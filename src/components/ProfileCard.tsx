@@ -9,9 +9,10 @@ interface ProfileCardProps {
   profile: any;
   onLike?: (id: string) => void;
   onSuperLike?: (profile: any) => void;
+  onOpenModal: () => void;
 }
 
-export const ProfileCard = ({ profile, onLike, onSuperLike }: ProfileCardProps) => {
+export const ProfileCard = ({ profile, onLike, onSuperLike, onOpenModal }: ProfileCardProps) => {
   const { getUserOnlineStatus, getLastSeenTime } = useUserOnlineStatus();
   const isOnline = profile.isOnline ?? getUserOnlineStatus(profile.id);
   const lastSeen = profile.lastSeen ?? getLastSeenTime(profile.id);
@@ -26,16 +27,17 @@ export const ProfileCard = ({ profile, onLike, onSuperLike }: ProfileCardProps) 
 
   const handleLike = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onLike?.(id);
+    onOpenModal();
   };
 
   const handleSuperLike = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onSuperLike?.(profile);
+    onOpenModal();
   };
 
   const handleDislike = (e: React.MouseEvent) => {
     e.stopPropagation();
+    onOpenModal();
     toast({
       title: "Perfil omitido",
       description: `Has pasado el perfil de ${name}`,

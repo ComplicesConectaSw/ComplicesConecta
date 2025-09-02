@@ -9,6 +9,7 @@ import { LoadingScreen } from "@/components/LoadingScreen";
 import { WelcomeModal } from "@/components/WelcomeModal";
 import { FeatureModal } from "@/components/modals/FeatureModal";
 import { InstallAppModal } from "@/components/modals/InstallAppModal";
+import { ActionButtonsModal } from "@/components/modals/ActionButtonsModal";
 import Navigation from "@/components/Navigation";
 import { Heart, Users, Shield, Zap, Sparkles, Star, Rocket, Smartphone, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -24,6 +25,7 @@ const Index = () => {
   const [selectedFeature, setSelectedFeature] = useState<'connections' | 'verification' | 'events' | 'tokens'>('connections');
   const [isAndroid, setIsAndroid] = useState(false);
   const [showInstallModal, setShowInstallModal] = useState(false);
+  const [showActionButtonsModal, setShowActionButtonsModal] = useState(false);
 
   // Verificar si el usuario está autenticado y detectar Android
   useEffect(() => {
@@ -64,7 +66,7 @@ const Index = () => {
       age: 29,
       location: "Ciudad de México",
       interests: ["Fiestas Temáticas", "Vinos y Licores", "Escapadas de Fin de Semana"],
-      image: "https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=500&h=700&fit=crop&crop=faces&auto=format&q=80",
+      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=500&h=700&fit=crop&crop=faces&auto=format&q=80",
       rating: 4.9,
       isOnline: true,
       bio: "Apasionada por la naturaleza y la creatividad. Buscando a alguien con quien compartir aventuras y conversaciones profundas.",
@@ -77,7 +79,7 @@ const Index = () => {
       age: 34,
       location: "Guadalajara",
       interests: ["Cenas Sensuales", "Clubs Exclusivos", "Viajes Exóticos"],
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=500&h=700&fit=crop&crop=faces&auto=format&q=80",
+      image: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=500&h=700&fit=crop&crop=faces&auto=format&q=80",
       rating: 4.8,
       isOnline: false,
       bio: "Emprendedor y amante del mar. Disfruto de un buen vino y una compañía inteligente.",
@@ -90,7 +92,7 @@ const Index = () => {
       age: 27,
       location: "Monterrey",
       interests: ["Tantra y Masajes", "Música Electrónica", "Noches de Gala"],
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=500&h=700&fit=crop&crop=faces&auto=format&q=80",
+      image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=500&h=700&fit=crop&crop=faces&auto=format&q=80",
       rating: 4.9,
       isOnline: true,
       bio: "Explorando la riqueza cultural de México. Me encanta perderme en libros y descubrir nuevos lugares.",
@@ -103,7 +105,7 @@ const Index = () => {
       age: 31,
       location: "Puebla",
       interests: ["Coctelería de Autor", "Juegos de Rol", "Eventos Privados"],
-      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&h=700&fit=crop&crop=faces&auto=format&q=80",
+      image: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=500&h=700&fit=crop&crop=faces&auto=format&q=80",
       rating: 4.7,
       isOnline: true,
       bio: "Ingeniero de software con alma de chef. Siempre en busca del equilibrio perfecto entre código y sabor.",
@@ -224,7 +226,8 @@ const Index = () => {
                   <ProfileCard 
                     profile={profile} 
                     onLike={() => {}} 
-                    onSuperLike={() => {}} 
+                    onSuperLike={() => {}}
+                    onOpenModal={() => setShowActionButtonsModal(true)} 
                   />
                 </div>
               ))}
@@ -296,7 +299,7 @@ const Index = () => {
                   <Button 
                     variant="outline" 
                     size="xl" 
-                    className="bg-gradient-to-r from-green-500 to-emerald-600 border-green-400 text-white hover:from-green-600 hover:to-emerald-700 backdrop-blur-sm transform hover:scale-105 transition-all duration-300 animate-pulse shadow-lg hover:shadow-green-500/25"
+                    className="bg-gradient-to-r from-green-500 to-emerald-600 border-green-400 text-white hover:from-green-600 hover:to-emerald-700 backdrop-blur-sm transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-green-500/25 hover:opacity-90"
                     onClick={() => setShowInstallModal(true)}
                   >
                     <Download className="w-5 h-5 mr-2" />
@@ -316,6 +319,10 @@ const Index = () => {
         isOpen={showFeatureModal}
         onClose={() => setShowFeatureModal(false)}
         feature={selectedFeature}
+      />
+      <ActionButtonsModal
+        isOpen={showActionButtonsModal}
+        onClose={() => setShowActionButtonsModal(false)}
       />
     </div>
   );
