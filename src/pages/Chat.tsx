@@ -1,11 +1,11 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
 import { ChatList } from "@/components/chat/ChatList";
-import { ChatWindow } from "@/components/chat/ChatWindow";
 import { Button } from "@/components/ui/button";
-import { MessageCircle, ArrowLeft, Heart, Users, Flame } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { MessageCircle, ArrowLeft, Heart, Users, Flame, Send } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import Navigation from "@/components/Navigation";
 
 export interface ChatUser {
   id: number;
@@ -29,13 +29,14 @@ const Chat = () => {
   const navigate = useNavigate();
   const [selectedChat, setSelectedChat] = useState<ChatUser | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
+  const [newMessage, setNewMessage] = useState('');
   
   // Swinger community chat data
   const chats: ChatUser[] = [
     {
       id: 1,
       name: "Sofía & Miguel",
-      image: "/src/assets/profile-1.jpg",
+      image: "https://images.unsplash.com/photo-1500000000000?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
       lastMessage: "¿Están libres este fin de semana? 🔥",
       timestamp: "5 min",
       isOnline: true,
@@ -44,7 +45,7 @@ const Chat = () => {
     {
       id: 2,
       name: "Valentina",
-      image: "/src/assets/profile-2.jpg",
+      image: "https://images.unsplash.com/photo-1500000000001?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
       lastMessage: "Me encantó conocerlos en la fiesta 💕",
       timestamp: "1 h",
       isOnline: true,
@@ -53,7 +54,7 @@ const Chat = () => {
     {
       id: 3,
       name: "Carlos & Ana",
-      image: "/src/assets/profile-3.jpg",
+      image: "https://images.unsplash.com/photo-1500000000002?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
       lastMessage: "¿Vienen al evento VIP del sábado?",
       timestamp: "3 h",
       isOnline: false,
@@ -62,7 +63,7 @@ const Chat = () => {
     {
       id: 4,
       name: "Isabella",
-      image: "/src/assets/profile-4.jpg",
+      image: "https://images.unsplash.com/photo-1500000000003?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
       lastMessage: "Gracias por la invitación privada 😘",
       timestamp: "1 día",
       isOnline: true,
@@ -105,18 +106,19 @@ const Chat = () => {
     }
   }, [selectedChat]);
 
-  const handleSendMessage = (content: string) => {
-    if (!selectedChat) return;
+  const handleSendMessage = () => {
+    if (!selectedChat || !newMessage.trim()) return;
     
-    const newMessage: Message = {
-      id: Date.now() + Math.random(), // Generar un ID más único
-      senderId: 0, // Current user
-      content,
+    const message: Message = {
+      id: Date.now() + Math.random(),
+      senderId: 0,
+      content: newMessage,
       timestamp: new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }),
       type: 'text'
     };
     
-    setMessages(prev => [...prev, newMessage]);
+    setMessages(prev => [...prev, message]);
+    setNewMessage('');
   };
 
   return (
@@ -168,7 +170,7 @@ const Chat = () => {
       <div className="relative z-10">
         <Header />
       
-        <main className="container mx-auto px-4 py-8">
+        <main className="container mx-auto px-4 py-8 pb-24">
           {/* Back Button */}
           <div className="mb-6">
             <Button 
@@ -196,7 +198,7 @@ const Chat = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[70vh]">
             {/* Chat List */}
             <div className="lg:col-span-1">
-              <div className="bg-card/80 backdrop-blur-sm rounded-2xl shadow-soft border border-primary/10">
+              <div className="bg-card/80 backdrop-blur-sm rounded-2xl shadow-soft border border-primary/10 h-full">
                 <div className="p-6 border-b border-primary/10">
                   <h2 className="text-xl font-semibold text-card-foreground mb-2 flex items-center">
                     <Users className="mr-2 h-5 w-5 text-primary" />
@@ -217,12 +219,69 @@ const Chat = () => {
             {/* Chat Window */}
             <div className="lg:col-span-2">
               {selectedChat ? (
-                <div className="bg-card/80 backdrop-blur-sm rounded-2xl shadow-soft border border-primary/10 h-full">
-                  <ChatWindow
-                    chat={selectedChat}
-                    messages={messages}
-                    onSendMessage={handleSendMessage}
-                  />
+                <div className="bg-card/80 backdrop-blur-sm rounded-2xl shadow-soft border border-primary/10 h-full flex flex-col">
+                  {/* Chat Header */}
+                  <div className="p-4 border-b border-primary/10 flex items-center space-x-3">
+                    <img 
+                      src={selectedChat.image} 
+                      alt={selectedChat.name}
+                      className="w-10 h-10 rounded-full object-cover"
+                    />
+                    <div>
+                      <h3 className="font-semibold text-card-foreground">{selectedChat.name}</h3>
+                      <p className="text-sm text-muted-foreground">
+                        {selectedChat.isOnline ? 'En línea' : 'Desconectado'}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Messages */}
+                  <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                    {messages.map((message) => (
+                      <div
+                        key={message.id}
+                        className={`flex ${message.senderId === 0 ? 'justify-end' : 'justify-start'}`}
+                      >
+                        <div
+                          className={`max-w-xs px-4 py-3 rounded-2xl ${
+                            message.senderId === 0
+                              ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
+                              : 'bg-white text-gray-900 shadow-md border border-gray-100'
+                          }`}
+                        >
+                          <p className="text-sm leading-relaxed">{message.content}</p>
+                          <p className={`text-xs mt-1 ${
+                            message.senderId === 0 ? 'text-purple-100' : 'text-gray-500'
+                          }`}>
+                            {message.timestamp}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Message Input */}
+                  <div className="p-4 border-t border-primary/10">
+                    <div className="flex space-x-2">
+                      <Input
+                        value={newMessage}
+                        onChange={(e) => setNewMessage(e.target.value)}
+                        placeholder="Escribe un mensaje..."
+                        className="flex-1 bg-white/80 border-primary/20"
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter') {
+                            handleSendMessage();
+                          }
+                        }}
+                      />
+                      <Button 
+                        onClick={handleSendMessage}
+                        className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
+                      >
+                        <Send className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               ) : (
                 <div className="bg-card/80 backdrop-blur-sm rounded-2xl shadow-soft border border-primary/10 h-full flex items-center justify-center">
@@ -247,7 +306,7 @@ const Chat = () => {
           </div>
         </main>
 
-        <Footer />
+        <Navigation />
       </div>
       
       {/* Custom Styles */}

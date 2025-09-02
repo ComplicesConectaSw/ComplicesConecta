@@ -32,16 +32,25 @@ export const useAuth = () => {
     const checkDemoSession = () => {
       const demoUser = localStorage.getItem('demo_user');
       const demoSession = localStorage.getItem('demo_session');
+      const userType = localStorage.getItem('userType');
       
-      if (demoUser && demoSession) {
-        const user = JSON.parse(demoUser);
-        setState({
-          user: user,
-          session: { user } as Session,
-          loading: false,
-          profile: { id: user.id, role: user.role }
-        });
-        return true;
+      if (demoUser && demoSession && userType) {
+        try {
+          const user = JSON.parse(demoUser);
+          setState({
+            user: user,
+            session: { user } as Session,
+            loading: false,
+            profile: { id: user.id, role: user.role }
+          });
+          return true;
+        } catch (error) {
+          console.error('Error parsing demo session:', error);
+          // Clear corrupted data
+          localStorage.removeItem('demo_user');
+          localStorage.removeItem('demo_session');
+          localStorage.removeItem('userType');
+        }
       }
       return false;
     };

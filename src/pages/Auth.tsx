@@ -85,7 +85,7 @@ const Auth = () => {
       let accountType = 'single';
       let welcomeTitle = "¡Bienvenido!";
       let welcomeDescription = "Conectando en modo demo para desarrollo local.";
-      let redirectPath = "/discover";
+      let redirectPath = "/feed";
       
       if (isAdminEmail) {
         userRole = 'administrador';
@@ -95,12 +95,13 @@ const Auth = () => {
       } else if (isParejaEmail) {
         accountType = 'couple';
         welcomeTitle = "¡Bienvenida Pareja!";
-        welcomeDescription = "Accediendo como perfil de pareja...";
-      } else if (isSingleEmail) {
-        accountType = 'single';
-        welcomeTitle = "¡Bienvenido Single!";
-        welcomeDescription = "Accediendo como perfil individual...";
-      }
+        welcomeDescription = "Conectando con otras parejas y singles...";
+        redirectPath = "/profile-couple";
+        localStorage.setItem('userType', 'couple');
+      } else {
+        localStorage.setItem('userType', 'single');
+        redirectPath = "/profile-single";
+      } 
       
       console.log('🔑 Tipo de usuario:', { userRole, accountType });
       

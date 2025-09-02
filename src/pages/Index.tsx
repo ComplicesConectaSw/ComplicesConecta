@@ -7,6 +7,7 @@ import { Footer } from "@/components/Footer";
 import { BetaBanner } from "@/components/BetaBanner";
 import { LoadingScreen } from "@/components/LoadingScreen";
 import { WelcomeModal } from "@/components/WelcomeModal";
+import Navigation from "@/components/Navigation";
 import { Heart, Users, Shield, Zap, Sparkles, Star, Rocket } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -114,6 +115,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-hero-gradient">
+      {/* Fixed closing div tag */}
       {/* Advanced Animated Background */}
       <div className="fixed inset-0 z-0">
         {/* Base Gradient - Removed to use main bg-hero-gradient */}
@@ -165,20 +167,23 @@ const Index = () => {
         <BetaBanner />
         <div className="pt-16"> {/* Add padding for fixed banner */}
           <Header />
+        </div>
+      </div>
       
       <main>
         <HeroSection />
         
         {/* Featured Profiles Section */}
-        <section className="py-20 relative">
+        <section className="py-10 sm:py-20 relative">
           <div className="text-center space-y-8">
             <div className="space-y-6">
               <div className="relative">
-                <h1 className="text-6xl md:text-8xl font-bold text-white mb-6 animate-fade-in relative z-10">
+                <h1 className="text-4xl sm:text-6xl md:text-8xl font-bold text-white mb-6 animate-fade-in relative z-10">
                   <span className="bg-gradient-to-r from-white via-pink-200 to-white bg-clip-text text-transparent drop-shadow-2xl">
                     Cómplices
                   </span>
-                  <span className="block bg-gradient-to-r from-pink-400 via-red-400 to-orange-400 bg-clip-text text-transparent animate-pulse drop-shadow-2xl">
+                  <br />
+                  <span className="bg-gradient-to-r from-white to-pink-200 bg-clip-text text-transparent animate-pulse drop-shadow-2xl">
                     Conecta
                   </span>
                 </h1>
@@ -253,7 +258,7 @@ const Index = () => {
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-primary/20 via-accent/30 to-secondary/20 animate-gradient-x"></div>
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1),transparent_70%)]"></div>
           </div>
-          <div className="container mx-auto px-4 text-center">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8 relative z-10 max-w-6xl">
             <div className="max-w-3xl mx-auto">
               <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
                 ¿Listos para explorar juntos?
@@ -284,14 +289,9 @@ const Index = () => {
         </section>
       </main>
 
-          <Footer />
-        </div>
-      </div>
+      <Footer />
+      <Navigation />
       
-      {/* Welcome Modal */}
-      <WelcomeModal isOpen={showWelcome} onClose={handleWelcomeClose} />
-      
-      {/* Custom Styles */}
       <style>{`
         @keyframes gradient-x {
           0%, 100% { transform: translateX(-50%); }

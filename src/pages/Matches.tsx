@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
+import Navigation from "@/components/Navigation";
 import { MatchCard } from "@/components/matches/MatchCard";
 import { MatchFilters } from "@/components/matches/MatchFilters";
 import { Button } from "@/components/ui/button";
@@ -150,7 +150,7 @@ const Matches = () => {
       <div className="relative z-10">
         <Header />
       
-        <main className="container mx-auto px-4 py-8">
+        <main className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 max-w-6xl pb-24">
           {/* Back Button */}
           <div className="mb-6">
             <Button 
@@ -238,7 +238,7 @@ const Matches = () => {
 
         {/* Matches Grid */}
         {filteredMatches.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {filteredMatches.map((match, index) => (
               <div 
                 key={match.id}
@@ -267,7 +267,7 @@ const Matches = () => {
             <Button 
               variant="love" 
               size="lg"
-              onClick={() => navigate('/profiles')}
+              onClick={() => navigate('/discover')}
             >
               <Users className="mr-2 h-5 w-5" />
               Descubrir Perfiles Swinger
@@ -276,7 +276,7 @@ const Matches = () => {
         )}
         </main>
 
-        <Footer />
+        <Navigation />
       </div>
       
       {/* Custom Styles */}

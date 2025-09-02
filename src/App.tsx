@@ -21,6 +21,11 @@ import Security from './pages/Security';
 import Guidelines from './pages/Guidelines';
 import Admin from './pages/Admin';
 import NotFound from "./pages/NotFound";
+import ProfileSingle from "./pages/ProfileSingle";
+import ProfileCouple from "./pages/ProfileCouple";
+import EditProfileSingle from "./pages/EditProfileSingle";
+import EditProfileCouple from "./pages/EditProfileCouple";
+import Feed from "./pages/Feed";
 
 const queryClient = new QueryClient();
 
@@ -32,9 +37,14 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/feed" element={<Feed />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/profiles" element={<Profiles />} />
             <Route path="/profile/:id" element={<ProfileDetail />} />
+            <Route path="/profile-single" element={<ProfileSingle />} />
+            <Route path="/profile-couple" element={<ProfileCouple />} />
+            <Route path="/edit-profile-single" element={<EditProfileSingle />} />
+            <Route path="/edit-profile-couple" element={<EditProfileCouple />} />
             <Route path="/events" element={<Events />} />
             <Route path="/chat" element={<Chat />} />
             <Route path="/matches" element={<Matches />} />
