@@ -226,6 +226,9 @@ NODE_ENV=development
 - ✅ Generación automática de perfiles mock
 - ✅ Filtros por edad, distancia, tipo de usuario
 - ✅ Interfaz tipo swipe moderna
+- ✅ **NUEVO**: Asignación inteligente de imágenes por tipo de perfil
+- ✅ **NUEVO**: Sistema anti-duplicados en viewport
+- ✅ **NUEVO**: Heurística por nombres (Alejandro→hombre, Laura→mujer, José&Miguel→pareja)
 
 ### 🧭 **Navegación**
 - ✅ Bottom tab bar responsive
@@ -249,6 +252,51 @@ NODE_ENV=development
 - ✅ **NUEVO**: Tipos TypeScript para todas las funcionalidades
 - ✅ **NUEVO**: Mock data extendido para funciones sociales
 
+### 📬 **Sistema de Invitaciones (NUEVO)**
+- ✅ **Envío de invitaciones** desde perfiles con mensaje personalizado
+- ✅ **Tres tipos**: Perfil, Galería privada, Chat privado
+- ✅ **Gestión completa** en página Requests con tabs
+- ✅ **Permisos de galería** - Control total sobre acceso a fotos privadas
+- ✅ **Gating de chat** - Chat global vs privado con invitaciones
+- ✅ **Notificaciones toast** para todas las acciones
+- ✅ **Integración** en SingleCard y CoupleCard
+
+### ⚙️ **Panel de Administración (COMPLETADO)**
+- ✅ **Gestión de perfiles** con verificación KYC
+- ✅ **Moderación de invitaciones** con revocación
+- ✅ **Auditoría del repositorio** con reportes descargables
+- ✅ **Estadísticas detalladas** de usuarios y actividad
+- ✅ **Gestión de FAQ** con categorías
+- ✅ **Configuración de chat** y moderación
+
+### ❓ **FAQ Mejorado (COMPLETADO)**
+- ✅ **8 categorías organizadas** con acordeones interactivos
+- ✅ **Verificación KYC, Privacidad, Galerías Privadas**
+- ✅ **Sistema de Invitaciones, Eventos VIP, Tokens**
+- ✅ **Seguridad y Reportes, Soporte Técnico**
+- ✅ **Formularios** de reporte de bugs y feedback
+- ✅ **Iconos y colores** por categoría
+
+### 🚫 **Página 404 Profesional (COMPLETADO)**
+- ✅ **Animaciones suaves** con gradientes dinámicos
+- ✅ **Elementos flotantes** y micro-interacciones
+- ✅ **Mensaje empático** y profesional
+- ✅ **Navegación intuitiva** con botones de acción
+- ✅ **Logo y branding** de ComplicesConecta
+
+### 🔧 **Herramientas de Desarrollo (NUEVO)**
+- ✅ **Script de auditoría** (`npm run audit:repo`)
+  - Detecta duplicados por hash SHA256
+  - Encuentra imports rotos en TypeScript
+  - Identifica carpetas vacías y archivos grandes
+  - Genera reportes JSON/CSV
+  - Excluye android/ y dependencias
+- ✅ **Importador de plantillas** (`npm run scaffold:templates`)
+  - Escanea directorios automáticamente
+  - Categoriza componentes por funcionalidad
+  - Evita conflictos renombrando archivos
+  - Genera catálogo para gestión en Admin
+
 ## 💳 Sistema de Suscripciones
 
 | Plan | Precio | Características |
@@ -269,6 +317,16 @@ npm run dev
 ```bash
 npm run build
 npm run preview
+```
+
+### Herramientas de Desarrollo
+```bash
+# Auditoría del repositorio
+npm run audit:repo          # Genera reporte completo
+npm run audit:fix           # Aplica correcciones seguras
+
+# Importar plantillas
+npm run scaffold:templates  # Importa componentes de plantillas
 ```
 
 ### Plataformas Recomendadas

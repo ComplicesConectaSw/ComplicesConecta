@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -13,22 +13,40 @@ import {
   Eye,
   EyeOff,
   Plus,
-  X
+  X,
+  UserPlus
 } from "lucide-react";
 import { useFeatures } from "@/hooks/useFeatures";
 import { mockGalleryImages, GalleryImage } from "@/lib/data";
+import { invitationService } from "@/lib/invitations";
+import { InvitationDialog } from "@/components/invitations/InvitationDialog";
 
 interface GalleryProps {
   userId: number;
   isOwner?: boolean;
   canViewPrivate?: boolean;
+  profileName?: string;
 }
 
-const Gallery = ({ userId, isOwner = false, canViewPrivate = false }: GalleryProps) => {
+const Gallery = ({ userId, isOwner = false, canViewPrivate = false, profileName = "Usuario" }: GalleryProps) => {
   const { features } = useFeatures();
   const [images, setImages] = useState<GalleryImage[]>(mockGalleryImages);
   const [activeTab, setActiveTab] = useState<'public' | 'private'>('public');
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
+  const [hasGalleryAccess, setHasGalleryAccess] = useState(canViewPrivate);
+
+  // Check gallery access permissions
+  useEffect(() => {
+    const checkAccess = async () => {
+      if (!isOwner && userId) {
+        const currentUserId = 1; // Mock current user ID
+        const access = await invitationService.hasGalleryAccess(userId.toString(), currentUserId.toString());
+        setHasGalleryAccess(access);
+      }
+    };
+    
+    checkAccess();
+  }, [userId, isOwner]);
 
   // Filtrar imágenes por visibilidad
   const publicImages = images.filter(img => img.isPublic);
@@ -124,10 +142,10 @@ const Gallery = ({ userId, isOwner = false, canViewPrivate = false }: GalleryPro
           <TabsTrigger 
             value="private" 
             className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-white/70 flex items-center gap-2"
-            disabled={!isOwner && !canViewPrivate}
+            disabled={!isOwner && !hasGalleryAccess}
           >
             <Lock className="h-4 w-4" />
-            Privadas ({isOwner || canViewPrivate ? privateImages.length : '?'})
+            Privadas ({isOwner || hasGalleryAccess ? privateImages.length : '?'})
           </TabsTrigger>
         </TabsList>
 
@@ -199,16 +217,22 @@ const Gallery = ({ userId, isOwner = false, canViewPrivate = false }: GalleryPro
 
         {/* Galería Privada */}
         <TabsContent value="private" className="mt-6">
-          {!isOwner && !canViewPrivate ? (
+          {!isOwner && !hasGalleryAccess ? (
             <Card className="p-8 text-center bg-black/30 backdrop-blur-sm border-white/10">
               <Lock className="h-16 w-16 mx-auto mb-4 text-white/50" />
               <h3 className="text-xl font-semibold text-white mb-2">Contenido Privado</h3>
               <p className="text-white/70 mb-4">
-                Necesitas una conexión aceptada para ver las fotos privadas de este usuario.
+                Necesitas una invitación aceptada para ver las fotos privadas de este usuario.
               </p>
-              <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white">
-                Enviar Solicitud de Conexión
-              </Button>
+              <InvitationDialog 
+                targetProfileId={userId.toString()}
+                targetProfileName={profileName}
+              >
+                <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white">
+                  <UserPlus className="h-4 w-4 mr-2" />
+                  Solicitar Acceso a Galería
+                </Button>
+              </InvitationDialog>
             </Card>
           ) : privateImages.length === 0 ? (
             <Card className="p-8 text-center bg-black/30 backdrop-blur-sm border-white/10">

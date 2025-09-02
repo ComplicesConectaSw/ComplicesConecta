@@ -21,18 +21,25 @@ ComplicesConecta/
 │   ├── compliceslogo.png             # 🎨 Logo oficial
 │   ├── favicon.ico                   # 🔖 Favicon
 │   └── placeholder.svg               # 🖼️ Placeholder imágenes
+├── scripts/                          # 🔧 Herramientas de desarrollo ✅
+│   ├── audit-project.ts              # 🔍 Auditoría exhaustiva del repo
+│   └── import-templates.ts           # 📥 Importador seguro de plantillas
 └── src/                              # 💻 Frontend React + TypeScript
     ├── components/                   # 🧩 Componentes reutilizables
     │   ├── analytics/                # 📊 Componentes de análisis
     │   ├── chat/                     # 💬 Sistema de chat swinger
     │   ├── discover/                 # 🔍 Descubrimiento de parejas
+    │   ├── invitations/              # 📬 Sistema de invitaciones ✅
+    │   │   └── InvitationDialog.tsx  # 📨 Diálogo de invitaciones
     │   ├── matches/                  # 💕 Sistema de matches
     │   ├── premium/                  # 💎 Funcionalidades premium
     │   │   ├── VIPEvents.tsx         # 🎭 Eventos VIP exclusivos
     │   │   ├── VirtualGifts.tsx      # 🎁 Regalos virtuales
     │   │   └── Stories.tsx           # 📸 Historias efímeras
     │   ├── profile/                  # 👤 Componentes de perfil
-    │   │   └── Gallery.tsx           # 🖼️ Galerías públicas/privadas
+    │   │   ├── Gallery.tsx           # 🖼️ Galerías públicas/privadas
+    │   │   ├── SingleCard.tsx        # 👤 Tarjeta perfil individual ✅
+    │   │   └── CoupleCard.tsx        # 👫 Tarjeta perfil pareja ✅
     │   ├── sidebar/                  # 📋 Navegación lateral
     │   └── ui/
     │       ├── accordion.tsx
@@ -93,7 +100,9 @@ ComplicesConecta/
     │   └── supabase/                 # 🔌 Integración Supabase
     ├── lib/
     │   ├── utils.ts                  # 🛠️ Utilidades generales
-    │   └── data.ts                   # 📊 Datos mock y configuración
+    │   ├── data.ts                   # 📊 Datos mock y configuración
+    │   ├── invitations.ts            # 📬 Servicios de invitaciones ✅
+    │   └── media.ts                  # 🖼️ Gestión inteligente de imágenes ✅
     ├── pages/                        # 📄 Páginas principales
     │   ├── Index.tsx                 # 🏠 Página principal swinger ✅
     │   ├── Auth.tsx                  # 🔐 Autenticación y registro ✅
@@ -105,9 +114,9 @@ ComplicesConecta/
     │   ├── Requests.tsx              # 🔗 Sistema de solicitudes ✅
     │   ├── Matches.tsx               # 💕 Gestión de matches ✅
     │   ├── Discover.tsx              # 🔍 Descubrimiento avanzado ✅
-    │   ├── Admin.tsx                 # ⚙️ Panel administrativo
-    │   ├── FAQ.tsx                   # ❓ Preguntas frecuentes
-    │   └── NotFound.tsx              # 🚫 Página 404
+    │   ├── Admin.tsx                 # ⚙️ Panel administrativo ✅
+    │   ├── FAQ.tsx                   # ❓ Preguntas frecuentes ✅
+    │   └── NotFound.tsx              # 🚫 Página 404 ✅
     └── assets/                       # 🖼️ Recursos estáticos
         ├── profile-1.jpg             # 👤 Imágenes de perfil demo
         ├── profile-2.jpg
@@ -172,15 +181,58 @@ ComplicesConecta/
 - **Requests**: Sistema de solicitudes de conexión ✅
 - **Matches**: Gestión de conexiones y matches ✅
 - **Discover**: Búsqueda avanzada con filtros lifestyle ✅
-- **Admin**: Panel de administración y moderación
-- **FAQ**: Preguntas frecuentes
-- **NotFound**: Página 404
+- **Admin**: Panel de administración y moderación ✅
+- **FAQ**: Preguntas frecuentes ✅
+- **NotFound**: Página 404 ✅
 
 #### 🔐 **Seguridad y Privacidad**
 - **Verificación KYC**: Sistema de 3 niveles de verificación
 - **Encriptación E2E**: Todas las comunicaciones protegidas
 - **Perfiles Anónimos**: Privacidad hasta el match mutuo
 - **Geolocalización Difusa**: Ubicación aproximada sin comprometer privacidad
+
+## 🔧 **Herramientas de Desarrollo (NUEVO)**
+
+### **Scripts de Automatización**
+- **audit-project.ts** - Auditoría exhaustiva del repositorio
+  - Detecta duplicados por hash SHA256
+  - Encuentra imports rotos en TypeScript/JavaScript
+  - Identifica carpetas vacías y archivos grandes
+  - Detecta archivos corruptos y conflictos de mayúsculas
+  - Genera reportes JSON/CSV en `reports/`
+  - Excluye `android/`, `node_modules/` y archivos de sistema
+
+- **import-templates.ts** - Importador seguro de plantillas
+  - Escanea directorios de plantillas automáticamente
+  - Categoriza componentes por funcionalidad
+  - Detecta conflictos con archivos existentes
+  - Importa componentes renombrando conflictos
+  - Genera catálogo para gestión en Admin UI
+
+### **Comandos NPM Disponibles**
+```bash
+npm run audit:repo          # Auditoría completa
+npm run audit:fix           # Correcciones automáticas
+npm run scaffold:templates  # Importar plantillas
+```
+
+## 📬 **Sistema de Invitaciones Completo (NUEVO)**
+
+### **Funcionalidades Implementadas**
+- **Tres tipos de invitación**: Perfil, Galería privada, Chat privado
+- **Envío desde perfiles**: Botón integrado en SingleCard y CoupleCard
+- **Gestión completa**: Página Requests con tabs organizados
+- **Permisos granulares**: Control total sobre acceso a galerías privadas
+- **Gating de chat**: Separación entre chat global y privado
+- **Notificaciones**: Toast para todas las acciones
+- **Mensajes personalizados**: Cada invitación incluye mensaje del usuario
+
+### **Arquitectura del Sistema**
+```
+src/lib/invitations.ts          # Servicios y tipos
+src/components/invitations/     # Componentes UI
+src/pages/Requests.tsx          # Gestión completa
+```
 
 ## 🚀 **Stack Tecnológico Premium**
 

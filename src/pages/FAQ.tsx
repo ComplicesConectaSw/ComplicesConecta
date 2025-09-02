@@ -6,7 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, HelpCircle, MessageSquare, Star, Send, Heart, Shield, Crown, Bug, AlertTriangle } from "lucide-react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { ArrowLeft, HelpCircle, MessageSquare, Star, Send, Heart, Shield, Crown, Bug, AlertTriangle, UserCheck, Lock, GalleryHorizontal, MessageCircle, Gift, Zap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
@@ -28,44 +29,160 @@ const FAQ = () => {
     email: ""
   });
 
-  const faqs = [
-    {
-      question: "¿Qué es ComplicesConecta?",
-      answer: "ComplicesConecta es la plataforma swinger más exclusiva y segura de España. Conectamos parejas y solteros verificados en un ambiente discreto y profesional para experiencias auténticas."
+  const faqCategories = {
+    verificacion: {
+      title: "Verificación KYC",
+      icon: UserCheck,
+      color: "text-blue-500",
+      faqs: [
+        {
+          question: "¿Cómo funciona la verificación KYC?",
+          answer: "Utilizamos tecnología blockchain avanzada para verificar la identidad de todos nuestros miembros. Este proceso garantiza que solo personas reales y verificadas accedan a la plataforma."
+        },
+        {
+          question: "¿Qué documentos necesito para verificarme?",
+          answer: "Necesitas una identificación oficial vigente (INE, pasaporte o cédula profesional) y una selfie clara. El proceso es completamente seguro y tus datos están protegidos."
+        },
+        {
+          question: "¿Cuánto tarda la verificación?",
+          answer: "La verificación KYC toma entre 24-48 horas hábiles. Los miembros Premium tienen verificación prioritaria en menos de 12 horas."
+        }
+      ]
     },
-    {
-      question: "¿Cómo funciona la verificación KYC?",
-      answer: "Utilizamos tecnología blockchain avanzada para verificar la identidad de todos nuestros miembros. Este proceso garantiza que solo personas reales y verificadas accedan a la plataforma."
+    privacidad: {
+      title: "Privacidad y Seguridad",
+      icon: Lock,
+      color: "text-green-500",
+      faqs: [
+        {
+          question: "¿Es seguro el chat privado?",
+          answer: "Absolutamente. Todas las conversaciones están encriptadas end-to-end. Tu privacidad y discreción son nuestra máxima prioridad."
+        },
+        {
+          question: "¿Cómo protegen mis datos personales?",
+          answer: "Utilizamos encriptación de grado militar y cumplimos con GDPR. Nunca compartimos tu información personal con terceros sin tu consentimiento explícito."
+        },
+        {
+          question: "¿Puedo controlar quién ve mi perfil?",
+          answer: "Sí, tienes control total sobre tu privacidad. Puedes configurar quién puede ver tu perfil, fotos privadas y contactarte."
+        }
+      ]
     },
-    {
-      question: "¿Es seguro el chat privado?",
-      answer: "Absolutamente. Todas las conversaciones están encriptadas end-to-end. Tu privacidad y discreción son nuestra máxima prioridad."
+    galerias: {
+      title: "Galerías Privadas",
+      icon: GalleryHorizontal,
+      color: "text-purple-500",
+      faqs: [
+        {
+          question: "¿Cómo funcionan las galerías privadas?",
+          answer: "Las galerías privadas te permiten compartir fotos íntimas solo con personas que hayas autorizado. Tienes control total sobre quién puede acceder."
+        },
+        {
+          question: "¿Cómo envío una invitación de galería?",
+          answer: "Desde cualquier perfil, puedes enviar una invitación para acceder a tu galería privada. La persona debe aceptar la invitación para ver tu contenido privado."
+        },
+        {
+          question: "¿Puedo revocar el acceso a mi galería?",
+          answer: "Sí, puedes revocar el acceso a tu galería privada en cualquier momento desde tu configuración de privacidad."
+        }
+      ]
     },
-    {
-      question: "¿Qué incluyen los planes Premium?",
-      answer: "Los planes Premium incluyen acceso a eventos VIP exclusivos, chat ilimitado, Super Likes, verificación prioritaria y acceso a fiestas privadas de la comunidad swinger."
+    invitaciones: {
+      title: "Sistema de Invitaciones",
+      icon: MessageCircle,
+      color: "text-pink-500",
+      faqs: [
+        {
+          question: "¿Cómo funcionan las invitaciones?",
+          answer: "Puedes enviar invitaciones para conectar, acceder a galerías privadas o chatear. Las invitaciones incluyen un mensaje personalizado y requieren aceptación."
+        },
+        {
+          question: "¿Qué tipos de invitaciones existen?",
+          answer: "Hay tres tipos: invitaciones de perfil (para conectar), de galería (para ver fotos privadas) y de chat (para conversaciones privadas)."
+        },
+        {
+          question: "¿Puedo rechazar una invitación?",
+          answer: "Por supuesto. Tienes control total para aceptar o rechazar cualquier invitación. Las personas rechazadas no pueden volver a enviarte invitaciones del mismo tipo."
+        }
+      ]
     },
-    {
-      question: "¿Cómo puedo reportar un perfil?",
-      answer: "Puedes reportar cualquier perfil sospechoso directamente desde su página. Nuestro equipo de moderación revisa todos los reportes en menos de 24 horas."
+    eventos: {
+      title: "Eventos VIP",
+      icon: Crown,
+      color: "text-yellow-500",
+      faqs: [
+        {
+          question: "¿Qué son los eventos VIP?",
+          answer: "Son fiestas privadas y encuentros exclusivos organizados para miembros verificados. Incluyen clubs exclusivos, cenas íntimas y experiencias únicas para la comunidad swinger."
+        },
+        {
+          question: "¿Cómo puedo acceder a eventos VIP?",
+          answer: "Los eventos VIP están disponibles para miembros Premium verificados. Recibirás invitaciones exclusivas basadas en tu ubicación y preferencias."
+        },
+        {
+          question: "¿Los eventos son seguros y discretos?",
+          answer: "Absolutamente. Todos los eventos son organizados en ubicaciones seguras y discretas, con estrictos protocolos de privacidad y consentimiento."
+        }
+      ]
     },
-    {
-      question: "¿Qué son los eventos VIP?",
-      answer: "Son fiestas privadas y encuentros exclusivos organizados para miembros verificados. Incluyen clubs exclusivos, cenas íntimas y experiencias únicas para la comunidad swinger."
+    tokens: {
+      title: "Tokens y Regalos",
+      icon: Gift,
+      color: "text-orange-500",
+      faqs: [
+        {
+          question: "¿Qué son los tokens?",
+          answer: "Los tokens son nuestra moneda virtual que puedes usar para enviar regalos, destacar tu perfil y acceder a funciones premium especiales."
+        },
+        {
+          question: "¿Cómo obtengo tokens?",
+          answer: "Puedes comprar tokens o ganarlos completando tu perfil, verificándote, siendo activo en la comunidad y recibiendo valoraciones positivas."
+        },
+        {
+          question: "¿Los tokens caducan?",
+          answer: "No, tus tokens no caducan. Puedes usarlos cuando quieras para mejorar tu experiencia en la plataforma."
+        }
+      ]
     },
-    {
-      question: "🚧 ¿Encontraste un error en la versión Beta?",
-      answer: "Como estamos en fase beta, algunos errores pueden ocurrir. Por favor, utiliza el formulario de reporte de errores más abajo para ayudarnos a identificar y corregir cualquier problema que encuentres."
+    seguridad: {
+      title: "Seguridad y Reportes",
+      icon: Shield,
+      color: "text-red-500",
+      faqs: [
+        {
+          question: "¿Cómo puedo reportar un perfil?",
+          answer: "Puedes reportar cualquier perfil sospechoso directamente desde su página. Nuestro equipo de moderación revisa todos los reportes en menos de 24 horas."
+        },
+        {
+          question: "¿Qué hago si alguien me acosa?",
+          answer: "Reporta inmediatamente el comportamiento inapropiado. Tenemos tolerancia cero al acoso y tomamos medidas rápidas para proteger a nuestra comunidad."
+        },
+        {
+          question: "¿Hay moderadores activos?",
+          answer: "Sí, tenemos un equipo de moderación 24/7 que supervisa la plataforma y responde rápidamente a reportes y situaciones de seguridad."
+        }
+      ]
     },
-    {
-      question: "📱 ¿Problemas con la aplicación móvil?",
-      answer: "Si experimentas crashes, pantallas en blanco, o funciones que no responden en la app móvil, repórtalo detalladamente en el formulario de errores especificando tu dispositivo y sistema operativo."
-    },
-    {
-      question: "💳 ¿Problemas con pagos o suscripciones?",
-      answer: "Si tienes inconvenientes con donaciones, suscripciones premium, o procesamiento de pagos, contáctanos inmediatamente a través del formulario con todos los detalles de la transacción."
+    soporte: {
+      title: "Soporte Técnico",
+      icon: Zap,
+      color: "text-cyan-500",
+      faqs: [
+        {
+          question: "🚧 ¿Encontraste un error en la versión Beta?",
+          answer: "Como estamos en fase beta, algunos errores pueden ocurrir. Por favor, utiliza el formulario de reporte de errores más abajo para ayudarnos a identificar y corregir cualquier problema que encuentres."
+        },
+        {
+          question: "📱 ¿Problemas con la aplicación móvil?",
+          answer: "Si experimentas crashes, pantallas en blanco, o funciones que no responden en la app móvil, repórtalo detalladamente en el formulario de errores especificando tu dispositivo y sistema operativo."
+        },
+        {
+          question: "💳 ¿Problemas con pagos o suscripciones?",
+          answer: "Si tienes inconvenientes con donaciones, suscripciones premium, o procesamiento de pagos, contáctanos inmediatamente a través del formulario con todos los detalles de la transacción."
+        }
+      ]
     }
-  ];
+  };
 
   const handleSubmitFeedback = () => {
     // Aquí se enviaría el feedback al backend
@@ -191,18 +308,33 @@ Fecha: ${new Date().toLocaleString()}
                     Preguntas Frecuentes
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  {faqs.map((faq, index) => (
-                    <div key={index} className="border-b border-primary/10 pb-4 last:border-b-0">
-                      <h3 className="font-semibold text-foreground mb-2 flex items-start gap-2">
-                        <Shield className="h-4 w-4 text-accent mt-1 flex-shrink-0" />
-                        {faq.question}
-                      </h3>
-                      <p className="text-muted-foreground text-sm leading-relaxed pl-6">
-                        {faq.answer}
-                      </p>
-                    </div>
-                  ))}
+                <CardContent>
+                  <Accordion type="single" collapsible className="w-full">
+                    {Object.entries(faqCategories).map(([key, category]) => {
+                      const IconComponent = category.icon;
+                      return (
+                        <AccordionItem key={key} value={key} className="border-primary/10">
+                          <AccordionTrigger className="text-left hover:no-underline">
+                            <div className="flex items-center gap-3">
+                              <IconComponent className={`h-5 w-5 ${category.color}`} />
+                              <span className="font-semibold">{category.title}</span>
+                              <span className="text-sm text-muted-foreground">({category.faqs.length})</span>
+                            </div>
+                          </AccordionTrigger>
+                          <AccordionContent className="pt-4">
+                            <div className="space-y-4">
+                              {category.faqs.map((faq, index) => (
+                                <div key={index} className="border-l-2 border-primary/20 pl-4 py-2">
+                                  <h4 className="font-medium text-foreground mb-2">{faq.question}</h4>
+                                  <p className="text-muted-foreground text-sm leading-relaxed">{faq.answer}</p>
+                                </div>
+                              ))}
+                            </div>
+                          </AccordionContent>
+                        </AccordionItem>
+                      );
+                    })}
+                  </Accordion>
                 </CardContent>
               </Card>
             </div>

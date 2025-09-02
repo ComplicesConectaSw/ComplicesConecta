@@ -1,15 +1,19 @@
-import { useState, useEffect } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Switch } from "@/components/ui/switch";
-import { Heart, MessageCircle, MapPin, Verified, Crown, Edit, Settings, Share2, Eye, EyeOff, Lock, Globe, UserPlus } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import Navigation from "@/components/Navigation";
-import ProfileStats from "@/components/profile/ProfileStats";
-import Gallery from "@/components/profile/Gallery";
-import { generateMockSingle, mockPrivacySettings, ProfilePrivacySettings } from "@/lib/data";
-import { useFeatures } from "@/hooks/useFeatures";
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ArrowLeft, Heart, MessageCircle, MapPin, Calendar, Shield, Eye, EyeOff, Lock, Globe, Users, UserPlus, Settings, Edit, Share2, Crown, CheckCircle } from 'lucide-react';
+import { Header } from '@/components/Header';
+import Navigation from '@/components/Navigation';
+import { generateMockSingle, mockPrivacySettings, type ProfilePrivacySettings } from '@/lib/data';
+import { useFeatures } from '@/hooks/useFeatures';
+import Gallery from '@/components/profile/Gallery';
+import { InvitationDialog } from '@/components/invitations/InvitationDialog';
 
 const ProfileSingle = () => {
   const navigate = useNavigate();
@@ -88,7 +92,7 @@ const ProfileSingle = () => {
             onClick={() => navigate(-1)}
             className="text-gray-600"
           >
-            <Edit className="h-5 w-5" />
+            <ArrowLeft className="h-5 w-5" />
           </Button>
           <h1 className="text-lg font-semibold text-gray-900">Mi Perfil</h1>
           <div className="flex gap-2">
@@ -123,7 +127,7 @@ const ProfileSingle = () => {
               )}
               {profile.isVerified && (
                 <Badge className="bg-blue-500 text-white">
-                  <Verified className="h-3 w-3 mr-1" />
+                  <CheckCircle className="h-3 w-3 mr-1" />
                   Verificado
                 </Badge>
               )}
@@ -135,15 +139,35 @@ const ProfileSingle = () => {
               )}
             </div>
             
-            {isOwnProfile && (
+            {isOwnProfile ? (
               <div className="absolute bottom-4 right-4">
                 <Button 
                   onClick={() => navigate('/edit-profile-single')}
                   className="bg-white/90 text-gray-800 hover:bg-white"
                 >
-                  <Edit className="h-4 w-4 mr-2" />
+                  <Settings className="h-4 w-4 mr-2" />
                   Editar
                 </Button>
+              </div>
+            ) : (
+              <div className="absolute bottom-4 right-4 flex gap-2">
+                <Button 
+                  className="bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:from-pink-600 hover:to-purple-700"
+                >
+                  <Heart className="h-4 w-4 mr-2" />
+                  Like
+                </Button>
+                <InvitationDialog 
+                  targetProfileId={profile.id}
+                  targetProfileName={profile.name}
+                >
+                  <Button 
+                    className="bg-gradient-to-r from-blue-500 to-cyan-600 text-white hover:from-blue-600 hover:to-cyan-700"
+                  >
+                    <UserPlus className="h-4 w-4 mr-2" />
+                    Invitar
+                  </Button>
+                </InvitationDialog>
               </div>
             )}
           </div>
@@ -184,13 +208,21 @@ const ProfileSingle = () => {
               </div>
             </div>
             
-            <ProfileStats 
-              stats={{
-                likes: profile.stats?.likes || 159,
-                matches: profile.stats?.matches || 17,
-                visits: profile.stats?.visits || 103
-              }}
-            />
+            {/* Stats del perfil */}
+            <div className="grid grid-cols-3 gap-4 mt-6">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-purple-600">{profile.stats?.likes || 159}</div>
+                <div className="text-sm text-gray-500">Likes</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-pink-600">{profile.stats?.matches || 17}</div>
+                <div className="text-sm text-gray-500">Matches</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-blue-600">{profile.stats?.visits || 103}</div>
+                <div className="text-sm text-gray-500">Visitas</div>
+              </div>
+            </div>
           </CardContent>
         </Card>
 
@@ -274,13 +306,21 @@ const ProfileSingle = () => {
                   </div>
                 </div>
                 
-                <ProfileStats 
-                  stats={{
-                    likes: profile.stats?.likes || 159,
-                    matches: profile.stats?.matches || 17,
-                    visits: profile.stats?.visits || 103
-                  }}
-                />
+                {/* Stats del perfil */}
+                <div className="grid grid-cols-3 gap-4 mt-6">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-purple-600">{profile.stats?.likes || 159}</div>
+                    <div className="text-sm text-gray-500">Likes</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-pink-600">{profile.stats?.matches || 17}</div>
+                    <div className="text-sm text-gray-500">Matches</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-blue-600">{profile.stats?.visits || 103}</div>
+                    <div className="text-sm text-gray-500">Visitas</div>
+                  </div>
+                </div>
               </CardContent>
             </Card>
 

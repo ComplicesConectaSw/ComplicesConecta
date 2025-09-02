@@ -5,11 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { MessageCircle, ArrowLeft, Heart, Users, Flame, Send, Lock, Globe } from "lucide-react";
+import { MessageCircle, ArrowLeft, Heart, Users, Flame, Send, Lock, Globe, UserPlus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { useFeatures } from "@/hooks/useFeatures";
 import { mockPrivacySettings } from "@/lib/data";
+import { invitationService } from "@/lib/invitations";
+import { InvitationDialog } from "@/components/invitations/InvitationDialog";
 
 export interface ChatUser {
   id: number;
@@ -38,6 +40,7 @@ const Chat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [activeTab, setActiveTab] = useState<'private' | 'public'>('private');
+  const [hasChatAccess, setHasChatAccess] = useState<{[key: number]: boolean}>({});
   
   // Load messages for a specific chat
   const loadMessages = (chatId: number) => {
@@ -48,6 +51,27 @@ const Chat = () => {
     ];
     setMessages(mockMessages);
   };
+
+  // Check chat access permissions for private chats
+  useEffect(() => {
+    const checkChatAccess = async () => {
+      const currentUserId = "1"; // Mock current user ID
+      const accessMap: {[key: number]: boolean} = {};
+      
+      for (const chat of privateChats) {
+        if (chat.isPrivate) {
+          const access = await invitationService.hasChatAccess(currentUserId, chat.id.toString());
+          accessMap[chat.id] = access;
+        } else {
+          accessMap[chat.id] = true; // Public chats are always accessible
+        }
+      }
+      
+      setHasChatAccess(accessMap);
+    };
+    
+    checkChatAccess();
+  }, []);
 
   // Get user from URL params
   useEffect(() => {
@@ -166,6 +190,12 @@ const Chat = () => {
 
   const handleSendMessage = () => {
     if (!selectedChat || !newMessage.trim()) return;
+    
+    // Check chat access for private chats
+    if (selectedChat.isPrivate && !hasChatAccess[selectedChat.id]) {
+      alert('No tienes acceso a este chat privado. Necesitas una invitación aceptada.');
+      return;
+    }
     
     // Verificar permisos de mensajería según configuración de privacidad
     const canSendMessage = checkMessagePermissions(selectedChat);
@@ -425,32 +455,53 @@ const Chat = () => {
 
               {/* Input para enviar mensajes */}
               <div className="p-4 border-t border-white/10 bg-black/30">
-                <div className="flex items-center space-x-3">
-                  <Input
-                    value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                    placeholder={selectedChat.roomType === 'public' 
-                      ? "Mensaje a la sala pública..." 
-                      : "Escribe un mensaje privado..."
-                    }
-                    className="flex-1 bg-white/10 border-white/20 text-white placeholder-white/50"
-                    onKeyPress={(e) => {
-                      if (e.key === 'Enter') {
-                        handleSendMessage();
+                {selectedChat.isPrivate && !hasChatAccess[selectedChat.id] ? (
+                  <div className="text-center space-y-3">
+                    <div className="flex items-center justify-center text-white/70 mb-2">
+                      <Lock className="h-5 w-5 mr-2" />
+                      <span>Chat privado bloqueado</span>
+                    </div>
+                    <p className="text-sm text-white/60 mb-3">
+                      Necesitas una invitación aceptada para chatear con {selectedChat.name}
+                    </p>
+                    <InvitationDialog 
+                      targetProfileId={selectedChat.id.toString()}
+                      targetProfileName={selectedChat.name}
+                    >
+                      <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white">
+                        <UserPlus className="h-4 w-4 mr-2" />
+                        Enviar Invitación
+                      </Button>
+                    </InvitationDialog>
+                  </div>
+                ) : (
+                  <div className="flex items-center space-x-3">
+                    <Input
+                      value={newMessage}
+                      onChange={(e) => setNewMessage(e.target.value)}
+                      placeholder={selectedChat.roomType === 'public' 
+                        ? "Mensaje a la sala pública..." 
+                        : "Escribe un mensaje privado..."
                       }
-                    }}
-                  />
-                  <Button 
-                    onClick={handleSendMessage}
-                    className={`${
-                      selectedChat.roomType === 'public'
-                        ? 'bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600'
-                        : 'bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600'
-                    } text-white`}
-                  >
-                    <Send className="h-4 w-4" />
-                  </Button>
-                </div>
+                      className="flex-1 bg-white/10 border-white/20 text-white placeholder-white/50"
+                      onKeyPress={(e) => {
+                        if (e.key === 'Enter') {
+                          handleSendMessage();
+                        }
+                      }}
+                    />
+                    <Button 
+                      onClick={handleSendMessage}
+                      className={`${
+                        selectedChat.roomType === 'public'
+                          ? 'bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600'
+                          : 'bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600'
+                      } text-white`}
+                    >
+                      <Send className="h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
                 {selectedChat.roomType === 'public' && (
                   <p className="text-xs text-white/50 mt-2 px-1">
                     🔒 Los mensajes en salas públicas son visibles para todos los miembros

@@ -22,12 +22,16 @@ import {
   Crown,
   Activity,
   HelpCircle,
-  ArrowLeft
+  ArrowLeft,
+  UserPlus,
+  FileText,
+  Search
 } from 'lucide-react';
 import { Header } from '@/components/Header';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from '@/integrations/supabase/client';
+import { invitationService, type Invitation } from '@/lib/invitations';
 
 interface Profile {
   id: string;
@@ -78,9 +82,11 @@ const Admin = () => {
     dailyVisits: 0
   });
   const [faqItems, setFaqItems] = useState<FAQItem[]>([]);
+  const [invitations, setInvitations] = useState<Invitation[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
   const [newFaq, setNewFaq] = useState({ question: '', answer: '', category: 'general' });
+  const [auditReport, setAuditReport] = useState<any>(null);
 
   useEffect(() => {
     // Check for demo session first
@@ -127,7 +133,8 @@ const Admin = () => {
       await Promise.all([
         loadProfiles(),
         loadStats(),
-        loadFAQ()
+        loadFAQ(),
+        loadInvitations()
       ]);
     } catch (error) {
       console.error('Error loading admin data:', error);
@@ -209,6 +216,36 @@ const Admin = () => {
       setFaqItems(mockFAQ);
     } catch (error) {
       console.error('Error loading FAQ:', error);
+    }
+  };
+
+  const loadInvitations = async () => {
+    try {
+      // Load all invitations for admin review
+      const allInvitations: Invitation[] = [
+        {
+          id: '1',
+          from_profile: '2',
+          to_profile: '1',
+          message: 'Hola, me encantaría conocerte mejor.',
+          type: 'gallery',
+          status: 'pending',
+          created_at: new Date(Date.now() - 86400000).toISOString(),
+        },
+        {
+          id: '2',
+          from_profile: '3',
+          to_profile: '1',
+          message: '¿Te gustaría chatear en privado?',
+          type: 'chat',
+          status: 'accepted',
+          created_at: new Date(Date.now() - 3600000).toISOString(),
+          decided_at: new Date(Date.now() - 1800000).toISOString(),
+        }
+      ];
+      setInvitations(allInvitations);
+    } catch (error) {
+      console.error('Error loading invitations:', error);
     }
   };
 
@@ -310,6 +347,83 @@ const Admin = () => {
       title: "FAQ Eliminado",
       description: "La pregunta frecuente ha sido eliminada"
     });
+  };
+
+  const handleRevokeInvitation = async (invitationId: string) => {
+    if (!confirm('¿Estás seguro de revocar esta invitación?')) return;
+
+    try {
+      setInvitations(invitations.map(inv => 
+        inv.id === invitationId ? { ...inv, status: 'revoked' as const } : inv
+      ));
+      
+      toast({
+        title: "Invitación Revocada",
+        description: "La invitación ha sido revocada exitosamente"
+      });
+    } catch (error) {
+      console.error('Error revoking invitation:', error);
+      toast({
+        title: "Error",
+        description: "Error al revocar la invitación",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const generateAuditReport = async () => {
+    try {
+      // Simulated audit report generation
+      const report = {
+        timestamp: new Date().toISOString(),
+        summary: {
+          totalFiles: 1247,
+          duplicates: 12,
+          brokenImports: 3,
+          emptyFolders: 2,
+          largeFiles: 5
+        },
+        details: {
+          duplicates: [
+            { file1: 'src/assets/profile-1.jpg', file2: 'src/assets/people/profile-1.jpg', size: '2.3MB' },
+            { file1: 'src/components/Button.tsx', file2: 'src/components/ui/Button.tsx', size: '1.2KB' }
+          ],
+          brokenImports: [
+            { file: 'src/pages/Profile.tsx', line: 15, import: './NonExistentComponent' }
+          ],
+          largeFiles: [
+            { file: 'src/assets/hero-bg.jpg', size: '15.2MB' }
+          ]
+        }
+      };
+      
+      setAuditReport(report);
+      
+      toast({
+        title: "Reporte Generado",
+        description: "El reporte de auditoría ha sido generado exitosamente"
+      });
+    } catch (error) {
+      console.error('Error generating audit report:', error);
+      toast({
+        title: "Error",
+        description: "Error al generar el reporte de auditoría",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const downloadAuditReport = () => {
+    if (!auditReport) return;
+    
+    const dataStr = JSON.stringify(auditReport, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `audit-report-${new Date().toISOString().split('T')[0]}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
   };
 
   if (loading) {
@@ -431,14 +545,22 @@ const Admin = () => {
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="profiles" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 bg-card/80 backdrop-blur-sm">
+          <TabsList className="grid w-full grid-cols-6 bg-card/80 backdrop-blur-sm">
             <TabsTrigger value="profiles" className="flex items-center gap-2">
               <Users className="w-4 h-4" />
               Perfiles
             </TabsTrigger>
+            <TabsTrigger value="invitations" className="flex items-center gap-2">
+              <UserPlus className="w-4 h-4" />
+              Invitaciones
+            </TabsTrigger>
             <TabsTrigger value="stats" className="flex items-center gap-2">
               <BarChart3 className="w-4 h-4" />
               Estadísticas
+            </TabsTrigger>
+            <TabsTrigger value="audit" className="flex items-center gap-2">
+              <FileText className="w-4 h-4" />
+              Auditoría
             </TabsTrigger>
             <TabsTrigger value="faq" className="flex items-center gap-2">
               <HelpCircle className="w-4 h-4" />
@@ -514,6 +636,54 @@ const Admin = () => {
             </Card>
           </TabsContent>
 
+          {/* Invitations Management */}
+          <TabsContent value="invitations">
+            <Card className="bg-card/80 backdrop-blur-sm border-primary/10">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <UserPlus className="w-5 h-5" />
+                  Gestión de Invitaciones
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {invitations.map((invitation) => (
+                    <div key={invitation.id} className="flex items-center justify-between p-4 border border-primary/10 rounded-lg bg-background/50">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <h3 className="font-semibold text-white">De: {invitation.from_profile} → Para: {invitation.to_profile}</h3>
+                          <Badge variant={invitation.status === 'pending' ? 'secondary' : invitation.status === 'accepted' ? 'default' : 'destructive'}>
+                            {invitation.status === 'pending' ? 'Pendiente' : invitation.status === 'accepted' ? 'Aceptada' : 'Rechazada'}
+                          </Badge>
+                          <Badge variant="outline">
+                            {invitation.type === 'gallery' ? 'Galería' : invitation.type === 'chat' ? 'Chat' : 'Perfil'}
+                          </Badge>
+                        </div>
+                        <p className="text-sm text-gray-300 mb-1">{invitation.message}</p>
+                        <p className="text-xs text-gray-400">Creada: {new Date(invitation.created_at).toLocaleString()}</p>
+                        {invitation.decided_at && (
+                          <p className="text-xs text-gray-400">Decidida: {new Date(invitation.decided_at).toLocaleString()}</p>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {invitation.status !== 'revoked' && (
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            onClick={() => handleRevokeInvitation(invitation.id)}
+                          >
+                            <XCircle className="w-4 h-4" />
+                            Revocar
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
           {/* Statistics */}
           <TabsContent value="stats">
             <Card className="bg-card/80 backdrop-blur-sm border-primary/10">
@@ -563,6 +733,99 @@ const Admin = () => {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Audit Report */}
+          <TabsContent value="audit">
+            <div className="space-y-6">
+              <Card className="bg-card/80 backdrop-blur-sm border-primary/10">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <FileText className="w-5 h-5" />
+                    Auditoría del Repositorio
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex gap-4">
+                    <Button onClick={generateAuditReport} className="flex-1">
+                      <Search className="w-4 h-4 mr-2" />
+                      Generar Reporte de Auditoría
+                    </Button>
+                    {auditReport && (
+                      <Button onClick={downloadAuditReport} variant="outline">
+                        <Download className="w-4 h-4 mr-2" />
+                        Descargar JSON
+                      </Button>
+                    )}
+                  </div>
+                  
+                  {auditReport && (
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                        <Card className="p-4">
+                          <div className="text-center">
+                            <p className="text-2xl font-bold text-blue-600">{auditReport.summary.totalFiles}</p>
+                            <p className="text-sm text-muted-foreground">Archivos Total</p>
+                          </div>
+                        </Card>
+                        <Card className="p-4">
+                          <div className="text-center">
+                            <p className="text-2xl font-bold text-yellow-600">{auditReport.summary.duplicates}</p>
+                            <p className="text-sm text-muted-foreground">Duplicados</p>
+                          </div>
+                        </Card>
+                        <Card className="p-4">
+                          <div className="text-center">
+                            <p className="text-2xl font-bold text-red-600">{auditReport.summary.brokenImports}</p>
+                            <p className="text-sm text-muted-foreground">Imports Rotos</p>
+                          </div>
+                        </Card>
+                        <Card className="p-4">
+                          <div className="text-center">
+                            <p className="text-2xl font-bold text-gray-600">{auditReport.summary.emptyFolders}</p>
+                            <p className="text-sm text-muted-foreground">Carpetas Vacías</p>
+                          </div>
+                        </Card>
+                        <Card className="p-4">
+                          <div className="text-center">
+                            <p className="text-2xl font-bold text-purple-600">{auditReport.summary.largeFiles}</p>
+                            <p className="text-sm text-muted-foreground">Archivos Grandes</p>
+                          </div>
+                        </Card>
+                      </div>
+                      
+                      <div className="space-y-4">
+                        <div>
+                          <h3 className="font-semibold mb-2">Archivos Duplicados</h3>
+                          <div className="space-y-2">
+                            {auditReport.details.duplicates.map((dup: any, index: number) => (
+                              <div key={index} className="p-2 bg-yellow-50 border border-yellow-200 rounded text-sm">
+                                <p><strong>Archivo 1:</strong> {dup.file1}</p>
+                                <p><strong>Archivo 2:</strong> {dup.file2}</p>
+                                <p><strong>Tamaño:</strong> {dup.size}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <h3 className="font-semibold mb-2">Imports Rotos</h3>
+                          <div className="space-y-2">
+                            {auditReport.details.brokenImports.map((broken: any, index: number) => (
+                              <div key={index} className="p-2 bg-red-50 border border-red-200 rounded text-sm">
+                                <p><strong>Archivo:</strong> {broken.file}</p>
+                                <p><strong>Línea:</strong> {broken.line}</p>
+                                <p><strong>Import:</strong> {broken.import}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
 
           {/* FAQ Management */}

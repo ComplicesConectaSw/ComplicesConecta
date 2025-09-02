@@ -8,10 +8,11 @@ import { Header } from '@/components/Header';
 import { FilterState, DiscoverSidebar, ProfileCard } from '@/components/discover';
 import { useToast } from "@/hooks/use-toast";
 import { useIsMobile } from '@/hooks/use-mobile';
+import { pickProfileImage, inferProfileKind, type ProfileType, type Gender } from '@/lib/media';
 
 // Professional profile images from Unsplash
 
-// Función para generar perfiles aleatorios
+// Función para generar perfiles aleatorios con imágenes coherentes
 const generateRandomProfiles = (userType = 'single') => {
   const coupleNames = [
     "Ana & Carlos", "María & Luis", "Carmen & Roberto", "Elena & Miguel", 
@@ -33,12 +34,27 @@ const generateRandomProfiles = (userType = 'single') => {
 
   const profiles = [];
   const profileCount = userType === 'couple' ? 15 : 20;
+  const usedImages = new Set<string>();
   
   for (let i = 1; i <= profileCount; i++) {
     const isCouple = userType === 'couple' || (userType === 'single' && Math.random() > 0.7);
     const name = isCouple ? 
       coupleNames[Math.floor(Math.random() * coupleNames.length)] :
       singleNames[Math.floor(Math.random() * singleNames.length)];
+    
+    // Determinar género basado en el nombre para singles
+    const profileInfo = inferProfileKind({ 
+      name, 
+      type: isCouple ? 'couple' : 'single' as ProfileType 
+    });
+    
+    // Asignar imagen coherente sin repetir
+    const profileImage = pickProfileImage({
+      id: i.toString(),
+      name,
+      type: isCouple ? 'couple' : 'single' as ProfileType,
+      gender: profileInfo.gender
+    }, usedImages);
     
     profiles.push({
       id: i,
@@ -47,7 +63,7 @@ const generateRandomProfiles = (userType = 'single') => {
       location: locations[Math.floor(Math.random() * locations.length)],
       distance: Math.floor(Math.random() * 50) + 1, // 1-50 km
       interests: interests[isCouple ? 'couple' : 'single'].slice(0, 3),
-      image: `https://images.unsplash.com/photo-${1500000000000 + Math.floor(Math.random() * 100000000)}?w=400&h=600&fit=crop&crop=faces`,
+      image: profileImage,
       bio: isCouple ? 
         "Pareja experimentada en el lifestyle. Buscamos nuevas experiencias y conexiones auténticas." :
         "Persona auténtica buscando conexiones reales y experiencias memorables en el lifestyle.",
@@ -70,7 +86,9 @@ const generateRandomProfiles = (userType = 'single') => {
       children: Math.random() > 0.6 ? "Sí, no viven conmigo" : "No",
       religion: ["Ninguna", "Católica", "Otra"][Math.floor(Math.random() * 3)],
       aiCompatibility: Math.floor(Math.random() * 30) + 70,
-      rating: (Math.random() * 1.5 + 3.5).toFixed(1) // 3.5-5.0
+      rating: (Math.random() * 1.5 + 3.5).toFixed(1), // 3.5-5.0
+      type: isCouple ? 'couple' : 'single' as ProfileType,
+      gender: profileInfo.gender
     });
   }
   

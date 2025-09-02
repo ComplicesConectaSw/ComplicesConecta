@@ -1,14 +1,14 @@
-# 📱 ComplicesConecta - Notas de Lanzamiento v1.2.0
+# 📱 ComplicesConecta - Notas de Lanzamiento v1.3.0
 
-**Fecha de Lanzamiento:** 2 de Septiembre de 2025  
+**Fecha de Lanzamiento:** 2 de Septiembre de 2025 - 03:39  
 **Plataforma:** Android APK + Web App  
-**Versión:** 1.2.0
+**Versión:** 1.3.0
 
 ---
 
-## 🎉 ¡Actualización Mayor con Funciones Sociales Avanzadas!
+## 🎉 ¡Actualización Mayor Completa - Sistema de Invitaciones y Herramientas!
 
-ComplicesConecta evoluciona con funcionalidades sociales premium, sistema de feature flags y control de privacidad avanzado para la comunidad swinger más exclusiva de México.
+ComplicesConecta se completa con sistema de invitaciones, panel de administración, herramientas de desarrollo y páginas mejoradas para la comunidad swinger más exclusiva.
 
 ---
 
@@ -46,7 +46,68 @@ ComplicesConecta evoluciona con funcionalidades sociales premium, sistema de fea
 
 ---
 
-## 🆕 Novedades en v1.2.0
+## 🆕 Novedades en v1.3.0
+
+### 📬 **Sistema de Invitaciones Completo (NUEVO)**
+- ✅ **Envío desde perfiles** - Botón "Enviar Invitación" en SingleCard y CoupleCard
+- ✅ **Tres tipos de invitación**: Perfil, Galería privada, Chat privado
+- ✅ **Gestión completa** en página Requests con tabs organizados
+- ✅ **Permisos de galería** - Control total sobre acceso a fotos privadas
+- ✅ **Gating de chat** - Separación entre chat global y privado
+- ✅ **Notificaciones toast** para todas las acciones de invitación
+- ✅ **Mensajes personalizados** en cada invitación enviada
+
+### 🔍 **Discover Mejorado (NUEVO)**
+- ✅ **Asignación inteligente de imágenes** por tipo de perfil
+- ✅ **Sistema anti-duplicados** en viewport visible
+- ✅ **Heurística por nombres** - Alejandro→hombre, Laura→mujer, José&Miguel→pareja
+- ✅ **Pools de imágenes** separados por categoría (male, female, couple)
+
+### ⚙️ **Panel de Administración Completo (NUEVO)**
+- ✅ **Gestión de perfiles** con activación/desactivación y verificación KYC
+- ✅ **Moderación de invitaciones** con capacidad de revocación
+- ✅ **Auditoría del repositorio** con generación y descarga de reportes JSON
+- ✅ **Estadísticas detalladas** de usuarios, matches y actividad
+- ✅ **Gestión de FAQ** con categorías organizadas
+- ✅ **Configuración de chat** y herramientas de moderación
+
+### ❓ **FAQ Rediseñado (COMPLETADO)**
+- ✅ **8 categorías organizadas** con acordeones interactivos
+- ✅ **Verificación KYC** - Proceso y requisitos
+- ✅ **Privacidad y Seguridad** - Configuraciones y protección
+- ✅ **Galerías Privadas** - Permisos y acceso
+- ✅ **Sistema de Invitaciones** - Tipos y gestión
+- ✅ **Eventos VIP** - Acceso y reservas
+- ✅ **Sistema de Tokens** - Compra y uso
+- ✅ **Soporte Técnico** - Reportes y contacto
+- ✅ **Formularios integrados** para bugs y feedback
+
+### 🚫 **Página 404 Profesional (NUEVO)**
+- ✅ **Diseño animado** con gradientes dinámicos y elementos flotantes
+- ✅ **Micro-interacciones** con corazones y blobs animados
+- ✅ **Mensaje empático** y profesional para usuarios perdidos
+- ✅ **Navegación intuitiva** con botones a inicio y Discover
+- ✅ **Branding consistente** con logo y colores de ComplicesConecta
+
+### 🔧 **Herramientas de Desarrollo (NUEVO)**
+- ✅ **Script de auditoría exhaustiva** (`npm run audit:repo`)
+  - Detecta archivos duplicados por hash SHA256
+  - Encuentra imports rotos en archivos TypeScript/JavaScript
+  - Identifica carpetas vacías y archivos grandes (+10MB)
+  - Detecta archivos corruptos (JSON, brackets)
+  - Encuentra conflictos de mayúsculas/minúsculas
+  - Genera reportes JSON y CSV en carpeta `reports/`
+  - Excluye `android/`, `node_modules/` y archivos de sistema
+
+- ✅ **Importador seguro de plantillas** (`npm run scaffold:templates`)
+  - Escanea directorios de plantillas automáticamente
+  - Categoriza componentes por funcionalidad (cards, buttons, modals, etc.)
+  - Detecta conflictos con archivos existentes
+  - Importa componentes renombrando conflictos como `.imported.tsx`
+  - Genera catálogo `src/lib/template-catalog.ts` para gestión en Admin
+  - Opciones CLI: dry-run, force import, filtros por categoría
+
+## 🆕 Funcionalidades Previas v1.2.0
 
 ### 🔗 **Sistema de Solicitudes de Conexión (NUEVO)**
 - ✅ Página dedicada `/requests` para gestión completa
@@ -129,6 +190,9 @@ ComplicesConecta evoluciona con funcionalidades sociales premium, sistema de fea
 - 💳 **Activación automática** de funciones premium por suscripción
 - 🤖 **IA para moderación** de contenido
 - 🎮 **Gamificación** con logros y recompensas
+- 🛠️ **Modo fix automático** en script de auditoría
+- 📊 **Dashboard de métricas** en tiempo real
+- 🎨 **Catálogo de plantillas** integrado en Admin UI
 
 ---
 
@@ -165,4 +229,4 @@ Gracias a la comunidad swinger mexicana por su paciencia y feedback durante el d
 
 ---
 
-*ComplicesConecta v1.2.0 - Desarrollado con ❤️ para la comunidad swinger mexicana*
+*ComplicesConecta v1.3.0 - Desarrollado con ❤️ para la comunidad swinger mexicana*

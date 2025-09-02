@@ -1,7 +1,8 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Heart, MessageCircle, MapPin, Verified, Crown, Users } from "lucide-react";
+import { Heart, MessageCircle, MapPin, Verified, Crown, Users, UserPlus } from "lucide-react";
+import { InvitationDialog } from "@/components/invitations/InvitationDialog";
 
 interface CoupleProfile {
   id: number;
@@ -33,9 +34,10 @@ interface CoupleCardProps {
   onLike?: () => void;
   onMessage?: () => void;
   showActions?: boolean;
+  showInviteButton?: boolean;
 }
 
-const CoupleCard = ({ profile, onLike, onMessage, showActions = true }: CoupleCardProps) => {
+const CoupleCard = ({ profile, onLike, onMessage, showActions = true, showInviteButton = true }: CoupleCardProps) => {
   return (
     <Card className="overflow-hidden bg-white shadow-lg hover:shadow-xl transition-all duration-300">
       <div className="relative">
@@ -117,22 +119,38 @@ const CoupleCard = ({ profile, onLike, onMessage, showActions = true }: CoupleCa
         </div>
         
         {showActions && (
-          <div className="flex gap-2">
-            <Button 
-              onClick={onLike}
-              className="flex-1 bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white"
-            >
-              <Heart className="h-4 w-4 mr-2" />
-              Me gusta
-            </Button>
-            <Button 
-              onClick={onMessage}
-              variant="outline" 
-              className="flex-1 border-purple-300 text-purple-600 hover:bg-purple-50"
-            >
-              <MessageCircle className="h-4 w-4 mr-2" />
-              Mensaje
-            </Button>
+          <div className="space-y-2">
+            <div className="flex gap-2">
+              <Button 
+                onClick={onLike}
+                className="flex-1 bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white"
+              >
+                <Heart className="h-4 w-4 mr-2" />
+                Me gusta
+              </Button>
+              <Button 
+                onClick={onMessage}
+                variant="outline" 
+                className="flex-1 border-purple-300 text-purple-600 hover:bg-purple-50"
+              >
+                <MessageCircle className="h-4 w-4 mr-2" />
+                Mensaje
+              </Button>
+            </div>
+            {showInviteButton && (
+              <InvitationDialog 
+                targetProfileId={profile.id.toString()}
+                targetProfileName={profile.coupleName}
+              >
+                <Button 
+                  variant="outline" 
+                  className="w-full border-blue-300 text-blue-600 hover:bg-blue-50"
+                >
+                  <UserPlus className="h-4 w-4 mr-2" />
+                  Enviar Invitación
+                </Button>
+              </InvitationDialog>
+            )}
           </div>
         )}
       </CardContent>

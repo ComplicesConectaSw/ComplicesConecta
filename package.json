@@ -8,7 +8,10 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "scaffold:templates": "bun tsx scripts/import-templates.ts",
+    "audit:repo": "bun tsx scripts/audit-project.ts --report",
+    "audit:fix": "bun tsx scripts/audit-project.ts --fix"
   },
   "dependencies": {
     "@capacitor/android": "^7.4.3",
