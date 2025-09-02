@@ -236,15 +236,15 @@ const EditProfileSingle = () => {
           <CardContent className="p-6">
             <h3 className="font-semibold text-gray-900 mb-4">Intereses</h3>
             <p className="text-sm text-gray-600 mb-4">Selecciona hasta 6 intereses que te representen</p>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto p-2 border rounded-lg bg-gray-50">
               {availableInterests.map((interest) => (
                 <Badge
                   key={interest}
                   variant={formData.interests.includes(interest) ? "default" : "secondary"}
-                  className={`cursor-pointer transition-all ${
+                  className={`cursor-pointer transition-all text-contrast ${
                     formData.interests.includes(interest)
-                      ? "bg-gradient-to-r from-pink-500 to-purple-500 text-white"
-                      : "hover:bg-gray-200"
+                      ? "bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-md"
+                      : "hover:bg-gray-200 text-gray-800 border border-gray-300"
                   }`}
                   onClick={() => toggleInterest(interest)}
                 >
