@@ -1,6 +1,6 @@
 # 🔥 ComplicesConecta - Plataforma Social +18
 
-> **La comunidad swinger más exclusiva y segura de España**
+> **La comunidad swinger más exclusiva y segura de Mexico +18**
 
 <div align="center">
 

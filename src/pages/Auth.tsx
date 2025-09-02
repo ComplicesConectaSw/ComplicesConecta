@@ -55,13 +55,16 @@ export default function Auth() {
 
       if (error) throw error;
 
-      // If admin login is selected, update the profile role
-      if (formData.role === "admin" && data.user) {
+      // Check if user is admin based on email
+      const isAdminEmail = formData.email === 'ComplicesConectaSw@outlook.es';
+      
+      if (isAdminEmail && data.user) {
         try {
           const { error: profileError } = await supabase
             .from('profiles')
             .upsert({
               id: data.user.id,
+              email: formData.email,
               role: 'administrador'
             });
           
@@ -78,25 +81,35 @@ export default function Auth() {
         description: "Has iniciado sesión exitosamente.",
       });
 
-      // Navigate to admin panel if admin login, otherwise to discover
-      navigate(formData.role === "admin" ? "/admin" : "/discover");
+      // Navigate to admin panel if admin email, otherwise to discover
+      navigate(isAdminEmail ? "/admin" : "/discover");
     } catch (error: unknown) {
       console.error('❌ Error de autenticación:', error);
-      let errorMessage = "Ha ocurrido un error inesperado.";
-      const errorObj = error as { message?: string };
+      let errorMessage = "Error desconocido al iniciar sesión";
       
-      if (errorObj.message?.includes('Invalid login credentials')) {
-        errorMessage = "Credenciales incorrectas. Verifica tu email y contraseña.";
-      } else if (errorObj.message?.includes('Email not confirmed')) {
-        errorMessage = "Debes confirmar tu email antes de iniciar sesión. Revisa tu bandeja de entrada.";
-      } else if (errorObj.message?.includes('Too many requests')) {
-        errorMessage = "Demasiados intentos. Espera unos minutos antes de intentar nuevamente.";
-      } else if (errorObj.message) {
-        errorMessage = errorObj.message;
+      if (error instanceof Error) {
+        if (error.message.includes('Failed to fetch') || error.message.includes('fetch') || error.message.includes('CONNECTION_REFUSED')) {
+          // Modo demo para desarrollo local
+          console.log('🔄 Activando modo demo para desarrollo');
+          const isAdminEmail = formData.email === 'ComplicesConectaSw@outlook.es';
+          toast({
+            title: "Modo Demo Activado",
+            description: "Conectando en modo demo para desarrollo local.",
+            duration: 3000,
+          });
+          // Simular login exitoso en modo demo con detección de admin
+          navigate(isAdminEmail ? "/admin" : "/discover");
+          return;
+        } else if (error.message.includes('Invalid login credentials')) {
+          errorMessage = "Credenciales incorrectas. Verifica tu email y contraseña.";
+        } else if (error.message.includes('Email not confirmed')) {
+          errorMessage = "Por favor confirma tu email antes de iniciar sesión.";
+        } else {
+          errorMessage = error.message;
+        }
       }
       
       toast({
-        variant: "destructive",
         title: "Error al iniciar sesión",
         description: errorMessage,
       });
@@ -151,7 +164,9 @@ export default function Auth() {
       let errorMessage = "Ha ocurrido un error inesperado.";
       const errorObj = error as { message?: string };
       
-      if (errorObj.message?.includes('User already registered')) {
+      if (errorObj.message?.includes('Failed to fetch') || errorObj.message?.includes('fetch')) {
+        errorMessage = "Problema de conexión. Verifica tu internet y vuelve a intentar.";
+      } else if (errorObj.message?.includes('User already registered')) {
         errorMessage = "Este email ya está registrado. Intenta iniciar sesión o usa otro email.";
       } else if (errorObj.message?.includes('Password should be at least')) {
         errorMessage = "La contraseña debe tener al menos 6 caracteres.";
@@ -267,16 +282,6 @@ export default function Auth() {
                     onChange={(e) => handleInputChange("password", e.target.value)}
                     required
                   />
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="adminLogin"
-                    checked={formData.role === "admin"}
-                    onCheckedChange={(checked) => handleInputChange("role", checked ? "admin" : "user")}
-                  />
-                  <Label htmlFor="adminLogin" className="text-sm">
-                    Iniciar sesión como administrador
-                  </Label>
                 </div>
                 <Button type="submit" className="w-full" disabled={isLoading}>
                   {isLoading ? "Iniciando sesión..." : "Iniciar Sesión"}

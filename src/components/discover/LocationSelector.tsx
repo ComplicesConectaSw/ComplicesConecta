@@ -20,16 +20,16 @@ export const LocationSelector = ({ onLocationChange, initialRadius = 10 }: Locat
   const { location, error, isLoading, getCurrentLocation } = useGeolocation();
   const { toast } = useToast();
 
-  // Ciudades populares de España
+  // Ciudades populares de México
   const popularCities = [
-    { name: "Madrid", lat: 40.4168, lng: -3.7038 },
-    { name: "Barcelona", lat: 41.3851, lng: 2.1734 },
-    { name: "Valencia", lat: 39.4699, lng: -0.3763 },
-    { name: "Sevilla", lat: 37.3891, lng: -5.9845 },
-    { name: "Bilbao", lat: 43.2627, lng: -2.9253 },
-    { name: "Málaga", lat: 36.7213, lng: -4.4214 },
-    { name: "Zaragoza", lat: 41.6488, lng: -0.8891 },
-    { name: "Las Palmas", lat: 28.1248, lng: -15.4300 }
+    { name: "Ciudad de México", lat: 19.4326, lng: -99.1332 },
+    { name: "Guadalajara", lat: 20.6597, lng: -103.3496 },
+    { name: "Monterrey", lat: 25.6866, lng: -100.3161 },
+    { name: "Puebla", lat: 19.0414, lng: -98.2063 },
+    { name: "Tijuana", lat: 32.5149, lng: -117.0382 },
+    { name: "Cancún", lat: 21.1619, lng: -86.8515 },
+    { name: "Mérida", lat: 20.9674, lng: -89.5926 },
+    { name: "León", lat: 21.1619, lng: -101.6921 }
   ];
 
   useEffect(() => {
@@ -84,8 +84,8 @@ export const LocationSelector = ({ onLocationChange, initialRadius = 10 }: Locat
     if (!address.trim()) return;
 
     // Simulación de geocoding (en producción usarías Google Maps API)
-    // Por ahora, usamos Madrid como fallback
-    const fallbackLocation = { lat: 40.4168, lng: -3.7038 };
+    // Por ahora, usamos Ciudad de México como fallback
+    const fallbackLocation = { lat: 19.4326, lng: -99.1332 };
     
     onLocationChange({
       lat: fallbackLocation.lat,
@@ -181,8 +181,8 @@ export const LocationSelector = ({ onLocationChange, initialRadius = 10 }: Locat
             // Actualizamos inmediatamente el radio
             if (location || selectedCity || address) {
                             const cityLocation = popularCities.find(c => c.name === selectedCity);
-              const currentLat = location?.latitude ?? cityLocation?.lat ?? 40.4168;
-              const currentLng = location?.longitude ?? cityLocation?.lng ?? -3.7038;
+              const currentLat = location?.latitude ?? cityLocation?.lat ?? 19.4326;
+              const currentLng = location?.longitude ?? cityLocation?.lng ?? -99.1332;
               
               onLocationChange({
                 lat: currentLat,

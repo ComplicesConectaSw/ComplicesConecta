@@ -32,9 +32,9 @@ const Profiles = () => {
       id: 1,
       name: "María Elena",
       age: 28,
-      location: "Madrid",
+      location: "Ciudad de México",
       interests: ["Fotografía", "Viajes", "Yoga", "Arte", "Cocina"],
-      image: "https://images.unsplash.com/photo-1494790108755-2616b332c1c0?w=400&h=600&fit=crop&crop=face",
+      image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=600&fit=crop&crop=face",
       rating: 4.8,
       isOnline: true,
       bio: "Fotógrafa profesional especializada en retratos. Me encanta capturar momentos únicos y explorar culturas a través de mis viajes. Practico yoga desde hace 5 años y disfruto cocinando platos de diferentes países.",
@@ -55,7 +55,7 @@ const Profiles = () => {
       id: 2,
       name: "Carlos Mendoza",
       age: 32,
-      location: "Barcelona",
+      location: "Guadalajara",
       interests: ["Cocina", "Música", "Senderismo", "Literatura"],
       image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face",
       rating: 4.9,
@@ -78,7 +78,7 @@ const Profiles = () => {
       id: 3,
       name: "Ana",
       age: 26,
-      location: "Valencia",
+      location: "Monterrey",
       interests: ["Arte", "Lectura", "Café", "Cine", "Teatro"],
       image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=600&fit=crop&crop=face",
       rating: 4.7,
@@ -90,7 +90,7 @@ const Profiles = () => {
       id: 4,
       name: "Diego",
       age: 30,
-      location: "Sevilla",
+      location: "Puebla",
       interests: ["Deporte", "Tecnología", "Naturaleza", "Fitness"],
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&crop=face",
       rating: 4.8,
@@ -102,9 +102,9 @@ const Profiles = () => {
       id: 5,
       name: "Laura",
       age: 29,
-      location: "Madrid",
+      location: "Tijuana",
       interests: ["Danza", "Música", "Viajes", "Gastronomía"],
-      image: "https://images.unsplash.com/photo-1494790108755-2616b332c1c0?w=400&h=600&fit=crop&crop=face",
+      image: "https://images.unsplash.com/photo-1488716820095-cbe80883c496?w=400&h=600&fit=crop&crop=face",
       rating: 4.9,
       isOnline: true,
       bio: "Bailarina profesional que ama explorar nuevos sabores y culturas.",
@@ -114,7 +114,7 @@ const Profiles = () => {
       id: 6,
       name: "Javier",
       age: 27,
-      location: "Bilbao",
+      location: "Cancún",
       interests: ["Surf", "Fotografía", "Aventura", "Naturaleza"],
       image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face",
       rating: 4.6,
@@ -126,7 +126,7 @@ const Profiles = () => {
       id: 7,
       name: "Carmen",
       age: 31,
-      location: "Granada",
+      location: "Mérida",
       interests: ["Historia", "Arquitectura", "Vino", "Cultura"],
       image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=600&fit=crop&crop=face",
       rating: 4.8,
@@ -138,13 +138,25 @@ const Profiles = () => {
       id: 8,
       name: "Pablo",
       age: 33,
-      location: "Valencia",
+      location: "León",
       interests: ["Ciclismo", "Tecnología", "Innovación", "Emprendimiento"],
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&crop=face",
       rating: 4.7,
       isOnline: true,
       bio: "Emprendedor tech y ciclista apasionado. Construyendo el futuro.",
       profession: "Emprendedor"
+    },
+    {
+      id: 9,
+      name: "Isabella",
+      age: 26,
+      location: "Playa del Carmen",
+      interests: ["Yoga", "Meditación", "Naturaleza", "Wellness"],
+      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face",
+      rating: 4.8,
+      isOnline: true,
+      bio: "Instructora de yoga y terapeuta holística. Conectando cuerpo, mente y espíritu.",
+      profession: "Instructora de Yoga"
     }
   ];
 
@@ -367,7 +379,7 @@ const Profiles = () => {
           <div className="mb-8">
             <div className="flex items-center gap-2 mb-4">
               <Filter className="h-5 w-5 text-muted-foreground" />
-              <h3 className="text-lg font-semibold">Filtros Avanzados</h3>
+              <h3 className="text-lg font-semibold text-white">Filtros Avanzados</h3>
             </div>
             <ProfileFilters onFilterChange={handleFilterChange} />
           </div>

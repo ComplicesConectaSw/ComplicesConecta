@@ -363,7 +363,7 @@ const Events = () => {
                       <img 
                         src={event.image} 
                         alt={event.title}
-                        className="w-full h-48 object-cover"
+                        className="w-full h-48 object-contain bg-gradient-to-br from-muted/20 to-muted/10"
                       />
                       <div className="absolute top-3 left-3">
                         <Badge variant="destructive" className="bg-accent">
@@ -441,7 +441,7 @@ const Events = () => {
                       <img 
                         src={club.image} 
                         alt={club.name}
-                        className="w-full h-48 object-cover"
+                        className="w-full h-48 object-contain bg-gradient-to-br from-muted/20 to-muted/10"
                       />
                       <div className="absolute top-3 left-3">
                         <Badge variant="secondary" className="bg-primary/20 text-primary">

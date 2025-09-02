@@ -19,7 +19,7 @@ const allProfiles = [
     location: "Ciudad de México",
     distance: 5,
     interests: ["Fiestas Privadas", "Intercambio de Parejas", "Eventos VIP"],
-    image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=400&h=600&fit=crop&crop=faces",
+    image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=400&h=600&fit=crop&crop=faces",
     bio: "Pareja experimentada en el lifestyle. Buscamos otras parejas para experiencias íntimas y divertidas.",
     isOnline: true,
     lastActive: "Hace 2 min",
@@ -49,7 +49,7 @@ const allProfiles = [
     location: "Guadalajara",
     distance: 10,
     interests: ["Unicornio", "Experiencias Nuevas", "Single Femenina"],
-    image: "https://images.unsplash.com/photo-1494790108755-2616b332c1c0?w=400&h=600&fit=crop&crop=face",
+    image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=600&fit=crop&crop=faces",
     bio: "Explorando mi sexualidad y buscando conexiones auténticas. Abierta a nuevas experiencias.",
     isOnline: true,
     lastActive: "En línea",
@@ -191,6 +191,286 @@ const allProfiles = [
     religion: "Ninguna",
     aiCompatibility: 89,
     rating: 4.9
+  },
+  {
+    id: 7,
+    name: "Lucia & Fernando",
+    age: 26,
+    location: "Guadalajara",
+    distance: 3,
+    interests: ["Intercambio", "Fiestas Privadas", "Soft Swap"],
+    image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=400&h=600&fit=crop&crop=faces",
+    bio: "Pareja joven y atractiva. Nos encanta conocer gente nueva y vivir experiencias únicas.",
+    isOnline: true,
+    lastActive: "En línea",
+    isVerified: true,
+    isPremium: false,
+    matchScore: 92,
+    lifestyle: "Swinger",
+    relationshipType: "Pareja",
+    lookingFor: ["Parejas"],
+    experienceLevel: "Intermedio",
+    ageRange: "22-35",
+    bodyType: "Atlético",
+    height: "165cm / 178cm",
+    education: "Universitario",
+    profession: "Médicos",
+    smoking: "No",
+    drinking: "Socialmente",
+    children: "No",
+    religion: "Ninguna",
+    aiCompatibility: 95,
+    rating: 4.8
+  },
+  {
+    id: 8,
+    name: "Alejandra",
+    age: 33,
+    location: "Mérida",
+    distance: 25,
+    interests: ["BDSM", "Dominación", "Fetiches"],
+    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face",
+    bio: "Dominatrix experimentada. Busco sumisos que sepan adorar a una diosa.",
+    isOnline: false,
+    lastActive: "Hace 2 horas",
+    isVerified: true,
+    isPremium: true,
+    matchScore: 87,
+    lifestyle: "BDSM",
+    relationshipType: "Single",
+    lookingFor: ["Singles Masculinos", "Parejas"],
+    experienceLevel: "Muy Experimentado",
+    ageRange: "25-45",
+    bodyType: "Atlético",
+    height: "170cm",
+    education: "Posgrado",
+    profession: "Psicóloga",
+    smoking: "No",
+    drinking: "Ocasionalmente",
+    children: "No",
+    religion: "Ninguna",
+    aiCompatibility: 91,
+    rating: 4.7
+  },
+  {
+    id: 15,
+    name: "Carmen",
+    age: 27,
+    location: "León",
+    image: "https://images.unsplash.com/photo-1494790108755-2616c9c0f8c3?w=400&h=600&fit=crop&crop=faces",
+    rating: 4.7,
+    isOnline: true,
+    lifestyle: "Activa",
+    relationshipType: "Soltero",
+    interests: ["Yoga", "Lectura", "Cocina"],
+    education: "Licenciatura",
+    profession: "Nutrióloga",
+    smoking: "No",
+    drinking: "Ocasionalmente",
+    children: "No",
+    religion: "Católica",
+    aiCompatibility: 92,
+    description: "Apasionada por la vida saludible. Me encanta cocinar, hacer yoga y leer. Busco a alguien que comparta mis valores."
+  },
+  {
+    id: 16,
+    name: "Ricardo",
+    age: 32,
+    location: "Querétaro",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&crop=face",
+    rating: 4.5,
+    isOnline: false,
+    lifestyle: "Equilibrada",
+    relationshipType: "Soltero",
+    interests: ["Tecnología", "Viajes", "Fotografía"],
+    education: "Maestría",
+    profession: "Ingeniero de Software",
+    smoking: "No",
+    drinking: "Socialmente",
+    children: "No",
+    religion: "Agnóstico",
+    aiCompatibility: 88,
+    description: "Ingeniero apasionado por la tecnología y los viajes. Busco conexiones auténticas con personas inteligentes y aventureras."
+  },
+  {
+    id: 9,
+    name: "Ricardo",
+    age: 38,
+    location: "León",
+    distance: 18,
+    interests: ["Voyeurismo", "Exhibicionismo", "Clubes"],
+    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=600&fit=crop&crop=face",
+    bio: "Me gusta observar y ser observado. Busco parejas liberales para experiencias únicas.",
+    isOnline: true,
+    lastActive: "Hace 10 min",
+    isVerified: false,
+    isPremium: false,
+    matchScore: 83,
+    lifestyle: "Voyeur",
+    relationshipType: "Single",
+    lookingFor: ["Parejas", "Singles Femeninas"],
+    experienceLevel: "Intermedio",
+    ageRange: "30-50",
+    bodyType: "Promedio",
+    height: "175cm",
+    education: "Universitario",
+    profession: "Contador",
+    smoking: "Ocasionalmente",
+    drinking: "Socialmente",
+    children: "Sí, no viven conmigo",
+    religion: "Católica",
+    aiCompatibility: 86,
+    rating: 4.2
+  },
+  {
+    id: 10,
+    name: "Carmen & Javier",
+    age: 45,
+    location: "Oaxaca",
+    distance: 35,
+    interests: ["Maduras", "Experiencias Intensas", "Viajes"],
+    image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=400&h=600&fit=crop&crop=faces",
+    bio: "Pareja madura con mucha experiencia. Buscamos otras parejas para aventuras intensas.",
+    isOnline: false,
+    lastActive: "Hace 1 día",
+    isVerified: true,
+    isPremium: true,
+    matchScore: 88,
+    lifestyle: "Swinger Maduro",
+    relationshipType: "Pareja",
+    lookingFor: ["Parejas", "Singles"],
+    experienceLevel: "Muy Experimentado",
+    ageRange: "35-55",
+    bodyType: "Promedio",
+    height: "160cm / 180cm",
+    education: "Universitario",
+    profession: "Empresarios",
+    smoking: "No",
+    drinking: "Socialmente",
+    children: "Sí, no viven conmigo",
+    religion: "Ninguna",
+    aiCompatibility: 90,
+    rating: 4.6
+  },
+  {
+    id: 11,
+    name: "Daniela",
+    age: 24,
+    location: "Querétaro",
+    distance: 12,
+    interests: ["Principiante", "Curiosa", "Experiencias Nuevas"],
+    image: "https://images.unsplash.com/photo-1488716820095-cbe80883c496?w=400&h=600&fit=crop&crop=face",
+    bio: "Nueva en esto, pero muy curiosa. Busco personas pacientes para explorar juntos.",
+    isOnline: true,
+    lastActive: "En línea",
+    isVerified: false,
+    isPremium: false,
+    matchScore: 79,
+    lifestyle: "Principiante",
+    relationshipType: "Single",
+    lookingFor: ["Parejas", "Singles"],
+    experienceLevel: "Principiante",
+    ageRange: "22-35",
+    bodyType: "Delgado",
+    height: "162cm",
+    education: "Universitario",
+    profession: "Estudiante",
+    smoking: "No",
+    drinking: "Ocasionalmente",
+    children: "No",
+    religion: "Ninguna",
+    aiCompatibility: 82,
+    rating: 4.1
+  },
+  {
+    id: 12,
+    name: "Eduardo",
+    age: 50,
+    location: "Aguascalientes",
+    distance: 40,
+    interests: ["Sugar Daddy", "Experiencias Premium", "Lujo"],
+    image: "https://images.unsplash.com/photo-1507591064344-4c6ce005b128?w=400&h=600&fit=crop&crop=face",
+    bio: "Empresario exitoso buscando compañía de calidad. Ofrezco experiencias de lujo.",
+    isOnline: false,
+    lastActive: "Hace 3 horas",
+    isVerified: true,
+    isPremium: true,
+    matchScore: 85,
+    lifestyle: "Sugar Daddy",
+    relationshipType: "Single",
+    lookingFor: ["Singles Femeninas"],
+    experienceLevel: "Muy Experimentado",
+    ageRange: "20-40",
+    bodyType: "Promedio",
+    height: "182cm",
+    education: "Posgrado",
+    profession: "CEO",
+    smoking: "No",
+    drinking: "Socialmente",
+    children: "Sí, no viven conmigo",
+    religion: "Ninguna",
+    aiCompatibility: 88,
+    rating: 4.5
+  },
+  {
+    id: 13,
+    name: "Camila & Roberto",
+    age: 35,
+    location: "Monterrey",
+    distance: 15,
+    interests: ["Intercambio", "Fiestas Temáticas", "Viajes"],
+    image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=600&fit=crop&crop=faces",
+    bio: "Pareja madura y experimentada. Nos encanta conocer gente nueva y vivir aventuras juntos.",
+    isOnline: false,
+    lastActive: "Hace 1 hora",
+    isVerified: true,
+    isPremium: true,
+    matchScore: 89,
+    lifestyle: "Swinger Experimentado",
+    relationshipType: "Pareja",
+    lookingFor: ["Parejas"],
+    experienceLevel: "Muy Experimentado",
+    ageRange: "30-45",
+    bodyType: "Atlético",
+    height: "165cm / 175cm",
+    education: "Universitario",
+    profession: "Ingenieros",
+    smoking: "No",
+    drinking: "Socialmente",
+    children: "Sí, no viven conmigo",
+    religion: "Ninguna",
+    aiCompatibility: 92,
+    rating: 4.7
+  },
+  {
+    id: 14,
+    name: "Andrés",
+    age: 31,
+    location: "Guadalajara",
+    distance: 8,
+    interests: ["Bull", "Discreto", "Experiencias Intensas"],
+    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=600&fit=crop&crop=face",
+    bio: "Bull experimentado y discreto. Busco parejas que quieran vivir experiencias únicas.",
+    isOnline: true,
+    lastActive: "En línea",
+    isVerified: true,
+    isPremium: false,
+    matchScore: 86,
+    lifestyle: "Bull",
+    relationshipType: "Single",
+    lookingFor: ["Parejas", "Hotwives"],
+    experienceLevel: "Muy Experimentado",
+    ageRange: "25-45",
+    bodyType: "Atlético",
+    height: "183cm",
+    education: "Universitario",
+    profession: "Entrenador Personal",
+    smoking: "No",
+    drinking: "Ocasionalmente",
+    children: "No",
+    religion: "Ninguna",
+    aiCompatibility: 90,
+    rating: 4.6
   }
 ];
 
@@ -223,7 +503,7 @@ const Discover = () => {
   const getFilteredProfiles = useCallback(() => {
     return allProfiles.filter(profile => {
       if (profile.age < filters.ageRange[0] || profile.age > filters.ageRange[1]) return false;
-      if (profile.distance > filters.distance[0]) return false;
+      if (profile.distance && profile.distance > filters.distance[0]) return false;
       if (filters.gender !== "all" && profile.relationshipType !== filters.gender) return false;
       if (filters.interests.length > 0 && !filters.interests.some(interest => profile.interests.includes(interest))) return false;
       if (filters.lifestyle.length > 0 && !filters.lifestyle.includes(profile.lifestyle)) return false;
@@ -243,7 +523,8 @@ const Discover = () => {
     });
   }, [filters]);
 
-  const [filteredProfiles, setFilteredProfiles] = useState(allProfiles);
+  const [filteredProfiles, setFilteredProfiles] = useState(getFilteredProfiles());
+  const [likedProfiles, setLikedProfiles] = useState<Set<number>>(new Set());
 
   const handleFiltersChange = useCallback((newFilters: FilterState) => setFilters(newFilters), []);
 
@@ -261,6 +542,17 @@ const Discover = () => {
   useEffect(() => {
     setFilteredProfiles(getFilteredProfiles());
   }, [filters, getFilteredProfiles]);
+
+  const handleLike = (profileId: number) => {
+    setLikedProfiles(prev => new Set([...prev, profileId]));
+    setDailyStats(prev => ({ ...prev, likes: prev.likes + 1 }));
+    if (Math.random() < 0.2) {
+      setDailyStats(prev => ({ ...prev, matches: prev.matches + 1 }));
+      toast({ title: "¡Es un Match!", description: "¡A ambos se gustan! Pueden empezar a chatear.", duration: 4000 });
+    } else {
+      toast({ title: "Like enviado", description: "Tu interés ha sido enviado.", duration: 2000 });
+    }
+  };
 
   const [showSuperLikeModal, setShowSuperLikeModal] = useState(false);
   const [selectedProfile, setSelectedProfile] = useState<any>(null);
@@ -280,25 +572,16 @@ const Discover = () => {
     setShowSuperLikeModal(false);
     if (Math.random() < 0.5) {
       setDailyStats(prev => ({ ...prev, matches: prev.matches + 1 }));
-      toast({ title: "🌟 ¡Super Match!", description: `Tu Super Like funcionó con ${selectedProfile.name}` });
     }
     setSelectedProfile(null);
   };
 
-  const handleLike = (profileId: number) => {
-    setDailyStats(prev => ({ ...prev, likes: prev.likes + 1 }));
-    if (Math.random() < 0.2) {
-      setDailyStats(prev => ({ ...prev, matches: prev.matches + 1 }));
-      const profile = allProfiles.find(p => p.id === profileId);
-      if (profile) toast({ title: "🎉 ¡Es un Match!", description: `Tú y ${profile.name} se han gustado mutuamente` });
-    }
-  };
 
 
   return (
     <div className="min-h-screen relative overflow-hidden">
       {showSuperLikeModal && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <Card className="w-full max-w-md bg-card border-accent/20">
             <CardContent className="p-8 text-center">
               <h2 className="text-2xl font-bold text-foreground mb-4">¡Super Like! 🔥</h2>
