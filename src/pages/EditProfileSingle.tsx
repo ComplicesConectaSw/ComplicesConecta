@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Save, Upload, Plus, X } from "lucide-react";
+import { ArrowLeft, Save, Upload, Plus, X, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { generateMockSingle } from "@/lib/data";
 import { ImageUpload } from "@/components/profile/ImageUpload";
@@ -84,6 +84,13 @@ const EditProfileSingle = () => {
     navigate('/profile-single');
   };
 
+  const handleLogout = () => {
+    // Limpiar datos de sesión demo
+    localStorage.removeItem('demo_authenticated');
+    localStorage.removeItem('demo_user');
+    navigate('/auth');
+  };
+
   if (!profile) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-pink-100 via-purple-50 to-indigo-100 flex items-center justify-center">
@@ -120,13 +127,23 @@ const EditProfileSingle = () => {
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <h1 className="text-lg font-semibold text-gray-900">Editar Perfil</h1>
-          <Button 
-            onClick={handleSave}
-            className="bg-gradient-to-r from-pink-500 to-purple-500 text-white"
-          >
-            <Save className="h-4 w-4 mr-2" />
-            Guardar
-          </Button>
+          <div className="flex gap-2">
+            <Button 
+              variant="outline"
+              onClick={handleLogout}
+              className="text-red-600 border-red-200 hover:bg-red-50"
+            >
+              <LogOut className="h-4 w-4 mr-2" />
+              Cerrar Sesión
+            </Button>
+            <Button 
+              onClick={handleSave}
+              className="bg-gradient-to-r from-pink-500 to-purple-500 text-white"
+            >
+              <Save className="h-4 w-4 mr-2" />
+              Guardar
+            </Button>
+          </div>
         </div>
       </div>
 

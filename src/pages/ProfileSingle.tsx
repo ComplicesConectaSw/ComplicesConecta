@@ -249,12 +249,23 @@ const ProfileSingle = () => {
         <Card className="bg-white shadow-lg">
           <CardContent className="p-6">
             <h3 className="font-semibold text-gray-900 mb-3">Intereses</h3>
-            <div className="flex flex-wrap gap-2">
-              {profile.interests.map((interest: string, index: number) => (
+            <div className="flex flex-wrap gap-2 mb-4">
+              {profile.interests?.map((interest: string, index: number) => (
                 <Badge key={index} className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm py-2 px-4 font-medium shadow-lg">
                   {interest}
                 </Badge>
               ))}
+            </div>
+            <div className="space-y-2">
+              <p className="text-sm text-gray-600">
+                <strong>Buscando:</strong> {profile.lookingFor || "Conexiones auténticas y experiencias únicas"}
+              </p>
+              <p className="text-sm text-gray-600">
+                <strong>Estilo de vida:</strong> {profile.lifestyle || "Aventurero y espontáneo"}
+              </p>
+              <p className="text-sm text-gray-600">
+                <strong>Nivel de experiencia:</strong> {profile.experienceLevel || "Intermedio"}
+              </p>
             </div>
           </CardContent>
         </Card>

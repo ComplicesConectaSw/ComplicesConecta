@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,6 +19,7 @@ interface FormData {
   password: string;
   firstName: string;
   lastName: string;
+  nickname: string;
   age: string;
   gender: string;
   interestedIn: string;
@@ -27,6 +28,7 @@ interface FormData {
   accountType: string;
   partnerFirstName: string;
   partnerLastName: string;
+  partnerNickname: string;
   partnerAge: string;
   partnerGender: string;
   partnerInterestedIn: string;
@@ -39,14 +41,16 @@ interface FormData {
 const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { getCurrentLocation, location, isLoading: locationLoading } = useGeolocation();
+  const { getCurrentLocation, location, isLoading: locationLoading, error: locationError } = useGeolocation();
   
   const [isLoading, setIsLoading] = useState(false);
+  const [autoLocationRequested, setAutoLocationRequested] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     email: '',
     password: '',
     firstName: '',
     lastName: '',
+    nickname: '',
     age: '',
     gender: '',
     interestedIn: '',
@@ -55,6 +59,7 @@ const Auth = () => {
     accountType: 'single',
     partnerFirstName: '',
     partnerLastName: '',
+    partnerNickname: '',
     partnerAge: '',
     partnerGender: '',
     partnerInterestedIn: '',
@@ -65,8 +70,31 @@ const Auth = () => {
   });
 
   const handleInputChange = (field: string, value: string | boolean) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
   };
+
+  // Auto-request location when component mounts
+  useEffect(() => {
+    if (!autoLocationRequested) {
+      getCurrentLocation();
+      setAutoLocationRequested(true);
+    }
+  }, [getCurrentLocation, autoLocationRequested]);
+
+  // Update form location when geolocation changes
+  useEffect(() => {
+    if (location) {
+      const locationString = `${location.latitude.toFixed(6)},${location.longitude.toFixed(6)}`;
+      handleInputChange("location", locationString);
+      toast({
+        title: "Ubicación detectada",
+        description: "Tu ubicación ha sido detectada automáticamente",
+      });
+    }
+  }, [location, toast]);
 
     const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -80,8 +108,8 @@ const Auth = () => {
         'complicesconectasw@outlook.es'
       ];
 
-      // Verificar si es una credencial demo
-      if (demoCredentials.includes(formData.email.toLowerCase())) {
+      // Verificar si es una credencial demo PRIMERO
+      if (demoCredentials.includes(formData.email.toLowerCase().trim())) {
         console.log('🎭 Modo demo activado para:', formData.email);
         
         // Configurar usuario demo completo en localStorage
@@ -161,19 +189,22 @@ const Auth = () => {
         return;
       }
 
-      // Intentar autenticación real con Supabase
-      const { error } = await supabase.auth.signInWithPassword({
+      // Solo intentar autenticación real con Supabase si NO es credencial demo
+      console.log('🔐 Intentando autenticación real con Supabase para:', formData.email);
+      const { data, error } = await supabase.auth.signInWithPassword({
         email: formData.email,
         password: formData.password,
       });
 
-      if (error) throw error;
-
-      toast({
-        title: "¡Bienvenido de vuelta!",
-        description: "Has iniciado sesión correctamente.",
-        duration: 3000,
-      });
+      if (error) {
+        console.error('❌ Error de autenticación:', error);
+        toast({
+          variant: "destructive",
+          title: "Error al iniciar sesión",
+          description: "Credenciales inválidas. Use las credenciales demo: single@outlook.es o pareja@outlook.es",
+        });
+        return;
+      }
 
       navigate("/discover");
 
@@ -368,15 +399,38 @@ const Auth = () => {
               <form onSubmit={handleSignUp} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="accountType">Tipo de perfil</Label>
-                  <Select onValueChange={(value) => handleInputChange("accountType", value)} defaultValue="single">
-                    <SelectTrigger>
-                      <SelectValue placeholder="Seleccionar tipo de perfil" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="single">Single</SelectItem>
-                      <SelectItem value="couple">Pareja</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => handleInputChange("accountType", "single")}
+                      className={`p-4 rounded-lg border-2 transition-all ${
+                        formData.accountType === "single"
+                          ? "border-pink-500 bg-pink-50 text-pink-700"
+                          : "border-gray-200 hover:border-gray-300"
+                      }`}
+                    >
+                      <div className="text-center">
+                        <div className="text-2xl mb-2">👤</div>
+                        <div className="font-semibold">Single</div>
+                        <div className="text-xs text-gray-500">Perfil individual</div>
+                      </div>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleInputChange("accountType", "couple")}
+                      className={`p-4 rounded-lg border-2 transition-all ${
+                        formData.accountType === "couple"
+                          ? "border-purple-500 bg-purple-50 text-purple-700"
+                          : "border-gray-200 hover:border-gray-300"
+                      }`}
+                    >
+                      <div className="text-center">
+                        <div className="text-2xl mb-2">👫</div>
+                        <div className="font-semibold">Pareja</div>
+                        <div className="text-xs text-gray-500">Perfil de pareja</div>
+                      </div>
+                    </button>
+                  </div>
                 </div>
 
                 <div className="space-y-2">
@@ -405,6 +459,16 @@ const Auth = () => {
                 {formData.accountType === "single" ? (
                   // Formulario para Single
                   <>
+                    <div className="space-y-2">
+                      <Label htmlFor="nickname">Apodo (como te mostrarás)</Label>
+                      <Input
+                        id="nickname"
+                        value={formData.nickname}
+                        onChange={(e) => handleInputChange("nickname", e.target.value)}
+                        placeholder="Ej: Alex, María, etc."
+                        required
+                      />
+                    </div>
                     <div className="grid grid-cols-2 gap-2">
                       <div className="space-y-2">
                         <Label htmlFor="firstName">Nombre</Label>
@@ -457,6 +521,16 @@ const Auth = () => {
                 ) : (
                   // Formulario para Pareja
                   <>
+                    <div className="space-y-2">
+                      <Label htmlFor="nickname">Apodo de la pareja (como se mostrarán)</Label>
+                      <Input
+                        id="nickname"
+                        value={formData.nickname}
+                        onChange={(e) => handleInputChange("nickname", e.target.value)}
+                        placeholder="Ej: Ana & Carlos, Los Aventureros, etc."
+                        required
+                      />
+                    </div>
                     <div className="space-y-4 p-4 bg-muted/30 rounded-lg">
                       <h3 className="font-semibold text-center">Información de Él</h3>
                       <div className="grid grid-cols-2 gap-2">
@@ -511,6 +585,16 @@ const Auth = () => {
 
                     <div className="space-y-4 p-4 bg-muted/30 rounded-lg">
                       <h3 className="font-semibold text-center">Información de Ella</h3>
+                      <div className="space-y-2">
+                        <Label htmlFor="partnerNickname">Apodo de ella</Label>
+                        <Input
+                          id="partnerNickname"
+                          value={formData.partnerNickname}
+                          onChange={(e) => handleInputChange("partnerNickname", e.target.value)}
+                          placeholder="Ej: Ana, Carmen, etc."
+                          required
+                        />
+                      </div>
                       <div className="grid grid-cols-2 gap-2">
                         <div className="space-y-2">
                           <Label htmlFor="partnerFirstName">Nombre</Label>
@@ -650,22 +734,44 @@ const Auth = () => {
                 )}
                 
                 <div className="space-y-3">
-                  <div className="flex items-center space-x-2">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={getCurrentLocation}
-                      disabled={locationLoading}
-                      className="flex items-center gap-2"
-                    >
-                      <MapPin className="h-4 w-4" />
-                      {locationLoading ? "Obteniendo..." : "Obtener ubicación"}
-                    </Button>
-                    {location && (
-                      <span className="text-sm text-muted-foreground">
-                        ✓ Ubicación obtenida
-                      </span>
+                  <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <MapPin className="h-4 w-4 text-blue-600" />
+                        <span className="text-sm font-medium text-blue-900">Ubicación</span>
+                      </div>
+                      {location && (
+                        <span className="text-xs text-green-600 font-medium">
+                          ✓ Detectada automáticamente
+                        </span>
+                      )}
+                      {locationLoading && (
+                        <span className="text-xs text-blue-600">
+                          🔄 Detectando...
+                        </span>
+                      )}
+                      {locationError && (
+                        <span className="text-xs text-red-600">
+                          ❌ Error al detectar
+                        </span>
+                      )}
+                    </div>
+                    
+                    <p className="text-xs text-blue-700 mb-3">
+                      Tu ubicación se detecta automáticamente para encontrar matches cercanos
+                    </p>
+                    
+                    {!location && !locationLoading && (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={getCurrentLocation}
+                        className="w-full flex items-center gap-2 text-blue-600 border-blue-300 hover:bg-blue-100"
+                      >
+                        <MapPin className="h-4 w-4" />
+                        Reintentar detección de ubicación
+                      </Button>
                     )}
                   </div>
                   
@@ -676,7 +782,7 @@ const Auth = () => {
                       onCheckedChange={(checked) => handleInputChange("shareLocation", checked as boolean)}
                     />
                     <Label htmlFor="shareLocation" className="text-sm">
-                      Compartir mi ubicación en tiempo real para chat
+                      Compartir mi ubicación en tiempo real para matches dinámicos
                     </Label>
                   </div>
                 </div>

@@ -44,7 +44,7 @@ export const generateMockSingle = () => {
   const apellidos = ["García", "Rodríguez", "López", "Martínez", "González", "Pérez", "Sánchez", "Ramírez"];
   const ubicaciones = ["CDMX", "Guadalajara", "Monterrey", "Puebla", "Tijuana", "León", "Querétaro"];
   const profesiones = ["Ingeniero/a", "Médico/a", "Abogado/a", "Diseñador/a", "Empresario/a", "Artista", "Profesor/a"];
-  const intereses = ["Aventuras", "Diversión", "Experiencias Únicas", "Conexiones Reales", "Lifestyle", "Viajes", "Arte", "Música", "Fotografía", "Cocina", "Deportes", "Lectura", "Cine", "Baile", "Naturaleza", "Tecnología", "Yoga", "Fitness", "Gastronomía", "Moda"];
+  const intereses = ["Fotografía", "Viajes", "Música", "Arte", "Cocina", "Deportes", "Lectura", "Cine", "Baile", "Naturaleza", "Tecnología", "Yoga", "Fitness", "Gastronomía", "Moda", "Aventuras", "Diversión", "Experiencias Únicas", "Conexiones Reales", "Lifestyle", "Eventos Sociales", "Fiestas Privadas", "Amistades Especiales", "Momentos Íntimos"];
   
   // Determinar género aleatoriamente
   const esMujer = Math.random() > 0.5;
@@ -66,6 +66,9 @@ export const generateMockSingle = () => {
     location: ubicaciones[Math.floor(Math.random() * ubicaciones.length)],
     profession: profesiones[Math.floor(Math.random() * profesiones.length)],
     bio: `Persona auténtica buscando conexiones reales y experiencias memorables. Me encanta ${intereses[Math.floor(Math.random() * intereses.length)].toLowerCase()} y conocer gente nueva.`,
+    lookingFor: "Conexiones auténticas y experiencias únicas",
+    lifestyle: "Aventurero y espontáneo",
+    experienceLevel: "Intermedio",
     interests: intereses.slice(0, 3 + Math.floor(Math.random() * 3)),
     avatar: `https://randomuser.me/api/portraits/${esMujer ? 'women' : 'men'}/${avatarId}.jpg`,
     isOnline: Math.random() > 0.5,
@@ -85,7 +88,7 @@ export const generateMockCouple = () => {
   const apellidos = ["García", "Rodríguez", "López", "Martínez", "González", "Pérez", "Sánchez", "Ramírez"];
   const ubicaciones = ["CDMX", "Guadalajara", "Monterrey", "Puebla", "Tijuana", "León", "Querétaro"];
   const profesiones = ["Ingeniero/a", "Médico/a", "Abogado/a", "Diseñador/a", "Empresario/a", "Artista", "Profesor/a"];
-  const intereses = ["Fiestas Privadas", "Intercambio de Parejas", "Eventos VIP", "Lifestyle", "Experiencias Nuevas", "Viajes"];
+  const intereses = ["Fiestas Privadas", "Eventos VIP", "Lifestyle", "Experiencias Nuevas", "Viajes", "Amistades Especiales", "Momentos Íntimos", "Eventos Sociales", "Conexiones Únicas", "Aventuras Compartidas", "Fotografía", "Música", "Arte", "Cocina", "Deportes", "Baile", "Naturaleza", "Gastronomía"];
   
   const nombreM = nombresM[Math.floor(Math.random() * nombresM.length)];
   const nombreF = nombresF[Math.floor(Math.random() * nombresF.length)];
@@ -102,6 +105,9 @@ export const generateMockCouple = () => {
     ageRange: `${Math.floor(Math.random() * 10) + 25}-${Math.floor(Math.random() * 10) + 35}`,
     location: ubicaciones[Math.floor(Math.random() * ubicaciones.length)],
     bio: "Pareja experimentada en el lifestyle. Buscamos nuevas experiencias y conexiones auténticas con otras parejas y singles.",
+    lookingFor: "Conexiones auténticas y experiencias únicas",
+    lifestyle: "Aventurero y espontáneo",
+    experienceLevel: "Intermedio",
     interests: intereses.slice(0, 3 + Math.floor(Math.random() * 3)),
     isOnline: Math.random() > 0.5,
     isVerified: Math.random() > 0.3,

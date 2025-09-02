@@ -12,11 +12,12 @@ export const useGeolocation = () => {
     error: null,
     isLoading: false
   });
+  const [watchId, setWatchId] = useState<number | null>(null);
 
   const getCurrentLocation = () => {
     setState(prev => ({ ...prev, isLoading: true, error: null }));
 
-        if (typeof navigator === 'undefined' || !navigator.geolocation) {
+    if (typeof navigator === 'undefined' || !navigator.geolocation) {
       setState(prev => ({
         ...prev,
         isLoading: false,
@@ -65,6 +66,70 @@ export const useGeolocation = () => {
     );
   };
 
+  // Start watching position for real-time updates
+  const startWatchingLocation = () => {
+    if (typeof navigator === 'undefined' || !navigator.geolocation) {
+      setState(prev => ({
+        ...prev,
+        error: 'La geolocalización no está soportada por este navegador'
+      }));
+      return;
+    }
+
+    if (watchId !== null) {
+      return; // Already watching
+    }
+
+    const id = navigator.geolocation.watchPosition(
+      (position) => {
+        setState(prev => ({
+          ...prev,
+          location: {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          },
+          error: null,
+          isLoading: false
+        }));
+      },
+      (error) => {
+        let errorMessage = 'Error desconocido';
+        
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            errorMessage = 'Acceso a la ubicación denegado por el usuario';
+            break;
+          case error.POSITION_UNAVAILABLE:
+            errorMessage = 'Información de ubicación no disponible';
+            break;
+          case error.TIMEOUT:
+            errorMessage = 'Tiempo de espera agotado al obtener la ubicación';
+            break;
+        }
+
+        setState(prev => ({
+          ...prev,
+          error: errorMessage
+        }));
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 300000 // 5 minutes for real-time updates
+      }
+    );
+
+    setWatchId(id);
+  };
+
+  // Stop watching position
+  const stopWatchingLocation = () => {
+    if (watchId !== null && typeof navigator !== 'undefined' && navigator.geolocation) {
+      navigator.geolocation.clearWatch(watchId);
+      setWatchId(null);
+    }
+  };
+
   // Calculate distance between two coordinates using Haversine formula
   const calculateDistance = (
     lat1: number,
@@ -84,9 +149,19 @@ export const useGeolocation = () => {
     return Math.round(d * 10) / 10; // Round to 1 decimal place
   };
 
+  // Cleanup effect
+  useEffect(() => {
+    return () => {
+      stopWatchingLocation();
+    };
+  }, []);
+
   return {
     ...state,
     getCurrentLocation,
-    calculateDistance
+    startWatchingLocation,
+    stopWatchingLocation,
+    calculateDistance,
+    isWatching: watchId !== null
   };
 };

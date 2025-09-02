@@ -95,6 +95,7 @@ ComplicesConecta/
     │   ├── use-mobile.tsx            # 📱 Detección móvil
     │   ├── use-toast.ts              # 🔔 Sistema de notificaciones
     │   ├── useAuth.ts                # 🔐 Autenticación swinger
+    │   ├── useGeolocation.ts         # 🌍 Geolocalización en tiempo real ✅
     │   └── useFeatures.ts            # ⚙️ Sistema de feature flags
     ├── integrations/
     │   └── supabase/                 # 🔌 Integración Supabase
@@ -216,7 +217,22 @@ npm run audit:fix           # Correcciones automáticas
 npm run scaffold:templates  # Importar plantillas
 ```
 
-## 🎨 **Mejoras de UI/UX v1.3.2 (NUEVO)**
+## 🚀 **Nuevas Funcionalidades v1.3.3** *(2 de septiembre, 2025)*
+
+### **Sistema de Registro Mejorado**
+- **Campos de Edad**: Validación 18-99 años para Single y Pareja
+- **Apodos Personalizables**: 
+  - Single: Apodo individual
+  - Pareja: Apodo conjunto + individual para ella
+- **Selección Visual**: Cards interactivas 👤 Single / 👫 Pareja
+
+### **Geolocalización Avanzada**
+- **Detección Automática**: Ubicación al cargar registro
+- **Tiempo Real**: Hook `useGeolocation` con `watchPosition`
+- **Matches Dinámicos**: Filtrado por distancia real (Haversine)
+- **Interfaz Mejorada**: Estados visuales de ubicación
+
+## 🎨 **Mejoras de UI/UX v1.3.2**
 
 ### **Visibilidad de Textos Mejorada**
 - **Panel de Administración**: Clases `privacy-text` y gradientes consistentes (azul, verde, amarillo, púrpura)

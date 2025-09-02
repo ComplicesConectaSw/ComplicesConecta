@@ -9,6 +9,7 @@ import { Header } from '@/components/Header';
 import { FilterState, DiscoverSidebar, ProfileCard } from '@/components/discover';
 import { useToast } from "@/hooks/use-toast";
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useGeolocation } from '@/hooks/useGeolocation';
 import { pickProfileImage, inferProfileKind, resetImageCounters, type ProfileType, type Gender } from '@/lib/media';
 
 // Definición del tipo para un perfil
@@ -157,9 +158,10 @@ const getUserType = () => {
 
 
 const Discover = () => {
-  const { toast } = useToast();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const isMobile = useIsMobile();
+  const { location, startWatchingLocation, stopWatchingLocation, calculateDistance, isWatching } = useGeolocation();
 
   const [allProfiles, setAllProfiles] = useState<Profile[]>([]);
 
@@ -203,7 +205,26 @@ const Discover = () => {
   const getFilteredProfiles = useCallback(() => {
     return allProfiles.filter(profile => {
       if (profile.age < filters.ageRange[0] || profile.age > filters.ageRange[1]) return false;
-      if (profile.distance > filters.distance[0]) return false;
+      
+      // Dynamic distance filtering based on user's current location
+      if (location) {
+        // Parse profile location (assuming format "lat,lng")
+        const [profileLat, profileLng] = profile.location.split(',').map(Number);
+        if (!isNaN(profileLat) && !isNaN(profileLng)) {
+          const realDistance = calculateDistance(
+            location.latitude,
+            location.longitude,
+            profileLat,
+            profileLng
+          );
+          // Update profile distance with real calculation
+          profile.distance = realDistance;
+          if (realDistance > filters.distance[0]) return false;
+        }
+      } else {
+        // Fallback to static distance if no location available
+        if (profile.distance > filters.distance[0]) return false;
+      }
       
       // Corregir filtro de género - comparar con profile.gender en lugar de relationshipType
       if (filters.gender !== "all" && profile.gender && profile.gender !== filters.gender) return false;
@@ -224,7 +245,7 @@ const Discover = () => {
       if (filters.onlyOnline && !profile.isOnline) return false;
       return true;
     });
-  }, [allProfiles, filters]);
+  }, [allProfiles, filters, location, calculateDistance]);
 
   const [filteredProfiles, setFilteredProfiles] = useState<Profile[]>([]);
   const [likedProfiles, setLikedProfiles] = useState<Set<string>>(new Set());
@@ -242,9 +263,27 @@ const Discover = () => {
 
   const [dailyStats, setDailyStats] = useState(() => ({ likes: 0, superLikes: 3, matches: 0 }));
 
+  // Start location tracking for real-time updates
+  useEffect(() => {
+    const shareLocation = localStorage.getItem('demo_share_location') === 'true';
+    if (shareLocation && !isWatching) {
+      startWatchingLocation();
+      toast({
+        title: "Ubicación en tiempo real activada",
+        description: "Los matches se actualizarán según tu ubicación actual",
+      });
+    }
+    
+    return () => {
+      if (isWatching) {
+        stopWatchingLocation();
+      }
+    };
+  }, [startWatchingLocation, stopWatchingLocation, isWatching, toast]);
+
   useEffect(() => {
     setFilteredProfiles(getFilteredProfiles());
-  }, [filters, getFilteredProfiles]);
+  }, [filters, getFilteredProfiles, location]); // Add location dependency
 
     const handleLike = (profileId: string) => {
     setLikedProfiles(prev => new Set([...prev, profileId]));

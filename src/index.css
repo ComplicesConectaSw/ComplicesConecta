@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Fondo suave para mejor experiencia visual */
+body {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
+  min-height: 100vh;
+}
+
 /* Mejoras de visibilidad de texto */
 .text-gray-600 {
   color: rgb(75 85 99) !important;

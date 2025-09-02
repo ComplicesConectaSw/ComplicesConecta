@@ -252,7 +252,16 @@ NODE_ENV=development
 - ✅ **NUEVO**: Tipos TypeScript para todas las funcionalidades
 - ✅ **NUEVO**: Mock data extendido para funciones sociales
 
-### ✨ **Mejoras Recientes (v1.3.2)**
+### ✨ **Nuevas Funcionalidades (v1.3.3)** *(2 de septiembre, 2025)*
+- ✅ **Registro Mejorado**: Campos de edad y apodo para perfiles Single y Pareja
+- ✅ **Selección Visual**: Cards interactivas para elegir tipo de perfil (👤 Single / 👫 Pareja)
+- ✅ **Geolocalización Automática**: Detección automática de ubicación en el registro
+- ✅ **Ubicación en Tiempo Real**: Seguimiento continuo con `watchPosition` para matches dinámicos
+- ✅ **Matches por Proximidad**: Filtrado automático basado en distancia real calculada con Haversine
+- ✅ **Interfaz de Ubicación**: Estados visuales mejorados (Detectando/Detectada/Error)
+- ✅ **Hook useGeolocation**: Funciones `startWatchingLocation()` y `stopWatchingLocation()`
+
+### ✨ **Mejoras Previas (v1.3.2)**
 - ✅ **Mejoras de UI/UX**: Visibilidad de textos mejorada en panel de administración con clases `privacy-text` y gradientes consistentes
 - ✅ **Cards de Estadísticas**: Rediseñadas con mejor contraste (azul, verde, amarillo, púrpura)
 - ✅ **Página 404 Profesional**: Completamente rediseñada con animaciones React avanzadas:

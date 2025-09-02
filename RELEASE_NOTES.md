@@ -196,6 +196,40 @@ ComplicesConecta se completa con sistema de invitaciones, panel de administraci�
 
 ---
 
+## 🚀 **Nuevas Funcionalidades en v1.3.3** *(2 de septiembre, 2025 - 05:53 AM)*
+
+### 📝 **Mejoras en el Registro de Usuarios**
+- **NUEVO**: Campo **Edad** agregado para perfiles Single y Pareja con validación (18-99 años)
+- **NUEVO**: Campo **Apodo** personalizable:
+  - Perfiles Single: Apodo individual (ej: "Alex", "María")
+  - Perfiles Pareja: Apodo conjunto + apodo individual para ella (ej: "Ana & Carlos", "Los Aventureros")
+- **NUEVO**: **Selección visual** de tipo de perfil con cards interactivas:
+  - Single: Ícono 👤 con colores rosa/pink
+  - Pareja: Ícono 👫 con colores púrpura/morado
+  - Feedback visual inmediato al seleccionar
+
+### 🌍 **Sistema de Geolocalización Avanzado**
+- **NUEVO**: **Detección automática** de ubicación al cargar el formulario de registro
+- **NUEVO**: **Seguimiento en tiempo real** de la ubicación del usuario con `watchPosition`
+- **NUEVO**: **Matches dinámicos** basados en ubicación actual:
+  - Cálculo de distancias reales usando fórmula Haversine
+  - Actualización automática de perfiles cercanos cuando el usuario se mueve
+  - Indicador visual de "Ubicación activa" en la página Discover
+- **NUEVO**: **Interfaz mejorada** para permisos de ubicación:
+  - Estados visuales: Detectando, Detectada, Error
+  - Opción de reintento manual si falla la detección automática
+  - Consentimiento claro para compartir ubicación en tiempo real
+
+### 🔧 **Mejoras Técnicas**
+- **MEJORADO**: Hook `useGeolocation` con nuevas funciones:
+  - `startWatchingLocation()` y `stopWatchingLocation()`
+  - Cleanup automático al desmontar componentes
+  - Configuración optimizada para actualizaciones en tiempo real (cache 5 min)
+- **CORREGIDO**: Importación de Supabase en `Auth.tsx` (`@/lib/supabase` → `@/integrations/supabase/client`)
+- **MEJORADO**: Filtrado dinámico en Discover que recalcula distancias basadas en ubicación actual
+
+---
+
 ## 🐞 **Correcciones en v1.3.2**
 
 ### 🎨 **Mejoras de UI/UX (NUEVO)**
@@ -218,7 +252,7 @@ ComplicesConecta se completa con sistema de invitaciones, panel de administraci�
 
 ## 🐛 Problemas Conocidos
 
-- El panel de administración requiere email exacto: `ComplicesConectaSw@outlook.es`
+- El panel de administración requiere email exacto: `xxxx`
 - En modo demo, algunas funciones de backend están limitadas
 - La geolocalización puede requerir permisos adicionales
 
@@ -226,7 +260,7 @@ ComplicesConecta se completa con sistema de invitaciones, panel de administraci�
 
 ## 📞 Soporte
 
-**Email:** ComplicesConectaSw@outlook.es  
+**Email:** [email protegido]  
 **Sitio Web:** https://complicesconecta.com  
 **Horario:** 24/7 (respuesta en 24-48 horas)
 
