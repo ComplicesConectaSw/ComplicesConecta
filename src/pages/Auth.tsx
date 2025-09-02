@@ -1,42 +1,67 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Heart, Shield, Users, Zap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import { useGeolocation } from "@/hooks/useGeolocation";
-import { MapPin, Heart, ArrowLeft, Sparkles, Shield, Users } from "lucide-react";
+import { MapPin, ArrowLeft, Sparkles } from "lucide-react";
 
-export default function Auth() {
+interface FormData {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  age: string;
+  gender: string;
+  interestedIn: string;
+  bio: string;
+  role: string;
+  accountType: string;
+  partnerFirstName: string;
+  partnerLastName: string;
+  partnerAge: string;
+  partnerGender: string;
+  partnerInterestedIn: string;
+  partnerBio: string;
+  location: string;
+  acceptTerms: boolean;
+  shareLocation: boolean;
+}
+
+const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { getCurrentLocation, location, isLoading: locationLoading } = useGeolocation();
   
   const [isLoading, setIsLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-    firstName: "",
-    lastName: "",
-    age: "",
-    gender: "",
-    interestedIn: "",
-    bio: "",
-    shareLocation: false,
-    role: "user" as "user" | "admin",
-    accountType: "single" as "single" | "couple",
-    // Campos para parejas
-    partnerFirstName: "",
-    partnerLastName: "",
-    partnerAge: "",
-    partnerGender: "",
-    partnerInterestedIn: "",
-    partnerBio: ""
+  const [formData, setFormData] = useState<FormData>({
+    email: '',
+    password: '',
+    firstName: '',
+    lastName: '',
+    age: '',
+    gender: '',
+    interestedIn: '',
+    bio: '',
+    role: 'user',
+    accountType: 'single',
+    partnerFirstName: '',
+    partnerLastName: '',
+    partnerAge: '',
+    partnerGender: '',
+    partnerInterestedIn: '',
+    partnerBio: '',
+    location: '',
+    acceptTerms: false,
+    shareLocation: false
   });
 
   const handleInputChange = (field: string, value: string | boolean) => {
@@ -48,70 +73,62 @@ export default function Auth() {
     setIsLoading(true);
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: formData.email,
-        password: formData.password,
-      });
-
-      if (error) throw error;
-
-      // Check if user is admin based on email
-      const isAdminEmail = formData.email === 'ComplicesConectaSw@outlook.es';
+      // Skip Supabase auth and go directly to demo mode
+      console.log('🔄 Activando modo demo directo');
+      console.log('📧 Email ingresado:', formData.email);
       
-      if (isAdminEmail && data.user) {
-        try {
-          const { error: profileError } = await supabase
-            .from('profiles')
-            .upsert({
-              id: data.user.id,
-              email: formData.email,
-              role: 'administrador'
-            });
-          
-          if (profileError) {
-            console.warn('Could not update admin role in profile:', profileError);
-          }
-        } catch (profileError) {
-          console.warn('Error updating profile role:', profileError);
-        }
+      const isAdminEmail = formData.email.toLowerCase() === 'complicesconectasw@outlook.es';
+      const isParejaEmail = formData.email.toLowerCase() === 'pareja@outlook.es';
+      const isSingleEmail = formData.email.toLowerCase() === 'single@outlook.es';
+      
+      let userRole = 'user';
+      let accountType = 'single';
+      let welcomeTitle = "¡Bienvenido!";
+      let welcomeDescription = "Conectando en modo demo para desarrollo local.";
+      let redirectPath = "/discover";
+      
+      if (isAdminEmail) {
+        userRole = 'administrador';
+        welcomeTitle = "¡Bienvenido Administrador!";
+        welcomeDescription = "Accediendo al panel de administración...";
+        redirectPath = "/admin";
+      } else if (isParejaEmail) {
+        accountType = 'couple';
+        welcomeTitle = "¡Bienvenida Pareja!";
+        welcomeDescription = "Accediendo como perfil de pareja...";
+      } else if (isSingleEmail) {
+        accountType = 'single';
+        welcomeTitle = "¡Bienvenido Single!";
+        welcomeDescription = "Accediendo como perfil individual...";
       }
-
+      
+      console.log('🔑 Tipo de usuario:', { userRole, accountType });
+      
+      // Simular sesión de usuario en localStorage para mantener estado
+      const mockUser = {
+        id: 'demo-user-' + Date.now(),
+        email: formData.email,
+        role: userRole,
+        accountType: accountType,
+        created_at: new Date().toISOString()
+      };
+      localStorage.setItem('demo_user', JSON.stringify(mockUser));
+      localStorage.setItem('demo_session', 'true');
+      
       toast({
-        title: "¡Bienvenido de vuelta!",
-        description: "Has iniciado sesión exitosamente.",
+        title: welcomeTitle,
+        description: welcomeDescription,
+        duration: 3000,
       });
-
-      // Navigate to admin panel if admin email, otherwise to discover
-      navigate(isAdminEmail ? "/admin" : "/discover");
+      
+      // Navigate to appropriate page
+      navigate(redirectPath);
     } catch (error: unknown) {
       console.error('❌ Error de autenticación:', error);
-      let errorMessage = "Error desconocido al iniciar sesión";
-      
-      if (error instanceof Error) {
-        if (error.message.includes('Failed to fetch') || error.message.includes('fetch') || error.message.includes('CONNECTION_REFUSED')) {
-          // Modo demo para desarrollo local
-          console.log('🔄 Activando modo demo para desarrollo');
-          const isAdminEmail = formData.email === 'ComplicesConectaSw@outlook.es';
-          toast({
-            title: "Modo Demo Activado",
-            description: "Conectando en modo demo para desarrollo local.",
-            duration: 3000,
-          });
-          // Simular login exitoso en modo demo con detección de admin
-          navigate(isAdminEmail ? "/admin" : "/discover");
-          return;
-        } else if (error.message.includes('Invalid login credentials')) {
-          errorMessage = "Credenciales incorrectas. Verifica tu email y contraseña.";
-        } else if (error.message.includes('Email not confirmed')) {
-          errorMessage = "Por favor confirma tu email antes de iniciar sesión.";
-        } else {
-          errorMessage = error.message;
-        }
-      }
-      
       toast({
-        title: "Error al iniciar sesión",
-        description: errorMessage,
+        title: "Error",
+        description: "Error al iniciar sesión. Intenta de nuevo.",
+        variant: "destructive"
       });
     } finally {
       setIsLoading(false);

@@ -441,36 +441,6 @@ const allProfiles = [
     religion: "Ninguna",
     aiCompatibility: 92,
     rating: 4.7
-  },
-  {
-    id: 14,
-    name: "Andrés",
-    age: 31,
-    location: "Guadalajara",
-    distance: 8,
-    interests: ["Bull", "Discreto", "Experiencias Intensas"],
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=600&fit=crop&crop=face",
-    bio: "Bull experimentado y discreto. Busco parejas que quieran vivir experiencias únicas.",
-    isOnline: true,
-    lastActive: "En línea",
-    isVerified: true,
-    isPremium: false,
-    matchScore: 86,
-    lifestyle: "Bull",
-    relationshipType: "Single",
-    lookingFor: ["Parejas", "Hotwives"],
-    experienceLevel: "Muy Experimentado",
-    ageRange: "25-45",
-    bodyType: "Atlético",
-    height: "183cm",
-    education: "Universitario",
-    profession: "Entrenador Personal",
-    smoking: "No",
-    drinking: "Ocasionalmente",
-    children: "No",
-    religion: "Ninguna",
-    aiCompatibility: 90,
-    rating: 4.6
   }
 ];
 

@@ -28,6 +28,29 @@ export const useAuth = () => {
   });
 
   useEffect(() => {
+    // Check for demo session first
+    const checkDemoSession = () => {
+      const demoUser = localStorage.getItem('demo_user');
+      const demoSession = localStorage.getItem('demo_session');
+      
+      if (demoUser && demoSession) {
+        const user = JSON.parse(demoUser);
+        setState({
+          user: user,
+          session: { user } as Session,
+          loading: false,
+          profile: { id: user.id, role: user.role }
+        });
+        return true;
+      }
+      return false;
+    };
+
+    // If demo session exists, use it
+    if (checkDemoSession()) {
+      return;
+    }
+
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
@@ -86,10 +109,22 @@ export const useAuth = () => {
   };
 
   const signOut = async () => {
+    // Clear demo session if exists
+    localStorage.removeItem('demo_user');
+    localStorage.removeItem('demo_session');
+    
     const { error } = await supabase.auth.signOut();
     if (error) {
       console.error('Error signing out:', error);
     }
+    
+    // Reset state
+    setState({
+      user: null,
+      session: null,
+      loading: false,
+      profile: null
+    });
   };
 
   const isAdmin = () => {
