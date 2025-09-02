@@ -458,7 +458,7 @@ const Admin = () => {
           <Card className="p-6 bg-gradient-to-br from-blue-500/10 to-blue-600/10 border-blue-500/20">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-900 privacy-text">Usuarios Totales</p>
+                <p className="text-sm font-medium text-white">Usuarios Totales</p>
                 <p className="text-3xl font-bold text-blue-600">{stats.totalUsers}</p>
               </div>
               <Users className="h-8 w-8 text-blue-500" />
@@ -468,7 +468,7 @@ const Admin = () => {
           <Card className="p-6 bg-gradient-to-br from-green-500/10 to-green-600/10 border-green-500/20">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-900 privacy-text">Usuarios Activos</p>
+                <p className="text-sm font-medium text-white">Usuarios Activos</p>
                 <p className="text-3xl font-bold text-green-600">{stats.activeUsers}</p>
               </div>
               <Activity className="h-8 w-8 text-green-500" />
@@ -478,7 +478,7 @@ const Admin = () => {
           <Card className="p-6 bg-gradient-to-br from-yellow-500/10 to-yellow-600/10 border-yellow-500/20">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-900 privacy-text">Premium</p>
+                <p className="text-sm font-medium text-white">Premium</p>
                 <p className="text-3xl font-bold text-yellow-600">{stats.premiumUsers}</p>
               </div>
               <Crown className="h-8 w-8 text-yellow-500" />
@@ -488,20 +488,27 @@ const Admin = () => {
           <Card className="p-6 bg-gradient-to-br from-purple-500/10 to-purple-600/10 border-purple-500/20">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-900 privacy-text">Matches</p>
+                <p className="text-sm font-medium text-white">Matches</p>
                 <p className="text-3xl font-bold text-purple-600">{stats.totalMatches}</p>
               </div>
               <BarChart3 className="h-8 w-8 text-purple-500" />
             </div>
           </Card>
 
-          <Card className="bg-card/80 backdrop-blur-sm border-primary/10 cursor-pointer hover:bg-card/90 transition-colors" onClick={() => window.open('https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v.1.1.1/app-release.apk', '_blank')}>
+          <Card className="bg-card/80 backdrop-blur-sm border-primary/10 cursor-pointer hover:bg-card/90 transition-colors" onClick={() => {
+            const link = document.createElement('a');
+            link.href = 'https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v.1.3.0/app-release.apk';
+            link.download = 'app-release.apk';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }}>
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground">Descargar APK</p>
-                  <p className="text-lg font-bold text-blue-600">v1.1.1</p>
-                  <p className="text-xs text-muted-foreground">Haz clic para descargar</p>
+                  <p className="text-sm text-white">Descargar APK</p>
+                  <p className="text-lg font-bold text-blue-400">v1.3.0</p>
+                  <p className="text-xs text-white/80">Haz clic para descargar</p>
                 </div>
                 <Download className="w-8 h-8 text-blue-600" />
               </div>
@@ -512,7 +519,7 @@ const Admin = () => {
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground">Visitas Hoy</p>
+                  <p className="text-sm text-white">Visitas Hoy</p>
                   <p className="text-2xl font-bold text-purple-600">{stats.dailyVisits}</p>
                 </div>
                 <Eye className="w-8 h-8 text-purple-600" />

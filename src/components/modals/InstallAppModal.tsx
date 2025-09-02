@@ -157,31 +157,48 @@ export const InstallAppModal = ({ isOpen, onClose }: InstallAppModalProps) => {
               </div>
             </div>
 
-            <div className="flex gap-3">
-              {currentStep > 0 && (
-                <Button 
-                  variant="outline" 
-                  onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
-                  className="flex-1"
-                >
-                  Anterior
-                </Button>
-              )}
-              {currentStep < currentInstructions.length - 1 ? (
-                <Button 
-                  onClick={() => setCurrentStep(Math.min(currentInstructions.length - 1, currentStep + 1))}
-                  className="flex-1"
-                >
-                  Siguiente
-                </Button>
-              ) : (
-                <Button 
-                  onClick={onClose}
-                  className="flex-1 bg-green-600 hover:bg-green-700"
-                >
-                  ¡Entendido!
-                </Button>
-              )}
+            <div className="space-y-3">
+              <Button 
+                onClick={() => {
+                  const link = document.createElement('a');
+                  link.href = 'https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v.1.3.0/app-release.apk';
+                  link.download = 'app-release.apk';
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                }}
+                className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold py-3"
+              >
+                <Download className="w-5 h-5 mr-2" />
+                Descargar APK Ahora
+              </Button>
+              
+              <div className="flex gap-3">
+                {currentStep > 0 && (
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
+                    className="flex-1"
+                  >
+                    Anterior
+                  </Button>
+                )}
+                {currentStep < currentInstructions.length - 1 ? (
+                  <Button 
+                    onClick={() => setCurrentStep(Math.min(currentInstructions.length - 1, currentStep + 1))}
+                    className="flex-1"
+                  >
+                    Siguiente
+                  </Button>
+                ) : (
+                  <Button 
+                    onClick={onClose}
+                    className="flex-1 bg-gray-600 hover:bg-gray-700"
+                  >
+                    Cerrar
+                  </Button>
+                )}
+              </div>
             </div>
           </CardContent>
         </div>
