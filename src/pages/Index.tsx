@@ -7,6 +7,7 @@ import { Footer } from "@/components/Footer";
 import { BetaBanner } from "@/components/BetaBanner";
 import { LoadingScreen } from "@/components/LoadingScreen";
 import { WelcomeModal } from "@/components/WelcomeModal";
+import { FeatureModal } from "@/components/modals/FeatureModal";
 import Navigation from "@/components/Navigation";
 import { Heart, Users, Shield, Zap, Sparkles, Star, Rocket } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -18,6 +19,8 @@ const Index = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [showWelcome, setShowWelcome] = useState(false);
+  const [showFeatureModal, setShowFeatureModal] = useState(false);
+  const [selectedFeature, setSelectedFeature] = useState<'connections' | 'verification' | 'events' | 'tokens'>('connections');
 
   // Verificar si el usuario está autenticado (sin redirección automática)
   useEffect(() => {
@@ -45,6 +48,7 @@ const Index = () => {
   if (isLoading) {
     return <LoadingScreen onComplete={handleLoadingComplete} />;
   }
+
   // Professional sample profiles for presentation
   const sampleProfiles = [
     {
@@ -101,26 +105,35 @@ const Index = () => {
     }
   ];
 
+  const handleFeatureClick = (featureType: 'connections' | 'verification' | 'events' | 'tokens') => {
+    setSelectedFeature(featureType);
+    setShowFeatureModal(true);
+  };
+
   const features = [
     {
       icon: Heart,
       title: "Conexiones Auténticas",
-      description: "Algoritmo inteligente que conecta personas con intereses reales en común"
+      description: "Algoritmo inteligente que conecta personas con intereses reales en común",
+      type: 'connections' as const
     },
     {
       icon: Shield,
       title: "Verificación KYC Avanzada",
-      description: "Perfiles verificados con tecnología blockchain y KYC para máxima seguridad y confianza"
+      description: "Perfiles verificados con tecnología blockchain y KYC para máxima seguridad y confianza",
+      type: 'verification' as const
     },
     {
       icon: Users,
       title: "Eventos Swinger Exclusivos",
-      description: "Accede a fiestas privadas, encuentros y eventos exclusivos para la comunidad swinger"
+      description: "Accede a fiestas privadas, encuentros y eventos exclusivos para la comunidad swinger",
+      type: 'events' as const
     },
     {
       icon: Zap,
       title: "Sistema de Tokens CMPX/GTK",
-      description: "Gana tokens participando, accede a funciones premium y eventos VIP"
+      description: "Gana tokens participando, accede a funciones premium y eventos VIP",
+      type: 'tokens' as const
     }
   ];
 
@@ -240,15 +253,19 @@ const Index = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
               {features.map((feature, index) => (
-                <div key={index} className="text-center group hover:transform hover:scale-105 transition-all duration-300">
+                <div 
+                  key={index} 
+                  className="text-center group hover:transform hover:scale-105 transition-all duration-300 cursor-pointer"
+                  onClick={() => handleFeatureClick(feature.type)}
+                >
                   <div className="bg-card-gradient rounded-2xl p-8 shadow-soft hover:shadow-glow transition-all duration-300">
                     <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-primary/20 transition-colors">
                       <feature.icon className="h-8 w-8 text-primary" />
                     </div>
-                    <h3 className="text-xl font-bold text-card-foreground mb-4">
+                    <h3 className="text-xl font-bold text-white mb-4">
                       {feature.title}
                     </h3>
-                    <p className="text-muted-foreground leading-relaxed">
+                    <p className="text-white/90 leading-relaxed">
                       {feature.description}
                     </p>
                   </div>
@@ -297,54 +314,12 @@ const Index = () => {
       </main>
 
       <Footer />
-      {showWelcome && <WelcomeModal isOpen={showWelcome} onClose={handleWelcomeClose} />}
-      
-      <style>{`
-        @keyframes gradient-x {
-          0%, 100% { transform: translateX(-50%); }
-          50% { transform: translateX(50%); }
-        }
-        
-        @keyframes gradient-y {
-          0%, 100% { transform: translateY(-50%); }
-          50% { transform: translateY(50%); }
-        }
-        
-        @keyframes float-slow {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-20px) rotate(180deg); }
-        }
-        
-        @keyframes float-reverse {
-          0%, 100% { transform: translateY(0px) translateX(0px); }
-          50% { transform: translateY(15px) translateX(-10px); }
-        }
-        
-        @keyframes spin-slow {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        
-        .animate-gradient-x {
-          animation: gradient-x 8s ease-in-out infinite;
-        }
-        
-        .animate-gradient-y {
-          animation: gradient-y 6s ease-in-out infinite;
-        }
-        
-        .animate-float-slow {
-          animation: float-slow 8s ease-in-out infinite;
-        }
-        
-        .animate-float-reverse {
-          animation: float-reverse 6s ease-in-out infinite;
-        }
-        
-        .animate-spin-slow {
-          animation: spin-slow 20s linear infinite;
-        }
-      `}</style>
+      {showWelcome && <WelcomeModal isOpen={showWelcome} onClose={() => setShowWelcome(false)} />}
+      <FeatureModal
+        isOpen={showFeatureModal}
+        onClose={() => setShowFeatureModal(false)}
+        feature={selectedFeature}
+      />
     </div>
   );
 };

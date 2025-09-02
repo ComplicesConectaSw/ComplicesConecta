@@ -76,11 +76,11 @@ const Profiles = () => {
     },
     {
       id: 3,
-      name: "Ana",
+      name: "Gabriela",
       age: 26,
       location: "Monterrey",
       interests: ["Arte", "Lectura", "Café", "Cine", "Teatro"],
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=600&fit=crop&crop=face",
+      image: "https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400&h=600&fit=crop&crop=face",
       rating: 4.7,
       isOnline: true,
       bio: "Artista y escritora. Me encanta el café y las buenas conversaciones.",
@@ -328,7 +328,7 @@ const Profiles = () => {
                     <div className="relative flex-1">
                       <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input
-                        placeholder="Ej: Personas creativas que amen viajar..."
+                        placeholder="Busca parejas swinger, solteros lifestyle, eventos privados..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="pl-10 pr-4 py-3 text-base"

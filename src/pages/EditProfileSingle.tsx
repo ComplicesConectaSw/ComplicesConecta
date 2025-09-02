@@ -24,9 +24,9 @@ const EditProfileSingle = () => {
   });
 
   const availableInterests = [
-    "Aventuras", "Diversión", "Experiencias Únicas", "Conexiones Reales", 
-    "Lifestyle", "Viajes", "Arte", "Música", "Deportes", "Gastronomía",
-    "Fotografía", "Lectura", "Cine", "Baile", "Yoga", "Fitness"
+    "Lifestyle Swinger", "Intercambio de Parejas", "Encuentros Casuales", "Comunicación Abierta", 
+    "Respeto Mutuo", "Experiencias Nuevas", "Discreción Total", "Fiestas Privadas", "Clubs Exclusivos", "Conexiones Reales",
+    "Aventuras", "Diversión", "Viajes", "Arte", "Música", "Gastronomía"
   ];
 
   useEffect(() => {
@@ -103,30 +103,26 @@ const EditProfileSingle = () => {
   }
 
   return (
-    <div className="min-h-screen relative overflow-hidden px-2 sm:px-4">
-      {/* Advanced Animated Background */}
-      <div className="fixed inset-0 z-0">
-        {/* Base Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-background via-muted/30 to-secondary/20"></div>
-        
-        {/* Animated Gradient Orbs */}
-        <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-        <div className="absolute top-40 right-10 w-96 h-96 bg-gradient-to-r from-accent/20 to-secondary/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-32 left-20 w-96 h-96 bg-gradient-to-r from-secondary/20 to-primary/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 relative overflow-hidden px-2 sm:px-4">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-pink-500/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+        <div className="absolute top-40 right-10 w-72 h-72 bg-purple-500/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-red-500/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
       </div>
       
       <div className="relative z-10">
       {/* Header */}
-      <div className="bg-white/80 backdrop-blur-sm border-b border-white/20 p-4">
+      <div className="bg-white/10 backdrop-blur-md border-b border-white/20 p-4">
         <div className="flex items-center justify-between">
           <Button 
             variant="ghost" 
             onClick={() => navigate(-1)}
-            className="text-gray-600"
+            className="text-white hover:bg-white/20"
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <h1 className="text-lg font-semibold text-gray-900">Editar Perfil</h1>
+          <h1 className="text-lg font-semibold text-white">Editar Perfil</h1>
           <div className="flex gap-2">
             <Button 
               variant="outline"
@@ -150,9 +146,9 @@ const EditProfileSingle = () => {
       <div className="p-4 pb-24 space-y-6">
         <div className="space-y-6">
           {/* Foto principal */}
-          <Card>
+          <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-glow">
             <CardContent className="p-6">
-              <h3 className="text-lg font-semibold mb-4">Foto de Perfil</h3>
+              <h3 className="text-lg font-semibold text-white mb-4">Foto de Perfil</h3>
               <ImageUpload
                 currentImage={formData.avatar}
                 onImageChange={(url) => setFormData(prev => ({ ...prev, avatar: url }))}
@@ -162,106 +158,91 @@ const EditProfileSingle = () => {
           </Card>
 
           {/* Información básica */}
-          <Card className="bg-white shadow-lg">
+          <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-glow">
             <CardContent className="p-6 space-y-4">
-              <h3 className="font-semibold text-gray-900 mb-4">Información básica</h3>
+              <h3 className="font-semibold text-white mb-4">Información básica</h3>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Nombre completo</label>
+                <label className="block text-sm font-medium text-white mb-2">Nombre completo</label>
                 <Input
                   value={formData.name}
                   onChange={(e) => handleInputChange('name', e.target.value)}
                   placeholder="Tu nombre completo"
+                  className="bg-white/20 border-white/30 text-white placeholder:text-white/70"
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Edad</label>
+                <label className="block text-sm font-medium text-white mb-2">Edad</label>
                 <Input
                   type="number"
                   value={formData.age}
                   onChange={(e) => handleInputChange('age', e.target.value)}
                   placeholder="Tu edad"
+                  className="bg-white/20 border-white/30 text-white placeholder:text-white/70"
                 />
               </div>
           </CardContent>
         </Card>
 
-        {/* Información básica */}
-        <Card className="bg-white shadow-lg">
+        {/* Información adicional */}
+        <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-glow">
           <CardContent className="p-6 space-y-4">
-            <h3 className="font-semibold text-gray-900 mb-4">Información básica</h3>
+            <h3 className="font-semibold text-white mb-4">Información adicional</h3>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Nombre completo</label>
-              <Input
-                value={formData.name}
-                onChange={(e) => handleInputChange('name', e.target.value)}
-                placeholder="Tu nombre completo"
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Edad</label>
-              <Input
-                type="number"
-                value={formData.age}
-                onChange={(e) => handleInputChange('age', e.target.value)}
-                placeholder="Tu edad"
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Ubicación</label>
+              <label className="block text-sm font-medium text-white mb-2">Ubicación</label>
               <Input
                 value={formData.location}
                 onChange={(e) => handleInputChange('location', e.target.value)}
                 placeholder="Ciudad donde vives"
+                className="bg-white/20 border-white/30 text-white placeholder:text-white/70"
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Profesión</label>
+              <label className="block text-sm font-medium text-white mb-2">Profesión</label>
               <Input
                 value={formData.profession}
                 onChange={(e) => handleInputChange('profession', e.target.value)}
                 placeholder="A qué te dedicas"
+                className="bg-white/20 border-white/30 text-white placeholder:text-white/70"
               />
             </div>
           </CardContent>
         </Card>
 
         {/* Biografía */}
-        <Card className="bg-white shadow-lg">
+        <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-glow">
           <CardContent className="p-6">
-            <h3 className="font-semibold text-gray-900 mb-4">Sobre ti</h3>
+            <h3 className="font-semibold text-white mb-4">Sobre ti</h3>
             <Textarea
               value={formData.bio}
               onChange={(e) => handleInputChange('bio', e.target.value)}
-              placeholder="Cuéntanos sobre ti, qué buscas, tus intereses..."
+              placeholder="Cuéntanos sobre ti, qué buscas en el lifestyle swinger..."
               rows={4}
-              className="resize-none"
+              className="resize-none bg-white/20 border-white/30 text-white placeholder:text-white/70"
             />
-            <p className="text-xs text-gray-500 mt-2">
+            <p className="text-xs text-white/70 mt-2">
               {formData.bio.length}/500 caracteres
             </p>
           </CardContent>
         </Card>
 
         {/* Intereses */}
-        <Card className="bg-white shadow-lg">
+        <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-glow">
           <CardContent className="p-6">
-            <h3 className="font-semibold text-gray-900 mb-4">Intereses</h3>
-            <p className="text-sm text-gray-600 mb-4">Selecciona hasta 6 intereses que te representen</p>
-            <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto p-2 border rounded-lg bg-gray-50">
+            <h3 className="font-semibold text-white mb-4">Intereses</h3>
+            <p className="text-sm text-white/70 mb-4">Selecciona hasta 6 intereses que te representen en el lifestyle</p>
+            <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto p-4 border border-white/30 rounded-lg bg-white/10 backdrop-blur-sm">
               {availableInterests.map((interest) => (
                 <Badge
                   key={interest}
                   variant={formData.interests.includes(interest) ? "default" : "secondary"}
-                  className={`cursor-pointer transition-all text-contrast ${
+                  className={`cursor-pointer transition-all ${
                     formData.interests.includes(interest)
-                      ? "bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-md"
-                      : "hover:bg-gray-200 text-gray-800 border border-gray-300"
+                      ? "bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-md border-0"
+                      : "bg-white/20 text-white border border-white/30 hover:bg-white/30"
                   }`}
                   onClick={() => toggleInterest(interest)}
                 >
@@ -272,28 +253,28 @@ const EditProfileSingle = () => {
                 </Badge>
               ))}
             </div>
-            <p className="text-xs text-gray-500 mt-2">
+            <p className="text-xs text-white/70 mt-2">
               {formData.interests.length}/6 seleccionados
             </p>
           </CardContent>
         </Card>
 
         {/* Configuración de privacidad */}
-        <Card className="bg-white shadow-lg">
+        <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-glow">
           <CardContent className="p-6">
-            <h3 className="font-semibold text-gray-900 mb-4">Configuración de privacidad</h3>
+            <h3 className="font-semibold text-white mb-4">Configuración de privacidad</h3>
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-700">Mostrar edad</span>
-                <input type="checkbox" defaultChecked className="rounded" />
+                <span className="text-sm text-white">Mostrar edad</span>
+                <input type="checkbox" defaultChecked className="rounded bg-white/20 border-white/30" />
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-700">Mostrar ubicación</span>
-                <input type="checkbox" defaultChecked className="rounded" />
+                <span className="text-sm text-white">Mostrar ubicación</span>
+                <input type="checkbox" defaultChecked className="rounded bg-white/20 border-white/30" />
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-700">Aparecer en búsquedas</span>
-                <input type="checkbox" defaultChecked className="rounded" />
+                <span className="text-sm text-white">Aparecer en búsquedas</span>
+                <input type="checkbox" defaultChecked className="rounded bg-white/20 border-white/30" />
               </div>
             </div>
           </CardContent>

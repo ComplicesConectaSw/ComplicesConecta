@@ -107,13 +107,13 @@ const ProfileSingle: React.FC = () => {
         {/* Foto principal y badges */}
         <Card className="overflow-hidden bg-white/90 backdrop-blur-md shadow-glow border-0">
           <div className="relative">
-            <div className="relative aspect-[3/4] overflow-hidden">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-t-lg">
               <img 
                 alt={profile.name} 
                 className="w-full h-full object-cover object-center" 
-                src={profile.avatar || profile.photos?.[0] || 'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400&h=600&fit=crop&crop=faces'}
+                src={profile.avatar || profile.photos?.[0] || 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=500&fit=crop&crop=face'}
                 onError={(e) => {
-                  e.currentTarget.src = 'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400&h=600&fit=crop&crop=faces';
+                  e.currentTarget.src = 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=500&fit=crop&crop=face';
                 }}
               />
             </div>
@@ -172,11 +172,11 @@ const ProfileSingle: React.FC = () => {
         </Card>
 
         {/* Información básica */}
-        <Card className="bg-white/95 backdrop-blur-sm shadow-glow border-0">
+        <Card className="bg-gradient-to-br from-purple-900/95 to-pink-900/95 backdrop-blur-sm shadow-glow border-0">
           <CardContent className="p-6">
             <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">{profile.name}</h2>
-              <div className="flex items-center justify-center space-x-4 text-gray-600 mb-4">
+              <h2 className="text-2xl font-bold text-white mb-2">{profile.name}</h2>
+              <div className="flex items-center justify-center space-x-4 text-white mb-4">
                 <span className="flex items-center">
                   <MapPin className="h-4 w-4 mr-1" />
                   {profile.location}
@@ -186,22 +186,22 @@ const ProfileSingle: React.FC = () => {
               </div>
               
               {/* Bio Section */}
-              <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 mb-4">
-                <h3 className="font-semibold text-gray-900 mb-2">Sobre mí</h3>
-                <p className="text-gray-700 text-sm leading-relaxed">
+              <div className="bg-gradient-to-r from-purple-800/30 to-pink-800/30 rounded-lg p-4 mb-4 border border-purple-300/30">
+                <h3 className="font-semibold text-white mb-2">Sobre mí</h3>
+                <p className="text-white/90 text-sm leading-relaxed">
                   {profile.bio || "Persona auténtica buscando conexiones reales y experiencias memorables. Me encanta el arte y conocer gente nueva."}
                 </p>
               </div>
               
               {/* Additional Info */}
               <div className="grid grid-cols-2 gap-4 text-sm">
-                <div className="bg-gray-50 rounded-lg p-3">
-                  <span className="font-medium text-gray-900">Edad:</span>
-                  <p className="text-gray-600">{profile.age} años</p>
+                <div className="bg-purple-800/30 rounded-lg p-3 border border-purple-300/30">
+                  <span className="font-medium text-white">Edad:</span>
+                  <p className="text-white/90">{profile.age} años</p>
                 </div>
-                <div className="bg-gray-50 rounded-lg p-3">
-                  <span className="font-medium text-gray-900">Buscando:</span>
-                  <p className="text-gray-600">Conexiones auténticas</p>
+                <div className="bg-purple-800/30 rounded-lg p-3 border border-purple-300/30">
+                  <span className="font-medium text-white">Buscando:</span>
+                  <p className="text-white/90">Conexiones auténticas</p>
                 </div>
               </div>
             </div>
@@ -209,40 +209,42 @@ const ProfileSingle: React.FC = () => {
             {/* Stats del perfil */}
             <div className="grid grid-cols-3 gap-4 mt-6">
               <div className="text-center">
-                <div className="text-2xl font-bold text-purple-600">{profile.stats?.likes || 159}</div>
-                <div className="text-sm text-gray-500">Likes</div>
+                <div className="text-2xl font-bold text-purple-300">{profile.stats?.likes || 159}</div>
+                <div className="text-sm text-white/80">Likes</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-pink-600">{profile.stats?.matches || 17}</div>
-                <div className="text-sm text-gray-500">Matches</div>
+                <div className="text-2xl font-bold text-pink-300">{profile.stats?.matches || 17}</div>
+                <div className="text-sm text-white/80">Matches</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600">{profile.stats?.visits || 103}</div>
-                <div className="text-sm text-gray-500">Visitas</div>
+                <div className="text-2xl font-bold text-blue-300">{profile.stats?.visits || 103}</div>
+                <div className="text-sm text-white/80">Visitas</div>
               </div>
             </div>
           </CardContent>
         </Card>
 
         {/* Intereses */}
-        <Card className="bg-white/95 backdrop-blur-sm shadow-glow border-0">
+        <Card className="bg-gradient-to-br from-purple-900/95 to-pink-900/95 backdrop-blur-sm shadow-glow border-0">
           <CardContent className="p-6">
-            <h3 className="font-semibold text-gray-900 mb-3">Intereses</h3>
-            <div className="flex flex-wrap gap-2 mb-4 max-h-32 overflow-y-auto">
-              {(profile.interests || ['Lifestyle Swinger', 'Intercambio de Parejas', 'Encuentros Casuales', 'Fiestas Temáticas', 'Clubs Privados', 'Eventos Lifestyle', 'Soft Swap', 'Full Swap', 'Experiencias Nuevas', 'Conexiones Auténticas']).map((interest: string, index: number) => (
-                <Badge key={index} className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm py-2 px-4 font-medium shadow-lg">
-                  {interest}
-                </Badge>
-              ))}
+            <h3 className="font-semibold text-white mb-3">Intereses</h3>
+            <div className="bg-gradient-to-r from-purple-800/30 to-pink-800/30 backdrop-blur-sm rounded-lg p-4 border border-purple-300/30">
+              <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto">
+                {(profile.interests || ['Lifestyle Swinger', 'Comunicación Abierta', 'Respeto Mutuo', 'Experiencias Nuevas', 'Discreción Total']).map((interest: string, index: number) => (
+                  <Badge key={index} className="bg-purple-200/80 text-purple-900 border border-purple-300/50 text-xs">
+                    {interest}
+                  </Badge>
+                ))}
+              </div>
             </div>
-            <div className="space-y-2">
-              <p className="text-sm text-gray-600">
+            <div className="space-y-2 mt-4">
+              <p className="text-sm text-white/90">
                 <strong>Buscando:</strong> {profile.lookingFor || "Conexiones auténticas y experiencias únicas"}
               </p>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-white/90">
                 <strong>Estilo de vida:</strong> {profile.lifestyle || "Aventurero y espontáneo"}
               </p>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-white/90">
                 <strong>Nivel de experiencia:</strong> {profile.experienceLevel || "Intermedio"}
               </p>
             </div>

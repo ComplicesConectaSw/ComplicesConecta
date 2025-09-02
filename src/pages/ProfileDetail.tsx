@@ -113,10 +113,18 @@ const ProfileDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-pink-500/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+        <div className="absolute top-40 right-10 w-72 h-72 bg-purple-500/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-red-500/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+      </div>
       
-      <main className="container mx-auto px-4 py-8">
+      <div className="relative z-10">
+        <Header />
+        
+        <main className="container mx-auto px-4 py-8">
         {/* Back Button */}
         <Button 
           variant="ghost" 
@@ -207,25 +215,27 @@ const ProfileDetail = () => {
             </Card>
 
             {/* Interests & Hobbies */}
-            <Card className="shadow-soft">
+            <Card className="shadow-soft bg-white/10 backdrop-blur-md border-white/20">
               <CardContent className="p-6">
-                <h2 className="text-xl font-semibold text-foreground mb-4">Intereses y Hobbies</h2>
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="font-medium text-foreground mb-2">Intereses principales</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {profile.interests.map((interest) => (
-                        <Badge key={interest} variant="default">{interest}</Badge>
-                      ))}
+                <h2 className="text-xl font-semibold text-white mb-4">Intereses y Hobbies</h2>
+                <div className="bg-gradient-to-r from-purple-100/80 to-pink-100/80 backdrop-blur-sm rounded-lg p-4 border border-purple-200/50">
+                  <div className="space-y-4">
+                    <div>
+                      <h3 className="font-medium text-gray-900 mb-3">Intereses principales</h3>
+                      <div className="flex flex-wrap gap-2 min-h-[80px]">
+                        {profile.interests.map((interest) => (
+                          <Badge key={interest} className="bg-purple-200/80 text-purple-900 border border-purple-300/50 px-3 py-1 text-sm font-semibold">{interest}</Badge>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                  
-                  <div>
-                    <h3 className="font-medium text-foreground mb-2">Otros hobbies</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {profile.hobbies.map((hobby) => (
-                        <Badge key={hobby} variant="outline">{hobby}</Badge>
-                      ))}
+                    
+                    <div>
+                      <h3 className="font-medium text-gray-900 mb-3">Otros hobbies</h3>
+                      <div className="flex flex-wrap gap-2 min-h-[80px]">
+                        {profile.hobbies.map((hobby) => (
+                          <Badge key={hobby} className="bg-pink-200/80 text-pink-900 border border-pink-300/50 px-3 py-1 text-sm font-semibold">{hobby}</Badge>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -360,9 +370,10 @@ const ProfileDetail = () => {
             </Card>
           </div>
         </div>
-      </main>
+        </main>
 
-      <Footer />
+        <Footer />
+      </div>
     </div>
   );
 };

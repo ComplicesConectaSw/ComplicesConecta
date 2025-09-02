@@ -108,7 +108,7 @@ const Chat = () => {
     {
       id: 1,
       name: "Anabella & Julio",
-      image: "https://randomuser.me/api/portraits/women/25.jpg",
+      image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=100&h=100&fit=crop&crop=faces",
       lastMessage: "¿Están libres este fin de semana? 🔥",
       timestamp: "5 min",
       isOnline: true,
@@ -119,7 +119,7 @@ const Chat = () => {
     {
       id: 2,
       name: "Sofía",
-      image: "https://randomuser.me/api/portraits/women/32.jpg",
+      image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face",
       lastMessage: "Me encantó conocerlos en la fiesta 💕",
       timestamp: "1 h",
       isOnline: true,
@@ -130,7 +130,7 @@ const Chat = () => {
     {
       id: 3,
       name: "Carmen & Roberto",
-      image: "https://randomuser.me/api/portraits/women/18.jpg",
+      image: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=100&h=100&fit=crop&crop=faces",
       lastMessage: "¿Vienen al evento VIP del sábado?",
       timestamp: "3 h",
       isOnline: false,
@@ -141,7 +141,7 @@ const Chat = () => {
     {
       id: 4,
       name: "Raúl",
-      image: "https://randomuser.me/api/portraits/men/45.jpg",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
       lastMessage: "¿Qué tal si nos vemos para tomar algo?",
       timestamp: "2 h",
       isOnline: false,
@@ -155,9 +155,9 @@ const Chat = () => {
   const publicChats: ChatUser[] = [
     {
       id: 101,
-      name: "🔥 Sala General",
-      image: "https://randomuser.me/api/portraits/lego/1.jpg",
-      lastMessage: "¡Bienvenidos a la comunidad!",
+      name: "🔥 Sala General Lifestyle",
+      image: "https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=100&h=100&fit=crop&crop=face",
+      lastMessage: "¡Bienvenidos a la comunidad swinger!",
       timestamp: "10 min",
       isOnline: true,
       unreadCount: 5,
@@ -167,8 +167,8 @@ const Chat = () => {
     {
       id: 102,
       name: "💑 Parejas CDMX",
-      image: "https://randomuser.me/api/portraits/lego/2.jpg",
-      lastMessage: "Evento este sábado en Polanco",
+      image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=100&h=100&fit=crop&crop=faces",
+      lastMessage: "Evento swinger este sábado en Polanco",
       timestamp: "30 min",
       isOnline: true,
       unreadCount: 12,
@@ -177,12 +177,23 @@ const Chat = () => {
     },
     {
       id: 103,
-      name: "🌟 Singles Guadalajara",
-      image: "https://randomuser.me/api/portraits/lego/3.jpg",
-      lastMessage: "¿Alguien para salir hoy?",
+      name: "🌟 Singles Lifestyle",
+      image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face",
+      lastMessage: "¿Alguien para intercambio hoy?",
       timestamp: "1 h",
       isOnline: true,
       unreadCount: 3,
+      isPrivate: false,
+      roomType: 'public'
+    },
+    {
+      id: 104,
+      name: "🎭 Eventos Privados",
+      image: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=100&h=100&fit=crop&crop=faces",
+      lastMessage: "Club exclusivo abre sus puertas",
+      timestamp: "2 h",
+      isOnline: true,
+      unreadCount: 8,
       isPrivate: false,
       roomType: 'public'
     }

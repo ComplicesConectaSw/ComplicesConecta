@@ -41,7 +41,7 @@ export const ImageUpload = ({ currentImage, onImageChange, className = "" }: Ima
       const isDemoMode = localStorage.getItem('demo_authenticated') === 'true';
       if (isDemoMode) {
         // Use a placeholder image URL for demo
-        const demoImageUrl = 'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400';
+        const demoImageUrl = 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=500&fit=crop&crop=face';
         onImageChange(demoImageUrl);
       } else {
         onImageChange(url);

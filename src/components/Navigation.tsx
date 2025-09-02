@@ -13,12 +13,21 @@ const Navigation = ({ className }: NavigationProps) => {
   const location = useLocation();
   const { features } = useFeatures();
 
+  // Verificar si el usuario está autenticado
+  const isAuthenticated = localStorage.getItem('demo_authenticated') === 'true';
+  const demoUser = localStorage.getItem('demo_user');
+
   const baseNavItems = [
     { id: 'feed', icon: Home, label: 'Inicio', path: '/feed' },
     { id: 'discover', icon: Search, label: 'Descubrir', path: '/discover' },
     { id: 'chat', icon: MessageCircle, label: 'Chat', path: '/chat' },
     { id: 'matches', icon: Heart, label: 'Matches', path: '/matches' },
   ];
+
+  // Solo mostrar navegación completa si está autenticado
+  if (!isAuthenticated || !demoUser) {
+    return null; // Ocultar navegación si no está logueado
+  }
 
   // Agregar solicitudes si la función está habilitada
   const navItems = features.requests 
@@ -27,10 +36,12 @@ const Navigation = ({ className }: NavigationProps) => {
         { id: 'requests', icon: UserPlus, label: 'Solicitudes', path: '/requests' },
         ...baseNavItems.slice(3), // matches
         { id: 'profile', icon: User, label: 'Perfil', path: '/profile' },
+        { id: 'settings', icon: Settings, label: 'Configuración', path: '/edit-profile-single' },
       ]
     : [
         ...baseNavItems,
         { id: 'profile', icon: User, label: 'Perfil', path: '/profile' },
+        { id: 'settings', icon: Settings, label: 'Configuración', path: '/edit-profile-single' },
       ];
 
   const handleNavigation = (path: string) => {

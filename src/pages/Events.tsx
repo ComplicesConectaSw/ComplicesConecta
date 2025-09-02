@@ -318,7 +318,7 @@ const Events = () => {
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
               <Input
-                placeholder="Buscar eventos y clubs lifestyle..."
+                placeholder="Buscar fiestas swinger, clubs privados, eventos lifestyle..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 bg-card/80 backdrop-blur-sm border-primary/20"
