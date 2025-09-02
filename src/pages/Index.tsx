@@ -11,7 +11,7 @@ import { FeatureModal } from "@/components/modals/FeatureModal";
 import { InstallAppModal } from "@/components/modals/InstallAppModal";
 import { ActionButtonsModal } from "@/components/modals/ActionButtonsModal";
 import Navigation from "@/components/Navigation";
-import { Heart, Users, Shield, Zap, Sparkles, Star, Rocket, Smartphone, Download } from "lucide-react";
+import { Heart, Users, Shield, Zap, Sparkles, Star, Rocket, Smartphone, Download, Smartphone as Android } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 // Professional profile images from Unsplash - Production ready
@@ -65,8 +65,8 @@ const Index = () => {
       name: "Gabriela",
       age: 29,
       location: "Ciudad de México",
-      interests: ["Fiestas Temáticas", "Vinos y Licores", "Escapadas de Fin de Semana"],
-      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=500&h=700&fit=crop&crop=faces&auto=format&q=80",
+      interests: ["Intercambio de Parejas", "Fiestas Privadas", "Encuentros Íntimos"],
+      image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=500&h=700&fit=crop&crop=faces&auto=format&q=80",
       rating: 4.9,
       isOnline: true,
       bio: "Apasionada por la naturaleza y la creatividad. Buscando a alguien con quien compartir aventuras y conversaciones profundas.",
@@ -78,7 +78,7 @@ const Index = () => {
       name: "Antonio",
       age: 34,
       location: "Guadalajara",
-      interests: ["Cenas Sensuales", "Clubs Exclusivos", "Viajes Exóticos"],
+      interests: ["Experiencias Grupales", "Clubs Liberales", "Aventuras Sensuales"],
       image: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=500&h=700&fit=crop&crop=faces&auto=format&q=80",
       rating: 4.8,
       isOnline: false,
@@ -91,7 +91,7 @@ const Index = () => {
       name: "Isabella",
       age: 27,
       location: "Monterrey",
-      interests: ["Tantra y Masajes", "Música Electrónica", "Noches de Gala"],
+      interests: ["Tantra y Sensualidad", "Juegos de Rol", "Experiencias Nuevas"],
       image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=500&h=700&fit=crop&crop=faces&auto=format&q=80",
       rating: 4.9,
       isOnline: true,
@@ -104,7 +104,7 @@ const Index = () => {
       name: "Mateo",
       age: 31,
       location: "Puebla",
-      interests: ["Coctelería de Autor", "Juegos de Rol", "Eventos Privados"],
+      interests: ["Encuentros Casuales", "Fantasías Compartidas", "Vida Nocturna Liberal"],
       image: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=500&h=700&fit=crop&crop=faces&auto=format&q=80",
       rating: 4.7,
       isOnline: true,
@@ -299,10 +299,10 @@ const Index = () => {
                   <Button 
                     variant="outline" 
                     size="xl" 
-                    className="bg-gradient-to-r from-green-500 to-emerald-600 border-green-400 text-white hover:from-green-600 hover:to-emerald-700 backdrop-blur-sm transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-green-500/25 hover:opacity-90"
+                    className="bg-gradient-to-r from-green-500 to-emerald-600 border-green-400 text-white hover:from-green-600 hover:to-emerald-700 backdrop-blur-sm transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-green-500/25"
                     onClick={() => setShowInstallModal(true)}
                   >
-                    <Download className="w-5 h-5 mr-2" />
+                    <Android className="w-5 h-5 mr-2" />
                     Instalar Aplicación
                   </Button>
                 )}
