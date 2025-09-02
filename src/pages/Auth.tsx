@@ -73,6 +73,95 @@ const Auth = () => {
     setIsLoading(true);
 
     try {
+      // Credenciales demo permitidas
+      const demoCredentials = [
+        'single@outlook.es',
+        'pareja@outlook.es',
+        'complicesconectasw@outlook.es'
+      ];
+
+      // Verificar si es una credencial demo
+      if (demoCredentials.includes(formData.email.toLowerCase())) {
+        console.log('🎭 Modo demo activado para:', formData.email);
+        
+        // Configurar usuario demo completo en localStorage
+        const demoUser = {
+          id: formData.email.includes('pareja') ? 2 : formData.email.includes('single') ? 1 : 999,
+          email: formData.email,
+          accountType: formData.email.includes('pareja') ? 'couple' : 
+                      formData.email.includes('single') ? 'single' : 'admin',
+          name: formData.email.includes('pareja') ? 'Ana & Carlos' : 
+                formData.email.includes('single') ? 'María González' : 'Administrador',
+          isDemo: true,
+          isAuthenticated: true,
+          // Perfil completo para single
+          ...(formData.email.includes('single') && {
+            age: 28,
+            bio: 'Me encanta viajar, la fotografía y conocer gente nueva. Busco conexiones auténticas y experiencias únicas.',
+            location: 'Ciudad de México, México',
+            interests: ['Fotografía', 'Viajes', 'Música', 'Arte', 'Cocina'],
+            photos: [
+              'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400',
+              'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400',
+              'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400'
+            ],
+            avatar: 'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400',
+            gender: 'female',
+            interestedIn: 'both',
+            verified: true,
+            premium: false,
+            relationshipType: 'single'
+          }),
+          // Perfil completo para pareja
+          ...(formData.email.includes('pareja') && {
+            ages: [26, 29],
+            bio: 'Somos una pareja aventurera que busca nuevas experiencias y conexiones. Nos gusta explorar juntos y conocer gente interesante.',
+            location: 'Guadalajara, México',
+            interests: ['Aventuras', 'Viajes', 'Gastronomía', 'Deportes', 'Naturaleza'],
+            photos: [
+              'https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?w=400',
+              'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400',
+              'https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?w=400'
+            ],
+            avatar: 'https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?w=400',
+            genders: ['female', 'male'],
+            interestedIn: 'couples',
+            verified: true,
+            premium: true,
+            relationshipType: 'couple'
+          })
+        };
+        
+        localStorage.setItem('demo_user', JSON.stringify(demoUser));
+        localStorage.setItem('demo_authenticated', 'true');
+        
+        // Disparar evento para notificar cambios en localStorage
+        window.dispatchEvent(new Event('storage'));
+        
+        // Simular autenticación exitosa para demo
+        toast({
+          title: "¡Bienvenido de vuelta! (Modo Demo)",
+          description: "Has iniciado sesión correctamente en modo demostración.",
+          duration: 3000,
+        });
+
+        // Pequeño delay para asegurar que el estado se actualice
+        setTimeout(() => {
+          // Redirigir según el tipo de usuario
+          if (formData.email.includes('complicesconectasw')) {
+            navigate("/admin");
+          } else if (formData.email.includes('pareja')) {
+            navigate("/profile-couple");
+          } else if (formData.email.includes('single')) {
+            navigate("/profile-single");
+          } else {
+            navigate("/discover");
+          }
+        }, 500);
+        return;
+      }
+
+      // Intentar autenticación real con Supabase
       const { error } = await supabase.auth.signInWithPassword({
         email: formData.email,
         password: formData.password,

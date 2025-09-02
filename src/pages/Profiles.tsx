@@ -248,6 +248,19 @@ const Profiles = () => {
   };
 
   useEffect(() => {
+    // Verificar autenticación demo
+    const demoAuth = localStorage.getItem('demo_authenticated');
+    const demoUser = localStorage.getItem('demo_user');
+    
+    if (demoAuth !== 'true' || !demoUser) {
+      navigate('/auth');
+      return;
+    }
+    
+    setFilteredProfiles(allProfiles);
+  }, [navigate]);
+
+  useEffect(() => {
     if (searchQuery.length > 2) {
       setAiSuggestions(generateAiSuggestions(searchQuery));
     } else {
@@ -413,20 +426,10 @@ const Profiles = () => {
           {/* Profiles Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {currentProfiles.map((profile) => (
-              <ProfileCard 
-                key={profile.id} 
-                id={profile.id}
-                name={profile.name}
-                age={profile.age}
-                location={profile.location}
-                interests={profile.interests}
-                image={profile.image}
-                rating={profile.rating}
-                isOnline={profile.isOnline}
-              />
+              profile && <ProfileCard key={profile.id} profile={profile} />
             ))}
           </div>
-          
+
           {/* Pagination */}
           <div className="mt-8 flex justify-center">
             <div className="flex items-center space-x-2">

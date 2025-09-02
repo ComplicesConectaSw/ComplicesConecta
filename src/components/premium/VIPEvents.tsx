@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { 
   Calendar, 
   MapPin, 
@@ -10,8 +10,15 @@ import {
   Clock,
   Ticket,
   Star,
-  Heart
+  Heart,
+  Lock
 } from "lucide-react";
+
+// Check if user is in demo mode
+const isDemoMode = () => {
+  return localStorage.getItem('demo_authenticated') === 'true';
+};
+
 import { useFeatures } from "@/hooks/useFeatures";
 import { mockVIPEvents, VIPEvent } from "@/lib/data";
 
@@ -38,13 +45,13 @@ const VIPEvents = () => {
     }).format(price);
   };
 
-  if (!features.eventsVIP) {
+  if (!features.eventsVIP && !isDemoMode()) {
     return (
       <Card className="p-8 text-center bg-black/30 backdrop-blur-sm border-white/10">
-        <Crown className="h-16 w-16 mx-auto mb-4 text-white/50" />
-        <h3 className="text-xl font-semibold text-white mb-2">Eventos VIP</h3>
+        <Calendar className="h-16 w-16 mx-auto mb-4 text-white/50" />
+        <h3 className="text-xl font-semibold text-white mb-2">Eventos VIP Exclusivos</h3>
         <p className="text-white/70 mb-4">
-          Accede a eventos exclusivos del lifestyle con tu membresía Premium.
+          Accede a eventos privados y experiencias únicas para miembros Premium.
         </p>
         <Button className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white">
           <Crown className="h-4 w-4 mr-2" />

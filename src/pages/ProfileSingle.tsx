@@ -25,10 +25,26 @@ const ProfileSingle = () => {
   const [activeTab, setActiveTab] = useState<'profile' | 'gallery' | 'privacy'>('profile');
 
   useEffect(() => {
-    // Generar perfil mock o cargar desde localStorage
-    const mockProfile = generateMockSingle();
-    setProfile(mockProfile);
-  }, []);
+    // Verificar autenticación demo y cargar perfil del usuario
+    const demoAuth = localStorage.getItem('demo_authenticated');
+    const demoUser = localStorage.getItem('demo_user');
+    
+    if (demoAuth !== 'true' || !demoUser) {
+      navigate('/auth');
+      return;
+    }
+    
+    const user = JSON.parse(demoUser);
+    
+    // Si es perfil single, usar datos del usuario demo
+    if (user.accountType === 'single') {
+      setProfile(user);
+    } else {
+      // Para otros tipos, generar perfil mock
+      const mockProfile = generateMockSingle();
+      setProfile(mockProfile);
+    }
+  }, [navigate]);
 
   const updatePrivacySetting = (key: keyof ProfilePrivacySettings, value: any) => {
     setPrivacySettings(prev => ({
@@ -115,9 +131,12 @@ const ProfileSingle = () => {
         <Card className="overflow-hidden bg-white shadow-xl">
           <div className="relative">
             <img 
-              src={profile.avatar} 
-              alt={profile.name}
-              className="w-full h-96 sm:h-[500px] object-cover object-center"
+              alt={profile.name} 
+              className="w-full h-96 sm:h-[500px] object-cover object-center" 
+              src={profile.image || profile.avatar || 'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400'}
+              onError={(e) => {
+                e.currentTarget.src = 'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400';
+              }}
             />
             <div className="absolute top-4 right-4 flex flex-col gap-2">
               {profile.isOnline && (
@@ -326,16 +345,31 @@ const ProfileSingle = () => {
 
             {/* Intereses */}
             <Card className="bg-white shadow-lg">
-              <CardContent className="p-6">
+              <div className="p-6">
                 <h3 className="font-semibold text-gray-900 mb-3">Intereses</h3>
                 <div className="flex flex-wrap gap-2">
-                  {profile.interests.map((interest: string, index: number) => (
-                    <Badge key={index} className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm py-2 px-4 font-medium shadow-lg">
+                  {profile.interests?.map((interest: string, index: number) => (
+                    <Badge 
+                      key={index} 
+                      variant="outline" 
+                      className="bg-gradient-to-r from-purple-500 to-pink-500 text-white border-none text-sm py-2 px-4 font-medium shadow-lg hover:shadow-xl transition-shadow"
+                    >
                       {interest}
                     </Badge>
                   ))}
                 </div>
-              </CardContent>
+                <div className="mt-4 space-y-2">
+                  <p className="text-sm text-gray-600">
+                    <strong>Buscando:</strong> {profile.lookingFor || "Conexiones auténticas y experiencias únicas"}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    <strong>Estilo de vida:</strong> {profile.lifestyle || "Aventurero y espontáneo"}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    <strong>Nivel de experiencia:</strong> {profile.experienceLevel || "Intermedio"}
+                  </p>
+                </div>
+              </div>
             </Card>
           </>
         )}

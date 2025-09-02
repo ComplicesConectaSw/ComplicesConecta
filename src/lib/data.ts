@@ -1,5 +1,4 @@
 import { Search, Users, Heart, MessageCircle, Calendar, Crown, BarChart3, Settings, Bell, Shield, UserPlus } from 'lucide-react';
-import profile1 from '@/assets/profile-1.jpg';
 
 export const mainNavItems = [
   { title: 'Descubrir', url: '/discover', icon: Search, badge: 'Nuevo' },
@@ -23,7 +22,7 @@ export const settingsItems = [
 
 export const mockUser = {
   name: 'María González',
-  avatar: profile1,
+  avatar: 'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400',
   subscription: 'Premium',
   notifications: 8,
 };
@@ -45,7 +44,7 @@ export const generateMockSingle = () => {
   const apellidos = ["García", "Rodríguez", "López", "Martínez", "González", "Pérez", "Sánchez", "Ramírez"];
   const ubicaciones = ["CDMX", "Guadalajara", "Monterrey", "Puebla", "Tijuana", "León", "Querétaro"];
   const profesiones = ["Ingeniero/a", "Médico/a", "Abogado/a", "Diseñador/a", "Empresario/a", "Artista", "Profesor/a"];
-  const intereses = ["Aventuras", "Diversión", "Experiencias Únicas", "Conexiones Reales", "Lifestyle", "Viajes", "Arte", "Música"];
+  const intereses = ["Aventuras", "Diversión", "Experiencias Únicas", "Conexiones Reales", "Lifestyle", "Viajes", "Arte", "Música", "Fotografía", "Cocina", "Deportes", "Lectura", "Cine", "Baile", "Naturaleza", "Tecnología", "Yoga", "Fitness", "Gastronomía", "Moda"];
   
   // Determinar género aleatoriamente
   const esMujer = Math.random() > 0.5;

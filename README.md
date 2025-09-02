@@ -252,9 +252,20 @@ NODE_ENV=development
 - ✅ **NUEVO**: Tipos TypeScript para todas las funcionalidades
 - ✅ **NUEVO**: Mock data extendido para funciones sociales
 
-### ✨ **Mejoras Recientes (v1.3.1)**
-- ✅ **Corrección de Duplicación de Imágenes**: Se optimizó el algoritmo en `Discover` para garantizar perfiles únicos y evitar la repetición de imágenes en el grid.
-- ✅ **Solución de Errores en Botones**: Se corrigió un error de tipos (`string`/`number`) en los `ProfileCard` para asegurar que los botones de `Like` funcionen correctamente.
+### ✨ **Mejoras Recientes (v1.3.2)**
+- ✅ **Mejoras de UI/UX**: Visibilidad de textos mejorada en panel de administración con clases `privacy-text` y gradientes consistentes
+- ✅ **Cards de Estadísticas**: Rediseñadas con mejor contraste (azul, verde, amarillo, púrpura)
+- ✅ **Página 404 Profesional**: Completamente rediseñada con animaciones React avanzadas:
+  - Sparkles, rayos y corazones flotantes con posiciones aleatorias
+  - Efectos de entrada escalonados con `useState` y `useEffect`
+  - Glow effect en número 404 con resplandor animado
+  - Botones interactivos con hover effects (rotación, bounce, spin)
+  - Nuevas animaciones CSS: `twinkle`, `pulse-glow`, `pulse-slow`
+- ✅ **Profile Cards**: Mejorado contraste con overlay `from-black/80 to-transparent` y clases `overlay-text`
+
+### ✨ **Correcciones Previas (v1.3.1)**
+- ✅ **Corrección de Duplicación de Imágenes**: Se optimizó el algoritmo en `Discover` para garantizar perfiles únicos
+- ✅ **Solución de Errores en Botones**: Se corrigió un error de tipos (`string`/`number`) en los `ProfileCard`
 
 ### 📬 **Sistema de Invitaciones (NUEVO)**
 - ✅ **Envío de invitaciones** desde perfiles con mensaje personalizado

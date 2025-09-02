@@ -164,9 +164,20 @@ const Discover = () => {
   const [allProfiles, setAllProfiles] = useState<Profile[]>([]);
 
   useEffect(() => {
+    // Verificar autenticación demo
+    const demoAuth = localStorage.getItem('demo_authenticated');
+    const demoUser = localStorage.getItem('demo_user');
+    
+    if (demoAuth !== 'true' || !demoUser) {
+      console.log('❌ Usuario no autenticado en Discover, redirigiendo a auth');
+      navigate('/auth');
+      return;
+    }
+    
     const userType = getUserType();
+    console.log('🔍 Cargando perfiles para usuario tipo:', userType);
     setAllProfiles(generateRandomProfiles(userType));
-  }, []);
+  }, [navigate]);
 
   const [filters, setFilters] = useState<FilterState>({
     ageRange: [18, 50],
@@ -193,7 +204,10 @@ const Discover = () => {
     return allProfiles.filter(profile => {
       if (profile.age < filters.ageRange[0] || profile.age > filters.ageRange[1]) return false;
       if (profile.distance > filters.distance[0]) return false;
-      if (filters.gender !== "all" && profile.relationshipType !== filters.gender) return false;
+      
+      // Corregir filtro de género - comparar con profile.gender en lugar de relationshipType
+      if (filters.gender !== "all" && profile.gender && profile.gender !== filters.gender) return false;
+      
       if (filters.interests.length > 0 && !filters.interests.some(interest => profile.interests.includes(interest))) return false;
       if (filters.lifestyle.length > 0 && !filters.lifestyle.includes(profile.lifestyle)) return false;
       if (filters.experienceLevel !== "all" && profile.experienceLevel !== filters.experienceLevel) return false;
@@ -322,9 +336,12 @@ const Discover = () => {
                 <div className="mb-4">
                   <Sheet>
                     <SheetTrigger asChild>
-                      <Button variant="outline" className="w-full">
-                        <Filter className="mr-2 h-4 w-4" />
-                        Mostrar Filtros
+                      <Button 
+                        variant="outline" 
+                        className="w-full"
+                      >
+                        <Filter className="h-4 w-4 mr-2" />
+                        Filtros
                       </Button>
                     </SheetTrigger>
                     <SheetContent side="left" className="w-[300px] sm:w-[400px]">

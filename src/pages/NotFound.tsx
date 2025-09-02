@@ -1,17 +1,30 @@
 import { Link, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Home, Heart, ArrowLeft, Search } from "lucide-react";
+import { Home, Heart, ArrowLeft, Search, Sparkles, Zap, Star } from "lucide-react";
 
 const NotFound = () => {
   const location = useLocation();
+  const [isVisible, setIsVisible] = useState(false);
+  const [sparklePositions, setSparklePositions] = useState<Array<{x: number, y: number, delay: number}>>([]);
 
   useEffect(() => {
     console.error(
       "404 Error: User attempted to access non-existent route:",
       location.pathname
     );
+    
+    // Trigger entrance animation
+    setTimeout(() => setIsVisible(true), 100);
+    
+    // Generate random sparkle positions
+    const sparkles = Array.from({ length: 12 }, (_, i) => ({
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      delay: Math.random() * 3
+    }));
+    setSparklePositions(sparkles);
   }, [location.pathname]);
 
   return (
@@ -24,17 +37,49 @@ const NotFound = () => {
         
         {/* Floating Hearts */}
         <div className="absolute inset-0 overflow-hidden">
-          {[...Array(6)].map((_, i) => (
+          {[...Array(8)].map((_, i) => (
             <Heart 
-              key={i}
-              className={`absolute text-white/5 animate-float-slow`}
+              key={`heart-${i}`}
+              className={`absolute text-pink-400/10 animate-float-slow`}
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
-                animationDelay: `${i * 3}s`,
-                fontSize: `${Math.random() * 30 + 15}px`
+                animationDelay: `${i * 2}s`,
+                fontSize: `${Math.random() * 25 + 20}px`
               }}
               fill="currentColor"
+            />
+          ))}
+        </div>
+        
+        {/* Animated Sparkles */}
+        <div className="absolute inset-0 overflow-hidden">
+          {sparklePositions.map((sparkle, i) => (
+            <Sparkles
+              key={`sparkle-${i}`}
+              className="absolute text-yellow-300/20 animate-twinkle"
+              style={{
+                left: `${sparkle.x}%`,
+                top: `${sparkle.y}%`,
+                animationDelay: `${sparkle.delay}s`,
+                fontSize: '16px'
+              }}
+            />
+          ))}
+        </div>
+        
+        {/* Lightning Effects */}
+        <div className="absolute inset-0 overflow-hidden">
+          {[...Array(4)].map((_, i) => (
+            <Zap
+              key={`zap-${i}`}
+              className="absolute text-purple-400/15 animate-pulse-glow"
+              style={{
+                left: `${20 + i * 25}%`,
+                top: `${10 + Math.random() * 80}%`,
+                animationDelay: `${i * 1.5}s`,
+                fontSize: '24px'
+              }}
             />
           ))}
         </div>
@@ -54,14 +99,20 @@ const NotFound = () => {
         </div>
 
         {/* 404 Number with Animation */}
-        <div className="animate-bounce-in">
-          <h1 className="text-8xl md:text-9xl font-bold text-white/20 mb-4 select-none">
-            404
-          </h1>
+        <div className={`transition-all duration-1000 ${isVisible ? 'animate-bounce-in' : 'opacity-0 scale-50'}`}>
+          <div className="relative">
+            <h1 className="text-8xl md:text-9xl font-bold text-white/20 mb-4 select-none relative z-10">
+              404
+            </h1>
+            {/* Glowing effect behind 404 */}
+            <div className="absolute inset-0 text-8xl md:text-9xl font-bold text-pink-500/30 blur-lg animate-pulse-slow">
+              404
+            </div>
+          </div>
         </div>
 
         {/* Main Content Card */}
-        <Card className="bg-black/40 backdrop-blur-sm border-white/10 p-8 animate-slide-up">
+        <Card className={`bg-black/40 backdrop-blur-sm border-white/10 p-8 transition-all duration-1000 ${isVisible ? 'animate-slide-up' : 'opacity-0 translate-y-10'}`}>
           <div className="space-y-6">
             <div className="animate-fade-in-delay">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
@@ -74,14 +125,14 @@ const NotFound = () => {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-delay-2">
+            <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center transition-all duration-1000 delay-700 ${isVisible ? 'animate-fade-in-delay-2' : 'opacity-0 translate-y-5'}`}>
               <Button 
                 asChild 
                 size="lg"
-                className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white rounded-2xl px-8 py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white rounded-2xl px-8 py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:rotate-1 group"
               >
                 <Link to="/">
-                  <Home className="mr-2 h-5 w-5" />
+                  <Home className="mr-2 h-5 w-5 group-hover:animate-bounce" />
                   Volver al Inicio
                 </Link>
               </Button>
@@ -90,10 +141,10 @@ const NotFound = () => {
                 asChild 
                 variant="outline" 
                 size="lg"
-                className="border-white/20 text-white hover:bg-white/10 rounded-2xl px-8 py-6 text-lg backdrop-blur-sm"
+                className="border-white/20 text-white hover:bg-white/10 rounded-2xl px-8 py-6 text-lg backdrop-blur-sm hover:border-pink-400/50 transition-all duration-300 transform hover:scale-105 hover:-rotate-1 group"
               >
                 <Link to="/discover">
-                  <Search className="mr-2 h-5 w-5" />
+                  <Search className="mr-2 h-5 w-5 group-hover:animate-spin" />
                   Explorar Perfiles
                 </Link>
               </Button>
@@ -107,13 +158,18 @@ const NotFound = () => {
         </Card>
 
         {/* Decorative Elements */}
-        <div className="flex justify-center space-x-4 animate-fade-in-delay-4">
-          {[...Array(3)].map((_, i) => (
+        <div className={`flex justify-center space-x-4 transition-all duration-1000 delay-1000 ${isVisible ? 'animate-fade-in-delay-4' : 'opacity-0'}`}>
+          {[...Array(5)].map((_, i) => (
             <div 
               key={i}
-              className="w-2 h-2 bg-white/30 rounded-full animate-pulse"
-              style={{ animationDelay: `${i * 0.5}s` }}
-            ></div>
+              className="relative"
+            >
+              <Star 
+                className="w-4 h-4 text-yellow-400/60 animate-twinkle"
+                style={{ animationDelay: `${i * 0.3}s` }}
+                fill="currentColor"
+              />
+            </div>
           ))}
         </div>
       </div>
@@ -153,6 +209,33 @@ const NotFound = () => {
         
         .animate-float-slow {
           animation: float-slow 8s ease-in-out infinite;
+        }
+        
+        @keyframes twinkle {
+          0%, 100% { opacity: 0.3; transform: scale(1); }
+          50% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        @keyframes pulse-glow {
+          0%, 100% { opacity: 0.1; transform: scale(1); }
+          50% { opacity: 0.3; transform: scale(1.1); }
+        }
+        
+        @keyframes pulse-slow {
+          0%, 100% { opacity: 0.3; }
+          50% { opacity: 0.6; }
+        }
+        
+        .animate-twinkle {
+          animation: twinkle 2s ease-in-out infinite;
+        }
+        
+        .animate-pulse-glow {
+          animation: pulse-glow 3s ease-in-out infinite;
+        }
+        
+        .animate-pulse-slow {
+          animation: pulse-slow 4s ease-in-out infinite;
         }
         
         .animate-fade-in {

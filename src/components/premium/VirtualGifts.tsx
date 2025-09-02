@@ -1,15 +1,14 @@
 import { useState } from "react";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { 
-  Gift, 
-  Heart, 
-  Send,
-  Crown,
-  Sparkles,
-  Star
-} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Gift, Heart, Star, Crown, Sparkles, Send } from "lucide-react";
+
+// Check if user is in demo mode
+const isDemoMode = () => {
+  return localStorage.getItem('demo_authenticated') === 'true';
+};
+
 import { useFeatures } from "@/hooks/useFeatures";
 import { mockVirtualGifts, VirtualGift } from "@/lib/data";
 
@@ -51,13 +50,13 @@ const VirtualGifts = ({ recipientName, onSendGift }: VirtualGiftsProps) => {
     }
   };
 
-  if (!features.virtualGifts) {
+  if (!features.virtualGifts && !isDemoMode()) {
     return (
       <Card className="p-8 text-center bg-black/30 backdrop-blur-sm border-white/10">
         <Gift className="h-16 w-16 mx-auto mb-4 text-white/50" />
         <h3 className="text-xl font-semibold text-white mb-2">Regalos Virtuales</h3>
         <p className="text-white/70 mb-4">
-          Envía regalos especiales para mostrar tu interés con tu membresía Premium.
+          Envía regalos especiales para expresar tu interés con tu membresía Premium.
         </p>
         <Button className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white">
           <Crown className="h-4 w-4 mr-2" />

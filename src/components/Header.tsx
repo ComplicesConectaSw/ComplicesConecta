@@ -1,8 +1,40 @@
-import { Heart, User, HelpCircle, Settings, Crown, DollarSign } from "lucide-react";
+import { Heart, User, HelpCircle, Settings, Crown, DollarSign, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 export const Header = () => {
+  const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [demoUser, setDemoUser] = useState<any>(null);
+
+  useEffect(() => {
+    const checkAuth = () => {
+      const demoAuth = localStorage.getItem('demo_authenticated');
+      const userData = localStorage.getItem('demo_user');
+      
+      if (demoAuth === 'true' && userData) {
+        setIsAuthenticated(true);
+        setDemoUser(JSON.parse(userData));
+      } else {
+        setIsAuthenticated(false);
+        setDemoUser(null);
+      }
+    };
+
+    checkAuth();
+    // Verificar cambios en localStorage
+    window.addEventListener('storage', checkAuth);
+    return () => window.removeEventListener('storage', checkAuth);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('demo_authenticated');
+    localStorage.removeItem('demo_user');
+    setIsAuthenticated(false);
+    setDemoUser(null);
+    navigate('/');
+  };
   return (
     <header className="bg-gradient-to-r from-purple-900/95 to-pink-900/95 backdrop-blur-sm border-b border-pink-300/30 sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4">
@@ -82,12 +114,29 @@ export const Header = () => {
               </Link>
             </Button>
 
-            <Button variant="outline" size="sm" className="bg-white/90 border-white text-black hover:bg-white hover:text-black font-semibold shadow-lg" asChild>
-              <Link to="/discover" className="flex items-center gap-1">
-                <User className="h-4 w-4" />
-                Iniciar Sesión
-              </Link>
-            </Button>
+            {!isAuthenticated ? (
+              <Button variant="outline" size="sm" className="bg-white/90 border-white text-black hover:bg-white hover:text-black font-semibold shadow-lg" asChild>
+                <Link to="/auth" className="flex items-center gap-1">
+                  <User className="h-4 w-4" />
+                  Iniciar Sesión
+                </Link>
+              </Button>
+            ) : (
+              <div className="flex items-center gap-3">
+                <span className="text-white/90 text-sm">
+                  {demoUser?.name} {demoUser?.isDemo && <span className="text-primary">(Demo)</span>}
+                </span>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="bg-white/90 border-white text-black hover:bg-white hover:text-black font-semibold shadow-lg"
+                  onClick={handleLogout}
+                >
+                  <LogOut className="h-4 w-4 mr-1" />
+                  Cerrar Sesión
+                </Button>
+              </div>
+            )}
 
             <Button variant="love" size="sm" asChild>
               <Link to="/premium" className="flex items-center gap-1">

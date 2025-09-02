@@ -14,6 +14,15 @@ const ProfileDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  // Verificar autenticación demo
+  const demoAuth = localStorage.getItem('demo_authenticated');
+  const demoUser = localStorage.getItem('demo_user');
+  
+  if (demoAuth !== 'true' || !demoUser) {
+    navigate('/auth');
+    return null;
+  }
+
   // Demo profile data for beta
   const allProfiles = [
     {

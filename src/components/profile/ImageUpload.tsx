@@ -36,7 +36,16 @@ export const ImageUpload = ({ currentImage, onImageChange, className = "" }: Ima
       // Create preview URL
       const url = URL.createObjectURL(file);
       setPreviewUrl(url);
-      onImageChange(url);
+      
+      // For demo mode, simulate upload success
+      const isDemoMode = localStorage.getItem('demo_authenticated') === 'true';
+      if (isDemoMode) {
+        // Use a placeholder image URL for demo
+        const demoImageUrl = 'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400';
+        onImageChange(demoImageUrl);
+      } else {
+        onImageChange(url);
+      }
     } catch (error) {
       console.error('Error uploading image:', error);
       alert('Error al cargar la imagen');

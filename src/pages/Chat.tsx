@@ -36,6 +36,17 @@ export interface Message {
 const Chat = () => {
   const navigate = useNavigate();
   const { features } = useFeatures();
+
+  // Verificar autenticación demo
+  useEffect(() => {
+    const demoAuth = localStorage.getItem('demo_authenticated');
+    const demoUser = localStorage.getItem('demo_user');
+    
+    if (demoAuth !== 'true' || !demoUser) {
+      navigate('/auth');
+      return;
+    }
+  }, [navigate]);
   const [selectedChat, setSelectedChat] = useState<ChatUser | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
@@ -456,12 +467,12 @@ const Chat = () => {
               {/* Input para enviar mensajes */}
               <div className="p-4 border-t border-white/10 bg-black/30">
                 {selectedChat.isPrivate && !hasChatAccess[selectedChat.id] ? (
-                  <div className="text-center space-y-3">
-                    <div className="flex items-center justify-center text-white/70 mb-2">
+                  <div className="text-center space-y-3 bg-black/50 rounded-lg p-4 border border-white/20">
+                    <div className="flex items-center justify-center text-white mb-2">
                       <Lock className="h-5 w-5 mr-2" />
-                      <span>Chat privado bloqueado</span>
+                      <span className="font-semibold text-shadow">Chat privado bloqueado</span>
                     </div>
-                    <p className="text-sm text-white/60 mb-3">
+                    <p className="text-sm text-white/90 mb-3 text-shadow">
                       Necesitas una invitación aceptada para chatear con {selectedChat.name}
                     </p>
                     <InvitationDialog 

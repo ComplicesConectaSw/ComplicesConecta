@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { HeroSection } from "@/components/HeroSection";
 import { ProfileCard } from "@/components/ProfileCard";
@@ -15,8 +15,22 @@ import { Button } from "@/components/ui/button";
 // Removed local imports that fail in production
 
 const Index = () => {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [showWelcome, setShowWelcome] = useState(false);
+
+  // Verificar si el usuario está autenticado y redirigir
+  useEffect(() => {
+    // Auto-redirect if user is already authenticated in demo mode
+    const demoAuth = localStorage.getItem('demo_authenticated');
+    const demoUser = localStorage.getItem('demo_user');
+    
+    if (demoAuth === 'true' && demoUser) {
+      const user = JSON.parse(demoUser);
+      // Redirect authenticated users to Discover instead of their profile
+      navigate('/discover');
+    }
+  }, [navigate]);
 
   const handleLoadingComplete = () => {
     setIsLoading(false);

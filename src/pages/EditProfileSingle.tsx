@@ -30,18 +30,37 @@ const EditProfileSingle = () => {
   ];
 
   useEffect(() => {
-    const mockProfile = generateMockSingle();
-    setProfile(mockProfile);
+    // Verificar autenticación demo y cargar perfil del usuario
+    const demoAuth = localStorage.getItem('demo_authenticated');
+    const demoUser = localStorage.getItem('demo_user');
+    
+    if (demoAuth !== 'true' || !demoUser) {
+      navigate('/auth');
+      return;
+    }
+    
+    const user = JSON.parse(demoUser);
+    let profileData;
+    
+    // Si es perfil single, usar datos del usuario demo
+    if (user.accountType === 'single') {
+      profileData = user;
+    } else {
+      // Para otros tipos, generar perfil mock
+      profileData = generateMockSingle();
+    }
+    
+    setProfile(profileData);
     setFormData({
-      name: mockProfile.name,
-      age: mockProfile.age.toString(),
-      location: mockProfile.location,
-      profession: mockProfile.profession,
-      bio: mockProfile.bio,
-      interests: mockProfile.interests,
-      avatar: mockProfile.avatar
+      name: profileData.name || "",
+      age: profileData.age?.toString() || "",
+      location: profileData.location || "",
+      profession: profileData.profession || "",
+      bio: profileData.bio || "",
+      interests: profileData.interests || [],
+      avatar: profileData.avatar || ""
     });
-  }, []);
+  }, [navigate]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({

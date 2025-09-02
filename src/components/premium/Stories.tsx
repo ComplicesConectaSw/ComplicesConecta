@@ -1,7 +1,8 @@
-import { useState } from "react";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { useState, useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { 
   Camera, 
   Play, 
@@ -10,8 +11,16 @@ import {
   Crown,
   Clock,
   Heart,
-  MessageCircle
+  MessageCircle,
+  Share2,
+  Lock
 } from "lucide-react";
+
+// Check if user is in demo mode
+const isDemoMode = () => {
+  return localStorage.getItem('demo_authenticated') === 'true';
+};
+
 import { useFeatures } from "@/hooks/useFeatures";
 import { mockStories, Story } from "@/lib/data";
 
@@ -39,12 +48,22 @@ const Stories = () => {
     console.log('Crear nueva historia...');
   };
 
-  const handleViewStory = (story: Story) => {
-    setSelectedStory(story);
-    // Marcar como vista
+  const canViewStory = (story: Story) => {
+    // En modo demo, todas las historias están disponibles
+    if (isDemoMode()) {
+      return true;
+    }
+    return features.stories;
   };
 
-  if (!features.stories) {
+  const handleViewStory = (story: Story) => {
+    if (canViewStory(story)) {
+      setSelectedStory(story);
+      // Marcar como vista
+    }
+  };
+
+  if (!features.stories && !isDemoMode()) {
     return (
       <Card className="p-8 text-center bg-black/30 backdrop-blur-sm border-white/10">
         <Camera className="h-16 w-16 mx-auto mb-4 text-white/50" />

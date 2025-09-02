@@ -14,10 +14,26 @@ const ProfileCouple = () => {
   const [isOwnProfile, setIsOwnProfile] = useState(true); // Por defecto es perfil propio
 
   useEffect(() => {
-    // Generar perfil mock o cargar desde localStorage
-    const mockProfile = generateMockCouple();
-    setProfile(mockProfile);
-  }, []);
+    // Verificar autenticación demo y cargar perfil del usuario
+    const demoAuth = localStorage.getItem('demo_authenticated');
+    const demoUser = localStorage.getItem('demo_user');
+    
+    if (demoAuth !== 'true' || !demoUser) {
+      navigate('/auth');
+      return;
+    }
+    
+    const user = JSON.parse(demoUser);
+    
+    // Si es perfil pareja, usar datos del usuario demo
+    if (user.accountType === 'couple') {
+      setProfile(user);
+    } else {
+      // Para otros tipos, generar perfil mock
+      const mockProfile = generateMockCouple();
+      setProfile(mockProfile);
+    }
+  }, [navigate]);
 
   if (!profile) {
     return (
@@ -91,16 +107,14 @@ const ProfileCouple = () => {
         {/* Fotos de la pareja */}
         <Card className="overflow-hidden bg-white shadow-xl">
           <div className="relative">
-            <div className="grid grid-cols-2 h-96 sm:h-[500px]">
+            <div className="relative">
               <img 
-                src={profile.partner1.avatar} 
-                alt={profile.partner1.name}
-                className="w-full h-full object-cover object-center"
-              />
-              <img 
-                src={profile.partner2.avatar} 
-                alt={profile.partner2.name}
-                className="w-full h-full object-cover object-center"
+                alt={profile.coupleName} 
+                className="w-full h-96 sm:h-[500px] object-cover object-center" 
+                src={profile.image || 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400'}
+                onError={(e) => {
+                  e.currentTarget.src = 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400';
+                }}
               />
             </div>
             <div className="absolute top-4 right-4 flex flex-col gap-2">

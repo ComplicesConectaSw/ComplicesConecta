@@ -40,29 +40,48 @@ const EditProfileCouple = () => {
   ];
 
   useEffect(() => {
-    const mockProfile = generateMockCouple();
-    setProfile(mockProfile);
+    // Verificar autenticación demo y cargar perfil del usuario
+    const demoAuth = localStorage.getItem('demo_authenticated');
+    const demoUser = localStorage.getItem('demo_user');
+    
+    if (demoAuth !== 'true' || !demoUser) {
+      navigate('/auth');
+      return;
+    }
+    
+    const user = JSON.parse(demoUser);
+    let profileData;
+    
+    // Si es perfil pareja, usar datos del usuario demo
+    if (user.accountType === 'couple') {
+      profileData = user;
+    } else {
+      // Para otros tipos, generar perfil mock
+      profileData = generateMockCouple();
+    }
+    
+    setProfile(profileData);
     setFormData({
-      coupleName: mockProfile.coupleName,
-      location: mockProfile.location,
-      bio: mockProfile.bio,
-      interests: mockProfile.interests,
+      coupleName: profileData.name || profileData.coupleName || "",
+      location: profileData.location || "",
+      bio: profileData.bio || "",
+      interests: profileData.interests || [],
       partner1: {
-        name: mockProfile.partner1.name,
-        age: mockProfile.partner1.age.toString(),
-        profession: mockProfile.partner1.profession,
-        bio: mockProfile.partner1.bio,
-        avatar: mockProfile.partner1.avatar
+        name: profileData.partner1?.name || "",
+        age: profileData.partner1?.age?.toString() || "",
+        profession: profileData.partner1?.profession || "",
+        bio: profileData.partner1?.bio || "",
+        avatar: profileData.partner1?.avatar || ""
       },
       partner2: {
-        name: mockProfile.partner2.name,
-        age: mockProfile.partner2.age.toString(),
-        profession: mockProfile.partner2.profession,
-        bio: mockProfile.partner2.bio,
-        avatar: mockProfile.partner2.avatar
+        name: profileData.partner2?.name || "",
+        age: profileData.partner2?.age?.toString() || "",
+        profession: profileData.partner2?.profession || "",
+        bio: profileData.partner2?.bio || "",
+        avatar: profileData.partner2?.avatar || ""
       }
     });
-  }, []);
+  }, [navigate]);
 
   const handleInputChange = (field: string, value: string, partner?: 'partner1' | 'partner2') => {
     if (partner) {

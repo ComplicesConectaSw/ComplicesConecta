@@ -5,9 +5,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 
+// Check if user is in demo mode
+const isDemoMode = () => {
+  return localStorage.getItem('demo_authenticated') === 'true';
+};
+
 // Beta user data - all features available
 const mockUserSubscription = {
-  plan: "beta", // All features available during beta
+  plan: isDemoMode() ? "premium" : "beta", // Premium features for demo users
   trialDaysLeft: 0,
   isActive: true
 };

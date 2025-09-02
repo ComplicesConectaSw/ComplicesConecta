@@ -89,13 +89,13 @@ const Admin = () => {
   const [auditReport, setAuditReport] = useState<any>(null);
 
   useEffect(() => {
-    // Check for demo session first
+    // Check for demo authentication first
+    const demoAuth = localStorage.getItem('demo_authenticated');
     const demoUser = localStorage.getItem('demo_user');
-    const demoSession = localStorage.getItem('demo_session');
     
-    if (demoUser && demoSession) {
+    if (demoAuth === 'true' && demoUser) {
       const user = JSON.parse(demoUser);
-      if (user.role === 'administrador') {
+      if (user.accountType === 'admin') {
         loadAdminData();
         return;
       } else {
@@ -104,28 +104,14 @@ const Admin = () => {
           description: "No tienes permisos de administrador",
           variant: "destructive"
         });
-        navigate('/');
+        navigate('/discover');
         return;
       }
     }
     
-    if (!isAuthenticated()) {
-      navigate('/auth');
-      return;
-    }
-    
-    if (!isAdmin()) {
-      toast({
-        title: "Acceso Denegado",
-        description: "No tienes permisos de administrador",
-        variant: "destructive"
-      });
-      navigate('/');
-      return;
-    }
-
-    loadAdminData();
-  }, []);
+    // If not demo mode, redirect to auth
+    navigate('/auth');
+  }, [navigate, toast]);
 
   const loadAdminData = async () => {
     setLoading(true);
@@ -468,53 +454,45 @@ const Admin = () => {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-6">
-          <Card className="bg-card/80 backdrop-blur-sm border-primary/10">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Usuarios Totales</p>
-                  <p className="text-2xl font-bold text-foreground">{stats.totalUsers}</p>
-                </div>
-                <Users className="w-8 h-8 text-primary" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <Card className="p-6 bg-gradient-to-br from-blue-500/10 to-blue-600/10 border-blue-500/20">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-900 privacy-text">Usuarios Totales</p>
+                <p className="text-3xl font-bold text-blue-600">{stats.totalUsers}</p>
               </div>
-            </CardContent>
+              <Users className="h-8 w-8 text-blue-500" />
+            </div>
           </Card>
 
-          <Card className="bg-card/80 backdrop-blur-sm border-primary/10">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Usuarios Activos</p>
-                  <p className="text-2xl font-bold text-green-600">{stats.activeUsers}</p>
-                </div>
-                <Activity className="w-8 h-8 text-green-600" />
+          <Card className="p-6 bg-gradient-to-br from-green-500/10 to-green-600/10 border-green-500/20">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-900 privacy-text">Usuarios Activos</p>
+                <p className="text-3xl font-bold text-green-600">{stats.activeUsers}</p>
               </div>
-            </CardContent>
+              <Activity className="h-8 w-8 text-green-500" />
+            </div>
           </Card>
 
-          <Card className="bg-card/80 backdrop-blur-sm border-primary/10">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Premium</p>
-                  <p className="text-2xl font-bold text-accent">{stats.premiumUsers}</p>
-                </div>
-                <Crown className="w-8 h-8 text-accent" />
+          <Card className="p-6 bg-gradient-to-br from-yellow-500/10 to-yellow-600/10 border-yellow-500/20">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-900 privacy-text">Premium</p>
+                <p className="text-3xl font-bold text-yellow-600">{stats.premiumUsers}</p>
               </div>
-            </CardContent>
+              <Crown className="h-8 w-8 text-yellow-500" />
+            </div>
           </Card>
 
-          <Card className="bg-card/80 backdrop-blur-sm border-primary/10">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Matches</p>
-                  <p className="text-2xl font-bold text-secondary-foreground">{stats.totalMatches}</p>
-                </div>
-                <BarChart3 className="w-8 h-8 text-secondary-foreground" />
+          <Card className="p-6 bg-gradient-to-br from-purple-500/10 to-purple-600/10 border-purple-500/20">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-900 privacy-text">Matches</p>
+                <p className="text-3xl font-bold text-purple-600">{stats.totalMatches}</p>
               </div>
-            </CardContent>
+              <BarChart3 className="h-8 w-8 text-purple-500" />
+            </div>
           </Card>
 
           <Card className="bg-card/80 backdrop-blur-sm border-primary/10 cursor-pointer hover:bg-card/90 transition-colors" onClick={() => window.open('https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v.1.1.1/app-release.apk', '_blank')}>
@@ -796,26 +774,26 @@ const Admin = () => {
                       
                       <div className="space-y-4">
                         <div>
-                          <h3 className="font-semibold mb-2">Archivos Duplicados</h3>
+                          <h3 className="font-semibold mb-2 text-foreground">Archivos Duplicados</h3>
                           <div className="space-y-2">
                             {auditReport.details.duplicates.map((dup: any, index: number) => (
-                              <div key={index} className="p-2 bg-yellow-50 border border-yellow-200 rounded text-sm">
-                                <p><strong>Archivo 1:</strong> {dup.file1}</p>
-                                <p><strong>Archivo 2:</strong> {dup.file2}</p>
-                                <p><strong>Tamaño:</strong> {dup.size}</p>
+                              <div key={index} className="p-2 bg-yellow-50 border border-yellow-200 rounded text-sm text-gray-800">
+                                <p className="text-gray-800"><strong>Archivo 1:</strong> {dup.file1}</p>
+                                <p className="text-gray-800"><strong>Archivo 2:</strong> {dup.file2}</p>
+                                <p className="text-gray-800"><strong>Tamaño:</strong> {dup.size}</p>
                               </div>
                             ))}
                           </div>
                         </div>
                         
                         <div>
-                          <h3 className="font-semibold mb-2">Imports Rotos</h3>
+                          <h3 className="font-semibold mb-2 text-foreground">Imports Rotos</h3>
                           <div className="space-y-2">
                             {auditReport.details.brokenImports.map((broken: any, index: number) => (
-                              <div key={index} className="p-2 bg-red-50 border border-red-200 rounded text-sm">
-                                <p><strong>Archivo:</strong> {broken.file}</p>
-                                <p><strong>Línea:</strong> {broken.line}</p>
-                                <p><strong>Import:</strong> {broken.import}</p>
+                              <div key={index} className="p-2 bg-red-50 border border-red-200 rounded text-sm text-gray-800">
+                                <p className="text-gray-800"><strong>Archivo:</strong> {broken.file}</p>
+                                <p className="text-gray-800"><strong>Línea:</strong> {broken.line}</p>
+                                <p className="text-gray-800"><strong>Import:</strong> {broken.import}</p>
                               </div>
                             ))}
                           </div>

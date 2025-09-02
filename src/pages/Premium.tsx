@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -6,9 +6,28 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Crown, Zap, Heart, Star, Shield, Calendar, Users, Coins, Lock, Sparkles, Gift } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 const Premium = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const [isDemoUser, setIsDemoUser] = useState(false);
+  const [userType, setUserType] = useState('');
+
+  useEffect(() => {
+    // Verificar autenticación demo
+    const demoAuth = localStorage.getItem('demo_authenticated');
+    const demoUser = localStorage.getItem('demo_user');
+    
+    if (demoAuth !== 'true' || !demoUser) {
+      navigate('/auth');
+      return;
+    }
+
+    const user = JSON.parse(demoUser);
+    setIsDemoUser(true);
+    setUserType(user.accountType);
+  }, [navigate]);
 
   const premiumBenefits = [
     {
@@ -158,10 +177,18 @@ const Premium = () => {
                   <p className="text-sm text-muted-foreground">• Acceso a contenido exclusivo</p>
                   <p className="text-sm text-muted-foreground">• Participación en encuestas</p>
                   <Button 
-                    asChild
-                    className="w-full mt-4 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                    className="w-full mt-4 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600"
+                    onClick={() => {
+                      if (isDemoUser) {
+                        toast({
+                          title: "¡Premium Activado! (Modo Demo)",
+                          description: "En modo demo tienes acceso completo a todas las funciones premium.",
+                          duration: 3000,
+                        });
+                      }
+                    }}
                   >
-                    <a href="https://buy.stripe.com/28o17y5fieSOd2I000" target="_blank" rel="noopener noreferrer">Seleccionar</a>
+                    {isDemoUser ? "Activado en Demo" : "Seleccionar"}
                   </Button>
                 </CardContent>
               </Card>
@@ -192,10 +219,18 @@ const Premium = () => {
                   <p className="text-sm text-muted-foreground">• Acceso beta a nuevas funciones</p>
                   <p className="text-sm text-muted-foreground">• Consulta directa con el equipo</p>
                   <Button 
-                    asChild
                     className="w-full mt-4 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600"
+                    onClick={() => {
+                      if (isDemoUser) {
+                        toast({
+                          title: "¡Premium VIP Activado! (Modo Demo)",
+                          description: "En modo demo tienes acceso completo a todas las funciones VIP.",
+                          duration: 3000,
+                        });
+                      }
+                    }}
                   >
-                    <a href="https://buy.stripe.com/6oE9E4bzu2c8d2I8wx" target="_blank" rel="noopener noreferrer">Seleccionar</a>
+                    {isDemoUser ? "VIP Activado en Demo" : "Seleccionar"}
                   </Button>
                 </CardContent>
               </Card>
@@ -220,10 +255,18 @@ const Premium = () => {
                   <p className="text-sm text-muted-foreground">• Tu nombre en los créditos</p>
                   <p className="text-sm text-muted-foreground">• Acceso de por vida a funciones premium</p>
                   <Button 
-                    asChild
                     className="w-full mt-4 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600"
+                    onClick={() => {
+                      if (isDemoUser) {
+                        toast({
+                          title: "¡Founding Member Activado! (Modo Demo)",
+                          description: "En modo demo tienes acceso completo a todas las funciones de miembro fundador.",
+                          duration: 3000,
+                        });
+                      }
+                    }}
                   >
-                    <a href="https://buy.stripe.com/14k5nOdHK7wocYE4gj" target="_blank" rel="noopener noreferrer">Seleccionar</a>
+                    {isDemoUser ? "Founding Member Demo" : "Seleccionar"}
                   </Button>
                 </CardContent>
               </Card>

@@ -196,10 +196,23 @@ ComplicesConecta se completa con sistema de invitaciones, panel de administraci�
 
 ---
 
-## 🐞 **Correcciones en v1.3.1**
+## 🐞 **Correcciones en v1.3.2**
 
-- **FIX**: Se corrigió un problema en la página `Discover` que causaba la duplicación de imágenes de perfiles al generar nuevos candidatos. La lógica ahora asegura la unicidad de los perfiles mostrados.
-- **FIX**: Se resolvió un error de tipos en los botones de `ProfileCard` que impedía el correcto funcionamiento de la acción `onLike`. Los perfiles ahora manejan `UUIDs` (string) correctamente.
+### 🎨 **Mejoras de UI/UX (NUEVO)**
+- **FIX**: Mejorada la visibilidad de textos en el panel de administración con clases `privacy-text` y gradientes de colores consistentes
+- **FIX**: Cards de estadísticas rediseñadas con mejor contraste (azul, verde, amarillo, púrpura)
+- **FIX**: Página 404 completamente rediseñada con animaciones React profesionales:
+  - Sparkles, rayos y corazones flotantes con posiciones aleatorias
+  - Efectos de entrada escalonados con `useState` y `useEffect`
+  - Glow effect en número 404 con resplandor animado
+  - Botones interactivos con hover effects (rotación, bounce, spin)
+  - Nuevas animaciones CSS: `twinkle`, `pulse-glow`, `pulse-slow`
+- **FIX**: Mejorado contraste en cards de perfiles con overlay `from-black/80 to-transparent`
+- **FIX**: Aplicadas clases `overlay-text` para mejor legibilidad en nombres, edades y ubicaciones
+
+### 🔧 **Correcciones Técnicas Previas**
+- **FIX**: Se corrigió un problema en la página `Discover` que causaba la duplicación de imágenes de perfiles al generar nuevos candidatos
+- **FIX**: Se resolvió un error de tipos en los botones de `ProfileCard` que impedía el correcto funcionamiento de la acción `onLike`
 
 ---
 

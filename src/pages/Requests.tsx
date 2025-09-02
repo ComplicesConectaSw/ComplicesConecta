@@ -35,6 +35,15 @@ const Requests = () => {
   }, [currentUserId]);
 
   useEffect(() => {
+    // Verificar autenticación demo
+    const demoAuth = localStorage.getItem('demo_authenticated');
+    const demoUser = localStorage.getItem('demo_user');
+    
+    if (demoAuth !== 'true' || !demoUser) {
+      window.location.href = '/auth';
+      return;
+    }
+    
     loadInvitations();
   }, [loadInvitations]);
 

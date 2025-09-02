@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Gamification } from "@/components/gamification/Gamification";
@@ -7,6 +8,19 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Trophy, Bell, TrendingUp } from "lucide-react";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Verificar autenticación demo
+    const demoAuth = localStorage.getItem('demo_authenticated');
+    const demoUser = localStorage.getItem('demo_user');
+    
+    if (demoAuth !== 'true' || !demoUser) {
+      navigate('/auth');
+      return;
+    }
+  }, [navigate]);
+
   return (
     <div className="min-h-screen bg-background">
       <Header />

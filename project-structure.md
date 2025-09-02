@@ -216,7 +216,19 @@ npm run audit:fix           # Correcciones automáticas
 npm run scaffold:templates  # Importar plantillas
 ```
 
-## 📬 **Sistema de Invitaciones Completo (NUEVO)**
+## 🎨 **Mejoras de UI/UX v1.3.2 (NUEVO)**
+
+### **Visibilidad de Textos Mejorada**
+- **Panel de Administración**: Clases `privacy-text` y gradientes consistentes (azul, verde, amarillo, púrpura)
+- **Cards de Perfiles**: Overlay `from-black/80 to-transparent` con clases `overlay-text`
+- **Página 404 Profesional**: Completamente rediseñada con animaciones React avanzadas:
+  - Sparkles, rayos y corazones flotantes con posiciones aleatorias
+  - Efectos de entrada escalonados con `useState` y `useEffect`
+  - Glow effect en número 404 con resplandor animado
+  - Botones interactivos con hover effects (rotación, bounce, spin)
+  - Nuevas animaciones CSS: `twinkle`, `pulse-glow`, `pulse-slow`
+
+## 📬 **Sistema de Invitaciones Completo**
 
 ### **Funcionalidades Implementadas**
 - **Tres tipos de invitación**: Perfil, Galería privada, Chat privado

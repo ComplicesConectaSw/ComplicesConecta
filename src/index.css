@@ -1,6 +1,73 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Mejoras de visibilidad de texto */
+.text-gray-600 {
+  color: rgb(75 85 99) !important;
+}
+
+.text-gray-700 {
+  color: rgb(55 65 81) !important;
+}
+
+.text-gray-900 {
+  color: rgb(17 24 39) !important;
+}
+
+.text-muted-foreground {
+  color: rgb(107 114 128) !important;
+}
+
+/* Contraste mejorado para badges */
+.badge-improved {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white !important;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos personalizados para mejor visibilidad */
+.text-shadow {
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.bg-overlay {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.badge-shadow {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.text-contrast {
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* Mejorar visibilidad de textos en overlays */
+.overlay-text {
+  color: white !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
+  font-weight: 500;
+}
+
+/* Mejorar contraste en configuración de privacidad */
+.privacy-text {
+  color: #1f2937 !important;
+  font-weight: 500;
+}
+
+/* Estilos para botones con mejor contraste */
+.btn-contrast {
+  background: rgba(255, 255, 255, 0.95);
+  color: #1f2937;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.btn-contrast:hover {
+  background: rgba(255, 255, 255, 1);
+}
 
 /* ComplicesConecta Design System - All colors, gradients, fonts, etc defined here. 
 All colors MUST be HSL. */
