@@ -92,25 +92,7 @@ export const useAuth = () => {
     }
   };
 
-  const isAdmin = async () => {
-    if (!state.user) return false;
-    
-    try {
-      const { data, error } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', state.user.id)
-        .eq('role', 'administrador')
-        .single();
-      
-      return !error && data;
-    } catch (error) {
-      console.error('Error checking admin role:', error);
-      return false;
-    }
-  };
-
-  const isAdminSync = () => {
+  const isAdmin = () => {
     return state.profile?.role === 'administrador';
   };
 
@@ -122,7 +104,6 @@ export const useAuth = () => {
     ...state,
     signOut,
     isAdmin,
-    isAdminSync,
     isAuthenticated,
     refreshProfile: () => state.user?.id && fetchUserProfile(state.user.id)
   };
