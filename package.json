@@ -9,9 +9,9 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
-    "scaffold:templates": "bun tsx scripts/import-templates.ts",
-    "audit:repo": "bun tsx scripts/audit-project.ts --report",
-    "audit:fix": "bun tsx scripts/audit-project.ts --fix"
+    "scaffold:templates": "npx tsx scripts/import-templates.ts",
+    "audit:repo": "npx tsx scripts/audit-project.ts --report",
+    "audit:fix": "npx tsx scripts/audit-project.ts --fix"
   },
   "dependencies": {
     "@capacitor/android": "^7.4.3",
@@ -49,6 +49,7 @@
     "@rollup/wasm-node": "^4.9.2",
     "@supabase/supabase-js": "^2.56.1",
     "@tanstack/react-query": "^5.85.5",
+    "@types/uuid": "^10.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
@@ -69,6 +70,7 @@
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
+    "uuid": "^11.1.0",
     "vaul": "^1.1.2",
     "zod": "^4.1.5"
   },

@@ -202,7 +202,11 @@ const Index = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
               {sampleProfiles.map((profile, index) => (
                 <div key={index} className="animate-slide-up" style={{ animationDelay: `${index * 0.2}s` }}>
-                  <ProfileCard {...profile} />
+                  <ProfileCard 
+                    profile={profile} 
+                    onLike={() => {}} 
+                    onSuperLike={() => {}} 
+                  />
                 </div>
               ))}
             </div>
@@ -291,6 +295,7 @@ const Index = () => {
 
       <Footer />
       <Navigation />
+      {showWelcome && <WelcomeModal isOpen={showWelcome} onClose={handleWelcomeClose} />}
       
       <style>{`
         @keyframes gradient-x {

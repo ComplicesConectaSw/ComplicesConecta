@@ -5,26 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
 interface ProfileCardProps {
-  id: number;
-  name: string;
-  age: number;
-  location: string;
-  interests: string[];
-  image: string;
-  rating: number;
-  isOnline?: boolean;
+  profile: any; // Can be tightened later
+  onLike?: (id: string) => void;
+  onSuperLike?: (profile: any) => void;
 }
 
-export const ProfileCard = ({ 
-  id,
-  name, 
-  age, 
-  location, 
-  interests, 
-  image, 
-  rating, 
-  isOnline = false 
-}: ProfileCardProps) => {
+export const ProfileCard = ({ profile, onLike, onSuperLike }: ProfileCardProps) => {
+  const { id, name, age, location, interests, image, rating, isOnline = false } = profile;
   const navigate = useNavigate();
   const { toast } = useToast();
   const [imageError, setImageError] = useState(false);
@@ -33,20 +20,14 @@ export const ProfileCard = ({
     navigate(`/profile/${id}`);
   };
 
-  const handleLike = (e: React.MouseEvent) => {
+      const handleLike = (e: React.MouseEvent) => {
     e.stopPropagation();
-    toast({
-      title: "¡Like enviado!",
-      description: `Te gusta ${name}`,
-    });
+    onLike?.(id);
   };
 
-  const handleSuperLike = (e: React.MouseEvent) => {
+      const handleSuperLike = (e: React.MouseEvent) => {
     e.stopPropagation();
-    toast({
-      title: "¡Super Like enviado!",
-      description: `Has enviado un Super Like a ${name}`,
-    });
+    onSuperLike?.(profile);
   };
 
   const handleDislike = (e: React.MouseEvent) => {
@@ -142,7 +123,7 @@ export const ProfileCard = ({
 
         {/* Interests */}
         <div className="flex flex-wrap gap-2 mb-4">
-          {interests.slice(0, 3).map((interest, index) => (
+          {interests.slice(0, 3).map((interest: string, index: number) => (
             <span 
               key={index}
               className="px-3 py-1 bg-secondary text-secondary-foreground text-xs rounded-full transition-colors hover:bg-primary hover:text-primary-foreground"
@@ -168,7 +149,7 @@ export const ProfileCard = ({
             <X className="w-4 h-4 mr-2" />
             Pasar
           </Button>
-          <Button variant="love" size="sm" className="flex-1" onClick={handleLike}>
+                  <Button variant="love" size="sm" className="flex-1" onClick={handleLike} disabled={!onLike}>
             <Heart className="w-4 h-4 mr-2" />
             Me Gusta
           </Button>

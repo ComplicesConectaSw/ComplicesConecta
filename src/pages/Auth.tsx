@@ -68,67 +68,31 @@ const Auth = () => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSignIn = async (e: React.FormEvent) => {
+    const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      // Skip Supabase auth and go directly to demo mode
-      console.log('🔄 Activando modo demo directo');
-      console.log('📧 Email ingresado:', formData.email);
-      
-      const isAdminEmail = formData.email.toLowerCase() === 'complicesconectasw@outlook.es';
-      const isParejaEmail = formData.email.toLowerCase() === 'pareja@outlook.es';
-      const isSingleEmail = formData.email.toLowerCase() === 'single@outlook.es';
-      
-      let userRole = 'user';
-      let accountType = 'single';
-      let welcomeTitle = "¡Bienvenido!";
-      let welcomeDescription = "Conectando en modo demo para desarrollo local.";
-      let redirectPath = "/feed";
-      
-      if (isAdminEmail) {
-        userRole = 'administrador';
-        welcomeTitle = "¡Bienvenido Administrador!";
-        welcomeDescription = "Accediendo al panel de administración...";
-        redirectPath = "/admin";
-      } else if (isParejaEmail) {
-        accountType = 'couple';
-        welcomeTitle = "¡Bienvenida Pareja!";
-        welcomeDescription = "Conectando con otras parejas y singles...";
-        redirectPath = "/profile-couple";
-        localStorage.setItem('userType', 'couple');
-      } else {
-        localStorage.setItem('userType', 'single');
-        redirectPath = "/profile-single";
-      } 
-      
-      console.log('🔑 Tipo de usuario:', { userRole, accountType });
-      
-      // Simular sesión de usuario en localStorage para mantener estado
-      const mockUser = {
-        id: 'demo-user-' + Date.now(),
+      const { error } = await supabase.auth.signInWithPassword({
         email: formData.email,
-        role: userRole,
-        accountType: accountType,
-        created_at: new Date().toISOString()
-      };
-      localStorage.setItem('demo_user', JSON.stringify(mockUser));
-      localStorage.setItem('demo_session', 'true');
-      
+        password: formData.password,
+      });
+
+      if (error) throw error;
+
       toast({
-        title: welcomeTitle,
-        description: welcomeDescription,
+        title: "¡Bienvenido de vuelta!",
+        description: "Has iniciado sesión correctamente.",
         duration: 3000,
       });
-      
-      // Navigate to appropriate page
-      navigate(redirectPath);
-    } catch (error: unknown) {
+
+      navigate("/discover");
+
+    } catch (error: any) {
       console.error('❌ Error de autenticación:', error);
       toast({
-        title: "Error",
-        description: "Error al iniciar sesión. Intenta de nuevo.",
+        title: "Error al iniciar sesión",
+        description: error.message || "Credenciales incorrectas. Por favor, intenta de nuevo.",
         variant: "destructive"
       });
     } finally {
@@ -304,6 +268,10 @@ const Auth = () => {
                 <Button type="submit" className="w-full" disabled={isLoading}>
                   {isLoading ? "Iniciando sesión..." : "Iniciar Sesión"}
                 </Button>
+                <div className="text-xs text-center text-muted-foreground pt-2">
+                  <p className="font-bold">MODO DEMO ACTIVADO</p>
+                  <p>Use: <code className="bg-muted p-1 rounded-sm">single@outlook.es</code> (Single), <code className="bg-muted p-1 rounded-sm">pareja@outlook.es</code> (Pareja), o <code className="bg-muted p-1 rounded-sm">complicesconectasw@outlook.es</code> (Admin).</p>
+                </div>
               </form>
             </TabsContent>
             

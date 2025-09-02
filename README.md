@@ -252,6 +252,10 @@ NODE_ENV=development
 - ✅ **NUEVO**: Tipos TypeScript para todas las funcionalidades
 - ✅ **NUEVO**: Mock data extendido para funciones sociales
 
+### ✨ **Mejoras Recientes (v1.3.1)**
+- ✅ **Corrección de Duplicación de Imágenes**: Se optimizó el algoritmo en `Discover` para garantizar perfiles únicos y evitar la repetición de imágenes en el grid.
+- ✅ **Solución de Errores en Botones**: Se corrigió un error de tipos (`string`/`number`) en los `ProfileCard` para asegurar que los botones de `Like` funcionen correctamente.
+
 ### 📬 **Sistema de Invitaciones (NUEVO)**
 - ✅ **Envío de invitaciones** desde perfiles con mensaje personalizado
 - ✅ **Tres tipos**: Perfil, Galería privada, Chat privado

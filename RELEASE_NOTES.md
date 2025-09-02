@@ -196,6 +196,13 @@ ComplicesConecta se completa con sistema de invitaciones, panel de administraci�
 
 ---
 
+## 🐞 **Correcciones en v1.3.1**
+
+- **FIX**: Se corrigió un problema en la página `Discover` que causaba la duplicación de imágenes de perfiles al generar nuevos candidatos. La lógica ahora asegura la unicidad de los perfiles mostrados.
+- **FIX**: Se resolvió un error de tipos en los botones de `ProfileCard` que impedía el correcto funcionamiento de la acción `onLike`. Los perfiles ahora manejan `UUIDs` (string) correctamente.
+
+---
+
 ## 🐛 Problemas Conocidos
 
 - El panel de administración requiere email exacto: `ComplicesConectaSw@outlook.es`

@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,23 +9,62 @@ import { Header } from '@/components/Header';
 import { FilterState, DiscoverSidebar, ProfileCard } from '@/components/discover';
 import { useToast } from "@/hooks/use-toast";
 import { useIsMobile } from '@/hooks/use-mobile';
-import { pickProfileImage, inferProfileKind, type ProfileType, type Gender } from '@/lib/media';
+import { pickProfileImage, inferProfileKind, resetImageCounters, type ProfileType, type Gender } from '@/lib/media';
+
+// Definición del tipo para un perfil
+interface Profile {
+  id: string;
+  name: string;
+  age: number;
+  location: string;
+  distance: number;
+  interests: string[];
+  image: string;
+  bio: string;
+  isOnline: boolean;
+  lastActive: string;
+  isVerified: boolean;
+  isPremium: boolean;
+  matchScore: number;
+  lifestyle: string;
+  relationshipType: string;
+  lookingFor: string[];
+  experienceLevel: string;
+  ageRange: string;
+  bodyType: string;
+  height: string;
+  education: string;
+  profession: string;
+  smoking: string;
+  drinking: string;
+  children: string;
+  religion: string;
+  aiCompatibility: number;
+  rating: string;
+  type: ProfileType;
+  gender: Gender;
+}
 
 // Professional profile images from Unsplash
 
 // Función para generar perfiles aleatorios con imágenes coherentes
 const generateRandomProfiles = (userType = 'single') => {
-  const coupleNames = [
-    "Ana & Carlos", "María & Luis", "Carmen & Roberto", "Elena & Miguel", 
+  resetImageCounters();
+
+  // Mezclar arrays de nombres para obtener perfiles únicos en cada carga
+  const shuffleArray = (arr: string[]) => arr.sort(() => 0.5 - Math.random());
+
+  const coupleNames = shuffleArray([
+    "Ana & Carlos", "María & Luis", "Carmen & Roberto", "Elena & Miguel",
     "Sofía & Diego", "Laura & Javier", "Patricia & Fernando", "Isabel & Antonio",
     "Cristina & Pablo", "Mónica & Raúl", "Beatriz & Sergio", "Natalia & Andrés"
-  ];
-  
-  const singleNames = [
+  ]);
+
+  const singleNames = shuffleArray([
     "Alejandra", "Valentina", "Isabella", "Camila", "Lucía", "Daniela", "Gabriela", "Andrea",
     "Carlos", "Miguel", "Alejandro", "Fernando", "Roberto", "Javier", "Antonio", "Pablo",
     "Sergio", "Raúl", "Andrés", "Diego", "Luis", "Manuel", "Ricardo", "Eduardo"
-  ];
+  ]);
 
   const locations = ["Ciudad de México", "Guadalajara", "Monterrey", "Puebla", "Tijuana", "León", "Juárez", "Torreón"];
   const interests = {
@@ -33,14 +73,21 @@ const generateRandomProfiles = (userType = 'single') => {
   };
 
   const profiles = [];
-  const profileCount = userType === 'couple' ? 15 : 20;
+  const profileCount = userType === 'couple' ? 12 : 20;
   const usedImages = new Set<string>();
-  
-  for (let i = 1; i <= profileCount; i++) {
+  let singleNameIndex = 0;
+  let coupleNameIndex = 0;
+
+  console.log(`🎯 Generando ${profileCount} perfiles para tipo: ${userType}`);
+
+  for (let i = 0; i < profileCount; i++) {
     const isCouple = userType === 'couple' || (userType === 'single' && Math.random() > 0.7);
-    const name = isCouple ? 
-      coupleNames[Math.floor(Math.random() * coupleNames.length)] :
-      singleNames[Math.floor(Math.random() * singleNames.length)];
+    let name;
+    if (isCouple) {
+      name = coupleNames[coupleNameIndex++ % coupleNames.length];
+    } else {
+      name = singleNames[singleNameIndex++ % singleNames.length];
+    }
     
     // Determinar género basado en el nombre para singles
     const profileInfo = inferProfileKind({ 
@@ -48,7 +95,7 @@ const generateRandomProfiles = (userType = 'single') => {
       type: isCouple ? 'couple' : 'single' as ProfileType 
     });
     
-    // Asignar imagen coherente sin repetir
+    // Asignar imagen coherente sin repetir en viewport
     const profileImage = pickProfileImage({
       id: i.toString(),
       name,
@@ -56,8 +103,10 @@ const generateRandomProfiles = (userType = 'single') => {
       gender: profileInfo.gender
     }, usedImages);
     
+    console.log(`📸 Perfil ${i}: ${name} (${profileInfo.kind}/${profileInfo.gender}) -> ${profileImage.split('/').pop()?.split('?')[0]}`);
+    
     profiles.push({
-      id: i,
+      id: uuidv4(),
       name,
       age: Math.floor(Math.random() * 20) + 25, // 25-44
       location: locations[Math.floor(Math.random() * locations.length)],
@@ -92,6 +141,7 @@ const generateRandomProfiles = (userType = 'single') => {
     });
   }
   
+  console.log(`✅ Generados ${profiles.length} perfiles con ${usedImages.size} imágenes únicas`);
   return profiles;
 };
 
@@ -105,12 +155,18 @@ const getUserType = () => {
   return 'single';
 };
 
-const allProfiles = generateRandomProfiles(getUserType());
 
 const Discover = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+
+  const [allProfiles, setAllProfiles] = useState<Profile[]>([]);
+
+  useEffect(() => {
+    const userType = getUserType();
+    setAllProfiles(generateRandomProfiles(userType));
+  }, []);
 
   const [filters, setFilters] = useState<FilterState>({
     ageRange: [18, 50],
@@ -136,7 +192,7 @@ const Discover = () => {
   const getFilteredProfiles = useCallback(() => {
     return allProfiles.filter(profile => {
       if (profile.age < filters.ageRange[0] || profile.age > filters.ageRange[1]) return false;
-      if (profile.distance && profile.distance > filters.distance[0]) return false;
+      if (profile.distance > filters.distance[0]) return false;
       if (filters.gender !== "all" && profile.relationshipType !== filters.gender) return false;
       if (filters.interests.length > 0 && !filters.interests.some(interest => profile.interests.includes(interest))) return false;
       if (filters.lifestyle.length > 0 && !filters.lifestyle.includes(profile.lifestyle)) return false;
@@ -145,7 +201,7 @@ const Discover = () => {
       if (profile.height) {
         const heights = profile.height.match(/\d+/g)?.map(Number);
         if (heights && heights.length > 0) {
-          const isInRange = heights.some(h => h >= filters.height[0] && h <= filters.height[1]);
+          const isInRange = heights.some((h: number) => h >= filters.height[0] && h <= filters.height[1]);
           if (!isInRange) return false;
         }
       }
@@ -154,10 +210,10 @@ const Discover = () => {
       if (filters.onlyOnline && !profile.isOnline) return false;
       return true;
     });
-  }, [filters]);
+  }, [allProfiles, filters]);
 
-  const [filteredProfiles, setFilteredProfiles] = useState(getFilteredProfiles());
-  const [likedProfiles, setLikedProfiles] = useState<Set<number>>(new Set());
+  const [filteredProfiles, setFilteredProfiles] = useState<Profile[]>([]);
+  const [likedProfiles, setLikedProfiles] = useState<Set<string>>(new Set());
 
   const handleFiltersChange = useCallback((newFilters: FilterState) => setFilters(newFilters), []);
 
@@ -176,7 +232,7 @@ const Discover = () => {
     setFilteredProfiles(getFilteredProfiles());
   }, [filters, getFilteredProfiles]);
 
-  const handleLike = (profileId: number) => {
+    const handleLike = (profileId: string) => {
     setLikedProfiles(prev => new Set([...prev, profileId]));
     setDailyStats(prev => ({ ...prev, likes: prev.likes + 1 }));
     if (Math.random() < 0.2) {
@@ -190,7 +246,7 @@ const Discover = () => {
   const [showSuperLikeModal, setShowSuperLikeModal] = useState(false);
   const [selectedProfile, setSelectedProfile] = useState<any>(null);
 
-  const handleSuperLike = (profile: any) => {
+    const handleSuperLike = (profile: Profile) => {
     if (dailyStats.superLikes <= 0) {
       toast({ title: "Super Likes agotados", description: "Has usado todos tus Super Likes de hoy. ¡Vuelve mañana!", variant: "destructive" });
       return;

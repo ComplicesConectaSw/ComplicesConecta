@@ -5,7 +5,7 @@ import { Heart, Flame, Star, MapPin, CheckCircle, Crown } from 'lucide-react';
 
 const FALLBACK_IMAGE_URL = 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=600&fit=crop&crop=face';
 
-export const ProfileCard = ({ profile, onLike, onSuperLike }: { profile: any, onLike: (id: number) => void, onSuperLike: (profile: any) => void }) => {
+export const ProfileCard = ({ profile, onLike, onSuperLike }: { profile: any, onLike: (id: string) => void, onSuperLike: (profile: any) => void }) => {
   const [imgSrc, setImgSrc] = useState(profile.image || FALLBACK_IMAGE_URL);
 
   const handleError = () => {
