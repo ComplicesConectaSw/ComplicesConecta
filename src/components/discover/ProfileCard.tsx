@@ -14,11 +14,11 @@ export const ProfileCard = ({ profile, onLike, onSuperLike }: { profile: any, on
 
   return (
     <Card className="overflow-hidden relative group border-primary/10 bg-card/80 backdrop-blur-sm flex flex-col h-full">
-      <div className="relative">
+      <div className="relative aspect-w-1 aspect-h-1">
         <img 
           src={imgSrc}
           alt={profile.name || 'Perfil'} 
-          className="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-300"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           onError={handleError}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
@@ -57,7 +57,7 @@ export const ProfileCard = ({ profile, onLike, onSuperLike }: { profile: any, on
       
       {/* Bio Section */}
       <div className="p-4 flex-grow flex flex-col">
-        <p className="text-sm text-muted-foreground flex-grow">{profile.bio}</p>
+        <p className="text-sm text-muted-foreground flex-grow line-clamp-3">{profile.bio}</p>
       </div>
     </Card>
   );

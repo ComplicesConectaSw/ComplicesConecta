@@ -199,11 +199,11 @@ const Discover = () => {
 
       <div className="relative z-10">
         <Header />
-        <main className="container mx-auto px-4 py-4">
-          <div className="flex flex-col lg:flex-row gap-8">
+        <main className="container mx-auto px-4 py-6">
+          <div className="flex flex-col lg:flex-row gap-6">
             {/* Desktop Sidebar */}
             {!isMobile && (
-              <aside className="w-full lg:w-1/4 lg:max-w-xs">
+              <aside className="w-full lg:w-1/4 lg:max-w-xs xl:max-w-sm">
                 <div className="sticky top-24">
                   <DiscoverSidebar 
                     filters={filters} 
@@ -216,12 +216,12 @@ const Discover = () => {
             )}
 
             {/* Main Content */}
-            <div className="flex-1">
-              <div className="text-center mb-8">
+            <div className="flex-1 min-w-0">
+              <div className="text-center mb-6">
                 <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
-                  Conecta con <span className="block bg-love-gradient bg-clip-text text-transparent">Parejas y Solteros</span>
+                  Conecta con <span className="bg-love-gradient bg-clip-text text-transparent">Parejas y Solteros</span>
                 </h1>
-                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                <p className="text-md text-muted-foreground max-w-2xl mx-auto">
                   🔥 Plataforma exclusiva +18 para el ambiente swinger
                 </p>
               </div>
@@ -254,7 +254,7 @@ const Discover = () => {
               )}
 
               {filteredProfiles.length > 0 ? (
-                <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4">
                   {filteredProfiles.map(profile => (
                     <ProfileCard 
                       key={profile.id} 
