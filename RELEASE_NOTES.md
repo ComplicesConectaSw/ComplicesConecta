@@ -196,7 +196,38 @@ ComplicesConecta se completa con sistema de invitaciones, panel de administraci�
 
 ---
 
-## 🚀 **Nuevas Funcionalidades en v1.3.4** *(2 de septiembre, 2025 - 07:00 AM)*
+## 🚀 **Últimas Actualizaciones en v1.3.5** *(2 de septiembre, 2025 - 07:35 AM)*
+
+### 🔍 **Discover Completamente Rediseñado**
+- **NUEVO**: **Página de descubrimiento** con filtros avanzados y sistema de matching
+- **NUEVO**: **Filtros inteligentes** por edad (18-65), distancia (1-100km), intereses lifestyle
+- **NUEVO**: **Grid responsivo** con cards de perfil optimizadas y aspect ratio 3:4
+- **NUEVO**: **Estadísticas en tiempo real** - Likes, Super Likes, Matches con iconos
+- **NUEVO**: **Sistema de compatibilidad** con porcentaje de match basado en intereses
+- **NUEVO**: **Navegación integrada** con botones Inicio/Perfil en header
+- **NUEVO**: **Botones de acción** - Like y Super Like directamente en las cards
+
+### 👤 **ProfileSingle Optimizado**
+- **FIX**: **Background consistente** con gradiente del proyecto (purple-pink-indigo)
+- **FIX**: **Imagen de perfil** con aspect ratio 3:4 correcto y mejor calidad
+- **FIX**: **Intereses reorganizados** con estilo de ProfileCouple:
+  - Contenedor con gradiente purple-pink translúcido
+  - Scroll vertical para mostrar todos los intereses sin truncar
+  - Badges con colores consistentes y mejor contraste
+- **FIX**: **Glassmorphism mejorado** con backdrop-blur-md en todas las cards
+
+### 💬 **Chat Privado Mejorado**
+- **FIX**: **Sección de invitaciones** completamente funcional sin texto truncado
+- **FIX**: **Botones de acción** - "Enviar Invitación" y "Cancelar" con layout responsive
+- **FIX**: **UX mejorada** con mejor espaciado y explicación clara del proceso
+- **FIX**: **Scroll corregido** en contenedor de chat para mejor navegación
+
+### 🏠 **Control de Acceso del Index**
+- **FIX**: **Navegación inferior removida** del Index para usuarios no autenticados
+- **FIX**: **Mejor control de acceso** - Solo aparece cuando el usuario está logueado
+- **FIX**: **Seguridad mejorada** - Funcionalidades internas protegidas
+
+## 🚀 **Funcionalidades Previas en v1.3.4** *(2 de septiembre, 2025 - 07:00 AM)*
 
 ### 👫 **Perfiles de Pareja Completamente Rediseñados**
 - **NUEVO**: **Información separada** para cada partner (él y ella) con secciones independientes

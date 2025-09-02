@@ -465,25 +465,35 @@ const Chat = () => {
               </div>
 
               {/* Input para enviar mensajes */}
-              <div className="p-4 border-t border-white/10 bg-black/30">
+              <div className="p-4 border-t border-white/10 bg-black/30 max-h-32 overflow-y-auto">
                 {selectedChat.isPrivate && !hasChatAccess[selectedChat.id] ? (
-                  <div className="text-center space-y-3 bg-black/50 rounded-lg p-4 border border-white/20">
-                    <div className="flex items-center justify-center text-white mb-2">
-                      <Lock className="h-5 w-5 mr-2" />
-                      <span className="font-semibold text-shadow">Chat privado bloqueado</span>
+                  <div className="text-center space-y-4 bg-black/50 rounded-lg p-6 border border-white/20">
+                    <div className="flex items-center justify-center text-white mb-3">
+                      <Lock className="h-6 w-6 mr-2" />
+                      <span className="font-semibold text-lg text-shadow">Chat privado bloqueado</span>
                     </div>
-                    <p className="text-sm text-white/90 mb-3 text-shadow">
-                      Necesitas una invitación aceptada para chatear con {selectedChat.name}
+                    <p className="text-sm text-white/90 mb-4 text-shadow leading-relaxed">
+                      Necesitas una invitación aceptada para chatear con {selectedChat.name}. 
+                      Puedes enviar una invitación o esperar a que te envíen una.
                     </p>
-                    <InvitationDialog 
-                      targetProfileId={selectedChat.id.toString()}
-                      targetProfileName={selectedChat.name}
-                    >
-                      <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white">
-                        <UserPlus className="h-4 w-4 mr-2" />
-                        Enviar Invitación
+                    <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                      <InvitationDialog 
+                        targetProfileId={selectedChat.id.toString()}
+                        targetProfileName={selectedChat.name}
+                      >
+                        <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-6 py-2">
+                          <UserPlus className="h-4 w-4 mr-2" />
+                          Enviar Invitación
+                        </Button>
+                      </InvitationDialog>
+                      <Button 
+                        variant="outline" 
+                        className="border-white/30 text-white hover:bg-white/10 px-6 py-2"
+                        onClick={() => setSelectedChat(null)}
+                      >
+                        Cancelar
                       </Button>
-                    </InvitationDialog>
+                    </div>
                   </div>
                 ) : (
                   <div className="flex items-center space-x-3">

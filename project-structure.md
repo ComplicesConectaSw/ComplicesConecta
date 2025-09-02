@@ -217,7 +217,33 @@ npm run audit:fix           # Correcciones automáticas
 npm run scaffold:templates  # Importar plantillas
 ```
 
-## 🚀 **Nuevas Funcionalidades v1.3.4** *(Enero 2025)*
+## 🚀 **Últimas Actualizaciones v1.3.5** *(2 de septiembre, 2025)*
+
+### **Discover Completamente Rediseñado**
+- **Página de descubrimiento** con filtros avanzados y sistema de matching inteligente
+- **Filtros por edad, distancia, intereses** lifestyle con sliders interactivos
+- **Grid responsivo** con cards optimizadas y aspect ratio 3:4 perfecto
+- **Estadísticas en tiempo real** - Likes, Super Likes, Matches con iconos
+- **Sistema de compatibilidad** basado en intereses comunes
+- **Navegación integrada** con botones Inicio/Perfil en header
+- **Botones de acción** Like y Super Like directamente en cards
+
+### **ProfileSingle Completamente Optimizado**
+- **Background consistente** con gradiente del proyecto (purple-pink-indigo)
+- **Imagen de perfil** con aspect ratio 3:4 correcto y mejor calidad
+- **Intereses reorganizados** con estilo ProfileCouple:
+  - Contenedor con gradiente purple-pink translúcido
+  - Scroll vertical para mostrar todos los intereses
+  - Badges con colores consistentes y mejor contraste
+- **Glassmorphism mejorado** con backdrop-blur-md en todas las cards
+
+### **Chat Privado y Navegación Mejorados**
+- **Sección de invitaciones** completamente funcional sin texto truncado
+- **Botones de acción** "Enviar Invitación" y "Cancelar" con layout responsive
+- **Navegación del Index** removida para usuarios no autenticados
+- **Control de acceso** mejorado - Solo aparece cuando está logueado
+
+## 🚀 **Funcionalidades Previas v1.3.4** *(Enero 2025)*
 
 ### **Mejoras Críticas de Perfiles**
 - **ProfileCouple.tsx Rediseñado**: 

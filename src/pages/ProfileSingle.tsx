@@ -71,7 +71,7 @@ const ProfileSingle: React.FC = () => {
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-purple-600 via-pink-500 to-indigo-600">
-      {/* Animated Background */}
+      {/* Fixed background layers */}
       <div className="fixed inset-0 z-0 bg-gradient-to-br from-purple-600/90 via-pink-500/90 to-indigo-600/90"></div>
       <div className="fixed inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-400/20 via-pink-400/20 to-transparent"></div>
       
@@ -105,16 +105,18 @@ const ProfileSingle: React.FC = () => {
 
       <div className="p-2 sm:p-4 pb-24 space-y-4 sm:space-y-6 max-w-2xl mx-auto max-h-screen overflow-y-auto">
         {/* Foto principal y badges */}
-        <Card className="overflow-hidden bg-white/95 backdrop-blur-sm shadow-glow border-0">
+        <Card className="overflow-hidden bg-white/90 backdrop-blur-md shadow-glow border-0">
           <div className="relative">
-            <img 
-              alt={profile.name} 
-              className="w-full h-96 sm:h-[500px] object-cover object-center" 
-              src={profile.avatar || profile.photos?.[0] || 'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400'}
-              onError={(e) => {
-                e.currentTarget.src = 'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400';
-              }}
-            />
+            <div className="relative aspect-[3/4] overflow-hidden">
+              <img 
+                alt={profile.name} 
+                className="w-full h-full object-cover object-center" 
+                src={profile.avatar || profile.photos?.[0] || 'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400&h=600&fit=crop&crop=faces'}
+                onError={(e) => {
+                  e.currentTarget.src = 'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400&h=600&fit=crop&crop=faces';
+                }}
+              />
+            </div>
             <div className="absolute top-4 right-4 flex flex-col gap-2">
               {profile.isOnline && (
                 <Badge className="bg-green-500 text-white">
@@ -248,7 +250,7 @@ const ProfileSingle: React.FC = () => {
         </Card>
 
         {/* Navigation Tabs */}
-        <div className="flex bg-white rounded-lg shadow-lg mb-6">
+        <div className="flex bg-white/90 backdrop-blur-md rounded-lg shadow-lg mb-6">
           <Button
             variant={activeTab === 'profile' ? 'default' : 'ghost'}
             className="flex-1 rounded-r-none"
@@ -279,7 +281,7 @@ const ProfileSingle: React.FC = () => {
         {activeTab === 'profile' && (
           <>
             {/* Información básica */}
-            <Card className="bg-white shadow-xl">
+            <Card className="bg-white/90 backdrop-blur-md shadow-xl border-0">
               <CardContent className="p-6">
                 <div className="text-center mb-6">
                   <h2 className="text-2xl font-bold text-gray-900 mb-2">{profile.name}</h2>
@@ -331,20 +333,19 @@ const ProfileSingle: React.FC = () => {
               </CardContent>
             </Card>
 
-            {/* Intereses */}
-            <Card className="bg-white shadow-lg">
+            <Card className="bg-white/90 backdrop-blur-md shadow-lg border-0">
               <div className="p-6">
                 <h3 className="font-semibold text-gray-900 mb-3">Intereses</h3>
-                <div className="flex flex-wrap gap-2 max-h-24 overflow-y-auto">
-                  {(profile.interests || ['Lifestyle Swinger', 'Intercambio de Parejas', 'Encuentros Casuales', 'Fiestas Temáticas', 'Clubs Privados', 'Eventos Lifestyle']).map((interest: string, index: number) => (
-                    <Badge 
-                      key={index} 
-                      variant="outline" 
-                      className="text-sm border-purple-300 text-purple-700 hover:bg-purple-50"
-                    >
-                      {interest}
-                    </Badge>
-                  ))}
+                <div className="bg-gradient-to-r from-purple-100/80 to-pink-100/80 backdrop-blur-sm rounded-lg p-4 border border-purple-200/50">
+                  <div className="bg-gradient-to-r from-purple-100/80 to-pink-100/80 backdrop-blur-sm rounded-lg p-4 border border-purple-200/50">
+                    <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto">
+                      {(profile.interests || ['Lifestyle Swinger', 'Intercambio de Parejas', 'Encuentros Casuales', 'Fiestas Temáticas', 'Clubs Privados', 'Eventos Lifestyle']).map((interest: string, index: number) => (
+                        <Badge key={index} variant="outline" className="text-xs bg-purple-200/80 text-purple-900 border border-purple-300/50">
+                          {interest}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
                 </div>
                 <div className="mt-4 space-y-2">
                   <p className="text-sm text-gray-600">
@@ -371,7 +372,7 @@ const ProfileSingle: React.FC = () => {
         )}
 
         {activeTab === 'privacy' && isOwnProfile && features.profileVisibility && (
-          <Card className="bg-white/95 backdrop-blur-sm shadow-xl border-0 shadow-purple-500/20">
+          <Card className="bg-white/90 backdrop-blur-md shadow-xl border-0 shadow-purple-500/20">
             <CardContent className="p-6">
               <h3 className="text-xl font-bold text-gray-900 mb-6">Configuración de Privacidad</h3>
               

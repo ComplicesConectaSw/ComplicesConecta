@@ -89,7 +89,7 @@ const ProfileCouple: React.FC = () => {
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-purple-600 via-pink-500 to-indigo-600">
-      {/* Animated Background */}
+      {/* Fixed background layers */}
       <div className="fixed inset-0 z-0 bg-gradient-to-br from-purple-600/90 via-pink-500/90 to-indigo-600/90"></div>
       <div className="fixed inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-400/20 via-pink-400/20 to-transparent"></div>
       
@@ -123,7 +123,7 @@ const ProfileCouple: React.FC = () => {
 
         <div className="p-2 sm:p-4 pb-24 space-y-4 sm:space-y-6 max-w-2xl mx-auto max-h-screen overflow-y-auto">
           {/* Foto principal de la pareja */}
-          <Card className="overflow-hidden bg-white/95 backdrop-blur-sm shadow-glow border-0">
+          <Card className="overflow-hidden bg-white/90 backdrop-blur-md shadow-glow border-0">
             <div className="relative">
               <img 
                 alt={profile.coupleName || 'Pareja'} 
@@ -160,7 +160,7 @@ const ProfileCouple: React.FC = () => {
           </Card>
 
           {/* Información básica de la pareja */}
-          <Card className="bg-white/95 backdrop-blur-sm shadow-xl border-0 shadow-purple-500/20">
+          <Card className="bg-white/90 backdrop-blur-md shadow-lg border-0">
             <CardContent className="p-6">
               <div className="text-center mb-6">
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">{profile.coupleName || 'Pareja'}</h2>
@@ -181,14 +181,14 @@ const ProfileCouple: React.FC = () => {
               {/* Información individual de cada partner */}
               <div className="grid md:grid-cols-2 gap-6">
                 {/* Partner 1 - Ella */}
-                <div className="bg-gradient-to-br from-pink-100 to-rose-100 rounded-lg p-4 border-2 border-pink-300 shadow-lg">
+                <div className="bg-gradient-to-br from-pink-100/80 to-rose-100/80 backdrop-blur-sm rounded-lg p-4 border-2 border-pink-300/50 shadow-lg">
                   <div className="text-center mb-4">
                     <img 
-                      src={profile.partner1?.avatar || 'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400'} 
+                      src={profile.partner1?.avatar || 'https://images.unsplash.com/photo-1521119989659-a83eee488004?w=400&h=400&fit=crop&crop=faces'} 
                       alt={profile.partner1?.name || 'Ella'}
-                      className="w-20 h-20 rounded-full mx-auto mb-3 object-cover border-3 border-pink-400 shadow-md"
+                      className="w-24 h-24 rounded-full mx-auto mb-3 object-cover border-4 border-pink-400 shadow-lg"
                       onError={(e) => {
-                        e.currentTarget.src = 'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400';
+                        e.currentTarget.src = 'https://images.unsplash.com/photo-1521119989659-a83eee488004?w=400&h=400&fit=crop&crop=faces';
                       }}
                     />
                     <h3 className="text-xl font-bold text-pink-900">{profile.partner1?.name || 'Ella'}</h3>
@@ -214,14 +214,14 @@ const ProfileCouple: React.FC = () => {
                 </div>
                 
                 {/* Partner 2 - Él */}
-                <div className="bg-gradient-to-br from-blue-100 to-indigo-100 rounded-lg p-4 border-2 border-blue-300 shadow-lg">
+                <div className="bg-gradient-to-br from-blue-100/80 to-sky-100/80 backdrop-blur-sm rounded-lg p-4 border-2 border-blue-300/50 shadow-lg">
                   <div className="text-center mb-4">
                     <img 
-                      src={profile.partner2?.avatar || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400'} 
+                      src={profile.partner2?.avatar || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=faces'} 
                       alt={profile.partner2?.name || 'Él'}
-                      className="w-20 h-20 rounded-full mx-auto mb-3 object-cover border-3 border-blue-400 shadow-md"
+                      className="w-24 h-24 rounded-full mx-auto mb-3 object-cover border-4 border-blue-400 shadow-lg"
                       onError={(e) => {
-                        e.currentTarget.src = 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400';
+                        e.currentTarget.src = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=faces';
                       }}
                     />
                     <h3 className="text-xl font-bold text-blue-900">{profile.partner2?.name || 'Él'}</h3>

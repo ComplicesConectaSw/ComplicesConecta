@@ -3,14 +3,17 @@ import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Slider } from "@/components/ui/slider";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Heart, Flame, ArrowLeft, Crown, Shield, Target, X, RefreshCw, Filter, Star, CheckCircle, MapPin } from 'lucide-react';
+import { Heart, Flame, ArrowLeft, Crown, Shield, Target, X, RefreshCw, Filter, Star, CheckCircle, MapPin, Settings, Home, User } from 'lucide-react';
 import { Header } from '@/components/Header';
-import { FilterState, DiscoverSidebar, ProfileCard } from '@/components/discover';
+import Navigation from '@/components/Navigation';
 import { useToast } from "@/hooks/use-toast";
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useGeolocation } from '@/hooks/useGeolocation';
 import { pickProfileImage, inferProfileKind, resetImageCounters, type ProfileType, type Gender } from '@/lib/media';
+import { lifestyleInterests as importedLifestyleInterests } from '@/lib/lifestyle-interests';
 
 // Definición del tipo para un perfil
 interface Profile {
@@ -167,272 +170,345 @@ const getUserType = () => {
   return 'single';
 };
 
-
-const Discover = () => {
+function Discover() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const isMobile = useIsMobile();
-  const { location, startWatchingLocation, stopWatchingLocation, calculateDistance, isWatching } = useGeolocation();
-
-  const [allProfiles, setAllProfiles] = useState<Profile[]>([]);
-
-  useEffect(() => {
-    // Discover page is now independent - load profiles based on current user or default to 'single'
-    const userType = getUserType() || 'single';
-    console.log('🔍 Discover independiente - Cargando perfiles para tipo:', userType);
-    setAllProfiles(generateRandomProfiles(userType));
-  }, []);
-
-  const [filters, setFilters] = useState<FilterState>({
+  const { getCurrentLocation, isLoading: locationLoading } = useGeolocation();
+  
+  const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showFilters, setShowFilters] = useState(false);
+  const [filters, setFilters] = useState({
     ageRange: [18, 50],
-    distance: [50],
-    interests: [],
-    education: "",
-    profession: "",
-    relationshipType: [],
-    lifestyle: [],
-    bodyType: "",
-    height: [150, 200],
-    smoking: "",
-    drinking: "",
-    children: "",
-    religion: "",
-    gender: "all",
-    experienceLevel: "all",
-    onlyVerified: false,
-    onlyPremium: false,
-    onlyOnline: false
+    distance: 50,
+    interests: [] as string[],
+    relationshipType: 'all',
+    experienceLevel: 'all',
+    onlineOnly: false,
+    verifiedOnly: false,
+    premiumOnly: false
   });
 
-  const getFilteredProfiles = useCallback(() => {
-    return allProfiles.filter(profile => {
-      if (profile.age < filters.ageRange[0] || profile.age > filters.ageRange[1]) return false;
-      
-      // Dynamic distance filtering based on user's current location
-      if (location) {
-        // Parse profile location (assuming format "lat,lng")
-        const [profileLat, profileLng] = profile.location.split(',').map(Number);
-        if (!isNaN(profileLat) && !isNaN(profileLng)) {
-          const realDistance = calculateDistance(
-            location.latitude,
-            location.longitude,
-            profileLat,
-            profileLng
-          );
-          // Update profile distance with real calculation
-          profile.distance = realDistance;
-          if (realDistance > filters.distance[0]) return false;
-        }
-      } else {
-        // Fallback to static distance if no location available
-        if (profile.distance > filters.distance[0]) return false;
-      }
-      
-      // Corregir filtro de género - comparar con profile.gender en lugar de relationshipType
-      if (filters.gender !== "all" && profile.gender && profile.gender !== filters.gender) return false;
-      
-      if (filters.interests.length > 0 && !filters.interests.some(interest => profile.interests.includes(interest))) return false;
-      if (filters.lifestyle.length > 0 && !filters.lifestyle.includes(profile.lifestyle)) return false;
-      if (filters.experienceLevel !== "all" && profile.experienceLevel !== filters.experienceLevel) return false;
-      if (filters.bodyType && filters.bodyType !== "all" && profile.bodyType !== filters.bodyType) return false;
-      if (profile.height) {
-        const heights = profile.height.match(/\d+/g)?.map(Number);
-        if (heights && heights.length > 0) {
-          const isInRange = heights.some((h: number) => h >= filters.height[0] && h <= filters.height[1]);
-          if (!isInRange) return false;
-        }
-      }
-      if (filters.onlyVerified && !profile.isVerified) return false;
-      if (filters.onlyPremium && !profile.isPremium) return false;
-      if (filters.onlyOnline && !profile.isOnline) return false;
-      return true;
-    });
-  }, [allProfiles, filters, location, calculateDistance]);
-
-  const [filteredProfiles, setFilteredProfiles] = useState<Profile[]>([]);
-  const [likedProfiles, setLikedProfiles] = useState<Set<string>>(new Set());
-
-  const handleFiltersChange = useCallback((newFilters: FilterState) => setFilters(newFilters), []);
-
-  const handleResetFilters = useCallback(() => {
-    setFilters({
-      ageRange: [18, 50], distance: [50], interests: [], education: "", profession: "",
-      relationshipType: [], lifestyle: [], bodyType: "", height: [150, 200], smoking: "",
-      drinking: "", children: "", religion: "", gender: "all", experienceLevel: "all",
-      onlyVerified: false, onlyPremium: false, onlyOnline: false
-    });
+  useEffect(() => {
+    const userType = getUserType() || 'single';
+    console.log('🔍 Discover independiente - Cargando perfiles para tipo:', userType);
+    setProfiles(generateRandomProfiles(userType));
+    setIsLoading(false);
   }, []);
 
-  const [dailyStats, setDailyStats] = useState(() => ({ likes: 0, superLikes: 3, matches: 0 }));
-
-  // Start location tracking for real-time updates
-  useEffect(() => {
-    const shareLocation = localStorage.getItem('demo_share_location') === 'true';
-    if (shareLocation && !isWatching) {
-      startWatchingLocation();
-      toast({
-        title: "Ubicación en tiempo real activada",
-        description: "Los matches se actualizarán según tu ubicación actual",
-      });
-    }
-    
-    return () => {
-      if (isWatching) {
-        stopWatchingLocation();
-      }
-    };
-  }, []); // Remove dependencies to prevent infinite loops
-
-  useEffect(() => {
-    if (allProfiles.length > 0) {
-      setFilteredProfiles(getFilteredProfiles());
-    }
-  }, [filters, location, allProfiles]); // Simplified dependencies
-
-    const handleLike = (profileId: string) => {
-    setLikedProfiles(prev => new Set([...prev, profileId]));
-    setDailyStats(prev => ({ ...prev, likes: prev.likes + 1 }));
-    if (Math.random() < 0.2) {
-      setDailyStats(prev => ({ ...prev, matches: prev.matches + 1 }));
-      toast({ title: "¡Es un Match!", description: "¡A ambos se gustan! Pueden empezar a chatear.", duration: 4000 });
-    } else {
-      toast({ title: "Like enviado", description: "Tu interés ha sido enviado.", duration: 2000 });
-    }
+  const handleLike = (profileId: string) => {
+    // Implementar lógica de like
   };
 
-  const [showSuperLikeModal, setShowSuperLikeModal] = useState(false);
-  const [selectedProfile, setSelectedProfile] = useState<any>(null);
-
-    const handleSuperLike = (profile: Profile) => {
-    if (dailyStats.superLikes <= 0) {
-      toast({ title: "Super Likes agotados", description: "Has usado todos tus Super Likes de hoy. ¡Vuelve mañana!", variant: "destructive" });
-      return;
-    }
-    setSelectedProfile(profile);
-    setShowSuperLikeModal(true);
+  const handleSuperLike = (profile: Profile) => {
+    // Implementar lógica de super like
   };
 
-  const confirmSuperLike = () => {
-    if (!selectedProfile) return;
-    setDailyStats(prev => ({ ...prev, superLikes: prev.superLikes - 1, likes: prev.likes + 1 }));
-    setShowSuperLikeModal(false);
-    if (Math.random() < 0.5) {
-      setDailyStats(prev => ({ ...prev, matches: prev.matches + 1 }));
-    }
-    setSelectedProfile(null);
+  const handleRefresh = () => {
+    // Implementar lógica de refresco
   };
-
-
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      {showSuperLikeModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <Card className="w-full max-w-md bg-card border-accent/20">
-            <CardContent className="p-8 text-center">
-              <h2 className="text-2xl font-bold text-foreground mb-4">¡Super Like! 🔥</h2>
-              <p className="text-muted-foreground mb-6">
-                ¿Estás seguro de que quieres usar un Super Like con <strong>{selectedProfile?.name}</strong>?
-              </p>
-              <div className="flex gap-3">
-                <Button variant="outline" onClick={() => setShowSuperLikeModal(false)} className="flex-1">Cancelar</Button>
-                <Button onClick={confirmSuperLike} className="flex-1 bg-accent hover:bg-accent/90"><Flame className="mr-2 h-4 w-4" />Confirmar</Button>
-              </div>
-            </CardContent>
+    <div className="min-h-screen bg-gradient-to-br from-purple-600 via-pink-500 to-indigo-600">
+      {/* Header con navegación */}
+      <div className="bg-white/90 backdrop-blur-md border-b border-white/30 p-4 shadow-lg">
+        <div className="flex items-center justify-between max-w-6xl mx-auto">
+          <div className="flex items-center space-x-4">
+            <Button
+              variant="ghost"
+              onClick={() => navigate('/')}
+              className="text-gray-700 hover:bg-white/50"
+            >
+              <Home className="h-5 w-5 mr-2" />
+              Inicio
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={() => navigate('/profile')}
+              className="text-gray-700 hover:bg-white/50"
+            >
+              <User className="h-5 w-5 mr-2" />
+              Perfil
+            </Button>
+          </div>
+          
+          <h1 className="text-xl font-bold text-gray-900">Conecta con Parejas y Solteros</h1>
+          
+          <div className="flex items-center space-x-2">
+            <Button
+              variant="ghost"
+              onClick={() => setShowFilters(!showFilters)}
+              className="text-gray-700 hover:bg-white/50"
+            >
+              <Filter className="h-5 w-5 mr-2" />
+              Filtros
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={handleRefresh}
+              className="text-gray-700 hover:bg-white/50"
+            >
+              <RefreshCw className="h-5 w-5" />
+            </Button>
+          </div>
+        </div>
+      </div>
+      
+      <div className="container mx-auto px-4 py-6">
+        {/* Estadísticas del día */}
+        <div className="grid grid-cols-3 gap-4 mb-6 max-w-md">
+          <Card className="bg-white/90 backdrop-blur-md border-0 text-center p-4">
+            <Heart className="h-6 w-6 mx-auto mb-2 text-red-500" />
+            <div className="text-2xl font-bold text-gray-900">0</div>
+            <div className="text-sm text-gray-600">Likes</div>
+          </Card>
+          <Card className="bg-white/90 backdrop-blur-md border-0 text-center p-4">
+            <Flame className="h-6 w-6 mx-auto mb-2 text-orange-500" />
+            <div className="text-2xl font-bold text-gray-900">5</div>
+            <div className="text-sm text-gray-600">Super Likes</div>
+          </Card>
+          <Card className="bg-white/90 backdrop-blur-md border-0 text-center p-4">
+            <Star className="h-6 w-6 mx-auto mb-2 text-yellow-500" />
+            <div className="text-2xl font-bold text-gray-900">0</div>
+            <div className="text-sm text-gray-600">Matches</div>
           </Card>
         </div>
-      )}
-
-      <div className="fixed inset-0 z-0 bg-hero-gradient"></div>
-      <div className="fixed inset-0 z-0 bg-gradient-to-br from-purple-900/20 via-pink-900/10 to-blue-900/20"></div>
-
-      <div className="relative z-10">
-        <Header />
-        <main className="container mx-auto px-4 py-6">
-          <div className="flex flex-col lg:flex-row gap-6">
-            {/* Desktop Sidebar */}
-            {!isMobile && (
-              <aside className="w-full lg:w-1/4 lg:max-w-xs xl:max-w-sm">
-                <div className="sticky top-24">
-                  <DiscoverSidebar 
-                    filters={filters} 
-                    onFiltersChange={handleFiltersChange} 
-                    onReset={handleResetFilters}
-                    dailyStats={dailyStats} 
-                  />
-                </div>
-              </aside>
-            )}
-
-            {/* Main Content */}
-            <div className="flex-1 min-w-0">
-              <div className="text-center mb-6">
-                <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
-                  Conecta con <span className="bg-love-gradient bg-clip-text text-transparent">Parejas y Solteros</span>
-                </h1>
-                <p className="text-md text-muted-foreground max-w-2xl mx-auto">
-                  🔥 Plataforma exclusiva +18 para el ambiente swinger
-                </p>
+        
+        <div className="flex flex-col lg:flex-row gap-6">
+          {/* Panel de filtros */}
+          {showFilters && (
+            <Card className="w-full lg:w-80 bg-white/90 backdrop-blur-md border-0 p-6">
+              <h3 className="text-lg font-semibold mb-4 text-gray-900">Filtros Avanzados</h3>
+              
+              {/* Edad */}
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Edad: {filters.ageRange[0]} - {filters.ageRange[1]} años
+                </label>
+                <Slider
+                  value={filters.ageRange}
+                  onValueChange={(value) => setFilters(prev => ({ ...prev, ageRange: value }))}
+                  min={18}
+                  max={65}
+                  step={1}
+                  className="w-full"
+                />
               </div>
-
-              {/* Mobile Filter Button */}
-              {isMobile && (
-                <div className="mb-4">
-                  <Sheet>
-                    <SheetTrigger asChild>
-                      <Button 
-                        variant="outline" 
-                        className="w-full"
-                      >
-                        <Filter className="h-4 w-4 mr-2" />
-                        Filtros
-                      </Button>
-                    </SheetTrigger>
-                    <SheetContent side="left" className="w-[300px] sm:w-[400px]">
-                      <SheetHeader>
-                        <SheetTitle>Filtros</SheetTitle>
-                      </SheetHeader>
-                      <div className="py-4">
-                        <DiscoverSidebar 
-                          filters={filters} 
-                          onFiltersChange={handleFiltersChange} 
-                          onReset={handleResetFilters}
-                          dailyStats={dailyStats} 
-                        />
-                      </div>
-                    </SheetContent>
-                  </Sheet>
-                </div>
-              )}
-
-              {filteredProfiles.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-                  {filteredProfiles.map(profile => (
-                    <ProfileCard 
-                      key={profile.id} 
-                      profile={profile} 
-                      onLike={handleLike}
-                      onSuperLike={handleSuperLike}
-                    />
+              
+              {/* Distancia */}
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Distancia: {filters.distance} km
+                </label>
+                <Slider
+                  value={[filters.distance]}
+                  onValueChange={(value) => setFilters(prev => ({ ...prev, distance: value[0] }))}
+                  min={1}
+                  max={100}
+                  step={1}
+                  className="w-full"
+                />
+              </div>
+              
+              {/* Intereses */}
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Intereses
+                </label>
+                <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto">
+                  {importedLifestyleInterests.slice(0, 12).map((interest) => (
+                    <Badge
+                      key={interest}
+                      variant={filters.interests.includes(interest) ? "default" : "outline"}
+                      className="cursor-pointer text-xs"
+                      onClick={() => {
+                        setFilters(prev => ({
+                          ...prev,
+                          interests: prev.interests.includes(interest)
+                            ? prev.interests.filter(i => i !== interest)
+                            : [...prev.interests, interest]
+                        }));
+                      }}
+                    >
+                      {interest}
+                    </Badge>
                   ))}
                 </div>
-              ) : (
-                <div className="flex items-center justify-center h-96">
-                  <Card className="text-center p-8 bg-card/80 backdrop-blur-sm">
-                    <p className="text-muted-foreground mb-4">No se encontraron perfiles.</p>
-                    <Button onClick={handleResetFilters}>
-                      <RefreshCw className="mr-2 h-4 w-4" />
-                      Limpiar Filtros
-                    </Button>
-                  </Card>
+                
+                {/* Filtros adicionales */}
+                <div className="space-y-3">
+                  <label className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      checked={filters.onlineOnly}
+                      onChange={(e) => setFilters(prev => ({ ...prev, onlineOnly: e.target.checked }))}
+                      className="rounded"
+                    />
+                    <span className="text-sm text-gray-700">Solo en línea</span>
+                  </label>
+                  <label className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      checked={filters.verifiedOnly}
+                      onChange={(e) => setFilters(prev => ({ ...prev, verifiedOnly: e.target.checked }))}
+                      className="rounded"
+                    />
+                    <span className="text-sm text-gray-700">Solo verificados</span>
+                  </label>
+                  <label className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      checked={filters.premiumOnly}
+                      onChange={(e) => setFilters(prev => ({ ...prev, premiumOnly: e.target.checked }))}
+                      className="rounded"
+                    />
+                    <span className="text-sm text-gray-700">Solo premium</span>
+                  </label>
                 </div>
+              </div>
+            </Card>
+          )}
+            
+          {/* Grid de perfiles */}
+          <div className="flex-1">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+              {isLoading ? (
+                // Skeleton loading
+                Array.from({ length: 6 }).map((_, i) => (
+                  <Card key={i} className="bg-white/90 backdrop-blur-md border-0 shadow-lg animate-pulse">
+                    <div className="aspect-[3/4] bg-gray-200 rounded-t-lg"></div>
+                    <CardContent className="p-4">
+                      <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                      <div className="h-3 bg-gray-200 rounded w-2/3"></div>
+                    </CardContent>
+                  </Card>
+                ))
+              ) : profiles.length === 0 ? (
+                <div className="col-span-full text-center py-12">
+                  <Target className="h-16 w-16 mx-auto text-white/50 mb-4" />
+                  <h3 className="text-xl font-semibold text-white mb-2">No hay perfiles disponibles</h3>
+                  <p className="text-white/70 mb-4">Intenta ajustar tus filtros o actualizar la búsqueda</p>
+                  <Button onClick={handleRefresh} className="bg-white/20 hover:bg-white/30 text-white">
+                    <RefreshCw className="h-4 w-4 mr-2" />
+                    Actualizar
+                  </Button>
+                </div>
+              ) : (
+                profiles.map((profile) => (
+                  <div key={profile.id} className="group relative bg-white/90 backdrop-blur-md rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
+                    <div className="relative aspect-[3/4] overflow-hidden">
+                      <img 
+                        src={profile.image} 
+                        alt={profile.name}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        onClick={() => navigate(`/profile/${profile.id}`)}
+                      />
+                      
+                      {/* Badges superiores */}
+                      <div className="absolute top-4 left-4 flex flex-col gap-2">
+                        {profile.isOnline && (
+                          <Badge className="bg-green-500 text-white text-xs">
+                            En línea
+                          </Badge>
+                        )}
+                        {profile.isVerified && (
+                          <Badge className="bg-blue-500 text-white text-xs">
+                            <CheckCircle className="h-3 w-3 mr-1" />
+                            Verificado
+                          </Badge>
+                        )}
+                        {profile.isPremium && (
+                          <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs">
+                            <Crown className="h-3 w-3 mr-1" />
+                            Premium
+                          </Badge>
+                        )}
+                      </div>
+                      
+                      {/* Rating */}
+                      <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-sm rounded-full px-2 py-1">
+                        <div className="flex items-center space-x-1">
+                          <Star className="w-3 h-3 text-yellow-400 fill-current" />
+                          <span className="text-xs font-medium text-white">{profile.rating}</span>
+                        </div>
+                      </div>
+                      
+                      {/* Botones de acción */}
+                      <div className="absolute bottom-4 right-4 flex space-x-2">
+                        <Button
+                          size="sm"
+                          variant="secondary"
+                          className="bg-white/90 hover:bg-white text-gray-800 rounded-full w-12 h-12 p-0"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleLike(profile.id);
+                          }}
+                        >
+                          <Heart className="h-5 w-5" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-full w-12 h-12 p-0"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleSuperLike(profile);
+                          }}
+                        >
+                          <Flame className="h-5 w-5" />
+                        </Button>
+                      </div>
+                    </div>
+                    
+                    {/* Información del perfil */}
+                    <div className="p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="text-lg font-bold text-gray-900">{profile.name}</h3>
+                        <span className="text-sm text-gray-600">{profile.age} años</span>
+                      </div>
+                      
+                      <div className="flex items-center text-sm text-gray-600 mb-2">
+                        <MapPin className="h-4 w-4 mr-1" />
+                        <span>{profile.location} • {profile.distance}km</span>
+                      </div>
+                      
+                      <p className="text-sm text-gray-700 mb-3 line-clamp-2">{profile.bio}</p>
+                      
+                      {/* Intereses */}
+                      <div className="flex flex-wrap gap-1 mb-3">
+                        {profile.interests.slice(0, 3).map((interest, index) => (
+                          <Badge key={index} variant="outline" className="text-xs">
+                            {interest}
+                          </Badge>
+                        ))}
+                        {profile.interests.length > 3 && (
+                          <Badge variant="outline" className="text-xs">
+                            +{profile.interests.length - 3}
+                          </Badge>
+                        )}
+                      </div>
+                      
+                      {/* Match score */}
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-1">
+                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                          <span className="text-xs text-gray-600">Compatibilidad: {profile.matchScore}%</span>
+                        </div>
+                        <span className="text-xs text-gray-500">{profile.lastActive}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))
               )}
             </div>
           </div>
-        </main>
+        </div>
       </div>
+      
+      <Navigation />
     </div>
   );
-};
+}
 
 export default Discover;

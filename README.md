@@ -252,7 +252,27 @@ NODE_ENV=development
 - ✅ **NUEVO**: Tipos TypeScript para todas las funcionalidades
 - ✅ **NUEVO**: Mock data extendido para funciones sociales
 
-### ✨ **Nuevas Funcionalidades (v1.3.4)** *(2 de septiembre, 2025)*
+### ✨ **Últimas Actualizaciones (v1.3.5)** *(2 de septiembre, 2025)*
+- ✅ **Discover Completamente Rediseñado**: Nueva página de descubrimiento con filtros avanzados
+  - Filtros por edad, distancia, intereses lifestyle y verificación
+  - Grid responsivo con cards de perfil mejoradas
+  - Estadísticas en tiempo real (Likes, Super Likes, Matches)
+  - Sistema de matching basado en compatibilidad
+  - Navegación integrada con botones Inicio/Perfil
+- ✅ **ProfileSingle Optimizado**: Mejoras visuales y funcionales
+  - Background consistente con gradiente del proyecto
+  - Imagen de perfil con aspect ratio 3:4 correcto
+  - Intereses reorganizados con scroll y estilo de ProfileCouple
+  - Contenedores con glassmorphism y backdrop blur
+- ✅ **Chat Privado Mejorado**: Sección de invitaciones completamente funcional
+  - Texto completo sin truncamiento
+  - Botones de acción (Enviar Invitación/Cancelar)
+  - Layout responsive con mejor UX
+- ✅ **Navegación del Index**: Removida para usuarios no autenticados
+  - Solo aparece cuando el usuario está logueado
+  - Mejor control de acceso a funcionalidades internas
+
+### ✨ **Funcionalidades Previas (v1.3.4)** *(2 de septiembre, 2025)*
 - ✅ **Perfiles de Pareja Mejorados**: Información separada para cada partner (él y ella)
 - ✅ **Sección de Intereses Completa**: Scroll vertical para mostrar todos los intereses
 - ✅ **Background Consistente**: Gradiente púrpura-rosa-índigo en todos los perfiles

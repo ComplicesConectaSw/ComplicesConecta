@@ -297,7 +297,6 @@ const Index = () => {
       </main>
 
       <Footer />
-      <Navigation />
       {showWelcome && <WelcomeModal isOpen={showWelcome} onClose={handleWelcomeClose} />}
       
       <style>{`
