@@ -4,10 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Save, Camera, X, Users } from "lucide-react";
+import { ArrowLeft, Save, Camera, X, Users, MapPin, AlertCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { generateMockCouple } from "@/lib/data";
+import { lifestyleInterests } from "@/lib/lifestyle-interests";
+import { useGeolocation } from "@/hooks/useGeolocation";
 
 const EditProfileCouple = () => {
   const navigate = useNavigate();
@@ -18,26 +20,35 @@ const EditProfileCouple = () => {
     bio: "",
     interests: [] as string[],
     partner1: {
-      name: "",
+      firstName: "",
+      lastName: "",
+      nickname: "",
       age: "",
       profession: "",
       bio: "",
-      avatar: ""
+      avatar: "",
+      interests: [] as string[],
+      publicImages: [] as string[],
+      privateImages: [] as string[]
     },
     partner2: {
-      name: "",
+      firstName: "",
+      lastName: "",
+      nickname: "",
       age: "",
       profession: "",
       bio: "",
-      avatar: ""
+      avatar: "",
+      interests: [] as string[],
+      publicImages: [] as string[],
+      privateImages: [] as string[]
     }
   });
+  
+  const { location, error: locationError, getCurrentLocation } = useGeolocation();
+  const [locationStatus, setLocationStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
-  const availableInterests = [
-    "Fiestas Privadas", "Intercambio de Parejas", "Eventos VIP", "Lifestyle", 
-    "Experiencias Nuevas", "Viajes", "Aventuras", "Diversión", "Arte", 
-    "Música", "Gastronomía", "Spa & Wellness", "Playa", "Montaña"
-  ];
+  const availableInterests = lifestyleInterests;
 
   useEffect(() => {
     // Verificar autenticación demo y cargar perfil del usuario
@@ -67,18 +78,28 @@ const EditProfileCouple = () => {
       bio: profileData.bio || "",
       interests: profileData.interests || [],
       partner1: {
-        name: profileData.partner1?.name || "",
+        firstName: profileData.partner1?.name?.split(' ')[0] || "",
+        lastName: profileData.partner1?.name?.split(' ')[1] || "",
+        nickname: profileData.partner1?.nickname || "",
         age: profileData.partner1?.age?.toString() || "",
         profession: profileData.partner1?.profession || "",
         bio: profileData.partner1?.bio || "",
-        avatar: profileData.partner1?.avatar || ""
+        avatar: profileData.partner1?.avatar || "",
+        interests: profileData.partner1?.interests || [],
+        publicImages: profileData.partner1?.publicImages || [],
+        privateImages: profileData.partner1?.privateImages || []
       },
       partner2: {
-        name: profileData.partner2?.name || "",
+        firstName: profileData.partner2?.name?.split(' ')[0] || "",
+        lastName: profileData.partner2?.name?.split(' ')[1] || "",
+        nickname: profileData.partner2?.nickname || "",
         age: profileData.partner2?.age?.toString() || "",
         profession: profileData.partner2?.profession || "",
         bio: profileData.partner2?.bio || "",
-        avatar: profileData.partner2?.avatar || ""
+        avatar: profileData.partner2?.avatar || "",
+        interests: profileData.partner2?.interests || [],
+        publicImages: profileData.partner2?.publicImages || [],
+        privateImages: profileData.partner2?.privateImages || []
       }
     });
   }, [navigate]);
@@ -100,13 +121,52 @@ const EditProfileCouple = () => {
     }
   };
 
-  const toggleInterest = (interest: string) => {
-    setFormData(prev => ({
-      ...prev,
-      interests: prev.interests.includes(interest)
-        ? prev.interests.filter(i => i !== interest)
-        : [...prev.interests, interest]
-    }));
+  const toggleInterest = (interest: string, partner?: 'partner1' | 'partner2') => {
+    if (partner) {
+      setFormData(prev => ({
+        ...prev,
+        [partner]: {
+          ...prev[partner],
+          interests: prev[partner].interests.includes(interest)
+            ? prev[partner].interests.filter(i => i !== interest)
+            : [...prev[partner].interests, interest]
+        }
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        interests: prev.interests.includes(interest)
+          ? prev.interests.filter(i => i !== interest)
+          : [...prev.interests, interest]
+      }));
+    }
+  };
+  
+  const handleLocationDetection = () => {
+    setLocationStatus('loading');
+    getCurrentLocation();
+  };
+  
+  useEffect(() => {
+    if (location) {
+      // Simular geocodificación inversa para obtener ciudad
+      const mockCities = ['Ciudad de México', 'Guadalajara', 'Monterrey', 'Puebla', 'Tijuana', 'León', 'Juárez', 'Torreón', 'Querétaro', 'Mérida'];
+      const randomCity = mockCities[Math.floor(Math.random() * mockCities.length)];
+      setFormData(prev => ({
+        ...prev,
+        location: randomCity
+      }));
+      setLocationStatus('success');
+    }
+    if (locationError) {
+      setLocationStatus('error');
+    }
+  }, [location, locationError]);
+  
+  const handleImageUpload = (partner: 'partner1' | 'partner2', type: 'public' | 'private' | 'avatar') => {
+    // Simulación de subida de imagen
+    console.log(`Subiendo imagen ${type} para ${partner}`);
+    // Aquí iría la lógica real de subida de imagen
   };
 
   const handleSave = () => {
@@ -160,30 +220,32 @@ const EditProfileCouple = () => {
               <div className="relative">
                 <img 
                   src={profile.partner1.avatar} 
-                  alt={formData.partner1.name}
+                  alt={`${formData.partner1.firstName} ${formData.partner1.lastName}`}
                   className="w-full h-40 rounded-lg object-cover"
                 />
                 <Button 
                   size="sm"
-                  className="absolute bottom-2 right-2 rounded-full bg-purple-500 hover:bg-purple-600 text-white"
+                  className="absolute bottom-2 right-2 rounded-full bg-pink-500 hover:bg-pink-600 text-white"
+                  onClick={() => handleImageUpload('partner1', 'avatar')}
                 >
                   <Camera className="h-4 w-4" />
                 </Button>
-                <p className="text-center text-sm text-gray-600 mt-2">{formData.partner1.name}</p>
+                <p className="text-center text-sm text-gray-600 mt-2">{formData.partner1.firstName} (Ella)</p>
               </div>
               <div className="relative">
                 <img 
                   src={profile.partner2.avatar} 
-                  alt={formData.partner2.name}
+                  alt={`${formData.partner2.firstName} ${formData.partner2.lastName}`}
                   className="w-full h-40 rounded-lg object-cover"
                 />
                 <Button 
                   size="sm"
-                  className="absolute bottom-2 right-2 rounded-full bg-purple-500 hover:bg-purple-600 text-white"
+                  className="absolute bottom-2 right-2 rounded-full bg-blue-500 hover:bg-blue-600 text-white"
+                  onClick={() => handleImageUpload('partner2', 'avatar')}
                 >
                   <Camera className="h-4 w-4" />
                 </Button>
-                <p className="text-center text-sm text-gray-600 mt-2">{formData.partner2.name}</p>
+                <p className="text-center text-sm text-gray-600 mt-2">{formData.partner2.firstName} (Él)</p>
               </div>
             </div>
           </CardContent>
@@ -205,11 +267,30 @@ const EditProfileCouple = () => {
             
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Ubicación</label>
-              <Input
-                value={formData.location}
-                onChange={(e) => handleInputChange('location', e.target.value)}
-                placeholder="Ciudad donde viven"
-              />
+              <div className="space-y-2">
+                <Input
+                  value={formData.location}
+                  onChange={(e) => handleInputChange('location', e.target.value)}
+                  placeholder="Ciudad donde viven"
+                />
+                {locationError && (
+                  <div className="flex items-center text-red-500 text-sm">
+                    <AlertCircle className="h-4 w-4 mr-1" />
+                    Error al detectar ubicación
+                  </div>
+                )}
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={handleLocationDetection}
+                  disabled={locationStatus === 'loading'}
+                  className="w-full"
+                >
+                  <MapPin className="h-4 w-4 mr-2" />
+                  {locationStatus === 'loading' ? 'Detectando...' : 'Reintentar detección de ubicación'}
+                </Button>
+              </div>
             </div>
             
             <div>
@@ -228,18 +309,37 @@ const EditProfileCouple = () => {
           </CardContent>
         </Card>
 
-        {/* Información del Partner 1 */}
-        <Card className="bg-white shadow-lg">
+        {/* Información del Partner 1 (Ella) */}
+        <Card className="bg-white shadow-lg border-l-4 border-pink-400">
           <CardContent className="p-6 space-y-4">
-            <h3 className="font-semibold text-pink-600 mb-4">Información de {formData.partner1.name}</h3>
+            <h3 className="font-semibold text-pink-600 mb-4">Información de Ella</h3>
             
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Nombre</label>
                 <Input
-                  value={formData.partner1.name}
-                  onChange={(e) => handleInputChange('name', e.target.value, 'partner1')}
+                  value={formData.partner1.firstName}
+                  onChange={(e) => handleInputChange('firstName', e.target.value, 'partner1')}
                   placeholder="Nombre"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Apellido</label>
+                <Input
+                  value={formData.partner1.lastName}
+                  onChange={(e) => handleInputChange('lastName', e.target.value, 'partner1')}
+                  placeholder="Apellido"
+                />
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Apodo</label>
+                <Input
+                  value={formData.partner1.nickname}
+                  onChange={(e) => handleInputChange('nickname', e.target.value, 'partner1')}
+                  placeholder="Apodo"
                 />
               </div>
               <div>
@@ -272,21 +372,102 @@ const EditProfileCouple = () => {
                 className="resize-none"
               />
             </div>
+            
+            {/* Galería de imágenes para Partner 1 */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Galería de Imágenes</label>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-xs text-gray-600 mb-2">Imágenes Públicas</p>
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+                    <Camera className="h-8 w-8 mx-auto text-gray-400 mb-2" />
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => handleImageUpload('partner1', 'public')}
+                    >
+                      Subir Públicas
+                    </Button>
+                  </div>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-600 mb-2">Imágenes Privadas</p>
+                  <div className="border-2 border-dashed border-pink-300 rounded-lg p-4 text-center">
+                    <Camera className="h-8 w-8 mx-auto text-pink-400 mb-2" />
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => handleImageUpload('partner1', 'private')}
+                      className="border-pink-300 text-pink-600"
+                    >
+                      Subir Privadas
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Intereses individuales para Partner 1 */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Intereses Lifestyle</label>
+              <p className="text-xs text-gray-600 mb-3">Selecciona sus intereses para encontrar matches compatibles</p>
+              <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto p-2 border rounded-lg bg-pink-50">
+                {availableInterests.map((interest) => (
+                  <Badge
+                    key={interest}
+                    variant={formData.partner1.interests.includes(interest) ? "default" : "secondary"}
+                    className={`cursor-pointer transition-all text-xs ${
+                      formData.partner1.interests.includes(interest)
+                        ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-md"
+                        : "hover:bg-pink-100 text-gray-800 border border-pink-200"
+                    }`}
+                    onClick={() => toggleInterest(interest, 'partner1')}
+                  >
+                    {interest}
+                    {formData.partner1.interests.includes(interest) && (
+                      <X className="h-3 w-3 ml-1" />
+                    )}
+                  </Badge>
+                ))}
+              </div>
+              <p className="text-xs text-gray-500 mt-2">
+                {formData.partner1.interests.length}/10 seleccionados
+              </p>
+            </div>
           </CardContent>
         </Card>
 
-        {/* Información del Partner 2 */}
-        <Card className="bg-white shadow-lg">
+        {/* Información del Partner 2 (Él) */}
+        <Card className="bg-white shadow-lg border-l-4 border-blue-400">
           <CardContent className="p-6 space-y-4">
-            <h3 className="font-semibold text-blue-600 mb-4">Información de {formData.partner2.name}</h3>
+            <h3 className="font-semibold text-blue-600 mb-4">Información de Él</h3>
             
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Nombre</label>
                 <Input
-                  value={formData.partner2.name}
-                  onChange={(e) => handleInputChange('name', e.target.value, 'partner2')}
+                  value={formData.partner2.firstName}
+                  onChange={(e) => handleInputChange('firstName', e.target.value, 'partner2')}
                   placeholder="Nombre"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Apellido</label>
+                <Input
+                  value={formData.partner2.lastName}
+                  onChange={(e) => handleInputChange('lastName', e.target.value, 'partner2')}
+                  placeholder="Apellido"
+                />
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Apodo</label>
+                <Input
+                  value={formData.partner2.nickname}
+                  onChange={(e) => handleInputChange('nickname', e.target.value, 'partner2')}
+                  placeholder="Apodo"
                 />
               </div>
               <div>
@@ -318,6 +499,68 @@ const EditProfileCouple = () => {
                 rows={3}
                 className="resize-none"
               />
+            </div>
+            
+            {/* Galería de imágenes para Partner 2 */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Galería de Imágenes</label>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-xs text-gray-600 mb-2">Imágenes Públicas</p>
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+                    <Camera className="h-8 w-8 mx-auto text-gray-400 mb-2" />
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => handleImageUpload('partner2', 'public')}
+                    >
+                      Subir Públicas
+                    </Button>
+                  </div>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-600 mb-2">Imágenes Privadas</p>
+                  <div className="border-2 border-dashed border-blue-300 rounded-lg p-4 text-center">
+                    <Camera className="h-8 w-8 mx-auto text-blue-400 mb-2" />
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => handleImageUpload('partner2', 'private')}
+                      className="border-blue-300 text-blue-600"
+                    >
+                      Subir Privadas
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Intereses individuales para Partner 2 */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Intereses Lifestyle</label>
+              <p className="text-xs text-gray-600 mb-3">Selecciona sus intereses para encontrar matches compatibles</p>
+              <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto p-2 border rounded-lg bg-blue-50">
+                {availableInterests.map((interest) => (
+                  <Badge
+                    key={interest}
+                    variant={formData.partner2.interests.includes(interest) ? "default" : "secondary"}
+                    className={`cursor-pointer transition-all text-xs ${
+                      formData.partner2.interests.includes(interest)
+                        ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-md"
+                        : "hover:bg-blue-100 text-gray-800 border border-blue-200"
+                    }`}
+                    onClick={() => toggleInterest(interest, 'partner2')}
+                  >
+                    {interest}
+                    {formData.partner2.interests.includes(interest) && (
+                      <X className="h-3 w-3 ml-1" />
+                    )}
+                  </Badge>
+                ))}
+              </div>
+              <p className="text-xs text-gray-500 mt-2">
+                {formData.partner2.interests.length}/10 seleccionados
+              </p>
             </div>
           </CardContent>
         </Card>

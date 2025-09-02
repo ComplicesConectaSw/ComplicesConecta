@@ -1,4 +1,4 @@
-import { Search, Users, Heart, MessageCircle, Calendar, Crown, BarChart3, Settings, Bell, Shield, UserPlus } from 'lucide-react';
+import { Heart, Users, Shield, Zap, MapPin, Calendar, Camera, MessageCircle, Star, Trophy, Gift, Sparkles, Search, UserPlus, Crown, BarChart3, Settings, Bell } from "lucide-react";
 
 export const mainNavItems = [
   { title: 'Descubrir', url: '/discover', icon: Search, badge: 'Nuevo' },
@@ -37,7 +37,7 @@ export function getRandomCoupleProfile() {
 }
 
 // Generador de perfiles mock aleatorios
-export const generateMockSingle = () => {
+export const generateMockSingle = (includeOnlineStatus = true) => {
   const nombresF = ["Sofía", "Valentina", "Isabella", "Camila", "Lucía", "Daniela", "Gabriela", "Andrea"];
   const nombresM = ["Raúl", "Miguel", "Alejandro", "Fernando", "Roberto", "Javier", "Antonio", "Pablo"];
   
@@ -79,31 +79,28 @@ export const generateMockSingle = () => {
     'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400'
   ];
   
-  return {
-    id: Math.floor(Math.random() * 10000),
+  const profile = {
+    id: Math.random().toString(36).substr(2, 9),
     name: `${nombre} ${apellido}`,
-    age: Math.floor(Math.random() * 27) + 18, // 18-44
-    gender: esMujer ? 'female' : 'male',
+    age: Math.floor(Math.random() * 20) + 25,
     location: ubicaciones[Math.floor(Math.random() * ubicaciones.length)],
-    profession: profesiones[Math.floor(Math.random() * profesiones.length)],
-    bio: `Persona auténtica buscando conexiones reales y experiencias memorables. Me encanta ${intereses[Math.floor(Math.random() * intereses.length)].toLowerCase()} y conocer gente nueva.`,
-    lookingFor: "Conexiones auténticas y experiencias únicas",
-    lifestyle: "Aventurero y espontáneo",
-    experienceLevel: "Intermedio",
-    interests: intereses.slice(0, 5 + Math.floor(Math.random() * 4)),
+    bio: `Soy ${nombre}, me encanta explorar nuevas experiencias y conocer gente interesante. Siempre busco aventuras y momentos únicos.`,
+    interests: intereses.slice(0, 3 + Math.floor(Math.random() * 3)),
     avatar: realImages[Math.floor(Math.random() * realImages.length)],
-    isOnline: Math.random() > 0.5,
-    isVerified: Math.random() > 0.3,
-    isPremium: Math.random() > 0.7,
-    stats: {
-      likes: Math.floor(Math.random() * 500) + 50,
-      matches: Math.floor(Math.random() * 50) + 5,
-      visits: Math.floor(Math.random() * 200) + 20
-    }
+    verified: Math.random() > 0.3,
+    distance: Math.floor(Math.random() * 50) + 1,
+    lastActive: `Hace ${Math.floor(Math.random() * 60)} min`,
+    profession: profesiones[Math.floor(Math.random() * profesiones.length)],
+    photos: [realImages[Math.floor(Math.random() * realImages.length)]],
+    compatibility: Math.floor(Math.random() * 30) + 70,
+    isOnline: includeOnlineStatus ? Math.random() > 0.3 : false,
+    lastSeen: includeOnlineStatus ? (Math.random() > 0.3 ? 'Ahora' : `Hace ${Math.floor(Math.random() * 120) + 1} min`) : 'Desconocido'
   };
+  
+  return profile;
 };
 
-export const generateMockCouple = () => {
+export const generateMockCouple = (includeOnlineStatus = true) => {
   const nombresM = ["Julio", "Miguel", "Alejandro", "Fernando", "Roberto", "Javier", "Antonio", "Pablo"];
   const nombresF = ["Anabella", "María", "Carmen", "Elena", "Sofía", "Laura", "Patricia", "Isabel"];
   const apellidos = ["García", "Rodríguez", "López", "Martínez", "González", "Pérez", "Sánchez", "Ramírez"];

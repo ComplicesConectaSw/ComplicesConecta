@@ -1,17 +1,21 @@
 import { useState } from 'react';
-import { Heart, MapPin, Star, X, Zap } from 'lucide-react';
+import { Heart, MessageCircle, MapPin, Verified, Star, Wifi, WifiOff, X, Zap } from "lucide-react";
+import { useUserOnlineStatus } from "@/hooks/useOnlineStatus";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
 interface ProfileCardProps {
-  profile: any; // Can be tightened later
+  profile: any;
   onLike?: (id: string) => void;
   onSuperLike?: (profile: any) => void;
 }
 
 export const ProfileCard = ({ profile, onLike, onSuperLike }: ProfileCardProps) => {
-  const { id, name, age, location, interests, image, rating, isOnline = false } = profile;
+  const { getUserOnlineStatus, getLastSeenTime } = useUserOnlineStatus();
+  const isOnline = profile.isOnline ?? getUserOnlineStatus(profile.id);
+  const lastSeen = profile.lastSeen ?? getLastSeenTime(profile.id);
+  const { id, name, age, location, interests, image, rating, isOnline: onlineStatus = false } = profile;
   const navigate = useNavigate();
   const { toast } = useToast();
   const [imageError, setImageError] = useState(false);
@@ -20,12 +24,12 @@ export const ProfileCard = ({ profile, onLike, onSuperLike }: ProfileCardProps) 
     navigate(`/profile/${id}`);
   };
 
-      const handleLike = (e: React.MouseEvent) => {
+  const handleLike = (e: React.MouseEvent) => {
     e.stopPropagation();
     onLike?.(id);
   };
 
-      const handleSuperLike = (e: React.MouseEvent) => {
+  const handleSuperLike = (e: React.MouseEvent) => {
     e.stopPropagation();
     onSuperLike?.(profile);
   };
@@ -37,6 +41,7 @@ export const ProfileCard = ({ profile, onLike, onSuperLike }: ProfileCardProps) 
       description: `Has pasado el perfil de ${name}`,
     });
   };
+
   return (
     <div 
       className="group relative bg-card-gradient rounded-2xl overflow-hidden shadow-soft hover:shadow-glow transition-all duration-500 transform hover:scale-105 cursor-pointer"
@@ -54,12 +59,10 @@ export const ProfileCard = ({ profile, onLike, onSuperLike }: ProfileCardProps) 
         )}
         
         {/* Online Status */}
-        {isOnline && (
-          <div className="absolute top-4 left-4 flex items-center space-x-2 bg-background/80 backdrop-blur-sm rounded-full px-3 py-1">
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-            <span className="text-xs font-medium text-foreground">En línea</span>
-          </div>
-        )}
+        <div className="absolute top-4 left-4 flex items-center space-x-2 bg-background/80 backdrop-blur-sm rounded-full px-3 py-1">
+          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+          <span className="text-xs font-medium text-foreground">En línea</span>
+        </div>
 
         {/* Rating */}
         <div className="absolute top-4 right-4 flex items-center space-x-1 bg-background/80 backdrop-blur-sm rounded-full px-3 py-1">
@@ -73,10 +76,21 @@ export const ProfileCard = ({ profile, onLike, onSuperLike }: ProfileCardProps) 
         {/* Quick Actions */}
         <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <div className="text-white">
-            <h3 className="text-xl font-bold">{name}, {age}</h3>
-            <div className="flex items-center space-x-1 text-white/80">
-              <MapPin className="w-3 h-3" />
-              <span className="text-sm">{location}</span>
+            <div className="absolute top-3 left-3 flex gap-2">
+              {profile.verified && (
+                <div className="bg-blue-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
+                  <Verified className="h-3 w-3" />
+                  Verificado
+                </div>
+              )}
+              <div className={`px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1 ${
+                isOnline 
+                  ? 'bg-green-500 text-white' 
+                  : 'bg-gray-500 text-white'
+              }`}>
+                {isOnline ? <Wifi className="h-3 w-3" /> : <WifiOff className="h-3 w-3" />}
+                {isOnline ? 'Online' : lastSeen}
+              </div>
             </div>
           </div>
           

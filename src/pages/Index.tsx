@@ -222,14 +222,6 @@ const Index = () => {
               ))}
             </div>
             
-            <div className="text-center">
-              <Button variant="love" size="lg" asChild>
-                <Link to="/profiles">
-                  <Users className="mr-2 h-5 w-5" />
-                  Ver Más Perfiles
-                </Link>
-              </Button>
-            </div>
           </div>
         </section>
 
