@@ -1,0 +1,11 @@
+name: Production Environment
+description: Production deployment environment
+
+# Branch protection rules
+protection_rules:
+  - pattern: main
+  - pattern: master
+
+env:
+  url: https://complicesconecta.com
+  NEXT_PUBLIC_API_URL: https://api.complicesconecta.com

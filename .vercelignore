@@ -1,0 +1,15 @@
+# Ignore package-lock.json to force npm install
+package-lock.json
+
+# Ignore GitHub workflows
+.github/
+
+# Ignore development files
+.env.local
+.env.development
+*.log
+
+# Ignore build artifacts that might cause conflicts
+node_modules/
+dist/
+.cache/

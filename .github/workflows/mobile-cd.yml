@@ -1,0 +1,237 @@
+name: Mobile App CD
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'apps/mobile/**'
+      - 'packages/shared/**'
+      - 'packages/ui/**'
+  workflow_dispatch:
+    inputs:
+      version_name:
+        description: 'Versión semántica (e.j. 1.2.3)'
+        required: true
+        default: ''
+      version_code:
+        description: 'Código de versión (número entero)'
+        required: true
+        default: ''
+
+env:
+  VERSION_NAME: ${{ github.event.inputs.version_name || format('1.0.{0}', github.run_number) }}
+  VERSION_CODE: ${{ github.event.inputs.version_code || github.run_number }}
+
+jobs:
+  build-android-app:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+        
+          
+      - name: Install dependencies
+        run: npm install --no-frozen-lockfile
+        
+      - name: Update app version
+        run: |
+          echo "Actualizando versión de la app a $VERSION_NAME ($VERSION_CODE)"
+          sed -i "s/versionCode .*/versionCode $VERSION_CODE/" apps/mobile/app/build.gradle
+          sed -i "s/versionName .*/versionName \"$VERSION_NAME\"/" apps/mobile/app/build.gradle
+          
+      - name: Configurar seguridad para la app
+        run: |
+          cat > apps/mobile/app/src/main/java/com/complicesconecta/SecurityConfig.java << 'EOL'
+          package com.complicesconecta;
+          
+          public class SecurityConfig {
+              // Flags de seguridad para detectar entornos inseguros
+              public static final boolean DETECT_DEVELOPER_MODE = true;
+              public static final boolean DETECT_ROOT = true;
+              public static final boolean DETECT_EMULATOR = true;
+              
+              // Información de la versión actual
+              public static final String APP_VERSION = "${{ env.VERSION_NAME }}";
+              public static final int VERSION_CODE = ${{ env.VERSION_CODE }};
+              
+              // Timestamp de compilación para verificación de integridad
+              public static final long BUILD_TIMESTAMP = $(date +%s000);
+          }
+          EOL
+      
+      - name: Build debug APK
+        run: |
+          cd apps/mobile
+          ./gradlew assembleDebug
+      
+      - name: Run APK tests
+        run: |
+          cd apps/mobile
+          ./gradlew testDebugUnitTest
+      
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug
+          path: apps/mobile/app/build/outputs/apk/debug/app-debug.apk
+      
+      - name: Build release APK
+        run: |
+          cd apps/mobile
+          ./gradlew assembleRelease
+        env:
+          DETECT_DEVELOPER_MODE: 'true'
+          DETECT_ROOT: 'true'
+          
+      - name: Sign APK
+        uses: r0adkll/sign-android-release@v1
+        id: sign_app
+        with:
+          releaseDirectory: ./apps/mobile/app/build/outputs/apk/release
+          signingKeyBase64: ${{ secrets.ANDROID_SIGNING_KEY }}
+          alias: ${{ secrets.ANDROID_KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "34.0.0"
+        continue-on-error: true
+          
+  publish-app:
+    needs: build-android-app
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Download signed APK
+        uses: actions/download-artifact@v4
+        with:
+          name: app-signed
+          path: ./app-release
+          
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ env.VERSION_NAME }}
+          release_name: ComplicesConecta v${{ env.VERSION_NAME }}
+          draft: false
+          prerelease: false
+          body: |
+            ## ComplicesConecta v${{ env.VERSION_NAME }} (Build ${{ env.VERSION_CODE }})
+            
+            **Fecha de lanzamiento:** $(date +'%d/%m/%Y')
+            
+            ### Características de seguridad
+            - Detección de modo desarrollador
+            - Detección de dispositivos rooteados
+            - Detección de emuladores
+            - Verificación de integridad de la aplicación
+            
+            ### Instrucciones de instalación
+            1. Descarga el APK
+            2. Habilita "Fuentes desconocidas" en la configuración de tu dispositivo
+            3. Instala la aplicación
+            4. Inicia sesión con tus credenciales existentes
+            
+            [Ver documentación completa](https://complicesconecta.app/docs)
+            
+      - name: Upload APK to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./app-release/app-release-signed.apk
+          asset_name: ComplicesConecta-v${{ env.VERSION_NAME }}.apk
+          asset_content_type: application/vnd.android.package-archive
+          
+  update-download-page:
+    needs: publish-app
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+        
+      - name: Create download page
+        run: |
+          VERSION="v${{ env.VERSION_NAME }}"
+          DOWNLOAD_URL="https://github.com/${{ github.repository }}/releases/download/$VERSION/ComplicesConecta-v${{ env.VERSION_NAME }}.apk"
+          BUILD_NUMBER="${{ env.VERSION_CODE }}"
+          
+          mkdir -p public/downloads
+          cat > public/downloads/index.html << EOL
+          <!DOCTYPE html>
+          <html lang="es">
+          <head>
+            <title>Descargar ComplicesConecta</title>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+          </head>
+          <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+            <div class="bg-white rounded-lg shadow-xl p-8 max-w-md w-full">
+              <h1 class="text-3xl font-bold text-center mb-6">ComplicesConecta</h1>
+              <p class="mb-2 text-gray-700">Versión: $VERSION (Build $BUILD_NUMBER)</p>
+              <p class="mb-6 text-gray-500">Publicado el: $(date +'%d/%m/%Y')</p>
+              
+              <div class="mb-8">
+                <h2 class="font-semibold text-lg mb-2">Instrucciones de instalación:</h2>
+                <ol class="list-decimal pl-6 space-y-2 text-gray-700">
+                  <li>Descarga la aplicación usando el botón de abajo</li>
+                  <li>Abre el archivo APK en tu dispositivo Android</li>
+                  <li>Si se te solicita, habilita la instalación desde fuentes desconocidas</li>
+                  <li>Sigue las instrucciones en pantalla para completar la instalación</li>
+                  <li>¡Disfruta de ComplicesConecta!</li>
+                </ol>
+              </div>
+              
+              <div class="mb-6 bg-blue-50 p-4 rounded-lg border border-blue-200">
+                <h3 class="font-semibold text-blue-800">Características de seguridad:</h3>
+                <ul class="list-disc pl-5 mt-2 text-blue-700">
+                  <li>Detección de modo desarrollador</li>
+                  <li>Detección de dispositivos rooteados</li>
+                  <li>Prevención de ejecución en emuladores</li>
+                  <li>Verificación de integridad de la aplicación</li>
+                </ul>
+              </div>
+              
+              <a href="$DOWNLOAD_URL" class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg text-center transition duration-300">
+                Descargar APK
+              </a>
+              
+              <p class="mt-6 text-xs text-gray-500 text-center">
+                ComplicesConecta © ${{ github.event.repository.owner.name }} $(date +'%Y')
+              </p>
+            </div>
+          </body>
+          </html>
+          EOL
+      
+      - name: Deploy download page
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_DOWNLOAD_PAGE_PROJECT_ID }}
+          vercel-args: '--prod'
+          working-directory: ./public
+        continue-on-error: true

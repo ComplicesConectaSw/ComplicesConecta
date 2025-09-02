@@ -1,0 +1,22 @@
+name: Integración y Despliegue Continuo
+
+on:
+  workflow_dispatch:
+
+jobs:
+  construir:
+    name: 🔍 Validar y Construir
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Obtener código
+      uses: actions/checkout@v4
+    - name: Configurar Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+    - name: Instalar dependencias
+      run: npm ci
+    - name: Construir aplicación
+      run: npm run build
