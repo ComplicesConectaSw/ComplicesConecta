@@ -23,7 +23,7 @@ const Index = () => {
   const [showWelcome, setShowWelcome] = useState(false);
   const [showFeatureModal, setShowFeatureModal] = useState(false);
   const [selectedFeature, setSelectedFeature] = useState<'connections' | 'verification' | 'events' | 'tokens'>('connections');
-  const [isAndroid, setIsAndroid] = useState(false);
+  const [isRunningInApp, setIsRunningInApp] = useState(false);
   const [showInstallModal, setShowInstallModal] = useState(false);
   const [showActionButtonsModal, setShowActionButtonsModal] = useState(false);
 
@@ -33,9 +33,16 @@ const Index = () => {
     const demoAuth = localStorage.getItem('demo_authenticated');
     const demoUser = localStorage.getItem('demo_user');
     
-    // Detectar si es Android
-    const userAgent = navigator.userAgent.toLowerCase();
-    setIsAndroid(userAgent.includes('android'));
+    // Detectar si se está ejecutando desde la APK instalada
+    // La APK instalada tendrá características específicas del WebView
+    const isInWebView = () => {
+      const userAgent = navigator.userAgent.toLowerCase();
+      // Detectar si está en un WebView de Android (APK instalada)
+      return userAgent.includes('wv') || // Android WebView
+             userAgent.includes('version/') && userAgent.includes('chrome/') && userAgent.includes('mobile') && !userAgent.includes('browser');
+    };
+    
+    setIsRunningInApp(isInWebView());
     
     // Remover redirección automática para permitir acceso al Index
     // Los usuarios pueden navegar manualmente a donde deseen
@@ -295,7 +302,7 @@ const Index = () => {
                     Crear Cuenta Gratis
                   </Link>
                 </Button>
-                {!isAndroid && (
+                {!isRunningInApp && (
                   <Button 
                     variant="outline" 
                     size="xl" 
