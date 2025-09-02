@@ -64,7 +64,7 @@ interface FAQItem {
 }
 
 const Admin = () => {
-  const { isAdminSync, isAuthenticated, user } = useAuth();
+  const { isAdmin, isAuthenticated, user } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
   
@@ -88,7 +88,7 @@ const Admin = () => {
       return;
     }
     
-    if (!isAdminSync()) {
+    if (!isAdmin()) {
       toast({
         title: "Acceso Denegado",
         description: "No tienes permisos de administrador",
@@ -99,7 +99,7 @@ const Admin = () => {
     }
 
     loadAdminData();
-  }, [isAuthenticated, isAdminSync]);
+  }, [isAuthenticated, isAdmin]);
 
   const loadAdminData = async () => {
     setLoading(true);
