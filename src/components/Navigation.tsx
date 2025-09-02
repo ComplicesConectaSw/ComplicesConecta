@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Home, Search, MessageCircle, Heart, User, Settings } from 'lucide-react';
+import { Home, Search, MessageCircle, Heart, User, Settings, UserPlus } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useFeatures } from '@/hooks/useFeatures';
 
 interface NavigationProps {
   className?: string;
@@ -10,14 +11,27 @@ interface NavigationProps {
 const Navigation = ({ className }: NavigationProps) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { features } = useFeatures();
 
-  const navItems = [
+  const baseNavItems = [
     { id: 'feed', icon: Home, label: 'Inicio', path: '/feed' },
     { id: 'discover', icon: Search, label: 'Descubrir', path: '/discover' },
     { id: 'chat', icon: MessageCircle, label: 'Chat', path: '/chat' },
     { id: 'matches', icon: Heart, label: 'Matches', path: '/matches' },
-    { id: 'profile', icon: User, label: 'Perfil', path: '/profile' },
   ];
+
+  // Agregar solicitudes si la función está habilitada
+  const navItems = features.requests 
+    ? [
+        ...baseNavItems.slice(0, 3), // feed, discover, chat
+        { id: 'requests', icon: UserPlus, label: 'Solicitudes', path: '/requests' },
+        ...baseNavItems.slice(3), // matches
+        { id: 'profile', icon: User, label: 'Perfil', path: '/profile' },
+      ]
+    : [
+        ...baseNavItems,
+        { id: 'profile', icon: User, label: 'Perfil', path: '/profile' },
+      ];
 
   const handleNavigation = (path: string) => {
     // Verificar sesión antes de navegar

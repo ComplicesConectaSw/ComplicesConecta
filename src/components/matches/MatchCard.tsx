@@ -115,8 +115,8 @@ export const MatchCard = ({ match, onSuperLike, onStartChat, onShare }: MatchCar
             <Button 
               variant="love" 
               size="sm" 
-              className="flex-1"
-              onClick={() => onStartChat(match.id)}
+              className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
+              onClick={() => window.location.href = `/chat?user=${match.id}`}
             >
               <MessageCircle className="w-4 h-4 mr-2" />
               {match.hasUnreadMessage ? 'Responder' : 'Chatear'}

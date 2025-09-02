@@ -2,22 +2,41 @@ import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Heart, MessageCircle, MapPin, Verified, Crown, Edit, Settings, Share2 } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { Heart, MessageCircle, MapPin, Verified, Crown, Edit, Settings, Share2, Eye, EyeOff, Lock, Globe, UserPlus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import ProfileStats from "@/components/profile/ProfileStats";
-import { generateMockSingle } from "@/lib/data";
+import Gallery from "@/components/profile/Gallery";
+import { generateMockSingle, mockPrivacySettings, ProfilePrivacySettings } from "@/lib/data";
+import { useFeatures } from "@/hooks/useFeatures";
 
 const ProfileSingle = () => {
   const navigate = useNavigate();
+  const { features } = useFeatures();
   const [profile, setProfile] = useState<any>(null);
   const [isOwnProfile, setIsOwnProfile] = useState(true); // Por defecto es perfil propio
+  const [privacySettings, setPrivacySettings] = useState<ProfilePrivacySettings>(mockPrivacySettings);
+  const [showPrivacySettings, setShowPrivacySettings] = useState(false);
+  const [activeTab, setActiveTab] = useState<'profile' | 'gallery' | 'privacy'>('profile');
 
   useEffect(() => {
     // Generar perfil mock o cargar desde localStorage
     const mockProfile = generateMockSingle();
     setProfile(mockProfile);
   }, []);
+
+  const updatePrivacySetting = (key: keyof ProfilePrivacySettings, value: any) => {
+    setPrivacySettings(prev => ({
+      ...prev,
+      [key]: value
+    }));
+  };
+
+  const handleSendConnectionRequest = () => {
+    // Lógica para enviar solicitud de conexión
+    console.log('Enviando solicitud de conexión...');
+  };
 
   if (!profile) {
     return (
@@ -31,7 +50,36 @@ const ProfileSingle = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-100 via-purple-50 to-indigo-100">
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Advanced Animated Background */}
+      <div className="fixed inset-0 z-0">
+        {/* Base Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-background via-muted/30 to-secondary/20"></div>
+        
+        {/* Animated Gradient Orbs */}
+        <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+        <div className="absolute top-40 right-10 w-96 h-96 bg-gradient-to-r from-accent/20 to-secondary/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-32 left-20 w-96 h-96 bg-gradient-to-r from-secondary/20 to-primary/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+        
+        {/* Floating Hearts */}
+        <div className="absolute inset-0 overflow-hidden">
+          {[...Array(8)].map((_, i) => (
+            <Heart 
+              key={i}
+              className={`absolute text-primary/10 animate-float-slow`}
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${i * 2}s`,
+                fontSize: `${Math.random() * 20 + 10}px`
+              }}
+              fill="currentColor"
+            />
+          ))}
+        </div>
+      </div>
+      
+      <div className="relative z-10">
       {/* Header */}
       <div className="bg-white/80 backdrop-blur-sm border-b border-white/20 p-4">
         <div className="flex items-center justify-between">
@@ -65,7 +113,7 @@ const ProfileSingle = () => {
             <img 
               src={profile.avatar} 
               alt={profile.name}
-              className="w-full h-64 sm:h-80 object-cover"
+              className="w-full h-96 sm:h-[500px] object-cover object-center"
             />
             <div className="absolute top-4 right-4 flex flex-col gap-2">
               {profile.isOnline && (
@@ -102,28 +150,49 @@ const ProfileSingle = () => {
         </Card>
 
         {/* Información básica */}
-        <Card className="bg-white shadow-lg">
+        <Card className="bg-white shadow-xl">
           <CardContent className="p-6">
-            <div className="text-center mb-4">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                {profile.name}, {profile.age}
-              </h1>
-              <div className="flex items-center justify-center text-gray-600 mb-2">
-                <MapPin className="h-4 w-4 mr-1" />
-                <span>{profile.location}</span>
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">{profile.name}</h2>
+              <div className="flex items-center justify-center space-x-4 text-gray-600 mb-4">
+                <span className="flex items-center">
+                  <MapPin className="h-4 w-4 mr-1" />
+                  {profile.location}
+                </span>
+                <span>•</span>
+                <span>{profile.profession}</span>
               </div>
-              <p className="text-gray-600 font-medium">{profile.profession}</p>
+              
+              {/* Bio Section */}
+              <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 mb-4">
+                <h3 className="font-semibold text-gray-900 mb-2">Sobre mí</h3>
+                <p className="text-gray-700 text-sm leading-relaxed">
+                  {profile.bio || "Persona auténtica buscando conexiones reales y experiencias memorables. Me encanta el arte y conocer gente nueva."}
+                </p>
+              </div>
+              
+              {/* Additional Info */}
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div className="bg-gray-50 rounded-lg p-3">
+                  <span className="font-medium text-gray-900">Edad:</span>
+                  <p className="text-gray-600">{profile.age} años</p>
+                </div>
+                <div className="bg-gray-50 rounded-lg p-3">
+                  <span className="font-medium text-gray-900">Buscando:</span>
+                  <p className="text-gray-600">Conexiones auténticas</p>
+                </div>
+              </div>
             </div>
             
-            <div className="border-t pt-4">
-              <h3 className="font-semibold text-gray-900 mb-2">Sobre mí</h3>
-              <p className="text-gray-700 leading-relaxed">{profile.bio}</p>
-            </div>
+            <ProfileStats 
+              stats={{
+                likes: profile.stats?.likes || 159,
+                matches: profile.stats?.matches || 17,
+                visits: profile.stats?.visits || 103
+              }}
+            />
           </CardContent>
         </Card>
-
-        {/* Estadísticas */}
-        <ProfileStats stats={profile.stats} />
 
         {/* Intereses */}
         <Card className="bg-white shadow-lg">
@@ -131,13 +200,265 @@ const ProfileSingle = () => {
             <h3 className="font-semibold text-gray-900 mb-3">Intereses</h3>
             <div className="flex flex-wrap gap-2">
               {profile.interests.map((interest: string, index: number) => (
-                <Badge key={index} variant="secondary" className="text-sm py-1 px-3">
+                <Badge key={index} className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm py-2 px-4 font-medium shadow-lg">
                   {interest}
                 </Badge>
               ))}
             </div>
           </CardContent>
         </Card>
+
+        {/* Navigation Tabs */}
+        <div className="flex bg-white rounded-lg shadow-lg mb-6">
+          <Button
+            variant={activeTab === 'profile' ? 'default' : 'ghost'}
+            className="flex-1 rounded-r-none"
+            onClick={() => setActiveTab('profile')}
+          >
+            Perfil
+          </Button>
+          <Button
+            variant={activeTab === 'gallery' ? 'default' : 'ghost'}
+            className="flex-1 rounded-none"
+            onClick={() => setActiveTab('gallery')}
+          >
+            Galería
+          </Button>
+          {isOwnProfile && features.profileVisibility && (
+            <Button
+              variant={activeTab === 'privacy' ? 'default' : 'ghost'}
+              className="flex-1 rounded-l-none"
+              onClick={() => setActiveTab('privacy')}
+            >
+              <Settings className="h-4 w-4 mr-2" />
+              Privacidad
+            </Button>
+          )}
+        </div>
+
+        {/* Tab Content */}
+        {activeTab === 'profile' && (
+          <>
+            {/* Información básica */}
+            <Card className="bg-white shadow-xl">
+              <CardContent className="p-6">
+                <div className="text-center mb-6">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">{profile.name}</h2>
+                  <div className="flex items-center justify-center space-x-4 text-gray-600 mb-4">
+                    <span className="flex items-center">
+                      <MapPin className="h-4 w-4 mr-1" />
+                      {profile.location}
+                    </span>
+                    <span>•</span>
+                    <span>{profile.profession}</span>
+                  </div>
+                  
+                  {/* Bio Section */}
+                  <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 mb-4">
+                    <h3 className="font-semibold text-gray-900 mb-2">Sobre mí</h3>
+                    <p className="text-gray-700 text-sm leading-relaxed">
+                      {profile.bio || "Persona auténtica buscando conexiones reales y experiencias memorables. Me encanta el arte y conocer gente nueva."}
+                    </p>
+                  </div>
+                  
+                  {/* Additional Info */}
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div className="bg-gray-50 rounded-lg p-3">
+                      <span className="font-medium text-gray-900">Edad:</span>
+                      <p className="text-gray-600">{profile.age} años</p>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-3">
+                      <span className="font-medium text-gray-900">Buscando:</span>
+                      <p className="text-gray-600">Conexiones auténticas</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <ProfileStats 
+                  stats={{
+                    likes: profile.stats?.likes || 159,
+                    matches: profile.stats?.matches || 17,
+                    visits: profile.stats?.visits || 103
+                  }}
+                />
+              </CardContent>
+            </Card>
+
+            {/* Intereses */}
+            <Card className="bg-white shadow-lg">
+              <CardContent className="p-6">
+                <h3 className="font-semibold text-gray-900 mb-3">Intereses</h3>
+                <div className="flex flex-wrap gap-2">
+                  {profile.interests.map((interest: string, index: number) => (
+                    <Badge key={index} className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm py-2 px-4 font-medium shadow-lg">
+                      {interest}
+                    </Badge>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </>
+        )}
+
+        {activeTab === 'gallery' && (
+          <Gallery 
+            userId={profile.id} 
+            isOwner={isOwnProfile}
+            canViewPrivate={true} // Simular que tiene acceso
+          />
+        )}
+
+        {activeTab === 'privacy' && isOwnProfile && features.profileVisibility && (
+          <Card className="bg-white shadow-xl">
+            <CardContent className="p-6">
+              <h3 className="text-xl font-bold text-gray-900 mb-6">Configuración de Privacidad</h3>
+              
+              <div className="space-y-6">
+                {/* Visibilidad del perfil */}
+                <div className="border-b pb-4">
+                  <h4 className="font-semibold text-gray-900 mb-3 flex items-center">
+                    <Eye className="h-5 w-5 mr-2" />
+                    Visibilidad del Perfil
+                  </h4>
+                  <div className="space-y-3">
+                    <label className="flex items-center space-x-3 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="profileVisibility"
+                        value="public"
+                        checked={privacySettings.profileVisibility === 'public'}
+                        onChange={(e) => updatePrivacySetting('profileVisibility', e.target.value)}
+                        className="text-purple-600"
+                      />
+                      <div>
+                        <div className="flex items-center">
+                          <Globe className="h-4 w-4 mr-2 text-green-600" />
+                          <span className="font-medium">Público</span>
+                        </div>
+                        <p className="text-sm text-gray-600">Visible para todos los usuarios</p>
+                      </div>
+                    </label>
+                    
+                    <label className="flex items-center space-x-3 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="profileVisibility"
+                        value="connections_only"
+                        checked={privacySettings.profileVisibility === 'connections_only'}
+                        onChange={(e) => updatePrivacySetting('profileVisibility', e.target.value)}
+                        className="text-purple-600"
+                      />
+                      <div>
+                        <div className="flex items-center">
+                          <UserPlus className="h-4 w-4 mr-2 text-blue-600" />
+                          <span className="font-medium">Solo conexiones</span>
+                        </div>
+                        <p className="text-sm text-gray-600">Visible solo para usuarios conectados</p>
+                      </div>
+                    </label>
+                    
+                    <label className="flex items-center space-x-3 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="profileVisibility"
+                        value="hidden"
+                        checked={privacySettings.profileVisibility === 'hidden'}
+                        onChange={(e) => updatePrivacySetting('profileVisibility', e.target.value)}
+                        className="text-purple-600"
+                      />
+                      <div>
+                        <div className="flex items-center">
+                          <EyeOff className="h-4 w-4 mr-2 text-red-600" />
+                          <span className="font-medium">Oculto</span>
+                        </div>
+                        <p className="text-sm text-gray-600">No apareces en búsquedas</p>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Mensajería */}
+                <div className="border-b pb-4">
+                  <h4 className="font-semibold text-gray-900 mb-3 flex items-center">
+                    <MessageCircle className="h-5 w-5 mr-2" />
+                    Mensajes
+                  </h4>
+                  <div className="space-y-3">
+                    <label className="flex items-center space-x-3 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="allowMessages"
+                        value="everyone"
+                        checked={privacySettings.allowMessages === 'everyone'}
+                        onChange={(e) => updatePrivacySetting('allowMessages', e.target.value)}
+                        className="text-purple-600"
+                      />
+                      <div>
+                        <span className="font-medium">Cualquier persona</span>
+                        <p className="text-sm text-gray-600">Todos pueden enviarte mensajes</p>
+                      </div>
+                    </label>
+                    
+                    <label className="flex items-center space-x-3 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="allowMessages"
+                        value="connections_only"
+                        checked={privacySettings.allowMessages === 'connections_only'}
+                        onChange={(e) => updatePrivacySetting('allowMessages', e.target.value)}
+                        className="text-purple-600"
+                      />
+                      <div>
+                        <span className="font-medium">Solo conexiones</span>
+                        <p className="text-sm text-gray-600">Solo usuarios conectados</p>
+                      </div>
+                    </label>
+                    
+                    <label className="flex items-center space-x-3 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="allowMessages"
+                        value="none"
+                        checked={privacySettings.allowMessages === 'none'}
+                        onChange={(e) => updatePrivacySetting('allowMessages', e.target.value)}
+                        className="text-purple-600"
+                      />
+                      <div>
+                        <span className="font-medium">Nadie</span>
+                        <p className="text-sm text-gray-600">Desactivar mensajes</p>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Configuraciones adicionales */}
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="font-medium text-gray-900">Mostrar estado en línea</span>
+                      <p className="text-sm text-gray-600">Otros pueden ver cuando estás activo</p>
+                    </div>
+                    <Switch
+                      checked={privacySettings.showOnlineStatus}
+                      onCheckedChange={(checked) => updatePrivacySetting('showOnlineStatus', checked)}
+                    />
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="font-medium text-gray-900">Mostrar última conexión</span>
+                      <p className="text-sm text-gray-600">Mostrar cuándo estuviste activo por última vez</p>
+                    </div>
+                    <Switch
+                      checked={privacySettings.showLastSeen}
+                      onCheckedChange={(checked) => updatePrivacySetting('showLastSeen', checked)}
+                    />
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Acciones (solo si no es perfil propio) */}
         {!isOwnProfile && (
@@ -149,19 +470,60 @@ const ProfileSingle = () => {
               <Heart className="h-5 w-5 mr-2" />
               Me gusta
             </Button>
+            {features.requests && (
+              <Button 
+                onClick={handleSendConnectionRequest}
+                className="flex-1 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white py-3"
+                size="lg"
+              >
+                <UserPlus className="h-5 w-5 mr-2" />
+                Conectar
+              </Button>
+            )}
             <Button 
               variant="outline" 
               className="flex-1 border-purple-300 text-purple-600 hover:bg-purple-50 py-3"
               size="lg"
             >
               <MessageCircle className="h-5 w-5 mr-2" />
-              Enviar mensaje
+              Mensaje
             </Button>
           </div>
         )}
       </div>
 
       <Navigation />
+      </div>
+      
+      {/* Custom Styles */}
+      <style>{`
+        @keyframes blob {
+          0%, 100% { transform: translate(0px, 0px) scale(1); }
+          33% { transform: translate(30px, -50px) scale(1.1); }
+          66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+        
+        @keyframes float-slow {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        .animate-blob {
+          animation: blob 7s infinite;
+        }
+        
+        .animate-float-slow {
+          animation: float-slow 6s ease-in-out infinite;
+        }
+        
+        .animation-delay-2000 {
+          animation-delay: 2s;
+        }
+        
+        .animation-delay-4000 {
+          animation-delay: 4s;
+        }
+      `}</style>
     </div>
   );
 };

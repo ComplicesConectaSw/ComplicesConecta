@@ -83,7 +83,7 @@ export const Header = () => {
             </Button>
 
             <Button variant="outline" size="sm" className="bg-white/90 border-white text-black hover:bg-white hover:text-black font-semibold shadow-lg" asChild>
-              <Link to="/auth" className="flex items-center gap-1">
+              <Link to="/discover" className="flex items-center gap-1">
                 <User className="h-4 w-4" />
                 Iniciar Sesión
               </Link>

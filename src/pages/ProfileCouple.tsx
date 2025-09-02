@@ -31,7 +31,36 @@ const ProfileCouple = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-100 via-purple-50 to-indigo-100">
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Advanced Animated Background */}
+      <div className="fixed inset-0 z-0">
+        {/* Base Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-background via-muted/30 to-secondary/20"></div>
+        
+        {/* Animated Gradient Orbs */}
+        <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+        <div className="absolute top-40 right-10 w-96 h-96 bg-gradient-to-r from-accent/20 to-secondary/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-32 left-20 w-96 h-96 bg-gradient-to-r from-secondary/20 to-primary/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+        
+        {/* Floating Hearts */}
+        <div className="absolute inset-0 overflow-hidden">
+          {[...Array(8)].map((_, i) => (
+            <Heart 
+              key={i}
+              className={`absolute text-primary/10 animate-float-slow`}
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${i * 2}s`,
+                fontSize: `${Math.random() * 20 + 10}px`
+              }}
+              fill="currentColor"
+            />
+          ))}
+        </div>
+      </div>
+      
+      <div className="relative z-10">
       {/* Header */}
       <div className="bg-white/80 backdrop-blur-sm border-b border-white/20 p-4">
         <div className="flex items-center justify-between">
@@ -62,16 +91,16 @@ const ProfileCouple = () => {
         {/* Fotos de la pareja */}
         <Card className="overflow-hidden bg-white shadow-xl">
           <div className="relative">
-            <div className="grid grid-cols-2 h-80">
+            <div className="grid grid-cols-2 h-96 sm:h-[500px]">
               <img 
                 src={profile.partner1.avatar} 
                 alt={profile.partner1.name}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover object-center"
               />
               <img 
                 src={profile.partner2.avatar} 
                 alt={profile.partner2.name}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover object-center"
               />
             </div>
             <div className="absolute top-4 right-4 flex flex-col gap-2">
@@ -112,53 +141,58 @@ const ProfileCouple = () => {
           </div>
         </Card>
 
-        {/* Información de la pareja */}
-        <Card className="bg-white shadow-lg">
+        {/* Información básica */}
+        <Card className="bg-white shadow-xl">
           <CardContent className="p-6">
             <div className="text-center mb-6">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                {profile.coupleName}
-              </h1>
-              <div className="flex items-center justify-center text-gray-600 mb-4">
-                <MapPin className="h-4 w-4 mr-1" />
-                <span>{profile.location}</span>
-              </div>
-            </div>
-            
-            {/* Información individual de cada partner */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <div className="text-center p-4 bg-pink-50 rounded-lg">
-                <h3 className="font-bold text-lg text-gray-900 mb-1">{profile.partner1.name}</h3>
-                <p className="text-gray-600 mb-1">{profile.partner1.age} años</p>
-                <p className="text-sm text-gray-600 mb-2">{profile.partner1.profession}</p>
-                <p className="text-sm text-gray-700">{profile.partner1.bio}</p>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">{profile.coupleName}</h2>
+              <div className="flex items-center justify-center space-x-4 text-gray-600 mb-4">
+                <span className="flex items-center">
+                  <MapPin className="h-4 w-4 mr-1" />
+                  {profile.location}
+                </span>
+                <span>•</span>
+                <span>{profile.ageRange}</span>
               </div>
               
-              <div className="text-center p-4 bg-blue-50 rounded-lg">
-                <h3 className="font-bold text-lg text-gray-900 mb-1">{profile.partner2.name}</h3>
-                <p className="text-gray-600 mb-1">{profile.partner2.age} años</p>
-                <p className="text-sm text-gray-600 mb-2">{profile.partner2.profession}</p>
-                <p className="text-sm text-gray-700">{profile.partner2.bio}</p>
+              {/* Bio Section */}
+              <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 mb-4">
+                <h3 className="font-semibold text-gray-900 mb-2">Sobre nosotros</h3>
+                <p className="text-gray-700 text-sm leading-relaxed">
+                  {profile.bio || "Pareja auténtica buscando conexiones reales y experiencias únicas. Nos encanta explorar juntos y conocer gente nueva."}
+                </p>
+              </div>
+              
+              {/* Partners Info */}
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div className="bg-gray-50 rounded-lg p-3">
+                  <span className="font-medium text-gray-900">{profile.partner1.name}:</span>
+                  <p className="text-gray-600">{profile.partner1.age || 26} años</p>
+                </div>
+                <div className="bg-gray-50 rounded-lg p-3">
+                  <span className="font-medium text-gray-900">{profile.partner2.name}:</span>
+                  <p className="text-gray-600">{profile.partner2.age || 28} años</p>
+                </div>
               </div>
             </div>
             
-            <div className="border-t pt-4">
-              <h3 className="font-semibold text-gray-900 mb-2">Sobre nosotros</h3>
-              <p className="text-gray-700 leading-relaxed">{profile.bio}</p>
-            </div>
+            <ProfileStats 
+              stats={{
+                likes: profile.stats?.likes || 245,
+                matches: profile.stats?.matches || 32,
+                visits: profile.stats?.visits || 187
+              }}
+            />
           </CardContent>
         </Card>
-
-        {/* Estadísticas */}
-        <ProfileStats stats={profile.stats} />
 
         {/* Intereses */}
         <Card className="bg-white shadow-lg">
           <CardContent className="p-6">
-            <h3 className="font-semibold text-gray-900 mb-3">Nuestros intereses</h3>
+            <h3 className="font-semibold text-gray-900 mb-3">Intereses</h3>
             <div className="flex flex-wrap gap-2">
               {profile.interests.map((interest: string, index: number) => (
-                <Badge key={index} variant="secondary" className="text-sm py-1 px-3">
+                <Badge key={index} className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm py-2 px-4 font-medium shadow-lg">
                   {interest}
                 </Badge>
               ))}
@@ -203,6 +237,37 @@ const ProfileCouple = () => {
       </div>
 
       <Navigation />
+      </div>
+      
+      {/* Custom Styles */}
+      <style>{`
+        @keyframes blob {
+          0%, 100% { transform: translate(0px, 0px) scale(1); }
+          33% { transform: translate(30px, -50px) scale(1.1); }
+          66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+        
+        @keyframes float-slow {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        .animate-blob {
+          animation: blob 7s infinite;
+        }
+        
+        .animate-float-slow {
+          animation: float-slow 6s ease-in-out infinite;
+        }
+        
+        .animation-delay-2000 {
+          animation-delay: 2s;
+        }
+        
+        .animation-delay-4000 {
+          animation-delay: 4s;
+        }
+      `}</style>
     </div>
   );
 };

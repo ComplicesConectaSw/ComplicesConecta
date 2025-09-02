@@ -1,14 +1,14 @@
-# 📱 ComplicesConecta - Notas de Lanzamiento v1.0.0
+# 📱 ComplicesConecta - Notas de Lanzamiento v1.2.0
 
-**Fecha de Lanzamiento:** 2 de Enero de 2025  
-**Plataforma:** Android APK  
-**Versión:** 1.0.0
+**Fecha de Lanzamiento:** 2 de Septiembre de 2025  
+**Plataforma:** Android APK + Web App  
+**Versión:** 1.2.0
 
 ---
 
-## 🎉 ¡Primera Versión Oficial!
+## 🎉 ¡Actualización Mayor con Funciones Sociales Avanzadas!
 
-ComplicesConecta es la plataforma exclusiva +18 para la comunidad swinger en México. Conecta con parejas y solteros de manera segura y discreta.
+ComplicesConecta evoluciona con funcionalidades sociales premium, sistema de feature flags y control de privacidad avanzado para la comunidad swinger más exclusiva de México.
 
 ---
 
@@ -46,24 +46,57 @@ ComplicesConecta es la plataforma exclusiva +18 para la comunidad swinger en Mé
 
 ---
 
-## 🆕 Novedades en esta Versión
+## 🆕 Novedades en v1.2.0
 
-### 🎨 **Mejoras Visuales**
-- ✅ Corregidas imágenes cortadas en eventos
-- ✅ Mejorada visibilidad del texto en filtros
-- ✅ Imágenes únicas para cada perfil (sin duplicados)
-- ✅ Interfaz optimizada para móviles
+### 🔗 **Sistema de Solicitudes de Conexión (NUEVO)**
+- ✅ Página dedicada `/requests` para gestión completa
+- ✅ Estados: pendiente, aceptada, rechazada
+- ✅ Tabs separados para solicitudes recibidas y enviadas
+- ✅ Interfaz intuitiva para aceptar, rechazar y responder
+- ✅ Integración con navegación principal
 
-### 🔧 **Mejoras Técnicas**
-- ✅ Refactorización completa de dependencias Android
-- ✅ Eliminadas advertencias de compilación
-- ✅ Optimización del sistema de autenticación
-- ✅ Modo demo automático para desarrollo
+### 🖼️ **Galerías Públicas y Privadas (NUEVO)**
+- ✅ Componente Gallery con tabs separados
+- ✅ Control de visibilidad por imagen individual
+- ✅ Permisos basados en conexiones aceptadas
+- ✅ Simulación de upload y gestión de imágenes
+- ✅ Modal de preview con navegación fluida
 
-### 🌍 **Localización Mexicana**
-- ✅ Perfiles ubicados en ciudades mexicanas
-- ✅ Coordenadas GPS actualizadas
-- ✅ Experiencia adaptada al mercado mexicano
+### 👁️ **Control de Privacidad Avanzado (NUEVO)**
+- ✅ Configuración de visibilidad de perfil (público/conexiones/oculto)
+- ✅ Control de permisos de mensajería por usuario
+- ✅ Toggles para estado online y última conexión
+- ✅ Integración en ProfileSingle con tabs organizados
+
+### 💬 **Chat con Control de Privacidad (MEJORADO)**
+- ✅ Verificación de permisos según configuración del usuario
+- ✅ Restricciones automáticas para chats privados
+- ✅ Mensajes de error informativos para permisos denegados
+- ✅ Integración con sistema de conexiones
+
+### 🎭 **Funciones Premium Pre-implementadas (NUEVO)**
+- ✅ **Eventos VIP**: Calendario exclusivo con sistema de reservas
+- ✅ **Regalos Virtuales**: Sistema de tokens con categorías temáticas
+- ✅ **Historias Efímeras**: Contenido que expira en 24 horas
+- ✅ Componentes listos para activación automática
+
+### ⚙️ **Sistema de Feature Flags (NUEVO)**
+- ✅ Hook `useFeatures` para control granular de funcionalidades
+- ✅ Variable `VITE_APP_PHASE` para fases: beta/premium/vip
+- ✅ Activación/desactivación sin reescribir código
+- ✅ Pre-implementación de funciones premium ocultas
+
+### 🧭 **Navegación Mejorada**
+- ✅ Integración dinámica de página Solicitudes
+- ✅ Control por feature flags en navegación
+- ✅ Iconografía actualizada con UserPlus
+- ✅ Badges informativos en elementos de navegación
+
+### 📊 **Mejoras Técnicas**
+- ✅ Tipos TypeScript completos para todas las funcionalidades
+- ✅ Mock data extendido para funciones sociales
+- ✅ Arquitectura modular y escalable
+- ✅ Corrección de errores de importación
 
 ---
 
@@ -89,12 +122,13 @@ ComplicesConecta es la plataforma exclusiva +18 para la comunidad swinger en Mé
 
 ## 🎯 Próximas Funcionalidades
 
-- 💬 **Chat en tiempo real** entre matches
-- 📸 **Subida de fotos** personalizadas
-- 🎉 **Creación de eventos** por usuarios
-- 🔔 **Notificaciones push** avanzadas
+- 🔄 **Integración Backend Real** para conexiones y mensajería
+- 📸 **Subida de fotos** personalizadas a galerías
+- 🔔 **Notificaciones push** para solicitudes y mensajes
 - 🌟 **Sistema de reputación** comunitario
-- 💳 **Suscripciones premium** con Stripe
+- 💳 **Activación automática** de funciones premium por suscripción
+- 🤖 **IA para moderación** de contenido
+- 🎮 **Gamificación** con logros y recompensas
 
 ---
 
@@ -131,4 +165,4 @@ Gracias a la comunidad swinger mexicana por su paciencia y feedback durante el d
 
 ---
 
-*ComplicesConecta v1.0.0 - Desarrollado con ❤️ para la comunidad swinger mexicana*
+*ComplicesConecta v1.2.0 - Desarrollado con ❤️ para la comunidad swinger mexicana*

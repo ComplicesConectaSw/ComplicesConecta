@@ -4,10 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Save, Camera, X } from "lucide-react";
+import { ArrowLeft, Save, Upload, Plus, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import Navigation from "@/components/Navigation";
 import { generateMockSingle } from "@/lib/data";
+import { ImageUpload } from "@/components/profile/ImageUpload";
+import Navigation from "@/components/Navigation";
 
 const EditProfileSingle = () => {
   const navigate = useNavigate();
@@ -76,7 +77,19 @@ const EditProfileSingle = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-100 via-purple-50 to-indigo-100 px-2 sm:px-4">
+    <div className="min-h-screen relative overflow-hidden px-2 sm:px-4">
+      {/* Advanced Animated Background */}
+      <div className="fixed inset-0 z-0">
+        {/* Base Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-background via-muted/30 to-secondary/20"></div>
+        
+        {/* Animated Gradient Orbs */}
+        <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+        <div className="absolute top-40 right-10 w-96 h-96 bg-gradient-to-r from-accent/20 to-secondary/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-32 left-20 w-96 h-96 bg-gradient-to-r from-secondary/20 to-primary/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+      </div>
+      
+      <div className="relative z-10">
       {/* Header */}
       <div className="bg-white/80 backdrop-blur-sm border-b border-white/20 p-4">
         <div className="flex items-center justify-between">
@@ -99,53 +112,42 @@ const EditProfileSingle = () => {
       </div>
 
       <div className="p-4 pb-24 space-y-6">
-        {/* Foto de perfil */}
-        <Card className="bg-white shadow-lg">
-          <CardContent className="p-6">
-            <div className="flex flex-col items-center space-y-4">
-              <div className="relative">
-                <img 
-                  src={formData.avatar} 
-                  alt="Foto de perfil"
-                  className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg"
+        <div className="space-y-6">
+          {/* Foto principal */}
+          <Card>
+            <CardContent className="p-6">
+              <h3 className="text-lg font-semibold mb-4">Foto de Perfil</h3>
+              <ImageUpload
+                currentImage={formData.avatar}
+                onImageChange={(url) => setFormData(prev => ({ ...prev, avatar: url }))}
+                className="mb-4"
+              />
+            </CardContent>
+          </Card>
+
+          {/* Información básica */}
+          <Card className="bg-white shadow-lg">
+            <CardContent className="p-6 space-y-4">
+              <h3 className="font-semibold text-gray-900 mb-4">Información básica</h3>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Nombre completo</label>
+                <Input
+                  value={formData.name}
+                  onChange={(e) => handleInputChange('name', e.target.value)}
+                  placeholder="Tu nombre completo"
                 />
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) {
-                      const reader = new FileReader();
-                      reader.onload = (event) => {
-                        setFormData(prev => ({
-                          ...prev,
-                          avatar: event.target?.result as string
-                        }));
-                      };
-                      reader.readAsDataURL(file);
-                    }
-                  }}
-                  className="hidden"
-                  id="avatar-upload"
-                />
-                <label htmlFor="avatar-upload">
-                  <Button 
-                    size="sm" 
-                    className="absolute bottom-0 right-0 rounded-full bg-purple-500 hover:bg-purple-600 text-white cursor-pointer"
-                    asChild
-                  >
-                    <span>
-                      <Camera className="h-4 w-4" />
-                    </span>
-                  </Button>
-                </label>
               </div>
-              <label htmlFor="avatar-upload">
-                <Button variant="outline" className="text-purple-600 border-purple-300 hover:bg-purple-50 cursor-pointer" asChild>
-                  <span>Cambiar foto</span>
-                </Button>
-              </label>
-            </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Edad</label>
+                <Input
+                  type="number"
+                  value={formData.age}
+                  onChange={(e) => handleInputChange('age', e.target.value)}
+                  placeholder="Tu edad"
+                />
+              </div>
           </CardContent>
         </Card>
 
@@ -260,9 +262,32 @@ const EditProfileSingle = () => {
             </div>
           </CardContent>
         </Card>
+        </div>
       </div>
 
       <Navigation />
+      </div>
+      
+      {/* Custom Styles */}
+      <style>{`
+        @keyframes blob {
+          0%, 100% { transform: translate(0px, 0px) scale(1); }
+          33% { transform: translate(30px, -50px) scale(1.1); }
+          66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+        
+        .animate-blob {
+          animation: blob 7s infinite;
+        }
+        
+        .animation-delay-2000 {
+          animation-delay: 2s;
+        }
+        
+        .animation-delay-4000 {
+          animation-delay: 4s;
+        }
+      `}</style>
     </div>
   );
 };

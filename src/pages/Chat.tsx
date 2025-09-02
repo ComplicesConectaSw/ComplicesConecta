@@ -3,9 +3,13 @@ import { Header } from "@/components/Header";
 import { ChatList } from "@/components/chat/ChatList";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { MessageCircle, ArrowLeft, Heart, Users, Flame, Send } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { MessageCircle, ArrowLeft, Heart, Users, Flame, Send, Lock, Globe } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
+import { useFeatures } from "@/hooks/useFeatures";
+import { mockPrivacySettings } from "@/lib/data";
 
 export interface ChatUser {
   id: number;
@@ -15,6 +19,8 @@ export interface ChatUser {
   timestamp: string;
   isOnline: boolean;
   unreadCount: number;
+  isPrivate: boolean;
+  roomType: 'private' | 'public';
 }
 
 export interface Message {
@@ -27,87 +33,146 @@ export interface Message {
 
 const Chat = () => {
   const navigate = useNavigate();
+  const { features } = useFeatures();
   const [selectedChat, setSelectedChat] = useState<ChatUser | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
+  const [activeTab, setActiveTab] = useState<'private' | 'public'>('private');
   
-  // Swinger community chat data
-  const chats: ChatUser[] = [
+  // Load messages for a specific chat
+  const loadMessages = (chatId: number) => {
+    const mockMessages: Message[] = [
+      { id: 1, senderId: chatId, content: "¡Hola! ¿Cómo están?", timestamp: "10:30", type: 'text' },
+      { id: 2, senderId: 0, content: "¡Muy bien! ¿Y ustedes?", timestamp: "10:32", type: 'text' },
+      { id: 3, senderId: chatId, content: "Genial, ¿les interesa conocernos mejor?", timestamp: "10:35", type: 'text' }
+    ];
+    setMessages(mockMessages);
+  };
+
+  // Get user from URL params
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('user');
+    const roomType = urlParams.get('room') as 'private' | 'public' || 'private';
+    
+    setActiveTab(roomType);
+    
+    if (userId) {
+      const allChats = [...privateChats, ...publicChats];
+      const user = allChats.find(chat => chat.id.toString() === userId);
+      if (user) {
+        setSelectedChat(user);
+        loadMessages(user.id);
+      }
+    }
+  }, [activeTab]);
+  
+  // Private chats - conexiones verificadas
+  const privateChats: ChatUser[] = [
     {
       id: 1,
-      name: "Sofía & Miguel",
-      image: "https://images.unsplash.com/photo-1500000000000?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
+      name: "Anabella & Julio",
+      image: "https://randomuser.me/api/portraits/women/25.jpg",
       lastMessage: "¿Están libres este fin de semana? 🔥",
       timestamp: "5 min",
       isOnline: true,
-      unreadCount: 2
+      unreadCount: 2,
+      isPrivate: true,
+      roomType: 'private'
     },
     {
       id: 2,
-      name: "Valentina",
-      image: "https://images.unsplash.com/photo-1500000000001?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
+      name: "Sofía",
+      image: "https://randomuser.me/api/portraits/women/32.jpg",
       lastMessage: "Me encantó conocerlos en la fiesta 💕",
       timestamp: "1 h",
       isOnline: true,
-      unreadCount: 1
+      unreadCount: 0,
+      isPrivate: true,
+      roomType: 'private'
     },
     {
       id: 3,
-      name: "Carlos & Ana",
-      image: "https://images.unsplash.com/photo-1500000000002?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
+      name: "Carmen & Roberto",
+      image: "https://randomuser.me/api/portraits/women/18.jpg",
       lastMessage: "¿Vienen al evento VIP del sábado?",
       timestamp: "3 h",
       isOnline: false,
-      unreadCount: 0
+      unreadCount: 0,
+      isPrivate: true,
+      roomType: 'private'
     },
     {
       id: 4,
-      name: "Isabella",
-      image: "https://images.unsplash.com/photo-1500000000003?w=400&h=400&fit=crop&crop=face&auto=format&q=80",
-      lastMessage: "Gracias por la invitación privada 😘",
-      timestamp: "1 día",
-      isOnline: true,
-      unreadCount: 0
+      name: "Raúl",
+      image: "https://randomuser.me/api/portraits/men/45.jpg",
+      lastMessage: "¿Qué tal si nos vemos para tomar algo?",
+      timestamp: "2 h",
+      isOnline: false,
+      unreadCount: 1,
+      isPrivate: true,
+      roomType: 'private'
     }
   ];
 
-  // Swinger community messages
-  const mockMessages: { [key: number]: Message[] } = {
-    1: [
-      { id: 1, senderId: 1, content: "¡Hola! Vimos su perfil y nos encantó 🔥", timestamp: "20:15", type: 'text' },
-      { id: 2, senderId: 0, content: "¡Hola Sofía y Miguel! Gracias, el suyo también nos gustó mucho", timestamp: "20:18", type: 'text' },
-      { id: 3, senderId: 1, content: "¿Les gustaría conocernos en persona? Hay una fiesta privada este sábado", timestamp: "20:22", type: 'text' },
-      { id: 4, senderId: 0, content: "¡Nos encantaría! ¿Podrían contarnos más detalles?", timestamp: "20:25", type: 'text' },
-      { id: 5, senderId: 1, content: "¿Están libres este fin de semana? 🔥", timestamp: "20:28", type: 'text' }
-    ],
-    2: [
-      { id: 1, senderId: 2, content: "¡Fue increíble conocerlos anoche! 💕", timestamp: "09:30", type: 'text' },
-      { id: 2, senderId: 0, content: "¡Valentina! Nosotros también la pasamos genial", timestamp: "09:45", type: 'text' },
-      { id: 3, senderId: 2, content: "¿Les gustaría repetir pronto? Tengo algunas ideas 😘", timestamp: "10:15", type: 'text' },
-      { id: 4, senderId: 2, content: "Me encantó conocerlos en la fiesta 💕", timestamp: "10:30", type: 'text' }
-    ],
-    3: [
-      { id: 1, senderId: 0, content: "¿Vienen al evento VIP del Club Secreto?", timestamp: "16:00", type: 'text' },
-      { id: 2, senderId: 3, content: "¡Claro! ¿A qué hora empieza?", timestamp: "16:15", type: 'text' },
-      { id: 3, senderId: 0, content: "A las 22:00, es solo para miembros verificados", timestamp: "16:20", type: 'text' },
-      { id: 4, senderId: 3, content: "¿Vienen al evento VIP del sábado?", timestamp: "16:25", type: 'text' }
-    ],
-    4: [
-      { id: 1, senderId: 4, content: "Gracias por la invitación a su casa 😘", timestamp: "Ayer 22:30", type: 'text' },
-      { id: 2, senderId: 0, content: "¡Fue un placer Isabella! Eres increíble", timestamp: "Ayer 22:45", type: 'text' },
-      { id: 3, senderId: 4, content: "¿Cuándo podemos volver a vernos? 🔥", timestamp: "Ayer 23:00", type: 'text' },
-      { id: 4, senderId: 4, content: "Gracias por la invitación privada 😘", timestamp: "Hoy 08:15", type: 'text' }
-    ]
+  // Public chats - salas comunitarias
+  const publicChats: ChatUser[] = [
+    {
+      id: 101,
+      name: "🔥 Sala General",
+      image: "https://randomuser.me/api/portraits/lego/1.jpg",
+      lastMessage: "¡Bienvenidos a la comunidad!",
+      timestamp: "10 min",
+      isOnline: true,
+      unreadCount: 5,
+      isPrivate: false,
+      roomType: 'public'
+    },
+    {
+      id: 102,
+      name: "💑 Parejas CDMX",
+      image: "https://randomuser.me/api/portraits/lego/2.jpg",
+      lastMessage: "Evento este sábado en Polanco",
+      timestamp: "30 min",
+      isOnline: true,
+      unreadCount: 12,
+      isPrivate: false,
+      roomType: 'public'
+    },
+    {
+      id: 103,
+      name: "🌟 Singles Guadalajara",
+      image: "https://randomuser.me/api/portraits/lego/3.jpg",
+      lastMessage: "¿Alguien para salir hoy?",
+      timestamp: "1 h",
+      isOnline: true,
+      unreadCount: 3,
+      isPrivate: false,
+      roomType: 'public'
+    }
+  ];
+
+  const getCurrentChats = () => {
+    return activeTab === 'private' ? privateChats : publicChats;
   };
+
+  const chats = getCurrentChats();
 
   useEffect(() => {
     if (selectedChat) {
-      setMessages(mockMessages[selectedChat.id] || []);
+      loadMessages(selectedChat.id);
     }
   }, [selectedChat]);
 
   const handleSendMessage = () => {
     if (!selectedChat || !newMessage.trim()) return;
+    
+    // Verificar permisos de mensajería según configuración de privacidad
+    const canSendMessage = checkMessagePermissions(selectedChat);
+    if (!canSendMessage) {
+      alert('No puedes enviar mensajes a este usuario según su configuración de privacidad.');
+      return;
+    }
     
     const message: Message = {
       id: Date.now() + Math.random(),
@@ -121,193 +186,306 @@ const Chat = () => {
     setNewMessage('');
   };
 
+  const checkMessagePermissions = (chat: ChatUser) => {
+    if (!features.messagingPrivacy) return true;
+    
+    // Para chats públicos, siempre permitir
+    if (chat.roomType === 'public') return true;
+    
+    // Para chats privados, verificar configuración
+    const userPrivacySettings = mockPrivacySettings; // En producción, obtener del usuario específico
+    
+    switch (userPrivacySettings.allowMessages) {
+      case 'everyone':
+        return true;
+      case 'connections_only':
+        // Verificar si hay conexión aceptada (simulado)
+        return true; // Por ahora siempre true para demo
+      case 'none':
+        return false;
+      default:
+        return true;
+    }
+  };
+
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      {/* Advanced Animated Background */}
-      <div className="fixed inset-0 z-0">
-        {/* Base Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-background via-muted/30 to-secondary/20"></div>
-        
-        {/* Animated Gradient Orbs */}
-        <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-        <div className="absolute top-40 right-10 w-96 h-96 bg-gradient-to-r from-accent/20 to-secondary/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-32 left-20 w-96 h-96 bg-gradient-to-r from-secondary/20 to-primary/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
-        
-        {/* Floating Hearts */}
-        <div className="absolute inset-0 overflow-hidden">
-          {[...Array(8)].map((_, i) => (
-            <Heart 
-              key={i}
-              className={`absolute text-primary/10 animate-float-slow`}
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${i * 2}s`,
-                fontSize: `${Math.random() * 20 + 10}px`
-              }}
-              fill="currentColor"
-            />
-          ))}
-        </div>
-        
-        {/* Floating Flames */}
-        <div className="absolute inset-0 overflow-hidden">
-          {[...Array(6)].map((_, i) => (
-            <Flame 
-              key={i}
-              className={`absolute text-accent/10 animate-pulse`}
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${i * 3}s`,
-                fontSize: `${Math.random() * 15 + 8}px`
-              }}
-            />
-          ))}
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-pink-500/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+        <div className="absolute top-40 right-10 w-72 h-72 bg-purple-500/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-red-500/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
       </div>
-      
-      <div className="relative z-10">
-        <Header />
-      
-        <main className="container mx-auto px-4 py-8 pb-24">
-          {/* Back Button */}
-          <div className="mb-6">
-            <Button 
-              variant="outline" 
-              onClick={() => navigate('/')}
-              className="bg-card/80 backdrop-blur-sm border-primary/20 hover:bg-primary/10 transition-all duration-300 text-white"
-            >
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Volver al Inicio
-            </Button>
-          </div>
 
-          <div className="mb-8">
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-              Chat Privado
-              <span className="block bg-love-gradient bg-clip-text text-transparent">
-                Conexiones Íntimas
-              </span>
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl">
-              Conversaciones discretas y seguras con parejas y solteros verificados de la comunidad swinger
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[70vh]">
-            {/* Chat List */}
-            <div className="lg:col-span-1">
-              <div className="bg-card/80 backdrop-blur-sm rounded-2xl shadow-soft border border-primary/10 h-full">
-                <div className="p-6 border-b border-primary/10">
-                  <h2 className="text-xl font-semibold text-card-foreground mb-2 flex items-center">
-                    <Users className="mr-2 h-5 w-5 text-primary" />
-                    Conversaciones Activas
-                  </h2>
-                  <p className="text-sm text-muted-foreground">
-                    {chats.filter(chat => chat.unreadCount > 0).length} mensajes sin leer
-                  </p>
-                </div>
-                <ChatList 
-                  chats={chats}
-                  selectedChat={selectedChat}
-                  onSelectChat={setSelectedChat}
-                />
-              </div>
+      <div className="relative z-10 flex h-screen">
+        {/* Sidebar - Lista de chats */}
+        <div className="w-full md:w-1/3 bg-black/30 backdrop-blur-sm border-r border-white/10">
+          <div className="p-4 border-b border-white/10">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold text-white">Conversaciones</h2>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="text-white hover:bg-white/10"
+                onClick={() => navigate('/')}
+              >
+                <ArrowLeft className="h-4 w-4" />
+              </Button>
             </div>
+            
+            {/* Tabs para Private/Public */}
+            <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'private' | 'public')} className="w-full">
+              <TabsList className="grid w-full grid-cols-2 bg-white/10 backdrop-blur-sm">
+                <TabsTrigger 
+                  value="private" 
+                  className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-white/70 flex items-center gap-2"
+                >
+                  <Lock className="h-4 w-4" />
+                  Privado
+                  {privateChats.reduce((acc, chat) => acc + chat.unreadCount, 0) > 0 && (
+                    <Badge className="bg-red-500 text-white text-xs">
+                      {privateChats.reduce((acc, chat) => acc + chat.unreadCount, 0)}
+                    </Badge>
+                  )}
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="public" 
+                  className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-white/70 flex items-center gap-2"
+                >
+                  <Globe className="h-4 w-4" />
+                  Público
+                  {publicChats.reduce((acc, chat) => acc + chat.unreadCount, 0) > 0 && (
+                    <Badge className="bg-red-500 text-white text-xs">
+                      {publicChats.reduce((acc, chat) => acc + chat.unreadCount, 0)}
+                    </Badge>
+                  )}
+                </TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="private" className="mt-4">
+                <div className="text-white/70 text-sm mb-3 px-2">
+                  💬 Chats privados con tus conexiones
+                </div>
+                <div className="space-y-2">
+                  {privateChats.map((chat) => (
+                    <div
+                      key={chat.id}
+                      onClick={() => {
+                        setSelectedChat(chat);
+                        loadMessages(chat.id);
+                      }}
+                      className={`p-3 rounded-lg cursor-pointer transition-all duration-200 ${
+                        selectedChat?.id === chat.id
+                          ? 'bg-white/20 border border-white/30'
+                          : 'hover:bg-white/10'
+                      }`}
+                    >
+                      <div className="flex items-center space-x-3">
+                        <div className="relative">
+                          <img 
+                            src={chat.image} 
+                            alt={chat.name}
+                            className="w-12 h-12 rounded-full object-cover border-2 border-white/20"
+                          />
+                          {chat.isOnline && (
+                            <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-400 rounded-full border-2 border-black/50"></div>
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between">
+                            <h3 className="font-semibold text-white truncate flex items-center gap-2">
+                              {chat.name}
+                              <Lock className="h-3 w-3 text-purple-300" />
+                            </h3>
+                            <span className="text-xs text-white/60">{chat.timestamp}</span>
+                          </div>
+                          <p className="text-sm text-white/70 truncate">{chat.lastMessage}</p>
+                        </div>
+                        {chat.unreadCount > 0 && (
+                          <div className="bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                            {chat.unreadCount}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="public" className="mt-4">
+                <div className="text-white/70 text-sm mb-3 px-2">
+                  🌍 Salas públicas de la comunidad
+                </div>
+                <div className="space-y-2">
+                  {publicChats.map((chat) => (
+                    <div
+                      key={chat.id}
+                      onClick={() => {
+                        setSelectedChat(chat);
+                        loadMessages(chat.id);
+                      }}
+                      className={`p-3 rounded-lg cursor-pointer transition-all duration-200 ${
+                        selectedChat?.id === chat.id
+                          ? 'bg-white/20 border border-white/30'
+                          : 'hover:bg-white/10'
+                      }`}
+                    >
+                      <div className="flex items-center space-x-3">
+                        <div className="relative">
+                          <div className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-lg border-2 border-white/20">
+                            {chat.name.charAt(0)}
+                          </div>
+                          <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-400 rounded-full border-2 border-black/50"></div>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between">
+                            <h3 className="font-semibold text-white truncate flex items-center gap-2">
+                              {chat.name}
+                              <Globe className="h-3 w-3 text-green-300" />
+                            </h3>
+                            <span className="text-xs text-white/60">{chat.timestamp}</span>
+                          </div>
+                          <p className="text-sm text-white/70 truncate">{chat.lastMessage}</p>
+                        </div>
+                        {chat.unreadCount > 0 && (
+                          <div className="bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                            {chat.unreadCount}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </TabsContent>
+            </Tabs>
+          </div>
+        </div>
 
-            {/* Chat Window */}
-            <div className="lg:col-span-2">
-              {selectedChat ? (
-                <div className="bg-card/80 backdrop-blur-sm rounded-2xl shadow-soft border border-primary/10 h-full flex flex-col">
-                  {/* Chat Header */}
-                  <div className="p-4 border-b border-primary/10 flex items-center space-x-3">
+        {/* Área de chat */}
+        <div className="flex-1 flex flex-col bg-black/20 backdrop-blur-sm">
+          {selectedChat ? (
+            <>
+              {/* Header del chat */}
+              <div className="p-4 border-b border-white/10 bg-black/30">
+                <div className="flex items-center space-x-3">
+                  {selectedChat.roomType === 'public' ? (
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold border-2 border-white/20">
+                      {selectedChat.name.charAt(0)}
+                    </div>
+                  ) : (
                     <img 
                       src={selectedChat.image} 
                       alt={selectedChat.name}
-                      className="w-10 h-10 rounded-full object-cover"
+                      className="w-10 h-10 rounded-full object-cover border-2 border-white/20"
                     />
-                    <div>
-                      <h3 className="font-semibold text-card-foreground">{selectedChat.name}</h3>
-                      <p className="text-sm text-muted-foreground">
-                        {selectedChat.isOnline ? 'En línea' : 'Desconectado'}
+                  )}
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-semibold text-white">{selectedChat.name}</h3>
+                      {selectedChat.roomType === 'private' ? (
+                        <Lock className="h-4 w-4 text-purple-300" />
+                      ) : (
+                        <Globe className="h-4 w-4 text-green-300" />
+                      )}
+                    </div>
+                    <p className="text-sm text-white/60">
+                      {selectedChat.roomType === 'public' 
+                        ? `Sala pública • ${Math.floor(Math.random() * 50) + 10} miembros activos`
+                        : selectedChat.isOnline ? 'En línea' : `Última vez ${selectedChat.timestamp}`
+                      }
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Messages */}
+              <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                {messages.map((message) => (
+                  <div
+                    key={message.id}
+                    className={`flex ${message.senderId === 0 ? 'justify-end' : 'justify-start'}`}
+                  >
+                    <div
+                      className={`max-w-xs px-4 py-3 rounded-2xl ${
+                        message.senderId === 0
+                          ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
+                          : 'bg-white text-gray-900 shadow-md border border-gray-100'
+                      }`}
+                    >
+                      <p className="text-sm leading-relaxed">{message.content}</p>
+                      <p className={`text-xs mt-1 ${
+                        message.senderId === 0 ? 'text-purple-100' : 'text-gray-500'
+                      }`}>
+                        {message.timestamp}
                       </p>
                     </div>
                   </div>
+                ))}
+              </div>
 
-                  {/* Messages */}
-                  <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                    {messages.map((message) => (
-                      <div
-                        key={message.id}
-                        className={`flex ${message.senderId === 0 ? 'justify-end' : 'justify-start'}`}
-                      >
-                        <div
-                          className={`max-w-xs px-4 py-3 rounded-2xl ${
-                            message.senderId === 0
-                              ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
-                              : 'bg-white text-gray-900 shadow-md border border-gray-100'
-                          }`}
-                        >
-                          <p className="text-sm leading-relaxed">{message.content}</p>
-                          <p className={`text-xs mt-1 ${
-                            message.senderId === 0 ? 'text-purple-100' : 'text-gray-500'
-                          }`}>
-                            {message.timestamp}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
+              {/* Input para enviar mensajes */}
+              <div className="p-4 border-t border-white/10 bg-black/30">
+                <div className="flex items-center space-x-3">
+                  <Input
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    placeholder={selectedChat.roomType === 'public' 
+                      ? "Mensaje a la sala pública..." 
+                      : "Escribe un mensaje privado..."
+                    }
+                    className="flex-1 bg-white/10 border-white/20 text-white placeholder-white/50"
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter') {
+                        handleSendMessage();
+                      }
+                    }}
+                  />
+                  <Button 
+                    onClick={handleSendMessage}
+                    className={`${
+                      selectedChat.roomType === 'public'
+                        ? 'bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600'
+                        : 'bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600'
+                    } text-white`}
+                  >
+                    <Send className="h-4 w-4" />
+                  </Button>
+                </div>
+                {selectedChat.roomType === 'public' && (
+                  <p className="text-xs text-white/50 mt-2 px-1">
+                    🔒 Los mensajes en salas públicas son visibles para todos los miembros
+                  </p>
+                )}
+              </div>
+            </>
+          ) : (
+            <div className="flex-1 flex items-center justify-center">
+              <div className="text-center text-white/60">
+                <MessageCircle className="h-16 w-16 mx-auto mb-4 opacity-50" />
+                <h3 className="text-xl font-semibold mb-2">Selecciona una conversación</h3>
+                <p className="mb-4">
+                  {activeTab === 'private' 
+                    ? 'Elige un chat privado para conversar de forma segura'
+                    : 'Únete a una sala pública para conocer la comunidad'
+                  }
+                </p>
+                <div className="flex items-center justify-center text-sm space-x-4">
+                  <div className="flex items-center">
+                    <Lock className="h-4 w-4 mr-1 text-purple-400" />
+                    <span>Chats privados encriptados</span>
                   </div>
-
-                  {/* Message Input */}
-                  <div className="p-4 border-t border-primary/10">
-                    <div className="flex space-x-2">
-                      <Input
-                        value={newMessage}
-                        onChange={(e) => setNewMessage(e.target.value)}
-                        placeholder="Escribe un mensaje..."
-                        className="flex-1 bg-white/80 border-primary/20"
-                        onKeyPress={(e) => {
-                          if (e.key === 'Enter') {
-                            handleSendMessage();
-                          }
-                        }}
-                      />
-                      <Button 
-                        onClick={handleSendMessage}
-                        className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
-                      >
-                        <Send className="h-4 w-4" />
-                      </Button>
-                    </div>
+                  <div className="flex items-center">
+                    <Globe className="h-4 w-4 mr-1 text-green-400" />
+                    <span>Salas públicas moderadas</span>
                   </div>
                 </div>
-              ) : (
-                <div className="bg-card/80 backdrop-blur-sm rounded-2xl shadow-soft border border-primary/10 h-full flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="bg-primary/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-                      <MessageCircle className="h-10 w-10 text-primary" />
-                    </div>
-                    <h3 className="text-xl font-semibold text-card-foreground mb-2">
-                      Selecciona una conversación
-                    </h3>
-                    <p className="text-muted-foreground">
-                      Elige un chat para comenzar a conversar de forma privada y segura
-                    </p>
-                    <div className="mt-4 flex items-center justify-center space-x-2 text-sm text-muted-foreground">
-                      <Flame className="h-4 w-4 text-accent" />
-                      <span>Todas las conversaciones son encriptadas</span>
-                    </div>
-                  </div>
-                </div>
-              )}
+              </div>
             </div>
-          </div>
-        </main>
-
-        <Navigation />
+          )}
+        </div>
       </div>
+
+      <Navigation />
       
       {/* Custom Styles */}
       <style>{`
@@ -317,17 +495,8 @@ const Chat = () => {
           66% { transform: translate(-20px, 20px) scale(0.9); }
         }
         
-        @keyframes float-slow {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-20px) rotate(180deg); }
-        }
-        
         .animate-blob {
           animation: blob 7s infinite;
-        }
-        
-        .animate-float-slow {
-          animation: float-slow 6s ease-in-out infinite;
         }
         
         .animation-delay-2000 {

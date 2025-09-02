@@ -38,9 +38,12 @@ Crear la comunidad lifestyle más exclusiva y segura de México, donde parejas y
 ### 💕 **Experiencia Social Premium**
 - **🧠 Matching IA**: Algoritmo de compatibilidad con 50+ factores
 - **💬 Chat Encriptado**: Mensajería con autodestrucción opcional
+- **🔗 Sistema de Conexiones**: Solicitudes y control de privacidad avanzado
+- **🖼️ Galerías Privadas**: Contenido público y privado por usuario
 - **🎭 Eventos VIP Exclusivos**: Fiestas privadas y encuentros verificados
+- **🎁 Regalos Virtuales**: Sistema de tokens CMPX y GTK
+- **📸 Historias Efímeras**: Contenido que expira en 24 horas
 - **🌟 Comunidad Selecta**: Solo usuarios verificados y premium
-- **🎁 Sistema de Tokens**: CMPX y GTK para economía interna
 
 ### 🎨 **Diseño de Vanguardia**
 - **📱 UI/UX Premium**: Diseño inspirado en apps de lujo
@@ -178,13 +181,38 @@ NODE_ENV=development
 - ✅ Preview inmediato de cambios de imagen
 - ✅ Navegación dinámica según tipo de usuario
 - ✅ Datos mock realistas con nombres mexicanos
+- ✅ **NUEVO**: Control de visibilidad de perfil (público/conexiones/oculto)
+- ✅ **NUEVO**: Configuración de privacidad de mensajería
+- ✅ **NUEVO**: Galerías públicas y privadas integradas
 
-### 💬 **Chat Privado**
+### 💬 **Chat Privado/Público**
 - ✅ Lista de conversaciones con usuarios online
 - ✅ Interfaz de mensajería moderna con burbujas
 - ✅ Input funcional con envío por Enter
 - ✅ Mensajes mock para demo
 - ✅ Diseño responsivo y encriptación visual
+- ✅ **NUEVO**: Control de privacidad en mensajería
+- ✅ **NUEVO**: Verificación de permisos según configuración
+
+### 🔗 **Sistema de Solicitudes (NUEVO)**
+- ✅ Página dedicada para gestión de solicitudes
+- ✅ Tabs para solicitudes recibidas y enviadas
+- ✅ Estados: pendiente, aceptada, rechazada
+- ✅ Interfaz para aceptar, rechazar y responder
+- ✅ Integración con navegación principal
+
+### 🖼️ **Galerías Públicas/Privadas (NUEVO)**
+- ✅ Componente Gallery con tabs separados
+- ✅ Control de visibilidad por imagen
+- ✅ Permisos basados en conexiones
+- ✅ Simulación de upload y gestión de imágenes
+- ✅ Modal de preview con navegación
+
+### 🎭 **Funciones Premium (PRE-IMPLEMENTADAS)**
+- ✅ **Eventos VIP**: Calendario exclusivo con reservas
+- ✅ **Regalos Virtuales**: Sistema de tokens y categorías
+- ✅ **Historias Efímeras**: Contenido con expiración 24h
+- ✅ **Feature Flags**: Control por fases (beta/premium/vip)
 
 ### 💕 **Matches**
 - ✅ Grid responsivo de matches verificados
@@ -204,6 +232,13 @@ NODE_ENV=development
 - ✅ Verificación de sesión antes de navegar
 - ✅ Redirección automática a login si no hay sesión
 - ✅ Iconos modernos con estados activos
+- ✅ **NUEVO**: Integración de página Solicitudes con feature flags
+
+### ⚙️ **Sistema de Feature Flags (NUEVO)**
+- ✅ Hook useFeatures para control de funcionalidades
+- ✅ Variable VITE_APP_PHASE para fases: beta/premium/vip
+- ✅ Control granular de funciones por fase
+- ✅ Pre-implementación de funciones premium ocultas
 
 ### 📊 **Mejoras Técnicas**
 - ✅ Corrección de errores JSX críticos
@@ -211,6 +246,8 @@ NODE_ENV=development
 - ✅ Diseño glassmorphism con backdrop-blur
 - ✅ Animaciones CSS personalizadas
 - ✅ Responsive design con TailwindCSS
+- ✅ **NUEVO**: Tipos TypeScript para todas las funcionalidades
+- ✅ **NUEVO**: Mock data extendido para funciones sociales
 
 ## 💳 Sistema de Suscripciones
 
