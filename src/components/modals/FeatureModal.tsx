@@ -44,7 +44,7 @@ const featureData = {
     description: "Acceso VIP a la mejor vida nocturna lifestyle",
     features: [
       "🎉 Fiestas privadas en clubs exclusivos",
-      "🏖️ Resorts lifestyle y cruceros temáticos",
+      "🏖️ Descuentos exclusivos en clubs lifestyle",
       "🍾 Eventos VIP solo para miembros verificados",
       "🎭 Fiestas temáticas y de disfraces",
       "💑 Encuentros para parejas principiantes",

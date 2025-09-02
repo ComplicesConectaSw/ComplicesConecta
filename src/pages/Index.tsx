@@ -211,6 +211,7 @@ const Index = () => {
                     Conecta
                   </span>
                 </h1>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                 <div className="absolute inset-0 bg-gradient-to-r from-pink-500/20 to-red-500/20 blur-3xl animate-pulse" />
               </div>
               
@@ -245,7 +246,7 @@ const Index = () => {
               <h2 className="text-4xl font-bold text-foreground mb-4">
                 ¿Por qué elegir ComplicesConecta?
               </h2>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              <p className="text-xl text-white max-w-3xl mx-auto">
                 La plataforma más segura y discreta para la comunidad swinger. Conectamos parejas y solteros 
                 con verificación avanzada, tecnología blockchain y total privacidad.
               </p>
@@ -314,7 +315,7 @@ const Index = () => {
       </main>
 
       <Footer />
-      {showWelcome && <WelcomeModal isOpen={showWelcome} onClose={() => setShowWelcome(false)} />}
+      {showWelcome && <WelcomeModal isOpen={showWelcome} onClose={handleWelcomeClose} />}
       <FeatureModal
         isOpen={showFeatureModal}
         onClose={() => setShowFeatureModal(false)}
