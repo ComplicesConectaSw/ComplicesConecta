@@ -196,7 +196,30 @@ ComplicesConecta se completa con sistema de invitaciones, panel de administraci�
 
 ---
 
-## 🚀 **Nuevas Funcionalidades en v1.3.3** *(2 de septiembre, 2025 - 05:53 AM)*
+## 🚀 **Nuevas Funcionalidades en v1.3.4** *(2 de septiembre, 2025 - 07:00 AM)*
+
+### 👫 **Perfiles de Pareja Completamente Rediseñados**
+- **NUEVO**: **Información separada** para cada partner (él y ella) con secciones independientes
+- **NUEVO**: **Fotos individuales** para cada partner con fallbacks seguros
+- **NUEVO**: **Datos personalizados** por partner: nombre, edad, profesión, bio e intereses únicos
+- **NUEVO**: **Colores diferenciados**: Rosa para ella, azul para él
+- **NUEVO**: **Fallbacks inteligentes** cuando no hay datos de partners
+
+### 🎨 **Mejoras de UI/UX Críticas**
+- **FIX**: **Background consistente** - Gradiente púrpura-rosa-índigo en todos los perfiles
+- **FIX**: **Sección de intereses completa** con scroll vertical para mostrar todos los badges
+- **FIX**: **Navegación mejorada** - Botón de regreso dirigido a `/profile` en lugar del index
+- **FIX**: **Visibilidad de texto** mejorada en secciones de configuración y privacidad
+- **FIX**: **Scroll optimizado** en contenedores principales para mejor UX móvil
+- **FIX**: **Contraste mejorado** en cards con borders y sombras más definidas
+
+### 🔧 **Mejoras Técnicas**
+- **MEJORADO**: TypeScript con interfaces `Partner` y `CoupleProfile` completas
+- **MEJORADO**: Manejo seguro de datos faltantes con operador optional chaining
+- **MEJORADO**: Contenedores con `max-h-screen overflow-y-auto` para scroll fluido
+- **MEJORADO**: Aplicado a ProfileSingle.tsx las mismas mejoras de consistencia
+
+## 🚀 **Funcionalidades Previas en v1.3.3** *(2 de septiembre, 2025 - 05:53 AM)*
 
 ### 📝 **Mejoras en el Registro de Usuarios**
 - **NUEVO**: Campo **Edad** agregado para perfiles Single y Pareja con validación (18-99 años)

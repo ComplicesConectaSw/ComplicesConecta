@@ -1,17 +1,38 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Heart, MessageCircle, MapPin, Verified, Crown, Edit, Settings, Share2, Users } from "lucide-react";
+import { Heart, MessageCircle, MapPin, Verified, Crown, ArrowLeft, Settings, Share2, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
-import ProfileStats from "@/components/profile/ProfileStats";
 import { generateMockCouple } from "@/lib/data";
 
-const ProfileCouple = () => {
+interface Partner {
+  name: string;
+  age: number;
+  profession: string;
+  bio: string;
+  avatar: string;
+  interests: string[];
+}
+
+interface CoupleProfile {
+  id: number;
+  coupleName: string;
+  location: string;
+  bio: string;
+  avatar: string;
+  isOnline: boolean;
+  isVerified: boolean;
+  isPremium: boolean;
+  partner1: Partner;
+  partner2: Partner;
+  accountType?: string;
+}
+
+const ProfileCouple: React.FC = () => {
   const navigate = useNavigate();
-  const [profile, setProfile] = useState<any>(null);
-  const [isOwnProfile, setIsOwnProfile] = useState(true); // Por defecto es perfil propio
+  const [profile, setProfile] = useState<CoupleProfile | null>(null);
 
   useEffect(() => {
     // Verificar autenticación demo y cargar perfil del usuario
@@ -27,7 +48,27 @@ const ProfileCouple = () => {
     
     // Si es perfil pareja, usar datos del usuario demo
     if (user.accountType === 'couple') {
-      setProfile(user);
+      // Asegurar que el usuario tenga la estructura correcta
+      const coupleProfile: CoupleProfile = {
+        ...user,
+        partner1: user.partner1 || {
+          name: user.name?.split(' & ')[0] || 'Ella',
+          age: 28,
+          profession: 'Profesional',
+          bio: 'Me encanta explorar nuevas experiencias junto a mi pareja.',
+          avatar: 'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400',
+          interests: ['Lifestyle Swinger', 'Intercambio de Parejas', 'Encuentros Casuales']
+        },
+        partner2: user.partner2 || {
+          name: user.name?.split(' & ')[1] || 'Él',
+          age: 30,
+          profession: 'Profesional',
+          bio: 'Aventurero y respetuoso, busco junto a mi pareja vivir experiencias únicas.',
+          avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400',
+          interests: ['Fiestas Temáticas', 'Clubs Privados', 'Eventos Lifestyle']
+        }
+      };
+      setProfile(coupleProfile);
     } else {
       // Para otros tipos, generar perfil mock
       const mockProfile = generateMockCouple();
@@ -47,252 +88,182 @@ const ProfileCouple = () => {
   }
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      {/* Advanced Animated Background */}
-      <div className="fixed inset-0 z-0">
-        {/* Base Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-background via-muted/30 to-secondary/20"></div>
-        
-        {/* Animated Gradient Orbs */}
-        <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-        <div className="absolute top-40 right-10 w-96 h-96 bg-gradient-to-r from-accent/20 to-secondary/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-32 left-20 w-96 h-96 bg-gradient-to-r from-secondary/20 to-primary/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
-        
-        {/* Floating Hearts */}
-        <div className="absolute inset-0 overflow-hidden">
-          {[...Array(8)].map((_, i) => (
-            <Heart 
-              key={i}
-              className={`absolute text-primary/10 animate-float-slow`}
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${i * 2}s`,
-                fontSize: `${Math.random() * 20 + 10}px`
-              }}
-              fill="currentColor"
-            />
-          ))}
-        </div>
-      </div>
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-purple-600 via-pink-500 to-indigo-600">
+      {/* Animated Background */}
+      <div className="fixed inset-0 z-0 bg-gradient-to-br from-purple-600/90 via-pink-500/90 to-indigo-600/90"></div>
+      <div className="fixed inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-400/20 via-pink-400/20 to-transparent"></div>
       
       <div className="relative z-10">
-      {/* Header */}
-      <div className="bg-white/80 backdrop-blur-sm border-b border-white/20 p-4">
-        <div className="flex items-center justify-between">
-          <Button 
-            variant="ghost" 
-            onClick={() => navigate(-1)}
-            className="text-gray-600"
-          >
-            <Edit className="h-5 w-5" />
-          </Button>
-          <h1 className="text-lg font-semibold text-gray-900">Nuestro Perfil</h1>
-          <div className="flex gap-2">
-            <Button variant="ghost" size="sm">
-              <Share2 className="h-5 w-5 text-gray-600" />
-            </Button>
+        {/* Header */}
+        <div className="bg-white/90 backdrop-blur-md border-b border-white/30 p-4 shadow-lg">
+          <div className="flex items-center justify-between">
             <Button 
               variant="ghost" 
-              size="sm"
-              onClick={() => navigate('/edit-profile-couple')}
+              onClick={() => navigate('/profile')}
+              className="text-gray-700 hover:bg-white/50"
             >
-              <Settings className="h-5 w-5 text-gray-600" />
+              <ArrowLeft className="h-5 w-5" />
             </Button>
+            <h1 className="text-lg font-semibold text-gray-900">Nuestro Perfil</h1>
+            <div className="flex gap-2">
+              <Button variant="ghost" size="sm" className="hover:bg-white/50">
+                <Share2 className="h-5 w-5 text-gray-700" />
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={() => navigate('/edit-profile-couple')}
+                className="hover:bg-white/50"
+              >
+                <Settings className="h-5 w-5 text-gray-700" />
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="p-2 sm:p-4 pb-24 space-y-4 sm:space-y-6 max-w-2xl mx-auto">
-        {/* Fotos de la pareja */}
-        <Card className="overflow-hidden bg-white shadow-xl">
-          <div className="relative">
+        <div className="p-2 sm:p-4 pb-24 space-y-4 sm:space-y-6 max-w-2xl mx-auto max-h-screen overflow-y-auto">
+          {/* Foto principal de la pareja */}
+          <Card className="overflow-hidden bg-white/95 backdrop-blur-sm shadow-glow border-0">
             <div className="relative">
               <img 
-                alt={profile.coupleName} 
+                alt={profile.coupleName || 'Pareja'} 
                 className="w-full h-96 sm:h-[500px] object-cover object-center" 
-                src={profile.image || 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400'}
+                src={profile.avatar || 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400'}
                 onError={(e) => {
                   e.currentTarget.src = 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400';
                 }}
               />
-            </div>
-            <div className="absolute top-4 right-4 flex flex-col gap-2">
-              <Badge className="bg-purple-500 text-white">
-                <Users className="h-3 w-3 mr-1" />
-                Pareja
-              </Badge>
-              {profile.isOnline && (
-                <Badge className="bg-green-500 text-white">
-                  En línea
+              <div className="absolute top-4 right-4 flex flex-col gap-2">
+                <Badge className="bg-purple-500 text-white">
+                  <Users className="h-3 w-3 mr-1" />
+                  Pareja
                 </Badge>
-              )}
-              {profile.isVerified && (
-                <Badge className="bg-blue-500 text-white">
-                  <Verified className="h-3 w-3 mr-1" />
-                  Verificado
-                </Badge>
-              )}
-              {profile.isPremium && (
-                <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white">
-                  <Crown className="h-3 w-3 mr-1" />
-                  Premium
-                </Badge>
-              )}
-            </div>
-            
-            {isOwnProfile && (
-              <div className="absolute bottom-4 right-4">
-                <Button 
-                  onClick={() => navigate('/edit-profile-couple')}
-                  className="bg-white/90 text-gray-800 hover:bg-white"
-                >
-                  <Edit className="h-4 w-4 mr-2" />
-                  Editar
-                </Button>
+                {profile.isOnline && (
+                  <Badge className="bg-green-500 text-white">
+                    En línea
+                  </Badge>
+                )}
+                {profile.isVerified && (
+                  <Badge className="bg-blue-500 text-white">
+                    <Verified className="h-3 w-3 mr-1" />
+                    Verificado
+                  </Badge>
+                )}
+                {profile.isPremium && (
+                  <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white">
+                    <Crown className="h-3 w-3 mr-1" />
+                    Premium
+                  </Badge>
+                )}
               </div>
-            )}
-          </div>
-        </Card>
+            </div>
+          </Card>
 
-        {/* Información básica */}
-        <Card className="bg-white shadow-xl">
-          <CardContent className="p-6">
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">{profile.coupleName}</h2>
-              <div className="flex items-center justify-center space-x-4 text-gray-600 mb-4">
-                <span className="flex items-center">
-                  <MapPin className="h-4 w-4 mr-1" />
-                  {profile.location}
-                </span>
-                <span>•</span>
-                <span>{profile.ageRange}</span>
-              </div>
-              
-              {/* Bio Section */}
-              <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 mb-4">
-                <h3 className="font-semibold text-gray-900 mb-2">Sobre nosotros</h3>
-                <p className="text-gray-700 text-sm leading-relaxed">
-                  {profile.bio || "Pareja auténtica buscando conexiones reales y experiencias únicas. Nos encanta explorar juntos y conocer gente nueva."}
-                </p>
-              </div>
-              
-              {/* Partners Info */}
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div className="bg-gray-50 rounded-lg p-3">
-                  <span className="font-medium text-gray-900">{profile.partner1.name}:</span>
-                  <p className="text-gray-600">{profile.partner1.age || 26} años</p>
+          {/* Información básica de la pareja */}
+          <Card className="bg-white/95 backdrop-blur-sm shadow-xl border-0 shadow-purple-500/20">
+            <CardContent className="p-6">
+              <div className="text-center mb-6">
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">{profile.coupleName || 'Pareja'}</h2>
+                <div className="flex items-center justify-center space-x-4 text-gray-600 mb-4">
+                  <span className="flex items-center">
+                    <MapPin className="h-4 w-4 mr-1" />
+                    {profile.location}
+                  </span>
                 </div>
-                <div className="bg-gray-50 rounded-lg p-3">
-                  <span className="font-medium text-gray-900">{profile.partner2.name}:</span>
-                  <p className="text-gray-600">{profile.partner2.age || 28} años</p>
+                
+                {/* Bio de la pareja */}
+                <div className="bg-gradient-to-r from-purple-100 to-pink-100 rounded-lg p-4 mb-6 border border-purple-200">
+                  <h3 className="font-semibold text-purple-900 mb-2">Sobre nosotros</h3>
+                  <p className="text-gray-800">{profile.bio}</p>
                 </div>
               </div>
-            </div>
-            
-            <ProfileStats 
-              stats={{
-                likes: profile.stats?.likes || 245,
-                matches: profile.stats?.matches || 32,
-                visits: profile.stats?.visits || 187
-              }}
-            />
-          </CardContent>
-        </Card>
 
-        {/* Intereses */}
-        <Card className="bg-white shadow-lg">
-          <CardContent className="p-6">
-            <h3 className="font-semibold text-gray-900 mb-3">Intereses</h3>
-            <div className="flex flex-wrap gap-2 mb-4">
-              {profile.interests?.map((interest: string, index: number) => (
-                <Badge key={index} className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm py-2 px-4 font-medium shadow-lg">
-                  {interest}
-                </Badge>
-              ))}
-            </div>
-            <div className="space-y-2">
-              <p className="text-sm text-gray-600">
-                <strong>Buscando:</strong> {profile.lookingFor || "Conexiones auténticas y experiencias únicas"}
-              </p>
-              <p className="text-sm text-gray-600">
-                <strong>Estilo de vida:</strong> {profile.lifestyle || "Aventurero y espontáneo"}
-              </p>
-              <p className="text-sm text-gray-600">
-                <strong>Nivel de experiencia:</strong> {profile.experienceLevel || "Intermedio"}
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Galería de fotos adicionales */}
-        <Card className="bg-white shadow-lg">
-          <CardContent className="p-6">
-            <h3 className="font-semibold text-gray-900 mb-3">Más fotos</h3>
-            <div className="grid grid-cols-2 gap-3">
-              {[1, 2, 3, 4].map((index) => (
-                <div key={index} className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center">
-                  <span className="text-gray-400 text-sm">Foto {index}</span>
+              {/* Información individual de cada partner */}
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* Partner 1 - Ella */}
+                <div className="bg-gradient-to-br from-pink-100 to-rose-100 rounded-lg p-4 border-2 border-pink-300 shadow-lg">
+                  <div className="text-center mb-4">
+                    <img 
+                      src={profile.partner1?.avatar || 'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400'} 
+                      alt={profile.partner1?.name || 'Ella'}
+                      className="w-20 h-20 rounded-full mx-auto mb-3 object-cover border-3 border-pink-400 shadow-md"
+                      onError={(e) => {
+                        e.currentTarget.src = 'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400';
+                      }}
+                    />
+                    <h3 className="text-xl font-bold text-pink-900">{profile.partner1?.name || 'Ella'}</h3>
+                    <p className="text-pink-700 font-medium">{profile.partner1?.age || 28} años</p>
+                    <p className="text-sm text-pink-600">{profile.partner1?.profession || 'Profesional'}</p>
+                  </div>
+                  
+                  <div className="mb-4">
+                    <h4 className="font-semibold text-pink-800 mb-2">Sobre ella:</h4>
+                    <p className="text-sm text-gray-800">{profile.partner1?.bio || 'Me encanta explorar nuevas experiencias junto a mi pareja.'}</p>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-semibold text-pink-800 mb-2">Sus intereses:</h4>
+                    <div className="flex flex-wrap gap-1 max-h-20 overflow-y-auto">
+                      {(profile.partner1?.interests || ['Lifestyle Swinger', 'Intercambio de Parejas', 'Encuentros Casuales', 'Fiestas Temáticas', 'Clubs Privados', 'Eventos Lifestyle']).map((interest: string, index: number) => (
+                        <Badge key={index} variant="secondary" className="text-xs bg-pink-200 text-pink-900 border border-pink-300">
+                          {interest}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+                
+                {/* Partner 2 - Él */}
+                <div className="bg-gradient-to-br from-blue-100 to-indigo-100 rounded-lg p-4 border-2 border-blue-300 shadow-lg">
+                  <div className="text-center mb-4">
+                    <img 
+                      src={profile.partner2?.avatar || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400'} 
+                      alt={profile.partner2?.name || 'Él'}
+                      className="w-20 h-20 rounded-full mx-auto mb-3 object-cover border-3 border-blue-400 shadow-md"
+                      onError={(e) => {
+                        e.currentTarget.src = 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400';
+                      }}
+                    />
+                    <h3 className="text-xl font-bold text-blue-900">{profile.partner2?.name || 'Él'}</h3>
+                    <p className="text-blue-700 font-medium">{profile.partner2?.age || 30} años</p>
+                    <p className="text-sm text-blue-600">{profile.partner2?.profession || 'Profesional'}</p>
+                  </div>
+                  
+                  <div className="mb-4">
+                    <h4 className="font-semibold text-blue-800 mb-2">Sobre él:</h4>
+                    <p className="text-sm text-gray-800">{profile.partner2?.bio || 'Aventurero y respetuoso, busco junto a mi pareja vivir experiencias únicas.'}</p>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-semibold text-blue-800 mb-2">Sus intereses:</h4>
+                    <div className="flex flex-wrap gap-1 max-h-20 overflow-y-auto">
+                      {(profile.partner2?.interests || ['Fiestas Temáticas', 'Clubs Privados', 'Eventos Lifestyle', 'Soft Swap', 'Full Swap', 'Experiencias Nuevas']).map((interest: string, index: number) => (
+                        <Badge key={index} variant="secondary" className="text-xs bg-blue-200 text-blue-900 border border-blue-300">
+                          {interest}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
-        {/* Acciones (solo si no es perfil propio) */}
-        {!isOwnProfile && (
+          {/* Acciones */}
           <div className="flex gap-3">
-            <Button 
-              className="flex-1 bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white py-3"
-              size="lg"
-            >
-              <Heart className="h-5 w-5 mr-2" />
-              Me gusta
+            <Button className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
+              <Heart className="h-4 w-4 mr-2" />
+              Me Gusta
             </Button>
-            <Button 
-              variant="outline" 
-              className="flex-1 border-purple-300 text-purple-600 hover:bg-purple-50 py-3"
-              size="lg"
-            >
-              <MessageCircle className="h-5 w-5 mr-2" />
-              Enviar mensaje
+            <Button className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700">
+              <MessageCircle className="h-4 w-4 mr-2" />
+              Mensaje
             </Button>
           </div>
-        )}
-      </div>
+        </div>
 
-      <Navigation />
+        <Navigation />
       </div>
-      
-      {/* Custom Styles */}
-      <style>{`
-        @keyframes blob {
-          0%, 100% { transform: translate(0px, 0px) scale(1); }
-          33% { transform: translate(30px, -50px) scale(1.1); }
-          66% { transform: translate(-20px, 20px) scale(0.9); }
-        }
-        
-        @keyframes float-slow {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-20px) rotate(180deg); }
-        }
-        
-        .animate-blob {
-          animation: blob 7s infinite;
-        }
-        
-        .animate-float-slow {
-          animation: float-slow 6s ease-in-out infinite;
-        }
-        
-        .animation-delay-2000 {
-          animation-delay: 2s;
-        }
-        
-        .animation-delay-4000 {
-          animation-delay: 4s;
-        }
-      `}</style>
     </div>
   );
 };

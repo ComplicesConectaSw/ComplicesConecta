@@ -13,6 +13,7 @@ import { Heart, Shield, Users, Zap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { MapPin, ArrowLeft, Sparkles } from "lucide-react";
+import { lifestyleInterests, getAutoInterests } from "@/lib/lifestyle-interests";
 
 interface FormData {
   email: string;
@@ -36,6 +37,7 @@ interface FormData {
   location: string;
   acceptTerms: boolean;
   shareLocation: boolean;
+  selectedInterests: string[];
 }
 
 const Auth = () => {
@@ -66,13 +68,23 @@ const Auth = () => {
     partnerBio: '',
     location: '',
     acceptTerms: false,
-    shareLocation: false
+    shareLocation: false,
+    selectedInterests: []
   });
 
-  const handleInputChange = (field: string, value: string | boolean) => {
+  const handleInputChange = (field: string, value: string | boolean | string[]) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
+    }));
+  };
+
+  const handleInterestToggle = (interest: string) => {
+    setFormData(prev => ({
+      ...prev,
+      selectedInterests: prev.selectedInterests.includes(interest)
+        ? prev.selectedInterests.filter(i => i !== interest)
+        : [...prev.selectedInterests, interest]
     }));
   };
 
@@ -127,7 +139,7 @@ const Auth = () => {
             age: 28,
             bio: 'Me encanta viajar, la fotografía y conocer gente nueva. Busco conexiones auténticas y experiencias únicas.',
             location: 'Ciudad de México, México',
-            interests: ['Fotografía', 'Viajes', 'Música', 'Arte', 'Cocina'],
+            interests: ['Lifestyle Swinger', 'Comunicación Abierta', 'Respeto Mutuo', 'Experiencias Nuevas', 'Discreción Total'],
             photos: [
               'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400',
               'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400',
@@ -142,21 +154,34 @@ const Auth = () => {
           }),
           // Perfil completo para pareja
           ...(formData.email.includes('pareja') && {
-            ages: [26, 29],
-            bio: 'Somos una pareja aventurera que busca nuevas experiencias y conexiones. Nos gusta explorar juntos y conocer gente interesante.',
+            id: Math.floor(Math.random() * 10000),
+            coupleName: 'Sofia & Miguel',
             location: 'Guadalajara, México',
-            interests: ['Aventuras', 'Viajes', 'Gastronomía', 'Deportes', 'Naturaleza'],
-            photos: [
-              'https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?w=400',
-              'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400',
-              'https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?w=400'
-            ],
+            bio: 'Somos una pareja aventurera que busca nuevas experiencias y conexiones. Nos gusta explorar juntos y conocer gente interesante.',
             avatar: 'https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?w=400',
-            genders: ['female', 'male'],
-            interestedIn: 'couples',
             verified: true,
             premium: true,
-            relationshipType: 'couple'
+            relationshipType: 'couple',
+            accountType: 'couple',
+            partner1: {
+              name: 'Sofia',
+              age: 26,
+              bio: 'Me encanta explorar nuevas experiencias junto a mi pareja. Soy diseñadora gráfica y disfruto de la vida al máximo.',
+              interests: ['Lifestyle Swinger', 'Comunicación Abierta', 'Respeto Mutuo', 'Experiencias Nuevas', 'Discreción Total'],
+              avatar: 'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400',
+              profession: 'Diseñadora Gráfica'
+            },
+            partner2: {
+              name: 'Miguel',
+              age: 29,
+              bio: 'Aventurero y respetuoso, busco junto a mi pareja vivir experiencias únicas. Trabajo como ingeniero de software.',
+              interests: ['Intercambio de Parejas', 'Parejas Experimentadas', 'Eventos Lifestyle', 'Clubs Privados', 'Hoteles Temáticos'],
+              avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400',
+              profession: 'Ingeniero de Software'
+            },
+            isOnline: true,
+            isVerified: true,
+            isPremium: true
           })
         };
         
@@ -250,7 +275,8 @@ const Auth = () => {
             partner_bio: formData.accountType === "couple" ? formData.partnerBio : null,
             latitude: location?.latitude || null,
             longitude: location?.longitude || null,
-            share_location: formData.shareLocation
+            share_location: formData.shareLocation,
+            selected_interests: formData.selectedInterests
           }
         }
       });
@@ -732,6 +758,80 @@ const Auth = () => {
                     </div>
                   </>
                 )}
+                
+                {/* Sección de Intereses Lifestyle */}
+                <div className="space-y-4 p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border border-purple-200">
+                  <div className="text-center">
+                    <h3 className="font-semibold text-purple-900 mb-2">Intereses Lifestyle</h3>
+                    <p className="text-sm text-purple-700">Selecciona tus intereses para encontrar matches compatibles</p>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto">
+                    {lifestyleInterests.map((interest, index) => (
+                      <div key={index} className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`interest-${index}`}
+                          checked={formData.selectedInterests.includes(interest)}
+                          onCheckedChange={() => handleInterestToggle(interest)}
+                        />
+                        <Label 
+                          htmlFor={`interest-${index}`} 
+                          className="text-xs cursor-pointer text-gray-700 hover:text-purple-700"
+                        >
+                          {interest}
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <div className="text-center">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        const autoInterests = getAutoInterests(formData.accountType as 'single' | 'couple');
+                        handleInputChange("selectedInterests", autoInterests);
+                      }}
+                      className="text-purple-600 border-purple-300 hover:bg-purple-100"
+                    >
+                      Selección automática
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Sección de Foto de Perfil */}
+                <div className="space-y-4 p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg border border-blue-200">
+                  <div className="text-center">
+                    <h3 className="font-semibold text-blue-900 mb-2">Foto de Perfil</h3>
+                    <p className="text-sm text-blue-700">Agrega una foto para tu perfil</p>
+                  </div>
+                  
+                  <div className="flex flex-col items-center space-y-3">
+                    <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
+                      <span className="text-2xl text-gray-500">📷</span>
+                    </div>
+                    
+                    <div className="flex gap-2">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        className="text-blue-600 border-blue-300 hover:bg-blue-100"
+                      >
+                        Subir foto
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        className="text-blue-600 border-blue-300 hover:bg-blue-100"
+                      >
+                        Avatar temporal
+                      </Button>
+                    </div>
+                  </div>
+                </div>
                 
                 <div className="space-y-3">
                   <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">

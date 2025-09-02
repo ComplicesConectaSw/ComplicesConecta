@@ -46,6 +46,17 @@ interface Profile {
   gender: Gender;
 }
 
+// Intereses lifestyle para perfiles
+const lifestyleInterests = [
+  "Lifestyle Swinger", "Intercambio de Parejas", "Encuentros Casuales", "Fiestas Temáticas", 
+  "Clubs Privados", "Eventos Lifestyle", "Soft Swap", "Full Swap", "Unicornios", 
+  "Parejas Experimentadas", "Principiantes Curiosos", "Mentalidad Abierta", "Sin Tabúes", 
+  "Comunicación Abierta", "Respeto Mutuo", "Discreción Total", "Ambiente Relajado", 
+  "Experiencias Nuevas", "Conexiones Auténticas", "Diversión Adulta", "Aventuras Compartidas",
+  "Hoteles Temáticos", "Resorts Lifestyle", "Cruceros Swinger", "Viajes en Grupo",
+  "Pool Parties", "Jacuzzi Sessions", "Masajes en Pareja", "Juegos de Rol"
+];
+
 // Professional profile images from Unsplash
 
 // Función para generar perfiles aleatorios con imágenes coherentes
@@ -69,8 +80,8 @@ const generateRandomProfiles = (userType = 'single') => {
 
   const locations = ["Ciudad de México", "Guadalajara", "Monterrey", "Puebla", "Tijuana", "León", "Juárez", "Torreón"];
   const interests = {
-    couple: ["Fiestas Privadas", "Intercambio de Parejas", "Eventos VIP", "Lifestyle", "Experiencias Nuevas"],
-    single: ["Aventuras", "Diversión", "Experiencias Únicas", "Conexiones Reales", "Lifestyle"]
+    couple: ["Intercambio de Parejas", "Parejas Experimentadas", "Eventos Lifestyle", "Clubs Privados", "Hoteles Temáticos"],
+    single: ["Lifestyle Swinger", "Comunicación Abierta", "Respeto Mutuo", "Experiencias Nuevas", "Discreción Total"]
   };
 
   const profiles = [];
@@ -166,20 +177,11 @@ const Discover = () => {
   const [allProfiles, setAllProfiles] = useState<Profile[]>([]);
 
   useEffect(() => {
-    // Verificar autenticación demo
-    const demoAuth = localStorage.getItem('demo_authenticated');
-    const demoUser = localStorage.getItem('demo_user');
-    
-    if (demoAuth !== 'true' || !demoUser) {
-      console.log('❌ Usuario no autenticado en Discover, redirigiendo a auth');
-      navigate('/auth');
-      return;
-    }
-    
-    const userType = getUserType();
-    console.log('🔍 Cargando perfiles para usuario tipo:', userType);
+    // Discover page is now independent - load profiles based on current user or default to 'single'
+    const userType = getUserType() || 'single';
+    console.log('🔍 Discover independiente - Cargando perfiles para tipo:', userType);
     setAllProfiles(generateRandomProfiles(userType));
-  }, [navigate]);
+  }, []);
 
   const [filters, setFilters] = useState<FilterState>({
     ageRange: [18, 50],
@@ -279,11 +281,13 @@ const Discover = () => {
         stopWatchingLocation();
       }
     };
-  }, [startWatchingLocation, stopWatchingLocation, isWatching, toast]);
+  }, []); // Remove dependencies to prevent infinite loops
 
   useEffect(() => {
-    setFilteredProfiles(getFilteredProfiles());
-  }, [filters, getFilteredProfiles, location]); // Add location dependency
+    if (allProfiles.length > 0) {
+      setFilteredProfiles(getFilteredProfiles());
+    }
+  }, [filters, location, allProfiles]); // Simplified dependencies
 
     const handleLike = (profileId: string) => {
     setLikedProfiles(prev => new Set([...prev, profileId]));
@@ -339,7 +343,8 @@ const Discover = () => {
         </div>
       )}
 
-      <div className="fixed inset-0 z-0 bg-gradient-to-br from-background via-muted/30 to-secondary/20"></div>
+      <div className="fixed inset-0 z-0 bg-hero-gradient"></div>
+      <div className="fixed inset-0 z-0 bg-gradient-to-br from-purple-900/20 via-pink-900/10 to-blue-900/20"></div>
 
       <div className="relative z-10">
         <Header />

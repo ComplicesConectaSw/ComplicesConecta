@@ -252,7 +252,16 @@ NODE_ENV=development
 - ✅ **NUEVO**: Tipos TypeScript para todas las funcionalidades
 - ✅ **NUEVO**: Mock data extendido para funciones sociales
 
-### ✨ **Nuevas Funcionalidades (v1.3.3)** *(2 de septiembre, 2025)*
+### ✨ **Nuevas Funcionalidades (v1.3.4)** *(2 de septiembre, 2025)*
+- ✅ **Perfiles de Pareja Mejorados**: Información separada para cada partner (él y ella)
+- ✅ **Sección de Intereses Completa**: Scroll vertical para mostrar todos los intereses
+- ✅ **Background Consistente**: Gradiente púrpura-rosa-índigo en todos los perfiles
+- ✅ **Navegación Mejorada**: Botón de regreso dirigido a `/profile` en lugar del index
+- ✅ **Visibilidad de Texto**: Mejor contraste en secciones de configuración y privacidad
+- ✅ **Scroll Optimizado**: Contenedores con scroll vertical para mejor UX móvil
+- ✅ **Fallbacks Seguros**: Datos por defecto cuando no hay información de partners
+
+### ✨ **Funcionalidades Previas (v1.3.3)** *(2 de septiembre, 2025)*
 - ✅ **Registro Mejorado**: Campos de edad y apodo para perfiles Single y Pareja
 - ✅ **Selección Visual**: Cards interactivas para elegir tipo de perfil (👤 Single / 👫 Pareja)
 - ✅ **Geolocalización Automática**: Detección automática de ubicación en el registro
@@ -325,10 +334,10 @@ NODE_ENV=development
 
 | Plan | Precio | Características |
 |------|--------|----------------|
-| **Basic** | €9.99/mes | Chat básico, 10 likes/día |
-| **Silver** | €19.99/mes | Chat ilimitado, 50 likes/día, eventos |
-| **Gold** | €29.99/mes | Todo Silver + Super Likes, verificación |
-| **Premium** | €49.99/mes | Acceso VIP total, eventos exclusivos |
+| **Basic** | x /mes | Chat básico, 10 likes/día |
+| **Silver** |x /mes | Chat ilimitado, 50 likes/día, eventos |
+| **Gold** |x /mes | Todo Silver + Super Likes, verificación |
+| **Premium** | x /mes | Acceso VIP total, eventos exclusivos |
 
 ## 🚀 Despliegue
 
@@ -357,7 +366,7 @@ npm run scaffold:templates  # Importa componentes de plantillas
 - **Vercel** - Para aplicación web
 - **Netlify** - Alternativa web
 - **Google Play Store** - Para Android
-- **App Store** - Para iOS
+- **App Store** - Para iOS - En desarrollo
 
 ## 🔒 Seguridad y Privacidad
 
@@ -378,6 +387,6 @@ Este proyecto es propiedad de ComplicesConectaSW. Todos los derechos reservados.
 
 ---
 
-**🔥 ¡Únete a la comunidad swinger más exclusiva de España!**
+**🔥 ¡Únete a la comunidad swinger más exclusiva de Mexico!**
 
 *Conexiones auténticas, experiencias únicas, discreción total.*

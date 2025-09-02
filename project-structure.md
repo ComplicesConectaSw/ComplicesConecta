@@ -217,16 +217,34 @@ npm run audit:fix           # Correcciones automáticas
 npm run scaffold:templates  # Importar plantillas
 ```
 
-## 🚀 **Nuevas Funcionalidades v1.3.3** *(2 de septiembre, 2025)*
+## 🚀 **Nuevas Funcionalidades v1.3.4** *(Enero 2025)*
 
-### **Sistema de Registro Mejorado**
+### **Mejoras Críticas de Perfiles**
+- **ProfileCouple.tsx Rediseñado**: 
+  - Información separada para cada partner (él y ella)
+  - Fotos individuales con colores diferenciados (rosa/azul)
+  - Sección de intereses completa con scroll vertical
+  - Fallbacks seguros para datos faltantes
+- **ProfileSingle.tsx Mejorado**:
+  - Background consistente púrpura-rosa-índigo
+  - Navegación mejorada (botón a /profile)
+  - Sección de intereses con scroll optimizado
+  - Mejor visibilidad de texto en configuración
+
+### **Mejoras de UI/UX**
+- **Background Consistente**: Gradiente púrpura-rosa-índigo en ambos perfiles
+- **Scroll Optimizado**: Contenedores principales con scroll fluido para móvil
+- **Navegación Mejorada**: Botones de regreso dirigidos correctamente a /profile
+- **TypeScript Completo**: Tipado React.FC agregado a todos los componentes
+
+### **Sistema de Registro Mejorado v1.3.3**
 - **Campos de Edad**: Validación 18-99 años para Single y Pareja
 - **Apodos Personalizables**: 
   - Single: Apodo individual
   - Pareja: Apodo conjunto + individual para ella
 - **Selección Visual**: Cards interactivas 👤 Single / 👫 Pareja
 
-### **Geolocalización Avanzada**
+### **Geolocalización Avanzada v1.3.3**
 - **Detección Automática**: Ubicación al cargar registro
 - **Tiempo Real**: Hook `useGeolocation` con `watchPosition`
 - **Matches Dinámicos**: Filtrado por distancia real (Haversine)

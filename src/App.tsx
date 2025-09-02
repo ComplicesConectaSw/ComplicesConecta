@@ -9,6 +9,7 @@ import ProfileDetail from "./pages/ProfileDetail";
 import Events from "./pages/Events";
 import Chat from "./pages/Chat";
 import Matches from "./pages/Matches";
+import Requests from "./pages/Requests";
 import Settings from "./pages/Settings";
 import Discover from "./pages/Discover";
 import Premium from "./pages/Premium";
@@ -48,6 +49,7 @@ const App = () => (
             <Route path="/events" element={<Events />} />
             <Route path="/chat" element={<Chat />} />
             <Route path="/matches" element={<Matches />} />
+            <Route path="/requests" element={<Requests />} />
             <Route path="/discover" element={<Discover />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/premium" element={<Premium />} />

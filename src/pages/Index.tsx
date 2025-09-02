@@ -19,17 +19,14 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [showWelcome, setShowWelcome] = useState(false);
 
-  // Verificar si el usuario está autenticado y redirigir
+  // Verificar si el usuario está autenticado (sin redirección automática)
   useEffect(() => {
-    // Auto-redirect if user is already authenticated in demo mode
+    // Solo verificar autenticación sin redirigir automáticamente
     const demoAuth = localStorage.getItem('demo_authenticated');
     const demoUser = localStorage.getItem('demo_user');
     
-    if (demoAuth === 'true' && demoUser) {
-      const user = JSON.parse(demoUser);
-      // Redirect authenticated users to Discover instead of their profile
-      navigate('/discover');
-    }
+    // Remover redirección automática para permitir acceso al Index
+    // Los usuarios pueden navegar manualmente a donde deseen
   }, [navigate]);
 
   const handleLoadingComplete = () => {

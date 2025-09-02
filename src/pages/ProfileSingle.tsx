@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,7 +15,7 @@ import { useFeatures } from '@/hooks/useFeatures';
 import Gallery from '@/components/profile/Gallery';
 import { InvitationDialog } from '@/components/invitations/InvitationDialog';
 
-const ProfileSingle = () => {
+const ProfileSingle: React.FC = () => {
   const navigate = useNavigate();
   const { features } = useFeatures();
   const [profile, setProfile] = useState<any>(null);
@@ -70,70 +70,47 @@ const ProfileSingle = () => {
   }
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      {/* Advanced Animated Background */}
-      <div className="fixed inset-0 z-0">
-        {/* Base Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-background via-muted/30 to-secondary/20"></div>
-        
-        {/* Animated Gradient Orbs */}
-        <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-        <div className="absolute top-40 right-10 w-96 h-96 bg-gradient-to-r from-accent/20 to-secondary/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-32 left-20 w-96 h-96 bg-gradient-to-r from-secondary/20 to-primary/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
-        
-        {/* Floating Hearts */}
-        <div className="absolute inset-0 overflow-hidden">
-          {[...Array(8)].map((_, i) => (
-            <Heart 
-              key={i}
-              className={`absolute text-primary/10 animate-float-slow`}
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${i * 2}s`,
-                fontSize: `${Math.random() * 20 + 10}px`
-              }}
-              fill="currentColor"
-            />
-          ))}
-        </div>
-      </div>
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-purple-600 via-pink-500 to-indigo-600">
+      {/* Animated Background */}
+      <div className="fixed inset-0 z-0 bg-gradient-to-br from-purple-600/90 via-pink-500/90 to-indigo-600/90"></div>
+      <div className="fixed inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-400/20 via-pink-400/20 to-transparent"></div>
       
       <div className="relative z-10">
       {/* Header */}
-      <div className="bg-white/80 backdrop-blur-sm border-b border-white/20 p-4">
+      <div className="bg-white/90 backdrop-blur-md border-b border-white/30 p-4 shadow-lg">
         <div className="flex items-center justify-between">
           <Button 
             variant="ghost" 
-            onClick={() => navigate(-1)}
-            className="text-gray-600"
+            onClick={() => navigate('/profile')}
+            className="text-gray-700 hover:bg-white/50"
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <h1 className="text-lg font-semibold text-gray-900">Mi Perfil</h1>
           <div className="flex gap-2">
-            <Button variant="ghost" size="sm">
-              <Share2 className="h-5 w-5 text-gray-600" />
+            <Button variant="ghost" size="sm" className="hover:bg-white/50">
+              <Share2 className="h-5 w-5 text-gray-700" />
             </Button>
             <Button 
               variant="ghost" 
               size="sm"
               onClick={() => navigate('/edit-profile-single')}
+              className="hover:bg-white/50"
             >
-              <Settings className="h-5 w-5 text-gray-600" />
+              <Settings className="h-5 w-5 text-gray-700" />
             </Button>
           </div>
         </div>
       </div>
 
-      <div className="p-2 sm:p-4 pb-24 space-y-4 sm:space-y-6 max-w-2xl mx-auto">
+      <div className="p-2 sm:p-4 pb-24 space-y-4 sm:space-y-6 max-w-2xl mx-auto max-h-screen overflow-y-auto">
         {/* Foto principal y badges */}
-        <Card className="overflow-hidden bg-white shadow-xl">
+        <Card className="overflow-hidden bg-white/95 backdrop-blur-sm shadow-glow border-0">
           <div className="relative">
             <img 
               alt={profile.name} 
               className="w-full h-96 sm:h-[500px] object-cover object-center" 
-              src={profile.image || profile.avatar || 'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400'}
+              src={profile.avatar || profile.photos?.[0] || 'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400'}
               onError={(e) => {
                 e.currentTarget.src = 'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400';
               }}
@@ -193,7 +170,7 @@ const ProfileSingle = () => {
         </Card>
 
         {/* Información básica */}
-        <Card className="bg-white shadow-xl">
+        <Card className="bg-white/95 backdrop-blur-sm shadow-glow border-0">
           <CardContent className="p-6">
             <div className="text-center mb-6">
               <h2 className="text-2xl font-bold text-gray-900 mb-2">{profile.name}</h2>
@@ -246,11 +223,11 @@ const ProfileSingle = () => {
         </Card>
 
         {/* Intereses */}
-        <Card className="bg-white shadow-lg">
+        <Card className="bg-white/95 backdrop-blur-sm shadow-glow border-0">
           <CardContent className="p-6">
             <h3 className="font-semibold text-gray-900 mb-3">Intereses</h3>
-            <div className="flex flex-wrap gap-2 mb-4">
-              {profile.interests?.map((interest: string, index: number) => (
+            <div className="flex flex-wrap gap-2 mb-4 max-h-32 overflow-y-auto">
+              {(profile.interests || ['Lifestyle Swinger', 'Intercambio de Parejas', 'Encuentros Casuales', 'Fiestas Temáticas', 'Clubs Privados', 'Eventos Lifestyle', 'Soft Swap', 'Full Swap', 'Experiencias Nuevas', 'Conexiones Auténticas']).map((interest: string, index: number) => (
                 <Badge key={index} className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm py-2 px-4 font-medium shadow-lg">
                   {interest}
                 </Badge>
@@ -358,12 +335,12 @@ const ProfileSingle = () => {
             <Card className="bg-white shadow-lg">
               <div className="p-6">
                 <h3 className="font-semibold text-gray-900 mb-3">Intereses</h3>
-                <div className="flex flex-wrap gap-2">
-                  {profile.interests?.map((interest: string, index: number) => (
+                <div className="flex flex-wrap gap-2 max-h-24 overflow-y-auto">
+                  {(profile.interests || ['Lifestyle Swinger', 'Intercambio de Parejas', 'Encuentros Casuales', 'Fiestas Temáticas', 'Clubs Privados', 'Eventos Lifestyle']).map((interest: string, index: number) => (
                     <Badge 
                       key={index} 
                       variant="outline" 
-                      className="bg-gradient-to-r from-purple-500 to-pink-500 text-white border-none text-sm py-2 px-4 font-medium shadow-lg hover:shadow-xl transition-shadow"
+                      className="text-sm border-purple-300 text-purple-700 hover:bg-purple-50"
                     >
                       {interest}
                     </Badge>
@@ -394,7 +371,7 @@ const ProfileSingle = () => {
         )}
 
         {activeTab === 'privacy' && isOwnProfile && features.profileVisibility && (
-          <Card className="bg-white shadow-xl">
+          <Card className="bg-white/95 backdrop-blur-sm shadow-xl border-0 shadow-purple-500/20">
             <CardContent className="p-6">
               <h3 className="text-xl font-bold text-gray-900 mb-6">Configuración de Privacidad</h3>
               

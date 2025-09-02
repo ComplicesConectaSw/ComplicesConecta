@@ -44,7 +44,18 @@ export const generateMockSingle = () => {
   const apellidos = ["García", "Rodríguez", "López", "Martínez", "González", "Pérez", "Sánchez", "Ramírez"];
   const ubicaciones = ["CDMX", "Guadalajara", "Monterrey", "Puebla", "Tijuana", "León", "Querétaro"];
   const profesiones = ["Ingeniero/a", "Médico/a", "Abogado/a", "Diseñador/a", "Empresario/a", "Artista", "Profesor/a"];
-  const intereses = ["Fotografía", "Viajes", "Música", "Arte", "Cocina", "Deportes", "Lectura", "Cine", "Baile", "Naturaleza", "Tecnología", "Yoga", "Fitness", "Gastronomía", "Moda", "Aventuras", "Diversión", "Experiencias Únicas", "Conexiones Reales", "Lifestyle", "Eventos Sociales", "Fiestas Privadas", "Amistades Especiales", "Momentos Íntimos"];
+  const intereses = [
+    "Lifestyle Swinger", "Intercambio de Parejas", "Encuentros Casuales", "Fiestas Temáticas", 
+    "Clubs Privados", "Eventos Lifestyle", "Soft Swap", "Full Swap", "Unicornios", 
+    "Parejas Experimentadas", "Principiantes Curiosos", "Mentalidad Abierta", "Sin Tabúes", 
+    "Comunicación Abierta", "Respeto Mutuo", "Discreción Total", "Ambiente Relajado", 
+    "Experiencias Nuevas", "Conexiones Auténticas", "Diversión Adulta", "Aventuras Compartidas",
+    "Hoteles Temáticos", "Resorts Lifestyle", "Cruceros Swinger", "Viajes en Grupo",
+    "Pool Parties", "Jacuzzi Sessions", "Masajes en Pareja", "Juegos de Rol",
+    "Fotografía Sensual", "Baile Sensual", "Cenas Íntimas", "Cócteles Exclusivos",
+    "Spa Couples", "Wellness Adulto", "Yoga en Pareja", "Fitness Compartido",
+    "Arte Erótico", "Literatura Adulta", "Cine para Adultos", "Música Sensual"
+  ];
   
   // Determinar género aleatoriamente
   const esMujer = Math.random() > 0.5;
@@ -53,10 +64,20 @@ export const generateMockSingle = () => {
     : nombresM[Math.floor(Math.random() * nombresM.length)];
   const apellido = apellidos[Math.floor(Math.random() * apellidos.length)];
   
-  // Avatar específico por género con ID único
-  const avatarGender = esMujer ? 'women' : 'men';
-  const avatarId = Math.floor(Math.random() * 99) + 1;
-  const uniqueId = Date.now() + Math.floor(Math.random() * 1000);
+  // Imágenes reales de Unsplash para perfiles demo
+  const realImages = esMujer ? [
+    'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400',
+    'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400',
+    'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400',
+    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
+    'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400'
+  ] : [
+    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400',
+    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
+    'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400',
+    'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400',
+    'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400'
+  ];
   
   return {
     id: Math.floor(Math.random() * 10000),
@@ -69,8 +90,8 @@ export const generateMockSingle = () => {
     lookingFor: "Conexiones auténticas y experiencias únicas",
     lifestyle: "Aventurero y espontáneo",
     experienceLevel: "Intermedio",
-    interests: intereses.slice(0, 3 + Math.floor(Math.random() * 3)),
-    avatar: `https://randomuser.me/api/portraits/${esMujer ? 'women' : 'men'}/${avatarId}.jpg`,
+    interests: intereses.slice(0, 5 + Math.floor(Math.random() * 4)),
+    avatar: realImages[Math.floor(Math.random() * realImages.length)],
     isOnline: Math.random() > 0.5,
     isVerified: Math.random() > 0.3,
     isPremium: Math.random() > 0.7,
@@ -88,16 +109,42 @@ export const generateMockCouple = () => {
   const apellidos = ["García", "Rodríguez", "López", "Martínez", "González", "Pérez", "Sánchez", "Ramírez"];
   const ubicaciones = ["CDMX", "Guadalajara", "Monterrey", "Puebla", "Tijuana", "León", "Querétaro"];
   const profesiones = ["Ingeniero/a", "Médico/a", "Abogado/a", "Diseñador/a", "Empresario/a", "Artista", "Profesor/a"];
-  const intereses = ["Fiestas Privadas", "Eventos VIP", "Lifestyle", "Experiencias Nuevas", "Viajes", "Amistades Especiales", "Momentos Íntimos", "Eventos Sociales", "Conexiones Únicas", "Aventuras Compartidas", "Fotografía", "Música", "Arte", "Cocina", "Deportes", "Baile", "Naturaleza", "Gastronomía"];
+  const intereses = [
+    "Lifestyle Swinger", "Intercambio de Parejas", "Encuentros Casuales", "Fiestas Temáticas", 
+    "Clubs Privados", "Eventos Lifestyle", "Soft Swap", "Full Swap", "Unicornios", 
+    "Parejas Experimentadas", "Principiantes Curiosos", "Mentalidad Abierta", "Sin Tabúes", 
+    "Comunicación Abierta", "Respeto Mutuo", "Discreción Total", "Ambiente Relajado", 
+    "Experiencias Nuevas", "Conexiones Auténticas", "Diversión Adulta", "Aventuras Compartidas",
+    "Hoteles Temáticos", "Resorts Lifestyle", "Cruceros Swinger", "Viajes en Grupo",
+    "Pool Parties", "Jacuzzi Sessions", "Masajes en Pareja", "Juegos de Rol",
+    "Fotografía Sensual", "Baile Sensual", "Cenas Íntimas", "Cócteles Exclusivos",
+    "Spa Couples", "Wellness Adulto", "Yoga en Pareja", "Fitness Compartido",
+    "Arte Erótico", "Literatura Adulta", "Cine para Adultos", "Música Sensual"
+  ];
   
   const nombreM = nombresM[Math.floor(Math.random() * nombresM.length)];
   const nombreF = nombresF[Math.floor(Math.random() * nombresF.length)];
   const apellido = apellidos[Math.floor(Math.random() * apellidos.length)];
   
-  // IDs únicos para avatares de pareja
-  const avatarIdF = Math.floor(Math.random() * 99) + 1;
-  const avatarIdM = Math.floor(Math.random() * 99) + 1;
-  const uniqueId = Date.now() + Math.floor(Math.random() * 1000);
+  // Imágenes reales de Unsplash para parejas demo
+  const coupleImages = [
+    'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400',
+    'https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?w=400',
+    'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400',
+    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400'
+  ];
+  
+  const femaleImages = [
+    'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400',
+    'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400',
+    'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400'
+  ];
+  
+  const maleImages = [
+    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400',
+    'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400',
+    'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400'
+  ];
   
   return {
     id: Math.floor(Math.random() * 10000),
@@ -108,7 +155,8 @@ export const generateMockCouple = () => {
     lookingFor: "Conexiones auténticas y experiencias únicas",
     lifestyle: "Aventurero y espontáneo",
     experienceLevel: "Intermedio",
-    interests: intereses.slice(0, 3 + Math.floor(Math.random() * 3)),
+    interests: intereses.slice(0, 5 + Math.floor(Math.random() * 4)),
+    avatar: coupleImages[Math.floor(Math.random() * coupleImages.length)],
     isOnline: Math.random() > 0.5,
     isVerified: Math.random() > 0.3,
     isPremium: Math.random() > 0.7,
@@ -117,14 +165,16 @@ export const generateMockCouple = () => {
       age: Math.floor(Math.random() * 20) + 25, // 25-44
       profession: profesiones[Math.floor(Math.random() * profesiones.length)],
       bio: `Me encanta explorar nuevas experiencias junto a mi pareja. Soy ${profesiones[Math.floor(Math.random() * profesiones.length)].toLowerCase()} y disfruto de la vida al máximo.`,
-      avatar: `https://randomuser.me/api/portraits/women/${avatarIdF}.jpg?seed=${uniqueId}`,
+      avatar: femaleImages[Math.floor(Math.random() * femaleImages.length)],
+      interests: intereses.slice(0, 3 + Math.floor(Math.random() * 3)), // 3-5 intereses
     },
     partner2: {
       name: nombreM,
       age: Math.floor(Math.random() * 20) + 25, // 25-44
       profession: profesiones[Math.floor(Math.random() * profesiones.length)],
       bio: `Aventurero y respetuoso, busco junto a mi pareja vivir experiencias únicas. Trabajo como ${profesiones[Math.floor(Math.random() * profesiones.length)].toLowerCase()}.`,
-      avatar: `https://randomuser.me/api/portraits/men/${avatarIdM}.jpg?seed=${uniqueId}`,
+      avatar: maleImages[Math.floor(Math.random() * maleImages.length)],
+      interests: intereses.slice(5, 8 + Math.floor(Math.random() * 3)), // 3-5 intereses diferentes
     },
     stats: {
       likes: Math.floor(Math.random() * 800) + 100,
