@@ -7,6 +7,9 @@ export const Header = () => {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [demoUser, setDemoUser] = useState<any>(null);
+  const [isRunningInApp, setIsRunningInApp] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
 
   useEffect(() => {
     const checkAuth = () => {
@@ -22,11 +25,59 @@ export const Header = () => {
       }
     };
 
+    // Detectar si se está ejecutando desde la APK instalada
+    const isInWebView = () => {
+      const userAgent = navigator.userAgent.toLowerCase();
+      return userAgent.includes('wv') || 
+             userAgent.includes('version/') && userAgent.includes('chrome/') && userAgent.includes('mobile') && !userAgent.includes('browser');
+    };
+    
+    setIsRunningInApp(isInWebView());
+
     checkAuth();
     // Verificar cambios en localStorage
     window.addEventListener('storage', checkAuth);
     return () => window.removeEventListener('storage', checkAuth);
   }, []);
+
+  // Manejar scroll solo en APK instalada
+  useEffect(() => {
+    if (!isRunningInApp) return;
+
+    let lastScrollY = window.scrollY;
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY;
+          
+          // Si está en el top (primeros 50px), minimizar
+          if (currentScrollY <= 50) {
+            setIsMinimized(true);
+            setIsScrolled(false);
+          }
+          // Si hace scroll hacia abajo, ocultar completamente
+          else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+            setIsScrolled(true);
+            setIsMinimized(false);
+          }
+          // Si hace scroll hacia arriba, mostrar minimizado
+          else if (currentScrollY < lastScrollY) {
+            setIsScrolled(false);
+            setIsMinimized(true);
+          }
+          
+          lastScrollY = currentScrollY;
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isRunningInApp]);
 
   const handleLogout = () => {
     localStorage.removeItem('demo_authenticated');
@@ -36,24 +87,39 @@ export const Header = () => {
     navigate('/');
   };
   return (
-    <header className="bg-gradient-to-r from-purple-900/95 to-pink-900/95 backdrop-blur-sm border-b border-pink-300/30 sticky top-0 z-50">
-      <div className="container mx-auto px-4 py-4">
+    <header className={`bg-gradient-to-r from-purple-900/95 to-pink-900/95 backdrop-blur-sm border-b border-pink-300/30 sticky top-0 z-50 transition-all duration-300 ${
+      isRunningInApp ? (
+        isScrolled ? '-translate-y-full' : 
+        isMinimized ? 'py-1' : 'py-0'
+      ) : ''
+    }`}>
+      <div className={`container mx-auto px-4 transition-all duration-300 ${
+        isRunningInApp && isMinimized ? 'py-2' : 'py-4'
+      }`}>
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <div className="relative">
-              <Heart className="h-8 w-8 text-primary animate-pulse-glow" fill="currentColor" />
+              <Heart className={`text-primary animate-pulse-glow transition-all duration-300 ${
+                isRunningInApp && isMinimized ? 'h-6 w-6' : 'h-8 w-8'
+              }`} fill="currentColor" />
               <div className="absolute inset-0 animate-float">
-                <Heart className="h-8 w-8 text-primary-glow opacity-50" fill="currentColor" />
+                <Heart className={`text-primary-glow opacity-50 transition-all duration-300 ${
+                  isRunningInApp && isMinimized ? 'h-6 w-6' : 'h-8 w-8'
+                }`} fill="currentColor" />
               </div>
             </div>
-            <h1 className="text-2xl font-bold bg-love-gradient bg-clip-text text-transparent">
+            <h1 className={`font-bold bg-love-gradient bg-clip-text text-transparent transition-all duration-300 ${
+              isRunningInApp && isMinimized ? 'text-lg' : 'text-2xl'
+            }`}>
               ComplicesConecta
             </h1>
           </Link>
 
-          {/* Navigation */}
-          <nav className="hidden md:flex items-center space-x-6">
+          {/* Navigation - Ocultar en modo minimizado de APK */}
+          <nav className={`items-center space-x-6 transition-all duration-300 ${
+            isRunningInApp && isMinimized ? 'hidden' : 'hidden md:flex'
+          }`}>
             <Link 
               to="/discover" 
               className="text-white/90 hover:text-white transition-colors duration-300 relative group font-medium"

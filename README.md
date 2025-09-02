@@ -12,7 +12,7 @@
 ### 📱 ¡Descarga la App Ahora!
 
 <a href="https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v.1.3.0/app-release.apk" download>
-  <img src="https://img.shields.io/badge/📱_Descargar_APK-v1.3.0-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
+  <img src="https://img.shields.io/badge/📱_Descargar_APK-v1.4.0-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
 </a>
 
 *🔒 Aplicación segura y verificada para Android*
@@ -252,7 +252,18 @@ NODE_ENV=development
 - ✅ **NUEVO**: Tipos TypeScript para todas las funcionalidades
 - ✅ **NUEVO**: Mock data extendido para funciones sociales
 
-### ✨ **Últimas Actualizaciones (v1.3.7)** *(15 de enero, 2025 - 15:20)*
+### ✨ **Últimas Actualizaciones (v1.4.0)** *(2 de septiembre, 2025 - 11:15)*
+- ✅ **Optimizaciones para APK Instalada**: Header inteligente que se oculta al hacer scroll y se minimiza en el top
+- ✅ **Detección de WebView Precisa**: Distingue entre navegador móvil Android y APK instalada
+- ✅ **Botón de Descarga Contextual**: Solo visible en navegadores web, oculto cuando se ejecuta desde APK
+- ✅ **Navegación Adaptativa**: Menú completo en web, minimizado en APK durante scroll
+- ✅ **Transiciones Suaves**: Animaciones de 300ms para cambios de estado del header
+- ✅ **Logo Responsivo**: Tamaño adaptable según estado (h-8 → h-6 en modo minimizado)
+- ✅ **Modal de Instalación Mejorado**: Botón de descarga directa desde GitHub releases v1.3.0
+- ✅ **Colores Corregidos**: Textos del panel de administración visibles en fondo oscuro
+- ✅ **Correcciones Técnicas**: ActionButtonsModal.tsx, URLs de imágenes actualizadas, intereses swinger
+
+### ✨ **Actualizaciones Previas (v1.3.7)** *(15 de enero, 2025 - 15:20)*
 - ✅ **Corrección de UI y Funcionalidad en ProfileSingle**: Mejoras completas de experiencia de usuario
   - Carga robusta de imágenes de perfil con fallback a Unsplash y placeholder SVG
   - Corrección de texto cortado en sección de intereses eliminando restricciones de altura

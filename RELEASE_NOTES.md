@@ -1,8 +1,8 @@
-# 📱 ComplicesConecta - Notas de Lanzamiento v1.3.7
+# 📱 ComplicesConecta - Notas de Lanzamiento v1.4.0
 
-**Fecha de Lanzamiento:** 2 de Enero de 2025 - 10:07 hrs  
+**Fecha de Lanzamiento:** 2 de Septiembre de 2025 - 11:15 hrs  
 **Plataforma:** Android APK + Web App  
-**Versión:** 1.3.7
+**Versión:** 1.4.0
 
 ---
 
@@ -46,7 +46,29 @@ ComplicesConecta se completa con sistema de invitaciones, panel de administraci�
 
 ---
 
-## 🆕 Novedades en v1.3.7
+## 🆕 Novedades en v1.4.0
+
+### 📱 **Optimizaciones para APK Instalada (NUEVO)**
+- ✅ **Header inteligente con scroll** - Se oculta al hacer scroll hacia abajo y se minimiza en el top
+- ✅ **Detección de WebView** - Distingue entre navegador móvil y APK instalada
+- ✅ **Botón de descarga contextual** - Solo visible en navegadores, oculto en APK instalada
+- ✅ **Navegación adaptativa** - Menú completo en web, minimizado en APK al hacer scroll
+- ✅ **Transiciones suaves** - Animaciones de 300ms para cambios de estado del header
+- ✅ **Logo responsivo** - Tamaño adaptable según estado minimizado (h-8 → h-6)
+
+### 🎨 **Mejoras de UI/UX para APK (NUEVO)**
+- ✅ **Modal de instalación mejorado** con botón de descarga directa desde GitHub releases
+- ✅ **Detección precisa de entorno** - Diferencia entre Android WebView y navegador móvil
+- ✅ **Experiencia optimizada** - Interfaz limpia sin elementos innecesarios en APK
+- ✅ **Colores corregidos** - Textos del panel de administración ahora visibles en fondo oscuro
+
+### 🔧 **Correcciones Técnicas (NUEVO)**
+- ✅ **ActionButtonsModal.tsx** - Corregido error de sintaxis con etiquetas div
+- ✅ **Intereses actualizados** - Perfiles con temática swinger más apropiada
+- ✅ **URLs de imágenes** - Reemplazadas URLs rotas de Unsplash por nuevas válidas
+- ✅ **Lógica de detección** - Mejorada para identificar correctamente APK vs navegador web
+
+## 🆕 Novedades Previas en v1.3.7
 
 ### 🎨 **Mejoras de Contraste y Visibilidad en UI de Registro (NUEVO)**
 - ✅ **LoginLoadingScreen personalizado** con nombres específicos de usuarios y parejas

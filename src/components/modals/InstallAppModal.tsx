@@ -76,7 +76,7 @@ export const InstallAppModal = ({ isOpen, onClose }: InstallAppModalProps) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <Card className="w-full max-w-lg shadow-glow animate-slide-up">
+      <Card className="w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-glow animate-slide-up">
         <div className="relative">
           <Button
             variant="ghost"
@@ -111,9 +111,9 @@ export const InstallAppModal = ({ isOpen, onClose }: InstallAppModalProps) => {
             </div>
           </div>
           
-          <CardContent className="p-6 space-y-6">
+          <CardContent className="p-6 space-y-6 bg-gradient-to-br from-purple-900/20 to-pink-900/20 backdrop-blur-sm">
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
+              <h3 className="text-lg font-semibold text-white flex items-center gap-2">
                 <Chrome className="h-5 w-5 text-primary" />
                 Instrucciones de Instalación
               </h3>
@@ -133,12 +133,12 @@ export const InstallAppModal = ({ isOpen, onClose }: InstallAppModalProps) => {
                         ? 'bg-green-500 text-white' 
                         : index === currentStep 
                           ? 'bg-primary text-white animate-pulse' 
-                          : 'bg-muted text-muted-foreground'
+                          : 'bg-white/20 text-white'
                     }`}>
                       {index < currentStep ? '✓' : index + 1}
                     </div>
                     <p className={`text-sm ${
-                      index === currentStep ? 'text-foreground font-medium' : 'text-muted-foreground'
+                      index === currentStep ? 'text-white font-medium' : 'text-white/80'
                     }`}>
                       {instruction}
                     </p>
@@ -147,11 +147,11 @@ export const InstallAppModal = ({ isOpen, onClose }: InstallAppModalProps) => {
               </div>
             </div>
 
-            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+            <div className="bg-amber-900/30 border border-amber-500/30 rounded-lg p-4">
               <div className="flex items-start space-x-2">
-                <div className="text-amber-600 mt-0.5">⚠️</div>
-                <div className="text-sm text-amber-800">
-                  <p className="font-medium mb-1">Importante:</p>
+                <div className="text-amber-400 mt-0.5">⚠️</div>
+                <div className="text-sm text-amber-100">
+                  <p className="font-medium mb-1 text-white">Importante:</p>
                   <p>Esta aplicación requiere Android 5.0 o superior. Asegúrate de habilitar la instalación desde fuentes desconocidas en la configuración de tu dispositivo.</p>
                 </div>
               </div>

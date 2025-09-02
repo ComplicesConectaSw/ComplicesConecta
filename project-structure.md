@@ -217,7 +217,28 @@ npm run audit:fix           # Correcciones automáticas
 npm run scaffold:templates  # Importar plantillas
 ```
 
-## 🚀 **Últimas Actualizaciones v1.3.6** *(2 de enero, 2025 - 10:07 hrs)*
+## 🚀 **Últimas Actualizaciones v1.4.0** *(2 de septiembre, 2025 - 11:15)*
+
+### **Optimizaciones para APK Instalada**
+- **Header Inteligente**: Se oculta automáticamente al hacer scroll hacia abajo y se minimiza cuando está en el top
+- **Detección WebView Precisa**: Distingue entre navegador móvil Android y APK instalada usando userAgent
+- **Botón de Descarga Contextual**: Solo visible en navegadores web, se oculta cuando se ejecuta desde APK
+- **Navegación Adaptativa**: Menú completo en web, se minimiza en APK durante scroll para mejor UX
+- **Transiciones Suaves**: Animaciones de 300ms para todos los cambios de estado del header
+- **Logo Responsivo**: Tamaño adaptable según estado (h-8 → h-6 en modo minimizado)
+- **Modal de Instalación Mejorado**: Botón de descarga directa desde GitHub releases v1.3.0
+- **Panel Admin Corregido**: Textos del panel de administración ahora visibles en fondo oscuro
+- **Correcciones Técnicas**: ActionButtonsModal.tsx, URLs de imágenes actualizadas, intereses swinger
+
+### **Componentes Actualizados**
+```
+src/components/Header.tsx           # Header con scroll detection y minimización
+src/pages/Index.tsx                 # Detección WebView y control de botón descarga
+src/components/modals/              # Modales corregidos y mejorados
+src/pages/Admin.tsx                 # Colores de texto corregidos
+```
+
+## 🚀 **Actualizaciones Previas v1.3.6** *(2 de enero, 2025 - 10:07 hrs)*
 
 ### **Mejoras de Contraste y Visibilidad en UI**
 - **LoginLoadingScreen personalizado** con nombres específicos de usuarios y parejas
