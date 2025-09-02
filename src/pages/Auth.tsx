@@ -634,4 +634,6 @@ const Auth = () => {
       </div>
     </div>
   );
-}
+};
+
+export default Auth;
