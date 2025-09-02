@@ -3,7 +3,7 @@ import { verify } from 'hcaptcha';
 // Configuración de hCaptcha
 const HCAPTCHA_SECRET = process.env.VITE_HCAPTCHA_SECRET;
 
-if (!HCAPTCHA_SECRET || HCAPTCHA_SECRET === 'your-hcaptcha-secret-key' || HCAPTCHA_SECRET.startsWith('ES_')) {
+if (!HCAPTCHA_SECRET || HCAPTCHA_SECRET === 'your-hcaptcha-secret-key') {
   throw new Error('hCaptcha secret key is not configured correctly in environment variables.');
 }
 
