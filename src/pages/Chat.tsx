@@ -37,11 +37,12 @@ const Chat = () => {
   const navigate = useNavigate();
   const { features } = useFeatures();
 
-  // Verificar autenticación demo
+  // Verificar autenticación demo - permitir acceso si está autenticado
   useEffect(() => {
     const demoAuth = localStorage.getItem('demo_authenticated');
     const demoUser = localStorage.getItem('demo_user');
     
+    // Solo redirigir si NO está autenticado
     if (demoAuth !== 'true' || !demoUser) {
       navigate('/auth');
       return;
