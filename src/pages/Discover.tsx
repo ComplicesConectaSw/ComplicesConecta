@@ -398,12 +398,21 @@ function Discover() {
               ) : (
                 profiles.map((profile) => (
                   <div key={profile.id} className="group relative bg-white/90 backdrop-blur-md rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
-                    <div className="relative aspect-[3/4] overflow-hidden">
+                    <div className="relative aspect-[3/4] overflow-hidden bg-gray-100">
                       <img 
                         src={profile.image} 
                         alt={profile.name}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                         onClick={() => navigate(`/profile/${profile.id}`)}
+                        onLoad={() => console.log(`✅ Imagen cargada: ${profile.name}`)}
+                        onError={(e) => {
+                          console.log(`❌ Error cargando imagen: ${profile.name}, usando fallback`);
+                          const fallbacks = [
+                            'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400&h=400&fit=crop&crop=face',
+                            'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face'
+                          ];
+                          e.currentTarget.src = fallbacks[Math.floor(Math.random() * fallbacks.length)];
+                        }}
                       />
                       
                       {/* Badges superiores */}

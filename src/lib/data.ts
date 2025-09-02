@@ -42,7 +42,7 @@ export const generateMockSingle = (includeOnlineStatus = true) => {
   const nombresM = ["Raúl", "Miguel", "Alejandro", "Fernando", "Roberto", "Javier", "Antonio", "Pablo"];
   
   const apellidos = ["García", "Rodríguez", "López", "Martínez", "González", "Pérez", "Sánchez", "Ramírez"];
-  const ubicaciones = ["CDMX", "Guadalajara", "Monterrey", "Puebla", "Tijuana", "León", "Querétaro"];
+  const ubicaciones = ["CDMX", "Guadalajara", "Monterrey", "Puebla", "Tijuana", "León", "Querétaro", "Cancún", "Playa del Carmen", "Mérida"];
   const profesiones = ["Ingeniero/a", "Médico/a", "Abogado/a", "Diseñador/a", "Empresario/a", "Artista", "Profesor/a"];
   const intereses = [
     "Lifestyle Swinger", "Intercambio de Parejas", "Encuentros Casuales", "Fiestas Temáticas", 
@@ -50,11 +50,11 @@ export const generateMockSingle = (includeOnlineStatus = true) => {
     "Parejas Experimentadas", "Principiantes Curiosos", "Mentalidad Abierta", "Sin Tabúes", 
     "Comunicación Abierta", "Respeto Mutuo", "Discreción Total", "Ambiente Relajado", 
     "Experiencias Nuevas", "Conexiones Auténticas", "Diversión Adulta", "Aventuras Compartidas",
-    "Hoteles Temáticos", "Resorts Lifestyle", "Cruceros Swinger", "Viajes en Grupo",
+    "Hoteles Temáticos", "Resorts Lifestyle", "Cruceros Swinger",
     "Pool Parties", "Jacuzzi Sessions", "Masajes en Pareja", "Juegos de Rol",
     "Fotografía Sensual", "Baile Sensual", "Cenas Íntimas", "Cócteles Exclusivos",
     "Spa Couples", "Wellness Adulto", "Yoga en Pareja", "Fitness Compartido",
-    "Arte Erótico", "Literatura Adulta", "Cine para Adultos", "Música Sensual"
+    "Fiestas Privadas", "Conexiones Reales", "Ambiente Exclusivo", "Experiencias Únicas"
   ];
   
   // Determinar género aleatoriamente
@@ -66,17 +66,17 @@ export const generateMockSingle = (includeOnlineStatus = true) => {
   
   // Imágenes reales de Unsplash para perfiles demo
   const realImages = esMujer ? [
-    'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400',
-    'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400',
-    'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400',
-    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
-    'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400'
+    'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400&h=500&fit=crop&crop=face',
+    'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=500&fit=crop&crop=face',
+    'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=500&fit=crop&crop=face',
+    'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=500&fit=crop&crop=face',
+    'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&h=500&fit=crop&crop=face'
   ] : [
-    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400',
-    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
-    'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400',
-    'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400',
-    'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400'
+    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=500&fit=crop&crop=face',
+    'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=500&fit=crop&crop=face',
+    'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=500&fit=crop&crop=face',
+    'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=500&fit=crop&crop=face',
+    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop&crop=face'
   ];
   
   const profile = {
@@ -84,14 +84,16 @@ export const generateMockSingle = (includeOnlineStatus = true) => {
     name: `${nombre} ${apellido}`,
     age: Math.floor(Math.random() * 20) + 25,
     location: ubicaciones[Math.floor(Math.random() * ubicaciones.length)],
-    bio: `Soy ${nombre}, me encanta explorar nuevas experiencias y conocer gente interesante. Siempre busco aventuras y momentos únicos.`,
+    bio: `Soy ${nombre}, me encanta explorar nuevas experiencias y conocer gente interesante del lifestyle. Siempre busco aventuras y momentos únicos con mentalidad abierta.`,
     interests: intereses.slice(0, 3 + Math.floor(Math.random() * 3)),
     avatar: realImages[Math.floor(Math.random() * realImages.length)],
     verified: Math.random() > 0.3,
     distance: Math.floor(Math.random() * 50) + 1,
     lastActive: `Hace ${Math.floor(Math.random() * 60)} min`,
     profession: profesiones[Math.floor(Math.random() * profesiones.length)],
-    photos: [realImages[Math.floor(Math.random() * realImages.length)]],
+    photos: [realImages[Math.floor(Math.random() * realImages.length)], realImages[Math.floor(Math.random() * realImages.length)]],
+    gender: esMujer ? 'female' : 'male',
+    firstName: nombre,
     compatibility: Math.floor(Math.random() * 30) + 70,
     isOnline: includeOnlineStatus ? Math.random() > 0.3 : false,
     lastSeen: includeOnlineStatus ? (Math.random() > 0.3 ? 'Ahora' : `Hace ${Math.floor(Math.random() * 120) + 1} min`) : 'Desconocido'
@@ -104,7 +106,7 @@ export const generateMockCouple = (includeOnlineStatus = true) => {
   const nombresM = ["Julio", "Miguel", "Alejandro", "Fernando", "Roberto", "Javier", "Antonio", "Pablo"];
   const nombresF = ["Anabella", "María", "Carmen", "Elena", "Sofía", "Laura", "Patricia", "Isabel"];
   const apellidos = ["García", "Rodríguez", "López", "Martínez", "González", "Pérez", "Sánchez", "Ramírez"];
-  const ubicaciones = ["CDMX", "Guadalajara", "Monterrey", "Puebla", "Tijuana", "León", "Querétaro"];
+  const ubicaciones = ["CDMX", "Guadalajara", "Monterrey", "Puebla", "Tijuana", "León", "Querétaro", "Cancún", "Playa del Carmen", "Mérida"];
   const profesiones = ["Ingeniero/a", "Médico/a", "Abogado/a", "Diseñador/a", "Empresario/a", "Artista", "Profesor/a"];
   const intereses = [
     "Lifestyle Swinger", "Intercambio de Parejas", "Encuentros Casuales", "Fiestas Temáticas", 
@@ -112,11 +114,11 @@ export const generateMockCouple = (includeOnlineStatus = true) => {
     "Parejas Experimentadas", "Principiantes Curiosos", "Mentalidad Abierta", "Sin Tabúes", 
     "Comunicación Abierta", "Respeto Mutuo", "Discreción Total", "Ambiente Relajado", 
     "Experiencias Nuevas", "Conexiones Auténticas", "Diversión Adulta", "Aventuras Compartidas",
-    "Hoteles Temáticos", "Resorts Lifestyle", "Cruceros Swinger", "Viajes en Grupo",
+    "Hoteles Temáticos", "Resorts Lifestyle", "Cruceros Swinger",
     "Pool Parties", "Jacuzzi Sessions", "Masajes en Pareja", "Juegos de Rol",
     "Fotografía Sensual", "Baile Sensual", "Cenas Íntimas", "Cócteles Exclusivos",
     "Spa Couples", "Wellness Adulto", "Yoga en Pareja", "Fitness Compartido",
-    "Arte Erótico", "Literatura Adulta", "Cine para Adultos", "Música Sensual"
+    "Fiestas Privadas", "Conexiones Reales", "Ambiente Exclusivo", "Experiencias Únicas"
   ];
   
   const nombreM = nombresM[Math.floor(Math.random() * nombresM.length)];
@@ -148,7 +150,7 @@ export const generateMockCouple = (includeOnlineStatus = true) => {
     coupleName: `${nombreF} & ${nombreM}`,
     ageRange: `${Math.floor(Math.random() * 10) + 25}-${Math.floor(Math.random() * 10) + 35}`,
     location: ubicaciones[Math.floor(Math.random() * ubicaciones.length)],
-    bio: "Pareja experimentada en el lifestyle. Buscamos nuevas experiencias y conexiones auténticas con otras parejas y singles.",
+    bio: "Pareja experimentada en el lifestyle swinger. Buscamos nuevas experiencias y conexiones auténticas con otras parejas y singles en México.",
     lookingFor: "Conexiones auténticas y experiencias únicas",
     lifestyle: "Aventurero y espontáneo",
     experienceLevel: "Intermedio",

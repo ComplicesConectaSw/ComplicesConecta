@@ -195,7 +195,7 @@ const Matches = () => {
                 Conexiones Swinger
               </span>
             </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-xl text-white max-w-2xl mx-auto">
               Parejas y solteros verificados que han mostrado interés mutuo contigo en la comunidad swinger
             </p>
           </div>

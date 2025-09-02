@@ -291,7 +291,8 @@ const Chat = () => {
               <TabsList className="grid w-full grid-cols-2 bg-white/10 backdrop-blur-sm">
                 <TabsTrigger 
                   value="private" 
-                  className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-white/70 flex items-center gap-2"
+                  className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-white hover:text-white flex items-center gap-2 cursor-pointer"
+                  onClick={() => setActiveTab('private')}
                 >
                   <Lock className="h-4 w-4" />
                   Privado
@@ -303,7 +304,8 @@ const Chat = () => {
                 </TabsTrigger>
                 <TabsTrigger 
                   value="public" 
-                  className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-white/70 flex items-center gap-2"
+                  className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-white hover:text-white flex items-center gap-2 cursor-pointer"
+                  onClick={() => setActiveTab('public')}
                 >
                   <Globe className="h-4 w-4" />
                   Público
@@ -477,30 +479,30 @@ const Chat = () => {
               </div>
 
               {/* Input para enviar mensajes */}
-              <div className="p-4 border-t border-white/10 bg-black/30 max-h-32 overflow-y-auto">
+              <div className="p-4 border-t border-white/10 bg-black/30">
                 {selectedChat.isPrivate && !hasChatAccess[selectedChat.id] ? (
                   <div className="text-center space-y-4 bg-black/50 rounded-lg p-6 border border-white/20">
                     <div className="flex items-center justify-center text-white mb-3">
                       <Lock className="h-6 w-6 mr-2" />
                       <span className="font-semibold text-lg text-shadow">Chat privado bloqueado</span>
                     </div>
-                    <p className="text-sm text-white/90 mb-4 text-shadow leading-relaxed">
+                    <p className="text-sm text-white/90 mb-6 text-shadow leading-relaxed max-w-sm mx-auto break-words">
                       Necesitas una invitación aceptada para chatear con {selectedChat.name}. 
                       Puedes enviar una invitación o esperar a que te envíen una.
                     </p>
-                    <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                    <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
                       <InvitationDialog 
                         targetProfileId={selectedChat.id.toString()}
                         targetProfileName={selectedChat.name}
                       >
-                        <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-6 py-2">
+                        <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-6 py-3 w-full sm:w-auto">
                           <UserPlus className="h-4 w-4 mr-2" />
                           Enviar Invitación
                         </Button>
                       </InvitationDialog>
                       <Button 
                         variant="outline" 
-                        className="border-white/30 text-white hover:bg-white/10 px-6 py-2"
+                        className="border-white/30 text-white hover:bg-white/10 px-6 py-3 w-full sm:w-auto"
                         onClick={() => setSelectedChat(null)}
                       >
                         Cancelar

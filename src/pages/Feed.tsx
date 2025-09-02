@@ -17,11 +17,11 @@ const generateFeedPosts = () => {
   ];
 
   const postTypes = [
-    { type: "photo", content: "¡Noche increíble en el club! 🔥✨", image: "https://images.unsplash.com/photo-1566737236500-c8ac43014a8e?w=500&h=300&fit=crop" },
+    { type: "photo", content: "¡Noche increíble en el club! 🔥✨", image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&h=300&fit=crop" },
     { type: "text", content: "Buscando parejas aventureras para el fin de semana 😈💫" },
-    { type: "photo", content: "Cena romántica antes de la diversión 🍷❤️", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=500&h=300&fit=crop" },
+    { type: "photo", content: "Cena romántica antes de la diversión 🍷❤️", image: "https://images.unsplash.com/photo-1551218808-94e220e084d2?w=500&h=300&fit=crop" },
     { type: "text", content: "Primera vez en el lifestyle, ¡qué experiencia tan increíble! 🌟" },
-    { type: "photo", content: "Pool party privada este sábado 🏊‍♀️🎉", image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=500&h=300&fit=crop" },
+    { type: "photo", content: "Pool party privada este sábado 🏊‍♀️🎉", image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&h=300&fit=crop" },
   ];
 
   return Array.from({ length: 8 }, (_, i) => {
@@ -65,7 +65,7 @@ const Feed = () => {
           <h1 className="text-3xl font-bold text-foreground mb-2">
             Feed <span className="bg-love-gradient bg-clip-text text-transparent">Lifestyle</span>
           </h1>
-          <p className="text-muted-foreground">
+          <p className="text-white">
             Descubre las experiencias de la comunidad 🔥
           </p>
         </div>
@@ -153,7 +153,7 @@ const Feed = () => {
 
         {/* Botón para cargar más */}
         <div className="text-center mt-8">
-          <Button variant="outline" className="px-8">
+          <Button variant="outline" className="px-8 text-white border-white/30 hover:bg-white/10">
             Cargar más publicaciones
           </Button>
         </div>

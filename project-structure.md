@@ -217,7 +217,17 @@ npm run audit:fix           # Correcciones automáticas
 npm run scaffold:templates  # Importar plantillas
 ```
 
-## 🚀 **Últimas Actualizaciones v1.3.5** *(2 de septiembre, 2025)*
+## 🚀 **Últimas Actualizaciones v1.3.6** *(2 de enero, 2025 - 10:07 hrs)*
+
+### **Mejoras de Contraste y Visibilidad en UI**
+- **LoginLoadingScreen personalizado** con nombres específicos de usuarios y parejas
+- **Sección de fotos de perfil mejorada** para parejas (separada "Él" y "Ella")
+- **Corrección de contraste** en sección "Intereses Lifestyle" con fondo oscuro y texto blanco
+- **Actualizada sección "Ubicación"** con mejor visibilidad de texto
+- **Backgrounds optimizados** con transparencias para mejor legibilidad
+- **Textos grises cambiados a blancos** en toda la pantalla de registro
+
+## 🚀 **Actualizaciones Previas v1.3.5** *(2 de septiembre, 2025)*
 
 ### **Discover Completamente Rediseñado**
 - **Página de descubrimiento** con filtros avanzados y sistema de matching inteligente

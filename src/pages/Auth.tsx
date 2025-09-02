@@ -14,6 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { MapPin, ArrowLeft, Sparkles } from "lucide-react";
 import { lifestyleInterests, getAutoInterests } from "@/lib/lifestyle-interests";
+import { LoginLoadingScreen } from "@/components/LoginLoadingScreen";
 
 interface FormData {
   email: string;
@@ -46,6 +47,7 @@ const Auth = () => {
   const { getCurrentLocation, location, isLoading: locationLoading, error: locationError } = useGeolocation();
   
   const [isLoading, setIsLoading] = useState(false);
+  const [showLoginLoading, setShowLoginLoading] = useState(false);
   const [autoLocationRequested, setAutoLocationRequested] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     email: '',
@@ -113,39 +115,52 @@ const Auth = () => {
     setIsLoading(true);
 
     try {
-      // Credenciales demo permitidas
+      // Credenciales demo permitidas con corrección de errores tipográficos
       const demoCredentials = [
         'single@outlook.es',
         'pareja@outlook.es',
         'complicesconectasw@outlook.es'
       ];
 
+      // Función para normalizar email y corregir errores comunes
+      const normalizeEmail = (email: string): string => {
+        const cleanEmail = email.toLowerCase().trim();
+        // Corregir errores tipográficos comunes
+        return cleanEmail
+          .replace('@otlook.es', '@outlook.es')  // Corregir otlook -> outlook
+          .replace('@outllok.es', '@outlook.es') // Corregir outllok -> outlook
+          .replace('@outlok.es', '@outlook.es')  // Corregir outlok -> outlook
+          .replace('@outook.es', '@outlook.es'); // Corregir outook -> outlook
+      };
+
+      const normalizedEmail = normalizeEmail(formData.email);
+
       // Verificar si es una credencial demo PRIMERO
-      if (demoCredentials.includes(formData.email.toLowerCase().trim())) {
+      if (demoCredentials.includes(normalizedEmail)) {
         console.log('🎭 Modo demo activado para:', formData.email);
         
         // Configurar usuario demo completo en localStorage
         const demoUser = {
-          id: formData.email.includes('pareja') ? 2 : formData.email.includes('single') ? 1 : 999,
-          email: formData.email,
-          accountType: formData.email.includes('pareja') ? 'couple' : 
-                      formData.email.includes('single') ? 'single' : 'admin',
-          name: formData.email.includes('pareja') ? 'Ana & Carlos' : 
-                formData.email.includes('single') ? 'María González' : 'Administrador',
+          id: normalizedEmail.includes('pareja') ? 2 : normalizedEmail.includes('single') ? 1 : 999,
+          email: normalizedEmail,
+          accountType: normalizedEmail.includes('pareja') ? 'couple' : 
+                      normalizedEmail.includes('single') ? 'single' : 'admin',
+          name: normalizedEmail.includes('pareja') ? 'Ana & Carlos' : 
+                normalizedEmail.includes('single') ? 'María González' : 'Administrador',
           isDemo: true,
           isAuthenticated: true,
           // Perfil completo para single
-          ...(formData.email.includes('single') && {
+          ...(normalizedEmail.includes('single') && {
             age: 28,
             bio: 'Me encanta viajar, la fotografía y conocer gente nueva. Busco conexiones auténticas y experiencias únicas.',
             location: 'Ciudad de México, México',
             interests: ['Lifestyle Swinger', 'Comunicación Abierta', 'Respeto Mutuo', 'Experiencias Nuevas', 'Discreción Total'],
             photos: [
-              'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400',
+              'https://images.unsplash.com/photo-1521119989659-a83eee488004?w=400&h=400&fit=crop&crop=faces',
               'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400',
               'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400'
             ],
-            avatar: 'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400',
+            avatar: 'https://images.unsplash.com/photo-1521119989659-a83eee488004?w=400&h=400&fit=crop&crop=faces',
             gender: 'female',
             interestedIn: 'both',
             verified: true,
@@ -153,7 +168,7 @@ const Auth = () => {
             relationshipType: 'single'
           }),
           // Perfil completo para pareja
-          ...(formData.email.includes('pareja') && {
+          ...(normalizedEmail.includes('pareja') && {
             id: Math.floor(Math.random() * 10000),
             coupleName: 'Sofia & Miguel',
             location: 'Guadalajara, México',
@@ -198,19 +213,27 @@ const Auth = () => {
           duration: 3000,
         });
 
-        // Pequeño delay para asegurar que el estado se actualice
+        // Mostrar LoginLoadingScreen antes de redirigir
+        setShowLoginLoading(true);
+        
+        // Determinar tipo de usuario y nombre usando email normalizado
+        const userType = normalizedEmail.includes('pareja') ? 'couple' : 'single';
+        const userName = normalizedEmail.includes('pareja') ? 'Pareja Demo' : 'Usuario Demo';
+        
+        // Simular tiempo de carga y luego redirigir
         setTimeout(() => {
-          // Redirigir según el tipo de usuario
-          if (formData.email.includes('complicesconectasw')) {
+          setShowLoginLoading(false);
+          // Redirigir según el tipo de usuario usando email normalizado
+          if (normalizedEmail.includes('complicesconectasw')) {
             navigate("/admin");
-          } else if (formData.email.includes('pareja')) {
+          } else if (normalizedEmail.includes('pareja')) {
             navigate("/profile-couple");
-          } else if (formData.email.includes('single')) {
+          } else if (normalizedEmail.includes('single')) {
             navigate("/profile-single");
           } else {
             navigate("/discover");
           }
-        }, 500);
+        }, 3000);
         return;
       }
 
@@ -370,15 +393,15 @@ const Auth = () => {
           <div className="grid grid-cols-3 gap-4 mt-6 p-4 bg-muted/30 rounded-lg">
             <div className="text-center">
               <Shield className="h-6 w-6 text-primary mx-auto mb-1" />
-              <p className="text-xs text-muted-foreground">Verificado</p>
+              <p className="text-xs text-white">Verificado</p>
             </div>
             <div className="text-center">
               <Users className="h-6 w-6 text-accent mx-auto mb-1" />
-              <p className="text-xs text-muted-foreground">Comunidad</p>
+              <p className="text-xs text-white">Comunidad</p>
             </div>
             <div className="text-center">
               <Sparkles className="h-6 w-6 text-secondary mx-auto mb-1" />
-              <p className="text-xs text-muted-foreground">IA Match</p>
+              <p className="text-xs text-white">IA Match</p>
             </div>
           </div>
         </CardHeader>
@@ -414,7 +437,7 @@ const Auth = () => {
                 <Button type="submit" className="w-full" disabled={isLoading}>
                   {isLoading ? "Iniciando sesión..." : "Iniciar Sesión"}
                 </Button>
-                <div className="text-xs text-center text-muted-foreground pt-2">
+                <div className="text-xs text-center text-white pt-2">
                   <p className="font-bold">MODO DEMO ACTIVADO</p>
                   <p>Use: <code className="bg-muted p-1 rounded-sm">single@outlook.es</code> (Single), <code className="bg-muted p-1 rounded-sm">pareja@outlook.es</code> (Pareja), o <code className="bg-muted p-1 rounded-sm">complicesconectasw@outlook.es</code> (Admin).</p>
                 </div>
@@ -438,7 +461,7 @@ const Auth = () => {
                       <div className="text-center">
                         <div className="text-2xl mb-2">👤</div>
                         <div className="font-semibold">Single</div>
-                        <div className="text-xs text-gray-500">Perfil individual</div>
+                        <div className="text-xs text-white">Perfil individual</div>
                       </div>
                     </button>
                     <button
@@ -453,7 +476,7 @@ const Auth = () => {
                       <div className="text-center">
                         <div className="text-2xl mb-2">👫</div>
                         <div className="font-semibold">Pareja</div>
-                        <div className="text-xs text-gray-500">Perfil de pareja</div>
+                        <div className="text-xs text-white">Perfil de pareja</div>
                       </div>
                     </button>
                   </div>
@@ -760,10 +783,10 @@ const Auth = () => {
                 )}
                 
                 {/* Sección de Intereses Lifestyle */}
-                <div className="space-y-4 p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border border-purple-200">
+                <div className="space-y-4 p-4 bg-gradient-to-r from-purple-900/20 to-pink-900/20 rounded-lg border border-purple-400">
                   <div className="text-center">
-                    <h3 className="font-semibold text-purple-900 mb-2">Intereses Lifestyle</h3>
-                    <p className="text-sm text-purple-700">Selecciona tus intereses para encontrar matches compatibles</p>
+                    <h3 className="font-semibold text-white mb-2">Intereses Lifestyle</h3>
+                    <p className="text-sm text-white/90">Selecciona tus intereses para encontrar matches compatibles</p>
                   </div>
                   
                   <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto">
@@ -776,7 +799,7 @@ const Auth = () => {
                         />
                         <Label 
                           htmlFor={`interest-${index}`} 
-                          className="text-xs cursor-pointer text-gray-700 hover:text-purple-700"
+                          className="text-xs cursor-pointer text-white hover:text-purple-300"
                         >
                           {interest}
                         </Label>
@@ -801,44 +824,107 @@ const Auth = () => {
                 </div>
 
                 {/* Sección de Foto de Perfil */}
-                <div className="space-y-4 p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg border border-blue-200">
-                  <div className="text-center">
-                    <h3 className="font-semibold text-blue-900 mb-2">Foto de Perfil</h3>
-                    <p className="text-sm text-blue-700">Agrega una foto para tu perfil</p>
-                  </div>
-                  
-                  <div className="flex flex-col items-center space-y-3">
-                    <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
-                      <span className="text-2xl text-gray-500">📷</span>
+                {formData.accountType === 'couple' ? (
+                  <div className="space-y-4 p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border border-purple-200">
+                    <div className="text-center">
+                      <h3 className="font-semibold text-purple-900 mb-2">Fotos de Perfil de Pareja</h3>
+                      <p className="text-sm text-purple-700">Agrega fotos para ambos miembros de la pareja</p>
                     </div>
                     
-                    <div className="flex gap-2">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        className="text-blue-600 border-blue-300 hover:bg-blue-100"
-                      >
-                        Subir foto
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        className="text-blue-600 border-blue-300 hover:bg-blue-100"
-                      >
-                        Avatar temporal
-                      </Button>
+                    <div className="grid grid-cols-2 gap-4">
+                      {/* Foto para Ella */}
+                      <div className="flex flex-col items-center space-y-3">
+                        <h4 className="text-sm font-medium text-purple-800">Ella</h4>
+                        <div className="w-20 h-20 bg-pink-200 rounded-full flex items-center justify-center overflow-hidden">
+                          <span className="text-xl text-pink-600">👩</span>
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            className="text-pink-600 border-pink-300 hover:bg-pink-100 text-xs"
+                          >
+                            Subir foto
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            className="text-pink-600 border-pink-300 hover:bg-pink-100 text-xs"
+                          >
+                            Avatar
+                          </Button>
+                        </div>
+                      </div>
+                      
+                      {/* Foto para Él */}
+                      <div className="flex flex-col items-center space-y-3">
+                        <h4 className="text-sm font-medium text-purple-800">Él</h4>
+                        <div className="w-20 h-20 bg-blue-200 rounded-full flex items-center justify-center overflow-hidden">
+                          <span className="text-xl text-blue-600">👨</span>
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            className="text-blue-600 border-blue-300 hover:bg-blue-100 text-xs"
+                          >
+                            Subir foto
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            className="text-blue-600 border-blue-300 hover:bg-blue-100 text-xs"
+                          >
+                            Avatar
+                          </Button>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
+                ) : (
+                  <div className="space-y-4 p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg border border-blue-200">
+                    <div className="text-center">
+                      <h3 className="font-semibold text-blue-900 mb-2">Foto de Perfil</h3>
+                      <p className="text-sm text-blue-700">Agrega una foto para tu perfil</p>
+                    </div>
+                    
+                    <div className="flex flex-col items-center space-y-3">
+                      <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
+                        <span className="text-2xl text-gray-500">📷</span>
+                      </div>
+                      
+                      <div className="flex gap-2">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          className="text-blue-600 border-blue-300 hover:bg-blue-100"
+                        >
+                          Subir foto
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          className="text-blue-600 border-blue-300 hover:bg-blue-100"
+                        >
+                          Avatar temporal
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                )}
                 
                 <div className="space-y-3">
-                  <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                  <div className="p-4 bg-blue-900/20 rounded-lg border border-blue-400">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
-                        <MapPin className="h-4 w-4 text-blue-600" />
-                        <span className="text-sm font-medium text-blue-900">Ubicación</span>
+                        <MapPin className="h-4 w-4 text-blue-400" />
+                        <span className="text-sm font-medium text-white">Ubicación</span>
                       </div>
                       {location && (
                         <span className="text-xs text-green-600 font-medium">
@@ -857,7 +943,7 @@ const Auth = () => {
                       )}
                     </div>
                     
-                    <p className="text-xs text-blue-700 mb-3">
+                    <p className="text-xs text-white/80 mb-3">
                       Tu ubicación se detecta automáticamente para encontrar matches cercanos
                     </p>
                     
@@ -896,6 +982,16 @@ const Auth = () => {
         </CardContent>
         </Card>
       </div>
+      
+      {/* LoginLoadingScreen */}
+      {showLoginLoading && (
+        <LoginLoadingScreen
+          onComplete={() => setShowLoginLoading(false)}
+          userType={formData.email.includes('pareja') ? 'couple' : 'single'}
+          userName={formData.email.includes('pareja') ? 'Pareja Demo' : 'Usuario Demo'}
+          userProfile={JSON.parse(localStorage.getItem('demo_user') || '{}')}
+        />
+      )}
     </div>
   );
 };

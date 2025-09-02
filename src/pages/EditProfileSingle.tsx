@@ -26,7 +26,7 @@ const EditProfileSingle = () => {
   const availableInterests = [
     "Lifestyle Swinger", "Intercambio de Parejas", "Encuentros Casuales", "Comunicación Abierta", 
     "Respeto Mutuo", "Experiencias Nuevas", "Discreción Total", "Fiestas Privadas", "Clubs Exclusivos", "Conexiones Reales",
-    "Aventuras", "Diversión", "Viajes", "Arte", "Música", "Gastronomía"
+    "Aventuras", "Diversión", "Hoteles Temáticos", "Eventos VIP", "Masajes Sensuales", "Fotografía Sensual"
   ];
 
   useEffect(() => {

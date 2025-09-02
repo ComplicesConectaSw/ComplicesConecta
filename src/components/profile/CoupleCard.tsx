@@ -122,14 +122,22 @@ const CoupleCard = ({ profile, onLike, onMessage, showActions = true, showInvite
           <div className="space-y-2">
             <div className="flex gap-2">
               <Button 
-                onClick={onLike}
+                onClick={() => {
+                  console.log('Me gusta', profile.coupleName);
+                  alert(`¡Has dado like a ${profile.coupleName}!`);
+                  if (onLike) onLike();
+                }}
                 className="flex-1 bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white"
               >
                 <Heart className="h-4 w-4 mr-2" />
                 Me gusta
               </Button>
               <Button 
-                onClick={onMessage}
+                onClick={() => {
+                  console.log('Enviando mensaje a', profile.coupleName);
+                  alert(`Mensaje enviado a ${profile.coupleName}`);
+                  if (onMessage) onMessage();
+                }}
                 variant="outline" 
                 className="flex-1 border-purple-300 text-purple-600 hover:bg-purple-50"
               >

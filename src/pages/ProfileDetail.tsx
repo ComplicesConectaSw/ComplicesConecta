@@ -103,7 +103,7 @@ const ProfileDetail = () => {
         <Header />
         <main className="container mx-auto px-4 py-8 text-center">
           <h1 className="text-2xl font-bold text-foreground mb-4">Perfil no encontrado</h1>
-          <Button onClick={() => navigate("/profiles")}>
+          <Button onClick={() => navigate("/profiles")} className="text-white bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700">
             Volver a perfiles
           </Button>
         </main>
@@ -126,10 +126,10 @@ const ProfileDetail = () => {
         
         <main className="container mx-auto px-4 py-8">
         {/* Back Button */}
-        <Button 
-          variant="ghost" 
+        <Button
           onClick={() => navigate("/profiles")}
-          className="mb-6 flex items-center gap-2"
+          variant="outline"
+          className="mb-6 flex items-center gap-2 text-white bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 border-0"
         >
           <ArrowLeft className="h-4 w-4" />
           Volver a perfiles
@@ -271,17 +271,43 @@ const ProfileDetail = () => {
             <Card className="shadow-soft">
               <CardContent className="p-6">
                 <div className="space-y-4">
-                  <Button variant="love" size="lg" className="w-full">
+                  <Button 
+                    onClick={() => {
+                      console.log('Me gusta', profile.name);
+                      alert(`¡Has dado like a ${profile.name}!`);
+                    }}
+                    variant="love" 
+                    size="lg" 
+                    className="w-full"
+                  >
                     <Heart className="h-5 w-5 mr-2" />
                     Me gusta
                   </Button>
                   
-                  <Button variant="default" size="lg" className="w-full">
+                  <Button 
+                    onClick={() => {
+                      console.log('Enviando mensaje a', profile.name);
+                      alert(`Mensaje enviado a ${profile.name}`);
+                    }}
+                    variant="default" 
+                    size="lg" 
+                    className="w-full"
+                  >
                     <MessageCircle className="h-5 w-5 mr-2" />
                     Enviar mensaje
                   </Button>
                   
-                  <Button variant="outline" size="lg" className="w-full">
+                  <Button 
+                    onClick={() => {
+                      console.log('Reportando perfil de', profile.name);
+                      if (confirm(`¿Estás seguro de que quieres reportar el perfil de ${profile.name}?`)) {
+                        alert('Perfil reportado. Gracias por ayudarnos a mantener la comunidad segura.');
+                      }
+                    }}
+                    variant="outline" 
+                    size="lg" 
+                    className="w-full"
+                  >
                     Reportar perfil
                   </Button>
                 </div>

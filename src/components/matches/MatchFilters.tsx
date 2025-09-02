@@ -31,10 +31,10 @@ export const MatchFilters = ({ currentFilter, onFilterChange, counts }: MatchFil
             variant={currentFilter === filter.key ? "default" : "outline"}
             size="sm"
             onClick={() => onFilterChange(filter.key)}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 text-white border-white/30 hover:bg-white/20"
           >
             <Icon className="h-4 w-4" />
-            <span>{filter.label}</span>
+            <span className="text-white">{filter.label}</span>
             {counts && counts[filter.key] > 0 && (
               <Badge variant="secondary" className="ml-2">
                 {counts[filter.key]}

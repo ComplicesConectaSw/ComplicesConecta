@@ -57,7 +57,7 @@ const Gallery = ({ userId, isOwner = false, canViewPrivate = false, profileName 
     const newImage: GalleryImage = {
       id: Date.now(),
       userId,
-      url: `https://randomuser.me/api/portraits/${Math.random() > 0.5 ? 'women' : 'men'}/${Math.floor(Math.random() * 99) + 1}.jpg`,
+      url: `https://images.unsplash.com/photo-${Math.random() > 0.5 ? '1494790108755-2616c96d2e9c' : '1472099645785-5658abf4ff4e'}?w=400&h=400&fit=crop&crop=face`,
       caption: isPublic ? "Nueva foto pública" : "Nueva foto privada",
       isPublic,
       createdAt: new Date().toISOString(),

@@ -1,8 +1,8 @@
-# 📱 ComplicesConecta - Notas de Lanzamiento v1.3.0
+# 📱 ComplicesConecta - Notas de Lanzamiento v1.3.7
 
-**Fecha de Lanzamiento:** 2 de Septiembre de 2025 - 03:39  
+**Fecha de Lanzamiento:** 2 de Enero de 2025 - 10:07 hrs  
 **Plataforma:** Android APK + Web App  
-**Versión:** 1.3.0
+**Versión:** 1.3.7
 
 ---
 
@@ -46,7 +46,17 @@ ComplicesConecta se completa con sistema de invitaciones, panel de administraci�
 
 ---
 
-## 🆕 Novedades en v1.3.0
+## 🆕 Novedades en v1.3.7
+
+### 🎨 **Mejoras de Contraste y Visibilidad en UI de Registro (NUEVO)**
+- ✅ **LoginLoadingScreen personalizado** con nombres específicos de usuarios y parejas
+- ✅ **Sección de fotos de perfil mejorada** para parejas (separada "Él" y "Ella")
+- ✅ **Corrección de contraste** en sección "Intereses Lifestyle" con fondo oscuro y texto blanco
+- ✅ **Actualizada sección "Ubicación"** con mejor visibilidad de texto
+- ✅ **Backgrounds optimizados** con transparencias para mejor legibilidad
+- ✅ **Textos grises cambiados a blancos** en toda la pantalla de registro
+
+## 🆕 Novedades Previas en v1.3.0
 
 ### 📬 **Sistema de Invitaciones Completo (NUEVO)**
 - ✅ **Envío desde perfiles** - Botón "Enviar Invitación" en SingleCard y CoupleCard

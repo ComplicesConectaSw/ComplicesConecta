@@ -252,7 +252,41 @@ NODE_ENV=development
 - ✅ **NUEVO**: Tipos TypeScript para todas las funcionalidades
 - ✅ **NUEVO**: Mock data extendido para funciones sociales
 
-### ✨ **Últimas Actualizaciones (v1.3.6)** *(2 de septiembre, 2025 - 08:35)*
+### ✨ **Últimas Actualizaciones (v1.3.7)** *(15 de enero, 2025 - 15:20)*
+- ✅ **Corrección de UI y Funcionalidad en ProfileSingle**: Mejoras completas de experiencia de usuario
+  - Carga robusta de imágenes de perfil con fallback a Unsplash y placeholder SVG
+  - Corrección de texto cortado en sección de intereses eliminando restricciones de altura
+  - Habilitación de botones interactivos ("Me gusta", "Enviar mensaje", "Reportar perfil") con alertas
+  - Actualización de rutas de navegación corrigiendo `/profile` a `/profiles`
+  - Mejora de estilos de botones y texto para mejor visibilidad
+  - **NUEVO**: Corrección de UI en pantalla de carga con nombres específicos de usuarios y parejas
+  - **NUEVO**: Cambio de textos grises a blancos en pantalla de registro para mejor visibilidad
+  - **NUEVO**: Actualizada sección de fotos de perfil para parejas (separada para "Él" y "Ella")
+  - **NUEVO**: Mejorada experiencia de usuario con mensajes de bienvenida personalizados
+  - **NUEVO**: Corregidos colores de texto en elementos de UI para mejor contraste
+
+### 2 de enero de 2025 - 10:06 hrs
+- **Mejoras de contraste y visibilidad en UI de registro**
+  - Corregido problema de contraste en sección de "Intereses Lifestyle" (fondo oscuro con texto blanco)
+  - Actualizada sección de "Ubicación" con mejor visibilidad de texto
+  - Mejorados backgrounds con transparencias para mejor legibilidad
+  - Personalizado LoginLoadingScreen para mostrar nombres específicos de usuarios y parejas
+  - Cambiados textos grises a blancos en pantalla de registro para mejor visibilidad
+  - Actualizada sección de fotos de perfil para parejas (separada para "Él" y "Ella")
+  - Mejorada experiencia de usuario con mensajes de bienvenida personalizados
+  - Corregidos colores de texto en elementos de UI para mejor contraste
+
+### 2 de enero de 2025 - 15:45 hrs
+- **Mejoras en UI y funcionalidad de perfiles y chat**
+  - Corregidos errores de carga de imágenes de perfil con fallbacks automáticos a Unsplash
+  - Habilitada funcionalidad completa de botones en perfiles demo
+  - Solucionados problemas de recorte de texto en chat privado bloqueado
+  - Optimizadas páginas Discover y Feed con mejor manejo de estados de carga
+  - Corregidos problemas de navegación y estilos en galería y chat
+  - Extendido pool de imágenes de perfil con más variedad
+  - Mejorada experiencia de usuario con transiciones suaves y feedback visual
+  - Actualizada documentación con cambios técnicos y de UI
+### ✨ **Actualizaciones Previas (v1.3.6)** *(2 de septiembre, 2025 - 08:35)*
 - ✅ **EditProfileSingle Completamente Rediseñado**: Página de edición con tema swinger
   - Background con gradiente púrpura-rosa-rojo y elementos animados
   - Todos los textos cambiados a color blanco para mejor visibilidad

@@ -5,24 +5,58 @@ export interface LoginLoadingScreenProps {
   onComplete: () => void;
   userType: 'single' | 'couple';
   userName?: string;
+  userProfile?: {
+    firstName?: string;
+    lastName?: string;
+    nickname?: string;
+    coupleName?: string;
+    partner1?: { name?: string; nickname?: string };
+    partner2?: { name?: string; nickname?: string };
+  };
 }
 
-export const LoginLoadingScreen = ({ onComplete, userType, userName }: LoginLoadingScreenProps) => {
+export const LoginLoadingScreen = ({ onComplete, userType, userName, userProfile }: LoginLoadingScreenProps) => {
   const [progress, setProgress] = useState(0);
   const [currentText, setCurrentText] = useState(0);
+
+  // Función para obtener el nombre personalizado
+  const getPersonalizedName = () => {
+    if (userType === 'single') {
+      if (userProfile?.nickname) {
+        return userProfile.nickname;
+      } else if (userProfile?.firstName) {
+        return userProfile.firstName;
+      } else {
+        return userName || 'Usuario';
+      }
+    } else if (userType === 'couple') {
+      if (userProfile?.coupleName) {
+        return userProfile.coupleName;
+      } else if (userProfile?.partner1?.nickname && userProfile?.partner2?.nickname) {
+        return `${userProfile.partner1.nickname} & ${userProfile.partner2.nickname}`;
+      } else if (userProfile?.partner1?.name && userProfile?.partner2?.name) {
+        return `${userProfile.partner1.name} & ${userProfile.partner2.name}`;
+      } else {
+        return userName || 'Pareja';
+      }
+    }
+    return userName || 'Usuario';
+  };
+
+  const personalizedName = getPersonalizedName();
 
   const singleTexts = [
     "Verificando tu identidad...",
     "Preparando tu perfil swinger...",
     "Conectando con la comunidad lifestyle...",
-    `¡Bienvenido/a ${userName || 'a ComplicesConecta'}!`
+    `¡Bienvenido/a ${personalizedName}!`
   ];
 
   const coupleTexts = [
     "Verificando perfiles de pareja...",
     "Sincronizando preferencias lifestyle...",
     "Activando modo pareja swinger...",
-    `¡Bienvenidos ${userName || 'a ComplicesConecta'}!`
+    `¡Bienvenidos ${personalizedName}!`
   ];
 
   const loadingTexts = userType === 'couple' ? coupleTexts : singleTexts;
