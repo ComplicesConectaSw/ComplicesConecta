@@ -8,8 +8,9 @@ import { BetaBanner } from "@/components/BetaBanner";
 import { LoadingScreen } from "@/components/LoadingScreen";
 import { WelcomeModal } from "@/components/WelcomeModal";
 import { FeatureModal } from "@/components/modals/FeatureModal";
+import { InstallAppModal } from "@/components/modals/InstallAppModal";
 import Navigation from "@/components/Navigation";
-import { Heart, Users, Shield, Zap, Sparkles, Star, Rocket } from "lucide-react";
+import { Heart, Users, Shield, Zap, Sparkles, Star, Rocket, Smartphone, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 // Professional profile images from Unsplash - Production ready
@@ -21,12 +22,18 @@ const Index = () => {
   const [showWelcome, setShowWelcome] = useState(false);
   const [showFeatureModal, setShowFeatureModal] = useState(false);
   const [selectedFeature, setSelectedFeature] = useState<'connections' | 'verification' | 'events' | 'tokens'>('connections');
+  const [isAndroid, setIsAndroid] = useState(false);
+  const [showInstallModal, setShowInstallModal] = useState(false);
 
-  // Verificar si el usuario está autenticado (sin redirección automática)
+  // Verificar si el usuario está autenticado y detectar Android
   useEffect(() => {
     // Solo verificar autenticación sin redirigir automáticamente
     const demoAuth = localStorage.getItem('demo_authenticated');
     const demoUser = localStorage.getItem('demo_user');
+    
+    // Detectar si es Android
+    const userAgent = navigator.userAgent.toLowerCase();
+    setIsAndroid(userAgent.includes('android'));
     
     // Remover redirección automática para permitir acceso al Index
     // Los usuarios pueden navegar manualmente a donde deseen
@@ -55,9 +62,9 @@ const Index = () => {
       id: 1,
       name: "Gabriela",
       age: 29,
-      location: "Madrid",
-      interests: ["Senderismo", "Arte Moderno", "Cocina Vegana"],
-      image: "https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=500&h=700&fit=crop&crop=faces",
+      location: "Ciudad de México",
+      interests: ["Fiestas Temáticas", "Vinos y Licores", "Escapadas de Fin de Semana"],
+      image: "https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=500&h=700&fit=crop&crop=faces&auto=format&q=80",
       rating: 4.9,
       isOnline: true,
       bio: "Apasionada por la naturaleza y la creatividad. Buscando a alguien con quien compartir aventuras y conversaciones profundas.",
@@ -68,9 +75,9 @@ const Index = () => {
       id: 2,
       name: "Antonio",
       age: 34,
-      location: "Barcelona",
-      interests: ["Navegación", "Finanzas", "Golf"],
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=500&h=700&fit=crop&crop=faces",
+      location: "Guadalajara",
+      interests: ["Cenas Sensuales", "Clubs Exclusivos", "Viajes Exóticos"],
+      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=500&h=700&fit=crop&crop=faces&auto=format&q=80",
       rating: 4.8,
       isOnline: false,
       bio: "Emprendedor y amante del mar. Disfruto de un buen vino y una compañía inteligente.",
@@ -81,12 +88,12 @@ const Index = () => {
       id: 3,
       name: "Isabella",
       age: 27,
-      location: "Sevilla",
-      interests: ["Baile Flamenco", "Historia", "Literatura"],
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=500&h=700&fit=crop&crop=faces",
+      location: "Monterrey",
+      interests: ["Tantra y Masajes", "Música Electrónica", "Noches de Gala"],
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=500&h=700&fit=crop&crop=faces&auto=format&q=80",
       rating: 4.9,
       isOnline: true,
-      bio: "Explorando la riqueza cultural de Andalucía. Me encanta perderme en libros y descubrir nuevos lugares.",
+      bio: "Explorando la riqueza cultural de México. Me encanta perderme en libros y descubrir nuevos lugares.",
       profession: "Historiadora del Arte",
       verified: true
     },
@@ -94,9 +101,9 @@ const Index = () => {
       id: 4,
       name: "Mateo",
       age: 31,
-      location: "Valencia",
-      interests: ["Ciclismo", "Tecnología", "Paella"],
-      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&h=700&fit=crop&crop=faces",
+      location: "Puebla",
+      interests: ["Coctelería de Autor", "Juegos de Rol", "Eventos Privados"],
+      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&h=700&fit=crop&crop=faces&auto=format&q=80",
       rating: 4.7,
       isOnline: true,
       bio: "Ingeniero de software con alma de chef. Siempre en busca del equilibrio perfecto entre código y sabor.",
@@ -201,19 +208,6 @@ const Index = () => {
         <section className="py-10 sm:py-20 relative">
           <div className="text-center space-y-8">
             <div className="space-y-6">
-              <div className="relative">
-                <h1 className="text-4xl sm:text-6xl md:text-8xl font-bold text-white mb-6 animate-fade-in relative z-10">
-                  <span className="bg-gradient-to-r from-white via-pink-200 to-white bg-clip-text text-transparent drop-shadow-2xl">
-                    Cómplices
-                  </span>
-                  <br />
-                  <span className="bg-gradient-to-r from-white to-pink-200 bg-clip-text text-transparent animate-pulse drop-shadow-2xl">
-                    Conecta
-                  </span>
-                </h1>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                <div className="absolute inset-0 bg-gradient-to-r from-pink-500/20 to-red-500/20 blur-3xl animate-pulse" />
-              </div>
               
               <p className="text-xl md:text-2xl text-white/95 max-w-4xl mx-auto leading-relaxed animate-slide-up font-medium">
                 La plataforma <strong className="text-pink-300">más exclusiva</strong> para la comunidad lifestyle mexicana.
@@ -286,10 +280,10 @@ const Index = () => {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8 relative z-10 max-w-6xl">
             <div className="max-w-3xl mx-auto">
               <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                ¿Listos para explorar juntos?
+                Atrévete a Vivir Nuevas Fantasías
               </h2>
               <p className="text-xl text-white/90 mb-8">
-                Únete a la comunidad swinger más exclusiva y segura. Parejas y solteros verificados esperándote
+                Conecta con parejas y solteros liberales en un ambiente seguro y discreto. La aventura de tu vida te espera.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button variant="hero" size="xl" className="bg-white text-primary hover:bg-white/90" asChild>
@@ -298,16 +292,17 @@ const Index = () => {
                     Crear Cuenta Gratis
                   </Link>
                 </Button>
-                <Button 
-                  variant="outline" 
-                  size="xl" 
-                  className="bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm"
-                  asChild
-                >
-                  <a href="https://github.com/ComplicesConectaSw/complicesconectasw/releases/download/v.1.1/app-release.apk" download>
-                    Descargar App
-                  </a>
-                </Button>
+                {!isAndroid && (
+                  <Button 
+                    variant="outline" 
+                    size="xl" 
+                    className="bg-gradient-to-r from-green-500 to-emerald-600 border-green-400 text-white hover:from-green-600 hover:to-emerald-700 backdrop-blur-sm transform hover:scale-105 transition-all duration-300 animate-pulse shadow-lg hover:shadow-green-500/25"
+                    onClick={() => setShowInstallModal(true)}
+                  >
+                    <Download className="w-5 h-5 mr-2" />
+                    Instalar Aplicación
+                  </Button>
+                )}
               </div>
             </div>
           </div>
@@ -316,6 +311,7 @@ const Index = () => {
 
       <Footer />
       {showWelcome && <WelcomeModal isOpen={showWelcome} onClose={handleWelcomeClose} />}
+      <InstallAppModal isOpen={showInstallModal} onClose={() => setShowInstallModal(false)} />
       <FeatureModal
         isOpen={showFeatureModal}
         onClose={() => setShowFeatureModal(false)}

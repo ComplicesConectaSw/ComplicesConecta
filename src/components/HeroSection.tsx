@@ -19,36 +19,38 @@ export const HeroSection = () => {
       {/* Content */}
       <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
         <div className="animate-slide-up">
-          <h2 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+          <h1 className="text-4xl sm:text-6xl md:text-8xl font-bold text-white mb-6 animate-fade-in relative z-10">
+            <span className="bg-gradient-to-r from-white via-pink-200 to-white bg-clip-text text-transparent drop-shadow-2xl">
+              Cómplices
+            </span>
+            <br />
+            <span className="bg-gradient-to-r from-white to-pink-200 bg-clip-text text-transparent animate-pulse drop-shadow-2xl">
+              Conecta
+            </span>
+          </h1>
+          
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">
             Encuentra tu
             <span className="block bg-gradient-to-r from-white to-accent bg-clip-text text-transparent">
               Cómplice Perfecto
             </span>
           </h2>
           
-          <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl mx-auto leading-relaxed">
-            🚀 En fase Beta - Todas las funciones gratuitas mientras desarrollamos la mejor experiencia para ti
+          <p className="text-xl md:text-2xl text-white/95 mb-8 max-w-3xl mx-auto leading-relaxed font-light">
+            <span className="inline-flex items-center gap-2 mb-4">
+              <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 text-black px-3 py-1 rounded-full text-sm font-semibold uppercase tracking-wide">
+                🚀 Versión Beta Exclusiva
+              </span>
+            </span>
+            <br />
+            <span className="text-2xl md:text-3xl font-medium bg-gradient-to-r from-white via-pink-200 to-white bg-clip-text text-transparent">
+              Acceso completo y gratuito a todas las funciones premium
+            </span>
+            <br />
+            <span className="text-lg md:text-xl text-white/80 mt-2 block">
+              Mientras perfeccionamos la plataforma más innovadora para conexiones auténticas
+            </span>
           </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button variant="hero" size="xl" className="group" asChild>
-              <Link to="/auth">
-                <Heart className="mr-2 h-5 w-5 group-hover:animate-pulse" fill="currentColor" />
-                Comenzar Ahora
-              </Link>
-            </Button>
-            <Button 
-              variant="outline" 
-              size="xl" 
-              className="bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm"
-              asChild
-            >
-              <Link to="/events">
-                <Sparkles className="mr-2 h-5 w-5" />
-                Ver Eventos
-              </Link>
-            </Button>
-          </div>
         </div>
 
         {/* Beta Stats */}

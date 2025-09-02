@@ -49,25 +49,36 @@ export const ProfileCard = ({ profile, onLike, onSuperLike }: ProfileCardProps) 
     >
       {/* Image Container */}
       <div className="relative aspect-[3/4] overflow-hidden">
-        {!imageError && (
+        {!imageError && image ? (
           <img 
             src={image} 
             alt={name}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-            onError={() => setImageError(true)}
+            onError={(e) => {
+              console.log('Error loading image:', image);
+              setImageError(true);
+            }}
+            onLoad={() => console.log('Image loaded successfully:', image)}
           />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">
+            <div className="text-center text-white">
+              <div className="text-6xl mb-2">👤</div>
+              <p className="text-sm opacity-80">Imagen no disponible</p>
+            </div>
+          </div>
         )}
         
         {/* Online Status */}
-        <div className="absolute top-4 left-4 flex items-center space-x-2 bg-background/80 backdrop-blur-sm rounded-full px-3 py-1">
+        <div className="absolute top-4 left-4 flex items-center space-x-2 bg-black/60 backdrop-blur-sm rounded-full px-3 py-1">
           <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-          <span className="text-xs font-medium text-foreground">En línea</span>
+          <span className="text-xs font-medium text-white">En línea</span>
         </div>
 
         {/* Rating */}
-        <div className="absolute top-4 right-4 flex items-center space-x-1 bg-background/80 backdrop-blur-sm rounded-full px-3 py-1">
+        <div className="absolute top-4 right-4 flex items-center space-x-1 bg-black/60 backdrop-blur-sm rounded-full px-3 py-1">
           <Star className="w-3 h-3 text-accent fill-current" />
-          <span className="text-xs font-medium text-foreground">{rating}</span>
+          <span className="text-xs font-medium text-white">{rating || 4.9}</span>
         </div>
 
         {/* Gradient Overlay */}
@@ -101,7 +112,7 @@ export const ProfileCard = ({ profile, onLike, onSuperLike }: ProfileCardProps) 
               className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-none"
               onClick={handleDislike}
             >
-              <X className="w-4 h-4" />
+              <X className="w-5 h-5" strokeWidth={2.5} />
             </Button>
             <Button 
               size="icon" 
@@ -109,7 +120,7 @@ export const ProfileCard = ({ profile, onLike, onSuperLike }: ProfileCardProps) 
               className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-none"
               onClick={handleSuperLike}
             >
-              <Zap className="w-4 h-4" />
+              <Zap className="w-5 h-5" strokeWidth={2.5} />
             </Button>
             <Button 
               size="icon" 
@@ -117,7 +128,7 @@ export const ProfileCard = ({ profile, onLike, onSuperLike }: ProfileCardProps) 
               className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-none"
               onClick={handleLike}
             >
-              <Heart className="w-4 h-4" />
+              <Heart className="w-5 h-5" strokeWidth={2.5} />
             </Button>
           </div>
         </div>
@@ -160,27 +171,25 @@ export const ProfileCard = ({ profile, onLike, onSuperLike }: ProfileCardProps) 
             className="flex-1 bg-background border-border text-foreground hover:bg-muted hover:text-foreground font-semibold"
             onClick={handleDislike}
           >
-            <X className="w-4 h-4 mr-2" />
+            <X className="w-5 h-5 mr-2" strokeWidth={2.5} />
             Pasar
           </Button>
                   <Button variant="love" size="sm" className="flex-1" onClick={handleLike} disabled={!onLike}>
-            <Heart className="w-4 h-4 mr-2" />
+            <Heart className="w-5 h-5 mr-2" strokeWidth={2.5} />
             Me Gusta
           </Button>
         </div>
         
         {/* View Profile Button */}
-        <Button 
-          variant="ghost" 
-          size="sm" 
-          className="w-full mt-2 text-muted-foreground hover:text-foreground"
+        <button
           onClick={(e) => {
             e.stopPropagation();
             handleViewProfile();
           }}
+          className="w-full mt-2 text-white hover:text-white/90 transition-colors text-sm py-2 hover:bg-white/10 rounded-md font-medium"
         >
           Ver Perfil Completo
-        </Button>
+        </button>
       </div>
     </div>
   );

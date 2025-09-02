@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { X, Heart, Sparkles, Users, Gift, Star, Zap } from "lucide-react";
+import { X, Heart, Sparkles, Users, Gift, Star, Zap, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -139,6 +139,12 @@ export const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
               </h3>
               <p className="text-muted-foreground leading-relaxed">
                 {currentStepData.description}
+                {currentStep === 1 && (
+                  <span className="inline-flex items-center gap-1 ml-1 text-primary font-medium">
+                    <HelpCircle className="w-4 h-4" />
+                    FAQ
+                  </span>
+                )}
               </p>
             </div>
 
