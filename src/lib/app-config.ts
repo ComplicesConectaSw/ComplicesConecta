@@ -42,6 +42,11 @@ export const getAppConfig = (): AppConfig => {
 export const DEMO_CREDENTIALS = [
   'single@outlook.es',
   'pareja@outlook.es', 
+  'djwacko28@gmail.com'
+];
+
+// Credenciales de producción para admin
+export const PRODUCTION_ADMIN_CREDENTIALS = [
   'complicesconectasw@outlook.es'
 ];
 
@@ -54,6 +59,18 @@ export const isDemoCredential = (email: string): boolean => {
     .replace('@outook.es', '@outlook.es');
     
   return DEMO_CREDENTIALS.includes(normalizedEmail);
+};
+
+// Función para verificar si es admin de producción
+export const isProductionAdmin = (email: string): boolean => {
+  const normalizedEmail = email.toLowerCase().trim();
+  return PRODUCTION_ADMIN_CREDENTIALS.includes(normalizedEmail);
+};
+
+// Función para verificar si es admin demo
+export const isDemoAdmin = (email: string): boolean => {
+  const normalizedEmail = email.toLowerCase().trim();
+  return normalizedEmail === 'djwacko28@gmail.com';
 };
 
 // Configuración global de la app

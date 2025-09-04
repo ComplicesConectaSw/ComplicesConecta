@@ -155,12 +155,12 @@ const Auth = () => {
             premium: false,
             relationshipType: 'single'
           }),
-          // Perfil completo para administrador
-          ...(normalizedEmail.includes('complicesconectasw') && {
+          // Perfil completo para administrador demo
+          ...(normalizedEmail.includes('djwacko28') && {
             id: 'admin-demo-id',
             accountType: 'admin',
             role: 'administrador',
-            displayName: 'Administrador',
+            displayName: 'Administrador Demo',
             permissions: ['admin', 'moderator', 'user']
           }),
           // Perfil completo para pareja
@@ -216,9 +216,9 @@ const Auth = () => {
         
         // Determinar tipo de usuario y nombre usando email normalizado
         const userType = normalizedEmail.includes('pareja') ? 'couple' : 
-                         normalizedEmail.includes('complicesconectasw') ? 'admin' : 'single';
+                         normalizedEmail.includes('djwacko28') ? 'admin' : 'single';
         const userName = normalizedEmail.includes('pareja') ? 'Pareja Demo' : 
-                        normalizedEmail.includes('complicesconectasw') ? 'Admin Demo' : 'Usuario Demo';
+                        normalizedEmail.includes('djwacko28') ? 'Admin Demo' : 'Usuario Demo';
         
         // Guardar tipo de usuario en localStorage
         localStorage.setItem('userType', userType);
@@ -229,7 +229,7 @@ const Auth = () => {
           setShowLoginLoading(false);
           // Redirigir según el tipo de usuario usando email normalizado
           if (normalizedEmail.includes('complicesconectasw')) {
-            navigate("/admin");
+            navigate("/admin-production");
           } else if (normalizedEmail.includes('pareja')) {
             navigate("/profile-couple");
           } else if (normalizedEmail.includes('single')) {

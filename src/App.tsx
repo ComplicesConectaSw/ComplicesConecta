@@ -25,7 +25,8 @@ import TokensLegal from './pages/TokensLegal';
 import ProjectInfo from './pages/ProjectInfo';
 import Security from './pages/Security';
 import Guidelines from './pages/Guidelines';
-import Admin from './pages/Admin';
+import Admin from '@/pages/Admin';
+import AdminProduction from '@/pages/AdminProduction';
 import NotFound from "./pages/NotFound";
 import ProfileSingle from "./pages/ProfileSingle";
 import ProfileCouple from "./pages/ProfileCouple";
@@ -72,6 +73,7 @@ const App = () => (
             <Route path="/tokens-legal" element={<TokensLegal />} />
             <Route path="/project-info" element={<ProjectInfo />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/admin-production" element={<AdminProduction />} />
             <Route path="/security" element={<Security />} />
             <Route path="/guidelines" element={<Guidelines />} />
             <Route path="/about" element={<About />} />
