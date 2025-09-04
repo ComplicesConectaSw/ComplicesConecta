@@ -507,7 +507,7 @@ const Admin = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-white">Descargar APK</p>
-                  <p className="text-lg font-bold text-blue-400">v1.3.0</p>
+                  <p className="text-lg font-bold text-blue-400">v1.3.3 (beta)</p>
                   <p className="text-xs text-white/80">Haz clic para descargar</p>
                 </div>
                 <Download className="w-8 h-8 text-blue-600" />

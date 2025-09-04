@@ -12,12 +12,17 @@ import Matches from "./pages/Matches";
 import Requests from "./pages/Requests";
 import Settings from "./pages/Settings";
 import Discover from "./pages/Discover";
-import Premium from "./pages/Premium";
-import Dashboard from "./pages/Dashboard";
+import Premium from './pages/Premium';
+import Dashboard from './pages/Dashboard';
 import FAQ from "./pages/FAQ";
 import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
 import Support from './pages/Support';
+import TokensInfo from './pages/TokensInfo';
+import TokensPrivacy from './pages/TokensPrivacy';
+import TokensTerms from './pages/TokensTerms';
+import TokensLegal from './pages/TokensLegal';
+import ProjectInfo from './pages/ProjectInfo';
 import Security from './pages/Security';
 import Guidelines from './pages/Guidelines';
 import Admin from './pages/Admin';
@@ -58,13 +63,17 @@ const App = () => (
             <Route path="/settings" element={<Settings />} />
             <Route path="/premium" element={<Premium />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/faq" element={<FAQ />} />
+            <Route path="/support" element={<Support />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy" element={<Privacy />} />
-            <Route path="/support" element={<Support />} />
+            <Route path="/tokens-info" element={<TokensInfo />} />
+            <Route path="/tokens-privacy" element={<TokensPrivacy />} />
+            <Route path="/tokens-terms" element={<TokensTerms />} />
+            <Route path="/tokens-legal" element={<TokensLegal />} />
+            <Route path="/project-info" element={<ProjectInfo />} />
+            <Route path="/admin" element={<Admin />} />
             <Route path="/security" element={<Security />} />
             <Route path="/guidelines" element={<Guidelines />} />
-            <Route path="/admin" element={<Admin />} />
             <Route path="/about" element={<About />} />
             <Route path="/careers" element={<Careers />} />
             <Route path="/chat-authenticated" element={<ChatAuthenticated />} />

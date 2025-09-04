@@ -1,8 +1,95 @@
-# 🚀 ComplicesConecta - Notas de Lanzamiento v1.4.2
+# 🚀 ComplicesConecta - Notas de Lanzamiento v1.5.0
 
-**Fecha de Lanzamiento:** 3 de Septiembre, 2025 - 20:35 hrs  
+**Fecha de Lanzamiento:** 3 de Septiembre, 2025 - 21:07 hrs  
 **Plataforma:** Android APK + Web App  
-**Versión:** 1.4.2
+**Versión:** 1.5.1
+
+---
+
+## 🪙 ¡Sistema de Tokens CMPX/GTK Implementado!
+
+ComplicesConecta introduce su revolucionario sistema de tokens con recompensas por referidos, preparando el camino hacia funciones premium y la transición blockchain.
+
+### 🎯 **Nuevas Características v1.5.1**
+
+#### 🪙 **Sistema de Tokens CMPX/GTK - Implementación Final**
+- **Tokens CMPX**: Sistema interno para fase beta sin valor monetario real
+- **Recompensas por Referidos**: 50 CMPX para invitador + 50 CMPX para invitado
+- **Límites Mensuales**: Máximo 500 CMPX por usuario por mes
+- **Componente TokenBalance**: Interfaz completa para gestión de tokens
+- **Backend Supabase**: Edge Function para procesar recompensas de referidos
+- **Base de Datos**: Tablas y triggers para gestión transaccional de tokens
+
+#### Funciones Premium Totalmente Habilitadas
+- **Acceso Basado en Tokens**: Sistema completo usando CMPX para funciones premium
+- **Compras Mock**: Sistema de compras simuladas sin pagos reales durante beta
+- **Stripe Deshabilitado**: Pagos reales desactivados hasta versión de producción
+- **Feature Flags Actualizados**: Premium features siempre habilitadas en beta
+
+#### Páginas Legales Completas
+- **TokensInfo**: Página informativa con FAQ, beneficios y explicaciones detalladas
+- **TokensPrivacy**: Política de privacidad específica para el sistema de tokens
+- **TokensTerms**: Términos y condiciones completos del programa de tokens
+- **TokensLegal**: Página de responsabilidad legal y consideraciones regulatorias
+- **Navegación Integrada**: Enlaces cruzados entre todas las páginas legales
+
+### 🔧 **Mejoras Técnicas Finales**
+
+#### Sistema de Rutas Completo
+- **4 Nuevas Rutas**: `/tokens-info`, `/tokens-privacy`, `/tokens-terms`, `/tokens-legal`
+- **Navegación Legal**: Enlaces desde TokensInfo a todas las páginas legales
+- **UI Consistente**: Diseño uniforme con gradientes y animaciones profesionales
+
+#### Backend y Seguridad
+- **Validación Robusta**: Anti-fraude y límites automáticos
+- **Transacciones Atómicas**: Prevención de duplicados y errores
+- **Cumplimiento Legal**: Marco regulatorio mexicano implementado
+- **Protección de Datos**: Políticas GDPR-compliant para tokens
+
+### 📚 **Documentación Final Actualizada**
+- **README.md**: Información completa y actualizada del sistema
+- **RELEASE_NOTES.md**: Historial completo de versiones
+- **Rutas Legales**: Todas las páginas legales documentadas y enlazadas
+
+### 🚀 **Estado de Preparación para Producción**
+- **Sistema Beta Completo**: Todas las funciones premium y legales implementadas
+- **Tokens GTK**: Contratos ERC20 preparados para blockchain
+- **Migración Planificada**: CMPX → GTK lista para activación
+- **Stripe Integration**: Preparada para activar post-beta
+- **Marco Legal**: Completo y listo para auditoría legal
+
+---
+
+## 🪙 ¡Sistema de Tokens CMPX/GTK Implementado!
+
+ComplicesConecta introduce su revolucionario sistema de tokens con recompensas por referidos, preparando el camino hacia funciones premium y la transición blockchain.
+
+### 🎯 **Nuevas Características v1.5.0**
+
+#### 🪙 **Sistema de Tokens CMPX/GTK**
+- **Recompensas por Referidos**: 50 CMPX para invitador + 50 CMPX para invitado
+- **Límite Mensual**: 500 CMPX máximo por usuario con reset automático
+- **Backend Robusto**: Supabase Edge Functions con PostgreSQL
+- **UI Profesional**: Componente TokenBalance con gestión completa
+- **Seguridad Avanzada**: Anti-fraude, validaciones y controles de límites
+- **Fase Beta**: Sistema off-chain, contratos GTK pausados hasta release
+
+#### 📄 **Página Informativa de Tokens**
+- **Guía Completa**: Explicación detallada para usuarios nuevos
+- **FAQ Integrado**: Preguntas frecuentes sobre tokens y seguridad
+- **Navegación Intuitiva**: Botones de regreso y registro
+- **Animaciones Profesionales**: Transiciones y efectos visuales
+
+#### 🔒 **Funciones Premium Preparadas**
+- **Estado**: Deshabilitadas durante fase beta
+- **Control**: Variable `VITE_PREMIUM_FEATURES_ENABLED=false`
+- **Preparación**: Código listo para activación post-beta
+
+---
+
+# 🚀 Versiones Anteriores
+
+## v1.4.2 (3 de Septiembre, 2025 - 20:35)
 
 ---
 

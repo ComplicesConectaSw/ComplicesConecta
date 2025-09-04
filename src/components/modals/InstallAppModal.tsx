@@ -106,7 +106,7 @@ export const InstallAppModal = ({ isOpen, onClose }: InstallAppModalProps) => {
                 {browserNames[browser as keyof typeof browserNames]}
               </Badge>
               <Badge variant="secondary" className="bg-green-500/20 text-green-100 border-green-400/30">
-                v1.3.0
+                v1.3.3 (beta)
               </Badge>
             </div>
           </div>

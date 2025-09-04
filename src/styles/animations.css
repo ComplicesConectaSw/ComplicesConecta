@@ -23,7 +23,52 @@
 .shape-delay-1 { animation-delay: 1s; }
 .shape-delay-2 { animation-delay: 1.5s; }
 
-/* Animation delay classes */
+/* Animación de deslizamiento hacia arriba con delay dinámico */
+.animate-slide-up {
+  animation: slideUp 0.6s ease-out forwards;
+  animation-delay: var(--animation-delay, 0s);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Barra de progreso con ancho dinámico basado en data attribute */
+.progress-bar[data-progress] {
+  width: calc(var(--progress, 0) * 1%);
+}
+
+.progress-bar[data-progress="0"] { --progress: 0; }
+.progress-bar[data-progress="10"] { --progress: 10; }
+.progress-bar[data-progress="20"] { --progress: 20; }
+.progress-bar[data-progress="30"] { --progress: 30; }
+.progress-bar[data-progress="40"] { --progress: 40; }
+.progress-bar[data-progress="50"] { --progress: 50; }
+.progress-bar[data-progress="60"] { --progress: 60; }
+.progress-bar[data-progress="70"] { --progress: 70; }
+.progress-bar[data-progress="80"] { --progress: 80; }
+.progress-bar[data-progress="90"] { --progress: 90; }
+.progress-bar[data-progress="100"] { --progress: 100; }
+
+.icon-delay-1 { animation-delay: 0.5s; }
+.icon-delay-2 { animation-delay: 1.2s; }
+.icon-delay-3 { animation-delay: 2s; }
+.icon-delay-4 { animation-delay: 0.8s; }
+.icon-delay-5 { animation-delay: 1.5s; }
+
+.slide-up-delay-0 { animation-delay: 0s; }
+.slide-up-delay-1 { animation-delay: 0.2s; }
+.slide-up-delay-2 { animation-delay: 0.4s; }
+.slide-up-delay-3 { animation-delay: 0.6s; }
+
+/* Dynamic animation delay using CSS custom properties */
 .animation-delay-100 {
   animation-delay: 0.1s;
 }

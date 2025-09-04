@@ -1,14 +1,32 @@
-# 🔥 ComplicesConecta - Estructura del Proyecto
+# 📁 Estructura del Proyecto ComplicesConecta
 
-## Directorio Raíz
+## 🏗️ Arquitectura General
+
 ```
 conecta-social-comunidad-main/
-├── src/                    # Código fuente principal
-├── public/                 # Archivos públicos estáticos
-├── android/                # Configuración Capacitor Android
-├── supabase/              # Backend y migraciones
-├── docs/                  # Documentación y reportes de auditoría
-└── config files           # Archivos de configuración
+├── 📱 src/
+│   ├── 🎨 components/
+│   │   ├── 🔐 auth/
+│   │   ├── 💬 chat/
+│   │   ├── 🎯 discover/
+│   │   ├── 📧 invitations/
+│   │   ├── 💕 matches/
+│   │   ├── 🎭 modals/
+│   │   ├── ⚙️ settings/
+│   │   ├── 👥 social/
+│   │   ├── 🎪 swipe/
+│   │   ├── 🪙 tokens/
+│   │   └── 🎛️ ui/
+│   ├── 🔧 hooks/
+│   ├── 📚 lib/
+│   ├── 📄 pages/
+│   └── 🎨 styles/
+├── 🗄️ supabase/
+│   ├── ⚡ functions/
+│   └── 🔄 migrations/
+├── 🤖 android/
+├── 🌐 public/
+└── 📋 docs/
 ```
 
 ## Estructura Detallada
@@ -22,10 +40,14 @@ src/
 │   ├── discover/         # Componentes de descubrimiento
 │   ├── analytics/        # Componentes de análisis
 │   ├── invitations/      # Sistema de invitaciones
+│   ├── tokens/           # Sistema de tokens CMPX/GTK
 │   └── profile/          # Componentes de perfil
 ├── pages/                # Páginas principales
 ├── hooks/                # Custom React hooks
 ├── lib/                  # Utilidades y configuración
+│   ├── tokens.ts         # Sistema de tokens y referidos
+│   ├── data.ts           # Mock data y perfiles
+│   └── utils.ts          # Utilidades generales
 ├── integrations/         # Integraciones externas
 ├── styles/               # Estilos globales y animaciones
 ├── assets/               # Recursos estáticos
@@ -64,6 +86,11 @@ docs/
 - **FAQ.tsx** - Preguntas frecuentes
 - **Premium.tsx** - Planes premium
 - **Events.tsx** - Eventos VIP
+- **TokensInfo.tsx** - Información completa del sistema de tokens
+- **TokensPrivacy.tsx** - Política de privacidad para tokens
+- **TokensTerms.tsx** - Términos y condiciones del programa de tokens
+- **TokensLegal.tsx** - Responsabilidad legal y marco regulatorio
+- **ProjectInfo.tsx** - Documentación del proyecto (README y Release Notes)
 
 ### Hooks Personalizados
 - **useAuth.ts** - Gestión de autenticación
@@ -73,10 +100,11 @@ docs/
 - **useFeatures.ts** - Control de características
 
 ### Integraciones
-- **Supabase** - Backend con modo demo automático
-- **Stripe** - Procesamiento de pagos
+- **Supabase** - Backend con modo demo automático y sistema de tokens
+- **Stripe** - Procesamiento de pagos (deshabilitado en beta)
 - **Capacitor** - Aplicación móvil nativa
 - **hCaptcha** - Verificación anti-bot (server-side)
+- **Sistema de Tokens CMPX/GTK** - Recompensas por referidos y funciones premium
 
 ### Responsividad
 - **Desktop**: Grid layouts optimizados

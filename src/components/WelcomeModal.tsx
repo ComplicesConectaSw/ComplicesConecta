@@ -18,31 +18,39 @@ export const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
       icon: Heart,
       title: "¡Bienvenido a ComplicesConecta!",
       subtitle: "Tu nueva aventura comienza aquí",
-      description: "Descubre conexiones auténticas y experiencias únicas con personas que comparten tus intereses.",
+      description: "Descubre conexiones auténticas y experiencias únicas con personas que comparten tus intereses en la comunidad lifestyle más grande de México.",
       color: "text-primary",
       bgColor: "bg-primary/10"
+    },
+    {
+      icon: Gift,
+      title: "🪙 Sistema de Tokens CMPX",
+      subtitle: "Gana recompensas por invitar amigos",
+      description: "Obtén 50 CMPX por cada amigo que invites + 50 CMPX de bienvenida para ellos. Usa tus tokens para desbloquear funciones premium durante la fase beta.",
+      color: "text-yellow-500",
+      bgColor: "bg-yellow-500/10"
     },
     {
       icon: Sparkles,
       title: "Versión Beta Exclusiva",
       subtitle: "Sé parte de algo especial",
-      description: "Estás entre los primeros en probar nuestra plataforma. Esta versión beta puede contener errores o funciones en desarrollo. Si encuentras algún problema, repórtalo en la sección FAQ para ayudarnos a mejorar.",
+      description: "Estás entre los primeros en probar nuestra plataforma. Acceso gratuito a funciones premium con tokens. Si encuentras problemas, repórtalos en FAQ.",
       color: "text-accent",
       bgColor: "bg-accent/10"
     },
     {
-      icon: Gift,
-      title: "Beneficios Especiales",
-      subtitle: "Recompensas por ser Beta Tester",
-      description: "Acceso gratuito a todas las funciones premium, eventos exclusivos y prioridad en nuevas características.",
-      color: "text-secondary",
-      bgColor: "bg-secondary/10"
+      icon: Zap,
+      title: "Funciones Premium Gratis",
+      subtitle: "Todo desbloqueado en la beta",
+      description: "Chat ilimitado, galería privada, eventos exclusivos y más. Todo disponible usando tus tokens CMPX sin costo adicional.",
+      color: "text-purple-500",
+      bgColor: "bg-purple-500/10"
     },
     {
       icon: Users,
       title: "¡Comienza a Conectar!",
       subtitle: "Tu cómplice perfecto te está esperando",
-      description: "Explora perfiles, participa en eventos y descubre personas increíbles en tu área.",
+      description: "Explora perfiles, invita amigos con tu código de referido, participa en eventos y descubre personas increíbles en tu área.",
       color: "text-primary",
       bgColor: "bg-primary/10"
     }
@@ -120,11 +128,25 @@ export const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
               <IconComponent className={`w-10 h-10 ${currentStepData.color}`} />
             </div>
 
-            {/* Beta Badge */}
+            {/* Special Badges */}
             {currentStep === 1 && (
+              <div className="mb-4">
+                <Badge variant="secondary" className="bg-yellow-500/20 text-yellow-500 border-yellow-500/30 animate-bounce">
+                  🪙 TOKENS CMPX
+                </Badge>
+              </div>
+            )}
+            {currentStep === 2 && (
               <div className="mb-4">
                 <Badge variant="secondary" className="bg-accent/20 text-accent border-accent/30 animate-bounce">
                   BETA EXCLUSIVA
+                </Badge>
+              </div>
+            )}
+            {currentStep === 3 && (
+              <div className="mb-4">
+                <Badge variant="secondary" className="bg-purple-500/20 text-purple-500 border-purple-500/30 animate-bounce">
+                  ⚡ PREMIUM GRATIS
                 </Badge>
               </div>
             )}

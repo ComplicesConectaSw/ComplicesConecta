@@ -116,13 +116,26 @@ export const FeatureModal: React.FC<FeatureModalProps> = ({ isOpen, onClose, fea
             >
               Cerrar
             </Button>
-            <Button
-              className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white"
-              onClick={onClose}
-            >
-              <Crown className="mr-2 h-4 w-4" />
-              Explorar Ahora
-            </Button>
+            {feature === 'tokens' ? (
+              <Button
+                className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white"
+                onClick={() => {
+                  onClose();
+                  window.location.href = '/tokens-info';
+                }}
+              >
+                <Zap className="mr-2 h-4 w-4" />
+                Más Información
+              </Button>
+            ) : (
+              <Button
+                className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white"
+                onClick={onClose}
+              >
+                <Crown className="mr-2 h-4 w-4" />
+                Explorar Ahora
+              </Button>
+            )}
           </div>
         </div>
       </DialogContent>
