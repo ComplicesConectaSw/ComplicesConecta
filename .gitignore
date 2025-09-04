@@ -84,3 +84,24 @@ token-system-spec-updated/
 **/GTKToken.sol
 **/StakingGTK.sol
 GITIGNORE_SNIPPET.txt
+
+# World ID - Archivos con información sensible (API Keys, tokens reales)
+WORLDID_ERROR_ANALYSIS.md
+WORLDID_FUNCTION_TEST.md
+WORLDID_SUCCESS_GUIDE.md
+worldid_deployment_steps.md
+test_worldid_function.md
+DEPLOYMENT_INSTRUCTIONS.md
+
+# Archivos de configuración con credenciales reales
+.env
+.env.local
+.env.production
+**/supabase/config.toml
+**/supabase/.env
+
+# Logs y archivos temporales con información sensible
+*.log
+logs/
+temp/
+.cache/
