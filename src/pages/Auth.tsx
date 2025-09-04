@@ -128,12 +128,13 @@ const Auth = () => {
         
         // Configurar usuario demo completo en localStorage
         const demoUser = {
-          id: normalizedEmail.includes('pareja') ? 2 : normalizedEmail.includes('single') ? 1 : 999,
+          id: normalizedEmail.includes('single') ? 'single-demo-id' : 
+              normalizedEmail.includes('pareja') ? 'couple-demo-id' : 'admin-demo-id',
           email: normalizedEmail,
+          displayName: normalizedEmail.includes('pareja') ? 'Ana & Carlos' : 
+                      normalizedEmail.includes('single') ? 'María González' : 'Administrador',
           accountType: normalizedEmail.includes('pareja') ? 'couple' : 
                       normalizedEmail.includes('single') ? 'single' : 'admin',
-          name: normalizedEmail.includes('pareja') ? 'Ana & Carlos' : 
-                normalizedEmail.includes('single') ? 'María González' : 'Administrador',
           isDemo: true,
           isAuthenticated: true,
           // Perfil completo para single
@@ -154,9 +155,17 @@ const Auth = () => {
             premium: false,
             relationshipType: 'single'
           }),
+          // Perfil completo para administrador
+          ...(normalizedEmail.includes('complicesconectasw') && {
+            id: 'admin-demo-id',
+            accountType: 'admin',
+            role: 'administrador',
+            displayName: 'Administrador',
+            permissions: ['admin', 'moderator', 'user']
+          }),
           // Perfil completo para pareja
           ...(normalizedEmail.includes('pareja') && {
-            id: Math.floor(Math.random() * 10000),
+            id: 'couple-demo-id',
             coupleName: 'Sofia & Miguel',
             location: 'Guadalajara, México',
             bio: 'Somos una pareja aventurera que busca nuevas experiencias y conexiones. Nos gusta explorar juntos y conocer gente interesante.',
@@ -206,8 +215,14 @@ const Auth = () => {
         setShowLoginLoading(true);
         
         // Determinar tipo de usuario y nombre usando email normalizado
-        const userType = normalizedEmail.includes('pareja') ? 'couple' : 'single';
-        const userName = normalizedEmail.includes('pareja') ? 'Pareja Demo' : 'Usuario Demo';
+        const userType = normalizedEmail.includes('pareja') ? 'couple' : 
+                         normalizedEmail.includes('complicesconectasw') ? 'admin' : 'single';
+        const userName = normalizedEmail.includes('pareja') ? 'Pareja Demo' : 
+                        normalizedEmail.includes('complicesconectasw') ? 'Admin Demo' : 'Usuario Demo';
+        
+        // Guardar tipo de usuario en localStorage
+        localStorage.setItem('userType', userType);
+        localStorage.setItem('demo_session', 'active');
         
         // Simular tiempo de carga y luego redirigir
         setTimeout(() => {

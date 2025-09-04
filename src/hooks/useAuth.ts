@@ -110,6 +110,18 @@ export const useAuth = () => {
   }, []);
 
   const fetchUserProfile = async (userId: string) => {
+    // Skip profile fetch for demo users
+    const demoUser = localStorage.getItem('demo_user');
+    if (demoUser) {
+      try {
+        const user = JSON.parse(demoUser);
+        setState(prev => ({ ...prev, profile: { id: user.id, role: user.role } }));
+        return;
+      } catch (error) {
+        console.error('Error parsing demo user:', error);
+      }
+    }
+
     try {
       const { data, error } = await supabase
         .from('profiles')
