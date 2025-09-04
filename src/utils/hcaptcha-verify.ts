@@ -1,7 +1,14 @@
 import { verify } from 'hcaptcha';
 
-// Configuración de hCaptcha
-const HCAPTCHA_SECRET = process.env.VITE_HCAPTCHA_SECRET;
+// SECURITY WARNING: This file should NOT be used in client-side code
+// hCaptcha secret verification must be done on the server side only
+// This is a template for server-side implementation
+
+// TODO: Move this to Supabase Edge Function or backend API
+console.warn('⚠️ SECURITY: hCaptcha verification should be done server-side only');
+
+// Configuración de hCaptcha (SERVER-SIDE ONLY)
+const HCAPTCHA_SECRET = process.env.HCAPTCHA_SECRET; // Changed from VITE_* to prevent client exposure
 
 if (!HCAPTCHA_SECRET || HCAPTCHA_SECRET === 'your-hcaptcha-secret-key') {
   throw new Error('hCaptcha secret key is not configured correctly in environment variables.');

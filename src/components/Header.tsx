@@ -122,35 +122,35 @@ export const Header = () => {
           }`}>
             <Link 
               to="/discover" 
-              className="text-white/90 hover:text-white transition-colors duration-300 relative group font-medium"
+              className="text-white hover:text-white transition-colors duration-300 relative group font-medium"
             >
               Descubrir
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
             </Link>
             <Link 
               to="/profiles" 
-              className="text-white/90 hover:text-white transition-colors duration-300 relative group font-medium"
+              className="text-white hover:text-white transition-colors duration-300 relative group font-medium"
             >
               Perfiles
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
             </Link>
             <Link 
               to="/matches" 
-              className="text-white/90 hover:text-white transition-colors duration-300 relative group font-medium"
+              className="text-white hover:text-white transition-colors duration-300 relative group font-medium"
             >
               Matches
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
             </Link>
             <Link 
               to="/chat" 
-              className="text-white/90 hover:text-white transition-colors duration-300 relative group font-medium"
+              className="text-white hover:text-white transition-colors duration-300 relative group font-medium"
             >
               Chat
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
             </Link>
             <Link 
               to="/events" 
-              className="text-white/90 hover:text-white transition-colors duration-300 relative group font-medium"
+              className="text-white hover:text-white transition-colors duration-300 relative group font-medium"
             >
               Eventos
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />

@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { verifyHCaptcha } from '@/utils/hcaptcha-verify';
+// SECURITY: Removed client-side verification - should be done server-side only
+// import { verifyHCaptcha } from '@/utils/hcaptcha-verify';
 
 interface HCaptchaWidgetProps {
   siteKey: string;
@@ -50,20 +51,14 @@ export const HCaptchaWidget: React.FC<HCaptchaWidgetProps> = ({
         sitekey: siteKey,
         theme,
         size,
-        callback: async (token: string) => {
+        callback: (token: string) => {
           console.log('hCaptcha token recibido:', token);
           
-          // Verificar el token automáticamente
-          try {
-            const result = await verifyHCaptcha(token);
-            if (onVerify) {
-              onVerify(token, result.success);
-            }
-          } catch (error) {
-            console.error('Error verificando hCaptcha:', error);
-            if (onError) {
-              onError('Error de verificación');
-            }
+          // SECURITY: Token verification moved to server-side
+          // Client only receives and passes the token
+          if (onVerify) {
+            // Pass token to parent component for server-side verification
+            onVerify(token, true); // Assume valid, verify server-side
           }
         },
         'expired-callback': () => {

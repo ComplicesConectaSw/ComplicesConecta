@@ -6,11 +6,11 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 // Validar que las variables de entorno estén configuradas
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('❌ Error: Variables de entorno de Supabase no configuradas');
-  console.error('VITE_SUPABASE_URL:', supabaseUrl ? '✅ Configurada' : '❌ Faltante');
-  console.error('VITE_SUPABASE_ANON_KEY:', supabaseAnonKey ? '✅ Configurada' : '❌ Faltante');
-  throw new Error('Variables de entorno de Supabase no configuradas. Verifica tu archivo .env');
+if (!supabaseUrl || !supabaseAnonKey || supabaseUrl.includes('your-supabase-url-here') || supabaseAnonKey.includes('your-supabase-anon-key-here')) {
+  console.warn('⚠️ Variables de Supabase usando valores placeholder - activando modo demo');
+  console.log('VITE_SUPABASE_URL:', supabaseUrl ? '✅ Configurada' : '❌ Faltante');
+  console.log('VITE_SUPABASE_ANON_KEY:', supabaseAnonKey ? '✅ Configurada' : '❌ Faltante');
+  // No lanzar error, permitir modo demo
 }
 
 console.log('🔗 Conectando a Supabase:', supabaseUrl);

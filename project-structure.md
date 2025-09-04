@@ -1,51 +1,101 @@
-# 🔥 ComplicesConecta - Estructura del Proyecto Swinger
+# 🔥 ComplicesConecta - Estructura del Proyecto
 
-> **Plataforma swinger premium para conexiones auténticas y discretas**
-
+## Directorio Raíz
 ```
-ComplicesConecta/
-├── .github/                          # 🔄 CI/CD y workflows
-│   ├── workflows/                    # Automatización GitHub Actions
-│   └── environments/                 # Configuraciones de entorno
-├── android/                          # 📱 Aplicación Android nativa
-│   ├── app/src/                      # Código fuente Android
-│   └── gradle/                       # Configuración Gradle
-├── supabase/                         # 🗄️ Backend serverless
-│   ├── functions/                    # ⚡ Edge Functions
-│   │   ├── send-email/               # 📧 Sistema de emails
-│   │   ├── check-subscription/       # 💳 Verificación suscripciones
-│   │   └── customer-portal/          # 👤 Portal de cliente
-│   └── migrations/                   # 🔄 Migraciones DB
-├── public/
-│   ├── app-release.apk              # 📱 APK de la aplicación
-│   ├── compliceslogo.png             # 🎨 Logo oficial
-│   ├── favicon.ico                   # 🔖 Favicon
-│   └── placeholder.svg               # 🖼️ Placeholder imágenes
-├── scripts/                          # 🔧 Herramientas de desarrollo ✅
-│   ├── audit-project.ts              # 🔍 Auditoría exhaustiva del repo
-│   └── import-templates.ts           # 📥 Importador seguro de plantillas
-└── src/                              # 💻 Frontend React + TypeScript
-    ├── components/                   # 🧩 Componentes reutilizables
-    │   ├── analytics/                # 📊 Componentes de análisis
-    │   ├── chat/                     # 💬 Sistema de chat swinger
-    │   ├── discover/                 # 🔍 Descubrimiento de parejas
-    │   ├── invitations/              # 📬 Sistema de invitaciones ✅
-    │   │   └── InvitationDialog.tsx  # 📨 Diálogo de invitaciones
-    │   ├── matches/                  # 💕 Sistema de matches
-    │   ├── premium/                  # 💎 Funcionalidades premium
-    │   │   ├── VIPEvents.tsx         # 🎭 Eventos VIP exclusivos
-    │   │   ├── VirtualGifts.tsx      # 🎁 Regalos virtuales
-    │   │   └── Stories.tsx           # 📸 Historias efímeras
-    │   ├── profile/                  # 👤 Componentes de perfil
-    │   │   ├── Gallery.tsx           # 🖼️ Galerías públicas/privadas
-    │   │   ├── SingleCard.tsx        # 👤 Tarjeta perfil individual ✅
-    │   │   └── CoupleCard.tsx        # 👫 Tarjeta perfil pareja ✅
-    │   ├── sidebar/                  # 📋 Navegación lateral
+conecta-social-comunidad-main/
+├── src/                    # Código fuente principal
+├── public/                 # Archivos públicos estáticos
+├── android/                # Configuración Capacitor Android
+├── supabase/              # Backend y migraciones
+├── docs/                  # Documentación y reportes de auditoría
+└── config files           # Archivos de configuración
+```
+
+## Estructura Detallada
+
+### `/src` - Código Fuente
+```
+src/
+├── components/            # Componentes reutilizables
+│   ├── ui/               # Componentes base (shadcn/ui)
+│   ├── chat/             # Componentes de mensajería
+│   ├── discover/         # Componentes de descubrimiento
+│   ├── analytics/        # Componentes de análisis
+│   ├── invitations/      # Sistema de invitaciones
+│   └── profile/          # Componentes de perfil
+├── pages/                # Páginas principales
+├── hooks/                # Custom React hooks
+├── lib/                  # Utilidades y configuración
+├── integrations/         # Integraciones externas
+├── styles/               # Estilos globales y animaciones
+├── assets/               # Recursos estáticos
+└── examples/             # Componentes de ejemplo
+```
+
+### `/docs` - Documentación y Auditoría
+```
+docs/
+├── ANALYSIS_REPORT.md           # Análisis de código
+├── AUDIT_REPORT.md             # Auditoría general
+├── COMPREHENSIVE_AUDIT_REPORT.md # Auditoría completa
+├── DEV_ERRORS_ANALYSIS.md      # Análisis de errores de desarrollo
+├── DEPLOYMENT_FIX.md           # Correcciones de despliegue
+├── INTEGRAL_AUDIT_REPORT.md    # Reporte integral
+└── SECURITY_FIXES_APPLIED.md   # Correcciones de seguridad
+```
+
+### Componentes Principales
+- **Header.tsx** - Navegación principal con texto blanco
+- **Footer.tsx** - Pie de página con enlaces funcionales
+- **Navigation.tsx** - Navegación móvil responsiva
+- **ProfileCard.tsx** - Tarjetas de perfil optimizadas
+- **ChatList.tsx** - Lista de conversaciones
+- **HCaptchaWidget.tsx** - Widget de verificación (server-side)
+
+### Páginas Implementadas
+- **Index.tsx** - Página de inicio responsiva
+- **Auth.tsx** - Autenticación con modo demo
+- **Discover.tsx** - Descubrimiento de perfiles
+- **Chat.tsx** - Sistema de mensajería (acceso libre)
+- **Profiles.tsx** - Gestión de perfiles
+- **Settings.tsx** - Dashboard swinger con texto blanco
+- **Terms.tsx** - Términos y condiciones con texto blanco
+- **Support.tsx** - Página de soporte corregida
+- **FAQ.tsx** - Preguntas frecuentes
+- **Premium.tsx** - Planes premium
+- **Events.tsx** - Eventos VIP
+
+### Hooks Personalizados
+- **useAuth.ts** - Gestión de autenticación
+- **useToast.ts** - Sistema de notificaciones centralizado
+- **use-mobile.tsx** - Detección de dispositivos móviles
+- **useGeolocation.ts** - Geolocalización
+- **useFeatures.ts** - Control de características
+
+### Integraciones
+- **Supabase** - Backend con modo demo automático
+- **Stripe** - Procesamiento de pagos
+- **Capacitor** - Aplicación móvil nativa
+- **hCaptcha** - Verificación anti-bot (server-side)
+
+### Responsividad
+- **Desktop**: Grid layouts optimizados
+- **Tablet**: Adaptación de columnas
+- **Mobile**: Interfaz táctil
+- **Android APK**: Navegación nativa
+
+### Características de UI
+- **Texto Blanco**: Mejorado contraste en toda la aplicación
+- **Gradientes**: Consistentes purple-pink-red
+- **Glassmorphism**: Efectos backdrop-blur
+- **Animaciones**: CSS personalizadas y Framer Motion
+- **Grid Responsivo**: Adaptable a todos los tamaños
     │   └── ui/
     │       ├── accordion.tsx
     │       ├── alert-dialog.tsx
     │       ├── alert.tsx
     │       ├── aspect-ratio.tsx
+{{ ... }}
     │       ├── avatar.tsx
     │       ├── badge.tsx
     │       ├── breadcrumb.tsx

@@ -17,7 +17,7 @@ const ContactPage = () => {
           <CardTitle>Contacto y Soporte</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="mb-6 text-muted-foreground">
+          <p className="mb-6 text-white/90">
             ¿Tienes alguna pregunta, sugerencia o necesitas ayuda? Completa el formulario y nuestro equipo se pondrá en contacto contigo lo antes posible.
           </p>
           <form onSubmit={handleSubmit} className="space-y-4">

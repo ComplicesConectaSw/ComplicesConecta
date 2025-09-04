@@ -293,7 +293,7 @@ Fecha: ${new Date().toLocaleString()}
                 FAQ & Comentarios
               </span>
             </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-xl text-white/90 max-w-2xl mx-auto">
               Encuentra respuestas a tus preguntas y ayúdanos a mejorar tu experiencia en ComplicesConecta
             </p>
           </div>
@@ -318,7 +318,7 @@ Fecha: ${new Date().toLocaleString()}
                             <div className="flex items-center gap-3">
                               <IconComponent className={`h-5 w-5 ${category.color}`} />
                               <span className="font-semibold">{category.title}</span>
-                              <span className="text-sm text-muted-foreground">({category.faqs.length})</span>
+                              <span className="text-sm text-white/80">({category.faqs.length})</span>
                             </div>
                           </AccordionTrigger>
                           <AccordionContent className="pt-4">
@@ -326,7 +326,7 @@ Fecha: ${new Date().toLocaleString()}
                               {category.faqs.map((faq, index) => (
                                 <div key={index} className="border-l-2 border-primary/20 pl-4 py-2">
                                   <h4 className="font-medium text-foreground mb-2">{faq.question}</h4>
-                                  <p className="text-muted-foreground text-sm leading-relaxed">{faq.answer}</p>
+                                  <p className="text-white/90 text-sm leading-relaxed">{faq.answer}</p>
                                 </div>
                               ))}
                             </div>
@@ -471,7 +471,7 @@ Fecha: ${new Date().toLocaleString()}
                     Enviar Reporte de Error
                   </Button>
 
-                  <div className="text-xs text-muted-foreground bg-red-50 dark:bg-red-950/20 p-3 rounded-lg border border-red-200 dark:border-red-800">
+                  <div className="text-xs text-white/90 bg-red-50 dark:bg-red-950/20 p-3 rounded-lg border border-red-200 dark:border-red-800">
                     <AlertTriangle className="h-4 w-4 text-red-600 dark:text-red-400 inline mr-1" />
                     Este formulario abrirá tu cliente de email con el reporte pre-llenado para enviarlo a support@complicesconecta.com
                   </div>
@@ -501,12 +501,13 @@ Fecha: ${new Date().toLocaleString()}
                           key={star}
                           onClick={() => setRating(star)}
                           className="transition-colors duration-200"
+                          aria-label={`Calificar con ${star} estrella${star > 1 ? 's' : ''}`}
                         >
                           <Star 
                             className={`h-6 w-6 ${
                               star <= rating 
                                 ? 'text-accent fill-current' 
-                                : 'text-muted-foreground hover:text-accent'
+                                : 'text-white/60 hover:text-accent'
                             }`}
                           />
                         </button>
@@ -553,7 +554,7 @@ Fecha: ${new Date().toLocaleString()}
                   </Button>
 
                   {/* Privacy Note */}
-                  <div className="text-xs text-muted-foreground bg-muted/20 p-3 rounded-lg">
+                  <div className="text-xs text-white/90 bg-muted/20 p-3 rounded-lg">
                     <Crown className="h-4 w-4 text-accent inline mr-1" />
                     Tus comentarios son confidenciales y nos ayudan a mejorar la experiencia para toda la comunidad swinger.
                   </div>

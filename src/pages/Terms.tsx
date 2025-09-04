@@ -1,11 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Shield, Users, Heart, Lock, FileText } from 'lucide-react';
-import { Button } from '../components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
-import { Badge } from '../components/ui/badge';
-import { Header } from '../components/Header';
-import { Footer } from '../components/Footer';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Header } from '@/components/Header';
+import { Footer } from '@/components/Footer';
 
 const Terms = () => {
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ const Terms = () => {
                 ComplicesConecta
               </span>
             </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-xl text-white/90 max-w-2xl mx-auto">
               Condiciones de uso para nuestra plataforma de conexiones para adultos
             </p>
             <Badge variant="secondary" className="mt-4">
@@ -64,11 +64,11 @@ const Terms = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <p className="text-muted-foreground">
+                <p className="text-white/90">
                   Al acceder y utilizar ComplicesConecta, usted acepta estar sujeto a estos términos y condiciones. 
                   Si no está de acuerdo con alguna parte de estos términos, no debe utilizar nuestro servicio.
                 </p>
-                <p className="text-muted-foreground">
+                <p className="text-white/90">
                   Esta plataforma está destinada exclusivamente para adultos mayores de 18 años que buscan 
                   conexiones dentro del estilo de vida alternativo para parejas.
                 </p>
@@ -84,18 +84,18 @@ const Terms = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <p className="text-muted-foreground">
+                <p className="text-white/90">
                   <strong>Requisitos de edad:</strong> Debe tener al menos 18 años para usar este servicio.
                 </p>
-                <p className="text-muted-foreground">
+                <p className="text-white/90">
                   <strong>Verificación:</strong> Nos reservamos el derecho de solicitar verificación de identidad 
                   y edad en cualquier momento.
                 </p>
-                <p className="text-muted-foreground">
+                <p className="text-white/90">
                   <strong>Información veraz:</strong> Debe proporcionar información precisa y actualizada 
                   durante el registro.
                 </p>
-                <p className="text-muted-foreground">
+                <p className="text-white/90">
                   <strong>Una cuenta por persona:</strong> No está permitido crear múltiples cuentas.
                 </p>
               </CardContent>
@@ -110,18 +110,18 @@ const Terms = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <p className="text-muted-foreground">
+                <p className="text-white/90">
                   <strong>Respeto mutuo:</strong> Mantenga siempre un trato respetuoso hacia otros usuarios.
                 </p>
-                <p className="text-muted-foreground">
+                <p className="text-white/90">
                   <strong>Consentimiento:</strong> Todas las interacciones deben ser consensuales. 
                   No se tolerará el acoso o comportamiento no deseado.
                 </p>
-                <p className="text-muted-foreground">
+                <p className="text-white/90">
                   <strong>Contenido apropiado:</strong> No publique contenido ilegal, ofensivo o que viole 
                   los derechos de terceros.
                 </p>
-                <p className="text-muted-foreground">
+                <p className="text-white/90">
                   <strong>Privacidad:</strong> Respete la privacidad de otros usuarios. No comparta información 
                   personal sin consentimiento.
                 </p>
@@ -137,19 +137,19 @@ const Terms = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <p className="text-muted-foreground">
+                <p className="text-white/90">
                   <strong>Protección de datos:</strong> Implementamos medidas de seguridad para proteger 
                   su información personal.
                 </p>
-                <p className="text-muted-foreground">
+                <p className="text-white/90">
                   <strong>Uso de información:</strong> Su información se utiliza únicamente para mejorar 
                   su experiencia en la plataforma.
                 </p>
-                <p className="text-muted-foreground">
+                <p className="text-white/90">
                   <strong>Terceros:</strong> No vendemos ni compartimos su información personal con terceros 
                   sin su consentimiento explícito.
                 </p>
-                <p className="text-muted-foreground">
+                <p className="text-white/90">
                   <strong>Cookies:</strong> Utilizamos cookies para mejorar la funcionalidad del sitio.
                 </p>
               </CardContent>
@@ -161,16 +161,16 @@ const Terms = () => {
                 <CardTitle>5. Servicios Premium y Pagos</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <p className="text-muted-foreground">
+                <p className="text-white/90">
                   <strong>Suscripciones:</strong> Los servicios premium requieren suscripción mensual o anual.
                 </p>
-                <p className="text-muted-foreground">
+                <p className="text-white/90">
                   <strong>Tokens CMPX:</strong> Sistema de tokens para funciones especiales y eventos exclusivos.
                 </p>
-                <p className="text-muted-foreground">
+                <p className="text-white/90">
                   <strong>Reembolsos:</strong> Las políticas de reembolso se aplican según las leyes locales.
                 </p>
-                <p className="text-muted-foreground">
+                <p className="text-white/90">
                   <strong>Cancelación:</strong> Puede cancelar su suscripción en cualquier momento desde su perfil.
                 </p>
               </CardContent>
@@ -182,10 +182,10 @@ const Terms = () => {
                 <CardTitle>6. Limitación de Responsabilidad</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <p className="text-muted-foreground">
+                <p className="text-white/90">
                   ComplicesConecta actúa como plataforma de conexión. No somos responsables de:
                 </p>
-                <ul className="list-disc list-inside text-muted-foreground space-y-2">
+                <ul className="list-disc list-inside text-white/90 space-y-2">
                   <li>Encuentros o relaciones que se desarrollen fuera de la plataforma</li>
                   <li>Verificación de la identidad de todos los usuarios</li>
                   <li>Contenido generado por usuarios</li>
@@ -200,11 +200,11 @@ const Terms = () => {
                 <CardTitle>7. Modificaciones de los Términos</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <p className="text-muted-foreground">
+                <p className="text-white/90">
                   Nos reservamos el derecho de modificar estos términos en cualquier momento. 
                   Los cambios importantes serán notificados con al menos 30 días de anticipación.
                 </p>
-                <p className="text-muted-foreground">
+                <p className="text-white/90">
                   El uso continuado del servicio después de las modificaciones constituye 
                   la aceptación de los nuevos términos.
                 </p>
@@ -217,10 +217,10 @@ const Terms = () => {
                 <CardTitle>8. Contacto</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground">
+                <p className="text-white/90">
                   Para preguntas sobre estos términos, contacte con nosotros a través de:
                 </p>
-                <p className="text-muted-foreground mt-2">
+                <p className="text-white/90 mt-2">
                   <strong>Email:</strong> <a href="mailto:legal@complicesconecta.com" className="text-primary hover:underline">legal@complicesconecta.com</a><br />
                   <strong>Dirección:</strong> Madrid, España
                 </p>

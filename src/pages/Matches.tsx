@@ -267,7 +267,7 @@ const Matches = () => {
               <div 
                 key={match.id}
                 className="animate-slide-up"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                style={{'--animation-delay': `${index * 0.1}s`} as React.CSSProperties}
               >
                 <MatchCard
                   match={match}

@@ -155,12 +155,21 @@ npx cap open android
 
 ```env
 # 🗄️ Supabase Configuration
-VITE_SUPABASE_URL=https://tu-proyecto.supabase.co
-VITE_SUPABASE_ANON_KEY=tu-clave-anonima-supabase
+VITE_SUPABASE_URL=https://demo-project.supabase.co
+VITE_SUPABASE_ANON_KEY=demo-anon-key
+
+# 💳 Stripe Configuration
+VITE_STRIPE_PUBLISHABLE_KEY=pk_test_demo_key
+
+# 🛡️ Security
+VITE_HCAPTCHA_SITE_KEY=demo-hcaptcha-key
+HCAPTCHA_SECRET=server-only-secret
 
 # 🌍 Environment
 VITE_APP_ENV=development
-NODE_ENV=development
+VITE_APP_PHASE=beta
+```
+
 ## 🎨 Páginas y Funcionalidades Implementadas
 
 ### 🏠 **Página Principal (Index)**
@@ -252,13 +261,16 @@ NODE_ENV=development
 - ✅ **NUEVO**: Tipos TypeScript para todas las funcionalidades
 - ✅ **NUEVO**: Mock data extendido para funciones sociales
 
-### ✨ **Últimas Actualizaciones (v1.4.1)** *(15 de enero, 2025 - 16:45)*
-- ✅ **Corrección de Errores JSX Críticos**: Solucionados errores de sintaxis en `Discover.tsx` que impedían la compilación
-- ✅ **Eliminación de Estilos CSS Inline**: Migración completa a clases TailwindCSS para mejor mantenibilidad
-- ✅ **Funcionalidad de Footer Habilitada**: Botones sociales, newsletter y enlaces externos completamente funcionales
-- ✅ **Optimización de Imágenes de Perfil**: Sistema mejorado de asignación de imágenes por tipo de perfil
-- ✅ **Mejoras de Responsividad Android**: Ajustes específicos para dispositivos móviles Android
-- ✅ **Documentación Actualizada**: README.md, RELEASE_NOTES.md y project-structure.md con información profesional
+### ✨ **Últimas Actualizaciones (v1.4.2)** *(3 de septiembre, 2025 - 20:35)*
+- ✅ **Texto Blanco Global**: Cambiado texto gris a blanco en toda la aplicación para mejor contraste
+  - Settings.tsx: Dashboard swinger con texto blanco
+  - Terms.tsx: Términos y condiciones con mejor visibilidad  
+  - Support.tsx: Página de soporte corregida y funcional
+- ✅ **Chat Demo Libre**: Eliminada restricción de autenticación para acceso al chat
+- ✅ **Navegación Mejorada**: Enlaces de navegación con texto blanco sólido
+- ✅ **Responsividad Verificada**: Grid layouts optimizados para desktop, tablet y móvil
+- ✅ **Documentación Organizada**: Carpeta docs/ creada con todos los reportes de auditoría
+- ✅ **Variables de Entorno**: Configuración demo funcional para desarrollo
 
 ### ✨ **Actualizaciones Previas (v1.4.0)** *(2 de septiembre, 2025 - 11:15)*
 - ✅ **Optimizaciones para APK Instalada**: Header inteligente que se oculta al hacer scroll y se minimiza en el top

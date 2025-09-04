@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Calendar, Users, MapPin, Plus, ArrowLeft, Heart, Lock, Sparkles, Shield, Crown, Star, AlertTriangle, X } from 'lucide-react';
-import { Button } from '../components/ui/button';
-import { Input } from '../components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
-import { Badge } from '../components/ui/badge';
-import { Header } from '../components/Header';
-import { Footer } from '../components/Footer';
-import profile1 from '../assets/profile-1.jpg';
-import profile2 from '../assets/profile-2.jpg';
-import profile3 from '../assets/profile-3.jpg';
-import profile4 from '../assets/profile-4.jpg';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Header } from '@/components/Header';
+import { Footer } from '@/components/Footer';
+import profile1 from '@/assets/profile-1.jpg';
+import profile2 from '@/assets/profile-2.jpg';
+import profile3 from '@/assets/profile-3.jpg';
+import profile4 from '@/assets/profile-4.jpg';
 
 const Events = () => {
   const navigate = useNavigate();

@@ -1,14 +1,14 @@
-# 📱 ComplicesConecta - Notas de Lanzamiento v1.4.1
+# 🚀 ComplicesConecta - Notas de Lanzamiento v1.4.2
 
-**Fecha de Lanzamiento:** 15 de Enero, 2025 - 16:45 hrs  
+**Fecha de Lanzamiento:** 3 de Septiembre, 2025 - 20:35 hrs  
 **Plataforma:** Android APK + Web App  
-**Versión:** 1.4.1
+**Versión:** 1.4.2
 
 ---
 
-## 🎉 ¡Actualización Mayor Completa - Sistema de Invitaciones y Herramientas!
+## 🎨 ¡Mejoras de UI y Organización de Documentación!
 
-ComplicesConecta se completa con sistema de invitaciones, panel de administración, herramientas de desarrollo y páginas mejoradas para la comunidad swinger más exclusiva.
+ComplicesConecta finaliza con correcciones de contraste de texto, chat demo libre, responsividad verificada y documentación completamente organizada.
 
 ---
 
@@ -46,7 +46,45 @@ ComplicesConecta se completa con sistema de invitaciones, panel de administraci�
 
 ---
 
-## 🆕 Novedades en v1.4.1
+## 🆕 Novedades en v1.4.2
+
+### 🎨 **Mejoras de UI/UX**
+- ✅ **Texto Blanco Global**: Cambiado texto gris a blanco en toda la aplicación para mejor contraste
+  - Settings.tsx: Dashboard swinger con texto blanco
+  - Terms.tsx: Términos y condiciones con mejor visibilidad
+  - Support.tsx: Página de soporte corregida y funcional
+- ✅ **Chat Demo Libre**: Eliminada restricción de autenticación para acceso al chat
+- ✅ **Navegación Mejorada**: Enlaces de navegación con texto blanco sólido
+- ✅ **Header.tsx**: Texto de navegación cambiado de gris translúcido a blanco sólido
+
+### 📁 **Organización de Documentación**
+- ✅ **Carpeta docs/ Creada**: Centralización de reportes de auditoría
+- ✅ **Archivos Movidos**: Todos los reportes .md organizados en `/docs/`
+  - ANALYSIS_REPORT.md
+  - AUDIT_REPORT.md
+  - COMPREHENSIVE_AUDIT_REPORT.md
+  - DEV_ERRORS_ANALYSIS.md
+  - DEPLOYMENT_FIX.md
+  - INTEGRAL_AUDIT_REPORT.md
+  - SECURITY_FIXES_APPLIED.md
+
+### 🔧 **Correcciones Técnicas**
+- ✅ **Support.tsx**: Corregidos errores JSX y estructura duplicada
+- ✅ **Supabase Demo**: Configuración automática de modo demo sin errores fatales
+- ✅ **Variables de Entorno**: Valores demo funcionales para desarrollo
+- ✅ **Responsividad Verificada**: Grid layouts optimizados para desktop, tablet y móvil
+
+### 📚 **Documentación Actualizada**
+- ✅ **README.md**: Información completa con estado actual del proyecto
+- ✅ **project-structure.md**: Estructura actualizada con nuevas características
+- ✅ **RELEASE_NOTES.md**: Historial completo de versiones y mejoras
+
+---
+
+## 📋 Versiones Anteriores
+
+### v1.4.1 - Correcciones Críticas y Mejoras de UI
+*Fecha: 15 de enero, 2025 - 16:45 hrs*
 
 ### 🔧 **Correcciones Críticas de JSX (NUEVO)**
 - ✅ **Errores de sintaxis solucionados** - Corregidos errores críticos en `Discover.tsx` que impedían la compilación

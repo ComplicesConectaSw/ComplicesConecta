@@ -37,16 +37,10 @@ const Chat = () => {
   const navigate = useNavigate();
   const { features } = useFeatures();
 
-  // Verificar autenticación demo - permitir acceso si está autenticado
+  // Permitir acceso al chat demo sin autenticación
   useEffect(() => {
-    const demoAuth = localStorage.getItem('demo_authenticated');
-    const demoUser = localStorage.getItem('demo_user');
-    
-    // Solo redirigir si NO está autenticado
-    if (demoAuth !== 'true' || !demoUser) {
-      navigate('/auth');
-      return;
-    }
+    // Chat demo siempre disponible - no requiere autenticación
+    console.log('Chat demo cargado - acceso libre');
   }, [navigate]);
   const [selectedChat, setSelectedChat] = useState<ChatUser | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);

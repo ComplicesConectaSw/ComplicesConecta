@@ -99,7 +99,7 @@ const Settings = () => {
                 Tu Centro de Control Íntimo
               </span>
             </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-xl text-white/90 max-w-2xl mx-auto">
               Gestiona tu experiencia swinger: conexiones, eventos privados y estadísticas de tu vida íntima
             </p>
           </div>
@@ -206,7 +206,7 @@ const Settings = () => {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-muted-foreground">{feature.description}</p>
+                    <p className="text-white/90">{feature.description}</p>
                   </CardContent>
                 </Card>
               ))}
