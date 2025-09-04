@@ -1,8 +1,35 @@
-# 🚀 ComplicesConecta - Notas de Lanzamiento v1.5.0
+# 🚀 ComplicesConecta - Notas de Lanzamiento v1.6.0
 
-**Fecha de Lanzamiento:** 3 de Septiembre, 2025 - 21:07 hrs  
+**Fecha de Lanzamiento:** 3 de Septiembre, 2025 - 22:00 hrs  
 **Plataforma:** Android APK + Web App  
-**Versión:** 1.5.1
+**Versión:** 1.6.0 (En Desarrollo)
+
+---
+
+## 🌍 **v1.6.0 - Integración World ID (DESHABILITADA)**
+
+### ✨ **Nuevas Funcionalidades**
+- ✅ **Migración BD World ID**: Campos integrados en sistema CMPX existente
+- ✅ **Edge Function**: `worldid-verify` con validación oficial Worldcoin
+- ✅ **Componente WorldIDButton**: UI consistente con diseño actual
+- ✅ **Hook useWorldID**: Estado de verificación y estadísticas
+- ✅ **Recompensas**: 100 CMPX verificación + 50 CMPX referido
+- ✅ **Seguridad**: Anti-fraude, nullifier hash único, límites mensuales
+
+### 🔧 **Mejoras Arquitecturales**
+- ✅ **Unificación**: Extiende tablas existentes vs nueva tabla separada
+- ✅ **Compatibilidad**: Edge Functions Supabase vs API Routes Next.js
+- ✅ **Límites Integrados**: Respeta 500 CMPX/mes existentes
+- ✅ **Dependencia**: @worldcoin/idkit v1.3.0 agregada
+
+### ⚠️ **Estado Actual**
+- **Implementado**: Código completo pero DESHABILITADO
+- **Pendiente**: Configuración World ID Developer Portal
+- **Documentación**: `docs/WORLDID_INTEGRATION_GUIDE.md`
+
+### 🔗 **Problemas Identificados**
+- ❌ **Link APK GitHub**: `v.1.3.3/app-release.apk` no funciona
+- ⚠️ **Solución**: Usar APK local `/app-release.apk`
 
 ---
 

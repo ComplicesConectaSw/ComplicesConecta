@@ -286,6 +286,35 @@ VITE_PREMIUM_FEATURES_ENABLED=false
 
 ### 🏆 **Auditoría Final: 91.4/100 - EXCELENTE**
 
+### 🌍 **Integración World ID (v1.6.0 - En Desarrollo)**
+
+**Estado:** Implementado pero **DESHABILITADO** hasta configuración completa
+
+**Funcionalidades Implementadas:**
+- ✅ **Migración BD:** Campos World ID en sistema CMPX existente
+- ✅ **Edge Function:** `worldid-verify` unificada con validación oficial
+- ✅ **Componente UI:** `WorldIDButton` con diseño consistente
+- ✅ **Hook Personalizado:** `useWorldID` para estado y estadísticas
+- ✅ **Recompensas:** 100 CMPX verificación + 50 CMPX referido
+- ✅ **Seguridad:** Anti-fraude, límites mensuales, validación robusta
+
+**Mejoras vs Plan Original:**
+- 🔄 **Unificado con Sistema CMPX** (vs nueva tabla separada)
+- 🔄 **Edge Functions Supabase** (vs API Routes Next.js)
+- 🔄 **Arquitectura Vite Compatible** (vs dependencias Next.js)
+- 🔄 **Límites Mensuales Integrados** (vs sistema independiente)
+
+**Pendiente para Habilitar:**
+- [ ] Configurar World ID Developer Portal
+- [ ] Aplicar migración en Supabase Production
+- [ ] Deployar Edge Function `worldid-verify`
+- [ ] Testing con Worldcoin Simulator
+- [ ] Configurar variables de entorno producción
+
+**Documentación:** `docs/WORLDID_INTEGRATION_GUIDE.md`
+
+⚠️ **NOTA:** Link de descarga APK GitHub no funciona. Usar APK local: `/app-release.apk`
+
 ### ✨ **Actualizaciones Previas (v1.4.2)** *(3 de septiembre, 2025 - 20:35)*
 - ✅ **Texto Blanco Global**: Cambiado texto gris a blanco en toda la aplicación para mejor contraste
 - ✅ **Chat Demo Libre**: Eliminada restricción de autenticación para acceso al chat

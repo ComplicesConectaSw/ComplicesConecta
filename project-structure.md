@@ -92,6 +92,11 @@ docs/
 - **TokensLegal.tsx** - Responsabilidad legal y marco regulatorio
 - **ProjectInfo.tsx** - Documentación del proyecto (README y Release Notes)
 
+### Componentes World ID (v1.6.0 - DESHABILITADOS)
+- **WorldIDButton.tsx** - Botón de verificación World ID con diseño integrado
+- **useWorldID.ts** - Hook para estado de verificación y estadísticas
+- **worldid-verify** - Edge Function para validación oficial Worldcoin
+
 ### Hooks Personalizados
 - **useAuth.ts** - Gestión de autenticación
 - **useToast.ts** - Sistema de notificaciones centralizado
