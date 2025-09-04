@@ -248,7 +248,16 @@ const Auth = () => {
           return;
         }
 
-        navigate("/discover");
+        // Redirigir según el tipo de usuario
+        if (normalizedEmail.includes('complicesconectasw')) {
+          navigate("/admin");
+        } else if (normalizedEmail.includes('pareja')) {
+          navigate("/profile-couple");
+        } else if (normalizedEmail.includes('single')) {
+          navigate("/profile-single");
+        } else {
+          navigate("/discover");
+        }
       } else {
         // En modo demo sin credenciales demo válidas
         toast({

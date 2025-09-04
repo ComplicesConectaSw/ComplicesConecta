@@ -118,9 +118,26 @@ const Admin = () => {
       }
     }
     
-    // If not demo mode, redirect to auth
-    navigate('/auth');
-  }, [navigate, toast]);
+    // Check for real authentication
+    if (!isAuthenticated()) {
+      navigate('/auth');
+      return;
+    }
+    
+    // Check admin permissions for real users
+    if (!isAdmin()) {
+      toast({
+        title: "Acceso Denegado",
+        description: "No tienes permisos de administrador",
+        variant: "destructive"
+      });
+      navigate('/discover');
+      return;
+    }
+    
+    // Load admin data for authenticated admin users
+    loadAdminData();
+  }, [navigate, toast, isAuthenticated, isAdmin]);
 
   const loadAdminData = async () => {
     setLoading(true);
