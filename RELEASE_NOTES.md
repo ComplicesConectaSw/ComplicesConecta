@@ -26,6 +26,11 @@
 - ✅ **app_metrics**: Métricas por nombre, valor y fecha
 - ✅ **apk_downloads**: Registro de descargas con IP y user agent
 
+### 📱 **APK Información**
+- ✅ **Tamaño**: 87MB (89.6MB exacto)
+- ✅ **Versión**: v1.8.0
+- ✅ **Descarga**: GitHub Releases - `v.1.8.0/app-release.apk`
+
 ---
 
 ## 🎯 **v1.7.0 - Panel Admin con Métricas de Tokens**
@@ -75,8 +80,8 @@
 - **Documentación**: `docs/WORLDID_INTEGRATION_GUIDE.md`
 
 ### 🔗 **Problemas Identificados**
-- ✅ **Link APK Local**: `./public/app-release.apk` actualizado y funcional
-- ✅ **Descarga Directa**: APK v1.8.0 disponible en repositorio
+- ✅ **Link APK GitHub**: `v.1.8.0/app-release.apk` actualizado y funcional
+- ✅ **Descarga Directa**: APK v1.8.0 (87MB) disponible en GitHub Releases
 
 ---
 
