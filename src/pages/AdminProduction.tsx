@@ -193,24 +193,44 @@ const AdminProduction = () => {
       const [
         { count: totalUsers },
         { count: premiumUsers },
-        { count: verifiedUsers }
+        { count: verifiedUsers },
+        { count: totalInvitations },
+        metricsResponse,
+        tokensResponse,
+        apkDownloadsResponse
       ] = await Promise.all([
         supabase.from('profiles').select('*', { count: 'exact', head: true }),
         supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('is_premium', true),
-        supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('is_verified', true)
+        supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('is_verified', true),
+        supabase.from('invitations').select('*', { count: 'exact', head: true }).eq('status', 'accepted'),
+        supabase.from('app_metrics').select('*'),
+        supabase.from('user_token_balances').select('cmpx_balance, gtk_balance'),
+        supabase.from('apk_downloads').select('*', { count: 'exact', head: true })
       ]);
+
+      // Procesar métricas
+      const metrics = metricsResponse.data || [];
+      const getMetricValue = (name: string) => {
+        const metric = metrics.find(m => m.metric_name === name);
+        return metric ? metric.metric_value : 0;
+      };
+
+      // Calcular totales de tokens
+      const tokenData = tokensResponse.data || [];
+      const totalTokens = tokenData.reduce((sum, user) => sum + (user.cmpx_balance || 0) + (user.gtk_balance || 0), 0);
+      const stakedTokens = tokenData.reduce((sum, user) => sum + (user.gtk_balance || 0), 0);
 
       setStats({
         totalUsers: totalUsers || 0,
-        activeUsers: Math.floor((totalUsers || 0) * 0.7), // Estimación
+        activeUsers: Math.floor((totalUsers || 0) * 0.7), // Estimación basada en usuarios totales
         premiumUsers: premiumUsers || 0,
-        totalMatches: 0, // Implementar cuando tengas tabla de matches
-        apkDownloads: 0, // Implementar tracking
-        dailyVisits: 0, // Implementar analytics
-        totalTokens: 0, // Implementar cuando tengas sistema de tokens
-        stakedTokens: 0,
+        totalMatches: totalInvitations || 0,
+        apkDownloads: apkDownloadsResponse.count || 0,
+        dailyVisits: getMetricValue('daily_visits'),
+        totalTokens: totalTokens,
+        stakedTokens: stakedTokens,
         worldIdVerified: verifiedUsers || 0,
-        rewardsDistributed: 0
+        rewardsDistributed: getMetricValue('rewards_distributed')
       });
     } catch (error) {
       console.error('Error loading real stats:', error);
@@ -219,27 +239,28 @@ const AdminProduction = () => {
 
   const loadRealFAQ = async () => {
     try {
-      // FAQ items simulados para producción hasta que se cree la tabla
-      const mockFaqItems: FAQItem[] = [
-        {
-          id: '1',
-          question: '¿Cómo funciona ComplicesConecta?',
-          answer: 'ComplicesConecta es una plataforma que conecta personas con intereses similares en el lifestyle swinger.',
-          category: 'general',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        },
-        {
-          id: '2',
-          question: '¿Es segura la plataforma?',
-          answer: 'Sí, utilizamos verificación WorldID y medidas de seguridad avanzadas.',
-          category: 'seguridad',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        }
-      ];
+      const { data, error } = await supabase
+        .from('faq_items')
+        .select('*')
+        .eq('is_active', true)
+        .order('display_order', { ascending: true });
 
-      setFaqItems(mockFaqItems);
+      if (error) {
+        console.error('Error loading FAQ items:', error);
+        return;
+      }
+
+      // Mapear los datos de Supabase al tipo FAQItem local
+      const mappedFaqItems: FAQItem[] = (data || []).map((faq: any) => ({
+        id: faq.id,
+        question: faq.question,
+        answer: faq.answer,
+        category: faq.category,
+        created_at: faq.created_at,
+        updated_at: faq.updated_at
+      }));
+
+      setFaqItems(mappedFaqItems);
     } catch (error) {
       console.error('Error in loadRealFAQ:', error);
     }
@@ -247,29 +268,34 @@ const AdminProduction = () => {
 
   const loadRealInvitations = async () => {
     try {
-      // Invitaciones simuladas para producción hasta que se implemente getAll
-      const mockInvitations: Invitation[] = [
-        {
-          id: '1',
-          from_profile: 'admin-profile',
-          to_profile: 'user-profile-1',
-          message: 'Invitación de administrador',
-          type: 'profile',
-          status: 'pending',
-          created_at: new Date().toISOString()
-        },
-        {
-          id: '2',
-          from_profile: 'admin-profile',
-          to_profile: 'user-profile-2',
-          message: 'Invitación de administrador',
-          type: 'profile',
-          status: 'accepted',
-          created_at: new Date().toISOString()
-        }
-      ];
+      const { data, error } = await supabase
+        .from('invitations')
+        .select(`
+          *,
+          from_profile:profiles!invitations_from_profile_fkey(display_name, first_name, last_name),
+          to_profile:profiles!invitations_to_profile_fkey(display_name, first_name, last_name)
+        `)
+        .order('created_at', { ascending: false })
+        .limit(50);
+
+      if (error) {
+        console.error('Error loading invitations:', error);
+        return;
+      }
+
+      // Mapear los datos de Supabase al tipo Invitation local
+      const mappedInvitations: Invitation[] = (data || []).map((inv: any) => ({
+        id: inv.id,
+        from_profile: inv.from_profile,
+        to_profile: inv.to_profile,
+        message: inv.message || '',
+        type: inv.type,
+        status: inv.status,
+        created_at: inv.created_at,
+        decided_at: inv.decided_at
+      }));
       
-      setInvitations(mockInvitations);
+      setInvitations(mappedInvitations);
     } catch (error) {
       console.error('Error loading invitations:', error);
     }
@@ -303,7 +329,15 @@ const AdminProduction = () => {
 
   const handleTogglePremium = async (profileId: string, isPremium: boolean) => {
     try {
-      // Simulamos la actualización hasta verificar el esquema de la base de datos
+      const { error } = await supabase
+        .from('profiles')
+        .update({ is_premium: !isPremium })
+        .eq('id', profileId);
+
+      if (error) {
+        throw error;
+      }
+
       setProfiles(profiles.map(p => 
         p.id === profileId ? { ...p, is_premium: !isPremium } : p
       ));
@@ -333,14 +367,29 @@ const AdminProduction = () => {
     }
 
     try {
-      // Simulamos la inserción hasta que se cree la tabla faq_items
+      const { data, error } = await supabase
+        .from('faq_items')
+        .insert([{
+          question: newFaq.question,
+          answer: newFaq.answer,
+          category: newFaq.category,
+          is_active: true,
+          display_order: faqItems.length + 1
+        }])
+        .select()
+        .single();
+
+      if (error) {
+        throw error;
+      }
+
       const newFaqItem: FAQItem = {
-        id: Date.now().toString(),
-        question: newFaq.question,
-        answer: newFaq.answer,
-        category: newFaq.category,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+        id: data.id,
+        question: data.question,
+        answer: data.answer,
+        category: data.category,
+        created_at: data.created_at,
+        updated_at: data.updated_at
       };
 
       setFaqItems([newFaqItem, ...faqItems]);
@@ -658,12 +707,20 @@ const AdminProduction = () => {
                       {invitations.map((invitation) => (
                         <div key={invitation.id} className="flex items-center justify-between p-4 border rounded-lg">
                           <div>
-                            <p className="font-medium">Invitación #{invitation.id}</p>
-                            <p className="text-sm text-muted-foreground">
-                              De: {invitation.from_profile} → Para: {invitation.to_profile}
+                            <p className="font-medium">
+                              {invitation.from_profile?.display_name || 
+                               `${invitation.from_profile?.first_name} ${invitation.from_profile?.last_name}` || 
+                               'Usuario'} 
+                              → 
+                              {invitation.to_profile?.display_name || 
+                               `${invitation.to_profile?.first_name} ${invitation.to_profile?.last_name}` || 
+                               'Usuario'}
                             </p>
                             <p className="text-sm text-muted-foreground">
                               Tipo: {invitation.type} | Estado: {invitation.status}
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                              Mensaje: {invitation.message || 'Sin mensaje'}
                             </p>
                             <p className="text-sm text-muted-foreground">
                               Creada: {new Date(invitation.created_at).toLocaleDateString()}
