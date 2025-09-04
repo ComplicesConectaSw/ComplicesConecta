@@ -268,7 +268,7 @@ const Chat = () => {
         {/* Sidebar - Lista de chats */}
         <div className={`${selectedChat ? 'hidden md:block' : 'block'} w-full md:w-1/3 bg-black/30 backdrop-blur-sm border-r border-white/10`}>
           <div className="p-4 border-b border-white/10">
-            <div className="flex items-center justify-between p-4 bg-white/90 backdrop-blur-md border-b border-white/30 shadow-lg">
+            <div className="flex items-center justify-between p-4 bg-gradient-to-r from-purple-900/80 to-pink-900/80 backdrop-blur-md border-b border-white/30 shadow-lg">
               <Button 
                 variant="ghost" 
                 onClick={() => setSelectedChat(null)}
@@ -291,10 +291,10 @@ const Chat = () => {
             
             {/* Tabs para Private/Public */}
             <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'private' | 'public')} className="w-full">
-              <TabsList className="grid w-full grid-cols-2 bg-white/10 backdrop-blur-sm">
+              <TabsList className="grid w-full grid-cols-2 bg-gradient-to-r from-purple-800/30 to-pink-800/30 backdrop-blur-sm">
                 <TabsTrigger 
                   value="private" 
-                  className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-white hover:text-white flex items-center gap-2 cursor-pointer"
+                  className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600/50 data-[state=active]:to-pink-600/50 data-[state=active]:text-white text-white hover:text-white flex items-center gap-2 cursor-pointer"
                   onClick={() => setActiveTab('private')}
                 >
                   <Lock className="h-4 w-4" />
@@ -307,7 +307,7 @@ const Chat = () => {
                 </TabsTrigger>
                 <TabsTrigger 
                   value="public" 
-                  className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-white hover:text-white flex items-center gap-2 cursor-pointer"
+                  className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600/50 data-[state=active]:to-pink-600/50 data-[state=active]:text-white text-white hover:text-white flex items-center gap-2 cursor-pointer"
                   onClick={() => setActiveTab('public')}
                 >
                   <Globe className="h-4 w-4" />
