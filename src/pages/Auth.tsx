@@ -15,6 +15,7 @@ import { useGeolocation } from "@/hooks/useGeolocation";
 import { MapPin, ArrowLeft, Sparkles } from "lucide-react";
 import { lifestyleInterests, getAutoInterests } from "@/lib/lifestyle-interests";
 import { LoginLoadingScreen } from "@/components/LoginLoadingScreen";
+import { appConfig, isDemoCredential } from "@/lib/app-config";
 
 interface FormData {
   email: string;
@@ -115,28 +116,14 @@ const Auth = () => {
     setIsLoading(true);
 
     try {
-      // Credenciales demo permitidas con corrección de errores tipográficos
-      const demoCredentials = [
-        'single@outlook.es',
-        'pareja@outlook.es',
-        'complicesconectasw@outlook.es'
-      ];
+      const normalizedEmail = formData.email.toLowerCase().trim()
+        .replace('@otlook.es', '@outlook.es')
+        .replace('@outllok.es', '@outlook.es')
+        .replace('@outlok.es', '@outlook.es')
+        .replace('@outook.es', '@outlook.es');
 
-      // Función para normalizar email y corregir errores comunes
-      const normalizeEmail = (email: string): string => {
-        const cleanEmail = email.toLowerCase().trim();
-        // Corregir errores tipográficos comunes
-        return cleanEmail
-          .replace('@otlook.es', '@outlook.es')  // Corregir otlook -> outlook
-          .replace('@outllok.es', '@outlook.es') // Corregir outllok -> outlook
-          .replace('@outlok.es', '@outlook.es')  // Corregir outlok -> outlook
-          .replace('@outook.es', '@outlook.es'); // Corregir outook -> outlook
-      };
-
-      const normalizedEmail = normalizeEmail(formData.email);
-
-      // Verificar si es una credencial demo PRIMERO
-      if (demoCredentials.includes(normalizedEmail)) {
+      // Verificar si es credencial demo Y si el modo demo está habilitado
+      if (isDemoCredential(normalizedEmail) && appConfig.features.demoCredentials) {
         console.log('🎭 Modo demo activado para:', formData.email);
         
         // Configurar usuario demo completo en localStorage
@@ -208,8 +195,10 @@ const Auth = () => {
         
         // Simular autenticación exitosa para demo
         toast({
-          title: "¡Bienvenido de vuelta! (Modo Demo)",
-          description: "Has iniciado sesión correctamente en modo demostración.",
+          title: `¡Bienvenido de vuelta! ${appConfig.ui.demoLabel}`,
+          description: appConfig.mode === 'demo' 
+            ? "Has iniciado sesión correctamente en modo demostración."
+            : "Has iniciado sesión correctamente.",
           duration: 3000,
         });
 
@@ -237,24 +226,48 @@ const Auth = () => {
         return;
       }
 
-      // Solo intentar autenticación real con Supabase si NO es credencial demo
-      console.log('🔐 Intentando autenticación real con Supabase para:', formData.email);
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: formData.email,
-        password: formData.password,
-      });
-
-      if (error) {
-        console.error('❌ Error de autenticación:', error);
+      // Si es credencial demo pero el modo demo está deshabilitado
+      if (isDemoCredential(normalizedEmail) && !appConfig.features.demoCredentials) {
         toast({
           variant: "destructive",
-          title: "Error al iniciar sesión",
-          description: "Credenciales inválidas. Use las credenciales demo: single@outlook.es o pareja@outlook.es",
+          title: "Modo Demo Deshabilitado",
+          description: "Las credenciales demo no están disponibles en modo producción. Use credenciales reales.",
         });
+        setIsLoading(false);
         return;
       }
 
-      navigate("/discover");
+      // Solo intentar autenticación real con Supabase si NO es credencial demo O si está en modo producción
+      if (appConfig.features.realAuth) {
+        console.log('🔐 Intentando autenticación real con Supabase para:', formData.email);
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: formData.email,
+          password: formData.password,
+        });
+
+        if (error) {
+          console.error('❌ Error de autenticación:', error);
+          const errorMessage = appConfig.mode === 'demo' 
+            ? "Credenciales inválidas. Use las credenciales demo: single@outlook.es o pareja@outlook.es"
+            : "Credenciales inválidas. Verifique su email y contraseña.";
+          
+          toast({
+            variant: "destructive",
+            title: "Error al iniciar sesión",
+            description: errorMessage,
+          });
+          return;
+        }
+
+        navigate("/discover");
+      } else {
+        // En modo demo sin credenciales demo válidas
+        toast({
+          variant: "destructive",
+          title: "Error al iniciar sesión",
+          description: "Use las credenciales demo: single@outlook.es o pareja@outlook.es",
+        });
+      }
 
     } catch (error: any) {
       console.error('❌ Error de autenticación:', error);

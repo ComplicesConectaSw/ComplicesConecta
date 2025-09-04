@@ -1,7 +1,10 @@
-import { Heart, User, HelpCircle, Settings, Crown, DollarSign, LogOut } from "lucide-react";
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { Heart, Menu, X, Download, Settings, LogOut, User, DollarSign, HelpCircle, Crown } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from "@/hooks/use-toast";
+import { ModeIndicator } from '@/components/ModeIndicator';
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -109,11 +112,14 @@ export const Header = () => {
                 }`} fill="currentColor" />
               </div>
             </div>
-            <h1 className={`font-bold bg-love-gradient bg-clip-text text-transparent transition-all duration-300 ${
-              isRunningInApp && isMinimized ? 'text-lg' : 'text-2xl'
-            }`}>
-              ComplicesConecta
-            </h1>
+            <div className="flex items-center gap-2">
+              <h1 className={`font-bold bg-love-gradient bg-clip-text text-transparent transition-all duration-300 ${
+                isRunningInApp && isMinimized ? 'text-lg' : 'text-2xl'
+              }`}>
+                ComplicesConecta
+              </h1>
+              <ModeIndicator />
+            </div>
           </Link>
 
           {/* Navigation - Ocultar en modo minimizado de APK */}

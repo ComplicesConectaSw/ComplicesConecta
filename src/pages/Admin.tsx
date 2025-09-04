@@ -32,6 +32,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from '@/integrations/supabase/client';
 import { invitationService, type Invitation } from '@/lib/invitations';
+import { appConfig } from '@/lib/app-config';
 
 interface Profile {
   id: string;
@@ -461,7 +462,7 @@ const Admin = () => {
           </div>
           <Badge variant="secondary" className="bg-primary/10 text-primary">
             <Crown className="w-4 h-4 mr-1" />
-            Administrador
+            Administrador {appConfig.ui.demoLabel}
           </Badge>
         </div>
 
