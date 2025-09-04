@@ -262,7 +262,7 @@ const Chat = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 relative overflow-hidden">
+    <div className="min-h-screen android-fix bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 relative overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-10 w-72 h-72 bg-pink-500/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
@@ -270,9 +270,9 @@ const Chat = () => {
         <div className="absolute -bottom-8 left-20 w-72 h-72 bg-red-500/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
       </div>
 
-      <div className="relative z-10 flex h-screen">
+      <div className="relative z-10 flex flex-col md:flex-row h-screen chat-container">
         {/* Sidebar - Lista de chats */}
-        <div className="w-full md:w-1/3 bg-black/30 backdrop-blur-sm border-r border-white/10">
+        <div className={`${selectedChat ? 'hidden md:block' : 'block'} w-full md:w-1/3 bg-black/30 backdrop-blur-sm border-r border-white/10`}>
           <div className="p-4 border-b border-white/10">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold text-white">Conversaciones</h2>
@@ -417,12 +417,20 @@ const Chat = () => {
         </div>
 
         {/* Área de chat */}
-        <div className="flex-1 flex flex-col bg-black/20 backdrop-blur-sm">
+        <div className={`${selectedChat ? 'block' : 'hidden md:block'} flex-1 flex flex-col bg-black/20 backdrop-blur-sm`}>
           {selectedChat ? (
             <>
               {/* Header del chat */}
               <div className="p-4 border-b border-white/10 bg-black/30">
                 <div className="flex items-center space-x-3">
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="md:hidden text-white hover:bg-white/10 mr-2"
+                    onClick={() => setSelectedChat(null)}
+                  >
+                    <ArrowLeft className="h-4 w-4" />
+                  </Button>
                   {selectedChat.roomType === 'public' ? (
                     <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold border-2 border-white/20">
                       {selectedChat.name.charAt(0)}
@@ -454,7 +462,7 @@ const Chat = () => {
               </div>
 
               {/* Messages */}
-              <div className="flex-1 overflow-y-auto p-4 space-y-4">
+              <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0 chat-messages">
                 {messages.map((message) => (
                   <div
                     key={message.id}
@@ -479,7 +487,7 @@ const Chat = () => {
               </div>
 
               {/* Input para enviar mensajes */}
-              <div className="p-4 border-t border-white/10 bg-black/30">
+              <div className="p-4 border-t border-white/10 bg-black/30 chat-input">
                 {selectedChat.isPrivate && !hasChatAccess[selectedChat.id] ? (
                   <div className="text-center space-y-4 bg-black/50 rounded-lg p-6 border border-white/20">
                     <div className="flex items-center justify-center text-white mb-3">

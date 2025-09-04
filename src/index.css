@@ -8,6 +8,40 @@ body {
   min-height: 100vh;
 }
 
+/* Mejoras para Android WebView */
+@media screen and (max-width: 768px) {
+  .chat-container {
+    height: 100vh;
+    height: 100dvh; /* Dynamic viewport height for mobile */
+  }
+  
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .chat-input {
+    position: sticky;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(10px);
+  }
+}
+
+/* Responsive fixes for Android */
+.android-fix {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Keyboard handling for Android */
+@media screen and (max-height: 600px) {
+  .chat-messages {
+    max-height: calc(100vh - 200px);
+  }
+}
+
 /* Mejoras de visibilidad de texto */
 .text-gray-600 {
   color: rgb(75 85 99) !important;

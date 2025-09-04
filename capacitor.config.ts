@@ -3,7 +3,24 @@ import type { CapacitorConfig } from '@capacitor/cli';
 const config: CapacitorConfig = {
   appId: 'com.complicesconecta.app',
   appName: 'ComplicesConecta',
-  webDir: 'dist'
+  webDir: 'dist',
+  plugins: {
+    StatusBar: {
+      style: 'dark',
+      backgroundColor: '#1a1a2e'
+    },
+    SplashScreen: {
+      launchShowDuration: 2000,
+      backgroundColor: '#1a1a2e',
+      androidSplashResourceName: 'splash',
+      showSpinner: false
+    }
+  },
+  android: {
+    allowMixedContent: true,
+    captureInput: true,
+    webContentsDebuggingEnabled: true
+  }
 };
 
 export default config;
