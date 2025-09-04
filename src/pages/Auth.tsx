@@ -347,13 +347,13 @@ const Auth = () => {
         <div className="absolute inset-0 opacity-30">
           <div className="absolute top-20 left-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-float"></div>
           <div className="absolute bottom-32 right-32 w-48 h-48 bg-accent/8 rounded-full blur-2xl animate-pulse"></div>
-          <div className="absolute top-1/2 left-1/3 w-32 h-32 bg-secondary/6 rounded-full blur-xl animate-float" style={{ animationDelay: '1s' }}></div>
+          <div className="absolute top-1/2 left-1/3 w-32 h-32 bg-secondary/6 rounded-full blur-xl animate-float animation-delay-1000"></div>
         </div>
         {/* Floating Icons */}
-        <Heart className="absolute top-32 left-1/4 w-6 h-6 text-primary/20 animate-float" fill="currentColor" style={{ animationDelay: '0.5s' }} />
-        <Sparkles className="absolute bottom-1/3 right-1/4 w-5 h-5 text-accent/25 animate-float" style={{ animationDelay: '1.2s' }} />
-        <Shield className="absolute top-1/3 right-1/5 w-7 h-7 text-secondary/20 animate-float" style={{ animationDelay: '2s' }} />
-        <Users className="absolute bottom-1/4 left-1/6 w-6 h-6 text-primary/15 animate-float" style={{ animationDelay: '0.8s' }} />
+        <Heart className="absolute top-32 left-1/4 w-6 h-6 text-primary/20 animate-float animation-delay-500" fill="currentColor" />
+        <Sparkles className="absolute bottom-1/3 right-1/4 w-5 h-5 text-accent/25 animate-float animation-delay-1200" />
+        <Shield className="absolute top-1/3 right-1/5 w-7 h-7 text-secondary/20 animate-float animation-delay-2000" />
+        <Users className="absolute bottom-1/4 left-1/6 w-6 h-6 text-primary/15 animate-float animation-delay-800" />
       </div>
       
       {/* Back Button */}

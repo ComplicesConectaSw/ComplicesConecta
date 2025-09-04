@@ -96,7 +96,7 @@ const EditProfileSingle = () => {
       <div className="min-h-screen bg-gradient-to-br from-pink-100 via-purple-50 to-indigo-100 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Cargando...</p>
+          <p className="text-white">Cargando...</p>
         </div>
       </div>
     );
@@ -266,15 +266,15 @@ const EditProfileSingle = () => {
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-white">Mostrar edad</span>
-                <input type="checkbox" defaultChecked className="rounded bg-white/20 border-white/30" />
+                <input type="checkbox" defaultChecked className="rounded bg-white/20 border-white/30" title="Mostrar edad en perfil" />
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm text-white">Mostrar ubicación</span>
-                <input type="checkbox" defaultChecked className="rounded bg-white/20 border-white/30" />
+                <input type="checkbox" defaultChecked className="rounded bg-white/20 border-white/30" title="Mostrar ubicación en perfil" />
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm text-white">Aparecer en búsquedas</span>
-                <input type="checkbox" defaultChecked className="rounded bg-white/20 border-white/30" />
+                <input type="checkbox" defaultChecked className="rounded bg-white/20 border-white/30" title="Aparecer en resultados de búsqueda" />
               </div>
             </div>
           </CardContent>

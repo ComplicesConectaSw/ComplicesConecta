@@ -86,7 +86,7 @@ const Requests = () => {
       case 'declined':
         return <Badge variant="outline" className="text-red-400 border-red-400"><UserX className="h-3 w-3 mr-1" />Rechazada</Badge>;
       case 'revoked':
-          return <Badge variant="outline" className="text-gray-400 border-gray-400"><UserX className="h-3 w-3 mr-1" />Revocada</Badge>;
+          return <Badge variant="outline" className="text-white border-white/40"><UserX className="h-3 w-3 mr-1" />Revocada</Badge>;
     }
   };
 

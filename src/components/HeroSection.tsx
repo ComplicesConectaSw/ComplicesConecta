@@ -19,13 +19,13 @@ export const HeroSection = () => {
       {/* Content */}
       <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
         <div className="animate-slide-up">
-          <h1 className="text-4xl sm:text-6xl md:text-8xl font-bold text-white mb-6 animate-fade-in relative z-10">
+          <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold text-white mb-6 animate-fade-in relative z-10">
             <span className="bg-gradient-to-r from-white via-pink-200 to-white bg-clip-text text-transparent drop-shadow-2xl">
-              Cómplices
+              Plataforma Social Premium
             </span>
             <br />
             <span className="bg-gradient-to-r from-white to-pink-200 bg-clip-text text-transparent animate-pulse drop-shadow-2xl">
-              Conecta
+              para Adultos +18
             </span>
           </h1>
           
@@ -36,7 +36,7 @@ export const HeroSection = () => {
             </span>
           </h2>
           
-          <p className="text-xl md:text-2xl text-white/95 mb-8 max-w-3xl mx-auto leading-relaxed font-light">
+          <p className="text-xl md:text-2xl text-white mb-8 max-w-3xl mx-auto leading-relaxed font-light">
             <span className="inline-flex items-center gap-2 mb-4">
               <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 text-black px-3 py-1 rounded-full text-sm font-semibold uppercase tracking-wide">
                 🚀 Versión Beta Exclusiva
@@ -44,11 +44,11 @@ export const HeroSection = () => {
             </span>
             <br />
             <span className="text-2xl md:text-3xl font-medium bg-gradient-to-r from-white via-pink-200 to-white bg-clip-text text-transparent">
-              Acceso completo y gratuito a todas las funciones premium
+              Conecta con personas afines de manera segura y discreta
             </span>
             <br />
-            <span className="text-lg md:text-xl text-white/80 mt-2 block">
-              Mientras perfeccionamos la plataforma más innovadora para conexiones auténticas
+            <span className="text-lg md:text-xl text-white mt-2 block">
+              Sistema de verificación KYC, chat encriptado y eventos exclusivos para la comunidad lifestyle
             </span>
           </p>
         </div>

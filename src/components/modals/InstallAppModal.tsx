@@ -75,8 +75,8 @@ export const InstallAppModal = ({ isOpen, onClose }: InstallAppModalProps) => {
   const currentInstructions = instructions[browser as keyof typeof instructions] || instructions.chrome;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <Card className="w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-glow animate-slide-up">
+    <div className="fixed top-0 left-0 right-0 z-50 p-4 bg-black/80 backdrop-blur-sm">
+      <Card className="w-full max-w-lg mx-auto shadow-glow animate-slide-down overflow-hidden">
         <div className="relative">
           <Button
             variant="ghost"
@@ -161,7 +161,7 @@ export const InstallAppModal = ({ isOpen, onClose }: InstallAppModalProps) => {
               <Button 
                 onClick={() => {
                   const link = document.createElement('a');
-                  link.href = 'https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v.1.3.0/app-release.apk';
+                  link.href = '/app-release.apk';
                   link.download = 'app-release.apk';
                   document.body.appendChild(link);
                   link.click();

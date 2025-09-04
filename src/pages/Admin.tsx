@@ -497,7 +497,7 @@ const Admin = () => {
 
           <Card className="bg-card/80 backdrop-blur-sm border-primary/10 cursor-pointer hover:bg-card/90 transition-colors" onClick={() => {
             const link = document.createElement('a');
-            link.href = 'https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v.1.3.0/app-release.apk';
+            link.href = '/app-release.apk';
             link.download = 'app-release.apk';
             document.body.appendChild(link);
             link.click();
@@ -847,6 +847,7 @@ const Admin = () => {
                       value={newFaq.category}
                       onChange={(e) => setNewFaq({ ...newFaq, category: e.target.value })}
                       className="w-full p-2 border border-input rounded-md bg-background"
+                      title="Seleccionar categoría de FAQ"
                     >
                       <option value="general">General</option>
                       <option value="verificacion">Verificación</option>

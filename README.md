@@ -11,7 +11,7 @@
 
 ### 📱 ¡Descarga la App Ahora!
 
-<a href="https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v.1.3.0/app-release.apk" download>
+<a href="/app-release.apk" download>
   <img src="https://img.shields.io/badge/📱_Descargar_APK-v1.4.0-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
 </a>
 
@@ -252,7 +252,15 @@ NODE_ENV=development
 - ✅ **NUEVO**: Tipos TypeScript para todas las funcionalidades
 - ✅ **NUEVO**: Mock data extendido para funciones sociales
 
-### ✨ **Últimas Actualizaciones (v1.4.0)** *(2 de septiembre, 2025 - 11:15)*
+### ✨ **Últimas Actualizaciones (v1.4.1)** *(15 de enero, 2025 - 16:45)*
+- ✅ **Corrección de Errores JSX Críticos**: Solucionados errores de sintaxis en `Discover.tsx` que impedían la compilación
+- ✅ **Eliminación de Estilos CSS Inline**: Migración completa a clases TailwindCSS para mejor mantenibilidad
+- ✅ **Funcionalidad de Footer Habilitada**: Botones sociales, newsletter y enlaces externos completamente funcionales
+- ✅ **Optimización de Imágenes de Perfil**: Sistema mejorado de asignación de imágenes por tipo de perfil
+- ✅ **Mejoras de Responsividad Android**: Ajustes específicos para dispositivos móviles Android
+- ✅ **Documentación Actualizada**: README.md, RELEASE_NOTES.md y project-structure.md con información profesional
+
+### ✨ **Actualizaciones Previas (v1.4.0)** *(2 de septiembre, 2025 - 11:15)*
 - ✅ **Optimizaciones para APK Instalada**: Header inteligente que se oculta al hacer scroll y se minimiza en el top
 - ✅ **Detección de WebView Precisa**: Distingue entre navegador móvil Android y APK instalada
 - ✅ **Botón de Descarga Contextual**: Solo visible en navegadores web, oculto cuando se ejecuta desde APK

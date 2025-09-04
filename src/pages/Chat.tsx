@@ -274,16 +274,25 @@ const Chat = () => {
         {/* Sidebar - Lista de chats */}
         <div className={`${selectedChat ? 'hidden md:block' : 'block'} w-full md:w-1/3 bg-black/30 backdrop-blur-sm border-r border-white/10`}>
           <div className="p-4 border-b border-white/10">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-white">Conversaciones</h2>
+            <div className="flex items-center justify-between p-4 bg-white/90 backdrop-blur-md border-b border-white/30 shadow-lg">
               <Button 
                 variant="ghost" 
-                size="sm" 
-                className="text-white hover:bg-white/10"
-                onClick={() => navigate('/')}
+                onClick={() => setSelectedChat(null)}
+                className="text-white hover:bg-white/50 md:hidden"
               >
-                <ArrowLeft className="h-4 w-4" />
+                <ArrowLeft className="h-5 w-5" />
               </Button>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-bold text-white">Conversaciones</h2>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="text-white hover:bg-white/10"
+                  onClick={() => navigate('/')}
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
             
             {/* Tabs para Private/Public */}

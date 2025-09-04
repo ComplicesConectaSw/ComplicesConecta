@@ -221,7 +221,7 @@ const ProfileDetail = () => {
                 <div className="bg-gradient-to-r from-purple-100/80 to-pink-100/80 backdrop-blur-sm rounded-lg p-4 border border-purple-200/50">
                   <div className="space-y-4">
                     <div>
-                      <h3 className="font-medium text-gray-900 mb-3">Intereses principales</h3>
+                      <h3 className="font-medium text-white mb-3">Intereses principales</h3>
                       <div className="flex flex-wrap gap-2 min-h-[80px]">
                         {profile.interests.map((interest) => (
                           <Badge key={interest} className="bg-purple-200/80 text-purple-900 border border-purple-300/50 px-3 py-1 text-sm font-semibold">{interest}</Badge>
@@ -230,7 +230,7 @@ const ProfileDetail = () => {
                     </div>
                     
                     <div>
-                      <h3 className="font-medium text-gray-900 mb-3">Otros hobbies</h3>
+                      <h3 className="font-medium text-white mb-3">Otros hobbies</h3>
                       <div className="flex flex-wrap gap-2 min-h-[80px]">
                         {profile.hobbies.map((hobby) => (
                           <Badge key={hobby} className="bg-pink-200/80 text-pink-900 border border-pink-300/50 px-3 py-1 text-sm font-semibold">{hobby}</Badge>
@@ -340,7 +340,7 @@ const ProfileDetail = () => {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Estado:</span>
-                    <span className={`text-sm ${profile.isOnline ? 'text-green-600' : 'text-gray-500'}`}>
+                    <span className={`text-sm ${profile.isOnline ? 'text-green-600' : 'text-white'}`}>
                       {profile.isOnline ? 'En línea' : 'Desconectado'}
                     </span>
                   </div>
@@ -359,7 +359,7 @@ const ProfileDetail = () => {
                       <span className="text-foreground">85%</span>
                     </div>
                     <div className="w-full bg-muted rounded-full h-2">
-                      <div className="bg-primary h-2 rounded-full" style={{ width: '85%' }}></div>
+                      <div className="bg-primary h-2 rounded-full w-[85%]"></div>
                     </div>
                   </div>
                   
@@ -369,7 +369,7 @@ const ProfileDetail = () => {
                       <span className="text-foreground">92%</span>
                     </div>
                     <div className="w-full bg-muted rounded-full h-2">
-                      <div className="bg-primary h-2 rounded-full" style={{ width: '92%' }}></div>
+                      <div className="bg-primary h-2 rounded-full w-[92%]"></div>
                     </div>
                   </div>
                   
@@ -379,7 +379,7 @@ const ProfileDetail = () => {
                       <span className="text-foreground">78%</span>
                     </div>
                     <div className="w-full bg-muted rounded-full h-2">
-                      <div className="bg-primary h-2 rounded-full" style={{ width: '78%' }}></div>
+                      <div className="bg-primary h-2 rounded-full w-[78%]"></div>
                     </div>
                   </div>
                 </div>

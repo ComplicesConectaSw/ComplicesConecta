@@ -25,22 +25,22 @@ const Dashboard = () => {
     <div className="min-h-screen bg-background">
       <Header />
       
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8 max-w-full overflow-x-hidden">
         {/* Page Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+        <div className="text-center mb-8 sm:mb-12">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4 px-2">
             Panel de Control
             <span className="block bg-love-gradient bg-clip-text text-transparent">
               Tu Progreso y Actividad
             </span>
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg sm:text-xl text-white max-w-2xl mx-auto px-4">
             Revisa tus logros, notificaciones y estadísticas de progreso
           </p>
         </div>
 
-        <Tabs defaultValue="gamification" className="space-y-8">
-          <TabsList className="grid w-full grid-cols-3 bg-muted/50 rounded-2xl p-2 max-w-2xl mx-auto">
+        <Tabs defaultValue="gamification" className="space-y-6 sm:space-y-8">
+          <TabsList className="grid w-full grid-cols-3 bg-muted/50 rounded-2xl p-1 sm:p-2 max-w-2xl mx-auto text-xs sm:text-sm">
             <TabsTrigger value="gamification" className="rounded-xl">
               <Trophy className="h-4 w-4 mr-2" />
               Logros

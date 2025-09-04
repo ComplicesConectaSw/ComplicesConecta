@@ -1,0 +1,74 @@
+/* Custom animations for Index page */
+.particle-1 { left: 15%; top: 20%; animation-delay: 0.5s; animation-duration: 4s; }
+.particle-2 { left: 85%; top: 30%; animation-delay: 1.2s; animation-duration: 5s; }
+.particle-3 { left: 25%; top: 70%; animation-delay: 2s; animation-duration: 3.5s; }
+.particle-4 { left: 75%; top: 80%; animation-delay: 0.8s; animation-duration: 4.5s; }
+.particle-5 { left: 45%; top: 15%; animation-delay: 1.5s; animation-duration: 3.8s; }
+.particle-6 { left: 65%; top: 60%; animation-delay: 0.3s; animation-duration: 4.2s; }
+.particle-7 { left: 10%; top: 50%; animation-delay: 1.8s; animation-duration: 3.2s; }
+.particle-8 { left: 90%; top: 10%; animation-delay: 2.5s; animation-duration: 5.5s; }
+.particle-9 { left: 35%; top: 85%; animation-delay: 0.7s; animation-duration: 4.8s; }
+.particle-10 { left: 55%; top: 25%; animation-delay: 1.9s; animation-duration: 3.6s; }
+.particle-11 { left: 20%; top: 40%; animation-delay: 0.4s; animation-duration: 4.3s; }
+.particle-12 { left: 80%; top: 75%; animation-delay: 1.6s; animation-duration: 3.9s; }
+.particle-13 { left: 30%; top: 5%; animation-delay: 2.2s; animation-duration: 4.7s; }
+.particle-14 { left: 70%; top: 45%; animation-delay: 0.9s; animation-duration: 3.4s; }
+.particle-15 { left: 5%; top: 90%; animation-delay: 1.3s; animation-duration: 5.2s; }
+.particle-16 { left: 95%; top: 35%; animation-delay: 2.8s; animation-duration: 3.7s; }
+.particle-17 { left: 40%; top: 65%; animation-delay: 0.6s; animation-duration: 4.6s; }
+.particle-18 { left: 60%; top: 95%; animation-delay: 1.7s; animation-duration: 3.3s; }
+.particle-19 { left: 15%; top: 75%; animation-delay: 2.4s; animation-duration: 4.9s; }
+.particle-20 { left: 85%; top: 55%; animation-delay: 1.1s; animation-duration: 3.1s; }
+
+.shape-delay-1 { animation-delay: 1s; }
+.shape-delay-2 {/* Animation delay classes */
+.animation-delay-100 {
+  animation-delay: 0.1s;
+}
+
+.animation-delay-200 {
+  animation-delay: 0.2s;
+}
+
+.animation-delay-300 {
+  animation-delay: 0.3s;
+}
+
+.animation-delay-400 {
+  animation-delay: 0.4s;
+}
+
+.animation-delay-500 {
+  animation-delay: 0.5s;
+}
+
+.animation-delay-600 {
+  animation-delay: 0.6s;
+}
+
+.animation-delay-800 {
+  animation-delay: 0.8s;
+}
+
+.animation-delay-1000 {
+  animation-delay: 1s;
+}
+
+.animation-delay-1200 {
+  animation-delay: 1.2s;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.icon-delay-1 { animation-delay: 0.5s; }
+.icon-delay-2 { animation-delay: 1.2s; }
+.icon-delay-3 { animation-delay: 2s; }
+.icon-delay-4 { animation-delay: 0.8s; }
+.icon-delay-5 { animation-delay: 1.5s; }
+
+.slide-up-delay-0 { animation-delay: 0s; }
+.slide-up-delay-1 { animation-delay: 0.2s; }
+.slide-up-delay-2 { animation-delay: 0.4s; }
+.slide-up-delay-3 { animation-delay: 0.6s; }

@@ -426,7 +426,7 @@ const Profiles = () => {
           {/* Profiles Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {currentProfiles.map((profile) => (
-              profile && <ProfileCard key={profile.id} profile={profile} />
+              profile && <ProfileCard key={profile.id} profile={profile} onOpenModal={() => {}} />
             ))}
           </div>
 
@@ -436,17 +436,17 @@ const Profiles = () => {
               <button
                 onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                 disabled={currentPage === 1}
-                className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-3 py-2 text-sm font-medium text-white bg-purple-600/80 border border-purple-400 rounded-md hover:bg-purple-700/80 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Anterior
               </button>
-              <span className="px-3 py-2 text-sm font-medium text-gray-700">
+              <span className="px-3 py-2 text-sm font-medium text-white">
                 Página {currentPage} de {totalPages}
               </span>
               <button
                 onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                 disabled={currentPage === totalPages}
-                className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-3 py-2 text-sm font-medium text-white bg-purple-600/80 border border-purple-400 rounded-md hover:bg-purple-700/80 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Siguiente
               </button>

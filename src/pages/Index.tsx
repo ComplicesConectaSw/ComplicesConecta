@@ -11,8 +11,10 @@ import { FeatureModal } from "@/components/modals/FeatureModal";
 import { InstallAppModal } from "@/components/modals/InstallAppModal";
 import { ActionButtonsModal } from "@/components/modals/ActionButtonsModal";
 import Navigation from "@/components/Navigation";
+import { useScrollHide } from "@/hooks/useScrollHide";
 import { Heart, Users, Shield, Zap, Sparkles, Star, Rocket, Smartphone, Download, Smartphone as Android } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import "@/styles/animations.css";
 
 // Professional profile images from Unsplash - Production ready
 // Removed local imports that fail in production
@@ -26,6 +28,7 @@ const Index = () => {
   const [isRunningInApp, setIsRunningInApp] = useState(false);
   const [showInstallModal, setShowInstallModal] = useState(false);
   const [showActionButtonsModal, setShowActionButtonsModal] = useState(false);
+  const isWelcomeVisible = useScrollHide(50);
 
   // Verificar si el usuario está autenticado y detectar Android
   useEffect(() => {
@@ -170,8 +173,8 @@ const Index = () => {
         <div className="absolute inset-0">
           <div className="absolute top-20 left-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-float-slow"></div>
           <div className="absolute top-40 right-32 w-48 h-48 bg-accent/8 rounded-full blur-2xl animate-float-reverse"></div>
-          <div className="absolute bottom-32 left-1/3 w-80 h-80 bg-secondary/4 rounded-full blur-3xl animate-float-slow" style={{ animationDelay: '2s' }}></div>
-          <div className="absolute bottom-20 right-20 w-56 h-56 bg-primary/6 rounded-full blur-2xl animate-float" style={{ animationDelay: '1s' }}></div>
+          <div className="absolute bottom-32 left-1/3 w-80 h-80 bg-secondary/4 rounded-full blur-3xl animate-float-slow shape-delay-2"></div>
+          <div className="absolute bottom-20 right-20 w-56 h-56 bg-primary/6 rounded-full blur-2xl animate-float shape-delay-1"></div>
           
           {/* Hexagonal Patterns */}
           <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-gradient-to-br from-primary/10 to-accent/10 transform rotate-45 animate-spin-slow blur-xl"></div>
@@ -183,23 +186,17 @@ const Index = () => {
           {Array.from({ length: 20 }).map((_, i) => (
             <div
               key={i}
-              className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 3}s`,
-                animationDuration: `${3 + Math.random() * 4}s`
-              }}
+              className={`absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-${i + 1}`}
             ></div>
           ))}
         </div>
         
         {/* Glowing Icons */}
-        <Heart className="absolute top-32 left-1/4 w-8 h-8 text-primary/20 animate-float" fill="currentColor" style={{ animationDelay: '0.5s' }} />
-        <Sparkles className="absolute top-1/3 right-1/4 w-6 h-6 text-accent/25 animate-float" style={{ animationDelay: '1.2s' }} />
-        <Star className="absolute bottom-1/3 left-1/5 w-7 h-7 text-secondary/20 animate-float" style={{ animationDelay: '2s' }} />
-        <Rocket className="absolute bottom-1/4 right-1/5 w-9 h-9 text-primary/15 animate-float" style={{ animationDelay: '0.8s' }} />
-        <Users className="absolute top-1/2 left-1/6 w-8 h-8 text-accent/20 animate-float" style={{ animationDelay: '1.5s' }} />
+        <Heart className="absolute top-32 left-1/4 w-8 h-8 text-primary/20 animate-float icon-delay-1" fill="currentColor" />
+        <Sparkles className="absolute top-1/3 right-1/4 w-6 h-6 text-accent/25 animate-float icon-delay-2" />
+        <Star className="absolute bottom-1/3 left-1/5 w-7 h-7 text-secondary/20 animate-float icon-delay-3" />
+        <Rocket className="absolute bottom-1/4 right-1/5 w-9 h-9 text-primary/15 animate-float icon-delay-4" />
+        <Users className="absolute top-1/2 left-1/6 w-8 h-8 text-accent/20 animate-float icon-delay-5" />
       </div>
       
       {/* Content */}
@@ -229,7 +226,7 @@ const Index = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
               {sampleProfiles.map((profile, index) => (
-                <div key={index} className="animate-slide-up" style={{ animationDelay: `${index * 0.2}s` }}>
+                <div key={index} className={`animate-slide-up slide-up-delay-${index}`}>
                   <ProfileCard 
                     profile={profile} 
                     onLike={() => {}} 
@@ -320,7 +317,7 @@ const Index = () => {
       </main>
 
       <Footer />
-      {showWelcome && <WelcomeModal isOpen={showWelcome} onClose={handleWelcomeClose} />}
+      {showWelcome && isWelcomeVisible && <WelcomeModal isOpen={showWelcome} onClose={handleWelcomeClose} />}
       <InstallAppModal isOpen={showInstallModal} onClose={() => setShowInstallModal(false)} />
       <FeatureModal
         isOpen={showFeatureModal}

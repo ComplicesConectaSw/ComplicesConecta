@@ -161,7 +161,7 @@ const ProfileSingle: React.FC = () => {
               <div className="absolute bottom-4 right-4">
                 <Button 
                   onClick={() => navigate('/edit-profile-single')}
-                  className="bg-white/90 text-gray-800 hover:bg-white"
+                  className="bg-white/90 text-black hover:bg-white"
                 >
                   <Settings className="h-4 w-4 mr-2" />
                   Editar

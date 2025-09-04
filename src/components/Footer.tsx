@@ -1,4 +1,4 @@
-import { Heart, Facebook, Instagram, Twitter, Mail, Phone } from "lucide-react";
+import { Heart, Facebook, Instagram, Twitter, Mail, Phone, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
@@ -20,13 +20,28 @@ export const Footer = () => {
               La plataforma líder para encontrar conexiones auténticas y experiencias únicas con personas que comparten tus intereses.
             </p>
             <div className="flex space-x-3">
-              <Button variant="ghost" size="icon" className="text-background hover:text-primary">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="text-background hover:text-primary"
+                onClick={() => window.open('https://facebook.com/complicesconecta', '_blank')}
+              >
                 <Facebook className="h-5 w-5" />
               </Button>
-              <Button variant="ghost" size="icon" className="text-background hover:text-primary">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="text-background hover:text-primary"
+                onClick={() => window.open('https://instagram.com/complicesconecta', '_blank')}
+              >
                 <Instagram className="h-5 w-5" />
               </Button>
-              <Button variant="ghost" size="icon" className="text-background hover:text-primary">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="text-background hover:text-primary"
+                onClick={() => window.open('https://twitter.com/complicesconecta', '_blank')}
+              >
                 <Twitter className="h-5 w-5" />
               </Button>
             </div>
@@ -37,24 +52,22 @@ export const Footer = () => {
             <h4 className="text-lg font-semibold mb-4 text-primary">Empresa</h4>
             <ul className="space-y-2">
               <li>
-                <a href="#about" className="text-background/80 hover:text-primary transition-colors">
-                  Sobre Nosotros
-                </a>
+                <Link to="/about" className="text-background/80 hover:text-primary transition-colors">
+                  Quiénes Somos
+                </Link>
               </li>
               <li>
-                <a href="#careers" className="text-background/80 hover:text-primary transition-colors">
+                <Link to="/careers" className="text-background/80 hover:text-primary transition-colors">
                   Carreras
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#press" className="text-background/80 hover:text-primary transition-colors">
-                  Prensa
-                </a>
-              </li>
-              <li>
-                <a href="#blog" className="text-background/80 hover:text-primary transition-colors">
+                <button 
+                  onClick={() => window.open('https://complicesconecta.blog', '_blank')}
+                  className="text-background/80 hover:text-primary transition-colors text-left"
+                >
                   Blog
-                </a>
+                </button>
               </li>
             </ul>
           </div>
@@ -92,11 +105,18 @@ export const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <Mail className="h-4 w-4 text-primary" />
-                <span className="text-background/80">hola@complicesconecta.com</span>
+                <a href="mailto:complicesconectasw@outlook.es" className="text-background/80 hover:text-primary transition-colors">
+                  complicesconectasw@outlook.es
+                </a>
               </div>
               <div className="flex items-center space-x-3">
-                <Phone className="h-4 w-4 text-primary" />
-                <span className="text-background/80">+1 (555) 123-4567</span>
+                <MessageCircle className="h-4 w-4 text-primary" />
+                <button 
+                  onClick={() => window.open('https://wa.me/5617184109', '_blank')}
+                  className="text-background/80 hover:text-primary transition-all duration-300 hover:scale-105 transform flex items-center space-x-2 group"
+                >
+                  <span className="group-hover:animate-pulse">Soporte WhatsApp</span>
+                </button>
               </div>
             </div>
             
@@ -109,7 +129,18 @@ export const Footer = () => {
                   placeholder="Tu email"
                   className="flex-1 px-3 py-2 bg-background/10 border border-background/20 rounded-md text-background placeholder-background/60 focus:outline-none focus:border-primary"
                 />
-                <Button variant="love" size="sm">
+                <Button 
+                  variant="love" 
+                  size="sm"
+                  onClick={() => {
+                    const email = (document.querySelector('input[type="email"]') as HTMLInputElement)?.value;
+                    if (email) {
+                      alert('¡Gracias por suscribirte! Te mantendremos informado.');
+                    } else {
+                      alert('Por favor ingresa tu email.');
+                    }
+                  }}
+                >
                   Suscribirse
                 </Button>
               </div>

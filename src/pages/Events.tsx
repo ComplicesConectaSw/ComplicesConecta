@@ -201,7 +201,7 @@ const Events = () => {
               <h2 className="text-2xl font-bold text-foreground mb-4">
                 Verificación de Edad
               </h2>
-              <p className="text-muted-foreground mb-6">
+              <p className="text-white mb-6">
                 Este contenido está destinado exclusivamente para adultos mayores de 18 años. 
                 Al continuar, confirmas que tienes la edad legal requerida.
               </p>
@@ -221,7 +221,7 @@ const Events = () => {
                   Soy mayor de 18 años
                 </Button>
               </div>
-              <p className="text-xs text-muted-foreground mt-4">
+              <p className="text-xs text-white mt-4">
                 Al confirmar, aceptas nuestros{' '}
                 <button 
                   onClick={() => navigate('/terms')}
@@ -292,7 +292,7 @@ const Events = () => {
                 Experiencias Exclusivas para Parejas
               </span>
             </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-xl text-white max-w-2xl mx-auto">
               Encuentros privados, clubs verificados y experiencias para parejas del lifestyle
             </p>
           </div>
@@ -302,7 +302,7 @@ const Events = () => {
             <CardContent className="text-center py-8">
               <Lock className="h-12 w-12 text-accent mx-auto mb-4" />
               <h2 className="text-2xl font-bold text-foreground mb-2">Integración de Clubs - Post Beta</h2>
-              <p className="text-muted-foreground mb-4">
+              <p className="text-white mb-4">
                 Los clubs lifestyle podrán integrarse a la plataforma después de la beta, 
                 con sistema de reputación basado en valoraciones de usuarios verificados.
               </p>
@@ -316,7 +316,7 @@ const Events = () => {
           {/* Search Bar */}
           <div className="max-w-md mx-auto mb-8">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/70 h-4 w-4" />
               <Input
                 placeholder="Buscar fiestas swinger, clubs privados, eventos lifestyle..."
                 value={searchQuery}
@@ -378,18 +378,18 @@ const Events = () => {
                     </div>
                     <CardContent className="p-6">
                       <h3 className="font-bold text-lg text-foreground mb-2">{event.title}</h3>
-                      <p className="text-muted-foreground text-sm mb-4">{event.description}</p>
+                      <p className="text-white text-sm mb-4">{event.description}</p>
                       
                       <div className="space-y-2 mb-4">
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <div className="flex items-center gap-2 text-sm text-white">
                           <Calendar className="h-4 w-4" />
                           {event.date} - {event.time}
                         </div>
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <div className="flex items-center gap-2 text-sm text-white">
                           <MapPin className="h-4 w-4" />
                           {event.location}
                         </div>
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <div className="flex items-center gap-2 text-sm text-white">
                           <Users className="h-4 w-4" />
                           {event.attendees}/{event.maxAttendees} parejas ({event.ageRange})
                         </div>
@@ -413,7 +413,7 @@ const Events = () => {
               {filteredEvents.length === 0 && (
                 <div className="text-center py-16">
                   <div className="bg-muted/20 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-4">
-                    <Calendar className="h-12 w-12 text-muted-foreground" />
+                    <Calendar className="h-12 w-12 text-white" />
                   </div>
                   <h3 className="text-xl font-semibold text-foreground mb-2">
                     No se encontraron eventos
@@ -453,7 +453,7 @@ const Events = () => {
                           <Shield className="h-5 w-5 text-accent" />
                         )}
                         {club.isPrivate && (
-                          <Lock className="h-5 w-5 text-muted-foreground" />
+                          <Lock className="h-5 w-5 text-white/70" />
                         )}
                       </div>
                     </div>
@@ -466,20 +466,20 @@ const Events = () => {
                         </div>
                       </div>
                       
-                      <p className="text-muted-foreground text-sm mb-4">{club.description}</p>
+                      <p className="text-white text-sm mb-4">{club.description}</p>
                       
                       <div className="space-y-2 mb-4">
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <div className="flex items-center gap-2 text-sm text-white">
                           <Users className="h-4 w-4" />
                           {club.memberCount}/{club.maxMembers} miembros
                         </div>
-                        <div className="text-xs text-muted-foreground">
+                        <div className="text-xs text-white">
                           <strong>Requisitos:</strong> {club.requirements}
                         </div>
                       </div>
 
                       <div className="flex items-center justify-between">
-                        <span className="text-sm text-muted-foreground">{club.lastActivity}</span>
+                        <span className="text-sm text-white">{club.lastActivity}</span>
                         <Button 
                           variant={club.isJoined ? "secondary" : club.isPending ? "outline" : "default"}
                           size="sm"
@@ -496,7 +496,7 @@ const Events = () => {
               {filteredClubs.length === 0 && (
                 <div className="text-center py-16">
                   <div className="bg-muted/20 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-4">
-                    <Crown className="h-12 w-12 text-muted-foreground" />
+                    <Crown className="h-12 w-12 text-white" />
                   </div>
                   <h3 className="text-xl font-semibold text-foreground mb-2">
                     No se encontraron clubs

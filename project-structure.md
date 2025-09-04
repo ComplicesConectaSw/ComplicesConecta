@@ -217,7 +217,27 @@ npm run audit:fix           # Correcciones automáticas
 npm run scaffold:templates  # Importar plantillas
 ```
 
-## 🚀 **Últimas Actualizaciones v1.4.0** *(2 de septiembre, 2025 - 11:15)*
+## 🚀 **Últimas Actualizaciones v1.4.1** *(15 de enero, 2025 - 16:45)*
+
+### **Correcciones Críticas de JSX y Mantenibilidad**
+- **Errores JSX Solucionados**: Corregidos errores críticos de sintaxis en `Discover.tsx` que impedían la compilación
+- **Eliminación CSS Inline**: Migración completa de estilos inline a clases TailwindCSS para mejor mantenibilidad
+- **Tipos TypeScript Mejorados**: Solucionados problemas de tipos en funciones de perfil y asignación de imágenes
+- **Footer Completamente Funcional**: Botones sociales, newsletter y enlaces externos ahora funcionan correctamente
+- **Optimización Android**: Mejoras específicas de responsividad para dispositivos móviles Android
+
+### **Componentes Actualizados**
+```
+src/pages/Discover.tsx              # Errores JSX corregidos, tipos mejorados
+src/components/Footer.tsx           # Funcionalidad completa habilitada
+src/styles/animations.css           # Animaciones CSS separadas
+src/pages/Index.tsx                 # Estilos inline removidos
+README.md                           # Documentación actualizada
+RELEASE_NOTES.md                    # Notas de versión actualizadas
+project-structure.md                # Estructura documentada
+```
+
+## 🚀 **Actualizaciones Previas v1.4.0** *(2 de septiembre, 2025 - 11:15)*
 
 ### **Optimizaciones para APK Instalada**
 - **Header Inteligente**: Se oculta automáticamente al hacer scroll hacia abajo y se minimiza cuando está en el top

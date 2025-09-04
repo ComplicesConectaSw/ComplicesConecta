@@ -81,7 +81,7 @@ const ProfileCouple: React.FC = () => {
       <div className="min-h-screen bg-gradient-to-br from-pink-100 via-purple-50 to-indigo-100 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Cargando perfil...</p>
+          <p className="text-white">Cargando perfil...</p>
         </div>
       </div>
     );
@@ -100,14 +100,14 @@ const ProfileCouple: React.FC = () => {
             <Button 
               variant="ghost" 
               onClick={() => navigate('/profile')}
-              className="text-gray-700 hover:bg-white/50"
+              className="text-white hover:bg-white/50"
             >
               <ArrowLeft className="h-5 w-5" />
             </Button>
-            <h1 className="text-lg font-semibold text-gray-900">Nuestro Perfil</h1>
+            <h1 className="text-lg font-semibold text-white">Nuestro Perfil</h1>
             <div className="flex gap-2">
               <Button variant="ghost" size="sm" className="hover:bg-white/50">
-                <Share2 className="h-5 w-5 text-gray-700" />
+                <Share2 className="h-5 w-5 text-white" />
               </Button>
               <Button 
                 variant="ghost" 
@@ -115,7 +115,7 @@ const ProfileCouple: React.FC = () => {
                 onClick={() => navigate('/edit-profile-couple')}
                 className="hover:bg-white/50"
               >
-                <Settings className="h-5 w-5 text-gray-700" />
+                <Settings className="h-5 w-5 text-white" />
               </Button>
             </div>
           </div>
@@ -163,8 +163,8 @@ const ProfileCouple: React.FC = () => {
           <Card className="bg-white/90 backdrop-blur-md shadow-lg border-0">
             <CardContent className="p-6">
               <div className="text-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">{profile.coupleName || 'Pareja'}</h2>
-                <div className="flex items-center justify-center space-x-4 text-gray-600 mb-4">
+                <h2 className="text-2xl font-bold text-white mb-2">{profile.coupleName || 'Pareja'}</h2>
+                <div className="flex items-center justify-center space-x-4 text-white mb-4">
                   <span className="flex items-center">
                     <MapPin className="h-4 w-4 mr-1" />
                     {profile.location}
@@ -174,7 +174,7 @@ const ProfileCouple: React.FC = () => {
                 {/* Bio de la pareja */}
                 <div className="bg-gradient-to-r from-purple-100 to-pink-100 rounded-lg p-4 mb-6 border border-purple-200">
                   <h3 className="font-semibold text-purple-900 mb-2">Sobre nosotros</h3>
-                  <p className="text-gray-800">{profile.bio}</p>
+                  <p className="text-white">{profile.bio}</p>
                 </div>
               </div>
 
@@ -198,7 +198,7 @@ const ProfileCouple: React.FC = () => {
                   
                   <div className="mb-4">
                     <h4 className="font-semibold text-pink-800 mb-2">Sobre ella:</h4>
-                    <p className="text-sm text-gray-800">{profile.partner1?.bio || 'Me encanta explorar nuevas experiencias junto a mi pareja.'}</p>
+                    <p className="text-sm text-white">{profile.partner1?.bio || 'Me encanta explorar nuevas experiencias junto a mi pareja.'}</p>
                   </div>
                   
                   <div>
@@ -231,7 +231,7 @@ const ProfileCouple: React.FC = () => {
                   
                   <div className="mb-4">
                     <h4 className="font-semibold text-blue-800 mb-2">Sobre él:</h4>
-                    <p className="text-sm text-gray-800">{profile.partner2?.bio || 'Aventurero y respetuoso, busco junto a mi pareja vivir experiencias únicas.'}</p>
+                    <p className="text-sm text-white">{profile.partner2?.bio || 'Aventurero y respetuoso, busco junto a mi pareja vivir experiencias únicas.'}</p>
                   </div>
                   
                   <div>

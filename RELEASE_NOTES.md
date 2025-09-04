@@ -1,8 +1,8 @@
-# 📱 ComplicesConecta - Notas de Lanzamiento v1.4.0
+# 📱 ComplicesConecta - Notas de Lanzamiento v1.4.1
 
-**Fecha de Lanzamiento:** 2 de Septiembre de 2025 - 11:15 hrs  
+**Fecha de Lanzamiento:** 15 de Enero, 2025 - 16:45 hrs  
 **Plataforma:** Android APK + Web App  
-**Versión:** 1.4.0
+**Versión:** 1.4.1
 
 ---
 
@@ -46,7 +46,30 @@ ComplicesConecta se completa con sistema de invitaciones, panel de administraci�
 
 ---
 
-## 🆕 Novedades en v1.4.0
+## 🆕 Novedades en v1.4.1
+
+### 🔧 **Correcciones Críticas de JSX (NUEVO)**
+- ✅ **Errores de sintaxis solucionados** - Corregidos errores críticos en `Discover.tsx` que impedían la compilación
+- ✅ **Tipos TypeScript mejorados** - Solucionados problemas de tipos en funciones de perfil y asignación de imágenes
+- ✅ **Optimización de generación de perfiles** - Mejorado el sistema de creación de perfiles mock con tipos correctos
+
+### 🎨 **Eliminación Completa de CSS Inline (NUEVO)**
+- ✅ **Migración a TailwindCSS** - Todos los estilos inline convertidos a clases de utilidad
+- ✅ **Mejor mantenibilidad** - Código más limpio y consistente sin estilos embebidos
+- ✅ **Animaciones CSS separadas** - Animaciones movidas a archivo CSS dedicado
+
+### 🔗 **Footer Completamente Funcional (NUEVO)**
+- ✅ **Botones sociales activos** - Enlaces a Facebook, Instagram y Twitter funcionando
+- ✅ **Newsletter funcional** - Sistema de suscripción con validación de email
+- ✅ **Enlaces externos** - Blog y redes sociales con apertura en nueva pestaña
+- ✅ **WhatsApp integrado** - Soporte directo vía WhatsApp con número verificado
+
+### 📱 **Mejoras de Responsividad Android (NUEVO)**
+- ✅ **Optimización móvil** - Ajustes específicos para dispositivos Android
+- ✅ **Touch targets mejorados** - Botones y elementos interactivos más accesibles
+- ✅ **Layout responsive** - Mejor adaptación a diferentes tamaños de pantalla
+
+## 🆕 Novedades Previas en v1.4.0
 
 ### 📱 **Optimizaciones para APK Instalada (NUEVO)**
 - ✅ **Header inteligente con scroll** - Se oculta al hacer scroll hacia abajo y se minimiza en el top

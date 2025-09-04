@@ -27,6 +27,9 @@ import ProfileCouple from "./pages/ProfileCouple";
 import EditProfileSingle from "./pages/EditProfileSingle";
 import EditProfileCouple from "./pages/EditProfileCouple";
 import Feed from "./pages/Feed";
+import About from "./pages/About";
+import Careers from "./pages/Careers";
+import ChatAuthenticated from "./pages/ChatAuthenticated";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +45,7 @@ const App = () => (
             <Route path="/auth" element={<Auth />} />
             <Route path="/profiles" element={<Profiles />} />
             <Route path="/profile/:id" element={<ProfileDetail />} />
+            <Route path="/profile" element={<ProfileSingle />} />
             <Route path="/profile-single" element={<ProfileSingle />} />
             <Route path="/profile-couple" element={<ProfileCouple />} />
             <Route path="/edit-profile-single" element={<EditProfileSingle />} />
@@ -61,6 +65,9 @@ const App = () => (
             <Route path="/security" element={<Security />} />
             <Route path="/guidelines" element={<Guidelines />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/careers" element={<Careers />} />
+            <Route path="/chat-authenticated" element={<ChatAuthenticated />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

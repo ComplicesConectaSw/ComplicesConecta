@@ -179,7 +179,7 @@ const EditProfileCouple = () => {
       <div className="min-h-screen bg-gradient-to-br from-pink-100 via-purple-50 to-indigo-100 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Cargando...</p>
+          <p className="text-white">Cargando...</p>
         </div>
       </div>
     );
@@ -193,11 +193,11 @@ const EditProfileCouple = () => {
           <Button 
             variant="ghost" 
             onClick={() => navigate(-1)}
-            className="text-gray-600"
+            className="text-white"
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <h1 className="text-lg font-semibold text-gray-900">Editar Perfil de Pareja</h1>
+          <h1 className="text-lg font-semibold text-white">Editar Perfil de Pareja</h1>
           <Button 
             onClick={handleSave}
             className="bg-gradient-to-r from-pink-500 to-purple-500 text-white"
@@ -212,7 +212,7 @@ const EditProfileCouple = () => {
         {/* Fotos de la pareja */}
         <Card className="bg-white shadow-lg">
           <CardContent className="p-6">
-            <h3 className="font-semibold text-gray-900 mb-4 flex items-center">
+            <h3 className="font-semibold text-white mb-4 flex items-center">
               <Users className="h-5 w-5 mr-2 text-purple-500" />
               Fotos de la pareja
             </h3>
@@ -230,7 +230,7 @@ const EditProfileCouple = () => {
                 >
                   <Camera className="h-4 w-4" />
                 </Button>
-                <p className="text-center text-sm text-gray-600 mt-2">{formData.partner1.firstName} (Ella)</p>
+                <p className="text-center text-sm text-white mt-2">{formData.partner1.firstName} (Ella)</p>
               </div>
               <div className="relative">
                 <img 
@@ -245,7 +245,7 @@ const EditProfileCouple = () => {
                 >
                   <Camera className="h-4 w-4" />
                 </Button>
-                <p className="text-center text-sm text-gray-600 mt-2">{formData.partner2.firstName} (Él)</p>
+                <p className="text-center text-sm text-white mt-2">{formData.partner2.firstName} (Él)</p>
               </div>
             </div>
           </CardContent>
@@ -254,10 +254,10 @@ const EditProfileCouple = () => {
         {/* Información general de la pareja */}
         <Card className="bg-white shadow-lg">
           <CardContent className="p-6 space-y-4">
-            <h3 className="font-semibold text-gray-900 mb-4">Información general</h3>
+            <h3 className="font-semibold text-white mb-4">Información general</h3>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Nombre de la pareja</label>
+              <label className="block text-sm font-medium text-white mb-2">Nombre de la pareja</label>
               <Input
                 value={formData.coupleName}
                 onChange={(e) => handleInputChange('coupleName', e.target.value)}
@@ -266,7 +266,7 @@ const EditProfileCouple = () => {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Ubicación</label>
+              <label className="block text-sm font-medium text-white mb-2">Ubicación</label>
               <div className="space-y-2">
                 <Input
                   value={formData.location}
@@ -294,7 +294,7 @@ const EditProfileCouple = () => {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Sobre nosotros</label>
+              <label className="block text-sm font-medium text-white mb-2">Sobre nosotros</label>
               <Textarea
                 value={formData.bio}
                 onChange={(e) => handleInputChange('bio', e.target.value)}
@@ -601,20 +601,20 @@ const EditProfileCouple = () => {
             <h3 className="font-semibold text-gray-900 mb-4">Configuración de privacidad</h3>
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-700">Mostrar edades</span>
-                <input type="checkbox" defaultChecked className="rounded" />
+                <span className="text-sm text-white">Mostrar edades</span>
+                <input type="checkbox" defaultChecked className="rounded bg-white/20 border-white/30" title="Mostrar edades en perfil" />
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-700">Mostrar ubicación</span>
-                <input type="checkbox" defaultChecked className="rounded" />
+                <span className="text-sm text-white">Mostrar ubicación</span>
+                <input type="checkbox" defaultChecked className="rounded bg-white/20 border-white/30" title="Mostrar ubicación en perfil" />
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-700">Aparecer en búsquedas</span>
-                <input type="checkbox" defaultChecked className="rounded" />
+                <span className="text-sm text-white">Aparecer en búsquedas</span>
+                <input type="checkbox" defaultChecked className="rounded bg-white/20 border-white/30" title="Aparecer en resultados de búsqueda" />
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-700">Solo parejas verificadas</span>
-                <input type="checkbox" className="rounded" />
+                <span className="text-sm text-white">Solo parejas verificadas</span>
+                <input type="checkbox" className="rounded bg-white/20 border-white/30" title="Solo mostrar parejas verificadas" />
               </div>
             </div>
           </CardContent>
