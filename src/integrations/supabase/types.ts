@@ -7,116 +7,221 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "13.0.4"
   }
   public: {
     Tables: {
-      conversations: {
+      apk_downloads: {
         Row: {
-          created_at: string
+          download_date: string | null
           id: string
+          ip_address: unknown | null
+          user_agent: string | null
+          version: string | null
         }
         Insert: {
-          created_at?: string
+          download_date?: string | null
           id?: string
+          ip_address?: unknown | null
+          user_agent?: string | null
+          version?: string | null
         }
         Update: {
-          created_at?: string
+          download_date?: string | null
           id?: string
+          ip_address?: unknown | null
+          user_agent?: string | null
+          version?: string | null
         }
         Relationships: []
       }
-      matches: {
+      app_metrics: {
         Row: {
-          conversation_id: string
-          created_at: string
+          created_at: string | null
           id: string
-          user1_id: string
-          user2_id: string
+          metric_date: string | null
+          metric_name: string
+          metric_value: number | null
+          updated_at: string | null
         }
         Insert: {
-          conversation_id: string
-          created_at?: string
+          created_at?: string | null
           id?: string
-          user1_id: string
-          user2_id: string
+          metric_date?: string | null
+          metric_name: string
+          metric_value?: number | null
+          updated_at?: string | null
         }
         Update: {
-          conversation_id?: string
-          created_at?: string
+          created_at?: string | null
           id?: string
-          user1_id?: string
-          user2_id?: string
+          metric_date?: string | null
+          metric_name?: string
+          metric_value?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      donaciones: {
+        Row: {
+          attrs: Json | null
+          business_type: string | null
+          country: string | null
+          created: string | null
+          email: string | null
+          id: string | null
+          type: string | null
+        }
+        Insert: {
+          attrs?: Json | null
+          business_type?: string | null
+          country?: string | null
+          created?: string | null
+          email?: string | null
+          id?: string | null
+          type?: string | null
+        }
+        Update: {
+          attrs?: Json | null
+          business_type?: string | null
+          country?: string | null
+          created?: string | null
+          email?: string | null
+          id?: string | null
+          type?: string | null
+        }
+        Relationships: []
+      }
+      faq_items: {
+        Row: {
+          answer: string
+          category: string | null
+          created_at: string | null
+          display_order: number | null
+          id: string
+          is_active: boolean | null
+          question: string
+          updated_at: string | null
+        }
+        Insert: {
+          answer: string
+          category?: string | null
+          created_at?: string | null
+          display_order?: number | null
+          id?: string
+          is_active?: boolean | null
+          question: string
+          updated_at?: string | null
+        }
+        Update: {
+          answer?: string
+          category?: string | null
+          created_at?: string | null
+          display_order?: number | null
+          id?: string
+          is_active?: boolean | null
+          question?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      gallery_permissions: {
+        Row: {
+          created_at: string | null
+          grantee_profile: string
+          id: string
+          owner_profile: string
+          scope: Database["public"]["Enums"]["gallery_scope"] | null
+          source_invitation: string | null
+          status: Database["public"]["Enums"]["permission_status"] | null
+        }
+        Insert: {
+          created_at?: string | null
+          grantee_profile: string
+          id?: string
+          owner_profile: string
+          scope?: Database["public"]["Enums"]["gallery_scope"] | null
+          source_invitation?: string | null
+          status?: Database["public"]["Enums"]["permission_status"] | null
+        }
+        Update: {
+          created_at?: string | null
+          grantee_profile?: string
+          id?: string
+          owner_profile?: string
+          scope?: Database["public"]["Enums"]["gallery_scope"] | null
+          source_invitation?: string | null
+          status?: Database["public"]["Enums"]["permission_status"] | null
         }
         Relationships: [
           {
-            foreignKeyName: "matches_conversation_id_fkey"
-            columns: ["conversation_id"]
-            isOneToOne: false
-            referencedRelation: "conversations"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "matches_user1_id_fkey"
-            columns: ["user1_id"]
+            foreignKeyName: "gallery_permissions_grantee_profile_fkey"
+            columns: ["grantee_profile"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "matches_user2_id_fkey"
-            columns: ["user2_id"]
+            foreignKeyName: "gallery_permissions_owner_profile_fkey"
+            columns: ["owner_profile"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gallery_permissions_source_invitation_fkey"
+            columns: ["source_invitation"]
+            isOneToOne: false
+            referencedRelation: "invitations"
             referencedColumns: ["id"]
           },
         ]
       }
-      messages: {
+      invitations: {
         Row: {
-          content: string
-          conversation_id: string
-          created_at: string
+          created_at: string | null
+          decided_at: string | null
+          from_profile: string
           id: string
-          location_address: string | null
-          location_latitude: number | null
-          location_longitude: number | null
-          sender_id: string
+          message: string | null
+          status: Database["public"]["Enums"]["invitation_status"] | null
+          to_profile: string
+          type: Database["public"]["Enums"]["invitation_type"] | null
         }
         Insert: {
-          content: string
-          conversation_id: string
-          created_at?: string
+          created_at?: string | null
+          decided_at?: string | null
+          from_profile: string
           id?: string
-          location_address?: string | null
-          location_latitude?: number | null
-          location_longitude?: number | null
-          sender_id: string
+          message?: string | null
+          status?: Database["public"]["Enums"]["invitation_status"] | null
+          to_profile: string
+          type?: Database["public"]["Enums"]["invitation_type"] | null
         }
         Update: {
-          content?: string
-          conversation_id?: string
-          created_at?: string
+          created_at?: string | null
+          decided_at?: string | null
+          from_profile?: string
           id?: string
-          location_address?: string | null
-          location_latitude?: number | null
-          location_longitude?: number | null
-          sender_id?: string
+          message?: string | null
+          status?: Database["public"]["Enums"]["invitation_status"] | null
+          to_profile?: string
+          type?: Database["public"]["Enums"]["invitation_type"] | null
         }
         Relationships: [
           {
-            foreignKeyName: "messages_conversation_id_fkey"
-            columns: ["conversation_id"]
+            foreignKeyName: "invitations_from_profile_fkey"
+            columns: ["from_profile"]
             isOneToOne: false
-            referencedRelation: "conversations"
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "messages_sender_id_fkey"
-            columns: ["sender_id"]
+            foreignKeyName: "invitations_to_profile_fkey"
+            columns: ["to_profile"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
@@ -125,52 +230,88 @@ export type Database = {
       }
       profiles: {
         Row: {
-          age: number | null
-          avatar_url: string | null
+          age: number
           bio: string | null
           created_at: string
-          display_name: string | null
-          first_name: string | null
-          gender: string | null
+          first_name: string
+          gender: string
           id: string
-          is_online: boolean
-          last_name: string | null
+          interested_in: string
+          is_premium: boolean | null
+          is_verified: boolean | null
+          last_name: string
           latitude: number | null
           longitude: number | null
+          share_location: boolean | null
           updated_at: string
-          user_preferences: Json | null
+          user_id: string | null
         }
         Insert: {
-          age?: number | null
-          avatar_url?: string | null
+          age: number
           bio?: string | null
           created_at?: string
-          display_name?: string | null
-          first_name?: string | null
-          gender?: string | null
-          id: string
-          is_online?: boolean
-          last_name?: string | null
+          first_name: string
+          gender: string
+          id?: string
+          interested_in: string
+          is_premium?: boolean | null
+          is_verified?: boolean | null
+          last_name: string
           latitude?: number | null
           longitude?: number | null
+          share_location?: boolean | null
           updated_at?: string
-          user_preferences?: Json | null
+          user_id?: string | null
         }
         Update: {
-          age?: number | null
-          avatar_url?: string | null
+          age?: number
           bio?: string | null
           created_at?: string
-          display_name?: string | null
-          first_name?: string | null
-          gender?: string | null
+          first_name?: string
+          gender?: string
           id?: string
-          is_online?: boolean
-          last_name?: string | null
+          interested_in?: string
+          is_premium?: boolean | null
+          is_verified?: boolean | null
+          last_name?: string
           latitude?: number | null
           longitude?: number | null
+          share_location?: boolean | null
           updated_at?: string
-          user_preferences?: Json | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      referral_rewards: {
+        Row: {
+          amount: number
+          created_at: string | null
+          id: string
+          invited_id: string
+          inviter_id: string
+          status: string | null
+          timestamp: string | null
+          type: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          id: string
+          invited_id: string
+          inviter_id: string
+          status?: string | null
+          timestamp?: string | null
+          type: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          id?: string
+          invited_id?: string
+          inviter_id?: string
+          status?: string | null
+          timestamp?: string | null
+          type?: string
         }
         Relationships: []
       }
@@ -195,19 +336,66 @@ export type Database = {
         }
         Relationships: []
       }
+      user_token_balances: {
+        Row: {
+          cmpx_balance: number | null
+          created_at: string | null
+          id: string
+          last_reset_date: string | null
+          monthly_earned: number | null
+          referral_code: string
+          referred_by: string | null
+          total_referrals: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          cmpx_balance?: number | null
+          created_at?: string | null
+          id?: string
+          last_reset_date?: string | null
+          monthly_earned?: number | null
+          referral_code: string
+          referred_by?: string | null
+          total_referrals?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          cmpx_balance?: number | null
+          created_at?: string | null
+          id?: string
+          last_reset_date?: string | null
+          monthly_earned?: number | null
+          referral_code?: string
+          referred_by?: string | null
+          total_referrals?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      accept_gallery_invitation: {
+        Args: { invitation_id: string }
+        Returns: undefined
+      }
       delete_current_user: {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      get_token_system_stats: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       has_role: {
         Args: {
-          _user_id: string
           _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
         }
         Returns: boolean
       }
@@ -215,9 +403,25 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      process_referral_reward: {
+        Args: {
+          current_monthly_earned: number
+          inviter_id: string
+          monthly_limit: number
+          new_user_id: string
+          new_user_referral_code: string
+          referral_reward: number
+          welcome_bonus: number
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       app_role: "administrador" | "cliente"
+      gallery_scope: "private_gallery" | "album"
+      invitation_status: "pending" | "accepted" | "declined" | "revoked"
+      invitation_type: "profile" | "gallery" | "chat"
+      permission_status: "active" | "revoked"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -346,6 +550,10 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["administrador", "cliente"],
+      gallery_scope: ["private_gallery", "album"],
+      invitation_status: ["pending", "accepted", "declined", "revoked"],
+      invitation_type: ["profile", "gallery", "chat"],
+      permission_status: ["active", "revoked"],
     },
   },
 } as const

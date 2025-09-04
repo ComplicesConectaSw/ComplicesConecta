@@ -27,6 +27,9 @@ conecta-social-comunidad-main/
 ├── 🤖 android/
 ├── 🌐 public/
 └── 📋 docs/
+    ├── 🌍 worldid/           # Documentación World ID
+    ├── 🔄 migrations/        # Documentación de migraciones
+    └── 🚀 DEPLOYMENT_INSTRUCTIONS.md
 ```
 
 ## Estructura Detallada

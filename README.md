@@ -11,8 +11,8 @@
 
 ### 📱 ¡Descarga la App Ahora!
 
-<a href="/app-release.apk" download>
-  <img src="https://img.shields.io/badge/📱_Descargar_APK-v1.4.0-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
+<a href="./public/app-release.apk" download>
+  <img src="https://img.shields.io/badge/📱_Descargar_APK-v1.8.0-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
 </a>
 
 *🔒 Aplicación segura y verificada para Android*

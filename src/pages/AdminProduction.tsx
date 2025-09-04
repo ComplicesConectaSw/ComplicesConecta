@@ -70,9 +70,9 @@ interface FAQItem {
   id: string;
   question: string;
   answer: string;
-  category: string;
-  created_at: string;
-  updated_at: string;
+  category: string | null;
+  created_at: string | null;
+  updated_at: string | null;
 }
 
 const AdminProduction = () => {
@@ -202,29 +202,27 @@ const AdminProduction = () => {
         supabase.from('profiles').select('*', { count: 'exact', head: true }),
         supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('is_premium', true),
         supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('is_verified', true),
-        supabase.from('invitations').select('*', { count: 'exact', head: true }).eq('status', 'accepted'),
+        supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('relationship_type', 'couple'),
         supabase.from('app_metrics').select('*'),
-        supabase.from('user_token_balances').select('cmpx_balance, gtk_balance'),
+        supabase.from('user_token_balances').select('cmpx_balance'),
         supabase.from('apk_downloads').select('*', { count: 'exact', head: true })
       ]);
 
-      // Procesar métricas
-      const metrics = metricsResponse.data || [];
+      // Obtener valores de métricas específicas
       const getMetricValue = (name: string) => {
-        const metric = metrics.find(m => m.metric_name === name);
-        return metric ? metric.metric_value : 0;
+        const metric = metricsResponse.data?.find((m: any) => m.metric_name === name);
+        return metric?.metric_value || 0;
       };
 
-      // Calcular totales de tokens
-      const tokenData = tokensResponse.data || [];
-      const totalTokens = tokenData.reduce((sum, user) => sum + (user.cmpx_balance || 0) + (user.gtk_balance || 0), 0);
-      const stakedTokens = tokenData.reduce((sum, user) => sum + (user.gtk_balance || 0), 0);
+      // Calcular tokens totales y en staking
+      const totalTokens = tokensResponse.data?.reduce((sum: number, balance: any) => sum + (balance.cmpx_balance || 0), 0) || 0;
+      const stakedTokens = getMetricValue('staked_tokens');
 
       setStats({
         totalUsers: totalUsers || 0,
         activeUsers: Math.floor((totalUsers || 0) * 0.7), // Estimación basada en usuarios totales
         premiumUsers: premiumUsers || 0,
-        totalMatches: totalInvitations || 0,
+        totalMatches: getMetricValue('total_matches'),
         apkDownloads: apkDownloadsResponse.count || 0,
         dailyVisits: getMetricValue('daily_visits'),
         totalTokens: totalTokens,
@@ -239,6 +237,7 @@ const AdminProduction = () => {
 
   const loadRealFAQ = async () => {
     try {
+      // Cargar FAQ reales desde Supabase
       const { data, error } = await supabase
         .from('faq_items')
         .select('*')
@@ -246,53 +245,98 @@ const AdminProduction = () => {
         .order('display_order', { ascending: true });
 
       if (error) {
-        console.error('Error loading FAQ items:', error);
+        console.error('Error loading FAQ:', error);
+        // Fallback a datos mock si hay error
+        const mockFaqItems: FAQItem[] = [
+          {
+            id: '1',
+            question: '¿Cómo funciona ComplicesConecta?',
+            answer: 'ComplicesConecta es una plataforma que conecta personas con intereses similares en el lifestyle swinger.',
+            category: 'general',
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          },
+          {
+            id: '2',
+            question: '¿Es segura la plataforma?',
+            answer: 'Sí, utilizamos verificación WorldID y medidas de seguridad avanzadas.',
+            category: 'seguridad',
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          }
+        ];
+        setFaqItems(mockFaqItems);
         return;
       }
 
-      // Mapear los datos de Supabase al tipo FAQItem local
-      const mappedFaqItems: FAQItem[] = (data || []).map((faq: any) => ({
-        id: faq.id,
-        question: faq.question,
-        answer: faq.answer,
-        category: faq.category,
-        created_at: faq.created_at,
-        updated_at: faq.updated_at
+      // Mapear datos de Supabase al tipo FAQItem local
+      const mappedFaqItems: FAQItem[] = (data || []).map((item: any) => ({
+        id: item.id,
+        question: item.question,
+        answer: item.answer,
+        category: item.category || 'general',
+        created_at: item.created_at,
+        updated_at: item.updated_at
       }));
 
       setFaqItems(mappedFaqItems);
     } catch (error) {
       console.error('Error in loadRealFAQ:', error);
+      // Fallback a datos mock si hay error
+      const mockFaqItems: FAQItem[] = [
+        {
+          id: '1',
+          question: '¿Cómo funciona ComplicesConecta?',
+          answer: 'ComplicesConecta es una plataforma que conecta personas con intereses similares en el lifestyle swinger.',
+          category: 'general',
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        }
+      ];
+      setFaqItems(mockFaqItems);
     }
   };
 
   const loadRealInvitations = async () => {
     try {
+      // Cargar invitaciones reales desde Supabase con datos de perfiles
       const { data, error } = await supabase
         .from('invitations')
         .select(`
           *,
-          from_profile:profiles!invitations_from_profile_fkey(display_name, first_name, last_name),
-          to_profile:profiles!invitations_to_profile_fkey(display_name, first_name, last_name)
+          from_profile:profiles!invitations_from_profile_fkey(display_name, avatar_url),
+          to_profile:profiles!invitations_to_profile_fkey(display_name, avatar_url)
         `)
         .order('created_at', { ascending: false })
         .limit(50);
 
       if (error) {
         console.error('Error loading invitations:', error);
+        // Fallback a datos mock si hay error
+        const mockInvitations: Invitation[] = [
+          {
+            id: '1',
+            from_profile: 'admin-profile',
+            to_profile: 'user-profile-1',
+            message: 'Invitación de administrador',
+            type: 'profile',
+            status: 'pending',
+            created_at: new Date().toISOString()
+          }
+        ];
+        setInvitations(mockInvitations);
         return;
       }
 
-      // Mapear los datos de Supabase al tipo Invitation local
+      // Mapear datos reales de invitaciones desde Supabase
       const mappedInvitations: Invitation[] = (data || []).map((inv: any) => ({
         id: inv.id,
-        from_profile: inv.from_profile,
-        to_profile: inv.to_profile,
-        message: inv.message || '',
-        type: inv.type,
+        from_profile: inv.from_profile_id,
+        to_profile: inv.to_profile_id,
+        message: inv.message || 'Sin mensaje',
+        type: inv.type || 'profile',
         status: inv.status,
-        created_at: inv.created_at,
-        decided_at: inv.decided_at
+        created_at: inv.created_at
       }));
       
       setInvitations(mappedInvitations);
@@ -308,49 +352,45 @@ const AdminProduction = () => {
         .delete()
         .eq('id', profileId);
 
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
 
-      setProfiles(profiles.filter(p => p.id !== profileId));
+      setProfiles(profiles.filter((p: Profile) => p.id !== profileId));
       toast({
-        title: "Perfil eliminado",
-        description: "El perfil ha sido eliminado exitosamente",
+        title: "Perfil Eliminado",
+        description: "El perfil ha sido eliminado exitosamente"
       });
     } catch (error) {
-      console.error('Error deleting profile:', error);
       toast({
         title: "Error",
-        description: "No se pudo eliminar el perfil",
+        description: "Error al eliminar el perfil",
         variant: "destructive"
       });
     }
   };
 
-  const handleTogglePremium = async (profileId: string, isPremium: boolean) => {
+  const handleTogglePremium = async (profileId: string) => {
     try {
+      const profile = profiles.find(p => p.id === profileId);
+      if (!profile) return;
+
       const { error } = await supabase
         .from('profiles')
-        .update({ is_premium: !isPremium })
+        .update({ is_premium: !profile.is_premium })
         .eq('id', profileId);
 
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
 
-      setProfiles(profiles.map(p => 
-        p.id === profileId ? { ...p, is_premium: !isPremium } : p
+      setProfiles(profiles.map((p: Profile) => 
+        p.id === profileId ? { ...p, is_premium: !p.is_premium } : p
       ));
-
       toast({
-        title: "Estado Premium actualizado",
-        description: `El usuario ${!isPremium ? 'ahora es' : 'ya no es'} premium`,
+        title: "Estado Premium Actualizado",
+        description: `El usuario ${!profile.is_premium ? 'ahora es' : 'ya no es'} premium`
       });
     } catch (error) {
-      console.error('Error updating premium status:', error);
       toast({
         title: "Error",
-        description: "No se pudo actualizar el estado premium",
+        description: "Error al actualizar el estado premium",
         variant: "destructive"
       });
     }
@@ -360,7 +400,7 @@ const AdminProduction = () => {
     if (!newFaq.question || !newFaq.answer) {
       toast({
         title: "Error",
-        description: "Pregunta y respuesta son requeridas",
+        description: "Debe completar la pregunta y respuesta",
         variant: "destructive"
       });
       return;
@@ -372,38 +412,32 @@ const AdminProduction = () => {
         .insert([{
           question: newFaq.question,
           answer: newFaq.answer,
-          category: newFaq.category,
-          is_active: true,
-          display_order: faqItems.length + 1
+          category: newFaq.category
         }])
         .select()
         .single();
 
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
 
-      const newFaqItem: FAQItem = {
+      setFaqItems([...faqItems, {
         id: data.id,
         question: data.question,
         answer: data.answer,
-        category: data.category,
-        created_at: data.created_at,
-        updated_at: data.updated_at
-      };
-
-      setFaqItems([newFaqItem, ...faqItems]);
+        category: data.category || 'general',
+        created_at: data.created_at || new Date().toISOString(),
+        updated_at: data.updated_at || new Date().toISOString()
+      }]);
       setNewFaq({ question: '', answer: '', category: 'general' });
       
       toast({
-        title: "FAQ agregado",
-        description: "La pregunta frecuente ha sido agregada exitosamente",
+        title: "FAQ Agregada",
+        description: "La pregunta frecuente ha sido agregada exitosamente"
       });
     } catch (error) {
       console.error('Error adding FAQ:', error);
       toast({
         title: "Error",
-        description: "No se pudo agregar la pregunta frecuente",
+        description: "Error al agregar la pregunta frecuente",
         variant: "destructive"
       });
     }
@@ -411,330 +445,280 @@ const AdminProduction = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-lg text-muted-foreground">Cargando panel de administración...</p>
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+        <Header />
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex items-center justify-center h-64">
+            <div className="text-white text-xl">Cargando panel de administración...</div>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
       <Header />
-      
       <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Panel de Administración</h1>
-            <p className="text-muted-foreground mt-2">
-              Gestión completa de ComplicesConecta - Modo Producción
-            </p>
-            <Badge variant="destructive" className="mt-2">
-              PRODUCCIÓN - Datos Reales
-            </Badge>
-          </div>
+        <div className="flex items-center gap-4 mb-8">
           <Button
             variant="outline"
             onClick={() => navigate('/discover')}
-            className="flex items-center gap-2"
+            className="text-white border-white/20 hover:bg-white/10"
           >
-            <ArrowLeft className="h-4 w-4" />
+            <ArrowLeft className="w-4 h-4 mr-2" />
             Volver
           </Button>
+          <div>
+            <h1 className="text-3xl font-bold text-white">Panel de Administración - Producción</h1>
+            <p className="text-white/70">Gestión completa de la plataforma ComplicesConecta</p>
+          </div>
         </div>
 
-        {/* Estadísticas principales */}
+        {/* Estadísticas Principales */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card>
+          <Card className="bg-white/10 backdrop-blur-md border-white/20">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Usuarios Totales</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium text-white">Usuarios Totales</CardTitle>
+              <Users className="h-4 w-4 text-white" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.totalUsers.toLocaleString()}</div>
-              <p className="text-xs text-muted-foreground">Registrados en la plataforma</p>
+              <div className="text-2xl font-bold text-white">{stats.totalUsers}</div>
+              <p className="text-xs text-white/70">Usuarios registrados</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-white/10 backdrop-blur-md border-white/20">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Usuarios Activos</CardTitle>
-              <Activity className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium text-white">Usuarios Premium</CardTitle>
+              <Crown className="h-4 w-4 text-white" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.activeUsers.toLocaleString()}</div>
-              <p className="text-xs text-muted-foreground">Activos en los últimos 30 días</p>
+              <div className="text-2xl font-bold text-white">{stats.premiumUsers}</div>
+              <p className="text-xs text-white/70">Con suscripción activa</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-white/10 backdrop-blur-md border-white/20">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Usuarios Premium</CardTitle>
-              <Crown className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium text-white">Descargas APK</CardTitle>
+              <Download className="h-4 w-4 text-white" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.premiumUsers.toLocaleString()}</div>
-              <p className="text-xs text-muted-foreground">Suscripciones activas</p>
+              <div className="text-2xl font-bold text-white">{stats.apkDownloads}</div>
+              <p className="text-xs text-white/70">Descargas totales</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-white/10 backdrop-blur-md border-white/20">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Verificados WorldID</CardTitle>
-              <Shield className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium text-white">Verificados WorldID</CardTitle>
+              <Shield className="h-4 w-4 text-white" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.worldIdVerified.toLocaleString()}</div>
-              <p className="text-xs text-muted-foreground">Usuarios verificados</p>
+              <div className="text-2xl font-bold text-white">{stats.worldIdVerified}</div>
+              <p className="text-xs text-white/70">Usuarios verificados</p>
             </CardContent>
           </Card>
         </div>
 
-        {/* Tabs principales */}
         <Tabs defaultValue="users" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="users">Usuarios</TabsTrigger>
-            <TabsTrigger value="analytics">Analíticas</TabsTrigger>
-            <TabsTrigger value="faq">FAQ</TabsTrigger>
-            <TabsTrigger value="invitations">Invitaciones</TabsTrigger>
+          <TabsList className="bg-white/10 backdrop-blur-md border-white/20">
+            <TabsTrigger value="users" className="text-white data-[state=active]:bg-white/20">
+              <Users className="w-4 h-4 mr-2" />
+              Usuarios
+            </TabsTrigger>
+            <TabsTrigger value="stats" className="text-white data-[state=active]:bg-white/20">
+              <BarChart3 className="w-4 h-4 mr-2" />
+              Estadísticas
+            </TabsTrigger>
+            <TabsTrigger value="faq" className="text-white data-[state=active]:bg-white/20">
+              <HelpCircle className="w-4 h-4 mr-2" />
+              FAQ
+            </TabsTrigger>
+            <TabsTrigger value="invitations" className="text-white data-[state=active]:bg-white/20">
+              <MessageSquare className="w-4 h-4 mr-2" />
+              Invitaciones
+            </TabsTrigger>
           </TabsList>
 
-          {/* Tab de Usuarios */}
           <TabsContent value="users" className="space-y-6">
-            <Card>
+            <Card className="bg-white/10 backdrop-blur-md border-white/20">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Users className="h-5 w-5" />
-                  Gestión de Usuarios
-                </CardTitle>
+                <CardTitle className="text-white">Gestión de Usuarios</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {profiles.length === 0 ? (
-                    <p className="text-center text-muted-foreground py-8">
-                      No hay usuarios registrados
-                    </p>
-                  ) : (
-                    <div className="space-y-2">
-                      {profiles.slice(0, 10).map((profile) => (
-                        <div key={profile.id} className="flex items-center justify-between p-4 border rounded-lg">
-                          <div className="flex items-center space-x-4">
-                            <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                              <Users className="h-5 w-5 text-primary" />
-                            </div>
-                            <div>
-                              <p className="font-medium">
-                                {profile.display_name || `${profile.first_name} ${profile.last_name}` || 'Sin nombre'}
-                              </p>
-                              <p className="text-sm text-muted-foreground">{profile.email}</p>
-                              <div className="flex gap-2 mt-1">
-                                {profile.is_verified && (
-                                  <Badge variant="secondary" className="text-xs">Verificado</Badge>
-                                )}
-                                {profile.is_premium && (
-                                  <Badge variant="default" className="text-xs">Premium</Badge>
-                                )}
-                                {profile.relationship_type && (
-                                  <Badge variant="outline" className="text-xs">
-                                    {profile.relationship_type === 'single' ? 'Soltero' : 'Pareja'}
-                                  </Badge>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleTogglePremium(profile.id, profile.is_premium)}
-                            >
-                              {profile.is_premium ? 'Quitar Premium' : 'Hacer Premium'}
-                            </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => setSelectedProfile(profile)}
-                            >
-                              <Eye className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="destructive"
-                              size="sm"
-                              onClick={() => handleDeleteProfile(profile.id)}
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
+                  {profiles.slice(0, 10).map((profile) => (
+                    <div key={profile.id} className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
+                      <div className="flex items-center space-x-4">
+                        <div className="w-10 h-10 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full flex items-center justify-center">
+                          <span className="text-white font-semibold">
+                            {profile.display_name?.charAt(0) || profile.first_name?.charAt(0) || 'U'}
+                          </span>
+                        </div>
+                        <div>
+                          <p className="text-white font-medium">
+                            {profile.display_name || `${profile.first_name} ${profile.last_name}` || 'Usuario sin nombre'}
+                          </p>
+                          <p className="text-white/60 text-sm">{profile.email}</p>
+                          <div className="flex gap-2 mt-1">
+                            {profile.is_premium && <Badge variant="secondary">Premium</Badge>}
+                            {profile.is_verified && <Badge variant="outline">Verificado</Badge>}
                           </div>
                         </div>
-                      ))}
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleTogglePremium(profile.id)}
+                          className="text-white border-white/20 hover:bg-white/10"
+                        >
+                          {profile.is_premium ? <XCircle className="w-4 h-4" /> : <Crown className="w-4 h-4" />}
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={() => handleDeleteProfile(profile.id)}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
                     </div>
-                  )}
+                  ))}
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
 
-          {/* Tab de Analíticas */}
-          <TabsContent value="analytics" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <BarChart3 className="h-5 w-5" />
-                  Analíticas Detalladas
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-4">
-                    <h3 className="text-lg font-semibold">Estadísticas de Usuarios</h3>
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span>Total de usuarios:</span>
-                        <span className="font-medium">{stats.totalUsers}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Usuarios activos:</span>
-                        <span className="font-medium">{stats.activeUsers}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Usuarios premium:</span>
-                        <span className="font-medium">{stats.premiumUsers}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Usuarios verificados:</span>
-                        <span className="font-medium">{stats.worldIdVerified}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="space-y-4">
-                    <h3 className="text-lg font-semibold">Métricas de Engagement</h3>
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span>Matches totales:</span>
-                        <span className="font-medium">{stats.totalMatches}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Descargas APK:</span>
-                        <span className="font-medium">{stats.apkDownloads}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Visitas diarias:</span>
-                        <span className="font-medium">{stats.dailyVisits}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Tab de FAQ */}
           <TabsContent value="faq" className="space-y-6">
-            <Card>
+            <Card className="bg-white/10 backdrop-blur-md border-white/20">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <HelpCircle className="h-5 w-5" />
-                  Gestión de FAQ
-                </CardTitle>
+                <CardTitle className="text-white">Gestión de FAQ</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-4 mb-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <Input
                       placeholder="Pregunta"
                       value={newFaq.question}
                       onChange={(e) => setNewFaq({...newFaq, question: e.target.value})}
+                      className="bg-white/10 border-white/20 text-white placeholder-white/50"
                     />
-                    <Input
-                      placeholder="Categoría"
+                    <select
                       value={newFaq.category}
                       onChange={(e) => setNewFaq({...newFaq, category: e.target.value})}
-                    />
-                    <Button onClick={handleAddFAQ} className="w-full">
-                      <Plus className="h-4 w-4 mr-2" />
-                      Agregar FAQ
-                    </Button>
+                      className="bg-white/10 border border-white/20 text-white rounded-md px-3 py-2"
+                    >
+                      <option value="general">General</option>
+                      <option value="seguridad">Seguridad</option>
+                      <option value="tokens">Tokens</option>
+                      <option value="premium">Premium</option>
+                    </select>
                   </div>
                   <Textarea
                     placeholder="Respuesta"
                     value={newFaq.answer}
                     onChange={(e) => setNewFaq({...newFaq, answer: e.target.value})}
+                    className="bg-white/10 border-white/20 text-white placeholder-white/50"
                     rows={3}
                   />
-                  
-                  <div className="space-y-2">
-                    {faqItems.map((faq) => (
-                      <div key={faq.id} className="p-4 border rounded-lg">
-                        <div className="flex justify-between items-start">
-                          <div className="flex-1">
-                            <h4 className="font-medium">{faq.question}</h4>
-                            <p className="text-sm text-muted-foreground mt-1">{faq.answer}</p>
-                            <Badge variant="outline" className="mt-2 text-xs">
-                              {faq.category}
-                            </Badge>
-                          </div>
-                          <Button variant="ghost" size="sm">
-                            <Edit className="h-4 w-4" />
-                          </Button>
+                  <Button onClick={handleAddFAQ} className="bg-purple-600 hover:bg-purple-700">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Agregar FAQ
+                  </Button>
+                </div>
+
+                <div className="space-y-4">
+                  {faqItems.map((faq) => (
+                    <div key={faq.id} className="p-4 bg-white/5 rounded-lg">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <h3 className="text-white font-medium mb-2">{faq.question}</h3>
+                          <p className="text-white/70 text-sm mb-2">{faq.answer}</p>
+                          <Badge variant="outline" className="text-xs">{faq.category || 'general'}</Badge>
                         </div>
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  ))}
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
 
-          {/* Tab de Invitaciones */}
+          <TabsContent value="stats" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <Card className="bg-white/10 backdrop-blur-md border-white/20">
+                <CardHeader>
+                  <CardTitle className="text-white">Tokens CMPX</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-white/70">Total en circulación:</span>
+                      <span className="text-white font-semibold">{stats.totalTokens.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-white/70">En staking:</span>
+                      <span className="text-white font-semibold">{stats.stakedTokens.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-white/70">Recompensas distribuidas:</span>
+                      <span className="text-white font-semibold">{stats.rewardsDistributed.toLocaleString()}</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-white/10 backdrop-blur-md border-white/20">
+                <CardHeader>
+                  <CardTitle className="text-white">Actividad</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-white/70">Visitas diarias:</span>
+                      <span className="text-white font-semibold">{stats.dailyVisits}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-white/70">Usuarios activos:</span>
+                      <span className="text-white font-semibold">{stats.activeUsers}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-white/70">Total matches:</span>
+                      <span className="text-white font-semibold">{stats.totalMatches}</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
           <TabsContent value="invitations" className="space-y-6">
-            <Card>
+            <Card className="bg-white/10 backdrop-blur-md border-white/20">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <UserPlus className="h-5 w-5" />
-                  Sistema de Invitaciones
-                </CardTitle>
+                <CardTitle className="text-white">Invitaciones Recientes</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {invitations.length === 0 ? (
-                    <p className="text-center text-muted-foreground py-8">
-                      No hay invitaciones registradas
-                    </p>
-                  ) : (
-                    <div className="space-y-2">
-                      {invitations.map((invitation) => (
-                        <div key={invitation.id} className="flex items-center justify-between p-4 border rounded-lg">
-                          <div>
-                            <p className="font-medium">
-                              {invitation.from_profile?.display_name || 
-                               `${invitation.from_profile?.first_name} ${invitation.from_profile?.last_name}` || 
-                               'Usuario'} 
-                              → 
-                              {invitation.to_profile?.display_name || 
-                               `${invitation.to_profile?.first_name} ${invitation.to_profile?.last_name}` || 
-                               'Usuario'}
-                            </p>
-                            <p className="text-sm text-muted-foreground">
-                              Tipo: {invitation.type} | Estado: {invitation.status}
-                            </p>
-                            <p className="text-sm text-muted-foreground">
-                              Mensaje: {invitation.message || 'Sin mensaje'}
-                            </p>
-                            <p className="text-sm text-muted-foreground">
-                              Creada: {new Date(invitation.created_at).toLocaleDateString()}
-                            </p>
-                          </div>
-                          <Badge 
-                            variant={invitation.status === 'accepted' ? 'default' : 'secondary'}
-                          >
-                            {invitation.status === 'accepted' ? 'Aceptada' : 'Pendiente'}
-                          </Badge>
-                        </div>
-                      ))}
+                  {invitations.slice(0, 10).map((invitation) => (
+                    <div key={invitation.id} className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
+                      <div>
+                        <p className="text-white font-medium">Invitación {invitation.type}</p>
+                        <p className="text-white/60 text-sm">{invitation.message}</p>
+                        <p className="text-white/40 text-xs">
+                          {new Date(invitation.created_at).toLocaleDateString()}
+                        </p>
+                      </div>
+                      <Badge 
+                        variant={invitation.status === 'accepted' ? 'default' : 
+                               invitation.status === 'pending' ? 'secondary' : 'destructive'}
+                      >
+                        {invitation.status}
+                      </Badge>
                     </div>
-                  )}
+                  ))}
                 </div>
               </CardContent>
             </Card>

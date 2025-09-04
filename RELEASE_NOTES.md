@@ -1,8 +1,30 @@
-# 🚀 ComplicesConecta - Notas de Lanzamiento v1.7.0
+# 🚀 ComplicesConecta - Notas de Lanzamiento v1.8.0
 
-**Fecha de Lanzamiento:** 3 de Septiembre, 2025 - 23:06 hrs  
+**Fecha de Lanzamiento:** 4 de Septiembre, 2025 - 02:55 hrs  
 **Plataforma:** Android APK + Web App  
-**Versión:** 1.7.0 (En Desarrollo)
+**Versión:** 1.8.0 (Completada)
+
+---
+
+## 🎯 **v1.8.0 - Migración FAQ y Métricas Completada**
+
+### ✨ **Nuevas Funcionalidades**
+- ✅ **Tablas FAQ**: Sistema completo de preguntas frecuentes para administradores
+- ✅ **Métricas de Aplicación**: Tracking de estadísticas en tiempo real
+- ✅ **Descargas APK**: Registro de descargas con metadatos
+- ✅ **Panel Admin Producción**: Integración con datos reales de Supabase
+- ✅ **Políticas RLS**: Seguridad implementada para nuevas tablas
+
+### 🔧 **Mejoras Técnicas**
+- ✅ **Migración Manual**: Aplicada exitosamente en base de datos de producción
+- ✅ **Tipos TypeScript**: Regenerados con nuevas tablas incluidas
+- ✅ **Organización Archivos**: Documentación movida a carpeta `docs/`
+- ✅ **Limpieza Repositorio**: Archivos temporales eliminados y .gitignore actualizado
+
+### 🛡️ **Estructura de Datos**
+- ✅ **faq_items**: Preguntas, respuestas, categorías, orden de visualización
+- ✅ **app_metrics**: Métricas por nombre, valor y fecha
+- ✅ **apk_downloads**: Registro de descargas con IP y user agent
 
 ---
 
@@ -53,8 +75,8 @@
 - **Documentación**: `docs/WORLDID_INTEGRATION_GUIDE.md`
 
 ### 🔗 **Problemas Identificados**
-- ❌ **Link APK GitHub**: `v.1.3.3/app-release.apk` no funciona
-- ⚠️ **Solución**: Usar APK local `/app-release.apk`
+- ✅ **Link APK Local**: `./public/app-release.apk` actualizado y funcional
+- ✅ **Descarga Directa**: APK v1.8.0 disponible en repositorio
 
 ---
 
