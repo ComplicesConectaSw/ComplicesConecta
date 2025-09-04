@@ -348,7 +348,7 @@ Fecha: ${new Date().toLocaleString()}
                     <HelpCircle className="h-6 w-6" />
                     🐛 Reporte de Errores Beta
                   </CardTitle>
-                  <p className="text-muted-foreground">
+                  <p className="text-white/90">
                     Ayúdanos a mejorar reportando errores, bugs o problemas que encuentres
                   </p>
                 </CardHeader>
@@ -485,7 +485,7 @@ Fecha: ${new Date().toLocaleString()}
                     <MessageSquare className="h-6 w-6 text-accent" />
                     💬 Comentarios Generales
                   </CardTitle>
-                  <p className="text-muted-foreground">
+                  <p className="text-white/90">
                     Tu opinión nos ayuda a crear la mejor experiencia swinger
                   </p>
                 </CardHeader>
