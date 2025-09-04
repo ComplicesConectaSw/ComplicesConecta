@@ -56,6 +56,10 @@ interface AppStats {
   totalMatches: number;
   apkDownloads: number;
   dailyVisits: number;
+  totalTokens: number;
+  stakedTokens: number;
+  worldIdVerified: number;
+  rewardsDistributed: number;
 }
 
 interface FAQItem {
@@ -79,7 +83,11 @@ const Admin = () => {
     premiumUsers: 0,
     totalMatches: 0,
     apkDownloads: 0,
-    dailyVisits: 0
+    dailyVisits: 0,
+    totalTokens: 0,
+    stakedTokens: 0,
+    worldIdVerified: 0,
+    rewardsDistributed: 0
   });
   const [faqItems, setFaqItems] = useState<FAQItem[]>([]);
   const [invitations, setInvitations] = useState<Invitation[]>([]);
@@ -170,7 +178,11 @@ const Admin = () => {
         premiumUsers: 89,
         totalMatches: 2156,
         apkDownloads: 3421,
-        dailyVisits: 567
+        dailyVisits: 567,
+        totalTokens: 125000,
+        stakedTokens: 45000,
+        worldIdVerified: 89,
+        rewardsDistributed: 12500
       };
       setStats(mockStats);
     } catch (error) {
@@ -495,6 +507,54 @@ const Admin = () => {
             </div>
           </Card>
 
+          {/* Tokens CMPX */}
+          <Card className="p-6 bg-gradient-to-br from-orange-500/10 to-orange-600/10 border-orange-500/20">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-white">Tokens CMPX</p>
+                <p className="text-3xl font-bold text-orange-600">{stats.totalTokens || 125000}</p>
+                <p className="text-xs text-orange-300">En circulación</p>
+              </div>
+              <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold text-sm">₡</div>
+            </div>
+          </Card>
+
+          {/* Tokens en Staking */}
+          <Card className="p-6 bg-gradient-to-br from-cyan-500/10 to-cyan-600/10 border-cyan-500/20">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-white">En Staking</p>
+                <p className="text-3xl font-bold text-cyan-600">{stats.stakedTokens || 45000}</p>
+                <p className="text-xs text-cyan-300">GTK bloqueados</p>
+              </div>
+              <div className="w-8 h-8 bg-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-sm">🔒</div>
+            </div>
+          </Card>
+
+          {/* World ID Verificados */}
+          <Card className="p-6 bg-gradient-to-br from-emerald-500/10 to-emerald-600/10 border-emerald-500/20">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-white">World ID</p>
+                <p className="text-3xl font-bold text-emerald-600">{stats.worldIdVerified || 89}</p>
+                <p className="text-xs text-emerald-300">Verificados</p>
+              </div>
+              <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center text-white font-bold text-sm">🌍</div>
+            </div>
+          </Card>
+
+          {/* Recompensas Distribuidas */}
+          <Card className="p-6 bg-gradient-to-br from-pink-500/10 to-pink-600/10 border-pink-500/20">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-white">Recompensas</p>
+                <p className="text-3xl font-bold text-pink-600">{stats.rewardsDistributed || 12500}</p>
+                <p className="text-xs text-pink-300">CMPX distribuidos</p>
+              </div>
+              <div className="w-8 h-8 bg-pink-500 rounded-full flex items-center justify-center text-white font-bold text-sm">🎁</div>
+            </div>
+          </Card>
+
           <Card className="bg-card/80 backdrop-blur-sm border-primary/10 cursor-pointer hover:bg-card/90 transition-colors" onClick={() => {
             const link = document.createElement('a');
             link.href = '/app-release.apk';
@@ -530,10 +590,14 @@ const Admin = () => {
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="profiles" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6 bg-card/80 backdrop-blur-sm">
+          <TabsList className="grid w-full grid-cols-7 bg-card/80 backdrop-blur-sm">
             <TabsTrigger value="profiles" className="flex items-center gap-2">
               <Users className="w-4 h-4" />
               Perfiles
+            </TabsTrigger>
+            <TabsTrigger value="tokens" className="flex items-center gap-2">
+              <div className="w-4 h-4 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold text-xs">₡</div>
+              Tokens
             </TabsTrigger>
             <TabsTrigger value="invitations" className="flex items-center gap-2">
               <UserPlus className="w-4 h-4" />
@@ -556,6 +620,138 @@ const Admin = () => {
               Chat
             </TabsTrigger>
           </TabsList>
+
+          {/* Tokens Management */}
+          <TabsContent value="tokens">
+            <div className="space-y-6">
+              <Card className="bg-card/80 backdrop-blur-sm border-primary/10">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <div className="w-5 h-5 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold text-xs">₡</div>
+                    Métricas del Sistema de Tokens
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {/* CMPX Tokens */}
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-semibold text-orange-400">Tokens CMPX</h3>
+                      <div className="space-y-2">
+                        <div className="flex justify-between">
+                          <span>Total en circulación:</span>
+                          <span className="font-bold text-orange-400">{stats.totalTokens.toLocaleString()}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Distribuidos hoy:</span>
+                          <span className="font-bold">2,450</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Por referidos:</span>
+                          <span className="font-bold text-green-400">8,750</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Por verificación:</span>
+                          <span className="font-bold text-blue-400">3,750</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* GTK Staking */}
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-semibold text-cyan-400">GTK Staking</h3>
+                      <div className="space-y-2">
+                        <div className="flex justify-between">
+                          <span>Total bloqueado:</span>
+                          <span className="font-bold text-cyan-400">{stats.stakedTokens.toLocaleString()}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>APY promedio:</span>
+                          <span className="font-bold text-green-400">12.5%</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Usuarios staking:</span>
+                          <span className="font-bold">156</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Recompensas pagadas:</span>
+                          <span className="font-bold text-purple-400">1,250</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* World ID */}
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-semibold text-emerald-400">World ID</h3>
+                      <div className="space-y-2">
+                        <div className="flex justify-between">
+                          <span>Verificados:</span>
+                          <span className="font-bold text-emerald-400">{stats.worldIdVerified}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Recompensa por verificación:</span>
+                          <span className="font-bold text-orange-400">100 CMPX</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Tasa de verificación:</span>
+                          <span className="font-bold text-green-400">7.1%</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Verificaciones hoy:</span>
+                          <span className="font-bold">12</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Distribución */}
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-semibold text-pink-400">Distribución</h3>
+                      <div className="space-y-2">
+                        <div className="flex justify-between">
+                          <span>Total distribuido:</span>
+                          <span className="font-bold text-pink-400">{stats.rewardsDistributed.toLocaleString()}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>% del supply:</span>
+                          <span className="font-bold text-blue-400">10%</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Usuarios con tokens:</span>
+                          <span className="font-bold text-green-400">892</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Promedio por usuario:</span>
+                          <span className="font-bold">140 CMPX</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Token Distribution Chart Placeholder */}
+                  <div className="mt-8 p-6 border border-primary/10 rounded-lg bg-background/30">
+                    <h3 className="text-lg font-semibold mb-4">Distribución de Tokens por Categoría</h3>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      <div className="text-center p-4 bg-orange-500/10 rounded-lg border border-orange-500/20">
+                        <div className="text-2xl font-bold text-orange-400">40%</div>
+                        <div className="text-sm text-orange-300">Referidos</div>
+                      </div>
+                      <div className="text-center p-4 bg-emerald-500/10 rounded-lg border border-emerald-500/20">
+                        <div className="text-2xl font-bold text-emerald-400">30%</div>
+                        <div className="text-sm text-emerald-300">World ID</div>
+                      </div>
+                      <div className="text-center p-4 bg-purple-500/10 rounded-lg border border-purple-500/20">
+                        <div className="text-2xl font-bold text-purple-400">20%</div>
+                        <div className="text-sm text-purple-300">Premium</div>
+                      </div>
+                      <div className="text-center p-4 bg-blue-500/10 rounded-lg border border-blue-500/20">
+                        <div className="text-2xl font-bold text-blue-400">10%</div>
+                        <div className="text-sm text-blue-300">Eventos</div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
 
           {/* Profiles Management */}
           <TabsContent value="profiles">

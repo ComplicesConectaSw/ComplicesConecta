@@ -437,10 +437,6 @@ const Auth = () => {
                 <Button type="submit" className="w-full" disabled={isLoading}>
                   {isLoading ? "Iniciando sesión..." : "Iniciar Sesión"}
                 </Button>
-                <div className="text-xs text-center text-white pt-2">
-                  <p className="font-bold">MODO DEMO ACTIVADO</p>
-                  <p>Use: <code className="bg-muted p-1 rounded-sm">single@outlook.es</code> (Single), <code className="bg-muted p-1 rounded-sm">pareja@outlook.es</code> (Pareja), o <code className="bg-muted p-1 rounded-sm">complicesconectasw@outlook.es</code> (Admin).</p>
-                </div>
               </form>
             </TabsContent>
             
