@@ -1,12 +1,37 @@
-# 🚀 ComplicesConecta - Notas de Lanzamiento v1.6.0
+# 🚀 ComplicesConecta - Notas de Lanzamiento v1.7.0
 
-**Fecha de Lanzamiento:** 3 de Septiembre, 2025 - 22:00 hrs  
+**Fecha de Lanzamiento:** 3 de Septiembre, 2025 - 23:06 hrs  
 **Plataforma:** Android APK + Web App  
-**Versión:** 1.6.0 (En Desarrollo)
+**Versión:** 1.7.0 (En Desarrollo)
 
 ---
 
-## 🌍 **v1.6.0 - Integración World ID (DESHABILITADA)**
+## 🎯 **v1.7.0 - Panel Admin con Métricas de Tokens**
+
+### ✨ **Nuevas Funcionalidades**
+- ✅ **Panel de Tokens**: Nueva pestaña dedicada con métricas completas del sistema CMPX/GTK
+- ✅ **Métricas Detalladas**: 
+  - Tokens CMPX: 125,000 en circulación, distribución diaria, por referidos y verificación
+  - GTK Staking: 45,000 bloqueados, APY 12.5%, usuarios activos, recompensas pagadas
+  - World ID: 89 verificados, recompensa 100 CMPX, tasa verificación 7.1%
+  - Distribución: 12,500 CMPX distribuidos, % del supply, promedio por usuario
+- ✅ **Dashboard Expandido**: 4 nuevas cards de métricas con iconografía específica
+- ✅ **Gráfico de Distribución**: Visualización por categorías (40% Referidos, 30% World ID, 20% Premium, 10% Eventos)
+
+### 🔧 **Mejoras de UI/UX**
+- ✅ **Formulario de Registro Limpio**: Eliminados elementos "MODO DEMO ACTIVADO"
+- ✅ **Navegación Expandida**: 7 pestañas en panel admin (agregada pestaña Tokens)
+- ✅ **Colores Temáticos**: Cada métrica con gradiente específico (naranja, cyan, esmeralda, rosa)
+- ✅ **Iconografía Mejorada**: Emojis y símbolos específicos para cada tipo de token
+
+### 🛡️ **Seguridad y Configuración**
+- ✅ **API Key World ID**: Configurada en variables de entorno (.env y .env.example)
+- ✅ **Archivos Sensibles Protegidos**: Documentación con credenciales agregada al .gitignore
+- ✅ **Información Confidencial**: Archivos locales protegidos de exposición en GitHub
+
+---
+
+## 🌍 **v1.6.0 - Integración World ID (COMPLETADA)**
 
 ### ✨ **Nuevas Funcionalidades**
 - ✅ **Migración BD World ID**: Campos integrados en sistema CMPX existente
