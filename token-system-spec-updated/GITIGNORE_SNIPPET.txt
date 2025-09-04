@@ -1,0 +1,2 @@
+# No subir documentación/tokenomics internos
+/token-system-spec/
