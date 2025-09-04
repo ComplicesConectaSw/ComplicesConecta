@@ -73,3 +73,14 @@ supabase/functions/_utils/
 # Local documentation and scripts (no subir a GitHub)
 docs/
 scripts/
+
+# Token System & World ID Integration (SENSITIVE - no subir a GitHub)
+worldid-integration/
+token-system-spec-updated/
+**/token-system-spec/
+**/DEV_README.md
+**/INTEGRATION_PROMPT.md
+**/referrals.sql
+**/GTKToken.sol
+**/StakingGTK.sol
+GITIGNORE_SNIPPET.txt

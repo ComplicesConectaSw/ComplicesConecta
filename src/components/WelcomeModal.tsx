@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { X, Heart, Sparkles, Users, Gift, Star, Zap, HelpCircle } from "lucide-react";
+import { X, Heart, Sparkles, Users, Gift, Star, Zap, HelpCircle, Globe, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -45,6 +45,14 @@ export const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
       description: "Chat ilimitado, galería privada, eventos exclusivos y más. Todo disponible usando tus tokens CMPX sin costo adicional.",
       color: "text-purple-500",
       bgColor: "bg-purple-500/10"
+    },
+    {
+      icon: Globe,
+      title: "🌍 Próximamente: World ID",
+      subtitle: "Verificación de identidad con Worldcoin",
+      description: "Pronto podrás verificar tu identidad humana con World ID y ganar 100 CMPX adicionales. Integración con Worldchain para máxima seguridad y privacidad.",
+      color: "text-blue-500",
+      bgColor: "bg-blue-500/10"
     },
     {
       icon: Users,
@@ -147,6 +155,13 @@ export const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
               <div className="mb-4">
                 <Badge variant="secondary" className="bg-purple-500/20 text-purple-500 border-purple-500/30 animate-bounce">
                   ⚡ PREMIUM GRATIS
+                </Badge>
+              </div>
+            )}
+            {currentStep === 4 && (
+              <div className="mb-4">
+                <Badge variant="secondary" className="bg-blue-500/20 text-blue-500 border-blue-500/30 animate-bounce">
+                  🌍 WORLD ID PRÓXIMAMENTE
                 </Badge>
               </div>
             )}

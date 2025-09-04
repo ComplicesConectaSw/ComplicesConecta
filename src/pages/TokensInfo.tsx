@@ -18,7 +18,8 @@ import {
   Users,
   Calendar,
   FileText,
-  Scale
+  Scale,
+  Globe
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { TOKEN_CONFIG } from '@/lib/tokens';
@@ -64,6 +65,16 @@ const faqData: FAQItem[] = [
     question: "¿Puedo transferir mis tokens?",
     answer: "Durante la beta, los CMPX son internos y no transferibles. Cuando se activen los GTK en blockchain, podrás transferirlos libremente.",
     category: "security"
+  },
+  {
+    question: "¿Qué es World ID y cómo funciona?",
+    answer: "World ID es un sistema de verificación de identidad humana desarrollado por Worldcoin. Próximamente podrás verificar tu identidad y ganar 100 CMPX adicionales. Utiliza tecnología blockchain para garantizar privacidad y seguridad.",
+    category: "security"
+  },
+  {
+    question: "¿Cuándo estará disponible World ID?",
+    answer: "La integración con World ID está en desarrollo y se activará próximamente. Te notificaremos cuando esté disponible para que puedas verificar tu identidad y obtener las recompensas.",
+    category: "general"
   },
   {
     question: "¿Qué pasa si encuentro un error?",
@@ -204,7 +215,7 @@ export default function TokensInfo() {
         </Card>
 
         {/* Token Types */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-slide-up">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-slide-up">
           <Card className="bg-gradient-to-r from-blue-900/80 to-purple-900/80 backdrop-blur-sm border border-white/10">
             <CardHeader>
               <CardTitle className="text-white flex items-center gap-2">
@@ -230,6 +241,36 @@ export default function TokensInfo() {
                 <div className="flex items-center gap-2 text-green-400">
                   <Gift className="h-4 w-4" />
                   <span className="text-sm">Gana por referidos</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gradient-to-r from-cyan-900/80 to-blue-900/80 backdrop-blur-sm border border-white/10">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center gap-2">
+                <Globe className="h-6 w-6 text-cyan-400" />
+                World ID
+              </CardTitle>
+              <Badge variant="outline" className="w-fit border-cyan-400 text-cyan-400">Próximamente</Badge>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-white/80">
+                Verificación de identidad humana con Worldcoin. Gana 100 CMPX 
+                adicionales verificando tu identidad de forma segura y privada.
+              </p>
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 text-cyan-400">
+                  <Shield className="h-4 w-4" />
+                  <span className="text-sm">Verificación humana</span>
+                </div>
+                <div className="flex items-center gap-2 text-cyan-400">
+                  <Gift className="h-4 w-4" />
+                  <span className="text-sm">100 CMPX bonus</span>
+                </div>
+                <div className="flex items-center gap-2 text-cyan-400">
+                  <Globe className="h-4 w-4" />
+                  <span className="text-sm">Worldchain integration</span>
                 </div>
               </div>
             </CardContent>
