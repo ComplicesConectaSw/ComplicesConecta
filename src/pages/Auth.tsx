@@ -226,18 +226,7 @@ const Auth = () => {
         return;
       }
 
-      // Si es credencial demo pero el modo demo está deshabilitado
-      if (isDemoCredential(normalizedEmail) && !appConfig.features.demoCredentials) {
-        toast({
-          variant: "destructive",
-          title: "Modo Demo Deshabilitado",
-          description: "Las credenciales demo no están disponibles en modo producción. Use credenciales reales.",
-        });
-        setIsLoading(false);
-        return;
-      }
-
-      // Solo intentar autenticación real con Supabase si NO es credencial demo O si está en modo producción
+      // En modo producción, intentar autenticación real con Supabase para TODOS los usuarios
       if (appConfig.features.realAuth) {
         console.log('🔐 Intentando autenticación real con Supabase para:', formData.email);
         const { data, error } = await supabase.auth.signInWithPassword({
