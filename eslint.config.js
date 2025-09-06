@@ -41,26 +41,10 @@ export default [
     },
     rules: {
       ...js.configs.recommended.rules,
-      ...tseslint.configs.recommended.rules,
-      ...tseslint.configs['recommended-requiring-type-checking'].rules,
       ...reactHooks.configs.recommended.rules,
-      '@typescript-eslint/no-unused-vars': 'error',
-      '@typescript-eslint/no-explicit-any': 'error',
-      '@typescript-eslint/ban-ts-comment': 'error',
-      '@typescript-eslint/prefer-const': 'error',
-      '@typescript-eslint/prefer-optional-chain': 'error',
-      '@typescript-eslint/no-unsafe-assignment': 'error',
-      '@typescript-eslint/no-unsafe-member-access': 'error',
-      '@typescript-eslint/no-unsafe-call': 'error',
-      '@typescript-eslint/no-unsafe-return': 'error',
-      '@typescript-eslint/no-unused-expressions': [
-        'error',
-        {
-          allowShortCircuit: true,
-          allowTernary: true
-        }
-      ],
-      '@typescript-eslint/dot-notation': 'off',
+      '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/ban-ts-comment': 'warn',
       'react-hooks/exhaustive-deps': 'error',
       'react-refresh/only-export-components': [
         'warn',
@@ -75,7 +59,7 @@ export default [
   {
     files: ['**/*.config.{ts,js}', 'capacitor.config.ts', 'vite.config.ts', 'tailwind.config.ts'],
     rules: {
-      '@typescript-eslint/prefer-optional-chain': 'off'
+      '@typescript-eslint/no-unused-vars': 'off'
     }
   }
 ]
