@@ -140,11 +140,8 @@ jobs:
     - name: 📦 Instalar dependencias
       run: npm ci
       
-    - name: 📥 Descargar artefactos de build
-      uses: actions/download-artifact@v4
-      with:
-        name: build-artifacts
-        path: dist/
+    - name: 🏗️ Build para tests E2E
+      run: npm run build
         
     - name: 🎭 Instalar Playwright
       run: npx playwright install --with-deps
