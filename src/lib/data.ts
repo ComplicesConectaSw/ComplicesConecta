@@ -81,22 +81,31 @@ export const generateMockSingle = (includeOnlineStatus = true) => {
   
   const profile = {
     id: Math.random().toString(36).substr(2, 9),
-    name: `${nombre} ${apellido}`,
+    first_name: nombre,
+    last_name: apellido,
     age: Math.floor(Math.random() * 20) + 25,
-    location: ubicaciones[Math.floor(Math.random() * ubicaciones.length)],
     bio: `Soy ${nombre}, me encanta explorar nuevas experiencias y conocer gente interesante del lifestyle. Siempre busco aventuras y momentos únicos con mentalidad abierta.`,
+    gender: esMujer ? 'female' : 'male',
+    interested_in: 'both',
+    is_premium: Math.random() > 0.7,
+    is_verified: Math.random() > 0.3,
+    relationship_type: 'single' as const,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    user_id: Math.random().toString(36).substr(2, 9),
+    // Propiedades adicionales para compatibilidad con UI
+    location: ubicaciones[Math.floor(Math.random() * ubicaciones.length)],
+    profession: profesiones[Math.floor(Math.random() * profesiones.length)],
     interests: intereses.slice(0, 3 + Math.floor(Math.random() * 3)),
     avatar: realImages[Math.floor(Math.random() * realImages.length)],
-    verified: Math.random() > 0.3,
-    distance: Math.floor(Math.random() * 50) + 1,
-    lastActive: `Hace ${Math.floor(Math.random() * 60)} min`,
-    profession: profesiones[Math.floor(Math.random() * profesiones.length)],
     photos: [realImages[Math.floor(Math.random() * realImages.length)], realImages[Math.floor(Math.random() * realImages.length)]],
-    gender: esMujer ? 'female' : 'male',
-    firstName: nombre,
-    compatibility: Math.floor(Math.random() * 30) + 70,
     isOnline: includeOnlineStatus ? Math.random() > 0.3 : false,
-    lastSeen: includeOnlineStatus ? (Math.random() > 0.3 ? 'Ahora' : `Hace ${Math.floor(Math.random() * 120) + 1} min`) : 'Desconocido'
+    isVerified: Math.random() > 0.3,
+    stats: {
+      matches: Math.floor(Math.random() * 50) + 10,
+      likes: Math.floor(Math.random() * 200) + 50,
+      views: Math.floor(Math.random() * 500) + 100
+    }
   };
   
   return profile;
