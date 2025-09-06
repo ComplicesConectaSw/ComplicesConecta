@@ -131,7 +131,7 @@ const ProfileSingle: React.FC = () => {
           <div className="relative">
             <div className="aspect-[3/4] rounded-t-lg overflow-hidden mb-4 relative bg-gray-100">
               <img 
-                src="https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=500&h=625&fit=crop&crop=face" 
+                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&h=625&fit=crop&crop=face" 
                 alt={profile.first_name || 'Perfil'} 
                 className="w-full h-full object-cover"
                 onLoad={() => console.log('Imagen cargada correctamente')}

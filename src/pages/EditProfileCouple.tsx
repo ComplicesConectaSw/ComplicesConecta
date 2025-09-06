@@ -303,7 +303,7 @@ const EditProfileCouple = () => {
                 rows={4}
                 className="resize-none"
               />
-              <p className="text-xs text-gray-500 mt-2">
+              <p className="text-xs text-white/80 mt-2">
                 {formData.bio.length}/500 caracteres
               </p>
             </div>
@@ -317,7 +317,7 @@ const EditProfileCouple = () => {
             
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Nombre</label>
+                <label className="block text-sm font-medium text-white mb-2">Nombre</label>
                 <Input
                   value={formData.partner1.firstName}
                   onChange={(e) => handleInputChange('firstName', e.target.value, 'partner1')}
@@ -325,7 +325,7 @@ const EditProfileCouple = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Apellido</label>
+                <label className="block text-sm font-medium text-white mb-2">Apellido</label>
                 <Input
                   value={formData.partner1.lastName}
                   onChange={(e) => handleInputChange('lastName', e.target.value, 'partner1')}
@@ -336,7 +336,7 @@ const EditProfileCouple = () => {
             
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Apodo</label>
+                <label className="block text-sm font-medium text-white mb-2">Apodo</label>
                 <Input
                   value={formData.partner1.nickname}
                   onChange={(e) => handleInputChange('nickname', e.target.value, 'partner1')}
@@ -344,7 +344,7 @@ const EditProfileCouple = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Edad</label>
+                <label className="block text-sm font-medium text-white mb-2">Edad</label>
                 <Input
                   type="number"
                   value={formData.partner1.age}
@@ -355,7 +355,7 @@ const EditProfileCouple = () => {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Profesión</label>
+              <label className="block text-sm font-medium text-white mb-2">Profesión</label>
               <Input
                 value={formData.partner1.profession}
                 onChange={(e) => handleInputChange('profession', e.target.value, 'partner1')}
@@ -364,7 +364,7 @@ const EditProfileCouple = () => {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Descripción personal</label>
+              <label className="block text-sm font-medium text-white mb-2">Descripción personal</label>
               <Textarea
                 value={formData.partner1.bio}
                 onChange={(e) => handleInputChange('bio', e.target.value, 'partner1')}
@@ -376,12 +376,12 @@ const EditProfileCouple = () => {
             
             {/* Galería de imágenes para Partner 1 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Galería de Imágenes</label>
+              <label className="block text-sm font-medium text-white mb-2">Galería de Imágenes</label>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-xs text-gray-600 mb-2">Imágenes Públicas</p>
+                  <p className="text-xs text-white/80 mb-2">Imágenes Públicas</p>
                   <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
-                    <Camera className="h-8 w-8 mx-auto text-gray-400 mb-2" />
+                    <Camera className="h-8 w-8 mx-auto text-white/60 mb-2" />
                     <Button 
                       variant="outline" 
                       size="sm"
@@ -392,7 +392,7 @@ const EditProfileCouple = () => {
                   </div>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-600 mb-2">Imágenes Privadas</p>
+                  <p className="text-xs text-white/80 mb-2">Imágenes Privadas</p>
                   <div className="border-2 border-dashed border-pink-300 rounded-lg p-4 text-center">
                     <Camera className="h-8 w-8 mx-auto text-pink-400 mb-2" />
                     <Button 
@@ -410,8 +410,8 @@ const EditProfileCouple = () => {
             
             {/* Intereses individuales para Partner 1 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Intereses Lifestyle</label>
-              <p className="text-xs text-gray-600 mb-3">Selecciona sus intereses para encontrar matches compatibles</p>
+              <label className="block text-sm font-medium text-white mb-2">Intereses Lifestyle</label>
+              <p className="text-xs text-white/80 mb-3">Selecciona sus intereses para encontrar matches compatibles</p>
               <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto p-2 border rounded-lg bg-pink-50">
                 {availableInterests.map((interest) => (
                   <Badge
@@ -431,7 +431,7 @@ const EditProfileCouple = () => {
                   </Badge>
                 ))}
               </div>
-              <p className="text-xs text-gray-500 mt-2">
+              <p className="text-xs text-white/80 mt-2">
                 {formData.partner1.interests.length}/10 seleccionados
               </p>
             </div>
@@ -445,7 +445,7 @@ const EditProfileCouple = () => {
             
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Nombre</label>
+                <label className="block text-sm font-medium text-white mb-2">Nombre</label>
                 <Input
                   value={formData.partner2.firstName}
                   onChange={(e) => handleInputChange('firstName', e.target.value, 'partner2')}
@@ -453,7 +453,7 @@ const EditProfileCouple = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Apellido</label>
+                <label className="block text-sm font-medium text-white mb-2">Apellido</label>
                 <Input
                   value={formData.partner2.lastName}
                   onChange={(e) => handleInputChange('lastName', e.target.value, 'partner2')}
@@ -464,7 +464,7 @@ const EditProfileCouple = () => {
             
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Apodo</label>
+                <label className="block text-sm font-medium text-white mb-2">Apodo</label>
                 <Input
                   value={formData.partner2.nickname}
                   onChange={(e) => handleInputChange('nickname', e.target.value, 'partner2')}
@@ -472,7 +472,7 @@ const EditProfileCouple = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Edad</label>
+                <label className="block text-sm font-medium text-white mb-2">Edad</label>
                 <Input
                   type="number"
                   value={formData.partner2.age}
@@ -483,7 +483,7 @@ const EditProfileCouple = () => {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Profesión</label>
+              <label className="block text-sm font-medium text-white mb-2">Profesión</label>
               <Input
                 value={formData.partner2.profession}
                 onChange={(e) => handleInputChange('profession', e.target.value, 'partner2')}
@@ -492,7 +492,7 @@ const EditProfileCouple = () => {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Descripción personal</label>
+              <label className="block text-sm font-medium text-white mb-2">Descripción personal</label>
               <Textarea
                 value={formData.partner2.bio}
                 onChange={(e) => handleInputChange('bio', e.target.value, 'partner2')}
@@ -504,12 +504,12 @@ const EditProfileCouple = () => {
             
             {/* Galería de imágenes para Partner 2 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Galería de Imágenes</label>
+              <label className="block text-sm font-medium text-white mb-2">Galería de Imágenes</label>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-xs text-gray-600 mb-2">Imágenes Públicas</p>
+                  <p className="text-xs text-white/80 mb-2">Imágenes Públicas</p>
                   <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
-                    <Camera className="h-8 w-8 mx-auto text-gray-400 mb-2" />
+                    <Camera className="h-8 w-8 mx-auto text-white/60 mb-2" />
                     <Button 
                       variant="outline" 
                       size="sm"
@@ -520,7 +520,7 @@ const EditProfileCouple = () => {
                   </div>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-600 mb-2">Imágenes Privadas</p>
+                  <p className="text-xs text-white/80 mb-2">Imágenes Privadas</p>
                   <div className="border-2 border-dashed border-blue-300 rounded-lg p-4 text-center">
                     <Camera className="h-8 w-8 mx-auto text-blue-400 mb-2" />
                     <Button 
@@ -538,8 +538,8 @@ const EditProfileCouple = () => {
             
             {/* Intereses individuales para Partner 2 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Intereses Lifestyle</label>
-              <p className="text-xs text-gray-600 mb-3">Selecciona sus intereses para encontrar matches compatibles</p>
+              <label className="block text-sm font-medium text-white mb-2">Intereses Lifestyle</label>
+              <p className="text-xs text-white/80 mb-3">Selecciona sus intereses para encontrar matches compatibles</p>
               <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto p-2 border rounded-lg bg-blue-50">
                 {availableInterests.map((interest) => (
                   <Badge
@@ -559,7 +559,7 @@ const EditProfileCouple = () => {
                   </Badge>
                 ))}
               </div>
-              <p className="text-xs text-gray-500 mt-2">
+              <p className="text-xs text-white/80 mt-2">
                 {formData.partner2.interests.length}/10 seleccionados
               </p>
             </div>
@@ -570,7 +570,7 @@ const EditProfileCouple = () => {
         <Card className="bg-white shadow-lg">
           <CardContent className="p-6">
             <h3 className="font-semibold text-gray-900 mb-4">Intereses compartidos</h3>
-            <p className="text-sm text-gray-600 mb-4">Seleccionen hasta 6 intereses que los representen como pareja</p>
+            <p className="text-sm text-white/80 mb-4">Seleccionen hasta 6 intereses que los representen como pareja</p>
             <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto p-2 border rounded-lg bg-gray-50">
               {availableInterests.map((interest) => (
                 <Badge
@@ -590,7 +590,7 @@ const EditProfileCouple = () => {
                 </Badge>
               ))}
             </div>
-            <p className="text-xs text-gray-500 mt-2">
+            <p className="text-xs text-white/80 mt-2">
               {formData.interests.length}/6 seleccionados
             </p>
           </CardContent>

@@ -179,7 +179,7 @@ const Auth = () => {
               age: 26,
               bio: 'Me encanta explorar nuevas experiencias junto a mi pareja. Soy diseñadora gráfica y disfruto de la vida al máximo.',
               interests: ['Lifestyle Swinger', 'Comunicación Abierta', 'Respeto Mutuo', 'Experiencias Nuevas', 'Discreción Total'],
-              avatar: 'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400',
+              avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400',
               profession: 'Diseñadora Gráfica'
             },
             partner2: {

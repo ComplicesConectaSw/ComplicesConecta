@@ -56,7 +56,7 @@ const ProfileCouple: React.FC = () => {
           age: 28,
           profession: 'Profesional',
           bio: 'Me encanta explorar nuevas experiencias junto a mi pareja.',
-          avatar: 'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400',
+          avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400',
           interests: ['Lifestyle Swinger', 'Intercambio de Parejas', 'Encuentros Casuales']
         },
         partner2: user.partner2 || {

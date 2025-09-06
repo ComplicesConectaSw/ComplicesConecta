@@ -22,7 +22,7 @@ export const settingsItems = [
 
 export const mockUser = {
   name: 'María González',
-  avatar: 'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400',
+  avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400',
   subscription: 'Premium',
   notifications: 8,
 };
@@ -66,7 +66,7 @@ export const generateMockSingle = (includeOnlineStatus = true) => {
   
   // Imágenes reales de Unsplash para perfiles demo
   const realImages = esMujer ? [
-    'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400&h=500&fit=crop&crop=face',
+    'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=500&fit=crop&crop=face',
     'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=500&fit=crop&crop=face',
     'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=500&fit=crop&crop=face',
     'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=500&fit=crop&crop=face',
@@ -144,7 +144,7 @@ export const generateMockCouple = (includeOnlineStatus = true) => {
   ];
   
   const femaleImages = [
-    'https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400',
+    'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400',
     'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400',
     'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400'
   ];

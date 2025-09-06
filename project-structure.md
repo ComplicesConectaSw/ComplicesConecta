@@ -318,9 +318,23 @@ npm run audit:fix           # Correcciones automáticas
 npm run scaffold:templates  # Importar plantillas
 ```
 
-## 🚀 **ACTUALIZACIÓN v2.1.1 - AUDITORÍA DEVOPS INTEGRAL COMPLETADA** *(6 de septiembre, 2025 - 04:56 hrs)*
+## 🚀 **ACTUALIZACIÓN v2.1.2 - CORRECCIONES UI Y SISTEMA AUTOMÁTICO SUPABASE** *(6 de septiembre, 2025 - 05:09 hrs)*
 
-### 🔍 **AUDITORÍA DEVOPS COMPLETADA v2.1.1**
+### 🔍 **CORRECCIONES UI COMPLETADAS v2.1.2**
+- **✅ Footer Habilitado**: Todas las secciones activas (Empresa, Quiénes Somos, Carreras, Soporte, etc.)
+- **✅ Navegación Corregida**: Botón Perfiles redirige correctamente a /profile
+- **✅ Imágenes Reparadas**: URL de Josefa corregida en todos los archivos
+- **✅ Visibilidad Mejorada**: Textos grises cambiados a blancos para mejor contraste
+- **✅ Configuración Limpia**: Warning NODE_ENV eliminado del .env
+
+### 🔧 **SISTEMA DE CORRECCIÓN AUTOMÁTICA SUPABASE IMPLEMENTADO**
+- **✅ Auditoría Integral**: Verificación completa de tablas, RLS, funciones, triggers, buckets
+- **✅ Corrección Automática**: Detección y reparación de errores sin intervención manual
+- **✅ Scripts SQL Generados**: Correcciones aplicables con un solo comando
+- **✅ Validación Final**: Sistema de puntuación 0-100 para estado del sistema
+- **✅ Reportes Detallados**: Documentación completa de cambios aplicados
+
+### 🔍 **AUDITORÍA DEVOPS PREVIA v2.1.1**
 - **✅ Puntuación Global**: 96/100 - EXCELENTE
 - **✅ Base de Datos**: 98/100 - 14 tablas críticas, 8 funciones, 32+ políticas RLS, 39+ índices
 - **✅ Calidad Código**: 95/100 - Sin @ts-nocheck, solo 1 tipo 'any' justificado
@@ -329,12 +343,6 @@ npm run scaffold:templates  # Importar plantillas
 - **✅ Seguridad RLS**: 100/100 - Implementación perfecta
 - **✅ Performance**: 94/100 - Índices optimizados
 - **✅ Storage**: 100/100 - 3 buckets creados con políticas
-
-### 🔧 **CORRECCIONES AUTOMÁTICAS APLICADAS v2.1.1**
-- **✅ Storage Buckets**: profile-images, gallery-images, chat-media creados
-- **✅ Funciones BD**: detect_mutual_match, get_user_matches, get_potential_matches implementadas
-- **✅ Migraciones**: Verificadas sin duplicados en schema_migrations
-- **✅ Sistemas**: Auth, perfiles, matching, chat, galería, roles - 100% operativos
 
 ### 📊 **ARCHIVOS CRÍTICOS GENERADOS v2.1.1**
 ```

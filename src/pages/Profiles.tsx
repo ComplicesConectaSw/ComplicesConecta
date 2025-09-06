@@ -80,7 +80,7 @@ const Profiles = () => {
       age: 26,
       location: "Monterrey",
       interests: ["Arte", "Lectura", "Café", "Cine", "Teatro"],
-      image: "https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400&h=600&fit=crop&crop=face",
+      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face",
       rating: 4.7,
       isOnline: true,
       bio: "Artista y escritora. Me encanta el café y las buenas conversaciones.",
