@@ -11,8 +11,8 @@
 
 ### 📱 ¡Descarga la App Ahora!
 
-<a href="https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v.2.1.0/app-release.apk" download>
-  <img src="https://img.shields.io/badge/📱_Descargar_APK-v2.1.0-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
+<a href="https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v.2.1.3/app-release.apk" download>
+  <img src="https://img.shields.io/badge/📱_Descargar_APK-v2.1.3-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
 </a>
 
 *🔒 Aplicación segura y verificada para Android*

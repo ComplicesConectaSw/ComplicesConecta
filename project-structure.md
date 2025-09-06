@@ -24,6 +24,7 @@ conecta-social-comunidad-main/
 ├── 🗄️ supabase/
 │   ├── ⚡ functions/
 │   └── 🔄 migrations/
+│       └── 20250906125234_clean_final_schema.sql  # ✅ Migración final limpia
 ├── 🤖 android/
 ├── 🌐 public/
 └── 📋 docs/
@@ -57,6 +58,17 @@ src/
 └── examples/             # Componentes de ejemplo
 ```
 
+### `/scripts` - Scripts de Base de Datos (Limpiados v2.1.3)
+```
+scripts/
+├── ✅ SIMPLE_CREATE_TABLES.sql      # Script funcional de creación de tablas
+├── ✅ VERIFY_TABLES.sql             # Verificación directa de columnas
+├── ✅ DEFINITIVE_RESET.sql          # Script de reseteo corregido
+├── 🔍 audit-database.js             # Auditoría de base de datos
+├── 📊 audit-project.ts              # Auditoría completa del proyecto
+└── 📄 database_audit.json           # Reporte de auditoría
+```
+
 ### `/docs` - Documentación y Auditoría
 ```
 docs/
@@ -66,7 +78,8 @@ docs/
 ├── DEV_ERRORS_ANALYSIS.md      # Análisis de errores de desarrollo
 ├── DEPLOYMENT_FIX.md           # Correcciones de despliegue
 ├── INTEGRAL_AUDIT_REPORT.md    # Reporte integral
-└── SECURITY_FIXES_APPLIED.md   # Correcciones de seguridad
+├── SECURITY_FIXES_APPLIED.md   # Correcciones de seguridad
+└── 🆕 FINAL_AUDIT_REPORT.md    # Auditoría final v2.1.3
 ```
 
 ### Componentes Principales

@@ -1,8 +1,8 @@
 # 🚀 README_DEV.md - ComplicesConecta
 
 **Guía Completa para Desarrolladores**  
-**Versión:** 2.1.0  
-**Fecha:** 06 de septiembre de 2025
+**Versión:** 2.1.3  
+**Fecha:** 06 de septiembre de 2025 - 07:06 hrs
 
 ## 📋 Índice
 
@@ -22,7 +22,8 @@
 - **Node.js:** v18.0.0 o superior
 - **npm:** v9.0.0 o superior (o pnpm v8.0.0+)
 - **Git:** Última versión
-- **Supabase CLI:** v1.100.0+ (opcional)
+- **Supabase CLI:** v2.33.9+ (requerido para migraciones)
+- **Docker Desktop:** Opcional para desarrollo local
 
 ### Instalación Inicial
 
@@ -68,6 +69,26 @@ npm run lint
   },
   "typescript.preferences.importModuleSpecifier": "relative"
 }
+```
+
+## 🗄️ Base de Datos Supabase (v2.1.3 - REPARADA)
+
+### Estado Actual
+- ✅ **11 tablas críticas** creadas con columnas completas
+- ✅ **RLS habilitado** en todas las tablas con políticas de seguridad
+- ✅ **Migración limpia** aplicada: `20250906125234_clean_final_schema.sql`
+- ✅ **Scripts organizados** en carpeta `scripts/` (limpieza profunda realizada)
+
+### Comandos de Base de Datos
+```bash
+# Aplicar migraciones
+supabase db push
+
+# Verificar estado de tablas (SQL Editor)
+# Ejecutar: scripts/VERIFY_TABLES.sql
+
+# Auditoría local (puede mostrar falsos negativos)
+node scripts/audit-database.js
 ```
 
 ## 🔐 Variables de Entorno
