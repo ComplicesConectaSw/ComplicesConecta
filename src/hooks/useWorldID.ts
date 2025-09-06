@@ -141,7 +141,7 @@ export const useWorldID = () => {
       
       const { data, error } = await supabase
         .from('referral_rewards')
-        .select('reward_amount')
+        .select('amount')
         .eq('user_id', user.id)
         .gte('created_at', currentMonth);
 
@@ -149,7 +149,7 @@ export const useWorldID = () => {
         throw error;
       }
 
-      const current = data?.reduce((sum: number, reward: any) => sum + reward.reward_amount, 0) || 0;
+      const current = data?.reduce((sum: number, reward: { amount: number }) => sum + reward.amount, 0) || 0;
       const limit = 500;
       const remaining = Math.max(0, limit - current);
 

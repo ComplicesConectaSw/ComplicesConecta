@@ -297,8 +297,8 @@ const Admin = () => {
       const { error } = await supabase
         .from('profiles')
         .update({ 
-          // Use existing field or create custom metadata
-          user_preferences: { verified: !currentStatus }
+          // Use bio field to store verification status temporarily
+          bio: `${profiles.find(p => p.id === profileId)?.bio || ''} [verified:${!currentStatus}]`
         })
         .eq('id', profileId);
 
@@ -997,7 +997,7 @@ const Admin = () => {
                         <div>
                           <h3 className="font-semibold mb-2 text-foreground">Archivos Duplicados</h3>
                           <div className="space-y-2">
-                            {auditReport.details.duplicates.map((dup: any, index: number) => (
+                            {auditReport.details.duplicates.map((dup: { file1: string; file2: string; size: string }, index: number) => (
                               <div key={index} className="p-2 bg-yellow-50 border border-yellow-200 rounded text-sm text-gray-800">
                                 <p className="text-gray-800"><strong>Archivo 1:</strong> {dup.file1}</p>
                                 <p className="text-gray-800"><strong>Archivo 2:</strong> {dup.file2}</p>
@@ -1010,7 +1010,7 @@ const Admin = () => {
                         <div>
                           <h3 className="font-semibold mb-2 text-foreground">Imports Rotos</h3>
                           <div className="space-y-2">
-                            {auditReport.details.brokenImports.map((broken: any, index: number) => (
+                            {auditReport.details.brokenImports.map((broken: { file: string; line: number; import: string }, index: number) => (
                               <div key={index} className="p-2 bg-red-50 border border-red-200 rounded text-sm text-gray-800">
                                 <p className="text-gray-800"><strong>Archivo:</strong> {broken.file}</p>
                                 <p className="text-gray-800"><strong>Línea:</strong> {broken.line}</p>

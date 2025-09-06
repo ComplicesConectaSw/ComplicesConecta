@@ -21,7 +21,19 @@ interface HCaptchaVerifyResponse {
 
 declare global {
   interface Window {
-    hcaptcha: any;
+    hcaptcha: {
+      render: (container: string | HTMLElement, config: {
+        sitekey: string;
+        callback?: (token: string) => void;
+        'error-callback'?: (error?: string | undefined) => void;
+        'expired-callback'?: () => void;
+        theme?: 'light' | 'dark';
+        size?: 'normal' | 'compact' | 'invisible';
+      }) => string;
+      reset: (widgetId?: string) => void;
+      execute: (widgetId?: string) => void;
+      getResponse: (widgetId?: string) => string;
+    };
   }
 }
 
@@ -102,10 +114,10 @@ export const HCaptchaWidget: React.FC<HCaptchaWidgetProps> = ({
             onExpire();
           }
         },
-        'error-callback': (error: string) => {
+        'error-callback': (error?: string) => {
           console.error('Error hCaptcha:', error);
           if (onError) {
-            onError(error);
+            onError(error || 'Error desconocido en hCaptcha');
           }
         }
       });

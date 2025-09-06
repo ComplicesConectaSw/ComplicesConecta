@@ -1,383 +1,654 @@
-# README DEV - ComplicesConecta v2.0.0
+# 🚀 README_DEV.md - ComplicesConecta
 
-## 🚀 Guía de Desarrollo y QA
+**Guía Completa para Desarrolladores**  
+**Versión:** 2.1.0  
+**Fecha:** 06 de septiembre de 2025
 
-### Configuración del Entorno
+## 📋 Índice
 
-#### Requisitos Previos
-- Node.js 18+ 
-- npm 9+
-- Git
-- Editor con soporte TypeScript (VS Code recomendado)
+1. [Setup del Proyecto](#setup-del-proyecto)
+2. [Variables de Entorno](#variables-de-entorno)
+3. [Comandos de Desarrollo](#comandos-de-desarrollo)
+4. [Arquitectura del Proyecto](#arquitectura-del-proyecto)
+5. [Testing](#testing)
+6. [Troubleshooting](#troubleshooting)
+7. [Guías de Contribución](#guías-de-contribución)
+8. [CI/CD](#cicd)
 
-#### Instalación
+## 🛠️ Setup del Proyecto
+
+### Requisitos Previos
+
+- **Node.js:** v18.0.0 o superior
+- **npm:** v9.0.0 o superior (o pnpm v8.0.0+)
+- **Git:** Última versión
+- **Supabase CLI:** v1.100.0+ (opcional)
+
+### Instalación Inicial
+
 ```bash
-# Clonar repositorio
-git clone <repository-url>
-cd conecta-social-comunidad-main
+# 1. Clonar el repositorio
+git clone https://github.com/ComplicesConecta/conecta-social-comunidad.git
+cd conecta-social-comunidad
 
-# Instalar dependencias
+# 2. Instalar dependencias
 npm install
+# o con pnpm
+pnpm install
 
-# Configurar variables de entorno
-cp .env.example .env
-# Editar .env con tus credenciales de Supabase y Sentry
+# 3. Configurar variables de entorno
+cp .env.example .env.local
+
+# 4. Verificar instalación
+npm run type-check
+npm run lint
 ```
 
-#### Variables de Entorno Requeridas
-```env
-# Supabase
-VITE_SUPABASE_URL=https://axtvqnozatbmllvwzuim.supabase.co
-VITE_SUPABASE_ANON_KEY=tu_anon_key
+### Configuración IDE (Recomendado)
 
-# Modo de aplicación
-VITE_APP_MODE=production  # o 'demo' para modo demo
-
-# Sentry (opcional)
-VITE_SENTRY_DSN=tu_sentry_dsn
+**VS Code Extensions:**
+```json
+{
+  "recommendations": [
+    "bradlc.vscode-tailwindcss",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "@typescript-eslint.typescript-eslint",
+    "ms-vscode.vscode-typescript-next"
+  ]
+}
 ```
 
-### Stack Tecnológico
+**VS Code Settings:**
+```json
+{
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "typescript.preferences.importModuleSpecifier": "relative"
+}
+```
 
-- **Frontend**: React 18 + TypeScript + Vite
-- **Styling**: TailwindCSS + Lucide Icons
-- **Backend**: Supabase (PostgreSQL + Auth + Storage)
-- **Testing**: Vitest (unit) + Playwright (e2e)
-- **CI/CD**: GitHub Actions + GitLab CI
-- **Monitoreo**: Sentry + Supabase Logs
-- **Deployment**: Vercel
+## 🔐 Variables de Entorno
 
-### Scripts Disponibles
+### Archivo `.env.local`
 
 ```bash
-# Desarrollo
-npm run dev              # Servidor de desarrollo
-npm run build           # Build de producción
-npm run preview         # Preview del build
+# === SUPABASE CONFIGURATION ===
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 
-# Testing
-npm run test            # Tests unitarios con Vitest
-npm run test:ui         # UI de tests unitarios
-npm run test:e2e        # Tests e2e con Playwright
-npm run test:e2e:ui     # UI de tests e2e
+# === AUTHENTICATION ===
+VITE_WORLDCOIN_APP_ID=app_your_worldcoin_id
+VITE_WORLDCOIN_ACTION=verify_human
 
-# Calidad de código
-npm run lint            # ESLint
-npm run type-check      # TypeScript check
-npm run format          # Prettier
+# === MONITORING ===
+VITE_SENTRY_DSN=https://your-sentry-dsn@sentry.io/project-id
+VITE_ENABLE_LOGGING=true
 
-# Base de datos
-npm run db:types        # Generar tipos de Supabase
+# === PAYMENTS (STRIPE) ===
+VITE_STRIPE_PUBLISHABLE_KEY=pk_test_your_stripe_key
+STRIPE_SECRET_KEY=sk_test_your_stripe_secret
+
+# === DEVELOPMENT ===
+VITE_APP_ENV=development
+VITE_API_BASE_URL=http://localhost:3000
+VITE_ENABLE_MOCK_DATA=true
+
+# === CAPACITOR (MOBILE) ===
+CAPACITOR_SERVER_URL=http://localhost:5173
 ```
 
-### Estructura del Proyecto
+### Variables Críticas
 
-```
-src/
-├── components/         # Componentes React reutilizables
-│   ├── auth/          # Componentes de autenticación
-│   ├── chat/          # Sistema de chat
-│   ├── profile/       # Gestión de perfiles
-│   └── ui/            # Componentes UI base
-├── hooks/             # Custom hooks
-├── integrations/      # Integraciones externas
-│   └── supabase/     # Cliente y tipos de Supabase
-├── lib/              # Utilidades y configuraciones
-│   ├── sentry.ts     # Configuración de Sentry
-│   └── supabase-logger.ts # Logger de Supabase
-├── pages/            # Páginas de la aplicación
-└── types/            # Definiciones de tipos TypeScript
+| Variable | Descripción | Requerida |
+|----------|-------------|-----------|
+| `VITE_SUPABASE_URL` | URL del proyecto Supabase | ✅ |
+| `VITE_SUPABASE_ANON_KEY` | Clave pública de Supabase | ✅ |
+| `VITE_SENTRY_DSN` | Monitoreo de errores | 🟡 |
+| `VITE_STRIPE_PUBLISHABLE_KEY` | Pagos Premium | 🟡 |
+| `VITE_WORLDCOIN_APP_ID` | Verificación World ID | 🟡 |
 
-tests/
-├── unit/             # Tests unitarios
-└── e2e/              # Tests end-to-end
-
-.github/workflows/    # GitHub Actions CI/CD
-```
-
-## 🧪 Testing
-
-### Tests Unitarios (Vitest)
-
-Los tests unitarios cubren:
-- **useAuth**: Hook de autenticación y gestión de sesión
-- **Profiles**: Generación y validación de perfiles
-- **Roles**: Sistema de roles y permisos
-
-```bash
-# Ejecutar tests unitarios
-npm run test
-
-# Con coverage
-npm run test -- --coverage
-
-# Modo watch
-npm run test -- --watch
-```
-
-### Tests E2E (Playwright)
-
-Los tests e2e cubren:
-- **Registration**: Flujo de registro de usuarios
-- **Admin Login**: Panel de administración
-- **Requests**: Sistema de solicitudes de conexión
-- **Images**: Gestión de galería de imágenes
-
-```bash
-# Ejecutar tests e2e
-npm run test:e2e
-
-# Con UI interactiva
-npm run test:e2e:ui
-
-# Solo un archivo específico
-npx playwright test registration.spec.ts
-```
-
-### Configuración de Tests
-
-#### Playwright Config
-- Navegadores: Chromium, Firefox, WebKit
-- Modo headless por defecto
-- Screenshots en fallos
-- Videos en CI
-
-#### Vitest Config
-- Entorno jsdom
-- Mocks automáticos de Supabase
-- Coverage con c8
-
-## 🔄 CI/CD Pipeline
-
-### GitHub Actions (.github/workflows/ci.yml)
-
-El pipeline ejecuta automáticamente:
-
-1. **Lint & Type Check**: ESLint + TypeScript
-2. **Build**: Compilación del proyecto
-3. **Unit Tests**: Tests unitarios con coverage
-4. **E2E Tests**: Tests end-to-end
-5. **Security Audit**: npm audit + CodeQL
-6. **Deploy**: Despliegue automático a Vercel (branch main)
-
-### GitLab CI (.gitlab-ci.yml)
-
-Pipeline opcional con stages:
-- `lint`: Análisis de código
-- `build`: Compilación
-- `test`: Tests unitarios y e2e
-- `security`: Auditoría de seguridad
-- `deploy-staging`: Deploy a staging (develop branch)
-- `deploy-production`: Deploy a producción (main branch)
-
-### Triggers
-- **Push**: Cualquier branch ejecuta lint, build y tests
-- **Pull Request**: Pipeline completo + análisis de seguridad
-- **Main Branch**: Pipeline completo + deploy a producción
-
-## 📊 Monitoreo y Logging
-
-### Sentry Integration
-
-Configuración en `src/lib/sentry.ts`:
-- Captura automática de errores
-- Tracking de performance
-- Filtrado de errores no críticos
-- Contexto de usuario automático
-
-```typescript
-// Uso básico
-import { logError, logMessage, setUserContext } from '@/lib/sentry';
-
-// Log de errores
-logError(error, { context: 'additional info' });
-
-// Log de mensajes
-logMessage('User action completed', 'info', { userId: '123' });
-
-// Contexto de usuario
-setUserContext({ id: user.id, email: user.email, role: user.role });
-```
-
-### Supabase Logging
-
-Sistema de logging en `src/lib/supabase-logger.ts`:
-- Log de queries SQL con duración
-- Detección de queries lentas
-- Log de errores RLS
-- Tracking de conexiones
-
-```typescript
-// Uso del logger
-import { supabaseLogger, withSupabaseLogging } from '@/lib/supabase-logger';
-
-// Wrapper automático
-const getProfiles = withSupabaseLogging(
-  () => supabase.from('profiles').select('*'),
-  'getProfiles'
-);
-
-// Log manual
-supabaseLogger.logRLSError('profiles', 'SELECT', userId, error);
-```
-
-## 🔒 Seguridad
-
-### Row Level Security (RLS)
-
-Todas las tablas tienen políticas RLS estrictas:
-- **profiles**: Solo el propietario puede editar
-- **invitations**: Creador y destinatario pueden ver
-- **messages**: Solo participantes del chat
-- **user_roles**: Solo admins pueden modificar
-
-### Autenticación
-
-- Email + contraseña obligatorios
-- Verificación de email en producción
-- Roles: `admin`, `user`
-- Separación demo/producción
-
-### Variables de Entorno
-
-- Nunca commitear archivos `.env`
-- Usar `.env.example` como plantilla
-- Rotar keys regularmente en producción
-
-## 🚀 Deployment
-
-### Vercel (Recomendado)
-
-1. Conectar repositorio a Vercel
-2. Configurar variables de entorno
-3. Deploy automático desde main branch
-
-### Variables de Entorno en Vercel
-```
-VITE_SUPABASE_URL=https://axtvqnozatbmllvwzuim.supabase.co
-VITE_SUPABASE_ANON_KEY=tu_anon_key
-VITE_APP_MODE=production
-VITE_SENTRY_DSN=tu_sentry_dsn
-```
-
-### Build Commands
-```bash
-# Build command
-npm run build
-
-# Output directory
-dist
-
-# Install command
-npm install
-```
-
-## 🐛 Debugging
+## ⚡ Comandos de Desarrollo
 
 ### Desarrollo Local
 
 ```bash
-# Logs detallados
-VITE_APP_MODE=development npm run dev
+# Servidor de desarrollo
+npm run dev
+# Puerto: http://localhost:5173
 
-# Debug de Supabase
-# Habilitar logs en browser console
+# Desarrollo con HTTPS (para testing mobile)
+npm run dev -- --host --https
 
-# Debug de tests
-npm run test -- --reporter=verbose
+# Build de desarrollo
+npm run build:dev
 ```
 
-### Herramientas Útiles
+### Testing
 
-- **React DevTools**: Inspección de componentes
-- **Supabase Dashboard**: Queries y logs en tiempo real
-- **Sentry Dashboard**: Errores y performance
-- **Playwright Inspector**: Debug de tests e2e
+```bash
+# Unit tests (Vitest)
+npm run test
+npm run test:watch
+npm run test:coverage
 
-## 📝 Convenciones de Código
+# E2E tests (Playwright)
+npm run test:e2e
+npm run test:e2e:ui
+npm run test:e2e:debug
 
-### TypeScript
-- Tipado estricto habilitado
-- No usar `any` (usar `unknown` si es necesario)
-- Interfaces para objetos, types para uniones
-- Exportar tipos junto con implementaciones
+# Tests completos
+npm run test:all
+```
 
-### React
-- Functional components con hooks
-- Props interfaces exportadas
-- Custom hooks para lógica reutilizable
-- Error boundaries para manejo de errores
+### Calidad de Código
 
-### Naming
-- camelCase para variables y funciones
-- PascalCase para componentes y tipos
-- kebab-case para archivos
-- UPPER_SNAKE_CASE para constantes
+```bash
+# Linting
+npm run lint
+npm run lint:fix
 
-### Git
-- Commits descriptivos en español
-- Branches: `feature/`, `fix/`, `hotfix/`
-- PR templates con checklist
-- Squash merge para features
+# Type checking
+npm run type-check
+npm run type-check:watch
+
+# Formateo
+npm run format
+```
+
+### Build y Deploy
+
+```bash
+# Build de producción
+npm run build
+
+# Preview del build
+npm run preview
+
+# Análisis del bundle
+npm run analyze
+
+# Deploy a Vercel
+npm run deploy
+```
+
+### Mobile (Capacitor)
+
+```bash
+# Sincronizar con Capacitor
+npm run cap:sync
+
+# Build Android
+npm run cap:android
+
+# Build iOS
+npm run cap:ios
+
+# Ejecutar en dispositivo
+npm run cap:run:android
+npm run cap:run:ios
+```
+
+## 🏗️ Arquitectura del Proyecto
+
+### Estructura de Directorios
+
+```
+src/
+├── components/          # Componentes reutilizables
+│   ├── ui/             # Componentes base (shadcn/ui)
+│   ├── auth/           # Componentes de autenticación
+│   ├── chat/           # Sistema de chat
+│   └── invitations/    # Sistema de invitaciones
+├── pages/              # Páginas principales
+├── hooks/              # Custom hooks
+├── lib/                # Utilidades y configuraciones
+│   ├── supabase.ts     # Cliente Supabase
+│   ├── sentry.ts       # Configuración Sentry
+│   └── utils.ts        # Utilidades generales
+├── types/              # Definiciones TypeScript
+├── assets/             # Recursos estáticos
+└── integrations/       # Integraciones externas
+    └── supabase/       # Tipos generados de Supabase
+```
+
+### Stack Tecnológico
+
+**Frontend:**
+- React 18 + TypeScript
+- Vite (Build tool)
+- Tailwind CSS + shadcn/ui
+- React Router v6
+- Zustand (Estado global)
+
+**Backend:**
+- Supabase (BaaS)
+- PostgreSQL + Row Level Security
+- Edge Functions (Deno)
+- Realtime subscriptions
+
+**Testing:**
+- Vitest (Unit tests)
+- Playwright (E2E tests)
+- Testing Library
+
+**Mobile:**
+- Capacitor
+- Android/iOS builds
+
+**Monitoring:**
+- Sentry (Error tracking)
+- Custom logging system
+
+### Patrones de Arquitectura
+
+**1. Componentes:**
+```typescript
+// Estructura estándar de componente
+interface ComponentProps {
+  // Props tipadas
+}
+
+export const Component = ({ prop }: ComponentProps) => {
+  // Hooks
+  // Estados locales
+  // Efectos
+  // Handlers
+  // Render
+};
+```
+
+**2. Custom Hooks:**
+```typescript
+// Hook personalizado
+export const useCustomHook = () => {
+  // Lógica reutilizable
+  return { data, loading, error };
+};
+```
+
+**3. Servicios:**
+```typescript
+// Servicios para lógica de negocio
+export const serviceAPI = {
+  async getData() {
+    // Implementación
+  }
+};
+```
+
+## 🧪 Testing
+
+### Unit Tests (Vitest)
+
+**Configuración:**
+```typescript
+// vitest.config.ts
+export default defineConfig({
+  test: {
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.ts'],
+    coverage: {
+      reporter: ['text', 'html', 'lcov']
+    }
+  }
+});
+```
+
+**Ejemplo de Test:**
+```typescript
+// src/components/__tests__/Component.test.tsx
+import { render, screen } from '@testing-library/react';
+import { Component } from '../Component';
+
+describe('Component', () => {
+  it('renders correctly', () => {
+    render(<Component />);
+    expect(screen.getByText('Expected Text')).toBeInTheDocument();
+  });
+});
+```
+
+### E2E Tests (Playwright)
+
+**Configuración:**
+```typescript
+// playwright.config.ts
+export default defineConfig({
+  testDir: './tests/e2e',
+  use: {
+    baseURL: 'http://localhost:5173',
+    trace: 'on-first-retry',
+  },
+});
+```
+
+**Ejemplo de E2E:**
+```typescript
+// tests/e2e/auth.spec.ts
+import { test, expect } from '@playwright/test';
+
+test('user can login', async ({ page }) => {
+  await page.goto('/auth');
+  await page.fill('[data-testid="email"]', 'test@example.com');
+  await page.click('[data-testid="login-btn"]');
+  await expect(page).toHaveURL('/dashboard');
+});
+```
 
 ## 🔧 Troubleshooting
 
 ### Problemas Comunes
 
-**Error de tipos de Supabase**
+#### 1. Error de Instalación de Dependencias
+
+**Síntoma:**
 ```bash
-npm run db:types
+npm ERR! peer dep missing
 ```
 
-**Tests e2e fallan**
+**Solución:**
 ```bash
-npx playwright install
-npm run test:e2e -- --headed
+# Limpiar cache y reinstalar
+rm -rf node_modules package-lock.json
+npm cache clean --force
+npm install
 ```
 
-**Build falla por lint**
-```bash
-npm run lint -- --fix
-npm run format
+#### 2. Errores de TypeScript
+
+**Síntoma:**
+```
+Type 'unknown' is not assignable to type 'string'
 ```
 
-**Variables de entorno no cargan**
-- Verificar nombres con prefijo `VITE_`
-- Reiniciar servidor de desarrollo
-- Verificar archivo `.env` existe
+**Solución:**
+```typescript
+// Usar type guards
+if (typeof value === 'string') {
+  // value es string aquí
+}
+
+// O type assertion con validación
+const stringValue = value as string;
+```
+
+#### 3. Problemas de Supabase Connection
+
+**Síntoma:**
+```
+Failed to fetch from Supabase
+```
+
+**Solución:**
+```bash
+# Verificar variables de entorno
+echo $VITE_SUPABASE_URL
+echo $VITE_SUPABASE_ANON_KEY
+
+# Verificar conectividad
+curl -I $VITE_SUPABASE_URL/rest/v1/
+```
+
+#### 4. Build Failures
+
+**Síntoma:**
+```
+Build failed with errors
+```
+
+**Solución:**
+```bash
+# Verificar tipos
+npm run type-check
+
+# Verificar lint
+npm run lint
+
+# Build limpio
+rm -rf dist
+npm run build
+```
+
+#### 5. Mobile Build Issues
+
+**Síntoma:**
+```
+Capacitor sync failed
+```
+
+**Solución:**
+```bash
+# Limpiar y resincronizar
+npx cap clean
+npm run build
+npx cap sync
+```
+
+### Debugging
+
+#### 1. React DevTools
+
+```bash
+# Instalar extensión del navegador
+# Chrome/Firefox: React Developer Tools
+```
+
+#### 2. Supabase Debugging
+
+```typescript
+// Habilitar logs detallados
+const supabase = createClient(url, key, {
+  auth: {
+    debug: true
+  }
+});
+```
+
+#### 3. Network Issues
+
+```typescript
+// Interceptar requests
+import { setupInterceptors } from './lib/debug';
+
+if (process.env.NODE_ENV === 'development') {
+  setupInterceptors();
+}
+```
 
 ### Performance
 
-**Bundle size grande**
-- Usar dynamic imports para code splitting
-- Lazy loading de componentes pesados
-- Optimizar imágenes y assets
+#### 1. Bundle Analysis
 
-**Queries lentas**
-- Revisar logs de Supabase
-- Añadir índices en BD
-- Usar select específicos, no `*`
+```bash
+# Analizar tamaño del bundle
+npm run analyze
+
+# Identificar dependencias pesadas
+npx webpack-bundle-analyzer dist/assets/*.js
+```
+
+#### 2. React Performance
+
+```typescript
+// Usar React.memo para componentes pesados
+export const HeavyComponent = React.memo(({ data }) => {
+  // Componente optimizado
+});
+
+// Lazy loading
+const LazyComponent = React.lazy(() => import('./LazyComponent'));
+```
+
+## 👥 Guías de Contribución
+
+### Workflow de Git
+
+```bash
+# 1. Crear branch desde main
+git checkout main
+git pull origin main
+git checkout -b feature/nueva-funcionalidad
+
+# 2. Desarrollar y commitear
+git add .
+git commit -m "feat: agregar nueva funcionalidad"
+
+# 3. Push y crear PR
+git push origin feature/nueva-funcionalidad
+# Crear Pull Request en GitHub
+```
+
+### Convenciones de Commits
+
+**Formato:**
+```
+tipo(scope): descripción
+
+[cuerpo opcional]
+
+[footer opcional]
+```
+
+**Tipos:**
+- `feat`: Nueva funcionalidad
+- `fix`: Corrección de bug
+- `docs`: Documentación
+- `style`: Formateo, sin cambios de código
+- `refactor`: Refactoring de código
+- `test`: Agregar o modificar tests
+- `chore`: Tareas de mantenimiento
+
+**Ejemplos:**
+```bash
+feat(auth): agregar autenticación con World ID
+fix(chat): corregir envío de mensajes en tiempo real
+docs(readme): actualizar guía de instalación
+```
+
+### Code Review
+
+**Checklist:**
+- [ ] Código sigue las convenciones del proyecto
+- [ ] Tests incluidos y pasando
+- [ ] Documentación actualizada
+- [ ] No hay console.logs en producción
+- [ ] Performance considerada
+- [ ] Accesibilidad verificada
+
+### Estándares de Código
+
+**TypeScript:**
+```typescript
+// ✅ Bueno
+interface UserProfile {
+  id: string;
+  name: string;
+  email: string;
+}
+
+// ❌ Evitar
+const user: any = {};
+```
+
+**React:**
+```typescript
+// ✅ Bueno
+const Component = ({ title, onAction }: ComponentProps) => {
+  const [state, setState] = useState<StateType>(initialState);
+  
+  const handleClick = useCallback(() => {
+    onAction?.();
+  }, [onAction]);
+
+  return <div>{title}</div>;
+};
+
+// ❌ Evitar
+const Component = (props: any) => {
+  // Lógica sin tipos
+};
+```
+
+## 🚀 CI/CD
+
+### GitHub Actions
+
+**Workflow Principal:**
+```yaml
+# .github/workflows/ci.yml
+name: CI/CD Pipeline
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - run: npm ci
+      - run: npm run type-check
+      - run: npm run lint
+      - run: npm run test
+      - run: npm run build
+```
+
+### Deployment
+
+**Vercel (Automático):**
+- Push a `main` → Deploy a producción
+- Push a `develop` → Deploy a staging
+- Pull Requests → Preview deployments
+
+**Manual Deploy:**
+```bash
+# Deploy a Vercel
+npm run deploy
+
+# Deploy Android APK
+npm run build:android
+```
+
+### Environment Variables en CI
+
+```bash
+# GitHub Secrets requeridos
+VITE_SUPABASE_URL
+VITE_SUPABASE_ANON_KEY
+VITE_SENTRY_DSN
+STRIPE_SECRET_KEY
+```
 
 ## 📚 Recursos Adicionales
 
-- [Documentación de Supabase](https://supabase.com/docs)
-- [Guía de React + TypeScript](https://react-typescript-cheatsheet.netlify.app/)
-- [Playwright Best Practices](https://playwright.dev/docs/best-practices)
-- [Vitest Documentation](https://vitest.dev/)
-- [TailwindCSS Docs](https://tailwindcss.com/docs)
+### Documentación
 
-## 🤝 Contribución
+- [React Docs](https://react.dev/)
+- [TypeScript Handbook](https://www.typescriptlang.org/docs/)
+- [Supabase Docs](https://supabase.com/docs)
+- [Tailwind CSS](https://tailwindcss.com/docs)
+- [Vite Guide](https://vitejs.dev/guide/)
 
-1. Fork del repositorio
-2. Crear branch feature: `git checkout -b feature/nueva-funcionalidad`
-3. Commit cambios: `git commit -m 'Añadir nueva funcionalidad'`
-4. Push branch: `git push origin feature/nueva-funcionalidad`
-5. Crear Pull Request
+### Herramientas
 
-### Checklist PR
-- [ ] Tests unitarios añadidos/actualizados
-- [ ] Tests e2e añadidos si es necesario
-- [ ] Lint y type-check pasan
-- [ ] Build exitoso
-- [ ] Documentación actualizada
-- [ ] Variables de entorno documentadas si aplica
+- [VS Code](https://code.visualstudio.com/)
+- [Supabase Studio](https://supabase.com/dashboard)
+- [Sentry Dashboard](https://sentry.io/)
+- [Vercel Dashboard](https://vercel.com/dashboard)
+
+### Comunidad
+
+- [Discord del Proyecto](https://discord.gg/complicesconecta)
+- [GitHub Issues](https://github.com/ComplicesConecta/conecta-social-comunidad/issues)
+- [Documentación Interna](./docs/)
+
+---
+
+**Última actualización:** 06/09/2025 03:25 AM  
+**Mantenido por:** Equipo ComplicesConecta  
+**Versión del documento:** 1.0.0
+
+¿Preguntas? Crear un issue en GitHub o contactar al equipo de desarrollo.

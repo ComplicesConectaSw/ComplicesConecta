@@ -95,7 +95,7 @@ export function InvitationDialog({ targetProfileId, targetProfileName, children 
         <div className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="type">Tipo de invitación</Label>
-            <Select value={type} onValueChange={(value: any) => setType(value)}>
+            <Select value={type} onValueChange={(value: 'profile' | 'gallery' | 'chat') => setType(value)}>
               <SelectTrigger>
                 <SelectValue placeholder="Selecciona el tipo" />
               </SelectTrigger>

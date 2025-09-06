@@ -29,7 +29,7 @@ const Profiles = () => {
   // Extended sample profiles data with unique characteristics
   const allProfiles = [
     {
-      id: 1,
+      id: "1",
       name: "María Elena",
       age: 28,
       location: "Ciudad de México",
@@ -52,7 +52,7 @@ const Profiles = () => {
       aiCompatibility: 92
     },
     {
-      id: 2,
+      id: "2",
       name: "Carlos Mendoza",
       age: 32,
       location: "Guadalajara",
@@ -75,7 +75,7 @@ const Profiles = () => {
       aiCompatibility: 87
     },
     {
-      id: 3,
+      id: "3",
       name: "Gabriela",
       age: 26,
       location: "Monterrey",
@@ -87,7 +87,7 @@ const Profiles = () => {
       profession: "Artista"
     },
     {
-      id: 4,
+      id: "4",
       name: "Diego",
       age: 30,
       location: "Puebla",
@@ -99,7 +99,7 @@ const Profiles = () => {
       profession: "Desarrollador"
     },
     {
-      id: 5,
+      id: "5",
       name: "Laura",
       age: 29,
       location: "Tijuana",
@@ -111,7 +111,7 @@ const Profiles = () => {
       profession: "Bailarina"
     },
     {
-      id: 6,
+      id: "6",
       name: "Javier",
       age: 27,
       location: "Cancún",
@@ -123,7 +123,7 @@ const Profiles = () => {
       profession: "Fotógrafo"
     },
     {
-      id: 7,
+      id: "7",
       name: "Carmen",
       age: 31,
       location: "Mérida",
@@ -135,7 +135,7 @@ const Profiles = () => {
       profession: "Historiadora"
     },
     {
-      id: 8,
+      id: "8",
       name: "Pablo",
       age: 33,
       location: "León",
@@ -147,7 +147,7 @@ const Profiles = () => {
       profession: "Emprendedor"
     },
     {
-      id: 9,
+      id: "9",
       name: "Isabella",
       age: 26,
       location: "Playa del Carmen",
@@ -259,7 +259,7 @@ const Profiles = () => {
     }
     
     setFilteredProfiles(allProfiles);
-  }, [navigate]);
+  }, [navigate, allProfiles]);
 
   useEffect(() => {
     if (searchQuery.length > 2) {

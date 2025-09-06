@@ -8,13 +8,17 @@ import { useToast } from "@/hooks/use-toast";
 
 interface ProfileCardProps {
   profile: {
-    id: string | number;
-    name?: string;
+    id: string;
+    name: string;
     age?: number;
     location?: string;
     image?: string;
     interests?: string[];
-    [key: string]: any;
+    bio?: string;
+    isOnline?: boolean;
+    lastSeen?: string;
+    verified?: boolean;
+    rating?: number;
   };
   onLike?: (id: string) => void;
   onSuperLike?: (profile: ProfileCardProps['profile']) => void;

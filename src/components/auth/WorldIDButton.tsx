@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Shield, CheckCircle, AlertCircle, Loader2, Globe } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/integrations/supabase/client';
 
 interface WorldIDButtonProps {
   onSuccess?: (result: ISuccessResult) => void;
@@ -113,15 +113,18 @@ export const WorldIDButton: React.FC<WorldIDButtonProps> = ({
     }
   };
 
-  const handleError = (error: any) => {
+  const handleError = (error: { code?: string; message?: string; detail?: string } | string | unknown) => {
     console.error('World ID widget error:', error);
     
     let errorMessage = 'Error en la verificación con World ID';
     
-    if (error?.code === 'verification_rejected') {
-      errorMessage = 'Verificación rechazada por el usuario';
-    } else if (error?.code === 'already_verified') {
-      errorMessage = 'Esta identidad ya ha sido verificada';
+    if (typeof error === 'object' && error !== null && 'code' in error) {
+      const errorObj = error as { code?: string; message?: string; detail?: string };
+      if (errorObj.code === 'verification_rejected') {
+        errorMessage = 'Verificación rechazada por el usuario';
+      } else if (errorObj.code === 'already_verified') {
+        errorMessage = 'Esta identidad ya ha sido verificada';
+      }
     }
 
     toast({

@@ -1,9 +1,32 @@
 import { supabase } from '@/integrations/supabase/client';
 import { logError, logMessage } from './sentry';
 
+interface LogEntry {
+  level: 'info' | 'warn' | 'error' | 'debug';
+  message: string;
+  metadata?: Record<string, unknown>;
+  timestamp: string;
+  user_id?: string;
+  session_id?: string;
+}
+
+interface SimpleMetric {
+  name: string;
+  value: number;
+  unit: 'ms' | 'bytes' | 'count';
+  metadata?: Record<string, unknown>;
+  timestamp: string;
+  user_id?: string;
+}
+
 // Configuración de logging para Supabase
 export class SupabaseLogger {
   private static instance: SupabaseLogger;
+  private isEnabled: boolean;
+  
+  constructor() {
+    this.isEnabled = import.meta.env.VITE_ENABLE_LOGGING === 'true' || import.meta.env.DEV;
+  }
   
   static getInstance(): SupabaseLogger {
     if (!SupabaseLogger.instance) {
@@ -13,148 +36,114 @@ export class SupabaseLogger {
   }
 
   // Log de queries SQL
-  logQuery(query: string, params?: any, duration?: number) {
+  logQuery(query: string, params?: Record<string, unknown>, duration?: number) {
     if (import.meta.env.DEV) {
       console.group('📊 Supabase Query');
       console.log('Query:', query);
-      if (params) console.log('Params:', params);
-      if (duration) console.log('Duration:', `${duration}ms`);
+      console.log('Params:', params);
+      console.log('Duration:', duration ? `${duration}ms` : 'N/A');
       console.groupEnd();
     }
 
-    logMessage('Supabase Query Executed', 'info', {
+    this.log('debug', 'Supabase Query', {
       query,
       params,
-      duration,
+      duration
+    });
+  }
+
+  logConnection(action: 'connect' | 'disconnect', userId?: string) {
+    this.log('info', `User ${action}`, {
+      action,
+      userId,
       timestamp: new Date().toISOString()
     });
   }
 
-  // Log de errores de RLS
-  logRLSError(table: string, operation: string, userId?: string, error?: any) {
-    const errorMessage = `RLS Policy Violation: ${operation} on ${table}`;
-    
-    console.error('🚫 RLS Error:', {
-      table,
-      operation,
-      userId,
-      error: error?.message || error
-    });
+  log(level: LogEntry['level'], message: string, metadata?: Record<string, unknown>) {
+    if (!this.isEnabled) return;
 
-    logError(new Error(errorMessage), {
-      table,
-      operation,
-      userId,
-      originalError: error?.message || error,
-      type: 'RLS_VIOLATION'
-    });
-  }
+    // Log to console in development
+    if (import.meta.env.DEV) {
+      console[level](`[${level.toUpperCase()}] ${message}`, metadata);
+    }
 
-  // Log de errores de autenticación
-  logAuthError(action: string, email?: string, error?: any) {
-    const errorMessage = `Auth Error: ${action}`;
-    
-    console.error('🔐 Auth Error:', {
-      action,
-      email,
-      error: error?.message || error
-    });
+    // Map log levels to Sentry compatible levels
+    const sentryLevel = level === 'warn' ? 'warning' : level;
 
-    logError(new Error(errorMessage), {
-      action,
-      email,
-      originalError: error?.message || error,
-      type: 'AUTH_ERROR'
-    });
-  }
-
-  // Log de performance de queries
-  logSlowQuery(query: string, duration: number, threshold = 1000) {
-    if (duration > threshold) {
-      console.warn('🐌 Slow Query Detected:', {
-        query,
-        duration: `${duration}ms`,
-        threshold: `${threshold}ms`
-      });
-
-      logMessage('Slow Query Detected', 'warning', {
-        query,
-        duration,
-        threshold,
-        type: 'PERFORMANCE_WARNING'
-      });
+    // Also send to Sentry for error tracking
+    if (level === 'error') {
+      logError(new Error(message), metadata);
+    } else {
+      logMessage(message, sentryLevel as 'info' | 'warning', metadata);
     }
   }
 
-  // Log de conexiones y desconexiones
-  logConnection(event: 'connect' | 'disconnect' | 'reconnect', userId?: string) {
-    console.log(`🔌 Supabase ${event}:`, { userId, timestamp: new Date().toISOString() });
+  metric(name: string, value: number, unit: SimpleMetric['unit'], metadata?: Record<string, unknown>) {
+    if (!this.isEnabled) return;
 
-    logMessage(`Supabase ${event}`, 'info', {
-      event,
-      userId,
-      timestamp: new Date().toISOString(),
-      type: 'CONNECTION_EVENT'
+    // Log metrics to console in development
+    if (import.meta.env.DEV) {
+      console.log(`📊 Metric: ${name} = ${value}${unit}`, metadata);
+    }
+
+    // Send performance metrics to Sentry
+    logMessage(`Performance Metric: ${name}`, 'info', {
+      metric: name,
+      value,
+      unit,
+      ...metadata
     });
   }
 
-  // Wrapper para queries con logging automático
-  async executeWithLogging<T>(
-    queryFn: () => Promise<{ data: T; error: any }>,
-    queryName: string,
-    params?: any
-  ): Promise<{ data: T; error: any }> {
-    const startTime = performance.now();
-    
+  info(message: string, metadata?: Record<string, unknown>) {
+    this.log('info', message, metadata);
+  }
+
+  warn(message: string, metadata?: Record<string, unknown>) {
+    this.log('warn', message, metadata);
+  }
+
+  error(message: string, metadata?: Record<string, unknown>) {
+    this.log('error', message, metadata);
+  }
+
+  debug(message: string, metadata?: Record<string, unknown>) {
+    this.log('debug', message, metadata);
+  }
+
+  private getCurrentUserIdSync(): string | undefined {
     try {
-      const result = await queryFn();
-      const duration = performance.now() - startTime;
-      
-      this.logQuery(queryName, params, duration);
-      this.logSlowQuery(queryName, duration);
-      
-      if (result.error) {
-        this.logRLSError('unknown', queryName, undefined, result.error);
+      // Try to get user ID from session storage or other sync source
+      const sessionData = sessionStorage.getItem('supabase.auth.token');
+      if (sessionData) {
+        const parsed = JSON.parse(sessionData);
+        return parsed?.user?.id;
       }
-      
-      return result;
-    } catch (error) {
-      const duration = performance.now() - startTime;
-      
-      logError(error as Error, {
-        queryName,
-        params,
-        duration,
-        type: 'QUERY_ERROR'
-      });
-      
-      return { data: null as T, error };
+      return undefined;
+    } catch {
+      return undefined;
     }
+  }
+
+  private getSessionId(): string {
+    let sessionId = sessionStorage.getItem('app-session-id');
+    if (!sessionId) {
+      sessionId = `session-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      sessionStorage.setItem('app-session-id', sessionId);
+    }
+    return sessionId;
   }
 }
 
-// Instancia singleton
-export const supabaseLogger = SupabaseLogger.getInstance();
-
-// Middleware para interceptar llamadas a Supabase
-export const withSupabaseLogging = <T extends (...args: any[]) => any>(
-  fn: T,
-  queryName: string
-): T => {
-  return ((...args: any[]) => {
-    return supabaseLogger.executeWithLogging(
-      () => fn(...args),
-      queryName,
-      args
-    );
-  }) as T;
-};
+// Export singleton instance
+export const logger = SupabaseLogger.getInstance();
 
 // Hook para logging de sesión de usuario
 export const useSupabaseSessionLogging = () => {
-  const logUserSession = (user: any) => {
+  const logUserSession = (user: { id: string; email?: string; user_metadata?: { role?: string } } | null) => {
     if (user) {
-      supabaseLogger.logConnection('connect', user.id);
+      logger.logConnection('connect', user.id);
       logMessage('User Session Started', 'info', {
         userId: user.id,
         email: user.email,
@@ -162,7 +151,7 @@ export const useSupabaseSessionLogging = () => {
         type: 'SESSION_START'
       });
     } else {
-      supabaseLogger.logConnection('disconnect');
+      logger.logConnection('disconnect');
       logMessage('User Session Ended', 'info', {
         type: 'SESSION_END'
       });

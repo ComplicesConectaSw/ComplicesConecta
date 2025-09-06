@@ -1,25 +1,48 @@
-name: CI/CD Pipeline - ComplicesConecta v2.0.0
+name: QA & DX Pipeline - ComplicesConecta v2.1.0
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main, develop, chore/logic-audit ]
   pull_request:
     branches: [ main, develop ]
 
 env:
-  NODE_VERSION: '18'
+  NODE_VERSION: '20'
+  FORCE_COLOR: '1'
 
 jobs:
-  # Job 1: Análisis de código y linting
-  code-quality:
-    name: 🔍 Análisis de Calidad de Código
+  # Job 1: Type Check (fail-fast)
+  type-check:
+    name: 🔧 TypeScript Type Check
     runs-on: ubuntu-latest
     
     steps:
     - name: 📥 Checkout código
       uses: actions/checkout@v4
       
-    - name: 🟢 Setup Node.js
+    - name: 🟢 Setup Node.js LTS
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: 📦 Instalar dependencias
+      run: npm ci
+      
+    - name: 🔧 TypeScript - Verificación de tipos
+      run: npm run type-check
+
+  # Job 2: Lint (after type-check)
+  lint:
+    name: 🔍 ESLint Analysis
+    runs-on: ubuntu-latest
+    needs: type-check
+    
+    steps:
+    - name: 📥 Checkout código
+      uses: actions/checkout@v4
+      
+    - name: 🟢 Setup Node.js LTS
       uses: actions/setup-node@v4
       with:
         node-version: ${{ env.NODE_VERSION }}
@@ -31,9 +54,6 @@ jobs:
     - name: 🔍 ESLint - Análisis de código
       run: npm run lint
       
-    - name: 🔧 TypeScript - Verificación de tipos
-      run: npm run type-check
-      
     - name: 📊 Generar reporte de linting
       if: always()
       run: |
@@ -43,11 +63,11 @@ jobs:
         cat lint-report.txt >> $GITHUB_STEP_SUMMARY
         echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
 
-  # Job 2: Build y compilación
+  # Job 3: Build (after lint)
   build:
     name: 🏗️ Build y Compilación
     runs-on: ubuntu-latest
-    needs: code-quality
+    needs: lint
     
     steps:
     - name: 📥 Checkout código
@@ -72,11 +92,11 @@ jobs:
         path: dist/
         retention-days: 7
 
-  # Job 3: Tests unitarios
+  # Job 4: Tests unitarios (after lint)
   unit-tests:
     name: 🧪 Tests Unitarios
     runs-on: ubuntu-latest
-    needs: code-quality
+    needs: lint
     
     steps:
     - name: 📥 Checkout código
@@ -101,7 +121,7 @@ jobs:
         flags: unittests
         name: codecov-umbrella
 
-  # Job 4: Tests E2E
+  # Job 5: Tests E2E (after build)
   e2e-tests:
     name: 🎭 Tests End-to-End
     runs-on: ubuntu-latest
@@ -142,11 +162,11 @@ jobs:
         path: playwright-report/
         retention-days: 7
 
-  # Job 5: Análisis de seguridad
+  # Job 6: Análisis de seguridad (after lint)
   security-scan:
     name: 🔒 Análisis de Seguridad
     runs-on: ubuntu-latest
-    needs: code-quality
+    needs: lint
     
     steps:
     - name: 📥 Checkout código
@@ -172,11 +192,11 @@ jobs:
     - name: 🔍 Realizar análisis CodeQL
       uses: github/codeql-action/analyze@v3
 
-  # Job 6: Reporte final
+  # Job 7: Reporte final
   qa-report:
     name: 📋 Reporte Final QA
     runs-on: ubuntu-latest
-    needs: [code-quality, build, unit-tests, e2e-tests, security-scan]
+    needs: [type-check, lint, build, unit-tests, e2e-tests, security-scan]
     if: always()
     
     steps:
@@ -192,7 +212,8 @@ jobs:
         echo "**Branch:** ${{ github.ref_name }}" >> qa-report.md
         echo "" >> qa-report.md
         echo "## 📊 Resultados" >> qa-report.md
-        echo "- **Code Quality:** ${{ needs.code-quality.result }}" >> qa-report.md
+        echo "- **Type Check:** ${{ needs.type-check.result }}" >> qa-report.md
+        echo "- **Lint:** ${{ needs.lint.result }}" >> qa-report.md
         echo "- **Build:** ${{ needs.build.result }}" >> qa-report.md
         echo "- **Unit Tests:** ${{ needs.unit-tests.result }}" >> qa-report.md
         echo "- **E2E Tests:** ${{ needs.e2e-tests.result }}" >> qa-report.md
@@ -205,11 +226,11 @@ jobs:
         path: qa-report.md
         retention-days: 30
 
-  # Job 7: Deploy (solo en main)
+  # Job 8: Deploy (solo en main)
   deploy:
     name: 🚀 Deploy a Producción
     runs-on: ubuntu-latest
-    needs: [code-quality, build, unit-tests, e2e-tests, security-scan]
+    needs: [type-check, lint, build, unit-tests, e2e-tests, security-scan]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     environment: production
     

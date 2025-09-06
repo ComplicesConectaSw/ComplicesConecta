@@ -3,7 +3,17 @@
 interface Profile {
   id: string;
   interests?: string[];
-  [key: string]: any;
+  name?: string;
+  age?: number;
+  location?: string;
+  bio?: string;
+  verified?: boolean;
+  type?: 'single' | 'couple';
+  preferences?: {
+    ageRange?: [number, number];
+    distance?: number;
+    lookingFor?: string[];
+  };
 }
 
 export interface MatchScore {

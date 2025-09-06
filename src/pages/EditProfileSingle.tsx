@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -36,11 +36,7 @@ const EditProfileSingle = () => {
     "Aventuras", "Diversión", "Hoteles Temáticos", "Eventos VIP", "Masajes Sensuales", "Fotografía Sensual"
   ];
 
-  useEffect(() => {
-    loadProfile();
-  }, []);
-
-  const loadProfile = async () => {
+  const loadProfile = useCallback(async () => {
     try {
       if (appConfig.features.demoCredentials) {
         // Modo demo
@@ -51,78 +47,60 @@ const EditProfileSingle = () => {
           const user = JSON.parse(demoUser);
           let profileData;
           
-          if (user.accountType === 'single') {
-            profileData = user;
-          } else {
-            profileData = generateMockSingle();
+          if (user.type === 'single') {
+            profileData = generateMockSingle(user.id);
+            setFormData({
+              name: profileData.first_name + ' ' + profileData.last_name,
+              age: profileData.age.toString(),
+              bio: profileData.bio,
+              location: profileData.location,
+              profession: '',
+              interests: profileData.interests,
+              avatar: ''
+            });
+            setUserId(user.id);
           }
-          
-          setProfile(profileData);
-          setUserId(user.id || 'demo-user');
-          setFormData({
-            name: profileData.name || "",
-            age: profileData.age?.toString() || "",
-            location: profileData.location || "",
-            profession: profileData.profession || "",
-            bio: profileData.bio || "",
-            interests: profileData.interests || [],
-            avatar: profileData.avatar || ""
-          });
         }
       } else {
-        // Modo producción - cargar desde Supabase
+        // Modo real con Supabase
         const { data: { user } } = await supabase.auth.getUser();
         
-        if (!user) {
-          navigate('/auth');
-          return;
-        }
-        
-        setUserId(user.id);
-        
-        // Cargar perfil desde Supabase
-        const { data: profileData, error } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', user.id)
-          .single();
-        
-        if (error && error.code !== 'PGRST116') {
-          setError('Error al cargar perfil: ' + error.message);
-          return;
-        }
-        
-        if (profileData) {
-          setProfile(profileData);
-          setFormData({
-            name: `${profileData.first_name} ${profileData.last_name}`.trim() || "",
-            age: profileData.age?.toString() || "",
-            location: "", // No location field in current schema
-            profession: "", // No profession field in current schema
-            bio: profileData.bio || "",
-            interests: [], // No interests field in current schema
-            avatar: "" // No avatar_url field in current schema
-          });
-        } else {
-          // Crear perfil nuevo si no existe
-          const newProfile = {
-            id: user.id,
-            first_name: user.user_metadata?.name?.split(' ')[0] || "Usuario",
-            last_name: user.user_metadata?.name?.split(' ').slice(1).join(' ') || "",
-            age: 25, // Default age
-            gender: 'other',
-            interested_in: 'all',
-            user_id: user.id,
-            created_at: new Date().toISOString()
-          };
-          
-          const { error: insertError } = await supabase
+        if (user) {
+          const { data: profile, error } = await supabase
             .from('profiles')
-            .insert(newProfile);
+            .select('*')
+            .eq('id', user.id)
+            .single();
           
-          if (insertError) {
-            setError('Error al crear perfil: ' + insertError.message);
-          } else {
+          if (error) {
+            console.error('Error fetching profile:', error);
+            setError('Error al cargar perfil');
+          } else if (profile) {
+            setFormData({
+              name: `${profile.first_name || ''} ${profile.last_name || ''}`.trim(),
+              age: profile.age?.toString() || '',
+              bio: profile.bio || '',
+              location: `${profile.latitude || ''}, ${profile.longitude || ''}`,
+              profession: '',
+              interests: [],
+              avatar: ''
+            });
+            setUserId(user.id);
+          }
+        } else {
+          const newProfile = generateMockSingle();
+          setFormData({
+            name: `${newProfile.first_name} ${newProfile.last_name}`,
+            age: newProfile.age.toString(),
+            bio: newProfile.bio,
+            location: newProfile.location,
+            profession: newProfile.profession,
+            interests: newProfile.interests,
+            avatar: newProfile.avatar
+          });
+          
+          if (newProfile.id) {
+            setUserId(newProfile.id);
             setProfile(newProfile);
           }
         }
@@ -133,7 +111,11 @@ const EditProfileSingle = () => {
     } finally {
       console.log('Profile loaded');
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadProfile();
+  }, [loadProfile]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({
