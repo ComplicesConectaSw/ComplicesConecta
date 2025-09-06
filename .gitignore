@@ -104,3 +104,8 @@ test_*.md
 logs/
 temp/
 .cache/
+
+# Auditoría y desarrollo (ignorar en git)
+dev-scripts/
+reports/
+token-system-spec/

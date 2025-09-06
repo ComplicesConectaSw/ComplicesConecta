@@ -7,7 +7,9 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Save, Upload, Plus, X, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { generateMockSingle } from "@/lib/data";
-import { ImageUpload } from "@/components/profile/ImageUpload";
+import ImageUpload from "../components/ImageUpload";
+import { supabase } from "../integrations/supabase/client";
+import { appConfig } from "../lib/app-config";
 import Navigation from "@/components/Navigation";
 
 const EditProfileSingle = () => {
@@ -22,6 +24,10 @@ const EditProfileSingle = () => {
     interests: [] as string[],
     avatar: ""
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [userId, setUserId] = useState<string>("");
 
   const availableInterests = [
     "Lifestyle Swinger", "Intercambio de Parejas", "Encuentros Casuales", "Comunicación Abierta", 
@@ -30,43 +36,102 @@ const EditProfileSingle = () => {
   ];
 
   useEffect(() => {
-    // Verificar autenticación (demo o producción)
-    const demoAuth = localStorage.getItem('demo_authenticated');
-    const demoUser = localStorage.getItem('demo_user');
-    
-    // Para producción: verificar autenticación real con Supabase
-    // Para demo: usar datos locales
-    if (demoAuth === 'true' && demoUser) {
-      // Modo demo
-      const user = JSON.parse(demoUser);
-      let profileData;
-      
-      if (user.accountType === 'single') {
-        profileData = user;
-      } else {
-        profileData = generateMockSingle();
-      }
-      
-      setProfile(profileData);
-      setFormData({
-        name: profileData.name || '',
-        age: profileData.age?.toString() || '',
-        location: profileData.location || '',
-        profession: profileData.profession || '',
-        bio: profileData.bio || '',
-        interests: profileData.interests || [],
-        avatar: profileData.avatar || ''
-      });
-    } else {
-      // Modo producción: cargar datos reales del usuario desde Supabase
-      loadProductionProfile();
-    }
-  }, [navigate]);
+    loadProfile();
+  }, []);
 
-  const loadProductionProfile = async () => {
-    // TODO: Implementar carga de perfil real desde Supabase
-    // Por ahora, redirigir a auth si no hay sesión demo
-    navigate('/auth');
+  const loadProfile = async () => {
+    try {
+      if (appConfig.features.demoCredentials) {
+        // Modo demo
+        const demoAuth = localStorage.getItem('demo_authenticated');
+        const demoUser = localStorage.getItem('demo_user');
+        
+        if (demoAuth === 'true' && demoUser) {
+          const user = JSON.parse(demoUser);
+          let profileData;
+          
+          if (user.accountType === 'single') {
+            profileData = user;
+          } else {
+            profileData = generateMockSingle();
+          }
+          
+          setProfile(profileData);
+          setUserId(user.id || 'demo-user');
+          setFormData({
+            name: profileData.name || "",
+            age: profileData.age?.toString() || "",
+            location: profileData.location || "",
+            profession: profileData.profession || "",
+            bio: profileData.bio || "",
+            interests: profileData.interests || [],
+            avatar: profileData.avatar || ""
+          });
+        }
+      } else {
+        // Modo producción - cargar desde Supabase
+        const { data: { user } } = await supabase.auth.getUser();
+        
+        if (!user) {
+          navigate('/auth');
+          return;
+        }
+        
+        setUserId(user.id);
+        
+        // Cargar perfil desde Supabase
+        const { data: profileData, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+        
+        if (error && error.code !== 'PGRST116') {
+          setError('Error al cargar perfil: ' + error.message);
+          return;
+        }
+        
+        if (profileData) {
+          setProfile(profileData);
+          setFormData({
+            name: `${profileData.first_name} ${profileData.last_name}`.trim() || "",
+            age: profileData.age?.toString() || "",
+            location: "", // No location field in current schema
+            profession: "", // No profession field in current schema
+            bio: profileData.bio || "",
+            interests: [], // No interests field in current schema
+            avatar: "" // No avatar_url field in current schema
+          });
+        } else {
+          // Crear perfil nuevo si no existe
+          const newProfile = {
+            id: user.id,
+            first_name: user.user_metadata?.name?.split(' ')[0] || "Usuario",
+            last_name: user.user_metadata?.name?.split(' ').slice(1).join(' ') || "",
+            age: 25, // Default age
+            gender: 'other',
+            interested_in: 'all',
+            user_id: user.id,
+            created_at: new Date().toISOString()
+          };
+          
+          const { error: insertError } = await supabase
+            .from('profiles')
+            .insert(newProfile);
+          
+          if (insertError) {
+            setError('Error al crear perfil: ' + insertError.message);
+          } else {
+            setProfile(newProfile);
+          }
+        }
+      }
+    } catch (error) {
+      setError('Error inesperado al cargar perfil');
+      console.error('Error loading profile:', error);
+    } finally {
+      console.log('Profile loaded');
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -85,9 +150,58 @@ const EditProfileSingle = () => {
     }));
   };
 
-  const handleSave = () => {
-    console.log('Guardando perfil:', formData);
-    // Aquí iría la lógica para guardar en Supabase
+  const handleSave = async () => {
+    if (isLoading) return;
+    
+    setIsLoading(true);
+    setError('');
+    setSuccess('');
+    
+    try {
+      if (appConfig.features.demoCredentials) {
+        // Modo demo - guardar en localStorage
+        const demoUser = JSON.parse(localStorage.getItem('demo_user') || '{}');
+        const updatedUser = {
+          ...demoUser,
+          ...formData,
+          age: parseInt(formData.age) || undefined
+        };
+        localStorage.setItem('demo_user', JSON.stringify(updatedUser));
+        setSuccess('Perfil guardado exitosamente (modo demo)');
+      } else {
+        // Modo producción - guardar en Supabase
+        const nameParts = formData.name.split(' ');
+        const { error } = await supabase
+          .from('profiles')
+          .update({
+            first_name: nameParts[0] || '',
+            last_name: nameParts.slice(1).join(' ') || '',
+            age: parseInt(formData.age) || 25,
+            bio: formData.bio,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', userId);
+        
+        if (error) {
+          setError('Error al guardar perfil: ' + error.message);
+        } else {
+          setSuccess('Perfil guardado exitosamente');
+        }
+      }
+    } catch (error) {
+      setError('Error inesperado al guardar perfil');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  const handleImageUploaded = (url: string) => {
+    setFormData(prev => ({ ...prev, avatar: url }));
+    setSuccess('Imagen subida exitosamente');
+  };
+  
+  const handleImageError = (error: string) => {
+    setError(error);
   };
 
   const handleLogout = () => {
@@ -150,44 +264,31 @@ const EditProfileSingle = () => {
       </div>
 
       <div className="p-4 pb-24 space-y-6">
-        <div className="space-y-6">
-          {/* Foto principal */}
-          <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-glow">
-            <CardContent className="p-6">
-              <h3 className="text-lg font-semibold text-white mb-4">Foto de Perfil</h3>
-              <ImageUpload
-                currentImage={formData.avatar}
-                onImageChange={(url) => setFormData(prev => ({ ...prev, avatar: url }))}
-                className="mb-4"
+        {/* Información básica */}
+        <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-glow">
+          <CardContent className="p-6 space-y-4">
+            <h3 className="font-semibold text-white mb-4">Información básica</h3>
+            
+            <div>
+              <label className="block text-sm font-medium text-white mb-2">Nombre completo</label>
+              <Input
+                value={formData.name}
+                onChange={(e) => handleInputChange('name', e.target.value)}
+                placeholder="Tu nombre completo"
+                className="bg-white/20 border-white/30 text-white placeholder:text-white/70"
               />
-            </CardContent>
-          </Card>
-
-          {/* Información básica */}
-          <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-glow">
-            <CardContent className="p-6 space-y-4">
-              <h3 className="font-semibold text-white mb-4">Información básica</h3>
-              
-              <div>
-                <label className="block text-sm font-medium text-white mb-2">Nombre completo</label>
-                <Input
-                  value={formData.name}
-                  onChange={(e) => handleInputChange('name', e.target.value)}
-                  placeholder="Tu nombre completo"
-                  className="bg-white/20 border-white/30 text-white placeholder:text-white/70"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-white mb-2">Edad</label>
-                <Input
-                  type="number"
-                  value={formData.age}
-                  onChange={(e) => handleInputChange('age', e.target.value)}
-                  placeholder="Tu edad"
-                  className="bg-white/20 border-white/30 text-white placeholder:text-white/70"
-                />
-              </div>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-white mb-2">Edad</label>
+              <Input
+                type="number"
+                value={formData.age}
+                onChange={(e) => handleInputChange('age', e.target.value)}
+                placeholder="Tu edad"
+                className="bg-white/20 border-white/30 text-white placeholder:text-white/70"
+              />
+            </div>
           </CardContent>
         </Card>
 
@@ -285,11 +386,11 @@ const EditProfileSingle = () => {
             </div>
           </CardContent>
         </Card>
-        </div>
+      </div>
+
       </div>
 
       <Navigation />
-      </div>
       
       {/* Custom Styles */}
       <style>{`

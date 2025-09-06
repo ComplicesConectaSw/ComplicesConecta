@@ -299,6 +299,22 @@ const Auth = () => {
     setIsLoading(true);
 
     try {
+      // Verificar email único antes del registro
+      const { data: existingProfile } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('email', formData.email)
+        .single();
+
+      if (existingProfile) {
+        toast({
+          variant: "destructive",
+          title: "Email ya registrado",
+          description: "Este email ya está en uso. Intenta iniciar sesión o usa otro email.",
+        });
+        return;
+      }
+
       const redirectUrl = `${window.location.origin}/`;
       
       const { error } = await supabase.auth.signUp({
