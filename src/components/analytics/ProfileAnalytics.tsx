@@ -64,67 +64,67 @@ export const ProfileAnalytics = () => {
   return (
     <div className="space-y-6">
       {/* Overview Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <Card className="shadow-soft">
-          <CardContent className="p-4">
+          <CardContent className="p-3 sm:p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Vistas de Perfil</p>
-                <p className="text-2xl font-bold text-foreground">{mockAnalytics.overview.profileViews}</p>
+                <p className="text-xs sm:text-sm text-muted-foreground">Vistas de Perfil</p>
+                <p className="text-lg sm:text-2xl font-bold text-foreground">{mockAnalytics.overview.profileViews}</p>
               </div>
-              <Eye className="h-8 w-8 text-blue-600" />
+              <Eye className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
             </div>
             <div className="flex items-center mt-2">
-              <TrendingUp className="h-4 w-4 text-green-600 mr-1" />
-              <span className="text-sm text-green-600">+12% esta semana</span>
+              <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 text-green-600 mr-1" />
+              <span className="text-xs sm:text-sm text-green-600">+12% esta semana</span>
             </div>
           </CardContent>
         </Card>
 
         <Card className="shadow-soft">
-          <CardContent className="p-4">
+          <CardContent className="p-3 sm:p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Likes Recibidos</p>
-                <p className="text-2xl font-bold text-foreground">{mockAnalytics.overview.likes}</p>
+                <p className="text-xs sm:text-sm text-muted-foreground">Likes Recibidos</p>
+                <p className="text-lg sm:text-2xl font-bold text-foreground">{mockAnalytics.overview.likes}</p>
               </div>
-              <Heart className="h-8 w-8 text-red-600" />
+              <Heart className="h-6 w-6 sm:h-8 sm:w-8 text-red-600" />
             </div>
             <div className="flex items-center mt-2">
-              <TrendingUp className="h-4 w-4 text-green-600 mr-1" />
-              <span className="text-sm text-green-600">+8% esta semana</span>
+              <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 text-green-600 mr-1" />
+              <span className="text-xs sm:text-sm text-green-600">+8% esta semana</span>
             </div>
           </CardContent>
         </Card>
 
         <Card className="shadow-soft">
-          <CardContent className="p-4">
+          <CardContent className="p-3 sm:p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Matches</p>
-                <p className="text-2xl font-bold text-foreground">{mockAnalytics.overview.matches}</p>
+                <p className="text-xs sm:text-sm text-muted-foreground">Matches</p>
+                <p className="text-lg sm:text-2xl font-bold text-foreground">{mockAnalytics.overview.matches}</p>
               </div>
-              <Users className="h-8 w-8 text-purple-600" />
+              <Users className="h-6 w-6 sm:h-8 sm:w-8 text-purple-600" />
             </div>
             <div className="flex items-center mt-2">
-              <TrendingUp className="h-4 w-4 text-green-600 mr-1" />
-              <span className="text-sm text-green-600">+15% esta semana</span>
+              <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 text-green-600 mr-1" />
+              <span className="text-xs sm:text-sm text-green-600">+15% esta semana</span>
             </div>
           </CardContent>
         </Card>
 
         <Card className="shadow-soft">
-          <CardContent className="p-4">
+          <CardContent className="p-3 sm:p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Mensajes</p>
-                <p className="text-2xl font-bold text-foreground">{mockAnalytics.overview.messages}</p>
+                <p className="text-xs sm:text-sm text-muted-foreground">Mensajes</p>
+                <p className="text-lg sm:text-2xl font-bold text-foreground">{mockAnalytics.overview.messages}</p>
               </div>
-              <MessageCircle className="h-8 w-8 text-green-600" />
+              <MessageCircle className="h-6 w-6 sm:h-8 sm:w-8 text-green-600" />
             </div>
             <div className="flex items-center mt-2">
-              <TrendingUp className="h-4 w-4 text-green-600 mr-1" />
-              <span className="text-sm text-green-600">+5% esta semana</span>
+              <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 text-green-600 mr-1" />
+              <span className="text-xs sm:text-sm text-green-600">+5% esta semana</span>
             </div>
           </CardContent>
         </Card>
@@ -132,27 +132,27 @@ export const ProfileAnalytics = () => {
 
       {/* Profile Score */}
       <Card className="shadow-soft">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Target className="h-5 w-5" />
+        <CardHeader className="pb-3 sm:pb-6">
+          <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+            <Target className="h-4 w-4 sm:h-5 sm:w-5" />
             Puntuación del Perfil
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-between mb-4">
+        <CardContent className="pt-0">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-3">
             <div>
-              <p className="text-3xl font-bold text-foreground">{mockAnalytics.overview.profileScore}/100</p>
+              <p className="text-2xl sm:text-3xl font-bold text-foreground">{mockAnalytics.overview.profileScore}/100</p>
               <Badge variant="secondary" className={getScoreColor(mockAnalytics.overview.profileScore)}>
                 {getScoreBadge(mockAnalytics.overview.profileScore)}
               </Badge>
             </div>
-            <div className="text-right">
-              <p className="text-sm text-muted-foreground">vs. promedio</p>
-              <p className="text-lg font-semibold text-green-600">+18 puntos</p>
+            <div className="text-left sm:text-right">
+              <p className="text-xs sm:text-sm text-muted-foreground">vs. promedio</p>
+              <p className="text-base sm:text-lg font-semibold text-green-600">+18 puntos</p>
             </div>
           </div>
-          <Progress value={mockAnalytics.overview.profileScore} className="h-3" />
-          <p className="text-sm text-muted-foreground mt-2">
+          <Progress value={mockAnalytics.overview.profileScore} className="h-2 sm:h-3" />
+          <p className="text-xs sm:text-sm text-muted-foreground mt-2">
             Tu perfil está en el top 15% de la plataforma
           </p>
         </CardContent>
@@ -160,20 +160,20 @@ export const ProfileAnalytics = () => {
 
       {/* Detailed Analytics */}
       <Tabs defaultValue="engagement" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-3 bg-muted/50 rounded-2xl p-2">
-          <TabsTrigger value="engagement" className="rounded-xl">
+        <TabsList className="grid w-full grid-cols-3 bg-muted/50 rounded-2xl p-1 sm:p-2">
+          <TabsTrigger value="engagement" className="rounded-xl text-xs sm:text-sm">
             Engagement
           </TabsTrigger>
-          <TabsTrigger value="demographics" className="rounded-xl">
+          <TabsTrigger value="demographics" className="rounded-xl text-xs sm:text-sm">
             Demografía
           </TabsTrigger>
-          <TabsTrigger value="photos" className="rounded-xl">
+          <TabsTrigger value="photos" className="rounded-xl text-xs sm:text-sm">
             Fotos
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="engagement" className="space-y-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
             <Card className="shadow-soft">
               <CardHeader>
                 <CardTitle>Tasa de Respuesta</CardTitle>

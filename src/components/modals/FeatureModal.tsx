@@ -74,41 +74,41 @@ export const FeatureModal: React.FC<FeatureModalProps> = ({ isOpen, onClose, fea
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl bg-gradient-to-br from-purple-900/95 to-pink-900/95 backdrop-blur-sm border border-pink-300/30 text-white">
+      <DialogContent className="max-w-sm sm:max-w-md lg:max-w-2xl bg-gradient-to-br from-purple-900/95 to-pink-900/95 backdrop-blur-sm border border-pink-300/30 text-white max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <div className="flex items-center gap-4 mb-4">
-            <div className="bg-primary/20 p-4 rounded-full">
-              <IconComponent className="h-8 w-8 text-primary" />
+          <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 mb-4">
+            <div className="bg-primary/20 p-3 sm:p-4 rounded-full">
+              <IconComponent className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
             </div>
-            <div>
-              <DialogTitle className="text-2xl font-bold text-white">
+            <div className="text-center sm:text-left">
+              <DialogTitle className="text-lg sm:text-2xl font-bold text-white">
                 {data.title}
               </DialogTitle>
-              <DialogDescription className="text-pink-200 text-lg">
+              <DialogDescription className="text-pink-200 text-sm sm:text-lg">
                 {data.description}
               </DialogDescription>
             </div>
           </div>
         </DialogHeader>
 
-        <div className="space-y-6">
-          <div className="bg-black/30 rounded-lg p-6 border border-pink-300/20">
-            <h3 className="text-xl font-semibold mb-4 text-pink-200">Características Principales</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="space-y-4 sm:space-y-6">
+          <div className="bg-black/30 rounded-lg p-4 sm:p-6 border border-pink-300/20">
+            <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-pink-200">Características Principales</h3>
+            <div className="grid grid-cols-1 gap-2 sm:gap-3">
               {data.features.map((feature, index) => (
                 <div key={index} className="flex items-start gap-2">
-                  <span className="text-sm text-white/90">{feature}</span>
+                  <span className="text-xs sm:text-sm text-white/90 leading-relaxed">{feature}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="bg-gradient-to-r from-pink-500/20 to-purple-500/20 rounded-lg p-6 border border-pink-300/20">
-            <h3 className="text-xl font-semibold mb-3 text-pink-200">¿Por qué es importante?</h3>
-            <p className="text-white/90 leading-relaxed">{data.benefits}</p>
+          <div className="bg-gradient-to-r from-pink-500/20 to-purple-500/20 rounded-lg p-4 sm:p-6 border border-pink-300/20">
+            <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3 text-pink-200">¿Por qué es importante?</h3>
+            <p className="text-white/90 leading-relaxed text-xs sm:text-sm">{data.benefits}</p>
           </div>
 
-          <div className="flex gap-3 justify-end">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-end">
             <Button
               variant="outline"
               onClick={onClose}

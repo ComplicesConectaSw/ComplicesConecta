@@ -36,15 +36,15 @@ export const ChatWindow = ({ chat, messages, onSendMessage, isTyping, onGenerate
   return (
     <div className="bg-card-gradient rounded-2xl shadow-soft h-full flex flex-col">
       {/* Chat Header */}
-      <div className="p-4 border-b border-border flex items-center justify-between">
-        <div className="flex items-center space-x-3">
+      <div className="p-3 sm:p-4 border-b border-border flex items-center justify-between">
+        <div className="flex items-center space-x-2 sm:space-x-3">
           <div className="relative">
-            <Avatar className="h-10 w-10">
+            <Avatar className="h-8 w-8 sm:h-10 sm:w-10">
               <AvatarImage src={chat.image} alt={chat.name} />
               <AvatarFallback>{chat.name[0]}</AvatarFallback>
             </Avatar>
             {chat.isOnline && (
-              <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-background" />
+              <div className="absolute -bottom-0.5 -right-0.5 sm:-bottom-1 sm:-right-1 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-green-500 rounded-full border-2 border-background" />
             )}
           </div>
           <div>
@@ -55,34 +55,34 @@ export const ChatWindow = ({ chat, messages, onSendMessage, isTyping, onGenerate
           </div>
         </div>
 
-        <div className="flex items-center space-x-2">
-          <Button variant="ghost" size="icon" aria-label="Llamada de voz">
-            <Phone className="h-4 w-4" />
+        <div className="flex items-center space-x-1 sm:space-x-2">
+          <Button variant="ghost" size="sm" className="h-8 w-8 sm:h-10 sm:w-10" aria-label="Llamada de voz">
+            <Phone className="h-3 w-3 sm:h-4 sm:w-4" />
           </Button>
-          <Button variant="ghost" size="icon" aria-label="Videollamada">
-            <Video className="h-4 w-4" />
+          <Button variant="ghost" size="sm" className="h-8 w-8 sm:h-10 sm:w-10" aria-label="Videollamada">
+            <Video className="h-3 w-3 sm:h-4 sm:w-4" />
           </Button>
-          <Button variant="ghost" size="icon" aria-label="Más opciones">
-            <MoreVertical className="h-4 w-4" />
+          <Button variant="ghost" size="sm" className="h-8 w-8 sm:h-10 sm:w-10" aria-label="Más opciones">
+            <MoreVertical className="h-3 w-3 sm:h-4 sm:w-4" />
           </Button>
         </div>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 sm:space-y-4">
         {messages.map((message) => (
           <div
             key={message.id}
             className={`flex ${message.senderId === 0 ? 'justify-end' : 'justify-start'}`}
           >
             <div
-              className={`max-w-[80%] rounded-2xl px-4 py-2 ${
+              className={`max-w-[85%] sm:max-w-[80%] rounded-2xl px-3 py-2 sm:px-4 sm:py-2 ${
                 message.senderId === 0
                   ? 'bg-primary text-primary-foreground ml-auto'
                   : 'bg-muted text-muted-foreground'
               }`}
             >
-              <p className="text-sm">{message.content}</p>
+              <p className="text-xs sm:text-sm leading-relaxed">{message.content}</p>
               <p className={`text-xs mt-1 ${
                 message.senderId === 0 ? 'text-primary-foreground/70' : 'text-muted-foreground/70'
               }`}>
@@ -95,7 +95,7 @@ export const ChatWindow = ({ chat, messages, onSendMessage, isTyping, onGenerate
       </div>
 
       {/* Message Input */}
-      <form onSubmit={handleSubmit} className="p-4 border-t border-border">
+      <form onSubmit={handleSubmit} className="p-3 sm:p-4 border-t border-border">
         <div className="flex items-end space-x-2">
           <div className="flex space-x-1">
             {onGenerateSuggestion && (

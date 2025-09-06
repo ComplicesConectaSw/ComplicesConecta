@@ -141,7 +141,7 @@ export function ImageGallery({ profileId, isOwner = false, showUpload = false }:
             <Unlock className="h-5 w-5" />
             Galería Pública ({publicImages.length})
           </h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
             {publicImages.map((image) => (
               <ImageCard
                 key={image.id}
@@ -217,22 +217,22 @@ export function ImageGallery({ profileId, isOwner = false, showUpload = false }:
       {/* Modal de imagen */}
       {selectedImage && (
         <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
-          <DialogContent className="max-w-4xl">
+          <DialogContent className="max-w-sm sm:max-w-md lg:max-w-4xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle className="flex items-center gap-2">
+              <DialogTitle className="flex items-center gap-2 text-sm sm:text-base">
                 {selectedImage.is_public ? (
-                  <Unlock className="h-5 w-5" />
+                  <Unlock className="h-4 w-4 sm:h-5 sm:w-5" />
                 ) : (
-                  <Lock className="h-5 w-5" />
+                  <Lock className="h-4 w-4 sm:h-5 sm:w-5" />
                 )}
                 {selectedImage.title || 'Imagen'}
               </DialogTitle>
             </DialogHeader>
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               <img
                 src={selectedImage.url}
                 alt={selectedImage.title || 'Imagen'}
-                className="w-full max-h-96 object-contain rounded-lg"
+                className="w-full max-h-60 sm:max-h-80 lg:max-h-96 object-contain rounded-lg"
               />
               {selectedImage.description && (
                 <p className="text-muted-foreground">{selectedImage.description}</p>

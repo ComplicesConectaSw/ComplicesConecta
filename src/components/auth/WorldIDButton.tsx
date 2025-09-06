@@ -144,9 +144,9 @@ export const WorldIDButton: React.FC<WorldIDButtonProps> = ({
         disabled
         className={`bg-green-50 border-green-200 text-green-700 hover:bg-green-50 ${className}`}
       >
-        <CheckCircle className="w-4 h-4 mr-2" />
-        Verificado con World ID
-        <Badge variant="secondary" className="ml-2 bg-green-100 text-green-800">
+        <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+        <span className="text-xs sm:text-sm">Verificado con World ID</span>
+        <Badge variant="secondary" className="ml-1 sm:ml-2 bg-green-100 text-green-800 text-xs">
           ✓
         </Badge>
       </Button>
@@ -171,15 +171,15 @@ export const WorldIDButton: React.FC<WorldIDButtonProps> = ({
         >
           {isVerifying ? (
             <>
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              Verificando...
+              <Loader2 className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 animate-spin" />
+              <span className="text-xs sm:text-sm">Verificando...</span>
             </>
           ) : (
             <>
               <div className="flex items-center">
-                <Globe className="w-4 h-4 mr-2" />
-                <Shield className="w-4 h-4 mr-2" />
-                Verificar con World ID
+                <Globe className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                <Shield className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                <span className="text-xs sm:text-sm">Verificar con World ID</span>
               </div>
               <Badge 
                 variant="secondary" 
