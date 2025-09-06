@@ -69,7 +69,7 @@ const ProfileSingle: React.FC = () => {
     return (
       <ProfileLoadingScreen 
         onComplete={() => setIsLoading(false)}
-        profileName={profile?.firstName || profile?.name || "Usuario"}
+        profileName={profile?.first_name || "Usuario"}
         profileType="single"
       />
     );
@@ -107,7 +107,7 @@ const ProfileSingle: React.FC = () => {
             <ArrowLeft className="h-5 w-5" />
             <span className="ml-2">Regresar</span>
           </Button>
-          <h1 className="text-lg font-semibold text-white">{profile?.firstName || profile?.name || 'Mi Perfil'}</h1>
+          <h1 className="text-3xl font-bold text-white mb-2">{profile.first_name}, {profile.age}</h1>
           <div className="flex gap-2">
             <Button variant="ghost" size="sm" className="hover:bg-white/20">
               <Share2 className="h-5 w-5 text-white" />
@@ -132,7 +132,7 @@ const ProfileSingle: React.FC = () => {
             <div className="aspect-[3/4] rounded-t-lg overflow-hidden mb-4 relative bg-gray-100">
               <img 
                 src="https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=500&h=625&fit=crop&crop=face" 
-                alt={profile.name || profile.firstName || 'Perfil'} 
+                alt={profile.first_name || 'Perfil'} 
                 className="w-full h-full object-cover"
                 onLoad={() => console.log('Imagen cargada correctamente')}
                 onError={(e) => {
@@ -172,8 +172,8 @@ const ProfileSingle: React.FC = () => {
               <div className="space-y-3 mt-4">
                 <Button 
                   onClick={() => {
-                    console.log('Enviando mensaje a', profile.name);
-                    alert(`Mensaje enviado a ${profile.name || profile.firstName}`);
+                    console.log('Enviando mensaje a', profile.first_name);
+                    alert(`Mensaje enviado a ${profile.first_name}`);
                   }}
                   className="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:from-pink-600 hover:to-purple-700"
                 >
@@ -182,8 +182,8 @@ const ProfileSingle: React.FC = () => {
                 </Button>
                 <Button 
                   onClick={() => {
-                    console.log('Me gusta', profile.name);
-                    alert(`¡Has dado like a ${profile.name || profile.firstName}!`);
+                    console.log('Me gusta', profile.first_name);
+                    alert(`¡Has dado like a ${profile.first_name}!`);
                   }}
                   className="w-full bg-gradient-to-r from-red-500 to-pink-600 text-white hover:from-red-600 hover:to-pink-700"
                 >
@@ -192,8 +192,8 @@ const ProfileSingle: React.FC = () => {
                 </Button>
                 <Button 
                   onClick={() => {
-                    console.log('Reportando perfil de', profile.name);
-                    if (confirm(`¿Estás seguro de que quieres reportar el perfil de ${profile.name || profile.firstName}?`)) {
+                    console.log('Reportando perfil de', profile.first_name);
+                    if (confirm(`¿Estás seguro de que quieres reportar el perfil de ${profile.first_name}?`)) {
                       alert('Perfil reportado. Gracias por ayudarnos a mantener la comunidad segura.');
                     }
                   }}
@@ -243,7 +243,7 @@ const ProfileSingle: React.FC = () => {
             <Card className="bg-gradient-to-br from-purple-900/95 to-pink-900/95 backdrop-blur-sm shadow-glow border-0">
               <CardContent className="p-6">
                 <div className="text-center mb-6">
-                  <h2 className="text-2xl font-bold text-white mb-2">{profile.name || profile.firstName || 'Usuario'}</h2>
+                  <h3 className="text-lg font-semibold text-white mb-2">{profile.first_name}</h3>
                   <div className="flex items-center justify-center space-x-4 text-white mb-4">
                     <span className="flex items-center">
                       <MapPin className="h-4 w-4 mr-1" />
@@ -265,7 +265,7 @@ const ProfileSingle: React.FC = () => {
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div className="bg-purple-800/30 rounded-lg p-3 border border-purple-300/30">
                       <span className="font-medium text-white">Edad:</span>
-                      <p className="text-white/90">{profile.age} años</p>
+                      <span className="text-white">{profile.age}</span>
                     </div>
                     <div className="bg-purple-800/30 rounded-lg p-3 border border-purple-300/30">
                       <span className="font-medium text-white">Buscando:</span>

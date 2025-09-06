@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Heart, MessageCircle, MapPin, Verified, Star, Wifi, WifiOff, X, Zap } from "lucide-react";
 import { useUserOnlineStatus } from "@/hooks/useOnlineStatus";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
@@ -22,8 +23,9 @@ interface ProfileCardProps {
 
 export const ProfileCard = ({ profile, onLike, onSuperLike, onOpenModal }: ProfileCardProps) => {
   const { getUserOnlineStatus, getLastSeenTime } = useUserOnlineStatus();
-  const isOnline = profile.isOnline ?? getUserOnlineStatus(profile.id);
-  const lastSeen = profile.lastSeen ?? getLastSeenTime(profile.id);
+  const profileId = String(profile.id);
+  const isOnline = profile.isOnline ?? getUserOnlineStatus(profileId);
+  const lastSeen = profile.lastSeen ?? getLastSeenTime(profileId);
   const { id, name, age, location, interests, image, rating, isOnline: onlineStatus = false } = profile;
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -104,6 +106,24 @@ export const ProfileCard = ({ profile, onLike, onSuperLike, onOpenModal }: Profi
                   Verificado
                 </div>
               )}
+              {(interests || []).length > 3 ? (
+                <>
+                  {(interests || []).slice(0, 3).map((interest, index) => (
+                    <Badge key={index} variant="secondary" className="text-xs px-2 py-1 bg-white/20 text-white border-white/30">
+                      {interest}
+                    </Badge>
+                  ))}
+                  <Badge variant="secondary" className="text-xs px-2 py-1 bg-white/20 text-white border-white/30">
+                    +{(interests || []).length - 3} más
+                  </Badge>
+                </>
+              ) : (
+                (interests || []).map((interest, index) => (
+                  <Badge key={index} variant="secondary" className="text-xs px-2 py-1 bg-white/20 text-white border-white/30">
+                    {interest}
+                  </Badge>
+                ))
+              )}
               <div className={`px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1 ${
                 isOnline 
                   ? 'bg-green-500 text-white' 
@@ -158,7 +178,7 @@ export const ProfileCard = ({ profile, onLike, onSuperLike, onOpenModal }: Profi
 
         {/* Interests */}
         <div className="flex flex-wrap gap-2 mb-4">
-          {interests.slice(0, 3).map((interest: string, index: number) => (
+          {interests?.slice(0, 3).map((interest: string, index: number) => (
             <span 
               key={index}
               className="px-3 py-1 bg-secondary text-secondary-foreground text-xs rounded-full transition-colors hover:bg-primary hover:text-primary-foreground"
@@ -166,7 +186,7 @@ export const ProfileCard = ({ profile, onLike, onSuperLike, onOpenModal }: Profi
               {interest}
             </span>
           ))}
-          {interests.length > 3 && (
+          {interests && interests.length > 3 && (
             <span className="px-3 py-1 bg-muted text-muted-foreground text-xs rounded-full">
               +{interests.length - 3}
             </span>

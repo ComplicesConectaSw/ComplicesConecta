@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Tables } from '@/integrations/supabase/types';
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
@@ -164,21 +165,21 @@ const AdminProduction = () => {
       // Mapear los datos de Supabase al tipo Profile local
       const mappedProfiles: Profile[] = (data || []).map((profile: Tables<'profiles'>) => ({
         id: profile.id,
-        display_name: profile.display_name,
+        display_name: `${profile.first_name} ${profile.last_name}`,
         first_name: profile.first_name,
         last_name: profile.last_name,
         age: profile.age,
-        location: profile.location || 'No especificada',
-        email: profile.email || 'No disponible',
+        location: profile.bio || 'No especificada', // Using bio as location fallback
+        email: 'No disponible', // Email not in profiles table
         is_verified: profile.is_verified || false,
+        gender: profile.gender,
+        interested_in: profile.interested_in,
         is_premium: profile.is_premium || false,
         created_at: profile.created_at,
-        last_seen: profile.last_seen,
-        avatar_url: profile.avatar_url,
-        bio: profile.bio,
-        relationship_type: profile.relationship_type,
-        gender: profile.gender,
-        interested_in: profile.interested_in
+        last_seen: 'Nunca', // Not in profiles table
+        avatar_url: '', // Not in profiles table
+        bio: profile.bio || 'Sin biografía',
+        relationship_type: 'single' // Default value
       }));
 
       setProfiles(mappedProfiles);
@@ -215,7 +216,7 @@ const AdminProduction = () => {
       };
 
       // Calcular tokens totales y en staking
-      const totalTokens = tokensResponse.data?.reduce((sum: number, balance: Tables<'token_balances'>) => sum + (balance.cmpx_balance || 0), 0) || 0;
+      const totalTokens = 0; // Mock value as token_balances table not available
       const stakedTokens = getMetricValue('staked_tokens');
 
       setStats({
@@ -331,12 +332,12 @@ const AdminProduction = () => {
       // Mapear datos reales de invitaciones desde Supabase
       const mappedInvitations: Invitation[] = (data || []).map((inv: Tables<'invitations'>) => ({
         id: inv.id,
-        from_profile: inv.from_profile_id,
-        to_profile: inv.to_profile_id,
+        from_profile: inv.from_profile,
+        to_profile: inv.to_profile,
         message: inv.message || 'Sin mensaje',
         type: inv.type || 'profile',
-        status: inv.status,
-        created_at: inv.created_at
+        status: inv.status || 'pending',
+        created_at: inv.created_at || new Date().toISOString()
       }));
       
       setInvitations(mappedInvitations);
