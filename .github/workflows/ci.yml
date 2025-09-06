@@ -226,7 +226,7 @@ jobs:
     - name: 🚀 Deploy a Vercel
       uses: amondnet/vercel-action@v25
       env:
-        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        VERCEL_TOKEN: wK9kjpeuIHwpPc6AmKgdjBWH
         VERCEL_ORG_ID: team_76B9uYcK2KACzNNkUspngLLG
         VERCEL_PROJECT_ID: prj_G1tZCHwwLIrpHYjmYyHCRY5V7SAq
       with:
