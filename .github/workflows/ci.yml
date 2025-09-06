@@ -247,9 +247,10 @@ jobs:
     - name: 🚀 Deploy a Vercel
       uses: amondnet/vercel-action@v25
       env:
-        VERCEL_TOKEN: wK9kjpeuIHwpPc6AmKgdjBWH
+        VERCEL_TOKEN: 2w5WOqoEW3eA2Sfu0uEZGYP6
         VERCEL_ORG_ID: team_76B9uYcK2KACzNNkUspngLLG
         VERCEL_PROJECT_ID: prj_G1tZCHwwLIrpHYjmYyHCRY5V7SAq
       with:
+        vercel-token: 2w5WOqoEW3eA2Sfu0uEZGYP6
         vercel-args: '--prod'
         working-directory: ./
