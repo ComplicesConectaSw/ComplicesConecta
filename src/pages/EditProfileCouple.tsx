@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Save, Camera, X, Users, MapPin, AlertCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
+import type { Tables } from '@/integrations/supabase/types';
 import { generateMockCouple } from "@/lib/data";
 import { lifestyleInterests } from "@/lib/lifestyle-interests";
 import { useGeolocation } from "@/hooks/useGeolocation";
@@ -161,7 +162,7 @@ const EditProfileCouple = () => {
     if (locationError) {
       setLocationStatus('error');
     }
-  }, [location, locationError]);
+  }, [location, locationError, setLocationStatus]);
   
   const handleImageUpload = (partner: 'partner1' | 'partner2', type: 'public' | 'private' | 'avatar') => {
     // Simulación de subida de imagen

@@ -1,4 +1,11 @@
 // Sistema de compatibilidad y matching basado en intereses
+// Tipo Profile local para matching
+interface Profile {
+  id: string;
+  interests?: string[];
+  [key: string]: any;
+}
+
 export interface MatchScore {
   profileId: string;
   compatibilityScore: number;
@@ -77,7 +84,7 @@ export function generateMatchReasons(sharedInterests: string[]): string[] {
 // Calcular score completo de match
 export function calculateMatchScore(
   userInterests: string[], 
-  profile: any
+  profile: Profile
 ): MatchScore {
   const profileInterests = profile.interests || [];
   const compatibilityScore = calculateCompatibility(userInterests, profileInterests);
@@ -95,9 +102,9 @@ export function calculateMatchScore(
 // Filtrar y ordenar perfiles por compatibilidad
 export function filterAndSortByCompatibility(
   userInterests: string[], 
-  profiles: any[], 
+  profiles: Profile[], 
   minCompatibility: number = 20
-): any[] {
+): Profile[] {
   return profiles
     .map(profile => ({
       ...profile,
@@ -110,9 +117,9 @@ export function filterAndSortByCompatibility(
 // Obtener matches recomendados
 export function getRecommendedMatches(
   userInterests: string[], 
-  profiles: any[], 
+  profiles: Profile[], 
   limit: number = 10
-): any[] {
+): Profile[] {
   const sortedProfiles = filterAndSortByCompatibility(userInterests, profiles);
   return sortedProfiles.slice(0, limit);
 }

@@ -6,9 +6,17 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
 interface ProfileCardProps {
-  profile: any;
+  profile: {
+    id: string | number;
+    name?: string;
+    age?: number;
+    location?: string;
+    image?: string;
+    interests?: string[];
+    [key: string]: any;
+  };
   onLike?: (id: string) => void;
-  onSuperLike?: (profile: any) => void;
+  onSuperLike?: (profile: ProfileCardProps['profile']) => void;
   onOpenModal: () => void;
 }
 

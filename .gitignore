@@ -86,6 +86,22 @@ token-system-spec-updated/docs/
 worldid-integration/prompts/INTEGRATION_PROMPT.md
 worldid-integration/token-system-spec/DEV_README.md
 
+# Scripts obsoletos y archivos temporales
+scripts/audit.js
+scripts/execute-migrations.js
+scripts/migrate.js
+scripts/run-migrations.ts
+scripts/import-templates.ts
+
+# Reportes y archivos temporales de desarrollo
+reports/
+dev-scripts/
+*.patch
+*.diff
+*_backup.*
+*_old.*
+*_temp.*
+
 # Archivos temporales de migración
 step*.sql
 *_create_*.sql

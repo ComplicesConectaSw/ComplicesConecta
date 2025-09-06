@@ -20,7 +20,7 @@ import { ProfileLoadingScreen } from '@/components/ProfileLoadingScreen';
 const ProfileSingle: React.FC = () => {
   const navigate = useNavigate();
   const { features } = useFeatures();
-  const [profile, setProfile] = useState<any>(null);
+  const [profile, setProfile] = useState<Tables<'profiles'> | null>(null);
   const [isOwnProfile, setIsOwnProfile] = useState(true); // Por defecto es perfil propio
   const [privacySettings, setPrivacySettings] = useState<ProfilePrivacySettings>(mockPrivacySettings);
   const [showPrivacySettings, setShowPrivacySettings] = useState(false);
@@ -43,11 +43,11 @@ const ProfileSingle: React.FC = () => {
     setTimeout(() => {
       // Si es perfil single, usar datos del usuario demo
       if (user.accountType === 'single') {
-        setProfile(user as any);
+        setProfile(user as Tables<'profiles'>);
       } else {
         // Para otros tipos, generar perfil mock
         const mockProfile = generateMockSingle();
-        setProfile(mockProfile as any);
+        setProfile(mockProfile as Tables<'profiles'>);
       }
       setIsLoading(false);
     }, 2500);

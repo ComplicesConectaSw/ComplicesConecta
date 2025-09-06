@@ -162,7 +162,7 @@ const AdminProduction = () => {
       }
 
       // Mapear los datos de Supabase al tipo Profile local
-      const mappedProfiles: Profile[] = (data || []).map((profile: any) => ({
+      const mappedProfiles: Profile[] = (data || []).map((profile: Tables<'profiles'>) => ({
         id: profile.id,
         display_name: profile.display_name,
         first_name: profile.first_name,
@@ -210,12 +210,12 @@ const AdminProduction = () => {
 
       // Obtener valores de métricas específicas
       const getMetricValue = (name: string) => {
-        const metric = metricsResponse.data?.find((m: any) => m.metric_name === name);
+        const metric = metricsResponse.data?.find((m: Tables<'app_metrics'>) => m.metric_name === name);
         return metric?.metric_value || 0;
       };
 
       // Calcular tokens totales y en staking
-      const totalTokens = tokensResponse.data?.reduce((sum: number, balance: any) => sum + (balance.cmpx_balance || 0), 0) || 0;
+      const totalTokens = tokensResponse.data?.reduce((sum: number, balance: Tables<'token_balances'>) => sum + (balance.cmpx_balance || 0), 0) || 0;
       const stakedTokens = getMetricValue('staked_tokens');
 
       setStats({
@@ -270,7 +270,7 @@ const AdminProduction = () => {
       }
 
       // Mapear datos de Supabase al tipo FAQItem local
-      const mappedFaqItems: FAQItem[] = (data || []).map((item: any) => ({
+      const mappedFaqItems: FAQItem[] = (data || []).map((item: Tables<'faq_items'>) => ({
         id: item.id,
         question: item.question,
         answer: item.answer,
@@ -329,7 +329,7 @@ const AdminProduction = () => {
       }
 
       // Mapear datos reales de invitaciones desde Supabase
-      const mappedInvitations: Invitation[] = (data || []).map((inv: any) => ({
+      const mappedInvitations: Invitation[] = (data || []).map((inv: Tables<'invitations'>) => ({
         id: inv.id,
         from_profile: inv.from_profile_id,
         to_profile: inv.to_profile_id,

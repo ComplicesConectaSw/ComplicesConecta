@@ -11,6 +11,7 @@ import ImageUpload from "@/components/ImageUpload";
 import { supabase } from "@/integrations/supabase/client";
 import { appConfig } from "@/lib/app-config";
 import Navigation from "@/components/Navigation";
+import type { Tables } from '@/integrations/supabase/types';
 
 const EditProfileSingle = () => {
   const navigate = useNavigate();
