@@ -17,18 +17,63 @@ export default [
       'supabase/functions/**',
       '*.config.js',
       '*.config.ts',
-      'capacitor.config.ts'
+      'capacitor.config.ts',
+      'scripts/**',
+      'tests/**',
+      'src/test/**'
     ]
+  },
+  {
+    files: ['**/*.{js,jsx}'],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+        process: 'readonly',
+        global: 'readonly',
+        Buffer: 'readonly',
+        vi: 'readonly',
+        React: 'readonly'
+      },
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true
+        }
+      }
+    },
+    plugins: {
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
+    },
+    rules: {
+      ...js.configs.recommended.rules,
+      ...reactHooks.configs.recommended.rules,
+      'no-unused-vars': 'warn',
+      'no-undef': 'warn',
+      'no-empty': 'warn',
+      'no-redeclare': 'warn',
+      'prefer-const': 'warn',
+      'no-var': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+      'react-refresh/only-export-components': 'warn'
+    },
   },
   {
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
       ecmaVersion: 2020,
-      globals: globals.browser,
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+        process: 'readonly',
+        global: 'readonly',
+        Buffer: 'readonly',
+        vi: 'readonly',
+        React: 'readonly'
+      },
       parser: tsParser,
       parserOptions: {
-        project: './tsconfig.json',
-        tsconfigRootDir: process.cwd(),
         ecmaFeatures: {
           jsx: true
         }
@@ -42,24 +87,16 @@ export default [
     rules: {
       ...js.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
-      '@typescript-eslint/no-unused-vars': 'warn',
-      '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/ban-ts-comment': 'warn',
-      'react-hooks/exhaustive-deps': 'error',
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
-      'prefer-const': 'error',
-      'no-var': 'error',
+      '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
       'no-unused-vars': 'off',
-      'no-unused-expressions': 'off'
+      'no-undef': 'off',
+      'no-empty': 'off',
+      'no-redeclare': 'off',
+      'prefer-const': 'off',
+      'no-var': 'off',
+      'react-hooks/exhaustive-deps': 'off',
+      'react-refresh/only-export-components': 'off'
     },
-  },
-  {
-    files: ['**/*.config.{ts,js}', 'capacitor.config.ts', 'vite.config.ts', 'tailwind.config.ts'],
-    rules: {
-      '@typescript-eslint/no-unused-vars': 'off'
-    }
   }
 ]

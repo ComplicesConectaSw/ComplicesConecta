@@ -47,7 +47,6 @@ export const LocationSelector = ({ onLocationChange, initialRadius = 10 }: Locat
         radius: radius[0]
       });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location, radius, address, onLocationChange]);
 
   const handleUseCurrentLocation = async () => {
