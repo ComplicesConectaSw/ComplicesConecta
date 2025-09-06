@@ -159,7 +159,7 @@ const Auth = () => {
           ...(normalizedEmail.includes('djwacko28') && {
             id: 'admin-demo-id',
             accountType: 'admin',
-            role: 'administrador',
+            role: 'admin',
             displayName: 'Administrador Demo',
             permissions: ['admin', 'moderator', 'user']
           }),
@@ -282,11 +282,12 @@ const Auth = () => {
         });
       }
 
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
       console.error('❌ Error de autenticación:', error);
       toast({
         title: "Error al iniciar sesión",
-        description: error.message || "Credenciales incorrectas. Por favor, intenta de nuevo.",
+        description: errorMessage || "Credenciales incorrectas. Por favor, intenta de nuevo.",
         variant: "destructive"
       });
     } finally {
@@ -300,11 +301,22 @@ const Auth = () => {
 
     try {
       // Verificar email único antes del registro
-      const { data: existingProfile } = await supabase
+      const { data: existingProfile, error: checkError } = await supabase
         .from('profiles')
-        .select('id')
+        .select('id, email')
         .eq('email', formData.email)
-        .single();
+        .maybeSingle();
+
+      // Si hay error diferente a "no encontrado", manejarlo
+      if (checkError && checkError.code !== 'PGRST116') {
+        console.error('Error verificando email:', checkError);
+        toast({
+          variant: "destructive",
+          title: "Error de validación",
+          description: "No se pudo verificar el email. Intenta nuevamente.",
+        });
+        return;
+      }
 
       if (existingProfile) {
         toast({

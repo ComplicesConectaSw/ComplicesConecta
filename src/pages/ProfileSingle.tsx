@@ -11,6 +11,7 @@ import { ArrowLeft, Heart, MessageCircle, MapPin, Calendar, Shield, Eye, EyeOff,
 import { Header } from '@/components/Header';
 import Navigation from '@/components/Navigation';
 import { generateMockSingle, mockPrivacySettings, type ProfilePrivacySettings } from '@/lib/data';
+import type { Tables } from '@/integrations/supabase/types';
 import { useFeatures } from '@/hooks/useFeatures';
 import Gallery from '@/components/profile/Gallery';
 import { InvitationDialog } from '@/components/invitations/InvitationDialog';
@@ -42,17 +43,17 @@ const ProfileSingle: React.FC = () => {
     setTimeout(() => {
       // Si es perfil single, usar datos del usuario demo
       if (user.accountType === 'single') {
-        setProfile(user);
+        setProfile(user as any);
       } else {
         // Para otros tipos, generar perfil mock
         const mockProfile = generateMockSingle();
-        setProfile(mockProfile);
+        setProfile(mockProfile as any);
       }
       setIsLoading(false);
     }, 2500);
   }, [navigate]);
 
-  const updatePrivacySetting = (key: keyof ProfilePrivacySettings, value: any) => {
+  const updatePrivacySetting = (key: keyof ProfilePrivacySettings, value: boolean | string) => {
     setPrivacySettings(prev => ({
       ...prev,
       [key]: value

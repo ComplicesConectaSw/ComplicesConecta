@@ -38,245 +38,6 @@ export type Database = {
         }
         Relationships: []
       }
-      chat_invitations: {
-        Row: {
-          created_at: string
-          from_profile: string
-          id: string
-          room_id: string
-          status: string
-          to_profile: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          from_profile: string
-          id?: string
-          room_id: string
-          status?: string
-          to_profile: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          from_profile?: string
-          id?: string
-          room_id?: string
-          status?: string
-          to_profile?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "chat_invitations_room_id_fkey"
-            columns: ["room_id"]
-            isOneToOne: false
-            referencedRelation: "chat_rooms"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
-      chat_members: {
-        Row: {
-          id: string
-          is_muted: boolean
-          joined_at: string
-          profile_id: string
-          role: string
-          room_id: string
-        }
-        Insert: {
-          id?: string
-          is_muted?: boolean
-          joined_at?: string
-          profile_id: string
-          role?: string
-          room_id: string
-        }
-        Update: {
-          id?: string
-          is_muted?: boolean
-          joined_at?: string
-          profile_id?: string
-          role?: string
-          room_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "chat_members_room_id_fkey"
-            columns: ["room_id"]
-            isOneToOne: false
-            referencedRelation: "chat_rooms"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
-      chat_rooms: {
-        Row: {
-          created_at: string
-          created_by: string
-          description: string | null
-          id: string
-          is_active: boolean
-          is_public: boolean
-          name: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          created_by: string
-          description?: string | null
-          id?: string
-          is_active?: boolean
-          is_public?: boolean
-          name: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          created_by?: string
-          description?: string | null
-          id?: string
-          is_active?: boolean
-          is_public?: boolean
-          name?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      gallery_access_requests: {
-        Row: {
-          created_at: string
-          from_profile: string
-          id: string
-          message: string | null
-          status: string
-          to_profile: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          from_profile: string
-          id?: string
-          message?: string | null
-          status?: string
-          to_profile: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          from_profile?: string
-          id?: string
-          message?: string | null
-          status?: string
-          to_profile?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      image_permissions: {
-        Row: {
-          created_at: string
-          granted_by: string
-          granted_to: string
-          id: string
-          image_id: string
-        }
-        Insert: {
-          created_at?: string
-          granted_by: string
-          granted_to: string
-          id?: string
-          image_id: string
-        }
-        Update: {
-          created_at?: string
-          granted_by?: string
-          granted_to?: string
-          id?: string
-          image_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "image_permissions_image_id_fkey"
-            columns: ["image_id"]
-            isOneToOne: false
-            referencedRelation: "images"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
-      images: {
-        Row: {
-          created_at: string
-          description: string | null
-          id: string
-          is_public: boolean
-          profile_id: string
-          updated_at: string
-          url: string
-        }
-        Insert: {
-          created_at?: string
-          description?: string | null
-          id?: string
-          is_public?: boolean
-          profile_id: string
-          updated_at?: string
-          url: string
-        }
-        Update: {
-          created_at?: string
-          description?: string | null
-          id?: string
-          is_public?: boolean
-          profile_id?: string
-          updated_at?: string
-          url?: string
-        }
-        Relationships: []
-      }
-      messages: {
-        Row: {
-          content: string
-          created_at: string
-          id: string
-          is_deleted: boolean
-          message_type: string
-          room_id: string
-          sender_id: string
-          updated_at: string
-        }
-        Insert: {
-          content: string
-          created_at?: string
-          id?: string
-          is_deleted?: boolean
-          message_type?: string
-          room_id: string
-          sender_id: string
-          updated_at?: string
-        }
-        Update: {
-          content?: string
-          created_at?: string
-          id?: string
-          is_deleted?: boolean
-          message_type?: string
-          room_id?: string
-          sender_id?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "messages_room_id_fkey"
-            columns: ["room_id"]
-            isOneToOne: false
-            referencedRelation: "chat_rooms"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
       app_metrics: {
         Row: {
           created_at: string | null
@@ -300,6 +61,112 @@ export type Database = {
           metric_date?: string | null
           metric_name?: string
           metric_value?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      chat_invitations: {
+        Row: {
+          created_at: string | null
+          from_profile: string
+          id: string
+          room_id: string | null
+          status: string | null
+          to_profile: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          from_profile: string
+          id?: string
+          room_id?: string | null
+          status?: string | null
+          to_profile: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          from_profile?: string
+          id?: string
+          room_id?: string | null
+          status?: string | null
+          to_profile?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_invitations_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "chat_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      chat_members: {
+        Row: {
+          id: string
+          is_muted: boolean | null
+          joined_at: string | null
+          profile_id: string
+          role: string | null
+          room_id: string | null
+        }
+        Insert: {
+          id?: string
+          is_muted?: boolean | null
+          joined_at?: string | null
+          profile_id: string
+          role?: string | null
+          room_id?: string | null
+        }
+        Update: {
+          id?: string
+          is_muted?: boolean | null
+          joined_at?: string | null
+          profile_id?: string
+          role?: string | null
+          room_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_members_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "chat_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      chat_rooms: {
+        Row: {
+          created_at: string | null
+          created_by: string
+          description: string | null
+          id: string
+          is_active: boolean | null
+          is_public: boolean | null
+          name: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_public?: boolean | null
+          name: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_public?: boolean | null
+          name?: string
           updated_at?: string | null
         }
         Relationships: []
@@ -367,6 +234,36 @@ export type Database = {
         }
         Relationships: []
       }
+      gallery_access_requests: {
+        Row: {
+          created_at: string | null
+          from_profile: string
+          id: string
+          message: string | null
+          status: string | null
+          to_profile: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          from_profile: string
+          id?: string
+          message?: string | null
+          status?: string | null
+          to_profile: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          from_profile?: string
+          id?: string
+          message?: string | null
+          status?: string | null
+          to_profile?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       gallery_permissions: {
         Row: {
           created_at: string | null
@@ -419,6 +316,68 @@ export type Database = {
           },
         ]
       }
+      image_permissions: {
+        Row: {
+          created_at: string | null
+          granted_by: string
+          granted_to: string
+          id: string
+          image_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          granted_by: string
+          granted_to: string
+          id?: string
+          image_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          granted_by?: string
+          granted_to?: string
+          id?: string
+          image_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "image_permissions_image_id_fkey"
+            columns: ["image_id"]
+            isOneToOne: false
+            referencedRelation: "images"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      images: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          is_public: boolean | null
+          profile_id: string
+          updated_at: string | null
+          url: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_public?: boolean | null
+          profile_id: string
+          updated_at?: string | null
+          url: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_public?: boolean | null
+          profile_id?: string
+          updated_at?: string | null
+          url?: string
+        }
+        Relationships: []
+      }
       invitations: {
         Row: {
           created_at: string | null
@@ -463,6 +422,47 @@ export type Database = {
             columns: ["to_profile"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      messages: {
+        Row: {
+          content: string
+          created_at: string | null
+          id: string
+          is_deleted: boolean | null
+          message_type: string | null
+          room_id: string | null
+          sender_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          id?: string
+          is_deleted?: boolean | null
+          message_type?: string | null
+          room_id?: string | null
+          sender_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          id?: string
+          is_deleted?: boolean | null
+          message_type?: string | null
+          room_id?: string | null
+          sender_id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "chat_rooms"
             referencedColumns: ["id"]
           },
         ]

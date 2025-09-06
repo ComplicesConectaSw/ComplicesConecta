@@ -81,6 +81,11 @@ token-system-spec-updated/
 **/StakingGTK.sol
 GITIGNORE_SNIPPET.txt
 
+# Directorios específicos agregados
+token-system-spec-updated/docs/
+worldid-integration/prompts/INTEGRATION_PROMPT.md
+worldid-integration/token-system-spec/DEV_README.md
+
 # Archivos temporales de migración
 step*.sql
 *_create_*.sql
@@ -109,3 +114,4 @@ temp/
 dev-scripts/
 reports/
 token-system-spec/
+docs/

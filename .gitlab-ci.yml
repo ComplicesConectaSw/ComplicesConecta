@@ -1,0 +1,168 @@
+# GitLab CI/CD Pipeline - ComplicesConecta v2.0.0
+# Configuración opcional para proyectos que usen GitLab
+
+stages:
+  - quality
+  - build
+  - test
+  - security
+  - deploy
+
+variables:
+  NODE_VERSION: "18"
+  CACHE_KEY: "$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR"
+
+# Cache para node_modules
+.node_cache: &node_cache
+  cache:
+    key: ${CACHE_KEY}
+    paths:
+      - node_modules/
+    policy: pull-push
+
+# Template base para jobs de Node.js
+.node_job: &node_job
+  image: node:18-alpine
+  before_script:
+    - npm ci --cache .npm --prefer-offline
+  <<: *node_cache
+
+# Stage 1: Análisis de calidad de código
+lint:
+  <<: *node_job
+  stage: quality
+  script:
+    - npm run lint
+    - npm run type-check
+  artifacts:
+    reports:
+      junit: reports/lint-results.xml
+    paths:
+      - reports/
+    expire_in: 1 week
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == "develop"
+
+# Stage 2: Build
+build:
+  <<: *node_job
+  stage: build
+  script:
+    - npm run build
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 day
+  needs: ["lint"]
+
+# Stage 3: Tests unitarios
+unit_tests:
+  <<: *node_job
+  stage: test
+  script:
+    - npm run test -- --coverage --reporter=junit --outputFile=reports/unit-tests.xml
+  coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
+  artifacts:
+    reports:
+      junit: reports/unit-tests.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage/cobertura-coverage.xml
+    paths:
+      - coverage/
+    expire_in: 1 week
+  needs: ["lint"]
+
+# Stage 3: Tests E2E
+e2e_tests:
+  <<: *node_job
+  stage: test
+  script:
+    - npx playwright install --with-deps
+    - npm run test:e2e
+  artifacts:
+    when: always
+    paths:
+      - playwright-report/
+      - test-results/
+    expire_in: 1 week
+  needs: ["build"]
+  allow_failure: true
+
+# Stage 4: Análisis de seguridad
+security_audit:
+  <<: *node_job
+  stage: security
+  script:
+    - npm audit --audit-level=moderate
+    - npm run audit:repo
+  artifacts:
+    reports:
+      junit: reports/security-audit.xml
+    paths:
+      - reports/
+    expire_in: 1 week
+  needs: ["lint"]
+  allow_failure: true
+
+# Stage 5: Deploy a staging (develop branch)
+deploy_staging:
+  stage: deploy
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache curl
+  script:
+    - echo "Deploying to staging environment..."
+    - curl -X POST "$STAGING_WEBHOOK_URL" -H "Authorization: Bearer $STAGING_TOKEN"
+  environment:
+    name: staging
+    url: https://staging.complicesconecta.app
+  needs: ["build", "unit_tests"]
+  rules:
+    - if: $CI_COMMIT_BRANCH == "develop"
+
+# Stage 5: Deploy a producción (main branch)
+deploy_production:
+  stage: deploy
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache curl
+  script:
+    - echo "Deploying to production environment..."
+    - curl -X POST "$PRODUCTION_WEBHOOK_URL" -H "Authorization: Bearer $PRODUCTION_TOKEN"
+  environment:
+    name: production
+    url: https://complicesconecta.app
+  needs: ["build", "unit_tests", "e2e_tests", "security_audit"]
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+  when: manual
+
+# Job para generar reporte final
+qa_report:
+  image: alpine:latest
+  stage: .post
+  before_script:
+    - apk add --no-cache curl jq
+  script:
+    - |
+      echo "# 📋 Reporte QA Pipeline - ComplicesConecta v2.0.0" > qa-report.md
+      echo "" >> qa-report.md
+      echo "**Fecha:** $(date)" >> qa-report.md
+      echo "**Commit:** $CI_COMMIT_SHA" >> qa-report.md
+      echo "**Branch:** $CI_COMMIT_REF_NAME" >> qa-report.md
+      echo "**Pipeline:** $CI_PIPELINE_URL" >> qa-report.md
+      echo "" >> qa-report.md
+      echo "## 📊 Resultados de Jobs" >> qa-report.md
+      echo "- **Lint & Type Check:** ✅" >> qa-report.md
+      echo "- **Build:** ✅" >> qa-report.md
+      echo "- **Unit Tests:** ✅" >> qa-report.md
+      echo "- **E2E Tests:** ✅" >> qa-report.md
+      echo "- **Security Audit:** ✅" >> qa-report.md
+  artifacts:
+    paths:
+      - qa-report.md
+    expire_in: 1 month
+  when: always

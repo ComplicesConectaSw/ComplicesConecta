@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Upload, X, Image as ImageIcon, Loader2 } from 'lucide-react';
-import { ProfileImageService, ImageUploadResult } from '../lib/storage';
+import { ProfileImageService, ImageUploadResult } from '@/lib/storage';
 
 interface ImageUploadProps {
   onImageUploaded: (url: string) => void;

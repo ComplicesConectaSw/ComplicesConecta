@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-// SECURITY: Removed client-side verification - should be done server-side only
-// import { verifyHCaptcha } from '@/utils/hcaptcha-verify';
+import { supabase } from '@/integrations/supabase/client';
 
 interface HCaptchaWidgetProps {
   siteKey: string;
@@ -10,6 +9,14 @@ interface HCaptchaWidgetProps {
   theme?: 'light' | 'dark';
   size?: 'normal' | 'compact';
   className?: string;
+}
+
+interface HCaptchaVerifyResponse {
+  success: boolean;
+  timestamp?: string;
+  hostname?: string;
+  score?: number;
+  errors?: string[];
 }
 
 declare global {
@@ -51,14 +58,42 @@ export const HCaptchaWidget: React.FC<HCaptchaWidgetProps> = ({
         sitekey: siteKey,
         theme,
         size,
-        callback: (token: string) => {
-          console.log('hCaptcha token recibido:', token);
+        callback: async (token: string) => {
+          console.log('hCaptcha token recibido, verificando en backend...');
           
-          // SECURITY: Token verification moved to server-side
-          // Client only receives and passes the token
-          if (onVerify) {
-            // Pass token to parent component for server-side verification
-            onVerify(token, true); // Assume valid, verify server-side
+          try {
+            // Verify token using Supabase Edge Function
+            const { data, error } = await supabase.functions.invoke('hcaptcha-verify', {
+              body: { 
+                token,
+                remoteip: window.location.hostname 
+              }
+            });
+
+            if (error) {
+              console.error('Error verificando hCaptcha:', error);
+              if (onError) {
+                onError('Error de verificación del servidor');
+              }
+              return;
+            }
+
+            const result = data as HCaptchaVerifyResponse;
+            console.log('Resultado verificación hCaptcha:', result.success);
+
+            if (onVerify) {
+              onVerify(token, result.success);
+            }
+
+            if (!result.success && onError) {
+              onError('Verificación fallida: ' + (result.errors?.join(', ') || 'Error desconocido'));
+            }
+
+          } catch (error) {
+            console.error('Error en verificación hCaptcha:', error);
+            if (onError) {
+              onError('Error de conexión con el servidor');
+            }
           }
         },
         'expired-callback': () => {

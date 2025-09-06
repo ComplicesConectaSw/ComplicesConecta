@@ -19,11 +19,13 @@ if (!HCAPTCHA_SECRET || HCAPTCHA_SECRET === 'your-hcaptcha-secret-key') {
  * @param token - Token generado por el widget de hCaptcha
  * @returns Promise con el resultado de la verificación
  */
-export const verifyHCaptcha = async (token: string): Promise<{
+interface HCaptchaResponse {
   success: boolean;
   message?: string;
-  data?: any;
-}> => {
+  data?: Record<string, unknown>;
+}
+
+export const verifyHCaptcha = async (token: string): Promise<HCaptchaResponse> => {
   try {
     // Verificar que el token existe
     if (!token) {

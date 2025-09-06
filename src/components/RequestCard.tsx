@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Check, X, MessageCircle, Clock, User, Users } from 'lucide-react';
-import { ConnectionRequest, RequestsService } from '../lib/requests';
+import { ConnectionRequest, RequestsService } from '@/lib/requests';
 
 interface RequestCardProps {
   request: ConnectionRequest;
@@ -61,7 +61,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
     }
   };
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (status: string | null) => {
     switch (status) {
       case 'accepted': return 'text-green-600 bg-green-100';
       case 'declined': return 'text-red-600 bg-red-100';
@@ -70,7 +70,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
     }
   };
 
-  const getStatusText = (status: string) => {
+  const getStatusText = (status: string | null) => {
     switch (status) {
       case 'accepted': return 'Aceptada';
       case 'declined': return 'Rechazada';
@@ -79,7 +79,9 @@ export const RequestCard: React.FC<RequestCardProps> = ({
     }
   };
 
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString: string | null) => {
+    if (!dateString) return 'Fecha no disponible';
+    
     const date = new Date(dateString);
     const now = new Date();
     const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
@@ -133,12 +135,12 @@ export const RequestCard: React.FC<RequestCardProps> = ({
 
             {/* Estado */}
             <div className="flex items-center gap-2">
-              <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(request.status)}`}>
-                {getStatusText(request.status)}
+              <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(request.status ?? 'pending')}`}>
+                {getStatusText(request.status ?? 'pending')}
               </span>
               <div className="flex items-center text-xs text-gray-400">
                 <Clock className="w-3 h-3 mr-1" />
-                {formatDate(request.created_at)}
+                {formatDate(request.created_at ?? '')}
               </div>
             </div>
           </div>

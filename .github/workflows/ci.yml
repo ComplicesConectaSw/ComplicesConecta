@@ -1,0 +1,234 @@
+name: CI/CD Pipeline - ComplicesConecta v2.0.0
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  # Job 1: Análisis de código y linting
+  code-quality:
+    name: 🔍 Análisis de Calidad de Código
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout código
+      uses: actions/checkout@v4
+      
+    - name: 🟢 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: 📦 Instalar dependencias
+      run: npm ci
+      
+    - name: 🔍 ESLint - Análisis de código
+      run: npm run lint
+      
+    - name: 🔧 TypeScript - Verificación de tipos
+      run: npm run type-check
+      
+    - name: 📊 Generar reporte de linting
+      if: always()
+      run: |
+        echo "## 📋 Reporte de Linting" >> $GITHUB_STEP_SUMMARY
+        npm run lint --format=compact >> lint-report.txt 2>&1 || true
+        echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+        cat lint-report.txt >> $GITHUB_STEP_SUMMARY
+        echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+
+  # Job 2: Build y compilación
+  build:
+    name: 🏗️ Build y Compilación
+    runs-on: ubuntu-latest
+    needs: code-quality
+    
+    steps:
+    - name: 📥 Checkout código
+      uses: actions/checkout@v4
+      
+    - name: 🟢 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: 📦 Instalar dependencias
+      run: npm ci
+      
+    - name: 🏗️ Build producción
+      run: npm run build
+      
+    - name: 📤 Subir artefactos de build
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-artifacts
+        path: dist/
+        retention-days: 7
+
+  # Job 3: Tests unitarios
+  unit-tests:
+    name: 🧪 Tests Unitarios
+    runs-on: ubuntu-latest
+    needs: code-quality
+    
+    steps:
+    - name: 📥 Checkout código
+      uses: actions/checkout@v4
+      
+    - name: 🟢 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: 📦 Instalar dependencias
+      run: npm ci
+      
+    - name: 🧪 Ejecutar tests unitarios
+      run: npm run test -- --coverage --reporter=verbose
+      
+    - name: 📊 Subir cobertura a Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage/lcov.info
+        flags: unittests
+        name: codecov-umbrella
+
+  # Job 4: Tests E2E
+  e2e-tests:
+    name: 🎭 Tests End-to-End
+    runs-on: ubuntu-latest
+    needs: build
+    
+    steps:
+    - name: 📥 Checkout código
+      uses: actions/checkout@v4
+      
+    - name: 🟢 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: 📦 Instalar dependencias
+      run: npm ci
+      
+    - name: 📥 Descargar artefactos de build
+      uses: actions/download-artifact@v4
+      with:
+        name: build-artifacts
+        path: dist/
+        
+    - name: 🎭 Instalar Playwright
+      run: npx playwright install --with-deps
+      
+    - name: 🎭 Ejecutar tests E2E
+      run: npm run test:e2e
+      env:
+        CI: true
+        
+    - name: 📤 Subir reportes de Playwright
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 7
+
+  # Job 5: Análisis de seguridad
+  security-scan:
+    name: 🔒 Análisis de Seguridad
+    runs-on: ubuntu-latest
+    needs: code-quality
+    
+    steps:
+    - name: 📥 Checkout código
+      uses: actions/checkout@v4
+      
+    - name: 🟢 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: 📦 Instalar dependencias
+      run: npm ci
+      
+    - name: 🔒 Audit de dependencias
+      run: npm audit --audit-level=moderate
+      
+    - name: 🔍 CodeQL Analysis
+      uses: github/codeql-action/init@v3
+      with:
+        languages: javascript
+        
+    - name: 🔍 Realizar análisis CodeQL
+      uses: github/codeql-action/analyze@v3
+
+  # Job 6: Reporte final
+  qa-report:
+    name: 📋 Reporte Final QA
+    runs-on: ubuntu-latest
+    needs: [code-quality, build, unit-tests, e2e-tests, security-scan]
+    if: always()
+    
+    steps:
+    - name: 📥 Checkout código
+      uses: actions/checkout@v4
+      
+    - name: 📋 Generar reporte QA
+      run: |
+        echo "# 📋 Reporte QA Pipeline - ComplicesConecta v2.0.0" > qa-report.md
+        echo "" >> qa-report.md
+        echo "**Fecha:** $(date)" >> qa-report.md
+        echo "**Commit:** ${{ github.sha }}" >> qa-report.md
+        echo "**Branch:** ${{ github.ref_name }}" >> qa-report.md
+        echo "" >> qa-report.md
+        echo "## 📊 Resultados" >> qa-report.md
+        echo "- **Code Quality:** ${{ needs.code-quality.result }}" >> qa-report.md
+        echo "- **Build:** ${{ needs.build.result }}" >> qa-report.md
+        echo "- **Unit Tests:** ${{ needs.unit-tests.result }}" >> qa-report.md
+        echo "- **E2E Tests:** ${{ needs.e2e-tests.result }}" >> qa-report.md
+        echo "- **Security Scan:** ${{ needs.security-scan.result }}" >> qa-report.md
+        
+    - name: 📤 Subir reporte QA
+      uses: actions/upload-artifact@v4
+      with:
+        name: qa-report
+        path: qa-report.md
+        retention-days: 30
+
+  # Job 7: Deploy (solo en main)
+  deploy:
+    name: 🚀 Deploy a Producción
+    runs-on: ubuntu-latest
+    needs: [code-quality, build, unit-tests, e2e-tests, security-scan]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment: production
+    
+    steps:
+    - name: 📥 Checkout código
+      uses: actions/checkout@v4
+      
+    - name: 📥 Descargar artefactos de build
+      uses: actions/download-artifact@v4
+      with:
+        name: build-artifacts
+        path: dist/
+        
+    - name: 🚀 Deploy a Vercel
+      uses: amondnet/vercel-action@v25
+      env:
+        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        VERCEL_ORG_ID: team_76B9uYcK2KACzNNkUspngLLG
+        VERCEL_PROJECT_ID: prj_G1tZCHwwLIrpHYjmYyHCRY5V7SAq
+      with:
+        vercel-args: '--prod'
+        working-directory: ./

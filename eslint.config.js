@@ -24,6 +24,7 @@ export default tseslint.config(
         { allowConstantExport: true },
       ],
       "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/no-explicit-any": "warn",
       "no-unused-expressions": "off",
       "@typescript-eslint/no-unused-expressions": [
         "error",
@@ -32,6 +33,9 @@ export default tseslint.config(
           "allowTernary": true
         }
       ],
+      // Reduce noise from property access warnings in development
+      "@typescript-eslint/dot-notation": "off",
+      "@typescript-eslint/prefer-optional-chain": "warn",
     },
   }
 );

@@ -2,41 +2,56 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Suspense, lazy } from "react";
+
+// Critical pages - loaded immediately
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
-import Profiles from "./pages/Profiles";
-import ProfileDetail from "./pages/ProfileDetail";
-import Events from "./pages/Events";
-import Chat from "./pages/Chat";
-import Matches from "./pages/Matches";
-import Requests from "./pages/Requests";
-import Settings from "./pages/Settings";
-import Discover from "./pages/Discover";
-import Premium from './pages/Premium';
-import Dashboard from './pages/Dashboard';
-import FAQ from "./pages/FAQ";
-import Terms from './pages/Terms';
-import Privacy from './pages/Privacy';
-import Support from './pages/Support';
-import TokensInfo from './pages/TokensInfo';
-import TokensPrivacy from './pages/TokensPrivacy';
-import TokensTerms from './pages/TokensTerms';
-import TokensLegal from './pages/TokensLegal';
-import ProjectInfo from './pages/ProjectInfo';
-import Security from './pages/Security';
-import Guidelines from './pages/Guidelines';
-import Admin from '@/pages/Admin';
-import AdminProduction from '@/pages/AdminProduction';
 import NotFound from "./pages/NotFound";
-import ProfileSingle from "./pages/ProfileSingle";
-import ProfileCouple from "./pages/ProfileCouple";
-import EditProfileSingle from "./pages/EditProfileSingle";
-import EditProfileCouple from "./pages/EditProfileCouple";
-import Feed from "./pages/Feed";
-import About from "./pages/About";
-import Careers from "./pages/Careers";
-import Blog from "./pages/Blog";
-import ChatAuthenticated from "./pages/ChatAuthenticated";
+
+// Lazy loaded pages for performance optimization
+const Profiles = lazy(() => import("./pages/Profiles"));
+const ProfileDetail = lazy(() => import("./pages/ProfileDetail"));
+const Events = lazy(() => import("./pages/Events"));
+const Chat = lazy(() => import("./pages/Chat"));
+const Matches = lazy(() => import("./pages/Matches"));
+const Requests = lazy(() => import("./pages/Requests"));
+const Settings = lazy(() => import("./pages/Settings"));
+const Discover = lazy(() => import("./pages/Discover"));
+const Premium = lazy(() => import("./pages/Premium"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const FAQ = lazy(() => import("./pages/FAQ"));
+const Terms = lazy(() => import("./pages/Terms"));
+const Privacy = lazy(() => import("./pages/Privacy"));
+const Support = lazy(() => import("./pages/Support"));
+const TokensInfo = lazy(() => import("./pages/TokensInfo"));
+const TokensPrivacy = lazy(() => import("./pages/TokensPrivacy"));
+const TokensTerms = lazy(() => import("./pages/TokensTerms"));
+const TokensLegal = lazy(() => import("./pages/TokensLegal"));
+const ProjectInfo = lazy(() => import("./pages/ProjectInfo"));
+const Security = lazy(() => import("./pages/Security"));
+const Guidelines = lazy(() => import("./pages/Guidelines"));
+const Admin = lazy(() => import("@/pages/Admin"));
+const AdminProduction = lazy(() => import("@/pages/AdminProduction"));
+const ProfileSingle = lazy(() => import("./pages/ProfileSingle"));
+const ProfileCouple = lazy(() => import("./pages/ProfileCouple"));
+const EditProfileSingle = lazy(() => import("./pages/EditProfileSingle"));
+const EditProfileCouple = lazy(() => import("./pages/EditProfileCouple"));
+const Feed = lazy(() => import("./pages/Feed"));
+const About = lazy(() => import("./pages/About"));
+const Careers = lazy(() => import("./pages/Careers"));
+const Blog = lazy(() => import("./pages/Blog"));
+const ChatAuthenticated = lazy(() => import("./pages/ChatAuthenticated"));
+
+// Loading component for Suspense
+const PageLoader = () => (
+  <div className="min-h-screen bg-hero-gradient flex items-center justify-center">
+    <div className="text-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+      <p className="text-white text-lg">Cargando...</p>
+    </div>
+  </div>
+);
 
 const queryClient = new QueryClient();
 
@@ -46,44 +61,46 @@ const App = () => (
       <div className="min-h-screen bg-hero-gradient">
         <Toaster />
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/feed" element={<Feed />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/profiles" element={<Profiles />} />
-            <Route path="/profile/:id" element={<ProfileDetail />} />
-            <Route path="/profile" element={<ProfileSingle />} />
-            <Route path="/profile-single" element={<ProfileSingle />} />
-            <Route path="/profile-couple" element={<ProfileCouple />} />
-            <Route path="/edit-profile-single" element={<EditProfileSingle />} />
-            <Route path="/edit-profile-couple" element={<EditProfileCouple />} />
-            <Route path="/events" element={<Events />} />
-            <Route path="/chat" element={<Chat />} />
-            <Route path="/matches" element={<Matches />} />
-            <Route path="/requests" element={<Requests />} />
-            <Route path="/discover" element={<Discover />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/premium" element={<Premium />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/support" element={<Support />} />
-            <Route path="/terms" element={<Terms />} />
-            <Route path="/privacy" element={<Privacy />} />
-            <Route path="/tokens-info" element={<TokensInfo />} />
-            <Route path="/tokens-privacy" element={<TokensPrivacy />} />
-            <Route path="/tokens-terms" element={<TokensTerms />} />
-            <Route path="/tokens-legal" element={<TokensLegal />} />
-            <Route path="/project-info" element={<ProjectInfo />} />
-            <Route path="/admin" element={<Admin />} />
-            <Route path="/admin-production" element={<AdminProduction />} />
-            <Route path="/security" element={<Security />} />
-            <Route path="/guidelines" element={<Guidelines />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/careers" element={<Careers />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/chat-authenticated" element={<ChatAuthenticated />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/feed" element={<Feed />} />
+              <Route path="/profiles" element={<Profiles />} />
+              <Route path="/profile/:id" element={<ProfileDetail />} />
+              <Route path="/profile" element={<ProfileSingle />} />
+              <Route path="/profile-single" element={<ProfileSingle />} />
+              <Route path="/profile-couple" element={<ProfileCouple />} />
+              <Route path="/edit-profile-single" element={<EditProfileSingle />} />
+              <Route path="/edit-profile-couple" element={<EditProfileCouple />} />
+              <Route path="/events" element={<Events />} />
+              <Route path="/chat" element={<Chat />} />
+              <Route path="/matches" element={<Matches />} />
+              <Route path="/requests" element={<Requests />} />
+              <Route path="/discover" element={<Discover />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/premium" element={<Premium />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/support" element={<Support />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/tokens-info" element={<TokensInfo />} />
+              <Route path="/tokens-privacy" element={<TokensPrivacy />} />
+              <Route path="/tokens-terms" element={<TokensTerms />} />
+              <Route path="/tokens-legal" element={<TokensLegal />} />
+              <Route path="/project-info" element={<ProjectInfo />} />
+              <Route path="/admin" element={<Admin />} />
+              <Route path="/admin-production" element={<AdminProduction />} />
+              <Route path="/security" element={<Security />} />
+              <Route path="/guidelines" element={<Guidelines />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/careers" element={<Careers />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/chat-authenticated" element={<ChatAuthenticated />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
         </BrowserRouter>
       </div>
     </TooltipProvider>

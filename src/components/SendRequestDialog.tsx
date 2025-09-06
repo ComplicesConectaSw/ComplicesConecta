@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, Send, User, Users, MessageCircle } from 'lucide-react';
-import { RequestsService } from '../lib/requests';
+import { RequestsService } from '@/lib/requests';
 
 interface SendRequestDialogProps {
   isOpen: boolean;

@@ -9,6 +9,11 @@ interface Profile {
   display_name?: string | null;
   age?: number | null;
   role?: string;
+  email?: string | null;
+  profile_type?: string | null;
+  is_demo?: boolean | null;
+  is_verified?: boolean | null;
+  is_premium?: boolean | null;
   [key: string]: unknown;
 }
 
@@ -160,7 +165,16 @@ export const useAuth = () => {
   };
 
   const isAdmin = () => {
-    return state.profile?.role === 'administrador';
+    // Verificar rol en perfil (después de migración)
+    return state.profile?.role === 'admin';
+  };
+
+  const isDemo = () => {
+    return state.profile?.is_demo === true;
+  };
+
+  const getProfileType = () => {
+    return state.profile?.profile_type || 'single';
   };
 
   const isAuthenticated = () => {
@@ -171,6 +185,8 @@ export const useAuth = () => {
     ...state,
     signOut,
     isAdmin,
+    isDemo,
+    getProfileType,
     isAuthenticated,
     refreshProfile: () => state.user?.id && fetchUserProfile(state.user.id)
   };
