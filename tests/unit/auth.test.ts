@@ -1,28 +1,67 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import { useAuth } from '@/hooks/useAuth';
-import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '../../src/hooks/useAuth';
+import { supabase } from '../../src/integrations/supabase/client';
 
 // Mock Supabase
-vi.mock('@/integrations/supabase/client', () => ({
+vi.mock('../../src/integrations/supabase/client', () => ({
   supabase: {
     auth: {
-      getSession: vi.fn(),
-      onAuthStateChange: vi.fn(),
-      signInWithPassword: vi.fn(),
-      signUp: vi.fn(),
-      signOut: vi.fn(),
+      getSession: vi.fn().mockResolvedValue({
+        data: { session: null },
+        error: null
+      }),
+      onAuthStateChange: vi.fn().mockReturnValue({
+        data: {
+          subscription: {
+            unsubscribe: vi.fn()
+          }
+        }
+      }),
+      signInWithPassword: vi.fn().mockResolvedValue({
+        data: { user: null, session: null },
+        error: null
+      }),
+      signUp: vi.fn().mockResolvedValue({
+        data: { user: null, session: null },
+        error: null
+      }),
+      signOut: vi.fn().mockResolvedValue({
+        error: null
+      }),
+      resetPasswordForEmail: vi.fn().mockResolvedValue({
+        data: {},
+        error: null
+      }),
+      updateUser: vi.fn().mockResolvedValue({
+        data: { user: null },
+        error: null
+      })
     },
     from: vi.fn(() => ({
       select: vi.fn(() => ({
         eq: vi.fn(() => ({
-          single: vi.fn(),
+          single: vi.fn().mockResolvedValue({
+            data: null,
+            error: null
+          }),
+          maybeSingle: vi.fn().mockResolvedValue({
+            data: null,
+            error: null
+          })
         })),
       })),
-      insert: vi.fn(),
-      update: vi.fn(),
+      insert: vi.fn().mockResolvedValue({
+        data: null,
+        error: null
+      }),
+      update: vi.fn().mockResolvedValue({
+        data: null,
+        error: null
+      }),
     })),
   },
+  isDemoMode: false
 }));
 
 // Mock localStorage
@@ -78,8 +117,35 @@ describe('useAuth Hook', () => {
       const mockUser = {
         id: 'user-123',
         email: 'test@example.com',
-        user_metadata: {}
-      };
+        user_metadata: {},
+        app_metadata: {},
+        aud: 'authenticated',
+        created_at: '2023-01-01T00:00:00Z',
+        updated_at: '2023-01-01T00:00:00Z',
+        email_confirmed_at: '2023-01-01T00:00:00Z',
+        phone: undefined,
+        confirmation_sent_at: undefined,
+        confirmed_at: undefined,
+        last_sign_in_at: undefined,
+        role: 'authenticated',
+        recovery_sent_at: undefined,
+        email_change_sent_at: undefined,
+        new_email: undefined,
+        invited_at: undefined,
+        action_link: undefined,
+        email_change: undefined,
+        email_change_confirm_status: 0,
+        banned_until: undefined,
+        new_phone: undefined,
+        phone_change: undefined,
+        phone_change_token: undefined,
+        phone_change_sent_at: undefined,
+        phone_confirmed_at: undefined,
+        phone_change_confirm_status: 0,
+        email_change_token_new: undefined,
+        email_change_token_current: undefined,
+        factors: undefined
+      } as any;
 
       const mockProfile = {
         id: 'profile-123',
@@ -90,7 +156,17 @@ describe('useAuth Hook', () => {
       };
 
       vi.mocked(supabase.auth.signInWithPassword).mockResolvedValue({
-        data: { user: mockUser, session: { access_token: 'token' } },
+        data: { 
+          user: mockUser, 
+          session: { 
+            access_token: 'token',
+            refresh_token: 'refresh_token',
+            expires_in: 3600,
+            token_type: 'bearer',
+            user: mockUser,
+            expires_at: Date.now() + 3600000
+          } 
+        },
         error: null
       });
 
@@ -120,7 +196,12 @@ describe('useAuth Hook', () => {
     it('debe manejar error de login', async () => {
       vi.mocked(supabase.auth.signInWithPassword).mockResolvedValue({
         data: { user: null, session: null },
-        error: { message: 'Invalid credentials' }
+        error: { 
+          message: 'Invalid credentials',
+          code: 'invalid_credentials',
+          status: 400,
+          name: 'AuthError'
+        } as any
       });
 
       const { result } = renderHook(() => useAuth());
@@ -137,8 +218,35 @@ describe('useAuth Hook', () => {
       const mockUser = {
         id: 'new-user-123',
         email: 'newuser@example.com',
-        user_metadata: {}
-      };
+        user_metadata: {},
+        app_metadata: {},
+        aud: 'authenticated',
+        created_at: '2023-01-01T00:00:00Z',
+        updated_at: '2023-01-01T00:00:00Z',
+        email_confirmed_at: undefined,
+        phone: undefined,
+        confirmation_sent_at: '2023-01-01T00:00:00Z',
+        confirmed_at: undefined,
+        last_sign_in_at: undefined,
+        role: 'authenticated',
+        recovery_sent_at: undefined,
+        email_change_sent_at: undefined,
+        new_email: undefined,
+        invited_at: undefined,
+        action_link: undefined,
+        email_change: undefined,
+        email_change_confirm_status: 0,
+        banned_until: undefined,
+        new_phone: undefined,
+        phone_change: undefined,
+        phone_change_token: undefined,
+        phone_change_sent_at: undefined,
+        phone_confirmed_at: undefined,
+        phone_change_confirm_status: 0,
+        email_change_token_new: undefined,
+        email_change_token_current: undefined,
+        factors: undefined
+      } as any;
 
       vi.mocked(supabase.auth.signUp).mockResolvedValue({
         data: { user: mockUser, session: null },
@@ -155,13 +263,15 @@ describe('useAuth Hook', () => {
       const { result } = renderHook(() => useAuth());
 
       await act(async () => {
-        const response = await result.current.signUp({
-          email: 'newuser@example.com',
-          password: 'password123',
-          firstName: 'New',
-          lastName: 'User',
-          accountType: 'single'
-        });
+        const response = await result.current.signUp(
+          'newuser@example.com',
+          'password123',
+          {
+            firstName: 'New',
+            lastName: 'User',
+            accountType: 'single'
+          }
+        );
         expect(response.error).toBeFalsy();
       });
     });
