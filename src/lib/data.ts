@@ -81,6 +81,7 @@ export const generateMockSingle = (includeOnlineStatus = true) => {
   
   const profile = {
     id: Math.random().toString(36).substr(2, 9),
+    name: `${nombre} ${apellido}`,
     first_name: nombre,
     last_name: apellido,
     age: Math.floor(Math.random() * 20) + 25,
@@ -101,12 +102,14 @@ export const generateMockSingle = (includeOnlineStatus = true) => {
     profession: profesiones[Math.floor(Math.random() * profesiones.length)],
     interests: intereses.slice(0, 3 + Math.floor(Math.random() * 3)),
     avatar: realImages[Math.floor(Math.random() * realImages.length)],
+    verified: Math.random() > 0.3,
     photos: [realImages[Math.floor(Math.random() * realImages.length)], realImages[Math.floor(Math.random() * realImages.length)]],
     stats: {
       matches: Math.floor(Math.random() * 50) + 10,
       likes: Math.floor(Math.random() * 200) + 50,
       views: Math.floor(Math.random() * 500) + 100
-    }
+    },
+    ...(includeOnlineStatus && { isOnline: Math.random() > 0.5 })
   };
   
   return profile;
@@ -155,10 +158,14 @@ export const generateMockCouple = (includeOnlineStatus = true) => {
     'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400'
   ];
   
+  const age1 = Math.floor(Math.random() * 20) + 25;
+  const age2 = Math.floor(Math.random() * 20) + 25;
+  
   return {
     id: Math.floor(Math.random() * 10000),
     coupleName: `${nombreF} & ${nombreM}`,
-    ageRange: `${Math.floor(Math.random() * 10) + 25}-${Math.floor(Math.random() * 10) + 35}`,
+    ages: [age1, age2],
+    ageRange: `${age1}-${age2}`,
     location: ubicaciones[Math.floor(Math.random() * ubicaciones.length)],
     bio: "Pareja experimentada en el lifestyle swinger. Buscamos nuevas experiencias y conexiones auténticas con otras parejas y singles en México.",
     lookingFor: "Conexiones auténticas y experiencias únicas",
@@ -166,6 +173,10 @@ export const generateMockCouple = (includeOnlineStatus = true) => {
     experienceLevel: "Intermedio",
     interests: intereses.slice(0, 5 + Math.floor(Math.random() * 4)),
     avatar: coupleImages[Math.floor(Math.random() * coupleImages.length)],
+    photos: [
+      coupleImages[Math.floor(Math.random() * coupleImages.length)],
+      coupleImages[Math.floor(Math.random() * coupleImages.length)]
+    ],
     isOnline: Math.random() > 0.5,
     isVerified: Math.random() > 0.3,
     isPremium: Math.random() > 0.7,

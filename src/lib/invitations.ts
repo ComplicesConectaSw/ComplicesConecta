@@ -19,8 +19,8 @@ export interface GalleryPermission {
   created_at: string;
 }
 
-// Mock data para invitaciones
-export const mockInvitations: Invitation[] = [
+// Mock data para invitaciones - using let for test reset capability
+let mockInvitations: Invitation[] = [
   {
     id: '1',
     from_profile: '2',
@@ -51,8 +51,8 @@ export const mockInvitations: Invitation[] = [
   }
 ];
 
-// Mock data para permisos de galería
-export const mockGalleryPermissions: GalleryPermission[] = [
+// Mock data para permisos de galería - using let for test reset capability
+let mockGalleryPermissions: GalleryPermission[] = [
   {
     id: '1',
     owner_profile: '4',
@@ -135,5 +135,10 @@ export const invitationService = {
              inv.type === 'chat' && 
              inv.status === 'accepted'
     );
+  },
+
+  resetMockData(): void {
+    mockInvitations.length = 0;
+    mockGalleryPermissions.length = 0;
   }
 };

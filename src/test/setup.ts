@@ -1,15 +1,23 @@
 import '@testing-library/jest-dom'
-import { expect, afterEach } from 'vitest'
-import { cleanup } from '@testing-library/react'
-import * as matchers from '@testing-library/jest-dom/matchers'
+import { expect, afterEach, beforeEach, vi } from 'vitest';
+import { cleanup } from '@testing-library/react';
+import * as matchers from '@testing-library/jest-dom/matchers';
 
-// Extend Vitest's expect with jest-dom matchers
-expect.extend(matchers)
+// Import Supabase mock
+import './mocks/supabase';
 
-// Cleanup after each test case
+// extends Vitest's expect method with methods from react-testing-library
+expect.extend(matchers);
+
+// runs a cleanup after each test case (e.g. clearing jsdom)
 afterEach(() => {
-  cleanup()
-})
+  cleanup();
+});
+
+// Clear all mocks before each test
+beforeEach(() => {
+  vi.clearAllMocks();
+});
 
 // Mock environment variables
 Object.defineProperty(window, 'matchMedia', {

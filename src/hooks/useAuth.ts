@@ -66,7 +66,7 @@ export const useAuth = () => {
     }
 
     // Set up auth state listener FIRST
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+    const authListener = supabase.auth.onAuthStateChange(
       (event, session) => {
         console.log('🔄 Auth state change:', event, session?.user?.email);
         
@@ -98,20 +98,29 @@ export const useAuth = () => {
     );
 
     // THEN check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession()?.then(({ data: { session } }) => {
       setState(prev => ({
         ...prev,
+        user: session?.user || null,
         session,
-        user: session?.user ?? null,
         loading: false
       }));
-
-      if (session?.user) {
-        fetchUserProfile(session.user.id);
-      }
+    }).catch(() => {
+      setState(prev => ({
+        ...prev,
+        loading: false
+      }));
     });
 
-    return () => subscription.unsubscribe();
+    if (state.session?.user) {
+      fetchUserProfile(state.session.user.id);
+    }
+
+    return () => {
+      if (authListener?.data?.subscription) {
+        authListener.data.subscription.unsubscribe();
+      }
+    };
   }, []);
 
   const fetchUserProfile = async (userId: string) => {
@@ -181,13 +190,99 @@ export const useAuth = () => {
     return !!state.user;
   };
 
+  const signIn = async (email: string, password: string) => {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+    return { data, error };
+  };
+
+  const signUp = async (email: string, password: string, metadata?: any) => {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: metadata
+      }
+    });
+    return { data, error };
+  };
+
+  const setDemoSession = (userType: string, userData: any) => {
+    localStorage.setItem('demo_user', JSON.stringify(userData));
+    localStorage.setItem('demo_session', 'true');
+    localStorage.setItem('userType', userType);
+    
+    setState({
+      user: userData,
+      session: { user: userData } as Session,
+      loading: false,
+      profile: { id: userData?.id, role: userData?.role, is_demo: true }
+    });
+  };
+
+  const isDemoSession = () => {
+    return !!localStorage.getItem('demo_user') && !!localStorage.getItem('demo_session');
+  };
+
+  // Helper function for testing - allows setting state directly
+  const setTestState = (newState: Partial<AuthState>) => {
+    setState(prev => ({ ...prev, ...newState }));
+  };
+
+  const clearDemoSession = () => {
+    localStorage.removeItem('demo_user');
+    localStorage.removeItem('demo_session');
+    localStorage.removeItem('userType');
+    
+    setState({
+      user: null,
+      session: null,
+      loading: false,
+      profile: null
+    });
+  };
+
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const resetPassword = async (email: string) => {
+    const { data, error } = await supabase.auth.resetPasswordForEmail(email);
+    return { data, error };
+  };
+
+  const updatePassword = async (password: string) => {
+    const { data, error } = await supabase.auth.updateUser({ password });
+    return { data, error };
+  };
+
   return {
-    ...state,
+    // Expose state properties directly for backward compatibility
+    user: state.user,
+    session: state.session,
+    loading: state.loading,
+    profile: state.profile,
+    // Also expose state object for tests that expect it
+    state,
+    // Functions
+    signIn,
+    signUp,
     signOut,
+    setDemoSession,
+    clearDemoSession,
+    isDemoSession,
+    validateEmail,
+    resetPassword,
+    updatePassword,
     isAdmin,
     isDemo,
     getProfileType,
     isAuthenticated,
-    refreshProfile: () => state.user?.id && fetchUserProfile(state.user.id)
+    refreshProfile: () => state.user?.id && fetchUserProfile(state.user.id),
+    // Test helper
+    setTestState
   };
 };

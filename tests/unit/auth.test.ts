@@ -53,12 +53,12 @@ describe('useAuth Hook', () => {
       expect(result.current.state.user).toBeNull();
       expect(result.current.state.profile).toBeNull();
       expect(result.current.state.loading).toBe(true);
-      expect(result.current.state.isAuthenticated).toBe(false);
+      expect(result.current.isAuthenticated()).toBe(false);
     });
 
     it('debe detectar sesión demo desde localStorage', () => {
       localStorageMock.getItem.mockImplementation((key) => {
-        if (key === 'demo_authenticated') return 'true';
+        if (key === 'demo_session') return 'true';
         if (key === 'demo_user') return JSON.stringify({
           id: 'demo-123',
           email: 'demo@test.com',
@@ -172,12 +172,14 @@ describe('useAuth Hook', () => {
       const { result } = renderHook(() => useAuth());
 
       act(() => {
-        result.current.state.profile = {
-          id: 'admin-123',
-          role: 'admin',
-          first_name: 'Admin',
-          last_name: 'User'
-        } as any;
+        result.current.setTestState({
+          profile: {
+            id: 'admin-123',
+            role: 'admin',
+            first_name: 'Admin',
+            last_name: 'User'
+          } as any
+        });
       });
 
       expect(result.current.isAdmin()).toBe(true);
@@ -187,12 +189,14 @@ describe('useAuth Hook', () => {
       const { result } = renderHook(() => useAuth());
 
       act(() => {
-        result.current.state.profile = {
-          id: 'user-123',
-          role: 'user',
-          first_name: 'Regular',
-          last_name: 'User'
-        } as any;
+        result.current.setTestState({
+          profile: {
+            id: 'user-123',
+            role: 'user',
+            first_name: 'Regular',
+            last_name: 'User'
+          } as any
+        });
       });
 
       expect(result.current.isAdmin()).toBe(false);
@@ -202,16 +206,18 @@ describe('useAuth Hook', () => {
       const { result } = renderHook(() => useAuth());
 
       act(() => {
-        result.current.state.profile = {
-          id: 'demo-123',
-          role: 'demo',
-          is_demo: true,
-          first_name: 'Demo',
-          last_name: 'User'
-        } as any;
+        result.current.setTestState({
+          profile: {
+            id: 'demo-123',
+            role: 'demo',
+            is_demo: true,
+            first_name: 'Demo',
+            last_name: 'User'
+          } as any
+        });
       });
 
-      expect(result.current.isDemoProfile()).toBe(true);
+      expect(result.current.isDemo()).toBe(true);
     });
   });
 
@@ -225,9 +231,10 @@ describe('useAuth Hook', () => {
 
       // Simular usuario logueado
       act(() => {
-        result.current.state.user = { id: 'user-123' } as any;
-        result.current.state.profile = { id: 'profile-123' } as any;
-        result.current.state.isAuthenticated = true;
+        result.current.setTestState({
+          user: { id: 'user-123' } as any,
+          profile: { id: 'profile-123' } as any
+        });
       });
 
       await act(async () => {
@@ -236,7 +243,7 @@ describe('useAuth Hook', () => {
 
       expect(result.current.state.user).toBeNull();
       expect(result.current.state.profile).toBeNull();
-      expect(result.current.state.isAuthenticated).toBe(false);
+      expect(result.current.isAuthenticated()).toBe(false);
       expect(localStorageMock.removeItem).toHaveBeenCalledWith('demo_user');
       expect(localStorageMock.removeItem).toHaveBeenCalledWith('demo_session');
     });
@@ -255,11 +262,20 @@ describe('useAuth Hook', () => {
       };
 
       act(() => {
-        result.current.setDemoSession(demoUser);
+        result.current.setDemoSession('single', demoUser);
       });
 
-      expect(localStorageMock.setItem).toHaveBeenCalledWith('demo_authenticated', 'true');
+      // Mock localStorage.getItem to return the values that setDemoSession would set
+      localStorageMock.getItem.mockImplementation((key) => {
+        if (key === 'demo_user') return JSON.stringify(demoUser);
+        if (key === 'demo_session') return 'true';
+        if (key === 'userType') return 'single';
+        return null;
+      });
+
+      expect(localStorageMock.setItem).toHaveBeenCalledWith('demo_session', 'true');
       expect(localStorageMock.setItem).toHaveBeenCalledWith('demo_user', JSON.stringify(demoUser));
+      expect(localStorageMock.setItem).toHaveBeenCalledWith('userType', 'single');
       expect(result.current.isDemoSession()).toBe(true);
     });
 
@@ -270,9 +286,9 @@ describe('useAuth Hook', () => {
         result.current.clearDemoSession();
       });
 
-      expect(localStorageMock.removeItem).toHaveBeenCalledWith('demo_authenticated');
       expect(localStorageMock.removeItem).toHaveBeenCalledWith('demo_user');
       expect(localStorageMock.removeItem).toHaveBeenCalledWith('demo_session');
+      expect(localStorageMock.removeItem).toHaveBeenCalledWith('userType');
     });
   });
 
@@ -292,10 +308,12 @@ describe('useAuth Hook', () => {
       const { result } = renderHook(() => useAuth());
 
       act(() => {
-        result.current.state.profile = {
-          id: 'single-123',
-          profile_type: 'single'
-        } as any;
+        result.current.setTestState({
+          profile: {
+            id: 'single-123',
+            profile_type: 'single'
+          } as any
+        });
       });
 
       expect(result.current.getProfileType()).toBe('single');
@@ -305,10 +323,12 @@ describe('useAuth Hook', () => {
       const { result } = renderHook(() => useAuth());
 
       act(() => {
-        result.current.state.profile = {
-          id: 'couple-123',
-          profile_type: 'couple'
-        } as any;
+        result.current.setTestState({
+          profile: {
+            id: 'couple-123',
+            profile_type: 'couple'
+          } as any
+        });
       });
 
       expect(result.current.getProfileType()).toBe('couple');

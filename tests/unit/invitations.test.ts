@@ -9,6 +9,9 @@ describe('Invitations System', () => {
   beforeEach(() => {
     // Clear localStorage before each test
     localStorage.clear();
+    
+    // Reset the invitation service mock data
+    invitationService.resetMockData();
   });
 
   describe('sendInvitation', () => {
