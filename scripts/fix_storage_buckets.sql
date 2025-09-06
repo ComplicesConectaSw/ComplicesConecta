@@ -1,8 +1,12 @@
 -- =====================================================
--- SCRIPT DE CREACIÓN Y CONFIGURACIÓN DE STORAGE BUCKETS
--- ComplicesConecta v2.1.2 - Sistema de Storage Supabase
--- Fecha: 06 de septiembre, 2025 - 05:09 hrs
+-- 🗂️ SISTEMA AUTOMÁTICO DE CORRECCIÓN STORAGE BUCKETS
+-- ComplicesConecta v2.1.2 - Configuración Completa de Almacenamiento
+-- Fecha: 06 de septiembre, 2025 - 05:32 hrs
 -- =====================================================
+
+-- 🤖 AUDITOR Y REPARADOR AUTOMÁTICO DE STORAGE
+-- Crea buckets y políticas de almacenamiento seguras
+-- Scripts idempotentes - seguros para ejecutar múltiples veces
 
 -- PASO 1: CREAR BUCKETS DE STORAGE SI NO EXISTEN
 -- =====================================================

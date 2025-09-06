@@ -1,25 +1,255 @@
 -- =====================================================
--- SCRIPT DE CORRECCIÓN AUTOMÁTICA DE BASE DE DATOS
--- ComplicesConecta v2.1.2 - Sistema de Reparación Supabase
--- Fecha: 06 de septiembre, 2025 - 05:09 hrs
+-- SISTEMA AUTOMÁTICO DE CORRECCIÓN DE BASE DE DATOS
+-- ComplicesConecta v2.1.2 - Auditoría y Reparación Completa
+-- Fecha: 06 de septiembre, 2025 - 05:32 hrs
 -- =====================================================
 
--- PASO 1: VERIFICAR Y CREAR TABLAS CRÍTICAS FALTANTES
+-- SISTEMA AUDITOR Y REPARADOR AUTOMÁTICO SUPABASE
+-- Detecta, crea y corrige toda la base de datos automáticamente
+-- Scripts idempotentes - seguros para ejecutar múltiples veces
+
+-- 🔍 PASO 1: AUDITORÍA Y CREACIÓN DE TABLAS CRÍTICAS
 -- =====================================================
 
--- Tabla profiles (verificar columnas críticas)
+DO $$
+BEGIN
+    RAISE NOTICE '🤖 INICIANDO SISTEMA AUTOMÁTICO DE CORRECCIÓN';
+    RAISE NOTICE '⏰ Fecha: %', NOW();
+    RAISE NOTICE '🔍 Auditando y creando tablas críticas...';
+END $$;
+
+-- 1.1 CREAR TABLA IMAGES (si no existe)
+CREATE TABLE IF NOT EXISTS public.images (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    profile_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    url TEXT NOT NULL,
+    is_public BOOLEAN DEFAULT false,
+    type TEXT DEFAULT 'profile' CHECK (type IN ('profile', 'gallery')),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 1.2 CREAR TABLA IMAGE_PERMISSIONS (si no existe)
+CREATE TABLE IF NOT EXISTS public.image_permissions (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    image_id UUID REFERENCES public.images(id) ON DELETE CASCADE,
+    granted_to UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    granted_by UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    granted_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    UNIQUE(image_id, granted_to)
+);
+
+-- 1.3 CREAR TABLA GALLERY_ACCESS_REQUESTS (si no existe)
+CREATE TABLE IF NOT EXISTS public.gallery_access_requests (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    requester_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    target_profile_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'denied')),
+    message TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    UNIQUE(requester_id, target_profile_id)
+);
+
+-- 1.4 CREAR TABLA CHAT_ROOMS (si no existe)
+CREATE TABLE IF NOT EXISTS public.chat_rooms (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    name TEXT NOT NULL,
+    is_public BOOLEAN DEFAULT true,
+    created_by UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 1.5 CREAR TABLA CHAT_MEMBERS (si no existe)
+CREATE TABLE IF NOT EXISTS public.chat_members (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    room_id UUID REFERENCES public.chat_rooms(id) ON DELETE CASCADE,
+    profile_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    role TEXT DEFAULT 'member' CHECK (role IN ('admin', 'moderator', 'member')),
+    joined_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    UNIQUE(room_id, profile_id)
+);
+
+-- 1.6 CREAR TABLA MESSAGES (si no existe)
+CREATE TABLE IF NOT EXISTS public.messages (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    room_id UUID REFERENCES public.chat_rooms(id) ON DELETE CASCADE,
+    sender_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    content TEXT NOT NULL,
+    message_type TEXT DEFAULT 'text' CHECK (message_type IN ('text', 'image', 'file')),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 1.7 CREAR TABLA CHAT_INVITATIONS (si no existe)
+CREATE TABLE IF NOT EXISTS public.chat_invitations (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    room_id UUID REFERENCES public.chat_rooms(id) ON DELETE CASCADE,
+    invited_by UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    invited_user UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'accepted', 'declined')),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    UNIQUE(room_id, invited_user)
+);
+
+-- 1.8 CREAR TABLA USER_LIKES (si no existe)
+CREATE TABLE IF NOT EXISTS public.user_likes (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    liked_user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    liked BOOLEAN NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    UNIQUE(user_id, liked_user_id)
+);
+
+-- 1.9 CREAR TABLA MATCHES (si no existe)
+CREATE TABLE IF NOT EXISTS public.matches (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    user1_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    user2_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    status TEXT DEFAULT 'active' CHECK (status IN ('active', 'inactive', 'blocked')),
+    compatibility_score INTEGER DEFAULT 0,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    UNIQUE(user1_id, user2_id)
+);
+
+-- 1.10 CREAR TABLA MATCH_INTERACTIONS (si no existe)
+CREATE TABLE IF NOT EXISTS public.match_interactions (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    match_id UUID REFERENCES public.matches(id) ON DELETE CASCADE,
+    user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    interaction_type TEXT CHECK (interaction_type IN ('like', 'super_like', 'pass', 'block')),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+DO $$
+BEGIN
+    RAISE NOTICE '✅ Tablas críticas creadas/verificadas exitosamente';
+END $$;
+
+-- 🔧 PASO 2: AGREGAR COLUMNAS CRÍTICAS FALTANTES
+-- =====================================================
+
+DO $$
+BEGIN
+    RAISE NOTICE '🔧 Agregando columnas críticas faltantes...';
+END $$;
+
+-- 2.1 Agregar columnas faltantes en PROFILES
 DO $$ 
 BEGIN
-    -- Verificar si existe la columna interests
+    -- Verificar y agregar columna interests
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
                    WHERE table_name = 'profiles' AND column_name = 'interests') THEN
         ALTER TABLE profiles ADD COLUMN interests TEXT[] DEFAULT '{}';
+        RAISE NOTICE '  ✅ Columna interests agregada a profiles';
     END IF;
     
-    -- Verificar si existe la columna looking_for
+    -- Verificar y agregar columna looking_for
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
                    WHERE table_name = 'profiles' AND column_name = 'looking_for') THEN
         ALTER TABLE profiles ADD COLUMN looking_for TEXT[] DEFAULT '{}';
+        RAISE NOTICE '  ✅ Columna looking_for agregada a profiles';
+    END IF;
+    
+    -- Verificar y agregar columna swinger_experience
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                   WHERE table_name = 'profiles' AND column_name = 'swinger_experience') THEN
+        ALTER TABLE profiles ADD COLUMN swinger_experience TEXT;
+        RAISE NOTICE '  ✅ Columna swinger_experience agregada a profiles';
+    END IF;
+    
+    -- Verificar y agregar columna age_range_min
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                   WHERE table_name = 'profiles' AND column_name = 'age_range_min') THEN
+        ALTER TABLE profiles ADD COLUMN age_range_min INTEGER DEFAULT 18;
+        RAISE NOTICE '  ✅ Columna age_range_min agregada a profiles';
+    END IF;
+    
+    -- Verificar y agregar columna age_range_max
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                   WHERE table_name = 'profiles' AND column_name = 'age_range_max') THEN
+        ALTER TABLE profiles ADD COLUMN age_range_max INTEGER DEFAULT 65;
+        RAISE NOTICE '  ✅ Columna age_range_max agregada a profiles';
+    END IF;
+    
+    -- Verificar y agregar columna max_distance
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                   WHERE table_name = 'profiles' AND column_name = 'max_distance') THEN
+        ALTER TABLE profiles ADD COLUMN max_distance INTEGER DEFAULT 50;
+        RAISE NOTICE '  ✅ Columna max_distance agregada a profiles';
+    END IF;
+    
+    -- Verificar y agregar columna is_demo
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                   WHERE table_name = 'profiles' AND column_name = 'is_demo') THEN
+        ALTER TABLE profiles ADD COLUMN is_demo BOOLEAN DEFAULT false;
+        RAISE NOTICE '  ✅ Columna is_demo agregada a profiles';
+    END IF;
+    
+    -- Verificar y agregar columna is_active
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                   WHERE table_name = 'profiles' AND column_name = 'is_active') THEN
+        ALTER TABLE profiles ADD COLUMN is_active BOOLEAN DEFAULT true;
+        RAISE NOTICE '  ✅ Columna is_active agregada a profiles';
+    END IF;
+END $$;
+
+-- 2.2 Agregar columnas faltantes en USER_ROLES
+DO $$ 
+BEGIN
+    -- Crear tabla user_roles si no existe
+    IF NOT EXISTS (SELECT 1 FROM information_schema.tables 
+                   WHERE table_name = 'user_roles' AND table_schema = 'public') THEN
+        CREATE TABLE public.user_roles (
+            id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+            user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+            role TEXT DEFAULT 'user' CHECK (role IN ('admin', 'user', 'demo')),
+            created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+            UNIQUE(user_id)
+        );
+        RAISE NOTICE '  ✅ Tabla user_roles creada';
+    END IF;
+END $$;
+
+-- 2.3 Verificar y agregar columnas en INVITATIONS
+DO $$ 
+BEGIN
+    -- Crear tabla invitations si no existe
+    IF NOT EXISTS (SELECT 1 FROM information_schema.tables 
+                   WHERE table_name = 'invitations' AND table_schema = 'public') THEN
+        CREATE TABLE public.invitations (
+            id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+            from_profile UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+            to_profile UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+            status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'accepted', 'declined')),
+            type TEXT DEFAULT 'connection' CHECK (type IN ('connection', 'gallery', 'chat')),
+            message TEXT,
+            created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+            updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+            UNIQUE(from_profile, to_profile, type)
+        );
+        RAISE NOTICE '  ✅ Tabla invitations creada';
+    END IF;
+END $$;
+
+-- 2.4 Verificar y agregar columnas en GALLERY_PERMISSIONS
+DO $$ 
+BEGIN
+    -- Crear tabla gallery_permissions si no existe
+    IF NOT EXISTS (SELECT 1 FROM information_schema.tables 
+                   WHERE table_name = 'gallery_permissions' AND table_schema = 'public') THEN
+        CREATE TABLE public.gallery_permissions (
+            id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+            profile_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+            granted_to UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+            granted_by UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+            granted_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+            UNIQUE(profile_id, granted_to)
+        );
+        RAISE NOTICE '  ✅ Tabla gallery_permissions creada';
     END IF;
     
     -- Verificar si existe la columna swinger_experience
