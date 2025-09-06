@@ -144,7 +144,7 @@ const ProfileSingle: React.FC = () => {
                   };
                 }}
               />
-              {profile.isOnline && (
+              {(profile as any).isOnline && (
                 <Badge className="bg-green-500 text-white px-2 py-1 text-xs">
                   En línea
                 </Badge>
@@ -332,7 +332,7 @@ const ProfileSingle: React.FC = () => {
 
         {activeTab === 'gallery' && (
           <Gallery 
-            userId={profile.id} 
+            userId={profile.id as string} 
             isOwner={isOwnProfile}
             canViewPrivate={true} // Simular que tiene acceso
           />
@@ -568,7 +568,7 @@ const ProfileSingle: React.FC = () => {
       {isLoading && (
         <ProfileLoadingScreen
           onComplete={() => setIsLoading(false)}
-          profileName={profile?.firstName || 'Usuario'}
+          profileName={profile?.first_name || 'Usuario'}
           profileType="single"
         />
       )}

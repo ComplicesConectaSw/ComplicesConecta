@@ -22,7 +22,7 @@ import { invitationService } from "@/lib/invitations";
 import { InvitationDialog } from "@/components/invitations/InvitationDialog";
 
 interface GalleryProps {
-  userId: number;
+  userId: string;
   isOwner?: boolean;
   canViewPrivate?: boolean;
   profileName?: string;
@@ -40,7 +40,7 @@ const Gallery = ({ userId, isOwner = false, canViewPrivate = false, profileName 
     const checkAccess = async () => {
       if (!isOwner && userId) {
         const currentUserId = 1; // Mock current user ID
-        const access = await invitationService.hasGalleryAccess(userId.toString(), currentUserId.toString());
+        const access = await invitationService.hasGalleryAccess(userId, currentUserId.toString());
         setHasGalleryAccess(access);
       }
     };

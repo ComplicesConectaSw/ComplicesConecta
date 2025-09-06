@@ -93,14 +93,15 @@ export const generateMockSingle = (includeOnlineStatus = true) => {
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
     user_id: Math.random().toString(36).substr(2, 9),
+    latitude: Math.random() * 0.1 + 19.4, // CDMX area
+    longitude: Math.random() * 0.1 - 99.1, // CDMX area
+    share_location: Math.random() > 0.5,
     // Propiedades adicionales para compatibilidad con UI
     location: ubicaciones[Math.floor(Math.random() * ubicaciones.length)],
     profession: profesiones[Math.floor(Math.random() * profesiones.length)],
     interests: intereses.slice(0, 3 + Math.floor(Math.random() * 3)),
     avatar: realImages[Math.floor(Math.random() * realImages.length)],
     photos: [realImages[Math.floor(Math.random() * realImages.length)], realImages[Math.floor(Math.random() * realImages.length)]],
-    isOnline: includeOnlineStatus ? Math.random() > 0.3 : false,
-    isVerified: Math.random() > 0.3,
     stats: {
       matches: Math.floor(Math.random() * 50) + 10,
       likes: Math.floor(Math.random() * 200) + 50,
@@ -235,7 +236,7 @@ export interface ProfilePrivacySettings {
 // Galería de imágenes
 export interface GalleryImage {
   id: number;
-  userId: number;
+  userId: string;
   url: string;
   caption?: string;
   isPublic: boolean;
@@ -353,7 +354,7 @@ export const mockPrivacySettings: ProfilePrivacySettings = {
 export const mockGalleryImages: GalleryImage[] = [
   {
     id: 1,
-    userId: 1,
+    userId: "1",
     url: "https://randomuser.me/api/portraits/women/30.jpg",
     caption: "Disfrutando el atardecer en la playa",
     isPublic: true,
@@ -363,7 +364,7 @@ export const mockGalleryImages: GalleryImage[] = [
   },
   {
     id: 2,
-    userId: 1,
+    userId: "1",
     url: "https://randomuser.me/api/portraits/women/31.jpg",
     caption: "Noche de fiesta con amigos",
     isPublic: false,
