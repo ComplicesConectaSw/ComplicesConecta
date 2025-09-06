@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Eye, Lock, Unlock, Trash2, MessageSquare } from 'lucide-react';
-import { imagesService, ImageRecord } from '@/lib/images';
+import { getUserImages, deleteImage, ImageUpload } from '@/lib/images';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -15,9 +15,9 @@ interface ImageGalleryProps {
 }
 
 export function ImageGallery({ profileId, isOwner = false, showUpload = false }: ImageGalleryProps) {
-  const [images, setImages] = useState<ImageRecord[]>([]);
+  const [images, setImages] = useState<ImageUpload[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedImage, setSelectedImage] = useState<ImageRecord | null>(null);
+  const [selectedImage, setSelectedImage] = useState<ImageUpload | null>(null);
   const [requestingAccess, setRequestingAccess] = useState(false);
   const { user } = useAuth();
   const { toast } = useToast();
@@ -29,25 +29,14 @@ export function ImageGallery({ profileId, isOwner = false, showUpload = false }:
   const loadImages = async () => {
     setLoading(true);
     try {
-      const result = await imagesService.getProfileImages(
-        profileId,
-        user?.id
-      );
-
-      if (result.success && result.images) {
-        setImages(result.images);
-      } else {
-        toast({
-          variant: "destructive",
-          title: "Error al cargar imágenes",
-          description: result.error || "Error desconocido",
-        });
-      }
+      const images = await getUserImages(profileId, isOwner);
+      setImages(images);
     } catch (error) {
+      console.error('Error loading images:', error);
       toast({
         variant: "destructive",
-        title: "Error inesperado",
-        description: "No se pudieron cargar las imágenes",
+        title: "Error al cargar imágenes",
+        description: "Error de conexión",
       });
     } finally {
       setLoading(false);
@@ -60,9 +49,9 @@ export function ImageGallery({ profileId, isOwner = false, showUpload = false }:
     }
 
     try {
-      const result = await imagesService.deleteImage(imageId);
+      const success = await deleteImage(imageId, profileId);
       
-      if (result.success) {
+      if (success) {
         setImages(images.filter(img => img.id !== imageId));
         setSelectedImage(null);
         toast({
@@ -73,7 +62,7 @@ export function ImageGallery({ profileId, isOwner = false, showUpload = false }:
         toast({
           variant: "destructive",
           title: "Error al eliminar",
-          description: result.error,
+          description: "No se pudo eliminar la imagen",
         });
       }
     } catch (error) {
@@ -90,23 +79,11 @@ export function ImageGallery({ profileId, isOwner = false, showUpload = false }:
 
     setRequestingAccess(true);
     try {
-      const result = await imagesService.requestGalleryAccess(
-        profileId,
-        "Me gustaría ver tu galería privada"
-      );
-
-      if (result.success) {
-        toast({
-          title: "Solicitud enviada",
-          description: "Tu solicitud de acceso ha sido enviada.",
-        });
-      } else {
-        toast({
-          variant: "destructive",
-          title: "Error al enviar solicitud",
-          description: result.error,
-        });
-      }
+      // Funcionalidad de solicitud de acceso no implementada aún
+      toast({
+        title: "Funcionalidad en desarrollo",
+        description: "La solicitud de acceso estará disponible pronto.",
+      });
     } catch (error) {
       toast({
         variant: "destructive",
@@ -261,9 +238,9 @@ export function ImageGallery({ profileId, isOwner = false, showUpload = false }:
 }
 
 interface ImageCardProps {
-  image: ImageRecord;
+  image: ImageUpload;
   isOwner: boolean;
-  onView: (image: ImageRecord) => void;
+  onView: (image: ImageUpload) => void;
   onDelete: (imageId: string) => void;
 }
 
