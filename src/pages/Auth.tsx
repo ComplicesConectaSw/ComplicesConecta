@@ -265,7 +265,7 @@ const Auth = () => {
 
         // Redirigir según el tipo de usuario
         if (normalizedEmail.includes('complicesconectasw')) {
-          navigate("/admin");
+          navigate("/admin-production");
         } else if (normalizedEmail.includes('pareja')) {
           navigate("/profile-couple");
         } else if (normalizedEmail.includes('single')) {

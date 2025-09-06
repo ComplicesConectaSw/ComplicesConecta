@@ -30,37 +30,44 @@ const EditProfileSingle = () => {
   ];
 
   useEffect(() => {
-    // Verificar autenticación demo y cargar perfil del usuario
+    // Verificar autenticación (demo o producción)
     const demoAuth = localStorage.getItem('demo_authenticated');
     const demoUser = localStorage.getItem('demo_user');
     
-    if (demoAuth !== 'true' || !demoUser) {
-      navigate('/auth');
-      return;
-    }
-    
-    const user = JSON.parse(demoUser);
-    let profileData;
-    
-    // Si es perfil single, usar datos del usuario demo
-    if (user.accountType === 'single') {
-      profileData = user;
+    // Para producción: verificar autenticación real con Supabase
+    // Para demo: usar datos locales
+    if (demoAuth === 'true' && demoUser) {
+      // Modo demo
+      const user = JSON.parse(demoUser);
+      let profileData;
+      
+      if (user.accountType === 'single') {
+        profileData = user;
+      } else {
+        profileData = generateMockSingle();
+      }
+      
+      setProfile(profileData);
+      setFormData({
+        name: profileData.name || '',
+        age: profileData.age?.toString() || '',
+        location: profileData.location || '',
+        profession: profileData.profession || '',
+        bio: profileData.bio || '',
+        interests: profileData.interests || [],
+        avatar: profileData.avatar || ''
+      });
     } else {
-      // Para otros tipos, generar perfil mock
-      profileData = generateMockSingle();
+      // Modo producción: cargar datos reales del usuario desde Supabase
+      loadProductionProfile();
     }
-    
-    setProfile(profileData);
-    setFormData({
-      name: profileData.name || "",
-      age: profileData.age?.toString() || "",
-      location: profileData.location || "",
-      profession: profileData.profession || "",
-      bio: profileData.bio || "",
-      interests: profileData.interests || [],
-      avatar: profileData.avatar || ""
-    });
   }, [navigate]);
+
+  const loadProductionProfile = async () => {
+    // TODO: Implementar carga de perfil real desde Supabase
+    // Por ahora, redirigir a auth si no hay sesión demo
+    navigate('/auth');
+  };
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({
@@ -69,7 +76,7 @@ const EditProfileSingle = () => {
     }));
   };
 
-  const toggleInterest = (interest: string) => {
+  const handleInterestToggle = (interest: string) => {
     setFormData(prev => ({
       ...prev,
       interests: prev.interests.includes(interest)
@@ -79,9 +86,8 @@ const EditProfileSingle = () => {
   };
 
   const handleSave = () => {
-    // Aquí iría la lógica para guardar el perfil
-    console.log("Guardando perfil:", formData);
-    navigate('/profile-single');
+    console.log('Guardando perfil:', formData);
+    // Aquí iría la lógica para guardar en Supabase
   };
 
   const handleLogout = () => {
@@ -244,7 +250,7 @@ const EditProfileSingle = () => {
                       ? "bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-md border-0"
                       : "bg-white/20 text-white border border-white/30 hover:bg-white/30"
                   }`}
-                  onClick={() => toggleInterest(interest)}
+                  onClick={() => handleInterestToggle(interest)}
                 >
                   {interest}
                   {formData.interests.includes(interest) && (

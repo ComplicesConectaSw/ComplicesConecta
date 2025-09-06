@@ -35,6 +35,7 @@ import EditProfileCouple from "./pages/EditProfileCouple";
 import Feed from "./pages/Feed";
 import About from "./pages/About";
 import Careers from "./pages/Careers";
+import Blog from "./pages/Blog";
 import ChatAuthenticated from "./pages/ChatAuthenticated";
 
 const queryClient = new QueryClient();
@@ -78,6 +79,7 @@ const App = () => (
             <Route path="/guidelines" element={<Guidelines />} />
             <Route path="/about" element={<About />} />
             <Route path="/careers" element={<Careers />} />
+            <Route path="/blog" element={<Blog />} />
             <Route path="/chat-authenticated" element={<ChatAuthenticated />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

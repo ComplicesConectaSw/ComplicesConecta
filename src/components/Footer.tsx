@@ -62,12 +62,9 @@ export const Footer = () => {
                 </Link>
               </li>
               <li>
-                <button 
-                  onClick={() => window.open('https://complicesconecta.blog', '_blank')}
-                  className="text-background/80 hover:text-primary transition-colors text-left"
-                >
+                <Link to="/blog" className="text-background/80 hover:text-primary transition-colors">
                   Blog
-                </button>
+                </Link>
               </li>
             </ul>
           </div>
