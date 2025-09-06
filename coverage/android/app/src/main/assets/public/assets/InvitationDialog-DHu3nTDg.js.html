@@ -1,0 +1,103 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Code coverage report for android/app/src/main/assets/public/assets/InvitationDialog-DHu3nTDg.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../../../../../prettify.css" />
+    <link rel="stylesheet" href="../../../../../../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../../../../../../favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../../../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+    
+<body>
+<div class='wrapper'>
+    <div class='pad1'>
+        <h1><a href="../../../../../../../index.html">All files</a> / <a href="index.html">android/app/src/main/assets/public/assets</a> InvitationDialog-DHu3nTDg.js</h1>
+        <div class='clearfix'>
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Statements</span>
+                <span class='fraction'>0/6</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>0/1</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>0/1</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Lines</span>
+                <span class='fraction'>0/6</span>
+            </div>
+        
+            
+        </div>
+        <p class="quiet">
+            Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
+        </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input type="search" id="fileSearch">
+            </div>
+        </template>
+    </div>
+    <div class='status-line low'></div>
+    <pre><table class="coverage">
+<tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
+<a name='L2'></a><a href='#L2'>2</a>
+<a name='L3'></a><a href='#L3'>3</a>
+<a name='L4'></a><a href='#L4'>4</a>
+<a name='L5'></a><a href='#L5'>5</a>
+<a name='L6'></a><a href='#L6'>6</a>
+<a name='L7'></a><a href='#L7'>7</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import{c as C,r as t,y as T,j as e,D,ao as E,z as L,E as b,J as k,L as h,e as M,f as U,g as F,h as O,i as c,W as p,q as g,B as u}from"./index-BX4sKwGe.js";import{T as P}from"./textarea-BlJsAWCi.js";import{i as _}from"./invitations-B9Bifat3.js";import{U as j}from"./user-plus-DGX2PbVA.js";/**<span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span></span>
+<span class="cstat-no" title="statement not covered" > * @license lucide-react v0.451.0 - ISC</span>
+<span class="cstat-no" title="statement not covered" > *</span>
+<span class="cstat-no" title="statement not covered" > * This source code is licensed under the ISC license.</span>
+<span class="cstat-no" title="statement not covered" > * See the LICENSE file in the root directory of this source tree.</span>
+<span class="cstat-no" title="statement not covered" > */const v=C("Image",[["rect",{width:"18",height:"18",x:"3",y:"3",rx:"2",ry:"2",key:"1m3agn"}],["circle",{cx:"9",cy:"9",r:"2",key:"af1f0g"}],["path",{d:"m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21",key:"1xmnt7"}]]);function V({targetProfileId:f,targetProfileName:o,children:N}){const[y,r]=t.useState(!1),[s,d]=t.useState(""),[i,x]=t.useState("profile"),[n,m]=t.useState(!1),{toast:l}=T(),S=async()=&gt;{if(!s.trim()){l({title:"Mensaje requerido",description:"Por favor escribe un mensaje para la invitación.",variant:"destructive"});return}m(!0);try{const a=JSON.parse(localStorage.getItem("demo_user")||"{}");await _.sendInvitation({from_profile:a.id||"1",to_profile:f,message:s.trim(),type:i}),l({title:"Invitación enviada",description:`Tu invitación a ${o} ha sido enviada exitosamente.`}),d(""),x("profile"),r(!1)}catch{l({title:"Error",description:"No se pudo enviar la invitación. Inténtalo de nuevo.",variant:"destructive"})}finally{m(!1)}},w=a=&gt;{switch(a){case"profile":return e.jsx(p,{className:"h-4 w-4"});case"gallery":return e.jsx(v,{className:"h-4 w-4"});case"chat":return e.jsx(g,{className:"h-4 w-4"});default:return e.jsx(j,{className:"h-4 w-4"})}},I=a=&gt;{switch(a){case"profile":return"Solicitar conexión general con el perfil";case"gallery":return"Solicitar acceso a la galería privada";case"chat":return"Solicitar permiso para chat privado";default:return""}};return e.jsxs(D,{open:y,onOpenChange:r,children:[e.jsx(E,{asChild:!0,children:N}),e.jsxs(L,{className:"sm:max-w-md",children:[e.jsx(b,{children:e.jsxs(k,{className:"flex items-center gap-2",children:[e.jsx(j,{className:"h-5 w-5"}),"Enviar Invitación a ",o]})}),e.jsxs("div",{className:"space-y-4",children:[e.jsxs("div",{className:"space-y-2",children:[e.jsx(h,{htmlFor:"type",children:"Tipo de invitación"}),e.jsxs(M,{value:i,onValueChange:a=&gt;x(a),children:[e.jsx(U,{children:e.jsx(F,{placeholder:"Selecciona el tipo"})}),e.jsxs(O,{children:[e.jsx(c,{value:"profile",children:e.jsxs("div",{className:"flex items-center gap-2",children:[e.jsx(p,{className:"h-4 w-4"}),e.jsx("span",{children:"Conexión de Perfil"})]})}),e.jsx(c,{value:"gallery",children:e.jsxs("div",{className:"flex items-center gap-2",children:[e.jsx(v,{className:"h-4 w-4"}),e.jsx("span",{children:"Acceso a Galería"})]})}),e.jsx(c,{value:"chat",children:e.jsxs("div",{className:"flex items-center gap-2",children:[e.jsx(g,{className:"h-4 w-4"}),e.jsx("span",{children:"Chat Privado"})]})})]})]}),e.jsx("p",{className:"text-sm text-muted-foreground",children:I(i)})]}),e.jsxs("div",{className:"space-y-2",children:[e.jsx(h,{htmlFor:"message",children:"Mensaje"}),e.jsx(P,{id:"message",placeholder:"Escribe un mensaje personalizado...",value:s,onChange:a=&gt;d(a.target.value),rows:4,maxLength:500}),e.jsxs("p",{className:"text-xs text-muted-foreground text-right",children:[s.length,"/500"]})]}),e.jsxs("div",{className:"flex gap-3 pt-4",children:[e.jsx(u,{variant:"outline",onClick:()=&gt;r(!1),className:"flex-1",disabled:n,children:"Cancelar"}),e.jsx(u,{onClick:S,className:"flex-1",disabled:n||!s.trim(),children:n?"Enviando...":e.jsxs(e.Fragment,{children:[w(i),e.jsx("span",{className:"ml-2",children:"Enviar"})]})})]})]})]})]})}export{V as I,v as a};</span>
+&nbsp;</pre></td></tr></table></pre>
+
+                <div class='push'></div><!-- for sticky footer -->
+            </div><!-- /wrapper -->
+            <div class='footer quiet pad2 space-top1 center small'>
+                Code coverage generated by
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2025-09-06T10:31:57.970Z
+            </div>
+        <script src="../../../../../../../prettify.js"></script>
+        <script>
+            window.onload = function () {
+                prettyPrint();
+            };
+        </script>
+        <script src="../../../../../../../sorter.js"></script>
+        <script src="../../../../../../../block-navigation.js"></script>
+    </body>
+</html>
+    

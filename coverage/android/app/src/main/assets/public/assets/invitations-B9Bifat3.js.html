@@ -1,0 +1,88 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Code coverage report for android/app/src/main/assets/public/assets/invitations-B9Bifat3.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../../../../../prettify.css" />
+    <link rel="stylesheet" href="../../../../../../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../../../../../../favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../../../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+    
+<body>
+<div class='wrapper'>
+    <div class='pad1'>
+        <h1><a href="../../../../../../../index.html">All files</a> / <a href="index.html">android/app/src/main/assets/public/assets</a> invitations-B9Bifat3.js</h1>
+        <div class='clearfix'>
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Statements</span>
+                <span class='fraction'>0/1</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>0/1</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>0/1</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Lines</span>
+                <span class='fraction'>0/1</span>
+            </div>
+        
+            
+        </div>
+        <p class="quiet">
+            Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
+        </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input type="search" id="fileSearch">
+            </div>
+        </template>
+    </div>
+    <div class='status-line low'></div>
+    <pre><table class="coverage">
+<tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
+<a name='L2'></a><a href='#L2'>2</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >const r=[{id:"1",from_profile:"2",to_profile:"1",message:"Hola, me encantaría conocerte mejor y ver tu galería privada.",type:"gallery",status:"pending",created_at:new Date(Date.now()-864e5).toISOString()},{id:"2",from_profile:"3",to_profile:"1",message:"¡Hola! ¿Te gustaría chatear en privado?",type:"chat",status:"pending",created_at:new Date(Date.now()-36e5).toISOString()},{id:"3",from_profile:"1",to_profile:"4",message:"Me pareces muy interesante, ¿podríamos conectar?",type:"profile",status:"accepted",created_at:new Date(Date.now()-1728e5).toISOString(),decided_at:new Date(Date.now()-864e5).toISOString()}],n=[{id:"1",owner_profile:"4",grantee_profile:"1",scope:"private_gallery",source_invitation:"3",status:"active",created_at:new Date(Date.now()-864e5).toISOString()}],i={async sendInvitation(a){const t={...a,id:Math.random().toString(36).substr(2,9),status:"pending",created_at:new Date().toISOString()};return r.push(t),t},async respondInvitation(a,t){const e=r.find(o=&gt;o.id===a);if(!e)throw new Error("Invitación no encontrada");if(e.status=t==="accept"?"accepted":"declined",e.decided_at=new Date().toISOString(),t==="accept"&amp;&amp;e.type==="gallery"){const o={id:Math.random().toString(36).substr(2,9),owner_profile:e.to_profile,grantee_profile:e.from_profile,scope:"private_gallery",source_invitation:e.id,status:"active",created_at:new Date().toISOString()};n.push(o)}return e},async getInvitations(a){const t=r.filter(o=&gt;o.to_profile===a),e=r.filter(o=&gt;o.from_profile===a);return{received:t,sent:e}},async hasGalleryAccess(a,t){return n.some(e=&gt;e.owner_profile===a&amp;&amp;e.grantee_profile===t&amp;&amp;e.status==="active")},async revokeGalleryAccess(a,t){const e=n.find(o=&gt;o.owner_profile===a&amp;&amp;o.grantee_profile===t&amp;&amp;o.status==="active");e&amp;&amp;(e.status="revoked")},async hasChatAccess(a,t){return r.some(e=&gt;(e.from_profile===a&amp;&amp;e.to_profile===t||e.from_profile===t&amp;&amp;e.to_profile===a)&amp;&amp;e.type==="chat"&amp;&amp;e.status==="accepted")}};export{i};<span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span></span>
+&nbsp;</pre></td></tr></table></pre>
+
+                <div class='push'></div><!-- for sticky footer -->
+            </div><!-- /wrapper -->
+            <div class='footer quiet pad2 space-top1 center small'>
+                Code coverage generated by
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2025-09-06T10:31:57.970Z
+            </div>
+        <script src="../../../../../../../prettify.js"></script>
+        <script>
+            window.onload = function () {
+                prettyPrint();
+            };
+        </script>
+        <script src="../../../../../../../sorter.js"></script>
+        <script src="../../../../../../../block-navigation.js"></script>
+    </body>
+</html>
+    

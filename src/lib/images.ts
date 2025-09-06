@@ -4,6 +4,8 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import type { Database } from '@/integrations/supabase/types';
+import { logger, logDatabaseOperation } from '@/lib/logger';
 
 // Interfaces para el sistema de imágenes
 export interface ImageUpload {
@@ -94,7 +96,12 @@ export async function uploadImage(
       });
 
     if (uploadError) {
-      console.error('Error uploading file:', uploadError);
+      logger.error('Error uploading file to storage', {
+        error: uploadError.message,
+        fileName,
+        bucket,
+        context: 'image-upload'
+      });
       return { success: false, error: 'Error al subir la imagen' };
     }
 
@@ -122,7 +129,12 @@ export async function uploadImage(
       .single();
 
     if (dbError) {
-      console.error('Error saving image metadata:', dbError);
+      logDatabaseOperation('insert', 'images', false, {
+        error: dbError.message,
+        fileName,
+        profileId,
+        context: 'image-metadata-save'
+      });
       // Limpiar archivo subido si falla la BD
       await supabase.storage.from(bucket).remove([fileName]);
       return { success: false, error: 'Error al guardar información de la imagen' };
@@ -135,7 +147,12 @@ export async function uploadImage(
     };
 
   } catch (error) {
-    console.error('Unexpected error in uploadImage:', error);
+    logger.error('Unexpected error in uploadImage', {
+      error: error instanceof Error ? error.message : String(error),
+      profileId,
+      fileName: file.name,
+      context: 'image-upload-unexpected'
+    });
     return { success: false, error: 'Error inesperado al subir la imagen' };
   }
 }
@@ -161,17 +178,25 @@ export async function getUserImages(
     const { data, error } = await query;
 
     if (error) {
-      console.error('Error fetching user images:', error);
+      logDatabaseOperation('select', 'images', false, {
+        error: error.message,
+        profileId,
+        context: 'fetch-user-images'
+      });
       return [];
     }
 
     // Mapear datos para asegurar compatibilidad con la interfaz
     return (data || []).map(item => ({
       ...item,
-      type: (item as any).type || 'gallery'
+      type: 'gallery' as const // Default type since DB doesn't have type column yet
     })) as ImageUpload[];
   } catch (error) {
-    console.error('Unexpected error in getUserImages:', error);
+    logger.error('Unexpected error in getUserImages', {
+      error: error instanceof Error ? error.message : String(error),
+      profileId,
+      context: 'get-user-images-unexpected'
+    });
     return [];
   }
 }
@@ -190,7 +215,12 @@ export async function deleteImage(imageId: string, profileId: string): Promise<b
       .single();
 
     if (fetchError || !image) {
-      console.error('Error fetching image:', fetchError);
+      logDatabaseOperation('select', 'images', false, {
+        error: fetchError?.message || 'Image not found',
+        imageId,
+        profileId,
+        context: 'fetch-image-for-delete'
+      });
       return false;
     }
 
@@ -211,13 +241,23 @@ export async function deleteImage(imageId: string, profileId: string): Promise<b
       .eq('profile_id', profileId);
 
     if (deleteError) {
-      console.error('Error deleting image from database:', deleteError);
+      logDatabaseOperation('delete', 'images', false, {
+        error: deleteError.message,
+        imageId,
+        profileId,
+        context: 'delete-image-metadata'
+      });
       return false;
     }
 
     return true;
   } catch (error) {
-    console.error('Unexpected error in deleteImage:', error);
+    logger.error('Unexpected error in deleteImage', {
+      error: error instanceof Error ? error.message : String(error),
+      imageId,
+      profileId,
+      context: 'delete-image-unexpected'
+    });
     return false;
   }
 }
@@ -235,16 +275,24 @@ export async function getPublicImages(limit: number = 20): Promise<ImageUpload[]
       .limit(limit);
 
     if (error) {
-      console.error('Error fetching public images:', error);
+      logDatabaseOperation('select', 'images', false, {
+        error: error.message,
+        limit,
+        context: 'fetch-public-images'
+      });
       return [];
     }
 
     return (data || []).map(item => ({
       ...item,
-      type: (item as any).type || 'gallery'
+      type: 'gallery' as const // Default type since DB doesn't have type column yet
     })) as ImageUpload[];
   } catch (error) {
-    console.error('Unexpected error in getPublicImages:', error);
+    logger.error('Unexpected error in getPublicImages', {
+      error: error instanceof Error ? error.message : String(error),
+      limit,
+      context: 'get-public-images-unexpected'
+    });
     return [];
   }
 }
