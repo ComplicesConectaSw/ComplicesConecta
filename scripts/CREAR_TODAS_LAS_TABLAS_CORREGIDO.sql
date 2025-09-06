@@ -1,7 +1,7 @@
 -- =====================================================
 -- 🚀 SCRIPT COMPLETO PARA CREAR TODAS LAS TABLAS FALTANTES
 -- ComplicesConecta v2.1.2 - Supabase Project: axtvqnozatbmllvwzuim
--- Fecha: 06 de septiembre, 2025 - 05:45 hrs
+-- Fecha: 06 de septiembre, 2025 - 06:21 hrs
 -- =====================================================
 
 -- 🤖 EJECUTAR EN SUPABASE SQL EDITOR:
@@ -364,7 +364,7 @@ END $$;
 -- 🚀 CREAR ÍNDICES CRÍTICOS PARA PERFORMANCE
 -- =====================================================
 
--- Índices para profiles
+-- Índices para profiles (solo columnas que existen)
 CREATE INDEX IF NOT EXISTS idx_profiles_interests_gin ON public.profiles USING GIN(interests);
 CREATE INDEX IF NOT EXISTS idx_profiles_looking_for_gin ON public.profiles USING GIN(looking_for);
 CREATE INDEX IF NOT EXISTS idx_profiles_active_search ON public.profiles(is_active, is_demo, age) WHERE is_active = true AND is_demo = false;
