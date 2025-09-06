@@ -112,7 +112,7 @@ jobs:
       run: npm ci
       
     - name: 🧪 Ejecutar tests unitarios
-      run: npm run test -- --coverage --reporter=verbose
+      run: npm run test -- --reporter=verbose
       
     - name: 📊 Subir cobertura a Codecov
       uses: codecov/codecov-action@v3
