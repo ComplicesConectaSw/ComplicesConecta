@@ -285,7 +285,7 @@ export const useAuth = () => {
       try {
         const parsedUser = JSON.parse(demoUser);
         const isAdminDemo = parsedUser.role === 'admin';
-        console.log('🎭 Verificando admin demo:', parsedUser.email, 'Es admin:', isAdminDemo);
+        console.log('🎭 Admin demo check:', parsedUser.email, 'Role:', parsedUser.role, 'Is admin:', isAdminDemo);
         return isAdminDemo;
       } catch (error) {
         console.error('❌ Error verificando admin demo:', error);
@@ -293,23 +293,51 @@ export const useAuth = () => {
       }
     }
     
-    // Verificar admin en perfil real
-    const isAdminReal = profile?.role === 'admin' || user?.email === 'djwacko28@gmail.com' || user?.email === 'complicesconectasw@outlook.es';
-    if (user?.email) {
-      console.log('🔐 Verificando admin real:', user.email, 'Es admin:', isAdminReal);
+    // Verificar admin en perfil real - usar múltiples fuentes
+    const userEmail = user?.email?.toLowerCase();
+    const profileRole = profile?.role;
+    
+    // Lista de emails admin conocidos
+    const adminEmails = ['djwacko28@gmail.com', 'complicesconectasw@outlook.es'];
+    
+    // Verificar por email o por rol en perfil
+    const isAdminByEmail = userEmail && adminEmails.includes(userEmail);
+    const isAdminByRole = profileRole === 'admin';
+    
+    const isAdminReal = isAdminByEmail || isAdminByRole;
+    
+    if (userEmail) {
+      console.log('🔐 Admin real check:', {
+        email: userEmail,
+        profileRole,
+        isAdminByEmail,
+        isAdminByRole,
+        finalResult: isAdminReal
+      });
     }
+    
     return isAdminReal;
   };
 
   const isDemo = () => {
     const demoAuth = localStorage.getItem('demo_authenticated');
-    const isDemoActive = demoAuth === 'true';
-    console.log('🎭 Verificando modo demo:', isDemoActive);
+    const demoUser = localStorage.getItem('demo_user');
+    const isDemoActive = demoAuth === 'true' && demoUser;
+    
+    if (isDemoActive) {
+      try {
+        const parsedUser = JSON.parse(demoUser);
+        console.log('🎭 Demo mode active for:', parsedUser.email, 'Role:', parsedUser.role);
+      } catch (error) {
+        console.log('🎭 Demo mode active but invalid user data');
+      }
+    }
+    
     return isDemoActive;
   };
 
   const getProfileType = () => {
-    return profile?.profile_type || 'single';
+    return profile?.profile_type || profile?.account_type || 'single';
   };
 
   const isAuthenticated = () => {
@@ -317,11 +345,17 @@ export const useAuth = () => {
     const demoAuth = localStorage.getItem('demo_authenticated');
     const demoUser = localStorage.getItem('demo_user');
     if (demoAuth === 'true' && demoUser) {
+      console.log('✅ Authenticated via demo session');
       return true;
     }
     
     // Verificar autenticación real
-    return !!user;
+    const realAuth = !!user && !!session;
+    if (realAuth) {
+      console.log('✅ Authenticated via real Supabase session');
+    }
+    
+    return realAuth;
   };
 
   return {
@@ -333,6 +367,8 @@ export const useAuth = () => {
     signOut,
     isAdmin,
     isDemo,
+    isAuthenticated,
+    getProfileType,
     fetchUserProfile,
     // Nuevas funciones de utilidad
     isDemoMode: isDemoMode,

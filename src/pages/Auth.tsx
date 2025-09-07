@@ -47,7 +47,7 @@ const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { getCurrentLocation, location, isLoading: locationLoading, error: locationError } = useGeolocation();
-  const { resetPassword } = useAuth();
+  const { user, session, profile, loading, signIn, signOut, isAdmin, isDemo, getProfileType, appMode } = useAuth();
   
   const [isLoading, setIsLoading] = useState(false);
   const [showResetPassword, setShowResetPassword] = useState(false);
@@ -117,30 +117,24 @@ const Auth = () => {
 
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-
+    if (!resetEmail) return;
+    
     try {
-      const { error } = await resetPassword(resetEmail);
+      const { error } = await supabase.auth.resetPasswordForEmail(resetEmail);
+      if (error) throw error;
       
-      if (error) {
-        throw error;
-      }
-
       toast({
-        title: "¡Email enviado!",
+        title: "Email enviado",
         description: "Revisa tu correo para restablecer tu contraseña",
       });
-
       setShowResetPassword(false);
       setResetEmail("");
-    } catch (error: any) {
+    } catch (error) {
       toast({
-        title: "Error",
-        description: error.message || "No se pudo enviar el email de restablecimiento",
         variant: "destructive",
+        title: "Error",
+        description: "No se pudo enviar el email de restablecimiento",
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -288,28 +282,38 @@ const Auth = () => {
         return;
       }
 
-      // Solo intentar autenticación real si NO es credencial demo
+      // Usar el hook useAuth para autenticación real
       if (!isDemoCredential(normalizedEmail) && getAppConfig().features.realAuth) {
-        console.log('🔐 Intentando autenticación real con Supabase para:', formData.email);
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email: formData.email,
-          password: formData.password,
-        });
-
-        if (error) {
-          console.error('❌ Error de autenticación:', error);
+        console.log('🔐 Usando useAuth para autenticación real:', formData.email);
+        
+        try {
+          const result = await signIn(formData.email, formData.password, formData.accountType);
+          
+          if (result?.user) {
+            console.log('✅ Autenticación exitosa, esperando carga de perfil...');
+            
+            // Esperar un momento para que se cargue el perfil
+            setTimeout(() => {
+              // Verificar si es admin para redirección
+              if (isAdmin()) {
+                console.log('👑 Usuario admin detectado - redirigiendo a admin');
+                navigate("/admin");
+              } else {
+                console.log('👤 Usuario regular - redirigiendo a discover');
+                navigate("/discover");
+              }
+            }, 1000);
+          }
+        } catch (error) {
+          console.error('❌ Error en signIn:', error);
           toast({
             variant: "destructive",
             title: "Error al iniciar sesión",
             description: "Credenciales inválidas. Verifique su email y contraseña.",
           });
-          return;
         }
-
-        // Redirigir según el tipo de usuario real
-        navigate("/discover");
       } else if (!isDemoCredential(normalizedEmail)) {
-        // Credencial no reconocida y no es demo - mostrar mensaje más genérico
+        // Credencial no reconocida y no es demo
         toast({
           variant: "destructive",
           title: "Error al iniciar sesión",
@@ -548,7 +552,7 @@ const Auth = () => {
                   <button
                     type="button"
                     onClick={() => setShowResetPassword(true)}
-                    className="text-sm text-primary hover:text-primary/80 underline"
+                    className="text-sm text-white hover:text-white/80 underline font-medium"
                   >
                     ¿Olvidaste tu contraseña?
                   </button>
