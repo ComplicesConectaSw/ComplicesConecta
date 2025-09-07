@@ -38,30 +38,29 @@ const EditProfileSingle = () => {
 
   const loadProfile = useCallback(async () => {
     try {
-      if (appConfig.features.demoCredentials) {
-        // Modo demo
-        const demoAuth = localStorage.getItem('demo_authenticated');
-        const demoUser = localStorage.getItem('demo_user');
+      // Verificar autenticación demo primero
+      const demoAuth = localStorage.getItem('demo_authenticated');
+      const demoUser = localStorage.getItem('demo_user');
+      
+      if (demoAuth === 'true' && demoUser) {
+        const user = JSON.parse(demoUser);
+        let profileData;
         
-        if (demoAuth === 'true' && demoUser) {
-          const user = JSON.parse(demoUser);
-          let profileData;
-          
-          if (user.type === 'single') {
-            profileData = generateMockSingle(user.id);
-            setFormData({
-              name: profileData.first_name + ' ' + profileData.last_name,
-              age: profileData.age.toString(),
-              bio: profileData.bio,
-              location: profileData.location,
-              profession: '',
-              interests: profileData.interests,
-              avatar: ''
-            });
-            setUserId(user.id);
-          }
+        if (user.accountType === 'single' || user.type === 'single') {
+          profileData = generateMockSingle(user.id);
+          setFormData({
+            name: profileData.first_name + ' ' + profileData.last_name,
+            age: profileData.age.toString(),
+            bio: profileData.bio,
+            location: profileData.location,
+            profession: profileData.profession || '',
+            interests: profileData.interests || [],
+            avatar: profileData.avatar || ''
+          });
+          setUserId(user.id);
+          setProfile(profileData);
         }
-      } else {
+      } else if (appConfig.features.demoCredentials) {
         // Modo real con Supabase
         const { data: { user } } = await supabase.auth.getUser();
         

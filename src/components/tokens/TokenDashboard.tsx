@@ -320,7 +320,7 @@ export function TokenDashboard() {
 
       {/* Botón de actualizar */}
       <div className="text-center">
-        <Button onClick={refreshTokens} variant="outline">
+        <Button onClick={refreshTokens} variant="outline" className="text-purple-700 border-purple-300 hover:bg-purple-50">
           🔄 Actualizar Balance
         </Button>
       </div>

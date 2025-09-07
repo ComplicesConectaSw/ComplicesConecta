@@ -10,20 +10,37 @@ import { StakingModal } from '../components/tokens/StakingModal';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { useTokens } from '../hooks/useTokens';
-import { Coins, Info, ExternalLink, Bot } from 'lucide-react';
+import { Coins, Info, ExternalLink, Bot, ArrowLeft } from 'lucide-react';
 
 export default function Tokens() {
   const [showStakingModal, setShowStakingModal] = useState(false);
   const { balance, getBalanceMessage, getStakingMessage } = useTokens();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50">
-      <div className="container mx-auto px-4 py-6 max-w-4xl">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900/20 via-pink-900/20 to-red-900/20 relative">
+      {/* Background Effects */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-pink-900/20 to-red-900/20">
+        <div className="absolute top-20 left-20 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-20 right-20 w-48 h-48 bg-purple-500/10 rounded-full blur-2xl animate-pulse"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-red-500/5 rounded-full blur-3xl animate-spin-slow"></div>
+      </div>
+      <div className="container mx-auto px-4 py-6 max-w-4xl relative z-10">
         {/* Header */}
         <div className="text-center mb-8 px-4">
-          <div className="flex items-center justify-center gap-3 mb-4 flex-wrap">
-            <Coins className="h-8 w-8 text-purple-600" />
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Tokens CMPX & GTK</h1>
+          <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+            <Button 
+              variant="ghost" 
+              onClick={() => window.history.back()}
+              className="text-purple-700 hover:bg-purple-100"
+            >
+              <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
+              <span className="ml-1 sm:ml-2">Regresar</span>
+            </Button>
+            <div className="flex items-center gap-3 flex-1 justify-center">
+              <Coins className="h-6 w-6 sm:h-8 sm:w-8 text-purple-600" />
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">Tokens CMPX & GTK</h1>
+            </div>
+            <div className="w-20"></div> {/* Spacer for balance */}
           </div>
           <p className="text-gray-600 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
             Gestiona tus tokens, participa en staking y reclama recompensas. 

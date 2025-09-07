@@ -97,28 +97,30 @@ const ProfileSingle: React.FC = () => {
       
       <div className="relative z-10 flex flex-col min-h-screen">
       {/* Header */}
-      <div className="bg-hero-gradient border-b border-white/30 p-4 shadow-lg flex-shrink-0">
-        <div className="flex items-center justify-between">
+      <div className="bg-hero-gradient border-b border-white/30 p-3 sm:p-4 shadow-lg flex-shrink-0">
+        <div className="flex items-center justify-between flex-wrap gap-2">
           <Button 
             variant="ghost" 
             onClick={() => navigate('/profiles')}
-            className="text-white hover:bg-white/20"
+            className="text-white hover:bg-white/20 text-sm sm:text-base"
           >
-            <ArrowLeft className="h-5 w-5" />
-            <span className="ml-2">Regresar</span>
+            <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
+            <span className="ml-1 sm:ml-2">Regresar</span>
           </Button>
-          <h1 className="text-3xl font-bold text-white mb-2">{profile.first_name}, {profile.age}</h1>
-          <div className="flex gap-2">
-            <Button variant="ghost" size="sm" className="hover:bg-white/20">
-              <Share2 className="h-5 w-5 text-white" />
+          <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-white text-center flex-1 min-w-0 px-2">
+            {profile.first_name || 'Usuario'}
+          </h1>
+          <div className="flex gap-1 sm:gap-2">
+            <Button variant="ghost" size="sm" className="hover:bg-white/20 p-2">
+              <Share2 className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
             </Button>
             <Button 
               variant="ghost" 
               size="sm"
               onClick={() => navigate('/edit-profile-single')}
-              className="hover:bg-white/20"
+              className="hover:bg-white/20 p-2"
             >
-              <Settings className="h-5 w-5 text-white" />
+              <Settings className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
             </Button>
           </div>
         </div>

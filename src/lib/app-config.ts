@@ -75,13 +75,15 @@ export const isDemoAdmin = (email: string): boolean => {
 };
 
 // Función centralizada para manejar autenticación demo
-export const handleDemoAuth = (email: string) => {
+export const handleDemoAuth = (email: string, accountType: string = 'single') => {
   if (!isDemoCredential(email)) return null;
   
   const demoUser = {
     id: `demo-${Date.now()}`,
     email: email.toLowerCase().trim(),
     role: isDemoAdmin(email) ? 'admin' : 'user',
+    accountType: accountType,
+    first_name: email.split('@')[0],
     is_demo: true,
     created_at: new Date().toISOString()
   };
