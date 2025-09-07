@@ -1,10 +1,20 @@
 // ✅ AUTO-FIX aplicado por Auditoría ComplicesConecta v2.1.2
 // Fecha: 2025-01-06
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { User, Session } from '@supabase/supabase-js';
-import { supabase } from '../integrations/supabase/client';
-import { checkDemoSession, clearDemoAuth, handleDemoAuth, isDemoCredential, getDemoPassword, getProductionPassword, isProductionAdmin, isDemoMode, shouldUseRealSupabase, getAppConfig } from '../lib/app-config';
+import { supabase } from '@/integrations/supabase/client';
+import { 
+  getAppConfig, 
+  isDemoCredential, 
+  getDemoPassword, 
+  handleDemoAuth, 
+  clearDemoAuth, 
+  checkDemoSession,
+  isProductionAdmin,
+  isDemoMode,
+  shouldUseRealSupabase
+} from '@/lib/app-config';
 
 interface Profile {
   id: string;
@@ -34,56 +44,19 @@ export const useAuth = () => {
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<any>(null);
   const config = getAppConfig();
+  const initialized = useRef(false);
+  const currentUserId = useRef<string | null>(null);
 
-  useEffect(() => {
-    console.log('🔄 Inicializando useAuth en modo:', config.mode);
-    
-    // Verificar sesión demo existente al cargar
-    const demoSession = checkDemoSession();
-    if (demoSession) {
-      setUser(demoSession.user as any);
-      setSession(demoSession.session as any);
-      fetchUserProfile(demoSession.user.id);
-      setLoading(false);
+  // Memoizar fetchUserProfile para evitar re-creaciones
+  const fetchUserProfile = useCallback(async (userId: string) => {
+    // Evitar llamadas duplicadas
+    if (currentUserId.current === userId) {
+      console.log('🚫 Evitando llamada duplicada para userId:', userId);
       return;
     }
     
-    // Solo configurar Supabase si debemos usar conexión real
-    if (shouldUseRealSupabase()) {
-      console.log('🔗 Configurando autenticación Supabase real...');
-      
-      // Obtener sesión actual de Supabase
-      supabase.auth.getSession().then(({ data: { session } }) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        if (session?.user) {
-          fetchUserProfile(session.user.id);
-        }
-        setLoading(false);
-      });
-      
-      // Escuchar cambios de autenticación
-      const {
-        data: { subscription },
-      } = supabase.auth.onAuthStateChange((_event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        if (session?.user) {
-          fetchUserProfile(session.user.id);
-        } else {
-          setProfile(null);
-        }
-        setLoading(false);
-      });
-      
-      return () => subscription.unsubscribe();
-    } else {
-      console.log('🎭 Modo demo - Supabase deshabilitado');
-      setLoading(false);
-    }
-  }, [config.mode]);
-
-  const fetchUserProfile = async (userId: string) => {
+    currentUserId.current = userId;
+    
     try {
       console.log('👤 Obteniendo perfil para userId:', userId);
       
@@ -161,7 +134,61 @@ export const useAuth = () => {
     } catch (error) {
       console.error('❌ Error in fetchUserProfile:', error);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (initialized.current) return;
+    initialized.current = true;
+    
+    console.log('🔄 Inicializando useAuth en modo:', config.mode);
+    
+    // Verificar sesión demo existente al cargar
+    const demoSession = checkDemoSession();
+    if (demoSession) {
+      setUser(demoSession.user as any);
+      setSession(demoSession.session as any);
+      fetchUserProfile(demoSession.user.id);
+      setLoading(false);
+      return;
+    }
+    
+    // Solo configurar Supabase si debemos usar conexión real
+    if (shouldUseRealSupabase()) {
+      console.log('🔗 Configurando autenticación Supabase real...');
+      
+      // Obtener sesión actual de Supabase
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+        if (session?.user) {
+          fetchUserProfile(session.user.id);
+        }
+        setLoading(false);
+      });
+      
+      // Escuchar cambios de autenticación
+      const {
+        data: { subscription },
+      } = supabase.auth.onAuthStateChange((_event, session) => {
+        console.log('🔄 Auth state change:', _event, session?.user?.id);
+        setSession(session);
+        setUser(session?.user ?? null);
+        if (session?.user) {
+          fetchUserProfile(session.user.id);
+        } else {
+          setProfile(null);
+          currentUserId.current = null;
+        }
+        setLoading(false);
+      });
+      
+      return () => subscription.unsubscribe();
+    } else {
+      console.log('🎭 Modo demo - Supabase deshabilitado');
+      setLoading(false);
+    }
+  }, [fetchUserProfile]);
+
 
   const signOut = async () => {
     try {
