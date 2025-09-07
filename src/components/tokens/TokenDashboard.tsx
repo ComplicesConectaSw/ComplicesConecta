@@ -62,7 +62,7 @@ export function TokenDashboard() {
   const stakedPercentage = totalCMPX > 0 ? (balance.cmpxStaked / totalCMPX) * 100 : 0;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-4">
       {/* Header con balance principal */}
       <div className="text-center bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 rounded-xl">
         <h2 className="text-2xl font-bold mb-2">🪙 Tu Balance de Tokens</h2>
@@ -176,8 +176,8 @@ export function TokenDashboard() {
             {pendingRewards.map((reward) => (
               <div key={reward.id} className="flex items-center justify-between p-3 bg-white rounded-lg border">
                 <div>
-                  <p className="font-semibold">{reward.description}</p>
-                  <p className="text-sm text-gray-600">+{reward.amount} {reward.tokenType}</p>
+                  <p className="font-medium">{reward.amount} {reward.token_type}</p>
+                  <p className="text-sm text-muted-foreground">Balance: {reward.amount}</p>
                 </div>
                 <Badge variant="secondary">Pendiente</Badge>
               </div>
@@ -215,8 +215,8 @@ export function TokenDashboard() {
                       <p className="font-medium">{staking.amount} CMPX</p>
                       <p className="text-sm text-gray-600">
                         {staking.status === 'active' 
-                          ? `${staking.daysRemaining} días restantes`
-                          : `Completado (+${Math.round(staking.amount * staking.rewardPercentage / 100)} CMPX)`
+                          ? `${Math.ceil((new Date(staking.end_date).getTime() - Date.now()) / (1000 * 60 * 60 * 24))} días restantes`
+                          : `Completado (+${Math.round(staking.amount * staking.apy / 100)} CMPX)`
                         }
                       </p>
                     </div>
@@ -226,7 +226,7 @@ export function TokenDashboard() {
                       >
                         {staking.status === 'active' ? 'Activo' : 'Completado'}
                       </Badge>
-                      {staking.status === 'active' && staking.daysRemaining === 0 && (
+                      {staking.status === 'active' && new Date(staking.end_date) <= new Date() && (
                         <Button 
                           size="sm" 
                           className="ml-2"
@@ -299,16 +299,14 @@ export function TokenDashboard() {
                 <div key={tx.id} className="flex items-center justify-between p-2 bg-gray-50 rounded">
                   <div>
                     <p className="text-sm font-medium">{tx.description}</p>
-                    <p className="text-xs text-gray-500">
-                      {new Date(tx.createdAt).toLocaleDateString('es-ES')}
-                    </p>
+                    <p className="text-sm text-muted-foreground">{new Date(tx.created_at).toLocaleDateString('es-ES')}</p>
                   </div>
                   <div className="text-right">
                     <p className={`text-sm font-semibold ${tx.amount > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                      {tx.amount > 0 ? '+' : ''}{tx.amount} {tx.tokenType}
+                      {tx.amount > 0 ? '+' : ''}{tx.amount} {tx.token_type}
                     </p>
                     <p className="text-xs text-gray-500">
-                      Balance: {tx.balanceAfter}
+                      Balance: {tx.amount}
                     </p>
                   </div>
                 </div>
@@ -326,4 +324,4 @@ export function TokenDashboard() {
       </div>
     </div>
   );
-}
+};

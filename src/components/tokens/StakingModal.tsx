@@ -43,14 +43,14 @@ export function StakingModal({ isOpen, onClose }: StakingModalProps) {
       setLoading(true);
       setError(null);
 
-      const result = await startStaking(stakingAmount, 30);
+      const result = await startStaking(stakingAmount);
       
-      if (result.success) {
+      if (result) {
         onClose();
         // Mostrar mensaje de éxito (podría ser un toast)
         alert(`🎉 ¡Staking iniciado! ${stakingAmount} CMPX bloqueados por 30 días`);
       } else {
-        setError(result.message);
+        setError('No se pudo iniciar el staking');
       }
     } catch (err) {
       setError('Error iniciando staking');

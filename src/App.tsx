@@ -43,6 +43,7 @@ const About = lazy(() => import("./pages/About"));
 const Careers = lazy(() => import("./pages/Careers"));
 const Blog = lazy(() => import("./pages/Blog"));
 const ChatAuthenticated = lazy(() => import("./pages/ChatAuthenticated"));
+const Donations = lazy(() => import("./pages/Donations"));
 
 // Loading component for Suspense
 const PageLoader = () => (
@@ -100,6 +101,7 @@ const App = () => (
               <Route path="/careers" element={<Careers />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/chat-authenticated" element={<ChatAuthenticated />} />
+              <Route path="/donations" element={<Donations />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

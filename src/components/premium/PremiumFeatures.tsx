@@ -54,7 +54,7 @@ const premiumFeatures = [
     title: "Filtros Avanzados",
     description: "Encuentra exactamente lo que buscas",
     icon: Target,
-    requiredPlan: "silver"
+    requiredPlan: "basic"
   },
   {
     id: "incognito-mode",
@@ -64,17 +64,17 @@ const premiumFeatures = [
     requiredPlan: "silver"
   },
   {
-    id: "travel-mode",
-    title: "Modo Viaje",
-    description: "Conecta en cualquier ciudad",
-    icon: Globe,
-    requiredPlan: "gold"
+    id: "analytics",
+    title: "Análisis de Perfil",
+    description: "Estadísticas detalladas de tu actividad",
+    icon: BarChart3,
+    requiredPlan: "silver"
   },
   {
-    id: "profile-analytics",
-    title: "Analytics de Perfil",
-    description: "Estadísticas detalladas de tu perfil",
-    icon: BarChart3,
+    id: "global-mode",
+    title: "Modo Global",
+    description: "Conecta con personas de todo el mundo",
+    icon: Globe,
     requiredPlan: "gold"
   },
   {
@@ -83,181 +83,94 @@ const premiumFeatures = [
     description: "Sugerencias personalizadas",
     icon: MessageCircle,
     requiredPlan: "premium"
+  },
+  {
+    id: "priority-support",
+    title: "Soporte Prioritario",
+    description: "Atención al cliente 24/7",
+    icon: MessageCircle,
+    requiredPlan: "premium"
   }
 ];
 
 const planHierarchy = ["free", "basic", "silver", "gold", "premium"];
 
 export const PremiumFeatures = () => {
-  const [activeFeature, setActiveFeature] = useState<string | null>(null);
-  
-  const userPlan = mockUserSubscription.plan;
-  const userPlanIndex = planHierarchy.indexOf(userPlan);
-  
-  const hasAccess = (requiredPlan: string) => {
-    const requiredIndex = planHierarchy.indexOf(requiredPlan);
-    return userPlanIndex >= requiredIndex;
-  };
-
-  const getUsageInfo = (feature: typeof premiumFeatures[0]) => {
-    if (!feature.freeLimit) return null;
-    
-    const limit = feature[`${userPlan}Limit` as keyof typeof feature] || 0;
-    
-    // Mock usage data
-    const used = Math.floor(Math.random() * (limit as number || 10));
-    
-    return {
-      used,
-      limit,
-      percentage: limit ? (used / (limit as number)) * 100 : 0
-    };
-  };
+  const [currentPlan] = useState(mockUserSubscription.plan);
 
   return (
-    <div className="space-y-6">
-      {/* Current Plan Status */}
-      <Card className="shadow-soft">
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <Crown className="h-6 w-6 text-primary" />
-              <div>
-                <CardTitle className="capitalize">Plan {userPlan}</CardTitle>
-                {mockUserSubscription.plan === "trial" && (
-                  <p className="text-sm text-muted-foreground">
-                    {mockUserSubscription.trialDaysLeft} días restantes de prueba
-                  </p>
-                )}
-              </div>
-            </div>
-            <Badge variant={userPlan === "free" ? "secondary" : "default"}>
-              {userPlan === "free" ? "Gratuito" : "Premium"}
-            </Badge>
-          </div>
-        </CardHeader>
-      </Card>
-
-      {/* Premium Features Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {premiumFeatures.map((feature) => {
-          const Icon = feature.icon;
-          const accessible = hasAccess(feature.requiredPlan);
-          const usageInfo = getUsageInfo(feature);
-          
-          return (
-            <Card
-              key={feature.id}
-              className={`shadow-soft transition-all duration-300 cursor-pointer ${
-                accessible 
-                  ? "hover:shadow-glow border-green-200 bg-green-50/30" 
-                  : "opacity-60 border-amber-200 bg-amber-50/30"
-              } ${activeFeature === feature.id ? "ring-2 ring-primary" : ""}`}
-              onClick={() => setActiveFeature(activeFeature === feature.id ? null : feature.id)}
-            >
-              <CardHeader className="pb-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <div className={`p-2 rounded-lg ${accessible ? "bg-green-100" : "bg-amber-100"}`}>
-                      <Icon className={`h-5 w-5 ${accessible ? "text-green-600" : "text-amber-600"}`} />
-                    </div>
-                    <div>
-                      <CardTitle className="text-base">{feature.title}</CardTitle>
-                      <p className="text-xs text-muted-foreground">
-                        Requiere: {feature.requiredPlan}
-                      </p>
-                    </div>
-                  </div>
-                  {accessible ? (
-                    <Badge variant="secondary" className="bg-green-100 text-green-700">
-                      Activo
-                    </Badge>
-                  ) : (
-                    <Badge variant="outline" className="border-amber-300 text-amber-700">
-                      Bloqueado
-                    </Badge>
-                  )}
+    <Card className="bg-gradient-to-br from-purple-900/20 to-blue-900/20 border-purple-500/30">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2 text-white">
+          <Crown className="h-6 w-6 text-yellow-400" />
+          ✨ Características Premium
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {premiumFeatures.map((feature) => {
+            const isUnlocked = currentPlan === "premium" || currentPlan === "beta";
+            
+            return (
+              <div 
+                key={feature.id}
+                className={`p-4 rounded-lg border transition-all duration-300 ${
+                  isUnlocked 
+                    ? 'bg-gradient-to-br from-green-500/10 to-emerald-500/10 border-green-500/30' 
+                    : 'bg-gradient-to-br from-gray-500/10 to-slate-500/10 border-gray-500/30'
+                }`}
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <feature.icon className={`h-6 w-6 ${isUnlocked ? 'text-green-400' : 'text-gray-400'}`} />
+                  <Badge variant={isUnlocked ? "default" : "secondary"} className="text-xs">
+                    {isUnlocked ? "Disponible" : "Premium"}
+                  </Badge>
                 </div>
-              </CardHeader>
-
-              <CardContent className="space-y-3">
-                <p className="text-sm text-muted-foreground">
-                  {feature.description}
-                </p>
-
-                {usageInfo && accessible && (
+                
+                <h3 className="font-semibold text-white mb-2 text-sm sm:text-base">{feature.title}</h3>
+                <p className="text-xs sm:text-sm text-gray-300 mb-3">{feature.description}</p>
+                
+                {feature.freeLimit !== undefined && (
                   <div className="space-y-2">
-                    <div className="flex justify-between text-xs">
-                      <span>Uso actual</span>
-                      <span>
-                        {usageInfo.used}/{usageInfo.limit ? String(usageInfo.limit) : "∞"}
-                      </span>
+                    <div className="flex justify-between text-xs text-gray-400">
+                      <span>Uso mensual</span>
+                      <span>{isUnlocked ? "Ilimitado" : `${feature.freeLimit} gratis`}</span>
                     </div>
-                    {usageInfo.limit && (
-                      <Progress value={usageInfo.percentage} className="h-2" />
+                    {!isUnlocked && (
+                      <Progress value={80} className="h-1" />
                     )}
                   </div>
                 )}
-
-                {!accessible && (
+                
+                {!isUnlocked && (
                   <Button 
-                    variant="outline" 
                     size="sm" 
-                    className="w-full"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      // Navigate to pricing
-                    }}
+                    variant="outline" 
+                    className="w-full mt-3 border-purple-500/50 text-purple-300 hover:bg-purple-500/10 text-xs"
+                    disabled
                   >
-                    Desbloquear
+                    <Lock className="h-3 w-3 mr-1" />
+                    Requiere Premium
                   </Button>
                 )}
-              </CardContent>
-
-              {/* Expanded Details */}
-              {activeFeature === feature.id && (
-                <CardContent className="pt-0 border-t">
-                  <div className="space-y-2">
-                    <h4 className="font-medium text-sm">Límites por plan:</h4>
-                    <div className="grid grid-cols-2 gap-2 text-xs">
-                      <div className="space-y-1">
-                        <div>Gratuito: {feature.freeLimit || "No disponible"}</div>
-                        <div>Básico: {feature.basicLimit || "Ilimitado"}</div>
-                      </div>
-                      <div className="space-y-1">
-                        <div>Silver: {feature.silverLimit || "Ilimitado"}</div>
-                        <div>Gold+: Ilimitado</div>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              )}
-            </Card>
-          );
-        })}
-      </div>
-
-      {/* Upgrade Prompt */}
-      {userPlan === "free" || userPlan === "basic" && (
-        <Card className="shadow-soft bg-hero-gradient text-white">
-          <CardContent className="p-6 text-center">
-            <Crown className="h-12 w-12 mx-auto mb-4" />
-            <h3 className="text-xl font-bold mb-2">
-              Desbloquea Todo tu Potencial
-            </h3>
-            <p className="text-white/90 mb-4">
-              Upgrade a un plan superior y accede a todas las funciones premium
+              </div>
+            );
+          })}
+        </div>
+        
+        {currentPlan === "beta" && (
+          <div className="mt-6 p-4 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/30 rounded-lg">
+            <div className="flex items-center gap-2 mb-2">
+              <Crown className="h-5 w-5 text-yellow-400" />
+              <span className="font-semibold text-white text-sm sm:text-base">Acceso Beta Premium</span>
+            </div>
+            <p className="text-xs sm:text-sm text-gray-300">
+              Como usuario Beta, tienes acceso completo a todas las características Premium. 
+              ¡Disfruta de la experiencia completa mientras ayudas a mejorar la plataforma!
             </p>
-            <Button 
-              variant="hero" 
-              size="lg"
-              className="bg-white text-primary hover:bg-white/90"
-            >
-              Ver Planes Premium
-            </Button>
-          </CardContent>
-        </Card>
-      )}
-    </div>
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 };

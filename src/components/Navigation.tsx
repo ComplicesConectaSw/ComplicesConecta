@@ -49,8 +49,10 @@ const Navigation = ({ className }: NavigationProps) => {
     // Verificar sesión antes de navegar
     const demoUser = localStorage.getItem('demo_user');
     const userType = localStorage.getItem('userType');
+    const isDemo = localStorage.getItem('demo_authenticated') === 'true';
     
-    if (!demoUser && path !== '/auth') {
+    // En modo demo, permitir navegación libre
+    if (!demoUser && !isDemo && path !== '/auth') {
       navigate('/auth');
       return;
     }

@@ -7,12 +7,18 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Crown, Zap, Heart, Star, Shield, Calendar, Users, Coins, Lock, Sparkles, Gift } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { PremiumFeatures } from "@/components/premium/PremiumFeatures";
+import VIPEvents from "@/components/premium/VIPEvents";
+import VirtualGifts from "@/components/premium/VirtualGifts";
+import { ComingSoonModal } from "@/components/modals/ComingSoonModal";
 
 const Premium = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isDemoUser, setIsDemoUser] = useState(false);
   const [userType, setUserType] = useState('');
+  const [showComingSoonModal, setShowComingSoonModal] = useState(false);
+  const [comingSoonTitle, setComingSoonTitle] = useState('');
 
   useEffect(() => {
     // Verificar autenticación (demo o real)
@@ -31,6 +37,11 @@ const Premium = () => {
     // Por ahora permitir acceso sin autenticación para usuarios reales
     console.log('🔓 Acceso a Premium sin autenticación requerida');
   }, [navigate]);
+
+  const handleComingSoon = (title: string) => {
+    setComingSoonTitle(title);
+    setShowComingSoonModal(true);
+  };
 
   const premiumBenefits = [
     {
@@ -61,37 +72,17 @@ const Premium = () => {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* Advanced Animated Background */}
-      <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-background via-muted/30 to-secondary/20"></div>
-        
-        {/* Animated Gradient Orbs */}
-        <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-        <div className="absolute top-40 right-10 w-96 h-96 bg-gradient-to-r from-accent/20 to-secondary/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-32 left-20 w-96 h-96 bg-gradient-to-r from-secondary/20 to-primary/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
-        
-        {/* Floating Hearts */}
-        <div className="absolute inset-0 overflow-hidden">
-          {[...Array(8)].map((_, i) => (
-            <Heart 
-              key={i}
-              className={`absolute text-primary/10 animate-float-slow`}
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${i * 2}s`,
-                fontSize: `${Math.random() * 20 + 10}px`
-              }}
-              fill="currentColor"
-            />
-          ))}
-        </div>
+      {/* Background decorativo */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+        <div className="absolute top-40 left-40 w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
       </div>
-      
-      <div className="relative z-10">
+
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
         <Header />
         
-        <main className="container mx-auto px-4 py-8">
+        <main className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 max-w-7xl">
           {/* Back Button */}
           <div className="mb-6">
             <Button 
@@ -386,6 +377,21 @@ const Premium = () => {
             </Card>
           </div>
 
+          {/* Premium Features Components */}
+          <div className="mb-12">
+            <PremiumFeatures />
+          </div>
+
+          {/* VIP Events */}
+          <div className="mb-12">
+            <VIPEvents />
+          </div>
+
+          {/* Virtual Gifts */}
+          <div className="mb-12">
+            <VirtualGifts />
+          </div>
+
           {/* Call to Action */}
           <Card className="bg-hero-gradient border-0 text-white">
             <CardContent className="text-center py-12">
@@ -399,19 +405,19 @@ const Premium = () => {
                 <Button 
                   size="lg" 
                   className="bg-white text-primary hover:bg-white/90 font-semibold"
-                  disabled
+                  onClick={() => handleComingSoon("Planes de Suscripción Premium")}
                 >
                   <Crown className="mr-2 h-5 w-5" />
-                  Lista VIP (Próximamente)
+                  Ver Planes Premium
                 </Button>
                 <Button 
                   variant="outline" 
                   size="lg" 
                   className="bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm"
-                  onClick={() => navigate('/faq')}
+                  onClick={() => handleComingSoon("Historias Premium")}
                 >
-                  <Heart className="mr-2 h-5 w-5" />
-                  Más Información
+                  <Sparkles className="mr-2 h-5 w-5" />
+                  Historias VIP
                 </Button>
               </div>
             </CardContent>
@@ -420,6 +426,15 @@ const Premium = () => {
 
         <Footer />
       </div>
+      
+      {/* Coming Soon Modal */}
+      <ComingSoonModal 
+        isOpen={showComingSoonModal}
+        onClose={() => setShowComingSoonModal(false)}
+        title={comingSoonTitle}
+        description="Esta funcionalidad estará disponible después de la fase Beta. Los usuarios que apoyen el proyecto tendrán acceso prioritario."
+        feature="Premium"
+      />
       
       {/* Custom Styles */}
       <style>{`

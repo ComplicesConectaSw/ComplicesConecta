@@ -66,6 +66,11 @@ export const Footer = () => {
                   Blog
                 </Link>
               </li>
+              <li>
+                <Link to="/donations" className="text-background/80 hover:text-primary transition-colors">
+                  Donaciones
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -91,6 +96,11 @@ export const Footer = () => {
               <li>
                 <Link to="/project-info" className="text-background/80 hover:text-primary transition-colors">
                   Información del Proyecto
+                </Link>
+              </li>
+              <li>
+                <Link to="/tokens-privacy" className="text-background/80 hover:text-primary transition-colors">
+                  Privacidad de Tokens
                 </Link>
               </li>
               <li>

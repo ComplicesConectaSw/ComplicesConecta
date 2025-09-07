@@ -18,9 +18,14 @@ const ProfileDetail = () => {
   const demoAuth = localStorage.getItem('demo_authenticated');
   const demoUser = localStorage.getItem('demo_user');
   
-  if (demoAuth !== 'true' || !demoUser) {
-    navigate('/auth');
-    return null;
+  // Allow access in demo mode or if user is authenticated
+  if (demoAuth !== 'true' && !demoUser) {
+    // Only redirect to auth if not in demo mode
+    const isDemoMode = window.location.hostname === 'localhost' || window.location.hostname.includes('demo');
+    if (!isDemoMode) {
+      navigate('/auth');
+      return null;
+    }
   }
 
   // Demo profile data for beta

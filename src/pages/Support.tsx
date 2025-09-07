@@ -103,7 +103,7 @@ const Support = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-purple-600 via-pink-500 to-indigo-600">
       {/* Header */}
       <div className="bg-white/80 backdrop-blur-md border-b border-pink-200/50 sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 py-4">

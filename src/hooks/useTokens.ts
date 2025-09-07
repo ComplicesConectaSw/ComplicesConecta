@@ -352,20 +352,136 @@ export const useTokens = () => {
 
 
 
+  // Helper functions for the Tokens page
+  const getBalanceMessage = () => {
+    if (!balance) return "Balance no disponible en este momento.";
+    return `Tienes ${balance.cmpx} tokens CMPX y ${balance.gtk} tokens GTK. Los tokens CMPX se pueden usar para funciones premium durante la fase Beta.`;
+  };
+
+  const getStakingMessage = () => {
+    return "El staking te permite bloquear tus tokens por un período determinado y recibir recompensas. Durante la fase Beta, puedes hacer staking de tokens CMPX con un 8% APY y GTK con 12.5% APY.";
+  };
+
+  const refreshTokens = () => {
+    refreshTokenData();
+  };
+
+  // Funciones adicionales requeridas por los componentes
+  const startStaking = async (amount: number) => {
+    return await stakeTokens('cmpx', amount, 30);
+  };
+
+  const completeStaking = async (stakingId: string) => {
+    if (!user) return false;
+    
+    if (isDemo() || !shouldUseRealSupabase()) {
+      console.log('🎭 Completando staking en modo demo:', stakingId);
+      
+      // Encontrar el staking record
+      const staking = stakingRecords.find(s => s.id === stakingId);
+      if (!staking) return false;
+      
+      // Calcular recompensa
+      const reward = staking.amount * (staking.apy / 100) * (30 / 365); // Recompensa por 30 días
+      
+      // Actualizar balance y records
+      setBalance(prev => ({ 
+        ...prev, 
+        [staking.token_type]: prev[staking.token_type] + staking.amount + reward 
+      }));
+      
+      setStakingRecords(prev => 
+        prev.map(s => s.id === stakingId ? { ...s, status: 'completed' } : s)
+      );
+      
+      console.log('✅ Staking completado en demo:', { stakingId, reward });
+      return true;
+    }
+    
+    try {
+      console.log('🔗 Completando staking real:', stakingId);
+      console.log('ℹ️ Completar staking real no implementado aún');
+      return false;
+    } catch (error) {
+      console.error('❌ Error completando staking:', error);
+      return false;
+    }
+  };
+
+  const claimWorldIdReward = async () => {
+    console.log('🌍 Reclamando recompensa World ID');
+    // Mock implementation for demo
+    if (isDemo()) {
+      const worldIdReward: Reward = {
+        id: `world-id-${Date.now()}`,
+        user_id: user?.id || '',
+        type: 'world_id',
+        token_type: 'cmpx',
+        amount: 500,
+        description: 'Recompensa por verificación World ID',
+        claimed: false,
+        expires_at: null,
+        created_at: new Date().toISOString()
+      };
+      setRewards(prev => [worldIdReward, ...prev]);
+      return true;
+    }
+    return false;
+  };
+
+  // Propiedades computadas
+  const pendingRewards = rewards.filter(r => !r.claimed);
+  const hasPendingRewards = pendingRewards.length > 0;
+  const hasActiveStaking = stakingRecords.some(s => s.status === 'active');
+  const isWorldIdEligible = true; // Mock for demo
+  const error = null; // Mock for demo
+
+  // Balance con propiedades específicas
+  const enhancedBalance = {
+    balance: {
+      cmpxBalance: balance.cmpx,
+      cmpxStaked: balance.cmpx * 0.3, // 30% staked demo
+      gtkBalance: balance.gtk,
+      gtkStaked: balance.gtk * 0.2, // 20% staked demo
+      cmpx: balance.cmpx,
+      gtk: balance.gtk,
+      monthlyEarned: balance.cmpx * 0.05, // 5% monthly earnings demo
+      monthlyRemaining: 1000 - (balance.cmpx * 0.05), // Monthly limit demo
+      monthlyLimit: 1000,
+      totalReferrals: 3, // Demo referrals
+      referralCode: `REF${user?.id || 'DEMO'}`
+    }
+  };
+
   return {
     // Estados
-    balance,
+    balance: enhancedBalance.balance,
     transactions,
     stakingRecords,
     rewards,
     loading,
+    error,
+
+    // Propiedades computadas
+    pendingRewards,
+    hasPendingRewards,
+    hasActiveStaking,
+    isWorldIdEligible,
 
     // Acciones
     refreshTokenData,
+    refreshTokens,
     processReferral,
     stakeTokens,
+    startStaking,
+    completeStaking,
     claimReward,
+    claimWorldIdReward,
     loadTokenData,
+
+    // Helper functions for UI
+    getBalanceMessage,
+    getStakingMessage,
 
     // Utilidades
     totalBalance: balance ? balance.cmpx + balance.gtk : 0,

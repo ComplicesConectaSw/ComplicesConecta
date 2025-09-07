@@ -5,7 +5,7 @@ import { Heart, Flame, CheckCircle, Crown, Star, MapPin, MessageCircle } from 'l
 
 const FALLBACK_IMAGE_URL = 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=600&fit=crop&crop=face';
 
-interface ProfileCardProps {
+interface DiscoverProfileCardProps {
   profile: {
     id: string;
     name: string;
@@ -24,10 +24,10 @@ interface ProfileCardProps {
     isPremium?: boolean;
   };
   onLike: (id: string) => void;
-  onSuperLike: (profile: ProfileCardProps['profile']) => void;
+  onSuperLike: (profile: DiscoverProfileCardProps['profile']) => void;
 }
 
-export const ProfileCard = ({ profile, onLike, onSuperLike }: ProfileCardProps) => {
+export const DiscoverProfileCard = ({ profile, onLike, onSuperLike }: DiscoverProfileCardProps) => {
   const [imgSrc, setImgSrc] = useState(profile.image || FALLBACK_IMAGE_URL);
 
   const handleError = () => {

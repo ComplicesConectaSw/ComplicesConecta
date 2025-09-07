@@ -40,6 +40,7 @@ interface Filters {
   verified: boolean;
   premium: boolean;
   online: boolean;
+  relationshipType: string[];
 }
 
 const Discover = () => {
@@ -57,7 +58,8 @@ const Discover = () => {
     interests: [],
     verified: false,
     premium: false,
-    online: false
+    online: false,
+    relationshipType: []
   });
 
   // Generar perfiles aleatorios
@@ -357,18 +359,30 @@ const Discover = () => {
                   Tipo de Relación
                 </label>
                 <div className="grid grid-cols-2 gap-2">
-                  {["Pareja", "Soltero/a", "Abierto", "Poliamoroso"].map((type) => (
-                    <Badge
-                      key={type}
-                      variant="outline"
-                      className="cursor-pointer text-xs p-2 text-center border-purple-300 text-purple-700 hover:border-purple-500 hover:bg-purple-50 transition-all duration-200"
-                      onClick={() => {
-                        // Funcionalidad futura
-                      }}
-                    >
-                      {type}
-                    </Badge>
-                  ))}
+                  {["Pareja", "Soltero/a", "Abierto", "Poliamoroso"].map((type) => {
+                    const isSelected = filters.relationshipType.includes(type);
+                    return (
+                      <Badge
+                        key={type}
+                        variant={isSelected ? "default" : "outline"}
+                        className={`cursor-pointer text-xs p-2 text-center transition-all duration-200 ${
+                          isSelected 
+                            ? "bg-purple-600 text-white border-purple-600 hover:bg-purple-700" 
+                            : "border-purple-300 text-purple-700 hover:border-purple-500 hover:bg-purple-50"
+                        }`}
+                        onClick={() => {
+                          setFilters(prev => ({
+                            ...prev,
+                            relationshipType: isSelected 
+                              ? prev.relationshipType.filter(t => t !== type)
+                              : [...prev.relationshipType, type]
+                          }));
+                        }}
+                      >
+                        {type}
+                      </Badge>
+                    );
+                  })}
                 </div>
               </div>
 
@@ -377,9 +391,13 @@ const Discover = () => {
                 <label className="flex items-center gap-2 text-sm font-medium text-purple-800 cursor-pointer">
                   <input 
                     type="checkbox" 
+                    checked={filters.verified}
                     className="w-4 h-4 text-purple-600 border-purple-300 rounded focus:ring-purple-500"
                     onChange={(e) => {
-                      // Funcionalidad futura
+                      setFilters(prev => ({
+                        ...prev,
+                        verified: e.target.checked
+                      }));
                     }}
                   />
                   Solo perfiles verificados
@@ -396,7 +414,8 @@ const Discover = () => {
                     interests: [],
                     verified: false,
                     premium: false,
-                    online: false
+                    online: false,
+                    relationshipType: []
                   });
                 }}
               >

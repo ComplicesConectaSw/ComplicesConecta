@@ -102,66 +102,76 @@ const AdminProduction = () => {
   const [auditReport, setAuditReport] = useState<any>(null);
 
   useEffect(() => {
-    console.log('🔍 AdminProduction - Verificando acceso...');
+    console.log('🔄 AdminProduction - Verificando acceso...');
     
-    // Check for demo authentication first
+    // Verificar sesión demo primero
     const demoAuth = localStorage.getItem('demo_authenticated');
     const demoUser = localStorage.getItem('demo_user');
     
-    console.log('🎭 Demo check:', { demoAuth, hasDemoUser: !!demoUser });
-    
     if (demoAuth === 'true' && demoUser) {
-      const user = JSON.parse(demoUser);
-      console.log('🎭 Usuario demo:', user);
-      if (user.accountType === 'admin' || user.role === 'admin') {
-        console.log('✅ Admin demo - cargando panel producción');
-        loadProductionData();
+      try {
+        const user = JSON.parse(demoUser);
+        console.log('🎭 Usuario demo detectado:', user.email, 'Role:', user.role);
+        
+        if (user.accountType === 'admin' || user.role === 'admin') {
+          console.log('✅ Admin demo autorizado - cargando panel producción');
+          // Add a small delay to prevent race conditions
+          setTimeout(() => {
+            loadProductionData();
+          }, 100);
+          return;
+        } else {
+          console.log('❌ Usuario demo sin permisos admin');
+          toast({
+            title: "Acceso Denegado",
+            description: "No tienes permisos de administrador",
+            variant: "destructive"
+          });
+          navigate('/discover');
+          return;
+        }
+      } catch (error) {
+        console.error('❌ Error parsing demo user:', error);
+        navigate('/auth');
         return;
-      } else {
-        console.log('❌ Usuario demo sin permisos admin');
+      }
+    }
+
+    // Verificar autenticación real con timeout para evitar race conditions
+    setTimeout(() => {
+      const authStatus = isAuthenticated();
+      console.log('🔐 Estado autenticación:', authStatus);
+      
+      if (!authStatus) {
+        console.log('❌ No autenticado - redirigiendo a /auth');
         toast({
           title: "Acceso Denegado",
-          description: "No tienes permisos de administrador",
+          description: "Debe iniciar sesión para acceder al panel de administración",
+          variant: "destructive"
+        });
+        navigate('/auth');
+        return;
+      }
+
+      // Verificar permisos de admin
+      const adminStatus = isAdmin();
+      console.log('👑 Estado admin:', adminStatus);
+      
+      if (!adminStatus) {
+        console.log('❌ Usuario sin permisos admin - redirigiendo a /discover');
+        toast({
+          title: "Acceso Denegado",
+          description: "No tiene permisos de administrador",
           variant: "destructive"
         });
         navigate('/discover');
         return;
       }
-    }
-
-    // Verificar autenticación real
-    const authStatus = isAuthenticated();
-    console.log('🔐 Estado autenticación:', authStatus);
-    
-    if (!authStatus) {
-      console.log('❌ No autenticado - redirigiendo a /auth');
-      toast({
-        title: "Acceso Denegado",
-        description: "Debe iniciar sesión para acceder al panel de administración",
-        variant: "destructive"
-      });
-      navigate('/auth');
-      return;
-    }
-
-    // Verificar permisos de admin
-    const adminStatus = isAdmin();
-    console.log('👑 Estado admin:', adminStatus);
-    
-    if (!adminStatus) {
-      console.log('❌ Usuario sin permisos admin - redirigiendo a /discover');
-      toast({
-        title: "Acceso Denegado",
-        description: "No tiene permisos de administrador",
-        variant: "destructive"
-      });
-      navigate('/discover');
-      return;
-    }
-    
-    console.log('✅ Acceso autorizado - cargando panel producción');
-    loadProductionData();
-  }, [navigate, toast, isAuthenticated, isAdmin]);
+      
+      console.log('✅ Acceso autorizado - cargando panel producción');
+      loadProductionData();
+    }, 200);
+  }, [navigate, toast]);
 
   const loadProductionData = async () => {
     setLoading(true);

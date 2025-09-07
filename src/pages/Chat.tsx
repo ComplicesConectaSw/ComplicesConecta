@@ -515,7 +515,9 @@ const Chat = () => {
                       <Button 
                         onClick={() => {
                           console.log('Rechazando invitación...');
-                          alert('Invitación rechazada.');
+                          // Properly reject the invitation and navigate back
+                          setSelectedChat(null);
+                          alert('Invitación rechazada. Has vuelto a la lista de chats.');
                         }}
                         variant="outline"
                         className="border-red-300/50 text-red-300 hover:bg-red-500/20 px-6 py-2 rounded-lg font-medium transition-all duration-200"

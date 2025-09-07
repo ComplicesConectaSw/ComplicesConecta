@@ -209,8 +209,8 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
 
       if (isWorldIdEligible) {
         const result = await claimWorldIdReward();
-        if (result.success) {
-          totalClaimed += result.amount || 100;
+        if (result) {
+          totalClaimed += 100;
           claimedRewards.push('World ID (+100 CMPX)');
         }
       }
@@ -301,16 +301,17 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
     addBotMessage('🔄 Procesando tu staking...');
 
     try {
-      const result = await startStaking(amount, 30);
+      const result = await startStaking(amount);
       
-      if (result.success) {
+      if (result) {
         await refreshTokens();
         setCurrentStep('completed');
         
+        const endDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
         addBotMessage(`🚀 **¡Staking iniciado exitosamente!**
 
 ✅ ${amount} CMPX bloqueados por 30 días
-📅 Liberación: ${result.endDate ? new Date(result.endDate).toLocaleDateString('es-ES') : 'Fecha no disponible'}
+📅 Liberación: ${endDate.toLocaleDateString('es-ES')}
 🎁 Recompensa: +${Math.round(amount * 0.1)} CMPX
 
 💡 **¿Qué sigue?**
@@ -320,7 +321,7 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
 
 ¡Gracias por apoyar la red ComplicesConecta! 🌟`);
       } else {
-        addBotMessage(`❌ Error iniciando staking: ${result.message}`);
+        addBotMessage(`❌ Error iniciando staking. Intenta de nuevo más tarde.`);
       }
     } catch (error) {
       addBotMessage('❌ Error procesando staking. Por favor intenta nuevamente.');
