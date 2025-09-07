@@ -212,9 +212,13 @@ export const shouldUseRealSupabase = () => {
   const config = getAppConfig();
   const demoAuth = localStorage.getItem('demo_authenticated');
   
-  // En modo producción, siempre usar Supabase real
+  console.log('🔍 shouldUseRealSupabase - Modo:', config.mode, 'DemoAuth:', demoAuth);
+  
+  // En modo producción, SIEMPRE usar Supabase real
+  // No importa si hay datos demo en localStorage
   if (config.mode === 'production') {
-    return demoAuth !== 'true';
+    console.log('🏢 Modo producción - usando Supabase real siempre');
+    return true;
   }
   
   // En modo demo, solo usar Supabase para admins
@@ -223,13 +227,17 @@ export const shouldUseRealSupabase = () => {
     if (demoUser) {
       try {
         const user = JSON.parse(demoUser);
-        return user.role === 'admin';
+        const useSupabase = user.role === 'admin';
+        console.log('🎭 Usuario demo:', user.email, 'Admin:', user.role === 'admin', 'Usar Supabase:', useSupabase);
+        return useSupabase;
       } catch (error) {
+        console.error('❌ Error parsing demo user:', error);
         return false;
       }
     }
   }
   
+  console.log('✅ Usando Supabase real por defecto');
   return true;
 };
 
