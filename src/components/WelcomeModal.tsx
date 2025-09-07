@@ -61,6 +61,14 @@ export const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
       description: "Explora perfiles, invita amigos con tu código de referido, participa en eventos y descubre personas increíbles en tu área.",
       color: "text-primary",
       bgColor: "bg-primary/10"
+    },
+    {
+      icon: Zap,
+      title: "🎯 ¡Todo es Interactivo!",
+      subtitle: "Cada elemento tiene vida propia",
+      description: "Todos los botones, enlaces y elementos de la página son dinámicos y animados. ¡Haz clic en todo! Cada interacción te llevará a nuevas experiencias. Los iconos brillan, los botones se animan y cada sección tiene sorpresas esperándote.",
+      color: "text-yellow-400",
+      bgColor: "bg-yellow-400/10"
     }
   ];
 
@@ -162,6 +170,13 @@ export const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
               <div className="mb-4">
                 <Badge variant="secondary" className="bg-blue-500/20 text-blue-500 border-blue-500/30 animate-bounce">
                   🌍 WORLD ID PRÓXIMAMENTE
+                </Badge>
+              </div>
+            )}
+            {currentStep === 6 && (
+              <div className="mb-4">
+                <Badge variant="secondary" className="bg-yellow-400/20 text-yellow-400 border-yellow-400/30 animate-bounce">
+                  🎯 EXPLORA TODO
                 </Badge>
               </div>
             )}

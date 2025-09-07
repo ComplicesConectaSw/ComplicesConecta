@@ -16,6 +16,7 @@ import { useGeolocation } from "@/hooks/useGeolocation";
 import { MapPin, ArrowLeft, Sparkles } from "lucide-react";
 import { lifestyleInterests, getAutoInterests } from "@/lib/lifestyle-interests";
 import { LoginLoadingScreen } from "@/components/LoginLoadingScreen";
+import { LoadingScreen } from "@/components/LoadingScreen";
 import { useAuth } from "@/hooks/useAuth";
 
 interface FormData {
@@ -1222,6 +1223,11 @@ const Auth = () => {
         </CardContent>
         </Card>
       </div>
+      
+      {/* Loading Screens */}
+      {isLoading && !showLoginLoading && (
+        <LoadingScreen onComplete={() => setIsLoading(false)} />
+      )}
       
       {/* LoginLoadingScreen */}
       {showLoginLoading && (

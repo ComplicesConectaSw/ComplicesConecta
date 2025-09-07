@@ -32,23 +32,30 @@ const Index = () => {
 
   // Verificar si el usuario está autenticado y detectar Android
   useEffect(() => {
-    // Solo verificar autenticación sin redirigir automáticamente
-    const demoAuth = localStorage.getItem('demo_authenticated');
-    const demoUser = localStorage.getItem('demo_user');
-    
-    // Detectar si se está ejecutando desde la APK instalada
-    // La APK instalada tendrá características específicas del WebView
-    const isInWebView = () => {
-      const userAgent = navigator.userAgent.toLowerCase();
-      // Detectar si está en un WebView de Android (APK instalada)
-      return userAgent.includes('wv') || // Android WebView
-             userAgent.includes('version/') && userAgent.includes('chrome/') && userAgent.includes('mobile') && !userAgent.includes('browser');
-    };
-    
-    setIsRunningInApp(isInWebView());
-    
-    // Remover redirección automática para permitir acceso al Index
-    // Los usuarios pueden navegar manualmente a donde deseen
+    // Mostrar loading screen al cargar la página
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+      
+      // Solo verificar autenticación sin redirigir automáticamente
+      const demoAuth = localStorage.getItem('demo_authenticated');
+      const demoUser = localStorage.getItem('demo_user');
+      
+      // Detectar si se está ejecutando desde la APK instalada
+      // La APK instalada tendrá características específicas del WebView
+      const isInWebView = () => {
+        const userAgent = navigator.userAgent.toLowerCase();
+        // Detectar si está en un WebView de Android (APK instalada)
+        return userAgent.includes('wv') || // Android WebView
+               userAgent.includes('version/') && userAgent.includes('chrome/') && userAgent.includes('mobile') && !userAgent.includes('browser');
+      };
+      
+      setIsRunningInApp(isInWebView());
+      
+      // Remover redirección automática para permitir acceso al Index
+      // Los usuarios pueden navegar manualmente a donde deseen
+    }, 2000);
+
+    return () => clearTimeout(timer);
   }, [navigate]);
 
   const handleLoadingComplete = () => {
@@ -330,6 +337,11 @@ const Index = () => {
         isOpen={showActionButtonsModal}
         onClose={() => setShowActionButtonsModal(false)}
       />
+      
+      {/* Loading Screen */}
+      {isLoading && (
+        <LoadingScreen onComplete={handleLoadingComplete} />
+      )}
     </div>
   );
 };

@@ -15,6 +15,8 @@ import type { Tables } from '@/integrations/supabase/types';
 import { useFeatures } from '@/hooks/useFeatures';
 import Gallery from '@/components/profile/Gallery';
 import { InvitationDialog } from '@/components/invitations/InvitationDialog';
+import { LoginLoadingScreen } from "@/components/LoginLoadingScreen";
+import { LoadingScreen } from "@/components/LoadingScreen";
 import { ProfileLoadingScreen } from '@/components/ProfileLoadingScreen';
 
 const ProfileSingle: React.FC = () => {
@@ -567,6 +569,11 @@ const ProfileSingle: React.FC = () => {
         </div>
         
         <Navigation />
+        
+        {/* Loading Screen */}
+        {isLoading && (
+          <LoadingScreen onComplete={() => setIsLoading(false)} />
+        )}
       </div>
     </div>
   );
