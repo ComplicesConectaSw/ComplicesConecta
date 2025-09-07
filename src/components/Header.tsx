@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Heart, Menu, X, Download, Settings, LogOut, User, DollarSign, HelpCircle, Crown } from 'lucide-react';
+import { Heart, Menu, X, Download, Settings, LogOut, User, DollarSign, HelpCircle, Crown, Shield, Coins, FileText, BookOpen, Lock, Info, ChevronDown } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from "@/hooks/use-toast";
 import { ModeIndicator } from '@/components/ModeIndicator';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -103,13 +104,16 @@ export const Header = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <div className="relative">
-              <Heart className={`text-primary animate-pulse-glow transition-all duration-300 ${
-                isRunningInApp && isMinimized ? 'h-6 w-6' : 'h-8 w-8'
-              }`} fill="currentColor" />
+              <Heart 
+                className="text-primary animate-pulse-glow transition-all duration-300 h-8 w-8 animate-bounce" 
+                fill="currentColor"
+                style={{ animationDuration: '2s' }}
+              />
               <div className="absolute inset-0 animate-float">
-                <Heart className={`text-primary-glow opacity-50 transition-all duration-300 ${
-                  isRunningInApp && isMinimized ? 'h-6 w-6' : 'h-8 w-8'
-                }`} fill="currentColor" />
+                <Heart className="text-primary-glow opacity-70 transition-all duration-300 h-8 w-8 animate-ping" fill="currentColor" />
+              </div>
+              <div className="absolute inset-0 animate-pulse">
+                <Heart className="text-primary opacity-30 transition-all duration-300 h-8 w-8" fill="currentColor" />
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -175,6 +179,55 @@ export const Header = () => {
               Soporte
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
             </Link>
+            
+            {/* Dropdown Menu for Info Pages */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="text-white hover:text-white transition-colors duration-300 relative group font-medium">
+                  Información
+                  <ChevronDown className="h-4 w-4 ml-1" />
+                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="bg-background/95 backdrop-blur-sm border border-primary/20">
+                <DropdownMenuItem asChild>
+                  <Link to="/security" className="flex items-center gap-2 w-full">
+                    <Shield className="h-4 w-4" />
+                    Seguridad
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/tokens" className="flex items-center gap-2 w-full">
+                    <Coins className="h-4 w-4" />
+                    Tokens CMPX
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/terms" className="flex items-center gap-2 w-full">
+                    <FileText className="h-4 w-4" />
+                    Términos
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/guidelines" className="flex items-center gap-2 w-full">
+                    <BookOpen className="h-4 w-4" />
+                    Guías
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/privacy" className="flex items-center gap-2 w-full">
+                    <Lock className="h-4 w-4" />
+                    Privacidad
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/project-info" className="flex items-center gap-2 w-full">
+                    <Info className="h-4 w-4" />
+                    Proyecto
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </nav>
 
           {/* Action Buttons */}
