@@ -85,84 +85,113 @@ export const useAuth = () => {
 
   const fetchUserProfile = async (userId: string) => {
     try {
-      // Verificar si hay una sesión demo activa
+      console.log('👤 Obteniendo perfil para userId:', userId);
+      
+      // Verificar si este userId corresponde a una sesión demo
       const demoAuth = localStorage.getItem('demo_authenticated');
       const demoUser = localStorage.getItem('demo_user');
       
+      // Solo usar perfil demo si el userId coincide con el usuario demo
       if (demoAuth === 'true' && demoUser) {
         try {
           const parsedDemoUser = JSON.parse(demoUser);
-          console.log('🎭 Usando perfil demo:', parsedDemoUser.email);
           
-          // Crear perfil demo basado en el usuario
-          const demoProfile = {
-            id: parsedDemoUser.id,
-            user_id: parsedDemoUser.id,
-            email: parsedDemoUser.email,
-            first_name: parsedDemoUser.first_name,
-            account_type: parsedDemoUser.accountType,
-            role: parsedDemoUser.role,
-            is_demo: true,
-            created_at: parsedDemoUser.created_at,
-            updated_at: new Date().toISOString(),
-            // Datos adicionales para demo
-            bio: `Perfil de demostración para ${parsedDemoUser.first_name}`,
-            location: 'Ciudad Demo',
-            age: parsedDemoUser.role === 'admin' ? null : 25,
-            interests: ['Tecnología', 'Música', 'Viajes'],
-            avatar_url: null
-          };
-          
-          setProfile(demoProfile);
-          return;
+          // IMPORTANTE: Solo usar perfil demo si el userId coincide
+          if (userId === parsedDemoUser.id) {
+            console.log('🎭 Usando perfil demo para:', parsedDemoUser.email);
+            
+            const demoProfile = {
+              id: parsedDemoUser.id,
+              user_id: parsedDemoUser.id,
+              email: parsedDemoUser.email,
+              first_name: parsedDemoUser.first_name,
+              account_type: parsedDemoUser.accountType,
+              role: parsedDemoUser.role,
+              is_demo: true,
+              created_at: parsedDemoUser.created_at,
+              updated_at: new Date().toISOString(),
+              bio: `Perfil de demostración para ${parsedDemoUser.first_name}`,
+              location: 'Ciudad Demo',
+              age: parsedDemoUser.role === 'admin' ? null : 25,
+              interests: ['Tecnología', 'Música', 'Viajes'],
+              avatar_url: null
+            };
+            
+            setProfile(demoProfile);
+            return;
+          } else {
+            console.log('🔄 UserId no coincide con demo user - usando Supabase real');
+          }
         } catch (error) {
           console.error('❌ Error parsing demo user:', error);
           clearDemoAuth();
         }
       }
       
-      // Solo usar Supabase si debemos usar conexión real
-      if (shouldUseRealSupabase()) {
-        console.log('🔗 Obteniendo perfil real de Supabase para:', userId);
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', userId)
-          .single();
-        
-        if (error) {
-          console.error('❌ Error fetching profile:', error);
-          return;
+      // Para usuarios reales (incluye complicesconectasw@outlook.es), usar Supabase
+      console.log('🔗 Obteniendo perfil real de Supabase para:', userId);
+      
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
+      
+      if (error) {
+        console.error('❌ Error fetching profile:', error);
+        // Si no se encuentra el perfil, crear uno básico
+        if (error.code === 'PGRST116') {
+          console.log('🆆 Perfil no encontrado - creando perfil básico');
+          const basicProfile = {
+            id: userId,
+            user_id: userId,
+            first_name: 'Usuario',
+            role: 'user',
+            is_demo: false,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          };
+          setProfile(basicProfile);
         }
-        
-        console.log('✅ Perfil real cargado para usuario:', userId);
-        setProfile(data);
-      } else {
-        console.log('🚫 Supabase bloqueado para usuario demo no-admin');
+        return;
       }
+      
+      console.log('✅ Perfil real cargado:', data?.first_name || 'Sin nombre');
+      setProfile(data);
     } catch (error) {
       console.error('❌ Error in fetchUserProfile:', error);
     }
   };
 
   const signOut = async () => {
-    // Use centralized demo auth clearing
-    clearDemoAuth();
-    
-    // Only attempt Supabase signout if not in demo mode
-    const demoAuth = localStorage.getItem('demo_authenticated');
-    if (!demoAuth) {
-      const { error } = await supabase.auth.signOut();
-      if (error) {
-        console.error('Error signing out:', error);
+    try {
+      console.log('🚪 Cerrando sesión...');
+      
+      // Verificar si es sesión demo
+      const demoAuth = localStorage.getItem('demo_authenticated');
+      
+      if (demoAuth === 'true') {
+        // Limpiar sesión demo
+        clearDemoAuth();
+        console.log('✅ Sesión demo cerrada');
+      } else {
+        // Cerrar sesión real de Supabase
+        console.log('🔗 Cerrando sesión real de Supabase...');
+        const { error } = await supabase.auth.signOut();
+        if (error) {
+          console.error('❌ Error cerrando sesión:', error);
+        } else {
+          console.log('✅ Sesión real cerrada');
+        }
       }
+      
+      // Limpiar estado local
+      setUser(null);
+      setSession(null);
+      setProfile(null);
+    } catch (error) {
+      console.error('❌ Error en signOut:', error);
     }
-    
-    // Reset state
-    setUser(null);
-    setSession(null);
-    setLoading(false);
-    setProfile(null);
   };
 
   const signIn = async (email: string, password: string, accountType: string = 'single') => {
@@ -172,7 +201,11 @@ export const useAuth = () => {
       
       // Verificar si es credencial de producción (complicesconectasw@outlook.es)
       if (isProductionAdmin(email)) {
-        console.log('🏢 Credencial de producción detectada - usando Supabase real');
+        console.log('🏢 Credencial de producción detectada - limpiando demo y usando Supabase real');
+        
+        // IMPORTANTE: Limpiar cualquier sesión demo antes de autenticar producción
+        clearDemoAuth();
+        
         const { data, error } = await supabase.auth.signInWithPassword({
           email,
           password,
@@ -192,6 +225,7 @@ export const useAuth = () => {
       
       // Verificar si es una credencial demo
       if (isDemoCredential(email)) {
+        console.log('🎭 Credencial demo detectada');
         const demoPassword = getDemoPassword(email);
         
         if (password !== demoPassword) {
@@ -211,7 +245,11 @@ export const useAuth = () => {
       
       // En modo producción, intentar con Supabase para otros usuarios
       if (config.mode === 'production') {
-        console.log('🔗 Intentando autenticación real con Supabase...');
+        console.log('🔗 Intentando autenticación real con Supabase para:', email);
+        
+        // Limpiar cualquier sesión demo antes de autenticar
+        clearDemoAuth();
+        
         const { data, error } = await supabase.auth.signInWithPassword({
           email,
           password,
@@ -229,7 +267,7 @@ export const useAuth = () => {
         return data;
       }
       
-      throw new Error('Credenciales no válidas');
+      throw new Error('Credenciales no válidas para el modo actual');
     } catch (error) {
       console.error('❌ Error signing in:', error);
       throw error;

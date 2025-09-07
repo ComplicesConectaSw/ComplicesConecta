@@ -65,7 +65,7 @@ export const PRODUCTION_ADMIN_CREDENTIALS = [
 
 // Contraseñas de producción (configuradas en Supabase real)
 export const PRODUCTION_PASSWORDS: Record<string, string> = {
-  'complicesconectasw@outlook.es': '123456' // Configurada en Supabase
+  'complicesconectasw@outlook.es': 'Magy_Wacko_nala28' // Contraseña real en Supabase
 };
 
 // Función para verificar si es credencial demo

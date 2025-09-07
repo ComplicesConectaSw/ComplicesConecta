@@ -32,24 +32,29 @@ export const supabase = createClient<Database>(
         'Authorization': `Bearer ${supabaseAnonKey || 'placeholder-key'}`,
       },
       fetch: (url, options = {}) => {
-        // Verificar si estamos en modo demo solo para usuarios no admin
+        // Solo bloquear Supabase para usuarios demo no-admin
         const demoAuth = localStorage.getItem('demo_authenticated');
         const demoUser = localStorage.getItem('demo_user');
         
+        // Si hay sesión demo activa, verificar si es admin
         if (demoAuth === 'true' && demoUser) {
           try {
             const user = JSON.parse(demoUser);
-            // Solo bloquear Supabase para usuarios demo no-admin
+            // Solo bloquear para usuarios demo no-admin
             if (user.role !== 'admin') {
-              console.log('🔄 Modo demo activo - evitando llamadas a Supabase');
-              return Promise.reject(new Error('Demo mode active'));
+              console.log('🚫 Bloqueando Supabase para usuario demo no-admin:', user.email);
+              return Promise.reject(new Error('Demo mode active - non-admin user'));
+            } else {
+              console.log('✅ Permitiendo Supabase para admin demo:', user.email);
             }
           } catch (error) {
-            console.log('🔄 Modo demo activo - evitando llamadas a Supabase');
-            return Promise.reject(new Error('Demo mode active'));
+            console.log('🚫 Bloqueando Supabase - error parsing demo user');
+            return Promise.reject(new Error('Demo mode active - parse error'));
           }
         }
         
+        // Para usuarios de producción o admins demo, permitir Supabase
+        console.log('🔗 Permitiendo llamada a Supabase:', typeof url === 'string' ? url.substring(0, 50) + '...' : url);
         return fetch(url, {
           ...options,
           headers: {
