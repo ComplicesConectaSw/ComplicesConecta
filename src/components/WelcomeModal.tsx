@@ -168,13 +168,13 @@ export const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
 
             {/* Content */}
             <div className="space-y-4 animate-slide-up">
-              <h2 className="text-2xl font-bold text-foreground">
+              <h2 className="text-2xl font-bold text-white">
                 {currentStepData.title}
               </h2>
-              <h3 className="text-lg text-muted-foreground font-medium">
+              <h3 className="text-lg text-white font-medium">
                 {currentStepData.subtitle}
               </h3>
-              <p className="text-muted-foreground leading-relaxed">
+              <p className="text-white/90 leading-relaxed">
                 {currentStepData.description}
                 {currentStep === 1 && (
                   <span className="inline-flex items-center gap-1 ml-1 text-primary font-medium">
@@ -231,7 +231,7 @@ export const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
             {/* Skip Option */}
             <button
               onClick={handleClose}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors mt-4 underline"
+              className="text-sm text-white/70 hover:text-white transition-colors mt-4 underline"
             >
               Saltar introducción
             </button>

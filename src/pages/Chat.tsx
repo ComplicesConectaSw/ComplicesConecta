@@ -256,23 +256,22 @@ const Chat = () => {
   };
 
   return (
-    <div className="min-h-screen android-fix bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 relative overflow-hidden">
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-pink-500/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-        <div className="absolute top-40 right-10 w-72 h-72 bg-purple-500/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-red-500/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+    <div className="min-h-screen android-fix relative overflow-hidden bg-gradient-to-br from-purple-600 via-pink-500 to-indigo-600">
+      {/* Background matching Index page */}
+      <div className="fixed inset-0 z-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-600/90 via-pink-500/90 to-indigo-600/90"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-400/20 via-pink-400/20 to-transparent"></div>
       </div>
 
       <div className="relative z-10 flex flex-col md:flex-row h-screen chat-container">
         {/* Sidebar - Lista de chats */}
-        <div className={`${selectedChat ? 'hidden md:block' : 'block'} w-full md:w-1/3 bg-black/30 backdrop-blur-sm border-r border-white/10`}>
-          <div className="p-4 border-b border-white/10">
-            <div className="flex items-center justify-between p-3 sm:p-4 bg-gradient-to-r from-purple-900/80 to-pink-900/80 backdrop-blur-md border-b border-white/30 shadow-lg">
+        <div className={`${selectedChat ? 'hidden md:block' : 'block'} w-full md:w-1/3 bg-black/40 backdrop-blur-md border-r border-white/20`}>
+          <div className="p-4 border-b border-white/20">
+            <div className="flex items-center justify-between p-3 sm:p-4 bg-black/60 backdrop-blur-md border-b border-white/30 shadow-lg rounded-lg mb-4">
               <Button 
                 variant="ghost" 
                 onClick={() => setSelectedChat(null)}
-                className="text-white hover:bg-white/50 md:hidden p-2"
+                className="text-white hover:bg-white/20 md:hidden p-2"
               >
                 <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
               </Button>
@@ -281,8 +280,8 @@ const Chat = () => {
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  className="text-white hover:bg-white/10 p-2"
-                  onClick={() => navigate('/')}
+                  className="text-white hover:bg-white/20 p-2"
+                  onClick={() => navigate(-1)}
                 >
                   <ArrowLeft className="h-4 w-4" />
                 </Button>
@@ -291,10 +290,10 @@ const Chat = () => {
             
             {/* Tabs para Private/Public */}
             <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'private' | 'public')} className="w-full">
-              <TabsList className="grid w-full grid-cols-2 bg-gradient-to-r from-purple-800/30 to-pink-800/30 backdrop-blur-sm">
+              <TabsList className="grid w-full grid-cols-2 bg-white/10 backdrop-blur-sm rounded-lg">
                 <TabsTrigger 
                   value="private" 
-                  className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600/50 data-[state=active]:to-pink-600/50 data-[state=active]:text-white text-white hover:text-white flex items-center gap-2 cursor-pointer"
+                  className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-white/80 hover:text-white flex items-center gap-2 cursor-pointer rounded-md"
                   onClick={() => setActiveTab('private')}
                 >
                   <Lock className="h-4 w-4" />
@@ -465,20 +464,20 @@ const Chat = () => {
               </div>
 
               {/* Messages */}
-              <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0 chat-messages">
+              <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0 chat-messages" style={{scrollBehavior: 'smooth'}}>
                 {messages.map((message) => (
                   <div
                     key={message.id}
                     className={`flex ${message.senderId === 0 ? 'justify-end' : 'justify-start'}`}
                   >
                     <div
-                      className={`max-w-xs px-4 py-3 rounded-2xl ${
+                      className={`max-w-xs lg:max-w-sm px-4 py-3 rounded-2xl break-words ${
                         message.senderId === 0
                           ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
-                          : 'bg-white text-gray-900 shadow-md border border-gray-100'
+                          : 'bg-white/95 text-gray-900 shadow-md border border-gray-200 backdrop-blur-sm'
                       }`}
                     >
-                      <p className="text-sm leading-relaxed">{message.content}</p>
+                      <p className="text-sm leading-relaxed break-words">{message.content}</p>
                       <p className={`text-xs mt-1 ${
                         message.senderId === 0 ? 'text-purple-100' : 'text-gray-500'
                       }`}>
@@ -495,54 +494,50 @@ const Chat = () => {
                   <div className="text-center space-y-4 bg-black/50 rounded-lg p-6 border border-white/20">
                     <div className="flex items-center justify-center text-white mb-3">
                       <Lock className="h-6 w-6 mr-2" />
-                      <span className="font-semibold text-lg text-shadow">Chat privado bloqueado</span>
+                      <span className="font-semibold text-lg">Chat privado bloqueado</span>
                     </div>
-                    <p className="text-sm text-white mb-6 leading-relaxed max-w-sm mx-auto break-words">
+                    <p className="text-sm text-white/90 mb-6 leading-relaxed max-w-sm mx-auto break-words">
                       Necesitas una invitación aceptada para chatear con {selectedChat.name}. 
                       Puedes enviar una invitación o esperar a que te envíen una.
                     </p>
-                    <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
-                      <InvitationDialog 
-                        targetProfileId={selectedChat.id.toString()}
-                        targetProfileName={selectedChat.name}
-                      >
-                        <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-6 py-3 w-full sm:w-auto">
-                          <UserPlus className="h-4 w-4 mr-2" />
-                          Enviar Invitación
-                        </Button>
-                      </InvitationDialog>
+                    <div className="flex flex-col sm:flex-row gap-3 justify-center">
                       <Button 
-                        variant="outline" 
-                        className="border-white/30 text-white hover:bg-white/10 px-6 py-3 w-full sm:w-auto"
-                        onClick={() => setSelectedChat(null)}
+                        onClick={() => {
+                          console.log('Enviando invitación...');
+                          // Simulate invitation sent
+                          setHasChatAccess(prev => ({...prev, [selectedChat.id]: true}));
+                          alert('¡Invitación aceptada! Ahora puedes chatear.');
+                        }}
+                        className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-6 py-2 rounded-lg font-medium transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
                       >
-                        Cancelar
+                        <UserPlus className="h-4 w-4 mr-2" />
+                        Aceptar invitación
+                      </Button>
+                      <Button 
+                        onClick={() => {
+                          console.log('Rechazando invitación...');
+                          alert('Invitación rechazada.');
+                        }}
+                        variant="outline"
+                        className="border-red-300/50 text-red-300 hover:bg-red-500/20 px-6 py-2 rounded-lg font-medium transition-all duration-200"
+                      >
+                        Rechazar
                       </Button>
                     </div>
                   </div>
                 ) : (
-                  <div className="flex items-center space-x-3">
+                  <div className="flex space-x-2">
                     <Input
                       value={newMessage}
                       onChange={(e) => setNewMessage(e.target.value)}
-                      placeholder={selectedChat.roomType === 'public' 
-                        ? "Mensaje a la sala pública..." 
-                        : "Escribe un mensaje privado..."
-                      }
-                      className="flex-1 bg-white/10 border-white/20 text-white placeholder-white/50"
-                      onKeyPress={(e) => {
-                        if (e.key === 'Enter') {
-                          handleSendMessage();
-                        }
-                      }}
+                      placeholder="Escribe un mensaje..."
+                      className="flex-1 bg-white/10 border-white/20 text-white placeholder-white/50 focus:border-purple-400 focus:ring-purple-400/20 rounded-lg"
+                      onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                     />
                     <Button 
                       onClick={handleSendMessage}
-                      className={`${
-                        selectedChat.roomType === 'public'
-                          ? 'bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600'
-                          : 'bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600'
-                      } text-white`}
+                      disabled={!newMessage.trim()}
+                      className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 disabled:opacity-50 disabled:cursor-not-allowed px-4 py-2 rounded-lg transition-all duration-200"
                     >
                       <Send className="h-4 w-4" />
                     </Button>

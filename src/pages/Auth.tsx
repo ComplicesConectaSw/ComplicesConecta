@@ -259,7 +259,7 @@ const Auth = () => {
             } else if (accountType === 'couple') {
               navigate("/profile-couple");
             } else {
-              navigate("/profile-single");
+              navigate("/discover");
             }
           }, 3000);
         } else {
@@ -439,71 +439,42 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-hero-gradient">
-      {/* Advanced Background */}
-      <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-secondary/10"></div>
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-20 left-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-float"></div>
-          <div className="absolute bottom-32 right-32 w-48 h-48 bg-accent/8 rounded-full blur-2xl animate-pulse"></div>
-          <div className="absolute top-1/2 left-1/3 w-32 h-32 bg-secondary/6 rounded-full blur-xl animate-float animation-delay-1000"></div>
-        </div>
-        {/* Floating Icons */}
-        <Heart className="absolute top-32 left-1/4 w-6 h-6 text-primary/20 animate-float animation-delay-500" fill="currentColor" />
-        <Sparkles className="absolute bottom-1/3 right-1/4 w-5 h-5 text-accent/25 animate-float animation-delay-1200" />
-        <Shield className="absolute top-1/3 right-1/5 w-7 h-7 text-secondary/20 animate-float animation-delay-2000" />
-        <Users className="absolute bottom-1/4 left-1/6 w-6 h-6 text-primary/15 animate-float animation-delay-800" />
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-black/20" />
+      <div className="absolute inset-0">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute top-3/4 left-1/2 w-64 h-64 bg-blue-500/20 rounded-full blur-2xl animate-pulse delay-500" />
       </div>
-      
-      {/* Back Button */}
-      <div className="relative z-10 p-4">
-        <Button
-          variant="ghost"
-          onClick={() => navigate('/')}
-          className="flex items-center gap-2 text-foreground hover:bg-primary/10 transition-all duration-300"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Volver al inicio
-        </Button>
-      </div>
-      
-      {/* Main Content */}
-      <div className="relative z-10 flex items-center justify-center min-h-screen p-4 pt-0">
-        <Card className="w-full max-w-md shadow-glow border-0 backdrop-blur-sm bg-background/95">
-        <CardHeader className="text-center relative">
-          {/* Animated Logo */}
-          <div className="flex items-center justify-center gap-2 mb-6">
-            <div className="relative">
-              <Heart className="h-10 w-10 text-primary animate-pulse-glow" fill="currentColor" />
-              <div className="absolute inset-0 animate-ping opacity-30">
-                <Heart className="h-10 w-10 text-primary/50" fill="currentColor" />
+
+      <div className="relative z-10 w-full max-w-md">
+        <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-2xl">
+          <CardHeader className="text-center">
+            <div className="flex justify-center mb-4">
+              <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-3 rounded-full">
+                <Heart className="h-8 w-8 text-white" />
               </div>
             </div>
-            <h1 className="text-3xl font-bold bg-love-gradient bg-clip-text text-transparent">
-              ComplicesConecta
-            </h1>
-          </div>
-          <CardTitle className="text-2xl mb-2">Encuentra tu cómplice perfecto</CardTitle>
-          <CardDescription className="text-base">
-            Conecta con personas que comparten tus intereses y valores
-          </CardDescription>
-          
-          {/* Features Preview */}
-          <div className="grid grid-cols-3 gap-4 mt-6 p-4 bg-muted/30 rounded-lg">
-            <div className="text-center">
-              <Shield className="h-6 w-6 text-primary mx-auto mb-1" />
-              <p className="text-xs text-white">Verificado</p>
+            <CardTitle className="text-2xl font-bold text-white">ComplicesConecta</CardTitle>
+            <CardDescription className="text-white/70">
+              Conecta con personas afines en un entorno seguro
+            </CardDescription>
+            
+            <div className="flex justify-center space-x-8 mt-6 mb-4">
+              <div className="text-center">
+                <Shield className="h-6 w-6 text-green-400 mx-auto mb-1" />
+                <p className="text-xs text-white">Seguro</p>
+              </div>
+              <div className="text-center">
+                <Users className="h-6 w-6 text-blue-400 mx-auto mb-1" />
+                <p className="text-xs text-white">Comunidad</p>
+              </div>
+              <div className="text-center">
+                <Sparkles className="h-6 w-6 text-pink-400 mx-auto mb-1" />
+                <p className="text-xs text-white">IA Match</p>
+              </div>
             </div>
-            <div className="text-center">
-              <Users className="h-6 w-6 text-accent mx-auto mb-1" />
-              <p className="text-xs text-white">Comunidad</p>
-            </div>
-            <div className="text-center">
-              <Sparkles className="h-6 w-6 text-secondary mx-auto mb-1" />
-              <p className="text-xs text-white">IA Match</p>
-            </div>
-          </div>
-        </CardHeader>
+          </CardHeader>
         <CardContent>
           <Tabs defaultValue="signin" className="w-full">
             <TabsList className="grid w-full grid-cols-2">

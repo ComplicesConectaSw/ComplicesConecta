@@ -38,11 +38,11 @@ export default function Tokens() {
             </Button>
             <div className="flex items-center gap-3 flex-1 justify-center">
               <Coins className="h-6 w-6 sm:h-8 sm:w-8 text-purple-600" />
-              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">Tokens CMPX & GTK</h1>
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">Tokens CMPX & GTK</h1>
             </div>
             <div className="w-20"></div> {/* Spacer for balance */}
           </div>
-          <p className="text-gray-600 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
+          <p className="text-white/80 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
             Gestiona tus tokens, participa en staking y reclama recompensas. 
             Durante la fase Beta, todas las funciones premium se pueden adquirir con tokens CMPX.
           </p>
@@ -159,7 +159,7 @@ export default function Tokens() {
 
           <Button
             onClick={() => window.open('/tokens-terms', '_blank')}
-            className="h-16 flex flex-col items-center justify-center gap-1 bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/20 text-gray-800 transition-all duration-300 sm:col-span-2 md:col-span-1"
+            className="h-16 flex flex-col items-center justify-center gap-1 bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/20 text-white transition-all duration-300 sm:col-span-2 md:col-span-1"
             variant="outline"
           >
             <span className="text-lg">📋</span>

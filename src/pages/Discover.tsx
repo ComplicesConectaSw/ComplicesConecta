@@ -5,9 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Heart, Flame, ArrowLeft, Crown, Shield, Target, X, RefreshCw, Filter, Star, CheckCircle, MapPin, Settings, Home, User } from 'lucide-react';
-import { Header } from '@/components/Header';
+import { Heart, Flame, Crown, RefreshCw, Filter, Star, CheckCircle, MapPin, Home, User, Search } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 import { useToast } from "@/hooks/use-toast";
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -144,10 +142,29 @@ const Discover = () => {
     setFilteredProfiles(filtered);
   }, [profiles, filters]);
 
-  // Generar perfiles al cargar
-  useEffect(() => {
-    generateRandomProfiles();
+  // Función para cargar perfiles reales desde Supabase
+  const loadRealProfiles = useCallback(async () => {
+    try {
+      // Por ahora, usar perfiles mock para usuarios reales también
+      // TODO: Implementar carga real desde Supabase cuando esté configurado
+      generateRandomProfiles();
+    } catch (error) {
+      console.error('Error loading real profiles:', error);
+      // Fallback a perfiles mock
+      generateRandomProfiles();
+    }
   }, [generateRandomProfiles]);
+
+  // Generar perfiles al cargar - solo para usuarios demo
+  useEffect(() => {
+    const demoAuth = localStorage.getItem('demo_authenticated');
+    if (demoAuth === 'true') {
+      generateRandomProfiles();
+    } else {
+      // Para usuarios reales, cargar perfiles desde Supabase
+      loadRealProfiles();
+    }
+  }, [generateRandomProfiles, loadRealProfiles]);
 
   const handleProfileClick = (profile: Profile) => {
     navigate(`/profile/${profile.id}`, { state: { profile } });
@@ -178,46 +195,66 @@ const Discover = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-600 via-pink-500 to-indigo-600">
+    <div className="min-h-screen bg-hero-gradient flex flex-col relative overflow-hidden">
+      {/* Animated Background */}
+      <div className="fixed inset-0 z-0">
+        <div className="absolute inset-0 opacity-40">
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-primary/20 via-transparent to-accent/20 animate-gradient-x"></div>
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent via-secondary/10 to-primary/15 animate-gradient-y"></div>
+        </div>
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-float-slow"></div>
+          <div className="absolute top-40 right-32 w-48 h-48 bg-accent/8 rounded-full blur-2xl animate-float-reverse"></div>
+          <div className="absolute bottom-32 left-1/3 w-80 h-80 bg-secondary/4 rounded-full blur-3xl animate-float-slow"></div>
+        </div>
+      </div>
+      
+      <div className="relative z-10">
+        <Navigation />
+      </div>
+      
       {/* Header con navegación */}
-      <div className="bg-white/90 backdrop-blur-md border-b border-white/30 p-4 shadow-lg">
+      <div className="bg-white/10 backdrop-blur-md border-b border-white/20 p-4 shadow-lg relative z-10">
         <div className="flex items-center justify-between max-w-6xl mx-auto">
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 sm:space-x-4">
             <Button
               variant="ghost"
               onClick={() => navigate('/')}
-              className="text-gray-700 hover:bg-white/50"
+              className="text-white hover:bg-white/20 p-2 sm:px-4"
             >
-              <Home className="h-5 w-5 mr-2" />
-              Inicio
+              <Home className="h-4 w-4 sm:h-5 sm:w-5 sm:mr-2" />
+              <span className="hidden sm:inline">Inicio</span>
             </Button>
             <Button
               variant="ghost"
               onClick={() => navigate('/profile')}
-              className="text-gray-700 hover:bg-white/50"
+              className="text-gray-700 hover:bg-white/50 p-2 sm:px-4"
             >
-              <User className="h-5 w-5 mr-2" />
-              Perfil
+              <User className="h-4 w-4 sm:h-5 sm:w-5 sm:mr-2" />
+              <span className="hidden sm:inline">Perfil</span>
             </Button>
           </div>
           
-          <h1 className="text-xl font-bold text-gray-900">Conecta con Parejas y Solteros</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
+            <Search className="h-5 w-5 sm:h-6 sm:w-6" />
+            <span className="hidden sm:inline">Descubrir</span>
+          </h1>
           
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-1 sm:space-x-2">
             <Button
               variant="ghost"
               onClick={() => setShowFilters(!showFilters)}
-              className="text-gray-700 hover:bg-white/50"
+              className="text-gray-700 hover:bg-white/50 p-2 sm:px-4"
             >
-              <Filter className="h-5 w-5 mr-2" />
-              Filtros
+              <Filter className="h-4 w-4 sm:h-5 sm:w-5 sm:mr-2" />
+              <span className="hidden sm:inline">Filtros</span>
             </Button>
             <Button
               variant="ghost"
               onClick={handleRefresh}
-              className="text-gray-700 hover:bg-white/50"
+              className="text-gray-700 hover:bg-white/50 p-2"
             >
-              <RefreshCw className="h-5 w-5" />
+              <RefreshCw className="h-4 w-4 sm:h-5 sm:w-5" />
             </Button>
           </div>
         </div>
@@ -244,10 +281,10 @@ const Discover = () => {
           </Card>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-6">
+        <div className="flex flex-col lg:flex-row gap-4 lg:gap-6">
           {/* Panel de filtros */}
           {showFilters && (
-            <Card className="w-full lg:w-80 bg-white/90 backdrop-blur-md border-0 p-6">
+            <Card className="w-full lg:w-80 bg-white/90 backdrop-blur-md border-0 p-4 lg:p-6">
               <h3 className="text-lg font-semibold mb-4 text-gray-900">Filtros Avanzados</h3>
               
               {/* Edad */}
@@ -310,11 +347,11 @@ const Discover = () => {
           
           {/* Grid de perfiles */}
           <div className="flex-1">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
               {filteredProfiles.map((profile) => (
-                <div
+                <Card
                   key={profile.id}
-                  className="bg-white/90 backdrop-blur-md rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group hover:scale-105"
+                  className="bg-white/90 backdrop-blur-md border-0 overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                   onClick={() => handleProfileClick(profile)}
                 >
                   <div className="relative">
@@ -323,23 +360,55 @@ const Discover = () => {
                       alt={profile.name}
                       className="w-full h-48 sm:h-64 object-cover"
                     />
-                    <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-full p-2">
-                      <div className={`w-3 h-3 rounded-full ${profile.isOnline ? 'bg-green-500' : 'bg-gray-400'}`}></div>
+                    <div className="absolute top-2 right-2 flex flex-col sm:flex-row gap-1 sm:gap-2">
+                      {profile.isVerified && (
+                        <Badge className="bg-green-500 text-white text-xs">
+                          <CheckCircle className="h-3 w-3 mr-1" />
+                          Verificado
+                        </Badge>
+                      )}
+                      {profile.isPremium && (
+                        <Badge className="bg-yellow-500 text-white text-xs">
+                          <Crown className="h-3 w-3 mr-1" />
+                          Premium
+                        </Badge>
+                      )}
                     </div>
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
-                      <h3 className="text-white font-bold text-lg">{profile.name}</h3>
-                      <p className="text-white/80 text-sm">{profile.age} años • {profile.location}</p>
+                    <div className="absolute bottom-2 left-2">
+                      {profile.isOnline && (
+                        <Badge className="bg-green-500 text-white text-xs">
+                          En línea
+                        </Badge>
+                      )}
                     </div>
                   </div>
                   
-                  <div className="p-4">
-                    <div className="flex items-center mb-2">
-                      <div className="flex text-yellow-400">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} className={`h-4 w-4 ${i < Math.floor(Number(profile.rating)) ? 'fill-current' : ''}`} />
-                        ))}
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="text-lg font-semibold text-gray-900">{profile.name}, {profile.age}</h3>
+                      <div className="flex items-center space-x-2">
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={(e) => handleLike(profile.id, e)}
+                          className="text-red-500 hover:text-red-600 hover:bg-red-50 p-2"
+                        >
+                          <Heart className="h-5 w-5" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={(e) => handleSuperLike(profile.id, e)}
+                          className="text-blue-500 hover:text-blue-600 hover:bg-blue-50 p-2"
+                        >
+                          <Flame className="h-5 w-5" />
+                        </Button>
                       </div>
-                      <span className="ml-2 text-sm text-gray-600">({profile.rating})</span>
+                    </div>
+                    
+                    <div className="flex items-center text-sm text-gray-600 mb-2">
+                      <MapPin className="h-4 w-4 mr-1" />
+                      {profile.location} • {profile.distance}km
                     </div>
                     
                     <p className="text-sm text-gray-700 mb-3 line-clamp-2">{profile.bio}</p>
@@ -366,8 +435,8 @@ const Discover = () => {
                       </div>
                       <span className="text-xs text-gray-500">{profile.lastActive}</span>
                     </div>
-                  </div>
-                </div>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </div>

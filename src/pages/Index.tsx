@@ -212,31 +212,33 @@ const Index = () => {
         
         {/* Featured Profiles Section */}
         <section className="py-10 sm:py-20 relative">
-          <div className="text-center space-y-8">
-            <div className="space-y-6">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center space-y-8">
+              <div className="space-y-6">
+                
+                <p className="text-xl md:text-2xl text-white/95 max-w-4xl mx-auto leading-relaxed animate-slide-up font-medium px-4">
+                  La plataforma <strong className="text-pink-300">más exclusiva</strong> para la comunidad lifestyle mexicana.
+                  <br className="hidden md:block" />
+                  <span className="bg-gradient-to-r from-white to-pink-200 bg-clip-text text-transparent">
+                    Conexiones auténticas, experiencias únicas.
+                  </span>
+                </p>
+              </div>
               
-              <p className="text-xl md:text-2xl text-white/95 max-w-4xl mx-auto leading-relaxed animate-slide-up font-medium">
-                La plataforma <strong className="text-pink-300">más exclusiva</strong> para la comunidad lifestyle mexicana.
-                <br className="hidden md:block" />
-                <span className="bg-gradient-to-r from-white to-pink-200 bg-clip-text text-transparent">
-                  Conexiones auténticas, experiencias únicas.
-                </span>
-              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12 px-2">
+                {sampleProfiles.map((profile, index) => (
+                  <div key={index} className={`animate-slide-up slide-up-delay-${index}`}>
+                    <ProfileCard 
+                      profile={profile} 
+                      onLike={() => {}} 
+                      onSuperLike={() => {}}
+                      onOpenModal={() => setShowActionButtonsModal(true)} 
+                    />
+                  </div>
+                ))}
+              </div>
+              
             </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-              {sampleProfiles.map((profile, index) => (
-                <div key={index} className={`animate-slide-up slide-up-delay-${index}`}>
-                  <ProfileCard 
-                    profile={profile} 
-                    onLike={() => {}} 
-                    onSuperLike={() => {}}
-                    onOpenModal={() => setShowActionButtonsModal(true)} 
-                  />
-                </div>
-              ))}
-            </div>
-            
           </div>
         </section>
 

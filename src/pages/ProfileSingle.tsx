@@ -90,12 +90,24 @@ const ProfileSingle: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen relative bg-gradient-to-br from-purple-600 via-pink-500 to-indigo-600">
-      {/* Fixed background layers */}
-      <div className="fixed inset-0 z-0 bg-gradient-to-br from-purple-600/90 via-pink-500/90 to-indigo-600/90"></div>
-      <div className="fixed inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-400/20 via-pink-400/20 to-transparent"></div>
-      
-      <div className="relative z-10 flex flex-col min-h-screen">
+    <div className="min-h-screen relative overflow-hidden bg-hero-gradient">
+      {/* Advanced Animated Background */}
+      <div className="fixed inset-0 z-0">
+        {/* Animated Mesh Gradient */}
+        <div className="absolute inset-0 opacity-40">
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-primary/20 via-transparent to-accent/20 animate-gradient-x"></div>
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent via-secondary/10 to-primary/15 animate-gradient-y"></div>
+        </div>
+        
+        {/* Floating Geometric Shapes */}
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-float-slow"></div>
+          <div className="absolute top-40 right-32 w-48 h-48 bg-accent/8 rounded-full blur-2xl animate-float-reverse"></div>
+          <div className="absolute bottom-32 left-1/3 w-80 h-80 bg-secondary/4 rounded-full blur-3xl animate-float-slow shape-delay-2"></div>
+          <div className="absolute bottom-20 right-20 w-56 h-56 bg-primary/6 rounded-full blur-2xl animate-float shape-delay-1"></div>
+        </div>
+      </div>
+
       {/* Header */}
       <div className="bg-black/80 backdrop-blur-md border-b border-white/30 p-3 sm:p-4 shadow-lg flex-shrink-0">
         <div className="flex items-center justify-between flex-wrap gap-2">
@@ -126,8 +138,8 @@ const ProfileSingle: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto">
-        <div className="p-2 sm:p-4 pb-32 space-y-4 sm:space-y-6 max-w-2xl mx-auto">
+      <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
+        <div className="p-2 sm:p-4 pb-20 sm:pb-32 space-y-4 sm:space-y-6 max-w-2xl mx-auto min-h-full">
         {/* Foto principal y badges */}
         <Card className="overflow-hidden bg-white/90 backdrop-blur-md shadow-glow border-0">
           <div className="relative">
@@ -254,22 +266,22 @@ const ProfileSingle: React.FC = () => {
                   </div>
                   
                   {/* Bio Section */}
-                  <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 mb-4 border border-purple-200">
-                    <h3 className="font-semibold text-purple-900 mb-2">Sobre mí</h3>
-                    <p className="text-gray-800 text-sm leading-relaxed">
+                  <div className="bg-white/95 backdrop-blur-sm rounded-lg p-4 mb-4 border border-gray-200 shadow-sm">
+                    <h3 className="font-semibold text-gray-900 mb-2">Sobre mí</h3>
+                    <p className="text-gray-700 text-sm leading-relaxed">
                       {profile.bio || "Persona auténtica buscando conexiones reales y experiencias memorables. Me encanta el arte y conocer gente nueva."}
                     </p>
                   </div>
                   
                   {/* Additional Info */}
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
-                      <span className="font-medium text-purple-900">Edad: </span>
-                      <span className="text-gray-800">{profile.age}</span>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm">
+                    <div className="bg-white/95 backdrop-blur-sm rounded-lg p-3 border border-gray-200 shadow-sm">
+                      <span className="font-medium text-gray-900">Edad: </span>
+                      <span className="text-gray-700">{profile.age}</span>
                     </div>
-                    <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
-                      <span className="font-medium text-purple-900">Buscando: </span>
-                      <p className="text-gray-800">Conexiones auténticas</p>
+                    <div className="bg-white/95 backdrop-blur-sm rounded-lg p-3 border border-gray-200 shadow-sm">
+                      <span className="font-medium text-gray-900">Buscando: </span>
+                      <p className="text-gray-700">Conexiones auténticas</p>
                     </div>
                   </div>
                 </div>
@@ -296,34 +308,34 @@ const ProfileSingle: React.FC = () => {
             <Card className="bg-white/90 backdrop-blur-md shadow-lg border-0">
               <CardContent className="p-6">
                 <h3 className="font-semibold text-gray-900 mb-3">Intereses</h3>
-                <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-200 mb-4">
+                <div className="bg-white/95 backdrop-blur-sm rounded-lg p-4 border border-gray-200 shadow-sm mb-4">
                   <div className="flex flex-wrap gap-2">
                     {((profile as any).interests || ['Lifestyle Swinger', 'Comunicación Abierta', 'Respeto Mutuo', 'Experiencias Nuevas', 'Discreción Total']).map((interest: string, index: number) => (
-                      <Badge key={index} className="bg-purple-200/80 text-purple-900 border border-purple-300/50 text-xs flex-shrink-0">
+                      <Badge key={index} className="bg-purple-100 text-purple-800 border border-purple-200 text-xs flex-shrink-0 hover:bg-purple-200 transition-colors">
                         {interest}
                       </Badge>
                     ))}
                   </div>
                 </div>
                 <div className="space-y-3">
-                  <div className="bg-gradient-to-r from-purple-800/20 to-pink-800/20 rounded-lg p-3 border border-purple-300/20">
-                    <p className="text-sm text-white/90">
-                      <strong>Buscando:</strong> {(profile as any).lookingFor || "Conexiones auténticas y experiencias únicas"}
+                  <div className="bg-white/95 backdrop-blur-sm rounded-lg p-3 border border-gray-200 shadow-sm">
+                    <p className="text-sm text-gray-800">
+                      <strong className="text-gray-900">Buscando:</strong> {(profile as any).lookingFor || "Conexiones auténticas y experiencias únicas"}
                     </p>
                   </div>
-                  <div className="bg-gradient-to-r from-purple-800/20 to-pink-800/20 rounded-lg p-3 border border-purple-300/20">
-                    <p className="text-sm text-white/90">
-                      <strong>Estilo de vida:</strong> {(profile as any).lifestyle || "Aventurero y espontáneo"}
+                  <div className="bg-white/95 backdrop-blur-sm rounded-lg p-3 border border-gray-200 shadow-sm">
+                    <p className="text-sm text-gray-800">
+                      <strong className="text-gray-900">Estilo de vida:</strong> {(profile as any).lifestyle || "Aventurero y espontáneo"}
                     </p>
                   </div>
-                  <div className="bg-gradient-to-r from-purple-800/20 to-pink-800/20 rounded-lg p-3 border border-purple-300/20">
-                    <p className="text-sm text-white/90">
-                      <strong>Nivel de experiencia:</strong> {(profile as any).experienceLevel || "Intermedio"}
+                  <div className="bg-white/95 backdrop-blur-sm rounded-lg p-3 border border-gray-200 shadow-sm">
+                    <p className="text-sm text-gray-800">
+                      <strong className="text-gray-900">Nivel de experiencia:</strong> {(profile as any).experienceLevel || "Intermedio"}
                     </p>
                   </div>
-                  <div className="bg-gradient-to-r from-purple-800/20 to-pink-800/20 rounded-lg p-3 border border-purple-300/20">
-                    <p className="text-sm text-white/90">
-                      <strong>Tipo de relación:</strong> {(profile as any).relationship_type || "Single"}
+                  <div className="bg-white/95 backdrop-blur-sm rounded-lg p-3 border border-gray-200 shadow-sm">
+                    <p className="text-sm text-gray-800">
+                      <strong className="text-gray-900">Tipo de relación:</strong> {(profile as any).relationship_type || "Single"}
                     </p>
                   </div>
                 </div>
@@ -523,57 +535,9 @@ const ProfileSingle: React.FC = () => {
           </div>
         )}
         </div>
+        
+        <Navigation />
       </div>
-
-      <Navigation />
-      </div>
-      
-      {/* Custom Styles */}
-      <style>{`
-        @keyframes blob {
-          0%, 100% { transform: translate(0px, 0px) scale(1); }
-          33% { transform: translate(30px, -50px) scale(1.1); }
-          66% { transform: translate(-20px, 20px) scale(0.9); }
-        }
-        
-        @keyframes float-slow {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-20px) rotate(180deg); }
-        }
-        
-        .animate-blob {
-          animation: blob 7s infinite;
-        }
-        
-        .animate-float-slow {
-          animation: float-slow 6s ease-in-out infinite;
-        }
-        
-        .animation-delay-2000 {
-          animation-delay: 2s;
-        }
-        
-        .animation-delay-4000 {
-          animation-delay: 4s;
-        }
-        
-        .bg-hero-gradient {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        
-        .shadow-glow {
-          box-shadow: 0 0 20px rgba(147, 51, 234, 0.3);
-        }
-      `}</style>
-      
-      {/* ProfileLoadingScreen */}
-      {isLoading && (
-        <ProfileLoadingScreen
-          onComplete={() => setIsLoading(false)}
-          profileName={profile?.first_name || 'Usuario'}
-          profileType="single"
-        />
-      )}
     </div>
   );
 };

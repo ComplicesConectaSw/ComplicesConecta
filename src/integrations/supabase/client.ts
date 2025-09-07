@@ -16,33 +16,47 @@ if (!supabaseUrl || !supabaseAnonKey || supabaseUrl.includes('your-supabase-url-
 console.log('🔗 Conectando a Supabase:', supabaseUrl);
 
 // Crear y exportar el cliente de Supabase con valores por defecto
-export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    persistSession: true,
-    autoRefreshToken: true,
-    detectSessionInUrl: true,
-    flowType: 'pkce'
-  },
-  global: {
-    headers: {
-      'apikey': supabaseAnonKey,
+export const supabase = createClient<Database>(
+  supabaseUrl || 'https://placeholder.supabase.co', 
+  supabaseAnonKey || 'placeholder-key', 
+  {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true,
+      flowType: 'pkce'
     },
-    fetch: (url, options = {}) => {
-      return fetch(url, {
-        ...options,
-        headers: {
-          ...options.headers,
-          'Access-Control-Allow-Origin': '*',
-        },
-      });
+    global: {
+      headers: {
+        'apikey': supabaseAnonKey || 'placeholder-key',
+        'Authorization': `Bearer ${supabaseAnonKey || 'placeholder-key'}`,
+      },
+      fetch: (url, options = {}) => {
+        // Verificar si estamos en modo demo
+        const demoAuth = localStorage.getItem('demo_authenticated');
+        if (demoAuth === 'true') {
+          console.log('🔄 Modo demo activo - evitando llamadas a Supabase');
+          return Promise.reject(new Error('Demo mode active'));
+        }
+        
+        return fetch(url, {
+          ...options,
+          headers: {
+            ...options.headers,
+            'apikey': supabaseAnonKey || 'placeholder-key',
+            'Authorization': `Bearer ${supabaseAnonKey || 'placeholder-key'}`,
+            'Access-Control-Allow-Origin': '*',
+          },
+        });
+      },
     },
-  },
-  realtime: {
-    params: {
-      eventsPerSecond: 10,
+    realtime: {
+      params: {
+        eventsPerSecond: 10,
+      },
     },
-  },
-});
+  }
+);
 
 // Verificar conectividad inicial y activar modo demo si es necesario
 let isDemoMode = false;

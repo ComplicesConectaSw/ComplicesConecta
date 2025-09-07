@@ -109,8 +109,10 @@ export const useAuth = () => {
 
   const fetchUserProfile = async (userId: string) => {
     // Skip profile fetch for demo users
+    const demoAuth = localStorage.getItem('demo_authenticated');
     const demoUser = localStorage.getItem('demo_user');
-    if (demoUser) {
+    
+    if (demoAuth === 'true' && demoUser) {
       try {
         const user = JSON.parse(demoUser);
         setState(prev => ({ ...prev, profile: { id: user.id, role: user.role } }));
@@ -120,21 +122,24 @@ export const useAuth = () => {
       }
     }
 
-    try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .maybeSingle();
+    // Only fetch from Supabase for real authenticated users
+    if (!demoAuth || demoAuth !== 'true') {
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', userId)
+          .maybeSingle();
 
-      if (error && error.code !== 'PGRST116') {
+        if (error && error.code !== 'PGRST116') {
+          console.error('Error fetching profile:', error);
+          return;
+        }
+
+        setState(prev => ({ ...prev, profile: data }));
+      } catch (error) {
         console.error('Error fetching profile:', error);
-        return;
       }
-
-      setState(prev => ({ ...prev, profile: data }));
-    } catch (error) {
-      console.error('Error fetching profile:', error);
     }
   };
 
@@ -161,6 +166,17 @@ export const useAuth = () => {
   };
 
   const isAdmin = () => {
+    // Verificar sesión demo primero
+    const demoUser = localStorage.getItem('demo_user');
+    if (demoUser) {
+      try {
+        const user = JSON.parse(demoUser);
+        return user.accountType === 'admin' || user.role === 'admin';
+      } catch (error) {
+        console.error('Error parsing demo user for admin check:', error);
+      }
+    }
+    
     // Verificar rol en perfil (después de migración)
     return state.profile?.role === 'admin';
   };
@@ -174,6 +190,14 @@ export const useAuth = () => {
   };
 
   const isAuthenticated = () => {
+    // Verificar sesión demo primero
+    const demoAuth = localStorage.getItem('demo_authenticated');
+    const demoUser = localStorage.getItem('demo_user');
+    if (demoAuth === 'true' && demoUser) {
+      return true;
+    }
+    
+    // Verificar autenticación real
     return !!state.user;
   };
 
