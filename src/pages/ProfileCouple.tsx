@@ -79,15 +79,12 @@ const ProfileCouple: React.FC = () => {
   if (!profile) {
     return (
       <div className="min-h-screen relative overflow-hidden bg-hero-gradient">
-        {/* Advanced Animated Background */}
         <div className="fixed inset-0 z-0">
-          {/* Animated Mesh Gradient */}
           <div className="absolute inset-0 opacity-40">
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-primary/20 via-transparent to-accent/20 animate-gradient-x"></div>
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent via-secondary/10 to-primary/15 animate-gradient-y"></div>
           </div>
           
-          {/* Floating Geometric Shapes */}
           <div className="absolute inset-0">
             <div className="absolute top-20 left-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-float-slow"></div>
             <div className="absolute top-40 right-32 w-48 h-48 bg-accent/8 rounded-full blur-2xl animate-float-reverse"></div>
@@ -95,12 +92,8 @@ const ProfileCouple: React.FC = () => {
             <div className="absolute bottom-20 right-20 w-56 h-56 bg-primary/6 rounded-full blur-2xl animate-float shape-delay-1"></div>
           </div>
         </div>
-        {/* Fixed background layers */}
-        <div className="fixed inset-0 z-0 bg-gradient-to-br from-purple-600/90 via-pink-500/90 to-indigo-600/90"></div>
-        <div className="fixed inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-400/20 via-pink-400/20 to-transparent"></div>
         
         <div className="relative z-10">
-          {/* Header */}
           <div className="bg-black/80 backdrop-blur-md border-b border-white/30 p-3 sm:p-4 shadow-lg flex-shrink-0">
             <div className="flex items-center justify-between flex-wrap gap-2">
               <Button 
@@ -132,7 +125,6 @@ const ProfileCouple: React.FC = () => {
 
           <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
             <div className="p-2 sm:p-4 pb-20 sm:pb-32 space-y-4 sm:space-y-6 max-w-2xl mx-auto min-h-full">
-              {/* Foto principal y badges */}
               <Card className="overflow-hidden bg-white/90 backdrop-blur-md shadow-glow border-0">
                 <div className="relative">
                   <div className="aspect-[3/4] rounded-t-lg overflow-hidden mb-4 relative bg-gray-100">
@@ -172,7 +164,6 @@ const ProfileCouple: React.FC = () => {
                 </div>
               </Card>
 
-              {/* Información básica de la pareja */}
               <Card className="bg-white/90 backdrop-blur-md shadow-lg border-0">
                 <CardContent className="p-6">
                   <div className="text-center mb-6">
@@ -189,7 +180,6 @@ const ProfileCouple: React.FC = () => {
                       </span>
                     </div>
                     
-                    {/* Bio Section */}
                     <div className="bg-white/95 backdrop-blur-sm rounded-lg p-4 mb-4 border border-gray-200 shadow-sm">
                       <h3 className="font-semibold text-gray-900 mb-2">Sobre nosotros</h3>
                       <p className="text-gray-700 text-sm leading-relaxed">
@@ -197,70 +187,68 @@ const ProfileCouple: React.FC = () => {
                       </p>
                     </div>
 
-                  {/* Información individual de cada partner */}
-                  <div className="grid md:grid-cols-2 gap-6">
-                    {/* Partner 1 - Ella */}
-                    <div className="bg-gradient-to-br from-pink-100/80 to-rose-100/80 backdrop-blur-sm rounded-lg p-4 border-2 border-pink-300/50 shadow-lg">
-                      <div className="text-center mb-4">
-                        <img 
-                          src={profile.partner1?.avatar || 'https://images.unsplash.com/photo-1521119989659-a83eee488004?w=400&h=400&fit=crop&crop=faces'} 
-                          alt={profile.partner1?.name || 'Ella'}
-                          className="w-24 h-24 rounded-full mx-auto mb-3 object-cover border-4 border-pink-400 shadow-lg"
-                          onError={(e) => {
-                            e.currentTarget.src = 'https://images.unsplash.com/photo-1521119989659-a83eee488004?w=400&h=400&fit=crop&crop=faces';
-                          }}
-                        />
-                        <h3 className="text-xl font-bold text-pink-900">{profile.partner1?.name || 'Ella'}</h3>
-                        <p className="text-pink-700 font-medium">{profile.partner1?.age || 28} años</p>
-                        <p className="text-sm text-pink-600">{profile.partner1?.profession || 'Profesional'}</p>
-                      </div>
-                      
-                      <div className="mb-4">
-                        <h4 className="font-semibold text-pink-800 mb-2">Sobre ella:</h4>
-                        <p className="text-sm text-gray-700 leading-relaxed">{profile.partner1?.bio || 'Me encanta explorar nuevas experiencias junto a mi pareja.'}</p>
-                      </div>
-                      
-                      <div>
-                        <h4 className="font-semibold text-pink-800 mb-2">Sus intereses:</h4>
-                        <div className="flex flex-wrap gap-1 max-h-20 overflow-y-auto">
-                          {(profile.partner1?.interests || ['Lifestyle Swinger', 'Intercambio de Parejas', 'Encuentros Casuales', 'Fiestas Temáticas', 'Clubs Privados', 'Eventos Lifestyle']).map((interest: string, index: number) => (
-                            <Badge key={index} variant="secondary" className="text-xs bg-pink-200 text-pink-900 border border-pink-300">
-                              {interest}
-                            </Badge>
-                          ))}
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div className="bg-gradient-to-br from-pink-100/80 to-rose-100/80 backdrop-blur-sm rounded-lg p-4 border-2 border-pink-300/50 shadow-lg">
+                        <div className="text-center mb-4">
+                          <img 
+                            src={profile?.partner1?.avatar || 'https://images.unsplash.com/photo-1521119989659-a83eee488004?w=400&h=400&fit=crop&crop=faces'} 
+                            alt={profile?.partner1?.name || 'Ella'}
+                            className="w-24 h-24 rounded-full mx-auto mb-3 object-cover border-4 border-pink-400 shadow-lg"
+                            onError={(e) => {
+                              e.currentTarget.src = 'https://images.unsplash.com/photo-1521119989659-a83eee488004?w=400&h=400&fit=crop&crop=faces';
+                            }}
+                          />
+                          <h3 className="text-xl font-bold text-pink-900">{profile?.partner1?.name || 'Ella'}</h3>
+                          <p className="text-pink-700 font-medium">{profile?.partner1?.age || 28} años</p>
+                          <p className="text-sm text-pink-600">{profile?.partner1?.profession || 'Profesional'}</p>
+                        </div>
+                        
+                        <div className="mb-4">
+                          <h4 className="font-semibold text-pink-800 mb-2">Sobre ella:</h4>
+                          <p className="text-sm text-gray-700 leading-relaxed">{profile?.partner1?.bio || 'Me encanta explorar nuevas experiencias junto a mi pareja.'}</p>
+                        </div>
+                        
+                        <div>
+                          <h4 className="font-semibold text-pink-800 mb-2">Sus intereses:</h4>
+                          <div className="flex flex-wrap gap-1 max-h-20 overflow-y-auto">
+                            {(profile?.partner1?.interests || ['Lifestyle Swinger', 'Intercambio de Parejas', 'Encuentros Casuales', 'Fiestas Temáticas', 'Clubs Privados', 'Eventos Lifestyle']).map((interest: string, index: number) => (
+                              <Badge key={index} variant="secondary" className="text-xs bg-pink-200 text-pink-900 border border-pink-300">
+                                {interest}
+                              </Badge>
+                            ))}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    
-                    {/* Partner 2 - Él */}
-                    <div className="bg-gradient-to-br from-blue-100/80 to-sky-100/80 backdrop-blur-sm rounded-lg p-4 border-2 border-blue-300/50 shadow-lg">
-                      <div className="text-center mb-4">
-                        <img 
-                          src={profile.partner2?.avatar || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=faces'} 
-                          alt={profile.partner2?.name || 'Él'}
-                          className="w-24 h-24 rounded-full mx-auto mb-3 object-cover border-4 border-blue-400 shadow-lg"
-                          onError={(e) => {
-                            e.currentTarget.src = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=faces';
-                          }}
-                        />
-                        <h3 className="text-xl font-bold text-blue-900">{profile.partner2?.name || 'Él'}</h3>
-                        <p className="text-blue-700 font-medium">{profile.partner2?.age || 30} años</p>
-                        <p className="text-sm text-blue-600">{profile.partner2?.profession || 'Profesional'}</p>
-                      </div>
                       
-                      <div className="mb-4">
-                        <h4 className="font-semibold text-blue-800 mb-2">Sobre él:</h4>
-                        <p className="text-sm text-gray-700 leading-relaxed">{profile.partner2?.bio || 'Aventurero y respetuoso, busco junto a mi pareja vivir experiencias únicas.'}</p>
-                      </div>
-                      
-                      <div>
-                        <h4 className="font-semibold text-blue-800 mb-2">Sus intereses:</h4>
-                        <div className="flex flex-wrap gap-1 max-h-20 overflow-y-auto">
-                          {(profile.partner2?.interests || ['Fiestas Temáticas', 'Clubs Privados', 'Eventos Lifestyle', 'Soft Swap', 'Full Swap', 'Experiencias Nuevas']).map((interest: string, index: number) => (
-                            <Badge key={index} variant="secondary" className="text-xs bg-blue-200 text-blue-900 border border-blue-300">
-                              {interest}
-                            </Badge>
-                          ))}
+                      <div className="bg-gradient-to-br from-blue-100/80 to-sky-100/80 backdrop-blur-sm rounded-lg p-4 border-2 border-blue-300/50 shadow-lg">
+                        <div className="text-center mb-4">
+                          <img 
+                            src={profile?.partner2?.avatar || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=faces'} 
+                            alt={profile?.partner2?.name || 'Él'}
+                            className="w-24 h-24 rounded-full mx-auto mb-3 object-cover border-4 border-blue-400 shadow-lg"
+                            onError={(e) => {
+                              e.currentTarget.src = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=faces';
+                            }}
+                          />
+                          <h3 className="text-xl font-bold text-blue-900">{profile?.partner2?.name || 'Él'}</h3>
+                          <p className="text-blue-700 font-medium">{profile?.partner2?.age || 30} años</p>
+                          <p className="text-sm text-blue-600">{profile?.partner2?.profession || 'Profesional'}</p>
+                        </div>
+                        
+                        <div className="mb-4">
+                          <h4 className="font-semibold text-blue-800 mb-2">Sobre él:</h4>
+                          <p className="text-sm text-gray-700 leading-relaxed">{profile?.partner2?.bio || 'Aventurero y respetuoso, busco junto a mi pareja vivir experiencias únicas.'}</p>
+                        </div>
+                        
+                        <div>
+                          <h4 className="font-semibold text-blue-800 mb-2">Sus intereses:</h4>
+                          <div className="flex flex-wrap gap-1 max-h-20 overflow-y-auto">
+                            {(profile?.partner2?.interests || ['Fiestas Temáticas', 'Clubs Privados', 'Eventos Lifestyle', 'Soft Swap', 'Full Swap', 'Experiencias Nuevas']).map((interest: string, index: number) => (
+                              <Badge key={index} variant="secondary" className="text-xs bg-blue-200 text-blue-900 border border-blue-300">
+                                {interest}
+                              </Badge>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -268,18 +256,15 @@ const ProfileCouple: React.FC = () => {
                 </CardContent>
               </Card>
 
-              {/* Partners Info */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 shadow-sm">
-                  <h4 className="font-medium text-white mb-2">{profile?.partner1?.name}</h4>
-                  <p className="text-sm text-white/80 mb-1">{profile?.partner1?.age} años</p>
-                  <p className="text-sm text-white/70">{profile?.partner1?.profession}</p>
-                </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 shadow-sm">
-                  <h4 className="font-medium text-white mb-2">{profile?.partner2?.name}</h4>
-                  <p className="text-sm text-white/80 mb-1">{profile?.partner2?.age} años</p>
-                  <p className="text-sm text-white/70">{profile?.partner2?.profession}</p>
-                </div>
+              <div className="flex gap-3">
+                <Button className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
+                  <Heart className="h-4 w-4 mr-2" />
+                  Me Gusta
+                </Button>
+                <Button className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700">
+                  <MessageCircle className="h-4 w-4 mr-2" />
+                  Mensaje
+                </Button>
               </div>
             </div>
           </div>
@@ -292,225 +277,12 @@ const ProfileCouple: React.FC = () => {
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-hero-gradient">
-      {/* Advanced Animated Background */}
-      <div className="fixed inset-0 z-0">
-        {/* Animated Mesh Gradient */}
-        <div className="absolute inset-0 opacity-40">
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-primary/20 via-transparent to-accent/20 animate-gradient-x"></div>
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent via-secondary/10 to-primary/15 animate-gradient-y"></div>
-        </div>
-        
-        {/* Floating Geometric Shapes */}
-        <div className="absolute inset-0">
-          <div className="absolute top-20 left-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-float-slow"></div>
-          <div className="absolute top-40 right-32 w-48 h-48 bg-accent/8 rounded-full blur-2xl animate-float-reverse"></div>
-          <div className="absolute bottom-32 left-1/3 w-80 h-80 bg-secondary/4 rounded-full blur-3xl animate-float-slow shape-delay-2"></div>
-          <div className="absolute bottom-20 right-20 w-56 h-56 bg-primary/6 rounded-full blur-2xl animate-float shape-delay-1"></div>
-        </div>
-      </div>
-      {/* Fixed background layers */}
-      <div className="fixed inset-0 z-0 bg-gradient-to-br from-purple-600/90 via-pink-500/90 to-indigo-600/90"></div>
-      <div className="fixed inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-400/20 via-pink-400/20 to-transparent"></div>
-      
-      <div className="relative z-10">
-        {/* Header */}
-        <div className="bg-black/80 backdrop-blur-md border-b border-white/30 p-3 sm:p-4 shadow-lg flex-shrink-0">
-          <div className="flex items-center justify-between flex-wrap gap-2">
-            <Button 
-              variant="ghost" 
-              onClick={() => navigate('/profiles')}
-              className="text-white hover:bg-white/20 text-sm sm:text-base p-2"
-            >
-              <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
-              <span className="ml-1 sm:ml-2">Regresar</span>
-            </Button>
-            <h1 className="text-base sm:text-lg md:text-xl font-bold text-white text-center flex-1 min-w-0 px-2 truncate">
-              {profile?.coupleName || 'Pareja'}
-            </h1>
-            <div className="flex gap-1 sm:gap-2">
-              <Button variant="ghost" size="sm" className="hover:bg-white/20 p-2">
-                <Share2 className="h-4 w-4 text-white" />
-              </Button>
-              <Button 
-                variant="ghost" 
-                size="sm"
-                onClick={() => navigate('/edit-profile-couple')}
-                className="hover:bg-white/20 p-2"
-              >
-                <Settings className="h-4 w-4 text-white" />
-              </Button>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
-          <div className="p-2 sm:p-4 pb-20 sm:pb-32 space-y-4 sm:space-y-6 max-w-2xl mx-auto min-h-full">
-            {/* Foto principal y badges */}
-            <Card className="overflow-hidden bg-white/90 backdrop-blur-md shadow-glow border-0">
-              <div className="relative">
-                <div className="aspect-[3/4] rounded-t-lg overflow-hidden mb-4 relative bg-gray-100">
-                  <img 
-                    src={profile?.avatar || "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=500&h=625&fit=crop&crop=faces"} 
-                    alt={profile?.coupleName || 'Pareja'} 
-                    className="w-full h-full object-cover"
-                  />
-                  {profile?.isOnline && (
-                    <Badge className="absolute top-3 left-3 bg-green-500 text-white px-2 py-1 text-xs">
-                      En línea
-                    </Badge>
-                  )}
-                  {profile?.isVerified && (
-                    <Badge className="absolute top-3 right-3 bg-blue-500 text-white px-2 py-1 text-xs">
-                      <Verified className="h-3 w-3 mr-1" />
-                      Verificado
-                    </Badge>
-                  )}
-                  {profile?.isPremium && (
-                    <Badge className="absolute bottom-3 left-3 bg-gradient-to-r from-yellow-400 to-yellow-600 text-white px-2 py-1 text-xs">
-                      <Crown className="h-3 w-3 mr-1" />
-                      Premium
-                    </Badge>
-                  )}
-                </div>
-                
-                <div className="absolute bottom-4 right-4">
-                  <Button 
-                    onClick={() => navigate('/edit-profile-couple')}
-                    className="bg-white/90 text-black hover:bg-white"
-                  >
-                    <Settings className="h-4 w-4 mr-2" />
-                    Editar
-                  </Button>
-                </div>
-              </div>
-            </Card>
-
-            {/* Información básica de la pareja */}
-            <Card className="bg-white/90 backdrop-blur-md shadow-lg border-0">
-              <CardContent className="p-6">
-                <div className="text-center mb-6">
-                  <h3 className="text-lg font-semibold text-white mb-2">{profile?.coupleName}</h3>
-                  <div className="flex items-center justify-center space-x-4 text-white/90 mb-4">
-                    <span className="flex items-center">
-                      <MapPin className="h-4 w-4 mr-1" />
-                      {profile?.location}
-                    </span>
-                    <span>•</span>
-                    <span className="flex items-center">
-                      <Users className="h-4 w-4 mr-1" />
-                      Pareja
-                    </span>
-                  </div>
-                  
-                  {/* Bio Section */}
-                  <div className="bg-white/95 backdrop-blur-sm rounded-lg p-4 mb-4 border border-gray-200 shadow-sm">
-                    <h3 className="font-semibold text-gray-900 mb-2">Sobre nosotros</h3>
-                    <p className="text-gray-700 text-sm leading-relaxed">
-                      {profile?.bio}
-                    </p>
-                  </div>
-
-                  {/* Información individual de cada partner */}
-                  <div className="grid md:grid-cols-2 gap-6">
-                    {/* Partner 1 - Ella */}
-                    <div className="bg-gradient-to-br from-pink-100/80 to-rose-100/80 backdrop-blur-sm rounded-lg p-4 border-2 border-pink-300/50 shadow-lg">
-                      <div className="text-center mb-4">
-                        <img 
-                          src={profile?.partner1?.avatar || 'https://images.unsplash.com/photo-1521119989659-a83eee488004?w=400&h=400&fit=crop&crop=faces'} 
-                          alt={profile?.partner1?.name || 'Ella'}
-                          className="w-24 h-24 rounded-full mx-auto mb-3 object-cover border-4 border-pink-400 shadow-lg"
-                          onError={(e) => {
-                            e.currentTarget.src = 'https://images.unsplash.com/photo-1521119989659-a83eee488004?w=400&h=400&fit=crop&crop=faces';
-                          }}
-                        />
-                        <h3 className="text-xl font-bold text-pink-900">{profile?.partner1?.name || 'Ella'}</h3>
-                        <p className="text-pink-700 font-medium">{profile?.partner1?.age || 28} años</p>
-                        <p className="text-sm text-pink-600">{profile?.partner1?.profession || 'Profesional'}</p>
-                      </div>
-                      
-                      <div className="mb-4">
-                        <h4 className="font-semibold text-pink-800 mb-2">Sobre ella:</h4>
-                        <p className="text-sm text-gray-700 leading-relaxed">{profile?.partner1?.bio || 'Me encanta explorar nuevas experiencias junto a mi pareja.'}</p>
-                      </div>
-                      
-                      <div>
-                        <h4 className="font-semibold text-pink-800 mb-2">Sus intereses:</h4>
-                        <div className="flex flex-wrap gap-1 max-h-20 overflow-y-auto">
-                          {(profile?.partner1?.interests || ['Lifestyle Swinger', 'Intercambio de Parejas', 'Encuentros Casuales', 'Fiestas Temáticas', 'Clubs Privados', 'Eventos Lifestyle']).map((interest: string, index: number) => (
-                            <Badge key={index} variant="secondary" className="text-xs bg-pink-200 text-pink-900 border border-pink-300">
-                              {interest}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                
-                    {/* Partner 2 - Él */}
-                    <div className="bg-gradient-to-br from-blue-100/80 to-sky-100/80 backdrop-blur-sm rounded-lg p-4 border-2 border-blue-300/50 shadow-lg">
-                      <div className="text-center mb-4">
-                        <img 
-                          src={profile?.partner2?.avatar || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=faces'} 
-                          alt={profile?.partner2?.name || 'Él'}
-                          className="w-24 h-24 rounded-full mx-auto mb-3 object-cover border-4 border-blue-400 shadow-lg"
-                          onError={(e) => {
-                            e.currentTarget.src = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=faces';
-                          }}
-                        />
-                        <h3 className="text-xl font-bold text-blue-900">{profile?.partner2?.name || 'Él'}</h3>
-                        <p className="text-blue-700 font-medium">{profile?.partner2?.age || 30} años</p>
-                        <p className="text-sm text-blue-600">{profile?.partner2?.profession || 'Profesional'}</p>
-                      </div>
-                      
-                      <div className="mb-4">
-                        <h4 className="font-semibold text-blue-800 mb-2">Sobre él:</h4>
-                        <p className="text-sm text-gray-700 leading-relaxed">{profile?.partner2?.bio || 'Aventurero y respetuoso, busco junto a mi pareja vivir experiencias únicas.'}</p>
-                      </div>
-                      
-                      <div>
-                        <h4 className="font-semibold text-blue-800 mb-2">Sus intereses:</h4>
-                        <div className="flex flex-wrap gap-1 max-h-20 overflow-y-auto">
-                          {(profile?.partner2?.interests || ['Fiestas Temáticas', 'Clubs Privados', 'Eventos Lifestyle', 'Soft Swap', 'Full Swap', 'Experiencias Nuevas']).map((interest: string, index: number) => (
-                            <Badge key={index} variant="secondary" className="text-xs bg-blue-200 text-blue-900 border border-blue-300">
-                              {interest}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Acciones */}
-            <div className="flex gap-3">
-              <Button className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
-                <Heart className="h-4 w-4 mr-2" />
-                Me Gusta
-              </Button>
-              <Button className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700">
-                <MessageCircle className="h-4 w-4 mr-2" />
-                Mensaje
-              </Button>
-            </div>
-          </div>
-
-          <Navigation />
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-purple-600 via-pink-500 to-indigo-600">
-      {/* Background matching Index page */}
       <div className="fixed inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-purple-600/90 via-pink-500/90 to-indigo-600/90"></div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-400/20 via-pink-400/20 to-transparent"></div>
       </div>
       
       <div className="relative z-10">
-        {/* Header with back button */}
         <div className="bg-black/80 backdrop-blur-md border-b border-white/30 p-3 sm:p-4 shadow-lg flex-shrink-0">
           <div className="flex items-center justify-between flex-wrap gap-2">
             <Button 
@@ -542,7 +314,6 @@ const ProfileCouple: React.FC = () => {
 
         <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
           <div className="p-2 sm:p-4 pb-20 sm:pb-32 space-y-4 sm:space-y-6 max-w-2xl mx-auto min-h-full">
-            {/* Profile content */}
             <Card className="overflow-hidden bg-white/90 backdrop-blur-md shadow-lg border-0">
               <div className="relative">
                 <div className="aspect-[3/4] rounded-t-lg overflow-hidden mb-4 relative bg-gray-100">
@@ -582,7 +353,6 @@ const ProfileCouple: React.FC = () => {
               </div>
             </Card>
 
-            {/* Basic info */}
             <Card className="bg-white/90 backdrop-blur-md shadow-lg border-0">
               <CardContent className="p-6">
                 <div className="text-center mb-6">
@@ -609,7 +379,6 @@ const ProfileCouple: React.FC = () => {
               </CardContent>
             </Card>
 
-            {/* Actions */}
             <div className="flex gap-3">
               <Button className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
                 <Heart className="h-4 w-4 mr-2" />
