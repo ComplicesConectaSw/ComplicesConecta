@@ -12,7 +12,7 @@
 
 ### 📱 ¡Descarga la App Ahora!
 
-<a href="https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v2.1.7/app-release.apk" download>
+<a href="https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v.2.1.7/complicesconecta_v2.1.7.apk" download>
   <img src="https://img.shields.io/badge/📱_Descargar_APK-v2.1.7-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
 </a>
 
