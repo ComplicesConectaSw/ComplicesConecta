@@ -131,3 +131,8 @@ dev-scripts/
 reports/
 token-system-spec/
 docs/
+
+# Coverage reports (archivos generados automáticamente)
+coverage/
+*.lcov
+.nyc_output/
