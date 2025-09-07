@@ -104,8 +104,9 @@ const Admin = () => {
     
     if (demoAuth === 'true' && demoUser) {
       const user = JSON.parse(demoUser);
-      if (user.accountType === 'admin') {
-        loadAdminData();
+      if (user.accountType === 'admin' || user.role === 'admin') {
+        // Redirect admin users to production admin panel
+        navigate('/admin-production');
         return;
       } else {
         toast({

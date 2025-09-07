@@ -649,7 +649,7 @@ npm run scaffold:templates  # Importa componentes de plantillas
 ## 👥 Equipo
 
 **Liderado por**: Ing. Juan Carlos Méndez Nataren  
-****Diseños por**: Reina Magaly Perdomo Sanchez & Ing. Juan Carlos Méndez Nataren 
+****Diseños por**: Reina Magaly Perdomo Sanchez & Ing.Juan Carlos Méndez Nataren 
 **Marketing por**: Reina Magaly Perdomo Sanchez
 **Repositorio**: https://github.com/ComplicesConectaSw/complice
 

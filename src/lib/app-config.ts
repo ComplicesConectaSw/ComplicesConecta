@@ -38,13 +38,21 @@ export const getAppConfig = (): AppConfig => {
   };
 };
 
-// Credenciales demo permitidas
+// Credenciales demo permitidas con contraseñas
 export const DEMO_CREDENTIALS = [
   'single@outlook.es',
   'pareja@outlook.es', 
   'djwacko28@gmail.com',
   'complicesconectasw@outlook.es'
 ];
+
+// Contraseñas demo por email
+export const DEMO_PASSWORDS = {
+  'single@outlook.es': '123456',
+  'pareja@outlook.es': '123456',
+  'djwacko28@gmail.com': '123456',
+  'complicesconectasw@outlook.es': '123456'
+};
 
 // Credenciales de producción para admin
 export const PRODUCTION_ADMIN_CREDENTIALS = [
@@ -71,19 +79,24 @@ export const isProductionAdmin = (email: string): boolean => {
 // Función para verificar si es admin demo
 export const isDemoAdmin = (email: string): boolean => {
   const normalizedEmail = email.toLowerCase().trim();
-  return normalizedEmail === 'djwacko28@gmail.com';
+  return normalizedEmail === 'djwacko28@gmail.com' || normalizedEmail === 'complicesconectasw@outlook.es';
 };
 
 // Función centralizada para manejar autenticación demo
 export const handleDemoAuth = (email: string, accountType: string = 'single') => {
   if (!isDemoCredential(email)) return null;
   
+  // Configurar accountType específico para admins
+  const finalAccountType = isDemoAdmin(email) ? 'admin' : accountType;
+  
   const demoUser = {
     id: `demo-${Date.now()}`,
     email: email.toLowerCase().trim(),
     role: isDemoAdmin(email) ? 'admin' : 'user',
-    accountType: accountType,
-    first_name: email.split('@')[0],
+    accountType: finalAccountType,
+    first_name: email === 'djwacko28@gmail.com' ? 'DJ Wacko' : 
+                email === 'complicesconectasw@outlook.es' ? 'Complices Admin' :
+                email.split('@')[0],
     is_demo: true,
     created_at: new Date().toISOString()
   };

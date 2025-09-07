@@ -102,6 +102,27 @@ const AdminProduction = () => {
   const [auditReport, setAuditReport] = useState<any>(null);
 
   useEffect(() => {
+    // Check for demo authentication first
+    const demoAuth = localStorage.getItem('demo_authenticated');
+    const demoUser = localStorage.getItem('demo_user');
+    
+    if (demoAuth === 'true' && demoUser) {
+      const user = JSON.parse(demoUser);
+      if (user.accountType === 'admin' || user.role === 'admin') {
+        // Admin demo user can access production panel
+        loadProductionData();
+        return;
+      } else {
+        toast({
+          title: "Acceso Denegado",
+          description: "No tienes permisos de administrador",
+          variant: "destructive"
+        });
+        navigate('/discover');
+        return;
+      }
+    }
+
     // Verificar autenticación y permisos de admin de producción
     if (!isAuthenticated()) {
       toast({
@@ -113,11 +134,11 @@ const AdminProduction = () => {
       return;
     }
 
-    // Verificar si es admin de producción usando el email
-    if (!user?.email || !isProductionAdmin(user.email)) {
+    // Verificar si es admin usando isAdmin hook
+    if (!isAdmin()) {
       toast({
         title: "Acceso Denegado",
-        description: "No tiene permisos de administrador de producción",
+        description: "No tiene permisos de administrador",
         variant: "destructive"
       });
       navigate('/discover');
@@ -126,7 +147,7 @@ const AdminProduction = () => {
     
     // Cargar datos reales de producción
     loadProductionData();
-  }, [navigate, toast, isAuthenticated, user]);
+  }, [navigate, toast, isAuthenticated, isAdmin]);
 
   const loadProductionData = async () => {
     setLoading(true);
