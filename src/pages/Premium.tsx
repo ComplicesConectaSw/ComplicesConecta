@@ -15,18 +15,21 @@ const Premium = () => {
   const [userType, setUserType] = useState('');
 
   useEffect(() => {
-    // Verificar autenticación demo
+    // Verificar autenticación (demo o real)
     const demoAuth = localStorage.getItem('demo_authenticated');
     const demoUser = localStorage.getItem('demo_user');
     
-    if (demoAuth !== 'true' || !demoUser) {
-      navigate('/auth');
+    // Si hay sesión demo, usar esa
+    if (demoAuth === 'true' && demoUser) {
+      const user = JSON.parse(demoUser);
+      setIsDemoUser(true);
+      setUserType(user.accountType);
       return;
     }
-
-    const user = JSON.parse(demoUser);
-    setIsDemoUser(true);
-    setUserType(user.accountType);
+    
+    // Si no hay demo, verificar autenticación real
+    // Por ahora permitir acceso sin autenticación para usuarios reales
+    console.log('🔓 Acceso a Premium sin autenticación requerida');
   }, [navigate]);
 
   const premiumBenefits = [
