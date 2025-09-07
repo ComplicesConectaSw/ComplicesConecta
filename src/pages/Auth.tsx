@@ -925,7 +925,7 @@ const Auth = () => {
                     <p className="text-sm text-white/90">Selecciona tus intereses para encontrar matches compatibles</p>
                   </div>
                   
-                  <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto scrollbar-thin scrollbar-thumb-purple-400 scrollbar-track-purple-900/20 smooth-scroll">
+                  <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto scrollbar-thin smooth-scroll scroll-container">
                     {lifestyleInterests.map((interest, index) => (
                       <div 
                         key={index} 
