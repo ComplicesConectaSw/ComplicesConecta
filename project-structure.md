@@ -16,6 +16,9 @@ conecta-social-comunidad-main/
 │   │   ├── 👥 social/
 │   │   ├── 🎪 swipe/
 │   │   ├── 🪙 tokens/
+│   │   │   ├── TokenDashboard.tsx     # Dashboard principal de tokens CMPX/GTK
+│   │   │   ├── TokenChatBot.tsx       # Asistente IA interactivo wizard
+│   │   │   └── StakingModal.tsx       # Modal de staking con explicaciones
 │   │   └── 🎛️ ui/
 │   ├── 🔧 hooks/
 │   ├── 📚 lib/
@@ -102,6 +105,7 @@ docs/
 - **FAQ.tsx** - Preguntas frecuentes
 - **Premium.tsx** - Planes premium
 - **Events.tsx** - Eventos VIP
+- **Tokens.tsx** - Dashboard completo de tokens CMPX/GTK con asistente IA interactivo
 - **TokensInfo.tsx** - Información completa del sistema de tokens
 - **TokensPrivacy.tsx** - Política de privacidad para tokens
 - **TokensTerms.tsx** - Términos y condiciones del programa de tokens

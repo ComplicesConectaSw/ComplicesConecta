@@ -24,6 +24,7 @@ const FAQ = lazy(() => import("./pages/FAQ"));
 const Terms = lazy(() => import("./pages/Terms"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Support = lazy(() => import("./pages/Support"));
+const Tokens = lazy(() => import("./pages/Tokens"));
 const TokensInfo = lazy(() => import("./pages/TokensInfo"));
 const TokensPrivacy = lazy(() => import("./pages/TokensPrivacy"));
 const TokensTerms = lazy(() => import("./pages/TokensTerms"));
@@ -78,6 +79,7 @@ const App = () => (
               <Route path="/matches" element={<Matches />} />
               <Route path="/requests" element={<Requests />} />
               <Route path="/discover" element={<Discover />} />
+              <Route path="/tokens" element={<Tokens />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/premium" element={<Premium />} />
               <Route path="/dashboard" element={<Dashboard />} />

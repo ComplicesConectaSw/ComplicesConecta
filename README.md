@@ -44,6 +44,7 @@ Crear la comunidad lifestyle más exclusiva y segura de México, donde parejas y
 - **🖼️ Galerías Privadas**: Contenido público y privado por usuario
 - **🎭 Eventos VIP Exclusivos**: Fiestas privadas y encuentros verificados
 - **🎁 Regalos Virtuales**: Sistema de tokens CMPX y GTK
+- **🤖 Asistente IA Interactivo**: Guía paso a paso para gestión de tokens
 - **📸 Historias Efímeras**: Contenido que expira en 24 horas
 - **🌟 Comunidad Selecta**: Solo usuarios verificados y premium
 
@@ -174,6 +175,11 @@ VITE_APP_PHASE=beta
 # 🪙 Tokens System (Beta - Off-chain)
 VITE_TOKENS_ENABLED=true
 VITE_PREMIUM_FEATURES_ENABLED=false
+VITE_MONTHLY_TOKEN_LIMIT=500
+VITE_REFERRAL_REWARD=50
+VITE_WORLD_ID_REWARD=100
+VITE_STAKING_REWARD_PERCENTAGE=10
+VITE_STAKING_DURATION_DAYS=30
 ```
 
 ## 🎨 Páginas y Funcionalidades Implementadas
@@ -223,12 +229,19 @@ VITE_PREMIUM_FEATURES_ENABLED=false
 - ✅ Simulación de upload y gestión de imágenes
 - ✅ Modal de preview con navegación
 
-### 🎭 **Funciones Premium (PRE-IMPLEMENTADAS)**
+### 🪙 **Sistema de Tokens CMPX/GTK (IMPLEMENTADO)**
+- ✅ **Asistente IA Interactivo**: Chatbot wizard paso a paso para usuarios Beta
+- ✅ **Dashboard de Tokens**: Visualización de balances, staking y recompensas
+- ✅ **Recompensas Automatizadas**: World ID (+100), Referidos (+50), Feedback (+20)
+- ✅ **Staking Simplificado**: 30 días con +10% recompensa, explicación educativa
+- ✅ **Validaciones de Seguridad**: Límite 500 CMPX/mes, RLS granular
+- ✅ **Edge Functions**: `claim-tokens` para procesamiento seguro
+
+### 🪙 **Funciones Premium (PRE-IMPLEMENTADAS)**
 - ✅ **Eventos VIP**: Calendario exclusivo con reservas
 - ✅ **Regalos Virtuales**: Sistema de tokens y categorías
 - ✅ **Historias Efímeras**: Contenido con expiración 24h
 - ✅ **Feature Flags**: Control por fases (beta/premium/vip)
-
 ### 💕 **Matches**
 - ✅ Grid responsivo de matches verificados
 - ✅ Stats detalladas (total, nuevos, conversaciones)

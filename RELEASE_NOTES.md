@@ -1,12 +1,34 @@
-# 🚀 ComplicesConecta - Notas de Lanzamiento v2.1.3
+# 🚀 ComplicesConecta - Notas de Lanzamiento v2.1.4
 
-**Fecha de Lanzamiento:** 06 de Septiembre, 2025 - 07:02 hrs  
+**Fecha de Lanzamiento:** 07 de Septiembre, 2025 - 00:05 hrs  
 **Plataforma:** Android APK + Web App  
-**Versión:** 2.1.3 (BASE DE DATOS SUPABASE COMPLETAMENTE REPARADA ✅)
+**Versión:** 2.1.4 (ASISTENTE IA DE TOKENS CMPX/GTK IMPLEMENTADO ✅)
 
 ---
 
-## 🎉 NUEVA VERSIÓN - BASE DE DATOS SUPABASE COMPLETAMENTE REPARADA v2.1.3
+## 🤖 NUEVA FUNCIONALIDAD - ASISTENTE IA INTERACTIVO DE TOKENS v2.1.4
+
+### 🎯 ASISTENTE IA WIZARD PASO A PASO
+- **✅ CHATBOT INTERACTIVO**: Flujo conversacional guiado para usuarios Beta sin experiencia en tokens
+- **✅ FLUJO WIZARD**: Saludo → Balance → Recompensas → Staking → Confirmación
+- **✅ LENGUAJE SENCILLO**: Explicaciones con emojis y ejemplos claros (ej: "alcancía especial")
+- **✅ VALIDACIONES INTEGRADAS**: Límite 500 CMPX/mes, verificación de balances, seguridad RLS
+- **✅ RESPUESTAS CONTEXTUALES**: IA adapta respuestas según el paso del wizard actual
+
+### 🪙 SISTEMA DE TOKENS CMPX/GTK COMPLETO
+- **✅ DASHBOARD INTERACTIVO**: Gráficos visuales de distribución, límites mensuales, staking
+- **✅ RECOMPENSAS AUTOMATIZADAS**: World ID (+100), Referidos (+50), Feedback (+20), Login diario (+5)
+- **✅ STAKING SIMPLIFICADO**: 30 días con +10% recompensa, explicación educativa integrada
+- **✅ EDGE FUNCTIONS**: `claim-tokens` para procesamiento seguro de recompensas
+- **✅ BASE DE DATOS**: Tablas `user_tokens`, `transactions`, `user_staking`, `pending_rewards` con RLS
+
+### 🔒 SEGURIDAD Y VALIDACIONES
+- **✅ RLS GRANULAR**: Políticas de seguridad por usuario y rol de administrador
+- **✅ LÍMITES BETA**: Máximo 500 CMPX/mes por usuario con reset automático mensual
+- **✅ AUDITORÍA COMPLETA**: Registro de todas las transacciones con timestamp y metadatos
+- **✅ VALIDACIÓN IA**: Nunca expone claves privadas, solo guía a funciones seguras
+
+## 🎉 VERSIÓN ANTERIOR - BASE DE DATOS SUPABASE COMPLETAMENTE REPARADA v2.1.3
 
 ### 🔥 RESOLUCIÓN CRÍTICA DEL PROBLEMA DE BASE DE DATOS
 - **✅ PROBLEMA IDENTIFICADO**: Múltiples migraciones conflictivas causaban errores de tipo `app_role` y tablas con 0 columnas

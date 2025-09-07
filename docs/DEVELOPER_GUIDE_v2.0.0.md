@@ -1,17 +1,86 @@
-# 🚀 ComplicesConecta - Guía del Desarrollador v2.1.0
+# 🚀 ComplicesConecta - Guía del Desarrollador v2.1.4
 
-**Fecha:** 6 de septiembre, 2025 - 02:43 hrs  
-**Versión:** 2.1.0 (CORRECCIONES TYPESCRIPT COMPLETADAS ✅)  
-**Estado:** Calidad de código finalizada al 100%
+**Fecha:** 7 de septiembre, 2025 - 00:05 hrs  
+**Versión:** 2.1.4 (ASISTENTE IA DE TOKENS CMPX/GTK IMPLEMENTADO ✅)  
+**Estado:** Sistema de tokens con IA interactiva completado al 100%
 
 ---
 
-## 🎉 HITO MAYOR - CORRECCIONES TYPESCRIPT COMPLETADAS v2.1.0
+## 🤖 NUEVA FUNCIONALIDAD - ASISTENTE IA INTERACTIVO DE TOKENS v2.1.4
 
 ### ✅ RESUMEN EJECUTIVO
-ComplicesConecta v2.1.0 marca la **finalización completa** de las correcciones exhaustivas de código TypeScript. Todos los errores de tipos han sido resueltos, eliminados los @ts-nocheck, implementados tipos específicos de Supabase, y el código está listo para producción sin warnings.
+ComplicesConecta v2.1.4 implementa un **asistente IA interactivo completo** para el sistema de tokens CMPX/GTK. Los usuarios Beta ahora tienen acceso a un chatbot wizard que los guía paso a paso a través de la gestión de tokens, con explicaciones simples, validaciones de seguridad y flujo conversacional intuitivo.
 
-### 🔧 CORRECCIONES CRÍTICAS COMPLETADAS
+### 🎯 COMPONENTES IMPLEMENTADOS
+
+#### 1. **TokenChatBot.tsx - Asistente IA Wizard**
+- **Ubicación:** `src/components/tokens/TokenChatBot.tsx`
+- **Funcionalidad:** Chatbot interactivo con flujo paso a paso
+- **Características:**
+  - Flujo wizard: Saludo → Balance → Recompensas → Staking → Confirmación
+  - Respuestas contextuales según el paso actual
+  - Validaciones integradas (límite 500 CMPX/mes, balances)
+  - Lenguaje sencillo con emojis y ejemplos claros
+  - Integración completa con `useTokens()` hook
+
+```typescript
+// Ejemplo de implementación del wizard:
+const steps = [
+  'greeting',     // Saludo inicial
+  'balance',      // Mostrar balance actual
+  'rewards',      // Explicar recompensas disponibles
+  'staking',      // Explicar staking como "alcancía especial"
+  'confirmation'  // Confirmar acciones realizadas
+];
+```
+
+#### 2. **Integración en Página Tokens**
+- **Archivo:** `src/pages/Tokens.tsx`
+- **Implementación:** Card destacada con gradiente purple-blue
+- **Posición:** Prominente antes del dashboard principal
+- **Descripción:** "Tu guía personal paso a paso para gestionar tokens CMPX/GTK"
+
+#### 3. **Sistema de Validaciones de Seguridad**
+- **RLS Granular:** Políticas de seguridad por usuario
+- **Límites Beta:** Máximo 500 CMPX/mes con reset automático
+- **Validación IA:** Nunca expone claves privadas, solo guía a funciones seguras
+- **Auditoría Completa:** Registro de todas las transacciones
+
+## 🎉 HITO PREVIO - CORRECCIONES TYPESCRIPT COMPLETADAS v2.1.0
+
+### ✅ RESUMEN EJECUTIVO v2.1.0
+ComplicesConecta v2.1.0 marcó la **finalización completa** de las correcciones exhaustivas de código TypeScript. Todos los errores de tipos fueron resueltos, eliminados los @ts-nocheck, implementados tipos específicos de Supabase, y el código está listo para producción sin warnings.
+
+### 🛠️ ARQUITECTURA DEL ASISTENTE IA
+
+#### 1. **Flujo Conversacional Wizard**
+```typescript
+// Estados del wizard implementados:
+type WizardStep = 'greeting' | 'balance' | 'rewards' | 'staking' | 'confirmation';
+
+// Respuestas contextuales por paso:
+const responses = {
+  greeting: "¡Hola! 👋 Soy tu asistente personal de tokens CMPX/GTK...",
+  balance: "📊 Tu balance actual es: {cmpxBalance} CMPX disponibles...",
+  rewards: "🎁 Puedes ganar tokens de estas formas: World ID (+100), Referidos (+50)...",
+  staking: "💰 El staking es como una alcancía especial que te da +10% en 30 días...",
+  confirmation: "✅ ¡Perfecto! Has completado la configuración de tokens..."
+};
+```
+
+#### 2. **Integración con Sistema de Tokens**
+- **Hook useTokens():** Acceso en tiempo real a balances y transacciones
+- **Edge Function claim-tokens:** Procesamiento seguro de recompensas
+- **Base de Datos:** Tablas `user_tokens`, `transactions`, `user_staking`, `pending_rewards`
+- **Validaciones:** Límite 500 CMPX/mes, verificación de balances, seguridad RLS
+
+#### 3. **Experiencia de Usuario Optimizada**
+- **Lenguaje Sencillo:** Explicaciones con emojis y ejemplos concretos
+- **Validaciones Visuales:** Mensajes de error y éxito contextuales
+- **Flujo Adaptativo:** IA adapta respuestas según el estado del usuario
+- **Seguridad Integrada:** Nunca expone información sensible
+
+### 🔧 CORRECCIONES CRÍTICAS PREVIAS v2.1.0
 
 #### 1. **Eliminación @ts-nocheck - COMPLETADO**
 - **Archivos:** Todos los archivos del proyecto
