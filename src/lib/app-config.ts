@@ -48,20 +48,23 @@ export const getAppConfig = (): AppConfig => {
 export const DEMO_CREDENTIALS = [
   'single@outlook.es',
   'pareja@outlook.es', 
-  'djwacko28@gmail.com'
+  'admin',
+  'apoyofinancieromexicano@gmail.com'
 ];
 
 // Contraseñas demo por email (SIN complicesconectasw@outlook.es)
 export const DEMO_PASSWORDS: Record<string, string> = {
   'single@outlook.es': '123456',
   'pareja@outlook.es': '123456',
-  'djwacko28@gmail.com': '123456'
+  'admin': '123456',
+  'apoyofinancieromexicano@gmail.com': '123456'
 };
 
 // Lista de emails admin para verificación rápida - CORREGIDA
 const ADMIN_EMAILS = [
-  'djwacko28@gmail.com',        // Admin demo solamente
-  'complicesconectasw@outlook.es'  // Único admin real
+  'admin',                      // Admin demo solamente
+  'djwacko28@gmail.com',        // Admin producción principal
+  'complicesconectasw@outlook.es'  // Admin real secundario
 ];
 
 // Credenciales de producción REAL (solo Supabase real)
@@ -69,7 +72,8 @@ export const PRODUCTION_ADMIN_CREDENTIALS = ADMIN_EMAILS;
 
 // Contraseñas de producción (configuradas en Supabase real)
 export const PRODUCTION_PASSWORDS: Record<string, string> = {
-  'complicesconectasw@outlook.es': 'Magy_Wacko_nala28' // Contraseña real en Supabase
+  'djwacko28@gmail.com': 'Magy_Wacko_nala28', // Admin producción principal
+  'complicesconectasw@outlook.es': 'Magy_Wacko_nala28' // Admin real secundario
 };
 
 // Función para verificar si es credencial demo
@@ -89,10 +93,10 @@ export const isProductionAdmin = (email: string): boolean => {
   return PRODUCTION_ADMIN_CREDENTIALS.includes(normalizedEmail);
 };
 
-// Función para verificar si es admin demo (SOLO djwacko28@gmail.com)
+// Función para verificar si es admin demo (SOLO admin)
 export const isDemoAdmin = (email: string): boolean => {
   const normalizedEmail = email.toLowerCase().trim();
-  return normalizedEmail === 'djwacko28@gmail.com';
+  return normalizedEmail === 'admin';
 };
 
 // Función para obtener contraseña demo
@@ -135,9 +139,10 @@ export const handleDemoAuth = (email: string, accountType: string = 'single') =>
     email: email.toLowerCase().trim(),
     role: isDemoAdmin(email) ? 'admin' : 'user',
     accountType: finalAccountType,
-    first_name: email === 'djwacko28@gmail.com' ? 'DJ Wacko' : 
+    first_name: email === 'admin' ? 'Admin Demo' : 
                 email === 'single@outlook.es' ? 'Single Demo' :
                 email === 'pareja@outlook.es' ? 'Pareja Demo' :
+                email === 'apoyofinancieromexicano@gmail.com' ? 'Apoyo Financiero' :
                 email.split('@')[0],
     is_demo: true,
     created_at: new Date().toISOString()

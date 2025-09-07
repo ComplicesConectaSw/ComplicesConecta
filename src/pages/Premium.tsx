@@ -106,7 +106,7 @@ const Premium = () => {
             <div className="bg-love-gradient bg-clip-text text-transparent text-2xl md:text-3xl font-bold mb-4">
               Experiencias Íntimas Exclusivas
             </div>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-xl text-white max-w-3xl mx-auto">
               Accede a la élite swinger con funciones premium, eventos VIP y el sistema de tokens CMPX. 
               <strong className="text-accent"> Disponible después de la fase Beta.</strong>
             </p>
@@ -116,7 +116,7 @@ const Premium = () => {
           <div className="mb-12">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-foreground mb-4">Apoya el Proyecto Beta</h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-white max-w-2xl mx-auto">
                 Ayúdanos a hacer ComplicesConecta la mejor plataforma swinger. Tu donación nos permite mejorar 
                 la experiencia y agregar nuevas funciones exclusivas.
               </p>
@@ -139,9 +139,9 @@ const Premium = () => {
                       Badge de Supporter
                     </Badge>
                   </div>
-                  <p className="text-sm text-muted-foreground">• Acceso anticipado a noticias</p>
-                  <p className="text-sm text-muted-foreground">• Nuestro agradecimiento eterno</p>
-                  <p className="text-sm text-muted-foreground">• Reconocimiento en la comunidad</p>
+                  <p className="text-sm text-white">• Acceso anticipado a noticias</p>
+                  <p className="text-sm text-white">• Nuestro agradecimiento eterno</p>
+                  <p className="text-sm text-white">• Reconocimiento en la comunidad</p>
                   <Button 
                     asChild
                     className="w-full mt-4 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600"
@@ -167,9 +167,9 @@ const Premium = () => {
                       Badge Contributor
                     </Badge>
                   </div>
-                  <p className="text-sm text-muted-foreground">• Todo lo anterior</p>
-                  <p className="text-sm text-muted-foreground">• Acceso a contenido exclusivo</p>
-                  <p className="text-sm text-muted-foreground">• Participación en encuestas</p>
+                  <p className="text-sm text-white">• Todo lo anterior</p>
+                  <p className="text-sm text-white">• Acceso a contenido exclusivo</p>
+                  <p className="text-sm text-white">• Participación en encuestas</p>
                   <Button 
                     className="w-full mt-4 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600"
                     onClick={() => {
@@ -209,9 +209,9 @@ const Premium = () => {
                       Badge VIP Dorado
                     </Badge>
                   </div>
-                  <p className="text-sm text-muted-foreground">• Todo lo anterior</p>
-                  <p className="text-sm text-muted-foreground">• Acceso beta a nuevas funciones</p>
-                  <p className="text-sm text-muted-foreground">• Consulta directa con el equipo</p>
+                  <p className="text-sm text-white">• Todo lo anterior</p>
+                  <p className="text-sm text-white">• Acceso beta a nuevas funciones</p>
+                  <p className="text-sm text-white">• Consulta directa con el equipo</p>
                   <Button 
                     className="w-full mt-4 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600"
                     onClick={() => {
@@ -245,9 +245,9 @@ const Premium = () => {
                       Founding Member
                     </Badge>
                   </div>
-                  <p className="text-sm text-muted-foreground">• Todo lo anterior</p>
-                  <p className="text-sm text-muted-foreground">• Tu nombre en los créditos</p>
-                  <p className="text-sm text-muted-foreground">• Acceso de por vida a funciones premium</p>
+                  <p className="text-sm text-white">• Todo lo anterior</p>
+                  <p className="text-sm text-white">• Tu nombre en los créditos</p>
+                  <p className="text-sm text-white">• Acceso de por vida a funciones premium</p>
                   <Button 
                     className="w-full mt-4 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600"
                     onClick={() => {
@@ -267,7 +267,7 @@ const Premium = () => {
             </div>
 
             <div className="text-center">
-              <p className="text-sm text-muted-foreground mb-4">
+              <p className="text-sm text-white mb-4">
                 💳 Pagos seguros procesados por Stripe • 🔒 Transacciones encriptadas • 🇲🇽 Precios en pesos mexicanos
               </p>
               <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
@@ -282,7 +282,7 @@ const Premium = () => {
             <CardContent className="text-center py-8">
               <Lock className="h-12 w-12 text-accent mx-auto mb-4" />
               <h2 className="text-2xl font-bold text-foreground mb-2">Funciones Premium - Post Beta</h2>
-              <p className="text-muted-foreground mb-4">
+              <p className="text-white mb-4">
                 Las funciones Premium avanzadas se activarán al finalizar la fase beta. 
                 Los donantes tendrán acceso prioritario y beneficios exclusivos.
               </p>
@@ -302,7 +302,7 @@ const Premium = () => {
                     <benefit.icon className="h-8 w-8 text-white" />
                   </div>
                   <h3 className="font-semibold text-foreground mb-2">{benefit.title}</h3>
-                  <p className="text-sm text-muted-foreground">{benefit.description}</p>
+                  <p className="text-sm text-white">{benefit.description}</p>
                 </CardContent>
               </Card>
             ))}
@@ -323,21 +323,21 @@ const Premium = () => {
                   <Users className="h-5 w-5 text-accent mt-1" />
                   <div>
                     <h4 className="font-medium text-foreground">Parejas Verificadas Premium</h4>
-                    <p className="text-sm text-muted-foreground">Acceso a perfiles ultra-verificados con experiencia swinger comprobada</p>
+                    <p className="text-sm text-white">Acceso a perfiles ultra-verificados con experiencia swinger comprobada</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <Calendar className="h-5 w-5 text-accent mt-1" />
                   <div>
                     <h4 className="font-medium text-foreground">Eventos VIP Exclusivos</h4>
-                    <p className="text-sm text-muted-foreground">Invitaciones a fiestas privadas, orgías y clubs swinger de élite</p>
+                    <p className="text-sm text-white">Invitaciones a fiestas privadas, orgías y clubs swinger de élite</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <Shield className="h-5 w-5 text-accent mt-1" />
                   <div>
                     <h4 className="font-medium text-foreground">Privacidad Máxima</h4>
-                    <p className="text-sm text-muted-foreground">Modo incógnito y protección avanzada de identidad</p>
+                    <p className="text-sm text-white">Modo incógnito y protección avanzada de identidad</p>
                   </div>
                 </div>
               </CardContent>
@@ -356,21 +356,21 @@ const Premium = () => {
                   <Gift className="h-5 w-5 text-primary mt-1" />
                   <div>
                     <h4 className="font-medium text-foreground">Recompensas por Actividad</h4>
-                    <p className="text-sm text-muted-foreground">Gana tokens CMPX por verificaciones, eventos y conexiones exitosas</p>
+                    <p className="text-sm text-white">Gana tokens CMPX por verificaciones, eventos y conexiones exitosas</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <Zap className="h-5 w-5 text-primary mt-1" />
                   <div>
                     <h4 className="font-medium text-foreground">Intercambio de Tokens</h4>
-                    <p className="text-sm text-muted-foreground">Usa tokens para acceder a funciones premium y eventos exclusivos</p>
+                    <p className="text-sm text-white">Usa tokens para acceder a funciones premium y eventos exclusivos</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <Star className="h-5 w-5 text-primary mt-1" />
                   <div>
                     <h4 className="font-medium text-foreground">NFTs de Experiencias</h4>
-                    <p className="text-sm text-muted-foreground">Colecciona NFTs únicos de tus experiencias swinger más memorables</p>
+                    <p className="text-sm text-white">Colecciona NFTs únicos de tus experiencias swinger más memorables</p>
                   </div>
                 </div>
               </CardContent>

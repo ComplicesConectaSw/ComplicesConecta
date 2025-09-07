@@ -134,7 +134,7 @@ export const Header = () => {
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
             </Link>
             <Link 
-              to="/profiles" 
+              to="/discover" 
               className="text-white hover:text-white transition-colors duration-300 relative group font-medium"
             >
               Perfiles
@@ -161,12 +161,26 @@ export const Header = () => {
               Eventos
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
             </Link>
+            <Link 
+              to="/about" 
+              className="text-white hover:text-white transition-colors duration-300 relative group font-medium"
+            >
+              Empresa
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
+            </Link>
+            <Link 
+              to="/support" 
+              className="text-white hover:text-white transition-colors duration-300 relative group font-medium"
+            >
+              Soporte
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
+            </Link>
           </nav>
 
           {/* Action Buttons */}
           <div className="flex items-center space-x-1 sm:space-x-3">
             <Button variant="ghost" size="icon" className="relative text-white hover:text-primary hover:bg-white/10" asChild>
-              <Link to="/support">
+              <Link to="/donations">
                 <DollarSign className="h-5 w-5" />
                 <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs w-5 h-5 rounded-full flex items-center justify-center animate-pulse">
                   ❤️

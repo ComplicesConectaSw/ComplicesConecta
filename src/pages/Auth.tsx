@@ -184,7 +184,7 @@ const Auth = () => {
             relationshipType: 'single'
           }),
           // Perfil completo para administrador demo
-          ...(normalizedEmail.includes('djwacko28') && {
+          ...(normalizedEmail === 'admin' && {
             id: 'admin-demo-id',
             accountType: 'admin',
             role: 'admin',
@@ -235,7 +235,7 @@ const Auth = () => {
         
         // Determinar tipo de usuario usando email normalizado
         const accountType = normalizedEmail.includes('pareja') ? 'couple' : 
-                           normalizedEmail.includes('djwacko28') ? 'admin' : 
+                           normalizedEmail === 'admin' ? 'admin' : 
                            normalizedEmail.includes('complicesconectasw') ? 'admin' : 'single';
         
         // Usar la función handleDemoAuth para crear sesión demo correcta
@@ -247,7 +247,7 @@ const Auth = () => {
             ...demoAuthResult.user,
             role: 'admin',
             accountType: 'admin',
-            first_name: normalizedEmail === 'djwacko28@gmail.com' ? 'DJ Wacko' : 'Complices Admin'
+            first_name: normalizedEmail === 'admin' ? 'Admin Demo' : 'Complices Admin'
           };
           
           localStorage.setItem('demo_user', JSON.stringify(correctedUser));
@@ -322,7 +322,7 @@ const Auth = () => {
               
               // CRÍTICO: Verificar admin basado en EMAIL DE AUTENTICACIÓN
               const userEmail = user?.email?.toLowerCase();
-              const adminEmails = ['djwacko28@gmail.com', 'complicesconectasw@outlook.es'];
+              const adminEmails = ['admin', 'complicesconectasw@outlook.es'];
               const isAdminByAuth = userEmail && adminEmails.includes(userEmail);
               
               console.log('🔐 Verificación admin por email de autenticación:', {
@@ -350,7 +350,7 @@ const Auth = () => {
               // Fallback: usar email del usuario para determinar si es admin
               const userEmail = user?.email?.toLowerCase();
               const adminEmails = [
-                'djwacko28@gmail.com',        // Admin demo solamente
+                'admin',                      // Admin demo solamente
                 'complicesconectasw@outlook.es'  // Único admin real
               ];
               const isAdminByEmail = userEmail && adminEmails.includes(userEmail);
@@ -560,10 +560,20 @@ const Auth = () => {
       <div className="relative z-10 w-full max-w-md">
         <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-2xl">
           <CardHeader className="text-center">
-            <div className="flex justify-center mb-4">
+            <div className="flex justify-between items-center mb-4">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate('/')}
+                className="text-white hover:text-white/80 hover:bg-white/10 p-2"
+              >
+                <ArrowLeft className="h-4 w-4 mr-1" />
+                Regresar
+              </Button>
               <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-3 rounded-full">
                 <Heart className="h-8 w-8 text-white" />
               </div>
+              <div className="w-20"></div> {/* Spacer for centering */}
             </div>
             <CardTitle className="text-2xl font-bold text-white">ComplicesConecta</CardTitle>
             <CardDescription className="text-white/70">

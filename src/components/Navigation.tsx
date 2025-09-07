@@ -51,11 +51,7 @@ const Navigation = ({ className }: NavigationProps) => {
     const userType = localStorage.getItem('userType');
     const isDemo = localStorage.getItem('demo_authenticated') === 'true';
     
-    // En modo demo, permitir navegación libre
-    if (!demoUser && !isDemo && path !== '/auth') {
-      navigate('/auth');
-      return;
-    }
+    console.log('🔍 Navigation Debug:', { demoUser, userType, isDemo, path });
     
     // Detectar tipo de usuario y redirigir al perfil correcto
     if (path === '/profile') {
@@ -64,8 +60,15 @@ const Navigation = ({ className }: NavigationProps) => {
       } else {
         navigate('/profile-single');
       }
-    } else {
+      return;
+    }
+    
+    // Para otras rutas, navegar directamente si está autenticado
+    if (isDemo || demoUser) {
       navigate(path);
+    } else {
+      // Solo redirigir a auth si no está autenticado y no es una ruta pública
+      navigate('/auth');
     }
   };
 

@@ -176,41 +176,35 @@ export const useAuth = () => {
         if (_event === 'SIGNED_OUT' && session === null) {
           console.log('⚠️ SIGNED_OUT detectado - verificando legitimidad');
           
-          // Verificar si hay sesión demo activa
+          // Verificar si hay sesión demo activa (incluye usuario apoyo)
           const demoAuth = localStorage.getItem('demo_authenticated');
-          if (demoAuth === 'true') {
-            console.log('🎭 Sesión demo activa - ignorando SIGNED_OUT de Supabase');
-            return;
+          const demoUser = localStorage.getItem('demo_user');
+          
+          if (demoAuth === 'true' && demoUser) {
+            try {
+              const parsedDemoUser = JSON.parse(demoUser);
+              console.log('🎭 Sesión demo activa para:', parsedDemoUser.email, '- ignorando SIGNED_OUT de Supabase');
+              
+              // Especial protección para usuario apoyo financiero
+              if (parsedDemoUser.email === 'apoyofinancieromexicano@gmail.com') {
+                console.log('🛡️ Usuario apoyo financiero protegido - manteniendo sesión demo');
+              }
+              
+              return;
+            } catch (error) {
+              console.error('❌ Error parsing demo user en SIGNED_OUT:', error);
+            }
           }
           
-          // Si hay usuario en estado, verificar si es logout legítimo
-          if (user && user.id) {
-            console.log('🚫 Posible logout espurio - manteniendo sesión:', user.id);
-            // Revalidar sesión con Supabase
-            supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
-              if (currentSession && currentSession.user) {
-                console.log('✅ Sesión válida confirmada - restaurando estado');
-                setSession(currentSession);
-                setUser(currentSession.user);
-                return;
-              } else {
-                console.log('❌ Sesión realmente expirada - procediendo con logout');
-              }
-            });
-            return;
-          }
+          // Proceder con logout normal para usuarios reales
+          console.log('🚪 Logout legítimo detectado - limpiando estado');
         }
         
-        // Solo actualizar estado si no es un evento espurio
-        console.log('🔄 Procesando cambio de auth:', _event);
-        
-        setSession(session);
         setUser(session?.user ?? null);
         if (session?.user) {
           console.log('👤 Usuario detectado en auth change:', session.user.id);
           fetchUserProfile(session.user.id);
         } else {
-          console.log('🚫 No hay usuario - limpiando estado');
           setProfile(null);
           currentUserId.current = null;
         }
@@ -360,7 +354,7 @@ export const useAuth = () => {
     
     // Lista de emails admin - SOLO estos pueden ser admin
     const adminEmails = [
-      'djwacko28@gmail.com',        // Admin demo solamente
+      'admin',                      // Admin demo solamente
       'complicesconectasw@outlook.es'  // Único admin real
     ];
     

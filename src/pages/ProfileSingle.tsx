@@ -33,7 +33,7 @@ const ProfileSingle: React.FC = () => {
     const demoUser = localStorage.getItem('demo_user');
     
     if (demoAuth !== 'true' || !demoUser) {
-      navigate('/auth');
+      navigate('/discover');
       return;
     }
     
@@ -126,7 +126,7 @@ const ProfileSingle: React.FC = () => {
             <Button 
               variant="ghost" 
               size="sm" 
-              className="hover:bg-white/20 p-2 transition-all duration-300 hover:scale-105"
+              className="bg-white/10 hover:bg-white/20 p-2 transition-all duration-300 hover:scale-105"
               onClick={() => {
                 navigator.share ? 
                   navigator.share({
@@ -139,7 +139,7 @@ const ProfileSingle: React.FC = () => {
                   )
               }}
             >
-              <Share2 className="h-4 w-4 text-white" />
+              <Share2 className="h-4 w-4 text-white opacity-90" />
             </Button>
             <Button 
               variant="ghost" 

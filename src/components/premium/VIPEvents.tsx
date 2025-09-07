@@ -222,6 +222,9 @@ const VIPEvents = () => {
                 <Button 
                   className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
                   size="lg"
+                  onClick={() => {
+                    alert('🎫 Reserva confirmada! Te contactaremos pronto con los detalles del evento VIP.');
+                  }}
                 >
                   <Ticket className="h-5 w-5 mr-2" />
                   Reservar Ahora
@@ -230,6 +233,9 @@ const VIPEvents = () => {
                   variant="outline"
                   className="border-white/20 text-white hover:bg-white/10"
                   size="lg"
+                  onClick={() => {
+                    alert('❤️ Evento agregado a favoritos! Lo encontrarás en tu lista de eventos guardados.');
+                  }}
                 >
                   <Heart className="h-5 w-5" />
                 </Button>

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Match } from "@/pages/Matches";
 import { ShareProfile } from "@/components/social/ShareProfile";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useState } from "react";
 
 interface MatchCardProps {
@@ -14,6 +15,7 @@ interface MatchCardProps {
 
 export const MatchCard = ({ match, onSuperLike, onStartChat, onShare }: MatchCardProps) => {
   const [showShareDialog, setShowShareDialog] = useState(false);
+  const [showSuperLikeModal, setShowSuperLikeModal] = useState(false);
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'new':
@@ -107,7 +109,7 @@ export const MatchCard = ({ match, onSuperLike, onStartChat, onShare }: MatchCar
               variant="outline" 
               size="sm" 
               className="flex-1 text-white"
-              onClick={() => onSuperLike(match.id)}
+              onClick={() => setShowSuperLikeModal(true)}
             >
               <Zap className="w-4 h-4 mr-2 text-accent" />
               Super Like
@@ -140,6 +142,56 @@ export const MatchCard = ({ match, onSuperLike, onStartChat, onShare }: MatchCar
         profileName={match.name}
         profileId={match.id.toString()}
       />
+
+      {/* Super Like Modal */}
+      <Dialog open={showSuperLikeModal} onOpenChange={setShowSuperLikeModal}>
+        <DialogContent className="sm:max-w-md bg-gradient-to-br from-purple-900/95 to-blue-900/95 border-purple-500/30">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-white">
+              <Zap className="h-5 w-5 text-yellow-400" />
+              ¿Qué es Super Like?
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 text-white">
+            <p className="text-sm leading-relaxed">
+              El <strong className="text-yellow-400">Super Like</strong> es una función premium que te permite destacar tu interés de manera especial.
+            </p>
+            <div className="space-y-2">
+              <h4 className="font-semibold text-yellow-400">¿Cómo funciona?</h4>
+              <ul className="text-sm space-y-1 list-disc list-inside text-white/90">
+                <li>Tu perfil aparecerá destacado para esa persona</li>
+                <li>Recibirán una notificación especial</li>
+                <li>Aumenta significativamente las posibilidades de match</li>
+                <li>Muestra un interés genuino y serio</li>
+              </ul>
+            </div>
+            <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3">
+              <p className="text-xs text-yellow-200">
+                💡 <strong>Tip:</strong> Úsalo con personas que realmente te interesen, ya que tienes un límite diario.
+              </p>
+            </div>
+            <div className="flex space-x-2 pt-2">
+              <Button 
+                onClick={() => {
+                  setShowSuperLikeModal(false);
+                  onSuperLike(match.id);
+                }}
+                className="flex-1 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white"
+              >
+                <Zap className="w-4 h-4 mr-2" />
+                Enviar Super Like
+              </Button>
+              <Button 
+                variant="outline" 
+                onClick={() => setShowSuperLikeModal(false)}
+                className="border-white/20 text-white hover:bg-white/10"
+              >
+                Cancelar
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

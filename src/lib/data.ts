@@ -399,11 +399,11 @@ export const mockVIPEvents: VIPEvent[] = [
     isVIPOnly: true,
     organizer: {
       name: "ComplicesConecta Events",
-      avatar: "https://randomuser.me/api/portraits/lego/1.jpg"
+      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face"
     },
     images: [
-      "https://images.unsplash.com/photo-1566737236500-c8ac43014a8e?w=400",
-      "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=400"
+      "https://images.unsplash.com/photo-1566737236500-c8ac43014a8e?w=400&h=300&fit=crop",
+      "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=400&h=300&fit=crop"
     ]
   }
 ];

@@ -448,12 +448,12 @@ const Events = () => {
                           {club.category}
                         </Badge>
                       </div>
-                      <div className="absolute top-3 right-3 flex gap-1">
+                      <div className="absolute top-3 right-3 flex gap-1 bg-black/50 backdrop-blur-sm rounded-full p-2">
                         {club.verified && (
-                          <Shield className="h-5 w-5 text-accent" />
+                          <Shield className="h-5 w-5 text-green-400 drop-shadow-lg" />
                         )}
                         {club.isPrivate && (
-                          <Lock className="h-5 w-5 text-white/70" />
+                          <Lock className="h-5 w-5 text-yellow-400 drop-shadow-lg" />
                         )}
                       </div>
                     </div>

@@ -43,7 +43,7 @@ const ProfileCouple: React.FC = () => {
         const demoUser = localStorage.getItem('demo_user');
         
         if (demoAuth !== 'true' || !demoUser) {
-          navigate('/auth');
+          navigate('/discover');
           return;
         }
         
@@ -133,12 +133,12 @@ const ProfileCouple: React.FC = () => {
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  className="hover:bg-white/20 p-2 transition-all duration-300 hover:scale-105"
+                  className="bg-white/10 hover:bg-white/20 p-2 transition-all duration-300 hover:scale-105"
                   onClick={() => {
                     navigator.share ? 
                       navigator.share({
-                        title: `Perfil de ${profile ? profile.coupleName : 'Pareja'}`,
-                        text: `Conoce a ${profile ? profile.coupleName : 'esta pareja'} en ComplicesConecta`,
+                        title: `Perfil de ${profile ? profile.partner1.name : 'Ella'} y ${profile ? profile.partner2.name : 'Él'}`,
+                        text: `Conoce a esta pareja en ComplicesConecta`,
                         url: window.location.href
                       }) : 
                       navigator.clipboard.writeText(window.location.href).then(() => 
@@ -146,7 +146,7 @@ const ProfileCouple: React.FC = () => {
                       )
                   }}
                 >
-                  <Share2 className="h-4 w-4 text-white" />
+                  <Share2 className="h-4 w-4 text-white opacity-90" />
                 </Button>
                 <Button 
                   variant="ghost" 
@@ -352,7 +352,7 @@ const ProfileCouple: React.FC = () => {
               <Button 
                 variant="ghost" 
                 size="sm" 
-                className="hover:bg-white/20 p-2 transition-all duration-300 hover:scale-105"
+                className="bg-white/10 hover:bg-white/20 p-2 transition-all duration-300 hover:scale-105"
                 onClick={() => {
                   navigator.share ? 
                     navigator.share({
@@ -365,7 +365,7 @@ const ProfileCouple: React.FC = () => {
                     )
                 }}
               >
-                <Share2 className="h-4 w-4 text-white" />
+                <Share2 className="h-4 w-4 text-white opacity-90" />
               </Button>
               <Button 
                 variant="ghost" 
