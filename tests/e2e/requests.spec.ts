@@ -24,7 +24,7 @@ test.describe('Sistema de Solicitudes', () => {
     await page.goto('/profiles');
     
     // Seleccionar un perfil
-    await page.click('[data-testid="profile-card"]').first();
+    await page.locator('[data-testid="profile-card"]').first().click();
     
     // Enviar solicitud
     await page.click('[data-testid="send-request-btn"]');
@@ -69,7 +69,7 @@ test.describe('Sistema de Solicitudes', () => {
     await page.click('[data-testid="received-tab"]');
     
     // Aceptar primera solicitud
-    await page.click('[data-testid="accept-btn"]').first();
+    await page.locator('[data-testid="accept-btn"]').first().click();
     
     // Verificar confirmación
     await expect(page.locator('[data-testid="accept-modal"]')).toBeVisible();
@@ -84,7 +84,7 @@ test.describe('Sistema de Solicitudes', () => {
     await page.click('[data-testid="received-tab"]');
     
     // Rechazar primera solicitud
-    await page.click('[data-testid="reject-btn"]').first();
+    await page.locator('[data-testid="reject-btn"]').first().click();
     
     // Verificar confirmación
     await expect(page.locator('[data-testid="reject-modal"]')).toBeVisible();
@@ -99,7 +99,7 @@ test.describe('Sistema de Solicitudes', () => {
     await page.click('[data-testid="sent-tab"]');
     
     // Cancelar solicitud pendiente
-    await page.click('[data-testid="cancel-request-btn"]').first();
+    await page.locator('[data-testid="cancel-request-btn"]').first().click();
     
     // Confirmar cancelación
     await expect(page.locator('[data-testid="cancel-modal"]')).toBeVisible();
@@ -129,7 +129,7 @@ test.describe('Sistema de Solicitudes', () => {
     await page.goto('/requests');
     
     // Hacer clic en una solicitud
-    await page.click('[data-testid="request-item"]').first();
+    await page.locator('[data-testid="request-item"]').first().click();
     
     // Verificar modal de detalles
     await expect(page.locator('[data-testid="request-details-modal"]')).toBeVisible();
@@ -142,7 +142,7 @@ test.describe('Sistema de Solicitudes', () => {
     await page.goto('/profiles');
     
     // Intentar enviar solicitud a perfil ya solicitado
-    await page.click('[data-testid="profile-card"]').first();
+    await page.locator('[data-testid="profile-card"]').first().click();
     await page.click('[data-testid="send-request-btn"]');
     
     // Verificar mensaje de error
@@ -170,7 +170,7 @@ test.describe('Sistema de Solicitudes', () => {
     await page.goto('/profiles');
     
     // Acceder a perfil con galería privada
-    await page.click('[data-testid="profile-card"]').first();
+    await page.locator('[data-testid="profile-card"]').first().click();
     await page.click('[data-testid="gallery-tab"]');
     
     // Solicitar acceso a galería
@@ -192,7 +192,7 @@ test.describe('Sistema de Solicitudes', () => {
     await page.click('[data-testid="start-private-chat"]');
     
     // Seleccionar usuario
-    await page.click('[data-testid="user-selector"]').first();
+    await page.locator('[data-testid="user-selector"]').first().click();
     
     // Enviar solicitud de chat
     await page.click('[data-testid="request-private-chat"]');

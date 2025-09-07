@@ -2,11 +2,10 @@
 // Fecha: 2025-01-06
 
 import React, { useState } from 'react';
-import { HCaptchaWidget } from '@/components/HCaptchaWidget';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { CheckCircle, AlertCircle, Shield } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { XCircle, CheckCircle, AlertCircle, Shield } from 'lucide-react';
 
 /**
  * Ejemplo completo de implementación de hCaptcha
@@ -90,15 +89,13 @@ export const HCaptchaExample: React.FC = () => {
             <label className="text-sm font-medium">
               Verificación de seguridad:
             </label>
-            <HCaptchaWidget
-              siteKey={HCAPTCHA_SITE_KEY}
-              onVerify={handleVerify}
-              onError={handleError}
-              onExpire={handleExpire}
-              theme="dark"
-              size="normal"
-              className="flex justify-center"
-            />
+            <div className="flex justify-center p-4 border-2 border-dashed border-gray-300 rounded-lg">
+              <div className="text-center text-gray-500">
+                <Shield className="h-8 w-8 mx-auto mb-2" />
+                <p>hCaptcha Widget Placeholder</p>
+                <p className="text-sm">Install @hcaptcha/react-hcaptcha to enable</p>
+              </div>
+            </div>
           </div>
 
           {/* Estado de verificación */}

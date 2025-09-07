@@ -65,7 +65,7 @@ export const ChatWithLocation = ({ conversationId, currentUserId, otherUser }: C
 
       if (error) throw error;
 
-      const formattedMessages = data.map((msg: MessageWithSender) => ({
+      const formattedMessages = data.map((msg: any) => ({
         id: msg.id,
         content: msg.content,
         sender_id: msg.sender_id,

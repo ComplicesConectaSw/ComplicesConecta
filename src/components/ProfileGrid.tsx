@@ -71,7 +71,19 @@ export const ProfileGrid = ({
             className="animate-slide-up" 
             style={{ animationDelay: `${index * 0.1}s` }}
           >
-            <ProfileCard {...profile} />
+            <ProfileCard 
+              profile={{
+                id: profile.id.toString(),
+                name: profile.name,
+                age: profile.age,
+                location: profile.location,
+                image: profile.image,
+                interests: profile.interests,
+                rating: profile.rating,
+                isOnline: profile.isOnline
+              }}
+              onOpenModal={() => {}}
+            />
           </div>
         ))}
       </div>

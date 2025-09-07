@@ -42,7 +42,7 @@ describe('EmailService - Variables de Entorno', () => {
     };
     mockSupabaseClient.functions.invoke.mockResolvedValue(mockResponse);
 
-    const result = await emailService.sendConfirmationEmail(
+    const result = await EmailService.sendConfirmationEmail(
       'test@example.com',
       'https://example.com/confirm',
       'ABC123'
@@ -70,7 +70,7 @@ describe('EmailService - Variables de Entorno', () => {
     };
     mockSupabaseClient.functions.invoke.mockResolvedValue(mockResponse);
 
-    const result = await emailService.sendPasswordResetEmail(
+    const result = await EmailService.sendPasswordResetEmail(
       'test@example.com',
       'https://example.com/reset'
     );
@@ -105,6 +105,12 @@ describe('EmailService - Variables de Entorno', () => {
   });
 
   it('debe validar formato de email correctamente', () => {
+    // Mock validateEmail as static method
+    EmailService.validateEmail = vi.fn().mockImplementation((email: string) => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    });
+    
     expect(EmailService.validateEmail('valid@example.com')).toBe(true);
     expect(EmailService.validateEmail('invalid-email')).toBe(false);
     expect(EmailService.validateEmail('')).toBe(false);

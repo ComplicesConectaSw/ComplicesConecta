@@ -66,8 +66,8 @@ test.describe('Sistema de Imágenes', () => {
     await page.click('[data-testid="gallery-tab"]');
     
     // Seleccionar imagen existente
-    await page.hover('[data-testid="gallery-image"]').first();
-    await page.click('[data-testid="delete-image-btn"]').first();
+    await page.locator('[data-testid="gallery-image"]').first().hover();
+    await page.locator('[data-testid="delete-image-btn"]').first().click();
     
     // Confirmar eliminación
     await expect(page.locator('[data-testid="delete-confirmation"]')).toBeVisible();
@@ -81,7 +81,7 @@ test.describe('Sistema de Imágenes', () => {
     await page.goto('/profiles');
     
     // Acceder a perfil de otro usuario
-    await page.click('[data-testid="profile-card"]').first();
+    await page.locator('[data-testid="profile-card"]').first().click();
     await page.click('[data-testid="gallery-tab"]');
     
     // Verificar imágenes públicas visibles
@@ -93,7 +93,7 @@ test.describe('Sistema de Imágenes', () => {
     await page.goto('/profiles');
     
     // Acceder a perfil con imágenes privadas
-    await page.click('[data-testid="profile-card"]').first();
+    await page.locator('[data-testid="profile-card"]').first().click();
     await page.click('[data-testid="gallery-tab"]');
     
     // Intentar ver imágenes privadas
@@ -116,7 +116,7 @@ test.describe('Sistema de Imágenes', () => {
     await expect(page.locator('[data-testid="gallery-request-item"]')).toBeVisible();
     
     // Aprobar solicitud
-    await page.click('[data-testid="approve-gallery-access"]').first();
+    await page.locator('[data-testid="approve-gallery-access"]').first().click();
     
     // Confirmar aprobación
     await expect(page.locator('[data-testid="approve-modal"]')).toBeVisible();
@@ -245,8 +245,8 @@ test.describe('Sistema de Imágenes', () => {
     await page.click('[data-testid="gallery-tab"]');
     
     // Seleccionar imagen como principal
-    await page.hover('[data-testid="gallery-image"]').first();
-    await page.click('[data-testid="set-main-image-btn"]').first();
+    await page.locator('[data-testid="gallery-image"]').first().hover();
+    await page.locator('[data-testid="set-main-image-btn"]').first().click();
     
     // Confirmar selección
     await expect(page.locator('[data-testid="main-image-confirmation"]')).toBeVisible();

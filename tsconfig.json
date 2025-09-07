@@ -6,13 +6,13 @@
     { "path": "./tsconfig.test.json" }
   ],
   "compilerOptions": {
+    "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
     "noImplicitAny": true,
     "noUnusedParameters": true,
-    "skipLibCheck": true,
     "allowJs": true,
     "noUnusedLocals": true,
     "strictNullChecks": true

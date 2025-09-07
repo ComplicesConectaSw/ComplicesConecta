@@ -71,7 +71,7 @@ const Index = () => {
   // Professional sample profiles for presentation
   const sampleProfiles = [
     {
-      id: 1,
+      id: "1",
       name: "Gabriela",
       age: 29,
       location: "Ciudad de México",
@@ -84,7 +84,7 @@ const Index = () => {
       verified: true
     },
     {
-      id: 2,
+      id: "2",
       name: "Antonio",
       age: 34,
       location: "Guadalajara",
@@ -97,7 +97,7 @@ const Index = () => {
       verified: true
     },
     {
-      id: 3,
+      id: "3",
       name: "Isabella",
       age: 27,
       location: "Monterrey",
@@ -110,7 +110,7 @@ const Index = () => {
       verified: true
     },
     {
-      id: 4,
+      id: "4",
       name: "Mateo",
       age: 31,
       location: "Puebla",

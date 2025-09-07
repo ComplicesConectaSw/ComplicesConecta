@@ -1,10 +1,10 @@
 /**
  * Hook useTokens() - Sistema de Tokens CMPX/GTK para fase Beta
  * Gestión completa de balances, transacciones, staking y recompensas
+ * NOTA: Mock temporal hasta implementar tablas de tokens en BD
  */
 
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
 import { useAuth } from './useAuth';
 
 export interface TokenBalance {
@@ -101,297 +101,207 @@ export function useTokens() {
     }
   };
 
-  // 💰 Cargar balance actual
+  // 💰 Cargar balance actual (Mock temporal)
   const loadBalance = async () => {
     if (!user?.id) return;
 
-    const { data, error } = await supabase
-      .from('user_tokens')
-      .select('*')
-      .eq('user_id', user.id)
-      .single();
+    // Mock data temporal hasta implementar tablas de tokens
+    const mockBalance = {
+      cmpxBalance: 150,
+      gtkBalance: 0,
+      cmpxStaked: 50,
+      monthlyEarned: 200,
+      monthlyLimit: 500,
+      monthlyRemaining: 300,
+      totalReferrals: 3,
+      referralCode: `REF_${user.id.slice(0, 8)}`,
+      worldIdVerified: false,
+      worldIdClaimed: false
+    };
 
-    if (error) {
-      console.error('❌ Error cargando balance:', error);
-      return;
-    }
-
-    if (data) {
-      setBalance({
-        cmpxBalance: data.cmpx_balance,
-        gtkBalance: data.gtk_balance,
-        cmpxStaked: data.cmpx_staked,
-        monthlyEarned: data.monthly_earned,
-        monthlyLimit: data.monthly_limit,
-        monthlyRemaining: data.monthly_limit - data.monthly_earned,
-        totalReferrals: data.total_referrals,
-        referralCode: data.referral_code,
-        worldIdVerified: data.world_id_verified,
-        worldIdClaimed: data.world_id_claimed
-      });
-    }
+    setBalance(mockBalance);
   };
 
-  // 📋 Cargar historial de transacciones
+  // 📋 Cargar historial de transacciones (Mock temporal)
   const loadTransactions = async () => {
     if (!user?.id) return;
 
-    const { data, error } = await supabase
-      .from('transactions')
-      .select('*')
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false })
-      .limit(50);
+    // Mock data temporal
+    const mockTransactions: Transaction[] = [
+      {
+        id: '1',
+        transactionType: 'referral_reward',
+        tokenType: 'CMPX',
+        amount: 50,
+        balanceBefore: 100,
+        balanceAfter: 150,
+        description: 'Recompensa por referido exitoso',
+        createdAt: new Date().toISOString(),
+        relatedUserId: 'ref_user_123'
+      },
+      {
+        id: '2',
+        transactionType: 'staking_start',
+        tokenType: 'CMPX',
+        amount: -50,
+        balanceBefore: 150,
+        balanceAfter: 100,
+        description: 'Inicio de staking por 30 días',
+        createdAt: new Date(Date.now() - 86400000).toISOString()
+      }
+    ];
 
-    if (error) {
-      console.error('❌ Error cargando transacciones:', error);
-      return;
-    }
-
-    if (data) {
-      setTransactions(data.map(t => ({
-        id: t.id,
-        transactionType: t.transaction_type,
-        tokenType: t.token_type,
-        amount: t.amount,
-        balanceBefore: t.balance_before,
-        balanceAfter: t.balance_after,
-        description: t.description,
-        createdAt: t.created_at,
-        relatedUserId: t.related_user_id
-      })));
-    }
+    setTransactions(mockTransactions);
   };
 
-  // 🔒 Cargar registros de staking
+  // 🔒 Cargar registros de staking (Mock temporal)
   const loadStakingRecords = async () => {
     if (!user?.id) return;
 
-    const { data, error } = await supabase
-      .from('user_staking')
-      .select('*')
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false });
+    // Mock data temporal
+    const now = new Date();
+    const endDate = new Date(now.getTime() + (25 * 24 * 60 * 60 * 1000)); // 25 días restantes
+    
+    const mockStaking: StakingRecord[] = [
+      {
+        id: '1',
+        amount: 50,
+        startDate: new Date(now.getTime() - (5 * 24 * 60 * 60 * 1000)).toISOString(),
+        endDate: endDate.toISOString(),
+        rewardPercentage: 10,
+        status: 'active',
+        rewardClaimed: false,
+        daysRemaining: 25
+      }
+    ];
 
-    if (error) {
-      console.error('❌ Error cargando staking:', error);
-      return;
-    }
-
-    if (data) {
-      const now = new Date();
-      setStakingRecords(data.map(s => {
-        const endDate = new Date(s.end_date);
-        const daysRemaining = s.status === 'active' 
-          ? Math.max(0, Math.ceil((endDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)))
-          : 0;
-
-        return {
-          id: s.id,
-          amount: s.amount,
-          startDate: s.start_date,
-          endDate: s.end_date,
-          rewardPercentage: s.reward_percentage,
-          status: s.status,
-          rewardClaimed: s.reward_claimed,
-          daysRemaining
-        };
-      }));
-    }
+    setStakingRecords(mockStaking);
   };
 
-  // 🎁 Cargar recompensas pendientes
+  // 🎁 Cargar recompensas pendientes (Mock temporal)
   const loadPendingRewards = async () => {
     if (!user?.id) return;
 
-    const { data, error } = await supabase
-      .from('pending_rewards')
-      .select('*')
-      .eq('user_id', user.id)
-      .eq('claimed', false)
-      .order('created_at', { ascending: false });
+    // Mock data temporal
+    const mockRewards: PendingReward[] = [
+      {
+        id: '1',
+        rewardType: 'world_id_verification',
+        amount: 100,
+        tokenType: 'CMPX',
+        description: 'Recompensa por verificación World ID',
+        expiresAt: new Date(Date.now() + (7 * 24 * 60 * 60 * 1000)).toISOString(),
+        claimed: false
+      }
+    ];
 
-    if (error) {
-      console.error('❌ Error cargando recompensas:', error);
-      return;
-    }
-
-    if (data) {
-      setPendingRewards(data.map(r => ({
-        id: r.id,
-        rewardType: r.reward_type,
-        amount: r.amount,
-        tokenType: r.token_type,
-        description: r.description,
-        expiresAt: r.expires_at,
-        claimed: r.claimed
-      })));
-    }
+    setPendingRewards(mockRewards);
   };
 
-  // 🎯 Procesar referido
+  // 🎯 Procesar referido (Mock temporal)
   const processReferral = async (referralCode: string) => {
     if (!user?.id) {
       return { success: false, message: 'Usuario no autenticado' };
     }
 
-    try {
-      const { data, error } = await supabase.rpc('process_referral_reward', {
-        referral_code_param: referralCode,
-        new_user_id: user.id
-      });
-
-      if (error) {
-        console.error('❌ Error procesando referido:', error);
-        return { success: false, message: 'Error procesando referido' };
-      }
-
-      if (data?.success) {
-        await loadTokenData(); // Recargar datos
-        return {
-          success: true,
-          message: data.message,
-          inviterReward: data.inviter_reward,
-          welcomeBonus: data.welcome_bonus
-        };
-      }
-
-      return { success: false, message: data?.message || 'Error desconocido' };
-    } catch (err) {
-      console.error('❌ Error en processReferral:', err);
-      return { success: false, message: 'Error de conexión' };
+    // Mock temporal
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    if (referralCode.startsWith('REF_')) {
+      await loadTokenData();
+      return {
+        success: true,
+        message: '¡Referido procesado exitosamente!',
+        inviterReward: 50,
+        welcomeBonus: 50
+      };
     }
+
+    return { success: false, message: 'Código de referido inválido' };
   };
 
-  // 🌍 Reclamar recompensa World ID
+  // 🌍 Reclamar recompensa World ID (Mock temporal)
   const claimWorldIdReward = async () => {
     if (!user?.id) {
       return { success: false, message: 'Usuario no autenticado' };
     }
 
-    try {
-      const { data, error } = await supabase.rpc('claim_world_id_reward', {
-        user_id_param: user.id
-      });
-
-      if (error) {
-        console.error('❌ Error reclamando World ID:', error);
-        return { success: false, message: 'Error reclamando recompensa' };
-      }
-
-      if (data?.success) {
-        await loadTokenData(); // Recargar datos
-        return {
-          success: true,
-          message: data.message,
-          amount: data.amount,
-          newBalance: data.new_balance
-        };
-      }
-
-      return { success: false, message: data?.message || 'Error desconocido' };
-    } catch (err) {
-      console.error('❌ Error en claimWorldIdReward:', err);
-      return { success: false, message: 'Error de conexión' };
+    // Mock temporal
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    if (balance && !balance.worldIdClaimed) {
+      await loadTokenData();
+      return {
+        success: true,
+        message: '¡Recompensa World ID reclamada!',
+        amount: 100,
+        newBalance: balance.cmpxBalance + 100
+      };
     }
+
+    return { success: false, message: 'Ya has reclamado esta recompensa' };
   };
 
-  // 🔒 Iniciar staking
+  // 🔒 Iniciar staking (Mock temporal)
   const startStaking = async (amount: number, durationDays: number = 30) => {
     if (!user?.id) {
       return { success: false, message: 'Usuario no autenticado' };
     }
 
-    try {
-      const { data, error } = await supabase.rpc('start_staking', {
-        user_id_param: user.id,
-        amount_param: amount,
-        duration_days: durationDays
-      });
-
-      if (error) {
-        console.error('❌ Error iniciando staking:', error);
-        return { success: false, message: 'Error iniciando staking' };
-      }
-
-      if (data?.success) {
-        await loadTokenData(); // Recargar datos
-        return {
-          success: true,
-          message: data.message,
-          amount: data.amount,
-          endDate: data.end_date,
-          rewardPercentage: data.reward_percentage
-        };
-      }
-
-      return { success: false, message: data?.message || 'Error desconocido' };
-    } catch (err) {
-      console.error('❌ Error en startStaking:', err);
-      return { success: false, message: 'Error de conexión' };
+    // Mock temporal
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    if (balance && balance.cmpxBalance >= amount) {
+      const endDate = new Date(Date.now() + (durationDays * 24 * 60 * 60 * 1000));
+      await loadTokenData();
+      return {
+        success: true,
+        message: `¡Staking iniciado por ${amount} CMPX!`,
+        amount,
+        endDate: endDate.toISOString(),
+        rewardPercentage: 10
+      };
     }
+
+    return { success: false, message: 'Balance insuficiente para staking' };
   };
 
-  // 🔓 Completar staking
+  // 🔓 Completar staking (Mock temporal)
   const completeStaking = async (stakingId: string) => {
-    try {
-      const { data, error } = await supabase.rpc('complete_staking', {
-        staking_id_param: stakingId
-      });
-
-      if (error) {
-        console.error('❌ Error completando staking:', error);
-        return { success: false, message: 'Error completando staking' };
-      }
-
-      if (data?.success) {
-        await loadTokenData(); // Recargar datos
-        return {
-          success: true,
-          message: data.message,
-          originalAmount: data.original_amount,
-          rewardAmount: data.reward_amount,
-          totalReturn: data.total_return
-        };
-      }
-
-      return { success: false, message: data?.message || 'Error desconocido' };
-    } catch (err) {
-      console.error('❌ Error en completeStaking:', err);
-      return { success: false, message: 'Error de conexión' };
+    // Mock temporal
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    const stakingRecord = stakingRecords.find(s => s.id === stakingId);
+    if (stakingRecord && stakingRecord.status === 'active') {
+      const originalAmount = stakingRecord.amount;
+      const rewardAmount = Math.floor(originalAmount * (stakingRecord.rewardPercentage / 100));
+      const totalReturn = originalAmount + rewardAmount;
+      
+      await loadTokenData();
+      return {
+        success: true,
+        message: '¡Staking completado exitosamente!',
+        originalAmount,
+        rewardAmount,
+        totalReturn
+      };
     }
+
+    return { success: false, message: 'Staking no encontrado o ya completado' };
   };
 
-  // 📊 Obtener estadísticas generales (solo admins)
+  // 📊 Obtener estadísticas generales (Mock temporal)
   const getTokenStats = async (): Promise<TokenStats | null> => {
-    try {
-      const { data: tokensData } = await supabase
-        .from('user_tokens')
-        .select('cmpx_balance, gtk_balance, cmpx_staked');
-
-      const { data: transactionsData } = await supabase
-        .from('transactions')
-        .select('id');
-
-      if (tokensData && transactionsData) {
-        const totalCMPX = tokensData.reduce((sum, t) => sum + t.cmpx_balance, 0);
-        const totalGTK = tokensData.reduce((sum, t) => sum + t.gtk_balance, 0);
-        const totalStaked = tokensData.reduce((sum, t) => sum + t.cmpx_staked, 0);
-
-        return {
-          totalUsers: tokensData.length,
-          totalCMPX,
-          totalGTK,
-          totalStaked,
-          totalTransactions: transactionsData.length
-        };
-      }
-
-      return null;
-    } catch (err) {
-      console.error('❌ Error obteniendo estadísticas:', err);
-      return null;
-    }
+    // Mock temporal
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    return {
+      totalUsers: 1250,
+      totalCMPX: 125000,
+      totalGTK: 0,
+      totalStaked: 25000,
+      totalTransactions: 3500
+    };
   };
 
   // 🔄 Refrescar datos

@@ -310,7 +310,7 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
         addBotMessage(`🚀 **¡Staking iniciado exitosamente!**
 
 ✅ ${amount} CMPX bloqueados por 30 días
-📅 Liberación: ${new Date(result.endDate).toLocaleDateString('es-ES')}
+📅 Liberación: ${result.endDate ? new Date(result.endDate).toLocaleDateString('es-ES') : 'Fecha no disponible'}
 🎁 Recompensa: +${Math.round(amount * 0.1)} CMPX
 
 💡 **¿Qué sigue?**

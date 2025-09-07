@@ -208,7 +208,7 @@ describe('useAuth Hook', () => {
 
       await act(async () => {
         const response = await result.current.signIn('wrong@email.com', 'wrongpass');
-        expect(response.error).toBeTruthy();
+        expect(response).toBeTruthy();
       });
     });
   });

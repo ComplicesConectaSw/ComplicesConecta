@@ -183,7 +183,7 @@ export const useAuth = () => {
       console.info(`🔐 Iniciando sesión para: ${email}`);
 
       // Check for demo session first
-      const demoSession = checkDemoSession(email, password);
+      const demoSession = checkDemoSession();
       if (demoSession) {
         console.info(`🎭 Sesión demo activada para: ${email}`);
         setState({
@@ -209,7 +209,8 @@ export const useAuth = () => {
       setState({
         user: data.user,
         session: data.session,
-        loading: false
+        loading: false,
+        profile: null
       });
       return data;
     } catch (error) {
