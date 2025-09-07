@@ -47,7 +47,7 @@ const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { getCurrentLocation, location, isLoading: locationLoading, error: locationError } = useGeolocation();
-  const { user, session, profile, loading, signIn, signOut, isAdmin, isDemo, getProfileType, appMode } = useAuth();
+  const { user, session, profile, loading, signIn, signOut, isAdmin, isDemo, getProfileType, shouldUseProductionAdmin, appMode } = useAuth();
   
   const [isLoading, setIsLoading] = useState(false);
   const [showResetPassword, setShowResetPassword] = useState(false);
@@ -326,8 +326,17 @@ const Auth = () => {
                 console.log('🔐 Verificación admin:', adminCheck);
                 
                 if (adminCheck) {
-                  console.log('👑 Usuario admin detectado - redirigiendo a admin');
-                  navigate("/admin");
+                  console.log('👑 Admin detectado - verificando tipo de panel');
+                  const useProduction = shouldUseProductionAdmin();
+                  console.log('🏭 Usar panel producción:', useProduction);
+                  
+                  if (useProduction) {
+                    console.log('📊 Redirigiendo a AdminProduction (datos reales)');
+                    navigate("/admin-production");
+                  } else {
+                    console.log('🎭 Redirigiendo a Admin (datos demo)');
+                    navigate("/admin");
+                  }
                 } else {
                   console.log('👤 Usuario regular - redirigiendo a discover');
                   navigate("/discover");
@@ -346,8 +355,17 @@ const Auth = () => {
                 console.log('🔐 Verificación admin por email (fallback):', isAdminByEmail);
                 
                 if (isAdminByEmail) {
-                  console.log('👑 Admin detectado por email - redirigiendo a admin');
-                  navigate("/admin");
+                  console.log('👑 Admin detectado por email - verificando tipo de panel');
+                  const useProduction = shouldUseProductionAdmin();
+                  console.log('🏭 Usar panel producción (fallback):', useProduction);
+                  
+                  if (useProduction) {
+                    console.log('📊 Redirigiendo a AdminProduction (datos reales)');
+                    navigate("/admin-production");
+                  } else {
+                    console.log('🎭 Redirigiendo a Admin (datos demo)');
+                    navigate("/admin");
+                  }
                 } else {
                   console.log('👤 Usuario regular por defecto - redirigiendo a discover');
                   navigate("/discover");

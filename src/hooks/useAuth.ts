@@ -382,6 +382,30 @@ export const useAuth = () => {
     return isAdminReal;
   };
 
+  // Función para determinar si debe usar AdminProduction (datos reales)
+  const shouldUseProductionAdmin = () => {
+    const demoAuth = localStorage.getItem('demo_authenticated');
+    const demoUser = localStorage.getItem('demo_user');
+    
+    // Si es demo admin, usar panel de producción
+    if (demoAuth === 'true' && demoUser) {
+      const user = JSON.parse(demoUser);
+      return user.accountType === 'admin' || user.role === 'admin';
+    }
+    
+    // Si es admin real (complicesconectasw@outlook.es), usar panel de producción
+    const userEmail = user?.email?.toLowerCase();
+    const isRealAdmin = userEmail === 'complicesconectasw@outlook.es';
+    
+    console.log('🏭 shouldUseProductionAdmin check:', {
+      userEmail,
+      isRealAdmin,
+      demoAuth: demoAuth === 'true'
+    });
+    
+    return isRealAdmin;
+  };
+
   const isDemo = () => {
     const demoAuth = localStorage.getItem('demo_authenticated');
     const demoUser = localStorage.getItem('demo_user');
@@ -436,6 +460,7 @@ export const useAuth = () => {
     // Nuevas funciones de utilidad
     isDemoMode: isDemoMode,
     shouldUseRealSupabase: shouldUseRealSupabase,
+    shouldUseProductionAdmin,
     appMode: config.mode
   };
 };
