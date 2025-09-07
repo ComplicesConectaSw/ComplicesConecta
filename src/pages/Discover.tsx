@@ -284,12 +284,16 @@ const Discover = () => {
         <div className="flex flex-col lg:flex-row gap-4 lg:gap-6">
           {/* Panel de filtros */}
           {showFilters && (
-            <Card className="w-full lg:w-80 bg-white/90 backdrop-blur-md border-0 p-4 lg:p-6">
-              <h3 className="text-lg font-semibold mb-4 text-gray-900">Filtros Avanzados</h3>
+            <Card className="w-full lg:w-80 bg-gradient-to-br from-purple-50/95 to-pink-50/95 backdrop-blur-md border border-purple-200/50 shadow-xl p-4 lg:p-6">
+              <h3 className="text-lg font-semibold mb-4 text-purple-900 flex items-center gap-2">
+                <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                  Filtros Avanzados
+                </span>
+              </h3>
               
               {/* Edad */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-purple-800 mb-3">
                   Edad: {filters.ageRange[0]} - {filters.ageRange[1]} años
                 </label>
                 <Slider
@@ -304,7 +308,7 @@ const Discover = () => {
               
               {/* Distancia */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-purple-800 mb-3">
                   Distancia: {filters.distance} km
                 </label>
                 <Slider
@@ -319,15 +323,19 @@ const Discover = () => {
               
               {/* Intereses */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-purple-800 mb-3">
                   Intereses
                 </label>
-                <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto">
-                  {importedLifestyleInterests.slice(0, 12).map((interest) => (
+                <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto p-2 bg-white/50 rounded-lg border border-purple-200/30">
+                  {importedLifestyleInterests.slice(0, 15).map((interest) => (
                     <Badge
                       key={interest}
                       variant={filters.interests.includes(interest) ? "default" : "outline"}
-                      className="cursor-pointer text-xs"
+                      className={`cursor-pointer text-xs transition-all duration-200 hover:scale-105 ${
+                        filters.interests.includes(interest) 
+                          ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0 shadow-md" 
+                          : "border-purple-300 text-purple-700 hover:border-purple-500 hover:bg-purple-50"
+                      }`}
                       onClick={() => {
                         setFilters(prev => ({
                           ...prev,
@@ -342,6 +350,58 @@ const Discover = () => {
                   ))}
                 </div>
               </div>
+
+              {/* Tipo de Relación */}
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-purple-800 mb-3">
+                  Tipo de Relación
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  {["Pareja", "Soltero/a", "Abierto", "Poliamoroso"].map((type) => (
+                    <Badge
+                      key={type}
+                      variant="outline"
+                      className="cursor-pointer text-xs p-2 text-center border-purple-300 text-purple-700 hover:border-purple-500 hover:bg-purple-50 transition-all duration-200"
+                      onClick={() => {
+                        // Funcionalidad futura
+                      }}
+                    >
+                      {type}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+
+              {/* Verificación */}
+              <div className="mb-4">
+                <label className="flex items-center gap-2 text-sm font-medium text-purple-800 cursor-pointer">
+                  <input 
+                    type="checkbox" 
+                    className="w-4 h-4 text-purple-600 border-purple-300 rounded focus:ring-purple-500"
+                    onChange={(e) => {
+                      // Funcionalidad futura
+                    }}
+                  />
+                  Solo perfiles verificados
+                </label>
+              </div>
+
+              {/* Botón Limpiar Filtros */}
+              <button 
+                className="w-full py-2 px-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg font-medium hover:from-purple-700 hover:to-pink-700 transition-all duration-200 shadow-md hover:shadow-lg"
+                onClick={() => {
+                  setFilters({
+                    ageRange: [18, 65],
+                    distance: 50,
+                    interests: [],
+                    verified: false,
+                    premium: false,
+                    online: false
+                  });
+                }}
+              >
+                Limpiar Filtros
+              </button>
             </Card>
           )}
           

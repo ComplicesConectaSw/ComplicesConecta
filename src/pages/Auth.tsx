@@ -138,7 +138,7 @@ const Auth = () => {
     }
   };
 
-    const handleSignIn = async (e: React.FormEvent) => {
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
@@ -287,129 +287,101 @@ const Auth = () => {
         console.log('🔐 Usando useAuth para autenticación real:', formData.email);
         console.log('📧 Email normalizado:', normalizedEmail);
         
-        try {
-          const result = await signIn(formData.email, formData.password, formData.accountType);
+        const result = await signIn(formData.email, formData.password, formData.accountType);
+        
+        if (result?.user) {
+          console.log('✅ Autenticación exitosa, esperando carga de perfil...');
           
-          if (result?.user) {
-            console.log('✅ Autenticación exitosa, esperando carga de perfil...');
+          // Esperar hasta que el perfil se cargue completamente
+          let profileCheckAttempts = 0;
+          const maxAttempts = 20; // 10 segundos máximo (20 * 500ms)
+          
+          const waitForProfile = () => {
+            profileCheckAttempts++;
             
-            // Esperar hasta que el perfil se cargue completamente
-            let profileCheckAttempts = 0;
-            const maxAttempts = 20; // 10 segundos máximo (20 * 500ms)
+            console.log(`🔍 Intento ${profileCheckAttempts}/${maxAttempts} - Verificando perfil:`, {
+              profileExists: !!profile,
+              first_name: profile?.first_name,
+              role: profile?.role,
+              email: profile?.email,
+              userEmail: user?.email
+            });
             
-            const waitForProfile = () => {
-              profileCheckAttempts++;
+            // Condición mejorada: verificar si el perfil existe O si tenemos datos del usuario
+            const hasValidProfile = profile && (
+              profile.first_name || 
+              profile.role || 
+              profile.email || 
+              profile.id
+            );
+            
+            const hasUserData = user && user.email;
+            
+            if (hasValidProfile || hasUserData) {
+              console.log('📋 Perfil/Usuario disponible - procediendo con redirección');
               
-              console.log(`🔍 Intento ${profileCheckAttempts}/${maxAttempts} - Verificando perfil:`, {
-                profileExists: !!profile,
-                first_name: profile?.first_name,
-                role: profile?.role,
-                email: profile?.email,
-                userEmail: user?.email
+              // CRÍTICO: Verificar admin basado en EMAIL DE AUTENTICACIÓN
+              const userEmail = user?.email?.toLowerCase();
+              const adminEmails = ['djwacko28@gmail.com', 'complicesconectasw@outlook.es'];
+              const isAdminByAuth = userEmail && adminEmails.includes(userEmail);
+              
+              console.log('🔐 Verificación admin por email de autenticación:', {
+                userEmail,
+                isAdminByAuth,
+                profileEmail: profile?.email
               });
               
-              // Condición mejorada: verificar si el perfil existe O si tenemos datos del usuario
-              const hasValidProfile = profile && (
-                profile.first_name || 
-                profile.role || 
-                profile.email || 
-                profile.id
-              );
-              
-              const hasUserData = user && user.email;
-              
-              if (hasValidProfile || hasUserData) {
-                console.log('📋 Perfil/Usuario disponible - procediendo con redirección');
-                
-                // Verificar si es admin para redirección
-                const adminCheck = isAdmin();
-                console.log('🔐 Verificación admin:', adminCheck);
-                
-                if (adminCheck) {
-                  console.log('👑 Admin detectado - verificando tipo de panel');
-                  const useProduction = shouldUseProductionAdmin();
-                  console.log('🏭 Usar panel producción:', useProduction);
-                  
-                  const userEmail = user?.email?.toLowerCase();
-                  const adminEmails = ['djwacko28@gmail.com', 'complicesconectasw@outlook.es'];
-                  const isAdminByAuth = userEmail && adminEmails.includes(userEmail);
-                  
-                  console.log('🔐 Verificación admin por email de autenticación:', {
-                    userEmail,
-                    isAdminByAuth,
-                    profileEmail: profile?.email
-                  });
-                  
-                  if (isAdminByAuth) {
-                    // Usar redirección inteligente para admins
-                    if (shouldUseProductionAdmin()) {
-                      console.log('🏭 Admin real/demo - redirigiendo a AdminProduction');
-                      navigate("/admin-production");
-                    } else {
-                      console.log('🎭 Admin demo - redirigiendo a Admin demo');
-                      navigate("/admin");
-                    }
-                  } else {
-                    console.log('👤 Usuario regular - redirigiendo a discover');
-                    navigate("/discover");
-                  }
-              } else if (profileCheckAttempts >= maxAttempts) {
-                console.warn('⚠️ Timeout alcanzado - redirigiendo sin perfil completo');
-                
-                // Fallback: usar email del usuario para determinar si es admin
-                const userEmail = user?.email?.toLowerCase();
-                const adminEmails = [
-                  'djwacko28@gmail.com',        // Admin demo solamente
-                  'complicesconectasw@outlook.es'  // Único admin real
-                ];
-                const isAdminByEmail = userEmail && adminEmails.includes(userEmail);
-                
-                console.log('🔐 Verificación admin por email (fallback):', isAdminByEmail);
-                
-                if (isAdminByEmail) {
-                  console.log('👑 Admin detectado por email - verificando tipo de panel');
-                  const useProduction = shouldUseProductionAdmin();
-                  console.log('🏭 Usar panel producción (fallback):', useProduction);
-                  
-                  if (useProduction) {
-                    console.log('📊 Redirigiendo a AdminProduction (datos reales)');
-                    navigate("/admin-production");
-                  } else {
-                    console.log('🎭 Redirigiendo a Admin (datos demo)');
-                    navigate("/admin");
-                  }
+              if (isAdminByAuth) {
+                // Usar redirección inteligente para admins
+                if (shouldUseProductionAdmin()) {
+                  console.log('🏭 Admin real/demo - redirigiendo a AdminProduction');
+                  navigate("/admin-production");
                 } else {
-                  console.log('👤 Usuario regular por defecto - redirigiendo a discover');
-                  navigate("/discover");
+                  console.log('🎭 Admin demo - redirigiendo a Admin demo');
+                  navigate("/admin");
                 }
               } else {
-                console.log('⏳ Perfil aún no cargado, reintentando...');
-                profileCheckAttempts++;
-                setTimeout(waitForProfile, 500);
+                console.log('👤 Usuario regular - redirigiendo a discover');
+                navigate("/discover");
               }
-            };
-            
-            // Iniciar verificación después de 200ms (más rápido)
-            setTimeout(waitForProfile, 200);
-          }
-        } catch (error) {
-          console.error('❌ Error en signIn:', error);
-          
-          // Mensaje de error más específico
-          let errorMessage = "Credenciales inválidas. Verifique su email y contraseña.";
-          if (error instanceof Error) {
-            if (error.message?.includes('Invalid login credentials')) {
-              errorMessage = "Email o contraseña incorrectos. Verifique sus credenciales.";
-            } else if (error.message?.includes('Email not confirmed')) {
-              errorMessage = "Email no confirmado. Revise su bandeja de entrada.";
+            } else if (profileCheckAttempts >= maxAttempts) {
+              console.warn('⚠️ Timeout alcanzado - redirigiendo sin perfil completo');
+              
+              // Fallback: usar email del usuario para determinar si es admin
+              const userEmail = user?.email?.toLowerCase();
+              const adminEmails = [
+                'djwacko28@gmail.com',        // Admin demo solamente
+                'complicesconectasw@outlook.es'  // Único admin real
+              ];
+              const isAdminByEmail = userEmail && adminEmails.includes(userEmail);
+              
+              console.log('🔐 Verificación admin por email (fallback):', isAdminByEmail);
+              
+              if (isAdminByEmail) {
+                console.log('👑 Admin detectado por email - verificando tipo de panel');
+                const useProduction = shouldUseProductionAdmin();
+                console.log('🏭 Usar panel producción (fallback):', useProduction);
+                
+                if (useProduction) {
+                  console.log('📊 Redirigiendo a AdminProduction (datos reales)');
+                  navigate("/admin-production");
+                } else {
+                  console.log('🎭 Redirigiendo a Admin (datos demo)');
+                  navigate("/admin");
+                }
+              } else {
+                console.log('👤 Usuario regular por defecto - redirigiendo a discover');
+                navigate("/discover");
+              }
+            } else {
+              console.log('⏳ Perfil aún no cargado, reintentando...');
+              profileCheckAttempts++;
+              setTimeout(waitForProfile, 500);
             }
-          }
+          };
           
-          toast({
-            variant: "destructive",
-            title: "Error al iniciar sesión",
-            description: errorMessage,
-          });
+          // Iniciar verificación después de 200ms (más rápido)
+          setTimeout(waitForProfile, 200);
         }
       } else if (!isDemoCredential(normalizedEmail)) {
         // Credencial no reconocida y no es demo

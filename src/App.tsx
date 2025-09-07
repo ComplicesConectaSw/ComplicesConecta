@@ -8,11 +8,11 @@ import { Suspense, lazy } from "react";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
+import Events from "./pages/Events";
 
 // Lazy loaded pages for performance optimization
 const Profiles = lazy(() => import("./pages/Profiles"));
 const ProfileDetail = lazy(() => import("./pages/ProfileDetail"));
-const Events = lazy(() => import("./pages/Events"));
 const Chat = lazy(() => import("./pages/Chat"));
 const Matches = lazy(() => import("./pages/Matches"));
 const Requests = lazy(() => import("./pages/Requests"));
