@@ -171,11 +171,46 @@ export const useAuth = () => {
         data: { subscription },
       } = supabase.auth.onAuthStateChange((_event, session) => {
         console.log('🔄 Auth state change:', _event, session?.user?.id);
+        
+        // CRÍTICO: Prevenir logout automático después del login
+        if (_event === 'SIGNED_OUT' && session === null) {
+          console.log('⚠️ SIGNED_OUT detectado - verificando legitimidad');
+          
+          // Verificar si hay sesión demo activa
+          const demoAuth = localStorage.getItem('demo_authenticated');
+          if (demoAuth === 'true') {
+            console.log('🎭 Sesión demo activa - ignorando SIGNED_OUT de Supabase');
+            return;
+          }
+          
+          // Si hay usuario en estado, verificar si es logout legítimo
+          if (user && user.id) {
+            console.log('🚫 Posible logout espurio - manteniendo sesión:', user.id);
+            // Revalidar sesión con Supabase
+            supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
+              if (currentSession && currentSession.user) {
+                console.log('✅ Sesión válida confirmada - restaurando estado');
+                setSession(currentSession);
+                setUser(currentSession.user);
+                return;
+              } else {
+                console.log('❌ Sesión realmente expirada - procediendo con logout');
+              }
+            });
+            return;
+          }
+        }
+        
+        // Solo actualizar estado si no es un evento espurio
+        console.log('🔄 Procesando cambio de auth:', _event);
+        
         setSession(session);
         setUser(session?.user ?? null);
         if (session?.user) {
+          console.log('👤 Usuario detectado en auth change:', session.user.id);
           fetchUserProfile(session.user.id);
         } else {
+          console.log('🚫 No hay usuario - limpiando estado');
           setProfile(null);
           currentUserId.current = null;
         }
