@@ -239,20 +239,24 @@ const AdminProduction = () => {
       ]);
       
       // Intentar obtener métricas opcionales (pueden no existir)
-      let metricsResponse = { data: [] };
-      let tokensResponse = { data: [] };
-      let apkDownloadsResponse = { count: 0 };
+      let metricsResponse: { data: any[] | null; error?: any } = { data: [] };
+      let tokensResponse: { data: any[] | null; error?: any } = { data: [] };
+      let apkDownloadsResponse: { count: number | null; error?: any } = { count: 0 };
       
       try {
-        metricsResponse = await supabase.from('app_metrics').select('*');
+        const result = await supabase.from('app_metrics').select('*');
+        metricsResponse = result;
       } catch (error) {
         console.warn('⚠️ Tabla app_metrics no disponible:', error);
+        metricsResponse = { data: [] };
       }
       
       try {
-        tokensResponse = await supabase.from('user_token_balances').select('cmpx_balance');
+        const result = await supabase.from('user_token_balances').select('cmpx_balance');
+        tokensResponse = result;
       } catch (error) {
         console.warn('⚠️ Tabla user_token_balances no disponible:', error);
+        tokensResponse = { data: [] };
       }
       
       try {
@@ -265,7 +269,8 @@ const AdminProduction = () => {
 
       // Obtener valores de métricas específicas
       const getMetricValue = (name: string) => {
-        const metric = metricsResponse.data?.find((m: Tables<'app_metrics'>) => m.metric_name === name);
+        if (!metricsResponse.data) return 0;
+        const metric = metricsResponse.data.find((m: any) => m.metric_name === name);
         return metric?.metric_value || 0;
       };
 
@@ -282,11 +287,11 @@ const AdminProduction = () => {
 
       setStats({
         totalUsers: totalUsers || 0,
-        activeUsers: Math.floor((totalUsers || 0) * 0.7), // Estimación basada en usuarios totales
+        activeUsers: Math.floor((totalUsers || 0) * 0.7),
         premiumUsers: premiumUsers || 0,
-        totalMatches: getMetricValue('total_matches') || Math.floor((totalUsers || 0) * 0.3), // Fallback
-        apkDownloads: apkDownloadsResponse.count || 150, // Fallback
-        dailyVisits: getMetricValue('daily_visits') || Math.floor((totalUsers || 0) * 0.4), // Fallback
+        totalMatches: getMetricValue('total_matches') || Math.floor((totalUsers || 0) * 0.3),
+        apkDownloads: apkDownloadsResponse.count || 0,
+        dailyVisits: getMetricValue('daily_visits') || Math.floor((totalUsers || 0) * 0.4),
         totalTokens: totalTokens,
         stakedTokens: stakedTokens || 0,
         worldIdVerified: verifiedUsers || 0,
@@ -308,26 +313,7 @@ const AdminProduction = () => {
 
       if (error) {
         console.error('Error loading FAQ:', error);
-        // Fallback a datos mock si hay error
-        const mockFaqItems: FAQItem[] = [
-          {
-            id: '1',
-            question: '¿Cómo funciona ComplicesConecta?',
-            answer: 'ComplicesConecta es una plataforma que conecta personas con intereses similares en el lifestyle swinger.',
-            category: 'general',
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-          },
-          {
-            id: '2',
-            question: '¿Es segura la plataforma?',
-            answer: 'Sí, utilizamos verificación WorldID y medidas de seguridad avanzadas.',
-            category: 'seguridad',
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-          }
-        ];
-        setFaqItems(mockFaqItems);
+        setFaqItems([]);
         return;
       }
 
@@ -344,54 +330,25 @@ const AdminProduction = () => {
       setFaqItems(mappedFaqItems);
     } catch (error) {
       console.error('Error in loadRealFAQ:', error);
-      // Fallback a datos mock si hay error
-      const mockFaqItems: FAQItem[] = [
-        {
-          id: '1',
-          question: '¿Cómo funciona ComplicesConecta?',
-          answer: 'ComplicesConecta es una plataforma que conecta personas con intereses similares en el lifestyle swinger.',
-          category: 'general',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        }
-      ];
-      setFaqItems(mockFaqItems);
+      setFaqItems([]);
     }
   };
 
   const loadRealInvitations = async () => {
     try {
-      // Cargar invitaciones reales desde Supabase con datos de perfiles
       const { data, error } = await supabase
         .from('invitations')
-        .select(`
-          *,
-          from_profile:profiles!invitations_from_profile_fkey(display_name, avatar_url),
-          to_profile:profiles!invitations_to_profile_fkey(display_name, avatar_url)
-        `)
+        .select('*')
         .order('created_at', { ascending: false })
         .limit(50);
 
       if (error) {
         console.error('Error loading invitations:', error);
-        // Fallback a datos mock si hay error
-        const mockInvitations: Invitation[] = [
-          {
-            id: '1',
-            from_profile: 'admin-profile',
-            to_profile: 'user-profile-1',
-            message: 'Invitación de administrador',
-            type: 'profile',
-            status: 'pending',
-            created_at: new Date().toISOString()
-          }
-        ];
-        setInvitations(mockInvitations);
+        setInvitations([]);
         return;
       }
 
-      // Mapear datos reales de invitaciones desde Supabase
-      const mappedInvitations: Invitation[] = (data || []).map((inv: Tables<'invitations'>) => ({
+      const mappedInvitations: Invitation[] = (data || []).map((inv: any) => ({
         id: inv.id,
         from_profile: inv.from_profile || 'unknown',
         to_profile: inv.to_profile || 'unknown', 
@@ -405,7 +362,6 @@ const AdminProduction = () => {
       console.log('📧 Invitaciones cargadas:', mappedInvitations.length);
     } catch (error) {
       console.error('Error loading invitations:', error);
-      // Fallback a lista vacía
       setInvitations([]);
     }
   };
