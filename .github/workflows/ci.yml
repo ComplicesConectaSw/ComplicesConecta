@@ -1,14 +1,15 @@
-name: QA & DX Pipeline - ComplicesConecta v2.1.0
+# DESACTIVADO TEMPORALMENTE - Pipeline consume muchos recursos
+# Descomenta las siguientes líneas cuando el proyecto esté estable
 
-on:
-  push:
-    branches: [ main, develop, chore/logic-audit ]
-  pull_request:
-    branches: [ main, develop ]
+# name: QA & DX Pipeline - ComplicesConecta v2.1.0
 
-env:
-  NODE_VERSION: '20'
-  FORCE_COLOR: '1'
+# on:
+#   push:
+#     branches: [ main, develop, chore/logic-audit ]
+#   pull_request:
+#     branches: [ main, develop ]
+
+# env:
 
 jobs:
   # Job 1: Type Check (fail-fast)
@@ -51,7 +52,7 @@ jobs:
     - name: 📦 Instalar dependencias
       run: npm ci
       
-    - name: 🔍 ESLint - Análisis de código
+    - name: 🔍 Ejecutar linting
       run: npm run lint
       
     - name: 📊 Generar reporte de linting
@@ -140,10 +141,10 @@ jobs:
     - name: 📦 Instalar dependencias
       run: npm ci
       
-    - name: 🏗️ Build para tests E2E
+    - name: 🏗️ Build para E2E
       run: npm run build
         
-    - name: 🎭 Instalar Playwright
+    - name: 🎭 Instalar navegadores Playwright
       run: npx playwright install --with-deps
       
     - name: 🎭 Ejecutar tests E2E
@@ -178,7 +179,7 @@ jobs:
     - name: 📦 Instalar dependencias
       run: npm ci
       
-    - name: 🔒 Audit de dependencias
+    - name: 🔒 Auditoría de seguridad
       run: npm audit --audit-level=moderate
       
     - name: 🔍 CodeQL Analysis
@@ -202,13 +203,9 @@ jobs:
       
     - name: 📋 Generar reporte QA
       run: |
-        echo "# 📋 Reporte QA Pipeline - ComplicesConecta v2.0.0" > qa-report.md
+        echo "# 📋 Reporte de Calidad - ComplicesConecta" > qa-report.md
         echo "" >> qa-report.md
-        echo "**Fecha:** $(date)" >> qa-report.md
-        echo "**Commit:** ${{ github.sha }}" >> qa-report.md
-        echo "**Branch:** ${{ github.ref_name }}" >> qa-report.md
-        echo "" >> qa-report.md
-        echo "## 📊 Resultados" >> qa-report.md
+        echo "## 📊 Resultados de Jobs:" >> qa-report.md
         echo "- **Type Check:** ${{ needs.type-check.result }}" >> qa-report.md
         echo "- **Lint:** ${{ needs.lint.result }}" >> qa-report.md
         echo "- **Build:** ${{ needs.build.result }}" >> qa-report.md
@@ -243,11 +240,9 @@ jobs:
         
     - name: 🚀 Deploy a Vercel
       uses: amondnet/vercel-action@v25
-      env:
-        VERCEL_TOKEN: 2w5WOqoEW3eA2Sfu0uEZGYP6
-        VERCEL_ORG_ID: team_76B9uYcK2KACzNNkUspngLLG
-        VERCEL_PROJECT_ID: prj_G1tZCHwwLIrpHYjmYyHCRY5V7SAq
       with:
-        vercel-token: 2w5WOqoEW3eA2Sfu0uEZGYP6
+        vercel-token: ${{ secrets.VERCEL_TOKEN }}
+        vercel-org-id: ${{ secrets.ORG_ID }}
+        vercel-project-id: ${{ secrets.PROJECT_ID }}
         vercel-args: '--prod'
-        working-directory: ./
+        working-directory: ./prj_G1tZCHwwLIrpHYjmYyHCRY5V7SAq
