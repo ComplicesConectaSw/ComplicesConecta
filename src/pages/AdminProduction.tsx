@@ -225,7 +225,7 @@ const AdminProduction = () => {
 
   const loadRealStats = async () => {
     try {
-      // Obtener estadísticas reales de la base de datos (con fallback para tablas faltantes)
+      // Obtener estadísticas básicas de profiles
       const [
         { count: totalUsers },
         { count: premiumUsers },
@@ -235,47 +235,48 @@ const AdminProduction = () => {
         supabase.from('profiles').select('*', { count: 'exact', head: true }),
         supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('is_premium', true),
         supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('is_verified', true),
-        supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('relationship_type', 'couple')
+        supabase.from('chat_invitations').select('*', { count: 'exact', head: true })
       ]);
-      
-      // Intentar obtener métricas opcionales (pueden no existir)
-      let metricsResponse: { data: any[] | null; error?: any } = { data: [] };
-      let tokensResponse: { data: any[] | null; error?: any } = { data: [] };
-      let apkDownloadsResponse: { count: number | null; error?: any } = { count: 0 };
-      
+
+      // Intentar cargar métricas adicionales - tablas podrían no existir
+      let apkDownloadsResponse = { count: 0 };
+      let appMetrics = null;
+      let tokenData = null;
+
       try {
-        const result = await supabase.from('app_metrics').select('*');
-        metricsResponse = result;
+        const apkResponse = await supabase.from('apk_downloads').select('*', { count: 'exact', head: true });
+        apkDownloadsResponse = { count: apkResponse.count || 0 };
       } catch (error) {
-        console.warn('⚠️ Tabla app_metrics no disponible:', error);
-        metricsResponse = { data: [] };
-      }
-      
-      try {
-        const result = await supabase.from('user_token_balances').select('cmpx_balance');
-        tokensResponse = result;
-      } catch (error) {
-        console.warn('⚠️ Tabla user_token_balances no disponible:', error);
-        tokensResponse = { data: [] };
-      }
-      
-      try {
-        const { count } = await supabase.from('apk_downloads').select('*', { count: 'exact', head: true });
-        apkDownloadsResponse = { count: count || 0 };
-      } catch (error) {
-        console.warn('⚠️ Tabla apk_downloads no disponible:', error);
-        apkDownloadsResponse = { count: 0 };
+        console.log('⚠️ Tabla apk_downloads no disponible');
       }
 
-      // Obtener valores de métricas específicas
+      try {
+        const metricsResponse = await supabase.from('app_metrics').select('*');
+        if (!metricsResponse.error) {
+          appMetrics = metricsResponse.data;
+        }
+      } catch (error) {
+        console.log('📊 Tabla app_metrics no disponible, usando datos calculados');
+      }
+
+      try {
+        const tokensResponse = await supabase.from('user_token_balances').select('cmpx_balance');
+        if (!tokensResponse.error) {
+          tokenData = tokensResponse.data;
+        }
+      } catch (error) {
+        console.log('🪙 Tabla user_token_balances no disponible');
+      }
+
+      // Función para obtener métricas específicas
       const getMetricValue = (name: string) => {
-        if (!metricsResponse.data) return 0;
-        const metric = metricsResponse.data.find((m: any) => m.metric_name === name);
+        if (!appMetrics) return 0;
+        const metric = appMetrics.find((m: any) => m.metric_name === name);
         return metric?.metric_value || 0;
       };
 
-      // Calcular tokens totales y en staking con fallback
-      const totalTokens = tokensResponse.data?.length || 0;
+      // Calcular tokens totales
+      const totalTokens = tokenData?.length || 0;
       const stakedTokens = getMetricValue('staked_tokens');
       
       console.log('📊 Estadísticas cargadas:', {
@@ -336,8 +337,9 @@ const AdminProduction = () => {
 
   const loadRealInvitations = async () => {
     try {
+      // Intentar primero con 'chat_invitations' como sugiere Supabase
       const { data, error } = await supabase
-        .from('invitations')
+        .from('chat_invitations')
         .select('*')
         .order('created_at', { ascending: false })
         .limit(50);
