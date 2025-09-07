@@ -294,14 +294,32 @@ const Auth = () => {
             console.log('✅ Autenticación exitosa, esperando carga de perfil...');
             
             // Esperar hasta que el perfil se cargue completamente
+            let profileCheckAttempts = 0;
+            const maxAttempts = 20; // 10 segundos máximo (20 * 500ms)
+            
             const waitForProfile = () => {
-              // Verificar si el perfil está cargado
-              if (profile && (profile.first_name || profile.role || profile.email)) {
-                console.log('📋 Perfil cargado:', {
-                  first_name: profile.first_name,
-                  role: profile.role,
-                  email: profile.email || user?.email
-                });
+              profileCheckAttempts++;
+              
+              console.log(`🔍 Intento ${profileCheckAttempts}/${maxAttempts} - Verificando perfil:`, {
+                profileExists: !!profile,
+                first_name: profile?.first_name,
+                role: profile?.role,
+                email: profile?.email,
+                userEmail: user?.email
+              });
+              
+              // Condición mejorada: verificar si el perfil existe O si tenemos datos del usuario
+              const hasValidProfile = profile && (
+                profile.first_name || 
+                profile.role || 
+                profile.email || 
+                profile.id
+              );
+              
+              const hasUserData = user && user.email;
+              
+              if (hasValidProfile || hasUserData) {
+                console.log('📋 Perfil/Usuario disponible - procediendo con redirección');
                 
                 // Verificar si es admin para redirección
                 const adminCheck = isAdmin();
@@ -314,15 +332,32 @@ const Auth = () => {
                   console.log('👤 Usuario regular - redirigiendo a discover');
                   navigate("/discover");
                 }
+              } else if (profileCheckAttempts >= maxAttempts) {
+                console.warn('⚠️ Timeout alcanzado - redirigiendo sin perfil completo');
+                
+                // Fallback: usar email del usuario para determinar si es admin
+                const userEmail = user?.email?.toLowerCase();
+                const adminEmails = ['djwacko28@gmail.com', 'complicesconectasw@outlook.es'];
+                const isAdminByEmail = userEmail && adminEmails.includes(userEmail);
+                
+                console.log('🔐 Verificación admin por email (fallback):', isAdminByEmail);
+                
+                if (isAdminByEmail) {
+                  console.log('👑 Admin detectado por email - redirigiendo a admin');
+                  navigate("/admin");
+                } else {
+                  console.log('👤 Usuario regular por defecto - redirigiendo a discover');
+                  navigate("/discover");
+                }
               } else {
-                console.log('⏳ Perfil aún no cargado, esperando...');
+                console.log('⏳ Perfil aún no cargado, reintentando...');
                 // Reintentar después de 500ms
                 setTimeout(waitForProfile, 500);
               }
             };
             
-            // Iniciar verificación después de 500ms
-            setTimeout(waitForProfile, 500);
+            // Iniciar verificación después de 200ms (más rápido)
+            setTimeout(waitForProfile, 200);
           }
         } catch (error) {
           console.error('❌ Error en signIn:', error);
