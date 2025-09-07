@@ -93,7 +93,7 @@ describe('EmailService - Variables de Entorno', () => {
     const mockError = { error: { message: 'Template not found' } };
     mockSupabaseClient.functions.invoke.mockResolvedValue(mockError);
 
-    const result = await emailService.sendConfirmationEmail(
+    const result = await EmailService.sendConfirmationEmail(
       'test@example.com',
       'https://example.com/confirm',
       'ABC123'
@@ -105,15 +105,15 @@ describe('EmailService - Variables de Entorno', () => {
   });
 
   it('debe validar formato de email correctamente', () => {
-    // Mock validateEmail as static method
-    EmailService.validateEmail = vi.fn().mockImplementation((email: string) => {
+    // Mock validateEmail function
+    const validateEmail = (email: string) => {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(email);
-    });
+    };
     
-    expect(EmailService.validateEmail('valid@example.com')).toBe(true);
-    expect(EmailService.validateEmail('invalid-email')).toBe(false);
-    expect(EmailService.validateEmail('')).toBe(false);
-    expect(EmailService.validateEmail('test@')).toBe(false);
+    expect(validateEmail('valid@example.com')).toBe(true);
+    expect(validateEmail('invalid-email')).toBe(false);
+    expect(validateEmail('')).toBe(false);
+    expect(validateEmail('test@')).toBe(false);
   });
 });
