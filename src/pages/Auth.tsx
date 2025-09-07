@@ -330,17 +330,29 @@ const Auth = () => {
                   const useProduction = shouldUseProductionAdmin();
                   console.log('🏭 Usar panel producción:', useProduction);
                   
-                  if (useProduction) {
-                    console.log('📊 Redirigiendo a AdminProduction (datos reales)');
-                    navigate("/admin-production");
+                  const userEmail = user?.email?.toLowerCase();
+                  const adminEmails = ['djwacko28@gmail.com', 'complicesconectasw@outlook.es'];
+                  const isAdminByAuth = userEmail && adminEmails.includes(userEmail);
+                  
+                  console.log('🔐 Verificación admin por email de autenticación:', {
+                    userEmail,
+                    isAdminByAuth,
+                    profileEmail: profile?.email
+                  });
+                  
+                  if (isAdminByAuth) {
+                    // Usar redirección inteligente para admins
+                    if (shouldUseProductionAdmin()) {
+                      console.log('🏭 Admin real/demo - redirigiendo a AdminProduction');
+                      navigate("/admin-production");
+                    } else {
+                      console.log('🎭 Admin demo - redirigiendo a Admin demo');
+                      navigate("/admin");
+                    }
                   } else {
-                    console.log('🎭 Redirigiendo a Admin (datos demo)');
-                    navigate("/admin");
+                    console.log('👤 Usuario regular - redirigiendo a discover');
+                    navigate("/discover");
                   }
-                } else {
-                  console.log('👤 Usuario regular - redirigiendo a discover');
-                  navigate("/discover");
-                }
               } else if (profileCheckAttempts >= maxAttempts) {
                 console.warn('⚠️ Timeout alcanzado - redirigiendo sin perfil completo');
                 
@@ -372,7 +384,7 @@ const Auth = () => {
                 }
               } else {
                 console.log('⏳ Perfil aún no cargado, reintentando...');
-                // Reintentar después de 500ms
+                profileCheckAttempts++;
                 setTimeout(waitForProfile, 500);
               }
             };

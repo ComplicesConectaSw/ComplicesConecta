@@ -355,23 +355,28 @@ export const useAuth = () => {
       }
     }
     
-    // Verificar admin en perfil real - usar múltiples fuentes
+    // CRÍTICO: Verificar admin basado en EMAIL DE AUTENTICACIÓN, no perfil
     const userEmail = user?.email?.toLowerCase();
-    const profileRole = profile?.role;
     
-    // Lista de emails admin conocidos - CORREGIDA
+    // Lista de emails admin - SOLO estos pueden ser admin
     const adminEmails = [
       'djwacko28@gmail.com',        // Admin demo solamente
       'complicesconectasw@outlook.es'  // Único admin real
     ];
+    
+    // PRIORIDAD: Email de autenticación determina admin status
     const isAdminByEmail = userEmail && adminEmails.includes(userEmail);
-    const isAdminByRole = profileRole === 'admin';
+    
+    // SECUNDARIO: Role del perfil (solo si email no es admin)
+    const profileRole = profile?.role;
+    const isAdminByRole = !isAdminByEmail && profileRole === 'admin';
     
     const isAdminReal = isAdminByEmail || isAdminByRole;
     
     if (userEmail) {
       console.log('🔐 Admin real check:', {
-        email: userEmail,
+        authEmail: userEmail,
+        profileEmail: profile?.email,
         profileRole,
         isAdminByEmail,
         isAdminByRole,
