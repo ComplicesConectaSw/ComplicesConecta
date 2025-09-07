@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitación - ComplicesConecta</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background-color: #f8f9fa; }
+        .container { max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 16px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #74b9ff, #0984e3); padding: 40px 30px; text-align: center; }
+        .logo { display: inline-flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .logo-icon { width: 48px; height: 48px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        .logo-text { font-size: 28px; font-weight: 700; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        .content { background: white; padding: 40px 30px; }
+        .title { font-size: 24px; font-weight: 700; color: #2d3436; margin-bottom: 20px; text-align: center; }
+        .subtitle { font-size: 16px; color: #636e72; margin-bottom: 30px; text-align: center; }
+        .cta-button { display: inline-block; background: linear-gradient(135deg, #74b9ff, #0984e3); color: white; text-decoration: none; padding: 16px 32px; border-radius: 50px; font-weight: 600; font-size: 16px; text-align: center; margin: 20px auto; display: block; width: fit-content; box-shadow: 0 8px 25px rgba(116, 185, 255, 0.3); }
+        .footer { background: #2d3436; color: #b2bec3; padding: 30px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <div class="logo-icon">🎉</div>
+                <div class="logo-text">ComplicesConecta</div>
+            </div>
+            <h1 style="color: white; font-size: 28px; margin: 0; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
+                ¡Has sido invitado! 💌
+            </h1>
+        </div>
+        
+        <div class="content">
+            <h2 class="title">Únete a la comunidad lifestyle más exclusiva</h2>
+            <p class="subtitle">
+                Hola <strong>{{ .Email }}</strong>, has recibido una invitación especial para unirte a ComplicesConecta, 
+                donde las conexiones auténticas y discretas son nuestra prioridad.
+            </p>
+            
+            <a href="{{ .ConfirmationURL }}" class="cta-button">
+                🚀 Aceptar Invitación
+            </a>
+            
+            <div style="background: #e8f5e8; border: 1px solid #4caf50; padding: 20px; border-radius: 8px; margin: 30px 0;">
+                <h4 style="color: #2e7d32; margin-bottom: 10px;">✨ Lo que te espera:</h4>
+                <ul style="color: #2e7d32; font-size: 14px; margin: 0; padding-left: 20px;">
+                    <li>Comunidad verificada y selecta</li>
+                    <li>Conexiones basadas en intereses reales</li>
+                    <li>Máxima privacidad y discreción</li>
+                    <li>Eventos exclusivos para miembros</li>
+                </ul>
+            </div>
+            
+            <p style="text-align: center; color: #636e72; font-size: 14px;">
+                Esta invitación es válida por 7 días. No compartas este enlace con nadie más.
+            </p>
+        </div>
+        
+        <div class="footer">
+            <p style="margin: 0; font-size: 14px;">
+                © 2024 ComplicesConecta. Conectando personas auténticas.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

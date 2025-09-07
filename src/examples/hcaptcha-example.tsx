@@ -1,9 +1,12 @@
+// ✅ Validado por Auditoría ComplicesConecta v2.1.2
+// Fecha: 2025-01-06
+
 import React, { useState } from 'react';
 import { HCaptchaWidget } from '@/components/HCaptchaWidget';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { CheckCircle, XCircle, Shield } from 'lucide-react';
+import { CheckCircle, AlertCircle, Shield } from 'lucide-react';
 
 /**
  * Ejemplo completo de implementación de hCaptcha
@@ -16,7 +19,7 @@ export const HCaptchaExample: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Site key de hCaptcha (obtener de hcaptcha.com)
-  const HCAPTCHA_SITE_KEY = process.env.VITE_HCAPTCHA_SITE_KEY || '10000000-ffff-ffff-ffff-000000000001';
+  const HCAPTCHA_SITE_KEY = import.meta.env.VITE_HCAPTCHA_SITE_KEY || '10000000-ffff-ffff-ffff-000000000001';
 
   const handleVerify = (captchaToken: string, isValid: boolean) => {
     console.log('Verificación hCaptcha:', { token: captchaToken, valid: isValid });

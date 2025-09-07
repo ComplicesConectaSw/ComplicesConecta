@@ -1,11 +1,15 @@
+// ✅ AUTO-FIX aplicado por Auditoría ComplicesConecta v2.1.2
+// Fecha: 2025-01-06
+
 import React, { useState } from 'react';
-import { IDKitWidget, VerificationLevel, ISuccessResult } from '@worldcoin/idkit';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Shield, CheckCircle, AlertCircle, Loader2, Globe } from 'lucide-react';
+import { IDKitWidget, VerificationLevel, ISuccessResult } from '@worldcoin/idkit'
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { useWorldID } from "@/hooks/useWorldID"
+import { useAuth } from "@/hooks/useAuth"
 import { useToast } from '@/hooks/use-toast';
-import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
+import { CheckCircle, Loader2, Globe, Shield } from 'lucide-react';
 
 interface WorldIDButtonProps {
   onSuccess?: (result: ISuccessResult) => void;
@@ -155,8 +159,8 @@ export const WorldIDButton: React.FC<WorldIDButtonProps> = ({
 
   return (
     <IDKitWidget
-      app_id={process.env.NEXT_PUBLIC_WORLD_APP_ID || ""}
-      action={process.env.NEXT_PUBLIC_WORLD_APP_ACTION || "verify-human"}
+      app_id={import.meta.env.VITE_WORLD_APP_ID || ""}
+      action={import.meta.env.VITE_WORLD_APP_ACTION || "verify-human"}
       verification_level={VerificationLevel.Orb}
       handleVerify={handleVerify}
       onError={handleError}

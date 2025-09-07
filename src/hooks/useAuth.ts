@@ -1,6 +1,10 @@
+// ✅ AUTO-FIX aplicado por Auditoría ComplicesConecta v2.1.2
+// Fecha: 2025-01-06
+
 import { useState, useEffect } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+import { handleDemoAuth, clearDemoAuth, checkDemoSession } from '@/lib/app-config';
 
 interface Profile {
   id: string;
@@ -33,35 +37,15 @@ export const useAuth = () => {
   });
 
   useEffect(() => {
-    // Check for demo session first
-    const checkDemoSession = () => {
-      const demoUser = localStorage.getItem('demo_user');
-      const demoSession = localStorage.getItem('demo_session');
-      const userType = localStorage.getItem('userType');
-      
-      if (demoUser && demoSession && userType) {
-        try {
-          const user = JSON.parse(demoUser);
-          setState({
-            user: user,
-            session: { user } as Session,
-            loading: false,
-            profile: { id: user.id, role: user.role }
-          });
-          return true;
-        } catch (error) {
-          console.error('Error parsing demo session:', error);
-          // Clear corrupted data
-          localStorage.removeItem('demo_user');
-          localStorage.removeItem('demo_session');
-          localStorage.removeItem('userType');
-        }
-      }
-      return false;
-    };
-
-    // If demo session exists, use it
-    if (checkDemoSession()) {
+    // Check for demo session using centralized function
+    const demoSessionData = checkDemoSession();
+    if (demoSessionData) {
+      setState({
+        user: demoSessionData.user,
+        session: { user: demoSessionData.user } as Session,
+        loading: false,
+        profile: { id: demoSessionData.user.id, role: demoSessionData.user.role }
+      });
       return;
     }
 
@@ -155,13 +139,16 @@ export const useAuth = () => {
   };
 
   const signOut = async () => {
-    // Clear demo session if exists
-    localStorage.removeItem('demo_user');
-    localStorage.removeItem('demo_session');
+    // Use centralized demo auth clearing
+    clearDemoAuth();
     
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      console.error('Error signing out:', error);
+    // Only attempt Supabase signout if not in demo mode
+    const demoAuth = localStorage.getItem('demo_authenticated');
+    if (!demoAuth) {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error('Error signing out:', error);
+      }
     }
     
     // Reset state
@@ -191,11 +178,45 @@ export const useAuth = () => {
   };
 
   const signIn = async (email: string, password: string) => {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password
-    });
-    return { data, error };
+    try {
+      setState(prev => ({ ...prev, loading: true }));
+      console.info(`🔐 Iniciando sesión para: ${email}`);
+
+      // Check for demo session first
+      const demoSession = checkDemoSession(email, password);
+      if (demoSession) {
+        console.info(`🎭 Sesión demo activada para: ${email}`);
+        setState({
+          user: demoSession.user as any,
+          session: { user: demoSession.user } as any,
+          loading: false,
+          profile: { id: demoSession.user.id, role: demoSession.user.role, is_demo: true }
+        });
+        return { user: demoSession.user, session: demoSession };
+      }
+
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        console.error(`❌ Error en signIn para ${email}:`, error.message);
+        throw error;
+      }
+
+      console.info(`✅ Sesión iniciada exitosamente para: ${email}`);
+      setState({
+        user: data.user,
+        session: data.session,
+        loading: false
+      });
+      return data;
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Error signing in';
+      console.error(errorMessage);
+      throw error;
+    }
   };
 
   const signUp = async (email: string, password: string, metadata?: any) => {
@@ -210,16 +231,16 @@ export const useAuth = () => {
   };
 
   const setDemoSession = (userType: string, userData: any) => {
-    localStorage.setItem('demo_user', JSON.stringify(userData));
-    localStorage.setItem('demo_session', 'true');
-    localStorage.setItem('userType', userType);
-    
-    setState({
-      user: userData,
-      session: { user: userData } as Session,
-      loading: false,
-      profile: { id: userData?.id, role: userData?.role, is_demo: true }
-    });
+    // Use centralized demo auth handling
+    const demoSession = handleDemoAuth(userData.email);
+    if (demoSession) {
+      setState({
+        user: demoSession.user as any,
+        session: { user: demoSession.user } as any,
+        loading: false,
+        profile: { id: demoSession.user.id, role: demoSession.user.role, is_demo: true }
+      });
+    }
   };
 
   const isDemoSession = () => {

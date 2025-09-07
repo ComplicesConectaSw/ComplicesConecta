@@ -47,20 +47,31 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
 // Verificar conectividad inicial y activar modo demo si es necesario
 let isDemoMode = false;
 
-supabase.auth.getSession().then(({ error }) => {
-  if (error) {
-    console.warn('⚠️ Problema de conectividad con Supabase:', error.message);
-    if (error.message.includes('Failed to fetch') || error.message.includes('CONNECTION_REFUSED')) {
-      isDemoMode = true;
-      console.log('🔄 Activando modo demo offline');
+// Solo intentar conectar a Supabase si no estamos en modo demo
+const checkDemoMode = () => {
+  const demoAuth = localStorage.getItem('demo_authenticated');
+  return demoAuth === 'true';
+};
+
+if (!checkDemoMode()) {
+  supabase.auth.getSession().then(({ error }) => {
+    if (error) {
+      console.warn('⚠️ Problema de conectividad con Supabase:', error.message);
+      if (error.message.includes('Failed to fetch') || error.message.includes('CONNECTION_REFUSED') || error.message.includes('Invalid Refresh Token')) {
+        isDemoMode = true;
+        console.log('🔄 Activando modo demo offline');
+      }
+    } else {
+      console.log('✅ Conectado exitosamente a Supabase');
     }
-  } else {
-    console.log('✅ Conectado exitosamente a Supabase');
-  }
-}).catch((err) => {
-  console.warn('⚠️ No se pudo verificar la sesión de Supabase:', err.message);
+  }).catch((err) => {
+    console.warn('⚠️ No se pudo verificar la sesión de Supabase:', err.message);
+    isDemoMode = true;
+    console.log('🔄 Activando modo demo offline');
+  });
+} else {
   isDemoMode = true;
-  console.log('🔄 Activando modo demo offline');
-});
+  console.log('🔄 Modo demo activo - evitando conexión a Supabase');
+}
 
 export { isDemoMode };

@@ -1,3 +1,8 @@
+// ✅ AUTO-FIX aplicado por Auditoría ComplicesConecta v2.1.2
+// Fecha: 2025-01-06
+// Cambios: Reemplazado process.env con import.meta.env para compatibilidad Vite
+// Logs informativos agregados para monitoreo en producción
+
 export interface EmailData {
   to: string;
   subject: string;
@@ -27,15 +32,17 @@ export interface TemplateData {
 
 export class EmailService {
   static {
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_ANON_KEY) {
       throw new Error("Supabase URL or Anon Key is not defined in environment variables.");
     }
   }
-  private static baseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  private static anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  private static baseUrl = import.meta.env.VITE_SUPABASE_URL;
+  private static anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
   static async sendEmail(template: string, to: string, data: TemplateData = {}) {
     try {
+      console.info(`📨 Enviando email con template: ${template} a ${to}`);
+      
       const response = await fetch(`${this.baseUrl}/functions/v1/send-email`, {
         method: 'POST',
         headers: {
@@ -50,17 +57,21 @@ export class EmailService {
       });
 
       if (!response.ok) {
+        console.error(`❌ Error HTTP en send-email: ${response.status}`);
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      return await response.json();
+      const result = await response.json();
+      console.info(`✅ Email enviado exitosamente con template: ${template}`);
+      return result;
     } catch (error) {
-      console.error('Error sending email:', error);
+      console.error(`❌ Error enviando email con template ${template}:`, error);
       throw error;
     }
   }
 
   static async sendWelcomeEmail(to: string, confirmationUrl: string, userName?: string) {
+    console.info(`👋 Enviando email de bienvenida a ${userName || 'usuario'} (${to})`);
     return this.sendEmail('welcome', to, { confirmationUrl, userName });
   }
 
@@ -69,6 +80,7 @@ export class EmailService {
   }
 
   static async sendPasswordResetEmail(to: string, resetUrl: string) {
+    console.info(`🔐 Enviando email de reset de contraseña a ${to}`);
     return this.sendEmail('reset-password', to, { resetUrl });
   }
 
@@ -81,6 +93,7 @@ export class EmailService {
     matchScore?: number;
     distance?: number;
   }) {
+    console.info(`💕 Enviando notificación de match a ${to} - Match: ${matchData.matchName}`);
     return this.sendEmail('match', to, matchData);
   }
 
@@ -92,6 +105,7 @@ export class EmailService {
     eventPrice: string;
     eventUrl: string;
   }) {
+    console.info(`🎉 Enviando invitación de evento a ${to} - Evento: ${eventData.eventName}`);
     return this.sendEmail('event', to, eventData);
   }
 }

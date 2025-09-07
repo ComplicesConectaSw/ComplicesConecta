@@ -95,11 +95,14 @@ export const useWorldID = () => {
     checkVerificationStatus();
   }, [checkVerificationStatus]);
 
+// ✅ AUTO-FIX aplicado por Auditoría ComplicesConecta v2.1.2
+// Fecha: 2025-01-06
+
   // Check if World ID is properly configured
   const isConfigured = useCallback(() => {
     return !!(
-      process.env.NEXT_PUBLIC_WORLD_APP_ID &&
-      process.env.NEXT_PUBLIC_WORLD_APP_ACTION
+      import.meta.env.VITE_WORLD_APP_ID &&
+      import.meta.env.VITE_WORLD_APP_ACTION
     );
   }, []);
 

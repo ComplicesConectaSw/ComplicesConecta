@@ -36,18 +36,18 @@
         <div class="content">
             <h2 class="title">Solo un paso más para unirte...</h2>
             <p class="subtitle">
-                Haz clic en el botón de abajo para verificar tu dirección de email y activar tu cuenta en la comunidad lifestyle más exclusiva.
+                Hola <strong>{{ .Email }}</strong>, haz clic en el botón de abajo para verificar tu dirección de email y activar tu cuenta en la comunidad lifestyle más exclusiva.
             </p>
             
             <div class="token-box">
                 <h3 style="margin-bottom: 15px; font-size: 20px;">🎯 ¡Tu código de verificación lifestyle!</h3>
-                <div class="token">{{.Token}}</div>
+                <div class="token">{{ .Token }}</div>
                 <p style="margin-top: 15px; font-size: 14px; opacity: 0.9;">
                     Este código expira en 24 horas por seguridad
                 </p>
             </div>
             
-            <a href="{{.ConfirmationURL}}" class="cta-button">
+            <a href="{{ .ConfirmationURL }}" class="cta-button">
                 Verificar mi Email y Entrar ✅
             </a>
             
@@ -63,7 +63,7 @@
             
             <p style="text-align: center; color: #636e72; font-size: 14px; margin-top: 30px;">
                 ¿Problemas con el botón? Copia y pega este enlace en tu navegador:<br>
-                <span style="color: #74b9ff; word-break: break-all;">{{.ConfirmationURL}}</span>
+                <span style="color: #74b9ff; word-break: break-all;">{{ .ConfirmationURL }}</span>
             </p>
         </div>
         
@@ -72,7 +72,7 @@
                 © 2024 ComplicesConecta. La plataforma líder para conexiones lifestyle auténticas.
             </p>
             <p style="font-size: 12px; color: #636e72; margin-top: 20px;">
-                <a href="#" style="color: #74b9ff; text-decoration: none;">¿No solicitaste esto?</a> Contáctanos de forma segura
+                <a href="{{ .SiteURL }}/support" style="color: #74b9ff; text-decoration: none;">¿No solicitaste esto?</a> Contáctanos de forma segura
             </p>
         </div>
     </div>

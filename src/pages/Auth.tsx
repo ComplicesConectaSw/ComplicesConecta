@@ -16,6 +16,7 @@ import { MapPin, ArrowLeft, Sparkles } from "lucide-react";
 import { lifestyleInterests, getAutoInterests } from "@/lib/lifestyle-interests";
 import { LoginLoadingScreen } from "@/components/LoginLoadingScreen";
 import { appConfig, isDemoCredential } from "@/lib/app-config";
+import { useAuth } from "@/hooks/useAuth";
 
 interface FormData {
   email: string;
@@ -46,8 +47,11 @@ const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { getCurrentLocation, location, isLoading: locationLoading, error: locationError } = useGeolocation();
+  const { resetPassword } = useAuth();
   
   const [isLoading, setIsLoading] = useState(false);
+  const [showResetPassword, setShowResetPassword] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
   const [showLoginLoading, setShowLoginLoading] = useState(false);
   const [autoLocationRequested, setAutoLocationRequested] = useState(false);
   const [formData, setFormData] = useState<FormData>({
@@ -110,6 +114,35 @@ const Auth = () => {
       });
     }
   }, [location, toast]);
+
+  const handleResetPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const { error } = await resetPassword(resetEmail);
+      
+      if (error) {
+        throw error;
+      }
+
+      toast({
+        title: "¡Email enviado!",
+        description: "Revisa tu correo para restablecer tu contraseña",
+      });
+
+      setShowResetPassword(false);
+      setResetEmail("");
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "No se pudo enviar el email de restablecimiento",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
     const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -216,9 +249,11 @@ const Auth = () => {
         
         // Determinar tipo de usuario y nombre usando email normalizado
         const userType = normalizedEmail.includes('pareja') ? 'couple' : 
-                         normalizedEmail.includes('djwacko28') ? 'admin' : 'single';
+                         normalizedEmail.includes('djwacko28') ? 'admin' : 
+                         normalizedEmail.includes('complicesconectasw') ? 'admin' : 'single';
         const userName = normalizedEmail.includes('pareja') ? 'Pareja Demo' : 
-                        normalizedEmail.includes('djwacko28') ? 'Admin Demo' : 'Usuario Demo';
+                        normalizedEmail.includes('djwacko28') ? 'Admin Demo' : 
+                        normalizedEmail.includes('complicesconectasw') ? 'Admin Demo' : 'Usuario Demo';
         
         // Guardar tipo de usuario en localStorage
         localStorage.setItem('userType', userType);
@@ -228,8 +263,8 @@ const Auth = () => {
         setTimeout(() => {
           setShowLoginLoading(false);
           // Redirigir según el tipo de usuario usando email normalizado
-          if (normalizedEmail.includes('complicesconectasw')) {
-            navigate("/admin-production");
+          if (normalizedEmail.includes('complicesconectasw') || normalizedEmail.includes('djwacko28')) {
+            navigate("/admin");
           } else if (normalizedEmail.includes('pareja')) {
             navigate("/profile-couple");
           } else if (normalizedEmail.includes('single')) {
@@ -241,8 +276,8 @@ const Auth = () => {
         return;
       }
 
-      // En modo producción, intentar autenticación real con Supabase para TODOS los usuarios
-      if (appConfig.features.realAuth) {
+      // Solo intentar autenticación real si NO es credencial demo
+      if (!isDemoCredential(normalizedEmail) && appConfig.features.realAuth) {
         console.log('🔐 Intentando autenticación real con Supabase para:', formData.email);
         const { data, error } = await supabase.auth.signInWithPassword({
           email: formData.email,
@@ -251,34 +286,22 @@ const Auth = () => {
 
         if (error) {
           console.error('❌ Error de autenticación:', error);
-          const errorMessage = appConfig.mode === 'demo' 
-            ? "Credenciales inválidas. Use las credenciales demo: single@outlook.es o pareja@outlook.es"
-            : "Credenciales inválidas. Verifique su email y contraseña.";
-          
           toast({
             variant: "destructive",
             title: "Error al iniciar sesión",
-            description: errorMessage,
+            description: "Credenciales inválidas. Verifique su email y contraseña.",
           });
           return;
         }
 
-        // Redirigir según el tipo de usuario
-        if (normalizedEmail.includes('complicesconectasw')) {
-          navigate("/admin-production");
-        } else if (normalizedEmail.includes('pareja')) {
-          navigate("/profile-couple");
-        } else if (normalizedEmail.includes('single')) {
-          navigate("/profile-single");
-        } else {
-          navigate("/discover");
-        }
-      } else {
-        // En modo demo sin credenciales demo válidas
+        // Redirigir según el tipo de usuario real
+        navigate("/discover");
+      } else if (!isDemoCredential(normalizedEmail)) {
+        // Credencial no reconocida y no es demo
         toast({
           variant: "destructive",
           title: "Error al iniciar sesión",
-          description: "Use las credenciales demo: single@outlook.es o pareja@outlook.es",
+          description: "Use las credenciales demo: single@outlook.es, pareja@outlook.es o complicesconectasw@outlook.es",
         });
       }
 
@@ -311,76 +334,100 @@ const Auth = () => {
       if (checkError && checkError.code !== 'PGRST116') {
         console.error('Error verificando email:', checkError);
         toast({
+          title: "Error",
+          description: "Debes aceptar los términos y condiciones",
           variant: "destructive",
-          title: "Error de validación",
-          description: "No se pudo verificar el email. Intenta nuevamente.",
         });
         return;
       }
 
-      if (existingProfile) {
+      if (parseInt(formData.age) < 18 || (formData.accountType === "couple" && parseInt(formData.partnerAge) < 18)) {
         toast({
+          title: "Error",
+          description: "Debes ser mayor de 18 años para registrarte",
           variant: "destructive",
-          title: "Email ya registrado",
-          description: "Este email ya está en uso. Intenta iniciar sesión o usa otro email.",
         });
         return;
       }
 
-      const redirectUrl = `${window.location.origin}/`;
-      
-      const { error } = await supabase.auth.signUp({
+      // Preparar datos del perfil
+      const profileData = {
+        email: formData.email,
+        first_name: formData.firstName,
+        last_name: formData.lastName,
+        nickname: formData.nickname,
+        age: parseInt(formData.age),
+        gender: formData.gender,
+        interested_in: formData.interestedIn,
+        bio: formData.bio,
+        account_type: formData.accountType,
+        location: location || formData.location,
+        interests: formData.selectedInterests,
+        ...(formData.accountType === "couple" && {
+          partner_first_name: formData.partnerFirstName,
+          partner_last_name: formData.partnerLastName,
+          partner_nickname: formData.partnerNickname,
+          partner_age: parseInt(formData.partnerAge),
+          partner_gender: formData.partnerGender,
+          partner_interested_in: formData.partnerInterestedIn,
+          partner_bio: formData.partnerBio,
+        }),
+      };
+
+      const { data, error } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
         options: {
-          emailRedirectTo: redirectUrl,
-          data: {
-            first_name: formData.firstName,
-            last_name: formData.lastName,
-            age: Number(formData.age) || null,
-            gender: formData.gender,
-            interested_in: formData.interestedIn,
-            bio: formData.bio,
-            role: formData.role,
-            account_type: formData.accountType,
-            // Datos de pareja (si aplica)
-            partner_first_name: formData.accountType === "couple" ? formData.partnerFirstName : null,
-            partner_last_name: formData.accountType === "couple" ? formData.partnerLastName : null,
-            partner_age: formData.accountType === "couple" ? (Number(formData.partnerAge) || null) : null,
-            partner_gender: formData.accountType === "couple" ? formData.partnerGender : null,
-            partner_interested_in: formData.accountType === "couple" ? formData.partnerInterestedIn : null,
-            partner_bio: formData.accountType === "couple" ? formData.partnerBio : null,
-            latitude: location?.latitude || null,
-            longitude: location?.longitude || null,
-            share_location: formData.shareLocation,
-            selected_interests: formData.selectedInterests
-          }
-        }
+          data: profileData,
+        },
       });
 
       if (error) throw error;
 
       toast({
-        title: "¡Cuenta creada!",
-        description: "Revisa tu correo para confirmar tu cuenta.",
+        title: "¡Registro exitoso!",
+        description: "Revisa tu correo para confirmar tu cuenta",
       });
-    } catch (error: unknown) {
-      console.error('❌ Error de registro:', error);
-      let errorMessage = "Ha ocurrido un error inesperado.";
-      const errorObj = error as { message?: string };
+
+      // Limpiar formulario
+      setFormData({
+        email: '',
+        password: '',
+        firstName: '',
+        lastName: '',
+        nickname: '',
+        age: '',
+        gender: '',
+        interestedIn: '',
+        bio: '',
+        role: '',
+        accountType: 'single',
+        partnerFirstName: '',
+        partnerLastName: '',
+        partnerNickname: '',
+        partnerAge: '',
+        partnerGender: '',
+        partnerInterestedIn: '',
+        partnerBio: '',
+        location: '',
+        acceptTerms: false,
+        shareLocation: false,
+        selectedInterests: [],
+      });
+
+    } catch (error: any) {
+      let errorMessage = "Error desconocido al crear la cuenta";
       
-      if (errorObj.message?.includes('Failed to fetch') || errorObj.message?.includes('fetch')) {
-        errorMessage = "Problema de conexión. Verifica tu internet y vuelve a intentar.";
-      } else if (errorObj.message?.includes('User already registered')) {
-        errorMessage = "Este email ya está registrado. Intenta iniciar sesión o usa otro email.";
-      } else if (errorObj.message?.includes('Password should be at least')) {
+      if (error.message?.includes('User already registered')) {
+        errorMessage = "Este email ya está registrado. Intenta iniciar sesión.";
+      } else if (error.message?.includes('Password should be at least')) {
         errorMessage = "La contraseña debe tener al menos 6 caracteres.";
-      } else if (errorObj.message?.includes('Invalid email')) {
+      } else if (error.message?.includes('Invalid email')) {
         errorMessage = "El formato del email no es válido.";
-      } else if (errorObj.message?.includes('Signup is disabled')) {
+      } else if (error.message?.includes('Signup is disabled')) {
         errorMessage = "El registro está temporalmente deshabilitado. Intenta más tarde.";
-      } else if (errorObj.message) {
-        errorMessage = errorObj.message;
+      } else if (error.message) {
+        errorMessage = error.message;
       }
       
       toast({
@@ -491,7 +538,56 @@ const Auth = () => {
                 <Button type="submit" className="w-full" disabled={isLoading}>
                   {isLoading ? "Iniciando sesión..." : "Iniciar Sesión"}
                 </Button>
+                
+                {/* Reset Password Link */}
+                <div className="text-center mt-4">
+                  <button
+                    type="button"
+                    onClick={() => setShowResetPassword(true)}
+                    className="text-sm text-primary hover:text-primary/80 underline"
+                  >
+                    ¿Olvidaste tu contraseña?
+                  </button>
+                </div>
               </form>
+              
+              {/* Reset Password Modal */}
+              {showResetPassword && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                  <div className="bg-background rounded-lg p-6 w-full max-w-md">
+                    <h3 className="text-lg font-semibold mb-4">Restablecer Contraseña</h3>
+                    <form onSubmit={handleResetPassword} className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="resetEmail">Correo electrónico</Label>
+                        <Input
+                          id="resetEmail"
+                          type="email"
+                          value={resetEmail}
+                          onChange={(e) => setResetEmail(e.target.value)}
+                          placeholder="Ingresa tu email"
+                          required
+                        />
+                      </div>
+                      <div className="flex gap-2">
+                        <Button 
+                          type="button" 
+                          variant="outline" 
+                          onClick={() => {
+                            setShowResetPassword(false);
+                            setResetEmail("");
+                          }}
+                          className="flex-1"
+                        >
+                          Cancelar
+                        </Button>
+                        <Button type="submit" disabled={isLoading} className="flex-1">
+                          {isLoading ? "Enviando..." : "Enviar"}
+                        </Button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              )}
             </TabsContent>
             
             <TabsContent value="signup">
