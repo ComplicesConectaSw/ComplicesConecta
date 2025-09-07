@@ -115,6 +115,13 @@ export const checkDemoSession = () => {
   
   if (demoUser && demoSession && userType) {
     try {
+      // Verificar que los valores no sean strings simples como "active"
+      if (demoUser === 'active' || demoSession === 'active' || userType === 'active') {
+        console.warn('🧹 Limpiando datos de sesión demo corruptos');
+        clearDemoAuth();
+        return null;
+      }
+      
       const user = JSON.parse(demoUser);
       const session = JSON.parse(demoSession);
       
