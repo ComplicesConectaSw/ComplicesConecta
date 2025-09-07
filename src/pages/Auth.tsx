@@ -439,12 +439,33 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/20" />
+    <div className="min-h-screen bg-hero-gradient flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Floating Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <Heart className="absolute top-20 left-10 w-8 h-8 text-white/20 animate-float" fill="currentColor" />
+        <Sparkles className="absolute top-32 right-16 w-6 h-6 text-white/30 animate-float" style={{ animationDelay: '1s' }} />
+        <Heart className="absolute bottom-32 left-20 w-6 h-6 text-white/25 animate-float" style={{ animationDelay: '2s' }} fill="currentColor" />
+        <Users className="absolute bottom-20 right-10 w-8 h-8 text-white/20 animate-float" style={{ animationDelay: '0.5s' }} />
+      </div>
+      
+      {/* Animated Background Particles */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-pulse delay-1000" />
-        <div className="absolute top-3/4 left-1/2 w-64 h-64 bg-blue-500/20 rounded-full blur-2xl animate-pulse delay-500" />
+        <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-1"></div>
+        <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-2"></div>
+        <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-3"></div>
+        <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-4"></div>
+        <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-5"></div>
+        <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-6"></div>
+        <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-7"></div>
+        <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-8"></div>
+        <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-9"></div>
+        <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-10"></div>
+        <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-11"></div>
+        <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-12"></div>
+        <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-13"></div>
+        <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-14"></div>
+        <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-15"></div>
+        <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-16"></div>
       </div>
 
       <div className="relative z-10 w-full max-w-md">
@@ -904,17 +925,22 @@ const Auth = () => {
                     <p className="text-sm text-white/90">Selecciona tus intereses para encontrar matches compatibles</p>
                   </div>
                   
-                  <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto">
+                  <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto scrollbar-thin scrollbar-thumb-purple-400 scrollbar-track-purple-900/20 smooth-scroll">
                     {lifestyleInterests.map((interest, index) => (
-                      <div key={index} className="flex items-center space-x-2">
+                      <div 
+                        key={index} 
+                        className="flex items-center space-x-2 p-2 rounded-md hover:bg-purple-500/10 transition-all duration-300 hover:scale-105 animate-fade-in"
+                        style={{ animationDelay: `${index * 50}ms` }}
+                      >
                         <Checkbox
                           id={`interest-${index}`}
                           checked={formData.selectedInterests.includes(interest)}
                           onCheckedChange={() => handleInterestToggle(interest)}
+                          className="data-[state=checked]:bg-purple-500 data-[state=checked]:border-purple-500"
                         />
                         <Label 
                           htmlFor={`interest-${index}`} 
-                          className="text-xs cursor-pointer text-white hover:text-purple-300"
+                          className="text-xs cursor-pointer text-white hover:text-purple-300 transition-colors duration-200 select-none"
                         >
                           {interest}
                         </Label>

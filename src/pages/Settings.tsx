@@ -98,7 +98,7 @@ const Settings = () => {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-foreground">{swingerStats.totalCouples}</div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-white/80">
                   <span className="text-accent">+15%</span> parejas nuevas este mes
                 </p>
               </CardContent>
@@ -111,7 +111,7 @@ const Settings = () => {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-foreground">{swingerStats.activeSwingers}</div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-white/80">
                   <span className="text-accent">+8.3%</span> conectados hoy
                 </p>
               </CardContent>
@@ -124,7 +124,7 @@ const Settings = () => {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-foreground">{swingerStats.intimateConnections}</div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-white/80">
                   <span className="text-accent">+22%</span> encuentros exitosos
                 </p>
               </CardContent>
@@ -137,7 +137,7 @@ const Settings = () => {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-foreground">{swingerStats.verifiedProfiles}</div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-white/80">
                   Verificación KYC + Lifestyle
                 </p>
               </CardContent>
@@ -150,7 +150,7 @@ const Settings = () => {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-foreground">{swingerStats.monthlyEvents}</div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-white/80">
                   Fiestas privadas y encuentros
                 </p>
               </CardContent>
@@ -163,7 +163,7 @@ const Settings = () => {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-foreground">{swingerStats.satisfactionRate}/5</div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-white/80">
                   Experiencias swinger valoradas
                 </p>
               </CardContent>
@@ -178,11 +178,25 @@ const Settings = () => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {swingerFeatures.map((feature, index) => (
-                <Card key={index} className="bg-card/80 backdrop-blur-sm border border-primary/10">
+                <Card 
+                  key={index} 
+                  className="bg-card/80 backdrop-blur-sm border border-primary/10 cursor-pointer hover:bg-card/90 transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/20"
+                  onClick={() => {
+                    if (feature.title === "Verificación Lifestyle KYC") {
+                      navigate('/profile-single');
+                    } else if (feature.title === "Chat Íntimo Encriptado") {
+                      navigate('/chat');
+                    } else if (feature.title === "Encuentros Gelocalizados") {
+                      navigate('/discover');
+                    } else if (feature.title === "Fiestas Privadas VIP") {
+                      navigate('/events');
+                    }
+                  }}
+                >
                   <CardHeader>
                     <CardTitle className="flex items-center gap-3">
                       <feature.icon className="h-6 w-6 text-primary" />
-                      {feature.title}
+                      <span className="text-white">{feature.title}</span>
                       <Badge 
                         variant={feature.status === "Premium" ? "destructive" : "secondary"}
                         className="ml-auto"
@@ -192,7 +206,7 @@ const Settings = () => {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-white/90">{feature.description}</p>
+                    <p className="text-white">{feature.description}</p>
                   </CardContent>
                 </Card>
               ))}

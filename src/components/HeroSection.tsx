@@ -21,7 +21,7 @@ export const HeroSection = () => {
         <div className="animate-slide-up">
           <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold text-white mb-6 animate-fade-in relative z-10">
             <span className="bg-gradient-to-r from-white via-pink-200 to-white bg-clip-text text-transparent drop-shadow-2xl">
-              Plataforma Social Premium
+              Plataforma Social Exclusiva
             </span>
             <br />
             <span className="bg-gradient-to-r from-white to-pink-200 bg-clip-text text-transparent animate-pulse drop-shadow-2xl">
@@ -32,7 +32,7 @@ export const HeroSection = () => {
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">
             Encuentra tu
             <span className="block bg-gradient-to-r from-white to-accent bg-clip-text text-transparent">
-              Cómplice Perfecto
+              Conexión Perfecta
             </span>
           </h2>
           

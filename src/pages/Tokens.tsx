@@ -60,7 +60,7 @@ export default function Tokens() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
               <div>
                 <h4 className="font-semibold mb-2 text-purple-800">🪙 Cómo obtener CMPX:</h4>
-                <ul className="space-y-1 text-gray-700">
+                <ul className="space-y-1 text-white/90">
                   <li className="flex items-start gap-2">
                     <span className="text-purple-600">•</span>
                     <span>100 CMPX → Verificar World ID</span>
@@ -85,7 +85,7 @@ export default function Tokens() {
               </div>
               <div>
                 <h4 className="font-semibold mb-2 text-purple-800">🔒 Beneficios del Staking:</h4>
-                <ul className="space-y-1 text-gray-700">
+                <ul className="space-y-1 text-white/90">
                   <li className="flex items-start gap-2">
                     <span className="text-purple-600">•</span>
                     <span>+10% recompensa en 30 días</span>
@@ -140,7 +140,7 @@ export default function Tokens() {
         <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           <Button
             onClick={() => setShowStakingModal(true)}
-            className="h-16 flex flex-col items-center justify-center gap-1 bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/20 text-gray-800 transition-all duration-300"
+            className="h-16 flex flex-col items-center justify-center gap-1 bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/20 text-white hover:text-purple-200 transition-all duration-300"
             variant="outline"
             disabled={!balance || balance.cmpxBalance < 50}
           >
@@ -150,7 +150,7 @@ export default function Tokens() {
 
           <Button
             onClick={() => window.open('/tokens-info', '_blank')}
-            className="h-16 flex flex-col items-center justify-center gap-1 bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/20 text-gray-800 transition-all duration-300"
+            className="h-16 flex flex-col items-center justify-center gap-1 bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/20 text-white hover:text-purple-200 transition-all duration-300"
             variant="outline"
           >
             <span className="text-lg">📚</span>
