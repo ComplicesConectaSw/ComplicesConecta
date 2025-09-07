@@ -285,6 +285,7 @@ const Auth = () => {
       // Usar el hook useAuth para autenticación real
       if (!isDemoCredential(normalizedEmail) && getAppConfig().features.realAuth) {
         console.log('🔐 Usando useAuth para autenticación real:', formData.email);
+        console.log('📧 Email normalizado:', normalizedEmail);
         
         try {
           const result = await signIn(formData.email, formData.password, formData.accountType);
@@ -292,24 +293,54 @@ const Auth = () => {
           if (result?.user) {
             console.log('✅ Autenticación exitosa, esperando carga de perfil...');
             
-            // Esperar un momento para que se cargue el perfil
-            setTimeout(() => {
-              // Verificar si es admin para redirección
-              if (isAdmin()) {
-                console.log('👑 Usuario admin detectado - redirigiendo a admin');
-                navigate("/admin");
+            // Esperar hasta que el perfil se cargue completamente
+            const waitForProfile = () => {
+              // Verificar si el perfil está cargado
+              if (profile && (profile.first_name || profile.role || profile.email)) {
+                console.log('📋 Perfil cargado:', {
+                  first_name: profile.first_name,
+                  role: profile.role,
+                  email: profile.email || user?.email
+                });
+                
+                // Verificar si es admin para redirección
+                const adminCheck = isAdmin();
+                console.log('🔐 Verificación admin:', adminCheck);
+                
+                if (adminCheck) {
+                  console.log('👑 Usuario admin detectado - redirigiendo a admin');
+                  navigate("/admin");
+                } else {
+                  console.log('👤 Usuario regular - redirigiendo a discover');
+                  navigate("/discover");
+                }
               } else {
-                console.log('👤 Usuario regular - redirigiendo a discover');
-                navigate("/discover");
+                console.log('⏳ Perfil aún no cargado, esperando...');
+                // Reintentar después de 500ms
+                setTimeout(waitForProfile, 500);
               }
-            }, 1000);
+            };
+            
+            // Iniciar verificación después de 500ms
+            setTimeout(waitForProfile, 500);
           }
         } catch (error) {
           console.error('❌ Error en signIn:', error);
+          
+          // Mensaje de error más específico
+          let errorMessage = "Credenciales inválidas. Verifique su email y contraseña.";
+          if (error instanceof Error) {
+            if (error.message?.includes('Invalid login credentials')) {
+              errorMessage = "Email o contraseña incorrectos. Verifique sus credenciales.";
+            } else if (error.message?.includes('Email not confirmed')) {
+              errorMessage = "Email no confirmado. Revise su bandeja de entrada.";
+            }
+          }
+          
           toast({
             variant: "destructive",
             title: "Error al iniciar sesión",
-            description: "Credenciales inválidas. Verifique su email y contraseña.",
+            description: errorMessage,
           });
         }
       } else if (!isDemoCredential(normalizedEmail)) {
