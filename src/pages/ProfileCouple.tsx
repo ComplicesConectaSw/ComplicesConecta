@@ -130,16 +130,39 @@ const ProfileCouple: React.FC = () => {
                 {profile ? profile.coupleName : 'Pareja'}
               </h1>
               <div className="flex gap-1 sm:gap-2">
-                <Button variant="ghost" size="sm" className="hover:bg-white/20 p-2">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="hover:bg-white/20 p-2 transition-all duration-300 hover:scale-105"
+                  onClick={() => {
+                    navigator.share ? 
+                      navigator.share({
+                        title: `Perfil de ${profile ? profile.coupleName : 'Pareja'}`,
+                        text: `Conoce a ${profile ? profile.coupleName : 'esta pareja'} en ComplicesConecta`,
+                        url: window.location.href
+                      }) : 
+                      navigator.clipboard.writeText(window.location.href).then(() => 
+                        alert('Enlace copiado al portapapeles')
+                      )
+                  }}
+                >
                   <Share2 className="h-4 w-4 text-white" />
                 </Button>
                 <Button 
                   variant="ghost" 
                   size="sm"
                   onClick={() => navigate('/edit-profile-couple')}
-                  className="hover:bg-white/20 p-2"
+                  className="hover:bg-white/20 p-2 transition-all duration-300 hover:scale-105"
                 >
                   <Settings className="h-4 w-4 text-white" />
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => navigate('/tokens')}
+                  className="hover:bg-white/20 p-2 transition-all duration-300 hover:scale-105"
+                >
+                  <Crown className="h-4 w-4 text-white" />
                 </Button>
               </div>
             </div>
@@ -174,13 +197,20 @@ const ProfileCouple: React.FC = () => {
                     )}
                   </div>
                   
-                  <div className="absolute bottom-4 right-4">
+                  <div className="absolute bottom-4 right-4 flex gap-2">
                     <Button 
                       onClick={() => navigate('/edit-profile-couple')}
-                      className="bg-white/90 text-black hover:bg-white"
+                      className="bg-white/90 text-black hover:bg-white transition-all duration-300 hover:scale-105"
                     >
                       <Settings className="h-4 w-4 mr-2" />
                       Editar
+                    </Button>
+                    <Button 
+                      onClick={() => navigate('/tokens')}
+                      className="bg-purple-500/90 text-white hover:bg-purple-600 transition-all duration-300 hover:scale-105"
+                    >
+                      <Crown className="h-4 w-4 mr-2" />
+                      Tokens
                     </Button>
                   </div>
                 </div>
@@ -319,16 +349,39 @@ const ProfileCouple: React.FC = () => {
               {profile ? profile.coupleName : 'Pareja'}
             </h1>
             <div className="flex gap-1 sm:gap-2">
-              <Button variant="ghost" size="sm" className="hover:bg-white/20 p-2">
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="hover:bg-white/20 p-2 transition-all duration-300 hover:scale-105"
+                onClick={() => {
+                  navigator.share ? 
+                    navigator.share({
+                      title: `Perfil de ${profile ? profile.coupleName : 'Pareja'}`,
+                      text: `Conoce a ${profile ? profile.coupleName : 'esta pareja'} en ComplicesConecta`,
+                      url: window.location.href
+                    }) : 
+                    navigator.clipboard.writeText(window.location.href).then(() => 
+                      alert('Enlace copiado al portapapeles')
+                    )
+                }}
+              >
                 <Share2 className="h-4 w-4 text-white" />
               </Button>
               <Button 
                 variant="ghost" 
                 size="sm"
                 onClick={() => navigate('/edit-profile-couple')}
-                className="hover:bg-white/20 p-2"
+                className="hover:bg-white/20 p-2 transition-all duration-300 hover:scale-105"
               >
                 <Settings className="h-4 w-4 text-white" />
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={() => navigate('/tokens')}
+                className="hover:bg-white/20 p-2 transition-all duration-300 hover:scale-105"
+              >
+                <Crown className="h-4 w-4 text-white" />
               </Button>
             </div>
           </div>
@@ -363,13 +416,20 @@ const ProfileCouple: React.FC = () => {
                   )}
                 </div>
                 
-                <div className="absolute bottom-4 right-4">
+                <div className="absolute bottom-4 right-4 flex gap-2">
                   <Button 
                     onClick={() => navigate('/edit-profile-couple')}
-                    className="bg-white/90 text-black hover:bg-white"
+                    className="bg-white/90 text-black hover:bg-white transition-all duration-300 hover:scale-105"
                   >
                     <Settings className="h-4 w-4 mr-2" />
                     Editar
+                  </Button>
+                  <Button 
+                    onClick={() => navigate('/tokens')}
+                    className="bg-purple-500/90 text-white hover:bg-purple-600 transition-all duration-300 hover:scale-105"
+                  >
+                    <Crown className="h-4 w-4 mr-2" />
+                    Tokens
                   </Button>
                 </div>
               </div>

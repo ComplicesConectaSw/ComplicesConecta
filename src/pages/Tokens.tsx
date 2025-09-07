@@ -4,43 +4,107 @@
  */
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { TokenDashboard } from '../components/tokens/TokenDashboard';
 import { TokenChatBot } from '../components/tokens/TokenChatBot';
 import { StakingModal } from '../components/tokens/StakingModal';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { useTokens } from '../hooks/useTokens';
-import { Coins, Info, ExternalLink, Bot, ArrowLeft } from 'lucide-react';
+import { Coins, Info, ExternalLink, Bot, ArrowLeft, Home, Heart, Sparkles, Star, Rocket, Users } from 'lucide-react';
 
 export default function Tokens() {
   const [showStakingModal, setShowStakingModal] = useState(false);
-  const { balance, getBalanceMessage, getStakingMessage } = useTokens();
+  const { balance, getBalanceMessage, getStakingMessage, refreshTokens } = useTokens();
+  const navigate = useNavigate();
+
+  const handleGoHome = () => {
+    navigate('/');
+  };
+
+  const handleGoBack = () => {
+    window.history.back();
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50 relative">
-      {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-50 to-pink-50">
-        <div className="absolute top-20 left-20 w-64 h-64 bg-purple-100/30 rounded-full blur-3xl animate-float"></div>
-        <div className="absolute bottom-20 right-20 w-48 h-48 bg-pink-100/30 rounded-full blur-2xl animate-pulse"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-indigo-100/20 rounded-full blur-3xl animate-spin-slow"></div>
+    <div className="min-h-screen relative overflow-hidden bg-hero-gradient">
+      {/* Advanced Animated Background - Same as Index */}
+      <div className="fixed inset-0 z-0">
+        {/* Animated Mesh Gradient */}
+        <div className="absolute inset-0 opacity-40">
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-primary/20 via-transparent to-accent/20 animate-gradient-x"></div>
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent via-secondary/10 to-primary/15 animate-gradient-y"></div>
+        </div>
+        
+        {/* Floating Geometric Shapes */}
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-float-slow"></div>
+          <div className="absolute top-40 right-32 w-48 h-48 bg-accent/8 rounded-full blur-2xl animate-float-reverse"></div>
+          <div className="absolute bottom-32 left-1/3 w-80 h-80 bg-secondary/4 rounded-full blur-3xl animate-float-slow shape-delay-2"></div>
+          <div className="absolute bottom-20 right-20 w-56 h-56 bg-primary/6 rounded-full blur-2xl animate-float shape-delay-1"></div>
+          
+          {/* Hexagonal Patterns */}
+          <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-gradient-to-br from-primary/10 to-accent/10 transform rotate-45 animate-spin-slow blur-xl"></div>
+          <div className="absolute bottom-1/3 right-1/3 w-24 h-24 bg-gradient-to-br from-secondary/15 to-primary/10 transform rotate-12 animate-pulse blur-lg"></div>
+        </div>
+        
+        {/* Particle Effects */}
+        <div className="absolute inset-0">
+          {Array.from({ length: 20 }).map((_, i) => (
+            <div
+              key={i}
+              className={`absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-${i + 1}`}
+            ></div>
+          ))}
+        </div>
+        
+        {/* Glowing Icons */}
+        <Heart className="absolute top-32 left-1/4 w-8 h-8 text-primary/20 animate-float icon-delay-1" fill="currentColor" />
+        <Sparkles className="absolute top-1/3 right-1/4 w-6 h-6 text-accent/25 animate-float icon-delay-2" />
+        <Star className="absolute bottom-1/3 left-1/5 w-7 h-7 text-secondary/20 animate-float icon-delay-3" />
+        <Rocket className="absolute bottom-1/4 right-1/5 w-9 h-9 text-primary/15 animate-float icon-delay-4" />
+        <Users className="absolute top-1/2 left-1/6 w-8 h-8 text-accent/20 animate-float icon-delay-5" />
       </div>
       <div className="container mx-auto px-4 py-6 max-w-4xl relative z-10">
-        {/* Header */}
-        <div className="text-center mb-8 px-4">
-          <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
-            <Button 
-              variant="ghost" 
-              onClick={() => window.history.back()}
-              className="text-purple-700 hover:bg-purple-100"
-            >
-              <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
-              <span className="ml-1 sm:ml-2">Regresar</span>
-            </Button>
-            <div className="flex items-center gap-3 flex-1 justify-center">
-              <Coins className="h-6 w-6 sm:h-8 sm:w-8 text-purple-600" />
-              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">Tokens CMPX & GTK</h1>
+        {/* Enhanced Header with Professional Navigation */}
+        <div className="bg-black/80 backdrop-blur-md border-b border-white/30 p-3 sm:p-4 shadow-lg flex-shrink-0 rounded-t-xl mb-6">
+          <div className="flex items-center justify-between flex-wrap gap-2">
+            <div className="flex items-center gap-2">
+              <Button 
+                variant="ghost" 
+                onClick={handleGoBack}
+                className="text-white hover:bg-white/20 text-sm sm:text-base p-2 transition-all duration-300 hover:scale-105"
+              >
+                <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
+                <span className="ml-1 sm:ml-2">Regresar</span>
+              </Button>
+              <Button 
+                variant="ghost" 
+                onClick={handleGoHome}
+                className="text-white hover:bg-white/20 text-sm sm:text-base p-2 transition-all duration-300 hover:scale-105"
+              >
+                <Home className="h-4 w-4 sm:h-5 sm:w-5" />
+                <span className="ml-1 sm:ml-2">Inicio</span>
+              </Button>
             </div>
-            <div className="w-20"></div> {/* Spacer for balance */}
+            <h1 className="text-base sm:text-lg md:text-xl font-bold text-white text-center flex-1 min-w-0 px-2 truncate">
+              Tokens CMPX & GTK
+            </h1>
+            <Button 
+              onClick={refreshTokens}
+              className="text-white border-white/30 hover:bg-white/20 text-sm px-3 py-2 transition-all duration-300 hover:scale-105 bg-white/10 backdrop-blur-sm"
+              variant="outline"
+            >
+              🔄 Actualizar Balance
+            </Button>
+          </div>
+        </div>
+        
+        {/* Main Content Header */}
+        <div className="text-center mb-8 px-4">
+          <div className="flex items-center gap-3 justify-center mb-4">
+            <Coins className="h-6 w-6 sm:h-8 sm:w-8 text-white animate-pulse" />
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white text-shadow">Sistema de Tokens</h2>
           </div>
           <p className="text-white/80 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
             Gestiona tus tokens, participa en staking y reclama recompensas. 

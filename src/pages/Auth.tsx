@@ -247,6 +247,20 @@ const Auth = () => {
         // Usar la función handleDemoAuth para crear sesión demo correcta
         const demoAuthResult = handleDemoAuth(normalizedEmail, accountType);
         
+        // Sobrescribir localStorage con datos correctos para admins
+        if (accountType === 'admin' && demoAuthResult) {
+          const correctedUser = {
+            ...demoAuthResult.user,
+            role: 'admin',
+            accountType: 'admin',
+            first_name: normalizedEmail === 'djwacko28@gmail.com' ? 'DJ Wacko' : 'Complices Admin'
+          };
+          
+          localStorage.setItem('demo_user', JSON.stringify(correctedUser));
+          localStorage.setItem('demo_authenticated', 'true');
+          localStorage.setItem('userType', 'admin');
+        }
+        
         if (demoAuthResult) {
           console.log('✅ Sesión demo creada correctamente:', demoAuthResult);
           

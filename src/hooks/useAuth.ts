@@ -3,8 +3,8 @@
 
 import { useState, useEffect } from 'react';
 import { User, Session } from '@supabase/supabase-js';
-import { supabase } from '@/integrations/supabase/client';
-import { handleDemoAuth, clearDemoAuth, checkDemoSession } from '@/lib/app-config';
+import { supabase } from '../integrations/supabase/client';
+import { checkDemoSession, clearDemoAuth, handleDemoAuth, isDemoCredential, getDemoPassword, getProductionPassword, isProductionAdmin, isDemoMode, shouldUseRealSupabase, getAppConfig } from '../lib/app-config';
 
 interface Profile {
   id: string;
@@ -29,117 +29,119 @@ interface AuthState {
 }
 
 export const useAuth = () => {
-  const [state, setState] = useState<AuthState>({
-    user: null,
-    session: null,
-    loading: true,
-    profile: null
-  });
+  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [profile, setProfile] = useState<any>(null);
+  const config = getAppConfig();
 
   useEffect(() => {
-    // Check for demo session using centralized function
-    const demoSessionData = checkDemoSession();
-    if (demoSessionData) {
-      setState({
-        user: demoSessionData.user,
-        session: { user: demoSessionData.user } as Session,
-        loading: false,
-        profile: { id: demoSessionData.user.id, role: demoSessionData.user.role }
-      });
+    console.log('🔄 Inicializando useAuth en modo:', config.mode);
+    
+    // Verificar sesión demo existente al cargar
+    const demoSession = checkDemoSession();
+    if (demoSession) {
+      setUser(demoSession.user as any);
+      setSession(demoSession.session as any);
+      fetchUserProfile(demoSession.user.id);
+      setLoading(false);
       return;
     }
-
-    // Set up auth state listener FIRST
-    const authListener = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        console.log('🔄 Auth state change:', event, session?.user?.email);
-        
-        setState(prev => ({
-          ...prev,
-          session,
-          user: session?.user ?? null,
-          loading: false
-        }));
-
-        // Fetch profile data when user signs in
+    
+    // Solo configurar Supabase si debemos usar conexión real
+    if (shouldUseRealSupabase()) {
+      console.log('🔗 Configurando autenticación Supabase real...');
+      
+      // Obtener sesión actual de Supabase
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        setSession(session);
+        setUser(session?.user ?? null);
         if (session?.user) {
-          setTimeout(() => {
-            fetchUserProfile(session.user.id);
-          }, 0);
+          fetchUserProfile(session.user.id);
+        }
+        setLoading(false);
+      });
+      
+      // Escuchar cambios de autenticación
+      const {
+        data: { subscription },
+      } = supabase.auth.onAuthStateChange((_event, session) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+        if (session?.user) {
+          fetchUserProfile(session.user.id);
         } else {
-          setState(prev => ({ ...prev, profile: null }));
+          setProfile(null);
         }
-
-        // Handle automatic logout
-        if (event === 'SIGNED_OUT' && session === null) {
-          console.log('🚪 Usuario deslogueado automáticamente');
-          // Clear any remaining demo data
-          localStorage.removeItem('demo_user');
-          localStorage.removeItem('demo_session');
-          localStorage.removeItem('userType');
-        }
-      }
-    );
-
-    // THEN check for existing session
-    supabase.auth.getSession()?.then(({ data: { session } }) => {
-      setState(prev => ({
-        ...prev,
-        user: session?.user || null,
-        session,
-        loading: false
-      }));
-    }).catch(() => {
-      setState(prev => ({
-        ...prev,
-        loading: false
-      }));
-    });
-
-    if (state.session?.user) {
-      fetchUserProfile(state.session.user.id);
+        setLoading(false);
+      });
+      
+      return () => subscription.unsubscribe();
+    } else {
+      console.log('🎭 Modo demo - Supabase deshabilitado');
+      setLoading(false);
     }
-
-    return () => {
-      if (authListener?.data?.subscription) {
-        authListener.data.subscription.unsubscribe();
-      }
-    };
-  }, []);
+  }, [config.mode]);
 
   const fetchUserProfile = async (userId: string) => {
-    // Skip profile fetch for demo users
-    const demoAuth = localStorage.getItem('demo_authenticated');
-    const demoUser = localStorage.getItem('demo_user');
-    
-    if (demoAuth === 'true' && demoUser) {
-      try {
-        const user = JSON.parse(demoUser);
-        setState(prev => ({ ...prev, profile: { id: user.id, role: user.role } }));
-        return;
-      } catch (error) {
-        console.error('Error parsing demo user:', error);
+    try {
+      // Verificar si hay una sesión demo activa
+      const demoAuth = localStorage.getItem('demo_authenticated');
+      const demoUser = localStorage.getItem('demo_user');
+      
+      if (demoAuth === 'true' && demoUser) {
+        try {
+          const parsedDemoUser = JSON.parse(demoUser);
+          console.log('🎭 Usando perfil demo:', parsedDemoUser.email);
+          
+          // Crear perfil demo basado en el usuario
+          const demoProfile = {
+            id: parsedDemoUser.id,
+            user_id: parsedDemoUser.id,
+            email: parsedDemoUser.email,
+            first_name: parsedDemoUser.first_name,
+            account_type: parsedDemoUser.accountType,
+            role: parsedDemoUser.role,
+            is_demo: true,
+            created_at: parsedDemoUser.created_at,
+            updated_at: new Date().toISOString(),
+            // Datos adicionales para demo
+            bio: `Perfil de demostración para ${parsedDemoUser.first_name}`,
+            location: 'Ciudad Demo',
+            age: parsedDemoUser.role === 'admin' ? null : 25,
+            interests: ['Tecnología', 'Música', 'Viajes'],
+            avatar_url: null
+          };
+          
+          setProfile(demoProfile);
+          return;
+        } catch (error) {
+          console.error('❌ Error parsing demo user:', error);
+          clearDemoAuth();
+        }
       }
-    }
-
-    // Only fetch from Supabase for real authenticated users
-    if (!demoAuth || demoAuth !== 'true') {
-      try {
+      
+      // Solo usar Supabase si debemos usar conexión real
+      if (shouldUseRealSupabase()) {
+        console.log('🔗 Obteniendo perfil real de Supabase para:', userId);
         const { data, error } = await supabase
           .from('profiles')
           .select('*')
           .eq('id', userId)
-          .maybeSingle();
-
-        if (error && error.code !== 'PGRST116') {
-          console.error('Error fetching profile:', error);
+          .single();
+        
+        if (error) {
+          console.error('❌ Error fetching profile:', error);
           return;
         }
-
-        setState(prev => ({ ...prev, profile: data }));
-      } catch (error) {
-        console.error('Error fetching profile:', error);
+        
+        console.log('✅ Perfil real cargado para usuario:', userId);
+        setProfile(data);
+      } else {
+        console.log('🚫 Supabase bloqueado para usuario demo no-admin');
       }
+    } catch (error) {
+      console.error('❌ Error in fetchUserProfile:', error);
     }
   };
 
@@ -157,36 +159,119 @@ export const useAuth = () => {
     }
     
     // Reset state
-    setState({
-      user: null,
-      session: null,
-      loading: false,
-      profile: null
-    });
+    setUser(null);
+    setSession(null);
+    setLoading(false);
+    setProfile(null);
+  };
+
+  const signIn = async (email: string, password: string, accountType: string = 'single') => {
+    try {
+      setLoading(true);
+      console.log('🔐 Intentando iniciar sesión:', email, 'Modo:', config.mode);
+      
+      // Verificar si es credencial de producción (complicesconectasw@outlook.es)
+      if (isProductionAdmin(email)) {
+        console.log('🏢 Credencial de producción detectada - usando Supabase real');
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+        
+        if (error) throw error;
+        
+        if (data.user) {
+          setUser(data.user);
+          setSession(data.session);
+          await fetchUserProfile(data.user.id);
+          console.log('✅ Sesión de producción iniciada para:', email);
+        }
+        
+        return data;
+      }
+      
+      // Verificar si es una credencial demo
+      if (isDemoCredential(email)) {
+        const demoPassword = getDemoPassword(email);
+        
+        if (password !== demoPassword) {
+          throw new Error('Contraseña incorrecta para usuario demo');
+        }
+        
+        // Manejar autenticación demo
+        const demoAuth = handleDemoAuth(email, accountType);
+        if (demoAuth) {
+          setUser(demoAuth.user as any);
+          setSession(demoAuth.session as any);
+          await fetchUserProfile(demoAuth.user.id);
+          console.log('✅ Sesión demo iniciada para:', email);
+          return { user: demoAuth.user, session: demoAuth.session };
+        }
+      }
+      
+      // En modo producción, intentar con Supabase para otros usuarios
+      if (config.mode === 'production') {
+        console.log('🔗 Intentando autenticación real con Supabase...');
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+        
+        if (error) throw error;
+        
+        if (data.user) {
+          setUser(data.user);
+          setSession(data.session);
+          await fetchUserProfile(data.user.id);
+          console.log('✅ Sesión real iniciada para:', email);
+        }
+        
+        return data;
+      }
+      
+      throw new Error('Credenciales no válidas');
+    } catch (error) {
+      console.error('❌ Error signing in:', error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
   };
 
   const isAdmin = () => {
-    // Verificar sesión demo primero
+    // Verificar admin en sesión demo
+    const demoAuth = localStorage.getItem('demo_authenticated');
     const demoUser = localStorage.getItem('demo_user');
-    if (demoUser) {
+    
+    if (demoAuth === 'true' && demoUser) {
       try {
-        const user = JSON.parse(demoUser);
-        return user.accountType === 'admin' || user.role === 'admin';
+        const parsedUser = JSON.parse(demoUser);
+        const isAdminDemo = parsedUser.role === 'admin';
+        console.log('🎭 Verificando admin demo:', parsedUser.email, 'Es admin:', isAdminDemo);
+        return isAdminDemo;
       } catch (error) {
-        console.error('Error parsing demo user for admin check:', error);
+        console.error('❌ Error verificando admin demo:', error);
+        return false;
       }
     }
     
-    // Verificar rol en perfil (después de migración)
-    return state.profile?.role === 'admin';
+    // Verificar admin en perfil real
+    const isAdminReal = profile?.role === 'admin' || user?.email === 'djwacko28@gmail.com' || user?.email === 'complicesconectasw@outlook.es';
+    if (user?.email) {
+      console.log('🔐 Verificando admin real:', user.email, 'Es admin:', isAdminReal);
+    }
+    return isAdminReal;
   };
 
   const isDemo = () => {
-    return state.profile?.is_demo === true;
+    const demoAuth = localStorage.getItem('demo_authenticated');
+    const isDemoActive = demoAuth === 'true';
+    console.log('🎭 Verificando modo demo:', isDemoActive);
+    return isDemoActive;
   };
 
   const getProfileType = () => {
-    return state.profile?.profile_type || 'single';
+    return profile?.profile_type || 'single';
   };
 
   const isAuthenticated = () => {
@@ -198,137 +283,22 @@ export const useAuth = () => {
     }
     
     // Verificar autenticación real
-    return !!state.user;
-  };
-
-  const signIn = async (email: string, password: string) => {
-    try {
-      setState(prev => ({ ...prev, loading: true }));
-      console.info(`🔐 Iniciando sesión para: ${email}`);
-
-      // Check for demo session first
-      const demoSession = checkDemoSession();
-      if (demoSession) {
-        console.info(`🎭 Sesión demo activada para: ${email}`);
-        setState({
-          user: demoSession.user as any,
-          session: { user: demoSession.user } as any,
-          loading: false,
-          profile: { id: demoSession.user.id, role: demoSession.user.role, is_demo: true }
-        });
-        return { user: demoSession.user, session: demoSession };
-      }
-
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) {
-        console.error(`❌ Error en signIn para ${email}:`, error.message);
-        throw error;
-      }
-
-      console.info(`✅ Sesión iniciada exitosamente para: ${email}`);
-      setState({
-        user: data.user,
-        session: data.session,
-        loading: false,
-        profile: null
-      });
-      return data;
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Error signing in';
-      console.error(errorMessage);
-      throw error;
-    }
-  };
-
-  const signUp = async (email: string, password: string, metadata?: any) => {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: metadata
-      }
-    });
-    return { data, error };
-  };
-
-  const setDemoSession = (userType: string, userData: any) => {
-    // Use centralized demo auth handling
-    const demoSession = handleDemoAuth(userData.email);
-    if (demoSession) {
-      setState({
-        user: demoSession.user as any,
-        session: { user: demoSession.user } as any,
-        loading: false,
-        profile: { id: demoSession.user.id, role: demoSession.user.role, is_demo: true }
-      });
-    }
-  };
-
-  const isDemoSession = () => {
-    return !!localStorage.getItem('demo_user') && !!localStorage.getItem('demo_session');
-  };
-
-  // Helper function for testing - allows setting state directly
-  const setTestState = (newState: Partial<AuthState>) => {
-    setState(prev => ({ ...prev, ...newState }));
-  };
-
-  const clearDemoSession = () => {
-    localStorage.removeItem('demo_user');
-    localStorage.removeItem('demo_session');
-    localStorage.removeItem('userType');
-    
-    setState({
-      user: null,
-      session: null,
-      loading: false,
-      profile: null
-    });
-  };
-
-  const validateEmail = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  const resetPassword = async (email: string) => {
-    const { data, error } = await supabase.auth.resetPasswordForEmail(email);
-    return { data, error };
-  };
-
-  const updatePassword = async (password: string) => {
-    const { data, error } = await supabase.auth.updateUser({ password });
-    return { data, error };
+    return !!user;
   };
 
   return {
-    // Expose state properties directly for backward compatibility
-    user: state.user,
-    session: state.session,
-    loading: state.loading,
-    profile: state.profile,
-    // Also expose state object for tests that expect it
-    state,
-    // Functions
+    user,
+    session,
+    profile,
+    loading,
     signIn,
-    signUp,
     signOut,
-    setDemoSession,
-    clearDemoSession,
-    isDemoSession,
-    validateEmail,
-    resetPassword,
-    updatePassword,
     isAdmin,
     isDemo,
-    getProfileType,
-    isAuthenticated,
-    refreshProfile: () => state.user?.id && fetchUserProfile(state.user.id),
-    // Test helper
-    setTestState
+    fetchUserProfile,
+    // Nuevas funciones de utilidad
+    isDemoMode: isDemoMode,
+    shouldUseRealSupabase: shouldUseRealSupabase,
+    appMode: config.mode
   };
 };

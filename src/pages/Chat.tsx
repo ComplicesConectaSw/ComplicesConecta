@@ -464,20 +464,20 @@ const Chat = () => {
               </div>
 
               {/* Messages */}
-              <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0 chat-messages" style={{scrollBehavior: 'smooth'}}>
+              <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0 chat-messages scroll-container" style={{scrollBehavior: 'smooth'}}>
                 {messages.map((message) => (
                   <div
                     key={message.id}
                     className={`flex ${message.senderId === 0 ? 'justify-end' : 'justify-start'}`}
                   >
                     <div
-                      className={`max-w-xs lg:max-w-sm px-4 py-3 rounded-2xl break-words ${
+                      className={`max-w-[85%] sm:max-w-xs lg:max-w-sm px-4 py-3 rounded-2xl break-words word-wrap ${
                         message.senderId === 0
                           ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
                           : 'bg-white/95 text-gray-900 shadow-md border border-gray-200 backdrop-blur-sm'
                       }`}
                     >
-                      <p className="text-sm leading-relaxed break-words">{message.content}</p>
+                      <p className="text-sm leading-relaxed break-words whitespace-pre-wrap overflow-wrap-anywhere">{message.content}</p>
                       <p className={`text-xs mt-1 ${
                         message.senderId === 0 ? 'text-purple-100' : 'text-gray-500'
                       }`}>
@@ -496,9 +496,8 @@ const Chat = () => {
                       <Lock className="h-6 w-6 mr-2" />
                       <span className="font-semibold text-lg">Chat privado bloqueado</span>
                     </div>
-                    <p className="text-sm text-white/90 mb-6 leading-relaxed max-w-sm mx-auto break-words">
-                      Necesitas una invitación aceptada para chatear con {selectedChat.name}. 
-                      Puedes enviar una invitación o esperar a que te envíen una.
+                    <p className="text-sm text-white/90 mb-6 leading-relaxed max-w-md mx-auto break-words whitespace-pre-wrap overflow-wrap-anywhere">
+                      Necesitas una invitación aceptada para chatear con {selectedChat.name}. Puedes enviar una invitación o esperar a que te envíen una.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-3 justify-center">
                       <Button 
