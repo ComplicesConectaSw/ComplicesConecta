@@ -74,7 +74,7 @@ export const Footer = () => {
             <h4 className="text-lg font-semibold mb-4 text-primary">Soporte</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/faq" className="text-background/80 hover:text-primary transition-colors">
+                <Link to="/support" className="text-background/80 hover:text-primary transition-colors">
                   Centro de Ayuda
                 </Link>
               </li>
