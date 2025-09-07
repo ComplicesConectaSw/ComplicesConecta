@@ -359,10 +359,11 @@ export const useAuth = () => {
     const userEmail = user?.email?.toLowerCase();
     const profileRole = profile?.role;
     
-    // Lista de emails admin conocidos
-    const adminEmails = ['djwacko28@gmail.com', 'complicesconectasw@outlook.es'];
-    
-    // Verificar por email o por rol en perfil
+    // Lista de emails admin conocidos - CORREGIDA
+    const adminEmails = [
+      'djwacko28@gmail.com',        // Admin demo solamente
+      'complicesconectasw@outlook.es'  // Único admin real
+    ];
     const isAdminByEmail = userEmail && adminEmails.includes(userEmail);
     const isAdminByRole = profileRole === 'admin';
     

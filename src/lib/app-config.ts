@@ -58,10 +58,14 @@ export const DEMO_PASSWORDS: Record<string, string> = {
   'djwacko28@gmail.com': '123456'
 };
 
-// Credenciales de producción REAL (solo Supabase real)
-export const PRODUCTION_ADMIN_CREDENTIALS = [
-  'complicesconectasw@outlook.es'
+// Lista de emails admin para verificación rápida - CORREGIDA
+const ADMIN_EMAILS = [
+  'djwacko28@gmail.com',        // Admin demo solamente
+  'complicesconectasw@outlook.es'  // Único admin real
 ];
+
+// Credenciales de producción REAL (solo Supabase real)
+export const PRODUCTION_ADMIN_CREDENTIALS = ADMIN_EMAILS;
 
 // Contraseñas de producción (configuradas en Supabase real)
 export const PRODUCTION_PASSWORDS: Record<string, string> = {

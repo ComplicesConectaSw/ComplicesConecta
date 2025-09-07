@@ -337,7 +337,10 @@ const Auth = () => {
                 
                 // Fallback: usar email del usuario para determinar si es admin
                 const userEmail = user?.email?.toLowerCase();
-                const adminEmails = ['djwacko28@gmail.com', 'complicesconectasw@outlook.es'];
+                const adminEmails = [
+                  'djwacko28@gmail.com',        // Admin demo solamente
+                  'complicesconectasw@outlook.es'  // Único admin real
+                ];
                 const isAdminByEmail = userEmail && adminEmails.includes(userEmail);
                 
                 console.log('🔐 Verificación admin por email (fallback):', isAdminByEmail);
