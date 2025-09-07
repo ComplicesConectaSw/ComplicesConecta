@@ -11,8 +11,8 @@
 
 ### 📱 ¡Descarga la App Ahora!
 
-<a href="https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v2.1.2/app-release.apk" download>
-  <img src="https://img.shields.io/badge/📱_Descargar_APK-v2.1.2-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
+<a href="https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v2.1.5/app-release.apk" download>
+  <img src="https://img.shields.io/badge/📱_Descargar_APK-v2.1.5-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
 </a>
 
 **SHA256:** `25d18ed775d4a8cb64780b847c1e2e11f22b950f37aec8345e253369b783d810`
@@ -397,6 +397,15 @@ VITE_STAKING_DURATION_DAYS=30
 **Documentación:** `docs/WORLDID_INTEGRATION_GUIDE.md`
 
 ⚠️ **NOTA:** Link de descarga APK GitHub no funciona. Usar APK local: `/app-release.apk`
+
+### ✨ **Actualizaciones Recientes (v2.1.5)** *(07 de septiembre, 2025 - 01:35)*
+- ✅ **Responsividad Completa**: Optimización total para web y Android con breakpoints `sm:`
+- ✅ **Navegación Adaptativa**: Botones con tamaños `min-w-[50px] sm:min-w-[60px]` y texto truncado
+- ✅ **Header Responsivo**: Espaciado `space-x-1 sm:space-x-3` y elementos ocultos en móvil
+- ✅ **ProfileSingle Mejorado**: Cards con `bg-white/90` y texto `text-gray-900` para mejor legibilidad
+- ✅ **Autenticación Real Habilitada**: Sistema híbrido demo + real auth funcionando simultáneamente
+- ✅ **Iconos Escalables**: `h-4 w-4 sm:h-5 sm:h-5` para mejor visibilidad en dispositivos móviles
+- ✅ **Consistencia Visual**: Backgrounds claros `from-purple-50 to-pink-50` en todas las páginas
 
 ### ✨ **Actualizaciones Previas (v1.4.2)** *(3 de septiembre, 2025 - 20:35)*
 - ✅ **Texto Blanco Global**: Cambiado texto gris a blanco en toda la aplicación para mejor contraste

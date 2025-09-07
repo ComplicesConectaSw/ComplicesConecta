@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { isDemoCredential, getAppConfig, handleDemoAuth } from "@/lib/app-config";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,12 +12,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Heart, Shield, Users, Zap } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { MapPin, ArrowLeft, Sparkles } from "lucide-react";
 import { lifestyleInterests, getAutoInterests } from "@/lib/lifestyle-interests";
 import { LoginLoadingScreen } from "@/components/LoginLoadingScreen";
-import { appConfig, isDemoCredential } from "@/lib/app-config";
 import { useAuth } from "@/hooks/useAuth";
 
 interface FormData {
@@ -156,6 +156,7 @@ const Auth = () => {
         .replace('@outook.es', '@outlook.es');
 
       // Verificar si es credencial demo Y si el modo demo está habilitado
+      const appConfig = getAppConfig();
       if (isDemoCredential(normalizedEmail) && appConfig.features.demoCredentials) {
         console.log('🎭 Modo demo activado para:', formData.email);
         
@@ -236,48 +237,45 @@ const Auth = () => {
         window.dispatchEvent(new Event('storage'));
         
         // Simular autenticación exitosa para demo
-        toast({
-          title: `¡Bienvenido de vuelta! ${appConfig.ui.demoLabel}`,
-          description: appConfig.mode === 'demo' 
-            ? "Has iniciado sesión correctamente en modo demostración."
-            : "Has iniciado sesión correctamente.",
-          duration: 3000,
-        });
-
-        // Mostrar LoginLoadingScreen antes de redirigir
         setShowLoginLoading(true);
         
-        // Determinar tipo de usuario y nombre usando email normalizado
-        const userType = normalizedEmail.includes('pareja') ? 'couple' : 
-                         normalizedEmail.includes('djwacko28') ? 'admin' : 
-                         normalizedEmail.includes('complicesconectasw') ? 'admin' : 'single';
-        const userName = normalizedEmail.includes('pareja') ? 'Pareja Demo' : 
-                        normalizedEmail.includes('djwacko28') ? 'Admin Demo' : 
-                        normalizedEmail.includes('complicesconectasw') ? 'Admin Demo' : 'Usuario Demo';
+        // Determinar tipo de usuario usando email normalizado
+        const accountType = normalizedEmail.includes('pareja') ? 'couple' : 
+                           normalizedEmail.includes('djwacko28') ? 'admin' : 
+                           normalizedEmail.includes('complicesconectasw') ? 'admin' : 'single';
         
-        // Guardar tipo de usuario en localStorage
-        localStorage.setItem('userType', userType);
-        localStorage.setItem('demo_session', 'active');
+        // Usar la función handleDemoAuth para crear sesión demo correcta
+        const demoAuthResult = handleDemoAuth(normalizedEmail, accountType);
         
-        // Simular tiempo de carga y luego redirigir
-        setTimeout(() => {
+        if (demoAuthResult) {
+          console.log('✅ Sesión demo creada correctamente:', demoAuthResult);
+          
+          // Simular tiempo de carga y luego redirigir
+          setTimeout(() => {
+            setShowLoginLoading(false);
+            // Redirigir según el tipo de usuario
+            if (accountType === 'admin') {
+              navigate("/admin");
+            } else if (accountType === 'couple') {
+              navigate("/profile-couple");
+            } else {
+              navigate("/profile-single");
+            }
+          }, 3000);
+        } else {
+          console.error('❌ Error al crear sesión demo');
           setShowLoginLoading(false);
-          // Redirigir según el tipo de usuario usando email normalizado
-          if (normalizedEmail.includes('complicesconectasw') || normalizedEmail.includes('djwacko28')) {
-            navigate("/admin");
-          } else if (normalizedEmail.includes('pareja')) {
-            navigate("/profile-couple");
-          } else if (normalizedEmail.includes('single')) {
-            navigate("/profile-single");
-          } else {
-            navigate("/discover");
-          }
-        }, 3000);
+          toast({
+            variant: "destructive",
+            title: "Error al iniciar sesión",
+            description: "Error interno al crear sesión demo",
+          });
+        }
         return;
       }
 
       // Solo intentar autenticación real si NO es credencial demo
-      if (!isDemoCredential(normalizedEmail) && appConfig.features.realAuth) {
+      if (!isDemoCredential(normalizedEmail) && getAppConfig().features.realAuth) {
         console.log('🔐 Intentando autenticación real con Supabase para:', formData.email);
         const { data, error } = await supabase.auth.signInWithPassword({
           email: formData.email,
@@ -297,11 +295,11 @@ const Auth = () => {
         // Redirigir según el tipo de usuario real
         navigate("/discover");
       } else if (!isDemoCredential(normalizedEmail)) {
-        // Credencial no reconocida y no es demo
+        // Credencial no reconocida y no es demo - mostrar mensaje más genérico
         toast({
           variant: "destructive",
           title: "Error al iniciar sesión",
-          description: "Use las credenciales demo: single@outlook.es, pareja@outlook.es o complicesconectasw@outlook.es",
+          description: "Credenciales inválidas. Verifique su email y contraseña o use las credenciales demo disponibles.",
         });
       }
 

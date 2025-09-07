@@ -95,27 +95,27 @@ const ProfileCouple: React.FC = () => {
       
       <div className="relative z-10">
         {/* Header */}
-        <div className="bg-white/90 backdrop-blur-md border-b border-white/30 p-4 shadow-lg">
-          <div className="flex items-center justify-between">
+        <div className="bg-black/80 backdrop-blur-md border-b border-white/30 p-3 sm:p-4 shadow-lg">
+          <div className="flex items-center justify-between flex-wrap gap-2">
             <Button 
               variant="ghost" 
               onClick={() => navigate('/profile')}
-              className="text-white hover:bg-white/50"
+              className="text-white hover:bg-white/20 p-2"
             >
-              <ArrowLeft className="h-5 w-5" />
+              <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
             </Button>
-            <h1 className="text-lg font-semibold text-white">Nuestro Perfil</h1>
-            <div className="flex gap-2">
-              <Button variant="ghost" size="sm" className="hover:bg-white/50">
-                <Share2 className="h-5 w-5 text-white" />
+            <h1 className="text-base sm:text-lg font-semibold text-white truncate flex-1 text-center">Nuestro Perfil</h1>
+            <div className="flex gap-1 sm:gap-2">
+              <Button variant="ghost" size="sm" className="hover:bg-white/20 p-2">
+                <Share2 className="h-4 w-4 text-white" />
               </Button>
               <Button 
                 variant="ghost" 
                 size="sm"
                 onClick={() => navigate('/edit-profile-couple')}
-                className="hover:bg-white/50"
+                className="hover:bg-white/20 p-2"
               >
-                <Settings className="h-5 w-5 text-white" />
+                <Settings className="h-4 w-4 text-white" />
               </Button>
             </div>
           </div>
@@ -163,8 +163,8 @@ const ProfileCouple: React.FC = () => {
           <Card className="bg-white/90 backdrop-blur-md shadow-lg border-0">
             <CardContent className="p-6">
               <div className="text-center mb-6">
-                <h2 className="text-2xl font-bold text-white mb-2">{profile.coupleName || 'Pareja'}</h2>
-                <div className="flex items-center justify-center space-x-4 text-white mb-4">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">{profile.coupleName || 'Pareja'}</h2>
+                <div className="flex items-center justify-center space-x-4 text-gray-700 mb-4">
                   <span className="flex items-center">
                     <MapPin className="h-4 w-4 mr-1" />
                     {profile.location}
@@ -172,9 +172,9 @@ const ProfileCouple: React.FC = () => {
                 </div>
                 
                 {/* Bio de la pareja */}
-                <div className="bg-gradient-to-r from-purple-100 to-pink-100 rounded-lg p-4 mb-6 border border-purple-200">
+                <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 mb-6 border border-purple-200">
                   <h3 className="font-semibold text-purple-900 mb-2">Sobre nosotros</h3>
-                  <p className="text-white">{profile.bio}</p>
+                  <p className="text-gray-800 leading-relaxed">{profile.bio}</p>
                 </div>
               </div>
 
@@ -198,7 +198,7 @@ const ProfileCouple: React.FC = () => {
                   
                   <div className="mb-4">
                     <h4 className="font-semibold text-pink-800 mb-2">Sobre ella:</h4>
-                    <p className="text-sm text-white">{profile.partner1?.bio || 'Me encanta explorar nuevas experiencias junto a mi pareja.'}</p>
+                    <p className="text-sm text-gray-700 leading-relaxed">{profile.partner1?.bio || 'Me encanta explorar nuevas experiencias junto a mi pareja.'}</p>
                   </div>
                   
                   <div>
@@ -231,7 +231,7 @@ const ProfileCouple: React.FC = () => {
                   
                   <div className="mb-4">
                     <h4 className="font-semibold text-blue-800 mb-2">Sobre él:</h4>
-                    <p className="text-sm text-white">{profile.partner2?.bio || 'Aventurero y respetuoso, busco junto a mi pareja vivir experiencias únicas.'}</p>
+                    <p className="text-sm text-gray-700 leading-relaxed">{profile.partner2?.bio || 'Aventurero y respetuoso, busco junto a mi pareja vivir experiencias únicas.'}</p>
                   </div>
                   
                   <div>

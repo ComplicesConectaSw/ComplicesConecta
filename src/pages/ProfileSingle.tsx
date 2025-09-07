@@ -97,22 +97,22 @@ const ProfileSingle: React.FC = () => {
       
       <div className="relative z-10 flex flex-col min-h-screen">
       {/* Header */}
-      <div className="bg-hero-gradient border-b border-white/30 p-3 sm:p-4 shadow-lg flex-shrink-0">
+      <div className="bg-black/80 backdrop-blur-md border-b border-white/30 p-3 sm:p-4 shadow-lg flex-shrink-0">
         <div className="flex items-center justify-between flex-wrap gap-2">
           <Button 
             variant="ghost" 
             onClick={() => navigate('/profiles')}
-            className="text-white hover:bg-white/20 text-sm sm:text-base"
+            className="text-white hover:bg-white/20 text-sm sm:text-base p-2"
           >
             <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
             <span className="ml-1 sm:ml-2">Regresar</span>
           </Button>
-          <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-white text-center flex-1 min-w-0 px-2">
+          <h1 className="text-base sm:text-lg md:text-xl font-bold text-white text-center flex-1 min-w-0 px-2 truncate">
             {profile.first_name || 'Usuario'}
           </h1>
           <div className="flex gap-1 sm:gap-2">
             <Button variant="ghost" size="sm" className="hover:bg-white/20 p-2">
-              <Share2 className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+              <Share2 className="h-4 w-4 text-white" />
             </Button>
             <Button 
               variant="ghost" 
@@ -120,7 +120,7 @@ const ProfileSingle: React.FC = () => {
               onClick={() => navigate('/edit-profile-single')}
               className="hover:bg-white/20 p-2"
             >
-              <Settings className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+              <Settings className="h-4 w-4 text-white" />
             </Button>
           </div>
         </div>
@@ -240,11 +240,11 @@ const ProfileSingle: React.FC = () => {
         {activeTab === 'profile' && (
           <>
             {/* Información básica */}
-            <Card className="bg-gradient-to-br from-purple-900/95 to-pink-900/95 backdrop-blur-sm shadow-glow border-0">
+            <Card className="bg-white/90 backdrop-blur-md shadow-lg border-0">
               <CardContent className="p-6">
                 <div className="text-center mb-6">
-                  <h3 className="text-lg font-semibold text-white mb-2">{profile.first_name}</h3>
-                  <div className="flex items-center justify-center space-x-4 text-white mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{profile.first_name}</h3>
+                  <div className="flex items-center justify-center space-x-4 text-gray-700 mb-4">
                     <span className="flex items-center">
                       <MapPin className="h-4 w-4 mr-1" />
                       {(profile as any).location || 'CDMX'}
@@ -254,22 +254,22 @@ const ProfileSingle: React.FC = () => {
                   </div>
                   
                   {/* Bio Section */}
-                  <div className="bg-gradient-to-r from-purple-800/30 to-pink-800/30 rounded-lg p-4 mb-4 border border-purple-300/30">
-                    <h3 className="font-semibold text-white mb-2">Sobre mí</h3>
-                    <p className="text-white/90 text-sm leading-relaxed">
+                  <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 mb-4 border border-purple-200">
+                    <h3 className="font-semibold text-purple-900 mb-2">Sobre mí</h3>
+                    <p className="text-gray-800 text-sm leading-relaxed">
                       {profile.bio || "Persona auténtica buscando conexiones reales y experiencias memorables. Me encanta el arte y conocer gente nueva."}
                     </p>
                   </div>
                   
                   {/* Additional Info */}
                   <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div className="bg-purple-800/30 rounded-lg p-3 border border-purple-300/30">
-                      <span className="font-medium text-white">Edad:</span>
-                      <span className="text-white">{profile.age}</span>
+                    <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
+                      <span className="font-medium text-purple-900">Edad: </span>
+                      <span className="text-gray-800">{profile.age}</span>
                     </div>
-                    <div className="bg-purple-800/30 rounded-lg p-3 border border-purple-300/30">
-                      <span className="font-medium text-white">Buscando:</span>
-                      <p className="text-white/90">Conexiones auténticas</p>
+                    <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
+                      <span className="font-medium text-purple-900">Buscando: </span>
+                      <p className="text-gray-800">Conexiones auténticas</p>
                     </div>
                   </div>
                 </div>
@@ -277,26 +277,26 @@ const ProfileSingle: React.FC = () => {
                 {/* Stats del perfil */}
                 <div className="grid grid-cols-3 gap-4 mt-6">
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-white">{(profile as any).stats?.matches || 0}</div>
-                    <div className="text-xs text-white/80">Matches</div>
+                    <div className="text-2xl font-bold text-gray-900">{(profile as any).stats?.matches || 0}</div>
+                    <div className="text-xs text-gray-600">Matches</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-white">{(profile as any).stats?.likes || 0}</div>
-                    <div className="text-xs text-white/80">Likes</div>
+                    <div className="text-2xl font-bold text-gray-900">{(profile as any).stats?.likes || 0}</div>
+                    <div className="text-xs text-gray-600">Likes</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-white">{(profile as any).stats?.views || 0}</div>
-                    <div className="text-xs text-white/80">Vistas</div>
+                    <div className="text-2xl font-bold text-gray-900">{(profile as any).stats?.views || 0}</div>
+                    <div className="text-xs text-gray-600">Vistas</div>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
             {/* Intereses */}
-            <Card className="bg-gradient-to-br from-purple-900/95 to-pink-900/95 backdrop-blur-sm shadow-glow border-0">
+            <Card className="bg-white/90 backdrop-blur-md shadow-lg border-0">
               <CardContent className="p-6">
-                <h3 className="font-semibold text-white mb-3">Intereses</h3>
-                <div className="bg-gradient-to-r from-purple-800/30 to-pink-800/30 backdrop-blur-sm rounded-lg p-4 border border-purple-300/30 mb-4">
+                <h3 className="font-semibold text-gray-900 mb-3">Intereses</h3>
+                <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-200 mb-4">
                   <div className="flex flex-wrap gap-2">
                     {((profile as any).interests || ['Lifestyle Swinger', 'Comunicación Abierta', 'Respeto Mutuo', 'Experiencias Nuevas', 'Discreción Total']).map((interest: string, index: number) => (
                       <Badge key={index} className="bg-purple-200/80 text-purple-900 border border-purple-300/50 text-xs flex-shrink-0">

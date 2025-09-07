@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { generateMockSingle } from "@/lib/data";
 import ImageUpload from "@/components/ImageUpload";
 import { supabase } from "@/integrations/supabase/client";
-import { appConfig } from "@/lib/app-config";
+import { getAppConfig } from "@/lib/app-config";
 import Navigation from "@/components/Navigation";
 import type { Tables } from '@/integrations/supabase/types';
 
@@ -29,6 +29,7 @@ const EditProfileSingle = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [userId, setUserId] = useState<string>("");
+  const [profileLoaded, setProfileLoaded] = useState(false);
 
   const availableInterests = [
     "Lifestyle Swinger", "Intercambio de Parejas", "Encuentros Casuales", "Comunicación Abierta", 
@@ -37,6 +38,8 @@ const EditProfileSingle = () => {
   ];
 
   const loadProfile = useCallback(async () => {
+    if (profileLoaded) return;
+    
     try {
       // Verificar autenticación demo primero
       const demoAuth = localStorage.getItem('demo_authenticated');
@@ -59,8 +62,9 @@ const EditProfileSingle = () => {
           });
           setUserId(user.id);
           setProfile(profileData);
+          setProfileLoaded(true);
         }
-      } else if (appConfig.features.demoCredentials) {
+      } else if (getAppConfig().features.demoCredentials) {
         // Modo real con Supabase
         const { data: { user } } = await supabase.auth.getUser();
         
@@ -85,6 +89,8 @@ const EditProfileSingle = () => {
               avatar: ''
             });
             setUserId(user.id);
+            setProfile(profile);
+            setProfileLoaded(true);
           }
         } else {
           const newProfile = generateMockSingle();
@@ -101,16 +107,15 @@ const EditProfileSingle = () => {
           if (newProfile.id) {
             setUserId(newProfile.id);
             setProfile(newProfile);
+            setProfileLoaded(true);
           }
         }
       }
     } catch (error) {
       setError('Error inesperado al cargar perfil');
       console.error('Error loading profile:', error);
-    } finally {
-      console.log('Profile loaded');
     }
-  }, []);
+  }, [profileLoaded]);
 
   useEffect(() => {
     loadProfile();
@@ -140,7 +145,7 @@ const EditProfileSingle = () => {
     setSuccess('');
     
     try {
-      if (appConfig.features.demoCredentials) {
+      if (getAppConfig().features.demoCredentials) {
         // Modo demo - guardar en localStorage
         const demoUser = JSON.parse(localStorage.getItem('demo_user') || '{}');
         const updatedUser = {

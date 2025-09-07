@@ -164,7 +164,7 @@ export const Header = () => {
           </nav>
 
           {/* Action Buttons */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-1 sm:space-x-3">
             <Button variant="ghost" size="icon" className="relative text-white hover:text-primary hover:bg-white/10" asChild>
               <Link to="/support">
                 <DollarSign className="h-5 w-5" />
@@ -187,15 +187,15 @@ export const Header = () => {
             </Button>
 
             {!isAuthenticated ? (
-              <Button variant="outline" size="sm" className="bg-white/90 border-white text-black hover:bg-white hover:text-black font-semibold shadow-lg" asChild>
+              <Button variant="outline" size="sm" className="bg-white/90 border-white text-black hover:bg-white hover:text-black font-semibold shadow-lg hidden sm:flex" asChild>
                 <Link to="/auth" className="flex items-center gap-1">
                   <User className="h-4 w-4" />
-                  Iniciar Sesión
+                  <span className="hidden md:inline">Iniciar Sesión</span>
                 </Link>
               </Button>
             ) : (
-              <div className="flex items-center gap-3">
-                <span className="text-white/90 text-sm">
+              <div className="flex items-center gap-1 sm:gap-3">
+                <span className="text-white/90 text-xs sm:text-sm hidden sm:inline">
                   {demoUser?.name} {demoUser?.isDemo && <span className="text-primary">(Demo)</span>}
                 </span>
                 <Button 
@@ -204,8 +204,8 @@ export const Header = () => {
                   className="bg-white/90 border-white text-black hover:bg-white hover:text-black font-semibold shadow-lg"
                   onClick={handleLogout}
                 >
-                  <LogOut className="h-4 w-4 mr-1" />
-                  Cerrar Sesión
+                  <LogOut className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-1" />
+                  <span className="hidden sm:inline">Cerrar Sesión</span>
                 </Button>
               </div>
             )}

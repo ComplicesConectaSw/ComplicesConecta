@@ -268,20 +268,20 @@ const Chat = () => {
         {/* Sidebar - Lista de chats */}
         <div className={`${selectedChat ? 'hidden md:block' : 'block'} w-full md:w-1/3 bg-black/30 backdrop-blur-sm border-r border-white/10`}>
           <div className="p-4 border-b border-white/10">
-            <div className="flex items-center justify-between p-4 bg-gradient-to-r from-purple-900/80 to-pink-900/80 backdrop-blur-md border-b border-white/30 shadow-lg">
+            <div className="flex items-center justify-between p-3 sm:p-4 bg-gradient-to-r from-purple-900/80 to-pink-900/80 backdrop-blur-md border-b border-white/30 shadow-lg">
               <Button 
                 variant="ghost" 
                 onClick={() => setSelectedChat(null)}
-                className="text-white hover:bg-white/50 md:hidden"
+                className="text-white hover:bg-white/50 md:hidden p-2"
               >
-                <ArrowLeft className="h-5 w-5" />
+                <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
               </Button>
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-bold text-white">Conversaciones</h2>
+              <div className="flex items-center justify-between flex-1 min-w-0">
+                <h2 className="text-lg sm:text-xl font-bold text-white truncate">Conversaciones</h2>
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  className="text-white hover:bg-white/10"
+                  className="text-white hover:bg-white/10 p-2"
                   onClick={() => navigate('/')}
                 >
                   <ArrowLeft className="h-4 w-4" />
@@ -497,7 +497,7 @@ const Chat = () => {
                       <Lock className="h-6 w-6 mr-2" />
                       <span className="font-semibold text-lg text-shadow">Chat privado bloqueado</span>
                     </div>
-                    <p className="text-sm text-white/90 mb-6 text-shadow leading-relaxed max-w-sm mx-auto break-words">
+                    <p className="text-sm text-white mb-6 leading-relaxed max-w-sm mx-auto break-words">
                       Necesitas una invitación aceptada para chatear con {selectedChat.name}. 
                       Puedes enviar una invitación o esperar a que te envíen una.
                     </p>

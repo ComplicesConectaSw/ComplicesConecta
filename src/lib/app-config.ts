@@ -28,7 +28,7 @@ export const getAppConfig = (): AppConfig => {
     },
     features: {
       demoCredentials: true, // Siempre permitir credenciales demo
-      realAuth: false, // Desactivar autenticación real por defecto
+      realAuth: true, // Habilitar autenticación real
       adminAccess: true // Permitir acceso admin en demo
     },
     ui: {

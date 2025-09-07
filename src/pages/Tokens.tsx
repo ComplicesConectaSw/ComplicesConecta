@@ -17,12 +17,12 @@ export default function Tokens() {
   const { balance, getBalanceMessage, getStakingMessage } = useTokens();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900/20 via-pink-900/20 to-red-900/20 relative">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50 relative">
       {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-pink-900/20 to-red-900/20">
-        <div className="absolute top-20 left-20 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl animate-float"></div>
-        <div className="absolute bottom-20 right-20 w-48 h-48 bg-purple-500/10 rounded-full blur-2xl animate-pulse"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-red-500/5 rounded-full blur-3xl animate-spin-slow"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-50 to-pink-50">
+        <div className="absolute top-20 left-20 w-64 h-64 bg-purple-100/30 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-20 right-20 w-48 h-48 bg-pink-100/30 rounded-full blur-2xl animate-pulse"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-indigo-100/20 rounded-full blur-3xl animate-spin-slow"></div>
       </div>
       <div className="container mx-auto px-4 py-6 max-w-4xl relative z-10">
         {/* Header */}
