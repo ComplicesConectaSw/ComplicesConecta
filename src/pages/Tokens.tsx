@@ -12,6 +12,7 @@ import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { useTokens } from '../hooks/useTokens';
 import { Coins, Info, ExternalLink, Bot, ArrowLeft, Home, Heart, Sparkles, Star, Rocket, Users } from 'lucide-react';
+import Navigation from '@/components/Navigation';
 
 export default function Tokens() {
   const [showStakingModal, setShowStakingModal] = useState(false);
@@ -273,6 +274,9 @@ export default function Tokens() {
           onClose={() => setShowStakingModal(false)}
         />
       </div>
+      
+      {/* Navigation Menu */}
+      <Navigation />
     </div>
   );
 }

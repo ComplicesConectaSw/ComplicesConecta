@@ -395,7 +395,7 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
     <Card className="w-full max-w-2xl mx-auto h-[600px] flex flex-col">
       <CardHeader className="border-b">
         <CardTitle className="flex items-center gap-2">
-          <Bot className="h-5 w-5 text-blue-600" />
+          <Bot className="h-5 w-5 text-purple-600" />
           🤖 Asistente de Tokens CMPX/GTK
         </CardTitle>
         <p className="text-sm text-gray-600">
@@ -415,20 +415,20 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
               )}
             >
               {message.type === 'bot' && (
-                <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
-                  <Bot className="h-4 w-4 text-blue-600" />
+                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-100 to-pink-100 flex items-center justify-center flex-shrink-0">
+                  <Bot className="h-4 w-4 text-purple-600" />
                 </div>
               )}
               
               <div
                 className={cn(
-                  "max-w-[80%] rounded-lg p-3",
+                  "max-w-[80%] rounded-lg p-3 break-words overflow-hidden",
                   message.type === 'user'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-900'
+                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white'
+                    : 'bg-gradient-to-r from-gray-50 to-gray-100 text-gray-900 border border-gray-200'
                 )}
               >
-                <div className="whitespace-pre-wrap text-sm">
+                <div className="whitespace-pre-wrap text-sm leading-relaxed break-words">
                   {message.content}
                 </div>
                 
@@ -450,7 +450,7 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
               </div>
               
               {message.type === 'user' && (
-                <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center flex-shrink-0">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center flex-shrink-0">
                   <User className="h-4 w-4 text-white" />
                 </div>
               )}
@@ -459,8 +459,8 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
           
           {isTyping && (
             <div className="flex gap-3 justify-start">
-              <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
-                <Bot className="h-4 w-4 text-blue-600" />
+              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-100 to-pink-100 flex items-center justify-center flex-shrink-0">
+                <Bot className="h-4 w-4 text-purple-600" />
               </div>
               <div className="bg-gray-100 rounded-lg p-3">
                 <div className="flex space-x-1">

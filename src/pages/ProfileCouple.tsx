@@ -49,34 +49,34 @@ const ProfileCouple: React.FC = () => {
         
         const user = JSON.parse(demoUser);
         
-        // Si es perfil pareja, usar datos del usuario demo
+        // Si es perfil pareja, crear perfil completo con datos demo
         if (user.accountType === 'couple') {
-          // Asegurar que el usuario tenga la estructura correcta
+          // Crear perfil de pareja demo con datos específicos
           const coupleProfile: CoupleProfile = {
             id: user.id || 1,
-            coupleName: user.name || user.coupleName || 'Pareja Demo',
-            location: user.location || 'Ciudad, País',
-            bio: user.bio || 'Somos una pareja aventurera buscando nuevas experiencias.',
-            avatar: user.avatar || 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=500&h=625&fit=crop&crop=faces',
-            isOnline: user.isOnline ?? true,
-            isVerified: user.isVerified ?? true,
-            isPremium: user.isPremium ?? true,
+            coupleName: user.first_name === 'Pareja Demo' ? 'Ana & Carlos Demo' : user.first_name || 'Pareja Demo',
+            location: 'CDMX, México',
+            bio: 'Somos una pareja aventurera del lifestyle swinger. Buscamos nuevas experiencias y conexiones auténticas con otras parejas y singles en México. Nos encanta la comunicación abierta y el respeto mutuo.',
+            avatar: 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=500&h=625&fit=crop&crop=faces',
+            isOnline: true,
+            isVerified: true,
+            isPremium: true,
             accountType: 'couple',
-            partner1: user.partner1 || {
-              name: user.name?.split(' & ')[0] || 'Ella',
-              age: 28,
-              profession: 'Profesional',
-              bio: 'Me encanta explorar nuevas experiencias junto a mi pareja.',
+            partner1: {
+              name: 'Ana',
+              age: 29,
+              profession: 'Diseñadora',
+              bio: 'Me encanta explorar nuevas experiencias junto a mi pareja. Soy creativa, espontánea y siempre busco aventuras emocionantes en el lifestyle.',
               avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400',
-              interests: ['Lifestyle Swinger', 'Intercambio de Parejas', 'Encuentros Casuales']
+              interests: ['Lifestyle Swinger', 'Intercambio de Parejas', 'Fiestas Temáticas', 'Pool Parties', 'Comunicación Abierta']
             },
-            partner2: user.partner2 || {
-              name: user.name?.split(' & ')[1] || 'Él',
-              age: 30,
-              profession: 'Profesional',
-              bio: 'Aventurero y respetuoso, busco junto a mi pareja vivir experiencias únicas.',
+            partner2: {
+              name: 'Carlos',
+              age: 31,
+              profession: 'Ingeniero',
+              bio: 'Aventurero y respetuoso, busco junto a mi pareja vivir experiencias únicas. Me gusta conocer gente nueva y crear conexiones auténticas.',
               avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400',
-              interests: ['Fiestas Temáticas', 'Clubs Privados', 'Eventos Lifestyle']
+              interests: ['Clubs Privados', 'Eventos Lifestyle', 'Soft Swap', 'Masajes en Pareja', 'Respeto Mutuo']
             }
           };
           setProfile(coupleProfile);

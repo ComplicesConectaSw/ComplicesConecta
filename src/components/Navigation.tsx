@@ -98,7 +98,7 @@ const Navigation = ({ className }: NavigationProps) => {
   return (
     <nav className={cn(
       "fixed bottom-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out",
-      "bg-white/10 backdrop-blur-xl border-t border-white/20 shadow-2xl",
+      "bg-gradient-to-r from-purple-900/90 via-pink-900/90 to-red-900/90 backdrop-blur-xl border-t border-pink-300/30 shadow-2xl",
       "px-2 sm:px-4 py-2 safe-area-pb",
       isVisible ? "translate-y-0 opacity-100" : "translate-y-full opacity-0",
       className
@@ -119,7 +119,7 @@ const Navigation = ({ className }: NavigationProps) => {
                 "relative overflow-hidden",
                 isActive 
                   ? "bg-gradient-to-r from-primary/20 to-accent/20 text-white shadow-lg scale-110" 
-                  : "text-white/80 hover:text-white hover:bg-white/10"
+                  : "text-white/80 hover:text-white hover:bg-pink-500/20"
               )}
             >
               {/* Animated background for active state */}
@@ -145,7 +145,7 @@ const Navigation = ({ className }: NavigationProps) => {
       </div>
       
       {/* Decorative gradient line */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-pink-300/50 to-transparent" />
     </nav>
   );
 };

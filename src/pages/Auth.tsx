@@ -268,7 +268,7 @@ const Auth = () => {
             } else if (accountType === 'couple') {
               navigate("/profile-couple");
             } else {
-              navigate("/discover");
+              navigate("/profile-single");
             }
           }, 3000);
         } else {
@@ -342,8 +342,8 @@ const Auth = () => {
                   navigate("/admin");
                 }
               } else {
-                console.log('👤 Usuario regular - redirigiendo a discover');
-                navigate("/discover");
+                console.log('👤 Usuario regular - redirigiendo a perfil single');
+                navigate("/profile-single");
               }
             } else if (profileCheckAttempts >= maxAttempts) {
               console.warn('⚠️ Timeout alcanzado - redirigiendo sin perfil completo');
@@ -371,8 +371,8 @@ const Auth = () => {
                   navigate("/admin");
                 }
               } else {
-                console.log('👤 Usuario regular por defecto - redirigiendo a discover');
-                navigate("/discover");
+                console.log('👤 Usuario regular por defecto - redirigiendo a perfil single');
+                navigate("/profile-single");
               }
             } else {
               console.log('⏳ Perfil aún no cargado, reintentando...');

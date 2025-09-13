@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { TOKEN_CONFIG } from '@/lib/tokens';
+import Navigation from '@/components/Navigation';
 
 interface FAQItem {
   question: string;
@@ -124,7 +125,7 @@ export default function TokensInfo() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8 space-y-8">
+      <div className="container mx-auto px-4 py-8 space-y-8 pb-20">
         {/* Hero Section */}
         <div className="text-center space-y-6 animate-fade-in">
           <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full mb-6">
@@ -495,6 +496,9 @@ export default function TokensInfo() {
           </div>
         </div>
       </div>
+      
+      {/* Navigation Menu */}
+      <Navigation />
     </div>
   );
 }

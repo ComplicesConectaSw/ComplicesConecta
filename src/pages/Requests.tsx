@@ -106,7 +106,7 @@ const Requests = () => {
   }
 
   return (
-    <div className="min-h-screen bg-hero-gradient relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 relative overflow-hidden pb-20">
       {/* Animated Background */}
       <div className="fixed inset-0 z-0">
         <div className="absolute inset-0 opacity-40">
