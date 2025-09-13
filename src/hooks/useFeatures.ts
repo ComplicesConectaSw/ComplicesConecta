@@ -22,13 +22,15 @@ export function useFeatures() {
         galleryPublicPrivate: true,  // Galerías habilitadas
         messagingPrivacy: true,      // Restricción de mensajes
 
-        // 🚀 Funciones premium (pre-implementadas)
-        eventsVIP: phase !== "beta",       // Solo visible en premium/vip
-        ghostMode: phase !== "beta",
-        virtualGifts: phase !== "beta",
-        superLikes: phase !== "beta",
-        stories: phase !== "beta",
-        privateMatches: phase !== "beta",  // Matches privados premium
+        // 🚀 Funciones premium - HABILITADAS DURANTE BETA
+        // Todas las funciones premium están disponibles hasta el cierre de beta
+        // Después se manejará con suscripciones
+        eventsVIP: true,           // Habilitado durante beta
+        ghostMode: true,           // Habilitado durante beta
+        virtualGifts: true,        // Habilitado durante beta
+        superLikes: true,          // Habilitado durante beta
+        stories: true,             // Habilitado durante beta
+        privateMatches: true,      // Habilitado durante beta
       },
     }
   }, [phase])
