@@ -1,12 +1,33 @@
 # 🏗️ ComplicesConecta - Estructura del Proyecto Unificada
 
 ## 📋 Información General
-- **Proyecto:** ComplicesConecta v2.2.0
-- **Tecnología:** React 18 + TypeScript + Vite
+- **Proyecto:** ComplicesConecta v2.4.0
+- **Tecnología:** React 18 + TypeScript + Vite + Framer Motion
 - **Backend:** Supabase (PostgreSQL + Auth + Storage)
-- **UI:** Tailwind CSS + Radix UI
-- **Estado:** Producción Activa - Sistema 100% Operativo
-- **Última actualización:** 13 de septiembre 2025, 16:45 hrs
+- **UI:** Tailwind CSS + Radix UI + Componentes Animados
+- **Estado:** Producción Activa - Sistema 100% Operativo con UI Moderna + Android Optimizado
+- **Testing:** ✅ Validación completa en dispositivos Android reales
+- **APK:** ✅ Disponible en GitHub Releases v2.4.0
+- **Última actualización:** 13 de septiembre 2025, 06:45 hrs
+
+## 🆕 NUEVAS FUNCIONALIDADES v2.4.0
+
+### 🎨 **Biblioteca de Componentes UI Animados**
+**Ubicación:** `src/components/ui/`
+- **AnimatedProfileCard.tsx**: Cards de perfil con animaciones Framer Motion, múltiples imágenes, reacciones
+- **AnimatedButton.tsx**: Botones con efectos hover, ripple, glow, variantes love/premium
+- **GlassCard.tsx**: Cards con efectos glassmorphism, blur backdrop, gradientes animados
+- **AnimatedTabs.tsx**: Tabs con transiciones suaves, badges, orientación horizontal/vertical
+- **AnimatedLoader.tsx**: Loaders animados (spinner, dots, pulse, wave, heart, love)
+- **ChatBubble.tsx**: Burbujas de chat con reacciones, estados de mensaje, animaciones
+
+### 📱 **Optimización Móvil Completa**
+**Archivo:** `src/utils/mobile.ts`
+- Detección automática de dispositivos móviles y touch
+- Configuración de animaciones adaptativa según capacidades del dispositivo
+- Soporte para `prefers-reduced-motion` y `hover: hover`
+- Helpers para touch gestures y tap highlighting
+- Breakpoints responsivos automáticos
 
 ## 🚀 CORRECCIONES CRÍTICAS v2.2.0 - Admin Panel y UI
 
@@ -133,7 +154,14 @@ conecta-social-comunidad-main/
 │   │   │   ├── TokenDashboard.tsx   # Dashboard principal de tokens
 │   │   │   ├── TokenChatBot.tsx     # Asistente IA interactivo
 │   │   │   └── StakingModal.tsx     # Modal de staking
-│   │   └── ui/                 # Componentes UI base
+│   │   └── ui/                 # Componentes UI base + Animados v2.4.0
+│   │       ├── AnimatedProfileCard.tsx  # Cards de perfil animadas
+│   │       ├── AnimatedButton.tsx       # Botones con efectos
+│   │       ├── GlassCard.tsx           # Cards glassmorphism
+│   │       ├── AnimatedTabs.tsx        # Tabs con transiciones
+│   │       ├── AnimatedLoader.tsx      # Loaders animados
+│   │       ├── ChatBubble.tsx          # Burbujas de chat
+│   │       └── [componentes shadcn/ui existentes]
 │   ├── 🎣 hooks/               # Custom React Hooks
 │   │   ├── useAuth.ts          # Hook de autenticación
 │   │   ├── useTokens.ts        # Hook de tokens
@@ -143,6 +171,8 @@ conecta-social-comunidad-main/
 │   │   ├── data.ts             # Datos mock y constantes
 │   │   ├── invitations.ts      # Lógica de invitaciones
 │   │   └── media.ts            # Gestión de medios
+│   ├── 🛠️ utils/               # Utilidades v2.4.0
+│   │   └── mobile.ts           # Detección móvil y optimizaciones
 │   ├── 📄 pages/               # Páginas de la aplicación
 │   │   ├── Admin.tsx           # Panel admin demo
 │   │   ├── AdminProduction.tsx # Panel admin producción

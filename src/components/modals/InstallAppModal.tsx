@@ -161,7 +161,7 @@ export const InstallAppModal = ({ isOpen, onClose }: InstallAppModalProps) => {
               <Button 
                 onClick={() => {
                   const link = document.createElement('a');
-                  link.href = 'https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v.2.1.7/app-release.apk';
+                  link.href = 'https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v2.4.0/app-release.apk';
                   link.download = 'app-release.apk';
                   document.body.appendChild(link);
                   link.click();

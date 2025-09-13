@@ -12,11 +12,22 @@
 			"backgroundColor": "#1a1a2e",
 			"androidSplashResourceName": "splash",
 			"showSpinner": false
+		},
+		"Keyboard": {
+			"resize": "body",
+			"style": "dark",
+			"resizeOnFullScreen": true
 		}
 	},
 	"android": {
 		"allowMixedContent": true,
 		"captureInput": true,
-		"webContentsDebuggingEnabled": true
+		"webContentsDebuggingEnabled": true,
+		"loggingBehavior": "debug",
+		"appendUserAgent": "ComplicesConecta/2.4.0",
+		"backgroundColor": "#1a1a2e"
+	},
+	"server": {
+		"androidScheme": "https"
 	}
 }

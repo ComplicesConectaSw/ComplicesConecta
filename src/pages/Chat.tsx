@@ -12,6 +12,11 @@ import { useFeatures } from "@/hooks/useFeatures";
 import { mockPrivacySettings } from "@/lib/data";
 import { invitationService } from "@/lib/invitations";
 import { InvitationDialog } from "@/components/invitations/InvitationDialog";
+import { AnimatedTabs } from "@/components/ui/AnimatedTabs";
+import { ChatBubble } from "@/components/ui/ChatBubble";
+import { GlassCard } from "@/components/ui/GlassCard";
+import { AnimatedButton } from "@/components/ui/AnimatedButton";
+import { motion, AnimatePresence } from "framer-motion";
 
 export interface ChatUser {
   id: number;

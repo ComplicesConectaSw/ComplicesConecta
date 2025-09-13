@@ -5,13 +5,17 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
-import { Heart, Flame, Crown, RefreshCw, Filter, Star, CheckCircle, MapPin, Home, User, Search } from 'lucide-react';
+import { Heart, Flame, Crown, RefreshCw, Filter, Star, CheckCircle, MapPin, Home, User, Search, MessageCircle } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 import { useToast } from "@/hooks/use-toast";
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useGeolocation } from '@/hooks/useGeolocation';
 import { pickProfileImage, inferProfileKind, resetImageCounters, type ProfileType, type Gender } from '@/lib/media';
 import { lifestyleInterests as importedLifestyleInterests } from '@/lib/lifestyle-interests';
+import { AnimatedProfileCard } from '@/components/ui/AnimatedProfileCard';
+import { AnimatedButton } from '@/components/ui/AnimatedButton';
+import { GlassCard } from '@/components/ui/GlassCard';
+import { motion } from 'framer-motion';
 
 // Definición del tipo para un perfil
 interface Profile {
@@ -172,12 +176,26 @@ const Discover = () => {
     navigate(`/profile/${profile.id}`, { state: { profile } });
   };
 
-  const handleLike = (profileId: string, e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleLike = (profileId: number) => {
     toast({
       title: "¡Like enviado!",
       description: "Tu interés ha sido registrado.",
     });
+  };
+
+  const handleMessage = (profileId: number) => {
+    toast({
+      title: "Chat iniciado",
+      description: "Redirigiendo al chat...",
+    });
+    navigate('/chat');
+  };
+
+  const handleViewProfile = (profileId: number) => {
+    const profile = profiles.find(p => p.id === profileId.toString());
+    if (profile) {
+      navigate(`/profile/${profile.id}`, { state: { profile } });
+    }
   };
 
   const handleSuperLike = (profileId: string, e: React.MouseEvent) => {
@@ -265,28 +283,39 @@ const Discover = () => {
       {/* Main content area */}
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8 max-w-full overflow-x-hidden">
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-          <Card className="bg-white/90 backdrop-blur-md border-0 text-center p-4">
+        <motion.div 
+          className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <GlassCard className="text-center p-4">
             <Heart className="h-6 w-6 mx-auto mb-2 text-red-500" />
-            <div className="text-2xl font-bold text-gray-900">12</div>
-            <div className="text-sm text-gray-600">Likes</div>
-          </Card>
-          <Card className="bg-white/90 backdrop-blur-md border-0 text-center p-4">
+            <div className="text-2xl font-bold text-white">12</div>
+            <div className="text-sm text-white/80">Likes</div>
+          </GlassCard>
+          <GlassCard className="text-center p-4">
             <Flame className="h-6 w-6 mx-auto mb-2 text-orange-500" />
-            <div className="text-2xl font-bold text-gray-900">5</div>
-            <div className="text-sm text-gray-600">Super Likes</div>
-          </Card>
-          <Card className="bg-white/90 backdrop-blur-md border-0 text-center p-4">
+            <div className="text-2xl font-bold text-white">5</div>
+            <div className="text-sm text-white/80">Super Likes</div>
+          </GlassCard>
+          <GlassCard className="text-center p-4">
             <Star className="h-6 w-6 mx-auto mb-2 text-yellow-500" />
-            <div className="text-2xl font-bold text-gray-900">0</div>
-            <div className="text-sm text-gray-600">Matches</div>
-          </Card>
-        </div>
+            <div className="text-2xl font-bold text-white">0</div>
+            <div className="text-sm text-white/80">Matches</div>
+          </GlassCard>
+        </motion.div>
 
         <div className="flex flex-col lg:flex-row gap-4 lg:gap-6">
           {/* Panel de filtros */}
           {showFilters && (
-            <Card className="w-full lg:w-80 bg-gradient-to-br from-purple-50/95 to-pink-50/95 backdrop-blur-md border border-purple-200/50 shadow-xl p-4 lg:p-6">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -50 }}
+              transition={{ duration: 0.3 }}
+            >
+              <GlassCard className="w-full lg:w-80 p-4 lg:p-6" variant="colored">
               <h3 className="text-lg font-semibold mb-4 text-purple-900 flex items-center gap-2">
                 <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                   Filtros Avanzados
@@ -405,8 +434,9 @@ const Discover = () => {
               </div>
 
               {/* Botón Limpiar Filtros */}
-              <button 
-                className="w-full py-2 px-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg font-medium hover:from-purple-700 hover:to-pink-700 transition-all duration-200 shadow-md hover:shadow-lg"
+              <AnimatedButton 
+                variant="love"
+                className="w-full"
                 onClick={() => {
                   setFilters({
                     ageRange: [18, 65],
@@ -420,104 +450,45 @@ const Discover = () => {
                 }}
               >
                 Limpiar Filtros
-              </button>
-            </Card>
+              </AnimatedButton>
+              </GlassCard>
+            </motion.div>
           )}
           
           {/* Grid de perfiles */}
           <div className="flex-1">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
-              {filteredProfiles.map((profile) => (
-                <Card
+            <motion.div 
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              {filteredProfiles.map((profile, index) => (
+                <motion.div
                   key={profile.id}
-                  className="bg-white/90 backdrop-blur-md border-0 overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-                  onClick={() => handleProfileClick(profile)}
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
-                  <div className="relative">
-                    <img
-                      src={profile.image}
-                      alt={profile.name}
-                      className="w-full h-48 sm:h-64 object-cover"
-                    />
-                    <div className="absolute top-2 right-2 flex flex-col sm:flex-row gap-1 sm:gap-2">
-                      {profile.isVerified && (
-                        <Badge className="bg-green-500 text-white text-xs">
-                          <CheckCircle className="h-3 w-3 mr-1" />
-                          Verificado
-                        </Badge>
-                      )}
-                      {profile.isPremium && (
-                        <Badge className="bg-yellow-500 text-white text-xs">
-                          <Crown className="h-3 w-3 mr-1" />
-                          Premium
-                        </Badge>
-                      )}
-                    </div>
-                    <div className="absolute bottom-2 left-2">
-                      {profile.isOnline && (
-                        <Badge className="bg-green-500 text-white text-xs">
-                          En línea
-                        </Badge>
-                      )}
-                    </div>
-                  </div>
-                  
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="text-lg font-semibold text-gray-900">{profile.name}, {profile.age}</h3>
-                      <div className="flex items-center space-x-2">
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={(e) => handleLike(profile.id, e)}
-                          className="text-red-500 hover:text-red-600 hover:bg-red-50 p-2"
-                        >
-                          <Heart className="h-5 w-5" />
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={(e) => handleSuperLike(profile.id, e)}
-                          className="text-blue-500 hover:text-blue-600 hover:bg-blue-50 p-2"
-                        >
-                          <Flame className="h-5 w-5" />
-                        </Button>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center text-sm text-gray-600 mb-2">
-                      <MapPin className="h-4 w-4 mr-1" />
-                      {profile.location} • {profile.distance}km
-                    </div>
-                    
-                    <p className="text-sm text-gray-700 mb-3 line-clamp-2">{profile.bio}</p>
-                    
-                    {/* Intereses */}
-                    <div className="flex flex-wrap gap-1 mb-3">
-                      {profile.interests.slice(0, 3).map((interest, index) => (
-                        <Badge key={index} variant="outline" className="text-xs">
-                          {interest}
-                        </Badge>
-                      ))}
-                      {profile.interests.length > 3 && (
-                        <Badge variant="outline" className="text-xs">
-                          +{profile.interests.length - 3}
-                        </Badge>
-                      )}
-                    </div>
-                    
-                    {/* Match score */}
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-1">
-                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                        <span className="text-xs text-gray-600">Compatibilidad: {profile.matchScore}%</span>
-                      </div>
-                      <span className="text-xs text-gray-500">{profile.lastActive}</span>
-                    </div>
-                  </CardContent>
-                </Card>
+                  <AnimatedProfileCard
+                    id={parseInt(profile.id)}
+                    name={profile.name}
+                    age={profile.age}
+                    location={profile.location}
+                    image={profile.image}
+                    bio={profile.bio}
+                    interests={profile.interests}
+                    isOnline={profile.isOnline}
+                    isPremium={profile.isPremium}
+                    isPrivate={false}
+                    lastSeen={profile.isOnline ? undefined : profile.lastActive}
+                    onLike={handleLike}
+                    onMessage={handleMessage}
+                    onViewProfile={handleViewProfile}
+                  />
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
         </div>
       </main>

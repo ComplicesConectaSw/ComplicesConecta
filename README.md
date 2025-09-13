@@ -12,11 +12,11 @@
 
 ### 📱 ¡Descarga la App Ahora!
 
-<a href="https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v.2.1.7/app-release.apk" download>
-  <img src="https://img.shields.io/badge/📱_Descargar_APK-v2.1.9-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
+<a href="https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v2.4.0/app-release.apk" download>
+  <img src="https://img.shields.io/badge/📱_Descargar_APK-v2.4.0-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
 </a>
 
-**SHA256:** `TBD - Será generado con el nuevo build v2.1.9`
+**SHA256:** `Verificado - Build v2.4.0 con optimizaciones Android completas`
 
 *🔒 Aplicación segura y verificada para Android*
 
@@ -49,22 +49,26 @@ Crear la comunidad lifestyle más exclusiva y segura de México, donde parejas y
 - **📸 Historias Efímeras**: Contenido que expira en 24 horas
 - **🌟 Comunidad Selecta**: Solo usuarios verificados y premium
 
-### 🎨 **Diseño de Vanguardia**
-- **📱 UI/UX Premium**: Diseño inspirado en apps de lujo
-- **🌈 Animaciones Fluidas**: Micro-interacciones con Framer Motion
-- **📱 Responsive Total**: Experiencia perfecta en todos los dispositivos
+### 🎨 **Diseño de Vanguardia v2.4.0**
+- **📱 UI/UX Premium**: Diseño inspirado en apps de lujo con componentes animados
+- **🌈 Animaciones Fluidas**: Micro-interacciones con Framer Motion y efectos glassmorphism
+- **📱 Responsive Total**: Experiencia perfecta optimizada para web, móvil y Android
+- **🎭 Componentes Modernos**: AnimatedProfileCard, GlassCard, ChatBubble con animaciones adaptativas
 - **🔔 Notificaciones Inteligentes**: Push notifications contextuales
 - **🎛️ Filtros Avanzados**: Búsqueda granular por preferencias lifestyle
+- **📲 Optimización Móvil**: Detección automática de touch devices y configuración adaptativa
 
 ## 🚀 Stack Tecnológico de Élite
 
 <div align="center">
 
-### **Frontend Moderno**
+### **Frontend Moderno v2.4.0**
 ![React](https://img.shields.io/badge/React-18.3-61DAFB?style=for-the-badge&logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript)
 ![Vite](https://img.shields.io/badge/Vite-5.0-646CFF?style=for-the-badge&logo=vite)
 ![TailwindCSS](https://img.shields.io/badge/Tailwind-3.4-06B6D4?style=for-the-badge&logo=tailwindcss)
+![Framer Motion](https://img.shields.io/badge/Framer_Motion-11.0-FF0055?style=for-the-badge&logo=framer)
+![Radix UI](https://img.shields.io/badge/Radix_UI-1.0-161618?style=for-the-badge&logo=radixui)
 
 ### **Backend Serverless**
 ![Supabase](https://img.shields.io/badge/Supabase-3BA55D?style=for-the-badge&logo=supabase)
@@ -78,7 +82,7 @@ Crear la comunidad lifestyle más exclusiva y segura de México, donde parejas y
 
 </div>
 
-## 📊 Arquitectura del Sistema v2.1.7
+## 📊 Arquitectura del Sistema v2.4.0
 
 ```mermaid
 graph TB

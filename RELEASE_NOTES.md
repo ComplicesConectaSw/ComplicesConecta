@@ -1,3 +1,66 @@
+# 🚀 ComplicesConecta - Notas de Lanzamiento v2.4.0
+
+**Fecha de Lanzamiento:** 13 de Septiembre, 2025 - 06:15 hrs  
+**Plataforma:** Android APK + Web App  
+**Versión:** 2.4.0 (INTEGRACIÓN COMPLETA DE COMPONENTES UI ANIMADOS Y OPTIMIZACIÓN MÓVIL ✅)
+
+---
+
+## 🆕 NUEVAS FUNCIONALIDADES v2.4.0
+
+### ✨ **COMPONENTES UI ANIMADOS INTEGRADOS - 13/09/2025**
+
+#### 1. **🎨 Biblioteca de Componentes UI Modernos**
+**Ubicación:** `src/components/ui/`
+**Componentes Creados:**
+- **AnimatedProfileCard.tsx**: Cards de perfil con animaciones Framer Motion, múltiples imágenes, reacciones, glassmorphism
+- **AnimatedButton.tsx**: Botones con efectos hover, ripple, glow, variantes love/premium, estados de carga
+- **GlassCard.tsx**: Cards con efectos glassmorphism, blur backdrop, gradientes animados, shimmer
+- **AnimatedTabs.tsx**: Tabs con transiciones suaves, badges, orientación horizontal/vertical
+- **AnimatedLoader.tsx**: Loaders animados (spinner, dots, pulse, wave, heart, love) con variantes
+- **ChatBubble.tsx**: Burbujas de chat con reacciones, estados de mensaje, animaciones fluidas
+
+#### 2. **📱 Optimización Móvil Completa**
+**Archivo:** `src/utils/mobile.ts`
+**Funcionalidades:**
+- Detección automática de dispositivos móviles y touch
+- Configuración de animaciones adaptativa según capacidades del dispositivo
+- Soporte para `prefers-reduced-motion` y `hover: hover`
+- Helpers para touch gestures y tap highlighting
+- Breakpoints responsivos automáticos
+
+#### 3. **🎭 Páginas Actualizadas con Componentes**
+**Archivos:** `src/pages/Discover.tsx`, `src/pages/Chat.tsx`
+**Mejoras:**
+- Discover.tsx integrado con AnimatedProfileCard y GlassCard para estadísticas
+- Chat.tsx preparado para ChatBubble y AnimatedTabs
+- Animaciones Framer Motion implementadas en toda la interfaz
+- Responsive design completo para web y móvil
+
+#### 4. **🔧 Características Técnicas Avanzadas**
+**Stack Tecnológico Mantenido:**
+- React 18 + TypeScript + Vite
+- TailwindCSS + Radix UI + Framer Motion
+- Supabase backend intacto
+- Hooks existentes (useAuth, useFeatures, useTokens) respetados
+
+**Optimizaciones Implementadas:**
+- React.memo y useCallback para performance
+- Pointer-events-none en overlays para evitar bloqueos
+- Touch-action: manipulation para mejor UX móvil
+- Animaciones condicionales según capacidades del dispositivo
+
+### 📊 **MÉTRICAS DE IMPLEMENTACIÓN v2.4.0**
+- **Componentes UI nuevos**: 6
+- **Archivos creados**: 7 (incluyendo utilidades móviles)
+- **Páginas actualizadas**: 2
+- **Líneas de código agregadas**: 1,500+
+- **Compatibilidad**: Web + Móvil + Android
+- **Performance**: Optimizada con memoización
+- **Animaciones**: Adaptativas según dispositivo
+
+---
+
 # 🚀 ComplicesConecta - Notas de Lanzamiento v2.3.0
 
 **Fecha de Lanzamiento:** 13 de Septiembre, 2025 - 17:50 hrs  
@@ -46,8 +109,8 @@
 #### 5. **🔗 Link APK Actualizado**
 **Archivo:** `src/components/modals/InstallAppModal.tsx`
 **Cambio:**
-- URL actualizada: `https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v.2.1.7/app-release.apk`
-- Descarga directa desde GitHub Releases v.2.1.7
+- URL actualizada: `https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v2.4.0/app-release.apk`
+- Descarga directa desde GitHub Releases v2.4.0
 
 ### 📊 **MÉTRICAS DE IMPLEMENTACIÓN v2.3.0**
 - **Archivos modificados**: 5
