@@ -9,22 +9,24 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 
 export const Header = () => {
   const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { user, profile, isAuthenticated: authIsAuthenticated, isAdmin, signOut, loading } = useAuth();
   const [demoUser, setDemoUser] = useState<any>(null);
   const [isRunningInApp, setIsRunningInApp] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
+  const { toast } = useToast();
+
+  // Determinar si está autenticado (demo o real)
+  const isAuthenticated = authIsAuthenticated() || (localStorage.getItem('demo_authenticated') === 'true');
 
   useEffect(() => {
-    const checkAuth = () => {
+    const checkDemoAuth = () => {
       const demoAuth = localStorage.getItem('demo_authenticated');
       const userData = localStorage.getItem('demo_user');
       
       if (demoAuth === 'true' && userData) {
-        setIsAuthenticated(true);
         setDemoUser(JSON.parse(userData));
       } else {
-        setIsAuthenticated(false);
         setDemoUser(null);
       }
     };
@@ -38,10 +40,10 @@ export const Header = () => {
     
     setIsRunningInApp(isInWebView());
 
-    checkAuth();
+    checkDemoAuth();
     // Verificar cambios en localStorage
-    window.addEventListener('storage', checkAuth);
-    return () => window.removeEventListener('storage', checkAuth);
+    window.addEventListener('storage', checkDemoAuth);
+    return () => window.removeEventListener('storage', checkDemoAuth);
   }, []);
 
   // Manejar scroll solo en APK instalada
@@ -83,11 +85,21 @@ export const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isRunningInApp]);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    // Cerrar sesión demo
     localStorage.removeItem('demo_authenticated');
     localStorage.removeItem('demo_user');
-    setIsAuthenticated(false);
     setDemoUser(null);
+    
+    // Cerrar sesión real si existe
+    if (authIsAuthenticated()) {
+      await signOut();
+      toast({
+        title: "Sesión cerrada",
+        description: "Has cerrado sesión exitosamente",
+      });
+    }
+    
     navigate('/');
   };
   return (
@@ -263,7 +275,18 @@ export const Header = () => {
             ) : (
               <div className="flex items-center gap-1 sm:gap-3">
                 <span className="text-white/90 text-xs sm:text-sm hidden sm:inline">
-                  {demoUser?.name} {demoUser?.isDemo && <span className="text-primary">(Demo)</span>}
+                  {/* Mostrar usuario real o demo */}
+                  {user?.email ? (
+                    <>
+                      {user.email}
+                      {isAdmin() && <span className="text-yellow-400 ml-1">(Admin)</span>}
+                    </>
+                  ) : (
+                    <>
+                      {demoUser?.name} 
+                      {demoUser?.isDemo && <span className="text-primary">(Demo)</span>}
+                    </>
+                  )}
                 </span>
                 <Button 
                   variant="outline" 

@@ -49,35 +49,35 @@ export const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
         <div className="absolute bottom-32 left-40 w-40 h-40 bg-white/5 rounded-full animate-float blur-2xl" style={{ animationDelay: '1s' }}></div>
         <div className="absolute bottom-20 right-20 w-28 h-28 bg-white/15 rounded-full animate-pulse blur-xl" style={{ animationDelay: '0.5s' }}></div>
         
-        {/* Floating Hearts */}
-        <Heart className="absolute top-32 left-1/4 w-8 h-8 text-white/30 animate-float" fill="currentColor" style={{ animationDelay: '0.2s' }} />
-        <Heart className="absolute bottom-40 right-1/3 w-6 h-6 text-white/40 animate-float" fill="currentColor" style={{ animationDelay: '1.5s' }} />
-        <Sparkles className="absolute top-1/3 right-1/4 w-7 h-7 text-white/35 animate-float" style={{ animationDelay: '0.8s' }} />
-        <Users className="absolute bottom-1/3 left-1/3 w-9 h-9 text-white/25 animate-float" style={{ animationDelay: '1.2s' }} />
-        <Zap className="absolute top-1/2 left-1/5 w-5 h-5 text-white/45 animate-float" style={{ animationDelay: '0.6s' }} />
+        {/* Floating Hearts - Hidden on mobile */}
+        <Heart className="absolute top-32 left-1/4 w-6 h-6 sm:w-8 sm:h-8 text-white/30 animate-float hidden sm:block" fill="currentColor" style={{ animationDelay: '0.2s' }} />
+        <Heart className="absolute bottom-40 right-1/3 w-4 h-4 sm:w-6 sm:h-6 text-white/40 animate-float hidden sm:block" fill="currentColor" style={{ animationDelay: '1.5s' }} />
+        <Sparkles className="absolute top-1/3 right-1/4 w-5 h-5 sm:w-7 sm:h-7 text-white/35 animate-float hidden sm:block" style={{ animationDelay: '0.8s' }} />
+        <Users className="absolute bottom-1/3 left-1/3 w-7 h-7 sm:w-9 sm:h-9 text-white/25 animate-float hidden sm:block" style={{ animationDelay: '1.2s' }} />
+        <Zap className="absolute top-1/2 left-1/5 w-4 h-4 sm:w-5 sm:h-5 text-white/45 animate-float hidden sm:block" style={{ animationDelay: '0.6s' }} />
       </div>
 
       {/* Main Loading Content */}
-      <div className="relative z-10 text-center px-8 max-w-md">
+      <div className="relative z-10 text-center px-4 sm:px-8 max-w-xs sm:max-w-md mx-auto">
         {/* Logo Animation */}
         <div className="mb-8 relative">
           <div className="relative inline-block">
             <Heart 
-              className="w-20 h-20 text-white animate-pulse-glow mx-auto" 
+              className="w-16 h-16 sm:w-20 sm:h-20 text-white animate-pulse-glow mx-auto" 
               fill="currentColor"
             />
             <div className="absolute inset-0 animate-ping">
-              <Heart className="w-20 h-20 text-white/50 mx-auto" fill="currentColor" />
+              <Heart className="w-16 h-16 sm:w-20 sm:h-20 text-white/50 mx-auto" fill="currentColor" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-white mt-4 animate-slide-up">
+          <h1 className="text-2xl sm:text-3xl font-bold text-white mt-4 animate-slide-up">
             ComplicesConecta
           </h1>
         </div>
 
         {/* Loading Text */}
-        <div className="mb-8 h-8">
-          <p className="text-xl text-white/90 animate-fade-in-out">
+        <div className="mb-6 sm:mb-8 h-6 sm:h-8">
+          <p className="text-lg sm:text-xl text-white/90 animate-fade-in-out px-2">
             {loadingTexts[currentText]}
           </p>
         </div>
