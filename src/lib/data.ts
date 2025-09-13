@@ -206,33 +206,9 @@ export const generateMockCouple = (includeOnlineStatus = true) => {
 
 // ===== NUEVAS FUNCIONALIDADES SOCIALES =====
 
-// Estados de solicitudes de conexión
-export type ConnectionRequestStatus = 'pending' | 'accepted' | 'declined';
-
-// Tipo para solicitudes de conexión
-export interface ConnectionRequest {
-  id: number;
-  fromUserId: number;
-  toUserId: number;
-  fromUser: {
-    id: number;
-    name: string;
-    avatar: string;
-    type: 'single' | 'couple';
-    location: string;
-  };
-  toUser: {
-    id: number;
-    name: string;
-    avatar: string;
-    type: 'single' | 'couple';
-    location: string;
-  };
-  status: ConnectionRequestStatus;
-  message?: string;
-  createdAt: string;
-  updatedAt?: string;
-}
+// NOTA: ConnectionRequest eliminado - usar tipos de Supabase desde @/integrations/supabase/types
+// Los tipos correctos están en Database['public']['Tables']['invitations']['Row']
+// con relaciones a Database['public']['Tables']['profiles']['Row']
 
 // Configuración de privacidad de perfil
 export interface ProfilePrivacySettings {
@@ -303,53 +279,8 @@ export interface Story {
   isViewed: boolean;
 }
 
-// Mock data para solicitudes de conexión
-export const mockConnectionRequests: ConnectionRequest[] = [
-  {
-    id: 1,
-    fromUserId: 101,
-    toUserId: 1,
-    fromUser: {
-      id: 101,
-      name: "Sofía García",
-      avatar: "https://randomuser.me/api/portraits/women/25.jpg",
-      type: 'single',
-      location: "CDMX"
-    },
-    toUser: {
-      id: 1,
-      name: "María González",
-      avatar: "https://randomuser.me/api/portraits/women/30.jpg",
-      type: 'single',
-      location: "CDMX"
-    },
-    status: 'pending',
-    message: "¡Hola! Me encantaría conocerte mejor. Tenemos muchos intereses en común.",
-    createdAt: "2024-01-15T10:30:00Z"
-  },
-  {
-    id: 2,
-    fromUserId: 102,
-    toUserId: 1,
-    fromUser: {
-      id: 102,
-      name: "Carmen & Roberto",
-      avatar: "https://randomuser.me/api/portraits/women/28.jpg",
-      type: 'couple',
-      location: "Guadalajara"
-    },
-    toUser: {
-      id: 1,
-      name: "María González",
-      avatar: "https://randomuser.me/api/portraits/women/30.jpg",
-      type: 'single',
-      location: "CDMX"
-    },
-    status: 'pending',
-    message: "Somos una pareja experimentada y nos gustaría conocerte. ¿Te interesa una experiencia única?",
-    createdAt: "2024-01-14T15:45:00Z"
-  }
-];
+// NOTA: Mock data eliminado - usar datos reales de Supabase
+// Las solicitudes se obtienen desde la tabla 'invitations' con relaciones a 'profiles'
 
 // Mock data para configuración de privacidad
 export const mockPrivacySettings: ProfilePrivacySettings = {
