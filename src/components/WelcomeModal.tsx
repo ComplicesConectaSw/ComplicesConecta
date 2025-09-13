@@ -56,9 +56,9 @@ export const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
     },
     {
       icon: Users,
-      title: "¡Comienza a Conectar!",
-      subtitle: "Tu cómplice perfecto te está esperando",
-      description: "Explora perfiles, invita amigos con tu código de referido, participa en eventos y descubre personas increíbles en tu área.",
+      title: "🎭 Perfiles Demo Disponibles",
+      subtitle: "Prueba la plataforma con cuentas de demostración",
+      description: "Accede con credenciales demo para explorar todas las funciones. Single: single@outlook.es (contraseña: 123456) | Pareja: pareja@outlook.es (contraseña: 123456). Explora chats, perfiles y funciones premium sin compromiso.",
       color: "text-primary",
       bgColor: "bg-primary/10"
     },

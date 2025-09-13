@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { MessageCircle, ArrowLeft, Heart, Users, Flame, Send, Lock, Globe, UserPlus } from "lucide-react";
+import { MessageCircle, ArrowLeft, Heart, Users, Flame, Send, Lock, Globe, UserPlus, Info } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { useFeatures } from "@/hooks/useFeatures";
@@ -277,14 +277,25 @@ const Chat = () => {
               </Button>
               <div className="flex items-center justify-between flex-1 min-w-0">
                 <h2 className="text-lg sm:text-xl font-bold text-white truncate">Conversaciones</h2>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="text-white hover:bg-white/20 p-2"
-                  onClick={() => navigate(-1)}
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="text-white hover:bg-white/20 p-2"
+                    onClick={() => navigate('/chat-info')}
+                    title="Información del sistema de chat"
+                  >
+                    <Info className="h-4 w-4" />
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="text-white hover:bg-white/20 p-2"
+                    onClick={() => navigate(-1)}
+                  >
+                    <ArrowLeft className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
             </div>
             

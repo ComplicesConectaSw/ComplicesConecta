@@ -14,6 +14,7 @@ import Events from "./pages/Events";
 const Profiles = lazy(() => import("./pages/Profiles"));
 const ProfileDetail = lazy(() => import("./pages/ProfileDetail"));
 const Chat = lazy(() => import("./pages/Chat"));
+const ChatInfo = lazy(() => import("./pages/ChatInfo"));
 const Matches = lazy(() => import("./pages/Matches"));
 const Requests = lazy(() => import("./pages/Requests"));
 const Settings = lazy(() => import("./pages/Settings"));
@@ -78,6 +79,7 @@ const App = () => (
               <Route path="/edit-profile-couple" element={<EditProfileCouple />} />
               <Route path="/events" element={<Events />} />
               <Route path="/chat" element={<Chat />} />
+              <Route path="/chat-info" element={<ChatInfo />} />
               <Route path="/matches" element={<Matches />} />
               <Route path="/requests" element={<Requests />} />
               <Route path="/discover" element={<Discover />} />

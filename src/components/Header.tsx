@@ -238,6 +238,12 @@ export const Header = () => {
                     Proyecto
                   </Link>
                 </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/chat-info" className="flex items-center gap-2 w-full">
+                    <Info className="h-4 w-4" />
+                    Sistema de Chat
+                  </Link>
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </nav>
