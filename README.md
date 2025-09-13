@@ -539,7 +539,17 @@ VITE_STAKING_DURATION_DAYS=30
 
 ⚠️ **NOTA:** Link de descarga APK GitHub no funciona. Usar APK local: `/app-release.apk`
 
-### ✨ **Actualizaciones Recientes (v2.1.5)** *(07 de septiembre, 2025 - 01:35)*
+### ✨ **CORRECCIONES CRÍTICAS v2.2.0** *(13 de septiembre, 2025 - 16:45)*
+- ✅ **Admin Panel Redirección**: Solucionado bucle infinito entre `/auth` y `/admin-production`
+- ✅ **LoadingScreens Responsive**: Optimizados para móvil y web con elementos adaptativos
+- ✅ **Header Autenticación**: Integración completa con `useAuth` mostrando usuario logueado
+- ✅ **Chat UI Corregido**: Texto cortado en ErrorBoundary solucionado con `max-w-sm`
+- ✅ **Nombres Demo Realistas**: "Single Demo" → "Sofía", "Pareja Demo" → "Carmen & Roberto"
+- ✅ **Tablas Supabase Creadas**: `faq_items`, `app_metrics`, `apk_downloads`, `user_token_balances`
+- ✅ **Organización SQL**: Archivos temporales movidos a `scripts/temp/` y excluidos de Git
+- ✅ **Sistema 100% Operativo**: Panel admin funcional con autenticación completa
+
+### ✨ **Actualizaciones Previas (v2.1.5)** *(07 de septiembre, 2025 - 01:35)*
 - ✅ **Responsividad Completa**: Optimización total para web y Android con breakpoints `sm:`
 - ✅ **Navegación Adaptativa**: Botones con tamaños `min-w-[50px] sm:min-w-[60px]` y texto truncado
 - ✅ **Header Responsivo**: Espaciado `space-x-1 sm:space-x-3` y elementos ocultos en móvil

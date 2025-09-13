@@ -142,8 +142,8 @@ export const handleDemoAuth = (email: string, accountType: string = 'single') =>
     role: isDemoAdmin(email) ? 'admin' : 'user',
     accountType: finalAccountType,
     first_name: email === 'admin' ? 'Admin Demo' : 
-                email === 'single@outlook.es' ? 'Single Demo' :
-                email === 'pareja@outlook.es' ? 'Pareja Demo' :
+                email === 'single@outlook.es' ? 'Sofía' :
+                email === 'pareja@outlook.es' ? 'Carmen & Roberto' :
                 email === 'djwacko28@gmail.com' ? 'DJ Wacko' :
                 email === 'apoyofinancieromexicano@gmail.com' ? 'Apoyo Financiero' :
                 email.split('@')[0],

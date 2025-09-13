@@ -496,7 +496,7 @@ const Chat = () => {
                       <Lock className="h-6 w-6 mr-2" />
                       <span className="font-semibold text-lg">Chat privado bloqueado</span>
                     </div>
-                    <p className="text-sm text-white/90 mb-6 leading-relaxed max-w-md mx-auto break-words whitespace-pre-wrap overflow-wrap-anywhere">
+                    <p className="text-sm text-white/90 mb-6 leading-relaxed max-w-sm mx-auto">
                       Necesitas una invitación aceptada para chatear con {selectedChat.name}. Puedes enviar una invitación o esperar a que te envíen una.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-3 justify-center">

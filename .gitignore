@@ -136,3 +136,15 @@ docs/
 coverage/
 *.lcov
 .nyc_output/
+
+# Scripts SQL temporales (v2.2.0 - organizados en scripts/temp/)
+scripts/temp/
+scripts/*_temp.sql
+scripts/*_fix.sql
+scripts/*_create_*.sql
+scripts/*_admin*.sql
+scripts/step_by_step.sql
+scripts/simple_fix.sql
+scripts/create_admin_profile.sql
+scripts/fix_rls_profiles.sql
+scripts/create_missing_tables.sql
