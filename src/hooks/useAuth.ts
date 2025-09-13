@@ -130,6 +130,7 @@ export const useAuth = () => {
       }
       
       console.log('✅ Perfil real cargado:', data?.first_name || 'Sin nombre');
+      console.log('📋 Datos completos del perfil:', data);
       setProfile(data);
     } catch (error) {
       console.error('❌ Error in fetchUserProfile:', error);

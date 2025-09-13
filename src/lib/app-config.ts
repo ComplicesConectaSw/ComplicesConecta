@@ -69,14 +69,10 @@ const ADMIN_EMAILS = [
   'complicesconectasw@outlook.es'  // ÚNICO admin producción REAL
 ];
 
-// Credenciales de producción REAL (SOLO complicesconectasw@outlook.es)
-export const PRODUCTION_ADMIN_CREDENTIALS = [
-  'complicesconectasw@outlook.es'  // ÚNICO admin producción real
-];
-
-// Contraseñas de producción (configuradas en Supabase real)
-export const PRODUCTION_PASSWORDS: Record<string, string> = {
-  'complicesconectasw@outlook.es': '123456' // ÚNICO admin real
+// Configuración de credenciales para modo producción
+export const productionCredentials = {
+  email: 'complicesconectasw@outlook.es',
+  password: 'Magy_Wacko_nala28'
 };
 
 // Función para verificar si es credencial demo
@@ -93,7 +89,7 @@ export const isDemoCredential = (email: string): boolean => {
 // Función para verificar si es admin de producción
 export const isProductionAdmin = (email: string): boolean => {
   const normalizedEmail = email.toLowerCase().trim();
-  return PRODUCTION_ADMIN_CREDENTIALS.includes(normalizedEmail);
+  return normalizedEmail === 'complicesconectasw@outlook.es';
 };
 
 // Función para verificar si es admin demo (admin Y djwacko28@gmail.com)
@@ -116,7 +112,10 @@ export const getDemoPassword = (email: string): string | null => {
 // Función para obtener contraseña de producción
 export const getProductionPassword = (email: string): string | null => {
   const normalizedEmail = email.toLowerCase().trim();
-  return PRODUCTION_PASSWORDS[normalizedEmail] || null;
+  if (normalizedEmail === 'complicesconectasw@outlook.es') {
+    return 'Magy_Wacko_nala28';
+  }
+  return null;
 };
 
 // Función centralizada para manejar autenticación demo (SIN complicesconectasw@outlook.es)
@@ -264,5 +263,5 @@ if (appConfig.mode === 'demo') {
   console.log('📝 Credenciales demo:', DEMO_CREDENTIALS);
 } else {
   console.log('🔐 Modo producción activo - autenticación real requerida');
-  console.log('🏢 Credenciales producción:', PRODUCTION_ADMIN_CREDENTIALS);
+  console.log('🏢 Credenciales producción:', { email: 'complicesconectasw@outlook.es' });
 }

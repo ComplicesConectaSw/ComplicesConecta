@@ -1,1 +1,0 @@
-import{r as t}from"./index-1rAgi2Qg.js";function u(){const e="production";return t.useMemo(()=>({phase:e,isBeta:e==="beta",isPremium:e==="vip",isVIP:e==="vip",features:{requests:!0,chatPublic:!0,chatPrivate:!0,profileVisibility:!0,galleryPublicPrivate:!0,messagingPrivacy:!0,eventsVIP:!0,ghostMode:!0,virtualGifts:!0,superLikes:!0,stories:!0,privateMatches:!0}}),[e])}export{u};

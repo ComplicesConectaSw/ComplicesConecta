@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
 // Obtener las credenciales de Supabase desde las variables de entorno
@@ -15,8 +15,18 @@ if (!supabaseUrl || !supabaseAnonKey || supabaseUrl.includes('your-supabase-url-
 
 console.log('🔗 Conectando a Supabase:', supabaseUrl);
 
-// Crear y exportar el cliente de Supabase con valores por defecto
-export const supabase = createClient<Database>(
+// Variable global para almacenar la instancia única del cliente
+let supabaseInstance: SupabaseClient<Database> | null = null;
+
+// Función para crear o retornar la instancia única del cliente
+function getSupabaseClient(): SupabaseClient<Database> {
+  if (supabaseInstance) {
+    console.log('♻️ Reutilizando instancia existente de Supabase');
+    return supabaseInstance;
+  }
+
+  console.log('🆕 Creando nueva instancia de Supabase');
+  supabaseInstance = createClient<Database>(
   supabaseUrl || 'https://placeholder.supabase.co', 
   supabaseAnonKey || 'placeholder-key', 
   {
@@ -71,8 +81,13 @@ export const supabase = createClient<Database>(
         eventsPerSecond: 10,
       },
     },
-  }
-);
+  });
+
+  return supabaseInstance;
+}
+
+// Exportar la instancia única del cliente
+export const supabase = getSupabaseClient();
 
 // Verificar conectividad inicial y activar modo demo si es necesario
 let isDemoMode = false;
