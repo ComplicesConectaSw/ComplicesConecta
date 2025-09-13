@@ -1,17 +1,50 @@
 -- PASO 1: Crear perfil para complicesconectasw@outlook.es (columnas correctas)
-INSERT INTO profiles (id, first_name, last_name, display_name, avatar_url, bio) 
-VALUES (
-    '10b2fa75-5a62-4299-921c-9a1cc99c765b', 
-    'Administrador', 
+-- Insertar perfil usando la columna correcta según el foreign key constraint
+-- El constraint profiles_id_fkey indica que debemos usar 'id' no 'user_id'
+
+-- Verificar constraint actual
+SELECT 'Constraint actual:' as paso;
+SELECT conname, confrelid::regclass, conkey, confkey
+FROM pg_constraint 
+WHERE conrelid = 'profiles'::regclass 
+AND contype = 'f';
+
+-- Eliminar perfil existente si existe
+DELETE FROM profiles WHERE id = '10b2fa75-5a62-4299-921c-9a1cc99c765b';
+
+-- Insertar perfil usando 'id' en lugar de 'user_id'
+INSERT INTO profiles (
+    id,
+    user_id,
+    first_name,
+    last_name,
+    display_name,
+    role,
+    email,
+    is_active,
+    is_public,
+    is_demo
+) VALUES (
+    '10b2fa75-5a62-4299-921c-9a1cc99c765b',  -- Usar mismo UUID como id
+    '10b2fa75-5a62-4299-921c-9a1cc99c765b',  -- Y como user_id
+    'Administrador',
     'ComplicesConecta',
-    'Admin ComplicesConecta',
-    NULL,
-    'Administrador principal del sistema'
+    'Administrador ComplicesConecta',
+    'admin',
+    'complicesconectasw@outlook.es',
+    true,
+    false,
+    false
 ) ON CONFLICT (id) DO UPDATE SET 
     first_name = EXCLUDED.first_name,
     last_name = EXCLUDED.last_name,
-    display_name = EXCLUDED.display_name,
-    bio = EXCLUDED.bio;
+    display_name = EXCLUDED.display_name;
+
+-- Verificar inserción
+SELECT 'Perfil creado:' as paso;
+SELECT id, user_id, first_name, last_name, display_name, role, email 
+FROM profiles 
+WHERE id = '10b2fa75-5a62-4299-921c-9a1cc99c765b';
 
 -- PASO 2: Crear rol en user_roles (columnas correctas)
 INSERT INTO user_roles (user_id, role, created_at) 

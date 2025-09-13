@@ -3,8 +3,12 @@
 -- PASO 1: Verificar usuarios existentes
 SELECT id, email, email_confirmed_at FROM auth.users WHERE email IN ('complicesconectasw@outlook.es', 'djwacko28@gmail.com');
 
--- PASO 2: Crear perfil para complicesconectasw@outlook.es (cambiar UUID por el real)
-INSERT INTO profiles (user_id, email, first_name, last_name, role, created_at, updated_at) 
+-- PASO 2: Verificar constraint actual
+SELECT 'Constraint actual:' as paso;
+SELECT conname, confrelid::regclass, conkey, confkey
+FROM pg_constraint 
+WHERE conrelid = 'profiles'::regclass 
+AND contype = 'f';
 VALUES (
     '10b2fa75-5a62-4299-921c-9a1cc99c765b', 
     'complicesconectasw@outlook.es', 

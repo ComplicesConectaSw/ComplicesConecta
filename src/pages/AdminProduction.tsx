@@ -77,7 +77,7 @@ interface FAQItem {
 }
 
 const AdminProduction = () => {
-  const { isAdmin, isAuthenticated, user } = useAuth();
+  const { user, profile, isAuthenticated, isAdmin, loading } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
   
@@ -96,13 +96,19 @@ const AdminProduction = () => {
   });
   const [faqItems, setFaqItems] = useState<FAQItem[]>([]);
   const [invitations, setInvitations] = useState<Invitation[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [dataLoading, setDataLoading] = useState(true);
   const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
   const [newFaq, setNewFaq] = useState({ question: '', answer: '', category: 'general' });
   const [auditReport, setAuditReport] = useState<any>(null);
 
   useEffect(() => {
     console.log('🔄 AdminProduction - Verificando acceso...');
+    
+    // CRÍTICO: No verificar autenticación si aún está cargando
+    if (loading) {
+      console.log('⏳ useAuth aún cargando - esperando...');
+      return;
+    }
     
     // Verificar sesión demo primero
     const demoAuth = localStorage.getItem('demo_authenticated');
@@ -115,10 +121,7 @@ const AdminProduction = () => {
         
         if (user.accountType === 'admin' || user.role === 'admin') {
           console.log('✅ Admin demo autorizado - cargando panel producción');
-          // Add a small delay to prevent race conditions
-          setTimeout(() => {
-            loadProductionData();
-          }, 100);
+          loadProductionData();
           return;
         } else {
           console.log('❌ Usuario demo sin permisos admin');
@@ -127,54 +130,54 @@ const AdminProduction = () => {
             description: "No tienes permisos de administrador",
             variant: "destructive"
           });
-          navigate('/discover');
+          navigate('/auth');
           return;
         }
       } catch (error) {
-        console.error('❌ Error parsing demo user:', error);
-        navigate('/auth');
-        return;
+        console.error('Error parsing demo user:', error);
       }
     }
+    
+    const authStatus = isAuthenticated();
+    console.log('🔐 Estado autenticación:', authStatus);
+    
+    if (!authStatus) {
+      console.log('❌ No autenticado - redirigiendo a /auth');
+      toast({
+        title: "Acceso Denegado",
+        description: "Debe iniciar sesión para acceder al panel de administración",
+        variant: "destructive"
+      });
+      navigate('/auth');
+      return;
+    }
 
-    // Verificar autenticación real con timeout para evitar race conditions
-    setTimeout(() => {
-      const authStatus = isAuthenticated();
-      console.log('🔐 Estado autenticación:', authStatus);
-      
-      if (!authStatus) {
-        console.log('❌ No autenticado - redirigiendo a /auth');
-        toast({
-          title: "Acceso Denegado",
-          description: "Debe iniciar sesión para acceder al panel de administración",
-          variant: "destructive"
-        });
-        navigate('/auth');
-        return;
-      }
+    // Verificar permisos de admin
+    const adminStatus = isAdmin();
+    console.log('👑 Estado admin:', adminStatus);
+    
+    if (!adminStatus) {
+      console.log('❌ Usuario sin permisos admin - redirigiendo a /discover');
+      toast({
+        title: "Acceso Denegado",
+        description: "No tiene permisos de administrador",
+        variant: "destructive"
+      });
+      navigate('/discover');
+      return;
+    }
 
-      // Verificar permisos de admin
-      const adminStatus = isAdmin();
-      console.log('👑 Estado admin:', adminStatus);
-      
-      if (!adminStatus) {
-        console.log('❌ Usuario sin permisos admin - redirigiendo a /discover');
-        toast({
-          title: "Acceso Denegado",
-          description: "No tiene permisos de administrador",
-          variant: "destructive"
-        });
-        navigate('/discover');
-        return;
-      }
-      
-      console.log('✅ Acceso autorizado - cargando panel producción');
-      loadProductionData();
-    }, 200);
-  }, [navigate, toast]);
+    console.log('✅ Acceso autorizado - cargando panel producción');
+    
+    // Cargar datos del panel
+    loadRealProfiles();
+    loadRealStats();
+    loadRealFAQ();
+    loadRealInvitations();
+  }, [loading, isAuthenticated, isAdmin, navigate, toast]);
 
   const loadProductionData = async () => {
-    setLoading(true);
+    setDataLoading(true);
     try {
       await Promise.all([
         loadRealProfiles(),
@@ -190,7 +193,7 @@ const AdminProduction = () => {
         variant: "destructive"
       });
     } finally {
-      setLoading(false);
+      setDataLoading(false);
     }
   };
 
@@ -216,7 +219,7 @@ const AdminProduction = () => {
         age: profile.age,
         location: profile.bio || 'No especificada', // Using bio as location fallback
         email: 'No disponible', // Email not in profiles table
-        is_verified: profile.is_verified || false,
+        is_verified: false, // Campo no disponible en la tabla profiles
         gender: profile.gender,
         interested_in: profile.interested_in,
         is_premium: profile.is_premium || false,
@@ -239,13 +242,13 @@ const AdminProduction = () => {
       const [
         { count: totalUsers },
         { count: premiumUsers },
-        { count: verifiedUsers },
+        { count: activeUsers },
         { count: totalInvitations }
       ] = await Promise.all([
         supabase.from('profiles').select('*', { count: 'exact', head: true }),
         supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('is_premium', true),
-        supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('is_verified', true),
-        supabase.from('chat_invitations').select('*', { count: 'exact', head: true })
+        supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('is_active', true),
+        supabase.from('invitations').select('*', { count: 'exact', head: true })
       ]);
 
       // Intentar cargar métricas adicionales - tablas podrían no existir
@@ -292,7 +295,7 @@ const AdminProduction = () => {
       console.log('📊 Estadísticas cargadas:', {
         totalUsers: totalUsers || 0,
         premiumUsers: premiumUsers || 0,
-        verifiedUsers: verifiedUsers || 0,
+        activeUsers: activeUsers || 0,
         apkDownloads: apkDownloadsResponse.count || 0
       });
 
@@ -305,7 +308,7 @@ const AdminProduction = () => {
         dailyVisits: getMetricValue('daily_visits') || Math.floor((totalUsers || 0) * 0.4),
         totalTokens: totalTokens,
         stakedTokens: stakedTokens || 0,
-        worldIdVerified: verifiedUsers || 0,
+        worldIdVerified: activeUsers || 0,
         rewardsDistributed: getMetricValue('rewards_distributed') || 0
       });
     } catch (error) {

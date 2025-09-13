@@ -110,6 +110,26 @@ export const useAuth = () => {
         .eq('id', userId)
         .single();
       
+      console.log('🔍 Consulta ejecutada - userId:', userId);
+      console.log('🔍 Resultado data:', data);
+      console.log('🔍 Error (si existe):', error);
+      
+      // Log detallado del contenido del objeto
+      if (data) {
+        // Manejar tanto array como objeto único
+        const profileData = Array.isArray(data) ? data[0] : data;
+        
+        console.log('📋 Contenido detallado del perfil:');
+        console.log('  - Es array:', Array.isArray(data));
+        console.log('  - id:', profileData?.id);
+        console.log('  - first_name:', profileData?.first_name);
+        console.log('  - last_name:', profileData?.last_name);
+        console.log('  - display_name:', (profileData as any)?.display_name);
+        console.log('  - role:', (profileData as any)?.role);
+        console.log('  - email:', (profileData as any)?.email);
+        console.log('  - Objeto completo:', JSON.stringify(data, null, 2));
+      }
+      
       if (error) {
         console.error('❌ Error fetching profile:', error);
         // Si no se encuentra el perfil, crear uno básico
@@ -129,9 +149,12 @@ export const useAuth = () => {
         return;
       }
       
-      console.log('✅ Perfil real cargado:', data?.first_name || 'Sin nombre');
-      console.log('📋 Datos completos del perfil:', data);
-      setProfile(data);
+      // Manejar tanto array como objeto único para setProfile
+      const profileData = Array.isArray(data) ? data[0] : data;
+      
+      console.log('✅ Perfil real cargado:', profileData?.first_name || 'Sin nombre');
+      console.log('📋 Datos completos del perfil:', profileData);
+      setProfile(profileData);
     } catch (error) {
       console.error('❌ Error in fetchUserProfile:', error);
     }

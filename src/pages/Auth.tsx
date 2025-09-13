@@ -116,6 +116,24 @@ const Auth = () => {
     }
   }, [location, toast]);
 
+  // Auto-redirect authenticated admin users (DISABLED - manual login required)
+  useEffect(() => {
+    console.log('🔍 Verificando redirección automática:', {
+      user: !!user,
+      profile: !!profile,
+      loading,
+      isAdmin: isAdmin(),
+      profileRole: profile?.role,
+      userEmail: user?.email
+    });
+
+    // DISABLED: Redirección automática deshabilitada para evitar bucles
+    // if (!loading && user && isAdmin()) {
+    //   console.log('✅ Usuario admin autenticado detectado - redirigiendo al panel de administración');
+    //   navigate("/admin-production");
+    // }
+  }, [user, loading, isAdmin]);
+
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!resetEmail) return;
@@ -150,8 +168,15 @@ const Auth = () => {
         .replace('@outlok.es', '@outlook.es')
         .replace('@outook.es', '@outlook.es');
 
+      console.log('🚀 handleSignIn iniciado para:', formData.email);
+      console.log('📧 Email normalizado:', normalizedEmail);
+      
       // Verificar si es credencial demo Y si el modo demo está habilitado
       const appConfig = getAppConfig();
+      console.log('🔧 App config:', appConfig);
+      console.log('🎭 isDemoCredential:', isDemoCredential(normalizedEmail));
+      console.log('🎭 demoCredentials habilitado:', appConfig.features.demoCredentials);
+      
       if (isDemoCredential(normalizedEmail) && appConfig.features.demoCredentials) {
         console.log('🎭 Modo demo activado para:', formData.email);
         
@@ -290,99 +315,30 @@ const Auth = () => {
         
         const result = await signIn(formData.email, formData.password, formData.accountType);
         
+        console.log('🔍 Resultado de signIn():', result);
+        console.log('🔍 result?.user:', result?.user);
+        console.log('🔍 Tipo de result:', typeof result);
+        console.log('🔍 Email del usuario:', result?.user?.email);
+        
         if (result?.user) {
-          console.log('✅ Autenticación exitosa, esperando carga de perfil...');
+          console.log('✅ Autenticación exitosa - redirigiendo directamente');
           
-          // Esperar hasta que el perfil se cargue completamente
-          let profileCheckAttempts = 0;
-          const maxAttempts = 20; // 10 segundos máximo (20 * 500ms)
+          // Redirección directa basada en email
+          const userEmail = result.user.email?.toLowerCase();
+          console.log('🔍 Email normalizado para comparación:', userEmail);
           
-          const waitForProfile = () => {
-            profileCheckAttempts++;
-            
-            console.log(`🔍 Intento ${profileCheckAttempts}/${maxAttempts} - Verificando perfil:`, {
-              profileExists: !!profile,
-              first_name: profile?.first_name,
-              role: profile?.role,
-              email: profile?.email,
-              userEmail: user?.email
-            });
-            
-            // Condición mejorada: verificar si el perfil existe O si tenemos datos del usuario
-            const hasValidProfile = profile && (
-              profile.first_name || 
-              profile.role || 
-              profile.email || 
-              profile.id
-            );
-            
-            const hasUserData = user && user.email;
-            
-            if (hasValidProfile || hasUserData) {
-              console.log('📋 Perfil/Usuario disponible - procediendo con redirección');
-              
-              // CRÍTICO: Verificar admin basado en EMAIL DE AUTENTICACIÓN
-              const userEmail = user?.email?.toLowerCase();
-              const adminEmails = ['admin', 'complicesconectasw@outlook.es'];
-              const isAdminByAuth = userEmail && adminEmails.includes(userEmail);
-              
-              console.log('🔐 Verificación admin por email de autenticación:', {
-                userEmail,
-                isAdminByAuth,
-                profileEmail: profile?.email
-              });
-              
-              if (isAdminByAuth) {
-                // Usar redirección inteligente para admins
-                if (shouldUseProductionAdmin()) {
-                  console.log('🏭 Admin real/demo - redirigiendo a AdminProduction');
-                  navigate("/admin-production");
-                } else {
-                  console.log('🎭 Admin demo - redirigiendo a Admin demo');
-                  navigate("/admin");
-                }
-              } else {
-                console.log('👤 Usuario regular - redirigiendo a perfil single');
-                navigate("/profile-single");
-              }
-            } else if (profileCheckAttempts >= maxAttempts) {
-              console.warn('⚠️ Timeout alcanzado - redirigiendo sin perfil completo');
-              
-              // Fallback: usar email del usuario para determinar si es admin
-              const userEmail = user?.email?.toLowerCase();
-              const adminEmails = [
-                'admin',                      // Admin demo solamente
-                'complicesconectasw@outlook.es'  // Único admin real
-              ];
-              const isAdminByEmail = userEmail && adminEmails.includes(userEmail);
-              
-              console.log('🔐 Verificación admin por email (fallback):', isAdminByEmail);
-              
-              if (isAdminByEmail) {
-                console.log('👑 Admin detectado por email - verificando tipo de panel');
-                const useProduction = shouldUseProductionAdmin();
-                console.log('🏭 Usar panel producción (fallback):', useProduction);
-                
-                if (useProduction) {
-                  console.log('📊 Redirigiendo a AdminProduction (datos reales)');
-                  navigate("/admin-production");
-                } else {
-                  console.log('🎭 Redirigiendo a Admin (datos demo)');
-                  navigate("/admin");
-                }
-              } else {
-                console.log('👤 Usuario regular por defecto - redirigiendo a perfil single');
-                navigate("/profile-single");
-              }
-            } else {
-              console.log('⏳ Perfil aún no cargado, reintentando...');
-              profileCheckAttempts++;
-              setTimeout(waitForProfile, 500);
-            }
-          };
+          if (userEmail === 'complicesconectasw@outlook.es') {
+            console.log('🏢 Admin real detectado - redirigiendo a AdminProduction');
+            navigate("/admin-production");
+          } else {
+            console.log('👤 Usuario regular - redirigiendo a perfil single');
+            navigate("/profile-single");
+          }
           
-          // Iniciar verificación después de 200ms (más rápido)
-          setTimeout(waitForProfile, 200);
+          setShowLoginLoading(false);
+        } else {
+          console.log('❌ No se recibió usuario en el resultado');
+          setShowLoginLoading(false);
         }
       } else if (!isDemoCredential(normalizedEmail)) {
         // Credencial no reconocida y no es demo
