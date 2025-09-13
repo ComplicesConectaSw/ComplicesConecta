@@ -215,7 +215,7 @@ const ChatInfo = () => {
           {/* CTA Section */}
           <div className="text-center">
             <Button 
-              onClick={() => navigate('/chat')}
+              onClick={() => navigate('/chat-authenticated')}
               className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-8 py-3 rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
             >
               <MessageCircle className="h-5 w-5 mr-2" />

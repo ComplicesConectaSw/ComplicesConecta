@@ -188,7 +188,7 @@ const Discover = () => {
       title: "Chat iniciado",
       description: "Redirigiendo al chat...",
     });
-    navigate('/chat');
+    navigate('/chat-info');
   };
 
   const handleViewProfile = (profileId: number) => {

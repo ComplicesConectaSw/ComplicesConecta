@@ -185,7 +185,7 @@ const Settings = () => {
                     if (feature.title === "Verificación Lifestyle KYC") {
                       navigate('/profile-single');
                     } else if (feature.title === "Chat Íntimo Encriptado") {
-                      navigate('/chat');
+                      navigate('/chat-info');
                     } else if (feature.title === "Encuentros Gelocalizados") {
                       navigate('/discover');
                     } else if (feature.title === "Fiestas Privadas VIP") {
