@@ -28,6 +28,7 @@ export function useFeatures() {
         virtualGifts: phase !== "beta",
         superLikes: phase !== "beta",
         stories: phase !== "beta",
+        privateMatches: phase !== "beta",  // Matches privados premium
       },
     }
   }, [phase])

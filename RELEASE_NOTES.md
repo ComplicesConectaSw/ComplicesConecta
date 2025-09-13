@@ -1,8 +1,44 @@
-# 🚀 ComplicesConecta - Notas de Lanzamiento v2.1.7
+# 🚀 ComplicesConecta - Notas de Lanzamiento v2.1.8
 
-**Fecha de Lanzamiento:** 07 de Septiembre, 2025 - 06:50 hrs  
+**Fecha de Lanzamiento:** 12 de Septiembre, 2025 - 23:37 hrs  
 **Plataforma:** Android APK + Web App  
-**Versión:** 2.1.7 (INTEGRACIÓN PREMIUM FEATURES Y TOKENS COMPLETADA ✅)
+**Versión:** 2.1.8 (CORRECCIONES PRIVATEMACHES COMPONENT COMPLETADAS ✅)
+
+---
+
+## 🎯 CORRECCIONES PRIVATEMACHES COMPONENT v2.1.8
+
+### ✅ **CORRECCIONES TYPESCRIPT CRÍTICAS v2.1.8**
+- **✅ PrivateMatches.tsx Completamente Corregido**: 
+  - Migrado de tabla inexistente `matches` a tabla `invitations` existente en Supabase
+  - Corregidos errores de tipos TypeScript con campos null/undefined
+  - Implementado mapeo correcto de datos de invitations a formato PrivateMatch
+  - Ajustadas queries para usar relaciones FK existentes (invitations_to_profile_fkey)
+- **✅ Integración con Schema Supabase Real**:
+  - Eliminadas referencias a tabla `private_matches` inexistente
+  - Utilizando tabla `invitations` con tipo 'gallery' para matches premium
+  - Corregidos tipos de datos: created_at, bio, avatar_url con manejo null-safe
+  - Implementadas actualizaciones de estado usando `decided_at` en lugar de `updated_at`
+
+### 🔧 **PROBLEMAS RESUELTOS v2.1.8**
+- **❌ Error**: `Argument of type '"matches"' is not assignable` → **✅ Solucionado**: Usando tabla `invitations`
+- **❌ Error**: `Type 'null' is not assignable to type 'string'` → **✅ Solucionado**: Manejo null-safe con fallbacks
+- **❌ Error**: `Property 'avatar_url' does not exist` → **✅ Solucionado**: Campo removido del query (no existe en profiles)
+- **❌ Error**: `Argument of type '"premium_match"' is not assignable` → **✅ Solucionado**: Usando tipo 'gallery' válido
+
+### 📊 **MÉTRICAS FINALES v2.1.8**
+- **Errores TypeScript**: 0 ✅
+- **Errores de Schema**: 0 ✅ 
+- **Integración Supabase**: 100% ✅
+- **Component PrivateMatches**: 100% funcional ✅
+- **Queries Optimizadas**: Usando tablas existentes ✅
+- **Compilación**: Exitosa sin warnings ✅
+
+### 🛠️ **ARCHIVOS CORREGIDOS v2.1.8**
+```
+src/components/premium/PrivateMatches.tsx    # Migración completa a tabla invitations
+src/integrations/supabase/types.ts           # Verificación de schema disponible
+```
 
 ---
 

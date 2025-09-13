@@ -1,12 +1,12 @@
 # 🏗️ ComplicesConecta - Estructura del Proyecto Unificada
 
 ## 📋 Información General
-- **Proyecto:** ComplicesConecta v2.1.7
+- **Proyecto:** ComplicesConecta v2.1.8
 - **Tecnología:** React 18 + TypeScript + Vite
 - **Backend:** Supabase (PostgreSQL + Auth + Storage)
 - **UI:** Tailwind CSS + Radix UI
 - **Estado:** Producción Activa
-- **Última actualización:** 07 de septiembre 2025, 06:50 AM
+- **Última actualización:** 12 de septiembre 2025, 23:37 hrs
 
 ---
 
