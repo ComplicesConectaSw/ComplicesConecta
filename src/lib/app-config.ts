@@ -44,36 +44,39 @@ export const getAppConfig = (): AppConfig => {
   };
 };
 
-// Credenciales demo permitidas (SIN complicesconectasw@outlook.es)
+// Credenciales demo permitidas (INCLUIR djwacko28@gmail.com)
 export const DEMO_CREDENTIALS = [
   'single@outlook.es',
   'pareja@outlook.es', 
   'admin',
+  'djwacko28@gmail.com',        // Admin DEMO - usa datos demo
   'apoyofinancieromexicano@gmail.com'
 ];
 
-// Contraseñas demo por email (SIN complicesconectasw@outlook.es)
+// Contraseñas demo por email (INCLUIR djwacko28@gmail.com)
 export const DEMO_PASSWORDS: Record<string, string> = {
   'single@outlook.es': '123456',
   'pareja@outlook.es': '123456',
   'admin': '123456',
+  'djwacko28@gmail.com': 'Magy_Wacko_nala28', // Admin DEMO
   'apoyofinancieromexicano@gmail.com': '123456'
 };
 
 // Lista de emails admin para verificación rápida - CORREGIDA
 const ADMIN_EMAILS = [
   'admin',                      // Admin demo solamente
-  'djwacko28@gmail.com',        // Admin producción principal
-  'complicesconectasw@outlook.es'  // Admin real secundario
+  'djwacko28@gmail.com',        // Admin DEMO (no producción)
+  'complicesconectasw@outlook.es'  // ÚNICO admin producción REAL
 ];
 
-// Credenciales de producción REAL (solo Supabase real)
-export const PRODUCTION_ADMIN_CREDENTIALS = ADMIN_EMAILS;
+// Credenciales de producción REAL (SOLO complicesconectasw@outlook.es)
+export const PRODUCTION_ADMIN_CREDENTIALS = [
+  'complicesconectasw@outlook.es'  // ÚNICO admin producción real
+];
 
 // Contraseñas de producción (configuradas en Supabase real)
 export const PRODUCTION_PASSWORDS: Record<string, string> = {
-  'djwacko28@gmail.com': 'Magy_Wacko_nala28', // Admin producción principal
-  'complicesconectasw@outlook.es': 'Magy_Wacko_nala28' // Admin real secundario
+  'complicesconectasw@outlook.es': '123456' // ÚNICO admin real
 };
 
 // Función para verificar si es credencial demo
@@ -93,10 +96,10 @@ export const isProductionAdmin = (email: string): boolean => {
   return PRODUCTION_ADMIN_CREDENTIALS.includes(normalizedEmail);
 };
 
-// Función para verificar si es admin demo (SOLO admin)
+// Función para verificar si es admin demo (admin Y djwacko28@gmail.com)
 export const isDemoAdmin = (email: string): boolean => {
   const normalizedEmail = email.toLowerCase().trim();
-  return normalizedEmail === 'admin';
+  return normalizedEmail === 'admin' || normalizedEmail === 'djwacko28@gmail.com';
 };
 
 // Función para obtener contraseña demo
@@ -142,6 +145,7 @@ export const handleDemoAuth = (email: string, accountType: string = 'single') =>
     first_name: email === 'admin' ? 'Admin Demo' : 
                 email === 'single@outlook.es' ? 'Single Demo' :
                 email === 'pareja@outlook.es' ? 'Pareja Demo' :
+                email === 'djwacko28@gmail.com' ? 'DJ Wacko' :
                 email === 'apoyofinancieromexicano@gmail.com' ? 'Apoyo Financiero' :
                 email.split('@')[0],
     is_demo: true,

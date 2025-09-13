@@ -332,19 +332,27 @@ export const useAuth = () => {
     }
   };
 
+  // Función para verificar si un usuario es administrador
   const isAdmin = () => {
-    // Verificar admin en sesión demo
+    // Demo admin check
     const demoAuth = localStorage.getItem('demo_authenticated');
     const demoUser = localStorage.getItem('demo_user');
     
     if (demoAuth === 'true' && demoUser) {
       try {
-        const parsedUser = JSON.parse(demoUser);
-        const isAdminDemo = parsedUser.role === 'admin';
-        console.log('🎭 Admin demo check:', parsedUser.email, 'Role:', parsedUser.role, 'Is admin:', isAdminDemo);
-        return isAdminDemo;
+        const parsedDemoUser = JSON.parse(demoUser);
+        const isDemoAdmin = parsedDemoUser.accountType === 'admin' || parsedDemoUser.role === 'admin';
+        
+        console.log('🎭 Demo admin check:', {
+          email: parsedDemoUser.email,
+          accountType: parsedDemoUser.accountType,
+          role: parsedDemoUser.role,
+          isDemoAdmin
+        });
+        
+        return isDemoAdmin;
       } catch (error) {
-        console.error('❌ Error verificando admin demo:', error);
+        console.error('❌ Error parsing demo user:', error);
         return false;
       }
     }
@@ -352,10 +360,11 @@ export const useAuth = () => {
     // CRÍTICO: Verificar admin basado en EMAIL DE AUTENTICACIÓN, no perfil
     const userEmail = user?.email?.toLowerCase();
     
-    // Lista de emails admin - SOLO estos pueden ser admin
+    // Lista de emails admin - INCLUIR djwacko28@gmail.com
     const adminEmails = [
       'admin',                      // Admin demo solamente
-      'complicesconectasw@outlook.es'  // Único admin real
+      'complicesconectasw@outlook.es',  // Admin principal
+      'djwacko28@gmail.com'        // Admin secundario
     ];
     
     // PRIORIDAD: Email de autenticación determina admin status
