@@ -14,6 +14,117 @@ interface ClaimRequest {
   metadata?: Record<string, any>;
 }
 
+// Validación de límites de recompensas
+const REWARD_LIMITS = {
+  world_id: { amount: 50, maxClaims: 1, cooldown: 0 },
+  referral: { amount: 30, maxClaims: 10, cooldown: 0 },
+  beta_feedback: { amount: 20, maxClaims: 1, cooldown: 0 },
+  daily_login: { amount: 5, maxClaims: 1, cooldown: 24 * 60 * 60 * 1000 }, // 24 horas
+  profile_completion: { amount: 25, maxClaims: 1, cooldown: 0 }
+} as const
+
+// Validación de entrada de datos
+function validateClaimRequest(request: ClaimRequest): { valid: boolean; error?: string } {
+  if (!request.rewardType) {
+    return { valid: false, error: 'Tipo de recompensa requerido' }
+  }
+
+  if (!Object.keys(REWARD_LIMITS).includes(request.rewardType)) {
+    return { valid: false, error: 'Tipo de recompensa no válido' }
+  }
+
+  // Validaciones específicas por tipo
+  switch (request.rewardType) {
+    case 'world_id':
+      if (!request.worldIdProof || typeof request.worldIdProof !== 'object') {
+        return { valid: false, error: 'Prueba de World ID inválida o faltante' }
+      }
+      break
+    
+    case 'referral':
+      if (!request.referralCode || typeof request.referralCode !== 'string' || request.referralCode.length < 6) {
+        return { valid: false, error: 'Código de referido inválido (mínimo 6 caracteres)' }
+      }
+      break
+    
+    case 'beta_feedback':
+      if (request.metadata && typeof request.metadata !== 'object') {
+        return { valid: false, error: 'Metadata de feedback inválida' }
+      }
+      break
+  }
+
+  return { valid: true }
+}
+
+// Verificar límites de reclamación
+async function checkClaimLimits(
+  supabaseClient: any, 
+  userId: string, 
+  rewardType: string
+): Promise<{ canClaim: boolean; error?: string }> {
+  const limits = REWARD_LIMITS[rewardType as keyof typeof REWARD_LIMITS]
+  
+  // Verificar reclamaciones previas
+  const { data: previousClaims, error } = await supabaseClient
+    .from('transactions')
+    .select('id, created_at')
+    .eq('user_id', userId)
+    .eq('transaction_type', 'beta_reward')
+    .like('description', `%${rewardType}%`)
+    .order('created_at', { ascending: false })
+
+  if (error) {
+    console.error('❌ Error verificando límites:', error)
+    return { canClaim: false, error: 'Error verificando historial de reclamaciones' }
+  }
+
+  // Verificar máximo de reclamaciones
+  if (previousClaims && previousClaims.length >= limits.maxClaims) {
+    return { canClaim: false, error: `Máximo de reclamaciones alcanzado (${limits.maxClaims})` }
+  }
+
+  // Verificar cooldown para recompensas con tiempo de espera
+  if (limits.cooldown > 0 && previousClaims && previousClaims.length > 0) {
+    const lastClaim = new Date(previousClaims[0].created_at)
+    const now = new Date()
+    const timeDiff = now.getTime() - lastClaim.getTime()
+    
+    if (timeDiff < limits.cooldown) {
+      const remainingHours = Math.ceil((limits.cooldown - timeDiff) / (60 * 60 * 1000))
+      return { canClaim: false, error: `Debes esperar ${remainingHours} horas para reclamar nuevamente` }
+    }
+  }
+
+  return { canClaim: true }
+}
+
+// Verificar límites mensuales
+async function checkMonthlyLimits(
+  supabaseClient: any, 
+  userId: string, 
+  amount: number
+): Promise<{ canClaim: boolean; error?: string; userTokens?: any }> {
+  const { data: userTokens } = await supabaseClient
+    .from('user_tokens')
+    .select('cmpx_balance, monthly_earned, monthly_limit')
+    .eq('user_id', userId)
+    .single()
+
+  if (!userTokens) {
+    return { canClaim: false, error: 'Usuario no encontrado en sistema de tokens' }
+  }
+
+  if ((userTokens.monthly_earned + amount) > userTokens.monthly_limit) {
+    return { 
+      canClaim: false, 
+      error: `Límite mensual alcanzado (${userTokens.monthly_earned}/${userTokens.monthly_limit} CMPX)` 
+    }
+  }
+
+  return { canClaim: true, userTokens }
+}
+
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -53,9 +164,62 @@ serve(async (req) => {
     }
 
     // Parse request body
-    const { rewardType, referralCode, worldIdProof, metadata }: ClaimRequest = await req.json()
+    const requestBody: ClaimRequest = await req.json()
+    const { rewardType, referralCode, worldIdProof, metadata } = requestBody
 
     console.log(`🎁 Procesando recompensa tipo: ${rewardType} para usuario: ${user.id}`)
+
+    // Validar entrada de datos
+    const validation = validateClaimRequest(requestBody)
+    if (!validation.valid) {
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          message: validation.error 
+        }),
+        {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 400,
+        }
+      )
+    }
+
+    // Verificar límites de reclamación
+    const claimLimitsCheck = await checkClaimLimits(supabaseClient, user.id, rewardType)
+    if (!claimLimitsCheck.canClaim) {
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          message: claimLimitsCheck.error 
+        }),
+        {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 429, // Too Many Requests
+        }
+      )
+    }
+
+    // Obtener cantidad de recompensa desde configuración
+    const rewardAmount = REWARD_LIMITS[rewardType as keyof typeof REWARD_LIMITS].amount
+
+    // Verificar límites mensuales para recompensas que no sean referrals o world_id
+    let userTokens: any = null
+    if (!['referral', 'world_id'].includes(rewardType)) {
+      const monthlyCheck = await checkMonthlyLimits(supabaseClient, user.id, rewardAmount)
+      if (!monthlyCheck.canClaim) {
+        return new Response(
+          JSON.stringify({ 
+            success: false, 
+            message: monthlyCheck.error 
+          }),
+          {
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            status: 429,
+          }
+        )
+      }
+      userTokens = monthlyCheck.userTokens
+    }
 
     let result: any = { success: false, message: 'Tipo de recompensa no válido' }
 
@@ -140,24 +304,9 @@ serve(async (req) => {
         break
 
       case 'beta_feedback':
-        // Beta feedback reward (20 CMPX)
-        const { data: userTokens } = await supabaseClient
-          .from('user_tokens')
-          .select('cmpx_balance, monthly_earned, monthly_limit')
-          .eq('user_id', user.id)
-          .single()
-
+        // Beta feedback reward - usar datos ya validados
         if (!userTokens) {
-          result = { success: false, message: 'Usuario no encontrado' }
-          break
-        }
-
-        const feedbackAmount = 20
-        if ((userTokens.monthly_earned + feedbackAmount) > userTokens.monthly_limit) {
-          result = { 
-            success: false, 
-            message: `Límite mensual alcanzado (${userTokens.monthly_limit} CMPX)` 
-          }
+          result = { success: false, message: 'Error interno: datos de usuario no disponibles' }
           break
         }
 
@@ -165,77 +314,64 @@ serve(async (req) => {
         const { error: feedbackError } = await supabaseClient
           .from('user_tokens')
           .update({
-            cmpx_balance: userTokens.cmpx_balance + feedbackAmount,
-            monthly_earned: userTokens.monthly_earned + feedbackAmount,
+            cmpx_balance: userTokens.cmpx_balance + rewardAmount,
+            monthly_earned: userTokens.monthly_earned + rewardAmount,
             updated_at: new Date().toISOString()
           })
           .eq('user_id', user.id)
 
         if (feedbackError) {
           console.error('❌ Error agregando feedback reward:', feedbackError)
-          result = { success: false, message: 'Error procesando recompensa' }
+          result = { success: false, message: 'Error procesando recompensa de feedback' }
         } else {
           // Record transaction
-          await supabaseClient
+          const { error: transactionError } = await supabaseClient
             .from('transactions')
             .insert({
               user_id: user.id,
               transaction_type: 'beta_reward',
               token_type: 'CMPX',
-              amount: feedbackAmount,
+              amount: rewardAmount,
               balance_before: userTokens.cmpx_balance,
-              balance_after: userTokens.cmpx_balance + feedbackAmount,
+              balance_after: userTokens.cmpx_balance + rewardAmount,
               description: 'Recompensa por feedback beta',
-              metadata: metadata || {}
+              metadata: { 
+                ...metadata, 
+                timestamp: new Date().toISOString(),
+                validation_passed: true
+              }
             })
 
-          result = {
-            success: true,
-            message: `¡Recompensa de feedback reclamada! +${feedbackAmount} CMPX`,
-            amount: feedbackAmount,
-            newBalance: userTokens.cmpx_balance + feedbackAmount
+          if (transactionError) {
+            console.error('❌ Error registrando transacción:', transactionError)
+            // Revertir cambio en user_tokens si falla la transacción
+            await supabaseClient
+              .from('user_tokens')
+              .update({
+                cmpx_balance: userTokens.cmpx_balance,
+                monthly_earned: userTokens.monthly_earned,
+                updated_at: new Date().toISOString()
+              })
+              .eq('user_id', user.id)
+            
+            result = { success: false, message: 'Error registrando transacción' }
+          } else {
+            result = {
+              success: true,
+              message: `¡Recompensa de feedback reclamada! +${rewardAmount} CMPX`,
+              amount: rewardAmount,
+              newBalance: userTokens.cmpx_balance + rewardAmount,
+              remainingMonthly: userTokens.monthly_limit - (userTokens.monthly_earned + rewardAmount)
+            }
+            console.log('✅ Feedback reward procesada:', result)
           }
-          console.log('✅ Feedback reward procesada:', result)
         }
         break
 
       case 'daily_login':
-        // Daily login bonus (5 CMPX)
-        const dailyAmount = 5
-        
-        // Check if already claimed today
-        const today = new Date().toISOString().split('T')[0]
-        const { data: todayTransaction } = await supabaseClient
-          .from('transactions')
-          .select('id')
-          .eq('user_id', user.id)
-          .eq('transaction_type', 'beta_reward')
-          .gte('created_at', `${today}T00:00:00.000Z`)
-          .lt('created_at', `${today}T23:59:59.999Z`)
-          .single()
-
-        if (todayTransaction) {
-          result = { success: false, message: 'Ya reclamaste tu recompensa diaria' }
-          break
-        }
-
-        // Get user tokens for daily reward
-        const { data: dailyUserTokens } = await supabaseClient
-          .from('user_tokens')
-          .select('cmpx_balance, monthly_earned, monthly_limit')
-          .eq('user_id', user.id)
-          .single()
-
-        if (!dailyUserTokens) {
-          result = { success: false, message: 'Usuario no encontrado' }
-          break
-        }
-
-        if ((dailyUserTokens.monthly_earned + dailyAmount) > dailyUserTokens.monthly_limit) {
-          result = { 
-            success: false, 
-            message: `Límite mensual alcanzado (${dailyUserTokens.monthly_limit} CMPX)` 
-          }
+        // Daily login bonus - usar datos ya validados
+        if (!userTokens) {
+          result = { success: false, message: 'Error interno: datos de usuario no disponibles' }
           break
         }
 
@@ -243,8 +379,8 @@ serve(async (req) => {
         const { error: dailyError } = await supabaseClient
           .from('user_tokens')
           .update({
-            cmpx_balance: dailyUserTokens.cmpx_balance + dailyAmount,
-            monthly_earned: dailyUserTokens.monthly_earned + dailyAmount,
+            cmpx_balance: userTokens.cmpx_balance + rewardAmount,
+            monthly_earned: userTokens.monthly_earned + rewardAmount,
             updated_at: new Date().toISOString()
           })
           .eq('user_id', user.id)
@@ -254,64 +390,55 @@ serve(async (req) => {
           result = { success: false, message: 'Error procesando recompensa diaria' }
         } else {
           // Record transaction
-          await supabaseClient
+          const today = new Date().toISOString().split('T')[0]
+          const { error: transactionError } = await supabaseClient
             .from('transactions')
             .insert({
               user_id: user.id,
               transaction_type: 'beta_reward',
               token_type: 'CMPX',
-              amount: dailyAmount,
-              balance_before: dailyUserTokens.cmpx_balance,
-              balance_after: dailyUserTokens.cmpx_balance + dailyAmount,
+              amount: rewardAmount,
+              balance_before: userTokens.cmpx_balance,
+              balance_after: userTokens.cmpx_balance + rewardAmount,
               description: 'Recompensa por login diario',
-              metadata: { type: 'daily_login', date: today }
+              metadata: { 
+                type: 'daily_login', 
+                date: today,
+                timestamp: new Date().toISOString(),
+                validation_passed: true
+              }
             })
 
-          result = {
-            success: true,
-            message: `¡Recompensa diaria reclamada! +${dailyAmount} CMPX`,
-            amount: dailyAmount,
-            newBalance: dailyUserTokens.cmpx_balance + dailyAmount
+          if (transactionError) {
+            console.error('❌ Error registrando transacción diaria:', transactionError)
+            // Revertir cambio en user_tokens si falla la transacción
+            await supabaseClient
+              .from('user_tokens')
+              .update({
+                cmpx_balance: userTokens.cmpx_balance,
+                monthly_earned: userTokens.monthly_earned,
+                updated_at: new Date().toISOString()
+              })
+              .eq('user_id', user.id)
+            
+            result = { success: false, message: 'Error registrando transacción diaria' }
+          } else {
+            result = {
+              success: true,
+              message: `¡Recompensa diaria reclamada! +${rewardAmount} CMPX`,
+              amount: rewardAmount,
+              newBalance: userTokens.cmpx_balance + rewardAmount,
+              remainingMonthly: userTokens.monthly_limit - (userTokens.monthly_earned + rewardAmount)
+            }
+            console.log('✅ Daily login reward procesada:', result)
           }
-          console.log('✅ Daily login reward procesada:', result)
         }
         break
 
       case 'profile_completion':
-        // Profile completion bonus (25 CMPX)
-        const profileAmount = 25
-        
-        // Check if already claimed
-        const { data: profileTransaction } = await supabaseClient
-          .from('transactions')
-          .select('id')
-          .eq('user_id', user.id)
-          .eq('transaction_type', 'beta_reward')
-          .eq('description', 'Recompensa por completar perfil')
-          .single()
-
-        if (profileTransaction) {
-          result = { success: false, message: 'Ya reclamaste la recompensa por completar perfil' }
-          break
-        }
-
-        // Get user tokens for profile reward
-        const { data: profileUserTokens } = await supabaseClient
-          .from('user_tokens')
-          .select('cmpx_balance, monthly_earned, monthly_limit')
-          .eq('user_id', user.id)
-          .single()
-
-        if (!profileUserTokens) {
-          result = { success: false, message: 'Usuario no encontrado' }
-          break
-        }
-
-        if ((profileUserTokens.monthly_earned + profileAmount) > profileUserTokens.monthly_limit) {
-          result = { 
-            success: false, 
-            message: `Límite mensual alcanzado (${profileUserTokens.monthly_limit} CMPX)` 
-          }
+        // Profile completion bonus - usar datos ya validados
+        if (!userTokens) {
+          result = { success: false, message: 'Error interno: datos de usuario no disponibles' }
           break
         }
 
@@ -319,8 +446,8 @@ serve(async (req) => {
         const { error: profileError } = await supabaseClient
           .from('user_tokens')
           .update({
-            cmpx_balance: profileUserTokens.cmpx_balance + profileAmount,
-            monthly_earned: profileUserTokens.monthly_earned + profileAmount,
+            cmpx_balance: userTokens.cmpx_balance + rewardAmount,
+            monthly_earned: userTokens.monthly_earned + rewardAmount,
             updated_at: new Date().toISOString()
           })
           .eq('user_id', user.id)
@@ -330,26 +457,46 @@ serve(async (req) => {
           result = { success: false, message: 'Error procesando recompensa de perfil' }
         } else {
           // Record transaction
-          await supabaseClient
+          const { error: transactionError } = await supabaseClient
             .from('transactions')
             .insert({
               user_id: user.id,
               transaction_type: 'beta_reward',
               token_type: 'CMPX',
-              amount: profileAmount,
-              balance_before: profileUserTokens.cmpx_balance,
-              balance_after: profileUserTokens.cmpx_balance + profileAmount,
+              amount: rewardAmount,
+              balance_before: userTokens.cmpx_balance,
+              balance_after: userTokens.cmpx_balance + rewardAmount,
               description: 'Recompensa por completar perfil',
-              metadata: metadata || {}
+              metadata: { 
+                ...metadata, 
+                timestamp: new Date().toISOString(),
+                validation_passed: true
+              }
             })
 
-          result = {
-            success: true,
-            message: `¡Recompensa por completar perfil! +${profileAmount} CMPX`,
-            amount: profileAmount,
-            newBalance: profileUserTokens.cmpx_balance + profileAmount
+          if (transactionError) {
+            console.error('❌ Error registrando transacción de perfil:', transactionError)
+            // Revertir cambio en user_tokens si falla la transacción
+            await supabaseClient
+              .from('user_tokens')
+              .update({
+                cmpx_balance: userTokens.cmpx_balance,
+                monthly_earned: userTokens.monthly_earned,
+                updated_at: new Date().toISOString()
+              })
+              .eq('user_id', user.id)
+            
+            result = { success: false, message: 'Error registrando transacción de perfil' }
+          } else {
+            result = {
+              success: true,
+              message: `¡Recompensa por completar perfil! +${rewardAmount} CMPX`,
+              amount: rewardAmount,
+              newBalance: userTokens.cmpx_balance + rewardAmount,
+              remainingMonthly: userTokens.monthly_limit - (userTokens.monthly_earned + rewardAmount)
+            }
+            console.log('✅ Profile completion reward procesada:', result)
           }
-          console.log('✅ Profile completion reward procesada:', result)
         }
         break
 
