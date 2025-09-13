@@ -1177,4 +1177,4 @@ Gracias a la comunidad swinger mexicana por su paciencia y feedback durante el d
 
 ---
 
-*ComplicesConecta v1.3.0 - Desarrollado con ❤️ para la comunidad swinger mexicana*
+*ComplicesConecta v2.4.0 - Desarrollado con ❤️ para la comunidad swinger mexicana*
