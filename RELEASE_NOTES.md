@@ -1,8 +1,60 @@
-# 🚀 ComplicesConecta - Notas de Lanzamiento v2.2.0
+# 🚀 ComplicesConecta - Notas de Lanzamiento v2.3.0
 
-**Fecha de Lanzamiento:** 13 de Septiembre, 2025 - 16:45 hrs  
+**Fecha de Lanzamiento:** 13 de Septiembre, 2025 - 17:50 hrs  
 **Plataforma:** Android APK + Web App  
-**Versión:** 2.2.0 (CORRECCIONES CRÍTICAS ADMIN PANEL Y UI COMPLETADAS ✅)
+**Versión:** 2.3.0 (NUEVA PÁGINA CHATINFO Y SINCRONIZACIÓN ANDROID ✅)
+
+---
+
+## 🆕 NUEVAS FUNCIONALIDADES v2.3.0
+
+### ✨ **PÁGINA CHATINFO Y MEJORAS UX - 13/09/2025**
+
+#### 1. **📱 Nueva Página ChatInfo**
+**Archivo:** `src/pages/ChatInfo.tsx`
+**Funcionalidades:**
+- Descripción completa del sistema de chat de ComplicesConecta
+- Información sobre chats privados con encriptación E2E
+- Salas públicas disponibles (General Lifestyle, Parejas CDMX, Singles, Eventos)
+- Características de seguridad y moderación 24/7
+- Diseño consistente con gradientes purple-pink
+
+#### 2. **🎭 Modal de Bienvenida Actualizado**
+**Archivo:** `src/components/WelcomeModal.tsx`
+**Mejoras:**
+- Nueva sección "🎭 Perfiles Demo Disponibles"
+- Credenciales de acceso agregadas:
+  - **Single**: `single@outlook.es` (contraseña: `123456`)
+  - **Pareja**: `pareja@outlook.es` (contraseña: `123456`)
+- Descripción completa de funciones demo disponibles
+
+#### 3. **🔗 Navegación Mejorada**
+**Archivos:** `src/App.tsx`, `src/components/Header.tsx`, `src/pages/Chat.tsx`
+**Actualizaciones:**
+- Ruta `/chat-info` configurada con lazy loading
+- Enlace "Sistema de Chat" en Header > Información dropdown
+- Botón "Info" discreto en página de chat para acceso directo
+
+#### 4. **📲 APK Sincronización Android**
+**Comando:** `npx cap sync android`
+**Resultados:**
+- ✅ Assets web copiados a Android (99.31ms)
+- ✅ Configuración Capacitor actualizada (2.88ms)
+- ✅ Plugins Android actualizados (27.12ms)
+- ✅ Sincronización completada en 0.612s
+
+#### 5. **🔗 Link APK Actualizado**
+**Archivo:** `src/components/modals/InstallAppModal.tsx`
+**Cambio:**
+- URL actualizada: `https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v.2.1.7/app-release.apk`
+- Descarga directa desde GitHub Releases v.2.1.7
+
+### 📊 **MÉTRICAS DE IMPLEMENTACIÓN v2.3.0**
+- **Archivos modificados**: 5
+- **Líneas agregadas**: 267+
+- **Nuevas rutas**: 1 (`/chat-info`)
+- **Tiempo de sincronización Android**: 0.612s
+- **Componentes nuevos**: 1 (ChatInfo.tsx)
 
 ---
 
