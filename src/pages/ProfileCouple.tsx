@@ -7,23 +7,28 @@ import { useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { generateMockCoupleProfiles, type CoupleProfileWithPartners } from "@/lib/coupleProfiles";
 import CoupleProfileHeader from "@/components/profile/CoupleProfileHeader";
+import { useAuth } from '@/hooks/useAuth';
 
 const ProfileCouple: React.FC = () => {
   const navigate = useNavigate();
   const [profile, setProfile] = useState<CoupleProfileWithPartners | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'couple' | 'individual'>('couple');
+  const { isAuthenticated, user, profile: authProfile } = useAuth();
 
   useEffect(() => {
     const loadProfile = async () => {
       try {
-        // Verificar autenticación (demo, apoyo o real)
-        const demoAuth = localStorage.getItem('demo_authenticated');
-        const apoyoAuth = localStorage.getItem('apoyo_authenticated');
-        const demoUser = localStorage.getItem('demo_user');
-        
-        if (demoAuth !== 'true' && apoyoAuth !== 'true') {
-          navigate('/discover');
+        console.log('🔍 ProfileCouple - Estado de autenticación:', {
+          isAuthenticated,
+          user: !!user,
+          authProfile: !!authProfile
+        });
+
+        // Verificar autenticación usando useAuth
+        if (!isAuthenticated) {
+          console.log('❌ No autenticado, redirigiendo a auth');
+          navigate('/auth', { replace: true });
           return;
         }
         
@@ -47,7 +52,7 @@ const ProfileCouple: React.FC = () => {
     };
     
     loadProfile();
-  }, [navigate]);
+  }, [isAuthenticated, navigate]);
 
   if (loading || !profile) {
     return (

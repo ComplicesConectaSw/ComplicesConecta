@@ -60,11 +60,12 @@ const ProfileSingle: React.FC = () => {
         // Si hay usuario pero no perfil, esperar a que se cargue
         if (user && !authProfile) {
           console.log('⏳ Usuario autenticado, esperando carga del perfil...');
-          // No cambiar isLoading aquí, mantener el loading screen
+          // Mantener loading state hasta que el perfil se cargue
           return;
         }
         
-        console.log('⚠️ Estado inesperado en ProfileSingle');
+        // Si llegamos aquí sin perfil ni usuario, algo está mal
+        console.log('⚠️ Estado inesperado: sin usuario ni perfil válido');
         setIsLoading(false);
       } catch (error) {
         console.error('Error cargando perfil:', error);
