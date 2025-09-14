@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Heart, Menu, X, Download, Settings, LogOut, User, DollarSign, HelpCircle, Crown, Shield, Coins, FileText, BookOpen, Lock, Info, ChevronDown } from 'lucide-react';
+import { Heart, Menu, X, Download, Settings, LogOut, User, DollarSign, HelpCircle, Crown, Shield, Coins, FileText, BookOpen, Lock, Info, ChevronDown, Users } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from "@/hooks/use-toast";
 import { ModeIndicator } from '@/components/ModeIndicator';
@@ -132,7 +132,9 @@ export const Header = () => {
               <h1 className={`font-bold bg-love-gradient bg-clip-text text-transparent transition-all duration-300 ${
                 isRunningInApp && isMinimized ? 'text-lg' : 'text-2xl'
               }`}>
-                ComplicesConecta
+                {isAuthenticated && profile?.nickname ? profile.nickname : 
+                 isAuthenticated && demoUser?.displayName ? demoUser.displayName :
+                 'ComplicesConecta'}
               </h1>
               <ModeIndicator />
             </div>
@@ -191,6 +193,62 @@ export const Header = () => {
               Soporte
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
             </Link>
+          </nav>
+
+          {/* Actions */}
+          <div className="flex items-center space-x-2">
+            {/* Mobile Menu Button - Solo visible en mobile */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="md:hidden text-white hover:text-primary hover:bg-white/10">
+                  <Menu className="h-5 w-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="bg-background/95 backdrop-blur-sm border border-primary/20 w-56">
+                <DropdownMenuItem asChild>
+                  <Link to="/discover" className="flex items-center gap-2 w-full">
+                    <Users className="h-4 w-4" />
+                    Descubrir
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/matches" className="flex items-center gap-2 w-full">
+                    <Heart className="h-4 w-4" />
+                    Matches
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/chat-info" className="flex items-center gap-2 w-full">
+                    <Users className="h-4 w-4" />
+                    Chat
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/events" className="flex items-center gap-2 w-full">
+                    <Users className="h-4 w-4" />
+                    Eventos
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/tokens" className="flex items-center gap-2 w-full">
+                    <Coins className="h-4 w-4" />
+                    Tokens CMPX
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/support" className="flex items-center gap-2 w-full">
+                    <HelpCircle className="h-4 w-4" />
+                    Soporte
+                  </Link>
+                </DropdownMenuItem>
+                {isAuthenticated && (
+                  <DropdownMenuItem onClick={handleLogout} className="flex items-center gap-2 w-full text-red-400 hover:text-red-300">
+                    <LogOut className="h-4 w-4" />
+                    Cerrar Sesión
+                  </DropdownMenuItem>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
             
             {/* Dropdown Menu for Info Pages */}
             <DropdownMenu>
@@ -246,11 +304,8 @@ export const Header = () => {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-          </nav>
 
-          {/* Action Buttons */}
-          <div className="flex items-center space-x-1 sm:space-x-3">
-            <Button variant="ghost" size="icon" className="relative text-white hover:text-primary hover:bg-white/10" asChild>
+            <Button variant="ghost" size="icon" className="relative text-white hover:text-primary hover:bg-white/10 hidden sm:flex" asChild>
               <Link to="/donations">
                 <DollarSign className="h-5 w-5" />
                 <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs w-5 h-5 rounded-full flex items-center justify-center animate-pulse">
@@ -259,23 +314,32 @@ export const Header = () => {
               </Link>
             </Button>
 
-            <Button variant="ghost" size="icon" className="relative text-white hover:text-primary hover:bg-white/10" asChild>
+            <Button variant="ghost" size="icon" className="relative text-white hover:text-primary hover:bg-white/10 hidden sm:flex" asChild>
               <Link to="/faq">
                 <HelpCircle className="h-5 w-5" />
               </Link>
             </Button>
             
-            <Button variant="ghost" size="icon" className="text-white hover:text-primary hover:bg-white/10" asChild>
+            <Button variant="ghost" size="icon" className="text-white hover:text-primary hover:bg-white/10 hidden sm:flex" asChild>
               <Link to="/settings">
                 <Settings className="h-5 w-5" />
               </Link>
             </Button>
 
+            {/* Botón Premium - Siempre visible */}
+            <Button variant="love" size="sm" className="flex items-center gap-1" asChild>
+              <Link to="/premium">
+                <Crown className="h-4 w-4" />
+                <span className="hidden sm:inline">Premium</span>
+              </Link>
+            </Button>
+
+            {/* Botones de autenticación */}
             {!isAuthenticated ? (
-              <Button variant="outline" size="sm" className="bg-white/90 border-white text-black hover:bg-white hover:text-black font-semibold shadow-lg hidden sm:flex" asChild>
-                <Link to="/auth" className="flex items-center gap-1">
+              <Button variant="outline" size="sm" className="bg-white/90 border-white text-black hover:bg-white hover:text-black font-semibold shadow-lg flex items-center gap-1" asChild>
+                <Link to="/auth">
                   <User className="h-4 w-4" />
-                  <span className="hidden md:inline">Iniciar Sesión</span>
+                  <span className="hidden sm:inline">Iniciar Sesión</span>
                 </Link>
               </Button>
             ) : (
@@ -305,16 +369,11 @@ export const Header = () => {
                 </Button>
               </div>
             )}
-
-            <Button variant="love" size="sm" asChild>
-              <Link to="/premium" className="flex items-center gap-1">
-                <Crown className="h-4 w-4" />
-                Premium
-              </Link>
-            </Button>
           </div>
         </div>
       </div>
     </header>
   );
 };
+
+export default Header;

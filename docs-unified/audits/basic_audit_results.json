@@ -1,0 +1,68 @@
+{
+  "tables": {
+    "profiles": {
+      "exists": true
+    },
+    "user_roles": {
+      "exists": true
+    },
+    "invitations": {
+      "exists": true
+    },
+    "gallery_permissions": {
+      "exists": true
+    },
+    "images": {
+      "exists": false,
+      "error": "Could not find the table 'public.images' in the schema cache"
+    },
+    "image_permissions": {
+      "exists": false,
+      "error": "Could not find the table 'public.image_permissions' in the schema cache"
+    },
+    "gallery_access_requests": {
+      "exists": false,
+      "error": "Could not find the table 'public.gallery_access_requests' in the schema cache"
+    },
+    "chat_rooms": {
+      "exists": false,
+      "error": "Could not find the table 'public.chat_rooms' in the schema cache"
+    },
+    "chat_members": {
+      "exists": false,
+      "error": "Could not find the table 'public.chat_members' in the schema cache"
+    },
+    "messages": {
+      "exists": false,
+      "error": "Could not find the table 'public.messages' in the schema cache"
+    },
+    "chat_invitations": {
+      "exists": false,
+      "error": "Could not find the table 'public.chat_invitations' in the schema cache"
+    },
+    "user_likes": {
+      "exists": false,
+      "error": "Could not find the table 'public.user_likes' in the schema cache"
+    },
+    "matches": {
+      "exists": false,
+      "error": "Could not find the table 'public.matches' in the schema cache"
+    },
+    "match_interactions": {
+      "exists": false,
+      "error": "Could not find the table 'public.match_interactions' in the schema cache"
+    }
+  },
+  "buckets": {
+    "profile-images": {
+      "exists": true
+    },
+    "gallery-images": {
+      "exists": true
+    },
+    "chat-media": {
+      "exists": true
+    }
+  },
+  "timestamp": "2025-09-06T11:43:44.625Z"
+}

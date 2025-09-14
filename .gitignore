@@ -148,3 +148,15 @@ scripts/simple_fix.sql
 scripts/create_admin_profile.sql
 scripts/fix_rls_profiles.sql
 scripts/create_missing_tables.sql
+
+# Directorios de documentación redundantes
+docs/
+docs-public/
+workflows-desactivados/
+diff.patch
+project-structure.md
+
+# Archivos temporales
+*.patch
+diff.patch
+project-structure.md
