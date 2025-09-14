@@ -242,7 +242,7 @@ user_staking         # Staking de usuarios
 │   └── 🔄 migrations/               # Migraciones de base de datos
 ├── 📱 android/                      # Proyecto Android nativo
 ├── 🌐 public/                       # Archivos públicos estáticos
-├── 📚 docs/                         # Documentación completa
+├── 📚 docs-unified/                         # Documentación completa
 └── 🔧 config/                       # Archivos de configuración
 ```
 
@@ -539,7 +539,7 @@ VITE_STAKING_DURATION_DAYS=30
 - 🔄 **Límites Mensuales Integrados** (vs sistema independiente)
 - 🔄 **Seguridad Mejorada** (archivos sensibles protegidos)
 
-**Documentación:** `docs/WORLDID_INTEGRATION_GUIDE.md`
+**Documentación:** `docs-unified/WORLDID_INTEGRATION_GUIDE.md`
 
 ⚠️ **NOTA:** Link de descarga APK GitHub no funciona. Usar APK local: `/app-release.apk`
 
@@ -567,7 +567,7 @@ VITE_STAKING_DURATION_DAYS=30
 - ✅ **Chat Demo Libre**: Eliminada restricción de autenticación para acceso al chat
 - ✅ **Navegación Mejorada**: Enlaces de navegación con texto blanco sólido
 - ✅ **Responsividad Verificada**: Grid layouts optimizados para desktop, tablet y móvil
-- ✅ **Documentación Organizada**: Carpeta docs/ creada con todos los reportes de auditoría
+- ✅ **Documentación Organizada**: Carpeta docs-unified/ creada con todos los reportes de auditoría
 
 ### ✨ **Actualizaciones Previas (v1.4.0)** *(2 de septiembre, 2025 - 11:15)*
 - ✅ **Optimizaciones para APK Instalada**: Header inteligente que se oculta al hacer scroll y se minimiza en el top
@@ -824,3 +824,23 @@ Este proyecto es propiedad de ComplicesConectaSW. Todos los derechos reservados.
 **🔥 ¡Únete a la comunidad swinger más exclusiva de Mexico!**
 
 *Conexiones auténticas, experiencias únicas, discreción total.*
+
+## 📚 Documentación
+
+Toda la documentación del proyecto se encuentra organizada en `docs-unified/`:
+
+- **Seguridad**: Auditorías y configuraciones de seguridad
+- **Tests**: Documentación de testing y QA
+- **Autenticación**: Guías de auth y configuración
+- **Matching**: Sistema de matching y algoritmos
+- **Base de Datos**: Esquemas y migraciones
+- **Despliegue**: Guías de deployment
+- **Auditorías**: Reportes de auditorías técnicas
+- **Chat**: Sistema de chat en tiempo real
+- **Premium**: Funcionalidades premium
+- **Android**: Configuración y optimización móvil
+- **Email**: Configuración de templates de email
+- **API**: Documentación de endpoints
+- **Desarrollo**: Guías para desarrolladores
+
+Ver [docs-unified/README.md](docs-unified/README.md) para el índice completo.

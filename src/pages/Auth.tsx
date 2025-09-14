@@ -395,11 +395,23 @@ const Auth = () => {
       }
 
       // Preparar datos del perfil
+      // Validar campos requeridos
+      if (!formData.firstName || !formData.lastName || !formData.nickname) {
+        toast({
+          title: "Error",
+          description: "Por favor completa todos los campos obligatorios (nombre, apellido y apodo)",
+          variant: "destructive",
+        });
+        setIsLoading(false);
+        return;
+      }
+
       const profileData = {
         email: formData.email,
         first_name: formData.firstName,
         last_name: formData.lastName,
         nickname: formData.nickname,
+        display_name: formData.nickname || `${formData.firstName} ${formData.lastName}`,
         age: parseInt(formData.age),
         gender: formData.gender,
         interested_in: formData.interestedIn,

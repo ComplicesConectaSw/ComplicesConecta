@@ -580,7 +580,9 @@ const Admin = () => {
             link.download = 'app-release.apk';
             document.body.appendChild(link);
             link.click();
-            document.body.removeChild(link);
+            if (document.body.contains(link)) {
+              document.body.removeChild(link);
+            }
           }}>
             <CardContent className="p-4">
               <div className="flex items-center justify-between">

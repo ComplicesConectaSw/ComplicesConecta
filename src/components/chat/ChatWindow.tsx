@@ -69,20 +69,20 @@ export const ChatWindow = ({ chat, messages, onSendMessage, isTyping, onGenerate
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 sm:space-y-4">
+      <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 sm:space-y-4 custom-scrollbar">
         {messages.map((message) => (
           <div
             key={message.id}
             className={`flex ${message.senderId === 0 ? 'justify-end' : 'justify-start'}`}
           >
             <div
-              className={`max-w-[85%] sm:max-w-[80%] rounded-2xl px-3 py-2 sm:px-4 sm:py-2 ${
+              className={`max-w-[85%] sm:max-w-[70%] rounded-2xl px-3 py-2 sm:px-4 sm:py-2 break-words ${
                 message.senderId === 0
                   ? 'bg-primary text-primary-foreground ml-auto'
                   : 'bg-muted text-muted-foreground'
               }`}
             >
-              <p className="text-xs sm:text-sm leading-relaxed">{message.content}</p>
+              <p className="text-xs sm:text-sm leading-relaxed break-words overflow-wrap-anywhere">{message.content}</p>
               <p className={`text-xs mt-1 ${
                 message.senderId === 0 ? 'text-primary-foreground/70' : 'text-muted-foreground/70'
               }`}>
