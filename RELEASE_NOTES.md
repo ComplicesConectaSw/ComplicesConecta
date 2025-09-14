@@ -664,7 +664,7 @@ ComplicesConecta ahora cuenta con:
 #### 5. **🔗 Link APK Actualizado**
 **Archivo:** `src/components/modals/InstallAppModal.tsx`
 **Cambio:**
-- URL actualizada: `https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v2.4.0/app-release.apk`
+- URL actualizada: `https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v.2.1.7/app-release.apk`
 - Descarga directa desde GitHub Releases v2.4.0
 
 ### 📊 **MÉTRICAS DE IMPLEMENTACIÓN v2.3.0**
@@ -1280,7 +1280,7 @@ README.md                           # Badge TypeScript 100% agregado
 ### 📱 **APK Información**
 - ✅ **Tamaño**: 87MB (89.6MB exacto)
 - ✅ **Versión**: v1.8.0
-- ✅ **Descarga**: GitHub Releases - `v.1.8.0/app-release.apk`
+- ✅ **Descarga**: GitHub Releases - `v.2.1.7/app-release.apk`
 
 ---
 
@@ -1331,7 +1331,7 @@ README.md                           # Badge TypeScript 100% agregado
 - **Documentación**: `docs/WORLDID_INTEGRATION_GUIDE.md`
 
 ### 🔗 **Problemas Identificados**
-- ✅ **Link APK GitHub**: `v.1.8.0/app-release.apk` actualizado y funcional
+- ✅ **Link APK GitHub**: `v.2.1.7/app-release.apk` actualizado y funcional
 - ✅ **Descarga Directa**: APK v1.8.0 (87MB) disponible en GitHub Releases
 
 ---
