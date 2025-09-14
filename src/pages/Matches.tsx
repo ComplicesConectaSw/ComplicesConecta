@@ -250,7 +250,7 @@ const Matches = () => {
                 Conexiones Swinger
               </span>
             </h1>
-            <p className="text-xl text-white max-w-2xl mx-auto">
+            <p className="text-xl text-white/90 max-w-2xl mx-auto">
               Parejas y solteros verificados que han mostrado interés mutuo contigo en la comunidad swinger
             </p>
           </div>
@@ -260,8 +260,8 @@ const Matches = () => {
             <UnifiedCard className="bg-card/80 backdrop-blur-sm border-primary/10">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground">Total Matches</p>
-                  <p className="text-3xl font-bold text-card-foreground">{currentMatches.length}</p>
+                  <p className="text-sm text-white/70">Total Matches</p>
+                  <p className="text-3xl font-bold text-white">{currentMatches.length}</p>
                 </div>
                 <div className="bg-primary/10 p-3 rounded-full">
                   <Heart className="h-6 w-6 text-primary" fill="currentColor" />
@@ -272,8 +272,8 @@ const Matches = () => {
             <UnifiedCard className="bg-card/80 backdrop-blur-sm border-primary/10">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground">Nuevos Matches</p>
-                  <p className="text-3xl font-bold text-card-foreground">
+                  <p className="text-sm text-white/70">Nuevos Matches</p>
+                  <p className="text-3xl font-bold text-white">
                     {currentMatches.filter(m => m.status === 'new').length}
                   </p>
                 </div>
@@ -286,8 +286,8 @@ const Matches = () => {
             <UnifiedCard className="bg-card/80 backdrop-blur-sm border-primary/10">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground">Conversaciones</p>
-                  <p className="text-3xl font-bold text-card-foreground">
+                  <p className="text-sm text-white/70">Conversaciones</p>
+                  <p className="text-3xl font-bold text-white">
                     {currentMatches.filter(m => m.hasUnreadMessage).length}
                   </p>
                 </div>
@@ -300,8 +300,8 @@ const Matches = () => {
             <UnifiedCard className="bg-card/80 backdrop-blur-sm border-primary/10">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground">Compatibilidad</p>
-                  <p className="text-3xl font-bold text-card-foreground">
+                  <p className="text-sm text-white/70">Compatibilidad</p>
+                  <p className="text-3xl font-bold text-white">
                     {currentMatches.length > 0 ? `${Math.round(currentMatches.reduce((acc, m) => acc + m.compatibility, 0) / currentMatches.length)}%` : '0%'}
                   </p>
                 </div>
@@ -323,7 +323,7 @@ const Matches = () => {
             <UnifiedButton
               variant={filter === 'all' ? 'default' : 'outline'}
               onClick={() => setFilter('all')}
-              className="flex items-center gap-2"
+              className={`flex items-center gap-2 ${filter === 'all' ? 'text-white' : 'text-white/90 hover:text-white'}`}
             >
               <Users className="h-4 w-4" />
               Todos ({currentMatches.length})
@@ -331,7 +331,7 @@ const Matches = () => {
             <UnifiedButton
               variant={filter === 'new' ? 'default' : 'outline'}
               onClick={() => setFilter('new')}
-              className="flex items-center gap-2"
+              className={`flex items-center gap-2 ${filter === 'new' ? 'text-white' : 'text-white/90 hover:text-white'}`}
             >
               <Flame className="h-4 w-4" />
               Nuevos ({currentMatches.filter(m => m.status === 'new').length})
@@ -339,7 +339,7 @@ const Matches = () => {
             <UnifiedButton
               variant={filter === 'recent' ? 'default' : 'outline'}
               onClick={() => setFilter('recent')}
-              className="flex items-center gap-2"
+              className={`flex items-center gap-2 ${filter === 'recent' ? 'text-white' : 'text-white/90 hover:text-white'}`}
             >
               <Sparkles className="h-4 w-4" />
               Recientes ({currentMatches.filter(m => m.matchedAt.includes('horas') || m.matchedAt.includes('Ayer')).length})
@@ -347,7 +347,7 @@ const Matches = () => {
             <UnifiedButton
               variant={filter === 'unread' ? 'default' : 'outline'}
               onClick={() => setFilter('unread')}
-              className="flex items-center gap-2"
+              className={`flex items-center gap-2 ${filter === 'unread' ? 'text-white' : 'text-white/90 hover:text-white'}`}
             >
               <MessageCircle className="h-4 w-4" />
               No leídos ({currentMatches.filter(m => m.hasUnreadMessage).length})
@@ -394,13 +394,13 @@ const Matches = () => {
           </div>
         ) : (
           <div className="text-center py-16">
-            <div className="bg-muted rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-4">
-              <Heart className="h-12 w-12 text-muted-foreground" />
+            <div className="bg-white/20 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-4">
+              <Heart className="h-12 w-12 text-white/70" />
             </div>
-            <h3 className="text-xl font-semibold text-foreground mb-2">
+            <h3 className="text-xl font-semibold text-white mb-2">
               No hay matches con este filtro
             </h3>
-            <p className="text-muted-foreground mb-6">
+            <p className="text-white/70 mb-6">
               Intenta cambiar los filtros o descubre más parejas y solteros verificados
             </p>
             <UnifiedButton 

@@ -63,9 +63,12 @@ const EditProfileSingle = () => {
           setUserId(user.id);
           setProfile(profileData);
           setProfileLoaded(true);
+          return;
         }
-      } else if (getAppConfig().features.demoCredentials) {
-        // Modo real con Supabase
+      }
+      
+      // Si no hay demo auth, intentar con Supabase
+      if (getAppConfig().features.demoCredentials) {
         const { data: { user } } = await supabase.auth.getUser();
         
         if (user) {
@@ -91,29 +94,46 @@ const EditProfileSingle = () => {
             setUserId(user.id);
             setProfile(profile);
             setProfileLoaded(true);
-          }
-        } else {
-          const newProfile = generateMockSingle();
-          setFormData({
-            name: `${newProfile.first_name} ${newProfile.last_name}`,
-            age: newProfile.age.toString(),
-            bio: newProfile.bio,
-            location: newProfile.location,
-            profession: newProfile.profession,
-            interests: newProfile.interests,
-            avatar: newProfile.avatar
-          });
-          
-          if (newProfile.id) {
-            setUserId(newProfile.id);
-            setProfile(newProfile);
-            setProfileLoaded(true);
+            return;
           }
         }
+      }
+      
+      // Fallback: crear perfil demo
+      const newProfile = generateMockSingle();
+      setFormData({
+        name: `${newProfile.first_name} ${newProfile.last_name}`,
+        age: newProfile.age.toString(),
+        bio: newProfile.bio,
+        location: newProfile.location,
+        profession: newProfile.profession,
+        interests: newProfile.interests,
+        avatar: newProfile.avatar
+      });
+      
+      if (newProfile.id) {
+        setUserId(newProfile.id);
+        setProfile(newProfile);
+        setProfileLoaded(true);
       }
     } catch (error) {
       setError('Error inesperado al cargar perfil');
       console.error('Error loading profile:', error);
+      
+      // En caso de error, crear perfil demo como fallback
+      const fallbackProfile = generateMockSingle();
+      setFormData({
+        name: `${fallbackProfile.first_name} ${fallbackProfile.last_name}`,
+        age: fallbackProfile.age.toString(),
+        bio: fallbackProfile.bio,
+        location: fallbackProfile.location,
+        profession: fallbackProfile.profession,
+        interests: fallbackProfile.interests,
+        avatar: fallbackProfile.avatar
+      });
+      setUserId(fallbackProfile.id);
+      setProfile(fallbackProfile);
+      setProfileLoaded(true);
     }
   }, [profileLoaded]);
 
@@ -200,10 +220,10 @@ const EditProfileSingle = () => {
 
   if (!profile) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-100 via-purple-50 to-indigo-100 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
-          <p className="text-white">Cargando...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+          <p className="text-white text-lg">Cargando perfil...</p>
         </div>
       </div>
     );

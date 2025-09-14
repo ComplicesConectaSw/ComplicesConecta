@@ -340,7 +340,7 @@ All colors MUST be HSL. */
   }
 
   body {
-    background: var(--hero-gradient);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
     background-attachment: fixed;
     color: hsl(var(--foreground));
     min-height: 100vh;
@@ -423,4 +423,55 @@ All colors MUST be HSL. */
 
 .animate-super-like {
   animation: super-like 0.5s ease-out forwards;
+}
+
+/* Scrollbar hide utility for navigation */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
+}
+
+/* Safe area padding for mobile devices */
+.safe-area-pb {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Mobile navigation optimizations */
+@media screen and (max-width: 640px) {
+  .navigation-mobile {
+    padding-left: max(0.5rem, env(safe-area-inset-left));
+    padding-right: max(0.5rem, env(safe-area-inset-right));
+    padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+  }
+  
+  .nav-button-mobile {
+    min-width: 45px;
+    width: 45px;
+    min-height: 45px;
+    font-size: 10px;
+  }
+}
+
+/* Tablet navigation optimizations */
+@media screen and (min-width: 641px) and (max-width: 1024px) {
+  .nav-button-tablet {
+    min-width: 55px;
+    width: 55px;
+    min-height: 55px;
+    font-size: 12px;
+  }
+}
+
+/* Desktop navigation optimizations */
+@media screen and (min-width: 1025px) {
+  .nav-button-desktop {
+    min-width: 65px;
+    width: 65px;
+    min-height: 65px;
+    font-size: 14px;
+  }
 }

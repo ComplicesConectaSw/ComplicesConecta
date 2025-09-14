@@ -26,50 +26,20 @@ const ProfileSingle: React.FC = () => {
           user: !!user,
           authProfile: !!authProfile,
           isDemo: authProfile?.is_demo,
-          userEmail: user?.email
+          userEmail: user?.email,
+          isAuthenticated
         });
+        
+        // Si no hay autenticación válida, redirigir
+        if (!isAuthenticated) {
+          console.log('❌ No hay autenticación válida, redirigiendo...');
+          navigate('/auth', { replace: true });
+          return;
+        }
         
         // Si authProfile ya está disponible, usarlo directamente
         if (authProfile && authProfile.id) {
-          console.log('✅ AuthProfile disponible inmediatamente:', authProfile);
-          setProfile(authProfile);
-          setIsLoading(false);
-          return;
-        }
-        
-        // FORZAR carga del perfil real si hay usuario autenticado
-        if (user && user.email === 'apoyofinancieromexicano@gmail.com') {
-          console.log('🛡️ Usuario protegido detectado - forzando carga de perfil');
-          
-          if (authProfile) {
-            console.log('✅ Perfil disponible - usando datos reales:', authProfile);
-            setProfile(authProfile);
-            setIsLoading(false);
-            return;
-          } else {
-            console.log('⏳ Esperando carga del perfil...');
-            // Mantener loading hasta que el perfil esté disponible
-            setIsLoading(true);
-            return;
-          }
-        }
-        
-        // VERIFICAR si hay sesión del usuario especial en localStorage
-        const apoyoAuth = localStorage.getItem('apoyo_authenticated');
-        const apoyoUser = localStorage.getItem('apoyo_user');
-        
-        if (apoyoAuth === 'true' && apoyoUser) {
-          console.log('🔑 Sesión especial encontrada en localStorage');
-          const parsedUser = JSON.parse(apoyoUser);
-          console.log('👤 Usuario especial desde localStorage:', parsedUser);
-          setProfile(parsedUser as Tables<'profiles'>);
-          setIsLoading(false);
-          return;
-        }
-        
-        // Verificar si hay usuario real autenticado en Supabase
-        if (user && authProfile && !authProfile.is_demo) {
-          console.log('🏢 Usuario real de Supabase detectado:', authProfile);
+          console.log('✅ AuthProfile disponible:', authProfile.first_name);
           setProfile(authProfile);
           setIsLoading(false);
           return;
@@ -82,21 +52,20 @@ const ProfileSingle: React.FC = () => {
         if (demoAuth === 'true' && demoUser) {
           const parsedUser = JSON.parse(demoUser);
           console.log('🎭 Cargando perfil demo:', parsedUser);
-          
-          // Usar datos del usuario demo
           setProfile(parsedUser as Tables<'profiles'>);
           setIsLoading(false);
           return;
         }
         
-        // Si no hay autenticación, redirigir con verificación condicional
-        if (!user && !localStorage.getItem('apoyo_authenticated')) {
-          console.log('❌ No hay autenticación válida, redirigiendo...');
-          // Usar setTimeout y replace para evitar bucles
-          setTimeout(() => {
-            navigate('/auth', { replace: true });
-          }, 100);
+        // Si hay usuario pero no perfil, esperar a que se cargue
+        if (user && !authProfile) {
+          console.log('⏳ Usuario autenticado, esperando carga del perfil...');
+          // No cambiar isLoading aquí, mantener el loading screen
+          return;
         }
+        
+        console.log('⚠️ Estado inesperado en ProfileSingle');
+        setIsLoading(false);
       } catch (error) {
         console.error('Error cargando perfil:', error);
         setIsLoading(false);
@@ -104,7 +73,7 @@ const ProfileSingle: React.FC = () => {
     };
     
     loadProfile();
-  }, [user, authProfile]); // Agregar dependencias para reaccionar a cambios
+  }, [user, authProfile, isAuthenticated, navigate]);
 
   if (isLoading) {
     return (
@@ -147,15 +116,15 @@ const ProfileSingle: React.FC = () => {
       </div>
 
       {/* Contenido principal con scroll personalizado */}
-      <div className="relative z-10 pb-20 px-4 max-h-[calc(100vh-140px)] overflow-y-auto custom-scrollbar">
-        <div className="max-w-4xl mx-auto space-y-6">
+      <div className="relative z-10 pb-20 px-2 sm:px-4 max-h-[calc(100vh-140px)] overflow-y-auto custom-scrollbar">
+        <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6">
           {/* Información principal del perfil */}
           <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
-            <CardContent className="p-6">
-              <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+            <CardContent className="p-4 sm:p-6">
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
                 {/* Avatar */}
-                <div className="relative">
-                  <div className="w-32 h-32 rounded-full bg-gradient-to-br from-pink-400 to-purple-600 flex items-center justify-center text-white text-4xl font-bold">
+                <div className="relative flex-shrink-0">
+                  <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-pink-400 to-purple-600 flex items-center justify-center text-white text-2xl sm:text-4xl font-bold">
                     {profile.first_name?.[0]?.toUpperCase() || 'U'}
                   </div>
                   {profile.is_verified && (
@@ -171,18 +140,18 @@ const ProfileSingle: React.FC = () => {
                 </div>
 
                 {/* Información básica */}
-                <div className="flex-1 text-center md:text-left">
-                  <h2 className="text-2xl font-bold mb-2">
+                <div className="flex-1 text-center sm:text-left">
+                  <h2 className="text-xl sm:text-2xl font-bold mb-2">
                     {profile.first_name} {profile.last_name}
                   </h2>
-                  <div className="flex flex-wrap gap-2 justify-center md:justify-start mb-4">
-                    <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
+                  <div className="flex flex-wrap gap-2 justify-center sm:justify-start mb-4">
+                    <Badge variant="secondary" className="bg-white/20 text-white border-white/30 text-xs sm:text-sm">
                       {profile.age} años
                     </Badge>
-                    <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
+                    <Badge variant="secondary" className="bg-white/20 text-white border-white/30 text-xs sm:text-sm">
                       {profile.gender}
                     </Badge>
-                    <Badge variant="secondary" className="bg-white/20 text-white border-white/30 flex items-center gap-1">
+                    <Badge variant="secondary" className="bg-white/20 text-white border-white/30 flex items-center gap-1 text-xs sm:text-sm">
                       <MapPin className="w-3 h-3" />
                       {(profile as any).location || 'CDMX, México'}
                     </Badge>
@@ -196,28 +165,15 @@ const ProfileSingle: React.FC = () => {
                   )}
 
                   {/* Botones de acción */}
-                  <div className="flex flex-wrap gap-3 justify-center md:justify-start">
+                  <div className="flex flex-wrap gap-2 sm:gap-3 justify-center sm:justify-start">
                     <Button 
                       onClick={() => navigate('/edit-profile-single')}
-                      className="bg-white/20 hover:bg-white/30 text-white border-white/30"
-                      variant="outline"
+                      className="bg-white/20 hover:bg-white/30 text-white border-white/30 flex items-center gap-2 text-sm sm:text-base px-3 sm:px-4 py-2"
+                      size="sm"
                     >
-                      <Edit className="w-4 h-4 mr-2" />
-                      Editar Perfil
-                    </Button>
-                    <Button 
-                      onClick={() => navigate('/matches')}
-                      className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white"
-                    >
-                      <Heart className="w-4 h-4 mr-2" />
-                      Ver Matches
-                    </Button>
-                    <Button 
-                      onClick={() => navigate('/chat-info')}
-                      className="bg-blue-500 hover:bg-blue-600 text-white"
-                    >
-                      <MessageCircle className="w-4 h-4 mr-2" />
-                      Mensajes
+                      <Edit className="w-4 h-4" />
+                      <span className="hidden sm:inline">Editar Perfil</span>
+                      <span className="sm:hidden">Editar</span>
                     </Button>
                   </div>
                 </div>
@@ -226,29 +182,30 @@ const ProfileSingle: React.FC = () => {
           </Card>
 
           {/* Estadísticas */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
             <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
-              <CardContent className="p-4 text-center">
-                <div className="text-2xl font-bold text-pink-400">12</div>
-                <div className="text-sm text-white/80">Matches</div>
+              <CardContent className="p-3 sm:p-4 text-center">
+                <Heart className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-2 text-pink-400" />
+                <div className="text-lg sm:text-2xl font-bold">{(profile as any).likes || 0}</div>
+                <div className="text-xs sm:text-sm text-white/70">Likes</div>
               </CardContent>
             </Card>
             <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
-              <CardContent className="p-4 text-center">
-                <div className="text-2xl font-bold text-purple-400">8</div>
-                <div className="text-sm text-white/80">Conversaciones</div>
+              <CardContent className="p-3 sm:p-4 text-center">
+                <div className="text-lg sm:text-2xl font-bold text-purple-400">8</div>
+                <div className="text-xs sm:text-sm text-white/80">Conversaciones</div>
               </CardContent>
             </Card>
             <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
-              <CardContent className="p-4 text-center">
+              <CardContent className="p-3 sm:p-4 text-center">
                 <div className="text-2xl font-bold text-blue-400">156</div>
                 <div className="text-sm text-white/80">Visitas</div>
               </CardContent>
             </Card>
             <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
               <CardContent className="p-4 text-center">
-                <div className="text-2xl font-bold text-green-400">89%</div>
-                <div className="text-sm text-white/80">Compatibilidad</div>
+                <div className="text-lg sm:text-2xl font-bold text-green-400">95%</div>
+                <div className="text-xs sm:text-sm text-white/80">Compatibilidad</div>
               </CardContent>
             </Card>
           </div>

@@ -8,225 +8,160 @@ export interface Invitation {
   type: 'profile' | 'gallery' | 'chat';
   status: 'pending' | 'accepted' | 'declined' | 'revoked';
   created_at: string;
-  decided_at?: string;
+  decided_at: string | null;
 }
 
 export interface GalleryPermission {
   id: string;
   owner_profile: string;
   grantee_profile: string;
-  scope: 'private_gallery' | 'album';
-  source_invitation: string;
   status: 'active' | 'revoked';
   created_at: string;
 }
 
-// Mock data para invitaciones - using let for test reset capability
-let mockInvitations: Invitation[] = [
+// Mock data para fallback
+const mockInvitations: Invitation[] = [
   {
     id: '1',
-    from_profile: '2',
-    to_profile: '1',
-    message: 'Hola, me encantaría conocerte mejor y ver tu galería privada.',
-    type: 'gallery',
-    status: 'pending',
-    created_at: new Date(Date.now() - 86400000).toISOString(), // 1 día atrás
-  },
-  {
-    id: '2',
-    from_profile: '3',
-    to_profile: '1',
-    message: '¡Hola! ¿Te gustaría chatear en privado?',
-    type: 'chat',
-    status: 'pending',
-    created_at: new Date(Date.now() - 3600000).toISOString(), // 1 hora atrás
-  },
-  {
-    id: '3',
     from_profile: '1',
-    to_profile: '4',
-    message: 'Me pareces muy interesante, ¿podríamos conectar?',
+    to_profile: '2',
+    message: 'Me gustaría conectar contigo',
     type: 'profile',
-    status: 'accepted',
-    created_at: new Date(Date.now() - 172800000).toISOString(), // 2 días atrás
-    decided_at: new Date(Date.now() - 86400000).toISOString(),
+    status: 'pending',
+    created_at: new Date().toISOString(),
+    decided_at: null
   }
 ];
 
-// Mock data para permisos de galería - using let for test reset capability
-let mockGalleryPermissions: GalleryPermission[] = [
+const mockGalleryPermissions: GalleryPermission[] = [
   {
     id: '1',
-    owner_profile: '4',
-    grantee_profile: '1',
-    scope: 'private_gallery',
-    source_invitation: '3',
+    owner_profile: '1',
+    grantee_profile: '2',
     status: 'active',
-    created_at: new Date(Date.now() - 86400000).toISOString(),
+    created_at: new Date().toISOString()
   }
 ];
 
-// Servicios reales para invitaciones usando Supabase
 export const invitationService = {
-  async sendInvitation(invitation: Omit<Invitation, 'id' | 'created_at' | 'status'>): Promise<Invitation> {
+  async sendInvitation(fromProfile: string, toProfile: string, message: string, type: 'profile' | 'gallery' | 'chat' = 'profile'): Promise<Invitation> {
     try {
       const { data, error } = await supabase
         .from('invitations')
         .insert({
-          from_profile: invitation.from_profile,
-          to_profile: invitation.to_profile,
-          message: invitation.message,
-          type: invitation.type,
+          from_profile: fromProfile,
+          to_profile: toProfile,
+          message,
+          type,
           status: 'pending'
         })
         .select()
         .single();
-      
+
       if (error) {
         console.error('❌ Error enviando invitación:', error);
         throw error;
       }
-      
-      return {
-        id: data.id,
-        from_profile: data.from_profile,
-        to_profile: data.to_profile,
-        message: data.message || '',
-        type: data.type as 'profile' | 'gallery' | 'chat',
-        status: data.status as 'pending' | 'accepted' | 'declined' | 'revoked',
-        created_at: data.created_at || new Date().toISOString()
-      };
+
+      return data as Invitation;
     } catch (error) {
       console.error('❌ Error en sendInvitation:', error);
-      // Fallback a mock data para desarrollo
-      const newInvitation: Invitation = {
-        ...invitation,
-        id: Math.random().toString(36).substr(2, 9),
+      // Fallback a mock data
+      const mockInvitation: Invitation = {
+        id: Date.now().toString(),
+        from_profile: fromProfile,
+        to_profile: toProfile,
+        message,
+        type,
         status: 'pending',
         created_at: new Date().toISOString(),
+        decided_at: null
       };
-      mockInvitations.push(newInvitation);
-      return newInvitation;
+      return mockInvitation;
     }
   },
 
-  async respondInvitation(invitationId: string, action: 'accept' | 'decline'): Promise<Invitation> {
+  async acceptInvitation(invitationId: string): Promise<void> {
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('invitations')
-        .update({
-          status: action === 'accept' ? 'accepted' : 'declined',
+        .update({ 
+          status: 'accepted',
           decided_at: new Date().toISOString()
         })
-        .eq('id', invitationId)
-        .select()
-        .single();
-      
+        .eq('id', invitationId);
+
       if (error) {
-        console.error('❌ Error respondiendo invitación:', error);
+        console.error('❌ Error aceptando invitación:', error);
         throw error;
       }
-      
-      const invitation: Invitation = {
-        id: data.id,
-        from_profile: data.from_profile,
-        to_profile: data.to_profile,
-        message: data.message || '',
-        type: data.type as 'profile' | 'gallery' | 'chat',
-        status: data.status as 'pending' | 'accepted' | 'declined' | 'revoked',
-        created_at: data.created_at || new Date().toISOString(),
-        decided_at: data.decided_at || undefined
-      };
-      
-      // Si se acepta una invitación de galería, crear permiso
-      if (action === 'accept' && invitation.type === 'gallery') {
-        await supabase
-          .from('gallery_permissions')
-          .insert({
-            owner_profile: invitation.to_profile,
-            grantee_profile: invitation.from_profile,
-            scope: 'private_gallery',
-            source_invitation: invitation.id,
-            status: 'active'
-          });
-      }
-      
-      return invitation;
     } catch (error) {
-      console.error('❌ Error en respondInvitation:', error);
+      console.error('❌ Error en acceptInvitation:', error);
       // Fallback a mock data
       const invitation = mockInvitations.find(inv => inv.id === invitationId);
-      if (!invitation) throw new Error('Invitación no encontrada');
-      
-      invitation.status = action === 'accept' ? 'accepted' : 'declined';
-      invitation.decided_at = new Date().toISOString();
-      return invitation;
+      if (invitation) {
+        invitation.status = 'accepted';
+        invitation.decided_at = new Date().toISOString();
+      }
+    }
+  },
+
+  async declineInvitation(invitationId: string): Promise<void> {
+    try {
+      const { error } = await supabase
+        .from('invitations')
+        .update({ 
+          status: 'declined',
+          decided_at: new Date().toISOString()
+        })
+        .eq('id', invitationId);
+
+      if (error) {
+        console.error('❌ Error rechazando invitación:', error);
+        throw error;
+      }
+    } catch (error) {
+      console.error('❌ Error en declineInvitation:', error);
+      // Fallback a mock data
+      const invitation = mockInvitations.find(inv => inv.id === invitationId);
+      if (invitation) {
+        invitation.status = 'declined';
+        invitation.decided_at = new Date().toISOString();
+      }
     }
   },
 
   async getInvitations(profileId: string): Promise<{ received: Invitation[], sent: Invitation[] }> {
     try {
-      // Obtener invitaciones recibidas
+      // Obtener invitaciones recibidas - compatible con ambos esquemas
       const { data: receivedData, error: receivedError } = await supabase
         .from('invitations')
-        .select(`
-          id,
-          from_profile,
-          to_profile,
-          message,
-          type,
-          status,
-          created_at,
-          decided_at,
-          from_profile:profiles!invitations_from_profile_fkey(first_name, last_name)
-        `)
-        .eq('to_profile', profileId)
+        .select('*')
+        .or(`to_profile_id.eq.${profileId},to_profile.eq.${profileId}`)
         .order('created_at', { ascending: false });
       
-      // Obtener invitaciones enviadas
+      // Obtener invitaciones enviadas - compatible con ambos esquemas
       const { data: sentData, error: sentError } = await supabase
         .from('invitations')
-        .select(`
-          id,
-          from_profile_id,
-          to_profile_id,
-          message,
-          type,
-          status,
-          created_at,
-          decided_at,
-          to_profile:profiles!invitations_to_profile_fkey(first_name, last_name)
-        `)
-        .eq('from_profile', profileId)
+        .select('*')
+        .or(`from_profile_id.eq.${profileId},from_profile.eq.${profileId}`)
         .order('created_at', { ascending: false });
-      
+
       if (receivedError || sentError) {
         console.error('❌ Error obteniendo invitaciones:', receivedError || sentError);
         throw receivedError || sentError;
       }
-      
-      const received: Invitation[] = (receivedData || []).map(item => ({
-        id: item.id,
-        from_profile: `${item.from_profile?.first_name || 'Usuario'} ${item.from_profile?.last_name || ''}`.trim(),
-        to_profile: profileId,
-        message: item.message,
-        type: item.type,
-        status: item.status,
-        created_at: item.created_at,
-        decided_at: item.decided_at
-      }));
-      
-      const sent: Invitation[] = (sentData || []).map(item => ({
-        id: item.id,
-        from_profile: profileId,
-        to_profile: `${item.to_profile?.first_name || 'Usuario'} ${item.to_profile?.last_name || ''}`.trim(),
-        message: item.message,
-        type: item.type,
-        status: item.status,
-        created_at: item.created_at,
-        decided_at: item.decided_at
-      }));
-      
+
+      const received = (receivedData || []).map(inv => ({
+        ...inv,
+        message: inv.message || 'Sin mensaje'
+      })) as Invitation[];
+
+      const sent = (sentData || []).map(inv => ({
+        ...inv,
+        message: inv.message || 'Sin mensaje'
+      })) as Invitation[];
+
       return { received, sent };
     } catch (error) {
       console.error('❌ Error en getInvitations:', error);
@@ -242,16 +177,15 @@ export const invitationService = {
       const { data, error } = await supabase
         .from('gallery_permissions')
         .select('id')
-        .eq('owner_profile_id', owner)
-        .eq('grantee_profile_id', grantee)
+        .or(`and(owner_profile_id.eq.${owner},grantee_profile_id.eq.${grantee}),and(profile_id.eq.${owner},granted_to.eq.${grantee})`)
         .eq('status', 'active')
         .limit(1);
-      
+        
       if (error) {
         console.error('❌ Error verificando acceso a galería:', error);
-        return false;
+        throw error;
       }
-      
+        
       return (data?.length || 0) > 0;
     } catch (error) {
       console.error('❌ Error en hasGalleryAccess:', error);
@@ -269,9 +203,7 @@ export const invitationService = {
       const { error } = await supabase
         .from('gallery_permissions')
         .update({ status: 'revoked' })
-        .eq('owner_profile_id', owner)
-        .eq('grantee_profile_id', grantee)
-        .eq('status', 'active');
+        .or(`and(owner_profile_id.eq.${owner},grantee_profile_id.eq.${grantee}),and(profile_id.eq.${owner},granted_to.eq.${grantee})`);
       
       if (error) {
         console.error('❌ Error revocando acceso a galería:', error);
@@ -293,19 +225,31 @@ export const invitationService = {
 
   async hasChatAccess(user1: string, user2: string): Promise<boolean> {
     try {
+      // Validar que los UUIDs sean válidos antes de hacer la consulta
+      const isValidUUID = (uuid: any) => {
+        return typeof uuid === 'string' && 
+               uuid.length === 36 && 
+               /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(uuid);
+      };
+      
+      if (!isValidUUID(user1) || !isValidUUID(user2)) {
+        console.warn('⚠️ UUIDs inválidos para hasChatAccess:', { user1, user2 });
+        return false;
+      }
+
       const { data, error } = await supabase
         .from('invitations')
         .select('id')
-        .or(`and(from_profile.eq.${user1},to_profile.eq.${user2}),and(from_profile.eq.${user2},to_profile.eq.${user1})`)
+        .or(`and(from_profile_id.eq.${user1},to_profile_id.eq.${user2}),and(from_profile_id.eq.${user2},to_profile_id.eq.${user1}),and(from_profile.eq.${user1},to_profile.eq.${user2}),and(from_profile.eq.${user2},to_profile.eq.${user1})`)
         .eq('type', 'chat')
         .eq('status', 'accepted')
         .limit(1);
-      
+
       if (error) {
         console.error('❌ Error verificando acceso al chat:', error);
-        return false;
+        throw error;
       }
-      
+
       return (data?.length || 0) > 0;
     } catch (error) {
       console.error('❌ Error en hasChatAccess:', error);
@@ -313,12 +257,12 @@ export const invitationService = {
       return mockInvitations.some(
         inv => ((inv.from_profile === user1 && inv.to_profile === user2) ||
                 (inv.from_profile === user2 && inv.to_profile === user1)) &&
-               inv.type === 'chat' && 
-               inv.status === 'accepted'
+               inv.type === 'chat' && inv.status === 'accepted'
       );
     }
   },
 
+  // Función para resetear mock data (útil para testing)
   resetMockData(): void {
     mockInvitations.length = 0;
     mockGalleryPermissions.length = 0;

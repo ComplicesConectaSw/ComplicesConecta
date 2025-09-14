@@ -103,21 +103,21 @@ const Support = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-600 via-pink-500 to-indigo-600">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       {/* Header */}
-      <div className="bg-white/80 backdrop-blur-md border-b border-pink-200/50 sticky top-0 z-50">
+      <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-blur-md border-b border-purple-300/30 sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 py-4">
           <div className="flex items-center gap-4">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => navigate('/')}
-              className="text-pink-600 hover:text-pink-700"
+              className="text-white hover:text-purple-200"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Volver
             </Button>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+            <h1 className="text-2xl font-bold text-white">
               Centro de Ayuda
             </h1>
           </div>
@@ -130,16 +130,16 @@ const Support = () => {
           <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full mb-6">
             <HelpCircle className="w-10 h-10 text-white" />
           </div>
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl font-bold text-white mb-4">
             ¿En qué podemos ayudarte?
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
+          <p className="text-xl text-white/90 max-w-2xl mx-auto mb-8">
             Encuentra respuestas rápidas a las preguntas más frecuentes o contáctanos directamente
           </p>
 
           {/* Search Bar */}
           <div className="relative max-w-md mx-auto">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-300 w-5 h-5" />
             <Input
               placeholder="Buscar en preguntas frecuentes..."
               value={searchTerm}
@@ -152,14 +152,14 @@ const Support = () => {
         {/* Contact Methods */}
         <div className="grid md:grid-cols-3 gap-6 mb-12">
           {contactMethods.map((method, index) => (
-            <Card key={index} className="bg-white/60 backdrop-blur-sm border-pink-200/50 hover:shadow-lg transition-shadow">
+            <Card key={index} className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-sm border-purple-300/30 hover:shadow-lg transition-shadow">
               <CardContent className="p-6 text-center">
-                <div className="w-12 h-12 bg-pink-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <method.icon className="w-6 h-6 text-pink-600" />
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-400/30 to-pink-400/30 rounded-xl flex items-center justify-center mx-auto mb-4 border border-purple-300/20">
+                  <method.icon className="w-6 h-6 text-purple-200" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">{method.title}</h3>
-                <p className="text-gray-700 mb-1">{method.description}</p>
-                <p className="text-sm text-gray-500">{method.subtitle}</p>
+                <h3 className="text-lg font-semibold text-white mb-2">{method.title}</h3>
+                <p className="text-white/90 mb-1">{method.description}</p>
+                <p className="text-sm text-white/70">{method.subtitle}</p>
               </CardContent>
             </Card>
           ))}
@@ -167,18 +167,18 @@ const Support = () => {
 
         {/* FAQ Section */}
         <div className="mb-12">
-          <h3 className="text-3xl font-bold text-center text-gray-900 mb-8">
+          <h3 className="text-3xl font-bold text-center text-white mb-8">
             Preguntas Frecuentes
           </h3>
           
           {filteredFaqs.length > 0 ? (
             <div className="space-y-6">
               {filteredFaqs.map((category, categoryIndex) => (
-                <Card key={categoryIndex} className="bg-white/60 backdrop-blur-sm border-pink-200/50">
+                <Card key={categoryIndex} className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-sm border-purple-300/30">
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-3 text-gray-900">
-                      <div className="w-10 h-10 bg-pink-100 rounded-lg flex items-center justify-center">
-                        <category.icon className="w-5 h-5 text-pink-600" />
+                    <CardTitle className="flex items-center gap-3 text-white">
+                      <div className="w-10 h-10 bg-gradient-to-br from-purple-400/30 to-pink-400/30 rounded-lg flex items-center justify-center border border-purple-300/20">
+                        <category.icon className="w-5 h-5 text-purple-200" />
                       </div>
                       {category.title}
                     </CardTitle>
@@ -188,19 +188,19 @@ const Support = () => {
                       {category.questions.map((faq, faqIndex) => {
                         const globalIndex = categoryIndex * 100 + faqIndex;
                         return (
-                          <div key={faqIndex} className="border-b border-gray-200 last:border-b-0 pb-4 last:pb-0">
+                          <div key={faqIndex} className="border-b border-purple-300/20 last:border-b-0 pb-4 last:pb-0">
                             <button
                               onClick={() => setExpandedFaq(expandedFaq === globalIndex ? null : globalIndex)}
                               className="w-full text-left flex items-center justify-between py-2 hover:text-pink-600 transition-colors"
                             >
-                              <span className="font-medium text-gray-900">{faq.q}</span>
+                              <span className="font-medium text-white">{faq.q}</span>
                               {expandedFaq === globalIndex ? 
                                 <ChevronUp className="w-5 h-5 text-pink-600" /> : 
-                                <ChevronDown className="w-5 h-5 text-gray-400" />
+                                <ChevronDown className="w-5 h-5 text-purple-300" />
                               }
                             </button>
                             {expandedFaq === globalIndex && (
-                              <div className="mt-2 text-gray-700 leading-relaxed">
+                              <div className="mt-2 text-white/90 leading-relaxed">
                                 {faq.a}
                               </div>
                             )}
@@ -214,35 +214,35 @@ const Support = () => {
             </div>
           ) : (
             <div className="text-center py-8">
-              <p className="text-gray-500">No se encontraron preguntas que coincidan con tu búsqueda.</p>
+              <p className="text-white/70">No se encontraron preguntas que coincidan con tu búsqueda.</p>
             </div>
           )}
         </div>
 
         {/* Contact Form */}
-        <Card className="bg-white/60 backdrop-blur-sm border-pink-200/50">
+        <Card className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-sm border-purple-300/30">
           <CardHeader>
-            <CardTitle className="text-center text-gray-900">¿No encontraste lo que buscabas?</CardTitle>
-            <p className="text-center text-gray-600">Envíanos un mensaje y te ayudaremos personalmente</p>
+            <CardTitle className="text-center text-white">¿No encontraste lo que buscabas?</CardTitle>
+            <p className="text-center text-white/90">Envíanos un mensaje y te ayudaremos personalmente</p>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4 max-w-2xl mx-auto">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+                  <label htmlFor="name" className="block text-sm font-medium text-white mb-1">Nombre</label>
                   <Input id="name" placeholder="Tu nombre" required />
                 </div>
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                  <label htmlFor="email" className="block text-sm font-medium text-white mb-1">Email</label>
                   <Input id="email" type="email" placeholder="tu@email.com" required />
                 </div>
               </div>
               <div>
-                <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">Asunto</label>
+                <label htmlFor="subject" className="block text-sm font-medium text-white mb-1">Asunto</label>
                 <Input id="subject" placeholder="¿En qué podemos ayudarte?" required />
               </div>
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Mensaje</label>
+                <label htmlFor="message" className="block text-sm font-medium text-white mb-1">Mensaje</label>
                 <Textarea id="message" placeholder="Describe tu consulta con detalle..." required rows={6} />
               </div>
               <Button 

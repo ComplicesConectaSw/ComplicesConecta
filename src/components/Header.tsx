@@ -103,21 +103,14 @@ export const Header = () => {
     navigate('/');
   };
   return (
-    <header className={`bg-gradient-to-r from-purple-900/95 to-pink-900/95 backdrop-blur-sm border-b border-pink-300/30 sticky top-0 z-50 transition-all duration-300 ${
-      isRunningInApp ? (
-        isScrolled ? '-translate-y-full' : 
-        isMinimized ? 'py-1' : 'py-0'
-      ) : ''
-    }`}>
-      <div className={`container mx-auto px-4 transition-all duration-300 ${
-        isRunningInApp && isMinimized ? 'py-2' : 'py-4'
-      }`}>
+    <header className="bg-gradient-to-r from-purple-900/95 to-pink-900/95 backdrop-blur-sm border-b border-pink-300/30 sticky top-0 z-50 transition-all duration-300 py-4">
+      <div className="container mx-auto px-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <div className="relative">
               <Heart 
-                className="text-primary animate-pulse-glow transition-all duration-300 h-8 w-8 animate-bounce" 
+                className="text-primary transition-all duration-300 h-8 w-8 animate-pulse" 
                 fill="currentColor"
                 style={{ animationDuration: '2s' }}
               />
@@ -344,24 +337,24 @@ export const Header = () => {
               </Button>
             ) : (
               <div className="flex items-center gap-1 sm:gap-3">
-                <span className="text-white/90 text-xs sm:text-sm hidden sm:inline">
+                <span className="text-white text-xs sm:text-sm hidden sm:inline font-medium">
                   {/* Mostrar usuario real o demo */}
                   {user?.email ? (
                     <>
                       {user.email}
-                      {isAdmin() && <span className="text-yellow-400 ml-1">(Admin)</span>}
+                      {isAdmin() && <span className="text-yellow-300 ml-1 font-bold">(Admin)</span>}
                     </>
                   ) : (
                     <>
                       {demoUser?.name} 
-                      {demoUser?.isDemo && <span className="text-primary">(Demo)</span>}
+                      {demoUser?.isDemo && <span className="text-pink-300 font-bold">(Demo)</span>}
                     </>
                   )}
                 </span>
                 <Button 
                   variant="outline" 
                   size="sm" 
-                  className="bg-white/90 border-white text-black hover:bg-white hover:text-black font-semibold shadow-lg"
+                  className="bg-red-500 border-red-500 text-white hover:bg-red-600 hover:border-red-600 hover:text-white font-semibold shadow-lg transition-all duration-300"
                   onClick={handleLogout}
                 >
                   <LogOut className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-1" />

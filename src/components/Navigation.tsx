@@ -132,27 +132,28 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
       "translate-y-0 opacity-100",
       className
     )}>
-      <div className="flex items-center justify-around max-w-md mx-auto">
-        {navItems.map((item) => {
-          const Icon = item.icon;
-          const isActive = location.pathname === item.path;
-          
-          return (
-            <button
-              key={item.id}
-              onClick={() => handleNavigation(item.path)}
-              className={cn(
-                "flex flex-col items-center justify-center p-2 sm:p-3 rounded-2xl",
-                "min-w-[60px] sm:min-w-[70px] min-h-[60px] sm:min-h-[70px] group flex-shrink-0",
-                "transition-all duration-400 ease-out transform hover:scale-102",
-                "relative overflow-hidden backdrop-blur-sm",
-                isActive 
-                  ? currentUserType === 'couple'
-                    ? "bg-gradient-to-r from-rose-300/20 to-pink-300/10 text-white shadow-xl border border-rose-300/30"
-                    : "bg-gradient-to-r from-white/20 to-white/10 text-white shadow-xl border border-white/30"
-                  : "text-white/85 hover:text-white hover:bg-white/10 hover:backdrop-blur-md"
-              )}
-            >
+      <div className="flex items-center justify-between w-full max-w-full mx-auto px-1 overflow-x-auto scrollbar-hide">
+        <div className="flex items-center justify-around w-full min-w-fit gap-1">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = location.pathname === item.path;
+            
+            return (
+              <button
+                key={item.id}
+                onClick={() => handleNavigation(item.path)}
+                className={cn(
+                  "flex flex-col items-center justify-center p-1.5 sm:p-2 rounded-2xl",
+                  "min-w-[50px] sm:min-w-[60px] w-[50px] sm:w-[60px] min-h-[50px] sm:min-h-[60px] group flex-shrink-0",
+                  "transition-all duration-400 ease-out transform hover:scale-102",
+                  "relative overflow-hidden backdrop-blur-sm",
+                  isActive 
+                    ? currentUserType === 'couple'
+                      ? "bg-gradient-to-r from-rose-300/20 to-pink-300/10 text-white shadow-xl border border-rose-300/30"
+                      : "bg-gradient-to-r from-white/20 to-white/10 text-white shadow-xl border border-white/30"
+                    : "text-white/85 hover:text-white hover:bg-white/10 hover:backdrop-blur-md"
+                )}
+              >
               {/* Animated background for active state */}
               {isActive && (
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/30 to-accent/30 rounded-xl animate-pulse" />
@@ -165,7 +166,7 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
                 )} 
               />
               <span className={cn(
-                "text-xs sm:text-sm font-medium transition-all duration-400 truncate max-w-[60px] sm:max-w-none relative z-10",
+                "text-xs sm:text-sm font-medium transition-all duration-400 truncate max-w-[50px] sm:max-w-none relative z-10",
                 isActive ? "text-white font-semibold" : "text-white/85 group-hover:text-white"
               )}>
                 {item.label}
@@ -173,6 +174,7 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
             </button>
           );
         })}
+        </div>
       </div>
       
       {/* Decorative gradient line */}
