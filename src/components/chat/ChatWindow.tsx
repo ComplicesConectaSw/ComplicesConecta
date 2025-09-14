@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ChatUser, Message } from "@/pages/Chat";
+import { ChatWindowEnhanced } from "./ChatWindowEnhanced";
 
 interface ChatWindowProps {
   chat: ChatUser;
@@ -13,7 +14,20 @@ interface ChatWindowProps {
   onGenerateSuggestion?: () => void;
 }
 
-export const ChatWindow = ({ chat, messages, onSendMessage, isTyping, onGenerateSuggestion }: ChatWindowProps) => {
+// Wrapper de compatibilidad - MANTIENE TODAS LAS PROPS ORIGINALES
+export const ChatWindow = (props: ChatWindowProps) => {
+  return (
+    <ChatWindowEnhanced 
+      {...props}
+      enableAnimations={true}
+      showTypingIndicator={true}
+      maxMessages={1000}
+    />
+  );
+};
+
+// Export del componente original para casos específicos
+export const ChatWindowLegacy = ({ chat, messages, onSendMessage, isTyping, onGenerateSuggestion }: ChatWindowProps) => {
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 

@@ -3,12 +3,26 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Home, Search, MessageCircle, Heart, User, Settings, UserPlus, Coins } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useFeatures } from '@/hooks/useFeatures';
+import NavigationEnhanced from './NavigationEnhanced';
 
 interface NavigationProps {
   className?: string;
 }
 
+// Wrapper de compatibilidad - MANTIENE TODAS LAS PROPS ORIGINALES
 const Navigation = ({ className }: NavigationProps) => {
+  return (
+    <NavigationEnhanced 
+      className={className}
+      showNotificationBadges={true}
+      enableAnimations={true}
+      notificationCounts={{}}
+    />
+  );
+};
+
+// Export del componente original para casos específicos
+export const NavigationLegacy = ({ className }: NavigationProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { features } = useFeatures();
