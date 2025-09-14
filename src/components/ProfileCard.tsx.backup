@@ -1,3 +1,0 @@
-// Wrapper temporal para mantener compatibilidad
-// TODO: Actualizar todas las referencias para usar MainProfileCard directamente
-export { ProfileCard } from './profile/MainProfileCard';

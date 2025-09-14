@@ -1,5 +1,0 @@
-// Wrapper temporal para mantener compatibilidad
-// TODO: Actualizar todas las referencias para usar profile/ImageUpload directamente
-import { ImageUpload } from './profile/ImageUpload';
-export { ImageUpload };
-export default ImageUpload;

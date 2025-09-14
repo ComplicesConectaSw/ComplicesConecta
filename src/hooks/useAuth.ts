@@ -196,6 +196,9 @@ export const useAuth = () => {
       localStorage.removeItem('apoyo_user');
       localStorage.removeItem('apoyo_session');
       // Solo mantener el flag de autenticación para UI
+      
+      // Reset profileLoaded para permitir carga desde Supabase
+      profileLoaded.current = false;
     }
     
     // Solo configurar Supabase si debemos usar conexión real
