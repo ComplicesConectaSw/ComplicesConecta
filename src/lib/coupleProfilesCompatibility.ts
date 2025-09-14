@@ -1,4 +1,4 @@
-import { invitationService } from './invitations';
+import { invitationService } from '@/lib/invitations';
 
 /**
  * Servicio de compatibilidad para perfiles de pareja
@@ -95,7 +95,7 @@ export const coupleProfileCompatibility: CoupleProfileCompatibility = {
       const actualFromId = fromIds[0] || fromProfileId;
       const actualToId = toIds[0] || toProfileId;
       
-      await invitationService.sendInvitation(actualFromId, actualToId, message, type);
+      await invitationService.sendInvitation(actualFromId, actualToId, type);
       
       console.log(`✅ Invitación enviada: ${actualFromId} → ${actualToId} (${type})`);
     } catch (error) {

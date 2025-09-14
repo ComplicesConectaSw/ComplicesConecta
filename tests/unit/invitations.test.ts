@@ -44,12 +44,12 @@ describe('Invitations System', () => {
 
   describe('sendInvitation', () => {
     it('should send a gallery invitation successfully', async () => {
-      const invitation = await invitationService.sendInvitation({
-        from_profile: 'user1',
-        to_profile: 'user2',
-        message: 'Test message',
-        type: 'gallery'
-      });
+      const invitation = await invitationService.sendInvitation(
+        'user1',
+        'user2',
+        'gallery',
+        'Test message'
+      );
       
       expect(invitation).toBeDefined();
       expect(invitation.type).toBe('gallery');
@@ -59,25 +59,25 @@ describe('Invitations System', () => {
     });
 
     it('should send a chat invitation successfully', async () => {
-      const invitation = await invitationService.sendInvitation({
-        from_profile: 'user1',
-        to_profile: 'user2',
-        message: 'Test chat',
-        type: 'chat'
-      });
-      
+      const invitation = await invitationService.sendInvitation(
+        'user1',
+        'user2',
+        'chat',
+        'Test chat message'
+      );
+
       expect(invitation.type).toBe('chat');
     });
   });
 
   describe('respondInvitation', () => {
     it('should accept an invitation successfully', async () => {
-      const invitation = await invitationService.sendInvitation({
-        from_profile: 'user1',
-        to_profile: 'user2',
-        message: 'Test',
-        type: 'gallery'
-      });
+      const invitation = await invitationService.sendInvitation(
+        'user1',
+        'user2',
+        'gallery',
+        'Test'
+      );
       
       const result = await invitationService.respondInvitation(invitation.id, 'accept');
       
@@ -85,12 +85,12 @@ describe('Invitations System', () => {
     });
 
     it('should reject an invitation successfully', async () => {
-      const invitation = await invitationService.sendInvitation({
-        from_profile: 'user1',
-        to_profile: 'user2',
-        message: 'Test',
-        type: 'chat'
-      });
+      const invitation = await invitationService.sendInvitation(
+        'user1',
+        'user2',
+        'chat',
+        'Test'
+      );
       
       const result = await invitationService.respondInvitation(invitation.id, 'decline');
       
@@ -120,12 +120,12 @@ describe('Invitations System', () => {
     });
 
     it('should return true after accepting chat invitation', async () => {
-      const invitation = await invitationService.sendInvitation({
-        from_profile: 'user1',
-        to_profile: 'user2',
-        message: 'Test',
-        type: 'chat'
-      });
+      const invitation = await invitationService.sendInvitation(
+        'user1',
+        'user2',
+        'chat',
+        'Test'
+      );
       await invitationService.respondInvitation(invitation.id, 'accept');
       
       // Test with simple strings - should use fallback logic

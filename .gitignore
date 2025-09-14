@@ -150,12 +150,20 @@ dist/
 android/app/build/
 android/app/release/
 android/gradle/
+android/.gradle/
 *.apk
 *.aab
 
 # Generated HTML files
 dist/*.html
 *.generated.html
+android/app/src/main/assets/public/*.html
+
+# Duplicate files cleanup
+**/duplicate_*
+**/*_duplicate.*
+**/*_copy.*
+**/*_backup.*
 
 # Scripts SQL temporales (v2.2.0 - organizados en scripts/temp/)
 scripts/temp/

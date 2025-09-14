@@ -49,6 +49,8 @@ Crear la comunidad lifestyle más exclusiva y segura de México, donde parejas y
 - **🖼️ Galerías Privadas**: Contenido público y privado por usuario
 - **👫 Perfiles de Pareja Avanzados**: Sistema completo para perfiles de pareja con UI distintiva
 - **💑 Navegación Dual**: Toggle entre perfiles individuales y de pareja en descubrimiento
+- **📸 Fotos de Pareja Separadas**: Sistema "Él" y "Ella" con gestión independiente de fotos principales
+- **📧 Validación de Email Única**: Verificación en tiempo real de emails únicos en registro
 - **🎭 Eventos VIP Exclusivos**: Fiestas privadas y encuentros verificados
 - **🎁 Regalos Virtuales**: Sistema de tokens CMPX y GTK
 - **🤖 Asistente IA Interactivo**: Guía paso a paso para gestión de tokens
@@ -699,6 +701,17 @@ VITE_STAKING_DURATION_DAYS=30
 
 ⚠️ **NOTA:** Link de descarga APK GitHub no funciona. Usar APK local: `/app-release.apk`
 
+### ✨ **IMPLEMENTACIÓN FOTOS DE PAREJA Y CHAT v2.8.2** *(14 de septiembre, 2025 - 10:50)*
+- ✅ **Sistema de Fotos de Pareja**: Componente `CouplePhotoSection` con gestión separada "Él" y "Ella"
+- ✅ **Hook useCouplePhotos**: Gestión completa de upload, delete, set main photo con Supabase Storage
+- ✅ **Validación Email Única**: Verificación en tiempo real durante registro con `emailValidation.ts`
+- ✅ **Migraciones SQL Aplicadas**: Tablas `couple_photos`, `chat_rooms`, `chat_messages`, `chat_participants`, `chat_typing`
+- ✅ **Chat en Tiempo Real**: Hook `useRealtimeChat` con typing indicators, presence y subscripciones
+- ✅ **Componente RealtimeChatWindow**: UI completa para chat con indicadores de escritura
+- ✅ **RLS Policies**: Políticas de seguridad granulares para todas las nuevas tablas
+- ✅ **Tipos TypeScript**: Regenerados tipos de Supabase incluyendo nuevas tablas
+- ✅ **Corrección de Errores**: Eliminados todos los errores TypeScript y referencias a columnas inexistentes
+
 ### ✨ **CORRECCIONES CRÍTICAS v2.2.0** *(13 de septiembre, 2025 - 16:45)*
 - ✅ **Admin Panel Redirección**: Solucionado bucle infinito entre `/auth` y `/admin-production`
 - ✅ **LoadingScreens Responsive**: Optimizados para móvil y web con elementos adaptativos
@@ -712,6 +725,7 @@ VITE_STAKING_DURATION_DAYS=30
 ### ✨ **Actualizaciones Previas (v2.1.5)** *(07 de septiembre, 2025 - 01:35)*
 - ✅ **Responsividad Completa**: Optimización total para web y Android con breakpoints `sm:`
 - ✅ **Navegación Adaptativa**: Botones con tamaños `min-w-[50px] sm:min-w-[60px]` y texto truncado
+{{ ... }}
 - ✅ **Header Responsivo**: Espaciado `space-x-1 sm:space-x-3` y elementos ocultos en móvil
 - ✅ **ProfileSingle Mejorado**: Cards con `bg-white/90` y texto `text-gray-900` para mejor legibilidad
 - ✅ **Autenticación Real Habilitada**: Sistema híbrido demo + real auth funcionando simultáneamente

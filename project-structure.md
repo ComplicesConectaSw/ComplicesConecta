@@ -10,7 +10,61 @@
 - **APK:** Disponible en GitHub Releases v2.8.2
 - **Última actualización:** 14 de septiembre 2025, 10:31 hrs
 
-## 🆕 NUEVAS FUNCIONALIDADES v2.8.1
+## 🆕 NUEVAS FUNCIONALIDADES v2.8.2
+
+### 💑 **SISTEMA DE FOTOS DE PAREJA Y CHAT EN TIEMPO REAL - 14/09/2025**
+
+#### **📸 Sistema de Fotos de Pareja Separadas**
+**Componente:** `src/components/profile/CouplePhotoSection.tsx`
+**Funcionalidades Implementadas:**
+- **Gestión separada "Él" y "Ella"**: Grids independientes para cada partner con UI distintiva
+- **Upload de fotos**: Drag & drop y selección de archivos con validación de tipo y tamaño
+- **Foto principal**: Sistema para establecer una foto principal por partner
+- **Preview modal**: Visualización completa con navegación entre fotos
+- **Eliminación segura**: Borrado de fotos con confirmación y cleanup de storage
+- **Animaciones Framer Motion**: Transiciones fluidas y micro-interacciones
+
+#### **🎣 Hook useCouplePhotos - Gestión Completa**
+**Archivo:** `src/hooks/useCouplePhotos.ts`
+**Características Técnicas:**
+- **Integración Supabase Storage**: Upload y gestión de archivos en bucket `couple-photos`
+- **Base de datos sincronizada**: Tabla `couple_photos` con metadatos y referencias
+- **Estados de carga**: Loading, error y success states para UX óptima
+- **Validaciones**: Tipo de archivo (jpg, png, webp), tamaño máximo, límite de fotos
+- **Cleanup automático**: Eliminación de archivos huérfanos en storage
+- **TypeScript estricto**: Tipos regenerados de Supabase incluyendo nuevas tablas
+
+#### **📧 Validación de Email Única en Registro**
+**Archivo:** `src/utils/emailValidation.ts`
+**Funcionalidades:**
+- **Verificación en tiempo real**: Validación durante el proceso de registro
+- **Consulta a tabla profiles**: Verificación de unicidad sin acceso a auth.users
+- **Feedback inmediato**: Mensajes de error claros para el usuario
+- **Integración con Auth.tsx**: Validación previa al signup de Supabase
+
+#### **💬 Sistema de Chat en Tiempo Real Completado**
+**Archivos:** `src/hooks/useRealtimeChat.ts`, `src/components/chat/RealtimeChatWindow.tsx`
+**Funcionalidades:**
+- **Supabase Realtime**: Subscripciones a canales de chat con WebSockets
+- **Typing indicators**: Indicadores de escritura en tiempo real
+- **Presence tracking**: Estado online/offline de usuarios
+- **Mensajes históricos**: Carga optimizada con paginación
+- **Manejo de errores**: Reconexión automática y fallbacks
+- **Memory management**: Cleanup automático de subscripciones
+
+#### **🗄️ Migraciones SQL Aplicadas Exitosamente**
+**Tablas Creadas en Supabase:**
+- **`couple_photos`**: Gestión de fotos separadas por partner con metadatos
+- **`chat_rooms`**: Salas de chat con tipos (private, group, couple)
+- **`chat_participants`**: Participantes con roles y permisos
+- **`chat_messages`**: Mensajes con tipos, replies y estados
+- **`chat_typing`**: Indicadores de escritura en tiempo real
+
+**Características Técnicas:**
+- **RLS Policies**: Políticas de seguridad granulares para acceso controlado
+- **Triggers automáticos**: Actualización de timestamps y validaciones
+- **Índices optimizados**: Performance mejorada para consultas frecuentes
+- **Funciones SQL**: Lógica de negocio para foto principal única
 
 ### 🧪 **ESTABILIZACIÓN COMPLETA DE TESTS - 14/09/2025**
 

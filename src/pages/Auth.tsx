@@ -19,6 +19,7 @@ import { LoginLoadingScreen } from "@/components/LoginLoadingScreen";
 import { LoadingScreen } from "@/components/LoadingScreen";
 import { useAuth } from "@/hooks/useAuth";
 import { EmailValidation } from "@/components/auth/EmailValidation";
+import { validateEmail } from "@/utils/emailValidation";
 
 interface FormData {
   email: string;
@@ -392,41 +393,46 @@ const Auth = () => {
         return;
       }
 
-      if (parseInt(formData.age) < 18 || (formData.accountType === "couple" && parseInt(formData.partnerAge) < 18)) {
+      // Validar email único antes del registro
+      const emailValidation = await validateEmail(formData.email);
+      if (!emailValidation.isValid || !emailValidation.isUnique) {
         toast({
-          title: "Error",
-          description: "Debes ser mayor de 18 años para registrarte",
+          title: "Error de Email",
+          description: emailValidation.error || "Email no válido",
           variant: "destructive",
         });
         return;
       }
 
-      // Preparar datos del perfil
-      // Validar campos requeridos
-      if (!formData.firstName || !formData.lastName || !formData.nickname) {
+      if (formData.accountType === 'couple' && (!formData.partnerFirstName || !formData.partnerAge)) {
         toast({
           title: "Error",
-          description: "Por favor completa todos los campos obligatorios (nombre, apellido y apodo)",
+          description: "Completa todos los campos de tu pareja",
           variant: "destructive",
         });
-        setIsLoading(false);
         return;
       }
+
+      // Auto-assign interests based on gender and preferences
+      const autoInterests = getAutoInterests(formData.gender, formData.interestedIn);
+      const finalInterests = [...new Set([...formData.selectedInterests, ...autoInterests])];
 
       const profileData = {
-        email: formData.email,
         first_name: formData.firstName,
         last_name: formData.lastName,
-        nickname: formData.nickname,
         display_name: formData.nickname || `${formData.firstName} ${formData.lastName}`,
         age: parseInt(formData.age),
         gender: formData.gender,
         interested_in: formData.interestedIn,
         bio: formData.bio,
-        account_type: formData.accountType,
-        location: location || formData.location,
-        interests: formData.selectedInterests,
-        ...(formData.accountType === "couple" && {
+        role: formData.role || 'user',
+        profile_type: formData.accountType,
+        location: formData.location,
+        interests: finalInterests,
+        is_demo: false,
+        is_verified: false,
+        is_premium: false,
+        ...(formData.accountType === 'couple' && {
           partner_first_name: formData.partnerFirstName,
           partner_last_name: formData.partnerLastName,
           partner_nickname: formData.partnerNickname,

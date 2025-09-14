@@ -3,7 +3,7 @@
  * Gestiona acceso a funciones premium usando tokens en lugar de pagos Stripe
  */
 
-import { getUserTokenBalance, TOKEN_CONFIG } from './tokens';
+import { getUserTokenBalance, TOKEN_CONFIG } from '@/lib/tokens';
 
 export interface PremiumFeature {
   id: string;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { UnifiedCard } from './UnifiedCard';
-import { UnifiedButton } from './UnifiedButton';
+import { UnifiedCard } from '@/components/ui/UnifiedCard';
+import { UnifiedButton } from '@/components/ui/UnifiedButton';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { MapPin, MessageCircle, Heart, Star, Users, Calendar } from 'lucide-react';

@@ -1,5 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
-import { logError, logMessage } from './sentry';
+import { logError, logMessage } from '@/lib/sentry';
 
 interface LogEntry {
   level: 'info' | 'warn' | 'error' | 'debug';

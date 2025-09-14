@@ -44,15 +44,14 @@ const mockGalleryPermissions: GalleryPermission[] = [
 ];
 
 export const invitationService = {
-  async sendInvitation(params: { from_profile: string; to_profile: string; message: string; type: 'profile' | 'gallery' | 'chat' }): Promise<Invitation> {
-    const { from_profile: fromProfile, to_profile: toProfile, message, type } = params;
+  async sendInvitation(fromProfile: string, toProfile: string, type: 'profile' | 'gallery' | 'chat', message?: string): Promise<Invitation> {
     try {
       const { data, error } = await supabase
         .from('invitations')
         .insert({
           from_profile: fromProfile,
           to_profile: toProfile,
-          message,
+          message: message || '',
           type,
           status: 'pending'
         })
@@ -72,7 +71,7 @@ export const invitationService = {
         id: Date.now().toString(),
         from_profile: fromProfile,
         to_profile: toProfile,
-        message,
+        message: message || '',
         type,
         status: 'pending',
         created_at: new Date().toISOString(),
