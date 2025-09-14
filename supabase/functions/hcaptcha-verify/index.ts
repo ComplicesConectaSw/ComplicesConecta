@@ -6,58 +6,17 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-interface HCaptchaRequest {
-  token: string
-  remoteip?: string
-}
-
-interface HCaptchaResponse {
-  success: boolean
-  challenge_ts?: string
-  hostname?: string
-  credit?: boolean
-  'error-codes'?: string[]
-  score?: number
-  score_reason?: string[]
-}
-
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
 
   try {
-    // Only allow POST requests
-    if (req.method !== 'POST') {
-      return new Response(
-        JSON.stringify({ error: 'Method not allowed' }),
-        { 
-          status: 405, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-        }
-      )
-    }
-
-    // Get hCaptcha secret from environment
-    const HCAPTCHA_SECRET = Deno.env.get('HCAPTCHA_SECRET')
-    if (!HCAPTCHA_SECRET) {
-      console.error('HCAPTCHA_SECRET not configured')
-      return new Response(
-        JSON.stringify({ error: 'Server configuration error' }),
-        { 
-          status: 500, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-        }
-      )
-    }
-
-    // Parse request body
-    const { token, remoteip }: HCaptchaRequest = await req.json()
-
+    const { token, action = 'login', userId } = await req.json()
+    
     if (!token) {
       return new Response(
-        JSON.stringify({ error: 'Token is required' }),
+        JSON.stringify({ error: 'Token requerido' }),
         { 
           status: 400, 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
@@ -65,50 +24,55 @@ serve(async (req) => {
       )
     }
 
-    // Prepare form data for hCaptcha API
-    const formData = new FormData()
-    formData.append('secret', HCAPTCHA_SECRET)
-    formData.append('response', token)
-    
-    if (remoteip) {
-      formData.append('remoteip', remoteip)
+    // Verificar hCaptcha con el servicio oficial
+    const hcaptchaSecret = Deno.env.get('HCAPTCHA_SECRET')
+    if (!hcaptchaSecret) {
+      console.error('❌ HCAPTCHA_SECRET no configurado en variables de entorno')
+      throw new Error('HCAPTCHA_SECRET no configurado')
     }
 
-    // Verify with hCaptcha API
-    const hcaptchaResponse = await fetch('https://hcaptcha.com/siteverify', {
+    const verifyResponse = await fetch('https://hcaptcha.com/siteverify', {
       method: 'POST',
-      body: formData,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        secret: hcaptchaSecret,
+        response: token,
+      }),
     })
 
-    if (!hcaptchaResponse.ok) {
-      console.error('hCaptcha API error:', hcaptchaResponse.status)
+    const verifyData = await verifyResponse.json()
+    
+    if (!verifyData.success) {
+      console.error('❌ hCaptcha verification failed:', verifyData['error-codes'])
       return new Response(
-        JSON.stringify({ error: 'Verification service unavailable' }),
+        JSON.stringify({ 
+          success: false, 
+          error: 'Verificación hCaptcha fallida',
+          details: verifyData['error-codes'] || []
+        }),
         { 
-          status: 503, 
+          status: 400, 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
         }
       )
     }
 
-    const result: HCaptchaResponse = await hcaptchaResponse.json()
-
-    // Log verification attempt (without sensitive data)
-    console.log('hCaptcha verification:', {
-      success: result.success,
-      hostname: result.hostname,
+    // Log de verificación exitosa para auditoría
+    console.log(`✅ hCaptcha verificado exitosamente para acción: ${action}`, {
       timestamp: new Date().toISOString(),
-      errors: result['error-codes']
+      userId: userId || 'anonymous',
+      action
     })
 
     // Return verification result
     return new Response(
       JSON.stringify({
-        success: result.success,
-        timestamp: result.challenge_ts,
-        hostname: result.hostname,
-        score: result.score,
-        errors: result['error-codes'] || []
+        success: true,
+        action,
+        timestamp: new Date().toISOString(),
+        message: 'Verificación hCaptcha exitosa'
       }),
       { 
         status: 200, 

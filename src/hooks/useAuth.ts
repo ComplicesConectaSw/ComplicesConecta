@@ -17,6 +17,7 @@ import {
   shouldUseRealSupabase
 } from '@/lib/app-config';
 import { useProfile } from '@/hooks/useProfileCache';
+import { StorageManager } from '@/lib/storage-manager';
 
 interface Profile {
   id: string;
@@ -150,16 +151,13 @@ export const useAuth = () => {
     // NOTA: checkDemoSession ahora retorna null para forzar recreación
     // Los datos demo ya no se persisten en localStorage
     
-    // Verificar si hay sesión persistente del usuario especial - SOLO para mantener estado UI
-    // Los datos reales siempre se cargan desde Supabase
-    const apoyoAuth = localStorage.getItem('apoyo_authenticated');
+    // Migrar datos legacy y verificar sesión usando StorageManager
+    StorageManager.migrateToSupabase();
+    const sessionFlags = StorageManager.getSessionFlags();
     
-    if (apoyoAuth === 'true') {
+    if (sessionFlags.apoyo_authenticated) {
       console.log('🛡️ Usuario especial detectado - cargando desde Supabase...');
-      // Limpiar cualquier dato obsoleto de localStorage
-      localStorage.removeItem('apoyo_user');
-      localStorage.removeItem('apoyo_session');
-      // Solo mantener el flag de autenticación para UI
+      // Datos se cargan exclusivamente desde Supabase via React Query
       
       // Reset profileLoaded para permitir carga desde Supabase
       profileLoaded.current = false;
@@ -197,10 +195,10 @@ export const useAuth = () => {
     try {
       console.log('🚪 Cerrando sesión...');
       
-      // Verificar si es sesión demo
-      const demoAuth = localStorage.getItem('demo_authenticated');
+      // Verificar si es sesión demo usando StorageManager
+      const sessionFlags = StorageManager.getSessionFlags();
       
-      if (demoAuth === 'true') {
+      if (sessionFlags.demo_authenticated) {
         // Limpiar sesión demo
         clearDemoAuth();
         console.log('✅ Sesión demo cerrada');
@@ -256,8 +254,8 @@ export const useAuth = () => {
           user: mockUser
         };
         
-        // Guardar solo flag de autenticación para persistencia UI
-        localStorage.setItem('apoyo_authenticated', 'true');
+        // Guardar solo flag de autenticación usando StorageManager
+        StorageManager.setSessionFlag('apoyo_authenticated', true);
         // ELIMINADO: No almacenar datos de usuario en localStorage
         // Los datos se cargan exclusivamente desde Supabase
         

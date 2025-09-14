@@ -1,5 +1,5 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import type { Database } from './types';
+import type { Database } from '@/integrations/supabase/types';
 
 // Obtener las credenciales de Supabase desde las variables de entorno
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;

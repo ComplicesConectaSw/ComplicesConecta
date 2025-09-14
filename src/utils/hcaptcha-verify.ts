@@ -4,8 +4,8 @@ import { verify } from 'hcaptcha';
 // hCaptcha secret verification must be done on the server side only
 // This is a template for server-side implementation
 
-// TODO: Move this to Supabase Edge Function or backend API
-console.warn('⚠️ SECURITY: hCaptcha verification should be done server-side only');
+// ✅ MIGRATED: hCaptcha verification moved to Supabase Edge Function
+// Use supabase.functions.invoke('hcaptcha-verify', { body: { token, action, userId } })
 
 // Configuración de hCaptcha (SERVER-SIDE ONLY)
 const HCAPTCHA_SECRET = process.env.HCAPTCHA_SECRET; // Changed from VITE_* to prevent client exposure

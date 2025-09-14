@@ -76,12 +76,14 @@ export class EmailService {
   }
 
   static async sendConfirmationEmail(to: string, confirmationUrl: string, token: string) {
-    return this.sendEmail('confirmation', to, { confirmationUrl, token });
+    const result = await this.sendEmail('confirmation', to, { confirmationUrl, token });
+    return result.success === true;
   }
 
   static async sendPasswordResetEmail(to: string, resetUrl: string) {
     console.info(`🔐 Enviando email de reset de contraseña a ${to}`);
-    return this.sendEmail('reset-password', to, { resetUrl });
+    const result = await this.sendEmail('reset-password', to, { resetUrl });
+    return result.success === true;
   }
 
   static async sendMatchNotification(to: string, matchData: {
