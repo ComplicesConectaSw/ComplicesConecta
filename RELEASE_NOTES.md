@@ -1,14 +1,62 @@
-# 🚀 ComplicesConecta - Notas de Lanzamiento v2.7.0
+# 🚀 ComplicesConecta - Notas de Lanzamiento v2.8.0
 
-**Fecha de Lanzamiento:** 14 de Septiembre, 2025 - 08:24 hrs  
+**Fecha de Lanzamiento:** 14 de Septiembre, 2025 - 08:47 hrs  
 **Plataforma:** Android APK + Web App  
-**Versión:** 2.7.0 (REACT QUERY CACHE Y MIGRACIÓN LOCALSTORAGE COMPLETADA ✅)
+**Versión:** 2.8.0 (SUITE DE COMUNICACIÓN EN TIEMPO REAL COMPLETADA ✅)
 
 ---
 
-## 🚀 NUEVA FUNCIONALIDAD MAYOR - REACT QUERY CACHE SYSTEM v2.7.0
+## 🚀 Suite de Comunicación en Tiempo Real v2.8.0
 
-### ✨ **SISTEMA COMPLETO DE CACHE REACT QUERY - 14/09/2025**
+### ✅ COMPLETADO - Sistema de Chat en Tiempo Real con WebSockets
+- **Chat en tiempo real** usando Supabase Realtime con WebSockets
+- **Indicadores de escritura** (typing indicators) en tiempo real
+- **Presencia de usuarios** (online/offline status)  
+- **Mensajes históricos** con carga optimizada
+- **Manejo de errores** robusto y reconexión automática
+- **Componente RealtimeChatWindow** con UI moderna y animaciones
+- **Hook useRealtimeChat** completamente funcional
+- **Tablas SQL** creadas y optimizadas: `chat_rooms`, `chat_messages`, `chat_participants`, `chat_typing`
+
+### ✅ COMPLETADO - Sistema de Geolocalización Mejorado
+- **Cálculos de distancia precisos** usando fórmula de Haversine
+- **Filtros avanzados** por distancia máxima y precisión mínima
+- **Detección de usuarios cercanos** con radio configurable
+- **Seguimiento en tiempo real** de ubicación con watchPosition
+- **Manejo de permisos** y estados de geolocalización
+- **Formateo inteligente** de distancias (metros/kilómetros)
+- **Hook useGeolocation** con funcionalidades extendidas
+
+### ✅ COMPLETADO - Sistema de Push Notifications
+- **Notificaciones push nativas** con Service Worker
+- **Suscripciones persistentes** almacenadas en Supabase
+- **Configuración granular** de tipos de notificaciones
+- **Notificaciones de prueba** para validar funcionamiento
+- **Manejo de permisos** y estados de suscripción
+- **Componente PushNotificationSettings** para gestión de usuario
+- **Hook usePushNotifications** con soporte completo
+- **Service Worker** (`sw.js`) para manejo en background
+- **Tablas SQL** creadas: `push_subscriptions`, `notification_logs`, `notification_preferences`
+
+### ✅ COMPLETADO - Video Chat Básico con WebRTC
+- **Llamadas de video P2P** usando WebRTC
+- **Señalización en tiempo real** a través de Supabase Realtime
+- **Controles de audio/video** (mute, cámara on/off)
+- **Interfaz de llamada** con modo pantalla completa
+- **Manejo de llamadas entrantes** con aceptar/rechazar
+- **Componente VideoCallWindow** con UI profesional
+- **Hook useVideoChat** para gestión completa de llamadas
+
+## Versión 2.7.0 - React Query Cache System (2025-01-XX)
+
+### 🚀 Funcionalidades Base
+
+#### Sistema de Cache con React Query
+- **Implementación completa** del sistema de cache para perfiles de usuario usando React Query
+- **Migración de localStorage a Supabase** como fuente única de verdad para datos de perfiles
+- **Hooks optimizados** para manejo de perfiles: `useProfile`, `useProfiles`, `useUpdateProfile`, `useCreateProfile`
+- **Cache inteligente** con configuración de `staleTime` (5 min) y `gcTime` (10 min)
+- **Invalidación automática** del cache en mutaciones y actualizaciones
 
 #### 1. **⚡ useProfileCache - Hook de Cache Inteligente**
 **Archivo:** `src/hooks/useProfileCache.ts`

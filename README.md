@@ -12,11 +12,11 @@
 
 ### 📱 ¡Descarga la App Ahora!
 
-<a href="https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v2.6.1/app-release.apk" download>
-  <img src="https://img.shields.io/badge/📱_Descargar_APK-v2.6.1-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
+<a href="https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v2.8.0/app-release.apk" download>
+  <img src="https://img.shields.io/badge/📱_Descargar_APK-v2.8.0-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
 </a>
 
-**SHA256:** `Verificado - Build v2.6.1 con perfiles de pareja mejorados`
+**SHA256:** `Verificado - Build v2.8.0 con Suite de Comunicación en Tiempo Real`
 
 *🔒 Aplicación segura y verificada para Android*
 
@@ -41,7 +41,9 @@ Crear la comunidad lifestyle más exclusiva y segura de México, donde parejas y
 
 ### 💕 **Experiencia Social Premium**
 - **🧠 Matching IA**: Algoritmo de compatibilidad con 50+ factores
-- **💬 Chat Encriptado**: Mensajería con autodestrucción opcional
+- **💬 Chat en Tiempo Real**: WebSockets con Supabase Realtime, typing indicators y presencia
+- **📹 Video Chat P2P**: Llamadas de video con WebRTC y señalización en tiempo real
+- **🔔 Push Notifications**: Notificaciones nativas con Service Worker y configuración granular
 - **🔗 Sistema de Conexiones**: Solicitudes y control de privacidad avanzado
 - **🖼️ Galerías Privadas**: Contenido público y privado por usuario
 - **👫 Perfiles de Pareja Avanzados**: Sistema completo para perfiles de pareja con UI distintiva
