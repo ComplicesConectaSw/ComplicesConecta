@@ -12,6 +12,10 @@ const Navigation = ({ className }: NavigationProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { features } = useFeatures();
+  
+  // Mover hooks al inicio antes de cualquier return
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   // Verificar si el usuario está autenticado
   const isAuthenticated = localStorage.getItem('demo_authenticated') === 'true';
@@ -24,6 +28,26 @@ const Navigation = ({ className }: NavigationProps) => {
     { id: 'matches', icon: Heart, label: 'Matches', path: '/matches' },
     { id: 'tokens', icon: Coins, label: 'Tokens', path: '/tokens' },
   ];
+
+  // Auto-hide navigation on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        // Scrolling down - hide navigation
+        setIsVisible(false);
+      } else {
+        // Scrolling up - show navigation
+        setIsVisible(true);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
 
   // Solo mostrar navegación completa si está autenticado
   if (!isAuthenticated || !demoUser) {
@@ -71,29 +95,6 @@ const Navigation = ({ className }: NavigationProps) => {
       navigate('/auth');
     }
   };
-
-  const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
-
-  // Auto-hide navigation on scroll
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        // Scrolling down - hide navigation
-        setIsVisible(false);
-      } else {
-        // Scrolling up - show navigation
-        setIsVisible(true);
-      }
-      
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
 
   return (
     <nav className={cn(

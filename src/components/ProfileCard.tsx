@@ -86,112 +86,84 @@ export const ProfileCard = ({ profile, onLike, onSuperLike, onOpenModal }: Profi
         )}
         
         {/* Online Status */}
-        <div className="absolute top-4 left-4 flex items-center space-x-2 bg-black/60 backdrop-blur-sm rounded-full px-3 py-1">
-          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-          <span className="text-xs font-medium text-white">En línea</span>
+        <div className="absolute top-2 sm:top-4 left-2 sm:left-4 flex items-center space-x-1 sm:space-x-2 bg-black/60 backdrop-blur-sm rounded-full px-2 sm:px-3 py-1">
+          <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-500 rounded-full animate-pulse" />
+          <span className="text-[10px] sm:text-xs font-medium text-white">En línea</span>
         </div>
 
         {/* Rating */}
-        <div className="absolute top-4 right-4 flex items-center space-x-1 bg-black/60 backdrop-blur-sm rounded-full px-3 py-1">
-          <Star className="w-3 h-3 text-accent fill-current" />
-          <span className="text-xs font-medium text-white">{rating || 4.9}</span>
+        <div className="absolute top-2 sm:top-4 right-2 sm:right-4 flex items-center space-x-1 bg-black/60 backdrop-blur-sm rounded-full px-2 sm:px-3 py-1">
+          <Star className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-yellow-400 fill-current" />
+          <span className="text-[10px] sm:text-xs font-medium text-white">{rating || 4.9}</span>
         </div>
 
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
         
         {/* Quick Actions */}
-        <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <div className="text-white">
-            <div className="absolute top-3 left-3 flex gap-2">
-              {profile.verified && (
-                <div className="bg-blue-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
-                  <Verified className="h-3 w-3" />
-                  Verificado
-                </div>
-              )}
-              {(interests || []).length > 3 ? (
-                <>
-                  {(interests || []).slice(0, 3).map((interest, index) => (
-                    <Badge key={index} variant="secondary" className="text-xs px-2 py-1 bg-white/20 text-white border-white/30">
-                      {interest}
-                    </Badge>
-                  ))}
-                  <Badge variant="secondary" className="text-xs px-2 py-1 bg-white/20 text-white border-white/30">
-                    +{(interests || []).length - 3} más
-                  </Badge>
-                </>
-              ) : (
-                (interests || []).map((interest, index) => (
-                  <Badge key={index} variant="secondary" className="text-xs px-2 py-1 bg-white/20 text-white border-white/30">
-                    {interest}
-                  </Badge>
-                ))
-              )}
-              <div className={`px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1 ${
-                isOnline 
-                  ? 'bg-green-500 text-white' 
-                  : 'bg-gray-500 text-white'
-              }`}>
-                {isOnline ? <Wifi className="h-3 w-3" /> : <WifiOff className="h-3 w-3" />}
-                {isOnline ? 'Online' : lastSeen}
-              </div>
-            </div>
-          </div>
-          
-          <div className="flex space-x-2">
+        <div className="absolute bottom-2 sm:bottom-4 left-2 sm:left-4 right-2 sm:right-4 flex justify-center items-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="flex space-x-1 sm:space-x-2">
             <Button 
               size="icon" 
               variant="ghost" 
-              className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-none"
+              className="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-none"
               onClick={handleDislike}
             >
-              <X className="w-5 h-5" strokeWidth={2.5} />
+              <X className="w-4 h-4 sm:w-5 sm:h-5" strokeWidth={2.5} />
             </Button>
             <Button 
               size="icon" 
               variant="ghost" 
-              className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-none"
+              className="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-none"
               onClick={handleSuperLike}
             >
-              <Zap className="w-5 h-5" strokeWidth={2.5} />
+              <Zap className="w-4 h-4 sm:w-5 sm:h-5" strokeWidth={2.5} />
             </Button>
             <Button 
               size="icon" 
               variant="ghost" 
-              className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-none"
+              className="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-none"
               onClick={handleLike}
             >
-              <Heart className="w-5 h-5" strokeWidth={2.5} />
+              <Heart className="w-4 h-4 sm:w-5 sm:h-5" strokeWidth={2.5} />
             </Button>
           </div>
         </div>
+
+        {/* Verification Badge */}
+        {profile.verified && (
+          <div className="absolute bottom-12 sm:bottom-16 left-2 sm:left-4 bg-blue-500 text-white px-2 py-1 rounded-full text-[10px] sm:text-xs font-medium flex items-center gap-1">
+            <Verified className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
+            <span className="hidden sm:inline">Verificado</span>
+            <span className="sm:hidden">✓</span>
+          </div>
+        )}
       </div>
 
       {/* Card Footer */}
       <div className="p-4">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-lg font-semibold text-card-foreground group-hover:text-primary transition-colors">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-800 group-hover:text-primary transition-colors truncate">
             {name}, {age}
           </h3>
-          <div className="flex items-center space-x-1 text-muted-foreground">
-            <MapPin className="w-4 h-4" />
-            <span className="text-sm">{location}</span>
+          <div className="flex items-center space-x-1 text-gray-600">
+            <MapPin className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+            <span className="text-xs sm:text-sm truncate">{location}</span>
           </div>
         </div>
 
         {/* Interests */}
-        <div className="flex flex-wrap gap-2 mb-4">
+        <div className="flex flex-wrap gap-1 sm:gap-2 mb-4">
           {interests?.slice(0, 3).map((interest: string, index: number) => (
             <span 
               key={index}
-              className="px-3 py-1 bg-secondary text-secondary-foreground text-xs rounded-full transition-colors hover:bg-primary hover:text-primary-foreground"
+              className="px-2 sm:px-3 py-1 bg-purple-100 text-purple-700 text-[10px] sm:text-xs rounded-full transition-colors hover:bg-purple-200 truncate max-w-[80px] sm:max-w-none"
             >
               {interest}
             </span>
           ))}
           {interests && interests.length > 3 && (
-            <span className="px-3 py-1 bg-muted text-muted-foreground text-xs rounded-full">
+            <span className="px-2 sm:px-3 py-1 bg-gray-100 text-gray-600 text-[10px] sm:text-xs rounded-full">
               +{interests.length - 3}
             </span>
           )}
@@ -202,15 +174,17 @@ export const ProfileCard = ({ profile, onLike, onSuperLike, onOpenModal }: Profi
           <Button 
             variant="outline" 
             size="sm" 
-            className="flex-1 bg-background border-border text-foreground hover:bg-muted hover:text-foreground font-semibold"
+            className="flex-1 bg-background border-border text-gray-600 hover:bg-muted hover:text-gray-800 font-semibold"
             onClick={handleDislike}
           >
-            <X className="w-5 h-5 mr-2" strokeWidth={2.5} />
-            Pasar
+            <X className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" strokeWidth={2.5} />
+            <span className="hidden sm:inline">Pasar</span>
+            <span className="sm:hidden">✕</span>
           </Button>
-                  <Button variant="love" size="sm" className="flex-1" onClick={handleLike} disabled={!onLike}>
-            <Heart className="w-5 h-5 mr-2" strokeWidth={2.5} />
-            Me Gusta
+          <Button variant="love" size="sm" className="flex-1" onClick={handleLike} disabled={!onLike}>
+            <Heart className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" strokeWidth={2.5} />
+            <span className="hidden sm:inline">Me Gusta</span>
+            <span className="sm:hidden">♥</span>
           </Button>
         </div>
         
@@ -220,7 +194,7 @@ export const ProfileCard = ({ profile, onLike, onSuperLike, onOpenModal }: Profi
             e.stopPropagation();
             handleViewProfile();
           }}
-          className="w-full mt-2 text-white hover:text-white/90 transition-colors text-sm py-2 hover:bg-white/10 rounded-md font-medium"
+          className="w-full mt-2 text-gray-600 hover:text-gray-800 transition-colors text-xs sm:text-sm py-2 hover:bg-gray-100 rounded-md font-medium"
         >
           Ver Perfil Completo
         </button>

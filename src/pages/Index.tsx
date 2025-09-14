@@ -36,7 +36,7 @@ const Index = () => {
     const timer = setTimeout(() => {
       setIsLoading(false);
       
-      // Solo verificar autenticación sin redirigir automáticamente
+      // Verificar autenticación y redirigir automáticamente al perfil
       const demoAuth = localStorage.getItem('demo_authenticated');
       const demoUser = localStorage.getItem('demo_user');
       
@@ -51,8 +51,24 @@ const Index = () => {
       
       setIsRunningInApp(isInWebView());
       
-      // Remover redirección automática para permitir acceso al Index
-      // Los usuarios pueden navegar manualmente a donde deseen
+      // Redirección automática para usuarios autenticados
+      if (demoAuth === 'true' && demoUser) {
+        try {
+          const userData = JSON.parse(demoUser);
+          const accountType = userData.account_type || userData.accountType || 'single';
+          
+          // Redirigir al perfil correspondiente según el tipo de cuenta
+          if (accountType === 'couple') {
+            navigate('/profile-couple');
+          } else {
+            navigate('/profile-single');
+          }
+        } catch (error) {
+          console.error('Error parsing user data:', error);
+          // Si hay error, redirigir al perfil single por defecto
+          navigate('/profile-single');
+        }
+      }
     }, 2000);
 
     return () => clearTimeout(timer);
