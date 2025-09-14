@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, memo } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -409,4 +409,4 @@ const Gallery = ({ userId, isOwner = false, canViewPrivate = false, profileName 
   );
 };
 
-export default Gallery;
+export default memo(Gallery);
