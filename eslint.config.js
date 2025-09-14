@@ -20,7 +20,11 @@ export default [
       'capacitor.config.ts',
       'scripts/**',
       'tests/**',
-      'src/test/**'
+      'src/test/**',
+      'temp/**',
+      'coverage/**',
+      'playwright-report/**',
+      'test-results/**'
     ]
   },
   {
@@ -34,7 +38,9 @@ export default [
         global: 'readonly',
         Buffer: 'readonly',
         vi: 'readonly',
-        React: 'readonly'
+        React: 'readonly',
+        $: 'readonly',
+        jQuery: 'readonly'
       },
       parserOptions: {
         ecmaFeatures: {
@@ -95,6 +101,7 @@ export default [
       'no-redeclare': 'off',
       'prefer-const': 'off',
       'no-var': 'off',
+      'no-unreachable': 'off',
       'react-hooks/exhaustive-deps': 'off',
       'react-refresh/only-export-components': 'off'
     },

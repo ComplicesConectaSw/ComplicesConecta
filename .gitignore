@@ -137,6 +137,17 @@ coverage/
 *.lcov
 .nyc_output/
 
+# Testing reports
+playwright-report/
+test-results/
+*.html.js
+*.js.html
+
+# Build artifacts
+build/
+dist/
+.vite/
+
 # Scripts SQL temporales (v2.2.0 - organizados en scripts/temp/)
 scripts/temp/
 scripts/*_temp.sql
