@@ -12,11 +12,11 @@
 
 ### 📱 ¡Descarga la App Ahora!
 
-<a href="https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v2.5.0/app-release.apk" download>
-  <img src="https://img.shields.io/badge/📱_Descargar_APK-v2.5.0-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
+<a href="https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v2.6.0/app-release.apk" download>
+  <img src="https://img.shields.io/badge/📱_Descargar_APK-v2.6.0-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
 </a>
 
-**SHA256:** `Verificado - Build v2.5.0 con plantillas UI premium integradas`
+**SHA256:** `Verificado - Build v2.6.0 con sistema global de animaciones`
 
 *🔒 Aplicación segura y verificada para Android*
 
@@ -63,6 +63,17 @@ Crear la comunidad lifestyle más exclusiva y segura de México, donde parejas y
 - **💬 Chat Mejorado**: Indicadores de escritura animados, scroll inteligente, glassmorphism avanzado
 - **🧭 Navegación Premium**: Badges de notificaciones dinámicos, transiciones fluidas
 - **🔔 Notificaciones Inteligentes**: Push notifications contextuales
+
+### 🎭 Sistema Global de Animaciones v2.6.0
+- **🎯 AnimationProvider**: Contexto global con preferencias de usuario y monitoreo de performance
+- **🎨 GlobalAnimations**: Variantes reutilizables para transiciones de página y efectos flotantes
+- **🔄 PageTransitions**: Transiciones avanzadas específicas por ruta con AnimatePresence
+- **⚡ InteractiveAnimations**: Efectos magnéticos, parallax, ripple, morfología y partículas
+- **🎪 EnhancedComponents**: Biblioteca completa de componentes UI animados
+- **🔔 NotificationSystem**: Sistema de notificaciones con celebraciones y corazones flotantes
+- **⚙️ AnimationSettings**: Panel de configuración con controles de velocidad y accesibilidad
+- **🎯 Performance Monitoring**: Adaptación automática basada en FPS del dispositivo
+- **♿ Accesibilidad**: Soporte completo para `prefers-reduced-motion`
 
 ## 🚀 Stack Tecnológico de Élite
 
@@ -157,6 +168,125 @@ graph TB
     STORAGE --> GALLERY_IMG[gallery-images]
     STORAGE --> CHAT_MEDIA[chat-media]
 ```
+
+## 🎭 Sistema Global de Animaciones - Guía Completa
+
+### 🚀 **Arquitectura del Sistema de Animaciones**
+
+El sistema de animaciones de ComplicesConecta v2.6.0 está diseñado como una infraestructura modular y escalable que proporciona experiencias visuales fluidas y accesibles en toda la aplicación.
+
+#### 🎯 **Componentes Core**
+
+**AnimationProvider** - Contexto Global
+```tsx
+// Configuración automática con preferencias de usuario
+<AnimationProvider>
+  <App />
+</AnimationProvider>
+```
+- Monitoreo de performance en tiempo real
+- Adaptación automática basada en FPS
+- Soporte para `prefers-reduced-motion`
+- Persistencia de configuraciones en localStorage
+
+**GlobalAnimations** - Variantes Reutilizables
+```tsx
+// Uso de variantes predefinidas
+<motion.div variants={pageVariants.slideIn} />
+<motion.div variants={floatingVariants.gentle} />
+```
+- Transiciones de página: slide, fade, scale, rotate
+- Efectos flotantes con physics naturales
+- Micro-interacciones estandarizadas
+- Configuración adaptativa por dispositivo
+
+#### ⚡ **Efectos Interactivos Avanzados**
+
+**Botones Magnéticos**
+```tsx
+<MagneticButton>
+  Botón con atracción al cursor
+</MagneticButton>
+```
+
+**Parallax Scrolling**
+```tsx
+<ParallaxContainer layers={3}>
+  <ParallaxLayer speed={0.5}>Fondo</ParallaxLayer>
+  <ParallaxLayer speed={1.0}>Contenido</ParallaxLayer>
+</ParallaxContainer>
+```
+
+**Sistema de Partículas**
+```tsx
+// Celebraciones automáticas en matches
+triggerCelebration('match', { hearts: true, confetti: true });
+```
+
+#### 🎪 **Componentes UI Animados**
+
+**AnimatedButton** - Múltiples Efectos
+- Variantes: magnetic, ripple, glow, pulse
+- Temas: love, premium, success, danger
+- Estados: loading, disabled, active
+
+**AnimatedCard** - Efectos 3D
+- Hover con transformaciones 3D
+- Glassmorphism avanzado
+- Efectos flotantes automáticos
+
+**ProfileCard** - Animaciones Flip
+- Transiciones flip en hover
+- Acciones contextuales animadas
+- Micro-interacciones fluidas
+
+#### 🔔 **Sistema de Notificaciones**
+
+**Notificaciones en Tiempo Real**
+```tsx
+// Triggers automáticos para eventos
+showNotification('match', {
+  title: '¡Nuevo Match!',
+  celebration: true,
+  actions: ['Ver Perfil', 'Enviar Mensaje']
+});
+```
+
+**Tipos de Notificaciones:**
+- **Matches**: Con corazones flotantes y confetti
+- **Mensajes**: Con indicadores de chat animados  
+- **Logros**: Con efectos de celebración especiales
+- **Sistema**: Con iconografía contextual
+
+#### ⚙️ **Configuración de Usuario**
+
+**Panel de Ajustes Accesible**
+- Control de velocidad: lento, normal, rápido
+- Toggle de partículas y efectos de fondo
+- Modo reducido para accesibilidad
+- Preview en tiempo real de cambios
+- Botón flotante para acceso rápido
+
+#### 🎯 **Performance y Optimización**
+
+**Monitoreo Automático**
+- Medición de FPS en tiempo real
+- Reducción automática de calidad en dispositivos lentos
+- Lazy loading de efectos pesados
+- Memory management con cleanup automático
+
+**Responsive Design**
+- Animaciones adaptativas por tamaño de pantalla
+- Efectos optimizados para touch vs mouse
+- Configuración específica para móvil/desktop
+
+### 📊 **Métricas del Sistema v2.6.0**
+- **Archivos de animación**: 6 componentes core
+- **Variantes disponibles**: 30+ efectos únicos
+- **Componentes animados**: 15+ elementos UI
+- **Bundle size**: 769.78 kB (optimizado)
+- **Performance**: Adaptación automática FPS
+- **Accesibilidad**: 100% compatible reduced motion
 
 ## 🔧 Componentes Técnicos Detallados
 

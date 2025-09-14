@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
 import Navigation from "@/components/Navigation";
-import { MatchCard } from "@/components/matches/MatchCard";
-import { MatchFilters } from "@/components/matches/MatchFilters";
-import { Button } from "@/components/ui/button";
-import { Heart, MessageCircle, Sparkles, ArrowLeft, Flame, Users, Crown } from "lucide-react";
+import { MatchCard } from "@/components/ui/MatchCard";
+import { ProfileCard } from "@/components/ui/ProfileCard";
+import { UnifiedTabs } from "@/components/ui/UnifiedTabs";
+import { UnifiedButton } from "@/components/ui/UnifiedButton";
+import { UnifiedCard } from "@/components/ui/UnifiedCard";
+import { Heart, MessageCircle, Sparkles, ArrowLeft, Flame, Users, Crown, Filter } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { simpleMatchService, SimpleMatch } from "@/lib/simpleMatches";
+import { motion, AnimatePresence } from "framer-motion";
 
 // Professional profile images from Unsplash - Production ready
 // Removed local imports that fail in production
@@ -229,14 +232,14 @@ const Matches = () => {
         <main className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 max-w-6xl pb-24">
           {/* Back Button */}
           <div className="mb-6">
-            <Button 
+            <UnifiedButton 
               variant="outline" 
               onClick={() => navigate('/')}
               className="bg-card/80 backdrop-blur-sm border-primary/20 hover:bg-primary/10 transition-all duration-300 text-white"
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Volver al Inicio
-            </Button>
+            </UnifiedButton>
           </div>
 
           {/* Page Header */}
@@ -254,7 +257,7 @@ const Matches = () => {
 
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-soft border border-primary/10">
+            <UnifiedCard className="bg-card/80 backdrop-blur-sm border-primary/10">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Total Matches</p>
@@ -264,9 +267,9 @@ const Matches = () => {
                   <Heart className="h-6 w-6 text-primary" fill="currentColor" />
                 </div>
               </div>
-            </div>
+            </UnifiedCard>
 
-            <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-soft border border-primary/10">
+            <UnifiedCard className="bg-card/80 backdrop-blur-sm border-primary/10">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Nuevos Matches</p>
@@ -278,9 +281,9 @@ const Matches = () => {
                   <Flame className="h-6 w-6 text-accent" />
                 </div>
               </div>
-            </div>
+            </UnifiedCard>
 
-            <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-soft border border-primary/10">
+            <UnifiedCard className="bg-card/80 backdrop-blur-sm border-primary/10">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Conversaciones</p>
@@ -292,9 +295,9 @@ const Matches = () => {
                   <MessageCircle className="h-6 w-6 text-primary" />
                 </div>
               </div>
-            </div>
+            </UnifiedCard>
 
-            <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-soft border border-primary/10">
+            <UnifiedCard className="bg-card/80 backdrop-blur-sm border-primary/10">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Compatibilidad</p>
@@ -306,11 +309,51 @@ const Matches = () => {
                   <Crown className="h-6 w-6 text-accent" />
                 </div>
               </div>
-            </div>
+            </UnifiedCard>
           </div>
 
         {/* Filters */}
-        <MatchFilters currentFilter={filter} onFilterChange={setFilter} />
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="mb-8"
+        >
+          <div className="flex flex-wrap gap-2 justify-center mb-6">
+            <UnifiedButton
+              variant={filter === 'all' ? 'default' : 'outline'}
+              onClick={() => setFilter('all')}
+              className="flex items-center gap-2"
+            >
+              <Users className="h-4 w-4" />
+              Todos ({currentMatches.length})
+            </UnifiedButton>
+            <UnifiedButton
+              variant={filter === 'new' ? 'default' : 'outline'}
+              onClick={() => setFilter('new')}
+              className="flex items-center gap-2"
+            >
+              <Flame className="h-4 w-4" />
+              Nuevos ({currentMatches.filter(m => m.status === 'new').length})
+            </UnifiedButton>
+            <UnifiedButton
+              variant={filter === 'recent' ? 'default' : 'outline'}
+              onClick={() => setFilter('recent')}
+              className="flex items-center gap-2"
+            >
+              <Sparkles className="h-4 w-4" />
+              Recientes ({currentMatches.filter(m => m.matchedAt.includes('horas') || m.matchedAt.includes('Ayer')).length})
+            </UnifiedButton>
+            <UnifiedButton
+              variant={filter === 'unread' ? 'default' : 'outline'}
+              onClick={() => setFilter('unread')}
+              className="flex items-center gap-2"
+            >
+              <MessageCircle className="h-4 w-4" />
+              No leídos ({currentMatches.filter(m => m.hasUnreadMessage).length})
+            </UnifiedButton>
+          </div>
+        </motion.div>
 
         {/* Matches Grid */}
         {filteredMatches.length > 0 ? (
@@ -331,9 +374,19 @@ const Matches = () => {
                   className={`animate-slide-up animation-delay-${Math.min(index, 10) * 100}`}
                 >
                   <MatchCard
-                    match={match}
-                    onSuperLike={handleSuperLike}
-                    onStartChat={handleStartChat}
+                    id={match.id.toString()}
+                    name={match.name}
+                    age={match.age}
+                    avatar={match.image}
+                    compatibility={match.compatibility}
+                    distance={match.distance}
+                    reasons={match.mutualInterests}
+                    verified={match.status === 'new'}
+                    accountType={match.name.includes('&') ? 'couple' : 'single'}
+                    variant="grid"
+                    onLike={() => handleStartChat(match.id)}
+                    onPass={() => console.log('Pass:', match.id)}
+                    onSuperLike={() => handleSuperLike(match.id)}
                   />
                 </div>
               ))
@@ -350,14 +403,15 @@ const Matches = () => {
             <p className="text-muted-foreground mb-6">
               Intenta cambiar los filtros o descubre más parejas y solteros verificados
             </p>
-            <Button 
+            <UnifiedButton 
               variant="love" 
               size="lg"
+              gradient={true}
               onClick={() => navigate('/discover')}
             >
               <Users className="mr-2 h-5 w-5" />
               Descubrir Perfiles Swinger
-            </Button>
+            </UnifiedButton>
           </div>
         )}
         </main>

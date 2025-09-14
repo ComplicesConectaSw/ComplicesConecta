@@ -1,22 +1,24 @@
 import { useState, useEffect } from "react";
-import { Header } from "@/components/Header";
-import { ChatList } from "@/components/chat/ChatList";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { motion, AnimatePresence } from "framer-motion";
+import { MessageCircle, Users, Search, Plus, Phone, Video, MoreVertical, ArrowLeft, Heart, Flame, Send, Lock, Globe, UserPlus, Info } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { MessageCircle, ArrowLeft, Heart, Users, Flame, Send, Lock, Globe, UserPlus, Info } from "lucide-react";
+import { UnifiedButton } from "@/components/ui/UnifiedButton";
+import { UnifiedInput } from "@/components/ui/UnifiedInput";
+import { UnifiedCard } from "@/components/ui/UnifiedCard";
+import { UnifiedTabs } from "@/components/ui/UnifiedTabs";
+import { ModernChatInterface } from "@/components/chat/ModernChatInterface";
+import { ChatContainer } from "@/components/chat/ChatContainer";
+import { ChatBubble } from "@/components/chat/ChatBubble";
+import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-import Navigation from "@/components/Navigation";
 import { useFeatures } from "@/hooks/useFeatures";
+import { toast } from "@/hooks/use-toast";
+import Navigation from "@/components/Navigation";
+import { Header } from "@/components/Header";
+import { InvitationDialog } from "@/components/invitations/InvitationDialog";
 import { mockPrivacySettings } from "@/lib/data";
 import { invitationService } from "@/lib/invitations";
-import { InvitationDialog } from "@/components/invitations/InvitationDialog";
-import { AnimatedTabs } from "@/components/ui/AnimatedTabs";
-import { ChatBubble } from "@/components/ui/ChatBubble";
-import { GlassCard } from "@/components/ui/GlassCard";
-import { AnimatedButton } from "@/components/ui/AnimatedButton";
-import { motion, AnimatePresence } from "framer-motion";
 import { chatService, type ChatRoom, type ChatMessage } from "@/lib/chat";
 import { simpleChatService, type SimpleChatRoom, type SimpleChatMessage } from '@/lib/simpleChatService';
 
@@ -384,70 +386,85 @@ const Chat = () => {
         <div className="w-full sm:w-80 flex-shrink-0 bg-black/40 backdrop-blur-sm border-r border-white/10 flex flex-col">
           <div className="p-4 border-b border-white/10">
             <div className="flex items-center gap-3 mb-4">
-              <Button 
+              <UnifiedButton 
                 variant="ghost" 
                 size="sm" 
                 className="text-white hover:bg-white/20 p-2 sm:hidden"
                 onClick={() => navigate('/feed')}
               >
                 <ArrowLeft className="h-4 w-4" />
-              </Button>
+              </UnifiedButton>
               <div className="flex items-center justify-between flex-1 min-w-0">
                 <h2 className="text-lg sm:text-xl font-bold text-white truncate">Conversaciones</h2>
                 <div className="flex items-center gap-2">
-                  <Button 
+                  <UnifiedButton 
                     variant="ghost" 
                     size="sm" 
-                    className="text-white hover:bg-white/20 p-2"
-                    onClick={() => navigate('/chat-info')}
-                    title="Información del sistema de chat"
+                    className="text-white hover:bg-white/10"
                   >
-                    <Info className="h-4 w-4" />
-                  </Button>
-                  <Button 
+                    <Phone className="h-4 w-4" />
+                  </UnifiedButton>
+                  <UnifiedButton 
                     variant="ghost" 
                     size="sm" 
-                    className="text-white hover:bg-white/20 p-2"
-                    onClick={() => navigate(-1)}
+                    className="text-white hover:bg-white/10"
+                  >
+                    <Video className="h-4 w-4" />
+                  </UnifiedButton>
+                  <UnifiedButton 
+                    variant="ghost" 
+                    size="sm" 
+                    className="text-white hover:bg-white/10"
+                  >
+                    <MoreVertical className="h-4 w-4" />
+                  </UnifiedButton>
+                  <UnifiedButton 
+                    variant="ghost" 
+                    size="sm" 
+                    className="text-white hover:bg-white/10 md:hidden"
+                    onClick={() => setSelectedChat(null)}
                   >
                     <ArrowLeft className="h-4 w-4" />
-                  </Button>
+                  </UnifiedButton>
                 </div>
               </div>
             </div>
             
             {/* Tabs para Private/Public */}
-            <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'private' | 'public')} className="w-full">
-              <TabsList className="grid w-full grid-cols-2 bg-white/10 backdrop-blur-sm rounded-lg">
-                <TabsTrigger 
-                  value="private" 
-                  className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-white/80 hover:text-white flex items-center gap-2 cursor-pointer rounded-md"
-                  onClick={() => setActiveTab('private')}
-                >
-                  <Lock className="h-4 w-4" />
-                  Privado
-                  {privateChats.reduce((acc, chat) => acc + chat.unreadCount, 0) > 0 && (
-                    <Badge className="bg-red-500 text-white text-xs">
-                      {privateChats.reduce((acc, chat) => acc + chat.unreadCount, 0)}
-                    </Badge>
-                  )}
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="public" 
-                  className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600/50 data-[state=active]:to-pink-600/50 data-[state=active]:text-white text-white hover:text-white flex items-center gap-2 cursor-pointer"
-                  onClick={() => setActiveTab('public')}
-                >
-                  <Globe className="h-4 w-4" />
-                  Público
-                  {publicChats.reduce((acc, chat) => acc + chat.unreadCount, 0) > 0 && (
-                    <Badge className="bg-red-500 text-white text-xs">
-                      {publicChats.reduce((acc, chat) => acc + chat.unreadCount, 0)}
-                    </Badge>
-                  )}
-                </TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="private" className="mt-4">
+            <div className="flex gap-2 bg-white/10 backdrop-blur-sm rounded-lg p-1">
+              <UnifiedButton
+                variant={activeTab === 'private' ? 'default' : 'ghost'}
+                size="sm"
+                className="flex-1 flex items-center gap-2 text-white"
+                onClick={() => setActiveTab('private')}
+              >
+                <Lock className="h-4 w-4" />
+                Privado
+                {privateChats.reduce((acc, chat) => acc + chat.unreadCount, 0) > 0 && (
+                  <Badge className="bg-red-500 text-white text-xs">
+                    {privateChats.reduce((acc, chat) => acc + chat.unreadCount, 0)}
+                  </Badge>
+                )}
+              </UnifiedButton>
+              <UnifiedButton
+                variant={activeTab === 'public' ? 'default' : 'ghost'}
+                size="sm"
+                className="flex-1 flex items-center gap-2 text-white"
+                onClick={() => setActiveTab('public')}
+              >
+                <Globe className="h-4 w-4" />
+                Público
+                {publicChats.reduce((acc, chat) => acc + chat.unreadCount, 0) > 0 && (
+                  <Badge className="bg-red-500 text-white text-xs">
+                    {publicChats.reduce((acc, chat) => acc + chat.unreadCount, 0)}
+                  </Badge>
+                )}
+              </UnifiedButton>
+            </div>
+            
+            {/* Tab Content */}
+            {activeTab === 'private' && (
+              <div className="mt-4">
                 <div className="text-white/70 text-sm mb-3 px-2">
                   💬 Chats privados con tus conexiones
                 </div>
@@ -495,9 +512,11 @@ const Chat = () => {
                     </div>
                   ))}
                 </div>
-              </TabsContent>
-              
-              <TabsContent value="public" className="mt-4">
+              </div>
+            )}
+            
+            {activeTab === 'public' && (
+              <div className="mt-4">
                 <div className="text-white/70 text-sm mb-3 px-2">
                   🌍 Salas públicas de la comunidad
                 </div>
@@ -541,8 +560,8 @@ const Chat = () => {
                     </div>
                   ))}
                 </div>
-              </TabsContent>
-            </Tabs>
+              </div>
+            )}
           </div>
         </div>
 
@@ -553,14 +572,14 @@ const Chat = () => {
               {/* Header del chat */}
               <div className="p-4 border-b border-white/10 bg-black/30">
                 <div className="flex items-center space-x-3">
-                  <Button 
+                  <UnifiedButton 
                     variant="ghost" 
                     size="sm" 
                     className="md:hidden text-white hover:bg-white/10 mr-2"
                     onClick={() => setSelectedChat(null)}
                   >
                     <ArrowLeft className="h-4 w-4" />
-                  </Button>
+                  </UnifiedButton>
                   {selectedChat.roomType === 'public' ? (
                     <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold border-2 border-white/20">
                       {selectedChat.name.charAt(0)}
@@ -654,7 +673,7 @@ const Chat = () => {
                       Necesitas una invitación aceptada para chatear con {selectedChat?.name}. Puedes enviar una invitación o esperar a que te envíen una.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                      <Button 
+                      <UnifiedButton 
                         onClick={() => {
                           console.log('Enviando invitación...');
                           // Simulate invitation sent
@@ -665,8 +684,8 @@ const Chat = () => {
                       >
                         <UserPlus className="h-4 w-4 mr-2" />
                         Aceptar invitación
-                      </Button>
-                      <Button 
+                      </UnifiedButton>
+                      <UnifiedButton 
                         onClick={() => {
                           console.log('Rechazando invitación...');
                           // Properly reject the invitation and navigate back
@@ -677,25 +696,27 @@ const Chat = () => {
                         className="border-red-300/50 text-red-300 hover:bg-red-500/20 px-6 py-2 rounded-lg font-medium transition-all duration-200"
                       >
                         Rechazar
-                      </Button>
+                      </UnifiedButton>
                     </div>
                   </div>
                 ) : (
                   <div className="flex space-x-2">
-                    <Input
+                    <UnifiedInput
+                      type="text"
+                      placeholder="Escribe tu mensaje..."
                       value={newMessage}
-                      onChange={(e) => setNewMessage(e.target.value)}
-                      placeholder="Escribe un mensaje..."
-                      className="flex-1 bg-white/10 border-white/20 text-white placeholder-white/50 focus:border-purple-400 focus:ring-purple-400/20 rounded-lg"
-                      onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewMessage(e.target.value)}
+                      onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && handleSendMessage()}
+                      className="flex-1 bg-white/10 border-white/20 text-white placeholder-white/50 focus:border-white/40"
                     />
-                    <Button 
+                    <UnifiedButton 
                       onClick={handleSendMessage}
                       disabled={!newMessage.trim()}
-                      className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 disabled:opacity-50 disabled:cursor-not-allowed px-4 py-2 rounded-lg transition-all duration-200"
+                      gradient={true}
+                      className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0"
                     >
                       <Send className="h-4 w-4" />
-                    </Button>
+                    </UnifiedButton>
                   </div>
                 )}
                 {selectedChat?.roomType === 'public' && (
