@@ -1,12 +1,63 @@
-# 🚀 ComplicesConecta - Notas de Lanzamiento v2.6.0
+# 🚀 ComplicesConecta - Notas de Lanzamiento v2.6.1
 
-**Fecha de Lanzamiento:** 15 de Enero, 2025 - 02:30 hrs  
+**Fecha de Lanzamiento:** 14 de Septiembre, 2025 - 06:13 hrs  
 **Plataforma:** Android APK + Web App  
-**Versión:** 2.6.0 (SISTEMA GLOBAL DE ANIMACIONES - FASE 3 COMPLETADA ✅)
+**Versión:** 2.6.1 (PERFILES DE PAREJA MEJORADOS - FASE 4 COMPLETADA ✅)
 
 ---
 
-## 🎭 NUEVA FUNCIONALIDAD MAYOR - SISTEMA GLOBAL DE ANIMACIONES v2.6.0
+## 💑 NUEVA FUNCIONALIDAD MAYOR - PERFILES DE PAREJA MEJORADOS v2.6.1
+
+### ✨ **SISTEMA COMPLETO DE PERFILES DE PAREJA - 14/09/2025**
+
+#### 1. **👫 CoupleProfileWithPartners - Interface Mejorada**
+**Archivo:** `src/lib/coupleProfiles.ts`
+**Funcionalidades Implementadas:**
+- **Interface TypeScript completa** con datos detallados de ambos partners
+- **Sistema de mock data** con fallback automático para desarrollo
+- **Tipos de relación** configurables (man-woman, man-man, woman-woman)
+- **Campos específicos** para cada partner (nombre, edad, bio, género)
+- **Gestión de imágenes** y verificación de perfiles de pareja
+
+#### 2. **🎨 CoupleProfileCard - Componente de Tarjeta**
+**Archivo:** `src/components/profile/CoupleProfileCard.tsx`
+**Características:**
+- **Diseño distintivo** con colores temáticos por tipo de pareja
+- **Dual-avatar display** con símbolo de unión corazón
+- **Acciones interactivas** (like, mensaje, invitación)
+- **Responsive design** con animaciones Framer Motion
+- **Badges de verificación** y estado premium
+
+#### 3. **📱 CoupleProfileHeader - Cabecera Elegante**
+**Archivo:** `src/components/profile/CoupleProfileHeader.tsx`
+**Funcionalidades:**
+- **Header dual-avatar** con efectos visuales profesionales
+- **Información de pareja** centralizada y organizada
+- **Botones de acción** con temas de color adaptativos
+- **Ubicación y estado** online integrados
+- **Diseño cohesivo** con el resto de la aplicación
+
+#### 4. **🔍 Discover Page - Integración Dual**
+**Archivo:** `src/pages/Discover.tsx`
+**Mejoras Implementadas:**
+- **Toggle de visualización** entre perfiles individuales y de pareja
+- **Carga simultánea** de ambos tipos de perfiles
+- **Filtros específicos** para perfiles de pareja
+- **Navegación fluida** entre modos de descubrimiento
+- **Integración completa** con sistema de matching existente
+
+#### 5. **💼 ProfileCouple Page - Página Completa**
+**Archivo:** `src/pages/ProfileCouple.tsx`
+**Características Avanzadas:**
+- **UI distintiva** con secciones separadas para cada partner
+- **Colores temáticos** diferenciados (rosa/azul) por partner
+- **Información detallada** de cada miembro de la pareja
+- **Intereses y preferencias** organizados por partner
+- **Navegación integrada** con el sistema global
+
+---
+
+## 🎭 FUNCIONALIDADES PREVIAS - SISTEMA GLOBAL DE ANIMACIONES v2.6.0
 
 ### ✨ **INFRAESTRUCTURA CORE DE ANIMACIONES - 15/01/2025**
 
