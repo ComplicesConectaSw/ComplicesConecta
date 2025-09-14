@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { logger } from '@/lib/logger';
 
 interface ProfileCardProps {
   profile: {
@@ -71,10 +72,10 @@ export const ProfileCard = ({ profile, onLike, onSuperLike, onOpenModal }: Profi
             alt={name}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             onError={(e) => {
-              console.log('Error loading image:', image);
+              logger.info('Error loading image:', image);
               setImageError(true);
             }}
-            onLoad={() => console.log('Image loaded successfully:', image)}
+            onLoad={() => logger.info('Image loaded successfully:', image)}
           />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">

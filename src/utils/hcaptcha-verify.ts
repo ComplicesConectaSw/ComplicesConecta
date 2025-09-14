@@ -1,18 +1,8 @@
-import { verify } from 'hcaptcha';
-
-// SECURITY WARNING: This file should NOT be used in client-side code
-// hCaptcha secret verification must be done on the server side only
-// This is a template for server-side implementation
+import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/lib/logger';
 
 // ✅ MIGRATED: hCaptcha verification moved to Supabase Edge Function
-// Use supabase.functions.invoke('hcaptcha-verify', { body: { token, action, userId } })
-
-// Configuración de hCaptcha (SERVER-SIDE ONLY)
-const HCAPTCHA_SECRET = process.env.HCAPTCHA_SECRET; // Changed from VITE_* to prevent client exposure
-
-if (!HCAPTCHA_SECRET || HCAPTCHA_SECRET === 'your-hcaptcha-secret-key') {
-  throw new Error('hCaptcha secret key is not configured correctly in environment variables.');
-}
+// This client-side utility now calls the secure Edge Function
 
 /**
  * Verifica un token de hCaptcha
@@ -25,7 +15,11 @@ interface HCaptchaResponse {
   data?: Record<string, unknown>;
 }
 
-export const verifyHCaptcha = async (token: string): Promise<HCaptchaResponse> => {
+export const verifyHCaptcha = async (
+  token: string, 
+  action: string = 'login', 
+  userId?: string
+): Promise<HCaptchaResponse> => {
   try {
     // Verificar que el token existe
     if (!token) {
@@ -35,28 +29,36 @@ export const verifyHCaptcha = async (token: string): Promise<HCaptchaResponse> =
       };
     }
 
-    // Verificar que tenemos la clave secreta
-
-    // Realizar la verificación
-    const data = await verify(HCAPTCHA_SECRET, token);
+    // Llamar a la Edge Function de Supabase para verificación segura
+    const { data, error } = await supabase.functions.invoke('hcaptcha-verify', {
+      body: { token, action, userId }
+    });
     
-    if (data.success === true) {
-      console.log('hCaptcha verificado exitosamente:', data);
+    if (error) {
+      logger.error('Error al verificar hCaptcha:', error);
+      return {
+        success: false,
+        message: 'Error interno de verificación'
+      };
+    }
+
+    if (data?.success) {
+      logger.info('hCaptcha verificado exitosamente:', data);
       return {
         success: true,
-        message: 'Verificación exitosa',
+        message: data.message || 'Verificación exitosa',
         data
       };
     } else {
-      console.log('Verificación de hCaptcha falló:', data);
+      logger.info('Verificación de hCaptcha falló:', data);
       return {
         success: false,
-        message: 'Verificación falló',
+        message: data?.error || 'Verificación falló',
         data
       };
     }
   } catch (error) {
-    console.error('Error al verificar hCaptcha:', error);
+    logger.error('Error al verificar hCaptcha:', error);
     return {
       success: false,
       message: 'Error interno de verificación'
@@ -65,23 +67,34 @@ export const verifyHCaptcha = async (token: string): Promise<HCaptchaResponse> =
 };
 
 /**
- * Ejemplo de uso básico
+ * Ejemplo de uso con Edge Function
  */
 export const exampleUsage = () => {
-  // Ejemplo de cómo usar la función de verificación
+  // Ejemplo de cómo usar la función de verificación migrada
   const token = 'token-from-hcaptcha-widget';
   
-  verifyHCaptcha(token)
+  verifyHCaptcha(token, 'registration', 'user-123')
     .then((result) => {
       if (result.success) {
-        console.log('✅ Verificación exitosa!', result.data);
+        logger.info('✅ Verificación exitosa!', result.data);
         // Proceder con el registro/login del usuario
       } else {
-        console.log('❌ Verificación falló:', result.message);
+        logger.info('❌ Verificación falló:', result.message);
         // Mostrar error al usuario
       }
     })
     .catch((error) => {
-      console.error('Error:', error);
+      logger.error('Error:', error);
     });
+};
+
+/**
+ * Hook React para verificación de hCaptcha
+ */
+export const useHCaptchaVerification = () => {
+  const verifyToken = async (token: string, action?: string, userId?: string) => {
+    return await verifyHCaptcha(token, action, userId);
+  };
+
+  return { verifyToken };
 };

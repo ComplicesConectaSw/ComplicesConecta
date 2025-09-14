@@ -10,46 +10,46 @@ import { NotificationProvider } from "@/components/animations/NotificationSystem
 import { AnimationSettingsButton } from "@/components/animations/AnimationSettings";
 
 // Critical pages - loaded immediately
-import Index from "./pages/Index";
-import Auth from "./pages/Auth";
-import NotFound from "./pages/NotFound";
-import Events from "./pages/Events";
+import Index from "@/pages/Index";
+import Auth from "@/pages/Auth";
+import NotFound from "@/pages/NotFound";
+import Events from "@/pages/Events";
 
 // Lazy loaded pages for performance optimization
-const Profiles = lazy(() => import("./pages/Profiles"));
-const ProfileDetail = lazy(() => import("./pages/ProfileDetail"));
-const Chat = lazy(() => import("./pages/Chat"));
-const ChatInfo = lazy(() => import("./pages/ChatInfo"));
-const Matches = lazy(() => import("./pages/Matches"));
-const Requests = lazy(() => import("./pages/Requests"));
-const Settings = lazy(() => import("./pages/Settings"));
-const Discover = lazy(() => import("./pages/Discover"));
-const Premium = lazy(() => import("./pages/Premium"));
-const Dashboard = lazy(() => import("./pages/Dashboard"));
-const FAQ = lazy(() => import("./pages/FAQ"));
-const Terms = lazy(() => import("./pages/Terms"));
-const Privacy = lazy(() => import("./pages/Privacy"));
-const Support = lazy(() => import("./pages/Support"));
-const Tokens = lazy(() => import("./pages/Tokens"));
-const TokensInfo = lazy(() => import("./pages/TokensInfo"));
-const TokensPrivacy = lazy(() => import("./pages/TokensPrivacy"));
-const TokensTerms = lazy(() => import("./pages/TokensTerms"));
-const TokensLegal = lazy(() => import("./pages/TokensLegal"));
-const ProjectInfo = lazy(() => import("./pages/ProjectInfo"));
-const Security = lazy(() => import("./pages/Security"));
-const Guidelines = lazy(() => import("./pages/Guidelines"));
+const Profiles = lazy(() => import("@/pages/Profiles"));
+const ProfileDetail = lazy(() => import("@/pages/ProfileDetail"));
+const Chat = lazy(() => import("@/pages/Chat"));
+const ChatInfo = lazy(() => import("@/pages/ChatInfo"));
+const Matches = lazy(() => import("@/pages/Matches"));
+const Requests = lazy(() => import("@/pages/Requests"));
+const Settings = lazy(() => import("@/pages/Settings"));
+const Discover = lazy(() => import("@/pages/Discover"));
+const Premium = lazy(() => import("@/pages/Premium"));
+const Dashboard = lazy(() => import("@/pages/Dashboard"));
+const FAQ = lazy(() => import("@/pages/FAQ"));
+const Terms = lazy(() => import("@/pages/Terms"));
+const Privacy = lazy(() => import("@/pages/Privacy"));
+const Support = lazy(() => import("@/pages/Support"));
+const Tokens = lazy(() => import("@/pages/Tokens"));
+const TokensInfo = lazy(() => import("@/pages/TokensInfo"));
+const TokensPrivacy = lazy(() => import("@/pages/TokensPrivacy"));
+const TokensTerms = lazy(() => import("@/pages/TokensTerms"));
+const TokensLegal = lazy(() => import("@/pages/TokensLegal"));
+const ProjectInfo = lazy(() => import("@/pages/ProjectInfo"));
+const Security = lazy(() => import("@/pages/Security"));
+const Guidelines = lazy(() => import("@/pages/Guidelines"));
 const Admin = lazy(() => import("@/pages/Admin"));
 const AdminProduction = lazy(() => import("@/pages/AdminProduction"));
-const ProfileSingle = lazy(() => import("./pages/ProfileSingle"));
-const ProfileCouple = lazy(() => import("./pages/ProfileCouple"));
-const EditProfileSingle = lazy(() => import("./pages/EditProfileSingle"));
-const EditProfileCouple = lazy(() => import("./pages/EditProfileCouple"));
-const Feed = lazy(() => import("./pages/Feed"));
-const About = lazy(() => import("./pages/About"));
-const Careers = lazy(() => import("./pages/Careers"));
-const Blog = lazy(() => import("./pages/Blog"));
-const ChatAuthenticated = lazy(() => import("./pages/ChatAuthenticated"));
-const Donations = lazy(() => import("./pages/Donations"));
+const ProfileSingle = lazy(() => import("@/pages/ProfileSingle"));
+const ProfileCouple = lazy(() => import("@/pages/ProfileCouple"));
+const EditProfileSingle = lazy(() => import("@/pages/EditProfileSingle"));
+const EditProfileCouple = lazy(() => import("@/pages/EditProfileCouple"));
+const Feed = lazy(() => import("@/pages/Feed"));
+const About = lazy(() => import("@/pages/About"));
+const Careers = lazy(() => import("@/pages/Careers"));
+const Blog = lazy(() => import("@/pages/Blog"));
+const ChatAuthenticated = lazy(() => import("@/pages/ChatAuthenticated"));
+const Donations = lazy(() => import("@/pages/Donations"));
 
 // Loading component for Suspense
 const PageLoader = () => (

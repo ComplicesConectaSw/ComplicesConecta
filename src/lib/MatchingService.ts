@@ -6,6 +6,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 import { 
+import { logger } from '@/lib/logger';
   calculateCompatibility, 
   getSharedInterests, 
   generateMatchReasons,
@@ -123,7 +124,7 @@ export class MatchingService {
       };
 
     } catch (error) {
-      console.error('Error al dar like:', error);
+      logger.error('Error al dar like:', error);
       return { success: false, error: 'Error al procesar el like' };
     }
   }
@@ -147,7 +148,7 @@ export class MatchingService {
       return { success: true };
 
     } catch (error) {
-      console.error('Error al quitar like:', error);
+      logger.error('Error al quitar like:', error);
       return { success: false, error: 'Error al quitar el like' };
     }
   }
@@ -171,7 +172,7 @@ export class MatchingService {
       return data || [];
 
     } catch (error) {
-      console.error('Error al obtener likes:', error);
+      logger.error('Error al obtener likes:', error);
       return [];
     }
   }
@@ -213,7 +214,7 @@ export class MatchingService {
       }));
 
     } catch (error) {
-      console.error('Error al obtener matches:', error);
+      logger.error('Error al obtener matches:', error);
       return [];
     }
   }
@@ -241,7 +242,7 @@ export class MatchingService {
       return data ? this.formatMatch(data, user.id) : null;
 
     } catch (error) {
-      console.error('Error al obtener match:', error);
+      logger.error('Error al obtener match:', error);
       return null;
     }
   }
@@ -295,7 +296,7 @@ export class MatchingService {
       }));
 
     } catch (error) {
-      console.error('Error al obtener perfiles potenciales:', error);
+      logger.error('Error al obtener perfiles potenciales:', error);
       return [];
     }
   }
@@ -347,7 +348,7 @@ export class MatchingService {
       return matchesWithScores;
 
     } catch (error) {
-      console.error('Error al calcular compatibilidad:', error);
+      logger.error('Error al calcular compatibilidad:', error);
       return [];
     }
   }
@@ -379,7 +380,7 @@ export class MatchingService {
       return { success: true };
 
     } catch (error) {
-      console.error('Error al enviar mensaje:', error);
+      logger.error('Error al enviar mensaje:', error);
       return { success: false, error: 'Error al enviar el mensaje' };
     }
   }
@@ -406,7 +407,7 @@ export class MatchingService {
       return { success: true };
 
     } catch (error) {
-      console.error('Error al marcar como visto:', error);
+      logger.error('Error al marcar como visto:', error);
       return { success: false, error: 'Error al marcar como visto' };
     }
   }
@@ -431,7 +432,7 @@ export class MatchingService {
       return (data || []).reverse(); // Mostrar mensajes más antiguos primero
 
     } catch (error) {
-      console.error('Error al obtener mensajes:', error);
+      logger.error('Error al obtener mensajes:', error);
       return [];
     }
   }
@@ -458,7 +459,7 @@ export class MatchingService {
       return { success: true };
 
     } catch (error) {
-      console.error('Error al actualizar intereses:', error);
+      logger.error('Error al actualizar intereses:', error);
       return { success: false, error: 'Error al actualizar intereses' };
     }
   }
@@ -477,7 +478,7 @@ export class MatchingService {
       });
 
     } catch (error) {
-      console.error('Error al actualizar estado online:', error);
+      logger.error('Error al actualizar estado online:', error);
     }
   }
 
@@ -533,7 +534,7 @@ export class MatchingService {
           table: 'matches' 
         }, 
         (payload) => {
-          console.log('Nuevo match:', payload);
+          logger.info('Nuevo match:', payload);
           // TODO: Formatear y enviar el match al callback
         }
       )

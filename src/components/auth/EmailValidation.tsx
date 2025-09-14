@@ -7,6 +7,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { CheckCircle, XCircle, Loader2 } from 'lucide-react';
+import { logger } from '@/lib/logger';
 
 interface EmailValidationProps {
   email: string;
@@ -73,7 +74,7 @@ export const EmailValidation = ({
         .limit(1);
 
       if (authError) {
-        console.error('Error checking email:', authError);
+        logger.error('Error checking email:', authError);
         setValidationState({
           isValid: false,
           message: 'Error al verificar email',
@@ -100,7 +101,7 @@ export const EmailValidation = ({
       }
 
     } catch (error) {
-      console.error('Error validating email:', error);
+      logger.error('Error validating email:', error);
       setValidationState({
         isValid: false,
         message: 'Error de conexión',
@@ -172,7 +173,7 @@ export const useEmailValidation = () => {
         .limit(1);
 
       if (error) {
-        console.error('Error checking email:', error);
+        logger.error('Error checking email:', error);
         return { isValid: false, message: 'Error al verificar email' };
       }
 
@@ -183,7 +184,7 @@ export const useEmailValidation = () => {
       return { isValid: true, message: 'Email disponible' };
 
     } catch (error) {
-      console.error('Error validating email:', error);
+      logger.error('Error validating email:', error);
       return { isValid: false, message: 'Error de conexión' };
     } finally {
       setIsValidating(false);

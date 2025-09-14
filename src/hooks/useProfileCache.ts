@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import type { Tables } from '@/integrations/supabase/types';
+import { logger } from '@/lib/logger';
 
 // Tipos para el cache de perfiles
 type Profile = Tables<'profiles'>;
@@ -21,7 +22,7 @@ export const useProfile = (userId: string | null) => {
     queryFn: async (): Promise<Profile | null> => {
       if (!userId) return null;
       
-      console.log('🔍 Cargando perfil desde Supabase:', userId);
+      logger.info('🔍 Cargando perfil desde Supabase:', userId);
       
       const { data, error } = await supabase
         .from('profiles')
@@ -30,11 +31,11 @@ export const useProfile = (userId: string | null) => {
         .single();
 
       if (error) {
-        console.error('❌ Error cargando perfil:', error);
+        logger.error('❌ Error cargando perfil:', error);
         throw error;
       }
 
-      console.log('✅ Perfil cargado desde Supabase:', data?.first_name);
+      logger.info('✅ Perfil cargado desde Supabase:', data?.first_name);
       return data;
     },
     enabled: !!userId,
@@ -56,7 +57,7 @@ export const useProfiles = (filters?: {
   return useQuery({
     queryKey: profileKeys.list(filterKey),
     queryFn: async (): Promise<Profile[]> => {
-      console.log('🔍 Cargando perfiles desde Supabase con filtros:', filters);
+      logger.info('🔍 Cargando perfiles desde Supabase con filtros:', filters);
       
       let query = supabase.from('profiles').select('*');
       
@@ -79,11 +80,11 @@ export const useProfiles = (filters?: {
       const { data, error } = await query.limit(50);
 
       if (error) {
-        console.error('❌ Error cargando perfiles:', error);
+        logger.error('❌ Error cargando perfiles:', error);
         throw error;
       }
 
-      console.log('✅ Perfiles cargados desde Supabase:', data?.length);
+      logger.info('✅ Perfiles cargados desde Supabase:', data?.length);
       return data || [];
     },
     staleTime: 2 * 60 * 1000, // 2 minutos
@@ -98,7 +99,7 @@ export const useUpdateProfile = () => {
   
   return useMutation({
     mutationFn: async (profile: Partial<Profile> & { id: string }) => {
-      console.log('💾 Actualizando perfil en Supabase:', profile.id);
+      logger.info('💾 Actualizando perfil en Supabase:', profile.id);
       
       const { data, error } = await supabase
         .from('profiles')
@@ -108,7 +109,7 @@ export const useUpdateProfile = () => {
         .single();
 
       if (error) {
-        console.error('❌ Error actualizando perfil:', error);
+        logger.error('❌ Error actualizando perfil:', error);
         throw error;
       }
 
@@ -120,10 +121,10 @@ export const useUpdateProfile = () => {
       // Invalidar listas de perfiles
       queryClient.invalidateQueries({ queryKey: profileKeys.lists() });
       
-      console.log('✅ Perfil actualizado y cache invalidado:', data.first_name);
+      logger.info('✅ Perfil actualizado y cache invalidado:', data.first_name);
     },
     onError: (error) => {
-      console.error('❌ Error en mutación de perfil:', error);
+      logger.error('❌ Error en mutación de perfil:', error);
     },
   });
 };
@@ -134,7 +135,7 @@ export const useCreateProfile = () => {
   
   return useMutation({
     mutationFn: async (profile: Omit<Profile, 'id' | 'created_at' | 'updated_at'>) => {
-      console.log('➕ Creando nuevo perfil en Supabase');
+      logger.info('➕ Creando nuevo perfil en Supabase');
       
       const { data, error } = await supabase
         .from('profiles')
@@ -143,7 +144,7 @@ export const useCreateProfile = () => {
         .single();
 
       if (error) {
-        console.error('❌ Error creando perfil:', error);
+        logger.error('❌ Error creando perfil:', error);
         throw error;
       }
 
@@ -155,7 +156,7 @@ export const useCreateProfile = () => {
       // Agregar al cache individual
       queryClient.setQueryData(profileKeys.detail(data.id), data);
       
-      console.log('✅ Perfil creado y cache actualizado:', data.first_name);
+      logger.info('✅ Perfil creado y cache actualizado:', data.first_name);
     },
   });
 };
@@ -187,15 +188,15 @@ export const useClearProfileCache = () => {
   return {
     clearAll: () => {
       queryClient.removeQueries({ queryKey: profileKeys.all });
-      console.log('🧹 Cache de perfiles limpiado completamente');
+      logger.info('🧹 Cache de perfiles limpiado completamente');
     },
     clearProfile: (userId: string) => {
       queryClient.removeQueries({ queryKey: profileKeys.detail(userId) });
-      console.log('🧹 Cache de perfil específico limpiado:', userId);
+      logger.info('🧹 Cache de perfil específico limpiado:', userId);
     },
     clearLists: () => {
       queryClient.removeQueries({ queryKey: profileKeys.lists() });
-      console.log('🧹 Cache de listas de perfiles limpiado');
+      logger.info('🧹 Cache de listas de perfiles limpiado');
     },
   };
 };

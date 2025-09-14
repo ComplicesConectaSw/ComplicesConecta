@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { RealtimeChannel } from '@supabase/supabase-js';
+import { logger } from '@/lib/logger';
 
 export interface VideoCallState {
   isInCall: boolean;
@@ -95,7 +96,7 @@ export const useVideoChat = ({
 
     // Handle remote stream
     peerConnection.ontrack = (event) => {
-      console.log('📹 Remote stream received');
+      logger.info('📹 Remote stream received');
       if (remoteVideoRef.current && event.streams[0]) {
         remoteVideoRef.current.srcObject = event.streams[0];
       }
@@ -103,7 +104,7 @@ export const useVideoChat = ({
 
     // Handle connection state changes
     peerConnection.onconnectionstatechange = () => {
-      console.log('🔗 Connection state:', peerConnection.connectionState);
+      logger.info('🔗 Connection state:', peerConnection.connectionState);
       
       if (peerConnection.connectionState === 'connected') {
         setState(prev => ({ ...prev, isConnecting: false, isInCall: true }));
@@ -132,7 +133,7 @@ export const useVideoChat = ({
 
       return stream;
     } catch (error) {
-      console.error('❌ Error accessing media devices:', error);
+      logger.error('❌ Error accessing media devices:', error);
       const errorMessage = error instanceof Error ? error.message : 'Error accessing camera/microphone';
       setState(prev => ({ ...prev, error: errorMessage }));
       onError?.(errorMessage);
@@ -189,7 +190,7 @@ export const useVideoChat = ({
 
       return callId;
     } catch (error) {
-      console.error('❌ Error starting call:', error);
+      logger.error('❌ Error starting call:', error);
       const errorMessage = error instanceof Error ? error.message : 'Error starting call';
       setState(prev => ({ ...prev, error: errorMessage, isConnecting: false }));
       onError?.(errorMessage);
@@ -245,7 +246,7 @@ export const useVideoChat = ({
 
       onCallAccepted?.(callId);
     } catch (error) {
-      console.error('❌ Error accepting call:', error);
+      logger.error('❌ Error accepting call:', error);
       const errorMessage = error instanceof Error ? error.message : 'Error accepting call';
       setState(prev => ({ ...prev, error: errorMessage, isConnecting: false }));
       onError?.(errorMessage);
@@ -353,7 +354,7 @@ export const useVideoChat = ({
   useEffect(() => {
     if (!userId) return;
 
-    console.log('🔄 Setting up video call signaling channel');
+    logger.info('🔄 Setting up video call signaling channel');
 
     const channel = supabase.channel(`video_calls_${userId}`, {
       config: {
@@ -369,7 +370,7 @@ export const useVideoChat = ({
       
       if (signal.to !== userId) return;
 
-      console.log('📞 Received call signal:', signal.type);
+      logger.info('📞 Received call signal:', signal.type);
 
       switch (signal.type) {
         case 'call-request':
@@ -406,11 +407,11 @@ export const useVideoChat = ({
     });
 
     channel.subscribe((status) => {
-      console.log('📡 Video call channel status:', status);
+      logger.info('📡 Video call channel status:', status);
     });
 
     return () => {
-      console.log('🧹 Cleaning up video call channel');
+      logger.info('🧹 Cleaning up video call channel');
       channel.unsubscribe();
       channelRef.current = null;
     };

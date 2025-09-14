@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 // Session storage utilities - only for UI flags and temporary data
 // Profile data should use React Query + Supabase
 
@@ -33,7 +34,7 @@ export const sessionStorage = {
       const updated = { ...current, ...flags };
       localStorage.setItem(SESSION_KEYS.UI_FLAGS, JSON.stringify(updated));
     } catch (error) {
-      console.warn('Failed to save UI flags:', error);
+      logger.warn('Failed to save UI flags:', error);
     }
   },
 
@@ -51,7 +52,7 @@ export const sessionStorage = {
     try {
       localStorage.setItem(`${SESSION_KEYS.TEMP_FORM_DATA}_${key}`, JSON.stringify(data));
     } catch (error) {
-      console.warn('Failed to save temp form data:', error);
+      logger.warn('Failed to save temp form data:', error);
     }
   },
 
@@ -59,7 +60,7 @@ export const sessionStorage = {
     try {
       localStorage.removeItem(`${SESSION_KEYS.TEMP_FORM_DATA}_${key}`);
     } catch (error) {
-      console.warn('Failed to clear temp form data:', error);
+      logger.warn('Failed to clear temp form data:', error);
     }
   },
 
@@ -77,7 +78,7 @@ export const sessionStorage = {
     try {
       localStorage.setItem(SESSION_KEYS.NAVIGATION_STATE, JSON.stringify(state));
     } catch (error) {
-      console.warn('Failed to save navigation state:', error);
+      logger.warn('Failed to save navigation state:', error);
     }
   },
 
@@ -94,7 +95,7 @@ export const sessionStorage = {
         }
       });
     } catch (error) {
-      console.warn('Failed to clear session data:', error);
+      logger.warn('Failed to clear session data:', error);
     }
   },
 };

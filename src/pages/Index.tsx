@@ -15,6 +15,7 @@ import { useScrollHide } from "@/hooks/useScrollHide";
 import { Heart, Users, Shield, Zap, Sparkles, Star, Rocket, Smartphone, Download, Smartphone as Android } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import "@/styles/animations.css";
+import { logger } from '@/lib/logger';
 
 // Professional profile images from Unsplash - Production ready
 // Removed local imports that fail in production
@@ -64,7 +65,7 @@ const Index = () => {
             navigate('/profile-single');
           }
         } catch (error) {
-          console.error('Error parsing user data:', error);
+          logger.error('Error parsing user data:', error);
           // Si hay error, redirigir al perfil single por defecto
           navigate('/profile-single');
         }

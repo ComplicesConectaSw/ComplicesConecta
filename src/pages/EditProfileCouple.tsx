@@ -11,6 +11,7 @@ import type { Tables } from '@/integrations/supabase/types';
 import { generateMockCouple } from "@/lib/data";
 import { lifestyleInterests } from "@/lib/lifestyle-interests";
 import { useGeolocation } from "@/hooks/useGeolocation";
+import { logger } from '@/lib/logger';
 
 const EditProfileCouple = () => {
   const navigate = useNavigate();
@@ -166,12 +167,12 @@ const EditProfileCouple = () => {
   
   const handleImageUpload = (partner: 'partner1' | 'partner2', type: 'public' | 'private' | 'avatar') => {
     // Simulación de subida de imagen
-    console.log(`Subiendo imagen ${type} para ${partner}`);
+    logger.info(`Subiendo imagen ${type} para ${partner}`);
     // Aquí iría la lógica real de subida de imagen
   };
 
   const handleSave = () => {
-    console.log("Guardando perfil de pareja:", formData);
+    logger.info("Guardando perfil de pareja:", formData);
     navigate('/profile-couple');
   };
 

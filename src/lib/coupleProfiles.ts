@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 // Couple Profile Service with fallback to mock data
 // This service will use real Supabase data when available, otherwise fallback to mock data
 
@@ -77,10 +78,10 @@ export const createCoupleProfile = async (data: CreateCoupleProfileData): Promis
     };
 
     // In a real implementation, this would save to Supabase
-    console.log('Created couple profile (mock):', newProfile);
+    logger.info('Created couple profile (mock):', newProfile);
     return newProfile;
   } catch (error) {
-    console.error('Error creating couple profile:', error);
+    logger.error('Error creating couple profile:', error);
     return null;
   }
 };
@@ -91,7 +92,7 @@ export const getCoupleProfileById = async (id: string): Promise<CoupleProfileWit
     initializeMockData();
     return mockCoupleProfiles.find(profile => profile.id === id) || null;
   } catch (error) {
-    console.error('Error fetching couple profile:', error);
+    logger.error('Error fetching couple profile:', error);
     return null;
   }
 };
@@ -104,7 +105,7 @@ export const getCoupleProfileByUserId = async (userId: string): Promise<CouplePr
       profile.partner1_id === userId || profile.partner2_id === userId
     ) || null;
   } catch (error) {
-    console.error('Error fetching couple profile by user ID:', error);
+    logger.error('Error fetching couple profile by user ID:', error);
     return null;
   }
 };
@@ -115,7 +116,7 @@ export const getAllCoupleProfiles = async (limit: number = 20, offset: number = 
     initializeMockData();
     return mockCoupleProfiles.slice(offset, offset + limit);
   } catch (error) {
-    console.error('Error fetching couple profiles:', error);
+    logger.error('Error fetching couple profiles:', error);
     return [];
   }
 };
@@ -137,10 +138,10 @@ export const updateCoupleProfile = async (id: string, data: UpdateCoupleProfileD
     };
 
     mockCoupleProfiles[profileIndex] = updatedProfile;
-    console.log('Updated couple profile (mock):', updatedProfile);
+    logger.info('Updated couple profile (mock):', updatedProfile);
     return updatedProfile;
   } catch (error) {
-    console.error('Error updating couple profile:', error);
+    logger.error('Error updating couple profile:', error);
     return null;
   }
 };
@@ -156,10 +157,10 @@ export const deleteCoupleProfile = async (id: string): Promise<boolean> => {
     }
 
     mockCoupleProfiles.splice(profileIndex, 1);
-    console.log('Deleted couple profile (mock):', id);
+    logger.info('Deleted couple profile (mock):', id);
     return true;
   } catch (error) {
-    console.error('Error deleting couple profile:', error);
+    logger.error('Error deleting couple profile:', error);
     return false;
   }
 };
@@ -170,7 +171,7 @@ export const isUserInCouple = async (userId: string): Promise<boolean> => {
     const coupleProfile = await getCoupleProfileByUserId(userId);
     return coupleProfile !== null;
   } catch (error) {
-    console.error('Error checking if user is in couple:', error);
+    logger.error('Error checking if user is in couple:', error);
     return false;
   }
 };

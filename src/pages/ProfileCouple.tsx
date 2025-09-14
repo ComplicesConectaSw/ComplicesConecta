@@ -8,6 +8,7 @@ import Navigation from "@/components/Navigation";
 import { generateMockCoupleProfiles, type CoupleProfileWithPartners } from "@/lib/coupleProfiles";
 import CoupleProfileHeader from "@/components/profile/CoupleProfileHeader";
 import { useAuth } from '@/hooks/useAuth';
+import { logger } from '@/lib/logger';
 
 const ProfileCouple: React.FC = () => {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ const ProfileCouple: React.FC = () => {
   useEffect(() => {
     const loadProfile = async () => {
       try {
-        console.log('🔍 ProfileCouple - Estado de autenticación:', {
+        logger.info('🔍 ProfileCouple - Estado de autenticación:', {
           isAuthenticated,
           user: !!user,
           authProfile: !!authProfile
@@ -27,7 +28,7 @@ const ProfileCouple: React.FC = () => {
 
         // Verificar autenticación usando useAuth
         if (!isAuthenticated) {
-          console.log('❌ No autenticado, redirigiendo a auth');
+          logger.info('❌ No autenticado, redirigiendo a auth');
           navigate('/auth', { replace: true });
           return;
         }
@@ -43,7 +44,7 @@ const ProfileCouple: React.FC = () => {
         }, 1500);
         
       } catch (error) {
-        console.error('Error loading profile:', error);
+        logger.error('Error loading profile:', error);
         // Fallback a perfil mock
         const mockCoupleProfiles = generateMockCoupleProfiles();
         setProfile(mockCoupleProfiles[0]);

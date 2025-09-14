@@ -21,6 +21,7 @@ import { mockPrivacySettings } from "@/lib/data";
 import { invitationService } from "@/lib/invitations";
 import { chatService, type ChatRoom, type ChatMessage } from "@/lib/chat";
 import { simpleChatService, type SimpleChatRoom, type SimpleChatMessage } from '@/lib/simpleChatService';
+import { logger } from '@/lib/logger';
 
 export interface ChatUser {
   id: number;
@@ -68,7 +69,7 @@ const Chat = () => {
       loadRealChatData();
     } else {
       // Modo demo - usar datos mock
-      console.log('Chat demo cargado - acceso libre');
+      logger.info('Chat demo cargado - acceso libre');
     }
   }, [navigate]);
 
@@ -98,7 +99,7 @@ const Chat = () => {
         setRealRooms(allRooms);
       }
     } catch (error) {
-      console.error('Error cargando datos de chat:', error);
+      logger.error('Error cargando datos de chat:', error);
     } finally {
       setIsLoading(false);
     }
@@ -118,7 +119,7 @@ const Chat = () => {
         });
       }
     } catch (error) {
-      console.error('Error cargando mensajes:', error);
+      logger.error('Error cargando mensajes:', error);
     } finally {
       setIsLoading(false);
     }
@@ -139,7 +140,7 @@ const Chat = () => {
         alert(result.error || 'Error al enviar mensaje');
       }
     } catch (error) {
-      console.error('Error enviando mensaje:', error);
+      logger.error('Error enviando mensaje:', error);
       alert('Error al enviar mensaje');
     }
   };
@@ -675,7 +676,7 @@ const Chat = () => {
                     <div className="flex flex-col sm:flex-row gap-3 justify-center">
                       <UnifiedButton 
                         onClick={() => {
-                          console.log('Enviando invitación...');
+                          logger.info('Enviando invitación...');
                           // Simulate invitation sent
                           setHasChatAccess(prev => ({...prev, [selectedChat?.id || 0]: true}));
                           alert('¡Invitación aceptada! Ahora puedes chatear.');
@@ -687,7 +688,7 @@ const Chat = () => {
                       </UnifiedButton>
                       <UnifiedButton 
                         onClick={() => {
-                          console.log('Rechazando invitación...');
+                          logger.info('Rechazando invitación...');
                           // Properly reject the invitation and navigate back
                           setSelectedChat(null);
                           alert('Invitación rechazada. Has vuelto a la lista de chats.');

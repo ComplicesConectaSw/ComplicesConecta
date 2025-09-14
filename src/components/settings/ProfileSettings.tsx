@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Camera, Plus, X } from "lucide-react";
+import { logger } from '@/lib/logger';
 // Removed local import that fails in production
 
 export const ProfileSettings = () => {
@@ -41,7 +42,7 @@ export const ProfileSettings = () => {
 
   const handleSave = () => {
     // Save profile logic
-    console.log("Saving profile:", profile);
+    logger.info("Saving profile:", profile);
   };
 
   return (

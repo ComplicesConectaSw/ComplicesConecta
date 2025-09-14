@@ -18,6 +18,7 @@ import Navigation from "@/components/Navigation";
 import { useFeatures } from "@/hooks/useFeatures";
 import { invitationService, type Invitation } from "@/lib/invitations";
 import { useToast } from "@/hooks/use-toast";
+import { logger } from '@/lib/logger';
 
 const Requests = () => {
   const { features } = useFeatures();
@@ -52,7 +53,7 @@ const Requests = () => {
     const isAuthenticated = demoAuth || specialAuth || demoUser || specialUser;
     
     if (!isAuthenticated) {
-      console.log('❌ Usuario no autenticado en Requests, redirigiendo a /auth');
+      logger.info('❌ Usuario no autenticado en Requests, redirigiendo a /auth');
       window.location.href = '/auth';
       return;
     }
@@ -64,25 +65,25 @@ const Requests = () => {
       try {
         const parsedSpecialUser = JSON.parse(specialUser);
         userId = parsedSpecialUser.id || parsedSpecialUser.user_id;
-        console.log('✅ Usuario especial ID:', userId);
+        logger.info('✅ Usuario especial ID:', userId);
       } catch (error) {
-        console.error('❌ Error parsing special user:', error);
+        logger.error('❌ Error parsing special user:', error);
       }
     } else if (demoAuth && demoUser) {
       try {
         const parsedDemoUser = JSON.parse(demoUser);
         userId = parsedDemoUser.id || parsedDemoUser.user_id;
-        console.log('✅ Usuario demo ID:', userId);
+        logger.info('✅ Usuario demo ID:', userId);
       } catch (error) {
-        console.error('❌ Error parsing demo user:', error);
+        logger.error('❌ Error parsing demo user:', error);
       }
     }
     
     if (userId) {
       setCurrentUserId(userId);
-      console.log('✅ Usuario autenticado en Requests con ID:', userId);
+      logger.info('✅ Usuario autenticado en Requests con ID:', userId);
     } else {
-      console.log('❌ No se pudo obtener userId, redirigiendo a /auth');
+      logger.info('❌ No se pudo obtener userId, redirigiendo a /auth');
       window.location.href = '/auth';
     }
   }, []);

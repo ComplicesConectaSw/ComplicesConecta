@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Home, Search, MessageCircle, Heart, User, Settings, UserPlus, Coins, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useFeatures } from '@/hooks/useFeatures';
+import { logger } from '@/lib/logger';
 
 interface NavigationEnhancedProps {
   className?: string;
@@ -103,7 +104,7 @@ const NavigationEnhanced = ({
     const isDemo = localStorage.getItem('demo_authenticated') === 'true';
     const isSpecial = localStorage.getItem('apoyo_authenticated') === 'true';
     
-    console.log('🔍 Navigation Debug:', { demoUser, specialUser, userType, isDemo, isSpecial, path });
+    logger.info('🔍 Navigation Debug:', { demoUser, specialUser, userType, isDemo, isSpecial, path });
     
     // Detectar tipo de usuario y redirigir al perfil correcto
     if (path === '/profile') {
@@ -119,7 +120,7 @@ const NavigationEnhanced = ({
     const isAuthenticated = isDemo || isSpecial || demoUser || specialUser;
     
     if (!isAuthenticated) {
-      console.log('❌ Usuario no autenticado, redirigiendo a /auth');
+      logger.info('❌ Usuario no autenticado, redirigiendo a /auth');
       navigate('/auth');
       return;
     }

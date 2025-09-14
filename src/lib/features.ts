@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Sistema de control de funciones por fase
  * Gestiona qué funcionalidades están disponibles según la fase actual
@@ -205,6 +206,6 @@ export const PREMIUM_FEATURES_LIST = [
   }
 ];
 
-console.log(`🎯 Features initialized for phase: ${getCurrentPhase()}`);
-console.log(`🪙 Tokens enabled: ${isFeatureEnabled('tokens')}`);
-console.log(`👑 Premium features: ${isFeatureEnabled('premiumChat') ? 'enabled' : 'disabled'}`);
+logger.info(`🎯 Features initialized for phase: ${getCurrentPhase()}`);
+logger.info(`🪙 Tokens enabled: ${isFeatureEnabled('tokens')}`);
+logger.info(`👑 Premium features: ${isFeatureEnabled('premiumChat') ? 'enabled' : 'disabled'}`);

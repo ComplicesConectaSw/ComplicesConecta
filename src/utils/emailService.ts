@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 // ✅ AUTO-FIX aplicado por Auditoría ComplicesConecta v2.1.2
 // Fecha: 2025-01-06
 // Cambios: Reemplazado process.env con import.meta.env para compatibilidad Vite
@@ -57,7 +58,7 @@ export class EmailService {
       });
 
       if (!response.ok) {
-        console.error(`❌ Error HTTP en send-email: ${response.status}`);
+        logger.error(`❌ Error HTTP en send-email: ${response.status}`);
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
@@ -65,7 +66,7 @@ export class EmailService {
       console.info(`✅ Email enviado exitosamente con template: ${template}`);
       return result;
     } catch (error) {
-      console.error(`❌ Error enviando email con template ${template}:`, error);
+      logger.error(`❌ Error enviando email con template ${template}:`, error);
       throw error;
     }
   }

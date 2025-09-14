@@ -34,6 +34,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from '@/integrations/supabase/client';
 import { invitationService, type Invitation } from '@/lib/invitations';
 import { isProductionAdmin } from '@/lib/app-config';
+import { logger } from '@/lib/logger';
 
 interface Profile {
   id: string;
@@ -102,11 +103,11 @@ const AdminProduction = () => {
   const [auditReport, setAuditReport] = useState<any>(null);
 
   useEffect(() => {
-    console.log('🔄 AdminProduction - Verificando acceso...');
+    logger.info('🔄 AdminProduction - Verificando acceso...');
     
     // CRÍTICO: No verificar autenticación si aún está cargando
     if (loading) {
-      console.log('⏳ useAuth aún cargando - esperando...');
+      logger.info('⏳ useAuth aún cargando - esperando...');
       return;
     }
     
@@ -117,14 +118,14 @@ const AdminProduction = () => {
     if (demoAuth === 'true' && demoUser) {
       try {
         const user = JSON.parse(demoUser);
-        console.log('🎭 Usuario demo detectado:', user.email, 'Role:', user.role);
+        logger.info('🎭 Usuario demo detectado:', user.email, 'Role:', user.role);
         
         if (user.accountType === 'admin' || user.role === 'admin') {
-          console.log('✅ Admin demo autorizado - cargando panel producción');
+          logger.info('✅ Admin demo autorizado - cargando panel producción');
           loadProductionData();
           return;
         } else {
-          console.log('❌ Usuario demo sin permisos admin');
+          logger.info('❌ Usuario demo sin permisos admin');
           toast({
             title: "Acceso Denegado",
             description: "No tienes permisos de administrador",
@@ -134,15 +135,15 @@ const AdminProduction = () => {
           return;
         }
       } catch (error) {
-        console.error('Error parsing demo user:', error);
+        logger.error('Error parsing demo user:', error);
       }
     }
     
     const authStatus = isAuthenticated();
-    console.log('🔐 Estado autenticación:', authStatus);
+    logger.info('🔐 Estado autenticación:', authStatus);
     
     if (!authStatus) {
-      console.log('❌ No autenticado - redirigiendo a /auth');
+      logger.info('❌ No autenticado - redirigiendo a /auth');
       toast({
         title: "Acceso Denegado",
         description: "Debe iniciar sesión para acceder al panel de administración",
@@ -154,10 +155,10 @@ const AdminProduction = () => {
 
     // Verificar permisos de admin
     const adminStatus = isAdmin();
-    console.log('👑 Estado admin:', adminStatus);
+    logger.info('👑 Estado admin:', adminStatus);
     
     if (!adminStatus) {
-      console.log('❌ Usuario sin permisos admin - redirigiendo a /discover');
+      logger.info('❌ Usuario sin permisos admin - redirigiendo a /discover');
       toast({
         title: "Acceso Denegado",
         description: "No tiene permisos de administrador",
@@ -167,7 +168,7 @@ const AdminProduction = () => {
       return;
     }
 
-    console.log('✅ Acceso autorizado - cargando panel producción');
+    logger.info('✅ Acceso autorizado - cargando panel producción');
     
     // Cargar datos del panel
     loadRealProfiles();
@@ -186,7 +187,7 @@ const AdminProduction = () => {
         loadRealInvitations()
       ]);
     } catch (error) {
-      console.error('Error loading production admin data:', error);
+      logger.error('Error loading production admin data:', error);
       toast({
         title: "Error",
         description: "Error al cargar datos del panel de administración de producción",
@@ -206,7 +207,7 @@ const AdminProduction = () => {
         .limit(100);
 
       if (error) {
-        console.error('Error loading profiles:', error);
+        logger.error('Error loading profiles:', error);
         return;
       }
 
@@ -232,7 +233,7 @@ const AdminProduction = () => {
 
       setProfiles(mappedProfiles);
     } catch (error) {
-      console.error('Error in loadRealProfiles:', error);
+      logger.error('Error in loadRealProfiles:', error);
     }
   };
 
@@ -260,7 +261,7 @@ const AdminProduction = () => {
         const apkResponse = await supabase.from('apk_downloads').select('*', { count: 'exact', head: true });
         apkDownloadsResponse = { count: apkResponse.count || 0 };
       } catch (error) {
-        console.log('⚠️ Tabla apk_downloads no disponible');
+        logger.info('⚠️ Tabla apk_downloads no disponible');
       }
 
       try {
@@ -269,7 +270,7 @@ const AdminProduction = () => {
           appMetrics = metricsResponse.data;
         }
       } catch (error) {
-        console.log('📊 Tabla app_metrics no disponible, usando datos calculados');
+        logger.info('📊 Tabla app_metrics no disponible, usando datos calculados');
       }
 
       try {
@@ -278,7 +279,7 @@ const AdminProduction = () => {
           tokenData = tokensResponse.data;
         }
       } catch (error) {
-        console.log('🪙 Tabla user_token_balances no disponible');
+        logger.info('🪙 Tabla user_token_balances no disponible');
       }
 
       // Función para obtener métricas específicas
@@ -292,7 +293,7 @@ const AdminProduction = () => {
       const totalTokens = tokenData?.length || 0;
       const stakedTokens = getMetricValue('staked_tokens');
       
-      console.log('📊 Estadísticas cargadas:', {
+      logger.info('📊 Estadísticas cargadas:', {
         totalUsers: totalUsers || 0,
         premiumUsers: premiumUsers || 0,
         activeUsers: activeUsers || 0,
@@ -312,7 +313,7 @@ const AdminProduction = () => {
         rewardsDistributed: getMetricValue('rewards_distributed') || 0
       });
     } catch (error) {
-      console.error('Error loading real stats:', error);
+      logger.error('Error loading real stats:', error);
     }
   };
 
@@ -326,7 +327,7 @@ const AdminProduction = () => {
         .order('display_order', { ascending: true });
 
       if (error) {
-        console.log('📋 Tabla faq_items no disponible, usando lista vacía');
+        logger.info('📋 Tabla faq_items no disponible, usando lista vacía');
         setFaqItems([]);
         return;
       }
@@ -342,9 +343,9 @@ const AdminProduction = () => {
       }));
 
       setFaqItems(mappedFaqItems);
-      console.log('📋 FAQ items cargados:', mappedFaqItems.length);
+      logger.info('📋 FAQ items cargados:', mappedFaqItems.length);
     } catch (error) {
-      console.log('📋 Error cargando FAQ, usando lista vacía:', error);
+      logger.info('📋 Error cargando FAQ, usando lista vacía:', error);
       setFaqItems([]);
     }
   };
@@ -359,7 +360,7 @@ const AdminProduction = () => {
         .limit(50);
 
       if (error) {
-        console.error('Error loading invitations:', error);
+        logger.error('Error loading invitations:', error);
         setInvitations([]);
         return;
       }
@@ -375,9 +376,9 @@ const AdminProduction = () => {
       }));
       
       setInvitations(mappedInvitations);
-      console.log('📧 Invitaciones cargadas:', mappedInvitations.length);
+      logger.info('📧 Invitaciones cargadas:', mappedInvitations.length);
     } catch (error) {
-      console.error('Error loading invitations:', error);
+      logger.error('Error loading invitations:', error);
       setInvitations([]);
     }
   };
@@ -471,7 +472,7 @@ const AdminProduction = () => {
         description: "La pregunta frecuente ha sido agregada exitosamente"
       });
     } catch (error) {
-      console.error('Error adding FAQ:', error);
+      logger.error('Error adding FAQ:', error);
       toast({
         title: "Error",
         description: "Error al agregar la pregunta frecuente",

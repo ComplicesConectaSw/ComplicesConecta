@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { XCircle, CheckCircle, AlertCircle, Shield } from 'lucide-react';
+import { logger } from '@/lib/logger';
 
 /**
  * Ejemplo completo de implementación de hCaptcha
@@ -21,7 +22,7 @@ export const HCaptchaExample: React.FC = () => {
   const HCAPTCHA_SITE_KEY = import.meta.env.VITE_HCAPTCHA_SITE_KEY || '10000000-ffff-ffff-ffff-000000000001';
 
   const handleVerify = (captchaToken: string, isValid: boolean) => {
-    console.log('Verificación hCaptcha:', { token: captchaToken, valid: isValid });
+    logger.info('Verificación hCaptcha:', { token: captchaToken, valid: isValid });
     
     if (isValid) {
       setToken(captchaToken);
@@ -35,14 +36,14 @@ export const HCaptchaExample: React.FC = () => {
   };
 
   const handleError = (errorMessage: string) => {
-    console.error('Error hCaptcha:', errorMessage);
+    logger.error('Error hCaptcha:', errorMessage);
     setError(`Error: ${errorMessage}`);
     setIsVerified(false);
     setToken('');
   };
 
   const handleExpire = () => {
-    console.log('hCaptcha expirado');
+    logger.info('hCaptcha expirado');
     setIsVerified(false);
     setToken('');
     setError('La verificación ha expirado. Por favor, verifica nuevamente.');
@@ -59,7 +60,7 @@ export const HCaptchaExample: React.FC = () => {
     try {
       // Aquí harías la llamada a tu API para procesar el formulario
       // La API debe verificar el token en el servidor
-      console.log('Enviando formulario con token:', token);
+      logger.info('Enviando formulario con token:', token);
       
       // Simulación de envío
       await new Promise(resolve => setTimeout(resolve, 2000));
@@ -67,7 +68,7 @@ export const HCaptchaExample: React.FC = () => {
       alert('¡Formulario enviado exitosamente!');
       
     } catch (error) {
-      console.error('Error enviando formulario:', error);
+      logger.error('Error enviando formulario:', error);
       setError('Error al enviar el formulario');
     } finally {
       setIsSubmitting(false);

@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/lib/logger';
 
 interface HCaptchaWidgetProps {
   siteKey: string;
@@ -71,7 +72,7 @@ export const HCaptchaWidget: React.FC<HCaptchaWidgetProps> = ({
         theme,
         size,
         callback: async (token: string) => {
-          console.log('hCaptcha token recibido, verificando en backend...');
+          logger.info('hCaptcha token recibido, verificando en backend...');
           
           try {
             // Verify token using Supabase Edge Function
@@ -83,7 +84,7 @@ export const HCaptchaWidget: React.FC<HCaptchaWidgetProps> = ({
             });
 
             if (error) {
-              console.error('Error verificando hCaptcha:', error);
+              logger.error('Error verificando hCaptcha:', error);
               if (onError) {
                 onError('Error de verificación del servidor');
               }
@@ -91,7 +92,7 @@ export const HCaptchaWidget: React.FC<HCaptchaWidgetProps> = ({
             }
 
             const result = data as HCaptchaVerifyResponse;
-            console.log('Resultado verificación hCaptcha:', result.success);
+            logger.info('Resultado verificación hCaptcha:', result.success);
 
             if (onVerify) {
               onVerify(token, result.success);
@@ -102,20 +103,20 @@ export const HCaptchaWidget: React.FC<HCaptchaWidgetProps> = ({
             }
 
           } catch (error) {
-            console.error('Error en verificación hCaptcha:', error);
+            logger.error('Error en verificación hCaptcha:', error);
             if (onError) {
               onError('Error de conexión con el servidor');
             }
           }
         },
         'expired-callback': () => {
-          console.log('hCaptcha expirado');
+          logger.info('hCaptcha expirado');
           if (onExpire) {
             onExpire();
           }
         },
         'error-callback': (error?: string) => {
-          console.error('Error hCaptcha:', error);
+          logger.error('Error hCaptcha:', error);
           if (onError) {
             onError(error || 'Error desconocido en hCaptcha');
           }

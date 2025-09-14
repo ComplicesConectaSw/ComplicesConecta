@@ -26,19 +26,79 @@ export default defineConfig({
     rollupOptions: {
       external: ['prop-types'],
       output: {
-        manualChunks: {
-          // Vendor libraries
-          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-          'vendor-ui': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-select', '@radix-ui/react-tabs', '@radix-ui/react-toast'],
-          'vendor-query': ['@tanstack/react-query'],
-          'vendor-supabase': ['@supabase/supabase-js'],
-          'vendor-utils': ['date-fns', 'uuid', 'framer-motion'],
-          'vendor-icons': ['lucide-react'],
-          // App chunks
-          'auth': ['src/hooks/useAuth.ts', 'src/pages/Auth.tsx', 'src/components/auth/EmailValidation.tsx', 'src/components/auth/WorldIDButton.tsx'],
-          'chat': ['src/pages/Chat.tsx', 'src/components/chat/ChatBubble.tsx', 'src/components/chat/ChatContainer.tsx', 'src/components/chat/ChatInput.tsx', 'src/components/chat/ChatList.tsx', 'src/components/chat/ChatWindow.tsx', 'src/components/chat/ChatWindowEnhanced.tsx', 'src/components/chat/ChatWithLocation.tsx', 'src/components/chat/ModernChatInterface.tsx', 'src/components/chat/RealtimeChatIntegration.tsx', 'src/components/chat/RealtimeChatWindow.tsx', 'src/components/chat/TypingIndicator.tsx', 'src/lib/chat.ts'],
-          'matching': ['src/pages/Matches.tsx', 'src/pages/Discover.tsx', 'src/lib/MatchingService.ts'],
-          'profile': ['src/pages/ProfileSingle.tsx', 'src/pages/ProfileCouple.tsx', 'src/components/profile/CoupleCard.tsx', 'src/components/profile/CoupleProfileCard.tsx', 'src/components/profile/CoupleProfileHeader.tsx', 'src/components/profile/Gallery.tsx', 'src/components/profile/ImageUpload.tsx', 'src/components/profile/MainProfileCard.tsx', 'src/components/profile/ProfileStats.tsx', 'src/components/profile/SingleCard.tsx'],
+        manualChunks: (id) => {
+          // Vendor chunks optimizados por tamaño
+          if (id.includes('node_modules')) {
+            // React ecosystem - chunk principal
+            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
+              return 'vendor-react';
+            }
+            
+            // UI libraries - separar por tamaño
+            if (id.includes('@radix-ui')) {
+              return 'vendor-radix';
+            }
+            
+            // Animation libraries
+            if (id.includes('framer-motion')) {
+              return 'vendor-animation';
+            }
+            
+            // Data fetching
+            if (id.includes('@tanstack/react-query')) {
+              return 'vendor-query';
+            }
+            
+            // Supabase
+            if (id.includes('@supabase')) {
+              return 'vendor-supabase';
+            }
+            
+            // Icons - chunk separado por ser grande
+            if (id.includes('lucide-react')) {
+              return 'vendor-icons';
+            }
+            
+            // Utilities - chunk pequeño
+            if (id.includes('date-fns') || id.includes('uuid') || id.includes('clsx') || id.includes('class-variance-authority')) {
+              return 'vendor-utils';
+            }
+            
+            // Resto de vendors en chunk general
+            return 'vendor-misc';
+          }
+          
+          // App chunks por funcionalidad
+          if (id.includes('/pages/Auth') || id.includes('/hooks/useAuth') || id.includes('/components/auth/')) {
+            return 'app-auth';
+          }
+          
+          if (id.includes('/pages/Chat') || id.includes('/components/chat/') || id.includes('/hooks/useRealtimeChat')) {
+            return 'app-chat';
+          }
+          
+          if (id.includes('/pages/Discover') || id.includes('/pages/Matches') || id.includes('/lib/MatchingService')) {
+            return 'app-matching';
+          }
+          
+          if (id.includes('/pages/Profile') || id.includes('/components/profile/') || id.includes('/hooks/useProfile')) {
+            return 'app-profile';
+          }
+          
+          if (id.includes('/pages/Admin') || id.includes('/components/admin/')) {
+            return 'app-admin';
+          }
+          
+          if (id.includes('/pages/Tokens') || id.includes('/components/tokens/') || id.includes('/hooks/useTokens')) {
+            return 'app-tokens';
+          }
+          
+          if (id.includes('/components/animations/') || id.includes('/components/ui/')) {
+            return 'app-ui';
+          }
+          
+          // Chunk principal para el resto
+          return undefined;
         },
         chunkFileNames: (chunkInfo) => {
           const facadeModuleId = chunkInfo.facadeModuleId ? chunkInfo.facadeModuleId.split('/').pop() : 'chunk';
@@ -53,7 +113,7 @@ export default defineConfig({
     },
     target: 'es2020',
     minify: 'esbuild',
-    chunkSizeWarningLimit: 500,
+    chunkSizeWarningLimit: 400, // Reducido para mejor optimización
   },
   define: {
     global: 'globalThis',

@@ -11,6 +11,7 @@ import Gallery from '@/components/profile/Gallery';
 import { ProfileLoadingScreen } from '@/components/ProfileLoadingScreen';
 import { useAuth } from '@/hooks/useAuth';
 import { getAppConfig } from '@/lib/app-config';
+import { logger } from '@/lib/logger';
 
 const ProfileSingle: React.FC = () => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const ProfileSingle: React.FC = () => {
   useEffect(() => {
     const loadProfile = async () => {
       try {
-        console.log('🔍 ProfileSingle - Estado de autenticación:', {
+        logger.info('🔍 ProfileSingle - Estado de autenticación:', {
           user: !!user,
           authProfile: !!authProfile,
           isDemo: authProfile?.is_demo,
@@ -32,14 +33,14 @@ const ProfileSingle: React.FC = () => {
         
         // Si no hay autenticación válida, redirigir
         if (!isAuthenticated) {
-          console.log('❌ No hay autenticación válida, redirigiendo...');
+          logger.info('❌ No hay autenticación válida, redirigiendo...');
           navigate('/auth', { replace: true });
           return;
         }
         
         // Si authProfile ya está disponible, usarlo directamente
         if (authProfile && authProfile.id) {
-          console.log('✅ AuthProfile disponible:', authProfile.first_name);
+          logger.info('✅ AuthProfile disponible:', authProfile.first_name);
           setProfile(authProfile);
           setIsLoading(false);
           return;
@@ -51,7 +52,7 @@ const ProfileSingle: React.FC = () => {
         
         if (demoAuth === 'true' && demoUser) {
           const parsedUser = JSON.parse(demoUser);
-          console.log('🎭 Cargando perfil demo:', parsedUser);
+          logger.info('🎭 Cargando perfil demo:', parsedUser);
           setProfile(parsedUser as Tables<'profiles'>);
           setIsLoading(false);
           return;
@@ -59,16 +60,16 @@ const ProfileSingle: React.FC = () => {
         
         // Si hay usuario pero no perfil, esperar a que se cargue
         if (user && !authProfile) {
-          console.log('⏳ Usuario autenticado, esperando carga del perfil...');
+          logger.info('⏳ Usuario autenticado, esperando carga del perfil...');
           // Mantener loading state hasta que el perfil se cargue
           return;
         }
         
         // Si llegamos aquí sin perfil ni usuario, algo está mal
-        console.log('⚠️ Estado inesperado: sin usuario ni perfil válido');
+        logger.info('⚠️ Estado inesperado: sin usuario ni perfil válido');
         setIsLoading(false);
       } catch (error) {
-        console.error('Error cargando perfil:', error);
+        logger.error('Error cargando perfil:', error);
         setIsLoading(false);
       }
     };

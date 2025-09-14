@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 // Configuración de la aplicación - Separación Demo vs Producción
 export interface AppConfig {
   mode: 'demo' | 'production';
@@ -31,7 +32,7 @@ export const getAppConfig = (): AppConfig => {
   const apoyoAuth = localStorage.getItem('apoyo_authenticated');
   const realMode = (apoyoAuth === 'true') ? 'production' : mode;
   
-  console.log('🔧 Configuración de aplicación:', {
+  logger.info('🔧 Configuración de aplicación:', {
     mode,
     supabaseUrl: import.meta.env.VITE_SUPABASE_URL ? '✅ Configurada' : '❌ Faltante',
     supabaseKey: import.meta.env.VITE_SUPABASE_ANON_KEY ? '✅ Configurada' : '❌ Faltante'
@@ -134,13 +135,13 @@ export const handleDemoAuth = (email: string, accountType: string = 'single') =>
   const config = getAppConfig();
   
   if (!isDemoCredential(email)) {
-    console.log('❌ Email no es credencial demo:', email);
+    logger.info('❌ Email no es credencial demo:', email);
     return null;
   }
   
   // Bloquear complicesconectasw@outlook.es en modo demo
   if (email.toLowerCase().trim() === 'complicesconectasw@outlook.es') {
-    console.log('🚫 complicesconectasw@outlook.es es SOLO para producción real');
+    logger.info('🚫 complicesconectasw@outlook.es es SOLO para producción real');
     return null;
   }
   
@@ -173,7 +174,7 @@ export const handleDemoAuth = (email: string, accountType: string = 'single') =>
   // ELIMINADO: No almacenar datos completos de usuario en localStorage
   // Los datos se mantienen solo en memoria durante la sesión
   
-  console.log('🎭 Sesión demo creada para:', email, 'Tipo:', finalAccountType);
+  logger.info('🎭 Sesión demo creada para:', email, 'Tipo:', finalAccountType);
   
   return { user: demoUser, session: demoSession };
 };
@@ -183,7 +184,7 @@ export const clearDemoAuth = () => {
   localStorage.removeItem('demo_authenticated');
   localStorage.removeItem('userType');
   // ELIMINADO: Limpiar datos de usuario que ya no se almacenan
-  console.log('🧹 Sesión demo limpiada');
+  logger.info('🧹 Sesión demo limpiada');
 };
 
 // Función para verificar sesión demo existente
@@ -212,12 +213,12 @@ export const shouldUseRealSupabase = () => {
   const config = getAppConfig();
   const demoAuth = localStorage.getItem('demo_authenticated');
   
-  console.log('🔍 shouldUseRealSupabase - Modo:', config.mode, 'DemoAuth:', demoAuth);
+  logger.info('🔍 shouldUseRealSupabase - Modo:', config.mode, 'DemoAuth:', demoAuth);
   
   // En modo producción, SIEMPRE usar Supabase real
   // No importa si hay datos demo en localStorage
   if (config.mode === 'production') {
-    console.log('🏢 Modo producción - usando Supabase real siempre');
+    logger.info('🏢 Modo producción - usando Supabase real siempre');
     return true;
   }
   
@@ -228,16 +229,16 @@ export const shouldUseRealSupabase = () => {
       try {
         const user = JSON.parse(demoUser);
         const useSupabase = user.role === 'admin';
-        console.log('🎭 Usuario demo:', user.email, 'Admin:', user.role === 'admin', 'Usar Supabase:', useSupabase);
+        logger.info('🎭 Usuario demo:', user.email, 'Admin:', user.role === 'admin', 'Usar Supabase:', useSupabase);
         return useSupabase;
       } catch (error) {
-        console.error('❌ Error parsing demo user:', error);
+        logger.error('❌ Error parsing demo user:', error);
         return false;
       }
     }
   }
   
-  console.log('✅ Usando Supabase real por defecto');
+  logger.info('✅ Usando Supabase real por defecto');
   return true;
 };
 
@@ -245,11 +246,11 @@ export const shouldUseRealSupabase = () => {
 export const appConfig = getAppConfig();
 
 // Log de configuración inicial
-console.log('🚀 ComplicesConecta iniciado en modo:', appConfig.mode);
+logger.info('🚀 ComplicesConecta iniciado en modo:', appConfig.mode);
 if (appConfig.mode === 'demo') {
-  console.log('🎭 Modo demo activo - credenciales de prueba habilitadas');
-  console.log('📝 Credenciales demo:', DEMO_CREDENTIALS);
+  logger.info('🎭 Modo demo activo - credenciales de prueba habilitadas');
+  logger.info('📝 Credenciales demo:', DEMO_CREDENTIALS);
 } else {
-  console.log('🔐 Modo producción activo - autenticación real requerida');
-  console.log('🏢 Credenciales producción:', { email: 'complicesconectasw@outlook.es' });
+  logger.info('🔐 Modo producción activo - autenticación real requerida');
+  logger.info('🏢 Credenciales producción:', { email: 'complicesconectasw@outlook.es' });
 }

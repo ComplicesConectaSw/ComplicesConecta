@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { logger } from '@/lib/logger';
 
 interface CouplePhoto {
   id: string;
@@ -57,7 +58,7 @@ export const useCouplePhotos = (profileId?: string): UseCouplePhotosReturn => {
 
       setPhotos(photosWithUrls);
     } catch (err) {
-      console.error('Error loading couple photos:', err);
+      logger.error('Error loading couple photos:', err);
       setError('Error al cargar las fotos');
     } finally {
       setLoading(false);
@@ -131,7 +132,7 @@ export const useCouplePhotos = (profileId?: string): UseCouplePhotosReturn => {
       setPhotos(prev => [newPhoto, ...prev]);
 
     } catch (err) {
-      console.error('Error uploading photo:', err);
+      logger.error('Error uploading photo:', err);
       throw new Error('Error al subir la foto');
     }
   };
@@ -157,7 +158,7 @@ export const useCouplePhotos = (profileId?: string): UseCouplePhotosReturn => {
           .remove([photoData.storage_path]);
 
         if (storageError) {
-          console.warn('Error deleting file from storage:', storageError);
+          logger.warn('Error deleting file from storage:', storageError);
         }
       }
 
@@ -184,7 +185,7 @@ export const useCouplePhotos = (profileId?: string): UseCouplePhotosReturn => {
       setPhotos(prev => prev.filter(p => p.id !== photoId));
 
     } catch (err) {
-      console.error('Error deleting photo:', err);
+      logger.error('Error deleting photo:', err);
       throw new Error('Error al eliminar la foto');
     }
   };
@@ -216,7 +217,7 @@ export const useCouplePhotos = (profileId?: string): UseCouplePhotosReturn => {
       })));
 
     } catch (err) {
-      console.error('Error setting main photo:', err);
+      logger.error('Error setting main photo:', err);
       throw new Error('Error al establecer foto principal');
     }
   };

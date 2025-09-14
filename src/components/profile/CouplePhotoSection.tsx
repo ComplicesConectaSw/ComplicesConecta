@@ -4,6 +4,7 @@ import { Camera, Upload, X, Heart, Star, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { logger } from '@/lib/logger';
 
 interface CouplePhoto {
   id: string;
@@ -66,7 +67,7 @@ export const CouplePhotoSection: React.FC<CouplePhotoSectionProps> = ({
       setUploading(partner);
       await onPhotoUpload(file, partner);
     } catch (error) {
-      console.error('Error uploading photo:', error);
+      logger.error('Error uploading photo:', error);
       alert('Error al subir la foto. Inténtalo de nuevo.');
     } finally {
       setUploading(null);

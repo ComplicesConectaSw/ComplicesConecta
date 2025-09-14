@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { Search, MapPin } from "lucide-react";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { supabase } from "@/integrations/supabase/client";
+import { logger } from '@/lib/logger';
 
 interface SearchFilters {
   ageRange: [number, number];
@@ -195,7 +196,7 @@ export const PreferenceSearch = ({ onResultsChange, currentUserId }: PreferenceS
       setResultsCount(enrichedResults.length);
       onResultsChange(enrichedResults);
     } catch (error) {
-      console.error('Error searching profiles:', error);
+      logger.error('Error searching profiles:', error);
     } finally {
       setIsSearching(false);
     }

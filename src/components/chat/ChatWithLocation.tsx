@@ -8,6 +8,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { MapPin, Send, Share2 } from 'lucide-react';
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { useToast } from "@/hooks/use-toast";
+import { logger } from '@/lib/logger';
 
 interface MessageWithSender {
   id: string;
@@ -80,7 +81,7 @@ export const ChatWithLocation = ({ conversationId, currentUserId, otherUser }: C
 
       setMessages(formattedMessages);
     } catch (error) {
-      console.error('Error fetching messages:', error);
+      logger.error('Error fetching messages:', error);
     }
   }, [conversationId]);
 
@@ -137,7 +138,7 @@ export const ChatWithLocation = ({ conversationId, currentUserId, otherUser }: C
         });
       }
     } catch (error) {
-      console.error('Error sending message:', error);
+      logger.error('Error sending message:', error);
       toast({
         variant: "destructive",
         title: "Error",

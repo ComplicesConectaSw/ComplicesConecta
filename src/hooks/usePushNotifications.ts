@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/lib/logger';
 
 export interface PushNotificationPayload {
   title: string;
@@ -65,10 +66,10 @@ export const usePushNotifications = ({
 
     try {
       const registration = await navigator.serviceWorker.register('/sw.js');
-      console.log('✅ Service Worker registrado:', registration);
+      logger.info('✅ Service Worker registrado:', registration);
       return registration;
     } catch (error) {
-      console.error('❌ Error registrando Service Worker:', error);
+      logger.error('❌ Error registrando Service Worker:', error);
       setError('Error registrando Service Worker');
       return null;
     }
@@ -93,7 +94,7 @@ export const usePushNotifications = ({
       
       return permission;
     } catch (error) {
-      console.error('❌ Error solicitando permisos:', error);
+      logger.error('❌ Error solicitando permisos:', error);
       setError('Error solicitando permisos de notificación');
       return 'denied';
     }
@@ -135,10 +136,10 @@ export const usePushNotifications = ({
       // Save subscription to database
       await saveSubscriptionToDatabase(pushSubscription);
 
-      console.log('✅ Suscripción push creada:', pushSubscription);
+      logger.info('✅ Suscripción push creada:', pushSubscription);
       return pushSubscription;
     } catch (error) {
-      console.error('❌ Error creando suscripción push:', error);
+      logger.error('❌ Error creando suscripción push:', error);
       setError('Error creando suscripción push');
       return null;
     } finally {
@@ -161,12 +162,12 @@ export const usePushNotifications = ({
         
         setSubscription(null);
         onSubscriptionChange?.(null);
-        console.log('✅ Suscripción push eliminada');
+        logger.info('✅ Suscripción push eliminada');
       }
       
       return success;
     } catch (error) {
-      console.error('❌ Error eliminando suscripción push:', error);
+      logger.error('❌ Error eliminando suscripción push:', error);
       setError('Error eliminando suscripción push');
       return false;
     } finally {
@@ -192,9 +193,9 @@ export const usePushNotifications = ({
       };
 
       localStorage.setItem(`push_subscription_${userId}`, JSON.stringify(subscriptionData));
-      console.log('✅ Suscripción guardada temporalmente en localStorage');
+      logger.info('✅ Suscripción guardada temporalmente en localStorage');
     } catch (error) {
-      console.error('❌ Error en saveSubscriptionToDatabase:', error);
+      logger.error('❌ Error en saveSubscriptionToDatabase:', error);
       throw error;
     }
   }, [userId]);
@@ -206,9 +207,9 @@ export const usePushNotifications = ({
     try {
       // Remove from localStorage for now
       localStorage.removeItem(`push_subscription_${userId}`);
-      console.log('✅ Suscripción removida de localStorage');
+      logger.info('✅ Suscripción removida de localStorage');
     } catch (error) {
-      console.error('❌ Error en removeSubscriptionFromDatabase:', error);
+      logger.error('❌ Error en removeSubscriptionFromDatabase:', error);
       throw error;
     }
   }, [userId]);
@@ -235,13 +236,13 @@ export const usePushNotifications = ({
       });
 
       if (error) {
-        console.error('❌ Error enviando notificación de prueba:', error);
+        logger.error('❌ Error enviando notificación de prueba:', error);
         setError('Error enviando notificación de prueba');
       } else {
-        console.log('✅ Notificación de prueba enviada');
+        logger.info('✅ Notificación de prueba enviada');
       }
     } catch (error) {
-      console.error('❌ Error en sendTestNotification:', error);
+      logger.error('❌ Error en sendTestNotification:', error);
       setError('Error enviando notificación de prueba');
     }
   }, [subscription, userId]);
@@ -268,7 +269,7 @@ export const usePushNotifications = ({
 
       return notification;
     } catch (error) {
-      console.error('❌ Error mostrando notificación local:', error);
+      logger.error('❌ Error mostrando notificación local:', error);
       return null;
     }
   }, [isSupported, permission, onNotificationReceived]);
@@ -287,7 +288,7 @@ export const usePushNotifications = ({
           onSubscriptionChange?.(existingSubscription);
         }
       } catch (error) {
-        console.error('❌ Error cargando suscripción existente:', error);
+        logger.error('❌ Error cargando suscripción existente:', error);
       }
     };
 

@@ -3,6 +3,7 @@ import { X, Smartphone, Download, Chrome, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { logger } from '@/lib/logger';
 
 interface InstallAppModalProps {
   isOpen: boolean;
@@ -170,7 +171,7 @@ export const InstallAppModal = ({ isOpen, onClose }: InstallAppModalProps) => {
                       document.body.removeChild(link);
                     }
                   } catch (error) {
-                    console.error('Error al descargar APK:', error);
+                    logger.error('Error al descargar APK:', error);
                     // Fallback: abrir en nueva ventana
                     window.open('https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v2.4.0/app-release.apk', '_blank');
                   }

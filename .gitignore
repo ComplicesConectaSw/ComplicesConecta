@@ -1,6 +1,5 @@
 # Logs
 logs
-logs_*/
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -154,10 +153,28 @@ android/.gradle/
 *.apk
 *.aab
 
+# Vite build artifacts
+dist-ssr/
+.vite-cache/
+vite.config.*.timestamp-*
+
+# TypeScript build info
+*.tsbuildinfo
+tsconfig.*.tsbuildinfo
+
 # Generated HTML files
 dist/*.html
 *.generated.html
 android/app/src/main/assets/public/*.html
+
+# Chunk analysis and bundle reports
+stats.html
+bundle-analyzer-report.html
+webpack-bundle-analyzer-report.html
+
+# Source maps in production
+*.map
+!*.d.ts.map
 
 # Duplicate files cleanup
 **/duplicate_*

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Bell, BellOff, Settings, TestTube, AlertCircle, CheckCircle } from 'lucide-react';
 import { usePushNotifications } from '@/hooks/usePushNotifications';
 import { useAuth } from '@/hooks/useAuth';
+import { logger } from '@/lib/logger';
 
 interface PushNotificationSettingsProps {
   className?: string;
@@ -29,10 +30,10 @@ export const PushNotificationSettings: React.FC<PushNotificationSettingsProps> =
   } = usePushNotifications({
     userId: user?.id,
     onNotificationReceived: (notification) => {
-      console.log('📨 Notificación recibida:', notification);
+      logger.info('📨 Notificación recibida:', notification);
     },
     onSubscriptionChange: (sub) => {
-      console.log('🔄 Suscripción cambió:', sub ? 'Activa' : 'Inactiva');
+      logger.info('🔄 Suscripción cambió:', sub ? 'Activa' : 'Inactiva');
     }
   });
 

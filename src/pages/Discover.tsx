@@ -17,12 +17,13 @@ import { generateMockCoupleProfiles, type CoupleProfileWithPartners } from "@/li
 // import { importedLifestyleInterests } from "@/lib/lifestyleInterests";
 import { getAllCoupleProfiles } from "@/lib/coupleProfiles";
 import { supabase } from "@/integrations/supabase/client";
-import type { Tables } from "@/integrations/supabase/types";
+// Note: Using 'any' type for Supabase profile data since types are not available
 import CoupleProfileCard from '@/components/profile/CoupleProfileCard';
 import { AnimatedProfileCard } from '@/components/ui/AnimatedProfileCard';
 import { AnimatedButton } from '@/components/ui/AnimatedButton';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { motion } from 'framer-motion';
+import { logger } from '@/lib/logger';
 
 // Definición del tipo para un perfil
 interface Profile {
@@ -84,7 +85,7 @@ const Discover = () => {
       setCoupleProfiles(couples);
       setFilteredCoupleProfiles(couples);
     } catch (error) {
-      console.error('Error loading couple profiles:', error);
+      logger.error('Error loading single profiles', { error: error instanceof Error ? error.message : String(error) });
     }
   }, []);
 
@@ -173,7 +174,7 @@ const Discover = () => {
   // Función para cargar perfiles reales desde Supabase
   const loadRealProfiles = useCallback(async () => {
     try {
-      console.log('🔗 Cargando perfiles reales desde Supabase...');
+      logger.info('🔗 Cargando perfiles reales desde Supabase...');
       
       const { data: realProfiles, error } = await supabase
         .from('profiles')
@@ -183,43 +184,53 @@ const Discover = () => {
         .limit(50);
 
       if (error) {
-        console.error('❌ Error cargando perfiles reales:', error);
+        logger.error('❌ Error cargando perfiles reales:', error);
         // Fallback a perfiles mock
         generateRandomProfiles();
         return;
       }
 
       if (realProfiles && realProfiles.length > 0) {
-        console.log(`✅ ${realProfiles.length} perfiles reales cargados`);
+        logger.info(`✅ ${realProfiles.length} perfiles reales cargados`);
         
         // Convertir perfiles de Supabase al formato esperado
-        const convertedProfiles: Profile[] = realProfiles.map((profile: Tables<'profiles'>) => ({
+        const convertedProfiles: Profile[] = realProfiles.map((profile: any) => ({
           id: profile.id,
           name: `${profile.first_name} ${profile.last_name || ''}`.trim(),
           age: profile.age || 25,
           location: getLocationDisplay(location), // Ubicación real implementada con useGeolocation
-          distance: calculateDistance(location, null), // Cálculo de distancia implementado
-          interests: profile.interested_in?.split(',') || [], // Sistema de intereses conectado con Supabase
+          distance: calculateDistance(
+            location, 
+            profile.latitude && profile.longitude 
+              ? { latitude: profile.latitude, longitude: profile.longitude } 
+              : null
+          ), // Cálculo de distancia implementado con coordenadas reales
+          interests: Array.isArray(profile.interests) ? profile.interests : [], // Sistema de intereses conectado con Supabase
           image: pickProfileImage({ id: profile.id, name: profile.first_name, type: 'single', gender: profile.gender as Gender }, new Set()), // Avatar URL desde Supabase profiles
           bio: profile.bio || 'Sin descripción',
-          isOnline: false, // TODO: implementar is_online en schema
-          lastActive: 'Hace 1 hora', // TODO: calcular tiempo real
+          isOnline: profile.is_online || false,
+          lastActive: profile.last_active ? new Date(profile.last_active).toLocaleString('es-ES', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            day: 'numeric',
+            month: 'short'
+          }) : 'Hace 1 hora',
           isVerified: profile.is_premium || false,
           isPremium: profile.is_premium || false,
           rating: 4.5,
           matchScore: Math.floor(Math.random() * 40) + 60,
-          profileType: 'single', // TODO: implementar account_type en schema
+          profileType: (profile.account_type as ProfileType) || 'single',
           gender: profile.gender as Gender || 'other'
         }));
 
         setProfiles(convertedProfiles);
         setFilteredProfiles(convertedProfiles);
       } else {
-        console.log('📭 No hay perfiles reales disponibles, usando mock');
+        logger.info('📭 No hay perfiles reales disponibles, usando mock');
         generateRandomProfiles();
       }
     } catch (error) {
-      console.error('❌ Error inesperado cargando perfiles:', error);
+      logger.error('❌ Error inesperado cargando perfiles', { error: error instanceof Error ? error.message : String(error) });
       // Fallback a perfiles mock
       generateRandomProfiles();
     }
@@ -229,12 +240,12 @@ const Discover = () => {
   useEffect(() => {
     // Verificar autenticación usando el hook useAuth
     if (!isAuthenticated) {
-      console.log('❌ Usuario no autenticado en Discover, redirigiendo a /auth');
+      logger.info('❌ Usuario no autenticado en Discover, redirigiendo a /auth');
       navigate('/auth');
       return;
     }
     
-    console.log('✅ Usuario autenticado en Discover:', { user: user?.email || user?.id, isAuthenticated });
+    logger.info('✅ Usuario autenticado en Discover:', { user: user?.email || user?.id, isAuthenticated });
     
     // Verificar autenticación local adicional (demo, usuario especial)
     const demoAuth = localStorage.getItem('demo_authenticated') === 'true';
@@ -244,10 +255,10 @@ const Discover = () => {
     if (profiles.length === 0) {
       // Cargar perfiles según el tipo de usuario
       if (demoAuth && !apoyoAuth) {
-        console.log('🎭 Cargando perfiles demo');
+        logger.info('🎭 Cargando perfiles demo');
         generateRandomProfiles();
       } else {
-        console.log('🔗 Cargando perfiles reales');
+        logger.info('🔗 Cargando perfiles reales');
         // Para usuarios reales y especiales, cargar perfiles desde Supabase
         loadRealProfiles();
       }

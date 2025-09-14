@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Home, Heart, ArrowLeft, Search, Sparkles, Zap, Star } from "lucide-react";
+import { logger } from '@/lib/logger';
 
 const NotFound = () => {
   const location = useLocation();
@@ -10,7 +11,7 @@ const NotFound = () => {
   const [sparklePositions, setSparklePositions] = useState<Array<{x: number, y: number, delay: number}>>([]);
 
   useEffect(() => {
-    console.error(
+    logger.error(
       "404 Error: User attempted to access non-existent route:",
       location.pathname
     );

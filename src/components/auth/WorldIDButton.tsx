@@ -10,6 +10,7 @@ import { useAuth } from "@/hooks/useAuth"
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { CheckCircle, Loader2, Globe, Shield } from 'lucide-react';
+import { logger } from '@/lib/logger';
 
 interface WorldIDButtonProps {
   onSuccess?: (result: ISuccessResult) => void;
@@ -101,7 +102,7 @@ export const WorldIDButton: React.FC<WorldIDButtonProps> = ({
       }
 
     } catch (error) {
-      console.error('World ID verification error:', error);
+      logger.error('World ID verification error:', error);
       
       const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
       
@@ -118,7 +119,7 @@ export const WorldIDButton: React.FC<WorldIDButtonProps> = ({
   };
 
   const handleError = (error: { code?: string; message?: string; detail?: string } | string | unknown) => {
-    console.error('World ID widget error:', error);
+    logger.error('World ID widget error:', error);
     
     let errorMessage = 'Error en la verificación con World ID';
     

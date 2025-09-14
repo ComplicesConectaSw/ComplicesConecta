@@ -10,6 +10,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 import type { Database } from '@/integrations/supabase/types';
+import { logger } from '@/lib/logger';
 
 type ChatRoomRow = Database['public']['Tables']['chat_rooms']['Row'];
 type ChatRoomInsert = Database['public']['Tables']['chat_rooms']['Insert'];
@@ -414,7 +415,7 @@ class ChatService {
       return !memberError && !!member;
 
     } catch (error) {
-      console.error('Error al verificar acceso a sala:', error);
+      logger.error('Error al verificar acceso a sala:', error);
       return false;
     }
   }

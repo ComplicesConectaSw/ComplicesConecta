@@ -19,6 +19,7 @@ import { useFeatures } from "@/hooks/useFeatures";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { logger } from '@/lib/logger';
 
 // Tipos para matches privados
 interface PrivateMatch {
@@ -165,7 +166,7 @@ export const PrivateMatches: React.FC = () => {
         .order('created_at', { ascending: false });
 
       if (error) {
-        console.error('Error loading private matches:', error);
+        logger.error('Error loading private matches:', error);
         toast({
           variant: "destructive",
           title: "Error",
@@ -204,7 +205,7 @@ export const PrivateMatches: React.FC = () => {
       }));
       setMatches(mappedMatches);
     } catch (error) {
-      console.error('Error in loadPrivateMatches:', error);
+      logger.error('Error in loadPrivateMatches:', error);
     } finally {
       setLoading(false);
     }
@@ -270,7 +271,7 @@ export const PrivateMatches: React.FC = () => {
       });
 
     } catch (error) {
-      console.error('Error handling match action:', error);
+      logger.error('Error handling match action:', error);
       toast({
         variant: "destructive",
         title: "Error",

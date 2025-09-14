@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { useVideoChat } from '@/hooks/useVideoChat';
 import { useAuth } from '@/hooks/useAuth';
+import { logger } from '@/lib/logger';
 
 interface VideoCallWindowProps {
   targetUserId?: string;
@@ -56,20 +57,20 @@ export const VideoCallWindow: React.FC<VideoCallWindowProps> = ({
       setIncomingCall({ callId, fromUserId });
     },
     onCallAccepted: (callId) => {
-      console.log('✅ Call accepted:', callId);
+      logger.info('✅ Call accepted:', callId);
       setIncomingCall(null);
     },
     onCallRejected: (callId) => {
-      console.log('❌ Call rejected:', callId);
+      logger.info('❌ Call rejected:', callId);
       setIncomingCall(null);
     },
     onCallEnded: (callId) => {
-      console.log('📞 Call ended:', callId);
+      logger.info('📞 Call ended:', callId);
       setIncomingCall(null);
       onCallEnd?.();
     },
     onError: (error) => {
-      console.error('❌ Video call error:', error);
+      logger.error('❌ Video call error:', error);
     }
   });
 

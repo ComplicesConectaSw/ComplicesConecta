@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { DismissibleBanner } from "@/components/DismissibleBanner";
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "react-router-dom";
+import { logger } from '@/lib/logger';
 
 export const BetaBanner = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -155,7 +156,7 @@ export const BetaModal = () => {
                     className="w-full"
                     onClick={() => {
                       // TODO: Handle donation/support action
-                      console.log("Support action");
+                      logger.info("Support action");
                       setIsOpen(false);
                     }}
                   >

@@ -11,6 +11,7 @@ import { PremiumFeatures } from "@/components/premium/PremiumFeatures";
 import VIPEvents from "@/components/premium/VIPEvents";
 import VirtualGifts from "@/components/premium/VirtualGifts";
 import { ComingSoonModal } from "@/components/modals/ComingSoonModal";
+import { logger } from '@/lib/logger';
 
 const Premium = () => {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ const Premium = () => {
     
     // Si no hay demo, verificar autenticación real
     // Por ahora permitir acceso sin autenticación para usuarios reales
-    console.log('🔓 Acceso a Premium sin autenticación requerida');
+    logger.info('🔓 Acceso a Premium sin autenticación requerida');
   }, [navigate]);
 
   const handleComingSoon = (title: string) => {

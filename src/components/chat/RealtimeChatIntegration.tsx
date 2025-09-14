@@ -16,6 +16,7 @@ import { Badge } from '@/components/ui/badge';
 import { Send, Phone, Video, MoreVertical, ArrowLeft } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { es } from 'date-fns/locale';
+import { logger } from '@/lib/logger';
 
 interface ChatMessage {
   id: string;
@@ -107,7 +108,7 @@ export const RealtimeChatIntegration = ({
 
       setCurrentMatch(mockMatch);
     } catch (error) {
-      console.error('Error loading match data:', error);
+      logger.error('Error loading match data:', error);
     }
   };
 
@@ -144,7 +145,7 @@ export const RealtimeChatIntegration = ({
 
       setMessages(mockMessages);
     } catch (error) {
-      console.error('Error loading messages:', error);
+      logger.error('Error loading messages:', error);
     } finally {
       setIsLoading(false);
     }
@@ -220,7 +221,7 @@ export const RealtimeChatIntegration = ({
       */
 
     } catch (error) {
-      console.error('Error sending message:', error);
+      logger.error('Error sending message:', error);
       // Restaurar mensaje en caso de error
       setNewMessage(messageContent);
     } finally {
@@ -251,7 +252,7 @@ export const RealtimeChatIntegration = ({
         });
       */
     } catch (error) {
-      console.error('Error marking as read:', error);
+      logger.error('Error marking as read:', error);
     }
   };
 

@@ -12,6 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { getAppConfig } from "@/lib/app-config";
 import Navigation from "@/components/Navigation";
 import type { Tables } from '@/integrations/supabase/types';
+import { logger } from '@/lib/logger';
 
 const EditProfileSingle = () => {
   const navigate = useNavigate();
@@ -79,7 +80,7 @@ const EditProfileSingle = () => {
             .single();
           
           if (error) {
-            console.error('Error fetching profile:', error);
+            logger.error('Error fetching profile:', error);
             setError('Error al cargar perfil');
           } else if (profile) {
             setFormData({
@@ -118,7 +119,7 @@ const EditProfileSingle = () => {
       }
     } catch (error) {
       setError('Error inesperado al cargar perfil');
-      console.error('Error loading profile:', error);
+      logger.error('Error loading profile:', error);
       
       // En caso de error, crear perfil demo como fallback
       const fallbackProfile = generateMockSingle();

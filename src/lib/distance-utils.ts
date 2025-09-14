@@ -15,12 +15,12 @@ export interface LocationCoordinates {
  */
 export function calculateDistance(
   coord1: LocationCoordinates | null,
-  coord2: LocationCoordinates | string | null
+  coord2: LocationCoordinates | null
 ): number {
   if (!coord1) return 0;
   
-  // Handle string location (fallback)
-  if (typeof coord2 === 'string' || !coord2) {
+  // Handle missing second coordinate
+  if (!coord2) {
     return Math.floor(Math.random() * 50) + 1; // Random distance for demo
   }
 

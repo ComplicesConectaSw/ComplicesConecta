@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 // Storage Manager - Migración gradual de localStorage a React Query + Supabase
 // Solo mantiene flags de sesión en localStorage, datos en Supabase
 
@@ -30,7 +31,7 @@ export class StorageManager {
     legacyKeys.forEach(key => {
       const data = localStorage.getItem(key);
       if (data) {
-        console.log(`🔄 Migrando ${key} - datos movidos a Supabase`);
+        logger.info(`🔄 Migrando ${key} - datos movidos a Supabase`);
         localStorage.removeItem(key);
       }
     });
@@ -48,7 +49,7 @@ export class StorageManager {
   // Establecer flag de sesión
   static setSessionFlag(key: keyof SessionFlags, value: boolean | string | null) {
     if (!this.ALLOWED_KEYS.includes(key)) {
-      console.warn(`⚠️ Intento de guardar clave no permitida: ${key}`);
+      logger.warn(`⚠️ Intento de guardar clave no permitida: ${key}`);
       return;
     }
 
@@ -92,7 +93,7 @@ export class StorageManager {
     );
 
     if (violations.length > 0) {
-      console.error('❌ Datos sensibles detectados en localStorage:', violations);
+      logger.error('❌ Datos sensibles detectados en localStorage:', violations);
       return false;
     }
 
