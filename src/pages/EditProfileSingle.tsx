@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Save, Upload, Plus, X, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { generateMockSingle } from "@/lib/data";
-import ImageUpload from "@/components/ImageUpload";
+import ImageUpload from "@/components/profile/ImageUpload";
 import { supabase } from "@/integrations/supabase/client";
 import { getAppConfig } from "@/lib/app-config";
 import Navigation from "@/components/Navigation";
