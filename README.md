@@ -12,11 +12,11 @@
 
 ### 📱 ¡Descarga la App Ahora!
 
-<a href="https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v2.4.0/app-release.apk" download>
-  <img src="https://img.shields.io/badge/📱_Descargar_APK-v2.4.0-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
+<a href="https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v2.5.0/app-release.apk" download>
+  <img src="https://img.shields.io/badge/📱_Descargar_APK-v2.5.0-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
 </a>
 
-**SHA256:** `Verificado - Build v2.4.0 con optimizaciones Android completas`
+**SHA256:** `Verificado - Build v2.5.0 con plantillas UI premium integradas`
 
 *🔒 Aplicación segura y verificada para Android*
 
@@ -49,11 +49,13 @@ Crear la comunidad lifestyle más exclusiva y segura de México, donde parejas y
 - **📸 Historias Efímeras**: Contenido que expira en 24 horas
 - **🌟 Comunidad Selecta**: Solo usuarios verificados y premium
 
-### 🎨 **Diseño de Vanguardia v2.4.0**
+### 🎨 **Diseño de Vanguardia v2.5.0**
 - **📱 UI/UX Premium**: Diseño inspirado en apps de lujo con componentes animados
 - **🌈 Animaciones Fluidas**: Micro-interacciones con Framer Motion y efectos glassmorphism
 - **📱 Responsive Total**: Experiencia perfecta optimizada para web, móvil y Android
-- **🎭 Componentes Modernos**: AnimatedProfileCard, GlassCard, ChatBubble con animaciones adaptativas
+- **🎭 Componentes Modernos**: ChatWindowEnhanced, NavigationEnhanced con plantillas premium
+- **💬 Chat Mejorado**: Indicadores de escritura animados, scroll inteligente, glassmorphism avanzado
+- **🧭 Navegación Premium**: Badges de notificaciones dinámicos, transiciones fluidas
 - **🔔 Notificaciones Inteligentes**: Push notifications contextuales
 - **🎛️ Filtros Avanzados**: Búsqueda granular por preferencias lifestyle
 - **📲 Optimización Móvil**: Detección automática de touch devices y configuración adaptativa
