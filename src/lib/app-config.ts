@@ -167,11 +167,11 @@ export const handleDemoAuth = (email: string, accountType: string = 'single') =>
     expires_at: Date.now() + (24 * 60 * 60 * 1000) // 24 hours
   };
   
-  // Store in localStorage
+  // Store only authentication flag in localStorage
   localStorage.setItem('demo_authenticated', 'true');
-  localStorage.setItem('demo_user', JSON.stringify(demoUser));
-  localStorage.setItem('demo_session', JSON.stringify(demoSession));
   localStorage.setItem('userType', demoUser.role);
+  // ELIMINADO: No almacenar datos completos de usuario en localStorage
+  // Los datos se mantienen solo en memoria durante la sesión
   
   console.log('🎭 Sesión demo creada para:', email, 'Tipo:', finalAccountType);
   
@@ -181,42 +181,20 @@ export const handleDemoAuth = (email: string, accountType: string = 'single') =>
 // Función para limpiar sesión demo
 export const clearDemoAuth = () => {
   localStorage.removeItem('demo_authenticated');
-  localStorage.removeItem('demo_user');
-  localStorage.removeItem('demo_session');
   localStorage.removeItem('userType');
+  // ELIMINADO: Limpiar datos de usuario que ya no se almacenan
   console.log('🧹 Sesión demo limpiada');
 };
 
 // Función para verificar sesión demo existente
 export const checkDemoSession = () => {
   const demoAuth = localStorage.getItem('demo_authenticated');
-  const demoUser = localStorage.getItem('demo_user');
-  const demoSession = localStorage.getItem('demo_session');
   
-  if (demoAuth === 'true' && demoUser && demoSession) {
-    try {
-      // Verificar que los valores no sean strings simples como "active"
-      if (demoUser === 'active' || demoSession === 'active') {
-        console.warn('🧹 Limpiando datos de sesión demo corruptos');
-        clearDemoAuth();
-        return null;
-      }
-      
-      const user = JSON.parse(demoUser);
-      const session = JSON.parse(demoSession);
-      
-      // Verificar si la sesión no ha expirado
-      if (session.expires_at && Date.now() < session.expires_at) {
-        console.log('✅ Sesión demo válida encontrada para:', user.email);
-        return { user, session: { user } };
-      } else {
-        console.log('⏰ Sesión demo expirada, limpiando...');
-        clearDemoAuth();
-      }
-    } catch (error) {
-      console.error('❌ Error parsing demo session:', error);
-      clearDemoAuth();
-    }
+  // Solo verificar flag de autenticación - datos no se almacenan en localStorage
+  if (demoAuth === 'true') {
+    // Retornar null para forzar recreación de sesión demo
+    // Los datos se mantienen solo en memoria durante la sesión activa
+    return null;
   }
   
   return null;

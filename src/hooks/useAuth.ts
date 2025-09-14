@@ -4,9 +4,10 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+import { useNavigate } from 'react-router-dom';
 import { 
   getAppConfig, 
-  isDemoCredential, 
+  DEMO_CREDENTIALS, 
   getDemoPassword, 
   handleDemoAuth, 
   clearDemoAuth, 
@@ -15,6 +16,7 @@ import {
   isDemoMode,
   shouldUseRealSupabase
 } from '@/lib/app-config';
+import { useProfile } from '@/hooks/useProfileCache';
 
 interface Profile {
   id: string;
@@ -48,58 +50,25 @@ export const useAuth = () => {
   const profileLoaded = useRef(false);
 
   // Función para cargar perfil
+  // Usar React Query para cargar perfil con cache
+  const { data: cachedProfile, isLoading: profileLoading, error: profileError } = useProfile(user?.id || null);
+  
   const loadProfile = useCallback(async (userId: string) => {
     if (profileLoaded.current) {
-      console.log('🔄 Perfil ya cargado, evitando duplicación');
+      console.log('⚠️ Perfil ya cargado, evitando recarga:', userId);
       return;
     }
     
-    console.log('🔄 Cargando perfil para userId:', userId);
+    // Si tenemos datos del cache, usarlos directamente
+    if (cachedProfile) {
+      console.log('✅ Perfil cargado desde cache:', cachedProfile.first_name);
+      setProfile(cachedProfile);
+      profileLoaded.current = true;
+      return;
+    }
     
     try {
-      // Verificar si hay sesión demo activa
-      const demoAuth = localStorage.getItem('demo_authenticated');
-      const demoUser = localStorage.getItem('demo_user');
-      
-      if (demoAuth === 'true' && demoUser) {
-        try {
-          const parsedDemoUser = JSON.parse(demoUser);
-          
-          // IMPORTANTE: Solo usar perfil demo si el userId coincide
-          if (userId === parsedDemoUser.id) {
-            console.log('🎭 Usando perfil demo para:', parsedDemoUser.email);
-            
-            const demoProfile = {
-              id: parsedDemoUser.id,
-              user_id: parsedDemoUser.id,
-              email: parsedDemoUser.email,
-              first_name: parsedDemoUser.first_name,
-              account_type: parsedDemoUser.accountType,
-              role: parsedDemoUser.role,
-              is_demo: true,
-              created_at: parsedDemoUser.created_at,
-              updated_at: new Date().toISOString(),
-              bio: `Perfil de demostración para ${parsedDemoUser.first_name}`,
-              location: 'Ciudad Demo',
-              age: parsedDemoUser.role === 'admin' ? null : 25,
-              interests: ['Tecnología', 'Música', 'Viajes'],
-              avatar_url: null
-            };
-            
-            profileLoaded.current = true;
-            setProfile(demoProfile);
-            return;
-          } else {
-            console.log('🔄 UserId no coincide con demo user - usando Supabase real');
-          }
-        } catch (error) {
-          console.error('❌ Error parsing demo user:', error);
-          clearDemoAuth();
-        }
-      }
-      
-      // Para usuarios reales (incluye complicesconectasw@outlook.es), usar Supabase
-      console.log('🔗 Obteniendo perfil real de Supabase para:', userId);
+      console.log('🔍 Cargando perfil para usuario:', userId);
       
       const { data, error } = await supabase
         .from('profiles')
@@ -110,22 +79,6 @@ export const useAuth = () => {
       console.log('🔍 Consulta ejecutada - userId:', userId);
       console.log('🔍 Resultado data:', data);
       console.log('🔍 Error (si existe):', error);
-      
-      // Log detallado del contenido del objeto
-      if (data) {
-        // Manejar tanto array como objeto único
-        const profileData = Array.isArray(data) ? data[0] : data;
-        
-        console.log('📋 Contenido detallado del perfil:');
-        console.log('  - Es array:', Array.isArray(data));
-        console.log('  - id:', profileData?.id);
-        console.log('  - first_name:', profileData?.first_name);
-        console.log('  - last_name:', profileData?.last_name);
-        console.log('  - display_name:', (profileData as any)?.display_name);
-        console.log('  - role:', (profileData as any)?.role);
-        console.log('  - email:', (profileData as any)?.email);
-        console.log('  - Objeto completo:', JSON.stringify(data, null, 2));
-      }
       
       if (error) {
         console.error('❌ Error fetching profile:', error);
@@ -146,29 +99,46 @@ export const useAuth = () => {
         return;
       }
       
-      // Manejar tanto array como objeto único para setProfile
-      const profileData = Array.isArray(data) ? data[0] : data;
-      console.log('✅ Perfil real cargado:', profileData.first_name);
-      console.log('📋 Datos completos del perfil:', profileData);
-      profileLoaded.current = true;
-      setProfile(profileData);
-      
-      // PERFIL CARGADO - Redirección automática al perfil para usuarios especiales
-      console.log('🔍 Perfil cargado - ID:', profileData?.id);
-      
-      // Redirección automática al perfil después de cargar datos
-      if (profileData?.first_name === 'Apoyo' && window.location.pathname === '/') {
-        console.log('🔄 Redirigiendo usuario Apoyo al perfil...');
-        setTimeout(() => {
-          window.location.href = '/profile-single';
-        }, 1000);
+      if (data) {
+        // Manejar tanto array como objeto único
+        const profileData = Array.isArray(data) ? data[0] : data;
+        
+        console.log('📋 Contenido detallado del perfil:');
+        console.log('  - Es array:', Array.isArray(data));
+        console.log('  - id:', profileData?.id);
+        console.log('  - first_name:', profileData?.first_name);
+        console.log('  - last_name:', profileData?.last_name);
+        console.log('  - display_name:', (profileData as any)?.display_name);
+        console.log('  - role:', (profileData as any)?.role);
+        console.log('  - email:', (profileData as any)?.email);
+        console.log('  - Objeto completo:', JSON.stringify(data, null, 2));
+        
+        console.log('✅ Perfil real cargado:', profileData.first_name);
+        console.log('📋 Datos completos del perfil:', profileData);
+        profileLoaded.current = true;
+        setProfile(profileData);
+        
+        // PERFIL CARGADO - Redirección automática al perfil para usuarios especiales
+        console.log('🔍 Perfil cargado - ID:', profileData?.id);
+        
+        // Redirección automática al perfil después de cargar datos
+        if (profileData?.first_name === 'Apoyo' && window.location.pathname === '/') {
+          console.log('🔄 Redirigiendo usuario Apoyo al perfil...');
+          setTimeout(() => {
+            window.location.href = '/profile-single';
+          }, 1000);
+        } else {
+          console.log('✅ Usuario especial autenticado - usar navegación manual');
+        }
       } else {
-        console.log('✅ Usuario especial autenticado - usar navegación manual');
+        console.log('⚠️ No se encontró perfil para el usuario:', userId);
+        setProfile(null);
       }
     } catch (error) {
       console.error('❌ Error in loadProfile:', error);
+      setProfile(null);
     }
-  }, []);
+  }, [cachedProfile]);
 
   useEffect(() => {
     if (initialized.current) return;
@@ -177,14 +147,8 @@ export const useAuth = () => {
     console.log('🔄 Inicializando useAuth en modo:', config.mode);
     
     // Verificar sesión demo existente al cargar
-    const demoSession = checkDemoSession();
-    if (demoSession) {
-      setUser(demoSession.user as any);
-      setSession(demoSession.session as any);
-      loadProfile(demoSession.user.id);
-      setLoading(false);
-      return;
-    }
+    // NOTA: checkDemoSession ahora retorna null para forzar recreación
+    // Los datos demo ya no se persisten en localStorage
     
     // Verificar si hay sesión persistente del usuario especial - SOLO para mantener estado UI
     // Los datos reales siempre se cargan desde Supabase
@@ -292,10 +256,10 @@ export const useAuth = () => {
           user: mockUser
         };
         
-        // Guardar en localStorage para persistencia
+        // Guardar solo flag de autenticación para persistencia UI
         localStorage.setItem('apoyo_authenticated', 'true');
-        localStorage.setItem('apoyo_user', JSON.stringify(mockUser));
-        localStorage.setItem('apoyo_session', JSON.stringify(mockSession));
+        // ELIMINADO: No almacenar datos de usuario en localStorage
+        // Los datos se cargan exclusivamente desde Supabase
         
         setUser(mockUser as any);
         setSession(mockSession as any);
@@ -330,7 +294,7 @@ export const useAuth = () => {
       }
       
       // Verificar si es una credencial demo
-      if (isDemoCredential(email)) {
+      if (DEMO_CREDENTIALS.includes(email)) {
         console.log('🎭 Credencial demo detectada');
         const demoPassword = getDemoPassword(email);
         
