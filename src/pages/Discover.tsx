@@ -16,6 +16,8 @@ import { AnimatedProfileCard } from '@/components/ui/AnimatedProfileCard';
 import { AnimatedButton } from '@/components/ui/AnimatedButton';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { motion } from 'framer-motion';
+import { getAllCoupleProfiles, generateMockCoupleProfiles, type CoupleProfileWithPartners } from '@/lib/coupleProfiles';
+import CoupleProfileCard from '@/components/profile/CoupleProfileCard';
 
 // Definición del tipo para un perfil
 interface Profile {
@@ -54,8 +56,11 @@ const Discover = () => {
   const { location, error: locationError } = useGeolocation();
   
   const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [coupleProfiles, setCoupleProfiles] = useState<CoupleProfileWithPartners[]>([]);
   const [filteredProfiles, setFilteredProfiles] = useState<Profile[]>([]);
+  const [filteredCoupleProfiles, setFilteredCoupleProfiles] = useState<CoupleProfileWithPartners[]>([]);
   const [showFilters, setShowFilters] = useState(false);
+  const [showCouples, setShowCouples] = useState(false);
   const [filters, setFilters] = useState<Filters>({
     ageRange: [18, 65],
     distance: 50,
@@ -65,6 +70,17 @@ const Discover = () => {
     online: false,
     relationshipType: []
   });
+
+  // Load couple profiles
+  const loadCoupleProfiles = useCallback(async () => {
+    try {
+      const couples = await getAllCoupleProfiles(20, 0);
+      setCoupleProfiles(couples);
+      setFilteredCoupleProfiles(couples);
+    } catch (error) {
+      console.error('Error loading couple profiles:', error);
+    }
+  }, []);
 
   // Generar perfiles aleatorios
   const generateRandomProfiles = useCallback(() => {
@@ -161,16 +177,36 @@ const Discover = () => {
     }
   }, [generateRandomProfiles]);
 
-  // Generar perfiles al cargar - solo para usuarios demo
+  // Verificar autenticación y cargar perfiles
   useEffect(() => {
-    const demoAuth = localStorage.getItem('demo_authenticated');
-    if (demoAuth === 'true') {
+    // Verificar autenticación (demo, usuario especial, o real)
+    const demoAuth = localStorage.getItem('demo_authenticated') === 'true';
+    const specialAuth = localStorage.getItem('apoyo_authenticated') === 'true';
+    const demoUser = localStorage.getItem('demo_user');
+    const specialUser = localStorage.getItem('apoyo_user');
+    
+    const isAuthenticated = demoAuth || specialAuth || demoUser || specialUser;
+    
+    // Load both single and couple profiles
+    loadRealProfiles();
+    loadCoupleProfiles();
+    
+    if (!isAuthenticated) {
+      console.log('❌ Usuario no autenticado en Discover, redirigiendo a /auth');
+      navigate('/auth');
+      return;
+    }
+    
+    console.log('✅ Usuario autenticado en Discover:', { demoAuth, specialAuth, hasUser: !!(demoUser || specialUser) });
+    
+    // Cargar perfiles según el tipo de usuario
+    if (demoAuth) {
       generateRandomProfiles();
     } else {
-      // Para usuarios reales, cargar perfiles desde Supabase
+      // Para usuarios reales y especiales, cargar perfiles desde Supabase
       loadRealProfiles();
     }
-  }, [generateRandomProfiles, loadRealProfiles]);
+  }, [generateRandomProfiles, loadRealProfiles, navigate]);
 
   const handleProfileClick = (profile: Profile) => {
     navigate(`/profile/${profile.id}`, { state: { profile } });
@@ -255,6 +291,14 @@ const Discover = () => {
           </h1>
           
           <div className="flex items-center space-x-1 sm:space-x-2">
+            <Button
+              variant="ghost"
+              onClick={() => setShowCouples(!showCouples)}
+              className={`p-2 sm:px-4 ${showCouples ? 'text-purple-300 bg-white/20' : 'text-gray-700 hover:bg-white/50'}`}
+            >
+              <span className="hidden sm:inline">{showCouples ? 'Singles' : 'Parejas'}</span>
+              <span className="sm:hidden">{showCouples ? 'S' : 'P'}</span>
+            </Button>
             <Button
               variant="ghost"
               onClick={() => setShowFilters(!showFilters)}
@@ -457,31 +501,65 @@ const Discover = () => {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              {filteredProfiles.map((profile, index) => (
-                <motion.div
-                  key={profile.id}
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <AnimatedProfileCard
-                    id={parseInt(profile.id)}
-                    name={profile.name}
-                    age={profile.age}
-                    location={profile.location}
-                    image={profile.image}
-                    bio={profile.bio}
-                    interests={profile.interests}
-                    isOnline={profile.isOnline}
-                    isPremium={profile.isPremium}
-                    isPrivate={false}
-                    lastSeen={profile.isOnline ? undefined : profile.lastActive}
-                    onLike={handleLike}
-                    onMessage={handleMessage}
-                    onViewProfile={handleViewProfile}
-                  />
-                </motion.div>
-              ))}
+              {showCouples ? (
+                // Show couple profiles
+                filteredCoupleProfiles.map((coupleProfile, index) => (
+                  <motion.div
+                    key={coupleProfile.id}
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                  >
+                    <CoupleProfileCard
+                      profile={{
+                        ...coupleProfile,
+                        location: coupleProfile.location || 'Ciudad de México',
+                        isOnline: coupleProfile.isOnline || Math.random() > 0.6
+                      }}
+                      onLike={() => {
+                        toast({
+                          title: "¡Like enviado!",
+                          description: `Tu interés en ${coupleProfile.couple_name} ha sido registrado.`,
+                        });
+                      }}
+                      onMessage={() => {
+                        toast({
+                          title: "Chat iniciado",
+                          description: `Iniciando conversación con ${coupleProfile.couple_name}...`,
+                        });
+                        navigate('/chat-info');
+                      }}
+                    />
+                  </motion.div>
+                ))
+              ) : (
+                // Show single profiles
+                filteredProfiles.map((profile, index) => (
+                  <motion.div
+                    key={profile.id}
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                  >
+                    <AnimatedProfileCard
+                      id={parseInt(profile.id)}
+                      name={profile.name}
+                      age={profile.age}
+                      location={profile.location}
+                      image={profile.image}
+                      bio={profile.bio}
+                      interests={profile.interests}
+                      isOnline={profile.isOnline}
+                      isPremium={profile.isPremium}
+                      isPrivate={false}
+                      lastSeen={profile.isOnline ? undefined : profile.lastActive}
+                      onLike={handleLike}
+                      onMessage={handleMessage}
+                      onViewProfile={handleViewProfile}
+                    />
+                  </motion.div>
+                ))
+              )}
             </motion.div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Home, Search, MessageCircle, Heart, User, Settings, UserPlus, Coins } from 'lucide-react';
+import { Home, Search, MessageCircle, Heart, User, Settings, Crown, LogOut, Coins, UserPlus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useFeatures } from '@/hooks/useFeatures';
 import NavigationEnhanced from './NavigationEnhanced';
@@ -9,8 +9,15 @@ interface NavigationProps {
   className?: string;
 }
 
-// Wrapper de compatibilidad - MANTIENE TODAS LAS PROPS ORIGINALES
+// Usar NavigationLegacy temporalmente para el usuario especial
 const Navigation = ({ className }: NavigationProps) => {
+  // Verificar si es el usuario especial
+  const isSpecialUser = localStorage.getItem('apoyo_authenticated') === 'true';
+  
+  if (isSpecialUser) {
+    return <NavigationLegacy className={className} />;
+  }
+  
   return (
     <NavigationEnhanced 
       className={className}
@@ -27,13 +34,15 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
   const location = useLocation();
   const { features } = useFeatures();
   
-  // Mover hooks al inicio antes de cualquier return
-  const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  // Navegación siempre visible - sin efectos de scroll
+  const [isVisible] = useState(true);
 
-  // Verificar si el usuario está autenticado
-  const isAuthenticated = localStorage.getItem('demo_authenticated') === 'true';
+  // Verificar si el usuario está autenticado (demo o usuario especial)
+  const isDemoAuthenticated = localStorage.getItem('demo_authenticated') === 'true';
+  const isSpecialAuthenticated = localStorage.getItem('apoyo_authenticated') === 'true';
+  const isAuthenticated = isDemoAuthenticated || isSpecialAuthenticated;
   const demoUser = localStorage.getItem('demo_user');
+  const specialUser = localStorage.getItem('apoyo_user');
 
   const baseNavItems = [
     { id: 'feed', icon: Home, label: 'Inicio', path: '/feed' },
@@ -43,53 +52,45 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
     { id: 'tokens', icon: Coins, label: 'Tokens', path: '/tokens' },
   ];
 
-  // Auto-hide navigation on scroll
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        // Scrolling down - hide navigation
-        setIsVisible(false);
-      } else {
-        // Scrolling up - show navigation
-        setIsVisible(true);
-      }
-      
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
+  // Navegación completamente estática - sin efectos de scroll
 
   // Solo mostrar navegación completa si está autenticado
-  if (!isAuthenticated || !demoUser) {
+  if (!isAuthenticated || (!demoUser && !specialUser)) {
     return null; // Ocultar navegación si no está logueado
   }
+
+  // Obtener tipo de usuario para navegación específica
+  const currentUserType = localStorage.getItem('userType');
+  
+  // Configuración específica para parejas
+  const getSettingsPath = () => {
+    return currentUserType === 'couple' ? '/edit-profile-couple' : '/edit-profile-single';
+  };
 
   // Agregar solicitudes si la función está habilitada
   const navItems = features.requests 
     ? [
         ...baseNavItems.slice(0, 3), // feed, discover, chat
         { id: 'requests', icon: UserPlus, label: 'Solicitudes', path: '/requests' },
-        ...baseNavItems.slice(3), // matches
+        ...baseNavItems.slice(3), // matches, tokens
         { id: 'profile', icon: User, label: 'Perfil', path: '/profile' },
-        { id: 'settings', icon: Settings, label: 'Configuración', path: '/edit-profile-single' },
+        { id: 'settings', icon: Settings, label: 'Configuración', path: getSettingsPath() },
       ]
     : [
         ...baseNavItems,
         { id: 'profile', icon: User, label: 'Perfil', path: '/profile' },
-        { id: 'settings', icon: Settings, label: 'Configuración', path: '/edit-profile-single' },
+        { id: 'settings', icon: Settings, label: 'Configuración', path: getSettingsPath() },
       ];
 
   const handleNavigation = (path: string) => {
     // Verificar sesión antes de navegar
     const demoUser = localStorage.getItem('demo_user');
+    const specialUser = localStorage.getItem('apoyo_user');
     const userType = localStorage.getItem('userType');
-    const isDemo = localStorage.getItem('demo_authenticated') === 'true';
+    const isDemoAuth = localStorage.getItem('demo_authenticated') === 'true';
+    const isSpecialAuth = localStorage.getItem('apoyo_authenticated') === 'true';
     
-    console.log('🔍 Navigation Debug:', { demoUser, userType, isDemo, path });
+    console.log('🔍 Navigation Debug:', { demoUser, specialUser, userType, isDemoAuth, isSpecialAuth, path });
     
     // Detectar tipo de usuario y redirigir al perfil correcto
     if (path === '/profile') {
@@ -101,24 +102,37 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
       return;
     }
     
-    // Para otras rutas, navegar directamente si está autenticado
-    if (isDemo || demoUser) {
-      navigate(path);
-    } else {
-      // Solo redirigir a auth si no está autenticado y no es una ruta pública
+    // Verificar autenticación antes de navegar
+    const isAuthenticated = isDemoAuth || isSpecialAuth || demoUser || specialUser;
+    
+    if (!isAuthenticated) {
+      console.log('❌ Usuario no autenticado, redirigiendo a /auth');
       navigate('/auth');
+      return;
     }
+    
+    // Rutas que requieren verificación adicional para parejas
+    const coupleRoutes = ['/feed', '/discover', '/chat', '/matches', '/tokens'];
+    
+    if (coupleRoutes.includes(path) && userType === 'couple') {
+      console.log('✅ Navegación de pareja autorizada a:', path);
+    }
+    
+    // Navegar a la ruta solicitada
+    navigate(path);
   };
 
   return (
     <nav className={cn(
-      "fixed bottom-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out",
-      "bg-gradient-to-r from-purple-900/90 via-pink-900/90 to-red-900/90 backdrop-blur-xl border-t border-pink-300/30 shadow-2xl",
-      "px-2 sm:px-4 py-2 safe-area-pb",
-      isVisible ? "translate-y-0 opacity-100" : "translate-y-full opacity-0",
+      "fixed bottom-0 left-0 right-0 z-50",
+      currentUserType === 'couple' 
+        ? "bg-gradient-to-r from-pink-900/95 via-rose-900/95 to-purple-900/95 backdrop-blur-xl border-t border-rose-300/40 shadow-2xl"
+        : "bg-gradient-to-r from-purple-900/95 via-pink-900/95 to-red-900/95 backdrop-blur-xl border-t border-pink-300/40 shadow-2xl",
+      "px-3 sm:px-6 py-3 safe-area-pb",
+      "translate-y-0 opacity-100",
       className
     )}>
-      <div className="flex items-center justify-around max-w-md mx-auto overflow-x-auto">
+      <div className="flex items-center justify-around max-w-md mx-auto">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = location.pathname === item.path;
@@ -128,13 +142,15 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
               key={item.id}
               onClick={() => handleNavigation(item.path)}
               className={cn(
-                "flex flex-col items-center justify-center p-1 sm:p-2 rounded-xl",
-                "min-w-[50px] sm:min-w-[60px] min-h-[50px] sm:min-h-[60px] group flex-shrink-0",
-                "transition-all duration-300 ease-out transform hover:scale-105",
-                "relative overflow-hidden",
+                "flex flex-col items-center justify-center p-2 sm:p-3 rounded-2xl",
+                "min-w-[60px] sm:min-w-[70px] min-h-[60px] sm:min-h-[70px] group flex-shrink-0",
+                "transition-all duration-400 ease-out transform hover:scale-102",
+                "relative overflow-hidden backdrop-blur-sm",
                 isActive 
-                  ? "bg-gradient-to-r from-primary/20 to-accent/20 text-white shadow-lg scale-110" 
-                  : "text-white/80 hover:text-white hover:bg-pink-500/20"
+                  ? currentUserType === 'couple'
+                    ? "bg-gradient-to-r from-rose-300/20 to-pink-300/10 text-white shadow-xl border border-rose-300/30"
+                    : "bg-gradient-to-r from-white/20 to-white/10 text-white shadow-xl border border-white/30"
+                  : "text-white/85 hover:text-white hover:bg-white/10 hover:backdrop-blur-md"
               )}
             >
               {/* Animated background for active state */}
@@ -144,13 +160,13 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
               
               <Icon 
                 className={cn(
-                  "w-4 h-4 sm:w-5 sm:h-5 mb-0.5 sm:mb-1 transition-all duration-300 relative z-10",
-                  isActive ? "scale-110 drop-shadow-lg" : "group-hover:scale-110 group-hover:drop-shadow-md"
+                  "w-5 h-5 sm:w-6 sm:h-6 mb-1 sm:mb-1.5 transition-all duration-400 relative z-10",
+                  isActive ? "scale-105 drop-shadow-lg text-white" : "group-hover:scale-105 group-hover:drop-shadow-md text-white/85"
                 )} 
               />
               <span className={cn(
-                "text-[10px] sm:text-xs font-medium transition-all duration-300 truncate max-w-[50px] sm:max-w-none relative z-10",
-                isActive ? "text-white font-semibold" : "text-white/80 group-hover:text-white"
+                "text-xs sm:text-sm font-medium transition-all duration-400 truncate max-w-[60px] sm:max-w-none relative z-10",
+                isActive ? "text-white font-semibold" : "text-white/85 group-hover:text-white"
               )}>
                 {item.label}
               </span>

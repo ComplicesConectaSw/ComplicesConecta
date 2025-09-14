@@ -793,7 +793,7 @@ const Admin = () => {
                         </div>
                         <div>
                           <h3 className="font-semibold text-white">{profile.display_name || profile.first_name || 'Usuario'}</h3>
-                          <p className="text-sm text-gray-300">{profile.email}</p>
+                          <p className="text-sm text-white/80">{profile.email}</p>
                           <div className="flex items-center gap-2 mt-1">
                             <Badge variant={profile.is_verified ? "default" : "secondary"}>
                               {profile.is_verified ? <CheckCircle className="w-3 h-3 mr-1" /> : <XCircle className="w-3 h-3 mr-1" />}
@@ -861,7 +861,7 @@ const Admin = () => {
                             {invitation.type === 'gallery' ? 'Galería' : invitation.type === 'chat' ? 'Chat' : 'Perfil'}
                           </Badge>
                         </div>
-                        <p className="text-sm text-gray-300 mb-1">{invitation.message}</p>
+                        <p className="text-sm text-white/80 mb-1">{invitation.message}</p>
                         <p className="text-xs text-gray-400">Creada: {new Date(invitation.created_at).toLocaleString()}</p>
                         {invitation.decided_at && (
                           <p className="text-xs text-gray-400">Decidida: {new Date(invitation.decided_at).toLocaleString()}</p>

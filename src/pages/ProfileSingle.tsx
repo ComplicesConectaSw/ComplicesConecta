@@ -9,37 +9,102 @@ import { generateMockSingle } from '@/lib/data';
 import type { Tables } from '@/integrations/supabase/types';
 import Gallery from '@/components/profile/Gallery';
 import { ProfileLoadingScreen } from '@/components/ProfileLoadingScreen';
+import { useAuth } from '@/hooks/useAuth';
+import { getAppConfig } from '@/lib/app-config';
 
 const ProfileSingle: React.FC = () => {
   const navigate = useNavigate();
   const [profile, setProfile] = useState<Tables<'profiles'> | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { user, profile: authProfile, isAuthenticated } = useAuth();
+  const config = getAppConfig();
 
   useEffect(() => {
-    // Verificar autenticación demo y cargar perfil del usuario
-    const demoAuth = localStorage.getItem('demo_authenticated');
-    const demoUser = localStorage.getItem('demo_user');
-    
-    if (demoAuth !== 'true' || !demoUser) {
-      navigate('/discover');
-      return;
-    }
-    
-    const user = JSON.parse(demoUser);
-    
-    // Simular tiempo de carga del perfil
-    setTimeout(() => {
-      // Si es perfil single, usar datos del usuario demo
-      if (user.accountType === 'single') {
-        setProfile(user as Tables<'profiles'>);
-      } else {
-        // Para otros tipos, generar perfil mock
-        const mockProfile = generateMockSingle();
-        setProfile(mockProfile as Tables<'profiles'>);
+    const loadProfile = async () => {
+      try {
+        console.log('🔍 ProfileSingle - Estado de autenticación:', {
+          user: !!user,
+          authProfile: !!authProfile,
+          isDemo: authProfile?.is_demo,
+          userEmail: user?.email
+        });
+        
+        // Si authProfile ya está disponible, usarlo directamente
+        if (authProfile && authProfile.id) {
+          console.log('✅ AuthProfile disponible inmediatamente:', authProfile);
+          setProfile(authProfile);
+          setIsLoading(false);
+          return;
+        }
+        
+        // FORZAR carga del perfil real si hay usuario autenticado
+        if (user && user.email === 'apoyofinancieromexicano@gmail.com') {
+          console.log('🛡️ Usuario protegido detectado - forzando carga de perfil');
+          
+          if (authProfile) {
+            console.log('✅ Perfil disponible - usando datos reales:', authProfile);
+            setProfile(authProfile);
+            setIsLoading(false);
+            return;
+          } else {
+            console.log('⏳ Esperando carga del perfil...');
+            // Mantener loading hasta que el perfil esté disponible
+            setIsLoading(true);
+            return;
+          }
+        }
+        
+        // VERIFICAR si hay sesión del usuario especial en localStorage
+        const apoyoAuth = localStorage.getItem('apoyo_authenticated');
+        const apoyoUser = localStorage.getItem('apoyo_user');
+        
+        if (apoyoAuth === 'true' && apoyoUser) {
+          console.log('🔑 Sesión especial encontrada en localStorage');
+          const parsedUser = JSON.parse(apoyoUser);
+          console.log('👤 Usuario especial desde localStorage:', parsedUser);
+          setProfile(parsedUser as Tables<'profiles'>);
+          setIsLoading(false);
+          return;
+        }
+        
+        // Verificar si hay usuario real autenticado en Supabase
+        if (user && authProfile && !authProfile.is_demo) {
+          console.log('🏢 Usuario real de Supabase detectado:', authProfile);
+          setProfile(authProfile);
+          setIsLoading(false);
+          return;
+        }
+        
+        // Verificar si hay sesión demo activa
+        const demoAuth = localStorage.getItem('demo_authenticated');
+        const demoUser = localStorage.getItem('demo_user');
+        
+        if (demoAuth === 'true' && demoUser) {
+          const parsedUser = JSON.parse(demoUser);
+          console.log('🎭 Cargando perfil demo:', parsedUser);
+          
+          // Usar datos del usuario demo
+          setProfile(parsedUser as Tables<'profiles'>);
+          setIsLoading(false);
+          return;
+        }
+        
+        // Si no hay autenticación, redirigir con verificación condicional
+        if (!user && !localStorage.getItem('apoyo_authenticated')) {
+          console.log('❌ No hay autenticación válida, redirigiendo...');
+          // Usar setTimeout y replace para evitar bucles
+          setTimeout(() => {
+            navigate('/auth', { replace: true });
+          }, 100);
+        }
+      } catch (error) {
+        console.error('Error cargando perfil:', error);
+        setIsLoading(false);
       }
-      setIsLoading(false);
-    }, 1500);
-  }, [navigate]);
+    };
+    
+    loadProfile();
+  }, [user, authProfile]); // Agregar dependencias para reaccionar a cambios
 
   if (isLoading) {
     return (
@@ -57,7 +122,7 @@ const ProfileSingle: React.FC = () => {
         <Card className="w-full max-w-md mx-4">
           <CardContent className="p-6 text-center">
             <h2 className="text-xl font-semibold mb-2">Perfil no encontrado</h2>
-            <p className="text-gray-600 mb-4">No se pudo cargar la información del perfil.</p>
+            <p className="text-white/80 mb-4">No se pudo cargar la información del perfil.</p>
             <Button onClick={() => navigate('/discover')} variant="outline">
               Volver al inicio
             </Button>
@@ -82,7 +147,7 @@ const ProfileSingle: React.FC = () => {
       </div>
 
       {/* Contenido principal con scroll personalizado */}
-      <div className="relative z-10 pb-20 px-4 max-h-[calc(100vh-140px)] overflow-y-auto scrollbar-hide">
+      <div className="relative z-10 pb-20 px-4 max-h-[calc(100vh-140px)] overflow-y-auto custom-scrollbar">
         <div className="max-w-4xl mx-auto space-y-6">
           {/* Información principal del perfil */}
           <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
@@ -119,13 +184,13 @@ const ProfileSingle: React.FC = () => {
                     </Badge>
                     <Badge variant="secondary" className="bg-white/20 text-white border-white/30 flex items-center gap-1">
                       <MapPin className="w-3 h-3" />
-                      Madrid, España
+                      {(profile as any).location || 'CDMX, México'}
                     </Badge>
                   </div>
                   
                   {/* Biografía */}
                   {profile.bio && (
-                    <p className="text-gray-300 mb-4 leading-relaxed">
+                    <p className="text-white/90 mb-4 leading-relaxed">
                       {profile.bio}
                     </p>
                   )}
@@ -165,25 +230,25 @@ const ProfileSingle: React.FC = () => {
             <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
               <CardContent className="p-4 text-center">
                 <div className="text-2xl font-bold text-pink-400">12</div>
-                <div className="text-sm text-gray-300">Matches</div>
+                <div className="text-sm text-white/80">Matches</div>
               </CardContent>
             </Card>
             <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
               <CardContent className="p-4 text-center">
                 <div className="text-2xl font-bold text-purple-400">8</div>
-                <div className="text-sm text-gray-300">Conversaciones</div>
+                <div className="text-sm text-white/80">Conversaciones</div>
               </CardContent>
             </Card>
             <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
               <CardContent className="p-4 text-center">
                 <div className="text-2xl font-bold text-blue-400">156</div>
-                <div className="text-sm text-gray-300">Visitas</div>
+                <div className="text-sm text-white/80">Visitas</div>
               </CardContent>
             </Card>
             <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
               <CardContent className="p-4 text-center">
                 <div className="text-2xl font-bold text-green-400">89%</div>
-                <div className="text-sm text-gray-300">Compatibilidad</div>
+                <div className="text-sm text-white/80">Compatibilidad</div>
               </CardContent>
             </Card>
           </div>
