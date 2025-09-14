@@ -59,11 +59,6 @@ const NavigationEnhanced = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
 
-  // Solo mostrar navegación completa si está autenticado
-  if (!isAuthenticated || !demoUser) {
-    return null; // Ocultar navegación si no está logueado
-  }
-
   // Agregar solicitudes si la función está habilitada
   const navItems = features.requests 
     ? [
@@ -87,6 +82,11 @@ const NavigationEnhanced = ({
       setActiveItem(currentItem.id);
     }
   }, [location.pathname, navItems]);
+
+  // Solo mostrar navegación completa si está autenticado
+  if (!isAuthenticated || !demoUser) {
+    return null; // Ocultar navegación si no está logueado
+  }
 
   const handleLogout = () => {
     localStorage.removeItem('demo_authenticated');
