@@ -108,60 +108,47 @@ const Requests = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 relative overflow-hidden pb-20">
       {/* Animated Background */}
-      <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 opacity-40">
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-primary/20 via-transparent to-accent/20 animate-gradient-x"></div>
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent via-secondary/10 to-primary/15 animate-gradient-y"></div>
-        </div>
-        <div className="absolute inset-0">
-          <div className="absolute top-20 left-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-float-slow"></div>
-          <div className="absolute top-40 right-32 w-48 h-48 bg-accent/8 rounded-full blur-2xl animate-float-reverse"></div>
-        </div>
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full mix-blend-multiply filter blur-xl animate-blob"></div>
+        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-pink-500/20 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-red-500/20 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-4000"></div>
       </div>
+
+      <Header />
       
-      <div className="relative z-10">
-        <Navigation />
-        
-        <div className="container mx-auto px-4 py-8">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold text-white mb-2">Mis Solicitudes</h1>
-              <p className="text-white/80">Gestiona tus invitaciones y solicitudes de conexión</p>
-            </div>
+      <div className="relative z-10 container mx-auto px-4 pt-20 pb-24">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">Invitaciones</h1>
+            <p className="text-white/80 text-lg">Gestiona tus invitaciones recibidas y enviadas</p>
+          </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-              <Card className="p-4 bg-black/30 backdrop-blur-sm border-white/10 text-center">
-                <div className="flex items-center justify-center mb-2">
-                  <Clock className="h-5 w-5 text-yellow-400 mr-2" />
-                  <span className="text-white font-semibold">Pendientes</span>
-                </div>
-                <p className="text-2xl font-bold text-white">{pendingReceivedCount}</p>
-              </Card>
-              
-              <Card className="p-4 bg-black/30 backdrop-blur-sm border-white/10 text-center">
-                <div className="flex items-center justify-center mb-2">
-                  <UserCheck className="h-5 w-5 text-green-400 mr-2" />
-                  <span className="text-white font-semibold">Conexiones Activas</span>
-                </div>
-                <p className="text-2xl font-bold text-white">{acceptedCount}</p>
-              </Card>
-              
-              <Card className="p-4 bg-black/30 backdrop-blur-sm border-white/10 text-center">
-                <div className="flex items-center justify-center mb-2">
-                  <Send className="h-5 w-5 text-blue-400 mr-2" />
-                  <span className="text-white font-semibold">Enviadas</span>
-                </div>
-                <p className="text-2xl font-bold text-white">{sentInvitations.length}</p>
-              </Card>
-            </div>
-
+          <div className="bg-black/30 backdrop-blur-sm rounded-xl border border-white/10 p-6">
             <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'received' | 'sent')} className="w-full">
-              <TabsList className="grid w-full grid-cols-2 bg-black/30 backdrop-blur-sm">
-                <TabsTrigger value="received" className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-white/70">
-                  Recibidas ({receivedInvitations.length})
+              <TabsList className="grid w-full grid-cols-2 bg-white/10 backdrop-blur-sm rounded-lg mb-6">
+                <TabsTrigger 
+                  value="received" 
+                  className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-white/80 hover:text-white flex items-center gap-2"
+                >
+                  <MailQuestion className="h-4 w-4" />
+                  Recibidas
+                  {receivedInvitations.length > 0 && (
+                    <Badge className="bg-red-500 text-white text-xs">
+                      {receivedInvitations.length}
+                    </Badge>
+                  )}
                 </TabsTrigger>
-                <TabsTrigger value="sent" className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-white/70">
-                  Enviadas ({sentInvitations.length})
+                <TabsTrigger 
+                  value="sent" 
+                  className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-white/80 hover:text-white flex items-center gap-2"
+                >
+                  <Send className="h-4 w-4" />
+                  Enviadas
+                  {sentInvitations.length > 0 && (
+                    <Badge className="bg-blue-500 text-white text-xs">
+                      {sentInvitations.length}
+                    </Badge>
+                  )}
                 </TabsTrigger>
               </TabsList>
 
@@ -233,6 +220,8 @@ const Requests = () => {
         </div>
       </div>
 
+      <Navigation />
+      
       <style>{`
         @keyframes blob {
           0%, 100% { transform: translate(0px, 0px) scale(1); }
