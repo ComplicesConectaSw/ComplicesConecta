@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { logger } from '@/lib/logger';
 
 // Professional profile images from Unsplash - Production ready
 // Removed local imports that fail in production
@@ -278,7 +279,7 @@ const ProfileDetail = () => {
                 <div className="space-y-4">
                   <Button 
                     onClick={() => {
-                      console.log('Me gusta', profile.name);
+                      logger.info('Me gusta', profile.name);
                       alert(`¡Has dado like a ${profile.name}!`);
                     }}
                     variant="love" 
@@ -291,7 +292,7 @@ const ProfileDetail = () => {
                   
                   <Button 
                     onClick={() => {
-                      console.log('Enviando mensaje a', profile.name);
+                      logger.info('Enviando mensaje a', profile.name);
                       alert(`Mensaje enviado a ${profile.name}`);
                     }}
                     variant="default" 
@@ -304,7 +305,7 @@ const ProfileDetail = () => {
                   
                   <Button 
                     onClick={() => {
-                      console.log('Reportando perfil de', profile.name);
+                      logger.info('Reportando perfil de', profile.name);
                       if (confirm(`¿Estás seguro de que quieres reportar el perfil de ${profile.name}?`)) {
                         alert('Perfil reportado. Gracias por ayudarnos a mantener la comunidad segura.');
                       }

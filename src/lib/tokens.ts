@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Sistema de Tokens CMPX - ComplicesConecta
  * Gestión de recompensas por referidos y límites mensuales
@@ -210,6 +211,6 @@ export function initializeMockTokenData() {
   
   userBalances.set('demo-user-1', demoUser);
   
-  console.log('🪙 Sistema de tokens CMPX inicializado');
-  console.log(`📊 Configuración: ${TOKEN_CONFIG.REFERRAL_REWARD} CMPX por referido, límite ${TOKEN_CONFIG.MONTHLY_LIMIT}/mes`);
+  logger.info('🪙 Sistema de tokens CMPX inicializado');
+  logger.info(`📊 Configuración: ${TOKEN_CONFIG.REFERRAL_REWARD} CMPX por referido, límite ${TOKEN_CONFIG.MONTHLY_LIMIT}/mes`);
 }

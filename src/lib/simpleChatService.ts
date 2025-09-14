@@ -4,6 +4,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/lib/logger';
 
 export interface SimpleChatRoom {
   id: string;
@@ -46,7 +47,7 @@ export class SimpleChatService {
         .eq('is_active', true);
 
       if (publicError) {
-        console.error('Error obteniendo salas públicas:', publicError);
+        logger.error('Error obteniendo salas públicas:', publicError);
       }
 
       // Obtener salas privadas donde el usuario es miembro
@@ -59,7 +60,7 @@ export class SimpleChatService {
         .eq('profile_id', user.user.id);
 
       if (memberError) {
-        console.error('Error obteniendo membresías:', memberError);
+        logger.error('Error obteniendo membresías:', memberError);
       }
 
       const privateRooms = memberRooms?.map(member => ({

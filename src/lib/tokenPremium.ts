@@ -4,6 +4,7 @@
  */
 
 import { getUserTokenBalance, TOKEN_CONFIG } from '@/lib/tokens';
+import { logger } from '@/lib/logger';
 
 export interface PremiumFeature {
   id: string;
@@ -233,7 +234,7 @@ export function initializeMockPremiumData() {
   
   userPremiumAccess.set('demo-user-1', [demoAccess]);
   
-  console.log('🎯 Premium system initialized');
-  console.log(`💎 Premium enabled: ${isPremiumEnabled()}`);
-  console.log(`🪙 Payment method: ${import.meta.env.VITE_APP_PHASE === 'beta' ? 'CMPX Tokens' : 'Stripe + Tokens'}`);
+  logger.info('🎯 Premium system initialized');
+  logger.info(`💎 Premium enabled: ${isPremiumEnabled()}`);
+  logger.info(`🪙 Payment method: ${import.meta.env.VITE_APP_PHASE === 'beta' ? 'CMPX Tokens' : 'Stripe + Tokens'}`);
 }

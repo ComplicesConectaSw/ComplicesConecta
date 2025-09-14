@@ -4,6 +4,7 @@ import { Home, Search, MessageCircle, Heart, User, Settings, Crown, LogOut, Coin
 import { cn } from '@/lib/utils';
 import { useFeatures } from '@/hooks/useFeatures';
 import NavigationEnhanced from './NavigationEnhanced';
+import { logger } from '@/lib/logger';
 
 interface NavigationProps {
   className?: string;
@@ -90,7 +91,7 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
     const isDemoAuth = localStorage.getItem('demo_authenticated') === 'true';
     const isSpecialAuth = localStorage.getItem('apoyo_authenticated') === 'true';
     
-    console.log('🔍 Navigation Debug:', { demoUser, specialUser, userType, isDemoAuth, isSpecialAuth, path });
+    logger.info('🔍 Navigation Debug:', { demoUser, specialUser, userType, isDemoAuth, isSpecialAuth, path });
     
     // Detectar tipo de usuario y redirigir al perfil correcto
     if (path === '/profile') {
@@ -106,7 +107,7 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
     const isAuthenticated = isDemoAuth || isSpecialAuth || demoUser || specialUser;
     
     if (!isAuthenticated) {
-      console.log('❌ Usuario no autenticado, redirigiendo a /auth');
+      logger.info('❌ Usuario no autenticado, redirigiendo a /auth');
       navigate('/auth');
       return;
     }
@@ -115,7 +116,7 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
     const coupleRoutes = ['/feed', '/discover', '/chat', '/matches', '/tokens'];
     
     if (coupleRoutes.includes(path) && userType === 'couple') {
-      console.log('✅ Navegación de pareja autorizada a:', path);
+      logger.info('✅ Navegación de pareja autorizada a:', path);
     }
     
     // Navegar a la ruta solicitada

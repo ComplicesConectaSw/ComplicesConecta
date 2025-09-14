@@ -1,4 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/lib/logger';
 
 export interface EmailValidationResult {
   isValid: boolean;
@@ -27,13 +28,13 @@ export const checkEmailUniqueness = async (email: string): Promise<boolean> => {
       .limit(1);
 
     if (profileError && profileError.code !== 'PGRST116') {
-      console.error('Error checking profiles:', profileError);
+      logger.error('Error checking profiles:', profileError);
       throw new Error('Error verificando disponibilidad del email');
     }
 
     return !profiles || profiles.length === 0;
   } catch (error) {
-    console.error('Error in checkEmailUniqueness:', error);
+    logger.error('Error in checkEmailUniqueness:', error);
     throw new Error('Error verificando disponibilidad del email');
   }
 };
@@ -76,7 +77,7 @@ export const validateEmail = async (email: string): Promise<EmailValidationResul
       isUnique: true
     };
   } catch (error) {
-    console.error('Error in validateEmail:', error);
+    logger.error('Error in validateEmail:', error);
     return {
       isValid: false,
       isUnique: false,

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { RealtimeChannel } from '@supabase/supabase-js';
+import { logger } from '@/lib/logger';
 
 export interface RealtimeMessage {
   id: string;
@@ -70,7 +71,7 @@ export const useRealtimeChat = ({
     
     setIsLoading(true);
     try {
-      console.log('📥 Cargando mensajes históricos para sala:', roomId);
+      logger.info('📥 Cargando mensajes históricos para sala:', roomId);
       
       // Usar tabla messages existente con estructura compatible
       const { data, error } = await supabase
@@ -85,7 +86,7 @@ export const useRealtimeChat = ({
         .limit(100);
 
       if (error) {
-        console.error('❌ Error cargando mensajes:', error);
+        logger.error('❌ Error cargando mensajes:', error);
         return;
       }
 
@@ -104,9 +105,9 @@ export const useRealtimeChat = ({
       }));
 
       setMessages(mappedMessages);
-      console.log('✅ Mensajes cargados:', data?.length || 0);
+      logger.info('✅ Mensajes cargados:', data?.length || 0);
     } catch (error) {
-      console.error('❌ Error en loadMessages:', error);
+      logger.error('❌ Error en loadMessages:', error);
     } finally {
       setIsLoading(false);
     }
@@ -121,7 +122,7 @@ export const useRealtimeChat = ({
     if (!chatRoomId || !userId || !content.trim()) return;
 
     try {
-      console.log('📤 Enviando mensaje:', { content, messageType, chatRoomId });
+      logger.info('📤 Enviando mensaje:', { content, messageType, chatRoomId });
 
       const { data, error } = await supabase
         .from('messages')
@@ -134,12 +135,12 @@ export const useRealtimeChat = ({
         .single();
 
       if (error) {
-        console.error('❌ Error enviando mensaje:', error);
+        logger.error('❌ Error enviando mensaje:', error);
         onError?.(error);
         return;
       }
 
-      console.log('✅ Mensaje enviado:', data);
+      logger.info('✅ Mensaje enviado:', data);
       
       // Crear mensaje compatible para el estado local
       const realtimeMessage: RealtimeMessage = {
@@ -157,7 +158,7 @@ export const useRealtimeChat = ({
 
       onMessageSent?.(realtimeMessage);
     } catch (error) {
-      console.error('❌ Error en sendMessage:', error);
+      logger.error('❌ Error en sendMessage:', error);
       onError?.(error as Error);
     }
   }, [chatRoomId, userId, onError, onMessageSent]);
@@ -200,7 +201,7 @@ export const useRealtimeChat = ({
         });
       }
     } catch (error) {
-      console.error('❌ Error enviando typing indicator:', error);
+      logger.error('❌ Error enviando typing indicator:', error);
     }
   }, [userId]);
 
@@ -208,7 +209,7 @@ export const useRealtimeChat = ({
   useEffect(() => {
     if (!chatRoomId || !userId) return;
 
-    console.log('🔄 Configurando canal realtime para sala:', chatRoomId);
+    logger.info('🔄 Configurando canal realtime para sala:', chatRoomId);
     
     // Crear canal único para la sala de chat
     const channel = supabase.channel(`chat_room_${chatRoomId}`, {
@@ -227,7 +228,7 @@ export const useRealtimeChat = ({
         schema: 'public',
         table: 'messages'
       }, (payload) => {
-        console.log('📨 Nuevo mensaje recibido:', payload.new);
+        logger.info('📨 Nuevo mensaje recibido:', payload.new);
         const newMessage = payload.new as RealtimeMessage;
         
         setMessages(prev => {
@@ -267,22 +268,22 @@ export const useRealtimeChat = ({
         const state = channel.presenceState();
         const users = Object.keys(state);
         setOnlineUsers(users);
-        console.log('👥 Usuarios online:', users.length);
+        logger.info('👥 Usuarios online:', users.length);
       })
       
       .on('presence', { event: 'join' }, ({ key }) => {
-        console.log('👋 Usuario se unió:', key);
+        logger.info('👋 Usuario se unió:', key);
         onUserJoined?.(key);
       })
       
       .on('presence', { event: 'leave' }, ({ key }) => {
-        console.log('👋 Usuario se fue:', key);
+        logger.info('👋 Usuario se fue:', key);
         onUserLeft?.(key);
       });
 
     // Suscribirse al canal
     channel.subscribe(async (status) => {
-      console.log('📡 Estado del canal:', status);
+      logger.info('📡 Estado del canal:', status);
       
       if (status === 'SUBSCRIBED') {
         setIsConnected(true);
@@ -302,7 +303,7 @@ export const useRealtimeChat = ({
 
     // Cleanup
     return () => {
-      console.log('🧹 Limpiando canal realtime');
+      logger.info('🧹 Limpiando canal realtime');
       
       if (typingTimeoutRef.current) {
         clearTimeout(typingTimeoutRef.current);

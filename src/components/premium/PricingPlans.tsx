@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { logger } from '@/lib/logger';
 
 const plans = [
   {
@@ -80,7 +81,7 @@ export const PricingPlans = () => {
 
   const handleSubscribe = (planId: string) => {
     // Durante la Beta, redirigir a página de apoyo/donación
-    console.log(`Subscribing to plan: ${planId}, period: ${billingPeriod}`);
+    logger.info(`Subscribing to plan: ${planId}, period: ${billingPeriod}`);
     // Lógica de redirección o checkout aquí
   };
 

@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { logger } from '@/lib/logger';
 
 export interface LocationCoordinates {
   latitude: number;
@@ -257,7 +258,7 @@ export const useGeolocation = () => {
       const permission = await navigator.permissions.query({ name: 'geolocation' });
       return permission.state;
     } catch (error) {
-      console.warn('Could not query geolocation permission:', error);
+      logger.warn('Could not query geolocation permission:', error);
       return null;
     }
   }, []);

@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { simpleMatchService, SimpleMatch } from "@/lib/simpleMatches";
 import MatchingService, { SupabaseProfile } from "@/lib/MatchingService";
 import { motion, AnimatePresence } from "framer-motion";
+import { logger } from '@/lib/logger';
 
 // Professional profile images from Unsplash - Production ready
 // Removed local imports that fail in production
@@ -149,7 +150,7 @@ const Matches = () => {
         setMatches(convertedMatches);
       }
     } catch (error) {
-      console.error('Error cargando matches:', error);
+      logger.error('Error cargando matches:', error);
       // Fallback a datos demo en caso de error
       setMatches(demoMatches);
     } finally {
@@ -173,12 +174,12 @@ const Matches = () => {
 
   const handleSuperLike = (matchId: number) => {
     // Super like logic
-    console.log('Super like:', matchId);
+    logger.info('Super like:', matchId);
   };
 
   const handleStartChat = (matchId: number) => {
     // Navigate to chat or start conversation
-    console.log('Start chat:', matchId);
+    logger.info('Start chat:', matchId);
   };
 
   return (
@@ -386,7 +387,7 @@ const Matches = () => {
                     accountType={match.name.includes('&') ? 'couple' : 'single'}
                     variant="grid"
                     onLike={() => handleStartChat(match.id)}
-                    onPass={() => console.log('Pass:', match.id)}
+                    onPass={() => logger.info('Pass:', match.id)}
                     onSuperLike={() => handleSuperLike(match.id)}
                   />
                 </div>

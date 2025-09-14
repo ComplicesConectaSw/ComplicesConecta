@@ -6,6 +6,7 @@ import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Bell, MessageCircle, Heart, Calendar, Zap } from "lucide-react";
+import { logger } from '@/lib/logger';
 
 export const NotificationSettings = () => {
   const [notifications, setNotifications] = useState({
@@ -27,7 +28,7 @@ export const NotificationSettings = () => {
   const navigate = useNavigate();
 
     const handleSave = () => {
-    console.log("Notification settings saved:", {
+    logger.info("Notification settings saved:", {
       ...notifications,
       quietHours,
       summaryFrequency,

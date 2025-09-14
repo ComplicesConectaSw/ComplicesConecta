@@ -5,6 +5,7 @@ import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Shield, Eye, EyeOff, Users, AlertTriangle, Trash2 } from "lucide-react";
+import { logger } from '@/lib/logger';
 
 export const PrivacySettings = () => {
   const [privacy, setPrivacy] = useState({
@@ -22,22 +23,22 @@ export const PrivacySettings = () => {
   };
 
   const handleSave = () => {
-    console.log("Privacy settings saved:", privacy);
+    logger.info("Privacy settings saved:", privacy);
     // Lógica para guardar en el backend
   };
 
   const handleDownloadData = () => {
-    console.log("Requesting data download...");
+    logger.info("Requesting data download...");
     // Lógica para iniciar la descarga de datos
   };
 
   const handleDeleteMatches = () => {
-    console.warn("Requesting to delete match history...");
+    logger.warn("Requesting to delete match history...");
     // Lógica para eliminar historial de matches, probablemente con confirmación
   };
 
   const handleDeleteAccount = () => {
-    console.error("Requesting permanent account deletion...");
+    logger.error("Requesting permanent account deletion...");
     // Lógica para eliminar la cuenta, probablemente con confirmación
   };
 

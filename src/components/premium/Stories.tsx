@@ -23,6 +23,7 @@ const isDemoMode = () => {
 
 import { useFeatures } from "@/hooks/useFeatures";
 import { mockStories, Story } from "@/lib/data";
+import { logger } from '@/lib/logger';
 
 const Stories = () => {
   const { features } = useFeatures();
@@ -45,7 +46,7 @@ const Stories = () => {
 
   const handleCreateStory = () => {
     // Lógica para crear nueva historia
-    console.log('Crear nueva historia...');
+    logger.info('Crear nueva historia...');
   };
 
   const canViewStory = (story: Story) => {

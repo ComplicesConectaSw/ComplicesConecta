@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/lib/logger';
 
 export interface WorldIDVerificationStatus {
   isVerified: boolean;
@@ -67,7 +68,7 @@ export const useWorldID = () => {
         setStatus({ isVerified: false, isLoading: false });
       }
     } catch (err) {
-      console.error('Error checking World ID verification status:', err);
+      logger.error('Error checking World ID verification status:', err);
       setError(err instanceof Error ? err.message : 'Error desconocido');
       setStatus({ isVerified: false, isLoading: false });
     }
@@ -85,7 +86,7 @@ export const useWorldID = () => {
         currentMonth: ''
       });  
     } catch (err) {
-      console.error('Error fetching World ID stats:', err);
+      logger.error('Error fetching World ID stats:', err);
       setError(err instanceof Error ? err.message : 'Error al obtener estadísticas');
     }
   }, []);
@@ -130,7 +131,7 @@ export const useWorldID = () => {
 
       return data || [];
     } catch (err) {
-      console.error('Error fetching verification history:', err);
+      logger.error('Error fetching verification history:', err);
       return [];
     }
   }, [user?.id]);
@@ -158,7 +159,7 @@ export const useWorldID = () => {
 
       return { current, limit, remaining };
     } catch (err) {
-      console.error('Error checking monthly limit:', err);
+      logger.error('Error checking monthly limit:', err);
       return { current: 0, limit: 500, remaining: 500 };
     }
   }, [user?.id]);

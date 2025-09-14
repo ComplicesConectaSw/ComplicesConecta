@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Check, X, MessageCircle, Clock, User } from 'lucide-react';
 import { RequestsService } from '@/lib/requests';
 import type { Database } from '@/integrations/supabase/types';
+import { logger } from '@/lib/logger';
 
 // Tipos estrictos basados en Supabase
 type ProfileRow = Database['public']['Tables']['profiles']['Row'];
@@ -113,7 +114,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
       }
     } catch (error) {
       if (!abortControllerRef.current?.signal.aborted) {
-        console.error('Error accepting request:', error);
+        logger.error('Error accepting request:', error);
       }
     } finally {
       if (!abortControllerRef.current?.signal.aborted) {
@@ -135,7 +136,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
       }
     } catch (error) {
       if (!abortControllerRef.current?.signal.aborted) {
-        console.error('Error declining request:', error);
+        logger.error('Error declining request:', error);
       }
     } finally {
       if (!abortControllerRef.current?.signal.aborted) {
@@ -157,7 +158,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
       }
     } catch (error) {
       if (!abortControllerRef.current?.signal.aborted) {
-        console.error('Error deleting request:', error);
+        logger.error('Error deleting request:', error);
       }
     } finally {
       if (!abortControllerRef.current?.signal.aborted) {

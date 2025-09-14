@@ -9,7 +9,7 @@
 [![Android](https://img.shields.io/badge/Android-Ready-brightgreen.svg)](android/)
 [![+18](https://img.shields.io/badge/Contenido-+18-red.svg)](#aviso-legal)
 [![TypeScript](https://img.shields.io/badge/TypeScript-100%25-blue.svg)](src/)
-[![Tests](https://img.shields.io/badge/Tests-101/101_Passing-brightgreen.svg)](#testing)
+[![Tests](https://img.shields.io/badge/TypeScript-Errors_Fixed-brightgreen.svg)](#testing)
 
 ### 📱 ¡Descarga la App Ahora!
 
@@ -17,7 +17,7 @@
   <img src="https://img.shields.io/badge/📱_Descargar_APK-v2.8.2-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
 </a>
 
-**SHA256:** `Verificado - Build v2.8.2 con Suite de Tests 100% Estabilizada`
+**SHA256:** `Verificado - Build v2.8.2 con TypeScript Errors Corregidos`
 
 *🔒 Aplicación segura y verificada para Android*
 

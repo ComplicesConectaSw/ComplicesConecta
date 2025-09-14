@@ -10,6 +10,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { ArrowLeft, HelpCircle, MessageSquare, Star, Send, Heart, Shield, Crown, Bug, AlertTriangle, UserCheck, Lock, GalleryHorizontal, MessageCircle, Gift, Zap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { logger } from '@/lib/logger';
 
 const FAQ = () => {
   const navigate = useNavigate();
@@ -186,7 +187,7 @@ const FAQ = () => {
 
   const handleSubmitFeedback = () => {
     // Aquí se enviaría el feedback al backend
-    console.log("Feedback enviado:", { email, feedback, rating });
+    logger.info("Feedback enviado:", { email, feedback, rating });
     toast({
       title: "¡Comentarios enviados!",
       description: "Gracias por tu feedback. Nos ayuda a mejorar la plataforma.",

@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Heart, MessageCircle, MapPin, Verified, Crown, Users, UserPlus } from "lucide-react";
 import { InvitationDialog } from "@/components/invitations/InvitationDialog";
 import { Tables } from "@/integrations/supabase/types";
+import { logger } from '@/lib/logger';
 
 // Extended interface for couple profiles with database integration
 interface CoupleProfileWithPartners {
@@ -199,7 +200,7 @@ const CoupleProfileCard = ({
             <div className="flex gap-2">
               <Button 
                 onClick={() => {
-                  console.log('Me gusta', profile.couple_name);
+                  logger.info('Me gusta', profile.couple_name);
                   if (onLike) onLike();
                 }}
                 className={`flex-1 ${theme.accent} hover:opacity-90 text-white shadow-md transition-all duration-200 hover:shadow-lg`}
@@ -209,7 +210,7 @@ const CoupleProfileCard = ({
               </Button>
               <Button 
                 onClick={() => {
-                  console.log('Enviando mensaje a', profile.couple_name);
+                  logger.info('Enviando mensaje a', profile.couple_name);
                   if (onMessage) onMessage();
                 }}
                 variant="outline" 

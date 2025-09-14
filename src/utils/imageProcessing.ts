@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 // Utility functions for image processing and uploading
 
 export interface ImageUploadResult {
@@ -118,7 +119,7 @@ export const createImagePreview = (file: File): Promise<string> => {
 // Background removal utility (requires @huggingface/transformers)
 export const removeImageBackground = async (imageElement: HTMLImageElement): Promise<Blob> => {
   try {
-    console.log('Starting background removal process...');
+    logger.info('Starting background removal process...');
     
     // Dynamically import transformers to avoid bundle bloat
     const { pipeline, env } = await import('@huggingface/transformers');
@@ -204,7 +205,7 @@ export const removeImageBackground = async (imageElement: HTMLImageElement): Pro
       );
     });
   } catch (error) {
-    console.error('Error removing background:', error);
+    logger.error('Error removing background:', error);
     throw error;
   }
 };

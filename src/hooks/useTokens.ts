@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { isDemoMode, shouldUseRealSupabase, getAppConfig } from '@/lib/app-config';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/lib/logger';
 
 // Interfaces simplificadas para demo vs real
 export interface TokenBalance {
@@ -79,11 +80,11 @@ export const useTokens = () => {
 
     try {
       setLoading(true);
-      console.log('💰 Cargando datos de tokens - Modo:', config.mode, 'Demo activo:', isDemo());
+      logger.info('💰 Cargando datos de tokens - Modo:', config.mode, 'Demo activo:', isDemo());
       
       // Si es demo o no debemos usar Supabase real, usar datos mock
       if (isDemo() || !shouldUseRealSupabase()) {
-        console.log('🎭 Cargando datos de tokens demo para:', user.email || user.id);
+        logger.info('🎭 Cargando datos de tokens demo para:', user.email || user.id);
         
         // Balance demo basado en tipo de usuario
         const demoUser = localStorage.getItem('demo_user');
@@ -96,7 +97,7 @@ export const useTokens = () => {
               demoBalance = { cmpx: 10000, gtk: 5000 }; // Admin tiene más tokens
             }
           } catch (error) {
-            console.warn('Error parsing demo user for balance');
+            logger.warn('Error parsing demo user for balance');
           }
         }
         
@@ -180,10 +181,10 @@ export const useTokens = () => {
         ];
         setRewards(mockRewards);
         
-        console.log('✅ Datos de tokens demo cargados - Balance:', demoBalance);
+        logger.info('✅ Datos de tokens demo cargados - Balance:', demoBalance);
       } else {
         // Cargar datos reales desde Supabase
-        console.log('🔗 Cargando datos de tokens reales desde Supabase...');
+        logger.info('🔗 Cargando datos de tokens reales desde Supabase...');
         
         try {
           // Cargar balance real (implementar cuando existan las tablas)
@@ -198,9 +199,9 @@ export const useTokens = () => {
           setStakingRecords([]);
           setRewards([]);
           
-          console.log('ℹ️ Datos reales no implementados aún - usando valores por defecto');
+          logger.info('ℹ️ Datos reales no implementados aún - usando valores por defecto');
         } catch (error) {
-          console.error('❌ Error cargando datos reales:', error);
+          logger.error('❌ Error cargando datos reales:', error);
           // Fallback a datos vacíos
           setBalance({ cmpx: 0, gtk: 0 });
           setTransactions([]);
@@ -209,7 +210,7 @@ export const useTokens = () => {
         }
       }
     } catch (error) {
-      console.error('❌ Error cargando datos de tokens:', error);
+      logger.error('❌ Error cargando datos de tokens:', error);
     } finally {
       setLoading(false);
     }
@@ -220,7 +221,7 @@ export const useTokens = () => {
     if (!user) return false;
     
     if (isDemo() || !shouldUseRealSupabase()) {
-      console.log('🎭 Simulando procesamiento de referido en modo demo');
+      logger.info('🎭 Simulando procesamiento de referido en modo demo');
       // Simular recompensa por referido
       const newTransaction: Transaction = {
         id: `demo-ref-${Date.now()}`,
@@ -235,17 +236,17 @@ export const useTokens = () => {
       
       setTransactions(prev => [newTransaction, ...prev]);
       setBalance(prev => ({ ...prev, cmpx: prev.cmpx + 50 }));
-      console.log('✅ Referido procesado en demo - +50 CMPX');
+      logger.info('✅ Referido procesado en demo - +50 CMPX');
       return true;
     }
     
     try {
-      console.log('🔗 Procesando referido real:', referredUserId);
+      logger.info('🔗 Procesando referido real:', referredUserId);
       // TODO: Implementar lógica real de referidos con Supabase Edge Functions
-      console.log('ℹ️ Procesamiento de referidos reales no implementado aún');
+      logger.info('ℹ️ Procesamiento de referidos reales no implementado aún');
       return false;
     } catch (error) {
-      console.error('❌ Error procesando referido:', error);
+      logger.error('❌ Error procesando referido:', error);
       return false;
     }
   };
@@ -255,7 +256,7 @@ export const useTokens = () => {
     if (!user) return false;
     
     if (isDemo() || !shouldUseRealSupabase()) {
-      console.log('🎭 Simulando staking en modo demo:', { tokenType, amount, duration });
+      logger.info('🎭 Simulando staking en modo demo:', { tokenType, amount, duration });
       
       // Verificar balance suficiente
       if (balance[tokenType] < amount) {
@@ -278,16 +279,16 @@ export const useTokens = () => {
       setStakingRecords(prev => [newStaking, ...prev]);
       setBalance(prev => ({ ...prev, [tokenType]: prev[tokenType] - amount }));
       
-      console.log('✅ Staking procesado en demo:', { tokenType, amount, duration });
+      logger.info('✅ Staking procesado en demo:', { tokenType, amount, duration });
       return true;
     }
     
     try {
-      console.log('🔗 Procesando staking real:', { tokenType, amount, duration });
-      console.log('ℹ️ Staking real no implementado aún');
+      logger.info('🔗 Procesando staking real:', { tokenType, amount, duration });
+      logger.info('ℹ️ Staking real no implementado aún');
       return false;
     } catch (error) {
-      console.error('❌ Error en staking:', error);
+      logger.error('❌ Error en staking:', error);
       return false;
     }
   };
@@ -297,11 +298,11 @@ export const useTokens = () => {
     if (!user) return false;
     
     if (isDemo() || !shouldUseRealSupabase()) {
-      console.log('🎭 Reclamando recompensa en modo demo:', rewardId);
+      logger.info('🎭 Reclamando recompensa en modo demo:', rewardId);
       
       const reward = rewards.find(r => r.id === rewardId);
       if (!reward || reward.claimed) {
-        console.log('❌ Recompensa no encontrada o ya reclamada');
+        logger.info('❌ Recompensa no encontrada o ya reclamada');
         return false;
       }
       
@@ -329,23 +330,23 @@ export const useTokens = () => {
       };
       
       setTransactions(prev => [newTransaction, ...prev]);
-      console.log('✅ Recompensa reclamada en demo:', reward.amount, reward.token_type);
+      logger.info('✅ Recompensa reclamada en demo:', reward.amount, reward.token_type);
       return true;
     }
     
     try {
-      console.log('🔗 Reclamando recompensa real:', rewardId);
-      console.log('ℹ️ Reclamo de recompensas reales no implementado aún');
+      logger.info('🔗 Reclamando recompensa real:', rewardId);
+      logger.info('ℹ️ Reclamo de recompensas reales no implementado aún');
       return false;
     } catch (error) {
-      console.error('❌ Error reclamando recompensa:', error);
+      logger.error('❌ Error reclamando recompensa:', error);
       return false;
     }
   };
 
   // Refrescar datos
   const refreshTokenData = () => {
-    console.log('🔄 Refrescando datos de tokens - Modo:', config.mode);
+    logger.info('🔄 Refrescando datos de tokens - Modo:', config.mode);
     loadTokenData();
   };
 
@@ -375,7 +376,7 @@ export const useTokens = () => {
     if (!user) return false;
     
     if (isDemo() || !shouldUseRealSupabase()) {
-      console.log('🎭 Completando staking en modo demo:', stakingId);
+      logger.info('🎭 Completando staking en modo demo:', stakingId);
       
       // Encontrar el staking record
       const staking = stakingRecords.find(s => s.id === stakingId);
@@ -394,22 +395,22 @@ export const useTokens = () => {
         prev.map(s => s.id === stakingId ? { ...s, status: 'completed' } : s)
       );
       
-      console.log('✅ Staking completado en demo:', { stakingId, reward });
+      logger.info('✅ Staking completado en demo:', { stakingId, reward });
       return true;
     }
     
     try {
-      console.log('🔗 Completando staking real:', stakingId);
-      console.log('ℹ️ Completar staking real no implementado aún');
+      logger.info('🔗 Completando staking real:', stakingId);
+      logger.info('ℹ️ Completar staking real no implementado aún');
       return false;
     } catch (error) {
-      console.error('❌ Error completando staking:', error);
+      logger.error('❌ Error completando staking:', error);
       return false;
     }
   };
 
   const claimWorldIdReward = async () => {
-    console.log('🌍 Reclamando recompensa World ID');
+    logger.info('🌍 Reclamando recompensa World ID');
     // Mock implementation for demo
     if (isDemo()) {
       const worldIdReward: Reward = {

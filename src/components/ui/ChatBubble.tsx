@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Check, CheckCheck, Clock, Heart, Smile, MoreHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { ChatBubble as SimpleChatBubble } from "@/components/chat/ChatBubble";
 
 interface ChatBubbleProps {
   id: string;
@@ -33,6 +34,7 @@ const statusColors = {
   read: "text-blue-500"
 };
 
+// Wrapper de compatibilidad para ChatBubble avanzado
 export const ChatBubble = React.memo<ChatBubbleProps>(function ChatBubble({
   id,
   message,
@@ -47,6 +49,21 @@ export const ChatBubble = React.memo<ChatBubbleProps>(function ChatBubble({
   onReply,
   className
 }) {
+  // Si no hay funcionalidades avanzadas, usar el componente simple
+  if (!reactions?.length && !onReact && !onReply && !isPrivate) {
+    return (
+      <SimpleChatBubble
+        message={message}
+        isOwn={isOwn}
+        timestamp={timestamp}
+        avatar={senderAvatar}
+        username={senderName}
+        className={className}
+      />
+    );
+  }
+
+  // Funcionalidad avanzada completa
   const [showReactions, setShowReactions] = React.useState(false);
   const [isHovered, setIsHovered] = React.useState(false);
 

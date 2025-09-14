@@ -23,6 +23,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { invitationService } from '@/lib/invitations';
 import { useAuth } from '@/hooks/useAuth';
 import { InvitationDialog } from "@/components/invitations/InvitationDialog";
+import { logger } from '@/lib/logger';
 
 interface GalleryImage {
   id: number;
@@ -81,7 +82,7 @@ const Gallery = ({ userId, isOwner = false, canViewPrivate = false, profileName 
           const access = await invitationService.hasGalleryAccess(userId, user.id);
           setHasGalleryAccess(access);
         } catch (error) {
-          console.error('Error verificando acceso a galería:', error);
+          logger.error('Error verificando acceso a galería:', error);
           setHasGalleryAccess(false);
         }
       }

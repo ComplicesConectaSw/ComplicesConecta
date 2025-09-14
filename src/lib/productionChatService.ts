@@ -9,6 +9,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/lib/logger';
 
 export interface ProductionChatRoom {
   id: string;
@@ -78,7 +79,7 @@ class ProductionChatService {
         .order('updated_at', { ascending: false });
 
       if (publicError) {
-        console.error('Error obteniendo salas públicas:', publicError);
+        logger.error('Error obteniendo salas públicas:', publicError);
         // Continuar sin error crítico
       }
 
@@ -95,7 +96,7 @@ class ProductionChatService {
         .order('updated_at', { ascending: false });
 
       if (privateError) {
-        console.error('Error obteniendo salas privadas:', privateError);
+        logger.error('Error obteniendo salas privadas:', privateError);
         // Continuar sin error crítico
       }
 
@@ -458,7 +459,7 @@ class ProductionChatService {
       return !memberError && !!member;
 
     } catch (error) {
-      console.error('Error al verificar acceso a sala:', error);
+      logger.error('Error al verificar acceso a sala:', error);
       return false;
     }
   }

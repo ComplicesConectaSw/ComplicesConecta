@@ -1,9 +1,10 @@
 import * as Sentry from '@sentry/react';
+import { logger } from '@/lib/logger';
 
 // Configuración simplificada de Sentry para monitoreo de errores
 export const initSentry = () => {
   if (!import.meta.env.VITE_SENTRY_DSN) {
-    console.warn('Sentry DSN no configurado');
+    logger.warn('Sentry DSN no configurado');
     return;
   }
 
@@ -16,8 +17,8 @@ export const initSentry = () => {
     beforeSend(event, hint) {
       if (import.meta.env.DEV) {
         console.group('🔍 Sentry Error Captured');
-        console.error('Error:', hint.originalException || hint.syntheticException);
-        console.error('Event:', event);
+        logger.error('Error:', hint.originalException || hint.syntheticException);
+        logger.error('Event:', event);
         console.groupEnd();
       }
       

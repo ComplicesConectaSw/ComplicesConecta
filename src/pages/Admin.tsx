@@ -33,6 +33,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from '@/integrations/supabase/client';
 import { invitationService, type Invitation } from '@/lib/invitations';
 import { appConfig } from '@/lib/app-config';
+import { logger } from '@/lib/logger';
 
 interface Profile {
   id: string;
@@ -150,7 +151,7 @@ const Admin = () => {
         loadInvitations()
       ]);
     } catch (error) {
-      console.error('Error loading admin data:', error);
+      logger.error('Error loading admin data:', error);
       toast({
         title: "Error",
         description: "Error al cargar datos del panel de administración",
@@ -184,7 +185,7 @@ const Admin = () => {
       
       setProfiles(mockProfiles);
     } catch (error) {
-      console.error('Error loading profiles:', error);
+      logger.error('Error loading profiles:', error);
     }
   };
 
@@ -205,7 +206,7 @@ const Admin = () => {
       };
       setStats(mockStats);
     } catch (error) {
-      console.error('Error loading stats:', error);
+      logger.error('Error loading stats:', error);
     }
   };
 
@@ -232,7 +233,7 @@ const Admin = () => {
       ];
       setFaqItems(mockFAQ);
     } catch (error) {
-      console.error('Error loading FAQ:', error);
+      logger.error('Error loading FAQ:', error);
     }
   };
 
@@ -262,7 +263,7 @@ const Admin = () => {
       ];
       setInvitations(allInvitations);
     } catch (error) {
-      console.error('Error loading invitations:', error);
+      logger.error('Error loading invitations:', error);
     }
   };
 
@@ -283,7 +284,7 @@ const Admin = () => {
         description: "El perfil ha sido eliminado exitosamente"
       });
     } catch (error) {
-      console.error('Error deleting profile:', error);
+      logger.error('Error deleting profile:', error);
       toast({
         title: "Error",
         description: "Error al eliminar el perfil",
@@ -314,7 +315,7 @@ const Admin = () => {
         description: `El perfil ha sido ${currentStatus ? 'desverificado' : 'verificado'} exitosamente`
       });
     } catch (error) {
-      console.error('Error updating verification:', error);
+      logger.error('Error updating verification:', error);
       toast({
         title: "Error",
         description: "Error al actualizar verificación",
@@ -349,7 +350,7 @@ const Admin = () => {
         description: "La pregunta frecuente ha sido agregada exitosamente"
       });
     } catch (error) {
-      console.error('Error adding FAQ:', error);
+      logger.error('Error adding FAQ:', error);
       toast({
         title: "Error",
         description: "Error al agregar FAQ",
@@ -379,7 +380,7 @@ const Admin = () => {
         description: "La invitación ha sido revocada exitosamente"
       });
     } catch (error) {
-      console.error('Error revoking invitation:', error);
+      logger.error('Error revoking invitation:', error);
       toast({
         title: "Error",
         description: "Error al revocar la invitación",
@@ -421,7 +422,7 @@ const Admin = () => {
         description: "El reporte de auditoría ha sido generado exitosamente"
       });
     } catch (error) {
-      console.error('Error generating audit report:', error);
+      logger.error('Error generating audit report:', error);
       toast({
         title: "Error",
         description: "Error al generar el reporte de auditoría",

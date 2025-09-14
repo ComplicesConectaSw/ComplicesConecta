@@ -20,6 +20,7 @@ import { LoadingScreen } from "@/components/LoadingScreen";
 import { useAuth } from "@/hooks/useAuth";
 import { EmailValidation } from "@/components/auth/EmailValidation";
 import { validateEmail } from "@/utils/emailValidation";
+import { logger } from '@/lib/logger';
 
 interface FormData {
   email: string;
@@ -120,7 +121,7 @@ const Auth = () => {
 
   // Auto-redirect authenticated users - PROTEGER usuario especial
   useEffect(() => {
-    console.log('🔍 Verificando redirección automática:', {
+    logger.info('🔍 Verificando redirección automática:', {
       user: !!user,
       profile: !!profile,
       loading,
@@ -131,12 +132,12 @@ const Auth = () => {
 
     // Proteger al usuario especial de deslogueo automático
     if (user?.email === 'apoyofinancieromexicano@gmail.com') {
-      console.log('🛡️ Usuario especial protegido - no redirigir desde Auth');
+      logger.info('🛡️ Usuario especial protegido - no redirigir desde Auth');
       return;
     }
 
     // REDIRECCIÓN AUTOMÁTICA DESHABILITADA para otros usuarios
-    console.log('🔄 Estado de autenticación actualizado - sin redirección automática');
+    logger.info('🔄 Estado de autenticación actualizado - sin redirección automática');
   }, [user, loading, profile]);
 
   const handleResetPassword = async (e: React.FormEvent) => {
@@ -173,17 +174,17 @@ const Auth = () => {
         .replace('@outlok.es', '@outlook.es')
         .replace('@outook.es', '@outlook.es');
 
-      console.log('🚀 handleSignIn iniciado para:', formData.email);
-      console.log('📧 Email normalizado:', normalizedEmail);
+      logger.info('🚀 handleSignIn iniciado para:', formData.email);
+      logger.info('📧 Email normalizado:', normalizedEmail);
       
       // Verificar si es credencial demo Y si el modo demo está habilitado
       const appConfig = getAppConfig();
-      console.log('🔧 App config:', appConfig);
-      console.log('🎭 isDemoCredential:', isDemoCredential(normalizedEmail));
-      console.log('🎭 demoCredentials habilitado:', appConfig.features.demoCredentials);
+      logger.info('🔧 App config:', appConfig);
+      logger.info('🎭 isDemoCredential:', isDemoCredential(normalizedEmail));
+      logger.info('🎭 demoCredentials habilitado:', appConfig.features.demoCredentials);
       
       if (isDemoCredential(normalizedEmail) && appConfig.features.demoCredentials) {
-        console.log('🎭 Modo demo activado para:', formData.email);
+        logger.info('🎭 Modo demo activado para:', formData.email);
         
         // Configurar usuario demo completo en localStorage
         const demoUser = {
@@ -287,7 +288,7 @@ const Auth = () => {
         }
         
         if (demoAuthResult) {
-          console.log('✅ Sesión demo creada correctamente:', demoAuthResult);
+          logger.info('✅ Sesión demo creada correctamente:', demoAuthResult);
           
           // Simular tiempo de carga y luego redirigir
           setTimeout(() => {
@@ -302,7 +303,7 @@ const Auth = () => {
             }
           }, 3000);
         } else {
-          console.error('❌ Error al crear sesión demo');
+          logger.error('❌ Error al crear sesión demo');
           setShowLoginLoading(false);
           toast({
             variant: "destructive",
@@ -315,23 +316,23 @@ const Auth = () => {
 
       // Usar el hook useAuth para autenticación real
       if (!isDemoCredential(normalizedEmail) && getAppConfig().features.realAuth) {
-        console.log('🔐 Usando useAuth para autenticación real:', formData.email);
-        console.log('📧 Email normalizado:', normalizedEmail);
+        logger.info('🔐 Usando useAuth para autenticación real:', formData.email);
+        logger.info('📧 Email normalizado:', normalizedEmail);
         
         const result = await signIn(formData.email, formData.password, formData.accountType);
         
-        console.log('🔍 Resultado de signIn():', result);
-        console.log('🔍 result?.user:', result?.user);
-        console.log('🔍 Tipo de result:', typeof result);
-        console.log('🔍 Email del usuario:', result?.user?.email);
-        console.log('🔍 ¿Resultado tiene usuario?', !!result?.user);
-        console.log('🔍 ¿Llegamos al if de redirección?', 'PUNTO DE CONTROL 1');
+        logger.info('🔍 Resultado de signIn():', result);
+        logger.info('🔍 result?.user:', result?.user);
+        logger.info('🔍 Tipo de result:', typeof result);
+        logger.info('🔍 Email del usuario:', result?.user?.email);
+        logger.info('🔍 ¿Resultado tiene usuario?', !!result?.user);
+        logger.info('🔍 ¿Llegamos al if de redirección?', 'PUNTO DE CONTROL 1');
         
         if (result?.user) {
-          console.log('✅ Autenticación exitosa');
+          logger.info('✅ Autenticación exitosa');
           
           const userEmail = result.user.email?.toLowerCase();
-          console.log('🔍 Email para redirección:', userEmail);
+          logger.info('🔍 Email para redirección:', userEmail);
           
           // Determinar la ruta de destino
           let targetPath = "/profile-single";
@@ -339,13 +340,13 @@ const Auth = () => {
             targetPath = "/admin-production";
           }
           
-          console.log('🚀 Navegando a:', targetPath);
+          logger.info('🚀 Navegando a:', targetPath);
           
           // Usar navigate con replace para evitar bucles
           navigate(targetPath, { replace: true });
           
         } else {
-          console.log('❌ No se recibió usuario en el resultado');
+          logger.info('❌ No se recibió usuario en el resultado');
           setShowLoginLoading(false);
         }
       } else if (!isDemoCredential(normalizedEmail)) {
@@ -359,7 +360,7 @@ const Auth = () => {
 
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
-      console.error('❌ Error de autenticación:', error);
+      logger.error('❌ Error de autenticación:', error);
       toast({
         title: "Error al iniciar sesión",
         description: errorMessage || "Credenciales incorrectas. Por favor, intenta de nuevo.",
@@ -384,7 +385,7 @@ const Auth = () => {
 
       // Si hay error diferente a "no encontrado", manejarlo
       if (checkError && checkError.code !== 'PGRST116') {
-        console.error('Error verificando email:', checkError);
+        logger.error('Error verificando email:', checkError);
         toast({
           title: "Error",
           description: "Debes aceptar los términos y condiciones",
@@ -443,8 +444,8 @@ const Auth = () => {
         }),
       };
 
-      console.log('🔗 Intentando registro con Supabase para:', formData.email);
-      console.log('📋 Datos del perfil:', profileData);
+      logger.info('🔗 Intentando registro con Supabase para:', formData.email);
+      logger.info('📋 Datos del perfil:', profileData);
       
       const { data, error } = await supabase.auth.signUp({
         email: formData.email,
@@ -455,11 +456,11 @@ const Auth = () => {
       });
 
       if (error) {
-        console.error('❌ Error en registro Supabase:', error);
+        logger.error('❌ Error en registro Supabase:', error);
         throw error;
       }
       
-      console.log('✅ Registro exitoso:', data);
+      logger.info('✅ Registro exitoso:', data);
 
       toast({
         title: "¡Registro exitoso!",

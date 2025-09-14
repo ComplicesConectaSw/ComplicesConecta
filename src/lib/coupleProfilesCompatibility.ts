@@ -1,4 +1,5 @@
 import { invitationService } from '@/lib/invitations';
+import { logger } from '@/lib/logger';
 
 /**
  * Servicio de compatibilidad para perfiles de pareja
@@ -28,10 +29,10 @@ export const coupleProfileCompatibility: CoupleProfileCompatibility = {
     try {
       // Por ahora, asumir que todos son perfiles individuales
       // TODO: Implementar detección real cuando la columna user_type esté disponible
-      console.log('🔄 Verificación de perfil de pareja - usando fallback temporal');
+      logger.info('🔄 Verificación de perfil de pareja - usando fallback temporal');
       return false;
     } catch (error) {
-      console.error('❌ Error en isCoupleProfile:', error);
+      logger.error('❌ Error en isCoupleProfile:', error);
       return false;
     }
   },
@@ -47,10 +48,10 @@ export const coupleProfileCompatibility: CoupleProfileCompatibility = {
       
       // Si es perfil de pareja, por ahora devolver solo el perfil actual
       // TODO: Implementar tabla couple_profiles cuando esté disponible en el esquema
-      console.log('🔄 Perfil de pareja detectado, usando fallback temporal');
+      logger.info('🔄 Perfil de pareja detectado, usando fallback temporal');
       return [profileId];
     } catch (error) {
-      console.error('❌ Error en getRelatedProfileIds:', error);
+      logger.error('❌ Error en getRelatedProfileIds:', error);
       return [profileId]; // Fallback al perfil original
     }
   },
@@ -80,7 +81,7 @@ export const coupleProfileCompatibility: CoupleProfileCompatibility = {
       
       return false;
     } catch (error) {
-      console.error('❌ Error en hasPermissionAsCouple:', error);
+      logger.error('❌ Error en hasPermissionAsCouple:', error);
       return false;
     }
   },
@@ -97,9 +98,9 @@ export const coupleProfileCompatibility: CoupleProfileCompatibility = {
       
       await invitationService.sendInvitation(actualFromId, actualToId, type);
       
-      console.log(`✅ Invitación enviada: ${actualFromId} → ${actualToId} (${type})`);
+      logger.info(`✅ Invitación enviada: ${actualFromId} → ${actualToId} (${type})`);
     } catch (error) {
-      console.error('❌ Error en sendInvitationAsCouple:', error);
+      logger.error('❌ Error en sendInvitationAsCouple:', error);
       throw error;
     }
   }
@@ -132,14 +133,14 @@ export const useCoupleProfileCompatibility = () => {
  */
 export const migrateToCoupleFriendly = {
   async updateExistingInvitations(): Promise<void> {
-    console.log('🔄 Iniciando migración de invitaciones para compatibilidad con parejas...');
+    logger.info('🔄 Iniciando migración de invitaciones para compatibilidad con parejas...');
     
     try {
       // Esta función se ejecutaría una sola vez para migrar datos existentes
       // Por ahora, solo registramos que la migración está disponible
-      console.log('✅ Sistema preparado para perfiles de pareja');
+      logger.info('✅ Sistema preparado para perfiles de pareja');
     } catch (error) {
-      console.error('❌ Error en migración:', error);
+      logger.error('❌ Error en migración:', error);
     }
   }
 };

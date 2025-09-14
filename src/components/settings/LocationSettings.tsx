@@ -6,6 +6,7 @@ import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { MapPin, Navigation, AlertCircle } from "lucide-react";
 import { useGeolocation } from "@/hooks/useGeolocation";
+import { logger } from '@/lib/logger';
 
 export const LocationSettings = () => {
   const [searchRadius, setSearchRadius] = useState([25]);
@@ -21,7 +22,7 @@ export const LocationSettings = () => {
   };
 
   const handleSave = () => {
-    console.log("Settings saved:", {
+    logger.info("Settings saved:", {
       searchRadius: searchRadius[0],
       autoDetectLocation,
       showDistance,

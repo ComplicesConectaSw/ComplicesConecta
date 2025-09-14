@@ -11,6 +11,7 @@ import profile1 from '@/assets/profile-1.jpg';
 import profile2 from '@/assets/profile-2.jpg';
 import profile3 from '@/assets/profile-3.jpg';
 import profile4 from '@/assets/profile-4.jpg';
+import { logger } from '@/lib/logger';
 
 const Events = () => {
   const navigate = useNavigate();
@@ -165,19 +166,19 @@ const Events = () => {
   ];
 
   const handleJoinEvent = (eventId: number) => {
-    console.log('Join event:', eventId);
+    logger.info('Join event:', eventId);
   };
 
   const handleLikeEvent = (eventId: number) => {
-    console.log('Like event:', eventId);
+    logger.info('Like event:', eventId);
   };
 
   const handleJoinGroup = (groupId: number) => {
-    console.log('Join group:', groupId);
+    logger.info('Join group:', groupId);
   };
 
   const handleViewGroup = (groupId: number) => {
-    console.log('View group:', groupId);
+    logger.info('View group:', groupId);
   };
 
   const filteredEvents = lifestyleEvents.filter(event =>

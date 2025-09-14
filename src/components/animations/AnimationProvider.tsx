@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
 import { AnimatePresence } from 'framer-motion';
+import { logger } from '@/lib/logger';
 
 // Animation configuration interface
 interface AnimationConfig {
@@ -215,7 +216,7 @@ export const useAnimationPerformance = () => {
         
         // If FPS is low, suggest reducing animations
         if (fps < 30 && config.animationSpeed !== 'fast') {
-          console.warn('Low FPS detected, consider reducing animations');
+          logger.warn('Low FPS detected, consider reducing animations');
           // Optionally auto-adjust
           // updateConfig({ animationSpeed: 'fast' });
         }

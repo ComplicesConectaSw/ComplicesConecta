@@ -16,6 +16,7 @@ import {
   Volume2,
   Vibrate
 } from "lucide-react";
+import { logger } from '@/lib/logger';
 
 // Mock notifications data
 const mockNotifications = [
@@ -143,7 +144,7 @@ export const NotificationCenter = () => {
 
   const markAllAsRead = () => {
     // In a real app, this would update the notifications
-    console.log("Marking all as read");
+    logger.info("Marking all as read");
   };
 
   return (

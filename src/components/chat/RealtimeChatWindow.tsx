@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { useRealtimeChat, RealtimeMessage } from '@/hooks/useRealtimeChat';
 import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
+import { logger } from '@/lib/logger';
 
 interface RealtimeChatWindowProps {
   chatRoomId: string;
@@ -43,14 +44,14 @@ export const RealtimeChatWindow: React.FC<RealtimeChatWindowProps> = ({
     userId: user?.id || '',
     chatRoomId,
     onMessageReceived: (message) => {
-      console.log('🔔 Nuevo mensaje recibido:', message);
+      logger.info('🔔 Nuevo mensaje recibido:', message);
       // Aquí podrías agregar notificaciones, sonidos, etc.
     },
     onUserJoined: (userId) => {
-      console.log('👋 Usuario se unió al chat:', userId);
+      logger.info('👋 Usuario se unió al chat:', userId);
     },
     onUserLeft: (userId) => {
-      console.log('👋 Usuario salió del chat:', userId);
+      logger.info('👋 Usuario salió del chat:', userId);
     }
   });
 
@@ -73,7 +74,7 @@ export const RealtimeChatWindow: React.FC<RealtimeChatWindowProps> = ({
       // Focus en input después de enviar
       setTimeout(() => inputRef.current?.focus(), 100);
     } catch (error) {
-      console.error('❌ Error enviando mensaje:', error);
+      logger.error('❌ Error enviando mensaje:', error);
     }
   };
 

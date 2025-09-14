@@ -1,4 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/lib/logger';
 
 export interface Invitation {
   id: string;
@@ -59,13 +60,13 @@ export const invitationService = {
         .single();
 
       if (error) {
-        console.error('❌ Error enviando invitación:', error);
+        logger.error('❌ Error enviando invitación:', error);
         throw error;
       }
 
       return data as Invitation;
     } catch (error) {
-      console.error('❌ Error en sendInvitation:', error);
+      logger.error('❌ Error en sendInvitation:', error);
       // Fallback a mock data
       const mockInvitation: Invitation = {
         id: Date.now().toString(),
@@ -121,11 +122,11 @@ export const invitationService = {
         .eq('id', invitationId);
 
       if (error) {
-        console.error('❌ Error aceptando invitación:', error);
+        logger.error('❌ Error aceptando invitación:', error);
         throw error;
       }
     } catch (error) {
-      console.error('❌ Error en acceptInvitation:', error);
+      logger.error('❌ Error en acceptInvitation:', error);
       // Fallback a mock data
       const invitation = mockInvitations.find(inv => inv.id === invitationId);
       if (invitation) {
@@ -146,11 +147,11 @@ export const invitationService = {
         .eq('id', invitationId);
 
       if (error) {
-        console.error('❌ Error rechazando invitación:', error);
+        logger.error('❌ Error rechazando invitación:', error);
         throw error;
       }
     } catch (error) {
-      console.error('❌ Error en declineInvitation:', error);
+      logger.error('❌ Error en declineInvitation:', error);
       // Fallback a mock data
       const invitation = mockInvitations.find(inv => inv.id === invitationId);
       if (invitation) {
@@ -177,7 +178,7 @@ export const invitationService = {
         .order('created_at', { ascending: false });
 
       if (receivedError || sentError) {
-        console.error('❌ Error obteniendo invitaciones:', receivedError || sentError);
+        logger.error('❌ Error obteniendo invitaciones:', receivedError || sentError);
         throw receivedError || sentError;
       }
 
@@ -193,7 +194,7 @@ export const invitationService = {
 
       return { received, sent };
     } catch (error) {
-      console.error('❌ Error en getInvitations:', error);
+      logger.error('❌ Error en getInvitations:', error);
       // Fallback a mock data
       const received = mockInvitations.filter(inv => inv.to_profile === profileId);
       const sent = mockInvitations.filter(inv => inv.from_profile === profileId);
@@ -211,13 +212,13 @@ export const invitationService = {
         .limit(1);
         
       if (error) {
-        console.error('❌ Error verificando acceso a galería:', error);
+        logger.error('❌ Error verificando acceso a galería:', error);
         throw error;
       }
         
       return (data?.length || 0) > 0;
     } catch (error) {
-      console.error('❌ Error en hasGalleryAccess:', error);
+      logger.error('❌ Error en hasGalleryAccess:', error);
       // Fallback a mock data
       return mockGalleryPermissions.some(
         perm => perm.owner_profile === owner && 
@@ -235,11 +236,11 @@ export const invitationService = {
         .or(`and(owner_profile_id.eq.${owner},grantee_profile_id.eq.${grantee}),and(profile_id.eq.${owner},granted_to.eq.${grantee})`);
       
       if (error) {
-        console.error('❌ Error revocando acceso a galería:', error);
+        logger.error('❌ Error revocando acceso a galería:', error);
         throw error;
       }
     } catch (error) {
-      console.error('❌ Error en revokeGalleryAccess:', error);
+      logger.error('❌ Error en revokeGalleryAccess:', error);
       // Fallback a mock data
       const permission = mockGalleryPermissions.find(
         perm => perm.owner_profile === owner && 
@@ -262,7 +263,7 @@ export const invitationService = {
       };
       
       if (!isValidUUID(user1) || !isValidUUID(user2)) {
-        console.warn('⚠️ UUIDs inválidos para hasChatAccess, usando fallback:', { user1, user2 });
+        logger.warn('⚠️ UUIDs inválidos para hasChatAccess, usando fallback:', { user1, user2 });
         // Use fallback for non-UUID strings (useful for testing)
         return mockInvitations.some(
           inv => ((inv.from_profile === user1 && inv.to_profile === user2) ||
@@ -280,13 +281,13 @@ export const invitationService = {
         .limit(1);
 
       if (error) {
-        console.error('❌ Error verificando acceso al chat:', error);
+        logger.error('❌ Error verificando acceso al chat:', error);
         throw error;
       }
 
       return (data?.length || 0) > 0;
     } catch (error) {
-      console.error('❌ Error en hasChatAccess:', error);
+      logger.error('❌ Error en hasChatAccess:', error);
       // Fallback a mock data
       return mockInvitations.some(
         inv => ((inv.from_profile === user1 && inv.to_profile === user2) ||
