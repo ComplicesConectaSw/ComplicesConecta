@@ -1,9 +1,34 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
-interface GeolocationState {
-  location: { latitude: number; longitude: number } | null;
+export interface LocationCoordinates {
+  latitude: number;
+  longitude: number;
+  accuracy?: number;
+  altitude?: number | null;
+  altitudeAccuracy?: number | null;
+  heading?: number | null;
+  speed?: number | null;
+}
+
+export interface GeolocationState {
+  location: LocationCoordinates | null;
   error: string | null;
   isLoading: boolean;
+  lastUpdated?: Date;
+}
+
+export interface LocationFilter {
+  maxDistance?: number; // en kilómetros
+  minAccuracy?: number; // en metros
+  excludeCurrentUser?: boolean;
+}
+
+export interface NearbyUser {
+  id: string;
+  name: string;
+  distance: number;
+  location: LocationCoordinates;
+  lastSeen?: Date;
 }
 
 export const useGeolocation = () => {
@@ -14,7 +39,7 @@ export const useGeolocation = () => {
   });
   const [watchId, setWatchId] = useState<number | null>(null);
 
-  const getCurrentLocation = () => {
+  const getCurrentLocation = useCallback(() => {
     setState(prev => ({ ...prev, isLoading: true, error: null }));
 
     if (typeof navigator === 'undefined' || !navigator.geolocation) {
@@ -31,10 +56,16 @@ export const useGeolocation = () => {
         setState({
           location: {
             latitude: position.coords.latitude,
-            longitude: position.coords.longitude
+            longitude: position.coords.longitude,
+            accuracy: position.coords.accuracy,
+            altitude: position.coords.altitude,
+            altitudeAccuracy: position.coords.altitudeAccuracy,
+            heading: position.coords.heading,
+            speed: position.coords.speed
           },
           error: null,
-          isLoading: false
+          isLoading: false,
+          lastUpdated: new Date()
         });
       },
       (error) => {
@@ -64,10 +95,10 @@ export const useGeolocation = () => {
         maximumAge: 600000 // 10 minutes
       }
     );
-  };
+  }, []);
 
   // Start watching position for real-time updates
-  const startWatchingLocation = () => {
+  const startWatchingLocation = useCallback(() => {
     if (typeof navigator === 'undefined' || !navigator.geolocation) {
       setState(prev => ({
         ...prev,
@@ -86,10 +117,16 @@ export const useGeolocation = () => {
           ...prev,
           location: {
             latitude: position.coords.latitude,
-            longitude: position.coords.longitude
+            longitude: position.coords.longitude,
+            accuracy: position.coords.accuracy,
+            altitude: position.coords.altitude,
+            altitudeAccuracy: position.coords.altitudeAccuracy,
+            heading: position.coords.heading,
+            speed: position.coords.speed
           },
           error: null,
-          isLoading: false
+          isLoading: false,
+          lastUpdated: new Date()
         }));
       },
       (error) => {
@@ -120,18 +157,18 @@ export const useGeolocation = () => {
     );
 
     setWatchId(id);
-  };
+  }, [watchId]);
 
   // Stop watching position
-  const stopWatchingLocation = () => {
+  const stopWatchingLocation = useCallback(() => {
     if (watchId !== null && typeof navigator !== 'undefined' && navigator.geolocation) {
       navigator.geolocation.clearWatch(watchId);
       setWatchId(null);
     }
-  };
+  }, [watchId]);
 
   // Calculate distance between two coordinates using Haversine formula
-  const calculateDistance = (
+  const calculateDistance = useCallback((
     lat1: number,
     lon1: number,
     lat2: number,
@@ -147,14 +184,98 @@ export const useGeolocation = () => {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     const d = R * c; // Distance in kilometers
     return Math.round(d * 10) / 10; // Round to 1 decimal place
-  };
+  }, []);
+
+  // Filter nearby users based on location and criteria
+  const filterNearbyUsers = useCallback((
+    users: NearbyUser[],
+    filter: LocationFilter,
+    currentLocation?: LocationCoordinates
+  ): NearbyUser[] => {
+    if (!currentLocation) return [];
+
+    return users.filter(user => {
+      // Filter by maximum distance
+      if (filter.maxDistance && user.distance > filter.maxDistance) {
+        return false;
+      }
+
+      // Filter by minimum accuracy (if user has accuracy data)
+      if (filter.minAccuracy && user.location.accuracy && user.location.accuracy > filter.minAccuracy) {
+        return false;
+      }
+
+      return true;
+    }).sort((a, b) => a.distance - b.distance); // Sort by distance
+  }, []);
+
+  // Get users within a specific radius
+  const getUsersInRadius = useCallback((
+    users: { id: string; name: string; location: LocationCoordinates; lastSeen?: Date }[],
+    radius: number,
+    currentUserId?: string
+  ): NearbyUser[] => {
+    if (!state.location) return [];
+
+    const nearbyUsers: NearbyUser[] = users
+      .filter(user => user.id !== currentUserId) // Exclude current user
+      .map(user => {
+        const distance = calculateDistance(
+          state.location!.latitude,
+          state.location!.longitude,
+          user.location.latitude,
+          user.location.longitude
+        );
+
+        return {
+          id: user.id,
+          name: user.name,
+          distance,
+          location: user.location,
+          lastSeen: user.lastSeen
+        };
+      })
+      .filter(user => user.distance <= radius)
+      .sort((a, b) => a.distance - b.distance);
+
+    return nearbyUsers;
+  }, [state.location, calculateDistance]);
+
+  // Check if location is accurate enough
+  const isLocationAccurate = useCallback((minAccuracy: number = 100): boolean => {
+    if (!state.location?.accuracy) return false;
+    return state.location.accuracy <= minAccuracy;
+  }, [state.location]);
+
+  // Get location permission status
+  const getPermissionStatus = useCallback(async (): Promise<PermissionState | null> => {
+    if (typeof navigator === 'undefined' || !navigator.permissions) {
+      return null;
+    }
+
+    try {
+      const permission = await navigator.permissions.query({ name: 'geolocation' });
+      return permission.state;
+    } catch (error) {
+      console.warn('Could not query geolocation permission:', error);
+      return null;
+    }
+  }, []);
+
+  // Format distance for display
+  const formatDistance = useCallback((distance: number): string => {
+    if (distance < 1) {
+      return `${Math.round(distance * 1000)}m`;
+    }
+    return `${distance}km`;
+  }, []);
 
   // Cleanup effect
   useEffect(() => {
     return () => {
       stopWatchingLocation();
     };
-  }, []);
+  }, [stopWatchingLocation]);
 
   return {
     ...state,
@@ -162,6 +283,11 @@ export const useGeolocation = () => {
     startWatchingLocation,
     stopWatchingLocation,
     calculateDistance,
+    filterNearbyUsers,
+    getUsersInRadius,
+    isLocationAccurate,
+    getPermissionStatus,
+    formatDistance,
     isWatching: watchId !== null
   };
 };
