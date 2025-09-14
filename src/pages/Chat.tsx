@@ -17,6 +17,7 @@ import { ChatBubble } from "@/components/ui/ChatBubble";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { AnimatedButton } from "@/components/ui/AnimatedButton";
 import { motion, AnimatePresence } from "framer-motion";
+import { chatService, type ChatRoom, type ChatMessage } from "@/lib/chat";
 
 export interface ChatUser {
   id: number;
@@ -42,16 +43,114 @@ const Chat = () => {
   const navigate = useNavigate();
   const { features } = useFeatures();
 
-  // Permitir acceso al chat demo sin autenticación
-  useEffect(() => {
-    // Chat demo siempre disponible - no requiere autenticación
-    console.log('Chat demo cargado - acceso libre');
-  }, [navigate]);
+  // Estados para chat real y demo
   const [selectedChat, setSelectedChat] = useState<ChatUser | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
+  const [realMessages, setRealMessages] = useState<ChatMessage[]>([]);
+  const [realRooms, setRealRooms] = useState<ChatRoom[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [activeTab, setActiveTab] = useState<'private' | 'public'>('private');
   const [hasChatAccess, setHasChatAccess] = useState<{[key: number]: boolean}>({});
+  const [isProduction, setIsProduction] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Detectar modo de operación (demo vs producción)
+  useEffect(() => {
+    const demoAuth = localStorage.getItem('demo_authenticated');
+    const isDemo = demoAuth === 'true';
+    setIsProduction(!isDemo);
+    
+    if (!isDemo) {
+      // Modo producción - cargar datos reales
+      loadRealChatData();
+    } else {
+      // Modo demo - usar datos mock
+      console.log('Chat demo cargado - acceso libre');
+    }
+  }, [navigate]);
+
+  // Convertir salas reales a formato ChatUser para compatibilidad con UI
+  const convertRoomToChatUser = (room: ChatRoom): ChatUser => {
+    return {
+      id: parseInt(room.id),
+      name: room.name,
+      image: "https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=100&h=100&fit=crop&crop=face",
+      lastMessage: "Sin mensajes",
+      timestamp: room.updated_at ? new Date(room.updated_at).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }) : "Ahora",
+      isOnline: true,
+      unreadCount: 0,
+      isPrivate: room.type === 'private',
+      roomType: room.type
+    };
+  };
+
+  // Cargar datos reales de chat para producción
+  const loadRealChatData = async () => {
+    setIsLoading(true);
+    try {
+      // Obtener salas del usuario
+      const roomsResult = await chatService.getUserRooms();
+      if (roomsResult.success && roomsResult.rooms) {
+        setRealRooms(roomsResult.rooms);
+      }
+
+      // Obtener sala pública principal
+      const publicRoomResult = await chatService.getPublicRoom();
+      if (publicRoomResult.success && publicRoomResult.room) {
+        setRealRooms(prev => {
+          const exists = prev.find(room => room.id === publicRoomResult.room!.id);
+          if (!exists) {
+            return [...prev, publicRoomResult.room!];
+          }
+          return prev;
+        });
+      }
+    } catch (error) {
+      console.error('Error cargando datos de chat:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Cargar mensajes reales de una sala
+  const loadRealMessages = async (roomId: string) => {
+    setIsLoading(true);
+    try {
+      const result = await chatService.getRoomMessages(roomId, 50);
+      if (result.success && result.messages) {
+        setRealMessages(result.messages);
+        
+        // Suscribirse a nuevos mensajes en tiempo real
+        chatService.subscribeToRoom(roomId, (message) => {
+          setRealMessages(prev => [...prev, message]);
+        });
+      }
+    } catch (error) {
+      console.error('Error cargando mensajes:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Enviar mensaje real
+  const sendRealMessage = async (content: string) => {
+    if (!selectedChat || !content.trim()) return;
+
+    try {
+      const roomId = selectedChat.id.toString();
+      const result = await chatService.sendMessage(roomId, content, 'text');
+      
+      if (result.success && result.message) {
+        setRealMessages(prev => [...prev, result.message!]);
+        setNewMessage('');
+      } else {
+        alert(result.error || 'Error al enviar mensaje');
+      }
+    } catch (error) {
+      console.error('Error enviando mensaje:', error);
+      alert('Error al enviar mensaje');
+    }
+  };
   
   // Load messages for a specific chat
   const loadMessages = (chatId: number) => {
@@ -199,21 +298,40 @@ const Chat = () => {
   ];
 
   const getCurrentChats = () => {
-    return activeTab === 'private' ? privateChats : publicChats;
+    if (isProduction) {
+      // Usar datos reales de Supabase
+      const realChats = realRooms
+        .filter(room => room.type === activeTab)
+        .map(room => convertRoomToChatUser(room));
+      return realChats;
+    } else {
+      // Usar datos mock para demo
+      return activeTab === 'private' ? privateChats : publicChats;
+    }
   };
 
   const chats = getCurrentChats();
 
   useEffect(() => {
     if (selectedChat) {
-      loadMessages(selectedChat.id);
+      if (isProduction) {
+        loadRealMessages(selectedChat.id.toString());
+      } else {
+        loadMessages(selectedChat.id);
+      }
     }
-  }, [selectedChat]);
+  }, [selectedChat, isProduction]);
 
   const handleSendMessage = () => {
     if (!selectedChat || !newMessage.trim()) return;
     
-    // Check chat access for private chats
+    // Usar datos reales en producción, mock en demo
+    if (isProduction) {
+      sendRealMessage(newMessage);
+      return;
+    }
+    
+    // Lógica para modo demo
     if (selectedChat.isPrivate && !hasChatAccess[selectedChat.id]) {
       alert('No tienes acceso a este chat privado. Necesitas una invitación aceptada.');
       return;
@@ -481,46 +599,72 @@ const Chat = () => {
 
               {/* Messages */}
               <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0 chat-messages scroll-container" style={{scrollBehavior: 'smooth'}}>
-                {messages.map((message) => (
-                  <div
-                    key={message.id}
-                    className={`flex ${message.senderId === 0 ? 'justify-end' : 'justify-start'}`}
-                  >
+                {isProduction ? (
+                  // Renderizar mensajes reales de Supabase
+                  realMessages.map((message) => (
                     <div
-                      className={`max-w-[85%] sm:max-w-xs lg:max-w-sm px-4 py-3 rounded-2xl break-words word-wrap ${
-                        message.senderId === 0
-                          ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
-                          : 'bg-white/95 text-gray-900 shadow-md border border-gray-200 backdrop-blur-sm'
-                      }`}
+                      key={message.id}
+                      className={`flex ${message.sender_id === localStorage.getItem('user_id') ? 'justify-end' : 'justify-start'}`}
                     >
-                      <p className="text-sm leading-relaxed break-words whitespace-pre-wrap overflow-wrap-anywhere">{message.content}</p>
-                      <p className={`text-xs mt-1 ${
-                        message.senderId === 0 ? 'text-purple-100' : 'text-gray-500'
-                      }`}>
-                        {message.timestamp}
-                      </p>
+                      <div
+                        className={`max-w-[85%] sm:max-w-xs lg:max-w-sm px-3 sm:px-4 py-2 sm:py-3 rounded-2xl ${
+                          message.sender_id === localStorage.getItem('user_id')
+                            ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
+                            : 'bg-white/95 text-gray-900 shadow-md border border-gray-200 backdrop-blur-sm'
+                        }`}
+                      >
+                        <p className="text-xs sm:text-sm leading-relaxed break-words whitespace-pre-wrap overflow-wrap-anywhere hyphens-auto" style={{wordBreak: 'break-word', overflowWrap: 'anywhere'}}>{message.content}</p>
+                        <p className={`text-xs mt-1 ${
+                          message.sender_id === localStorage.getItem('user_id') ? 'text-purple-100' : 'text-gray-500'
+                        }`}>
+                          {new Date(message.created_at).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))
+                ) : (
+                  // Renderizar mensajes mock para demo
+                  messages.map((message) => (
+                    <div
+                      key={message.id}
+                      className={`flex ${message.senderId === 0 ? 'justify-end' : 'justify-start'}`}
+                    >
+                      <div
+                        className={`max-w-[85%] sm:max-w-xs lg:max-w-sm px-3 sm:px-4 py-2 sm:py-3 rounded-2xl ${
+                          message.senderId === 0
+                            ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
+                            : 'bg-white/95 text-gray-900 shadow-md border border-gray-200 backdrop-blur-sm'
+                        }`}
+                      >
+                        <p className="text-xs sm:text-sm leading-relaxed break-words whitespace-pre-wrap overflow-wrap-anywhere hyphens-auto" style={{wordBreak: 'break-word', overflowWrap: 'anywhere'}}>{message.content}</p>
+                        <p className={`text-xs mt-1 ${
+                          message.senderId === 0 ? 'text-purple-100' : 'text-gray-500'
+                        }`}>
+                          {message.timestamp}
+                        </p>
+                      </div>
+                    </div>
+                  ))
+                )}
               </div>
 
               {/* Input para enviar mensajes */}
               <div className="p-4 border-t border-white/10 bg-black/30 chat-input">
-                {selectedChat.isPrivate && !hasChatAccess[selectedChat.id] ? (
+                {selectedChat?.isPrivate && !hasChatAccess[selectedChat.id] ? (
                   <div className="text-center space-y-4 bg-black/50 rounded-lg p-6 border border-white/20">
                     <div className="flex items-center justify-center text-white mb-3">
                       <Lock className="h-6 w-6 mr-2" />
                       <span className="font-semibold text-lg">Chat privado bloqueado</span>
                     </div>
                     <p className="text-sm text-white/90 mb-6 leading-relaxed max-w-sm mx-auto">
-                      Necesitas una invitación aceptada para chatear con {selectedChat.name}. Puedes enviar una invitación o esperar a que te envíen una.
+                      Necesitas una invitación aceptada para chatear con {selectedChat?.name}. Puedes enviar una invitación o esperar a que te envíen una.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-3 justify-center">
                       <Button 
                         onClick={() => {
                           console.log('Enviando invitación...');
                           // Simulate invitation sent
-                          setHasChatAccess(prev => ({...prev, [selectedChat.id]: true}));
+                          setHasChatAccess(prev => ({...prev, [selectedChat?.id || 0]: true}));
                           alert('¡Invitación aceptada! Ahora puedes chatear.');
                         }}
                         className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-6 py-2 rounded-lg font-medium transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
@@ -560,7 +704,7 @@ const Chat = () => {
                     </Button>
                   </div>
                 )}
-                {selectedChat.roomType === 'public' && (
+                {selectedChat?.roomType === 'public' && (
                   <p className="text-xs text-white/50 mt-2 px-1">
                     🔒 Los mensajes en salas públicas son visibles para todos los miembros
                   </p>

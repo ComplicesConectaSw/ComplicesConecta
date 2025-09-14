@@ -51,9 +51,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
   // El perfil ya viene incluido en la consulta desde RequestsService
   const profile = request.profile;
   
-  // Early return con null-safe check
-  if (!profile) return null;
-
+  // Mover todos los hooks al inicio antes de cualquier return
   // Cleanup de operaciones async al desmontar
   useEffect(() => {
     return () => {
@@ -61,6 +59,44 @@ export const RequestCard: React.FC<RequestCardProps> = ({
         abortControllerRef.current.abort();
       }
     };
+  }, []);
+
+  // Funciones puras memoizadas
+  const getStatusColor = useCallback((status: InvitationStatus | null): string => {
+    switch (status) {
+      case 'accepted': return 'text-green-600 bg-green-100';
+      case 'declined': return 'text-red-600 bg-red-100';
+      case 'pending': return 'text-yellow-600 bg-yellow-100';
+      case 'revoked': return 'text-gray-600 bg-gray-100';
+      default: return 'text-gray-600 bg-gray-100';
+    }
+  }, []);
+
+  const getStatusText = useCallback((status: InvitationStatus | null): string => {
+    switch (status) {
+      case 'accepted': return 'Aceptada';
+      case 'declined': return 'Rechazada';
+      case 'pending': return 'Pendiente';
+      case 'revoked': return 'Revocada';
+      default: return status ?? 'Desconocido';
+    }
+  }, []);
+
+  const formatDate = useCallback((dateString: string | null): string => {
+    if (!dateString) return 'Fecha no disponible';
+    
+    try {
+      const date = new Date(dateString);
+      const now = new Date();
+      const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
+      
+      if (diffInHours < 1) return 'Hace unos minutos';
+      if (diffInHours < 24) return `Hace ${diffInHours}h`;
+      if (diffInHours < 48) return 'Ayer';
+      return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+    } catch {
+      return 'Fecha inválida';
+    }
   }, []);
 
   // Memoización de handlers con useCallback
@@ -130,43 +166,8 @@ export const RequestCard: React.FC<RequestCardProps> = ({
     }
   }, [request.id, onRequestUpdated, isLoading]);
 
-  // Funciones puras memoizadas
-  const getStatusColor = useCallback((status: InvitationStatus | null): string => {
-    switch (status) {
-      case 'accepted': return 'text-green-600 bg-green-100';
-      case 'declined': return 'text-red-600 bg-red-100';
-      case 'pending': return 'text-yellow-600 bg-yellow-100';
-      case 'revoked': return 'text-gray-600 bg-gray-100';
-      default: return 'text-gray-600 bg-gray-100';
-    }
-  }, []);
-
-  const getStatusText = useCallback((status: InvitationStatus | null): string => {
-    switch (status) {
-      case 'accepted': return 'Aceptada';
-      case 'declined': return 'Rechazada';
-      case 'pending': return 'Pendiente';
-      case 'revoked': return 'Revocada';
-      default: return status ?? 'Desconocido';
-    }
-  }, []);
-
-  const formatDate = useCallback((dateString: string | null): string => {
-    if (!dateString) return 'Fecha no disponible';
-    
-    try {
-      const date = new Date(dateString);
-      const now = new Date();
-      const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
-      
-      if (diffInHours < 1) return 'Hace unos minutos';
-      if (diffInHours < 24) return `Hace ${diffInHours}h`;
-      if (diffInHours < 48) return 'Ayer';
-      return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
-    } catch {
-      return 'Fecha inválida';
-    }
-  }, []);
+  // Early return con null-safe check después de todos los hooks
+  if (!profile) return null;
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 hover:shadow-md transition-shadow">
