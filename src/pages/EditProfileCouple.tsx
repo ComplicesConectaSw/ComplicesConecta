@@ -187,14 +187,14 @@ const EditProfileCouple = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-100 via-purple-50 to-indigo-100 pb-20">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 pb-20">
       {/* Header */}
-      <div className="bg-white/80 backdrop-blur-sm border-b border-white/20 p-4">
+      <div className="bg-white/10 backdrop-blur-md border-b border-white/20 p-4">
         <div className="flex items-center justify-between">
           <Button 
             variant="ghost" 
             onClick={() => navigate('/profile-couple')}
-            className="text-gray-700 hover:bg-white/50"
+            className="text-white hover:bg-white/20"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Volver al perfil
@@ -216,10 +216,10 @@ const EditProfileCouple = () => {
       {/* Main Content */}
       <div className="container mx-auto px-4 py-6 pb-24 space-y-6 max-w-4xl">
         {/* Fotos de la pareja */}
-        <Card className="bg-white shadow-lg">
+        <Card className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-md border-purple-300/30 shadow-lg">
           <CardContent className="p-6">
             <h3 className="font-semibold text-white mb-4 flex items-center">
-              <Users className="h-5 w-5 mr-2 text-purple-500" />
+              <Users className="h-5 w-5 mr-2 text-purple-400" />
               Fotos de la pareja
             </h3>
             <div className="grid grid-cols-2 gap-4">
@@ -258,7 +258,7 @@ const EditProfileCouple = () => {
         </Card>
 
         {/* Información general de la pareja */}
-        <Card className="bg-white shadow-lg">
+        <Card className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-md border-purple-300/30 shadow-lg">
           <CardContent className="p-6 space-y-4">
             <h3 className="font-semibold text-white mb-4">Información general</h3>
             
@@ -316,9 +316,9 @@ const EditProfileCouple = () => {
         </Card>
 
         {/* Información del Partner 1 (Ella) */}
-        <Card className="bg-white shadow-lg border-l-4 border-pink-400">
+        <Card className="bg-gradient-to-br from-pink-500/20 to-rose-500/20 backdrop-blur-md border-l-4 border-pink-400 shadow-lg">
           <CardContent className="p-6 space-y-4">
-            <h3 className="font-semibold text-pink-600 mb-4">Información de Ella</h3>
+            <h3 className="font-semibold text-white mb-4">Información de Ella</h3>
             
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -444,9 +444,9 @@ const EditProfileCouple = () => {
         </Card>
 
         {/* Información del Partner 2 (Él) */}
-        <Card className="bg-white shadow-lg border-l-4 border-blue-400">
+        <Card className="bg-gradient-to-br from-purple-500/20 to-blue-500/20 backdrop-blur-md border-l-4 border-purple-400 shadow-lg">
           <CardContent className="p-6 space-y-4">
-            <h3 className="font-semibold text-blue-600 mb-4">Información de Él</h3>
+            <h3 className="font-semibold text-white mb-4">Información de Él</h3>
             
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -572,9 +572,9 @@ const EditProfileCouple = () => {
         </Card>
 
         {/* Intereses compartidos */}
-        <Card className="bg-white shadow-lg">
+        <Card className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-md border-purple-300/30 shadow-lg">
           <CardContent className="p-6">
-            <h3 className="font-semibold text-gray-900 mb-4">Intereses compartidos</h3>
+            <h3 className="font-semibold text-white mb-4">Intereses compartidos</h3>
             <p className="text-sm text-white/80 mb-4">Seleccionen hasta 6 intereses que los representen como pareja</p>
             <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto p-2 border rounded-lg bg-gray-50">
               {availableInterests.map((interest) => (
@@ -602,9 +602,9 @@ const EditProfileCouple = () => {
         </Card>
 
         {/* Configuración de privacidad */}
-        <Card className="bg-white shadow-lg">
+        <Card className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-md border-purple-300/30 shadow-lg">
           <CardContent className="p-6">
-            <h3 className="font-semibold text-gray-900 mb-4">Configuración de privacidad</h3>
+            <h3 className="font-semibold text-white mb-4">Configuración de privacidad</h3>
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-white">Mostrar edades</span>

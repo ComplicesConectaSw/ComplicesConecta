@@ -98,10 +98,12 @@ const NavigationEnhanced = ({
   const handleNavigation = (path: string) => {
     // Verificar sesión antes de navegar
     const demoUser = localStorage.getItem('demo_user');
+    const specialUser = localStorage.getItem('apoyo_user');
     const userType = localStorage.getItem('userType');
     const isDemo = localStorage.getItem('demo_authenticated') === 'true';
+    const isSpecial = localStorage.getItem('apoyo_authenticated') === 'true';
     
-    console.log('🔍 Navigation Debug:', { demoUser, userType, isDemo, path });
+    console.log('🔍 Navigation Debug:', { demoUser, specialUser, userType, isDemo, isSpecial, path });
     
     // Detectar tipo de usuario y redirigir al perfil correcto
     if (path === '/profile') {
@@ -113,13 +115,17 @@ const NavigationEnhanced = ({
       return;
     }
     
-    // Para otras rutas, navegar directamente si está autenticado
-    if (isDemo || demoUser) {
-      navigate(path);
-    } else {
-      // Solo redirigir a auth si no está autenticado y no es una ruta pública
+    // Verificar autenticación antes de navegar
+    const isAuthenticated = isDemo || isSpecial || demoUser || specialUser;
+    
+    if (!isAuthenticated) {
+      console.log('❌ Usuario no autenticado, redirigiendo a /auth');
       navigate('/auth');
+      return;
     }
+    
+    // Navegar a la ruta solicitada
+    navigate(path);
   };
 
   // Animation variants
@@ -210,32 +216,33 @@ const NavigationEnhanced = ({
       {/* Glassmorphism overlay */}
       <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-red-500/10 rounded-t-2xl" />
       
-      <div className="relative flex items-center justify-around max-w-md mx-auto overflow-x-auto">
-        {navItems.map((item, index) => {
-          const Icon = item.icon;
-          const isActive = location.pathname === item.path;
-          const notificationCount = notificationCounts[item.id] || 0;
-          const hasNotifications = showNotificationBadges && notificationCount > 0;
-          
-          return (
-            <motion.button
-              key={item.id}
-              variants={enableAnimations ? itemVariants : undefined}
-              initial={enableAnimations ? "inactive" : undefined}
-              animate={enableAnimations ? (isActive ? "active" : "inactive") : undefined}
-              whileHover={enableAnimations ? "hover" : undefined}
-              whileTap={enableAnimations ? "tap" : undefined}
-              onClick={() => handleNavigation(item.path)}
-              className={cn(
-                "relative flex flex-col items-center justify-center p-1 sm:p-2 rounded-2xl",
-                "min-w-[50px] sm:min-w-[60px] min-h-[50px] sm:min-h-[60px] group flex-shrink-0",
-                "transition-all duration-300 ease-out overflow-hidden",
-                !enableAnimations && "transform hover:scale-105",
-                isActive 
-                  ? "text-white" 
-                  : "text-gray-600 hover:text-gray-800"
-              )}
-            >
+      <div className="relative flex items-center justify-between w-full max-w-full mx-auto px-1 overflow-x-auto scrollbar-hide">
+        <div className="flex items-center justify-around w-full min-w-fit gap-1">
+          {navItems.map((item, index) => {
+            const Icon = item.icon;
+            const isActive = location.pathname === item.path;
+            const notificationCount = notificationCounts[item.id] || 0;
+            const hasNotifications = showNotificationBadges && notificationCount > 0;
+            
+            return (
+              <motion.button
+                key={item.id}
+                variants={enableAnimations ? itemVariants : undefined}
+                initial={enableAnimations ? "inactive" : undefined}
+                animate={enableAnimations ? (isActive ? "active" : "inactive") : undefined}
+                whileHover={enableAnimations ? "hover" : undefined}
+                whileTap={enableAnimations ? "tap" : undefined}
+                onClick={() => handleNavigation(item.path)}
+                className={cn(
+                  "relative flex flex-col items-center justify-center p-1 sm:p-2 rounded-2xl",
+                  "min-w-[45px] sm:min-w-[55px] w-[45px] sm:w-[55px] min-h-[45px] sm:min-h-[55px] group flex-shrink-0",
+                  "transition-all duration-300 ease-out overflow-hidden",
+                  !enableAnimations && "transform hover:scale-105",
+                  isActive 
+                    ? "text-white" 
+                    : "text-gray-600 hover:text-gray-800"
+                )}
+              >
               {/* Animated background for active state */}
               <AnimatePresence>
                 {isActive && (
@@ -282,7 +289,7 @@ const NavigationEnhanced = ({
               </div>
               
               <span className={cn(
-                "text-[10px] sm:text-xs font-medium transition-all duration-300 truncate max-w-[50px] sm:max-w-none relative z-10",
+                "text-[10px] sm:text-xs font-medium transition-all duration-300 truncate max-w-[45px] sm:max-w-none relative z-10",
                 isActive ? "text-white font-semibold" : "text-gray-600 group-hover:text-gray-800"
               )}>
                 {item.label}
@@ -309,7 +316,7 @@ const NavigationEnhanced = ({
           onClick={handleLogout}
           className={cn(
             "flex flex-col items-center justify-center p-1 sm:p-2 rounded-xl",
-            "min-w-[50px] sm:min-w-[60px] min-h-[50px] sm:min-h-[60px] group flex-shrink-0",
+            "min-w-[45px] sm:min-w-[55px] w-[45px] sm:w-[55px] min-h-[45px] sm:min-h-[55px] group flex-shrink-0",
             "transition-all duration-300 ease-out transform hover:scale-105",
             "relative overflow-hidden",
             "text-red-400 hover:text-red-300 hover:bg-red-500/20"
@@ -324,12 +331,13 @@ const NavigationEnhanced = ({
             )} 
           />
           <span className={cn(
-            "text-[10px] sm:text-xs font-medium transition-all duration-300 truncate max-w-[50px] sm:max-w-none relative z-10",
+            "text-[10px] sm:text-xs font-medium transition-all duration-300 truncate max-w-[45px] sm:max-w-none relative z-10",
             "text-red-400/80 group-hover:text-red-300"
           )}>
             Salir
           </span>
         </motion.button>
+        </div>
       </div>
       
       {/* Decorative elements */}

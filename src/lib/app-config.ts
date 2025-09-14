@@ -16,9 +16,20 @@ export interface AppConfig {
   };
 }
 
+// Cache para evitar múltiples llamadas y logs repetitivos
+let cachedConfig: AppConfig | null = null;
+
 // Obtener configuración desde variables de entorno
 export const getAppConfig = (): AppConfig => {
+  if (cachedConfig) {
+    return cachedConfig;
+  }
+  
   const mode = (import.meta.env.VITE_APP_MODE || 'production') as 'demo' | 'production';
+  
+  // Forzar modo producción para usuarios reales autenticados
+  const apoyoAuth = localStorage.getItem('apoyo_authenticated');
+  const realMode = (apoyoAuth === 'true') ? 'production' : mode;
   
   console.log('🔧 Configuración de aplicación:', {
     mode,
@@ -26,15 +37,15 @@ export const getAppConfig = (): AppConfig => {
     supabaseKey: import.meta.env.VITE_SUPABASE_ANON_KEY ? '✅ Configurada' : '❌ Faltante'
   });
   
-  return {
-    mode,
+  cachedConfig = {
+    mode: realMode,
     supabase: {
       url: import.meta.env.VITE_SUPABASE_URL || 'https://axtvqnozatbmllvwzuim.supabase.co',
       anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF4dHZxbm96YXRibWxsdnd6dWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYwODQ5MDYsImV4cCI6MjA2MTY2MDkwNn0.yzrgK-Z-DR7lsUqftnVUA0GMsWQuf62zSAmDNxZKG9Y'
     },
     features: {
       demoCredentials: true, // Siempre permitir credenciales demo
-      realAuth: mode === 'production', // Solo auth real en producción
+      realAuth: realMode === 'production', // Solo auth real en producción
       adminAccess: true // Permitir acceso admin en ambos modos
     },
     ui: {
@@ -42,6 +53,8 @@ export const getAppConfig = (): AppConfig => {
       demoLabel: mode === 'demo' ? '(Demo)' : ''
     }
   };
+  
+  return cachedConfig;
 };
 
 // Credenciales demo permitidas (INCLUIR djwacko28@gmail.com)

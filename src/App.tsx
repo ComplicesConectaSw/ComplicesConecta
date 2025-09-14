@@ -72,7 +72,7 @@ const App = () => (
             <AnimatedBackground />
             <FloatingParticles count={15} />
             <AnimationSettingsButton />
-            <BrowserRouter>
+            <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
               <PageTransitionWrapper>
                 <Suspense fallback={<PageLoader />}>
                   <Routes>

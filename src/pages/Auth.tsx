@@ -325,50 +325,22 @@ const Auth = () => {
         console.log('🔍 ¿Resultado tiene usuario?', !!result?.user);
         console.log('🔍 ¿Llegamos al if de redirección?', 'PUNTO DE CONTROL 1');
         
-        // NAVEGACIÓN CONDICIONAL para evitar bucles
-        if (result?.user?.email === 'apoyofinancieromexicano@gmail.com') {
-          console.log('🚨 Usuario especial - navegando a perfil');
-          // Usar setTimeout para evitar conflictos de estado
-          setTimeout(() => {
-            navigate('/profile-single', { replace: true });
-          }, 100);
-        } else if (result?.user) {
-          console.log('✅ Usuario regular autenticado');
-          setTimeout(() => {
-            navigate('/profile-single', { replace: true });
-          }, 100);
-        }
-        
         if (result?.user) {
-          console.log('✅ Autenticación exitosa - FORZANDO redirección múltiple');
+          console.log('✅ Autenticación exitosa');
           
           const userEmail = result.user.email?.toLowerCase();
           console.log('🔍 Email para redirección:', userEmail);
           
-          const targetUrl = userEmail === 'complicesconectasw@outlook.es' ? "/admin-production" : "/profile-single";
+          // Determinar la ruta de destino
+          let targetPath = "/profile-single";
+          if (userEmail === 'complicesconectasw@outlook.es') {
+            targetPath = "/admin-production";
+          }
           
-          console.log('🚀 Ejecutando redirección MÚLTIPLE a:', targetUrl);
+          console.log('🚀 Navegando a:', targetPath);
           
-          // Método 1: window.location.href
-          window.location.href = targetUrl;
-          
-          // Método 2: window.location.replace (más agresivo)
-          setTimeout(() => {
-            console.log('🔄 Backup redirect con replace');
-            window.location.replace(targetUrl);
-          }, 100);
-          
-          // Método 3: React Router navigate como último recurso
-          setTimeout(() => {
-            console.log('🔄 Backup redirect con navigate');
-            navigate(targetUrl);
-          }, 200);
-          
-          // Método 4: Forzar recarga completa si nada funciona
-          setTimeout(() => {
-            console.log('🔄 Backup redirect con reload');
-            window.location.assign(targetUrl);
-          }, 500);
+          // Usar navigate con replace para evitar bucles
+          navigate(targetPath, { replace: true });
           
         } else {
           console.log('❌ No se recibió usuario en el resultado');

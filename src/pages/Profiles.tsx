@@ -14,7 +14,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Search, Sparkles, Brain, Filter, Users, MapPin, Heart } from "lucide-react";
+import { Search, Sparkles, Brain, Filter, Users, MapPin, Heart } from "lucide-react";
+import Navigation from "@/components/Navigation";
 
 // Professional profile images from Unsplash - Production ready
 // Removed local imports that fail in production
@@ -293,17 +294,8 @@ const Profiles = () => {
       <div className="relative z-10">
         {/* Header component removed - not found */}
         
-        {/* Back Button */}
-        <div className="container mx-auto px-4 pt-4">
-          <Button
-            variant="ghost"
-            onClick={() => navigate('/')}
-            className="flex items-center gap-2 text-white hover:bg-primary/10 transition-all duration-300"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Volver al inicio
-          </Button>
-        </div>
+        {/* Header con navegación completa */}
+        <Navigation />
       
         <main className="container mx-auto px-4 py-8">
           {/* Page Header */}
@@ -314,7 +306,7 @@ const Profiles = () => {
                 Tu Match Perfecto
               </span>
             </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
+            <p className="text-xl text-white/90 max-w-2xl mx-auto mb-8">
               Usa nuestra IA avanzada para encontrar personas compatibles basándose en personalidad, intereses y valores
             </p>
             
@@ -332,7 +324,7 @@ const Profiles = () => {
                 <div className="relative">
                   <div className="flex gap-2">
                     <div className="relative flex-1">
-                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                       <Input
                         placeholder="Busca parejas swinger, solteros lifestyle, eventos privados..."
                         value={searchQuery}
@@ -362,7 +354,7 @@ const Profiles = () => {
                   {/* AI Suggestions */}
                   {aiSuggestions.length > 0 && (
                     <div className="mt-3">
-                      <p className="text-sm text-muted-foreground mb-2">Sugerencias de IA:</p>
+                      <p className="text-sm text-gray-300 mb-2">Sugerencias de IA:</p>
                       <div className="flex flex-wrap gap-2">
                         {aiSuggestions.map((suggestion, index) => (
                           <Badge 
@@ -397,7 +389,7 @@ const Profiles = () => {
           {/* Filters Section */}
           <div className="mb-8">
             <div className="flex items-center gap-2 mb-4">
-              <Filter className="h-5 w-5 text-muted-foreground" />
+              <Filter className="h-5 w-5 text-gray-300" />
               <h3 className="text-lg font-semibold text-white">Filtros Avanzados</h3>
             </div>
             <ProfileFilters onFilterChange={handleFilterChange} />
@@ -406,7 +398,7 @@ const Profiles = () => {
           {/* Results Summary */}
           <div className="flex justify-between items-center mb-8">
             <div className="flex items-center gap-4">
-              <p className="text-muted-foreground">
+              <p className="text-gray-300">
                 {filteredProfiles.length} perfiles encontrados
               </p>
               {aiSearchMode && (

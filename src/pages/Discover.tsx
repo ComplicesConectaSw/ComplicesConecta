@@ -7,17 +7,21 @@ import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
 import { Heart, Flame, Crown, RefreshCw, Filter, Star, CheckCircle, MapPin, Home, User, Search, MessageCircle } from 'lucide-react';
 import Navigation from '@/components/Navigation';
+import { useAuth } from '@/hooks/useAuth';
 import { useToast } from "@/hooks/use-toast";
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useGeolocation } from '@/hooks/useGeolocation';
 import { pickProfileImage, inferProfileKind, resetImageCounters, type ProfileType, type Gender } from '@/lib/media';
-import { lifestyleInterests as importedLifestyleInterests } from '@/lib/lifestyle-interests';
+import { generateMockCoupleProfiles, type CoupleProfileWithPartners } from "@/lib/coupleProfiles";
+// import { importedLifestyleInterests } from "@/lib/lifestyleInterests";
+import { getAllCoupleProfiles } from "@/lib/coupleProfiles";
+import { supabase } from "@/integrations/supabase/client";
+import type { Tables } from "@/integrations/supabase/types";
+import CoupleProfileCard from '@/components/profile/CoupleProfileCard';
 import { AnimatedProfileCard } from '@/components/ui/AnimatedProfileCard';
 import { AnimatedButton } from '@/components/ui/AnimatedButton';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { motion } from 'framer-motion';
-import { getAllCoupleProfiles, generateMockCoupleProfiles, type CoupleProfileWithPartners } from '@/lib/coupleProfiles';
-import CoupleProfileCard from '@/components/profile/CoupleProfileCard';
 
 // Definición del tipo para un perfil
 interface Profile {
@@ -54,6 +58,7 @@ const Discover = () => {
   const { toast } = useToast();
   const isMobile = useIsMobile();
   const { location, error: locationError } = useGeolocation();
+  const { user, isAuthenticated } = useAuth();
   
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [coupleProfiles, setCoupleProfiles] = useState<CoupleProfileWithPartners[]>([]);
@@ -127,9 +132,9 @@ const Discover = () => {
         age: Math.floor(Math.random() * (45 - 22 + 1)) + 22,
         location: ubicaciones[Math.floor(Math.random() * ubicaciones.length)],
         distance: Math.floor(Math.random() * 100) + 1,
-        interests: importedLifestyleInterests
+        interests: ['Lifestyle', 'Swinger', 'Parejas', 'Intercambio']
           .sort(() => 0.5 - Math.random())
-          .slice(0, Math.floor(Math.random() * 5) + 3),
+          .slice(0, Math.floor(Math.random() * 3) + 2),
         image: pickProfileImage({ id, name, type: profileType, gender }, usedImages),
         bio: bios[Math.floor(Math.random() * bios.length)],
         isOnline: Math.random() > 0.6,
@@ -167,11 +172,53 @@ const Discover = () => {
   // Función para cargar perfiles reales desde Supabase
   const loadRealProfiles = useCallback(async () => {
     try {
-      // Por ahora, usar perfiles mock para usuarios reales también
-      // TODO: Implementar carga real desde Supabase cuando esté configurado
-      generateRandomProfiles();
+      console.log('🔗 Cargando perfiles reales desde Supabase...');
+      
+      const { data: realProfiles, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('is_active', true)
+        .neq('is_demo', true)
+        .limit(50);
+
+      if (error) {
+        console.error('❌ Error cargando perfiles reales:', error);
+        // Fallback a perfiles mock
+        generateRandomProfiles();
+        return;
+      }
+
+      if (realProfiles && realProfiles.length > 0) {
+        console.log(`✅ ${realProfiles.length} perfiles reales cargados`);
+        
+        // Convertir perfiles de Supabase al formato esperado
+        const convertedProfiles: Profile[] = realProfiles.map((profile: Tables<'profiles'>) => ({
+          id: profile.id,
+          name: `${profile.first_name} ${profile.last_name || ''}`.trim(),
+          age: profile.age || 25,
+          location: 'México', // TODO: usar ubicación real del perfil
+          distance: Math.floor(Math.random() * 100) + 1, // TODO: calcular distancia real
+          interests: [], // TODO: implementar sistema de intereses en Supabase
+          image: '/placeholder-avatar.jpg', // TODO: implementar avatar_url en schema
+          bio: profile.bio || 'Sin descripción',
+          isOnline: false, // TODO: implementar is_online en schema
+          lastActive: 'Hace 1 hora', // TODO: calcular tiempo real
+          isVerified: profile.is_premium || false,
+          isPremium: profile.is_premium || false,
+          rating: 4.5,
+          matchScore: Math.floor(Math.random() * 40) + 60,
+          profileType: 'single', // TODO: implementar account_type en schema
+          gender: profile.gender as Gender || 'other'
+        }));
+
+        setProfiles(convertedProfiles);
+        setFilteredProfiles(convertedProfiles);
+      } else {
+        console.log('📭 No hay perfiles reales disponibles, usando mock');
+        generateRandomProfiles();
+      }
     } catch (error) {
-      console.error('Error loading real profiles:', error);
+      console.error('❌ Error inesperado cargando perfiles:', error);
       // Fallback a perfiles mock
       generateRandomProfiles();
     }
@@ -179,34 +226,37 @@ const Discover = () => {
 
   // Verificar autenticación y cargar perfiles
   useEffect(() => {
-    // Verificar autenticación (demo, usuario especial, o real)
-    const demoAuth = localStorage.getItem('demo_authenticated') === 'true';
-    const specialAuth = localStorage.getItem('apoyo_authenticated') === 'true';
-    const demoUser = localStorage.getItem('demo_user');
-    const specialUser = localStorage.getItem('apoyo_user');
-    
-    const isAuthenticated = demoAuth || specialAuth || demoUser || specialUser;
-    
-    // Load both single and couple profiles
-    loadRealProfiles();
-    loadCoupleProfiles();
-    
+    // Verificar autenticación usando el hook useAuth
     if (!isAuthenticated) {
       console.log('❌ Usuario no autenticado en Discover, redirigiendo a /auth');
       navigate('/auth');
       return;
     }
     
-    console.log('✅ Usuario autenticado en Discover:', { demoAuth, specialAuth, hasUser: !!(demoUser || specialUser) });
+    console.log('✅ Usuario autenticado en Discover:', { user: user?.email || user?.id, isAuthenticated });
     
-    // Cargar perfiles según el tipo de usuario
-    if (demoAuth) {
-      generateRandomProfiles();
-    } else {
-      // Para usuarios reales y especiales, cargar perfiles desde Supabase
-      loadRealProfiles();
+    // Verificar autenticación local adicional (demo, usuario especial)
+    const demoAuth = localStorage.getItem('demo_authenticated') === 'true';
+    const apoyoAuth = localStorage.getItem('apoyo_authenticated') === 'true';
+    
+    // Solo cargar perfiles una vez
+    if (profiles.length === 0) {
+      // Cargar perfiles según el tipo de usuario
+      if (demoAuth && !apoyoAuth) {
+        console.log('🎭 Cargando perfiles demo');
+        generateRandomProfiles();
+      } else {
+        console.log('🔗 Cargando perfiles reales');
+        // Para usuarios reales y especiales, cargar perfiles desde Supabase
+        loadRealProfiles();
+      }
     }
-  }, [generateRandomProfiles, loadRealProfiles, navigate]);
+    
+    // Solo cargar parejas una vez
+    if (coupleProfiles.length === 0) {
+      loadCoupleProfiles();
+    }
+  }, [isAuthenticated, navigate, profiles.length, coupleProfiles.length]);
 
   const handleProfileClick = (profile: Profile) => {
     navigate(`/profile/${profile.id}`, { state: { profile } });
@@ -396,7 +446,7 @@ const Discover = () => {
                   Intereses
                 </label>
                 <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto p-2 bg-white/50 rounded-lg border border-purple-200/30">
-                  {importedLifestyleInterests.slice(0, 15).map((interest) => (
+                  {['Lifestyle', 'Swinger', 'Parejas', 'Intercambio', 'Liberal', 'Aventura', 'Diversión', 'Respeto', 'Discreción', 'Experiencia'].map((interest: string) => (
                     <Badge
                       key={interest}
                       variant={filters.interests.includes(interest) ? "default" : "outline"}

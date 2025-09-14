@@ -1,25 +1,39 @@
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useState, useEffect } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
 import { 
-  Image as ImageIcon, 
+  Upload, 
   Lock, 
-  Globe, 
+  Eye, 
   Heart, 
   MessageCircle, 
-  Upload,
-  Eye,
-  EyeOff,
-  Plus,
+  Share2, 
+  Download,
   X,
-  UserPlus
-} from "lucide-react";
-import { useFeatures } from "@/hooks/useFeatures";
-import { mockGalleryImages, GalleryImage } from "@/lib/data";
-import { invitationService } from "@/lib/invitations";
+  Plus,
+  Camera,
+  Globe,
+  EyeOff,
+  UserPlus,
+  ImageIcon
+} from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { invitationService } from '@/lib/invitations';
+import { useAuth } from '@/hooks/useAuth';
 import { InvitationDialog } from "@/components/invitations/InvitationDialog";
+
+interface GalleryImage {
+  id: number;
+  userId: string;
+  url: string;
+  caption?: string;
+  isPublic: boolean;
+  createdAt: string;
+  likes: number;
+  comments: number;
+}
 
 interface GalleryProps {
   userId: string;
@@ -28,8 +42,32 @@ interface GalleryProps {
   profileName?: string;
 }
 
+// Mock data
+const mockGalleryImages: GalleryImage[] = [
+  {
+    id: 1,
+    userId: "1",
+    url: "https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400&h=400&fit=crop&crop=face",
+    caption: "Disfrutando el día",
+    isPublic: true,
+    createdAt: "2024-01-15T10:30:00Z",
+    likes: 12,
+    comments: 3
+  },
+  {
+    id: 2,
+    userId: "1",
+    url: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
+    caption: "Momento especial",
+    isPublic: false,
+    createdAt: "2024-01-14T15:45:00Z",
+    likes: 8,
+    comments: 2
+  }
+];
+
 const Gallery = ({ userId, isOwner = false, canViewPrivate = false, profileName = "Usuario" }: GalleryProps) => {
-  const { features } = useFeatures();
+  const { user } = useAuth();
   const [images, setImages] = useState<GalleryImage[]>(mockGalleryImages);
   const [activeTab, setActiveTab] = useState<'public' | 'private'>('public');
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
@@ -38,15 +76,19 @@ const Gallery = ({ userId, isOwner = false, canViewPrivate = false, profileName 
   // Check gallery access permissions
   useEffect(() => {
     const checkAccess = async () => {
-      if (!isOwner && userId) {
-        const currentUserId = 1; // Mock current user ID
-        const access = await invitationService.hasGalleryAccess(userId, currentUserId.toString());
-        setHasGalleryAccess(access);
+      if (!isOwner && userId && user?.id) {
+        try {
+          const access = await invitationService.hasGalleryAccess(userId, user.id);
+          setHasGalleryAccess(access);
+        } catch (error) {
+          console.error('Error verificando acceso a galería:', error);
+          setHasGalleryAccess(false);
+        }
       }
     };
     
     checkAccess();
-  }, [userId, isOwner]);
+  }, [userId, isOwner, user?.id]);
 
   // Filtrar imágenes por visibilidad
   const publicImages = images.filter(img => img.isPublic);
@@ -87,16 +129,6 @@ const Gallery = ({ userId, isOwner = false, canViewPrivate = false, profileName 
       month: 'short'
     });
   };
-
-  if (!features.galleryPublicPrivate) {
-    return (
-      <Card className="p-6 text-center bg-black/30 backdrop-blur-sm border-white/10">
-        <ImageIcon className="h-12 w-12 mx-auto mb-3 text-white/50" />
-        <h3 className="font-semibold text-white mb-2">Galería no disponible</h3>
-        <p className="text-white/70 text-sm">Esta función estará disponible próximamente.</p>
-      </Card>
-    );
-  }
 
   return (
     <div className="space-y-6">

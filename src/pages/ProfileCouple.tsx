@@ -17,11 +17,12 @@ const ProfileCouple: React.FC = () => {
   useEffect(() => {
     const loadProfile = async () => {
       try {
-        // Verificar autenticación demo y cargar perfil del usuario
+        // Verificar autenticación (demo, apoyo o real)
         const demoAuth = localStorage.getItem('demo_authenticated');
+        const apoyoAuth = localStorage.getItem('apoyo_authenticated');
         const demoUser = localStorage.getItem('demo_user');
         
-        if (demoAuth !== 'true' || !demoUser) {
+        if (demoAuth !== 'true' && apoyoAuth !== 'true') {
           navigate('/discover');
           return;
         }
@@ -94,16 +95,11 @@ const ProfileCouple: React.FC = () => {
       </div>
       
       <div className="relative z-10 flex flex-col min-h-screen">
+        {/* Header con navegación completa */}
+        <Navigation />
+        
         <div className="bg-black/80 backdrop-blur-md border-b border-white/30 p-3 sm:p-4 shadow-lg flex-shrink-0">
           <div className="flex items-center justify-between flex-wrap gap-2">
-            <Button 
-              variant="ghost" 
-              onClick={() => navigate('/profiles')}
-              className="text-white hover:bg-white/20 text-sm sm:text-base p-2"
-            >
-              <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
-              <span className="ml-1 sm:ml-2">Regresar</span>
-            </Button>
             <h1 className="text-base sm:text-lg md:text-xl font-bold text-white text-center flex-1 min-w-0 px-2 truncate">
               {profile ? profile.couple_name : 'Pareja'}
             </h1>
@@ -147,58 +143,78 @@ const ProfileCouple: React.FC = () => {
         </div>
 
         <div className="flex-1 overflow-y-auto custom-scrollbar">
-          <div className="p-2 sm:p-4 pb-20 sm:pb-32 space-y-4 sm:space-y-6 max-w-2xl mx-auto min-h-full">
-            <Card className="overflow-hidden bg-white/90 backdrop-blur-md shadow-glow border-0">
-              <div className="relative">
-                <div className="aspect-[3/4] rounded-t-lg overflow-hidden mb-4 relative bg-gray-100">
-                  <img 
-                    src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=500&h=625&fit=crop&crop=faces" 
-                    alt={profile ? profile.couple_name : 'Pareja'} 
-                    className="w-full h-full object-cover"
-                  />
-                  {profile && profile.isOnline && (
-                    <Badge className="absolute top-3 left-3 bg-green-500 text-white px-2 py-1 text-xs">
-                      En línea
-                    </Badge>
-                  )}
-                  {profile && profile.is_verified && (
-                    <Badge className="absolute top-3 right-3 bg-blue-500 text-white px-2 py-1 text-xs">
-                      <Verified className="h-3 w-3 mr-1" />
-                      Verificado
-                    </Badge>
-                  )}
-                  {profile && profile.is_premium && (
-                    <Badge className="absolute bottom-3 left-3 bg-gradient-to-r from-yellow-400 to-yellow-600 text-white px-2 py-1 text-xs">
-                      <Crown className="h-3 w-3 mr-1" />
-                      Premium
-                    </Badge>
-                  )}
+          <div className="max-w-4xl mx-auto p-2 sm:p-4 space-y-4 sm:space-y-6">
+            {/* Información principal de la pareja */}
+            <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
+                  {/* Avatares de la pareja */}
+                  <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
+                    <div className="relative">
+                      <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-pink-400 to-purple-600 flex items-center justify-center text-white text-lg sm:text-2xl font-bold">
+                        {profile?.partner1_first_name?.[0]?.toUpperCase() || 'E'}
+                      </div>
+                      {profile?.is_verified && (
+                        <div className="absolute -top-1 -right-1 bg-blue-500 rounded-full p-1">
+                          <Verified className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
+                        </div>
+                      )}
+                    </div>
+                    <Heart className="w-5 h-5 sm:w-6 sm:h-6 text-pink-400 animate-pulse" />
+                    <div className="relative">
+                      <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-purple-400 to-pink-600 flex items-center justify-center text-white text-lg sm:text-2xl font-bold">
+                        {profile?.partner2_first_name?.[0]?.toUpperCase() || 'É'}
+                      </div>
+                      {profile?.is_verified && (
+                        <div className="absolute -top-1 -right-1 bg-blue-500 rounded-full p-1">
+                          <Verified className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Información básica */}
+                  <div className="flex-1 text-center sm:text-left">
+                    <h2 className="text-xl sm:text-2xl font-bold mb-2">
+                      {profile?.partner1_first_name} & {profile?.partner2_first_name}
+                    </h2>
+                    <div className="flex flex-wrap gap-2 justify-center sm:justify-start mb-4">
+                      <Badge variant="secondary" className="bg-white/20 text-white border-white/30 text-xs sm:text-sm">
+                        Pareja
+                      </Badge>
+                      <Badge variant="secondary" className="bg-white/20 text-white border-white/30 flex items-center gap-1 text-xs sm:text-sm">
+                        <MapPin className="w-3 h-3" />
+                        {profile?.location || 'CDMX, México'}
+                      </Badge>
+                    </div>
+                    
+                    {/* Biografía */}
+                    <p className="text-white/90 mb-4 leading-relaxed text-sm sm:text-base">
+                      Una pareja aventurera que busca nuevas experiencias y conexiones auténticas.
+                    </p>
+
+                    {/* Botones de acción */}
+                    <div className="flex flex-wrap gap-2 sm:gap-3 justify-center sm:justify-start">
+                      <Button 
+                        onClick={() => navigate('/edit-profile-couple')}
+                        className="bg-white/20 hover:bg-white/30 text-white border-white/30 flex items-center gap-2 text-sm sm:text-base px-3 sm:px-4 py-2"
+                        size="sm"
+                      >
+                        <Settings className="w-4 h-4" />
+                        <span className="hidden sm:inline">Editar Perfil</span>
+                        <span className="sm:hidden">Editar</span>
+                      </Button>
+                    </div>
+                  </div>
                 </div>
-                
-                <div className="absolute bottom-4 right-4 flex gap-2">
-                  <Button 
-                    onClick={() => navigate('/edit-profile-couple')}
-                    className="bg-white/90 text-black hover:bg-white transition-all duration-300 hover:scale-105"
-                  >
-                    <Settings className="h-4 w-4 mr-2" />
-                    Editar
-                  </Button>
-                  <Button 
-                    onClick={() => navigate('/tokens')}
-                    className="bg-purple-500/90 text-white hover:bg-purple-600 transition-all duration-300 hover:scale-105"
-                  >
-                    <Crown className="h-4 w-4 mr-2" />
-                    Tokens
-                  </Button>
-                </div>
-              </div>
+              </CardContent>
             </Card>
 
-            <Card className="bg-white/90 backdrop-blur-md shadow-lg border-0">
+            <Card className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-md border-purple-300/30 shadow-lg">
               <CardContent className="p-6">
                 <div className="text-center mb-6">
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2">{profile ? profile.couple_name : 'Pareja'}</h3>
-                  <div className="flex items-center justify-center space-x-4 text-gray-600 mb-4">
+                  <h3 className="text-lg font-semibold text-white mb-2">{profile ? profile.couple_name : 'Pareja'}</h3>
+                  <div className="flex items-center justify-center space-x-4 text-white/90 mb-4">
                     <span className="flex items-center">
                       <MapPin className="h-4 w-4 mr-1" />
                       {profile ? profile.location : 'Ubicación'}
@@ -210,15 +226,15 @@ const ProfileCouple: React.FC = () => {
                     </span>
                   </div>
                   
-                  <div className="bg-gray-50 rounded-lg p-4 mb-4 border border-gray-200 shadow-sm">
-                    <h3 className="font-semibold text-gray-800 mb-2">Sobre nosotros</h3>
-                    <p className="text-gray-700 text-sm leading-relaxed">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 mb-4 border border-white/20 shadow-sm">
+                    <h3 className="font-semibold text-white mb-2">Sobre nosotros</h3>
+                    <p className="text-white/90 text-sm leading-relaxed">
                       {profile?.couple_bio}
                     </p>
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-6">
-                    <div className="bg-gradient-to-br from-pink-100/80 to-rose-100/80 backdrop-blur-sm rounded-lg p-4 border-2 border-pink-300/50 shadow-lg">
+                    <div className="bg-gradient-to-br from-pink-500/20 to-rose-500/20 backdrop-blur-sm rounded-lg p-4 border-2 border-pink-400/30 shadow-lg">
                       <div className="text-center mb-4">
                         <img 
                           src='https://images.unsplash.com/photo-1521119989659-a83eee488004?w=400&h=400&fit=crop&crop=faces' 
@@ -228,21 +244,21 @@ const ProfileCouple: React.FC = () => {
                             e.currentTarget.src = 'https://images.unsplash.com/photo-1521119989659-a83eee488004?w=400&h=400&fit=crop&crop=faces';
                           }}
                         />
-                        <h3 className="text-xl font-bold text-pink-900">{profile?.partner1_first_name || 'Ella'}</h3>
-                        <p className="text-pink-700 font-medium">{profile?.partner1_age || 28} años</p>
-                        <p className="text-sm text-pink-700 leading-relaxed">{profile?.partner1_bio || 'Soy una persona aventurera que disfruta de la vida al máximo.'}</p>
+                        <h3 className="text-xl font-bold text-white">{profile?.partner1_first_name || 'Ella'}</h3>
+                        <p className="text-white/90 font-medium">{profile?.partner1_age || 28} años</p>
+                        <p className="text-sm text-white/80 leading-relaxed">{profile?.partner1_bio || 'Soy una persona aventurera que disfruta de la vida al máximo.'}</p>
                       </div>
                       
                       <div className="mb-4">
-                        <h4 className="font-semibold text-pink-800 mb-2">Sobre ella:</h4>
-                        <p className="text-sm text-pink-700 leading-relaxed">{profile?.partner1_bio || 'Me encanta explorar nuevas experiencias junto a mi pareja.'}</p>
+                        <h4 className="font-semibold text-white mb-2">Sobre ella:</h4>
+                        <p className="text-sm text-white/90 leading-relaxed">{profile?.partner1_bio || 'Me encanta explorar nuevas experiencias junto a mi pareja.'}</p>
                       </div>
                       
                       <div>
-                        <h4 className="font-semibold text-pink-800 mb-2">Sus intereses:</h4>
+                        <h4 className="font-semibold text-white mb-2">Sus intereses:</h4>
                         <div className="flex flex-wrap gap-1 max-h-20 overflow-y-auto custom-scrollbar">
                           {['Lifestyle Swinger', 'Intercambio de Parejas', 'Encuentros Casuales', 'Fiestas Temáticas', 'Clubs Privados', 'Eventos Lifestyle'].map((interest: string, index: number) => (
-                            <Badge key={index} variant="secondary" className="text-xs bg-pink-200 text-pink-900 border border-pink-300">
+                            <Badge key={index} variant="secondary" className="text-xs bg-white/20 text-white border border-white/30">
                               {interest}
                             </Badge>
                           ))}
@@ -250,31 +266,31 @@ const ProfileCouple: React.FC = () => {
                       </div>
                     </div>
                     
-                    <div className="bg-gradient-to-br from-blue-100/80 to-sky-100/80 backdrop-blur-sm rounded-lg p-4 border-2 border-blue-300/50 shadow-lg">
+                    <div className="bg-gradient-to-br from-purple-500/20 to-blue-500/20 backdrop-blur-sm rounded-lg p-4 border-2 border-purple-400/30 shadow-lg">
                       <div className="text-center mb-4">
                         <img 
                           src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=faces' 
                           alt={profile?.partner2_first_name || 'Él'}
-                          className="w-24 h-24 rounded-full mx-auto mb-3 object-cover border-4 border-blue-400 shadow-lg"
+                          className="w-24 h-24 rounded-full mx-auto mb-3 object-cover border-4 border-purple-400 shadow-lg"
                           onError={(e) => {
                             e.currentTarget.src = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=faces';
                           }}
                         />
-                        <h3 className="text-xl font-bold text-blue-900">{profile?.partner2_first_name || 'Él'}</h3>
-                        <p className="text-blue-700 font-medium">{profile?.partner2_age || 30} años</p>
-                        <p className="text-blue-700 text-sm">Profesional</p>
+                        <h3 className="text-xl font-bold text-white">{profile?.partner2_first_name || 'Él'}</h3>
+                        <p className="text-white/90 font-medium">{profile?.partner2_age || 30} años</p>
+                        <p className="text-white/80 text-sm">Profesional</p>
                       </div>
                       
                       <div className="mb-4">
-                        <h4 className="font-semibold text-blue-800 mb-2">Sobre él:</h4>
-                        <p className="text-sm text-blue-700 leading-relaxed">{profile?.partner2_bio || 'Aventurero y respetuoso, busco junto a mi pareja vivir experiencias únicas.'}</p>
+                        <h4 className="font-semibold text-white mb-2">Sobre él:</h4>
+                        <p className="text-sm text-white/90 leading-relaxed">{profile?.partner2_bio || 'Aventurero y respetuoso, busco junto a mi pareja vivir experiencias únicas.'}</p>
                       </div>
                       
                       <div>
-                        <h4 className="font-semibold text-blue-800 mb-2">Sus intereses:</h4>
+                        <h4 className="font-semibold text-white mb-2">Sus intereses:</h4>
                         <div className="flex flex-wrap gap-1 max-h-20 overflow-y-auto custom-scrollbar">
                           {['Fiestas Temáticas', 'Clubs Privados', 'Eventos Lifestyle', 'Soft Swap', 'Full Swap', 'Experiencias Nuevas'].map((interest: string, index: number) => (
-                            <Badge key={index} variant="secondary" className="text-xs bg-blue-200 text-blue-900 border border-blue-300">
+                            <Badge key={index} variant="secondary" className="text-xs bg-white/20 text-white border border-white/30">
                               {interest}
                             </Badge>
                           ))}
