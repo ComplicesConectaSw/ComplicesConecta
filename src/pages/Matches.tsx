@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
 import Navigation from "@/components/Navigation";
 import { MatchCard } from "@/components/matches/MatchCard";
@@ -6,6 +6,7 @@ import { MatchFilters } from "@/components/matches/MatchFilters";
 import { Button } from "@/components/ui/button";
 import { Heart, MessageCircle, Sparkles, ArrowLeft, Flame, Users, Crown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { simpleMatchService, SimpleMatch } from "@/lib/simpleMatches";
 
 // Professional profile images from Unsplash - Production ready
 // Removed local imports that fail in production
@@ -25,7 +26,11 @@ export interface Match {
 
 const Matches = () => {
   const navigate = useNavigate();
-  const [matches, setMatches] = useState<Match[]>([
+  const [matches, setMatches] = useState<Match[]>([]);
+  const [realMatches, setRealMatches] = useState<SimpleMatch[]>([]);
+  const [isProduction, setIsProduction] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [demoMatches] = useState<Match[]>([
     {
       id: 1,
       name: "Anabella & Julio",
@@ -102,7 +107,54 @@ const Matches = () => {
 
   const [filter, setFilter] = useState<'all' | 'new' | 'recent' | 'unread'>('all');
 
-  const filteredMatches = matches.filter(match => {
+  // Detectar modo de operación (demo vs producción)
+  useEffect(() => {
+    const demoAuth = localStorage.getItem('demo_authenticated');
+    const isDemo = demoAuth === 'true';
+    setIsProduction(!isDemo);
+
+    if (!isDemo) {
+      // Modo producción - cargar matches reales (sin filtro de distancia inicial)
+      loadRealMatches();
+    } else {
+      // Modo demo - usar datos mock
+      setMatches(demoMatches);
+    }
+  }, []);
+
+  // Cargar matches reales de producción
+  const loadRealMatches = async (maxDistance?: number) => {
+    setIsLoading(true);
+    try {
+      const result = await simpleMatchService.getMatches(20, maxDistance);
+      if (result.success && result.matches) {
+        setRealMatches(result.matches);
+        // Convertir matches reales al formato de la UI
+        const convertedMatches: Match[] = result.matches.map((match, index) => ({
+          id: parseInt(match.id),
+          name: match.name,
+          age: match.age,
+          image: match.images[0] || "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=600&fit=crop&crop=face",
+          compatibility: match.compatibility,
+          mutualInterests: match.reasons,
+          distance: match.distance,
+          matchedAt: match.lastSeen.includes('T') ? 'Hace unas horas' : match.lastSeen,
+          hasUnreadMessage: match.isOnline,
+          status: index < 2 ? 'new' : (index < 4 ? 'chatting' : 'viewed') as 'new' | 'viewed' | 'chatting'
+        }));
+        setMatches(convertedMatches);
+      }
+    } catch (error) {
+      console.error('Error cargando matches:', error);
+      // Fallback a datos demo en caso de error
+      setMatches(demoMatches);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const currentMatches = isProduction ? matches : demoMatches;
+  const filteredMatches = currentMatches.filter(match => {
     switch (filter) {
       case 'new':
         return match.status === 'new';
@@ -206,7 +258,7 @@ const Matches = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Total Matches</p>
-                  <p className="text-3xl font-bold text-card-foreground">{matches.length}</p>
+                  <p className="text-3xl font-bold text-card-foreground">{currentMatches.length}</p>
                 </div>
                 <div className="bg-primary/10 p-3 rounded-full">
                   <Heart className="h-6 w-6 text-primary" fill="currentColor" />
@@ -219,7 +271,7 @@ const Matches = () => {
                 <div>
                   <p className="text-sm text-muted-foreground">Nuevos Matches</p>
                   <p className="text-3xl font-bold text-card-foreground">
-                    {matches.filter(m => m.status === 'new').length}
+                    {currentMatches.filter(m => m.status === 'new').length}
                   </p>
                 </div>
                 <div className="bg-accent/20 p-3 rounded-full">
@@ -233,7 +285,7 @@ const Matches = () => {
                 <div>
                   <p className="text-sm text-muted-foreground">Conversaciones</p>
                   <p className="text-3xl font-bold text-card-foreground">
-                    {matches.filter(m => m.hasUnreadMessage).length}
+                    {currentMatches.filter(m => m.hasUnreadMessage).length}
                   </p>
                 </div>
                 <div className="bg-secondary/20 p-3 rounded-full">
@@ -247,7 +299,7 @@ const Matches = () => {
                 <div>
                   <p className="text-sm text-muted-foreground">Compatibilidad</p>
                   <p className="text-3xl font-bold text-card-foreground">
-                    {matches.length > 0 ? `${Math.round(matches.reduce((acc, m) => acc + m.compatibility, 0) / matches.length)}%` : '0%'}
+                    {currentMatches.length > 0 ? `${Math.round(currentMatches.reduce((acc, m) => acc + m.compatibility, 0) / currentMatches.length)}%` : '0%'}
                   </p>
                 </div>
                 <div className="bg-accent/20 p-3 rounded-full">
@@ -263,18 +315,29 @@ const Matches = () => {
         {/* Matches Grid */}
         {filteredMatches.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {filteredMatches.map((match, index) => (
-              <div 
-                key={match.id}
-                className={`animate-slide-up animation-delay-${Math.min(index, 10) * 100}`}
-              >
-                <MatchCard
-                  match={match}
-                  onSuperLike={handleSuperLike}
-                  onStartChat={handleStartChat}
-                />
-              </div>
-            ))}
+            {isLoading ? (
+              // Loading skeleton
+              [...Array(6)].map((_, index) => (
+                <div key={index} className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 animate-pulse">
+                  <div className="h-48 bg-muted rounded-lg mb-4"></div>
+                  <div className="h-4 bg-muted rounded mb-2"></div>
+                  <div className="h-4 bg-muted rounded w-3/4"></div>
+                </div>
+              ))
+            ) : (
+              filteredMatches.map((match, index) => (
+                <div 
+                  key={match.id}
+                  className={`animate-slide-up animation-delay-${Math.min(index, 10) * 100}`}
+                >
+                  <MatchCard
+                    match={match}
+                    onSuperLike={handleSuperLike}
+                    onStartChat={handleStartChat}
+                  />
+                </div>
+              ))
+            )}
           </div>
         ) : (
           <div className="text-center py-16">

@@ -18,6 +18,7 @@ import { GlassCard } from "@/components/ui/GlassCard";
 import { AnimatedButton } from "@/components/ui/AnimatedButton";
 import { motion, AnimatePresence } from "framer-motion";
 import { chatService, type ChatRoom, type ChatMessage } from "@/lib/chat";
+import { simpleChatService, type SimpleChatRoom, type SimpleChatMessage } from '@/lib/simpleChatService';
 
 export interface ChatUser {
   id: number;
@@ -46,8 +47,8 @@ const Chat = () => {
   // Estados para chat real y demo
   const [selectedChat, setSelectedChat] = useState<ChatUser | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
-  const [realMessages, setRealMessages] = useState<ChatMessage[]>([]);
-  const [realRooms, setRealRooms] = useState<ChatRoom[]>([]);
+  const [realMessages, setRealMessages] = useState<SimpleChatMessage[]>([]);
+  const [realRooms, setRealRooms] = useState<SimpleChatRoom[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [activeTab, setActiveTab] = useState<'private' | 'public'>('private');
   const [hasChatAccess, setHasChatAccess] = useState<{[key: number]: boolean}>({});
@@ -70,12 +71,12 @@ const Chat = () => {
   }, [navigate]);
 
   // Convertir salas reales a formato ChatUser para compatibilidad con UI
-  const convertRoomToChatUser = (room: ChatRoom): ChatUser => {
+  const convertRoomToChatUser = (room: SimpleChatRoom): ChatUser => {
     return {
       id: parseInt(room.id),
       name: room.name,
       image: "https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=100&h=100&fit=crop&crop=face",
-      lastMessage: "Sin mensajes",
+      lastMessage: room.last_message || "Sin mensajes",
       timestamp: room.updated_at ? new Date(room.updated_at).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }) : "Ahora",
       isOnline: true,
       unreadCount: 0,
@@ -89,21 +90,10 @@ const Chat = () => {
     setIsLoading(true);
     try {
       // Obtener salas del usuario
-      const roomsResult = await chatService.getUserRooms();
-      if (roomsResult.success && roomsResult.rooms) {
-        setRealRooms(roomsResult.rooms);
-      }
-
-      // Obtener sala pública principal
-      const publicRoomResult = await chatService.getPublicRoom();
-      if (publicRoomResult.success && publicRoomResult.room) {
-        setRealRooms(prev => {
-          const exists = prev.find(room => room.id === publicRoomResult.room!.id);
-          if (!exists) {
-            return [...prev, publicRoomResult.room!];
-          }
-          return prev;
-        });
+      const roomsResult = await simpleChatService.getUserChatRooms();
+      if (roomsResult.success) {
+        const allRooms = [...(roomsResult.publicRooms || []), ...(roomsResult.privateRooms || [])];
+        setRealRooms(allRooms);
       }
     } catch (error) {
       console.error('Error cargando datos de chat:', error);
@@ -116,12 +106,12 @@ const Chat = () => {
   const loadRealMessages = async (roomId: string) => {
     setIsLoading(true);
     try {
-      const result = await chatService.getRoomMessages(roomId, 50);
+      const result = await simpleChatService.getRoomMessages(roomId, 50);
       if (result.success && result.messages) {
         setRealMessages(result.messages);
         
         // Suscribirse a nuevos mensajes en tiempo real
-        chatService.subscribeToRoom(roomId, (message) => {
+        simpleChatService.subscribeToRoomMessages(roomId, (message) => {
           setRealMessages(prev => [...prev, message]);
         });
       }
@@ -138,7 +128,7 @@ const Chat = () => {
 
     try {
       const roomId = selectedChat.id.toString();
-      const result = await chatService.sendMessage(roomId, content, 'text');
+      const result = await simpleChatService.sendMessage(roomId, content, 'text');
       
       if (result.success && result.message) {
         setRealMessages(prev => [...prev, result.message!]);
@@ -379,24 +369,28 @@ const Chat = () => {
   };
 
   return (
-    <div className="min-h-screen android-fix relative overflow-hidden bg-gradient-to-br from-purple-600 via-pink-500 to-indigo-600">
-      {/* Background matching Index page */}
-      <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-600/90 via-pink-500/90 to-indigo-600/90"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-400/20 via-pink-400/20 to-transparent"></div>
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 relative overflow-hidden pb-20">
+      {/* Animated Background */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full mix-blend-multiply filter blur-xl animate-blob"></div>
+        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-pink-500/20 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-red-500/20 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-4000"></div>
       </div>
 
-      <div className="relative z-10 flex flex-col md:flex-row h-screen chat-container">
-        {/* Sidebar - Lista de chats */}
-        <div className={`${selectedChat ? 'hidden md:block' : 'block'} w-full md:w-1/3 bg-black/40 backdrop-blur-md border-r border-white/20`}>
-          <div className="p-4 border-b border-white/20">
-            <div className="flex items-center justify-between p-3 sm:p-4 bg-black/60 backdrop-blur-md border-b border-white/30 shadow-lg rounded-lg mb-4">
+      <Header />
+      
+      <div className="relative z-10 flex h-screen pt-16 pb-20">
+        {/* Chat List Sidebar */}
+        <div className="w-full sm:w-80 flex-shrink-0 bg-black/40 backdrop-blur-sm border-r border-white/10 flex flex-col">
+          <div className="p-4 border-b border-white/10">
+            <div className="flex items-center gap-3 mb-4">
               <Button 
                 variant="ghost" 
-                onClick={() => setSelectedChat(null)}
-                className="text-white hover:bg-white/20 md:hidden p-2"
+                size="sm" 
+                className="text-white hover:bg-white/20 p-2 sm:hidden"
+                onClick={() => navigate('/feed')}
               >
-                <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
+                <ArrowLeft className="h-4 w-4" />
               </Button>
               <div className="flex items-center justify-between flex-1 min-w-0">
                 <h2 className="text-lg sm:text-xl font-bold text-white truncate">Conversaciones</h2>

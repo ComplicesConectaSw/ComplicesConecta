@@ -187,21 +187,25 @@ const EditProfileCouple = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-100 via-purple-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-pink-100 via-purple-50 to-indigo-100 pb-20">
       {/* Header */}
       <div className="bg-white/80 backdrop-blur-sm border-b border-white/20 p-4">
         <div className="flex items-center justify-between">
           <Button 
             variant="ghost" 
-            onClick={() => navigate(-1)}
-            className="text-white"
+            onClick={() => navigate('/profile-couple')}
+            className="text-gray-700 hover:bg-white/50"
           >
-            <ArrowLeft className="h-5 w-5" />
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Volver al perfil
           </Button>
-          <h1 className="text-lg font-semibold text-white">Editar Perfil de Pareja</h1>
+          <h1 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+            <Users className="h-5 w-5" />
+            Editar Perfil de Pareja
+          </h1>
           <Button 
             onClick={handleSave}
-            className="bg-gradient-to-r from-pink-500 to-purple-500 text-white"
+            className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white"
           >
             <Save className="h-4 w-4 mr-2" />
             Guardar
@@ -209,7 +213,8 @@ const EditProfileCouple = () => {
         </div>
       </div>
 
-      <div className="p-4 pb-24 space-y-6">
+      {/* Main Content */}
+      <div className="container mx-auto px-4 py-6 pb-24 space-y-6 max-w-4xl">
         {/* Fotos de la pareja */}
         <Card className="bg-white shadow-lg">
           <CardContent className="p-6">
