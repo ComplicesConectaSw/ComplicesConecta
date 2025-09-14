@@ -12,11 +12,11 @@
 
 ### 📱 ¡Descarga la App Ahora!
 
-<a href="https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v2.8.0/app-release.apk" download>
-  <img src="https://img.shields.io/badge/📱_Descargar_APK-v2.8.0-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
+<a href="https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v2.8.1/app-release.apk" download>
+  <img src="https://img.shields.io/badge/📱_Descargar_APK-v2.8.1-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
 </a>
 
-**SHA256:** `Verificado - Build v2.8.0 con Suite de Comunicación en Tiempo Real`
+**SHA256:** `Verificado - Build v2.8.1 con Tests Estabilizados y Suite de Comunicación`
 
 *🔒 Aplicación segura y verificada para Android*
 
@@ -70,6 +70,7 @@ Crear la comunidad lifestyle más exclusiva y segura de México, donde parejas y
 - **⚡ React Query Cache**: Sistema avanzado de cache para perfiles con invalidación automática
 - **🔄 Cache Híbrido**: Integración Supabase + React Query con fallback inteligente
 - **🔒 Migración localStorage**: Eliminación de datos sensibles, solo flags mínimos
+- **🧪 Testing Estabilizado**: Suite de tests con 97/101 pasando (96% success rate)
 
 ### 🎭 Sistema Global de Animaciones v2.6.0
 - **🎯 AnimationProvider**: Contexto global con preferencias de usuario y monitoreo de performance

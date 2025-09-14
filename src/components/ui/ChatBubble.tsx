@@ -147,21 +147,23 @@ export const ChatBubble = React.memo<ChatBubbleProps>(function ChatBubble({
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
-                transition={{ duration: 0.2 }}
+                transition={{ type: "spring", stiffness: 400, damping: 25 }}
               >
                 <Button
-                  variant="ghost"
                   size="sm"
-                  className="w-8 h-8 p-0 bg-white/80 backdrop-blur-sm hover:bg-white shadow-sm"
+                  variant="ghost"
+                  className="w-8 h-8 p-0 bg-white shadow-md border"
                   onClick={() => setShowReactions(!showReactions)}
+                  aria-label="Reaccionar"
                 >
                   <Smile className="w-4 h-4" />
                 </Button>
                 <Button
-                  variant="ghost"
                   size="sm"
-                  className="w-8 h-8 p-0 bg-white/80 backdrop-blur-sm hover:bg-white shadow-sm"
+                  variant="ghost"
+                  className="w-8 h-8 p-0 bg-white shadow-md border"
                   onClick={() => onReply?.(id)}
+                  aria-label="Responder"
                 >
                   <MoreHorizontal className="w-4 h-4" />
                 </Button>

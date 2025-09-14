@@ -147,6 +147,15 @@ test-results/
 build/
 dist/
 .vite/
+android/app/build/
+android/app/release/
+android/gradle/
+*.apk
+*.aab
+
+# Generated HTML files
+dist/*.html
+*.generated.html
 
 # Scripts SQL temporales (v2.2.0 - organizados en scripts/temp/)
 scripts/temp/

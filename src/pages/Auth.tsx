@@ -18,6 +18,7 @@ import { lifestyleInterests, getAutoInterests } from "@/lib/lifestyle-interests"
 import { LoginLoadingScreen } from "@/components/LoginLoadingScreen";
 import { LoadingScreen } from "@/components/LoadingScreen";
 import { useAuth } from "@/hooks/useAuth";
+import { EmailValidation } from "@/components/auth/EmailValidation";
 
 interface FormData {
   email: string;
@@ -595,6 +596,17 @@ const Auth = () => {
                     value={formData.email}
                     onChange={(e) => handleInputChange("email", e.target.value)}
                     required
+                  />
+                  <EmailValidation 
+                    email={formData.email}
+                    onValidationChange={(isValid, message) => {
+                      // Store validation state for form submission
+                      setFormData(prev => ({
+                        ...prev,
+                        emailValid: isValid,
+                        emailValidationMessage: message
+                      }));
+                    }}
                   />
                 </div>
                 <div className="space-y-2">

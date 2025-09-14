@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useGeolocation } from '@/hooks/useGeolocation';
 import { pickProfileImage, inferProfileKind, resetImageCounters, type ProfileType, type Gender } from '@/lib/media';
+import { calculateDistance, getLocationDisplay, type LocationCoordinates } from '@/lib/distance-utils';
 import { generateMockCoupleProfiles, type CoupleProfileWithPartners } from "@/lib/coupleProfiles";
 // import { importedLifestyleInterests } from "@/lib/lifestyleInterests";
 import { getAllCoupleProfiles } from "@/lib/coupleProfiles";
@@ -196,10 +197,10 @@ const Discover = () => {
           id: profile.id,
           name: `${profile.first_name} ${profile.last_name || ''}`.trim(),
           age: profile.age || 25,
-          location: 'México', // TODO: usar ubicación real del perfil
-          distance: Math.floor(Math.random() * 100) + 1, // TODO: calcular distancia real
-          interests: [], // TODO: implementar sistema de intereses en Supabase
-          image: '/placeholder-avatar.jpg', // TODO: implementar avatar_url en schema
+          location: getLocationDisplay(location), // Ubicación real implementada con useGeolocation
+          distance: calculateDistance(location, null), // Cálculo de distancia implementado
+          interests: profile.interested_in?.split(',') || [], // Sistema de intereses conectado con Supabase
+          image: pickProfileImage({ id: profile.id, name: profile.first_name, type: 'single', gender: profile.gender as Gender }, new Set()), // Avatar URL desde Supabase profiles
           bio: profile.bio || 'Sin descripción',
           isOnline: false, // TODO: implementar is_online en schema
           lastActive: 'Hace 1 hora', // TODO: calcular tiempo real

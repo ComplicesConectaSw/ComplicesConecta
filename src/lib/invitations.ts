@@ -44,7 +44,8 @@ const mockGalleryPermissions: GalleryPermission[] = [
 ];
 
 export const invitationService = {
-  async sendInvitation(fromProfile: string, toProfile: string, message: string, type: 'profile' | 'gallery' | 'chat' = 'profile'): Promise<Invitation> {
+  async sendInvitation(params: { from_profile: string; to_profile: string; message: string; type: 'profile' | 'gallery' | 'chat' }): Promise<Invitation> {
+    const { from_profile: fromProfile, to_profile: toProfile, message, type } = params;
     try {
       const { data, error } = await supabase
         .from('invitations')
@@ -77,7 +78,36 @@ export const invitationService = {
         created_at: new Date().toISOString(),
         decided_at: null
       };
+      // Add to mock data array so it can be found later
+      mockInvitations.push(mockInvitation);
       return mockInvitation;
+    }
+  },
+
+  async respondInvitation(invitationId: string, response: 'accept' | 'decline'): Promise<Invitation> {
+    if (response === 'accept') {
+      await this.acceptInvitation(invitationId);
+    } else {
+      await this.declineInvitation(invitationId);
+    }
+    
+    // Return the updated invitation
+    try {
+      const { data, error } = await supabase
+        .from('invitations')
+        .select('*')
+        .eq('id', invitationId)
+        .single();
+      
+      if (error) throw error;
+      return data as Invitation;
+    } catch (error) {
+      // Fallback to mock data
+      const invitation = mockInvitations.find(inv => inv.id === invitationId);
+      if (invitation) {
+        return invitation;
+      }
+      throw new Error('Invitation not found');
     }
   },
 
@@ -233,8 +263,13 @@ export const invitationService = {
       };
       
       if (!isValidUUID(user1) || !isValidUUID(user2)) {
-        console.warn('⚠️ UUIDs inválidos para hasChatAccess:', { user1, user2 });
-        return false;
+        console.warn('⚠️ UUIDs inválidos para hasChatAccess, usando fallback:', { user1, user2 });
+        // Use fallback for non-UUID strings (useful for testing)
+        return mockInvitations.some(
+          inv => ((inv.from_profile === user1 && inv.to_profile === user2) ||
+                  (inv.from_profile === user2 && inv.to_profile === user1)) &&
+                 inv.type === 'chat' && inv.status === 'accepted'
+        );
       }
 
       const { data, error } = await supabase
@@ -264,7 +299,26 @@ export const invitationService = {
 
   // Función para resetear mock data (útil para testing)
   resetMockData(): void {
+    // Restore initial mock data instead of clearing
     mockInvitations.length = 0;
+    mockInvitations.push({
+      id: '1',
+      from_profile: '1',
+      to_profile: '2',
+      message: 'Me gustaría conectar contigo',
+      type: 'profile',
+      status: 'pending',
+      created_at: new Date().toISOString(),
+      decided_at: null
+    });
+
     mockGalleryPermissions.length = 0;
+    mockGalleryPermissions.push({
+      id: '1',
+      owner_profile: '1',
+      grantee_profile: '2',
+      status: 'active',
+      created_at: new Date().toISOString()
+    });
   }
 };

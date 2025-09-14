@@ -103,7 +103,9 @@ export default [
       'no-var': 'off',
       'no-unreachable': 'off',
       'react-hooks/exhaustive-deps': 'off',
-      'react-refresh/only-export-components': 'off'
+      'react-refresh/only-export-components': 'off',
+      // Enforce consistent import paths (disabled for now to avoid breaking existing code)
+      'no-restricted-imports': 'off'
     },
   }
 ]
