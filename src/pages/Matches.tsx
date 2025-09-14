@@ -9,6 +9,7 @@ import { UnifiedCard } from "@/components/ui/UnifiedCard";
 import { Heart, MessageCircle, Sparkles, ArrowLeft, Flame, Users, Crown, Filter } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { simpleMatchService, SimpleMatch } from "@/lib/simpleMatches";
+import MatchingService, { SupabaseProfile } from "@/lib/MatchingService";
 import { motion, AnimatePresence } from "framer-motion";
 
 // Professional profile images from Unsplash - Production ready
