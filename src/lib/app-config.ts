@@ -49,8 +49,7 @@ export const DEMO_CREDENTIALS = [
   'single@outlook.es',
   'pareja@outlook.es', 
   'admin',
-  'djwacko28@gmail.com',        // Admin DEMO - usa datos demo
-  'apoyofinancieromexicano@gmail.com'
+  'djwacko28@gmail.com'        // Admin DEMO - usa datos demo
 ];
 
 // Contraseñas demo por email (INCLUIR djwacko28@gmail.com)
@@ -58,8 +57,7 @@ export const DEMO_PASSWORDS: Record<string, string> = {
   'single@outlook.es': '123456',
   'pareja@outlook.es': '123456',
   'admin': '123456',
-  'djwacko28@gmail.com': 'Magy_Wacko_nala28', // Admin DEMO
-  'apoyofinancieromexicano@gmail.com': '123456'
+  'djwacko28@gmail.com': 'Magy_Wacko_nala28' // Admin DEMO
 };
 
 // Lista de emails admin para verificación rápida - CORREGIDA
@@ -145,7 +143,6 @@ export const handleDemoAuth = (email: string, accountType: string = 'single') =>
                 email === 'single@outlook.es' ? 'Sofía' :
                 email === 'pareja@outlook.es' ? 'Carmen & Roberto' :
                 email === 'djwacko28@gmail.com' ? 'DJ Wacko' :
-                email === 'apoyofinancieromexicano@gmail.com' ? 'Apoyo Financiero' :
                 email.split('@')[0],
     is_demo: true,
     created_at: new Date().toISOString()

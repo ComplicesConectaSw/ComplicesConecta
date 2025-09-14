@@ -26,26 +26,66 @@ const Requests = () => {
   const [sentInvitations, setSentInvitations] = useState<Invitation[]>([]);
   const [activeTab, setActiveTab] = useState<'received' | 'sent'>('received');
 
-  const currentUserId = "1"; // Mock current user ID
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
   const loadInvitations = useCallback(async () => {
+    if (!currentUserId) return;
+    
     const { received, sent } = await invitationService.getInvitations(currentUserId);
     setReceivedInvitations(received);
     setSentInvitations(sent);
   }, [currentUserId]);
 
   useEffect(() => {
-    // Verificar autenticación demo
-    const demoAuth = localStorage.getItem('demo_authenticated');
+    if (currentUserId) {
+      loadInvitations();
+    }
+  }, [currentUserId, loadInvitations]);
+
+  useEffect(() => {
+    // Verificar autenticación y obtener userId real
+    const demoAuth = localStorage.getItem('demo_authenticated') === 'true';
+    const specialAuth = localStorage.getItem('apoyo_authenticated') === 'true';
     const demoUser = localStorage.getItem('demo_user');
+    const specialUser = localStorage.getItem('apoyo_user');
     
-    if (demoAuth !== 'true' || !demoUser) {
+    const isAuthenticated = demoAuth || specialAuth || demoUser || specialUser;
+    
+    if (!isAuthenticated) {
+      console.log('❌ Usuario no autenticado en Requests, redirigiendo a /auth');
       window.location.href = '/auth';
       return;
     }
     
-    loadInvitations();
-  }, [loadInvitations]);
+    // Obtener userId real del usuario autenticado
+    let userId: string | null = null;
+    
+    if (specialAuth && specialUser) {
+      try {
+        const parsedSpecialUser = JSON.parse(specialUser);
+        userId = parsedSpecialUser.id || parsedSpecialUser.user_id;
+        console.log('✅ Usuario especial ID:', userId);
+      } catch (error) {
+        console.error('❌ Error parsing special user:', error);
+      }
+    } else if (demoAuth && demoUser) {
+      try {
+        const parsedDemoUser = JSON.parse(demoUser);
+        userId = parsedDemoUser.id || parsedDemoUser.user_id;
+        console.log('✅ Usuario demo ID:', userId);
+      } catch (error) {
+        console.error('❌ Error parsing demo user:', error);
+      }
+    }
+    
+    if (userId) {
+      setCurrentUserId(userId);
+      console.log('✅ Usuario autenticado en Requests con ID:', userId);
+    } else {
+      console.log('❌ No se pudo obtener userId, redirigiendo a /auth');
+      window.location.href = '/auth';
+    }
+  }, []);
 
   const handleInvitationAction = async (invitationId: string, action: 'accept' | 'decline') => {
     try {

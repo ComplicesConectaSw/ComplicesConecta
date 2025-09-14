@@ -318,7 +318,7 @@ export const PrivateMatches: React.FC = () => {
             <h3 className="text-xl font-semibold text-white mb-2">
               Matches Privados
             </h3>
-            <p className="text-gray-300 mb-4 max-w-md">
+            <p className="text-white/80 mb-4 max-w-md">
               Descubre conexiones exclusivas con nuestro algoritmo avanzado de compatibilidad.
               Solo disponible para usuarios Premium.
             </p>
@@ -445,7 +445,7 @@ export const PrivateMatches: React.FC = () => {
                       )}
                       
                       {match.matched_user.bio && (
-                        <p className="text-gray-300 text-sm mb-3 line-clamp-2">
+                        <p className="text-white/80 text-sm mb-3 line-clamp-2">
                           {match.matched_user.bio}
                         </p>
                       )}
@@ -478,7 +478,7 @@ export const PrivateMatches: React.FC = () => {
                             variant="outline"
                             onClick={() => handleMatchAction(match.id, 'decline')}
                             disabled={isProcessing === match.id}
-                            className="border-gray-600 text-gray-300 hover:bg-gray-800"
+                            className="border-white/30 text-white/80 hover:bg-white/10"
                           >
                             <EyeOff className="h-4 w-4 mr-1" />
                             Rechazar

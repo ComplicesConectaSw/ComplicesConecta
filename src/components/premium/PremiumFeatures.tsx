@@ -128,7 +128,7 @@ export const PremiumFeatures = () => {
                 </div>
                 
                 <h3 className="font-semibold text-white mb-2 text-sm sm:text-base">{feature.title}</h3>
-                <p className="text-xs sm:text-sm text-gray-300 mb-3">{feature.description}</p>
+                <p className="text-xs sm:text-sm text-white/80 mb-3">{feature.description}</p>
                 
                 {feature.freeLimit !== undefined && (
                   <div className="space-y-2">
@@ -164,7 +164,7 @@ export const PremiumFeatures = () => {
               <Crown className="h-5 w-5 text-yellow-400" />
               <span className="font-semibold text-white text-sm sm:text-base">Acceso Beta Premium</span>
             </div>
-            <p className="text-xs sm:text-sm text-gray-300">
+            <p className="text-xs sm:text-sm text-white/80">
               Como usuario Beta, tienes acceso completo a todas las características Premium. 
               ¡Disfruta de la experiencia completa mientras ayudas a mejorar la plataforma!
             </p>

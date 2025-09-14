@@ -68,36 +68,11 @@ export default function Tokens() {
       </div>
       <div className="container mx-auto px-4 py-6 max-w-4xl relative z-10">
         {/* Enhanced Header with Professional Navigation */}
-        <div className="bg-black/80 backdrop-blur-md border-b border-white/30 p-3 sm:p-4 shadow-lg flex-shrink-0 rounded-t-xl mb-6">
-          <div className="flex items-center justify-between flex-wrap gap-2">
-            <div className="flex items-center gap-2">
-              <Button 
-                variant="ghost" 
-                onClick={handleGoBack}
-                className="text-white hover:bg-white/20 text-sm sm:text-base p-2 transition-all duration-300 hover:scale-105"
-              >
-                <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
-                <span className="ml-1 sm:ml-2">Regresar</span>
-              </Button>
-              <Button 
-                variant="ghost" 
-                onClick={handleGoHome}
-                className="text-white hover:bg-white/20 text-sm sm:text-base p-2 transition-all duration-300 hover:scale-105"
-              >
-                <Home className="h-4 w-4 sm:h-5 sm:w-5" />
-                <span className="ml-1 sm:ml-2">Inicio</span>
-              </Button>
-            </div>
-            <h1 className="text-base sm:text-lg md:text-xl font-bold text-white text-center flex-1 min-w-0 px-2 truncate">
-              Tokens CMPX & GTK
+        <div className="bg-gradient-to-r from-purple-900/90 to-pink-900/90 backdrop-blur-md border-b border-purple-300/30 p-3 sm:p-4 shadow-lg flex-shrink-0 rounded-t-xl mb-6">
+          <div className="flex items-center justify-center">
+            <h1 className="text-base sm:text-lg md:text-xl font-bold text-white text-center">
+              🪙 Tokens CMPX & GTK
             </h1>
-            <Button 
-              onClick={refreshTokens}
-              className="text-white border-white/30 hover:bg-white/20 text-sm px-3 py-2 transition-all duration-300 hover:scale-105 bg-white/10 backdrop-blur-sm"
-              variant="outline"
-            >
-              🔄 Actualizar Balance
-            </Button>
           </div>
         </div>
         

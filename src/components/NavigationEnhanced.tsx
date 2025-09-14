@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Home, Search, MessageCircle, Heart, User, Settings, UserPlus, Coins } from 'lucide-react';
+import { Home, Search, MessageCircle, Heart, User, Settings, UserPlus, Coins, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useFeatures } from '@/hooks/useFeatures';
 
@@ -87,6 +87,13 @@ const NavigationEnhanced = ({
       setActiveItem(currentItem.id);
     }
   }, [location.pathname, navItems]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('demo_authenticated');
+    localStorage.removeItem('demo_user');
+    localStorage.removeItem('userType');
+    navigate('/auth');
+  };
 
   const handleNavigation = (path: string) => {
     // Verificar sesión antes de navegar
@@ -296,6 +303,33 @@ const NavigationEnhanced = ({
             </motion.button>
           );
         })}
+        
+        {/* Botón de cerrar sesión */}
+        <motion.button
+          onClick={handleLogout}
+          className={cn(
+            "flex flex-col items-center justify-center p-1 sm:p-2 rounded-xl",
+            "min-w-[50px] sm:min-w-[60px] min-h-[50px] sm:min-h-[60px] group flex-shrink-0",
+            "transition-all duration-300 ease-out transform hover:scale-105",
+            "relative overflow-hidden",
+            "text-red-400 hover:text-red-300 hover:bg-red-500/20"
+          )}
+          whileHover={enableAnimations ? { scale: 1.05 } : undefined}
+          whileTap={enableAnimations ? { scale: 0.95 } : undefined}
+        >
+          <LogOut 
+            className={cn(
+              "w-4 h-4 sm:w-5 sm:h-5 mb-0.5 sm:mb-1 transition-all duration-300 relative z-10",
+              "group-hover:scale-110 group-hover:drop-shadow-md"
+            )} 
+          />
+          <span className={cn(
+            "text-[10px] sm:text-xs font-medium transition-all duration-300 truncate max-w-[50px] sm:max-w-none relative z-10",
+            "text-red-400/80 group-hover:text-red-300"
+          )}>
+            Salir
+          </span>
+        </motion.button>
       </div>
       
       {/* Decorative elements */}

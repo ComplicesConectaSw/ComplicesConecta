@@ -425,10 +425,10 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
                   "max-w-[80%] rounded-lg p-3 break-words overflow-hidden",
                   message.type === 'user'
                     ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white'
-                    : 'bg-gradient-to-r from-gray-50 to-gray-100 text-gray-900 border border-gray-200'
+                    : 'bg-gradient-to-r from-purple-50 to-pink-50 text-purple-900 border border-purple-200'
                 )}
               >
-                <div className="whitespace-pre-wrap text-sm leading-relaxed break-words">
+                <div className="whitespace-pre-wrap text-sm leading-relaxed break-words max-h-40 overflow-y-auto">
                   {message.content}
                 </div>
                 
@@ -462,11 +462,11 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
               <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-100 to-pink-100 flex items-center justify-center flex-shrink-0">
                 <Bot className="h-4 w-4 text-purple-600" />
               </div>
-              <div className="bg-gray-100 rounded-lg p-3">
+              <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-3">
                 <div className="flex space-x-1">
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                  <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce"></div>
+                  <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                  <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                 </div>
               </div>
             </div>

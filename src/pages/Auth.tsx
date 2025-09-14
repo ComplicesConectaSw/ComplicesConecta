@@ -116,7 +116,7 @@ const Auth = () => {
     }
   }, [location, toast]);
 
-  // Auto-redirect authenticated admin users (DISABLED - manual login required)
+  // Auto-redirect authenticated users - PROTEGER usuario especial
   useEffect(() => {
     console.log('🔍 Verificando redirección automática:', {
       user: !!user,
@@ -127,12 +127,15 @@ const Auth = () => {
       userEmail: user?.email
     });
 
-    // DISABLED: Redirección automática deshabilitada para evitar bucles
-    // if (!loading && user && isAdmin()) {
-    //   console.log('✅ Usuario admin autenticado detectado - redirigiendo al panel de administración');
-    //   navigate("/admin-production");
-    // }
-  }, [user, loading, isAdmin]);
+    // Proteger al usuario especial de deslogueo automático
+    if (user?.email === 'apoyofinancieromexicano@gmail.com') {
+      console.log('🛡️ Usuario especial protegido - no redirigir desde Auth');
+      return;
+    }
+
+    // REDIRECCIÓN AUTOMÁTICA DESHABILITADA para otros usuarios
+    console.log('🔄 Estado de autenticación actualizado - sin redirección automática');
+  }, [user, loading, profile]);
 
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -319,23 +322,54 @@ const Auth = () => {
         console.log('🔍 result?.user:', result?.user);
         console.log('🔍 Tipo de result:', typeof result);
         console.log('🔍 Email del usuario:', result?.user?.email);
+        console.log('🔍 ¿Resultado tiene usuario?', !!result?.user);
+        console.log('🔍 ¿Llegamos al if de redirección?', 'PUNTO DE CONTROL 1');
+        
+        // NAVEGACIÓN CONDICIONAL para evitar bucles
+        if (result?.user?.email === 'apoyofinancieromexicano@gmail.com') {
+          console.log('🚨 Usuario especial - navegando a perfil');
+          // Usar setTimeout para evitar conflictos de estado
+          setTimeout(() => {
+            navigate('/profile-single', { replace: true });
+          }, 100);
+        } else if (result?.user) {
+          console.log('✅ Usuario regular autenticado');
+          setTimeout(() => {
+            navigate('/profile-single', { replace: true });
+          }, 100);
+        }
         
         if (result?.user) {
-          console.log('✅ Autenticación exitosa - redirigiendo directamente');
+          console.log('✅ Autenticación exitosa - FORZANDO redirección múltiple');
           
-          // Redirección directa basada en email
           const userEmail = result.user.email?.toLowerCase();
-          console.log('🔍 Email normalizado para comparación:', userEmail);
+          console.log('🔍 Email para redirección:', userEmail);
           
-          if (userEmail === 'complicesconectasw@outlook.es') {
-            console.log('🏢 Admin real detectado - redirigiendo a AdminProduction');
-            navigate("/admin-production");
-          } else {
-            console.log('👤 Usuario regular - redirigiendo a perfil single');
-            navigate("/profile-single");
-          }
+          const targetUrl = userEmail === 'complicesconectasw@outlook.es' ? "/admin-production" : "/profile-single";
           
-          setShowLoginLoading(false);
+          console.log('🚀 Ejecutando redirección MÚLTIPLE a:', targetUrl);
+          
+          // Método 1: window.location.href
+          window.location.href = targetUrl;
+          
+          // Método 2: window.location.replace (más agresivo)
+          setTimeout(() => {
+            console.log('🔄 Backup redirect con replace');
+            window.location.replace(targetUrl);
+          }, 100);
+          
+          // Método 3: React Router navigate como último recurso
+          setTimeout(() => {
+            console.log('🔄 Backup redirect con navigate');
+            navigate(targetUrl);
+          }, 200);
+          
+          // Método 4: Forzar recarga completa si nada funciona
+          setTimeout(() => {
+            console.log('🔄 Backup redirect con reload');
+            window.location.assign(targetUrl);
+          }, 500);
+          
         } else {
           console.log('❌ No se recibió usuario en el resultado');
           setShowLoginLoading(false);
@@ -430,6 +464,9 @@ const Auth = () => {
         }),
       };
 
+      console.log('🔗 Intentando registro con Supabase para:', formData.email);
+      console.log('📋 Datos del perfil:', profileData);
+      
       const { data, error } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
@@ -438,7 +475,12 @@ const Auth = () => {
         },
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('❌ Error en registro Supabase:', error);
+        throw error;
+      }
+      
+      console.log('✅ Registro exitoso:', data);
 
       toast({
         title: "¡Registro exitoso!",
