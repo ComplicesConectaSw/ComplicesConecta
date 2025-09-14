@@ -6,8 +6,8 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from './useAuth';
-import { isDemoMode, shouldUseRealSupabase, getAppConfig } from '../lib/app-config';
-import { supabase } from '../integrations/supabase/client';
+import { isDemoMode, shouldUseRealSupabase, getAppConfig } from '@/lib/app-config';
+import { supabase } from '@/integrations/supabase/client';
 
 // Interfaces simplificadas para demo vs real
 export interface TokenBalance {

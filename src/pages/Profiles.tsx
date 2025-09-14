@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ProfileCard } from '@/components/ProfileCard';
+import { ProfileCard } from '@/components/profile/MainProfileCard';
 import { ProfileFilters } from '@/components/ProfileFilters';
 
 interface FilterState {

@@ -4,12 +4,12 @@
  */
 
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
-import { Button } from '../ui/button';
-import { Input } from '../ui/input';
-import { Label } from '../ui/label';
-import { Card, CardContent } from '../ui/card';
-import { useTokens } from '../../hooks/useTokens';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent } from '@/components/ui/card';
+import { useTokens } from '@/hooks/useTokens';
 import { Lock, TrendingUp, Calendar, AlertCircle } from 'lucide-react';
 
 interface StakingModalProps {

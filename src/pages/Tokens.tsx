@@ -5,12 +5,12 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TokenDashboard } from '../components/tokens/TokenDashboard';
-import { TokenChatBot } from '../components/tokens/TokenChatBot';
-import { StakingModal } from '../components/tokens/StakingModal';
-import { Button } from '../components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
-import { useTokens } from '../hooks/useTokens';
+import { TokenDashboard } from '@/components/tokens/TokenDashboard';
+import { TokenChatBot } from '@/components/tokens/TokenChatBot';
+import { StakingModal } from '@/components/tokens/StakingModal';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useTokens } from '@/hooks/useTokens';
 import { Coins, Info, ExternalLink, Bot, ArrowLeft, Home, Heart, Sparkles, Star, Rocket, Users } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 

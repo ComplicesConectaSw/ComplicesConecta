@@ -59,15 +59,6 @@ const NavigationEnhanced = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
 
-  // Update active item based on current path
-  useEffect(() => {
-    const currentPath = location.pathname;
-    const currentItem = navItems.find(item => item.path === currentPath);
-    if (currentItem) {
-      setActiveItem(currentItem.id);
-    }
-  }, [location.pathname]);
-
   // Solo mostrar navegación completa si está autenticado
   if (!isAuthenticated || !demoUser) {
     return null; // Ocultar navegación si no está logueado
@@ -87,6 +78,15 @@ const NavigationEnhanced = ({
         { id: 'profile', icon: User, label: 'Perfil', path: '/profile' },
         { id: 'settings', icon: Settings, label: 'Configuración', path: '/edit-profile-single' },
       ];
+
+  // Update active item based on current path
+  useEffect(() => {
+    const currentPath = location.pathname;
+    const currentItem = navItems.find(item => item.path === currentPath);
+    if (currentItem) {
+      setActiveItem(currentItem.id);
+    }
+  }, [location.pathname, navItems]);
 
   const handleNavigation = (path: string) => {
     // Verificar sesión antes de navegar
