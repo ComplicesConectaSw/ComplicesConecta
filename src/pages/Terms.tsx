@@ -26,17 +26,6 @@ const Terms = () => {
         <Header />
         
         <main className="container mx-auto px-4 py-8">
-          {/* Back Button */}
-          <div className="mb-6">
-            <Button 
-              variant="outline" 
-              onClick={() => navigate(-1)}
-              className="bg-card/80 backdrop-blur-sm border-primary/20 hover:bg-primary/10 transition-all duration-300"
-            >
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Volver
-            </Button>
-          </div>
 
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
@@ -45,7 +34,7 @@ const Terms = () => {
                 ComplicesConecta
               </span>
             </h1>
-            <p className="text-xl text-white/90 max-w-2xl mx-auto">
+            <p className="text-xl text-white font-medium max-w-2xl mx-auto">
               Condiciones de uso para nuestra plataforma de conexiones para adultos
             </p>
             <Badge variant="secondary" className="mt-4">

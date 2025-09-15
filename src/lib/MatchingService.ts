@@ -5,12 +5,12 @@
 // =====================================================
 
 import { supabase } from '@/integrations/supabase/client';
-import { 
 import { logger } from '@/lib/logger';
+import { 
   calculateCompatibility, 
   getSharedInterests, 
   generateMatchReasons,
-  MatchScore 
+  type MatchScore 
 } from '@/lib/matching';
 
 // Tipos para el servicio de matching
@@ -124,7 +124,7 @@ export class MatchingService {
       };
 
     } catch (error) {
-      logger.error('Error al dar like:', error);
+      logger.error('Error al dar like:', { error: error instanceof Error ? error.message : String(error) });
       return { success: false, error: 'Error al procesar el like' };
     }
   }
@@ -148,7 +148,7 @@ export class MatchingService {
       return { success: true };
 
     } catch (error) {
-      logger.error('Error al quitar like:', error);
+      logger.error('Error al quitar like:', { error: error instanceof Error ? error.message : String(error) });
       return { success: false, error: 'Error al quitar el like' };
     }
   }
@@ -172,7 +172,7 @@ export class MatchingService {
       return data || [];
 
     } catch (error) {
-      logger.error('Error al obtener likes:', error);
+      logger.error('Error al obtener likes:', { error: error instanceof Error ? error.message : String(error) });
       return [];
     }
   }
@@ -214,7 +214,7 @@ export class MatchingService {
       }));
 
     } catch (error) {
-      logger.error('Error al obtener matches:', error);
+      logger.error('Error al obtener matches:', { error: error instanceof Error ? error.message : String(error) });
       return [];
     }
   }
@@ -242,7 +242,7 @@ export class MatchingService {
       return data ? this.formatMatch(data, user.id) : null;
 
     } catch (error) {
-      logger.error('Error al obtener match:', error);
+      logger.error('Error al obtener match:', { error: error instanceof Error ? error.message : String(error) });
       return null;
     }
   }
@@ -296,7 +296,7 @@ export class MatchingService {
       }));
 
     } catch (error) {
-      logger.error('Error al obtener perfiles potenciales:', error);
+      logger.error('Error al obtener perfiles potenciales:', { error: error instanceof Error ? error.message : String(error) });
       return [];
     }
   }
@@ -348,7 +348,7 @@ export class MatchingService {
       return matchesWithScores;
 
     } catch (error) {
-      logger.error('Error al calcular compatibilidad:', error);
+      logger.error('Error al calcular compatibilidad:', { error: error instanceof Error ? error.message : String(error) });
       return [];
     }
   }
@@ -380,7 +380,7 @@ export class MatchingService {
       return { success: true };
 
     } catch (error) {
-      logger.error('Error al enviar mensaje:', error);
+      logger.error('Error al enviar mensaje:', { error: error instanceof Error ? error.message : String(error) });
       return { success: false, error: 'Error al enviar el mensaje' };
     }
   }
@@ -407,7 +407,7 @@ export class MatchingService {
       return { success: true };
 
     } catch (error) {
-      logger.error('Error al marcar como visto:', error);
+      logger.error('Error al marcar como visto:', { error: error instanceof Error ? error.message : String(error) });
       return { success: false, error: 'Error al marcar como visto' };
     }
   }
@@ -432,7 +432,7 @@ export class MatchingService {
       return (data || []).reverse(); // Mostrar mensajes más antiguos primero
 
     } catch (error) {
-      logger.error('Error al obtener mensajes:', error);
+      logger.error('Error al obtener mensajes:', { error: error instanceof Error ? error.message : String(error) });
       return [];
     }
   }
@@ -459,7 +459,7 @@ export class MatchingService {
       return { success: true };
 
     } catch (error) {
-      logger.error('Error al actualizar intereses:', error);
+      logger.error('Error al actualizar intereses:', { error: error instanceof Error ? error.message : String(error) });
       return { success: false, error: 'Error al actualizar intereses' };
     }
   }
@@ -478,7 +478,7 @@ export class MatchingService {
       });
 
     } catch (error) {
-      logger.error('Error al actualizar estado online:', error);
+      logger.error('Error al actualizar estado online:', { error: error instanceof Error ? error.message : String(error) });
     }
   }
 

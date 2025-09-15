@@ -25,17 +25,7 @@ dist-ssr
 
 # Environment Variables (CRITICAL SECURITY)
 .env
-.env.local
-.env.local.*
-.env.production
-.env.production.*
-.env.development
-.env.development.*
-.env.staging
-.env.staging.*
-.env.*.local
-.env.*.bak
-.env.backup
+.env.*
 !.env.example
 
 # Vercel
@@ -116,6 +106,7 @@ test_*.md
 .env
 .env.local
 .env.production
+.env.demo
 **/supabase/config.toml
 **/supabase/.env
 
@@ -205,3 +196,14 @@ project-structure.md
 *.patch
 diff.patch
 project-structure.md
+
+# Archivos con información sensible detectados
+docs-unified/deployment/DEPLOY.md
+docs-unified/deployment/VERCEL_SETUP.md
+docs-unified/deployment/DEPLOYMENT_INSTRUCTIONS.md
+docs-unified/tests/worldid/WORLDID_FUNCTION_TEST.md
+
+# Archivos de build con tokens embebidos
+android/app/build/intermediates/assets/release/mergeReleaseAssets/public/js/*.js
+android/app/src/main/assets/public/js/*.js
+dist/js/*.js

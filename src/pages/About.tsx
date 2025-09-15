@@ -1,7 +1,8 @@
-import { ArrowLeft, Heart, Users, Shield, Zap, Star, Award, Target } from "lucide-react";
+import { Heart, Users, Shield, Zap, Star, Award, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
+import { Header } from "@/components/Header";
 
 const About = () => {
   const navigate = useNavigate();
@@ -15,23 +16,9 @@ const About = () => {
         <div className="absolute -bottom-8 left-20 w-72 h-72 bg-red-500/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
       </div>
 
+      <Header />
       {/* Content */}
       <div className="relative z-10 min-h-screen">
-        {/* Header */}
-        <div className="bg-black/30 backdrop-blur-sm border-b border-white/10 p-4">
-          <div className="flex items-center justify-between max-w-4xl mx-auto">
-            <Button 
-              variant="ghost" 
-              onClick={() => navigate(-1)}
-              className="text-white hover:bg-white/10 transition-all duration-300 hover:scale-105"
-            >
-              <ArrowLeft className="h-5 w-5 mr-2" />
-              Volver
-            </Button>
-            <h1 className="text-2xl font-bold text-white">Quiénes Somos</h1>
-            <div className="w-20"></div>
-          </div>
-        </div>
 
         {/* Main Content */}
         <div className="max-w-4xl mx-auto p-6 space-y-8">
@@ -44,7 +31,7 @@ const About = () => {
                 </div>
               </div>
               <h2 className="text-3xl font-bold text-white mb-4">ComplicesConecta</h2>
-              <p className="text-xl text-white/90 leading-relaxed">
+              <p className="text-xl text-white font-medium leading-relaxed">
                 La plataforma social premium más innovadora para adultos que buscan conexiones auténticas 
                 y experiencias únicas en un ambiente seguro y discreto.
               </p>
@@ -59,7 +46,7 @@ const About = () => {
                   <Target className="h-8 w-8 text-pink-400 mr-3" />
                   <h3 className="text-xl font-bold text-white">Nuestra Misión</h3>
                 </div>
-                <p className="text-white/80 leading-relaxed">
+                <p className="text-white font-medium leading-relaxed">
                   Crear un espacio seguro y verificado donde personas adultas puedan explorar 
                   conexiones auténticas, compartir experiencias y vivir su lifestyle con total 
                   libertad y respeto mutuo.
@@ -73,7 +60,7 @@ const About = () => {
                   <Star className="h-8 w-8 text-purple-400 mr-3" />
                   <h3 className="text-xl font-bold text-white">Nuestra Visión</h3>
                 </div>
-                <p className="text-white/80 leading-relaxed">
+                <p className="text-white font-medium leading-relaxed">
                   Ser la plataforma líder en Latinoamérica para la comunidad lifestyle, 
                   reconocida por su innovación tecnológica, seguridad y compromiso con 
                   la privacidad de nuestros usuarios.
@@ -179,7 +166,7 @@ const About = () => {
           <Card className="bg-gradient-to-r from-pink-500/20 to-purple-600/20 backdrop-blur-md border-pink-300/30 shadow-xl">
             <CardContent className="p-8 text-center">
               <h3 className="text-2xl font-bold text-white mb-4">¿Listo para Conectar?</h3>
-              <p className="text-white/90 mb-6">
+              <p className="text-white font-medium mb-6">
                 Únete a miles de personas que ya viven experiencias únicas en ComplicesConecta
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">

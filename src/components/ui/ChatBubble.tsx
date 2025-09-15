@@ -49,6 +49,18 @@ export const ChatBubble = React.memo<ChatBubbleProps>(function ChatBubble({
   onReply,
   className
 }) {
+  // Hooks siempre deben estar en el nivel superior
+  const [showReactions, setShowReactions] = React.useState(false);
+  const [isHovered, setIsHovered] = React.useState(false);
+
+  const StatusIcon = statusIcons[status];
+  const commonEmojis = ["❤️", "😂", "😮", "😢", "😡", "👍"];
+
+  const handleReaction = React.useCallback((emoji: string) => {
+    onReact?.(id, emoji);
+    setShowReactions(false);
+  }, [id, onReact]);
+
   // Si no hay funcionalidades avanzadas, usar el componente simple
   if (!reactions?.length && !onReact && !onReply && !isPrivate) {
     return (
@@ -62,18 +74,6 @@ export const ChatBubble = React.memo<ChatBubbleProps>(function ChatBubble({
       />
     );
   }
-
-  // Funcionalidad avanzada completa
-  const [showReactions, setShowReactions] = React.useState(false);
-  const [isHovered, setIsHovered] = React.useState(false);
-
-  const StatusIcon = statusIcons[status];
-  const commonEmojis = ["❤️", "😂", "😮", "😢", "😡", "👍"];
-
-  const handleReaction = React.useCallback((emoji: string) => {
-    onReact?.(id, emoji);
-    setShowReactions(false);
-  }, [id, onReact]);
 
   return (
     <motion.div
