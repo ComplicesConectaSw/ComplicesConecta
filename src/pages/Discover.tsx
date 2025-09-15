@@ -7,6 +7,10 @@ import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
 import { Heart, Flame, Crown, RefreshCw, Filter, Star, CheckCircle, MapPin, Home, User, Search, MessageCircle } from 'lucide-react';
 import Navigation from '@/components/Navigation';
+import SuperLikesModal from '@/components/modals/SuperLikesModal';
+import PremiumModal from '@/components/modals/PremiumModal';
+import CompatibilityModal from '@/components/modals/CompatibilityModal';
+import EventsModal from '@/components/modals/EventsModal';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from "@/hooks/use-toast";
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -14,10 +18,11 @@ import { useGeolocation } from '@/hooks/useGeolocation';
 import { pickProfileImage, inferProfileKind, resetImageCounters, type ProfileType, type Gender } from '@/lib/media';
 import { calculateDistance, getLocationDisplay, type LocationCoordinates } from '@/lib/distance-utils';
 import { generateMockCoupleProfiles, type CoupleProfileWithPartners } from "@/lib/coupleProfiles";
-// import { importedLifestyleInterests } from "@/lib/lifestyleInterests";
 import { getAllCoupleProfiles } from "@/lib/coupleProfiles";
+import { generateDemoProfiles, demoStats, type DemoProfile } from '@/lib/demoData';
+import { generateFilterDemoCards, type FilterDemoCard } from '@/lib/infoCards';
+import { FilterDemoCard as FilterDemoCardComponent } from '@/components/ui/FilterDemoCard';
 import { supabase } from "@/integrations/supabase/client";
-// Note: Using 'any' type for Supabase profile data since types are not available
 import CoupleProfileCard from '@/components/profile/CoupleProfileCard';
 import { AnimatedProfileCard } from '@/components/ui/AnimatedProfileCard';
 import { AnimatedButton } from '@/components/ui/AnimatedButton';
@@ -63,11 +68,20 @@ const Discover = () => {
   const { user, isAuthenticated } = useAuth();
   
   const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [demoProfiles, setDemoProfiles] = useState<DemoProfile[]>([]);
+  const [filterCards, setFilterCards] = useState<FilterDemoCard[]>([]);
   const [coupleProfiles, setCoupleProfiles] = useState<CoupleProfileWithPartners[]>([]);
   const [filteredProfiles, setFilteredProfiles] = useState<Profile[]>([]);
+  const [filteredDemoProfiles, setFilteredDemoProfiles] = useState<DemoProfile[]>([]);
   const [filteredCoupleProfiles, setFilteredCoupleProfiles] = useState<CoupleProfileWithPartners[]>([]);
   const [showFilters, setShowFilters] = useState(false);
   const [showCouples, setShowCouples] = useState(false);
+  
+  // Modal states
+  const [showSuperLikesModal, setShowSuperLikesModal] = useState(false);
+  const [showPremiumModal, setShowPremiumModal] = useState(false);
+  const [showCompatibilityModal, setShowCompatibilityModal] = useState(false);
+  const [showEventsModal, setShowEventsModal] = useState(false);
   const [filters, setFilters] = useState<Filters>({
     ageRange: [18, 65],
     distance: 50,
@@ -156,20 +170,55 @@ const Discover = () => {
 
   // Aplicar filtros
   useEffect(() => {
-    let filtered = profiles.filter(profile => {
-      const ageMatch = profile.age >= filters.ageRange[0] && profile.age <= filters.ageRange[1];
-      const distanceMatch = profile.distance <= filters.distance;
-      const interestsMatch = filters.interests.length === 0 || 
-        filters.interests.some(interest => profile.interests.includes(interest));
-      const verifiedMatch = !filters.verified || profile.isVerified;
-      const premiumMatch = !filters.premium || profile.isPremium;
-      const onlineMatch = !filters.online || profile.isOnline;
+    const applyFilters = () => {
+      // Filtrar perfiles demo
+      const filteredDemo = demoProfiles.filter(profile => {
+        const ageMatch = profile.age >= filters.ageRange[0] && profile.age <= filters.ageRange[1];
+        const distanceMatch = !location || profile.distance <= filters.distance;
+        const interestsMatch = filters.interests.length === 0 || 
+          filters.interests.some(interest => profile.interests.includes(interest));
+        const verifiedMatch = !filters.verified || profile.isVerified;
+        const premiumMatch = !filters.premium || profile.isPremium;
+        const onlineMatch = !filters.online || profile.isOnline;
+        
+        return ageMatch && distanceMatch && interestsMatch && verifiedMatch && premiumMatch && onlineMatch;
+      });
+      
+      setFilteredDemoProfiles(filteredDemo);
 
-      return ageMatch && distanceMatch && interestsMatch && verifiedMatch && premiumMatch && onlineMatch;
-    });
+      // Filtrar perfiles individuales reales
+      const filtered = profiles.filter(profile => {
+        const ageMatch = profile.age >= filters.ageRange[0] && profile.age <= filters.ageRange[1];
+        const distanceMatch = !location || profile.distance <= filters.distance;
+        const interestsMatch = filters.interests.length === 0 || 
+          filters.interests.some(interest => profile.interests.includes(interest));
+        const verifiedMatch = !filters.verified || profile.isVerified;
+        const premiumMatch = !filters.premium || profile.isPremium;
+        const onlineMatch = !filters.online || profile.isOnline;
+        
+        return ageMatch && distanceMatch && interestsMatch && verifiedMatch && premiumMatch && onlineMatch;
+      });
+      
+      setFilteredProfiles(filtered);
 
-    setFilteredProfiles(filtered);
-  }, [profiles, filters]);
+      // Filtrar perfiles de parejas
+      const filteredCouples = coupleProfiles.filter(couple => {
+        const avgAge = (couple.partner1_age + couple.partner2_age) / 2;
+        const ageMatch = avgAge >= filters.ageRange[0] && avgAge <= filters.ageRange[1];
+        const distanceMatch = true; // No distance filtering for couples yet
+        const interestsMatch = true; // No interests filtering for couples yet
+        const verifiedMatch = !filters.verified || couple.is_verified;
+        const premiumMatch = !filters.premium || couple.is_premium;
+        const onlineMatch = !filters.online || couple.isOnline;
+        
+        return ageMatch && distanceMatch && interestsMatch && verifiedMatch && premiumMatch && onlineMatch;
+      });
+      
+      setFilteredCoupleProfiles(filteredCouples);
+    };
+
+    applyFilters();
+  }, [filters, demoProfiles, profiles, coupleProfiles, location]);
 
   // Función para cargar perfiles reales desde Supabase
   const loadRealProfiles = useCallback(async () => {
@@ -236,12 +285,31 @@ const Discover = () => {
     }
   }, [generateRandomProfiles]);
 
-  // Verificar autenticación y cargar perfiles
+  // Cargar cards de filtros demo para usuarios no autenticados
   useEffect(() => {
-    // Verificar autenticación usando el hook useAuth
+    if (filterCards.length === 0) {
+      const cards = generateFilterDemoCards();
+      setFilterCards(cards);
+    }
+  }, [filterCards.length]);
+
+  // Cargar perfiles demo solo para usuarios con credenciales específicas
+  useEffect(() => {
+    const demoAuth = localStorage.getItem('demo_authenticated') === 'true';
+    const isDemoUser = user?.email === 'single@outlook.es' || user?.email === 'pareja@outlook.es';
+    
+    if (demoAuth && isDemoUser && demoProfiles.length === 0) {
+      const demos = generateDemoProfiles(20);
+      setDemoProfiles(demos);
+      setFilteredDemoProfiles(demos);
+    }
+  }, [user?.email, demoProfiles.length]);
+
+  // Verificar autenticación y cargar perfiles reales
+  useEffect(() => {
+    // Si no está autenticado, mostrar cards informativos
     if (!isAuthenticated) {
-      logger.info('❌ Usuario no autenticado en Discover, redirigiendo a /auth');
-      navigate('/auth');
+      logger.info('👤 Usuario no autenticado - mostrando cards informativos');
       return;
     }
     
@@ -251,11 +319,11 @@ const Discover = () => {
     const demoAuth = localStorage.getItem('demo_authenticated') === 'true';
     const apoyoAuth = localStorage.getItem('apoyo_authenticated') === 'true';
     
-    // Solo cargar perfiles una vez
+    // Solo cargar perfiles reales una vez para usuarios autenticados
     if (profiles.length === 0) {
       // Cargar perfiles según el tipo de usuario
       if (demoAuth && !apoyoAuth) {
-        logger.info('🎭 Cargando perfiles demo');
+        logger.info('🎭 Usuario demo - cargando perfiles adicionales');
         generateRandomProfiles();
       } else {
         logger.info('🔗 Cargando perfiles reales');
@@ -274,34 +342,73 @@ const Discover = () => {
     navigate(`/profile/${profile.id}`, { state: { profile } });
   };
 
-  const handleLike = (profileId: number) => {
+  const handleLike = (profileId: number | string) => {
+    if (!isAuthenticated) {
+      setShowPremiumModal(true);
+      return;
+    }
     toast({
       title: "¡Like enviado!",
-      description: "Tu interés ha sido registrado.",
+      description: "Le has dado like a este perfil.",
     });
   };
 
-  const handleMessage = (profileId: number) => {
+  const handleSuperLike = (profileId: number | string) => {
+    if (!isAuthenticated) {
+      setShowSuperLikesModal(true);
+      return;
+    }
     toast({
-      title: "Chat iniciado",
-      description: "Redirigiendo al chat...",
+      title: "¡Super Like enviado!",
+      description: "Has enviado un Super Like especial.",
+      variant: "default",
     });
-    navigate('/chat-info');
   };
 
-  const handleViewProfile = (profileId: number) => {
-    const profile = profiles.find(p => p.id === profileId.toString());
+  const handlePass = (profileId: number | string) => {
+    // Simplemente no mostrar mensaje para pass
+  };
+
+  const handleCompatibilityClick = () => {
+    if (!isAuthenticated) {
+      setShowCompatibilityModal(true);
+    }
+  };
+
+  const handleEventsClick = () => {
+    if (!isAuthenticated) {
+      setShowEventsModal(true);
+    }
+  };
+
+  const handleViewProfile = (profileId: number | string) => {
+    const profile = profiles.find(p => p.id === profileId.toString()) || 
+                   demoProfiles.find(p => p.id === profileId.toString());
     if (profile) {
       navigate(`/profile/${profile.id}`, { state: { profile } });
     }
   };
 
-  const handleSuperLike = (profileId: string, e: React.MouseEvent) => {
-    e.stopPropagation();
-    toast({
-      title: "¡Super Like enviado!",
-      description: "Has mostrado interés especial en este perfil.",
-    });
+  const handleMessage = (profileId: number | string) => {
+    if (!isAuthenticated) {
+      setShowPremiumModal(true);
+      return;
+    }
+    navigate(`/chat/${profileId}`);
+  };
+
+  const handleCtaClick = (action: 'register' | 'login' | 'premium') => {
+    switch (action) {
+      case 'register':
+        navigate('/auth?mode=register');
+        break;
+      case 'login':
+        navigate('/auth');
+        break;
+      case 'premium':
+        setShowPremiumModal(true);
+        break;
+    }
   };
 
   const handleRefresh = () => {
@@ -416,15 +523,15 @@ const Discover = () => {
               transition={{ duration: 0.3 }}
             >
               <GlassCard className="w-full lg:w-80 p-4 lg:p-6" variant="colored">
-              <h3 className="text-lg font-semibold mb-4 text-purple-900 flex items-center gap-2">
-                <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              <h3 className="text-lg font-semibold mb-4 text-white flex items-center gap-2">
+                <span className="bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent font-bold">
                   Filtros Avanzados
                 </span>
               </h3>
               
               {/* Edad */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-purple-800 mb-3">
+                <label className="block text-sm font-semibold text-white mb-3">
                   Edad: {filters.ageRange[0]} - {filters.ageRange[1]} años
                 </label>
                 <Slider
@@ -439,7 +546,7 @@ const Discover = () => {
               
               {/* Distancia */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-purple-800 mb-3">
+                <label className="block text-sm font-semibold text-white mb-3">
                   Distancia: {filters.distance} km
                 </label>
                 <Slider
@@ -454,18 +561,18 @@ const Discover = () => {
               
               {/* Intereses */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-purple-800 mb-3">
+                <label className="block text-sm font-semibold text-white mb-3">
                   Intereses
                 </label>
-                <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto p-2 bg-white/50 rounded-lg border border-purple-200/30">
+                <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto p-3 bg-white/20 rounded-lg border border-white/30">
                   {['Lifestyle', 'Swinger', 'Parejas', 'Intercambio', 'Liberal', 'Aventura', 'Diversión', 'Respeto', 'Discreción', 'Experiencia'].map((interest: string) => (
                     <Badge
                       key={interest}
                       variant={filters.interests.includes(interest) ? "default" : "outline"}
-                      className={`cursor-pointer text-xs transition-all duration-200 hover:scale-105 ${
+                      className={`cursor-pointer text-xs font-medium transition-all duration-200 hover:scale-105 ${
                         filters.interests.includes(interest) 
-                          ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0 shadow-md" 
-                          : "border-purple-300 text-purple-700 hover:border-purple-500 hover:bg-purple-50"
+                          ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0 shadow-lg" 
+                          : "border-white/60 text-white hover:border-white hover:bg-white/20"
                       }`}
                       onClick={() => {
                         setFilters(prev => ({
@@ -595,32 +702,99 @@ const Discover = () => {
                   </motion.div>
                 ))
               ) : (
-                // Show single profiles
-                filteredProfiles.map((profile, index) => (
-                  <motion.div
-                    key={profile.id}
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                  >
-                    <AnimatedProfileCard
-                      id={parseInt(profile.id)}
-                      name={profile.name}
-                      age={profile.age}
-                      location={profile.location}
-                      image={profile.image}
-                      bio={profile.bio}
-                      interests={profile.interests}
-                      isOnline={profile.isOnline}
-                      isPremium={profile.isPremium}
-                      isPrivate={false}
-                      lastSeen={profile.isOnline ? undefined : profile.lastActive}
-                      onLike={handleLike}
-                      onMessage={handleMessage}
-                      onViewProfile={handleViewProfile}
+                // Show content based on authentication status
+                <>
+                  {/* Usuarios NO autenticados: Cards de filtros demo */}
+                  {!isAuthenticated() && filterCards.map((card, index) => (
+                    <FilterDemoCardComponent
+                      key={card.id}
+                      card={card}
+                      index={index}
+                      onCtaClick={handleCtaClick}
                     />
-                  </motion.div>
-                ))
+                  ))}
+                  
+                  {/* Usuarios autenticados con credenciales demo: Perfiles demo */}
+                  {isAuthenticated() && user?.email === 'single@outlook.es' && filteredDemoProfiles.map((profile, index) => (
+                    <motion.div
+                      key={profile.id}
+                      initial={{ opacity: 0, y: 50 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                    >
+                      <AnimatedProfileCard
+                        id={parseInt(profile.id.slice(-8), 16) || index}
+                        name={profile.name}
+                        age={profile.age}
+                        location={profile.location}
+                        image={profile.image}
+                        bio={profile.bio}
+                        interests={profile.interests}
+                        isOnline={profile.isOnline}
+                        isPremium={profile.isPremium}
+                        isPrivate={false}
+                        lastSeen={profile.isOnline ? undefined : profile.lastActive}
+                        onLike={handleLike}
+                        onMessage={handleMessage}
+                        onViewProfile={handleViewProfile}
+                      />
+                    </motion.div>
+                  ))}
+                  
+                  {/* Usuarios autenticados con credenciales demo: Perfiles demo */}
+                  {isAuthenticated() && user?.email === 'pareja@outlook.es' && filteredDemoProfiles.map((profile, index) => (
+                    <motion.div
+                      key={profile.id}
+                      initial={{ opacity: 0, y: 50 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                    >
+                      <AnimatedProfileCard
+                        id={parseInt(profile.id.slice(-8), 16) || index}
+                        name={profile.name}
+                        age={profile.age}
+                        location={profile.location}
+                        image={profile.image}
+                        bio={profile.bio}
+                        interests={profile.interests}
+                        isOnline={profile.isOnline}
+                        isPremium={profile.isPremium}
+                        isPrivate={false}
+                        lastSeen={profile.isOnline ? undefined : profile.lastActive}
+                        onLike={handleLike}
+                        onMessage={handleMessage}
+                        onViewProfile={handleViewProfile}
+                      />
+                    </motion.div>
+                  ))}
+                  
+                  {/* Usuarios autenticados reales: Perfiles reales */}
+                  {isAuthenticated() && user?.email !== 'single@outlook.es' && user?.email !== 'pareja@outlook.es' && filteredProfiles.map((profile, index) => (
+                    <motion.div
+                      key={profile.id}
+                      initial={{ opacity: 0, y: 50 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                    >
+                      <AnimatedProfileCard
+                        id={parseInt(profile.id)}
+                        name={profile.name}
+                        age={profile.age}
+                        location={profile.location}
+                        image={profile.image}
+                        bio={profile.bio}
+                        interests={profile.interests}
+                        isOnline={profile.isOnline}
+                        isPremium={profile.isPremium}
+                        isPrivate={false}
+                        lastSeen={profile.isOnline ? undefined : profile.lastActive}
+                        onLike={handleLike}
+                        onMessage={handleMessage}
+                        onViewProfile={handleViewProfile}
+                      />
+                    </motion.div>
+                  ))}
+                </>
               )}
             </motion.div>
           </div>
@@ -628,6 +802,24 @@ const Discover = () => {
       </main>
       
       <Navigation />
+      
+      {/* Presentation Modals */}
+      <SuperLikesModal 
+        isOpen={showSuperLikesModal} 
+        onClose={() => setShowSuperLikesModal(false)} 
+      />
+      <PremiumModal 
+        isOpen={showPremiumModal} 
+        onClose={() => setShowPremiumModal(false)} 
+      />
+      <CompatibilityModal 
+        isOpen={showCompatibilityModal} 
+        onClose={() => setShowCompatibilityModal(false)} 
+      />
+      <EventsModal 
+        isOpen={showEventsModal} 
+        onClose={() => setShowEventsModal(false)} 
+      />
     </div>
   );
 };

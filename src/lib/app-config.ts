@@ -41,8 +41,8 @@ export const getAppConfig = (): AppConfig => {
   cachedConfig = {
     mode: realMode,
     supabase: {
-      url: import.meta.env.VITE_SUPABASE_URL || 'https://axtvqnozatbmllvwzuim.supabase.co',
-      anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF4dHZxbm96YXRibWxsdnd6dWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYwODQ5MDYsImV4cCI6MjA2MTY2MDkwNn0.yzrgK-Z-DR7lsUqftnVUA0GMsWQuf62zSAmDNxZKG9Y'
+      url: import.meta.env.VITE_SUPABASE_URL || 'https://demo.supabase.co',
+      anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY || 'demo-anon-key-placeholder'
     },
     features: {
       demoCredentials: true, // Siempre permitir credenciales demo
@@ -135,7 +135,7 @@ export const handleDemoAuth = (email: string, accountType: string = 'single') =>
   const config = getAppConfig();
   
   if (!isDemoCredential(email)) {
-    logger.info('❌ Email no es credencial demo:', email);
+    logger.info('❌ Email no es credencial demo:', { email });
     return null;
   }
   
@@ -174,7 +174,7 @@ export const handleDemoAuth = (email: string, accountType: string = 'single') =>
   // ELIMINADO: No almacenar datos completos de usuario en localStorage
   // Los datos se mantienen solo en memoria durante la sesión
   
-  logger.info('🎭 Sesión demo creada para:', email, 'Tipo:', finalAccountType);
+  logger.info('🎭 Sesión demo creada', { email, tipo: finalAccountType });
   
   return { user: demoUser, session: demoSession };
 };
@@ -213,7 +213,7 @@ export const shouldUseRealSupabase = () => {
   const config = getAppConfig();
   const demoAuth = localStorage.getItem('demo_authenticated');
   
-  logger.info('🔍 shouldUseRealSupabase - Modo:', config.mode, 'DemoAuth:', demoAuth);
+  logger.info('🔍 shouldUseRealSupabase', { modo: config.mode, demoAuth });
   
   // En modo producción, SIEMPRE usar Supabase real
   // No importa si hay datos demo en localStorage
@@ -229,10 +229,10 @@ export const shouldUseRealSupabase = () => {
       try {
         const user = JSON.parse(demoUser);
         const useSupabase = user.role === 'admin';
-        logger.info('🎭 Usuario demo:', user.email, 'Admin:', user.role === 'admin', 'Usar Supabase:', useSupabase);
+        logger.info('🎭 Usuario demo', { email: user.email, admin: user.role === 'admin', usarSupabase: useSupabase });
         return useSupabase;
       } catch (error) {
-        logger.error('❌ Error parsing demo user:', error);
+        logger.error('❌ Error parsing demo user', { error: error instanceof Error ? error.message : String(error) });
         return false;
       }
     }
@@ -246,7 +246,7 @@ export const shouldUseRealSupabase = () => {
 export const appConfig = getAppConfig();
 
 // Log de configuración inicial
-logger.info('🚀 ComplicesConecta iniciado en modo:', appConfig.mode);
+logger.info('🚀 ComplicesConecta iniciado', { modo: appConfig.mode });
 if (appConfig.mode === 'demo') {
   logger.info('🎭 Modo demo activo - credenciales de prueba habilitadas');
   logger.info('📝 Credenciales demo:', DEMO_CREDENTIALS);

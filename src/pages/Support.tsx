@@ -1,10 +1,11 @@
-import { ArrowLeft, HelpCircle, Shield, MessageCircle, Phone, Mail, Clock, Search, ChevronDown, ChevronUp } from 'lucide-react';
+import { HelpCircle, Shield, MessageCircle, Phone, Mail, Clock, Search, ChevronDown, ChevronUp } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Header } from '@/components/Header';
 
 const Support = () => {
   const navigate = useNavigate();
@@ -103,26 +104,8 @@ const Support = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-blur-md border-b border-purple-300/30 sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 py-4">
-          <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate('/')}
-              className="text-white hover:text-purple-200"
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Volver
-            </Button>
-            <h1 className="text-2xl font-bold text-white">
-              Centro de Ayuda
-            </h1>
-          </div>
-        </div>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900">
+      <Header />
 
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Hero Section */}
@@ -133,7 +116,7 @@ const Support = () => {
           <h2 className="text-4xl font-bold text-white mb-4">
             ¿En qué podemos ayudarte?
           </h2>
-          <p className="text-xl text-white/90 max-w-2xl mx-auto mb-8">
+          <p className="text-xl text-white font-medium max-w-2xl mx-auto mb-8">
             Encuentra respuestas rápidas a las preguntas más frecuentes o contáctanos directamente
           </p>
 
@@ -158,8 +141,8 @@ const Support = () => {
                   <method.icon className="w-6 h-6 text-purple-200" />
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">{method.title}</h3>
-                <p className="text-white/90 mb-1">{method.description}</p>
-                <p className="text-sm text-white/70">{method.subtitle}</p>
+                <p className="text-white font-medium mb-1">{method.description}</p>
+                <p className="text-sm text-white font-medium">{method.subtitle}</p>
               </CardContent>
             </Card>
           ))}
@@ -200,7 +183,7 @@ const Support = () => {
                               }
                             </button>
                             {expandedFaq === globalIndex && (
-                              <div className="mt-2 text-white/90 leading-relaxed">
+                              <div className="mt-2 text-white font-medium leading-relaxed">
                                 {faq.a}
                               </div>
                             )}
@@ -214,7 +197,7 @@ const Support = () => {
             </div>
           ) : (
             <div className="text-center py-8">
-              <p className="text-white/70">No se encontraron preguntas que coincidan con tu búsqueda.</p>
+              <p className="text-white font-medium">No se encontraron preguntas que coincidan con tu búsqueda.</p>
             </div>
           )}
         </div>
@@ -223,7 +206,7 @@ const Support = () => {
         <Card className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-sm border-purple-300/30">
           <CardHeader>
             <CardTitle className="text-center text-white">¿No encontraste lo que buscabas?</CardTitle>
-            <p className="text-center text-white/90">Envíanos un mensaje y te ayudaremos personalmente</p>
+            <p className="text-center text-white font-medium">Envíanos un mensaje y te ayudaremos personalmente</p>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4 max-w-2xl mx-auto">

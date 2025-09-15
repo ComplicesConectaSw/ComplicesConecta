@@ -1,6 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
 import { logError, logMessage } from '@/lib/sentry';
-import { logger } from '@/lib/logger';
+import { logger as baseLogger } from '@/lib/logger';
 
 interface LogEntry {
   level: 'info' | 'warn' | 'error' | 'debug';
@@ -40,9 +40,9 @@ export class SupabaseLogger {
   logQuery(query: string, params?: Record<string, unknown>, duration?: number) {
     if (import.meta.env.DEV) {
       console.group('📊 Supabase Query');
-      logger.info('Query:', query);
-      logger.info('Params:', params);
-      logger.info('Duration:', duration ? `${duration}ms` : 'N/A');
+      console.log('Query:', query);
+      console.log('Params:', params);
+      console.log('Duration:', duration ? `${duration}ms` : 'N/A');
       console.groupEnd();
     }
 
@@ -85,7 +85,7 @@ export class SupabaseLogger {
 
     // Log metrics to console in development
     if (import.meta.env.DEV) {
-      logger.info(`📊 Metric: ${name} = ${value}${unit}`, metadata);
+      console.log(`📊 Metric: ${name} = ${value}${unit}`, metadata);
     }
 
     // Send performance metrics to Sentry

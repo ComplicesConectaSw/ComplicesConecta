@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Shield, Lock, Eye, UserCheck, AlertTriangle, CheckCircle, ArrowLeft } from "lucide-react";
+import { Shield, Lock, Eye, UserCheck, AlertTriangle, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
