@@ -81,7 +81,7 @@ export const ChatWithLocation = ({ conversationId, currentUserId, otherUser }: C
 
       setMessages(formattedMessages);
     } catch (error) {
-      logger.error('Error fetching messages:', error);
+      logger.error('Error fetching messages:', { error: error instanceof Error ? error.message : String(error) });
     }
   }, [conversationId]);
 
@@ -138,7 +138,7 @@ export const ChatWithLocation = ({ conversationId, currentUserId, otherUser }: C
         });
       }
     } catch (error) {
-      logger.error('Error sending message:', error);
+      logger.error('Error sending message:', { error: error instanceof Error ? error.message : String(error) });
       toast({
         variant: "destructive",
         title: "Error",

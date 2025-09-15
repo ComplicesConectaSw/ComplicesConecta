@@ -101,7 +101,7 @@ export const EmailValidation = ({
       }
 
     } catch (error) {
-      logger.error('Error validating email:', error);
+      logger.error('Error validating email:', { error: error instanceof Error ? error.message : String(error) });
       setValidationState({
         isValid: false,
         message: 'Error de conexión',
@@ -184,7 +184,7 @@ export const useEmailValidation = () => {
       return { isValid: true, message: 'Email disponible' };
 
     } catch (error) {
-      logger.error('Error validating email:', error);
+      logger.error('Error validating email:', { error: error instanceof Error ? error.message : String(error) });
       return { isValid: false, message: 'Error de conexión' };
     } finally {
       setIsValidating(false);

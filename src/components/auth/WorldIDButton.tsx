@@ -102,7 +102,7 @@ export const WorldIDButton: React.FC<WorldIDButtonProps> = ({
       }
 
     } catch (error) {
-      logger.error('World ID verification error:', error);
+      logger.error('World ID verification error:', { error: error instanceof Error ? error.message : String(error) });
       
       const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
       
@@ -119,7 +119,7 @@ export const WorldIDButton: React.FC<WorldIDButtonProps> = ({
   };
 
   const handleError = (error: { code?: string; message?: string; detail?: string } | string | unknown) => {
-    logger.error('World ID widget error:', error);
+    logger.error('World ID widget error:', { error: typeof error === 'object' ? JSON.stringify(error) : String(error) });
     
     let errorMessage = 'Error en la verificación con World ID';
     

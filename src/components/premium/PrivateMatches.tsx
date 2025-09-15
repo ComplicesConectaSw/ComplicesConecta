@@ -177,25 +177,25 @@ export const PrivateMatches: React.FC = () => {
 
       // Mapear datos de invitations a formato PrivateMatch
       const mappedMatches: PrivateMatch[] = (data ?? []).map(invitation => ({
-        id: invitation.id,
-        user_id: invitation.from_profile,
-        matched_user_id: invitation.to_profile,
+        id: (invitation as any).id,
+        user_id: (invitation as any).from_profile,
+        matched_user_id: (invitation as any).to_profile,
         match_type: 'private' as const,
         compatibility_score: 85 + Math.floor(Math.random() * 15), // Score simulado
-        is_mutual: invitation.status === 'accepted',
-        created_at: invitation.created_at ?? new Date().toISOString(),
-        status: invitation.status as 'pending' | 'accepted' | 'declined' | 'expired',
+        is_mutual: (invitation as any).status === 'accepted',
+        created_at: (invitation as any).created_at ?? new Date().toISOString(),
+        status: (invitation as any).status as 'pending' | 'accepted' | 'declined' | 'expired',
         matched_user: {
-          id: invitation.matched_user?.id ?? '',
-          first_name: invitation.matched_user?.first_name ?? '',
-          last_name: invitation.matched_user?.last_name,
-          age: invitation.matched_user?.age,
-          location: `${invitation.matched_user?.first_name ?? 'Usuario'} Premium`,
+          id: (invitation as any).matched_user?.id ?? '',
+          first_name: (invitation as any).matched_user?.first_name ?? '',
+          last_name: (invitation as any).matched_user?.last_name,
+          age: (invitation as any).matched_user?.age,
+          location: `${(invitation as any).matched_user?.first_name ?? 'Usuario'} Premium`,
           avatar_url: undefined, // Campo no existe en schema profiles
-          bio: invitation.matched_user?.bio ?? undefined,
+          bio: (invitation as any).matched_user?.bio ?? undefined,
           interests: [],
-          is_premium: invitation.matched_user?.is_premium ?? false,
-          is_verified: invitation.matched_user?.is_verified ?? false
+          is_premium: (invitation as any).matched_user?.is_premium ?? false,
+          is_verified: (invitation as any).matched_user?.is_verified ?? false
         },
         metadata: {
           algorithm_version: "v2.1",
@@ -205,7 +205,7 @@ export const PrivateMatches: React.FC = () => {
       }));
       setMatches(mappedMatches);
     } catch (error) {
-      logger.error('Error in loadPrivateMatches:', error);
+      logger.error('Error in loadPrivateMatches:', { error: error instanceof Error ? error.message : String(error) });
     } finally {
       setLoading(false);
     }
@@ -243,14 +243,14 @@ export const PrivateMatches: React.FC = () => {
       if (!user?.id) return;
 
       // Actualizar estado del match en tabla invitations
-      const { error } = await supabase
+      const { error } = await (supabase
         .from('invitations')
         .update({ 
           status: action === 'accept' ? 'accepted' : 'declined',
           decided_at: new Date().toISOString()
         })
         .eq('id', matchId)
-        .eq('from_profile', user.id);
+        .eq('from_profile', user.id) as any);
 
       if (error) {
         throw error;
@@ -271,7 +271,7 @@ export const PrivateMatches: React.FC = () => {
       });
 
     } catch (error) {
-      logger.error('Error handling match action:', error);
+      logger.error('Error handling match action:', { error: error instanceof Error ? error.message : String(error) });
       toast({
         variant: "destructive",
         title: "Error",

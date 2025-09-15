@@ -108,7 +108,7 @@ export const RealtimeChatIntegration = ({
 
       setCurrentMatch(mockMatch);
     } catch (error) {
-      logger.error('Error loading match data:', error);
+      logger.error('Error loading match data:', { error: error instanceof Error ? error.message : String(error) });
     }
   };
 
@@ -145,7 +145,7 @@ export const RealtimeChatIntegration = ({
 
       setMessages(mockMessages);
     } catch (error) {
-      logger.error('Error loading messages:', error);
+      logger.error('Error loading messages:', { error: error instanceof Error ? error.message : String(error) });
     } finally {
       setIsLoading(false);
     }
@@ -221,7 +221,7 @@ export const RealtimeChatIntegration = ({
       */
 
     } catch (error) {
-      logger.error('Error sending message:', error);
+      logger.error('Error sending message:', { error: error instanceof Error ? error.message : String(error) });
       // Restaurar mensaje en caso de error
       setNewMessage(messageContent);
     } finally {
@@ -252,7 +252,7 @@ export const RealtimeChatIntegration = ({
         });
       */
     } catch (error) {
-      logger.error('Error marking as read:', error);
+      logger.error('Error marking messages as read:', { error: error instanceof Error ? error.message : String(error) });
     }
   };
 
