@@ -57,6 +57,102 @@ Crear la comunidad lifestyle más exclusiva y segura de México, donde parejas y
 - **📸 Historias Efímeras**: Contenido que expira en 24 horas
 - **🌟 Comunidad Selecta**: Solo usuarios verificados y premium
 
+### 🔒 Sistema de Validación de Edad y Términos
+
+ComplicesConecta implementa un sistema robusto de verificación de mayoría de edad y consentimiento legal para garantizar el cumplimiento normativo:
+
+### Validación de Edad +18
+
+#### **🛡️ Verificación Obligatoria**
+- **Fecha de nacimiento requerida**: Campos de fecha exacta reemplazan edad manual
+- **Cálculo automático**: Sistema verifica mayoría de edad en tiempo real
+- **Validación dual para parejas**: Ambos integrantes deben ser +18 años
+- **Bloqueo de registro**: Imposible continuar sin cumplir requisitos
+
+#### **⚖️ Mensajes de Error Específicos**
+- Usuario individual: "Debes ser mayor de 18 años para registrarte en esta plataforma"
+- Parejas: "Ambos integrantes deben ser mayores de 18 años para continuar con el registro"
+- Validación en tiempo real con indicadores visuales
+
+### Sistema de Términos y Condiciones
+
+#### **📋 Consentimiento Obligatorio**
+- **Modal interactivo**: Resumen completo de términos y políticas
+- **Checkbox obligatorio**: Aceptación explícita requerida
+- **Enlace a términos completos**: Acceso directo a documentación legal
+- **Advertencia +18**: Notificación clara sobre contenido adulto
+
+#### **🎯 Implementación Técnica**
+```typescript
+// Validación de edad
+const validateAge = (birthDate: string): boolean => {
+  const age = calculateAge(birthDate);
+  return age >= 18;
+};
+
+// Manejo de términos
+const handleTermsAcceptance = (accepted: boolean) => {
+  setFormData(prev => ({ ...prev, acceptTerms: accepted }));
+};
+```
+
+### Componentes de Seguridad
+
+- **TermsModal**: Modal de términos con resumen y aceptación
+- **Age Validation**: Validación automática de fechas de nacimiento
+- **Registration Blocking**: Sistema que previene registros ilegales
+- **Legal Compliance**: Cumplimiento con regulaciones de contenido adulto
+
+## 🎨 Sistema de Personalización Visual
+
+ComplicesConecta incluye un sistema avanzado de temas visuales que se adapta automáticamente según el tipo de usuario y sus preferencias:
+
+### Tipos de Temas Disponibles
+
+#### **🎭 Temas por Género**
+- **Masculino**: Gradientes azules y tonos fríos profesionales
+- **Femenino**: Gradientes rosas y tonos cálidos elegantes  
+- **No Binario**: Paletas neutras y equilibradas
+- **Parejas**: Combinaciones dinámicas según géneros de ambos integrantes
+
+#### **✨ Temas Premium**
+- **Elegante**: Tonos oscuros sofisticados con acentos dorados
+- **Moderno**: Diseño minimalista con contrastes limpios
+- **Vibrante**: Colores intensos y gradientes llamativos
+
+### Implementación Técnica
+
+El sistema utiliza el hook `useProfileTheme` que calcula automáticamente:
+- Clases de fondo (`backgroundClass`)
+- Colores de texto (`textClass`) 
+- Colores de acento (`accentClass`)
+- Bordes temáticos (`borderClass`)
+
+```typescript
+const themeConfig = useProfileTheme(profileType, genders, selectedTheme);
+```
+
+### Componentes Temáticos
+
+- **ProfileCard**: Tarjetas de perfil con temas dinámicos
+- **ThemeSelector**: Selector interactivo de temas
+- **ProfileThemeShowcase**: Vista previa de temas en tiempo real
+- **ThemeInfoModal**: Modal educativo sobre el sistema de temas
+
+El sistema está optimizado con `useMemo` para rendimiento y soporta animaciones fluidas con Framer Motion.
+
+#### **Temas Automáticos por Perfil:**
+- **Single Masculino**: Azules profundos, grises metálicos (`from-blue-900 via-gray-800 to-gray-900`)
+- **Single Femenino**: Púrpuras, rosas suaves (`from-pink-400 via-purple-500 to-pink-600`)
+- **Pareja M+F**: Gradientes equilibrados (`from-purple-500 via-indigo-600 to-blue-500`)
+- **Pareja M+M**: Fondos sobrios azul-gris (`from-blue-900 via-gray-700 to-black`)
+- **Pareja F+F**: Vibrantes púrpura-fucsia (`from-pink-500 via-fuchsia-600 to-purple-700`)
+
+#### **Temas Personalizables:**
+- **Elegante**: Fondos oscuros minimalistas (`from-gray-900 via-gray-800 to-black`)
+- **Moderno**: Gradientes vivos tecnológicos (`from-indigo-500 via-purple-500 to-pink-500`)
+- **Vibrante**: Colores intensos energéticos (`from-pink-500 via-red-500 to-yellow-500`)
+
 ### 🔧 Tecnologías de Vanguardia
 
 ### Frontend

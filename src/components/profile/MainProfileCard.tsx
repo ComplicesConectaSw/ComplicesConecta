@@ -6,6 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { logger } from '@/lib/logger';
+import { useProfileTheme, Gender, ProfileType, Theme } from '@/hooks/useProfileTheme';
+import { cn } from '@/lib/utils';
 
 interface ProfileCardProps {
   profile: {
@@ -20,21 +22,36 @@ interface ProfileCardProps {
     lastSeen?: string;
     verified?: boolean;
     rating?: number;
+    // Nuevas propiedades para personalización visual
+    gender?: Gender;
+    partnerGender?: Gender;
+    accountType?: ProfileType;
+    theme?: Theme;
   };
   onLike?: (id: string) => void;
   onSuperLike?: (profile: ProfileCardProps['profile']) => void;
   onOpenModal: () => void;
+  // Nueva prop para habilitar temas visuales
+  useThemeBackground?: boolean;
 }
 
-export const ProfileCard = ({ profile, onLike, onSuperLike, onOpenModal }: ProfileCardProps) => {
+export const ProfileCard = ({ profile, onLike, onSuperLike, onOpenModal, useThemeBackground = false }: ProfileCardProps) => {
   const { getUserOnlineStatus, getLastSeenTime } = useUserOnlineStatus();
   const profileId = String(profile.id);
   const isOnline = profile.isOnline ?? getUserOnlineStatus(profileId);
   const lastSeen = profile.lastSeen ?? getLastSeenTime(profileId);
-  const { id, name, age, location, interests, image, rating, isOnline: onlineStatus = false } = profile;
+  const { id, name, age, location, interests, image, rating, isOnline: onlineStatus = false, gender = 'male', partnerGender, accountType = 'single', theme } = profile;
   const navigate = useNavigate();
   const { toast } = useToast();
   const [imageError, setImageError] = useState(false);
+
+  // Configurar géneros para el hook de tema
+  const genders: Gender[] = accountType === 'couple' && partnerGender 
+    ? [gender, partnerGender] 
+    : [gender];
+  
+  // Obtener configuración de tema
+  const themeConfig = useProfileTheme(accountType, genders, theme);
 
   const handleViewProfile = () => {
     navigate(`/profile/${id}`);
@@ -61,7 +78,12 @@ export const ProfileCard = ({ profile, onLike, onSuperLike, onOpenModal }: Profi
 
   return (
     <div 
-      className="group relative bg-card-gradient rounded-2xl overflow-hidden shadow-soft hover:shadow-glow transition-all duration-500 transform hover:scale-105 cursor-pointer"
+      className={cn(
+        "group relative rounded-2xl overflow-hidden shadow-soft hover:shadow-glow transition-all duration-500 transform hover:scale-105 cursor-pointer",
+        useThemeBackground 
+          ? `${themeConfig.backgroundClass} ${themeConfig.textClass}` 
+          : "bg-card-gradient"
+      )}
       onClick={handleViewProfile}
     >
       {/* Image Container */}
@@ -72,14 +94,22 @@ export const ProfileCard = ({ profile, onLike, onSuperLike, onOpenModal }: Profi
             alt={name}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             onError={(e) => {
-              logger.info('Error loading image:', image);
+              logger.info('Error loading image:', { image });
               setImageError(true);
             }}
-            onLoad={() => logger.info('Image loaded successfully:', image)}
+            onLoad={() => logger.info('Image loaded successfully:', { image })}
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">
-            <div className="text-center text-white">
+          <div className={cn(
+            "w-full h-full flex items-center justify-center",
+            useThemeBackground 
+              ? themeConfig.backgroundClass 
+              : "bg-gradient-to-br from-purple-400 to-pink-400"
+          )}>
+            <div className={cn(
+              "text-center",
+              useThemeBackground ? themeConfig.textClass : "text-white"
+            )}>
               <div className="text-6xl mb-2">👤</div>
               <p className="text-sm opacity-80">Imagen no disponible</p>
             </div>
@@ -144,10 +174,16 @@ export const ProfileCard = ({ profile, onLike, onSuperLike, onOpenModal }: Profi
       {/* Card Footer */}
       <div className="p-4">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-base sm:text-lg font-semibold text-gray-800 group-hover:text-primary transition-colors truncate">
+          <h3 className={cn(
+            "text-base sm:text-lg font-semibold group-hover:text-primary transition-colors truncate",
+            useThemeBackground ? themeConfig.textClass : "text-gray-800"
+          )}>
             {name}, {age}
           </h3>
-          <div className="flex items-center space-x-1 text-gray-600">
+          <div className={cn(
+            "flex items-center space-x-1",
+            useThemeBackground ? themeConfig.accentClass : "text-gray-600"
+          )}>
             <MapPin className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
             <span className="text-xs sm:text-sm truncate">{location}</span>
           </div>
