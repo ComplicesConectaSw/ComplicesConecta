@@ -248,11 +248,11 @@ export const PrivateMatches: React.FC = () => {
         decided_at: new Date().toISOString()
       };
       
-      const { error } = await (supabase
+      const { error } = await (supabase as any)
         .from('invitations')
         .update(updatePayload)
         .eq('id', matchId)
-        .eq('from_profile', user.id) as any);
+        .eq('from_profile', user.id);
 
       if (error) {
         throw error;
