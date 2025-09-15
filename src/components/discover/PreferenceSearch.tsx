@@ -121,13 +121,13 @@ export const PreferenceSearch = ({ onResultsChange, currentUserId }: PreferenceS
       // Filter by distance if location is available
       if (filters.location.latitude && filters.location.longitude) {
         filteredResults = filteredResults.filter((profile: Tables<'profiles'>) => {
-          if (!profile.latitude || !profile.longitude) return false;
+          if (!(profile as any).latitude || !(profile as any).longitude) return false;
           
           const distance = calculateDistance(
             filters.location.latitude!,
             filters.location.longitude!,
-            profile.latitude,
-            profile.longitude
+            (profile as any).latitude,
+            (profile as any).longitude
           );
           
           return distance <= filters.maxDistance;
@@ -153,12 +153,12 @@ export const PreferenceSearch = ({ onResultsChange, currentUserId }: PreferenceS
       // Add distance and compatibility score
       const enrichedResults = filteredResults.map((profile: Tables<'profiles'>) => {
         let distance = null;
-        if (filters.location.latitude && filters.location.longitude && profile.latitude && profile.longitude) {
+        if (filters.location.latitude && filters.location.longitude && (profile as any).latitude && (profile as any).longitude) {
           distance = calculateDistance(
             filters.location.latitude,
             filters.location.longitude,
-            profile.latitude,
-            profile.longitude
+            (profile as any).latitude,
+            (profile as any).longitude
           );
         }
 
