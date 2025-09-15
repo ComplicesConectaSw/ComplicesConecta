@@ -16,6 +16,7 @@ import { Heart, Users, Shield, Zap, Sparkles, Star, Rocket, Smartphone, Download
 import { Button } from "@/components/ui/button";
 import "@/styles/animations.css";
 import { logger } from '@/lib/logger';
+import { motion } from 'framer-motion';
 
 // Professional profile images from Unsplash - Production ready
 // Removed local imports that fail in production
@@ -45,6 +46,7 @@ const Index = () => {
       // La APK instalada tendrá características específicas del WebView
       const isInWebView = () => {
         const userAgent = navigator.userAgent.toLowerCase();
+        logger.info('🔍 Detectando entorno de ejecución', { isInWebView: isInWebView, userAgent: userAgent });
         // Detectar si está en un WebView de Android (APK instalada)
         return userAgent.includes('wv') || // Android WebView
                userAgent.includes('version/') && userAgent.includes('chrome/') && userAgent.includes('mobile') && !userAgent.includes('browser');
@@ -65,7 +67,7 @@ const Index = () => {
             navigate('/profile-single');
           }
         } catch (error) {
-          logger.error('Error parsing user data:', error);
+          logger.error('Error parsing user data', { error });
           // Si hay error, redirigir al perfil single por defecto
           navigate('/profile-single');
         }

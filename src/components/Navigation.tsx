@@ -5,6 +5,8 @@ import { cn } from '@/lib/utils';
 import { useFeatures } from '@/hooks/useFeatures';
 import NavigationEnhanced from './NavigationEnhanced';
 import { logger } from '@/lib/logger';
+import { LogoutButton } from '@/components/ui/LogoutButton';
+import { motion } from 'framer-motion';
 
 interface NavigationProps {
   className?: string;
@@ -83,7 +85,25 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
         { id: 'settings', icon: Settings, label: 'Configuración', path: getSettingsPath() },
       ];
 
+  // Agregar botón de logout si está autenticado
+  if (isAuthenticated) {
+    navItems.push({ id: 'logout', icon: LogOut, label: 'Salir', path: '/logout' });
+  }
+
   const handleNavigation = (path: string) => {
+    // Manejar logout especial
+    if (path === '/logout') {
+      // Limpiar localStorage/sessionStorage
+      localStorage.removeItem('demo_authenticated');
+      localStorage.removeItem('apoyo_authenticated');
+      localStorage.removeItem('demo_user');
+      localStorage.removeItem('apoyo_user');
+      localStorage.removeItem('userType');
+      sessionStorage.clear();
+      navigate('/auth', { replace: true });
+      return;
+    }
+
     // Verificar sesión antes de navegar
     const demoUser = localStorage.getItem('demo_user');
     const specialUser = localStorage.getItem('apoyo_user');
@@ -116,7 +136,7 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
     const coupleRoutes = ['/feed', '/discover', '/chat', '/matches', '/tokens'];
     
     if (coupleRoutes.includes(path) && userType === 'couple') {
-      logger.info('✅ Navegación de pareja autorizada a:', path);
+      logger.info('✅ Navegación de pareja autorizada', { path });
     }
     
     // Navegar a la ruta solicitada

@@ -17,10 +17,14 @@ import {
 import Navigation from "@/components/Navigation";
 import { useFeatures } from "@/hooks/useFeatures";
 import { invitationService, type Invitation } from "@/lib/invitations";
+import { useAuth } from '@/hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 import { useToast } from "@/hooks/use-toast";
 import { logger } from '@/lib/logger';
 
 const Requests = () => {
+  const { user, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const { features } = useFeatures();
   const { toast } = useToast();
   const [receivedInvitations, setReceivedInvitations] = useState<Invitation[]>([]);
@@ -54,7 +58,7 @@ const Requests = () => {
     
     if (!isAuthenticated) {
       logger.info('❌ Usuario no autenticado en Requests, redirigiendo a /auth');
-      window.location.href = '/auth';
+      navigate('/auth');
       return;
     }
     
@@ -65,26 +69,26 @@ const Requests = () => {
       try {
         const parsedSpecialUser = JSON.parse(specialUser);
         userId = parsedSpecialUser.id || parsedSpecialUser.user_id;
-        logger.info('✅ Usuario especial ID:', userId);
+        logger.info('🔍 Usuario especial autenticado:', { userId });
       } catch (error) {
-        logger.error('❌ Error parsing special user:', error);
+        logger.error('❌ Error parsing special user:', { error });
       }
     } else if (demoAuth && demoUser) {
       try {
         const parsedDemoUser = JSON.parse(demoUser);
         userId = parsedDemoUser.id || parsedDemoUser.user_id;
-        logger.info('✅ Usuario demo ID:', userId);
+        logger.info('🔍 Usuario actual:', { email: user?.email });
       } catch (error) {
-        logger.error('❌ Error parsing demo user:', error);
+        logger.error('❌ Error parsing demo user:', { error });
       }
     }
     
     if (userId) {
       setCurrentUserId(userId);
-      logger.info('✅ Usuario autenticado en Requests con ID:', userId);
+      logger.info('✅ Usuario autenticado en Requests con ID:', { userId });
     } else {
       logger.info('❌ No se pudo obtener userId, redirigiendo a /auth');
-      window.location.href = '/auth';
+      navigate('/auth');
     }
   }, []);
 
@@ -164,7 +168,7 @@ const Requests = () => {
             <p className="text-white/80 text-lg">Gestiona tus invitaciones recibidas y enviadas</p>
           </div>
 
-          <div className="bg-black/30 backdrop-blur-sm rounded-xl border border-white/10 p-6">
+          <div className="bg-gradient-to-br from-purple-900/40 via-pink-900/30 to-red-900/40 backdrop-blur-sm rounded-xl border border-white/10 p-6">
             <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'received' | 'sent')} className="w-full">
               <TabsList className="grid w-full grid-cols-2 bg-white/10 backdrop-blur-sm rounded-lg mb-6">
                 <TabsTrigger 
@@ -196,14 +200,14 @@ const Requests = () => {
               <TabsContent value="received" className="mt-6">
                 <div className="space-y-4">
                   {receivedInvitations.length === 0 ? (
-                    <Card className="p-8 text-center bg-black/30 backdrop-blur-sm border-white/10">
+                    <Card className="p-8 text-center bg-gradient-to-br from-purple-900/30 via-pink-900/20 to-red-900/30 backdrop-blur-sm border-white/10">
                       <UserPlus className="h-16 w-16 mx-auto mb-4 text-white/50" />
                       <h3 className="text-xl font-semibold text-white mb-2">No hay invitaciones recibidas</h3>
                       <p className="text-white/70">Cuando alguien te envíe una invitación, aparecerá aquí.</p>
                     </Card>
                   ) : (
                     receivedInvitations.map((inv) => (
-                      <Card key={inv.id} className="p-4 bg-black/30 backdrop-blur-sm border-white/10 flex flex-col sm:flex-row items-start gap-4">
+                      <Card key={inv.id} className="p-4 bg-gradient-to-br from-purple-900/30 via-pink-900/20 to-red-900/30 backdrop-blur-sm border-white/10 flex flex-col sm:flex-row items-start gap-4 card-accessible">
                         <div className="flex-1">
                           <div className="flex justify-between items-start mb-2">
                             <div className="flex items-center text-sm text-white/80">
@@ -234,14 +238,14 @@ const Requests = () => {
               <TabsContent value="sent" className="mt-6">
                 <div className="space-y-4">
                   {sentInvitations.length === 0 ? (
-                    <Card className="p-8 text-center bg-black/30 backdrop-blur-sm border-white/10">
+                    <Card className="p-8 text-center bg-gradient-to-br from-purple-900/30 via-pink-900/20 to-red-900/30 backdrop-blur-sm border-white/10">
                       <Send className="h-16 w-16 mx-auto mb-4 text-white/50" />
                       <h3 className="text-xl font-semibold text-white mb-2">No has enviado invitaciones</h3>
                       <p className="text-white/70">Explora perfiles y envía invitaciones para conectar.</p>
                     </Card>
                   ) : (
                     sentInvitations.map((inv) => (
-                      <Card key={inv.id} className="p-4 bg-black/30 backdrop-blur-sm border-white/10">
+                      <Card key={inv.id} className="p-4 bg-gradient-to-br from-purple-900/30 via-pink-900/20 to-red-900/30 backdrop-blur-sm border-white/10 card-accessible">
                         <div className="flex justify-between items-start">
                           <div className="flex items-center text-sm text-white/80">
                             {getInvitationTypeIcon(inv.type)}

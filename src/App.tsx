@@ -1,7 +1,10 @@
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { CrossBrowserOptimizer } from '@/components/ui/CrossBrowserOptimizer';
+import { AccessibilityEnhancer } from '@/components/ui/AccessibilityEnhancer';
+import { MobileOptimizer } from '@/components/ui/MobileOptimizer';
 import { Suspense, lazy } from "react";
 import { AnimationProvider } from "@/components/animations/AnimationProvider";
 import { PageTransitionWrapper } from "@/components/animations/PageTransitions";
@@ -66,13 +69,16 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <AnimationProvider>
-        <NotificationProvider>
-          <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-800 relative overflow-hidden">
+      <CrossBrowserOptimizer>
+        <AccessibilityEnhancer>
+          <MobileOptimizer>
+            <AnimationProvider>
+              <NotificationProvider>
+                <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-800 relative overflow-hidden">
             <AnimatedBackground />
             <FloatingParticles count={15} />
             <AnimationSettingsButton />
-            <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+            <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
               <PageTransitionWrapper>
                 <Suspense fallback={<PageLoader />}>
                   <Routes>
@@ -119,11 +125,14 @@ const App = () => (
                 </Routes>
               </Suspense>
             </PageTransitionWrapper>
-          </BrowserRouter>
+          </Router>
             <Toaster />
           </div>
         </NotificationProvider>
       </AnimationProvider>
+      </MobileOptimizer>
+      </AccessibilityEnhancer>
+      </CrossBrowserOptimizer>
     </TooltipProvider>
   </QueryClientProvider>
 );
