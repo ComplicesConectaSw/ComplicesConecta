@@ -45,35 +45,36 @@ const mockGalleryPermissions: GalleryPermission[] = [
 ];
 
 export const invitationService = {
-  async sendInvitation(fromProfile: string, toProfile: string, type: 'profile' | 'gallery' | 'chat', message?: string): Promise<Invitation> {
+  async sendInvitation(invitation: { from_profile: string; to_profile: string; type: 'profile' | 'gallery' | 'chat'; message?: string }): Promise<Invitation> {
     try {
       const { data, error } = await supabase
         .from('invitations')
         .insert({
-          from_profile: fromProfile,
-          to_profile: toProfile,
-          message: message || '',
-          type,
+          from_profile: invitation.from_profile,
+          to_profile: invitation.to_profile,
+          message: invitation.message || '',
+          type: invitation.type,
           status: 'pending'
         })
         .select()
         .single();
 
       if (error) {
-        logger.error('❌ Error enviando invitación:', error);
+        logger.error('❌ Error enviando invitación:', { error: error.message || String(error) });
         throw error;
       }
 
+      logger.info('✅ Invitación enviada exitosamente');
       return data as Invitation;
     } catch (error) {
-      logger.error('❌ Error en sendInvitation:', error);
+      logger.error('❌ Error en sendInvitation:', { error: error instanceof Error ? error.message : String(error) });
       // Fallback a mock data
       const mockInvitation: Invitation = {
         id: Date.now().toString(),
-        from_profile: fromProfile,
-        to_profile: toProfile,
-        message: message || '',
-        type,
+        from_profile: invitation.from_profile,
+        to_profile: invitation.to_profile,
+        message: invitation.message || '',
+        type: invitation.type,
         status: 'pending',
         created_at: new Date().toISOString(),
         decided_at: null
@@ -122,11 +123,11 @@ export const invitationService = {
         .eq('id', invitationId);
 
       if (error) {
-        logger.error('❌ Error aceptando invitación:', error);
+        logger.error('❌ Error actualizando invitación:', { error: error.message || String(error) });
         throw error;
       }
     } catch (error) {
-      logger.error('❌ Error en acceptInvitation:', error);
+      logger.error('❌ Error en acceptInvitation:', { error: error instanceof Error ? error.message : String(error) });
       // Fallback a mock data
       const invitation = mockInvitations.find(inv => inv.id === invitationId);
       if (invitation) {
@@ -147,7 +148,7 @@ export const invitationService = {
         .eq('id', invitationId);
 
       if (error) {
-        logger.error('❌ Error rechazando invitación:', error);
+        logger.error('❌ Error actualizando invitación:', { error: error.message || String(error) });
         throw error;
       }
     } catch (error) {
@@ -236,11 +237,11 @@ export const invitationService = {
         .or(`and(owner_profile_id.eq.${owner},grantee_profile_id.eq.${grantee}),and(profile_id.eq.${owner},granted_to.eq.${grantee})`);
       
       if (error) {
-        logger.error('❌ Error revocando acceso a galería:', error);
+        logger.error('❌ Error otorgando permiso de galería:', { error: error instanceof Error ? error.message : String(error) });
         throw error;
       }
     } catch (error) {
-      logger.error('❌ Error en revokeGalleryAccess:', error);
+      logger.error('❌ Error en revokeGalleryAccess:', { error: error instanceof Error ? error.message : String(error) });
       // Fallback a mock data
       const permission = mockGalleryPermissions.find(
         perm => perm.owner_profile === owner && 

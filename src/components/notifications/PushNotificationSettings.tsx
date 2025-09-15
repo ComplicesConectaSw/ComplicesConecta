@@ -33,7 +33,7 @@ export const PushNotificationSettings: React.FC<PushNotificationSettingsProps> =
       logger.info('📨 Notificación recibida:', notification);
     },
     onSubscriptionChange: (sub) => {
-      logger.info('🔄 Suscripción cambió:', sub ? 'Activa' : 'Inactiva');
+      logger.info('🔄 Suscripción cambió:', { status: sub ? 'Activa' : 'Inactiva' });
     }
   });
 

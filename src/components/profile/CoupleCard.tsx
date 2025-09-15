@@ -124,7 +124,7 @@ const CoupleCard = ({ profile, onLike, onMessage, showActions = true, showInvite
             <div className="flex gap-2">
               <Button 
                 onClick={() => {
-                  logger.info('Me gusta', profile.coupleName);
+                  logger.info('Me gusta', { coupleName: profile.coupleName });
                   alert(`¡Has dado like a ${profile.coupleName}!`);
                   if (onLike) onLike();
                 }}
@@ -135,7 +135,7 @@ const CoupleCard = ({ profile, onLike, onMessage, showActions = true, showInvite
               </Button>
               <Button 
                 onClick={() => {
-                  logger.info('Enviando mensaje a', profile.coupleName);
+                  logger.info('Enviando mensaje a', { coupleName: profile.coupleName });
                   alert(`Mensaje enviado a ${profile.coupleName}`);
                   if (onMessage) onMessage();
                 }}

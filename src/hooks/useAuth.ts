@@ -107,25 +107,25 @@ export const useAuth = () => {
         
         logger.info('📋 Contenido detallado del perfil', {
           isArray: Array.isArray(data),
-          id: profileData?.id,
-          firstName: profileData?.first_name,
-          lastName: profileData?.last_name,
+          id: (profileData as any)?.id,
+          firstName: (profileData as any)?.first_name,
+          lastName: (profileData as any)?.last_name,
           displayName: (profileData as any)?.display_name,
           role: (profileData as any)?.role,
           email: (profileData as any)?.email,
           fullData: JSON.stringify(data, null, 2)
         });
         
-        logger.info('✅ Perfil real cargado', { firstName: profileData.first_name });
+        logger.info('✅ Perfil real cargado', { firstName: (profileData as any)?.first_name });
         logger.info('📋 Datos completos del perfil', { profile: profileData });
         profileLoaded.current = true;
         setProfile(profileData);
         
         // PERFIL CARGADO - Redirección automática al perfil para usuarios especiales
-        logger.info('🔍 Perfil cargado', { id: profileData?.id });
+        logger.info('🔍 Perfil cargado', { id: (profileData as any)?.id });
         
         // Redirección automática al perfil después de cargar datos
-        if (profileData?.first_name === 'Apoyo' && window.location.pathname === '/') {
+        if ((profileData as any)?.first_name === 'Apoyo' && window.location.pathname === '/') {
           logger.info('🔄 Redirigiendo usuario Apoyo al perfil...');
           setTimeout(() => {
             window.location.href = '/profile-single';
@@ -313,35 +313,31 @@ export const useAuth = () => {
         }
       }
       
-      // En modo producción, intentar con Supabase para otros usuarios
-      if (config.mode === 'production') {
-        logger.info('🔗 Intentando autenticación real con Supabase', { email });
-        
-        // Limpiar cualquier sesión demo antes de autenticar
-        clearDemoAuth();
-        
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-        
-        if (error) {
-          logger.error('❌ Error de autenticación Supabase', { error: error.message });
-          throw error;
-        }
-        
-        if (data.user) {
-          logger.info('✅ Usuario autenticado con Supabase', { email: data.user.email });
-          setUser(data.user);
-          setSession(data.session);
-          await loadProfile(data.user.id);
-          logger.info('✅ Sesión real iniciada', { email });
-        }
-        
-        return data;
+      // Intentar con Supabase para usuarios reales (siempre en producción)
+      logger.info('🔗 Intentando autenticación real con Supabase', { email });
+      
+      // Limpiar cualquier sesión demo antes de autenticar
+      clearDemoAuth();
+      
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      
+      if (error) {
+        logger.error('❌ Error de autenticación Supabase', { error: error.message });
+        throw error;
       }
       
-      throw new Error('Credenciales no válidas para el modo actual');
+      if (data.user) {
+        logger.info('✅ Usuario autenticado con Supabase', { email: data.user.email });
+        setUser(data.user);
+        setSession(data.session);
+        await loadProfile(data.user.id);
+        logger.info('✅ Sesión real iniciada', { email });
+      }
+      
+      return data;
     } catch (error) {
       logger.error('❌ Error signing in', { error: error instanceof Error ? error.message : String(error) });
       throw error;
@@ -439,18 +435,27 @@ export const useAuth = () => {
       return true;
     }
     
-    // Verificar sesión real
+    // Verificar sesión especial de apoyo
     if (sessionFlags.apoyo_authenticated && user) {
-      logger.info('✅ Authenticated via real Supabase session');
+      logger.info('✅ Authenticated via special apoyo session');
+      return true;
     }
     
-    // Verificar autenticación real
+    // Verificar autenticación real de Supabase
     const realAuth = !!user && !!session;
     if (realAuth) {
       logger.info('✅ Authenticated via real Supabase session');
+      return true;
     }
     
-    return realAuth;
+    logger.info('❌ No authentication found', { 
+      hasUser: !!user, 
+      hasSession: !!session,
+      demoAuth: sessionFlags.demo_authenticated,
+      apoyoAuth: sessionFlags.apoyo_authenticated
+    });
+    
+    return false;
   };
 
   const shouldUseProductionAdmin = () => {
