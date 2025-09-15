@@ -1,7 +1,8 @@
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, Shield, Lock, Eye, Database, AlertTriangle, FileText } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { AnimatedButton } from "@/components/ui/AnimatedButton";
 
 export default function TokensPrivacy() {
   const navigate = useNavigate();
@@ -9,17 +10,17 @@ export default function TokensPrivacy() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900">
       {/* Header */}
-      <div className="sticky top-0 z-50 bg-black/20 backdrop-blur-md border-b border-white/10">
+      <div className="sticky top-0 z-50 bg-gradient-to-r from-purple-900/80 via-pink-900/80 to-red-900/80 backdrop-blur-md border-b border-white/10">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <Button
+            <AnimatedButton
               variant="ghost"
-              onClick={() => navigate(-1)}
-              className="text-white hover:bg-white/10"
+              onClick={() => navigate('/tokens')}
+              className="text-white hover:bg-white/10 btn-accessible"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Regresar
-            </Button>
+              <span className="truncate">Regresar</span>
+            </AnimatedButton>
             
             <h1 className="text-xl font-bold text-white">Política de Privacidad - Tokens</h1>
             

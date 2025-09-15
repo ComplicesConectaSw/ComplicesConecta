@@ -25,23 +25,9 @@ export const DebugInfo: React.FC = () => {
     }
   }, []);
 
+  // Debug info solo en consola para producción
   if (import.meta.env.PROD) {
-    return (
-      <div style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        background: 'rgba(0,0,0,0.9)',
-        color: 'white',
-        padding: '10px',
-        fontSize: '12px',
-        zIndex: 9999,
-        maxWidth: '300px'
-      }}>
-        <h3>🔍 Vercel Debug</h3>
-        <pre>{JSON.stringify(envVars, null, 2)}</pre>
-      </div>
-    );
+    return null;
   }
 
   return null;

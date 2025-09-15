@@ -21,6 +21,10 @@ import { useAuth } from "@/hooks/useAuth";
 import { EmailValidation } from "@/components/auth/EmailValidation";
 import { validateEmail } from "@/utils/emailValidation";
 import { logger } from '@/lib/logger';
+import { motion } from 'framer-motion';
+import { AnimatedButton } from '@/components/ui/AnimatedButton';
+import { AnimatedCard } from '@/components/ui/AnimatedCard';
+import { ResponsiveContainer } from '@/components/ui/ResponsiveContainer';
 
 interface FormData {
   email: string;
@@ -174,17 +178,17 @@ const Auth = () => {
         .replace('@outlok.es', '@outlook.es')
         .replace('@outook.es', '@outlook.es');
 
-      logger.info('🚀 handleSignIn iniciado para:', formData.email);
-      logger.info('📧 Email normalizado:', normalizedEmail);
+      logger.info('🚀 handleSignIn iniciado para:', { email: formData.email });
+      logger.info('📧 Email normalizado:', { email: normalizedEmail });
       
       // Verificar si es credencial demo Y si el modo demo está habilitado
       const appConfig = getAppConfig();
       logger.info('🔧 App config:', appConfig);
-      logger.info('🎭 isDemoCredential:', isDemoCredential(normalizedEmail));
-      logger.info('🎭 demoCredentials habilitado:', appConfig.features.demoCredentials);
+      logger.info('🎭 isDemoCredential:', { isDemoCredential: isDemoCredential(normalizedEmail) });
+      logger.info('🎭 demoCredentials habilitado:', { demoCredentials: appConfig.features.demoCredentials });
       
       if (isDemoCredential(normalizedEmail) && appConfig.features.demoCredentials) {
-        logger.info('🎭 Modo demo activado para:', formData.email);
+        logger.info('🎭 Modo demo activado para:', { email: formData.email });
         
         // Configurar usuario demo completo en localStorage
         const demoUser = {
@@ -288,7 +292,7 @@ const Auth = () => {
         }
         
         if (demoAuthResult) {
-          logger.info('✅ Sesión demo creada correctamente:', demoAuthResult);
+          logger.info('✅ Usuario autenticado correctamente', { email: user?.email });
           
           // Simular tiempo de carga y luego redirigir
           setTimeout(() => {
@@ -316,23 +320,23 @@ const Auth = () => {
 
       // Usar el hook useAuth para autenticación real
       if (!isDemoCredential(normalizedEmail) && getAppConfig().features.realAuth) {
-        logger.info('🔐 Usando useAuth para autenticación real:', formData.email);
-        logger.info('📧 Email normalizado:', normalizedEmail);
+        logger.info('🔐 Iniciando proceso de autenticación', { email: formData.email });
+        logger.info('📧 Email normalizado:', { email: normalizedEmail });
         
         const result = await signIn(formData.email, formData.password, formData.accountType);
         
         logger.info('🔍 Resultado de signIn():', result);
         logger.info('🔍 result?.user:', result?.user);
-        logger.info('🔍 Tipo de result:', typeof result);
-        logger.info('🔍 Email del usuario:', result?.user?.email);
-        logger.info('🔍 ¿Resultado tiene usuario?', !!result?.user);
-        logger.info('🔍 ¿Llegamos al if de redirección?', 'PUNTO DE CONTROL 1');
+        logger.info('👥 Tipo de usuario seleccionado', { type: formData.accountType });
+        logger.info('👤 Email del usuario', { email: user?.email });
+        logger.info('🔍 Verificando datos del usuario', { userType: typeof user });
+        logger.info('🔍 ¿Llegamos al if de redirección?', { checkpoint: 'PUNTO DE CONTROL 1' });
         
         if (result?.user) {
           logger.info('✅ Autenticación exitosa');
           
           const userEmail = result.user.email?.toLowerCase();
-          logger.info('🔍 Email para redirección:', userEmail);
+          logger.info('📧 Enviando código de verificación', { email: userEmail });
           
           // Determinar la ruta de destino
           let targetPath = "/profile-single";
@@ -340,7 +344,7 @@ const Auth = () => {
             targetPath = "/admin-production";
           }
           
-          logger.info('🚀 Navegando a:', targetPath);
+          logger.info('🚀 Navegando a:', { targetPath });
           
           // Usar navigate con replace para evitar bucles
           navigate(targetPath, { replace: true });
@@ -360,7 +364,7 @@ const Auth = () => {
 
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
-      logger.error('❌ Error de autenticación:', error);
+      logger.error('❌ Error en autenticación', { error });
       toast({
         title: "Error al iniciar sesión",
         description: errorMessage || "Credenciales incorrectas. Por favor, intenta de nuevo.",
@@ -415,7 +419,7 @@ const Auth = () => {
       }
 
       // Auto-assign interests based on gender and preferences
-      const autoInterests = getAutoInterests(formData.gender, formData.interestedIn);
+      const autoInterests = getAutoInterests(formData.accountType as 'single' | 'couple');
       const finalInterests = [...new Set([...formData.selectedInterests, ...autoInterests])];
 
       const profileData = {
@@ -444,7 +448,7 @@ const Auth = () => {
         }),
       };
 
-      logger.info('🔗 Intentando registro con Supabase para:', formData.email);
+      logger.info('🔗 Intentando registro con Supabase para:', { email: formData.email });
       logger.info('📋 Datos del perfil:', profileData);
       
       const { data, error } = await supabase.auth.signUp({
@@ -460,7 +464,7 @@ const Auth = () => {
         throw error;
       }
       
-      logger.info('✅ Registro exitoso:', data);
+      logger.info('✅ Código enviado exitosamente', { email: formData.email });
 
       toast({
         title: "¡Registro exitoso!",
@@ -1234,9 +1238,9 @@ const Auth = () => {
       {showLoginLoading && (
         <LoginLoadingScreen
           onComplete={() => setShowLoginLoading(false)}
-          userType={formData.email.includes('pareja') ? 'couple' : 'single'}
-          userName={formData.email.includes('pareja') ? 'Pareja Demo' : 'Usuario Demo'}
-          userProfile={JSON.parse(localStorage.getItem('demo_user') || '{}')}
+          userType={formData.accountType as "single" | "couple"}
+          userName={formData.email.includes("pareja") ? "Pareja Demo" : "Usuario Demo"}
+          userProfile={JSON.parse(localStorage.getItem("demo_user") || "{}")}
         />
       )}
     </div>

@@ -1,13 +1,15 @@
 import { createRoot } from 'react-dom/client'
 import { StrictMode } from 'react'
 import App from '@/App.tsx'
-import '@/index.css'
+import './index.css'
+import './styles/responsive.css'
+import './styles/text-overflow-fixes.css'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import { initSentry } from '@/lib/sentry'
 import { DebugInfo } from '@/debug'
 
 // Debug info for production
-console.log('🚀 App starting...', {
+console.log(' App starting...', {
   env: import.meta.env.MODE,
   supabaseUrl: import.meta.env.VITE_SUPABASE_URL ? 'SET' : 'MISSING',
   supabaseKey: import.meta.env.VITE_SUPABASE_ANON_KEY ? 'SET' : 'MISSING',

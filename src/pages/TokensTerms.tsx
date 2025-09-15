@@ -1,29 +1,38 @@
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, FileText, AlertTriangle, Shield, Coins, Users, Scale } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { AnimatedButton } from "@/components/ui/AnimatedButton";
 
 export default function TokensTerms() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900">
+    <div className="min-h-screen bg-hero-gradient">
       {/* Header */}
-      <div className="sticky top-0 z-50 bg-black/20 backdrop-blur-md border-b border-white/10">
+      <div className="sticky top-0 z-50 bg-gradient-to-r from-purple-900/90 to-pink-900/90 backdrop-blur-md border-b border-white/20">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
+            <AnimatedButton
+              variant="ghost"
+              onClick={() => navigate('/tokens')}
+              className="text-white hover:bg-white/20 flex items-center gap-2 btn-accessible"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              <span className="hidden sm:inline truncate">Regresar a Tokens</span>
+              <span className="sm:hidden">Regresar</span>
+            </AnimatedButton>
+            
+            <h1 className="text-lg sm:text-xl font-bold text-white text-center truncate">Términos y Condiciones - Tokens</h1>
+            
             <Button
               variant="ghost"
-              onClick={() => navigate(-1)}
-              className="text-white hover:bg-white/10"
+              onClick={() => navigate('/')}
+              className="text-white hover:bg-white/20"
             >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Regresar
+              <span className="hidden sm:inline">Inicio</span>
+              <span className="sm:hidden">🏠</span>
             </Button>
-            
-            <h1 className="text-xl font-bold text-white">Términos y Condiciones - Tokens</h1>
-            
-            <div className="w-20"></div>
           </div>
         </div>
       </div>

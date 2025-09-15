@@ -98,28 +98,30 @@ export default function TokensInfo() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900">
+    <div className="min-h-screen bg-hero-gradient">
       {/* Header */}
-      <div className="sticky top-0 z-50 bg-black/20 backdrop-blur-md border-b border-white/10">
+      <div className="sticky top-0 z-50 bg-gradient-to-r from-purple-900/90 to-pink-900/90 backdrop-blur-md border-b border-white/20">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Button
               variant="ghost"
-              onClick={() => navigate(-1)}
-              className="text-white hover:bg-white/10"
+              onClick={() => navigate('/tokens')}
+              className="text-white hover:bg-white/20 flex items-center gap-2"
             >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Regresar
+              <ArrowLeft className="h-4 w-4" />
+              <span className="hidden sm:inline">Regresar a Tokens</span>
+              <span className="sm:hidden">Regresar</span>
             </Button>
             
-            <h1 className="text-xl font-bold text-white">Sistema de Tokens</h1>
+            <h1 className="text-lg sm:text-xl font-bold text-white text-center truncate">Guía de Tokens</h1>
             
             <Button
-              onClick={() => navigate('/auth')}
-              className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700"
+              variant="ghost"
+              onClick={() => navigate('/')}
+              className="text-white hover:bg-white/20"
             >
-              <UserPlus className="h-4 w-4 mr-2" />
-              Registrarse
+              <span className="hidden sm:inline">Inicio</span>
+              <span className="sm:hidden">🏠</span>
             </Button>
           </div>
         </div>
