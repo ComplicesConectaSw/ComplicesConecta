@@ -10,8 +10,14 @@ import { DebugInfo } from '@/debug'
 console.log('🚀 App starting...', {
   env: import.meta.env.MODE,
   supabaseUrl: import.meta.env.VITE_SUPABASE_URL ? 'SET' : 'MISSING',
+  supabaseKey: import.meta.env.VITE_SUPABASE_ANON_KEY ? 'SET' : 'MISSING',
+  appMode: import.meta.env.VITE_APP_MODE,
+  nodeEnv: import.meta.env.NODE_ENV,
   timestamp: new Date().toISOString()
 });
+
+// Force show all environment variables for debugging
+console.log('🔍 All ENV vars:', import.meta.env);
 
 // Inicializar Sentry para monitoreo de errores
 try {
