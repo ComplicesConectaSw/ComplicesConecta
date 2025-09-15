@@ -200,7 +200,7 @@ const CoupleProfileCard = ({
             <div className="flex gap-2">
               <Button 
                 onClick={() => {
-                  logger.info('Me gusta', profile.couple_name);
+                  logger.info('Me gusta', { couple_name: profile.couple_name });
                   if (onLike) onLike();
                 }}
                 className={`flex-1 ${theme.accent} hover:opacity-90 text-white shadow-md transition-all duration-200 hover:shadow-lg`}
@@ -210,7 +210,7 @@ const CoupleProfileCard = ({
               </Button>
               <Button 
                 onClick={() => {
-                  logger.info('Enviando mensaje a', profile.couple_name);
+                  logger.info('Enviando mensaje a', { couple_name: profile.couple_name });
                   if (onMessage) onMessage();
                 }}
                 variant="outline" 

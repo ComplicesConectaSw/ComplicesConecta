@@ -243,12 +243,14 @@ export const PrivateMatches: React.FC = () => {
       if (!user?.id) return;
 
       // Actualizar estado del match en tabla invitations
+      const updatePayload = { 
+        status: action === 'accept' ? 'accepted' : 'declined',
+        decided_at: new Date().toISOString()
+      };
+      
       const { error } = await (supabase
         .from('invitations')
-        .update({ 
-          status: action === 'accept' ? 'accepted' : 'declined',
-          decided_at: new Date().toISOString()
-        })
+        .update(updatePayload)
         .eq('id', matchId)
         .eq('from_profile', user.id) as any);
 

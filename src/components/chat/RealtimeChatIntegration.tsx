@@ -221,7 +221,7 @@ export const RealtimeChatIntegration = ({
       */
 
     } catch (error) {
-      logger.error('Error sending message:', { error: error instanceof Error ? error.message : String(error) });
+      logger.error('Error in subscription:', { error: error instanceof Error ? error.message : String(error) });
       // Restaurar mensaje en caso de error
       setNewMessage(messageContent);
     } finally {
