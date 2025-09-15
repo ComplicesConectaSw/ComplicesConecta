@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { MapPin, MessageCircle, Heart, Star, Users, Calendar } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useProfileTheme, Gender, ProfileType, Theme } from '@/hooks/useProfileTheme';
 
 interface ProfileCardProps {
   id: string;
@@ -17,7 +18,7 @@ interface ProfileCardProps {
   images?: string[];
   isOnline?: boolean;
   verified?: boolean;
-  accountType?: 'single' | 'couple';
+  accountType?: ProfileType;
   interests?: string[];
   distance?: number;
   compatibility?: number;
@@ -26,6 +27,11 @@ interface ProfileCardProps {
   onView?: () => void;
   className?: string;
   variant?: 'compact' | 'detailed' | 'minimal';
+  // Nuevas props para personalización visual
+  gender?: Gender;
+  partnerGender?: Gender;
+  theme?: Theme;
+  useThemeBackground?: boolean;
 }
 
 export const ProfileCard: React.FC<ProfileCardProps> = ({
@@ -46,8 +52,19 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
   onLike,
   onView,
   className,
-  variant = 'detailed'
+  variant = 'detailed',
+  gender = 'male',
+  partnerGender,
+  theme,
+  useThemeBackground = false
 }) => {
+  // Configurar géneros para el hook de tema
+  const genders: Gender[] = accountType === 'couple' && partnerGender 
+    ? [gender, partnerGender] 
+    : [gender];
+  
+  // Obtener configuración de tema
+  const themeConfig = useProfileTheme(accountType, genders, theme);
   const cardVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 },
@@ -78,12 +95,23 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
         className={cn("cursor-pointer", className)}
         onClick={onView}
       >
-        <UnifiedCard glass hover className="p-4">
+        <UnifiedCard 
+          glass 
+          hover 
+          className={cn(
+            "p-4",
+            useThemeBackground && themeConfig.backgroundClass
+          )}
+        >
           <div className="flex items-center gap-3">
             <div className="relative">
               <Avatar className="w-12 h-12">
                 <AvatarImage src={avatar} alt={name} />
-                <AvatarFallback className="bg-gradient-to-br from-pink-500 to-purple-600 text-white">
+                <AvatarFallback className={cn(
+                  useThemeBackground 
+                    ? `${themeConfig.backgroundClass} ${themeConfig.textClass}` 
+                    : "bg-gradient-to-br from-pink-500 to-purple-600 text-white"
+                )}>
                   {name.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
@@ -94,13 +122,19 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
             
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
-                <h3 className="font-semibold text-gray-900 truncate">
+                <h3 className={cn(
+                  "font-semibold truncate",
+                  useThemeBackground ? themeConfig.textClass : "text-gray-900"
+                )}>
                   {name} {age && `, ${age}`}
                 </h3>
                 {verified && <Star className="h-4 w-4 text-yellow-500 fill-current" />}
               </div>
               {location && (
-                <p className="text-sm text-gray-500 flex items-center gap-1">
+                <p className={cn(
+                  "text-sm flex items-center gap-1",
+                  useThemeBackground ? themeConfig.accentClass : "text-gray-500"
+                )}>
                   <MapPin className="h-3 w-3" />
                   {location}
                 </p>
@@ -126,7 +160,14 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
         className={cn("cursor-pointer", className)}
         onClick={onView}
       >
-        <UnifiedCard glass hover className="overflow-hidden">
+        <UnifiedCard 
+          glass 
+          hover 
+          className={cn(
+            "overflow-hidden",
+            useThemeBackground && themeConfig.backgroundClass
+          )}
+        >
           <div className="relative h-48">
             <img
               src={avatar || images[0] || '/placeholder.svg'}
@@ -209,7 +250,14 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
       className={cn("cursor-pointer", className)}
       onClick={onView}
     >
-      <UnifiedCard glass hover className="overflow-hidden">
+      <UnifiedCard 
+        glass 
+        hover 
+        className={cn(
+          "overflow-hidden",
+          useThemeBackground && themeConfig.backgroundClass
+        )}
+      >
         {/* Header with image */}
         <div className="relative h-64">
           <img

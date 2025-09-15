@@ -25,6 +25,9 @@ import { motion } from 'framer-motion';
 import { AnimatedButton } from '@/components/ui/AnimatedButton';
 import { AnimatedCard } from '@/components/ui/AnimatedCard';
 import { ResponsiveContainer } from '@/components/ui/ResponsiveContainer';
+import { ThemeInfoModal } from '@/components/auth/ThemeInfoModal';
+import { TermsModal } from '@/components/auth/TermsModal';
+import { Gender } from '@/hooks/useProfileTheme';
 
 interface FormData {
   email: string;
@@ -33,6 +36,7 @@ interface FormData {
   lastName: string;
   nickname: string;
   age: string;
+  birthDate: string;
   gender: string;
   interestedIn: string;
   bio: string;
@@ -42,6 +46,7 @@ interface FormData {
   partnerLastName: string;
   partnerNickname: string;
   partnerAge: string;
+  partnerBirthDate: string;
   partnerGender: string;
   partnerInterestedIn: string;
   partnerBio: string;
@@ -62,6 +67,8 @@ const Auth = () => {
   const [resetEmail, setResetEmail] = useState("");
   const [showLoginLoading, setShowLoginLoading] = useState(false);
   const [autoLocationRequested, setAutoLocationRequested] = useState(false);
+  const [showThemeModal, setShowThemeModal] = useState(false);
+  const [showTermsModal, setShowTermsModal] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     email: '',
     password: '',
@@ -69,6 +76,7 @@ const Auth = () => {
     lastName: '',
     nickname: '',
     age: '',
+    birthDate: '',
     gender: '',
     interestedIn: '',
     bio: '',
@@ -78,6 +86,7 @@ const Auth = () => {
     partnerLastName: '',
     partnerNickname: '',
     partnerAge: '',
+    partnerBirthDate: '',
     partnerGender: '',
     partnerInterestedIn: '',
     partnerBio: '',
@@ -92,6 +101,50 @@ const Auth = () => {
       ...prev,
       [field]: value
     }));
+  };
+
+  // Función para calcular edad desde fecha de nacimiento
+  const calculateAge = (birthDate: string): number => {
+    const today = new Date();
+    const birth = new Date(birthDate);
+    let age = today.getFullYear() - birth.getFullYear();
+    const monthDiff = today.getMonth() - birth.getMonth();
+    
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+      age--;
+    }
+    
+    return age;
+  };
+
+  // Función para validar edad mínima +18
+  const validateAge = (birthDate: string): boolean => {
+    if (!birthDate) return false;
+    const age = calculateAge(birthDate);
+    return age >= 18;
+  };
+
+  // Manejar cambio de fecha de nacimiento y calcular edad automáticamente
+  const handleBirthDateChange = (field: string, birthDate: string) => {
+    const age = birthDate ? calculateAge(birthDate).toString() : '';
+    setFormData(prev => ({
+      ...prev,
+      [field]: birthDate,
+      [field.replace('birthDate', 'age')]: age
+    }));
+  };
+
+  // Manejar aceptación de términos
+  const handleTermsAcceptance = (accepted: boolean) => {
+    setFormData(prev => ({
+      ...prev,
+      acceptTerms: accepted
+    }));
+  };
+
+  // Manejar cierre del modal de términos
+  const handleTermsModalClose = () => {
+    setShowTermsModal(false);
   };
 
   const handleInterestToggle = (interest: string) => {
@@ -380,6 +433,40 @@ const Auth = () => {
     setIsLoading(true);
 
     try {
+      // Validar aceptación de términos
+      if (!formData.acceptTerms) {
+        toast({
+          title: "Términos y Condiciones",
+          description: "Debes aceptar los términos y condiciones para continuar",
+          variant: "destructive",
+        });
+        setShowTermsModal(true);
+        setIsLoading(false);
+        return;
+      }
+
+      // Validar edad mínima +18 para usuario principal
+      if (!formData.birthDate || !validateAge(formData.birthDate)) {
+        toast({
+          title: "Edad Mínima Requerida",
+          description: "Debes ser mayor de 18 años para registrarte en esta plataforma",
+          variant: "destructive",
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      // Validar edad mínima +18 para pareja (si aplica)
+      if (formData.accountType === 'couple' && formData.partnerBirthDate && !validateAge(formData.partnerBirthDate)) {
+        toast({
+          title: "Edad Mínima Requerida",
+          description: "Ambos miembros de la pareja deben ser mayores de 18 años",
+          variant: "destructive",
+        });
+        setIsLoading(false);
+        return;
+      }
+
       // Verificar email único antes del registro
       const { data: existingProfile, error: checkError } = await supabase
         .from('profiles')
@@ -392,7 +479,7 @@ const Auth = () => {
         logger.error('Error verificando email:', checkError);
         toast({
           title: "Error",
-          description: "Debes aceptar los términos y condiciones",
+          description: "Error al verificar el email. Intenta de nuevo.",
           variant: "destructive",
         });
         return;
@@ -466,36 +553,15 @@ const Auth = () => {
       
       logger.info('✅ Código enviado exitosamente', { email: formData.email });
 
+      // Mostrar modal de temas antes de completar
+      setShowThemeModal(true);
+
       toast({
         title: "¡Registro exitoso!",
-        description: "Revisa tu correo para confirmar tu cuenta",
+        description: "Revisa tu correo para confirmar tu cuenta. Descubre cómo se verá tu perfil.",
       });
 
-      // Limpiar formulario
-      setFormData({
-        email: '',
-        password: '',
-        firstName: '',
-        lastName: '',
-        nickname: '',
-        age: '',
-        gender: '',
-        interestedIn: '',
-        bio: '',
-        role: '',
-        accountType: 'single',
-        partnerFirstName: '',
-        partnerLastName: '',
-        partnerNickname: '',
-        partnerAge: '',
-        partnerGender: '',
-        partnerInterestedIn: '',
-        partnerBio: '',
-        location: '',
-        acceptTerms: false,
-        shareLocation: false,
-        selectedInterests: [],
-      });
+      // El formulario se limpiará cuando se cierre el modal
 
     } catch (error: any) {
       let errorMessage = "Error desconocido al crear la cuenta";
@@ -520,6 +586,37 @@ const Auth = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleThemeModalClose = () => {
+    setShowThemeModal(false);
+    // Limpiar formulario después de mostrar el modal
+    setFormData({
+      email: '',
+      password: '',
+      firstName: '',
+      lastName: '',
+      nickname: '',
+      age: '',
+      birthDate: '',
+      gender: '',
+      interestedIn: '',
+      bio: '',
+      role: 'user',
+      accountType: 'single',
+      partnerFirstName: '',
+      partnerLastName: '',
+      partnerNickname: '',
+      partnerAge: '',
+      partnerBirthDate: '',
+      partnerGender: '',
+      partnerInterestedIn: '',
+      partnerBio: '',
+      location: '',
+      acceptTerms: false,
+      shareLocation: false,
+      selectedInterests: []
+    });
   };
 
   return (
@@ -781,16 +878,21 @@ const Auth = () => {
                     </div>
                     <div className="grid grid-cols-2 gap-2">
                       <div className="space-y-2">
-                        <Label htmlFor="age">Edad</Label>
+                        <Label htmlFor="birthDate">Fecha de Nacimiento</Label>
                         <Input
-                          id="age"
-                          type="number"
-                          min="18"
-                          max="99"
-                          value={formData.age}
-                          onChange={(e) => handleInputChange("age", e.target.value)}
+                          id="birthDate"
+                          type="date"
+                          value={formData.birthDate}
+                          onChange={(e) => handleBirthDateChange("birthDate", e.target.value)}
+                          max={new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toISOString().split('T')[0]}
                           required
                         />
+                        {formData.birthDate && !validateAge(formData.birthDate) && (
+                          <p className="text-sm text-red-500">Debes ser mayor de 18 años</p>
+                        )}
+                        {formData.age && (
+                          <p className="text-sm text-gray-500">Edad: {formData.age} años</p>
+                        )}
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="gender">Género</Label>
@@ -845,16 +947,21 @@ const Auth = () => {
                       </div>
                       <div className="grid grid-cols-2 gap-2">
                         <div className="space-y-2">
-                          <Label htmlFor="age">Edad</Label>
+                          <Label htmlFor="birthDate">Fecha de Nacimiento</Label>
                           <Input
-                            id="age"
-                            type="number"
-                            min="18"
-                            max="99"
-                            value={formData.age}
-                            onChange={(e) => handleInputChange("age", e.target.value)}
+                            id="birthDate"
+                            type="date"
+                            value={formData.birthDate}
+                            onChange={(e) => handleBirthDateChange("birthDate", e.target.value)}
+                            max={new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toISOString().split('T')[0]}
                             required
                           />
+                          {formData.birthDate && !validateAge(formData.birthDate) && (
+                            <p className="text-sm text-red-500">Debes ser mayor de 18 años</p>
+                          )}
+                          {formData.age && (
+                            <p className="text-sm text-gray-500">Edad: {formData.age} años</p>
+                          )}
                         </div>
                         <div className="space-y-2">
                           <Label htmlFor="gender">Género</Label>
@@ -907,16 +1014,21 @@ const Auth = () => {
                       </div>
                       <div className="grid grid-cols-2 gap-2">
                         <div className="space-y-2">
-                          <Label htmlFor="partnerAge">Edad</Label>
+                          <Label htmlFor="partnerBirthDate">Fecha de Nacimiento</Label>
                           <Input
-                            id="partnerAge"
-                            type="number"
-                            min="18"
-                            max="99"
-                            value={formData.partnerAge}
-                            onChange={(e) => handleInputChange("partnerAge", e.target.value)}
+                            id="partnerBirthDate"
+                            type="date"
+                            value={formData.partnerBirthDate}
+                            onChange={(e) => handleBirthDateChange("partnerBirthDate", e.target.value)}
+                            max={new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toISOString().split('T')[0]}
                             required
                           />
+                          {formData.partnerBirthDate && !validateAge(formData.partnerBirthDate) && (
+                            <p className="text-sm text-red-500">Debe ser mayor de 18 años</p>
+                          )}
+                          {formData.partnerAge && (
+                            <p className="text-sm text-gray-500">Edad: {formData.partnerAge} años</p>
+                          )}
                         </div>
                         <div className="space-y-2">
                           <Label htmlFor="partnerGender">Género</Label>
@@ -1218,8 +1330,54 @@ const Auth = () => {
                     </Label>
                   </div>
                 </div>
+
+                {/* Términos y Condiciones */}
+                <div className="space-y-3 p-4 bg-red-900/20 rounded-lg border border-red-400">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-semibold text-red-300">Términos y Condiciones</h3>
+                    <span className="text-xs text-red-400">+18 Requerido</span>
+                  </div>
+                  
+                  <div className="flex items-start space-x-3">
+                    <Checkbox
+                      id="acceptTerms"
+                      checked={formData.acceptTerms}
+                      onCheckedChange={(checked) => handleTermsAcceptance(checked as boolean)}
+                      className="mt-1 data-[state=checked]:bg-red-500 data-[state=checked]:border-red-500"
+                    />
+                    <div className="flex-1">
+                      <Label htmlFor="acceptTerms" className="text-sm text-white cursor-pointer">
+                        Acepto los términos y condiciones, políticas de privacidad y confirmo que soy mayor de 18 años
+                      </Label>
+                      <Button
+                        type="button"
+                        variant="link"
+                        size="sm"
+                        onClick={() => setShowTermsModal(true)}
+                        className="p-0 h-auto text-red-300 hover:text-red-200 underline text-xs"
+                      >
+                        Ver resumen de términos y condiciones
+                      </Button>
+                    </div>
+                  </div>
+
+                  {!formData.acceptTerms && (
+                    <p className="text-xs text-red-400">
+                      ⚠️ Debes aceptar los términos y condiciones para continuar
+                    </p>
+                  )}
+                </div>
                 
-                <Button type="submit" className="w-full" disabled={isLoading}>
+                <Button 
+                  type="submit" 
+                  className="w-full" 
+                  disabled={
+                    isLoading || 
+                    !formData.acceptTerms || 
+                    (!!formData.birthDate && !validateAge(formData.birthDate)) || 
+                    (formData.accountType === 'couple' && !!formData.partnerBirthDate && !validateAge(formData.partnerBirthDate))
+                  }
+                >
                   {isLoading ? "Creando cuenta..." : "Crear Cuenta"}
                 </Button>
               </form>
@@ -1243,6 +1401,23 @@ const Auth = () => {
           userProfile={JSON.parse(localStorage.getItem("demo_user") || "{}")}
         />
       )}
+
+      {/* Terms Modal */}
+      <TermsModal
+        isOpen={showTermsModal}
+        onClose={handleTermsModalClose}
+        onAccept={handleTermsAcceptance}
+        accepted={formData.acceptTerms}
+      />
+
+      {/* Theme Info Modal */}
+      <ThemeInfoModal
+        isOpen={showThemeModal}
+        onClose={handleThemeModalClose}
+        userType={formData.accountType as "single" | "couple"}
+        gender={formData.gender as Gender}
+        partnerGender={formData.partnerGender as Gender | undefined}
+      />
     </div>
   );
 };

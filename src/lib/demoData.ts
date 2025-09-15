@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { pickProfileImage, inferProfileKind, resetImageCounters, type ProfileType, type Gender } from '@/lib/media';
+import { Theme } from '@/hooks/useProfileTheme';
 
 export interface DemoProfile {
   id: string;
@@ -18,6 +19,8 @@ export interface DemoProfile {
   matchScore: number;
   profileType: ProfileType;
   gender?: Gender;
+  partnerGender?: Gender;
+  theme?: Theme;
   isDemo: true;
 }
 
@@ -57,6 +60,7 @@ export const generateDemoProfiles = (count: number = 20): DemoProfile[] => {
 
   resetImageCounters();
   const usedImages = new Set<string>();
+  const themes: (Theme | undefined)[] = ['elegant', 'modern', 'vibrant', undefined];
 
   return Array.from({ length: count }, (_, index) => {
     const name = nombres[Math.floor(Math.random() * nombres.length)];
@@ -64,6 +68,16 @@ export const generateDemoProfiles = (count: number = 20): DemoProfile[] => {
     const profileType: ProfileType = profileKind.kind === 'couple' ? 'couple' : 'single';
     const gender: Gender = profileKind.gender;
     const id = uuidv4();
+    
+    // Para parejas, generar género del compañero
+    let partnerGender: Gender | undefined;
+    if (profileType === 'couple') {
+      const genderOptions: Gender[] = ['male', 'female'];
+      partnerGender = genderOptions[Math.floor(Math.random() * genderOptions.length)];
+    }
+    
+    // Asignar tema aleatorio (30% probabilidad de tener tema personalizado)
+    const theme = Math.random() > 0.7 ? themes[Math.floor(Math.random() * themes.length)] : undefined;
     
     return {
       id,
@@ -84,6 +98,8 @@ export const generateDemoProfiles = (count: number = 20): DemoProfile[] => {
       matchScore: Math.floor(Math.random() * 40) + 60,
       profileType,
       gender,
+      partnerGender,
+      theme,
       isDemo: true as const
     };
   });
