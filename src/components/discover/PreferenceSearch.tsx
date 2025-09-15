@@ -196,7 +196,7 @@ export const PreferenceSearch = ({ onResultsChange, currentUserId }: PreferenceS
       setResultsCount(enrichedResults.length);
       onResultsChange(enrichedResults);
     } catch (error) {
-      logger.error('Error searching profiles:', error);
+      logger.error('Error searching profiles:', { error: error instanceof Error ? error.message : String(error) });
     } finally {
       setIsSearching(false);
     }

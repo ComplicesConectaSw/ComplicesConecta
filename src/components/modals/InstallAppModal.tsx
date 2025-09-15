@@ -171,7 +171,7 @@ export const InstallAppModal = ({ isOpen, onClose }: InstallAppModalProps) => {
                       document.body.removeChild(link);
                     }
                   } catch (error) {
-                    logger.error('Error al descargar APK:', error);
+                    logger.error('Error al descargar APK:', { error: error instanceof Error ? error.message : String(error) });
                     // Fallback: abrir en nueva ventana
                     window.open('https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v2.4.0/app-release.apk', '_blank');
                   }

@@ -48,10 +48,10 @@ export const RealtimeChatWindow: React.FC<RealtimeChatWindowProps> = ({
       // Aquí podrías agregar notificaciones, sonidos, etc.
     },
     onUserJoined: (userId) => {
-      logger.info('👋 Usuario se unió al chat:', userId);
+      logger.info('👋 Usuario se unió al chat:', { userId });
     },
     onUserLeft: (userId) => {
-      logger.info('👋 Usuario salió del chat:', userId);
+      logger.info('👋 Usuario salió del chat:', { userId });
     }
   });
 
@@ -67,14 +67,14 @@ export const RealtimeChatWindow: React.FC<RealtimeChatWindowProps> = ({
     if (!newMessage.trim() || !user?.id) return;
 
     try {
-      await sendMessage(newMessage, chatRoomId);
+      await sendMessage(newMessage, 'text');
       setNewMessage('');
       setIsTypingInput(false);
       
       // Focus en input después de enviar
       setTimeout(() => inputRef.current?.focus(), 100);
     } catch (error) {
-      logger.error('❌ Error enviando mensaje:', error);
+      logger.error('❌ Error enviando mensaje:', { error: error instanceof Error ? error.message : String(error) });
     }
   };
 

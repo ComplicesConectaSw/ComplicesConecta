@@ -2,10 +2,10 @@ import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Heart, Flame, CheckCircle, Crown, Star, MapPin, MessageCircle, User } from 'lucide-react';
-import type { Database } from '@/integrations/supabase/types';
+import type { Tables } from '@/integrations/supabase/types';
 
 // Tipos estrictos basados en Supabase
-type ProfileRow = Database['public']['Tables']['profiles']['Row'];
+type ProfileRow = Tables<'profiles'>;
 
 // Constantes
 const FALLBACK_IMAGE_URL = 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=600&fit=crop&crop=face';

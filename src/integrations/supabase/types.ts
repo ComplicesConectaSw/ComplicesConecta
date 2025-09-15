@@ -23,6 +23,8 @@ export interface Database {
           is_verified: boolean | null
           is_premium: boolean | null
           role: string | null
+          latitude: number | null
+          longitude: number | null
           created_at: string
           updated_at: string
         }
@@ -39,6 +41,8 @@ export interface Database {
           is_verified?: boolean | null
           is_premium?: boolean | null
           role?: string | null
+          latitude?: number | null
+          longitude?: number | null
           created_at?: string
           updated_at?: string
         }
@@ -55,6 +59,8 @@ export interface Database {
           is_verified?: boolean | null
           is_premium?: boolean | null
           role?: string | null
+          latitude?: number | null
+          longitude?: number | null
           created_at?: string
           updated_at?: string
         }
