@@ -35,7 +35,7 @@ export const useProfileQuery = () => {
     mutationFn: async (updates: Partial<Profile>) => {
       if (!user?.id) throw new Error('No user authenticated');
 
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('profiles')
         .update(updates)
         .eq('id', user.id)

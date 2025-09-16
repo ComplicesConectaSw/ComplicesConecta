@@ -48,17 +48,17 @@ export const useCouplePhotos = (profileId?: string): UseCouplePhotosReturn => {
       if (fetchError) throw fetchError;
 
       const photosWithUrls = data?.map(photo => ({
-        id: photo.id,
-        url: photo.photo_url,
-        partner: (photo.partner_type === 'el' || photo.partner_type === 'ella') ? photo.partner_type : 'el' as 'el' | 'ella',
-        isMain: photo.is_main || false,
-        profileId: photo.profile_id,
-        uploadedAt: new Date(photo.created_at)
+        id: (photo as any).id,
+        url: (photo as any).photo_url,
+        partner: ((photo as any).partner_type === 'el' || (photo as any).partner_type === 'ella') ? (photo as any).partner_type : 'el' as 'el' | 'ella',
+        isMain: (photo as any).is_main || false,
+        profileId: (photo as any).profile_id,
+        uploadedAt: new Date((photo as any).created_at)
       })) || [];
 
       setPhotos(photosWithUrls);
     } catch (err) {
-      logger.error('Error loading couple photos:', err);
+      logger.error('Error loading couple photos:', { error: err instanceof Error ? err.message : String(err) });
       setError('Error al cargar las fotos');
     } finally {
       setLoading(false);
@@ -97,7 +97,7 @@ export const useCouplePhotos = (profileId?: string): UseCouplePhotosReturn => {
 
       // Si es la primera foto, hacer que las otras no sean principales
       if (isFirstPhoto) {
-        await supabase
+        await (supabase as any)
           .from('couple_photos')
           .update({ is_main: false })
           .eq('profile_id', currentProfileId)
@@ -105,7 +105,7 @@ export const useCouplePhotos = (profileId?: string): UseCouplePhotosReturn => {
       }
 
       // Guardar información en la base de datos
-      const { data: photoData, error: dbError } = await supabase
+      const { data: newPhoto, error: insertError } = await (supabase as any)
         .from('couple_photos')
         .insert({
           profile_id: currentProfileId,
@@ -117,22 +117,22 @@ export const useCouplePhotos = (profileId?: string): UseCouplePhotosReturn => {
         .select()
         .single();
 
-      if (dbError) throw dbError;
+      if (insertError) throw insertError;
 
       // Actualizar estado local
-      const newPhoto: CouplePhoto = {
-        id: photoData.id,
+      const newPhotoData: CouplePhoto = {
+        id: (newPhoto as any).id,
         url: publicUrl,
         partner,
         isMain: isFirstPhoto,
-        uploadedAt: new Date(photoData.created_at),
+        uploadedAt: new Date((newPhoto as any).created_at),
         profileId: currentProfileId
       };
 
-      setPhotos(prev => [newPhoto, ...prev]);
+      setPhotos(prev => [newPhotoData, ...prev]);
 
     } catch (err) {
-      logger.error('Error uploading photo:', err);
+      logger.error('Error uploading photo:', { error: err instanceof Error ? err.message : String(err) });
       throw new Error('Error al subir la foto');
     }
   };
@@ -143,41 +143,46 @@ export const useCouplePhotos = (profileId?: string): UseCouplePhotosReturn => {
       setError(null);
 
       // Obtener información de la foto
+      const photoToDelete = photos.find(p => p.id === photoId);
+      if (!photoToDelete) throw new Error('Foto no encontrada');
+
+      // Obtener información de la foto desde la base de datos
       const { data: photoData, error: fetchError } = await supabase
         .from('couple_photos')
-        .select('storage_path, partner_type, is_main')
+        .select('storage_path, is_main, partner_type')
         .eq('id', photoId)
         .single();
 
       if (fetchError) throw fetchError;
 
-      // Eliminar archivo del storage
-      if (photoData.storage_path) {
-        const { error: storageError } = await supabase.storage
-          .from('profile-images')
-          .remove([photoData.storage_path]);
+      // Eliminar archivo de storage
+      const { error: storageError } = await supabase.storage
+        .from('couple-photos')
+        .remove([(photoData as any).storage_path]);
 
-        if (storageError) {
-          logger.warn('Error deleting file from storage:', storageError);
-        }
+      if (storageError) {
+        logger.warn('Error deleting from storage:', storageError);
       }
 
-      // Eliminar registro de la base de datos
-      const { error: deleteError } = await supabase
+      // Eliminar de la base de datos
+      const { error: dbError } = await supabase
         .from('couple_photos')
         .delete()
         .eq('id', photoId);
 
-      if (deleteError) throw deleteError;
+      if (dbError) throw dbError;
 
-      // Si era la foto principal, hacer principal a la siguiente
-      if (photoData.is_main) {
+      // Si era la foto principal y hay más fotos del mismo partner, hacer principal la siguiente
+      if ((photoData as any).is_main) {
         const remainingPhotos = photos.filter(p => 
-          p.id !== photoId && p.partner === photoData.partner_type
+          p.id !== photoId && p.partner === (photoData as any).partner_type
         );
         
         if (remainingPhotos.length > 0) {
-          await setMainPhoto(remainingPhotos[0].id, photoData.partner_type as 'el' | 'ella');
+          await supabase
+            .from('couple_photos')
+            .update({ is_main: true })
+            .eq('id', remainingPhotos[0].id);
         }
       }
 
@@ -185,7 +190,7 @@ export const useCouplePhotos = (profileId?: string): UseCouplePhotosReturn => {
       setPhotos(prev => prev.filter(p => p.id !== photoId));
 
     } catch (err) {
-      logger.error('Error deleting photo:', err);
+      logger.error('Error deleting photo:', { error: err instanceof Error ? err.message : String(err) });
       throw new Error('Error al eliminar la foto');
     }
   };
@@ -195,15 +200,17 @@ export const useCouplePhotos = (profileId?: string): UseCouplePhotosReturn => {
     try {
       setError(null);
 
-      // Quitar principal de todas las fotos de este partner
-      await supabase
+      // Quitar principal de todas las fotos
+      const { error: updateError } = await (supabase as any)
         .from('couple_photos')
         .update({ is_main: false })
-        .eq('profile_id', currentProfileId!)
+        .eq('profile_id', currentProfileId)
         .eq('partner_type', partner);
 
+      if (updateError) throw updateError;
+
       // Establecer la nueva foto principal
-      const { error: updateError } = await supabase
+      const { error: updateError2 } = await (supabase as any)
         .from('couple_photos')
         .update({ is_main: true })
         .eq('id', photoId);
@@ -217,7 +224,7 @@ export const useCouplePhotos = (profileId?: string): UseCouplePhotosReturn => {
       })));
 
     } catch (err) {
-      logger.error('Error setting main photo:', err);
+      logger.error('Error setting main photo:', { error: err instanceof Error ? err.message : String(err) });
       throw new Error('Error al establecer foto principal');
     }
   };

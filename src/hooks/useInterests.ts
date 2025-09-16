@@ -41,7 +41,7 @@ export const useInterests = () => {
       if (error) throw error;
       setInterests(data || []);
     } catch (error) {
-      logger.error('❌ Error loading interests:', error);
+      logger.error('❌ Error loading interests:', { error: error instanceof Error ? error.message : String(error) });
       toast({
         title: "Error",
         description: "No se pudieron cargar los intereses",
@@ -68,7 +68,7 @@ export const useInterests = () => {
       if (error) throw error;
       setUserInterests(data || []);
     } catch (error) {
-      logger.error('❌ Error loading user interests:', error);
+      logger.error('❌ Error updating user interests:', { error: error instanceof Error ? error.message : String(error) });
       setError('Error cargando intereses del usuario');
     }
   }, [user?.id]);
@@ -95,7 +95,7 @@ export const useInterests = () => {
       // Recargar intereses del usuario
       await loadUserInterests();
     } catch (error) {
-      logger.error('❌ Error adding interest:', error);
+      logger.error('❌ Error adding user interest:', { error: error instanceof Error ? error.message : String(error) });
       toast({
         title: "Error",
         description: "No se pudo añadir el interés",
@@ -125,7 +125,7 @@ export const useInterests = () => {
       // Recargar intereses del usuario
       await loadUserInterests();
     } catch (error) {
-      logger.error('❌ Error removing interest:', error);
+      logger.error('❌ Error removing user interest:', { error: error instanceof Error ? error.message : String(error) });
       toast({
         title: "Error",
         description: "No se pudo remover el interés",
@@ -180,15 +180,15 @@ export const useInterests = () => {
 
       // Luego, agregar los nuevos intereses
       if (profileInterests.length > 0) {
-        const userInterestsData = profileInterests.map(interestName => ({
+        const interestInserts = profileInterests.map(interestName => ({
           user_id: user.id,
           interest_id: interests.find(i => i.name === interestName)?.id
         })).filter(item => item.interest_id); // Solo incluir intereses válidos
 
-        if (userInterestsData.length > 0) {
-          const { error } = await supabase
+        if (interestInserts.length > 0) {
+          const { error } = await (supabase as any)
             .from('user_interests')
-            .insert(userInterestsData);
+            .insert(interestInserts);
 
           if (error) throw error;
         }
@@ -196,7 +196,7 @@ export const useInterests = () => {
 
       await loadUserInterests();
     } catch (err) {
-      logger.error('Error syncing profile interests:', err);
+      logger.error('Error syncing profile interests:', { error: err instanceof Error ? err.message : String(err) });
     }
   }, [user?.id, interests, loadUserInterests]);
 

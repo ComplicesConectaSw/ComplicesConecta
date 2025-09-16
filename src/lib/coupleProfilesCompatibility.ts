@@ -32,7 +32,7 @@ export const coupleProfileCompatibility: CoupleProfileCompatibility = {
       logger.info('🔄 Verificación de perfil de pareja - usando fallback temporal');
       return false;
     } catch (error) {
-      logger.error('❌ Error en isCoupleProfile:', error);
+      logger.error('❌ Error en isCoupleProfile:', { error: error instanceof Error ? error.message : String(error) });
       return false;
     }
   },
@@ -51,7 +51,7 @@ export const coupleProfileCompatibility: CoupleProfileCompatibility = {
       logger.info('🔄 Perfil de pareja detectado, usando fallback temporal');
       return [profileId];
     } catch (error) {
-      logger.error('❌ Error en getRelatedProfileIds:', error);
+      logger.error('❌ Error en getRelatedProfileIds:', { error: error instanceof Error ? error.message : String(error) });
       return [profileId]; // Fallback al perfil original
     }
   },
@@ -81,7 +81,7 @@ export const coupleProfileCompatibility: CoupleProfileCompatibility = {
       
       return false;
     } catch (error) {
-      logger.error('❌ Error en hasPermissionAsCouple:', error);
+      logger.error('❌ Error en hasPermissionAsCouple:', { error: error instanceof Error ? error.message : String(error) });
       return false;
     }
   },
@@ -100,7 +100,7 @@ export const coupleProfileCompatibility: CoupleProfileCompatibility = {
       
       logger.info(`✅ Invitación enviada: ${actualFromId} → ${actualToId} (${type})`);
     } catch (error) {
-      logger.error('❌ Error en sendInvitationAsCouple:', error);
+      logger.error('❌ Error en sendInvitationAsCouple:', { error: error instanceof Error ? error.message : String(error) });
       throw error;
     }
   }
@@ -140,7 +140,7 @@ export const migrateToCoupleFriendly = {
       // Por ahora, solo registramos que la migración está disponible
       logger.info('✅ Sistema preparado para perfiles de pareja');
     } catch (error) {
-      logger.error('❌ Error en migración:', error);
+      logger.error('❌ Error en migración:', { error: error instanceof Error ? error.message : String(error) });
     }
   }
 };
