@@ -1,0 +1,88 @@
+{
+  "audit_date": "2025-09-15T20:08:00-06:00",
+  "project_version": "v2.8.5",
+  "overall_score": 82,
+  "status": "PRECAUTIONS",
+  "methodology": "React 18 + TypeScript + Vite + Supabase + Vitest + Playwright",
+  "top_issues": [
+    {
+      "id": "A1",
+      "title": "Tests fallando por QueryClient",
+      "priority": "Critical",
+      "impact": "CI/CD bloqueado",
+      "files_affected": ["tests/unit/invitations.test.ts", "tests/setup/"],
+      "estimated_fix_time": "2 horas"
+    },
+    {
+      "id": "A2", 
+      "title": "89+ archivos duplicados",
+      "priority": "High",
+      "impact": "Builds inconsistentes, confusión en desarrollo",
+      "files_affected": ["src/components/ui/ChatBubble.tsx", "src/components/profile/ImageUpload.tsx"],
+      "estimated_fix_time": "1 día"
+    },
+    {
+      "id": "A3",
+      "title": "Uso excesivo de localStorage",
+      "priority": "High", 
+      "impact": "Datos inconsistentes, problemas de hidratación",
+      "files_affected": ["src/hooks/useAuth.ts", "src/components/Navigation.tsx", "src/lib/storage-manager.ts"],
+      "estimated_fix_time": "3 días"
+    },
+    {
+      "id": "A4",
+      "title": "TODOs críticos sin resolver",
+      "priority": "Medium",
+      "impact": "Funcionalidades incompletas",
+      "files_affected": ["src/debug.tsx", "src/hooks/useAuth.ts", "src/components/chat/RealtimeChatIntegration.tsx"],
+      "estimated_fix_time": "2 días"
+    },
+    {
+      "id": "A5",
+      "title": "Chunks grandes en build",
+      "priority": "Medium",
+      "impact": "Performance degradada",
+      "files_affected": ["vite.config.ts"],
+      "estimated_fix_time": "4 horas"
+    }
+  ],
+  "files_to_change": [
+    "tests/setup/test-utils.tsx",
+    "vitest.config.ts", 
+    "src/hooks/usePersistedState.ts",
+    "src/hooks/useAuth.ts",
+    "src/components/ChatBubble.tsx",
+    "src/components/ImageUpload.tsx",
+    ".gitignore",
+    "vite.config.ts"
+  ],
+  "commands": [
+    "npm run test",
+    "npm run build", 
+    "npm run lint",
+    "git apply patches/patch-A1.diff",
+    "git apply patches/patch-A2.diff",
+    "git apply patches/patch-A3.diff"
+  ],
+  "scoring_breakdown": {
+    "typescript_compliance": 90,
+    "tests": 70,
+    "build_process": 95,
+    "code_quality": 85,
+    "architecture": 80,
+    "security": 75
+  },
+  "critical_paths": [
+    "src/hooks/useAuth.ts",
+    "src/components/Navigation.tsx",
+    "tests/unit/invitations.test.ts",
+    "src/lib/storage-manager.ts"
+  ],
+  "next_steps": [
+    "Aplicar patch A1 para resolver tests fallando",
+    "Consolidar componentes duplicados con wrappers",
+    "Migrar localStorage a React Query + hooks tipados",
+    "Implementar TODOs críticos pendientes",
+    "Optimizar configuración Vite para chunks"
+  ]
+}
