@@ -13,7 +13,7 @@ const NotFound = () => {
   useEffect(() => {
     logger.error(
       "404 Error: User attempted to access non-existent route:",
-      location.pathname
+      { pathname: location.pathname }
     );
     
     // Trigger entrance animation

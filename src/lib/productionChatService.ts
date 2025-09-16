@@ -224,7 +224,7 @@ class ProductionChatService {
       }
 
       // Obtener información de perfiles de los remitentes
-      const senderIds = [...new Set(messages.map(msg => msg.sender_id))];
+      const senderIds = [...new Set(messages.map((msg: any) => msg.sender_id))];
       const { data: profiles } = await (supabase as any)
         .from('profiles')
         .select(`
@@ -234,10 +234,10 @@ class ProductionChatService {
         `)
         .in('id', senderIds);
 
-      const profileMap = new Map(profiles?.map(p => [p.id, p]) || []);
+      const profileMap = new Map(profiles?.map((p: any) => [p.id, p]) || []);
 
-      const productionMessages: ProductionChatMessage[] = messages.map(msg => {
-        const profile = profileMap.get(msg.sender_id);
+      const productionMessages: ProductionChatMessage[] = messages.map((msg: any) => {
+        const profile = profileMap.get(msg.sender_id) as any;
         const displayName = profile 
           ? profile.first_name
           : 'Usuario';

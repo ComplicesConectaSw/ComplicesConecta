@@ -118,7 +118,7 @@ const AdminProduction = () => {
     if (demoAuth === 'true' && demoUser) {
       try {
         const user = JSON.parse(demoUser);
-        logger.info('🎭 Usuario demo detectado:', user.email, 'Role:', user.role);
+        logger.info('📊 Actualizando estado premium para usuario:', { userId: user.id, email: user.email, role: user.role });
         
         if (user.accountType === 'admin' || user.role === 'admin') {
           logger.info('✅ Admin demo autorizado - cargando panel producción');
@@ -135,12 +135,13 @@ const AdminProduction = () => {
           return;
         }
       } catch (error) {
-        logger.error('Error parsing demo user:', error);
+        logger.error('Error parsing demo user:', { error: String(error) });
       }
     }
-    
+
+    // Verificar autenticación
     const authStatus = isAuthenticated();
-    logger.info('🔐 Estado autenticación:', authStatus);
+    logger.info('🔐 Estado autenticación:', { status: authStatus });
     
     if (!authStatus) {
       logger.info('❌ No autenticado - redirigiendo a /auth');
@@ -155,7 +156,7 @@ const AdminProduction = () => {
 
     // Verificar permisos de admin
     const adminStatus = isAdmin();
-    logger.info('👑 Estado admin:', adminStatus);
+    logger.info('📊 Verificando permisos admin:', { status: adminStatus });
     
     if (!adminStatus) {
       logger.info('❌ Usuario sin permisos admin - redirigiendo a /discover');
@@ -187,7 +188,7 @@ const AdminProduction = () => {
         loadRealInvitations()
       ]);
     } catch (error) {
-      logger.error('Error loading production admin data:', error);
+      logger.error('Error loading production admin data:', { error: String(error) });
       toast({
         title: "Error",
         description: "Error al cargar datos del panel de administración de producción",
@@ -207,7 +208,7 @@ const AdminProduction = () => {
         .limit(100);
 
       if (error) {
-        logger.error('Error loading profiles:', error);
+        logger.error('Error loading profiles:', { error: String(error) });
         return;
       }
 
@@ -233,7 +234,7 @@ const AdminProduction = () => {
 
       setProfiles(mappedProfiles);
     } catch (error) {
-      logger.error('Error in loadRealProfiles:', error);
+      logger.error('Error in loadRealProfiles:', { error: String(error) });
     }
   };
 
@@ -286,7 +287,7 @@ const AdminProduction = () => {
       const getMetricValue = (name: string) => {
         if (!appMetrics) return 0;
         const metric = appMetrics.find((m: any) => m.metric_name === name);
-        return metric?.metric_value || 0;
+        return (metric as any)?.metric_value || 0;
       };
 
       // Calcular tokens totales
@@ -313,7 +314,7 @@ const AdminProduction = () => {
         rewardsDistributed: getMetricValue('rewards_distributed') || 0
       });
     } catch (error) {
-      logger.error('Error loading real stats:', error);
+      logger.error('Error loading real stats:', { error: String(error) });
     }
   };
 
@@ -343,9 +344,9 @@ const AdminProduction = () => {
       }));
 
       setFaqItems(mappedFaqItems);
-      logger.info('📋 FAQ items cargados:', mappedFaqItems.length);
+      logger.info('📋 FAQ items cargados:', { count: mappedFaqItems.length });
     } catch (error) {
-      logger.info('📋 Error cargando FAQ, usando lista vacía:', error);
+      logger.info('📋 Error cargando FAQ, usando lista vacía:', { error: String(error) });
       setFaqItems([]);
     }
   };
@@ -354,13 +355,13 @@ const AdminProduction = () => {
     try {
       // Intentar primero con 'chat_invitations' como sugiere Supabase
       const { data, error } = await supabase
-        .from('chat_invitations')
+        .from('invitations')
         .select('*')
         .order('created_at', { ascending: false })
         .limit(50);
 
       if (error) {
-        logger.error('Error loading invitations:', error);
+        logger.error('Error loading invitations:', { error: String(error) });
         setInvitations([]);
         return;
       }
@@ -372,13 +373,14 @@ const AdminProduction = () => {
         message: inv.message || 'Sin mensaje',
         type: inv.type || 'profile',
         status: inv.status || 'pending',
-        created_at: inv.created_at || new Date().toISOString()
+        created_at: inv.created_at,
+        decided_at: inv.decided_at || null
       }));
       
       setInvitations(mappedInvitations);
-      logger.info('📧 Invitaciones cargadas:', mappedInvitations.length);
+      logger.info('📧 Cargando invitaciones, total encontradas:', { count: data.length });
     } catch (error) {
-      logger.error('Error loading invitations:', error);
+      logger.error('Error loading invitations:', { error: String(error) });
       setInvitations([]);
     }
   };
@@ -413,7 +415,7 @@ const AdminProduction = () => {
 
       const { error } = await supabase
         .from('profiles')
-        .update({ is_premium: !profile.is_premium })
+        .update({ is_premium: !profile.is_premium } as any)
         .eq('id', profileId);
 
       if (error) throw error;
@@ -447,23 +449,19 @@ const AdminProduction = () => {
     try {
       const { data, error } = await supabase
         .from('faq_items')
-        .insert([{
-          question: newFaq.question,
-          answer: newFaq.answer,
-          category: newFaq.category
-        }])
+        .insert({ question: newFaq.question, answer: newFaq.answer, category: newFaq.category } as any)
         .select()
         .single();
 
       if (error) throw error;
 
       setFaqItems([...faqItems, {
-        id: data.id,
-        question: data.question,
-        answer: data.answer,
-        category: data.category || 'general',
-        created_at: data.created_at || new Date().toISOString(),
-        updated_at: data.updated_at || new Date().toISOString()
+        id: (data as any).id,
+        question: (data as any).question,
+        answer: (data as any).answer,
+        category: (data as any).category || 'general',
+        created_at: (data as any).created_at || new Date().toISOString(),
+        updated_at: (data as any).updated_at || new Date().toISOString()
       }]);
       setNewFaq({ question: '', answer: '', category: 'general' });
       
@@ -472,7 +470,7 @@ const AdminProduction = () => {
         description: "La pregunta frecuente ha sido agregada exitosamente"
       });
     } catch (error) {
-      logger.error('Error adding FAQ:', error);
+      logger.error('Error adding FAQ:', { error: String(error) });
       toast({
         title: "Error",
         description: "Error al agregar la pregunta frecuente",
@@ -604,6 +602,8 @@ const AdminProduction = () => {
                             {profile.is_premium && <Badge variant="secondary">Premium</Badge>}
                             {profile.is_verified && <Badge variant="outline">Verificado</Badge>}
                           </div>
+                          <p><strong>Género:</strong> {(profile as any).gender || 'No especificado'}</p>
+                          <p><strong>Interesado en:</strong> {(profile as any).interested_in || 'No especificado'}</p>
                         </div>
                       </div>
                       <div className="flex gap-2">

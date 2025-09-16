@@ -150,7 +150,7 @@ const Matches = () => {
         setMatches(convertedMatches);
       }
     } catch (error) {
-      logger.error('Error cargando matches:', error);
+      logger.error('Error cargando matches:', { error: String(error) });
       // Fallback a datos demo en caso de error
       setMatches(demoMatches);
     } finally {
@@ -174,12 +174,12 @@ const Matches = () => {
 
   const handleSuperLike = (matchId: number) => {
     // Super like logic
-    logger.info('Super like:', matchId);
+    logger.info('Super like:', { matchId });
   };
 
   const handleStartChat = (matchId: number) => {
     // Navigate to chat or start conversation
-    logger.info('Start chat:', matchId);
+    logger.info('Start chat:', { matchId });
   };
 
   return (
@@ -387,7 +387,7 @@ const Matches = () => {
                     accountType={match.name.includes('&') ? 'couple' : 'single'}
                     variant="grid"
                     onLike={() => handleStartChat(match.id)}
-                    onPass={() => logger.info('Pass:', match.id)}
+                    onPass={() => logger.info('Pass:', { matchId: match.id })}
                     onSuperLike={() => handleSuperLike(match.id)}
                   />
                 </div>
