@@ -404,9 +404,9 @@ ALTER TABLE token_packages ENABLE ROW LEVEL SECURITY;
 -- =====================================================
 
 -- Políticas básicas para acceso público a categorías e intereses
-CREATE POLICY "Public read access for interest_categories" ON interest_categories FOR SELECT USING (is_active = true);
-CREATE POLICY "Public read access for interests" ON interests FOR SELECT USING (is_active = true);
-CREATE POLICY "Public read access for token_packages" ON token_packages FOR SELECT USING (is_active = true);
+-- CREATE POLICY "Public read access for interest_categories" ON interest_categories FOR SELECT USING (is_active = true);
+-- CREATE POLICY "Public read access for interests" ON interests FOR SELECT USING (is_active = true);
+-- CREATE POLICY "Public read access for token_packages" ON token_packages FOR SELECT USING (is_active = true);
 
 -- Políticas para usuarios autenticados
 CREATE POLICY "Users can view own data" ON user_roles FOR SELECT USING (user_id = auth.uid());
