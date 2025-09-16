@@ -43,10 +43,10 @@ describe('Realtime Chat Tests', () => {
         insert: mockInsert
       });
 
-      const result = await supabase.from('chat_messages').insert({
+      const result = await (supabase.from('chat_messages') as any).insert({
         content: 'test message',
         user_id: 'test-user'
-      });
+      } as any);
 
       expect(mockInsert).toHaveBeenCalledWith({
         content: 'test message',
@@ -120,10 +120,10 @@ describe('Realtime Chat Tests', () => {
         insert: mockInsert
       });
 
-      const result = await supabase.from('chat_messages').insert({
+      const result = await (supabase.from('chat_messages') as any).insert({
         content: 'test message',
         user_id: 'test-user'
-      });
+      } as any);
 
       expect(result.error).toBeDefined();
       expect(result.error?.message).toBe('Failed to send message');
