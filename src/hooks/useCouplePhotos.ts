@@ -179,7 +179,7 @@ export const useCouplePhotos = (profileId?: string): UseCouplePhotosReturn => {
         );
         
         if (remainingPhotos.length > 0) {
-          await supabase
+          await (supabase as any)
             .from('couple_photos')
             .update({ is_main: true })
             .eq('id', remainingPhotos[0].id);

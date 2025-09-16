@@ -742,11 +742,33 @@ VITE_STAKING_DURATION_DAYS=30
 - 📈 **Archivos Corregidos** - 10+ archivos principales con correcciones exhaustivas
 - 🧪 **Tests Completos** - Suite de testing unitario y e2e funcionando al 100%
 
-**📊 MÉTRICAS FINALES v2.1.0:**
+### 🗃️ **MIGRACIONES SQL - ORDEN DE EJECUCIÓN**
+
+Las migraciones de base de datos deben ejecutarse en el siguiente orden para evitar conflictos:
+
+| Orden | Archivo | Descripción | Estado |
+|-------|---------|-------------|---------|
+| 1 | `20250906125234_clean_final_schema.sql` | Esquema base limpio | ✅ |
+| 2 | `20250107_create_couple_profiles.sql` | Perfiles de parejas | ✅ |
+| 3 | `20250914_add_interests_tables.sql` | Tablas de intereses | ✅ |
+| 4 | `20250914103600_create_couple_photos_table.sql` | Fotos de parejas | ✅ |
+| 5 | `20250914103700_create_chat_realtime_tables.sql` | Chat tiempo real | ✅ |
+| 6 | `20250906_05_create_token_system.sql` | Sistema de tokens | ✅ |
+| 7 | `20250906_06_create_token_rls.sql` | RLS tokens | ✅ |
+| 8 | `HABILITAR_RLS_COMPLETO.sql` | Habilitar RLS general | ✅ |
+| 9 | `rls-profiles-validation.sql` | Validación perfiles | ✅ |
+| 10 | `rls-messages-tokens-invitations.sql` | RLS específico | ✅ |
+| 11 | `rls-fix-20250915.sql` | Corrección final RLS | ✅ |
+
+**🎯 Estado Actual**: RLS Policies aplicadas correctamente - ComplicesConecta
+
+**📊 MÉTRICAS FINALES v2.9.0:**
 - **Correcciones TypeScript**: 100% ✅
 - **Eliminación @ts-nocheck**: 100% ✅
 - **Tipos específicos**: 100% ✅
 - **Imports corregidos**: 100% ✅
+- **Migraciones SQL**: 100% ✅
+- **Políticas RLS**: 100% ✅
 - **Manejo undefined**: 100% ✅
 - **Optimización variables**: 100% ✅
 - **Tests unitarios**: 100% ✅

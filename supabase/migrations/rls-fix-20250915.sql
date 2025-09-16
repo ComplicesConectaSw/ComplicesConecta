@@ -71,14 +71,12 @@ CREATE POLICY "profiles_delete_policy" ON profiles
 -- Verificar si la tabla messages existe, si no, crearla
 CREATE TABLE IF NOT EXISTS messages (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    content TEXT NOT NULL,
+    room_id UUID REFERENCES chat_rooms(id) ON DELETE CASCADE,
     sender_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
-    receiver_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
-    chat_room_id UUID,
+    content TEXT NOT NULL,
+    message_type TEXT DEFAULT 'text' CHECK (message_type IN ('text', 'image', 'file', 'system')),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    read_at TIMESTAMP WITH TIME ZONE,
-    is_deleted BOOLEAN DEFAULT FALSE
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
 -- Eliminar políticas existentes
@@ -90,14 +88,18 @@ DROP POLICY IF EXISTS "messages_delete_policy" ON messages;
 -- Habilitar RLS en messages
 ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
 
--- Política SELECT: Solo participantes del chat pueden ver mensajes
+-- Política SELECT: Solo miembros del chat room pueden ver mensajes
 CREATE POLICY "messages_select_policy" ON messages
     FOR SELECT USING (
         -- Sender puede ver sus mensajes
         auth.uid() = sender_id
         OR
-        -- Receiver puede ver mensajes dirigidos a él
-        auth.uid() = receiver_id
+        -- Miembros del room pueden ver mensajes
+        EXISTS (
+            SELECT 1 FROM chat_members cm 
+            WHERE cm.room_id = messages.room_id 
+            AND cm.profile_id = auth.uid()
+        )
         OR
         -- Admins pueden ver todos los mensajes
         EXISTS (
@@ -107,20 +109,22 @@ CREATE POLICY "messages_select_policy" ON messages
         )
     );
 
--- Política INSERT: Solo usuarios autenticados pueden enviar mensajes
+-- Política INSERT: Solo miembros del room pueden enviar mensajes
 CREATE POLICY "messages_insert_policy" ON messages
     FOR INSERT WITH CHECK (
         auth.uid() = sender_id
         AND auth.uid() IS NOT NULL
-        AND sender_id != receiver_id -- No enviarse mensajes a sí mismo
+        AND EXISTS (
+            SELECT 1 FROM chat_members cm 
+            WHERE cm.room_id = messages.room_id 
+            AND cm.profile_id = auth.uid()
+        )
     );
 
--- Política UPDATE: Solo el sender puede modificar sus mensajes (marcar como leído, etc.)
+-- Política UPDATE: Solo el sender puede modificar sus mensajes
 CREATE POLICY "messages_update_policy" ON messages
     FOR UPDATE USING (
         auth.uid() = sender_id
-        OR
-        auth.uid() = receiver_id -- Receiver puede marcar como leído
         OR
         EXISTS (
             SELECT 1 FROM profiles p 
@@ -295,10 +299,17 @@ BEGIN
     END IF;
 END $$;
 
--- Agregar constraint de email único en profiles
-ALTER TABLE profiles 
-ADD CONSTRAINT unique_email_profiles 
-UNIQUE (email);
+-- Agregar constraint de email único en profiles (si no existe)
+DO $$ 
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM information_schema.table_constraints 
+        WHERE constraint_name = 'unique_email_profiles' 
+        AND table_name = 'profiles'
+    ) THEN
+        ALTER TABLE profiles ADD CONSTRAINT unique_email_profiles UNIQUE (email);
+    END IF;
+END $$;
 
 -- =====================================================
 -- 6. ÍNDICES PARA PERFORMANCE
@@ -308,8 +319,8 @@ UNIQUE (email);
 CREATE INDEX IF NOT EXISTS idx_profiles_role ON profiles(role);
 CREATE INDEX IF NOT EXISTS idx_profiles_is_demo ON profiles(is_demo);
 CREATE INDEX IF NOT EXISTS idx_profiles_is_verified ON profiles(is_verified);
-CREATE INDEX IF NOT EXISTS idx_messages_sender_receiver ON messages(sender_id, receiver_id);
-CREATE INDEX IF NOT EXISTS idx_messages_chat_room ON messages(chat_room_id);
+CREATE INDEX IF NOT EXISTS idx_messages_room_sender ON messages(room_id, sender_id);
+CREATE INDEX IF NOT EXISTS idx_messages_created_at ON messages(created_at);
 CREATE INDEX IF NOT EXISTS idx_tokens_user_type ON tokens(user_id, token_type);
 CREATE INDEX IF NOT EXISTS idx_invitations_from_to ON invitations(from_profile, to_profile);
 
@@ -350,7 +361,7 @@ COMMENT ON POLICY "profiles_select_policy" ON profiles IS
 'Permite ver perfiles públicos verificados y el perfil propio. Admins ven todos.';
 
 COMMENT ON POLICY "messages_select_policy" ON messages IS 
-'Solo participantes del chat pueden ver mensajes. Admins ven todos.';
+'Solo miembros del chat room pueden ver mensajes. Admins ven todos.';
 
 COMMENT ON POLICY "tokens_select_policy" ON tokens IS 
 'Solo el propietario puede ver sus tokens. Admins ven todos.';
