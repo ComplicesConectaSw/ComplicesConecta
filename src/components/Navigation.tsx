@@ -7,6 +7,7 @@ import NavigationEnhanced from './NavigationEnhanced';
 import { logger } from '@/lib/logger';
 import { LogoutButton } from '@/components/ui/LogoutButton';
 import { motion } from 'framer-motion';
+import { usePersistedState } from '@/hooks/usePersistedState';
 
 interface NavigationProps {
   className?: string;
@@ -14,8 +15,8 @@ interface NavigationProps {
 
 // Usar NavigationLegacy temporalmente para el usuario especial
 const Navigation = ({ className }: NavigationProps) => {
-  // Verificar si es el usuario especial
-  const isSpecialUser = localStorage.getItem('apoyo_authenticated') === 'true';
+  // Migrar localStorage a hook tipado
+  const [isSpecialUser] = usePersistedState('apoyo_authenticated', false);
   
   if (isSpecialUser) {
     return <NavigationLegacy className={className} />;
@@ -40,12 +41,14 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
   // Navegación siempre visible - sin efectos de scroll
   const [isVisible] = useState(true);
 
-  // Verificar si el usuario está autenticado (demo o usuario especial)
-  const isDemoAuthenticated = localStorage.getItem('demo_authenticated') === 'true';
-  const isSpecialAuthenticated = localStorage.getItem('apoyo_authenticated') === 'true';
+  // Migrar localStorage a hooks tipados - TODOS los hooks al inicio
+  const [isDemoAuthenticated] = usePersistedState('demo_authenticated', false);
+  const [isSpecialAuthenticated] = usePersistedState('apoyo_authenticated', false);
+  const [demoUser] = usePersistedState('demo_user', null);
+  const [specialUser] = usePersistedState('apoyo_user', null);
+  const [currentUserType] = usePersistedState('userType', null);
+  
   const isAuthenticated = isDemoAuthenticated || isSpecialAuthenticated;
-  const demoUser = localStorage.getItem('demo_user');
-  const specialUser = localStorage.getItem('apoyo_user');
 
   const baseNavItems = [
     { id: 'feed', icon: Home, label: 'Inicio', path: '/feed' },
@@ -61,9 +64,6 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
   if (!isAuthenticated || (!demoUser && !specialUser)) {
     return null; // Ocultar navegación si no está logueado
   }
-
-  // Obtener tipo de usuario para navegación específica
-  const currentUserType = localStorage.getItem('userType');
   
   // Configuración específica para parejas
   const getSettingsPath = () => {
@@ -91,9 +91,9 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
   }
 
   const handleNavigation = (path: string) => {
-    // Manejar logout especial
+    // Manejar logout especial - usar hooks para limpiar estado
     if (path === '/logout') {
-      // Limpiar localStorage/sessionStorage
+      // TODO: Migrar a useClearPersistedState hook
       localStorage.removeItem('demo_authenticated');
       localStorage.removeItem('apoyo_authenticated');
       localStorage.removeItem('demo_user');
@@ -104,12 +104,10 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
       return;
     }
 
-    // Verificar sesión antes de navegar
-    const demoUser = localStorage.getItem('demo_user');
-    const specialUser = localStorage.getItem('apoyo_user');
-    const userType = localStorage.getItem('userType');
-    const isDemoAuth = localStorage.getItem('demo_authenticated') === 'true';
-    const isSpecialAuth = localStorage.getItem('apoyo_authenticated') === 'true';
+    // Usar valores de hooks en lugar de localStorage directo
+    const userType = currentUserType;
+    const isDemoAuth = isDemoAuthenticated;
+    const isSpecialAuth = isSpecialAuthenticated;
     
     logger.info('🔍 Navigation Debug:', { demoUser, specialUser, userType, isDemoAuth, isSpecialAuth, path });
     
