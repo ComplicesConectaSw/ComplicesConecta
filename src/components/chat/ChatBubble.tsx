@@ -1,3 +1,12 @@
+// WRAPPER DE COMPATIBILIDAD - DEPRECADO
+// Este archivo reexporta el componente consolidado en /src/components/ui/ChatBubble.tsx
+// - Mover referencias a '@/components/ui/ChatBubble'
+// - Este wrapper se eliminará en 30 días tras confirmación de que no hay imports residuales.
+
+export { ChatBubble as default } from '@/components/ui/ChatBubble';
+export * from '@/components/ui/ChatBubble';
+
+// Implementación legacy mantenida por compatibilidad
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -12,7 +21,7 @@ interface ChatBubbleProps {
   className?: string;
 }
 
-export const ChatBubble: React.FC<ChatBubbleProps> = ({
+export const ChatBubbleLegacy: React.FC<ChatBubbleProps> = ({
   message,
   isOwn,
   timestamp,

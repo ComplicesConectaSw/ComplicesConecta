@@ -1,3 +1,12 @@
+// WRAPPER DE COMPATIBILIDAD - DEPRECADO
+// Este archivo reexporta el componente consolidado en /src/components/profile/ImageUpload.tsx
+// - Mover referencias a '@/components/profile/ImageUpload'
+// - Este wrapper se eliminará en 30 días tras confirmación de que no hay imports residuales.
+
+export { ImageUpload as default } from '@/components/profile/ImageUpload';
+export * from '@/components/profile/ImageUpload';
+
+// Implementación legacy mantenida por compatibilidad
 import React, { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
