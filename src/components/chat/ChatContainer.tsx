@@ -145,15 +145,14 @@ export const ChatContainer: React.FC<ChatContainerProps> = ({
         }}
       >
         <AnimatePresence mode="popLayout">
-          {messages.map((msg, index) => (
+          {messages.map((message, index) => (
             <ChatBubble
-              key={msg.id}
-              id={msg.id}
-              message={msg.content}
-              isOwn={msg.sender_id === currentUserId}
-              timestamp={msg.created_at}
-              senderName={msg.sender?.display_name}
-              senderAvatar={msg.sender?.avatar_url}
+              id={message.id}
+              message={message.content}
+              isOwn={message.sender_id === (message as any).currentUserId}
+              timestamp={new Date(message.created_at).toLocaleTimeString()}
+              senderAvatar={(message as any).sender?.avatar_url}
+              senderName={(message as any).sender?.display_name}
             />
           ))}
         </AnimatePresence>
