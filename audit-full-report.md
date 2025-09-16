@@ -177,7 +177,7 @@ grep -r "TODO|FIXME" src/          # ⚠️ 15+ items pendientes
 
 ---
 
-## 3. 🚨 Hallazgos Detallados
+## 3. 🔍 Hallazgos Detallados
 
 ### A1 - Tests Fallando con QueryClient
 **ID:** A1  

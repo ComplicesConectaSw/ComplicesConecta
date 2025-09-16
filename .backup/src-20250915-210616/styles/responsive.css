@@ -1,0 +1,237 @@
+/**
+ * Estilos Responsivos Globales para ComplicesConecta v2.8.2
+ * Optimización para móviles, tabletas y desktop
+ */
+
+/* Safe Area para dispositivos con notch */
+.safe-area-inset {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+.safe-area-pb {
+  padding-bottom: calc(env(safe-area-inset-bottom) + 1rem);
+}
+
+/* Optimizaciones para Android */
+@media screen and (max-width: 480px) {
+  /* Resoluciones comunes Android: 360x640, 412x915 */
+  .android-optimized {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  
+  /* Botones más grandes para touch */
+  .touch-friendly {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Texto más legible en móviles */
+  .mobile-text {
+    font-size: 16px; /* Evita zoom automático en iOS */
+    line-height: 1.5;
+  }
+}
+
+/* Breakpoints personalizados */
+@media (max-width: 360px) {
+  /* Dispositivos muy pequeños */
+  .container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+}
+
+@media (min-width: 361px) and (max-width: 768px) {
+  /* Móviles y tabletas pequeñas */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  /* Tabletas */
+  .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  /* Desktop */
+  .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* Animaciones optimizadas para móviles */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Mejoras de performance para Android */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* Scrolling suave */
+.smooth-scroll {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* Ocultar scrollbars en móviles */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Gradientes optimizados */
+.hero-gradient {
+  background: linear-gradient(135deg, 
+    #667eea 0%, 
+    #764ba2 25%, 
+    #f093fb 50%, 
+    #f5576c 75%, 
+    #4facfe 100%
+  );
+}
+
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Contraste mejorado para accesibilidad WCAG AA */
+.text-high-contrast {
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.text-medium-contrast {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.text-low-contrast {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Botones responsivos */
+.btn-responsive {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+@media (max-width: 640px) {
+  .btn-responsive {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.875rem;
+  }
+}
+
+/* Cards responsivas */
+.card-responsive {
+  padding: 1.5rem;
+  border-radius: 1rem;
+}
+
+@media (max-width: 640px) {
+  .card-responsive {
+    padding: 1rem;
+    border-radius: 0.75rem;
+  }
+}
+
+/* Modales responsivos */
+.modal-responsive {
+  max-width: 90vw;
+  max-height: 90vh;
+  margin: 1rem;
+}
+
+@media (min-width: 640px) {
+  .modal-responsive {
+    max-width: 32rem;
+    margin: 2rem auto;
+  }
+}
+
+/* Grid responsivo */
+.grid-responsive {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .grid-responsive {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-responsive {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+}
+
+/* Navegación responsiva */
+.nav-responsive {
+  padding: 0.75rem;
+  gap: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .nav-responsive {
+    padding: 1rem;
+    gap: 1rem;
+  }
+}
+
+/* Texto truncado responsivo */
+.truncate-responsive {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .truncate-responsive {
+    max-width: 120px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .truncate-responsive {
+    max-width: 200px;
+  }
+}
+
+@media (min-width: 1025px) {
+  .truncate-responsive {
+    max-width: 300px;
+  }
+}
