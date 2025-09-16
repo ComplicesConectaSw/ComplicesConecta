@@ -3,22 +3,26 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, CheckCircle, Crown, Heart, MessageCircle, Edit } from 'lucide-react';
+import { ArrowLeft, Edit, MapPin, Calendar, Heart, Star, Users, Shield, Camera, Settings, CheckCircle, Crown, Images } from 'lucide-react';
+import { Header } from '@/components/Header';
 import Navigation from '@/components/Navigation';
-import { generateMockSingle } from '@/lib/data';
-import type { Tables } from '@/integrations/supabase/types';
-import Gallery from '@/components/profile/Gallery';
-import { ProfileLoadingScreen } from '@/components/ProfileLoadingScreen';
+import { ProfileTabs } from '@/components/profile/ProfileTabs';
+import { ProfileNavigation } from '@/components/profile/ProfileNavigation';
 import { useAuth } from '@/hooks/useAuth';
-import { getAppConfig } from '@/lib/app-config';
+import { useProfileQuery } from '@/hooks/useProfileQuery';
 import { logger } from '@/lib/logger';
+import { usePersistedState } from '@/hooks/usePersistedState';
+import type { Tables } from '@/integrations/supabase/types';
 
 const ProfileSingle: React.FC = () => {
   const navigate = useNavigate();
   const [profile, setProfile] = useState<Tables<'profiles'> | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { user, profile: authProfile, isAuthenticated } = useAuth();
-  const config = getAppConfig();
+  
+  // Migración localStorage → usePersistedState
+  const [demoAuth, setDemoAuth] = usePersistedState('demo_authenticated', 'false');
+  const [demoUser, setDemoUser] = usePersistedState<any>('demo_user', null);
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -38,22 +42,19 @@ const ProfileSingle: React.FC = () => {
           return;
         }
         
-        // Si authProfile ya está disponible, usarlo directamente
-        if (authProfile && authProfile.id) {
-          logger.info('✅ AuthProfile disponible:', authProfile.first_name);
-          setProfile(authProfile);
+        // Verificar si hay sesión demo activa
+        if (demoAuth === 'true' && demoUser) {
+          const parsedUser = typeof demoUser === 'string' ? JSON.parse(demoUser) : demoUser;
+          logger.info('🎭 Cargando perfil demo:', parsedUser);
+          setProfile(parsedUser as Tables<'profiles'>);
           setIsLoading(false);
           return;
         }
         
-        // Verificar si hay sesión demo activa
-        const demoAuth = localStorage.getItem('demo_authenticated');
-        const demoUser = localStorage.getItem('demo_user');
-        
-        if (demoAuth === 'true' && demoUser) {
-          const parsedUser = JSON.parse(demoUser);
-          logger.info('🎭 Cargando perfil demo:', parsedUser);
-          setProfile(parsedUser as Tables<'profiles'>);
+        // Si authProfile ya está disponible, usarlo directamente
+        if (authProfile && authProfile.id) {
+          logger.info('✅ AuthProfile disponible:', authProfile.first_name);
+          setProfile(authProfile);
           setIsLoading(false);
           return;
         }
