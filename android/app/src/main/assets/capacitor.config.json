@@ -24,10 +24,12 @@
 		"captureInput": true,
 		"webContentsDebuggingEnabled": true,
 		"loggingBehavior": "debug",
-		"appendUserAgent": "ComplicesConecta/2.4.0",
+		"appendUserAgent": "ComplicesConecta/2.9.0",
 		"backgroundColor": "#1a1a2e"
 	},
 	"server": {
-		"androidScheme": "https"
+		"androidScheme": "https",
+		"hostname": "localhost",
+		"iosScheme": "capacitor"
 	}
 }
