@@ -31,18 +31,21 @@
             - paragraph [ref=e71]: IA Match
       - generic [ref=e73]:
         - tablist [ref=e74]:
-          - tab "Iniciar Sesión" [selected] [ref=e75] [cursor=pointer]
+          - tab "Iniciar Sesión" [active] [selected] [ref=e75] [cursor=pointer]
           - tab "Registrarse" [ref=e76] [cursor=pointer]
         - tabpanel "Iniciar Sesión" [ref=e77]:
           - generic [ref=e78]:
             - generic [ref=e79]:
               - generic [ref=e80]: Correo electrónico
-              - textbox "Correo electrónico" [ref=e81]
-            - generic [ref=e82]:
-              - generic [ref=e83]: Contraseña
-              - textbox "Contraseña" [ref=e84]
-            - button "Iniciar Sesión" [ref=e85] [cursor=pointer]
-            - button "¿Olvidaste tu contraseña?" [ref=e87] [cursor=pointer]
+              - textbox "Correo electrónico" [ref=e81]: complicesconectasw@outlook.es
+              - generic [ref=e82]:
+                - img [ref=e83]
+                - generic [ref=e87]: Error al verificar email
+            - generic [ref=e88]:
+              - generic [ref=e89]: Contraseña
+              - textbox "Contraseña" [ref=e90]: admin123
+            - button "Iniciar Sesión" [ref=e91] [cursor=pointer]
+            - button "¿Olvidaste tu contraseña?" [ref=e93] [cursor=pointer]
   - region "Notifications (F8)":
     - list
 ```

@@ -1,13 +1,14 @@
 import { invitationService } from '@/lib/invitations';
 import { logger } from '@/lib/logger';
+import { supabase } from '@/integrations/supabase/client';
 
 /**
  * Servicio de compatibilidad para perfiles de pareja
  * Garantiza que todas las funciones de invitaciones y permisos
  * funcionen correctamente con perfiles individuales y de pareja
  * 
- * NOTA: Implementación temporal con fallbacks hasta que el esquema
- * de base de datos incluya soporte completo para perfiles de pareja
+ * IMPLEMENTACIÓN COMPLETA: Utiliza la tabla couple_profiles para
+ * gestión real de perfiles de pareja con partner1_id y partner2_id
  */
 
 export interface CoupleProfileCompatibility {
@@ -27,10 +28,14 @@ export interface CoupleProfileCompatibility {
 export const coupleProfileCompatibility: CoupleProfileCompatibility = {
   async isCoupleProfile(profileId: string): Promise<boolean> {
     try {
-      // Por ahora, asumir que todos son perfiles individuales
-      // TODO: Implementar detección real cuando la columna user_type esté disponible
-      logger.info('🔄 Verificación de perfil de pareja - usando fallback temporal');
-      return false;
+      // Verificar si el perfil existe en la tabla couple_profiles
+      const { data: coupleProfile } = await supabase
+        .from('couple_profiles')
+        .select('id')
+        .or(`partner1_id.eq.${profileId},partner2_id.eq.${profileId}`)
+        .single();
+      
+      return !!coupleProfile;
     } catch (error) {
       logger.error('❌ Error en isCoupleProfile:', { error: error instanceof Error ? error.message : String(error) });
       return false;
@@ -39,16 +44,19 @@ export const coupleProfileCompatibility: CoupleProfileCompatibility = {
 
   async getRelatedProfileIds(profileId: string): Promise<string[]> {
     try {
-      const isCouple = await this.isCoupleProfile(profileId);
+      // Buscar si el perfil es parte de una pareja
+      const { data: coupleProfile } = await supabase
+        .from('couple_profiles')
+        .select('partner1_id, partner2_id')
+        .or(`partner1_id.eq.${profileId},partner2_id.eq.${profileId}`)
+        .single();
       
-      if (!isCouple) {
-        // Si es perfil individual, solo devolver el mismo ID
-        return [profileId];
+      if (coupleProfile) {
+        // Si es perfil de pareja, devolver ambos IDs de los partners
+        return [coupleProfile.partner1_id, coupleProfile.partner2_id];
       }
       
-      // Si es perfil de pareja, por ahora devolver solo el perfil actual
-      // TODO: Implementar tabla couple_profiles cuando esté disponible en el esquema
-      logger.info('🔄 Perfil de pareja detectado, usando fallback temporal');
+      // Si es perfil individual, solo devolver el mismo ID
       return [profileId];
     } catch (error) {
       logger.error('❌ Error en getRelatedProfileIds:', { error: error instanceof Error ? error.message : String(error) });
