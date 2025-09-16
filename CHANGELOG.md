@@ -1,5 +1,42 @@
 # Changelog - ComplicesConecta
 
+## [v2.9.0] - 2025-09-16
+
+### 🎯 **RELEASE MAYOR - SISTEMA E2E REFACTORIZADO Y AUDITORÍA COMPLETA**
+
+#### ✨ **Nuevas Funcionalidades**
+- **Sistema E2E Completamente Refactorizado**: Nueva infraestructura de testing independiente
+- **EnhancedAuthHelper**: Helper robusto con limpieza completa de estado entre tests
+- **Mocks de Supabase**: Sistema completo de mocks independientes del backend real
+- **Fixtures Estandarizados**: Datos de prueba consistentes y predecibles
+- **Tests Críticos de Integración**: Cobertura completa de flujos de autenticación
+
+#### 🔧 **Mejoras Técnicas**
+- **Configuración E2E Dedicada**: `playwright.config.e2e.ts` con entorno aislado
+- **Setup/Teardown Global**: Preparación y limpieza automática del entorno
+- **Aislamiento Total**: Limpieza de localStorage, sessionStorage, IndexedDB y cookies
+- **Timeouts Optimizados**: 60s para operaciones críticas, 30s para UI
+- **Debug Integrado**: Logging extensivo para troubleshooting
+
+#### 🐛 **Correcciones**
+- **Conflictos de Merge**: Resuelto conflicto en MainProfileCard.tsx
+- **Errores TypeScript**: Corregidos en auth-fixtures.ts y realtime-chat.test.ts
+- **Casting de Tipos**: Mejorado manejo de tipos en tests unitarios
+
+#### 📊 **Métricas de Calidad**
+- **Tests Unitarios**: 101/101 (100% pass rate)
+- **Cobertura E2E**: Sistema independiente y confiable
+- **Estado Build**: ✅ Exitoso
+- **Production Ready**: ✅ Validado
+
+#### 🚀 **Deployment**
+- **Tag Release**: v2.9.0 creado exitosamente
+- **Rama Master**: Actualizada con todas las correcciones
+- **Limpieza**: Ramas obsoletas eliminadas
+- **Estado**: LISTO PARA PRODUCCIÓN
+
+---
+
 ## [v2.1.8] - 2025-01-14
 
 ### ✨ Nuevas Funcionalidades
