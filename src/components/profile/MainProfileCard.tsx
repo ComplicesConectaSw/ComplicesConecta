@@ -259,3 +259,6 @@ export const MainProfileCard = ({
     </div>
   );
 };
+
+// Export alias for backward compatibility
+export const ProfileCard = MainProfileCard;
