@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Heart, MessageCircle, MapPin, Verified, Star, Wifi, WifiOff, X, Zap } from "lucide-react";
 import { useUserOnlineStatus } from "@/hooks/useOnlineStatus";
 import { Button } from "@/components/ui/button";
@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils';
 
 interface ProfileCardProps {
   profile: {
-    id: string;
+    id: string | number;
     name: string;
     age?: number;
     location?: string;
@@ -22,20 +22,38 @@ interface ProfileCardProps {
     lastSeen?: string;
     verified?: boolean;
     rating?: number;
-    // Nuevas propiedades para personalización visual
+    // Propiedades para personalización visual
     gender?: Gender;
     partnerGender?: Gender;
     accountType?: ProfileType;
     theme?: Theme;
+    // Propiedades específicas para parejas
+    couple_name?: string;
+    partner1_first_name?: string;
+    partner1_age?: number;
+    partner2_first_name?: string;
+    partner2_age?: number;
   };
   onLike?: (id: string) => void;
   onSuperLike?: (profile: ProfileCardProps['profile']) => void;
-  onOpenModal: () => void;
-  // Nueva prop para habilitar temas visuales
+  onOpenModal?: () => void;
+  // Props de configuración
   useThemeBackground?: boolean;
+  variant?: 'single' | 'couple' | 'discover' | 'animated';
+  showQuickActions?: boolean;
+  showViewProfile?: boolean;
 }
 
-export const ProfileCard = ({ profile, onLike, onSuperLike, onOpenModal, useThemeBackground = false }: ProfileCardProps) => {
+export const MainProfileCard = ({ 
+  profile, 
+  onLike, 
+  onSuperLike, 
+  onOpenModal, 
+  useThemeBackground = false,
+  variant = 'single',
+  showQuickActions = true,
+  showViewProfile = true 
+}: ProfileCardProps) => {
   const { getUserOnlineStatus, getLastSeenTime } = useUserOnlineStatus();
   const profileId = String(profile.id);
   const isOnline = profile.isOnline ?? getUserOnlineStatus(profileId);
@@ -59,20 +77,22 @@ export const ProfileCard = ({ profile, onLike, onSuperLike, onOpenModal, useThem
 
   const handleLike = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onOpenModal();
+    if (onLike) onLike(String(id));
+    if (onOpenModal) onOpenModal();
   };
 
   const handleSuperLike = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onOpenModal();
+    if (onSuperLike) onSuperLike(profile);
+    if (onOpenModal) onOpenModal();
   };
 
   const handleDislike = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onOpenModal();
+    if (onOpenModal) onOpenModal();
     toast({
       title: "Perfil omitido",
-      description: `Has pasado el perfil de ${name}`,
+      description: `Has pasado el perfil de ${variant === 'couple' ? profile.couple_name || name : name}`,
     });
   };
 
@@ -84,7 +104,7 @@ export const ProfileCard = ({ profile, onLike, onSuperLike, onOpenModal, useThem
           ? `${themeConfig.backgroundClass} ${themeConfig.textClass}` 
           : "bg-card-gradient"
       )}
-      onClick={handleViewProfile}
+      onClick={showViewProfile ? handleViewProfile : undefined}
     >
       {/* Image Container */}
       <div className="relative aspect-[3/4] overflow-hidden">
