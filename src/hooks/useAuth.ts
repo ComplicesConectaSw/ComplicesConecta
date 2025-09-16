@@ -19,6 +19,7 @@ import {
 import { useProfile } from '@/hooks/useProfileCache';
 import { StorageManager } from '@/lib/storage-manager';
 import { logger } from '@/lib/logger';
+import { usePersistedState } from '@/hooks/usePersistedState';
 
 interface Profile {
   id: string;
