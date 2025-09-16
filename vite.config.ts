@@ -8,7 +8,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'production';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: './', // Rutas relativas para Capacitor APK
+  base: '', // Sin base para Capacitor APK
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
