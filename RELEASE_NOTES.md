@@ -1568,7 +1568,7 @@ ComplicesConecta introduce su revolucionario sistema de tokens con recompensas p
 #### 🪙 **Sistema de Tokens CMPX/GTK - Implementación Final**
 - **Tokens CMPX**: Sistema interno para fase beta sin valor monetario real
 - **Recompensas por Referidos**: 50 CMPX para invitador + 50 CMPX para invitado
-- **Límites Mensuales**: Máximo 500 CMPX por usuario por mes
+- **Límite Mensual**: 500 CMPX máximo por usuario con reset automático
 - **Componente TokenBalance**: Interfaz completa para gestión de tokens
 - **Backend Supabase**: Edge Function para procesar recompensas de referidos
 - **Base de Datos**: Tablas y triggers para gestión transaccional de tokens
@@ -1576,7 +1576,7 @@ ComplicesConecta introduce su revolucionario sistema de tokens con recompensas p
 #### Funciones Premium Totalmente Habilitadas
 - **Acceso Basado en Tokens**: Sistema completo usando CMPX para funciones premium
 - **Compras Mock**: Sistema de compras simuladas sin pagos reales durante beta
-- **Stripe Deshabilitado**: Pagos reales desactivados hasta versión de producción
+- ✅ **Stripe Deshabilitado**: Pagos reales desactivados hasta versión de producción
 - **Feature Flags Actualizados**: Premium features siempre habilitadas en beta
 
 #### Páginas Legales Completas

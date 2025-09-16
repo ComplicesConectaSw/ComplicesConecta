@@ -72,7 +72,7 @@ export const HCaptchaWidget: React.FC<HCaptchaWidgetProps> = ({
         theme,
         size,
         callback: async (token: string) => {
-          logger.info('hCaptcha token recibido, verificando en backend...');
+          logger.info('hCaptcha token recibido, verificando en backend...', { token: token.substring(0, 10) + '...' });
           
           try {
             // Verify token using Supabase Edge Function
@@ -84,7 +84,7 @@ export const HCaptchaWidget: React.FC<HCaptchaWidgetProps> = ({
             });
 
             if (error) {
-              logger.error('Error verificando hCaptcha:', error);
+              logger.error('Error verificando hCaptcha:', { error });
               if (onError) {
                 onError('Error de verificación del servidor');
               }
@@ -92,7 +92,7 @@ export const HCaptchaWidget: React.FC<HCaptchaWidgetProps> = ({
             }
 
             const result = data as HCaptchaVerifyResponse;
-            logger.info('Resultado verificación hCaptcha:', result.success);
+            logger.info('Resultado verificación hCaptcha:', { success: result.success });
 
             if (onVerify) {
               onVerify(token, result.success);
@@ -103,20 +103,20 @@ export const HCaptchaWidget: React.FC<HCaptchaWidgetProps> = ({
             }
 
           } catch (error) {
-            logger.error('Error en verificación hCaptcha:', error);
+            logger.error('Error en verificación hCaptcha:', { error });
             if (onError) {
               onError('Error de conexión con el servidor');
             }
           }
         },
         'expired-callback': () => {
-          logger.info('hCaptcha expirado');
+          logger.info('hCaptcha expirado', {});
           if (onExpire) {
             onExpire();
           }
         },
         'error-callback': (error?: string) => {
-          logger.error('Error hCaptcha:', error);
+          logger.error('Error hCaptcha:', { error });
           if (onError) {
             onError(error || 'Error desconocido en hCaptcha');
           }

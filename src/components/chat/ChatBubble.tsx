@@ -13,6 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
 
 interface ChatBubbleProps {
+  id: string;
   message: string;
   isOwn: boolean;
   timestamp: string;
@@ -22,6 +23,7 @@ interface ChatBubbleProps {
 }
 
 export const ChatBubbleLegacy: React.FC<ChatBubbleProps> = ({
+  id,
   message,
   isOwn,
   timestamp,

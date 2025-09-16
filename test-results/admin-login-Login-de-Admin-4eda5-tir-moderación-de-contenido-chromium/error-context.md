@@ -1,48 +1,48 @@
 # Page snapshot
 
 ```yaml
-- generic [ref=e3]:
+- generic [ref=e5]:
+  - button [ref=e11] [cursor=pointer]:
+    - img [ref=e12] [cursor=pointer]
+  - generic [ref=e16]:
+    - generic [ref=e17]:
+      - img [ref=e18]
+      - img [ref=e20]
+      - img [ref=e22]
+      - img [ref=e24]
+    - generic [ref=e47]:
+      - generic [ref=e48]:
+        - generic [ref=e49]:
+          - button "Regresar" [ref=e50] [cursor=pointer]:
+            - img
+            - text: Regresar
+          - img [ref=e52]
+        - heading "ComplicesConecta" [level=3] [ref=e54]
+        - paragraph [ref=e55]: Conecta con personas afines en un entorno seguro
+        - generic [ref=e56]:
+          - generic [ref=e57]:
+            - img [ref=e58]
+            - paragraph [ref=e60]: Seguro
+          - generic [ref=e61]:
+            - img [ref=e62]
+            - paragraph [ref=e67]: Comunidad
+          - generic [ref=e68]:
+            - img [ref=e69]
+            - paragraph [ref=e71]: IA Match
+      - generic [ref=e73]:
+        - tablist [ref=e74]:
+          - tab "Iniciar Sesión" [selected] [ref=e75] [cursor=pointer]
+          - tab "Registrarse" [ref=e76] [cursor=pointer]
+        - tabpanel "Iniciar Sesión" [ref=e77]:
+          - generic [ref=e78]:
+            - generic [ref=e79]:
+              - generic [ref=e80]: Correo electrónico
+              - textbox "Correo electrónico" [ref=e81]
+            - generic [ref=e82]:
+              - generic [ref=e83]: Contraseña
+              - textbox "Contraseña" [ref=e84]
+            - button "Iniciar Sesión" [ref=e85] [cursor=pointer]
+            - button "¿Olvidaste tu contraseña?" [ref=e87] [cursor=pointer]
   - region "Notifications (F8)":
     - list
-  - generic [ref=e4]:
-    - generic [ref=e5]:
-      - img [ref=e11]
-      - img [ref=e13]
-      - img [ref=e15]
-      - img [ref=e17]
-    - button "Volver al inicio" [ref=e23] [cursor=pointer]:
-      - img
-      - text: Volver al inicio
-    - generic [ref=e25]:
-      - generic [ref=e26]:
-        - generic [ref=e27]:
-          - generic [ref=e28]:
-            - img [ref=e29]
-            - img [ref=e32]
-          - heading "ComplicesConecta" [level=1] [ref=e34]
-        - heading "Encuentra tu cómplice perfecto" [level=3] [ref=e35]
-        - paragraph [ref=e36]: Conecta con personas que comparten tus intereses y valores
-        - generic [ref=e37]:
-          - generic [ref=e38]:
-            - img [ref=e39]
-            - paragraph [ref=e41]: Verificado
-          - generic [ref=e42]:
-            - img [ref=e43]
-            - paragraph [ref=e48]: Comunidad
-          - generic [ref=e49]:
-            - img [ref=e50]
-            - paragraph [ref=e52]: IA Match
-      - generic [ref=e54]:
-        - tablist [ref=e55]:
-          - tab "Iniciar Sesión" [selected] [ref=e56] [cursor=pointer]
-          - tab "Registrarse" [ref=e57] [cursor=pointer]
-        - tabpanel "Iniciar Sesión" [ref=e58]:
-          - generic [ref=e59]:
-            - generic [ref=e60]:
-              - generic [ref=e61]: Correo electrónico
-              - textbox "Correo electrónico" [ref=e62]
-            - generic [ref=e63]:
-              - generic [ref=e64]: Contraseña
-              - textbox "Contraseña" [ref=e65]
-            - button "Iniciar Sesión" [ref=e66] [cursor=pointer]
 ```
