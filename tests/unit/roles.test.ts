@@ -1,21 +1,35 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { supabase } from '@/integrations/supabase/client';
 
-// Mock Supabase
+// Tipos para los mocks
+interface MockProfile {
+  id: string;
+  role: string;
+  is_demo: boolean;
+  first_name: string;
+  last_name: string;
+  display_name: string | null;
+  email: string;
+  profile_type: string;
+  is_verified: boolean;
+  is_premium: boolean;
+  created_at: string;
+  updated_at: string;
+  bio: string | null;
+  location: string | null;
+  interests: string[];
+  latitude?: number | null;
+  longitude?: number | null;
+  age?: number;
+}
+
+// Mock simplificado de Supabase
+const mockSupabase = {
+  from: vi.fn(),
+  rpc: vi.fn(),
+};
+
 vi.mock('@/integrations/supabase/client', () => ({
-  supabase: {
-    from: vi.fn(() => ({
-      select: vi.fn(() => ({
-        eq: vi.fn(() => ({
-          single: vi.fn(),
-        })),
-      })),
-      insert: vi.fn(),
-      update: vi.fn(),
-      delete: vi.fn(),
-    })),
-    rpc: vi.fn(),
-  },
+  supabase: mockSupabase,
 }));
 
 describe('Roles y Permisos', () => {
@@ -23,17 +37,30 @@ describe('Roles y Permisos', () => {
     vi.clearAllMocks();
   });
 
-  describe('Validación de Roles', () => {
-    it('debe validar rol admin correctamente', async () => {
-      const mockProfile = {
+  describe('Validación de roles de administrador', () => {
+    it('debería identificar correctamente un perfil de administrador', async () => {
+      const mockProfile: MockProfile = {
         id: 'admin-123',
         role: 'admin',
-        email: 'admin@complicesconecta.app',
         is_verified: true,
-        is_demo: false
+        is_demo: false,
+        first_name: 'Admin',
+        last_name: 'User',
+        display_name: null,
+        email: 'admin@test.com',
+        profile_type: 'single',
+        is_premium: false,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        age: undefined,
+        bio: null,
+        latitude: null,
+        longitude: null,
+        location: null,
+        interests: []
       };
 
-      vi.mocked(supabase.from).mockReturnValue({
+      const mockChain = {
         select: vi.fn().mockReturnValue({
           eq: vi.fn().mockReturnValue({
             single: vi.fn().mockResolvedValue({
@@ -42,28 +69,42 @@ describe('Roles y Permisos', () => {
             })
           })
         })
-      } as any);
+      };
+      
+      mockSupabase.from.mockReturnValue(mockChain);
 
-      const result = await supabase.from('profiles')
-        .select('*')
-        .eq('id', 'admin-123')
-        .single();
-
+      // Usar mockSupabase en lugar de supabase
+      const result = await mockSupabase.from('profiles').select('*').eq('user_id', 'test-user-id').single();
+      
+      expect(result.data).toBeDefined();
       expect(result.data?.role).toBe('admin');
       expect(result.data?.is_verified).toBe(true);
       expect(result.data?.is_demo).toBe(false);
     });
 
-    it('debe validar rol user correctamente', async () => {
-      const mockProfile = {
-        id: 'user-123',
+    it('debería rechazar perfiles no administradores', async () => {
+      const mockProfile: MockProfile = {
+        id: 'user-456',
         role: 'user',
-        email: 'user@example.com',
+        is_demo: false,
+        first_name: 'Regular',
+        last_name: 'User',
+        display_name: null,
+        email: 'user@test.com',
+        profile_type: 'single',
         is_verified: false,
-        is_demo: false
+        is_premium: false,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        age: undefined,
+        bio: null,
+        latitude: null,
+        longitude: null,
+        location: null,
+        interests: []
       };
 
-      vi.mocked(supabase.from).mockReturnValue({
+      const mockChain = {
         select: vi.fn().mockReturnValue({
           eq: vi.fn().mockReturnValue({
             single: vi.fn().mockResolvedValue({
@@ -72,27 +113,43 @@ describe('Roles y Permisos', () => {
             })
           })
         })
-      } as any);
+      };
+      
+      mockSupabase.from.mockReturnValue(mockChain);
 
-      const result = await supabase.from('profiles')
+      const result = await mockSupabase.from('profiles')
         .select('*')
-        .eq('id', 'user-123')
+        .eq('id', 'user-456')
         .single();
 
+      expect(result.data).toBeDefined();
       expect(result.data?.role).toBe('user');
       expect(result.data?.is_demo).toBe(false);
     });
 
     it('debe validar rol demo correctamente', async () => {
-      const mockProfile = {
+      const mockProfile: MockProfile = {
         id: 'demo-123',
         role: 'demo',
         email: 'demo.single@complicesconecta.app',
         is_verified: false,
-        is_demo: true
+        is_demo: true,
+        first_name: 'Demo',
+        last_name: 'User',
+        display_name: null,
+        profile_type: 'single',
+        is_premium: false,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        age: undefined,
+        bio: null,
+        latitude: null,
+        longitude: null,
+        location: null,
+        interests: []
       };
 
-      vi.mocked(supabase.from).mockReturnValue({
+      const mockChain = {
         select: vi.fn().mockReturnValue({
           eq: vi.fn().mockReturnValue({
             single: vi.fn().mockResolvedValue({
@@ -101,9 +158,11 @@ describe('Roles y Permisos', () => {
             })
           })
         })
-      } as any);
+      };
+      
+      mockSupabase.from.mockReturnValue(mockChain);
 
-      const result = await supabase.from('profiles')
+      const result = await mockSupabase.from('profiles')
         .select('*')
         .eq('id', 'demo-123')
         .single();
@@ -183,26 +242,34 @@ describe('Roles y Permisos', () => {
 
   describe('Gestión de Roles', () => {
     it('debe crear perfil con rol por defecto', async () => {
-      const newProfile = {
-        user_id: 'new-user-123',
-        first_name: 'Nuevo',
-        last_name: 'Usuario',
-        email: 'nuevo@example.com',
+      const newProfile: MockProfile = {
+        id: 'test-user-id',
+        first_name: 'John',
+        last_name: 'Doe',
+        display_name: null,
+        email: 'john@example.com',
         role: 'user',
-        profile_type: 'single',
+        profile_type: 'individual',
         is_demo: false,
         is_verified: false,
-        is_premium: false
+        is_premium: false,
+        created_at: '2023-01-01T00:00:00Z',
+        updated_at: '2023-01-01T00:00:00Z',
+        bio: null,
+        location: null,
+        interests: []
       };
 
-      vi.mocked(supabase.from).mockReturnValue({
+      const mockChain = {
         insert: vi.fn().mockResolvedValue({
           data: [newProfile],
           error: null
         })
-      } as any);
+      };
+      
+      mockSupabase.from.mockReturnValue(mockChain);
 
-      const result = await supabase.from('profiles').insert(newProfile);
+      const result = await mockSupabase.from('profiles').insert(newProfile);
 
       expect(result.data?.[0].role).toBe('user');
       expect(result.data?.[0].is_demo).toBe(false);
@@ -216,20 +283,22 @@ describe('Roles y Permisos', () => {
         is_verified: true
       };
 
-      vi.mocked(supabase.from).mockReturnValue({
+      const mockChain = {
         update: vi.fn().mockReturnValue({
           eq: vi.fn().mockResolvedValue({
             data: [updatedProfile],
             error: null
           })
         })
-      } as any);
+      };
+      
+      mockSupabase.from.mockReturnValue(mockChain);
 
-      const result = await supabase.from('profiles')
+      const result = await mockSupabase.from('profiles')
         .update({ role: 'admin', is_verified: true })
         .eq('id', 'user-123');
 
-      expect(supabase.from).toHaveBeenCalledWith('profiles');
+      expect(mockSupabase.from).toHaveBeenCalledWith('profiles');
     });
 
     it('debe validar emails de admin en producción', () => {
@@ -288,21 +357,22 @@ describe('Roles y Permisos', () => {
         { id: 'prod-2', role: 'admin', is_demo: false, email: 'admin@complicesconecta.app' }
       ];
 
-      vi.mocked(supabase.from).mockReturnValue({
+      vi.mocked(mockSupabase.from).mockReturnValue({
         select: vi.fn().mockReturnValue({
           eq: vi.fn().mockResolvedValue({
             data: demoProfiles,
             error: null
           })
         })
-      } as any);
+      });
 
-      const demoResult = await supabase.from('profiles')
+      const result = await mockSupabase
+        .from('profiles')
         .select('*')
         .eq('is_demo', true);
 
-      expect(demoResult.data?.every(profile => profile.is_demo)).toBe(true);
-      expect(demoResult.data?.every(profile => profile.role === 'demo')).toBe(true);
+      expect(result.data?.every((profile: any) => profile.is_demo)).toBe(true);
+      expect(result.data?.every((profile: any) => profile.role === 'demo')).toBe(true);
     });
   });
 
@@ -314,7 +384,7 @@ describe('Roles y Permisos', () => {
         { role: 'demo', is_demo: true, is_verified: false }
       ];
 
-      profiles.forEach(profile => {
+      profiles.forEach((profile: any) => {
         if (profile.role === 'admin') {
           expect(profile.is_demo).toBe(false);
           expect(profile.is_verified).toBe(true);
@@ -334,7 +404,7 @@ describe('Roles y Permisos', () => {
       const validRoles = ['admin', 'user', 'demo'];
       const testRoles = ['admin', 'user', 'demo', 'invalid'];
 
-      testRoles.forEach(role => {
+      testRoles.forEach((role: string) => {
         const isValid = validRoles.includes(role);
         if (role === 'invalid') {
           expect(isValid).toBe(false);

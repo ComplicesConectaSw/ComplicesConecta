@@ -7,6 +7,8 @@ import './styles/text-overflow-fixes.css'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import { initSentry } from '@/lib/sentry'
 import { DebugInfo } from '@/debug'
+import { initWebVitalsMonitoring } from '@/utils/webVitals'
+import { initializeCriticalPreloading } from '@/utils/preloading'
 
 // Debug info for production
 console.log(' App starting...', {
@@ -31,6 +33,44 @@ try {
   }
 } catch (error) {
   console.error('❌ Sentry initialization failed:', error);
+}
+
+// Inicializar Web Vitals monitoring
+try {
+  const monitor = initWebVitalsMonitoring({
+    enableLogging: import.meta.env.MODE === 'development',
+    enableAnalytics: import.meta.env.MODE === 'production',
+    apiEndpoint: '/api/analytics/web-vitals',
+    sampleRate: 0.1 // 10% sampling en producción
+  });
+  monitor.init().then(() => {
+    console.log('✅ Web Vitals monitoring initialized');
+  }).catch((error) => {
+    console.error('❌ Web Vitals initialization failed:', error);
+  });
+} catch (error) {
+  console.error('❌ Web Vitals initialization failed:', error);
+}
+
+// Inicializar preloading crítico
+try {
+  initializeCriticalPreloading();
+  console.log('✅ Critical preloading initialized');
+} catch (error) {
+  console.error('❌ Critical preloading failed:', error);
+}
+
+// Registrar Service Worker
+if ('serviceWorker' in navigator && import.meta.env.MODE === 'production') {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then((registration) => {
+        console.log('✅ Service Worker registered:', registration);
+      })
+      .catch((error) => {
+        console.error('❌ Service Worker registration failed:', error);
+      });
+  });
 }
 
 const rootElement = document.getElementById("root");

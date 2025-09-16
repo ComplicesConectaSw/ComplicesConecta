@@ -65,11 +65,10 @@ export const ChatBubble = React.memo<ChatBubbleProps>(function ChatBubble({
   if (!reactions?.length && !onReact && !onReply && !isPrivate) {
     return (
       <SimpleChatBubble
+        id={id}
         message={message}
         isOwn={isOwn}
         timestamp={timestamp}
-        avatar={senderAvatar}
-        username={senderName}
         className={className}
       />
     );
