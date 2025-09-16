@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ChatUser, Message } from "@/pages/Chat";
-import { ChatWindowEnhanced } from "./ChatWindowEnhanced";
+import { ChatWindowEnhanced } from "@/components/chat/ChatWindowEnhanced";
 
 interface ChatWindowProps {
   chat: ChatUser;

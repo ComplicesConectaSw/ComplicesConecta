@@ -15,8 +15,7 @@ import {
   Calendar
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import Gallery from '@/components/profile/Gallery';
-import CoupleImageGallery from '@/components/profile/CoupleImageGallery';
+import { MainProfileCard } from '@/components/profile/MainProfileCard';
 import type { Tables } from '@/integrations/supabase/types';
 
 type ProfileType = 'single' | 'couple';
@@ -267,7 +266,17 @@ export const ProfileTabs: React.FC<ProfileTabsProps> = ({
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <Gallery userId={singleProfile.id} />
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center">
+                <span className="text-gray-500 text-sm">Foto 1</span>
+              </div>
+              <div className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center">
+                <span className="text-gray-500 text-sm">Foto 2</span>
+              </div>
+              <div className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center">
+                <span className="text-gray-500 text-sm">Foto 3</span>
+              </div>
+            </div>
           </CardContent>
         </Card>
       );
@@ -282,17 +291,17 @@ export const ProfileTabs: React.FC<ProfileTabsProps> = ({
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <CoupleImageGallery
-              coupleId={coupleProfile.id}
-              images={coupleProfile.couple_images || []}
-              onImagesUpdated={() => {}}
-              onError={() => {}}
-              currentPartner="partner1"
-              partnerNames={{
-                partner1: coupleProfile.partner1_first_name,
-                partner2: coupleProfile.partner2_first_name
-              }}
-            />
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="aspect-square bg-gradient-to-br from-pink-200 to-purple-200 rounded-lg flex items-center justify-center">
+                <span className="text-gray-600 text-sm">Pareja Foto 1</span>
+              </div>
+              <div className="aspect-square bg-gradient-to-br from-purple-200 to-blue-200 rounded-lg flex items-center justify-center">
+                <span className="text-gray-600 text-sm">Pareja Foto 2</span>
+              </div>
+              <div className="aspect-square bg-gradient-to-br from-blue-200 to-pink-200 rounded-lg flex items-center justify-center">
+                <span className="text-gray-600 text-sm">Pareja Foto 3</span>
+              </div>
+            </div>
           </CardContent>
         </Card>
       );

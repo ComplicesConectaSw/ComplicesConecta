@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useAnimation, useGlobalAnimationTriggers } from './AnimationProvider';
+import { useAnimation, useGlobalAnimationTriggers } from '@/components/animations/AnimationProvider';
 import { Heart, Star, MessageCircle, Trophy, AlertCircle, CheckCircle, X } from 'lucide-react';
 
 // Notification types
