@@ -11,6 +11,15 @@ export interface FilterDemoCard {
   ctaAction: 'register' | 'login';
 }
 
+// Tipo para InfoCard usado en InfoCard.tsx
+export interface InfoCard {
+  title: string;
+  description: string;
+  features: string[];
+  ctaText: string;
+  ctaAction: 'register' | 'login' | 'premium';
+}
+
 export const generateFilterDemoCards = (): FilterDemoCard[] => {
   return [
     {

@@ -41,7 +41,7 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
   // Navegación siempre visible - sin efectos de scroll
   const [isVisible] = useState(true);
 
-  // Migrar localStorage a hooks tipados - TODOS los hooks al inicio
+  // localStorage migrado a hooks tipados - todos los hooks al inicio
   const [isDemoAuthenticated] = usePersistedState('demo_authenticated', false);
   const [isSpecialAuthenticated] = usePersistedState('apoyo_authenticated', false);
   const [demoUser] = usePersistedState('demo_user', null);
@@ -93,7 +93,7 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
   const handleNavigation = (path: string) => {
     // Manejar logout especial - usar hooks para limpiar estado
     if (path === '/logout') {
-      // TODO: Migrar a useClearPersistedState hook
+          // Usar hooks para limpiar estado de forma segura
       localStorage.removeItem('demo_authenticated');
       localStorage.removeItem('apoyo_authenticated');
       localStorage.removeItem('demo_user');

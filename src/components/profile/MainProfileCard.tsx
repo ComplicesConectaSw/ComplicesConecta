@@ -260,6 +260,11 @@ export const MainProfileCard = ({
   );
 };
 
+<<<<<<< HEAD
 // Export aliases for compatibility
 export const ProfileCard = MainProfileCard;
 export default MainProfileCard;
+=======
+// Export alias for backward compatibility
+export { MainProfileCard as ProfileCard };
+>>>>>>> feature/todo-fixes-v2.9.0

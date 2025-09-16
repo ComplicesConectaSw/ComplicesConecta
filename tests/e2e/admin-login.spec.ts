@@ -6,14 +6,20 @@ test.describe('Login de Administrador', () => {
   });
 
   test('debe permitir login de admin con credenciales válidas', async ({ page }) => {
-    // Cambiar a modo login
-    await page.click('button[data-testid="toggle-auth-mode"]');
+    await page.waitForLoadState('networkidle');
+    
+    // Verificar que la página de auth cargó correctamente
+    await expect(page.locator('h3:has-text("ComplicesConecta")')).toBeVisible();
+    
+    // Asegurar que estamos en la tab "Iniciar Sesión"
+    const loginTab = page.locator('[role="tab"]:has-text("Iniciar Sesión")');
+    await expect(loginTab).toBeVisible();
     
     // Usar credenciales de admin
     await page.fill('input[type="email"]', 'complicesconectasw@outlook.es');
     await page.fill('input[type="password"]', 'admin123');
     
-    await page.click('button[type="submit"]');
+    await page.click('button:has-text("Iniciar Sesión")');
     
     // Verificar redirección al panel de admin
     await expect(page).toHaveURL(/\/admin/);
@@ -23,10 +29,19 @@ test.describe('Login de Administrador', () => {
   test('debe mostrar panel de administración completo', async ({ page }) => {
     // Login como admin
     await page.goto('/auth');
-    await page.click('button[data-testid="toggle-auth-mode"]');
+    await page.waitForLoadState('networkidle');
+    
+    // Verificar que la página de auth cargó correctamente
+    await expect(page.locator('h3:has-text("ComplicesConecta")')).toBeVisible();
+    
+    // Asegurar que estamos en la tab "Iniciar Sesión"
+    const loginTab = page.locator('[role="tab"]:has-text("Iniciar Sesión")');
+    await expect(loginTab).toBeVisible();
+    
+    // Llenar formulario de login
     await page.fill('input[type="email"]', 'complicesconectasw@outlook.es');
     await page.fill('input[type="password"]', 'admin123');
-    await page.click('button[type="submit"]');
+    await page.click('button:has-text("Iniciar Sesión")');
     
     await page.waitForURL(/\/admin/);
     
@@ -40,10 +55,19 @@ test.describe('Login de Administrador', () => {
   test('debe mostrar estadísticas de usuarios', async ({ page }) => {
     // Login como admin y navegar al panel
     await page.goto('/auth');
-    await page.click('button[data-testid="toggle-auth-mode"]');
+    await page.waitForLoadState('networkidle');
+    
+    // Verificar que la página de auth cargó correctamente
+    await expect(page.locator('h3:has-text("ComplicesConecta")')).toBeVisible();
+    
+    // Asegurar que estamos en la tab "Iniciar Sesión"
+    const loginTab = page.locator('[role="tab"]:has-text("Iniciar Sesión")');
+    await expect(loginTab).toBeVisible();
+    
+    // Llenar formulario de login
     await page.fill('input[type="email"]', 'complicesconectasw@outlook.es');
     await page.fill('input[type="password"]', 'admin123');
-    await page.click('button[type="submit"]');
+    await page.click('button:has-text("Iniciar Sesión")');
     
     await page.waitForURL(/\/admin/);
     
@@ -57,10 +81,19 @@ test.describe('Login de Administrador', () => {
   test('debe permitir gestión de usuarios', async ({ page }) => {
     // Login como admin
     await page.goto('/auth');
-    await page.click('button[data-testid="toggle-auth-mode"]');
+    await page.waitForLoadState('networkidle');
+    
+    // Verificar que la página de auth cargó correctamente
+    await expect(page.locator('h3:has-text("ComplicesConecta")')).toBeVisible();
+    
+    // Asegurar que estamos en la tab "Iniciar Sesión"
+    const loginTab = page.locator('[role="tab"]:has-text("Iniciar Sesión")');
+    await expect(loginTab).toBeVisible();
+    
+    // Llenar formulario de login
     await page.fill('input[type="email"]', 'complicesconectasw@outlook.es');
     await page.fill('input[type="password"]', 'admin123');
-    await page.click('button[type="submit"]');
+    await page.click('button:has-text("Iniciar Sesión")');
     
     await page.waitForURL(/\/admin/);
     
@@ -79,10 +112,19 @@ test.describe('Login de Administrador', () => {
   test('debe permitir moderación de contenido', async ({ page }) => {
     // Login como admin
     await page.goto('/auth');
-    await page.click('button[data-testid="toggle-auth-mode"]');
+    await page.waitForLoadState('networkidle');
+    
+    // Verificar que la página de auth cargó correctamente
+    await expect(page.locator('h3:has-text("ComplicesConecta")')).toBeVisible();
+    
+    // Asegurar que estamos en la tab "Iniciar Sesión"
+    const loginTab = page.locator('[role="tab"]:has-text("Iniciar Sesión")');
+    await expect(loginTab).toBeVisible();
+    
+    // Llenar formulario de login
     await page.fill('input[type="email"]', 'complicesconectasw@outlook.es');
     await page.fill('input[type="password"]', 'admin123');
-    await page.click('button[type="submit"]');
+    await page.click('button:has-text("Iniciar Sesión")');
     
     await page.waitForURL(/\/admin/);
     
@@ -97,10 +139,19 @@ test.describe('Login de Administrador', () => {
   test('debe denegar acceso a usuarios no admin', async ({ page }) => {
     // Login como usuario regular
     await page.goto('/auth');
-    await page.click('button[data-testid="toggle-auth-mode"]');
+    await page.waitForLoadState('networkidle');
+    
+    // Verificar que la página de auth cargó correctamente
+    await expect(page.locator('h3:has-text("ComplicesConecta")')).toBeVisible();
+    
+    // Asegurar que estamos en la tab "Iniciar Sesión"
+    const loginTab = page.locator('[role="tab"]:has-text("Iniciar Sesión")');
+    await expect(loginTab).toBeVisible();
+    
+    // Llenar formulario de login
     await page.fill('input[type="email"]', 'user@example.com');
     await page.fill('input[type="password"]', 'password123');
-    await page.click('button[type="submit"]');
+    await page.click('button:has-text("Iniciar Sesión")');
     
     // Intentar acceder al panel de admin directamente
     await page.goto('/admin');
@@ -113,10 +164,19 @@ test.describe('Login de Administrador', () => {
   test('debe manejar logout de admin correctamente', async ({ page }) => {
     // Login como admin
     await page.goto('/auth');
-    await page.click('button[data-testid="toggle-auth-mode"]');
+    await page.waitForLoadState('networkidle');
+    
+    // Verificar que la página de auth cargó correctamente
+    await expect(page.locator('h3:has-text("ComplicesConecta")')).toBeVisible();
+    
+    // Asegurar que estamos en la tab "Iniciar Sesión"
+    const loginTab = page.locator('[role="tab"]:has-text("Iniciar Sesión")');
+    await expect(loginTab).toBeVisible();
+    
+    // Llenar formulario de login
     await page.fill('input[type="email"]', 'complicesconectasw@outlook.es');
     await page.fill('input[type="password"]', 'admin123');
-    await page.click('button[type="submit"]');
+    await page.click('button:has-text("Iniciar Sesión")');
     
     await page.waitForURL(/\/admin/);
     
@@ -131,10 +191,19 @@ test.describe('Login de Administrador', () => {
   test('debe mostrar logs de actividad admin', async ({ page }) => {
     // Login como admin
     await page.goto('/auth');
-    await page.click('button[data-testid="toggle-auth-mode"]');
+    await page.waitForLoadState('networkidle');
+    
+    // Verificar que la página de auth cargó correctamente
+    await expect(page.locator('h3:has-text("ComplicesConecta")')).toBeVisible();
+    
+    // Asegurar que estamos en la tab "Iniciar Sesión"
+    const loginTab = page.locator('[role="tab"]:has-text("Iniciar Sesión")');
+    await expect(loginTab).toBeVisible();
+    
+    // Llenar formulario de login
     await page.fill('input[type="email"]', 'complicesconectasw@outlook.es');
     await page.fill('input[type="password"]', 'admin123');
-    await page.click('button[type="submit"]');
+    await page.click('button:has-text("Iniciar Sesión")');
     
     await page.waitForURL(/\/admin/);
     
@@ -149,10 +218,19 @@ test.describe('Login de Administrador', () => {
   test('debe validar permisos específicos de admin', async ({ page }) => {
     // Login como admin
     await page.goto('/auth');
-    await page.click('button[data-testid="toggle-auth-mode"]');
+    await page.waitForLoadState('networkidle');
+    
+    // Verificar que la página de auth cargó correctamente
+    await expect(page.locator('h3:has-text("ComplicesConecta")')).toBeVisible();
+    
+    // Asegurar que estamos en la tab "Iniciar Sesión"
+    const loginTab = page.locator('[role="tab"]:has-text("Iniciar Sesión")');
+    await expect(loginTab).toBeVisible();
+    
+    // Llenar formulario de login
     await page.fill('input[type="email"]', 'complicesconectasw@outlook.es');
     await page.fill('input[type="password"]', 'admin123');
-    await page.click('button[type="submit"]');
+    await page.click('button:has-text("Iniciar Sesión")');
     
     await page.waitForURL(/\/admin/);
     
@@ -165,10 +243,19 @@ test.describe('Login de Administrador', () => {
 
   test('debe manejar errores de autenticación admin', async ({ page }) => {
     // Intentar login con credenciales incorrectas
-    await page.click('button[data-testid="toggle-auth-mode"]');
+    await page.waitForLoadState('networkidle');
+    
+    // Verificar que la página de auth cargó correctamente
+    await expect(page.locator('h3:has-text("ComplicesConecta")')).toBeVisible();
+    
+    // Asegurar que estamos en la tab "Iniciar Sesión"
+    const loginTab = page.locator('[role="tab"]:has-text("Iniciar Sesión")');
+    await expect(loginTab).toBeVisible();
+    
+    // Llenar formulario de login
     await page.fill('input[type="email"]', 'complicesconectasw@outlook.es');
     await page.fill('input[type="password"]', 'wrongpassword');
-    await page.click('button[type="submit"]');
+    await page.click('button:has-text("Iniciar Sesión")');
     
     // Verificar mensaje de error
     await expect(page.locator('[data-testid="auth-error"]')).toContainText('Credenciales incorrectas');

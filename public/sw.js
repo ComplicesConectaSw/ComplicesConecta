@@ -1,25 +1,47 @@
-// Service Worker para Push Notifications - ComplicesConecta
-const CACHE_NAME = 'complicesconecta-v1';
-const urlsToCache = [
+// Service Worker Avanzado - ComplicesConecta v2.9.0
+const CACHE_NAME = 'complicesconecta-v2.9.0';
+const STATIC_CACHE = 'static-v2.9.0';
+const DYNAMIC_CACHE = 'dynamic-v2.9.0';
+const IMAGE_CACHE = 'images-v2.9.0';
+
+// Recursos estáticos críticos
+const STATIC_ASSETS = [
   '/',
   '/compliceslogo.png',
-  '/favicon.ico'
+  '/favicon.ico',
+  '/placeholder.svg'
 ];
+
+// Recursos dinámicos importantes
+const DYNAMIC_ASSETS = [
+  '/discover',
+  '/matches',
+  '/chat',
+  '/profile-single',
+  '/profile-couple'
+];
+
+// Patrones de cache
+const CACHE_STRATEGIES = {
+  static: /\.(js|css|woff2?|ttf|eot)$/,
+  images: /\.(png|jpg|jpeg|svg|webp|avif|gif)$/,
+  api: /\/api\//,
+  pages: /^\/(?!api)/
+};
 
 // Install event - cache resources
 self.addEventListener('install', (event) => {
   console.log('🔧 Service Worker instalando...');
   
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => {
-        console.log('📦 Cache abierto');
-        return cache.addAll(urlsToCache);
-      })
-      .then(() => {
-        console.log('✅ Service Worker instalado');
-        return self.skipWaiting();
-      })
+    Promise.all([
+      caches.open(STATIC_CACHE).then(cache => cache.addAll(STATIC_ASSETS)),
+      caches.open(DYNAMIC_CACHE).then(cache => cache.addAll(DYNAMIC_ASSETS)),
+      caches.open(IMAGE_CACHE)
+    ]).then(() => {
+      console.log('✅ Service Worker instalado con cache avanzado');
+      return self.skipWaiting();
+    })
   );
 });
 
@@ -27,18 +49,20 @@ self.addEventListener('install', (event) => {
 self.addEventListener('activate', (event) => {
   console.log('🚀 Service Worker activando...');
   
+  const currentCaches = [STATIC_CACHE, DYNAMIC_CACHE, IMAGE_CACHE];
+  
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
+          if (!currentCaches.includes(cacheName)) {
             console.log('🗑️ Eliminando cache antiguo:', cacheName);
             return caches.delete(cacheName);
           }
         })
       );
     }).then(() => {
-      console.log('✅ Service Worker activado');
+      console.log('✅ Service Worker activado con limpieza avanzada');
       return self.clients.claim();
     })
   );
@@ -190,32 +214,88 @@ async function doBackgroundSync() {
   }
 }
 
-// Fetch event - serve from cache when offline
+// Estrategias de cache avanzadas
+async function cacheFirst(request, cacheName) {
+  const cache = await caches.open(cacheName);
+  const cached = await cache.match(request);
+  return cached || fetch(request).then(response => {
+    cache.put(request, response.clone());
+    return response;
+  });
+}
+
+async function networkFirst(request, cacheName) {
+  const cache = await caches.open(cacheName);
+  try {
+    const response = await fetch(request);
+    cache.put(request, response.clone());
+    return response;
+  } catch (error) {
+    const cached = await cache.match(request);
+    return cached || new Response('Offline', { status: 503 });
+  }
+}
+
+async function staleWhileRevalidate(request, cacheName) {
+  const cache = await caches.open(cacheName);
+  const cached = await cache.match(request);
+  
+  const fetchPromise = fetch(request).then(response => {
+    cache.put(request, response.clone());
+    return response;
+  });
+  
+  return cached || fetchPromise;
+}
+
+// Fetch event con estrategias avanzadas
 self.addEventListener('fetch', (event) => {
-  // Only handle GET requests
-  if (event.request.method !== 'GET') {
-    return;
-  }
+  if (event.request.method !== 'GET') return;
+  if (!event.request.url.startsWith(self.location.origin)) return;
 
-  // Skip cross-origin requests
-  if (!event.request.url.startsWith(self.location.origin)) {
-    return;
+  const url = new URL(event.request.url);
+  
+  // Estrategia por tipo de recurso
+  if (CACHE_STRATEGIES.static.test(url.pathname)) {
+    // Recursos estáticos: Cache First
+    event.respondWith(cacheFirst(event.request, STATIC_CACHE));
+  } else if (CACHE_STRATEGIES.images.test(url.pathname)) {
+    // Imágenes: Cache First con compresión
+    event.respondWith(handleImageRequest(event.request));
+  } else if (CACHE_STRATEGIES.api.test(url.pathname)) {
+    // API: Network First
+    event.respondWith(networkFirst(event.request, DYNAMIC_CACHE));
+  } else if (CACHE_STRATEGIES.pages.test(url.pathname)) {
+    // Páginas: Stale While Revalidate
+    event.respondWith(staleWhileRevalidate(event.request, DYNAMIC_CACHE));
+  } else {
+    // Default: Network First
+    event.respondWith(networkFirst(event.request, DYNAMIC_CACHE));
   }
-
-  event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        // Return cached version or fetch from network
-        return response || fetch(event.request);
-      })
-      .catch(() => {
-        // Return offline page for navigation requests
-        if (event.request.mode === 'navigate') {
-          return caches.match('/');
-        }
-      })
-  );
 });
+
+// Manejo optimizado de imágenes
+async function handleImageRequest(request) {
+  const cache = await caches.open(IMAGE_CACHE);
+  const cached = await cache.match(request);
+  
+  if (cached) return cached;
+  
+  try {
+    const response = await fetch(request);
+    
+    // Solo cachear imágenes exitosas
+    if (response.ok) {
+      cache.put(request, response.clone());
+    }
+    
+    return response;
+  } catch (error) {
+    // Retornar placeholder en caso de error
+    return cache.match('/placeholder.svg') || 
+           new Response('', { status: 404 });
+  }
+}
 
 // Handle message from main thread
 self.addEventListener('message', (event) => {
@@ -226,4 +306,4 @@ self.addEventListener('message', (event) => {
   }
 });
 
-console.log('🎯 Service Worker loaded - ComplicesConecta v2.7.0');
+console.log('🎯 Service Worker Avanzado loaded - ComplicesConecta v2.9.0');

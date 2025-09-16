@@ -103,6 +103,26 @@ export interface Database {
           decided_at?: string | null
         }
       }
+      chat_messages: {
+        Row: {
+          id: string
+          content: string
+          user_id: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          content: string
+          user_id: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          content?: string
+          user_id?: string
+          created_at?: string
+        }
+      }
       messages: {
         Row: {
           id: string
