@@ -1,35 +1,5 @@
 {
 	"appId": "com.complicesconecta.app",
 	"appName": "ComplicesConecta",
-	"webDir": "dist",
-	"plugins": {
-		"StatusBar": {
-			"style": "dark",
-			"backgroundColor": "#1a1a2e"
-		},
-		"SplashScreen": {
-			"launchShowDuration": 2000,
-			"backgroundColor": "#1a1a2e",
-			"androidSplashResourceName": "splash",
-			"showSpinner": false
-		},
-		"Keyboard": {
-			"resize": "body",
-			"style": "dark",
-			"resizeOnFullScreen": true
-		}
-	},
-	"android": {
-		"allowMixedContent": true,
-		"captureInput": true,
-		"webContentsDebuggingEnabled": true,
-		"loggingBehavior": "debug",
-		"appendUserAgent": "ComplicesConecta/2.9.0",
-		"backgroundColor": "#1a1a2e"
-	},
-	"server": {
-		"androidScheme": "https",
-		"hostname": "localhost",
-		"iosScheme": "capacitor"
-	}
+	"webDir": "dist"
 }

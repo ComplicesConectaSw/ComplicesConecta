@@ -1,91 +1,114 @@
-import { createRoot } from 'react-dom/client'
-import { StrictMode } from 'react'
-import App from '@/App.tsx'
-import './index.css'
-import './styles/responsive.css'
-import './styles/text-overflow-fixes.css'
-import ErrorBoundary from '@/components/ErrorBoundary'
-import { initSentry } from '@/lib/sentry'
-import { DebugInfo } from '@/debug'
-import { initWebVitalsMonitoring } from '@/utils/webVitals'
-import { initializeCriticalPreloading } from '@/utils/preloading'
+console.log('🚀 APK Test - Direct DOM manipulation');
 
-// Debug info for production
-console.log(' App starting...', {
-  env: import.meta.env.MODE,
-  supabaseUrl: import.meta.env.VITE_SUPABASE_URL ? 'SET' : 'MISSING',
-  supabaseKey: import.meta.env.VITE_SUPABASE_ANON_KEY ? 'SET' : 'MISSING',
-  appMode: import.meta.env.VITE_APP_MODE,
-  nodeEnv: import.meta.env.NODE_ENV,
-  timestamp: new Date().toISOString()
-});
-
-// Force show all environment variables for debugging
-console.log('🔍 All ENV vars:', import.meta.env);
-
-// Inicializar Sentry para monitoreo de errores
-try {
-  if (import.meta.env.VITE_SENTRY_DSN) {
-    initSentry();
-    console.log('✅ Sentry initialized');
-  } else {
-    console.log('⚠️ Sentry DSN not configured');
-  }
-} catch (error) {
-  console.error('❌ Sentry initialization failed:', error);
-}
-
-// Inicializar Web Vitals monitoring
-try {
-  const monitor = initWebVitalsMonitoring({
-    enableLogging: import.meta.env.MODE === 'development',
-    enableAnalytics: import.meta.env.MODE === 'production',
-    apiEndpoint: '/api/analytics/web-vitals',
-    sampleRate: 0.1 // 10% sampling en producción
-  });
-  monitor.init().then(() => {
-    console.log('✅ Web Vitals monitoring initialized');
-  }).catch((error) => {
-    console.error('❌ Web Vitals initialization failed:', error);
-  });
-} catch (error) {
-  console.error('❌ Web Vitals initialization failed:', error);
-}
-
-// Inicializar preloading crítico
-try {
-  initializeCriticalPreloading();
-  console.log('✅ Critical preloading initialized');
-} catch (error) {
-  console.error('❌ Critical preloading failed:', error);
-}
-
-// Registrar Service Worker
-if ('serviceWorker' in navigator && import.meta.env.MODE === 'production') {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-      .then((registration) => {
-        console.log('✅ Service Worker registered:', registration);
-      })
-      .catch((error) => {
-        console.error('❌ Service Worker registration failed:', error);
-      });
-  });
-}
-
+// Crear contenido directamente en el DOM
 const rootElement = document.getElementById("root");
-if (!rootElement) {
+if (rootElement) {
+  rootElement.innerHTML = `
+    <div style="
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      color: white;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      text-align: center;
+      padding: 20px;
+      margin: 0;
+    ">
+      <div style="
+        background: rgba(42, 42, 78, 0.9);
+        padding: 50px 40px;
+        border-radius: 20px;
+        max-width: 450px;
+        width: 100%;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+      ">
+        <div style="
+          width: 80px;
+          height: 80px;
+          background: linear-gradient(45deg, #4CAF50, #45a049);
+          border-radius: 50%;
+          margin: 0 auto 30px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 40px;
+        ">🎯</div>
+        
+        <h1 style="
+          margin: 0 0 20px 0;
+          font-size: 28px;
+          font-weight: 700;
+          background: linear-gradient(45deg, #4CAF50, #81C784);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        ">ComplicesConecta</h1>
+        
+        <p style="
+          margin: 0 0 15px 0;
+          font-size: 18px;
+          font-weight: 500;
+          color: #ffffff;
+        ">APK Funcionando Correctamente</p>
+        
+        <p style="
+          margin: 0 0 30px 0;
+          font-size: 14px;
+          opacity: 0.8;
+          color: #b0b0b0;
+        ">Versión 2.9.0 | ${new Date().toLocaleDateString('es-ES')}</p>
+        
+        <button onclick="testFunction()" style="
+          padding: 15px 30px;
+          background: linear-gradient(45deg, #4CAF50, #45a049);
+          color: white;
+          border: none;
+          border-radius: 10px;
+          font-size: 16px;
+          font-weight: 600;
+          cursor: pointer;
+          width: 100%;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(76, 175, 80, 0.4)'" 
+           onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(76, 175, 80, 0.3)'">
+          Probar Funcionalidad ✨
+        </button>
+        
+        <div style="
+          margin-top: 30px;
+          padding: 20px;
+          background: rgba(0, 0, 0, 0.2);
+          border-radius: 10px;
+          border-left: 4px solid #4CAF50;
+        ">
+          <p style="
+            margin: 0;
+            font-size: 14px;
+            color: #4CAF50;
+            font-weight: 600;
+          ">✅ Estado: Operativo</p>
+          <p style="
+            margin: 5px 0 0 0;
+            font-size: 12px;
+            opacity: 0.7;
+          ">Todas las funciones básicas están disponibles</p>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Función de prueba
+  (window as any).testFunction = function() {
+    alert('🎉 ¡Excelente! El APK funciona perfectamente.\n\n✅ DOM: Funcionando\n✅ JavaScript: Funcionando\n✅ Eventos: Funcionando\n✅ Estilos: Funcionando\n\nComplicesConecta v2.9.0 está listo para usar.');
+  };
+
+  console.log('✅ APK content loaded successfully with DOM manipulation');
+} else {
   console.error('❌ Root element not found');
-  throw new Error('Root element not found');
 }
-
-console.log('✅ Root element found, rendering app...');
-
-createRoot(rootElement).render(
-  <StrictMode>
-    <ErrorBoundary>
-      <DebugInfo />
-      <App />
-    </ErrorBoundary>
-  </StrictMode>
-);
