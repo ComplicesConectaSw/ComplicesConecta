@@ -22,7 +22,7 @@ export const HCaptchaExample: React.FC = () => {
   const HCAPTCHA_SITE_KEY = import.meta.env.VITE_HCAPTCHA_SITE_KEY || '10000000-ffff-ffff-ffff-000000000001';
 
   const handleVerify = (captchaToken: string, isValid: boolean) => {
-    logger.info('Verificación hCaptcha:', { token: captchaToken, valid: isValid });
+    logger.info('Verificación hCaptcha:', { token: captchaToken.substring(0, 10) + '...', valid: isValid });
     
     if (isValid) {
       setToken(captchaToken);
@@ -36,14 +36,14 @@ export const HCaptchaExample: React.FC = () => {
   };
 
   const handleError = (errorMessage: string) => {
-    logger.error('Error hCaptcha:', errorMessage);
+    logger.error('Error hCaptcha:', { error: errorMessage });
     setError(`Error: ${errorMessage}`);
     setIsVerified(false);
     setToken('');
   };
 
   const handleExpire = () => {
-    logger.info('hCaptcha expirado');
+    logger.info('hCaptcha expirado', {});
     setIsVerified(false);
     setToken('');
     setError('La verificación ha expirado. Por favor, verifica nuevamente.');
@@ -60,7 +60,7 @@ export const HCaptchaExample: React.FC = () => {
     try {
       // Aquí harías la llamada a tu API para procesar el formulario
       // La API debe verificar el token en el servidor
-      logger.info('Enviando formulario con token:', token);
+      logger.info('Enviando formulario con token:', { token: token.substring(0, 10) + '...' });
       
       // Simulación de envío
       await new Promise(resolve => setTimeout(resolve, 2000));
@@ -68,7 +68,7 @@ export const HCaptchaExample: React.FC = () => {
       alert('¡Formulario enviado exitosamente!');
       
     } catch (error) {
-      logger.error('Error enviando formulario:', error);
+      logger.error('Error enviando formulario:', { error });
       setError('Error al enviar el formulario');
     } finally {
       setIsSubmitting(false);

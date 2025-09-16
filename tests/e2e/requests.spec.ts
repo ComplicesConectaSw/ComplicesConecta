@@ -4,11 +4,22 @@ test.describe('Sistema de Solicitudes', () => {
   test.beforeEach(async ({ page }) => {
     // Login como usuario para acceder a solicitudes
     await page.goto('/auth');
-    await page.click('button[data-testid="toggle-auth-mode"]');
-    await page.fill('input[type="email"]', 'user@example.com');
-    await page.fill('input[type="password"]', 'password123');
-    await page.click('button[type="submit"]');
-    await page.waitForURL(/\/dashboard/);
+    await page.waitForLoadState('networkidle');
+    
+    // Verificar que la página de auth cargó correctamente
+    await expect(page.locator('h3:has-text("ComplicesConecta")')).toBeVisible();
+    
+    // Asegurar que estamos en la tab "Iniciar Sesión"
+    const loginTab = page.locator('[role="tab"]:has-text("Iniciar Sesión")');
+    await expect(loginTab).toBeVisible();
+    
+    // Llenar formulario de login
+    await page.fill('input[type="email"]', 'single@demo.com');
+    await page.fill('input[type="password"]', 'demo123');
+    await page.click('button:has-text("Iniciar Sesión")');
+    
+    // Esperar redirección exitosa
+    await page.waitForURL(/\/(profile-single|profile-couple|discover)/, { timeout: 30000 });
   });
 
   test('debe mostrar página de solicitudes', async ({ page }) => {

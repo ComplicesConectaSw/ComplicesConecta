@@ -107,12 +107,17 @@ test.describe('Registro de Usuario', () => {
   });
 
   test('debe alternar entre login y registro', async ({ page }) => {
-    // Verificar que está en modo registro por defecto
-    await expect(page.locator('button[data-testid="toggle-auth-mode"]')).toContainText('¿Ya tienes cuenta?');
+    // Verificar que el sistema de tabs está disponible
+    await expect(page.locator('[role="tablist"]')).toBeVisible();
     
-    // Cambiar a modo login
-    await page.click('button[data-testid="toggle-auth-mode"]');
-    await expect(page.locator('button[data-testid="toggle-auth-mode"]')).toContainText('¿No tienes cuenta?');
+    // Verificar tab de registro
+    const registerTab = page.locator('[role="tab"]:has-text("Registrarse")');
+    await expect(registerTab).toBeVisible();
+    await registerTab.click();
+    
+    // Verificar tab de login
+    const loginTab = page.locator('[role="tab"]:has-text("Iniciar Sesión")');
+    await expect(loginTab).toBeVisible();
     
     // Verificar que los campos de registro se ocultan
     await expect(page.locator('input[name="firstName"]')).not.toBeVisible();

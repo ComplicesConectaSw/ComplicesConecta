@@ -23,6 +23,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { isAuthenticated, user } = useAuth();
+  const userIsAuthenticated = isAuthenticated();
 
   const navItems = [
     {
@@ -96,7 +97,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
   };
 
   const handleNavigation = (item: typeof navItems[0]) => {
-    if (item.requiresAuth && !isAuthenticated) {
+    if (item.requiresAuth && !userIsAuthenticated) {
       navigate('/auth');
       return;
     }
@@ -123,7 +124,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = isActivePath(item.path);
-              const showItem = !item.requiresAuth || isAuthenticated;
+              const showItem = !item.requiresAuth || userIsAuthenticated;
 
               if (!showItem) return null;
 
@@ -152,7 +153,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                   )}
                   
                   {/* Auth required badge for non-authenticated users */}
-                  {item.requiresAuth && !isAuthenticated && (
+                  {item.requiresAuth && !userIsAuthenticated && showItem && (
                     <Badge variant="secondary" className="ml-1 text-xs">
                       <Crown className="h-3 w-3" />
                     </Badge>
@@ -164,7 +165,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
 
           {/* User Actions */}
           <div className="flex items-center space-x-2">
-            {isAuthenticated ? (
+            {userIsAuthenticated ? (
               <Button
                 variant="ghost"
                 size="sm"

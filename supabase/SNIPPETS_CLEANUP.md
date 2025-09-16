@@ -87,3 +87,10 @@ END $$;
 **Estado:** ✅ LIMPIEZA TÉCNICA COMPLETADA  
 **Pendiente:** Solo limpieza manual en Supabase Dashboard  
 **Impacto:** Ninguno en funcionalidad del proyecto
+
+---
+
+### 📋 Pendiente
+- Creación de tests robustos de lint y type-check
+- Optimizaciones de performance  
+- Feedback de usuarios

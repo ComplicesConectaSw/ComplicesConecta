@@ -271,6 +271,7 @@ CREATE INDEX IF NOT EXISTS idx_user_interests_user ON user_interests(user_id);
 
 -- Crear tabla couple_photos (dependiente de couple_profiles)
 -- NOTA: Esta tabla requiere que couple_profiles exista primero
+<<<<<<< HEAD
 DO $$
 BEGIN
     IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'couple_profiles') THEN
@@ -294,6 +295,38 @@ BEGIN
         CREATE INDEX IF NOT EXISTS idx_couple_photos_private ON couple_photos(is_private);
         CREATE INDEX IF NOT EXISTS idx_couple_photos_partner ON couple_photos(partner_type);
 END $$;
+=======
+-- DESHABILITADO: La tabla couple_profiles no existe en el esquema actual
+-- DO $$
+-- BEGIN
+--     IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'couple_profiles') THEN
+--         CREATE TABLE IF NOT EXISTS couple_photos (
+--             id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+--             couple_id UUID REFERENCES couple_profiles(id) ON DELETE CASCADE,
+--             image_url TEXT NOT NULL,
+--             partner_type VARCHAR(20) CHECK (partner_type IN ('partner1', 'partner2', 'couple', 'both')),
+--             is_main BOOLEAN DEFAULT FALSE,
+--             is_private BOOLEAN DEFAULT FALSE,
+--             is_verified BOOLEAN DEFAULT FALSE,
+--             upload_order INTEGER DEFAULT 1,
+--             metadata JSONB,
+--             created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+--             updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+--         );
+--     END IF;
+-- END $$;
+
+-- Índices para optimización (solo si la tabla existe)
+-- DESHABILITADO: Tabla couple_photos no se crea porque couple_profiles no existe
+-- DO $$
+-- BEGIN
+--     IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'couple_photos') THEN
+--         CREATE INDEX IF NOT EXISTS idx_couple_photos_couple ON couple_photos(couple_id);
+--         CREATE INDEX IF NOT EXISTS idx_couple_photos_main ON couple_photos(is_main);
+--         CREATE INDEX IF NOT EXISTS idx_couple_photos_partner ON couple_photos(partner_type);
+--     END IF;
+-- END $$;
+>>>>>>> feature/todo-fixes-v2.9.0
 
 -- =====================================================
 -- 5. CHAT TIEMPO REAL (YA INCLUIDO EN ESQUEMA BASE)
@@ -387,7 +420,7 @@ ALTER TABLE couple_profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE interest_categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE interests ENABLE ROW LEVEL SECURITY;
 ALTER TABLE user_interests ENABLE ROW LEVEL SECURITY;
-ALTER TABLE couple_photos ENABLE ROW LEVEL SECURITY;
+-- ALTER TABLE couple_photos ENABLE ROW LEVEL SECURITY; -- Tabla couple_photos no existe
 ALTER TABLE tokens ENABLE ROW LEVEL SECURITY;
 ALTER TABLE token_transactions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE token_packages ENABLE ROW LEVEL SECURITY;
@@ -397,14 +430,14 @@ ALTER TABLE token_packages ENABLE ROW LEVEL SECURITY;
 -- =====================================================
 
 -- Políticas básicas para acceso público a categorías e intereses
-CREATE POLICY "Public read access for interest_categories" ON interest_categories FOR SELECT USING (is_active = true);
-CREATE POLICY "Public read access for interests" ON interests FOR SELECT USING (is_active = true);
-CREATE POLICY "Public read access for token_packages" ON token_packages FOR SELECT USING (is_active = true);
+-- CREATE POLICY "Public read access for interest_categories" ON interest_categories FOR SELECT USING (is_active = true);
+-- CREATE POLICY "Public read access for interests" ON interests FOR SELECT USING (is_active = true);
+-- CREATE POLICY "Public read access for token_packages" ON token_packages FOR SELECT USING (is_active = true);
 
 -- Políticas para usuarios autenticados
 CREATE POLICY "Users can view own data" ON user_roles FOR SELECT USING (user_id = auth.uid());
 CREATE POLICY "Users can view own invitations" ON invitations FOR SELECT USING (from_profile = auth.uid() OR to_profile = auth.uid());
-CREATE POLICY "Users can view own couple profile" ON couple_profiles FOR SELECT USING (user_id = auth.uid());
+-- CREATE POLICY "Users can view own couple profile" ON couple_profiles FOR SELECT USING (user_id = auth.uid()); -- Columna user_id no existe en couple_profiles
 -- CREATE POLICY "Users can view own photos" ON couple_photos FOR SELECT USING (couple_profile_id IN (SELECT id FROM couple_profiles WHERE user_id = auth.uid())); -- Política comentada hasta que couple_photos exista
 CREATE POLICY "Users can view own interests" ON user_interests FOR SELECT USING (user_id = auth.uid());
 CREATE POLICY "Users can view own tokens" ON tokens FOR SELECT USING (user_id = auth.uid());
