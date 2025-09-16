@@ -1,44 +1,48 @@
-// Compatibilidad con WebViews antiguas - evitar imports React complejos
+// Carga completa de React para APK nativo
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import App from '@/App.tsx'
 import './index.css'
 import './styles/responsive.css'
 import './styles/text-overflow-fixes.css'
 
-console.log('🚀 ComplicesConecta APK starting...');
+console.log('🚀 ComplicesConecta APK - Carga Completa Iniciando...');
 
-// Detectar capacidades del WebView
-function detectWebViewCapabilities() {
-  const userAgent = navigator.userAgent;
-  const isAndroid = /Android/.test(userAgent);
-  const chromeVersion = userAgent.match(/Chrome\/(\d+)/);
-  const webViewVersion = chromeVersion ? parseInt(chromeVersion[1]) : 0;
-  
-  console.log('📱 Platform:', isAndroid ? 'Android' : 'Other');
-  console.log('🌐 WebView Chrome version:', webViewVersion);
-  
-  return {
-    isAndroid,
-    webViewVersion,
-    supportsModernReact: webViewVersion >= 60,
-    supportsES6: webViewVersion >= 51
-  };
-}
-
-const capabilities = detectWebViewCapabilities();
-
-// Función para cargar la aplicación principal
+// Función para cargar la aplicación completa de React
 async function loadMainApp() {
   try {
-    console.log('📦 Attempting to load main app components...');
+    console.log('📦 Loading full ComplicesConecta React application...');
     
-    // Simular carga por 2 segundos y luego fallar intencionalmente
-    // para mostrar la aplicación básica funcional
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    const rootElement = document.getElementById("root");
+    if (!rootElement) {
+      throw new Error('Root element not found');
+    }
+
+    // Mostrar pantalla de carga mientras se inicializa
+    showLoadingScreen();
     
-    console.log('⚠️ Main app not available in APK environment');
-    return false;
+    // Pequeña pausa para mostrar la pantalla de carga
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    console.log('✅ Rendering full React application...');
+    
+    // Limpiar contenido previo
+    rootElement.innerHTML = '';
+    
+    // Renderizar la aplicación completa
+    const root = createRoot(rootElement);
+    root.render(
+      <StrictMode>
+        <App />
+      </StrictMode>
+    );
+
+    console.log('🎉 Full ComplicesConecta app loaded successfully!');
+    return true;
 
   } catch (error) {
-    console.error('❌ Failed to load main app:', error);
+    console.error('❌ Failed to load full app:', error);
+    showErrorWithFallback(error);
     return false;
   }
 }
@@ -248,27 +252,19 @@ function showErrorWithFallback(error: any) {
   }
 }
 
-// Inicializar aplicación
+// Inicializar aplicación completa directamente
 async function initializeApp() {
+  console.log('🚀 Initializing full ComplicesConecta application...');
+  
   const rootElement = document.getElementById("root");
   if (!rootElement) {
     console.error('❌ Root element not found');
     return;
   }
 
-  // Mostrar pantalla de carga
-  showLoadingScreen();
-
-  // Intentar cargar la aplicación principal
-  setTimeout(async () => {
-    const success = await loadMainApp();
-    
-    if (!success) {
-      console.log('⚠️ Falling back to compatibility mode');
-      showErrorWithFallback('Main app failed to load');
-    }
-  }, 1500);
+  // Cargar aplicación completa inmediatamente
+  await loadMainApp();
 }
 
-// Iniciar la aplicación
+// Iniciar la aplicación completa
 initializeApp();

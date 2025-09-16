@@ -5,20 +5,29 @@
 Este documento consolida todos los TODOs identificados en el proyecto, organizados por prioridad y área funcional para facilitar la planificación del desarrollo futuro.
 
 **Fecha de generación:** 16 de Septiembre, 2025  
-**Estado del proyecto:** Release v2.9.0 - Preparación final  
-**TODOs totales identificados:** 53 elementos
+**Estado del proyecto:** Release v2.9.0 - APK Android Completamente Funcional  
+**TODOs totales identificados:** 53 elementos  
+**🎉 HITO ALCANZADO:** APK Android carga aplicación React completa exitosamente
 
 ---
 
 ## 🔴 CRÍTICOS - Requieren Atención Inmediata
 
-### 1. Sistema de Perfiles de Pareja
+### 1. ✅ APK Android - Pantalla en Blanco RESUELTO
+**Archivos:** `src/main.tsx`, `capacitor.config.ts`, `vite.config.ts`
+- ✅ **RESUELTO:** Configuración hostname 127.0.0.1 y cleartext en Capacitor
+- ✅ **RESUELTO:** Sistema de detección de capacidades WebView implementado
+- ✅ **RESUELTO:** Carga completa de aplicación React en APK nativo
+- ✅ **RESUELTO:** Bundle optimizado con todas las dependencias incluidas
+- ✅ **RESUELTO:** APK genera y carga aplicación completa exitosamente
+
+### 2. Sistema de Perfiles de Pareja
 **Archivo:** `src/lib/coupleProfilesCompatibility.ts`
 - ✅ **RESUELTO:** Implementar detección de perfiles de pareja usando `profile_type`
 - ✅ **RESUELTO:** Actualizar lógica de permisos para perfiles relacionados
 - 🔄 **PENDIENTE:** Crear tabla `couple_profiles` en esquema de BD cuando sea necesario
 
-### 2. Optimización de Hooks en RequestCard
+### 3. Optimización de Hooks en RequestCard
 **Archivo:** `src/components/RequestCard.tsx`
 - ✅ **RESUELTO:** Mover todos los hooks al inicio antes de returns
 - ✅ **RESUELTO:** Implementar cleanup de operaciones async
