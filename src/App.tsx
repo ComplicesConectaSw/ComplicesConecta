@@ -16,7 +16,6 @@ import { AnimationSettingsButton } from "@/components/animations/AnimationSettin
 import Index from "@/pages/Index";
 import Auth from "@/pages/Auth";
 import NotFound from "@/pages/NotFound";
-import Events from "@/pages/Events";
 
 // Lazy loaded pages for performance optimization
 const Profiles = lazy(() => import("@/pages/Profiles"));
@@ -53,6 +52,7 @@ const Careers = lazy(() => import("@/pages/Careers"));
 const Blog = lazy(() => import("@/pages/Blog"));
 const ChatAuthenticated = lazy(() => import("@/pages/ChatAuthenticated"));
 const Donations = lazy(() => import("@/pages/Donations"));
+const Events = lazy(() => import("@/pages/Events"));
 
 // Loading component for Suspense
 const PageLoader = () => (
