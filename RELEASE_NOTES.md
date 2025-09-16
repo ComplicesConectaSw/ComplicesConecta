@@ -915,7 +915,7 @@ ComplicesConecta ahora cuenta con:
 #### 5. **🔗 Link APK Actualizado**
 **Archivo:** `src/components/modals/InstallAppModal.tsx`
 **Cambio:**
-- URL actualizada: `https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v.2.1.7/app-release.apk`
+- URL actualizada: `https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/2.9.0/app-release.apk`
 - Descarga directa desde GitHub Releases v2.4.0
 
 ### 📊 **MÉTRICAS DE IMPLEMENTACIÓN v2.3.0**
