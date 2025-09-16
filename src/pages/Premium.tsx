@@ -12,6 +12,7 @@ import VIPEvents from "@/components/premium/VIPEvents";
 import VirtualGifts from "@/components/premium/VirtualGifts";
 import { ComingSoonModal } from "@/components/modals/ComingSoonModal";
 import { logger } from '@/lib/logger';
+import { usePersistedState } from '@/hooks/usePersistedState';
 
 const Premium = () => {
   const navigate = useNavigate();
@@ -21,14 +22,14 @@ const Premium = () => {
   const [showComingSoonModal, setShowComingSoonModal] = useState(false);
   const [comingSoonTitle, setComingSoonTitle] = useState('');
 
+  const [demoAuth, setDemoAuth] = usePersistedState('demo_authenticated', 'false');
+  const [demoUser, setDemoUser] = usePersistedState<any>('demo_user', null);
+
   useEffect(() => {
     // Verificar autenticación (demo o real)
-    const demoAuth = localStorage.getItem('demo_authenticated');
-    const demoUser = localStorage.getItem('demo_user');
-    
     // Si hay sesión demo, usar esa
     if (demoAuth === 'true' && demoUser) {
-      const user = JSON.parse(demoUser);
+      const user = typeof demoUser === 'string' ? JSON.parse(demoUser) : demoUser;
       setIsDemoUser(true);
       setUserType(user.accountType);
       return;
@@ -37,7 +38,7 @@ const Premium = () => {
     // Si no hay demo, verificar autenticación real
     // Por ahora permitir acceso sin autenticación para usuarios reales
     logger.info('🔓 Acceso a Premium sin autenticación requerida');
-  }, [navigate]);
+  }, [navigate, demoAuth, demoUser]);
 
   const handleComingSoon = (title: string) => {
     setComingSoonTitle(title);

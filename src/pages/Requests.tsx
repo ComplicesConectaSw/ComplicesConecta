@@ -9,10 +9,11 @@ import {
   UserCheck, 
   UserX, 
   Clock,
-  Send,
-  MailQuestion,
+  Camera, // For photo access
   GalleryHorizontal, // For gallery access
-  MessageSquare // For chat access
+  MessageSquare, // For chat access
+  MailQuestion,
+  Send
 } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import { useFeatures } from "@/hooks/useFeatures";
@@ -21,15 +22,22 @@ import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from "@/hooks/use-toast";
 import { logger } from '@/lib/logger';
+import { usePersistedState } from '@/hooks/usePersistedState';
 
 const Requests = () => {
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
-  const { features } = useFeatures();
   const { toast } = useToast();
+  const { features } = useFeatures();
   const [receivedInvitations, setReceivedInvitations] = useState<Invitation[]>([]);
   const [sentInvitations, setSentInvitations] = useState<Invitation[]>([]);
   const [activeTab, setActiveTab] = useState<'received' | 'sent'>('received');
+  
+  // Migración localStorage → usePersistedState
+  const [demoAuth, setDemoAuth] = usePersistedState('demo_authenticated', 'false');
+  const [specialAuth, setSpecialAuth] = usePersistedState('apoyo_authenticated', 'false');
+  const [demoUser, setDemoUser] = usePersistedState<any>('demo_user', null);
+  const [specialUser, setSpecialUser] = usePersistedState<any>('apoyo_user', null);
 
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
@@ -45,16 +53,11 @@ const Requests = () => {
     if (currentUserId) {
       loadInvitations();
     }
-  }, [currentUserId, loadInvitations]);
+  }, [currentUserId, loadInvitations, navigate, demoAuth, specialAuth, demoUser, specialUser]);
 
   useEffect(() => {
     // Verificar autenticación y obtener userId real
-    const demoAuth = localStorage.getItem('demo_authenticated') === 'true';
-    const specialAuth = localStorage.getItem('apoyo_authenticated') === 'true';
-    const demoUser = localStorage.getItem('demo_user');
-    const specialUser = localStorage.getItem('apoyo_user');
-    
-    const isAuthenticated = demoAuth || specialAuth || demoUser || specialUser;
+    const isAuthenticated = demoAuth === 'true' || specialAuth === 'true' || demoUser || specialUser;
     
     if (!isAuthenticated) {
       logger.info('❌ Usuario no autenticado en Requests, redirigiendo a /auth');
