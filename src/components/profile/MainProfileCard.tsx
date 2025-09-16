@@ -42,7 +42,7 @@ interface ProfileCardProps {
   variant?: 'single' | 'couple' | 'discover' | 'animated';
   showQuickActions?: boolean;
   showViewProfile?: boolean;
-}
+};
 
 export const MainProfileCard = ({ 
   profile, 
@@ -259,3 +259,7 @@ export const MainProfileCard = ({
     </div>
   );
 };
+
+// Export aliases for compatibility
+export const ProfileCard = MainProfileCard;
+export default MainProfileCard;

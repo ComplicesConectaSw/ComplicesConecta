@@ -287,18 +287,12 @@ BEGIN
             created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
             updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
         );
-    END IF;
-END $$;
-
--- Índices para optimización (solo si la tabla existe)
-DO $$
-BEGIN
-    IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'couple_photos') THEN
+        
+        -- Crear índices inmediatamente después de crear la tabla
         CREATE INDEX IF NOT EXISTS idx_couple_photos_profile ON couple_photos(couple_profile_id);
         CREATE INDEX IF NOT EXISTS idx_couple_photos_main ON couple_photos(is_main);
         CREATE INDEX IF NOT EXISTS idx_couple_photos_private ON couple_photos(is_private);
         CREATE INDEX IF NOT EXISTS idx_couple_photos_partner ON couple_photos(partner_type);
-    END IF;
 END $$;
 
 -- =====================================================
