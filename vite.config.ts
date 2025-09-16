@@ -28,15 +28,50 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-          'vendor-supabase': ['@supabase/supabase-js'],
-          'vendor-ui': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-toast', '@radix-ui/react-select', '@radix-ui/react-tabs'],
-          'vendor-animation': ['framer-motion'],
-          'vendor-query': ['@tanstack/react-query'],
-          'vendor-utils': ['date-fns', 'clsx', 'class-variance-authority'],
-          'vendor-forms': ['react-hook-form', '@hookform/resolvers'],
-          'vendor-icons': ['lucide-react']
+        manualChunks: (id) => {
+          // Vendor chunks optimizados
+          if (id.includes('node_modules')) {
+            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
+              return 'vendor-react';
+            }
+            if (id.includes('@supabase')) {
+              return 'vendor-supabase';
+            }
+            if (id.includes('@radix-ui')) {
+              return 'vendor-ui';
+            }
+            if (id.includes('framer-motion')) {
+              return 'vendor-animation';
+            }
+            if (id.includes('@tanstack/react-query')) {
+              return 'vendor-query';
+            }
+            if (id.includes('lucide-react')) {
+              return 'vendor-icons';
+            }
+            if (id.includes('date-fns') || id.includes('clsx') || id.includes('class-variance-authority')) {
+              return 'vendor-utils';
+            }
+            if (id.includes('react-hook-form') || id.includes('@hookform')) {
+              return 'vendor-forms';
+            }
+            // Otros vendors en chunk separado
+            return 'vendor-misc';
+          }
+          
+          // Chunks por funcionalidad
+          if (id.includes('/pages/')) {
+            return 'pages';
+          }
+          if (id.includes('/components/')) {
+            return 'components';
+          }
+          if (id.includes('/hooks/')) {
+            return 'hooks';
+          }
+          if (id.includes('/lib/')) {
+            return 'lib';
+          }
         },
         chunkFileNames: 'js/[name]-[hash].js',
         entryFileNames: 'js/[name]-[hash].js',
@@ -48,12 +83,24 @@ export default defineConfig({
     },
     target: 'es2020',
     minify: 'esbuild',
-    chunkSizeWarningLimit: 400, // Reducido para mejor optimización
+    chunkSizeWarningLimit: 300,
+    sourcemap: false,
   },
   define: {
     global: 'globalThis',
   },
   esbuild: {
-    drop: process.env.NODE_ENV === 'production' ? ['debugger'] : [],
+    drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [],
+  },
+  optimizeDeps: {
+    include: [
+      'react',
+      'react-dom',
+      'react-router-dom',
+      '@supabase/supabase-js',
+      'framer-motion',
+      '@tanstack/react-query',
+      'lucide-react'
+    ],
   },
 });
