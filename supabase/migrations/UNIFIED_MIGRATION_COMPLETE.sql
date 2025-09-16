@@ -251,7 +251,18 @@ CREATE TABLE IF NOT EXISTS user_interests (
 
 -- Índices para optimización (creados después de las tablas)
 -- CREATE INDEX IF NOT EXISTS idx_interests_category ON interests(category_id); -- Columna category_id no existe
-CREATE INDEX IF NOT EXISTS idx_interests_premium ON interests(is_premium);
+
+-- Crear índice para is_premium solo si la columna existe
+DO $$
+BEGIN
+    IF EXISTS (
+        SELECT 1 FROM information_schema.columns 
+        WHERE table_name = 'interests' AND column_name = 'is_premium'
+    ) THEN
+        CREATE INDEX IF NOT EXISTS idx_interests_premium ON interests(is_premium);
+    END IF;
+END $$;
+
 CREATE INDEX IF NOT EXISTS idx_user_interests_user ON user_interests(user_id);
 CREATE INDEX IF NOT EXISTS idx_user_interests_public ON user_interests(is_public);
 

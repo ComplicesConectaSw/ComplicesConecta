@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChatContainer } from './ChatContainer';
+import { ChatContainer } from '@/components/chat/ChatContainer';
 import { UnifiedCard } from '@/components/ui/UnifiedCard';
 import { UnifiedButton } from '@/components/ui/UnifiedButton';
 import { UnifiedInput } from '@/components/ui/UnifiedInput';

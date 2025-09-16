@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Heart, Flame, Crown, Filter, RefreshCw } from 'lucide-react';
-import { AdvancedFilters, FilterState } from './AdvancedFilters';
+import { AdvancedFilters, FilterState } from '@/components/discover/AdvancedFilters';
 
 interface DiscoverSidebarProps {
   filters: FilterState;
