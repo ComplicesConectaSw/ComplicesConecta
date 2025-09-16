@@ -261,4 +261,4 @@ export const MainProfileCard = ({
 };
 
 // Export alias for backward compatibility
-export const ProfileCard = MainProfileCard;
+export { MainProfileCard as ProfileCard };
