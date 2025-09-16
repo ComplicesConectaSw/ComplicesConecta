@@ -244,7 +244,6 @@ CREATE TABLE IF NOT EXISTS user_interests (
     user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
     interest_id UUID REFERENCES interests(id) ON DELETE CASCADE,
     intensity_level INTEGER DEFAULT 3 CHECK (intensity_level >= 1 AND intensity_level <= 5),
-    is_public BOOLEAN DEFAULT TRUE,
     added_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     UNIQUE(user_id, interest_id)
 );
@@ -264,7 +263,7 @@ BEGIN
 END $$;
 
 CREATE INDEX IF NOT EXISTS idx_user_interests_user ON user_interests(user_id);
-CREATE INDEX IF NOT EXISTS idx_user_interests_public ON user_interests(is_public);
+-- CREATE INDEX IF NOT EXISTS idx_user_interests_public ON user_interests(is_public); -- Columna is_public removida
 
 -- =====================================================
 -- 4. FOTOS DE PAREJAS
