@@ -6,7 +6,7 @@
 import React, { createContext, useContext, ReactNode } from 'react';
 import { logger } from '@/lib/logger';
 import { Database } from '@/integrations/supabase/types';
-import { demoProfiles, demoMessages, demoInvitations, demoEvents, demoMatches } from './demoData';
+import { demoProfiles, demoMessages, demoInvitations, demoEvents, demoMatches } from './demoData.js';
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
 
@@ -30,27 +30,27 @@ interface DemoProviderProps {
 
 export const DemoProvider: React.FC<DemoProviderProps> = ({ children }) => {
   const getDemoProfile = (id: string): Profile | null => {
-    return demoProfiles.find((p: Profile) => p.id === id) || null;
+    return (demoProfiles as any[]).find((p: any) => p.id === id) as Profile || null;
   };
 
   const getDemoProfiles = (filters?: any): Profile[] => {
-    let filtered = [...demoProfiles];
+    let filtered = [...(demoProfiles as any[])];
     
     if (filters?.ageRange) {
-      filtered = filtered.filter(p => 
+      filtered = filtered.filter((p: any) => 
         p.age && p.age >= filters.ageRange.min && p.age <= filters.ageRange.max
       );
     }
     
     if (filters?.interests) {
-      filtered = filtered.filter((p: Profile) => {
-        return (p as any).interests?.some((interest: string) => 
+      filtered = filtered.filter((p: any) => {
+        return p.interests?.some((interest: string) => 
           filters.interests.includes(interest)
         );
       });
     }
     
-    return filtered;
+    return filtered as Profile[];
   };
 
   const mockAuth = {
@@ -88,7 +88,7 @@ export const DemoProvider: React.FC<DemoProviderProps> = ({ children }) => {
   };
 
   const contextValue: DemoContextType = {
-    profiles: demoProfiles,
+    profiles: demoProfiles as Profile[],
     isDemo: true,
     getDemoProfile,
     getDemoProfiles,
