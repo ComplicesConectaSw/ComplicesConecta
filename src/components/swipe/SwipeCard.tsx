@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { ReportDialog } from "./ReportDialog";
+import { ReportDialog } from "@/components/swipe/ReportDialog";
 import { VerificationBadge } from "@/components/ui/verification-badge";
 import { MatchScore } from "@/components/discover/MatchScore";
 

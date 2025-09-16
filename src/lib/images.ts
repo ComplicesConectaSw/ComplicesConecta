@@ -110,21 +110,30 @@ export async function uploadImage(
       .from(bucket)
       .getPublicUrl(fileName);
 
-    // Preparar datos para la base de datos
-    const imageData = {
-      profile_id: profileId,
-      url: publicUrl,
-      is_public: isPublic,
-      title: file.name,
-      description,
-      file_size: file.size,
-      mime_type: file.type
-    };
+    const { data, error } = await (supabase as any)
+      .from('images')
+      .insert({
+        profile_id: profileId,
+        url: publicUrl,
+        is_public: isPublic,
+        title: file.name,
+        description,
+        file_size: file.size,
+        mime_type: file.type
+      });
 
     // Guardar metadatos en la base de datos
     const { data: dbData, error: dbError } = await supabase
       .from('images')
-      .insert(imageData)
+      .insert({
+        profile_id: profileId,
+        url: publicUrl,
+        is_public: isPublic,
+        title: file.name,
+        description,
+        file_size: file.size,
+        mime_type: file.type
+      })
       .select()
       .single();
 

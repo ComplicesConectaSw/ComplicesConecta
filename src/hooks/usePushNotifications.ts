@@ -69,7 +69,7 @@ export const usePushNotifications = ({
       logger.info('✅ Service Worker registrado:', registration);
       return registration;
     } catch (error) {
-      logger.error('❌ Error registrando Service Worker:', error);
+      logger.error('Error registering service worker:', { error: String(error) });
       setError('Error registrando Service Worker');
       return null;
     }
@@ -94,7 +94,7 @@ export const usePushNotifications = ({
       
       return permission;
     } catch (error) {
-      logger.error('❌ Error solicitando permisos:', error);
+      logger.error('Error requesting notification permission:', { error: String(error) });
       setError('Error solicitando permisos de notificación');
       return 'denied';
     }
@@ -139,7 +139,7 @@ export const usePushNotifications = ({
       logger.info('✅ Suscripción push creada:', pushSubscription);
       return pushSubscription;
     } catch (error) {
-      logger.error('❌ Error creando suscripción push:', error);
+      logger.error('Error subscribing to push notifications:', { error: String(error) });
       setError('Error creando suscripción push');
       return null;
     } finally {
@@ -167,7 +167,7 @@ export const usePushNotifications = ({
       
       return success;
     } catch (error) {
-      logger.error('❌ Error eliminando suscripción push:', error);
+      logger.error('Error unsubscribing from push notifications:', { error: String(error) });
       setError('Error eliminando suscripción push');
       return false;
     } finally {
@@ -195,7 +195,7 @@ export const usePushNotifications = ({
       localStorage.setItem(`push_subscription_${userId}`, JSON.stringify(subscriptionData));
       logger.info('✅ Suscripción guardada temporalmente en localStorage');
     } catch (error) {
-      logger.error('❌ Error en saveSubscriptionToDatabase:', error);
+      logger.error('Error saving subscription to database:', { error: error instanceof Error ? error.message : String(error) });
       throw error;
     }
   }, [userId]);
@@ -209,7 +209,7 @@ export const usePushNotifications = ({
       localStorage.removeItem(`push_subscription_${userId}`);
       logger.info('✅ Suscripción removida de localStorage');
     } catch (error) {
-      logger.error('❌ Error en removeSubscriptionFromDatabase:', error);
+      logger.error('Error removing subscription from database:', { error: error instanceof Error ? error.message : String(error) });
       throw error;
     }
   }, [userId]);
@@ -236,13 +236,13 @@ export const usePushNotifications = ({
       });
 
       if (error) {
-        logger.error('❌ Error enviando notificación de prueba:', error);
+        logger.error('Error sending test notification:', { error: String(error) });
         setError('Error enviando notificación de prueba');
       } else {
         logger.info('✅ Notificación de prueba enviada');
       }
     } catch (error) {
-      logger.error('❌ Error en sendTestNotification:', error);
+      logger.error('Error sending test notification:', { error: String(error) });
       setError('Error enviando notificación de prueba');
     }
   }, [subscription, userId]);
@@ -269,7 +269,7 @@ export const usePushNotifications = ({
 
       return notification;
     } catch (error) {
-      logger.error('❌ Error mostrando notificación local:', error);
+      logger.error('Error showing local notification:', { error: error instanceof Error ? error.message : String(error) });
       return null;
     }
   }, [isSupported, permission, onNotificationReceived]);
@@ -288,7 +288,7 @@ export const usePushNotifications = ({
           onSubscriptionChange?.(existingSubscription);
         }
       } catch (error) {
-        logger.error('❌ Error cargando suscripción existente:', error);
+        logger.error('❌ Error cargando suscripción existente:', { error: error instanceof Error ? error.message : String(error) });
       }
     };
 

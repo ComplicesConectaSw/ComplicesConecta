@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Calendar, Users, MapPin, Plus, ArrowLeft, Heart, Lock, Sparkles, Shield, Crown, Star, AlertTriangle, X } from 'lucide-react';
+import { Calendar, MapPin, Users, Clock, Star, Heart, Share2, Filter, Search, Plus, AlertTriangle, X, ArrowLeft, Lock, Sparkles, Crown, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
-import profile1 from '@/assets/profile-1.jpg';
-import profile2 from '@/assets/profile-2.jpg';
-import profile3 from '@/assets/profile-3.jpg';
-import profile4 from '@/assets/profile-4.jpg';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import Navigation from '@/components/Navigation';
+import { motion } from 'framer-motion';
+import { ResponsiveContainer } from '@/components/ui/ResponsiveContainer';
+import { usePersistedState } from '@/hooks/usePersistedState';
 import { logger } from '@/lib/logger';
 
 const Events = () => {
@@ -19,17 +19,19 @@ const Events = () => {
   const [activeTab, setActiveTab] = useState("events");
   const [showAgeModal, setShowAgeModal] = useState(false);
 
+  // Estado persistente para verificación de edad
+  const [ageVerified, setAgeVerified] = usePersistedState<boolean>('ageVerified', false);
+
   useEffect(() => {
     // Check if user has confirmed age verification
-    const ageVerified = localStorage.getItem('ageVerified');
     if (!ageVerified) {
       setShowAgeModal(true);
     }
-  }, []); // Add an empty dependency array to ensure it only runs once on component mount
+  }, [ageVerified]);
 
   const handleAgeConfirmation = (confirmed: boolean) => {
     if (confirmed) {
-      localStorage.setItem('ageVerified', 'true');
+      setAgeVerified(true);
       setShowAgeModal(false);
     } else {
       navigate('/');
@@ -39,19 +41,19 @@ const Events = () => {
   const lifestyleEvents = [
     {
       id: 1,
-      title: "Encuentro Elegante - Parejas Selectas",
-      description: "Evento exclusivo para parejas verificadas con experiencia en el estilo de vida alternativo",
+      title: "Encuentro Elegante - Parejas Selectas CDMX",
+      description: "Evento exclusivo para parejas verificadas con experiencia en el estilo de vida swinger en la Ciudad de México",
       date: "2024-03-15",
       time: "21:00",
-      location: "Villa Privada Madrid",
+      location: "Villa Privada Polanco, CDMX",
       attendees: 24,
       maxAttendees: 30,
-      price: 150,
+      price: 2500,
       category: "VIP Exclusivo",
-      image: profile1,
+      image: "/placeholder.svg",
       organizer: {
-        name: "Elite Connections",
-        avatar: profile2
+        name: "Elite Connections México",
+        avatar: "/placeholder.svg"
       },
       isJoined: true,
       isLiked: true,
@@ -60,19 +62,19 @@ const Events = () => {
     },
     {
       id: 2,
-      title: "Velada Íntima de Conexiones",
-      description: "Encuentro sofisticado para parejas que buscan conexiones auténticas y experiencias compartidas",
+      title: "Velada Íntima Swinger Guadalajara",
+      description: "Encuentro sofisticado para parejas que buscan conexiones auténticas y experiencias compartidas en ambiente swinger",
       date: "2024-03-20",
       time: "20:00",
-      location: "Club Privado Barcelona",
+      location: "Club Privado Zapopan, Jalisco",
       attendees: 16,
       maxAttendees: 20,
-      price: 80,
-      category: "Conexiones",
-      image: profile3,
+      price: 1800,
+      category: "Conexiones Swinger",
+      image: "/placeholder.svg",
       organizer: {
-        name: "Intimate Gatherings",
-        avatar: profile4
+        name: "Intimate Gatherings GDL",
+        avatar: "/placeholder.svg"
       },
       isJoined: false,
       isLiked: true,
@@ -81,19 +83,19 @@ const Events = () => {
     },
     {
       id: 3,
-      title: "Fiesta Acuática Lifestyle",
-      description: "Celebración en ambiente relajado con piscina climatizada para parejas del estilo de vida",
+      title: "Fiesta Acuática Swinger Cancún",
+      description: "Celebración en ambiente relajado con piscina climatizada para parejas del estilo de vida swinger en la Riviera Maya",
       date: "2024-03-25",
       time: "15:00",
-      location: "Resort Privado Valencia",
+      location: "Resort Privado Playa del Carmen, Q.Roo",
       attendees: 32,
       maxAttendees: 40,
-      price: 120,
-      category: "Ambiente Relajado",
-      image: profile1,
+      price: 3200,
+      category: "Ambiente Playero",
+      image: "/placeholder.svg",
       organizer: {
-        name: "Aqua Lifestyle",
-        avatar: profile3
+        name: "Aqua Lifestyle Cancún",
+        avatar: "/placeholder.svg"
       },
       isJoined: false,
       isLiked: false,
@@ -105,80 +107,80 @@ const Events = () => {
   const lifestyleClubs = [
     {
       id: 1,
-      name: "Club Elite Madrid",
-      description: "Comunidad exclusiva para parejas verificadas con experiencia en el estilo de vida alternativo",
+      name: "Club Elite CDMX",
+      description: "Comunidad exclusiva para parejas verificadas con experiencia en el estilo de vida swinger en la Ciudad de México",
       memberCount: 156,
       maxMembers: 200,
       isPrivate: true,
       category: "Club VIP",
-      image: profile2,
+      image: "/placeholder.svg",
       admin: {
-        name: "Administración Elite",
-        avatar: profile1
+        name: "Administración Elite México",
+        avatar: "/placeholder.svg"
       },
       lastActivity: "Hace 1h",
       isJoined: false,
       isPending: true,
       reputation: 4.9,
       verified: true,
-      requirements: "Parejas 25-50 años, verificación KYC + lifestyle"
+      requirements: "Parejas 25-50 años, verificación KYC + experiencia swinger"
     },
     {
       id: 2,
-      name: "Lifestyle Beginners",
-      description: "Comunidad para parejas que inician en el estilo de vida alternativo con ambiente relajado",
+      name: "Swingers Principiantes México",
+      description: "Comunidad para parejas que inician en el estilo de vida swinger con ambiente relajado y educativo",
       memberCount: 89,
       maxMembers: 120,
       isPrivate: false,
       category: "Principiantes",
-      image: profile4,
+      image: "/placeholder.svg",
       admin: {
-        name: "Coordinadores Lifestyle",
-        avatar: profile2
+        name: "Coordinadores Swinger MX",
+        avatar: "/placeholder.svg"
       },
       lastActivity: "Hace 2h",
       isJoined: true,
       isPending: false,
       reputation: 4.6,
       verified: true,
-      requirements: "Parejas 21+ años, mente abierta"
+      requirements: "Parejas 21+ años, mente abierta, respeto mutuo"
     },
     {
       id: 3,
-      name: "Aqua Lifestyle",
-      description: "Club especializado en eventos acuáticos y celebraciones para el estilo de vida",
+      name: "Aqua Swinger Riviera Maya",
+      description: "Club especializado en eventos acuáticos y celebraciones swinger en destinos playeros de México",
       memberCount: 203,
       maxMembers: 250,
       isPrivate: true,
-      category: "Eventos Acuáticos",
-      image: profile3,
+      category: "Eventos Playeros",
+      image: "/placeholder.svg",
       admin: {
-        name: "Aqua Team",
-        avatar: profile4
+        name: "Aqua Team Cancún",
+        avatar: "/placeholder.svg"
       },
       lastActivity: "Hace 30min",
       isJoined: false,
       isPending: false,
       reputation: 4.8,
       verified: true,
-      requirements: "Parejas verificadas, eventos estacionales"
+      requirements: "Parejas verificadas, eventos de temporada alta"
     }
   ];
 
   const handleJoinEvent = (eventId: number) => {
-    logger.info('Join event:', eventId);
+    logger.info('Join event:', { eventId });
   };
 
   const handleLikeEvent = (eventId: number) => {
-    logger.info('Like event:', eventId);
+    logger.info('Like event:', { eventId });
   };
 
   const handleJoinGroup = (groupId: number) => {
-    logger.info('Join group:', groupId);
+    logger.info('Join group:', { groupId });
   };
 
   const handleViewGroup = (groupId: number) => {
-    logger.info('View group:', groupId);
+    logger.info('View group:', { groupId });
   };
 
   const filteredEvents = lifestyleEvents.filter(event =>
@@ -271,7 +273,7 @@ const Events = () => {
       </div>
       
       <div className="relative z-10">
-        <Header />
+        <Navigation />
         
         <main className="container mx-auto px-4 py-8">
           {/* Back Button */}
@@ -288,13 +290,13 @@ const Events = () => {
 
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-              Eventos Lifestyle VIP
+              Eventos Swinger México
               <span className="block bg-love-gradient bg-clip-text text-transparent">
                 Experiencias Exclusivas para Parejas
               </span>
             </h1>
             <p className="text-xl text-white max-w-2xl mx-auto">
-              Encuentros privados, clubs verificados y experiencias para parejas del lifestyle
+              Encuentros privados, clubs verificados y experiencias swinger en México
             </p>
           </div>
 
@@ -304,7 +306,7 @@ const Events = () => {
               <Lock className="h-12 w-12 text-accent mx-auto mb-4" />
               <h2 className="text-2xl font-bold text-foreground mb-2">Integración de Clubs - Post Beta</h2>
               <p className="text-white mb-4">
-                Los clubs lifestyle podrán integrarse a la plataforma después de la beta, 
+                Los clubs swinger de México podrán integrarse a la plataforma después de la beta, 
                 con sistema de reputación basado en valoraciones de usuarios verificados.
               </p>
               <Badge variant="secondary" className="bg-accent/20 text-accent">
@@ -319,7 +321,7 @@ const Events = () => {
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/70 h-4 w-4" />
               <Input
-                placeholder="Buscar fiestas swinger, clubs privados, eventos lifestyle..."
+                placeholder="Buscar fiestas swinger, clubs privados, eventos en México..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 bg-card/80 backdrop-blur-sm border-primary/20"
@@ -344,7 +346,7 @@ const Events = () => {
                 className="rounded-lg"
               >
                 <Crown className="mr-2 h-4 w-4" />
-                Clubs Lifestyle
+                Clubs Swinger
               </Button>
             </div>
           </div>
@@ -397,7 +399,7 @@ const Events = () => {
                       </div>
 
                       <div className="flex items-center justify-between">
-                        <span className="text-2xl font-bold text-primary">${event.price}</span>
+                        <span className="text-2xl font-bold text-primary">${event.price} MXN</span>
                         <Button 
                           variant={event.isJoined ? "secondary" : "default"}
                           size="sm"
@@ -511,7 +513,6 @@ const Events = () => {
           )}
         </main>
 
-        <Footer />
       </div>
       
       {/* Custom Styles */}

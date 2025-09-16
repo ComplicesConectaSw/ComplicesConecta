@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import "@/styles/animations.css";
 import { logger } from '@/lib/logger';
 import { motion } from 'framer-motion';
+import { usePersistedState } from '@/hooks/usePersistedState';
 
 // Professional profile images from Unsplash - Production ready
 // Removed local imports that fail in production
@@ -32,6 +33,11 @@ const Index = () => {
   const [showActionButtonsModal, setShowActionButtonsModal] = useState(false);
   const isWelcomeVisible = useScrollHide(50);
 
+  // Estado persistente
+  const [demoAuthenticated] = usePersistedState<boolean>('demo_authenticated', false);
+  const [demoUser] = usePersistedState<any>('demo_user', null);
+  const [hasVisited, setHasVisited] = usePersistedState<boolean>('hasVisitedComplicesConecta', false);
+
   // Verificar si el usuario está autenticado y detectar Android
   useEffect(() => {
     // Mostrar loading screen al cargar la página
@@ -39,8 +45,7 @@ const Index = () => {
       setIsLoading(false);
       
       // Verificar autenticación y redirigir automáticamente al perfil
-      const demoAuth = localStorage.getItem('demo_authenticated');
-      const demoUser = localStorage.getItem('demo_user');
+      // Usar estado persistente en lugar de localStorage directo
       
       // Detectar si se está ejecutando desde la APK instalada
       // La APK instalada tendrá características específicas del WebView
@@ -55,9 +60,9 @@ const Index = () => {
       setIsRunningInApp(isInWebView());
       
       // Redirección automática para usuarios autenticados
-      if (demoAuth === 'true' && demoUser) {
+      if (demoAuthenticated && demoUser) {
         try {
-          const userData = JSON.parse(demoUser);
+          const userData = typeof demoUser === 'string' ? JSON.parse(demoUser) : demoUser;
           const accountType = userData.account_type || userData.accountType || 'single';
           
           // Redirigir al perfil correspondiente según el tipo de cuenta
@@ -79,7 +84,6 @@ const Index = () => {
 
   const handleLoadingComplete = () => {
     setIsLoading(false);
-    const hasVisited = localStorage.getItem('hasVisitedComplicesConecta');
     if (!hasVisited) {
       setTimeout(() => setShowWelcome(true), 500);
     }
@@ -87,7 +91,7 @@ const Index = () => {
 
   const handleWelcomeClose = () => {
     setShowWelcome(false);
-    localStorage.setItem('hasVisitedComplicesConecta', 'true');
+    setHasVisited(true);
   };
 
   if (isLoading) {

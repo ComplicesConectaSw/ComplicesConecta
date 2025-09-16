@@ -29,7 +29,7 @@ export class SimpleMatchService {
       }
 
       // Obtener perfil del usuario actual con coordenadas
-      const { data: currentProfile } = await supabase
+      const { data: currentProfile } = await (supabase as any)
         .from('profiles')
         .select('*, latitude, longitude, share_location')
         .eq('user_id', user.data.user.id)
@@ -40,7 +40,7 @@ export class SimpleMatchService {
       }
 
       // Obtener otros perfiles para matches con coordenadas
-      const { data: profiles, error } = await supabase
+      const { data: profiles, error } = await (supabase as any)
         .from('profiles')
         .select('*, latitude, longitude, share_location')
         .neq('user_id', user.data.user.id)
@@ -57,15 +57,15 @@ export class SimpleMatchService {
       // Filtrar perfiles por distancia si se especifica
       let filteredProfiles = profiles;
       
-      if (maxDistance && currentProfile.latitude && currentProfile.longitude && currentProfile.share_location) {
-        filteredProfiles = profiles.filter(profile => {
-          if (!profile.latitude || !profile.longitude || !profile.share_location) {
+      if (maxDistance && (currentProfile as any).latitude && (currentProfile as any).longitude && (currentProfile as any).share_location) {
+        filteredProfiles = profiles.filter((profile: any) => {
+          if (!(profile as any).latitude || !(profile as any).longitude || !(profile as any).share_location) {
             return true; // Incluir perfiles sin ubicación
           }
           
           const distance = this.calculateDistance(
-            currentProfile.latitude!, currentProfile.longitude!,
-            profile.latitude, profile.longitude
+            (currentProfile as any).latitude!, (currentProfile as any).longitude!,
+            (profile as any).latitude, (profile as any).longitude
           );
           
           return distance <= maxDistance;
@@ -73,12 +73,12 @@ export class SimpleMatchService {
       }
 
       // Convertir perfiles a matches
-      const matches: SimpleMatch[] = filteredProfiles.map(profile => {
+      const matches: SimpleMatch[] = filteredProfiles.map((profile: any) => {
         // Calcular compatibilidad básica
         let compatibility = 50;
         
-        if (currentProfile.interested_in && profile.gender) {
-          if (currentProfile.interested_in.includes(profile.gender)) {
+        if ((currentProfile as any).interested_in && (profile as any).gender) {
+          if ((currentProfile as any).interested_in.includes((profile as any).gender)) {
             compatibility += 25;
           }
         }
@@ -94,12 +94,12 @@ export class SimpleMatchService {
         // Calcular distancia real si ambos perfiles tienen coordenadas
         let distance = Math.floor(Math.random() * 50) + 1; // Fallback
         
-        if (currentProfile.latitude && currentProfile.longitude && 
-            profile.latitude && profile.longitude && 
-            currentProfile.share_location && profile.share_location) {
+        if ((currentProfile as any).latitude && (currentProfile as any).longitude && 
+            (profile as any).latitude && (profile as any).longitude && 
+            (currentProfile as any).share_location && (profile as any).share_location) {
           distance = this.calculateDistance(
-            currentProfile.latitude, currentProfile.longitude,
-            profile.latitude, profile.longitude
+            (currentProfile as any).latitude, (currentProfile as any).longitude,
+            (profile as any).latitude, (profile as any).longitude
           );
         }
 
@@ -170,13 +170,13 @@ export class SimpleMatchService {
 
   async getStats(): Promise<{ success: boolean; stats?: any; error?: string }> {
     try {
-      const { data: profiles } = await supabase
+      const { data: profiles } = await (supabase as any)
         .from('profiles')
         .select('is_verified, created_at');
 
       const totalProfiles = profiles?.length || 0;
-      const verifiedCount = profiles?.filter(p => p.is_verified).length || 0;
-      const newThisWeek = profiles?.filter(p => {
+      const verifiedCount = profiles?.filter((p: any) => p.is_verified).length || 0;
+      const newThisWeek = profiles?.filter((p: any) => {
         const createdAt = new Date(p.created_at);
         const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
         return createdAt > weekAgo;

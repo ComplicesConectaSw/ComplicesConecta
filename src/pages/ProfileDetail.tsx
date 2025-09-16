@@ -279,7 +279,7 @@ const ProfileDetail = () => {
                 <div className="space-y-4">
                   <Button 
                     onClick={() => {
-                      logger.info('Me gusta', profile.name);
+                      logger.info('Me gusta', { profileName: profile.name });
                       alert(`¡Has dado like a ${profile.name}!`);
                     }}
                     variant="love" 
@@ -292,7 +292,7 @@ const ProfileDetail = () => {
                   
                   <Button 
                     onClick={() => {
-                      logger.info('Enviando mensaje a', profile.name);
+                      logger.info('Enviando mensaje a', { profileName: profile.name });
                       alert(`Mensaje enviado a ${profile.name}`);
                     }}
                     variant="default" 
@@ -305,7 +305,7 @@ const ProfileDetail = () => {
                   
                   <Button 
                     onClick={() => {
-                      logger.info('Reportando perfil de', profile.name);
+                      logger.info('Reportando perfil de', { profileName: profile.name });
                       if (confirm(`¿Estás seguro de que quieres reportar el perfil de ${profile.name}?`)) {
                         alert('Perfil reportado. Gracias por ayudarnos a mantener la comunidad segura.');
                       }

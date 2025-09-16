@@ -71,10 +71,10 @@ export const useRealtimeChat = ({
     
     setIsLoading(true);
     try {
-      logger.info('📥 Cargando mensajes históricos para sala:', roomId);
+      logger.info('📥 Cargando mensajes históricos para sala:', { roomId });
       
       // Usar tabla messages existente con estructura compatible
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('messages')
         .select(`
           id,
@@ -91,7 +91,7 @@ export const useRealtimeChat = ({
       }
 
       // Mapear a estructura RealtimeMessage
-      const mappedMessages: RealtimeMessage[] = (data || []).map(msg => ({
+      const mappedMessages: RealtimeMessage[] = (data || []).map((msg: any) => ({
         id: msg.id,
         content: msg.content,
         sender_id: msg.sender_id,
@@ -105,9 +105,9 @@ export const useRealtimeChat = ({
       }));
 
       setMessages(mappedMessages);
-      logger.info('✅ Mensajes cargados:', data?.length || 0);
+      logger.info('📨 Mensajes cargados:', { count: data?.length || 0 });
     } catch (error) {
-      logger.error('❌ Error en loadMessages:', error);
+      logger.error('Error in realtime subscription:', { error: String(error) });
     } finally {
       setIsLoading(false);
     }
@@ -124,7 +124,7 @@ export const useRealtimeChat = ({
     try {
       logger.info('📤 Enviando mensaje:', { content, messageType, chatRoomId });
 
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('messages')
         .insert({
           content: content.trim(),
@@ -135,20 +135,20 @@ export const useRealtimeChat = ({
         .single();
 
       if (error) {
-        logger.error('❌ Error enviando mensaje:', error);
+        logger.error('❌ Error enviando mensaje:', { error: String(error) });
         onError?.(error);
         return;
       }
 
-      logger.info('✅ Mensaje enviado:', data);
+      logger.info('📨 Mensaje recibido en tiempo real:', { payload: String(data) });
       
       // Crear mensaje compatible para el estado local
       const realtimeMessage: RealtimeMessage = {
-        id: data.id,
-        content: data.content,
-        sender_id: data.sender_id,
+        id: (data as any).id,
+        content: (data as any).content,
+        sender_id: (data as any).sender_id,
         room_id: chatRoomId,
-        created_at: data.created_at || new Date().toISOString(),
+        created_at: (data as any).created_at || new Date().toISOString(),
         message_type: messageType,
         reply_to: null,
         is_edited: false,
@@ -158,7 +158,7 @@ export const useRealtimeChat = ({
 
       onMessageSent?.(realtimeMessage);
     } catch (error) {
-      logger.error('❌ Error en sendMessage:', error);
+      logger.error('Error in sendMessage:', { error: String(error) });
       onError?.(error as Error);
     }
   }, [chatRoomId, userId, onError, onMessageSent]);
@@ -201,7 +201,7 @@ export const useRealtimeChat = ({
         });
       }
     } catch (error) {
-      logger.error('❌ Error enviando typing indicator:', error);
+      logger.error('Error enviando typing indicator:', { error: String(error) });
     }
   }, [userId]);
 
@@ -209,7 +209,7 @@ export const useRealtimeChat = ({
   useEffect(() => {
     if (!chatRoomId || !userId) return;
 
-    logger.info('🔄 Configurando canal realtime para sala:', chatRoomId);
+    logger.info('Initializing realtime chat for conversation:', { conversationId: chatRoomId });
     
     // Crear canal único para la sala de chat
     const channel = supabase.channel(`chat_room_${chatRoomId}`, {
@@ -228,7 +228,7 @@ export const useRealtimeChat = ({
         schema: 'public',
         table: 'messages'
       }, (payload) => {
-        logger.info('📨 Nuevo mensaje recibido:', payload.new);
+        logger.info('New message received:', { messageId: (payload.new as any).id });
         const newMessage = payload.new as RealtimeMessage;
         
         setMessages(prev => {
@@ -268,22 +268,22 @@ export const useRealtimeChat = ({
         const state = channel.presenceState();
         const users = Object.keys(state);
         setOnlineUsers(users);
-        logger.info('👥 Usuarios online:', users.length);
+        logger.info('Messages updated, count:', { count: messages.length });
       })
       
       .on('presence', { event: 'join' }, ({ key }) => {
-        logger.info('👋 Usuario se unió:', key);
+        logger.info('Usuario se unió:', { key });
         onUserJoined?.(key);
       })
       
       .on('presence', { event: 'leave' }, ({ key }) => {
-        logger.info('👋 Usuario se fue:', key);
+        logger.info('👋 Usuario se fue:', { key });
         onUserLeft?.(key);
       });
 
     // Suscribirse al canal
     channel.subscribe(async (status) => {
-      logger.info('📡 Estado del canal:', status);
+      logger.info('🔌 Canal conectado:', { status: String(status) });
       
       if (status === 'SUBSCRIBED') {
         setIsConnected(true);

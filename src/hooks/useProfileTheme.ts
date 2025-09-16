@@ -1,14 +1,27 @@
 import { useMemo } from "react";
 
+// Definir tipos de género específicos para el tema
 export type Gender = "male" | "female";
 export type ProfileType = "single" | "couple";
 export type Theme = "elegant" | "modern" | "vibrant";
 
-export interface ProfileThemeConfig {
+interface ThemeConfig {
   backgroundClass: string;
   textClass: string;
   accentClass: string;
   borderClass: string;
+  gradientFrom: string;
+  gradientTo: string;
+}
+
+interface UseProfileThemeReturn {
+  backgroundClass: string;
+  textClass: string;
+  accentClass: string;
+  borderClass: string;
+  gradientFrom: string;
+  gradientTo: string;
+  themeConfig: ThemeConfig;
 }
 
 /**
@@ -19,18 +32,48 @@ export interface ProfileThemeConfig {
  * @returns Configuración completa de clases CSS para el tema
  */
 export const useProfileTheme = (
-  profileType: ProfileType,
-  genders: Gender[],
+  profileType: ProfileType = 'single',
+  genders: Gender[] = ['male'],
   theme?: Theme
-): ProfileThemeConfig => {
-  return useMemo(() => {
-    // 🎨 Temas adicionales tienen prioridad máxima
+): UseProfileThemeReturn => {
+  return useMemo((): UseProfileThemeReturn => {
+    // Configuraciones base por género
+    const genderConfigs: Record<Gender, ThemeConfig> = {
+      male: {
+        backgroundClass: "bg-gradient-to-br from-blue-900 via-gray-800 to-gray-900",
+        textClass: "text-white",
+        accentClass: "text-blue-200",
+        borderClass: "border-blue-700",
+        gradientFrom: "from-blue-900",
+        gradientTo: "to-gray-900"
+      },
+      female: {
+        backgroundClass: "bg-gradient-to-br from-pink-400 via-purple-500 to-pink-600",
+        textClass: "text-white",
+        accentClass: "text-pink-100",
+        borderClass: "border-pink-400",
+        gradientFrom: "from-pink-400",
+        gradientTo: "to-pink-600"
+      }
+    };
+
+    // Temas adicionales tienen prioridad máxima
     if (theme === "elegant") {
       return {
         backgroundClass: "bg-gradient-to-br from-gray-900 via-gray-800 to-black",
         textClass: "text-white",
         accentClass: "text-gray-300",
-        borderClass: "border-gray-700"
+        borderClass: "border-gray-700",
+        gradientFrom: "from-gray-900",
+        gradientTo: "to-black",
+        themeConfig: {
+          backgroundClass: "bg-gradient-to-br from-gray-900 via-gray-800 to-black",
+          textClass: "text-white",
+          accentClass: "text-gray-300",
+          borderClass: "border-gray-700",
+          gradientFrom: "from-gray-900",
+          gradientTo: "to-black"
+        }
       };
     }
     
@@ -39,7 +82,17 @@ export const useProfileTheme = (
         backgroundClass: "bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500",
         textClass: "text-white",
         accentClass: "text-indigo-100",
-        borderClass: "border-indigo-400"
+        borderClass: "border-indigo-400",
+        gradientFrom: "from-indigo-500",
+        gradientTo: "to-pink-500",
+        themeConfig: {
+          backgroundClass: "bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500",
+          textClass: "text-white",
+          accentClass: "text-indigo-100",
+          borderClass: "border-indigo-400",
+          gradientFrom: "from-indigo-500",
+          gradientTo: "to-pink-500"
+        }
       };
     }
     
@@ -48,25 +101,33 @@ export const useProfileTheme = (
         backgroundClass: "bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500",
         textClass: "text-white",
         accentClass: "text-pink-100",
-        borderClass: "border-pink-400"
+        borderClass: "border-pink-400",
+        gradientFrom: "from-pink-500",
+        gradientTo: "to-yellow-500",
+        themeConfig: {
+          backgroundClass: "bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500",
+          textClass: "text-white",
+          accentClass: "text-pink-100",
+          borderClass: "border-pink-400",
+          gradientFrom: "from-pink-500",
+          gradientTo: "to-yellow-500"
+        }
       };
     }
 
     // 👤 Perfiles Single - Diferenciación por género
     if (profileType === "single") {
       if (genders[0] === "male") {
+        const config = genderConfigs.male;
         return {
-          backgroundClass: "bg-gradient-to-br from-blue-900 via-gray-800 to-gray-900",
-          textClass: "text-white",
-          accentClass: "text-blue-200",
-          borderClass: "border-blue-700"
+          ...config,
+          themeConfig: config
         };
       } else {
+        const config = genderConfigs.female;
         return {
-          backgroundClass: "bg-gradient-to-br from-pink-400 via-purple-500 to-pink-600",
-          textClass: "text-white",
-          accentClass: "text-pink-100",
-          borderClass: "border-pink-400"
+          ...config,
+          themeConfig: config
         };
       }
     }
@@ -75,39 +136,63 @@ export const useProfileTheme = (
     if (profileType === "couple") {
       // Pareja de hombres
       if (genders[0] === "male" && genders[1] === "male") {
-        return {
+        const config = {
           backgroundClass: "bg-gradient-to-br from-blue-900 via-gray-700 to-black",
           textClass: "text-white",
           accentClass: "text-blue-200",
-          borderClass: "border-blue-800"
+          borderClass: "border-blue-800",
+          gradientFrom: "from-blue-900",
+          gradientTo: "to-black"
+        };
+        return {
+          ...config,
+          themeConfig: config
         };
       }
       
       // Pareja de mujeres
       if (genders[0] === "female" && genders[1] === "female") {
-        return {
+        const config = {
           backgroundClass: "bg-gradient-to-br from-pink-500 via-fuchsia-600 to-purple-700",
           textClass: "text-white",
           accentClass: "text-pink-100",
-          borderClass: "border-pink-400"
+          borderClass: "border-pink-400",
+          gradientFrom: "from-pink-500",
+          gradientTo: "to-purple-700"
+        };
+        return {
+          ...config,
+          themeConfig: config
         };
       }
       
       // Pareja mixta (hombre + mujer)
-      return {
+      const config = {
         backgroundClass: "bg-gradient-to-br from-purple-500 via-indigo-600 to-blue-500",
         textClass: "text-white",
         accentClass: "text-purple-100",
-        borderClass: "border-purple-400"
+        borderClass: "border-purple-400",
+        gradientFrom: "from-purple-500",
+        gradientTo: "to-blue-500"
+      };
+      return {
+        ...config,
+        themeConfig: config
       };
     }
 
     // Fallback por defecto
-    return {
+    const defaultConfig = {
       backgroundClass: "bg-gradient-to-br from-gray-800 to-gray-900",
       textClass: "text-white",
       accentClass: "text-gray-300",
-      borderClass: "border-gray-600"
+      borderClass: "border-gray-600",
+      gradientFrom: "from-gray-800",
+      gradientTo: "to-gray-900"
+    };
+    return {
+      ...defaultConfig,
+      themeConfig: defaultConfig
     };
   }, [profileType, genders, theme]);
 };

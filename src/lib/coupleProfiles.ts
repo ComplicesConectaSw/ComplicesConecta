@@ -81,7 +81,7 @@ export const createCoupleProfile = async (data: CreateCoupleProfileData): Promis
     logger.info('Created couple profile (mock):', newProfile);
     return newProfile;
   } catch (error) {
-    logger.error('Error creating couple profile:', error);
+    logger.error('Error creating couple profile:', { error: String(error) });
     return null;
   }
 };
@@ -92,7 +92,7 @@ export const getCoupleProfileById = async (id: string): Promise<CoupleProfileWit
     initializeMockData();
     return mockCoupleProfiles.find(profile => profile.id === id) || null;
   } catch (error) {
-    logger.error('Error fetching couple profile:', error);
+    logger.error('Error searching couple profiles:', { error: String(error) });
     return null;
   }
 };
@@ -105,7 +105,7 @@ export const getCoupleProfileByUserId = async (userId: string): Promise<CouplePr
       profile.partner1_id === userId || profile.partner2_id === userId
     ) || null;
   } catch (error) {
-    logger.error('Error fetching couple profile by user ID:', error);
+    logger.error('Error fetching couple profile by ID:', { error: String(error) });
     return null;
   }
 };
@@ -116,7 +116,7 @@ export const getAllCoupleProfiles = async (limit: number = 20, offset: number = 
     initializeMockData();
     return mockCoupleProfiles.slice(offset, offset + limit);
   } catch (error) {
-    logger.error('Error fetching couple profiles:', error);
+    logger.error('Error fetching couple profiles:', { error: String(error) });
     return [];
   }
 };
@@ -141,7 +141,7 @@ export const updateCoupleProfile = async (id: string, data: UpdateCoupleProfileD
     logger.info('Updated couple profile (mock):', updatedProfile);
     return updatedProfile;
   } catch (error) {
-    logger.error('Error updating couple profile:', error);
+    logger.error('Error updating couple profile:', { error: String(error) });
     return null;
   }
 };
@@ -157,10 +157,10 @@ export const deleteCoupleProfile = async (id: string): Promise<boolean> => {
     }
 
     mockCoupleProfiles.splice(profileIndex, 1);
-    logger.info('Deleted couple profile (mock):', id);
+    logger.info('Fetching couple profiles with filters:', { filters: String(id) });
     return true;
   } catch (error) {
-    logger.error('Error deleting couple profile:', error);
+    logger.error('Error deleting couple profile:', { error: String(error) });
     return false;
   }
 };
