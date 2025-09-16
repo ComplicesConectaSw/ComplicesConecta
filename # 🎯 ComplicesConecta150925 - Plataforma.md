@@ -19,11 +19,11 @@
 
 ### 📱 ¡Descarga la App Ahora!
 
-<a href="https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v2.8.2/app-release.apk" download>
-  <img src="https://img.shields.io/badge/📱_Descargar_APK-v2.8.2-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
+<a href="https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/2.9.0/app-release.apk" download>
+  <img src="https://img.shields.io/badge/📱_Descargar_APK-v2.9.0-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
 </a>
 
-**SHA256:** `Verificado - Build v2.8.2 con TypeScript Errors Corregidos`
+**SHA256:** `Verificado - Build v2.9.0 con Sistema E2E Refactorizado`
 
 *🔒 Aplicación segura y verificada para Android*
 
