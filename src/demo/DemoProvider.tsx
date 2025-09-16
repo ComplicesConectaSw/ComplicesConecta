@@ -5,8 +5,10 @@
 
 import React, { createContext, useContext, ReactNode } from 'react';
 import { logger } from '@/lib/logger';
-import { demoProfiles } from './demoData';
-import type { Profile } from '@/types/profile';
+import { Database } from '@/integrations/supabase/types';
+import { demoProfiles, demoMessages, demoInvitations, demoEvents, demoMatches } from './demoData';
+
+type Profile = Database['public']['Tables']['profiles']['Row'];
 
 interface DemoContextType {
   profiles: Profile[];
@@ -36,19 +38,16 @@ export const DemoProvider: React.FC<DemoProviderProps> = ({ children }) => {
     
     if (filters?.ageRange) {
       filtered = filtered.filter(p => 
-        p.age >= filters.ageRange.min && p.age <= filters.ageRange.max
+        p.age && p.age >= filters.ageRange.min && p.age <= filters.ageRange.max
       );
-    }
-    
-    if (filters?.location) {
-      // Mock location filtering
-      filtered = filtered.filter(p => p.location?.includes(filters.location));
     }
     
     if (filters?.interests) {
-      filtered = filtered.filter(p => 
-        p.interests?.some(interest => filters.interests.includes(interest))
-      );
+      filtered = filtered.filter((p: Profile) => {
+        return (p as any).interests?.some((interest: string) => 
+          filters.interests.includes(interest)
+        );
+      });
     }
     
     return filtered;

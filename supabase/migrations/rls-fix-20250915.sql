@@ -282,6 +282,15 @@ CREATE POLICY "invitations_delete_policy" ON invitations
 -- 5. CONSTRAINT PARA EMAIL ÚNICO
 -- =====================================================
 
+-- Verificar y agregar columna is_verified si no existe
+DO $$ 
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                   WHERE table_name = 'profiles' AND column_name = 'is_verified') THEN
+        ALTER TABLE profiles ADD COLUMN is_verified BOOLEAN DEFAULT false;
+    END IF;
+END $$;
+
 -- Agregar constraint de email único en profiles
 ALTER TABLE profiles 
 ADD CONSTRAINT unique_email_profiles 

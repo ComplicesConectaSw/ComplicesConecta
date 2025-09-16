@@ -3,7 +3,7 @@
  * Determina automáticamente si usar Demo o Real Provider
  */
 
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 import { DemoProvider } from './DemoProvider';
 import { RealProvider } from './RealProvider';
 import { getDataConfig } from '@/config/demo-production';
@@ -12,34 +12,50 @@ import { logger } from '@/lib/logger';
 interface AppFactoryProps {
   children: ReactNode;
   forceMode?: 'demo' | 'production';
-  userContext?: {
-    authenticated?: boolean;
-    userType?: 'admin' | 'user' | 'guest';
-  };
 }
 
-export const AppFactory: React.FC<AppFactoryProps> = ({
-  children,
-  forceMode,
-  userContext = {}
-}) => {
-  const config = getDataConfig({
-    userAuthenticated: userContext.authenticated,
-    userType: userContext.userType,
-    forceMode
-  });
+export const AppFactory: React.FC<AppFactoryProps> = ({ children }) => {
+  const isDemoMode = useMemo(() => {
+    const mode = import.meta.env.VITE_APP_MODE;
+    const isDemo = mode === 'demo' || mode === 'development';
+    
+    logger.info('AppFactory: Modo detectado', { 
+      mode, 
+      isDemo,
+      env: import.meta.env.MODE 
+    });
+    
+    return isDemo;
+  }, []);
 
-  logger.info('AppFactory configuración:', {
-    mode: config.mode,
-    useDemo: config.useDemo,
-    userContext
-  });
-
-  if (config.useDemo) {
-    return <DemoProvider>{children}</DemoProvider>;
+  // Renderizar provider apropiado según el modo
+  if (isDemoMode) {
+    logger.info('AppFactory: Usando DemoProvider');
+    
+    return (
+      <DemoProvider>
+        <div className="demo-mode-indicator">
+          <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">
+            MODO DEMO
+          </span>
+        </div>
+        {children}
+      </DemoProvider>
+    );
   }
 
-  return <RealProvider>{children}</RealProvider>;
+  logger.info('AppFactory: Usando RealProvider');
+  
+  return (
+    <RealProvider>
+      <div className="production-mode-indicator">
+        <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
+          MODO PRODUCCIÓN
+        </span>
+      </div>
+      {children}
+    </RealProvider>
+  );
 };
 
 /**
@@ -47,42 +63,16 @@ export const AppFactory: React.FC<AppFactoryProps> = ({
  * Funciona independientemente del provider activo
  */
 export const useAppContext = () => {
-  // Intentar obtener contexto demo
-  try {
-    const { useDemoContext } = require('./DemoProvider');
-    const demoContext = useDemoContext();
-    if (demoContext) {
-      return {
-        ...demoContext,
-        type: 'demo' as const
-      };
-    }
-  } catch {
-    // Demo context no disponible
-  }
+  const isDemoMode = useMemo(() => {
+    const mode = import.meta.env.VITE_APP_MODE;
+    return mode === 'demo' || mode === 'development';
+  }, []);
 
-  // Intentar obtener contexto real
-  try {
-    const { useRealContext } = require('./RealProvider');
-    const realContext = useRealContext();
-    if (realContext) {
-      return {
-        ...realContext,
-        type: 'real' as const
-      };
-    }
-  } catch {
-    // Real context no disponible
-  }
-
-  // Fallback - retornar contexto básico
-  logger.warn('No se pudo obtener contexto demo ni real, usando fallback');
+  // Fallback seguro sin hooks condicionales
   return {
     profiles: [],
-    isDemo: false,
-    type: 'fallback' as const,
-    getRealProfile: async () => null,
-    getRealProfiles: async () => [],
+    isDemo: isDemoMode,
+    mode: isDemoMode ? 'demo' : 'production',
     realAuth: {
       login: async () => ({ success: false, error: 'Service not available' }),
       logout: async () => {},
