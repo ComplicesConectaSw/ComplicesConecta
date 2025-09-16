@@ -286,8 +286,10 @@ CREATE POLICY "invitations_delete_policy" ON invitations
 DO $$ 
 BEGIN
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
-                   WHERE table_name = 'profiles' AND column_name = 'is_verified') THEN
-        ALTER TABLE profiles ADD COLUMN is_verified BOOLEAN DEFAULT false;
+                   WHERE table_schema = 'public' 
+                   AND table_name = 'profiles' 
+                   AND column_name = 'is_verified') THEN
+        ALTER TABLE public.profiles ADD COLUMN is_verified BOOLEAN DEFAULT false;
     END IF;
 END $$;
 

@@ -30,7 +30,7 @@ interface DemoProviderProps {
 
 export const DemoProvider: React.FC<DemoProviderProps> = ({ children }) => {
   const getDemoProfile = (id: string): Profile | null => {
-    return demoProfiles.find(p => p.id === id) || null;
+    return demoProfiles.find((p: Profile) => p.id === id) || null;
   };
 
   const getDemoProfiles = (filters?: any): Profile[] => {
