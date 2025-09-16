@@ -411,7 +411,7 @@ ALTER TABLE token_packages ENABLE ROW LEVEL SECURITY;
 -- Políticas para usuarios autenticados
 CREATE POLICY "Users can view own data" ON user_roles FOR SELECT USING (user_id = auth.uid());
 CREATE POLICY "Users can view own invitations" ON invitations FOR SELECT USING (from_profile = auth.uid() OR to_profile = auth.uid());
-CREATE POLICY "Users can view own couple profile" ON couple_profiles FOR SELECT USING (user_id = auth.uid());
+-- CREATE POLICY "Users can view own couple profile" ON couple_profiles FOR SELECT USING (user_id = auth.uid()); -- Columna user_id no existe en couple_profiles
 -- CREATE POLICY "Users can view own photos" ON couple_photos FOR SELECT USING (couple_profile_id IN (SELECT id FROM couple_profiles WHERE user_id = auth.uid())); -- Política comentada hasta que couple_photos exista
 CREATE POLICY "Users can view own interests" ON user_interests FOR SELECT USING (user_id = auth.uid());
 CREATE POLICY "Users can view own tokens" ON tokens FOR SELECT USING (user_id = auth.uid());
