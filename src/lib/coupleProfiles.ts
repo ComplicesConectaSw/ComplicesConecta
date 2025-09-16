@@ -1,6 +1,6 @@
 import { logger } from '@/lib/logger';
-// Couple Profile Service with fallback to mock data
-// This service will use real Supabase data when available, otherwise fallback to mock data
+// Servicio de Perfiles de Pareja con respaldo a datos simulados
+// Este servicio usará datos reales de Supabase cuando estén disponibles, de lo contrario usará datos simulados
 
 export type RelationshipType = 'man-woman' | 'man-man' | 'woman-woman';
 
@@ -48,17 +48,17 @@ export interface UpdateCoupleProfileData {
   couple_images?: string[];
 }
 
-// Mock data storage for development
+// Almacenamiento de datos simulados para desarrollo
 let mockCoupleProfiles: CoupleProfileWithPartners[] = [];
 
-// Initialize mock data
+// Inicializar datos simulados
 const initializeMockData = () => {
   if (mockCoupleProfiles.length === 0) {
     mockCoupleProfiles = generateMockCoupleProfiles();
   }
 };
 
-// Create a new couple profile (mock implementation)
+// Crear un nuevo perfil de pareja (implementación simulada)
 export const createCoupleProfile = async (data: CreateCoupleProfileData): Promise<CoupleProfileData | null> => {
   try {
     initializeMockData();
@@ -77,7 +77,7 @@ export const createCoupleProfile = async (data: CreateCoupleProfileData): Promis
       updated_at: new Date().toISOString(),
     };
 
-    // In a real implementation, this would save to Supabase
+    // En una implementación real, esto se guardaría en Supabase
     logger.info('Created couple profile (mock):', newProfile);
     return newProfile;
   } catch (error) {
@@ -86,7 +86,7 @@ export const createCoupleProfile = async (data: CreateCoupleProfileData): Promis
   }
 };
 
-// Get couple profile by ID with partner details (mock implementation)
+// Obtener perfil de pareja por ID con detalles de los compañeros (implementación simulada)
 export const getCoupleProfileById = async (id: string): Promise<CoupleProfileWithPartners | null> => {
   try {
     initializeMockData();
@@ -97,7 +97,7 @@ export const getCoupleProfileById = async (id: string): Promise<CoupleProfileWit
   }
 };
 
-// Get couple profile by user ID (mock implementation)
+// Obtener perfil de pareja por ID de usuario (implementación simulada)
 export const getCoupleProfileByUserId = async (userId: string): Promise<CoupleProfileWithPartners | null> => {
   try {
     initializeMockData();
@@ -110,7 +110,7 @@ export const getCoupleProfileByUserId = async (userId: string): Promise<CouplePr
   }
 };
 
-// Get all couple profiles for discovery
+// Obtener todos los perfiles de pareja para descubrimiento
 export const getAllCoupleProfiles = async (limit: number = 20, offset: number = 0): Promise<CoupleProfileWithPartners[]> => {
   try {
     initializeMockData();
@@ -121,7 +121,7 @@ export const getAllCoupleProfiles = async (limit: number = 20, offset: number = 
   }
 };
 
-// Update couple profile (mock implementation)
+// Actualizar perfil de pareja (implementación simulada)
 export const updateCoupleProfile = async (id: string, data: UpdateCoupleProfileData): Promise<CoupleProfileData | null> => {
   try {
     initializeMockData();
@@ -146,7 +146,7 @@ export const updateCoupleProfile = async (id: string, data: UpdateCoupleProfileD
   }
 };
 
-// Delete couple profile (mock implementation)
+// Eliminar perfil de pareja (implementación simulada)
 export const deleteCoupleProfile = async (id: string): Promise<boolean> => {
   try {
     initializeMockData();
@@ -165,18 +165,18 @@ export const deleteCoupleProfile = async (id: string): Promise<boolean> => {
   }
 };
 
-// Check if user is part of a couple
+// Verificar si el usuario es parte de una pareja
 export const isUserInCouple = async (userId: string): Promise<boolean> => {
   try {
     const coupleProfile = await getCoupleProfileByUserId(userId);
     return coupleProfile !== null;
   } catch (error) {
-    logger.error('Error checking if user is in couple:', error);
+    logger.error('Error checking if user is in couple:', { error: String(error) });
     return false;
   }
 };
 
-// Get relationship type display name
+// Obtener nombre de visualización del tipo de relación
 export const getRelationshipDisplayName = (relationshipType: RelationshipType): string => {
   switch (relationshipType) {
     case 'man-man':
@@ -189,7 +189,7 @@ export const getRelationshipDisplayName = (relationshipType: RelationshipType): 
   }
 };
 
-// Generate mock couple profiles for development/demo
+// Generar perfiles de pareja simulados para desarrollo/demo
 export const generateMockCoupleProfiles = (): CoupleProfileWithPartners[] => {
   return [
     {

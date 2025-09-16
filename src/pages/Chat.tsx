@@ -99,7 +99,7 @@ const Chat = () => {
         setRealRooms(allRooms);
       }
     } catch (error) {
-      logger.error('Error cargando datos de chat:', error);
+      logger.error('Error cargando datos de chat:', { error: String(error) });
     } finally {
       setIsLoading(false);
     }
@@ -119,7 +119,7 @@ const Chat = () => {
         });
       }
     } catch (error) {
-      logger.error('Error cargando mensajes:', error);
+      logger.error('Error cargando mensajes:', { error: String(error) });
     } finally {
       setIsLoading(false);
     }
@@ -140,7 +140,7 @@ const Chat = () => {
         alert(result.error || 'Error al enviar mensaje');
       }
     } catch (error) {
-      logger.error('Error enviando mensaje:', error);
+      logger.error('Error enviando mensaje:', { error: String(error) });
       alert('Error al enviar mensaje');
     }
   };

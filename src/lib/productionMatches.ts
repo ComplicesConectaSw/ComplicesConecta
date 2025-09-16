@@ -41,6 +41,7 @@ export interface MatchFilters {
   accountType?: 'single' | 'couple';
   gender?: string;
   minCompatibility?: number;
+  location?: string;
 }
 
 export interface MatchStats {
@@ -153,7 +154,7 @@ class ProductionMatchService {
       if (filters?.gender) {
         query = query.eq('gender', filters.gender);
       }
-      if (filters?.accountType && filters.accountType !== 'both') {
+      if (filters?.accountType) {
         query = query.eq('account_type', filters.accountType);
       }
       if (filters?.location) {
@@ -267,14 +268,14 @@ class ProductionMatchService {
     try {
       const { data: user } = await supabase.auth.getUser();
       if (!user.user) {
-        return { success: false, error: 'Usuario no autenticado' };
+        return { success: false, error: 'Usuario no autenticado', total: 0 };
       }
 
       // Obtener perfiles que coincidan con la búsqueda
       let query = (supabase as any)
         .from('profiles')
         .select('*')
-        .neq('user_id', user.id);
+        .neq('user_id', user.user.id);
 
       if (searchQuery) {
         query = query.or(`first_name.ilike.%${searchQuery}%,last_name.ilike.%${searchQuery}%,bio.ilike.%${searchQuery}%`);
@@ -339,6 +340,7 @@ class ProductionMatchService {
     } catch (error) {
       return {
         success: false,
+        total: 0,
         error: `Error inesperado: ${error instanceof Error ? error.message : 'Error desconocido'}`
       };
     }

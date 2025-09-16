@@ -44,7 +44,7 @@ const ProfileCouple: React.FC = () => {
         }, 1500);
         
       } catch (error) {
-        logger.error('Error loading profile:', error);
+        logger.error('Error loading profile:', { error: String(error) });
         // Fallback a perfil mock
         const mockCoupleProfiles = generateMockCoupleProfiles();
         setProfile(mockCoupleProfiles[0]);

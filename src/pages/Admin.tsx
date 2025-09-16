@@ -151,7 +151,7 @@ const Admin = () => {
         loadInvitations()
       ]);
     } catch (error) {
-      logger.error('Error loading admin data:', error);
+      logger.error('Error loading admin data:', { error: String(error) });
       toast({
         title: "Error",
         description: "Error al cargar datos del panel de administración",
@@ -185,7 +185,7 @@ const Admin = () => {
       
       setProfiles(mockProfiles);
     } catch (error) {
-      logger.error('Error loading profiles:', error);
+      logger.error('Error loading profiles:', { error: String(error) });
     }
   };
 
@@ -206,7 +206,7 @@ const Admin = () => {
       };
       setStats(mockStats);
     } catch (error) {
-      logger.error('Error loading stats:', error);
+      logger.error('Error loading stats:', { error: String(error) });
     }
   };
 
@@ -233,7 +233,7 @@ const Admin = () => {
       ];
       setFaqItems(mockFAQ);
     } catch (error) {
-      logger.error('Error loading FAQ:', error);
+      logger.error('Error loading FAQ:', { error: String(error) });
     }
   };
 
@@ -249,6 +249,7 @@ const Admin = () => {
           type: 'gallery',
           status: 'pending',
           created_at: new Date(Date.now() - 86400000).toISOString(),
+          decided_at: null,
         },
         {
           id: '2',
@@ -263,7 +264,7 @@ const Admin = () => {
       ];
       setInvitations(allInvitations);
     } catch (error) {
-      logger.error('Error loading invitations:', error);
+      logger.error('Error loading invitations:', { error: String(error) });
     }
   };
 
@@ -284,7 +285,7 @@ const Admin = () => {
         description: "El perfil ha sido eliminado exitosamente"
       });
     } catch (error) {
-      logger.error('Error deleting profile:', error);
+      logger.error('Error deleting profile:', { error: String(error) });
       toast({
         title: "Error",
         description: "Error al eliminar el perfil",
@@ -296,7 +297,7 @@ const Admin = () => {
   const handleToggleVerification = async (profileId: string, currentStatus: boolean) => {
     try {
       // Note: Using a custom field for verification status since is_verified might not exist in schema
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('profiles')
         .update({ 
           // Use bio field to store verification status temporarily
@@ -315,7 +316,7 @@ const Admin = () => {
         description: `El perfil ha sido ${currentStatus ? 'desverificado' : 'verificado'} exitosamente`
       });
     } catch (error) {
-      logger.error('Error updating verification:', error);
+      logger.error('Error updating verification:', { error: String(error) });
       toast({
         title: "Error",
         description: "Error al actualizar verificación",
@@ -350,7 +351,7 @@ const Admin = () => {
         description: "La pregunta frecuente ha sido agregada exitosamente"
       });
     } catch (error) {
-      logger.error('Error adding FAQ:', error);
+      logger.error('Error adding FAQ:', { error: String(error) });
       toast({
         title: "Error",
         description: "Error al agregar FAQ",
@@ -380,7 +381,7 @@ const Admin = () => {
         description: "La invitación ha sido revocada exitosamente"
       });
     } catch (error) {
-      logger.error('Error revoking invitation:', error);
+      logger.error('Error revoking invitation:', { error: String(error) });
       toast({
         title: "Error",
         description: "Error al revocar la invitación",
@@ -422,7 +423,7 @@ const Admin = () => {
         description: "El reporte de auditoría ha sido generado exitosamente"
       });
     } catch (error) {
-      logger.error('Error generating audit report:', error);
+      logger.error('Error generating audit report:', { error: String(error) });
       toast({
         title: "Error",
         description: "Error al generar el reporte de auditoría",

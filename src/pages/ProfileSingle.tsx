@@ -69,7 +69,7 @@ const ProfileSingle: React.FC = () => {
         logger.info('⚠️ Estado inesperado: sin usuario ni perfil válido');
         setIsLoading(false);
       } catch (error) {
-        logger.error('Error cargando perfil:', error);
+        logger.error('Error cargando perfil:', { error: String(error) });
         setIsLoading(false);
       }
     };
@@ -151,7 +151,7 @@ const ProfileSingle: React.FC = () => {
                       {profile.age} años
                     </Badge>
                     <Badge variant="secondary" className="bg-white/20 text-white border-white/30 text-xs sm:text-sm">
-                      {profile.gender}
+                      {(profile as any).gender || 'No especificado'}
                     </Badge>
                     <Badge variant="secondary" className="bg-white/20 text-white border-white/30 flex items-center gap-1 text-xs sm:text-sm">
                       <MapPin className="w-3 h-3" />

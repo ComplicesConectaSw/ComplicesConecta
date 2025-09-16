@@ -17,8 +17,8 @@ export const initSentry = () => {
     beforeSend(event, hint) {
       if (import.meta.env.DEV) {
         console.group('🔍 Sentry Error Captured');
-        logger.error('Error:', hint.originalException || hint.syntheticException);
-        logger.error('Error initializing Sentry:', { context: String(hint.context) });
+        logger.error('Sentry error captured:', { error: String(hint.originalException || hint.syntheticException) });
+        logger.error('Sentry context:', { eventHint: String(hint.originalException || hint.syntheticException || 'no context') });
         console.groupEnd();
       }
       

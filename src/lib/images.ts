@@ -110,18 +110,6 @@ export async function uploadImage(
       .from(bucket)
       .getPublicUrl(fileName);
 
-    const { data, error } = await (supabase as any)
-      .from('images')
-      .insert({
-        profile_id: profileId,
-        url: publicUrl,
-        is_public: isPublic,
-        title: file.name,
-        description,
-        file_size: file.size,
-        mime_type: file.type
-      });
-
     // Guardar metadatos en la base de datos
     const { data: dbData, error: dbError } = await supabase
       .from('images')
@@ -133,7 +121,7 @@ export async function uploadImage(
         description,
         file_size: file.size,
         mime_type: file.type
-      })
+      } as any)
       .select()
       .single();
 
@@ -196,9 +184,9 @@ export async function getUserImages(
     }
 
     // Mapear datos para asegurar compatibilidad con la interfaz
-    return (data || []).map(item => ({
+    return (data || []).map((item: any) => ({
       ...item,
-      type: 'gallery' as const // Default type since DB doesn't have type column yet
+      type: 'gallery' as 'gallery' // Default type since DB doesn't have type column yet
     })) as ImageUpload[];
   } catch (error) {
     logger.error('Unexpected error in getUserImages', {
@@ -234,8 +222,8 @@ export async function deleteImage(imageId: string, profileId: string): Promise<b
     }
 
     // Determinar bucket y nombre del archivo
-    const bucket = image.is_public ? STORAGE_BUCKETS.GALLERY : STORAGE_BUCKETS.PROFILE;
-    const fileName = image.url.split('/').pop();
+    const bucket = (image as any).is_public ? STORAGE_BUCKETS.GALLERY : STORAGE_BUCKETS.PROFILE;
+    const fileName = (image as any).url.split('/').pop();
 
     // Eliminar archivo del Storage
     if (fileName) {
@@ -292,9 +280,9 @@ export async function getPublicImages(limit: number = 20): Promise<ImageUpload[]
       return [];
     }
 
-    return (data || []).map(item => ({
+    return (data || []).map((item: any) => ({
       ...item,
-      type: 'gallery' as const // Default type since DB doesn't have type column yet
+      type: 'gallery' as 'gallery' // Default type since DB doesn't have type column yet
     })) as ImageUpload[];
   } catch (error) {
     logger.error('Unexpected error in getPublicImages', {

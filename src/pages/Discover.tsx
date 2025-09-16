@@ -698,6 +698,12 @@ const Discover = () => {
                         });
                         navigate('/chat-info');
                       }}
+                      onOpenModal={() => {
+                        toast({
+                          title: "Acción requerida",
+                          description: "Funcionalidad de modal disponible próximamente.",
+                        });
+                      }}
                     />
                   </motion.div>
                 ))
