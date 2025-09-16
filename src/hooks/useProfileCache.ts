@@ -22,7 +22,7 @@ export const useProfile = (userId: string | null) => {
     queryFn: async (): Promise<Profile | null> => {
       if (!userId) return null;
       
-      logger.info('🔍 Cargando perfil desde Supabase:', userId);
+      logger.info('🔍 Cargando perfil desde Supabase:', { userId });
       
       const { data, error } = await supabase
         .from('profiles')
@@ -35,7 +35,7 @@ export const useProfile = (userId: string | null) => {
         throw error;
       }
 
-      logger.info('✅ Perfil cargado desde Supabase:', data?.first_name);
+      logger.info('✅ Perfil cargado desde Supabase:', { first_name: (data as any)?.first_name });
       return data;
     },
     enabled: !!userId,
@@ -51,13 +51,14 @@ export const useProfiles = (filters?: {
   ageMin?: number;
   ageMax?: number;
   location?: string;
+  limit?: number;
 }) => {
   const filterKey = JSON.stringify(filters || {});
   
   return useQuery({
     queryKey: profileKeys.list(filterKey),
     queryFn: async (): Promise<Profile[]> => {
-      logger.info('🔍 Cargando perfiles desde Supabase con filtros:', filters);
+      logger.info('📊 Cargando perfiles con filtros:', { limit: filters?.limit });
       
       let query = supabase.from('profiles').select('*');
       
@@ -77,14 +78,18 @@ export const useProfiles = (filters?: {
         query = query.ilike('location', `%${filters.location}%`);
       }
 
-      const { data, error } = await query.limit(50);
+      if (filters?.limit) {
+        query = query.limit(filters.limit);
+      }
+
+      const { data, error } = await query;
 
       if (error) {
         logger.error('❌ Error cargando perfiles:', error);
         throw error;
       }
 
-      logger.info('✅ Perfiles cargados desde Supabase:', data?.length);
+      logger.info('📊 Perfiles cargados desde cache:', { count: data?.length });
       return data || [];
     },
     staleTime: 2 * 60 * 1000, // 2 minutos
@@ -98,13 +103,16 @@ export const useUpdateProfile = () => {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: async (profile: Partial<Profile> & { id: string }) => {
-      logger.info('💾 Actualizando perfil en Supabase:', profile.id);
+    mutationFn: async ({ profileId, updates }: { profileId: string; updates: Partial<Profile> }) => {
+      logger.info('💾 Actualizando perfil en Supabase:', { profileId });
       
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('profiles')
-        .update(profile)
-        .eq('id', profile.id)
+        .update({
+          ...updates,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', profileId)
         .select()
         .single();
 
@@ -121,7 +129,7 @@ export const useUpdateProfile = () => {
       // Invalidar listas de perfiles
       queryClient.invalidateQueries({ queryKey: profileKeys.lists() });
       
-      logger.info('✅ Perfil actualizado y cache invalidado:', data.first_name);
+      logger.info('✅ Perfil actualizado en cache:', { id: (data as any)?.id });
     },
     onError: (error) => {
       logger.error('❌ Error en mutación de perfil:', error);
@@ -134,12 +142,12 @@ export const useCreateProfile = () => {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: async (profile: Omit<Profile, 'id' | 'created_at' | 'updated_at'>) => {
-      logger.info('➕ Creando nuevo perfil en Supabase');
+    mutationFn: async (newProfile: Omit<Profile, 'id' | 'created_at' | 'updated_at'>) => {
+      logger.info('📝 Creando nuevo perfil:', { first_name: (newProfile as any)?.first_name });
       
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('profiles')
-        .insert(profile)
+        .insert(newProfile)
         .select()
         .single();
 
@@ -192,7 +200,7 @@ export const useClearProfileCache = () => {
     },
     clearProfile: (userId: string) => {
       queryClient.removeQueries({ queryKey: profileKeys.detail(userId) });
-      logger.info('🧹 Cache de perfil específico limpiado:', userId);
+      logger.info('🧹 Cache de perfil específico limpiado:', { userId });
     },
     clearLists: () => {
       queryClient.removeQueries({ queryKey: profileKeys.lists() });

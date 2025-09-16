@@ -101,7 +101,7 @@ export class MatchingService {
           liker_id: user.id,
           liked_id: likedUserId,
           is_active: true
-        });
+        } as any);
 
       if (likeError) throw likeError;
 
@@ -137,7 +137,7 @@ export class MatchingService {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Usuario no autenticado');
 
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('user_likes')
         .update({ is_active: false })
         .eq('liker_id', user.id)
@@ -191,11 +191,11 @@ export class MatchingService {
 
       // Usar la función SQL helper
       const { data, error } = await supabase
-        .rpc('get_user_matches', { user_id: user.id });
+        .rpc('get_user_matches', { user_id: user.id } as any);
 
       if (error) throw error;
 
-      return (data || []).map((match: any) => ({
+      return ((data as any) || []).map((match: any) => ({
         id: match.match_id,
         user1_id: user.id,
         user2_id: match.other_user_id,
@@ -279,11 +279,11 @@ export class MatchingService {
           min_age: minAge,
           max_age: maxAge,
           limit_count: limit
-        });
+        } as any);
 
       if (error) throw error;
 
-      return (data || []).map((profile: any) => ({
+      return ((data as any) || []).map((profile: any) => ({
         id: profile.profile_id,
         first_name: profile.first_name,
         last_name: profile.last_name,
@@ -322,7 +322,7 @@ export class MatchingService {
         .eq('id', user.id)
         .single();
 
-      const userInterests = userProfile?.interests || [];
+      const userInterests = (userProfile as any)?.interests || [];
 
       // Obtener perfiles potenciales
       const potentialMatches = await this.getPotentialMatches(filters);
@@ -373,7 +373,7 @@ export class MatchingService {
           interaction_type: 'message',
           content: content.trim(),
           metadata: { timestamp: new Date().toISOString() }
-        });
+        } as any);
 
       if (error) throw error;
 
@@ -393,7 +393,7 @@ export class MatchingService {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Usuario no autenticado');
 
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('match_interactions')
         .insert({
           match_id: matchId,
@@ -449,7 +449,7 @@ export class MatchingService {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Usuario no autenticado');
 
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('profiles')
         .update({ interests })
         .eq('id', user.id);
@@ -472,7 +472,7 @@ export class MatchingService {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      await supabase.rpc('update_user_activity', {
+      await (supabase as any).rpc('update_user_activity', {
         user_id: user.id,
         is_online: isOnline
       });

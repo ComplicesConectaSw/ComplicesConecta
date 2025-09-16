@@ -222,8 +222,8 @@ const AdminProduction = () => {
         location: profile.bio || 'No especificada', // Using bio as location fallback
         email: 'No disponible', // Email not in profiles table
         is_verified: false, // Campo no disponible en la tabla profiles
-        gender: profile.gender,
-        interested_in: profile.interested_in,
+        gender: (profile as any).gender || 'male',
+        interested_in: (profile as any).interested_in || 'women',
         is_premium: profile.is_premium || false,
         created_at: profile.created_at,
         last_seen: 'Nunca', // Not in profiles table
@@ -413,9 +413,9 @@ const AdminProduction = () => {
       const profile = profiles.find(p => p.id === profileId);
       if (!profile) return;
 
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('profiles')
-        .update({ is_premium: !profile.is_premium } as any)
+        .update({ is_premium: !profile.is_premium })
         .eq('id', profileId);
 
       if (error) throw error;

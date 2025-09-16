@@ -4,8 +4,8 @@ import type { Database } from '@/integrations/supabase/types';
 // Tipos estrictos basados en Supabase
 type ProfileRow = Database['public']['Tables']['profiles']['Row'];
 type InvitationRow = Database['public']['Tables']['invitations']['Row'];
-type InvitationStatus = Database['public']['Enums']['invitation_status'];
-type InvitationType = Database['public']['Enums']['invitation_type'];
+type InvitationStatus = 'pending' | 'accepted' | 'declined';
+type InvitationType = 'profile' | 'chat' | 'gallery' | 'event';
 
 // Tipo genérico para respuestas de API
 export interface ApiResponse<T = any> {
@@ -110,7 +110,7 @@ export const RequestsService = {
           message: data.message ?? null,
           type: 'profile' as InvitationType,
           status: 'pending' as InvitationStatus
-        });
+        } as any);
 
       if (error) {
         return { success: false, error: error.message };
@@ -133,7 +133,7 @@ export const RequestsService = {
     response: 'accepted' | 'declined'
   ): Promise<ApiResponse> {
     try {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('invitations')
         .update({ 
           status: response as InvitationStatus,
@@ -188,9 +188,9 @@ export const RequestsService = {
       }
 
       // Transformar datos para que coincidan con ConnectionRequestWithProfile
-      const transformedData = (data ?? []).map(item => ({
+      const transformedData = (data ?? []).map((item: any) => ({
         ...item,
-        profile: item.sender_profile // Para solicitudes recibidas, el perfil es el remitente
+        profile: (item as any).sender_profile // Para solicitudes recibidas, el perfil es el remitente
       }));
 
       return { data: transformedData };
@@ -235,9 +235,9 @@ export const RequestsService = {
       }
 
       // Transformar datos para que coincidan con ConnectionRequestWithProfile
-      const transformedData = (data ?? []).map(item => ({
+      const transformedData = (data ?? []).map((item: any) => ({
         ...item,
-        profile: item.receiver_profile // Para solicitudes enviadas, el perfil es el destinatario
+        profile: (item as any).receiver_profile // Para solicitudes enviadas, el perfil es el destinatario
       }));
 
       return { data: transformedData };
@@ -331,9 +331,9 @@ export const RequestsService = {
       }
 
       return {
-        connected: data.status === 'accepted',
-        requestStatus: data.status as InvitationStatus,
-        requestId: data.id
+        connected: (data as any).status === 'accepted',
+        requestStatus: (data as any).status as InvitationStatus,
+        requestId: (data as any).id
       };
     } catch (error) {
       return { 

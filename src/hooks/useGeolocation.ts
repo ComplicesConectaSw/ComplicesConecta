@@ -258,7 +258,7 @@ export const useGeolocation = () => {
       const permission = await navigator.permissions.query({ name: 'geolocation' });
       return permission.state;
     } catch (error) {
-      logger.warn('Could not query geolocation permission:', error);
+      logger.warn('Could not query geolocation permission:', { error: error instanceof Error ? error.message : String(error) });
       return null;
     }
   }, []);
