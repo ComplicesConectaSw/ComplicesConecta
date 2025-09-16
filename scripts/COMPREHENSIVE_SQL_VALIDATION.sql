@@ -165,7 +165,8 @@ BEGIN
                 relationship_type TEXT CHECK (relationship_type IN ('married', 'dating', 'open', 'polyamorous')),
                 looking_for TEXT[] DEFAULT '{}',
                 verification_status TEXT DEFAULT 'pending' CHECK (verification_status IN ('pending', 'verified', 'rejected')),
-                is_active BOOLEAN DEFAULT true,
+                is_verified BOOLEAN DEFAULT FALSE,
+                is_premium BOOLEAN DEFAULT FALSE,
                 created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
                 updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
                 CONSTRAINT unique_partner1 UNIQUE (partner1_id),
@@ -436,12 +437,16 @@ BEGIN
     RAISE NOTICE '📊 CREANDO ÍNDICES DE PERFORMANCE';
     
     -- Índices para couple_profiles
-    IF NOT index_exists('idx_couple_profiles_user_id') THEN
-        CREATE INDEX idx_couple_profiles_user_id ON public.couple_profiles(user_id);
+    IF NOT index_exists('idx_couple_profiles_partner1_id') THEN
+        CREATE INDEX idx_couple_profiles_partner1_id ON public.couple_profiles(partner1_id);
     END IF;
     
-    IF NOT index_exists('idx_couple_profiles_active') THEN
-        CREATE INDEX idx_couple_profiles_active ON public.couple_profiles(is_active) WHERE is_active = true;
+    IF NOT index_exists('idx_couple_profiles_partner2_id') THEN
+        CREATE INDEX idx_couple_profiles_partner2_id ON public.couple_profiles(partner2_id);
+    END IF;
+    
+    IF NOT index_exists('idx_couple_profiles_verified') THEN
+        CREATE INDEX idx_couple_profiles_verified ON public.couple_profiles(is_verified) WHERE is_verified = true;
     END IF;
     
     -- Índices para chat_messages
