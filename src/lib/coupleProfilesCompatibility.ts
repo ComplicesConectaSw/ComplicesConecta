@@ -53,7 +53,7 @@ export const coupleProfileCompatibility: CoupleProfileCompatibility = {
       
       if (coupleProfile) {
         // Si es perfil de pareja, devolver ambos IDs de los partners
-        return [coupleProfile.partner1_id, coupleProfile.partner2_id];
+        return [(coupleProfile as any).partner1_id, (coupleProfile as any).partner2_id];
       }
       
       // Si es perfil individual, solo devolver el mismo ID
