@@ -44,6 +44,14 @@ interface AuthState {
 }
 
 export const useAuth = () => {
+  // Migración a usePersistedState para tokens y sesión
+  const [authTokens, setAuthTokens] = usePersistedState<{
+    access_token?: string;
+    refresh_token?: string;
+    expires_at?: number;
+    demo_user?: string;
+  }>('auth_tokens', {});
+  
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
@@ -351,7 +359,7 @@ export const useAuth = () => {
   const isAdmin = () => {
     // Demo admin check usando StorageManager
     const sessionFlags = StorageManager.getSessionFlags();
-    const demoUser = localStorage.getItem('demo_user'); // TODO: Migrar a Supabase
+    const demoUser = authTokens.demo_user; // Migrado de localStorage
     
     if (sessionFlags.demo_authenticated && demoUser) {
       try {
@@ -408,7 +416,7 @@ export const useAuth = () => {
 
   const isDemo = () => {
     const sessionFlags = StorageManager.getSessionFlags();
-    const demoUser = localStorage.getItem('demo_user'); // TODO: Migrar a Supabase
+    const demoUser = authTokens.demo_user; // Migrado de localStorage
     const isDemoActive = sessionFlags.demo_authenticated && demoUser;
     
     if (isDemoActive) {
@@ -430,7 +438,7 @@ export const useAuth = () => {
   const isAuthenticated = () => {
     // Verificar sesión demo primero
     const sessionFlags = StorageManager.getSessionFlags();
-    const demoUser = localStorage.getItem('demo_user'); // TODO: Migrar a Supabase
+    const demoUser = authTokens.demo_user; // Migrado de localStorage
     if (sessionFlags.demo_authenticated && demoUser) {
       logger.info('✅ Authenticated via demo session');
       return true;

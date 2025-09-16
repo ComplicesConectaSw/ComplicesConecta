@@ -40,18 +40,18 @@ export class SimpleChatService {
       }
 
       // Obtener salas públicas
-      const { data: publicRooms, error: publicError } = await supabase
+      const { data: publicRooms, error: publicError } = await (supabase as any)
         .from('chat_rooms')
         .select('*')
         .eq('is_public', true)
         .eq('is_active', true);
 
       if (publicError) {
-        logger.error('Error obteniendo salas públicas:', publicError);
+        logger.error('Error obteniendo salas públicas:', { error: String(publicError) });
       }
 
       // Obtener salas privadas donde el usuario es miembro
-      const { data: memberRooms, error: memberError } = await supabase
+      const { data: memberRooms, error: memberError } = await (supabase as any)
         .from('chat_members')
         .select(`
           room_id,
@@ -60,19 +60,19 @@ export class SimpleChatService {
         .eq('profile_id', user.user.id);
 
       if (memberError) {
-        logger.error('Error obteniendo membresías:', memberError);
+        logger.error('Error obteniendo membresías:', { error: String(memberError) });
       }
 
-      const privateRooms = memberRooms?.map(member => ({
-        id: (member as any).chat_rooms.id,
-        name: (member as any).chat_rooms.name,
+      const privateRooms = memberRooms?.map((member: any) => ({
+        id: member.chat_rooms.id,
+        name: member.chat_rooms.name,
         type: 'private' as const,
-        description: (member as any).chat_rooms.description,
-        created_at: (member as any).chat_rooms.created_at,
-        updated_at: (member as any).chat_rooms.updated_at
+        description: member.chat_rooms.description,
+        created_at: member.chat_rooms.created_at,
+        updated_at: member.chat_rooms.updated_at
       })) || [];
 
-      const formattedPublicRooms: SimpleChatRoom[] = (publicRooms || []).map(room => ({
+      const formattedPublicRooms: SimpleChatRoom[] = (publicRooms || []).map((room: any) => ({
         id: room.id,
         name: room.name,
         type: 'public' as const,
@@ -101,7 +101,7 @@ export class SimpleChatService {
     error?: string;
   }> {
     try {
-      const { data: messages, error } = await supabase
+      const { data: messages, error } = await (supabase as any)
         .from('messages')
         .select('*')
         .eq('room_id', roomId)
@@ -113,17 +113,17 @@ export class SimpleChatService {
       }
 
       // Obtener información de los remitentes
-      const senderIds = [...new Set(messages?.map(m => m.sender_id) || [])];
-      const { data: profiles } = await supabase
+      const senderIds = [...new Set(messages?.map((m: any) => m.sender_id) || [])];
+      const { data: profiles } = await (supabase as any)
         .from('profiles')
         .select('id, first_name, last_name')
         .in('id', senderIds);
 
       const profileMap = new Map(
-        profiles?.map(p => [p.id, `${p.first_name} ${p.last_name}`]) || []
+        profiles?.map((p: any) => [p.id, `${p.first_name} ${p.last_name}`]) || []
       );
 
-      const formattedMessages: SimpleChatMessage[] = (messages || []).map(message => ({
+      const formattedMessages: SimpleChatMessage[] = (messages || []).map((message: any) => ({
         id: message.id,
         content: message.content,
         sender_id: message.sender_id,
@@ -155,7 +155,7 @@ export class SimpleChatService {
       }
 
       // Obtener perfil del usuario
-      const { data: profile } = await supabase
+      const { data: profile } = await (supabase as any)
         .from('profiles')
         .select('id, first_name, last_name')
         .eq('user_id', user.user.id)
@@ -166,7 +166,7 @@ export class SimpleChatService {
       }
 
       // Enviar mensaje
-      const { data: message, error } = await supabase
+      const { data: message, error } = await (supabase as any)
         .from('messages')
         .insert({
           content,
@@ -216,7 +216,7 @@ export class SimpleChatService {
           const newMessage = payload.new as any;
           
           // Obtener información del remitente
-          const { data: profile } = await supabase
+          const { data: profile } = await (supabase as any)
             .from('profiles')
             .select('first_name, last_name')
             .eq('id', newMessage.sender_id)

@@ -10,6 +10,9 @@ interface ImageUploadProps {
   type?: 'profile' | 'gallery';
   className?: string;
   disabled?: boolean;
+  // New props for couple profile support
+  profileType?: 'single' | 'couple';
+  partnerName?: string;
 }
 
 export const ImageUpload: React.FC<ImageUploadProps> = ({
@@ -19,7 +22,9 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
   currentImage,
   type = 'profile',
   className = '',
-  disabled = false
+  disabled = false,
+  profileType = 'single',
+  partnerName
 }) => {
   const [isUploading, setIsUploading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
@@ -119,7 +124,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
         <div className="relative group">
           <img
             src={currentImage}
-            alt="Imagen de perfil"
+            alt={profileType === 'couple' && partnerName ? `Imagen de ${partnerName}` : "Imagen de perfil"}
             className="w-full h-full object-cover rounded-lg"
           />
           

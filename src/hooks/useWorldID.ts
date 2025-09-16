@@ -68,7 +68,7 @@ export const useWorldID = () => {
         setStatus({ isVerified: false, isLoading: false });
       }
     } catch (err) {
-      logger.error('Error checking World ID verification status:', err);
+      logger.error('Error checking verification status:', { error: String(err) });
       setError(err instanceof Error ? err.message : 'Error desconocido');
       setStatus({ isVerified: false, isLoading: false });
     }
@@ -86,7 +86,7 @@ export const useWorldID = () => {
         currentMonth: ''
       });  
     } catch (err) {
-      logger.error('Error fetching World ID stats:', err);
+      logger.error('Error initializing WorldID:', { error: String(err) });
       setError(err instanceof Error ? err.message : 'Error al obtener estadísticas');
     }
   }, []);
@@ -131,7 +131,7 @@ export const useWorldID = () => {
 
       return data || [];
     } catch (err) {
-      logger.error('Error fetching verification history:', err);
+      logger.error('Error storing verification:', { error: String(err) });
       return [];
     }
   }, [user?.id]);
@@ -159,7 +159,7 @@ export const useWorldID = () => {
 
       return { current, limit, remaining };
     } catch (err) {
-      logger.error('Error checking monthly limit:', err);
+      logger.error('Error checking monthly limit:', { error: String(err) });
       return { current: 0, limit: 500, remaining: 500 };
     }
   }, [user?.id]);

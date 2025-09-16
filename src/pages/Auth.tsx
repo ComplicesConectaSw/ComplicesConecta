@@ -28,6 +28,7 @@ import { ResponsiveContainer } from '@/components/ui/ResponsiveContainer';
 import { ThemeInfoModal } from '@/components/auth/ThemeInfoModal';
 import { TermsModal } from '@/components/auth/TermsModal';
 import { Gender } from '@/hooks/useProfileTheme';
+import { usePersistedState } from '@/hooks/usePersistedState';
 
 interface FormData {
   email: string;
@@ -61,6 +62,11 @@ const Auth = () => {
   const { toast } = useToast();
   const { getCurrentLocation, location, isLoading: locationLoading, error: locationError } = useGeolocation();
   const { user, session, profile, loading, signIn, signOut, isAdmin, isDemo, getProfileType, shouldUseProductionAdmin, appMode } = useAuth();
+  
+  // Estado persistente para autenticación demo
+  const [demoUser, setDemoUser] = usePersistedState<any>('demo_user', null);
+  const [demoAuthenticated, setDemoAuthenticated] = usePersistedState<boolean>('demo_authenticated', false);
+  const [userType, setUserType] = usePersistedState<string>('userType', '');
   
   const [isLoading, setIsLoading] = useState(false);
   const [showResetPassword, setShowResetPassword] = useState(false);
@@ -243,8 +249,8 @@ const Auth = () => {
       if (isDemoCredential(normalizedEmail) && appConfig.features.demoCredentials) {
         logger.info('🎭 Modo demo activado para:', { email: formData.email });
         
-        // Configurar usuario demo completo en localStorage
-        const demoUser = {
+        // Configurar usuario demo completo
+        const demoUserData = {
           id: normalizedEmail.includes('single') ? 'single-demo-id' : 
               normalizedEmail.includes('pareja') ? 'couple-demo-id' : 'admin-demo-id',
           email: normalizedEmail,
@@ -313,8 +319,8 @@ const Auth = () => {
           })
         };
         
-        localStorage.setItem('demo_user', JSON.stringify(demoUser));
-        localStorage.setItem('demo_authenticated', 'true');
+        setDemoUser(demoUserData);
+        setDemoAuthenticated(true);
         
         // Disparar evento para notificar cambios en localStorage
         window.dispatchEvent(new Event('storage'));
@@ -339,9 +345,9 @@ const Auth = () => {
             first_name: normalizedEmail === 'admin' ? 'Admin Demo' : 'Complices Admin'
           };
           
-          localStorage.setItem('demo_user', JSON.stringify(correctedUser));
-          localStorage.setItem('demo_authenticated', 'true');
-          localStorage.setItem('userType', 'admin');
+          setDemoUser(correctedUser);
+          setDemoAuthenticated(true);
+          setUserType('admin');
         }
         
         if (demoAuthResult) {
@@ -1398,7 +1404,7 @@ const Auth = () => {
           onComplete={() => setShowLoginLoading(false)}
           userType={formData.accountType as "single" | "couple"}
           userName={formData.email.includes("pareja") ? "Pareja Demo" : "Usuario Demo"}
-          userProfile={JSON.parse(localStorage.getItem("demo_user") || "{}")}
+          userProfile={demoUser || {}}
         />
       )}
 

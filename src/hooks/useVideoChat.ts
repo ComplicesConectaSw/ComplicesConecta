@@ -104,7 +104,7 @@ export const useVideoChat = ({
 
     // Handle connection state changes
     peerConnection.onconnectionstatechange = () => {
-      logger.info('🔗 Connection state:', peerConnection.connectionState);
+      logger.info('Connection state changed:', { connectionState: peerConnection.connectionState });
       
       if (peerConnection.connectionState === 'connected') {
         setState(prev => ({ ...prev, isConnecting: false, isInCall: true }));
@@ -133,7 +133,7 @@ export const useVideoChat = ({
 
       return stream;
     } catch (error) {
-      logger.error('❌ Error accessing media devices:', error);
+      logger.error('Error accessing media devices:', { error: String(error) });
       const errorMessage = error instanceof Error ? error.message : 'Error accessing camera/microphone';
       setState(prev => ({ ...prev, error: errorMessage }));
       onError?.(errorMessage);
@@ -190,7 +190,7 @@ export const useVideoChat = ({
 
       return callId;
     } catch (error) {
-      logger.error('❌ Error starting call:', error);
+      logger.error('Error handling offer:', { error: String(error) });
       const errorMessage = error instanceof Error ? error.message : 'Error starting call';
       setState(prev => ({ ...prev, error: errorMessage, isConnecting: false }));
       onError?.(errorMessage);
@@ -246,7 +246,7 @@ export const useVideoChat = ({
 
       onCallAccepted?.(callId);
     } catch (error) {
-      logger.error('❌ Error accepting call:', error);
+      logger.error('Error creating offer:', { error: String(error) });
       const errorMessage = error instanceof Error ? error.message : 'Error accepting call';
       setState(prev => ({ ...prev, error: errorMessage, isConnecting: false }));
       onError?.(errorMessage);
@@ -354,7 +354,7 @@ export const useVideoChat = ({
   useEffect(() => {
     if (!userId) return;
 
-    logger.info('🔄 Setting up video call signaling channel');
+    logger.info('Setting up video call signaling channel');
 
     const channel = supabase.channel(`video_calls_${userId}`, {
       config: {
@@ -370,7 +370,7 @@ export const useVideoChat = ({
       
       if (signal.to !== userId) return;
 
-      logger.info('📞 Received call signal:', signal.type);
+      logger.info('Received call signal:', { type: signal.type });
 
       switch (signal.type) {
         case 'call-request':
@@ -407,11 +407,11 @@ export const useVideoChat = ({
     });
 
     channel.subscribe((status) => {
-      logger.info('📡 Video call channel status:', status);
+      logger.info('Channel status:', { status: String(status) });
     });
 
     return () => {
-      logger.info('🧹 Cleaning up video call channel');
+      logger.info('Cleaning up video call channel');
       channel.unsubscribe();
       channelRef.current = null;
     };

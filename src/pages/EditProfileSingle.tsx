@@ -13,10 +13,11 @@ import { getAppConfig } from "@/lib/app-config";
 import Navigation from "@/components/Navigation";
 import type { Tables } from '@/integrations/supabase/types';
 import { logger } from '@/lib/logger';
+import { usePersistedState } from '@/hooks/usePersistedState';
 
 const EditProfileSingle = () => {
   const navigate = useNavigate();
-  const [profile, setProfile] = useState<any>(null);
+  const [profile, setProfile] = useState<Tables<'profiles'> | any>(null);
   const [formData, setFormData] = useState({
     name: "",
     age: "",
@@ -73,21 +74,22 @@ const EditProfileSingle = () => {
         const { data: { user } } = await supabase.auth.getUser();
         
         if (user) {
-          const { data: profile, error } = await supabase
+          const { data: profile, error } = await (supabase as any)
             .from('profiles')
             .select('*')
             .eq('id', user.id)
             .single();
           
           if (error) {
-            logger.error('Error fetching profile:', error);
+            logger.error('Error fetching profile:', { error: error.message });
             setError('Error al cargar perfil');
           } else if (profile) {
+            const profileData = profile as any;
             setFormData({
-              name: `${profile.first_name || ''} ${profile.last_name || ''}`.trim(),
-              age: profile.age?.toString() || '',
-              bio: profile.bio || '',
-              location: `${profile.latitude || ''}, ${profile.longitude || ''}`,
+              name: `${profileData.first_name || ''} ${profileData.last_name || ''}`.trim(),
+              age: profileData.age?.toString() || '',
+              bio: profileData.bio || '',
+              location: `${profileData.latitude || ''}, ${profileData.longitude || ''}`,
               profession: '',
               interests: [],
               avatar: ''
@@ -119,7 +121,7 @@ const EditProfileSingle = () => {
       }
     } catch (error) {
       setError('Error inesperado al cargar perfil');
-      logger.error('Error loading profile:', error);
+      logger.error('Error loading profile:', { error: String(error) });
       
       // En caso de error, crear perfil demo como fallback
       const fallbackProfile = generateMockSingle();
@@ -179,7 +181,7 @@ const EditProfileSingle = () => {
       } else {
         // Modo producción - guardar en Supabase
         const nameParts = formData.name.split(' ');
-        const { error } = await supabase
+        const { error } = await (supabase as any)
           .from('profiles')
           .update({
             first_name: nameParts[0] || '',

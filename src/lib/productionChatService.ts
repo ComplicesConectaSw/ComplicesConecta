@@ -71,7 +71,7 @@ class ProductionChatService {
       }
 
       // Obtener salas públicas
-      const { data: publicRooms, error: publicError } = await supabase
+      const { data: publicRooms, error: publicError } = await (supabase as any)
         .from('chat_rooms')
         .select('*')
         .eq('is_public', true)
@@ -84,7 +84,7 @@ class ProductionChatService {
       }
 
       // Obtener salas privadas donde el usuario es miembro
-      const { data: privateRooms, error: privateError } = await supabase
+      const { data: privateRooms, error: privateError } = await (supabase as any)
         .from('chat_rooms')
         .select(`
           *,
@@ -145,7 +145,7 @@ class ProductionChatService {
         return { success: false, error: 'Usuario no autenticado' };
       }
 
-      const { data: newRoom, error: roomError } = await supabase
+      const { data: newRoom, error: roomError } = await (supabase as any)
         .from('chat_rooms')
         .insert({
           name,
@@ -203,7 +203,7 @@ class ProductionChatService {
         return { success: false, error: 'Sin permisos para acceder a esta sala' };
       }
 
-      const { data: messages, error } = await supabase
+      const { data: messages, error } = await (supabase as any)
         .from('messages')
         .select(`
           id,
@@ -225,7 +225,7 @@ class ProductionChatService {
 
       // Obtener información de perfiles de los remitentes
       const senderIds = [...new Set(messages.map(msg => msg.sender_id))];
-      const { data: profiles } = await supabase
+      const { data: profiles } = await (supabase as any)
         .from('profiles')
         .select(`
           id,
@@ -292,7 +292,7 @@ class ProductionChatService {
         return { success: false, error: 'Sin permisos para enviar mensajes en esta sala' };
       }
 
-      const { data: newMessage, error } = await supabase
+      const { data: newMessage, error } = await (supabase as any)
         .from('messages')
         .insert({
           room_id: roomId,
@@ -309,13 +309,13 @@ class ProductionChatService {
       }
 
       // Actualizar timestamp de la sala
-      await supabase
+      await (supabase as any)
         .from('chat_rooms')
         .update({ updated_at: new Date().toISOString() })
         .eq('id', roomId);
 
       // Obtener información del perfil del remitente
-      const { data: profile } = await supabase
+      const { data: profile } = await (supabase as any)
         .from('profiles')
         .select(`
           id,
@@ -379,7 +379,7 @@ class ProductionChatService {
           const newMessage = payload.new as any;
           
           // Obtener información del perfil del remitente
-          const { data: profile } = await supabase
+          const { data: profile } = await (supabase as any)
             .from('profiles')
             .select(`
               id,
@@ -434,7 +434,7 @@ class ProductionChatService {
       if (!user.user) return false;
 
       // Obtener información de la sala
-      const { data: room, error: roomError } = await supabase
+      const { data: room, error: roomError } = await (supabase as any)
         .from('chat_rooms')
         .select('is_public, created_by')
         .eq('id', roomId)
@@ -449,7 +449,7 @@ class ProductionChatService {
       if (room.created_by === user.user.id) return true;
 
       // Verificar si es miembro de la sala privada
-      const { data: member, error: memberError } = await supabase
+      const { data: member, error: memberError } = await (supabase as any)
         .from('chat_members')
         .select('id')
         .eq('room_id', roomId)
@@ -459,7 +459,7 @@ class ProductionChatService {
       return !memberError && !!member;
 
     } catch (error) {
-      logger.error('Error al verificar acceso a sala:', error);
+      logger.error('Error al verificar acceso a sala:', { error: String(error) });
       return false;
     }
   }

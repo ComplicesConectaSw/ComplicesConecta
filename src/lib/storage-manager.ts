@@ -1,4 +1,6 @@
 import { logger } from '@/lib/logger';
+import { usePersistedState } from '@/hooks/usePersistedState';
+
 // Storage Manager - Migración gradual de localStorage a React Query + Supabase
 // Solo mantiene flags de sesión en localStorage, datos en Supabase
 

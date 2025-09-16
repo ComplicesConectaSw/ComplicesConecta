@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Home, Search, MessageCircle, Heart, User, Settings, Crown, LogOut, Coins, UserPlus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useFeatures } from '@/hooks/useFeatures';
-import NavigationEnhanced from './NavigationEnhanced';
+import NavigationEnhanced from '@/components/NavigationEnhanced';
 import { logger } from '@/lib/logger';
 import { LogoutButton } from '@/components/ui/LogoutButton';
 import { motion } from 'framer-motion';

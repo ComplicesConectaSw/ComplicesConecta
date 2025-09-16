@@ -12,14 +12,8 @@ import { supabase } from '@/integrations/supabase/client';
 import type { Database } from '@/integrations/supabase/types';
 import { logger } from '@/lib/logger';
 
-type ChatRoomRow = Database['public']['Tables']['chat_rooms']['Row'];
-type ChatRoomInsert = Database['public']['Tables']['chat_rooms']['Insert'];
-type ChatMemberRow = Database['public']['Tables']['chat_members']['Row'];
-type ChatMemberInsert = Database['public']['Tables']['chat_members']['Insert'];
 type MessageRow = Database['public']['Tables']['messages']['Row'];
 type MessageInsert = Database['public']['Tables']['messages']['Insert'];
-type ChatInvitationRow = Database['public']['Tables']['chat_invitations']['Row'];
-type ChatInvitationInsert = Database['public']['Tables']['chat_invitations']['Insert'];
 
 export interface ChatRoom {
   id: string;
@@ -40,6 +34,9 @@ export interface ChatMember {
   role: 'admin' | 'member';
   is_muted: boolean;
 }
+
+export type ChatRoomInsert = any;
+export type ChatMemberInsert = any;
 
 export interface ChatMessage {
   id: string;
@@ -66,6 +63,8 @@ export interface ChatInvitation {
   created_at: string;
   updated_at: string;
 }
+
+export type ChatInvitationInsert = any;
 
 class ChatService {
   private subscriptions: Map<string, any> = new Map();
@@ -204,23 +203,33 @@ class ChatService {
       }
 
       // Obtener salas públicas y privadas donde el usuario es miembro
-      const { data: rooms, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('chat_rooms')
         .select(`
           *,
-          chat_members!inner(profile_id)
+          chat_members!inner(
+            user_id,
+            role,
+            joined_at
+          )
         `)
-        .or(`is_public.eq.true,chat_members.profile_id.eq.${user.user.id}`)
-        .eq('is_active', true)
-        .order('updated_at', { ascending: false });
+        .eq('chat_members.user_id', user.user.id)
+        .eq('is_active', true);
 
       if (error) {
         return { success: false, error: `Error al obtener salas: ${error.message}` };
       }
 
+      const rooms = (data as any)?.map((room: any) => ({
+        ...room,
+        id: room.id,
+        lastMessage: null,
+        unreadCount: 0
+      })) || [];
+
       return {
         success: true,
-        rooms: rooms.map(mapChatRoomRowToChatRoom)
+        rooms
       };
 
     } catch (error) {
@@ -251,15 +260,13 @@ class ChatService {
         return { success: false, error: 'Sin permisos para acceder a esta sala' };
       }
 
-      const messageData: MessageInsert = {
-        room_id: roomId,
+      const messageData = {
+        conversation_id: roomId,
         sender_id: user.user.id,
-        content,
-        message_type: messageType,
-        is_deleted: false
+        content
       };
 
-      const { data: newMessage, error } = await supabase
+      const { data: newMessage, error } = await (supabase as any)
         .from('messages')
         .insert(messageData)
         .select()
@@ -271,7 +278,7 @@ class ChatService {
 
       return {
         success: true,
-        message: mapMessageRowToChatMessage(newMessage)
+        message: newMessage as any
       };
 
     } catch (error) {
@@ -415,7 +422,7 @@ class ChatService {
       return !memberError && !!member;
 
     } catch (error) {
-      logger.error('Error al verificar acceso a sala:', error);
+      logger.error('Error al verificar acceso a sala:', { error: String(error) });
       return false;
     }
   }
