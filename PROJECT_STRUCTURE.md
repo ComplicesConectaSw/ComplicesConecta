@@ -1,12 +1,12 @@
-# 📁 Estructura del Proyecto - ComplicesConecta v2.9.1
+# 📁 Estructura del Proyecto - ComplicesConecta v2.9.2
 
-**Última Actualización**: 16 de Septiembre, 2025 - 23:11 hrs  
-**Contexto**: Plataforma Swinger Mexicana  
-**Estado**: Refactorización Completa - Lifestyle Context  
+**Última Actualización**: 17 de Septiembre, 2025 - 01:27 hrs  
+**Contexto**: Plataforma Swinger Mexicana + Galería Responsiva  
+**Estado**: Diseño Responsivo Completo + Sincronización Android  
 
 ## 🏗️ Arquitectura General
 
-ComplicesConecta v2.9.1 es una plataforma swinger mexicana construida con React, TypeScript, Vite y Supabase. Completamente refactorizada para el contexto lifestyle con terminología auténtica del ambiente swinger mexicano.
+ComplicesConecta v2.9.2 es una plataforma swinger mexicana construida con React, TypeScript, Vite y Supabase. Incluye sistema de galería completamente responsivo y sincronización Android con Capacitor.
 
 ```
 conecta-social-comunidad-main/
@@ -32,7 +32,9 @@ components/
 ├── common/                 # Componentes base con tema lifestyle
 ├── demo/                   # Perfiles demo con terminología explícita
 ├── events/                 # Eventos swinger (fiestas privadas, clubs)
-├── gallery/                # Galería de imágenes lifestyle
+├── gallery/                # Galería responsiva lifestyle (UserGalleryPage)
+├── images/                 # Galería de perfiles (ProfileImageGallery)
+├── modals/                 # Modales responsivos y adaptativos
 ├── layout/                 # Layout con tema swinger mexicano
 ├── matching/               # Matching por intereses lifestyle
 ├── profile/                # Perfiles diferenciados (single/couple)

@@ -1,7 +1,7 @@
-# 📋 Guía de Instalación - ComplicesConecta Swinger v2.9.1
+# 📋 Guía de Instalación - ComplicesConecta Swinger v2.9.2
 
 > **Plataforma Swinger Mexicana - Instalación Completa**  
-> **Contexto Lifestyle Auténtico • Localización México • Terminología Real**
+> **Galería Responsiva • Sincronización Android • APK Lista**
 
 ## 🔧 Prerrequisitos
 
