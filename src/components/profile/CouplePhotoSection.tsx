@@ -67,7 +67,7 @@ export const CouplePhotoSection: React.FC<CouplePhotoSectionProps> = ({
       setUploading(partner);
       await onPhotoUpload(file, partner);
     } catch (error) {
-      logger.error('Error uploading photo:', error);
+      logger.error('Error uploading photo:', { error: String(error) });
       alert('Error al subir la foto. Inténtalo de nuevo.');
     } finally {
       setUploading(null);
