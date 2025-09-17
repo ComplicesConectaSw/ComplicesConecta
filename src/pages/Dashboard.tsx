@@ -6,25 +6,32 @@ import { Gamification } from "@/components/gamification/Gamification";
 import { NotificationCenter } from "@/components/notifications/NotificationCenter";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Trophy, Bell, TrendingUp } from "lucide-react";
+import { usePersistedState } from '@/hooks/usePersistedState';
+import { logger } from '@/lib/logger';
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  
+  // Estado persistente para autenticación
+  const [demoAuth] = usePersistedState('demo_authenticated', 'false');
+  const [demoUser] = usePersistedState<any>('demo_user', null);
+  const [apoyoAuth] = usePersistedState('apoyo_authenticated', 'false');
 
   useEffect(() => {
-    // Verificar autenticación demo
-    const demoAuth = localStorage.getItem('demo_authenticated');
-    const demoUser = localStorage.getItem('demo_user');
+    // Verificar autenticación demo o apoyo
+    const isAuthenticated = demoAuth === 'true' || apoyoAuth === 'true';
     
-    // Allow access in demo mode or if user is authenticated
-    if (demoAuth !== 'true' && !demoUser) {
-      // Only redirect to auth if not in demo mode
-      const isDemoMode = window.location.hostname === 'localhost' || window.location.hostname.includes('demo');
-      if (!isDemoMode) {
-        navigate('/auth');
-        return;
-      }
+    if (!isAuthenticated) {
+      logger.info('🔒 Dashboard: Usuario no autenticado, redirigiendo a /auth');
+      navigate('/auth');
+      return;
     }
-  }, [navigate]);
+    
+    logger.info('✅ Dashboard: Acceso autorizado', { 
+      demoMode: demoAuth === 'true',
+      apoyoMode: apoyoAuth === 'true'
+    });
+  }, [navigate, demoAuth, apoyoAuth]);
 
   return (
     <div className="min-h-screen bg-background">

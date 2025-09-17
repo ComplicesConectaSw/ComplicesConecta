@@ -5,6 +5,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Heart, MessageCircle, Share, MoreHorizontal, MapPin, Clock } from 'lucide-react';
 import { Header } from '@/components/Header';
 import Navigation from '@/components/Navigation';
+import { usePersistedState } from '@/hooks/usePersistedState';
+import { logger } from '@/lib/logger';
+import { useNavigate } from 'react-router-dom';
 
 // Datos mock para publicaciones
 const generateFeedPosts = () => {
@@ -41,8 +44,30 @@ const generateFeedPosts = () => {
 };
 
 const Feed = () => {
+  const navigate = useNavigate();
   const [posts] = useState(generateFeedPosts());
   const [likedPosts, setLikedPosts] = useState<Set<number>>(new Set());
+  
+  // Estado persistente para autenticación
+  const [demoAuth] = usePersistedState('demo_authenticated', 'false');
+  const [apoyoAuth] = usePersistedState('apoyo_authenticated', 'false');
+  const [demoUser] = usePersistedState<any>('demo_user', null);
+  
+  useEffect(() => {
+    // Verificar autenticación
+    const isAuthenticated = demoAuth === 'true' || apoyoAuth === 'true';
+    
+    if (!isAuthenticated) {
+      logger.info('🔒 Feed: Usuario no autenticado, redirigiendo a /auth');
+      navigate('/auth');
+      return;
+    }
+    
+    logger.info('✅ Feed: Acceso autorizado', { 
+      demoMode: demoAuth === 'true',
+      apoyoMode: apoyoAuth === 'true'
+    });
+  }, [navigate, demoAuth, apoyoAuth]);
 
   const handleLike = (postId: number) => {
     setLikedPosts(prev => {

@@ -200,7 +200,7 @@ const EditProfileCouple = () => {
             <ArrowLeft className="h-4 w-4 mr-2" />
             Volver al perfil
           </Button>
-          <h1 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+          <h1 className="text-xl font-bold text-white flex items-center gap-2">
             <Users className="h-5 w-5" />
             Editar Perfil de Pareja
           </h1>
@@ -426,7 +426,7 @@ const EditProfileCouple = () => {
                     className={`cursor-pointer transition-all text-xs ${
                       formData.partner1.interests.includes(interest)
                         ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-md"
-                        : "hover:bg-pink-100 text-gray-800 border border-pink-200"
+                        : "hover:bg-pink-100 text-gray-900 border border-pink-200"
                     }`}
                     onClick={() => toggleInterest(interest, 'partner1')}
                   >
@@ -554,7 +554,7 @@ const EditProfileCouple = () => {
                     className={`cursor-pointer transition-all text-xs ${
                       formData.partner2.interests.includes(interest)
                         ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-md"
-                        : "hover:bg-blue-100 text-gray-800 border border-blue-200"
+                        : "hover:bg-blue-100 text-gray-900 border border-blue-200"
                     }`}
                     onClick={() => toggleInterest(interest, 'partner2')}
                   >
@@ -585,7 +585,7 @@ const EditProfileCouple = () => {
                   className={`cursor-pointer transition-all text-contrast ${
                     formData.interests.includes(interest)
                       ? "bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-md"
-                      : "hover:bg-gray-200 text-gray-800 border border-gray-300"
+                      : "hover:bg-white/20 text-white border border-white/30"
                   }`}
                   onClick={() => toggleInterest(interest)}
                 >

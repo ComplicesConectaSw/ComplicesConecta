@@ -211,7 +211,7 @@ const Terms = () => {
                 </p>
                 <p className="text-white/90 mt-2">
                   <strong>Email:</strong> <a href="mailto:legal@complicesconecta.com" className="text-primary hover:underline">legal@complicesconecta.com</a><br />
-                  <strong>Dirección:</strong> Madrid, España
+                  <strong>Dirección:</strong> Ciudad de México, México
                 </p>
               </CardContent>
             </Card>

@@ -122,7 +122,7 @@ const Support = () => {
 
           {/* Search Bar */}
           <div className="relative max-w-md mx-auto">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-300 w-5 h-5" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60 w-5 h-5" />
             <Input
               placeholder="Buscar en preguntas frecuentes..."
               value={searchTerm}

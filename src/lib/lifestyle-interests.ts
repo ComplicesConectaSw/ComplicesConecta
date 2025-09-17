@@ -25,7 +25,13 @@ export const lifestyleInterests = [
   "Spa de Parejas", "Bienestar Adulto", "Experiencias Tántricas", "Actividades en Pareja",
   
   // Arte y entretenimiento adulto
-  "Arte Erótico", "Literatura Erótica", "Entretenimiento Adulto", "Ambiente Seductor"
+  "Arte Erótico", "Literatura Erótica", "Entretenimiento Adulto", "Ambiente Seductor",
+  
+  // Términos explícitos para demo y producción
+  "Hotwife", "Bull", "Unicornio", "Cuckold", "Tríos", "Orgías", "Gangbang", 
+  "Creampie", "Anal", "MILF", "Cougar", "BDSM", "Dominación", "Sumisión",
+  "Doble Penetración", "Sexo Oral", "Juguetes Sexuales", "Fetichismo", "Voyeurismo Extremo",
+  "Exhibicionismo Público", "Sexo Grupal", "Intercambio Hardcore", "Fiestas Sexuales"
 ];
 
 // Categorías para el registro automático con temática mexicana
@@ -36,11 +42,13 @@ export const interestCategories = {
   ],
   intermedio: [
     "Lifestyle Swinger", "Eventos Lifestyle", "Intercambio Suave", "Fiestas Temáticas",
-    "Clubs Privados", "Conexiones Auténticas", "Diversión Adulta", "Lifestyle México"
+    "Clubs Privados", "Conexiones Auténticas", "Diversión Adulta", "Lifestyle México",
+    "Hotwife", "Bull", "Tríos", "Voyeurismo"
   ],
   experimentado: [
     "Intercambio de Parejas", "Intercambio Completo", "Parejas Experimentadas", 
-    "Clubs Swinger México", "Eventos Exclusivos", "Sin Prejuicios", "Fiestas Privadas CDMX"
+    "Clubs Swinger México", "Eventos Exclusivos", "Sin Prejuicios", "Fiestas Privadas CDMX",
+    "Orgías", "Gangbang", "BDSM", "Cuckold", "Sexo Grupal"
   ],
   terceras_personas: [
     "Terceras Personas", "Encuentros Casuales", "Aventuras Compartidas",

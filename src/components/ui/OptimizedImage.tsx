@@ -55,7 +55,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
         className={`bg-gray-200 flex items-center justify-center ${className}`}
         style={{ width, height }}
       >
-        <span className="text-gray-500 text-sm">Error al cargar imagen</span>
+        <span className="text-white/70 text-sm">Error al cargar imagen</span>
       </div>
     );
   }
@@ -87,7 +87,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
       {/* Skeleton loader */}
       {!isLoaded && (
         <div 
-          className="absolute inset-0 bg-gray-200 animate-pulse"
+          className="absolute inset-0 bg-white/10 animate-pulse"
           style={{ width, height }}
         />
       )}

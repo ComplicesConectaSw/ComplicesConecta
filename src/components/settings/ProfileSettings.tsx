@@ -14,10 +14,10 @@ export const ProfileSettings = () => {
   const [profile, setProfile] = useState({
     name: "María González",
     age: 28,
-    bio: "Fotógrafa y amante de los viajes. Siempre buscando nuevas aventuras y conexiones auténticas.",
+    bio: "Pareja liberal de CDMX. Ella disfruta la atención, él comparte las experiencias. Buscamos conexiones auténticas con parejas y personas especiales.",
     profession: "Diseñadora Gráfica",
-    education: "Universidad Complutense de Madrid",
-    interests: ["Fotografía", "Viajes", "Yoga", "Arte", "Cocina"],
+    education: "Universidad Nacional Autónoma de México",
+    interests: ["Lifestyle", "Intercambio", "Parejas", "Aventuras", "Encuentros casuales"],
     images: ["https://images.unsplash.com/photo-1494790108755-2616b332c1c0?w=400&h=600&fit=crop&crop=face", "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face", "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=600&fit=crop&crop=face"]
   });
 

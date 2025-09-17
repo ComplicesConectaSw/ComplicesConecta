@@ -59,12 +59,15 @@ const Index = () => {
       
       setIsRunningInApp(isInWebView());
       
-      // Redirección automática para usuarios autenticados
-      if (demoAuthenticated && demoUser) {
+      // SEPARACIÓN DEMO/REAL: Redirección solo para usuarios demo autenticados
+      const apoyoAuth = localStorage.getItem('apoyo_authenticated') === 'true';
+      
+      if (demoAuthenticated && !apoyoAuth && demoUser) {
         try {
           const userData = typeof demoUser === 'string' ? JSON.parse(demoUser) : demoUser;
           const accountType = userData.account_type || userData.accountType || 'single';
           
+          logger.info('🎭 INDEX - Usuario demo autenticado, redirigiendo a perfil');
           // Redirigir al perfil correspondiente según el tipo de cuenta
           if (accountType === 'couple') {
             navigate('/profile-couple');
@@ -76,6 +79,9 @@ const Index = () => {
           // Si hay error, redirigir al perfil single por defecto
           navigate('/profile-single');
         }
+      } else if (apoyoAuth) {
+        logger.info('🔗 INDEX - Usuario real autenticado, redirigiendo a perfil');
+        navigate('/profile-single');
       }
     }, 2000);
 
@@ -98,18 +104,18 @@ const Index = () => {
     return <LoadingScreen onComplete={handleLoadingComplete} />;
   }
 
-  // Professional sample profiles for presentation
+  // SOLO DATOS DEMO - Nunca mostrar datos reales en Index
   const sampleProfiles = [
     {
       id: "1",
-      name: "Gabriela",
+      name: "Gaby & Ricardo",
       age: 29,
       location: "Ciudad de México",
-      interests: ["Intercambio de Parejas", "Fiestas Privadas", "Encuentros Íntimos"],
+      interests: ["Lifestyle", "Intercambio", "Fiestas privadas", "Nuevas experiencias"],
       image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=500&h=700&fit=crop&crop=faces&auto=format&q=80",
       rating: 4.9,
       isOnline: true,
-      bio: "Apasionada por la naturaleza y la creatividad. Buscando a alguien con quien compartir aventuras y conversaciones profundas.",
+      bio: "Pareja liberal de CDMX. Ella disfruta la atención, él comparte sus aventuras. Buscamos conexiones auténticas con parejas y personas interesantes.",
       profession: "Arquitecta",
       verified: true
     },
@@ -118,11 +124,11 @@ const Index = () => {
       name: "Antonio",
       age: 34,
       location: "Guadalajara",
-      interests: ["Experiencias Grupales", "Clubs Liberales", "Aventuras Sensuales"],
+      interests: ["Encuentros casuales", "Clubs liberales", "Intercambio", "Aventuras"],
       image: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=500&h=700&fit=crop&crop=faces&auto=format&q=80",
       rating: 4.8,
       isOnline: false,
-      bio: "Emprendedor y amante del mar. Disfruto de un buen vino y una compañía inteligente.",
+      bio: "Caballero experimentado de Guadalajara. Discreto, respetuoso y con mucha energía. Me especializo en hacer sentir especiales a las parejas.",
       profession: "Consultor Financiero",
       verified: true
     },
@@ -131,11 +137,11 @@ const Index = () => {
       name: "Isabella",
       age: 27,
       location: "Monterrey",
-      interests: ["Tantra y Sensualidad", "Juegos de Rol", "Experiencias Nuevas"],
+      interests: ["Tercera persona", "Parejas", "Juegos de rol", "Sensualidad"],
       image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=500&h=700&fit=crop&crop=faces&auto=format&q=80",
       rating: 4.9,
       isOnline: true,
-      bio: "Explorando la riqueza cultural de México. Me encanta perderme en libros y descubrir nuevos lugares.",
+      bio: "Mujer independiente de Monterrey. Me encanta la compañía de parejas y soy muy cómoda con ambos géneros. Sin complicaciones, solo momentos especiales.",
       profession: "Historiadora del Arte",
       verified: true
     },
@@ -144,11 +150,11 @@ const Index = () => {
       name: "Mateo",
       age: 31,
       location: "Puebla",
-      interests: ["Encuentros Casuales", "Fantasías Compartidas", "Vida Nocturna Liberal"],
+      interests: ["Encuentros grupales", "Experiencias intensas", "Exhibicionismo", "Aventuras"],
       image: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=500&h=700&fit=crop&crop=faces&auto=format&q=80",
       rating: 4.7,
       isOnline: true,
-      bio: "Ingeniero de software con alma de chef. Siempre en busca del equilibrio perfecto entre código y sabor.",
+      bio: "Hombre activo de Puebla con mucha experiencia en el lifestyle. Disfruto los encuentros grupales y las experiencias intensas. Siempre respetuoso y discreto.",
       profession: "Desarrollador de Software",
       verified: true
     }

@@ -1,12 +1,13 @@
-# 🎯 ComplicesConecta - Plataforma Swinger Premium v2.9.0
+# 🎯 ComplicesConecta - Plataforma Swinger Mexicana v2.9.1
 
-## 🚀 APK Android Completamente Funcional - 16/09/2025
+## 🚀 Refactorización Swinger Completa - 16/09/2025
 
-**Estado:** ✅ APK ANDROID 100% FUNCIONAL - Pantalla en Blanco Resuelta  
-**Última Actualización:** 16 de Septiembre, 2025 - 04:59 hrs  
-**Versión:** 2.9.0 - RELEASE FINAL con APK Android cargando aplicación React completa
+**Estado:** ✅ PLATAFORMA SWINGER 100% CONTEXTUALIZADA  
+**Última Actualización:** 16 de Septiembre, 2025 - 23:11 hrs  
+**Versión:** 2.9.1 - REFACTORIZACIÓN LIFESTYLE COMPLETA
 
-> **La plataforma de intercambio de parejas más exclusiva y segura de México +18**
+> **La plataforma swinger más auténtica y discreta de México +18**
+> **Terminología lifestyle real • Localización 100% mexicana • Diferenciación por género**
 
 <div align="center">
 
@@ -18,53 +19,67 @@
 [![Tests](https://img.shields.io/badge/Tests-101/101_Passing-brightgreen.svg)](#testing)
 [![APK](https://img.shields.io/badge/APK-React_Completo-brightgreen.svg)](#apk-android)
 [![Performance](https://img.shields.io/badge/Build-6.91s_Optimized-green.svg)](#performance)
-[![Release](https://img.shields.io/badge/Release-v2.9.0-blue.svg)](#release)
+[![Release](https://img.shields.io/badge/Release-v2.9.1-blue.svg)](#release)
 
 ### 📱 ¡Descarga la App Ahora!
 
-<a href="https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/2.9.0/app-release.apk" download>
-  <img src="https://img.shields.io/badge/📱_Descargar_APK-v2.9.0-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
+<a href="https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/2.9.1/app-release.apk" download>
+  <img src="https://img.shields.io/badge/📱_Descargar_APK-v2.9.1-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
 </a>
 
-**SHA256:** `Verificado - Build v2.9.0 con APK Android Funcional`
+**SHA256:** `Verificado - Build v2.9.1 con APK Android Funcional`
 
 *🔒 Aplicación segura y verificada para Android - React App Completa*
 
 </div>
 
-ComplicesConecta es más que una aplicación de citas: es una **plataforma integral** diseñada específicamente para la comunidad swinger mexicana, ofreciendo un espacio seguro, verificado y discreto para intercambio de parejas y conexiones auténticas.
+ComplicesConecta es la **plataforma lifestyle definitiva** para la comunidad swinger mexicana, diseñada con terminología auténtica del ambiente y localización 100% mexicana. Ofrecemos un espacio seguro, verificado y discreto donde parejas y solteros del lifestyle pueden conectar de manera genuina.
 
-### 🎯 Misión
-Crear la comunidad swinger más exclusiva y segura de México, donde parejas y solteros pueden conectar para intercambio de parejas de manera auténtica, discreta y verificada.
+### 🎯 Misión Swinger
+Crear la comunidad lifestyle más auténtica de México, donde miembros del ambiente swinger pueden conectar usando terminología real del lifestyle mexicano, con diferenciación por género y experiencias personalizadas según el tipo de perfil.
 
-## ✨ Características Revolucionarias
+### ✨ Refactorización Swinger v2.9.1
+- **Terminología Auténtica**: Hotwife, Bull, Unicornio, Cuckold, Tríos, Orgías
+- **Localización Mexicana**: CDMX, Guadalajara, Monterrey (sin referencias extranjeras)
+- **Diferenciación por Género**: Contenido específico para hombres, mujeres y parejas
+- **Vocabulario Diversificado**: Evita repeticiones y exceso de explicitud
+- **Contexto Cultural**: Ambiente swinger mexicano auténtico
 
-### ✨ **Sistema de Matches Inteligente con Geolocalización**
-- **🎯 Algoritmo de Compatibilidad**: Basado en preferencias, ubicación y comportamiento
-- **📍 Geolocalización Avanzada**: Cálculo de distancia real con fórmula de Haversine
-- **🔍 Filtros por Proximidad**: "Muy cerca de ti" (≤5km), "En tu zona" (≤15km)
-- **💝 Matches Mutuos**: Solo conexiones reales y verificadas
-- **🔍 Filtros Avanzados**: Por edad, ubicación, verificación y preferencias
-- **⚡ Matches en Tiempo Real**: Notificaciones instantáneas al match mutuo
-- **📍 Geolocalización Difusa**: Ubicación aproximada sin comprometer privacidad
-- **🚨 Sistema Anti-Fake**: IA para detectar perfiles falsos
+## ✨ Características Lifestyle Auténticas
 
-### 💕 **Experiencia Social Premium**
-- **🧠 Matching IA**: Algoritmo de compatibilidad con 50+ factores
-- **💬 Chat en Tiempo Real**: WebSockets con Supabase Realtime, typing indicators y presencia
-- **📹 Video Chat P2P**: Llamadas de video con WebRTC y señalización en tiempo real
-- **🔔 Push Notifications**: Notificaciones nativas con Service Worker y configuración granular
-- **🔗 Sistema de Conexiones**: Solicitudes y control de privacidad avanzado
-- **🖼️ Galerías Privadas**: Contenido público y privado por usuario
-- **👫 Perfiles de Pareja Avanzados**: Sistema completo para perfiles de pareja con UI distintiva
-- **💑 Navegación Dual**: Toggle entre perfiles individuales y de pareja en descubrimiento
-- **📸 Fotos de Pareja Separadas**: Sistema "Él" y "Ella" con gestión independiente de fotos principales
-- **📧 Validación de Email Única**: Verificación en tiempo real de emails únicos en registro
-- **🎭 Eventos VIP Exclusivos**: Fiestas privadas y encuentros verificados
-- **🎁 Regalos Virtuales**: Sistema de tokens CMPX y GTK
-- **🤖 Asistente IA Interactivo**: Guía paso a paso para gestión de tokens
-- **📸 Historias Efímeras**: Contenido que expira en 24 horas
-- **🌟 Comunidad Selecta**: Solo usuarios verificados y premium
+### 🎯 **Terminología Swinger Auténtica**
+- **Intereses Reales**: Hotwife, Bull, Unicornio, Cuckold, Tríos, Orgías
+- **Ciudades Reales**: Ciudad de México, Guadalajara, Monterrey, Puebla, Tijuana
+- **Sin Referencias Extranjeras**: Eliminadas todas las menciones a España u otros países
+- **Cultura Swinger Mexicana**: Contexto auténtico del lifestyle nacional
+- **Eventos Locales**: Clubs y fiestas privadas en ubicaciones mexicanas
+
+### ✨ **Sistema de Matching Lifestyle Inteligente**
+- **🎯 Compatibilidad Swinger**: Basado en intereses lifestyle y experiencia en el ambiente
+- **📍 Geolocalización México**: Ubicaciones reales mexicanas (CDMX, Guadalajara, Monterrey)
+- **🔍 Filtros Swinger**: Por intereses lifestyle, tipo de experiencia y preferencias del ambiente
+- **💝 Matches Auténticos**: Conexiones entre miembros verificados del lifestyle
+- **🔍 Filtros Avanzados**: 30+ intereses swinger desde suaves hasta explícitos
+- **⚡ Notificaciones Lifestyle**: Alertas contextualizadas al ambiente swinger
+- **📍 Privacidad Swinger**: Ubicación aproximada respetando discreción del lifestyle
+- **🚨 Verificación Ambiente**: Detección de perfiles no auténticos del lifestyle
+
+### 💕 **Experiencia Lifestyle Premium**
+- **🧠 Matching Swinger**: Algoritmo especializado en compatibilidad lifestyle
+- **💬 Chat del Ambiente**: Mensajería entre miembros del lifestyle mexicano
+- **📹 Video Chat Discreto**: Llamadas privadas para miembros verificados
+- **🔔 Notificaciones Lifestyle**: Alertas contextualizadas al ambiente swinger
+- **🔗 Conexiones Swinger**: Solicitudes entre parejas y singles del lifestyle
+- **🖼️ Galerías Lifestyle**: Contenido público y privado del ambiente
+- **👫 Perfiles de Pareja Swinger**: Sistema especializado para parejas del lifestyle
+- **💑 Navegación Lifestyle**: Toggle entre singles y parejas del ambiente
+- **📸 Fotos Diferenciadas**: Gestión "Él" y "Ella" para parejas swinger
+- **📧 Validación +18**: Verificación estricta de mayoría de edad
+- **🎭 Eventos Swinger**: Fiestas privadas y clubs del lifestyle mexicano
+- **🎁 Tokens Lifestyle**: Sistema CMPX/GTK para funciones premium
+- **🤖 Asistente Swinger**: Guía especializada en el ambiente lifestyle
+- **📸 Contenido Temporal**: Historias que expiran respetando privacidad
+- **🌟 Comunidad Verificada**: Solo miembros auténticos del lifestyle
 
 ### 🔒 Sistema de Validación de Edad y Términos
 
@@ -289,7 +304,7 @@ graph TB
 
 ### 🚀 **Arquitectura del Sistema de Animaciones**
 
-El sistema de animaciones de ComplicesConecta v2.6.0 está diseñado como una infraestructura modular y escalable que proporciona experiencias visuales fluidas y accesibles en toda la aplicación.
+El sistema de animaciones de ComplicesConecta v2.9.1 está diseñado como una plataforma swinger auténtica que proporciona experiencias lifestyle genuinas y respetuosas para la comunidad mexicana.
 
 #### 🎯 **Componentes Core**
 
@@ -520,12 +535,6 @@ user_staking         # Staking de usuarios
 ### ✅ **Integración Premium Features y Tokens Completada**
 - **Sistema de Tokens**: TokenDashboard, TokenChatBot, StakingModal completamente funcionales
 - **Premium Features**: PremiumFeatures, VIPEvents, VirtualGifts integrados correctamente
-- **TypeScript Errors**: Todos los errores corregidos (0 errores)
-- **JSX Structure**: Estructura corregida y validada
-- **Responsividad**: Verificada para Web, Móvil y Android
-- **Production Ready**: Código listo para GitHub y deployment
-
-### 📊 **Métricas de Calidad v2.1.7**
 - **TypeScript Errors**: 0 ✅
 - **JSX Errors**: 0 ✅
 - **Premium Integration**: 100% ✅
@@ -534,80 +543,55 @@ user_staking         # Staking de usuarios
 - **Build Success**: ✅
 - **Code Quality**: Production-Ready ✅
 
-## 🚀 Instalación y Desarrollo
+## 🌟 ¿Qué es ComplicesConecta?
 
-### 📋 Prerrequisitos
+ComplicesConecta es una plataforma social premium diseñada específicamente para la comunidad swinger mexicana. Conectamos parejas y solteros verificados en un ambiente seguro, discreto y sofisticado.
 
-- **Node.js** 18+ 
-- **Bun** (recomendado) o npm/pnpm
-- **Android Studio** (para desarrollo móvil)
-- **Supabase CLI**
-- **Git** con acceso al repositorio
+### ✨ Características Principales
 
-### ⚡ Configuración Rápida
+- 🔐 **Verificación KYC Avanzada** - Perfiles 100% auténticos
+- 💕 **Matching Inteligente** - Algoritmo de compatibilidad exclusivo
+- 💬 **Chat Seguro** - Mensajería cifrada en tiempo real
+- 🎉 **Eventos VIP** - Acceso a fiestas privadas exclusivas
+- 💎 **Sistema CMPX/GTK** - Tokens para funciones premium
+- 📱 **PWA Optimizada** - Experiencia nativa móvil/desktop
+
+## 🛠️ Tecnologías
+
+**Frontend**: React 18 + TypeScript + Vite  
+**UI/UX**: TailwindCSS + shadcn/ui + Framer Motion  
+**Backend**: Supabase (PostgreSQL + Auth + Realtime)  
+**Mobile**: PWA + Capacitor  
+**Testing**: Vitest + Playwright  
+
+## 🚀 Inicio Rápido
 
 ```bash
-# 1️⃣ Clonar el repositorio
-git clone https://github.com/ComplicesConectaSw/complicesconectasw.git
+# Clonar e instalar
+git clone [repo-url]
 cd conecta-social-comunidad-main
+npm install
 
-# 2️⃣ Instalar dependencias (ultra-rápido con Bun)
-bun install
-
-# 3️⃣ Configurar variables de entorno
+# Configurar entorno
 cp .env.example .env.local
-# ✏️ Editar .env.local con tus credenciales
+# Editar .env.local con credenciales
 
-# 4️⃣ Iniciar servidor de desarrollo
-bun run dev
-# 🌐 Abre http://localhost:5173
-
-# 📱 Para desarrollo móvil Android
-bun run build
-npx cap sync
-npx cap open android
+# Ejecutar desarrollo
+npm run dev
 ```
 
-### 🔐 Variables de Entorno Críticas
+## 📚 Documentación Completa
 
-```env
-# 🗄️ Supabase Configuration
-VITE_SUPABASE_URL=https://demo-project.supabase.co
-VITE_SUPABASE_ANON_KEY=demo-anon-key
+| Documento | Descripción |
+|-----------|-------------|
+| [📋 Guía de Instalación](./INSTALLATION_GUIDE.md) | Configuración paso a paso |
+| [🏗️ Estructura del Proyecto](./PROJECT_STRUCTURE.md) | Arquitectura y organización |
+| [⚙️ Detalles Técnicos](./TECHNICAL_DETAILS.md) | Stack y componentes |
+| [📈 Historial de Versiones](./RELEASE_NOTES.md) | Releases y cambios |
+| [🔍 Auditorías](./AUDITS.md) | Reportes de calidad |
+| [📝 Changelog](./CHANGELOG.md) | Registro cronológico |
 
-# 💳 Stripe Configuration
-VITE_STRIPE_PUBLISHABLE_KEY=pk_test_demo_key
-
-# 🛡️ Security
-VITE_HCAPTCHA_SITE_KEY=demo-hcaptcha-key
-HCAPTCHA_SECRET=server-only-secret
-
-# 🌍 Environment
-VITE_APP_ENV=development
-VITE_APP_PHASE=beta
-
-# 🪙 Tokens System (Beta - Off-chain)
-VITE_TOKENS_ENABLED=true
-VITE_PREMIUM_FEATURES_ENABLED=false
-VITE_MONTHLY_TOKEN_LIMIT=500
-VITE_REFERRAL_REWARD=50
-VITE_WORLD_ID_REWARD=100
-VITE_STAKING_REWARD_PERCENTAGE=10
-VITE_STAKING_DURATION_DAYS=30
-```
-
-## 🎨 Páginas y Funcionalidades Implementadas
-
-### 🏠 **Página Principal (Index)**
-- ✅ Hero section con animaciones avanzadas y gradientes
-- ✅ Diseño responsivo mobile-first
-- ✅ Modal de bienvenida interactivo
-- ✅ Perfiles destacados con navegación fluida
-
-### 🔐 **Autenticación (Auth)**
-- ✅ Login demo con emails específicos (single@outlook.es / pareja@outlook.es)
-- ✅ Detección automática de tipo de usuario
-- ✅ Redirección condicional según perfil
+## 🏆 Estado Actual
 - ✅ Persistencia de sesión en localStorage
 
 ### 👥 **Perfiles Single y Pareja**
@@ -1301,3 +1285,59 @@ Toda la documentación del proyecto se encuentra organizada en `docs-unified/`:
 - **Desarrollo**: Guías para desarrolladores
 {{ ... }}
 Ver [docs-unified/README.md](docs-unified/README.md) para el índice completo.
+
+
+## 🐞 **Correcciones en v1.3.2**
+
+### 🎨 **Mejoras de UI/UX (NUEVO)**
+- **FIX**: Mejorada la visibilidad de textos en el panel de administración con clases `privacy-text` y gradientes de colores consistentes
+- **FIX**: Cards de estadísticas rediseñadas con mejor contraste (azul, verde, amarillo, púrpura)
+- **FIX**: Página 404 completamente rediseñada con animaciones React profesionales:
+  - Sparkles, rayos y corazones flotantes con posiciones aleatorias
+  - Efectos de entrada escalonados con `useState` y `useEffect`
+  - Glow effect en número 404 con resplandor animado
+  - Botones interactivos con hover effects (rotación, bounce, spin)
+  - Nuevas animaciones CSS: `twinkle`, `pulse-glow`, `pulse-slow`
+- **FIX**: Mejorado contraste en cards de perfiles con overlay `from-black/80 to-transparent`
+- **FIX**: Aplicadas clases `overlay-text` para mejor legibilidad en nombres, edades y ubicaciones
+
+### 🔧 **Correcciones Técnicas Previas**
+- **FIX**: Se corrigió un problema en la página `Discover` que causaba la duplicación de imágenes de perfiles al generar nuevos candidatos
+- **FIX**: Se resolvió un error de tipos en los botones de `ProfileCard` que impedía el correcto funcionamiento de la acción `onLike`
+
+---
+
+## 🐛 Problemas Conocidos
+
+- El panel de administración requiere email exacto: `xxxx`
+- En modo demo, algunas funciones de backend están limitadas
+- La geolocalización puede requerir permisos adicionales
+
+---
+
+## 📞 Soporte
+
+**Email:** [email protegido]  
+**Sitio Web:** https://complicesconecta.com  
+**Horario:** 24/7 (respuesta en 24-48 horas)
+
+---
+
+## 📄 Licencia y Términos
+
+- **Edad mínima:** 18 años
+- **Uso responsable:** Respeta a otros usuarios
+- **Privacidad:** Tus datos están protegidos
+- **Términos completos:** Disponibles en la app
+
+---
+
+## 🙏 Agradecimientos
+
+Gracias a la comunidad swinger mexicana por su paciencia y feedback durante el desarrollo. Esta aplicación es para ustedes.
+
+**¡Disfruta conectando de manera segura y divertida!** 🎉
+
+---
+
+*ComplicesConecta v2.4.0 - Desarrollado con ❤️ para la comunidad swinger mexicana*

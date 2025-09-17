@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProfileCard } from '@/components/profile/MainProfileCard';
 import { ProfileFilters } from '@/components/ProfileFilters';
+import { useAuth } from '@/hooks/useAuth';
+import { generateDemoProfiles } from '@/lib/demoData';
 
 interface FilterState {
   location: string;
@@ -22,23 +24,26 @@ import Navigation from "@/components/Navigation";
 
 const Profiles = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState("");
   const [aiSearchMode, setAiSearchMode] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [aiSuggestions, setAiSuggestions] = useState<string[]>([]);
+  const [isProduction, setIsProduction] = useState(false);
+  const [realProfiles, setRealProfiles] = useState([]);
   
   // Extended sample profiles data with unique characteristics
   const allProfiles = [
     {
       id: "1",
-      name: "María Elena",
+      name: "María Elena & Jorge",
       age: 28,
       location: "Ciudad de México",
-      interests: ["Fotografía", "Viajes", "Yoga", "Arte", "Cocina"],
+      interests: ["Lifestyle", "Intercambio", "Nuevas experiencias", "Clubs liberales"],
       image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=600&fit=crop&crop=face",
       rating: 4.8,
       isOnline: true,
-      bio: "Fotógrafa profesional especializada en retratos. Me encanta capturar momentos únicos y explorar culturas a través de mis viajes. Practico yoga desde hace 5 años y disfruto cocinando platos de diferentes países.",
+      bio: "Pareja aventurera de CDMX. Ella disfruta la atención, él comparte las experiencias. Buscamos conexiones auténticas con parejas y personas especiales.",
       profession: "Diseñadora Gráfica",
       personality: ["Creativa", "Aventurera", "Empática"],
       languages: ["Español", "Inglés", "Francés"],
@@ -57,14 +62,14 @@ const Profiles = () => {
       name: "Carlos Mendoza",
       age: 32,
       location: "Guadalajara",
-      interests: ["Cocina", "Música", "Senderismo", "Literatura"],
+      interests: ["Caballero", "Parejas", "Encuentros íntimos", "Aventuras"],
       image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face",
       rating: 4.9,
       isOnline: false,
-      bio: "Chef ejecutivo con 8 años de experiencia. Toco la guitarra en mis ratos libres y soy un apasionado del senderismo. Leo principalmente novela histórica y filosofía. Busco a alguien con quien compartir aventuras culinarias y conversaciones profundas.",
+      bio: "Hombre experimentado de Guadalajara. Especializado en hacer sentir especiales a las parejas. Discreto, respetuoso y con mucha energía para compartir.",
       profession: "Chef Ejecutivo",
       personality: ["Apasionado", "Intelectual", "Aventurero"],
-      languages: ["Español", "Catalán", "Inglés"],
+      languages: ["Español", "Inglés"],
       education: "Culinary Arts Institute",
       lifestyle: "Equilibrado",
       relationshipGoals: "Conocer gente nueva",
@@ -80,11 +85,11 @@ const Profiles = () => {
       name: "Gabriela",
       age: 26,
       location: "Monterrey",
-      interests: ["Arte", "Lectura", "Café", "Cine", "Teatro"],
-      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face",
+      interests: ["Tercera persona", "Bisexual", "Parejas", "Sensualidad"],
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=600&fit=crop&crop=face",
       rating: 4.7,
       isOnline: true,
-      bio: "Artista y escritora. Me encanta el café y las buenas conversaciones.",
+      bio: "Mujer independiente de Monterrey. Me encanta la compañía de parejas y ser el centro de atención. Cómoda con ambos géneros, busco momentos especiales.",
       profession: "Artista"
     },
     {
@@ -92,11 +97,11 @@ const Profiles = () => {
       name: "Diego",
       age: 30,
       location: "Puebla",
-      interests: ["Deporte", "Tecnología", "Naturaleza", "Fitness"],
+      interests: ["Encuentros grupales", "Experiencias intensas", "Exhibicionismo", "Aventuras"],
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&crop=face",
       rating: 4.8,
       isOnline: true,
-      bio: "Desarrollador de software apasionado por el deporte y la vida sana.",
+      bio: "Hombre activo del lifestyle en Puebla. Disfruto los encuentros grupales y experiencias intensas. Siempre respetuoso, discreto y con mucha energía.",
       profession: "Desarrollador"
     },
     {
@@ -104,11 +109,11 @@ const Profiles = () => {
       name: "Laura",
       age: 29,
       location: "Tijuana",
-      interests: ["Danza", "Música", "Viajes", "Gastronomía"],
+      interests: ["Danza sensual", "Performance", "Exhibicionismo", "Voyeurismo"],
       image: "https://images.unsplash.com/photo-1488716820095-cbe80883c496?w=400&h=600&fit=crop&crop=face",
       rating: 4.9,
       isOnline: true,
-      bio: "Bailarina profesional que ama explorar nuevos sabores y culturas.",
+      bio: "Bailarina profesional de Tijuana. Me encanta el arte del movimiento y ser observada. Muy liberal y abierta a experiencias únicas.",
       profession: "Bailarina"
     },
     {
@@ -116,11 +121,11 @@ const Profiles = () => {
       name: "Javier",
       age: 27,
       location: "Cancún",
-      interests: ["Surf", "Fotografía", "Aventura", "Naturaleza"],
-      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face",
+      interests: ["Fotografía artística", "Aventuras al aire libre", "Naturaleza", "Voyeurismo"],
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&crop=face",
       rating: 4.6,
       isOnline: false,
-      bio: "Surfista y fotógrafo de naturaleza. Siempre en busca de la ola perfecta.",
+      bio: "Fotógrafo artístico de Cancún. Especializado en capturar la belleza natural y momentos especiales. Me gusta documentar y vivir experiencias únicas.",
       profession: "Fotógrafo"
     },
     {
@@ -128,11 +133,11 @@ const Profiles = () => {
       name: "Carmen",
       age: 31,
       location: "Mérida",
-      interests: ["Historia", "Arquitectura", "Vino", "Cultura"],
+      interests: ["Mujer madura", "Experiencia", "Fiestas privadas", "Mentorazgo"],
       image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=600&fit=crop&crop=face",
       rating: 4.8,
       isOnline: true,
-      bio: "Historiadora del arte con pasión por la arquitectura andaluza.",
+      bio: "Mujer experimentada de Mérida. Organizadora de encuentros privados en casa. Disfruto la compañía de personas jóvenes y guiar a quienes inician en el lifestyle.",
       profession: "Historiadora"
     },
     {
@@ -140,11 +145,11 @@ const Profiles = () => {
       name: "Pablo",
       age: 33,
       location: "León",
-      interests: ["Ciclismo", "Tecnología", "Innovación", "Emprendimiento"],
+      interests: ["Fitness", "Liderazgo", "BDSM suave", "Juegos de poder"],
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&crop=face",
       rating: 4.7,
       isOnline: true,
-      bio: "Emprendedor tech y ciclista apasionado. Construyendo el futuro.",
+      bio: "Empresario de León con excelente condición física. Me gusta tomar el control y ser admirado. Busco personas que disfruten los juegos de poder y la sumisión.",
       profession: "Emprendedor"
     },
     {
@@ -152,16 +157,30 @@ const Profiles = () => {
       name: "Isabella",
       age: 26,
       location: "Playa del Carmen",
-      interests: ["Yoga", "Meditación", "Naturaleza", "Wellness"],
-      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face",
+      interests: ["Tantra", "Masajes sensuales", "Yoga", "Conexión espiritual"],
+      image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=600&fit=crop&crop=face",
       rating: 4.8,
       isOnline: true,
-      bio: "Instructora de yoga y terapeuta holística. Conectando cuerpo, mente y espíritu.",
+      bio: "Instructora de tantra de Playa del Carmen. Especializada en masajes sensuales y conexión espiritual. Ayudo a parejas a descubrir nuevas formas de intimidad.",
       profession: "Instructora de Yoga"
     }
   ];
 
-  const [filteredProfiles, setFilteredProfiles] = useState(allProfiles);
+  // Detectar modo demo vs real
+  useEffect(() => {
+    const demoAuth = localStorage.getItem('demo_authenticated');
+    const isDemo = demoAuth === 'true';
+    setIsProduction(!isDemo);
+    
+    if (!isDemo) {
+      // Modo producción - cargar perfiles reales (placeholder)
+      setRealProfiles([]);
+    }
+  }, []);
+
+  // Usar perfiles demo o reales según el modo
+  const currentProfilesData = isProduction ? realProfiles : allProfiles;
+  const [filteredProfiles, setFilteredProfiles] = useState(currentProfilesData);
   const [currentPage, setCurrentPage] = useState(1);
   const profilesPerPage = 6;
 
@@ -172,7 +191,7 @@ const Profiles = () => {
   const currentProfiles = filteredProfiles.slice(startIndex, endIndex);
 
   const handleFilterChange = (filters: FilterState) => {
-    let filtered = allProfiles;
+    let filtered = currentProfilesData;
 
     if (filters.location && filters.location !== "all") {
       filtered = filtered.filter(profile => {
@@ -226,7 +245,7 @@ const Profiles = () => {
     await new Promise(resolve => setTimeout(resolve, 1500));
     
     // AI-powered filtering based on personality, interests, and compatibility
-    let aiFilteredProfiles = allProfiles.filter(profile => {
+    let aiFilteredProfiles = currentProfilesData.filter(profile => {
       const queryLower = query.toLowerCase();
       return (
         profile.personality?.some(trait => trait.toLowerCase().includes(queryLower)) ||
@@ -324,7 +343,7 @@ const Profiles = () => {
                 <div className="relative">
                   <div className="flex gap-2">
                     <div className="relative flex-1">
-                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-white/60" />
                       <Input
                         placeholder="Busca parejas swinger, solteros lifestyle, eventos privados..."
                         value={searchQuery}
@@ -354,7 +373,7 @@ const Profiles = () => {
                   {/* AI Suggestions */}
                   {aiSuggestions.length > 0 && (
                     <div className="mt-3">
-                      <p className="text-sm text-gray-300 mb-2">Sugerencias de IA:</p>
+                      <p className="text-sm text-white/80 mb-2">Sugerencias de IA:</p>
                       <div className="flex flex-wrap gap-2">
                         {aiSuggestions.map((suggestion, index) => (
                           <Badge 
@@ -389,7 +408,7 @@ const Profiles = () => {
           {/* Filters Section */}
           <div className="mb-8">
             <div className="flex items-center gap-2 mb-4">
-              <Filter className="h-5 w-5 text-gray-300" />
+              <Filter className="h-5 w-5 text-white/80" />
               <h3 className="text-lg font-semibold text-white">Filtros Avanzados</h3>
             </div>
             <ProfileFilters onFilterChange={handleFilterChange} />
@@ -398,7 +417,7 @@ const Profiles = () => {
           {/* Results Summary */}
           <div className="flex justify-between items-center mb-8">
             <div className="flex items-center gap-4">
-              <p className="text-gray-300">
+              <p className="text-white/80">
                 {filteredProfiles.length} perfiles encontrados
               </p>
               {aiSearchMode && (

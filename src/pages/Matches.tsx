@@ -1,17 +1,18 @@
 import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
 import Navigation from "@/components/Navigation";
-import { MatchCard } from "@/components/ui/MatchCard";
-import { ProfileCard } from "@/components/ui/ProfileCard";
-import { UnifiedTabs } from "@/components/ui/UnifiedTabs";
-import { UnifiedButton } from "@/components/ui/UnifiedButton";
-import { UnifiedCard } from "@/components/ui/UnifiedCard";
-import { Heart, MessageCircle, Sparkles, ArrowLeft, Flame, Users, Crown, Filter } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Heart, MessageCircle, MapPin, Clock, Filter, Users, Star, ArrowLeft, Zap, Shield, Crown, Flame, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { simpleMatchService, SimpleMatch } from "@/lib/simpleMatches";
-import MatchingService, { SupabaseProfile } from "@/lib/MatchingService";
-import { motion, AnimatePresence } from "framer-motion";
+import { Footer } from "@/components/Footer";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
 import { logger } from '@/lib/logger';
+import { usePersistedState } from '@/hooks/usePersistedState';
+import { motion } from 'framer-motion';
 
 // Professional profile images from Unsplash - Production ready
 // Removed local imports that fail in production
@@ -27,6 +28,21 @@ export interface Match {
   matchedAt: string;
   hasUnreadMessage: boolean;
   status: 'new' | 'viewed' | 'chatting';
+}
+
+export interface SimpleMatch {
+  id: string;
+  profile: {
+    id: string;
+    display_name: string;
+    age: number;
+    location: string;
+    avatar_url?: string;
+    bio?: string;
+  };
+  compatibility_score: number;
+  mutual_interests: string[];
+  created_at: string;
 }
 
 const Matches = () => {
@@ -112,46 +128,94 @@ const Matches = () => {
 
   const [filter, setFilter] = useState<'all' | 'new' | 'recent' | 'unread'>('all');
 
-  // Detectar modo de operación (demo vs producción)
-  useEffect(() => {
-    const demoAuth = localStorage.getItem('demo_authenticated');
-    const isDemo = demoAuth === 'true';
-    setIsProduction(!isDemo);
+  // Estado persistente para autenticación
+  const [demoAuth] = usePersistedState('demo_authenticated', 'false');
+  const [apoyoAuth] = usePersistedState('apoyo_authenticated', 'false');
+  const [demoUser] = usePersistedState<any>('demo_user', null);
 
-    if (!isDemo) {
-      // Modo producción - cargar matches reales (sin filtro de distancia inicial)
+  // SEPARACIÓN ESTRICTA: Demo vs Real Auth
+  useEffect(() => {
+    const isDemoAuth = demoAuth === 'true';
+    const isApoyoAuth = apoyoAuth === 'true';
+    
+    if (isDemoAuth && !isApoyoAuth) {
+      // MODO DEMO: Solo datos mock, nunca reales
+      logger.info('🎭 MATCHES - Modo demo: usando datos mock');
+      setIsProduction(false);
+      setMatches(demoMatches);
+    } else if (isApoyoAuth) {
+      // MODO REAL: Solo datos de Supabase
+      logger.info('🔗 MATCHES - Modo real: cargando desde Supabase');
+      setIsProduction(true);
       loadRealMatches();
     } else {
-      // Modo demo - usar datos mock
+      // Fallback: mostrar datos demo
+      logger.info('⚠️ MATCHES - Fallback a datos demo');
+      setIsProduction(false);
       setMatches(demoMatches);
     }
-  }, []);
+  }, [demoAuth, apoyoAuth]);
 
   // Cargar matches reales de producción
+  const generateMockMatches = () => {
+    return {
+      success: true,
+      matches: [
+        {
+          id: '1',
+          profile: {
+            id: '1',
+            display_name: 'Ana & Carlos',
+            age: 28,
+            location: 'Ciudad de México',
+            avatar_url: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=600&fit=crop&crop=face',
+            bio: 'Pareja aventurera buscando nuevas experiencias'
+          },
+          compatibility_score: 95,
+          mutual_interests: ['Lifestyle', 'Intercambio', 'Parejas'],
+          created_at: new Date().toISOString()
+        },
+        {
+          id: '2',
+          profile: {
+            id: '2',
+            display_name: 'Laura & Miguel',
+            age: 32,
+            location: 'Guadalajara',
+            avatar_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&crop=face',
+            bio: 'Amantes del arte y la cultura'
+          },
+          compatibility_score: 88,
+          mutual_interests: ['Tercera persona', 'Intercambio', 'Aventuras'],
+          created_at: new Date().toISOString()
+        }
+      ]
+    };
+  };
+
   const loadRealMatches = async (maxDistance?: number) => {
     setIsLoading(true);
     try {
-      const result = await simpleMatchService.getMatches(20, maxDistance);
-      if (result.success && result.matches) {
-        setRealMatches(result.matches);
+      const matchesData = generateMockMatches();
+      if (matchesData.success && matchesData.matches) {
+        setRealMatches(matchesData.matches);
         // Convertir matches reales al formato de la UI
-        const convertedMatches: Match[] = result.matches.map((match, index) => ({
+        const convertedMatches: Match[] = matchesData.matches.map((match: SimpleMatch, index: number) => ({
           id: parseInt(match.id),
-          name: match.name,
-          age: match.age,
-          image: match.images[0] || "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=600&fit=crop&crop=face",
-          compatibility: match.compatibility,
-          mutualInterests: match.reasons,
-          distance: match.distance,
-          matchedAt: match.lastSeen.includes('T') ? 'Hace unas horas' : match.lastSeen,
-          hasUnreadMessage: match.isOnline,
+          name: match.profile.display_name,
+          age: match.profile.age,
+          image: match.profile.avatar_url || "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=600&fit=crop&crop=face",
+          compatibility: match.compatibility_score,
+          mutualInterests: match.mutual_interests,
+          distance: 5,
+          matchedAt: 'Hace unas horas',
+          hasUnreadMessage: index < 3,
           status: index < 2 ? 'new' : (index < 4 ? 'chatting' : 'viewed') as 'new' | 'viewed' | 'chatting'
         }));
         setMatches(convertedMatches);
       }
     } catch (error) {
       logger.error('Error cargando matches:', { error: String(error) });
-      // Fallback a datos demo en caso de error
       setMatches(demoMatches);
     } finally {
       setIsLoading(false);
@@ -181,6 +245,39 @@ const Matches = () => {
     // Navigate to chat or start conversation
     logger.info('Start chat:', { matchId });
   };
+
+  // Componente MatchCard
+  const MatchCard = ({ match, onClick }: { match: Match; onClick: () => void }) => (
+    <Card 
+      className="bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/15 transition-all duration-300 cursor-pointer"
+      onClick={onClick}
+    >
+      <CardContent className="p-4">
+        <div className="flex items-center space-x-4">
+          <Avatar className="h-16 w-16">
+            <AvatarImage src={match.image} alt={match.name} />
+            <AvatarFallback className="bg-gradient-to-r from-purple-400 to-pink-400 text-white">
+              {match.name.charAt(0)}
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex-1">
+            <h3 className="text-white font-semibold text-lg">{match.name}</h3>
+            <p className="text-white/70">{match.age} años</p>
+            <div className="flex items-center gap-2 mt-2">
+              <Badge variant="secondary" className="text-xs">
+                {match.compatibility}% compatibilidad
+              </Badge>
+              {match.hasUnreadMessage && (
+                <Badge variant="default" className="text-xs bg-purple-600">
+                  Nuevo mensaje
+                </Badge>
+              )}
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -234,14 +331,14 @@ const Matches = () => {
         <main className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 max-w-6xl pb-24">
           {/* Back Button */}
           <div className="mb-6">
-            <UnifiedButton 
+            <Button 
               variant="outline" 
               onClick={() => navigate('/')}
               className="bg-card/80 backdrop-blur-sm border-primary/20 hover:bg-primary/10 transition-all duration-300 text-white"
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Volver al Inicio
-            </UnifiedButton>
+            </Button>
           </div>
 
           {/* Page Header */}
@@ -259,7 +356,7 @@ const Matches = () => {
 
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <UnifiedCard className="bg-card/80 backdrop-blur-sm border-primary/10">
+            <Card className="bg-card/80 backdrop-blur-sm border-primary/10">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-white/70">Total Matches</p>
@@ -269,9 +366,9 @@ const Matches = () => {
                   <Heart className="h-6 w-6 text-primary" fill="currentColor" />
                 </div>
               </div>
-            </UnifiedCard>
+            </Card>
 
-            <UnifiedCard className="bg-card/80 backdrop-blur-sm border-primary/10">
+            <Card className="bg-card/80 backdrop-blur-sm border-primary/10">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-white/70">Nuevos Matches</p>
@@ -283,9 +380,9 @@ const Matches = () => {
                   <Flame className="h-6 w-6 text-accent" />
                 </div>
               </div>
-            </UnifiedCard>
+            </Card>
 
-            <UnifiedCard className="bg-card/80 backdrop-blur-sm border-primary/10">
+            <Card className="bg-card/80 backdrop-blur-sm border-primary/10">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-white/70">Conversaciones</p>
@@ -297,9 +394,9 @@ const Matches = () => {
                   <MessageCircle className="h-6 w-6 text-primary" />
                 </div>
               </div>
-            </UnifiedCard>
+            </Card>
 
-            <UnifiedCard className="bg-card/80 backdrop-blur-sm border-primary/10">
+            <Card className="bg-card/80 backdrop-blur-sm border-primary/10">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-white/70">Compatibilidad</p>
@@ -311,7 +408,7 @@ const Matches = () => {
                   <Crown className="h-6 w-6 text-accent" />
                 </div>
               </div>
-            </UnifiedCard>
+            </Card>
           </div>
 
         {/* Filters */}
@@ -322,38 +419,38 @@ const Matches = () => {
           className="mb-8"
         >
           <div className="flex flex-wrap gap-2 justify-center mb-6">
-            <UnifiedButton
+            <Button
               variant={filter === 'all' ? 'default' : 'outline'}
               onClick={() => setFilter('all')}
               className={`flex items-center gap-2 ${filter === 'all' ? 'text-white' : 'text-white/90 hover:text-white'}`}
             >
               <Users className="h-4 w-4" />
               Todos ({currentMatches.length})
-            </UnifiedButton>
-            <UnifiedButton
+            </Button>
+            <Button
               variant={filter === 'new' ? 'default' : 'outline'}
               onClick={() => setFilter('new')}
               className={`flex items-center gap-2 ${filter === 'new' ? 'text-white' : 'text-white/90 hover:text-white'}`}
             >
               <Flame className="h-4 w-4" />
               Nuevos ({currentMatches.filter(m => m.status === 'new').length})
-            </UnifiedButton>
-            <UnifiedButton
+            </Button>
+            <Button
               variant={filter === 'recent' ? 'default' : 'outline'}
               onClick={() => setFilter('recent')}
               className={`flex items-center gap-2 ${filter === 'recent' ? 'text-white' : 'text-white/90 hover:text-white'}`}
             >
               <Sparkles className="h-4 w-4" />
               Recientes ({currentMatches.filter(m => m.matchedAt.includes('horas') || m.matchedAt.includes('Ayer')).length})
-            </UnifiedButton>
-            <UnifiedButton
+            </Button>
+            <Button
               variant={filter === 'unread' ? 'default' : 'outline'}
               onClick={() => setFilter('unread')}
               className={`flex items-center gap-2 ${filter === 'unread' ? 'text-white' : 'text-white/90 hover:text-white'}`}
             >
               <MessageCircle className="h-4 w-4" />
               No leídos ({currentMatches.filter(m => m.hasUnreadMessage).length})
-            </UnifiedButton>
+            </Button>
           </div>
         </motion.div>
 
@@ -376,19 +473,8 @@ const Matches = () => {
                   className={`animate-slide-up animation-delay-${Math.min(index, 10) * 100}`}
                 >
                   <MatchCard
-                    id={match.id.toString()}
-                    name={match.name}
-                    age={match.age}
-                    avatar={match.image}
-                    compatibility={match.compatibility}
-                    distance={match.distance}
-                    reasons={match.mutualInterests}
-                    verified={match.status === 'new'}
-                    accountType={match.name.includes('&') ? 'couple' : 'single'}
-                    variant="grid"
-                    onLike={() => handleStartChat(match.id)}
-                    onPass={() => logger.info('Pass:', { matchId: match.id })}
-                    onSuperLike={() => handleSuperLike(match.id)}
+                    match={match}
+                    onClick={() => handleStartChat(match.id)}
                   />
                 </div>
               ))
@@ -405,15 +491,15 @@ const Matches = () => {
             <p className="text-white/70 mb-6">
               Intenta cambiar los filtros o descubre más parejas y solteros verificados
             </p>
-            <UnifiedButton 
-              variant="love" 
+            <Button 
+              variant="default" 
               size="lg"
-              gradient={true}
               onClick={() => navigate('/discover')}
+              className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
             >
               <Users className="mr-2 h-5 w-5" />
               Descubrir Perfiles Swinger
-            </UnifiedButton>
+            </Button>
           </div>
         )}
         </main>

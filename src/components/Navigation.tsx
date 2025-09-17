@@ -45,7 +45,7 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
   const [isDemoAuthenticated] = usePersistedState('demo_authenticated', false);
   const [isSpecialAuthenticated] = usePersistedState('apoyo_authenticated', false);
   const [demoUser] = usePersistedState('demo_user', null);
-  const [specialUser] = usePersistedState('apoyo_user', null);
+  // Removed apoyo_user reference
   const [currentUserType] = usePersistedState('userType', null);
   
   const isAuthenticated = isDemoAuthenticated || isSpecialAuthenticated;
@@ -61,7 +61,7 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
   // Navegación completamente estática - sin efectos de scroll
 
   // Solo mostrar navegación completa si está autenticado
-  if (!isAuthenticated || (!demoUser && !specialUser)) {
+  if (!isAuthenticated || !demoUser) {
     return null; // Ocultar navegación si no está logueado
   }
   
@@ -97,7 +97,7 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
       localStorage.removeItem('demo_authenticated');
       localStorage.removeItem('apoyo_authenticated');
       localStorage.removeItem('demo_user');
-      localStorage.removeItem('apoyo_user');
+      // Removed apoyo_user cleanup
       localStorage.removeItem('userType');
       sessionStorage.clear();
       navigate('/auth', { replace: true });
@@ -109,7 +109,7 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
     const isDemoAuth = isDemoAuthenticated;
     const isSpecialAuth = isSpecialAuthenticated;
     
-    logger.info('🔍 Navigation Debug:', { demoUser, specialUser, userType, isDemoAuth, isSpecialAuth, path });
+    logger.info('🔍 Navigation Debug:', { demoUser, userType, isDemoAuth, isSpecialAuth, path });
     
     // Detectar tipo de usuario y redirigir al perfil correcto
     if (path === '/profile') {
@@ -122,7 +122,7 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
     }
     
     // Verificar autenticación antes de navegar
-    const isAuthenticated = isDemoAuth || isSpecialAuth || demoUser || specialUser;
+    const isAuthenticated = isDemoAuth || isSpecialAuth || demoUser;
     
     if (!isAuthenticated) {
       logger.info('❌ Usuario no autenticado, redirigiendo a /auth');

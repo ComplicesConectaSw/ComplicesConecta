@@ -22,7 +22,7 @@ const ProfileThemeDemo: React.FC = () => {
             </h1>
           </div>
           
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed">
             Experimenta con la personalización visual avanzada de ComplicesConecta. 
             Los perfiles se adaptan dinámicamente según el género, tipo de relación y preferencias de tema.
           </p>
@@ -69,11 +69,11 @@ const ProfileThemeDemo: React.FC = () => {
         {/* Información Técnica */}
         <div className="grid md:grid-cols-2 gap-6">
           <UnifiedCard className="p-6">
-            <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
               <Palette className="h-5 w-5 text-purple-600" />
               Características Técnicas
             </h3>
-            <ul className="space-y-3 text-gray-700">
+            <ul className="space-y-3 text-white/90">
               <li className="flex items-start gap-2">
                 <span className="text-purple-600 font-bold">•</span>
                 <span><strong>Temas Dinámicos:</strong> Fondos que se adaptan automáticamente según género y tipo de relación</span>
@@ -94,11 +94,11 @@ const ProfileThemeDemo: React.FC = () => {
           </UnifiedCard>
 
           <UnifiedCard className="p-6">
-            <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
               <Users className="h-5 w-5 text-purple-600" />
               Combinaciones de Temas
             </h3>
-            <div className="space-y-4 text-gray-700">
+            <div className="space-y-4 text-white/90">
               <div>
                 <h4 className="font-medium text-blue-700 mb-1">👨 Perfiles Masculinos</h4>
                 <p className="text-sm">Tonos azules, grises y metálicos que transmiten confianza y elegancia</p>
