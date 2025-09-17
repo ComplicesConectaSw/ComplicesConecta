@@ -21,7 +21,6 @@ export class StorageManager {
   // Migrar datos legacy a Supabase y limpiar localStorage
   static migrateToSupabase() {
     const legacyKeys = [
-      'apoyo_user',
       'apoyo_session',
       'demo_user',
       'demo_session',
@@ -86,7 +85,6 @@ export class StorageManager {
       'user_profile',
       'profile_data', 
       'cached_profile',
-      'apoyo_user',
       'demo_user'
     ];
 

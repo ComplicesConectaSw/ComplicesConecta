@@ -293,12 +293,15 @@ const Discover = () => {
     }
   }, [filterCards.length]);
 
-  // Cargar perfiles demo solo para usuarios con credenciales específicas
+  // MODO DEMO: Cargar perfiles demo solo para usuarios demo autenticados
   useEffect(() => {
     const demoAuth = localStorage.getItem('demo_authenticated') === 'true';
+    const apoyoAuth = localStorage.getItem('apoyo_authenticated') === 'true';
     const isDemoUser = user?.email === 'single@outlook.es' || user?.email === 'pareja@outlook.es';
     
-    if (demoAuth && isDemoUser && demoProfiles.length === 0) {
+    // SEPARACIÓN ESTRICTA: Solo en modo demo puro (no apoyo)
+    if (demoAuth && !apoyoAuth && isDemoUser && demoProfiles.length === 0) {
+      logger.info('🎭 Cargando perfiles demo para usuario demo autenticado');
       const demos = generateDemoProfiles(20);
       setDemoProfiles(demos);
       setFilteredDemoProfiles(demos);
@@ -321,14 +324,18 @@ const Discover = () => {
     
     // Solo cargar perfiles reales una vez para usuarios autenticados
     if (profiles.length === 0) {
-      // Cargar perfiles según el tipo de usuario
+      // SEPARACIÓN ESTRICTA: Demo vs Real Auth
       if (demoAuth && !apoyoAuth) {
-        logger.info('🎭 Usuario demo - cargando perfiles adicionales');
+        // MODO DEMO: Solo datos mock, nunca reales
+        logger.info('🎭 MODO DEMO - cargando perfiles mock únicamente');
         generateRandomProfiles();
-      } else {
-        logger.info('🔗 Cargando perfiles reales');
-        // Para usuarios reales y especiales, cargar perfiles desde Supabase
+      } else if (apoyoAuth || (isAuthenticated() && !demoAuth)) {
+        // MODO REAL: Solo datos de Supabase
+        logger.info('🔗 MODO REAL - cargando perfiles desde Supabase');
         loadRealProfiles();
+      } else {
+        // Usuario no autenticado: mostrar cards informativos
+        logger.info('👤 Usuario no autenticado - sin perfiles');
       }
     }
     
@@ -447,7 +454,7 @@ const Discover = () => {
             <Button
               variant="ghost"
               onClick={() => navigate('/profile')}
-              className="text-gray-700 hover:bg-white/50 p-2 sm:px-4"
+              className="text-white hover:bg-white/50 p-2 sm:px-4"
             >
               <User className="h-4 w-4 sm:h-5 sm:w-5 sm:mr-2" />
               <span className="hidden sm:inline">Perfil</span>
@@ -463,7 +470,7 @@ const Discover = () => {
             <Button
               variant="ghost"
               onClick={() => setShowCouples(!showCouples)}
-              className={`p-2 sm:px-4 ${showCouples ? 'text-purple-300 bg-white/20' : 'text-gray-700 hover:bg-white/50'}`}
+              className={`p-2 sm:px-4 ${showCouples ? 'text-purple-300 bg-white/20' : 'text-white hover:bg-white/50'}`}
             >
               <span className="hidden sm:inline">{showCouples ? 'Singles' : 'Parejas'}</span>
               <span className="sm:hidden">{showCouples ? 'S' : 'P'}</span>
@@ -471,7 +478,7 @@ const Discover = () => {
             <Button
               variant="ghost"
               onClick={() => setShowFilters(!showFilters)}
-              className="text-gray-700 hover:bg-white/50 p-2 sm:px-4"
+              className="text-white hover:bg-white/50 p-2 sm:px-4"
             >
               <Filter className="h-4 w-4 sm:h-5 sm:w-5 sm:mr-2" />
               <span className="hidden sm:inline">Filtros</span>
@@ -479,7 +486,7 @@ const Discover = () => {
             <Button
               variant="ghost"
               onClick={handleRefresh}
-              className="text-gray-700 hover:bg-white/50 p-2"
+              className="text-white hover:bg-white/50 p-2"
             >
               <RefreshCw className="h-4 w-4 sm:h-5 sm:w-5" />
             </Button>

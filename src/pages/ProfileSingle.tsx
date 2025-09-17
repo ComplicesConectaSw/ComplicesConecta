@@ -83,7 +83,7 @@ const ProfileSingle: React.FC = () => {
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Cargando perfil...</p>
+          <p className="mt-4 text-white/90">Cargando perfil...</p>
         </div>
       </div>
     );
@@ -241,14 +241,14 @@ const ProfileSingle: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                <div className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center">
-                  <span className="text-gray-500 text-sm">Foto 1</span>
+                <div className="aspect-square bg-white/10 rounded-lg flex items-center justify-center border border-white/20">
+                  <span className="text-white/70 text-sm">Foto 1</span>
                 </div>
-                <div className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center">
-                  <span className="text-gray-500 text-sm">Foto 2</span>
+                <div className="aspect-square bg-white/10 rounded-lg flex items-center justify-center border border-white/20">
+                  <span className="text-white/70 text-sm">Foto 2</span>
                 </div>
-                <div className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center">
-                  <span className="text-gray-500 text-sm">Foto 3</span>
+                <div className="aspect-square bg-white/10 rounded-lg flex items-center justify-center border border-white/20">
+                  <span className="text-white/70 text-sm">Foto 3</span>
                 </div>
               </div>
             </CardContent>

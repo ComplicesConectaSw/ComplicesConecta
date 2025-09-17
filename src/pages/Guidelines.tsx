@@ -10,10 +10,10 @@ const GuidelinesPage = () => {
           <div className="flex justify-center mb-4">
             <Users className="h-16 w-16 text-purple-600" />
           </div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl font-bold text-white/70 mb-4">
             Directrices de la Comunidad
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-white/90 max-w-3xl mx-auto">
             Nuestra comunidad se basa en el respeto mutuo, la autenticidad y la diversión responsable. 
             Estas directrices nos ayudan a mantener un ambiente seguro y acogedor para todos.
           </p>
@@ -27,7 +27,7 @@ const GuidelinesPage = () => {
               <CardTitle className="text-xl">Respeto</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600 text-center">
+              <p className="text-white/90 text-center">
                 Tratamos a todos los miembros con dignidad, respeto y consideración, 
                 independientemente de sus preferencias o estilo de vida.
               </p>
@@ -40,7 +40,7 @@ const GuidelinesPage = () => {
               <CardTitle className="text-xl">Autenticidad</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600 text-center">
+              <p className="text-white/90 text-center">
                 Valoramos la honestidad y la transparencia. Sé genuino en tu perfil 
                 y en tus interacciones con otros miembros.
               </p>
@@ -53,7 +53,7 @@ const GuidelinesPage = () => {
               <CardTitle className="text-xl">Seguridad</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600 text-center">
+              <p className="text-white/90 text-center">
                 La seguridad de nuestra comunidad es prioritaria. Reporta cualquier 
                 comportamiento inapropiado o sospechoso.
               </p>
@@ -74,31 +74,31 @@ const GuidelinesPage = () => {
               <div className="space-y-3">
                 <div className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
-                  <p className="text-gray-700">
+                  <p className="text-white/90">
                     <strong>Comunicación respetuosa:</strong> Usa un lenguaje cortés y considerado
                   </p>
                 </div>
                 <div className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
-                  <p className="text-gray-700">
+                  <p className="text-white/90">
                     <strong>Perfiles auténticos:</strong> Usa fotos reales y información veraz
                   </p>
                 </div>
                 <div className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
-                  <p className="text-gray-700">
+                  <p className="text-white/90">
                     <strong>Consentimiento mutuo:</strong> Respeta los límites y decisiones de otros
                   </p>
                 </div>
                 <div className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
-                  <p className="text-gray-700">
+                  <p className="text-white/90">
                     <strong>Privacidad:</strong> Mantén confidencial la información personal compartida
                   </p>
                 </div>
                 <div className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
-                  <p className="text-gray-700">
+                  <p className="text-white/90">
                     <strong>Diversidad:</strong> Celebra y respeta las diferentes orientaciones y preferencias
                   </p>
                 </div>
@@ -117,31 +117,31 @@ const GuidelinesPage = () => {
               <div className="space-y-3">
                 <div className="flex items-start">
                   <XCircle className="h-5 w-5 text-red-600 mr-3 mt-0.5 flex-shrink-0" />
-                  <p className="text-gray-700">
+                  <p className="text-white/90">
                     <strong>Acoso o intimidación:</strong> Cualquier forma de hostigamiento está prohibida
                   </p>
                 </div>
                 <div className="flex items-start">
                   <XCircle className="h-5 w-5 text-red-600 mr-3 mt-0.5 flex-shrink-0" />
-                  <p className="text-gray-700">
+                  <p className="text-white/90">
                     <strong>Perfiles falsos:</strong> No uses identidades falsas o fotos de otras personas
                   </p>
                 </div>
                 <div className="flex items-start">
                   <XCircle className="h-5 w-5 text-red-600 mr-3 mt-0.5 flex-shrink-0" />
-                  <p className="text-gray-700">
+                  <p className="text-white/90">
                     <strong>Contenido inapropiado:</strong> No compartas material ofensivo o ilegal
                   </p>
                 </div>
                 <div className="flex items-start">
                   <XCircle className="h-5 w-5 text-red-600 mr-3 mt-0.5 flex-shrink-0" />
-                  <p className="text-gray-700">
+                  <p className="text-white/90">
                     <strong>Spam o promoción:</strong> No uses la plataforma para publicidad no autorizada
                   </p>
                 </div>
                 <div className="flex items-start">
                   <XCircle className="h-5 w-5 text-red-600 mr-3 mt-0.5 flex-shrink-0" />
-                  <p className="text-gray-700">
+                  <p className="text-white/90">
                     <strong>Discriminación:</strong> No toleramos prejuicios por raza, género, orientación, etc.
                   </p>
                 </div>
@@ -159,7 +159,7 @@ const GuidelinesPage = () => {
             <div className="grid md:grid-cols-2 gap-8">
               <div>
                 <h3 className="text-lg font-semibold mb-4 text-purple-700">Fotos de Perfil</h3>
-                <ul className="space-y-2 text-gray-700">
+                <ul className="space-y-2 text-white/90">
                   <li>• Usa fotos claras y recientes (máximo 2 años)</li>
                   <li>• Incluye al menos una foto de rostro visible</li>
                   <li>• Las fotos deben ser tuyas o de tu pareja</li>
@@ -169,7 +169,7 @@ const GuidelinesPage = () => {
               </div>
               <div>
                 <h3 className="text-lg font-semibold mb-4 text-purple-700">Mensajes y Chat</h3>
-                <ul className="space-y-2 text-gray-700">
+                <ul className="space-y-2 text-white/90">
                   <li>• Sé respetuoso desde el primer mensaje</li>
                   <li>• No envíes contenido no solicitado</li>
                   <li>• Respeta si alguien no responde o declina</li>
@@ -196,7 +196,7 @@ const GuidelinesPage = () => {
                   <AlertCircle className="h-8 w-8 text-red-600" />
                 </div>
                 <h3 className="font-semibold mb-2 text-red-700">Reportar Usuario</h3>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-white/90">
                   Usa el botón "Reportar" en cualquier perfil para denunciar comportamientos inapropiados.
                 </p>
               </div>
@@ -205,7 +205,7 @@ const GuidelinesPage = () => {
                   <Flag className="h-8 w-8 text-orange-600" />
                 </div>
                 <h3 className="font-semibold mb-2 text-orange-700">Reportar Contenido</h3>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-white/90">
                   Reporta fotos, mensajes o cualquier contenido que viole nuestras directrices.
                 </p>
               </div>
@@ -214,7 +214,7 @@ const GuidelinesPage = () => {
                   <Shield className="h-8 w-8 text-blue-600" />
                 </div>
                 <h3 className="font-semibold mb-2 text-blue-700">Emergencias</h3>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-white/90">
                   Para situaciones urgentes de seguridad, contacta inmediatamente a nuestro equipo.
                 </p>
               </div>
@@ -249,7 +249,7 @@ const GuidelinesPage = () => {
                   </p>
                 </div>
               </div>
-              <div className="text-center text-gray-600">
+              <div className="text-center text-white/80">
                 <p className="text-sm">
                   Las decisiones se toman caso por caso, considerando la gravedad y el contexto de cada situación.
                 </p>
@@ -264,18 +264,18 @@ const GuidelinesPage = () => {
             <CardTitle className="text-2xl text-center">Contacto y Apelaciones</CardTitle>
           </CardHeader>
           <CardContent className="text-center">
-            <p className="text-gray-700 mb-6">
+            <p className="text-white/90 mb-6">
               Si tienes preguntas sobre estas directrices o deseas apelar una decisión, 
               no dudes en contactarnos:
             </p>
             <div className="space-y-4">
               <div>
                 <p className="font-semibold text-purple-700">Equipo de Moderación</p>
-                <p className="text-gray-600">moderacion@complicesconecta.com</p>
+                <p className="text-white/90">moderacion@complicesconecta.com</p>
               </div>
               <div>
                 <p className="font-semibold text-purple-700">Apelaciones</p>
-                <p className="text-gray-600">apelaciones@complicesconecta.com</p>
+                <p className="text-white/90">apelaciones@complicesconecta.com</p>
               </div>
             </div>
             <div className="mt-8">
@@ -290,7 +290,7 @@ const GuidelinesPage = () => {
         </Card>
 
         {/* Footer Note */}
-        <div className="text-center mt-12 text-gray-500 text-sm">
+        <div className="text-center mt-12 text-white/70 text-sm">
           <p>
             Estas directrices pueden actualizarse periódicamente. Te notificaremos sobre cambios importantes.
           </p>

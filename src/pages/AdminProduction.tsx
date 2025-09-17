@@ -101,6 +101,7 @@ const AdminProduction = () => {
   const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
   const [newFaq, setNewFaq] = useState({ question: '', answer: '', category: 'general' });
   const [auditReport, setAuditReport] = useState<any>(null);
+  const [isAuthorized, setIsAuthorized] = useState(false);
 
   useEffect(() => {
     logger.info('🔄 AdminProduction - Verificando acceso...');
@@ -111,32 +112,31 @@ const AdminProduction = () => {
       return;
     }
     
-    // Verificar sesión demo primero
+    // Estado persistente para autenticación
     const demoAuth = localStorage.getItem('demo_authenticated');
+    const apoyoAuth = localStorage.getItem('apoyo_authenticated');
     const demoUser = localStorage.getItem('demo_user');
     
+    // Verificar sesión demo primero
     if (demoAuth === 'true' && demoUser) {
       try {
         const user = JSON.parse(demoUser);
-        logger.info('📊 Actualizando estado premium para usuario:', { userId: user.id, email: user.email, role: user.role });
-        
-        if (user.accountType === 'admin' || user.role === 'admin') {
-          logger.info('✅ Admin demo autorizado - cargando panel producción');
-          loadProductionData();
-          return;
-        } else {
-          logger.info('❌ Usuario demo sin permisos admin');
-          toast({
-            title: "Acceso Denegado",
-            description: "No tienes permisos de administrador",
-            variant: "destructive"
-          });
-          navigate('/auth');
+        if (user.email === 'admin@complicesconecta.com') {
+          setIsAuthorized(true);
+          logger.info('✅ AdminProduction: Acceso demo autorizado para admin');
           return;
         }
       } catch (error) {
         logger.error('Error parsing demo user:', { error: String(error) });
       }
+    }
+    
+    // Verificar sesión apoyo
+    if (apoyoAuth === 'true') {
+      // Acceso apoyo simplificado sin referencia a apoyoUser
+      setIsAuthorized(true);
+      logger.info('✅ AdminProduction: Acceso apoyo autorizado');
+      return;
     }
 
     // Verificar autenticación
@@ -170,12 +170,10 @@ const AdminProduction = () => {
     }
 
     logger.info('✅ Acceso autorizado - cargando panel producción');
+    setIsAuthorized(true);
     
     // Cargar datos del panel
-    loadRealProfiles();
-    loadRealStats();
-    loadRealFAQ();
-    loadRealInvitations();
+    loadProductionData();
   }, [loading, isAuthenticated, isAdmin, navigate, toast]);
 
   const loadProductionData = async () => {
@@ -486,6 +484,19 @@ const AdminProduction = () => {
         <div className="container mx-auto px-4 py-8">
           <div className="flex items-center justify-center h-64">
             <div className="text-white text-xl">Cargando panel de administración...</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthorized) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+        <Header />
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex items-center justify-center h-64">
+            <div className="text-white text-xl">Verificando permisos de administrador...</div>
           </div>
         </div>
       </div>

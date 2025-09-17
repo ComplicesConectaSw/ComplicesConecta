@@ -897,7 +897,7 @@ const Auth = () => {
                           <p className="text-sm text-red-500">Debes ser mayor de 18 años</p>
                         )}
                         {formData.age && (
-                          <p className="text-sm text-gray-500">Edad: {formData.age} años</p>
+                          <p className="text-sm text-white/80">Edad: {formData.age} años</p>
                         )}
                       </div>
                       <div className="space-y-2">
@@ -966,7 +966,7 @@ const Auth = () => {
                             <p className="text-sm text-red-500">Debes ser mayor de 18 años</p>
                           )}
                           {formData.age && (
-                            <p className="text-sm text-gray-500">Edad: {formData.age} años</p>
+                            <p className="text-sm text-white/80">Edad: {formData.age} años</p>
                           )}
                         </div>
                         <div className="space-y-2">
@@ -1033,7 +1033,7 @@ const Auth = () => {
                             <p className="text-sm text-red-500">Debe ser mayor de 18 años</p>
                           )}
                           {formData.partnerAge && (
-                            <p className="text-sm text-gray-500">Edad: {formData.partnerAge} años</p>
+                            <p className="text-sm text-white/80">Edad: {formData.partnerAge} años</p>
                           )}
                         </div>
                         <div className="space-y-2">
@@ -1258,7 +1258,7 @@ const Auth = () => {
                     
                     <div className="flex flex-col items-center space-y-3">
                       <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
-                        <span className="text-2xl text-gray-500">📷</span>
+                        <span className="text-2xl text-white/80">📷</span>
                       </div>
                       
                       <div className="flex gap-2">

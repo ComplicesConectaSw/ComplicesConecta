@@ -139,16 +139,16 @@ const Privacy = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-muted-foreground">
-                  <strong>Con otros usuarios:</strong> Su perfil e información básica son visibles para 
-                  otros usuarios según sus configuraciones de privacidad.
+                  <strong>Con otros miembros del lifestyle:</strong> Su perfil swinger e información de preferencias 
+                  son visibles para otros usuarios según sus configuraciones de privacidad.
                 </p>
                 <p className="text-muted-foreground">
                   <strong>Proveedores de servicios:</strong> Compartimos datos limitados con proveedores 
-                  que nos ayudan a operar la plataforma (hosting, pagos, análisis).
+                  que nos ayudan a operar la plataforma swinger (hosting, pagos, verificaciones).
                 </p>
                 <p className="text-muted-foreground">
                   <strong>Cumplimiento legal:</strong> Podemos divulgar información cuando sea requerido 
-                  por autoridades legales o para proteger la seguridad.
+                  por autoridades mexicanas o para proteger la seguridad de la comunidad swinger.
                 </p>
                 <p className="text-muted-foreground">
                   <strong>Nunca vendemos:</strong> No vendemos su información personal a terceros para 
@@ -271,7 +271,7 @@ const Privacy = () => {
                 <p className="text-muted-foreground mt-2">
                   <strong>Email:</strong> <a href="mailto:privacy@complicesconecta.com" className="text-primary hover:underline">privacy@complicesconecta.com</a><br />
                   <strong>Responsable de Protección de Datos:</strong> <a href="mailto:dpo@complicesconecta.com" className="text-primary hover:underline">dpo@complicesconecta.com</a><br />
-                  <strong>Dirección:</strong> Madrid, España
+                  <strong>Dirección:</strong> Ciudad de México, México
                 </p>
               </CardContent>
             </Card>

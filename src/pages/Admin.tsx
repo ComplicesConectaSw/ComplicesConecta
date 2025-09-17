@@ -864,9 +864,9 @@ const Admin = () => {
                           </Badge>
                         </div>
                         <p className="text-sm text-white/80 mb-1">{invitation.message}</p>
-                        <p className="text-xs text-gray-400">Creada: {new Date(invitation.created_at).toLocaleString()}</p>
+                        <p className="text-xs text-white/60">Creada: {new Date(invitation.created_at).toLocaleString()}</p>
                         {invitation.decided_at && (
-                          <p className="text-xs text-gray-400">Decidida: {new Date(invitation.decided_at).toLocaleString()}</p>
+                          <p className="text-xs text-white/60">Decidida: {new Date(invitation.decided_at).toLocaleString()}</p>
                         )}
                       </div>
                       <div className="flex items-center gap-2">
@@ -986,7 +986,7 @@ const Admin = () => {
                         </Card>
                         <Card className="p-4">
                           <div className="text-center">
-                            <p className="text-2xl font-bold text-gray-600">{auditReport.summary.emptyFolders}</p>
+                            <p className="text-2xl font-bold text-foreground">{auditReport.summary.emptyFolders}</p>
                             <p className="text-sm text-muted-foreground">Carpetas Vacías</p>
                           </div>
                         </Card>
@@ -1003,10 +1003,10 @@ const Admin = () => {
                           <h3 className="font-semibold mb-2 text-foreground">Archivos Duplicados</h3>
                           <div className="space-y-2">
                             {auditReport.details.duplicates.map((dup: { file1: string; file2: string; size: string }, index: number) => (
-                              <div key={index} className="p-2 bg-yellow-50 border border-yellow-200 rounded text-sm text-gray-800">
-                                <p className="text-gray-800"><strong>Archivo 1:</strong> {dup.file1}</p>
-                                <p className="text-gray-800"><strong>Archivo 2:</strong> {dup.file2}</p>
-                                <p className="text-gray-800"><strong>Tamaño:</strong> {dup.size}</p>
+                              <div key={index} className="p-2 bg-yellow-50 border border-yellow-200 rounded text-sm text-gray-900">
+                                <p className="text-gray-900"><strong>Archivo 1:</strong> {dup.file1}</p>
+                                <p className="text-gray-900"><strong>Archivo 2:</strong> {dup.file2}</p>
+                                <p className="text-gray-900"><strong>Tamaño:</strong> {dup.size}</p>
                               </div>
                             ))}
                           </div>
@@ -1016,10 +1016,10 @@ const Admin = () => {
                           <h3 className="font-semibold mb-2 text-foreground">Imports Rotos</h3>
                           <div className="space-y-2">
                             {auditReport.details.brokenImports.map((broken: { file: string; line: number; import: string }, index: number) => (
-                              <div key={index} className="p-2 bg-red-50 border border-red-200 rounded text-sm text-gray-800">
-                                <p className="text-gray-800"><strong>Archivo:</strong> {broken.file}</p>
-                                <p className="text-gray-800"><strong>Línea:</strong> {broken.line}</p>
-                                <p className="text-gray-800"><strong>Import:</strong> {broken.import}</p>
+                              <div key={index} className="p-2 bg-red-50 border border-red-200 rounded text-sm text-gray-900">
+                                <p className="text-gray-900"><strong>Archivo:</strong> {broken.file}</p>
+                                <p className="text-gray-900"><strong>Línea:</strong> {broken.line}</p>
+                                <p className="text-gray-900"><strong>Import:</strong> {broken.import}</p>
                               </div>
                             ))}
                           </div>

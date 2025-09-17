@@ -12,6 +12,9 @@ import { motion } from 'framer-motion';
 import { ResponsiveContainer } from '@/components/ui/ResponsiveContainer';
 import { usePersistedState } from '@/hooks/usePersistedState';
 import { logger } from '@/lib/logger';
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+// Removed AgeVerificationModal import - component not available
 
 const Events = () => {
   const navigate = useNavigate();
@@ -38,7 +41,39 @@ const Events = () => {
     }
   };
 
-  const lifestyleEvents = [
+  const [events, setEvents] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Estado persistente para autenticación
+  const [demoAuth] = usePersistedState('demo_authenticated', 'false');
+  const [apoyoAuth] = usePersistedState('apoyo_authenticated', 'false');
+  const [demoUser] = usePersistedState<any>('demo_user', null);
+
+  useEffect(() => {
+    const loadEvents = () => {
+      const isDemoAuth = demoAuth === 'true';
+      const isApoyoAuth = apoyoAuth === 'true';
+
+      if (isDemoAuth && !isApoyoAuth) {
+        // MODO DEMO: Eventos simulados
+        logger.info('🎭 EVENTS - Cargando eventos demo');
+        setEvents(demoEvents);
+      } else if (isApoyoAuth) {
+        // MODO REAL: Eventos desde Supabase (por ahora usar demo)
+        logger.info('🔗 EVENTS - Cargando eventos reales');
+        setEvents(demoEvents); // TODO: Implementar carga desde Supabase
+      } else {
+        // Usuario no autenticado: eventos públicos limitados
+        logger.info('👤 EVENTS - Mostrando eventos públicos');
+        setEvents(demoEvents.slice(0, 2)); // Solo primeros 2 eventos
+      }
+      setIsLoading(false);
+    };
+
+    loadEvents();
+  }, [demoAuth, apoyoAuth]);
+
+  const demoEvents = [
     {
       id: 1,
       title: "Encuentro Elegante - Parejas Selectas CDMX",
@@ -183,15 +218,23 @@ const Events = () => {
     logger.info('View group:', { groupId });
   };
 
-  const filteredEvents = lifestyleEvents.filter(event =>
-    event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    event.description.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredEvents = events.filter(event => {
+    const matchesSearch = event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         event.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         event.description.toLowerCase().includes(searchQuery.toLowerCase());
 
-  const filteredClubs = lifestyleClubs.filter(club =>
-    club.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    club.description.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+    if (activeTab === "events") return matchesSearch;
+    if (activeTab === "premium") return matchesSearch && event.category === "premium";
+    if (activeTab === "public") return matchesSearch && event.category === "public";
+
+    return matchesSearch;
+  });
+
+  const filteredClubs = lifestyleClubs.filter(club => {
+    const matchesSearch = club.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         club.description.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesSearch;
+  });
 
   return (
     <div className="min-h-screen relative overflow-hidden">

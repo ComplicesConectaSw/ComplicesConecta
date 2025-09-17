@@ -31,10 +31,12 @@ export const ProfileFilters = ({ onFilterChange }: ProfileFiltersProps) => {
     searchQuery: ""
   });
 
-  const locations = ["Todas", "Madrid", "Barcelona", "Valencia", "Sevilla", "Bilbao", "Granada"];
+  const locations = ["Todas", "Ciudad de México", "Guadalajara", "Monterrey", "Puebla", "Tijuana", "León"];
   const interestOptions = [
-    "Arte", "Música", "Viajes", "Deporte", "Tecnología", "Cocina", 
-    "Fotografía", "Lectura", "Cine", "Naturaleza", "Yoga", "Danza"
+    "Lifestyle", "Intercambio de parejas", "Parejas liberales", "Tercera persona", "Encuentros casuales", "Aventuras íntimas", 
+    "Encuentros grupales", "Experiencias intensas", "Caballero single", "Mujer madura", "Exhibicionismo", "Voyeurismo",
+    "Sensualidad", "Bisexual", "BDSM suave", "Tantra", "Juegos de rol", "Fiestas privadas", "Swinger", "Hotwife",
+    "Bull", "Unicornio", "Cuckold", "Tríos", "Orgías", "Gangbang", "Creampie", "Anal", "MILF", "Cougar"
   ];
 
   const handleFilterUpdate = (newFilters: Partial<FilterState>) => {

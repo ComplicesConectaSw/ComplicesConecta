@@ -1,33 +1,43 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Heart, MessageCircle, MapPin, Calendar, Star, Shield, Camera } from "lucide-react";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
+import { ArrowLeft, MapPin, Star, Shield, Camera, Heart, MessageCircle } from "lucide-react";
+import { useEffect, useState } from "react";
+import { usePersistedState } from '@/hooks/usePersistedState';
 import { logger } from '@/lib/logger';
 
-// Professional profile images from Unsplash - Production ready
-// Removed local imports that fail in production
+// Perfil detallado con datos demo para la versión Beta
 
 const ProfileDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  // Verificar autenticación demo
-  const demoAuth = localStorage.getItem('demo_authenticated');
-  const demoUser = localStorage.getItem('demo_user');
-  
-  // Allow access in demo mode or if user is authenticated
-  if (demoAuth !== 'true' && !demoUser) {
-    // Only redirect to auth if not in demo mode
-    const isDemoMode = window.location.hostname === 'localhost' || window.location.hostname.includes('demo');
-    if (!isDemoMode) {
+  // Estado persistente para autenticación
+  const [demoAuth] = usePersistedState('demo_authenticated', 'false');
+  const [apoyoAuth] = usePersistedState('apoyo_authenticated', 'false');
+  const [demoUser] = usePersistedState<any>('demo_user', null);
+
+  useEffect(() => {
+    // Verificar autenticación
+    const isAuthenticated = demoAuth === 'true' || apoyoAuth === 'true';
+
+    if (!isAuthenticated) {
+      logger.info('🔒 ProfileDetail: Usuario no autenticado, redirigiendo a /auth');
       navigate('/auth');
-      return null;
+      return;
     }
-  }
+
+    logger.info('✅ ProfileDetail: Acceso autorizado', { 
+      profileId: id,
+      demoMode: demoAuth === 'true',
+      apoyoMode: apoyoAuth === 'true'
+    });
+  }, [navigate, demoAuth, apoyoAuth, id]);
 
   // Demo profile data for beta
   const allProfiles = [
@@ -52,51 +62,51 @@ const ProfileDetail = () => {
       id: 2,
       name: "Carlos",
       age: 32,
-      location: "Barcelona",
-      interests: ["Cocina", "Música", "Senderismo", "Literatura"],
+      location: "Ciudad de México",
+      interests: ["Caballero", "Parejas", "Encuentros íntimos", "Aventuras"],
       image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face",
       rating: 4.9,
       isOnline: false,
-      bio: "Chef profesional con pasión por la música y la naturaleza.",
+      bio: "Hombre experimentado de CDMX. Especializado en hacer sentir especiales a las parejas. Discreto, respetuoso y con mucha energía.",
       profession: "Chef",
-      education: "Escuela de Hostelería de Barcelona",
-      languages: ["Español", "Catalán", "Inglés"],
-      hobbies: ["Guitarra", "Escalada", "Lectura", "Degustación de vinos"],
-      lookingFor: "Alguien con quien compartir buena comida y mejores conversaciones",
+      education: "Universidad Nacional Autónoma de México",
+      languages: ["Español", "Inglés"],
+      hobbies: ["Liderazgo", "Intimidad", "Encuentros sociales", "Fiestas privadas"],
+      lookingFor: "Parejas aventureras y personas especiales para encuentros íntimos y experiencias únicas",
       images: ["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face", "https://images.unsplash.com/photo-1494790108755-2616b332c1c0?w=400&h=600&fit=crop&crop=face", "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&crop=face"],
     },
     {
       id: 3,
       name: "Ana",
       age: 26,
-      location: "Valencia",
-      interests: ["Arte", "Lectura", "Café", "Cine", "Teatro"],
+      location: "Monterrey",
+      interests: ["Tercera persona", "Bisexual", "Parejas", "Sensualidad"],
       image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=600&fit=crop&crop=face",
       rating: 4.7,
       isOnline: true,
-      bio: "Artista y escritora. Me encanta el café y las buenas conversaciones.",
+      bio: "Mujer independiente de Monterrey. Me encanta la compañía de parejas y ser el centro de atención. Cómoda con ambos géneros.",
       profession: "Artista",
-      education: "Bellas Artes - Universidad Politécnica de Valencia",
-      languages: ["Español", "Inglés", "Italiano"],
-      hobbies: ["Escritura creativa", "Pintura al óleo", "Teatro amateur", "Cafés especiales"],
-      lookingFor: "Una persona creativa que aprecie el arte y las conversaciones profundas",
+      education: "Universidad Autónoma de Nuevo León",
+      languages: ["Español", "Inglés"],
+      hobbies: ["Danza sensual", "Performance", "Intimidad", "Juegos sensuales"],
+      lookingFor: "Parejas liberales y personas especiales para encuentros íntimos y experiencias sin compromisos",
       images: ["https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=600&fit=crop&crop=face", "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&crop=face", "https://images.unsplash.com/photo-1494790108755-2616b332c1c0?w=400&h=600&fit=crop&crop=face"],
     },
     {
       id: 4,
       name: "Diego",
       age: 30,
-      location: "Sevilla",
-      interests: ["Deporte", "Tecnología", "Naturaleza", "Fitness"],
+      location: "Puebla",
+      interests: ["Encuentros grupales", "Experiencias intensas", "Exhibicionismo", "Aventuras"],
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&crop=face",
       rating: 4.8,
       isOnline: true,
-      bio: "Desarrollador de software apasionado por el deporte y la vida sana.",
+      bio: "Hombre activo del lifestyle en Puebla. Disfruto los encuentros grupales y experiencias intensas. Siempre respetuoso y discreto.",
       profession: "Desarrollador",
-      education: "Ingeniería Informática - Universidad de Sevilla",
+      education: "Instituto Tecnológico de Puebla",
       languages: ["Español", "Inglés"],
-      hobbies: ["Ciclismo", "Running", "Programación", "Fotografía de naturaleza"],
-      lookingFor: "Compañera de aventuras que valore el equilibrio entre tecnología y naturaleza",
+      hobbies: ["Encuentros sociales", "Experiencias intensas", "Intimidad", "Voyeurismo"],
+      lookingFor: "Parejas, mujeres aventureras y grupos para encuentros intensos y experiencias únicas",
       images: ["https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&crop=face", "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=600&fit=crop&crop=face", "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face"],
     }
   ];

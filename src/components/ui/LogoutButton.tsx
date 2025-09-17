@@ -35,7 +35,6 @@ export function LogoutButton({
       localStorage.removeItem('demo_authenticated');
       localStorage.removeItem('apoyo_authenticated');
       localStorage.removeItem('demo_user');
-      localStorage.removeItem('apoyo_user');
       localStorage.removeItem('userType');
       sessionStorage.clear();
       

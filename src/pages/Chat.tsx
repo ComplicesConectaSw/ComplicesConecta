@@ -22,6 +22,7 @@ import { invitationService } from "@/lib/invitations";
 import { chatService, type ChatRoom, type ChatMessage } from "@/lib/chat";
 import { simpleChatService, type SimpleChatRoom, type SimpleChatMessage } from '@/lib/simpleChatService';
 import { logger } from '@/lib/logger';
+import { usePersistedState } from '@/hooks/usePersistedState';
 
 export interface ChatUser {
   id: number;
@@ -44,8 +45,14 @@ export interface Message {
 }
 
 const Chat = () => {
+  const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const { features } = useFeatures();
+
+  // Estado persistente para autenticación
+  const [demoAuth] = usePersistedState<string>('demo_authenticated', 'false');
+  const [apoyoAuth] = usePersistedState<string>('apoyo_authenticated', 'false');
+  const [demoUser] = usePersistedState<string>('demo_user', '');
 
   // Estados para chat real y demo
   const [selectedChat, setSelectedChat] = useState<ChatUser | null>(null);
@@ -304,6 +311,42 @@ const Chat = () => {
   };
 
   const chats = getCurrentChats();
+
+  // Estados para carga de datos
+  const [chatRooms, setChatRooms] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  
+  const loadChatRooms = async () => {
+    setLoading(true);
+    try {
+      await loadRealChatData();
+    } catch (error) {
+      logger.error('Error cargando salas de chat:', { error: String(error) });
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  useEffect(() => {
+    logger.info('🔄 CHAT - Verificando autenticación y modo...');
+    
+    // Verificar autenticación
+    if (!isAuthenticated()) {
+      navigate('/auth');
+      return;
+    }
+    
+    // Determinar modo según autenticación
+    if (demoAuth === 'true' || apoyoAuth === 'true') {
+      logger.info('✅ CHAT - Modo producción/demo detectado');
+      loadChatRooms();
+    } else {
+      logger.info('⚠️ CHAT - Fallback a datos demo');
+      // Cargar datos demo básicos
+      setChatRooms([]);
+      setLoading(false);
+    }
+  }, [isAuthenticated, navigate, demoAuth, apoyoAuth]);
 
   useEffect(() => {
     if (selectedChat) {
@@ -623,13 +666,11 @@ const Chat = () => {
                       <div
                         className={`max-w-[85%] sm:max-w-xs lg:max-w-sm px-3 sm:px-4 py-2 sm:py-3 rounded-2xl ${
                           message.sender_id === localStorage.getItem('user_id')
-                            ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
-                            : 'bg-white/95 text-gray-900 shadow-md border border-gray-200 backdrop-blur-sm'
                         }`}
                       >
                         <p className="text-xs sm:text-sm leading-relaxed break-words whitespace-pre-wrap overflow-wrap-anywhere hyphens-auto" style={{wordBreak: 'break-word', overflowWrap: 'anywhere'}}>{message.content}</p>
                         <p className={`text-xs mt-1 ${
-                          message.sender_id === localStorage.getItem('user_id') ? 'text-purple-100' : 'text-gray-500'
+                          message.sender_id === localStorage.getItem('user_id') ? 'text-purple-100' : 'text-white/70'
                         }`}>
                           {new Date(message.created_at).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}
                         </p>
@@ -645,14 +686,12 @@ const Chat = () => {
                     >
                       <div
                         className={`max-w-[85%] sm:max-w-xs lg:max-w-sm px-3 sm:px-4 py-2 sm:py-3 rounded-2xl ${
-                          message.senderId === 0
-                            ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
-                            : 'bg-white/95 text-gray-900 shadow-md border border-gray-200 backdrop-blur-sm'
+                          message.senderId === 0 ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' : 'bg-white/95 text-gray-800 shadow-md border border-gray-200 backdrop-blur-sm'
                         }`}
                       >
                         <p className="text-xs sm:text-sm leading-relaxed break-words whitespace-pre-wrap overflow-wrap-anywhere hyphens-auto" style={{wordBreak: 'break-word', overflowWrap: 'anywhere'}}>{message.content}</p>
                         <p className={`text-xs mt-1 ${
-                          message.senderId === 0 ? 'text-purple-100' : 'text-gray-500'
+                          message.senderId === 0 ? 'text-purple-100' : 'text-gray-600'
                         }`}>
                           {message.timestamp}
                         </p>

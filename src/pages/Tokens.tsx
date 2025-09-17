@@ -15,11 +15,36 @@ import { TokenChatBot } from '@/components/tokens/TokenChatBot';
 import Navigation from '@/components/Navigation';
 import { motion } from 'framer-motion';
 import { AnimatedButton } from '@/components/ui/AnimatedButton';
+import { usePersistedState } from '@/hooks/usePersistedState';
 
 export default function Tokens() {
   const [showStakingModal, setShowStakingModal] = useState(false);
   const { balance, getBalanceMessage, getStakingMessage, refreshTokens } = useTokens();
   const navigate = useNavigate();
+  
+  // SEPARACIÓN DEMO/REAL: Balance según modo de autenticación
+  const [displayBalance, setDisplayBalance] = useState(0);
+  
+  // Estado persistente para autenticación
+  const [demoAuth] = usePersistedState('demo_authenticated', 'false');
+  const [apoyoAuth] = usePersistedState('apoyo_authenticated', 'false');
+  const [demoUser] = usePersistedState<any>('demo_user', null);
+
+  useEffect(() => {
+    const isDemoAuth = demoAuth === 'true';
+    const isApoyoAuth = apoyoAuth === 'true';
+    
+    if (isDemoAuth && !isApoyoAuth) {
+      // MODO DEMO: Balance ficticio
+      setDisplayBalance(250); // Balance demo fijo
+    } else if (isApoyoAuth) {
+      // MODO REAL: Balance real (por ahora 0)
+      setDisplayBalance(0); // En producción usar balance real
+    } else {
+      // Usuario no autenticado: sin balance
+      setDisplayBalance(0);
+    }
+  }, [demoAuth, apoyoAuth]);
 
   const handleGoHome = () => {
     navigate('/');

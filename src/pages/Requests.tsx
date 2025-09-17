@@ -28,16 +28,17 @@ const Requests = () => {
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { features } = useFeatures();
-  const [receivedInvitations, setReceivedInvitations] = useState<Invitation[]>([]);
-  const [sentInvitations, setSentInvitations] = useState<Invitation[]>([]);
-  const [activeTab, setActiveTab] = useState<'received' | 'sent'>('received');
   
-  // Migración localStorage → usePersistedState
-  const [demoAuth, setDemoAuth] = usePersistedState('demo_authenticated', 'false');
-  const [specialAuth, setSpecialAuth] = usePersistedState('apoyo_authenticated', 'false');
-  const [demoUser, setDemoUser] = usePersistedState<any>('demo_user', null);
-  const [specialUser, setSpecialUser] = usePersistedState<any>('apoyo_user', null);
+  // Estado persistente para autenticación
+  const [demoAuth] = usePersistedState<string>('demo_authenticated', 'false');
+  const [apoyoAuth] = usePersistedState<string>('apoyo_authenticated', 'false');
+  const [demoUser] = usePersistedState<string>('demo_user', '');
+  
+  const { features } = useFeatures();
+  const [invitations, setInvitations] = useState<Invitation[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<'received' | 'sent'>('received');
+  const [isProduction, setIsProduction] = useState(false);
 
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
@@ -45,55 +46,51 @@ const Requests = () => {
     if (!currentUserId) return;
     
     const { received, sent } = await invitationService.getInvitations(currentUserId);
-    setReceivedInvitations(received);
-    setSentInvitations(sent);
+    setInvitations(received.concat(sent));
   }, [currentUserId]);
 
   useEffect(() => {
     if (currentUserId) {
       loadInvitations();
     }
-  }, [currentUserId, loadInvitations, navigate, demoAuth, specialAuth, demoUser, specialUser]);
+  }, [currentUserId, loadInvitations]);
 
   useEffect(() => {
-    // Verificar autenticación y obtener userId real
-    const isAuthenticated = demoAuth === 'true' || specialAuth === 'true' || demoUser || specialUser;
+    logger.info('🔄 REQUESTS - Verificando autenticación y modo...');
     
-    if (!isAuthenticated) {
-      logger.info('❌ Usuario no autenticado en Requests, redirigiendo a /auth');
+    // Verificar autenticación
+    if (!isAuthenticated()) {
       navigate('/auth');
       return;
     }
     
-    // Obtener userId real del usuario autenticado
-    let userId: string | null = null;
-    
-    if (specialAuth && specialUser) {
+    // Determinar modo según autenticación
+    if (demoAuth === 'true' || apoyoAuth === 'true') {
+      logger.info('✅ REQUESTS - Modo producción/demo detectado');
+      setIsProduction(true);
+      // Establecer currentUserId para cargar invitaciones
       try {
-        const parsedSpecialUser = JSON.parse(specialUser);
-        userId = parsedSpecialUser.id || parsedSpecialUser.user_id;
-        logger.info('🔍 Usuario especial autenticado:', { userId });
+        if (demoAuth === 'true' && demoUser) {
+          const parsedUser = JSON.parse(demoUser);
+          setCurrentUserId(parsedUser.id || parsedUser.user_id || user?.id);
+        } else {
+          setCurrentUserId(user?.id || null);
+        }
       } catch (error) {
-        logger.error('❌ Error parsing special user:', { error });
+        logger.error('❌ Error parsing user data:', { error: String(error) });
+        setCurrentUserId(user?.id || null);
       }
-    } else if (demoAuth && demoUser) {
-      try {
-        const parsedDemoUser = JSON.parse(demoUser);
-        userId = parsedDemoUser.id || parsedDemoUser.user_id;
-        logger.info('🔍 Usuario actual:', { email: user?.email });
-      } catch (error) {
-        logger.error('❌ Error parsing demo user:', { error });
-      }
-    }
-    
-    if (userId) {
-      setCurrentUserId(userId);
-      logger.info('✅ Usuario autenticado en Requests con ID:', { userId });
     } else {
-      logger.info('❌ No se pudo obtener userId, redirigiendo a /auth');
-      navigate('/auth');
+      logger.info('⚠️ REQUESTS - Fallback a datos demo');
+      setIsProduction(false);
+      setInvitations([]);
+      setLoading(false);
     }
-  }, []);
+  }, [isAuthenticated, navigate, demoAuth, apoyoAuth, demoUser, user?.id]);
+
+  // Separar invitaciones recibidas y enviadas
+  const receivedInvitations = invitations.filter(inv => inv.to_profile === user?.id);
+  const sentInvitations = invitations.filter(inv => inv.from_profile === user?.id);
 
   const handleInvitationAction = async (invitationId: string, action: 'accept' | 'decline') => {
     try {
@@ -138,8 +135,8 @@ const Requests = () => {
     }
   };
 
-  const pendingReceivedCount = receivedInvitations.filter(inv => inv.status === 'pending').length;
-  const acceptedCount = [...receivedInvitations, ...sentInvitations].filter(inv => inv.status === 'accepted').length;
+  const pendingReceivedCount = receivedInvitations.filter((inv: Invitation) => inv.status === 'pending').length;
+  const acceptedCount = [...receivedInvitations, ...sentInvitations].filter((inv: Invitation) => inv.status === 'accepted').length;
 
   if (!features.requests) {
     return (

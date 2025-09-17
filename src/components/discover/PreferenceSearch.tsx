@@ -141,7 +141,7 @@ export const PreferenceSearch = ({ onResultsChange, currentUserId }: PreferenceS
           const mockPreferences = {
             interests: ['música', 'viajes', 'deportes', 'tecnología'],
             ageRange: { min: 25, max: 35 },
-            location: 'Madrid' // Mock location since field doesn't exist
+            location: 'Ciudad de México' // Mock location since field doesn't exist
           };
           
           if (!mockPreferences.interests || !Array.isArray(mockPreferences.interests)) return false;

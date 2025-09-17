@@ -1,12 +1,18 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Send, Users, Lock, MessageCircle, Check, X, UserPlus } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Separator } from '@/components/ui/separator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ArrowLeft, Send, Phone, Video, MoreVertical, Search, Users, Heart, Smile, MessageCircle, UserPlus, Check, X, Lock } from 'lucide-react';
+import { Header } from '@/components/Header';
+import { Footer } from '@/components/Footer';
+import { usePersistedState } from '@/hooks/usePersistedState';
+import { logger } from '@/lib/logger';
 
 interface ChatMessage {
   id: string;
@@ -120,16 +126,26 @@ const ChatAuthenticated = () => {
     }
   ]);
 
+  // Estado persistente para autenticación
+  const [demoAuth] = usePersistedState('demo_authenticated', 'false');
+  const [apoyoAuth] = usePersistedState('apoyo_authenticated', 'false');
+  const [demoUser] = usePersistedState<any>('demo_user', null);
+
   useEffect(() => {
-    // Verificar autenticación
-    const demoAuth = localStorage.getItem('demo_authenticated');
-    const demoUser = localStorage.getItem('demo_user');
+    // Verificar autenticación demo o apoyo
+    const isAuthenticated = demoAuth === 'true' || apoyoAuth === 'true';
     
-    if (demoAuth !== 'true' || !demoUser) {
+    if (!isAuthenticated) {
+      logger.info('🔒 ChatAuthenticated: Usuario no autenticado, redirigiendo a /auth');
       navigate('/auth');
       return;
     }
-  }, [navigate]);
+    
+    logger.info('✅ ChatAuthenticated: Acceso autorizado', { 
+      demoMode: demoAuth === 'true',
+      apoyoMode: apoyoAuth === 'true'
+    });
+  }, [navigate, demoAuth, apoyoAuth]);
 
   const sendMessage = () => {
     if (!currentMessage.trim()) return;
