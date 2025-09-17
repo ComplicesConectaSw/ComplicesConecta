@@ -11,6 +11,17 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  // Configuración del servidor de desarrollo
+  server: {
+    cors: true,
+    headers: {
+      'Cross-Origin-Embedder-Policy': 'require-corp',
+      'Cross-Origin-Opener-Policy': 'same-origin',
+    },
+    fs: {
+      deny: ['android/**', 'ios/**', '.git/**', '**/node_modules/**']
+    }
+  },
   build: {
     // Bundle único para APK nativo con todos los assets incluidos
     rollupOptions: {
@@ -33,13 +44,6 @@ export default defineConfig({
       transformMixedEsModules: true,
     },
   },
-  server: {
-    cors: true,
-    headers: {
-      'Cross-Origin-Embedder-Policy': 'require-corp',
-      'Cross-Origin-Opener-Policy': 'same-origin',
-    },
-  },
   define: {
     global: 'globalThis',
   },
@@ -53,5 +57,6 @@ export default defineConfig({
       '@tanstack/react-query',
       'lucide-react'
     ],
+    exclude: ['@emotion/is-prop-valid'],
   },
 });
