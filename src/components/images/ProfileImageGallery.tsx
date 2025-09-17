@@ -98,9 +98,9 @@ export function ProfileImageGallery({ profileId, isOwner = false, showUpload = f
 
   if (loading) {
     return (
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {[...Array(8)].map((_, i) => (
-          <div key={i} className="aspect-square bg-gray-200 animate-pulse rounded-lg" />
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3 lg:gap-4">
+        {[...Array(12)].map((_, i) => (
+          <div key={i} className="aspect-square bg-gradient-to-br from-purple-100 to-pink-100 animate-pulse rounded-xl shadow-sm" />
         ))}
       </div>
     );
@@ -115,11 +115,11 @@ export function ProfileImageGallery({ profileId, isOwner = false, showUpload = f
       {/* Imágenes públicas */}
       {publicImages.length > 0 && (
         <div>
-          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-            <Unlock className="h-5 w-5" />
+          <h3 className="text-lg sm:text-xl font-bold mb-4 flex items-center gap-2 text-purple-800">
+            <Unlock className="h-5 w-5 text-purple-600" />
             Galería Pública ({publicImages.length})
           </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3 lg:gap-4">
             {publicImages.map((image) => (
               <ImageCard
                 key={image.id}
@@ -136,11 +136,11 @@ export function ProfileImageGallery({ profileId, isOwner = false, showUpload = f
       {/* Imágenes privadas */}
       {privateImages.length > 0 && (
         <div>
-          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-            <Lock className="h-5 w-5" />
+          <h3 className="text-lg sm:text-xl font-bold mb-4 flex items-center gap-2 text-pink-800">
+            <Lock className="h-5 w-5 text-pink-600" />
             Galería Privada ({privateImages.length})
           </h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3 lg:gap-4">
             {privateImages.map((image) => (
               <ImageCard
                 key={image.id}
@@ -156,11 +156,11 @@ export function ProfileImageGallery({ profileId, isOwner = false, showUpload = f
 
       {/* Mensaje cuando no hay imágenes */}
       {images.length === 0 && (
-        <Card className="p-8 text-center">
+        <Card className="p-6 sm:p-8 text-center bg-gradient-to-br from-purple-50 to-pink-50 border-purple-200/50">
           <CardContent>
-            <Eye className="h-12 w-12 mx-auto mb-4 text-gray-400" />
-            <h3 className="text-lg font-semibold mb-2">No hay imágenes</h3>
-            <p className="text-muted-foreground">
+            <Eye className="h-12 w-12 sm:h-16 sm:w-16 mx-auto mb-4 text-purple-400" />
+            <h3 className="text-lg sm:text-xl font-bold mb-2 text-purple-800">No hay imágenes</h3>
+            <p className="text-purple-600 text-sm sm:text-base">
               {isOwner 
                 ? "Sube tu primera imagen para comenzar tu galería"
                 : "Este perfil no tiene imágenes públicas disponibles"
@@ -172,18 +172,18 @@ export function ProfileImageGallery({ profileId, isOwner = false, showUpload = f
 
       {/* Botón para solicitar acceso a galería privada */}
       {!isOwner && hasPrivateImages && user && (
-        <Card className="p-4">
-          <CardContent className="flex items-center justify-between">
-            <div>
-              <h4 className="font-semibold">Galería Privada</h4>
-              <p className="text-sm text-muted-foreground">
+        <Card className="p-4 sm:p-6 bg-gradient-to-r from-pink-50 to-purple-50 border-pink-200/50">
+          <CardContent className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="space-y-1">
+              <h4 className="font-bold text-pink-800">Galería Privada</h4>
+              <p className="text-sm text-pink-600">
                 Este perfil tiene imágenes privadas. Solicita acceso para verlas.
               </p>
             </div>
             <Button
               onClick={handleRequestAccess}
               disabled={requestingAccess}
-              variant="outline"
+              className="w-full sm:w-auto bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white"
             >
               <MessageSquare className="h-4 w-4 mr-2" />
               {requestingAccess ? 'Enviando...' : 'Solicitar Acceso'}
@@ -247,31 +247,42 @@ interface ImageCardProps {
 
 function ImageCard({ image, isOwner, onView, onDelete }: ImageCardProps) {
   return (
-    <Card className="overflow-hidden group cursor-pointer hover:shadow-lg transition-shadow">
+    <Card className="overflow-hidden group cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:scale-105 bg-white/80 backdrop-blur-sm border-purple-200/50">
       <div className="relative aspect-square" onClick={() => onView(image)}>
         <img
           src={image.url}
           alt={image.title || 'Imagen'}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
         />
         
         {/* Overlay con controles */}
-        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-          <Button variant="secondary" size="sm">
-            <Eye className="h-4 w-4 mr-2" />
-            Ver
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
+          <Button 
+            variant="secondary" 
+            size="sm"
+            className="bg-white/90 hover:bg-white text-purple-700 shadow-lg"
+          >
+            <Eye className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+            <span className="text-xs sm:text-sm">Ver</span>
           </Button>
         </div>
 
         {/* Badge de privacidad */}
-        <div className="absolute top-2 left-2">
-          <Badge variant={image.is_public ? "default" : "secondary"} className="text-xs">
+        <div className="absolute top-1 sm:top-2 left-1 sm:left-2">
+          <Badge 
+            variant={image.is_public ? "default" : "secondary"} 
+            className={`text-xs shadow-lg ${
+              image.is_public 
+                ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white' 
+                : 'bg-gradient-to-r from-pink-600 to-purple-600 text-white'
+            }`}
+          >
             {image.is_public ? (
-              <Unlock className="h-3 w-3 mr-1" />
+              <Unlock className="h-2 w-2 sm:h-3 sm:w-3 mr-1" />
             ) : (
-              <Lock className="h-3 w-3 mr-1" />
+              <Lock className="h-2 w-2 sm:h-3 sm:w-3 mr-1" />
             )}
-            {image.is_public ? 'Pública' : 'Privada'}
+            <span className="hidden sm:inline">{image.is_public ? 'Pública' : 'Privada'}</span>
           </Badge>
         </div>
 
@@ -280,23 +291,23 @@ function ImageCard({ image, isOwner, onView, onDelete }: ImageCardProps) {
           <Button
             variant="destructive"
             size="sm"
-            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity h-8 w-8 p-0"
+            className="absolute top-1 sm:top-2 right-1 sm:right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 h-6 w-6 sm:h-8 sm:w-8 p-0 bg-red-500 hover:bg-red-600 shadow-lg"
             onClick={(e) => {
               e.stopPropagation();
               onDelete(image.id);
             }}
           >
-            <Trash2 className="h-4 w-4" />
+            <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
           </Button>
         )}
       </div>
 
       {/* Información de la imagen */}
       {image.title && (
-        <CardContent className="p-3">
-          <p className="text-sm font-medium truncate">{image.title}</p>
+        <CardContent className="p-2 sm:p-3">
+          <p className="text-xs sm:text-sm font-medium truncate text-purple-800">{image.title}</p>
           {image.description && (
-            <p className="text-xs text-muted-foreground truncate mt-1">
+            <p className="text-xs text-purple-600 truncate mt-1">
               {image.description}
             </p>
           )}
