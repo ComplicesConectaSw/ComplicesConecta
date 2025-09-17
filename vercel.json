@@ -5,15 +5,6 @@
   "installCommand": "npm install --legacy-peer-deps",
   "headers": [
     {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
-      ]
-    },
-    {
       "source": "/sw.js",
       "headers": [
         {
@@ -27,28 +18,11 @@
       ]
     },
     {
-      "source": "/(.*\\.(js|css|woff2?|ttf|eot))",
+      "source": "/static/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
           "value": "public, max-age=31536000, immutable"
-        },
-        {
-          "key": "Content-Encoding",
-          "value": "gzip"
-        }
-      ]
-    },
-    {
-      "source": "/(.*\\.(png|jpg|jpeg|svg|webp|avif|gif))",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        },
-        {
-          "key": "Content-Encoding",
-          "value": "gzip"
         }
       ]
     }
