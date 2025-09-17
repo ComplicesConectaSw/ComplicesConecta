@@ -269,21 +269,22 @@ export const UserGalleryPage: React.FC<UserGalleryPageProps> = ({
   const privateImages = images.filter(img => img.isPrivate);
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-4">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-800">
+    <div className="w-full max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 sm:mb-8">
+        <div className="space-y-2">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-purple-800 via-pink-700 to-purple-800 bg-clip-text text-transparent">
             {isOwner ? 'Mi Galería de Fotos' : 'Galería de Fotos'}
           </h2>
           {isDemo && (
-            <Badge variant="outline" className="mt-1">
+            <Badge variant="outline" className="border-purple-300 text-purple-700 bg-purple-50">
+              <Camera className="w-3 h-3 mr-1" />
               Modo Demo
             </Badge>
           )}
         </div>
         
         {isOwner && (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 w-full sm:w-auto">
             <input
               type="file"
               accept="image/*"
@@ -295,7 +296,7 @@ export const UserGalleryPage: React.FC<UserGalleryPageProps> = ({
             <Button
               onClick={() => document.getElementById('image-upload')?.click()}
               disabled={uploading || loading}
-              className="bg-pink-600 hover:bg-pink-700"
+              className="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
               data-testid="upload-image-btn"
             >
               <Upload className="w-4 h-4 mr-2" />
@@ -305,15 +306,15 @@ export const UserGalleryPage: React.FC<UserGalleryPageProps> = ({
         )}
       </div>
 
-      {/* Tabs para público/privado */}
+      {/* Tabs para público/privado con diseño responsivo */}
       {isOwner && (
-        <div className="flex mb-6 border-b">
+        <div className="flex mb-6 sm:mb-8 border-b border-purple-200/50 bg-white/50 backdrop-blur-sm rounded-t-xl p-1">
           <button
             onClick={() => setSelectedTab('publicas')}
-            className={`px-4 py-2 font-medium ${
+            className={`flex-1 sm:flex-none px-4 sm:px-6 py-3 font-semibold rounded-lg transition-all duration-200 text-sm sm:text-base ${
               selectedTab === 'publicas'
-                ? 'text-pink-600 border-b-2 border-pink-600'
-                : 'text-gray-500 hover:text-gray-700'
+                ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg transform scale-105'
+                : 'text-purple-700 hover:text-purple-900 hover:bg-purple-50'
             }`}
             data-testid="public-gallery-tab"
           >
@@ -321,10 +322,10 @@ export const UserGalleryPage: React.FC<UserGalleryPageProps> = ({
           </button>
           <button
             onClick={() => setSelectedTab('privadas')}
-            className={`px-4 py-2 font-medium ml-4 ${
+            className={`flex-1 sm:flex-none px-4 sm:px-6 py-3 font-semibold rounded-lg transition-all duration-200 text-sm sm:text-base ml-2 ${
               selectedTab === 'privadas'
-                ? 'text-pink-600 border-b-2 border-pink-600'
-                : 'text-gray-500 hover:text-gray-700'
+                ? 'bg-gradient-to-r from-pink-600 to-purple-600 text-white shadow-lg transform scale-105'
+                : 'text-purple-700 hover:text-purple-900 hover:bg-purple-50'
             }`}
             data-testid="private-gallery-tab"
           >
@@ -333,9 +334,9 @@ export const UserGalleryPage: React.FC<UserGalleryPageProps> = ({
         </div>
       )}
 
-      {/* Grid de imágenes */}
+      {/* Grid de imágenes responsivo */}
       <div 
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+        className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 lg:gap-6"
         data-testid="image-gallery"
       >
         {loading && (
