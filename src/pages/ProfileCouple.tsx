@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Heart, MessageCircle, MapPin, Verified, Crown, ArrowLeft, Settings, Share2, Users } from "lucide-react";
+import { Heart, MessageCircle, MapPin, Verified, Crown, ArrowLeft, Settings, Share2, Users, Camera } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { generateMockCoupleProfiles, type CoupleProfileWithPartners } from "@/lib/coupleProfiles";
@@ -209,6 +209,15 @@ const ProfileCouple: React.FC = () => {
                         <Settings className="w-4 h-4" />
                         <span className="hidden sm:inline">Editar Perfil</span>
                         <span className="sm:hidden">Editar</span>
+                      </Button>
+                      <Button 
+                        onClick={() => navigate('/gallery')}
+                        className="bg-pink-600/80 hover:bg-pink-700/80 text-white flex items-center gap-2 text-sm sm:text-base px-3 sm:px-4 py-2"
+                        size="sm"
+                      >
+                        <Camera className="w-4 h-4" />
+                        <span className="hidden sm:inline">Nuestra Galería</span>
+                        <span className="sm:hidden">Galería</span>
                       </Button>
                     </div>
                   </div>

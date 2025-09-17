@@ -9,13 +9,13 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { logger } from '@/lib/logger';
 
-interface ImageGalleryProps {
+interface ProfileImageGalleryProps {
   profileId: string;
   isOwner?: boolean;
   showUpload?: boolean;
 }
 
-export function ImageGallery({ profileId, isOwner = false, showUpload = false }: ImageGalleryProps) {
+export function ProfileImageGallery({ profileId, isOwner = false, showUpload = false }: ProfileImageGalleryProps) {
   const [images, setImages] = useState<ImageUpload[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState<ImageUpload | null>(null);
@@ -33,7 +33,7 @@ export function ImageGallery({ profileId, isOwner = false, showUpload = false }:
       const images = await getUserImages(profileId, isOwner);
       setImages(images);
     } catch (error) {
-      logger.error('Error loading images:', error);
+      logger.error('Error loading images:', { error: String(error) });
       toast({
         variant: "destructive",
         title: "Error al cargar imágenes",

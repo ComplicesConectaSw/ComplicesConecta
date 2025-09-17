@@ -218,29 +218,27 @@ export const ProfileThemeShowcase: React.FC<ProfileThemeShowcaseProps> = ({
           animate="visible"
           className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
-          {demoProfiles.map((profile) => (
-            <motion.div key={profile.id} variants={itemVariants}>
+          {demoProfiles.map((profile, index) => (
+            <motion.div key={profile.id} variants={itemVariants} className="space-y-2">
               <ProfileCard
-                id={profile.id}
-                name={profile.name}
-                age={profile.age}
-                bio={profile.bio}
-                location={profile.location}
-                avatar={profile.image}
-                isOnline={profile.isOnline}
-                verified={profile.isVerified}
-                accountType={profile.profileType}
-                interests={profile.interests}
-                distance={profile.distance}
-                compatibility={profile.matchScore}
-                gender={profile.gender as Gender}
-                partnerGender={profile.partnerGender as Gender}
-                theme={profile.theme}
+                profile={{
+                  id: profile.id,
+                  name: profile.name,
+                  age: profile.age,
+                  bio: profile.bio,
+                  location: profile.location,
+                  image: profile.image,
+                  interests: profile.interests,
+                  isOnline: profile.isOnline,
+                  verified: profile.isVerified,
+                  accountType: profile.profileType,
+                  gender: profile.gender as Gender,
+                  partnerGender: profile.partnerGender as Gender,
+                  theme: profile.theme
+                }}
                 useThemeBackground={true}
-                variant="compact"
-                onMessage={() => console.log('Mensaje a', profile.name)}
+                variant="discover"
                 onLike={() => console.log('Like a', profile.name)}
-                onView={() => console.log('Ver perfil de', profile.name)}
               />
               
               {/* Etiquetas informativas */}

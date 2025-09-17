@@ -57,20 +57,20 @@ export const VideoCallWindow: React.FC<VideoCallWindowProps> = ({
       setIncomingCall({ callId, fromUserId });
     },
     onCallAccepted: (callId) => {
-      logger.info('✅ Call accepted:', callId);
+      logger.info('✅ Call accepted:', { callId });
       setIncomingCall(null);
     },
     onCallRejected: (callId) => {
-      logger.info('❌ Call rejected:', callId);
+      logger.info('❌ Call rejected:', { callId });
       setIncomingCall(null);
     },
     onCallEnded: (callId) => {
-      logger.info('📞 Call ended:', callId);
+      logger.info('📞 Call ended:', { callId });
       setIncomingCall(null);
       onCallEnd?.();
     },
     onError: (error) => {
-      logger.error('❌ Video call error:', error);
+      logger.error('❌ Video call error:', { error: String(error) });
     }
   });
 

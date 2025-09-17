@@ -45,7 +45,8 @@ const mockGalleryPermissions: GalleryPermission[] = [
 ];
 
 export const invitationService = {
-  async sendInvitation(from_profile: string, to_profile: string, type: 'profile' | 'gallery' | 'chat', message?: string): Promise<Invitation> {
+  async sendInvitation(params: { from_profile: string; to_profile: string; type: 'profile' | 'gallery' | 'chat'; message?: string }): Promise<Invitation> {
+    const { from_profile, to_profile, type, message } = params;
     try {
       const { data, error } = await (supabase as any)
         .from('invitations')

@@ -31,11 +31,15 @@ describe('Profiles - Generación y Validación', () => {
     });
 
     it('debe generar perfiles únicos en múltiples llamadas', () => {
-      const profile1 = generateMockSingle();
-      const profile2 = generateMockSingle();
-
-      expect(profile1.id).not.toBe(profile2.id);
-      expect(profile1.name).not.toBe(profile2.name);
+      const profiles = Array.from({ length: 10 }, () => generateMockSingle());
+      const ids = profiles.map(p => p.id);
+      const names = profiles.map(p => p.name);
+      
+      // Verificar que todos los IDs son únicos
+      expect(new Set(ids).size).toBe(ids.length);
+      
+      // Verificar que al menos algunos nombres son diferentes (no todos iguales)
+      expect(new Set(names).size).toBeGreaterThan(1);
     });
 
     it('debe incluir estado online cuando se especifica', () => {

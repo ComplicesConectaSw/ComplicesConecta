@@ -179,6 +179,15 @@ const ProfileSingle: React.FC = () => {
                       <span className="hidden sm:inline">Editar Perfil</span>
                       <span className="sm:hidden">Editar</span>
                     </Button>
+                    <Button 
+                      onClick={() => navigate('/gallery')}
+                      className="bg-pink-600/80 hover:bg-pink-700/80 text-white flex items-center gap-2 text-sm sm:text-base px-3 sm:px-4 py-2"
+                      size="sm"
+                    >
+                      <Camera className="w-4 h-4" />
+                      <span className="hidden sm:inline">Mi Galería</span>
+                      <span className="sm:hidden">Galería</span>
+                    </Button>
                   </div>
                 </div>
               </div>
