@@ -543,15 +543,16 @@ user_staking         # Staking de usuarios
 - **Build Success**: ✅
 - **Code Quality**: Production-Ready ✅
 
-## 🌟 ¿Qué es ComplicesConecta?
+## 🌟 ¿Qué es ComplicesConecta - Conecta Social Comunidad
 
-ComplicesConecta es una plataforma social premium diseñada específicamente para la comunidad swinger mexicana. Conectamos parejas y solteros verificados en un ambiente seguro, discreto y sofisticado.
+ComplicesConecta es una plataforma de conexión social diseñada para la comunidad swinger mexicana, ofreciendo un espacio seguro y discreto para conocer personas afines. Incluye galería de fotos con sistema de privacidad avanzado y solicitudes de acceso.
 
 ### ✨ Características Principales
 
 - 🔐 **Verificación KYC Avanzada** - Perfiles 100% auténticos
 - 💕 **Matching Inteligente** - Algoritmo de compatibilidad exclusivo
 - 💬 **Chat Seguro** - Mensajería cifrada en tiempo real
+- 📸 **Galería Privada** - Sistema de fotos con privacidad granular y solicitudes de acceso
 - 🎉 **Eventos VIP** - Acceso a fiestas privadas exclusivas
 - 💎 **Sistema CMPX/GTK** - Tokens para funciones premium
 - 📱 **PWA Optimizada** - Experiencia nativa móvil/desktop

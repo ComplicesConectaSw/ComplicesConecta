@@ -53,6 +53,7 @@ const Blog = lazy(() => import("@/pages/Blog"));
 const ChatAuthenticated = lazy(() => import("@/pages/ChatAuthenticated"));
 const Donations = lazy(() => import("@/pages/Donations"));
 const Events = lazy(() => import("@/pages/Events"));
+const Gallery = lazy(() => import("@/pages/Gallery"));
 
 // Loading component for Suspense
 const PageLoader = () => (
@@ -94,6 +95,8 @@ const App = () => (
                   <Route path="/edit-profile-single" element={<EditProfileSingle />} />
                   <Route path="/edit-profile-couple" element={<EditProfileCouple />} />
                   <Route path="/events" element={<Events />} />
+                  <Route path="/gallery" element={<Gallery />} />
+                  <Route path="/galeria" element={<Gallery />} />
                   <Route path="/chat" element={<Chat />} />
                   <Route path="/chat-info" element={<ChatInfo />} />
                   <Route path="/matches" element={<Matches />} />

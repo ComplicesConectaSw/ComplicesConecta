@@ -5,10 +5,11 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { MapPin, Send, Share2 } from 'lucide-react';
+import { MapPin, Send, Share2, Video } from 'lucide-react';
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { useToast } from "@/hooks/use-toast";
 import { logger } from '@/lib/logger';
+import { VideoCallBetaModal } from '@/components/modals/VideoCallBetaModal';
 
 interface MessageWithSender {
   id: string;
@@ -53,6 +54,7 @@ export const ChatWithLocation = ({ conversationId, currentUserId, otherUser }: C
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showVideoCallModal, setShowVideoCallModal] = useState(false);
   const { location, getCurrentLocation, calculateDistance, isLoading: locationLoading } = useGeolocation();
   const { toast } = useToast();
 
@@ -122,10 +124,9 @@ export const ChatWithLocation = ({ conversationId, currentUserId, otherUser }: C
         })
       };
 
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('messages')
         .insert([messageData]);
-
 
       if (error) throw error;
 
@@ -182,13 +183,24 @@ export const ChatWithLocation = ({ conversationId, currentUserId, otherUser }: C
             <AvatarImage src={otherUser.avatar} />
             <AvatarFallback>{otherUser.name.charAt(0)}</AvatarFallback>
           </Avatar>
-          <div>
+          <div className="flex-1">
             <CardTitle className="text-lg">{otherUser.name}</CardTitle>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <div className="w-2 h-2 bg-green-500 rounded-full"></div>
               En línea
             </div>
           </div>
+          
+          {/* Botón de videollamada - DESHABILITADO HASTA BETA */}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowVideoCallModal(true)}
+            className="flex items-center gap-2"
+          >
+            <Video className="h-4 w-4" />
+            Video
+          </Button>
         </div>
       </CardHeader>
       
@@ -267,6 +279,12 @@ export const ChatWithLocation = ({ conversationId, currentUserId, otherUser }: C
           </div>
         </div>
       </CardContent>
+      
+      {/* Modal de videollamada en desarrollo */}
+      <VideoCallBetaModal
+        isOpen={showVideoCallModal}
+        onClose={() => setShowVideoCallModal(false)}
+      />
     </Card>
   );
 };

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Home, Search, MessageCircle, Heart, User, Settings, Crown, LogOut, Coins, UserPlus } from 'lucide-react';
+import { Home, Search, MessageCircle, Heart, User, Settings, Crown, LogOut, Coins, UserPlus, Camera } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useFeatures } from '@/hooks/useFeatures';
 import NavigationEnhanced from '@/components/NavigationEnhanced';
@@ -53,6 +53,7 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
   const baseNavItems = [
     { id: 'feed', icon: Home, label: 'Inicio', path: '/feed' },
     { id: 'discover', icon: Search, label: 'Descubrir', path: '/discover' },
+    { id: 'gallery', icon: Camera, label: 'Galería', path: '/gallery' },
     { id: 'chat', icon: MessageCircle, label: 'Chat', path: '/chat' },
     { id: 'matches', icon: Heart, label: 'Matches', path: '/matches' },
     { id: 'tokens', icon: Coins, label: 'Tokens', path: '/tokens' },
@@ -73,9 +74,9 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
   // Agregar solicitudes si la función está habilitada
   const navItems = features.requests 
     ? [
-        ...baseNavItems.slice(0, 3), // feed, discover, chat
+        ...baseNavItems.slice(0, 4), // feed, discover, gallery, chat
         { id: 'requests', icon: UserPlus, label: 'Solicitudes', path: '/requests' },
-        ...baseNavItems.slice(3), // matches, tokens
+        ...baseNavItems.slice(4), // matches, tokens
         { id: 'profile', icon: User, label: 'Perfil', path: '/profile' },
         { id: 'settings', icon: Settings, label: 'Configuración', path: getSettingsPath() },
       ]
