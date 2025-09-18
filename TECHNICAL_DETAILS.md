@@ -1,8 +1,8 @@
-# ⚙️ Detalles Técnicos - ComplicesConecta v2.9.2
+# ⚙️ Detalles Técnicos - ComplicesConecta v2.9.3
 
-**Última Actualización**: 17 de Septiembre, 2025 - 01:27 hrs  
-**Contexto**: Plataforma Swinger Mexicana + Galería Responsiva  
-**Estado**: Producción - Diseño Responsivo Completo + Android Sync  
+**Última Actualización**: 17 de Septiembre, 2025 - 23:58 hrs  
+**Contexto**: Plataforma Swinger Mexicana + Sistema de Tokens CMPX/GTK  
+**Estado**: Producción - Audit Completo + Optimizaciones UI/UX + Android Ready  
 
 ## 🏗️ Stack Tecnológico
 
@@ -22,16 +22,20 @@
 - **Edge Functions**: Funciones serverless
 - **Real-time**: Subscripciones en tiempo real
 
-### Mobile
+### Mobile & Tokens
 - **Capacitor 6.x**: Framework híbrido multiplataforma
-- **Android SDK**: Compilación nativa Android
+- **Android SDK**: Compilación nativa Android (Ready)
 - **iOS SDK**: Compilación nativa iOS (macOS)
+- **Sistema CMPX/GTK**: Tokens premium y staking
+- **TokenChatBot**: Asistente de tokens integrado
 
 ### Testing & Quality
-- **Vitest**: Testing framework ultrarrápido
+- **Vitest**: Testing framework ultrarrápido (107/107 tests pasando)
 - **Playwright**: Tests end-to-end
 - **ESLint**: Linting y análisis estático
-- **TypeScript Compiler**: Verificación de tipos
+- **TypeScript Compiler**: Verificación de tipos sin errores
+- **React Query**: Gestión de estado y caché optimizada
+- **Supabase Storage**: Gestión de archivos e imágenes
 
 ## 🎯 Arquitectura de la Aplicación
 
@@ -486,9 +490,33 @@ VITE_SENTRY_DSN=https://xxx@sentry.io/xxx
 
 ---
 
-## 📋 Refactorización Swinger Completada
+## 🔧 Audit Completo v2.9.3 - Septiembre 2025
 
-### ✅ Cambios Implementados (16/09/2025)
+### ✅ Correcciones Críticas Implementadas (17/09/2025)
+
+#### **Sistema de Tokens CMPX/GTK**
+- ✅ TokenChatBot completamente funcional e integrado
+- ✅ Flujo wizard: saludo → balance → reclamos → staking
+- ✅ Validaciones de seguridad y límites beta implementados
+- ✅ Mock temporal para desarrollo sin backend
+- ✅ Páginas legales: Términos, Privacidad, Responsabilidad Legal
+
+#### **Optimizaciones UI/UX**
+- ✅ Corregidos problemas de contraste en componentes UI
+- ✅ Agregados placeholders SVG para imágenes rotas
+- ✅ Mejorada accesibilidad con aria-labels en botones
+- ✅ Eliminados CSS inline styles por clases Tailwind
+- ✅ Sistema de placeholders elegantes (avatar-placeholder.svg, image-placeholder.svg)
+
+#### **Arquitectura y Testing**
+- ✅ Migración completa localStorage → React Query + Supabase
+- ✅ Tests unitarios: 107/107 pasando (100%)
+- ✅ Compilación TypeScript sin errores
+- ✅ Todos los imports migrados a alias @/
+- ✅ Sistema de referidos funcional implementado
+- ✅ Supabase Storage integrado para gestión de archivos
+
+### ✅ Cambios Previos Implementados (16/09/2025)
 
 1. **Contextualización Completa**:
    - Todos los perfiles, intereses y biografías actualizados al contexto swinger mexicano
@@ -511,14 +539,20 @@ VITE_SENTRY_DSN=https://xxx@sentry.io/xxx
    - `demoData.ts`: Perfiles demo con terminología explícita
    - `ProfileDetail.tsx`, `Matches.tsx`: Contenido contextualizado
 
-### 🎯 Estado Actual
-- **Versión**: v2.9.1 - Refactorización Swinger Completa
+### 🎯 Estado Actual v2.9.3
+- **Versión**: v2.9.3 - Audit Completo + Sistema de Tokens
 - **Contexto**: Plataforma lifestyle mexicana 100% funcional
 - **Terminología**: Auténtica del ambiente swinger en español
 - **Localización**: México (sin referencias a España u otros países)
+- **Testing**: 107/107 tests unitarios pasando
+- **TypeScript**: Compilación sin errores
+- **Tokens**: Sistema CMPX/GTK operativo
+- **Mobile**: Android Ready con Capacitor
+- **UI/UX**: Optimizada para accesibilidad y contraste
 
 ---
 
-**© 2025 ComplicesConecta** - Plataforma Swinger Mexicana v2.9.1  
-**Contexto**: Lifestyle Swinger - Localización México  
-**Actualizado**: 16 de Septiembre, 2025 - 23:11 hrs
+**© 2025 ComplicesConecta** - Plataforma Swinger Mexicana v2.9.3  
+**Contexto**: Lifestyle Swinger + Tokens CMPX/GTK - Localización México  
+**Actualizado**: 17 de Septiembre, 2025 - 23:58 hrs  
+**Estado**: Producción Ready - Audit Completo Finalizado

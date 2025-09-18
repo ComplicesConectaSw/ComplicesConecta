@@ -256,7 +256,7 @@ const ProfileCouple: React.FC = () => {
                           alt={profile?.partner1_first_name || 'Ella'}
                           className="w-24 h-24 rounded-full mx-auto mb-3 object-cover border-4 border-pink-400 shadow-lg"
                           onError={(e) => {
-                            e.currentTarget.src = 'https://images.unsplash.com/photo-1521119989659-a83eee488004?w=400&h=400&fit=crop&crop=faces';
+                            e.currentTarget.src = '/avatar-placeholder.svg';
                           }}
                         />
                         <h3 className="text-xl font-bold text-white">{profile?.partner1_first_name || 'Ella'}</h3>
@@ -288,7 +288,7 @@ const ProfileCouple: React.FC = () => {
                           alt={profile?.partner2_first_name || 'Él'}
                           className="w-24 h-24 rounded-full mx-auto mb-3 object-cover border-4 border-purple-400 shadow-lg"
                           onError={(e) => {
-                            e.currentTarget.src = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=faces';
+                            e.currentTarget.src = '/avatar-placeholder.svg';
                           }}
                         />
                         <h3 className="text-xl font-bold text-white">{profile?.partner2_first_name || 'Él'}</h3>

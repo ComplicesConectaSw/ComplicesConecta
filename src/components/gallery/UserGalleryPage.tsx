@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Camera, Upload, Eye, EyeOff, Trash2, Lock, Unlock, Heart, MessageCircle } from 'lucide-react';
-import { Button } from '../ui/button';
-import { Card, CardContent } from '../ui/card';
-import { Badge } from '../ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
-import { Alert, AlertDescription } from '../ui/alert';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 interface ImageData {
   id: string;
@@ -99,6 +101,41 @@ export const UserGalleryPage: React.FC<UserGalleryPageProps> = ({
     loadImages();
   }, [userId, isDemo]);
 
+  const loadImagesFromSupabase = async () => {
+    try {
+      // Implementación real de carga desde Supabase Storage
+      const { data, error } = await supabase.storage
+        .from('user-images')
+        .list('public', {
+          limit: 100,
+          offset: 0
+        });
+
+      if (error) {
+        console.error('Error loading from Supabase:', error);
+        setImages([]);
+        return;
+      }
+
+      const imageList: ImageData[] = data?.map((file: any, index: number) => ({
+        id: `supabase-${index}`,
+        url: supabase.storage.from('user-images').getPublicUrl(`public/${file.name}`).data.publicUrl,
+        isPrivate: false,
+        uploadedAt: new Date(file.created_at || Date.now()),
+        title: file.name,
+        likes: 0,
+        accessRequests: []
+      })) || [];
+
+      setImages(imageList);
+    } catch (error) {
+      console.error('Error loading images from Supabase:', error);
+      setImages([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const loadImages = async () => {
     setLoading(true);
     try {
@@ -109,10 +146,8 @@ export const UserGalleryPage: React.FC<UserGalleryPageProps> = ({
           setLoading(false);
         }, 1000);
       } else {
-        // Modo real: cargar desde Supabase
-        // TODO: Implementar carga real desde Supabase Storage
-        setImages([]);
-        setLoading(false);
+        // Modo real: cargar desde Supabase Storage
+        await loadImagesFromSupabase();
       }
     } catch (error) {
       console.error('Error loading images:', error);
@@ -168,12 +203,51 @@ export const UserGalleryPage: React.FC<UserGalleryPageProps> = ({
         }, 2000);
       } else {
         // Modo real: subir a Supabase Storage
-        // TODO: Implementar subida real a Supabase
-        setUploading(false);
-        toast({
-          title: "Info",
-          description: "Subida real a Supabase pendiente de implementar",
-        });
+        try {
+          const fileExt = file.name.split('.').pop();
+          const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+          const filePath = `${viewerUserId}/${fileName}`;
+
+          const { error: uploadError } = await supabase.storage
+            .from('user-images')
+            .upload(filePath, file, {
+              cacheControl: '3600',
+              upsert: false
+            });
+
+          if (uploadError) {
+            throw uploadError;
+          }
+
+          const { data: { publicUrl } } = supabase.storage
+            .from('user-images')
+            .getPublicUrl(filePath);
+
+          const newImage: ImageData = {
+            id: Date.now().toString(),
+            url: publicUrl,
+            isPrivate: false,
+            uploadedAt: new Date(),
+            title: file.name,
+            likes: 0,
+            accessRequests: []
+          };
+
+          setImages(prev => [newImage, ...prev]);
+          setUploading(false);
+          toast({
+            title: "¡Éxito!",
+            description: "Imagen subida correctamente a Supabase Storage",
+          });
+        } catch (error) {
+          console.error('Error uploading to Supabase:', error);
+          setUploading(false);
+          toast({
+            title: "Error",
+            description: "Error al subir la imagen. Inténtalo de nuevo.",
+            variant: "destructive",
+          });
+        }
       }
     } catch (error) {
       setUploading(false);
@@ -292,6 +366,7 @@ export const UserGalleryPage: React.FC<UserGalleryPageProps> = ({
               className="hidden"
               id="image-upload"
               data-testid="image-upload-input"
+              aria-label="Subir imagen a la galería"
             />
             <Button
               onClick={() => document.getElementById('image-upload')?.click()}

@@ -170,7 +170,7 @@ export const VideoCallWindow: React.FC<VideoCallWindowProps> = ({
         
         {!isVideoEnabled && (
           <div className="absolute inset-0 bg-gray-800 flex items-center justify-center">
-            <VideoOff className="h-6 w-6 text-gray-400" />
+            <VideoOff className="h-6 w-6 text-gray-300" />
           </div>
         )}
       </div>
@@ -235,6 +235,7 @@ export const VideoCallWindow: React.FC<VideoCallWindowProps> = ({
             {isCallActive ? (
               <button
                 onClick={handleEndCall}
+                aria-label="Terminar llamada"
                 className="p-4 bg-red-500 hover:bg-red-600 rounded-full transition-colors"
               >
                 <PhoneOff className="h-6 w-6 text-white" />
@@ -243,6 +244,7 @@ export const VideoCallWindow: React.FC<VideoCallWindowProps> = ({
               <button
                 onClick={handleStartCall}
                 disabled={!targetUserId}
+                aria-label="Iniciar llamada"
                 className="p-4 bg-green-500 hover:bg-green-600 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Phone className="h-6 w-6 text-white" />
@@ -252,6 +254,7 @@ export const VideoCallWindow: React.FC<VideoCallWindowProps> = ({
             {/* Fullscreen toggle */}
             <button
               onClick={toggleFullscreen}
+              aria-label={isFullscreen ? "Salir de pantalla completa" : "Pantalla completa"}
               className="p-4 bg-gray-700 hover:bg-gray-600 rounded-full transition-colors"
             >
               {isFullscreen ? (
@@ -264,6 +267,7 @@ export const VideoCallWindow: React.FC<VideoCallWindowProps> = ({
             {/* Settings */}
             <button
               onClick={() => setShowControls(!showControls)}
+              aria-label="Configuración"
               className="p-4 bg-gray-700 hover:bg-gray-600 rounded-full transition-colors"
             >
               <Settings className="h-6 w-6 text-white" />
@@ -288,9 +292,9 @@ export const VideoCallWindow: React.FC<VideoCallWindowProps> = ({
       {!isInCall && !isConnecting && (
         <div className="absolute inset-0 flex items-center justify-center bg-gray-800">
           <div className="text-center text-white">
-            <Video className="h-16 w-16 mx-auto mb-4 text-gray-400" />
+            <VideoOff className="h-16 w-16 mx-auto mb-4 text-gray-300" />
             <h3 className="text-xl font-semibold mb-2">Video Chat</h3>
-            <p className="text-gray-400 mb-6">
+            <p className="text-gray-300 mb-6">
               {targetUserId ? 'Presiona el botón para iniciar la llamada' : 'Selecciona un usuario para llamar'}
             </p>
             

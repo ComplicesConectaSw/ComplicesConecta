@@ -272,7 +272,7 @@ const ProfileDetail = () => {
                         src={photo} 
                         alt={`${profile.name} - Foto ${index + 1}`}
                         className="w-full h-full object-cover hover:scale-105 transition-transform duration-300 cursor-pointer"
-                        onError={(e) => (e.currentTarget.style.display = 'none')}
+                        onError={(e) => (e.currentTarget.src = '/image-placeholder.svg')}
                       />
                     </div>
                   ))}

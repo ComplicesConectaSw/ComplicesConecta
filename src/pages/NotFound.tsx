@@ -94,7 +94,7 @@ const NotFound = () => {
             alt="ComplicesConecta" 
             className="mx-auto h-16 opacity-90 mb-8"
             onError={(e) => {
-              e.currentTarget.style.display = 'none';
+              e.currentTarget.src = '/avatar-placeholder.svg';
             }}
           />
         </div>
