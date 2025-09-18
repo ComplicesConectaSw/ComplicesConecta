@@ -659,6 +659,7 @@ const AdminProduction = () => {
                       value={newFaq.category}
                       onChange={(e) => setNewFaq({...newFaq, category: e.target.value})}
                       className="bg-white/10 border border-white/20 text-white rounded-md px-3 py-2"
+                      aria-label="Categoría de la pregunta frecuente"
                     >
                       <option value="general">General</option>
                       <option value="seguridad">Seguridad</option>

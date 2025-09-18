@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import UserGalleryPage from '@/components/gallery/UserGalleryPage';
-import Navigation from '../components/Navigation';
-import { useAuth } from '../hooks/useAuth';
-import { Alert, AlertDescription } from '../components/ui/alert';
+import Navigation from '@/components/Navigation';
+import { useAuth } from '@/hooks/useAuth';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Camera } from 'lucide-react';
 
 const Gallery: React.FC = () => {

@@ -1145,20 +1145,26 @@ const Auth = () => {
                 <div className="space-y-4 p-4 bg-gradient-to-r from-purple-900/20 to-pink-900/20 rounded-lg border border-purple-400">
                   <div className="text-center">
                     <h3 className="font-semibold text-white mb-2">Intereses Lifestyle</h3>
-                    <p className="text-sm text-white/90">Selecciona tus intereses para encontrar matches compatibles</p>
+                    <p className="text-sm text-white/80">Selecciona tus intereses para encontrar matches compatibles</p>
                   </div>
                   
                   <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto scrollbar-thin smooth-scroll scroll-container">
                     {lifestyleInterests.map((interest, index) => (
                       <div 
                         key={index} 
-                        className="flex items-center space-x-2 p-2 rounded-md hover:bg-purple-500/10 transition-all duration-300 hover:scale-105 animate-fade-in"
-                        style={{ animationDelay: `${index * 50}ms` }}
+                        className={`flex items-center space-x-2 p-2 rounded-md hover:bg-purple-500/10 transition-all duration-300 hover:scale-105 animate-fade-in`}
+                        data-delay={index * 50}
                       >
                         <Checkbox
                           id={`interest-${index}`}
-                          checked={formData.selectedInterests.includes(interest)}
-                          onCheckedChange={() => handleInterestToggle(interest)}
+                          checked={formData.selectedInterests?.includes(interest) || false}
+                          onCheckedChange={(checked) => {
+                            const currentInterests = formData.selectedInterests || [];
+                            const newInterests = checked 
+                              ? [...currentInterests, interest]
+                              : currentInterests.filter(i => i !== interest);
+                            handleInputChange("selectedInterests", newInterests);
+                          }}
                           className="data-[state=checked]:bg-purple-500 data-[state=checked]:border-purple-500"
                         />
                         <Label 

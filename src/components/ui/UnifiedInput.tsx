@@ -59,7 +59,7 @@ export const UnifiedInput = forwardRef<HTMLInputElement, UnifiedInputProps>(({
         className="relative"
       >
         {leftIcon && (
-          <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+          <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 dark:text-gray-300">
             {leftIcon}
           </div>
         )}
@@ -89,14 +89,14 @@ export const UnifiedInput = forwardRef<HTMLInputElement, UnifiedInputProps>(({
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100 transition-colors"
           >
             {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
           </button>
         )}
 
         {rightIcon && !isPassword && (
-          <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+          <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 dark:text-gray-300">
             {rightIcon}
           </div>
         )}

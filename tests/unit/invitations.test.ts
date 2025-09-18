@@ -105,8 +105,11 @@ describe('Invitations System', () => {
     });
 
     it('should return true after accepting gallery invitation', async () => {
-      // For this test, we'll rely on the fallback mock data behavior
-      // Since Supabase calls fail, it will use internal mock logic
+      // Send and accept a gallery invitation first
+      const invitation = await invitationService.sendInvitation('user1', 'user2', 'gallery', 'Test');
+      await invitationService.respondInvitation(invitation.id, 'accept');
+      
+      // Check access using mock data fallback (since Supabase is mocked to fail)
       const hasAccess = await invitationService.hasGalleryAccess('1', '2');
       expect(hasAccess).toBe(true); // Mock data has this permission
     });

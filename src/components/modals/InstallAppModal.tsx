@@ -163,7 +163,7 @@ export const InstallAppModal = ({ isOpen, onClose }: InstallAppModalProps) => {
                 onClick={() => {
                   try {
                     const link = document.createElement('a');
-                    link.href = 'https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/2.9.0/app-release.apk';
+                    link.href = 'https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v2.9.3/app-release.apk';
                     link.download = 'app-release.apk';
                     document.body.appendChild(link);
                     link.click();
@@ -173,7 +173,7 @@ export const InstallAppModal = ({ isOpen, onClose }: InstallAppModalProps) => {
                   } catch (error) {
                     logger.error('Error al descargar APK:', { error: error instanceof Error ? error.message : String(error) });
                     // Fallback: abrir en nueva ventana
-                    window.open('https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/2.9.0/app-release.apk', '_blank');
+                    window.open('https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v2.9.3/app-release.apk', '_blank');
                   }
                 }}
                 className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold py-2 sm:py-3 text-sm sm:text-base"

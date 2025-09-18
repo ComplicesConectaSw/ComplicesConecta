@@ -242,9 +242,55 @@ export const useTokens = () => {
     
     try {
       logger.info('🔗 Procesando referido real:', { referredUserId });
-      // TODO: Implementar lógica real de referidos con Supabase Edge Functions
-      logger.info('ℹ️ Procesamiento de referidos reales no implementado aún');
-      return false;
+      
+      // Verificar que el usuario referido existe
+      const { data: referredUser, error: userError } = await supabase
+        .from('profiles')
+        .select('id, email')
+        .eq('id', referredUserId)
+        .single();
+
+      if (userError || !referredUser) {
+        logger.error('❌ Usuario referido no encontrado:', { referredUserId, error: userError });
+        return false;
+      }
+
+      // Crear registro de referido
+      const { error: referralError } = await (supabase as any)
+        .from('referrals')
+        .insert({
+          referrer_id: user.id,
+          referred_id: referredUserId,
+          status: 'completed',
+          reward_amount: 50, // 50 tokens por referido
+          created_at: new Date().toISOString()
+        });
+
+      if (referralError) {
+        logger.error('❌ Error creando registro de referido:', referralError);
+        return false;
+      }
+
+      // Otorgar tokens de recompensa al referidor
+      const { error: tokenError } = await (supabase as any).rpc('add_user_tokens', {
+        user_id: user.id,
+        amount: 50,
+        transaction_type: 'referral_reward',
+        description: `Recompensa por referir a ${(referredUser as any).email}`
+      });
+
+      if (tokenError) {
+        logger.error('❌ Error otorgando tokens de referido:', tokenError);
+        return false;
+      }
+
+      logger.info('✅ Referido procesado exitosamente:', { 
+        referrer: user.id, 
+        referred: referredUserId,
+        reward: 50 
+      });
+      
+      return true;
     } catch (error) {
       logger.error('❌ Error procesando referido:', { error });
       return false;
@@ -286,23 +332,23 @@ export const useTokens = () => {
     try {
       logger.info('🔗 Procesando staking real:', { tokenType, amount, duration });
       // Implementar lógica real de staking con Supabase Edge Functions
-      const { data, error } = await supabase
+      const endDate = new Date(Date.now() + duration * 24 * 60 * 60 * 1000);
+      const apy = tokenType === 'gtk' ? 12.5 : 8.0;
+      const { error: stakingError } = await (supabase as any)
         .from('staking_records')
-        .insert([
-          {
-            user_id: user.id,
-            token_type: tokenType,
-            amount,
-            start_date: new Date().toISOString(),
-            end_date: new Date(Date.now() + duration * 24 * 60 * 60 * 1000).toISOString(),
-            apy: tokenType === 'gtk' ? 12.5 : 8.0,
-            status: 'active',
-            created_at: new Date().toISOString()
-          }
-        ]);
+        .insert([{
+          user_id: user.id,
+          token_type: tokenType,
+          amount: amount,
+          start_date: new Date().toISOString(),
+          end_date: endDate.toISOString(),
+          apy: apy,
+          status: 'active',
+          created_at: new Date().toISOString()
+        }]);
       
-      if (error) {
-        logger.error('❌ Error en staking:', { error });
+      if (stakingError) {
+        logger.error('❌ Error en staking:', { error: stakingError });
         return false;
       }
       
