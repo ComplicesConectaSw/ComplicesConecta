@@ -65,6 +65,96 @@ export interface Database {
           updated_at?: string
         }
       }
+      chat_rooms: {
+        Row: {
+          id: string
+          name: string
+          description: string | null
+          created_by: string | null
+          is_public: boolean | null
+          is_active: boolean | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          description?: string | null
+          created_by?: string | null
+          is_public?: boolean | null
+          is_active?: boolean | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          description?: string | null
+          created_by?: string | null
+          is_public?: boolean | null
+          is_active?: boolean | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      chat_members: {
+        Row: {
+          id: string
+          room_id: string | null
+          profile_id: string | null
+          role: string | null
+          joined_at: string | null
+          is_muted: boolean | null
+        }
+        Insert: {
+          id?: string
+          room_id?: string | null
+          profile_id?: string | null
+          role?: string | null
+          joined_at?: string | null
+          is_muted?: boolean | null
+        }
+        Update: {
+          id?: string
+          room_id?: string | null
+          profile_id?: string | null
+          role?: string | null
+          joined_at?: string | null
+          is_muted?: boolean | null
+        }
+      }
+      couple_photos: {
+        Row: {
+          id: string
+          couple_id: string | null
+          image_url: string | null
+          title: string | null
+          description: string | null
+          is_public: boolean | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          couple_id?: string | null
+          image_url?: string | null
+          title?: string | null
+          description?: string | null
+          is_public?: boolean | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          couple_id?: string | null
+          image_url?: string | null
+          title?: string | null
+          description?: string | null
+          is_public?: boolean | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
       invitations: {
         Row: {
           id: string
