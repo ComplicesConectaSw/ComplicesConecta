@@ -41,13 +41,13 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
   const [isVisible] = useState(true);
 
   // localStorage migrado a hooks tipados - todos los hooks al inicio
-  const [isDemoAuthenticated] = usePersistedState('demo_authenticated', false);
-  // Removido isSpecialAuthenticated - solo usar demo
+  const [demoAuthString] = usePersistedState('demo_authenticated', 'false');
   const [demoUser] = usePersistedState('demo_user', null);
   // Removed apoyo_user reference
   const [currentUserType] = usePersistedState('userType', null);
   
-  const isAuthenticated = isDemoAuthenticated;
+  // Corregir lógica de autenticación - verificar string 'true'
+  const isAuthenticated = demoAuthString === 'true' && demoUser;
 
   const baseNavItems = [
     { id: 'feed', icon: Home, label: 'Inicio', path: '/feed' },
@@ -106,7 +106,7 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
 
     // Usar valores de hooks en lugar de localStorage directo
     const userType = currentUserType;
-    const isDemoAuth = isDemoAuthenticated;
+    const isDemoAuth = demoAuthString === 'true';
     
     logger.info('🔍 Navigation Debug:', { demoUser, userType, isDemoAuth, path });
     
@@ -121,9 +121,9 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
     }
     
     // Verificar autenticación antes de navegar
-    const isAuthenticated = isDemoAuth || demoUser;
+    const isUserAuthenticated = isDemoAuth && demoUser;
     
-    if (!isAuthenticated) {
+    if (!isUserAuthenticated) {
       logger.info('❌ Usuario no autenticado, redirigiendo a /auth');
       navigate('/auth');
       return;

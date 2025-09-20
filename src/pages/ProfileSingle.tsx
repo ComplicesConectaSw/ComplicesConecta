@@ -38,7 +38,9 @@ const ProfileSingle: React.FC = () => {
         // Si no hay autenticación válida, redirigir inmediatamente
         if (!isAuthenticated) {
           logger.info('❌ No hay autenticación válida, redirigiendo a /auth...');
-          navigate('/auth', { replace: true });
+          setTimeout(() => {
+            navigate('/auth', { replace: true });
+          }, 100);
           return;
         }
         

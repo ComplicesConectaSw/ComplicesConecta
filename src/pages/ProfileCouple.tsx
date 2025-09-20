@@ -29,7 +29,9 @@ const ProfileCouple: React.FC = () => {
         // Verificar autenticación usando useAuth - redirigir inmediatamente
         if (!isAuthenticated) {
           logger.info('❌ No autenticado, redirigiendo a /auth...');
-          navigate('/auth', { replace: true });
+          setTimeout(() => {
+            navigate('/auth', { replace: true });
+          }, 100);
           return;
         }
         
