@@ -3,6 +3,11 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { logger } from '@/lib/logger';
+import type { Database } from '@/integrations/supabase/types';
+
+// Tipos basados en el schema de Supabase
+type CouplePhotoRow = Database['public']['Tables']['couple_photos']['Row'];
+type CouplePhotoInsert = Database['public']['Tables']['couple_photos']['Insert'];
 
 interface CouplePhoto {
   id: string;

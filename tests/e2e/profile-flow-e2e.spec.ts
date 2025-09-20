@@ -7,7 +7,7 @@ import { test, expect } from '@playwright/test';
 test.describe('🛠️ Test E2E Perfiles', () => {
   
   test('Debe hacer login demo single@outlook.es', async ({ page }) => {
-    await page.goto('http://localhost:3000/auth');
+    await page.goto('http://localhost:8080/auth');
     
     await page.fill('[data-testid="email-input"]', 'single@outlook.es');
     await page.fill('[data-testid="password-input"]', '123456');
@@ -18,7 +18,7 @@ test.describe('🛠️ Test E2E Perfiles', () => {
   });
 
   test('Debe navegar a perfil single', async ({ page }) => {
-    await page.goto('http://localhost:3000/auth');
+    await page.goto('http://localhost:8080/auth');
     
     await page.fill('[data-testid="email-input"]', 'single@outlook.es');
     await page.fill('[data-testid="password-input"]', '123456');
