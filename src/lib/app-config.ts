@@ -144,10 +144,24 @@ export const handleDemoAuth = (email: string, accountType: string = 'single') =>
     return null;
   }
   
+  // Importar datos demo para perfiles completos
+  const { demoProfiles } = require('@/demo/demoData');
+  
+  // Buscar perfil demo completo por email
+  const fullDemoProfile = demoProfiles.find((profile: any) => 
+    profile.email === email.toLowerCase().trim()
+  );
+  
   // Configurar accountType específico para admins
   const finalAccountType = isDemoAdmin(email) ? 'admin' : accountType;
   
-  const demoUser = {
+  const demoUser = fullDemoProfile ? {
+    ...fullDemoProfile,
+    role: isDemoAdmin(email) ? 'admin' : fullDemoProfile.role || 'user',
+    accountType: finalAccountType,
+    is_demo: true,
+    created_at: fullDemoProfile.created_at || new Date().toISOString()
+  } : {
     id: `demo-${Date.now()}`,
     email: email.toLowerCase().trim(),
     role: isDemoAdmin(email) ? 'admin' : 'user',
@@ -167,11 +181,16 @@ export const handleDemoAuth = (email: string, accountType: string = 'single') =>
     expires_at: Date.now() + (24 * 60 * 60 * 1000) // 24 hours
   };
   
-  // Store only authentication flag in localStorage
+  // Store authentication flag and demo user profile in localStorage
   localStorage.setItem('demo_authenticated', 'true');
   localStorage.setItem('userType', demoUser.role);
-  // ELIMINADO: No almacenar datos completos de usuario en localStorage
-  // Los datos se mantienen solo en memoria durante la sesión
+  localStorage.setItem('demo_user', JSON.stringify(demoUser));
+  
+  logger.info('💾 Perfil demo guardado:', { 
+    email: demoUser.email, 
+    name: demoUser.first_name,
+    hasFullProfile: !!fullDemoProfile 
+  });
   
   logger.info('🎭 Sesión demo creada', { email, tipo: finalAccountType });
   
@@ -248,7 +267,7 @@ export const appConfig = getAppConfig();
 logger.info('🚀 ComplicesConecta iniciado', { modo: appConfig.mode });
 if (appConfig.mode === 'demo') {
   logger.info('🎭 Modo demo activo - credenciales de prueba habilitadas');
-  logger.info('📝 Credenciales demo:', DEMO_CREDENTIALS);
+  logger.info('📝 Credenciales demo:', { credentials: DEMO_CREDENTIALS });
 } else {
   logger.info('🔐 Modo producción activo - autenticación real requerida');
   logger.info('🏢 Credenciales producción:', { email: 'complicesconectasw@outlook.es' });
