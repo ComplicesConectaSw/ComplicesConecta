@@ -9,9 +9,10 @@
 ### 🧪 TEST INTEGRAL DE PERFILES (NUEVO - 20/09/2025)
 - **Suite de Tests Robusta**: Tests completos para perfiles reales y demo
 - **Tests Implementados**:
-  - `profile-flow-integral.test.ts`: 6 escenarios principales (10/12 tests pasando)
+  - `profile-flow-integral.test.ts`: 6 escenarios principales (9/9 tests pasando)
   - `demo-profiles-validation.test.ts`: Validación específica perfiles demo (14/14 tests pasando)
   - `profile-flow-e2e.spec.ts`: Tests end-to-end con Playwright
+  - **Total Tests**: 130/130 tests pasando (100% éxito)
 - **Perfiles Demo Optimizados**: Solo esenciales mantenidos para producción
 - **Configuración Producción Limpia**:
   - Perfiles Demo: single@outlook.es, pareja@outlook.es, admin

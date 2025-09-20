@@ -144,11 +144,17 @@ export const handleDemoAuth = (email: string, accountType: string = 'single') =>
   // Importar datos demo para perfiles completos usando require síncrono
   let demoProfiles: any[] = [];
   try {
-    const demoData = require('../demo/demoData');
+    const demoData = require('../demo/demoData.ts');
     demoProfiles = demoData.demoProfiles || [];
   } catch (error) {
-    logger.warn('No se pudieron cargar datos demo:', { error: String(error) });
-    demoProfiles = [];
+    // Fallback: intentar sin extensión
+    try {
+      const demoData = require('../demo/demoData');
+      demoProfiles = demoData.demoProfiles || [];
+    } catch (fallbackError) {
+      logger.warn('No se pudieron cargar datos demo:', { error: String(error) });
+      demoProfiles = [];
+    }
   }
   
   // Buscar perfil demo completo por email
