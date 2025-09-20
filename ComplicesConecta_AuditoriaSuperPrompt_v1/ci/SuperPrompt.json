@@ -1,0 +1,48 @@
+{
+  "name": "ComplicesConecta - SuperPrompt Audit Pipeline",
+  "pipeline": "audit:fix",
+  "branch": "fix/auditoria-2025",
+  "rules": {
+    "verify_before_create": true,
+    "verify_before_delete": true,
+    "resume_on_error": true,
+    "safe_mode": true,
+    "require_backups_before_delete": true,
+    "respect_git_branches": true
+  },
+  "steps": [
+    {
+      "id": "checkout",
+      "run": "git checkout fix/auditoria-2025 && git pull"
+    },
+    {
+      "id": "install",
+      "run": "npm ci"
+    },
+    {
+      "id": "ts_check",
+      "run": "npx tsc --noEmit"
+    },
+    {
+      "id": "lint",
+      "run": "npm run lint || true"
+    },
+    {
+      "id": "run_audit_checks",
+      "run": "node ./ci/run_super_audit.js --safe"
+    },
+    {
+      "id": "run_tests",
+      "run": "npm test || true"
+    },
+    {
+      "id": "report",
+      "run": "node ./ci/generate_report.js --out=reports/AUDIT_VALIDATION_REPORT.md"
+    }
+  ],
+  "report": {
+    "output": "reports/AUDIT_VALIDATION_REPORT.md",
+    "progress_tracker": "reports/PROGRESS_TRACKER.md",
+    "errors_log": "reports/ERRORS_LOG.md"
+  }
+}

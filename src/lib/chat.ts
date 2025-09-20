@@ -9,8 +9,8 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
-import type { Database } from '@/integrations/supabase/types';
-import { logger } from '@/lib/logger';
+import { logger } from './logger';
+import type { Database } from '@/types/supabase';
 
 type MessageRow = Database['public']['Tables']['messages']['Row'];
 type MessageInsert = Database['public']['Tables']['messages']['Insert'];
@@ -35,8 +35,9 @@ export interface ChatMember {
   is_muted: boolean;
 }
 
-export type ChatRoomInsert = any;
-export type ChatMemberInsert = any;
+// Tipos específicos basados en el schema de Supabase
+export type ChatRoomInsert = Database['public']['Tables']['chat_rooms']['Insert'];
+export type ChatMemberInsert = Database['public']['Tables']['chat_members']['Insert'];
 
 export interface ChatMessage {
   id: string;

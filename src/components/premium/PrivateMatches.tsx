@@ -20,6 +20,20 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { logger } from '@/lib/logger';
+import type { Database } from '@/types/supabase';
+
+// Tipo para la consulta de invitations con join a profiles
+type InvitationWithProfile = Database['public']['Tables']['invitations']['Row'] & {
+  matched_user: {
+    id: string;
+    first_name: string | null;
+    last_name: string | null;
+    age: number | null;
+    bio: string | null;
+    is_premium: boolean | null;
+    is_verified: boolean | null;
+  } | null;
+};
 
 // Tipos para matches privados
 interface PrivateMatch {
@@ -176,26 +190,26 @@ export const PrivateMatches: React.FC = () => {
       }
 
       // Mapear datos de invitations a formato PrivateMatch
-      const mappedMatches: PrivateMatch[] = (data ?? []).map(invitation => ({
-        id: (invitation as any).id,
-        user_id: (invitation as any).from_profile,
-        matched_user_id: (invitation as any).to_profile,
+      const mappedMatches: PrivateMatch[] = (data as InvitationWithProfile[] ?? []).map(invitation => ({
+        id: invitation.id,
+        user_id: invitation.from_profile,
+        matched_user_id: invitation.to_profile,
         match_type: 'private' as const,
         compatibility_score: 85 + Math.floor(Math.random() * 15), // Score simulado
-        is_mutual: (invitation as any).status === 'accepted',
-        created_at: (invitation as any).created_at ?? new Date().toISOString(),
-        status: (invitation as any).status as 'pending' | 'accepted' | 'declined' | 'expired',
+        is_mutual: invitation.status === 'accepted',
+        created_at: invitation.created_at ?? new Date().toISOString(),
+        status: invitation.status as 'pending' | 'accepted' | 'declined' | 'expired',
         matched_user: {
-          id: (invitation as any).matched_user?.id ?? '',
-          first_name: (invitation as any).matched_user?.first_name ?? '',
-          last_name: (invitation as any).matched_user?.last_name,
-          age: (invitation as any).matched_user?.age,
-          location: `${(invitation as any).matched_user?.first_name ?? 'Usuario'} Premium`,
+          id: invitation.matched_user?.id ?? '',
+          first_name: invitation.matched_user?.first_name ?? '',
+          last_name: invitation.matched_user?.last_name ?? undefined,
+          age: invitation.matched_user?.age ?? undefined,
+          location: `${invitation.matched_user?.first_name ?? 'Usuario'} Premium`,
           avatar_url: undefined, // Campo no existe en schema profiles
-          bio: (invitation as any).matched_user?.bio ?? undefined,
+          bio: invitation.matched_user?.bio ?? undefined,
           interests: [],
-          is_premium: (invitation as any).matched_user?.is_premium ?? false,
-          is_verified: (invitation as any).matched_user?.is_verified ?? false
+          is_premium: invitation.matched_user?.is_premium ?? false,
+          is_verified: invitation.matched_user?.is_verified ?? false
         },
         metadata: {
           algorithm_version: "v2.1",
@@ -248,7 +262,7 @@ export const PrivateMatches: React.FC = () => {
         decided_at: new Date().toISOString()
       };
       
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('invitations')
         .update(updatePayload)
         .eq('id', matchId)
