@@ -304,9 +304,9 @@ const Profiles = () => {
           <div className="absolute bottom-40 right-40 w-64 h-64 bg-accent/8 rounded-full blur-2xl animate-pulse"></div>
         </div>
         {/* Floating Icons */}
-        <Users className="absolute top-1/4 left-1/5 w-6 h-6 text-primary/15 animate-float" style={{ animationDelay: '0.5s' }} />
-        <Heart className="absolute bottom-1/3 right-1/4 w-5 h-5 text-accent/20 animate-float" fill="currentColor" style={{ animationDelay: '1.2s' }} />
-        <MapPin className="absolute top-1/2 right-1/6 w-7 h-7 text-secondary/15 animate-float" style={{ animationDelay: '2s' }} />
+        <Users className="absolute top-1/4 left-1/5 w-6 h-6 text-primary/15 animate-float [animation-delay:0.5s]" />
+        <Heart className="absolute bottom-1/3 right-1/4 w-5 h-5 text-accent/20 animate-float [animation-delay:1.2s]" fill="currentColor" />
+        <MapPin className="absolute top-1/2 right-1/6 w-7 h-7 text-secondary/15 animate-float [animation-delay:2s]" />
       </div>
       
       {/* Content */}

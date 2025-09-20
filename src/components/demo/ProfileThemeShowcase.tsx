@@ -238,7 +238,11 @@ export const ProfileThemeShowcase: React.FC<ProfileThemeShowcaseProps> = ({
                 }}
                 useThemeBackground={true}
                 variant="discover"
-                onLike={() => console.log('Like a', profile.name)}
+                onLike={() => {
+                  if (import.meta.env.DEV) {
+                    console.log('Like a', profile.name);
+                  }
+                }}
               />
               
               {/* Etiquetas informativas */}
