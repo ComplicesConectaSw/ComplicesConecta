@@ -93,9 +93,19 @@ export const useAuth = () => {
       
       if (error) {
         logger.error('❌ Error fetching profile:', error);
-        // Si no se encuentra el perfil, crear uno básico
-        if (error.code === 'PGRST116') {
-          logger.info('🆆 Perfil no encontrado - creando perfil básico');
+        
+        // IMPORTANTE: NO crear perfiles automáticamente para usuarios demo
+        // La lógica demo ya maneja sus propios perfiles
+        const sessionFlags = StorageManager.getSessionFlags();
+        if (sessionFlags.demo_authenticated || sessionFlags.apoyo_authenticated) {
+          logger.info('🎭 Sesión demo detectada - no crear perfil automático');
+          setProfile(null);
+          return;
+        }
+        
+        // Solo crear perfil básico para usuarios reales de Supabase
+        if (error.code === 'PGRST116' && shouldUseRealSupabase()) {
+          logger.info('🆆 Perfil real no encontrado - creando perfil básico');
           try {
             const { data: newProfile, error: createError } = await (supabase
               .from('profiles') as any)
@@ -122,6 +132,7 @@ export const useAuth = () => {
             setProfile(null);
           }
         } else {
+          logger.info('⚠️ Perfil no encontrado - no crear automáticamente');
           setProfile(null);
         }
         return;
