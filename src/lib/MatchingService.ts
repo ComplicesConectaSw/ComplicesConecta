@@ -501,7 +501,7 @@ export class MatchingService {
   /**
    * Formatear match para el frontend
    */
-  private static formatMatch(rawMatch: any, currentUserId: string): Match {
+  private static formatMatch(rawMatch: Record<string, unknown>, currentUserId: string): Match {
     const otherUserId = rawMatch.user1_id === currentUserId ? rawMatch.user2_id : rawMatch.user1_id;
     const otherUserProfile = rawMatch.user1_id === currentUserId 
       ? rawMatch.profiles_user2_id 
