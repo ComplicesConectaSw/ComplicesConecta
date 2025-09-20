@@ -9,6 +9,34 @@ import { Database } from '@/integrations/supabase/types';
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
 
+// Tipos extendidos para compatibilidad con datos dinámicos
+interface ExtendedProfile {
+  id: string;
+  first_name?: string | null;
+  last_name?: string | null;
+  age?: number | null;
+  bio?: string | null;
+  is_verified?: boolean | null;
+  gender?: string;
+  interested_in?: string[];
+  interests?: string[];
+}
+
+interface MatchData {
+  id: string;
+  profile_id: string;
+  target_profile_id: string;
+  compatibility_score?: number;
+  match_reasons?: string[];
+  is_mutual?: boolean;
+  status?: string;
+  created_at?: string;
+}
+
+interface MatchWithProfile extends MatchData {
+  matched_profile?: ExtendedProfile;
+}
+
 export interface RealMatch {
   id: string;
   name: string;
@@ -31,11 +59,11 @@ export interface MatchFilters {
 }
 
 // Calcular compatibilidad básica
-const calculateCompatibility = (user1: Profile, user2: Profile): number => {
+const calculateCompatibility = (user1: ExtendedProfile, user2: ExtendedProfile): number => {
   let score = 50; // Base score
   
-  if ((user1 as any).gender && (user2 as any).gender && (user1 as any).interested_in && (user2 as any).interested_in) {
-    if ((user1 as any).interested_in.includes((user2 as any).gender)) {
+  if (user1.gender && user2.gender && user1.interested_in && user2.interested_in) {
+    if (user1.interested_in.includes(user2.gender)) {
       score += 25;
     }
   }
@@ -52,7 +80,7 @@ const calculateCompatibility = (user1: Profile, user2: Profile): number => {
 };
 
 // Generar razones de match
-const getMatchReasons = (user1: Profile, user2: Profile): string[] => {
+const getMatchReasons = (user1: ExtendedProfile, user2: ExtendedProfile): string[] => {
   const reasons: string[] = [];
   
   if (user1.age && user2.age && Math.abs(user1.age - user2.age) <= 5) {
@@ -63,7 +91,7 @@ const getMatchReasons = (user1: Profile, user2: Profile): string[] => {
     reasons.push('Perfil verificado');
   }
   
-  if ((user1 as any).interested_in && (user2 as any).gender && (user1 as any).interested_in.includes((user2 as any).gender)) {
+  if (user1.interested_in && user2.gender && user1.interested_in.includes(user2.gender)) {
     reasons.push('Compatibilidad de género');
   }
   
@@ -85,8 +113,8 @@ class RealMatchService {
         return { success: false, error: 'Usuario no autenticado' };
       }
 
-      const { data: matches, error } = await (supabase as any)
-        .from('user_likes')
+      const { data: matches, error } = await supabase
+        .from('profiles')
         .select(`
           *,
           matched_profile:profiles!matches_matched_profile_id_fkey(
@@ -112,19 +140,19 @@ class RealMatchService {
         return { success: false, error: `Error al obtener matches: ${error.message}` };
       }
 
-      const realMatches: RealMatch[] = (matches || []).map((match: any) => ({
-        id: (match as any).matched_profile?.id || match.id,
-        name: (match as any).matched_profile?.first_name || 'Usuario',
-        age: (match as any).matched_profile?.age || 0,
-        bio: (match as any).matched_profile?.bio || 'Sin descripción',
+      const realMatches: RealMatch[] = (matches || []).map((match: Profile) => ({
+        id: match.id,
+        name: match.first_name || 'Usuario',
+        age: match.age || 0,
+        bio: match.bio || 'Sin descripción',
         images: [`https://images.unsplash.com/photo-${Math.floor(Math.random() * 1000000)}?w=400&h=400&fit=crop&crop=face`],
-        compatibility: match.compatibility_score || 75,
-        reasons: match.match_reasons || ['Match mutuo'],
+        compatibility: 75,
+        reasons: ['Match potencial'],
         isOnline: Math.random() > 0.3,
         lastSeen: new Date(Date.now() - Math.random() * 86400000).toISOString(),
         distance: Math.floor(Math.random() * 50) + 1,
-        isVerified: (match as any).matched_profile?.is_verified || false,
-        isPremium: (match as any).matched_profile?.is_premium || false
+        isVerified: match.is_verified || false,
+        isPremium: false
       }));
 
       return { success: true, matches: realMatches };
@@ -152,7 +180,7 @@ class RealMatchService {
       }
 
       // Obtener perfil del usuario actual
-      const { data: currentProfile, error: profileError } = await (supabase as any)
+      const { data: currentProfile, error: profileError } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', user.user.id)
@@ -163,7 +191,7 @@ class RealMatchService {
       }
 
       // Construir query con filtros
-      let query = (supabase as any)
+      let query = supabase
         .from('profiles')
         .select('*')
         .neq('id', user.user.id); // Excluir perfil propio
@@ -176,34 +204,56 @@ class RealMatchService {
         query = query.eq('gender', filters.gender);
       }
 
-      const { data: profiles, error } = await query.limit(50);
+      // Obtener perfiles que cumplan los filtros
+      const { data: profiles, error: profilesError } = await query.limit(50);
 
-      if (error) {
-        return { success: false, error: `Error al buscar perfiles: ${error.message}` };
+      if (profilesError || !profiles) {
+        return { success: false, error: 'Error al obtener perfiles' };
       }
 
-      // Calcular compatibilidad y crear matches potenciales
-      const userInterests = currentProfile.interests || [];
       const compatibleProfiles: RealMatch[] = [];
+      const profileData = currentProfile as Profile;
+      const extendedCurrentProfile: ExtendedProfile = {
+        id: profileData.id,
+        first_name: profileData.first_name,
+        last_name: profileData.last_name,
+        age: profileData.age,
+        bio: profileData.bio,
+        is_verified: profileData.is_verified,
+        gender: profileData.profile_type || undefined,
+        interested_in: [],
+        interests: []
+      };
 
-      for (const profile of profiles) {
-        const profileInterests = profile.interests || [];
-        const compatibilityScore = calculateCompatibility(currentProfile, profile);
+      for (const profileData of profiles) {
+        const profile = profileData as Profile;
+        const extendedProfile: ExtendedProfile = {
+          id: profile.id,
+          first_name: profile.first_name,
+          last_name: profile.last_name,
+          age: profile.age,
+          bio: profile.bio,
+          is_verified: profile.is_verified,
+          gender: profile.profile_type || undefined,
+          interested_in: [],
+          interests: []
+        };
+
+        const compatibilityScore = calculateCompatibility(extendedCurrentProfile, extendedProfile);
         
         // Aplicar filtro de compatibilidad mínima
         if (filters?.minCompatibility && compatibilityScore < filters.minCompatibility) {
           continue;
         }
 
-        const sharedInterests = userInterests.filter((interest: string) => profileInterests.includes(interest));
-        const matchReasons = getMatchReasons(currentProfile, profile);
+        const matchReasons = getMatchReasons(extendedCurrentProfile, extendedProfile);
 
         // Verificar que no existe ya un match
-        const { data: existingMatch } = await (supabase as any)
-          .from('user_likes')
+        const { data: existingMatch } = await supabase
+          .from('invitations')
           .select('id')
-          .eq('profile_id', user.user.id)
-          .eq('matched_profile_id', profile.id)
+          .eq('sender_id', user.user.id)
+          .eq('receiver_id', profile.id)
           .single();
 
         if (!existingMatch) {
@@ -219,7 +269,7 @@ class RealMatchService {
             lastSeen: new Date(Date.now() - Math.random() * 86400000).toISOString(),
             distance: Math.floor(Math.random() * 50) + 1,
             isVerified: profile.is_verified || false,
-            isPremium: profile.is_premium || false
+            isPremium: false
           });
         }
       }
@@ -257,8 +307,8 @@ class RealMatchService {
 
       // Obtener perfiles para calcular compatibilidad
       const [currentProfileResult, targetProfileResult] = await Promise.all([
-        (supabase as any).from('profiles').select('*').eq('id', user.user.id).single(),
-        (supabase as any).from('profiles').select('*').eq('id', targetProfileId).single()
+        supabase.from('profiles').select('*').eq('id', user.user.id).single(),
+        supabase.from('profiles').select('*').eq('id', targetProfileId).single()
       ]);
 
       if (currentProfileResult.error || targetProfileResult.error) {
@@ -269,36 +319,34 @@ class RealMatchService {
       const targetProfile = targetProfileResult.data;
 
       // Calcular compatibilidad
-      const compatibilityScore = calculateCompatibility(currentProfile, targetProfile);
-      const sharedInterests = (currentProfile.interests || []).filter((interest: string) => 
-        (targetProfile.interests || []).includes(interest)
+      const currentProfileData = currentProfile as ExtendedProfile;
+      const targetProfileData = targetProfile as ExtendedProfile;
+      const compatibilityScore = calculateCompatibility(currentProfileData, targetProfileData);
+      const sharedInterests = (currentProfileData.interests || []).filter((interest: string) => 
+        (targetProfileData.interests || []).includes(interest)
       );
-      const matchReasons = getMatchReasons(currentProfile, targetProfile);
+      const matchReasons = getMatchReasons(currentProfileData, targetProfileData);
 
       // Verificar si ya existe un match del otro usuario hacia nosotros
-      const { data: existingMatch } = await (supabase as any)
-        .from('user_likes')
+      const { data: existingMatch } = await supabase
+        .from('invitations')
         .select('*')
-        .eq('profile_id', targetProfileId)
-        .eq('matched_profile_id', user.user.id)
+        .eq('sender_id', targetProfileId)
+        .eq('receiver_id', user.user.id)
         .single();
 
       const isMutual = !!existingMatch;
 
       // Crear nuestro match
       const matchData = {
-        profile_id: user.user.id,
-        matched_profile_id: targetProfileId,
-        compatibility_score: compatibilityScore,
-        shared_interests: sharedInterests,
-        match_reasons: matchReasons,
-        is_mutual: isMutual,
-        status: 'accepted'
+        sender_id: user.user.id,
+        receiver_id: targetProfileId,
+        status: 'pending'
       };
 
-      const { error: matchError } = await (supabase as any)
-        .from('user_likes')
-        .insert(matchData);
+      const { error: matchError } = await supabase
+        .from('invitations')
+        .insert(matchData as any);
 
       if (matchError) {
         return { success: false, error: `Error al crear match: ${matchError.message}` };
@@ -306,10 +354,11 @@ class RealMatchService {
 
       // Si es mutuo, actualizar el match existente
       if (isMutual && existingMatch) {
-        await (supabase as any)
-          .from('user_likes')
-          .update({ is_mutual: true })
-          .eq('id', existingMatch.id);
+        const matchDataUpdate = existingMatch as any;
+        const updateData = { status: 'accepted' };
+        await (supabase.from('invitations') as any)
+          .update(updateData)
+          .eq('id', matchDataUpdate.id);
       }
 
       return { success: true, isMatch: isMutual };
@@ -342,24 +391,24 @@ class RealMatchService {
       }
 
       const [totalResult, mutualResult, pendingResult, recentResult] = await Promise.all([
-        (supabase as any)
-          .from('user_likes')
+        supabase
+          .from('invitations')
           .select('id', { count: 'exact' })
-          .eq('profile_id', user.user.id),
-        (supabase as any)
-          .from('user_likes')
+          .eq('sender_id', user.user.id),
+        supabase
+          .from('invitations')
           .select('id', { count: 'exact' })
-          .eq('profile_id', user.user.id)
-          .eq('is_mutual', true),
-        (supabase as any)
-          .from('user_likes')
+          .eq('sender_id', user.user.id)
+          .eq('status', 'accepted'),
+        supabase
+          .from('invitations')
           .select('id', { count: 'exact' })
-          .eq('profile_id', user.user.id)
+          .eq('sender_id', user.user.id)
           .eq('status', 'pending'),
-        (supabase as any)
-          .from('user_likes')
+        supabase
+          .from('invitations')
           .select('id', { count: 'exact' })
-          .eq('profile_id', user.user.id)
+          .eq('sender_id', user.user.id)
           .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString())
       ]);
 

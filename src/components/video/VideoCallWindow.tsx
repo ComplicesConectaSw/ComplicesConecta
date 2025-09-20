@@ -114,11 +114,11 @@ export const VideoCallWindow: React.FC<VideoCallWindowProps> = ({
               <Video className="h-12 w-12 text-white" />
             </div>
             
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+            <h3 className="text-xl font-semibold text-white mb-2">
               Llamada entrante
             </h3>
             
-            <p className="text-gray-600 mb-8">
+            <p className="text-gray-200 mb-8">
               Usuario {incomingCall.fromUserId.slice(0, 8)} te está llamando
             </p>
             
