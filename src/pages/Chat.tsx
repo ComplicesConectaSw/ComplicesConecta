@@ -331,7 +331,7 @@ const Chat = () => {
     logger.info('🔄 CHAT - Verificando autenticación y modo...');
     
     // Determinar modo según autenticación
-    if (demoAuth === 'true' || isAuthenticated) {
+    if (demoAuth === 'true' || user) {
       logger.info('✅ CHAT - Modo producción/demo detectado');
       loadChatRooms();
     } else {
@@ -339,7 +339,17 @@ const Chat = () => {
       setChatRooms([]);
       setLoading(false);
     }
-  }, [isAuthenticated, navigate, demoAuth]);
+  }, [user, demoAuth, navigate]);
+
+  useEffect(() => {
+    if (selectedChat) {
+      if (isProduction) {
+        loadRealMessages(selectedChat.id.toString());
+      } else {
+        loadMessages(selectedChat.id);
+      }
+    }
+  }, [selectedChat, isProduction]);
 
   const handleSendMessage = () => {
     if (!selectedChat || !newMessage.trim()) return;

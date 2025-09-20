@@ -231,8 +231,8 @@ const AdminProduction = () => {
         location: profile.bio || 'No especificada', // Using bio as location fallback
         email: 'No disponible', // Email not in profiles table
         is_verified: false, // Campo no disponible en la tabla profiles
-        gender: (profile as any).gender || 'male',
-        interested_in: (profile as any).interested_in || 'women',
+        gender: profile.gender || 'male',
+        interested_in: profile.interested_in || 'women',
         is_premium: profile.is_premium || false,
         created_at: profile.created_at,
         last_seen: 'Nunca', // Not in profiles table
@@ -331,7 +331,7 @@ const AdminProduction = () => {
     try {
       // Intentar cargar FAQ - tabla podría no existir aún
       const { data, error } = await supabase
-        .from('faq_items')
+        .from('faqs')
         .select('*')
         .eq('is_active', true)
         .order('display_order', { ascending: true });
@@ -421,7 +421,7 @@ const AdminProduction = () => {
       const profile = profiles.find(p => p.id === profileId);
       if (!profile) return;
 
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('profiles')
         .update({ is_premium: !profile.is_premium })
         .eq('id', profileId);
@@ -456,20 +456,26 @@ const AdminProduction = () => {
 
     try {
       const { data, error } = await supabase
-        .from('faq_items')
-        .insert({ question: newFaq.question, answer: newFaq.answer, category: newFaq.category } as any)
+        .from('faqs')
+        .insert({ 
+          question: newFaq.question, 
+          answer: newFaq.answer, 
+          category: newFaq.category,
+          is_active: true,
+          display_order: 0
+        })
         .select()
         .single();
 
       if (error) throw error;
 
       setFaqItems([...faqItems, {
-        id: (data as any).id,
-        question: (data as any).question,
-        answer: (data as any).answer,
-        category: (data as any).category || 'general',
-        created_at: (data as any).created_at || new Date().toISOString(),
-        updated_at: (data as any).updated_at || new Date().toISOString()
+        id: data.id,
+        question: data.question,
+        answer: data.answer,
+        category: data.category || 'general',
+        created_at: data.created_at || new Date().toISOString(),
+        updated_at: data.updated_at || new Date().toISOString()
       }]);
       setNewFaq({ question: '', answer: '', category: 'general' });
       
@@ -623,8 +629,8 @@ const AdminProduction = () => {
                             {profile.is_premium && <Badge variant="secondary">Premium</Badge>}
                             {profile.is_verified && <Badge variant="outline">Verificado</Badge>}
                           </div>
-                          <p><strong>Género:</strong> {(profile as any).gender || 'No especificado'}</p>
-                          <p><strong>Interesado en:</strong> {(profile as any).interested_in || 'No especificado'}</p>
+                          <p><strong>Género:</strong> {profile.gender || 'No especificado'}</p>
+                          <p><strong>Interesado en:</strong> {profile.interested_in || 'No especificado'}</p>
                         </div>
                       </div>
                       <div className="flex gap-2">
