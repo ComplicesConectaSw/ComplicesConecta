@@ -92,7 +92,7 @@ export const useAuth = () => {
       logger.info('🔍 Error (si existe)', error ? { error: error.message } : undefined);
       
       if (error) {
-        logger.error('❌ Error fetching profile:', error);
+        logger.error('Error fetching profile:', { error: error.message });
         
         // IMPORTANTE: NO crear perfiles automáticamente para usuarios demo
         // La lógica demo ya maneja sus propios perfiles

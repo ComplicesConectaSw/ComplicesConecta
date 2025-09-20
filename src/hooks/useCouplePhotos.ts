@@ -54,10 +54,10 @@ export const useCouplePhotos = (profileId?: string): UseCouplePhotosReturn => {
 
       const photosWithUrls = data?.map((photo: CouplePhotoRow) => ({
         id: photo.id,
-        url: photo.image_url || '',
-        partner: (photo.title === 'el' || photo.title === 'ella') ? photo.title as 'el' | 'ella' : 'el' as 'el' | 'ella',
-        isMain: photo.is_public || false,
-        profileId: photo.couple_id || '',
+        url: photo.photo_url || '',
+        partner: (photo.partner_type === 'el' || photo.partner_type === 'ella') ? photo.partner_type as 'el' | 'ella' : 'el' as 'el' | 'ella',
+        isMain: photo.is_main || false,
+        profileId: photo.profile_id || '',
         uploadedAt: new Date(photo.created_at)
       })) || [];
 
@@ -104,14 +104,14 @@ export const useCouplePhotos = (profileId?: string): UseCouplePhotosReturn => {
       if (isFirstPhoto) {
         await supabase
           .from('couple_photos')
-          .update({ is_public: false })
-          .eq('couple_id', currentProfileId)
+          .update({ is_main: false })
+          .eq('profile_id', currentProfileId)
           .neq('id', 'temp');
       }
 
       // Guardar información en la base de datos
       const photoInsert: CouplePhotoInsert = {
-        couple_id: currentProfileId,
+        profile_id: currentProfileId,
         photo_url: publicUrl,
         partner_type: partner,
         is_main: isFirstPhoto,
@@ -213,8 +213,8 @@ export const useCouplePhotos = (profileId?: string): UseCouplePhotosReturn => {
       const { error: updateError } = await supabase
         .from('couple_photos')
         .update({ is_main: false })
-        .eq('couple_id', currentProfileId)
-        .eq('title', partner);
+        .eq('profile_id', currentProfileId || '')
+        .eq('partner_type', partner || 'el');
 
       if (updateError) throw updateError;
 

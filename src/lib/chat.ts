@@ -590,15 +590,15 @@ function mapChatRoomRowToChatRoom(row: any): ChatRoom {
   };
 }
 
-function mapMessageRowToChatMessage(row: MessageRow): ChatMessage {
+function mapMessageRowToChatMessage(row: any): ChatMessage {
   return {
     id: row.id,
-    room_id: (row as any).conversation_id || '',
-    sender_id: row.sender_id,
+    room_id: row.room_id || '',
+    sender_id: row.sender_id || '',
     content: row.content,
     message_type: 'text' as 'text' | 'image' | 'file',
     created_at: row.created_at || '',
-    is_deleted: false
+    is_deleted: row.is_deleted || false
   };
 }
 

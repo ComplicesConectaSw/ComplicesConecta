@@ -190,7 +190,7 @@ export const PrivateMatches: React.FC = () => {
       }
 
       // Mapear datos de invitations a formato PrivateMatch
-      const mappedMatches: PrivateMatch[] = (data as InvitationWithProfile[] ?? []).map(invitation => ({
+      const mappedMatches: PrivateMatch[] = (data as unknown as InvitationWithProfile[] ?? []).map(invitation => ({
         id: invitation.id,
         user_id: invitation.from_profile,
         matched_user_id: invitation.to_profile,
