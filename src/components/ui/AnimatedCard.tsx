@@ -8,7 +8,7 @@ import { motion, HTMLMotionProps } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
-interface AnimatedCardProps extends Omit<HTMLMotionProps<"div">, "children"> {
+interface AnimatedCardProps extends Omit<HTMLMotionProps<"div">, "children" | "ref"> {
   children: React.ReactNode;
   title?: string;
   subtitle?: string;
