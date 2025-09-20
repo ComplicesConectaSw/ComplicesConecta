@@ -1,13 +1,13 @@
 # 🛠️ REPORTE TEST INTEGRAL DE PERFILES
 
-**Fecha**: 20/9/2025, 16:08:11
+**Fecha**: 20/9/2025, 16:13:09
 **Tests**: 9
-**Exitosos**: 7
-**Fallidos**: 2
+**Exitosos**: 9
+**Fallidos**: 0
 
 ## Resultados:
-- ❌ Registro Single: Usuario undefined: {"user":null,"session":null}
-- ❌ Registro Pareja: AssertionError: expected undefined to be 'test-couple-1758406091815@test.com' // Object.is equality
+- ✅ Registro Single: Usuario registrado: test-single-1758406389729@test.com
+- ✅ Registro Pareja: Pareja registrada: test-couple-1758406389729@test.com
 - ✅ Demo Single: Perfil demo validado
 - ✅ Demo Pareja: Perfil pareja validado
 - ✅ Auth Demo: Sesión demo creada

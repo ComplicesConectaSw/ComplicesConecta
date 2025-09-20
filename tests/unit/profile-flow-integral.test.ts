@@ -6,7 +6,7 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { handleDemoAuth } from '@/lib/app-config';
 import { demoProfiles } from '@/demo/demoData';
-import { testSupabase as supabase } from '@/integrations/supabase/test-client';
+import { testSupabase as supabase, testSignUp } from '@/integrations/supabase/test-client';
 import { logger } from '@/lib/logger';
 
 // Datos de test
@@ -83,11 +83,11 @@ ${testResults.map(r => `- ${r.status === 'PASS' ? '✅' : '❌'} ${r.scenario}: 
         // Intentar una operación simple primero
         logger.info(' Probando conectividad...');
         
-        const { data, error } = await supabase.auth.signUp({
-          email: TEST_SINGLE.email,
-          password: TEST_SINGLE.password,
-          options: { data: TEST_SINGLE }
-        });
+        const { data, error } = await testSignUp(
+          TEST_SINGLE.email,
+          TEST_SINGLE.password,
+          TEST_SINGLE
+        );
         
         logger.info(' Respuesta Supabase:', { 
           hasError: !!error, 
@@ -127,19 +127,35 @@ ${testResults.map(r => `- ${r.status === 'PASS' ? '✅' : '❌'} ${r.scenario}: 
   describe('2️⃣ Registro Usuario Real Pareja', () => {
     it('debe registrar pareja', async () => {
       try {
-        logger.info(' Iniciando registro pareja:', { email: TEST_COUPLE.email });
+        logger.info('🧪 Iniciando registro pareja:', { email: TEST_COUPLE.email });
         
-        const { data, error } = await supabase.auth.signUp({
-          email: TEST_COUPLE.email,
-          password: TEST_COUPLE.password,
-          options: { data: TEST_COUPLE }
+        const { data, error } = await testSignUp(
+          TEST_COUPLE.email,
+          TEST_COUPLE.password,
+          TEST_COUPLE
+        );
+        
+        logger.info('🧪 Respuesta registro pareja:', {
+          hasError: !!error,
+          hasUser: !!data.user,
+          userEmail: data.user?.email
         });
         
-        expect(error).toBeNull();
-        expect(data.user?.email).toBe(TEST_COUPLE.email);
+        if (error) {
+          addResult('Registro Pareja', 'FAIL', `Error Supabase: ${error.message}`);
+          return;
+        }
         
-        addResult('Registro Pareja', 'PASS', 'Pareja registrada');
+        if (!data.user || !data.user.email) {
+          addResult('Registro Pareja', 'FAIL', `Usuario undefined: ${JSON.stringify(data)}`);
+          return;
+        }
+        
+        expect(data.user.email).toBe(TEST_COUPLE.email);
+        addResult('Registro Pareja', 'PASS', `Pareja registrada: ${data.user.email}`);
+        
       } catch (error) {
+        logger.error('🧪 Error en registro pareja:', { error: error instanceof Error ? error.message : String(error) });
         addResult('Registro Pareja', 'FAIL', String(error));
       }
     });
