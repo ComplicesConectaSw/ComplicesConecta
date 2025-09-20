@@ -28,13 +28,13 @@ export const checkEmailUniqueness = async (email: string): Promise<boolean> => {
       .limit(1);
 
     if (profileError && profileError.code !== 'PGRST116') {
-      logger.error('Error checking profiles:', profileError);
+      logger.error('Error checking profiles:', { error: profileError.message || String(profileError) });
       throw new Error('Error verificando disponibilidad del email');
     }
 
     return !profiles || profiles.length === 0;
   } catch (error) {
-    logger.error('Error in checkEmailUniqueness:', error);
+    logger.error('Error verificando email en Supabase:', { error: error instanceof Error ? error.message : String(error) });
     throw new Error('Error verificando disponibilidad del email');
   }
 };
@@ -77,7 +77,7 @@ export const validateEmail = async (email: string): Promise<EmailValidationResul
       isUnique: true
     };
   } catch (error) {
-    logger.error('Error in validateEmail:', error);
+    logger.error('Error inesperado verificando email:', { error: error instanceof Error ? error.message : String(error) });
     return {
       isValid: false,
       isUnique: false,

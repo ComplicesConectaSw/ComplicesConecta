@@ -35,7 +35,7 @@ export const verifyHCaptcha = async (
     });
     
     if (error) {
-      logger.error('Error al verificar hCaptcha:', error);
+      logger.error('Error al verificar hCaptcha:', { error: error.message || String(error) });
       return {
         success: false,
         message: 'Error interno de verificación'
@@ -58,7 +58,7 @@ export const verifyHCaptcha = async (
       };
     }
   } catch (error) {
-    logger.error('Error al verificar hCaptcha:', error);
+    logger.error('Error al verificar hCaptcha:', { error: error instanceof Error ? error.message : String(error) });
     return {
       success: false,
       message: 'Error interno de verificación'
@@ -79,12 +79,12 @@ export const exampleUsage = () => {
         logger.info('✅ Verificación exitosa!', result.data);
         // Proceder con el registro/login del usuario
       } else {
-        logger.info('❌ Verificación falló:', result.message);
+        logger.info('❌ Verificación falló:', { message: result.message });
         // Mostrar error al usuario
       }
     })
     .catch((error) => {
-      logger.error('Error:', error);
+      logger.error('Error:', { error: error instanceof Error ? error.message : String(error) });
     });
 };
 
