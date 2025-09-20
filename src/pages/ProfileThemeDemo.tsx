@@ -23,7 +23,7 @@ const ProfileThemeDemo: React.FC = () => {
           </div>
           
           <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed">
-            Experimenta con la personalización visual avanzada de ComplicesConecta. 
+            Experimenta con la personalización visual avanzada de ComplicesConecta v2.9.3. 
             Los perfiles se adaptan dinámicamente según el género, tipo de relación y preferencias de tema.
           </p>
           

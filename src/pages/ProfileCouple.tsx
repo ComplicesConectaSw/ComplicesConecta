@@ -33,15 +33,69 @@ const ProfileCouple: React.FC = () => {
           return;
         }
         
-        // Simular carga de perfil de pareja
-        setTimeout(() => {
-          // Usar el nuevo sistema de perfiles de pareja
-          const mockCoupleProfiles = generateMockCoupleProfiles();
-          const selectedProfile = mockCoupleProfiles[0]; // Usar el primer perfil como ejemplo
-          
-          setProfile(selectedProfile);
-          setLoading(false);
-        }, 1500);
+        // Verificar si es usuario demo por email
+        const isDemoEmail = user?.email && (
+          user.email === 'single@outlook.es' || 
+          user.email === 'pareja@outlook.es'
+        );
+        
+        if (isDemoEmail) {
+          logger.info('🎭 Usuario demo detectado, cargando desde demoData...');
+          // Cargar perfil demo desde demoData
+          import('@/demo/demoData').then(({ demoProfiles }) => {
+            const demoProfile = demoProfiles.find(p => p.email === user.email);
+            if (demoProfile && demoProfile.profile_type === 'couple') {
+              logger.info('✅ Perfil demo pareja encontrado:', { name: demoProfile.first_name });
+              // Convertir perfil demo a formato CoupleProfileWithPartners
+              const coupleProfile: CoupleProfileWithPartners = {
+                id: demoProfile.id,
+                couple_name: demoProfile.display_name || `${demoProfile.first_name} & Roberto`,
+                couple_bio: demoProfile.bio || 'Pareja liberal y experimentada',
+                relationship_type: 'couple' as any,
+                partner1_id: `${demoProfile.id}-partner1`,
+                partner2_id: `${demoProfile.id}-partner2`,
+                couple_images: [demoProfile.avatar_url || '/profile-couple.jpg'],
+                location: demoProfile.location || 'Guadalajara, México',
+                is_verified: demoProfile.is_verified || false,
+                is_premium: demoProfile.is_premium || false,
+                created_at: demoProfile.created_at || new Date().toISOString(),
+                updated_at: new Date().toISOString(),
+                partner1_first_name: demoProfile.first_name || 'Carmen',
+                partner1_last_name: 'Ruiz',
+                partner1_age: demoProfile.age || 32,
+                partner1_bio: 'Parte de una pareja liberal',
+                partner1_gender: 'female',
+                partner2_first_name: 'Roberto',
+                partner2_last_name: 'García',
+                partner2_age: 34,
+                partner2_bio: 'Compañero de vida y aventuras',
+                partner2_gender: 'male',
+                isOnline: true
+              };
+              setProfile(coupleProfile);
+            } else {
+              logger.warn('⚠️ Perfil demo pareja no encontrado para:', { email: user.email });
+              // Fallback a perfil mock
+              const mockCoupleProfiles = generateMockCoupleProfiles();
+              setProfile(mockCoupleProfiles[0]);
+            }
+            setLoading(false);
+          }).catch((error) => {
+            logger.error('❌ Error cargando demoData:', { error: String(error) });
+            // Fallback a perfil mock
+            const mockCoupleProfiles = generateMockCoupleProfiles();
+            setProfile(mockCoupleProfiles[0]);
+            setLoading(false);
+          });
+        } else {
+          // Para usuarios reales, usar perfil mock por ahora
+          setTimeout(() => {
+            const mockCoupleProfiles = generateMockCoupleProfiles();
+            const selectedProfile = mockCoupleProfiles[0];
+            setProfile(selectedProfile);
+            setLoading(false);
+          }, 1500);
+        }
         
       } catch (error) {
         logger.error('Error loading profile:', { error: String(error) });
@@ -101,9 +155,6 @@ const ProfileCouple: React.FC = () => {
       </div>
       
       <div className="relative z-10 flex flex-col min-h-screen">
-        {/* Header con navegación completa */}
-        <Navigation />
-        
         <div className="bg-black/80 backdrop-blur-md border-b border-white/30 p-3 sm:p-4 shadow-lg flex-shrink-0">
           <div className="flex items-center justify-between flex-wrap gap-2">
             <h1 className="text-base sm:text-lg md:text-xl font-bold text-white text-center flex-1 min-w-0 px-2 truncate">

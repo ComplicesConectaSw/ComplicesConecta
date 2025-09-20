@@ -101,9 +101,8 @@ const NavigationEnhanced = ({
     const demoUser = localStorage.getItem('demo_user');
     const userType = localStorage.getItem('userType');
     const isDemo = localStorage.getItem('demo_authenticated') === 'true';
-    const isSpecial = localStorage.getItem('apoyo_authenticated') === 'true';
     
-    logger.info('🔍 Navigation Debug:', { demoUser, userType, isDemo, isSpecial, path });
+    logger.info('🔍 Navigation Debug:', { demoUser, userType, isDemo, path });
     
     // Detectar tipo de usuario y redirigir al perfil correcto
     if (path === '/profile') {
@@ -116,7 +115,7 @@ const NavigationEnhanced = ({
     }
     
     // Verificar autenticación antes de navegar
-    const isAuthenticated = isDemo || isSpecial;
+    const isAuthenticated = isDemo;
     if (demoUser) {
     }
     

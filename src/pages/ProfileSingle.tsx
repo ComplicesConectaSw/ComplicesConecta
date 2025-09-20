@@ -59,8 +59,33 @@ const ProfileSingle: React.FC = () => {
           return;
         }
         
-        // Si hay usuario pero no perfil, esperar a que se cargue
+        // Si hay usuario pero no perfil, intentar cargar desde demoData
         if (user && !authProfile) {
+          // Verificar si es usuario demo por email
+          const isDemoEmail = user.email && (
+            user.email === 'single@outlook.es' || 
+            user.email === 'pareja@outlook.es'
+          );
+          
+          if (isDemoEmail) {
+            logger.info('🎭 Usuario demo detectado, cargando desde demoData...');
+            // Cargar perfil demo desde demoData
+            import('@/demo/demoData').then(({ demoProfiles }) => {
+              const demoProfile = demoProfiles.find(p => p.email === user.email);
+              if (demoProfile) {
+                logger.info('✅ Perfil demo encontrado:', { name: demoProfile.first_name });
+                setProfile(demoProfile as Tables<'profiles'>);
+              } else {
+                logger.warn('⚠️ Perfil demo no encontrado para:', { email: user.email });
+              }
+              setIsLoading(false);
+            }).catch((error) => {
+              logger.error('❌ Error cargando demoData:', { error: String(error) });
+              setIsLoading(false);
+            });
+            return;
+          }
+          
           logger.info('⏳ Usuario autenticado, esperando carga del perfil...');
           // Mantener loading state hasta que el perfil se cargue
           return;
@@ -90,12 +115,26 @@ const ProfileSingle: React.FC = () => {
   }
 
   if (!profile) {
+    // Debug: mostrar información de estado
+    logger.info('🔍 ProfileSingle - Estado cuando profile es null:', {
+      isLoading,
+      user: !!user,
+      userEmail: user?.email,
+      authProfile: !!authProfile,
+      isAuthenticated,
+      demoAuth,
+      demoUser: !!demoUser
+    });
+    
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-pink-800 flex items-center justify-center">
         <Card className="w-full max-w-md mx-4">
           <CardContent className="p-6 text-center">
             <h2 className="text-xl font-semibold mb-2">Perfil no encontrado</h2>
             <p className="text-white/80 mb-4">No se pudo cargar la información del perfil.</p>
+            <p className="text-sm text-white/60 mb-4">
+              Debug: Usuario: {user?.email || 'No user'}, Auth: {String(isAuthenticated)}
+            </p>
             <Button onClick={() => navigate('/discover')} variant="outline">
               Volver al inicio
             </Button>
