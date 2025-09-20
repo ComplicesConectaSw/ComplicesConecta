@@ -93,7 +93,7 @@ function showLoadingScreen() {
             Cargando aplicación...
           </p>
           <p style="margin: 0; font-size: 14px; opacity: 0.7;">
-            Versión 2.9.0
+            Versión 2.9.3
           </p>
         </div>
         <style>
@@ -185,7 +185,7 @@ function showErrorWithFallback(error: unknown) {
                 🎯 ComplicesConecta
               </h1>
               <p style="font-size: 18px; opacity: 0.8;">
-                Plataforma de Conexión Social - Versión 2.9.0
+                Plataforma de Conexión Social - Versión 2.9.3
               </p>
             </header>
             

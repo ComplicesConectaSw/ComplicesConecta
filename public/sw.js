@@ -1,8 +1,8 @@
-// Service Worker Avanzado - ComplicesConecta v2.9.0
-const CACHE_NAME = 'complicesconecta-v2.9.0';
-const STATIC_CACHE = 'static-v2.9.0';
-const DYNAMIC_CACHE = 'dynamic-v2.9.0';
-const IMAGE_CACHE = 'images-v2.9.0';
+// Service Worker Avanzado - ComplicesConecta v2.9.3
+const CACHE_NAME = 'complicesconecta-v2.9.3';
+const STATIC_CACHE = 'static-v2.9.3';
+const DYNAMIC_CACHE = 'dynamic-v2.9.3';
+const IMAGE_CACHE = 'images-v2.9.3';
 
 // Recursos estáticos críticos
 const STATIC_ASSETS = [
@@ -306,4 +306,4 @@ self.addEventListener('message', (event) => {
   }
 });
 
-console.log('🎯 Service Worker Avanzado loaded - ComplicesConecta v2.9.0');
+console.log('🎯 Service Worker Avanzado loaded - ComplicesConecta v2.9.3');
