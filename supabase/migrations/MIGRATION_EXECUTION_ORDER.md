@@ -62,6 +62,14 @@
 -- Estado: ✅ APLICADA - Seguridad completa implementada
 ```
 
+### 9. CORRECCIÓN ESQUEMA MATCHING 🆕
+```sql
+-- Archivo: 20250920_fix_matching_schema.sql
+-- Descripción: Alinear esquema DB con MatchingService.ts
+-- Estado: 🆕 NUEVA - Corrige discrepancias entre código y BD
+-- Cambios: Renombra columnas user_likes, agrega interests, funciones RPC
+```
+
 ---
 
 ## 📚 MIGRACIONES COMPLEMENTARIAS (Orden cronológico)
