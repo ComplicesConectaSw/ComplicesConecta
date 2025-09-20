@@ -78,7 +78,7 @@ export const createCoupleProfile = async (data: CreateCoupleProfileData): Promis
     };
 
     // En una implementación real, esto se guardaría en Supabase
-    logger.info('Created couple profile (mock):', newProfile);
+    logger.info('Created couple profile (mock):', { id: newProfile.id, couple_name: newProfile.couple_name });
     return newProfile;
   } catch (error) {
     logger.error('Error creating couple profile:', { error: String(error) });
