@@ -502,29 +502,29 @@ export class MatchingService {
    * Formatear match para el frontend
    */
   private static formatMatch(rawMatch: Record<string, unknown>, currentUserId: string): Match {
-    const otherUserId = rawMatch.user1_id === currentUserId ? rawMatch.user2_id : rawMatch.user1_id;
+    const otherUserId = String(rawMatch.user1_id) === currentUserId ? String(rawMatch.user2_id) : String(rawMatch.user1_id);
     const otherUserProfile = rawMatch.user1_id === currentUserId 
-      ? rawMatch.profiles_user2_id 
-      : rawMatch.profiles_user1_id;
+      ? rawMatch.profiles_user2_id as Record<string, unknown>
+      : rawMatch.profiles_user1_id as Record<string, unknown>;
 
     return {
-      id: rawMatch.id,
-      user1_id: rawMatch.user1_id,
-      user2_id: rawMatch.user2_id,
-      compatibility_score: rawMatch.compatibility_score,
-      shared_interests: rawMatch.shared_interests || [],
-      match_reasons: rawMatch.match_reasons || [],
-      created_at: rawMatch.created_at,
-      last_interaction: rawMatch.last_interaction,
-      is_active: rawMatch.is_active,
+      id: String(rawMatch.id || ''),
+      user1_id: String(rawMatch.user1_id || ''),
+      user2_id: String(rawMatch.user2_id || ''),
+      compatibility_score: Number(rawMatch.compatibility_score || 0),
+      shared_interests: Array.isArray(rawMatch.shared_interests) ? rawMatch.shared_interests as string[] : [],
+      match_reasons: Array.isArray(rawMatch.match_reasons) ? rawMatch.match_reasons as string[] : [],
+      created_at: String(rawMatch.created_at || ''),
+      last_interaction: String(rawMatch.last_interaction || ''),
+      is_active: Boolean(rawMatch.is_active),
       other_user: otherUserProfile ? {
         id: otherUserId,
-        first_name: otherUserProfile.first_name,
-        last_name: otherUserProfile.last_name,
-        display_name: otherUserProfile.display_name,
-        avatar_url: otherUserProfile.avatar_url,
-        age: otherUserProfile.age,
-        interests: otherUserProfile.interests
+        first_name: String(otherUserProfile.first_name || ''),
+        last_name: String(otherUserProfile.last_name || ''),
+        display_name: String(otherUserProfile.display_name || ''),
+        avatar_url: String(otherUserProfile.avatar_url || ''),
+        age: Number(otherUserProfile.age || 0),
+        interests: Array.isArray(otherUserProfile.interests) ? otherUserProfile.interests as string[] : []
       } : undefined
     };
   }
