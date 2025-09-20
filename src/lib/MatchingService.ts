@@ -89,7 +89,7 @@ export class MatchingService {
       }
 
       // Verificar si ya existe el like
-      const { data: existingLike } = await supabase
+      const { data: existingLike } = await (supabase as any)
         .from('user_likes')
         .select('*')
         .eq('liker_id', user.id)
@@ -101,13 +101,13 @@ export class MatchingService {
       }
 
       // Crear el like
-      const { error: likeError } = await supabase
+      const { error: likeError } = await (supabase as any)
         .from('user_likes')
         .insert({
           liker_id: user.id,
           liked_id: likedUserId,
           is_active: true
-        } as any);
+        });
 
       if (likeError) throw likeError;
 
@@ -167,7 +167,7 @@ export class MatchingService {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return [];
 
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('user_likes')
         .select('*')
         .eq('liker_id', user.id)
@@ -195,29 +195,46 @@ export class MatchingService {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return [];
 
-      // Usar la función SQL helper
-      const { data, error } = await supabase
-        .rpc('get_user_matches', { user_id: user.id } as any);
+      // Usar consulta directa mientras se aplica la migración
+      const { data, error } = await (supabase as any)
+        .from('matches')
+        .select(`
+          id,
+          user1_id,
+          user2_id,
+          compatibility_score,
+          shared_interests,
+          match_reasons,
+          created_at,
+          last_interaction
+        `)
+        .or(`user1_id.eq.${user.id},user2_id.eq.${user.id}`)
+        .eq('is_active', true)
+        .order('created_at', { ascending: false });
 
       if (error) throw error;
 
-      return ((data as unknown[]) || []).map((match: { match_id: string; other_user_id: string; compatibility_score?: number; created_at?: string }) => ({
-        id: match.match_id,
-        user1_id: user.id,
-        user2_id: match.other_user_id,
-        compatibility_score: match.compatibility_score,
-        shared_interests: match.shared_interests,
-        match_reasons: match.match_reasons,
-        created_at: match.last_interaction,
-        last_interaction: match.last_interaction,
-        is_active: true,
-        other_user: {
-          id: match.other_user_id,
-          display_name: match.other_user_name,
-          avatar_url: match.other_user_avatar
-        },
-        unread_messages: match.unread_messages
-      }));
+      return ((data as unknown[]) || []).map((match: unknown) => {
+        const m = match as Record<string, unknown>;
+        const otherUserId = String(m.user1_id) === user.id ? String(m.user2_id) : String(m.user1_id);
+        return {
+          id: String(m.id || ''),
+          user1_id: String(m.user1_id || ''),
+          user2_id: String(m.user2_id || ''),
+          compatibility_score: Number(m.compatibility_score || 0),
+          shared_interests: Array.isArray(m.shared_interests) ? m.shared_interests as string[] : [],
+          match_reasons: Array.isArray(m.match_reasons) ? m.match_reasons as string[] : [],
+          created_at: String(m.created_at || new Date().toISOString()),
+          last_interaction: String(m.last_interaction || m.created_at || new Date().toISOString()),
+          is_active: true,
+          other_user: {
+            id: otherUserId,
+            name: 'Usuario',
+            avatar: ''
+          },
+          unread_messages: 0
+        } as Match;
+      });
 
     } catch (error) {
       logger.error('Error al obtener matches:', { error: error instanceof Error ? error.message : String(error) });
@@ -277,29 +294,41 @@ export class MatchingService {
         limit = 20 
       } = filters || {};
 
-      // Usar la función SQL helper
-      const { data, error } = await supabase
-        .rpc('get_potential_matches', {
-          user_id: user.id,
-          max_distance: maxDistance,
-          min_age: minAge,
-          max_age: maxAge,
-          limit_count: limit
-        } as any);
+      // Usar consulta directa mientras se aplica la migración
+      const { data, error } = await (supabase as any)
+        .from('profiles')
+        .select(`
+          id,
+          first_name,
+          last_name,
+          display_name,
+          age,
+          interests,
+          avatar_url,
+          is_online,
+          last_active
+        `)
+        .neq('id', user.id)
+        .gte('age', minAge)
+        .lte('age', maxAge)
+        .limit(limit);
 
       if (error) throw error;
 
-      return ((data as any) || []).map((profile: any) => ({
-        id: profile.profile_id,
-        first_name: profile.first_name,
-        last_name: profile.last_name,
-        display_name: profile.display_name,
-        age: profile.age,
-        interests: profile.interests || [],
-        avatar_url: profile.avatar_url,
-        is_online: profile.is_online,
-        last_active: profile.last_active
-      }));
+      return ((data as unknown[]) || []).map((profile: unknown) => {
+        const p = profile as Record<string, unknown>;
+        return {
+          id: String(p.id || ''),
+          first_name: String(p.first_name || ''),
+          last_name: String(p.last_name || ''),
+          display_name: String(p.display_name || ''),
+          age: Number(p.age || 0),
+          interests: Array.isArray(p.interests) ? p.interests as string[] : [],
+          avatar_url: String(p.avatar_url || ''),
+          is_online: Boolean(p.is_online),
+          last_active: String(p.last_active || '')
+        };
+      });
 
     } catch (error) {
       logger.error('Error al obtener perfiles potenciales:', { error: error instanceof Error ? error.message : String(error) });
@@ -328,7 +357,7 @@ export class MatchingService {
         .eq('id', user.id)
         .single();
 
-      const userInterests = (userProfile as any)?.interests || [];
+      const userInterests = (userProfile as unknown as { interests?: string[] })?.interests || [];
 
       // Obtener perfiles potenciales
       const potentialMatches = await this.getPotentialMatches(filters);
