@@ -56,6 +56,7 @@
 ✅ MANTENER (Core Realtime):
 - RealtimeChatWindow.tsx    → 🔴 CRÍTICO: Chat público en tiempo real
 - ChatWithLocation.tsx      → 🔴 CRÍTICO: Chat con geolocalización (usado en DB schema)
+- TypingIndicator.tsx       → 🔴 CRÍTICO: UX tiempo real (usado en ChatContainer, useRealtimeChat)
 - ChatList.tsx              → Lista de chats
 - ChatWindow.tsx            → Ventana básica (wrapper)
 - ChatWindowEnhanced.tsx    → Ventana mejorada

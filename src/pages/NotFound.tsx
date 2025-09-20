@@ -166,8 +166,7 @@ const NotFound = () => {
               className="relative"
             >
               <Star 
-                className="w-4 h-4 text-yellow-400/60 animate-twinkle"
-                style={{ animationDelay: `${i * 0.3}s` }}
+                className={`w-4 h-4 text-yellow-400/60 animate-twinkle [animation-delay:${i * 0.3}s]`}
                 fill="currentColor"
               />
             </div>

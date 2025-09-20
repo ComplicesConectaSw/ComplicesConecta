@@ -4,6 +4,13 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { SupabaseProfile } from '@/lib/MatchingService';
+
+interface ProfileWithLocation extends SupabaseProfile {
+  share_location?: boolean;
+  is_verified?: boolean;
+  created_at?: string;
+}
 
 export interface SimpleMatch {
   id: string;
@@ -57,15 +64,17 @@ export class SimpleMatchService {
       // Filtrar perfiles por distancia si se especifica
       let filteredProfiles = profiles;
       
-      if (maxDistance && (currentProfile as any).latitude && (currentProfile as any).longitude && (currentProfile as any).share_location) {
-        filteredProfiles = profiles.filter((profile: any) => {
-          if (!(profile as any).latitude || !(profile as any).longitude || !(profile as any).share_location) {
+      if (maxDistance && (currentProfile as ProfileWithLocation).latitude && (currentProfile as ProfileWithLocation).longitude && (currentProfile as ProfileWithLocation).share_location) {
+        filteredProfiles = profiles.filter((profile: ProfileWithLocation) => {
+          if (!profile.latitude || !profile.longitude || !profile.share_location) {
             return true; // Incluir perfiles sin ubicación
           }
           
           const distance = this.calculateDistance(
-            (currentProfile as any).latitude!, (currentProfile as any).longitude!,
-            (profile as any).latitude, (profile as any).longitude
+            (currentProfile as ProfileWithLocation).latitude!,
+            (currentProfile as ProfileWithLocation).longitude!,
+            profile.latitude,
+            profile.longitude
           );
           
           return distance <= maxDistance;
@@ -73,12 +82,12 @@ export class SimpleMatchService {
       }
 
       // Convertir perfiles a matches
-      const matches: SimpleMatch[] = filteredProfiles.map((profile: any) => {
+      const matches: SimpleMatch[] = filteredProfiles.map((profile: ProfileWithLocation) => {
         // Calcular compatibilidad básica
         let compatibility = 50;
         
-        if ((currentProfile as any).interested_in && (profile as any).gender) {
-          if ((currentProfile as any).interested_in.includes((profile as any).gender)) {
+        if (currentProfile.interested_in && profile.gender) {
+          if (currentProfile.interested_in.includes(profile.gender)) {
             compatibility += 25;
           }
         }
