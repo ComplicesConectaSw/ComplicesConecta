@@ -54,7 +54,21 @@ export const demoProfiles = [
     id: 'demo-1',
     first_name: 'Ana',
     last_name: 'García',
-    display_name: 'Ana & Carlos'
+    display_name: 'Ana & Carlos',
+    age: 29,
+    email: 'ana.garcia@demo.com',
+    profile_type: 'couple',
+    is_demo: true,
+    is_verified: true,
+    is_premium: false,
+    role: 'user',
+    gender: 'couple',
+    relationship_status: 'couple',
+    location: 'Ciudad de México, México',
+    interests: ['lifestyle', 'parejas', 'nuevas_experiencias'],
+    bio: 'Pareja joven y aventurera buscando nuevas experiencias y conexiones auténticas.',
+    created_at: '2024-01-15T12:00:00Z',
+    updated_at: '2024-01-15T12:00:00Z'
   },
   {
     id: 'demo-6',
