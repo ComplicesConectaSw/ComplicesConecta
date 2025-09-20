@@ -402,8 +402,7 @@ const Events = () => {
                 {filteredEvents.map((event, index) => (
                   <Card 
                     key={event.id}
-                    className="bg-card/80 backdrop-blur-sm border border-primary/10 overflow-hidden animate-slide-up"
-                    style={{ animationDelay: `${index * 0.1}s` }}
+                    className={`bg-card/80 backdrop-blur-sm border border-primary/10 overflow-hidden animate-slide-up [animation-delay:${index * 0.1}s]`}
                   >
                     <div className="relative">
                       <img 
@@ -480,8 +479,7 @@ const Events = () => {
                 {filteredClubs.map((club, index) => (
                   <Card 
                     key={club.id}
-                    className="bg-card/80 backdrop-blur-sm border border-primary/10 overflow-hidden animate-slide-up"
-                    style={{ animationDelay: `${index * 0.1}s` }}
+                    className={`bg-card/80 backdrop-blur-sm border border-primary/10 overflow-hidden animate-slide-up [animation-delay:${index * 0.1}s]`}
                   >
                     <div className="relative">
                       <img 
