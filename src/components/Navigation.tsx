@@ -15,12 +15,11 @@ interface NavigationProps {
 
 // Usar NavigationLegacy temporalmente para el usuario especial
 const Navigation = ({ className }: NavigationProps) => {
-  // Migrar localStorage a hook tipado
-  const [isSpecialUser] = usePersistedState('apoyo_authenticated', false);
+  // Verificar si es usuario demo
+  const [isDemoUser] = usePersistedState('demo_authenticated', false);
   
-  if (isSpecialUser) {
-    return <NavigationLegacy className={className} />;
-  }
+  // Usar NavigationEnhanced para todos los usuarios
+  // NavigationLegacy se mantiene como fallback
   
   return (
     <NavigationEnhanced 
@@ -43,12 +42,12 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
 
   // localStorage migrado a hooks tipados - todos los hooks al inicio
   const [isDemoAuthenticated] = usePersistedState('demo_authenticated', false);
-  const [isSpecialAuthenticated] = usePersistedState('apoyo_authenticated', false);
+  // Removido isSpecialAuthenticated - solo usar demo
   const [demoUser] = usePersistedState('demo_user', null);
   // Removed apoyo_user reference
   const [currentUserType] = usePersistedState('userType', null);
   
-  const isAuthenticated = isDemoAuthenticated || isSpecialAuthenticated;
+  const isAuthenticated = isDemoAuthenticated;
 
   const baseNavItems = [
     { id: 'feed', icon: Home, label: 'Inicio', path: '/feed' },
@@ -96,7 +95,7 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
     if (path === '/logout') {
           // Usar hooks para limpiar estado de forma segura
       localStorage.removeItem('demo_authenticated');
-      localStorage.removeItem('apoyo_authenticated');
+      // Removido apoyo_authenticated cleanup
       localStorage.removeItem('demo_user');
       // Removed apoyo_user cleanup
       localStorage.removeItem('userType');
@@ -108,9 +107,8 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
     // Usar valores de hooks en lugar de localStorage directo
     const userType = currentUserType;
     const isDemoAuth = isDemoAuthenticated;
-    const isSpecialAuth = isSpecialAuthenticated;
     
-    logger.info('🔍 Navigation Debug:', { demoUser, userType, isDemoAuth, isSpecialAuth, path });
+    logger.info('🔍 Navigation Debug:', { demoUser, userType, isDemoAuth, path });
     
     // Detectar tipo de usuario y redirigir al perfil correcto
     if (path === '/profile') {
@@ -123,7 +121,7 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
     }
     
     // Verificar autenticación antes de navegar
-    const isAuthenticated = isDemoAuth || isSpecialAuth || demoUser;
+    const isAuthenticated = isDemoAuth || demoUser;
     
     if (!isAuthenticated) {
       logger.info('❌ Usuario no autenticado, redirigiendo a /auth');

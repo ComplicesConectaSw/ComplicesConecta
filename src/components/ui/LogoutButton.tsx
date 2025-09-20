@@ -33,7 +33,6 @@ export function LogoutButton({
       // Limpiar localStorage/sessionStorage
       localStorage.removeItem('supabase.auth.token');
       localStorage.removeItem('demo_authenticated');
-      localStorage.removeItem('apoyo_authenticated');
       localStorage.removeItem('demo_user');
       localStorage.removeItem('userType');
       sessionStorage.clear();

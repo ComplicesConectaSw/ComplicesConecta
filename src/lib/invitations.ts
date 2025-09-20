@@ -282,7 +282,7 @@ export const invitationService = {
         .limit(1);
 
       if (error) {
-        logger.error('❌ Error verificando acceso al chat:', error);
+        logger.error('❌ Error verificando acceso al chat:', { error: error.message, code: error.code });
         throw error;
       }
 

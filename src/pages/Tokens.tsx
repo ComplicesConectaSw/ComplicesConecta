@@ -27,24 +27,19 @@ export default function Tokens() {
   
   // Estado persistente para autenticación
   const [demoAuth] = usePersistedState('demo_authenticated', 'false');
-  const [apoyoAuth] = usePersistedState('apoyo_authenticated', 'false');
   const [demoUser] = usePersistedState<any>('demo_user', null);
 
   useEffect(() => {
     const isDemoAuth = demoAuth === 'true';
-    const isApoyoAuth = apoyoAuth === 'true';
     
-    if (isDemoAuth && !isApoyoAuth) {
+    if (isDemoAuth) {
       // MODO DEMO: Balance ficticio
       setDisplayBalance(250); // Balance demo fijo
-    } else if (isApoyoAuth) {
-      // MODO REAL: Balance real (por ahora 0)
-      setDisplayBalance(0); // En producción usar balance real
     } else {
       // Usuario no autenticado: sin balance
       setDisplayBalance(0);
     }
-  }, [demoAuth, apoyoAuth]);
+  }, [demoAuth]);
 
   const handleGoHome = () => {
     navigate('/');

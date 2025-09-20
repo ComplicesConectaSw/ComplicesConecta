@@ -124,7 +124,7 @@ export const BetaModal = () => {
                     Ayúdanos a crear la mejor app de citas
                   </h3>
                   <p className="text-muted-foreground">
-                    ComplicesConecta está en desarrollo. Tu feedback y apoyo son fundamentales para nosotros.
+                    ComplicesConecta está en desarrollo. Tu feedback y contribución son fundamentales para nosotros.
                   </p>
                 </div>
 
@@ -132,9 +132,9 @@ export const BetaModal = () => {
                   <div className="flex items-start space-x-3 p-3 bg-muted/50 rounded-lg">
                     <Gift className="h-5 w-5 text-primary mt-0.5" />
                     <div>
-                      <h4 className="font-medium text-foreground">Recompensas por Apoyo</h4>
+                      <h4 className="font-medium text-foreground">Recompensas por Contribución</h4>
                       <p className="text-sm text-muted-foreground">
-                        Los usuarios que nos apoyen durante la Beta recibirán subscripciones gratuitas y beneficios exclusivos
+                        Los usuarios que contribuyan durante la Beta recibirán subscripciones gratuitas y beneficios exclusivos
                       </p>
                     </div>
                   </div>

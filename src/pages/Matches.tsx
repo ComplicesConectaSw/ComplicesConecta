@@ -130,31 +130,24 @@ const Matches = () => {
 
   // Estado persistente para autenticación
   const [demoAuth] = usePersistedState('demo_authenticated', 'false');
-  const [apoyoAuth] = usePersistedState('apoyo_authenticated', 'false');
   const [demoUser] = usePersistedState<any>('demo_user', null);
 
-  // SEPARACIÓN ESTRICTA: Demo vs Real Auth
+  // SEPARACIÓN ESTRICTA: Demo Auth
   useEffect(() => {
     const isDemoAuth = demoAuth === 'true';
-    const isApoyoAuth = apoyoAuth === 'true';
     
-    if (isDemoAuth && !isApoyoAuth) {
+    if (isDemoAuth) {
       // MODO DEMO: Solo datos mock, nunca reales
       logger.info('🎭 MATCHES - Modo demo: usando datos mock');
       setIsProduction(false);
       setMatches(demoMatches);
-    } else if (isApoyoAuth) {
-      // MODO REAL: Solo datos de Supabase
-      logger.info('🔗 MATCHES - Modo real: cargando desde Supabase');
-      setIsProduction(true);
-      loadRealMatches();
     } else {
-      // Fallback: mostrar datos demo
-      logger.info('⚠️ MATCHES - Fallback a datos demo');
+      // Sin autenticación: usar datos demo
+      logger.info('⚠️ MATCHES - Sin autenticación: datos demo');
       setIsProduction(false);
       setMatches(demoMatches);
     }
-  }, [demoAuth, apoyoAuth]);
+  }, [demoAuth]);
 
   // Cargar matches reales de producción
   const generateMockMatches = () => {

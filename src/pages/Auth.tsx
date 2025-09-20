@@ -193,12 +193,6 @@ const Auth = () => {
       userEmail: user?.email
     });
 
-    // Proteger al usuario especial de deslogueo automático
-    if (user?.email === 'apoyofinancieromexicano@gmail.com') {
-      logger.info('🛡️ Usuario especial protegido - no redirigir desde Auth');
-      return;
-    }
-
     // REDIRECCIÓN AUTOMÁTICA DESHABILITADA para otros usuarios
     logger.info('🔄 Estado de autenticación actualizado - sin redirección automática');
   }, [user, loading, profile]);

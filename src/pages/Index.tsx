@@ -59,10 +59,9 @@ const Index = () => {
       
       setIsRunningInApp(isInWebView());
       
-      // SEPARACIÓN DEMO/REAL: Redirección solo para usuarios demo autenticados
-      const apoyoAuth = localStorage.getItem('apoyo_authenticated') === 'true';
+      // SEPARACIÓN DEMO: Redirección solo para usuarios demo autenticados
       
-      if (demoAuthenticated && !apoyoAuth && demoUser) {
+      if (demoAuthenticated && demoUser) {
         try {
           const userData = typeof demoUser === 'string' ? JSON.parse(demoUser) : demoUser;
           const accountType = userData.account_type || userData.accountType || 'single';
@@ -79,9 +78,6 @@ const Index = () => {
           // Si hay error, redirigir al perfil single por defecto
           navigate('/profile-single');
         }
-      } else if (apoyoAuth) {
-        logger.info('🔗 INDEX - Usuario real autenticado, redirigiendo a perfil');
-        navigate('/profile-single');
       }
     }, 2000);
 

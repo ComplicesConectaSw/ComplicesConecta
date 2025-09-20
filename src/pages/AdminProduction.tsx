@@ -124,7 +124,6 @@ const AdminProduction = () => {
     
     // Estado persistente para autenticación
     const demoAuth = localStorage.getItem('demo_authenticated');
-    const apoyoAuth = localStorage.getItem('apoyo_authenticated');
     const demoUser = localStorage.getItem('demo_user');
     
     // Verificar sesión demo primero
@@ -141,11 +140,10 @@ const AdminProduction = () => {
       }
     }
     
-    // Verificar sesión apoyo
-    if (apoyoAuth === 'true') {
-      // Acceso apoyo simplificado sin referencia a apoyoUser
+    // Verificar sesión de administrador
+    if (user?.email === 'admin@complicesconecta.com') {
       setIsAuthorized(true);
-      logger.info('✅ AdminProduction: Acceso apoyo autorizado');
+      logger.info('✅ AdminProduction: Acceso administrador autorizado');
       return;
     }
 

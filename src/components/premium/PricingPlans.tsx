@@ -80,7 +80,7 @@ export const PricingPlans = () => {
   const [billingPeriod, setBillingPeriod] = useState<"monthly" | "annually">("annually");
 
   const handleSubscribe = (planId: string) => {
-    // Durante la Beta, redirigir a página de apoyo/donación
+    // Durante la Beta, redirigir a página de donación
     logger.info(`Subscribing to plan: ${planId}, period: ${billingPeriod}`);
     // Lógica de redirección o checkout aquí
   };
@@ -189,7 +189,7 @@ export const PricingPlans = () => {
             ¿Te gusta lo que estamos construyendo?
           </h3>
           <p className="text-muted-foreground mb-4">
-            Tu apoyo nos ayuda a acelerar el desarrollo y lanzar nuevas funciones más rápido.
+            Tu contribución nos ayuda a acelerar el desarrollo y lanzar nuevas funciones más rápido.
             Los contribuyentes recibirán beneficios especiales al finalizar la Beta.
           </p>
           <Button 

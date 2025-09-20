@@ -15,7 +15,6 @@ interface UnifiedCardProps {
   headerClassName?: string;
   contentClassName?: string;
   footerClassName?: string;
-  motionProps?: HTMLMotionProps<"div">;
 }
 
 export const UnifiedCard: React.FC<UnifiedCardProps> = ({
@@ -29,8 +28,7 @@ export const UnifiedCard: React.FC<UnifiedCardProps> = ({
   className,
   headerClassName,
   contentClassName,
-  footerClassName,
-  motionProps
+  footerClassName
 }) => {
   const cardVariants = {
     initial: { opacity: 0, y: 20 },
@@ -45,7 +43,6 @@ export const UnifiedCard: React.FC<UnifiedCardProps> = ({
       animate="animate"
       whileHover="hover"
       transition={{ duration: 0.3, ease: "easeOut" }}
-      {...motionProps}
     >
       <Card
         className={cn(

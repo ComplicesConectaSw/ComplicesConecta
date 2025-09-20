@@ -92,7 +92,7 @@ export const useAuth = () => {
       logger.info('🔍 Error (si existe)', error ? { error: error.message } : undefined);
       
       if (error) {
-        logger.error('❌ Error fetching profile:', error);
+        logger.error('❌ Error fetching profile:', { error: error.message, code: error.code });
         
         // IMPORTANTE: NO crear perfiles automáticamente para usuarios demo
         // La lógica demo ya maneja sus propios perfiles
@@ -162,8 +162,8 @@ export const useAuth = () => {
         logger.info('🔍 Perfil cargado', { id: (profileData as any)?.id });
         
         // Redirección automática al perfil después de cargar datos
-        if ((profileData as any)?.first_name === 'Apoyo' && window.location.pathname === '/') {
-          logger.info('🔄 Redirigiendo usuario Apoyo al perfil...');
+        if ((profileData as any)?.first_name === 'Admin' && window.location.pathname === '/') {
+          logger.info('🔄 Redirigiendo usuario Admin al perfil...');
           setTimeout(() => {
             window.location.href = '/profile-single';
           }, 1000);

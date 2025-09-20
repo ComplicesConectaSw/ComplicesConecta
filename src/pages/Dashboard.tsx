@@ -15,11 +15,10 @@ const Dashboard = () => {
   // Estado persistente para autenticación
   const [demoAuth] = usePersistedState('demo_authenticated', 'false');
   const [demoUser] = usePersistedState<any>('demo_user', null);
-  const [apoyoAuth] = usePersistedState('apoyo_authenticated', 'false');
 
   useEffect(() => {
-    // Verificar autenticación demo o apoyo
-    const isAuthenticated = demoAuth === 'true' || apoyoAuth === 'true';
+    // Verificar autenticación demo
+    const isAuthenticated = demoAuth === 'true';
     
     if (!isAuthenticated) {
       logger.info('🔒 Dashboard: Usuario no autenticado, redirigiendo a /auth');
@@ -28,10 +27,9 @@ const Dashboard = () => {
     }
     
     logger.info('✅ Dashboard: Acceso autorizado', { 
-      demoMode: demoAuth === 'true',
-      apoyoMode: apoyoAuth === 'true'
+      demoMode: demoAuth === 'true'
     });
-  }, [navigate, demoAuth, apoyoAuth]);
+  }, [navigate, demoAuth]);
 
   return (
     <div className="min-h-screen bg-background">

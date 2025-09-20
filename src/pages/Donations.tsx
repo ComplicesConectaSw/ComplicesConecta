@@ -11,7 +11,7 @@ const Donations = () => {
   const donationTiers = [
     {
       id: 1,
-      name: "Apoyo Básico",
+      name: "Contribución Básica",
       amount: 50,
       icon: Heart,
       color: "from-pink-500 to-rose-500",
@@ -24,12 +24,12 @@ const Donations = () => {
     },
     {
       id: 2,
-      name: "Apoyo Premium",
+      name: "Contribución Premium",
       amount: 100,
       icon: Star,
       color: "from-purple-500 to-indigo-500",
       benefits: [
-        "Todos los beneficios del Apoyo Básico",
+        "Todos los beneficios de la Contribución Básica",
         "100 tokens CMPX de regalo",
         "Perfil destacado por 30 días",
         "Acceso a eventos exclusivos",
@@ -38,7 +38,7 @@ const Donations = () => {
     },
     {
       id: 3,
-      name: "Apoyo VIP",
+      name: "Contribución VIP",
       amount: 250,
       icon: Crown,
       color: "from-yellow-500 to-orange-500",
@@ -53,7 +53,7 @@ const Donations = () => {
     },
     {
       id: 4,
-      name: "Apoyo Fundador",
+      name: "Contribución Fundador",
       amount: 500,
       icon: Zap,
       color: "from-emerald-500 to-teal-500",

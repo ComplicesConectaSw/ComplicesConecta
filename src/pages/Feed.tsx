@@ -50,12 +50,11 @@ const Feed = () => {
   
   // Estado persistente para autenticación
   const [demoAuth] = usePersistedState('demo_authenticated', 'false');
-  const [apoyoAuth] = usePersistedState('apoyo_authenticated', 'false');
   const [demoUser] = usePersistedState<any>('demo_user', null);
   
   useEffect(() => {
     // Verificar autenticación
-    const isAuthenticated = demoAuth === 'true' || apoyoAuth === 'true';
+    const isAuthenticated = demoAuth === 'true';
     
     if (!isAuthenticated) {
       logger.info('🔒 Feed: Usuario no autenticado, redirigiendo a /auth');
@@ -64,10 +63,9 @@ const Feed = () => {
     }
     
     logger.info('✅ Feed: Acceso autorizado', { 
-      demoMode: demoAuth === 'true',
-      apoyoMode: apoyoAuth === 'true'
+      demoMode: demoAuth === 'true'
     });
-  }, [navigate, demoAuth, apoyoAuth]);
+  }, [navigate, demoAuth]);
 
   const handleLike = (postId: number) => {
     setLikedPosts(prev => {

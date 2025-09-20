@@ -51,7 +51,6 @@ const Chat = () => {
 
   // Estado persistente para autenticación
   const [demoAuth] = usePersistedState<string>('demo_authenticated', 'false');
-  const [apoyoAuth] = usePersistedState<string>('apoyo_authenticated', 'false');
   const [demoUser] = usePersistedState<string>('demo_user', '');
 
   // Estados para chat real y demo
@@ -337,8 +336,8 @@ const Chat = () => {
     }
     
     // Determinar modo según autenticación
-    if (demoAuth === 'true' || apoyoAuth === 'true') {
-      logger.info('✅ CHAT - Modo producción/demo detectado');
+    if (demoAuth === 'true') {
+      logger.info('✅ CHAT - Modo demo detectado');
       loadChatRooms();
     } else {
       logger.info('⚠️ CHAT - Fallback a datos demo');
@@ -346,7 +345,7 @@ const Chat = () => {
       setChatRooms([]);
       setLoading(false);
     }
-  }, [isAuthenticated, navigate, demoAuth, apoyoAuth]);
+  }, [isAuthenticated, navigate, demoAuth]);
 
   useEffect(() => {
     if (selectedChat) {

@@ -31,7 +31,7 @@ export const useProfile = (userId: string | null) => {
         .single();
 
       if (error) {
-        logger.error('❌ Error cargando perfil:', error);
+        logger.error('❌ Error cargando perfil:', { error: error.message, code: error.code });
         throw error;
       }
 
@@ -85,7 +85,7 @@ export const useProfiles = (filters?: {
       const { data, error } = await query;
 
       if (error) {
-        logger.error('❌ Error cargando perfiles:', error);
+        logger.error('❌ Error cargando perfiles:', { error: error.message, code: error.code });
         throw error;
       }
 
@@ -132,7 +132,7 @@ export const useUpdateProfile = () => {
       logger.info('✅ Perfil actualizado en cache:', { id: (data as any)?.id });
     },
     onError: (error) => {
-      logger.error('❌ Error en mutación de perfil:', error);
+      logger.error('❌ Error en mutación de perfil:', { error: error.message });
     },
   });
 };

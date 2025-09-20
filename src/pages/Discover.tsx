@@ -297,11 +297,10 @@ const Discover = () => {
   // MODO DEMO: Cargar perfiles demo solo para usuarios demo autenticados
   useEffect(() => {
     const demoAuth = localStorage.getItem('demo_authenticated') === 'true';
-    const apoyoAuth = localStorage.getItem('apoyo_authenticated') === 'true';
     const isDemoUser = user?.email === 'single@outlook.es' || user?.email === 'pareja@outlook.es';
     
-    // SEPARACIÓN ESTRICTA: Solo en modo demo puro (no apoyo)
-    if (demoAuth && !apoyoAuth && isDemoUser && demoProfiles.length === 0) {
+    // SEPARACIÓN ESTRICTA: Solo en modo demo
+    if (demoAuth && isDemoUser && demoProfiles.length === 0) {
       logger.info('🎭 Cargando perfiles demo para usuario demo autenticado');
       const demos = generateDemoProfiles(20);
       setDemoProfiles(demos);
@@ -321,16 +320,15 @@ const Discover = () => {
     
     // Verificar autenticación local adicional (demo, usuario especial)
     const demoAuth = localStorage.getItem('demo_authenticated') === 'true';
-    const apoyoAuth = localStorage.getItem('apoyo_authenticated') === 'true';
     
     // Solo cargar perfiles reales una vez para usuarios autenticados
     if (profiles.length === 0) {
-      // SEPARACIÓN ESTRICTA: Demo vs Real Auth
-      if (demoAuth && !apoyoAuth) {
+      // SEPARACIÓN ESTRICTA: Demo Auth
+      if (demoAuth) {
         // MODO DEMO: Solo datos mock, nunca reales
         logger.info('🎭 MODO DEMO - cargando perfiles mock únicamente');
         generateRandomProfiles();
-      } else if (apoyoAuth || (isAuthenticated() && !demoAuth)) {
+      } else if (isAuthenticated() && !demoAuth) {
         // MODO REAL: Solo datos de Supabase
         logger.info('🔗 MODO REAL - cargando perfiles desde Supabase');
         loadRealProfiles();

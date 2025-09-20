@@ -19,12 +19,11 @@ const ProfileDetail = () => {
 
   // Estado persistente para autenticación
   const [demoAuth] = usePersistedState('demo_authenticated', 'false');
-  const [apoyoAuth] = usePersistedState('apoyo_authenticated', 'false');
   const [demoUser] = usePersistedState<any>('demo_user', null);
 
   useEffect(() => {
     // Verificar autenticación
-    const isAuthenticated = demoAuth === 'true' || apoyoAuth === 'true';
+    const isAuthenticated = demoAuth === 'true';
 
     if (!isAuthenticated) {
       logger.info('🔒 ProfileDetail: Usuario no autenticado, redirigiendo a /auth');
@@ -34,10 +33,9 @@ const ProfileDetail = () => {
 
     logger.info('✅ ProfileDetail: Acceso autorizado', { 
       profileId: id,
-      demoMode: demoAuth === 'true',
-      apoyoMode: apoyoAuth === 'true'
+      demoMode: demoAuth === 'true'
     });
-  }, [navigate, demoAuth, apoyoAuth, id]);
+  }, [navigate, demoAuth, id]);
 
   // Demo profile data for beta
   const allProfiles = [

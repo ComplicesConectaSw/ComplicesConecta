@@ -91,7 +91,7 @@ export const AnimationProvider: React.FC<AnimationProviderProps> = ({ children }
   return (
     <AnimationContext.Provider value={contextValue}>
       <AnimatePresence mode="wait">
-        {children as React.ReactElement}
+        <div>{children}</div>
       </AnimatePresence>
     </AnimationContext.Provider>
   );

@@ -128,12 +128,11 @@ const ChatAuthenticated = () => {
 
   // Estado persistente para autenticación
   const [demoAuth] = usePersistedState('demo_authenticated', 'false');
-  const [apoyoAuth] = usePersistedState('apoyo_authenticated', 'false');
   const [demoUser] = usePersistedState<any>('demo_user', null);
 
   useEffect(() => {
-    // Verificar autenticación demo o apoyo
-    const isAuthenticated = demoAuth === 'true' || apoyoAuth === 'true';
+    // Verificar autenticación demo
+    const isAuthenticated = demoAuth === 'true';
     
     if (!isAuthenticated) {
       logger.info('🔒 ChatAuthenticated: Usuario no autenticado, redirigiendo a /auth');
@@ -142,10 +141,9 @@ const ChatAuthenticated = () => {
     }
     
     logger.info('✅ ChatAuthenticated: Acceso autorizado', { 
-      demoMode: demoAuth === 'true',
-      apoyoMode: apoyoAuth === 'true'
+      demoMode: demoAuth === 'true'
     });
-  }, [navigate, demoAuth, apoyoAuth]);
+  }, [navigate, demoAuth]);
 
   const sendMessage = () => {
     if (!currentMessage.trim()) return;

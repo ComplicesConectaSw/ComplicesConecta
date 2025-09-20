@@ -31,7 +31,6 @@ const Requests = () => {
   
   // Estado persistente para autenticación
   const [demoAuth] = usePersistedState<string>('demo_authenticated', 'false');
-  const [apoyoAuth] = usePersistedState<string>('apoyo_authenticated', 'false');
   const [demoUser] = usePersistedState<string>('demo_user', '');
   
   const { features } = useFeatures();
@@ -65,8 +64,8 @@ const Requests = () => {
     }
     
     // Determinar modo según autenticación
-    if (demoAuth === 'true' || apoyoAuth === 'true') {
-      logger.info('✅ REQUESTS - Modo producción/demo detectado');
+    if (demoAuth === 'true') {
+      logger.info('✅ REQUESTS - Modo demo detectado');
       setIsProduction(true);
       // Establecer currentUserId para cargar invitaciones
       try {
@@ -86,7 +85,7 @@ const Requests = () => {
       setInvitations([]);
       setLoading(false);
     }
-  }, [isAuthenticated, navigate, demoAuth, apoyoAuth, demoUser, user?.id]);
+  }, [isAuthenticated, navigate, demoAuth, demoUser, user?.id]);
 
   // Separar invitaciones recibidas y enviadas
   const receivedInvitations = invitations.filter(inv => inv.to_profile === user?.id);

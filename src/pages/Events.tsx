@@ -46,32 +46,26 @@ const Events = () => {
 
   // Estado persistente para autenticación
   const [demoAuth] = usePersistedState('demo_authenticated', 'false');
-  const [apoyoAuth] = usePersistedState('apoyo_authenticated', 'false');
   const [demoUser] = usePersistedState<any>('demo_user', null);
 
   useEffect(() => {
     const loadEvents = () => {
       const isDemoAuth = demoAuth === 'true';
-      const isApoyoAuth = apoyoAuth === 'true';
 
-      if (isDemoAuth && !isApoyoAuth) {
+      if (isDemoAuth) {
         // MODO DEMO: Eventos simulados
         logger.info('🎭 EVENTS - Cargando eventos demo');
         setEvents(demoEvents);
-      } else if (isApoyoAuth) {
-        // MODO REAL: Eventos desde Supabase (por ahora usar demo)
-        logger.info('🔗 EVENTS - Cargando eventos reales');
-        setEvents(demoEvents); // ✅ PENDIENTE: Implementar carga desde Supabase en próxima iteración
       } else {
-        // Usuario no autenticado: eventos públicos limitados
-        logger.info('👤 EVENTS - Mostrando eventos públicos');
-        setEvents(demoEvents.slice(0, 2)); // Solo primeros 2 eventos
+        // Sin autenticación: eventos demo
+        logger.info('⚠️ EVENTS - Sin autenticación: eventos demo');
+        setEvents(demoEvents);
       }
       setIsLoading(false);
     };
 
     loadEvents();
-  }, [demoAuth, apoyoAuth]);
+  }, [demoAuth]);
 
   const demoEvents = [
     {
