@@ -97,7 +97,7 @@ export const useAuth = () => {
         // IMPORTANTE: NO crear perfiles automáticamente para usuarios demo
         // La lógica demo ya maneja sus propios perfiles
         const sessionFlags = StorageManager.getSessionFlags();
-        if (sessionFlags.demo_authenticated || sessionFlags.apoyo_authenticated) {
+        if (sessionFlags.demo_authenticated) {
           logger.info('🎭 Sesión demo detectada - no crear perfil automático');
           setProfile(null);
           return;
@@ -194,13 +194,6 @@ export const useAuth = () => {
     StorageManager.migrateToSupabase();
     const sessionFlags = StorageManager.getSessionFlags();
     
-    if (sessionFlags.apoyo_authenticated) {
-      logger.info('🛡️ Usuario especial detectado - cargando desde Supabase...');
-      // Datos se cargan exclusivamente desde Supabase via React Query
-      
-      // Reset profileLoaded para permitir carga desde Supabase
-      profileLoaded.current = false;
-    }
     
     // Solo configurar Supabase si debemos usar conexión real
     if (shouldUseRealSupabase()) {
@@ -266,45 +259,6 @@ export const useAuth = () => {
       setLoading(true);
       logger.info('🔐 Intentando iniciar sesión', { email, mode: config.mode });
       
-      // SOLUCIÓN ESPECIAL para apoyofinancieromexicano@gmail.com
-      if (email.toLowerCase() === 'apoyofinancieromexicano@gmail.com') {
-        logger.info('🛡️ Usuario especial detectado - usando autenticación personalizada');
-        
-        if (password !== '123456') {
-          throw new Error('Contraseña incorrecta');
-        }
-        
-        // Crear sesión mock persistente
-        const mockUser = {
-          id: '7c189901-0939-4f28-8d17-4496e0b41492',
-          email: 'apoyofinancieromexicano@gmail.com',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          email_confirmed_at: new Date().toISOString(),
-          app_metadata: {},
-          user_metadata: {}
-        };
-        
-        const mockSession = {
-          access_token: 'mock-token-apoyo',
-          refresh_token: 'mock-refresh-apoyo',
-          expires_in: 3600,
-          token_type: 'bearer',
-          user: mockUser
-        };
-        
-        // Guardar solo flag de autenticación usando StorageManager
-        StorageManager.setSessionFlag('apoyo_authenticated', true);
-        // ELIMINADO: No almacenar datos de usuario en localStorage
-        // Los datos se cargan exclusivamente desde Supabase
-        
-        setUser(mockUser as any);
-        setSession(mockSession as any);
-        await loadProfile(mockUser.id);
-        logger.info('✅ Sesión personalizada iniciada para usuario especial');
-        
-        return { user: mockUser, session: mockSession };
-      }
       
       // Verificar si es credencial de producción (complicesconectasw@outlook.es)
       if (isProductionAdmin(email)) {
@@ -411,11 +365,10 @@ export const useAuth = () => {
     // CRÍTICO: Verificar admin basado en EMAIL DE AUTENTICACIÓN, no perfil
     const userEmail = user?.email?.toLowerCase();
     
-    // Lista de emails admin - INCLUIR djwacko28@gmail.com
+    // Lista de emails admin autorizados
     const adminEmails = [
       'admin',                      // Admin demo solamente
-      'complicesconectasw@outlook.es',  // Admin principal
-      'djwacko28@gmail.com'        // Admin secundario
+      'complicesconectasw@outlook.es'   // Admin principal de producción
     ];
     
     // PRIORIDAD: Email de autenticación determina admin status
@@ -472,11 +425,6 @@ export const useAuth = () => {
       return true;
     }
     
-    // Verificar sesión especial de apoyo
-    if (sessionFlags.apoyo_authenticated && user) {
-      logger.info('✅ Authenticated via special apoyo session');
-      return true;
-    }
     
     // Verificar autenticación real de Supabase
     const realAuth = !!user && !!session;
@@ -489,7 +437,6 @@ export const useAuth = () => {
       hasUser: !!user, 
       hasSession: !!session,
       demoAuth: sessionFlags.demo_authenticated,
-      apoyoAuth: sessionFlags.apoyo_authenticated
     });
     
     return false;

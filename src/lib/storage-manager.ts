@@ -5,7 +5,6 @@ import { usePersistedState } from '@/hooks/usePersistedState';
 // Solo mantiene flags de sesión en localStorage, datos en Supabase
 
 export interface SessionFlags {
-  apoyo_authenticated: boolean;
   demo_authenticated: boolean;
   userType: 'single' | 'couple' | null;
 }
@@ -13,7 +12,6 @@ export interface SessionFlags {
 export class StorageManager {
   // Solo flags de sesión permitidos en localStorage
   private static readonly ALLOWED_KEYS = [
-    'apoyo_authenticated',
     'demo_authenticated', 
     'userType'
   ];
@@ -41,7 +39,6 @@ export class StorageManager {
   // Obtener flags de sesión
   static getSessionFlags(): SessionFlags {
     return {
-      apoyo_authenticated: localStorage.getItem('apoyo_authenticated') === 'true',
       demo_authenticated: localStorage.getItem('demo_authenticated') === 'true',
       userType: localStorage.getItem('userType') as 'single' | 'couple' | null
     };
@@ -74,9 +71,9 @@ export class StorageManager {
     localStorage.removeItem('userType');
   }
 
-  // Limpiar solo sesión real
+  // Limpiar sesión real (no hay sesiones especiales)
   static clearRealSession() {
-    localStorage.removeItem('apoyo_authenticated');
+    // No hay sesiones especiales que limpiar
   }
 
   // Validar que no hay datos sensibles en localStorage
