@@ -27,7 +27,7 @@ interface Profile {
   last_name?: string | null;
   display_name?: string | null;
   age?: number | null;
-  role?: string;
+  role?: string | null;
   email?: string | null;
   profile_type?: string | null;
   is_demo?: boolean | null;
@@ -55,7 +55,7 @@ export const useAuth = () => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
-  const [profile, setProfile] = useState<any>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
   const config = getAppConfig();
   const initialized = useRef(false);
   const profileLoaded = useRef(false);
