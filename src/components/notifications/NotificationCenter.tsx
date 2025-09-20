@@ -117,7 +117,7 @@ const getNotificationIcon = (type: string) => {
     case "like": return <Heart className="h-4 w-4 text-pink-500" />;
     case "event": return <Calendar className="h-4 w-4 text-purple-500" />;
     case "premium": return <span className="text-yellow-500">👑</span>;
-    default: return <Bell className="h-4 w-4 text-gray-500" />;
+    default: return <Bell className="h-4 w-4 text-gray-600 dark:text-gray-300" />;
   }
 };
 

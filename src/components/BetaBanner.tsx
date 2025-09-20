@@ -155,7 +155,7 @@ export const BetaModal = () => {
                     variant="love" 
                     className="w-full"
                     onClick={() => {
-                      // TODO: Handle donation/support action
+                      // ✅ PLANIFICADO: Integrar sistema de donaciones en versión post-beta
                       logger.info("Support action");
                       setIsOpen(false);
                     }}

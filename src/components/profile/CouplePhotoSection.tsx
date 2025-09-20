@@ -225,7 +225,7 @@ export const CouplePhotoSection: React.FC<CouplePhotoSectionProps> = ({
 
         {/* Mensaje cuando no hay fotos */}
         {partnerPhotos.length === 0 && !isEditable && (
-          <div className="text-center py-8 text-gray-500">
+          <div className="text-center py-8 text-gray-700 dark:text-gray-200">
             <Camera className="w-12 h-12 mx-auto mb-2 opacity-50" />
             <p>No hay fotos de {partnerLabel} aún</p>
           </div>
@@ -261,7 +261,7 @@ export const CouplePhotoSection: React.FC<CouplePhotoSectionProps> = ({
           <div className="w-full border-t border-gray-200" />
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="px-4 bg-white text-gray-500 flex items-center gap-2">
+          <span className="px-4 bg-white text-gray-700 dark:text-gray-200 flex items-center gap-2">
             <Heart className="w-4 h-4 text-red-400" />
             Pareja
             <Heart className="w-4 h-4 text-red-400" />

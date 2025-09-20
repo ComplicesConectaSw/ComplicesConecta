@@ -63,7 +63,7 @@ export class SimpleChatService {
         logger.error('Error obteniendo membresías:', { error: String(memberError) });
       }
 
-      const privateRooms = memberRooms?.map((member: any) => ({
+      const privateRooms = memberRooms?.map((member: { chat_rooms: { id: string; name: string; description?: string; created_at: string; updated_at: string } }) => ({
         id: member.chat_rooms.id,
         name: member.chat_rooms.name,
         type: 'private' as const,
@@ -72,7 +72,7 @@ export class SimpleChatService {
         updated_at: member.chat_rooms.updated_at
       })) || [];
 
-      const formattedPublicRooms: SimpleChatRoom[] = (publicRooms || []).map((room: any) => ({
+      const formattedPublicRooms: SimpleChatRoom[] = (publicRooms || []).map((room: { id: string; name: string; description?: string; created_at: string; updated_at: string }) => ({
         id: room.id,
         name: room.name,
         type: 'public' as const,
@@ -113,17 +113,17 @@ export class SimpleChatService {
       }
 
       // Obtener información de los remitentes
-      const senderIds = [...new Set(messages?.map((m: any) => m.sender_id) || [])];
+      const senderIds = [...new Set(messages?.map((m: { sender_id: string }) => m.sender_id) || [])];
       const { data: profiles } = await (supabase as any)
         .from('profiles')
         .select('id, first_name, last_name')
         .in('id', senderIds);
 
       const profileMap = new Map(
-        profiles?.map((p: any) => [p.id, `${p.first_name} ${p.last_name}`]) || []
+        profiles?.map((p: { id: string; first_name: string; last_name: string }) => [p.id, `${p.first_name} ${p.last_name}`]) || []
       );
 
-      const formattedMessages: SimpleChatMessage[] = (messages || []).map((message: any) => ({
+      const formattedMessages: SimpleChatMessage[] = (messages || []).map((message: { id: string; content: string; sender_id: string; room_id?: string; created_at?: string; message_type?: string }) => ({
         id: message.id,
         content: message.content,
         sender_id: message.sender_id,

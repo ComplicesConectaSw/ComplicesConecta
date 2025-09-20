@@ -159,7 +159,7 @@ export const SendRequestDialog: React.FC<SendRequestDialogProps> = ({
               />
             </div>
             <div className="flex justify-between items-center mt-2">
-              <p className="text-xs text-gray-500 dark:text-gray-400">
+              <p className="text-xs text-gray-600 dark:text-gray-300">
                 Presenta tu interés de manera respetuosa
               </p>
               <span className="text-xs text-gray-400">

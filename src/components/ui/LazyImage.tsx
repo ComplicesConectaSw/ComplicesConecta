@@ -100,7 +100,7 @@ export function LazyImage({
 
       {/* Error fallback */}
       {isError && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-200 text-gray-500">
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-200 text-gray-700 dark:text-gray-200">
           <span className="text-sm">Error al cargar imagen</span>
         </div>
       )}

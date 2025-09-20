@@ -114,13 +114,13 @@ export const ProfileLoadingScreen = ({ onComplete, profileName, profileType }: P
         <div className="absolute top-16 left-16 animate-float hidden sm:block">
           <Sparkles className="w-5 h-5 text-pink-300/70" />
         </div>
-        <div className="absolute bottom-16 right-16 animate-float hidden sm:block" style={{ animationDelay: '1.5s' }}>
+        <div className="absolute bottom-16 right-16 animate-float hidden sm:block [animation-delay:1.5s]">
           <Heart className="w-6 h-6 text-red-300/70" />
         </div>
-        <div className="absolute top-1/4 right-24 animate-float hidden sm:block" style={{ animationDelay: '3s' }}>
+        <div className="absolute top-1/4 right-24 animate-float hidden sm:block [animation-delay:3s]">
           <Star className="w-4 h-4 text-yellow-300/70" />
         </div>
-        <div className="absolute bottom-1/4 left-24 animate-float hidden sm:block" style={{ animationDelay: '2s' }}>
+        <div className="absolute bottom-1/4 left-24 animate-float hidden sm:block [animation-delay:2s]">
           <Users className="w-5 h-5 text-purple-300/70" />
         </div>
       </div>

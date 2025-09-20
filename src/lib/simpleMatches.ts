@@ -177,15 +177,15 @@ export class SimpleMatchService {
     return degrees * (Math.PI/180);
   }
 
-  async getStats(): Promise<{ success: boolean; stats?: any; error?: string }> {
+  async getStats(): Promise<{ success: boolean; stats?: { totalProfiles: number; singlesCount: number; couplesCount: number; verifiedCount: number; newThisWeek: number }; error?: string }> {
     try {
       const { data: profiles } = await (supabase as any)
         .from('profiles')
         .select('is_verified, created_at');
 
       const totalProfiles = profiles?.length || 0;
-      const verifiedCount = profiles?.filter((p: any) => p.is_verified).length || 0;
-      const newThisWeek = profiles?.filter((p: any) => {
+      const verifiedCount = profiles?.filter((p: { is_verified?: boolean }) => p.is_verified).length || 0;
+      const newThisWeek = profiles?.filter((p: { created_at: string }) => {
         const createdAt = new Date(p.created_at);
         const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
         return createdAt > weekAgo;
