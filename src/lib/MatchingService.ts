@@ -441,7 +441,12 @@ export class MatchingService {
         .limit(limit);
 
       if (error) throw error;
-      return (data || []).reverse(); // Mostrar mensajes más antiguos primero
+      return (data || []).map(item => ({
+        ...item,
+        match_id: item.match_id || '',
+        user_id: item.user_id || '',
+        interaction_type: item.interaction_type || 'message'
+      })).reverse() as MatchInteraction[]; // Mostrar mensajes más antiguos primero
 
     } catch (error) {
       logger.error('Error al obtener mensajes:', { error: error instanceof Error ? error.message : String(error) });
