@@ -183,12 +183,12 @@ export const invitationService = {
         throw receivedError || sentError;
       }
 
-      const received = ((receivedData as any) || []).map((inv: any) => ({
+      const received = ((receivedData as unknown[]) || []).map((inv: { message?: string; [key: string]: unknown }) => ({
         ...inv,
         message: inv.message || 'Sin mensaje'
       })) as Invitation[];
 
-      const sent = ((sentData as any) || []).map((inv: any) => ({
+      const sent = ((sentData as unknown[]) || []).map((inv: { message?: string; [key: string]: unknown }) => ({
         ...inv,
         message: inv.message || 'Sin mensaje'
       })) as Invitation[];

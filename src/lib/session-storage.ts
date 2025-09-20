@@ -74,7 +74,7 @@ export const sessionStorage = {
     }
   },
 
-  setNavigationState: (state: any) => {
+  setNavigationState: (state: Record<string, unknown>) => {
     try {
       localStorage.setItem(SESSION_KEYS.NAVIGATION_STATE, JSON.stringify(state));
     } catch (error) {

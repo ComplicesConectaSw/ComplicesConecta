@@ -188,12 +188,12 @@ export const RequestsService = {
       }
 
       // Transformar datos para que coincidan con ConnectionRequestWithProfile
-      const transformedData = (data ?? []).map((item: any) => ({
+      const transformedData = (data ?? []).map((item: { sender_profile: unknown; [key: string]: unknown }) => ({
         ...item,
-        profile: (item as any).sender_profile // Para solicitudes recibidas, el perfil es el remitente
+        profile: item.sender_profile // Para solicitudes recibidas, el perfil es el remitente
       }));
 
-      return { data: transformedData };
+      return { data: transformedData as ConnectionRequestWithProfile[] };
     } catch (error) {
       return { 
         data: [], 
@@ -235,12 +235,12 @@ export const RequestsService = {
       }
 
       // Transformar datos para que coincidan con ConnectionRequestWithProfile
-      const transformedData = (data ?? []).map((item: any) => ({
+      const transformedData = (data ?? []).map((item: { receiver_profile: unknown; [key: string]: unknown }) => ({
         ...item,
-        profile: (item as any).receiver_profile // Para solicitudes enviadas, el perfil es el destinatario
+        profile: item.receiver_profile // Para solicitudes enviadas, el perfil es el destinatario
       }));
 
-      return { data: transformedData };
+      return { data: transformedData as ConnectionRequestWithProfile[] };
     } catch (error) {
       return { 
         data: [], 
