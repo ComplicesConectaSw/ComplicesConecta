@@ -13,6 +13,13 @@ import { Database } from '@/integrations/supabase/types';
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
 
+// Tipos extendidos para propiedades que pueden no estar en el schema actual
+interface ExtendedProfile extends Profile {
+  gender?: string;
+  interested_in?: string[];
+  account_type?: 'single' | 'couple';
+}
+
 // Interfaces para el sistema de matches de producción
 export interface ProductionMatch {
   id: string;
@@ -52,15 +59,17 @@ export interface MatchStats {
   newThisWeek: number;
 }
 
-// Función para calcular compatibilidad basada en criterios básicos
-const calculateCompatibility = (user1: Profile, user2: Profile): number => {
+// Función para calcular compatibilidad entre dos perfiles
+function calculateCompatibility(user1: Profile, user2: Profile): number {
   let score = 0;
   
-  // Compatibilidad por género e interés usando bypass para propiedades faltantes
-  const user1Gender = (user1 as any).gender;
-  const user2Gender = (user2 as any).gender;
-  const user1InterestedIn = (user1 as any).interested_in;
-  const user2InterestedIn = (user2 as any).interested_in;
+  // Compatibilidad por género e interés usando tipos extendidos
+  const extUser1 = user1 as ExtendedProfile;
+  const extUser2 = user2 as ExtendedProfile;
+  const user1Gender = extUser1.gender;
+  const user2Gender = extUser2.gender;
+  const user1InterestedIn = extUser1.interested_in;
+  const user2InterestedIn = extUser2.interested_in;
   
   if (user1Gender && user2Gender && user1InterestedIn && user2InterestedIn) {
     if (user1InterestedIn.includes(user2Gender) && user2InterestedIn.includes(user1Gender)) {
@@ -95,10 +104,12 @@ const getMatchReasons = (user1: Profile, user2: Profile): string[] => {
   if (user2.is_verified) reasons.push('Perfil verificado');
   if (user2.is_premium) reasons.push('Usuario premium');
   
-  // Usar bypass para propiedades faltantes
-  const user1Gender = (user1 as any).gender;
-  const user2Gender = (user2 as any).gender;
-  const user1InterestedIn = (user1 as any).interested_in;
+  // Usar tipos extendidos para propiedades faltantes
+  const extUser1 = user1 as ExtendedProfile;
+  const extUser2 = user2 as ExtendedProfile;
+  const user1Gender = extUser1.gender;
+  const user2Gender = extUser2.gender;
+  const user1InterestedIn = extUser1.interested_in;
   
   if (user1Gender && user2Gender && user1InterestedIn) {
     if (user1InterestedIn.includes(user2Gender)) {
@@ -129,7 +140,7 @@ class ProductionMatchService {
       }
 
       // Obtener perfil del usuario actual
-      const { data: currentProfile, error: profileError } = await (supabase as any)
+      const { data: currentProfile, error: profileError } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', user.user.id)
@@ -140,7 +151,7 @@ class ProductionMatchService {
       }
 
       // Construir query con filtros
-      let query = (supabase as any)
+      let query = supabase
         .from('profiles')
         .select('*')
         .neq('id', user.user.id); // Excluir perfil propio
