@@ -57,26 +57,23 @@ export const getAppConfig = (): AppConfig => {
   return cachedConfig;
 };
 
-// Credenciales demo permitidas (INCLUIR djwacko28@gmail.com)
+// Credenciales demo permitidas (SOLO perfiles demo esenciales)
 export const DEMO_CREDENTIALS = [
   'single@outlook.es',
   'pareja@outlook.es', 
-  'admin',
-  'djwacko28@gmail.com'        // Admin DEMO - usa datos demo
+  'admin'
 ];
 
-// Contraseñas demo por email (INCLUIR djwacko28@gmail.com)
+// Contraseñas demo por email (SOLO perfiles demo esenciales)
 export const DEMO_PASSWORDS: Record<string, string> = {
   'single@outlook.es': '123456',
   'pareja@outlook.es': '123456',
-  'admin': '123456',
-  'djwacko28@gmail.com': 'Magy_Wacko_nala28' // Admin DEMO
+  'admin': '123456'
 };
 
-// Lista de emails admin para verificación rápida - CORREGIDA
+// Lista de emails admin para verificación rápida - PRODUCCIÓN
 const ADMIN_EMAILS = [
   'admin',                      // Admin demo solamente
-  'djwacko28@gmail.com',        // Admin DEMO (no producción)
   'complicesconectasw@outlook.es'  // ÚNICO admin producción REAL
 ];
 
@@ -144,10 +141,10 @@ export const handleDemoAuth = (email: string, accountType: string = 'single') =>
     return null;
   }
   
-  // Importar datos demo para perfiles completos
+  // Importar datos demo para perfiles completos usando require síncrono
   let demoProfiles: any[] = [];
   try {
-    const demoData = require('../demo/demoData.ts');
+    const demoData = require('../demo/demoData');
     demoProfiles = demoData.demoProfiles || [];
   } catch (error) {
     logger.warn('No se pudieron cargar datos demo:', { error: String(error) });
@@ -176,7 +173,6 @@ export const handleDemoAuth = (email: string, accountType: string = 'single') =>
     first_name: email === 'admin' ? 'Admin Demo' : 
                 email === 'single@outlook.es' ? 'Sofía' :
                 email === 'pareja@outlook.es' ? 'Carmen & Roberto' :
-                email === 'djwacko28@gmail.com' ? 'DJ Wacko' :
                 email.split('@')[0],
     is_demo: true,
     created_at: new Date().toISOString()

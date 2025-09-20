@@ -55,35 +55,46 @@ describe('🎭 Validación Perfiles Demo', () => {
       expect(isDemoCredential('single@outlook.es')).toBe(true);
       expect(isDemoCredential('pareja@outlook.es')).toBe(true);
       expect(isDemoCredential('admin')).toBe(true);
+      expect(isDemoCredential('djwacko28@gmail.com')).toBe(false); // Ya no es demo
       expect(isDemoCredential('usuario@real.com')).toBe(false);
     });
 
     it('debe crear sesión demo para single@outlook.es', () => {
-      const demoAuth = handleDemoAuth('single@outlook.es', 'single');
-      
-      expect(demoAuth).toBeDefined();
-      expect(demoAuth?.user).toBeDefined();
-      expect(demoAuth?.session).toBeDefined();
-      
-      // Verificar usuario demo
-      expect(demoAuth?.user.email).toBe('single@outlook.es');
-      expect(demoAuth?.user.first_name).toBe('Sofía');
-      expect(demoAuth?.user.is_demo).toBe(true);
-      expect(demoAuth?.user.profile_type).toBe('single');
-      
-      // Verificar sesión
-      expect(demoAuth?.session.access_token).toContain('demo-token-');
-      expect(demoAuth?.session.expires_at).toBeGreaterThan(Date.now());
+      try {
+        const demoAuth = handleDemoAuth('single@outlook.es', 'single');
+        
+        expect(demoAuth).toBeDefined();
+        expect(demoAuth?.user).toBeDefined();
+        expect(demoAuth?.session).toBeDefined();
+        
+        // Verificar usuario demo
+        expect(demoAuth?.user.email).toBe('single@outlook.es');
+        expect(demoAuth?.user.first_name).toBe('Sofía');
+        expect(demoAuth?.user.is_demo).toBe(true);
+        expect(demoAuth?.user.profile_type).toBe('single');
+        
+        // Verificar sesión
+        expect(demoAuth?.session.access_token).toContain('demo-token-');
+        expect(demoAuth?.session.expires_at).toBeGreaterThan(Date.now());
+        
+      } catch (error) {
+        throw error;
+      }
     });
 
     it('debe crear sesión demo para pareja@outlook.es', () => {
-      const demoAuth = handleDemoAuth('pareja@outlook.es', 'couple');
-      
-      expect(demoAuth).toBeDefined();
-      expect(demoAuth?.user.email).toBe('pareja@outlook.es');
-      expect(demoAuth?.user.first_name).toBe('Carmen');
-      expect(demoAuth?.user.profile_type).toBe('couple');
-      expect(demoAuth?.user.is_premium).toBe(true);
+      try {
+        const demoAuth = handleDemoAuth('pareja@outlook.es', 'couple');
+        
+        expect(demoAuth).toBeDefined();
+        expect(demoAuth?.user.email).toBe('pareja@outlook.es');
+        expect(demoAuth?.user.first_name).toBe('Carmen');
+        expect(demoAuth?.user.profile_type).toBe('couple');
+        expect(demoAuth?.user.is_premium).toBe(true);
+        
+      } catch (error) {
+        throw error;
+      }
     });
   });
 
