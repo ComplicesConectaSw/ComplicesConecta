@@ -283,10 +283,10 @@ class ProductionMatchService {
       }
 
       // Obtener perfiles que coincidan con la búsqueda
-      let query = (supabase as any)
+      let query = supabase
         .from('profiles')
         .select('*')
-        .neq('user_id', user.user.id);
+        .neq('id', user.user.id);
 
       if (searchQuery) {
         query = query.or(`first_name.ilike.%${searchQuery}%,last_name.ilike.%${searchQuery}%,bio.ilike.%${searchQuery}%`);
@@ -377,21 +377,21 @@ class ProductionMatchService {
       }
 
       const [totalResult, singleResult, coupleResult, verifiedResult] = await Promise.all([
-        (supabase as any)
+        supabase
           .from('profiles')
           .select('id', { count: 'exact' })
           .neq('id', user.user.id),
-        (supabase as any)
+        supabase
           .from('profiles')
           .select('id', { count: 'exact' })
           .neq('id', user.user.id)
-          .eq('account_type', 'single'),
-        (supabase as any)
+          .eq('profile_type', 'single'),
+        supabase
           .from('profiles')
           .select('id', { count: 'exact' })
           .neq('id', user.user.id)
-          .eq('account_type', 'couple'),
-        (supabase as any)
+          .eq('profile_type', 'couple'),
+        supabase
           .from('profiles')
           .select('id', { count: 'exact' })
           .neq('id', user.user.id)

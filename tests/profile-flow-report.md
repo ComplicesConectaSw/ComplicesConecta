@@ -1,13 +1,13 @@
 # 🛠️ REPORTE TEST INTEGRAL DE PERFILES
 
-**Fecha**: 20/9/2025, 16:19:59
+**Fecha**: 20/9/2025, 16:29:46
 **Tests**: 9
 **Exitosos**: 9
 **Fallidos**: 0
 
 ## Resultados:
-- ✅ Registro Single: Usuario registrado: test-single-1758406799325@test.com
-- ✅ Registro Pareja: Pareja registrada: test-couple-1758406799325@test.com
+- ✅ Registro Single: Usuario registrado: test-single-1758407386356@test.com
+- ✅ Registro Pareja: Pareja registrada: test-couple-1758407386356@test.com
 - ✅ Demo Single: Perfil demo validado
 - ✅ Demo Pareja: Perfil pareja validado
 - ✅ Auth Demo: Sesión demo creada
