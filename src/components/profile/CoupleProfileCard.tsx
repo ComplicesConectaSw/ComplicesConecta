@@ -279,13 +279,13 @@ const CoupleProfileCard = ({
         <div className="flex items-center justify-between mb-3">
           <h3 className={cn(
             "text-base sm:text-lg font-semibold group-hover:text-primary transition-colors truncate",
-            useThemeBackground ? themeConfig.textClass : "text-gray-800"
+            useThemeBackground ? themeConfig.textClass : "text-white"
           )}>
             {profile.couple_name}
           </h3>
           <div className={cn(
             "flex items-center space-x-1",
-            useThemeBackground ? themeConfig.accentClass : "text-gray-600"
+            useThemeBackground ? themeConfig.accentClass : "text-white/80"
           )}>
             <MapPin className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
             <span className="text-xs sm:text-sm truncate">{profile.location}</span>
@@ -303,7 +303,7 @@ const CoupleProfileCard = ({
             </span>
           ))}
           {profile.interests && profile.interests.length > 3 && (
-            <span className="px-2 sm:px-3 py-1 bg-gray-100 text-gray-600 text-[10px] sm:text-xs rounded-full">
+            <span className="px-2 sm:px-3 py-1 bg-white/20 text-white text-[10px] sm:text-xs rounded-full">
               +{profile.interests.length - 3}
             </span>
           )}
@@ -330,7 +330,7 @@ const CoupleProfileCard = ({
           <Button 
             variant="outline" 
             size="sm" 
-            className="flex-1 bg-background border-border text-gray-600 hover:bg-muted hover:text-gray-800 font-semibold"
+            className="flex-1 bg-white/10 border-white/20 text-white/90 hover:bg-white/20 hover:text-white font-semibold"
             onClick={handleDislike}
           >
             <X className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" strokeWidth={2.5} />
@@ -350,7 +350,7 @@ const CoupleProfileCard = ({
             e.stopPropagation();
             handleViewProfile();
           }}
-          className="w-full mt-2 text-gray-600 hover:text-gray-800 transition-colors text-xs sm:text-sm py-2 hover:bg-gray-100 rounded-md font-medium"
+          className="w-full mt-2 text-white/90 hover:text-white transition-colors text-xs sm:text-sm py-2 hover:bg-white/10 rounded-md font-medium"
         >
           Ver Perfil Completo
         </button>

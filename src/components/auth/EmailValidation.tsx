@@ -74,7 +74,7 @@ export const EmailValidation = ({
         .limit(1);
 
       if (authError) {
-        logger.error('Error checking email:', authError);
+        logger.error('Error checking email:', { error: authError.message, code: authError.code });
         setValidationState({
           isValid: false,
           message: 'Error al verificar email',
@@ -173,7 +173,7 @@ export const useEmailValidation = () => {
         .limit(1);
 
       if (error) {
-        logger.error('Error checking email:', error);
+        logger.error('Error checking email:', { error: error.message, code: error.code });
         return { isValid: false, message: 'Error al verificar email' };
       }
 

@@ -26,9 +26,9 @@ const ProfileCouple: React.FC = () => {
           authProfile: !!authProfile
         });
 
-        // Verificar autenticación usando useAuth
+        // Verificar autenticación usando useAuth - redirigir inmediatamente
         if (!isAuthenticated) {
-          logger.info('❌ No autenticado, redirigiendo a auth');
+          logger.info('❌ No autenticado, redirigiendo a /auth...');
           navigate('/auth', { replace: true });
           return;
         }

@@ -44,7 +44,7 @@ export const RealtimeChatWindow: React.FC<RealtimeChatWindowProps> = ({
     userId: user?.id || '',
     chatRoomId,
     onMessageReceived: (message) => {
-      logger.info('🔔 Nuevo mensaje recibido:', message);
+      logger.info('🔔 Nuevo mensaje recibido:', { messageId: message.id, content: message.content });
       // Aquí podrías agregar notificaciones, sonidos, etc.
     },
     onUserJoined: (userId) => {

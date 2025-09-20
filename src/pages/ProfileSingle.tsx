@@ -35,9 +35,9 @@ const ProfileSingle: React.FC = () => {
           isAuthenticated
         });
         
-        // Si no hay autenticación válida, redirigir
+        // Si no hay autenticación válida, redirigir inmediatamente
         if (!isAuthenticated) {
-          logger.info('❌ No hay autenticación válida, redirigiendo...');
+          logger.info('❌ No hay autenticación válida, redirigiendo a /auth...');
           navigate('/auth', { replace: true });
           return;
         }
@@ -135,9 +135,19 @@ const ProfileSingle: React.FC = () => {
             <p className="text-sm text-white/60 mb-4">
               Debug: Usuario: {user?.email || 'No user'}, Auth: {String(isAuthenticated)}
             </p>
-            <Button onClick={() => navigate('/discover')} variant="outline">
-              Volver al inicio
-            </Button>
+            <div className="space-y-2 mb-4">
+              <p className="text-xs text-white/50">Credenciales Demo:</p>
+              <p className="text-xs text-white/60">Single: single@outlook.es / 123456</p>
+              <p className="text-xs text-white/60">Pareja: pareja@outlook.es / 123456</p>
+            </div>
+            <div className="space-y-2">
+              <Button onClick={() => navigate('/auth')} className="w-full">
+                Ir a Autenticación
+              </Button>
+              <Button onClick={() => navigate('/discover')} variant="outline" className="w-full">
+                Volver al inicio
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </div>

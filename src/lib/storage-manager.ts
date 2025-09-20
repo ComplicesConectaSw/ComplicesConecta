@@ -90,7 +90,7 @@ export class StorageManager {
     );
 
     if (violations.length > 0) {
-      logger.error('❌ Datos sensibles detectados en localStorage:', violations);
+      logger.error('❌ Datos sensibles detectados en localStorage:', { violations: violations.join(', ') });
       return false;
     }
 
