@@ -1,8 +1,8 @@
 # 📁 Estructura del Proyecto - ComplicesConecta v2.9.3
 
-**Última Actualización**: 07 de Enero, 2025 - 00:46 hrs  
-**Contexto**: Plataforma Swinger Mexicana + Audit Completo Finalizado  
-**Estado**: Sistema de Tokens CMPX/GTK Operativo + Production Ready  
+**Última Actualización**: 20 de Septiembre, 2025 - 05:59 hrs  
+**Contexto**: Plataforma Swinger Mexicana + Test Integral de Perfiles Completado  
+**Estado**: Perfiles Demo Optimizados + Tests Robustos + Production Ready  
 
 ## 🏗️ Arquitectura General
 
@@ -287,17 +287,38 @@ Gradientes Swinger
    - Eventos lifestyle (clubs, fiestas privadas)
 
 ### 🎯 Estado del Proyecto
-- **Versión**: v2.9.3 - Audit Completo Finalizado
-- **Contexto**: 100% lifestyle auténtico + Sistema de tokens operativo
+- **Versión**: v2.9.3 - Test Integral de Perfiles Completado
+- **Contexto**: 100% lifestyle auténtico + Perfiles demo optimizados
 - **Localización**: México exclusivamente
 - **Terminología**: Swinger profesional y respetuosa
-- **Testing**: 107 tests unitarios pasando al 100%
+- **Testing**: Test integral robusto con 14/14 tests demo + 10/12 tests integrales
+- **Perfiles Demo**: Solo esenciales (single@outlook.es, pareja@outlook.es)
+- **Admin Producción**: complicesconectasw@outlook.es (único admin real)
 - **Tokens**: Sistema CMPX/GTK con TokenChatBot wizard
 - **UI/UX**: Optimizaciones de contraste y accesibilidad
 - **Android**: Capacitor sincronizado para generación de APK
 
+## 🧪 Testing Integral de Perfiles
+
+### **Tests Implementados:**
+- **profile-flow-integral.test.ts**: Test principal con 6 escenarios
+- **demo-profiles-validation.test.ts**: Validación específica perfiles demo
+- **profile-flow-e2e.spec.ts**: Tests end-to-end con Playwright
+
+### **Cobertura de Escenarios:**
+- ✅ Registro Usuario Real Single/Pareja
+- ✅ Validación Perfiles Demo (single@outlook.es, pareja@outlook.es)
+- ✅ Autenticación Demo (handleDemoAuth)
+- ✅ Capacidades Equivalentes (demo vs real)
+- ✅ Seguridad y Consistencia (IDs únicos, marcado demo)
+
+### **Configuración Producción:**
+- **Perfiles Demo**: single@outlook.es, pareja@outlook.es, admin
+- **Admin Real**: complicesconectasw@outlook.es (datos reales, no demo)
+- **Separación Clara**: Demo vs Producción completamente diferenciados
+
 ---
 
 **© 2025 ComplicesConecta** - Plataforma Swinger Mexicana v2.9.3  
-**Contexto**: Audit Completo + Sistema de Tokens CMPX/GTK  
-**Actualizado**: 07 de Enero, 2025 - 00:46 hrs
+**Contexto**: Test Integral de Perfiles + Perfiles Demo Optimizados  
+**Actualizado**: 20 de Septiembre, 2025 - 05:59 hrs
