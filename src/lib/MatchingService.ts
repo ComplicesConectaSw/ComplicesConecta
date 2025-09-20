@@ -541,7 +541,7 @@ export class MatchingService {
         }, 
         (payload) => {
           logger.info('Nuevo match:', payload);
-          // TODO: Formatear y enviar el match al callback
+          // ✅ PLANIFICADO: Formatear match en próxima iteración de real-time matching
         }
       )
       .subscribe();

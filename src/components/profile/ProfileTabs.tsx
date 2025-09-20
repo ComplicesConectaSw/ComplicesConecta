@@ -268,13 +268,13 @@ export const ProfileTabs: React.FC<ProfileTabsProps> = ({
           <CardContent>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               <div className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center">
-                <span className="text-gray-500 text-sm">Foto 1</span>
+                <span className="text-gray-700 dark:text-gray-200 text-sm">Foto 1</span>
               </div>
               <div className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center">
-                <span className="text-gray-500 text-sm">Foto 2</span>
+                <span className="text-gray-700 dark:text-gray-200 text-sm">Foto 2</span>
               </div>
               <div className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center">
-                <span className="text-gray-500 text-sm">Foto 3</span>
+                <span className="text-gray-700 dark:text-gray-200 text-sm">Foto 3</span>
               </div>
             </div>
           </CardContent>
