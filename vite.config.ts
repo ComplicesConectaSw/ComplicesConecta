@@ -10,6 +10,7 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+    dedupe: ['react', 'react-dom', 'framer-motion']
   },
   // Configuración del servidor de desarrollo
   server: {
@@ -56,9 +57,12 @@ export default defineConfig({
       'react-router-dom',
       '@supabase/supabase-js',
       '@tanstack/react-query',
-      'lucide-react'
+      'lucide-react',
+      '@emotion/is-prop-valid',
+      'framer-motion'
     ],
-    exclude: ['@emotion/is-prop-valid', 'framer-motion'],
-    force: true
+    esbuildOptions: {
+      target: 'es2020'
+    }
   },
 });
