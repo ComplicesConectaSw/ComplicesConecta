@@ -33,7 +33,7 @@ export function LogoutButton({
       // Limpiar localStorage/sessionStorage
       localStorage.removeItem('supabase.auth.token');
       localStorage.removeItem('demo_authenticated');
-      localStorage.removeItem('apoyo_authenticated');
+      // Los administradores reales usan logout de Supabase
       localStorage.removeItem('demo_user');
       localStorage.removeItem('userType');
       sessionStorage.clear();

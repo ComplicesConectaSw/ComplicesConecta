@@ -235,9 +235,13 @@ class ProductionChatService {
           first_name,
           last_name
         `)
-        .in('id', senderIds);
+        .in('id', senderIds.filter((id): id is string => typeof id === 'string'));
 
-      const profileMap = new Map(profiles?.map((p: { id: string; first_name: string; last_name: string }) => [p.id, p]) || []);
+      const profileMap = new Map(profiles?.map((p) => [p.id, { 
+        id: p.id, 
+        first_name: p.first_name || '', 
+        last_name: p.last_name || '' 
+      }]) || []);
 
       const productionMessages: ProductionChatMessage[] = messages.map((msg: { id: string; content: string; sender_id: string; created_at: string; message_type?: string; room_id?: string; is_deleted?: boolean }) => {
         const profile = profileMap.get(msg.sender_id) as { id: string; first_name: string; last_name: string } | undefined;

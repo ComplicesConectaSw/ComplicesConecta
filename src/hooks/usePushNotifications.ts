@@ -66,7 +66,7 @@ export const usePushNotifications = ({
 
     try {
       const registration = await navigator.serviceWorker.register('/sw.js');
-      logger.info('✅ Service Worker registrado:', registration);
+      logger.info('Service Worker registrado:', { scope: registration.scope });
       return registration;
     } catch (error) {
       logger.error('Error registering service worker:', { error: String(error) });
@@ -136,7 +136,7 @@ export const usePushNotifications = ({
       // Save subscription to database
       await saveSubscriptionToDatabase(pushSubscription);
 
-      logger.info('✅ Suscripción push creada:', pushSubscription);
+      logger.info('Push subscription creada:', { endpoint: pushSubscription.endpoint });
       return pushSubscription;
     } catch (error) {
       logger.error('Error subscribing to push notifications:', { error: String(error) });

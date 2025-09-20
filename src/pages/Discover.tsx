@@ -244,7 +244,7 @@ const Discover = () => {
         logger.info(`✅ ${realProfiles.length} perfiles reales cargados`);
         
         // Convertir perfiles de Supabase al formato esperado
-        const convertedProfiles: Profile[] = realProfiles.map((profile: SupabaseProfile) => ({
+        const convertedProfiles: Profile[] = realProfiles.map((profile) => ({
           id: profile.id,
           name: `${profile.first_name} ${profile.last_name || ''}`.trim(),
           age: profile.age || 25,

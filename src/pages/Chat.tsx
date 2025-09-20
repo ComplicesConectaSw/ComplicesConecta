@@ -51,7 +51,7 @@ const Chat = () => {
 
   // Estado persistente para autenticación
   const [demoAuth] = usePersistedState<string>('demo_authenticated', 'false');
-  const [apoyoAuth] = usePersistedState<string>('apoyo_authenticated', 'false');
+  // Administradores reales usan autenticación de Supabase directamente
   const [demoUser] = usePersistedState<string>('demo_user', '');
 
   // Estados para chat real y demo
@@ -330,33 +330,16 @@ const Chat = () => {
   useEffect(() => {
     logger.info('🔄 CHAT - Verificando autenticación y modo...');
     
-    // Verificar autenticación
-    if (!isAuthenticated()) {
-      navigate('/auth');
-      return;
-    }
-    
     // Determinar modo según autenticación
-    if (demoAuth === 'true' || apoyoAuth === 'true') {
+    if (demoAuth === 'true' || isAuthenticated) {
       logger.info('✅ CHAT - Modo producción/demo detectado');
       loadChatRooms();
     } else {
-      logger.info('⚠️ CHAT - Fallback a datos demo');
-      // Cargar datos demo básicos
+      logger.info('❌ CHAT - Usuario no autenticado');
       setChatRooms([]);
       setLoading(false);
     }
-  }, [isAuthenticated, navigate, demoAuth, apoyoAuth]);
-
-  useEffect(() => {
-    if (selectedChat) {
-      if (isProduction) {
-        loadRealMessages(selectedChat.id.toString());
-      } else {
-        loadMessages(selectedChat.id);
-      }
-    }
-  }, [selectedChat, isProduction]);
+  }, [isAuthenticated, navigate, demoAuth]);
 
   const handleSendMessage = () => {
     if (!selectedChat || !newMessage.trim()) return;

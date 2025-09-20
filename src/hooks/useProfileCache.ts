@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import type { Tables } from '@/integrations/supabase/types';
+import type { Tables, Database } from '@/integrations/supabase/types';
 import { logger } from '@/lib/logger';
 
 // Tipos para el cache de perfiles
@@ -31,11 +31,11 @@ export const useProfile = (userId: string | null) => {
         .single();
 
       if (error) {
-        logger.error('❌ Error cargando perfil:', error);
+        logger.error('Error fetching profile:', { error: error.message });
         throw error;
       }
 
-      logger.info('✅ Perfil cargado desde Supabase:', { first_name: (data as any)?.first_name });
+      logger.info('✅ Perfil cargado desde Supabase:', { first_name: data?.first_name });
       return data;
     },
     enabled: !!userId,
@@ -85,7 +85,7 @@ export const useProfiles = (filters?: {
       const { data, error } = await query;
 
       if (error) {
-        logger.error('❌ Error cargando perfiles:', error);
+        logger.error('Error updating profile cache:', { error: error.message });
         throw error;
       }
 
@@ -106,7 +106,7 @@ export const useUpdateProfile = () => {
     mutationFn: async ({ profileId, updates }: { profileId: string; updates: Partial<Profile> }) => {
       logger.info('💾 Actualizando perfil en Supabase:', { profileId });
       
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('profiles')
         .update({
           ...updates,
@@ -117,7 +117,7 @@ export const useUpdateProfile = () => {
         .single();
 
       if (error) {
-        logger.error('❌ Error actualizando perfil:', error);
+        logger.error('Error updating profile:', { error: error.message });
         throw error;
       }
 
@@ -129,10 +129,10 @@ export const useUpdateProfile = () => {
       // Invalidar listas de perfiles
       queryClient.invalidateQueries({ queryKey: profileKeys.lists() });
       
-      logger.info('✅ Perfil actualizado en cache:', { id: (data as any)?.id });
+      logger.info('✅ Perfil actualizado en cache:', { id: data?.id });
     },
     onError: (error) => {
-      logger.error('❌ Error en mutación de perfil:', error);
+      logger.error('Error in profile cache operation:', { error: error.message });
     },
   });
 };
@@ -142,17 +142,17 @@ export const useCreateProfile = () => {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: async (newProfile: Omit<Profile, 'id' | 'created_at' | 'updated_at'>) => {
-      logger.info('📝 Creando nuevo perfil:', { first_name: (newProfile as any)?.first_name });
+    mutationFn: async (newProfile: Database['public']['Tables']['profiles']['Insert']) => {
+      logger.info('📝 Creando nuevo perfil:', { first_name: newProfile?.first_name });
       
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('profiles')
         .insert(newProfile)
         .select()
         .single();
 
       if (error) {
-        logger.error('❌ Error creando perfil:', error);
+        logger.error('❌ Error creando perfil:', { error: error.message });
         throw error;
       }
 
@@ -164,7 +164,7 @@ export const useCreateProfile = () => {
       // Agregar al cache individual
       queryClient.setQueryData(profileKeys.detail(data.id), data);
       
-      logger.info('✅ Perfil creado y cache actualizado:', data.first_name);
+      logger.info('✅ Perfil creado y cache actualizado:', { first_name: data.first_name });
     },
   });
 };

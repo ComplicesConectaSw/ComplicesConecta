@@ -434,6 +434,39 @@ export type Database = {
         }
         Relationships: []
       }
+      faqs: {
+        Row: {
+          answer: string
+          category: string | null
+          created_at: string
+          display_order: number | null
+          id: string
+          is_active: boolean | null
+          question: string
+          updated_at: string
+        }
+        Insert: {
+          answer: string
+          category?: string | null
+          created_at?: string
+          display_order?: number | null
+          id?: string
+          is_active?: boolean | null
+          question: string
+          updated_at?: string
+        }
+        Update: {
+          answer?: string
+          category?: string | null
+          created_at?: string
+          display_order?: number | null
+          id?: string
+          is_active?: boolean | null
+          question?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       gallery_access_requests: {
         Row: {
           created_at: string | null
@@ -616,6 +649,7 @@ export type Database = {
       invitations: {
         Row: {
           created_at: string | null
+          decided_at: string | null
           from_profile: string | null
           id: string
           message: string | null
@@ -626,6 +660,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string | null
+          decided_at?: string | null
           from_profile?: string | null
           id?: string
           message?: string | null
@@ -636,6 +671,7 @@ export type Database = {
         }
         Update: {
           created_at?: string | null
+          decided_at?: string | null
           from_profile?: string | null
           id?: string
           message?: string | null
@@ -1033,6 +1069,42 @@ export type Database = {
           updated_at?: string
           user_agent?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      referral_rewards: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          reward_amount: number
+          reward_type: string
+          updated_at: string
+          user_id: string
+          verification_method: string
+          worldid_proof: Json | null
+        }
+        Insert: {
+          amount?: number
+          created_at?: string
+          id?: string
+          reward_amount?: number
+          reward_type?: string
+          updated_at?: string
+          user_id: string
+          verification_method?: string
+          worldid_proof?: Json | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          reward_amount?: number
+          reward_type?: string
+          updated_at?: string
+          user_id?: string
+          verification_method?: string
+          worldid_proof?: Json | null
         }
         Relationships: []
       }
