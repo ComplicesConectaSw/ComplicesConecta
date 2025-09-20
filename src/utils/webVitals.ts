@@ -1,16 +1,27 @@
 // Monitoreo de Core Web Vitals - ComplicesConecta v2.9.0
-import type { Metric } from 'web-vitals';
+import type { Metric, ReportCallback } from 'web-vitals';
+
+// Tipos para las funciones de web-vitals
+type WebVitalsModule = {
+  getCLS: (callback: ReportCallback) => void;
+  getFID: (callback: ReportCallback) => void;
+  getFCP: (callback: ReportCallback) => void;
+  getLCP: (callback: ReportCallback) => void;
+  getTTFB: (callback: ReportCallback) => void;
+};
 
 // Importación dinámica para evitar errores de build
-const getWebVitals = async () => {
+const getWebVitals = async (): Promise<WebVitalsModule> => {
   try {
     const webVitals = await import('web-vitals');
+    // Acceso seguro a las funciones con fallback
+    const module = webVitals as Record<string, unknown>;
     return {
-      getCLS: (webVitals as any).getCLS || (() => {}),
-      getFID: (webVitals as any).getFID || (() => {}),
-      getFCP: (webVitals as any).getFCP || (() => {}),
-      getLCP: (webVitals as any).getLCP || (() => {}),
-      getTTFB: (webVitals as any).getTTFB || (() => {})
+      getCLS: (typeof module.getCLS === 'function' ? module.getCLS : () => {}) as (callback: ReportCallback) => void,
+      getFID: (typeof module.getFID === 'function' ? module.getFID : () => {}) as (callback: ReportCallback) => void,
+      getFCP: (typeof module.getFCP === 'function' ? module.getFCP : () => {}) as (callback: ReportCallback) => void,
+      getLCP: (typeof module.getLCP === 'function' ? module.getLCP : () => {}) as (callback: ReportCallback) => void,
+      getTTFB: (typeof module.getTTFB === 'function' ? module.getTTFB : () => {}) as (callback: ReportCallback) => void
     };
   } catch (error) {
     console.warn('web-vitals not available:', error);
