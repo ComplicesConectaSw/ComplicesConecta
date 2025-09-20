@@ -368,7 +368,7 @@ class ChatService {
           const { data: profile } = await supabase
             .from('profiles')
             .select('id, first_name, last_name')
-            .eq('id', newMessage.sender_id)
+            .eq('id', newMessage.sender_id || '')
             .single();
 
           if (profile) {

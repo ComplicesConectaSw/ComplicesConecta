@@ -186,6 +186,7 @@ export async function getUserImages(
     // Mapear datos para asegurar compatibilidad con la interfaz
     return (data || []).map((item: Record<string, unknown>) => ({
       ...item,
+      is_public: (item as any).is_primary || false,
       type: 'gallery' as 'gallery' // Default type since DB doesn't have type column yet
     })) as ImageUpload[];
   } catch (error) {
@@ -282,6 +283,7 @@ export async function getPublicImages(limit: number = 20): Promise<ImageUpload[]
 
     return (data || []).map((item: Record<string, unknown>) => ({
       ...item,
+      is_public: (item as any).is_primary || false,
       type: 'gallery' as 'gallery' // Default type since DB doesn't have type column yet
     })) as ImageUpload[];
   } catch (error) {
