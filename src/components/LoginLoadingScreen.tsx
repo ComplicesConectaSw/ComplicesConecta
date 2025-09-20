@@ -122,8 +122,8 @@ export const LoginLoadingScreen = ({ onComplete, userType, userName, userProfile
         <div className="w-full max-w-xs sm:max-w-sm mx-auto space-y-3">
           <div className="w-full bg-white/20 rounded-full h-3 backdrop-blur-sm">
             <div 
-              className="bg-gradient-to-r from-pink-500 to-red-500 h-3 rounded-full transition-all duration-300 ease-out relative overflow-hidden"
-              style={{ width: `${progress}%` }}
+              className="bg-gradient-to-r from-pink-500 to-red-500 h-3 rounded-full login-progress-bar relative overflow-hidden"
+              style={{ '--progress-width': `${progress}%` } as React.CSSProperties}
             >
               <div className="absolute inset-0 bg-white/30 animate-pulse"></div>
             </div>
@@ -135,10 +135,10 @@ export const LoginLoadingScreen = ({ onComplete, userType, userName, userProfile
         <div className="absolute top-10 left-10 animate-float hidden sm:block">
           <Sparkles className="w-6 h-6 text-pink-300/60" />
         </div>
-        <div className="absolute bottom-10 right-10 animate-float hidden sm:block" style={{ animationDelay: '1s' }}>
+        <div className="absolute bottom-10 right-10 animate-float login-float-delay-1 hidden sm:block">
           <Heart className="w-8 h-8 text-red-300/60" />
         </div>
-        <div className="absolute top-1/3 right-20 animate-float hidden sm:block" style={{ animationDelay: '2s' }}>
+        <div className="absolute top-1/3 right-20 animate-float login-float-delay-2 hidden sm:block">
           <Users className="w-5 h-5 text-purple-300/60" />
         </div>
       </div>

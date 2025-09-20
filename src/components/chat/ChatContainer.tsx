@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChatBubble } from '@/components/chat/ChatBubble';
+import { ChatBubble } from '@/components/ui/ChatBubble';
 import { ChatInput } from '@/components/chat/ChatInput';
 import { TypingIndicator } from '@/components/chat/TypingIndicator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -134,15 +134,8 @@ export const ChatContainer: React.FC<ChatContainerProps> = ({
 
       {/* Área de Mensajes */}
       <div
-        className="flex-1 overflow-y-auto p-4 space-y-2"
+        className="flex-1 overflow-y-auto p-4 space-y-2 chat-messages-container"
         onScroll={handleScroll}
-        style={{
-          backgroundImage: `
-            radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.1) 0%, transparent 50%),
-            radial-gradient(circle at 40% 40%, rgba(120, 119, 198, 0.05) 0%, transparent 50%)
-          `
-        }}
       >
         <AnimatePresence mode="popLayout">
           {messages.map((message, index) => (

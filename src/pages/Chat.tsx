@@ -9,7 +9,7 @@ import { UnifiedCard } from "@/components/ui/UnifiedCard";
 import { UnifiedTabs } from "@/components/ui/UnifiedTabs";
 import { ModernChatInterface } from "@/components/chat/ModernChatInterface";
 import { ChatContainer } from "@/components/chat/ChatContainer";
-import { ChatBubble } from "@/components/chat/ChatBubble";
+import { ChatBubble } from "@/components/ui/ChatBubble";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useFeatures } from "@/hooks/useFeatures";
@@ -655,7 +655,7 @@ const Chat = () => {
               </div>
 
               {/* Messages */}
-              <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0 chat-messages scroll-container" style={{scrollBehavior: 'smooth'}}>
+              <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0 chat-messages scroll-container chat-smooth-scroll">
                 {isProduction ? (
                   // Renderizar mensajes reales de Supabase
                   realMessages.map((message) => (
@@ -668,7 +668,7 @@ const Chat = () => {
                           message.sender_id === localStorage.getItem('user_id')
                         }`}
                       >
-                        <p className="text-xs sm:text-sm leading-relaxed break-words whitespace-pre-wrap overflow-wrap-anywhere hyphens-auto" style={{wordBreak: 'break-word', overflowWrap: 'anywhere'}}>{message.content}</p>
+                        <p className="text-xs sm:text-sm leading-relaxed break-words whitespace-pre-wrap overflow-wrap-anywhere hyphens-auto chat-message-text">{message.content}</p>
                         <p className={`text-xs mt-1 ${
                           message.sender_id === localStorage.getItem('user_id') ? 'text-purple-100' : 'text-white/70'
                         }`}>
@@ -689,7 +689,7 @@ const Chat = () => {
                           message.senderId === 0 ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' : 'bg-white/95 text-gray-800 shadow-md border border-gray-200 backdrop-blur-sm'
                         }`}
                       >
-                        <p className="text-xs sm:text-sm leading-relaxed break-words whitespace-pre-wrap overflow-wrap-anywhere hyphens-auto" style={{wordBreak: 'break-word', overflowWrap: 'anywhere'}}>{message.content}</p>
+                        <p className="text-xs sm:text-sm leading-relaxed break-words whitespace-pre-wrap overflow-wrap-anywhere hyphens-auto chat-message-text">{message.content}</p>
                         <p className={`text-xs mt-1 ${
                           message.senderId === 0 ? 'text-purple-100' : 'text-gray-600'
                         }`}>

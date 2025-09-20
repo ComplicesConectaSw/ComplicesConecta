@@ -26,7 +26,7 @@ import { AnimatedButton } from '@/components/ui/AnimatedButton';
 import { AnimatedCard } from '@/components/ui/AnimatedCard';
 import { ResponsiveContainer } from '@/components/ui/ResponsiveContainer';
 import { ThemeInfoModal } from '@/components/auth/ThemeInfoModal';
-import { TermsModal } from '@/components/auth/TermsModal';
+import { TermsModal } from '@/components/ui/TermsModal';
 import { Gender } from '@/hooks/useProfileTheme';
 import { usePersistedState } from '@/hooks/usePersistedState';
 
@@ -1418,8 +1418,7 @@ const Auth = () => {
       <TermsModal
         isOpen={showTermsModal}
         onClose={handleTermsModalClose}
-        onAccept={handleTermsAcceptance}
-        accepted={formData.acceptTerms}
+        onAccept={(termsAccepted, privacyAccepted) => handleTermsAcceptance(termsAccepted && privacyAccepted)}
       />
 
       {/* Theme Info Modal */}

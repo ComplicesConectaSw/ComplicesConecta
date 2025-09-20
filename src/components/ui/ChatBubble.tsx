@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Check, CheckCheck, Clock, Heart, Smile, MoreHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ChatBubble as SimpleChatBubble } from "@/components/chat/ChatBubble";
+// Removed circular import - will implement simple version inline
 
 interface ChatBubbleProps {
   id: string;
@@ -61,16 +61,46 @@ export const ChatBubble = React.memo<ChatBubbleProps>(function ChatBubble({
     setShowReactions(false);
   }, [id, onReact]);
 
-  // Si no hay funcionalidades avanzadas, usar el componente simple
+  // Si no hay funcionalidades avanzadas, usar versión simple inline
   if (!reactions?.length && !onReact && !onReply && !isPrivate) {
     return (
-      <SimpleChatBubble
-        id={id}
-        message={message}
-        isOwn={isOwn}
-        timestamp={timestamp}
-        className={className}
-      />
+      <motion.div
+        className={cn(
+          "flex gap-3 mb-4 group",
+          isOwn ? "flex-row-reverse" : "flex-row",
+          className
+        )}
+        initial={{ opacity: 0, y: 20, scale: 0.8 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
+      >
+        <div className={cn(
+          "flex flex-col max-w-[70%]",
+          isOwn ? "items-end" : "items-start"
+        )}>
+          <div className={cn(
+            "relative px-4 py-3 rounded-2xl shadow-sm",
+            "backdrop-blur-sm border border-white/10",
+            "transition-all duration-300 ease-out",
+            isOwn 
+              ? "bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-br-md" 
+              : "bg-white/90 text-gray-800 rounded-bl-md hover:bg-white/95"
+          )}>
+            <p className={cn(
+              "text-sm leading-relaxed break-words",
+              isOwn ? "text-white" : "text-gray-800"
+            )}>
+              {message}
+            </p>
+            <span className={cn(
+              "text-xs opacity-70 mt-1 block",
+              isOwn ? "text-white/80" : "text-gray-500"
+            )}>
+              {timestamp}
+            </span>
+          </div>
+        </div>
+      </motion.div>
     );
   }
 

@@ -44,6 +44,8 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
           value={selectedTheme || ''}
           onChange={(e) => onThemeChange(e.target.value as Theme || undefined)}
           className="text-sm border border-gray-300 rounded-md px-2 py-1 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+          aria-label="Selector de tema visual"
+          title="Selecciona un tema visual para tu perfil"
         >
           <option value="">Por defecto</option>
           {themes.map((theme) => (

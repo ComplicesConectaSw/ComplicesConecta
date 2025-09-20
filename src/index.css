@@ -1,11 +1,13 @@
+/* Tailwind CSS directives - processed by PostCSS */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* Custom scrollbar styles - Professional Design */
+/* Modern browsers support - fallbacks handled by webkit properties */
 .custom-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(139, 92, 246, 0.5) rgba(255, 255, 255, 0.1);
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: rgba(139, 92, 246, 0.5) rgba(255, 255, 255, 0.1); /* Firefox */
 }
 
 .custom-scrollbar::-webkit-scrollbar {
@@ -141,6 +143,7 @@ body {
     position: sticky;
     bottom: 0;
     background: rgba(0, 0, 0, 0.9);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
   }
 }
@@ -474,4 +477,125 @@ All colors MUST be HSL. */
     min-height: 65px;
     font-size: 14px;
   }
+}
+
+/* Chat message styles - Replace inline styles */
+.chat-smooth-scroll {
+  scroll-behavior: smooth;
+}
+
+.chat-message-text {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* Loading screen animations */
+.loading-gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.loading-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.loading-bounce {
+  animation: bounce 1s infinite;
+}
+
+/* Interactive animations */
+.hover-scale {
+  transition: transform 0.2s ease-in-out;
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+/* Glass card effects */
+.glass-card {
+  background: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Token dashboard styles */
+.token-gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.token-glow {
+  box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+}
+
+/* Custom scrollbar for ChatBot */
+.custom-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 0, 128, 0.8) transparent;
+}
+
+.custom-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #FF0080, #7928CA);
+  border-radius: 3px;
+}
+
+/* Loading screen specific styles */
+.loading-progress-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.loading-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #FF0080, #7928CA);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+/* Chat container specific styles */
+.chat-messages-container {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Loading screen animation delays */
+.loading-dot-1 {
+  animation-delay: 0.1s;
+}
+
+.loading-dot-2 {
+  animation-delay: 0.2s;
+}
+
+/* Dynamic progress bar width */
+.progress-dynamic {
+  transition: width 0.3s ease;
+  width: var(--progress-width, 0%);
+}
+
+/* Login loading screen specific styles */
+.login-progress-bar {
+  width: var(--progress-width, 0%);
+  transition: width 0.3s ease-out;
+}
+
+.login-float-delay-1 {
+  animation-delay: 1s;
+}
+
+.login-float-delay-2 {
+  animation-delay: 2s;
 }

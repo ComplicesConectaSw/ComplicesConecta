@@ -405,7 +405,7 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
       
       <CardContent className="flex-1 flex flex-col p-0">
         {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scroll">
           {messages.map((message) => (
             <div
               key={message.id}

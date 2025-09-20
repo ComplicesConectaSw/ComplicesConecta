@@ -29,7 +29,7 @@ export const TypingIndicator: React.FC<TypingIndicatorProps> = ({
       </Avatar>
       
       <div className="flex flex-col">
-        <span className="text-xs text-gray-500 mb-1 px-2">
+        <span className="text-xs text-gray-200 mb-1 px-2">
           {username} está escribiendo...
         </span>
         

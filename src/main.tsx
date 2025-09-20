@@ -2,16 +2,17 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from '@/App.tsx'
+import { logger, logError } from '@/lib/logger';
 import './index.css'
 import './styles/responsive.css'
 import './styles/text-overflow-fixes.css'
 
-console.log('🚀 ComplicesConecta APK - Carga Completa Iniciando...');
+logger.info('🚀 ComplicesConecta APK - Carga Completa Iniciando...');
 
 // Función para cargar la aplicación completa de React
 async function loadMainApp() {
   try {
-    console.log('📦 Loading full ComplicesConecta React application...');
+    logger.info('📦 Loading full ComplicesConecta React application...');
     
     const rootElement = document.getElementById("root");
     if (!rootElement) {
@@ -24,7 +25,7 @@ async function loadMainApp() {
     // Pequeña pausa para mostrar la pantalla de carga
     await new Promise(resolve => setTimeout(resolve, 1000));
     
-    console.log('✅ Rendering full React application...');
+    logger.info('✅ Rendering full React application...');
     
     // Limpiar contenido previo
     rootElement.innerHTML = '';
@@ -37,11 +38,15 @@ async function loadMainApp() {
       </StrictMode>
     );
 
-    console.log('🎉 Full ComplicesConecta app loaded successfully!');
+    logger.info('🎉 Full ComplicesConecta app loaded successfully!');
     return true;
 
   } catch (error) {
-    console.error('❌ Failed to load full app:', error);
+    if (error instanceof Error) {
+      logError(error, { context: 'main_app_load' });
+    } else {
+      logger.error('❌ Failed to load full app:', { errorMessage: String(error) });
+    }
     showErrorWithFallback(error);
     return false;
   }
@@ -254,11 +259,11 @@ function showErrorWithFallback(error: any) {
 
 // Inicializar aplicación completa directamente
 async function initializeApp() {
-  console.log('🚀 Initializing full ComplicesConecta application...');
+  logger.info('🚀 Initializing full ComplicesConecta application...');
   
   const rootElement = document.getElementById("root");
   if (!rootElement) {
-    console.error('❌ Root element not found');
+    logger.error('❌ Root element not found');
     return;
   }
 
