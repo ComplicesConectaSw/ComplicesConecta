@@ -16,16 +16,18 @@
 - TokenChatBot.tsx          → Bot de tokens (único)
 - ui/ChatBubble.tsx         → Burbuja de mensaje (consolidado)
 
-⚠️ EVALUAR PARA UNIFICACIÓN:
+✅ MANTENER (Core Realtime):
+- RealtimeChatWindow.tsx    → 🔴 CRÍTICO: Chat público en tiempo real
+- ChatWithLocation.tsx      → 🔴 CRÍTICO: Chat con geolocalización (usado en DB schema)
 - ChatList.tsx              → Lista de chats
-- ChatWindow.tsx            → Ventana básica
+- ChatWindow.tsx            → Ventana básica (wrapper)
 - ChatWindowEnhanced.tsx    → Ventana mejorada
-- ModernChatInterface.tsx   → Interfaz moderna
-- RealtimeChatWindow.tsx    → Chat en tiempo real
 
-🔄 CANDIDATOS A CONSOLIDAR:
-- ChatWithLocation.tsx      → Funcionalidad específica
-- RealtimeChatIntegration.tsx → Integración realtime
+⚠️ EVALUAR PARA UNIFICACIÓN:
+- ModernChatInterface.tsx   → Interfaz moderna (usado en Chat.tsx)
+
+✅ ELIMINADO (No usado):
+- RealtimeChatIntegration.tsx → ❌ ELIMINADO: No referenciado
 ```
 
 ### 👤 **COMPONENTES PROFILE (19 encontrados)**
