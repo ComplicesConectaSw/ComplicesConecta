@@ -87,8 +87,12 @@ export const DemoProvider: React.FC<DemoProviderProps> = ({ children }) => {
     }
   };
 
+  const setProfiles = (profiles: Profile[]) => {
+    // implement setProfiles logic here
+  };
+
   const contextValue: DemoContextType = {
-    profiles: demoProfiles as Profile[],
+    profiles: demoProfiles as unknown as Profile[],
     isDemo: true,
     getDemoProfile,
     getDemoProfiles,
