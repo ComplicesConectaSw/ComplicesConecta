@@ -100,21 +100,24 @@ class ProductionChatService {
         // Continuar sin error crítico
       }
 
-      const mapRoomData = (rooms: any[]): ProductionChatRoom[] => {
+      const mapRoomData = (rooms: unknown[]): ProductionChatRoom[] => {
         if (!rooms) return [];
-        return rooms.map(room => ({
-          id: room.id,
-          name: room.name,
-          type: room.is_public ? 'public' : 'private',
-          created_by: room.created_by,
-          created_at: room.created_at || '',
-          updated_at: room.updated_at || '',
-          description: room.description || undefined,
-          is_active: room.is_active || false,
-          participant_count: room.is_public ? 0 : 1,
-          last_message: undefined,
-          last_message_at: undefined
-        }));
+        return rooms.map(room => {
+          const r = room as { id: string; name: string; is_public: boolean; created_by: string; created_at?: string; updated_at?: string; description?: string; is_active?: boolean };
+          return {
+            id: r.id,
+            name: r.name,
+            type: r.is_public ? 'public' : 'private',
+            created_by: r.created_by,
+            created_at: r.created_at || '',
+            updated_at: r.updated_at || '',
+            description: r.description || undefined,
+            is_active: r.is_active || false,
+            participant_count: r.is_public ? 0 : 1,
+            last_message: undefined,
+            last_message_at: undefined
+          };
+        });
       };
 
       return {

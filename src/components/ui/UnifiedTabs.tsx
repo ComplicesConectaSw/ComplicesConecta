@@ -77,8 +77,7 @@ export const UnifiedTabs: React.FC<UnifiedTabsProps> = ({
             {animated && activeTab === item.value && variant === 'default' && (
               <motion.div
                 layoutId="activeTab"
-                className="absolute inset-0 bg-white rounded-md shadow-sm"
-                style={{ zIndex: -1 }}
+                className="absolute inset-0 bg-white rounded-md shadow-sm -z-10"
                 transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
               />
             )}
