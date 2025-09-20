@@ -14,10 +14,11 @@ import { Database } from '@/integrations/supabase/types';
 type Profile = Database['public']['Tables']['profiles']['Row'];
 
 // Tipos extendidos para propiedades que pueden no estar en el schema actual
-interface ExtendedProfile extends Profile {
-  gender?: string;
-  interested_in?: string[];
-  account_type?: 'single' | 'couple';
+interface ExtendedProfile extends Omit<Profile, 'account_type' | 'gender' | 'interested_in'> {
+  gender?: string | null;
+  interested_in?: string[] | null;
+  account_type?: 'single' | 'couple' | string | null;
+  location?: string;
 }
 
 // Interfaces para el sistema de matches de producción
@@ -200,7 +201,7 @@ class ProductionMatchService {
 
         compatibleMatches.push({
           id: profile.id,
-          name: displayName,
+          name: displayName || 'Usuario',
           age: profile.age || 0,
           bio: profile.bio || 'Sin descripción disponible',
           images: [
@@ -321,7 +322,7 @@ class ProductionMatchService {
 
         searchResults.push({
           id: profile.id,
-          name: displayName,
+          name: displayName || 'Usuario',
           age: profile.age || 0,
           bio: profile.bio || 'Sin descripción disponible',
           images: [
@@ -336,7 +337,7 @@ class ProductionMatchService {
           accountType: (profile.account_type as 'single' | 'couple') || 'single',
           partnerName: profile.partner_first_name || undefined,
           partnerAge: profile.partner_age || undefined,
-          location: profile.location || 'Ubicación no especificada',
+          location: (profile as ExtendedProfile).location || 'Ubicación no especificada',
           isVerified: profile.is_verified || false,
           isPremium: profile.is_premium || false
         });

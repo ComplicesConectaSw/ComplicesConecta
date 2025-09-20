@@ -38,7 +38,7 @@ export const userRegistrationSchema = z.object({
     .optional(),
   age: ageSchema,
   profile_type: z.enum(['single', 'couple'], {
-    errorMap: () => ({ message: 'Tipo de perfil debe ser single o couple' })
+    message: 'Tipo de perfil debe ser single o couple'
   }),
   bio: z
     .string()
@@ -107,7 +107,7 @@ export const interestsSchema = z.array(
     'experiencias_intensas',
     'exhibicionismo'
   ], {
-    errorMap: () => ({ message: 'Interés no válido' })
+    message: 'Interés no válido'
   })
 ).min(1, 'Debes seleccionar al menos un interés')
   .max(10, 'No puedes seleccionar más de 10 intereses');
@@ -125,7 +125,7 @@ export const chatMessageSchema = z.object({
 export const invitationSchema = z.object({
   to_profile: z.string().uuid('ID de perfil inválido'),
   type: z.enum(['profile', 'gallery'], {
-    errorMap: () => ({ message: 'Tipo de invitación debe ser profile o gallery' })
+    message: 'Tipo de invitación debe ser profile o gallery'
   }),
   message: z
     .string()
