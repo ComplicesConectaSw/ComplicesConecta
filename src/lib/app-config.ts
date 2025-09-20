@@ -145,7 +145,14 @@ export const handleDemoAuth = (email: string, accountType: string = 'single') =>
   }
   
   // Importar datos demo para perfiles completos
-  const { demoProfiles } = require('@/demo/demoData');
+  let demoProfiles: any[] = [];
+  try {
+    const demoData = require('../demo/demoData.ts');
+    demoProfiles = demoData.demoProfiles || [];
+  } catch (error) {
+    logger.warn('No se pudieron cargar datos demo:', { error: String(error) });
+    demoProfiles = [];
+  }
   
   // Buscar perfil demo completo por email
   const fullDemoProfile = demoProfiles.find((profile: any) => 
