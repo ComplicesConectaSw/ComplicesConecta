@@ -174,13 +174,13 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
           {isUploading ? (
             <div className="flex flex-col items-center gap-3">
               <Loader2 className="w-12 h-12 text-purple-500 animate-spin" />
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-gray-700 dark:text-gray-200">
                 Subiendo imagen...
               </p>
             </div>
           ) : (
             <div className="flex flex-col items-center gap-3">
-              <ImageIcon className="w-12 h-12 text-gray-400" />
+              <ImageIcon className="w-12 h-12 text-gray-600 dark:text-gray-300" />
               <div>
                 <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Haz clic o arrastra una imagen aquí
