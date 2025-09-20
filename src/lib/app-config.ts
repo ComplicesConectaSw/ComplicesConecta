@@ -28,9 +28,8 @@ export const getAppConfig = (): AppConfig => {
   
   const mode = (import.meta.env.VITE_APP_MODE || 'production') as 'demo' | 'production';
   
-  // Forzar modo producción para usuarios reales autenticados
-  const apoyoAuth = localStorage.getItem('apoyo_authenticated');
-  const realMode = (apoyoAuth === 'true') ? 'production' : mode;
+  // Usar modo configurado directamente
+  const realMode = mode;
   
   logger.info('🔧 Configuración de aplicación:', {
     mode,
