@@ -383,7 +383,14 @@ const ProfileCouple: React.FC = () => {
           </div>
         </div>
 
-        <Navigation />
+        {(() => {
+          logger.info('🧭 ProfileCouple renderizando Navigation:', { 
+            isAuthenticated, 
+            demoAuth: localStorage.getItem('demo_authenticated'), 
+            demoUser: !!localStorage.getItem('demo_user')
+          });
+          return <Navigation />;
+        })()}
       </div>
     </div>
   );

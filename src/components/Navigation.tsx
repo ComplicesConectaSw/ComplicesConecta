@@ -15,6 +15,9 @@ interface NavigationProps {
 
 // Usar NavigationLegacy con lógica de autenticación corregida
 const Navigation = ({ className }: NavigationProps) => {
+  // Debug del componente principal
+  logger.info('🧭 Navigation principal llamado:', { className });
+  
   // Usar NavigationLegacy que tiene la lógica de autenticación correcta
   return <NavigationLegacy className={className} />;
 };
@@ -36,6 +39,14 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
   
   // Corregir lógica de autenticación - verificar string 'true'
   const isAuthenticated = demoAuthString === 'true' && demoUser;
+  
+  // Debug inicial del componente
+  logger.info('🧭 NavigationLegacy iniciado:', {
+    demoAuthString,
+    demoUser: !!demoUser,
+    isAuthenticated,
+    currentPath: location.pathname
+  });
 
   const baseNavItems = [
     { id: 'feed', icon: Home, label: 'Inicio', path: '/feed' },
@@ -58,7 +69,9 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
     isAuthenticated, 
     demoAuthString, 
     demoUser: !!demoUser,
-    currentUserType 
+    currentUserType,
+    localStorage_demo_auth: localStorage.getItem('demo_authenticated'),
+    localStorage_demo_user: !!localStorage.getItem('demo_user')
   });
   
   // Configuración específica para parejas

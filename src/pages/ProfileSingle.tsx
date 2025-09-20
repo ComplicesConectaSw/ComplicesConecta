@@ -356,7 +356,14 @@ const ProfileSingle: React.FC = () => {
       </div>
 
       {/* Navegación inferior */}
-      <Navigation />
+      {(() => {
+        logger.info('🧭 ProfileSingle renderizando Navigation:', { 
+          isAuthenticated, 
+          demoAuth, 
+          demoUser: !!demoUser 
+        });
+        return <Navigation />;
+      })()}
     </div>
   );
 };
