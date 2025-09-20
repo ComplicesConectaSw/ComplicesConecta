@@ -3,12 +3,12 @@ import { ComponentType, lazy } from 'react';
 /**
  * Utility para crear lazy loading con retry automático
  */
-export const createLazyComponent = <T extends ComponentType<any>>(
-  importFn: () => Promise<{ default: T }>,
+export const createLazyComponent = <P = Record<string, unknown>>(
+  importFn: () => Promise<{ default: ComponentType<P> }>,
   retries = 3
-): ComponentType<any> => {
+): ComponentType<P> => {
   return lazy(() => {
-    return new Promise<{ default: T }>((resolve, reject) => {
+    return new Promise<{ default: ComponentType<P> }>((resolve, reject) => {
       let attempt = 0;
       
       const tryImport = () => {
@@ -34,7 +34,7 @@ export const createLazyComponent = <T extends ComponentType<any>>(
 /**
  * Preload de componentes críticos
  */
-export const preloadComponent = (importFn: () => Promise<any>) => {
+export const preloadComponent = <P = Record<string, unknown>>(importFn: () => Promise<{ default: ComponentType<P> }>) => {
   const link = document.createElement('link');
   link.rel = 'modulepreload';
   link.href = importFn.toString();
@@ -47,10 +47,10 @@ export const preloadComponent = (importFn: () => Promise<any>) => {
 /**
  * Lazy loading con prioridad
  */
-export const createPriorityLazyComponent = <T extends ComponentType<any>>(
-  importFn: () => Promise<{ default: T }>,
+export const createPriorityLazyComponent = <P = Record<string, unknown>>(
+  importFn: () => Promise<{ default: ComponentType<P> }>,
   priority: 'high' | 'medium' | 'low' = 'medium'
-): ComponentType<any> => {
+): ComponentType<P> => {
   const component = createLazyComponent(importFn);
   
   // Preload para componentes de alta prioridad
