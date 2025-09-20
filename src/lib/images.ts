@@ -139,7 +139,7 @@ export async function uploadImage(
 
     return { 
       success: true, 
-      data: dbData as ImageUpload,
+      data: { ...dbData, is_public: dbData.is_primary || false } as ImageUpload,
       url: publicUrl
     };
 

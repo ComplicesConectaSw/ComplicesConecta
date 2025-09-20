@@ -101,7 +101,7 @@ export const invitationService = {
         .single();
       
       if (error) throw error;
-      return data as Invitation;
+      return { ...data, decided_at: data.updated_at } as Invitation;
     } catch (error) {
       // Fallback to mock data
       const invitation = mockInvitations.find(inv => inv.id === invitationId);
@@ -282,7 +282,7 @@ export const invitationService = {
         .limit(1);
 
       if (error) {
-        logger.error('❌ Error verificando acceso al chat:', error);
+        logger.error('❌ Error verificando acceso al chat:', { error: error.message });
         throw error;
       }
 
