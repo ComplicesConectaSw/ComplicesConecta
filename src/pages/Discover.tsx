@@ -234,7 +234,7 @@ const Discover = () => {
         .limit(50);
 
       if (error) {
-        logger.error('❌ Error cargando perfiles reales:', error);
+        logger.error('❌ Error cargando perfiles reales:', { error: error.message || String(error) });
         // Fallback a perfiles mock
         generateRandomProfiles();
         return;

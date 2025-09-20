@@ -242,7 +242,7 @@ const Auth = () => {
       
       // Verificar si es credencial demo Y si el modo demo está habilitado
       const appConfig = getAppConfig();
-      logger.info('🔧 App config:', appConfig);
+      logger.info('🔧 App config:', { mode: appConfig.mode, features: appConfig.features });
       logger.info('🎭 isDemoCredential:', { isDemoCredential: isDemoCredential(normalizedEmail) });
       logger.info('🎭 demoCredentials habilitado:', { demoCredentials: appConfig.features.demoCredentials });
       
@@ -385,7 +385,7 @@ const Auth = () => {
         const result = await signIn(formData.email, formData.password, formData.accountType);
         
         logger.info('🔍 Resultado de signIn():', result);
-        logger.info('🔍 result?.user:', result?.user);
+        logger.info('🔍 result?.user:', { userId: result?.user?.id, email: result?.user?.email });
         logger.info('👥 Tipo de usuario seleccionado', { type: formData.accountType });
         logger.info('👤 Email del usuario', { email: user?.email });
         logger.info('🔍 Verificando datos del usuario', { userType: typeof user });
@@ -482,7 +482,7 @@ const Auth = () => {
 
       // Si hay error diferente a "no encontrado", manejarlo
       if (checkError && checkError.code !== 'PGRST116') {
-        logger.error('Error verificando email:', checkError);
+        logger.error('Error verificando email:', { error: checkError.message || String(checkError) });
         toast({
           title: "Error",
           description: "Error al verificar el email. Intenta de nuevo.",
@@ -553,7 +553,7 @@ const Auth = () => {
       });
 
       if (error) {
-        logger.error('❌ Error en registro Supabase:', error);
+        logger.error('❌ Error en registro Supabase:', { error: error.message || String(error) });
         throw error;
       }
       

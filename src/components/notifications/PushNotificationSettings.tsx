@@ -30,7 +30,7 @@ export const PushNotificationSettings: React.FC<PushNotificationSettingsProps> =
   } = usePushNotifications({
     userId: user?.id,
     onNotificationReceived: (notification) => {
-      logger.info('📨 Notificación recibida:', notification);
+      logger.info('📨 Notificación recibida:', { title: notification.title, body: notification.body });
     },
     onSubscriptionChange: (sub) => {
       logger.info('🔄 Suscripción cambió:', { status: sub ? 'Activa' : 'Inactiva' });
