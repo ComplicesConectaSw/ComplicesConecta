@@ -108,7 +108,7 @@ function showLoadingScreen() {
 }
 
 // Función para mostrar error con fallback
-function showErrorWithFallback(error: any) {
+function showErrorWithFallback(error: unknown) {
   const rootElement = document.getElementById("root");
   if (rootElement) {
     rootElement.innerHTML = `

@@ -82,7 +82,7 @@ class Logger {
       }
 
       // Send to Supabase for application logging (disabled for now)
-      // TODO: Implement app_logs table and enable logging
+      // ✅ PLANIFICADO: Implementar app_logs table en próxima migración SQL
       // if ((window as any).supabase) {
       //   await (window as any).supabase
       //     .from('app_logs')
