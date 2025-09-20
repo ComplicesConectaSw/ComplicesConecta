@@ -212,7 +212,7 @@ export const CouplePhotoSection: React.FC<CouplePhotoSectionProps> = ({
                 }`}
                 onClick={() => handleUploadClick(partner)}
               >
-                <div className="w-full h-full flex flex-col items-center justify-center text-gray-400 hover:text-gray-600">
+                <div className="w-full h-full flex flex-col items-center justify-center text-gray-600 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-200">
                   <Camera className="w-8 h-8 mb-2" />
                   <span className="text-sm text-center px-2">
                     Agregar foto de {partnerLabel}
