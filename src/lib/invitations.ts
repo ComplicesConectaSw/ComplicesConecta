@@ -183,14 +183,14 @@ export const invitationService = {
         throw receivedError || sentError;
       }
 
-      const received = ((receivedData as unknown[]) || []).map((inv: { message?: string; [key: string]: unknown }) => ({
-        ...inv,
-        message: inv.message || 'Sin mensaje'
+      const received = ((receivedData as unknown[]) || []).map((inv: unknown) => ({
+        ...(inv as { message?: string; [key: string]: unknown }),
+        message: (inv as { message?: string }).message || 'Sin mensaje'
       })) as Invitation[];
 
-      const sent = ((sentData as unknown[]) || []).map((inv: { message?: string; [key: string]: unknown }) => ({
-        ...inv,
-        message: inv.message || 'Sin mensaje'
+      const sent = ((sentData as unknown[]) || []).map((inv: unknown) => ({
+        ...(inv as { message?: string; [key: string]: unknown }),
+        message: (inv as { message?: string }).message || 'Sin mensaje'
       })) as Invitation[];
 
       return { received, sent };
@@ -257,7 +257,7 @@ export const invitationService = {
   async hasChatAccess(user1: string, user2: string): Promise<boolean> {
     try {
       // Validar que los UUIDs sean válidos antes de hacer la consulta
-      const isValidUUID = (uuid: any) => {
+      const isValidUUID = (uuid: string) => {
         return typeof uuid === 'string' && 
                uuid.length === 36 && 
                /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(uuid);

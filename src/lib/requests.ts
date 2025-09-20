@@ -193,7 +193,7 @@ export const RequestsService = {
         profile: item.sender_profile // Para solicitudes recibidas, el perfil es el remitente
       }));
 
-      return { data: transformedData as ConnectionRequestWithProfile[] };
+      return { data: transformedData as unknown as ConnectionRequestWithProfile[] };
     } catch (error) {
       return { 
         data: [], 
@@ -240,7 +240,7 @@ export const RequestsService = {
         profile: item.receiver_profile // Para solicitudes enviadas, el perfil es el destinatario
       }));
 
-      return { data: transformedData as ConnectionRequestWithProfile[] };
+      return { data: transformedData as unknown as ConnectionRequestWithProfile[] };
     } catch (error) {
       return { 
         data: [], 
