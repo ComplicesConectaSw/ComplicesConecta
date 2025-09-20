@@ -35,12 +35,12 @@ export function InvitationDialog({ targetProfileId, targetProfileName, children 
     try {
       const currentUser = JSON.parse(localStorage.getItem('demo_user') || '{}');
       
-      await invitationService.sendInvitation({
-        from_profile: currentUser.id || '1',
-        to_profile: targetProfileId,
-        message: message.trim(),
-        type
-      });
+      await invitationService.sendInvitation(
+        currentUser.id || '1',
+        targetProfileId,
+        type,
+        message.trim()
+      );
 
       toast({
         title: "Invitación enviada",
