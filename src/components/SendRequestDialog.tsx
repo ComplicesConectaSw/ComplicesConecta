@@ -75,7 +75,7 @@ export const SendRequestDialog: React.FC<SendRequestDialogProps> = ({
             disabled={isLoading}
             className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors disabled:opacity-50"
           >
-            <X className="w-5 h-5 text-gray-500" />
+            <X className="w-5 h-5 text-gray-600 dark:text-gray-300" />
           </button>
         </div>
 
@@ -116,7 +116,7 @@ export const SendRequestDialog: React.FC<SendRequestDialogProps> = ({
               <h3 className="font-semibold text-gray-900 dark:text-white text-lg">
                 {targetUser.name}
               </h3>
-              <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+              <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200">
                 {targetUser.age && <span>{targetUser.age} años</span>}
                 {targetUser.location && (
                   <>

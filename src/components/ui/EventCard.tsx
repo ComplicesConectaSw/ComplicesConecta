@@ -101,7 +101,7 @@ export const EventCard: React.FC<EventCardProps> = ({
                   {title}
                 </h3>
                 <div className="flex gap-1 flex-shrink-0">
-                  {isPrivate && <Lock className="h-4 w-4 text-gray-500" />}
+                  {isPrivate && <Lock className="h-4 w-4 text-gray-600 dark:text-gray-300" />}
                   {isPremium && <Star className="h-4 w-4 text-yellow-500" />}
                 </div>
               </div>

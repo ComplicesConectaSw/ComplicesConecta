@@ -57,7 +57,9 @@ export const UserGalleryPage: React.FC<UserGalleryPageProps> = ({
   const [accessRequests, setAccessRequests] = useState<AccessRequest[]>([]);
   
   const toast = (options: any) => {
-    console.log('Toast:', options.title, options.description);
+    if (import.meta.env.DEV) {
+      console.log('Toast:', options.title, options.description);
+    }
   };
 
   // Datos demo para desarrollo con thumbnails y datos completos

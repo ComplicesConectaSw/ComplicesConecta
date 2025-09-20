@@ -77,6 +77,16 @@ interface FAQItem {
   updated_at: string | null;
 }
 
+interface AppMetric {
+  metric_name: string;
+  metric_value: number;
+}
+
+interface SupabaseMetric {
+  metric_name: string;
+  metric_value: number;
+}
+
 const AdminProduction = () => {
   const { user, profile, isAuthenticated, isAdmin, loading } = useAuth();
   const { toast } = useToast();
@@ -253,7 +263,7 @@ const AdminProduction = () => {
 
       // Intentar cargar métricas adicionales - tablas podrían no existir
       let apkDownloadsResponse = { count: 0 };
-      let appMetrics = null;
+      let appMetrics: AppMetric[] | null = null;
       let tokenData = null;
 
       try {
@@ -265,8 +275,8 @@ const AdminProduction = () => {
 
       try {
         const metricsResponse = await supabase.from('app_metrics').select('*');
-        if (!metricsResponse.error) {
-          appMetrics = metricsResponse.data;
+        if (!metricsResponse.error && metricsResponse.data) {
+          appMetrics = metricsResponse.data as AppMetric[];
         }
       } catch (error) {
         logger.info('📊 Tabla app_metrics no disponible, usando datos calculados');
@@ -284,8 +294,8 @@ const AdminProduction = () => {
       // Función para obtener métricas específicas
       const getMetricValue = (name: string) => {
         if (!appMetrics) return 0;
-        const metric = appMetrics.find((m: any) => m.metric_name === name);
-        return (metric as any)?.metric_value || 0;
+        const metric = appMetrics.find((m: AppMetric) => m.metric_name === name);
+        return metric?.metric_value || 0;
       };
 
       // Calcular tokens totales
@@ -332,7 +342,7 @@ const AdminProduction = () => {
       }
 
       // Mapear datos de Supabase al tipo FAQItem local
-      const mappedFaqItems: FAQItem[] = (data || []).map((item: any) => ({
+      const mappedFaqItems: FAQItem[] = (data || []).map((item: FAQItem) => ({
         id: item.id,
         question: item.question,
         answer: item.answer,
@@ -364,7 +374,7 @@ const AdminProduction = () => {
         return;
       }
 
-      const mappedInvitations: Invitation[] = (data || []).map((inv: any) => ({
+      const mappedInvitations: Invitation[] = (data || []).map((inv: Invitation) => ({
         id: inv.id,
         from_profile: inv.from_profile || 'unknown',
         to_profile: inv.to_profile || 'unknown', 

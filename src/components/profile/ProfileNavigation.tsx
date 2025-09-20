@@ -66,7 +66,9 @@ export const ProfileNavigation: React.FC<ProfileNavigationProps> = ({
       } else {
         navigator.clipboard.writeText(window.location.href).then(() => {
           // Could show a toast here
-          console.log('Enlace copiado al portapapeles');
+          if (import.meta.env.DEV) {
+            console.log('Enlace copiado al portapapeles');
+          }
         });
       }
     }

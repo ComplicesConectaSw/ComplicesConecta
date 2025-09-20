@@ -39,7 +39,7 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
   if (compact) {
     return (
       <div className={cn("flex items-center gap-2", className)}>
-        <Palette className="h-4 w-4 text-gray-500" />
+        <Palette className="h-4 w-4 text-gray-600 dark:text-gray-300" />
         <select
           value={selectedTheme || ''}
           onChange={(e) => onThemeChange(e.target.value as Theme || undefined)}
