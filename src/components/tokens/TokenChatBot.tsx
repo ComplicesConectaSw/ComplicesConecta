@@ -494,7 +494,7 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
               <Send className="h-4 w-4" />
             </Button>
           </div>
-          <p className="text-xs text-gray-500 mt-2">
+          <p className="text-xs text-gray-600 dark:text-gray-300 mt-2">
             💡 Prueba: "¿Cuántos tokens tengo?" o "Quiero hacer staking"
           </p>
         </div>

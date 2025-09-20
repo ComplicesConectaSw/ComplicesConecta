@@ -29,6 +29,12 @@ export interface SupabaseProfile {
   age_range_max?: number;
   max_distance?: number;
   looking_for?: string[];
+  latitude?: number;
+  longitude?: number;
+  gender?: string;
+  bio?: string;
+  is_premium?: boolean;
+  account_type?: string;
 }
 
 export interface UserLike {

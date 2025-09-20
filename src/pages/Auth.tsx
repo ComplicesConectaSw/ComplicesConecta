@@ -569,19 +569,20 @@ const Auth = () => {
 
       // El formulario se limpiará cuando se cierre el modal
 
-    } catch (error: any) {
+    } catch (error: unknown) {
       let errorMessage = "Error desconocido al crear la cuenta";
+      const errorMsg = error instanceof Error ? error.message : String(error);
       
-      if (error.message?.includes('User already registered')) {
+      if (errorMsg.includes('User already registered')) {
         errorMessage = "Este email ya está registrado. Intenta iniciar sesión.";
-      } else if (error.message?.includes('Password should be at least')) {
+      } else if (errorMsg.includes('Password should be at least')) {
         errorMessage = "La contraseña debe tener al menos 6 caracteres.";
-      } else if (error.message?.includes('Invalid email')) {
+      } else if (errorMsg.includes('Invalid email')) {
         errorMessage = "El formato del email no es válido.";
-      } else if (error.message?.includes('Signup is disabled')) {
+      } else if (errorMsg.includes('Signup is disabled')) {
         errorMessage = "El registro está temporalmente deshabilitado. Intenta más tarde.";
-      } else if (error.message) {
-        errorMessage = error.message;
+      } else if (errorMsg) {
+        errorMessage = errorMsg;
       }
       
       toast({
@@ -630,9 +631,9 @@ const Auth = () => {
       {/* Floating Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <Heart className="absolute top-20 left-10 w-8 h-8 text-white/20 animate-float" fill="currentColor" />
-        <Sparkles className="absolute top-32 right-16 w-6 h-6 text-white/30 animate-float" style={{ animationDelay: '1s' }} />
-        <Heart className="absolute bottom-32 left-20 w-6 h-6 text-white/25 animate-float" style={{ animationDelay: '2s' }} fill="currentColor" />
-        <Users className="absolute bottom-20 right-10 w-8 h-8 text-white/20 animate-float" style={{ animationDelay: '0.5s' }} />
+        <Sparkles className="absolute top-32 right-16 w-6 h-6 text-white/30 animate-float [animation-delay:1s]" />
+        <Heart className="absolute bottom-32 left-20 w-6 h-6 text-white/25 animate-float [animation-delay:2s]" fill="currentColor" />
+        <Users className="absolute bottom-20 right-10 w-8 h-8 text-white/20 animate-float [animation-delay:0.5s]" />
       </div>
       
       {/* Animated Background Particles */}

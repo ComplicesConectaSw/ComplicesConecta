@@ -13,6 +13,7 @@ import CompatibilityModal from '@/components/modals/CompatibilityModal';
 import EventsModal from '@/components/modals/EventsModal';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from "@/hooks/use-toast";
+import { SupabaseProfile } from '@/lib/MatchingService';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useGeolocation } from '@/hooks/useGeolocation';
 import { pickProfileImage, inferProfileKind, resetImageCounters, type ProfileType, type Gender } from '@/lib/media';
@@ -243,7 +244,7 @@ const Discover = () => {
         logger.info(`✅ ${realProfiles.length} perfiles reales cargados`);
         
         // Convertir perfiles de Supabase al formato esperado
-        const convertedProfiles: Profile[] = realProfiles.map((profile: any) => ({
+        const convertedProfiles: Profile[] = realProfiles.map((profile: SupabaseProfile) => ({
           id: profile.id,
           name: `${profile.first_name} ${profile.last_name || ''}`.trim(),
           age: profile.age || 25,
@@ -255,7 +256,7 @@ const Discover = () => {
               : null
           ), // Cálculo de distancia implementado con coordenadas reales
           interests: Array.isArray(profile.interests) ? profile.interests : [], // Sistema de intereses conectado con Supabase
-          image: pickProfileImage({ id: profile.id, name: profile.first_name, type: 'single', gender: profile.gender as Gender }, new Set()), // Avatar URL desde Supabase profiles
+          image: pickProfileImage({ id: profile.id || 'unknown', name: profile.first_name || 'Usuario', type: 'single', gender: (profile.gender || 'male') as Gender }, new Set()), // Avatar URL desde Supabase profiles
           bio: profile.bio || 'Sin descripción',
           isOnline: profile.is_online || false,
           lastActive: profile.last_active ? new Date(profile.last_active).toLocaleString('es-ES', { 

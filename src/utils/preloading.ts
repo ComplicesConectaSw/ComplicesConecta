@@ -192,7 +192,9 @@ export const initializeCriticalPreloading = async (): Promise<void> => {
     // DNS prefetch para APIs externas
     dnsPrefetch('//api.complicesconecta.app');
     
-    console.log('✅ Critical preloading initialized');
+    if (import.meta.env.DEV) {
+      console.log('✅ Critical preloading initialized');
+    }
   } catch (error) {
     console.error('❌ Error initializing critical preloading:', error);
   }

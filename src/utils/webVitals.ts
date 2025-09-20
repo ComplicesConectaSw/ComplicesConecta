@@ -96,8 +96,10 @@ const sendToAnalytics = async (data: WebVitalsData, config: WebVitalsConfig): Pr
 
 // Logger para desarrollo
 const logMetric = (data: WebVitalsData): void => {
-  const emoji = data.rating === 'good' ? '✅' : data.rating === 'needs-improvement' ? '⚠️' : '❌';
-  console.log(`${emoji} ${data.name}: ${data.value.toFixed(2)}ms (${data.rating})`);
+  if (import.meta.env.DEV) {
+    const emoji = data.rating === 'good' ? '✅' : data.rating === 'needs-improvement' ? '⚠️' : '❌';
+    console.log(`${emoji} ${data.name}: ${data.value.toFixed(2)}ms (${data.rating})`);
+  }
 };
 
 // Clase principal para monitoreo
@@ -219,7 +221,9 @@ export const measureCustomMetric = (name: string, startTime: number): void => {
     userAgent: navigator.userAgent
   };
   
-  console.log(`📊 Custom metric ${name}: ${duration.toFixed(2)}ms`);
+  if (import.meta.env.DEV) {
+    console.log(`📊 Custom metric ${name}: ${duration.toFixed(2)}ms`);
+  }
   window.dispatchEvent(new CustomEvent('custommetric', { detail: data }));
 };
 

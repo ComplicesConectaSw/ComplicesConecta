@@ -197,7 +197,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
               <h3 className="font-semibold text-gray-900 dark:text-white truncate">
                 {profile.first_name} {profile.last_name ?? ''}
               </h3>
-              <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mt-1">
+              <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200 mt-1">
                 {profile.age && <span>{profile.age} años</span>}
                 {profile.bio && (
                   <>

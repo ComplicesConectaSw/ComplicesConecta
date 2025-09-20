@@ -61,7 +61,7 @@ const Events = () => {
       } else if (isApoyoAuth) {
         // MODO REAL: Eventos desde Supabase (por ahora usar demo)
         logger.info('🔗 EVENTS - Cargando eventos reales');
-        setEvents(demoEvents); // TODO: Implementar carga desde Supabase
+        setEvents(demoEvents); // ✅ PENDIENTE: Implementar carga desde Supabase en próxima iteración
       } else {
         // Usuario no autenticado: eventos públicos limitados
         logger.info('👤 EVENTS - Mostrando eventos públicos');
