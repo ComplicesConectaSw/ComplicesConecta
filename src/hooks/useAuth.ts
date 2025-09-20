@@ -96,16 +96,33 @@ export const useAuth = () => {
         // Si no se encuentra el perfil, crear uno básico
         if (error.code === 'PGRST116') {
           logger.info('🆆 Perfil no encontrado - creando perfil básico');
-          const basicProfile = {
-            id: userId,
-            user_id: userId,
-            first_name: 'Usuario',
-            role: 'user',
-            is_demo: false,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-          };
-          setProfile(basicProfile);
+          try {
+            const { data: newProfile, error: createError } = await (supabase
+              .from('profiles') as any)
+              .insert({
+                user_id: userId,
+                first_name: 'Usuario',
+                role: 'user',
+                is_demo: false
+              })
+              .select()
+              .single();
+
+            if (createError) {
+              logger.error('❌ Error creando perfil básico:', createError);
+              setProfile(null);
+            } else {
+              logger.info('✅ Perfil básico creado exitosamente');
+              setProfile(newProfile);
+            }
+          } catch (createErr) {
+            logger.error('❌ Error inesperado creando perfil:', { 
+              error: createErr instanceof Error ? createErr.message : String(createErr) 
+            });
+            setProfile(null);
+          }
+        } else {
+          setProfile(null);
         }
         return;
       }

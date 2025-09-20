@@ -65,19 +65,24 @@
 2. Mapear imports y referencias en el código
 3. Determinar funcionalidades únicas vs duplicadas
 
-### **FASE 2: Consolidación Chat**
+### **FASE 2: Consolidación Chat** ✅ INICIADA
 ```typescript
-// Estructura propuesta:
+// Estructura actual (parcialmente unificada):
 src/components/chat/
 ├── core/
-│   ├── ChatContainer.tsx     → Principal (mantener)
-│   ├── ChatInput.tsx         → Input (mantener)
-│   └── ChatBubble.tsx        → Burbuja (ya consolidado)
+│   ├── ChatContainer.tsx     → Principal ✅
+│   ├── ChatInput.tsx         → Input ✅
+│   └── ChatBubble.tsx        → Burbuja ✅ (ya consolidado)
+├── wrappers/
+│   ├── ChatWindow.tsx        → ✅ Wrapper de ChatWindowEnhanced
+│   └── ChatWindowEnhanced.tsx → ✅ Implementación principal
 ├── features/
-│   ├── RealtimeChat.tsx      → Unificar realtime components
-│   ├── LocationChat.tsx      → Chat con ubicación
-│   └── ModernInterface.tsx   → Interfaz moderna unificada
-└── TokenChatBot.tsx          → Bot tokens (mantener)
+│   ├── RealtimeChat*.tsx     → ⚠️ Pendiente unificar
+│   ├── ModernChatInterface.tsx → ⚠️ Evaluar consolidar
+│   └── ChatWithLocation.tsx  → ⚠️ Funcionalidad específica
+└── TokenChatBot.tsx          → ✅ Bot tokens (mantener)
+
+PROGRESO: 4/11 componentes consolidados (36%)
 ```
 
 ### **FASE 3: Consolidación Profile**
