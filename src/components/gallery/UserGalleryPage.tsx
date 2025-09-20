@@ -425,7 +425,7 @@ export const UserGalleryPage: React.FC<UserGalleryPageProps> = ({
         {!loading && filteredImages.length === 0 && (
           <div className="col-span-full text-center py-12">
             <Camera className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <p className="text-gray-500">
+            <p className="text-gray-700 dark:text-gray-200">
               {selectedTab === 'publicas' 
                 ? 'No hay fotos públicas aún' 
                 : 'No hay fotos privadas aún'
@@ -499,7 +499,7 @@ export const UserGalleryPage: React.FC<UserGalleryPageProps> = ({
                   <div className="w-full h-48 bg-gray-200 flex items-center justify-center">
                     <div className="text-center">
                       <Lock className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                      <p className="text-sm text-gray-500">Imagen Privada</p>
+                      <p className="text-sm text-gray-700 dark:text-gray-200">Imagen Privada</p>
                       {!isOwner && viewerUserId && (
                         <Button
                           size="sm"

@@ -68,8 +68,7 @@ export const ProfileGrid = ({
         {currentProfiles.map((profile, index) => (
           <div 
             key={profile.id} 
-            className="animate-slide-up" 
-            style={{ animationDelay: `${index * 0.1}s` }}
+            className={`animate-slide-up [animation-delay:${index * 0.1}s]`}
           >
             <ProfileCard 
               profile={{

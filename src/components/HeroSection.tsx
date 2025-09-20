@@ -11,9 +11,9 @@ export const HeroSection = () => {
       {/* Floating Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <Heart className="absolute top-20 left-10 w-8 h-8 text-white/20 animate-float" fill="currentColor" />
-        <Sparkles className="absolute top-32 right-16 w-6 h-6 text-white/30 animate-float" style={{ animationDelay: '1s' }} />
-        <Heart className="absolute bottom-32 left-20 w-6 h-6 text-white/25 animate-float" style={{ animationDelay: '2s' }} fill="currentColor" />
-        <Users className="absolute bottom-20 right-10 w-8 h-8 text-white/20 animate-float" style={{ animationDelay: '0.5s' }} />
+        <Sparkles className="absolute top-32 right-16 w-6 h-6 text-white/30 animate-float [animation-delay:1s]" />
+        <Heart className="absolute bottom-32 left-20 w-6 h-6 text-white/25 animate-float [animation-delay:2s]" fill="currentColor" />
+        <Users className="absolute bottom-20 right-10 w-8 h-8 text-white/20 animate-float [animation-delay:0.5s]" />
       </div>
 
       {/* Content */}
