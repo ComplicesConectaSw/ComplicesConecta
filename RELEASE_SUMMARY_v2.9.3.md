@@ -1,10 +1,23 @@
 # 🚀 Resumen de Release v2.9.3 - ComplicesConecta
 
-**Fecha:** 17 de Septiembre, 2025 - 23:58 hrs  
-**Versión:** v2.9.3 - AUDIT COMPLETO + SISTEMA DE TOKENS CMPX/GTK  
-**Estado:** ✅ PRODUCCIÓN READY - AUDIT FINALIZADO
+**Fecha:** 20 de Septiembre, 2025 - 05:59 hrs  
+**Versión:** v2.9.3 - TEST INTEGRAL DE PERFILES + PERFILES DEMO OPTIMIZADOS  
+**Estado:** ✅ PRODUCCIÓN READY - TEST INTEGRAL COMPLETADO
 
 ## 🎯 FUNCIONALIDADES PRINCIPALES v2.9.3
+
+### 🧪 TEST INTEGRAL DE PERFILES (NUEVO - 20/09/2025)
+- **Suite de Tests Robusta**: Tests completos para perfiles reales y demo
+- **Tests Implementados**:
+  - `profile-flow-integral.test.ts`: 6 escenarios principales (10/12 tests pasando)
+  - `demo-profiles-validation.test.ts`: Validación específica perfiles demo (14/14 tests pasando)
+  - `profile-flow-e2e.spec.ts`: Tests end-to-end con Playwright
+- **Perfiles Demo Optimizados**: Solo esenciales mantenidos para producción
+- **Configuración Producción Limpia**:
+  - Perfiles Demo: single@outlook.es, pareja@outlook.es, admin
+  - Admin Real: complicesconectasw@outlook.es (único administrador real)
+  - Eliminado: djwacko28@gmail.com de credenciales demo
+- **Cobertura Completa**: Registro, autenticación, UI, seguridad y consistencia
 
 ### ✅ SISTEMA DE TOKENS CMPX/GTK
 - TokenChatBot completamente funcional e integrado
