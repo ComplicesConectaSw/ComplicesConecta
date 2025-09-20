@@ -13,6 +13,8 @@ export default defineConfig({
   },
   // Configuración del servidor de desarrollo
   server: {
+    port: 8080,
+    host: true,
     cors: true,
     headers: {
       'Cross-Origin-Embedder-Policy': 'require-corp',
