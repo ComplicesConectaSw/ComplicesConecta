@@ -756,7 +756,7 @@ Las migraciones de base de datos deben ejecutarse en el siguiente orden para evi
 | 5 | `20250914103700_create_chat_realtime_tables.sql` | Chat tiempo real | ✅ |
 | 6 | `20250906_05_create_token_system.sql` | Sistema de tokens | ✅ |
 | 7 | `20250906_06_create_token_rls.sql` | RLS tokens | ✅ |
-| 8 | `HABILITAR_RLS_COMPLETO.sql` | Habilitar RLS general | ✅ |
+| 8 | `HABILITAR_RLS.sql` | Habilitar RLS general | ✅ |
 | 9 | `rls-profiles-validation.sql` | Validación perfiles | ✅ |
 | 10 | `rls-messages-tokens-invitations.sql` | RLS específico | ✅ |
 | 11 | `rls-fix-20250915.sql` | Corrección final RLS | ✅ |
