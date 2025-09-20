@@ -55,10 +55,10 @@ export default defineConfig({
       'react-dom',
       'react-router-dom',
       '@supabase/supabase-js',
-      'framer-motion',
       '@tanstack/react-query',
       'lucide-react'
     ],
-    exclude: ['@emotion/is-prop-valid'],
+    exclude: ['@emotion/is-prop-valid', 'framer-motion'],
+    force: true
   },
 });
