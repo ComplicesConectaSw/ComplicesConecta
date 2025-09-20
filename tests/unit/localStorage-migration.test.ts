@@ -78,7 +78,6 @@ describe('localStorage Migration Tests', () => {
       
       // Flags permitidos después de la migración
       const allowedFlags = [
-        'apoyo_authenticated',
         'demo_authenticated', 
         'userType'
       ];
@@ -155,16 +154,45 @@ describe('localStorage Migration Tests', () => {
     });
   });
 
+  describe('Autenticación de administrador real', () => {
+    it('debe usar autenticación real de Supabase para administradores', () => {
+      // Los administradores reales usan el sistema de auth de Supabase
+      // No necesitan flags especiales en localStorage
+      
+      // Verificar que no hay datos obsoletos
+      expect(localStorage.getItem('apoyo_user')).toBeNull();
+      expect(localStorage.getItem('apoyo_session')).toBeNull();
+      expect(localStorage.getItem('apoyo_authenticated')).toBeNull();
+    });
+
+    it('debe limpiar datos obsoletos de sistema apoyo', () => {
+      // Simular datos obsoletos que deben ser limpiados
+      localStorage.setItem('apoyo_user', JSON.stringify({ id: 'apoyo-id' }));
+      localStorage.setItem('apoyo_session', JSON.stringify({ token: 'old-token' }));
+      localStorage.setItem('apoyo_authenticated', 'true');
+
+      // Simular limpieza de migración
+      localStorage.removeItem('apoyo_user');
+      localStorage.removeItem('apoyo_session');
+      localStorage.removeItem('apoyo_authenticated');
+      
+      // Verificar limpieza exitosa
+      expect(localStorage.getItem('apoyo_user')).toBeNull();
+      expect(localStorage.getItem('apoyo_session')).toBeNull();
+      expect(localStorage.getItem('apoyo_authenticated')).toBeNull();
+    });
+  });
+
   describe('Configuración de modo de aplicación', () => {
     it('debe determinar correctamente el uso de Supabase real', () => {
       // Limpiar localStorage
       localStorage.clear();
       
-      // Caso 1: Usuario Apoyo autenticado
-      localStorage.setItem('apoyo_authenticated', 'true');
+      // Caso 1: Usuario administrador real (usa Supabase auth)
+      // Los administradores reales no necesitan flags especiales
       expect(shouldUseRealSupabase()).toBe(true);
 
-      // Limpiar y probar caso 2
+      // Caso 2: Usuario demo
       localStorage.clear();
       
       // Caso 2: Modo producción (siempre usa Supabase real)

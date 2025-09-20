@@ -60,9 +60,8 @@ const Index = () => {
       setIsRunningInApp(isInWebView());
       
       // SEPARACIÓN DEMO/REAL: Redirección solo para usuarios demo autenticados
-      const apoyoAuth = localStorage.getItem('apoyo_authenticated') === 'true';
-      
-      if (demoAuthenticated && !apoyoAuth && demoUser) {
+      // Solo usuarios demo necesitan redirección automática
+      if (demoAuthenticated && demoUser) {
         try {
           const userData = typeof demoUser === 'string' ? JSON.parse(demoUser) : demoUser;
           const accountType = userData.account_type || userData.accountType || 'single';
@@ -79,10 +78,9 @@ const Index = () => {
           // Si hay error, redirigir al perfil single por defecto
           navigate('/profile-single');
         }
-      } else if (apoyoAuth) {
-        logger.info('🔗 INDEX - Usuario real autenticado, redirigiendo a perfil');
-        navigate('/profile-single');
       }
+      // Los administradores reales usan autenticación de Supabase directamente
+      // No necesitan redirección automática desde Index
     }, 2000);
 
     return () => clearTimeout(timer);
