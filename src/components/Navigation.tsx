@@ -13,22 +13,10 @@ interface NavigationProps {
   className?: string;
 }
 
-// Usar NavigationLegacy temporalmente para el usuario especial
+// Usar NavigationLegacy con lógica de autenticación corregida
 const Navigation = ({ className }: NavigationProps) => {
-  // Verificar si es usuario demo
-  const [isDemoUser] = usePersistedState('demo_authenticated', false);
-  
-  // Usar NavigationEnhanced para todos los usuarios
-  // NavigationLegacy se mantiene como fallback
-  
-  return (
-    <NavigationEnhanced 
-      className={className}
-      showNotificationBadges={true}
-      enableAnimations={true}
-      notificationCounts={{}}
-    />
-  );
+  // Usar NavigationLegacy que tiene la lógica de autenticación correcta
+  return <NavigationLegacy className={className} />;
 };
 
 // Export del componente original para casos específicos
@@ -61,9 +49,17 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
   // Navegación completamente estática - sin efectos de scroll
 
   // Solo mostrar navegación completa si está autenticado
-  if (!isAuthenticated || !demoUser) {
+  if (!isAuthenticated) {
     return null; // Ocultar navegación si no está logueado
   }
+  
+  // Debug: verificar estado de autenticación
+  logger.info('🧭 Navigation renderizando:', { 
+    isAuthenticated, 
+    demoAuthString, 
+    demoUser: !!demoUser,
+    currentUserType 
+  });
   
   // Configuración específica para parejas
   const getSettingsPath = () => {

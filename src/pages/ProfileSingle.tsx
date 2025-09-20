@@ -32,12 +32,21 @@ const ProfileSingle: React.FC = () => {
           authProfile: !!authProfile,
           isDemo: authProfile?.is_demo,
           userEmail: user?.email,
-          isAuthenticated
+          isAuthenticated,
+          demoAuth,
+          demoUser: !!demoUser
         });
         
-        // Si no hay autenticación válida, redirigir inmediatamente
+        // Si no hay autenticación válida, limpiar estado y redirigir
         if (!isAuthenticated) {
-          logger.info('❌ No hay autenticación válida, redirigiendo a /auth...');
+          logger.info('❌ No hay autenticación válida, limpiando estado...');
+          // Limpiar cualquier estado inconsistente
+          localStorage.removeItem('demo_authenticated');
+          localStorage.removeItem('demo_user');
+          localStorage.removeItem('userType');
+          setDemoAuth('false');
+          setDemoUser(null);
+          
           setTimeout(() => {
             navigate('/auth', { replace: true });
           }, 100);
@@ -46,11 +55,26 @@ const ProfileSingle: React.FC = () => {
         
         // Verificar si hay sesión demo activa
         if (demoAuth === 'true' && demoUser) {
-          const parsedUser = typeof demoUser === 'string' ? JSON.parse(demoUser) : demoUser;
-          logger.info('🎭 Cargando perfil demo:', parsedUser);
-          setProfile(parsedUser as Tables<'profiles'>);
-          setIsLoading(false);
-          return;
+          try {
+            const parsedUser = typeof demoUser === 'string' ? JSON.parse(demoUser) : demoUser;
+            logger.info('🎭 Cargando perfil demo:', parsedUser);
+            
+            // Verificar que el perfil demo tenga los datos mínimos necesarios
+            if (!parsedUser.id || !parsedUser.email) {
+              logger.error('❌ Perfil demo incompleto:', parsedUser);
+              throw new Error('Perfil demo incompleto');
+            }
+            
+            setProfile(parsedUser as Tables<'profiles'>);
+            setIsLoading(false);
+            return;
+          } catch (error) {
+            logger.error('❌ Error procesando perfil demo:', { error: String(error) });
+            // Limpiar datos corruptos
+            localStorage.removeItem('demo_user');
+            setDemoUser(null);
+            // Continuar con la lógica de error
+          }
         }
         
         // Si authProfile ya está disponible, usarlo directamente
@@ -143,10 +167,25 @@ const ProfileSingle: React.FC = () => {
               <p className="text-xs text-white/60">Pareja: pareja@outlook.es / 123456</p>
             </div>
             <div className="space-y-2">
-              <Button onClick={() => navigate('/auth')} className="w-full">
+              <Button 
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  navigate('/auth', { replace: true });
+                }} 
+                className="w-full bg-pink-600 hover:bg-pink-700 text-white"
+              >
                 Ir a Autenticación
               </Button>
-              <Button onClick={() => navigate('/discover')} variant="outline" className="w-full">
+              <Button 
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  navigate('/', { replace: true });
+                }} 
+                variant="outline" 
+                className="w-full border-white/30 text-white hover:bg-white/10"
+              >
                 Volver al inicio
               </Button>
             </div>

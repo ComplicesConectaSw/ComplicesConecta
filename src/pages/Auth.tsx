@@ -234,6 +234,32 @@ const Auth = () => {
       logger.info('🚀 handleSignIn iniciado para:', { email: formData.email });
       logger.info('📧 Email normalizado:', { email: normalizedEmail });
       
+      // VALIDACIÓN DE CREDENCIALES DEMO
+      if (isDemoCredential(normalizedEmail)) {
+        // Verificar contraseña demo
+        if (formData.password !== '123456') {
+          setIsLoading(false);
+          toast({
+            variant: "destructive",
+            title: "Credenciales incorrectas",
+            description: "Email o contraseña incorrectos. Para cuentas demo usa: 123456",
+          });
+          return;
+        }
+        
+        // Verificar que el email sea exactamente correcto
+        const validDemoEmails = ['single@outlook.es', 'pareja@outlook.es', 'admin@outlook.es'];
+        if (!validDemoEmails.includes(normalizedEmail)) {
+          setIsLoading(false);
+          toast({
+            variant: "destructive", 
+            title: "Email incorrecto",
+            description: "Emails válidos: single@outlook.es, pareja@outlook.es",
+          });
+          return;
+        }
+      }
+      
       // Verificar si es credencial demo Y si el modo demo está habilitado
       const appConfig = getAppConfig();
       logger.info('🔧 App config:', { mode: appConfig.mode, features: appConfig.features });
