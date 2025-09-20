@@ -201,7 +201,7 @@ export class MatchingService {
 
       if (error) throw error;
 
-      return ((data as any) || []).map((match: any) => ({
+      return ((data as unknown[]) || []).map((match: { match_id: string; other_user_id: string; compatibility_score?: number; created_at?: string }) => ({
         id: match.match_id,
         user1_id: user.id,
         user2_id: match.other_user_id,

@@ -386,12 +386,12 @@ export const PrivateMatches: React.FC = () => {
         {matches.length === 0 ? (
           <div className="text-center py-8">
             <div className="p-4 rounded-full bg-gray-700/30 w-fit mx-auto mb-4">
-              <Users className="h-8 w-8 text-gray-400" />
+              <Users className="h-8 w-8 text-gray-600 dark:text-gray-300" />
             </div>
             <h3 className="text-lg font-medium text-white mb-2">
               No hay matches privados
             </h3>
-            <p className="text-gray-400 text-sm">
+            <p className="text-gray-600 dark:text-gray-300 text-sm">
               Nuestro algoritmo está trabajando para encontrar conexiones perfectas para ti.
             </p>
           </div>
