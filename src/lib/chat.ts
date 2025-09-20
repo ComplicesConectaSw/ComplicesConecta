@@ -38,6 +38,22 @@ export interface ChatMember {
 // Tipos específicos basados en el schema de Supabase
 export type ChatRoomInsert = Database['public']['Tables']['chat_rooms']['Insert'];
 export type ChatMemberInsert = Database['public']['Tables']['chat_members']['Insert'];
+export type ChatRoomRow = Database['public']['Tables']['chat_rooms']['Row'];
+export type ChatMemberRow = Database['public']['Tables']['chat_members']['Row'];
+
+// Tipo para invitaciones de chat basado en el schema real
+export type ChatInvitationRow = Database['public']['Tables']['chat_invitations']['Row'];
+export type ChatInvitationInsert = Database['public']['Tables']['chat_invitations']['Insert'];
+
+export interface ChatInvitation {
+  id: string;
+  room_id: string;
+  from_profile: string;
+  to_profile: string;
+  status: 'pending' | 'accepted' | 'declined';
+  created_at: string;
+  updated_at: string;
+}
 
 export interface ChatMessage {
   id: string;
@@ -64,8 +80,6 @@ export interface ChatInvitation {
   created_at: string;
   updated_at: string;
 }
-
-export type ChatInvitationInsert = any;
 
 class ChatService {
   private subscriptions: Map<string, any> = new Map();

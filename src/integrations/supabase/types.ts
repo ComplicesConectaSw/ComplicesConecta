@@ -155,6 +155,35 @@ export interface Database {
           updated_at?: string
         }
       }
+      chat_invitations: {
+        Row: {
+          id: string
+          room_id: string | null
+          from_profile: string | null
+          to_profile: string | null
+          status: string | null
+          created_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string
+          room_id?: string | null
+          from_profile?: string | null
+          to_profile?: string | null
+          status?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string
+          room_id?: string | null
+          from_profile?: string | null
+          to_profile?: string | null
+          status?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+      }
       invitations: {
         Row: {
           id: string
