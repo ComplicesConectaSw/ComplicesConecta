@@ -240,7 +240,7 @@ export class FileValidator {
     const extension = this.getFileExtension(fileName);
     const categoryKey = Object.keys(ALLOWED_EXTENSIONS).find(cat => {
       const category = cat as AllowedExtensionCategory;
-      return ALLOWED_EXTENSIONS[category].includes(extension);
+      return (ALLOWED_EXTENSIONS[category] as readonly string[]).includes(extension);
     }) as AllowedExtensionCategory | undefined;
   
     return categoryKey;
