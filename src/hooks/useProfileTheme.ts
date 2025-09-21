@@ -292,6 +292,38 @@ export const useDemoThemeConfig = () => {
 };
 
 /**
+ * Hook para manejar configuración de tema en producción con persistencia
+ */
+export const useProductionThemeConfig = () => {
+  // Siempre llamar hooks en el mismo orden para cumplir reglas de React
+  const [fallbackTheme, setFallbackTheme] = usePersistedState<Theme>('user_theme', 'dark');
+  const [fallbackNavbar, setFallbackNavbar] = usePersistedState<NavbarStyle>('user_navbar_style', 'solid');
+  
+  // Por ahora usar localStorage hasta que Supabase esté completamente integrado
+  // TODO: Integrar useSupabaseTheme cuando los tipos estén corregidos
+  return {
+    userTheme: fallbackTheme,
+    setUserTheme: setFallbackTheme,
+    navbarStyle: fallbackNavbar,
+    setNavbarStyle: setFallbackNavbar
+  };
+};
+
+/**
+ * Hook unificado que detecta automáticamente si usar configuración demo o producción
+ */
+export const useThemeConfig = () => {
+  const isDemoMode = localStorage.getItem('demo_authenticated') === 'true';
+  
+  // Llamar ambos hooks siempre para cumplir con las reglas de React Hooks
+  const demoConfig = useDemoThemeConfig();
+  const productionConfig = useProductionThemeConfig();
+  
+  // Retornar la configuración apropiada basada en el modo
+  return isDemoMode ? demoConfig : productionConfig;
+};
+
+/**
  * Utilidad para obtener estilos de navbar
  */
 export const getNavbarStyles = (style: NavbarStyle) => {

@@ -195,7 +195,7 @@ const EditProfileCouple = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 pb-20">
+    <div className={`min-h-screen ${themeConfig.backgroundClass} pb-20`}>
       {/* Header */}
       <div className="bg-white/10 backdrop-blur-md border-b border-white/20 p-4">
         <div className="flex items-center justify-between">

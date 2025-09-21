@@ -6,6 +6,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useToast } from "@/hooks/use-toast";
 import { ModeIndicator } from '@/components/ModeIndicator';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { useDemoThemeConfig, getNavbarStyles } from '@/hooks/useProfileTheme';
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -15,6 +16,10 @@ export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const { toast } = useToast();
+
+  // Demo theme configuration
+  const { navbarStyle } = useDemoThemeConfig();
+  const navbarStyles = getNavbarStyles(navbarStyle);
 
   // Determinar si está autenticado (demo o real)
   const isAuthenticated = authIsAuthenticated() || (localStorage.getItem('demo_authenticated') === 'true');
@@ -103,7 +108,7 @@ export const Header = () => {
     navigate('/');
   };
   return (
-    <header className="bg-gradient-to-r from-purple-900/95 to-pink-900/95 backdrop-blur-sm border-b border-pink-300/30 sticky top-0 z-50 transition-all duration-300 py-4">
+    <header className={`${navbarStyles.backgroundClass} ${navbarStyles.shadowClass} border-b ${navbarStyles.borderClass} sticky top-0 z-50 transition-all duration-300 py-4`}>
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between">
           {/* Logo */}

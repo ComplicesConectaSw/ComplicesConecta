@@ -27,7 +27,8 @@ import { AnimatedCard } from '@/components/ui/AnimatedCard';
 import { ResponsiveContainer } from '@/components/ui/ResponsiveContainer';
 import { ThemeInfoModal } from '@/components/auth/ThemeInfoModal';
 import { TermsModal } from '@/components/auth/TermsModal';
-import { Gender } from '@/hooks/useProfileTheme';
+import { ThemeModal } from '@/components/ThemeModal';
+import { useDemoThemeConfig, Theme } from '@/hooks/useProfileTheme';
 import { usePersistedState } from '@/hooks/usePersistedState';
 import { clearAllStorage, resetAuthState, debugStorage } from '@/utils/clearStorage';
 
@@ -56,6 +57,7 @@ interface FormData {
   acceptTerms: boolean;
   shareLocation: boolean;
   selectedInterests: string[];
+  preferredTheme: Theme;
 }
 
 const Auth = () => {
@@ -100,7 +102,8 @@ const Auth = () => {
     location: '',
     acceptTerms: false,
     shareLocation: false,
-    selectedInterests: []
+    selectedInterests: [],
+    preferredTheme: 'dark'
   });
 
   const handleInputChange = (field: string, value: string | boolean | string[]) => {
@@ -531,6 +534,8 @@ const Auth = () => {
         is_demo: false,
         is_verified: false,
         is_premium: false,
+        preferred_theme: formData.preferredTheme,
+        navbar_style: 'solid',
         ...(formData.accountType === 'couple' && {
           partner_first_name: formData.partnerFirstName,
           partner_last_name: formData.partnerLastName,
@@ -622,7 +627,8 @@ const Auth = () => {
       location: '',
       acceptTerms: false,
       shareLocation: false,
-      selectedInterests: []
+      selectedInterests: [],
+      preferredTheme: 'dark'
     });
   };
 
@@ -1417,13 +1423,15 @@ const Auth = () => {
         accepted={formData.acceptTerms}
       />
 
-      {/* Theme Info Modal */}
-      <ThemeInfoModal
+      {/* Theme Selection Modal */}
+      <ThemeModal
         isOpen={showThemeModal}
         onClose={handleThemeModalClose}
-        userType={formData.accountType as "single" | "couple"}
-        gender={formData.gender as Gender}
-        partnerGender={formData.partnerGender as Gender | undefined}
+        selectedTheme={formData.preferredTheme}
+        onThemeSelect={(theme) => setFormData(prev => ({ ...prev, preferredTheme: theme }))}
+        onConfirm={handleThemeModalClose}
+        title="Personaliza tu experiencia"
+        subtitle="Elige el tema que mejor refleje tu personalidad"
       />
     </div>
   );

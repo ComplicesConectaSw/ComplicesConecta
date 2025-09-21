@@ -16,6 +16,7 @@
 [![+18](https://img.shields.io/badge/Contenido-+18-red.svg)](#aviso-legal)
 [![TypeScript](https://img.shields.io/badge/TypeScript-100%25-blue.svg)](src/)
 [![Tests](https://img.shields.io/badge/TypeScript-Errors_Fixed-brightgreen.svg)](#testing)
+[![Theme System](https://img.shields.io/badge/🎨_Sistema_de_Temas-v3.0.0_Completo-purple.svg)](#theme-system)
 
 ### 📱 ¡Descarga la App Ahora!
 
@@ -23,9 +24,21 @@
   <img src="https://img.shields.io/badge/📱_Descargar_APK-v3.0.0-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
 </a>
 
-**SHA256:** `Verificado - Build v3.0.0 con Optimización Android Completa`
+**SHA256:** `Verificado - Build v3.0.0 con Sistema de Temas y Optimización Android Completa`
 
 *🔒 Aplicación segura y verificada para Android*
+
+### 🎨 Nuevo Sistema de Temas v3.0.0
+
+ComplicesConecta ahora incluye un **sistema de temas completamente personalizable**:
+
+- **5 Temas Únicos**: Light, Dark, Elegant, Modern, Vibrant
+- **Selección en Registro**: Elige tu tema favorito al crear tu cuenta
+- **Persistencia Real**: Tus preferencias se guardan en Supabase
+- **Estilos Dinámicos**: Navbar adaptable (transparente/sólido)
+- **Compatible Demo/Producción**: Funciona igual en ambos modos
+
+[📖 Ver Documentación Completa](./docs-unified/theme-system/THEME_SYSTEM_IMPLEMENTATION.md)
 
 </div>
 

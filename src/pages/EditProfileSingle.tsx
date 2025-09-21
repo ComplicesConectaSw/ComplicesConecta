@@ -240,7 +240,7 @@ const EditProfileSingle = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 relative overflow-hidden pb-20">
+    <div className={`min-h-screen ${themeConfig.backgroundClass} relative overflow-hidden pb-20`}>
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full mix-blend-multiply filter blur-xl animate-blob"></div>
@@ -275,26 +275,26 @@ const EditProfileSingle = () => {
         {/* Información básica */}
         <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-glow">
           <CardContent className="p-6 space-y-4">
-            <h3 className="font-semibold text-white mb-4">Información básica</h3>
+            <h3 className={`font-semibold ${themeConfig.textClass} mb-4`}>Información básica</h3>
             
             <div>
-              <label className="block text-sm font-medium text-white mb-2">Nombre completo</label>
+              <label className={`block text-sm font-medium ${themeConfig.textClass} mb-2`}>Nombre completo</label>
               <Input
                 value={formData.name}
                 onChange={(e) => handleInputChange('name', e.target.value)}
                 placeholder="Tu nombre completo"
-                className="bg-white/20 border-white/30 text-white placeholder:text-white/70"
+                className={`bg-white/20 border-white/30 ${themeConfig.textClass} placeholder:text-white/70`}
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-white mb-2">Edad</label>
+              <label className={`block text-sm font-medium ${themeConfig.textClass} mb-2`}>Edad</label>
               <Input
                 type="number"
                 value={formData.age}
                 onChange={(e) => handleInputChange('age', e.target.value)}
                 placeholder="Tu edad"
-                className="bg-white/20 border-white/30 text-white placeholder:text-white/70"
+                className={`bg-white/20 border-white/30 ${themeConfig.textClass} placeholder:text-white/70`}
               />
             </div>
           </CardContent>
@@ -303,25 +303,25 @@ const EditProfileSingle = () => {
         {/* Información adicional */}
         <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-glow">
           <CardContent className="p-6 space-y-4">
-            <h3 className="font-semibold text-white mb-4">Información adicional</h3>
+            <h3 className={`font-semibold ${themeConfig.textClass} mb-4`}>Información adicional</h3>
             
             <div>
-              <label className="block text-sm font-medium text-white mb-2">Ubicación</label>
+              <label className={`block text-sm font-medium ${themeConfig.textClass} mb-2`}>Ubicación</label>
               <Input
                 value={formData.location}
                 onChange={(e) => handleInputChange('location', e.target.value)}
                 placeholder="Ciudad donde vives"
-                className="bg-white/20 border-white/30 text-white placeholder:text-white/70"
+                className={`bg-white/20 border-white/30 ${themeConfig.textClass} placeholder:text-white/70`}
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-white mb-2">Profesión</label>
+              <label className={`block text-sm font-medium ${themeConfig.textClass} mb-2`}>Profesión</label>
               <Input
                 value={formData.profession}
                 onChange={(e) => handleInputChange('profession', e.target.value)}
-                placeholder="A qué te dedicas"
-                className="bg-white/20 border-white/30 text-white placeholder:text-white/70"
+                placeholder="Tu profesión"
+                className={`bg-white/20 border-white/30 ${themeConfig.textClass} placeholder:text-white/70`}
               />
             </div>
           </CardContent>
@@ -330,15 +330,15 @@ const EditProfileSingle = () => {
         {/* Biografía */}
         <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-glow">
           <CardContent className="p-6">
-            <h3 className="font-semibold text-white mb-4">Sobre ti</h3>
+            <h3 className={`font-semibold ${themeConfig.textClass} mb-4`}>Sobre ti</h3>
             <Textarea
               value={formData.bio}
               onChange={(e) => handleInputChange('bio', e.target.value)}
               placeholder="Cuéntanos sobre ti, qué buscas en el lifestyle swinger..."
               rows={4}
-              className="resize-none bg-white/20 border-white/30 text-white placeholder:text-white/70"
+              className={`resize-none bg-white/20 border-white/30 ${themeConfig.textClass} placeholder:text-white/70`}
             />
-            <p className="text-xs text-white/70 mt-2">
+            <p className={`text-xs ${themeConfig.textClass}/70 mt-2`}>
               {formData.bio.length}/500 caracteres
             </p>
           </CardContent>
@@ -347,8 +347,8 @@ const EditProfileSingle = () => {
         {/* Intereses */}
         <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-glow">
           <CardContent className="p-6">
-            <h3 className="font-semibold text-white mb-4">Intereses</h3>
-            <p className="text-sm text-white/70 mb-4">Selecciona hasta 6 intereses que te representen en el lifestyle</p>
+            <h3 className={`font-semibold ${themeConfig.textClass} mb-4`}>Intereses</h3>
+            <p className={`text-sm ${themeConfig.textClass}/70 mb-4`}>Selecciona hasta 6 intereses que te representen en el lifestyle</p>
             <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto p-4 border border-white/30 rounded-lg bg-white/10 backdrop-blur-sm">
               {availableInterests.map((interest) => (
                 <Badge

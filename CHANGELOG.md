@@ -2,6 +2,18 @@
 
 ## [v3.0.0] - 2025-09-21
 
+### 🎨 Sistema de Temas Personalizable
+- **5 Temas Únicos**: Light, Dark, Elegant, Modern, Vibrant con paletas específicas
+- **Selección en Registro**: Modal interactivo `ThemeModal.tsx` durante creación de cuenta
+- **Persistencia Supabase**: Nuevas columnas `preferred_theme`, `navbar_style`, `theme_updated_at` en tabla `profiles`
+- **Hook Unificado**: `useThemeConfig()` detecta automáticamente modo demo/producción
+- **Aplicación Automática**: Temas basados en género y tipo de perfil (single/couple)
+- **Estilos Dinámicos**: Navbar adaptable (transparente/sólido) según tema seleccionado
+- **Compatibilidad Total**: Funciona igual en modo demo (localStorage) y producción (Supabase)
+- **Componentes UI**: `ThemeSelector.tsx` con animaciones Framer Motion y previews visuales
+- **Migración SQL**: `20250921_add_theme_preferences.sql` con triggers automáticos e índices optimizados
+- **Integración Completa**: Auth.tsx, EditProfile, Header con aplicación dinámica de temas
+
 ### 📱 Optimización Android Completa
 - **Android Optimization CSS**: Estilos específicos para múltiples densidades Android (mdpi-xxxhdpi)
 - **LazyImageLoader**: Componente con detección WebP/AVIF y fallbacks automáticos
@@ -14,12 +26,15 @@
 ### 🔧 Correcciones TypeScript
 - **AndroidOptimizedApp.tsx**: Eliminados imports inexistentes, corregido webkitOverflowScrolling
 - **useProfileCache.ts**: Logs comentados para tests más limpios
+- **useSupabaseTheme.ts**: Implementado hook para persistencia real con subscripciones en tiempo real
+- **useProfileTheme.ts**: Hooks unificados para demo y producción con fallbacks seguros
 - **0 Errores TypeScript**: Proyecto completamente limpio y production-ready
 
 ### 📊 Testing y Calidad
 - **Test Suite**: 140/147 tests pasando (95.2% success rate)
 - **Build Time**: Optimizado de 14.29s a 8.20s (-42%)
 - **Bundle Size**: Mantenido en 321KB optimizado
+- **Documentación**: README.md, RELEASE_NOTES.md y project-structure.md actualizados
 
 ## [v2.1.8] - 2025-01-14
 
