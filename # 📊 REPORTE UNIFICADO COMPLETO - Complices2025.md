@@ -279,7 +279,7 @@ tests/
 - **Ubicaciones**: Ciudad de México, Guadalajara, Monterrey, Cancún, Playa del Carmen
 - **Nombres Locales**: Alejandra Martínez, Carmen López, María González
 - **Intereses Contextualizados**: Vida nocturna, cenotes, playas, gastronomía mexicana
-- **Biografías Auténticas**: Parejas aventureras mexicanas con contexto real
+- **Biografías Auténticas**: Comunidad Swinger con contexto real
 
 ### Contenido en Español Mexicano
 - **Mensajes de Error**: Traducidos con modismos locales
@@ -348,6 +348,6 @@ ComplicesConecta se posiciona como **líder tecnológico** en el mercado de apli
 **Fecha**: 21/09/2025 - 06:17 AM (GMT-6)  
 **Versión**: ComplicesConecta v3.0.0  
 **Estado**: ✅ LISTO PARA PRODUCCIÓN  
-**Equipo**: Cascade AI Assistant + Desarrollo ComplicesConecta  
+**Equipo**: Desarrollo ComplicesConecta  
 
 *La plataforma swinger más avanzada de México está lista para conquistar el mercado.*
