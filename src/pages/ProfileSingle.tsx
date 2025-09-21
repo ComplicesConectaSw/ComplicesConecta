@@ -53,8 +53,8 @@ const ProfileSingle: React.FC = () => {
         
         // Si authProfile ya está disponible, usarlo directamente
         if (authProfile && authProfile.id) {
-          logger.info('✅ AuthProfile disponible:', authProfile.first_name);
-          setProfile(authProfile);
+          logger.info('✅ AuthProfile disponible:', { first_name: authProfile.first_name });
+          setProfile(authProfile as Tables<'profiles'>);
           setIsLoading(false);
           return;
         }
@@ -74,7 +74,7 @@ const ProfileSingle: React.FC = () => {
               const demoProfile = demoProfiles.find(p => p.email === user.email);
               if (demoProfile) {
                 logger.info('✅ Perfil demo encontrado:', { name: demoProfile.first_name });
-                setProfile(demoProfile as Tables<'profiles'>);
+                setProfile(demoProfile as unknown as Tables<'profiles'>);
               } else {
                 logger.warn('⚠️ Perfil demo no encontrado para:', { email: user.email });
               }
@@ -192,11 +192,11 @@ const ProfileSingle: React.FC = () => {
                       {profile.age} años
                     </Badge>
                     <Badge variant="secondary" className="bg-white/20 text-white border-white/30 text-xs sm:text-sm">
-                      {(profile as any).gender || 'No especificado'}
+                      {profile.gender || 'No especificado'}
                     </Badge>
                     <Badge variant="secondary" className="bg-white/20 text-white border-white/30 flex items-center gap-1 text-xs sm:text-sm">
                       <MapPin className="w-3 h-3" />
-                      {(profile as any).location || 'CDMX, México'}
+                      {'CDMX, México'}
                     </Badge>
                   </div>
                   
@@ -238,7 +238,7 @@ const ProfileSingle: React.FC = () => {
             <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
               <CardContent className="p-3 sm:p-4 text-center">
                 <Heart className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-2 text-pink-400" />
-                <div className="text-lg sm:text-2xl font-bold">{(profile as any).likes || 0}</div>
+                <div className="text-lg sm:text-2xl font-bold">0</div>
                 <div className="text-xs sm:text-sm text-white/70">Likes</div>
               </CardContent>
             </Card>

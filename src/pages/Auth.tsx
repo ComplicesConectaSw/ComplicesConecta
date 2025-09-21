@@ -334,7 +334,7 @@ const Auth = () => {
                            normalizedEmail.includes('complicesconectasw') ? 'admin' : 'single';
         
         // Usar la función handleDemoAuth para crear sesión demo correcta
-        const demoAuthResult = handleDemoAuth(normalizedEmail, accountType);
+        const demoAuthResult = await handleDemoAuth(normalizedEmail, accountType);
         
         // Sobrescribir localStorage con datos correctos para admins
         if (accountType === 'admin' && demoAuthResult) {

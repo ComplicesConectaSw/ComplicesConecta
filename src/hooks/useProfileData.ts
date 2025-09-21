@@ -96,7 +96,23 @@ export const useProfileData = (userId?: string) => {
           throw error;
         }
 
-        return data as ProfileData;
+        // Convertir datos de Supabase a ProfileData
+        const profileData: ProfileData = {
+          id: data.id,
+          email: data.email || '',
+          name: `${data.first_name || ''} ${data.last_name || ''}`.trim() || 'Usuario',
+          age: data.age || undefined,
+          location: undefined, // Campo no disponible en esquema actual
+          bio: data.bio || undefined,
+          interests: data.interests || undefined,
+          userType: (data.profile_type as 'single' | 'couple') || 'single',
+          profileImage: data.avatar_url || undefined,
+          isVerified: data.is_verified || false,
+          createdAt: data.created_at,
+          updatedAt: data.updated_at
+        };
+        
+        return profileData;
       } catch (err) {
         logger.error('Error in profile query:', { error: String(err) });
         throw err;

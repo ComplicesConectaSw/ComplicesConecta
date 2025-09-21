@@ -74,7 +74,7 @@ const EditProfileSingle = () => {
         const { data: { user } } = await supabase.auth.getUser();
         
         if (user) {
-          const { data: profile, error } = await (supabase as any)
+          const { data: profile, error } = await supabase
             .from('profiles')
             .select('*')
             .eq('id', user.id)
@@ -84,7 +84,7 @@ const EditProfileSingle = () => {
             logger.error('Error fetching profile:', { error: error.message });
             setError('Error al cargar perfil');
           } else if (profile) {
-            const profileData = profile as any;
+            const profileData = profile;
             setFormData({
               name: `${profileData.first_name || ''} ${profileData.last_name || ''}`.trim(),
               age: profileData.age?.toString() || '',
@@ -181,7 +181,7 @@ const EditProfileSingle = () => {
       } else {
         // Modo producción - guardar en Supabase
         const nameParts = formData.name.split(' ');
-        const { error } = await (supabase as any)
+        const { error } = await supabase
           .from('profiles')
           .update({
             first_name: nameParts[0] || '',

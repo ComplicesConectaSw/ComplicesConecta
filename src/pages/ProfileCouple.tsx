@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Heart, MessageCircle, MapPin, Verified, Crown, ArrowLeft, Settings, Share2, Users, Camera } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
-import { generateMockCoupleProfiles, type CoupleProfileWithPartners } from "@/lib/coupleProfiles";
+import { generateMockCoupleProfiles, type CoupleProfileWithPartners, type RelationshipType } from "@/lib/coupleProfiles";
 import CoupleProfileHeader from "@/components/profile/CoupleProfileHeader";
 import { useAuth } from '@/hooks/useAuth';
 import { logger } from '@/lib/logger';
@@ -51,7 +51,7 @@ const ProfileCouple: React.FC = () => {
                 id: demoProfile.id,
                 couple_name: demoProfile.display_name || `${demoProfile.first_name} & Roberto`,
                 couple_bio: demoProfile.bio || 'Pareja liberal y experimentada',
-                relationship_type: 'couple' as any,
+                relationship_type: 'man-woman' as RelationshipType,
                 partner1_id: `${demoProfile.id}-partner1`,
                 partner2_id: `${demoProfile.id}-partner2`,
                 couple_images: [demoProfile.avatar_url || '/profile-couple.jpg'],

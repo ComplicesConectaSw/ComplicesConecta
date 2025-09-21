@@ -107,19 +107,20 @@ export const useAuth = () => {
         if (error.code === 'PGRST116' && shouldUseRealSupabase()) {
           logger.info('🆆 Perfil real no encontrado - creando perfil básico');
           try {
-            const { data: newProfile, error: createError } = await (supabase
-              .from('profiles') as any)
+            const { data: newProfile, error: createError } = await supabase
+              .from('profiles')
               .insert({
-                user_id: userId,
+                id: userId,
                 first_name: 'Usuario',
                 role: 'user',
-                is_demo: false
+                is_demo: false,
+                email: user?.email,
               })
               .select()
               .single();
 
             if (createError) {
-              logger.error('❌ Error creando perfil básico:', createError);
+              logger.error('❌ Error creando perfil básico:', { error: createError.message });
               setProfile(null);
             } else {
               logger.info('✅ Perfil básico creado exitosamente');
@@ -144,25 +145,25 @@ export const useAuth = () => {
         
         logger.info('📋 Contenido detallado del perfil', {
           isArray: Array.isArray(data),
-          id: (profileData as any)?.id,
-          firstName: (profileData as any)?.first_name,
-          lastName: (profileData as any)?.last_name,
-          displayName: (profileData as any)?.display_name,
-          role: (profileData as any)?.role,
-          email: (profileData as any)?.email,
+          id: profileData?.id,
+          firstName: profileData?.first_name,
+          lastName: profileData?.last_name,
+          displayName: profileData?.display_name,
+          role: profileData?.role,
+          email: profileData?.email,
           fullData: JSON.stringify(data, null, 2)
         });
         
-        logger.info('✅ Perfil real cargado', { firstName: (profileData as any)?.first_name });
+        logger.info('✅ Perfil real cargado', { firstName: profileData?.first_name });
         logger.info('📋 Datos completos del perfil', { profile: profileData });
         profileLoaded.current = true;
         setProfile(profileData);
         
         // PERFIL CARGADO - Redirección automática al perfil para usuarios especiales
-        logger.info('🔍 Perfil cargado', { id: (profileData as any)?.id });
+        logger.info('🔍 Perfil cargado', { id: profileData?.id });
         
         // Redirección automática al perfil después de cargar datos
-        if ((profileData as any)?.first_name === 'Apoyo' && window.location.pathname === '/') {
+        if (profileData?.first_name === 'Apoyo' && window.location.pathname === '/') {
           logger.info('🔄 Redirigiendo usuario Apoyo al perfil...');
           setTimeout(() => {
             window.location.href = '/profile-single';
@@ -294,10 +295,10 @@ export const useAuth = () => {
         }
         
         // Manejar autenticación demo
-        const demoAuth = handleDemoAuth(email, accountType);
+        const demoAuth = await handleDemoAuth(email, accountType);
         if (demoAuth) {
-          setUser(demoAuth.user as any);
-          setSession(demoAuth.session as any);
+          setUser(demoAuth.user as User);
+          setSession(demoAuth.session as Session);
           await loadProfile(demoAuth.user.id);
           logger.info('✅ Sesión demo iniciada', { email });
           return { user: demoAuth.user, session: demoAuth.session };

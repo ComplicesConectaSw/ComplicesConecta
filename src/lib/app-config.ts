@@ -127,7 +127,7 @@ export const getProductionPassword = (email: string): string | null => {
 };
 
 // Función centralizada para manejar autenticación demo (SIN complicesconectasw@outlook.es)
-export const handleDemoAuth = (email: string, accountType: string = 'single') => {
+export const handleDemoAuth = async (email: string, accountType: string = 'single') => {
   const config = getAppConfig();
   
   if (!isDemoCredential(email)) {
@@ -141,20 +141,35 @@ export const handleDemoAuth = (email: string, accountType: string = 'single') =>
     return null;
   }
   
-  // Importar datos demo para perfiles completos usando require síncrono
+  // Importar datos demo para perfiles completos usando import dinámico
   let demoProfiles: any[] = [];
   try {
-    const demoData = require('../demo/demoData.ts');
-    demoProfiles = demoData.demoProfiles || [];
+    // Usar import dinámico para cargar datos demo
+    const demoDataModule = await import('@/demo/demoData');
+    demoProfiles = demoDataModule.demoProfiles || [];
   } catch (error) {
-    // Fallback: intentar sin extensión
-    try {
-      const demoData = require('../demo/demoData');
-      demoProfiles = demoData.demoProfiles || [];
-    } catch (fallbackError) {
-      logger.warn('No se pudieron cargar datos demo:', { error: String(error) });
-      demoProfiles = [];
-    }
+    logger.warn('No se pudieron cargar datos demo:', { error: String(error) });
+    // Fallback con perfiles básicos
+    demoProfiles = [
+      {
+        id: 'demo-single-outlook',
+        email: 'single@outlook.es',
+        first_name: 'Sofía',
+        last_name: 'Mendoza',
+        display_name: 'Sofía M.',
+        profile_type: 'single',
+        is_demo: true
+      },
+      {
+        id: 'demo-pareja-outlook',
+        email: 'pareja@outlook.es',
+        first_name: 'Carmen',
+        last_name: 'Ruiz',
+        display_name: 'Carmen & Roberto',
+        profile_type: 'couple',
+        is_demo: true
+      }
+    ];
   }
   
   // Buscar perfil demo completo por email
