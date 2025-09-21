@@ -10,7 +10,7 @@ import { generateMockSingle } from "@/lib/data";
 import ImageUpload from "@/components/profile/ImageUpload";
 import { supabase } from "@/integrations/supabase/client";
 import { getAppConfig } from "@/lib/app-config";
-import Navigation from "@/components/Navigation";
+import NavigationEnhanced from "@/components/NavigationEnhanced";
 import type { Tables } from '@/integrations/supabase/types';
 import { logger } from '@/lib/logger';
 import { usePersistedState } from '@/hooks/usePersistedState';
@@ -389,7 +389,7 @@ const EditProfileSingle = () => {
         </Card>
       </div>
 
-      <Navigation />
+      <NavigationEnhanced />
       
       {/* Custom Styles */}
       <style>{`

@@ -15,7 +15,7 @@ import {
   MailQuestion,
   Send
 } from "lucide-react";
-import Navigation from "@/components/Navigation";
+import NavigationEnhanced from "@/components/NavigationEnhanced";
 import { useFeatures } from "@/hooks/useFeatures";
 import { invitationService, type Invitation } from "@/lib/invitations";
 import { useAuth } from '@/hooks/useAuth';
@@ -374,7 +374,7 @@ const Requests = () => {
         </div>
       </div>
 
-      <Navigation />
+      <NavigationEnhanced />
       
       <style>{`
         @keyframes blob {

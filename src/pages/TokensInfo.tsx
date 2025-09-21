@@ -23,7 +23,7 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { TOKEN_CONFIG } from '@/lib/tokens';
-import Navigation from '@/components/Navigation';
+import NavigationEnhanced from "@/components/NavigationEnhanced";
 
 interface FAQItem {
   question: string;
@@ -500,7 +500,7 @@ export default function TokensInfo() {
       </div>
       
       {/* Navigation Menu */}
-      <Navigation />
+      <NavigationEnhanced />
     </div>
   );
 }

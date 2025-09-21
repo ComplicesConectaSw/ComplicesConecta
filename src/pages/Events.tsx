@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import Navigation from '@/components/Navigation';
+import NavigationEnhanced from "@/components/NavigationEnhanced";
 import { motion } from 'framer-motion';
 import { ResponsiveContainer } from '@/components/ui/ResponsiveContainer';
 import { usePersistedState } from '@/hooks/usePersistedState';
@@ -273,7 +273,7 @@ const Events = () => {
       </div>
       
       <div className="relative z-10">
-        <Navigation />
+        <NavigationEnhanced />
         
         <main className="container mx-auto px-4 py-8">
           {/* Back Button */}

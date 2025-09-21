@@ -392,20 +392,20 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
   }
 
   return (
-    <Card className="w-full max-w-2xl mx-auto h-[600px] flex flex-col bg-gradient-to-br from-purple-100 via-pink-100 to-purple-200 border-purple-300 shadow-lg">
-      <CardHeader className="border-b border-purple-300 bg-gradient-to-r from-purple-200 to-pink-200 flex-shrink-0">
-        <CardTitle className="flex items-center gap-2">
-          <Bot className="h-5 w-5 text-purple-600" />
+    <Card className="token-chatbox w-full max-w-2xl mx-auto h-[600px] flex flex-col">
+      <CardHeader className="border-b border-white/20 bg-white/10 backdrop-filter backdrop-blur-md flex-shrink-0">
+        <CardTitle className="flex items-center gap-2 text-white">
+          <Bot className="h-5 w-5 text-white" />
           🤖 Asistente de Tokens CMPX/GTK
         </CardTitle>
-        <p className="text-sm text-purple-700">
+        <p className="text-sm text-white/90">
           Tu guía personal para tokens en fase Beta
         </p>
       </CardHeader>
       
       <CardContent className="flex-1 flex flex-col p-0">
         {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-purple-50/50 to-pink-50/50">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-white/5 backdrop-filter backdrop-blur-sm">
           {messages.map((message) => (
             <div
               key={message.id}
@@ -425,10 +425,10 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
                   "max-w-[80%] rounded-lg p-3 break-words overflow-hidden",
                   message.type === 'user'
                     ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-md'
-                    : 'bg-gradient-to-r from-purple-100 to-pink-100 text-purple-900 border border-purple-300 shadow-sm'
+                    : 'bg-white/15 backdrop-filter backdrop-blur-md text-white border border-white/20 shadow-sm'
                 )}
               >
-                <div className="whitespace-pre-wrap text-sm leading-relaxed break-words max-h-40 overflow-y-auto overflow-wrap-anywhere hyphens-auto">
+                <div className="whitespace-pre-wrap text-sm leading-relaxed break-words max-h-40 overflow-y-auto word-wrap-break-word overflow-wrap-anywhere hyphens-auto">
                   {message.content}
                 </div>
                 
@@ -476,25 +476,26 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
         </div>
         
         {/* Input Area */}
-        <div className="border-t border-purple-300 p-4 bg-gradient-to-r from-purple-100 to-pink-100 flex-shrink-0">
+        <div className="border-t border-white/20 p-4 bg-white/10 backdrop-filter backdrop-blur-md flex-shrink-0">
           <div className="flex gap-2">
             <Input
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder="Escribe tu mensaje aquí..."
-              className="flex-1"
+              className="flex-1 bg-white/15 border-white/30 text-white placeholder-white/70 focus:border-white/50"
               disabled={isTyping}
             />
             <Button
               onClick={handleSendMessage}
               disabled={!userInput.trim() || isTyping}
               size="sm"
+              className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0"
             >
               <Send className="h-4 w-4" />
             </Button>
           </div>
-          <p className="text-xs text-purple-700 mt-2">
+          <p className="text-xs text-white/80 mt-2">
             💡 Prueba: "¿Cuántos tokens tengo?" o "Quiero hacer staking"
           </p>
         </div>

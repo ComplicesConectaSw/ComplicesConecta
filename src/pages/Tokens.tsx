@@ -12,7 +12,7 @@ import { useTokens } from '@/hooks/useTokens';
 import { TokenDashboard } from '@/components/tokens/TokenDashboard';
 import { StakingModal } from '@/components/tokens/StakingModal';
 import { TokenChatBot } from '@/components/tokens/TokenChatBot';
-import Navigation from '@/components/Navigation';
+import NavigationEnhanced from "@/components/NavigationEnhanced";
 import { motion } from 'framer-motion';
 import { AnimatedButton } from '@/components/ui/AnimatedButton';
 
@@ -280,7 +280,7 @@ export default function Tokens() {
                 <div className="text-xs text-white/90 space-y-1">
                   <p>🪙 <strong>Ejemplo de respuesta:</strong></p>
                   <div className="bg-white/90 p-2 rounded border ml-2 sm:ml-4">
-                    <p className="break-words text-gray-800">{getBalanceMessage()}</p>
+                    <p className="break-words text-gray-900">{getBalanceMessage()}</p>
                   </div>
                 </div>
               </div>
@@ -291,7 +291,7 @@ export default function Tokens() {
                 </p>
                 <div className="text-xs text-white/90">
                   <div className="bg-white/90 p-2 rounded border ml-2 sm:ml-4">
-                    <p className="break-words text-gray-800">{getStakingMessage()}</p>
+                    <p className="break-words text-gray-900">{getStakingMessage()}</p>
                   </div>
                 </div>
               </div>
@@ -307,7 +307,7 @@ export default function Tokens() {
       </div>
       
       {/* Navigation Menu */}
-      <Navigation />
+      <NavigationEnhanced />
     </div>
   );
 }

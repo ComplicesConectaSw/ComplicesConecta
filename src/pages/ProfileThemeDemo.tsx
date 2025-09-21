@@ -1,6 +1,6 @@
 import React from 'react';
 import { Header } from "@/components/Header";
-import Navigation from "@/components/Navigation";
+import NavigationEnhanced from "@/components/NavigationEnhanced";
 import { ProfileThemeShowcase } from '@/components/demo/ProfileThemeShowcase';
 import { UnifiedCard } from '@/components/ui/UnifiedCard';
 import { Badge } from '@/components/ui/badge';
@@ -10,7 +10,7 @@ const ProfileThemeDemo: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-indigo-50">
       <Header />
-      <Navigation />
+      <NavigationEnhanced />
       
       <div className="container mx-auto px-4 py-8 space-y-8">
         {/* Hero Section */}

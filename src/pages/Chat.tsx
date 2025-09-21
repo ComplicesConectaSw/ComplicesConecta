@@ -14,7 +14,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useFeatures } from "@/hooks/useFeatures";
 import { toast } from "@/hooks/use-toast";
-import Navigation from "@/components/Navigation";
+import NavigationEnhanced from "@/components/NavigationEnhanced";
 // import { Header } from "@/components/Header";
 import { InvitationDialog } from "@/components/invitations/InvitationDialog";
 import { mockPrivacySettings } from "@/lib/data";
@@ -760,7 +760,7 @@ const Chat = () => {
         </div>
       </div>
 
-      <Navigation />
+      <NavigationEnhanced />
       
       {/* Custom Styles */}
       <style>{`
