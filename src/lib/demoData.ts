@@ -55,7 +55,7 @@ export const generateDemoProfiles = (count: number = 20): DemoProfile[] => {
   const interestsPool = [
     'Lifestyle', 'Swinger', 'Parejas', 'Intercambio', 'Liberal', 
     'Aventura', 'Diversión', 'Respeto', 'Discreción', 'Experiencia',
-    'Viajes', 'Música', 'Baile', 'Cocina', 'Deportes'
+    'BSM', 'Música', 'Inter-Full', 'Exhibición', 'Soft'
   ];
 
   resetImageCounters();
