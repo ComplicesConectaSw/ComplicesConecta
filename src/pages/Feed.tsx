@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Heart, MessageCircle, Share, MoreHorizontal, MapPin, Clock } from 'lucide-react';
 import { Header } from '@/components/Header';
-import Navigation from '@/components/Navigation';
+import NavigationEnhanced from "@/components/NavigationEnhanced";
 
 // Datos mock para publicaciones
 const generateFeedPosts = () => {
@@ -159,7 +159,7 @@ const Feed = () => {
         </div>
       </main>
 
-      <Navigation />
+      <NavigationEnhanced />
     </div>
   );
 };

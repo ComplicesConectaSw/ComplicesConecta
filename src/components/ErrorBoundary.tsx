@@ -1,8 +1,9 @@
 import React from 'react';
-import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
+import { AlertTriangle, RefreshCw, Home, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { logger } from '@/lib/logger';
+import { Link } from 'react-router-dom';
 
 interface ErrorBoundaryState {
   hasError: boolean;
@@ -47,55 +48,74 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
       }
 
       return (
-        <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center p-4">
-          <Card className="w-full max-w-md mx-auto bg-white/10 backdrop-blur-md border-white/20">
-            <CardHeader className="text-center">
-              <div className="mx-auto w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mb-4">
-                <AlertTriangle className="w-8 h-8 text-red-400" />
-              </div>
-              <CardTitle className="text-white text-xl">
-                ¡Oops! Algo salió mal
-              </CardTitle>
-              <CardDescription className="text-white/70">
-                La aplicación encontró un error inesperado. Esto puede deberse a conflictos con extensiones del navegador.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3">
-                <p className="text-red-300 text-sm font-mono">
-                  {this.state.error?.message || 'Error desconocido'}
-                </p>
-              </div>
-              
-              <div className="text-white/60 text-xs space-y-1">
-                <p>💡 <strong>Posibles soluciones:</strong></p>
-                <ul className="list-disc list-inside space-y-1 ml-2">
-                  <li>Desactiva extensiones de wallets (MetaMask, TronLink, etc.)</li>
-                  <li>Prueba en modo incógnito</li>
-                  <li>Actualiza tu navegador</li>
-                  <li>Limpia la caché del navegador</li>
-                </ul>
-              </div>
+        <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex flex-col">
+          {/* Header with Login Button */}
+          <div className="flex justify-between items-center p-4 bg-black/20 backdrop-blur-sm border-b border-white/10">
+            <h1 className="font-bold bg-love-gradient bg-clip-text text-transparent transition-all duration-300 text-2xl">
+              ComplicesConecta
+            </h1>
+            <Button
+              asChild
+              className="login-btn auth-button bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 px-4 py-2 text-sm font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+            >
+              <Link to="/auth">
+                <User className="h-4 w-4 mr-2" />
+                Iniciar Sesión
+              </Link>
+            </Button>
+          </div>
+          
+          {/* Error Content */}
+          <div className="flex-1 flex items-center justify-center p-4">
+            <Card className="w-full max-w-md mx-auto bg-white/10 backdrop-blur-md border-white/20">
+              <CardHeader className="text-center">
+                <div className="mx-auto w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mb-4">
+                  <AlertTriangle className="w-8 h-8 text-red-400" />
+                </div>
+                <CardTitle className="text-white text-xl">
+                  ¡Oops! Algo salió mal
+                </CardTitle>
+                <CardDescription className="text-white/70">
+                  La aplicación encontró un error inesperado. Esto puede deberse a conflictos con extensiones del navegador.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3">
+                  <p className="text-red-300 text-sm font-mono">
+                    {this.state.error?.message || 'Error desconocido'}
+                  </p>
+                </div>
+                
+                <div className="text-white/60 text-xs space-y-1">
+                  <p>💡 <strong>Posibles soluciones:</strong></p>
+                  <ul className="list-disc list-inside space-y-1 ml-2">
+                    <li>Desactiva extensiones de wallets (MetaMask, TronLink, etc.)</li>
+                    <li>Prueba en modo incógnito</li>
+                    <li>Actualiza tu navegador</li>
+                    <li>Limpia la caché del navegador</li>
+                  </ul>
+                </div>
 
-              <div className="flex gap-2 pt-2">
-                <Button 
-                  onClick={this.resetError}
-                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
-                >
-                  <RefreshCw className="w-4 h-4 mr-2" />
-                  Reintentar
-                </Button>
-                <Button 
-                  onClick={() => window.location.href = '/'}
-                  variant="outline"
-                  className="flex-1 border-white/20 text-white hover:bg-white/10"
-                >
-                  <Home className="w-4 h-4 mr-2" />
-                  Inicio
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+                <div className="flex gap-2 pt-2">
+                  <Button 
+                    onClick={this.resetError}
+                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    <RefreshCw className="w-4 h-4 mr-2" />
+                    Reintentar
+                  </Button>
+                  <Button 
+                    onClick={() => window.location.href = '/'}
+                    variant="outline"
+                    className="flex-1 border-white/20 text-white hover:bg-white/10"
+                  >
+                    <Home className="w-4 h-4 mr-2" />
+                    Inicio
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       );
     }

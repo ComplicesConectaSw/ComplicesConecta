@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 // import { Header } from "@/components/Header";
-import Navigation from "@/components/Navigation";
+import NavigationEnhanced from "@/components/NavigationEnhanced";
 import { MatchCard } from "@/components/ui/MatchCard";
 import { ProfileCard } from "@/components/ui/ProfileCard";
 import { UnifiedTabs } from "@/components/ui/UnifiedTabs";
@@ -419,7 +419,7 @@ const Matches = () => {
         )}
         </main>
 
-        <Navigation />
+        <NavigationEnhanced />
       </div>
       
       {/* Custom Styles */}

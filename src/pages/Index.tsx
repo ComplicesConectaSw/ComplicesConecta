@@ -10,7 +10,7 @@ import { WelcomeModal } from "@/components/WelcomeModal";
 import { FeatureModal } from "@/components/modals/FeatureModal";
 import { InstallAppModal } from "@/components/modals/InstallAppModal";
 import { ActionButtonsModal } from "@/components/modals/ActionButtonsModal";
-import Navigation from "@/components/Navigation";
+import NavigationEnhanced from "@/components/NavigationEnhanced";
 import { useScrollHide } from "@/hooks/useScrollHide";
 import { Heart, Users, Shield, Zap, Sparkles, Star, Rocket, Smartphone, Download, Smartphone as Android } from "lucide-react";
 import { Button } from "@/components/ui/button";

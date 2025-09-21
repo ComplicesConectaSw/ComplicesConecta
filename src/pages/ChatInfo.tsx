@@ -16,7 +16,7 @@ import {
   UserCheck
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import Navigation from "@/components/Navigation";
+import NavigationEnhanced from "@/components/NavigationEnhanced";
 
 const ChatInfo = () => {
   const navigate = useNavigate();
@@ -228,7 +228,7 @@ const ChatInfo = () => {
         </div>
       </div>
 
-      <Navigation />
+      <NavigationEnhanced />
     </div>
   );
 };

@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Save, Camera, X, Users, MapPin, AlertCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import Navigation from "@/components/Navigation";
+import NavigationEnhanced from "@/components/NavigationEnhanced";
 import type { Tables } from '@/integrations/supabase/types';
 import { generateMockCouple } from "@/lib/data";
 import { lifestyleInterests } from "@/lib/lifestyle-interests";
@@ -628,7 +628,7 @@ const EditProfileCouple = () => {
         </Card>
       </div>
 
-      <Navigation />
+      <NavigationEnhanced />
     </div>
   );
 };

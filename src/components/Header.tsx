@@ -327,6 +327,32 @@ export const Header = () => {
               </Link>
             </Button>
 
+            {/* Auth Buttons */}
+            <div className="flex items-center space-x-2">
+              {!isAuthenticated ? (
+                <Button
+                  asChild
+                  className="login-btn auth-button auth-button-mobile bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 px-3 py-1.5 text-sm font-weight-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                >
+                  <Link to="/auth">
+                    <User className="h-3 w-3 mr-1.5" />
+                    <span className="hidden sm:inline">Iniciar Sesión</span>
+                    <span className="sm:hidden">Login</span>
+                  </Link>
+                </Button>
+              ) : (
+                <Button
+                  onClick={handleLogout}
+                  variant="outline"
+                  className="auth-button auth-button-mobile border-white/30 text-white hover:bg-red-500/30 px-3 py-1.5 text-sm font-weight-bold transition-all duration-300 bg-red-500/20"
+                >
+                  <LogOut className="h-3 w-3 mr-1.5" />
+                  <span className="hidden sm:inline">Cerrar Sesión</span>
+                  <span className="sm:hidden">Logout</span>
+                </Button>
+              )}
+            </div>
+
             {/* Botón Premium - Siempre visible */}
             <Button variant="love" size="sm" className="flex items-center gap-1" asChild>
               <Link to="/premium">
@@ -336,14 +362,7 @@ export const Header = () => {
             </Button>
 
             {/* Botones de autenticación */}
-            {!isAuthenticated ? (
-              <Button variant="outline" size="sm" className="bg-white/90 border-white text-black hover:bg-white hover:text-black font-semibold shadow-lg flex items-center gap-1" asChild>
-                <Link to="/auth">
-                  <User className="h-4 w-4" />
-                  <span className="text-xs sm:text-sm">Iniciar Sesión</span>
-                </Link>
-              </Button>
-            ) : (
+            {isAuthenticated && (
               <div className="flex items-center gap-1 sm:gap-3">
                 <span className="text-white text-xs sm:text-sm hidden sm:inline font-medium">
                   {/* Mostrar usuario real o demo */}
