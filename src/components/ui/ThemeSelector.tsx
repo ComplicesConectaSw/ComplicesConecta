@@ -5,6 +5,8 @@ import { cn } from '@/lib/utils';
 import { Theme, getAvailableThemes, getThemeDisplayName } from '@/hooks/useProfileTheme';
 import { UnifiedButton } from '@/components/ui/UnifiedButton';
 import { Badge } from '@/components/ui/badge';
+import { validateThemeSelector } from '@/lib/zod-schemas';
+import { logger } from '@/lib/logger';
 
 interface ThemeSelectorProps {
   selectedTheme?: Theme;
@@ -21,6 +23,16 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
   showPreview = true,
   compact = false
 }) => {
+  // Validar props con Zod
+  try {
+    validateThemeSelector({
+      currentTheme: selectedTheme || 'elegant',
+      onThemeChange,
+      className,
+    });
+  } catch (error) {
+    logger.error('❌ Error validando ThemeSelector:', { error });
+  }
   const themes = getAvailableThemes();
 
   const getThemePreviewClass = (theme: Theme): string => {

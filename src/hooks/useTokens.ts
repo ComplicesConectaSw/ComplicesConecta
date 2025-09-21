@@ -4,8 +4,9 @@
  * NOTA: Mock temporal hasta implementar tablas de tokens en BD
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/hooks/useAuth';
+import { validateStaking, validateTokenTransaction } from '@/lib/zod-schemas';
 import { isDemoMode, shouldUseRealSupabase, getAppConfig } from '@/lib/app-config';
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
@@ -285,24 +286,21 @@ export const useTokens = () => {
     
     try {
       logger.info('🔗 Procesando staking real:', { tokenType, amount, duration });
-      // Implementar lógica real de staking con Supabase Edge Functions
-      // Comentar temporalmente la inserción real hasta que la tabla esté disponible
-      // const { data, error } = await supabase
-      //   .from('staking_records')
-      //   .insert({
-      //     user_id: user.id,
-      //     token_type: tokenType,
-      //     amount,
-      //     start_date: new Date().toISOString(),
-      //     end_date: new Date(Date.now() + duration * 24 * 60 * 60 * 1000).toISOString(),
-      //     apy: tokenType === 'gtk' ? 12.5 : 8.0,
-      //     status: 'active',
-      //     created_at: new Date().toISOString()
-      //   });
+      // Validar datos con Zod antes de enviar
+      const stakingData = validateStaking({
+        userId: user.id,
+        amount,
+        duration,
+        tokenType
+      });
       
-      // Usar mock data temporalmente
-      const data = { success: true };
-      const error = null;
+      // Usar función de Supabase para staking (tabla staking_records)
+      const { data, error } = await (supabase as any).rpc('start_staking', {
+        user_id_param: stakingData.userId,
+        amount_param: stakingData.amount,
+        duration_days: stakingData.duration,
+        token_type_param: stakingData.tokenType
+      });
       
       if (error) {
         logger.error('❌ Error en staking:', { error });

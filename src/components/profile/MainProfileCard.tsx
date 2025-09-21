@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { logger } from '@/lib/logger';
 import { useProfileTheme, Gender, ProfileType, Theme } from '@/hooks/useProfileTheme';
 import { cn } from '@/lib/utils';
+import { validateProfileCard, type ProfileCardProps as ZodProfileCardProps } from '@/lib/zod-schemas';
 
 interface ProfileCardProps {
   profile: {
@@ -54,6 +55,12 @@ export const MainProfileCard = ({
   showQuickActions = true,
   showViewProfile = true 
 }: ProfileCardProps) => {
+  // Validar props con Zod
+  try {
+    validateProfileCard(profile);
+  } catch (error) {
+    logger.error('❌ Error validando ProfileCard:', { error });
+  }
   const { getUserOnlineStatus, getLastSeenTime } = useUserOnlineStatus();
   const profileId = String(profile.id);
   const isOnline = profile.isOnline ?? getUserOnlineStatus(profileId);

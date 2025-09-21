@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion, Variants } from 'framer-motion';
 
-// Global animation variants
-export const pageVariants: Variants = {
+// Optimized animation variants with useMemo for performance
+export const usePageVariants = (): Variants => useMemo(() => ({
   initial: {
     opacity: 0,
     y: 20,
@@ -13,7 +13,8 @@ export const pageVariants: Variants = {
     y: 0,
     scale: 1,
     transition: {
-      duration: 0.4
+      duration: 0.4,
+      ease: "easeOut"
     }
   },
   exit: {
@@ -21,21 +22,22 @@ export const pageVariants: Variants = {
     y: -20,
     scale: 0.98,
     transition: {
-      duration: 0.3
+      duration: 0.3,
+      ease: "easeIn"
     }
   }
-};
+}), []);
 
-export const staggerContainer: Variants = {
+export const useStaggerContainer = (): Variants => useMemo(() => ({
   animate: {
     transition: {
       staggerChildren: 0.1,
       delayChildren: 0.2
     }
   }
-};
+}), []);
 
-export const fadeInUp: Variants = {
+export const useFadeInUp = (): Variants => useMemo(() => ({
   initial: {
     opacity: 0,
     y: 30
@@ -44,9 +46,26 @@ export const fadeInUp: Variants = {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.5
+      duration: 0.5,
+      ease: "easeOut"
     }
   }
+}), []);
+
+// Legacy exports for backward compatibility
+export const pageVariants: Variants = {
+  initial: { opacity: 0, y: 20, scale: 0.98 },
+  animate: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.4, ease: "easeOut" } },
+  exit: { opacity: 0, y: -20, scale: 0.98, transition: { duration: 0.3, ease: "easeIn" } }
+};
+
+export const staggerContainer: Variants = {
+  animate: { transition: { staggerChildren: 0.1, delayChildren: 0.2 } }
+};
+
+export const fadeInUp: Variants = {
+  initial: { opacity: 0, y: 30 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
 };
 
 export const scaleIn: Variants = {
