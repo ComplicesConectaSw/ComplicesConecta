@@ -235,9 +235,10 @@ export class FileValidator {
 
     // Buscar por extensión como fallback
     const extension = this.getFileExtension(fileName);
-    const categoryKey = Object.keys(ALLOWED_EXTENSIONS).find(cat => 
-      ALLOWED_EXTENSIONS[cat as keyof typeof ALLOWED_EXTENSIONS].includes(extension)
-    ) as keyof typeof ALLOWED_EXTENSIONS | undefined;
+    const categoryKey = Object.keys(ALLOWED_EXTENSIONS).find(cat => {
+      const category = cat as keyof typeof ALLOWED_EXTENSIONS;
+      return ALLOWED_EXTENSIONS[category].includes(extension);
+    }) as keyof typeof ALLOWED_EXTENSIONS | undefined;
   
     return categoryKey;
   }

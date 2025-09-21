@@ -251,12 +251,12 @@ class DataEncryption {
         dataType: encryptedData.type, 
         error 
       });
-      throw new Error(`Error de desencriptación: ${error}`);
+      throw error;
     }
   }
 
   /**
-   * Convierte ArrayBuffer a Base64
+   * Convierte ArrayBuffer a string Base64
    */
   private arrayBufferToBase64(buffer: ArrayBuffer): string {
     const bytes = new Uint8Array(buffer);
@@ -265,6 +265,18 @@ class DataEncryption {
       binary += String.fromCharCode(bytes[i]);
     }
     return btoa(binary);
+  }
+
+  /**
+   * Convierte string Base64 a ArrayBuffer
+   */
+  private base64ToArrayBuffer(base64: string): ArrayBuffer {
+    const binary = atob(base64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+    return bytes.buffer;
   }
 
   /**
