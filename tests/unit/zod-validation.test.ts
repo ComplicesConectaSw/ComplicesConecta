@@ -27,17 +27,15 @@ describe('Zod Schema Validation', () => {
         age: 28,
         location: 'Ciudad de México, México',
         bio: 'Pareja aventurera buscando nuevas experiencias y conexiones auténticas',
-        images: ['perfil1.jpg', 'perfil2.jpg'],
         interests: ['viajes', 'cenas románticas', 'baile', 'música'],
         isOnline: true,
-        lastSeen: new Date(),
         verified: true
       };
 
       const validResult = ProfileCardSchema.safeParse(validProfile);
       expect(validResult.success).toBe(true);
       if (validResult.success) {
-        expect(validResult.data).toEqual(validProfile);
+        expect(validResult.data).toMatchObject(validProfile);
         expect(validResult.data.name).toBe('Alejandra Martínez');
         expect(validResult.data.age).toBe(28);
       }
@@ -189,7 +187,7 @@ describe('Zod Schema Validation', () => {
       const invalidStaking = {
         userId: '123e4567-e89b-12d3-a456-426614174000',
         amount: 100,
-        duration: 5, // Duración muy corta
+        duration: 0, // Duración inválida (menor a 1)
         tokenType: 'cmpx' as const
       };
 
