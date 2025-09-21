@@ -1,16 +1,43 @@
 # ComplicesConecta - Estructura del Proyecto Unificada
 
 ## Información General
-- **Proyecto:** ComplicesConecta v3.0.0 - Android Optimization & Production Ready Release
+- **Proyecto:** ComplicesConecta v3.0.0 - Sistema de Temas + Android Optimization & Production Ready Release
 - **Tecnología:** React 18 + TypeScript + Vite + Framer Motion
 - **Backend:** Supabase (PostgreSQL + Auth + Storage + Realtime)
-- **UI:** Tailwind CSS + Radix UI + Plantillas Premium Integradas
+- **UI:** Tailwind CSS + Radix UI + Sistema de Temas Personalizable
 - **Estado:** Producción Lista - SQL Validado y Performance Optimizada
 - **Testing:** Build exitoso 6.87s, Lint sin errores, TypeScript 100%
-- **APK:** Disponible en GitHub Releases v2.9.0
-- **Última actualización:** 21 de septiembre 2025, 07:34 hrs
+- **APK:** Disponible en GitHub Releases v3.0.0
+- **Última actualización:** 21 de septiembre 2025, 09:59 hrs
 
 ## 🆕 NUEVAS FUNCIONALIDADES v3.0.0
+
+### 🎨 **SISTEMA DE TEMAS PERSONALIZABLE - 21/09/2025 09:59 hrs**
+
+#### **✅ Sistema de Temas Completo**
+**Archivos Nuevos:** `src/hooks/useThemeConfig.ts`, `src/components/ThemeSelector.tsx`, `src/components/ThemeModal.tsx`
+**Funcionalidades Implementadas:**
+- **5 Temas Únicos**: Light, Dark, Elegant, Modern, Vibrant con paletas específicas
+- **Selección en Registro**: Modal interactivo durante creación de cuenta
+- **Persistencia Real**: Datos guardados en Supabase con fallback localStorage
+- **Aplicación Automática**: Temas basados en género y tipo de perfil
+- **Estilos Dinámicos**: Navbar adaptable (transparente/sólido)
+- **Compatibilidad Total**: Funciona igual en modo demo y producción
+
+#### **🗄️ Base de Datos Supabase**
+**Migración:** `supabase/migrations/20250921_add_theme_preferences.sql`
+**Nuevas Columnas en `profiles`:**
+- `preferred_theme`: Tema seleccionado por el usuario
+- `navbar_style`: Estilo de navegación (transparent/solid)
+- `theme_updated_at`: Timestamp automático de cambios
+**Triggers SQL:** Actualización automática de timestamps
+**Índices Optimizados:** Consultas rápidas por tema y estilo
+
+#### **🔧 Arquitectura Técnica**
+**Hook Unificado:** `useThemeConfig()` detecta automáticamente modo demo/producción
+**Persistencia Dual:** Supabase para usuarios reales + localStorage para demo
+**Componentes UI:** `ThemeSelector.tsx` y `ThemeModal.tsx` con animaciones Framer Motion
+**Integración Completa:** Auth.tsx, EditProfile, Header con estilos dinámicos
 
 ### 📱 **OPTIMIZACIÓN ANDROID COMPLETA - 21/09/2025 07:34 hrs**
 
