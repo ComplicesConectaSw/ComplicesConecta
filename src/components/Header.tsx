@@ -315,8 +315,8 @@ export const Header = () => {
               </Link>
             </Button>
 
-            <Button variant="ghost" size="icon" className="relative text-white hover:text-primary hover:bg-white/10 hidden sm:flex" asChild>
-              <Link to="/faq">
+            <Button variant="ghost" size="icon" className="text-white hover:text-primary hover:bg-white/10 hidden sm:flex" asChild>
+              <Link to="/support">
                 <HelpCircle className="h-5 w-5" />
               </Link>
             </Button>

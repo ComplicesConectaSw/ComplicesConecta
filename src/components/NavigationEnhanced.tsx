@@ -97,7 +97,7 @@ const NavigationEnhanced = ({
   };
 
   const handleNavigation = (path: string) => {
-    // Verificar sesión antes de navegar
+    // SOLO verificar autenticación, NO hacer logout automático
     const demoUser = localStorage.getItem('demo_user');
     const specialUser = localStorage.getItem('apoyo_user');
     const userType = localStorage.getItem('userType');
@@ -116,7 +116,7 @@ const NavigationEnhanced = ({
       return;
     }
     
-    // Verificar autenticación antes de navegar
+    // CRÍTICO: Solo verificar autenticación, NUNCA hacer logout automático
     const isAuthenticated = isDemo || isSpecial || demoUser || specialUser;
     
     if (!isAuthenticated) {
@@ -125,7 +125,8 @@ const NavigationEnhanced = ({
       return;
     }
     
-    // Navegar a la ruta solicitada
+    // NAVEGACIÓN SEGURA: Mantener sesión activa al navegar
+    logger.info('✅ Navegando con sesión activa:', { path, isAuthenticated: true });
     navigate(path);
   };
 
