@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Save, Camera, X, Users, MapPin, AlertCircle } from "lucide-react";
+import { ArrowLeft, Save, Camera, X, Users, MapPin, AlertCircle, Sun, Moon, Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import NavigationEnhanced from "@/components/NavigationEnhanced";
 import type { Tables } from '@/integrations/supabase/types';
@@ -12,6 +12,8 @@ import { generateMockCouple } from "@/lib/data";
 import { lifestyleInterests } from "@/lib/lifestyle-interests";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { logger } from '@/lib/logger';
+import { useDemoThemeConfig, getNavbarStyles, useProfileTheme } from '@/hooks/useProfileTheme';
+import { motion } from 'framer-motion';
 
 const EditProfileCouple = () => {
   const navigate = useNavigate();
@@ -46,6 +48,11 @@ const EditProfileCouple = () => {
       privateImages: [] as string[]
     }
   });
+  
+  // Demo theme configuration
+  const { demoTheme, setDemoTheme, navbarStyle, setNavbarStyle } = useDemoThemeConfig();
+  const themeConfig = useProfileTheme('couple', ['male', 'female'], demoTheme);
+  const navbarStyles = getNavbarStyles(navbarStyle);
   
   const { location, error: locationError, getCurrentLocation } = useGeolocation();
   const [locationStatus, setLocationStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -599,6 +606,95 @@ const EditProfileCouple = () => {
             <p className="text-xs text-white/80 mt-2">
               {formData.interests.length}/6 seleccionados
             </p>
+          </CardContent>
+        </Card>
+
+        {/* 🎨 Personalización Visual */}
+        <Card className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-md border-purple-300/30 shadow-lg">
+          <CardContent className="p-6">
+            <h3 className="font-semibold text-white mb-4 flex items-center gap-2">
+              🎨 Personalización Visual
+            </h3>
+            
+            {/* Selector de Tema */}
+            <div className="space-y-4">
+              <div>
+                <label className="text-sm text-white/90 mb-2 block">Tema de Colores</label>
+                <div className="grid grid-cols-2 gap-3">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setDemoTheme('light')}
+                    className={`p-3 rounded-lg border-2 transition-all ${
+                      demoTheme === 'light'
+                        ? 'border-yellow-400 bg-gradient-to-br from-pink-300 via-purple-200 to-indigo-200'
+                        : 'border-white/30 bg-white/10 hover:bg-white/20'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2 text-sm font-medium">
+                      <Sun className="h-4 w-4" />
+                      <span className={demoTheme === 'light' ? 'text-gray-900' : 'text-white'}>
+                        ☀️ Claro
+                      </span>
+                    </div>
+                  </motion.button>
+                  
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setDemoTheme('dark')}
+                    className={`p-3 rounded-lg border-2 transition-all ${
+                      demoTheme === 'dark'
+                        ? 'border-purple-400 bg-gradient-to-br from-gray-900 via-gray-800 to-black'
+                        : 'border-white/30 bg-white/10 hover:bg-white/20'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2 text-sm font-medium text-white">
+                      <Moon className="h-4 w-4" />
+                      🌙 Oscuro
+                    </div>
+                  </motion.button>
+                </div>
+              </div>
+              
+              {/* Selector de Navbar */}
+              <div>
+                <label className="text-sm text-white/90 mb-2 block">Estilo de Navegación</label>
+                <div className="grid grid-cols-2 gap-3">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setNavbarStyle('transparent')}
+                    className={`p-3 rounded-lg border-2 transition-all ${
+                      navbarStyle === 'transparent'
+                        ? 'border-blue-400 bg-transparent'
+                        : 'border-white/30 bg-white/10 hover:bg-white/20'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2 text-sm font-medium text-white">
+                      <Eye className="h-4 w-4" />
+                      Transparente
+                    </div>
+                  </motion.button>
+                  
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setNavbarStyle('solid')}
+                    className={`p-3 rounded-lg border-2 transition-all ${
+                      navbarStyle === 'solid'
+                        ? 'border-purple-400 bg-gradient-to-r from-purple-600 to-pink-600'
+                        : 'border-white/30 bg-white/10 hover:bg-white/20'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2 text-sm font-medium text-white">
+                      <EyeOff className="h-4 w-4" />
+                      Sólida
+                    </div>
+                  </motion.button>
+                </div>
+              </div>
+            </div>
           </CardContent>
         </Card>
 

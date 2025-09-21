@@ -1,9 +1,11 @@
 import { useMemo } from "react";
+import { usePersistedState } from '@/hooks/usePersistedState';
 
 // Definir tipos de género específicos para el tema
 export type Gender = "male" | "female";
 export type ProfileType = "single" | "couple";
-export type Theme = "elegant" | "modern" | "vibrant";
+export type Theme = "elegant" | "modern" | "vibrant" | "light" | "dark";
+export type NavbarStyle = "transparent" | "solid";
 
 interface ThemeConfig {
   backgroundClass: string;
@@ -58,6 +60,44 @@ export const useProfileTheme = (
     };
 
     // Temas adicionales tienen prioridad máxima
+    if (theme === "light") {
+      return {
+        backgroundClass: "bg-gradient-to-br from-pink-300 via-purple-200 to-indigo-200",
+        textClass: "text-gray-900",
+        accentClass: "text-purple-700",
+        borderClass: "border-purple-300",
+        gradientFrom: "from-pink-300",
+        gradientTo: "to-indigo-200",
+        themeConfig: {
+          backgroundClass: "bg-gradient-to-br from-pink-300 via-purple-200 to-indigo-200",
+          textClass: "text-gray-900",
+          accentClass: "text-purple-700",
+          borderClass: "border-purple-300",
+          gradientFrom: "from-pink-300",
+          gradientTo: "to-indigo-200"
+        }
+      };
+    }
+    
+    if (theme === "dark") {
+      return {
+        backgroundClass: "bg-gradient-to-br from-gray-900 via-gray-800 to-black",
+        textClass: "text-white",
+        accentClass: "text-gray-300",
+        borderClass: "border-gray-700",
+        gradientFrom: "from-gray-900",
+        gradientTo: "to-black",
+        themeConfig: {
+          backgroundClass: "bg-gradient-to-br from-gray-900 via-gray-800 to-black",
+          textClass: "text-white",
+          accentClass: "text-gray-300",
+          borderClass: "border-gray-700",
+          gradientFrom: "from-gray-900",
+          gradientTo: "to-black"
+        }
+      };
+    }
+    
     if (theme === "elegant") {
       return {
         backgroundClass: "bg-gradient-to-br from-gray-900 via-gray-800 to-black",
@@ -229,7 +269,53 @@ export const getThemeDisplayName = (theme?: Theme): string => {
  * Utilidad para obtener todos los temas disponibles
  */
 export const getAvailableThemes = (): { value: Theme; label: string }[] => [
+  { value: "light", label: "☀️ Claro" },
+  { value: "dark", label: "🌙 Oscuro" },
   { value: "elegant", label: "Elegante" },
   { value: "modern", label: "Moderno" },
   { value: "vibrant", label: "Vibrante" }
 ];
+
+/**
+ * Hook para manejar configuración de tema demo con persistencia
+ */
+export const useDemoThemeConfig = () => {
+  const [demoTheme, setDemoTheme] = usePersistedState<Theme>('demo_theme', 'dark');
+  const [navbarStyle, setNavbarStyle] = usePersistedState<NavbarStyle>('demo_navbar_style', 'solid');
+  
+  return {
+    demoTheme,
+    setDemoTheme,
+    navbarStyle,
+    setNavbarStyle
+  };
+};
+
+/**
+ * Utilidad para obtener estilos de navbar
+ */
+export const getNavbarStyles = (style: NavbarStyle) => {
+  switch (style) {
+    case 'transparent':
+      return {
+        backgroundClass: 'bg-transparent',
+        textClass: 'text-white',
+        shadowClass: 'shadow-none',
+        borderClass: 'border-transparent'
+      };
+    case 'solid':
+      return {
+        backgroundClass: 'bg-gradient-to-r from-purple-600 to-pink-600',
+        textClass: 'text-white',
+        shadowClass: 'shadow-lg',
+        borderClass: 'border-purple-500/20'
+      };
+    default:
+      return {
+        backgroundClass: 'bg-gradient-to-r from-purple-600 to-pink-600',
+        textClass: 'text-white',
+        shadowClass: 'shadow-lg',
+        borderClass: 'border-purple-500/20'
+      };
+  }
+};

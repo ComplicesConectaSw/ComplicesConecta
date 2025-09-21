@@ -5,6 +5,7 @@ import { Home, Search, MessageCircle, Heart, User, Settings, UserPlus, Coins, Lo
 import { cn } from '@/lib/utils';
 import { useFeatures } from '@/hooks/useFeatures';
 import { logger } from '@/lib/logger';
+import { useDemoThemeConfig, getNavbarStyles } from '@/hooks/useProfileTheme';
 
 interface NavigationEnhancedProps {
   className?: string;
@@ -27,6 +28,10 @@ const NavigationEnhanced = ({
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [activeItem, setActiveItem] = useState<string>('');
+
+  // Demo theme configuration
+  const { navbarStyle } = useDemoThemeConfig();
+  const navbarStyles = getNavbarStyles(navbarStyle);
 
   // Verificar si el usuario está autenticado
   const isAuthenticated = localStorage.getItem('demo_authenticated') === 'true';
@@ -206,12 +211,12 @@ const NavigationEnhanced = ({
       initial={enableAnimations ? "hidden" : undefined}
       animate={enableAnimations ? (isVisible ? "visible" : "hidden") : undefined}
       className={cn(
-        "fixed bottom-0 left-0 right-0 z-50",
-        "bg-white/10 backdrop-blur-2xl border-t border-white/20",
-        "shadow-[0_-8px_32px_rgba(0,0,0,0.1)]",
-        "px-2 sm:px-4 py-2 safe-area-pb",
-        !enableAnimations && (isVisible ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"),
-        !enableAnimations && "transition-all duration-300 ease-in-out",
+        "fixed bottom-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out",
+        navbarStyles.backgroundClass,
+        "backdrop-blur-xl border-t border-white/10",
+        navbarStyles.shadowClass,
+        "rounded-t-2xl mx-2 mb-2",
+        isVisible ? "translate-y-0 opacity-100" : "translate-y-full opacity-0",
         className
       )}
     >

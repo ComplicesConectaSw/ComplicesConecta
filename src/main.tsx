@@ -11,7 +11,8 @@ import { initWebVitalsMonitoring } from '@/utils/webVitals'
 import { initializeCriticalPreloading } from '@/utils/preloading'
 
 // Debug info for production
-console.log(' App starting...', {
+console.log('🚀 ComplicesConecta v3.0.0 starting...', {
+  version: '3.0.0',
   env: import.meta.env.MODE,
   supabaseUrl: import.meta.env.VITE_SUPABASE_URL ? 'SET' : 'MISSING',
   supabaseKey: import.meta.env.VITE_SUPABASE_ANON_KEY ? 'SET' : 'MISSING',
