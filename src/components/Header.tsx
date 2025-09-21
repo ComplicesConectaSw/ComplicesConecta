@@ -234,6 +234,14 @@ export const Header = () => {
                     Soporte
                   </Link>
                 </DropdownMenuItem>
+                {!isAuthenticated && (
+                  <DropdownMenuItem asChild>
+                    <Link to="/auth" className="flex items-center gap-2 w-full">
+                      <User className="h-4 w-4" />
+                      Iniciar Sesión
+                    </Link>
+                  </DropdownMenuItem>
+                )}
                 {isAuthenticated && (
                   <DropdownMenuItem onClick={handleLogout} className="flex items-center gap-2 w-full text-red-400 hover:text-red-300">
                     <LogOut className="h-4 w-4" />
@@ -332,7 +340,7 @@ export const Header = () => {
               <Button variant="outline" size="sm" className="bg-white/90 border-white text-black hover:bg-white hover:text-black font-semibold shadow-lg flex items-center gap-1" asChild>
                 <Link to="/auth">
                   <User className="h-4 w-4" />
-                  <span className="hidden sm:inline">Iniciar Sesión</span>
+                  <span className="text-xs sm:text-sm">Iniciar Sesión</span>
                 </Link>
               </Button>
             ) : (
@@ -357,8 +365,8 @@ export const Header = () => {
                   className="bg-red-500 border-red-500 text-white hover:bg-red-600 hover:border-red-600 hover:text-white font-semibold shadow-lg transition-all duration-300"
                   onClick={handleLogout}
                 >
-                  <LogOut className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-1" />
-                  <span className="hidden sm:inline">Cerrar Sesión</span>
+                  <LogOut className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <span className="text-xs ml-1">Salir</span>
                 </Button>
               </div>
             )}
