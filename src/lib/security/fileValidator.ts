@@ -29,12 +29,14 @@ const ALLOWED_MIME_TYPES = {
   ]
 } as const;
 
-// Extensiones permitidas (verificación adicional)
+// Extensiones permitidas por categoría
 const ALLOWED_EXTENSIONS = {
-  images: ['.jpg', '.jpeg', '.png', '.webp', '.avif', '.gif'],
-  documents: ['.pdf', '.txt', '.doc', '.docx'],
-  audio: ['.mp3', '.wav', '.ogg', '.m4a']
+  images: ['jpg', 'jpeg', 'png', 'webp', 'avif', 'gif'],
+  documents: ['pdf', 'txt', 'doc', 'docx'],
+  audio: ['mp3', 'wav', 'ogg', 'm4a']
 } as const;
+
+type AllowedExtensionCategory = keyof typeof ALLOWED_EXTENSIONS;
 
 // Límites de tamaño por tipo (en bytes)
 const SIZE_LIMITS = {
@@ -193,6 +195,7 @@ export class FileValidator {
    */
   private static validateFileName(fileName: string): boolean {
     // Verificar caracteres de control y caracteres peligrosos
+    // eslint-disable-next-line no-control-regex
     const controlChars = /[\u0000-\u001f\u007f-\u009f]/g;
     
     // Caracteres prohibidos en nombres de archivo
@@ -236,9 +239,9 @@ export class FileValidator {
     // Buscar por extensión como fallback
     const extension = this.getFileExtension(fileName);
     const categoryKey = Object.keys(ALLOWED_EXTENSIONS).find(cat => {
-      const category = cat as keyof typeof ALLOWED_EXTENSIONS;
+      const category = cat as AllowedExtensionCategory;
       return ALLOWED_EXTENSIONS[category].includes(extension);
-    }) as keyof typeof ALLOWED_EXTENSIONS | undefined;
+    }) as AllowedExtensionCategory | undefined;
   
     return categoryKey;
   }
