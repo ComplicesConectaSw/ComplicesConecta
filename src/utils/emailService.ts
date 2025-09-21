@@ -1,4 +1,5 @@
 import { logger } from '@/lib/logger';
+import { validateEmail } from '@/lib/zod-schemas';
 // ✅ AUTO-FIX aplicado por Auditoría ComplicesConecta v2.1.2
 // Fecha: 2025-01-06
 // Cambios: Reemplazado process.env con import.meta.env para compatibilidad Vite
@@ -42,6 +43,8 @@ export class EmailService {
 
   static async sendEmail(template: string, to: string, data: TemplateData = {}) {
     try {
+      // Validar email con Zod
+      validateEmail({ email: to, template });
       console.info(`📨 Enviando email con template: ${template} a ${to}`);
       
       const response = await fetch(`${this.baseUrl}/functions/v1/send-email`, {
