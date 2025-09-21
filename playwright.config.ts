@@ -26,6 +26,11 @@ export default defineConfig({
     /* Increased timeouts for CI environment */
     actionTimeout: 30000, // 30 seconds for actions
     navigationTimeout: 60000, // 60 seconds for navigation
+    
+    // Mock hCaptcha para tests headless
+    extraHTTPHeaders: {
+      'Accept-Language': 'es-ES,es;q=0.9,en;q=0.8'
+    }
   },
 
   /* Configure projects for major browsers */

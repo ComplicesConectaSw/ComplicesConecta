@@ -22,7 +22,8 @@ export const useProfile = (userId: string | null) => {
     queryFn: async (): Promise<Profile | null> => {
       if (!userId) return null;
       
-      logger.info('🔍 Cargando perfil desde Supabase:', { userId });
+      // Comentado para reducir logs en tests
+      // logger.info('🔍 Cargando perfil desde Supabase:', { userId });
       
       const { data, error } = await supabase
         .from('profiles')
@@ -35,7 +36,7 @@ export const useProfile = (userId: string | null) => {
         throw error;
       }
 
-      logger.info('✅ Perfil cargado desde Supabase:', { first_name: (data as any)?.first_name });
+      // logger.info('✅ Perfil cargado desde Supabase:', { first_name: (data as any)?.first_name });
       return data;
     },
     enabled: !!userId,
@@ -58,7 +59,7 @@ export const useProfiles = (filters?: {
   return useQuery({
     queryKey: profileKeys.list(filterKey),
     queryFn: async (): Promise<Profile[]> => {
-      logger.info('📊 Cargando perfiles con filtros:', { limit: filters?.limit });
+      // logger.info('📊 Cargando perfiles con filtros:', { limit: filters?.limit });
       
       let query = supabase.from('profiles').select('*');
       
@@ -89,7 +90,7 @@ export const useProfiles = (filters?: {
         throw error;
       }
 
-      logger.info('📊 Perfiles cargados desde cache:', { count: data?.length });
+      // logger.info('📊 Perfiles cargados desde cache:', { count: data?.length });
       return data || [];
     },
     staleTime: 2 * 60 * 1000, // 2 minutos
@@ -104,7 +105,7 @@ export const useUpdateProfile = () => {
   
   return useMutation({
     mutationFn: async ({ profileId, updates }: { profileId: string; updates: Partial<Profile> }) => {
-      logger.info('💾 Actualizando perfil en Supabase:', { profileId });
+      // logger.info('💾 Actualizando perfil en Supabase:', { profileId });
       
       const { data, error } = await (supabase as any)
         .from('profiles')
@@ -129,10 +130,10 @@ export const useUpdateProfile = () => {
       // Invalidar listas de perfiles
       queryClient.invalidateQueries({ queryKey: profileKeys.lists() });
       
-      logger.info('✅ Perfil actualizado en cache:', { id: (data as any)?.id });
+      // logger.info('✅ Perfil actualizado en cache:', { id: (data as any)?.id });
     },
     onError: (error) => {
-      logger.error('❌ Error en mutación de perfil:', error);
+      // logger.error('❌ Error en mutación de perfil:', error);
     },
   });
 };
@@ -143,7 +144,7 @@ export const useCreateProfile = () => {
   
   return useMutation({
     mutationFn: async (newProfile: Omit<Profile, 'id' | 'created_at' | 'updated_at'>) => {
-      logger.info('📝 Creando nuevo perfil:', { first_name: (newProfile as any)?.first_name });
+      // logger.info('📝 Creando nuevo perfil:', { first_name: (newProfile as any)?.first_name });
       
       const { data, error } = await (supabase as any)
         .from('profiles')
@@ -164,7 +165,7 @@ export const useCreateProfile = () => {
       // Agregar al cache individual
       queryClient.setQueryData(profileKeys.detail(data.id), data);
       
-      logger.info('✅ Perfil creado y cache actualizado:', data.first_name);
+      // logger.info('✅ Perfil creado y cache actualizado:', data.first_name);
     },
   });
 };
