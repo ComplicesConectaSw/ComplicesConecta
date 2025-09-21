@@ -1,9 +1,9 @@
+/* Import cross-browser compatibility styles */
+@import './styles/cross-browser.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Import cross-browser compatibility styles */
-@import './styles/cross-browser.css';
 
 /* Custom scrollbar styles - Professional Design */
 .custom-scrollbar {
