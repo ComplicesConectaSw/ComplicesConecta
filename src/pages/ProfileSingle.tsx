@@ -12,6 +12,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useProfileQuery } from '@/hooks/useProfileQuery';
 import { logger } from '@/lib/logger';
 import { usePersistedState } from '@/hooks/usePersistedState';
+import { generateDemoProfiles } from '@/lib/demoData';
 import type { Tables } from '@/integrations/supabase/types';
 
 const ProfileSingle: React.FC = () => {
@@ -27,28 +28,48 @@ const ProfileSingle: React.FC = () => {
   useEffect(() => {
     const loadProfile = async () => {
       try {
-        logger.info('🔍 ProfileSingle - Estado de autenticación:', {
-          user: !!user,
-          authProfile: !!authProfile,
-          isDemo: authProfile?.is_demo,
-          userEmail: user?.email,
-          isAuthenticated
-        });
-        
-        // Si no hay autenticación válida, redirigir
-        if (!isAuthenticated) {
-          logger.info('❌ No hay autenticación válida, redirigiendo...');
-          navigate('/auth', { replace: true });
-          return;
+        // Solo log una vez al montar el componente
+        if (!profile) {
+          logger.info('🔍 ProfileSingle - Estado de autenticación:', {
+            user: !!user,
+            authProfile: !!authProfile,
+            isDemo: authProfile?.is_demo,
+            userEmail: user?.email,
+            isAuthenticated,
+            demoAuth,
+            demoAuthType: typeof demoAuth,
+            demoUser: !!demoUser
+          });
         }
         
-        // Verificar si hay sesión demo activa
-        if (demoAuth === 'true' && demoUser) {
-          const parsedUser = typeof demoUser === 'string' ? JSON.parse(demoUser) : demoUser;
-          logger.info('🎭 Cargando perfil demo:', parsedUser);
-          setProfile(parsedUser as Tables<'profiles'>);
-          setIsLoading(false);
-          return;
+        // Verificar si hay sesión demo activa PRIMERO - manejar tanto string como boolean
+        const isDemoActive = (String(demoAuth) === 'true') && demoUser;
+        if (isDemoActive && !profile) {
+          try {
+            const parsedUser = typeof demoUser === 'string' ? JSON.parse(demoUser) : demoUser;
+            
+            // Crear perfil demo estático una sola vez
+            const profileData = {
+              id: parsedUser.id || 'demo-single-1',
+              first_name: parsedUser.first_name || 'Demo',
+              last_name: 'User',
+              age: 30,
+              bio: 'Perfil demo para testing',
+              email: parsedUser.email,
+              is_verified: true,
+              is_premium: false,
+              is_demo: true,
+              profile_type: 'single',
+              created_at: new Date().toISOString(),
+              updated_at: new Date().toISOString()
+            };
+            
+            setProfile(profileData as Tables<'profiles'>);
+            setIsLoading(false);
+            return;
+          } catch (error) {
+            logger.error('Error parseando usuario demo:', { error: String(error) });
+          }
         }
         
         // Si authProfile ya está disponible, usarlo directamente
@@ -66,7 +87,22 @@ const ProfileSingle: React.FC = () => {
           return;
         }
         
-        // Si llegamos aquí sin perfil ni usuario, algo está mal
+        // Si no hay autenticación válida Y no es demo, redirigir
+        if (!isAuthenticated && !(String(demoAuth) === 'true' && demoUser)) {
+          logger.info('❌ No hay autenticación válida, redirigiendo...');
+          navigate('/auth', { replace: true });
+          return;
+        }
+        
+        // Si llegamos aquí sin perfil ni usuario pero con demo, mostrar error
+        if (String(demoAuth) === 'true' && demoUser && !profile) {
+          logger.info('⚠️ Demo autenticado pero perfil no cargado, reintentando...');
+          // El perfil demo debería haberse cargado arriba, algo falló
+          setIsLoading(false);
+          return;
+        }
+        
+        // Estado inesperado final
         logger.info('⚠️ Estado inesperado: sin usuario ni perfil válido');
         setIsLoading(false);
       } catch (error) {
@@ -76,7 +112,7 @@ const ProfileSingle: React.FC = () => {
     };
     
     loadProfile();
-  }, [user, authProfile, isAuthenticated, navigate]);
+  }, [user, authProfile, isAuthenticated, navigate, demoAuth, demoUser]);
 
   if (isLoading) {
     return (
@@ -107,7 +143,10 @@ const ProfileSingle: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-pink-800">
-      {/* Header sin navegación superior */}
+      {/* Navegación superior */}
+      <Navigation />
+      
+      {/* Header con navegación */}
       <div className="relative">
         <div className="absolute inset-0 bg-black/20" />
         <div className="relative z-10 pt-8 pb-6 px-4">
@@ -241,23 +280,29 @@ const ProfileSingle: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                <div className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center">
-                  <span className="text-gray-500 text-sm">Foto 1</span>
+                <div className="aspect-square bg-gradient-to-br from-pink-400/20 to-purple-600/20 rounded-lg flex items-center justify-center border border-white/20">
+                  <div className="text-center">
+                    <Camera className="w-8 h-8 mx-auto mb-2 text-white/60" />
+                    <span className="text-white/60 text-sm">Foto 1</span>
+                  </div>
                 </div>
-                <div className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center">
-                  <span className="text-gray-500 text-sm">Foto 2</span>
+                <div className="aspect-square bg-gradient-to-br from-purple-400/20 to-pink-600/20 rounded-lg flex items-center justify-center border border-white/20">
+                  <div className="text-center">
+                    <Images className="w-8 h-8 mx-auto mb-2 text-white/60" />
+                    <span className="text-white/60 text-sm">Foto 2</span>
+                  </div>
                 </div>
-                <div className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center">
-                  <span className="text-gray-500 text-sm">Foto 3</span>
+                <div className="aspect-square bg-gradient-to-br from-pink-500/20 to-purple-500/20 rounded-lg flex items-center justify-center border border-white/20">
+                  <div className="text-center">
+                    <Camera className="w-8 h-8 mx-auto mb-2 text-white/60" />
+                    <span className="text-white/60 text-sm">Foto 3</span>
+                  </div>
                 </div>
               </div>
             </CardContent>
           </Card>
         </div>
       </div>
-
-      {/* Navegación inferior */}
-      <Navigation />
     </div>
   );
 };

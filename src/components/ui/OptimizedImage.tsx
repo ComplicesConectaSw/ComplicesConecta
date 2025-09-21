@@ -55,7 +55,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
         className={`bg-gray-200 flex items-center justify-center ${className}`}
         style={{ width, height }}
       >
-        <span className="text-gray-500 text-sm">Error al cargar imagen</span>
+        <span className="text-gray-700 dark:text-gray-200 text-sm">Error al cargar imagen</span>
       </div>
     );
   }

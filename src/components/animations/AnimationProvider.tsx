@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
+import type { ReactNode } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { logger } from '@/lib/logger';
 
@@ -91,7 +92,7 @@ export const AnimationProvider: React.FC<AnimationProviderProps> = ({ children }
   return (
     <AnimationContext.Provider value={contextValue}>
       <AnimatePresence mode="wait">
-        {children}
+        <>{children}</>
       </AnimatePresence>
     </AnimationContext.Provider>
   );

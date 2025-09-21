@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { useFeatures } from "@/hooks/useFeatures";
 import { toast } from "@/hooks/use-toast";
 import Navigation from "@/components/Navigation";
-import { Header } from "@/components/Header";
+// import { Header } from "@/components/Header";
 import { InvitationDialog } from "@/components/invitations/InvitationDialog";
 import { mockPrivacySettings } from "@/lib/data";
 import { invitationService } from "@/lib/invitations";
@@ -68,8 +68,14 @@ const Chat = () => {
       // Modo producción - cargar datos reales
       loadRealChatData();
     } else {
-      // Modo demo - usar datos mock
+      // Modo demo - usar datos mock SIEMPRE
       logger.info('Chat demo cargado - acceso libre');
+      // Forzar acceso a todos los chats demo
+      const demoAccessMap: {[key: number]: boolean} = {};
+      [...privateChats, ...publicChats].forEach(chat => {
+        demoAccessMap[chat.id] = true;
+      });
+      setHasChatAccess(demoAccessMap);
     }
   }, [navigate]);
 
@@ -380,11 +386,11 @@ const Chat = () => {
         <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-red-500/20 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-4000"></div>
       </div>
 
-      <Header />
+      {/* Header removido para usuarios demo - solo NavigationLegacy */}
       
       <div className="relative z-10 flex h-screen pt-16 pb-20">
         {/* Chat List Sidebar */}
-        <div className="w-full sm:w-80 flex-shrink-0 bg-black/40 backdrop-blur-sm border-r border-white/10 flex flex-col">
+        <div className="w-full sm:w-80 flex-shrink-0 bg-gradient-to-br from-purple-900/40 via-pink-900/40 to-purple-800/40 backdrop-blur-sm border-r border-white/10 flex flex-col">
           <div className="p-4 border-b border-white/10">
             <div className="flex items-center gap-3 mb-4">
               <UnifiedButton 
@@ -567,11 +573,11 @@ const Chat = () => {
         </div>
 
         {/* Área de chat */}
-        <div className={`${selectedChat ? 'block' : 'hidden md:block'} flex-1 flex flex-col bg-black/20 backdrop-blur-sm`}>
+        <div className={`${selectedChat ? 'block' : 'hidden md:block'} flex-1 flex flex-col bg-gradient-to-br from-purple-900/20 via-pink-900/20 to-purple-800/20 backdrop-blur-sm`}>
           {selectedChat ? (
             <>
               {/* Header del chat */}
-              <div className="p-4 border-b border-white/10 bg-black/30">
+              <div className="p-4 border-b border-white/10 bg-gradient-to-r from-purple-900/30 via-pink-900/30 to-purple-800/30">
                 <div className="flex items-center space-x-3">
                   <UnifiedButton 
                     variant="ghost" 
@@ -612,7 +618,7 @@ const Chat = () => {
               </div>
 
               {/* Messages */}
-              <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0 chat-messages scroll-container" style={{scrollBehavior: 'smooth'}}>
+              <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0 chat-messages scroll-container btn-animated" style={{scrollBehavior: 'smooth'}}>
                 {isProduction ? (
                   // Renderizar mensajes reales de Supabase
                   realMessages.map((message) => (
@@ -621,7 +627,7 @@ const Chat = () => {
                       className={`flex ${message.sender_id === localStorage.getItem('user_id') ? 'justify-end' : 'justify-start'}`}
                     >
                       <div
-                        className={`max-w-[85%] sm:max-w-xs lg:max-w-sm px-3 sm:px-4 py-2 sm:py-3 rounded-2xl ${
+                        className={`max-w-[85%] sm:max-w-xs lg:max-w-sm px-3 sm:px-4 py-2 sm:py-3 rounded-2xl transition-all duration-300 hover:scale-102 ${
                           message.sender_id === localStorage.getItem('user_id')
                             ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
                             : 'bg-white/95 text-gray-900 shadow-md border border-gray-200 backdrop-blur-sm'
@@ -629,7 +635,7 @@ const Chat = () => {
                       >
                         <p className="text-xs sm:text-sm leading-relaxed break-words whitespace-pre-wrap overflow-wrap-anywhere hyphens-auto" style={{wordBreak: 'break-word', overflowWrap: 'anywhere'}}>{message.content}</p>
                         <p className={`text-xs mt-1 ${
-                          message.sender_id === localStorage.getItem('user_id') ? 'text-purple-100' : 'text-gray-500'
+                          message.sender_id === localStorage.getItem('user_id') ? 'text-purple-100' : 'text-gray-700 dark:text-gray-200'
                         }`}>
                           {new Date(message.created_at).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}
                         </p>
@@ -644,7 +650,7 @@ const Chat = () => {
                       className={`flex ${message.senderId === 0 ? 'justify-end' : 'justify-start'}`}
                     >
                       <div
-                        className={`max-w-[85%] sm:max-w-xs lg:max-w-sm px-3 sm:px-4 py-2 sm:py-3 rounded-2xl ${
+                        className={`max-w-[85%] sm:max-w-xs lg:max-w-sm px-3 sm:px-4 py-2 sm:py-3 rounded-2xl transition-all duration-300 hover:scale-102 ${
                           message.senderId === 0
                             ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
                             : 'bg-white/95 text-gray-900 shadow-md border border-gray-200 backdrop-blur-sm'
@@ -652,7 +658,7 @@ const Chat = () => {
                       >
                         <p className="text-xs sm:text-sm leading-relaxed break-words whitespace-pre-wrap overflow-wrap-anywhere hyphens-auto" style={{wordBreak: 'break-word', overflowWrap: 'anywhere'}}>{message.content}</p>
                         <p className={`text-xs mt-1 ${
-                          message.senderId === 0 ? 'text-purple-100' : 'text-gray-500'
+                          message.senderId === 0 ? 'text-purple-100' : 'text-gray-700 dark:text-gray-200'
                         }`}>
                           {message.timestamp}
                         </p>
@@ -663,9 +669,9 @@ const Chat = () => {
               </div>
 
               {/* Input para enviar mensajes */}
-              <div className="p-4 border-t border-white/10 bg-black/30 chat-input">
+              <div className="p-4 border-t border-white/10 bg-gradient-to-r from-purple-900/30 via-pink-900/30 to-purple-800/30 chat-input">
                 {selectedChat?.isPrivate && !hasChatAccess[selectedChat.id] ? (
-                  <div className="text-center space-y-4 bg-black/50 rounded-lg p-6 border border-white/20">
+                  <div className="text-center space-y-4 bg-gradient-to-br from-purple-900/50 via-pink-900/50 to-purple-800/50 rounded-lg p-6 border border-white/20">
                     <div className="flex items-center justify-center text-white mb-3">
                       <Lock className="h-6 w-6 mr-2" />
                       <span className="font-semibold text-lg">Chat privado bloqueado</span>

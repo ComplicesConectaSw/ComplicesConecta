@@ -41,13 +41,83 @@ const Requests = () => {
 
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
+  const loadDemoInvitations = () => {
+    // Solicitudes demo recibidas
+    const demoReceived: Invitation[] = [
+      {
+        id: 'demo-inv-1',
+        from_profile: 'Anabella & Julio',
+        to_profile: 'Sofía',
+        type: 'chat',
+        status: 'pending',
+        message: '¡Hola! Nos encantaría conocerte mejor. ¿Te gustaría chatear con nosotros?',
+        created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 horas atrás
+        decided_at: null
+      },
+      {
+        id: 'demo-inv-2',
+        from_profile: 'Carmen & Roberto',
+        to_profile: 'Sofía',
+        type: 'gallery',
+        status: 'pending',
+        message: 'Hola guapa, nos gustó mucho tu perfil. ¿Nos permites ver tu galería privada?',
+        created_at: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(), // 5 horas atrás
+        decided_at: null
+      },
+      {
+        id: 'demo-inv-3',
+        from_profile: 'Raúl',
+        to_profile: 'Sofía',
+        type: 'profile',
+        status: 'accepted',
+        message: '¿Qué tal si nos conocemos mejor?',
+        created_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), // 1 día atrás
+        decided_at: new Date(Date.now() - 20 * 60 * 60 * 1000).toISOString()
+      }
+    ];
+    
+    // Solicitudes demo enviadas
+    const demoSent: Invitation[] = [
+      {
+        id: 'demo-sent-1',
+        from_profile: 'Sofía',
+        to_profile: 'Miguel & Laura',
+        type: 'chat',
+        status: 'accepted',
+        message: 'Hola, me encantó su perfil. ¿Les gustaría platicar?',
+        created_at: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(), // 3 horas atrás
+        decided_at: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString()
+      },
+      {
+        id: 'demo-sent-2',
+        from_profile: 'Sofía',
+        to_profile: 'Carlos',
+        type: 'profile',
+        status: 'pending',
+        message: 'Hola, me pareces muy interesante. ¿Te gustaría conocernos?',
+        created_at: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(), // 6 horas atrás
+        decided_at: null
+      }
+    ];
+    
+    setReceivedInvitations(demoReceived);
+    setSentInvitations(demoSent);
+    logger.info('🎭 Solicitudes demo cargadas:', { received: demoReceived.length, sent: demoSent.length });
+  };
+  
   const loadInvitations = useCallback(async () => {
     if (!currentUserId) return;
+    
+    // Si es modo demo, no hacer llamadas reales
+    if (demoAuth === 'true') {
+      loadDemoInvitations();
+      return;
+    }
     
     const { received, sent } = await invitationService.getInvitations(currentUserId);
     setReceivedInvitations(received);
     setSentInvitations(sent);
-  }, [currentUserId]);
+  }, [currentUserId, demoAuth]);
 
   useEffect(() => {
     if (currentUserId) {
@@ -56,47 +126,82 @@ const Requests = () => {
   }, [currentUserId, loadInvitations, navigate, demoAuth, specialAuth, demoUser, specialUser]);
 
   useEffect(() => {
-    // Verificar autenticación y obtener userId real
-    const isAuthenticated = demoAuth === 'true' || specialAuth === 'true' || demoUser || specialUser;
+    // Detectar modo demo
+    const isDemoMode = demoAuth === 'true' && demoUser;
+    const isSpecialMode = specialAuth === 'true' && specialUser;
     
-    if (!isAuthenticated) {
+    if (isDemoMode) {
+      // Modo demo - usar datos mock
+      try {
+        const parsedDemoUser = typeof demoUser === 'string' ? JSON.parse(demoUser) : demoUser;
+        const userId = parsedDemoUser.id || parsedDemoUser.user_id || 'demo-user-1';
+        setCurrentUserId(userId);
+        logger.info('🎭 Usuario demo autenticado en Requests:', { userId });
+        
+        // Cargar solicitudes demo
+        loadDemoInvitations();
+      } catch (error) {
+        logger.error('❌ Error parsing demo user:', { error });
+        const fallbackUserId = 'demo-user-1';
+        setCurrentUserId(fallbackUserId);
+        loadDemoInvitations();
+      }
+      return;
+    }
+    
+    if (isSpecialMode) {
+      try {
+        const parsedSpecialUser = typeof specialUser === 'string' ? JSON.parse(specialUser) : specialUser;
+        const userId = parsedSpecialUser.id || parsedSpecialUser.user_id;
+        setCurrentUserId(userId);
+        logger.info('🔍 Usuario especial autenticado:', { userId });
+      } catch (error) {
+        logger.error('❌ Error parsing special user:', { error });
+      }
+      return;
+    }
+    
+    // Verificar autenticación real
+    if (!isAuthenticated || !user) {
       logger.info('❌ Usuario no autenticado en Requests, redirigiendo a /auth');
       navigate('/auth');
       return;
     }
     
-    // Obtener userId real del usuario autenticado
-    let userId: string | null = null;
-    
-    if (specialAuth && specialUser) {
-      try {
-        const parsedSpecialUser = JSON.parse(specialUser);
-        userId = parsedSpecialUser.id || parsedSpecialUser.user_id;
-        logger.info('🔍 Usuario especial autenticado:', { userId });
-      } catch (error) {
-        logger.error('❌ Error parsing special user:', { error });
-      }
-    } else if (demoAuth && demoUser) {
-      try {
-        const parsedDemoUser = JSON.parse(demoUser);
-        userId = parsedDemoUser.id || parsedDemoUser.user_id;
-        logger.info('🔍 Usuario actual:', { email: user?.email });
-      } catch (error) {
-        logger.error('❌ Error parsing demo user:', { error });
-      }
-    }
-    
+    // Usuario real autenticado
+    const userId = user.id;
     if (userId) {
       setCurrentUserId(userId);
-      logger.info('✅ Usuario autenticado en Requests con ID:', { userId });
+      logger.info('✅ Usuario real autenticado en Requests con ID:', { userId });
     } else {
       logger.info('❌ No se pudo obtener userId, redirigiendo a /auth');
       navigate('/auth');
     }
-  }, []);
+  }, [demoAuth, demoUser, specialAuth, specialUser, isAuthenticated, user, navigate]);
 
   const handleInvitationAction = async (invitationId: string, action: 'accept' | 'decline') => {
     try {
+      // Si es modo demo, simular la acción
+      if (demoAuth === 'true') {
+        // Actualizar el estado local para demo
+        setReceivedInvitations(prev => 
+          prev.map(inv => 
+            inv.id === invitationId 
+              ? { ...inv, status: action === 'accept' ? 'accepted' : 'declined' as const }
+              : inv
+          )
+        );
+        
+        toast({
+          title: `Invitación ${action === 'accept' ? 'aceptada' : 'rechazada'}`,
+          description: `La invitación ha sido procesada correctamente (modo demo).`,
+        });
+        
+        logger.info('🎭 Acción demo en invitación:', { invitationId, action });
+        return;
+      }
+      
+      // Modo real
       await invitationService.respondInvitation(invitationId, action);
       toast({
         title: `Invitación ${action === 'accept' ? 'aceptada' : 'rechazada'}`,
@@ -162,7 +267,8 @@ const Requests = () => {
         <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-red-500/20 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-4000"></div>
       </div>
 
-      <Header />
+      {/* Header removido para usuarios demo - solo NavigationLegacy */}
+      {demoAuth !== 'true' && <Header />}
       
       <div className="relative z-10 container mx-auto px-4 pt-20 pb-24">
         <div className="max-w-4xl mx-auto">

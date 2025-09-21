@@ -5,7 +5,6 @@ import { usePersistedState } from '@/hooks/usePersistedState';
 // Solo mantiene flags de sesión en localStorage, datos en Supabase
 
 export interface SessionFlags {
-  apoyo_authenticated: boolean;
   demo_authenticated: boolean;
   userType: 'single' | 'couple' | null;
 }
@@ -13,16 +12,13 @@ export interface SessionFlags {
 export class StorageManager {
   // Solo flags de sesión permitidos en localStorage
   private static readonly ALLOWED_KEYS = [
-    'apoyo_authenticated',
-    'demo_authenticated', 
+    'demo_authenticated',
     'userType'
   ];
 
   // Migrar datos legacy a Supabase y limpiar localStorage
   static migrateToSupabase() {
     const legacyKeys = [
-      'apoyo_user',
-      'apoyo_session',
       'demo_user',
       'demo_session',
       'user_profile',
@@ -42,7 +38,6 @@ export class StorageManager {
   // Obtener flags de sesión
   static getSessionFlags(): SessionFlags {
     return {
-      apoyo_authenticated: localStorage.getItem('apoyo_authenticated') === 'true',
       demo_authenticated: localStorage.getItem('demo_authenticated') === 'true',
       userType: localStorage.getItem('userType') as 'single' | 'couple' | null
     };
@@ -77,7 +72,7 @@ export class StorageManager {
 
   // Limpiar solo sesión real
   static clearRealSession() {
-    localStorage.removeItem('apoyo_authenticated');
+    localStorage.removeItem('demo_authenticated');
   }
 
   // Validar que no hay datos sensibles en localStorage
@@ -86,7 +81,7 @@ export class StorageManager {
       'user_profile',
       'profile_data', 
       'cached_profile',
-      'apoyo_user',
+      'demo_user',
       'demo_user'
     ];
 

@@ -28,9 +28,9 @@ const statusIcons = {
 };
 
 const statusColors = {
-  sending: "text-gray-400",
-  sent: "text-gray-400",
-  delivered: "text-gray-500",
+  sending: "text-gray-600 dark:text-gray-300",
+  sent: "text-gray-600 dark:text-gray-300",
+  delivered: "text-gray-700 dark:text-gray-200",
   read: "text-blue-500"
 };
 
@@ -105,7 +105,7 @@ export const ChatBubble = React.memo<ChatBubbleProps>(function ChatBubble({
       <div className={cn("flex flex-col max-w-[85%] sm:max-w-[70%]", isOwn && "items-end")}>
         {/* Sender Name */}
         {!isOwn && senderName && (
-          <span className="text-xs text-gray-500 mb-1 px-2">{senderName}</span>
+          <span className="text-xs text-gray-700 dark:text-gray-200 mb-1 px-2">{senderName}</span>
         )}
 
         {/* Message Container */}
@@ -142,7 +142,7 @@ export const ChatBubble = React.memo<ChatBubbleProps>(function ChatBubble({
                 "flex items-center gap-1 mt-1 text-xs",
                 isOwn
                   ? "text-white/70 justify-end"
-                  : "text-gray-500 justify-start"
+                  : "text-gray-700 dark:text-gray-200 justify-start"
               )}
             >
               <span>{timestamp}</span>

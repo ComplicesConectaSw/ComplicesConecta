@@ -168,11 +168,12 @@ export const handleDemoAuth = (email: string, accountType: string = 'single') =>
     expires_at: Date.now() + (24 * 60 * 60 * 1000) // 24 hours
   };
   
-  // Store only authentication flag in localStorage
+  // Store authentication flag AND user data in localStorage for Navigation
   localStorage.setItem('demo_authenticated', 'true');
-  localStorage.setItem('userType', demoUser.role);
-  // ELIMINADO: No almacenar datos completos de usuario en localStorage
-  // Los datos se mantienen solo en memoria durante la sesión
+  localStorage.setItem('userType', demoUser.accountType || demoUser.role);
+  localStorage.setItem('demo_user', JSON.stringify(demoUser));
+  
+  logger.info('🎭 Demo user stored in localStorage:', { email, demoUser });
   
   logger.info('🎭 Sesión demo creada', { email, tipo: finalAccountType });
   
@@ -183,7 +184,7 @@ export const handleDemoAuth = (email: string, accountType: string = 'single') =>
 export const clearDemoAuth = () => {
   localStorage.removeItem('demo_authenticated');
   localStorage.removeItem('userType');
-  // ELIMINADO: Limpiar datos de usuario que ya no se almacenan
+  localStorage.removeItem('demo_user');
   logger.info('🧹 Sesión demo limpiada');
 };
 

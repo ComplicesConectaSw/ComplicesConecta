@@ -89,13 +89,13 @@ export function TokenChatBot() {
     const userName = 'Usuario'; // En producción obtener del contexto
     return `👋 ¡Hola ${userName}! Bienvenido a tu asistente de tokens Beta.
 
-🪙 Soy tu guía personal para CMPX y GTK. Puedo ayudarte a:
-• Ver tu balance actual
+🪙 Soy tu guía personal para CMPX y GTK. Te puedo ayudar a:
+• Ver tu saldo actual
 • Reclamar recompensas disponibles  
 • Configurar staking (alcancía especial)
 • Aprender sobre el sistema de tokens
 
-¿Quieres revisar tu balance actual?`;
+¿Quieres revisar tu saldo actual?`;
   };
 
   const getBalanceMessage = (): string => {
@@ -104,7 +104,7 @@ export function TokenChatBot() {
     const totalCMPX = balance.cmpxBalance + balance.cmpxStaked;
     const pendingAmount = pendingRewards.reduce((sum, r) => sum + r.amount, 0);
 
-    return `🪙 **Tu balance actual:**
+    return `🪙 **Tu saldo actual:**
 • CMPX: ${totalCMPX} (${balance.cmpxBalance} disponibles, ${balance.cmpxStaked} en staking${pendingAmount > 0 ? `, ${pendingAmount} pendientes` : ''})
 • GTK: ${balance.gtkBalance} (todos disponibles)
 
@@ -126,18 +126,18 @@ ${hasPendingRewards ? '🎁 ¡Tienes recompensas pendientes!' : ''}`;
     });
 
     if (rewards.length === 0) {
-      return '😊 No tienes recompensas pendientes en este momento.\n\n💡 **Formas de ganar CMPX:**\n• Verificar World ID (+100 CMPX)\n• Invitar amigos (+50 CMPX cada uno)\n• Completar perfil (+25 CMPX)\n• Dar feedback beta (+20 CMPX)\n• Login diario (+5 CMPX)';
+      return '😊 No tienes recompensas pendientes en este momento.\n\n💡 **Maneras de ganar CMPX:**\n• Verificar World ID (+100 CMPX)\n• Invitar cuates (+50 CMPX cada uno)\n• Completar perfil (+25 CMPX)\n• Dar feedback beta (+20 CMPX)\n• Iniciar sesión diario (+5 CMPX)';
     }
 
-    return `🎁 **Recompensas disponibles:**\n${rewards.join('\n')}\n\n¿Quieres reclamar todas tus recompensas ahora?`;
+    return `🎁 **Recompensas disponibles:**\n${rewards.join('\n')}\n\n¿Quieres reclamar todas tus recompensas ahorita?`;
   };
 
   const getStakingMessage = (): string => {
-    return `🔒 **¿Qué es staking?**
+    return `🔒 **¿Qué es el staking?**
 Es como una alcancía especial: guardas tus CMPX por 30 días y al final recibes un +10% de recompensa.
 
 💡 **Ejemplo:**
-Si pones 100 CMPX → En 30 días tendrás 110 CMPX
+Si metes 100 CMPX → En 30 días tendrás 110 CMPX
 
 ✨ **Beneficios:**
 • Apoyas la red ComplicesConecta
@@ -145,7 +145,7 @@ Si pones 100 CMPX → En 30 días tendrás 110 CMPX
 • Tokens seguros durante el período
 
 Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
-¿Cuántos CMPX quieres poner en staking?`;
+¿Cuántos CMPX quieres meter en staking?`;
   };
 
   // Handlers para diferentes pasos del wizard
@@ -167,7 +167,7 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
         }
       ]);
     } else {
-      addBotMessage('😊 ¡Perfecto! Cuando quieras revisar tu balance, solo pregúntame.\n\n💡 También puedes decir:\n• "¿Cuántos tokens tengo?"\n• "Quiero hacer staking"\n• "¿Qué recompensas hay?"');
+      addBotMessage('😊 ¡Perfecto! Cuando quieras revisar tu saldo, nomás pregúntame.\n\n💡 También puedes decir:\n• "¿Cuántos tokens tengo?"\n• "Quiero hacer staking"\n• "¿Qué recompensas hay?"');
     }
   };
 
@@ -186,7 +186,7 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
           {
             id: 'maybe-later',
             label: '⏰ Más tarde',
-            action: () => addBotMessage('😊 ¡Perfecto! Tus recompensas estarán aquí cuando quieras reclamarlas.')
+            action: () => addBotMessage('😊 ¡Perfecto! Tus recompensas estarán aquí cuando las quieras reclamar.')
           }
         ]);
       } else {
@@ -220,14 +220,14 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
 
       if (totalClaimed > 0) {
         await refreshTokens();
-        addBotMessage(`🎉 **¡Recompensas reclamadas exitosamente!**
+        addBotMessage(`🎉 **¡Recompensas reclamadas con éxito!**
 
-✅ Total añadido: ${totalClaimed} CMPX
+✅ Total agregado: ${totalClaimed} CMPX
 📋 Recompensas: ${claimedRewards.join(', ')}
 
-💰 Nuevo balance: ${(balance?.cmpxBalance || 0) + totalClaimed} CMPX disponibles
+💰 Nuevo saldo: ${(balance?.cmpxBalance || 0) + totalClaimed} CMPX disponibles
 
-¿Quieres revisar opciones de staking ahora?`, [
+¿Quieres revisar opciones de staking ahorita?`, [
           {
             id: 'yes-staking',
             label: '🔒 Sí, ver staking',
@@ -236,14 +236,14 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
           {
             id: 'no-staking',
             label: '😊 No, gracias',
-            action: () => addBotMessage('¡Perfecto! Tus tokens están seguros en tu balance. ¡Que disfrutes ComplicesConecta! 🚀')
+            action: () => addBotMessage('¡Perfecto! Tus tokens están seguros en tu saldo. ¡Que disfrutes ComplicesConecta! 🚀')
           }
         ]);
       } else {
-        addBotMessage('⚠️ No se pudieron reclamar las recompensas. Intenta más tarde.');
+        addBotMessage('⚠️ No se pudieron reclamar las recompensas. Inténtalo más tarde.');
       }
     } catch (error) {
-      addBotMessage('❌ Error procesando recompensas. Por favor intenta nuevamente.');
+      addBotMessage('❌ Error procesando recompensas. Por favor inténtalo de nuevo.');
     }
   };
 
@@ -258,7 +258,7 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
     const stakingAmount = parseInt(amount);
     
     if (isNaN(stakingAmount) || stakingAmount < 50) {
-      addBotMessage('⚠️ Por favor ingresa un número válido. Mínimo 50 CMPX para staking.');
+      addBotMessage('⚠️ Por favor ingresa un número válido. Mínimo 50 CMPX para hacer staking.');
       return;
     }
 
@@ -291,7 +291,7 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
       {
         id: 'cancel-staking',
         label: '❌ Cancelar',
-        action: () => addBotMessage('😊 Staking cancelado. Tus CMPX siguen disponibles en tu balance.')
+        action: () => addBotMessage('😊 Staking cancelado. Tus CMPX siguen disponibles en tu saldo.')
       }
     ]);
   };
@@ -308,10 +308,10 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
         setCurrentStep('completed');
         
         const endDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
-        addBotMessage(`🚀 **¡Staking iniciado exitosamente!**
+        addBotMessage(`🚀 **¡Staking iniciado con éxito!**
 
 ✅ ${amount} CMPX bloqueados por 30 días
-📅 Liberación: ${endDate.toLocaleDateString('es-ES')}
+📅 Liberación: ${endDate.toLocaleDateString('es-MX')}
 🎁 Recompensa: +${Math.round(amount * 0.1)} CMPX
 
 💡 **¿Qué sigue?**
@@ -321,10 +321,10 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
 
 ¡Gracias por apoyar la red ComplicesConecta! 🌟`);
       } else {
-        addBotMessage(`❌ Error iniciando staking. Intenta de nuevo más tarde.`);
+        addBotMessage(`❌ Error iniciando staking. Inténtalo de nuevo más tarde.`);
       }
     } catch (error) {
-      addBotMessage('❌ Error procesando staking. Por favor intenta nuevamente.');
+      addBotMessage('❌ Error procesando staking. Por favor inténtalo de nuevo.');
     }
   };
 
@@ -342,10 +342,10 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
           handleStakingInput(input);
         } else if (lowerInput.includes('no') || lowerInput.includes('cancelar')) {
           addUserMessage(input);
-          addBotMessage('😊 ¡Perfecto! El staking es opcional. Tus CMPX están seguros en tu balance.\n\n¿Hay algo más en lo que pueda ayudarte?');
+          addBotMessage('😊 ¡Perfecto! El staking es opcional. Tus CMPX están seguros en tu saldo.\n\n¿Hay algo más en lo que te pueda ayudar?');
         } else {
           addUserMessage(input);
-          addBotMessage('💡 Para hacer staking, ingresa la cantidad de CMPX (ejemplo: 100) o escribe "no" si prefieres no hacerlo ahora.');
+          addBotMessage('💡 Para hacer staking, ingresa la cantidad de CMPX (ejemplo: 100) o escribe "no" si prefieres no hacerlo ahorita.');
         }
         break;
         
@@ -360,7 +360,7 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
         } else if (lowerInput.includes('staking') || lowerInput.includes('alcancía')) {
           addBotMessage(getStakingMessage());
         } else {
-          addBotMessage('🤔 No estoy seguro de cómo ayudarte con eso.\n\n💡 **Puedes preguntarme:**\n• "¿Cuántos tokens tengo?"\n• "¿Qué recompensas hay?"\n• "¿Cómo funciona el staking?"\n• "Quiero reclamar recompensas"');
+          addBotMessage('🤔 No estoy seguro de cómo ayudarte con eso.\n\n💡 **Me puedes preguntar:**\n• "¿Cuántos tokens tengo?"\n• "¿Qué recompensas hay?"\n• "¿Cómo funciona el staking?"\n• "Quiero reclamar recompensas"');
         }
     }
     
@@ -385,27 +385,27 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
       <Card className="w-full max-w-2xl mx-auto">
         <CardContent className="flex items-center justify-center p-8">
           <Loader2 className="h-8 w-8 animate-spin mr-2" />
-          <span>Cargando asistente de tokens...</span>
+          <span>Cargando tu asistente de tokens...</span>
         </CardContent>
       </Card>
     );
   }
 
   return (
-    <Card className="w-full max-w-2xl mx-auto h-[600px] flex flex-col">
-      <CardHeader className="border-b">
+    <Card className="w-full max-w-2xl mx-auto h-[600px] flex flex-col bg-gradient-to-br from-purple-100 via-pink-100 to-purple-200 border-purple-300 shadow-lg">
+      <CardHeader className="border-b border-purple-300 bg-gradient-to-r from-purple-200 to-pink-200 flex-shrink-0">
         <CardTitle className="flex items-center gap-2">
           <Bot className="h-5 w-5 text-purple-600" />
           🤖 Asistente de Tokens CMPX/GTK
         </CardTitle>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-purple-700">
           Tu guía personal para tokens en fase Beta
         </p>
       </CardHeader>
       
       <CardContent className="flex-1 flex flex-col p-0">
         {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-purple-50/50 to-pink-50/50">
           {messages.map((message) => (
             <div
               key={message.id}
@@ -415,7 +415,7 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
               )}
             >
               {message.type === 'bot' && (
-                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-100 to-pink-100 flex items-center justify-center flex-shrink-0">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-200 to-pink-200 flex items-center justify-center flex-shrink-0 shadow-sm">
                   <Bot className="h-4 w-4 text-purple-600" />
                 </div>
               )}
@@ -424,11 +424,11 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
                 className={cn(
                   "max-w-[80%] rounded-lg p-3 break-words overflow-hidden",
                   message.type === 'user'
-                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white'
-                    : 'bg-gradient-to-r from-purple-50 to-pink-50 text-purple-900 border border-purple-200'
+                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-md'
+                    : 'bg-gradient-to-r from-purple-100 to-pink-100 text-purple-900 border border-purple-300 shadow-sm'
                 )}
               >
-                <div className="whitespace-pre-wrap text-sm leading-relaxed break-words max-h-40 overflow-y-auto">
+                <div className="whitespace-pre-wrap text-sm leading-relaxed break-words max-h-40 overflow-y-auto overflow-wrap-anywhere hyphens-auto">
                   {message.content}
                 </div>
                 
@@ -450,7 +450,7 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
               </div>
               
               {message.type === 'user' && (
-                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center flex-shrink-0">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center flex-shrink-0 shadow-md">
                   <User className="h-4 w-4 text-white" />
                 </div>
               )}
@@ -459,10 +459,10 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
           
           {isTyping && (
             <div className="flex gap-3 justify-start">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-100 to-pink-100 flex items-center justify-center flex-shrink-0">
-                <Bot className="h-4 w-4 text-purple-600" />
+              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-200 to-pink-200 flex items-center justify-center flex-shrink-0 shadow-sm">
+                <Bot className="h-4 w-4 text-purple-700" />
               </div>
-              <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-3">
+              <div className="bg-gradient-to-r from-purple-100 to-pink-100 border border-purple-300 rounded-lg p-3 shadow-sm">
                 <div className="flex space-x-1">
                   <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce"></div>
                   <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
@@ -476,13 +476,13 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
         </div>
         
         {/* Input Area */}
-        <div className="border-t p-4">
+        <div className="border-t border-purple-300 p-4 bg-gradient-to-r from-purple-100 to-pink-100 flex-shrink-0">
           <div className="flex gap-2">
             <Input
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Escribe tu mensaje..."
+              placeholder="Escribe tu mensaje aquí..."
               className="flex-1"
               disabled={isTyping}
             />
@@ -494,7 +494,7 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
               <Send className="h-4 w-4" />
             </Button>
           </div>
-          <p className="text-xs text-gray-500 mt-2">
+          <p className="text-xs text-purple-700 mt-2">
             💡 Prueba: "¿Cuántos tokens tengo?" o "Quiero hacer staking"
           </p>
         </div>

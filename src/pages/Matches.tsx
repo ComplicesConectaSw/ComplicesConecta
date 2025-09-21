@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Header } from "@/components/Header";
+// import { Header } from "@/components/Header";
 import Navigation from "@/components/Navigation";
 import { MatchCard } from "@/components/ui/MatchCard";
 import { ProfileCard } from "@/components/ui/ProfileCard";
@@ -122,8 +122,9 @@ const Matches = () => {
       // Modo producción - cargar matches reales (sin filtro de distancia inicial)
       loadRealMatches();
     } else {
-      // Modo demo - usar datos mock
+      // Modo demo - usar datos mock SIEMPRE
       setMatches(demoMatches);
+      logger.info('🎭 Matches demo cargados:', { count: demoMatches.length });
     }
   }, []);
 
@@ -229,7 +230,7 @@ const Matches = () => {
       </div>
       
       <div className="relative z-10">
-        <Header />
+        {/* Header removido para usuarios demo - solo NavigationLegacy */}
       
         <main className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 max-w-6xl pb-24">
           {/* Back Button */}
@@ -359,12 +360,12 @@ const Matches = () => {
 
         {/* Matches Grid */}
         {filteredMatches.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
             {isLoading ? (
               // Loading skeleton
               [...Array(6)].map((_, index) => (
-                <div key={index} className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 animate-pulse">
-                  <div className="h-48 bg-muted rounded-lg mb-4"></div>
+                <div key={index} className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 sm:p-6 animate-pulse transition-all duration-300">
+                  <div className="h-40 sm:h-48 bg-muted rounded-lg mb-4"></div>
                   <div className="h-4 bg-muted rounded mb-2"></div>
                   <div className="h-4 bg-muted rounded w-3/4"></div>
                 </div>
@@ -395,14 +396,14 @@ const Matches = () => {
             )}
           </div>
         ) : (
-          <div className="text-center py-16">
-            <div className="bg-white/20 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-4">
-              <Heart className="h-12 w-12 text-white/70" />
+          <div className="text-center py-12 sm:py-16 px-4">
+            <div className="bg-gradient-to-br from-purple-200/30 to-pink-200/30 rounded-full w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center mx-auto mb-4 shadow-lg border border-purple-300/20 transition-all duration-300 hover:scale-105">
+              <Heart className="h-10 w-10 sm:h-12 sm:w-12 text-white/70" />
             </div>
-            <h3 className="text-xl font-semibold text-white mb-2">
+            <h3 className="text-lg sm:text-xl font-semibold text-white mb-2">
               No hay matches con este filtro
             </h3>
-            <p className="text-white/70 mb-6">
+            <p className="text-sm sm:text-base text-white/70 mb-6 max-w-md mx-auto">
               Intenta cambiar los filtros o descubre más parejas y solteros verificados
             </p>
             <UnifiedButton 

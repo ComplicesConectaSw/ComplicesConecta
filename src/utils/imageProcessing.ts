@@ -205,7 +205,7 @@ export const removeImageBackground = async (imageElement: HTMLImageElement): Pro
       );
     });
   } catch (error) {
-    logger.error('Error removing background:', error);
+    logger.error('Error removing background:', { error });
     throw error;
   }
 };
