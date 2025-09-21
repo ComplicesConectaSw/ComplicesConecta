@@ -41,8 +41,8 @@ export const useCoupleProfile = (coupleId: string | undefined) => {
       
       logger.info('Fetching couple profile', { coupleId });
       
-      // Use any type to bypass Supabase type checking issues
-      const { data, error } = await (supabase as any)
+      // Query couple profile with partner details
+      const { data, error } = await supabase
         .from('couple_profiles')
         .select(`
           *,
@@ -63,6 +63,8 @@ export const useCoupleProfile = (coupleId: string | undefined) => {
         // Transform data to match CoupleProfileWithPartners interface
         const transformedData: CoupleProfileWithPartners = {
           ...data,
+          created_at: data.created_at || new Date().toISOString(),
+          updated_at: data.updated_at || new Date().toISOString(),
           partner1_first_name: data.partner1?.first_name || '',
           partner1_last_name: data.partner1?.last_name || '',
           partner1_age: data.partner1?.age || 0,
@@ -96,7 +98,7 @@ export const useCoupleProfiles = (page = 1, limit = 10) => {
       
       logger.info('Fetching couple profiles', { page, limit });
       
-      const { data, error, count } = await (supabase as any)
+      const { data, error, count } = await supabase
         .from('couple_profiles')
         .select(`
           *,
@@ -114,7 +116,7 @@ export const useCoupleProfiles = (page = 1, limit = 10) => {
       logger.info('✅ Couple profiles fetched successfully', { count });
       
       // Transform data to match CoupleProfileWithPartners interface
-      const transformedData = data?.map((item: any) => ({
+      const transformedData = data?.map((item) => ({
         ...item,
         partner1_first_name: item.partner1?.first_name || '',
         partner1_last_name: item.partner1?.last_name || '',
@@ -150,7 +152,7 @@ export const useCoupleProfilesByUser = (userId: string | undefined) => {
       
       logger.info('Fetching couple profiles by user', { userId });
       
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('couple_profiles')
         .select(`
           *,
@@ -168,7 +170,7 @@ export const useCoupleProfilesByUser = (userId: string | undefined) => {
       logger.info('✅ Couple profiles by user fetched successfully', { count: data?.length });
       
       // Transform data to match CoupleProfileWithPartners interface
-      const transformedData = data?.map((item: any) => ({
+      const transformedData = data?.map((item) => ({
         ...item,
         partner1_first_name: item.partner1?.first_name || '',
         partner1_last_name: item.partner1?.last_name || '',
@@ -199,7 +201,7 @@ export const useCreateCoupleProfile = () => {
     mutationFn: async (profileData: Omit<CoupleProfile, 'id' | 'created_at' | 'updated_at'>) => {
       logger.info('Creating couple profile', { couple_name: profileData.couple_name });
       
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('couple_profiles')
         .insert([profileData])
         .select()
@@ -212,7 +214,7 @@ export const useCreateCoupleProfile = () => {
 
       if (data) {
         logger.info('✅ Couple profile created successfully:', { couple_name: data.couple_name });
-        return data as CoupleProfile;
+        return data;
       }
 
       throw new Error('No data returned from couple profile creation');
@@ -240,7 +242,7 @@ export const useUpdateCoupleProfile = () => {
       
       logger.info('Updating couple profile', { id });
       
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('couple_profiles')
         .update(updateData)
         .eq('id', id)
@@ -254,7 +256,7 @@ export const useUpdateCoupleProfile = () => {
 
       if (data) {
         logger.info('✅ Couple profile updated successfully:', { id: data.id });
-        return data as CoupleProfile;
+        return data;
       }
 
       throw new Error('No data returned from couple profile update');
@@ -282,7 +284,7 @@ export const useDeleteCoupleProfile = () => {
     mutationFn: async (coupleId: string) => {
       logger.info('Deleting couple profile', { coupleId });
       
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('couple_profiles')
         .delete()
         .eq('id', coupleId);
@@ -319,7 +321,7 @@ export const usePrefetchCoupleProfile = () => {
       queryFn: async () => {
         logger.info('Prefetching couple profile', { coupleId });
         
-        const { data, error } = await (supabase as any)
+        const { data, error } = await supabase
           .from('couple_profiles')
           .select(`
             *,
@@ -338,6 +340,8 @@ export const usePrefetchCoupleProfile = () => {
           // Transform data to match CoupleProfileWithPartners interface
           const transformedData: CoupleProfileWithPartners = {
             ...data,
+            created_at: data.created_at || new Date().toISOString(),
+            updated_at: data.updated_at || new Date().toISOString(),
             partner1_first_name: data.partner1?.first_name || '',
             partner1_last_name: data.partner1?.last_name || '',
             partner1_age: data.partner1?.age || 0,

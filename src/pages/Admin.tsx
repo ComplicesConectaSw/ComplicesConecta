@@ -297,7 +297,7 @@ const Admin = () => {
   const handleToggleVerification = async (profileId: string, currentStatus: boolean) => {
     try {
       // Note: Using a custom field for verification status since is_verified might not exist in schema
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('profiles')
         .update({ 
           // Use bio field to store verification status temporarily
