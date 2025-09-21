@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, Edit, MapPin, Calendar, Heart, Star, Users, Shield, Camera, Settings, CheckCircle, Crown, Images } from 'lucide-react';
 import { Header } from '@/components/Header';
-import Navigation from '@/components/Navigation';
+import NavigationEnhanced from '@/components/NavigationEnhanced';
 import { ProfileTabs } from '@/components/profile/ProfileTabs';
 import { ProfileNavigation } from '@/components/profile/ProfileNavigation';
 import { useAuth } from '@/hooks/useAuth';
@@ -144,7 +144,7 @@ const ProfileSingle: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-pink-800">
       {/* Navegación superior */}
-      <Navigation />
+      <NavigationEnhanced />
       
       {/* Header con navegación */}
       <div className="relative">

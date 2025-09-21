@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import Navigation from '@/components/Navigation';
+import NavigationEnhanced from '@/components/NavigationEnhanced';
 import { ContrastFixer } from '@/components/accessibility/ContrastFixer';
 import { logger } from '@/lib/logger';
 import { 
@@ -129,7 +129,7 @@ const Profiles: React.FC = () => {
       <MapPin className="absolute top-1/2 right-1/6 w-7 h-7 text-secondary/15 animate-pulse" />
       
       {/* Navegación */}
-      <Navigation />
+      <NavigationEnhanced />
       
       <main className="container mx-auto px-4 py-8">
         {/* Encabezado de página */}
