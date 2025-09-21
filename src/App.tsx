@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { CrossBrowserOptimizer } from '@/components/ui/CrossBrowserOptimizer';
 import { AccessibilityEnhancer } from '@/components/ui/AccessibilityEnhancer';
 import { MobileOptimizer } from '@/components/ui/MobileOptimizer';
+import { ThemeProvider } from '@/components/ui/ThemeProvider';
 import { Suspense, lazy } from "react";
 import { AnimationProvider } from "@/components/animations/AnimationProvider";
 import { PageTransitionWrapper } from "@/components/animations/PageTransitions";
@@ -53,6 +54,7 @@ const Careers = lazy(() => import("@/pages/Careers"));
 const Blog = lazy(() => import("@/pages/Blog"));
 const ChatAuthenticated = lazy(() => import("@/pages/ChatAuthenticated"));
 const Donations = lazy(() => import("@/pages/Donations"));
+const TemplateDemo = lazy(() => import("@/pages/TemplateDemo"));
 
 // Loading component for Suspense
 const PageLoader = () => (
@@ -69,11 +71,12 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <CrossBrowserOptimizer>
-        <AccessibilityEnhancer>
-          <MobileOptimizer>
-            <AnimationProvider>
-              <NotificationProvider>
+      <ThemeProvider>
+        <CrossBrowserOptimizer>
+          <AccessibilityEnhancer>
+            <MobileOptimizer>
+              <AnimationProvider>
+                <NotificationProvider>
                 <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-800 relative overflow-hidden">
             <AnimatedBackground />
             <FloatingParticles count={15} />
@@ -120,6 +123,7 @@ const App = () => (
                   <Route path="/blog" element={<Blog />} />
                   <Route path="/chat-authenticated" element={<ChatAuthenticated />} />
                   <Route path="/donations" element={<Donations />} />
+                  <Route path="/template-demo" element={<TemplateDemo />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
@@ -133,6 +137,7 @@ const App = () => (
       </MobileOptimizer>
       </AccessibilityEnhancer>
       </CrossBrowserOptimizer>
+      </ThemeProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );

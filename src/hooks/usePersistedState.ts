@@ -26,9 +26,16 @@ export function usePersistedState<T>(
         return defaultValue;
       }
       
-      const parsed = JSON.parse(item);
-      logger.info('Estado cargado desde localStorage:', { key, hasValue: !!parsed });
-      return parsed;
+      // Intentar parsear como JSON primero
+      try {
+        const parsed = JSON.parse(item);
+        logger.info('Estado cargado desde localStorage:', { key, hasValue: !!parsed });
+        return parsed;
+      } catch (jsonError) {
+        // Si falla JSON, tratar como string simple
+        logger.info('Estado cargado desde localStorage (string):', { key, value: item });
+        return item as T;
+      }
     } catch (error) {
       logger.error('Error leyendo localStorage:', { key, error: String(error) });
       return defaultValue;

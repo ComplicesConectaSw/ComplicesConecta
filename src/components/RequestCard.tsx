@@ -197,7 +197,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
               <h3 className="font-semibold text-gray-900 dark:text-white truncate">
                 {profile.first_name} {profile.last_name ?? ''}
               </h3>
-              <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mt-1">
+              <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200 mt-1">
                 {profile.age && <span>{profile.age} años</span>}
                 {profile.bio && (
                   <>
@@ -213,7 +213,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
               <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(request.status as InvitationStatus)}`}>
                 {getStatusText(request.status as InvitationStatus)}
               </span>
-              <div className="flex items-center text-xs text-gray-400">
+              <div className="flex items-center text-xs text-gray-600 dark:text-gray-300">
                 <Clock className="w-3 h-3 mr-1" />
                 {formatDate(request.created_at)}
               </div>
@@ -224,7 +224,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
           {request.message && (
             <div className="mt-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
               <div className="flex items-start gap-2">
-                <MessageCircle className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
+                <MessageCircle className="w-4 h-4 text-gray-600 dark:text-gray-300 mt-0.5 flex-shrink-0" />
                 <p className="text-sm text-gray-700 dark:text-gray-300">
                   {request.message}
                 </p>

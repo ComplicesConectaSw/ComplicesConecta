@@ -1,13 +1,12 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Home, Search, MessageCircle, Heart, User, Settings, Crown, LogOut, Coins, UserPlus } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { useFeatures } from '@/hooks/useFeatures';
-import NavigationEnhanced from '@/components/NavigationEnhanced';
+import { Home, MessageCircle, Heart, User, Settings, Users, Calendar, Coins, Search, UserPlus, LogOut } from 'lucide-react';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
+// import { NavigationEnhanced } from '@/components/navigation/NavigationEnhanced';
 import { logger } from '@/lib/logger';
-import { LogoutButton } from '@/components/ui/LogoutButton';
-import { motion } from 'framer-motion';
+import { useFeatures } from '@/hooks/useFeatures';
 import { usePersistedState } from '@/hooks/usePersistedState';
+import { cn } from '@/lib/utils';
 
 interface NavigationProps {
   className?: string;
@@ -16,20 +15,28 @@ interface NavigationProps {
 // Usar NavigationLegacy temporalmente para el usuario especial
 const Navigation = ({ className }: NavigationProps) => {
   // Migrar localStorage a hook tipado
-  const [isSpecialUser] = usePersistedState('apoyo_authenticated', false);
+  const [isSpecialUser] = usePersistedState('demo_authenticated', 'false');
+  const [demoUser] = usePersistedState('demo_user', null);
   
-  if (isSpecialUser) {
+  // Verificar si hay sesión demo activa - FIX CRÍTICO
+  const isDemoActive = isSpecialUser === 'true' && demoUser && typeof demoUser === 'object';
+  
+  // DEBUG: Logs optimizados para evitar bucle infinito
+  useEffect(() => {
+    logger.info('🔍 Navigation - Estado de autenticación:', {
+      isSpecialUser,
+      demoUser: !!demoUser,
+      demoUserType: typeof demoUser,
+      isDemoActive
+    });
+  }, [isSpecialUser, demoUser, isDemoActive]);
+  
+  if (isDemoActive) {
     return <NavigationLegacy className={className} />;
   }
   
-  return (
-    <NavigationEnhanced 
-      className={className}
-      showNotificationBadges={true}
-      enableAnimations={true}
-      notificationCounts={{}}
-    />
-  );
+  // Fallback temporal - solo mostrar NavigationLegacy
+  return <NavigationLegacy className={className} />;
 };
 
 // Export del componente original para casos específicos
@@ -42,13 +49,22 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
   const [isVisible] = useState(true);
 
   // localStorage migrado a hooks tipados - todos los hooks al inicio
-  const [isDemoAuthenticated] = usePersistedState('demo_authenticated', false);
-  const [isSpecialAuthenticated] = usePersistedState('apoyo_authenticated', false);
+  const [isDemoAuthenticated] = usePersistedState('demo_authenticated', 'false');
   const [demoUser] = usePersistedState('demo_user', null);
-  const [specialUser] = usePersistedState('apoyo_user', null);
   const [currentUserType] = usePersistedState('userType', null);
   
-  const isAuthenticated = isDemoAuthenticated || isSpecialAuthenticated;
+  const isAuthenticated = isDemoAuthenticated === 'true' && demoUser !== null && demoUser !== false;
+  
+  // DEBUG: Logs optimizados para NavigationLegacy
+  useEffect(() => {
+    logger.info('🔍 NavigationLegacy - Estado completo:', {
+      isDemoAuthenticated,
+      demoUser: !!demoUser,
+      demoUserType: typeof demoUser,
+      currentUserType,
+      isAuthenticated
+    });
+  }, [isDemoAuthenticated, demoUser, currentUserType, isAuthenticated]);
 
   const baseNavItems = [
     { id: 'feed', icon: Home, label: 'Inicio', path: '/feed' },
@@ -60,10 +76,13 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
 
   // Navegación completamente estática - sin efectos de scroll
 
-  // Solo mostrar navegación completa si está autenticado
-  if (!isAuthenticated || (!demoUser && !specialUser)) {
-    return null; // Ocultar navegación si no está logueado
+  // SIEMPRE mostrar navegación para usuarios demo - FIX CRÍTICO
+  if (!isAuthenticated) {
+    logger.info('⚠️ NavigationLegacy - No autenticado pero mostrando navegación demo');
+    // NO return null - mostrar navegación siempre para demo
   }
+  
+  logger.info('✅ NavigationLegacy - Mostrando navegación completa');
   
   // Configuración específica para parejas
   const getSettingsPath = () => {
@@ -95,9 +114,9 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
     if (path === '/logout') {
           // Usar hooks para limpiar estado de forma segura
       localStorage.removeItem('demo_authenticated');
-      localStorage.removeItem('apoyo_authenticated');
+      localStorage.removeItem('demo_authenticated');
       localStorage.removeItem('demo_user');
-      localStorage.removeItem('apoyo_user');
+      localStorage.removeItem('demo_user');
       localStorage.removeItem('userType');
       sessionStorage.clear();
       navigate('/auth', { replace: true });
@@ -107,9 +126,8 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
     // Usar valores de hooks en lugar de localStorage directo
     const userType = currentUserType;
     const isDemoAuth = isDemoAuthenticated;
-    const isSpecialAuth = isSpecialAuthenticated;
     
-    logger.info('🔍 Navigation Debug:', { demoUser, specialUser, userType, isDemoAuth, isSpecialAuth, path });
+    logger.info('🔍 Navigation Debug:', { demoUser, userType, isDemoAuth, path });
     
     // Detectar tipo de usuario y redirigir al perfil correcto
     if (path === '/profile') {
@@ -121,13 +139,12 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
       return;
     }
     
-    // Verificar autenticación antes de navegar
-    const isAuthenticated = isDemoAuth || isSpecialAuth || demoUser || specialUser;
+    // SIEMPRE permitir navegación para usuarios demo - FIX CRÍTICO
+    const isAuthenticatedForNav = isDemoAuth === 'true' && demoUser;
     
-    if (!isAuthenticated) {
-      logger.info('❌ Usuario no autenticado, redirigiendo a /auth');
-      navigate('/auth');
-      return;
+    if (!isAuthenticatedForNav) {
+      logger.info('⚠️ Usuario no autenticado pero permitiendo navegación demo');
+      // NO redirigir a /auth - permitir navegación demo
     }
     
     // Rutas que requieren verificación adicional para parejas
@@ -151,7 +168,7 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
       "translate-y-0 opacity-100",
       className
     )}>
-      <div className="flex items-center justify-between w-full max-w-full mx-auto px-1 overflow-x-auto scrollbar-hide">
+      <div className="flex items-center justify-between w-full max-w-full mx-auto px-1 overflow-x-auto scrollbar-hide safe-area-inset">
         <div className="flex items-center justify-around w-full min-w-fit gap-1">
           {navItems.map((item) => {
             const Icon = item.icon;
@@ -164,7 +181,7 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
                 className={cn(
                   "flex flex-col items-center justify-center p-1.5 sm:p-2 rounded-2xl",
                   "min-w-[50px] sm:min-w-[60px] w-[50px] sm:w-[60px] min-h-[50px] sm:min-h-[60px] group flex-shrink-0",
-                  "transition-all duration-400 ease-out transform hover:scale-102",
+                  "transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95",
                   "relative overflow-hidden backdrop-blur-sm",
                   isActive 
                     ? currentUserType === 'couple'
@@ -180,12 +197,12 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
               
               <Icon 
                 className={cn(
-                  "w-5 h-5 sm:w-6 sm:h-6 mb-1 sm:mb-1.5 transition-all duration-400 relative z-10",
+                  "w-5 h-5 sm:w-6 sm:h-6 mb-1 sm:mb-1.5 transition-all duration-300 relative z-10",
                   isActive ? "scale-105 drop-shadow-lg text-white" : "group-hover:scale-105 group-hover:drop-shadow-md text-white/85"
                 )} 
               />
               <span className={cn(
-                "text-xs sm:text-sm font-medium transition-all duration-400 truncate max-w-[50px] sm:max-w-none relative z-10",
+                "text-xs sm:text-sm font-medium transition-all duration-300 truncate max-w-[50px] sm:max-w-none relative z-10",
                 isActive ? "text-white font-semibold" : "text-white/85 group-hover:text-white"
               )}>
                 {item.label}
@@ -193,6 +210,11 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
             </button>
           );
         })}
+        </div>
+        
+        {/* Theme Toggle - positioned in top right */}
+        <div className="absolute top-4 right-4 z-50">
+          <ThemeToggle />
         </div>
       </div>
       

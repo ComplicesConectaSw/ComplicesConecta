@@ -178,12 +178,8 @@ export const ThemeInfoModal: React.FC<ThemeInfoModalProps> = ({
                       <div className="flex justify-center">
                         <div className="w-full max-w-sm">
                           <ProfileCard
-                            {...demoProfileProps}
-                            variant="compact"
-                            gender={gender}
-                            partnerGender={partnerGender}
-                            theme={theme}
-                            useThemeBackground={true}
+                            profile={demoProfileProps}
+                            variant="single"
                           />
                         </div>
                       </div>

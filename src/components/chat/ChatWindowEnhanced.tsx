@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect, useCallback } from "react";
-import { motion, AnimatePresence, useAnimation } from "framer-motion";
+import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
+import { motion, AnimatePresence, useAnimation, Variants } from 'framer-motion';
 import { Send, MoreVertical, Phone, Video, Image, Smile, Paperclip, Sparkles, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -85,15 +85,14 @@ export const ChatWindowEnhanced = ({
   };
 
   // Variantes de animación
-  const messageVariants = {
+  const messageVariants: Variants = {
     hidden: { opacity: 0, y: 20, scale: 0.95 },
     visible: { 
       opacity: 1, 
       y: 0, 
       scale: 1,
       transition: {
-        duration: 0.3,
-        ease: [0.25, 0.25, 0, 1]
+        duration: 0.3
       }
     },
     exit: { 
@@ -103,7 +102,7 @@ export const ChatWindowEnhanced = ({
     }
   };
 
-  const typingVariants = {
+  const typingVariants: Variants = {
     hidden: { opacity: 0, y: 10 },
     visible: { 
       opacity: 1, 
@@ -112,12 +111,12 @@ export const ChatWindowEnhanced = ({
     }
   };
 
-  const headerVariants = {
+  const headerVariants: Variants = {
     hidden: { opacity: 0, y: -20 },
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { duration: 0.4, ease: "easeOut" }
+      transition: { duration: 0.4 }
     }
   };
 

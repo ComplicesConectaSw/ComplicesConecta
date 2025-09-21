@@ -66,7 +66,7 @@ export class EmailService {
       console.info(`✅ Email enviado exitosamente con template: ${template}`);
       return result;
     } catch (error) {
-      logger.error(`❌ Error enviando email con template ${template}:`, error);
+      logger.error(`❌ Error enviando email con template ${template}:`, { error });
       throw error;
     }
   }

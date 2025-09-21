@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { useAnimation, useGlobalAnimationTriggers } from '@/components/animations/AnimationProvider';
 import { Heart, Star, MessageCircle, Trophy, AlertCircle, CheckCircle, X } from 'lucide-react';
 
@@ -107,16 +107,14 @@ const NotificationItem: React.FC<{ notification: Notification }> = ({ notificati
     }
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     initial: { opacity: 0, x: 300, scale: 0.8 },
     animate: { 
       opacity: 1, 
       x: 0, 
       scale: 1,
       transition: { 
-        type: "spring", 
-        stiffness: 300, 
-        damping: 25 
+        duration: 0.3
       }
     },
     exit: { 

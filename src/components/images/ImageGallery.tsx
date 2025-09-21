@@ -33,7 +33,7 @@ export function ImageGallery({ profileId, isOwner = false, showUpload = false }:
       const images = await getUserImages(profileId, isOwner);
       setImages(images);
     } catch (error) {
-      logger.error('Error loading images:', error);
+      logger.error('Error loading images:', { error });
       toast({
         variant: "destructive",
         title: "Error al cargar imágenes",

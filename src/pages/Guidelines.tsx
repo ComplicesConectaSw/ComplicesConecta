@@ -290,7 +290,7 @@ const GuidelinesPage = () => {
         </Card>
 
         {/* Footer Note */}
-        <div className="text-center mt-12 text-gray-500 text-sm">
+        <div className="text-center mt-12 text-gray-700 dark:text-gray-200 text-sm">
           <p>
             Estas directrices pueden actualizarse periódicamente. Te notificaremos sobre cambios importantes.
           </p>

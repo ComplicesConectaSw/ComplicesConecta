@@ -1,8 +1,8 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 
 // Global animation variants
-export const pageVariants = {
+export const pageVariants: Variants = {
   initial: {
     opacity: 0,
     y: 20,
@@ -13,8 +13,7 @@ export const pageVariants = {
     y: 0,
     scale: 1,
     transition: {
-      duration: 0.4,
-      ease: [0.25, 0.46, 0.45, 0.94]
+      duration: 0.4
     }
   },
   exit: {
@@ -22,13 +21,12 @@ export const pageVariants = {
     y: -20,
     scale: 0.98,
     transition: {
-      duration: 0.3,
-      ease: [0.25, 0.46, 0.45, 0.94]
+      duration: 0.3
     }
   }
 };
 
-export const staggerContainer = {
+export const staggerContainer: Variants = {
   animate: {
     transition: {
       staggerChildren: 0.1,
@@ -37,7 +35,7 @@ export const staggerContainer = {
   }
 };
 
-export const fadeInUp = {
+export const fadeInUp: Variants = {
   initial: {
     opacity: 0,
     y: 30
@@ -46,13 +44,12 @@ export const fadeInUp = {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.5,
-      ease: [0.25, 0.46, 0.45, 0.94]
+      duration: 0.5
     }
   }
 };
 
-export const scaleIn = {
+export const scaleIn: Variants = {
   initial: {
     opacity: 0,
     scale: 0.8
@@ -61,13 +58,12 @@ export const scaleIn = {
     opacity: 1,
     scale: 1,
     transition: {
-      duration: 0.4,
-      ease: [0.25, 0.46, 0.45, 0.94]
+      duration: 0.4
     }
   }
 };
 
-export const slideInLeft = {
+export const slideInLeft: Variants = {
   initial: {
     opacity: 0,
     x: -50
@@ -76,13 +72,12 @@ export const slideInLeft = {
     opacity: 1,
     x: 0,
     transition: {
-      duration: 0.5,
-      ease: [0.25, 0.46, 0.45, 0.94]
+      duration: 0.5
     }
   }
 };
 
-export const slideInRight = {
+export const slideInRight: Variants = {
   initial: {
     opacity: 0,
     x: 50
@@ -91,8 +86,7 @@ export const slideInRight = {
     opacity: 1,
     x: 0,
     transition: {
-      duration: 0.5,
-      ease: [0.25, 0.46, 0.45, 0.94]
+      duration: 0.5
     }
   }
 };
@@ -128,7 +122,7 @@ export const hoverScale = {
     scale: 1.05,
     transition: {
       duration: 0.2,
-      ease: [0.25, 0.46, 0.45, 0.94]
+      ease: "easeOut"
     }
   },
   whileTap: {

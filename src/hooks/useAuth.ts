@@ -49,8 +49,10 @@ export const useAuth = () => {
     access_token?: string;
     refresh_token?: string;
     expires_at?: number;
-    demo_user?: string;
   }>('auth_tokens', {});
+  
+  // Usar usePersistedState para demo_user directamente
+  const [demoUser, setDemoUser] = usePersistedState<any>('demo_user', null);
   
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
@@ -139,8 +141,6 @@ export const useAuth = () => {
           setTimeout(() => {
             window.location.href = '/profile-single';
           }, 1000);
-        } else {
-          logger.info('✅ Usuario especial autenticado - usar navegación manual');
         }
       } else {
         logger.info('⚠️ No se encontró perfil para el usuario', { userId });
@@ -162,15 +162,12 @@ export const useAuth = () => {
     // NOTA: checkDemoSession ahora retorna null para forzar recreación
     // Los datos demo ya no se persisten en localStorage
     
-    // Migrar datos legacy y verificar sesión usando StorageManager
-    StorageManager.migrateToSupabase();
+    // Verificar sesión demo existente sin migración destructiva
     const sessionFlags = StorageManager.getSessionFlags();
     
-    if (sessionFlags.apoyo_authenticated) {
-      logger.info('🛡️ Usuario especial detectado - cargando desde Supabase...');
-      // Datos se cargan exclusivamente desde Supabase via React Query
-      
-      // Reset profileLoaded para permitir carga desde Supabase
+    if (sessionFlags.demo_authenticated && demoUser) {
+      logger.info('🎭 Usuario demo detectado', { demoUser });
+      // Reset profileLoaded para permitir carga
       profileLoaded.current = false;
     }
     
@@ -266,7 +263,7 @@ export const useAuth = () => {
         };
         
         // Guardar solo flag de autenticación usando StorageManager
-        StorageManager.setSessionFlag('apoyo_authenticated', true);
+        StorageManager.setSessionFlag('demo_authenticated', true);
         // ELIMINADO: No almacenar datos de usuario en localStorage
         // Los datos se cargan exclusivamente desde Supabase
         
@@ -357,27 +354,20 @@ export const useAuth = () => {
 
   // Función para verificar si un usuario es administrador
   const isAdmin = () => {
-    // Demo admin check usando StorageManager
+    // Demo admin check usando demoUser directo
     const sessionFlags = StorageManager.getSessionFlags();
-    const demoUser = authTokens.demo_user; // Migrado de localStorage
     
     if (sessionFlags.demo_authenticated && demoUser) {
-      try {
-        const parsedDemoUser = JSON.parse(demoUser);
-        const isDemoAdmin = parsedDemoUser.accountType === 'admin' || parsedDemoUser.role === 'admin';
-        
-        logger.info('🎭 Demo admin check:', {
-          email: parsedDemoUser.email,
-          accountType: parsedDemoUser.accountType,
-          role: parsedDemoUser.role,
-          isDemoAdmin
-        });
-        
-        return isDemoAdmin;
-      } catch (error) {
-        logger.error('❌ Error parsing demo user', { error: error instanceof Error ? error.message : String(error) });
-        return false;
-      }
+      const isDemoAdmin = demoUser.accountType === 'admin' || demoUser.role === 'admin';
+      
+      logger.info('🎭 Demo admin check:', {
+        email: demoUser.email,
+        accountType: demoUser.accountType,
+        role: demoUser.role,
+        isDemoAdmin
+      });
+      
+      return isDemoAdmin;
     }
     
     // CRÍTICO: Verificar admin basado en EMAIL DE AUTENTICACIÓN, no perfil
@@ -416,16 +406,10 @@ export const useAuth = () => {
 
   const isDemo = () => {
     const sessionFlags = StorageManager.getSessionFlags();
-    const demoUser = authTokens.demo_user; // Migrado de localStorage
     const isDemoActive = sessionFlags.demo_authenticated && demoUser;
     
     if (isDemoActive) {
-      try {
-        const parsedUser = JSON.parse(demoUser);
-        logger.info('🎭 Demo mode active', { email: parsedUser.email, role: parsedUser.role });
-      } catch (error) {
-        logger.info('🎭 Demo mode active but invalid user data');
-      }
+      logger.info('🎭 Demo mode active', { email: demoUser?.email, role: demoUser?.role });
     }
     
     return isDemoActive;
@@ -436,23 +420,19 @@ export const useAuth = () => {
   };
 
   const isAuthenticated = () => {
-    // Verificar sesión demo primero
+    // Verificar sesión demo primero usando StorageManager directamente
     const sessionFlags = StorageManager.getSessionFlags();
-    const demoUser = authTokens.demo_user; // Migrado de localStorage
-    if (sessionFlags.demo_authenticated && demoUser) {
-      logger.info('✅ Authenticated via demo session');
+    const rawDemoUser = localStorage.getItem('demo_user');
+    
+    if (sessionFlags.demo_authenticated && rawDemoUser) {
+      logger.info('✅ Authenticated via demo session', { 
+        demoUser: rawDemoUser ? 'present' : 'missing' 
+      });
       return true;
     }
     
-    // Verificar sesión especial de apoyo
-    if (sessionFlags.apoyo_authenticated && user) {
-      logger.info('✅ Authenticated via special apoyo session');
-      return true;
-    }
-    
-    // Verificar autenticación real de Supabase
-    const realAuth = !!user && !!session;
-    if (realAuth) {
+    // Verificar sesión real de Supabase
+    if (user && session) {
       logger.info('✅ Authenticated via real Supabase session');
       return true;
     }
@@ -461,7 +441,8 @@ export const useAuth = () => {
       hasUser: !!user, 
       hasSession: !!session,
       demoAuth: sessionFlags.demo_authenticated,
-      apoyoAuth: sessionFlags.apoyo_authenticated
+      hasDemoUser: !!rawDemoUser,
+      demoUserState: !!demoUser
     });
     
     return false;
@@ -469,12 +450,10 @@ export const useAuth = () => {
 
   const shouldUseProductionAdmin = () => {
     const sessionFlags = StorageManager.getSessionFlags();
-    const demoUser = localStorage.getItem('demo_user');
     
     // Si es demo admin, usar panel de producción
     if (sessionFlags.demo_authenticated && demoUser) {
-      const user = JSON.parse(demoUser);
-      return user.accountType === 'admin' || user.role === 'admin';
+      return demoUser.accountType === 'admin' || demoUser.role === 'admin';
     }
     
     // Si es admin real, usar panel de producción

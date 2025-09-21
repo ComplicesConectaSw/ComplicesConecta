@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import cross-browser compatibility styles */
+@import './styles/cross-browser.css';
+
 /* Custom scrollbar styles - Professional Design */
 .custom-scrollbar {
   scrollbar-width: thin;
@@ -59,6 +62,34 @@
 
 .animate-pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Hover animations for buttons and interactive elements */
+.btn-animated {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-animated:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+}
+
+.btn-animated:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
+}
+
+/* Scale animations */
+.hover\:scale-102:hover {
+  transform: scale(1.02);
+}
+
+.hover\:scale-105:hover {
+  transform: scale(1.05);
+}
+
+.active\:scale-95:active {
+  transform: scale(0.95);
 }
 
 /* Scroll personalizado - Completamente oculto */
