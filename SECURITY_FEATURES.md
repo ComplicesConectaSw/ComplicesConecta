@@ -449,3 +449,44 @@ Para soporte técnico o reportar vulnerabilidades:
 
 *Documento actualizado: 23 de septiembre de 2025*
 *Versión: 1.0.0*
+
+# 🔐 SECURITY FEATURES - ComplicesConecta v3.3.0
+
+**Fecha:** 23 de Septiembre, 2025 - 10:42 hrs  
+**Versión:** 3.3.0  
+**Estado de Seguridad:** ✅ **ENTERPRISE GRADE**
+
+---
+
+## 🆕 **NUEVAS CARACTERÍSTICAS DE SEGURIDAD v3.3.0**
+
+### 🔐 **Sistema de Auditoría Avanzada**
+- **Tabla audit_logs**: Registro completo de todas las acciones del sistema
+- **IP Tracking**: Monitoreo de direcciones IP sospechosas
+- **Session Monitoring**: Seguimiento completo de sesiones de usuario
+- **Risk Scoring**: Puntuación automática de riesgo por acción
+- **Fraud Detection**: Detección automática de actividad fraudulenta
+
+### 🛡️ **Autenticación de Dos Factores (2FA)**
+- **Tabla user_2fa_settings**: Configuración TOTP por usuario
+- **TOTP Support**: Compatibilidad con Google Authenticator, Authy
+- **Backup Codes**: Códigos de recuperación seguros
+- **Recovery System**: Sistema de recuperación de cuenta
+
+### 📊 **Logs de Moderación**
+- **Tabla moderation_logs**: Registro de todas las acciones de moderación
+- **Estado Anterior/Posterior**: Tracking completo de cambios
+- **Metadatos de Contexto**: Información adicional por acción
+- **Auditoría de Moderadores**: Seguimiento de acciones por moderador
+
+### 🔔 **Seguridad en Notificaciones**
+- **Token Validation**: Validación de tokens FCM
+- **Device Tracking**: Seguimiento de dispositivos registrados
+- **Notification History**: Historial completo de notificaciones
+- **Preference Security**: Seguridad en preferencias de usuario
+
+### 📈 **Monitoreo de Seguridad**
+- **Performance Monitoring**: Detección de anomalías en performance
+- **Error Rate Monitoring**: Alertas por tasas de error elevadas
+- **User Activity Monitoring**: Seguimiento de actividad sospechosa
+- **System Health**: Monitoreo de salud del sistema

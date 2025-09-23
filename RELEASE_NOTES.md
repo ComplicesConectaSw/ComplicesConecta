@@ -952,16 +952,6 @@ ComplicesConecta ahora cuenta con:
 ### 🎉 **CORRECCIONES TYPESCRIPT COMPLETADAS**
 - **✅ ResponsiveNavigation.tsx**: Corregidas referencias incorrectas de User type
 - **✅ Propiedades de perfil**: Migradas de `user.avatar/name` a `profile.avatar_url/display_name`
-- **✅ Hook useAuth**: Utilización correcta de objetos `user` y `profile`
-- **✅ Build exitoso**: Sin errores TypeScript, compilación limpia
-
----
-
-# 🚀 ComplicesConecta - Notas de Lanzamiento v2.5.0
-
-**Fecha de Lanzamiento:** 14 de Septiembre, 2025 - 00:45 hrs  
-**Plataforma:** Android APK + Web App  
-**Versión:** 2.5.0 (INTEGRACIÓN DE PLANTILLAS UI PREMIUM Y COMPONENTES MEJORADOS ✅)
 
 ---
 

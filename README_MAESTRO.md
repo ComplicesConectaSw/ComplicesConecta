@@ -1,4 +1,4 @@
-# 🎯 ComplicesConecta - Plataforma Swinger Premium v3.0.0
+# 🎯 ComplicesConecta - Plataforma Swinger Premium v3.3.0
 
 <div align="center">
 

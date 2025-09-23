@@ -14,6 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
+      audit_logs: {
+        Row: {
+          action_description: string
+          action_type: string
+          created_at: string
+          fraud_score: number | null
+          id: string
+          ip_address: unknown | null
+          request_data: Json | null
+          resource_id: string | null
+          resource_type: string | null
+          response_data: Json | null
+          risk_level: string | null
+          session_id: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action_description: string
+          action_type: string
+          created_at?: string
+          fraud_score?: number | null
+          id?: string
+          ip_address?: unknown | null
+          request_data?: Json | null
+          resource_id?: string | null
+          resource_type?: string | null
+          response_data?: Json | null
+          risk_level?: string | null
+          session_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action_description?: string
+          action_type?: string
+          created_at?: string
+          fraud_score?: number | null
+          id?: string
+          ip_address?: unknown | null
+          request_data?: Json | null
+          resource_id?: string | null
+          resource_type?: string | null
+          response_data?: Json | null
+          risk_level?: string | null
+          session_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       chat_invitations: {
         Row: {
           created_at: string | null
@@ -417,6 +468,93 @@ export type Database = {
           },
         ]
       }
+      moderation_logs: {
+        Row: {
+          action_type: string
+          created_at: string
+          description: string
+          id: string
+          metadata: Json | null
+          moderator_id: string
+          new_state: Json | null
+          previous_state: Json | null
+          target_id: string | null
+          target_type: string
+          target_user_id: string | null
+        }
+        Insert: {
+          action_type: string
+          created_at?: string
+          description: string
+          id?: string
+          metadata?: Json | null
+          moderator_id: string
+          new_state?: Json | null
+          previous_state?: Json | null
+          target_id?: string | null
+          target_type: string
+          target_user_id?: string | null
+        }
+        Update: {
+          action_type?: string
+          created_at?: string
+          description?: string
+          id?: string
+          metadata?: Json | null
+          moderator_id?: string
+          new_state?: Json | null
+          previous_state?: Json | null
+          target_id?: string | null
+          target_type?: string
+          target_user_id?: string | null
+        }
+        Relationships: []
+      }
+      notification_history: {
+        Row: {
+          body: string
+          created_at: string
+          data: Json | null
+          delivered_at: string | null
+          delivery_method: string
+          error_message: string | null
+          id: string
+          notification_type: string
+          sent_at: string | null
+          status: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          data?: Json | null
+          delivered_at?: string | null
+          delivery_method: string
+          error_message?: string | null
+          id?: string
+          notification_type: string
+          sent_at?: string | null
+          status?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          data?: Json | null
+          delivered_at?: string | null
+          delivery_method?: string
+          error_message?: string | null
+          id?: string
+          notification_type?: string
+          sent_at?: string | null
+          status?: string | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       pending_rewards: {
         Row: {
           amount: number
@@ -605,6 +743,90 @@ export type Database = {
           },
         ]
       }
+      system_metrics: {
+        Row: {
+          created_at: string
+          id: string
+          metadata: Json | null
+          metric_type: string
+          metric_unit: string
+          metric_value: number
+          recorded_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          metric_type: string
+          metric_unit?: string
+          metric_value: number
+          recorded_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          metric_type?: string
+          metric_unit?: string
+          metric_value?: number
+          recorded_at?: string
+        }
+        Relationships: []
+      }
+      token_analytics: {
+        Row: {
+          active_stakers: number
+          circulating_cmpx: number
+          circulating_gtk: number
+          created_at: string
+          id: string
+          metadata: Json | null
+          period_end: string
+          period_start: string
+          period_type: string
+          total_cmpx_supply: number
+          total_gtk_supply: number
+          total_staked_cmpx: number
+          transaction_count: number
+          transaction_volume_cmpx: number
+          transaction_volume_gtk: number
+        }
+        Insert: {
+          active_stakers?: number
+          circulating_cmpx?: number
+          circulating_gtk?: number
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          period_end: string
+          period_start: string
+          period_type: string
+          total_cmpx_supply?: number
+          total_gtk_supply?: number
+          total_staked_cmpx?: number
+          transaction_count?: number
+          transaction_volume_cmpx?: number
+          transaction_volume_gtk?: number
+        }
+        Update: {
+          active_stakers?: number
+          circulating_cmpx?: number
+          circulating_gtk?: number
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          period_end?: string
+          period_start?: string
+          period_type?: string
+          total_cmpx_supply?: number
+          total_gtk_supply?: number
+          total_staked_cmpx?: number
+          transaction_count?: number
+          transaction_volume_cmpx?: number
+          transaction_volume_gtk?: number
+        }
+        Relationships: []
+      }
       tokens: {
         Row: {
           base_value: number | null
@@ -680,6 +902,84 @@ export type Database = {
         }
         Relationships: []
       }
+      user_2fa_settings: {
+        Row: {
+          backup_codes: string[] | null
+          backup_codes_used: number
+          created_at: string
+          id: string
+          last_used_at: string | null
+          recovery_email: string | null
+          recovery_phone: string | null
+          totp_enabled: boolean
+          totp_secret: string | null
+          totp_verified_at: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          backup_codes?: string[] | null
+          backup_codes_used?: number
+          created_at?: string
+          id?: string
+          last_used_at?: string | null
+          recovery_email?: string | null
+          recovery_phone?: string | null
+          totp_enabled?: boolean
+          totp_secret?: string | null
+          totp_verified_at?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          backup_codes?: string[] | null
+          backup_codes_used?: number
+          created_at?: string
+          id?: string
+          last_used_at?: string | null
+          recovery_email?: string | null
+          recovery_phone?: string | null
+          totp_enabled?: boolean
+          totp_secret?: string | null
+          totp_verified_at?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_device_tokens: {
+        Row: {
+          created_at: string
+          device_info: Json | null
+          device_token: string
+          device_type: string | null
+          id: string
+          is_active: boolean
+          last_used_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          device_info?: Json | null
+          device_token: string
+          device_type?: string | null
+          id?: string
+          is_active?: boolean
+          last_used_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          device_info?: Json | null
+          device_token?: string
+          device_type?: string | null
+          id?: string
+          is_active?: boolean
+          last_used_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_likes: {
         Row: {
           created_at: string | null
@@ -701,6 +1001,39 @@ export type Database = {
           liked?: boolean
           liked_user_id?: string | null
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      user_notification_preferences: {
+        Row: {
+          created_at: string
+          delivery_method: string | null
+          enabled: boolean
+          id: string
+          notification_type: string
+          settings: Json | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          delivery_method?: string | null
+          enabled?: boolean
+          id?: string
+          notification_type: string
+          settings?: Json | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          delivery_method?: string | null
+          enabled?: boolean
+          id?: string
+          notification_type?: string
+          settings?: Json | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
