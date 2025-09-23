@@ -88,11 +88,18 @@ Probar en DevTools o dispositivos reales:
 ## 📊 Checklist de Verificación Rápida
 
 ### ✅ Funcionalidad Básica
-- [ ] App carga sin errores
-- [ ] Login/logout funciona
-- [ ] Navegación entre páginas fluida
-- [ ] Botones auth siempre visibles
-- [ ] NavigationEnhanced en todas las páginas
+- [x] App carga sin errores
+- [x] Login/logout funciona
+- [x] Navegación entre páginas fluida
+- [x] Botones auth siempre visibles
+- [x] NavigationEnhanced en todas las páginas
+
+### ✅ Botones de Perfiles Activados
+- [x] **ProfileSingle** - Botones de acción completamente funcionales
+- [x] **ProfileCouple** - Botones de match y chat activados
+- [x] **Discover** - Botones de like/dislike operativos
+- [x] **Matches** - Botones de chat y perfil funcionando
+- [x] **Requests** - Botones de aceptar/rechazar activos
 
 ### ✅ Responsividad
 - [ ] Sin scroll horizontal no deseado
