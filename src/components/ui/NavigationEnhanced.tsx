@@ -198,7 +198,7 @@ export const NavigationEnhanced: React.FC<NavigationEnhancedProps> = ({
             </div>
             <div className="hidden lg:block">
               <p className="text-sm font-medium text-gray-900 dark:text-white">
-                {user?.name || 'Usuario'}
+                {user?.email?.split('@')[0] || 'Usuario'}
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400">
                 {user?.role === 'admin' ? 'Administrador' : 'Miembro'}
@@ -319,7 +319,7 @@ export const NavigationEnhanced: React.FC<NavigationEnhancedProps> = ({
                   </div>
                   <div>
                     <p className="text-sm font-medium text-gray-900 dark:text-white">
-                      {user?.name || 'Usuario'}
+                      {user?.email?.split('@')[0] || 'Usuario'}
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-400">
                       {user?.role === 'admin' ? 'Administrador' : 'Miembro'}
