@@ -4,6 +4,7 @@ import App from '@/App.tsx'
 import './index.css'
 import './styles/responsive.css'
 import './styles/text-overflow-fixes.css'
+import './styles/text-visibility-fixes.css'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import { initSentry } from '@/lib/sentry'
 import { DebugInfo } from '@/debug'
@@ -11,10 +12,36 @@ import { initWebVitalsMonitoring } from '@/utils/webVitals'
 import { initializeCriticalPreloading } from '@/utils/preloading'
 import { androidSecurity } from '@/utils/androidSecurity'
 
+// Protección contra errores de wallets de criptomonedas
+if (typeof window !== 'undefined') {
+  // Silenciar errores específicos de wallets
+  window.addEventListener('error', (event) => {
+    const message = event.message || '';
+    if (message.includes('solana') || 
+        message.includes('ethereum') || 
+        message.includes('tronWeb') ||
+        message.includes('Cannot redefine property') ||
+        message.includes('Cannot assign to read only property')) {
+      event.preventDefault();
+      console.warn('⚠️ Wallet extension error silenced:', message);
+      return false;
+    }
+  });
+
+  // Interceptar errores no manejados
+  window.addEventListener('unhandledrejection', (event) => {
+    const reason = event.reason?.message || String(event.reason);
+    if (reason.includes('solana') || reason.includes('ethereum') || reason.includes('tronWeb')) {
+      event.preventDefault();
+      console.warn('⚠️ Wallet promise rejection silenced:', reason);
+    }
+  });
+}
+
 // Debug info for development only
 if (import.meta.env.DEV) {
-  console.log('🚀 ComplicesConecta v3.0.0 starting...', {
-    version: '3.0.0',
+  console.log('🚀 ComplicesConecta v3.3.0 starting...', {
+    version: '3.3.0',
     env: import.meta.env.MODE,
     supabaseUrl: import.meta.env.VITE_SUPABASE_URL ? 'SET' : 'MISSING',
     supabaseKey: import.meta.env.VITE_SUPABASE_ANON_KEY ? 'SET' : 'MISSING',

@@ -28,7 +28,7 @@ const config: CapacitorConfig = {
     // Optimizaciones para componentes animados móviles
     loggingBehavior: 'debug',
     // Mejora el rendimiento de WebView
-    appendUserAgent: 'ComplicesConecta/2.4.0',
+    appendUserAgent: 'ComplicesConecta/3.3.0',
     // Optimización de colores para tema oscuro
     backgroundColor: '#1a1a2e'
   },

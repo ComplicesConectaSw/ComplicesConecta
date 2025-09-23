@@ -758,30 +758,62 @@ button[class*="auth"]:hover {
 .text-gray-500,
 .text-gray-600,
 .text-muted-foreground {
-  color: #e0e0e0 !important;
+  color: #ffffff !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 /* Ensure all gray text variants are visible */
 .text-gray-300 {
-  color: #e0e0e0 !important;
+  color: #ffffff !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .text-gray-700 {
-  color: #1f2937 !important;
+  color: #000000 !important;
+  font-weight: 500;
 }
 
 .text-gray-800 {
-  color: #1f2937 !important;
+  color: #000000 !important;
+  font-weight: 600;
 }
 
 .text-gray-900 {
-  color: #111827 !important;
+  color: #000000 !important;
+  font-weight: 700;
 }
 
 .text-white\/60,
 .text-white\/70,
 .text-white\/80 {
-  color: #e0e0e0 !important;
+  color: #ffffff !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+/* Corregir textos específicos invisibles */
+.text-gray-600 {
+  color: #ffffff !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* Mejorar contraste en fondos oscuros */
+[class*="bg-gradient"], [class*="bg-purple"], [class*="bg-blue"] {
+  .text-gray-300,
+  .text-gray-400,
+  .text-gray-500,
+  .text-gray-600 {
+    color: #ffffff !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  }
+}
+
+/* Textos en cards y contenedores */
+.card .text-gray-600,
+.bg-white .text-gray-600,
+.bg-gray-50 .text-gray-600 {
+  color: #374151 !important;
+  text-shadow: none;
+  font-weight: 500;
 }
 
 /* Ensure all text is visible */

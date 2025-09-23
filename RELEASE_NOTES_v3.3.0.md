@@ -341,6 +341,5 @@ ComplicesConecta v3.3.0 marca un hito importante en la evolución de la platafor
 ---
 
 **Desarrollado por:** Equipo ComplicesConecta  
-**Arquitecto Técnico:** Assistant AI  
-**Fecha de Release:** 23 de Septiembre, 2025  
+ **Fecha de Release:** 23 de Septiembre, 2025  
 **Próxima Versión:** v3.4.0 (Diciembre 2025)
