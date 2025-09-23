@@ -29,7 +29,7 @@
 **Descripción**: Template de variables de entorno  
 **Contenido**:
 ```bash
-GITHUB_TOKEN=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
+GITHUB_TOKEN=YOUR_NEW_SECURE_GITHUB_TOKEN_HERE
 VITE_SUPABASE_URL=https://your-project.supabase.co
 VITE_SUPABASE_ANON_KEY=your-anon-key
 NODE_ENV=production
@@ -85,7 +85,7 @@ En CircleCI Project Settings > Environment Variables, agrega:
 
 | Variable | Valor |
 |----------|-------|
-| `GITHUB_TOKEN` | `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` |
+| `GITHUB_TOKEN` | `YOUR_NEW_SECURE_GITHUB_TOKEN_HERE` |
 | `VITE_SUPABASE_URL` | Tu URL de Supabase |
 | `VITE_SUPABASE_ANON_KEY` | Tu clave anónima de Supabase |
 | `NODE_ENV` | `production` |

@@ -23,7 +23,7 @@ VITE_SUPABASE_ANON_KEY=real-production-key
 DATABASE_URL=postgresql://real-credentials
 
 # En .env.circleci  
-GITHUB_TOKEN=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
+GITHUB_TOKEN=YOUR_NEW_SECURE_GITHUB_TOKEN_HERE
 VITE_SUPABASE_URL=production-url
 VITE_SUPABASE_ANON_KEY=production-key
 ```

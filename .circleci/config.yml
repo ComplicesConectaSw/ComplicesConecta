@@ -10,7 +10,7 @@ environment: &environment
   NODE_ENV: production
   VITE_SUPABASE_URL: $VITE_SUPABASE_URL
   VITE_SUPABASE_ANON_KEY: $VITE_SUPABASE_ANON_KEY
-  GITHUB_TOKEN: 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
+  GITHUB_TOKEN: $GITHUB_TOKEN
 
 # Configuración de caché
 cache_key: &cache_key
