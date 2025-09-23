@@ -594,26 +594,81 @@ const AdminProduction = () => {
 
           <Card className="bg-white/10 backdrop-blur-md border-white/20">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-white">Descargas APK</CardTitle>
-              <Download className="h-4 w-4 text-white" />
+              <CardTitle className="text-sm font-medium text-white">Solicitudes Carrera</CardTitle>
+              <FileText className="h-4 w-4 text-white" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white">{stats.apkDownloads}</div>
-              <p className="text-xs text-white/70">Descargas totales</p>
+              <div className="text-2xl font-bold text-white">{stats.totalNotifications}</div>
+              <p className="text-xs text-white/70">Aplicaciones pendientes</p>
             </CardContent>
           </Card>
 
           <Card className="bg-white/10 backdrop-blur-md border-white/20">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-white">Verificados WorldID</CardTitle>
+              <CardTitle className="text-sm font-medium text-white">Solicitudes Moderador</CardTitle>
               <Shield className="h-4 w-4 text-white" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white">{stats.worldIdVerified}</div>
-              <p className="text-xs text-white/70">Usuarios verificados</p>
+              <div className="text-2xl font-bold text-white">{stats.moderationQueue}</div>
+              <p className="text-xs text-white/70">En evaluación</p>
             </CardContent>
           </Card>
         </div>
+
+        {/* Panel de Control de Moderadores */}
+        <Card className="bg-white/10 backdrop-blur-md border-white/20 mb-8">
+          <CardHeader>
+            <CardTitle className="text-white flex items-center gap-2">
+              <Shield className="h-6 w-6 text-purple-400" />
+              Control de Moderadores - Administrador Principal
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4">
+                <h3 className="text-white font-semibold mb-2 flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-400" />
+                  Acciones Aprobadas
+                </h3>
+                <p className="text-2xl font-bold text-green-400">127</p>
+                <p className="text-white/60 text-sm">Decisiones validadas hoy</p>
+              </div>
+              
+              <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4">
+                <h3 className="text-white font-semibold mb-2 flex items-center gap-2">
+                  <AlertTriangle className="h-5 w-5 text-yellow-400" />
+                  Pendientes Revisión
+                </h3>
+                <p className="text-2xl font-bold text-yellow-400">23</p>
+                <p className="text-white/60 text-sm">Requieren supervisión</p>
+              </div>
+              
+              <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4">
+                <h3 className="text-white font-semibold mb-2 flex items-center gap-2">
+                  <XCircle className="h-5 w-5 text-red-400" />
+                  Acciones Rechazadas
+                </h3>
+                <p className="text-2xl font-bold text-red-400">8</p>
+                <p className="text-white/60 text-sm">Decisiones revertidas</p>
+              </div>
+            </div>
+            
+            <div className="mt-6 flex gap-4">
+              <Button className="bg-green-600 hover:bg-green-700 text-white">
+                <CheckCircle className="h-4 w-4 mr-2" />
+                Aprobar Todas las Pendientes
+              </Button>
+              <Button variant="outline" className="border-yellow-500 text-yellow-400 hover:bg-yellow-500/10">
+                <Eye className="h-4 w-4 mr-2" />
+                Revisar Cola de Moderación
+              </Button>
+              <Button variant="destructive">
+                <XCircle className="h-4 w-4 mr-2" />
+                Revocar Permisos Moderador
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
 
         <Tabs defaultValue="users" className="space-y-6">
           <TabsList className="bg-white/10 backdrop-blur-md border-white/20">

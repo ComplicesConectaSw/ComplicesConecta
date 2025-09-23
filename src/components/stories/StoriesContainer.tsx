@@ -101,26 +101,96 @@ const StoriesContainer: React.FC = () => {
   // Preview para usuarios no registrados
   if (!isAuthenticated()) {
     return (
-      <Card className="p-8 text-center bg-black/30 backdrop-blur-sm border-white/10">
-        <Camera className="h-16 w-16 mx-auto mb-4 text-white/50" />
-        <h3 className="text-xl font-semibold text-white mb-2">Historias Efímeras</h3>
-        <p className="text-white/70 mb-4">
-          Comparte momentos que desaparecen en 24 horas. Únete para ver y crear historias.
-        </p>
-        <div className="grid grid-cols-3 gap-2 mb-6 opacity-50">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="aspect-square bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg relative overflow-hidden">
-              <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                <Lock className="h-6 w-6 text-white" />
+      <div className="space-y-6">
+        {/* Descripción detallada de la funcionalidad */}
+        <Card className="bg-black/30 backdrop-blur-sm border-white/10 p-6">
+          <div className="text-center mb-6">
+            <Camera className="h-16 w-16 mx-auto mb-4 text-purple-400" />
+            <h3 className="text-2xl font-semibold text-white mb-3">Historias Efímeras de ComplicesConecta</h3>
+            <p className="text-white/90 text-lg leading-relaxed max-w-3xl mx-auto">
+              Comparte momentos auténticos que desaparecen automáticamente en 24 horas. 
+              Conecta de manera más íntima y espontánea con otros miembros de la comunidad.
+            </p>
+          </div>
+
+          {/* Características principales */}
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            <div className="text-center p-4 bg-white/5 rounded-lg">
+              <Clock className="h-8 w-8 mx-auto mb-2 text-blue-400" />
+              <h4 className="font-semibold text-white mb-1">24 Horas</h4>
+              <p className="text-white/70 text-sm">Contenido que desaparece automáticamente</p>
+            </div>
+            <div className="text-center p-4 bg-white/5 rounded-lg">
+              <Eye className="h-8 w-8 mx-auto mb-2 text-green-400" />
+              <h4 className="font-semibold text-white mb-1">Privacidad</h4>
+              <p className="text-white/70 text-sm">Control total sobre quién ve tus historias</p>
+            </div>
+            <div className="text-center p-4 bg-white/5 rounded-lg">
+              <Heart className="h-8 w-8 mx-auto mb-2 text-pink-400" />
+              <h4 className="font-semibold text-white mb-1">Interacción</h4>
+              <p className="text-white/70 text-sm">Reacciones y comentarios privados</p>
+            </div>
+          </div>
+
+          {/* Ejemplos de historias */}
+          <div className="mb-6">
+            <h4 className="text-lg font-semibold text-white mb-3 text-center">Ejemplos de Historias Populares</h4>
+            <div className="grid grid-cols-3 gap-3">
+              <div className="aspect-square bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg relative overflow-hidden">
+                <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white p-2">
+                  <Camera className="h-6 w-6 mb-1" />
+                  <span className="text-xs font-medium text-center">Cena romántica en casa</span>
+                </div>
+              </div>
+              <div className="aspect-square bg-gradient-to-br from-blue-500 to-teal-500 rounded-lg relative overflow-hidden">
+                <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white p-2">
+                  <Globe className="h-6 w-6 mb-1" />
+                  <span className="text-xs font-medium text-center">Viaje de fin de semana</span>
+                </div>
+              </div>
+              <div className="aspect-square bg-gradient-to-br from-orange-500 to-red-500 rounded-lg relative overflow-hidden">
+                <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white p-2">
+                  <MessageCircle className="h-6 w-6 mb-1" />
+                  <span className="text-xs font-medium text-center">Momento especial juntos</span>
+                </div>
               </div>
             </div>
-          ))}
-        </div>
-        <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white">
-          <Crown className="h-4 w-4 mr-2" />
-          Registrarse para Ver Historias
-        </Button>
-      </Card>
+          </div>
+
+          {/* Tipos de contenido */}
+          <div className="mb-6 p-4 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-lg border border-purple-400/20">
+            <h4 className="font-semibold text-white mb-2">¿Qué puedes compartir?</h4>
+            <div className="grid md:grid-cols-2 gap-3 text-sm text-white/80">
+              <div className="flex items-center gap-2">
+                <Camera className="h-4 w-4 text-purple-400" />
+                <span>Fotos de momentos especiales</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Play className="h-4 w-4 text-blue-400" />
+                <span>Videos cortos (hasta 30 segundos)</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Heart className="h-4 w-4 text-pink-400" />
+                <span>Momentos íntimos y románticos</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Share2 className="h-4 w-4 text-green-400" />
+                <span>Experiencias y aventuras</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center">
+            <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-8 py-3 text-lg">
+              <Crown className="h-5 w-5 mr-2" />
+              Únete para Ver y Crear Historias
+            </Button>
+            <p className="text-white/60 text-sm mt-2">
+              Regístrate gratis y comienza a compartir tus momentos especiales
+            </p>
+          </div>
+        </Card>
+      </div>
     );
   }
 

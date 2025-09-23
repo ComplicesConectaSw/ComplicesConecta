@@ -223,7 +223,10 @@ const Discover = () => {
   // Función para cargar perfiles reales desde Supabase
   const loadRealProfiles = useCallback(async () => {
     try {
-      logger.info('🔗 Cargando perfiles reales desde Supabase...');
+      // Solo log una vez por carga
+      if (profiles.length === 0) {
+        logger.info('🔗 Cargando perfiles reales desde Supabase...');
+      }
       
       const { data: realProfiles, error } = await supabase
         .from('profiles')
@@ -323,11 +326,14 @@ const Discover = () => {
     if (profiles.length === 0) {
       // Cargar perfiles según el tipo de usuario
       if (demoAuth && !apoyoAuth) {
-        logger.info('🎭 Usuario demo - cargando perfiles adicionales');
+        // Solo log una vez para demo
+        if (demoProfiles.length === 0) {
+          logger.info('🎭 Usuario demo - cargando perfiles adicionales');
+        }
         generateRandomProfiles();
       } else {
+        // Solo log una vez para usuarios reales
         logger.info('🔗 Cargando perfiles reales');
-        // Para usuarios reales y especiales, cargar perfiles desde Supabase
         loadRealProfiles();
       }
     }

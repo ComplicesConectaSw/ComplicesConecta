@@ -229,15 +229,29 @@ export const Header = () => {
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
             </Link>
             <Link 
+              to="/stories" 
+              className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base"
+            >
+              Stories
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
+            </Link>
+            <Link 
               to="/about" 
-              className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base hidden xl:block"
+              className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base"
             >
               Empresa
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
             </Link>
             <Link 
+              to="/moderator-request" 
+              className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base"
+            >
+              Moderadores
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
+            </Link>
+            <Link 
               to="/support" 
-              className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base hidden xl:block"
+              className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base"
             >
               Soporte
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
@@ -279,6 +293,12 @@ export const Header = () => {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
+                  <Link to="/stories" className="flex items-center gap-2 w-full">
+                    <BookOpen className="h-4 w-4" />
+                    Stories
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
                   <Link to="/tokens" className="flex items-center gap-2 w-full">
                     <Coins className="h-4 w-4" />
                     Tokens CMPX
@@ -288,6 +308,12 @@ export const Header = () => {
                   <Link to="/support" className="flex items-center gap-2 w-full">
                     <HelpCircle className="h-4 w-4" />
                     Soporte
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/about" className="flex items-center gap-2 w-full">
+                    <Info className="h-4 w-4" />
+                    Empresa
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
@@ -344,7 +370,7 @@ export const Header = () => {
                 <DropdownMenuItem asChild>
                   <Link to="/guidelines" className="flex items-center gap-2 w-full">
                     <BookOpen className="h-4 w-4" />
-                    Guías
+                    📋 Directrices de la Comunidad
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
@@ -357,6 +383,12 @@ export const Header = () => {
                   <Link to="/legal" className="flex items-center gap-2 w-full text-white hover:text-white">
                     <Scale className="h-4 w-4" />
                     Marco Legal
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/moderator-request" className="flex items-center gap-2 w-full">
+                    <Shield className="h-4 w-4" />
+                    🛡️ Ser Moderador
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>

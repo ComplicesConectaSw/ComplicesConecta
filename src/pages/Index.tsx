@@ -13,13 +13,14 @@ import { ActionButtonsModal } from "@/components/modals/ActionButtonsModal";
 import NavigationEnhanced from "@/components/NavigationEnhanced";
 import StoriesContainer from "@/components/stories/StoriesContainer";
 import { useScrollHide } from "@/hooks/useScrollHide";
-import { Heart, Users, Shield, Zap, Sparkles, Star, Rocket, Smartphone, Download, Smartphone as Android, Info, Briefcase, DollarSign } from "lucide-react";
+import { Heart, Users, Shield, Zap, Sparkles, Star, Rocket, Smartphone, Download, Smartphone as Android, Info, Briefcase, DollarSign, UserCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import "@/styles/animations.css";
 import { logger } from '@/lib/logger';
 import { motion } from 'framer-motion';
 import { usePersistedState } from '@/hooks/usePersistedState';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import ModeratorApplicationForm from "@/components/forms/ModeratorApplicationForm";
 
 // Professional profile images from Unsplash - Production ready
 // Removed local imports that fail in production
@@ -33,6 +34,7 @@ const Index = () => {
   const [isRunningInApp, setIsRunningInApp] = useState(false);
   const [showInstallModal, setShowInstallModal] = useState(false);
   const [showActionButtonsModal, setShowActionButtonsModal] = useState(false);
+  const [showModeratorForm, setShowModeratorForm] = useState(false);
   const isWelcomeVisible = useScrollHide(50);
 
   // Estado persistente
@@ -303,7 +305,7 @@ const Index = () => {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
               {/* About Section */}
               <Card className="bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/15 transition-all duration-300 hover:scale-105">
                 <CardHeader>
@@ -356,6 +358,32 @@ const Index = () => {
                     <Link to="/careers">
                       Ver Vacantes
                     </Link>
+                  </Button>
+                </CardContent>
+              </Card>
+              
+              {/* Moderator Section */}
+              <Card className="bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/15 transition-all duration-300 hover:scale-105">
+                <CardHeader>
+                  <div className="flex items-center justify-center mb-4">
+                    <div className="p-3 bg-gradient-to-r from-orange-500 to-red-600 rounded-full">
+                      <UserCheck className="h-8 w-8 text-white" />
+                    </div>
+                  </div>
+                  <CardTitle className="text-white text-center text-xl">
+                    Ser Moderador
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="text-center">
+                  <p className="text-white/90 mb-6">
+                    Ayuda a mantener una comunidad segura y respetuosa. Únete a nuestro equipo de moderadores voluntarios.
+                  </p>
+                  <Button 
+                    variant="outline" 
+                    className="border-white/30 text-white hover:bg-white/10 w-full"
+                    onClick={() => setShowModeratorForm(true)}
+                  >
+                    Aplicar Ahora
                   </Button>
                 </CardContent>
               </Card>
@@ -479,6 +507,27 @@ const Index = () => {
         isOpen={showActionButtonsModal}
         onClose={() => setShowActionButtonsModal(false)}
       />
+      
+      {/* Moderator Application Modal */}
+      {showModeratorForm && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-black/80 backdrop-blur-sm p-4 border-b border-white/20 z-10">
+              <Button
+                variant="ghost"
+                onClick={() => setShowModeratorForm(false)}
+                className="text-white hover:bg-white/10 float-right"
+              >
+                ✕ Cerrar
+              </Button>
+              <div className="clear-both"></div>
+            </div>
+            <div className="p-6">
+              <ModeratorApplicationForm />
+            </div>
+          </div>
+        </div>
+      )}
       
       {/* Loading Screen */}
       {isLoading && (

@@ -4,7 +4,7 @@ import { ArrowLeft, Heart, Star, Crown, Zap, Gift, Users, Shield } from "lucide-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Header } from "@/components/Header";
+import Header from "@/components/Header";
 
 const Donations = () => {
   const navigate = useNavigate();

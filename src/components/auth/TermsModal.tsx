@@ -40,7 +40,7 @@ export const TermsModal: React.FC<TermsModalProps> = ({
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ type: "spring", duration: 0.5 }}
-            className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+            className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto mx-4 sm:mx-0"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}

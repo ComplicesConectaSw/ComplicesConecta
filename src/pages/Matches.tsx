@@ -118,14 +118,10 @@ const Matches = () => {
     const isDemo = demoAuth === 'true';
     setIsProduction(!isDemo);
 
-    if (!isDemo) {
-      // Modo producción - cargar matches reales (sin filtro de distancia inicial)
-      loadRealMatches();
-    } else {
-      // Modo demo - usar datos mock SIEMPRE
-      setMatches(demoMatches);
-      logger.info('🎭 Matches demo cargados:', { count: demoMatches.length });
-    }
+    // SIEMPRE usar datos demo para respetar la lógica de negocio
+    // No cargar datos reales hasta que el sistema esté completamente implementado
+    setMatches(demoMatches);
+    logger.info('🎭 Matches demo cargados (respetando lógica de negocio):', { count: demoMatches.length, isDemo });
   }, []);
 
   // Cargar matches reales de producción
@@ -159,7 +155,7 @@ const Matches = () => {
     }
   };
 
-  const currentMatches = isProduction ? matches : demoMatches;
+  const currentMatches = demoMatches; // Siempre usar datos demo para respetar lógica de negocio
   const filteredMatches = currentMatches.filter(match => {
     switch (filter) {
       case 'new':

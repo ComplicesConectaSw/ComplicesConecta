@@ -13,6 +13,7 @@ import { TokenDashboard } from '@/components/tokens/TokenDashboard';
 import { StakingModal } from '@/components/tokens/StakingModal';
 import { TokenChatBot } from '@/components/tokens/TokenChatBot';
 import NavigationEnhanced from "@/components/NavigationEnhanced";
+import Header from "@/components/Header";
 import { motion } from 'framer-motion';
 import { AnimatedButton } from '@/components/ui/AnimatedButton';
 
@@ -31,6 +32,7 @@ export default function Tokens() {
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-hero-gradient pb-20">
+      <Header />
       {/* Advanced Animated Background - Same as Index */}
       <div className="fixed inset-0 z-0">
         {/* Animated Mesh Gradient */}

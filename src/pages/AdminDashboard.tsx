@@ -41,6 +41,8 @@ interface DashboardStats {
   moderatorsCount: number;
   newUsersToday: number;
   matchesToday: number;
+  careerApplications: number;
+  moderatorRequests: number;
 }
 
 interface UserActivity {
@@ -74,7 +76,9 @@ const AdminDashboard = () => {
     reportsCount: 0,
     moderatorsCount: 0,
     newUsersToday: 0,
-    matchesToday: 0
+    matchesToday: 0,
+    careerApplications: 0,
+    moderatorRequests: 0
   });
   
   const [userActivity, setUserActivity] = useState<UserActivity[]>([]);
@@ -154,6 +158,20 @@ const AdminDashboard = () => {
 
       const moderatorsCount = moderatorsData?.length || 0;
 
+      // Obtener solicitudes de carrera
+      const { data: careerData, error: careerError } = await (supabase as any)
+        .from('career_applications')
+        .select('id');
+
+      const careerApplications = careerData?.length || 0;
+
+      // Obtener solicitudes de moderadores
+      const { data: moderatorRequestsData, error: moderatorRequestsError } = await (supabase as any)
+        .from('moderator_requests')
+        .select('id');
+
+      const moderatorRequests = moderatorRequestsData?.length || 0;
+
       setStats({
         totalUsers,
         activeUsers,
@@ -162,7 +180,9 @@ const AdminDashboard = () => {
         reportsCount,
         moderatorsCount,
         newUsersToday,
-        matchesToday
+        matchesToday,
+        careerApplications,
+        moderatorRequests
       });
 
       // Cargar actividad de usuarios recientes
@@ -419,6 +439,32 @@ const AdminDashboard = () => {
                     <p className="text-blue-400 text-xs">Total enviados</p>
                   </div>
                   <MessageSquare className="h-6 w-6 sm:h-8 sm:w-8 text-blue-400" />
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-lg">
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-white/80 text-xs sm:text-sm">Solicitudes Carrera</p>
+                    <p className="text-xl sm:text-2xl font-bold text-white">{stats.careerApplications}</p>
+                    <p className="text-orange-400 text-xs">Pendientes revisión</p>
+                  </div>
+                  <Mail className="h-6 w-6 sm:h-8 sm:w-8 text-orange-400" />
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-lg">
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-white/80 text-xs sm:text-sm">Solicitudes Moderador</p>
+                    <p className="text-xl sm:text-2xl font-bold text-white">{stats.moderatorRequests}</p>
+                    <p className="text-purple-400 text-xs">En evaluación</p>
+                  </div>
+                  <Shield className="h-6 w-6 sm:h-8 sm:w-8 text-purple-400" />
                 </div>
               </CardContent>
             </Card>

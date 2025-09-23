@@ -4,15 +4,20 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { 
+  AlertCircle, 
+  ArrowLeft, 
+  CheckCircle, 
+  Crown, 
+  Mail, 
   Shield, 
   User, 
-  Mail, 
-  MessageSquare, 
   Clock, 
-  CheckCircle,
-  AlertCircle,
-  ArrowLeft
-} from 'lucide-react';
+  Award, 
+  Target, 
+  Users, 
+  Send, 
+  DollarSign 
+} from "lucide-react";
 import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
 import { validateModeratorRequest, type ModeratorRequestInput } from '@/lib/validations/moderator';
@@ -157,33 +162,135 @@ const ModeratorRequest = () => {
           </p>
         </div>
 
-        {/* Información sobre el rol */}
+        {/* Información detallada sobre el rol */}
         <Card className="bg-white/10 backdrop-blur-sm border-white/20 mb-6">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
-              <AlertCircle className="h-5 w-5 text-blue-400" />
-              ¿Qué hace un moderador?
+              <Shield className="h-6 w-6 text-purple-400" />
+              Programa de Moderadores ComplicesConecta
             </CardTitle>
+            <CardDescription className="text-white/80">
+              Únete a nuestro equipo de moderación y ayuda a crear un espacio seguro y respetuoso para todos
+            </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-6">
+            {/* Descripción del programa */}
+            <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-lg p-4 border border-purple-400/20">
+              <h3 className="text-white font-semibold mb-2 flex items-center gap-2">
+                <AlertCircle className="h-5 w-5 text-blue-400" />
+                ¿Por qué necesitamos moderadores?
+              </h3>
+              <p className="text-white/80 text-sm leading-relaxed">
+                ComplicesConecta es una plataforma para adultos que facilita conexiones auténticas y respetuosas. 
+                Nuestros moderadores son fundamentales para mantener un ambiente seguro, donde todos los miembros 
+                puedan interactuar con confianza y respeto mutuo.
+              </p>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="bg-white/5 rounded-lg p-4">
-                <h3 className="text-white font-semibold mb-2">Responsabilidades</h3>
-                <ul className="text-white/70 text-sm space-y-1">
-                  <li>• Revisar reportes de usuarios</li>
-                  <li>• Moderar contenido inapropiado</li>
-                  <li>• Aplicar suspensiones cuando sea necesario</li>
-                  <li>• Mantener la comunidad segura</li>
+                <h3 className="text-white font-semibold mb-3 flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-400" />
+                  Responsabilidades Principales
+                </h3>
+                <ul className="text-white/70 text-sm space-y-2">
+                  <li>• <strong>Revisar reportes:</strong> Analizar denuncias de usuarios de manera imparcial</li>
+                  <li>• <strong>Moderar contenido:</strong> Evaluar fotos, mensajes y perfiles reportados</li>
+                  <li>• <strong>Aplicar sanciones:</strong> Advertencias, suspensiones temporales o permanentes</li>
+                  <li>• <strong>Apoyo a usuarios:</strong> Resolver consultas sobre políticas de la comunidad</li>
+                  <li>• <strong>Prevención:</strong> Identificar patrones de comportamiento problemático</li>
                 </ul>
               </div>
+
               <div className="bg-white/5 rounded-lg p-4">
-                <h3 className="text-white font-semibold mb-2">Requisitos</h3>
-                <ul className="text-white/70 text-sm space-y-1">
-                  <li>• Ser mayor de 18 años</li>
-                  <li>• Disponibilidad de al menos 5 horas/semana</li>
-                  <li>• Experiencia en moderación (preferible)</li>
-                  <li>• Compromiso con la comunidad</li>
+                <h3 className="text-white font-semibold mb-3 flex items-center gap-2">
+                  <DollarSign className="h-5 w-5 text-yellow-400" />
+                  Retribución Monetaria
+                </h3>
+                <div className="text-white/70 text-sm space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span>Compensación base mensual:</span>
+                    <span className="text-green-400 font-semibold">$2,500 - $4,000 MXN</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span>Bono por desempeño:</span>
+                    <span className="text-green-400 font-semibold">Hasta $1,500 MXN</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span>Bono por casos complejos:</span>
+                    <span className="text-green-400 font-semibold">$50 - $200 MXN</span>
+                  </div>
+                  <div className="mt-3 pt-2 border-t border-white/10">
+                    <p className="text-xs text-white/60">
+                      * Pagos quincenales vía transferencia bancaria
+                    </p>
+                    <p className="text-xs text-white/60">
+                      * Incrementos basados en evaluaciones trimestrales
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-white/5 rounded-lg p-4">
+                <h3 className="text-white font-semibold mb-3 flex items-center gap-2">
+                  <User className="h-5 w-5 text-blue-400" />
+                  Perfil Ideal del Moderador
+                </h3>
+                <ul className="text-white/70 text-sm space-y-2">
+                  <li>• <strong>Edad:</strong> Mayor de 21 años (preferible)</li>
+                  <li>• <strong>Disponibilidad:</strong> Mínimo 8-10 horas semanales</li>
+                  <li>• <strong>Experiencia:</strong> Moderación online, atención al cliente o psicología</li>
+                  <li>• <strong>Habilidades:</strong> Comunicación empática y toma de decisiones</li>
+                  <li>• <strong>Compromiso:</strong> Mínimo 6 meses en el programa</li>
                 </ul>
+              </div>
+            </div>
+
+            {/* Beneficios y compensación */}
+            <div className="bg-gradient-to-r from-green-500/10 to-blue-500/10 rounded-lg p-4 border border-green-400/20">
+              <h3 className="text-white font-semibold mb-3 flex items-center gap-2">
+                <Badge className="h-5 w-5 text-yellow-400" />
+                Beneficios del Programa
+              </h3>
+              <div className="grid md:grid-cols-3 gap-4 text-sm">
+                <div>
+                  <h4 className="text-green-300 font-medium mb-1">Compensación</h4>
+                  <p className="text-white/70">Tokens CMPX mensuales según horas dedicadas</p>
+                </div>
+                <div>
+                  <h4 className="text-blue-300 font-medium mb-1">Acceso Premium</h4>
+                  <p className="text-white/70">Funciones exclusivas mientras seas moderador activo</p>
+                </div>
+                <div>
+                  <h4 className="text-purple-300 font-medium mb-1">Experiencia</h4>
+                  <p className="text-white/70">Certificado de moderación y referencias profesionales</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Proceso de selección */}
+            <div className="bg-white/5 rounded-lg p-4">
+              <h3 className="text-white font-semibold mb-3 flex items-center gap-2">
+                <Clock className="h-5 w-5 text-orange-400" />
+                Proceso de Selección
+              </h3>
+              <div className="grid md:grid-cols-4 gap-3 text-xs">
+                <div className="text-center">
+                  <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-2 text-white font-bold">1</div>
+                  <p className="text-white/70">Solicitud</p>
+                </div>
+                <div className="text-center">
+                  <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-2 text-white font-bold">2</div>
+                  <p className="text-white/70">Revisión (2-3 días)</p>
+                </div>
+                <div className="text-center">
+                  <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-2 text-white font-bold">3</div>
+                  <p className="text-white/70">Entrevista virtual</p>
+                </div>
+                <div className="text-center">
+                  <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center mx-auto mb-2 text-white font-bold">4</div>
+                  <p className="text-white/70">Capacitación</p>
+                </div>
               </div>
             </div>
           </CardContent>

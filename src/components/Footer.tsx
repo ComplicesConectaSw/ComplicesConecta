@@ -169,16 +169,16 @@ export const Footer = () => {
         <div className="border-t border-background/20 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-background/60 text-sm">
-              © 2024 ComplicesConecta v1.6.0 - Sistema CMPX/GTK + World ID Integration. Todos los derechos reservados.
+              2024 ComplicesConecta v1.6.0 - Sistema CMPX/GTK + World ID Integration. Todos los derechos reservados.
             </div>
             <div className="flex space-x-6 text-sm">
-              <Link to="/privacy" className="text-background/60 hover:text-primary transition-colors">
+              <Link to="/privacy" className="text-white/80 hover:text-primary transition-colors">
                 Privacidad
               </Link>
-              <Link to="/terms" className="text-background/60 hover:text-primary transition-colors">
+              <Link to="/terms" className="text-white/80 hover:text-primary transition-colors">
                 Términos
               </Link>
-              <Link to="/support" className="text-background/60 hover:text-primary transition-colors">
+              <Link to="/support" className="text-white/80 hover:text-primary transition-colors">
                 Contacto
               </Link>
             </div>

@@ -376,10 +376,28 @@ export const useTokens = () => {
   };
 
   // Refrescar datos
-  const refreshTokenData = () => {
+  const refreshTokenData = useCallback(async () => {
     logger.info('🔄 Refrescando datos de tokens', { mode: config.mode });
-    loadTokenData();
-  };
+    setLoading(true);
+    await loadTokenData();
+    
+    // Mostrar feedback visual al usuario
+    if (typeof window !== 'undefined') {
+      // Crear notificación temporal
+      const notification = document.createElement('div');
+      notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 transition-all duration-300';
+      notification.textContent = '✅ Balance actualizado correctamente';
+      document.body.appendChild(notification);
+      
+      // Remover después de 3 segundos
+      setTimeout(() => {
+        notification.style.opacity = '0';
+        setTimeout(() => {
+          document.body.removeChild(notification);
+        }, 300);
+      }, 3000);
+    }
+  }, [config.mode, loadTokenData]);
 
 
 

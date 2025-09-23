@@ -161,8 +161,10 @@ const ProfileSingle: React.FC = () => {
           return;
         }
         
-        // Estado inesperado final
-        logger.info('⚠️ Estado inesperado: sin usuario ni perfil válido');
+        // Estado inesperado final - solo log una vez
+        if (!profile) {
+          logger.info('⚠️ Estado inesperado: sin usuario ni perfil válido');
+        }
         setIsLoading(false);
       } catch (error) {
         logger.error('Error cargando perfil:', { error: String(error) });
