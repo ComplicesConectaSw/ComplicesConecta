@@ -29,9 +29,18 @@ const NavigationEnhanced = ({
   const [lastScrollY, setLastScrollY] = useState(0);
   const [activeItem, setActiveItem] = useState<string>('');
 
-  // Demo theme configuration
-  const { navbarStyle } = useDemoThemeConfig();
+  // Demo theme configuration - usar hook unificado para mejor compatibilidad
+  const { navbarStyle, demoTheme } = useDemoThemeConfig();
   const navbarStyles = getNavbarStyles(navbarStyle);
+  
+  // Forzar re-render cuando cambie el tema
+  useEffect(() => {
+    // Trigger re-render para aplicar nuevos estilos
+    const timer = setTimeout(() => {
+      setActiveItem(prev => prev);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [navbarStyle, demoTheme]);
 
   // Verificar si el usuario está autenticado
   const isAuthenticated = localStorage.getItem('demo_authenticated') === 'true';

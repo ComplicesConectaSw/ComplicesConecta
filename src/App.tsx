@@ -44,6 +44,7 @@ const TokensLegal = lazy(() => import("@/pages/TokensLegal"));
 const ProjectInfo = lazy(() => import("@/pages/ProjectInfo"));
 const Security = lazy(() => import("@/pages/Security"));
 const Guidelines = lazy(() => import("@/pages/Guidelines"));
+const Legal = lazy(() => import("@/pages/Legal"));
 const Admin = lazy(() => import("@/pages/Admin"));
 const AdminProduction = lazy(() => import("@/pages/AdminProduction"));
 const ProfileSingle = lazy(() => import("@/pages/ProfileSingle"));
@@ -124,6 +125,7 @@ const App = () => (
                   <Route path="/admin-production" element={<AdminProduction />} />
                   <Route path="/security" element={<Security />} />
                   <Route path="/guidelines" element={<Guidelines />} />
+                  <Route path="/legal" element={<Legal />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/careers" element={<Careers />} />
                   <Route path="/admin/career-applications" element={

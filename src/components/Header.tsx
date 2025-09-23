@@ -9,7 +9,25 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator 
 } from "@/components/ui/dropdown-menu";
-import { Heart, Menu, X, Download, Settings, LogOut, User, DollarSign, HelpCircle, Crown, Shield, Coins, FileText, BookOpen, Lock, Info, ChevronDown, Users } from 'lucide-react';
+import { 
+  User, 
+  LogOut, 
+  Crown, 
+  Settings, 
+  HelpCircle, 
+  DollarSign, 
+  Users, 
+  Heart, 
+  Coins, 
+  FileText, 
+  BookOpen, 
+  Lock, 
+  Info, 
+  Shield, 
+  ChevronDown, 
+  Scale,
+  Menu 
+} from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { NotificationBell } from "@/components/notifications/NotificationBell";
@@ -99,21 +117,37 @@ export const Header = () => {
   }, [isRunningInApp]);
 
   const handleLogout = async () => {
-    // Cerrar sesión demo
-    localStorage.removeItem('demo_authenticated');
-    localStorage.removeItem('demo_user');
-    setDemoUser(null);
-    
-    // Cerrar sesión real si existe
-    if (authIsAuthenticated()) {
-      await signOut();
+    try {
+      // Limpiar sesión demo completamente
+      localStorage.removeItem('demo_authenticated');
+      localStorage.removeItem('demo_user');
+      localStorage.removeItem('userType');
+      setDemoUser(null);
+      
+      // Cerrar sesión real si existe
+      if (authIsAuthenticated()) {
+        await signOut();
+      }
+      
+      // Limpiar cualquier otro dato de sesión
+      localStorage.removeItem('selectedProfile');
+      localStorage.removeItem('currentUser');
+      
       toast({
         title: "Sesión cerrada",
         description: "Has cerrado sesión exitosamente",
       });
+      
+      // Forzar recarga de la página para limpiar estado
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Error durante logout:', error);
+      toast({
+        title: "Error",
+        description: "Hubo un problema al cerrar sesión",
+        variant: "destructive"
+      });
     }
-    
-    navigate('/');
   };
   return (
     <header className={`${navbarStyles.backgroundClass} ${navbarStyles.shadowClass} border-b ${navbarStyles.borderClass} sticky top-0 z-50 transition-all duration-300 py-2 sm:py-4`}>
@@ -256,6 +290,12 @@ export const Header = () => {
                     Soporte
                   </Link>
                 </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/moderator-request" className="flex items-center gap-2 w-full">
+                    <Shield className="h-4 w-4" />
+                    Ser Moderador
+                  </Link>
+                </DropdownMenuItem>
                 {!isAuthenticated && (
                   <DropdownMenuItem asChild>
                     <Link to="/auth" className="flex items-center gap-2 w-full">
@@ -314,15 +354,21 @@ export const Header = () => {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
+                  <Link to="/legal" className="flex items-center gap-2 w-full">
+                    <Scale className="h-4 w-4" />
+                    Marco Legal
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
                   <Link to="/project-info" className="flex items-center gap-2 w-full">
                     <Info className="h-4 w-4" />
                     Proyecto
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/chat-info" className="flex items-center gap-2 w-full">
+                  <Link to="/about" className="flex items-center gap-2 w-full">
                     <Info className="h-4 w-4" />
-                    Sistema de Chat
+                    Acerca de
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>

@@ -54,6 +54,7 @@ const Chat = () => {
   const [realRooms, setRealRooms] = useState<SimpleChatRoom[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [activeTab, setActiveTab] = useState<'private' | 'public'>('private');
+  const [tabError, setTabError] = useState<string | null>(null);
   const [hasChatAccess, setHasChatAccess] = useState<{[key: number]: boolean}>({});
   const [isProduction, setIsProduction] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -435,8 +436,16 @@ const Chat = () => {
               <UnifiedButton
                 variant={activeTab === 'private' ? 'default' : 'ghost'}
                 size="sm"
-                className="flex-1 flex items-center gap-2 text-white"
-                onClick={() => setActiveTab('private')}
+                className={`flex-1 flex items-center gap-2 transition-all duration-200 ${
+                  activeTab === 'private' 
+                    ? 'bg-purple-500 text-white shadow-lg' 
+                    : 'text-white/70 hover:text-white hover:bg-white/10'
+                }`}
+                onClick={() => {
+                  setTabError(null);
+                  setActiveTab('private');
+                  logger.info('🔒 Cambiando a tab privado');
+                }}
               >
                 <Lock className="h-4 w-4" />
                 Privado
@@ -449,8 +458,16 @@ const Chat = () => {
               <UnifiedButton
                 variant={activeTab === 'public' ? 'default' : 'ghost'}
                 size="sm"
-                className="flex-1 flex items-center gap-2 text-white"
-                onClick={() => setActiveTab('public')}
+                className={`flex-1 flex items-center gap-2 transition-all duration-200 ${
+                  activeTab === 'public' 
+                    ? 'bg-pink-500 text-white shadow-lg' 
+                    : 'text-white/70 hover:text-white hover:bg-white/10'
+                }`}
+                onClick={() => {
+                  setTabError(null);
+                  setActiveTab('public');
+                  logger.info('🌐 Cambiando a tab público');
+                }}
               >
                 <Globe className="h-4 w-4" />
                 Público
@@ -461,6 +478,13 @@ const Chat = () => {
                 )}
               </UnifiedButton>
             </div>
+
+            {/* Error display */}
+            {tabError && (
+              <div className="mt-2 p-2 bg-red-500/20 border border-red-500/30 rounded-lg">
+                <p className="text-red-200 text-sm">{tabError}</p>
+              </div>
+            )}
             
             {/* Tab Content */}
             {activeTab === 'private' && (
@@ -710,23 +734,60 @@ const Chat = () => {
                     </div>
                   </div>
                 ) : (
-                  <div className="flex space-x-2">
-                    <UnifiedInput
-                      type="text"
-                      placeholder="Escribe tu mensaje..."
-                      value={newMessage}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewMessage(e.target.value)}
-                      onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && handleSendMessage()}
-                      className="flex-1 bg-white/10 border-white/20 text-white placeholder-white/50 focus:border-white/40"
-                    />
-                    <UnifiedButton 
-                      onClick={handleSendMessage}
-                      disabled={!newMessage.trim()}
-                      gradient={true}
-                      className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0"
-                    >
-                      <Send className="h-4 w-4" />
-                    </UnifiedButton>
+                  <div className="space-y-3">
+                    {/* Botones de galería y solicitudes */}
+                    <div className="flex gap-2 justify-center">
+                      <UnifiedButton
+                        onClick={() => navigate('/gallery')}
+                        variant="outline"
+                        className="flex-1 border-purple-400/50 text-purple-300 hover:bg-purple-500/20 text-xs py-2"
+                      >
+                        <Heart className="h-3 w-3 mr-1" />
+                        Galería
+                      </UnifiedButton>
+                      <UnifiedButton
+                        onClick={() => navigate('/requests')}
+                        variant="outline"
+                        className="flex-1 border-pink-400/50 text-pink-300 hover:bg-pink-500/20 text-xs py-2"
+                      >
+                        <UserPlus className="h-3 w-3 mr-1" />
+                        Solicitudes
+                      </UnifiedButton>
+                      <UnifiedButton
+                        onClick={() => {
+                          if (selectedChat?.roomType === 'private') {
+                            toast({ title: "Galería Privada", description: "Accediendo a galería privada con " + selectedChat.name });
+                          } else {
+                            toast({ title: "Galería Pública", description: "Accediendo a galería pública de la sala" });
+                          }
+                        }}
+                        variant="outline"
+                        className="flex-1 border-green-400/50 text-green-300 hover:bg-green-500/20 text-xs py-2"
+                      >
+                        <Globe className="h-3 w-3 mr-1" />
+                        {selectedChat?.roomType === 'private' ? 'Privada' : 'Pública'}
+                      </UnifiedButton>
+                    </div>
+                    
+                    {/* Input de mensaje */}
+                    <div className="flex space-x-2">
+                      <UnifiedInput
+                        type="text"
+                        placeholder="Escribe tu mensaje..."
+                        value={newMessage}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewMessage(e.target.value)}
+                        onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && handleSendMessage()}
+                        className="flex-1 bg-white/10 border-white/20 text-white placeholder-white/50 focus:border-white/40"
+                      />
+                      <UnifiedButton 
+                        onClick={handleSendMessage}
+                        disabled={!newMessage.trim()}
+                        gradient={true}
+                        className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0"
+                      >
+                        <Send className="h-4 w-4" />
+                      </UnifiedButton>
+                    </div>
                   </div>
                 )}
                 {selectedChat?.roomType === 'public' && (

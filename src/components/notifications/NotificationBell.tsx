@@ -35,6 +35,32 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ className = 
   const { user } = useAuth();
   const { toast } = useToast();
 
+  // Load demo notifications for demo users
+  const loadDemoNotifications = () => {
+    const demoNotifications: NotificationItem[] = [
+      {
+        id: 'demo-1',
+        type: 'request',
+        title: 'Nueva solicitud de conexión',
+        message: 'Anabella & Julio quieren conectar contigo',
+        read: false,
+        created_at: new Date().toISOString(),
+        sender_name: 'Anabella & Julio'
+      },
+      {
+        id: 'demo-2',
+        type: 'email',
+        title: 'Nuevo mensaje',
+        message: 'Tienes un mensaje nuevo de Carmen & Roberto',
+        read: false,
+        created_at: new Date(Date.now() - 3600000).toISOString(),
+        sender_name: 'Carmen & Roberto'
+      }
+    ];
+    setNotifications(demoNotifications);
+    setUnreadCount(demoNotifications.filter(n => !n.read).length);
+  };
+
   // Load notifications on mount and when user changes
   useEffect(() => {
     if (user && !(user as any).is_demo) {
@@ -54,9 +80,8 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ className = 
         subscription.unsubscribe();
       };
     } else if ((user as any)?.is_demo) {
-      // Mock notifications for demo users
-      setNotifications([]);
-      setUnreadCount(0);
+      // Cargar notificaciones demo
+      loadDemoNotifications();
     }
   }, [user]);
 

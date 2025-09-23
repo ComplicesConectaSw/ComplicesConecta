@@ -44,10 +44,17 @@ const StoriesContainer: React.FC = () => {
   const loadStories = async () => {
     try {
       setLoading(true);
+      logger.info('🎬 Cargando stories...');
       const fetchedStories = await storyService.getStories();
+      logger.info('🎬 Stories cargadas:', { count: fetchedStories.length });
       setStories(fetchedStories);
     } catch (error) {
       logger.error('Error loading stories:', { error: error instanceof Error ? error.message : String(error) });
+      // En caso de error, cargar stories demo como fallback
+      if (isDemoMode()) {
+        logger.info('🎬 Cargando stories demo como fallback');
+        setStories([]);
+      }
     } finally {
       setLoading(false);
     }

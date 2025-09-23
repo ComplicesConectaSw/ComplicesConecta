@@ -11,6 +11,7 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/lib/logger";
+import { Header } from "@/components/Header";
 
 const ProjectSupport = () => {
   const navigate = useNavigate();
@@ -179,7 +180,9 @@ const ProjectSupport = () => {
 
       {/* Content */}
       <div className="relative z-10 min-h-screen">
-        {/* Header */}
+        <Header />
+        
+        {/* Page Header */}
         <div className="bg-black/30 backdrop-blur-sm border-b border-white/10 p-4">
           <div className="flex items-center justify-between max-w-6xl mx-auto">
             <Button 
@@ -188,10 +191,10 @@ const ProjectSupport = () => {
               className="text-white hover:bg-white/10 transition-all duration-300 hover:scale-105"
             >
               <ArrowLeft className="h-5 w-5 mr-2" />
-              Volver
+              <span className="hidden sm:inline">Volver</span>
             </Button>
-            <h1 className="text-2xl font-bold text-white">Apoyo al Proyecto</h1>
-            <div className="w-20"></div>
+            <h1 className="text-xl sm:text-2xl font-bold text-white">Apoyo al Proyecto</h1>
+            <div className="w-16 sm:w-20"></div>
           </div>
         </div>
 

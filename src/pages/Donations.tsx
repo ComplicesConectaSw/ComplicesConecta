@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Heart, Star, Crown, Zap, Gift, Users, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Header } from "@/components/Header";
 
 const Donations = () => {
+  const navigate = useNavigate();
   const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
 
   const donationTiers = [
@@ -73,14 +75,19 @@ const Donations = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-600 via-pink-500 to-indigo-600">
+      <Header />
+      
       <div className="container mx-auto px-4 py-8">
-        {/* Header */}
+        {/* Page Header */}
         <div className="flex items-center gap-4 mb-8">
-          <Button variant="ghost" size="sm" className="text-white hover:bg-white/10" asChild>
-            <Link to="/settings">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Volver
-            </Link>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="text-white hover:bg-white/10"
+            onClick={() => navigate(-1)}
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            <span className="hidden sm:inline">Volver</span>
           </Button>
         </div>
 

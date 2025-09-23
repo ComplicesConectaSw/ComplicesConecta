@@ -162,10 +162,20 @@ const Requests = () => {
     }
     
     // Verificar autenticación real - solo redirigir si realmente no está autenticado
-    if (!isAuthenticated()) {
-      logger.info('❌ Usuario no autenticado en Requests, redirigiendo a /auth');
-      navigate('/auth');
-      return;
+    try {
+      if (!isAuthenticated()) {
+        logger.info('❌ Usuario no autenticado en Requests, redirigiendo a /auth');
+        navigate('/auth');
+        return;
+      }
+    } catch (error) {
+      logger.error('❌ Error verificando autenticación en Requests:', { error });
+      // No redirigir automáticamente en caso de error, permitir que el usuario permanezca
+      toast({
+        title: "Advertencia",
+        description: "Hubo un problema verificando la autenticación. Si persiste, intenta cerrar y abrir sesión.",
+        variant: "destructive"
+      });
     }
     
     // Usuario real autenticado

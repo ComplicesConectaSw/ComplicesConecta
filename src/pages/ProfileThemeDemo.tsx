@@ -1,14 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Header } from "@/components/Header";
 import NavigationEnhanced from "@/components/NavigationEnhanced";
 import { ProfileThemeShowcase } from '@/components/demo/ProfileThemeShowcase';
 import { UnifiedCard } from '@/components/ui/UnifiedCard';
 import { Badge } from '@/components/ui/badge';
-import { Palette, Eye, Users, Sparkles } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Palette, Eye, Users, Sparkles, Settings, Heart } from 'lucide-react';
+import { useProfileTheme, ProfileType, Gender, Theme, getAvailableThemes } from '@/hooks/useProfileTheme';
 
 const ProfileThemeDemo: React.FC = () => {
+  const [selectedProfileType, setSelectedProfileType] = useState<ProfileType>('single');
+  const [selectedGenders, setSelectedGenders] = useState<Gender[]>(['male']);
+  const [selectedTheme, setSelectedTheme] = useState<Theme>('elegant');
+  
+  const themeConfig = useProfileTheme(selectedProfileType, selectedGenders, selectedTheme);
+  const availableThemes = getAvailableThemes();
+
+  const handleProfileTypeChange = (type: ProfileType) => {
+    setSelectedProfileType(type);
+    if (type === 'single') {
+      setSelectedGenders(['male']);
+    } else {
+      setSelectedGenders(['male', 'female']);
+    }
+  };
+
+  const handleGenderChange = (index: number, gender: Gender) => {
+    const newGenders = [...selectedGenders];
+    newGenders[index] = gender;
+    setSelectedGenders(newGenders);
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-indigo-50">
+    <div className={`min-h-screen ${themeConfig.backgroundClass}`}>
       <Header />
       <NavigationEnhanced />
       
@@ -16,32 +41,129 @@ const ProfileThemeDemo: React.FC = () => {
         {/* Hero Section */}
         <div className="text-center space-y-4 py-12">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <Sparkles className="h-10 w-10 text-purple-600" />
-            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+            <Sparkles className={`h-10 w-10 ${themeConfig.accentClass}`} />
+            <h1 className={`text-4xl md:text-5xl font-bold ${themeConfig.textClass}`}>
               Temas Visuales de Perfiles
             </h1>
           </div>
           
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+          <p className={`text-xl ${themeConfig.textClass} max-w-3xl mx-auto leading-relaxed opacity-90`}>
             Experimenta con la personalización visual avanzada de ComplicesConecta. 
             Los perfiles se adaptan dinámicamente según el género, tipo de relación y preferencias de tema.
           </p>
           
           <div className="flex flex-wrap justify-center gap-3 mt-6">
-            <Badge variant="secondary" className="px-4 py-2">
+            <Badge variant="secondary" className="px-4 py-2 bg-white/20 text-white">
               <Eye className="h-4 w-4 mr-2" />
               Personalización Visual
             </Badge>
-            <Badge variant="secondary" className="px-4 py-2">
+            <Badge variant="secondary" className="px-4 py-2 bg-white/20 text-white">
               <Users className="h-4 w-4 mr-2" />
               Single & Parejas
             </Badge>
-            <Badge variant="secondary" className="px-4 py-2">
+            <Badge variant="secondary" className="px-4 py-2 bg-white/20 text-white">
               <Palette className="h-4 w-4 mr-2" />
-              3 Temas Premium
+              5 Temas Premium
             </Badge>
           </div>
         </div>
+
+        {/* Configuración de Tema */}
+        <UnifiedCard className="p-6 bg-white/10 backdrop-blur-md border-white/20">
+          <div className="flex items-center gap-3 mb-6">
+            <Settings className={`h-6 w-6 ${themeConfig.accentClass}`} />
+            <h3 className={`text-xl font-semibold ${themeConfig.textClass}`}>
+              Configuración de Tema Personalizado
+            </h3>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-6">
+            {/* Tipo de Perfil */}
+            <div>
+              <label className={`block text-sm font-medium ${themeConfig.textClass} mb-2`}>
+                Tipo de Perfil
+              </label>
+              <div className="space-y-2">
+                <Button
+                  variant={selectedProfileType === 'single' ? 'default' : 'outline'}
+                  onClick={() => handleProfileTypeChange('single')}
+                  className={`w-full ${selectedProfileType === 'single' ? 'bg-white/20 text-white' : 'border-white/30 text-white hover:bg-white/10'}`}
+                >
+                  👤 Single
+                </Button>
+                <Button
+                  variant={selectedProfileType === 'couple' ? 'default' : 'outline'}
+                  onClick={() => handleProfileTypeChange('couple')}
+                  className={`w-full ${selectedProfileType === 'couple' ? 'bg-white/20 text-white' : 'border-white/30 text-white hover:bg-white/10'}`}
+                >
+                  💑 Pareja
+                </Button>
+              </div>
+            </div>
+
+            {/* Configuración de Género */}
+            <div>
+              <label className={`block text-sm font-medium ${themeConfig.textClass} mb-2`}>
+                {selectedProfileType === 'single' ? 'Género' : 'Géneros de la Pareja'}
+              </label>
+              <div className="space-y-2">
+                {selectedGenders.map((gender, index) => (
+                  <div key={index} className="flex gap-2">
+                    <Button
+                      variant={gender === 'male' ? 'default' : 'outline'}
+                      onClick={() => handleGenderChange(index, 'male')}
+                      className={`flex-1 ${gender === 'male' ? 'bg-blue-500/80 text-white' : 'border-white/30 text-white hover:bg-white/10'}`}
+                    >
+                      👨 Masculino
+                    </Button>
+                    <Button
+                      variant={gender === 'female' ? 'default' : 'outline'}
+                      onClick={() => handleGenderChange(index, 'female')}
+                      className={`flex-1 ${gender === 'female' ? 'bg-pink-500/80 text-white' : 'border-white/30 text-white hover:bg-white/10'}`}
+                    >
+                      👩 Femenino
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Tema Premium */}
+            <div>
+              <label className={`block text-sm font-medium ${themeConfig.textClass} mb-2`}>
+                Tema Premium
+              </label>
+              <Select value={selectedTheme} onValueChange={(value: Theme) => setSelectedTheme(value)}>
+                <SelectTrigger className="bg-white/10 border-white/30 text-white">
+                  <SelectValue placeholder="Selecciona un tema" />
+                </SelectTrigger>
+                <SelectContent className="bg-gray-900 border-white/20">
+                  {availableThemes.map((theme) => (
+                    <SelectItem key={theme.value} value={theme.value} className="text-white hover:bg-white/10">
+                      {theme.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          {/* Vista Previa del Tema Actual */}
+          <div className="mt-6 p-4 rounded-lg bg-white/5 border border-white/20">
+            <h4 className={`font-medium ${themeConfig.textClass} mb-2`}>Vista Previa del Tema Actual:</h4>
+            <div className="flex items-center gap-4 text-sm">
+              <span className={themeConfig.textClass}>
+                <strong>Tipo:</strong> {selectedProfileType === 'single' ? '👤 Single' : '💑 Pareja'}
+              </span>
+              <span className={themeConfig.textClass}>
+                <strong>Género(s):</strong> {selectedGenders.map(g => g === 'male' ? '👨' : '👩').join(' ')}
+              </span>
+              <span className={themeConfig.textClass}>
+                <strong>Tema:</strong> {availableThemes.find(t => t.value === selectedTheme)?.label}
+              </span>
+            </div>
+          </div>
+        </UnifiedCard>
 
         {/* Información de Accesibilidad */}
         <UnifiedCard className="p-6 bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">

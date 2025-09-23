@@ -7,11 +7,11 @@ const DEMO_STORIES: Story[] = [
     userId: 101,
     user: {
       name: "Sofía García",
-      avatar: "/src/assets/people/profile-1.jpg"
+      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face"
     },
     content: {
       type: 'image',
-      url: "/src/assets/people/profile-1.jpg"
+      url: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=600&fit=crop"
     },
     createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 horas atrás
     expiresAt: new Date(Date.now() + 22 * 60 * 60 * 1000).toISOString(), // 22 horas restantes
@@ -26,7 +26,7 @@ const DEMO_STORIES: Story[] = [
         storyId: "1",
         userId: "102",
         createdAt: new Date(),
-        user: { id: "102", name: "Miguel López", avatar: "/src/assets/people/profile-2.jpg" }
+        user: { id: "102", name: "Miguel López", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face" }
       }
     ],
     comments: [
@@ -36,7 +36,7 @@ const DEMO_STORIES: Story[] = [
         userId: "103",
         comment: "¡Qué hermosa foto!",
         createdAt: new Date(),
-        user: { id: "103", name: "Ana Martínez", avatar: "/src/assets/people/profile-2.jpg" }
+        user: { id: "103", name: "Ana Martínez", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face" }
       }
     ]
   },
@@ -45,11 +45,11 @@ const DEMO_STORIES: Story[] = [
     userId: 102,
     user: {
       name: "Miguel & Carmen",
-      avatar: "/src/assets/people/profile-2.jpg"
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
     },
     content: {
       type: 'image',
-      url: "/src/assets/people/profile-2.jpg"
+      url: "https://images.unsplash.com/photo-1511593358241-7eea1f3c84e5?w=400&h=600&fit=crop"
     },
     createdAt: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(), // 5 horas atrás
     expiresAt: new Date(Date.now() + 19 * 60 * 60 * 1000).toISOString(), // 19 horas restantes
@@ -104,7 +104,7 @@ class StoryService {
         userId: 1, // Usuario demo
         user: {
           name: "Usuario Demo",
-          avatar: "/src/assets/people/profile-1.jpg"
+          avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
         },
         content: {
           type: 'image',
@@ -159,7 +159,7 @@ class StoryService {
             storyId: storyId.toString(),
             userId: "1",
             createdAt: new Date(),
-            user: { id: "1", name: "Usuario Demo", avatar: "/src/assets/people/profile-1.jpg" }
+            user: { id: "1", name: "Usuario Demo", avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face" }
           };
           story.likes = story.likes || [];
           story.likes.push(newLike);
@@ -194,7 +194,7 @@ class StoryService {
           userId: "1",
           comment,
           createdAt: new Date(),
-          user: { id: "1", name: "Usuario Demo", avatar: "/src/assets/people/profile-1.jpg" }
+          user: { id: "1", name: "Usuario Demo", avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face" }
         };
         
         story.comments = story.comments || [];

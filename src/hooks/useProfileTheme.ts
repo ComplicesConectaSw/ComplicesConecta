@@ -330,24 +330,24 @@ export const getNavbarStyles = (style: NavbarStyle) => {
   switch (style) {
     case 'transparent':
       return {
-        backgroundClass: 'bg-transparent',
+        backgroundClass: 'bg-gradient-to-r from-purple-500/80 to-pink-500/80 backdrop-blur-md',
         textClass: 'text-white',
-        shadowClass: 'shadow-none',
-        borderClass: 'border-transparent'
+        shadowClass: 'shadow-lg shadow-purple-500/25',
+        borderClass: 'border-purple-400/30'
       };
     case 'solid':
       return {
-        backgroundClass: 'bg-gradient-to-r from-purple-600 to-pink-600',
+        backgroundClass: 'bg-gradient-to-r from-purple-600 via-indigo-600 to-pink-600',
         textClass: 'text-white',
-        shadowClass: 'shadow-lg',
-        borderClass: 'border-purple-500/20'
+        shadowClass: 'shadow-xl shadow-purple-500/30',
+        borderClass: 'border-purple-400/40'
       };
     default:
       return {
-        backgroundClass: 'bg-gradient-to-r from-purple-600 to-pink-600',
+        backgroundClass: 'bg-gradient-to-r from-purple-600 via-indigo-600 to-pink-600',
         textClass: 'text-white',
-        shadowClass: 'shadow-lg',
-        borderClass: 'border-purple-500/20'
+        shadowClass: 'shadow-xl shadow-purple-500/30',
+        borderClass: 'border-purple-400/40'
       };
   }
 };
