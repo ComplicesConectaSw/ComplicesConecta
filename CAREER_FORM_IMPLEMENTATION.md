@@ -195,14 +195,24 @@ WHERE status = 'pending';
 
 ## 🎯 **PRÓXIMOS PASOS OPCIONALES**
 
-### **🔔 Sistema de Notificaciones (Roadmap v3.1)**
+### **🔔 Notificaciones**
+- [ ] Implementar notificaciones por email a admins
+- [ ] Sistema de alertas para nuevas solicitudes
+- [ ] Confirmación automática por email al solicitante
+
+### **🔔 Sistema de Notificaciones Avanzado (Roadmap v3.1)**
 - [ ] **Email a Admins**: Notificación automática cuando llega nueva solicitud
 - [ ] **Sistema de Alertas**: Dashboard con contador de solicitudes pendientes
 - [ ] **Confirmación Automática**: Email de confirmación al solicitante con número de ticket
 - [ ] **Recordatorios**: Alertas para solicitudes sin respuesta después de 48 horas
 - [ ] **Templates**: Plantillas de email personalizables por puesto
 
-### **📊 Dashboard de Administración (Roadmap v3.2)**
+### **📊 Dashboard Admin**
+- [ ] Panel de administración para gestionar solicitudes
+- [ ] Filtros por puesto, fecha, status
+- [ ] Exportación de datos a CSV/Excel
+
+### **📊 Dashboard de Administración Avanzado (Roadmap v3.2)**
 - [ ] **Panel Principal**: Vista general con métricas y gráficos
 - [ ] **Gestión de Solicitudes**: Lista paginada con filtros avanzados
 - [ ] **Filtros Inteligentes**: Por puesto, fecha, status, experiencia
@@ -211,7 +221,12 @@ WHERE status = 'pending';
 - [ ] **Historial de Cambios**: Log de actualizaciones de status
 - [ ] **Estadísticas**: Métricas de conversión y tiempo de respuesta
 
-### **🤖 Automatización Inteligente (Roadmap v3.3)**
+### **🤖 Automatización**
+- [ ] Auto-respuesta inicial al solicitante
+- [ ] Integración con sistema de CRM
+- [ ] Análisis automático de solicitudes
+
+### **🤖 Automatización Inteligente Avanzada (Roadmap v3.3)**
 - [ ] **Auto-respuesta Inicial**: Email automático con información del proceso
 - [ ] **Integración CRM**: Sincronización con HubSpot/Salesforce
 - [ ] **Análisis de CV**: IA para evaluar experiencia vs requisitos

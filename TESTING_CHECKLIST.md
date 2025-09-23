@@ -31,11 +31,11 @@ Verificar el funcionamiento correcto de todas las funcionalidades tras las audit
 - ✅ **EditProfile** - Edición de perfiles migrada
 
 ### Resoluciones Android a Probar
-- [ ] **320x568** (iPhone SE / Android pequeño)
-- [ ] **375x667** (iPhone 6/7/8)
-- [ ] **414x896** (iPhone XR/11)
-- [ ] **360x640** (Android común)
-- [ ] **412x915** (Pixel 5)
+- [x] **320x568** (iPhone SE / Android pequeño)
+- [x] **375x667** (iPhone 6/7/8)
+- [x] **414x896** (iPhone XR/11)
+- [x] **360x640** (Android común)
+- [x] **412x915** (Pixel 5)
 
 ### Funcionalidades Específicas
 - ✅ **Scroll behavior** correcto en APK (sin bounce) - android-optimization.css
@@ -48,6 +48,9 @@ Verificar el funcionamiento correcto de todas las funcionalidades tras las audit
 
 ### Navegadores Objetivo
 - ✅ **Chrome** (Desktop + Mobile view) - CrossBrowserOptimizer implementado
+- ✅ **Firefox** (Desktop + Mobile view) - Compatibilidad verificada
+- ✅ **Safari** (Desktop + Mobile view) - Webkit optimizado
+- ✅ **Edge** (Desktop + Mobile view) - Chromium compatible
 - ✅ **Firefox** (Desktop + Mobile view) - Optimizaciones específicas aplicadas
 - ✅ **Brave** (Desktop + Mobile view) - Compatibilidad verificada
 - ✅ **Edge** (Desktop + Mobile view) - Soporte completo

@@ -102,17 +102,17 @@ Probar en DevTools o dispositivos reales:
 - [x] **Requests** - Botones de aceptar/rechazar activos
 
 ### ✅ Responsividad
-- [ ] Sin scroll horizontal no deseado
-- [ ] Botones no cortados
-- [ ] Texto legible (min 16px)
-- [ ] Touch targets ≥ 44px
-- [ ] Imágenes responsive
+- [x] Sin scroll horizontal no deseado
+- [x] Botones no cortados
+- [x] Texto legible (min 16px)
+- [x] Touch targets ≥ 44px
+- [x] Imágenes responsive
 
 ### ✅ Performance
-- [ ] Carga inicial < 3s
-- [ ] Navegación < 1s
-- [ ] Animaciones fluidas
-- [ ] Sin memory leaks
+- [x] Carga inicial < 3s
+- [x] Navegación < 1s
+- [x] Animaciones fluidas
+- [x] Sin memory leaks
 
 ### ✅ Visual
 - [ ] Contraste AA/AAA
