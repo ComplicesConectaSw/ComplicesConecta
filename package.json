@@ -36,7 +36,8 @@
     "security:check": "node scripts/security-check.js",
     "security:scan": "node scripts/security-check.js",
     "security:verify": "git check-ignore .env.production .env.circleci && echo 'Archivos sensibles protegidos'",
-    "security:progress": "node scripts/security-progress-check.js"
+    "security:progress": "node scripts/security-progress-check.js",
+    "token:verify": "node scripts/verify-token.js"
   },
   "dependencies": {
     "@capacitor/android": "^7.4.3",
