@@ -58,6 +58,7 @@ interface FormData {
   shareLocation: boolean;
   selectedInterests: string[];
   preferredTheme: Theme;
+  profileTheme: string;
 }
 
 const Auth = () => {
@@ -103,7 +104,8 @@ const Auth = () => {
     acceptTerms: false,
     shareLocation: false,
     selectedInterests: [],
-    preferredTheme: 'dark'
+    preferredTheme: 'dark',
+    profileTheme: 'blue-steel'
   });
 
   const handleInputChange = (field: string, value: string | boolean | string[]) => {
@@ -628,7 +630,8 @@ const Auth = () => {
       acceptTerms: false,
       shareLocation: false,
       selectedInterests: [],
-      preferredTheme: 'dark'
+      preferredTheme: 'dark',
+      profileTheme: 'blue-steel'
     });
   };
 

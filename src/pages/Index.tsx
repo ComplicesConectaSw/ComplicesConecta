@@ -13,12 +13,13 @@ import { ActionButtonsModal } from "@/components/modals/ActionButtonsModal";
 import NavigationEnhanced from "@/components/NavigationEnhanced";
 import StoriesContainer from "@/components/stories/StoriesContainer";
 import { useScrollHide } from "@/hooks/useScrollHide";
-import { Heart, Users, Shield, Zap, Sparkles, Star, Rocket, Smartphone, Download, Smartphone as Android } from "lucide-react";
+import { Heart, Users, Shield, Zap, Sparkles, Star, Rocket, Smartphone, Download, Smartphone as Android, Info, Briefcase, DollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import "@/styles/animations.css";
 import { logger } from '@/lib/logger';
 import { motion } from 'framer-motion';
 import { usePersistedState } from '@/hooks/usePersistedState';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 // Professional profile images from Unsplash - Production ready
 // Removed local imports that fail in production
@@ -286,6 +287,106 @@ const Index = () => {
             </div>
             <div className="max-w-4xl mx-auto">
               <StoriesContainer />
+            </div>
+          </div>
+        </section>
+
+        {/* About, Careers, Donations Section */}
+        <section className="py-20 relative">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold text-white mb-4">
+                Conoce Más Sobre ComplicesConecta
+              </h2>
+              <p className="text-xl text-white/90 max-w-3xl mx-auto">
+                Descubre nuestra misión, únete a nuestro equipo o apoya nuestro crecimiento
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+              {/* About Section */}
+              <Card className="bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/15 transition-all duration-300 hover:scale-105">
+                <CardHeader>
+                  <div className="flex items-center justify-center mb-4">
+                    <div className="p-3 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-full">
+                      <Info className="h-8 w-8 text-white" />
+                    </div>
+                  </div>
+                  <CardTitle className="text-white text-center text-xl">
+                    Acerca de Nosotros
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="text-center">
+                  <p className="text-white/90 mb-6">
+                    Conoce nuestra misión, visión y valores. Descubre por qué ComplicesConecta es la plataforma más confiable para la comunidad lifestyle.
+                  </p>
+                  <Button 
+                    variant="outline" 
+                    className="border-white/30 text-white hover:bg-white/10 w-full"
+                    asChild
+                  >
+                    <Link to="/about">
+                      Conocer Más
+                    </Link>
+                  </Button>
+                </CardContent>
+              </Card>
+              
+              {/* Careers Section */}
+              <Card className="bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/15 transition-all duration-300 hover:scale-105">
+                <CardHeader>
+                  <div className="flex items-center justify-center mb-4">
+                    <div className="p-3 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full">
+                      <Briefcase className="h-8 w-8 text-white" />
+                    </div>
+                  </div>
+                  <CardTitle className="text-white text-center text-xl">
+                    Únete al Equipo
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="text-center">
+                  <p className="text-white/90 mb-6">
+                    Forma parte de nuestro equipo innovador. Buscamos talento apasionado por la tecnología y la comunidad lifestyle.
+                  </p>
+                  <Button 
+                    variant="outline" 
+                    className="border-white/30 text-white hover:bg-white/10 w-full"
+                    asChild
+                  >
+                    <Link to="/careers">
+                      Ver Vacantes
+                    </Link>
+                  </Button>
+                </CardContent>
+              </Card>
+              
+              {/* Donations Section */}
+              <Card className="bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/15 transition-all duration-300 hover:scale-105">
+                <CardHeader>
+                  <div className="flex items-center justify-center mb-4">
+                    <div className="p-3 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full">
+                      <DollarSign className="h-8 w-8 text-white" />
+                    </div>
+                  </div>
+                  <CardTitle className="text-white text-center text-xl">
+                    Apoya el Proyecto
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="text-center">
+                  <p className="text-white/90 mb-6">
+                    Ayúdanos a crecer y mejorar la plataforma. Tu apoyo nos permite seguir innovando para la comunidad.
+                  </p>
+                  <Button 
+                    variant="outline" 
+                    className="border-white/30 text-white hover:bg-white/10 w-full"
+                    asChild
+                  >
+                    <Link to="/donations">
+                      Donar Ahora
+                    </Link>
+                  </Button>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </section>
