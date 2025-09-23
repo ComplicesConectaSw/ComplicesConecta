@@ -25,12 +25,14 @@ import {
 } from '@heroicons/react/24/outline'
 
 // Importar subpaneles
-import { ReportsPanel } from './panels/ReportsPanel'
-import { UserManagementPanel } from './panels/UserManagementPanel'
-import { TokenSystemPanel } from './panels/TokenSystemPanel'
-import { AnalyticsPanel } from './panels/AnalyticsPanel'
-import { PerformancePanel } from './panels/PerformancePanel'
-import { SecurityPanel } from './panels/SecurityPanel'
+import { 
+  ReportsPanel,
+  UserManagementPanel,
+  TokenSystemPanel,
+  AnalyticsPanel,
+  PerformancePanel,
+  SecurityPanel
+} from './panels'
 
 // Hooks y servicios
 import { useAuth } from '../../hooks/useAuth'
