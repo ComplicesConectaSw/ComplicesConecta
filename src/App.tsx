@@ -12,6 +12,8 @@ import { PageTransitionWrapper } from "@/components/animations/PageTransitions";
 import { AnimatedBackground, FloatingParticles } from "@/components/animations/GlobalAnimations";
 import { NotificationProvider } from "@/components/animations/NotificationSystem";
 import { AnimationSettingsButton } from "@/components/animations/AnimationSettings";
+import AdminRoute from '@/components/auth/AdminRoute';
+import ModeratorRoute from '@/components/auth/ModeratorRoute';
 
 // Critical pages - loaded immediately
 import Index from "@/pages/Index";
@@ -51,6 +53,10 @@ const EditProfileCouple = lazy(() => import("@/pages/EditProfileCouple"));
 const Feed = lazy(() => import("@/pages/Feed"));
 const About = lazy(() => import("@/pages/About"));
 const Careers = lazy(() => import("@/pages/Careers"));
+const AdminCareerApplications = lazy(() => import("@/pages/AdminCareerApplications"));
+const AdminModerators = lazy(() => import("@/pages/AdminModerators"));
+const ModeratorDashboard = lazy(() => import("@/pages/ModeratorDashboard"));
+const ModeratorRequest = lazy(() => import("@/pages/ModeratorRequest"));
 const Blog = lazy(() => import("@/pages/Blog"));
 const ChatAuthenticated = lazy(() => import("@/pages/ChatAuthenticated"));
 const Donations = lazy(() => import("@/pages/Donations"));
@@ -120,6 +126,22 @@ const App = () => (
                   <Route path="/guidelines" element={<Guidelines />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/careers" element={<Careers />} />
+                  <Route path="/admin/career-applications" element={
+                    <AdminRoute>
+                      <AdminCareerApplications />
+                    </AdminRoute>
+                  } />
+                  <Route path="/admin/moderators" element={
+                    <AdminRoute>
+                      <AdminModerators />
+                    </AdminRoute>
+                  } />
+                  <Route path="/moderators/dashboard" element={
+                    <ModeratorRoute>
+                      <ModeratorDashboard />
+                    </ModeratorRoute>
+                  } />
+                  <Route path="/moderator-request" element={<ModeratorRequest />} />
                   <Route path="/blog" element={<Blog />} />
                   <Route path="/chat-authenticated" element={<ChatAuthenticated />} />
                   <Route path="/donations" element={<Donations />} />

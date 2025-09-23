@@ -63,6 +63,14 @@ export const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
       bgColor: "bg-primary/10"
     },
     {
+      icon: Shield,
+      title: "🛡️ Sistema de Moderación",
+      subtitle: "Comunidad segura y protegida",
+      description: "Contamos con un equipo de moderadores dedicados que mantienen la comunidad segura. ¿Interesado en ayudar? Puedes aplicar para ser moderador y contribuir a crear un ambiente positivo para todos.",
+      color: "text-blue-400",
+      bgColor: "bg-blue-400/10"
+    },
+    {
       icon: Zap,
       title: "🎯 ¡Todo es Interactivo!",
       subtitle: "Cada elemento tiene vida propia",
@@ -174,6 +182,13 @@ export const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
               </div>
             )}
             {currentStep === 6 && (
+              <div className="mb-4">
+                <Badge variant="secondary" className="bg-blue-400/20 text-blue-400 border-blue-400/30 animate-bounce">
+                  🛡️ MODERACIÓN SEGURA
+                </Badge>
+              </div>
+            )}
+            {currentStep === 7 && (
               <div className="mb-4">
                 <Badge variant="secondary" className="bg-yellow-400/20 text-yellow-400 border-yellow-400/30 animate-bounce">
                   🎯 EXPLORA TODO

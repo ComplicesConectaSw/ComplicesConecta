@@ -71,6 +71,11 @@ export const Footer = () => {
                   Donaciones
                 </Link>
               </li>
+              <li>
+                <Link to="/moderator-request" className="text-background/80 hover:text-primary transition-colors">
+                  Ser Moderador
+                </Link>
+              </li>
             </ul>
           </div>
 

@@ -9,6 +9,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { logger } from "@/lib/logger";
 
 const ProjectSupport = () => {
   const navigate = useNavigate();
@@ -26,6 +28,8 @@ const ProjectSupport = () => {
     cv: null as File | null,
     aceptaTerminos: false
   });
+
+  const [uploadingFile, setUploadingFile] = useState(false);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -57,17 +61,84 @@ const ProjectSupport = () => {
       return;
     }
 
+    // Validar campos requeridos
+    if (!formData.nombre || !formData.telefono || !formData.correo || !formData.puesto || !formData.experiencia || !formData.expectativas) {
+      toast({
+        variant: "destructive",
+        title: "Campos requeridos",
+        description: "Por favor completa todos los campos obligatorios"
+      });
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
-      // Simular envío de email a ComplicesConectaSw@outlook.es
-      // Asunto: Solicitud de Apoyo al Proyecto - [Puesto]
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      logger.info('📝 Enviando solicitud de apoyo al proyecto:', { 
+        nombre: formData.nombre, 
+        puesto: formData.puesto,
+        correo: formData.correo 
+      });
+
+      // Obtener información adicional para auditoría
+      const userAgent = navigator.userAgent;
+      const timestamp = new Date().toISOString();
+
+      // Subir archivo CV si existe
+      let cvUrl = null;
+      if (formData.cv) {
+        setUploadingFile(true);
+        const fileExt = formData.cv.name.split('.').pop();
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+        
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('career-files')
+          .upload(`cvs/${fileName}`, formData.cv);
+
+        if (uploadError) {
+          logger.error('❌ Error al subir CV:', { error: uploadError.message });
+          throw new Error(`Error al subir archivo: ${uploadError.message}`);
+        }
+
+        cvUrl = uploadData.path;
+        logger.info('✅ CV subido exitosamente:', { path: cvUrl });
+        setUploadingFile(false);
+      }
+
+      // Insertar en la base de datos Supabase
+      const { data, error } = await (supabase as any)
+        .from('career_applications')
+        .insert([
+          {
+            nombre: formData.nombre.trim(),
+            telefono: formData.telefono.trim(),
+            correo: formData.correo.trim().toLowerCase(),
+            domicilio: formData.domicilio.trim() || null,
+            puesto: formData.puesto,
+            experiencia: formData.experiencia.trim(),
+            referencias: formData.referencias.trim() || null,
+            expectativas: formData.expectativas.trim(),
+            cv_url: cvUrl,
+            status: 'pending',
+            user_agent: userAgent
+          }
+        ])
+        .select();
+
+      if (error) {
+        logger.error('❌ Error al insertar solicitud en Supabase:', { error: error.message });
+        throw new Error(`Error de base de datos: ${error.message}`);
+      }
+
+      logger.info('✅ Solicitud guardada exitosamente en Supabase:', { 
+        id: data?.[0]?.id,
+        timestamp 
+      });
       
       toast({
         title: "¡Solicitud enviada exitosamente!",
-        description: "Te responderemos en las próximas 24 horas",
-        duration: 5000
+        description: `Tu solicitud para ${formData.puesto} ha sido registrada. Te contactaremos en las próximas 24 horas a ${formData.correo}`,
+        duration: 7000
       });
 
       // Limpiar formulario
@@ -84,11 +155,13 @@ const ProjectSupport = () => {
         aceptaTerminos: false
       });
 
-    } catch (error) {
+    } catch (error: any) {
+      logger.error('❌ Error al enviar solicitud:', { error: error.message });
+      
       toast({
         variant: "destructive",
-        title: "Error al enviar",
-        description: "Hubo un problema. Inténtalo de nuevo."
+        title: "Error al enviar solicitud",
+        description: error.message || "Hubo un problema al procesar tu solicitud. Inténtalo de nuevo o contacta a ComplicesConectaSw@outlook.es"
       });
     } finally {
       setIsSubmitting(false);
@@ -230,6 +303,30 @@ const ProjectSupport = () => {
                   />
                 </div>
 
+                {/* Carga de CV */}
+                <div>
+                  <Label className="text-white">Curriculum Vitae (Opcional)</Label>
+                  <div className="mt-2">
+                    <Input
+                      type="file"
+                      accept=".pdf,.doc,.docx,.txt"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0] || null;
+                        handleInputChange('cv', file);
+                      }}
+                      className="bg-white/10 border-white/20 text-white file:bg-purple-500 file:text-white file:border-0 file:rounded-md file:px-4 file:py-2 file:mr-4"
+                    />
+                    <p className="text-white/60 text-sm mt-1">
+                      Formatos aceptados: PDF, DOC, DOCX, TXT (máximo 10MB)
+                    </p>
+                    {formData.cv && (
+                      <p className="text-green-400 text-sm mt-1">
+                        ✓ Archivo seleccionado: {formData.cv.name}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
                 {/* Términos y Condiciones */}
                 <div className="flex items-start space-x-2">
                   <Checkbox
@@ -248,9 +345,9 @@ const ProjectSupport = () => {
                 {/* Información adicional */}
                 <div className="bg-white/5 p-4 rounded-lg border border-white/10">
                   <p className="text-white/80 text-sm">
-                    <strong>Nota:</strong> Tu solicitud será enviada a ComplicesConectaSw@outlook.es con el asunto 
-                    "Solicitud de Apoyo al Proyecto - [Puesto Seleccionado]". Nos comprometemos a responder 
-                    en un plazo máximo de 24 horas con información detallada sobre la colaboración.
+                    <strong>Nota:</strong> Tu solicitud será registrada en nuestra base de datos y enviada directamente 
+                    al equipo de ComplicesConecta. Nos comprometemos a responder en un plazo máximo de 24 horas 
+                    a tu correo electrónico con información detallada sobre la colaboración y próximos pasos.
                   </p>
                 </div>
 
@@ -261,7 +358,9 @@ const ProjectSupport = () => {
                   className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-3 text-lg"
                 >
                   {isSubmitting ? (
-                    <>Enviando solicitud...</>
+                    <>
+                      {uploadingFile ? 'Subiendo archivo...' : 'Enviando solicitud...'}
+                    </>
                   ) : (
                     <>
                       <Send className="h-5 w-5 mr-2" />

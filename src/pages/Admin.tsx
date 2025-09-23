@@ -552,6 +552,25 @@ const Admin = () => {
             </div>
           </Card>
 
+          {/* Solicitudes de Carrera */}
+          <Card className="p-6 bg-gradient-to-br from-pink-500/10 to-pink-600/10 border-pink-500/20">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-white">Solicitudes</p>
+                <p className="text-3xl font-bold text-pink-600">Carrera</p>
+                <p className="text-xs text-pink-300">Panel Admin</p>
+              </div>
+              <FileText className="h-8 w-8 text-pink-500" />
+            </div>
+            <Button
+              onClick={() => navigate('/admin/career-applications')}
+              className="w-full mt-3 bg-pink-600 hover:bg-pink-700 text-white"
+              size="sm"
+            >
+              Ver Solicitudes
+            </Button>
+          </Card>
+
           {/* World ID Verificados */}
           <Card className="p-6 bg-gradient-to-br from-emerald-500/10 to-emerald-600/10 border-emerald-500/20">
             <div className="flex items-center justify-between">
