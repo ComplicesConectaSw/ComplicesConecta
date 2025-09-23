@@ -11,27 +11,29 @@ import { initWebVitalsMonitoring } from '@/utils/webVitals'
 import { initializeCriticalPreloading } from '@/utils/preloading'
 import { androidSecurity } from '@/utils/androidSecurity'
 
-// Debug info for production
-console.log('🚀 ComplicesConecta v3.0.0 starting...', {
-  version: '3.0.0',
-  env: import.meta.env.MODE,
-  supabaseUrl: import.meta.env.VITE_SUPABASE_URL ? 'SET' : 'MISSING',
-  supabaseKey: import.meta.env.VITE_SUPABASE_ANON_KEY ? 'SET' : 'MISSING',
-  appMode: import.meta.env.VITE_APP_MODE,
-  nodeEnv: import.meta.env.NODE_ENV,
-  timestamp: new Date().toISOString()
-});
+// Debug info for development only
+if (import.meta.env.DEV) {
+  console.log('🚀 ComplicesConecta v3.0.0 starting...', {
+    version: '3.0.0',
+    env: import.meta.env.MODE,
+    supabaseUrl: import.meta.env.VITE_SUPABASE_URL ? 'SET' : 'MISSING',
+    supabaseKey: import.meta.env.VITE_SUPABASE_ANON_KEY ? 'SET' : 'MISSING',
+    appMode: import.meta.env.VITE_APP_MODE,
+    nodeEnv: import.meta.env.NODE_ENV,
+    timestamp: new Date().toISOString()
+  });
 
-// Force show all environment variables for debugging
-console.log('🔍 All ENV vars:', import.meta.env);
+  // Force show all environment variables for debugging
+  console.log('🔍 All ENV vars:', import.meta.env);
+}
 
 // Inicializar Sentry para monitoreo de errores
 try {
   if (import.meta.env.VITE_SENTRY_DSN) {
     initSentry();
-    console.log('✅ Sentry initialized');
+    if (import.meta.env.DEV) console.log('✅ Sentry initialized');
   } else {
-    console.log('⚠️ Sentry DSN not configured');
+    if (import.meta.env.DEV) console.log('⚠️ Sentry DSN not configured');
   }
 } catch (error) {
   console.error('❌ Sentry initialization failed:', error);
@@ -46,7 +48,7 @@ try {
     sampleRate: 0.1 // 10% sampling en producción
   });
   monitor.init().then(() => {
-    console.log('✅ Web Vitals monitoring initialized');
+    if (import.meta.env.DEV) console.log('✅ Web Vitals monitoring initialized');
   }).catch((error) => {
     console.error('❌ Web Vitals initialization failed:', error);
   });
@@ -57,7 +59,7 @@ try {
 // Inicializar preloading crítico
 try {
   initializeCriticalPreloading();
-  console.log('✅ Critical preloading initialized');
+  if (import.meta.env.DEV) console.log('✅ Critical preloading initialized');
 } catch (error) {
   console.error('❌ Critical preloading failed:', error);
 }
