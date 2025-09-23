@@ -109,10 +109,17 @@ export const ChatWithLocation = ({ conversationId, currentUserId, otherUser }: C
         })
       };
 
-      // Temporal: Cast hasta regenerar tipos Supabase
+      // Usar tabla chat_messages que existe en la BD (38 tablas creadas)
       const { error } = await (supabase
-        .from('messages') as any)
-        .insert([messageData]);
+        .from('chat_messages') as any)
+        .insert([{
+          conversation_id: messageData.conversation_id,
+          sender_id: messageData.sender_id,
+          content: messageData.content,
+          location_latitude: messageData.location_latitude,
+          location_longitude: messageData.location_longitude,
+          location_address: messageData.location_address
+        }]);
 
 
       if (error) throw error;

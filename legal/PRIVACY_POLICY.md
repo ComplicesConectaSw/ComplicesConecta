@@ -1,4 +1,4 @@
-ndiente # 🔒 POLÍTICA DE PRIVACIDAD - ComplicesConecta
+# 🔒 POLÍTICA DE PRIVACIDAD - ComplicesConecta
 
 **Fecha de Vigencia:** 21 de septiembre de 2025  
 **Versión:** 3.0.0  
