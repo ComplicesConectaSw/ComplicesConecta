@@ -28,6 +28,10 @@ dist-ssr
 .env.*
 !.env.example
 
+# Archivos de configuración específicos (SENSIBLES)
+.env.production
+.env.circleci
+
 # Vercel
 .vercel
 .vercel.json
