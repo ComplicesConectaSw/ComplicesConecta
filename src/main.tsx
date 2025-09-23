@@ -9,6 +9,7 @@ import { initSentry } from '@/lib/sentry'
 import { DebugInfo } from '@/debug'
 import { initWebVitalsMonitoring } from '@/utils/webVitals'
 import { initializeCriticalPreloading } from '@/utils/preloading'
+import { androidSecurity } from '@/utils/androidSecurity'
 
 // Debug info for production
 console.log('🚀 ComplicesConecta v3.0.0 starting...', {
@@ -61,6 +62,30 @@ try {
   console.error('❌ Critical preloading failed:', error);
 }
 
+// Verificar seguridad Android antes de inicializar la app
+async function initializeSecurityCheck() {
+  try {
+    // Solo ejecutar en entorno Capacitor (APK Android)
+    if (typeof window !== 'undefined' && window.Capacitor) {
+      console.log('🔒 Ejecutando verificación de seguridad Android...');
+      
+      const isSecure = await androidSecurity.checkAndEnforceSecurity();
+      
+      if (!isSecure) {
+        console.error('❌ Verificación de seguridad falló - Bloqueando aplicación');
+        return false;
+      }
+      
+      console.log('✅ Verificación de seguridad exitosa');
+    }
+    
+    return true;
+  } catch (error) {
+    console.error('❌ Error en verificación de seguridad:', error);
+    return true; // Permitir acceso en caso de error para no bloquear usuarios legítimos
+  }
+}
+
 // Registrar Service Worker
 if ('serviceWorker' in navigator && import.meta.env.MODE === 'production') {
   window.addEventListener('load', () => {
@@ -74,19 +99,35 @@ if ('serviceWorker' in navigator && import.meta.env.MODE === 'production') {
   });
 }
 
-const rootElement = document.getElementById("root");
-if (!rootElement) {
-  console.error('❌ Root element not found');
-  throw new Error('Root element not found');
+// Inicializar aplicación con verificación de seguridad
+async function initializeApp() {
+  const rootElement = document.getElementById("root");
+  if (!rootElement) {
+    console.error('❌ Root element not found');
+    throw new Error('Root element not found');
+  }
+
+  // Verificar seguridad antes de renderizar
+  const isSecure = await initializeSecurityCheck();
+  
+  if (!isSecure) {
+    console.log('🔒 Aplicación bloqueada por motivos de seguridad');
+    return;
+  }
+
+  console.log('✅ Root element found, rendering app...');
+
+  createRoot(rootElement).render(
+    <StrictMode>
+      <ErrorBoundary>
+        <DebugInfo />
+        <App />
+      </ErrorBoundary>
+    </StrictMode>
+  );
 }
 
-console.log('✅ Root element found, rendering app...');
-
-createRoot(rootElement).render(
-  <StrictMode>
-    <ErrorBoundary>
-      <DebugInfo />
-      <App />
-    </ErrorBoundary>
-  </StrictMode>
-);
+// Inicializar la aplicación
+initializeApp().catch((error) => {
+  console.error('❌ Failed to initialize app:', error);
+});

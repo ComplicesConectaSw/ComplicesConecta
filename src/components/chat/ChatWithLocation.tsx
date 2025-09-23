@@ -26,6 +26,15 @@ interface MessageWithSender {
   };
 }
 
+interface MessageInsert {
+  conversation_id: string;
+  sender_id: string;
+  content: string;
+  location_latitude?: number;
+  location_longitude?: number;
+  location_address?: string;
+}
+
 interface Message {
   id: string;
   content: string;
@@ -111,7 +120,7 @@ export const ChatWithLocation = ({ conversationId, currentUserId, otherUser }: C
 
     setIsLoading(true);
     try {
-      const messageData = {
+      const messageData: MessageInsert = {
         conversation_id: conversationId,
         sender_id: currentUserId,
         content: newMessage.trim() || "📍 Ubicación compartida",
@@ -122,8 +131,8 @@ export const ChatWithLocation = ({ conversationId, currentUserId, otherUser }: C
         })
       };
 
-      const { error } = await supabase
-        .from('messages')
+      const { error } = await (supabase
+        .from('messages') as any)
         .insert([messageData]);
 
 
