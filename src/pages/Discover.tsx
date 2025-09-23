@@ -447,7 +447,7 @@ const Discover = () => {
             <Button
               variant="ghost"
               onClick={() => navigate('/profile')}
-              className="text-gray-700 hover:bg-white/50 p-2 sm:px-4"
+              className="text-white hover:bg-white/20 p-2 sm:px-4"
             >
               <User className="h-4 w-4 sm:h-5 sm:w-5 sm:mr-2" />
               <span className="hidden sm:inline">Perfil</span>
@@ -463,7 +463,7 @@ const Discover = () => {
             <Button
               variant="ghost"
               onClick={() => setShowCouples(!showCouples)}
-              className={`p-2 sm:px-4 ${showCouples ? 'text-purple-300 bg-white/20' : 'text-gray-700 hover:bg-white/50'}`}
+              className={`p-2 sm:px-4 ${showCouples ? 'text-purple-300 bg-white/20' : 'text-white hover:bg-white/20'}`}
             >
               <span className="hidden sm:inline">{showCouples ? 'Singles' : 'Parejas'}</span>
               <span className="sm:hidden">{showCouples ? 'S' : 'P'}</span>
@@ -471,7 +471,7 @@ const Discover = () => {
             <Button
               variant="ghost"
               onClick={() => setShowFilters(!showFilters)}
-              className="text-gray-700 hover:bg-white/50 p-2 sm:px-4"
+              className="text-white hover:bg-white/20 p-2 sm:px-4"
             >
               <Filter className="h-4 w-4 sm:h-5 sm:w-5 sm:mr-2" />
               <span className="hidden sm:inline">Filtros</span>
@@ -479,7 +479,7 @@ const Discover = () => {
             <Button
               variant="ghost"
               onClick={handleRefresh}
-              className="text-gray-700 hover:bg-white/50 p-2"
+              className="text-white hover:bg-white/20 p-2"
             >
               <RefreshCw className="h-4 w-4 sm:h-5 sm:w-5" />
             </Button>

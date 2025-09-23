@@ -61,57 +61,98 @@ const EditProfileCouple = () => {
   const availableInterests = lifestyleInterests;
 
   useEffect(() => {
-    // Verificar autenticación demo y cargar perfil del usuario
-    const demoAuth = localStorage.getItem('demo_authenticated');
-    const demoUser = localStorage.getItem('demo_user');
-    
-    if (demoAuth !== 'true' || !demoUser) {
-      navigate('/auth');
-      return;
-    }
-    
-    const user = JSON.parse(demoUser);
-    let profileData;
-    
-    // Si es perfil pareja, usar datos del usuario demo
-    if (user.accountType === 'couple') {
-      profileData = user;
-    } else {
-      // Para otros tipos, generar perfil mock
-      profileData = generateMockCouple();
-    }
-    
-    setProfile(profileData);
-    setFormData({
-      coupleName: profileData.name || profileData.coupleName || "",
-      location: profileData.location || "",
-      bio: profileData.bio || "",
-      interests: profileData.interests || [],
-      partner1: {
-        firstName: profileData.partner1?.name?.split(' ')[0] || "",
-        lastName: profileData.partner1?.name?.split(' ')[1] || "",
-        nickname: profileData.partner1?.nickname || "",
-        age: profileData.partner1?.age?.toString() || "",
-        profession: profileData.partner1?.profession || "",
-        bio: profileData.partner1?.bio || "",
-        avatar: profileData.partner1?.avatar || "",
-        interests: profileData.partner1?.interests || [],
-        publicImages: profileData.partner1?.publicImages || [],
-        privateImages: profileData.partner1?.privateImages || []
-      },
-      partner2: {
-        firstName: profileData.partner2?.name?.split(' ')[0] || "",
-        lastName: profileData.partner2?.name?.split(' ')[1] || "",
-        nickname: profileData.partner2?.nickname || "",
-        age: profileData.partner2?.age?.toString() || "",
-        profession: profileData.partner2?.profession || "",
-        bio: profileData.partner2?.bio || "",
-        avatar: profileData.partner2?.avatar || "",
-        interests: profileData.partner2?.interests || [],
-        publicImages: profileData.partner2?.publicImages || [],
-        privateImages: profileData.partner2?.privateImages || []
+    const loadProfile = async () => {
+      try {
+        // Verificar autenticación demo y cargar perfil del usuario
+        const demoAuth = localStorage.getItem('demo_authenticated');
+        const demoUser = localStorage.getItem('demo_user');
+        
+        if (demoAuth !== 'true' || !demoUser) {
+          navigate('/auth');
+          return;
+        }
+        
+        const user = JSON.parse(demoUser);
+        let profileData;
+        
+        // Si es perfil pareja, usar datos del usuario demo
+        if (user.accountType === 'couple') {
+          profileData = user;
+        } else {
+          // Para otros tipos, generar perfil mock
+          profileData = generateMockCouple();
+        }
+        
+        setProfile(profileData);
+        setFormData({
+          coupleName: profileData.name || profileData.coupleName || "",
+          location: profileData.location || "",
+          bio: profileData.bio || "",
+          interests: profileData.interests || [],
+          partner1: {
+            firstName: profileData.partner1?.name?.split(' ')[0] || "",
+            lastName: profileData.partner1?.name?.split(' ')[1] || "",
+            nickname: profileData.partner1?.nickname || "",
+            age: profileData.partner1?.age?.toString() || "",
+            profession: profileData.partner1?.profession || "",
+            bio: profileData.partner1?.bio || "",
+            avatar: profileData.partner1?.avatar || "",
+            interests: profileData.partner1?.interests || [],
+            publicImages: profileData.partner1?.publicImages || [],
+            privateImages: profileData.partner1?.privateImages || []
+          },
+          partner2: {
+            firstName: profileData.partner2?.name?.split(' ')[0] || "",
+            lastName: profileData.partner2?.name?.split(' ')[1] || "",
+            nickname: profileData.partner2?.nickname || "",
+            age: profileData.partner2?.age?.toString() || "",
+            profession: profileData.partner2?.profession || "",
+            bio: profileData.partner2?.bio || "",
+            avatar: profileData.partner2?.avatar || "",
+            interests: profileData.partner2?.interests || [],
+            publicImages: profileData.partner2?.publicImages || [],
+            privateImages: profileData.partner2?.privateImages || []
+          }
+        });
+      } catch (error) {
+        logger.error('Error cargando perfil de pareja:', { error: String(error) });
+        // Fallback con perfil demo
+        const fallbackProfile = generateMockCouple();
+        setProfile(fallbackProfile);
+        setFormData({
+          coupleName: fallbackProfile.coupleName || "",
+          location: fallbackProfile.location || "",
+          bio: fallbackProfile.bio || "",
+          interests: fallbackProfile.interests || [],
+          partner1: {
+            firstName: fallbackProfile.partner1?.name?.split(' ')[0] || "",
+            lastName: fallbackProfile.partner1?.name?.split(' ')[1] || "",
+            nickname: "",
+            age: fallbackProfile.partner1?.age?.toString() || "",
+            profession: fallbackProfile.partner1?.profession || "",
+            bio: fallbackProfile.partner1?.bio || "",
+            avatar: fallbackProfile.partner1?.avatar || "",
+            interests: fallbackProfile.partner1?.interests || [],
+            publicImages: [],
+            privateImages: []
+          },
+          partner2: {
+            firstName: fallbackProfile.partner2?.name?.split(' ')[0] || "",
+            lastName: fallbackProfile.partner2?.name?.split(' ')[1] || "",
+            nickname: "",
+            age: fallbackProfile.partner2?.age?.toString() || "",
+            profession: fallbackProfile.partner2?.profession || "",
+            bio: fallbackProfile.partner2?.bio || "",
+            avatar: fallbackProfile.partner2?.avatar || "",
+            interests: fallbackProfile.partner2?.interests || [],
+            publicImages: [],
+            privateImages: []
+          }
+        });
       }
-    });
+    };
+    
+    loadProfile();
   }, [navigate]);
 
   const handleInputChange = (field: string, value: string, partner?: 'partner1' | 'partner2') => {

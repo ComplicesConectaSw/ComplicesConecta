@@ -106,7 +106,7 @@ class PostsService {
 
       return posts;
     } catch (error) {
-      logger.error('Error in getFeed:', error);
+      logger.error('Error in getFeed:', error as any);
       return [];
     }
   }
@@ -135,7 +135,7 @@ class PostsService {
         throw error;
       }
 
-      return data;
+      return data as Post | null;
     } catch (error) {
       logger.error('Error in createPost:', error as any);
       return null;

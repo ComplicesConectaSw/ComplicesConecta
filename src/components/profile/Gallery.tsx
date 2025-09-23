@@ -82,7 +82,7 @@ const Gallery = ({ userId, isOwner = false, canViewPrivate = false, profileName 
           const access = await invitationService.hasGalleryAccess(userId, user.id);
           setHasGalleryAccess(access);
         } catch (error) {
-          logger.error('Error verificando acceso a galería:', error);
+          logger.error('Error verificando acceso a galería:', error as any);
           setHasGalleryAccess(false);
         }
       }

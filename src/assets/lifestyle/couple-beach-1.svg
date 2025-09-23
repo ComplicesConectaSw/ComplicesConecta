@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="none">
+  <defs>
+    <linearGradient id="beach" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#87ceeb"/>
+      <stop offset="50%" style="stop-color:#ff6b9d"/>
+      <stop offset="100%" style="stop-color:#ffd700"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Sky background -->
+  <rect width="400" height="150" fill="#87ceeb" opacity="0.3" rx="20"/>
+  
+  <!-- Beach background -->
+  <rect y="150" width="400" height="150" fill="#ffd700" opacity="0.2" rx="20"/>
+  
+  <!-- Sun -->
+  <circle cx="350" cy="50" r="20" fill="#ffd700" opacity="0.8"/>
+  <g stroke="#ffd700" stroke-width="2" opacity="0.6">
+    <line x1="330" y1="30" x2="335" y2="35"/>
+    <line x1="365" y1="35" x2="370" y2="30"/>
+    <line x1="370" y1="65" x2="365" y2="70"/>
+    <line x1="335" y1="70" x2="330" y2="65"/>
+    <line x1="320" y1="50" x2="325" y2="50"/>
+    <line x1="375" y1="50" x2="380" y2="50"/>
+    <line x1="350" y1="20" x2="350" y2="25"/>
+    <line x1="350" y1="75" x2="350" y2="80"/>
+  </g>
+  
+  <!-- Couple walking on beach -->
+  <g transform="translate(150, 180)">
+    <!-- Female -->
+    <circle cx="30" cy="25" r="15" fill="#ff6b9d"/>
+    <ellipse cx="30" cy="55" rx="12" ry="20" fill="#ff6b9d"/>
+    <ellipse cx="18" cy="45" rx="5" ry="12" fill="#ff6b9d"/>
+    <ellipse cx="42" cy="45" rx="5" ry="12" fill="#ff6b9d"/>
+    
+    <!-- Male -->
+    <circle cx="70" cy="20" r="18" fill="#c44569"/>
+    <ellipse cx="70" cy="55" rx="15" ry="25" fill="#c44569"/>
+    <ellipse cx="55" cy="42" rx="6" ry="15" fill="#c44569"/>
+    <ellipse cx="85" cy="42" rx="6" ry="15" fill="#c44569"/>
+  </g>
+  
+  <!-- Footprints in sand -->
+  <g fill="#c44569" opacity="0.3">
+    <ellipse cx="120" cy="220" rx="3" ry="6"/>
+    <ellipse cx="125" cy="225" rx="3" ry="6"/>
+    <ellipse cx="130" cy="230" rx="3" ry="6"/>
+    <ellipse cx="135" cy="235" rx="3" ry="6"/>
+  </g>
+  
+  <!-- Seashells -->
+  <g fill="#ff6b9d" opacity="0.6">
+    <path d="M80 250 C80 245, 85 245, 85 250 C85 255, 80 255, 80 250"/>
+    <path d="M300 260 C300 257, 303 257, 303 260 C303 263, 300 263, 300 260"/>
+  </g>
+  
+  <!-- Waves -->
+  <g stroke="#87ceeb" stroke-width="3" fill="none" opacity="0.4">
+    <path d="M0 200 Q50 195 100 200 T200 200"/>
+    <path d="M200 205 Q250 200 300 205 T400 205"/>
+  </g>
+</svg>

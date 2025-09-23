@@ -48,6 +48,7 @@ const Legal = lazy(() => import("@/pages/Legal"));
 const Admin = lazy(() => import("@/pages/Admin"));
 const AdminProduction = lazy(() => import("@/pages/AdminProduction"));
 const ProfileSingle = lazy(() => import("@/pages/ProfileSingle"));
+const Stories = lazy(() => import("@/pages/Stories"));
 const ProfileCouple = lazy(() => import("@/pages/ProfileCouple"));
 const EditProfileSingle = lazy(() => import("@/pages/EditProfileSingle"));
 const EditProfileCouple = lazy(() => import("@/pages/EditProfileCouple"));
@@ -109,6 +110,7 @@ const App = () => (
                   <Route path="/matches" element={<Matches />} />
                   <Route path="/requests" element={<Requests />} />
                   <Route path="/discover" element={<Discover />} />
+                  <Route path="/stories" element={<Stories />} />
                   <Route path="/tokens" element={<Tokens />} />
                   <Route path="/settings" element={<Settings />} />
                   <Route path="/premium" element={<Premium />} />

@@ -1,14 +1,32 @@
 import { Story, CreateStoryData, StoryLike, StoryComment } from './StoryTypes';
 
-// Mock data for demo mode
-const DEMO_STORIES: Story[] = [
-  {
-    id: 1,
-    userId: 101,
-    user: {
-      name: "Sofía García",
-      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face"
-    },
+// Mock data for demo mode - adapts to user profile type
+const getDemoStories = (): Story[] => {
+  const demoUser = localStorage.getItem('demo_user');
+  const userType = localStorage.getItem('userType') || 'single';
+  
+  let userName = "Usuario Demo";
+  let userAvatar = "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face";
+  
+  if (demoUser) {
+    try {
+      const parsedUser = JSON.parse(demoUser);
+      userName = userType === 'couple' 
+        ? `${parsedUser.first_name} & Pareja`
+        : parsedUser.first_name || "Usuario Demo";
+    } catch (e) {
+      // Fallback to default
+    }
+  }
+
+  return [
+    {
+      id: 1,
+      userId: 101,
+      user: {
+        name: userName,
+        avatar: userAvatar
+      },
     content: {
       type: 'image',
       url: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=600&fit=crop"
@@ -61,7 +79,8 @@ const DEMO_STORIES: Story[] = [
     likes: [],
     comments: []
   }
-];
+  ];
+};
 
 class StoryService {
   private isDemoMode(): boolean {
@@ -70,7 +89,7 @@ class StoryService {
 
   private getDemoStories(): Story[] {
     const stored = localStorage.getItem('demo_stories');
-    return stored ? JSON.parse(stored) : DEMO_STORIES;
+    return stored ? JSON.parse(stored) : getDemoStories();
   }
 
   private saveDemoStories(stories: Story[]): void {

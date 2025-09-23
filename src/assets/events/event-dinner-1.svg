@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="none">
+  <defs>
+    <linearGradient id="romantic" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff6b9d;stop-opacity:0.2"/>
+      <stop offset="100%" style="stop-color:#c44569;stop-opacity:0.3"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="300" fill="url(#romantic)" rx="20"/>
+  
+  <!-- Table -->
+  <ellipse cx="200" cy="180" rx="80" ry="40" fill="#8b4513" opacity="0.8"/>
+  
+  <!-- Candles -->
+  <g fill="#ffd700">
+    <rect x="180" y="140" width="4" height="20" fill="#ff6b9d"/>
+    <ellipse cx="182" cy="135" rx="3" ry="8" fill="#ffd700"/>
+    <rect x="216" y="140" width="4" height="20" fill="#ff6b9d"/>
+    <ellipse cx="218" cy="135" rx="3" ry="8" fill="#ffd700"/>
+  </g>
+  
+  <!-- Flame -->
+  <g fill="#ff4500" opacity="0.8">
+    <ellipse cx="182" cy="130" rx="2" ry="5"/>
+    <ellipse cx="218" cy="130" rx="2" ry="5"/>
+  </g>
+  
+  <!-- Wine glasses -->
+  <g stroke="#ff6b9d" stroke-width="2" fill="none">
+    <path d="M160 160 L160 170 L170 170 L170 160"/>
+    <line x1="165" y1="170" x2="165" y2="180"/>
+    <line x1="160" y1="180" x2="170" y2="180"/>
+    
+    <path d="M230 160 L230 170 L240 170 L240 160"/>
+    <line x1="235" y1="170" x2="235" y2="180"/>
+    <line x1="230" y1="180" x2="240" y2="180"/>
+  </g>
+  
+  <!-- Wine in glasses -->
+  <rect x="161" y="162" width="8" height="6" fill="#c44569" opacity="0.6"/>
+  <rect x="231" y="162" width="8" height="6" fill="#c44569" opacity="0.6"/>
+  
+  <!-- Plates -->
+  <circle cx="160" cy="180" r="15" fill="#f5f5f5" opacity="0.8"/>
+  <circle cx="240" cy="180" r="15" fill="#f5f5f5" opacity="0.8"/>
+  
+  <!-- Hearts floating -->
+  <g fill="#ff6b9d" opacity="0.5">
+    <path d="M100 80 C100 76, 108 76, 108 80 C108 76, 116 76, 116 80 C116 88, 108 96, 108 96 C108 96, 100 88, 100 80 Z"/>
+    <path d="M280 70 C280 67, 286 67, 286 70 C286 67, 292 67, 292 70 C292 76, 286 82, 286 82 C286 82, 280 76, 280 70 Z"/>
+    <path d="M320 120 C320 118, 324 118, 324 120 C324 118, 328 118, 328 120 C328 124, 324 128, 324 128 C324 128, 320 124, 320 120 Z"/>
+  </g>
+  
+  <!-- Sparkles -->
+  <g fill="#ffd700" opacity="0.6">
+    <polygon points="50,50 51,53 54,53 52,55 53,58 50,56 47,58 48,55 46,53 49,53"/>
+    <polygon points="350,100 351,102 353,102 352,103 352.5,105 350,104 347.5,105 348,103 347,102 349,102"/>
+    <polygon points="80,220 81,222 83,222 82,223 82.5,225 80,224 77.5,225 78,223 77,222 79,222"/>
+  </g>
+</svg>

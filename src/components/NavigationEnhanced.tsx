@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Home, Search, MessageCircle, Heart, User, Settings, UserPlus, Coins, LogOut } from 'lucide-react';
+import { Home, Search, MessageCircle, Heart, User, Settings, UserPlus, Coins, LogOut, Calendar } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useFeatures } from '@/hooks/useFeatures';
 import { logger } from '@/lib/logger';
@@ -48,7 +48,8 @@ const NavigationEnhanced = ({
 
   const baseNavItems = [
     { id: 'feed', icon: Home, label: 'Inicio', path: '/feed' },
-    { id: 'discover', icon: Search, label: 'Descubrir', path: '/discover' },
+    { id: 'discover', icon: Search, label: 'Perfiles', path: '/discover' },
+    { id: 'stories', icon: Calendar, label: 'Historias', path: '/stories' },
     { id: 'chat', icon: MessageCircle, label: 'Chat', path: '/chat' },
     { id: 'matches', icon: Heart, label: 'Matches', path: '/matches' },
     { id: 'tokens', icon: Coins, label: 'Tokens', path: '/tokens' },

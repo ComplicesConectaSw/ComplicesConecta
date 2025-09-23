@@ -77,6 +77,7 @@ const Chat = () => {
         demoAccessMap[chat.id] = true;
       });
       setHasChatAccess(demoAccessMap);
+      setIsLoading(false);
     }
   }, [navigate]);
 

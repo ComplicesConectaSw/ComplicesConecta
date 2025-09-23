@@ -84,18 +84,26 @@ export const useTokens = () => {
       logger.info('💰 Cargando datos de tokens', { mode: config.mode, demo: isDemo() });
       
       // Si es demo o no debemos usar Supabase real, usar datos mock
-      if (isDemo() || !shouldUseRealSupabase()) {
-        logger.info('🎭 Cargando datos de tokens demo', { user: user.email || user.id });
+      if (isDemoMode()) {
+        logger.info('🎭 Cargando datos de tokens demo', { user: user.email });
         
-        // Balance demo basado en tipo de usuario
-        const demoUser = localStorage.getItem('demo_user');
-        let demoBalance = { cmpx: 1250, gtk: 850 };
+        // Balance demo basado en el tipo de usuario
+        let demoBalance: TokenBalance = { cmpx: 1250, gtk: 850 };
         
-        if (demoUser) {
+        // Ajustar balance según el usuario demo
+        if (user.email?.includes('couple')) {
+          demoBalance = { cmpx: 2000, gtk: 1500 };
+        } else if (user.email?.includes('premium')) {
+          demoBalance = { cmpx: 5000, gtk: 3000 };
+        }
+        
+        // Intentar obtener balance personalizado del localStorage
+        const storedUser = localStorage.getItem('demo_user');
+        if (storedUser) {
           try {
-            const parsedUser = JSON.parse(demoUser);
-            if (parsedUser.role === 'admin') {
-              demoBalance = { cmpx: 10000, gtk: 5000 }; // Admin tiene más tokens
+            const parsedUser = JSON.parse(storedUser);
+            if (parsedUser.accountType === 'couple') {
+              demoBalance = { cmpx: 2000, gtk: 1500 };
             }
           } catch (error) {
             logger.warn('Error parsing demo user for balance');
@@ -103,6 +111,7 @@ export const useTokens = () => {
         }
         
         setBalance(demoBalance);
+        setLoading(false);
         
         // Transacciones demo
         const mockTransactions: Transaction[] = [

@@ -230,7 +230,7 @@ const Matches = () => {
       </div>
       
       <div className="relative z-10">
-        {/* Header removido para usuarios demo - solo NavigationLegacy */}
+        <NavigationEnhanced />
       
         <main className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 max-w-6xl pb-24">
           {/* Back Button */}

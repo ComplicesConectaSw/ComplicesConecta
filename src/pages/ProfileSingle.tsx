@@ -93,22 +93,37 @@ const ProfileSingle: React.FC = () => {
             const parsedUser = typeof demoUser === 'string' ? JSON.parse(demoUser) : demoUser;
             
             // Crear perfil demo estático una sola vez
-            const profileData = {
+            const profileData: Tables<'profiles'> = {
               id: parsedUser.id || 'demo-single-1',
-              first_name: parsedUser.first_name || 'Demo',
-              last_name: 'User',
-              age: 30,
-              bio: 'Perfil demo para testing',
-              email: parsedUser.email,
-              is_verified: true,
-              is_premium: false,
-              is_demo: true,
-              profile_type: 'single',
+              name: parsedUser.first_name || 'Sofía',
+              user_id: parsedUser.id || 'demo-user-1',
+              age: 28,
+              bio: 'Explorando nuevas conexiones y experiencias auténticas. Me encanta viajar, la música y conocer personas interesantes.',
+              account_type: parsedUser.accountType || 'single',
+              age_range_max: null,
+              age_range_min: null,
+              avatar_url: '/placeholder.svg',
+              blocked_at: null,
+              blocked_reason: null,
               created_at: new Date().toISOString(),
-              updated_at: new Date().toISOString()
+              gender: 'female',
+              interested_in: null,
+              interests: ['Viajes', 'Música', 'Arte', 'Cocina', 'Fotografía'],
+              is_active: true,
+              is_blocked: false,
+              is_demo: true,
+              is_premium: false,
+              is_verified: true,
+              location: 'Ciudad de México, México',
+              looking_for: null,
+              max_distance: null,
+              suspension_end_date: null,
+              swinger_experience: null,
+              updated_at: new Date().toISOString(),
+              warnings_count: null
             };
             
-            setProfile(profileData as Tables<'profiles'>);
+            setProfile(profileData);
             setIsLoading(false);
             return;
           } catch (error) {
@@ -118,7 +133,7 @@ const ProfileSingle: React.FC = () => {
         
         // Si authProfile ya está disponible, usarlo directamente
         if (authProfile && authProfile.id) {
-          logger.info('✅ AuthProfile disponible:', authProfile.first_name);
+          logger.info('📄 Perfil cargado exitosamente:', { name: authProfile.name });
           setProfile(authProfile);
           setIsLoading(false);
           return;
@@ -196,7 +211,7 @@ const ProfileSingle: React.FC = () => {
         <div className="relative z-10 pt-8 pb-6 px-4">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-white mb-2">
-              Mi Perfil - {profile.first_name}
+              Mi Perfil - {profile.name}
             </h1>
           </div>
         </div>
@@ -212,7 +227,7 @@ const ProfileSingle: React.FC = () => {
                 {/* Avatar */}
                 <div className="relative flex-shrink-0">
                   <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-pink-400 to-purple-600 flex items-center justify-center text-white text-2xl sm:text-4xl font-bold">
-                    {profile.first_name?.[0]?.toUpperCase() || 'U'}
+                    {profile.name?.[0]?.toUpperCase() || 'U'}
                   </div>
                   {profile.is_verified && (
                     <div className="absolute -top-2 -right-2 bg-blue-500 rounded-full p-1">
@@ -229,18 +244,18 @@ const ProfileSingle: React.FC = () => {
                 {/* Información básica */}
                 <div className="flex-1 text-center sm:text-left">
                   <h2 className="text-xl sm:text-2xl font-bold mb-2">
-                    {profile.first_name} {profile.last_name}
+                    {profile.name}
                   </h2>
                   <div className="flex flex-wrap gap-2 justify-center sm:justify-start mb-4">
                     <Badge variant="secondary" className="bg-white/20 text-white border-white/30 text-xs sm:text-sm">
                       {profile.age} años
                     </Badge>
                     <Badge variant="secondary" className="bg-white/20 text-white border-white/30 text-xs sm:text-sm">
-                      {(profile as any).gender || 'No especificado'}
+                      {profile.gender || 'No especificado'}
                     </Badge>
                     <Badge variant="secondary" className="bg-white/20 text-white border-white/30 flex items-center gap-1 text-xs sm:text-sm">
                       <MapPin className="w-3 h-3" />
-                      {(profile as any).location || 'CDMX, México'}
+                      {profile.location || 'CDMX, México'}
                     </Badge>
                   </div>
                   
@@ -408,24 +423,26 @@ const ProfileSingle: React.FC = () => {
                 </div>
                 <div className="aspect-square bg-gradient-to-br from-purple-400 to-blue-600 rounded-lg flex items-center justify-center overflow-hidden">
                   <img 
-                    src="/src/assets/profile-2.jpg" 
+                    src="/placeholder.svg" 
                     alt="Foto pública 2"
                     className="w-full h-full object-cover"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).style.display = 'none';
-                      (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      target.nextElementSibling?.classList.remove('hidden');
                     }}
                   />
                   <Camera className="w-8 h-8 text-white hidden" />
                 </div>
                 <div className="aspect-square bg-gradient-to-br from-blue-400 to-teal-600 rounded-lg flex items-center justify-center overflow-hidden">
                   <img 
-                    src="/src/assets/profile-1.jpg" 
+                    src="/placeholder.svg" 
                     alt="Foto pública 3"
                     className="w-full h-full object-cover"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).style.display = 'none';
-                      (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      target.nextElementSibling?.classList.remove('hidden');
                     }}
                   />
                   <Camera className="w-8 h-8 text-white hidden" />
@@ -441,7 +458,7 @@ const ProfileSingle: React.FC = () => {
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                   <div className="aspect-square rounded-lg overflow-hidden relative">
                     <img 
-                      src="/src/assets/people/privado/erocpriv.jpg" 
+                      src="/placeholder.svg" 
                       alt="Foto privada 1"
                       className={`w-full h-full object-cover ${(profile as any)?.isOwner ? '' : 'filter blur-md'}`}
                     />
@@ -453,7 +470,7 @@ const ProfileSingle: React.FC = () => {
                   </div>
                   <div className="aspect-square rounded-lg overflow-hidden relative">
                     <img 
-                      src="/src/assets/profile-2.jpg" 
+                      src="/placeholder.svg" 
                       alt="Foto privada 2"
                       className={`w-full h-full object-cover ${(profile as any)?.isOwner ? '' : 'filter blur-md'}`}
                     />
@@ -465,7 +482,7 @@ const ProfileSingle: React.FC = () => {
                   </div>
                   <div className="aspect-square rounded-lg overflow-hidden relative">
                     <img 
-                      src="/src/assets/profile-1.jpg" 
+                      src="/placeholder.svg" 
                       alt="Foto privada 3"
                       className={`w-full h-full object-cover ${(profile as any)?.isOwner ? '' : 'filter blur-md'}`}
                     />
@@ -482,7 +499,7 @@ const ProfileSingle: React.FC = () => {
               {privateImageAccess === 'approved' && (
                 <PrivateImageGallery 
                   profileId={profile?.id || ''}
-                  profileName={profile?.first_name || 'Usuario'}
+                  profileName={profile?.name || 'Usuario'}
                   profileType="single"
                   isOwner={false}
                   hasAccess={true}
@@ -507,7 +524,7 @@ const ProfileSingle: React.FC = () => {
           isOpen={showPrivateImageRequest}
           onClose={() => setShowPrivateImageRequest(false)}
           profileId={profile?.id || ''}
-          profileName={profile?.first_name || ''}
+          profileName={profile?.name || ''}
           profileType="single"
           onRequestSent={() => {
             setPrivateImageAccess('pending');
@@ -519,7 +536,7 @@ const ProfileSingle: React.FC = () => {
       {/* Modal de reporte */}
       <ReportDialog
         profileId={profile?.id || ''}
-        profileName={profile?.first_name || 'Usuario'}
+        profileName={profile?.name || 'Usuario'}
         isOpen={showReportDialog}
         onOpenChange={setShowReportDialog}
         onReport={(reason) => {

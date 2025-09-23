@@ -72,21 +72,25 @@ export const CreateStory: React.FC<CreateStoryProps> = ({ onStoryCreated, onClos
     if (!selectedImage) return;
 
     setIsUploading(true);
-    
     try {
+      // En modo demo, simular la creación de historia
+      const isDemoMode = localStorage.getItem('demo_authenticated') === 'true';
+      
       const storyData: CreateStoryData = {
         contentUrl: selectedImage,
-        description: description.trim() || undefined,
-        visibility,
-        location: location.trim() || undefined
+        description,
+        location: location || undefined,
+        visibility
       };
 
-      const newStory = await storyService.createStory(storyData);
-      
-      if (newStory) {
-        onStoryCreated();
-        onClose();
+      if (isDemoMode) {
+        // Simular delay de subida
+        await new Promise(resolve => setTimeout(resolve, 2000));
       }
+
+      await storyService.createStory(storyData);
+      onStoryCreated();
+      onClose();
     } catch (error) {
       console.error('Error creating story:', error);
     } finally {

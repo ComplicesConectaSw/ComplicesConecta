@@ -56,7 +56,6 @@ const EditProfileSingle = () => {
     if (profileLoaded) return;
     
     try {
-      // Verificar autenticación demo primero
       const demoAuth = localStorage.getItem('demo_authenticated');
       const demoUser = localStorage.getItem('demo_user');
       
@@ -78,6 +77,7 @@ const EditProfileSingle = () => {
           setUserId(user.id);
           setProfile(profileData);
           setProfileLoaded(true);
+          setIsLoading(false);
           return;
         }
       }
@@ -131,6 +131,7 @@ const EditProfileSingle = () => {
         setUserId(newProfile.id);
         setProfile(newProfile);
         setProfileLoaded(true);
+        setIsLoading(false);
       }
     } catch (error) {
       setError('Error inesperado al cargar perfil');
@@ -150,6 +151,7 @@ const EditProfileSingle = () => {
       setUserId(fallbackProfile.id);
       setProfile(fallbackProfile);
       setProfileLoaded(true);
+      setIsLoading(false);
     }
   }, [profileLoaded]);
 

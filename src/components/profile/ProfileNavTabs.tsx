@@ -13,6 +13,8 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import StoriesContainer from '@/components/stories/StoriesContainer';
+import { ComingSoonModal } from '@/components/modals/ComingSoonModal';
+import { FeatureModal } from '@/components/modals/FeatureModal';
 
 type TabType = 'posts' | 'stories' | 'gallery';
 
@@ -30,6 +32,8 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
   onCommentPost
 }) => {
   const [activeTab, setActiveTab] = useState<TabType>('posts');
+  const [showComingSoon, setShowComingSoon] = useState(false);
+  const [showFeatureModal, setShowFeatureModal] = useState(false);
 
   const tabs = [
     {
@@ -253,6 +257,20 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
       <div className="min-h-[400px]">
         {renderTabContent()}
       </div>
+
+      {/* Modales */}
+      <ComingSoonModal 
+        isOpen={showComingSoon}
+        onClose={() => setShowComingSoon(false)}
+        title="Galería Privada"
+        feature="Galería Privada"
+      />
+      
+      <FeatureModal 
+        isOpen={showFeatureModal}
+        onClose={() => setShowFeatureModal(false)}
+        feature="connections"
+      />
     </div>
   );
 };

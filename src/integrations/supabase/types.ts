@@ -14,174 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
-      apk_downloads: {
+      audit_logs: {
         Row: {
-          created_at: string | null
-          download_count: number | null
-          download_url: string | null
-          file_size: number | null
-          id: string
-          is_active: boolean | null
-          release_date: string | null
-          updated_at: string | null
-          version: string
-        }
-        Insert: {
-          created_at?: string | null
-          download_count?: number | null
-          download_url?: string | null
-          file_size?: number | null
-          id?: string
-          is_active?: boolean | null
-          release_date?: string | null
-          updated_at?: string | null
-          version: string
-        }
-        Update: {
-          created_at?: string | null
-          download_count?: number | null
-          download_url?: string | null
-          file_size?: number | null
-          id?: string
-          is_active?: boolean | null
-          release_date?: string | null
-          updated_at?: string | null
-          version?: string
-        }
-        Relationships: []
-      }
-      app_metrics: {
-        Row: {
-          created_at: string | null
-          description: string | null
-          id: string
-          metric_name: string
-          metric_type: string | null
-          metric_value: number | null
-          updated_at: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          description?: string | null
-          id?: string
-          metric_name: string
-          metric_type?: string | null
-          metric_value?: number | null
-          updated_at?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          description?: string | null
-          id?: string
-          metric_name?: string
-          metric_type?: string | null
-          metric_value?: number | null
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      biometric_sessions: {
-        Row: {
-          created_at: string | null
-          credential_id: string | null
-          error_message: string | null
-          id: string
-          ip_address: unknown | null
-          session_type: string
-          success: boolean
-          user_agent: string | null
-          user_id: string
-        }
-        Insert: {
-          created_at?: string | null
-          credential_id?: string | null
-          error_message?: string | null
-          id?: string
-          ip_address?: unknown | null
-          session_type: string
-          success: boolean
-          user_agent?: string | null
-          user_id: string
-        }
-        Update: {
-          created_at?: string | null
-          credential_id?: string | null
-          error_message?: string | null
-          id?: string
-          ip_address?: unknown | null
-          session_type?: string
-          success?: boolean
-          user_agent?: string | null
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "biometric_sessions_credential_id_fkey"
-            columns: ["credential_id"]
-            isOneToOne: false
-            referencedRelation: "user_credentials"
-            referencedColumns: ["credential_id"]
-          },
-          {
-            foreignKeyName: "biometric_sessions_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      career_applications: {
-        Row: {
-          correo: string
+          action_description: string
+          action_type: string
           created_at: string
-          cv_url: string | null
-          domicilio: string | null
-          expectativas: string
-          experiencia: string
+          fraud_score: number | null
           id: string
           ip_address: unknown | null
-          nombre: string
-          puesto: string
-          referencias: string | null
-          status: string
-          telefono: string
-          updated_at: string
+          request_data: Json | null
+          resource_id: string | null
+          resource_type: string | null
+          response_data: Json | null
+          risk_level: string | null
+          session_id: string | null
           user_agent: string | null
+          user_id: string | null
         }
         Insert: {
-          correo: string
+          action_description: string
+          action_type: string
           created_at?: string
-          cv_url?: string | null
-          domicilio?: string | null
-          expectativas: string
-          experiencia: string
+          fraud_score?: number | null
           id?: string
           ip_address?: unknown | null
-          nombre: string
-          puesto: string
-          referencias?: string | null
-          status?: string
-          telefono: string
-          updated_at?: string
+          request_data?: Json | null
+          resource_id?: string | null
+          resource_type?: string | null
+          response_data?: Json | null
+          risk_level?: string | null
+          session_id?: string | null
           user_agent?: string | null
+          user_id?: string | null
         }
         Update: {
-          correo?: string
+          action_description?: string
+          action_type?: string
           created_at?: string
-          cv_url?: string | null
-          domicilio?: string | null
-          expectativas?: string
-          experiencia?: string
+          fraud_score?: number | null
           id?: string
           ip_address?: unknown | null
-          nombre?: string
-          puesto?: string
-          referencias?: string | null
-          status?: string
-          telefono?: string
-          updated_at?: string
+          request_data?: Json | null
+          resource_id?: string | null
+          resource_type?: string | null
+          response_data?: Json | null
+          risk_level?: string | null
+          session_id?: string | null
           user_agent?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -252,89 +132,6 @@ export type Database = {
           },
         ]
       }
-      chat_messages: {
-        Row: {
-          content: string
-          created_at: string | null
-          id: string
-          is_deleted: boolean | null
-          is_edited: boolean | null
-          message_type: string | null
-          metadata: Json | null
-          reply_to: string | null
-          room_id: string
-          sender_id: string
-          updated_at: string | null
-        }
-        Insert: {
-          content: string
-          created_at?: string | null
-          id?: string
-          is_deleted?: boolean | null
-          is_edited?: boolean | null
-          message_type?: string | null
-          metadata?: Json | null
-          reply_to?: string | null
-          room_id: string
-          sender_id: string
-          updated_at?: string | null
-        }
-        Update: {
-          content?: string
-          created_at?: string | null
-          id?: string
-          is_deleted?: boolean | null
-          is_edited?: boolean | null
-          message_type?: string | null
-          metadata?: Json | null
-          reply_to?: string | null
-          room_id?: string
-          sender_id?: string
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "chat_messages_reply_to_fkey"
-            columns: ["reply_to"]
-            isOneToOne: false
-            referencedRelation: "chat_messages"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      chat_participants: {
-        Row: {
-          id: string
-          is_active: boolean | null
-          joined_at: string | null
-          last_read_at: string | null
-          left_at: string | null
-          role: string | null
-          room_id: string
-          user_id: string
-        }
-        Insert: {
-          id?: string
-          is_active?: boolean | null
-          joined_at?: string | null
-          last_read_at?: string | null
-          left_at?: string | null
-          role?: string | null
-          room_id: string
-          user_id: string
-        }
-        Update: {
-          id?: string
-          is_active?: boolean | null
-          joined_at?: string | null
-          last_read_at?: string | null
-          left_at?: string | null
-          role?: string | null
-          room_id?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
       chat_rooms: {
         Row: {
           created_at: string | null
@@ -362,88 +159,38 @@ export type Database = {
         }
         Relationships: []
       }
-      chat_typing: {
+      comment_likes: {
         Row: {
-          expires_at: string | null
+          comment_id: string
+          created_at: string | null
           id: string
-          room_id: string
-          started_at: string | null
+          profile_id: string | null
           user_id: string
         }
         Insert: {
-          expires_at?: string | null
+          comment_id: string
+          created_at?: string | null
           id?: string
-          room_id: string
-          started_at?: string | null
+          profile_id?: string | null
           user_id: string
         }
         Update: {
-          expires_at?: string | null
+          comment_id?: string
+          created_at?: string | null
           id?: string
-          room_id?: string
-          started_at?: string | null
+          profile_id?: string | null
           user_id?: string
-        }
-        Relationships: []
-      }
-      conversations: {
-        Row: {
-          created_at: string
-          id: string
-          participant_1_id: string
-          participant_2_id: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          participant_1_id: string
-          participant_2_id: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          participant_1_id?: string
-          participant_2_id?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      couple_photos: {
-        Row: {
-          created_at: string
-          id: string
-          is_main: boolean | null
-          partner_type: string
-          photo_url: string
-          profile_id: string
-          storage_path: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          is_main?: boolean | null
-          partner_type: string
-          photo_url: string
-          profile_id: string
-          storage_path: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          is_main?: boolean | null
-          partner_type?: string
-          photo_url?: string
-          profile_id?: string
-          storage_path?: string
-          updated_at?: string
         }
         Relationships: [
           {
-            foreignKeyName: "couple_photos_profile_id_fkey"
+            foreignKeyName: "comment_likes_comment_id_fkey"
+            columns: ["comment_id"]
+            isOneToOne: false
+            referencedRelation: "post_comments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comment_likes_profile_id_fkey"
             columns: ["profile_id"]
             isOneToOne: false
             referencedRelation: "profiles"
@@ -507,69 +254,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
-      }
-      faq_items: {
-        Row: {
-          answer: string
-          created_at: string | null
-          display_order: number | null
-          id: string
-          is_active: boolean | null
-          question: string
-          updated_at: string | null
-        }
-        Insert: {
-          answer: string
-          created_at?: string | null
-          display_order?: number | null
-          id?: string
-          is_active?: boolean | null
-          question: string
-          updated_at?: string | null
-        }
-        Update: {
-          answer?: string
-          created_at?: string | null
-          display_order?: number | null
-          id?: string
-          is_active?: boolean | null
-          question?: string
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      faqs: {
-        Row: {
-          answer: string
-          category: string | null
-          created_at: string
-          display_order: number | null
-          id: string
-          is_active: boolean | null
-          question: string
-          updated_at: string
-        }
-        Insert: {
-          answer: string
-          category?: string | null
-          created_at?: string
-          display_order?: number | null
-          id?: string
-          is_active?: boolean | null
-          question: string
-          updated_at?: string
-        }
-        Update: {
-          answer?: string
-          category?: string | null
-          created_at?: string
-          display_order?: number | null
-          id?: string
-          is_active?: boolean | null
-          question?: string
-          updated_at?: string
-        }
-        Relationships: []
       }
       gallery_access_requests: {
         Row: {
@@ -690,70 +374,9 @@ export type Database = {
         }
         Relationships: []
       }
-      interest_categories: {
-        Row: {
-          color: string | null
-          created_at: string | null
-          description: string | null
-          icon: string | null
-          id: string
-          is_active: boolean | null
-          name: string
-        }
-        Insert: {
-          color?: string | null
-          created_at?: string | null
-          description?: string | null
-          icon?: string | null
-          id?: string
-          is_active?: boolean | null
-          name: string
-        }
-        Update: {
-          color?: string | null
-          created_at?: string | null
-          description?: string | null
-          icon?: string | null
-          id?: string
-          is_active?: boolean | null
-          name?: string
-        }
-        Relationships: []
-      }
-      interests: {
-        Row: {
-          category: string
-          created_at: string
-          description: string | null
-          id: string
-          is_popular: boolean | null
-          name: string
-          updated_at: string
-        }
-        Insert: {
-          category: string
-          created_at?: string
-          description?: string | null
-          id?: string
-          is_popular?: boolean | null
-          name: string
-          updated_at?: string
-        }
-        Update: {
-          category?: string
-          created_at?: string
-          description?: string | null
-          id?: string
-          is_popular?: boolean | null
-          name?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
       invitations: {
         Row: {
           created_at: string | null
-          decided_at: string | null
           from_profile: string | null
           id: string
           message: string | null
@@ -764,7 +387,6 @@ export type Database = {
         }
         Insert: {
           created_at?: string | null
-          decided_at?: string | null
           from_profile?: string | null
           id?: string
           message?: string | null
@@ -775,7 +397,6 @@ export type Database = {
         }
         Update: {
           created_at?: string | null
-          decided_at?: string | null
           from_profile?: string | null
           id?: string
           message?: string | null
@@ -848,120 +469,11 @@ export type Database = {
         }
         Relationships: []
       }
-      media: {
-        Row: {
-          created_at: string | null
-          file_size: number | null
-          file_type: string
-          id: string
-          is_profile_photo: boolean | null
-          is_public: boolean | null
-          owner_id: string
-          storage_path: string
-          thumbnail_path: string | null
-          updated_at: string | null
-          upload_ip: unknown | null
-          watermarked_path: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          file_size?: number | null
-          file_type: string
-          id?: string
-          is_profile_photo?: boolean | null
-          is_public?: boolean | null
-          owner_id: string
-          storage_path: string
-          thumbnail_path?: string | null
-          updated_at?: string | null
-          upload_ip?: unknown | null
-          watermarked_path?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          file_size?: number | null
-          file_type?: string
-          id?: string
-          is_profile_photo?: boolean | null
-          is_public?: boolean | null
-          owner_id?: string
-          storage_path?: string
-          thumbnail_path?: string | null
-          updated_at?: string | null
-          upload_ip?: unknown | null
-          watermarked_path?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "media_owner_id_fkey"
-            columns: ["owner_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      media_access_logs: {
-        Row: {
-          access_type: string
-          accessed_at: string | null
-          accessed_by: string
-          id: string
-          ip_address: unknown | null
-          media_id: string
-          user_agent: string | null
-        }
-        Insert: {
-          access_type: string
-          accessed_at?: string | null
-          accessed_by: string
-          id?: string
-          ip_address?: unknown | null
-          media_id: string
-          user_agent?: string | null
-        }
-        Update: {
-          access_type?: string
-          accessed_at?: string | null
-          accessed_by?: string
-          id?: string
-          ip_address?: unknown | null
-          media_id?: string
-          user_agent?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "media_access_logs_accessed_by_fkey"
-            columns: ["accessed_by"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "media_access_logs_media_id_fkey"
-            columns: ["media_id"]
-            isOneToOne: false
-            referencedRelation: "media"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "media_access_logs_media_id_fkey"
-            columns: ["media_id"]
-            isOneToOne: false
-            referencedRelation: "media_preview_for_moderator"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       messages: {
         Row: {
           content: string
-          conversation_id: string | null
           created_at: string | null
           id: string
-          location_address: string | null
-          location_latitude: number | null
-          location_longitude: number | null
           message_type: string | null
           room_id: string | null
           sender_id: string | null
@@ -969,12 +481,8 @@ export type Database = {
         }
         Insert: {
           content: string
-          conversation_id?: string | null
           created_at?: string | null
           id?: string
-          location_address?: string | null
-          location_latitude?: number | null
-          location_longitude?: number | null
           message_type?: string | null
           room_id?: string | null
           sender_id?: string | null
@@ -982,12 +490,8 @@ export type Database = {
         }
         Update: {
           content?: string
-          conversation_id?: string | null
           created_at?: string | null
           id?: string
-          location_address?: string | null
-          location_latitude?: number | null
-          location_longitude?: number | null
           message_type?: string | null
           room_id?: string | null
           sender_id?: string | null
@@ -1005,329 +509,336 @@ export type Database = {
       }
       moderation_logs: {
         Row: {
-          action_details: Json | null
           action_type: string
           created_at: string
-          duration_days: number | null
+          description: string
           id: string
-          ip_address: unknown | null
-          moderator_id: string | null
-          reason: string | null
-          target_report_id: string | null
+          metadata: Json | null
+          moderator_id: string
+          new_state: Json | null
+          previous_state: Json | null
+          target_id: string | null
+          target_type: string
           target_user_id: string | null
-          user_agent: string | null
         }
         Insert: {
-          action_details?: Json | null
           action_type: string
           created_at?: string
-          duration_days?: number | null
+          description: string
           id?: string
-          ip_address?: unknown | null
-          moderator_id?: string | null
-          reason?: string | null
-          target_report_id?: string | null
+          metadata?: Json | null
+          moderator_id: string
+          new_state?: Json | null
+          previous_state?: Json | null
+          target_id?: string | null
+          target_type: string
           target_user_id?: string | null
-          user_agent?: string | null
         }
         Update: {
-          action_details?: Json | null
           action_type?: string
           created_at?: string
-          duration_days?: number | null
+          description?: string
           id?: string
-          ip_address?: unknown | null
-          moderator_id?: string | null
-          reason?: string | null
-          target_report_id?: string | null
+          metadata?: Json | null
+          moderator_id?: string
+          new_state?: Json | null
+          previous_state?: Json | null
+          target_id?: string | null
+          target_type?: string
           target_user_id?: string | null
-          user_agent?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "moderation_logs_moderator_id_fkey"
-            columns: ["moderator_id"]
-            isOneToOne: false
-            referencedRelation: "moderators"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "moderation_logs_target_report_id_fkey"
-            columns: ["target_report_id"]
-            isOneToOne: false
-            referencedRelation: "user_reports"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      moderator_requests: {
-        Row: {
-          created_at: string
-          email: string
-          full_name: string
-          id: string
-          ip_address: unknown | null
-          motivation: string
-          rejection_reason: string | null
-          reviewed_at: string | null
-          reviewed_by: string | null
-          status: string
-          updated_at: string
-          user_agent: string | null
-        }
-        Insert: {
-          created_at?: string
-          email: string
-          full_name: string
-          id?: string
-          ip_address?: unknown | null
-          motivation: string
-          rejection_reason?: string | null
-          reviewed_at?: string | null
-          reviewed_by?: string | null
-          status?: string
-          updated_at?: string
-          user_agent?: string | null
-        }
-        Update: {
-          created_at?: string
-          email?: string
-          full_name?: string
-          id?: string
-          ip_address?: unknown | null
-          motivation?: string
-          rejection_reason?: string | null
-          reviewed_at?: string | null
-          reviewed_by?: string | null
-          status?: string
-          updated_at?: string
-          user_agent?: string | null
         }
         Relationships: []
       }
-      moderators: {
-        Row: {
-          activated_at: string | null
-          activation_expires_at: string | null
-          activation_token: string | null
-          created_at: string
-          created_by: string | null
-          email: string
-          full_name: string | null
-          id: string
-          last_activity: string | null
-          reports_handled: number | null
-          status: string
-          suspensions_applied: number | null
-          updated_at: string
-          user_id: string | null
-        }
-        Insert: {
-          activated_at?: string | null
-          activation_expires_at?: string | null
-          activation_token?: string | null
-          created_at?: string
-          created_by?: string | null
-          email: string
-          full_name?: string | null
-          id?: string
-          last_activity?: string | null
-          reports_handled?: number | null
-          status?: string
-          suspensions_applied?: number | null
-          updated_at?: string
-          user_id?: string | null
-        }
-        Update: {
-          activated_at?: string | null
-          activation_expires_at?: string | null
-          activation_token?: string | null
-          created_at?: string
-          created_by?: string | null
-          email?: string
-          full_name?: string | null
-          id?: string
-          last_activity?: string | null
-          reports_handled?: number | null
-          status?: string
-          suspensions_applied?: number | null
-          updated_at?: string
-          user_id?: string | null
-        }
-        Relationships: []
-      }
-      notification_logs: {
+      notification_history: {
         Row: {
           body: string
+          created_at: string
           data: Json | null
-          delivery_status: string | null
+          delivered_at: string | null
+          delivery_method: string
           error_message: string | null
           id: string
           notification_type: string
-          sent_at: string
-          subscription_id: string | null
+          sent_at: string | null
+          status: string | null
           title: string
           user_id: string
         }
         Insert: {
           body: string
+          created_at?: string
           data?: Json | null
-          delivery_status?: string | null
+          delivered_at?: string | null
+          delivery_method: string
           error_message?: string | null
           id?: string
           notification_type: string
-          sent_at?: string
-          subscription_id?: string | null
+          sent_at?: string | null
+          status?: string | null
           title: string
           user_id: string
         }
         Update: {
           body?: string
+          created_at?: string
           data?: Json | null
-          delivery_status?: string | null
+          delivered_at?: string | null
+          delivery_method?: string
           error_message?: string | null
           id?: string
           notification_type?: string
-          sent_at?: string
-          subscription_id?: string | null
+          sent_at?: string | null
+          status?: string | null
           title?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "notification_logs_subscription_id_fkey"
-            columns: ["subscription_id"]
-            isOneToOne: false
-            referencedRelation: "push_subscriptions"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      notification_preferences: {
-        Row: {
-          created_at: string
-          id: string
-          invitations_enabled: boolean | null
-          likes_enabled: boolean | null
-          marketing_enabled: boolean | null
-          matches_enabled: boolean | null
-          messages_enabled: boolean | null
-          profile_views_enabled: boolean | null
-          quiet_hours_end: string | null
-          quiet_hours_start: string | null
-          timezone: string | null
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          invitations_enabled?: boolean | null
-          likes_enabled?: boolean | null
-          marketing_enabled?: boolean | null
-          matches_enabled?: boolean | null
-          messages_enabled?: boolean | null
-          profile_views_enabled?: boolean | null
-          quiet_hours_end?: string | null
-          quiet_hours_start?: string | null
-          timezone?: string | null
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          invitations_enabled?: boolean | null
-          likes_enabled?: boolean | null
-          marketing_enabled?: boolean | null
-          matches_enabled?: boolean | null
-          messages_enabled?: boolean | null
-          profile_views_enabled?: boolean | null
-          quiet_hours_end?: string | null
-          quiet_hours_start?: string | null
-          timezone?: string | null
-          updated_at?: string
           user_id?: string
         }
         Relationships: []
       }
-      notifications: {
+      pending_rewards: {
         Row: {
-          action_url: string | null
-          created_at: string | null
+          amount: number
+          claimed: boolean
+          claimed_at: string | null
+          created_at: string
+          description: string
+          expires_at: string | null
           id: string
-          message: string
-          metadata: Json | null
-          read: boolean | null
-          sender_id: string | null
-          sender_name: string | null
-          title: string
-          type: string
+          reward_type: string
+          token_type: string | null
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          claimed?: boolean
+          claimed_at?: string | null
+          created_at?: string
+          description: string
+          expires_at?: string | null
+          id?: string
+          reward_type: string
+          token_type?: string | null
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          claimed?: boolean
+          claimed_at?: string | null
+          created_at?: string
+          description?: string
+          expires_at?: string | null
+          id?: string
+          reward_type?: string
+          token_type?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      post_comments: {
+        Row: {
+          content: string
+          created_at: string | null
+          deleted_at: string | null
+          id: string
+          likes_count: number
+          parent_comment_id: string | null
+          post_id: string
+          profile_id: string | null
           updated_at: string | null
           user_id: string
         }
         Insert: {
-          action_url?: string | null
+          content: string
           created_at?: string | null
+          deleted_at?: string | null
           id?: string
-          message: string
-          metadata?: Json | null
-          read?: boolean | null
-          sender_id?: string | null
-          sender_name?: string | null
-          title: string
-          type: string
+          likes_count?: number
+          parent_comment_id?: string | null
+          post_id: string
+          profile_id?: string | null
           updated_at?: string | null
           user_id: string
         }
         Update: {
-          action_url?: string | null
+          content?: string
           created_at?: string | null
+          deleted_at?: string | null
           id?: string
-          message?: string
-          metadata?: Json | null
-          read?: boolean | null
-          sender_id?: string | null
-          sender_name?: string | null
-          title?: string
-          type?: string
+          likes_count?: number
+          parent_comment_id?: string | null
+          post_id?: string
+          profile_id?: string | null
           updated_at?: string | null
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "post_comments_parent_comment_id_fkey"
+            columns: ["parent_comment_id"]
+            isOneToOne: false
+            referencedRelation: "post_comments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "post_comments_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "post_comments_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
-      profile_images: {
+      post_likes: {
         Row: {
-          file_size: number | null
+          created_at: string | null
           id: string
-          image_url: string
-          is_primary: boolean | null
-          is_public: boolean | null
-          mime_type: string | null
-          upload_date: string | null
+          post_id: string
+          profile_id: string | null
           user_id: string
         }
         Insert: {
-          file_size?: number | null
+          created_at?: string | null
           id?: string
-          image_url: string
-          is_primary?: boolean | null
-          is_public?: boolean | null
-          mime_type?: string | null
-          upload_date?: string | null
+          post_id: string
+          profile_id?: string | null
           user_id: string
         }
         Update: {
-          file_size?: number | null
+          created_at?: string | null
           id?: string
-          image_url?: string
-          is_primary?: boolean | null
-          is_public?: boolean | null
-          mime_type?: string | null
-          upload_date?: string | null
+          post_id?: string
+          profile_id?: string | null
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "post_likes_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "post_likes_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      post_shares: {
+        Row: {
+          created_at: string | null
+          id: string
+          post_id: string
+          profile_id: string | null
+          share_type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          post_id: string
+          profile_id?: string | null
+          share_type?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          post_id?: string
+          profile_id?: string | null
+          share_type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_shares_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "post_shares_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      posts: {
+        Row: {
+          comments_count: number
+          content: string
+          created_at: string | null
+          deleted_at: string | null
+          id: string
+          image_url: string | null
+          is_premium: boolean
+          is_public: boolean
+          likes_count: number
+          location: string | null
+          post_type: string
+          profile_id: string | null
+          shares_count: number
+          updated_at: string | null
+          user_id: string
+          video_url: string | null
+        }
+        Insert: {
+          comments_count?: number
+          content: string
+          created_at?: string | null
+          deleted_at?: string | null
+          id?: string
+          image_url?: string | null
+          is_premium?: boolean
+          is_public?: boolean
+          likes_count?: number
+          location?: string | null
+          post_type?: string
+          profile_id?: string | null
+          shares_count?: number
+          updated_at?: string | null
+          user_id: string
+          video_url?: string | null
+        }
+        Update: {
+          comments_count?: number
+          content?: string
+          created_at?: string | null
+          deleted_at?: string | null
+          id?: string
+          image_url?: string | null
+          is_premium?: boolean
+          is_public?: boolean
+          likes_count?: number
+          location?: string | null
+          post_type?: string
+          profile_id?: string | null
+          shares_count?: number
+          updated_at?: string | null
+          user_id?: string
+          video_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "posts_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
@@ -1337,46 +848,27 @@ export type Database = {
           age_range_min: number | null
           avatar_url: string | null
           bio: string | null
-          biometric_enabled: boolean | null
-          biometric_last_used: string | null
-          biometric_public_key: string | null
-          created_at: string
-          display_name: string | null
-          email: string | null
-          experience_level: string | null
-          first_name: string | null
+          blocked_at: string | null
+          blocked_reason: string | null
+          created_at: string | null
           gender: string | null
           id: string
-          interested_in: string[] | null
+          interested_in: string | null
           interests: string[] | null
           is_active: boolean | null
+          is_blocked: boolean | null
           is_demo: boolean | null
-          is_online: boolean
           is_premium: boolean | null
-          is_public: boolean | null
           is_verified: boolean | null
-          last_active: string | null
-          last_name: string | null
-          latitude: number | null
-          longitude: number | null
-          looking_for: string[] | null
+          location: string | null
+          looking_for: string | null
           max_distance: number | null
-          navbar_style: string | null
-          partner_age: number | null
-          partner_first_name: string | null
-          payment_failed: boolean | null
-          preferred_theme: string | null
-          premium_expires_at: string | null
-          premium_plan: string | null
-          profile_type: string | null
-          role: string | null
-          stripe_customer_id: string | null
-          stripe_subscription_id: string | null
+          name: string
+          suspension_end_date: string | null
           swinger_experience: string | null
-          theme_updated_at: string | null
-          updated_at: string
-          user_id: string | null
-          webauthn_registered: boolean | null
+          updated_at: string | null
+          user_id: string
+          warnings_count: number | null
         }
         Insert: {
           account_type?: string | null
@@ -1385,46 +877,27 @@ export type Database = {
           age_range_min?: number | null
           avatar_url?: string | null
           bio?: string | null
-          biometric_enabled?: boolean | null
-          biometric_last_used?: string | null
-          biometric_public_key?: string | null
-          created_at?: string
-          display_name?: string | null
-          email?: string | null
-          experience_level?: string | null
-          first_name?: string | null
+          blocked_at?: string | null
+          blocked_reason?: string | null
+          created_at?: string | null
           gender?: string | null
-          id: string
-          interested_in?: string[] | null
+          id?: string
+          interested_in?: string | null
           interests?: string[] | null
           is_active?: boolean | null
+          is_blocked?: boolean | null
           is_demo?: boolean | null
-          is_online?: boolean
           is_premium?: boolean | null
-          is_public?: boolean | null
           is_verified?: boolean | null
-          last_active?: string | null
-          last_name?: string | null
-          latitude?: number | null
-          longitude?: number | null
-          looking_for?: string[] | null
+          location?: string | null
+          looking_for?: string | null
           max_distance?: number | null
-          navbar_style?: string | null
-          partner_age?: number | null
-          partner_first_name?: string | null
-          payment_failed?: boolean | null
-          preferred_theme?: string | null
-          premium_expires_at?: string | null
-          premium_plan?: string | null
-          profile_type?: string | null
-          role?: string | null
-          stripe_customer_id?: string | null
-          stripe_subscription_id?: string | null
+          name: string
+          suspension_end_date?: string | null
           swinger_experience?: string | null
-          theme_updated_at?: string | null
-          updated_at?: string
-          user_id?: string | null
-          webauthn_registered?: boolean | null
+          updated_at?: string | null
+          user_id: string
+          warnings_count?: number | null
         }
         Update: {
           account_type?: string | null
@@ -1433,440 +906,325 @@ export type Database = {
           age_range_min?: number | null
           avatar_url?: string | null
           bio?: string | null
-          biometric_enabled?: boolean | null
-          biometric_last_used?: string | null
-          biometric_public_key?: string | null
-          created_at?: string
-          display_name?: string | null
-          email?: string | null
-          experience_level?: string | null
-          first_name?: string | null
+          blocked_at?: string | null
+          blocked_reason?: string | null
+          created_at?: string | null
           gender?: string | null
           id?: string
-          interested_in?: string[] | null
+          interested_in?: string | null
           interests?: string[] | null
           is_active?: boolean | null
+          is_blocked?: boolean | null
           is_demo?: boolean | null
-          is_online?: boolean
           is_premium?: boolean | null
-          is_public?: boolean | null
           is_verified?: boolean | null
-          last_active?: string | null
-          last_name?: string | null
-          latitude?: number | null
-          longitude?: number | null
-          looking_for?: string[] | null
+          location?: string | null
+          looking_for?: string | null
           max_distance?: number | null
-          navbar_style?: string | null
-          partner_age?: number | null
-          partner_first_name?: string | null
-          payment_failed?: boolean | null
-          preferred_theme?: string | null
-          premium_expires_at?: string | null
-          premium_plan?: string | null
-          profile_type?: string | null
-          role?: string | null
-          stripe_customer_id?: string | null
-          stripe_subscription_id?: string | null
+          name?: string
+          suspension_end_date?: string | null
           swinger_experience?: string | null
-          theme_updated_at?: string | null
-          updated_at?: string
-          user_id?: string | null
-          webauthn_registered?: boolean | null
-        }
-        Relationships: []
-      }
-      push_subscriptions: {
-        Row: {
-          auth_key: string
-          created_at: string
-          endpoint: string
-          id: string
-          is_active: boolean | null
-          p256dh_key: string
-          updated_at: string
-          user_agent: string | null
-          user_id: string
-        }
-        Insert: {
-          auth_key: string
-          created_at?: string
-          endpoint: string
-          id?: string
-          is_active?: boolean | null
-          p256dh_key: string
-          updated_at?: string
-          user_agent?: string | null
-          user_id: string
-        }
-        Update: {
-          auth_key?: string
-          created_at?: string
-          endpoint?: string
-          id?: string
-          is_active?: boolean | null
-          p256dh_key?: string
-          updated_at?: string
-          user_agent?: string | null
+          updated_at?: string | null
           user_id?: string
+          warnings_count?: number | null
         }
         Relationships: []
       }
-      referral_rewards: {
+      reports: {
         Row: {
-          amount: number
+          content_type: string
           created_at: string
+          description: string | null
           id: string
-          reward_amount: number
-          reward_type: string
+          reason: string
+          reported_content_id: string
+          reported_user_id: string
+          reporter_user_id: string
+          resolution_notes: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          severity: string | null
+          status: string | null
           updated_at: string
-          user_id: string
-          verification_method: string
-          worldid_proof: Json | null
         }
         Insert: {
-          amount?: number
+          content_type: string
           created_at?: string
+          description?: string | null
           id?: string
-          reward_amount?: number
-          reward_type?: string
+          reason: string
+          reported_content_id: string
+          reported_user_id: string
+          reporter_user_id: string
+          resolution_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: string | null
+          status?: string | null
           updated_at?: string
-          user_id: string
-          verification_method?: string
-          worldid_proof?: Json | null
         }
         Update: {
-          amount?: number
+          content_type?: string
           created_at?: string
+          description?: string | null
           id?: string
-          reward_amount?: number
-          reward_type?: string
+          reason?: string
+          reported_content_id?: string
+          reported_user_id?: string
+          reporter_user_id?: string
+          resolution_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: string | null
+          status?: string | null
           updated_at?: string
-          user_id?: string
-          verification_method?: string
-          worldid_proof?: Json | null
-        }
-        Relationships: []
-      }
-      security_logs: {
-        Row: {
-          action: string
-          created_at: string | null
-          id: string
-          ip_address: unknown | null
-          meta: Json | null
-          target_id: string | null
-          target_type: string | null
-          user_agent: string | null
-          user_id: string | null
-        }
-        Insert: {
-          action: string
-          created_at?: string | null
-          id?: string
-          ip_address?: unknown | null
-          meta?: Json | null
-          target_id?: string | null
-          target_type?: string | null
-          user_agent?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          action?: string
-          created_at?: string | null
-          id?: string
-          ip_address?: unknown | null
-          meta?: Json | null
-          target_id?: string | null
-          target_type?: string | null
-          user_agent?: string | null
-          user_id?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "security_logs_user_id_fkey"
-            columns: ["user_id"]
+            foreignKeyName: "reports_reported_user_id_fkey"
+            columns: ["reported_user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
       }
-      staking_records: {
+      system_metrics: {
         Row: {
-          amount: number
-          apy: number
           created_at: string
-          end_date: string
           id: string
-          start_date: string
-          status: string
-          token_type: string
-          updated_at: string | null
-          user_id: string
+          metadata: Json | null
+          metric_type: string
+          metric_unit: string
+          metric_value: number
+          recorded_at: string
         }
         Insert: {
-          amount: number
-          apy: number
           created_at?: string
-          end_date: string
           id?: string
-          start_date?: string
-          status?: string
-          token_type: string
-          updated_at?: string | null
-          user_id: string
+          metadata?: Json | null
+          metric_type: string
+          metric_unit?: string
+          metric_value: number
+          recorded_at?: string
         }
         Update: {
-          amount?: number
-          apy?: number
           created_at?: string
-          end_date?: string
           id?: string
-          start_date?: string
-          status?: string
-          token_type?: string
-          updated_at?: string | null
-          user_id?: string
+          metadata?: Json | null
+          metric_type?: string
+          metric_unit?: string
+          metric_value?: number
+          recorded_at?: string
         }
         Relationships: []
       }
-      subscription_plans: {
+      token_analytics: {
         Row: {
-          created_at: string | null
-          description: string | null
-          features: string[] | null
+          active_stakers: number
+          circulating_cmpx: number
+          circulating_gtk: number
+          created_at: string
           id: string
-          is_active: boolean | null
-          name: string
-          price_monthly: number | null
-          price_yearly: number | null
-          tokens_included: number | null
+          metadata: Json | null
+          period_end: string
+          period_start: string
+          period_type: string
+          total_cmpx_supply: number
+          total_gtk_supply: number
+          total_staked_cmpx: number
+          transaction_count: number
+          transaction_volume_cmpx: number
+          transaction_volume_gtk: number
         }
         Insert: {
-          created_at?: string | null
-          description?: string | null
-          features?: string[] | null
+          active_stakers?: number
+          circulating_cmpx?: number
+          circulating_gtk?: number
+          created_at?: string
           id?: string
-          is_active?: boolean | null
-          name: string
-          price_monthly?: number | null
-          price_yearly?: number | null
-          tokens_included?: number | null
+          metadata?: Json | null
+          period_end: string
+          period_start: string
+          period_type: string
+          total_cmpx_supply?: number
+          total_gtk_supply?: number
+          total_staked_cmpx?: number
+          transaction_count?: number
+          transaction_volume_cmpx?: number
+          transaction_volume_gtk?: number
         }
         Update: {
-          created_at?: string | null
-          description?: string | null
-          features?: string[] | null
+          active_stakers?: number
+          circulating_cmpx?: number
+          circulating_gtk?: number
+          created_at?: string
           id?: string
-          is_active?: boolean | null
-          name?: string
-          price_monthly?: number | null
-          price_yearly?: number | null
-          tokens_included?: number | null
-        }
-        Relationships: []
-      }
-      token_packages: {
-        Row: {
-          amount: number
-          created_at: string | null
-          description: string | null
-          discount_percentage: number | null
-          id: string
-          is_active: boolean | null
-          is_popular: boolean | null
-          name: string
-          price_mxn: number | null
-          price_usd: number | null
-          token_type: string
-          updated_at: string | null
-        }
-        Insert: {
-          amount: number
-          created_at?: string | null
-          description?: string | null
-          discount_percentage?: number | null
-          id?: string
-          is_active?: boolean | null
-          is_popular?: boolean | null
-          name: string
-          price_mxn?: number | null
-          price_usd?: number | null
-          token_type: string
-          updated_at?: string | null
-        }
-        Update: {
-          amount?: number
-          created_at?: string | null
-          description?: string | null
-          discount_percentage?: number | null
-          id?: string
-          is_active?: boolean | null
-          is_popular?: boolean | null
-          name?: string
-          price_mxn?: number | null
-          price_usd?: number | null
-          token_type?: string
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      token_transactions: {
-        Row: {
-          amount: number
-          balance_after: number | null
-          balance_before: number | null
-          created_at: string | null
-          id: string
-          reason: string | null
-          reference_id: string | null
-          token_type: string
-          transaction_type: string | null
-          user_id: string | null
-        }
-        Insert: {
-          amount: number
-          balance_after?: number | null
-          balance_before?: number | null
-          created_at?: string | null
-          id?: string
-          reason?: string | null
-          reference_id?: string | null
-          token_type: string
-          transaction_type?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          amount?: number
-          balance_after?: number | null
-          balance_before?: number | null
-          created_at?: string | null
-          id?: string
-          reason?: string | null
-          reference_id?: string | null
-          token_type?: string
-          transaction_type?: string | null
-          user_id?: string | null
+          metadata?: Json | null
+          period_end?: string
+          period_start?: string
+          period_type?: string
+          total_cmpx_supply?: number
+          total_gtk_supply?: number
+          total_staked_cmpx?: number
+          transaction_count?: number
+          transaction_volume_cmpx?: number
+          transaction_volume_gtk?: number
         }
         Relationships: []
       }
       tokens: {
         Row: {
-          amount: number
-          created_at: string | null
+          base_value: number | null
+          created_at: string
           description: string | null
-          expires_at: string | null
           id: string
           is_active: boolean | null
-          token_type: string
-          transaction_type: string | null
-          user_id: string | null
+          token_code: string
+          token_name: string
+          updated_at: string
         }
         Insert: {
-          amount?: number
-          created_at?: string | null
+          base_value?: number | null
+          created_at?: string
           description?: string | null
-          expires_at?: string | null
           id?: string
           is_active?: boolean | null
-          token_type: string
-          transaction_type?: string | null
-          user_id?: string | null
+          token_code: string
+          token_name: string
+          updated_at?: string
         }
         Update: {
-          amount?: number
-          created_at?: string | null
+          base_value?: number | null
+          created_at?: string
           description?: string | null
-          expires_at?: string | null
           id?: string
           is_active?: boolean | null
-          token_type?: string
-          transaction_type?: string | null
-          user_id?: string | null
+          token_code?: string
+          token_name?: string
+          updated_at?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "tokens_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
-      user_credentials: {
+      transactions: {
         Row: {
-          counter: number | null
-          created_at: string | null
-          credential_id: string
-          credential_type: string | null
+          amount: number
+          balance_after: number
+          balance_before: number
+          created_at: string
+          description: string | null
           id: string
-          is_active: boolean | null
-          last_used: string | null
-          public_key: string
+          metadata: Json | null
+          related_user_id: string | null
+          token_type: string
+          transaction_type: string
           user_id: string
         }
         Insert: {
-          counter?: number | null
-          created_at?: string | null
-          credential_id: string
-          credential_type?: string | null
+          amount: number
+          balance_after: number
+          balance_before: number
+          created_at?: string
+          description?: string | null
           id?: string
-          is_active?: boolean | null
-          last_used?: string | null
-          public_key: string
+          metadata?: Json | null
+          related_user_id?: string | null
+          token_type: string
+          transaction_type: string
           user_id: string
         }
         Update: {
-          counter?: number | null
-          created_at?: string | null
-          credential_id?: string
-          credential_type?: string | null
+          amount?: number
+          balance_after?: number
+          balance_before?: number
+          created_at?: string
+          description?: string | null
           id?: string
-          is_active?: boolean | null
-          last_used?: string | null
-          public_key?: string
+          metadata?: Json | null
+          related_user_id?: string | null
+          token_type?: string
+          transaction_type?: string
           user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "user_credentials_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
-      user_interests: {
+      user_2fa_settings: {
         Row: {
+          backup_codes: string[] | null
+          backup_codes_used: number
           created_at: string
           id: string
-          interest_id: string
+          last_used_at: string | null
+          recovery_email: string | null
+          recovery_phone: string | null
+          totp_enabled: boolean
+          totp_secret: string | null
+          totp_verified_at: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          backup_codes?: string[] | null
+          backup_codes_used?: number
+          created_at?: string
+          id?: string
+          last_used_at?: string | null
+          recovery_email?: string | null
+          recovery_phone?: string | null
+          totp_enabled?: boolean
+          totp_secret?: string | null
+          totp_verified_at?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          backup_codes?: string[] | null
+          backup_codes_used?: number
+          created_at?: string
+          id?: string
+          last_used_at?: string | null
+          recovery_email?: string | null
+          recovery_phone?: string | null
+          totp_enabled?: boolean
+          totp_secret?: string | null
+          totp_verified_at?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_device_tokens: {
+        Row: {
+          created_at: string
+          device_info: Json | null
+          device_token: string
+          device_type: string | null
+          id: string
+          is_active: boolean
+          last_used_at: string
           user_id: string
         }
         Insert: {
           created_at?: string
+          device_info?: Json | null
+          device_token: string
+          device_type?: string | null
           id?: string
-          interest_id: string
+          is_active?: boolean
+          last_used_at?: string
           user_id: string
         }
         Update: {
           created_at?: string
+          device_info?: Json | null
+          device_token?: string
+          device_type?: string | null
           id?: string
-          interest_id?: string
+          is_active?: boolean
+          last_used_at?: string
           user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "user_interests_interest_id_fkey"
-            columns: ["interest_id"]
-            isOneToOne: false
-            referencedRelation: "interests"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       user_likes: {
         Row: {
@@ -1892,74 +1250,38 @@ export type Database = {
         }
         Relationships: []
       }
-      user_reports: {
+      user_notification_preferences: {
         Row: {
-          assigned_moderator_id: string | null
           created_at: string
-          description: string
-          evidence_urls: string[] | null
+          delivery_method: string | null
+          enabled: boolean
           id: string
-          moderation_action: string | null
-          moderation_notes: string | null
-          priority: string
-          report_type: string
-          reported_user_id: string | null
-          reporter_id: string | null
-          reviewed_at: string | null
-          reviewed_by: string | null
-          status: string
+          notification_type: string
+          settings: Json | null
           updated_at: string
+          user_id: string
         }
         Insert: {
-          assigned_moderator_id?: string | null
           created_at?: string
-          description: string
-          evidence_urls?: string[] | null
+          delivery_method?: string | null
+          enabled?: boolean
           id?: string
-          moderation_action?: string | null
-          moderation_notes?: string | null
-          priority?: string
-          report_type: string
-          reported_user_id?: string | null
-          reporter_id?: string | null
-          reviewed_at?: string | null
-          reviewed_by?: string | null
-          status?: string
+          notification_type: string
+          settings?: Json | null
           updated_at?: string
+          user_id: string
         }
         Update: {
-          assigned_moderator_id?: string | null
           created_at?: string
-          description?: string
-          evidence_urls?: string[] | null
+          delivery_method?: string | null
+          enabled?: boolean
           id?: string
-          moderation_action?: string | null
-          moderation_notes?: string | null
-          priority?: string
-          report_type?: string
-          reported_user_id?: string | null
-          reporter_id?: string | null
-          reviewed_at?: string | null
-          reviewed_by?: string | null
-          status?: string
+          notification_type?: string
+          settings?: Json | null
           updated_at?: string
+          user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "user_reports_assigned_moderator_id_fkey"
-            columns: ["assigned_moderator_id"]
-            isOneToOne: false
-            referencedRelation: "moderators"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "user_reports_reviewed_by_fkey"
-            columns: ["reviewed_by"]
-            isOneToOne: false
-            referencedRelation: "moderators"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       user_roles: {
         Row: {
@@ -1982,108 +1304,116 @@ export type Database = {
         }
         Relationships: []
       }
-      user_suspensions: {
+      user_staking: {
         Row: {
+          amount: number
           created_at: string
-          duration_days: number | null
-          ends_at: string | null
+          end_date: string
           id: string
-          is_active: boolean | null
-          lifted_at: string | null
-          lifted_by: string | null
-          reason: string
-          related_report_id: string | null
-          starts_at: string | null
-          suspended_by: string | null
-          user_id: string | null
+          reward_claimed: boolean
+          reward_percentage: number
+          start_date: string
+          status: string | null
+          user_id: string
         }
         Insert: {
+          amount: number
           created_at?: string
-          duration_days?: number | null
-          ends_at?: string | null
+          end_date: string
           id?: string
-          is_active?: boolean | null
-          lifted_at?: string | null
-          lifted_by?: string | null
-          reason: string
-          related_report_id?: string | null
-          starts_at?: string | null
-          suspended_by?: string | null
-          user_id?: string | null
+          reward_claimed?: boolean
+          reward_percentage?: number
+          start_date?: string
+          status?: string | null
+          user_id: string
         }
         Update: {
+          amount?: number
           created_at?: string
-          duration_days?: number | null
-          ends_at?: string | null
+          end_date?: string
           id?: string
-          is_active?: boolean | null
-          lifted_at?: string | null
-          lifted_by?: string | null
-          reason?: string
-          related_report_id?: string | null
-          starts_at?: string | null
-          suspended_by?: string | null
-          user_id?: string | null
+          reward_claimed?: boolean
+          reward_percentage?: number
+          start_date?: string
+          status?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_tokens: {
+        Row: {
+          cmpx_balance: number
+          cmpx_staked: number
+          created_at: string
+          gtk_balance: number
+          id: string
+          last_earned_at: string | null
+          last_reset_date: string
+          last_spent_at: string | null
+          monthly_earned: number
+          monthly_limit: number
+          quantity: number | null
+          token_id: string
+          total_referrals: number
+          updated_at: string
+          user_id: string
+          world_id_claimed: boolean
+          world_id_verified: boolean
+        }
+        Insert: {
+          cmpx_balance?: number
+          cmpx_staked?: number
+          created_at?: string
+          gtk_balance?: number
+          id?: string
+          last_earned_at?: string | null
+          last_reset_date?: string
+          last_spent_at?: string | null
+          monthly_earned?: number
+          monthly_limit?: number
+          quantity?: number | null
+          token_id: string
+          total_referrals?: number
+          updated_at?: string
+          user_id: string
+          world_id_claimed?: boolean
+          world_id_verified?: boolean
+        }
+        Update: {
+          cmpx_balance?: number
+          cmpx_staked?: number
+          created_at?: string
+          gtk_balance?: number
+          id?: string
+          last_earned_at?: string | null
+          last_reset_date?: string
+          last_spent_at?: string | null
+          monthly_earned?: number
+          monthly_limit?: number
+          quantity?: number | null
+          token_id?: string
+          total_referrals?: number
+          updated_at?: string
+          user_id?: string
+          world_id_claimed?: boolean
+          world_id_verified?: boolean
         }
         Relationships: [
           {
-            foreignKeyName: "user_suspensions_lifted_by_fkey"
-            columns: ["lifted_by"]
+            foreignKeyName: "user_tokens_token_id_fkey"
+            columns: ["token_id"]
             isOneToOne: false
-            referencedRelation: "moderators"
+            referencedRelation: "tokens"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "user_suspensions_related_report_id_fkey"
-            columns: ["related_report_id"]
+            foreignKeyName: "user_tokens_user_id_fkey"
+            columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "user_reports"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "user_suspensions_suspended_by_fkey"
-            columns: ["suspended_by"]
-            isOneToOne: false
-            referencedRelation: "moderators"
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
-      }
-      user_token_balances: {
-        Row: {
-          cmpx_balance: number | null
-          created_at: string | null
-          gtk_balance: number | null
-          id: string
-          last_claim_date: string | null
-          total_earned: number | null
-          total_spent: number | null
-          updated_at: string | null
-          user_id: string | null
-        }
-        Insert: {
-          cmpx_balance?: number | null
-          created_at?: string | null
-          gtk_balance?: number | null
-          id?: string
-          last_claim_date?: string | null
-          total_earned?: number | null
-          total_spent?: number | null
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          cmpx_balance?: number | null
-          created_at?: string | null
-          gtk_balance?: number | null
-          id?: string
-          last_claim_date?: string | null
-          total_earned?: number | null
-          total_spent?: number | null
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Relationships: []
       }
     }
     Views: {
@@ -2098,16 +1428,14 @@ export type Database = {
           is_verified: boolean | null
           partner1_age: number | null
           partner1_bio: string | null
-          partner1_first_name: string | null
           partner1_gender: string | null
           partner1_id: string | null
-          partner1_last_name: string | null
+          partner1_name: string | null
           partner2_age: number | null
           partner2_bio: string | null
-          partner2_first_name: string | null
           partner2_gender: string | null
           partner2_id: string | null
-          partner2_last_name: string | null
+          partner2_name: string | null
           relationship_type:
             | Database["public"]["Enums"]["relationship_type"]
             | null
@@ -2130,41 +1458,74 @@ export type Database = {
           },
         ]
       }
-      media_preview_for_moderator: {
+      recent_transactions: {
         Row: {
+          amount: number | null
+          balance_after: number | null
+          balance_before: number | null
           created_at: string | null
-          file_type: string | null
-          id: string | null
-          is_public: boolean | null
-          meta: Json | null
-          owner_id: string | null
-          thumbnail_path: string | null
-          watermarked_path: string | null
+          description: string | null
+          token_type: string | null
+          transaction_type: string | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
+      user_staking_summary: {
+        Row: {
+          active_stakes: number | null
+          avg_reward_percentage: number | null
+          completed_stakes: number | null
+          total_staked: number | null
+          total_stakes: number | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
+      user_token_balances: {
+        Row: {
+          cmpx_balance: number | null
+          cmpx_staked: number | null
+          gtk_balance: number | null
+          last_reset_date: string | null
+          monthly_earned: number | null
+          monthly_limit: number | null
+          monthly_remaining: number | null
+          total_referrals: number | null
+          user_id: string | null
+          world_id_claimed: boolean | null
+          world_id_verified: boolean | null
         }
         Insert: {
-          created_at?: string | null
-          file_type?: string | null
-          id?: string | null
-          is_public?: boolean | null
-          meta?: never
-          owner_id?: string | null
-          thumbnail_path?: string | null
-          watermarked_path?: string | null
+          cmpx_balance?: number | null
+          cmpx_staked?: number | null
+          gtk_balance?: number | null
+          last_reset_date?: string | null
+          monthly_earned?: number | null
+          monthly_limit?: number | null
+          monthly_remaining?: never
+          total_referrals?: number | null
+          user_id?: string | null
+          world_id_claimed?: boolean | null
+          world_id_verified?: boolean | null
         }
         Update: {
-          created_at?: string | null
-          file_type?: string | null
-          id?: string | null
-          is_public?: boolean | null
-          meta?: never
-          owner_id?: string | null
-          thumbnail_path?: string | null
-          watermarked_path?: string | null
+          cmpx_balance?: number | null
+          cmpx_staked?: number | null
+          gtk_balance?: number | null
+          last_reset_date?: string | null
+          monthly_earned?: number | null
+          monthly_limit?: number | null
+          monthly_remaining?: never
+          total_referrals?: number | null
+          user_id?: string | null
+          world_id_claimed?: boolean | null
+          world_id_verified?: boolean | null
         }
         Relationships: [
           {
-            foreignKeyName: "media_owner_id_fkey"
-            columns: ["owner_id"]
+            foreignKeyName: "user_tokens_user_id_fkey"
+            columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
@@ -2173,62 +1534,36 @@ export type Database = {
       }
     }
     Functions: {
-      accept_gallery_invitation: {
-        Args: { invitation_id: string }
-        Returns: undefined
-      }
-      are_connected: {
-        Args: { user1_id: string; user2_id: string }
-        Returns: boolean
-      }
-      calculate_compatibility_score: {
-        Args: { p_user1_uuid: string; p_user2_uuid: string }
-        Returns: number
-      }
-      cleanup_expired_typing: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      cleanup_old_credentials: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
-      cleanup_old_matches: {
-        Args: Record<PropertyKey, never>
-        Returns: number
+      claim_world_id_reward: {
+        Args: { user_id_param: string }
+        Returns: Json
       }
       complete_staking: {
         Args: { staking_id_param: string }
         Returns: Json
       }
-      create_match_if_mutual: {
-        Args: { p_user1_uuid: string; p_user2_uuid: string }
+      create_post: {
+        Args:
+          | {
+              p_content: string
+              p_image_url?: string
+              p_location?: string
+              p_post_type?: string
+              p_profile_id: string
+              p_user_id: string
+              p_video_url?: string
+            }
+          | {
+              p_content: string
+              p_post_type?: string
+              p_profile_id: string
+              p_user_id: string
+            }
+        Returns: Json
+      }
+      generate_referral_code: {
+        Args: { user_uuid: string }
         Returns: string
-      }
-      create_notification: {
-        Args: {
-          p_action_url?: string
-          p_message: string
-          p_metadata?: Json
-          p_sender_id?: string
-          p_sender_name?: string
-          p_title: string
-          p_type: string
-          p_user_id: string
-        }
-        Returns: string
-      }
-      create_private_chat_room: {
-        Args: { user1_id: string; user2_id: string }
-        Returns: string
-      }
-      delete_current_user: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      detect_mutual_match: {
-        Args: { p_user1_uuid: string; p_user2_uuid: string }
-        Returns: boolean
       }
       get_couple_profile_by_user_id: {
         Args: { user_uuid: string }
@@ -2256,195 +1591,55 @@ export type Database = {
           updated_at: string
         }[]
       }
-      get_moderator_stats: {
-        Args: { moderator_uuid: string }
+      get_post_comments: {
+        Args: { page_limit?: number; page_offset?: number; post_uuid: string }
+        Returns: {
+          content: string
+          created_at: string
+          id: string
+          likes_count: number
+          parent_comment_id: string
+          profile_avatar: string
+          profile_id: string
+          profile_name: string
+          user_id: string
+          user_liked: boolean
+        }[]
+      }
+      get_user_feed: {
+        Args: {
+          limit_param?: number
+          offset_param?: number
+          user_id_param: string
+        }
         Returns: Json
       }
-      get_notification_preferences: {
-        Args: { target_user_id: string }
-        Returns: {
-          invitations_enabled: boolean
-          likes_enabled: boolean
-          marketing_enabled: boolean
-          matches_enabled: boolean
-          messages_enabled: boolean
-          profile_views_enabled: boolean
-          quiet_hours_end: string
-          quiet_hours_start: string
-          timezone: string
-        }[]
+      process_referral_reward: {
+        Args: { new_user_id: string; referral_code_param: string }
+        Returns: Json
       }
-      get_potential_matches: {
-        Args:
-          | {
-              limit_count?: number
-              max_age?: number
-              max_distance?: number
-              min_age?: number
-              user_id: string
-            }
-          | { p_limit?: number; p_max_distance?: number; p_user_id: string }
-        Returns: {
-          compatibility_score: number
-          distance_km: number
-          shared_interests: string[]
-          user_id: string
-        }[]
-      }
-      get_token_balance: {
-        Args: { token_type: string; user_id: string }
-        Returns: number
-      }
-      get_user_biometric_status: {
-        Args: { p_user_id: string }
-        Returns: {
-          biometric_enabled: boolean
-          credential_count: number
-          last_used: string
-          webauthn_registered: boolean
-        }[]
-      }
-      get_user_chat_rooms: {
-        Args: { user_id: string }
-        Returns: {
-          last_message_at: string
-          participant_count: number
-          room_id: string
-          room_name: string
-          room_type: string
-          unread_count: number
-        }[]
-      }
-      get_user_matches: {
-        Args:
-          | { p_limit?: number; p_offset?: number; p_user_id: string }
-          | { user_id: string }
-        Returns: {
-          last_message_at: string
-          match_id: string
-          matched_at: string
-          matched_user_id: string
-          unread_count: number
-        }[]
-      }
-      get_user_profile_complete: {
-        Args: { p_user_uuid: string }
-        Returns: {
-          age: number
-          avatar_url: string
-          bio: string
-          created_at: string
-          email: string
-          first_name: string
-          id: string
-          interests: string[]
-          is_active: boolean
-          is_demo: boolean
-          last_name: string
-          looking_for: string[]
-          profile_type: string
-          role: string
-          swinger_experience: string
-          updated_at: string
-        }[]
-      }
-      get_user_push_subscriptions: {
-        Args: { target_user_id: string }
-        Returns: {
-          auth_key: string
-          created_at: string
-          endpoint: string
-          id: string
-          p256dh_key: string
-        }[]
-      }
-      has_role: {
-        Args:
-          | { _role: Database["public"]["Enums"]["app_role"]; _user_id: string }
-          | { p_role_name: string; p_user_uuid: string }
-        Returns: boolean
-      }
-      increment_counter: {
-        Args: { credential_id_param: string }
-        Returns: number
-      }
-      initialize_current_user_profile: {
-        Args: Record<PropertyKey, never>
+      remove_post_like: {
+        Args: { p_post_id: string; p_user_id: string }
         Returns: undefined
       }
-      is_admin: {
-        Args: { user_id: string }
-        Returns: boolean
-      }
-      is_user_suspended: {
-        Args: { user_uuid: string }
-        Returns: boolean
-      }
-      log_biometric_event: {
-        Args: {
-          p_credential_id?: string
-          p_error_message?: string
-          p_ip_address?: string
-          p_session_type?: string
-          p_success?: boolean
-          p_user_agent?: string
-          p_user_id: string
-        }
-        Returns: string
-      }
-      log_notification_delivery: {
-        Args: {
-          delivery_status?: string
-          error_message?: string
-          notification_body: string
-          notification_data?: Json
-          notification_title: string
-          notification_type: string
-          target_subscription_id: string
-          target_user_id: string
-        }
-        Returns: string
-      }
-      process_like_action: {
-        Args: { p_is_like: boolean; p_liked_id: string; p_liker_id: string }
-        Returns: Json
-      }
-      request_media_access: {
-        Args: { media_id: string; requesting_user_id?: string }
-        Returns: Json
-      }
-      search_compatible_profiles: {
-        Args: { p_limit_count?: number; p_user_uuid: string }
-        Returns: {
-          age: number
-          avatar_url: string
-          common_interests: string[]
-          compatibility_score: number
-          first_name: string
-          last_name: string
-          profile_id: string
-        }[]
+      reset_monthly_limits: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
       }
       start_staking: {
         Args: {
           amount_param: number
           duration_days?: number
-          token_type_param?: string
           user_id_param: string
         }
         Returns: Json
       }
-      update_user_activity: {
-        Args: { is_online?: boolean; user_id: string }
-        Returns: undefined
+      toggle_post_like: {
+        Args: { p_post_id: string; p_user_id: string }
+        Returns: boolean
       }
     }
     Enums: {
-      app_role: "administrador" | "cliente"
-      gallery_scope: "private_gallery" | "album"
-      invitation_status: "pending" | "accepted" | "declined" | "revoked"
-      invitation_type: "profile" | "gallery" | "chat"
-      permission_status: "active" | "revoked"
       relationship_type: "man-woman" | "man-man" | "woman-woman"
     }
     CompositeTypes: {
@@ -2573,11 +1768,6 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["administrador", "cliente"],
-      gallery_scope: ["private_gallery", "album"],
-      invitation_status: ["pending", "accepted", "declined", "revoked"],
-      invitation_type: ["profile", "gallery", "chat"],
-      permission_status: ["active", "revoked"],
       relationship_type: ["man-woman", "man-man", "woman-woman"],
     },
   },
