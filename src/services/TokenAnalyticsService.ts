@@ -170,7 +170,7 @@ export class TokenAnalyticsService {
         }
       }
 
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('token_analytics')
         .upsert(analyticsData, {
           onConflict: 'period_type,period_start'
@@ -184,7 +184,7 @@ export class TokenAnalyticsService {
       }
 
       logger.info('Analytics guardados exitosamente:', { periodType, periodStart })
-      return { success: true, analytics: [data] }
+      return { success: true, analytics: [data as TokenAnalytics] }
 
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
@@ -201,7 +201,7 @@ export class TokenAnalyticsService {
     limit: number = 30
   ): Promise<AnalyticsResponse> {
     try {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('token_analytics')
         .select('*')
         .eq('period_type', periodType)
@@ -213,7 +213,7 @@ export class TokenAnalyticsService {
         return { success: false, error: error.message }
       }
 
-      return { success: true, analytics: data || [] }
+      return { success: true, analytics: data as TokenAnalytics[] || [] }
 
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
@@ -337,7 +337,7 @@ export class TokenAnalyticsService {
   }> {
     try {
       // Calcular supply total sumando todos los balances
-      const { data: balances, error } = await (supabase as any)
+      const { data: balances, error } = await supabase
         .from('user_tokens')
         .select('cmpx_balance, gtk_balance, total_earned, total_spent')
 
@@ -353,7 +353,7 @@ export class TokenAnalyticsService {
       const totalGtk = balances?.reduce((sum: number, b: any) => sum + (b.gtk_balance || 0), 0) || 0
 
       // Calcular tokens en staking (no circulantes)
-      const { data: staking } = await (supabase as any)
+      const { data: staking } = await supabase
         .from('user_staking')
         .select('amount')
         .eq('status', 'active')
@@ -385,7 +385,7 @@ export class TokenAnalyticsService {
     try {
       const last24h = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
 
-      const { data: transactions, error } = await (supabase as any)
+      const { data: transactions, error } = await supabase
         .from('transactions')
         .select('token_type, amount')
         .gte('created_at', last24h)
@@ -419,7 +419,7 @@ export class TokenAnalyticsService {
     avgDuration: number
   }> {
     try {
-      const { data: staking, error } = await (supabase as any)
+      const { data: staking, error } = await supabase
         .from('user_staking')
         .select('amount, start_date, end_date, status')
         .eq('status', 'active')
@@ -457,13 +457,13 @@ export class TokenAnalyticsService {
       const last24h = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
 
       // Usuarios activos (con transacciones en las últimas 24h)
-      const { data: activeUsers, error: activeError } = await (supabase as any)
+      const { data: activeUsers, error: activeError } = await supabase
         .from('transactions')
         .select('user_id')
         .gte('created_at', last24h)
 
       // Usuarios nuevos (creados en las últimas 24h)
-      const { data: newUsers, error: newError } = await (supabase as any)
+      const { data: newUsers, error: newError } = await supabase
         .from('user_tokens')
         .select('user_id')
         .gte('created_at', last24h)

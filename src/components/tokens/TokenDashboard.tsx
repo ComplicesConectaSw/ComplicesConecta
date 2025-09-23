@@ -206,7 +206,7 @@ export function TokenDashboard() {
               </p>
             </div>
 
-            {stakingRecords.length > 0 && (
+            {stakingRecords && stakingRecords.length > 0 && (
               <div className="space-y-2">
                 <h4 className="font-semibold text-white">Tus Stakings:</h4>
                 {stakingRecords.map((staking) => (
