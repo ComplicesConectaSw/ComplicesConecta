@@ -45,7 +45,7 @@ export const demoProfiles = [
     is_premium: true,
     role: 'user',
     location: 'Barcelona, España',
-    interests: ['tecnología', 'deportes', 'cine', 'lectura'],
+    interests: ['Lifestyle Swinger', 'Intercambio de Parejas', 'Eventos Lifestyle', 'Mentalidad Abierta'],
     created_at: '2024-01-16T14:30:00Z',
     updated_at: '2024-01-16T14:30:00Z'
   },
@@ -63,7 +63,7 @@ export const demoProfiles = [
     is_premium: true,
     role: 'user',
     location: 'Valencia, España',
-    interests: ['aventura', 'naturaleza', 'cocina', 'baile'],
+    interests: ['Intercambio de Parejas', 'Fiestas Temáticas', 'Clubs Privados', 'Experiencias Nuevas'],
     created_at: '2024-01-17T09:15:00Z',
     updated_at: '2024-01-17T09:15:00Z'
   },
@@ -81,7 +81,7 @@ export const demoProfiles = [
     is_premium: false,
     role: 'user',
     location: 'Sevilla, España',
-    interests: ['arte', 'diseño', 'música', 'teatro'],
+    interests: ['Arte Erótico', 'Fotografía Erótica', 'Ambiente Sensual', 'Conexiones Auténticas'],
     created_at: '2024-01-18T16:45:00Z',
     updated_at: '2024-01-18T16:45:00Z'
   },
@@ -99,7 +99,7 @@ export const demoProfiles = [
     is_premium: false,
     role: 'user',
     location: 'Bilbao, España',
-    interests: ['cocina', 'gastronomía', 'vinos', 'cultura'],
+    interests: ['Cenas Íntimas', 'Cócteles Afrodisíacos', 'Experiencias Sensuales', 'Diversión Adulta'],
     created_at: '2024-01-19T11:20:00Z',
     updated_at: '2024-01-19T11:20:00Z'
   }
