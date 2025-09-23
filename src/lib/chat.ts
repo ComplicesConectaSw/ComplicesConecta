@@ -12,6 +12,12 @@ import { supabase } from '@/integrations/supabase/client';
 import type { Database } from '@/integrations/supabase/types';
 import { logger } from '@/lib/logger';
 
+// Helper function to get current user ID
+function getCurrentUserId(): string | null {
+  // This should be replaced with actual auth context
+  return supabase.auth.getUser().then(({ data }) => data.user?.id || null).catch(() => null) as any;
+}
+
 type MessageRow = Database['public']['Tables']['messages']['Row'];
 type MessageInsert = Database['public']['Tables']['messages']['Insert'];
 
@@ -139,12 +145,14 @@ class ChatService {
         return { success: false, error: 'Usuario no autenticado' };
       }
 
+      const userId = user.user.id;
+
       // Crear sala privada
       const roomData: ChatRoomInsert = {
         name,
         is_public: false,
         is_active: true,
-        created_by: user.user.id
+        created_by: userId
       };
 
       const { data: newRoom, error: roomError } = await supabase
@@ -160,7 +168,7 @@ class ChatService {
       // Agregar creador como admin
       const creatorMember: ChatMemberInsert = {
         room_id: (newRoom as any).id,
-        profile_id: user.user.id,
+        profile_id: userId,
         role: 'admin',
         is_muted: false
       };
@@ -202,6 +210,8 @@ class ChatService {
         return { success: false, error: 'Usuario no autenticado' };
       }
 
+      const userId = user.user.id;
+
       // Obtener salas públicas y privadas donde el usuario es miembro
       const { data, error } = await (supabase as any)
         .from('chat_rooms')
@@ -213,7 +223,7 @@ class ChatService {
             joined_at
           )
         `)
-        .eq('chat_members.user_id', user.user.id)
+        .eq('chat_members.user_id', userId)
         .eq('is_active', true);
 
       if (error) {
@@ -254,6 +264,8 @@ class ChatService {
         return { success: false, error: 'Usuario no autenticado' };
       }
 
+      const userId = user.user.id;
+
       // Verificar acceso a la sala
       const hasAccess = await this.canAccessRoom(roomId);
       if (!hasAccess) {
@@ -261,9 +273,11 @@ class ChatService {
       }
 
       const messageData = {
-        conversation_id: roomId,
-        sender_id: user.user.id,
-        content
+        id: crypto.randomUUID(),
+        content,
+        senderId: userId,
+        timestamp: Date.now(),
+        type: 'text'
       };
 
       const { data: newMessage, error } = await (supabase as any)
@@ -353,7 +367,7 @@ class ChatService {
           const { data: profile } = await supabase
             .from('profiles')
             .select('id, first_name, last_name')
-            .eq('id', newMessage.sender_id)
+            .eq('id', newMessage.sender_id || '')
             .single();
 
           if (profile) {
@@ -579,7 +593,7 @@ function mapMessageRowToChatMessage(row: MessageRow): ChatMessage {
   return {
     id: row.id,
     room_id: (row as any).conversation_id || '',
-    sender_id: row.sender_id,
+    sender_id: row.sender_id || '',
     content: row.content,
     message_type: 'text' as 'text' | 'image' | 'file',
     created_at: row.created_at || '',

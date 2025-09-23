@@ -1,7 +1,14 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { vi } from 'vitest';
+import { vi, describe, beforeEach, afterEach, test, expect } from 'vitest';
 import Chat from '@/pages/Chat';
+
+// Console logging para debugging de tests
+const testLogger = {
+  info: (message: string, data?: any) => console.log(`🧪 [Chat.test] ${message}`, data || ''),
+  error: (message: string, error?: any) => console.error(`❌ [Chat.test] ${message}`, error || ''),
+  warn: (message: string, data?: any) => console.warn(`⚠️ [Chat.test] ${message}`, data || '')
+};
 
 // Mock de hooks y servicios
 vi.mock('@/hooks/useAuth', () => ({
@@ -54,27 +61,45 @@ const renderWithRouter = (component: React.ReactElement) => {
 
 describe('Chat', () => {
   beforeEach(() => {
+    testLogger.info('Iniciando test - configurando localStorage demo');
     localStorage.setItem('demo_authenticated', 'true');
     localStorage.setItem('demo_user', JSON.stringify({
       id: 'demo-user-1',
       first_name: 'Usuario'
     }));
+    testLogger.info('localStorage configurado', {
+      demo_authenticated: localStorage.getItem('demo_authenticated'),
+      demo_user: localStorage.getItem('demo_user')
+    });
   });
 
   afterEach(() => {
+    testLogger.info('Finalizando test - limpiando mocks y localStorage');
     localStorage.clear();
     vi.clearAllMocks();
   });
 
   test('debe cargar la interfaz de chat en modo demo', async () => {
-    renderWithRouter(<Chat />);
+    testLogger.info('Test: Cargando interfaz de chat en modo demo');
     
-    await waitFor(() => {
-      expect(screen.getByText('🔥 Sala General Lifestyle')).toBeInTheDocument();
-    });
-    
-    expect(screen.getByText('💑 Parejas CDMX')).toBeInTheDocument();
-    expect(screen.getByText('Anabella & Julio')).toBeInTheDocument();
+    try {
+      renderWithRouter(<Chat />);
+      testLogger.info('Componente Chat renderizado exitosamente');
+      
+      await waitFor(() => {
+        testLogger.info('Verificando presencia de Sala General Lifestyle');
+        expect(screen.getByText('🔥 Sala General Lifestyle')).toBeInTheDocument();
+      });
+      
+      testLogger.info('Verificando elementos adicionales del chat');
+      expect(screen.getByText('💑 Parejas CDMX')).toBeInTheDocument();
+      expect(screen.getByText('Anabella & Julio')).toBeInTheDocument();
+      
+      testLogger.info('Test completado exitosamente');
+    } catch (error) {
+      testLogger.error('Error en test de carga de interfaz', error);
+      throw error;
+    }
   });
 
   test('debe mostrar pestañas de chat privado y público', async () => {

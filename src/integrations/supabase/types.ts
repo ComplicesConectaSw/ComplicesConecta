@@ -65,6 +65,39 @@ export type Database = {
         }
         Relationships: []
       }
+      chat_messages: {
+        Row: {
+          content: string
+          created_at: string | null
+          id: string
+          is_deleted: boolean | null
+          message_type: string | null
+          room_id: string | null
+          sender_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          id?: string
+          is_deleted?: boolean | null
+          message_type?: string | null
+          room_id?: string | null
+          sender_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          id?: string
+          is_deleted?: boolean | null
+          message_type?: string | null
+          room_id?: string | null
+          sender_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       chat_invitations: {
         Row: {
           created_at: string | null
@@ -1414,6 +1447,84 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      media_access_logs: {
+        Row: {
+          access_type: string | null
+          created_at: string | null
+          id: string
+          media_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          access_type?: string | null
+          created_at?: string | null
+          id?: string
+          media_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          access_type?: string | null
+          created_at?: string | null
+          id?: string
+          media_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      notification_preferences: {
+        Row: {
+          created_at: string | null
+          email_notifications: boolean | null
+          id: string
+          push_notifications: boolean | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email_notifications?: boolean | null
+          id?: string
+          push_notifications?: boolean | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email_notifications?: boolean | null
+          id?: string
+          push_notifications?: boolean | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      referral_rewards: {
+        Row: {
+          amount: number | null
+          created_at: string | null
+          id: string
+          referral_id: string | null
+          reward_type: string | null
+          user_id: string | null
+        }
+        Insert: {
+          amount?: number | null
+          created_at?: string | null
+          id?: string
+          referral_id?: string | null
+          reward_type?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number | null
+          created_at?: string | null
+          id?: string
+          referral_id?: string | null
+          reward_type?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
       }
     }
     Views: {
