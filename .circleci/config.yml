@@ -141,6 +141,55 @@ jobs:
           paths:
             - dist
 
+  # Job de build Android APK
+  build-android-apk:
+    docker:
+      - image: cimg/android:2024.01.1-node
+    environment:
+      <<: *environment
+      JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Instalar Capacitor CLI
+          command: |
+            sudo corepack enable
+            corepack prepare pnpm@latest --activate
+            pnpm add -g @capacitor/cli
+      - run:
+          name: Sincronizar proyecto Android
+          command: |
+            npx cap sync android
+      - run:
+          name: Build APK de desarrollo
+          command: |
+            cd android
+            ./gradlew assembleDebug
+      - run:
+          name: Build APK de producción
+          command: |
+            cd android
+            ./gradlew assembleRelease
+      - run:
+          name: Verificar APKs generados
+          command: |
+            echo "APKs generados:"
+            find android -name "*.apk" -type f
+            ls -la android/app/build/outputs/apk/debug/
+            ls -la android/app/build/outputs/apk/release/
+      - store_artifacts:
+          path: android/app/build/outputs/apk/debug/
+          destination: apk-debug
+      - store_artifacts:
+          path: android/app/build/outputs/apk/release/
+          destination: apk-release
+      - persist_to_workspace:
+          root: .
+          paths:
+            - android/app/build/outputs/apk
+
   # Job de análisis de seguridad
   security-audit:
     docker:
@@ -207,6 +256,16 @@ workflows:
           requires:
             - lint-and-typecheck
             - test-unit
+            
+      - build-android-apk:
+          requires:
+            - build-production
+          filters:
+            branches:
+              only: 
+                - main
+                - master
+                - feature/roadmap-v3.1
             
       - deploy-production:
           requires:

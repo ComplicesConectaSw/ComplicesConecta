@@ -1,5 +1,6 @@
 import { invitationService } from '@/lib/invitations';
 import { logger } from '@/lib/logger';
+import { supabase } from '@/integrations/supabase/client';
 
 /**
  * Servicio de compatibilidad para perfiles de pareja
@@ -27,10 +28,19 @@ export interface CoupleProfileCompatibility {
 export const coupleProfileCompatibility: CoupleProfileCompatibility = {
   async isCoupleProfile(profileId: string): Promise<boolean> {
     try {
-      // Por ahora, asumir que todos son perfiles individuales
-      // TODO: Implementar detección real cuando la columna user_type esté disponible
-      logger.info('🔄 Verificación de perfil de pareja - usando fallback temporal');
-      return false;
+      // Verificar si el perfil tiene account_type = 'couple'
+      const { data: profile, error } = await supabase
+        .from('profiles')
+        .select('account_type')
+        .eq('id', profileId)
+        .single() as { data: any | null, error: any };
+
+      if (error) {
+        logger.warn('Error verificando tipo de perfil:', { error: error.message, profileId });
+        return false;
+      }
+
+      return profile?.account_type === 'couple';
     } catch (error) {
       logger.error('❌ Error en isCoupleProfile:', { error: error instanceof Error ? error.message : String(error) });
       return false;
@@ -46,10 +56,19 @@ export const coupleProfileCompatibility: CoupleProfileCompatibility = {
         return [profileId];
       }
       
-      // Si es perfil de pareja, por ahora devolver solo el perfil actual
-      // TODO: Implementar tabla couple_profiles cuando esté disponible en el esquema
-      logger.info('🔄 Perfil de pareja detectado, usando fallback temporal');
-      return [profileId];
+      // Si es perfil de pareja, obtener los IDs de ambos partners
+      const { data: coupleProfile, error } = await supabase
+        .from('couple_profiles')
+        .select('partner1_id, partner2_id')
+        .or(`partner1_id.eq.${profileId},partner2_id.eq.${profileId}`)
+        .single() as { data: any | null, error: any };
+
+      if (error || !coupleProfile) {
+        logger.warn('No se encontró perfil de pareja:', { profileId, error: error?.message });
+        return [profileId];
+      }
+
+      return [coupleProfile.partner1_id, coupleProfile.partner2_id];
     } catch (error) {
       logger.error('❌ Error en getRelatedProfileIds:', { error: error instanceof Error ? error.message : String(error) });
       return [profileId]; // Fallback al perfil original
@@ -124,23 +143,80 @@ export const useCoupleProfileCompatibility = () => {
     
     async checkChatAccessAsCouple(user1ProfileId: string, user2ProfileId: string): Promise<boolean> {
       return coupleProfileCompatibility.hasPermissionAsCouple(user1ProfileId, user2ProfileId, 'chat');
-    }
+    },
+
+    // Utilidades adicionales
+    ...coupleProfileUtils
   };
 };
 
 /**
- * Utilidad para migrar datos existentes a ser compatibles con perfiles de pareja
+ * Utilidades adicionales para gestión de perfiles de pareja
  */
-export const migrateToCoupleFriendly = {
-  async updateExistingInvitations(): Promise<void> {
-    logger.info('🔄 Iniciando migración de invitaciones para compatibilidad con parejas...');
-    
+export const coupleProfileUtils = {
+  /**
+   * Crear un nuevo perfil de pareja
+   */
+  async createCoupleProfile(
+    partner1Id: string, 
+    partner2Id: string, 
+    coupleData: {
+      couple_name: string;
+      couple_bio?: string;
+      relationship_type: 'man-woman' | 'man-man' | 'woman-woman';
+      couple_images?: string[];
+    }
+  ): Promise<string | null> {
     try {
-      // Esta función se ejecutaría una sola vez para migrar datos existentes
-      // Por ahora, solo registramos que la migración está disponible
-      logger.info('✅ Sistema preparado para perfiles de pareja');
+      const { data, error } = (await supabase
+        .from('couple_profiles')
+        .insert({
+          partner1_id: partner1Id,
+          partner2_id: partner2Id,
+          ...coupleData
+        } as any)
+        .select('id')
+        .single()) as { data: any | null, error: any };
+
+      if (error) {
+        logger.error('Error creando perfil de pareja:', { error: error.message });
+        return null;
+      }
+
+      // Actualizar account_type de ambos perfiles
+      await supabase
+        .from('profiles')
+        .update({ account_type: 'couple' } as never)
+        .in('id', [partner1Id, partner2Id]);
+
+      logger.info('✅ Perfil de pareja creado exitosamente:', { coupleId: data.id });
+      return data.id;
     } catch (error) {
-      logger.error('❌ Error en migración:', { error: error instanceof Error ? error.message : String(error) });
+      logger.error('❌ Error en createCoupleProfile:', { error: error instanceof Error ? error.message : String(error) });
+      return null;
+    }
+  },
+
+  /**
+   * Obtener información completa del perfil de pareja
+   */
+  async getCoupleProfileDetails(profileId: string): Promise<any | null> {
+    try {
+      const { data, error } = await supabase
+        .from('couple_profiles_with_partners')
+        .select('*')
+        .or(`partner1_id.eq.${profileId},partner2_id.eq.${profileId}`)
+        .single() as { data: any | null, error: any };
+
+      if (error) {
+        logger.warn('No se encontró perfil de pareja:', { profileId, error: error.message });
+        return null;
+      }
+
+      return data;
+    } catch (error) {
+      logger.error('❌ Error en getCoupleProfileDetails:', { error: error instanceof Error ? error.message : String(error) });
+      return null;
     }
   }
 };

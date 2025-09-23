@@ -308,230 +308,199 @@ const AdminModerators = () => {
       {/* Content */}
       <div className="relative z-10 min-h-screen">
         {/* Header */}
-        <div className="bg-black/30 backdrop-blur-sm border-b border-white/10 p-4">
-          <div className="flex items-center justify-between max-w-7xl mx-auto">
+        <div className="bg-black/30 backdrop-blur-sm border-b border-white/10 p-3 sm:p-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between max-w-7xl mx-auto gap-3 sm:gap-0">
             <Button 
               variant="ghost" 
-              onClick={() => navigate('/admin')}
-              className="text-white hover:bg-white/10 transition-all duration-300 hover:scale-105"
+              onClick={() => navigate(-1)}
+              className="text-white hover:bg-white/10 transition-all duration-300 hover:scale-105 text-sm sm:text-base"
             >
-              <ArrowLeft className="h-5 w-5 mr-2" />
-              Volver al Admin
+              <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+              Volver
             </Button>
-            <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-              <Shield className="h-6 w-6" />
-              Gestión de Moderadores 🎭
+            <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-white flex items-center gap-2 text-center sm:text-left">
+              <Shield className="h-5 w-5 sm:h-6 sm:w-6" />
+              <span className="hidden sm:inline">Panel de Administración - </span>Moderadores
             </h1>
             <div className="flex items-center gap-2 text-white">
-              <Badge variant="secondary" className="bg-white/20 text-white">
+              <Badge variant="secondary" className="bg-white/20 text-white text-xs sm:text-sm">
                 {moderators.length} Moderadores
-              </Badge>
-              <Badge variant="secondary" className="bg-white/20 text-white">
-                {requests.filter(r => r.status === 'pending').length} Solicitudes
               </Badge>
             </div>
           </div>
         </div>
 
         {/* Main Content */}
-        <div className="max-w-7xl mx-auto p-6">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-            <TabsList className="bg-white/10 backdrop-blur-md border-white/20">
-              <TabsTrigger value="moderators" className="data-[state=active]:bg-white/20">
-                Moderadores Activos
+        <div className="max-w-7xl mx-auto p-3 sm:p-6">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6">
+            <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 bg-white/10 backdrop-blur-md border-white/20 gap-1 sm:gap-0">
+              <TabsTrigger value="moderators" className="text-white data-[state=active]:bg-white/20 text-xs sm:text-sm">
+                <Shield className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                <span className="hidden sm:inline">Moderadores </span>Activos
               </TabsTrigger>
-              <TabsTrigger value="requests" className="data-[state=active]:bg-white/20">
-                Solicitudes Pendientes
+              <TabsTrigger value="requests" className="text-white data-[state=active]:bg-white/20 text-xs sm:text-sm">
+                <UserPlus className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                Solicitudes ({requests.filter(r => r.status === 'pending').length})
               </TabsTrigger>
-              <TabsTrigger value="create" className="data-[state=active]:bg-white/20">
-                Crear Moderador
+              <TabsTrigger value="create" className="text-white data-[state=active]:bg-white/20 text-xs sm:text-sm">
+                <UserPlus className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                Crear
               </TabsTrigger>
             </TabsList>
 
             {/* Tab: Moderadores Activos */}
-            <TabsContent value="moderators" className="space-y-4">
-              <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-2xl">
-                <CardHeader>
-                  <CardTitle className="text-white flex items-center gap-2">
-                    <Shield className="h-5 w-5" />
-                    Moderadores del Sistema
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {moderators.length === 0 ? (
-                    <div className="text-center py-8">
-                      <Shield className="h-12 w-12 text-white/50 mx-auto mb-4" />
-                      <p className="text-white/80">No hay moderadores registrados</p>
-                    </div>
-                  ) : (
-                    <div className="grid gap-4">
-                      {moderators.map((moderator) => (
-                        <Card key={moderator.id} className="bg-white/5 border-white/10 hover:bg-white/10 transition-all duration-300">
-                          <CardContent className="p-4">
-                            <div className="flex justify-between items-start">
-                              <div className="flex-1">
-                                <div className="flex items-center gap-3 mb-2">
-                                  <h3 className="text-lg font-bold text-white">
-                                    {moderator.full_name || 'Sin nombre'}
-                                  </h3>
-                                  <Badge className={`${statusColors[moderator.status]} text-white`}>
-                                    {statusLabels[moderator.status]}
-                                  </Badge>
-                                </div>
-                                <div className="grid md:grid-cols-2 gap-2 text-white/80 text-sm">
-                                  <div className="flex items-center gap-2">
-                                    <Mail className="h-4 w-4" />
-                                    <span>{moderator.email}</span>
-                                  </div>
-                                  <div className="flex items-center gap-2">
-                                    <Calendar className="h-4 w-4" />
-                                    <span>Creado: {formatDate(moderator.created_at)}</span>
-                                  </div>
-                                  <div className="flex items-center gap-2">
-                                    <Activity className="h-4 w-4" />
-                                    <span>Reportes: {moderator.reports_handled}</span>
-                                  </div>
-                                  <div className="flex items-center gap-2">
-                                    <Ban className="h-4 w-4" />
-                                    <span>Suspensiones: {moderator.suspensions_applied}</span>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="flex gap-2 ml-4">
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={() => setSelectedModerator(moderator)}
-                                  className="bg-white/10 border-white/20 text-white hover:bg-white/20"
-                                >
-                                  <Eye className="h-4 w-4" />
-                                </Button>
-                                {moderator.status === 'active' && (
-                                  <Button
-                                    size="sm"
-                                    variant="outline"
-                                    onClick={() => updateModeratorStatus(moderator.id, 'suspended')}
-                                    className="bg-red-500/20 border-red-500/30 text-red-300 hover:bg-red-500/30"
-                                  >
-                                    <Ban className="h-4 w-4" />
-                                  </Button>
-                                )}
-                                {moderator.status === 'suspended' && (
-                                  <Button
-                                    size="sm"
-                                    variant="outline"
-                                    onClick={() => updateModeratorStatus(moderator.id, 'active')}
-                                    className="bg-green-500/20 border-green-500/30 text-green-300 hover:bg-green-500/30"
-                                  >
-                                    <CheckCircle className="h-4 w-4" />
-                                  </Button>
-                                )}
-                              </div>
+            <TabsContent value="moderators" className="space-y-3 sm:space-y-4">
+              {moderators.length === 0 ? (
+                <Card className="bg-white/10 backdrop-blur-md border-white/20">
+                  <CardContent className="p-6 sm:p-8 text-center">
+                    <Shield className="h-8 w-8 sm:h-12 sm:w-12 text-white/50 mx-auto mb-4" />
+                    <p className="text-white/80 text-sm sm:text-base">No hay moderadores registrados</p>
+                  </CardContent>
+                </Card>
+              ) : (
+                moderators.map((moderator) => (
+                  <Card key={moderator.id} className="bg-white/10 backdrop-blur-md border-white/20 shadow-lg hover:bg-white/15 transition-all duration-300">
+                    <CardContent className="p-4 sm:p-6">
+                      <div className="flex flex-col sm:flex-row justify-between items-start gap-3 sm:gap-0">
+                        <div className="flex-1 w-full">
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-3">
+                            <h3 className="text-lg sm:text-xl font-bold text-white break-words">{moderator.full_name || moderator.email}</h3>
+                            <Badge className={`${
+                              moderator.status === MODERATOR_STATUS.ACTIVE ? 'bg-green-500' :
+                              moderator.status === MODERATOR_STATUS.INACTIVE ? 'bg-yellow-500' :
+                              'bg-red-500'
+                            } text-white text-xs w-fit`}>
+                              {moderator.status}
+                            </Badge>
+                          </div>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 text-white/80 text-sm sm:text-base">
+                            <div className="flex items-center gap-2">
+                              <Mail className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                              <span className="break-all">{moderator.email}</span>
                             </div>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+                            <div className="flex items-center gap-2">
+                              <Calendar className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                              <span>Creado: {formatDate(moderator.created_at)}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Activity className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                              <span>Reportes: {moderator.reports_handled}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Ban className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                              <span>Suspensiones: {moderator.suspensions_applied}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex gap-2 w-full sm:w-auto sm:ml-4">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => updateModeratorStatus(moderator.id, moderator.status === MODERATOR_STATUS.ACTIVE ? MODERATOR_STATUS.INACTIVE : MODERATOR_STATUS.ACTIVE)}
+                            className="bg-white/10 border-white/20 text-white hover:bg-white/20 flex-1 sm:flex-none"
+                          >
+                            {moderator.status === MODERATOR_STATUS.ACTIVE ? (
+                              <><Ban className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-0" /><span className="sm:hidden">Desactivar</span></>
+                            ) : (
+                              <><CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-0" /><span className="sm:hidden">Activar</span></>
+                            )}
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))
+              )}
             </TabsContent>
 
             {/* Tab: Solicitudes Pendientes */}
-            <TabsContent value="requests" className="space-y-4">
-              <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-2xl">
-                <CardHeader>
-                  <CardTitle className="text-white flex items-center gap-2">
-                    <UserPlus className="h-5 w-5" />
-                    Solicitudes de Moderador
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {requests.filter(r => r.status === 'pending').length === 0 ? (
-                    <div className="text-center py-8">
-                      <UserPlus className="h-12 w-12 text-white/50 mx-auto mb-4" />
-                      <p className="text-white/80">No hay solicitudes pendientes</p>
-                    </div>
-                  ) : (
-                    <div className="grid gap-4">
-                      {requests.filter(r => r.status === 'pending').map((request) => (
-                        <Card key={request.id} className="bg-white/5 border-white/10 hover:bg-white/10 transition-all duration-300">
-                          <CardContent className="p-4">
-                            <div className="flex justify-between items-start">
-                              <div className="flex-1">
-                                <h3 className="text-lg font-bold text-white mb-2">{request.full_name}</h3>
-                                <div className="text-white/80 text-sm space-y-1">
-                                  <p><strong>Email:</strong> {request.email}</p>
-                                  <p><strong>Fecha:</strong> {formatDate(request.created_at)}</p>
-                                  <p><strong>Motivación:</strong> {request.motivation.substring(0, 100)}...</p>
-                                </div>
-                              </div>
-                              <div className="flex gap-2 ml-4">
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={() => setSelectedRequest(request)}
-                                  className="bg-white/10 border-white/20 text-white hover:bg-white/20"
-                                >
-                                  <Eye className="h-4 w-4" />
-                                </Button>
-                                <Button
-                                  size="sm"
-                                  onClick={() => handleRequest(request.id, 'approved')}
-                                  className="bg-green-600 hover:bg-green-700 text-white"
-                                >
-                                  <CheckCircle className="h-4 w-4" />
-                                </Button>
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={() => setSelectedRequest(request)}
-                                  className="bg-red-500/20 border-red-500/30 text-red-300 hover:bg-red-500/30"
-                                >
-                                  <XCircle className="h-4 w-4" />
-                                </Button>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+            <TabsContent value="requests" className="space-y-3 sm:space-y-4">
+              {requests.filter(r => r.status === 'pending').length === 0 ? (
+                <Card className="bg-white/10 backdrop-blur-md border-white/20">
+                  <CardContent className="p-6 sm:p-8 text-center">
+                    <UserPlus className="h-8 w-8 sm:h-12 sm:w-12 text-white/50 mx-auto mb-4" />
+                    <p className="text-white/80 text-sm sm:text-base">No hay solicitudes pendientes</p>
+                  </CardContent>
+                </Card>
+              ) : (
+                requests.filter(r => r.status === 'pending').map((request) => (
+                  <Card key={request.id} className="bg-white/10 backdrop-blur-md border-white/20 shadow-lg hover:bg-white/15 transition-all duration-300">
+                    <CardContent className="p-4 sm:p-6">
+                      <div className="flex flex-col sm:flex-row justify-between items-start gap-3 sm:gap-0">
+                        <div className="flex-1 w-full">
+                          <h3 className="text-lg sm:text-xl font-bold text-white mb-2 break-words">{request.full_name}</h3>
+                          <div className="text-white/80 text-sm sm:text-base space-y-1">
+                            <p><strong>Email:</strong> <span className="break-all">{request.email}</span></p>
+                            <p><strong>Fecha:</strong> {formatDate(request.created_at)}</p>
+                            <p><strong>Motivación:</strong> {request.motivation.substring(0, 100)}...</p>
+                          </div>
+                        </div>
+                        <div className="flex gap-1 sm:gap-2 w-full sm:w-auto sm:ml-4 flex-wrap">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => setSelectedRequest(request)}
+                            className="bg-white/10 border-white/20 text-white hover:bg-white/20 flex-1 sm:flex-none"
+                          >
+                            <Eye className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-0" />
+                            <span className="sm:hidden">Ver</span>
+                          </Button>
+                          <Button
+                            size="sm"
+                            onClick={() => handleRequest(request.id, 'approved')}
+                            className="bg-green-600 hover:bg-green-700 text-white flex-1 sm:flex-none"
+                          >
+                            <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-0" />
+                            <span className="sm:hidden">Aprobar</span>
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => setSelectedRequest(request)}
+                            className="bg-red-500/20 border-red-500/30 text-red-300 hover:bg-red-500/30 flex-1 sm:flex-none"
+                          >
+                            <XCircle className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-0" />
+                            <span className="sm:hidden">Rechazar</span>
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))
+              )}
             </TabsContent>
 
             {/* Tab: Crear Moderador */}
-            <TabsContent value="create" className="space-y-4">
+            <TabsContent value="create" className="space-y-3 sm:space-y-4">
               <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-2xl">
                 <CardHeader>
-                  <CardTitle className="text-white flex items-center gap-2">
-                    <UserPlus className="h-5 w-5" />
+                  <CardTitle className="text-white flex items-center gap-2 text-lg sm:text-xl">
+                    <UserPlus className="h-4 w-4 sm:h-5 sm:w-5" />
                     Crear Nuevo Moderador
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
-                    <Label className="text-white">Email del Moderador *</Label>
+                    <Label className="text-white text-sm sm:text-base">Email del Moderador *</Label>
                     <Input
                       type="email"
                       value={newModeratorEmail}
                       onChange={(e) => setNewModeratorEmail(e.target.value)}
                       placeholder="moderador@ejemplo.com"
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                      className="bg-white/10 border-white/20 text-white placeholder:text-white/50 text-sm sm:text-base"
                     />
                   </div>
                   <div>
-                    <Label className="text-white">Nombre Completo *</Label>
+                    <Label className="text-white text-sm sm:text-base">Nombre Completo *</Label>
                     <Input
                       value={newModeratorName}
                       onChange={(e) => setNewModeratorName(e.target.value)}
                       placeholder="Nombre del moderador"
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                      className="bg-white/10 border-white/20 text-white placeholder:text-white/50 text-sm sm:text-base"
                     />
                   </div>
-                  <div className="bg-white/5 p-4 rounded-lg border border-white/10">
-                    <p className="text-white/80 text-sm">
+                  <div className="bg-white/5 p-3 sm:p-4 rounded-lg border border-white/10">
+                    <p className="text-white/80 text-xs sm:text-sm">
                       <strong>Nota:</strong> Se enviará un enlace de activación al email especificado. 
                       El moderador tendrá 24 horas para activar su cuenta y definir su contraseña.
                     </p>
@@ -539,13 +508,13 @@ const AdminModerators = () => {
                   <Button
                     onClick={createModerator}
                     disabled={isCreating || !newModeratorEmail || !newModeratorName}
-                    className="w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-semibold py-3"
+                    className="w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-semibold py-2 sm:py-3 text-sm sm:text-base"
                   >
                     {isCreating ? (
                       <>Creando moderador...</>
                     ) : (
                       <>
-                        <UserPlus className="h-5 w-5 mr-2" />
+                        <UserPlus className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
                         Crear Moderador
                       </>
                     )}

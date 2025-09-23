@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuTrigger,
+  DropdownMenuSeparator 
+} from "@/components/ui/dropdown-menu";
 import { Heart, Menu, X, Download, Settings, LogOut, User, DollarSign, HelpCircle, Crown, Shield, Coins, FileText, BookOpen, Lock, Info, ChevronDown, Users } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
-import { useToast } from "@/hooks/use-toast";
-import { ModeIndicator } from '@/components/ModeIndicator';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { useToast } from '@/hooks/use-toast';
+import { NotificationBell } from "@/components/notifications/NotificationBell";
 import { useDemoThemeConfig, getNavbarStyles } from '@/hooks/useProfileTheme';
+import { ModeIndicator } from '@/components/ModeIndicator';
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -108,85 +116,94 @@ export const Header = () => {
     navigate('/');
   };
   return (
-    <header className={`${navbarStyles.backgroundClass} ${navbarStyles.shadowClass} border-b ${navbarStyles.borderClass} sticky top-0 z-50 transition-all duration-300 py-4`}>
-      <div className="container mx-auto px-4">
+    <header className={`${navbarStyles.backgroundClass} ${navbarStyles.shadowClass} border-b ${navbarStyles.borderClass} sticky top-0 z-50 transition-all duration-300 py-2 sm:py-4`}>
+      <div className="container mx-auto px-2 sm:px-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
+          <Link to="/" className="flex items-center space-x-1 sm:space-x-2">
             <div className="relative">
               <Heart 
-                className="text-primary transition-all duration-300 h-8 w-8 animate-pulse" 
+                className="text-primary transition-all duration-300 h-6 w-6 sm:h-8 sm:w-8 animate-pulse" 
                 fill="currentColor"
                 style={{ animationDuration: '2s' }}
               />
               <div className="absolute inset-0 animate-float">
-                <Heart className="text-primary-glow opacity-70 transition-all duration-300 h-8 w-8 animate-ping" fill="currentColor" />
+                <Heart className="text-primary-glow opacity-70 transition-all duration-300 h-6 w-6 sm:h-8 sm:w-8 animate-ping" fill="currentColor" />
               </div>
               <div className="absolute inset-0 animate-pulse">
-                <Heart className="text-primary opacity-30 transition-all duration-300 h-8 w-8" fill="currentColor" />
+                <Heart className="text-primary opacity-30 transition-all duration-300 h-6 w-6 sm:h-8 sm:w-8" fill="currentColor" />
               </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 sm:gap-2">
               <h1 className={`font-bold bg-love-gradient bg-clip-text text-transparent transition-all duration-300 ${
-                isRunningInApp && isMinimized ? 'text-lg' : 'text-2xl'
+                isRunningInApp && isMinimized ? 'text-base sm:text-lg' : 'text-lg sm:text-2xl'
               }`}>
                 {isAuthenticated && profile?.nickname ? profile.nickname : 
                  isAuthenticated && demoUser?.displayName ? demoUser.displayName :
                  'ComplicesConecta'}
               </h1>
-              <ModeIndicator />
+              <div className="hidden sm:block">
+                <ModeIndicator />
+              </div>
             </div>
           </Link>
 
+          {/* Notification Bell - Solo para usuarios autenticados */}
+          {isAuthenticated && (
+            <div className="hidden md:block">
+              <NotificationBell />
+            </div>
+          )}
+
           {/* Navigation - Ocultar en modo minimizado de APK */}
-          <nav className={`items-center space-x-6 transition-all duration-300 ${
-            isRunningInApp && isMinimized ? 'hidden' : 'hidden md:flex'
+          <nav className={`items-center space-x-3 lg:space-x-6 transition-all duration-300 ${
+            isRunningInApp && isMinimized ? 'hidden' : 'hidden lg:flex'
           }`}>
             <Link 
               to="/discover" 
-              className="text-white hover:text-white transition-colors duration-300 relative group font-medium"
+              className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base"
             >
               Descubrir
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
             </Link>
             <Link 
               to="/discover" 
-              className="text-white hover:text-white transition-colors duration-300 relative group font-medium"
+              className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base"
             >
               Perfiles
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
             </Link>
             <Link 
               to="/matches" 
-              className="text-white hover:text-white transition-colors duration-300 relative group font-medium"
+              className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base"
             >
               Matches
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
             </Link>
             <Link 
               to="/chat-info" 
-              className="text-white hover:text-white transition-colors duration-300 relative group font-medium"
+              className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base"
             >
               Chat
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
             </Link>
             <Link 
               to="/events" 
-              className="text-white hover:text-white transition-colors duration-300 relative group font-medium"
+              className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base"
             >
               Eventos
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
             </Link>
             <Link 
               to="/about" 
-              className="text-white hover:text-white transition-colors duration-300 relative group font-medium"
+              className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base hidden xl:block"
             >
               Empresa
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
             </Link>
             <Link 
               to="/support" 
-              className="text-white hover:text-white transition-colors duration-300 relative group font-medium"
+              className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base hidden xl:block"
             >
               Soporte
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
@@ -194,12 +211,12 @@ export const Header = () => {
           </nav>
 
           {/* Actions */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-1 sm:space-x-2">
             {/* Mobile Menu Button - Solo visible en mobile */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden text-white hover:text-primary hover:bg-white/10">
-                  <Menu className="h-5 w-5" />
+                <Button variant="ghost" size="icon" className="lg:hidden text-white hover:text-primary hover:bg-white/10">
+                  <Menu className="h-4 w-4 sm:h-5 sm:w-5" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="bg-background/95 backdrop-blur-sm border border-primary/20 w-56">
@@ -365,6 +382,9 @@ export const Header = () => {
                 <span className="hidden sm:inline">Premium</span>
               </Link>
             </Button>
+
+            {/* Notification Bell - v3.1 */}
+            {isAuthenticated && <NotificationBell className="hidden sm:block" />}
 
             {/* Botones de autenticación */}
             {isAuthenticated && (

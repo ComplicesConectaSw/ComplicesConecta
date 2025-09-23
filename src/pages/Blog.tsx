@@ -10,7 +10,7 @@ const Blog = () => {
       title: "Guía Completa para Conexiones Seguras en el Lifestyle",
       excerpt: "Aprende las mejores prácticas para conectar de manera segura y discreta en la comunidad lifestyle.",
       author: "Equipo ComplicesConecta",
-      date: "2024-12-01",
+      date: "2025-09-23",
       category: "Seguridad",
       image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=400&fit=crop&auto=format&q=80"
     },

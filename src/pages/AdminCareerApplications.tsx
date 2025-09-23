@@ -224,22 +224,22 @@ const AdminCareerApplications = () => {
       {/* Content */}
       <div className="relative z-10 min-h-screen">
         {/* Header */}
-        <div className="bg-black/30 backdrop-blur-sm border-b border-white/10 p-4">
-          <div className="flex items-center justify-between max-w-7xl mx-auto">
+        <div className="bg-black/30 backdrop-blur-sm border-b border-white/10 p-3 sm:p-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between max-w-7xl mx-auto gap-3 sm:gap-0">
             <Button 
               variant="ghost" 
               onClick={() => navigate(-1)}
-              className="text-white hover:bg-white/10 transition-all duration-300 hover:scale-105"
+              className="text-white hover:bg-white/10 transition-all duration-300 hover:scale-105 text-sm sm:text-base"
             >
-              <ArrowLeft className="h-5 w-5 mr-2" />
+              <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
               Volver
             </Button>
-            <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-              <Users className="h-6 w-6" />
-              Panel de Administración - Solicitudes de Carrera
+            <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-white flex items-center gap-2 text-center sm:text-left">
+              <Users className="h-5 w-5 sm:h-6 sm:w-6" />
+              <span className="hidden sm:inline">Panel de Administración - </span>Solicitudes de Carrera
             </h1>
             <div className="flex items-center gap-2 text-white">
-              <Badge variant="secondary" className="bg-white/20 text-white">
+              <Badge variant="secondary" className="bg-white/20 text-white text-xs sm:text-sm">
                 {applications.length} Total
               </Badge>
             </div>
@@ -247,16 +247,16 @@ const AdminCareerApplications = () => {
         </div>
 
         {/* Filters */}
-        <div className="max-w-7xl mx-auto p-6">
+        <div className="max-w-7xl mx-auto p-3 sm:p-6">
           <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-2xl mb-6">
             <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
-                <Filter className="h-5 w-5" />
+              <CardTitle className="text-white flex items-center gap-2 text-sm sm:text-base">
+                <Filter className="h-4 w-4 sm:h-5 sm:w-5" />
                 Filtros y Búsqueda
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div>
                   <Label className="text-white">Buscar</Label>
                   <div className="relative">
@@ -332,7 +332,7 @@ const AdminCareerApplications = () => {
                             {statusLabels[application.status]}
                           </Badge>
                         </div>
-                        <div className="grid md:grid-cols-2 gap-4 text-white/80">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 text-white/80 text-sm sm:text-base">
                           <div className="flex items-center gap-2">
                             <Mail className="h-4 w-4" />
                             <span>{application.correo}</span>
@@ -350,14 +350,14 @@ const AdminCareerApplications = () => {
                             <span>{formatDate(application.created_at)}</span>
                           </div>
                           {application.domicilio && (
-                            <div className="flex items-center gap-2 md:col-span-2">
+                            <div className="flex items-center gap-2 sm:col-span-2">
                               <MapPin className="h-4 w-4" />
-                              <span>{application.domicilio}</span>
+                              <span className="break-words">{application.domicilio}</span>
                             </div>
                           )}
                         </div>
                       </div>
-                      <div className="flex gap-2 ml-4">
+                      <div className="flex gap-2 ml-2 sm:ml-4 flex-shrink-0">
                         <Button
                           size="sm"
                           variant="outline"
@@ -379,7 +379,7 @@ const AdminCareerApplications = () => {
                       </div>
                     </div>
                     
-                    <div className="flex gap-2 flex-wrap">
+                    <div className="flex gap-1 sm:gap-2 flex-wrap">
                       {Object.entries(statusLabels).map(([status, label]) => (
                         <Button
                           key={status}
@@ -406,8 +406,8 @@ const AdminCareerApplications = () => {
 
       {/* Application Detail Modal */}
       {selectedApplication && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4">
+          <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-2xl max-w-4xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
             <CardHeader>
               <div className="flex justify-between items-center">
                 <CardTitle className="text-white text-2xl">
@@ -423,7 +423,7 @@ const AdminCareerApplications = () => {
               </div>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 <div>
                   <h4 className="text-white font-semibold mb-2">Información Personal</h4>
                   <div className="space-y-2 text-white/80">

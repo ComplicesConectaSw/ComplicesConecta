@@ -1,10 +1,10 @@
 import React from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { useAnimation, useGlobalAnimationTriggers } from '@/components/animations/AnimationProvider';
-import { Heart, Star, MessageCircle, Trophy, AlertCircle, CheckCircle, X } from 'lucide-react';
+import { Heart, Star, MessageCircle, Trophy, AlertCircle, CheckCircle, X, Mail, Bell, UserPlus } from 'lucide-react';
 
-// Notification types
-export type NotificationType = 'match' | 'like' | 'message' | 'achievement' | 'success' | 'error' | 'warning' | 'info';
+// Notification types - Extended for v3.1
+export type NotificationType = 'match' | 'like' | 'message' | 'achievement' | 'success' | 'error' | 'warning' | 'info' | 'email' | 'request' | 'confirmation' | 'alert';
 
 interface Notification {
   id: string;
@@ -90,6 +90,10 @@ const NotificationItem: React.FC<{ notification: Notification }> = ({ notificati
       case 'success': return <CheckCircle className="w-5 h-5 text-green-400" />;
       case 'error': return <AlertCircle className="w-5 h-5 text-red-400" />;
       case 'warning': return <AlertCircle className="w-5 h-5 text-yellow-400" />;
+      case 'email': return <Mail className="w-5 h-5 text-blue-500" />;
+      case 'request': return <UserPlus className="w-5 h-5 text-purple-500" />;
+      case 'confirmation': return <CheckCircle className="w-5 h-5 text-green-500" />;
+      case 'alert': return <Bell className="w-5 h-5 text-red-500" />;
       default: return <AlertCircle className="w-5 h-5 text-blue-400" />;
     }
   };
@@ -103,6 +107,10 @@ const NotificationItem: React.FC<{ notification: Notification }> = ({ notificati
       case 'success': return 'from-green-500 to-emerald-500';
       case 'error': return 'from-red-500 to-red-600';
       case 'warning': return 'from-yellow-500 to-yellow-600';
+      case 'email': return 'from-blue-500 to-indigo-500';
+      case 'request': return 'from-purple-500 to-violet-500';
+      case 'confirmation': return 'from-green-500 to-teal-500';
+      case 'alert': return 'from-red-500 to-orange-500';
       default: return 'from-blue-500 to-blue-600';
     }
   };
@@ -208,7 +216,7 @@ const NotificationContainer: React.FC = () => {
 };
 
 // Special effect notifications
-export const MatchNotification: React.FC<{ user: any }> = ({ user }) => {
+export const MatchNotification: React.FC<{ user: { id: string; name: string } }> = ({ user }) => {
   const { addNotification } = useNotifications();
   
   React.useEffect(() => {
@@ -221,7 +229,7 @@ export const MatchNotification: React.FC<{ user: any }> = ({ user }) => {
         label: 'Enviar mensaje',
         onClick: () => {
           // Navigate to chat
-          window.location.href = `/chat?user=${user.id}`;
+          window.location.href = `/chat?user=${user.id || ''}`;
         }
       },
       data: user
@@ -337,7 +345,7 @@ export const useNotificationHelpers = () => {
   const { addNotification } = useNotifications();
   
   return {
-    showMatch: (user: any) => {
+    showMatch: (user: { id: string; name: string }) => {
       addNotification({
         type: 'match',
         title: '¡Es un Match! 💕',
@@ -345,12 +353,12 @@ export const useNotificationHelpers = () => {
         duration: 8000,
         action: {
           label: 'Enviar mensaje',
-          onClick: () => window.location.href = `/chat?user=${user.id}`
+          onClick: () => window.location.href = `/chat?user=${user.id || ''}`
         }
       });
     },
     
-    showLike: (user: any) => {
+    showLike: (user: { id: string; name: string }) => {
       addNotification({
         type: 'like',
         title: '¡Nuevo Like! 💖',
@@ -359,7 +367,7 @@ export const useNotificationHelpers = () => {
       });
     },
     
-    showMessage: (sender: any) => {
+    showMessage: (sender: { id: string; name: string }, message: string) => {
       addNotification({
         type: 'message',
         title: 'Nuevo mensaje 💬',
@@ -414,6 +422,55 @@ export const useNotificationHelpers = () => {
         title: 'Información',
         message,
         duration: 4000
+      });
+    },
+
+    // New v3.1 notification helpers
+    showEmailNotification: (title: string, message: string, actionUrl?: string) => {
+      addNotification({
+        type: 'email',
+        title,
+        message,
+        duration: 6000,
+        action: actionUrl ? {
+          label: 'Ver detalles',
+          onClick: () => window.location.href = actionUrl
+        } : undefined
+      });
+    },
+
+    showNewRequest: (senderName: string, requestId: string) => {
+      addNotification({
+        type: 'request',
+        title: 'Nueva Solicitud',
+        message: `${senderName} te ha enviado una solicitud de conexión`,
+        duration: 8000,
+        action: {
+          label: 'Ver solicitud',
+          onClick: () => window.location.href = `/requests?id=${requestId}`
+        }
+      });
+    },
+
+    showConfirmation: (title: string, message: string) => {
+      addNotification({
+        type: 'confirmation',
+        title,
+        message,
+        duration: 5000
+      });
+    },
+
+    showAlert: (title: string, message: string, actionUrl?: string) => {
+      addNotification({
+        type: 'alert',
+        title,
+        message,
+        duration: 0, // Persistent until dismissed
+        action: actionUrl ? {
+          label: 'Resolver',
+          onClick: () => window.location.href = actionUrl
+        } : undefined
       });
     }
   };

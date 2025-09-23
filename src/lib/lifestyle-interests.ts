@@ -14,11 +14,11 @@ export const lifestyleInterests = [
   // Lugares y eventos mexicanos
   "Clubs Swinger México", "Fiestas Privadas CDMX", "Encuentros Guadalajara", "Eventos Monterrey",
   "Reuniones Íntimas", "Jacuzzi Privado", "Masajes Tántricos", "Juegos Sensuales",
-  "Lifestyle México", "Intercambio Parejas", "Noches Temáticas", "Eventos Exclusivos",
+  "Lifestyle México", "Eventos Exclusivos",
   
   // Cultura mexicana lifestyle
   "Encuentros Íntimos", "Experiencias Sensuales", "Espacios Privados", "Libertad Sexual",
-  "Noches Temáticas", "Ambiente Sensual", "Intercambio Íntimo", "Conexión Física",
+  "Ambiente Sensual", "Intercambio Íntimo", "Conexión Física",
   
   // Actividades sensuales
   "Fotografía Erótica", "Baile Sensual", "Cenas Íntimas", "Cócteles Afrodisíacos",

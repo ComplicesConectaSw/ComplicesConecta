@@ -14,9 +14,15 @@ const browsers = [
   { name: 'Safari Mobile', ...devices['iPhone 12'] }
 ];
 
+// Tests para cada navegador/dispositivo
 browsers.forEach(({ name, ...device }) => {
   test.describe(`Compatibilidad ${name}`, () => {
-    test.use(device);
+    test.beforeEach(async ({ page }) => {
+      // Configurar viewport para cada test
+      if (device.viewport) {
+        await page.setViewportSize(device.viewport);
+      }
+    });
 
     test('debería cargar la página principal correctamente', async ({ page }) => {
       await page.goto('/');

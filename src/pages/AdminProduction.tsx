@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { 
   Users, 
   BarChart3, 
@@ -26,7 +27,13 @@ import {
   ArrowLeft,
   UserPlus,
   FileText,
-  Search
+  Search,
+  Filter,
+  Calendar,
+  TrendingUp,
+  Bell,
+  AlertTriangle,
+  RefreshCw
 } from 'lucide-react';
 import { Header } from '@/components/Header';
 import { useAuth } from '@/hooks/useAuth';
@@ -66,6 +73,31 @@ interface AppStats {
   stakedTokens: number;
   worldIdVerified: number;
   rewardsDistributed: number;
+  totalNotifications: number;
+  unreadNotifications: number;
+  systemAlerts: number;
+  moderationQueue: number;
+}
+
+interface NotificationStats {
+  id: string;
+  type: string;
+  title: string;
+  message: string;
+  user_id: string;
+  read: boolean;
+  created_at: string;
+  user_email?: string;
+}
+
+interface SystemAlert {
+  id: string;
+  type: 'error' | 'warning' | 'info';
+  title: string;
+  message: string;
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  resolved: boolean;
+  created_at: string;
 }
 
 interface FAQItem {
@@ -93,7 +125,11 @@ const AdminProduction = () => {
     totalTokens: 0,
     stakedTokens: 0,
     worldIdVerified: 0,
-    rewardsDistributed: 0
+    rewardsDistributed: 0,
+    totalNotifications: 0,
+    unreadNotifications: 0,
+    systemAlerts: 0,
+    moderationQueue: 0
   });
   const [faqItems, setFaqItems] = useState<FAQItem[]>([]);
   const [invitations, setInvitations] = useState<Invitation[]>([]);
@@ -101,6 +137,13 @@ const AdminProduction = () => {
   const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
   const [newFaq, setNewFaq] = useState({ question: '', answer: '', category: 'general' });
   const [auditReport, setAuditReport] = useState<any>(null);
+  const [notifications, setNotifications] = useState<NotificationStats[]>([]);
+  const [systemAlerts, setSystemAlerts] = useState<SystemAlert[]>([]);
+  const [dateFilter, setDateFilter] = useState('today');
+  const [typeFilter, setTypeFilter] = useState('all');
+  const [userFilter, setUserFilter] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [realTimeStats, setRealTimeStats] = useState(true);
 
   useEffect(() => {
     logger.info('🔄 AdminProduction - Verificando acceso...');
@@ -301,6 +344,16 @@ const AdminProduction = () => {
         apkDownloads: apkDownloadsResponse.count || 0
       });
 
+      // Load notification stats
+      const { count: totalNotifications } = await supabase
+        .from('notifications')
+        .select('*', { count: 'exact', head: true }) || { count: 0 };
+      
+      const { count: unreadNotifications } = await supabase
+        .from('notifications')
+        .select('*', { count: 'exact', head: true })
+        .eq('read', false) || { count: 0 };
+
       setStats({
         totalUsers: totalUsers || 0,
         activeUsers: Math.floor((totalUsers || 0) * 0.7),
@@ -311,7 +364,11 @@ const AdminProduction = () => {
         totalTokens: totalTokens,
         stakedTokens: stakedTokens || 0,
         worldIdVerified: activeUsers || 0,
-        rewardsDistributed: getMetricValue('rewards_distributed') || 0
+        rewardsDistributed: getMetricValue('rewards_distributed') || 0,
+        totalNotifications: totalNotifications || 0,
+        unreadNotifications: unreadNotifications || 0,
+        systemAlerts: 0,
+        moderationQueue: 0
       });
     } catch (error) {
       logger.error('Error loading real stats:', { error: String(error) });
