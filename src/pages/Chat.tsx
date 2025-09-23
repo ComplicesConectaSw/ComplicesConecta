@@ -409,13 +409,6 @@ const Chat = () => {
                     size="sm" 
                     className="text-white hover:bg-white/10"
                   >
-                    <Phone className="h-4 w-4" />
-                  </UnifiedButton>
-                  <UnifiedButton 
-                    variant="ghost" 
-                    size="sm" 
-                    className="text-white hover:bg-white/10"
-                  >
                     <Video className="h-4 w-4" />
                   </UnifiedButton>
                   <UnifiedButton 
@@ -480,8 +473,13 @@ const Chat = () => {
                     <div
                       key={chat.id}
                       onClick={() => {
-                        setSelectedChat(chat);
-                        loadMessages(chat.id);
+                        if (isProduction) {
+                          setSelectedChat(chat);
+                          loadRealMessages(chat.id.toString());
+                        } else {
+                          setSelectedChat(chat);
+                          loadMessages(chat.id);
+                        }
                       }}
                       className={`p-3 rounded-lg cursor-pointer transition-all duration-200 ${
                         selectedChat?.id === chat.id
@@ -532,8 +530,13 @@ const Chat = () => {
                     <div
                       key={chat.id}
                       onClick={() => {
-                        setSelectedChat(chat);
-                        loadMessages(chat.id);
+                        if (isProduction) {
+                          setSelectedChat(chat);
+                          loadRealMessages(chat.id.toString());
+                        } else {
+                          setSelectedChat(chat);
+                          loadMessages(chat.id);
+                        }
                       }}
                       className={`p-3 rounded-lg cursor-pointer transition-all duration-200 ${
                         selectedChat?.id === chat.id

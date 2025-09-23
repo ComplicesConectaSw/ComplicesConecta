@@ -6,7 +6,7 @@
 import React, { createContext, useContext, ReactNode } from 'react';
 import { logger } from '@/lib/logger';
 import { Database } from '@/integrations/supabase/types';
-import { demoProfiles, demoMessages, demoInvitations, demoEvents, demoMatches } from '@/demo/demoData.js';
+import { demoProfiles, demoMessages, demoInvitations, demoEvents, demoMatches } from '@/demo/demoData';
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
 
@@ -88,7 +88,7 @@ export const DemoProvider: React.FC<DemoProviderProps> = ({ children }) => {
   };
 
   const contextValue: DemoContextType = {
-    profiles: demoProfiles as Profile[],
+    profiles: demoProfiles as any as Profile[],
     isDemo: true,
     getDemoProfile,
     getDemoProfiles,

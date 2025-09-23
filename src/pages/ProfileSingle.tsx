@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Edit, MapPin, Calendar, Heart, Star, Users, Shield, Camera, Settings, CheckCircle, Crown, Images } from 'lucide-react';
+import { ArrowLeft, Edit, MapPin, Calendar, Heart, Star, Users, Shield, Camera, Settings, CheckCircle, Crown, Images, Lock } from 'lucide-react';
 import { Header } from '@/components/Header';
 import NavigationEnhanced from '@/components/NavigationEnhanced';
 import { ProfileTabs } from '@/components/profile/ProfileTabs';
@@ -14,11 +14,15 @@ import { logger } from '@/lib/logger';
 import { usePersistedState } from '@/hooks/usePersistedState';
 import { generateDemoProfiles } from '@/lib/demoData';
 import type { Tables } from '@/integrations/supabase/types';
+import { PrivateImageRequest } from '@/components/profile/PrivateImageRequest';
+import { PrivateImageGallery } from '@/components/profile/PrivateImageGallery';
 
 const ProfileSingle: React.FC = () => {
   const navigate = useNavigate();
   const [profile, setProfile] = useState<Tables<'profiles'> | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [showPrivateImageRequest, setShowPrivateImageRequest] = useState(false);
+  const [privateImageAccess, setPrivateImageAccess] = useState<'none' | 'pending' | 'approved' | 'denied'>('none');
   const { user, profile: authProfile, isAuthenticated } = useAuth();
   
   // Migración localStorage → usePersistedState
@@ -218,6 +222,45 @@ const ProfileSingle: React.FC = () => {
                       <span className="hidden sm:inline">Editar Perfil</span>
                       <span className="sm:hidden">Editar</span>
                     </Button>
+                    
+                    {/* Botón para solicitar acceso a fotos privadas */}
+                    {privateImageAccess === 'none' && (
+                      <Button 
+                        onClick={() => setShowPrivateImageRequest(true)}
+                        className="bg-purple-600/80 hover:bg-purple-700/80 text-white flex items-center gap-2 text-sm sm:text-base px-3 sm:px-4 py-2"
+                        size="sm"
+                      >
+                        <Lock className="w-4 h-4" />
+                        <span className="hidden sm:inline">Ver Fotos Privadas</span>
+                        <span className="sm:hidden">Privadas</span>
+                      </Button>
+                    )}
+                    
+                    {/* Estado de solicitud pendiente */}
+                    {privateImageAccess === 'pending' && (
+                      <Button 
+                        disabled
+                        className="bg-yellow-600/80 text-white flex items-center gap-2 text-sm sm:text-base px-3 sm:px-4 py-2"
+                        size="sm"
+                      >
+                        <Lock className="w-4 h-4" />
+                        <span className="hidden sm:inline">Solicitud Pendiente</span>
+                        <span className="sm:hidden">Pendiente</span>
+                      </Button>
+                    )}
+                    
+                    {/* Acceso aprobado */}
+                    {privateImageAccess === 'approved' && (
+                      <Button 
+                        onClick={() => {/* Mostrar galería privada */}}
+                        className="bg-green-600/80 hover:bg-green-700/80 text-white flex items-center gap-2 text-sm sm:text-base px-3 sm:px-4 py-2"
+                        size="sm"
+                      >
+                        <Images className="w-4 h-4" />
+                        <span className="hidden sm:inline">Fotos Privadas</span>
+                        <span className="sm:hidden">Privadas</span>
+                      </Button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -276,33 +319,63 @@ const ProfileSingle: React.FC = () => {
           {/* Galería */}
           <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
             <CardHeader>
-              <CardTitle className="text-white">Mi Galería</CardTitle>
+              <CardTitle className="text-white flex items-center gap-2">
+                <Images className="w-5 h-5" />
+                Galería de Fotos
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                <div className="aspect-square bg-gradient-to-br from-pink-400/20 to-purple-600/20 rounded-lg flex items-center justify-center border border-white/20">
-                  <div className="text-center">
-                    <Camera className="w-8 h-8 mx-auto mb-2 text-white/60" />
-                    <span className="text-white/60 text-sm">Foto 1</span>
-                  </div>
+              {/* Mostrar mensaje de acceso denegado si corresponde */}
+              {privateImageAccess === 'denied' && (
+                <div className="text-center py-8">
+                  <Lock className="w-12 h-12 mx-auto mb-4 text-red-400" />
+                  <h3 className="text-lg font-semibold text-red-400 mb-2">Acceso Denegado</h3>
+                  <p className="text-white/70">Tu solicitud para ver las fotos privadas fue denegada.</p>
                 </div>
-                <div className="aspect-square bg-gradient-to-br from-purple-400/20 to-pink-600/20 rounded-lg flex items-center justify-center border border-white/20">
-                  <div className="text-center">
-                    <Images className="w-8 h-8 mx-auto mb-2 text-white/60" />
-                    <span className="text-white/60 text-sm">Foto 2</span>
-                  </div>
+              )}
+              
+              {/* Galería pública siempre visible */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
+                <div className="aspect-square bg-gradient-to-br from-pink-400 to-purple-600 rounded-lg flex items-center justify-center">
+                  <Camera className="w-8 h-8 text-white" />
                 </div>
-                <div className="aspect-square bg-gradient-to-br from-pink-500/20 to-purple-500/20 rounded-lg flex items-center justify-center border border-white/20">
-                  <div className="text-center">
-                    <Camera className="w-8 h-8 mx-auto mb-2 text-white/60" />
-                    <span className="text-white/60 text-sm">Foto 3</span>
-                  </div>
+                <div className="aspect-square bg-gradient-to-br from-purple-400 to-blue-600 rounded-lg flex items-center justify-center">
+                  <Camera className="w-8 h-8 text-white" />
+                </div>
+                <div className="aspect-square bg-gradient-to-br from-blue-400 to-teal-600 rounded-lg flex items-center justify-center">
+                  <Camera className="w-8 h-8 text-white" />
                 </div>
               </div>
+              
+              {/* Galería privada - solo si tiene acceso aprobado */}
+              {privateImageAccess === 'approved' && (
+                <PrivateImageGallery 
+                  profileId={profile?.id || ''}
+                  profileName={profile?.first_name || ''}
+                  profileType="single"
+                  isOwner={false}
+                  hasAccess={true}
+                  images={[]}
+                />
+              )}
             </CardContent>
           </Card>
         </div>
       </div>
+      
+      {/* Modal de solicitud de acceso a fotos privadas */}
+      {showPrivateImageRequest && (
+        <PrivateImageRequest
+          isOpen={showPrivateImageRequest}
+          onClose={() => setShowPrivateImageRequest(false)}
+          profileId={profile?.id || ''}
+          profileName={profile?.first_name || ''}
+          onRequestSent={() => {
+            setPrivateImageAccess('pending');
+            setShowPrivateImageRequest(false);
+          }}
+        />
+      )}
     </div>
   );
 };

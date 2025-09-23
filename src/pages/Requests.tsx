@@ -161,15 +161,15 @@ const Requests = () => {
       return;
     }
     
-    // Verificar autenticación real
-    if (!isAuthenticated || !user) {
+    // Verificar autenticación real - solo redirigir si realmente no está autenticado
+    if (!isAuthenticated()) {
       logger.info('❌ Usuario no autenticado en Requests, redirigiendo a /auth');
       navigate('/auth');
       return;
     }
     
     // Usuario real autenticado
-    const userId = user.id;
+    const userId = user?.id;
     if (userId) {
       setCurrentUserId(userId);
       logger.info('✅ Usuario real autenticado en Requests con ID:', { userId });

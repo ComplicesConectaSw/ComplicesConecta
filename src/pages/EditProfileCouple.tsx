@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Save, Camera, X, Users, MapPin, AlertCircle, Sun, Moon, Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import NavigationEnhanced from "@/components/NavigationEnhanced";
+import ImageUpload from "@/components/profile/ImageUpload";
 import type { Tables } from '@/integrations/supabase/types';
 import { generateMockCouple } from "@/lib/data";
 import { lifestyleInterests } from "@/lib/lifestyle-interests";
@@ -172,10 +173,20 @@ const EditProfileCouple = () => {
     }
   }, [location, locationError, setLocationStatus]);
   
-  const handleImageUpload = (partner: 'partner1' | 'partner2', type: 'public' | 'private' | 'avatar') => {
-    // Simulación de subida de imagen
-    logger.info(`Subiendo imagen ${type} para ${partner}`);
-    // Aquí iría la lógica real de subida de imagen
+  const handleImageUploaded = (partner: 'partner1' | 'partner2', type: 'avatar' | 'public' | 'private', url: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [partner]: {
+        ...prev[partner],
+        [type === 'avatar' ? 'avatar' : type === 'public' ? 'publicImages' : 'privateImages']: 
+          type === 'avatar' ? url : [...(prev[partner][type === 'public' ? 'publicImages' : 'privateImages']), url]
+      }
+    }));
+    logger.info(`Imagen ${type} subida para ${partner}`, { partner, type, url });
+  };
+
+  const handleImageError = (error: string) => {
+    logger.error('Error subiendo imagen', { error });
   };
 
   const handleSave = () => {
@@ -231,35 +242,35 @@ const EditProfileCouple = () => {
               Fotos de la pareja
             </h3>
             <div className="grid grid-cols-2 gap-4">
-              <div className="relative">
-                <img 
-                  src={profile.partner1.avatar} 
-                  alt={`${formData.partner1.firstName} ${formData.partner1.lastName}`}
-                  className="w-full h-40 rounded-lg object-cover"
-                />
-                <Button 
-                  size="sm"
-                  className="absolute bottom-2 right-2 rounded-full bg-pink-500 hover:bg-pink-600 text-white"
-                  onClick={() => handleImageUpload('partner1', 'avatar')}
-                >
-                  <Camera className="h-4 w-4" />
-                </Button>
-                <p className="text-center text-sm text-white mt-2">{formData.partner1.firstName} (Ella)</p>
+              <div className="space-y-2">
+                <div className="w-full h-40">
+                  <ImageUpload
+                    onImageUploaded={(url) => handleImageUploaded('partner1', 'avatar', url)}
+                    onError={handleImageError}
+                    userId={`${profile.id}-partner1`}
+                    currentImage={formData.partner1.avatar}
+                    type="profile"
+                    profileType="couple"
+                    partnerName={formData.partner1.firstName}
+                    className="w-full h-full"
+                  />
+                </div>
+                <p className="text-center text-sm text-white">{formData.partner1.firstName} (Ella)</p>
               </div>
-              <div className="relative">
-                <img 
-                  src={profile.partner2.avatar} 
-                  alt={`${formData.partner2.firstName} ${formData.partner2.lastName}`}
-                  className="w-full h-40 rounded-lg object-cover"
-                />
-                <Button 
-                  size="sm"
-                  className="absolute bottom-2 right-2 rounded-full bg-blue-500 hover:bg-blue-600 text-white"
-                  onClick={() => handleImageUpload('partner2', 'avatar')}
-                >
-                  <Camera className="h-4 w-4" />
-                </Button>
-                <p className="text-center text-sm text-white mt-2">{formData.partner2.firstName} (Él)</p>
+              <div className="space-y-2">
+                <div className="w-full h-40">
+                  <ImageUpload
+                    onImageUploaded={(url) => handleImageUploaded('partner2', 'avatar', url)}
+                    onError={handleImageError}
+                    userId={`${profile.id}-partner2`}
+                    currentImage={formData.partner2.avatar}
+                    type="profile"
+                    profileType="couple"
+                    partnerName={formData.partner2.firstName}
+                    className="w-full h-full"
+                  />
+                </div>
+                <p className="text-center text-sm text-white">{formData.partner2.firstName} (Él)</p>
               </div>
             </div>
           </CardContent>
@@ -395,27 +406,34 @@ const EditProfileCouple = () => {
                   <p className="text-xs text-white/80 mb-2">Imágenes Públicas</p>
                   <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
                     <Camera className="h-8 w-8 mx-auto text-white/60 mb-2" />
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => handleImageUpload('partner1', 'public')}
-                    >
-                      Subir Públicas
-                    </Button>
+                    <div className="w-full h-32">
+                      <ImageUpload
+                        onImageUploaded={(url) => handleImageUploaded('partner1', 'public', url)}
+                        onError={handleImageError}
+                        userId={`${profile.id}-partner1-public`}
+                        type="gallery"
+                        profileType="couple"
+                        partnerName={formData.partner1.firstName}
+                        className="w-full h-full"
+                      />
+                    </div>
                   </div>
                 </div>
                 <div>
                   <p className="text-xs text-white/80 mb-2">Imágenes Privadas</p>
                   <div className="border-2 border-dashed border-pink-300 rounded-lg p-4 text-center">
                     <Camera className="h-8 w-8 mx-auto text-pink-400 mb-2" />
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => handleImageUpload('partner1', 'private')}
-                      className="border-pink-300 text-pink-600"
-                    >
-                      Subir Privadas
-                    </Button>
+                    <div className="w-full h-32">
+                      <ImageUpload
+                        onImageUploaded={(url) => handleImageUploaded('partner1', 'private', url)}
+                        onError={handleImageError}
+                        userId={`${profile.id}-partner1-private`}
+                        type="gallery"
+                        profileType="couple"
+                        partnerName={formData.partner1.firstName}
+                        className="w-full h-full"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -523,27 +541,34 @@ const EditProfileCouple = () => {
                   <p className="text-xs text-white/80 mb-2">Imágenes Públicas</p>
                   <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
                     <Camera className="h-8 w-8 mx-auto text-white/60 mb-2" />
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => handleImageUpload('partner2', 'public')}
-                    >
-                      Subir Públicas
-                    </Button>
+                    <div className="w-full h-32">
+                      <ImageUpload
+                        onImageUploaded={(url) => handleImageUploaded('partner2', 'public', url)}
+                        onError={handleImageError}
+                        userId={`${profile.id}-partner2-public`}
+                        type="gallery"
+                        profileType="couple"
+                        partnerName={formData.partner2.firstName}
+                        className="w-full h-full"
+                      />
+                    </div>
                   </div>
                 </div>
                 <div>
                   <p className="text-xs text-white/80 mb-2">Imágenes Privadas</p>
                   <div className="border-2 border-dashed border-blue-300 rounded-lg p-4 text-center">
                     <Camera className="h-8 w-8 mx-auto text-blue-400 mb-2" />
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => handleImageUpload('partner2', 'private')}
-                      className="border-blue-300 text-blue-600"
-                    >
-                      Subir Privadas
-                    </Button>
+                    <div className="w-full h-32">
+                      <ImageUpload
+                        onImageUploaded={(url) => handleImageUploaded('partner2', 'private', url)}
+                        onError={handleImageError}
+                        userId={`${profile.id}-partner2-private`}
+                        type="gallery"
+                        profileType="couple"
+                        partnerName={formData.partner2.firstName}
+                        className="w-full h-full"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>

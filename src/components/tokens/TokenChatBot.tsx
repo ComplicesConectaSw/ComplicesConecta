@@ -46,15 +46,17 @@ export function TokenChatBot() {
   const [isTyping, setIsTyping] = useState(false);
   const [stakingAmount, setStakingAmount] = useState<number>(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const isInitialized = useRef(false);
 
   // Auto-scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Initialize chat
+  // Initialize chat - solo una vez
   useEffect(() => {
-    if (balance && messages.length === 0) {
+    if (balance && !isInitialized.current && messages.length === 0) {
+      isInitialized.current = true;
       addBotMessage(getGreetingMessage());
     }
   }, [balance]);
@@ -428,7 +430,7 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
                     : 'bg-white/15 backdrop-filter backdrop-blur-md text-white border border-white/20 shadow-sm'
                 )}
               >
-                <div className="whitespace-pre-wrap text-sm leading-relaxed break-words max-h-40 overflow-y-auto word-wrap-break-word overflow-wrap-anywhere hyphens-auto">
+                <div className="whitespace-pre-wrap text-sm leading-relaxed break-words max-h-40 overflow-y-auto overflow-wrap-break-word hyphens-auto">
                   {message.content}
                 </div>
                 

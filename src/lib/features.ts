@@ -12,6 +12,7 @@ export interface FeatureFlags {
   profiles: boolean;
   discover: boolean;
   matches: boolean;
+  requests: boolean;
   
   // Sistema de tokens (beta)
   tokens: boolean;
@@ -39,6 +40,7 @@ const PHASE_FEATURES: Record<AppPhase, FeatureFlags> = {
     profiles: true,
     discover: true,
     matches: true,
+    requests: true,
     
     // Tokens
     tokens: true,
@@ -64,6 +66,7 @@ const PHASE_FEATURES: Record<AppPhase, FeatureFlags> = {
     profiles: true,
     discover: true,
     matches: true,
+    requests: true,
     
     // Tokens
     tokens: true,
@@ -89,6 +92,7 @@ const PHASE_FEATURES: Record<AppPhase, FeatureFlags> = {
     profiles: true,
     discover: true,
     matches: true,
+    requests: true,
     tokens: true,
     referrals: true,
     premiumChat: true,

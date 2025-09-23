@@ -40,6 +40,12 @@ const EditProfileSingle = () => {
   const themeConfig = useProfileTheme('single', ['male'], demoTheme);
   const navbarStyles = getNavbarStyles(navbarStyle);
 
+  // Forzar re-render cuando cambia el tema
+  useEffect(() => {
+    // El cambio de tema se maneja automáticamente por el hook
+    logger.info('Tema actualizado', { demoTheme, navbarStyle });
+  }, [demoTheme, navbarStyle]);
+
   const availableInterests = [
     "Lifestyle Swinger", "Intercambio de Parejas", "Encuentros Casuales", "Comunicación Abierta", 
     "Respeto Mutuo", "Experiencias Nuevas", "Discreción Total", "Fiestas Privadas", "Clubs Exclusivos", "Conexiones Reales",
@@ -272,6 +278,27 @@ const EditProfileSingle = () => {
       </div>
 
       <div className="relative z-10 container mx-auto px-4 py-6 pb-24 space-y-6 max-w-4xl">
+        {/* Foto de perfil */}
+        <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-glow">
+          <CardContent className="p-6">
+            <h3 className={`font-semibold ${themeConfig.textClass} mb-4`}>Foto de perfil</h3>
+            <div className="w-32 h-32 mx-auto">
+              <ImageUpload
+                onImageUploaded={handleImageUploaded}
+                onError={handleImageError}
+                userId={userId}
+                currentImage={formData.avatar}
+                type="profile"
+                profileType="single"
+                className="w-full h-full"
+              />
+            </div>
+            <p className="text-xs text-white/70 text-center mt-2">
+              Sube una foto clara de tu rostro para aumentar tus conexiones
+            </p>
+          </CardContent>
+        </Card>
+
         {/* Información básica */}
         <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-glow">
           <CardContent className="p-6 space-y-4">

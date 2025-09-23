@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Heart, MessageCircle, MapPin, Verified, Crown, ArrowLeft, Settings, Share2, Users } from "lucide-react";
+import { Heart, MessageCircle, MapPin, Verified, Crown, ArrowLeft, Settings, Share2, Users, Lock, Images, Camera } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import NavigationEnhanced from "@/components/NavigationEnhanced";
 import { generateMockCoupleProfiles, type CoupleProfileWithPartners } from "@/lib/coupleProfiles";
@@ -10,12 +10,16 @@ import CoupleProfileHeader from "@/components/profile/CoupleProfileHeader";
 import { useAuth } from '@/hooks/useAuth';
 import { logger } from '@/lib/logger';
 import { usePersistedState } from '@/hooks/usePersistedState';
+import { PrivateImageRequest } from '@/components/profile/PrivateImageRequest';
+import { PrivateImageGallery } from '@/components/profile/PrivateImageGallery';
 
 const ProfileCouple: React.FC = () => {
   const navigate = useNavigate();
   const [profile, setProfile] = useState<CoupleProfileWithPartners | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'couple' | 'individual'>('couple');
+  const [showPrivateImageRequest, setShowPrivateImageRequest] = useState(false);
+  const [privateImageAccess, setPrivateImageAccess] = useState<'none' | 'pending' | 'approved' | 'denied'>('none');
   const { isAuthenticated, user, profile: authProfile } = useAuth();
   
   // Migración localStorage → usePersistedState
@@ -246,139 +250,119 @@ const ProfileCouple: React.FC = () => {
                         <span className="hidden sm:inline">Editar Perfil</span>
                         <span className="sm:hidden">Editar</span>
                       </Button>
+                      
+                      {/* Botón para solicitar acceso a fotos privadas */}
+                      {privateImageAccess === 'none' && (
+                        <Button 
+                          onClick={() => setShowPrivateImageRequest(true)}
+                          className="bg-purple-600/80 hover:bg-purple-700/80 text-white flex items-center gap-2 text-sm sm:text-base px-3 sm:px-4 py-2"
+                          size="sm"
+                        >
+                          <Lock className="w-4 h-4" />
+                          <span className="hidden sm:inline">Ver Fotos Privadas</span>
+                          <span className="sm:hidden">Privadas</span>
+                        </Button>
+                      )}
+                      
+                      {/* Estado de solicitud pendiente */}
+                      {privateImageAccess === 'pending' && (
+                        <Button 
+                          disabled
+                          className="bg-yellow-600/80 text-white flex items-center gap-2 text-sm sm:text-base px-3 sm:px-4 py-2"
+                          size="sm"
+                        >
+                          <Lock className="w-4 h-4" />
+                          <span className="hidden sm:inline">Solicitud Pendiente</span>
+                          <span className="sm:hidden">Pendiente</span>
+                        </Button>
+                      )}
+                      
+                      {/* Acceso aprobado */}
+                      {privateImageAccess === 'approved' && (
+                        <Button 
+                          onClick={() => {/* Mostrar galería privada */}}
+                          className="bg-green-600/80 hover:bg-green-700/80 text-white flex items-center gap-2 text-sm sm:text-base px-3 sm:px-4 py-2"
+                          size="sm"
+                        >
+                          <Images className="w-4 h-4" />
+                          <span className="hidden sm:inline">Fotos Privadas</span>
+                          <span className="sm:hidden">Privadas</span>
+                        </Button>
+                      )}
                     </div>
-</div>
-</div>
-</CardContent>
-</Card>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-<Card className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-md border-purple-300/30 shadow-lg">
-<CardContent className="p-6">
-<div className="text-center mb-6">
-<h3 className="text-lg font-semibold text-white mb-2">{profile ? profile.couple_name : 'Pareja'}</h3>
-<div className="flex items-center justify-center space-x-4 text-white/90 mb-4">
-<span className="flex items-center">
-<MapPin className="h-4 w-4 mr-1" />
-{profile ? profile.location : 'Ubicación'}
-</span>
-<span>•</span>
-<span className="flex items-center">
-<Users className="h-4 w-4 mr-1" />
-Pareja
-</span>
-</div>
-                  
-<div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 mb-4 border border-white/20 shadow-sm">
-<h3 className="font-semibold text-white mb-2">Sobre nosotros</h3>
-<p className="text-white/90 text-sm leading-relaxed">
-{profile?.couple_bio}
-</p>
-</div>
+            {/* Galería de fotos */}
+            <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
+              <CardContent className="p-4 sm:p-6">
+                <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                  <Images className="w-5 h-5" />
+                  Galería de Fotos
+                </h3>
+                
+                {/* Mostrar mensaje de acceso denegado si corresponde */}
+                {privateImageAccess === 'denied' && (
+                  <div className="text-center py-8">
+                    <Lock className="w-12 h-12 mx-auto mb-4 text-red-400" />
+                    <h3 className="text-lg font-semibold text-red-400 mb-2">Acceso Denegado</h3>
+                    <p className="text-white/70">Tu solicitud para ver las fotos privadas fue denegada.</p>
+                  </div>
+                )}
+                
+                {/* Galería pública siempre visible */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
+                  <div className="aspect-square bg-gradient-to-br from-pink-400 to-purple-600 rounded-lg flex items-center justify-center">
+                    <Camera className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="aspect-square bg-gradient-to-br from-purple-400 to-blue-600 rounded-lg flex items-center justify-center">
+                    <Camera className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="aspect-square bg-gradient-to-br from-blue-400 to-teal-600 rounded-lg flex items-center justify-center">
+                    <Camera className="w-8 h-8 text-white" />
+                  </div>
+                </div>
+                
+                {/* Galería privada - solo si tiene acceso aprobado */}
+                {privateImageAccess === 'approved' && (
+                  <PrivateImageGallery 
+                    profileId={profile?.id || ''}
+                    profileName={profile ? `${profile.partner1_first_name || ''} & ${profile.partner2_first_name || ''}` : 'Pareja'}
+                    profileType="couple"
+                    isOwner={false}
+                    hasAccess={true}
+                    images={[]}
+                  />
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        </div>
 
-<div className="grid md:grid-cols-2 gap-6">
-<div className="bg-gradient-to-br from-pink-500/20 to-rose-500/20 backdrop-blur-sm rounded-lg p-4 border-2 border-pink-400/30 shadow-lg">
-<div className="text-center mb-4">
-<img 
-src='https://images.unsplash.com/photo-1521119989659-a83eee488004?w=400&h=400&fit=crop&crop=faces' 
-alt={profile?.partner1_first_name || 'Ella'}
-className="w-24 h-24 rounded-full mx-auto mb-3 object-cover border-4 border-pink-400 shadow-lg"
-onError={(e) => {
-e.currentTarget.src = 'https://images.unsplash.com/photo-1521119989659-a83eee488004?w=400&h=400&fit=crop&crop=faces';
-}}
-/>
-<h3 className="text-xl font-bold text-white">{profile?.partner1_first_name || 'Ella'}</h3>
-<p className="text-white/90 font-medium">{profile?.partner1_age || 28} años</p>
-<p className="text-white/80 text-sm">Profesional</p>
-</div>
-                      
-<div className="mb-4">
-<h4 className="font-semibold text-white mb-2">Sobre ella:</h4>
-<p className="text-sm text-white/90 leading-relaxed">{profile?.partner1_bio || 'Soy una persona aventurera que disfruta de la vida al máximo.'}</p>
-</div>
-                      
-<div>
-<h4 className="font-semibold text-white mb-2">Sus intereses:</h4>
-<div className="flex flex-wrap gap-1 max-h-20 overflow-y-auto custom-scrollbar">
-{['Lifestyle Swinger', 'Intercambio de Parejas', 'Encuentros Casuales', 'Fiestas Temáticas', 'Clubs Privados', 'Eventos Lifestyle'].map((interest: string, index: number) => (
-<Badge key={index} variant="secondary" className="text-xs bg-white/20 text-white border border-white/30">
-{interest}
-</Badge>
-))}
-</div>
-</div>
-</div>
-                    
-<div className="bg-gradient-to-br from-purple-500/20 to-blue-500/20 backdrop-blur-sm rounded-lg p-4 border-2 border-purple-400/30 shadow-lg">
-<div className="text-center mb-4">
-<img 
-src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=faces' 
-alt={profile?.partner2_first_name || 'Él'}
-className="w-24 h-24 rounded-full mx-auto mb-3 object-cover border-4 border-purple-400 shadow-lg"
-onError={(e) => {
-e.currentTarget.src = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=faces';
-}}
-/>
-<h3 className="text-xl font-bold text-white">{profile?.partner2_first_name || 'Él'}</h3>
-<p className="text-white/90 font-medium">{profile?.partner2_age || 30} años</p>
-<p className="text-white/80 text-sm">Profesional</p>
-</div>
-                      
-<div className="mb-4">
-<h4 className="font-semibold text-white mb-2">Sobre él:</h4>
-<p className="text-sm text-white/90 leading-relaxed">{profile?.partner2_bio || 'Aventurero y respetuoso, busco junto a mi pareja vivir experiencias únicas.'}</p>
-</div>
-                      
-<div>
-<h4 className="font-semibold text-white mb-2">Sus intereses:</h4>
-<div className="flex flex-wrap gap-1 max-h-20 overflow-y-auto custom-scrollbar">
-{['Fiestas Temáticas', 'Clubs Privados', 'Eventos Lifestyle', 'Soft Swap', 'Full Swap', 'Experiencias Nuevas'].map((interest: string, index: number) => (
-<Badge key={index} variant="secondary" className="text-xs bg-white/20 text-white border border-white/30">
-{interest}
-</Badge>
-))}
-</div>
-</div>
-</div>
-</div>
-</div>
-</CardContent>
-</Card>
-          
-<div className="flex gap-3">
-<Button 
-className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
-onClick={(e) => {
-e.preventDefault();
-e.stopPropagation();
-// Lógica para dar like sin afectar autenticación
-console.log('Like enviado');
-}}
->
-<Heart className="h-4 w-4 mr-2" />
-Me Gusta
-</Button>
-<Button 
-className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
-onClick={(e) => {
-e.preventDefault();
-e.stopPropagation();
-navigate('/chat');
-}}
->
-<MessageCircle className="h-4 w-4 mr-2" />
-Mensaje
-</Button>
-</div>
-</div>
-</div>
-
-{/* Navegación inferior fija */}
-<div className="fixed bottom-0 left-0 right-0 z-50">
-<NavigationEnhanced />
-</div>
-</div>
-</div>
-);
+        {/* Navegación inferior fija */}
+        <div className="fixed bottom-0 left-0 right-0 z-50">
+          <NavigationEnhanced />
+        </div>
+      </div>
+      
+      {/* Modal de solicitud de acceso a fotos privadas */}
+      {showPrivateImageRequest && (
+        <PrivateImageRequest
+          isOpen={showPrivateImageRequest}
+          onClose={() => setShowPrivateImageRequest(false)}
+          profileId={profile?.id || ''}
+          profileName={profile ? `${profile.partner1_first_name || ''} & ${profile.partner2_first_name || ''}` : 'Pareja'}
+          profileType="couple"
+          onRequestSent={() => {
+            setPrivateImageAccess('pending');
+            setShowPrivateImageRequest(false);
+          }}
+        />
+      )}
+    </div>
+  );
 };
 
 export default ProfileCouple;
