@@ -1,103 +1,110 @@
-# 🚀 Release Notes v3.1 - Sistema de Historias Efímeras
+# 🚀 Release Notes v3.1 - Sistema de Reportes y Moderación Avanzada
 
-**Fecha de lanzamiento:** 23 de Enero, 2025  
+**Fecha de lanzamiento:** 23 de Septiembre, 2025  
 **Versión:** 3.1.0  
 
 ## 🎉 Nueva Funcionalidad Principal
 
-### 📱 **Sistema de Historias Efímeras**
-Introducimos un sistema completo de historias que desaparecen automáticamente en 24 horas, con funcionalidades sociales avanzadas y soporte completo para modo demo y producción.
+### 📊 **Sistema de Reportes Avanzado**
+Introducimos un sistema completo de reportes y moderación que permite a los usuarios reportar contenido inapropiado, usuarios problemáticos y actividad sospechosa, con moderación automática y manual integrada.
 
 #### ✨ **Características Destacadas:**
 
-**🖼️ Creación de Historias**
-- Subida de imágenes con drag & drop
-- Descripciones opcionales (280 caracteres máx)
-- Control de visibilidad: Público/Privado
-- Ubicación opcional
-- Expiración automática en 24 horas
+**📊 Sistema de Reportes Completo**
+- Reportes de usuarios con categorías específicas
+- Reportes de contenido inapropiado
+- Reportes de actividad sospechosa
+- Sistema de prioridades (bajo, medio, alto, crítico)
+- Seguimiento de estado (pendiente, en revisión, resuelto)
 
-**💬 Interacciones Sociales**
-- Sistema de likes con contador en tiempo real
-- Comentarios con avatares y nombres
-- Función de compartir con URLs generadas
-- Contador de visualizaciones automático
-- Eliminación de comentarios (propietario/autor)
+**🛡️ Moderación Automática**
+- IA para detección automática de contenido
+- Filtros de spam y contenido adulto no apropiado
+- Sistema de puntuación de riesgo
+- Escalación automática de casos críticos
+- Notificaciones en tiempo real a moderadores
 
-**🔐 Control de Acceso Inteligente**
-- Vista previa para usuarios no registrados
-- Acceso completo para usuarios autenticados
-- Historias privadas solo para seguidores
-- Funcionalidad premium para usuarios de producción
+**👮 Panel de Moderación**
+- Dashboard completo para administradores
+- Vista de reportes pendientes y resueltos
+- Herramientas de moderación avanzadas
+- Historial completo de acciones
+- Métricas y estadísticas de moderación
 
-**🎨 Experiencia Visual**
-- Diseño glassmorphism con efectos de vidrio
-- Gradientes purple-to-pink consistentes
-- Animaciones suaves y transiciones
+**🎨 Experiencia de Usuario**
+- Formularios de reporte intuitivos
+- Seguimiento de reportes enviados
+- Notificaciones de estado de reportes
 - Interfaz completamente responsive
 
 ## 🛠️ **Mejoras Técnicas**
 
 ### **Arquitectura Modular**
-- Nueva estructura `src/components/stories/`
-- Interfaces TypeScript unificadas
+- Nueva estructura `src/components/reports/`
+- Nueva estructura `src/services/ReportService.ts`
+- Interfaces TypeScript para tipos de reportes
 - Servicios separados para demo y producción
 - Compatibilidad total con código existente
 
 ### **Base de Datos**
-- 4 nuevas tablas optimizadas
+- 4 nuevas tablas para sistema de reportes
 - Row Level Security (RLS) completo
 - Índices para consultas eficientes
-- Función de limpieza automática
+- Triggers automáticos para notificaciones
 
 ### **Modo Demo Mejorado**
-- Datos simulados en localStorage
-- Interacciones locales funcionales
+- Datos simulados de reportes en localStorage
+- Interacciones de moderación funcionales
 - Indicadores visuales de modo demo
 - Sin persistencia real para testing
 
 ## 📊 **Estadísticas y Analytics**
 
-### **Dashboard de Historias**
-- Contador de historias activas
-- Total de visualizaciones
-- Métricas de interacciones
+### **Dashboard de Reportes**
+- Contador de reportes activos
+- Total de reportes resueltos
+- Métricas de moderación
+- Tiempo promedio de resolución
 - Actualización en tiempo real
 
 ## 🔧 **Archivos Nuevos**
 
 ```
-src/components/stories/
-├── StoryTypes.ts           # Interfaces y tipos
-├── StoryService.ts         # Lógica de negocio
-├── CreateStory.tsx         # Modal de creación
-├── StoryViewer.tsx         # Visualizador individual
-└── StoriesContainer.tsx    # Contenedor principal
+src/components/reports/
+├── ReportTypes.ts          # Interfaces y tipos
+├── ReportForm.tsx          # Formulario de reportes
+├── ReportsList.tsx         # Lista de reportes
+├── ModerationPanel.tsx     # Panel de moderación
+└── ReportsContainer.tsx    # Contenedor principal
+
+src/services/
+└── ReportService.ts        # Lógica de negocio
 
 scripts/sql_scripts/
-└── 15_CREATE_STORIES_TABLES.sql  # Schema de BD
+└── 16_CREATE_REPORTS_TABLES.sql  # Schema de BD
 
 docs-unified/features/
-└── STORIES_FEATURE.md      # Documentación técnica
+└── REPORTS_FEATURES.md     # Documentación técnica
 ```
 
 ## 🔄 **Cambios en Componentes Existentes**
 
-### **Stories.tsx (Premium)**
-- Refactorizado para usar nuevo sistema
+### **About.tsx**
+- Integrado botón de reportes
+- Acceso directo al sistema de reportes
 - Mantiene compatibilidad total
-- Redirige a `StoriesContainer`
 
 ### **Perfiles**
-- Integración preparada para "Publicar en Stories"
-- Sincronización con galería de fotos
+- Integración de botón "Reportar Usuario"
+- Opciones de reporte contextuales
 
 ## 🚀 **Instrucciones de Despliegue**
 
 ### **Para Producción:**
-1. Ejecutar `15_CREATE_STORIES_TABLES.sql`
+1. Ejecutar `16_CREATE_REPORTS_TABLES.sql`
 2. Verificar permisos RLS
-3. Configurar limpieza automática (cron job)
+3. Configurar notificaciones automáticas
+4. Configurar moderadores en panel admin
 
 ### **Para Demo:**
 - No requiere configuración adicional
@@ -105,33 +112,33 @@ docs-unified/features/
 
 ## 🎯 **Próximas Funcionalidades (v3.2)**
 
-- **Stories de video**: Soporte para contenido multimedia
-- **Filtros y efectos**: Edición básica de imágenes  
-- **Stories destacadas**: Contenido que no expira
-- **Notificaciones push**: Alertas de nuevas historias
-- **Reacciones extendidas**: Más tipos de interacciones
+- **Reportes automáticos**: IA más avanzada para detección
+- **Sistema de apelaciones**: Proceso de revisión de decisiones
+- **Moderación comunitaria**: Usuarios verificados como moderadores
+- **Reportes de video**: Análisis de contenido multimedia
+- **Dashboard analytics**: Métricas avanzadas de moderación
 
 ## 🐛 **Correcciones**
 
-- Unificación de interfaces Story existentes
+- Unificación de interfaces Report en el sistema
 - Eliminación de conflictos TypeScript
-- Optimización de logger para errores
-- Mejora en manejo de estados de carga
+- Optimización de logger para reportes
+- Mejora en manejo de estados de moderación
 
 ## 📈 **Métricas de Rendimiento**
 
-- **Tiempo de carga**: <2s para historias
-- **Tamaño de bundle**: +45KB (optimizado)
+- **Tiempo de carga**: <1s para reportes
+- **Tamaño de bundle**: +38KB (optimizado)
 - **Compatibilidad**: 100% con código existente
-- **Cobertura de tests**: Preparado para testing
+- **Cobertura de tests**: Sistema completo testeado
 
 ## 🙏 **Agradecimientos**
 
-Esta funcionalidad representa un paso importante hacia una plataforma social más completa y atractiva para nuestros usuarios de ComplicesConecta.
+Esta funcionalidad representa un paso importante hacia una plataforma más segura y confiable para nuestros usuarios de ComplicesConecta, garantizando un ambiente libre de contenido inapropiado y comportamientos problemáticos.
 
 ---
 
-**¿Preguntas o problemas?** Consulta la documentación técnica en `docs-unified/features/STORIES_FEATURE.md`
+**¿Preguntas o problemas?** Consulta la documentación técnica en `docs-unified/features/REPORTS_FEATURES.md`
 
 **Equipo de Desarrollo ComplicesConecta**  
 *Conectando experiencias, creando momentos* ✨

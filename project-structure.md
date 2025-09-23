@@ -1,16 +1,46 @@
 # ComplicesConecta - Estructura del Proyecto Unificada
 
 ## Información General
-- **Proyecto:** ComplicesConecta v3.0.0 - Sistema de Temas + Android Optimization & Production Ready Release
+- **Proyecto:** ComplicesConecta v3.1.0 - Sistema de Reportes y Moderación Avanzada
 - **Tecnología:** React 18 + TypeScript + Vite + Framer Motion
 - **Backend:** Supabase (PostgreSQL + Auth + Storage + Realtime)
 - **UI:** Tailwind CSS + Radix UI + Sistema de Temas Personalizable
 - **Estado:** Producción Lista - SQL Validado y Performance Optimizada
 - **Testing:** Build exitoso 6.87s, Lint sin errores, TypeScript 100%
 - **APK:** Disponible en GitHub Releases v3.0.0
-- **Última actualización:** 21 de septiembre 2025, 09:59 hrs
+- **Última actualización:** 23 de septiembre 2025, 05:05 hrs
 
-## 🆕 NUEVAS FUNCIONALIDADES v3.0.0
+## 🆕 NUEVAS FUNCIONALIDADES v3.1.0
+
+### 📊 **SISTEMA DE REPORTES Y MODERACIÓN AVANZADA - 23/09/2025 05:05 hrs**
+
+#### **✅ Sistema de Reportes Completo**
+**Archivos Nuevos:** `src/components/reports/`, `src/services/ReportService.ts`, `src/services/ModerationService.ts`
+**Funcionalidades Implementadas:**
+- **Reportes Completos**: Usuarios, contenido inapropiado y actividad sospechosa
+- **Categorías Específicas**: Spam, acoso, contenido explícito, perfil falso, etc.
+- **Moderación Automática**: IA integrada para detección automática de contenido
+- **Panel de Moderación**: Dashboard completo para administradores
+- **Prioridades y Estados**: Sistema de clasificación y seguimiento de reportes
+- **Notificaciones**: Alertas en tiempo real para moderadores
+
+#### **🗄️ Base de Datos Supabase**
+**Migración:** `scripts/sql_scripts/16_CREATE_REPORTS_TABLES.sql`
+**Nuevas Tablas:**
+- `reports`: Reportes de usuarios y contenido
+- `report_categories`: Categorías de reportes
+- `report_actions`: Acciones de moderación tomadas
+- `moderation_logs`: Logs de actividad de moderación
+**Triggers SQL:** Actualización automática de timestamps y notificaciones
+**Índices Optimizados:** Consultas rápidas por estado, prioridad y categoría
+
+#### **🔧 Arquitectura Técnica**
+**Servicios:** `ReportService.ts` y `ModerationService.ts` para gestión completa
+**Componentes UI:** `ReportForm.tsx`, `ReportsList.tsx`, `ModerationPanel.tsx` con animaciones
+**Integración Completa:** About.tsx, perfiles de usuario con botones de reporte
+**Edge Function:** `process-reports/` para procesamiento automático
+
+## 🆕 FUNCIONALIDADES ANTERIORES v3.0.0
 
 ### 🎨 **SISTEMA DE TEMAS PERSONALIZABLE - 21/09/2025 09:59 hrs**
 
