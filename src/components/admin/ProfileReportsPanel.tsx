@@ -56,7 +56,7 @@ export const ProfileReportsPanel: React.FC = () => {
   const loadReports = async () => {
     setLoading(true);
     try {
-      const result = await profileReportService.getPendingProfileReports(100, 0);
+      const result = await profileReportService.getPendingProfileReports();
       if (result.success && result.reports) {
         setReports(result.reports);
       } else {
@@ -81,10 +81,8 @@ export const ProfileReportsPanel: React.FC = () => {
     try {
       const result = await profileReportService.resolveProfileReport(
         reportId,
-        action,
-        actionTaken as any,
-        resolutionNotes,
-        suspensionDays
+        action === 'confirm' ? 'resolved' : 'dismissed',
+        resolutionNotes
       );
 
       if (result.success) {

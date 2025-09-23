@@ -34,7 +34,7 @@ export const ReportsManagement: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [selectedReport, setSelectedReport] = useState<ReportWithDetails | null>(null);
   const [showResolveDialog, setShowResolveDialog] = useState(false);
-  const [resolutionAction, setResolutionAction] = useState('');
+  const [resolutionAction, setResolutionAction] = useState<'warning' | 'suspension' | 'ban' | 'dismiss'>('dismiss');
   const [resolutionNotes, setResolutionNotes] = useState('');
   const [isResolving, setIsResolving] = useState(false);
   const [filterStatus, setFilterStatus] = useState<string>('all');
@@ -45,7 +45,7 @@ export const ReportsManagement: React.FC = () => {
   const loadReports = async () => {
     try {
       setLoading(true);
-      const result = await reportService.getPendingReports(100, 0);
+      const result = await reportService.getPendingReports();
       
       if (result.success && result.reports) {
         setReports(result.reports);
@@ -100,8 +100,7 @@ export const ReportsManagement: React.FC = () => {
       const result = await reportService.resolveReport(
         selectedReport.id,
         resolutionAction,
-        resolutionNotes,
-        resolutionAction === 'none'
+        resolutionNotes
       );
 
       if (result.success) {
