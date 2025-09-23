@@ -9,31 +9,9 @@ import { MapPin, Send, Share2 } from 'lucide-react';
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { useToast } from "@/hooks/use-toast";
 import { logger } from '@/lib/logger';
+import type { MessageInsert, MessageWithSender } from '@/types/supabase-messages';
 
-interface MessageWithSender {
-  id: string;
-  content: string;
-  sender_id: string;
-  created_at: string;
-  conversation_id: string;
-  location_latitude: number | null;
-  location_longitude: number | null;
-  location_address: string | null;
-  sender: {
-    first_name: string | null;
-    last_name: string | null;
-    avatar_url?: string | null;
-  };
-}
-
-interface MessageInsert {
-  conversation_id: string;
-  sender_id: string;
-  content: string;
-  location_latitude?: number;
-  location_longitude?: number;
-  location_address?: string;
-}
+// Interfaces importadas de @/types/supabase-messages
 
 interface Message {
   id: string;
@@ -131,6 +109,7 @@ export const ChatWithLocation = ({ conversationId, currentUserId, otherUser }: C
         })
       };
 
+      // Temporal: Cast hasta regenerar tipos Supabase
       const { error } = await (supabase
         .from('messages') as any)
         .insert([messageData]);
