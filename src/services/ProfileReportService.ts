@@ -1,487 +1,327 @@
-import { supabase } from '@/integrations/supabase/client';
-import { logger } from '@/lib/logger';
+import { supabase } from '../integrations/supabase/client'
+import { logger } from '../lib/logger'
+import type { Database } from '../types/supabase'
 
+// Force TypeScript to reload types
+type _ReportsTableCheck = Database['public']['Tables']['reports']
+
+// Tipos de Supabase - Actualizados según esquema real
+type ReportsTable = Database['public']['Tables']['reports']
+type ProfilesTable = Database['public']['Tables']['profiles']
+type ReportRow = ReportsTable['Row']
+type ReportInsert = ReportsTable['Insert']
+
+// Interfaces para los reportes de perfiles
 export interface CreateProfileReportParams {
-  reportedUserId: string;
-  reason: 'harassment' | 'impersonation' | 'fake-profile' | 'fraud' | 'underage' | 'other';
-  description?: string;
+  reportedUserId: string
+  reason: string
+  description?: string
+  severity?: 'low' | 'medium' | 'high' | 'critical'
 }
 
+// Interface actualizada para coincidir exactamente con ReportRow del esquema
 export interface ProfileReport {
-  id: string;
-  reported_user_id: string;
-  reporter_user_id: string;
-  reason: string;
-  status: 'pending' | 'reviewed' | 'dismissed' | 'confirmed';
-  description?: string;
-  created_at: string;
-  reviewed_at?: string;
-  reviewed_by?: string;
-  resolution_notes?: string;
-  action_taken?: 'none' | 'warning' | 'temporary_suspension' | 'permanent_suspension';
+  id: string
+  content_type: string
+  created_at: string
+  description: string | null
+  reason: string
+  reported_content_id: string
+  reported_user_id: string
+  reporter_user_id: string
+  resolution_notes: string | null
+  reviewed_at: string | null
+  reviewed_by: string | null
+  severity: string
+  status: string
+  updated_at: string
 }
 
-export interface ProfileReportStats {
-  userId: string;
-  reportsMade: number;
-  reportsReceived: number;
-  recentReports: number;
-  isBlocked: boolean;
-  suspensionEndDate?: string;
+export interface ProfileReportResponse {
+  success: boolean
+  data?: ReportRow
+  error?: string
 }
 
-class ProfileReportService {
-  /**
-   * Crear un reporte de perfil
-   */
-  async createProfileReport(params: CreateProfileReportParams): Promise<{ success: boolean; reportId?: string; error?: string }> {
+export interface ProfileReportsListResponse {
+  success: boolean
+  reports?: ReportRow[]
+  error?: string
+}
+
+export interface ProfileReportStatsResponse {
+  success: boolean
+  stats?: {
+    reportsMade: number
+    reportsReceived: number
+    recentReports: number
+    canReport: boolean
+    reason?: string
+  }
+  error?: string
+}
+
+export class ProfileReportService {
+  async createProfileReport(params: CreateProfileReportParams): Promise<ProfileReportResponse> {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      if (!user) {
-        return { success: false, error: 'Usuario no autenticado' };
+      const { data: { user }, error: authError } = await supabase.auth.getUser()
+
+      if (authError || !user) {
+        return { success: false, error: 'Usuario no autenticado' }
       }
 
-      // Verificar que el usuario no se reporte a sí mismo
-      if (params.reportedUserId === user.id) {
-        return { success: false, error: 'No puedes reportarte a ti mismo' };
+      if (user.id === params.reportedUserId) {
+        return { success: false, error: 'No puedes reportarte a ti mismo' }
       }
 
-      // Verificar límite de reportes por día (anti-spam)
-      const { data: recentReports } = await supabase
-        .from('profile_reports')
-        .select('id')
-        .eq('reporter_user_id', user.id)
-        .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+      // Ajustado según esquema real: todos los campos obligatorios incluidos
+      const insertData = {
+        reporter_user_id: user.id,
+        reported_user_id: params.reportedUserId,
+        content_type: 'profile',
+        reported_content_id: params.reportedUserId,
+        reason: params.reason,
+        description: params.description ?? null,
+        severity: params.severity ?? 'medium',
+        status: 'pending'
+      } as ReportInsert
 
-      if (recentReports && recentReports.length >= 5) {
-        return { success: false, error: 'Has alcanzado el límite de reportes por día' };
-      }
-
-      // Verificar si ya reportó este perfil
-      const { data: existingReport } = await supabase
-        .from('profile_reports')
-        .select('id')
-        .eq('reporter_user_id', user.id)
-        .eq('reported_user_id', params.reportedUserId)
-        .eq('status', 'pending')
-        .single();
-
-      if (existingReport) {
-        return { success: false, error: 'Ya has reportado este perfil' };
-      }
-
-      // Crear el reporte
-      const { data, error } = await supabase
-        .from('profile_reports')
-        .insert({
-          reported_user_id: params.reportedUserId,
-          reporter_user_id: user.id,
-          reason: params.reason,
-          description: params.description || null,
-          status: 'pending'
-        })
-        .select('id')
-        .single();
+      const { data, error } = await (supabase as any)
+        .from('reports')
+        .insert(insertData)
+        .select()
+        .single()
 
       if (error) {
-        logger.error('Error creating profile report:', { error: error.message });
-        return { success: false, error: 'Error al crear el reporte' };
+        logger.error('Error creando reporte de perfil:', { error: error.message })
+        return { success: false, error: 'Error al crear el reporte' }
       }
 
-      // Verificar si necesita bloqueo automático (≥3 reportes en 24h)
-      await this.checkAutoBlock(params.reportedUserId);
-
-      logger.info('Profile report created successfully:', { reportId: data.id });
-      return { success: true, reportId: data.id };
+      logger.info('Reporte de perfil creado exitosamente:', { reportId: data.id })
+      return { success: true, data }
 
     } catch (error) {
-      logger.error('Error in createProfileReport:', { error: error instanceof Error ? error.message : String(error) });
-      return { success: false, error: 'Error interno del servidor' };
+      logger.error('Error inesperado en createProfileReport:', { error: error instanceof Error ? error.message : String(error) })
+      return { success: false, error: 'Error inesperado al crear el reporte' }
     }
   }
 
-  /**
-   * Verificar si un perfil necesita bloqueo automático
-   */
-  private async checkAutoBlock(reportedUserId: string): Promise<void> {
+  async getUserProfileReports(): Promise<ProfileReportsListResponse> {
     try {
-      const { data: recentReports } = await supabase
-        .from('profile_reports')
-        .select('id')
-        .eq('reported_user_id', reportedUserId)
-        .eq('status', 'pending')
-        .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+      const { data: { user }, error: authError } = await supabase.auth.getUser()
 
-      if (recentReports && recentReports.length >= 3) {
-        // Bloquear perfil temporalmente
-        await supabase
-          .from('profiles')
-          .update({ 
-            is_blocked: true,
-            blocked_reason: 'Múltiples reportes pendientes de revisión',
-            blocked_at: new Date().toISOString()
-          })
-          .eq('id', reportedUserId);
-
-        // Crear notificación para el usuario
-        await this.createBlockNotification(reportedUserId, 'temporary_block');
-        
-        logger.info('Profile auto-blocked due to multiple reports:', { userId: reportedUserId });
-      }
-    } catch (error) {
-      logger.error('Error in checkAutoBlock:', { error: error instanceof Error ? error.message : String(error) });
-    }
-  }
-
-  /**
-   * Crear notificación para usuario bloqueado/desbloqueado
-   */
-  private async createBlockNotification(userId: string, type: 'temporary_block' | 'restored' | 'suspended'): Promise<void> {
-    try {
-      let title = '';
-      let message = '';
-
-      switch (type) {
-        case 'temporary_block':
-          title = 'Perfil bloqueado preventivamente';
-          message = 'Tu perfil fue bloqueado preventivamente por reportes. Será revisado por nuestro equipo. Esto no implica automáticamente una violación de términos.';
-          break;
-        case 'restored':
-          title = 'Perfil restaurado';
-          message = 'Tu perfil fue restaurado tras revisión. No se detectó violación a las políticas.';
-          break;
-        case 'suspended':
-          title = 'Perfil suspendido';
-          message = 'Tu perfil fue suspendido por infringir nuestras políticas. Revisa los términos de servicio.';
-          break;
+      if (authError || !user) {
+        return { success: false, error: 'Usuario no autenticado' }
       }
 
-      await supabase
-        .from('notifications')
-        .insert({
-          user_id: userId,
-          title,
-          message,
-          type: 'profile_report',
-          is_read: false
-        });
-
-    } catch (error) {
-      logger.error('Error creating block notification:', { error: error instanceof Error ? error.message : String(error) });
-    }
-  }
-
-  /**
-   * Obtener reportes pendientes para moderadores
-   */
-  async getPendingProfileReports(limit = 50, offset = 0): Promise<{ success: boolean; reports?: any[]; error?: string }> {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      if (!user) {
-        return { success: false, error: 'Usuario no autenticado' };
-      }
-
-      // Verificar permisos de moderador/admin
-      const { data: userRole } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', user.id)
-        .single();
-
-      if (!userRole || !['admin', 'moderator'].includes(userRole.role)) {
-        return { success: false, error: 'No tienes permisos para ver reportes' };
-      }
-
-      const { data, error } = await supabase
-        .from('profile_reports')
-        .select(`
-          *,
-          reported_user:profiles!profile_reports_reported_user_id_fkey(
-            id, full_name, email, avatar_url, created_at
-          ),
-          reporter_user:profiles!profile_reports_reporter_user_id_fkey(
-            id, full_name, email
-          )
-        `)
-        .eq('status', 'pending')
-        .order('created_at', { ascending: true })
-        .range(offset, offset + limit - 1);
-
-      if (error) {
-        logger.error('Error fetching pending profile reports:', { error: error.message });
-        return { success: false, error: 'Error al obtener reportes pendientes' };
-      }
-
-      return { success: true, reports: data };
-
-    } catch (error) {
-      logger.error('Error in getPendingProfileReports:', { error: error instanceof Error ? error.message : String(error) });
-      return { success: false, error: 'Error interno del servidor' };
-    }
-  }
-
-  /**
-   * Resolver un reporte de perfil
-   */
-  async resolveProfileReport(
-    reportId: string,
-    action: 'dismiss' | 'confirm',
-    actionTaken?: 'none' | 'warning' | 'temporary_suspension' | 'permanent_suspension',
-    resolutionNotes?: string,
-    suspensionDays?: number
-  ): Promise<{ success: boolean; error?: string }> {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      if (!user) {
-        return { success: false, error: 'Usuario no autenticado' };
-      }
-
-      // Verificar permisos
-      const { data: userRole } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', user.id)
-        .single();
-
-      if (!userRole || !['admin', 'moderator'].includes(userRole.role)) {
-        return { success: false, error: 'No tienes permisos para resolver reportes' };
-      }
-
-      // Obtener información del reporte
-      const { data: report, error: reportError } = await supabase
-        .from('profile_reports')
+      const { data, error } = await (supabase as any)
+        .from('reports')
         .select('*')
-        .eq('id', reportId)
-        .single();
+        .eq('reporter_user_id', user.id)
+        .eq('content_type', 'profile')
+        .order('created_at', { ascending: false })
 
-      if (reportError || !report) {
-        return { success: false, error: 'Reporte no encontrado' };
+      if (error) {
+        logger.error('Error obteniendo reportes del usuario:', { error: error.message })
+        return { success: false, error: 'Error al obtener los reportes' }
       }
 
-      // Actualizar el reporte
-      const status = action === 'dismiss' ? 'dismissed' : 'confirmed';
-      const { error: updateError } = await supabase
-        .from('profile_reports')
+      return { success: true, reports: (data || []) as ReportRow[] }
+
+    } catch (error) {
+      logger.error('Error inesperado en getUserProfileReports:', { error: error instanceof Error ? error.message : String(error) })
+      return { success: false, error: 'Error inesperado al obtener los reportes' }
+    }
+  }
+
+  async getPendingProfileReports(): Promise<ProfileReportsListResponse> {
+    try {
+      const { data, error } = await (supabase as any)
+        .from('reports')
+        .select('*')
+        .eq('status', 'pending')
+        .eq('content_type', 'profile')
+        .order('created_at', { ascending: false })
+
+      if (error) {
+        logger.error('Error obteniendo reportes pendientes:', { error: error.message })
+        return { success: false, error: 'Error al obtener los reportes pendientes' }
+      }
+
+      return { success: true, reports: (data || []) as ReportRow[] }
+
+    } catch (error) {
+      logger.error('Error inesperado en getPendingProfileReports:', { error: error instanceof Error ? error.message : String(error) })
+      return { success: false, error: 'Error inesperado al obtener los reportes pendientes' }
+    }
+  }
+
+  async resolveProfileReport(reportId: string, resolution: 'resolved' | 'dismissed', notes?: string): Promise<ProfileReportResponse> {
+    try {
+      const { data: { user }, error: authError } = await supabase.auth.getUser()
+
+      if (authError || !user) {
+        return { success: false, error: 'Usuario no autenticado' }
+      }
+
+      const { data, error } = await (supabase as any)
+        .from('reports')
         .update({
-          status,
+          status: resolution,
           reviewed_at: new Date().toISOString(),
           reviewed_by: user.id,
-          resolution_notes: resolutionNotes || null,
-          action_taken: actionTaken || 'none'
+          resolution_notes: notes
         })
-        .eq('id', reportId);
+        .eq('id', reportId)
+        .eq('content_type', 'profile')
+        .select()
+        .single()
 
-      if (updateError) {
-        logger.error('Error updating profile report:', { error: updateError.message });
-        return { success: false, error: 'Error al actualizar el reporte' };
+      if (error) {
+        logger.error('Error resolviendo reporte de perfil:', { error: error.message })
+        return { success: false, error: 'Error al resolver el reporte' }
       }
 
-      // Aplicar acción al perfil reportado
-      if (action === 'confirm' && actionTaken && actionTaken !== 'none') {
-        await this.applyProfileAction(report.reported_user_id, actionTaken, suspensionDays);
-      } else if (action === 'dismiss') {
-        // Restaurar perfil si estaba bloqueado
-        await this.restoreProfile(report.reported_user_id);
-      }
-
-      logger.info('Profile report resolved:', { reportId, action, actionTaken });
-      return { success: true };
+      logger.info('Reporte de perfil resuelto exitosamente:', { reportId, resolution })
+      return { success: true, data: data as ReportRow }
 
     } catch (error) {
-      logger.error('Error in resolveProfileReport:', { error: error instanceof Error ? error.message : String(error) });
-      return { success: false, error: 'Error interno del servidor' };
+      logger.error('Error inesperado en resolveProfileReport:', { error: error instanceof Error ? error.message : String(error) })
+      return { success: false, error: 'Error inesperado al resolver el reporte' }
     }
   }
 
-  /**
-   * Aplicar acción disciplinaria a un perfil
-   */
-  private async applyProfileAction(
-    userId: string, 
-    action: 'warning' | 'temporary_suspension' | 'permanent_suspension',
-    suspensionDays?: number
-  ): Promise<void> {
+  async applyProfileAction(userId: string, action: 'warning' | 'temporary_suspension' | 'permanent_suspension', suspensionDays?: number): Promise<{ success: boolean; error?: string }> {
     try {
-      let updateData: any = {};
-      let notificationType: 'restored' | 'suspended' = 'suspended';
+      let updateData: Partial<ProfilesTable['Update']> = {}
 
       switch (action) {
         case 'warning':
           updateData = {
             is_blocked: false,
             blocked_reason: null,
-            blocked_at: null,
-            warning_count: supabase.raw('COALESCE(warning_count, 0) + 1')
-          };
-          notificationType = 'restored';
-          break;
-        
+            blocked_at: null
+          }
+          break
+
         case 'temporary_suspension': {
-          const suspensionEnd = new Date();
-          suspensionEnd.setDate(suspensionEnd.getDate() + (suspensionDays || 7));
-          
+          const suspensionEnd = new Date()
+          suspensionEnd.setDate(suspensionEnd.getDate() + (suspensionDays || 7))
           updateData = {
             is_blocked: true,
             blocked_reason: `Suspensión temporal por ${suspensionDays || 7} días`,
             blocked_at: new Date().toISOString(),
             suspension_end_date: suspensionEnd.toISOString()
-          };
-          break;
+          }
+          break
         }
-        
+
         case 'permanent_suspension':
           updateData = {
             is_blocked: true,
             blocked_reason: 'Suspensión permanente',
             blocked_at: new Date().toISOString(),
             suspension_end_date: null
-          };
-          break;
+          }
+          break
       }
 
-      await supabase
+      const { error: updateError } = await supabase
         .from('profiles')
-        .update(updateData)
-        .eq('id', userId);
+        .update(updateData as any)
+        .eq('id', userId)
 
-      await this.createBlockNotification(userId, notificationType);
+      if (updateError) {
+        logger.error('Error aplicando acción al perfil:', { error: updateError.message })
+        return { success: false, error: 'Error al aplicar la acción' }
+      }
+
+      logger.info('Acción aplicada al perfil exitosamente:', { userId, action })
+      return { success: true }
 
     } catch (error) {
-      logger.error('Error applying profile action:', { error: error instanceof Error ? error.message : String(error) });
+      logger.error('Error inesperado en applyProfileAction:', { error: error instanceof Error ? error.message : String(error) })
+      return { success: false, error: 'Error inesperado al aplicar la acción' }
     }
   }
 
-  /**
-   * Restaurar un perfil (quitar bloqueo)
-   */
-  private async restoreProfile(userId: string): Promise<void> {
+  async getProfileReportStats(userId?: string): Promise<ProfileReportStatsResponse> {
     try {
-      await supabase
-        .from('profiles')
-        .update({
-          is_blocked: false,
-          blocked_reason: null,
-          blocked_at: null,
-          suspension_end_date: null
-        })
-        .eq('id', userId);
+      const { data: { user } } = await supabase.auth.getUser()
 
-      await this.createBlockNotification(userId, 'restored');
-
-    } catch (error) {
-      logger.error('Error restoring profile:', { error: error instanceof Error ? error.message : String(error) });
-    }
-  }
-
-  /**
-   * Obtener estadísticas de reportes de un usuario
-   */
-  async getProfileReportStats(userId?: string): Promise<{ success: boolean; stats?: ProfileReportStats; error?: string }> {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      
       if (!user) {
-        return { success: false, error: 'Usuario no autenticado' };
+        return { success: false, error: 'Usuario no autenticado' }
       }
 
-      const targetUserId = userId || user.id;
+      const targetUserId = userId || user.id
 
-      // Obtener reportes hechos por el usuario
-      const { data: reportsMade } = await supabase
-        .from('profile_reports')
-        .select('id')
-        .eq('reporter_user_id', targetUserId);
-
-      // Obtener reportes recibidos por el usuario
-      const { data: reportsReceived } = await supabase
-        .from('profile_reports')
-        .select('id')
-        .eq('reported_user_id', targetUserId);
-
-      // Obtener reportes recientes (últimas 24h)
-      const { data: recentReports } = await supabase
-        .from('profile_reports')
+      const { data: reportsMade } = await (supabase as any)
+        .from('reports')
         .select('id')
         .eq('reporter_user_id', targetUserId)
-        .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+        .eq('content_type', 'profile')
 
-      // Verificar si el perfil está bloqueado
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('is_blocked, suspension_end_date')
-        .eq('id', targetUserId)
-        .single();
+      const { data: reportsReceived } = await (supabase as any)
+        .from('reports')
+        .select('id')
+        .eq('reported_user_id', targetUserId)
+        .eq('content_type', 'profile')
 
-      const stats: ProfileReportStats = {
-        userId: targetUserId,
-        reportsMade: reportsMade?.length || 0,
-        reportsReceived: reportsReceived?.length || 0,
-        recentReports: recentReports?.length || 0,
-        isBlocked: profile?.is_blocked || false,
-        suspensionEndDate: profile?.suspension_end_date || undefined
-      };
+      const { data: recentReports } = await (supabase as any)
+        .from('reports')
+        .select('id')
+        .eq('reporter_user_id', targetUserId)
+        .eq('content_type', 'profile')
+        .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
 
-      return { success: true, stats };
+      return {
+        success: true,
+        stats: {
+          reportsMade: reportsMade?.length || 0,
+          reportsReceived: reportsReceived?.length || 0,
+          recentReports: recentReports?.length || 0,
+          canReport: (recentReports?.length || 0) < 5
+        }
+      }
 
     } catch (error) {
-      logger.error('Error in getProfileReportStats:', { error: error instanceof Error ? error.message : String(error) });
-      return { success: false, error: 'Error interno del servidor' };
+      logger.error('Error inesperado en getProfileReportStats:', { error: error instanceof Error ? error.message : String(error) })
+      return { success: false, error: 'Error inesperado al obtener las estadísticas' }
     }
   }
 
-  /**
-   * Verificar si un usuario puede reportar (no está limitado)
-   */
   async canUserReport(userId?: string): Promise<{ success: boolean; canReport?: boolean; reason?: string; error?: string }> {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      
+      const { data: { user } } = await supabase.auth.getUser()
+
       if (!user) {
-        return { success: false, error: 'Usuario no autenticado' };
+        return { success: false, error: 'Usuario no autenticado' }
       }
 
-      const targetUserId = userId || user.id;
+      const targetUserId = userId || user.id
 
-      // Verificar reportes recientes
-      const { data: recentReports } = await supabase
-        .from('profile_reports')
+      const { data: recentReports } = await (supabase as any)
+        .from('reports')
         .select('id')
         .eq('reporter_user_id', targetUserId)
-        .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+        .eq('content_type', 'profile')
+        .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
 
       if (recentReports && recentReports.length >= 5) {
-        return { 
-          success: true, 
-          canReport: false, 
-          reason: 'Has alcanzado el límite diario de reportes' 
-        };
+        return {
+          success: true,
+          canReport: false,
+          reason: 'Has excedido el límite de reportes diarios'
+        }
       }
 
-      // Verificar si el usuario está bloqueado
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('is_blocked')
-        .eq('id', targetUserId)
-        .single();
-
-      if (profile?.is_blocked) {
-        return { 
-          success: true, 
-          canReport: false, 
-          reason: 'Tu cuenta está suspendida' 
-        };
-      }
-
-      return { success: true, canReport: true };
+      return { success: true, canReport: true }
 
     } catch (error) {
-      logger.error('Error in canUserReport:', { error: error instanceof Error ? error.message : String(error) });
-      return { success: false, error: 'Error interno del servidor' };
+      logger.error('Error en canUserReport:', { error: error instanceof Error ? error.message : String(error) })
+      return { success: false, error: 'Error interno del servidor' }
     }
   }
 }
 
-export const profileReportService = new ProfileReportService();
+export const profileReportService = new ProfileReportService()

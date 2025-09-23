@@ -28,156 +28,113 @@ export interface Report {
   updated_at: string;
 }
 
-export interface ModerationAction {
-  id: string;
-  report_id: string;
-  moderator_id: string;
-  action_type: string;
-  duration_hours?: number;
-  reason: string;
-  is_automated: boolean;
-  created_at: string;
+export interface ReportResponse {
+  success: boolean;
+  data?: Report;
+  error?: string;
 }
 
-export interface ReportNotification {
-  id: string;
-  user_id: string;
-  report_id: string;
-  notification_type: 'content_reported' | 'report_reviewed' | 'action_taken' | 'appeal_result';
-  title: string;
-  message: string;
-  is_read: boolean;
-  created_at: string;
+export interface ReportsListResponse {
+  success: boolean;
+  reports?: Report[];
+  error?: string;
 }
 
-export interface UserReportStats {
-  user_id: string;
-  reports_made: number;
-  reports_received: number;
-  false_reports_made: number;
-  valid_reports_made: number;
-  trust_score: number;
-  is_flagged_reporter: boolean;
-  last_report_at?: string;
-  created_at: string;
-  updated_at: string;
+export interface ReportStats {
+  totalReports: number;
+  pendingReports: number;
+  resolvedReports: number;
+  dismissedReports: number;
 }
 
-class ReportService {
-  /**
-   * Crear un nuevo reporte
-   */
-  async createReport(params: CreateReportParams): Promise<{ success: boolean; reportId?: string; error?: string }> {
+export class ReportService {
+  async createReport(params: CreateReportParams): Promise<ReportResponse> {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
       
-      if (!user) {
+      if (authError || !user) {
         return { success: false, error: 'Usuario no autenticado' };
       }
 
-      // Verificar que el usuario no se reporte a sí mismo
-      if (params.reportedUserId === user.id) {
+      if (user.id === params.reportedUserId) {
         return { success: false, error: 'No puedes reportarte a ti mismo' };
       }
 
-      // Verificar límite de reportes por día (anti-spam)
-      const { data: recentReports } = await supabase
-        .from('profile_reports')
-        .select('id')
-        .eq('reporter_user_id', user.id)
-        .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
-
-      if (recentReports && recentReports.length >= 10) {
-        return { success: false, error: 'Has alcanzado el límite de reportes por día' };
-      }
-
-      // Crear el reporte usando la función RPC
-      const { data, error } = await supabase.rpc('create_report', {
-        p_reporter_id: user.id,
-        p_content_type: params.contentType,
-        p_reason: params.reason,
-        p_reported_user_id: params.reportedUserId || null,
-        p_reported_content_id: params.reportedContentId || null,
-        p_description: params.description || null
-      });
+      // Crear reporte usando insert directo con casting
+      const { data, error } = await (supabase as any)
+        .from('reports')
+        .insert({
+          reporter_id: user.id,
+          reported_user_id: params.reportedUserId,
+          content_type: params.contentType,
+          reason: params.reason,
+          description: params.description,
+          status: 'pending'
+        })
+        .select()
+        .single();
 
       if (error) {
-        logger.error('Error creating report:', { error: error.message });
+        logger.error('Error creating report:', error);
         return { success: false, error: 'Error al crear el reporte' };
       }
 
-      logger.info('Report created successfully:', { reportId: data });
-      return { success: true, reportId: data };
+      logger.info('Report created successfully:', { reportId: data?.id });
+      return { success: true, data };
 
     } catch (error) {
-      logger.error('Error in createReport:', { error: error instanceof Error ? error.message : String(error) });
-      return { success: false, error: 'Error interno del servidor' };
+      logger.error('Unexpected error in createReport:', { error: error instanceof Error ? error.message : String(error) });
+      return { success: false, error: 'Error inesperado al crear el reporte' };
     }
   }
 
-  /**
-   * Obtener reportes del usuario actual
-   */
-  async getUserReports(): Promise<{ success: boolean; reports?: Report[]; error?: string }> {
+  async getUserReports(): Promise<ReportsListResponse> {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
       
-      if (!user) {
+      if (authError || !user) {
         return { success: false, error: 'Usuario no autenticado' };
       }
 
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('reports')
         .select('*')
         .eq('reporter_id', user.id)
         .order('created_at', { ascending: false });
 
       if (error) {
-        logger.error('Error fetching user reports:', { error: error.message });
-        return { success: false, error: 'Error al obtener reportes' };
+        logger.error('Error fetching user reports:', error);
+        return { success: false, error: 'Error al obtener los reportes' };
       }
 
-      return { success: true, reports: data as Report[] };
+      return { success: true, reports: data || [] };
 
     } catch (error) {
-      logger.error('Error in getUserReports:', { error: error instanceof Error ? error.message : String(error) });
-      return { success: false, error: 'Error interno del servidor' };
+      logger.error('Unexpected error in getUserReports:', { error: error instanceof Error ? error.message : String(error) });
+      return { success: false, error: 'Error inesperado al obtener los reportes' };
     }
   }
 
-  /**
-   * Obtener reportes pendientes (solo para moderadores/admins)
-   */
-  async getPendingReports(limit = 50, offset = 0): Promise<{ success: boolean; reports?: any[]; error?: string }> {
+  async getPendingReports(): Promise<ReportsListResponse> {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
       
-      if (!user) {
+      if (authError || !user) {
         return { success: false, error: 'Usuario no autenticado' };
       }
 
-      // Verificar que el usuario sea moderador o admin
-      const { data: userRole } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', user.id)
-        .single();
-
-      if (!userRole || !['admin', 'moderator'].includes(userRole.role)) {
-        return { success: false, error: 'No tienes permisos para ver reportes' };
-      }
-
-      const { data, error } = await supabase.rpc('get_pending_reports', {
-        p_limit: limit,
-        p_offset: offset
-      });
+      const { data, error } = await (supabase as any)
+        .from('reports')
+        .select('*')
+        .eq('status', 'pending')
+        .order('created_at', { ascending: false });
 
       if (error) {
-        logger.error('Error fetching pending reports:', { error: error.message });
+        logger.error('Error fetching pending reports:', error);
         return { success: false, error: 'Error al obtener reportes pendientes' };
       }
 
-      return { success: true, reports: data };
+      return { success: true, reports: data || [] };
 
     } catch (error) {
       logger.error('Error in getPendingReports:', { error: error instanceof Error ? error.message : String(error) });
@@ -185,156 +142,109 @@ class ReportService {
     }
   }
 
-  /**
-   * Resolver un reporte (solo para moderadores/admins)
-   */
-  async resolveReport(
-    reportId: string, 
-    actionTaken: string, 
-    resolutionNotes?: string, 
-    isFalsePositive = false
-  ): Promise<{ success: boolean; error?: string }> {
+  async resolveReport(reportId: string, action: 'warning' | 'suspension' | 'ban' | 'dismiss', notes?: string): Promise<ReportResponse> {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
       
-      if (!user) {
+      if (authError || !user) {
         return { success: false, error: 'Usuario no autenticado' };
       }
 
-      // Verificar que el usuario sea moderador o admin
-      const { data: userRole } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', user.id)
+      const status = action === 'dismiss' ? 'dismissed' : 'resolved';
+      const actionTaken = action === 'dismiss' ? 'none' : action;
+
+      const { data, error } = await (supabase as any)
+        .from('reports')
+        .update({
+          status,
+          action_taken: actionTaken,
+          resolution_notes: notes,
+          resolved_by: user.id,
+          resolved_at: new Date().toISOString()
+        })
+        .eq('id', reportId)
+        .select()
         .single();
 
-      if (!userRole || !['admin', 'moderator'].includes(userRole.role)) {
-        return { success: false, error: 'No tienes permisos para resolver reportes' };
-      }
-
-      const { data, error } = await supabase.rpc('resolve_report', {
-        p_report_id: reportId,
-        p_moderator_id: user.id,
-        p_action_taken: actionTaken,
-        p_resolution_notes: resolutionNotes || null,
-        p_is_false_positive: isFalsePositive
-      });
-
       if (error) {
-        logger.error('Error resolving report:', { error: error.message });
+        logger.error('Error resolving report:', error);
         return { success: false, error: 'Error al resolver el reporte' };
       }
 
-      if (!data) {
-        return { success: false, error: 'Reporte no encontrado' };
-      }
-
-      logger.info('Report resolved successfully:', { reportId });
-      return { success: true };
+      logger.info('Report resolved successfully:', { reportId, action });
+      return { success: true, data };
 
     } catch (error) {
-      logger.error('Error in resolveReport:', { error: error instanceof Error ? error.message : String(error) });
-      return { success: false, error: 'Error interno del servidor' };
+      logger.error('Unexpected error in resolveReport:', { error: error instanceof Error ? error.message : String(error) });
+      return { success: false, error: 'Error inesperado al resolver el reporte' };
     }
   }
 
-  /**
-   * Obtener notificaciones de reportes del usuario
-   */
-  async getReportNotifications(): Promise<{ success: boolean; notifications?: ReportNotification[]; error?: string }> {
+  async getUserReportStats(): Promise<{ success: boolean; stats?: ReportStats; error?: string }> {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
       
-      if (!user) {
+      if (authError || !user) {
         return { success: false, error: 'Usuario no autenticado' };
       }
 
-      const { data, error } = await supabase
-        .from('report_notifications')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false })
-        .limit(50);
-
-      if (error) {
-        logger.error('Error fetching report notifications:', { error: error.message });
-        return { success: false, error: 'Error al obtener notificaciones' };
-      }
-
-      return { success: true, notifications: data as ReportNotification[] };
-
-    } catch (error) {
-      logger.error('Error in getReportNotifications:', { error: error instanceof Error ? error.message : String(error) });
-      return { success: false, error: 'Error interno del servidor' };
-    }
-  }
-
-  /**
-   * Marcar notificación como leída
-   */
-  async markNotificationAsRead(notificationId: string): Promise<{ success: boolean; error?: string }> {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      if (!user) {
-        return { success: false, error: 'Usuario no autenticado' };
-      }
-
-      const { error } = await supabase
-        .from('report_notifications')
-        .update({ is_read: true })
-        .eq('id', notificationId)
-        .eq('user_id', user.id);
-
-      if (error) {
-        logger.error('Error marking notification as read:', { error: error.message });
-        return { success: false, error: 'Error al marcar notificación' };
-      }
-
-      return { success: true };
-
-    } catch (error) {
-      logger.error('Error in markNotificationAsRead:', { error: error instanceof Error ? error.message : String(error) });
-      return { success: false, error: 'Error interno del servidor' };
-    }
-  }
-
-  /**
-   * Obtener estadísticas de reportes del usuario
-   */
-  async getUserReportStats(): Promise<{ success: boolean; stats?: UserReportStats; error?: string }> {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      if (!user) {
-        return { success: false, error: 'Usuario no autenticado' };
-      }
-
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('user_report_stats')
         .select('*')
         .eq('user_id', user.id)
         .single();
 
-      if (error && error.code !== 'PGRST116') { // PGRST116 = no rows found
-        logger.error('Error fetching user report stats:', { error: error.message });
+      if (error && error.code !== 'PGRST116') {
+        logger.error('Error fetching user report stats:', error);
         return { success: false, error: 'Error al obtener estadísticas' };
       }
 
-      return { success: true, stats: data as UserReportStats };
+      const stats: ReportStats = {
+        totalReports: data?.total_reports || 0,
+        pendingReports: data?.pending_reports || 0,
+        resolvedReports: data?.resolved_reports || 0,
+        dismissedReports: data?.dismissed_reports || 0
+      };
+
+      return { success: true, stats };
 
     } catch (error) {
-      logger.error('Error in getUserReportStats:', { error: error instanceof Error ? error.message : String(error) });
-      return { success: false, error: 'Error interno del servidor' };
+      logger.error('Unexpected error in getUserReportStats:', { error: error instanceof Error ? error.message : String(error) });
+      return { success: false, error: 'Error inesperado al obtener estadísticas' };
     }
   }
 
-  /**
-   * Verificar si un contenido está bloqueado
-   */
+  async getReportNotifications(): Promise<{ success: boolean; notifications?: any[]; error?: string }> {
+    try {
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
+      
+      if (authError || !user) {
+        return { success: false, error: 'Usuario no autenticado' };
+      }
+
+      const { data, error } = await (supabase as any)
+        .from('report_notifications')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('read', false)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        logger.error('Error fetching report notifications:', error);
+        return { success: false, error: 'Error al obtener notificaciones' };
+      }
+
+      return { success: true, notifications: data || [] };
+
+    } catch (error) {
+      logger.error('Unexpected error in getReportNotifications:', { error: error instanceof Error ? error.message : String(error) });
+      return { success: false, error: 'Error inesperado al obtener notificaciones' };
+    }
+  }
+
   async isContentBlocked(contentId: string, contentType: string): Promise<{ success: boolean; isBlocked?: boolean; error?: string }> {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('blocked_content')
         .select('id')
         .eq('content_id', contentId)
@@ -343,65 +253,47 @@ class ReportService {
         .single();
 
       if (error && error.code !== 'PGRST116') {
-        logger.error('Error checking if content is blocked:', { error: error.message });
-        return { success: false, error: 'Error al verificar contenido' };
+        logger.error('Error checking blocked content:', error);
+        return { success: false, error: 'Error al verificar contenido bloqueado' };
       }
 
       return { success: true, isBlocked: !!data };
 
     } catch (error) {
-      logger.error('Error in isContentBlocked:', { error: error instanceof Error ? error.message : String(error) });
-      return { success: false, error: 'Error interno del servidor' };
+      logger.error('Unexpected error in isContentBlocked:', { error: error instanceof Error ? error.message : String(error) });
+      return { success: false, error: 'Error inesperado al verificar contenido' };
     }
   }
 
-  /**
-   * Obtener estadísticas generales de reportes (para admins)
-   */
   async getReportStatistics(): Promise<{ success: boolean; stats?: any; error?: string }> {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
       
-      if (!user) {
+      if (authError || !user) {
         return { success: false, error: 'Usuario no autenticado' };
       }
 
-      // Verificar que el usuario sea admin
-      const { data: userRole } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', user.id)
-        .single();
+      const { data, error } = await (supabase as any)
+        .from('reports')
+        .select('status, content_type')
+        .not('status', 'is', null);
 
-      if (!userRole || userRole.role !== 'admin') {
-        return { success: false, error: 'No tienes permisos para ver estadísticas' };
+      if (error) {
+        logger.error('Error fetching report statistics:', error);
+        return { success: false, error: 'Error al obtener estadísticas' };
       }
 
-      // Obtener estadísticas básicas
-      const { data: totalReports } = await supabase
-        .from('reports')
-        .select('id', { count: 'exact' });
-
-      const { data: pendingReports } = await supabase
-        .from('reports')
-        .select('id', { count: 'exact' })
-        .eq('status', 'pending');
-
-      const { data: resolvedReports } = await supabase
-        .from('reports')
-        .select('id', { count: 'exact' })
-        .eq('status', 'resolved');
-
-      const { data: falsePositives } = await supabase
-        .from('reports')
-        .select('id', { count: 'exact' })
-        .eq('is_false_positive', true);
-
       const stats = {
-        totalReports: totalReports?.length || 0,
-        pendingReports: pendingReports?.length || 0,
-        resolvedReports: resolvedReports?.length || 0,
-        falsePositives: falsePositives?.length || 0
+        total: data?.length || 0,
+        pending: data?.filter((r: any) => r.status === 'pending').length || 0,
+        resolved: data?.filter((r: any) => r.status === 'resolved').length || 0,
+        dismissed: data?.filter((r: any) => r.status === 'dismissed').length || 0,
+        byType: {
+          profile: data?.filter((r: any) => r.content_type === 'profile').length || 0,
+          message: data?.filter((r: any) => r.content_type === 'message').length || 0,
+          media: data?.filter((r: any) => r.content_type === 'media').length || 0,
+          other: data?.filter((r: any) => r.content_type === 'other').length || 0
+        }
       };
 
       return { success: true, stats };

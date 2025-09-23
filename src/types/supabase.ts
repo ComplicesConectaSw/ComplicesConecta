@@ -7,74 +7,13 @@ export type Json =
   | Json[]
 
 export type Database = {
-  graphql_public: {
-    Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      graphql: {
-        Args: {
-          extensions?: Json
-          operationName?: string
-          query?: string
-          variables?: Json
-        }
-        Returns: Json
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "13.0.4"
   }
   public: {
     Tables: {
-      blocked_content: {
-        Row: {
-          blocked_at: string | null
-          blocked_by_report_id: string | null
-          content_id: string
-          content_type: string
-          id: string
-          is_active: boolean | null
-          reason: string
-          unblocked_at: string | null
-        }
-        Insert: {
-          blocked_at?: string | null
-          blocked_by_report_id?: string | null
-          content_id: string
-          content_type: string
-          id?: string
-          is_active?: boolean | null
-          reason: string
-          unblocked_at?: string | null
-        }
-        Update: {
-          blocked_at?: string | null
-          blocked_by_report_id?: string | null
-          content_id?: string
-          content_type?: string
-          id?: string
-          is_active?: boolean | null
-          reason?: string
-          unblocked_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "blocked_content_blocked_by_report_id_fkey"
-            columns: ["blocked_by_report_id"]
-            isOneToOne: false
-            referencedRelation: "reports"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       chat_invitations: {
         Row: {
           created_at: string | null
@@ -478,86 +417,42 @@ export type Database = {
           },
         ]
       }
-      moderation_actions: {
+      pending_rewards: {
         Row: {
-          action_type: string
-          created_at: string | null
-          duration_hours: number | null
+          amount: number
+          claimed: boolean
+          claimed_at: string | null
+          created_at: string
+          description: string
+          expires_at: string | null
           id: string
-          is_automated: boolean | null
-          moderator_id: string
-          reason: string
-          report_id: string
+          reward_type: string
+          token_type: string | null
+          user_id: string
         }
         Insert: {
-          action_type: string
-          created_at?: string | null
-          duration_hours?: number | null
+          amount: number
+          claimed?: boolean
+          claimed_at?: string | null
+          created_at?: string
+          description: string
+          expires_at?: string | null
           id?: string
-          is_automated?: boolean | null
-          moderator_id: string
-          reason: string
-          report_id: string
+          reward_type: string
+          token_type?: string | null
+          user_id: string
         }
         Update: {
-          action_type?: string
-          created_at?: string | null
-          duration_hours?: number | null
+          amount?: number
+          claimed?: boolean
+          claimed_at?: string | null
+          created_at?: string
+          description?: string
+          expires_at?: string | null
           id?: string
-          is_automated?: boolean | null
-          moderator_id?: string
-          reason?: string
-          report_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "moderation_actions_report_id_fkey"
-            columns: ["report_id"]
-            isOneToOne: false
-            referencedRelation: "reports"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      profile_reports: {
-        Row: {
-          action_taken: string | null
-          created_at: string | null
-          description: string | null
-          id: string
-          reason: string
-          reported_user_id: string
-          reporter_user_id: string
-          resolution_notes: string | null
-          reviewed_at: string | null
-          reviewed_by: string | null
-          status: string | null
-        }
-        Insert: {
-          action_taken?: string | null
-          created_at?: string | null
-          description?: string | null
-          id?: string
-          reason: string
-          reported_user_id: string
-          reporter_user_id: string
-          resolution_notes?: string | null
-          reviewed_at?: string | null
-          reviewed_by?: string | null
-          status?: string | null
-        }
-        Update: {
-          action_taken?: string | null
-          created_at?: string | null
-          description?: string | null
-          id?: string
-          reason?: string
-          reported_user_id?: string
-          reporter_user_id?: string
-          resolution_notes?: string | null
-          reviewed_at?: string | null
-          reviewed_by?: string | null
-          status?: string | null
+          reward_type?: string
+          token_type?: string | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -585,6 +480,7 @@ export type Database = {
           looking_for: string | null
           max_distance: number | null
           name: string
+          suspension_end_date: string | null
           swinger_experience: string | null
           updated_at: string | null
           user_id: string
@@ -613,6 +509,7 @@ export type Database = {
           looking_for?: string | null
           max_distance?: number | null
           name: string
+          suspension_end_date?: string | null
           swinger_experience?: string | null
           updated_at?: string | null
           user_id: string
@@ -641,6 +538,7 @@ export type Database = {
           looking_for?: string | null
           max_distance?: number | null
           name?: string
+          suspension_end_date?: string | null
           swinger_experience?: string | null
           updated_at?: string | null
           user_id?: string
@@ -648,101 +546,137 @@ export type Database = {
         }
         Relationships: []
       }
-      report_notifications: {
+      reports: {
         Row: {
-          created_at: string | null
+          content_type: string
+          created_at: string
+          description: string | null
           id: string
-          is_read: boolean | null
-          message: string
-          notification_type: string
-          report_id: string
-          title: string
-          user_id: string
+          reason: string
+          reported_content_id: string
+          reported_user_id: string
+          reporter_user_id: string
+          resolution_notes: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          severity: string | null
+          status: string | null
+          updated_at: string
         }
         Insert: {
-          created_at?: string | null
+          content_type: string
+          created_at?: string
+          description?: string | null
           id?: string
-          is_read?: boolean | null
-          message: string
-          notification_type: string
-          report_id: string
-          title: string
-          user_id: string
+          reason: string
+          reported_content_id: string
+          reported_user_id: string
+          reporter_user_id: string
+          resolution_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: string | null
+          status?: string | null
+          updated_at?: string
         }
         Update: {
-          created_at?: string | null
+          content_type?: string
+          created_at?: string
+          description?: string | null
           id?: string
-          is_read?: boolean | null
-          message?: string
-          notification_type?: string
-          report_id?: string
-          title?: string
-          user_id?: string
+          reason?: string
+          reported_content_id?: string
+          reported_user_id?: string
+          reporter_user_id?: string
+          resolution_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          severity?: string | null
+          status?: string | null
+          updated_at?: string
         }
         Relationships: [
           {
-            foreignKeyName: "report_notifications_report_id_fkey"
-            columns: ["report_id"]
+            foreignKeyName: "reports_reported_user_id_fkey"
+            columns: ["reported_user_id"]
             isOneToOne: false
-            referencedRelation: "reports"
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
       }
-      reports: {
+      tokens: {
         Row: {
-          action_taken: string | null
-          content_type: string
-          created_at: string | null
+          base_value: number | null
+          created_at: string
           description: string | null
           id: string
-          is_false_positive: boolean | null
-          reason: string
-          reported_content_id: string | null
-          reported_user_id: string | null
-          reporter_id: string
-          resolution_notes: string | null
-          reviewed_at: string | null
-          reviewed_by: string | null
-          severity: string
-          status: string
-          updated_at: string | null
+          is_active: boolean | null
+          token_code: string
+          token_name: string
+          updated_at: string
         }
         Insert: {
-          action_taken?: string | null
-          content_type: string
-          created_at?: string | null
+          base_value?: number | null
+          created_at?: string
           description?: string | null
           id?: string
-          is_false_positive?: boolean | null
-          reason: string
-          reported_content_id?: string | null
-          reported_user_id?: string | null
-          reporter_id: string
-          resolution_notes?: string | null
-          reviewed_at?: string | null
-          reviewed_by?: string | null
-          severity?: string
-          status?: string
-          updated_at?: string | null
+          is_active?: boolean | null
+          token_code: string
+          token_name: string
+          updated_at?: string
         }
         Update: {
-          action_taken?: string | null
-          content_type?: string
-          created_at?: string | null
+          base_value?: number | null
+          created_at?: string
           description?: string | null
           id?: string
-          is_false_positive?: boolean | null
-          reason?: string
-          reported_content_id?: string | null
-          reported_user_id?: string | null
-          reporter_id?: string
-          resolution_notes?: string | null
-          reviewed_at?: string | null
-          reviewed_by?: string | null
-          severity?: string
-          status?: string
-          updated_at?: string | null
+          is_active?: boolean | null
+          token_code?: string
+          token_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      transactions: {
+        Row: {
+          amount: number
+          balance_after: number
+          balance_before: number
+          created_at: string
+          description: string | null
+          id: string
+          metadata: Json | null
+          related_user_id: string | null
+          token_type: string
+          transaction_type: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          balance_after: number
+          balance_before: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          metadata?: Json | null
+          related_user_id?: string | null
+          token_type: string
+          transaction_type: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          balance_after?: number
+          balance_before?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          metadata?: Json | null
+          related_user_id?: string | null
+          token_type?: string
+          transaction_type?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -770,45 +704,6 @@ export type Database = {
         }
         Relationships: []
       }
-      user_report_stats: {
-        Row: {
-          created_at: string | null
-          false_reports_made: number | null
-          is_flagged_reporter: boolean | null
-          last_report_at: string | null
-          reports_made: number | null
-          reports_received: number | null
-          trust_score: number | null
-          updated_at: string | null
-          user_id: string
-          valid_reports_made: number | null
-        }
-        Insert: {
-          created_at?: string | null
-          false_reports_made?: number | null
-          is_flagged_reporter?: boolean | null
-          last_report_at?: string | null
-          reports_made?: number | null
-          reports_received?: number | null
-          trust_score?: number | null
-          updated_at?: string | null
-          user_id: string
-          valid_reports_made?: number | null
-        }
-        Update: {
-          created_at?: string | null
-          false_reports_made?: number | null
-          is_flagged_reporter?: boolean | null
-          last_report_at?: string | null
-          reports_made?: number | null
-          reports_received?: number | null
-          trust_score?: number | null
-          updated_at?: string | null
-          user_id?: string
-          valid_reports_made?: number | null
-        }
-        Relationships: []
-      }
       user_roles: {
         Row: {
           created_at: string | null
@@ -829,6 +724,117 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      user_staking: {
+        Row: {
+          amount: number
+          created_at: string
+          end_date: string
+          id: string
+          reward_claimed: boolean
+          reward_percentage: number
+          start_date: string
+          status: string | null
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          end_date: string
+          id?: string
+          reward_claimed?: boolean
+          reward_percentage?: number
+          start_date?: string
+          status?: string | null
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          end_date?: string
+          id?: string
+          reward_claimed?: boolean
+          reward_percentage?: number
+          start_date?: string
+          status?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_tokens: {
+        Row: {
+          cmpx_balance: number
+          cmpx_staked: number
+          created_at: string
+          gtk_balance: number
+          id: string
+          last_earned_at: string | null
+          last_reset_date: string
+          last_spent_at: string | null
+          monthly_earned: number
+          monthly_limit: number
+          quantity: number | null
+          token_id: string
+          total_referrals: number
+          updated_at: string
+          user_id: string
+          world_id_claimed: boolean
+          world_id_verified: boolean
+        }
+        Insert: {
+          cmpx_balance?: number
+          cmpx_staked?: number
+          created_at?: string
+          gtk_balance?: number
+          id?: string
+          last_earned_at?: string | null
+          last_reset_date?: string
+          last_spent_at?: string | null
+          monthly_earned?: number
+          monthly_limit?: number
+          quantity?: number | null
+          token_id: string
+          total_referrals?: number
+          updated_at?: string
+          user_id: string
+          world_id_claimed?: boolean
+          world_id_verified?: boolean
+        }
+        Update: {
+          cmpx_balance?: number
+          cmpx_staked?: number
+          created_at?: string
+          gtk_balance?: number
+          id?: string
+          last_earned_at?: string | null
+          last_reset_date?: string
+          last_spent_at?: string | null
+          monthly_earned?: number
+          monthly_limit?: number
+          quantity?: number | null
+          token_id?: string
+          total_referrals?: number
+          updated_at?: string
+          user_id?: string
+          world_id_claimed?: boolean
+          world_id_verified?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_tokens_token_id_fkey"
+            columns: ["token_id"]
+            isOneToOne: false
+            referencedRelation: "tokens"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_tokens_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
@@ -873,17 +879,92 @@ export type Database = {
           },
         ]
       }
+      recent_transactions: {
+        Row: {
+          amount: number | null
+          balance_after: number | null
+          balance_before: number | null
+          created_at: string | null
+          description: string | null
+          token_type: string | null
+          transaction_type: string | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
+      user_staking_summary: {
+        Row: {
+          active_stakes: number | null
+          avg_reward_percentage: number | null
+          completed_stakes: number | null
+          total_staked: number | null
+          total_stakes: number | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
+      user_token_balances: {
+        Row: {
+          cmpx_balance: number | null
+          cmpx_staked: number | null
+          gtk_balance: number | null
+          last_reset_date: string | null
+          monthly_earned: number | null
+          monthly_limit: number | null
+          monthly_remaining: number | null
+          total_referrals: number | null
+          user_id: string | null
+          world_id_claimed: boolean | null
+          world_id_verified: boolean | null
+        }
+        Insert: {
+          cmpx_balance?: number | null
+          cmpx_staked?: number | null
+          gtk_balance?: number | null
+          last_reset_date?: string | null
+          monthly_earned?: number | null
+          monthly_limit?: number | null
+          monthly_remaining?: never
+          total_referrals?: number | null
+          user_id?: string | null
+          world_id_claimed?: boolean | null
+          world_id_verified?: boolean | null
+        }
+        Update: {
+          cmpx_balance?: number | null
+          cmpx_staked?: number | null
+          gtk_balance?: number | null
+          last_reset_date?: string | null
+          monthly_earned?: number | null
+          monthly_limit?: number | null
+          monthly_remaining?: never
+          total_referrals?: number | null
+          user_id?: string | null
+          world_id_claimed?: boolean | null
+          world_id_verified?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_tokens_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
-      create_report: {
-        Args: {
-          p_content_type: string
-          p_description?: string
-          p_reason: string
-          p_reported_content_id?: string
-          p_reported_user_id?: string
-          p_reporter_id: string
-        }
+      claim_world_id_reward: {
+        Args: { user_id_param: string }
+        Returns: Json
+      }
+      complete_staking: {
+        Args: { staking_id_param: string }
+        Returns: Json
+      }
+      generate_referral_code: {
+        Args: { user_uuid: string }
         Returns: string
       }
       get_couple_profile_by_user_id: {
@@ -912,28 +993,21 @@ export type Database = {
           updated_at: string
         }[]
       }
-      get_pending_reports: {
-        Args: { p_limit?: number; p_offset?: number }
-        Returns: {
-          content_type: string
-          created_at: string
-          description: string
-          id: string
-          reason: string
-          reported_user_email: string
-          reporter_email: string
-          severity: string
-        }[]
+      process_referral_reward: {
+        Args: { new_user_id: string; referral_code_param: string }
+        Returns: Json
       }
-      resolve_report: {
+      reset_monthly_limits: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      start_staking: {
         Args: {
-          p_action_taken: string
-          p_is_false_positive?: boolean
-          p_moderator_id: string
-          p_report_id: string
-          p_resolution_notes?: string
+          amount_param: number
+          duration_days?: number
+          user_id_param: string
         }
-        Returns: boolean
+        Returns: Json
       }
     }
     Enums: {
@@ -1063,13 +1137,9 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
-  graphql_public: {
-    Enums: {},
-  },
   public: {
     Enums: {
       relationship_type: ["man-woman", "man-man", "woman-woman"],
     },
   },
 } as const
-

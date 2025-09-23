@@ -3,5 +3,8 @@
         {
             "path": "."
         }
-    ]
+    ],
+    "settings": {
+        "gitConfigUser.selectedProfile": "alex eventos"
+    }
 }
