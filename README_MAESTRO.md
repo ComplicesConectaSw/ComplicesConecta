@@ -567,8 +567,6 @@ VITE_SMART_NOTIFICATIONS_ENABLED=true
 
 <div align="center">
 
-### 🌟 ¡Únete a la Comunidad Swinger Más Exclusiva de México! 🌟
-
-**[Descargar APK](https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v3.0.0/app-release.apk)** | **[Documentación](./docs-unified/)** | **[Contribuir](./CONTRIBUTING.md)**
+### 🌟 ¡Únete a la Comunidad Swinger Más Exclusiva de México! **APK Disponible**: [Descargar v3.1.0](https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v3.1.0/app-release.apk)** | **[Documentación](./docs-unified/)** | **[Contribuir](./CONTRIBUTING.md)**
 
 </div>

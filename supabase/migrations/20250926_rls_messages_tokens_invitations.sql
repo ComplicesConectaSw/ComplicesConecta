@@ -13,13 +13,19 @@ DROP POLICY IF EXISTS "chat_messages_select_policy" ON chat_messages;
 DROP POLICY IF EXISTS "chat_messages_insert_policy" ON chat_messages;
 DROP POLICY IF EXISTS "chat_messages_update_policy" ON chat_messages;
 DROP POLICY IF EXISTS "chat_messages_delete_policy" ON chat_messages;
+DROP POLICY IF EXISTS "Users can view own interests" ON user_interests;
+DROP POLICY IF EXISTS "couple_profiles_select_all" ON couple_profiles;
 
 -- SELECT: Solo sender, receiver o admin pueden leer mensajes
 CREATE POLICY "chat_messages_select_policy" ON chat_messages
     FOR SELECT USING (
         auth.uid() = sender_id
         OR
-        auth.uid() = receiver_id
+        EXISTS (
+            SELECT 1 FROM chat_members cm 
+            WHERE cm.room_id = chat_messages.room_id 
+            AND cm.profile_id = auth.uid()
+        )
         OR
         EXISTS (
             SELECT 1 FROM profiles p 
@@ -33,7 +39,11 @@ CREATE POLICY "chat_messages_insert_policy" ON chat_messages
     FOR INSERT WITH CHECK (
         auth.uid() = sender_id
         AND
-        sender_id != receiver_id
+        EXISTS (
+            SELECT 1 FROM chat_members cm 
+            WHERE cm.room_id = chat_messages.room_id 
+            AND cm.profile_id = auth.uid()
+        )
         AND
         auth.uid() IS NOT NULL
     );
@@ -92,7 +102,7 @@ CREATE POLICY "tokens_insert_policy" ON user_token_balances
         )
         OR
         -- Usuario puede insertar su propio balance inicial
-        (auth.uid() = user_id AND balance >= 0)
+        (auth.uid() = user_id)
     );
 
 -- UPDATE: Solo admin puede modificar balances directamente
@@ -131,9 +141,9 @@ DROP POLICY IF EXISTS "invitations_delete_policy" ON invitations;
 -- SELECT: Solo sender, receiver o admin pueden ver invitaciones
 CREATE POLICY "invitations_select_policy" ON invitations
     FOR SELECT USING (
-        auth.uid() = sender_id
+        auth.uid() = from_profile
         OR
-        auth.uid() = receiver_id
+        auth.uid() = to_profile
         OR
         EXISTS (
             SELECT 1 FROM profiles p 
@@ -145,9 +155,9 @@ CREATE POLICY "invitations_select_policy" ON invitations
 -- INSERT: Solo usuarios autenticados, no pueden enviarse invitaciones a sí mismos
 CREATE POLICY "invitations_insert_policy" ON invitations
     FOR INSERT WITH CHECK (
-        auth.uid() = sender_id
+        auth.uid() = from_profile
         AND
-        sender_id != receiver_id
+        from_profile != to_profile
         AND
         auth.uid() IS NOT NULL
     );
@@ -156,10 +166,10 @@ CREATE POLICY "invitations_insert_policy" ON invitations
 CREATE POLICY "invitations_update_policy" ON invitations
     FOR UPDATE USING (
         -- Receiver puede aceptar/rechazar
-        (auth.uid() = receiver_id AND status IN ('accepted', 'rejected'))
+        (auth.uid() = to_profile AND status IN ('accepted', 'declined'))
         OR
         -- Sender puede cancelar
-        (auth.uid() = sender_id AND status = 'cancelled')
+        (auth.uid() = from_profile AND status = 'cancelled')
         OR
         -- Admin puede modificar cualquier invitación
         EXISTS (
@@ -270,7 +280,7 @@ BEGIN
             FOR SELECT USING (
                 EXISTS (
                     SELECT 1 FROM couple_profiles cp 
-                    WHERE cp.id = couple_id 
+                    WHERE cp.partner1_id = couple_photos.profile_id OR cp.partner2_id = couple_photos.profile_id 
                     AND (cp.partner1_id = auth.uid() OR cp.partner2_id = auth.uid())
                 )
                 OR
@@ -286,7 +296,7 @@ BEGIN
             FOR INSERT WITH CHECK (
                 EXISTS (
                     SELECT 1 FROM couple_profiles cp 
-                    WHERE cp.id = couple_id 
+                    WHERE cp.partner1_id = couple_photos.profile_id OR cp.partner2_id = couple_photos.profile_id 
                     AND (cp.partner1_id = auth.uid() OR cp.partner2_id = auth.uid())
                 )
             );
@@ -296,7 +306,7 @@ BEGIN
             FOR UPDATE USING (
                 EXISTS (
                     SELECT 1 FROM couple_profiles cp 
-                    WHERE cp.id = couple_id 
+                    WHERE cp.partner1_id = couple_photos.profile_id OR cp.partner2_id = couple_photos.profile_id 
                     AND (cp.partner1_id = auth.uid() OR cp.partner2_id = auth.uid())
                 )
                 OR
@@ -312,7 +322,7 @@ BEGIN
             FOR DELETE USING (
                 EXISTS (
                     SELECT 1 FROM couple_profiles cp 
-                    WHERE cp.id = couple_id 
+                    WHERE cp.partner1_id = couple_photos.profile_id OR cp.partner2_id = couple_photos.profile_id 
                     AND (cp.partner1_id = auth.uid() OR cp.partner2_id = auth.uid())
                 )
                 OR
@@ -330,8 +340,8 @@ BEGIN
 END $$;
 
 -- Crear índices para optimizar consultas RLS
-CREATE INDEX IF NOT EXISTS idx_chat_messages_sender_receiver ON chat_messages(sender_id, receiver_id);
-CREATE INDEX IF NOT EXISTS idx_invitations_sender_receiver ON invitations(sender_id, receiver_id);
+CREATE INDEX IF NOT EXISTS idx_chat_messages_sender_room ON chat_messages(sender_id, room_id);
+CREATE INDEX IF NOT EXISTS idx_invitations_from_to ON invitations(from_profile, to_profile);
 CREATE INDEX IF NOT EXISTS idx_user_token_balances_user_id ON user_token_balances(user_id);
 
 -- Todas las políticas RLS han sido creadas exitosamente

@@ -82,9 +82,9 @@ class ReportService {
 
       // Verificar límite de reportes por día (anti-spam)
       const { data: recentReports } = await supabase
-        .from('reports')
+        .from('profile_reports')
         .select('id')
-        .eq('reporter_id', user.id)
+        .eq('reporter_user_id', user.id)
         .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
 
       if (recentReports && recentReports.length >= 10) {

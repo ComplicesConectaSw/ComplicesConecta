@@ -7,7 +7,7 @@
 - **UI:** Tailwind CSS + Radix UI + Sistema de Temas Personalizable
 - **Estado:** Producción Lista - SQL Validado y Performance Optimizada
 - **Testing:** Build exitoso 6.87s, Lint sin errores, TypeScript 100%
-- **APK:** Disponible en GitHub Releases v3.0.0
+- **APK:** Disponible en GitHub Releases v3.1.0
 - **Última actualización:** 23 de septiembre 2025, 05:05 hrs
 
 ## 🆕 NUEVAS FUNCIONALIDADES v3.1.0
