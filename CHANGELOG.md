@@ -1,5 +1,35 @@
 # Changelog - ComplicesConecta
 
+## [v3.3.1] - 2025-09-23
+
+### Added
+- Sistema completo de analytics y métricas en tiempo real
+- Nuevas tablas Supabase: chat_messages, media_access_logs, notification_preferences, referral_rewards
+- Sistema de backup automático con Redis cache
+- Sistema ML para matching avanzado con algoritmos de compatibilidad
+- Panel de analytics integrado en AdminDashboard
+- Script SQL con políticas RLS y triggers automáticos
+
+### Fixed
+- Corregidos errores TypeScript en chat.ts con manejo seguro de null
+- Eliminados usos innecesarios de 'as any' en TokenAnalyticsService
+- Corregida sintaxis en build.gradle de Android
+- Solucionados conflictos de políticas y triggers duplicados en SQL
+- Mejorado manejo de tipos en integración Supabase
+
+### Changed
+- Actualizado sistema de tipos Supabase con tablas faltantes
+- Mejorada integración de analytics con métricas en tiempo real
+- Optimizado rendimiento del sistema de backup
+- Refactorizado logger para usar objetos estructurados
+
+### Security
+- Implementadas políticas RLS para todas las nuevas tablas
+- Agregado sistema de validación de tokens y autenticación
+- Mejorada seguridad en acceso a logs y preferencias
+
+---
+
 ## [v2.9.2] - 2025-09-17
 
 ### 📱 **GALERÍA RESPONSIVA Y SINCRONIZACIÓN ANDROID**
@@ -130,18 +160,12 @@
 - **Compatibilidad**: Servicios funcionan con esquema Supabase real
 
 ### 📈 Rendimiento
-- **Consultas Eficientes**: Solo campos necesarios en queries de perfiles
-- **Cálculos Optimizados**: Fórmula de Haversine para distancias precisas
-- **Fallback Rápido**: Distancia aleatoria cuando no hay coordenadas
-
-### 🔒 Seguridad
-- **Privacidad de Ubicación**: Respeto a configuración `share_location`
-- **Datos Reales**: Solo usuarios autenticados acceden a matches reales
-- **Modo Demo**: Preservado para pruebas sin comprometer datos reales
 
 ---
 
 ## Versiones Anteriores
+
+### [v2.1.8] - 2025-01-14
 
 ### [v2.1.7] - 2025-01-13
 - Sistema de Tokens CMPX/GTK completamente funcional
