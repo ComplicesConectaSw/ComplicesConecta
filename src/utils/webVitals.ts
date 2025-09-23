@@ -5,12 +5,24 @@ import type { Metric } from 'web-vitals';
 const getWebVitals = async () => {
   try {
     const webVitals = await import('web-vitals');
+    
+    // Definir la interfaz para web-vitals
+    interface WebVitalsModule {
+      getCLS?: (callback: (metric: any) => void) => void;
+      getFID?: (callback: (metric: any) => void) => void;
+      getFCP?: (callback: (metric: any) => void) => void;
+      getLCP?: (callback: (metric: any) => void) => void;
+      getTTFB?: (callback: (metric: any) => void) => void;
+    }
+    
+    const vitalsModule = webVitals as WebVitalsModule;
+    
     return {
-      getCLS: (webVitals as any).getCLS || (() => {}),
-      getFID: (webVitals as any).getFID || (() => {}),
-      getFCP: (webVitals as any).getFCP || (() => {}),
-      getLCP: (webVitals as any).getLCP || (() => {}),
-      getTTFB: (webVitals as any).getTTFB || (() => {})
+      getCLS: vitalsModule.getCLS || (() => {}),
+      getFID: vitalsModule.getFID || (() => {}),
+      getFCP: vitalsModule.getFCP || (() => {}),
+      getLCP: vitalsModule.getLCP || (() => {}),
+      getTTFB: vitalsModule.getTTFB || (() => {})
     };
   } catch (error) {
     console.warn('web-vitals not available:', error);

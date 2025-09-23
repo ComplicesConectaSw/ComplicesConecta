@@ -48,7 +48,9 @@ export const addTouchSupport = (element: HTMLElement) => {
   if (!isTouchDevice()) return;
   
   element.style.touchAction = 'manipulation';
-  (element.style as any).webkitTapHighlightColor = 'transparent';
+  
+  // Usar setProperty para propiedades webkit específicas
+  element.style.setProperty('-webkit-tap-highlight-color', 'transparent');
 };
 
 // Animation configuration based on device capabilities
