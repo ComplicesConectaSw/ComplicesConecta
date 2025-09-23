@@ -31,14 +31,14 @@ export const ThemeInfoModal: React.FC<ThemeInfoModalProps> = ({
     age: userType === 'single' ? 28 : undefined,
     location: 'Ciudad de México',
     distance: 0,
-    images: ['/placeholder.svg'],
+    images: ['/compliceslogo.png'],
     bio: 'Descubre cómo se verá tu perfil con diferentes temas visuales.',
     interests: ['Música', 'Viajes', 'Gastronomía'],
     accountType: userType,
     isOnline: true,
     compatibility: 95,
     verified: true,
-    avatar: '/placeholder.svg'
+    avatar: '/compliceslogo.png'
   };
 
   const themes: { theme: Theme | undefined; name: string; description: string; icon: React.ReactNode }[] = [

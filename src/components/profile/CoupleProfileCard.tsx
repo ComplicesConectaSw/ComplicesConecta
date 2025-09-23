@@ -125,8 +125,8 @@ const CoupleProfileCard = ({
   const relationshipDisplayName = getRelationshipDisplayName(profile.relationship_type);
   
   // Use couple images if available, otherwise use placeholder
-  const partner1Avatar = profile.couple_images?.[0] || '/placeholder.svg';
-  const partner2Avatar = profile.couple_images?.[1] || '/placeholder.svg';
+  const partner1Avatar = profile.couple_images?.[0] || '/compliceslogo.png';
+  const partner2Avatar = profile.couple_images?.[1] || '/compliceslogo.png';
 
   // Handlers sincronizados con MainProfileCard
   const handleViewProfile = () => {

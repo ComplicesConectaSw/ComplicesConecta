@@ -13,6 +13,8 @@ import { usePersistedState } from '@/hooks/usePersistedState';
 import { PrivateImageRequest } from '@/components/profile/PrivateImageRequest';
 import { PrivateImageGallery } from '@/components/profile/PrivateImageGallery';
 import { ReportDialog } from '@/components/swipe/ReportDialog';
+import StoriesContainer from '@/components/stories/StoriesContainer';
+import { ProfileNavTabs } from '@/components/profile/ProfileNavTabs';
 
 const ProfileCouple: React.FC = () => {
   const navigate = useNavigate();
@@ -23,6 +25,25 @@ const ProfileCouple: React.FC = () => {
   const [privateImageAccess, setPrivateImageAccess] = useState<'none' | 'pending' | 'approved' | 'denied'>('none');
   const [showReportDialog, setShowReportDialog] = useState(false);
   const { isAuthenticated, user, profile: authProfile } = useAuth();
+  
+  // Determinar si es el perfil propio
+  const isOwnProfile = user?.id === profile?.id;
+
+  // Handlers para las acciones del perfil
+  const handleUploadImage = () => {
+    logger.info('Subir imagen solicitado');
+    // Implementar lógica de subida de imagen
+  };
+
+  const handleDeletePost = (postId: string) => {
+    logger.info('Eliminar post solicitado', { postId });
+    // Implementar lógica de eliminación de post
+  };
+
+  const handleCommentPost = (postId: string) => {
+    logger.info('Comentar post solicitado', { postId });
+    // Implementar lógica de comentario
+  };
   
   // Migración localStorage → usePersistedState
   const [demoAuth, setDemoAuth] = usePersistedState('demo_authenticated', 'false');
@@ -307,110 +328,18 @@ const ProfileCouple: React.FC = () => {
               </CardContent>
             </Card>
 
-            {/* Galería de fotos */}
-            <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
-              <CardContent className="p-4 sm:p-6">
-                <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                  <Images className="w-5 h-5" />
-                  Galería de Fotos
-                </h3>
-                
-                {/* Mostrar mensaje de acceso denegado si corresponde */}
-                {privateImageAccess === 'denied' && (
-                  <div className="text-center py-8">
-                    <Lock className="w-12 h-12 mx-auto mb-4 text-red-400" />
-                    <h3 className="text-lg font-semibold text-red-400 mb-2">Acceso Denegado</h3>
-                    <p className="text-white/70">Tu solicitud para ver las fotos privadas fue denegada.</p>
-                  </div>
-                )}
-                
-                {/* Galería pública siempre visible */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
-                  <div className="aspect-square bg-gradient-to-br from-pink-400 to-purple-600 rounded-lg flex items-center justify-center overflow-hidden">
-                    <img 
-                      src="/src/assets/profile-1.jpg" 
-                      alt="Foto pública 1"
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        e.currentTarget.src = '/placeholder.svg';
-                      }}
-                    />
-                    <Camera className="w-8 h-8 text-white hidden" />
-                  </div>
-                  <div className="aspect-square bg-gradient-to-br from-purple-400 to-blue-600 rounded-lg flex items-center justify-center overflow-hidden">
-                    <img 
-                      src="/src/assets/profile-2.jpg" 
-                      alt="Foto pública 2"
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).style.display = 'none';
-                        (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
-                      }}
-                    />
-                    <Camera className="w-8 h-8 text-white hidden" />
-                  </div>
-                  <div className="aspect-square bg-gradient-to-br from-blue-400 to-teal-600 rounded-lg flex items-center justify-center overflow-hidden">
-                    <img 
-                      src="/src/assets/profile-1.jpg" 
-                      alt="Foto pública 3"
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).style.display = 'none';
-                        (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
-                      }}
-                    />
-                    <Camera className="w-8 h-8 text-white hidden" />
-                  </div>
-                </div>
+            {/* Profile Navigation Tabs - Estilo Twitter/Instagram */}
+            <ProfileNavTabs 
+              isOwnProfile={isOwnProfile}
+              onUploadImage={handleUploadImage}
+              onDeletePost={handleDeletePost}
+              onCommentPost={handleCommentPost}
+            />
 
-                {/* Galería privada - visible solo para el dueño del perfil */}
-                <div className="mb-6">
-                  <h4 className="text-white font-semibold mb-3 flex items-center gap-2">
-                    <Lock className="w-4 h-4" />
-                    Fotos Privadas
-                  </h4>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                    <div className="aspect-square rounded-lg overflow-hidden relative">
-                      <img 
-                        src="/src/assets/people/privado/coupleprivjpg.jpg" 
-                        alt="Foto privada 1"
-                        className={`w-full h-full object-cover ${(profile as any)?.isOwner ? '' : 'filter blur-md'}`}
-                      />
-                      {!(profile as any)?.isOwner && (
-                        <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                          <Lock className="w-8 h-8 text-white" />
-                        </div>
-                      )}
-                    </div>
-                    <div className="aspect-square rounded-lg overflow-hidden relative">
-                      <img 
-                        src="/src/assets/profile-2.jpg" 
-                        alt="Foto privada 2"
-                        className={`w-full h-full object-cover ${(profile as any)?.isOwner ? '' : 'filter blur-md'}`}
-                      />
-                      {!(profile as any)?.isOwner && (
-                        <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                          <Lock className="w-8 h-8 text-white" />
-                        </div>
-                      )}
-                    </div>
-                    <div className="aspect-square rounded-lg overflow-hidden relative">
-                      <img 
-                        src="/src/assets/profile-1.jpg" 
-                        alt="Foto privada 3"
-                        className={`w-full h-full object-cover ${(profile as any)?.isOwner ? '' : 'filter blur-md'}`}
-                      />
-                      {!(profile as any)?.isOwner && (
-                        <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                          <Lock className="w-8 h-8 text-white" />
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Galería privada - solo si tiene acceso aprobado */}
-                {privateImageAccess === 'approved' && (
+            {/* Galería privada - solo si tiene acceso aprobado */}
+            {privateImageAccess === 'approved' && (
+              <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white mt-6">
+                <CardContent className="p-4 sm:p-6">
                   <PrivateImageGallery 
                     profileId={profile?.id || ''}
                     profileName={profile ? `${profile.partner1_first_name || ''} & ${profile.partner2_first_name || ''}` : 'Pareja'}
@@ -426,9 +355,9 @@ const ProfileCouple: React.FC = () => {
                       }
                     ]}
                   />
-                )}
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            )}
           </div>
         </div>
 

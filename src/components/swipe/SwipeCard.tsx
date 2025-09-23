@@ -190,7 +190,7 @@ export const SwipeCard = ({
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
                 target.onerror = null; // Prevent infinite loop
-                target.src = '/placeholder.svg';
+                target.src = '/compliceslogo.png';
               }} 
               alt={profile.name}
               className="w-full object-cover"

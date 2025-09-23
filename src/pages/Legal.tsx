@@ -192,34 +192,49 @@ const Legal: React.FC = () => {
         <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-white">
-              <AlertTriangle className="h-5 w-5" />
-              Responsabilidades y Limitaciones
+              <Shield className="h-5 w-5" />
+              Información de Seguridad - v3.3.0
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent>
             <div className="space-y-4">
-              <div className="p-4 bg-yellow-500/10 border border-yellow-400/30 rounded-lg">
-                <h3 className="font-semibold text-yellow-300 mb-2">Uso Responsable</h3>
+              <div className="p-4 bg-green-500/20 border border-green-400/30 rounded-lg">
+                <h3 className="font-semibold text-green-300 mb-2">🔒 Protección de Datos Enterprise</h3>
                 <p className="text-white/80 text-sm">
-                  Los usuarios son responsables del uso apropiado de la plataforma, incluyendo 
-                  el respeto hacia otros usuarios y el cumplimiento de las normas comunitarias.
+                  Encriptación AES-GCM, cumplimiento GDPR/LFPDPPP, sistema de auditoría avanzada 
+                  con IP tracking, session monitoring y risk scoring automático.
                 </p>
               </div>
               
-              <div className="p-4 bg-red-500/10 border border-red-400/30 rounded-lg">
-                <h3 className="font-semibold text-red-300 mb-2">Limitaciones de Responsabilidad</h3>
+              <div className="p-4 bg-blue-500/20 border border-blue-400/30 rounded-lg">
+                <h3 className="font-semibold text-blue-300 mb-2">🛡️ Autenticación Biométrica 2FA</h3>
                 <p className="text-white/80 text-sm">
-                  ComplicesConecta no se hace responsable por las interacciones entre usuarios 
-                  fuera de la plataforma. Los encuentros presenciales son bajo responsabilidad 
-                  exclusiva de los participantes.
+                  Sistema TOTP con Google Authenticator/Authy, códigos de recuperación seguros, 
+                  WebAuthn para huella/FaceID y monitoreo de sesiones activas.
                 </p>
               </div>
               
-              <div className="p-4 bg-purple-500/10 border border-purple-400/30 rounded-lg">
-                <h3 className="font-semibold text-purple-300 mb-2">Contenido del Usuario</h3>
+              <div className="p-4 bg-purple-500/20 border border-purple-400/30 rounded-lg">
+                <h3 className="font-semibold text-purple-300 mb-2">📱 Protección Multimedia Avanzada</h3>
                 <p className="text-white/80 text-sm">
-                  Los usuarios mantienen la propiedad de su contenido pero otorgan a ComplicesConecta 
-                  una licencia para usar, mostrar y distribuir dicho contenido dentro de la plataforma.
+                  URLs firmadas temporales, watermarks dinámicos invisibles, FLAG_SECURE Android, 
+                  bloqueo de screenshots web y sistema de permisos granular por roles.
+                </p>
+              </div>
+
+              <div className="p-4 bg-red-500/20 border border-red-400/30 rounded-lg">
+                <h3 className="font-semibold text-red-300 mb-2">🚨 Detección de Fraude</h3>
+                <p className="text-white/80 text-sm">
+                  Fraud detection automático, logs de moderación completos, performance monitoring 
+                  con alertas por anomalías y sistema de puntuación de riesgo en tiempo real.
+                </p>
+              </div>
+
+              <div className="p-4 bg-yellow-500/20 border border-yellow-400/30 rounded-lg">
+                <h3 className="font-semibold text-yellow-300 mb-2">📊 Monitoreo 24/7</h3>
+                <p className="text-white/80 text-sm">
+                  Sistema de métricas en tiempo real, error rate monitoring, user activity tracking, 
+                  notificaciones push seguras y auditorías automáticas cada 5 minutos.
                 </p>
               </div>
             </div>
@@ -300,27 +315,52 @@ const Legal: React.FC = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="space-y-2">
                 <h3 className="font-semibold text-pink-300">Departamento Legal</h3>
                 <p className="text-white/80 text-sm">legal@complicesconecta.com</p>
-                <p className="text-white/80 text-sm">+52 55 1234-5678</p>
+                <p className="text-white/80 text-sm">Lun-Vie 9:00-18:00 GMT-6</p>
               </div>
               <div className="space-y-2">
-                <h3 className="font-semibold text-purple-300">Oficial de Protección de Datos</h3>
-                <p className="text-white/80 text-sm">dpo@complicesconecta.com</p>
-                <p className="text-white/80 text-sm">Tiempo de respuesta: 72 horas</p>
+                <h3 className="font-semibold text-purple-300">Derechos ARCO</h3>
+                <p className="text-white/80 text-sm">derechos@complicesconecta.com</p>
+                <p className="text-white/80 text-sm">Respuesta: 20 días hábiles</p>
+              </div>
+              <div className="space-y-2">
+                <h3 className="font-semibold text-green-300">Emergencias Seguridad</h3>
+                <p className="text-white/80 text-sm">emergencias@complicesconecta.com</p>
+                <p className="text-white/80 text-sm">Atención 24/7</p>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+              <div className="p-3 bg-blue-500/20 border border-blue-400/30 rounded-lg">
+                <h4 className="font-semibold text-blue-300 mb-2">📍 Domicilio Legal</h4>
+                <p className="text-white/80 text-sm">
+                  Juan Carlos Méndez Nataren<br/>
+                  ComplicesConecta Platform<br/>
+                  Ciudad de México, México
+                </p>
+              </div>
+              <div className="p-3 bg-orange-500/20 border border-orange-400/30 rounded-lg">
+                <h4 className="font-semibold text-orange-300 mb-2">⚖️ Autoridades Competentes</h4>
+                <p className="text-white/80 text-sm">
+                  PROFECO • INAI • IFT<br/>
+                  Ministerio Público<br/>
+                  Jurisdicción: CDMX, México
+                </p>
               </div>
             </div>
             
             <div className="mt-6 p-4 bg-gradient-to-r from-pink-500/10 to-purple-500/10 border border-pink-400/30 rounded-lg">
-              <p className="text-white/90 text-sm text-center">
-                <strong>Última actualización:</strong> {new Date().toLocaleDateString('es-MX', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })}
-              </p>
+              <div className="text-center space-y-2">
+                <p className="text-white/90 text-sm">
+                  <strong>Marco Legal Actualizado:</strong> 21 de septiembre de 2025
+                </p>
+                <p className="text-white/70 text-xs">
+                  Términos v3.0.0 • Cumplimiento LFPDPPP/GDPR • Jurisdicción México
+                </p>
+              </div>
             </div>
           </CardContent>
         </Card>

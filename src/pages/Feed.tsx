@@ -2,58 +2,92 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Heart, MessageCircle, Share, MoreHorizontal, MapPin, Clock } from 'lucide-react';
+import { Heart, MessageCircle, Share2, MoreHorizontal, MapPin, Clock, CheckCircle, Loader2, Plus } from 'lucide-react';
 import { Header } from '@/components/Header';
 import NavigationEnhanced from "@/components/NavigationEnhanced";
-
-// Datos mock para publicaciones
-const generateFeedPosts = () => {
-  const users = [
-    { name: "Ana & Carlos", type: "couple", location: "CDMX", avatar: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=100&h=100&fit=crop&crop=faces" },
-    { name: "Valentina", type: "single", location: "Guadalajara", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face" },
-    { name: "Miguel", type: "single", location: "Monterrey", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" },
-    { name: "Sofia & Diego", type: "couple", location: "Puebla", avatar: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=100&h=100&fit=crop&crop=faces" },
-    { name: "Isabella", type: "single", location: "Tijuana", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face" },
-  ];
-
-  const postTypes = [
-    { type: "photo", content: "¡Noche increíble en el club! 🔥✨", image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&h=300&fit=crop" },
-    { type: "text", content: "Buscando parejas aventureras para el fin de semana 😈💫" },
-    { type: "photo", content: "Cena romántica antes de la diversión 🍷❤️", image: "https://images.unsplash.com/photo-1551218808-94e220e084d2?w=500&h=300&fit=crop" },
-    { type: "text", content: "Primera vez en el lifestyle, ¡qué experiencia tan increíble! 🌟" },
-    { type: "photo", content: "Pool party privada este sábado 🏊‍♀️🎉", image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&h=300&fit=crop" },
-  ];
-
-  return Array.from({ length: 8 }, (_, i) => {
-    const user = users[Math.floor(Math.random() * users.length)];
-    const post = postTypes[Math.floor(Math.random() * postTypes.length)];
-    
-    return {
-      id: i + 1,
-      user,
-      ...post,
-      likes: Math.floor(Math.random() * 50) + 5,
-      comments: Math.floor(Math.random() * 20) + 1,
-      timeAgo: `${Math.floor(Math.random() * 12) + 1}h`,
-      isLiked: Math.random() > 0.7,
-    };
-  });
-};
+import { postsService, type Post } from '@/services/postsService';
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/use-toast';
+import { logger } from '@/lib/logger';
 
 const Feed = () => {
-  const [posts] = useState(generateFeedPosts());
-  const [likedPosts, setLikedPosts] = useState<Set<number>>(new Set());
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const { isAuthenticated } = useAuth();
+  const { toast } = useToast();
 
-  const handleLike = (postId: number) => {
-    setLikedPosts(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(postId)) {
-        newSet.delete(postId);
+  // Cargar posts iniciales
+  useEffect(() => {
+    loadPosts();
+  }, []);
+
+  const loadPosts = async (pageNum = 0) => {
+    try {
+      if (pageNum === 0) setLoading(true);
+
+      const newPosts = await postsService.getFeed(pageNum, 20);
+      
+      if (pageNum === 0) {
+        setPosts(newPosts);
       } else {
-        newSet.add(postId);
+        setPosts(prev => [...prev, ...newPosts]);
       }
-      return newSet;
-    });
+      
+      setHasMore(newPosts.length === 20);
+      setPage(pageNum);
+    } catch (error) {
+      logger.error('Error loading posts', { error });
+      toast({
+        title: "Error",
+        description: "No se pudieron cargar las publicaciones",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleLike = async (post: Post) => {
+    try {
+      const newLikedState = await postsService.toggleLike(post.id);
+        
+      // Actualizar el contador de likes en el post
+      setPosts(prevPosts => 
+        prevPosts.map(p => 
+          p.id === post.id 
+            ? { ...p, likes_count: p.likes_count + (newLikedState ? 1 : -1) }
+            : p
+        )
+      );
+    } catch (error) {
+      logger.error('Error toggling like', { error });
+      toast({
+        title: "Error",
+        description: "No se pudo procesar el like",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleLoadMore = () => {
+    if (!loading && hasMore) {
+      loadPosts(page + 1);
+    }
+  };
+
+  const formatTimeAgo = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
+    
+    if (diffInHours < 1) return 'Ahora';
+    if (diffInHours < 24) return `${diffInHours}h`;
+    const diffInDays = Math.floor(diffInHours / 24);
+    if (diffInDays < 7) return `${diffInDays}d`;
+    return date.toLocaleDateString('es-MX');
   };
 
   return (
@@ -70,93 +104,126 @@ const Feed = () => {
           </p>
         </div>
 
-        <div className="space-y-6">
-          {posts.map((post) => (
-            <Card key={post.id} className="bg-card/80 backdrop-blur-sm border-accent/20 overflow-hidden">
-              <CardContent className="p-0">
-                {/* Header del post */}
-                <div className="flex items-center justify-between p-4 pb-3">
-                  <div className="flex items-center space-x-3">
-                    <Avatar className="w-10 h-10 ring-2 ring-accent/20">
-                      <AvatarImage src={post.user.avatar} alt={post.user.name} />
-                      <AvatarFallback>{post.user.name.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <div className="flex items-center space-x-2">
-                        <h3 className="font-semibold text-foreground">{post.user.name}</h3>
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          post.user.type === 'couple' 
-                            ? 'bg-pink-500/20 text-pink-400' 
-                            : 'bg-blue-500/20 text-blue-400'
-                        }`}>
-                          {post.user.type === 'couple' ? 'Pareja' : 'Single'}
-                        </span>
-                      </div>
-                      <div className="flex items-center text-xs text-muted-foreground space-x-2">
-                        <MapPin className="w-3 h-3" />
-                        <span>{post.user.location}</span>
-                        <Clock className="w-3 h-3 ml-2" />
-                        <span>{post.timeAgo}</span>
+        {loading ? (
+          <div className="flex justify-center items-center py-12">
+            <Loader2 className="h-8 w-8 animate-spin text-white" />
+            <span className="ml-2 text-white">Cargando publicaciones...</span>
+          </div>
+        ) : posts.length === 0 ? (
+          <div className="text-center py-12">
+            <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-lg p-8">
+              <h3 className="text-xl font-semibold text-white mb-2">¡Sé el primero en publicar!</h3>
+              <p className="text-white/80 mb-4">Comparte tus experiencias con la comunidad lifestyle</p>
+              <Button className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white">
+                <Plus className="h-4 w-4 mr-2" />
+                Crear publicación
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-6">
+            {posts.map((post) => (
+              <Card key={post.id} className="bg-card/80 backdrop-blur-sm border-accent/20 overflow-hidden">
+                <CardContent className="p-0">
+                  {/* Header del post */}
+                  <div className="flex items-center justify-between p-4 pb-3">
+                    <div className="flex items-center space-x-3">
+                      <img
+                        src={post.profile?.avatar_url || '/compliceslogo.png'}
+                        alt={post.profile?.name || 'Usuario'}
+                        className="w-10 h-10 rounded-full object-cover"
+                      />
+                      <div>
+                        <div className="flex items-center space-x-2">
+                          <h3 className="font-semibold text-foreground">
+                            {post.profile?.name || 'Usuario Anónimo'}
+                          </h3>
+                          {post.profile?.is_verified && (
+                            <CheckCircle className="w-4 h-4 text-blue-500" />
+                          )}
+                        </div>
+                        <div className="flex items-center text-sm text-muted-foreground space-x-2">
+                          {post.location && (
+                            <>
+                              <MapPin className="w-3 h-3" />
+                              <span>{post.location}</span>
+                            </>
+                          )}
+                          <Clock className="w-3 h-3 ml-2" />
+                          <span>{formatTimeAgo(post.created_at)}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <Button variant="ghost" size="sm">
-                    <MoreHorizontal className="w-4 h-4" />
-                  </Button>
-                </div>
-
-                {/* Contenido del post */}
-                <div className="px-4 pb-3">
-                  <p className="text-foreground leading-relaxed">{post.content}</p>
-                </div>
-
-                {/* Imagen si existe */}
-                {post.image && (
-                  <div className="relative">
-                    <img 
-                      src={post.image} 
-                      alt="Post content" 
-                      className="w-full h-64 object-cover"
-                    />
-                  </div>
-                )}
-
-                {/* Acciones */}
-                <div className="flex items-center justify-between p-4 pt-3 border-t border-border/50">
-                  <div className="flex items-center space-x-4">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleLike(post.id)}
-                      className={`flex items-center space-x-2 ${
-                        likedPosts.has(post.id) ? 'text-red-500' : 'text-muted-foreground'
-                      }`}
-                    >
-                      <Heart className={`w-5 h-5 ${likedPosts.has(post.id) ? 'fill-current' : ''}`} />
-                      <span>{post.likes + (likedPosts.has(post.id) ? 1 : 0)}</span>
+                    <Button variant="ghost" size="sm">
+                      <MoreHorizontal className="w-4 h-4" />
                     </Button>
+                  </div>
+
+                  {/* Contenido del post */}
+                  <div className="px-4 pb-3">
+                    <p className="text-foreground leading-relaxed">{post.content}</p>
+                  </div>
+
+                  {/* Imagen si existe */}
+                  {post.image_url && (
+                    <div className="px-4 pb-3">
+                      <img
+                        src={post.image_url}
+                        alt="Post image"
+                        className="w-full rounded-lg max-h-96 object-cover"
+                      />
+                    </div>
+                  )}
+
+                  {/* Acciones */}
+                  <div className="flex items-center justify-between p-4 pt-3 border-t border-border/50">
+                    <div className="flex items-center space-x-4">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleLike(post)}
+                        className="flex items-center space-x-2 text-muted-foreground hover:text-red-500"
+                      >
+                        <Heart className="w-5 h-5" />
+                        <span>{post.likes_count}</span>
+                      </Button>
+                      
+                      <Button variant="ghost" size="sm" className="flex items-center space-x-2 text-muted-foreground">
+                        <MessageCircle className="w-5 h-5" />
+                        <span>{post.comments_count}</span>
+                      </Button>
+                    </div>
                     
-                    <Button variant="ghost" size="sm" className="flex items-center space-x-2 text-muted-foreground">
-                      <MessageCircle className="w-5 h-5" />
-                      <span>{post.comments}</span>
+                    <Button variant="ghost" size="sm" className="text-muted-foreground">
+                      <Share2 className="w-5 h-5" />
                     </Button>
                   </div>
-                  
-                  <Button variant="ghost" size="sm" className="text-muted-foreground">
-                    <Share className="w-5 h-5" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
 
         {/* Botón para cargar más */}
-        <div className="text-center mt-8">
-          <Button variant="outline" className="px-8 text-white border-white/30 hover:bg-white/10">
-            Cargar más publicaciones
-          </Button>
-        </div>
+        {!loading && posts.length > 0 && hasMore && (
+          <div className="text-center mt-8">
+            <Button 
+              variant="outline" 
+              className="px-8 text-white border-white/30 hover:bg-white/10"
+              onClick={handleLoadMore}
+              disabled={loadingMore}
+            >
+              {loadingMore ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  Cargando...
+                </>
+              ) : (
+                'Cargar más publicaciones'
+              )}
+            </Button>
+          </div>
+        )}
       </main>
 
       <NavigationEnhanced />

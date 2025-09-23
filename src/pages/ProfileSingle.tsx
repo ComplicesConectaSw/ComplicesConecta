@@ -25,6 +25,7 @@ import { Header } from '@/components/Header';
 import NavigationEnhanced from '@/components/NavigationEnhanced';
 import { ProfileTabs } from '@/components/profile/ProfileTabs';
 import { ProfileNavigation } from '@/components/profile/ProfileNavigation';
+import { ProfileNavTabs } from '@/components/profile/ProfileNavTabs';
 import { useAuth } from '@/hooks/useAuth';
 import { useProfileQuery } from '@/hooks/useProfileQuery';
 import { logger } from '@/lib/logger';
@@ -34,6 +35,7 @@ import type { Tables } from '@/integrations/supabase/types';
 import { PrivateImageRequest } from '@/components/profile/PrivateImageRequest';
 import { PrivateImageGallery } from '@/components/profile/PrivateImageGallery';
 import { ReportDialog } from '@/components/swipe/ReportDialog';
+import StoriesContainer from '@/components/stories/StoriesContainer';
 
 const ProfileSingle: React.FC = () => {
   const navigate = useNavigate();
@@ -43,6 +45,25 @@ const ProfileSingle: React.FC = () => {
   const [showPrivateImageRequest, setShowPrivateImageRequest] = useState(false);
   const [privateImageAccess, setPrivateImageAccess] = usePersistedState<'none' | 'pending' | 'approved' | 'denied'>('private_image_access', 'none');
   const [showReportDialog, setShowReportDialog] = useState(false);
+  
+  // Determinar si es el perfil propio
+  const isOwnProfile = user?.id === profile?.user_id;
+
+  // Handlers para las acciones del perfil
+  const handleUploadImage = () => {
+    logger.info('Subir imagen solicitado');
+    // Implementar lógica de subida de imagen
+  };
+
+  const handleDeletePost = (postId: string) => {
+    logger.info('Eliminar post solicitado', { postId });
+    // Implementar lógica de eliminación de post
+  };
+
+  const handleCommentPost = (postId: string) => {
+    logger.info('Comentar post solicitado', { postId });
+    // Implementar lógica de comentario
+  };
   
   // Migración localStorage → usePersistedState
   const [demoAuth, setDemoAuth] = usePersistedState('demo_authenticated', 'false');
@@ -325,6 +346,14 @@ const ProfileSingle: React.FC = () => {
               </CardContent>
             </Card>
           </div>
+
+          {/* Profile Navigation Tabs - Estilo Twitter/Instagram */}
+          <ProfileNavTabs 
+            isOwnProfile={isOwnProfile}
+            onUploadImage={handleUploadImage}
+            onDeletePost={handleDeletePost}
+            onCommentPost={handleCommentPost}
+          />
 
           {/* Intereses */}
           <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">

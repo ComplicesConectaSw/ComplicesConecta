@@ -47,7 +47,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
   };
 
   // Placeholder mientras carga
-  const placeholderSrc = '/placeholder.svg';
+  const placeholderSrc = '/compliceslogo.png';
 
   if (hasError) {
     return (

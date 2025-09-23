@@ -12,7 +12,11 @@ import {
   MapPin,
   Star,
   Eye,
-  Calendar
+  Calendar,
+  Grid3X3,
+  Play,
+  Upload,
+  Trash2
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { MainProfileCard } from '@/components/profile/MainProfileCard';
@@ -20,12 +24,18 @@ import type { Tables } from '@/integrations/supabase/types';
 
 type ProfileType = 'single' | 'couple';
 
-interface SingleProfile extends Tables<'profiles'> {
+interface SingleProfile {
+  id?: string;
+  first_name?: string;
+  last_name?: string;
+  age?: number;
+  bio?: string;
+  gender?: string;
+  location?: string;
   likes?: number;
   matches?: number;
   views?: number;
-  interests?: string[];
-  location?: string;
+  interests?: string[] | null;
 }
 
 interface CoupleProfile {

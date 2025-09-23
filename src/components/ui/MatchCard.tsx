@@ -91,7 +91,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({
           <div className="relative">
             <div className="aspect-[3/4] relative">
               <img
-                src={avatar || images[0] || '/placeholder.svg'}
+                src={avatar || images[0] || '/compliceslogo.png'}
                 alt={name}
                 className="w-full h-full object-cover"
               />
@@ -215,7 +215,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({
         <div className="relative">
           <div className="aspect-[3/4] relative">
             <img
-              src={avatar || images[0] || '/placeholder.svg'}
+              src={avatar || images[0] || '/compliceslogo.png'}
               alt={name}
               className="w-full h-full object-cover"
             />

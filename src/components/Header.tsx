@@ -354,7 +354,7 @@ export const Header = () => {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/legal" className="flex items-center gap-2 w-full">
+                  <Link to="/legal" className="flex items-center gap-2 w-full text-white hover:text-white">
                     <Scale className="h-4 w-4" />
                     Marco Legal
                   </Link>
@@ -363,12 +363,6 @@ export const Header = () => {
                   <Link to="/project-info" className="flex items-center gap-2 w-full">
                     <Info className="h-4 w-4" />
                     Proyecto
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/about" className="flex items-center gap-2 w-full">
-                    <Info className="h-4 w-4" />
-                    Acerca de
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>

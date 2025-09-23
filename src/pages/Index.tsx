@@ -11,6 +11,7 @@ import { FeatureModal } from "@/components/modals/FeatureModal";
 import { InstallAppModal } from "@/components/modals/InstallAppModal";
 import { ActionButtonsModal } from "@/components/modals/ActionButtonsModal";
 import NavigationEnhanced from "@/components/NavigationEnhanced";
+import StoriesContainer from "@/components/stories/StoriesContainer";
 import { useScrollHide } from "@/hooks/useScrollHide";
 import { Heart, Users, Shield, Zap, Sparkles, Star, Rocket, Smartphone, Download, Smartphone as Android } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -268,6 +269,23 @@ const Index = () => {
                 ))}
               </div>
               
+            </div>
+          </div>
+        </section>
+
+        {/* Stories Section */}
+        <section className="py-10 sm:py-20 relative">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                Historias Efímeras
+              </h2>
+              <p className="text-xl text-white/90 max-w-3xl mx-auto">
+                Comparte momentos especiales que desaparecen en 24 horas. Conecta de manera más íntima y espontánea.
+              </p>
+            </div>
+            <div className="max-w-4xl mx-auto">
+              <StoriesContainer />
             </div>
           </div>
         </section>

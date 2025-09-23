@@ -89,7 +89,7 @@ export const EventCard: React.FC<EventCardProps> = ({
           <div className="flex gap-4">
             <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
               <img
-                src={image || '/placeholder.svg'}
+                src={image || '/compliceslogo.png'}
                 alt={title}
                 className="w-full h-full object-cover"
               />
@@ -157,7 +157,7 @@ export const EventCard: React.FC<EventCardProps> = ({
         <UnifiedCard glass hover className="overflow-hidden">
           <div className="relative h-64">
             <img
-              src={image || '/placeholder.svg'}
+              src={image || '/compliceslogo.png'}
               alt={title}
               className="w-full h-full object-cover"
             />
@@ -279,7 +279,7 @@ export const EventCard: React.FC<EventCardProps> = ({
       <UnifiedCard glass hover className="overflow-hidden">
         <div className="relative h-48">
           <img
-            src={image || '/placeholder.svg'}
+            src={image || '/compliceslogo.png'}
             alt={title}
             className="w-full h-full object-cover"
           />
