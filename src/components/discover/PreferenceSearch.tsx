@@ -139,7 +139,7 @@ export const PreferenceSearch = ({ onResultsChange, currentUserId }: PreferenceS
         filteredResults = filteredResults.filter((profile: Tables<'profiles'>) => {
           // Mock preferences since user_preferences doesn't exist in current schema
           const mockPreferences = {
-            interests: ['música', 'viajes', 'deportes', 'tecnología'],
+            interests: ['Lifestyle Swinger', 'Intercambio de Parejas', 'Eventos Lifestyle', 'Mentalidad Abierta'],
             ageRange: { min: 25, max: 35 },
             location: 'Madrid' // Mock location since field doesn't exist
           };
@@ -165,7 +165,7 @@ export const PreferenceSearch = ({ onResultsChange, currentUserId }: PreferenceS
         // Calculate compatibility score based on shared interests (Mock)
         let compatibilityScore = 60; // Base score
         const mockPrefs = {
-          interests: ['música', 'viajes', 'deportes', 'tecnología']
+          interests: ['Lifestyle Swinger', 'Intercambio de Parejas', 'Eventos Lifestyle', 'Mentalidad Abierta']
         };
         
         if (filters.interests.length > 0) {

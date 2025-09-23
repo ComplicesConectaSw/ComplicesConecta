@@ -160,10 +160,11 @@ test.describe('Critical User Flows', () => {
     // Debería redirigir o mostrar 404
     await page.waitForTimeout(2000);
     
-    // Test sin conexión (simulado)
-    await page.context().setOffline(true);
+    // Test sin conexión (simulado) - Método correcto para Playwright
+    const context = page.context();
+    await context.setOffline(true);
     await page.reload();
-    await page.context().setOffline(false);
+    await context.setOffline(false);
   });
 });
 
