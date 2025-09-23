@@ -32,7 +32,10 @@
     "ai:test": "node scripts/setup-github-ai.js",
     "ci:install": "pnpm install --frozen-lockfile",
     "ci:test": "pnpm test --run --reporter=junit --outputFile=test-results/junit.xml",
-    "ci:build": "pnpm build && echo 'Build completed successfully'"
+    "ci:build": "pnpm build && echo 'Build completed successfully'",
+    "security:check": "node scripts/security-check.js",
+    "security:scan": "node scripts/security-check.js",
+    "security:verify": "git check-ignore .env.production .env.circleci && echo 'Archivos sensibles protegidos'"
   },
   "dependencies": {
     "@azure-rest/ai-inference": "^1.0.0",
