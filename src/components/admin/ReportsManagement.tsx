@@ -113,7 +113,7 @@ export const ReportsManagement: React.FC = () => {
         setReports(prev => prev.filter(r => r.id !== selectedReport.id));
         setShowResolveDialog(false);
         setSelectedReport(null);
-        setResolutionAction('');
+        setResolutionAction('dismiss');
         setResolutionNotes('');
         
         // Recargar estadísticas
@@ -390,7 +390,7 @@ export const ReportsManagement: React.FC = () => {
 
               <div className="space-y-3">
                 <label className="text-sm font-medium">Acción a tomar:</label>
-                <Select value={resolutionAction} onValueChange={setResolutionAction}>
+                <Select value={resolutionAction} onValueChange={(value) => setResolutionAction(value as 'warning' | 'suspension' | 'ban' | 'dismiss')}>
                   <SelectTrigger>
                     <SelectValue placeholder="Selecciona una acción" />
                   </SelectTrigger>

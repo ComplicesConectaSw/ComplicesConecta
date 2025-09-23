@@ -9,7 +9,7 @@ interface ProfileReport {
   reported_user_id: string;
   reporter_user_id: string;
   reason: string;
-  status: string;
+  status: string | null;
   description?: string;
   created_at: string;
   reported_user?: {
@@ -58,7 +58,7 @@ export const ProfileReportsPanel: React.FC = () => {
     try {
       const result = await profileReportService.getPendingProfileReports();
       if (result.success && result.reports) {
-        setReports(result.reports);
+        setReports(result.reports as ProfileReport[]);
       } else {
         toast.error(result.error || 'Error al cargar reportes');
       }
@@ -102,7 +102,7 @@ export const ProfileReportsPanel: React.FC = () => {
   const filteredReports = reports.filter(report => {
     if (filter === 'all') return true;
     if (filter === 'pending') return report.status === 'pending';
-    if (filter === 'reviewed') return ['dismissed', 'confirmed'].includes(report.status);
+    if (filter === 'reviewed') return report.status && ['dismissed', 'confirmed'].includes(report.status);
     return true;
   });
 
