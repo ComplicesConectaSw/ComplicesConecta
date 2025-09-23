@@ -20,7 +20,7 @@ Configura estas variables en CircleCI Project Settings > Environment Variables:
 
 ```bash
 # GitHub AI Token
-GITHUB_TOKEN=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
+GITHUB_TOKEN=YOUR_NEW_SECURE_GITHUB_TOKEN_HERE
 
 # Supabase Configuration
 VITE_SUPABASE_URL=https://your-project.supabase.co
@@ -52,7 +52,7 @@ En CircleCI Dashboard:
 
 El token ya está incluido en la configuración:
 ```
-GITHUB_TOKEN=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
+GITHUB_TOKEN=YOUR_NEW_SECURE_GITHUB_TOKEN_HERE
 ```
 
 ### 4. Verificar Configuración

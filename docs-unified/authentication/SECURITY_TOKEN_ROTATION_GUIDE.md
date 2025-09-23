@@ -9,7 +9,7 @@
 ## 🚨 **ROTACIÓN INMEDIATA REQUERIDA**
 
 ### **⚠️ Token GitHub AI Expuesto**
-**Token actual**: `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`
+**Token anterior**: `github_pat_XXXXXXXXXX...` (REVOCADO POR SEGURIDAD)
 **Estado**: 🔴 **COMPROMETIDO** (expuesto en documentación)
 **Acción**: ✅ **ROTACIÓN INMEDIATA REQUERIDA**
 
@@ -46,7 +46,7 @@ Permissions requeridos:
 
 #### **Eliminar Token Comprometido**
 1. GitHub Settings → Personal access tokens
-2. Buscar token que inicia con `github_pat_11BUGPENY0...`
+21. **Localizar**: Token anterior comprometido
 3. Click "Delete" → Confirmar revocación
 4. ✅ **Token anterior invalidado**
 

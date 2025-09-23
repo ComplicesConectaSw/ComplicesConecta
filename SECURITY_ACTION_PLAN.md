@@ -10,7 +10,7 @@
 
 ### **⚠️ Token GitHub AI Comprometido**
 ```
-Token expuesto: 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
+Token anterior: github_pat_XXXXXXXXXX... (REVOCADO POR SEGURIDAD)
 Ubicación: Documentación del proyecto (múltiples archivos)
 Riesgo: ALTO - Acceso no autorizado a GitHub AI Models
 Tiempo crítico: < 30 minutos para rotación
@@ -35,7 +35,7 @@ Tiempo crítico: < 30 minutos para rotación
 4. **Copiar**: Token inmediatamente (solo se muestra una vez)
 
 #### **Paso 1.2: Revocar Token Comprometido**
-1. **Localizar**: Token que inicia con `github_pat_11BUGPENY0...`
+1. **Localizar**: Token anterior comprometido
 2. **Eliminar**: Click "Delete" → Confirmar revocación
 3. **Verificar**: Token invalidado correctamente
 

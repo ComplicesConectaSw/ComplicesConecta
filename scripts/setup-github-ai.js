@@ -7,7 +7,7 @@ import ModelClient, { isUnexpected } from "@azure-rest/ai-inference";
 import { AzureKeyCredential } from "@azure/core-auth";
 
 // Configuración del token y endpoint
-const token = process.env["GITHUB_TOKEN"] || "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";
+const token = process.env["GITHUB_TOKEN"] || "YOUR_GITHUB_TOKEN_HERE";
 const endpoint = "https://models.github.ai/inference";
 const model = "deepseek/DeepSeek-V3-0324";
 
