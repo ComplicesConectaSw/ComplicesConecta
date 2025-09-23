@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Flag, AlertTriangle, UserX, MessageSquareOff, Heart, Camera } from "lucide-react";
+import { Flag, AlertTriangle, UserX, MessageSquareOff, Heart, Camera, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
@@ -9,57 +9,70 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { reportService } from "@/services/ReportService";
 
-interface ReportDialogProps {
-  profileId: string;
-  profileName: string;
+interface StoryReportDialogProps {
+  storyId: string;
+  storyAuthor: string;
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
   onReport: (reason: string) => void;
 }
 
-export const ReportDialog = ({ profileId, profileName, isOpen, onOpenChange, onReport }: ReportDialogProps) => {
+export const StoryReportDialog = ({ storyId, storyAuthor, isOpen, onOpenChange, onReport }: StoryReportDialogProps) => {
   const [reportType, setReportType] = useState("");
   const [description, setDescription] = useState("");
   const [blockUser, setBlockUser] = useState(false);
+  const [hideContent, setHideContent] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
   const reportReasons = [
     {
-      id: "fake-profile",
-      label: "Perfil falso",
-      description: "Fotos falsas o información engañosa",
-      icon: <UserX className="h-4 w-4" />
-    },
-    {
       id: "inappropriate-content",
       label: "Contenido inapropiado",
-      description: "Fotos o descripción ofensiva",
+      description: "Imágenes o contenido ofensivo",
       icon: <Camera className="h-4 w-4" />
     },
     {
+      id: "explicit-content",
+      label: "Contenido explícito",
+      description: "Desnudez o contenido sexual explícito",
+      icon: <Eye className="h-4 w-4" />
+    },
+    {
       id: "harassment",
-      label: "Acoso o comportamiento abusivo",
-      description: "Mensajes ofensivos o acoso",
+      label: "Acoso o intimidación",
+      description: "Contenido que acosa o intimida",
       icon: <MessageSquareOff className="h-4 w-4" />
     },
     {
+      id: "fake-profile",
+      label: "Perfil falso",
+      description: "El autor parece ser un perfil falso",
+      icon: <UserX className="h-4 w-4" />
+    },
+    {
       id: "spam",
-      label: "Spam o promoción no deseada",
-      description: "Promoción de servicios o spam",
+      label: "Spam o promoción",
+      description: "Promoción no deseada o spam",
       icon: <AlertTriangle className="h-4 w-4" />
     },
     {
       id: "underage",
       label: "Menor de edad",
-      description: "Parece ser menor de 18 años",
+      description: "El contenido involucra menores de edad",
       icon: <Flag className="h-4 w-4" />
     },
     {
-      id: "scam",
-      label: "Estafa o fraude",
-      description: "Intento de estafa o solicitud de dinero",
+      id: "violence",
+      label: "Violencia o contenido perturbador",
+      description: "Contenido violento o perturbador",
       icon: <AlertTriangle className="h-4 w-4" />
+    },
+    {
+      id: "impersonation",
+      label: "Suplantación de identidad",
+      description: "Se hace pasar por otra persona",
+      icon: <UserX className="h-4 w-4" />
     },
     {
       id: "other",
@@ -84,8 +97,8 @@ export const ReportDialog = ({ profileId, profileName, isOpen, onOpenChange, onR
     try {
       // Enviar reporte usando el servicio
       const result = await reportService.createReport({
-        reportedUserId: profileId,
-        contentType: 'profile',
+        reportedContentId: storyId,
+        contentType: 'story',
         reason: reportType,
         description: description || undefined
       });
@@ -95,14 +108,21 @@ export const ReportDialog = ({ profileId, profileName, isOpen, onOpenChange, onR
 
         // Mostrar confirmación
         toast({
-          title: "Reporte enviado",
-          description: `Hemos recibido tu reporte sobre ${profileName}. Lo revisaremos en las próximas 24 horas.`
+          title: "Historia reportada",
+          description: `Hemos recibido tu reporte sobre la historia de ${storyAuthor}. La revisaremos en las próximas 24 horas.`
         });
+
+        if (hideContent) {
+          toast({
+            title: "Contenido ocultado",
+            description: "La historia ha sido ocultada de tu feed mientras se revisa."
+          });
+        }
 
         if (blockUser) {
           toast({
             title: "Usuario bloqueado",
-            description: `${profileName} ha sido bloqueado y no podrás ver su perfil ni recibir mensajes.`
+            description: `${storyAuthor} ha sido bloqueado y no podrás ver su contenido.`
           });
         }
 
@@ -110,6 +130,7 @@ export const ReportDialog = ({ profileId, profileName, isOpen, onOpenChange, onR
         setReportType("");
         setDescription("");
         setBlockUser(false);
+        setHideContent(true);
         onOpenChange(false);
       } else {
         toast({
@@ -132,22 +153,21 @@ export const ReportDialog = ({ profileId, profileName, isOpen, onOpenChange, onR
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-            
       <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Flag className="h-5 w-5 text-destructive" />
-            Reportar a {profileName}
+            Reportar Historia
           </DialogTitle>
           <DialogDescription>
-            Tu reporte nos ayuda a mantener la comunidad segura. Toda la información será confidencial.
+            Reporta esta historia de {storyAuthor} si viola las normas de la comunidad.
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-6">
           {/* Motivos del reporte */}
           <div className="space-y-3">
-            <Label className="text-base font-medium">¿Cuál es el motivo del reporte?</Label>
+            <Label className="text-base font-medium">¿Por qué reportas esta historia?</Label>
             <RadioGroup value={reportType} onValueChange={setReportType}>
               {reportReasons.map((reason) => (
                 <div key={reason.id} className="flex items-start space-x-3 p-3 rounded-lg border hover:bg-muted/50 transition-colors">
@@ -189,16 +209,32 @@ export const ReportDialog = ({ profileId, profileName, isOpen, onOpenChange, onR
           <div className="space-y-4 p-4 bg-muted/30 rounded-lg">
             <div className="flex items-start space-x-3">
               <Checkbox
+                id="hide-content"
+                checked={hideContent}
+                onCheckedChange={(checked) => setHideContent(!!checked)}
+              />
+              <div className="space-y-1">
+                <Label htmlFor="hide-content" className="cursor-pointer">
+                  Ocultar esta historia de mi feed
+                </Label>
+                <p className="text-sm text-muted-foreground">
+                  No verás más esta historia mientras se revisa el reporte.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start space-x-3">
+              <Checkbox
                 id="block-user"
                 checked={blockUser}
                 onCheckedChange={(checked) => setBlockUser(!!checked)}
               />
               <div className="space-y-1">
                 <Label htmlFor="block-user" className="cursor-pointer">
-                  Bloquear a {profileName}
+                  Bloquear a {storyAuthor}
                 </Label>
                 <p className="text-sm text-muted-foreground">
-                  No podrás ver su perfil ni recibir mensajes de esta persona.
+                  No podrás ver el contenido de esta persona ni recibir mensajes.
                 </p>
               </div>
             </div>

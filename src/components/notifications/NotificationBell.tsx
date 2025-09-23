@@ -37,7 +37,7 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ className = 
 
   // Load notifications on mount and when user changes
   useEffect(() => {
-    if (user) {
+    if (user && !(user as any).is_demo) {
       loadNotifications();
       // Set up real-time subscription
       const subscription = supabase
@@ -53,11 +53,22 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ className = 
       return () => {
         subscription.unsubscribe();
       };
+    } else if ((user as any)?.is_demo) {
+      // Mock notifications for demo users
+      setNotifications([]);
+      setUnreadCount(0);
     }
   }, [user]);
 
   const loadNotifications = async () => {
     if (!user) return;
+    
+    // Skip loading for demo users to prevent errors
+    if ((user as any)?.is_demo) {
+      setNotifications([]);
+      setUnreadCount(0);
+      return;
+    }
     
     setLoading(true);
     try {
@@ -86,11 +97,14 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ className = 
       setUnreadCount(formattedNotifications.filter(n => !n.read).length);
     } catch (error) {
       logger.error('Error loading notifications:', error as any);
-      toast({
-        title: "Error",
-        description: "No se pudieron cargar las notificaciones",
-        variant: "destructive"
-      });
+      // Only show toast for non-demo users
+      if (!(user as any)?.is_demo) {
+        toast({
+          title: "Error",
+          description: "No se pudieron cargar las notificaciones",
+          variant: "destructive"
+        });
+      }
     } finally {
       setLoading(false);
     }

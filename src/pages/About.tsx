@@ -32,8 +32,9 @@ const About = () => {
               </div>
               <h2 className="text-3xl font-bold text-white mb-4">ComplicesConecta</h2>
               <p className="text-xl text-white font-medium leading-relaxed">
-                La plataforma social premium más innovadora para adultos que buscan conexiones auténticas 
-                y experiencias únicas en un ambiente seguro y discreto.
+                Una nueva plataforma social para adultos que buscan conexiones auténticas 
+                en el lifestyle swinger. Conecta con parejas y solteros en un ambiente 
+                seguro, discreto y respetuoso.
               </p>
             </CardContent>
           </Card>
@@ -47,9 +48,9 @@ const About = () => {
                   <h3 className="text-xl font-bold text-white">Nuestra Misión</h3>
                 </div>
                 <p className="text-white font-medium leading-relaxed">
-                  Crear un espacio seguro y verificado donde personas adultas puedan explorar 
-                  conexiones auténticas, compartir experiencias y vivir su lifestyle con total 
-                  libertad y respeto mutuo.
+                  Crear un espacio seguro donde parejas y solteros del lifestyle swinger puedan 
+                  conectar de manera auténtica, explorando nuevas experiencias con total 
+                  discreción y respeto mutuo.
                 </p>
               </CardContent>
             </Card>
@@ -61,9 +62,9 @@ const About = () => {
                   <h3 className="text-xl font-bold text-white">Nuestra Visión</h3>
                 </div>
                 <p className="text-white font-medium leading-relaxed">
-                  Ser la plataforma líder en Latinoamérica para la comunidad lifestyle, 
-                  reconocida por su innovación tecnológica, seguridad y compromiso con 
-                  la privacidad de nuestros usuarios.
+                  Convertirnos en una plataforma confiable para la comunidad lifestyle en México, 
+                  reconocida por brindar un ambiente seguro, tecnología moderna y compromiso 
+                  con la privacidad de nuestros usuarios.
                 </p>
               </CardContent>
             </Card>
@@ -80,7 +81,7 @@ const About = () => {
                   </div>
                   <h4 className="text-lg font-semibold text-white mb-2">Seguridad</h4>
                   <p className="text-white/70 text-sm">
-                    Verificación KYC, encriptación end-to-end y protección total de datos personales.
+                    Sistema de verificación de usuarios y protección de datos personales.
                   </p>
                 </div>
 
@@ -90,7 +91,7 @@ const About = () => {
                   </div>
                   <h4 className="text-lg font-semibold text-white mb-2">Comunidad</h4>
                   <p className="text-white/70 text-sm">
-                    Fomentamos el respeto, la inclusión y conexiones genuinas entre nuestros miembros.
+                    Comunidad lifestyle con códigos de respeto y ética bien definidos.
                   </p>
                 </div>
 
@@ -100,7 +101,7 @@ const About = () => {
                   </div>
                   <h4 className="text-lg font-semibold text-white mb-2">Innovación</h4>
                   <p className="text-white/70 text-sm">
-                    Tecnología de vanguardia con IA para matching inteligente y experiencias únicas.
+                    Sistema de matching inteligente basado en compatibilidad e intereses.
                   </p>
                 </div>
               </div>
@@ -117,21 +118,21 @@ const About = () => {
                     <Award className="h-6 w-6 text-yellow-400 mt-1 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-white">Verificación Premium</h4>
-                      <p className="text-white/70 text-sm">Sistema KYC que garantiza perfiles auténticos y seguros.</p>
+                      <p className="text-white/70 text-sm">Sistema de verificación de usuarios para mayor seguridad.</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
                     <Shield className="h-6 w-6 text-green-400 mt-1 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-white">Privacidad Total</h4>
-                      <p className="text-white/70 text-sm">Chat encriptado y control completo sobre tu información.</p>
+                      <p className="text-white/70 text-sm">Chat privado y fotos con sistema de solicitud de acceso.</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
                     <Users className="h-6 w-6 text-blue-400 mt-1 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-white">Comunidad Exclusiva</h4>
-                      <p className="text-white/70 text-sm">Acceso a eventos y experiencias únicas para miembros.</p>
+                      <p className="text-white/70 text-sm">Próximamente: eventos y experiencias para la comunidad lifestyle.</p>
                     </div>
                   </div>
                 </div>
@@ -140,21 +141,21 @@ const About = () => {
                     <Zap className="h-6 w-6 text-purple-400 mt-1 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-white">Matching Inteligente</h4>
-                      <p className="text-white/70 text-sm">IA avanzada para encontrar conexiones compatibles.</p>
+                      <p className="text-white/70 text-sm">Sistema de matching basado en preferencias y compatibilidad.</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
                     <Star className="h-6 w-6 text-pink-400 mt-1 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-white">Experiencia Premium</h4>
-                      <p className="text-white/70 text-sm">Interfaz elegante y funciones avanzadas sin publicidad.</p>
+                      <p className="text-white/70 text-sm">Interfaz limpia con funciones de búsqueda y filtros avanzados.</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
                     <Heart className="h-6 w-6 text-red-400 mt-1 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-white">Soporte 24/7</h4>
-                      <p className="text-white/70 text-sm">Equipo dedicado para resolver cualquier consulta.</p>
+                      <p className="text-white/70 text-sm">Equipo de soporte dedicado para resolver tus consultas.</p>
                     </div>
                   </div>
                 </div>
@@ -167,7 +168,8 @@ const About = () => {
             <CardContent className="p-8 text-center">
               <h3 className="text-2xl font-bold text-white mb-4">¿Listo para Conectar?</h3>
               <p className="text-white font-medium mb-6">
-                Únete a miles de personas que ya viven experiencias únicas en ComplicesConecta
+                Únete a nuestra creciente comunidad lifestyle en México. 
+                Estamos construyendo algo especial juntos.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 

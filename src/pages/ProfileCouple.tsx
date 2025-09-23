@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Heart, MessageCircle, MapPin, Verified, Crown, ArrowLeft, Settings, Share2, Users, Lock, Images, Camera } from "lucide-react";
+import { Heart, MessageCircle, MapPin, Verified, Crown, ArrowLeft, Settings, Share2, Users, Lock, Images, Camera, Flag } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import NavigationEnhanced from "@/components/NavigationEnhanced";
 import { generateMockCoupleProfiles, type CoupleProfileWithPartners } from "@/lib/coupleProfiles";
@@ -12,6 +12,7 @@ import { logger } from '@/lib/logger';
 import { usePersistedState } from '@/hooks/usePersistedState';
 import { PrivateImageRequest } from '@/components/profile/PrivateImageRequest';
 import { PrivateImageGallery } from '@/components/profile/PrivateImageGallery';
+import { ReportDialog } from '@/components/swipe/ReportDialog';
 
 const ProfileCouple: React.FC = () => {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ const ProfileCouple: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'couple' | 'individual'>('couple');
   const [showPrivateImageRequest, setShowPrivateImageRequest] = useState(false);
   const [privateImageAccess, setPrivateImageAccess] = useState<'none' | 'pending' | 'approved' | 'denied'>('none');
+  const [showReportDialog, setShowReportDialog] = useState(false);
   const { isAuthenticated, user, profile: authProfile } = useAuth();
   
   // Migración localStorage → usePersistedState
@@ -127,7 +129,6 @@ const ProfileCouple: React.FC = () => {
       </div>
       
       <div className="relative z-10 flex flex-col min-h-screen">
-        
         <div className="bg-black/80 backdrop-blur-md border-b border-white/30 p-3 sm:p-4 shadow-lg flex-shrink-0">
           <div className="flex items-center justify-between flex-wrap gap-2">
             <h1 className="text-base sm:text-lg md:text-xl font-bold text-white text-center flex-1 min-w-0 px-2 truncate">
@@ -251,6 +252,17 @@ const ProfileCouple: React.FC = () => {
                         <span className="sm:hidden">Editar</span>
                       </Button>
                       
+                      <Button 
+                        onClick={() => setShowReportDialog(true)}
+                        variant="outline"
+                        className="bg-red-500/20 hover:bg-red-600/30 text-red-200 border-red-400/30 flex items-center gap-2 text-sm sm:text-base px-3 sm:px-4 py-2"
+                        size="sm"
+                      >
+                        <Flag className="w-4 h-4" />
+                        <span className="hidden sm:inline">Reportar</span>
+                        <span className="sm:hidden">Report</span>
+                      </Button>
+                      
                       {/* Botón para solicitar acceso a fotos privadas */}
                       {privateImageAccess === 'none' && (
                         <Button 
@@ -314,14 +326,87 @@ const ProfileCouple: React.FC = () => {
                 
                 {/* Galería pública siempre visible */}
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
-                  <div className="aspect-square bg-gradient-to-br from-pink-400 to-purple-600 rounded-lg flex items-center justify-center">
-                    <Camera className="w-8 h-8 text-white" />
+                  <div className="aspect-square bg-gradient-to-br from-pink-400 to-purple-600 rounded-lg flex items-center justify-center overflow-hidden">
+                    <img 
+                      src="/src/assets/people/profile-1.jpg" 
+                      alt="Foto pública 1"
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).style.display = 'none';
+                        (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
+                      }}
+                    />
+                    <Camera className="w-8 h-8 text-white hidden" />
                   </div>
-                  <div className="aspect-square bg-gradient-to-br from-purple-400 to-blue-600 rounded-lg flex items-center justify-center">
-                    <Camera className="w-8 h-8 text-white" />
+                  <div className="aspect-square bg-gradient-to-br from-purple-400 to-blue-600 rounded-lg flex items-center justify-center overflow-hidden">
+                    <img 
+                      src="/src/assets/people/profile-2.jpg" 
+                      alt="Foto pública 2"
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).style.display = 'none';
+                        (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
+                      }}
+                    />
+                    <Camera className="w-8 h-8 text-white hidden" />
                   </div>
-                  <div className="aspect-square bg-gradient-to-br from-blue-400 to-teal-600 rounded-lg flex items-center justify-center">
-                    <Camera className="w-8 h-8 text-white" />
+                  <div className="aspect-square bg-gradient-to-br from-blue-400 to-teal-600 rounded-lg flex items-center justify-center overflow-hidden">
+                    <img 
+                      src="/src/assets/people/profile-1.jpg" 
+                      alt="Foto pública 3"
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).style.display = 'none';
+                        (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
+                      }}
+                    />
+                    <Camera className="w-8 h-8 text-white hidden" />
+                  </div>
+                </div>
+
+                {/* Galería privada - visible solo para el dueño del perfil */}
+                <div className="mb-6">
+                  <h4 className="text-white font-semibold mb-3 flex items-center gap-2">
+                    <Lock className="w-4 h-4" />
+                    Fotos Privadas
+                  </h4>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    <div className="aspect-square rounded-lg overflow-hidden relative">
+                      <img 
+                        src="/src/assets/people/privado/coupleprivjpg.jpg" 
+                        alt="Foto privada 1"
+                        className={`w-full h-full object-cover ${(profile as any)?.isOwner ? '' : 'filter blur-md'}`}
+                      />
+                      {!(profile as any)?.isOwner && (
+                        <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                          <Lock className="w-8 h-8 text-white" />
+                        </div>
+                      )}
+                    </div>
+                    <div className="aspect-square rounded-lg overflow-hidden relative">
+                      <img 
+                        src="/src/assets/people/profile-2.jpg" 
+                        alt="Foto privada 2"
+                        className={`w-full h-full object-cover ${(profile as any)?.isOwner ? '' : 'filter blur-md'}`}
+                      />
+                      {!(profile as any)?.isOwner && (
+                        <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                          <Lock className="w-8 h-8 text-white" />
+                        </div>
+                      )}
+                    </div>
+                    <div className="aspect-square rounded-lg overflow-hidden relative">
+                      <img 
+                        src="/src/assets/people/profile-1.jpg" 
+                        alt="Foto privada 3"
+                        className={`w-full h-full object-cover ${(profile as any)?.isOwner ? '' : 'filter blur-md'}`}
+                      />
+                      {!(profile as any)?.isOwner && (
+                        <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                          <Lock className="w-8 h-8 text-white" />
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
                 
@@ -333,7 +418,14 @@ const ProfileCouple: React.FC = () => {
                     profileType="couple"
                     isOwner={false}
                     hasAccess={true}
-                    images={[]}
+                    images={[
+                      {
+                        id: '1',
+                        url: '/src/assets/people/privado/coupleprivjpg.jpg',
+                        thumbnail: '/src/assets/people/privado/coupleprivjpg.jpg',
+                        uploadedAt: new Date()
+                      }
+                    ]}
                   />
                 )}
               </CardContent>
@@ -361,6 +453,18 @@ const ProfileCouple: React.FC = () => {
           }}
         />
       )}
+
+      {/* Modal de reporte */}
+      <ReportDialog
+        profileId={profile?.id || ''}
+        profileName={profile ? `${profile.partner1_first_name || ''} & ${profile.partner2_first_name || ''}` : 'Pareja'}
+        isOpen={showReportDialog}
+        onOpenChange={setShowReportDialog}
+        onReport={(reason) => {
+          console.log('Perfil reportado por:', reason);
+          // Aquí se implementará la lógica de reporte
+        }}
+      />
     </div>
   );
 };

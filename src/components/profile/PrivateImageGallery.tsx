@@ -24,7 +24,7 @@ interface AccessRequest {
 }
 
 interface PrivateImageGalleryProps {
-  images?: PrivateImage[];
+  images: PrivateImage[];
   profileId: string;
   profileName: string;
   profileType: 'single' | 'couple';
@@ -94,7 +94,7 @@ export const PrivateImageGallery: React.FC<PrivateImageGalleryProps> = ({
               Imágenes Privadas
             </h3>
             <Badge variant="secondary" className="bg-purple-500/20 text-purple-300">
-              {images?.length || 0}
+              {images.length}
             </Badge>
           </div>
           
@@ -151,7 +151,7 @@ export const PrivateImageGallery: React.FC<PrivateImageGalleryProps> = ({
         )}
 
         {/* Galería de imágenes */}
-        {(images?.length || 0) === 0 ? (
+        {images.length === 0 ? (
           <div className="text-center py-8">
             <Lock className="h-12 w-12 text-white/30 mx-auto mb-4" />
             <p className="text-white/60">
@@ -162,7 +162,7 @@ export const PrivateImageGallery: React.FC<PrivateImageGalleryProps> = ({
           <>
             {hasAccess || isOwner ? (
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {images?.map((image) => (
+                {images.map((image) => (
                   <div
                     key={image.id}
                     className="relative aspect-square cursor-pointer group"
@@ -185,7 +185,7 @@ export const PrivateImageGallery: React.FC<PrivateImageGalleryProps> = ({
                   <Lock className="h-8 w-8 text-purple-400" />
                 </div>
                 <p className="text-white/80 mb-4">
-                  {profileName} tiene {images?.length || 0} imagen{(images?.length || 0) !== 1 ? 'es' : ''} privada{(images?.length || 0) !== 1 ? 's' : ''}
+                  {profileName} tiene {images.length} imagen{images.length !== 1 ? 'es' : ''} privada{images.length !== 1 ? 's' : ''}
                 </p>
                 <Button
                   onClick={handleRequestAccess}
@@ -207,7 +207,7 @@ export const PrivateImageGallery: React.FC<PrivateImageGalleryProps> = ({
           >
             <div className="relative max-w-4xl max-h-full">
               <img
-                src={images?.find(img => img.id === selectedImage)?.url}
+                src={images.find(img => img.id === selectedImage)?.url}
                 alt="Imagen privada ampliada"
                 className="max-w-full max-h-full object-contain rounded-lg"
               />

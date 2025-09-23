@@ -1,0 +1,361 @@
+import React, { useState, useEffect } from 'react';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { 
+  Heart, 
+  MessageCircle, 
+  Share2, 
+  Eye, 
+  Clock, 
+  X, 
+  Send,
+  Trash2,
+  MapPin,
+  Globe,
+  Lock
+} from 'lucide-react';
+import { Story } from './StoryTypes';
+import { storyService } from './StoryService';
+
+interface StoryViewerProps {
+  story: Story;
+  onClose: () => void;
+  onStoryChange?: (updatedStory: Story) => void;
+}
+
+export const StoryViewer: React.FC<StoryViewerProps> = ({ 
+  story, 
+  onClose, 
+  onStoryChange 
+}) => {
+  const [currentStory, setCurrentStory] = useState<Story>(story);
+  const [isLiked, setIsLiked] = useState(false);
+  const [showComments, setShowComments] = useState(false);
+  const [newComment, setNewComment] = useState('');
+  const [isSubmittingComment, setIsSubmittingComment] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+  const isDemoMode = localStorage.getItem('demo_authenticated') === 'true';
+  const currentUserId = "1"; // Usuario demo
+
+  useEffect(() => {
+    // Marcar como vista
+    storyService.markAsViewed(currentStory.id);
+    
+    // Verificar si ya le dio like
+    const userLike = currentStory.likes?.find(like => like.userId === currentUserId);
+    setIsLiked(!!userLike);
+
+    // Simular progreso de la historia (15 segundos)
+    const interval = setInterval(() => {
+      setProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          onClose();
+          return 100;
+        }
+        return prev + (100 / 150); // 15 segundos = 150 intervalos de 100ms
+      });
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, [currentStory.id, currentUserId, onClose]);
+
+  const formatTimeAgo = (dateString: string) => {
+    const now = new Date();
+    const storyDate = new Date(dateString);
+    const diffInHours = Math.floor((now.getTime() - storyDate.getTime()) / (1000 * 60 * 60));
+    
+    if (diffInHours < 1) return 'Hace unos minutos';
+    if (diffInHours < 24) return `Hace ${diffInHours}h`;
+    return 'Expirada';
+  };
+
+  const handleLike = async () => {
+    const success = await storyService.likeStory(currentStory.id);
+    if (success) {
+      setIsLiked(!isLiked);
+      // Actualizar el estado local de la historia
+      const updatedStory = { ...currentStory };
+      if (isLiked) {
+        // Quitar like
+        updatedStory.likes = updatedStory.likes?.filter(like => like.userId !== currentUserId) || [];
+      } else {
+        // Agregar like
+        const newLike = {
+          id: `like_${Date.now()}`,
+          storyId: currentStory.id.toString(),
+          userId: currentUserId,
+          createdAt: new Date(),
+          user: { id: currentUserId, name: "Usuario Demo", avatar: "/src/assets/people/profile-1.jpg" }
+        };
+        updatedStory.likes = updatedStory.likes || [];
+        updatedStory.likes.push(newLike);
+      }
+      setCurrentStory(updatedStory);
+      onStoryChange?.(updatedStory);
+    }
+  };
+
+  const handleComment = async () => {
+    if (!newComment.trim() || isSubmittingComment) return;
+
+    setIsSubmittingComment(true);
+    const success = await storyService.commentStory(currentStory.id, newComment.trim());
+    
+    if (success) {
+      const updatedStory = { ...currentStory };
+      const newCommentObj = {
+        id: `comment_${Date.now()}`,
+        storyId: currentStory.id.toString(),
+        userId: currentUserId,
+        comment: newComment.trim(),
+        createdAt: new Date(),
+        user: { id: currentUserId, name: "Usuario Demo", avatar: "/src/assets/people/profile-1.jpg" }
+      };
+      
+      updatedStory.comments = updatedStory.comments || [];
+      updatedStory.comments.push(newCommentObj);
+      setCurrentStory(updatedStory);
+      onStoryChange?.(updatedStory);
+      setNewComment('');
+    }
+    
+    setIsSubmittingComment(false);
+  };
+
+  const handleShare = async () => {
+    const shareUrl = await storyService.shareStory(currentStory.id);
+    if (shareUrl) {
+      if (navigator.share) {
+        navigator.share({
+          title: `Historia de ${currentStory.user.name}`,
+          text: currentStory.description || 'Mira esta historia',
+          url: shareUrl
+        });
+      } else {
+        navigator.clipboard.writeText(shareUrl);
+        // TODO: Mostrar toast de "Link copiado"
+      }
+    }
+  };
+
+  const handleDeleteComment = async (commentId: string) => {
+    const success = await storyService.deleteComment(currentStory.id, commentId);
+    if (success) {
+      const updatedStory = { ...currentStory };
+      updatedStory.comments = updatedStory.comments?.filter(c => c.id !== commentId) || [];
+      setCurrentStory(updatedStory);
+      onStoryChange?.(updatedStory);
+    }
+  };
+
+  const isOwner = currentStory.userId.toString() === currentUserId;
+
+  return (
+    <div className="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center z-50">
+      <div className="relative w-full max-w-md h-full max-h-[90vh] mx-4">
+        {/* Barra de progreso */}
+        <div className="absolute top-4 left-4 right-4 z-10">
+          <div className="w-full h-1 bg-white/30 rounded-full">
+            <div 
+              className="h-full bg-white rounded-full transition-all duration-100 ease-linear" 
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+        </div>
+        
+        {/* Header */}
+        <div className="absolute top-8 left-4 right-4 z-10 flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <img 
+              src={currentStory.user.avatar} 
+              alt={currentStory.user.name}
+              className="w-8 h-8 rounded-full border-2 border-white"
+            />
+            <div>
+              <p className="text-white font-medium text-sm">{currentStory.user.name}</p>
+              <div className="flex items-center gap-2">
+                <p className="text-white/70 text-xs">{formatTimeAgo(currentStory.createdAt)}</p>
+                {currentStory.location && (
+                  <div className="flex items-center gap-1">
+                    <MapPin className="h-3 w-3 text-white/70" />
+                    <p className="text-white/70 text-xs">{currentStory.location}</p>
+                  </div>
+                )}
+                <div className="flex items-center gap-1">
+                  {currentStory.visibility === 'private' ? (
+                    <Lock className="h-3 w-3 text-white/70" />
+                  ) : (
+                    <Globe className="h-3 w-3 text-white/70" />
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <Button
+            onClick={onClose}
+            variant="ghost"
+            size="sm"
+            className="text-white hover:bg-white/10"
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        </div>
+        
+        {/* Contenido */}
+        <Card className="h-full bg-black border-white/20 overflow-hidden">
+          {currentStory.content.type === 'image' ? (
+            <div className="relative h-full">
+              <img 
+                src={currentStory.content.url} 
+                alt="Historia"
+                className="w-full h-full object-cover"
+              />
+              {currentStory.description && (
+                <div className="absolute bottom-20 left-4 right-4">
+                  <div className="bg-black/50 backdrop-blur-sm rounded-lg p-3">
+                    <p className="text-white text-sm">{currentStory.description}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : currentStory.content.type === 'video' ? (
+            <video 
+              src={currentStory.content.url} 
+              className="w-full h-full object-cover"
+              autoPlay
+              muted
+              loop
+            />
+          ) : (
+            <div className="h-full flex items-center justify-center bg-gradient-to-br from-purple-600 to-pink-600">
+              <div className="text-center px-8">
+                <p className="text-white text-xl font-bold mb-4">
+                  {currentStory.content.text}
+                </p>
+                {currentStory.description && (
+                  <p className="text-white/80 text-sm">{currentStory.description}</p>
+                )}
+              </div>
+            </div>
+          )}
+        </Card>
+        
+        {/* Controles inferiores */}
+        <div className="absolute bottom-4 left-4 right-4 z-10 space-y-3">
+          {/* Stats */}
+          <div className="flex items-center justify-between text-white text-sm">
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-1">
+                <Eye className="h-4 w-4" />
+                <span>{currentStory.views}</span>
+              </div>
+              <div className="flex items-center space-x-1">
+                <Heart className="h-4 w-4" />
+                <span>{currentStory.likes?.length || 0}</span>
+              </div>
+              <div className="flex items-center space-x-1">
+                <MessageCircle className="h-4 w-4" />
+                <span>{currentStory.comments?.length || 0}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <Button
+                onClick={handleLike}
+                size="sm"
+                variant="ghost"
+                className={`text-white hover:bg-white/10 ${isLiked ? 'text-red-400' : ''}`}
+              >
+                <Heart className={`h-4 w-4 ${isLiked ? 'fill-current' : ''}`} />
+              </Button>
+              <Button
+                onClick={() => setShowComments(!showComments)}
+                size="sm"
+                variant="ghost"
+                className="text-white hover:bg-white/10"
+              >
+                <MessageCircle className="h-4 w-4" />
+              </Button>
+              <Button
+                onClick={handleShare}
+                size="sm"
+                variant="ghost"
+                className="text-white hover:bg-white/10"
+              >
+                <Share2 className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+
+          {/* Comments Section */}
+          {showComments && (
+            <div className="bg-black/50 backdrop-blur-sm rounded-lg p-3 max-h-40 overflow-y-auto">
+              <div className="space-y-2 mb-3">
+                {currentStory.comments?.map((comment) => (
+                  <div key={comment.id} className="flex items-start gap-2">
+                    <img 
+                      src={comment.user.avatar} 
+                      alt={comment.user.name}
+                      className="w-6 h-6 rounded-full"
+                    />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <p className="text-white text-xs font-medium">{comment.user.name}</p>
+                        {(isOwner || comment.userId === currentUserId) && (
+                          <Button
+                            onClick={() => handleDeleteComment(comment.id)}
+                            size="sm"
+                            variant="ghost"
+                            className="h-4 w-4 p-0 text-red-400 hover:bg-red-400/10"
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
+                        )}
+                      </div>
+                      <p className="text-white/80 text-xs">{comment.comment}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              <div className="flex gap-2">
+                <Input
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                  placeholder="Escribe un comentario..."
+                  className="bg-white/10 border-white/20 text-white placeholder:text-white/50 text-sm"
+                  onKeyPress={(e) => e.key === 'Enter' && handleComment()}
+                />
+                <Button
+                  onClick={handleComment}
+                  disabled={!newComment.trim() || isSubmittingComment}
+                  size="sm"
+                  className="bg-purple-500 hover:bg-purple-600"
+                >
+                  <Send className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* Demo Notice */}
+          {isDemoMode && (
+            <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-lg p-2">
+              <p className="text-yellow-200 text-xs text-center">
+                📱 Modo Demo: Las interacciones son simuladas
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};

@@ -36,6 +36,19 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
     setIsUploading(true);
     
     try {
+      // Check if user is in demo mode
+      const isDemoMode = localStorage.getItem('demo_authenticated') === 'true';
+      
+      if (isDemoMode) {
+        // Simulate upload for demo users
+        await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate upload time
+        
+        // Create a temporary URL for the uploaded file
+        const tempUrl = URL.createObjectURL(file);
+        onImageUploaded(tempUrl);
+        return;
+      }
+
       let result: ImageUploadResult;
       
       if (type === 'profile') {

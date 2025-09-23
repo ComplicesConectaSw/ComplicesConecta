@@ -3,7 +3,24 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Edit, MapPin, Calendar, Heart, Star, Users, Shield, Camera, Settings, CheckCircle, Crown, Images, Lock } from 'lucide-react';
+import { 
+  Camera, 
+  Heart, 
+  MessageCircle, 
+  MapPin, 
+  Calendar, 
+  Users, 
+  Edit, 
+  Lock, 
+  Verified,
+  Settings,
+  Eye,
+  EyeOff,
+  Flag,
+  CheckCircle,
+  Crown,
+  Images
+} from 'lucide-react';
 import { Header } from '@/components/Header';
 import NavigationEnhanced from '@/components/NavigationEnhanced';
 import { ProfileTabs } from '@/components/profile/ProfileTabs';
@@ -16,14 +33,16 @@ import { generateDemoProfiles } from '@/lib/demoData';
 import type { Tables } from '@/integrations/supabase/types';
 import { PrivateImageRequest } from '@/components/profile/PrivateImageRequest';
 import { PrivateImageGallery } from '@/components/profile/PrivateImageGallery';
+import { ReportDialog } from '@/components/swipe/ReportDialog';
 
 const ProfileSingle: React.FC = () => {
   const navigate = useNavigate();
+  const { user, profile: authProfile, isAuthenticated } = useAuth();
   const [profile, setProfile] = useState<Tables<'profiles'> | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showPrivateImageRequest, setShowPrivateImageRequest] = useState(false);
-  const [privateImageAccess, setPrivateImageAccess] = useState<'none' | 'pending' | 'approved' | 'denied'>('none');
-  const { user, profile: authProfile, isAuthenticated } = useAuth();
+  const [privateImageAccess, setPrivateImageAccess] = usePersistedState<'none' | 'pending' | 'approved' | 'denied'>('private_image_access', 'none');
+  const [showReportDialog, setShowReportDialog] = useState(false);
   
   // Migración localStorage → usePersistedState
   const [demoAuth, setDemoAuth] = usePersistedState('demo_authenticated', 'false');
@@ -223,6 +242,17 @@ const ProfileSingle: React.FC = () => {
                       <span className="sm:hidden">Editar</span>
                     </Button>
                     
+                    <Button 
+                      onClick={() => setShowReportDialog(true)}
+                      variant="outline"
+                      className="bg-red-500/20 hover:bg-red-600/30 text-red-200 border-red-400/30 flex items-center gap-2 text-sm sm:text-base px-3 sm:px-4 py-2"
+                      size="sm"
+                    >
+                      <Flag className="w-4 h-4" />
+                      <span className="hidden sm:inline">Reportar</span>
+                      <span className="sm:hidden">Report</span>
+                    </Button>
+                    
                     {/* Botón para solicitar acceso a fotos privadas */}
                     {privateImageAccess === 'none' && (
                       <Button 
@@ -336,14 +366,87 @@ const ProfileSingle: React.FC = () => {
               
               {/* Galería pública siempre visible */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
-                <div className="aspect-square bg-gradient-to-br from-pink-400 to-purple-600 rounded-lg flex items-center justify-center">
-                  <Camera className="w-8 h-8 text-white" />
+                <div className="aspect-square bg-gradient-to-br from-pink-400 to-purple-600 rounded-lg flex items-center justify-center overflow-hidden">
+                  <img 
+                    src="/src/assets/people/profile-1.jpg" 
+                    alt="Foto pública 1"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = 'none';
+                      (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
+                    }}
+                  />
+                  <Camera className="w-8 h-8 text-white hidden" />
                 </div>
-                <div className="aspect-square bg-gradient-to-br from-purple-400 to-blue-600 rounded-lg flex items-center justify-center">
-                  <Camera className="w-8 h-8 text-white" />
+                <div className="aspect-square bg-gradient-to-br from-purple-400 to-blue-600 rounded-lg flex items-center justify-center overflow-hidden">
+                  <img 
+                    src="/src/assets/people/profile-2.jpg" 
+                    alt="Foto pública 2"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = 'none';
+                      (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
+                    }}
+                  />
+                  <Camera className="w-8 h-8 text-white hidden" />
                 </div>
-                <div className="aspect-square bg-gradient-to-br from-blue-400 to-teal-600 rounded-lg flex items-center justify-center">
-                  <Camera className="w-8 h-8 text-white" />
+                <div className="aspect-square bg-gradient-to-br from-blue-400 to-teal-600 rounded-lg flex items-center justify-center overflow-hidden">
+                  <img 
+                    src="/src/assets/people/profile-1.jpg" 
+                    alt="Foto pública 3"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = 'none';
+                      (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
+                    }}
+                  />
+                  <Camera className="w-8 h-8 text-white hidden" />
+                </div>
+              </div>
+
+              {/* Galería privada - visible solo para el dueño del perfil */}
+              <div className="mb-6">
+                <h4 className="text-white font-semibold mb-3 flex items-center gap-2">
+                  <Lock className="w-4 h-4" />
+                  Fotos Privadas
+                </h4>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                  <div className="aspect-square rounded-lg overflow-hidden relative">
+                    <img 
+                      src="/src/assets/people/privado/erocpriv.jpg" 
+                      alt="Foto privada 1"
+                      className={`w-full h-full object-cover ${(profile as any)?.isOwner ? '' : 'filter blur-md'}`}
+                    />
+                    {!(profile as any)?.isOwner && (
+                      <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                        <Lock className="w-8 h-8 text-white" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="aspect-square rounded-lg overflow-hidden relative">
+                    <img 
+                      src="/src/assets/people/profile-2.jpg" 
+                      alt="Foto privada 2"
+                      className={`w-full h-full object-cover ${(profile as any)?.isOwner ? '' : 'filter blur-md'}`}
+                    />
+                    {!(profile as any)?.isOwner && (
+                      <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                        <Lock className="w-8 h-8 text-white" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="aspect-square rounded-lg overflow-hidden relative">
+                    <img 
+                      src="/src/assets/people/profile-1.jpg" 
+                      alt="Foto privada 3"
+                      className={`w-full h-full object-cover ${(profile as any)?.isOwner ? '' : 'filter blur-md'}`}
+                    />
+                    {!(profile as any)?.isOwner && (
+                      <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                        <Lock className="w-8 h-8 text-white" />
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
               
@@ -351,11 +454,18 @@ const ProfileSingle: React.FC = () => {
               {privateImageAccess === 'approved' && (
                 <PrivateImageGallery 
                   profileId={profile?.id || ''}
-                  profileName={profile?.first_name || ''}
+                  profileName={profile?.first_name || 'Usuario'}
                   profileType="single"
                   isOwner={false}
                   hasAccess={true}
-                  images={[]}
+                  images={[
+                    {
+                      id: '1',
+                      url: '/src/assets/people/privado/erocpriv.jpg',
+                      thumbnail: '/src/assets/people/privado/erocpriv.jpg',
+                      uploadedAt: new Date()
+                    }
+                  ]}
                 />
               )}
             </CardContent>
@@ -370,12 +480,25 @@ const ProfileSingle: React.FC = () => {
           onClose={() => setShowPrivateImageRequest(false)}
           profileId={profile?.id || ''}
           profileName={profile?.first_name || ''}
+          profileType="single"
           onRequestSent={() => {
             setPrivateImageAccess('pending');
             setShowPrivateImageRequest(false);
           }}
         />
       )}
+
+      {/* Modal de reporte */}
+      <ReportDialog
+        profileId={profile?.id || ''}
+        profileName={profile?.first_name || 'Usuario'}
+        isOpen={showReportDialog}
+        onOpenChange={setShowReportDialog}
+        onReport={(reason) => {
+          console.log('Perfil reportado por:', reason);
+          // Aquí se implementará la lógica de reporte
+        }}
+      />
     </div>
   );
 };
