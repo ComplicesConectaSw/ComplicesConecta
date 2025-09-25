@@ -61,7 +61,7 @@ export default defineConfig({
             return 'vendor-misc';
           }
           
-          // App chunks by feature
+          // App chunks by feature - more granular splitting
           if (id.includes('/pages/Admin') || id.includes('/components/admin/')) {
             return 'admin';
           }
@@ -71,11 +71,20 @@ export default defineConfig({
           if (id.includes('/pages/Chat') || id.includes('/components/chat/')) {
             return 'chat';
           }
-          if (id.includes('/pages/Profile') || id.includes('/components/profile/')) {
+          if (id.includes('/pages/Profile') || id.includes('/components/profile/') || 
+              id.includes('/pages/EditProfile') || id.includes('/pages/ProfileSingle') || 
+              id.includes('/pages/ProfileCouple')) {
             return 'profiles';
           }
           if (id.includes('/pages/Discover') || id.includes('/components/discover/')) {
             return 'discover';
+          }
+          if (id.includes('/pages/Stories') || id.includes('/pages/Feed')) {
+            return 'social';
+          }
+          if (id.includes('/pages/Terms') || id.includes('/pages/Privacy') || 
+              id.includes('/pages/Legal') || id.includes('/pages/Guidelines')) {
+            return 'legal';
           }
         },
         chunkFileNames: 'js/[name]-[hash].js',
@@ -95,7 +104,8 @@ export default defineConfig({
         pure_funcs: ['console.log', 'console.info', 'console.debug'],
       },
     },
-    chunkSizeWarningLimit: 300,
+    chunkSizeWarningLimit: 500, // Increase limit temporarily
+    sourcemap: false, // Disable sourcemaps in production for smaller builds
   },
   define: {
     global: 'globalThis',

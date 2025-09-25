@@ -22,7 +22,7 @@ import Auth from "@/pages/Auth";
 import NotFound from "@/pages/NotFound";
 import Events from "@/pages/Events";
 
-// Lazy loaded pages for performance optimization
+// Lazy loaded pages for performance optimization - Core features
 const Profiles = lazy(() => import("@/pages/Profiles"));
 const ProfileDetail = lazy(() => import("@/pages/ProfileDetail"));
 const Chat = lazy(() => import("@/pages/Chat"));
@@ -33,19 +33,25 @@ const Settings = lazy(() => import("@/pages/Settings"));
 const Discover = lazy(() => import("@/pages/Discover"));
 const Premium = lazy(() => import("@/pages/Premium"));
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
+
+// Secondary pages - loaded on demand
 const FAQ = lazy(() => import("@/pages/FAQ"));
 const Terms = lazy(() => import("@/pages/Terms"));
 const Privacy = lazy(() => import("@/pages/Privacy"));
 const Support = lazy(() => import("@/pages/Support"));
+const ProjectInfo = lazy(() => import("@/pages/ProjectInfo"));
+const Security = lazy(() => import("@/pages/Security"));
+const Guidelines = lazy(() => import("@/pages/Guidelines"));
+const Legal = lazy(() => import("@/pages/Legal"));
+
+// Token system - separate chunk
 const Tokens = lazy(() => import("@/pages/Tokens"));
 const TokensInfo = lazy(() => import("@/pages/TokensInfo"));
 const TokensPrivacy = lazy(() => import("@/pages/TokensPrivacy"));
 const TokensTerms = lazy(() => import("@/pages/TokensTerms"));
 const TokensLegal = lazy(() => import("@/pages/TokensLegal"));
-const ProjectInfo = lazy(() => import("@/pages/ProjectInfo"));
-const Security = lazy(() => import("@/pages/Security"));
-const Guidelines = lazy(() => import("@/pages/Guidelines"));
-const Legal = lazy(() => import("@/pages/Legal"));
+
+// Admin pages - separate chunk
 const Admin = lazy(() => import("@/pages/Admin"));
 const AdminProduction = lazy(() => import("@/pages/AdminProduction"));
 const ProfileSingle = lazy(() => import("@/pages/ProfileSingle"));
