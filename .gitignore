@@ -125,6 +125,12 @@ dev-scripts/
 reports/
 token-system-spec/
 docs/
+GIT_HUB_Menu.ps1/
+fix-supabase.ps1/
+.GIT_HUB_Menu.ps1/
+.fix-supabase.ps1/
+*GIT_HUB_Menu.ps1*
+*fix-supabase.ps1*
 
 # Coverage reports (archivos generados automáticamente)
 coverage/
