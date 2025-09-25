@@ -39,7 +39,7 @@ const Privacy = () => {
             </p>
             <Badge variant="secondary" className="mt-4">
               <Shield className="h-4 w-4 mr-1" />
-              Última actualización: Agosto 2024
+              Última actualización: Agosto 2025
             </Badge>
           </div>
 

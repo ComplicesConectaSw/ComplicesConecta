@@ -251,7 +251,9 @@ const Index = () => {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center space-y-8">
               <div className="space-y-6">
-                
+                <h1 data-testid="main-heading" className="text-4xl md:text-6xl font-bold text-white mb-6 animate-slide-up">
+                  Bienvenido a ComplicesConecta
+                </h1>
                 <p className="text-xl md:text-2xl text-white/95 max-w-4xl mx-auto leading-relaxed animate-slide-up font-medium px-4">
                   La plataforma <strong className="text-pink-300">más exclusiva</strong> para la comunidad lifestyle mexicana.
                   <br className="hidden md:block" />

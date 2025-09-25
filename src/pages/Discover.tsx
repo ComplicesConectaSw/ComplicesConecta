@@ -318,14 +318,13 @@ const Discover = () => {
     
     logger.info('✅ Usuario autenticado en Discover:', { user: user?.email || user?.id, isAuthenticated });
     
-    // Verificar autenticación local adicional (demo, usuario especial)
+    // Verificar autenticación local adicional (demo)
     const demoAuth = localStorage.getItem('demo_authenticated') === 'true';
-    const apoyoAuth = localStorage.getItem('apoyo_authenticated') === 'true';
     
     // Solo cargar perfiles reales una vez para usuarios autenticados
     if (profiles.length === 0) {
       // Cargar perfiles según el tipo de usuario
-      if (demoAuth && !apoyoAuth) {
+      if (demoAuth) {
         // Solo log una vez para demo
         if (demoProfiles.length === 0) {
           logger.info('🎭 Usuario demo - cargando perfiles adicionales');

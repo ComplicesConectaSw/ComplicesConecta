@@ -114,12 +114,10 @@ const NavigationEnhanced = ({
   const handleNavigation = (path: string) => {
     // SOLO verificar autenticación, NO hacer logout automático
     const demoUser = localStorage.getItem('demo_user');
-    const specialUser = localStorage.getItem('apoyo_user');
     const userType = localStorage.getItem('userType');
     const isDemo = localStorage.getItem('demo_authenticated') === 'true';
-    const isSpecial = localStorage.getItem('apoyo_authenticated') === 'true';
     
-    logger.info('🔍 Navigation Debug:', { demoUser, specialUser, userType, isDemo, isSpecial, path });
+    logger.info('🔍 Navigation Debug:', { demoUser, userType, isDemo, path });
     
     // Detectar tipo de usuario y redirigir al perfil correcto
     if (path === '/profile') {
@@ -132,7 +130,7 @@ const NavigationEnhanced = ({
     }
     
     // CRÍTICO: Solo verificar autenticación, NUNCA hacer logout automático
-    const isAuthenticated = isDemo || isSpecial || demoUser || specialUser;
+    const isAuthenticated = isDemo || demoUser;
     
     if (!isAuthenticated) {
       logger.info('❌ Usuario no autenticado, redirigiendo a /auth');
@@ -216,117 +214,123 @@ const NavigationEnhanced = ({
   };
 
   return (
-    <motion.nav 
-      variants={enableAnimations ? navVariants : undefined}
-      initial={enableAnimations ? "hidden" : undefined}
-      animate={enableAnimations ? (isVisible ? "visible" : "hidden") : undefined}
-      className={cn(
-        "fixed bottom-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out",
-        navbarStyles.backgroundClass,
-        "backdrop-blur-xl border-t border-white/10",
-        navbarStyles.shadowClass,
-        "rounded-t-2xl mx-2 mb-2",
-        isVisible ? "translate-y-0 opacity-100" : "translate-y-full opacity-0",
-        className
-      )}
-    >
-      {/* Glassmorphism overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-red-500/10 rounded-t-2xl" />
-      
-      <div className="relative flex items-center justify-between w-full max-w-full mx-auto px-1 overflow-x-auto scrollbar-hide">
-        <div className="flex items-center justify-around w-full min-w-fit gap-1">
-          {navItems.map((item, index) => {
-            const Icon = item.icon;
-            const isActive = location.pathname === item.path;
-            const notificationCount = notificationCounts[item.id] || 0;
-            const hasNotifications = showNotificationBadges && notificationCount > 0;
-            
-            return (
-              <motion.button
-                key={item.id}
-                variants={enableAnimations ? itemVariants : undefined}
-                initial={enableAnimations ? "inactive" : undefined}
-                animate={enableAnimations ? (isActive ? "active" : "inactive") : undefined}
-                whileHover={enableAnimations ? "hover" : undefined}
-                whileTap={enableAnimations ? "tap" : undefined}
-                onClick={() => handleNavigation(item.path)}
-                className={cn(
-                  "relative flex flex-col items-center justify-center p-1 sm:p-2 rounded-2xl",
-                  "min-w-[45px] sm:min-w-[55px] w-[45px] sm:w-[55px] min-h-[45px] sm:min-h-[55px] group flex-shrink-0",
-                  "transition-all duration-300 ease-out overflow-hidden",
-                  !enableAnimations && "transform hover:scale-105",
-                  isActive 
-                    ? "text-white" 
-                    : "text-gray-600 hover:text-gray-800"
-                )}
-              >
-              {/* Animated background for active state */}
-              <AnimatePresence>
-                {isActive && (
-                  <motion.div 
-                    variants={enableAnimations ? backgroundVariants : undefined}
-                    initial={enableAnimations ? "inactive" : undefined}
-                    animate={enableAnimations ? "active" : undefined}
-                    exit={enableAnimations ? "inactive" : undefined}
-                    className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl shadow-lg"
-                  />
-                )}
-              </AnimatePresence>
-              
-              {/* Hover background */}
-              <div className={cn(
-                "absolute inset-0 bg-gray-100/80 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-200",
-                isActive && "group-hover:opacity-20"
-              )} />
-              
-              {/* Icon container */}
-              <div className="relative z-10 flex items-center justify-center">
-                <Icon 
-                  className={cn(
-                    "w-4 h-4 sm:w-5 sm:h-5 mb-0.5 sm:mb-1 transition-all duration-300",
-                    isActive ? "drop-shadow-lg" : "group-hover:drop-shadow-md",
-                    !enableAnimations && (isActive ? "scale-110" : "group-hover:scale-110")
-                  )} 
-                />
+    <AnimatePresence>
+      {isVisible && (
+        <motion.nav
+          initial={{ y: enableAnimations ? 100 : 0 }}
+          animate={{ y: 0 }}
+          exit={{ y: enableAnimations ? 100 : 0 }}
+          transition={{ duration: 0.3, ease: 'easeInOut' }}
+          className={cn(
+            "fixed bottom-0 left-0 right-0 z-50 px-4 pb-safe-bottom",
+            navbarStyles.backgroundClass,
+            navbarStyles.shadowClass,
+            "border-t",
+            navbarStyles.borderClass,
+            className
+          )}
+          role="navigation"
+          aria-label="Navegación principal"
+          data-testid="main-navigation"
+        >
+          {/* Glassmorphism overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-red-500/10 rounded-t-2xl" />
+          
+          <div className="relative flex items-center justify-between w-full max-w-full mx-auto px-1 overflow-x-auto scrollbar-hide">
+            <div className="flex items-center justify-around w-full min-w-fit gap-1">
+              {navItems.map((item, index) => {
+                const Icon = item.icon;
+                const isActive = location.pathname === item.path;
+                const notificationCount = notificationCounts[item.id] || 0;
+                const hasNotifications = showNotificationBadges && notificationCount > 0;
                 
-                {/* Notification badge */}
-                <AnimatePresence>
-                  {hasNotifications && (
-                    <motion.div
-                      variants={enableAnimations ? badgeVariants : undefined}
-                      initial={enableAnimations ? "hidden" : undefined}
-                      animate={enableAnimations ? ["visible", "pulse"] : undefined}
-                      exit={enableAnimations ? "hidden" : undefined}
-                      className="absolute -top-1 -right-1 min-w-[16px] h-4 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center px-1 shadow-lg border-2 border-white"
-                    >
-                      {notificationCount > 99 ? '99+' : notificationCount}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-              
-              <span className={cn(
-                "text-[10px] sm:text-xs font-medium transition-all duration-300 truncate max-w-[45px] sm:max-w-none relative z-10",
-                isActive ? "text-white font-semibold" : "text-gray-600 group-hover:text-gray-800"
-              )}>
-                {item.label}
-              </span>
-              
-              {/* Active indicator dot */}
-              <AnimatePresence>
-                {isActive && (
-                  <motion.div
-                    initial={enableAnimations ? { scale: 0, opacity: 0 } : undefined}
-                    animate={enableAnimations ? { scale: 1, opacity: 1 } : undefined}
-                    exit={enableAnimations ? { scale: 0, opacity: 0 } : undefined}
-                    transition={enableAnimations ? { delay: 0.1, type: "spring", stiffness: 500 } : undefined}
-                    className="absolute -bottom-1 w-1 h-1 bg-white rounded-full shadow-lg"
-                  />
-                )}
-              </AnimatePresence>
-            </motion.button>
-          );
-        })}
+                return (
+                  <motion.button
+                    key={item.id}
+                    variants={enableAnimations ? itemVariants : undefined}
+                    initial={enableAnimations ? "inactive" : undefined}
+                    animate={enableAnimations ? (isActive ? "active" : "inactive") : undefined}
+                    whileHover={enableAnimations ? "hover" : undefined}
+                    whileTap={enableAnimations ? "tap" : undefined}
+                    onClick={() => handleNavigation(item.path)}
+                    className={cn(
+                      "relative flex flex-col items-center justify-center p-1 sm:p-2 rounded-2xl",
+                      "min-w-[45px] sm:min-w-[55px] w-[45px] sm:w-[55px] min-h-[45px] sm:min-h-[55px] group flex-shrink-0",
+                      "transition-all duration-300 ease-out overflow-hidden",
+                      !enableAnimations && "transform hover:scale-105",
+                      isActive 
+                        ? "text-white" 
+                        : "text-gray-600 hover:text-gray-800"
+                    )}
+                    data-testid={`nav-${item.id}`}
+                  >
+                  {/* Animated background for active state */}
+                  <AnimatePresence>
+                    {isActive && (
+                      <motion.div 
+                        variants={enableAnimations ? backgroundVariants : undefined}
+                        initial={enableAnimations ? "inactive" : undefined}
+                        animate={enableAnimations ? "active" : undefined}
+                        exit={enableAnimations ? "inactive" : undefined}
+                        className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl shadow-lg"
+                      />
+                    )}
+                  </AnimatePresence>
+                  
+                  {/* Hover background */}
+                  <div className={cn(
+                    "absolute inset-0 bg-gray-100/80 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-200",
+                    isActive && "group-hover:opacity-20"
+                  )} />
+                  
+                  {/* Icon container */}
+                  <div className="relative z-10 flex items-center justify-center">
+                    <Icon 
+                      className={cn(
+                        "w-4 h-4 sm:w-5 sm:h-5 mb-0.5 sm:mb-1 transition-all duration-300",
+                        isActive ? "drop-shadow-lg" : "group-hover:drop-shadow-md",
+                        !enableAnimations && (isActive ? "scale-110" : "group-hover:scale-110")
+                      )} 
+                    />
+                    
+                    {/* Notification badge */}
+                    <AnimatePresence>
+                      {hasNotifications && (
+                        <motion.div
+                          variants={enableAnimations ? badgeVariants : undefined}
+                          initial={enableAnimations ? "hidden" : undefined}
+                          animate={enableAnimations ? ["visible", "pulse"] : undefined}
+                          exit={enableAnimations ? "hidden" : undefined}
+                          className="absolute -top-1 -right-1 min-w-[16px] h-4 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center px-1 shadow-lg border-2 border-white"
+                        >
+                          {notificationCount > 99 ? '99+' : notificationCount}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                  
+                  <span className={cn(
+                    "text-[10px] sm:text-xs font-medium transition-all duration-300 truncate max-w-[45px] sm:max-w-none relative z-10",
+                    isActive ? "text-white font-semibold" : "text-gray-600 group-hover:text-gray-800"
+                  )}>
+                    {item.label}
+                  </span>
+                  
+                  {/* Active indicator dot */}
+                  <AnimatePresence>
+                    {isActive && (
+                      <motion.div
+                        initial={enableAnimations ? { scale: 0, opacity: 0 } : undefined}
+                        animate={enableAnimations ? { scale: 1, opacity: 1 } : undefined}
+                        exit={enableAnimations ? { scale: 0, opacity: 0 } : undefined}
+                        transition={enableAnimations ? { delay: 0.1, type: "spring", stiffness: 500 } : undefined}
+                        className="absolute -bottom-1 w-1 h-1 bg-white rounded-full shadow-lg"
+                      />
+                    )}
+                  </AnimatePresence>
+                </motion.button>
+              );
+            })}
         
         {/* Botón de cerrar sesión */}
         <motion.button
@@ -340,6 +344,7 @@ const NavigationEnhanced = ({
           )}
           whileHover={enableAnimations ? { scale: 1.05 } : undefined}
           whileTap={enableAnimations ? { scale: 0.95 } : undefined}
+          data-testid="logout-button"
         >
           <LogOut 
             className={cn(
@@ -364,7 +369,9 @@ const NavigationEnhanced = ({
         animate={enableAnimations ? { opacity: [0.2, 0.5, 0.2] } : undefined}
         transition={enableAnimations ? { duration: 2, repeat: Infinity } : undefined}
       />
-    </motion.nav>
+        </motion.nav>
+      )}
+    </AnimatePresence>
   );
 };
 

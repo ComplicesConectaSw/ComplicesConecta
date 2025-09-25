@@ -35,9 +35,7 @@ const Requests = () => {
   
   // Migración localStorage → usePersistedState
   const [demoAuth, setDemoAuth] = usePersistedState('demo_authenticated', 'false');
-  const [specialAuth, setSpecialAuth] = usePersistedState('apoyo_authenticated', 'false');
   const [demoUser, setDemoUser] = usePersistedState<any>('demo_user', null);
-  const [specialUser, setSpecialUser] = usePersistedState<any>('apoyo_user', null);
 
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
@@ -123,47 +121,30 @@ const Requests = () => {
     if (currentUserId) {
       loadInvitations();
     }
-  }, [currentUserId, loadInvitations, navigate, demoAuth, specialAuth, demoUser, specialUser]);
+  }, [currentUserId, loadInvitations, navigate, demoAuth, demoUser]);
 
   useEffect(() => {
     // Detectar modo demo
     const isDemoMode = demoAuth === 'true' && demoUser;
-    const isSpecialMode = specialAuth === 'true' && specialUser;
     
     if (isDemoMode) {
       // Modo demo - usar datos mock
       try {
         const parsedDemoUser = typeof demoUser === 'string' ? JSON.parse(demoUser) : demoUser;
-        const userId = parsedDemoUser.id || parsedDemoUser.user_id || 'demo-user-1';
-        setCurrentUserId(userId);
-        logger.info('🎭 Usuario demo autenticado en Requests:', { userId });
-        
-        // Cargar solicitudes demo
+        setCurrentUserId(parsedDemoUser.id || 'demo-user-1');
         loadDemoInvitations();
       } catch (error) {
-        logger.error('❌ Error parsing demo user:', { error });
-        const fallbackUserId = 'demo-user-1';
-        setCurrentUserId(fallbackUserId);
+        console.error('Error parsing demo user:', error);
+        setCurrentUserId('demo-user-1');
         loadDemoInvitations();
       }
       return;
     }
     
-    if (isSpecialMode) {
-      try {
-        const parsedSpecialUser = typeof specialUser === 'string' ? JSON.parse(specialUser) : specialUser;
-        const userId = parsedSpecialUser.id || parsedSpecialUser.user_id;
-        setCurrentUserId(userId);
-        logger.info('🔍 Usuario especial autenticado:', { userId });
-      } catch (error) {
-        logger.error('❌ Error parsing special user:', { error });
-      }
-      return;
-    }
     
     // Verificar autenticación real - solo redirigir si realmente no está autenticado
     try {
-      if (!isAuthenticated()) {
+      if (!isAuthenticated) {
         logger.info('❌ Usuario no autenticado en Requests, redirigiendo a /auth');
         navigate('/auth');
         return;
@@ -187,7 +168,7 @@ const Requests = () => {
       logger.info('❌ No se pudo obtener userId, redirigiendo a /auth');
       navigate('/auth');
     }
-  }, [demoAuth, demoUser, specialAuth, specialUser, isAuthenticated, user, navigate]);
+  }, [demoAuth, demoUser, user]);
 
   const handleInvitationAction = async (invitationId: string, action: 'accept' | 'decline') => {
     try {
