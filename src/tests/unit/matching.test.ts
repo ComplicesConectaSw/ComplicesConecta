@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { calculateCompatibility, calculateMatchScore, getSharedInterests } from '../../src/lib/matching';
+import { calculateCompatibility, calculateMatchScore, getSharedInterests } from '@/lib/matching';
 
 describe('Matching Algorithm', () => {
   const mockProfile1 = {

@@ -14,7 +14,7 @@ import {
   ExclamationTriangleIcon
 } from '@heroicons/react/24/outline'
 
-import { performanceMonitor, PerformanceMetrics } from '../../../services/PerformanceMonitoringService'
+import { performanceMonitor, PerformanceMetrics } from '@/services/PerformanceMonitoringService'
 
 export const PerformancePanel: React.FC = () => {
   const [metrics, setMetrics] = useState<PerformanceMetrics | null>(null)

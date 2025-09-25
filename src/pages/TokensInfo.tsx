@@ -253,7 +253,7 @@ export default function TokensInfo() {
                 <Globe className="h-6 w-6 text-cyan-400" />
                 World ID
               </CardTitle>
-              <Badge className="w-fit border-cyan-400 text-cyan-400 border border-input bg-background hover:bg-accent hover:text-accent-foreground">Próximamente</Badge>
+              <Badge className="w-fit border-cyan-400 text-cyan-400 bg-cyan-900/20">Próximamente</Badge>
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-white/80">
@@ -283,7 +283,7 @@ export default function TokensInfo() {
                 <Star className="h-6 w-6 text-orange-400" />
                 GTK (Futuro)
               </CardTitle>
-              <Badge className="w-fit border-orange-400 text-orange-400 border border-input bg-background hover:bg-accent hover:text-accent-foreground">Próximamente</Badge>
+              <Badge className="w-fit border-orange-400 text-orange-400 bg-orange-900/20">Próximamente</Badge>
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-white/80">

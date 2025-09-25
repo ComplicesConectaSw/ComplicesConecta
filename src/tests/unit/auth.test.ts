@@ -1,12 +1,12 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import { useAuth } from '../../src/hooks/useAuth';
+import { useAuth } from '@/hooks/useAuth';
 import { createTestQueryClient } from '../setup/test-utils';
 import { QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 
 // Mock Supabase
-vi.mock('../../src/integrations/supabase/client', () => ({
+vi.mock('@/integrations/supabase/client', () => ({
   supabase: {
     auth: {
       getSession: vi.fn().mockResolvedValue({
@@ -42,7 +42,7 @@ vi.mock('../../src/integrations/supabase/client', () => ({
 }));
 
 // Mock app-config
-vi.mock('../../src/lib/app-config', () => ({
+vi.mock('@/lib/app-config', () => ({
   getAppConfig: vi.fn(() => ({ mode: 'production' })),
   DEMO_CREDENTIALS: ['demo@test.com'],
   getDemoPassword: vi.fn(() => 'demo123'),
@@ -55,7 +55,7 @@ vi.mock('../../src/lib/app-config', () => ({
 }));
 
 // Mock useProfileCache
-vi.mock('../../src/hooks/useProfileCache', () => ({
+vi.mock('@/hooks/useAuth', () => ({
   useProfile: vi.fn(() => ({
     data: null,
     isLoading: false,

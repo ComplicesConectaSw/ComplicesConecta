@@ -12,8 +12,8 @@
  * - Integración con sistema de reportes y tokens
  */
 
-import { supabase } from '../integrations/supabase/client'
-import { logger } from '../lib/logger'
+import { supabase } from '@/integrations/supabase/client'
+import { logger } from '@/lib/logger'
 
 // Tipos de notificaciones soportadas
 export type NotificationType = 

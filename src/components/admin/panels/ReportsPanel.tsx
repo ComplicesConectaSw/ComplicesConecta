@@ -16,8 +16,8 @@ import {
   MagnifyingGlassIcon
 } from '@heroicons/react/24/outline'
 
-import { ProfileReportService } from '../../../services/ProfileReportService'
-import { logger } from '../../../lib/logger'
+import { ProfileReportService } from '@/services/ProfileReportService'
+import { logger } from '@/lib/logger'
 
 interface Report {
   id: string

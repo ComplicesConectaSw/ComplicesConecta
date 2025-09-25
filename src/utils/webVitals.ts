@@ -1,5 +1,5 @@
 // Monitoreo de Core Web Vitals - ComplicesConecta v3.3.0
-import type { Metric } from 'web-vitals';
+import { Metric } from 'web-vitals';
 
 // Importación dinámica para evitar errores de build
 const getWebVitals = async () => {

@@ -3,10 +3,10 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { PushNotificationService } from '../../src/services/PushNotificationService'
+import { PushNotificationService } from '@/services/PushNotificationService'
 
 // Mock de Supabase
-vi.mock('../../src/integrations/supabase/client', () => ({
+vi.mock('@/integrations/supabase/client', () => ({
   supabase: {
     from: vi.fn(() => ({
       insert: vi.fn(() => ({
@@ -30,7 +30,7 @@ vi.mock('../../src/integrations/supabase/client', () => ({
 }))
 
 // Mock del logger
-vi.mock('../../src/lib/logger', () => ({
+vi.mock('@/lib/logger', () => ({
   logger: {
     info: vi.fn(),
     error: vi.fn(),

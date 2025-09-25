@@ -35,9 +35,9 @@ import {
 } from './panels'
 
 // Hooks y servicios
-import { useAuth } from '../../hooks/useAuth'
-import { logger } from '../../lib/logger'
-import { analyticsMetrics } from '../../lib/analytics-metrics'
+import { useAuth } from '@/hooks/useAuth'
+import { logger } from '@/lib/logger'
+import { analyticsMetrics } from '@/lib/analytics-metrics'
 
 // Tipos de paneles disponibles
 type PanelType = 

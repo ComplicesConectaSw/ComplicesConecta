@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { generateMockSingle, generateMockCouple } from '../../src/lib/data';
-import { inferProfileKind, pickProfileImage } from '../../src/lib/media';
+import { generateMockSingle, generateMockCouple } from '@/lib/data';
+import { inferProfileKind, pickProfileImage } from '@/lib/media';
 
 describe('Profiles - Generación y Validación', () => {
   beforeEach(() => {

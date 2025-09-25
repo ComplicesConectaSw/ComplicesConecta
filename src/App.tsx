@@ -14,6 +14,7 @@ import { NotificationProvider } from "@/components/animations/NotificationSystem
 import { AnimationSettingsButton } from "@/components/animations/AnimationSettings";
 import AdminRoute from '@/components/auth/AdminRoute';
 import ModeratorRoute from '@/components/auth/ModeratorRoute';
+import ProtectedRoute from '@/components/ProtectedRoute';
 
 // Critical pages - loaded immediately
 import Index from "@/pages/Index";
@@ -94,7 +95,11 @@ const App = () => (
                 <Suspense fallback={<PageLoader />}>
                   <Routes>
                   <Route path="/" element={<Index />} />
-                  <Route path="/auth" element={<Auth />} />
+                  <Route path="/auth" element={
+                    <ProtectedRoute requireAuth={false}>
+                      <Auth />
+                    </ProtectedRoute>
+                  } />
                   <Route path="/faq" element={<FAQ />} />
                   <Route path="/feed" element={<Feed />} />
                   <Route path="/profiles" element={<Profiles />} />
@@ -114,7 +119,11 @@ const App = () => (
                   <Route path="/tokens" element={<Tokens />} />
                   <Route path="/settings" element={<Settings />} />
                   <Route path="/premium" element={<Premium />} />
-                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/dashboard" element={
+                    <ProtectedRoute>
+                      <Dashboard />
+                    </ProtectedRoute>
+                  } />
                   <Route path="/support" element={<Support />} />
                   <Route path="/terms" element={<Terms />} />
                   <Route path="/privacy" element={<Privacy />} />

@@ -25,12 +25,12 @@ export const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
           setTimeout(() => onComplete(), 100);
           return 100;
         }
-        return prev + 4;
+        return prev + 8; // Acelerar progreso para reducir tiempo de carga
       });
-    }, 30);
+    }, 20); // Reducir intervalo para carga más rápida
 
     return () => clearInterval(interval);
-  }, [loadingTexts.length, onComplete]);
+  }, [onComplete]);
 
   useEffect(() => {
     const textInterval = setInterval(() => {

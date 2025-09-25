@@ -210,7 +210,7 @@ export default function Tokens() {
           >
             <Button
               onClick={() => setShowStakingModal(true)}
-              className="h-16 w-full flex flex-col items-center justify-center gap-1 bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/20 text-white hover:text-purple-200 transition-all duration-300 border border-input bg-background hover:bg-accent hover:text-accent-foreground"
+              className="h-16 w-full flex flex-col items-center justify-center gap-1 bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/20 text-white hover:text-purple-200 transition-all duration-300"
               disabled={false}
             >
               <span className="text-lg">🔒</span>
@@ -224,7 +224,7 @@ export default function Tokens() {
           >
             <Button
               onClick={refreshTokens}
-              className="h-16 w-full flex flex-col items-center justify-center gap-1 bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/20 text-white hover:text-green-200 transition-all duration-300 border border-input bg-background hover:bg-accent hover:text-accent-foreground"
+              className="h-16 w-full flex flex-col items-center justify-center gap-1 bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/20 text-white hover:text-green-200 transition-all duration-300"
             >
               <span className="text-lg">🔄</span>
               <span className="text-sm font-medium truncate">Actualizar Balance</span>
@@ -237,7 +237,7 @@ export default function Tokens() {
           >
             <Button
               onClick={() => navigate('/tokens-info')}
-              className="h-16 w-full flex flex-col items-center justify-center gap-1 bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/20 text-white hover:text-blue-200 transition-all duration-300 border border-input bg-background hover:bg-accent hover:text-accent-foreground"
+              className="h-16 w-full flex flex-col items-center justify-center gap-1 bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/20 text-white hover:text-blue-200 transition-all duration-300"
             >
               <span className="text-lg">📚</span>
               <span className="text-sm font-medium truncate">Guía de Tokens</span>
@@ -250,7 +250,7 @@ export default function Tokens() {
           >
             <Button
               onClick={() => navigate('/tokens-terms')}
-              className="h-16 w-full flex flex-col items-center justify-center gap-1 bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/20 text-white hover:text-yellow-200 transition-all duration-300 border border-input bg-background hover:bg-accent hover:text-accent-foreground"
+              className="h-16 w-full flex flex-col items-center justify-center gap-1 bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/20 text-white hover:text-yellow-200 transition-all duration-300"
             >
               <span className="text-lg">📋</span>
               <span className="text-sm font-medium truncate">Términos</span>

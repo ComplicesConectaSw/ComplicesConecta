@@ -169,7 +169,15 @@ export class MatchingService {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      return data || [];
+      
+      // Mapear datos de Supabase a nuestra interfaz UserLike usando propiedades reales
+      return (data || []).map(item => ({
+        id: item.id,
+        liker_id: item.user_id || user.id,
+        liked_id: item.liked_user_id || '',
+        created_at: item.created_at || new Date().toISOString(),
+        is_active: item.liked || true
+      }));
 
     } catch (error) {
       logger.error('Error al obtener likes:', { error: error instanceof Error ? error.message : String(error) });
@@ -429,7 +437,19 @@ export class MatchingService {
         .limit(limit);
 
       if (error) throw error;
-      return (data || []).reverse(); // Mostrar mensajes más antiguos primero
+      
+      // Mapear datos de Supabase a nuestra interfaz MatchInteraction usando propiedades reales
+      const mappedData = (data || []).map(item => ({
+        id: item.id,
+        match_id: item.match_id || '',
+        user_id: item.user_id || '',
+        interaction_type: item.interaction_type as 'message' | 'like' | 'view' | 'block' | 'report',
+        content: undefined, // Esta propiedad no existe en la tabla real
+        metadata: undefined, // Esta propiedad no existe en la tabla real
+        created_at: item.created_at || new Date().toISOString()
+      }));
+      
+      return mappedData.reverse(); // Mostrar mensajes más antiguos primero
 
     } catch (error) {
       logger.error('Error al obtener mensajes:', { error: error instanceof Error ? error.message : String(error) });

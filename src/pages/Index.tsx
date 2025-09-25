@@ -44,27 +44,29 @@ const Index = () => {
 
   // Verificar si el usuario está autenticado y detectar Android
   useEffect(() => {
+    // Detectar si se está ejecutando desde la APK instalada
+    const isInWebView = () => {
+      const userAgent = navigator.userAgent.toLowerCase();
+      logger.info('🔍 Detectando entorno de ejecución', { userAgent: userAgent });
+      // Detectar si está en un WebView de Android (APK instalada)
+      return userAgent.includes('wv') || // Android WebView
+             userAgent.includes('version/') && userAgent.includes('chrome/') && userAgent.includes('mobile') && !userAgent.includes('browser');
+    };
+    
+    setIsRunningInApp(isInWebView());
+    
     // Mostrar loading screen al cargar la página
     const timer = setTimeout(() => {
       setIsLoading(false);
-      
-      // Verificar autenticación y redirigir automáticamente al perfil
-      // Usar estado persistente en lugar de localStorage directo
-      
-      // Detectar si se está ejecutando desde la APK instalada
-      // La APK instalada tendrá características específicas del WebView
-      const isInWebView = () => {
-        const userAgent = navigator.userAgent.toLowerCase();
-        logger.info('🔍 Detectando entorno de ejecución', { isInWebView: isInWebView, userAgent: userAgent });
-        // Detectar si está en un WebView de Android (APK instalada)
-        return userAgent.includes('wv') || // Android WebView
-               userAgent.includes('version/') && userAgent.includes('chrome/') && userAgent.includes('mobile') && !userAgent.includes('browser');
-      };
-      
-      setIsRunningInApp(isInWebView());
-      
-      // Redirección automática para usuarios autenticados
-      if (demoAuthenticated && demoUser) {
+    }, 1500); // Reducir tiempo de loading
+
+    return () => clearTimeout(timer);
+  }, []); // Remover dependencias para evitar re-renders
+
+  // Separar la lógica de redirección para evitar loops
+  useEffect(() => {
+    if (!isLoading && demoAuthenticated && demoUser) {
+      const redirectTimer = setTimeout(() => {
         try {
           const userData = typeof demoUser === 'string' ? JSON.parse(demoUser) : demoUser;
           const accountType = userData.account_type || userData.accountType || 'single';
@@ -80,11 +82,11 @@ const Index = () => {
           // Si hay error, redirigir al perfil single por defecto
           navigate('/profile-single');
         }
-      }
-    }, 2000);
+      }, 500);
 
-    return () => clearTimeout(timer);
-  }, [navigate]);
+      return () => clearTimeout(redirectTimer);
+    }
+  }, [isLoading, demoAuthenticated, demoUser, navigate]);
 
   const handleLoadingComplete = () => {
     setIsLoading(false);
@@ -297,7 +299,7 @@ const Index = () => {
         <section className="py-20 relative">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-white mb-4">
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
                 Conoce Más Sobre ComplicesConecta
               </h2>
               <p className="text-xl text-white/90 max-w-3xl mx-auto">

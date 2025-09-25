@@ -4,6 +4,8 @@ import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from '@typescript-eslint/eslint-plugin'
 import tsParser from '@typescript-eslint/parser'
+import importPlugin from 'eslint-plugin-import'
+import unusedImports from 'eslint-plugin-unused-imports'
 
 export default [
   {
@@ -51,6 +53,16 @@ export default [
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
+      'import': importPlugin,
+      'unused-imports': unusedImports,
+    },
+    settings: {
+      'import/resolver': {
+        typescript: {
+          alwaysTryTypes: true,
+          project: './tsconfig.json'
+        }
+      }
     },
     rules: {
       ...js.configs.recommended.rules,
@@ -62,7 +74,20 @@ export default [
       'prefer-const': 'warn',
       'no-var': 'error',
       'react-hooks/exhaustive-deps': 'warn',
-      'react-refresh/only-export-components': 'warn'
+      'react-refresh/only-export-components': 'warn',
+
+      // Import plugin rules
+      'import/no-unresolved': 'error',
+      'import/named': 'error',
+      'import/no-duplicates': 'warn',
+      'import/no-unused-modules': 'warn',
+
+      // Limpieza de imports/variables no usados
+      'unused-imports/no-unused-imports': 'warn',
+      'unused-imports/no-unused-vars': [
+        'warn',
+        { vars: 'all', varsIgnorePattern: '^_', args: 'after-used', argsIgnorePattern: '^_' }
+      ],
     },
   },
   {
@@ -89,13 +114,26 @@ export default [
       '@typescript-eslint': tseslint,
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
+      'import': importPlugin,
+      'unused-imports': unusedImports,
+    },
+    settings: {
+      'import/resolver': {
+        typescript: {
+          alwaysTryTypes: true,
+          project: './tsconfig.json'
+        }
+      }
     },
     rules: {
       ...js.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
+
+      // Apagamos los genéricos y usamos unused-imports
       '@typescript-eslint/no-unused-vars': 'off',
-      '@typescript-eslint/no-explicit-any': 'off',
       'no-unused-vars': 'off',
+
+      // Mantienes otras reglas como las tenías
       'no-undef': 'off',
       'no-empty': 'off',
       'no-redeclare': 'off',
@@ -104,8 +142,19 @@ export default [
       'no-unreachable': 'off',
       'react-hooks/exhaustive-deps': 'off',
       'react-refresh/only-export-components': 'off',
-      // Enforce consistent import paths (disabled for now to avoid breaking existing code)
-      'no-restricted-imports': 'off'
+
+      // Import plugin rules
+      'import/no-unresolved': 'error',
+      'import/named': 'error',
+      'import/no-duplicates': 'warn',
+      'import/no-unused-modules': 'warn',
+
+      // 🚀 Detectar imports y variables no usados símbolo por símbolo
+      'unused-imports/no-unused-imports': 'warn',
+      'unused-imports/no-unused-vars': [
+        'warn',
+        { vars: 'all', varsIgnorePattern: '^_', args: 'after-used', argsIgnorePattern: '^_' }
+      ],
     },
   }
 ]

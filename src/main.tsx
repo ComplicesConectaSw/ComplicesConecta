@@ -38,20 +38,9 @@ if (typeof window !== 'undefined') {
   });
 }
 
-// Debug info for development only
+// Debug info for development only - minimized to reduce console noise
 if (import.meta.env.DEV) {
-  console.log('🚀 ComplicesConecta v3.3.0 starting...', {
-    version: '3.3.0',
-    env: import.meta.env.MODE,
-    supabaseUrl: import.meta.env.VITE_SUPABASE_URL ? 'SET' : 'MISSING',
-    supabaseKey: import.meta.env.VITE_SUPABASE_ANON_KEY ? 'SET' : 'MISSING',
-    appMode: import.meta.env.VITE_APP_MODE,
-    nodeEnv: import.meta.env.NODE_ENV,
-    timestamp: new Date().toISOString()
-  });
-
-  // Force show all environment variables for debugging
-  console.log('🔍 All ENV vars:', import.meta.env);
+  console.log('🚀 ComplicesConecta v3.4.0 starting...');
 }
 
 // Inicializar Sentry para monitoreo de errores
@@ -66,21 +55,19 @@ try {
   console.error('❌ Sentry initialization failed:', error);
 }
 
-// Inicializar Web Vitals monitoring
+// Inicializar Web Vitals monitoring - silencioso para reducir logs
 try {
   const monitor = initWebVitalsMonitoring({
-    enableLogging: import.meta.env.MODE === 'development',
+    enableLogging: false, // Deshabilitar logging para reducir ruido
     enableAnalytics: import.meta.env.MODE === 'production',
     apiEndpoint: '/api/analytics/web-vitals',
     sampleRate: 0.1 // 10% sampling en producción
   });
-  monitor.init().then(() => {
-    if (import.meta.env.DEV) console.log('✅ Web Vitals monitoring initialized');
-  }).catch((error) => {
-    console.error('❌ Web Vitals initialization failed:', error);
+  monitor.init().catch(() => {
+    // Silenciar errores de Web Vitals para evitar ruido en consola
   });
 } catch (error) {
-  console.error('❌ Web Vitals initialization failed:', error);
+  // Silenciar errores de inicialización
 }
 
 // Inicializar preloading crítico

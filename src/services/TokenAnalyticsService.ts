@@ -13,8 +13,8 @@
  * - Dashboard de analytics
  */
 
-import { supabase } from '../integrations/supabase/client'
-import { logger } from '../lib/logger'
+import { supabase } from '@/integrations/supabase/client'
+import { logger } from '@/lib/logger'
 
 // Tipos para analytics de tokens
 export type PeriodType = 'hourly' | 'daily' | 'weekly' | 'monthly'

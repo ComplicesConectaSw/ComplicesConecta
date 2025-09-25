@@ -25,8 +25,8 @@ import {
 } from 'lucide-react';
 
 // Importaciones para analytics de tokens
-import { tokenAnalytics, TokenMetrics } from '../../services/TokenAnalyticsService';
-import { analyticsMetrics } from '../../lib/analytics-metrics';
+import { tokenAnalytics, TokenMetrics } from '@/services/TokenAnalyticsService';
+import { analyticsMetrics } from '@/lib/analytics-metrics';
 
 type AnalyticsData = {
   totalUsers: number;

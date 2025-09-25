@@ -3,10 +3,10 @@ import {
   invitationService,
   Invitation,
   GalleryPermission 
-} from '../../src/lib/invitations';
+} from '@/lib/invitations';
 
 // Mock Supabase client - force fallback to mock data by throwing errors
-vi.mock('../../src/integrations/supabase/client', () => ({
+vi.mock('@/integrations/supabase/client', () => ({
   supabase: {
     from: vi.fn(() => ({
       insert: vi.fn(() => ({

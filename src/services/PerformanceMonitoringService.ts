@@ -13,8 +13,8 @@
  * - Actividad de reportes
  */
 
-import { supabase } from '../integrations/supabase/client'
-import { logger } from '../lib/logger'
+import { supabase } from '@/integrations/supabase/client'
+import { logger } from '@/lib/logger'
 
 // Tipos para las métricas del sistema
 export interface PerformanceMetrics {
