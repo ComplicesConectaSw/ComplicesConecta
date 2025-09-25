@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Send, Shield, Users, Eye } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -264,7 +264,7 @@ const ModeratorApplicationForm = () => {
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <Label className="text-white">Disponibilidad *</Label>
-              <Select value={formData.disponibilidad} onValueChange={(value) => handleInputChange('disponibilidad', value)}>
+              <Select value={formData.disponibilidad} onValueChange={(value: string) => handleInputChange('disponibilidad', value)}>
                 <SelectTrigger className="bg-white/10 border-white/20 text-white">
                   <SelectValue placeholder="Selecciona tu disponibilidad" />
                 </SelectTrigger>
@@ -277,7 +277,7 @@ const ModeratorApplicationForm = () => {
             </div>
             <div>
               <Label className="text-white">Zona Horaria *</Label>
-              <Select value={formData.zonaHoraria} onValueChange={(value) => handleInputChange('zonaHoraria', value)}>
+              <Select value={formData.zonaHoraria} onValueChange={(value: string) => handleInputChange('zonaHoraria', value)}>
                 <SelectTrigger className="bg-white/10 border-white/20 text-white">
                   <SelectValue placeholder="Selecciona tu zona horaria" />
                 </SelectTrigger>
@@ -317,7 +317,7 @@ const ModeratorApplicationForm = () => {
             <Checkbox
               id="terminos-moderador"
               checked={formData.aceptaTerminos}
-              onCheckedChange={(checked) => handleInputChange('aceptaTerminos', !!checked)}
+              onCheckedChange={(checked: boolean) => handleInputChange('aceptaTerminos', !!checked)}
               className="border-white/30"
             />
             <Label htmlFor="terminos-moderador" className="text-white/90 text-sm leading-relaxed">

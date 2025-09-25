@@ -443,17 +443,15 @@ const Discover = () => {
         <div className="flex items-center justify-between max-w-6xl mx-auto">
           <div className="flex items-center space-x-2 sm:space-x-4">
             <Button
-              variant="ghost"
               onClick={() => navigate('/')}
-              className="text-white hover:bg-white/20 p-2 sm:px-4"
+              className="text-white hover:bg-white/20 p-2 sm:px-4 bg-transparent border-none"
             >
               <Home className="h-4 w-4 sm:h-5 sm:w-5 sm:mr-2" />
               <span className="hidden sm:inline">Inicio</span>
             </Button>
             <Button
-              variant="ghost"
               onClick={() => navigate('/profile')}
-              className="text-white hover:bg-white/20 p-2 sm:px-4"
+              className="text-white hover:bg-white/20 p-2 sm:px-4 bg-transparent border-none"
             >
               <User className="h-4 w-4 sm:h-5 sm:w-5 sm:mr-2" />
               <span className="hidden sm:inline">Perfil</span>
@@ -467,25 +465,22 @@ const Discover = () => {
           
           <div className="flex items-center space-x-1 sm:space-x-2">
             <Button
-              variant="ghost"
               onClick={() => setShowCouples(!showCouples)}
-              className={`p-2 sm:px-4 ${showCouples ? 'text-purple-300 bg-white/20' : 'text-white hover:bg-white/20'}`}
+              className={`p-2 sm:px-4 bg-transparent hover:bg-white/20 ${showCouples ? 'text-purple-300 bg-white/20' : 'text-white'}`}
             >
               <span className="hidden sm:inline">{showCouples ? 'Singles' : 'Parejas'}</span>
               <span className="sm:hidden">{showCouples ? 'S' : 'P'}</span>
             </Button>
             <Button
-              variant="ghost"
               onClick={() => setShowFilters(!showFilters)}
-              className="text-white hover:bg-white/20 p-2 sm:px-4"
+              className="text-white hover:bg-white/20 p-2 sm:px-4 bg-transparent"
             >
               <Filter className="h-4 w-4 sm:h-5 sm:w-5 sm:mr-2" />
               <span className="hidden sm:inline">Filtros</span>
             </Button>
             <Button
-              variant="ghost"
               onClick={handleRefresh}
-              className="text-white hover:bg-white/20 p-2"
+              className="text-white hover:bg-white/20 p-2 bg-transparent"
             >
               <RefreshCw className="h-4 w-4 sm:h-5 sm:w-5" />
             </Button>
@@ -542,7 +537,7 @@ const Discover = () => {
                 </label>
                 <Slider
                   value={filters.ageRange}
-                  onValueChange={(value) => setFilters(prev => ({ ...prev, ageRange: value as [number, number] }))}
+                  onValueChange={(value: number[]) => setFilters(prev => ({ ...prev, ageRange: value as [number, number] }))}
                   min={18}
                   max={65}
                   step={1}
@@ -557,7 +552,7 @@ const Discover = () => {
                 </label>
                 <Slider
                   value={[filters.distance]}
-                  onValueChange={(value) => setFilters(prev => ({ ...prev, distance: value[0] }))}
+                  onValueChange={(value: number[]) => setFilters(prev => ({ ...prev, distance: value[0] }))}
                   min={1}
                   max={100}
                   step={1}
@@ -574,11 +569,10 @@ const Discover = () => {
                   {['Lifestyle', 'Swinger', 'Parejas', 'Intercambio', 'Liberal', 'Aventura', 'Diversión', 'Respeto', 'Discreción', 'Experiencia'].map((interest: string) => (
                     <Badge
                       key={interest}
-                      variant={filters.interests.includes(interest) ? "default" : "outline"}
                       className={`cursor-pointer text-xs font-medium transition-all duration-200 hover:scale-105 ${
                         filters.interests.includes(interest) 
                           ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0 shadow-lg" 
-                          : "border-white/60 text-white hover:border-white hover:bg-white/20"
+                          : "border-white/60 text-white hover:border-white hover:bg-white/20 border bg-transparent"
                       }`}
                       onClick={() => {
                         setFilters(prev => ({
@@ -606,11 +600,10 @@ const Discover = () => {
                     return (
                       <Badge
                         key={type}
-                        variant={isSelected ? "default" : "outline"}
                         className={`cursor-pointer text-xs p-2 text-center transition-all duration-200 ${
                           isSelected 
                             ? "bg-purple-600 text-white border-purple-600 hover:bg-purple-700" 
-                            : "border-purple-300 text-purple-700 hover:border-purple-500 hover:bg-purple-50"
+                            : "border-purple-300 text-purple-700 hover:border-purple-500 hover:bg-purple-50 border bg-transparent"
                         }`}
                         onClick={() => {
                           setFilters(prev => ({

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -17,7 +17,7 @@ import {
   Calendar,
   User
 } from 'lucide-react';
-import { toast } from 'sonner';
+import { useToast } from '@/hooks/use-toast';
 import { UserRole, ModerationAction, ReportType, ReportStatus } from '@/lib/roles';
 
 interface Report {
@@ -59,6 +59,7 @@ interface UserSuspension {
 }
 
 const ModeratorDashboard = () => {
+  const { toast } = useToast();
   const [reports, setReports] = useState<Report[]>([]);
   const [moderationLogs, setModerationLogs] = useState<ModerationLog[]>([]);
   const [suspensions, setSuspensions] = useState<UserSuspension[]>([]);
@@ -81,7 +82,11 @@ const ModeratorDashboard = () => {
       ]);
     } catch (error) {
       console.error('Error fetching data:', error);
-      toast.error('Error al cargar los datos');
+      toast({
+        title: "Error",
+        description: "Error al cargar los datos",
+        variant: "destructive"
+      });
     } finally {
       setLoading(false);
     }
@@ -163,7 +168,11 @@ const ModeratorDashboard = () => {
 
   const handleReportAction = async (reportId: string, action: 'approve' | 'reject') => {
     if (!actionReason.trim()) {
-      toast.error('Por favor proporciona una razón para esta acción');
+      toast({
+        title: "Error",
+        description: "Por favor proporciona una razón para esta acción",
+        variant: "destructive"
+      });
       return;
     }
 
@@ -221,13 +230,20 @@ const ModeratorDashboard = () => {
         if (suspensionError) throw suspensionError;
       }
 
-      toast.success(`Reporte ${action === 'approve' ? 'aprobado' : 'rechazado'} exitosamente`);
+      toast({
+        title: "Éxito",
+        description: `Reporte ${action === 'approve' ? 'aprobado' : 'rechazado'} exitosamente`
+      });
       setActionReason('');
       setSelectedReport(null);
       fetchData();
     } catch (error) {
       console.error('Error handling report action:', error);
-      toast.error('Error al procesar la acción');
+      toast({
+        title: "Error",
+        description: "Error al procesar la acción",
+        variant: "destructive"
+      });
     }
   };
 
@@ -260,11 +276,18 @@ const ModeratorDashboard = () => {
           }]);
       }
 
-      toast.success('Suspensión levantada exitosamente');
+      toast({
+        title: "Éxito",
+        description: "Suspensión levantada exitosamente"
+      });
       fetchData();
     } catch (error) {
       console.error('Error lifting suspension:', error);
-      toast.error('Error al levantar la suspensión');
+      toast({
+        title: "Error",
+        description: "Error al levantar la suspensión",
+        variant: "destructive"
+      });
     }
   };
 
@@ -296,7 +319,7 @@ const ModeratorDashboard = () => {
     };
 
     return (
-      <Badge variant={variants[status] || 'secondary'}>
+      <Badge className={`${variants[status] === 'destructive' ? 'bg-red-500 text-white' : variants[status] === 'default' ? 'bg-blue-500 text-white' : 'bg-gray-500 text-white'}`}>
         {labels[status] || status}
       </Badge>
     );
@@ -484,16 +507,14 @@ const ModeratorDashboard = () => {
                           </Button>
                           <Button
                             onClick={() => handleReportAction(report.id, 'reject')}
-                            variant="outline"
-                            className="border-white/20 text-white hover:bg-white/10"
+                            className="border-white/20 text-white hover:bg-white/10 border bg-transparent"
                           >
                             <XCircle className="h-4 w-4 mr-2" />
                             Rechazar Reporte
                           </Button>
                           <Button
                             onClick={() => setSelectedReport(null)}
-                            variant="ghost"
-                            className="text-white hover:bg-white/10"
+                            className="text-white hover:bg-white/10 bg-transparent"
                           >
                             Cancelar
                           </Button>
@@ -554,7 +575,7 @@ const ModeratorDashboard = () => {
                     
                     <div>
                       <p className="text-white/80 text-sm mb-1">Tipo:</p>
-                      <Badge variant={suspension.is_permanent ? 'destructive' : 'secondary'}>
+                      <Badge className={suspension.is_permanent ? 'bg-red-500 text-white' : 'bg-gray-500 text-white'}>
                         {suspension.is_permanent ? 'Permanente' : 'Temporal'}
                       </Badge>
                     </div>

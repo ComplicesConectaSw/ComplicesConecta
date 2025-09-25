@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,9 +16,10 @@ import {
   Target, 
   Users, 
   Send, 
-  DollarSign 
+  DollarSign,
+  MessageSquare
 } from "lucide-react";
-import { toast } from 'sonner';
+import { useToast } from '@/hooks/use-toast';
 import { Link } from 'react-router-dom';
 import { validateModeratorRequest, type ModeratorRequestInput } from '@/lib/validations/moderator';
 
@@ -33,6 +34,7 @@ interface FormData {
 }
 
 const ModeratorRequest = () => {
+  const { toast } = useToast();
   const [formData, setFormData] = useState<FormData>({
     fullName: '',
     email: '',
@@ -61,7 +63,11 @@ const ModeratorRequest = () => {
     const validation = validateModeratorRequest(formData);
     if (!validation.success) {
       const firstError = validation.error.issues[0];
-      toast.error(firstError.message);
+      toast({
+        title: "Error de validación",
+        description: firstError.message,
+        variant: "destructive"
+      });
       return;
     }
 
@@ -77,7 +83,11 @@ const ModeratorRequest = () => {
         .single();
 
       if (existingRequest) {
-        toast.error('Ya tienes una solicitud pendiente. Por favor espera la respuesta del equipo.');
+        toast({
+          title: "Solicitud duplicada",
+          description: "Ya tienes una solicitud pendiente. Por favor espera la respuesta del equipo.",
+          variant: "destructive"
+        });
         return;
       }
 
@@ -98,10 +108,17 @@ const ModeratorRequest = () => {
       if (error) throw error;
 
       setSubmitted(true);
-      toast.success('¡Solicitud enviada exitosamente!');
+      toast({
+        title: "¡Éxito!",
+        description: "Solicitud enviada exitosamente"
+      });
     } catch (error) {
       console.error('Error submitting moderator request:', error);
-      toast.error('Error al enviar la solicitud. Por favor intenta nuevamente.');
+      toast({
+        title: "Error",
+        description: "Error al enviar la solicitud. Por favor intenta nuevamente.",
+        variant: "destructive"
+      });
     } finally {
       setLoading(false);
     }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -360,9 +360,8 @@ const AdminDashboard = () => {
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between max-w-7xl mx-auto gap-3 sm:gap-0">
             <div className="flex items-center gap-3">
               <Button 
-                variant="ghost" 
                 onClick={() => navigate(-1)}
-                className="text-white hover:bg-white/10 transition-all duration-300 hover:scale-105"
+                className="text-white hover:bg-white/10 transition-all duration-300 hover:scale-105 bg-transparent"
               >
                 <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
                 Volver
@@ -374,11 +373,9 @@ const AdminDashboard = () => {
             </div>
             <div className="flex items-center gap-2">
               <Button
-                variant="outline"
-                size="sm"
                 onClick={() => loadDashboardData()}
                 disabled={refreshing}
-                className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                className="bg-white/10 border border-white/20 text-white hover:bg-white/20 text-sm px-3 py-1.5"
               >
                 <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
                 Actualizar
@@ -504,11 +501,11 @@ const AdminDashboard = () => {
                   <CardContent className="space-y-4">
                     <div className="flex justify-between items-center">
                       <span className="text-white/80">Reportes Pendientes</span>
-                      <Badge variant="destructive">{stats.reportsCount}</Badge>
+                      <Badge className="bg-red-500 text-white">{stats.reportsCount}</Badge>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-white/80">Moderadores Activos</span>
-                      <Badge className="bg-green-500">{stats.moderatorsCount}</Badge>
+                      <Badge className="bg-green-500 text-white">{stats.moderatorsCount}</Badge>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-white/80">Tasa de Conversión</span>
@@ -589,7 +586,7 @@ const AdminDashboard = () => {
                             </p>
                           </div>
                         </div>
-                        <Badge variant={user.is_active ? "default" : "secondary"}>
+                        <Badge className={user.is_active ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}>
                           {user.is_active ? 'Activo' : 'Inactivo'}
                         </Badge>
                       </div>
@@ -626,9 +623,8 @@ const AdminDashboard = () => {
                             {report.severity}
                           </Badge>
                           <Button
-                            size="sm"
                             onClick={() => resolveReport(report.id)}
-                            className="bg-green-600 hover:bg-green-700 text-white"
+                            className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 text-sm"
                           >
                             Resolver
                           </Button>

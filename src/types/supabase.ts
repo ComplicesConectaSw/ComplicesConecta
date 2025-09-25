@@ -132,6 +132,51 @@ export type Database = {
           },
         ]
       }
+      chat_messages: {
+        Row: {
+          content: string
+          created_at: string | null
+          id: string
+          message_type: string | null
+          room_id: string | null
+          sender_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          id?: string
+          message_type?: string | null
+          room_id?: string | null
+          sender_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          id?: string
+          message_type?: string | null
+          room_id?: string | null
+          sender_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_messages_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "chat_rooms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "chat_messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       chat_rooms: {
         Row: {
           created_at: string | null
@@ -158,6 +203,45 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      comment_likes: {
+        Row: {
+          comment_id: string
+          created_at: string | null
+          id: string
+          profile_id: string | null
+          user_id: string
+        }
+        Insert: {
+          comment_id: string
+          created_at?: string | null
+          id?: string
+          profile_id?: string | null
+          user_id: string
+        }
+        Update: {
+          comment_id?: string
+          created_at?: string | null
+          id?: string
+          profile_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comment_likes_comment_id_fkey"
+            columns: ["comment_id"]
+            isOneToOne: false
+            referencedRelation: "post_comments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comment_likes_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       couple_profiles: {
         Row: {
@@ -430,6 +514,41 @@ export type Database = {
         }
         Relationships: []
       }
+      media_access_logs: {
+        Row: {
+          access_type: string
+          accessed_at: string | null
+          created_at: string | null
+          id: string
+          media_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          access_type: string
+          accessed_at?: string | null
+          created_at?: string | null
+          id?: string
+          media_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          access_type?: string
+          accessed_at?: string | null
+          created_at?: string | null
+          id?: string
+          media_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "media_access_logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       messages: {
         Row: {
           content: string
@@ -555,6 +674,47 @@ export type Database = {
         }
         Relationships: []
       }
+      notification_preferences: {
+        Row: {
+          created_at: string | null
+          delivery_method: string | null
+          enabled: boolean | null
+          id: string
+          notification_type: string
+          settings: Json | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          delivery_method?: string | null
+          enabled?: boolean | null
+          id?: string
+          notification_type: string
+          settings?: Json | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          delivery_method?: string | null
+          enabled?: boolean | null
+          id?: string
+          notification_type?: string
+          settings?: Json | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_preferences_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       pending_rewards: {
         Row: {
           amount: number
@@ -593,6 +753,213 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      post_comments: {
+        Row: {
+          content: string
+          created_at: string | null
+          deleted_at: string | null
+          id: string
+          likes_count: number
+          parent_comment_id: string | null
+          post_id: string
+          profile_id: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          deleted_at?: string | null
+          id?: string
+          likes_count?: number
+          parent_comment_id?: string | null
+          post_id: string
+          profile_id?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          deleted_at?: string | null
+          id?: string
+          likes_count?: number
+          parent_comment_id?: string | null
+          post_id?: string
+          profile_id?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_comments_parent_comment_id_fkey"
+            columns: ["parent_comment_id"]
+            isOneToOne: false
+            referencedRelation: "post_comments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "post_comments_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "post_comments_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      post_likes: {
+        Row: {
+          created_at: string | null
+          id: string
+          post_id: string
+          profile_id: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          post_id: string
+          profile_id?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          post_id?: string
+          profile_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_likes_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "post_likes_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      post_shares: {
+        Row: {
+          created_at: string | null
+          id: string
+          post_id: string
+          profile_id: string | null
+          share_type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          post_id: string
+          profile_id?: string | null
+          share_type?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          post_id?: string
+          profile_id?: string | null
+          share_type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_shares_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "post_shares_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      posts: {
+        Row: {
+          comments_count: number
+          content: string
+          created_at: string | null
+          deleted_at: string | null
+          id: string
+          image_url: string | null
+          is_premium: boolean
+          is_public: boolean
+          likes_count: number
+          location: string | null
+          post_type: string
+          profile_id: string | null
+          shares_count: number
+          updated_at: string | null
+          user_id: string
+          video_url: string | null
+        }
+        Insert: {
+          comments_count?: number
+          content: string
+          created_at?: string | null
+          deleted_at?: string | null
+          id?: string
+          image_url?: string | null
+          is_premium?: boolean
+          is_public?: boolean
+          likes_count?: number
+          location?: string | null
+          post_type?: string
+          profile_id?: string | null
+          shares_count?: number
+          updated_at?: string | null
+          user_id: string
+          video_url?: string | null
+        }
+        Update: {
+          comments_count?: number
+          content?: string
+          created_at?: string | null
+          deleted_at?: string | null
+          id?: string
+          image_url?: string | null
+          is_premium?: boolean
+          is_public?: boolean
+          likes_count?: number
+          location?: string | null
+          post_type?: string
+          profile_id?: string | null
+          shares_count?: number
+          updated_at?: string | null
+          user_id?: string
+          video_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "posts_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
@@ -684,6 +1051,53 @@ export type Database = {
         }
         Relationships: []
       }
+      referral_rewards: {
+        Row: {
+          amount: number
+          claimed: boolean | null
+          claimed_at: string | null
+          created_at: string | null
+          description: string | null
+          expires_at: string | null
+          id: string
+          referral_code: string
+          reward_type: string
+          user_id: string | null
+        }
+        Insert: {
+          amount?: number
+          claimed?: boolean | null
+          claimed_at?: string | null
+          created_at?: string | null
+          description?: string | null
+          expires_at?: string | null
+          id?: string
+          referral_code: string
+          reward_type: string
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          claimed?: boolean | null
+          claimed_at?: string | null
+          created_at?: string | null
+          description?: string | null
+          expires_at?: string | null
+          id?: string
+          referral_code?: string
+          reward_type?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "referral_rewards_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       reports: {
         Row: {
           content_type: string
@@ -748,6 +1162,7 @@ export type Database = {
           created_at: string
           id: string
           metadata: Json | null
+          metric_name: string | null
           metric_type: string
           metric_unit: string
           metric_value: number
@@ -757,6 +1172,7 @@ export type Database = {
           created_at?: string
           id?: string
           metadata?: Json | null
+          metric_name?: string | null
           metric_type: string
           metric_unit?: string
           metric_value: number
@@ -766,6 +1182,7 @@ export type Database = {
           created_at?: string
           id?: string
           metadata?: Json | null
+          metric_name?: string | null
           metric_type?: string
           metric_unit?: string
           metric_value?: number
@@ -1296,6 +1713,35 @@ export type Database = {
         Args: { staking_id_param: string }
         Returns: Json
       }
+      create_notification: {
+        Args: {
+          body: string
+          data?: Json
+          notification_type: string
+          title: string
+          user_id: string
+        }
+        Returns: Json
+      }
+      create_post: {
+        Args:
+          | {
+              p_content: string
+              p_image_url?: string
+              p_location?: string
+              p_post_type?: string
+              p_profile_id: string
+              p_user_id: string
+              p_video_url?: string
+            }
+          | {
+              p_content: string
+              p_post_type?: string
+              p_profile_id: string
+              p_user_id: string
+            }
+        Returns: Json
+      }
       generate_referral_code: {
         Args: { user_uuid: string }
         Returns: string
@@ -1326,9 +1772,44 @@ export type Database = {
           updated_at: string
         }[]
       }
+      get_post_comments: {
+        Args: { page_limit?: number; page_offset?: number; post_uuid: string }
+        Returns: {
+          content: string
+          created_at: string
+          id: string
+          likes_count: number
+          parent_comment_id: string
+          profile_avatar: string
+          profile_id: string
+          profile_name: string
+          user_id: string
+          user_liked: boolean
+        }[]
+      }
+      get_potential_matches: {
+        Args: { limit_param?: number; user_id_param: string }
+        Returns: Json
+      }
+      get_user_feed: {
+        Args: {
+          limit_param?: number
+          offset_param?: number
+          user_id_param: string
+        }
+        Returns: Json
+      }
+      get_user_matches: {
+        Args: { user_id_param: string }
+        Returns: Json
+      }
       process_referral_reward: {
         Args: { new_user_id: string; referral_code_param: string }
         Returns: Json
+      }
+      remove_post_like: {
+        Args: { p_post_id: string; p_user_id: string }
+        Returns: undefined
       }
       reset_monthly_limits: {
         Args: Record<PropertyKey, never>
@@ -1341,6 +1822,10 @@ export type Database = {
           user_id_param: string
         }
         Returns: Json
+      }
+      toggle_post_like: {
+        Args: { p_post_id: string; p_user_id: string }
+        Returns: boolean
       }
     }
     Enums: {

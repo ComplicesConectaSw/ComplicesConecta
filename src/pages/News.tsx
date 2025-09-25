@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { Header } from '@/components/Header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -126,9 +126,8 @@ const News: React.FC = () => {
       <div className="bg-black/80 backdrop-blur-md border-b border-white/30 p-4 shadow-lg">
         <div className="flex items-center justify-between max-w-4xl mx-auto">
           <Button
-            variant="ghost"
             onClick={() => navigate(-1)}
-            className="text-white hover:bg-white/10 flex items-center gap-2"
+            className="text-white hover:bg-white/10 flex items-center gap-2 bg-transparent"
           >
             <ArrowLeft className="h-4 w-4" />
             <span className="hidden sm:inline">Regresar</span>
@@ -177,7 +176,7 @@ const News: React.FC = () => {
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
                       <h3 className="text-xl font-bold text-white">{update.title}</h3>
-                      <Badge variant="secondary" className={getTypeColor(update.type)}>
+                      <Badge className={getTypeColor(update.type)}>
                         {getTypeLabel(update.type)}
                       </Badge>
                     </div>
@@ -187,7 +186,7 @@ const News: React.FC = () => {
                         <Calendar className="h-4 w-4" />
                         <span className="text-sm">{update.date}</span>
                       </div>
-                      <Badge variant="outline" className="border-white/30 text-white">
+                      <Badge className="border-white/30 text-white border bg-transparent">
                         {update.version}
                       </Badge>
                     </div>

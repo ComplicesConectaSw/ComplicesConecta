@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { Header } from '@/components/Header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -93,9 +93,8 @@ const Legal: React.FC = () => {
         <div className="bg-black/30 backdrop-blur-sm border-b border-white/10 p-4">
           <div className="flex items-center justify-between max-w-4xl mx-auto">
           <Button
-            variant="ghost"
             onClick={() => navigate(-1)}
-            className="text-white hover:bg-white/10 flex items-center gap-2"
+            className="text-white hover:bg-white/10 flex items-center gap-2 bg-transparent"
           >
             <ArrowLeft className="h-4 w-4" />
             <span className="hidden sm:inline">Regresar</span>
@@ -172,7 +171,7 @@ const Legal: React.FC = () => {
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-3">
-                <Badge variant="secondary" className="bg-green-500/20 text-green-300 border-green-400/30">
+                <Badge className="bg-green-500/20 text-green-300 border-green-400/30">
                   Derechos ARCO
                 </Badge>
                 <ul className="space-y-2 text-white/80 text-sm">
@@ -183,7 +182,7 @@ const Legal: React.FC = () => {
                 </ul>
               </div>
               <div className="space-y-3">
-                <Badge variant="secondary" className="bg-blue-500/20 text-blue-300 border-blue-400/30">
+                <Badge className="bg-blue-500/20 text-blue-300 border-blue-400/30">
                   Derechos Adicionales
                 </Badge>
                 <ul className="space-y-2 text-white/80 text-sm">
@@ -270,7 +269,7 @@ const Legal: React.FC = () => {
                       <div className="flex-1">
                         <h3 className="font-semibold text-white text-sm">{doc.title}</h3>
                         <div className="flex items-center gap-2 mt-1">
-                          <Badge variant="secondary" className="text-xs bg-white/20 text-white border-white/30">
+                          <Badge className="text-xs bg-white/20 text-white border-white/30">
                             {doc.category}
                           </Badge>
                         </div>
@@ -288,8 +287,7 @@ const Legal: React.FC = () => {
                     <div className="flex gap-2">
                       <Button
                         onClick={() => window.open(`/legal/${doc.file}`, '_blank')}
-                        className="flex-1 bg-white/20 hover:bg-white/30 text-white text-xs"
-                        size="sm"
+                        className="flex-1 bg-white/20 hover:bg-white/30 text-white text-xs px-3 py-1"
                       >
                         <Eye className="h-3 w-3 mr-1" />
                         Ver
@@ -301,9 +299,7 @@ const Legal: React.FC = () => {
                           link.download = doc.file;
                           link.click();
                         }}
-                        variant="outline"
-                        className="border-white/30 text-white hover:bg-white/10 text-xs"
-                        size="sm"
+                        className="border-white/30 text-white hover:bg-white/10 text-xs border bg-transparent px-3 py-1"
                       >
                         <Download className="h-3 w-3" />
                       </Button>
@@ -386,8 +382,7 @@ const Legal: React.FC = () => {
           
           <Button
             onClick={() => navigate('/privacy')}
-            variant="outline"
-            className="border-white/30 text-white hover:bg-white/10"
+            className="border-white/30 text-white hover:bg-white/10 border bg-transparent"
           >
             <Shield className="h-4 w-4 mr-2" />
             Política de Privacidad

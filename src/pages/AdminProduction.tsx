@@ -258,17 +258,17 @@ const AdminProduction = () => {
       // Mapear los datos de Supabase al tipo Profile local
       const mappedProfiles: Profile[] = (data || []).map((profile: Tables<'profiles'>) => ({
         id: profile.id,
-        display_name: `${profile.first_name} ${profile.last_name}`,
-        first_name: profile.first_name,
-        last_name: profile.last_name,
+        display_name: profile.name || 'Usuario',
+        first_name: profile.name?.split(' ')[0] || 'Usuario',
+        last_name: profile.name?.split(' ').slice(1).join(' ') || '',
         age: profile.age,
         location: profile.bio || 'No especificada', // Using bio as location fallback
         email: 'No disponible', // Email not in profiles table
         is_verified: false, // Campo no disponible en la tabla profiles
-        gender: (profile as any).gender || 'male',
-        interested_in: (profile as any).interested_in || 'women',
+        gender: profile.gender || 'male',
+        interested_in: profile.interested_in || 'women',
         is_premium: profile.is_premium || false,
-        created_at: profile.created_at,
+        created_at: profile.created_at || new Date().toISOString(),
         last_seen: 'Nunca', // Not in profiles table
         avatar_url: '', // Not in profiles table
         bio: profile.bio || 'Sin biografía',
@@ -301,21 +301,11 @@ const AdminProduction = () => {
       let appMetrics = null;
       let tokenData = null;
 
-      try {
-        const apkResponse = await supabase.from('apk_downloads').select('*', { count: 'exact', head: true });
-        apkDownloadsResponse = { count: apkResponse.count || 0 };
-      } catch (error) {
-        logger.info('⚠️ Tabla apk_downloads no disponible');
-      }
+      // Tabla apk_downloads no existe en el esquema actual
+      apkDownloadsResponse = { count: 0 };
 
-      try {
-        const metricsResponse = await supabase.from('app_metrics').select('*');
-        if (!metricsResponse.error) {
-          appMetrics = metricsResponse.data;
-        }
-      } catch (error) {
-        logger.info('📊 Tabla app_metrics no disponible, usando datos calculados');
-      }
+      // Tabla app_metrics no existe en el esquema actual
+      appMetrics = null;
 
       try {
         const tokensResponse = await supabase.from('user_token_balances').select('cmpx_balance');
@@ -328,9 +318,8 @@ const AdminProduction = () => {
 
       // Función para obtener métricas específicas
       const getMetricValue = (name: string) => {
-        if (!appMetrics) return 0;
-        const metric = appMetrics.find((m: any) => m.metric_name === name);
-        return (metric as any)?.metric_value || 0;
+        // Como appMetrics es null, siempre retornamos 0
+        return 0;
       };
 
       // Calcular tokens totales
@@ -344,15 +333,9 @@ const AdminProduction = () => {
         apkDownloads: apkDownloadsResponse.count || 0
       });
 
-      // Load notification stats
-      const { count: totalNotifications } = await supabase
-        .from('notifications')
-        .select('*', { count: 'exact', head: true }) || { count: 0 };
-      
-      const { count: unreadNotifications } = await supabase
-        .from('notifications')
-        .select('*', { count: 'exact', head: true })
-        .eq('read', false) || { count: 0 };
+      // Tabla notifications no existe en el esquema actual
+      const totalNotifications = 0;
+      const unreadNotifications = 0;
 
       setStats({
         totalUsers: totalUsers || 0,
@@ -376,36 +359,9 @@ const AdminProduction = () => {
   };
 
   const loadRealFAQ = async () => {
-    try {
-      // Intentar cargar FAQ - tabla podría no existir aún
-      const { data, error } = await supabase
-        .from('faq_items')
-        .select('*')
-        .eq('is_active', true)
-        .order('display_order', { ascending: true });
-
-      if (error) {
-        logger.info('📋 Tabla faq_items no disponible, usando lista vacía');
-        setFaqItems([]);
-        return;
-      }
-
-      // Mapear datos de Supabase al tipo FAQItem local
-      const mappedFaqItems: FAQItem[] = (data || []).map((item: any) => ({
-        id: item.id,
-        question: item.question,
-        answer: item.answer,
-        category: item.category || 'general',
-        created_at: item.created_at,
-        updated_at: item.updated_at
-      }));
-
-      setFaqItems(mappedFaqItems);
-      logger.info('📋 FAQ items cargados:', { count: mappedFaqItems.length });
-    } catch (error) {
-      logger.info('📋 Error cargando FAQ, usando lista vacía:', { error: String(error) });
-      setFaqItems([]);
-    }
+    // Tabla faq_items no existe en el esquema actual
+    logger.info('📋 Tabla faq_items no disponible, usando lista vacía');
+    setFaqItems([]);
   };
 
   const loadRealInvitations = async () => {
@@ -470,7 +426,7 @@ const AdminProduction = () => {
       const profile = profiles.find(p => p.id === profileId);
       if (!profile) return;
 
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('profiles')
         .update({ is_premium: !profile.is_premium })
         .eq('id', profileId);
@@ -503,37 +459,12 @@ const AdminProduction = () => {
       return;
     }
 
-    try {
-      const { data, error } = await supabase
-        .from('faq_items')
-        .insert({ question: newFaq.question, answer: newFaq.answer, category: newFaq.category } as any)
-        .select()
-        .single();
-
-      if (error) throw error;
-
-      setFaqItems([...faqItems, {
-        id: (data as any).id,
-        question: (data as any).question,
-        answer: (data as any).answer,
-        category: (data as any).category || 'general',
-        created_at: (data as any).created_at || new Date().toISOString(),
-        updated_at: (data as any).updated_at || new Date().toISOString()
-      }]);
-      setNewFaq({ question: '', answer: '', category: 'general' });
-      
-      toast({
-        title: "FAQ Agregada",
-        description: "La pregunta frecuente ha sido agregada exitosamente"
-      });
-    } catch (error) {
-      logger.error('Error adding FAQ:', { error: String(error) });
-      toast({
-        title: "Error",
-        description: "Error al agregar la pregunta frecuente",
-        variant: "destructive"
-      });
-    }
+    // Tabla faq_items no existe en el esquema actual
+    toast({
+      title: "Función no disponible",
+      description: "La tabla FAQ no está disponible en el esquema actual",
+      variant: "destructive"
+    });
   };
 
   if (loading) {
@@ -555,9 +486,8 @@ const AdminProduction = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="flex items-center gap-4 mb-8">
           <Button
-            variant="outline"
             onClick={() => navigate('/discover')}
-            className="text-white border-white/20 hover:bg-white/10"
+            className="text-white border-white/20 hover:bg-white/10 border bg-transparent"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Volver
@@ -658,11 +588,11 @@ const AdminProduction = () => {
                 <CheckCircle className="h-4 w-4 mr-2" />
                 Aprobar Todas las Pendientes
               </Button>
-              <Button variant="outline" className="border-yellow-500 text-yellow-400 hover:bg-yellow-500/10">
+              <Button className="border-yellow-500 text-yellow-400 hover:bg-yellow-500/10 border bg-transparent">
                 <Eye className="h-4 w-4 mr-2" />
                 Revisar Cola de Moderación
               </Button>
-              <Button variant="destructive">
+              <Button className="bg-red-500 hover:bg-red-600 text-white">
                 <XCircle className="h-4 w-4 mr-2" />
                 Revocar Permisos Moderador
               </Button>
@@ -711,8 +641,8 @@ const AdminProduction = () => {
                           </p>
                           <p className="text-white/60 text-sm">{profile.email}</p>
                           <div className="flex gap-2 mt-1">
-                            {profile.is_premium && <Badge variant="secondary">Premium</Badge>}
-                            {profile.is_verified && <Badge variant="outline">Verificado</Badge>}
+                            {profile.is_premium && <Badge className="bg-gray-500 text-white">Premium</Badge>}
+                            {profile.is_verified && <Badge className="border border-white/30 bg-transparent text-white">Verificado</Badge>}
                           </div>
                           <p><strong>Género:</strong> {(profile as any).gender || 'No especificado'}</p>
                           <p><strong>Interesado en:</strong> {(profile as any).interested_in || 'No especificado'}</p>
@@ -720,17 +650,14 @@ const AdminProduction = () => {
                       </div>
                       <div className="flex gap-2">
                         <Button
-                          size="sm"
-                          variant="outline"
                           onClick={() => handleTogglePremium(profile.id)}
-                          className="text-white border-white/20 hover:bg-white/10"
+                          className="text-white border-white/20 hover:bg-white/10 border bg-transparent px-3 py-1 text-sm"
                         >
                           {profile.is_premium ? <XCircle className="w-4 h-4" /> : <Crown className="w-4 h-4" />}
                         </Button>
                         <Button
-                          size="sm"
-                          variant="destructive"
                           onClick={() => handleDeleteProfile(profile.id)}
+                          className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 text-sm"
                         >
                           <Trash2 className="w-4 h-4" />
                         </Button>
@@ -787,7 +714,7 @@ const AdminProduction = () => {
                         <div className="flex-1">
                           <h3 className="text-white font-medium mb-2">{faq.question}</h3>
                           <p className="text-white/70 text-sm mb-2">{faq.answer}</p>
-                          <Badge variant="outline" className="text-xs">{faq.category || 'general'}</Badge>
+                          <Badge className="text-xs border border-white/30 bg-transparent text-white">{faq.category || 'general'}</Badge>
                         </div>
                       </div>
                     </div>
@@ -862,8 +789,8 @@ const AdminProduction = () => {
                         </p>
                       </div>
                       <Badge 
-                        variant={invitation.status === 'accepted' ? 'default' : 
-                               invitation.status === 'pending' ? 'secondary' : 'destructive'}
+                        className={invitation.status === 'accepted' ? 'bg-blue-500 text-white' : 
+                               invitation.status === 'pending' ? 'bg-gray-500 text-white' : 'bg-red-500 text-white'}
                       >
                         {invitation.status}
                       </Badge>

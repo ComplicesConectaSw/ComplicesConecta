@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -267,9 +267,8 @@ export default function ProfileThemeDemo({
           Aplicar Tema
         </Button>
         <Button
-          variant="outline"
+          className="border border-white/30 bg-transparent text-white hover:bg-white/10"
           onClick={() => setPreviewTheme('')}
-          className="border-white/30 text-white hover:bg-white/10"
         >
           Restablecer
         </Button>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -193,7 +193,7 @@ const ProfileSingle: React.FC = () => {
           <CardContent className="p-6 text-center">
             <h2 className="text-xl font-semibold mb-2">Perfil no encontrado</h2>
             <p className="text-white/80 mb-4">No se pudo cargar la información del perfil.</p>
-            <Button onClick={() => navigate('/discover')} variant="outline">
+            <Button onClick={() => navigate('/discover')} className="border border-white/30 bg-transparent text-white hover:bg-white/10">
               Volver al inicio
             </Button>
           </CardContent>
@@ -249,13 +249,13 @@ const ProfileSingle: React.FC = () => {
                     {profile.name}
                   </h2>
                   <div className="flex flex-wrap gap-2 justify-center sm:justify-start mb-4">
-                    <Badge variant="secondary" className="bg-white/20 text-white border-white/30 text-xs sm:text-sm">
+                    <Badge className="bg-white/20 text-white border-white/30 text-xs sm:text-sm">
                       {profile.age} años
                     </Badge>
-                    <Badge variant="secondary" className="bg-white/20 text-white border-white/30 text-xs sm:text-sm">
+                    <Badge className="bg-white/20 text-white border-white/30 text-xs sm:text-sm">
                       {profile.gender || 'No especificado'}
                     </Badge>
-                    <Badge variant="secondary" className="bg-white/20 text-white border-white/30 flex items-center gap-1 text-xs sm:text-sm">
+                    <Badge className="bg-white/20 text-white border-white/30 flex items-center gap-1 text-xs sm:text-sm">
                       <MapPin className="w-3 h-3" />
                       {profile.location || 'CDMX, México'}
                     </Badge>
@@ -273,7 +273,6 @@ const ProfileSingle: React.FC = () => {
                     <Button 
                       onClick={() => navigate('/edit-profile-single')}
                       className="bg-white/20 hover:bg-white/30 text-white border-white/30 flex items-center gap-2 text-sm sm:text-base px-3 sm:px-4 py-2"
-                      size="sm"
                     >
                       <Edit className="w-4 h-4" />
                       <span className="hidden sm:inline">Editar Perfil</span>
@@ -282,9 +281,7 @@ const ProfileSingle: React.FC = () => {
                     
                     <Button 
                       onClick={() => setShowReportDialog(true)}
-                      variant="outline"
-                      className="bg-red-500/20 hover:bg-red-600/30 text-red-200 border-red-400/30 flex items-center gap-2 text-sm sm:text-base px-3 sm:px-4 py-2"
-                      size="sm"
+                      className="bg-red-500/20 hover:bg-red-600/30 text-red-200 border-red-400/30 flex items-center gap-2 text-sm sm:text-base px-3 sm:px-4 py-2 border"
                     >
                       <Flag className="w-4 h-4" />
                       <span className="hidden sm:inline">Reportar</span>
@@ -296,7 +293,6 @@ const ProfileSingle: React.FC = () => {
                       <Button 
                         onClick={() => setShowPrivateImageRequest(true)}
                         className="bg-purple-600/80 hover:bg-purple-700/80 text-white flex items-center gap-2 text-sm sm:text-base px-3 sm:px-4 py-2"
-                        size="sm"
                       >
                         <Lock className="w-4 h-4" />
                         <span className="hidden sm:inline">Ver Fotos Privadas</span>
@@ -309,7 +305,6 @@ const ProfileSingle: React.FC = () => {
                       <Button 
                         disabled
                         className="bg-yellow-600/80 text-white flex items-center gap-2 text-sm sm:text-base px-3 sm:px-4 py-2"
-                        size="sm"
                       >
                         <Lock className="w-4 h-4" />
                         <span className="hidden sm:inline">Solicitud Pendiente</span>
@@ -322,7 +317,6 @@ const ProfileSingle: React.FC = () => {
                       <Button 
                         onClick={() => {/* Mostrar galería privada */}}
                         className="bg-green-600/80 hover:bg-green-700/80 text-white flex items-center gap-2 text-sm sm:text-base px-3 sm:px-4 py-2"
-                        size="sm"
                       >
                         <Images className="w-4 h-4" />
                         <span className="hidden sm:inline">Fotos Privadas</span>
@@ -382,7 +376,6 @@ const ProfileSingle: React.FC = () => {
                 {['Viajes', 'Música', 'Deportes', 'Cocina', 'Lectura', 'Cine', 'Arte', 'Naturaleza'].map((interest) => (
                   <Badge 
                     key={interest} 
-                    variant="secondary" 
                     className="bg-gradient-to-r from-pink-500/20 to-purple-600/20 text-white border-pink-400/30 hover:bg-pink-500/30 transition-colors"
                   >
                     {interest}

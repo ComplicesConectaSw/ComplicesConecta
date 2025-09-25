@@ -260,9 +260,8 @@ const About = () => {
                   Crear Cuenta Gratis
                 </Button>
                 <Button 
-                  variant="outline"
                   onClick={() => navigate('/support')}
-                  className="border-white/30 text-white hover:bg-white/10 px-8 py-3 transition-all duration-300 hover:scale-105"
+                  className="border-white/30 text-white hover:bg-white/10 px-8 py-3 transition-all duration-300 hover:scale-105 border bg-transparent"
                 >
                   Contactar Soporte
                 </Button>

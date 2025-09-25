@@ -65,39 +65,6 @@ export type Database = {
         }
         Relationships: []
       }
-      chat_messages: {
-        Row: {
-          content: string
-          created_at: string | null
-          id: string
-          is_deleted: boolean | null
-          message_type: string | null
-          room_id: string | null
-          sender_id: string | null
-          updated_at: string | null
-        }
-        Insert: {
-          content: string
-          created_at?: string | null
-          id?: string
-          is_deleted?: boolean | null
-          message_type?: string | null
-          room_id?: string | null
-          sender_id?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          content?: string
-          created_at?: string | null
-          id?: string
-          is_deleted?: boolean | null
-          message_type?: string | null
-          room_id?: string | null
-          sender_id?: string | null
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
       chat_invitations: {
         Row: {
           created_at: string | null
@@ -161,6 +128,51 @@ export type Database = {
             columns: ["room_id"]
             isOneToOne: false
             referencedRelation: "chat_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      chat_messages: {
+        Row: {
+          content: string
+          created_at: string | null
+          id: string
+          message_type: string | null
+          room_id: string | null
+          sender_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          id?: string
+          message_type?: string | null
+          room_id?: string | null
+          sender_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          id?: string
+          message_type?: string | null
+          room_id?: string | null
+          sender_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_messages_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "chat_rooms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "chat_messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -502,6 +514,41 @@ export type Database = {
         }
         Relationships: []
       }
+      media_access_logs: {
+        Row: {
+          access_type: string
+          accessed_at: string | null
+          created_at: string | null
+          id: string
+          media_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          access_type: string
+          accessed_at?: string | null
+          created_at?: string | null
+          id?: string
+          media_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          access_type?: string
+          accessed_at?: string | null
+          created_at?: string | null
+          id?: string
+          media_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "media_access_logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       messages: {
         Row: {
           content: string
@@ -626,6 +673,47 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      notification_preferences: {
+        Row: {
+          created_at: string | null
+          delivery_method: string | null
+          enabled: boolean | null
+          id: string
+          notification_type: string
+          settings: Json | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          delivery_method?: string | null
+          enabled?: boolean | null
+          id?: string
+          notification_type: string
+          settings?: Json | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          delivery_method?: string | null
+          enabled?: boolean | null
+          id?: string
+          notification_type?: string
+          settings?: Json | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_preferences_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       pending_rewards: {
         Row: {
@@ -962,6 +1050,53 @@ export type Database = {
           warnings_count?: number | null
         }
         Relationships: []
+      }
+      referral_rewards: {
+        Row: {
+          amount: number
+          claimed: boolean | null
+          claimed_at: string | null
+          created_at: string | null
+          description: string | null
+          expires_at: string | null
+          id: string
+          referral_code: string
+          reward_type: string
+          user_id: string | null
+        }
+        Insert: {
+          amount?: number
+          claimed?: boolean | null
+          claimed_at?: string | null
+          created_at?: string | null
+          description?: string | null
+          expires_at?: string | null
+          id?: string
+          referral_code: string
+          reward_type: string
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          claimed?: boolean | null
+          claimed_at?: string | null
+          created_at?: string | null
+          description?: string | null
+          expires_at?: string | null
+          id?: string
+          referral_code?: string
+          reward_type?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "referral_rewards_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       reports: {
         Row: {
@@ -1448,84 +1583,6 @@ export type Database = {
           },
         ]
       }
-      media_access_logs: {
-        Row: {
-          access_type: string | null
-          created_at: string | null
-          id: string
-          media_id: string | null
-          user_id: string | null
-        }
-        Insert: {
-          access_type?: string | null
-          created_at?: string | null
-          id?: string
-          media_id?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          access_type?: string | null
-          created_at?: string | null
-          id?: string
-          media_id?: string | null
-          user_id?: string | null
-        }
-        Relationships: []
-      }
-      notification_preferences: {
-        Row: {
-          created_at: string | null
-          email_notifications: boolean | null
-          id: string
-          push_notifications: boolean | null
-          updated_at: string | null
-          user_id: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          email_notifications?: boolean | null
-          id?: string
-          push_notifications?: boolean | null
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          email_notifications?: boolean | null
-          id?: string
-          push_notifications?: boolean | null
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Relationships: []
-      }
-      referral_rewards: {
-        Row: {
-          amount: number | null
-          created_at: string | null
-          id: string
-          referral_id: string | null
-          reward_type: string | null
-          user_id: string | null
-        }
-        Insert: {
-          amount?: number | null
-          created_at?: string | null
-          id?: string
-          referral_id?: string | null
-          reward_type?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          amount?: number | null
-          created_at?: string | null
-          id?: string
-          referral_id?: string | null
-          reward_type?: string | null
-          user_id?: string | null
-        }
-        Relationships: []
-      }
     }
     Views: {
       couple_profiles_with_partners: {
@@ -1653,6 +1710,16 @@ export type Database = {
         Args: { staking_id_param: string }
         Returns: Json
       }
+      create_notification: {
+        Args: {
+          body: string
+          data?: Json
+          notification_type: string
+          title: string
+          user_id: string
+        }
+        Returns: Json
+      }
       create_post: {
         Args:
           | {
@@ -1717,12 +1784,20 @@ export type Database = {
           user_liked: boolean
         }[]
       }
+      get_potential_matches: {
+        Args: { limit_param?: number; user_id_param: string }
+        Returns: Json
+      }
       get_user_feed: {
         Args: {
           limit_param?: number
           offset_param?: number
           user_id_param: string
         }
+        Returns: Json
+      }
+      get_user_matches: {
+        Args: { user_id_param: string }
         Returns: Json
       }
       process_referral_reward: {
