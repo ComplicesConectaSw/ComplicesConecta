@@ -1,11 +1,23 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Home, Search, MessageCircle, Heart, User, Settings, UserPlus, Coins, LogOut, Calendar } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { useFeatures } from '@/hooks/useFeatures';
+import { 
+  Home, 
+  Users, 
+  MessageCircle, 
+  Heart, 
+  Search, 
+  Calendar,
+  Settings,
+  User,
+  UserPlus,
+  Coins,
+  Menu,
+  X,
+  LogOut
+} from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { logger } from '@/lib/logger';
-import { useDemoThemeConfig, getNavbarStyles } from '@/hooks/useProfileTheme';
+import { cn } from '@/lib/utils';
 
 interface NavigationEnhancedProps {
   className?: string;
@@ -14,24 +26,18 @@ interface NavigationEnhancedProps {
   notificationCounts?: Record<string, number>;
 }
 
-const NavigationEnhanced = ({ 
-  className, 
-  showNotificationBadges = true,
-  enableAnimations = true,
-  notificationCounts = {}
-}: NavigationEnhancedProps) => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { features } = useFeatures();
-  
-  // Mover hooks al inicio antes de cualquier return
+const NavigationEnhanced: React.FC = () => {
+  const [activeItem, setActiveItem] = useState('feed');
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [activeItem, setActiveItem] = useState<string>('');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  // Demo theme configuration - usar hook unificado para mejor compatibilidad
-  const { navbarStyle, demoTheme } = useDemoThemeConfig();
-  const navbarStyles = getNavbarStyles(navbarStyle);
+  // Configuración de tema y animaciones
+  const [navbarStyle] = useState('floating');
+  const [demoTheme] = useState('default');
+  const [enableAnimations] = useState(true);
   
   // Forzar re-render cuando cambie el tema
   useEffect(() => {
@@ -76,19 +82,14 @@ const NavigationEnhanced = ({
   }, [lastScrollY]);
 
   // Agregar solicitudes si la función está habilitada
-  const navItems = features.requests 
-    ? [
-        ...baseNavItems.slice(0, 3), // feed, discover, chat
-        { id: 'requests', icon: UserPlus, label: 'Solicitudes', path: '/requests' },
-        ...baseNavItems.slice(3), // matches
-        { id: 'profile', icon: User, label: 'Perfil', path: '/profile' },
-        { id: 'settings', icon: Settings, label: 'Configuración', path: '/edit-profile-single' },
-      ]
-    : [
-        ...baseNavItems,
-        { id: 'profile', icon: User, label: 'Perfil', path: '/profile' },
-        { id: 'settings', icon: Settings, label: 'Configuración', path: '/edit-profile-single' },
-      ];
+  const navItems = [
+    ...baseNavItems.slice(0, 2), // feed, discover
+    { id: 'stories', icon: Calendar, label: 'Momentos', path: '/stories' },
+    ...baseNavItems.slice(2), // chat, matches, tokens
+    { id: 'requests', icon: UserPlus, label: 'Solicitudes', path: '/requests' },
+    { id: 'profile', icon: User, label: 'Perfil', path: '/profile' },
+    { id: 'settings', icon: Settings, label: 'Configuración', path: '/edit-profile-single' },
+  ];
 
   // Update active item based on current path
   useEffect(() => {
@@ -223,11 +224,10 @@ const NavigationEnhanced = ({
           transition={{ duration: 0.3, ease: 'easeInOut' }}
           className={cn(
             "fixed bottom-0 left-0 right-0 z-50 px-4 pb-safe-bottom",
-            navbarStyles.backgroundClass,
-            navbarStyles.shadowClass,
-            "border-t",
-            navbarStyles.borderClass,
-            className
+            "bg-white/80 backdrop-blur-xl",
+            "shadow-lg shadow-black/10",
+            "border-t border-gray-200/50",
+            "stable-element"
           )}
           role="navigation"
           aria-label="Navegación principal"
@@ -241,8 +241,8 @@ const NavigationEnhanced = ({
               {navItems.map((item, index) => {
                 const Icon = item.icon;
                 const isActive = location.pathname === item.path;
-                const notificationCount = notificationCounts[item.id] || 0;
-                const hasNotifications = showNotificationBadges && notificationCount > 0;
+                const notificationCount = 0;
+                const hasNotifications = false;
                 
                 return (
                   <motion.button

@@ -3,13 +3,14 @@ import { logger } from '@/lib/logger';
 
 export interface Invitation {
   id: string;
-  from_profile: string;
-  to_profile: string;
-  message: string;
-  type: 'profile' | 'gallery' | 'chat';
-  status: 'pending' | 'accepted' | 'declined' | 'revoked';
-  created_at: string;
-  decided_at: string | null;
+  from_profile: string | null;
+  to_profile: string | null;
+  message: string | null;
+  type: string | null;
+  status: string | null;
+  created_at: string | null;
+  decided_at?: string | null;
+  updated_at?: string | null;
 }
 
 export interface GalleryPermission {
@@ -101,8 +102,8 @@ export const invitationService = {
         .single();
       
       if (error) throw error;
-      return data as Invitation;
-    } catch (error) {
+      return data;
+    } catch {
       // Fallback to mock data
       const invitation = mockInvitations.find(inv => inv.id === invitationId);
       if (invitation) {

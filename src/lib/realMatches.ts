@@ -195,7 +195,7 @@ class RealMatchService {
           continue;
         }
 
-        const sharedInterests = userInterests.filter((interest: string) => profileInterests.includes(interest));
+        const _sharedInterests = userInterests.filter((interest: string) => profileInterests.includes(interest));
         const matchReasons = getMatchReasons(currentProfile, profile);
 
         // Verificar que no existe ya un match

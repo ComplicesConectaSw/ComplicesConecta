@@ -4,17 +4,14 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
-import { useNavigate } from 'react-router-dom';
 import { 
   getAppConfig, 
   DEMO_CREDENTIALS, 
   getDemoPassword, 
   handleDemoAuth, 
   clearDemoAuth, 
-  checkDemoSession,
   isProductionAdmin
 } from '@/lib/app-config';
-import { useProfile } from '@/hooks/useProfileCache';
 import { StorageManager } from '@/lib/storage-manager';
 import { logger } from '@/lib/logger';
 import { usePersistedState } from '@/hooks/usePersistedState';
@@ -34,7 +31,7 @@ interface Profile {
   [key: string]: unknown;
 }
 
-interface AuthState {
+interface _AuthState {
   user: User | null;
   session: Session | null;
   loading: boolean;
@@ -43,14 +40,14 @@ interface AuthState {
 
 export const useAuth = () => {
   // Migración a usePersistedState para tokens y sesión
-  const [authTokens, setAuthTokens] = usePersistedState<{
+  const [_authTokens, _setAuthTokens] = usePersistedState<{
     access_token?: string;
     refresh_token?: string;
     expires_at?: number;
   }>('auth_tokens', {});
   
   // Usar usePersistedState para demo_user directamente
-  const [demoUser, setDemoUser] = usePersistedState<any>('demo_user', null);
+  const [demoUser, _setDemoUser] = usePersistedState<any>('demo_user', null);
   
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
@@ -61,14 +58,14 @@ export const useAuth = () => {
   const profileLoaded = useRef(false);
 
   // Función para cargar perfil
-  // Usar React Query para cargar perfil con cache
-  const { data: cachedProfile, isLoading: profileLoading, error: profileError } = useProfile(user?.id || null);
   
   const loadProfile = useCallback(async (userId: string) => {
     if (profileLoaded.current) {
       logger.info('⚠️ Perfil ya cargado, evitando recarga', { userId });
       return;
     }
+    
+    // Cache deshabilitado - cargar siempre desde Supabase
     
     // CRÍTICO: Verificar modo demo PRIMERO antes de cargar perfil
     const sessionFlags = StorageManager.getSessionFlags();
@@ -79,6 +76,7 @@ export const useAuth = () => {
           id: parsedDemoUser.id || 'demo-user-1',
           first_name: parsedDemoUser.first_name || 'Demo User',
           last_name: '',
+          display_name: parsedDemoUser.displayName || parsedDemoUser.first_name || 'Demo User',
           email: parsedDemoUser.email,
           role: parsedDemoUser.role || 'user',
           profile_type: parsedDemoUser.accountType || 'single',
@@ -87,7 +85,7 @@ export const useAuth = () => {
           is_premium: false
         };
         
-        logger.info('🎭 Perfil demo cargado en useAuth:', { firstName: demoProfile.first_name });
+        logger.info('🎭 Perfil demo cargado en useAuth:', { displayName: demoProfile.display_name });
         setProfile(demoProfile);
         profileLoaded.current = true;
         return;
@@ -96,13 +94,13 @@ export const useAuth = () => {
       }
     }
     
-    // Si tenemos datos del cache, usarlos directamente
-    if (cachedProfile) {
-      logger.info('✅ Perfil cargado exitosamente', { firstName: cachedProfile.first_name });
-      setProfile(cachedProfile);
-      profileLoaded.current = true;
-      return;
-    }
+    // Cache deshabilitado - cargar siempre desde Supabase
+    // if (cachedProfile) {
+    //   logger.info('✅ Perfil cargado exitosamente', { userId: cachedProfile.id });
+    //   setProfile(cachedProfile);
+    //   profileLoaded.current = true;
+    //   return;
+    // }
     
     try {
       logger.info('🔍 Iniciando verificación de autenticación', { userId });
@@ -174,7 +172,7 @@ export const useAuth = () => {
       logger.error('❌ Error in loadProfile', { error: error instanceof Error ? error.message : String(error) });
       setProfile(null);
     }
-  }, [cachedProfile]);
+  }, []);
 
   useEffect(() => {
     if (initialized.current) return;

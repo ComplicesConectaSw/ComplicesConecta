@@ -20,18 +20,18 @@ export const HeroSection = () => {
       <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
         <div className="animate-slide-up">
           <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold text-white mb-6 animate-fade-in relative z-10">
-            <span className="bg-gradient-to-r from-white via-pink-200 to-white bg-clip-text text-transparent drop-shadow-2xl">
+            <span className="bg-gradient-to-r from-white via-pink-200 to-white bg-clip-text text-transparent drop-shadow-2xl stable-element">
               Plataforma Social Exclusiva
             </span>
             <br />
-            <span className="bg-gradient-to-r from-white to-pink-200 bg-clip-text text-transparent animate-pulse drop-shadow-2xl">
+            <span className="bg-gradient-to-r from-white to-pink-200 bg-clip-text text-transparent animate-pulse drop-shadow-2xl stable-element">
               para Adultos +18
             </span>
           </h1>
           
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">
             Encuentra tu
-            <span className="block bg-gradient-to-r from-white to-accent bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-r from-white to-accent bg-clip-text text-transparent stable-element">
               Conexión Perfecta
             </span>
           </h2>
@@ -43,7 +43,7 @@ export const HeroSection = () => {
               </span>
             </span>
             <br />
-            <span className="text-2xl md:text-3xl font-medium bg-gradient-to-r from-white via-pink-200 to-white bg-clip-text text-transparent">
+            <span className="text-2xl md:text-3xl font-medium bg-gradient-to-r from-white via-pink-200 to-white bg-clip-text text-transparent stable-element">
               Conecta con personas afines de manera segura y discreta
             </span>
             <br />

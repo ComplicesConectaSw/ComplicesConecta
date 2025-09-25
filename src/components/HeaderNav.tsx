@@ -43,12 +43,20 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
       requiresAuth: false
     },
     {
+      id: 'stories',
+      label: 'Momentos',
+      icon: Calendar,
+      path: '/stories',
+      color: 'text-indigo-400',
+      requiresAuth: false
+    },
+    {
       id: 'matches',
       label: 'Matches',
       icon: Heart,
       path: '/matches',
       color: 'text-red-400',
-      requiresAuth: true
+      requiresAuth: false
     },
     {
       id: 'chat',

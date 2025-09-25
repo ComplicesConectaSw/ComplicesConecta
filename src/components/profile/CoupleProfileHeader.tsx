@@ -112,7 +112,7 @@ const CoupleProfileHeader: React.FC<CoupleProfileHeaderProps> = ({
         <div className="flex-1 text-center lg:text-left">
           {/* Couple Name & Type */}
           <div className="mb-4">
-            <h1 className="text-3xl font-bold mb-2 bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold mb-2 bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent stable-element">
               {profile.couple_name}
             </h1>
             <Badge className={`${theme.badge} text-white mb-2`}>

@@ -74,7 +74,7 @@ export const ProfileLoadingScreen = ({ onComplete, profileName, profileType }: P
 
         {/* Loading Text */}
         <div className="space-y-3 sm:space-y-4">
-          <h2 className="text-2xl sm:text-4xl font-bold text-white animate-fade-in bg-gradient-to-r from-white to-pink-200 bg-clip-text text-transparent">
+          <h2 className="text-2xl sm:text-4xl font-bold animate-fade-in bg-gradient-to-r from-white to-pink-200 bg-clip-text text-transparent stable-element">
             {profileName}
           </h2>
           <div className="inline-flex items-center space-x-2 px-4 py-2 bg-white/10 rounded-full backdrop-blur-sm">

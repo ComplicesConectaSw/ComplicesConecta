@@ -12,7 +12,7 @@ export const Footer = () => {
           <div className="md:col-span-1">
             <div className="flex items-center space-x-2 mb-4">
               <Heart className="h-8 w-8 text-primary" fill="currentColor" />
-              <h3 className="text-2xl font-bold bg-love-gradient bg-clip-text text-transparent">
+              <h3 className="text-2xl font-bold bg-love-gradient bg-clip-text text-transparent stable-element">
                 ComplicesConecta
               </h3>
             </div>

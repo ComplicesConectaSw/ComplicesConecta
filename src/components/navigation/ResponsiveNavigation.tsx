@@ -182,7 +182,7 @@ export const ResponsiveNavigation: React.FC<ResponsiveNavigationProps> = ({
 
           <div className="flex items-center gap-2">
             <Sparkles className="h-6 w-6 text-pink-500" />
-            <span className="font-bold text-xl bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent">
+            <span className="font-bold text-xl bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent stable-element">
               ComplicesConecta
             </span>
           </div>
@@ -314,7 +314,7 @@ export const ResponsiveNavigation: React.FC<ResponsiveNavigationProps> = ({
             <Sparkles className="h-6 w-6 text-white" />
           </div>
           <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-            <h2 className="font-bold text-lg bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent">
+            <h2 className="font-bold text-lg bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent stable-element">
               ComplicesConecta
             </h2>
           </div>

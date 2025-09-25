@@ -169,7 +169,7 @@ export const Header = () => {
               </div>
             </div>
             <div className="flex items-center gap-1 sm:gap-2">
-              <h1 className={`font-bold bg-love-gradient bg-clip-text text-transparent transition-all duration-300 ${
+              <h1 className={`font-bold bg-love-gradient bg-clip-text text-transparent transition-all duration-300 stable-element ${
                 isRunningInApp && isMinimized ? 'text-base sm:text-lg' : 'text-lg sm:text-2xl'
               }`}>
                 {isAuthenticated && profile?.nickname ? profile.nickname : 

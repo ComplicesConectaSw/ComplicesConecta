@@ -50,7 +50,7 @@ export async function uploadImage(
     const filePath = `${options.folder}/${fileName}`;
 
     // Subir archivo
-    const { data, error } = await supabase.storage
+    const { data: _data, error } = await supabase.storage
       .from(options.bucket)
       .upload(filePath, file, {
         cacheControl: '3600',
@@ -217,6 +217,7 @@ export const ProfileImageService = {
 
       return deleteImage(bucket, filePath);
     } catch (error) {
+      console.error('Error removing cached profile:', error);
       return {
         success: false,
         error: 'URL de imagen inválida'
