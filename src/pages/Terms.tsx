@@ -37,7 +37,7 @@ const Terms = () => {
             <p className="text-xl text-white font-medium max-w-2xl mx-auto">
               Condiciones de uso para nuestra plataforma de conexiones para adultos
             </p>
-            <Badge variant="secondary" className="mt-4">
+            <Badge className="mt-4 bg-gray-200 text-gray-800">
               <FileText className="h-4 w-4 mr-1" />
               Última actualización: Agosto 2024
             </Badge>

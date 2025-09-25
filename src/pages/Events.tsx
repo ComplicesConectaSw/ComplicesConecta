@@ -210,16 +210,15 @@ const Events = () => {
               </p>
               <div className="flex gap-3">
                 <Button 
-                  variant="outline" 
                   onClick={() => handleAgeConfirmation(false)}
-                  className="flex-1"
+                  className="flex-1 border border-gray-300 bg-transparent hover:bg-gray-100 text-gray-700"
                 >
                   <X className="mr-2 h-4 w-4" />
                   Salir
                 </Button>
                 <Button 
                   onClick={() => handleAgeConfirmation(true)}
-                  className="flex-1"
+                  className="flex-1 bg-primary text-primary-foreground"
                 >
                   Soy mayor de 18 años
                 </Button>
@@ -279,9 +278,8 @@ const Events = () => {
           {/* Back Button */}
           <div className="mb-6">
             <Button 
-              variant="outline" 
               onClick={() => navigate('/')}
-              className="bg-card/80 backdrop-blur-sm border-primary/20 hover:bg-primary/10 transition-all duration-300 text-white"
+              className="bg-card/80 backdrop-blur-sm border border-primary/20 hover:bg-primary/10 transition-all duration-300 text-white"
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Volver al Inicio
@@ -309,7 +307,7 @@ const Events = () => {
                 Los clubs swinger de México podrán integrarse a la plataforma después de la beta, 
                 con sistema de reputación basado en valoraciones de usuarios verificados.
               </p>
-              <Badge variant="secondary" className="bg-accent/20 text-accent">
+              <Badge className="bg-accent/20 text-accent border border-accent/30">
                 <Sparkles className="h-4 w-4 mr-1" />
                 Próximamente
               </Badge>
@@ -333,17 +331,23 @@ const Events = () => {
           <div className="flex justify-center mb-8">
             <div className="bg-card/80 backdrop-blur-sm border border-primary/20 rounded-xl p-1">
               <Button
-                variant={activeTab === "events" ? "default" : "ghost"}
                 onClick={() => setActiveTab("events")}
-                className="rounded-lg"
+                className={`rounded-lg ${
+                  activeTab === "events" 
+                    ? "bg-primary text-primary-foreground" 
+                    : "bg-transparent hover:bg-gray-100 text-gray-700"
+                }`}
               >
                 <Calendar className="mr-2 h-4 w-4" />
                 Eventos VIP
               </Button>
               <Button
-                variant={activeTab === "clubs" ? "default" : "ghost"}
                 onClick={() => setActiveTab("clubs")}
-                className="rounded-lg"
+                className={`rounded-lg ${
+                  activeTab === "clubs" 
+                    ? "bg-primary text-primary-foreground" 
+                    : "bg-transparent hover:bg-gray-100 text-gray-700"
+                }`}
               >
                 <Crown className="mr-2 h-4 w-4" />
                 Clubs Swinger
@@ -369,7 +373,7 @@ const Events = () => {
                         className="w-full h-48 object-contain bg-gradient-to-br from-muted/20 to-muted/10"
                       />
                       <div className="absolute top-3 left-3">
-                        <Badge variant="destructive" className="bg-accent">
+                        <Badge className="bg-accent text-white border border-accent">
                           {event.category}
                         </Badge>
                       </div>
@@ -401,8 +405,11 @@ const Events = () => {
                       <div className="flex items-center justify-between">
                         <span className="text-2xl font-bold text-primary">${event.price} MXN</span>
                         <Button 
-                          variant={event.isJoined ? "secondary" : "default"}
-                          size="sm"
+                          className={`px-3 py-1 text-sm ${
+                            event.isJoined 
+                              ? "bg-gray-200 text-gray-700" 
+                              : "bg-primary text-primary-foreground"
+                          }`}
                           disabled
                         >
                           {event.isJoined ? "Inscrito" : "Post-Beta"}
@@ -447,7 +454,7 @@ const Events = () => {
                         className="w-full h-48 object-contain bg-gradient-to-br from-muted/20 to-muted/10"
                       />
                       <div className="absolute top-3 left-3">
-                        <Badge variant="secondary" className="bg-primary/20 text-primary">
+                        <Badge className="bg-primary/20 text-primary border border-primary/30">
                           {club.category}
                         </Badge>
                       </div>
@@ -484,8 +491,13 @@ const Events = () => {
                       <div className="flex items-center justify-between">
                         <span className="text-sm text-white">{club.lastActivity}</span>
                         <Button 
-                          variant={club.isJoined ? "secondary" : club.isPending ? "outline" : "default"}
-                          size="sm"
+                          className={`px-3 py-1 text-sm ${
+                            club.isJoined 
+                              ? "bg-gray-200 text-gray-700" 
+                              : club.isPending 
+                              ? "border border-gray-300 bg-transparent text-gray-700" 
+                              : "bg-primary text-primary-foreground"
+                          }`}
                           disabled
                         >
                           {club.isJoined ? "Miembro" : club.isPending ? "Pendiente" : "Post-Beta"}

@@ -196,13 +196,15 @@ export const Header = () => {
             <Link 
               to="/discover" 
               className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base"
+              aria-label="Ir a la página de descubrir perfiles"
             >
               Descubrir
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
             </Link>
             <Link 
-              to="/discover" 
+              to="/profiles" 
               className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base"
+              aria-label="Ver todos los perfiles disponibles"
             >
               Perfiles
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
@@ -210,6 +212,7 @@ export const Header = () => {
             <Link 
               to="/matches" 
               className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base"
+              aria-label="Ver mis matches y conexiones"
             >
               Matches
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
@@ -217,6 +220,7 @@ export const Header = () => {
             <Link 
               to="/chat-info" 
               className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base"
+              aria-label="Acceder al chat y mensajes"
             >
               Chat
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
@@ -224,6 +228,7 @@ export const Header = () => {
             <Link 
               to="/events" 
               className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base"
+              aria-label="Ver eventos y actividades disponibles"
             >
               Eventos
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
@@ -231,6 +236,7 @@ export const Header = () => {
             <Link 
               to="/stories" 
               className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base"
+              aria-label="Ver historias y contenido compartido"
             >
               Stories
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
@@ -238,6 +244,7 @@ export const Header = () => {
             <Link 
               to="/about" 
               className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base"
+              aria-label="Información sobre la empresa y el proyecto"
             >
               Empresa
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
@@ -245,6 +252,7 @@ export const Header = () => {
             <Link 
               to="/moderator-request" 
               className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base"
+              aria-label="Solicitar ser moderador de la plataforma"
             >
               Moderadores
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
@@ -252,6 +260,7 @@ export const Header = () => {
             <Link 
               to="/support" 
               className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base"
+              aria-label="Obtener ayuda y soporte técnico"
             >
               Soporte
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
@@ -263,7 +272,7 @@ export const Header = () => {
             {/* Mobile Menu Button - Solo visible en mobile */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="lg:hidden text-white hover:text-primary hover:bg-white/10">
+                <Button className="lg:hidden text-white hover:text-primary hover:bg-white/10 bg-transparent border-none p-2">
                   <Menu className="h-4 w-4 sm:h-5 sm:w-5" />
                 </Button>
               </DropdownMenuTrigger>
@@ -342,7 +351,7 @@ export const Header = () => {
             {/* Dropdown Menu for Info Pages */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="text-white hover:text-white transition-colors duration-300 relative group font-medium">
+                <Button className="text-white hover:text-white transition-colors duration-300 relative group font-medium bg-transparent border-none">
                   Información
                   <ChevronDown className="h-4 w-4 ml-1" />
                   <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
@@ -400,8 +409,8 @@ export const Header = () => {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <Button variant="ghost" size="icon" className="relative text-white hover:text-primary hover:bg-white/10 hidden sm:flex" asChild>
-              <Link to="/donations">
+            <Button className="text-white hover:text-primary hover:bg-white/10 hidden sm:flex bg-transparent border-none p-2" asChild>
+              <Link to="/donations" aria-label="Donaciones">
                 <DollarSign className="h-5 w-5" />
                 <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs w-5 h-5 rounded-full flex items-center justify-center animate-pulse">
                   ❤️
@@ -409,14 +418,14 @@ export const Header = () => {
               </Link>
             </Button>
 
-            <Button variant="ghost" size="icon" className="text-white hover:text-primary hover:bg-white/10 hidden sm:flex" asChild>
-              <Link to="/support">
+            <Button className="text-white hover:text-primary hover:bg-white/10 hidden sm:flex bg-transparent border-none p-2" asChild>
+              <Link to="/support" aria-label="Soporte">
                 <HelpCircle className="h-5 w-5" />
               </Link>
             </Button>
             
-            <Button variant="ghost" size="icon" className="text-white hover:text-primary hover:bg-white/10 hidden sm:flex" asChild>
-              <Link to="/settings">
+            <Button className="text-white hover:text-primary hover:bg-white/10 hidden sm:flex bg-transparent border-none p-2" asChild>
+              <Link to="/settings" aria-label="Configuración">
                 <Settings className="h-5 w-5" />
               </Link>
             </Button>
@@ -428,7 +437,7 @@ export const Header = () => {
                   asChild
                   className="login-btn auth-button auth-button-mobile bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 px-3 py-1.5 text-sm font-weight-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
                 >
-                  <Link to="/auth">
+                  <Link to="/auth" aria-label="Iniciar sesión en la plataforma">
                     <User className="h-3 w-3 mr-1.5" />
                     <span className="hidden sm:inline">Iniciar Sesión</span>
                     <span className="sm:hidden">Login</span>
@@ -437,8 +446,7 @@ export const Header = () => {
               ) : (
                 <Button
                   onClick={handleLogout}
-                  variant="outline"
-                  className="auth-button auth-button-mobile border-white/30 text-white hover:bg-red-500/30 px-3 py-1.5 text-sm font-weight-bold transition-all duration-300 bg-red-500/20"
+                  className="auth-button auth-button-mobile border border-white/30 text-white hover:bg-red-500/30 px-3 py-1.5 text-sm font-weight-bold transition-all duration-300 bg-red-500/20"
                 >
                   <LogOut className="h-3 w-3 mr-1.5" />
                   <span className="hidden sm:inline">Cerrar Sesión</span>
@@ -448,7 +456,7 @@ export const Header = () => {
             </div>
 
             {/* Botón Premium - Siempre visible */}
-            <Button variant="love" size="sm" className="flex items-center gap-1" asChild>
+            <Button className="flex items-center gap-1 px-3 py-1.5 text-sm bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-md hover:from-pink-600 hover:to-purple-700" asChild>
               <Link to="/premium">
                 <Crown className="h-4 w-4" />
                 <span className="hidden sm:inline">Premium</span>
@@ -476,10 +484,9 @@ export const Header = () => {
                   )}
                 </span>
                 <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="bg-red-500 border-red-500 text-white hover:bg-red-600 hover:border-red-600 hover:text-white font-semibold shadow-lg transition-all duration-300"
+                  className="bg-red-500 border border-red-500 text-white hover:bg-red-600 hover:border-red-600 hover:text-white font-semibold shadow-lg transition-all duration-300 px-3 py-1.5 text-sm rounded"
                   onClick={handleLogout}
+                  aria-label="Cerrar sesión y salir de la plataforma"
                 >
                   <LogOut className="h-3 w-3 sm:h-4 sm:w-4" />
                   <span className="text-xs ml-1">Salir</span>

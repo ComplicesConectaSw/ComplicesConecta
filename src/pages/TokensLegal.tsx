@@ -14,9 +14,8 @@ export default function TokensLegal() {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <AnimatedButton
-              variant="ghost"
               onClick={() => navigate('/tokens')}
-              className="text-white hover:bg-white/10 btn-accessible"
+              className="text-white hover:bg-white/10 btn-accessible bg-transparent border-none"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               <span className="truncate">Regresar</span>
@@ -338,8 +337,7 @@ export default function TokensLegal() {
               </Button>
               <Button
                 onClick={() => navigate('/tokens-info')}
-                variant="outline"
-                className="border-white/20 text-white hover:bg-white/10"
+                className="border-white/20 text-white hover:bg-white/10 border border-input bg-background hover:bg-accent hover:text-accent-foreground"
               >
                 Volver a Información de Tokens
               </Button>

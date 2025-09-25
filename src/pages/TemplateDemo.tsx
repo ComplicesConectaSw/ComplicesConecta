@@ -271,7 +271,7 @@ const TemplateDemo: React.FC = () => {
                           </p>
                           <div className="flex gap-2 mt-3">
                             <Button className="flex-1 btn-animated">Acción 1</Button>
-                            <Button variant="outline" className="flex-1 btn-animated">
+                            <Button className="flex-1 btn-animated border border-input bg-background hover:bg-accent hover:text-accent-foreground">
                               Acción 2
                             </Button>
                           </div>
@@ -300,9 +300,9 @@ const TemplateDemo: React.FC = () => {
                         </p>
                         <div className="grid grid-cols-2 gap-2">
                           <Button className="btn-animated">Primario</Button>
-                          <Button variant="outline" className="btn-animated">Secundario</Button>
-                          <Button variant="ghost" className="btn-animated">Ghost</Button>
-                          <Button variant="destructive" className="btn-animated">Destructivo</Button>
+                          <Button className="w-full btn-animated border border-input bg-background hover:bg-accent hover:text-accent-foreground">Secundario</Button>
+                          <Button className="btn-animated hover:bg-accent hover:text-accent-foreground">Ghost</Button>
+                          <Button className="btn-animated bg-destructive text-destructive-foreground hover:bg-destructive/90">Destructivo</Button>
                         </div>
                       </div>
                     </div>

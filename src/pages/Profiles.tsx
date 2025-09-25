@@ -108,12 +108,12 @@ const Profiles: React.FC = () => {
         <p className="text-sm text-white/80 mb-3">{profile.bio}</p>
         <div className="flex flex-wrap gap-1 mb-3">
           {profile.interests.slice(0, 3).map((interest, idx) => (
-            <Badge key={idx} variant="secondary" className="text-xs">
+            <Badge key={idx} className="text-xs bg-white/20 text-white border-white/30">
               {interest}
             </Badge>
           ))}
         </div>
-        <Button className="w-full" size="sm">
+        <Button className="w-full px-3 py-1.5 text-sm">
           Ver Perfil
         </Button>
       </CardContent>
@@ -193,8 +193,7 @@ const Profiles: React.FC = () => {
                       {aiSuggestions.map((suggestion, index) => (
                         <Badge 
                           key={index}
-                          variant="outline" 
-                          className="cursor-pointer hover:bg-white/10 transition-colors border-white/30 text-white"
+                          className="cursor-pointer hover:bg-white/10 transition-colors border border-white/30 text-white bg-transparent"
                           onClick={() => {
                             setSearchQuery(suggestion);
                             handleAiSearch(suggestion);
@@ -241,16 +240,14 @@ const Profiles: React.FC = () => {
               {filteredProfiles.length} perfiles encontrados
             </p>
             {aiSearchMode && (
-              <Badge variant="secondary" className="bg-purple-500/20 text-purple-200 border-purple-400/30">
+              <Badge className="bg-purple-500/20 text-purple-200 border border-purple-400/30">
                 <Brain className="h-3 w-3 mr-1" />
                 Ordenado por IA
               </Badge>
             )}
           </div>
           <Button 
-            variant="outline" 
-            size="sm"
-            className="border-white/30 text-white hover:bg-white/10"
+            className="border border-white/30 text-white hover:bg-white/10 bg-transparent px-3 py-1.5 text-sm"
             onClick={() => {
               setFilteredProfiles(allProfiles);
               setAiSearchMode(false);

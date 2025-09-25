@@ -243,13 +243,13 @@ const Requests = () => {
   const getStatusBadge = (status: Invitation['status']) => {
     switch (status) {
       case 'pending':
-        return <Badge variant="outline" className="text-yellow-400 border-yellow-400"><Clock className="h-3 w-3 mr-1" />Pendiente</Badge>;
+        return <Badge className="text-yellow-400 border border-yellow-400 bg-transparent"><Clock className="h-3 w-3 mr-1" />Pendiente</Badge>;
       case 'accepted':
-        return <Badge variant="outline" className="text-green-400 border-green-400"><UserCheck className="h-3 w-3 mr-1" />Aceptada</Badge>;
+        return <Badge className="text-green-400 border border-green-400 bg-transparent"><UserCheck className="h-3 w-3 mr-1" />Aceptada</Badge>;
       case 'declined':
-        return <Badge variant="outline" className="text-red-400 border-red-400"><UserX className="h-3 w-3 mr-1" />Rechazada</Badge>;
+        return <Badge className="text-red-400 border border-red-400 bg-transparent"><UserX className="h-3 w-3 mr-1" />Rechazada</Badge>;
       case 'revoked':
-          return <Badge variant="outline" className="text-white border-white/40"><UserX className="h-3 w-3 mr-1" />Revocada</Badge>;
+          return <Badge className="text-white border border-white/40 bg-transparent"><UserX className="h-3 w-3 mr-1" />Revocada</Badge>;
     }
   };
 
@@ -340,10 +340,10 @@ const Requests = () => {
                         </div>
                         {inv.status === 'pending' && (
                           <div className="flex gap-2 self-stretch sm:self-center">
-                            <Button size="sm" onClick={() => handleInvitationAction(inv.id, 'accept')} className="bg-green-500 hover:bg-green-600">
+                            <Button onClick={() => handleInvitationAction(inv.id, 'accept')} className="bg-green-500 hover:bg-green-600 px-3 py-1 text-sm">
                               <UserCheck className="h-4 w-4 mr-1" /> Aceptar
                             </Button>
-                            <Button size="sm" variant="destructive" onClick={() => handleInvitationAction(inv.id, 'decline')}>
+                            <Button onClick={() => handleInvitationAction(inv.id, 'decline')} className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 text-sm">
                               <UserX className="h-4 w-4 mr-1" /> Rechazar
                             </Button>
                           </div>

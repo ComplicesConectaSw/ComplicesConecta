@@ -227,9 +227,8 @@ const AdminCareerApplications = () => {
         <div className="bg-black/30 backdrop-blur-sm border-b border-white/10 p-3 sm:p-4">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between max-w-7xl mx-auto gap-3 sm:gap-0">
             <Button 
-              variant="ghost" 
               onClick={() => navigate(-1)}
-              className="text-white hover:bg-white/10 transition-all duration-300 hover:scale-105 text-sm sm:text-base"
+              className="text-white hover:bg-white/10 transition-all duration-300 hover:scale-105 text-sm sm:text-base bg-transparent border-none"
             >
               <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
               Volver
@@ -239,7 +238,7 @@ const AdminCareerApplications = () => {
               <span className="hidden sm:inline">Panel de Administración - </span>Solicitudes de Carrera
             </h1>
             <div className="flex items-center gap-2 text-white">
-              <Badge variant="secondary" className="bg-white/20 text-white text-xs sm:text-sm">
+              <Badge className="bg-white/20 text-white text-xs sm:text-sm border border-white/30">
                 {applications.length} Total
               </Badge>
             </div>
@@ -359,19 +358,15 @@ const AdminCareerApplications = () => {
                       </div>
                       <div className="flex gap-2 ml-2 sm:ml-4 flex-shrink-0">
                         <Button
-                          size="sm"
-                          variant="outline"
                           onClick={() => setSelectedApplication(application)}
-                          className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                          className="bg-white/10 border border-white/20 text-white hover:bg-white/20 px-2 py-1 text-sm"
                         >
                           <Eye className="h-4 w-4" />
                         </Button>
                         {application.cv_url && (
                           <Button
-                            size="sm"
-                            variant="outline"
                             onClick={() => downloadCV(application.cv_url!, application.nombre)}
-                            className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                            className="bg-white/10 border border-white/20 text-white hover:bg-white/20 px-2 py-1 text-sm"
                           >
                             <Download className="h-4 w-4" />
                           </Button>
@@ -383,13 +378,11 @@ const AdminCareerApplications = () => {
                       {Object.entries(statusLabels).map(([status, label]) => (
                         <Button
                           key={status}
-                          size="sm"
-                          variant={application.status === status ? "default" : "outline"}
                           onClick={() => updateApplicationStatus(application.id, status)}
-                          className={`text-xs ${
+                          className={`text-xs px-2 py-1 ${
                             application.status === status 
                               ? `${statusColors[status as keyof typeof statusColors]} text-white` 
-                              : 'bg-white/10 border-white/20 text-white hover:bg-white/20'
+                              : 'bg-white/10 border border-white/20 text-white hover:bg-white/20'
                           }`}
                         >
                           {label}
@@ -414,9 +407,8 @@ const AdminCareerApplications = () => {
                   Detalle de Solicitud - {selectedApplication.nombre}
                 </CardTitle>
                 <Button
-                  variant="ghost"
                   onClick={() => setSelectedApplication(null)}
-                  className="text-white hover:bg-white/10"
+                  className="text-white hover:bg-white/10 bg-transparent border-none"
                 >
                   ✕
                 </Button>
@@ -490,16 +482,14 @@ const AdminCareerApplications = () => {
                 {Object.entries(statusLabels).map(([status, label]) => (
                   <Button
                     key={status}
-                    size="sm"
-                    variant={selectedApplication.status === status ? "default" : "outline"}
                     onClick={() => {
                       updateApplicationStatus(selectedApplication.id, status);
                       setSelectedApplication({...selectedApplication, status: status as any});
                     }}
-                    className={`text-xs ${
+                    className={`text-xs px-2 py-1 ${
                       selectedApplication.status === status 
                         ? `${statusColors[status as keyof typeof statusColors]} text-white` 
-                        : 'bg-white/10 border-white/20 text-white hover:bg-white/20'
+                        : 'bg-white/10 border border-white/20 text-white hover:bg-white/20'
                     }`}
                   >
                     {label}

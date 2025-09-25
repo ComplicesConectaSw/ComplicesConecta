@@ -21,7 +21,12 @@ const buttonVariants = cva(
         // ComplicesConecta custom variants
         love: "bg-love-gradient text-primary-foreground hover:shadow-glow transform hover:scale-105 transition-all duration-300",
         hero: "bg-hero-gradient text-primary-foreground hover:shadow-glow transform hover:scale-105 transition-all duration-300 animate-pulse-glow",
-        premium: "bg-accent text-accent-foreground border-2 border-primary hover:bg-accent/90 hover:shadow-primary"
+        premium: "bg-accent text-accent-foreground border-2 border-primary hover:bg-accent/90 hover:shadow-primary",
+        // Variantes adicionales usadas en el proyecto
+        success: "bg-green-600 text-white hover:bg-green-700",
+        warning: "bg-yellow-600 text-white hover:bg-yellow-700",
+        info: "bg-blue-600 text-white hover:bg-blue-700",
+        danger: "bg-red-600 text-white hover:bg-red-700"
       },
       size: {
         default: "h-10 px-4 py-2",

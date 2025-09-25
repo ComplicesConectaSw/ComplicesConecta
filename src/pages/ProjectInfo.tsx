@@ -27,10 +27,8 @@ export default function ProjectInfo() {
           {/* Header */}
           <div className="flex items-center gap-4 mb-8">
             <Button
-              variant="ghost"
-              size="sm"
               onClick={() => navigate(-1)}
-              className="text-white hover:bg-white/10"
+              className="text-white hover:bg-white/10 bg-transparent border-none px-3 py-1 text-sm"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Volver
@@ -249,7 +247,7 @@ export default function ProjectInfo() {
                 </div>
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button variant="outline" className="border-white/20 text-white hover:bg-white/10">
+                    <Button className="border border-white/20 text-white hover:bg-white/10 bg-transparent">
                       Ver Detalles
                     </Button>
                   </DialogTrigger>

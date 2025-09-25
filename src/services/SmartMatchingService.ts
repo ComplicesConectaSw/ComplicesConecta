@@ -135,13 +135,32 @@ class SmartMatchingService {
       const matchResults: SmartMatchResult[] = [];
       
       for (const candidate of candidates) {
-        const compatibility = await this.calculateCompatibility(userProfile, candidate);
+        // Validar que el candidato tenga los campos requeridos
+        if (!candidate.age || candidate.age === null) {
+          continue; // Saltar candidatos sin edad válida
+        }
+
+        const validCandidate: MatchingProfile = {
+          id: candidate.id,
+          name: candidate.name || 'Usuario',
+          age: candidate.age as number, // Garantizado que no es null por la validación anterior
+          gender: candidate.gender || 'no_especificado',
+          interested_in: candidate.interested_in || 'todos',
+          location: candidate.location || undefined,
+          bio: candidate.bio || undefined,
+          is_verified: candidate.is_verified || false,
+          is_premium: candidate.is_premium || false,
+          latitude: candidate.latitude || undefined,
+          longitude: candidate.longitude || undefined
+        };
+
+        const compatibility = await this.calculateCompatibility(userProfile, validCandidate);
         
         if (compatibility.overall >= preferences.minCompatibility) {
-          const distance = this.calculateDistance(userProfile, candidate);
+          const distance = this.calculateDistance(userProfile, validCandidate);
           
           matchResults.push({
-            profile: candidate,
+            profile: validCandidate,
             compatibility,
             distance,
             matchReason: this.generatePrimaryMatchReason(compatibility)

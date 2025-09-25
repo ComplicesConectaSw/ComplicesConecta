@@ -39,10 +39,10 @@ export const RegisterSchema = z.object({
     .min(18, 'Edad mínima 18 años')
     .max(99, 'Edad máxima 99 años'),
   accountType: z.enum(['single', 'couple'], {
-    errorMap: () => ({ message: 'Tipo de cuenta debe ser single o couple' })
+    message: 'Tipo de cuenta debe ser single o couple'
   }),
   gender: z.enum(['male', 'female'], {
-    errorMap: () => ({ message: 'Género debe ser male o female' })
+    message: 'Género debe ser male o female'
   }),
   partnerGender: z.enum(['male', 'female']).optional(),
   termsAccepted: z.boolean().refine(val => val === true, {
@@ -72,7 +72,7 @@ export const ChatMessageSchema = z.object({
     .max(1000, 'Mensaje muy largo (máximo 1000 caracteres)')
     .trim(),
   type: z.enum(['text', 'image', 'file', 'emoji'], {
-    errorMap: () => ({ message: 'Tipo de mensaje inválido' })
+    message: 'Tipo de mensaje inválido'
   }),
   timestamp: z.date().default(() => new Date()),
   senderId: z.string().uuid('ID de remitente inválido'),
@@ -91,7 +91,7 @@ export const ChatMessageSchema = z.object({
 export const ProfileValidationSchema = z.object({
   isDemoMode: z.boolean(),
   role: z.enum(['user', 'admin', 'demo'], {
-    errorMap: () => ({ message: 'Rol debe ser user, admin o demo' })
+    message: 'Rol debe ser user, admin o demo'
   }),
   images: z.array(z.string().url('URL de imagen inválida'))
     .max(10, 'Máximo 10 imágenes por perfil')

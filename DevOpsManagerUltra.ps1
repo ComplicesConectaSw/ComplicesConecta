@@ -23,7 +23,7 @@ function Confirm-YesNo([string]$msg) {
     return ($c -match '^[SsYy]$')
 }
 
-function Ensure-Dir([string]$path) {
+function New-Directory([string]$path) {
     if (-not (Test-Path $path)) { New-Item -ItemType Directory -Path $path -Force | Out-Null }
 }
 
@@ -31,9 +31,9 @@ function Ensure-Dir([string]$path) {
 #### SUPABASE ULTRA #######################
 ###########################################
 
-function Crear-Backup([string]$ruta) {
+function New-Backup([string]$ruta) {
     if (-not $ruta) { $ruta = $global:backupDir }
-    Ensure-Dir $ruta
+    New-Directory $ruta
     $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
     $fileName = "backup_${timestamp}.sql"
     $fullPath = Join-Path $ruta $fileName
@@ -51,20 +51,20 @@ function Crear-Backup([string]$ruta) {
     }
 }
 
-function Listar-Respaldos([string]$ruta) {
+function Get-Backups([string]$ruta) {
     if (-not $ruta) { $ruta = $global:backupDir }
     if (-not (Test-Path $ruta)) { Write-Host "⚠️ Carpeta no existe: $ruta"; return @() }
     Get-ChildItem $ruta -Filter "backup_*.sql" | Sort-Object LastWriteTime -Descending
 }
 
-function Reparar-Migraciones([string[]]$conflicts) {
+function Repair-Migrations([string[]]$conflicts) {
     Write-Host "⚠️ Se detectaron migraciones conflictivas:" -ForegroundColor Yellow
     $conflicts | ForEach-Object { Write-Host "- $_" }
     if (-not (Confirm-YesNo "¿Deseas repararlas AHORA? Asegúrate de tener backup previo.")) {
         Write-Host "⏭ Reparación cancelada."
         return
     }
-    Crear-Backup $global:backupDir | Out-Null
+    New-Backup $global:backupDir | Out-Null
     foreach ($id in $conflicts) {
         Write-Host "🛠️ Reparando $id => reverted..." -ForegroundColor Cyan
         npx supabase migration repair --status reverted $id
@@ -72,7 +72,7 @@ function Reparar-Migraciones([string[]]$conflicts) {
     Write-Host "✅ Reparaciones completadas." -ForegroundColor Green
 }
 
-function Recuperar-DesdeRemoto() {
+function Restore-FromRemote() {
     Write-Host "🌐 Recuperando y alineando desde REMOTO..." -ForegroundColor Cyan
     Push-Location $global:projectDir
     $output = npx supabase db pull 2>&1
@@ -83,20 +83,20 @@ function Recuperar-DesdeRemoto() {
         }
     }
     if ($conflicts.Count -gt 0) {
-        Reparar-Migraciones -conflicts $conflicts
+        Repair-Migrations -conflicts $conflicts
         Write-Host "🔁 Reintentando db pull..." -ForegroundColor Cyan
         npx supabase db pull
     }
     npx supabase gen types typescript --project-id axtvqnozatbmllvwzuim --schema public > "$global:projectDir\src\types\supabase.ts"
     npm run type-check
     Pop-Location
-    Crear-Backup $global:backupDir | Out-Null
+    New-Backup $global:backupDir | Out-Null
     Write-Host "✅ Proyecto alineado con remoto y respaldo creado." -ForegroundColor Green
 }
 
-function Recuperar-DesdeBackup() {
+function Restore-FromBackup() {
     Write-Host "💾 Recuperando desde respaldo local..." -ForegroundColor Cyan
-    $files = Listar-Respaldos $global:backupDir
+    $files = Get-Backups $global:backupDir
     if ($files.Count -eq 0) { Write-Host "⚠️ No hay respaldos en $global:backupDir"; return }
     for ($i=0; $i -lt $files.Count; $i++) {
         Write-Host "[$($i+1)] $($files[$i].Name) - $($files[$i].LastWriteTime)"
@@ -109,27 +109,27 @@ function Recuperar-DesdeBackup() {
         Push-Location $global:projectDir
         npx supabase db push -f $sel
         Pop-Location
-        Crear-Backup $global:backupDir | Out-Null
+        New-Backup $global:backupDir | Out-Null
         Write-Host "✅ Proyecto sincronizado con respaldo local." -ForegroundColor Green
     } else {
         Write-Host "❌ Selección inválida."
     }
 }
 
-function Eliminar-MigracionesLocales() {
+function Remove-LocalMigrations() {
     $migrationsPath = Join-Path $global:projectDir "supabase\migrations"
     if (Test-Path $migrationsPath) {
         if (Confirm-YesNo "Vas a ELIMINAR migraciones locales en $migrationsPath ¿Hacer backup antes?") {
-            Crear-Backup $global:backupDir | Out-Null
+            New-Backup $global:backupDir | Out-Null
         }
         Remove-Item -Recurse -Force "$migrationsPath\*"
         Write-Host "✅ Migraciones locales eliminadas." -ForegroundColor Green
     } else { Write-Host "⚠️ No existe carpeta de migraciones locales." }
 }
 
-function Crear-Backup-Personalizado() {
+function New-CustomBackup() {
     $ruta = Read-Host "Ruta donde guardar el backup"
-    if ($ruta) { Crear-Backup -ruta $ruta | Out-Null }
+    if ($ruta) { New-Backup -ruta $ruta | Out-Null }
 }
 
 ###########################################
@@ -147,7 +147,7 @@ function Set-Sesion() {
     } else { Write-Host "❌ Sesión no encontrada" }
 }
 
-function Crear-Backup-Rama() {
+function New-BranchBackup() {
     $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
     $backupBranch = "backup/safe-$timestamp"
     Push-Location $global:projectDir
@@ -159,7 +159,7 @@ function Crear-Backup-Rama() {
     Write-Host "✅ Rama de respaldo creada: $backupBranch (desde $currentBranch)"
 }
 
-function Commit-Seguro([string]$tipo="chore",[string]$descripcion="commit seguro") {
+function New-SafeCommit([string]$tipo="chore",[string]$descripcion="commit seguro") {
     $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
     $mensaje = "$tipo(auto-$timestamp): $descripcion"
     Push-Location $global:projectDir
@@ -169,7 +169,7 @@ function Commit-Seguro([string]$tipo="chore",[string]$descripcion="commit seguro
     Write-Host "✅ Commit creado en rama $(git -C $global:projectDir branch --show-current): $mensaje"
 }
 
-function Estado-Rapido() {
+function Get-QuickStatus() {
     Push-Location $global:projectDir
     Write-Host "=============================="
     Write-Host "   📊 ESTADO RÁPIDO DEL REPO"
@@ -183,7 +183,7 @@ function Estado-Rapido() {
     Pop-Location
 }
 
-function Comparar-Ramas() {
+function Compare-Branches() {
     Push-Location $global:projectDir
     $ramaActual = git branch --show-current
     $target = Read-Host "¿Con qué rama quieres comparar?"
@@ -208,7 +208,7 @@ function Push-Produccion-Seguro() {
     git merge $ramaActual --no-ff
     git push origin staging
     if (Confirm-YesNo "¿Promover staging → main?") {
-        Crear-Backup-Rama
+        New-BranchBackup
         git checkout main; git pull origin main
         git merge staging --no-ff
         git push origin main
@@ -216,7 +216,7 @@ function Push-Produccion-Seguro() {
     Pop-Location
 }
 
-function Restaurar-Desde-Backup-Git() {
+function Restore-FromGitBackup() {
     Push-Location $global:projectDir
     git branch -a | Select-String "backup/" | ForEach-Object { Write-Host $_.ToString().Trim() }
     $backup = Read-Host "Elige la rama backup"
@@ -229,10 +229,10 @@ function Restaurar-Desde-Backup-Git() {
     Pop-Location
 }
 
-function Listar-Ramas() { Push-Location $global:projectDir; git branch -a; Pop-Location }
-function Restaurar-Archivo([string]$commitId,[string]$archivo) { Push-Location $global:projectDir; git checkout $commitId -- $archivo; Pop-Location }
+function Get-Branches() { Push-Location $global:projectDir; git branch -a; Pop-Location }
+function Restore-File([string]$commitId,[string]$archivo) { Push-Location $global:projectDir; git checkout $commitId -- $archivo; Pop-Location }
 
-function Actualizar-Gitignore() {
+function Update-Gitignore() {
     Push-Location $global:projectDir
     $gitignore = Join-Path $global:projectDir ".gitignore"
     if (-not (Test-Path $gitignore)) { New-Item -Path $gitignore -ItemType File | Out-Null }
@@ -277,23 +277,23 @@ do {
     Write-Host "========================================="
     $option = Read-Host "Selecciona una opción"
     switch ($option) {
-        "1" { Crear-Backup $global:backupDir | Out-Null }
+        "1" { New-Backup $global:backupDir | Out-Null }
         "2" {
             $sub = Read-Host "Elige (2.1 remoto / 2.2 backup)"
-            if ($sub -eq "2.1") { Recuperar-DesdeRemoto }
-            elseif ($sub -eq "2.2") { Recuperar-DesdeBackup }
+            if ($sub -eq "2.1") { Restore-FromRemote }
+            elseif ($sub -eq "2.2") { Restore-FromBackup }
         }
-        "3" { Crear-Backup $global:backupDir | Out-Null }
-        "4" { Eliminar-MigracionesLocales }
-        "5" { Crear-Backup-Personalizado }
-        "6" { Crear-Backup-Rama }
-        "7" { $tipo=Read-Host "Tipo"; $desc=Read-Host "Descripción"; Commit-Seguro -tipo $tipo -descripcion $desc }
+        "3" { New-Backup $global:backupDir | Out-Null }
+        "4" { Remove-LocalMigrations }
+        "5" { New-CustomBackup }
+        "6" { New-BranchBackup }
+        "7" { $tipo=Read-Host "Tipo"; $desc=Read-Host "Descripción"; New-SafeCommit -tipo $tipo -descripcion $desc }
         "8" { Push-Produccion-Seguro }
-        "9" { Estado-Rapido }
-        "10" { Actualizar-Gitignore }
-        "11" { Comparar-Ramas }
-        "12" { Restaurar-Desde-Backup-Git }
-        "13" { $commitId=Read-Host "Commit ID"; $archivo=Read-Host "Archivo"; Restaurar-Archivo -commitId $commitId -archivo $archivo }
+        "9" { Get-QuickStatus }
+        "10" { Update-Gitignore }
+        "11" { Compare-Branches }
+        "12" { Restore-FromGitBackup }
+        "13" { $commitId=Read-Host "Commit ID"; $archivo=Read-Host "Archivo"; Restore-File -commitId $commitId -archivo $archivo }
         "14" { Set-Sesion }
         "0" { break }
     }

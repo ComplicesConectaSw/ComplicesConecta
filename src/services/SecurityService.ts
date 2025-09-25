@@ -188,8 +188,8 @@ class SecurityService {
       }
       
       // PLACEHOLDER: Verificación mock (en producción usar TOTP library)
-      const isValidCode = this.mockVerifyTOTP(settings.secret, code);
-      const isBackupCode = settings.backup_codes?.includes(code);
+      const isValidCode = this.mockVerifyTOTP('mock_secret', code);
+      const isBackupCode = settings.backup_codes ? settings.backup_codes.includes(code) : false;
       
       if (!isValidCode && !isBackupCode) {
         // Log intento fallido
@@ -202,7 +202,7 @@ class SecurityService {
       }
       
       // Si usó backup code, removerlo de la lista
-      if (isBackupCode) {
+      if (isBackupCode && settings.backup_codes) {
         const updatedCodes = settings.backup_codes.filter((c: string) => c !== code);
         await supabase
           .from('user_2fa_settings')
@@ -314,12 +314,13 @@ class SecurityService {
         .from('audit_logs')
         .insert({
           user_id: userId,
-          action,
-          resource: 'security',
-          details,
+          action_type: action,
+          action_description: `Evento de seguridad: ${action}`,
+          resource_type: 'security',
+          request_data: details,
           ip_address: ipAddress || 'unknown',
           user_agent: userAgent || 'unknown',
-          risk_score: riskScore,
+          fraud_score: riskScore,
           created_at: new Date().toISOString()
         });
         
@@ -353,9 +354,22 @@ class SecurityService {
         return { success: false, error: error.message };
       }
       
+      // Mapear los datos de la base de datos al formato esperado
+      const mappedLogs: AuditLogEntry[] = (data || []).map(log => ({
+        id: log.id,
+        userId: log.user_id || '',
+        action: log.action_type || '',
+        resource: log.resource_type || '',
+        details: log.request_data || {},
+        ipAddress: log.ip_address || '',
+        userAgent: log.user_agent || '',
+        timestamp: log.created_at || new Date().toISOString(),
+        riskScore: log.fraud_score || 0
+      }));
+
       return {
         success: true,
-        logs: data || [],
+        logs: mappedLogs,
         total: count || 0
       };
       

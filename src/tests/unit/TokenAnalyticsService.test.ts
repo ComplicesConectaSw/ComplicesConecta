@@ -3,30 +3,44 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { TokenAnalyticsService } from '../../src/services/TokenAnalyticsService'
+import { TokenAnalyticsService } from '../../services/TokenAnalyticsService'
 
 // Mock de Supabase
-vi.mock('../../src/integrations/supabase/client', () => ({
+const mockAnalyticsData = [
+  {
+    id: '1',
+    period_type: 'daily',
+    period_start: '2025-01-01T00:00:00Z',
+    period_end: '2025-01-02T00:00:00Z',
+    metrics: {
+      totalSupply: { cmpx: 1000, gtk: 500 },
+      circulatingSupply: { cmpx: 800, gtk: 400 },
+      transactionVolume: { cmpx: 100, gtk: 50, count: 10 },
+      stakingMetrics: { totalStaked: 200, activeStakers: 5, avgDuration: 30 },
+      userMetrics: { activeUsers: 25, newUsers: 3 }
+    }
+  }
+]
+
+vi.mock('../../integrations/supabase/client', () => ({
   supabase: {
     from: vi.fn(() => ({
-      select: vi.fn(() => Promise.resolve({ data: [], error: null })),
+      select: vi.fn().mockReturnThis(),
       upsert: vi.fn(() => ({
         select: vi.fn(() => ({
           single: vi.fn(() => Promise.resolve({ data: { id: '1' }, error: null }))
         }))
       })),
-      eq: vi.fn(() => ({
-        order: vi.fn(() => ({
-          limit: vi.fn(() => Promise.resolve({ data: [], error: null }))
-        }))
-      })),
+      eq: vi.fn().mockReturnThis(),
+      order: vi.fn().mockReturnThis(),
+      limit: vi.fn(() => Promise.resolve({ data: mockAnalyticsData, error: null })),
       gte: vi.fn(() => Promise.resolve({ data: [], error: null }))
     }))
   }
 }))
 
 // Mock del logger
-vi.mock('../../src/lib/logger', () => ({
+vi.mock('../../lib/logger', () => ({
   logger: {
     info: vi.fn(),
     error: vi.fn(),
@@ -134,8 +148,20 @@ describe('TokenAnalyticsService', () => {
 
   describe('automatic analytics', () => {
     it('should start and stop automatic analytics', () => {
+      // Mock setInterval to prevent infinite loops in tests
+      const mockSetInterval = vi.fn()
+      const mockClearInterval = vi.fn()
+      
+      vi.stubGlobal('setInterval', mockSetInterval)
+      vi.stubGlobal('clearInterval', mockClearInterval)
+      
       expect(() => service.startAutomaticAnalytics(1)).not.toThrow()
+      expect(mockSetInterval).toHaveBeenCalledTimes(1)
+      
       expect(() => service.stopAutomaticAnalytics()).not.toThrow()
+      
+      // Restore original functions
+      vi.unstubAllGlobals()
     })
   })
 })

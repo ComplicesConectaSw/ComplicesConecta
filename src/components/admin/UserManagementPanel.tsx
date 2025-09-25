@@ -255,10 +255,10 @@ export function UserManagementPanel() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Badge variant="outline">
+          <Badge className="border px-2 py-1 rounded">
             Total: {users.length}
           </Badge>
-          <Badge variant="outline">
+          <Badge className="border px-2 py-1 rounded">
             Activos: {users.filter(u => u.status === 'active').length}
           </Badge>
         </div>
@@ -425,8 +425,7 @@ export function UserManagementPanel() {
                             </DialogHeader>
                             <div className="grid gap-2">
                               <Button 
-                                variant="outline" 
-                                className="justify-start"
+                                className="border px-2 py-1 rounded justify-start"
                                 onClick={() => {
                                   setSelectedUser(user);
                                   setShowUserModal(true);
@@ -439,16 +438,14 @@ export function UserManagementPanel() {
                               {user.status === 'active' && (
                                 <>
                                   <Button 
-                                    variant="outline" 
-                                    className="justify-start text-yellow-600"
+                                    className="border px-2 py-1 rounded justify-start text-yellow-600"
                                     onClick={() => handleUserAction(user.id, 'suspend')}
                                   >
                                     <UserX className="w-4 h-4 mr-2" />
                                     Suspender
                                   </Button>
                                   <Button 
-                                    variant="outline" 
-                                    className="justify-start text-red-600"
+                                    className="border px-2 py-1 rounded justify-start text-red-600"
                                     onClick={() => handleUserAction(user.id, 'ban')}
                                   >
                                     <Ban className="w-4 h-4 mr-2" />
@@ -459,8 +456,7 @@ export function UserManagementPanel() {
                               
                               {(user.status === 'suspended' || user.status === 'banned') && (
                                 <Button 
-                                  variant="outline" 
-                                  className="justify-start text-green-600"
+                                  className="border px-2 py-1 rounded justify-start text-green-600"
                                   onClick={() => handleUserAction(user.id, 'activate')}
                                 >
                                   <UserCheck className="w-4 h-4 mr-2" />
@@ -470,8 +466,7 @@ export function UserManagementPanel() {
                               
                               {!user.is_verified && (
                                 <Button 
-                                  variant="outline" 
-                                  className="justify-start text-blue-600"
+                                  className="border px-2 py-1 rounded justify-start text-blue-600"
                                   onClick={() => handleUserAction(user.id, 'verify')}
                                 >
                                   <Shield className="w-4 h-4 mr-2" />
@@ -480,8 +475,7 @@ export function UserManagementPanel() {
                               )}
                               
                               <Button 
-                                variant="outline" 
-                                className="justify-start text-red-600"
+                                className="border px-2 py-1 rounded justify-start text-red-600"
                                 onClick={() => handleUserAction(user.id, 'delete')}
                               >
                                 <Trash2 className="w-4 h-4 mr-2" />

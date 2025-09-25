@@ -121,15 +121,26 @@ export const removeImageBackground = async (imageElement: HTMLImageElement): Pro
   try {
     logger.info('Starting background removal process...');
     
-    // Dynamically import transformers to avoid bundle bloat
-    const { pipeline, env } = await import('@huggingface/transformers');
+    // Check if transformers is available
+    let transformers;
+    try {
+      transformers = await import('@huggingface/transformers');
+    } catch (importError) {
+      logger.error('Failed to import @huggingface/transformers:', { error: importError });
+      throw new Error('Background removal feature is not available. Please ensure @huggingface/transformers is properly installed.');
+    }
     
-    // Configure transformers.js
+    const { pipeline, env } = transformers;
+    
+    // Configure transformers.js for web environment
     env.allowLocalModels = false;
-    env.useBrowserCache = false;
+    env.useBrowserCache = true;
+    env.allowRemoteModels = true;
     
+    // Use CPU device for better compatibility
     const segmenter = await pipeline('image-segmentation', 'Xenova/segformer-b0-finetuned-ade-512-512', {
-      device: 'webgpu',
+      device: 'cpu',
+      dtype: 'fp32'
     });
     
     // Convert HTMLImageElement to canvas
@@ -139,7 +150,7 @@ export const removeImageBackground = async (imageElement: HTMLImageElement): Pro
     if (!ctx) throw new Error('Could not get canvas context');
     
     // Resize image if needed
-    const MAX_DIMENSION = 1024;
+    const MAX_DIMENSION = 512; // Reduced for better performance
     let width = imageElement.naturalWidth;
     let height = imageElement.naturalHeight;
     
@@ -205,7 +216,7 @@ export const removeImageBackground = async (imageElement: HTMLImageElement): Pro
       );
     });
   } catch (error) {
-    logger.error('Error removing background:', { error });
+    logger.error('Error removing background:', { error: error instanceof Error ? error.message : String(error) });
     throw error;
   }
 };

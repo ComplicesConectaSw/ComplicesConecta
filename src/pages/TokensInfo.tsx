@@ -104,9 +104,8 @@ export default function TokensInfo() {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Button
-              variant="ghost"
               onClick={() => navigate('/tokens')}
-              className="text-white hover:bg-white/20 flex items-center gap-2"
+              className="text-white hover:bg-white/20 flex items-center gap-2 hover:bg-accent hover:text-accent-foreground"
             >
               <ArrowLeft className="h-4 w-4" />
               <span className="hidden sm:inline">Regresar a Tokens</span>
@@ -116,9 +115,8 @@ export default function TokensInfo() {
             <h1 className="text-lg sm:text-xl font-bold text-white text-center truncate">Guía de Tokens</h1>
             
             <Button
-              variant="ghost"
               onClick={() => navigate('/')}
-              className="text-white hover:bg-white/20"
+              className="text-white hover:bg-white/20 hover:bg-accent hover:text-accent-foreground"
             >
               <span className="hidden sm:inline">Inicio</span>
               <span className="sm:hidden">🏠</span>
@@ -225,7 +223,7 @@ export default function TokensInfo() {
                 <Coins className="h-6 w-6 text-blue-400" />
                 CMPX (Beta)
               </CardTitle>
-              <Badge variant="secondary" className="w-fit">Activo Ahora</Badge>
+              <Badge className="w-fit bg-secondary text-secondary-foreground hover:bg-secondary/80">Activo Ahora</Badge>
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-white/80">
@@ -255,7 +253,7 @@ export default function TokensInfo() {
                 <Globe className="h-6 w-6 text-cyan-400" />
                 World ID
               </CardTitle>
-              <Badge variant="outline" className="w-fit border-cyan-400 text-cyan-400">Próximamente</Badge>
+              <Badge className="w-fit border-cyan-400 text-cyan-400 border border-input bg-background hover:bg-accent hover:text-accent-foreground">Próximamente</Badge>
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-white/80">
@@ -285,7 +283,7 @@ export default function TokensInfo() {
                 <Star className="h-6 w-6 text-orange-400" />
                 GTK (Futuro)
               </CardTitle>
-              <Badge variant="outline" className="w-fit border-orange-400 text-orange-400">Próximamente</Badge>
+              <Badge className="w-fit border-orange-400 text-orange-400 border border-input bg-background hover:bg-accent hover:text-accent-foreground">Próximamente</Badge>
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-white/80">
@@ -372,42 +370,32 @@ export default function TokensInfo() {
             <CardTitle className="text-2xl text-white">Preguntas Frecuentes</CardTitle>
             <div className="flex flex-wrap gap-2 mt-4">
               <Button
-                variant={selectedCategory === 'all' ? 'default' : 'outline'}
-                size="sm"
                 onClick={() => setSelectedCategory('all')}
-                className="text-xs"
+                className={`text-xs h-9 rounded-md px-3 ${selectedCategory === 'all' ? 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-primary' : 'border border-input bg-background hover:bg-accent hover:text-accent-foreground'}`}
               >
                 Todas
               </Button>
               <Button
-                variant={selectedCategory === 'general' ? 'default' : 'outline'}
-                size="sm"
                 onClick={() => setSelectedCategory('general')}
-                className="text-xs"
+                className={`text-xs h-9 rounded-md px-3 ${selectedCategory === 'general' ? 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-primary' : 'border border-input bg-background hover:bg-accent hover:text-accent-foreground'}`}
               >
                 General
               </Button>
               <Button
-                variant={selectedCategory === 'rewards' ? 'default' : 'outline'}
-                size="sm"
                 onClick={() => setSelectedCategory('rewards')}
-                className="text-xs"
+                className={`text-xs h-9 rounded-md px-3 ${selectedCategory === 'rewards' ? 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-primary' : 'border border-input bg-background hover:bg-accent hover:text-accent-foreground'}`}
               >
                 Recompensas
               </Button>
               <Button
-                variant={selectedCategory === 'security' ? 'default' : 'outline'}
-                size="sm"
                 onClick={() => setSelectedCategory('security')}
-                className="text-xs"
+                className={`text-xs h-9 rounded-md px-3 ${selectedCategory === 'security' ? 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-primary' : 'border border-input bg-background hover:bg-accent hover:text-accent-foreground'}`}
               >
                 Seguridad
               </Button>
               <Button
-                variant={selectedCategory === 'premium' ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => setSelectedCategory('premium')}
-                className="text-xs"
+                onClick={() => setSelectedCategory('technical')}
+                className={`text-xs h-9 rounded-md px-3 ${selectedCategory === 'technical' ? 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-primary' : 'border border-input bg-background hover:bg-accent hover:text-accent-foreground'}`}
               >
                 Premium
               </Button>
@@ -444,24 +432,21 @@ export default function TokensInfo() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
           <Button
             onClick={() => navigate('/tokens-terms')}
-            variant="outline"
-            className="border-white/20 text-white hover:bg-white/10"
+            className="border-white/20 text-white hover:bg-white/10 border border-input bg-background hover:bg-accent hover:text-accent-foreground"
           >
             <FileText className="h-4 w-4 mr-2" />
             Términos y Condiciones
           </Button>
           <Button
             onClick={() => navigate('/tokens-privacy')}
-            variant="outline"
-            className="border-white/20 text-white hover:bg-white/10"
+            className="border-white/20 text-white hover:bg-white/10 border border-input bg-background hover:bg-accent hover:text-accent-foreground"
           >
             <Shield className="h-4 w-4 mr-2" />
             Política de Privacidad
           </Button>
           <Button
             onClick={() => navigate('/tokens-legal')}
-            variant="outline"
-            className="border-white/20 text-white hover:bg-white/10"
+            className="border-white/20 text-white hover:bg-white/10 border border-input bg-background hover:bg-accent hover:text-accent-foreground"
           >
             <Scale className="h-4 w-4 mr-2" />
             Responsabilidad Legal
@@ -480,17 +465,14 @@ export default function TokensInfo() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               onClick={() => navigate('/auth')}
-              size="lg"
-              className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700"
+              className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 h-11 rounded-md px-8"
             >
               <UserPlus className="h-5 w-5 mr-2" />
               Registrarse Ahora
             </Button>
             <Button
               onClick={() => navigate(-1)}
-              variant="outline"
-              size="lg"
-              className="border-white/20 text-white hover:bg-white/10"
+              className="border-white/20 text-white hover:bg-white/10 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-11 rounded-md px-8"
             >
               <ArrowLeft className="h-5 w-5 mr-2" />
               Volver al Inicio

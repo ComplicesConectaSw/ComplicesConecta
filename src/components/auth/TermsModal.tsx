@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+// import { motion, AnimatePresence } from 'framer-motion';
 import { X, Shield, FileText, ExternalLink, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -26,22 +26,15 @@ export const TermsModal: React.FC<TermsModalProps> = ({
   };
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+    <>
+    {isOpen && (
+        <div
           className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
           onClick={onClose}
         >
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
-            transition={{ type: "spring", duration: 0.5 }}
-            className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto mx-4 sm:mx-0"
-            onClick={(e) => e.stopPropagation()}
+          <div
+            className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto mx-4 sm:mx-0 transform transition-all duration-300 ease-out"
+            onClick={(e: React.MouseEvent) => e.stopPropagation()}
           >
             {/* Header */}
             <div className="sticky top-0 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 p-6 rounded-t-2xl">
@@ -60,10 +53,8 @@ export const TermsModal: React.FC<TermsModalProps> = ({
                   </div>
                 </div>
                 <Button
-                  variant="ghost"
-                  size="sm"
                   onClick={onClose}
-                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 bg-transparent border-none px-2 py-1 text-sm"
                 >
                   <X className="w-5 h-5" />
                 </Button>
@@ -180,9 +171,8 @@ export const TermsModal: React.FC<TermsModalProps> = ({
               {/* Botón para ver términos completos */}
               <div className="text-center">
                 <Button
-                  variant="outline"
                   onClick={handleViewFullTerms}
-                  className="border-blue-300 text-blue-600 hover:bg-blue-50 dark:border-blue-600 dark:text-blue-400 dark:hover:bg-blue-900/20"
+                  className="border border-blue-300 text-blue-600 hover:bg-blue-50 dark:border-blue-600 dark:text-blue-400 dark:hover:bg-blue-900/20 px-2 py-1 rounded"
                 >
                   <ExternalLink className="w-4 h-4 mr-2" />
                   Ver Términos y Condiciones Completos
@@ -221,9 +211,8 @@ export const TermsModal: React.FC<TermsModalProps> = ({
               {/* Botones de acción */}
               <div className="flex flex-col sm:flex-row gap-3 justify-end">
                 <Button
-                  variant="outline"
                   onClick={onClose}
-                  className="border-gray-300 dark:border-gray-600"
+                  className="border border-gray-300 dark:border-gray-600 px-2 py-1 rounded"
                 >
                   Cancelar
                 </Button>
@@ -241,10 +230,10 @@ export const TermsModal: React.FC<TermsModalProps> = ({
                 </Button>
               </div>
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       )}
-    </AnimatePresence>
+    </>
   );
 };
 

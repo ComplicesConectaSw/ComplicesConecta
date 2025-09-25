@@ -67,9 +67,8 @@ const Settings = () => {
           {/* Back Button */}
           <div className="mb-6">
             <Button 
-              variant="outline" 
               onClick={() => navigate('/')}
-              className="bg-card/80 backdrop-blur-sm border-primary/20 hover:bg-primary/10 transition-all duration-300 text-white"
+              className="bg-card/80 backdrop-blur-sm border border-primary/20 hover:bg-primary/10 transition-all duration-300 text-white"
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Volver al Inicio
@@ -228,17 +227,14 @@ const Settings = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 
-                  size="lg" 
-                  className="bg-white text-primary hover:bg-white/90 font-semibold"
+                  className="bg-white text-primary hover:bg-white/90 font-semibold px-6 py-3 text-lg"
                   onClick={() => navigate('/premium')}
                 >
                   <Crown className="mr-2 h-5 w-5" />
                   Descubrir Premium
                 </Button>
                 <Button 
-                  variant="outline" 
-                  size="lg" 
-                  className="bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm"
+                  className="bg-white/10 border border-white/30 text-white hover:bg-white/20 backdrop-blur-sm px-6 py-3 text-lg"
                   onClick={() => navigate('/events')}
                 >
                   <Calendar className="mr-2 h-5 w-5" />

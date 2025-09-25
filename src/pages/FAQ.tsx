@@ -348,7 +348,7 @@ Fecha: ${new Date().toLocaleString()}
                     <label className="block text-sm font-medium text-foreground mb-2">
                       Tipo de Error
                     </label>
-                    <Select onValueChange={(value) => handleBugReportChange("type", value)}>
+                    <Select onValueChange={(value: string) => handleBugReportChange("type", value)}>
                       <SelectTrigger className="bg-background/50 border-red-200 dark:border-red-800">
                         <SelectValue placeholder="Selecciona el tipo de error" />
                       </SelectTrigger>
@@ -370,7 +370,7 @@ Fecha: ${new Date().toLocaleString()}
                     <label className="block text-sm font-medium text-foreground mb-2">
                       Severidad
                     </label>
-                    <Select onValueChange={(value) => handleBugReportChange("severity", value)}>
+                    <Select onValueChange={(value: string) => handleBugReportChange("severity", value)}>
                       <SelectTrigger className="bg-background/50 border-red-200 dark:border-red-800">
                         <SelectValue placeholder="¿Qué tan grave es?" />
                       </SelectTrigger>

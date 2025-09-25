@@ -154,7 +154,7 @@ const Feed = () => {
                         </div>
                       </div>
                     </div>
-                    <Button variant="ghost" size="sm">
+                    <Button className="bg-transparent hover:bg-white/10 border-none px-2 py-1 text-sm">
                       <MoreHorizontal className="w-4 h-4" />
                     </Button>
                   </div>
@@ -179,22 +179,20 @@ const Feed = () => {
                   <div className="flex items-center justify-between p-4 pt-3 border-t border-border/50">
                     <div className="flex items-center space-x-4">
                       <Button
-                        variant="ghost"
-                        size="sm"
                         onClick={() => handleLike(post)}
-                        className="flex items-center space-x-2 text-muted-foreground hover:text-red-500"
+                        className="flex items-center space-x-2 text-muted-foreground hover:text-red-500 bg-transparent hover:bg-white/10 border-none px-2 py-1 text-sm"
                       >
                         <Heart className="w-5 h-5" />
                         <span>{post.likes_count}</span>
                       </Button>
                       
-                      <Button variant="ghost" size="sm" className="flex items-center space-x-2 text-muted-foreground">
+                      <Button className="flex items-center space-x-2 text-muted-foreground bg-transparent hover:bg-white/10 border-none px-2 py-1 text-sm">
                         <MessageCircle className="w-5 h-5" />
                         <span>{post.comments_count}</span>
                       </Button>
                     </div>
                     
-                    <Button variant="ghost" size="sm" className="text-muted-foreground">
+                    <Button className="text-muted-foreground bg-transparent hover:bg-white/10 border-none px-2 py-1 text-sm">
                       <Share2 className="w-5 h-5" />
                     </Button>
                   </div>
@@ -208,8 +206,7 @@ const Feed = () => {
         {!loading && posts.length > 0 && hasMore && (
           <div className="text-center mt-8">
             <Button 
-              variant="outline" 
-              className="px-8 text-white border-white/30 hover:bg-white/10"
+              className="px-8 text-white border border-white/30 hover:bg-white/10 bg-transparent"
               onClick={handleLoadMore}
               disabled={loadingMore}
             >

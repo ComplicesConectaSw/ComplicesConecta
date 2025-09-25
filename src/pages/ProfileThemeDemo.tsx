@@ -53,15 +53,15 @@ const ProfileThemeDemo: React.FC = () => {
           </p>
           
           <div className="flex flex-wrap justify-center gap-3 mt-6">
-            <Badge variant="secondary" className="px-4 py-2 bg-white/20 text-white">
+            <Badge className="px-4 py-2 bg-white/20 text-white border border-white/30">
               <Eye className="h-4 w-4 mr-2" />
               Personalización Visual
             </Badge>
-            <Badge variant="secondary" className="px-4 py-2 bg-white/20 text-white">
+            <Badge className="px-4 py-2 bg-white/20 text-white border border-white/30">
               <Users className="h-4 w-4 mr-2" />
               Single & Parejas
             </Badge>
-            <Badge variant="secondary" className="px-4 py-2 bg-white/20 text-white">
+            <Badge className="px-4 py-2 bg-white/20 text-white border border-white/30">
               <Palette className="h-4 w-4 mr-2" />
               5 Temas Premium
             </Badge>
@@ -85,16 +85,14 @@ const ProfileThemeDemo: React.FC = () => {
               </label>
               <div className="space-y-2">
                 <Button
-                  variant={selectedProfileType === 'single' ? 'default' : 'outline'}
                   onClick={() => handleProfileTypeChange('single')}
-                  className={`w-full ${selectedProfileType === 'single' ? 'bg-white/20 text-white' : 'border-white/30 text-white hover:bg-white/10'}`}
+                  className={`w-full ${selectedProfileType === 'single' ? 'bg-white/20 text-white' : 'border border-white/30 text-white hover:bg-white/10 bg-transparent'}`}
                 >
                   👤 Single
                 </Button>
                 <Button
-                  variant={selectedProfileType === 'couple' ? 'default' : 'outline'}
                   onClick={() => handleProfileTypeChange('couple')}
-                  className={`w-full ${selectedProfileType === 'couple' ? 'bg-white/20 text-white' : 'border-white/30 text-white hover:bg-white/10'}`}
+                  className={`w-full ${selectedProfileType === 'couple' ? 'bg-white/20 text-white' : 'border border-white/30 text-white hover:bg-white/10 bg-transparent'}`}
                 >
                   💑 Pareja
                 </Button>
@@ -110,16 +108,14 @@ const ProfileThemeDemo: React.FC = () => {
                 {selectedGenders.map((gender, index) => (
                   <div key={index} className="flex gap-2">
                     <Button
-                      variant={gender === 'male' ? 'default' : 'outline'}
                       onClick={() => handleGenderChange(index, 'male')}
-                      className={`flex-1 ${gender === 'male' ? 'bg-blue-500/80 text-white' : 'border-white/30 text-white hover:bg-white/10'}`}
+                      className={`flex-1 ${gender === 'male' ? 'bg-blue-500/80 text-white' : 'border border-white/30 text-white hover:bg-white/10 bg-transparent'}`}
                     >
                       👨 Masculino
                     </Button>
                     <Button
-                      variant={gender === 'female' ? 'default' : 'outline'}
                       onClick={() => handleGenderChange(index, 'female')}
-                      className={`flex-1 ${gender === 'female' ? 'bg-pink-500/80 text-white' : 'border-white/30 text-white hover:bg-white/10'}`}
+                      className={`flex-1 ${gender === 'female' ? 'bg-pink-500/80 text-white' : 'border border-white/30 text-white hover:bg-white/10 bg-transparent'}`}
                     >
                       👩 Femenino
                     </Button>

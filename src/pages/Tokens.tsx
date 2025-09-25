@@ -75,9 +75,8 @@ export default function Tokens() {
         <div className="bg-gradient-to-r from-purple-900/90 to-pink-900/90 backdrop-blur-md border-b border-purple-300/30 p-3 sm:p-4 shadow-lg flex-shrink-0 rounded-t-xl mb-6">
           <div className="flex items-center justify-between">
             <AnimatedButton
-              variant="ghost"
               onClick={handleGoBack}
-              className="text-white hover:bg-white/20 flex items-center gap-2 btn-accessible"
+              className="text-white hover:bg-white/20 flex items-center gap-2 btn-accessible bg-transparent border-none"
             >
               <ArrowLeft className="h-4 w-4" />
               <span className="hidden sm:inline truncate">Regresar al Inicio</span>
@@ -90,9 +89,7 @@ export default function Tokens() {
             
             <Button
               onClick={handleGoHome}
-              variant="ghost"
-              size="sm"
-              className="text-white hover:bg-white/20 flex items-center gap-2"
+              className="text-white hover:bg-white/20 flex items-center gap-2 hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3"
             >
               <Home className="h-4 w-4" />
               <span className="hidden sm:inline">Inicio</span>
@@ -213,8 +210,7 @@ export default function Tokens() {
           >
             <Button
               onClick={() => setShowStakingModal(true)}
-              className="h-16 w-full flex flex-col items-center justify-center gap-1 bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/20 text-white hover:text-purple-200 transition-all duration-300"
-              variant="outline"
+              className="h-16 w-full flex flex-col items-center justify-center gap-1 bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/20 text-white hover:text-purple-200 transition-all duration-300 border border-input bg-background hover:bg-accent hover:text-accent-foreground"
               disabled={false}
             >
               <span className="text-lg">🔒</span>
@@ -228,8 +224,7 @@ export default function Tokens() {
           >
             <Button
               onClick={refreshTokens}
-              className="h-16 w-full flex flex-col items-center justify-center gap-1 bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/20 text-white hover:text-green-200 transition-all duration-300"
-              variant="outline"
+              className="h-16 w-full flex flex-col items-center justify-center gap-1 bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/20 text-white hover:text-green-200 transition-all duration-300 border border-input bg-background hover:bg-accent hover:text-accent-foreground"
             >
               <span className="text-lg">🔄</span>
               <span className="text-sm font-medium truncate">Actualizar Balance</span>
@@ -242,8 +237,7 @@ export default function Tokens() {
           >
             <Button
               onClick={() => navigate('/tokens-info')}
-              className="h-16 w-full flex flex-col items-center justify-center gap-1 bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/20 text-white hover:text-blue-200 transition-all duration-300"
-              variant="outline"
+              className="h-16 w-full flex flex-col items-center justify-center gap-1 bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/20 text-white hover:text-blue-200 transition-all duration-300 border border-input bg-background hover:bg-accent hover:text-accent-foreground"
             >
               <span className="text-lg">📚</span>
               <span className="text-sm font-medium truncate">Guía de Tokens</span>
@@ -256,8 +250,7 @@ export default function Tokens() {
           >
             <Button
               onClick={() => navigate('/tokens-terms')}
-              className="h-16 w-full flex flex-col items-center justify-center gap-1 bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/20 text-white hover:text-yellow-200 transition-all duration-300"
-              variant="outline"
+              className="h-16 w-full flex flex-col items-center justify-center gap-1 bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/20 text-white hover:text-yellow-200 transition-all duration-300 border border-input bg-background hover:bg-accent hover:text-accent-foreground"
             >
               <span className="text-lg">📋</span>
               <span className="text-sm font-medium truncate">Términos</span>

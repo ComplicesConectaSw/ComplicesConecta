@@ -26,6 +26,21 @@
     border-radius: var(--mobile-border-radius);
     line-height: var(--mobile-line-height);
     min-height: var(--mobile-min-touch);
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Optimización específica para 375x667 (iPhone SE) */
+  @media (max-width: 375px) {
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="number"],
+    textarea,
+    select {
+      padding: 12px 14px;
+      font-size: 16px;
+    }
   }
 
   /* Botones táctiles optimizados */
@@ -40,6 +55,19 @@
     border-radius: var(--mobile-border-radius);
     transition: var(--mobile-transition);
     touch-action: manipulation;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Optimización específica para pantallas pequeñas */
+  @media (max-width: 375px) {
+    button,
+    .btn,
+    [role="button"] {
+      padding: 10px 12px;
+      font-size: 14px;
+      min-height: 40px;
+    }
   }
 
   /* Área táctil extendida para iconos */
@@ -113,6 +141,8 @@
     border-top: 1px solid var(--border);
     padding: 8px var(--mobile-padding);
     z-index: 50;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
 
   .nav-mobile .nav-item {
@@ -120,6 +150,23 @@
     padding: 8px 12px;
     border-radius: var(--mobile-border-radius);
     transition: var(--mobile-transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  /* Optimización para pantallas muy pequeñas */
+  @media (max-width: 375px) {
+    .nav-mobile {
+      padding: 6px 12px;
+    }
+    
+    .nav-mobile .nav-item {
+      padding: 6px 8px;
+      min-height: 40px;
+    }
   }
 
   /* Texto legible en móvil */

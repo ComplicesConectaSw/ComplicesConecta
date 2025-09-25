@@ -14,9 +14,8 @@ export default function TokensTerms() {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <AnimatedButton
-              variant="ghost"
               onClick={() => navigate('/tokens')}
-              className="text-white hover:bg-white/20 flex items-center gap-2 btn-accessible"
+              className="text-white hover:bg-white/20 flex items-center gap-2 btn-accessible bg-transparent border-none"
             >
               <ArrowLeft className="h-4 w-4" />
               <span className="hidden sm:inline truncate">Regresar a Tokens</span>
@@ -26,9 +25,8 @@ export default function TokensTerms() {
             <h1 className="text-lg sm:text-xl font-bold text-white text-center truncate">Términos y Condiciones - Tokens</h1>
             
             <Button
-              variant="ghost"
               onClick={() => navigate('/')}
-              className="text-white hover:bg-white/20"
+              className="text-white hover:bg-white/20 bg-transparent border-none"
             >
               <span className="hidden sm:inline">Inicio</span>
               <span className="sm:hidden">🏠</span>
@@ -368,8 +366,7 @@ export default function TokensTerms() {
               </Button>
               <Button
                 onClick={() => navigate('/tokens-info')}
-                variant="outline"
-                className="border-white/20 text-white hover:bg-white/10"
+                className="border border-white/20 text-white hover:bg-white/10 bg-transparent"
               >
                 Volver a Información de Tokens
               </Button>

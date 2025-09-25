@@ -1,4 +1,15 @@
+/**
+ * AnalyticsPanel v3.4.0 - CONSOLIDADO
+ * 
+ * Panel de analytics completo que combina:
+ * - Analytics generales de usuarios y engagement
+ * - Analytics avanzados del sistema de tokens
+ * - Métricas en tiempo real
+ * - Integrado con TokenAnalyticsService y Supabase
+ */
+
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -9,8 +20,13 @@ import { supabase } from '@/integrations/supabase/client';
 import { Database } from '@/integrations/supabase/types';
 import {
   BarChart3, Users, Activity, UserPlus, TrendingUp, Download,
-  RefreshCw, Calendar, Eye, Heart, MessageCircle, Share
+  RefreshCw, Calendar, Eye, Heart, MessageCircle, Share,
+  BarChart, TrendingUp as ArrowTrendingUpIcon, DollarSign as CurrencyDollarIcon, Users as UserGroupIcon
 } from 'lucide-react';
+
+// Importaciones para analytics de tokens
+import { tokenAnalytics, TokenMetrics } from '../../services/TokenAnalyticsService';
+import { analyticsMetrics } from '../../lib/analytics-metrics';
 
 type AnalyticsData = {
   totalUsers: number;
@@ -58,8 +74,25 @@ export default function AnalyticsPanel() {
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
   const { toast } = useToast();
 
+  // Estados para analytics de tokens
+  const [tokenMetrics, setTokenMetrics] = useState<TokenMetrics | null>(null);
+  const [realTimeMetrics, setRealTimeMetrics] = useState<any>(null);
+  const [systemMetrics, setSystemMetrics] = useState<any>(null);
+  const [tokenLoading, setTokenLoading] = useState(true);
+  const [tokenError, setTokenError] = useState<string | null>(null);
+  const [isGeneratingReport, setIsGeneratingReport] = useState(false);
+
   useEffect(() => {
     loadAnalyticsData();
+    loadTokenMetrics();
+    loadRealTimeMetrics();
+    
+    // Actualizar métricas en tiempo real cada 30 segundos
+    const interval = setInterval(() => {
+      loadRealTimeMetrics();
+    }, 30000);
+    
+    return () => clearInterval(interval);
   }, [timeRange]);
 
   const loadAnalyticsData = async () => {
@@ -79,11 +112,62 @@ export default function AnalyticsPanel() {
     }
   };
 
+  // Funciones para analytics de tokens
+  const loadTokenMetrics = async () => {
+    try {
+      setTokenLoading(true);
+      const response = await tokenAnalytics.generateCurrentMetrics();
+      
+      if (response.success && response.metrics) {
+        setTokenMetrics(response.metrics);
+      } else {
+        setTokenError(response.error || 'Error cargando métricas de tokens');
+      }
+    } catch (err) {
+      setTokenError('Error inesperado cargando métricas de tokens');
+    } finally {
+      setTokenLoading(false);
+    }
+  };
+
+  const loadRealTimeMetrics = async () => {
+    try {
+      const rtMetrics = analyticsMetrics.getRealTimeMetrics();
+      const sysMetrics = analyticsMetrics.getSystemMetrics();
+      
+      setRealTimeMetrics(rtMetrics);
+      setSystemMetrics(sysMetrics);
+    } catch (err) {
+      console.error('Error cargando métricas en tiempo real:', err);
+    }
+  };
+
+  const generateTokenReport = async () => {
+    try {
+      setIsGeneratingReport(true);
+      const response = await tokenAnalytics.generateAutomaticReport('daily');
+      
+      if (response.success && response.report) {
+        console.log('Reporte generado:', response.report);
+        toast({
+          title: "Reporte generado",
+          description: "El reporte de tokens ha sido generado exitosamente",
+        });
+      } else {
+        setTokenError(response.error || 'Error generando reporte');
+      }
+    } catch (err) {
+      setTokenError('Error inesperado generando reporte');
+    } finally {
+      setIsGeneratingReport(false);
+    }
+  };
+
   const loadUserAnalytics = async () => {
     try {
       const { data: profiles, error } = await supabase
         .from('profiles')
-        .select('id, created_at, last_seen_at, is_premium')
+        .select('id, created_at, is_premium')
         .order('created_at', { ascending: false });
 
       if (error) {
@@ -98,10 +182,10 @@ export default function AnalyticsPanel() {
 
       const totalUsers = profiles?.length || 0;
       const newUsersToday = profiles?.filter(p => 
-        new Date(p.created_at) >= today
+        p.created_at && new Date(p.created_at) >= today
       ).length || 0;
       const newUsersWeek = profiles?.filter(p => 
-        new Date(p.created_at) >= weekAgo
+        p.created_at && new Date(p.created_at) >= weekAgo
       ).length || 0;
 
       // Mock calculations for complex metrics
@@ -388,11 +472,12 @@ export default function AnalyticsPanel() {
       </div>
 
       <Tabs defaultValue="overview" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="overview">Resumen</TabsTrigger>
           <TabsTrigger value="users">Usuarios</TabsTrigger>
           <TabsTrigger value="engagement">Engagement</TabsTrigger>
           <TabsTrigger value="demographics">Demografía</TabsTrigger>
+          <TabsTrigger value="tokens">Tokens</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-4">
@@ -626,6 +711,156 @@ export default function AnalyticsPanel() {
               </div>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="tokens" className="space-y-4">
+          {tokenLoading ? (
+            <div className="flex items-center justify-center h-64">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500"></div>
+              <span className="ml-2 text-gray-600">Cargando analytics de tokens...</span>
+            </div>
+          ) : (
+            <>
+              {/* Controles de tokens */}
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-lg font-semibold">Analytics del Sistema de Tokens</h3>
+                <Button
+                  onClick={generateTokenReport}
+                  disabled={isGeneratingReport}
+                  className="bg-purple-600 hover:bg-purple-700 text-white"
+                >
+                  {isGeneratingReport ? 'Generando...' : 'Generar Reporte'}
+                </Button>
+              </div>
+
+              {/* Métricas en tiempo real */}
+              {realTimeMetrics && (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                  <Card>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-sm font-medium text-gray-600">Usuarios Activos</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold text-green-600">{realTimeMetrics.activeUsers}</div>
+                      <p className="text-xs text-gray-500">En línea ahora</p>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-sm font-medium text-gray-600">Eventos Recientes</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold text-blue-600">{realTimeMetrics.recentEvents}</div>
+                      <p className="text-xs text-gray-500">Último minuto</p>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-sm font-medium text-gray-600">Sesiones Totales</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold text-purple-600">{realTimeMetrics.totalSessions}</div>
+                      <p className="text-xs text-gray-500">Desde inicio</p>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-sm font-medium text-gray-600">Pico de Usuarios</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold text-yellow-600">{realTimeMetrics.peakConcurrentUsers}</div>
+                      <p className="text-xs text-gray-500">Máximo concurrente</p>
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
+
+              {/* Métricas de tokens */}
+              {tokenMetrics && (
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <CurrencyDollarIcon className="h-5 w-5" />
+                        Supply de Tokens
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div>
+                          <div className="flex justify-between items-center mb-2">
+                            <span className="text-gray-600">CMPX Total</span>
+                            <span className="text-xl font-bold text-green-600">
+                              {tokenMetrics.totalSupply.cmpx.toLocaleString()}
+                            </span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-gray-600">CMPX Circulante</span>
+                            <span className="text-lg text-green-500">
+                              {tokenMetrics.circulatingSupply.cmpx.toLocaleString()}
+                            </span>
+                          </div>
+                        </div>
+                        <div>
+                          <div className="flex justify-between items-center mb-2">
+                            <span className="text-gray-600">GTK Total</span>
+                            <span className="text-xl font-bold text-blue-600">
+                              {tokenMetrics.totalSupply.gtk.toLocaleString()}
+                            </span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-gray-600">GTK Circulante</span>
+                            <span className="text-lg text-blue-500">
+                              {tokenMetrics.circulatingSupply.gtk.toLocaleString()}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <ArrowTrendingUpIcon className="h-5 w-5" />
+                        Actividad de Transacciones
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div>
+                          <span className="text-gray-600">Volumen CMPX (24h)</span>
+                          <p className="text-2xl font-bold text-green-600">
+                            {tokenMetrics.transactionVolume.cmpx.toLocaleString()}
+                          </p>
+                        </div>
+                        <div>
+                          <span className="text-gray-600">Volumen GTK (24h)</span>
+                          <p className="text-2xl font-bold text-blue-600">
+                            {tokenMetrics.transactionVolume.gtk.toLocaleString()}
+                          </p>
+                        </div>
+                        <div>
+                          <span className="text-gray-600">Total Transacciones</span>
+                          <p className="text-xl font-bold text-gray-800">
+                            {tokenMetrics.transactionVolume.count.toLocaleString()}
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
+
+              {tokenError && (
+                <Card className="border-red-200 bg-red-50">
+                  <CardContent className="pt-6">
+                    <p className="text-red-600">{tokenError}</p>
+                  </CardContent>
+                </Card>
+              )}
+            </>
+          )}
         </TabsContent>
       </Tabs>
     </div>

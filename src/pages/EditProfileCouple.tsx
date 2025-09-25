@@ -252,9 +252,8 @@ const EditProfileCouple = () => {
       <div className="bg-white/10 backdrop-blur-md border-b border-white/20 p-4">
         <div className="flex items-center justify-between">
           <Button 
-            variant="ghost" 
             onClick={() => navigate('/profile-couple')}
-            className="text-white hover:bg-white/20"
+            className="text-white hover:bg-white/20 bg-transparent border-none"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Volver al perfil
@@ -347,11 +346,9 @@ const EditProfileCouple = () => {
                 )}
                 <Button
                   type="button"
-                  variant="outline"
-                  size="sm"
                   onClick={handleLocationDetection}
                   disabled={locationStatus === 'loading'}
-                  className="w-full"
+                  className="w-full border border-gray-300 bg-transparent hover:bg-gray-100 text-gray-700 px-3 py-1 text-sm"
                 >
                   <MapPin className="h-4 w-4 mr-2" />
                   {locationStatus === 'loading' ? 'Detectando...' : 'Reintentar detección de ubicación'}
@@ -488,7 +485,6 @@ const EditProfileCouple = () => {
                 {availableInterests.map((interest) => (
                   <Badge
                     key={interest}
-                    variant={formData.partner1.interests.includes(interest) ? "default" : "secondary"}
                     className={`cursor-pointer transition-all text-xs ${
                       formData.partner1.interests.includes(interest)
                         ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-md"
@@ -623,7 +619,6 @@ const EditProfileCouple = () => {
                 {availableInterests.map((interest) => (
                   <Badge
                     key={interest}
-                    variant={formData.partner2.interests.includes(interest) ? "default" : "secondary"}
                     className={`cursor-pointer transition-all text-xs ${
                       formData.partner2.interests.includes(interest)
                         ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-md"
@@ -654,7 +649,6 @@ const EditProfileCouple = () => {
               {availableInterests.map((interest) => (
                 <Badge
                   key={interest}
-                  variant={formData.interests.includes(interest) ? "default" : "secondary"}
                   className={`cursor-pointer transition-all text-contrast ${
                     formData.interests.includes(interest)
                       ? "bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-md"

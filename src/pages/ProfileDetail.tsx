@@ -134,7 +134,6 @@ const ProfileDetail = () => {
         {/* Back Button */}
         <Button
           onClick={() => navigate("/profiles")}
-          variant="outline"
           className="mb-6 flex items-center gap-2 text-white bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 border-0"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -164,7 +163,7 @@ const ProfileDetail = () => {
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
                       <h1 className="text-3xl font-bold text-foreground">{profile.name}</h1>
-                      <Badge variant="secondary">{profile.age} años</Badge>
+                      <Badge className="bg-gray-200 text-gray-800">{profile.age} años</Badge>
                     </div>
                     
                     <div className="flex items-center gap-4 text-muted-foreground mb-4">
@@ -212,7 +211,7 @@ const ProfileDetail = () => {
                     <h3 className="font-medium text-foreground mb-2">Idiomas</h3>
                     <div className="flex flex-wrap gap-2">
                       {profile.languages.map((lang) => (
-                        <Badge key={lang} variant="outline">{lang}</Badge>
+                        <Badge key={lang} className="border border-gray-300 bg-transparent text-gray-700">{lang}</Badge>
                       ))}
                     </div>
                   </div>
@@ -282,9 +281,7 @@ const ProfileDetail = () => {
                       logger.info('Me gusta', { profileName: profile.name });
                       alert(`¡Has dado like a ${profile.name}!`);
                     }}
-                    variant="love" 
-                    size="lg" 
-                    className="w-full"
+                    className="w-full bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white px-6 py-3 text-lg"
                   >
                     <Heart className="h-5 w-5 mr-2" />
                     Me gusta
@@ -295,9 +292,7 @@ const ProfileDetail = () => {
                       logger.info('Enviando mensaje a', { profileName: profile.name });
                       alert(`Mensaje enviado a ${profile.name}`);
                     }}
-                    variant="default" 
-                    size="lg" 
-                    className="w-full"
+                    className="w-full bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 text-lg"
                   >
                     <MessageCircle className="h-5 w-5 mr-2" />
                     Enviar mensaje
@@ -310,9 +305,7 @@ const ProfileDetail = () => {
                         alert('Perfil reportado. Gracias por ayudarnos a mantener la comunidad segura.');
                       }
                     }}
-                    variant="outline" 
-                    size="lg" 
-                    className="w-full"
+                    className="w-full border border-gray-300 bg-transparent text-gray-700 hover:bg-gray-100 px-6 py-3 text-lg"
                   >
                     Reportar perfil
                   </Button>
