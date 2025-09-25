@@ -2,8 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 
-// Configurar NODE_ENV para producción
-process.env.NODE_ENV = process.env.NODE_ENV || 'production';
+// NODE_ENV configuration removed - Vite handles this automatically
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -111,6 +110,6 @@ export default defineConfig({
     global: 'globalThis',
   },
   esbuild: {
-    drop: process.env.NODE_ENV === 'production' ? ['debugger'] : [],
+    drop: ['debugger'], // Always drop debugger statements in builds
   },
 });
