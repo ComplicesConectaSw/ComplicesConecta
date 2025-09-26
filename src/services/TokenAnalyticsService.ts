@@ -58,7 +58,7 @@ export interface TokenAnalytics {
   transaction_volume_gtk: number
   total_staked_cmpx: number
   active_stakers: number
-  metadata: Record<string, any>
+  metadata: Record<string, unknown>
   created_at: string
 }
 
@@ -89,7 +89,7 @@ export interface ReportResponse {
  */
 export class TokenAnalyticsService {
   private static instance: TokenAnalyticsService
-  private analyticsCache: Map<string, any> = new Map()
+  private analyticsCache: Map<string, NodeJS.Timeout | unknown> = new Map()
   private isGeneratingReports: boolean = false
 
   private constructor() {
@@ -321,7 +321,7 @@ export class TokenAnalyticsService {
    * Detener generación automática
    */
   stopAutomaticAnalytics(): void {
-    const interval = this.analyticsCache.get('analyticsInterval')
+    const interval = this.analyticsCache.get('analyticsInterval') as NodeJS.Timeout
     if (interval) {
       clearInterval(interval)
       this.analyticsCache.delete('analyticsInterval')
@@ -336,10 +336,10 @@ export class TokenAnalyticsService {
     circulatingSupply: { cmpx: number; gtk: number }
   }> {
     try {
-      // Calcular supply total sumando todos los balances
+      // Obtener métricas de supply
       const { data: balances, error } = await supabase
         .from('user_tokens')
-        .select('cmpx_balance, gtk_balance, total_earned, total_spent')
+        .select('cmpx_balance, gtk_balance')
 
       if (error) {
         logger.error('Error calculando supply:', { error: error.message })
@@ -349,8 +349,8 @@ export class TokenAnalyticsService {
         }
       }
 
-      const totalCmpx = balances?.reduce((sum: number, b: any) => sum + (b.cmpx_balance || 0), 0) || 0
-      const totalGtk = balances?.reduce((sum: number, b: any) => sum + (b.gtk_balance || 0), 0) || 0
+      const totalCmpx = balances?.reduce((sum: number, b: { cmpx_balance?: number }) => sum + (b.cmpx_balance || 0), 0) || 0
+      const totalGtk = balances?.reduce((sum: number, b: { gtk_balance?: number }) => sum + (b.gtk_balance || 0), 0) || 0
 
       // Calcular tokens en staking (no circulantes)
       const { data: staking } = await supabase
@@ -358,7 +358,7 @@ export class TokenAnalyticsService {
         .select('amount')
         .eq('status', 'active')
 
-      const stakedAmount = staking?.reduce((sum: number, s: any) => sum + (s.amount || 0), 0) || 0
+      const stakedAmount = staking?.reduce((sum: number, s: { amount?: number }) => sum + (s.amount || 0), 0) || 0
 
       return {
         totalSupply: { cmpx: totalCmpx, gtk: totalGtk },
@@ -395,11 +395,11 @@ export class TokenAnalyticsService {
         return { cmpx: 0, gtk: 0, count: 0 }
       }
 
-      const cmpxVolume = transactions?.filter((t: any) => t.token_type === 'CMPX')
-        .reduce((sum: number, t: any) => sum + Math.abs(t.amount), 0) || 0
+      const cmpxVolume = transactions?.filter((t: { token_type?: string }) => t.token_type === 'CMPX')
+        .reduce((sum: number, t: { amount?: number }) => sum + Math.abs(t.amount || 0), 0) || 0
       
-      const gtkVolume = transactions?.filter((t: any) => t.token_type === 'GTK')
-        .reduce((sum: number, t: any) => sum + Math.abs(t.amount), 0) || 0
+      const gtkVolume = transactions?.filter((t: { token_type?: string }) => t.token_type === 'GTK')
+        .reduce((sum: number, t: { amount?: number }) => sum + Math.abs(t.amount || 0), 0) || 0
 
       return {
         cmpx: cmpxVolume,
@@ -429,14 +429,14 @@ export class TokenAnalyticsService {
         return { totalStaked: 0, activeStakers: 0, avgDuration: 0 }
       }
 
-      const totalStaked = staking?.reduce((sum: number, s: any) => sum + (s.amount || 0), 0) || 0
+      const totalStaked = staking?.reduce((sum: number, s: { amount?: number }) => sum + (s.amount || 0), 0) || 0
       const activeStakers = staking?.length || 0
 
       // Calcular duración promedio
       const avgDuration = staking?.length > 0 
-        ? staking.reduce((sum: number, s: any) => {
-            const start = new Date(s.start_date)
-            const end = new Date(s.end_date)
+        ? staking.reduce((sum: number, s: { start_date?: string; end_date?: string }) => {
+            const start = new Date(s.start_date || '')
+            const end = new Date(s.end_date || '')
             return sum + (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)
           }, 0) / staking.length
         : 0
@@ -473,7 +473,7 @@ export class TokenAnalyticsService {
         return { activeUsers: 0, newUsers: 0 }
       }
 
-      const uniqueActiveUsers = new Set(activeUsers?.map((u: any) => u.user_id) || []).size
+      const uniqueActiveUsers = new Set(activeUsers?.map((u: { user_id?: string }) => u.user_id) || []).size
       const uniqueNewUsers = newUsers?.length || 0
 
       return {
@@ -508,7 +508,7 @@ export class TokenAnalyticsService {
         current.stakingMetrics.totalStaked
       ),
       userGrowth: this.calculatePercentageChange(
-        previous.metadata?.activeUsers || 0,
+        (previous.metadata?.activeUsers as number) || 0,
         current.userMetrics.activeUsers
       )
     }

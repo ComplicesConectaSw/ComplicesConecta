@@ -44,12 +44,12 @@ const registerBiometric = async () => {
       success: true,
       credentialId: credential?.id || 'test-credential-id'
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       success: false,
-      error: error.name === 'NotAllowedError' ? 'Registro cancelado por el usuario' :
-             error.name === 'NotSupportedError' ? 'Autenticación biométrica no soportada' :
-             error.name === 'SecurityError' ? 'Error de seguridad durante el registro' :
+      error: (error as Error).name === 'NotAllowedError' ? 'Registro cancelado por el usuario' :
+             (error as Error).name === 'NotSupportedError' ? 'Autenticación biométrica no soportada' :
+             (error as Error).name === 'SecurityError' ? 'Error de seguridad durante el registro' :
              'Error desconocido'
     };
   }
@@ -69,11 +69,11 @@ const authenticateWithBiometric = async () => {
       success: true,
       credentialId: assertion?.id
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       success: false,
-      error: error.name === 'NotAllowedError' ? 'Autenticación cancelada' :
-             error.name === 'InvalidStateError' ? 'Credencial no válida' :
+      error: (error as Error).name === 'NotAllowedError' ? 'Autenticación cancelada' :
+             (error as Error).name === 'InvalidStateError' ? 'Credencial no válida' :
              'No hay credenciales biométricas registradas'
     };
   }

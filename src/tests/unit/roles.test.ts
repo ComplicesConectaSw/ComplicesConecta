@@ -371,8 +371,8 @@ describe('Roles y Permisos', () => {
         .select('*')
         .eq('is_demo', true);
 
-      expect(result.data?.every((profile: any) => profile.is_demo)).toBe(true);
-      expect(result.data?.every((profile: any) => profile.role === 'demo')).toBe(true);
+      expect(result.data?.every((profile: Record<string, unknown>) => profile.is_demo)).toBe(true);
+      expect(result.data?.every((profile: Record<string, unknown>) => profile.role === 'demo')).toBe(true);
     });
   });
 
@@ -384,7 +384,7 @@ describe('Roles y Permisos', () => {
         { role: 'demo', is_demo: true, is_verified: false }
       ];
 
-      profiles.forEach((profile: any) => {
+      profiles.forEach((profile: Record<string, unknown>) => {
         if (profile.role === 'admin') {
           expect(profile.is_demo).toBe(false);
           expect(profile.is_verified).toBe(true);

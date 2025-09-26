@@ -1,6 +1,9 @@
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
 import { NotificationService } from '@/lib/notifications';
+import type { Database } from '@/integrations/supabase/types';
+
+type ProfileRow = Database['public']['Tables']['profiles']['Row'];
 
 export interface AdvancedMatchingConfig {
   algorithm: 'compatibility' | 'ml_based' | 'hybrid';
@@ -79,7 +82,7 @@ export class AdvancedFeaturesService {
         .from('profiles')
         .select('*')
         .eq('id', userId)
-        .single() as { data: any };
+        .single();
 
       if (!userProfile) throw new Error('User profile not found');
 
@@ -88,7 +91,7 @@ export class AdvancedFeaturesService {
         .from('profiles')
         .select('*')
         .neq('id', userId)
-        .limit(100) as { data: any[] };
+        .limit(100);
 
       if (!potentialMatches) return [];
 
@@ -133,8 +136,8 @@ export class AdvancedFeaturesService {
    * Calculate advanced compatibility between two users
    */
   private static async calculateAdvancedCompatibility(
-    user1: any,
-    user2: any,
+    user1: ProfileRow,
+    user2: ProfileRow,
     config: AdvancedMatchingConfig
   ): Promise<{ score: number; reasons: string[]; confidence: number }> {
     const scores: Record<string, number> = {};
@@ -152,8 +155,8 @@ export class AdvancedFeaturesService {
 
     // Location compatibility
     const locationScore = this.calculateLocationCompatibility(
-      user1.location_preferences,
-      user2.location_preferences,
+      user1.location,
+      user2.location,
       config.filters.maxDistance
     );
     scores.location = locationScore;
@@ -170,9 +173,9 @@ export class AdvancedFeaturesService {
     scores.age = ageScore;
 
     // Personality compatibility
-    const personalityScore = this.calculatePersonalityCompatibility(
-      user1.personality_traits || {},
-      user2.personality_traits || {}
+    const personalityScore = this.calculateInterestCompatibility(
+      user1.interests || [],
+      user2.interests || []
     );
     scores.personality = personalityScore;
     if (personalityScore > 0.75) {
@@ -180,9 +183,9 @@ export class AdvancedFeaturesService {
     }
 
     // Lifestyle compatibility
-    const lifestyleScore = this.calculateLifestyleCompatibility(
-      user1.lifestyle_preferences || {},
-      user2.lifestyle_preferences || {}
+    const lifestyleScore = this.calculateInterestCompatibility(
+      user1.interests || [],
+      user2.interests || []
     );
     scores.lifestyle = lifestyleScore;
     if (lifestyleScore > 0.7) {
@@ -226,17 +229,31 @@ export class AdvancedFeaturesService {
    * Calculate location compatibility
    */
   private static calculateLocationCompatibility(
-    location1: any,
-    location2: any,
+    location1: string | null,
+    location2: string | null,
     maxDistance: number
   ): number {
     if (!location1 || !location2) return 0.5;
 
-    // Simplified distance calculation (in a real app, use proper geolocation)
-    const distance = Math.abs((location1.lat || 0) - (location2.lat || 0)) + 
-                    Math.abs((location1.lng || 0) - (location2.lng || 0));
-
-    return Math.max(0, 1 - (distance / maxDistance));
+    // Simple string comparison for location compatibility
+    // In a real app, you would parse coordinates and calculate actual distance
+    if (location1 === location2) return 1.0;
+    
+    // Check if locations are similar (same city/region)
+    const loc1Parts = location1.toLowerCase().split(',');
+    const loc2Parts = location2.toLowerCase().split(',');
+    
+    let commonParts = 0;
+    for (const part1 of loc1Parts) {
+      for (const part2 of loc2Parts) {
+        if (part1.trim() === part2.trim()) {
+          commonParts++;
+          break;
+        }
+      }
+    }
+    
+    return Math.min(1.0, commonParts / Math.max(loc1Parts.length, loc2Parts.length));
   }
 
   /**
@@ -250,55 +267,69 @@ export class AdvancedFeaturesService {
   }
 
   /**
-   * Calculate personality compatibility
+   * Calculate gender compatibility based on preferences
    */
-  private static calculatePersonalityCompatibility(traits1: any, traits2: any): number {
-    const traitKeys = ['openness', 'conscientiousness', 'extraversion', 'agreeableness', 'neuroticism'];
-    let totalCompatibility = 0;
-    let validTraits = 0;
+  private static calculateGenderCompatibility(
+    gender1: string | null,
+    interestedIn1: string | null,
+    gender2: string | null,
+    interestedIn2: string | null
+  ): number {
+    if (!gender1 || !gender2 || !interestedIn1 || !interestedIn2) return 0.5;
 
-    for (const trait of traitKeys) {
-      if (traits1[trait] !== undefined && traits2[trait] !== undefined) {
-        const diff = Math.abs(traits1[trait] - traits2[trait]);
-        totalCompatibility += 1 - (diff / 100); // Assuming traits are 0-100
-        validTraits++;
-      }
-    }
+    // Check if each person is interested in the other's gender
+    const user1InterestedInUser2 = interestedIn1.toLowerCase().includes(gender2.toLowerCase()) || interestedIn1.toLowerCase() === 'all';
+    const user2InterestedInUser1 = interestedIn2.toLowerCase().includes(gender1.toLowerCase()) || interestedIn2.toLowerCase() === 'all';
 
-    return validTraits > 0 ? totalCompatibility / validTraits : 0.5;
+    if (user1InterestedInUser2 && user2InterestedInUser1) return 1.0;
+    if (user1InterestedInUser2 || user2InterestedInUser1) return 0.7;
+    return 0.1;
   }
 
   /**
-   * Calculate lifestyle compatibility
+   * Calculate account type compatibility
    */
-  private static calculateLifestyleCompatibility(lifestyle1: any, lifestyle2: any): number {
-    const factors = ['activity_level', 'social_preference', 'work_life_balance', 'travel_frequency'];
-    let compatibility = 0;
-    let validFactors = 0;
+  private static calculateAccountTypeCompatibility(
+    accountType1: string | null,
+    lookingFor1: string | null,
+    accountType2: string | null,
+    lookingFor2: string | null
+  ): number {
+    if (!accountType1 || !accountType2) return 0.5;
 
-    for (const factor of factors) {
-      if (lifestyle1[factor] !== undefined && lifestyle2[factor] !== undefined) {
-        const diff = Math.abs(lifestyle1[factor] - lifestyle2[factor]);
-        compatibility += 1 - (diff / 10); // Assuming lifestyle factors are 0-10
-        validFactors++;
-      }
-    }
+    // Simple compatibility based on what each user is looking for
+    const type1Match = !lookingFor1 || lookingFor1.toLowerCase().includes(accountType2.toLowerCase());
+    const type2Match = !lookingFor2 || lookingFor2.toLowerCase().includes(accountType1.toLowerCase());
 
-    return validFactors > 0 ? compatibility / validFactors : 0.5;
+    if (type1Match && type2Match) return 1.0;
+    if (type1Match || type2Match) return 0.7;
+    return 0.3;
   }
 
   /**
    * Calculate confidence level based on profile completeness
    */
-  private static calculateConfidenceLevel(user1: any, user2: any): number {
+  private static calculateConfidenceLevel(user1: ProfileRow, user2: ProfileRow): number {
     const requiredFields = ['interests', 'personality_traits', 'lifestyle_preferences', 'age'];
     
     let user1Completeness = 0;
     let user2Completeness = 0;
 
     for (const field of requiredFields) {
-      if (user1[field] && Object.keys(user1[field]).length > 0) user1Completeness++;
-      if (user2[field] && Object.keys(user2[field]).length > 0) user2Completeness++;
+      const value1 = user1[field as keyof ProfileRow];
+      const value2 = user2[field as keyof ProfileRow];
+      
+      if (field === 'age') {
+        if (value1 && typeof value1 === 'number') user1Completeness++;
+        if (value2 && typeof value2 === 'number') user2Completeness++;
+      } else if (field === 'interests') {
+        if (value1 && Array.isArray(value1) && value1.length > 0) user1Completeness++;
+        if (value2 && Array.isArray(value2) && value2.length > 0) user2Completeness++;
+      } else {
+        // For JSONB fields (personality_traits, lifestyle_preferences)
+        if (value1 && typeof value1 === 'object' && value1 !== null && Object.keys(value1).length > 0) user1Completeness++;
+        if (value2 && typeof value2 === 'object' && value2 !== null && Object.keys(value2).length > 0) user2Completeness++;
+      }
     }
 
     return ((user1Completeness + user2Completeness) / (requiredFields.length * 2));
@@ -323,19 +354,21 @@ export class AdvancedFeaturesService {
     try {
       const { data: profile } = await supabase
         .from('profiles')
-        .select('personality_traits, interests, lifestyle_preferences')
+        .select('interests, bio, age, gender, account_type, personality_traits')
         .eq('id', userId)
-        .single() as { data: any | null, error: any };
+        .single();
 
-      if (!profile?.personality_traits) return [];
+      if (!profile?.interests || profile.interests.length === 0) return [];
 
       const insights: PersonalityInsight[] = [];
-      const traits = profile.personality_traits;
+      const traits = profile.personality_traits as Record<string, number> | null;
+
+      if (!traits) return [];
 
       // Analyze each personality trait
       if (traits.openness !== undefined) {
         insights.push({
-          trait: 'Apertura a la Experiencia',
+          trait: 'Apertura',
           score: traits.openness,
           description: this.getOpennessDescription(traits.openness),
           compatibility_factors: ['Creatividad', 'Aventura', 'Nuevas experiencias']
@@ -362,7 +395,7 @@ export class AdvancedFeaturesService {
 
       return insights;
     } catch (error) {
-      logger.error('Error calculating interest compatibility:', { error: error instanceof Error ? error.message : String(error) });
+      logger.error('Error generating personality insights:', { error: error instanceof Error ? error.message : String(error) });
       return [];
     }
   }
@@ -410,15 +443,15 @@ export class AdvancedFeaturesService {
     try {
       const { data: userProfile } = await supabase
         .from('profiles')
-        .select('interests, personality_traits')
+        .select('*')
         .eq('id', userId)
-        .single() as { data: any | null, error: any };
+        .single();
 
       const { data: matchProfile } = await supabase
         .from('profiles')
-        .select('interests, personality_traits')
+        .select('*')
         .eq('id', matchId)
-        .single() as { data: any | null, error: any };
+        .single();
 
       if (!userProfile || !matchProfile) return [];
 
@@ -438,7 +471,10 @@ export class AdvancedFeaturesService {
       }
 
       // Connection-based starters
-      if (userProfile.personality_traits?.extraversion > 60 && matchProfile.personality_traits?.extraversion > 60) {
+      const userTraits = userProfile.personality_traits as Record<string, number> | null;
+      const matchTraits = matchProfile.personality_traits as Record<string, number> | null;
+      
+      if ((userTraits?.extraversion || 0) > 60 && (matchTraits?.extraversion || 0) > 60) {
         starters.push({
           id: crypto.randomUUID(),
           category: 'personality',
@@ -596,12 +632,12 @@ export class AdvancedFeaturesService {
       // Get profiles of liked and passed users
       const { data: likedProfiles } = await supabase
         .from('profiles')
-        .select('interests, personality_traits, age, location_preferences')
+        .select('*')
         .in('id', likedUsers);
 
       const { data: passedProfiles } = await supabase
         .from('profiles')
-        .select('interests, personality_traits, age, location_preferences')
+        .select('*')
         .in('id', passedUsers);
 
       // Analyze patterns and update user preferences
@@ -625,18 +661,19 @@ export class AdvancedFeaturesService {
   /**
    * Analyze preference patterns from user behavior
    */
-  private static analyzePreferencePatterns(likedProfiles: any[], passedProfiles: any[]): any {
-    const patterns: any = {
+  private static analyzePreferencePatterns(likedProfiles: ProfileRow[], passedProfiles: ProfileRow[]): Record<string, unknown> {
+    const patterns: Record<string, unknown> = {
       preferred_age_range: null,
       preferred_interests: [],
-      preferred_personality_traits: {},
+      preferred_locations: [],
+      preferred_account_types: [],
       confidence_score: 0
     };
 
     if (likedProfiles.length === 0) return patterns;
 
     // Analyze age preferences
-    const likedAges = likedProfiles.map(p => p.age).filter(age => age);
+    const likedAges = likedProfiles.map(p => p.age).filter((age): age is number => age !== null);
     if (likedAges.length > 0) {
       patterns.preferred_age_range = [
         Math.min(...likedAges) - 2,

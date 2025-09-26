@@ -112,8 +112,8 @@ describe('EmailService - Variables de Entorno', () => {
         'ABC123'
       );
       expect.fail('Should have thrown an error');
-    } catch (error: any) {
-      expect(error.message).toContain('HTTP error! status: 500');
+    } catch (error: unknown) {
+      expect((error as Error).message).toContain('HTTP error! status: 500');
     }
 
     expect(global.fetch).toHaveBeenCalledWith(

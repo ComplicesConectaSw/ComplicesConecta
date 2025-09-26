@@ -3,7 +3,7 @@
 
 // Mock implementation para Playwright
 const mockHCaptcha = {
-  render: (container: string | HTMLElement, options: any) => {
+  render: (container: string | HTMLElement, options: Record<string, unknown>) => {
     console.log('hCaptcha mock: render called', { container, options });
     return 'mock-widget-id';
   },

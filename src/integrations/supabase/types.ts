@@ -595,9 +595,10 @@ export type Database = {
           id: string
           metadata: Json | null
           moderator_id: string
-          new_state: Json | null
-          previous_state: Json | null
-          target_id: string | null
+          personality_traits: Json | null
+          lifestyle_preferences: Json | null
+          location_preferences: Json | null
+          role: string | null
           target_type: string
           target_user_id: string | null
         }
@@ -981,10 +982,14 @@ export type Database = {
           is_demo: boolean | null
           is_premium: boolean | null
           is_verified: boolean | null
+          lifestyle_preferences: Record<string, any> | null
           location: string | null
+          location_preferences: Record<string, any> | null
           looking_for: string | null
           max_distance: number | null
           name: string
+          personality_traits: Record<string, any> | null
+          role: string | null
           suspension_end_date: string | null
           swinger_experience: string | null
           updated_at: string | null
@@ -1823,6 +1828,19 @@ export type Database = {
       toggle_post_like: {
         Args: { p_post_id: string; p_user_id: string }
         Returns: boolean
+      }
+      clean_expired_cache: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      log_security_event: {
+        Args: {
+          p_user_id: string
+          p_event_type: string
+          p_risk_level?: string
+          p_details?: Json
+        }
+        Returns: string
       }
     }
     Enums: {

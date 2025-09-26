@@ -214,7 +214,7 @@ export class ReportService {
     }
   }
 
-  async getReportNotifications(): Promise<{ success: boolean; notifications?: any[]; error?: string }> {
+  async getReportNotifications(): Promise<{ success: boolean; notifications?: unknown[]; error?: string }> {
     try {
       const { data: { user }, error: authError } = await supabase.auth.getUser();
       
@@ -265,7 +265,7 @@ export class ReportService {
     }
   }
 
-  async getReportStatistics(): Promise<{ success: boolean; stats?: any; error?: string }> {
+  async getReportStatistics(): Promise<{ success: boolean; stats?: Record<string, unknown>; error?: string }> {
     try {
       const { data: { user }, error: authError } = await supabase.auth.getUser();
       
@@ -285,14 +285,14 @@ export class ReportService {
 
       const stats = {
         total: data?.length || 0,
-        pending: data?.filter((r: any) => r.status === 'pending').length || 0,
-        resolved: data?.filter((r: any) => r.status === 'resolved').length || 0,
-        dismissed: data?.filter((r: any) => r.status === 'dismissed').length || 0,
+        pending: data?.filter((r: Record<string, unknown>) => r.status === 'pending').length || 0,
+        resolved: data?.filter((r: Record<string, unknown>) => r.status === 'resolved').length || 0,
+        dismissed: data?.filter((r: Record<string, unknown>) => r.status === 'dismissed').length || 0,
         byType: {
-          profile: data?.filter((r: any) => r.content_type === 'profile').length || 0,
-          message: data?.filter((r: any) => r.content_type === 'message').length || 0,
-          media: data?.filter((r: any) => r.content_type === 'media').length || 0,
-          other: data?.filter((r: any) => r.content_type === 'other').length || 0
+          profile: data?.filter((r: Record<string, unknown>) => r.content_type === 'profile').length || 0,
+          message: data?.filter((r: Record<string, unknown>) => r.content_type === 'message').length || 0,
+          media: data?.filter((r: Record<string, unknown>) => r.content_type === 'media').length || 0,
+          other: data?.filter((r: Record<string, unknown>) => r.content_type === 'other').length || 0
         }
       };
 
