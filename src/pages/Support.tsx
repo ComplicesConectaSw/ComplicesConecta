@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Header } from '@/components/Header';
+import HeaderNav from '@/components/HeaderNav';
 
 const Support = () => {
   const navigate = useNavigate();
@@ -105,6 +106,7 @@ const Support = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900">
+      <HeaderNav />
       <Header />
 
       <div className="max-w-6xl mx-auto px-4 py-8">

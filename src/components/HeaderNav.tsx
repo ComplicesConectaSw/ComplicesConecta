@@ -10,10 +10,16 @@ import {
   Building, 
   HelpCircle, 
   Info,
-  Crown
+  Crown,
+  Camera,
+  Coins,
+  FileText,
+  ChevronDown
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { Badge } from '@/components/ui/badge';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { useState } from 'react';
 
 interface HeaderNavProps {
   className?: string;
@@ -24,6 +30,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
   const location = useLocation();
   const { isAuthenticated, user } = useAuth();
   const userIsAuthenticated = isAuthenticated();
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
   const navItems = [
     {
@@ -43,12 +50,13 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
       requiresAuth: false
     },
     {
-      id: 'stories',
-      label: 'Momentos',
-      icon: Calendar,
+      id: 'historias',
+      label: 'Historias',
+      icon: Camera,
       path: '/stories',
       color: 'text-indigo-400',
-      requiresAuth: false
+      requiresAuth: false,
+      hasDropdown: true
     },
     {
       id: 'matches',
@@ -91,6 +99,24 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
       requiresAuth: false
     },
     {
+      id: 'tokens',
+      label: 'Tokens',
+      icon: Coins,
+      path: '/tokens',
+      color: 'text-yellow-400',
+      requiresAuth: false,
+      hasDropdown: true
+    },
+    {
+      id: 'legal',
+      label: 'Legal',
+      icon: FileText,
+      path: '/legal',
+      color: 'text-gray-400',
+      requiresAuth: false,
+      hasDropdown: true
+    },
+    {
       id: 'informacion',
       label: 'Información',
       icon: Info,
@@ -105,11 +131,43 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
   };
 
   const handleNavigation = (item: typeof navItems[0]) => {
+    if (item.hasDropdown) {
+      setOpenDropdown(openDropdown === item.id ? null : item.id);
+      return;
+    }
     if (item.requiresAuth && !userIsAuthenticated) {
       navigate('/auth');
       return;
     }
     navigate(item.path);
+  };
+
+  const getDropdownContent = (itemId: string) => {
+    switch (itemId) {
+      case 'historias':
+        return [
+          { label: 'Qué son las Historias', action: () => navigate('/stories/info') },
+          { label: 'Características', action: () => navigate('/stories/features') },
+          { label: 'Potencial y Beneficios', action: () => navigate('/stories/benefits') },
+          { label: 'Ver Historias', action: () => navigate('/stories') }
+        ];
+      case 'tokens':
+        return [
+          { label: 'Sistema CMPX/GTK', action: () => navigate('/tokens/info') },
+          { label: 'Cómo Ganar Tokens', action: () => navigate('/tokens/earn') },
+          { label: 'Privacidad Tokens', action: () => navigate('/tokens/privacy') },
+          { label: 'Términos Tokens', action: () => navigate('/tokens/terms') }
+        ];
+      case 'legal':
+        return [
+          { label: 'Términos de Servicio', action: () => navigate('/terms') },
+          { label: 'Política de Privacidad', action: () => navigate('/privacy') },
+          { label: 'Directrices', action: () => navigate('/guidelines') },
+          { label: 'Legal Completo', action: () => navigate('/legal') }
+        ];
+      default:
+        return [];
+    }
   };
 
   return (
@@ -135,6 +193,47 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
               const showItem = !item.requiresAuth || userIsAuthenticated;
 
               if (!showItem) return null;
+
+              if (item.hasDropdown) {
+                return (
+                  <DropdownMenu key={item.id} open={openDropdown === item.id} onOpenChange={(open) => setOpenDropdown(open ? item.id : null)}>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className={`
+                          relative flex items-center space-x-1 px-2 sm:px-3 py-2 rounded-lg transition-all duration-200
+                          ${isActive 
+                            ? 'bg-white/20 text-white shadow-lg' 
+                            : 'text-white/80 hover:text-white hover:bg-white/10'
+                          }
+                        `}
+                      >
+                        <Icon className={`h-4 w-4 ${isActive ? 'text-white' : item.color}`} />
+                        <span className="hidden md:block text-xs font-medium">
+                          {item.label}
+                        </span>
+                        <ChevronDown className="h-3 w-3 ml-1" />
+                        
+                        {isActive && (
+                          <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-white rounded-full" />
+                        )}
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="bg-black/90 border-white/20 backdrop-blur-sm">
+                      {getDropdownContent(item.id).map((dropdownItem, index) => (
+                        <DropdownMenuItem 
+                          key={index}
+                          onClick={dropdownItem.action}
+                          className="text-white hover:bg-white/10 cursor-pointer"
+                        >
+                          {dropdownItem.label}
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                );
+              }
 
               return (
                 <Button

@@ -45,9 +45,74 @@ const StoriesContainer: React.FC = () => {
     try {
       setLoading(true);
       logger.info('🎬 Cargando stories...');
-      const fetchedStories = await storyService.getStories();
-      logger.info('🎬 Stories cargadas:', { count: fetchedStories.length });
-      setStories(fetchedStories);
+      
+      if (isDemoMode()) {
+        // Demo stories with placeholders
+        const demoStories: Story[] = [
+          {
+            id: 1,
+            userId: 1,
+            content: {
+              type: 'image',
+              url: '/placeholder.svg'
+            },
+            createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 hours ago
+            expiresAt: new Date(Date.now() + 22 * 60 * 60 * 1000).toISOString(), // 22 hours from now
+            views: 15,
+            isViewed: false,
+            description: 'Mi primera historia en ComplicesConecta! 🎉',
+            visibility: 'public',
+            user: {
+              name: 'Ana García',
+              avatar: '/placeholder.svg'
+            }
+          },
+          {
+            id: 2,
+            userId: 2,
+            content: {
+              type: 'image',
+              url: '/placeholder.svg'
+            },
+            createdAt: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(), // 4 hours ago
+            expiresAt: new Date(Date.now() + 20 * 60 * 60 * 1000).toISOString(), // 20 hours from now
+            views: 8,
+            isViewed: false,
+            description: 'Explorando la ciudad 🌆',
+            visibility: 'public',
+            user: {
+              name: 'Carlos López',
+              avatar: '/placeholder.svg'
+            }
+          },
+          {
+            id: 3,
+            userId: 3,
+            content: {
+              type: 'image',
+              url: '/placeholder.svg'
+            },
+            createdAt: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(), // 6 hours ago
+            expiresAt: new Date(Date.now() + 18 * 60 * 60 * 1000).toISOString(), // 18 hours from now
+            views: 23,
+            isViewed: false,
+            description: 'Momento especial ✨',
+            visibility: 'private',
+            user: {
+              name: 'María Rodríguez',
+              avatar: '/placeholder.svg'
+            }
+          }
+        ];
+        
+        logger.info('🎬 Demo stories cargadas:', { count: demoStories.length });
+        setStories(demoStories);
+      } else {
+        // Production stories from database
+        const fetchedStories = await storyService.getStories();
+        logger.info('🎬 Stories cargadas:', { count: fetchedStories.length });
+        setStories(fetchedStories);
+      }
     } catch (error) {
       logger.error('Error loading stories:', { error: error instanceof Error ? error.message : String(error) });
       // En caso de error, cargar stories demo como fallback

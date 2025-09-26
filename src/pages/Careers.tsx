@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/lib/logger";
 import { Header } from "@/components/Header";
+import HeaderNav from "@/components/HeaderNav";
 
 const ProjectSupport = () => {
   const navigate = useNavigate();
@@ -183,6 +184,7 @@ const ProjectSupport = () => {
 
       {/* Content */}
       <div className="relative z-10 min-h-screen">
+        <HeaderNav />
         <Header />
         
         {/* Page Header */}
@@ -206,11 +208,35 @@ const ProjectSupport = () => {
             <CardHeader>
               <CardTitle className="text-3xl font-bold text-white text-center flex items-center justify-center gap-3">
                 <FileText className="h-8 w-8" />
-                Solicitud de Apoyo al Proyecto
+                Apoyo al Proyecto ComplicesConecta
               </CardTitle>
-              <p className="text-white/80 text-center mt-2">
-                Únete a ComplicesConecta como colaborador startup. Respuesta garantizada en 24 horas.
-              </p>
+              <div className="text-white/90 mt-4 space-y-4">
+                <div className="bg-gradient-to-r from-pink-500/20 to-purple-500/20 p-4 rounded-lg border border-white/10">
+                  <h3 className="text-xl font-semibold mb-2">¿Qué ofrecemos?</h3>
+                  <ul className="space-y-2 text-sm">
+                    <li>• Colaboración en startup innovadora en el sector lifestyle</li>
+                    <li>• Honorarios basados en tiempo dedicado y crecimiento del proyecto</li>
+                    <li>• Oportunidad de formar parte del equipo fundador</li>
+                    <li>• Participación en decisiones estratégicas del producto</li>
+                    <li>• Ambiente de trabajo flexible y remoto</li>
+                  </ul>
+                </div>
+                
+                <div className="bg-gradient-to-r from-indigo-500/20 to-pink-500/20 p-4 rounded-lg border border-white/10">
+                  <h3 className="text-xl font-semibold mb-2">Beneficios de unirte</h3>
+                  <ul className="space-y-2 text-sm">
+                    <li>• Experiencia en startup tecnológica real</li>
+                    <li>• Crecimiento profesional acelerado</li>
+                    <li>• Red de contactos en el ecosistema tech</li>
+                    <li>• Posibilidad de equity en el futuro</li>
+                    <li>• Impacto directo en el producto final</li>
+                  </ul>
+                </div>
+                
+                <p className="text-center text-white/80 font-medium">
+                  Si te interesa formar parte de nuestro equipo, completa el formulario a continuación
+                </p>
+              </div>
             </CardHeader>
             
             <CardContent className="p-8">
