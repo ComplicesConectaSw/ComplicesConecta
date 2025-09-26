@@ -981,10 +981,13 @@ export type Database = {
           is_demo: boolean | null
           is_premium: boolean | null
           is_verified: boolean | null
+          lifestyle_preferences: Record<string, any> | null
           location: string | null
+          location_preferences: Record<string, any> | null
           looking_for: string | null
           max_distance: number | null
           name: string
+          personality_traits: Record<string, any> | null
           suspension_end_date: string | null
           swinger_experience: string | null
           updated_at: string | null
