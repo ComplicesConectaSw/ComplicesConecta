@@ -1,7 +1,9 @@
 import { createRoot } from 'react-dom/client'
 import { StrictMode } from 'react'
-import App from '@/App.tsx'
+import App from './App.tsx'
 import './index.css'
+import { initializeWalletProtection, detectWalletConflicts } from "./utils/walletProtection";
+import { initializeReactFallbacks, ensureReactPolyfills } from "./utils/reactFallbacks";
 import './styles/responsive.css'
 import './styles/text-overflow-fixes.css'
 import './styles/text-visibility-fixes.css'
@@ -66,7 +68,7 @@ try {
   monitor.init().catch(() => {
     // Silenciar errores de Web Vitals para evitar ruido en consola
   });
-} catch (error) {
+} catch {
   // Silenciar errores de inicialización
 }
 
@@ -117,6 +119,14 @@ if ('serviceWorker' in navigator && import.meta.env.MODE === 'production') {
 
 // Inicializar aplicación con verificación de seguridad
 async function initializeApp() {
+  // Initialize React fallbacks first for SSR compatibility
+  initializeReactFallbacks();
+  ensureReactPolyfills();
+  
+  // Initialize wallet protection before anything else
+  initializeWalletProtection();
+  detectWalletConflicts();
+  
   const rootElement = document.getElementById("root");
   if (!rootElement) {
     console.error('❌ Root element not found');
