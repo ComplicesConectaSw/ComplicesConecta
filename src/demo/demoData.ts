@@ -3,6 +3,106 @@
  * Perfiles mock para desarrollo y testing
  */
 
+import { v4 as uuidv4 } from 'uuid';
+import { pickProfileImage, inferProfileKind, resetImageCounters, type ProfileType, type Gender } from '@/lib/media';
+import { Theme } from '@/hooks/useProfileTheme';
+
+export interface DemoProfile {
+  id: string;
+  name: string;
+  age: number;
+  location: string;
+  distance: number;
+  interests: string[];
+  image: string;
+  bio: string;
+  isOnline: boolean;
+  lastActive: string;
+  isVerified: boolean;
+  isPremium: boolean;
+  rating: number;
+  matchScore: number;
+  profileType: ProfileType;
+  gender?: Gender;
+  partnerGender?: Gender;
+  theme?: 'romantic' | 'adventurous';
+  isDemo: true;
+}
+
+export const generateDemoProfiles = (count: number = 20): DemoProfile[] => {
+  const nombres = [
+    'Alejandro', 'María', 'Carlos', 'Ana', 'José', 'Laura', 'Miguel', 'Carmen',
+    'Antonio', 'Isabel', 'Manuel', 'Pilar', 'Francisco', 'Dolores', 'David',
+    'Cristina', 'Javier', 'Rosa', 'Daniel', 'Antonia', 'Rafael', 'Francisca',
+    'José Luis', 'Lucía', 'Jesús', 'Mercedes', 'Ángel', 'Josefa', 'Marcos',
+    'Elena', 'Pedro', 'Teresa', 'Sergio', 'Raquel', 'Pablo', 'Manuela'
+  ];
+
+  const ubicaciones = [
+    'Ciudad de México', 'Guadalajara', 'Monterrey', 'Puebla', 'Tijuana',
+    'León', 'Juárez', 'Torreón', 'Querétaro', 'San Luis Potosí',
+    'Mérida', 'Mexicali', 'Aguascalientes', 'Cuernavaca', 'Saltillo'
+  ];
+
+  const bios = [
+    'Aventurero en busca de nuevas experiencias y conexiones auténticas.',
+    'Amante de la vida, los viajes y las buenas conversaciones.',
+    'Explorando el mundo del lifestyle swinger con mente abierta.',
+    'Buscando parejas y personas afines para compartir momentos únicos.',
+    'Discreto, respetuoso y con ganas de conocer gente interesante.',
+    'Pareja liberal en busca de otras parejas para intercambios.',
+    'Nuevo en esto, pero con muchas ganas de aprender y disfrutar.',
+    'Experiencia y diversión garantizada. Siempre con respeto.'
+  ];
+
+  const interesesList = [
+    ['Viajes', 'Gastronomía', 'Música'], ['Deportes', 'Cine', 'Lectura'],
+    ['Arte', 'Baile', 'Fotografía'], ['Cocina', 'Yoga', 'Naturaleza'],
+    ['Tecnología', 'Fitness', 'Aventura'], ['Teatro', 'Vino', 'Historia']
+  ];
+
+  resetImageCounters();
+
+  return Array.from({ length: count }, (_, i) => {
+    const profileType: ProfileType = Math.random() > 0.7 ? 'couple' : 'single';
+    const gender: Gender = Math.random() > 0.5 ? 'male' : 'female';
+    const partnerGender: Gender = gender === 'male' ? 'female' : 'male';
+    
+    return {
+      id: uuidv4(),
+      name: nombres[Math.floor(Math.random() * nombres.length)],
+      age: Math.floor(Math.random() * 20) + 25,
+      location: ubicaciones[Math.floor(Math.random() * ubicaciones.length)],
+      distance: Math.floor(Math.random() * 50) + 1,
+      interests: interesesList[Math.floor(Math.random() * interesesList.length)],
+      image: pickProfileImage({ id: uuidv4(), name: nombres[Math.floor(Math.random() * nombres.length)], type: profileType, gender }, new Set()),
+      bio: bios[Math.floor(Math.random() * bios.length)],
+      isOnline: Math.random() > 0.3,
+      lastActive: `Hace ${Math.floor(Math.random() * 60)} min`,
+      isVerified: Math.random() > 0.4,
+      isPremium: Math.random() > 0.7,
+      rating: Math.floor(Math.random() * 2) + 4,
+      matchScore: Math.floor(Math.random() * 30) + 70,
+      profileType,
+      gender,
+      partnerGender: profileType === 'couple' ? partnerGender : undefined,
+      theme: Math.random() > 0.5 ? 'romantic' : 'adventurous',
+      isDemo: true as const
+    };
+  });
+};
+
+export const demoStats = {
+  totalUsers: 15420,
+  activeToday: 2341,
+  newThisWeek: 187,
+  premiumUsers: 892,
+  verifiedProfiles: 7234,
+  successfulMatches: 3456,
+  averageAge: 32,
+  topLocation: 'Ciudad de México'
+};
+
 export const demoProfiles = [
   {
     id: 'demo-1',

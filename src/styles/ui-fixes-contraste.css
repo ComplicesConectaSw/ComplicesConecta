@@ -1,0 +1,108 @@
+/**
+ * Correcciones de Contraste UI - Fase 4
+ * Mejora la visibilidad y accesibilidad de elementos interactivos
+ */
+
+/* ===== MEJORAS DE CONTRASTE EN HOVER ===== */
+
+/* Botones con hover mejorado */
+.text-white.hover\:bg-white\/10:hover,
+.hover\:bg-white\/10:hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Botones con fondo transparente mejorado */
+.bg-white\/10 {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.border-white\/20 {
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* ===== MEJORAS ESPECÍFICAS PARA ELEMENTOS CRÍTICOS ===== */
+
+/* Botones de navegación */
+.text-white.hover\:bg-white\/20:hover {
+  background-color: rgba(255, 255, 255, 0.25) !important;
+  backdrop-filter: blur(8px);
+}
+
+/* Tarjetas con fondo transparente */
+.bg-white\/10.backdrop-blur-md {
+  background-color: rgba(255, 255, 255, 0.18) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+}
+
+/* ===== CORRECCIONES DE RESPONSIVIDAD ===== */
+
+/* Asegurar que textos importantes no desaparezcan en móvil */
+@media (max-width: 640px) {
+  .hidden.sm\:inline {
+    display: inline !important;
+    font-size: 0.75rem !important;
+  }
+  
+  /* Iconos más consistentes en móvil */
+  .h-3.w-3.sm\:h-4.sm\:w-4 {
+    height: 1rem !important;
+    width: 1rem !important;
+  }
+}
+
+/* ===== MEJORAS DE ACCESIBILIDAD ===== */
+
+/* Mejor contraste para elementos focuseables */
+.focus\:outline-none:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.5) !important;
+  outline-offset: 2px !important;
+}
+
+/* Sombras mejoradas para mejor definición */
+.shadow-lg {
+  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.3), 
+              0 4px 6px -2px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* ===== CORRECCIONES ESPECÍFICAS DETECTADAS ===== */
+
+/* AdminModerators.tsx - Botones con mejor contraste */
+.bg-white\/10.border-white\/20.text-white.hover\:bg-white\/20 {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.bg-white\/10.border-white\/20.text-white.hover\:bg-white\/20:hover {
+  background-color: rgba(255, 255, 255, 0.25) !important;
+  transform: translateY(-1px);
+  transition: all 0.2s ease;
+}
+
+/* Tabs con mejor visibilidad */
+.data-\[state\=active\]\:bg-white\/20[data-state="active"] {
+  background-color: rgba(255, 255, 255, 0.25) !important;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.5) !important;
+}
+
+/* ===== ANIMACIONES SUAVES ===== */
+
+/* Transiciones mejoradas para todos los elementos hover */
+.hover\:bg-white\/10,
+.hover\:bg-white\/20,
+.bg-white\/10,
+.border-white\/20 {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* ===== MODO OSCURO ESPECÍFICO ===== */
+
+@media (prefers-color-scheme: dark) {
+  .text-white {
+    color: #ffffff !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  }
+  
+  .bg-white\/10 {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+  }
+}

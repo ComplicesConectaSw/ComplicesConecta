@@ -19,7 +19,7 @@ import { pickProfileImage, inferProfileKind, resetImageCounters, type ProfileTyp
 import { calculateDistance, getLocationDisplay, type LocationCoordinates } from '@/lib/distance-utils';
 import { generateMockCoupleProfiles, type CoupleProfileWithPartners } from "@/lib/coupleProfiles";
 import { getAllCoupleProfiles } from "@/lib/coupleProfiles";
-import { generateDemoProfiles, demoStats, type DemoProfile } from '@/lib/demoData';
+import { generateDemoProfiles, demoStats, type DemoProfile } from '@/demo/demoData';
 import { generateFilterDemoCards, type FilterDemoCard } from '@/lib/infoCards';
 import { FilterDemoCard as FilterDemoCardComponent } from '@/components/ui/FilterDemoCard';
 import { supabase } from "@/integrations/supabase/client";

@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Palette, Users, User, Heart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Theme, Gender, ProfileType } from '@/hooks/useProfileTheme';
-import { generateDemoProfiles, DemoProfile } from '@/lib/demoData';
+import { generateDemoProfiles, DemoProfile } from '@/demo/demoData';
 
 interface ProfileThemeShowcaseProps {
   className?: string;
@@ -251,8 +251,7 @@ export const ProfileThemeShowcase: React.FC<ProfileThemeShowcaseProps> = ({
                 </Badge>
                 {profile.theme && (
                   <Badge variant="secondary" className="text-xs">
-                    {profile.theme === 'elegant' ? 'Elegante' : 
-                     profile.theme === 'modern' ? 'Moderno' : 'Vibrante'}
+                    {profile.theme === 'romantic' ? 'Romántico' : 'Aventurero'}
                   </Badge>
                 )}
               </div>

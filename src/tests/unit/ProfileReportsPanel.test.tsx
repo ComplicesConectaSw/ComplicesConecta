@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { ProfileReportsPanel } from '../../src/components/admin/ProfileReportsPanel';
+import { ProfileReportsPanel } from '@/components/admin/ProfileReportsPanel';
 
 // Mock services
 const mockProfileReportService = {

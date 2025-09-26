@@ -33,7 +33,7 @@ export const useScreenshotProtection = (options: ScreenshotProtectionOptions = {
         width: 100%;
         height: 100%;
         background: rgba(0, 0, 0, 0.9);
-        z-index: 999999;
+        z-index: 9999;
         display: flex;
         align-items: center;
         justify-content: center;

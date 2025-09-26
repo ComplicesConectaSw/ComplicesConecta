@@ -30,7 +30,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useProfileQuery } from '@/hooks/useProfileQuery';
 import { logger } from '@/lib/logger';
 import { usePersistedState } from '@/hooks/usePersistedState';
-import { generateDemoProfiles } from '@/lib/demoData';
+import { generateDemoProfiles } from '@/demo/demoData';
 import type { Tables } from '@/integrations/supabase/types';
 import { PrivateImageRequest } from '@/components/profile/PrivateImageRequest';
 import { PrivateImageGallery } from '@/components/profile/PrivateImageGallery';

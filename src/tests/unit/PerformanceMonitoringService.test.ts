@@ -3,10 +3,10 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { PerformanceMonitoringService } from '../../src/services/PerformanceMonitoringService'
+import { PerformanceMonitoringService } from '@/services/PerformanceMonitoringService'
 
 // Mock de Supabase
-vi.mock('../../src/integrations/supabase/client', () => ({
+vi.mock('@/integrations/supabase/client', () => ({
   supabase: {
     from: vi.fn(() => ({
       insert: vi.fn(() => ({
@@ -65,7 +65,7 @@ describe('PerformanceMonitoringService', () => {
 
     it('should handle metric recording errors', async () => {
       // Mock error response
-      const mockSupabase = await import('../../src/integrations/supabase/client')
+      const mockSupabase = await import('@/integrations/supabase/client')
       vi.mocked(mockSupabase.supabase.from).mockReturnValueOnce({
         insert: vi.fn(() => ({
           select: vi.fn(() => ({
