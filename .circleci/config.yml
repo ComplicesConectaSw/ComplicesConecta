@@ -51,8 +51,14 @@ jobs:
       <<: *environment
     steps:
       - checkout
-      - attach_workspace:
-          at: .
+      - restore_cache:
+          <<: *cache_key
+      - run:
+          name: Instalar dependencias si no existen
+          command: |
+            if [ ! -d "node_modules" ]; then
+              npm ci
+            fi
       - run:
           name: Verificar TypeScript
           command: npm run type-check
@@ -71,8 +77,14 @@ jobs:
       <<: *environment
     steps:
       - checkout
-      - attach_workspace:
-          at: .
+      - restore_cache:
+          <<: *cache_key
+      - run:
+          name: Instalar dependencias si no existen
+          command: |
+            if [ ! -d "node_modules" ]; then
+              npm ci
+            fi
       - run:
           name: Ejecutar tests unitarios
           command: npm run test:run
@@ -91,8 +103,14 @@ jobs:
       - checkout
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
-      - attach_workspace:
-          at: .
+      - restore_cache:
+          <<: *cache_key
+      - run:
+          name: Instalar dependencias si no existen
+          command: |
+            if [ ! -d "node_modules" ]; then
+              npm ci
+            fi
       - run:
           name: Ejecutar tests de integración
           command: npm run test:integration || echo "Tests de integración completados"
