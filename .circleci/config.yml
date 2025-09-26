@@ -14,7 +14,7 @@ environment: &environment
 
 # Configuración de caché
 cache_key: &cache_key
-  key: v1-dependencies-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
+  key: v1-dependencies-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
 
 # Jobs principales
 jobs:
@@ -29,24 +29,19 @@ jobs:
       - restore_cache:
           <<: *cache_key
       - run:
-          name: Instalar pnpm
-          command: |
-            sudo corepack enable
-            corepack prepare pnpm@latest --activate
-      - run:
           name: Instalar dependencias
-          command: pnpm install --frozen-lockfile
+          command: npm ci
       - save_cache:
           <<: *cache_key
           paths:
             - node_modules
-            - ~/.pnpm-store
+            - ~/.npm
       - persist_to_workspace:
           root: .
           paths:
             - node_modules
             - package.json
-            - pnpm-lock.yaml
+            - package-lock.json
 
   # Job de linting y verificación de código
   lint-and-typecheck:
@@ -60,16 +55,13 @@ jobs:
           at: .
       - run:
           name: Verificar TypeScript
-          command: |
-            sudo corepack enable
-            corepack prepare pnpm@latest --activate
-            pnpm tsc --noEmit
+          command: npm run type-check
       - run:
           name: Ejecutar ESLint
-          command: pnpm lint
+          command: npm run lint
       - run:
           name: Verificar formato de código
-          command: pnpm format:check || echo "Formato verificado"
+          command: npm run format:check || echo "Formato verificado"
 
   # Job de testing unitario
   test-unit:
@@ -83,10 +75,7 @@ jobs:
           at: .
       - run:
           name: Ejecutar tests unitarios
-          command: |
-            sudo corepack enable
-            corepack prepare pnpm@latest --activate
-            pnpm test --run --reporter=junit --outputFile=test-results/junit.xml
+          command: npm run test:run
       - store_test_results:
           path: test-results
       - store_artifacts:
@@ -106,10 +95,7 @@ jobs:
           at: .
       - run:
           name: Ejecutar tests de integración
-          command: |
-            sudo corepack enable
-            corepack prepare pnpm@latest --activate
-            pnpm test:integration --run || echo "Tests de integración completados"
+          command: npm run test:integration || echo "Tests de integración completados"
 
   # Job de build de producción
   build-production:
@@ -123,10 +109,7 @@ jobs:
           at: .
       - run:
           name: Build de producción
-          command: |
-            sudo corepack enable
-            corepack prepare pnpm@latest --activate
-            pnpm build
+          command: npm run build
       - run:
           name: Verificar tamaño del bundle
           command: |
@@ -154,10 +137,7 @@ jobs:
           at: .
       - run:
           name: Instalar Capacitor CLI
-          command: |
-            sudo corepack enable
-            corepack prepare pnpm@latest --activate
-            pnpm add -g @capacitor/cli
+          command: npm install -g @capacitor/cli
       - run:
           name: Sincronizar proyecto Android
           command: |
@@ -202,10 +182,7 @@ jobs:
           at: .
       - run:
           name: Auditoría de seguridad
-          command: |
-            sudo corepack enable
-            corepack prepare pnpm@latest --activate
-            pnpm audit --audit-level moderate || echo "Auditoría completada con warnings"
+          command: npm audit --audit-level moderate || echo "Auditoría completada con warnings"
 
   # Job de deploy (solo en main)
   deploy-production:
