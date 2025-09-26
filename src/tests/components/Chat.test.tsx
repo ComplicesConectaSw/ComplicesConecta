@@ -5,9 +5,9 @@ import Chat from '@/pages/Chat';
 
 // Console logging para debugging de tests
 const testLogger = {
-  info: (message: string, data?: any) => console.log(`🧪 [Chat.test] ${message}`, data || ''),
-  error: (message: string, error?: any) => console.error(`❌ [Chat.test] ${message}`, error || ''),
-  warn: (message: string, data?: any) => console.warn(`⚠️ [Chat.test] ${message}`, data || '')
+  info: (message: string, data?: unknown) => console.log(`🧪 [Chat.test] ${message}`, data || ''),
+  error: (message: string, error?: unknown) => console.error(`❌ [Chat.test] ${message}`, error || ''),
+  warn: (message: string, data?: unknown) => console.warn(`⚠️ [Chat.test] ${message}`, data || '')
 };
 
 // Mock de hooks y servicios

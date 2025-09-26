@@ -65,6 +65,54 @@ export type Database = {
         }
         Relationships: []
       }
+      automation_rules: {
+        Row: {
+          actions: Json
+          conditions: Json
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          enabled: boolean | null
+          execution_count: number | null
+          id: string
+          last_executed_at: string | null
+          name: string
+          priority: number | null
+          trigger: string
+          updated_at: string | null
+        }
+        Insert: {
+          actions?: Json
+          conditions?: Json
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          enabled?: boolean | null
+          execution_count?: number | null
+          id?: string
+          last_executed_at?: string | null
+          name: string
+          priority?: number | null
+          trigger: string
+          updated_at?: string | null
+        }
+        Update: {
+          actions?: Json
+          conditions?: Json
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          enabled?: boolean | null
+          execution_count?: number | null
+          id?: string
+          last_executed_at?: string | null
+          name?: string
+          priority?: number | null
+          trigger?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       chat_invitations: {
         Row: {
           created_at: string | null
@@ -242,6 +290,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      content_moderation: {
+        Row: {
+          ai_confidence: number | null
+          content_id: string
+          content_type: string
+          created_at: string
+          id: string
+          metadata: Json | null
+          moderator_id: string | null
+          reason: string | null
+          reviewed_at: string | null
+          status: string
+          user_id: string | null
+        }
+        Insert: {
+          ai_confidence?: number | null
+          content_id: string
+          content_type: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          moderator_id?: string | null
+          reason?: string | null
+          reviewed_at?: string | null
+          status?: string
+          user_id?: string | null
+        }
+        Update: {
+          ai_confidence?: number | null
+          content_id?: string
+          content_type?: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          moderator_id?: string | null
+          reason?: string | null
+          reviewed_at?: string | null
+          status?: string
+          user_id?: string | null
+        }
+        Relationships: []
       }
       couple_profiles: {
         Row: {
@@ -961,6 +1051,41 @@ export type Database = {
           },
         ]
       }
+      profile_cache: {
+        Row: {
+          cache_key: string
+          cached_data: Json
+          created_at: string
+          expires_at: string
+          id: string
+          profile_id: string
+        }
+        Insert: {
+          cache_key: string
+          cached_data: Json
+          created_at?: string
+          expires_at: string
+          id?: string
+          profile_id: string
+        }
+        Update: {
+          cache_key?: string
+          cached_data?: Json
+          created_at?: string
+          expires_at?: string
+          id?: string
+          profile_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profile_cache_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           account_type: string | null
@@ -981,10 +1106,14 @@ export type Database = {
           is_demo: boolean | null
           is_premium: boolean | null
           is_verified: boolean | null
+          lifestyle_preferences: Json | null
           location: string | null
+          location_preferences: Json | null
           looking_for: string | null
           max_distance: number | null
           name: string
+          personality_traits: Json | null
+          role: string | null
           suspension_end_date: string | null
           swinger_experience: string | null
           updated_at: string | null
@@ -1010,10 +1139,14 @@ export type Database = {
           is_demo?: boolean | null
           is_premium?: boolean | null
           is_verified?: boolean | null
+          lifestyle_preferences?: Json | null
           location?: string | null
+          location_preferences?: Json | null
           looking_for?: string | null
           max_distance?: number | null
           name: string
+          personality_traits?: Json | null
+          role?: string | null
           suspension_end_date?: string | null
           swinger_experience?: string | null
           updated_at?: string | null
@@ -1039,10 +1172,14 @@ export type Database = {
           is_demo?: boolean | null
           is_premium?: boolean | null
           is_verified?: boolean | null
+          lifestyle_preferences?: Json | null
           location?: string | null
+          location_preferences?: Json | null
           looking_for?: string | null
           max_distance?: number | null
           name?: string
+          personality_traits?: Json | null
+          role?: string | null
           suspension_end_date?: string | null
           swinger_experience?: string | null
           updated_at?: string | null
@@ -1156,6 +1293,111 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      roles: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          permissions: Json
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          permissions?: Json
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          permissions?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      security: {
+        Row: {
+          created_at: string
+          details: Json | null
+          event_type: string
+          id: string
+          ip_address: unknown | null
+          location: Json | null
+          resolved: boolean | null
+          risk_level: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          details?: Json | null
+          event_type: string
+          id?: string
+          ip_address?: unknown | null
+          location?: Json | null
+          resolved?: boolean | null
+          risk_level?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          details?: Json | null
+          event_type?: string
+          id?: string
+          ip_address?: unknown | null
+          location?: Json | null
+          resolved?: boolean | null
+          risk_level?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      sessions: {
+        Row: {
+          created_at: string
+          device_info: Json | null
+          expires_at: string
+          id: string
+          ip_address: unknown | null
+          last_activity: string
+          session_token: string
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          device_info?: Json | null
+          expires_at: string
+          id?: string
+          ip_address?: unknown | null
+          last_activity?: string
+          session_token: string
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          device_info?: Json | null
+          expires_at?: string
+          id?: string
+          ip_address?: unknown | null
+          last_activity?: string
+          session_token?: string
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       system_metrics: {
         Row: {
@@ -1518,13 +1760,11 @@ export type Database = {
           created_at: string
           gtk_balance: number
           id: string
-          last_earned_at: string | null
           last_reset_date: string
-          last_spent_at: string | null
           monthly_earned: number
           monthly_limit: number
-          quantity: number | null
-          token_id: string
+          referral_code: string
+          referred_by: string | null
           total_referrals: number
           updated_at: string
           user_id: string
@@ -1537,13 +1777,11 @@ export type Database = {
           created_at?: string
           gtk_balance?: number
           id?: string
-          last_earned_at?: string | null
           last_reset_date?: string
-          last_spent_at?: string | null
           monthly_earned?: number
           monthly_limit?: number
-          quantity?: number | null
-          token_id: string
+          referral_code: string
+          referred_by?: string | null
           total_referrals?: number
           updated_at?: string
           user_id: string
@@ -1556,35 +1794,18 @@ export type Database = {
           created_at?: string
           gtk_balance?: number
           id?: string
-          last_earned_at?: string | null
           last_reset_date?: string
-          last_spent_at?: string | null
           monthly_earned?: number
           monthly_limit?: number
-          quantity?: number | null
-          token_id?: string
+          referral_code?: string
+          referred_by?: string | null
           total_referrals?: number
           updated_at?: string
           user_id?: string
           world_id_claimed?: boolean
           world_id_verified?: boolean
         }
-        Relationships: [
-          {
-            foreignKeyName: "user_tokens_token_id_fkey"
-            columns: ["token_id"]
-            isOneToOne: false
-            referencedRelation: "tokens"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "user_tokens_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
     }
     Views: {
@@ -1653,61 +1874,15 @@ export type Database = {
         }
         Relationships: []
       }
-      user_token_balances: {
-        Row: {
-          cmpx_balance: number | null
-          cmpx_staked: number | null
-          gtk_balance: number | null
-          last_reset_date: string | null
-          monthly_earned: number | null
-          monthly_limit: number | null
-          monthly_remaining: number | null
-          total_referrals: number | null
-          user_id: string | null
-          world_id_claimed: boolean | null
-          world_id_verified: boolean | null
-        }
-        Insert: {
-          cmpx_balance?: number | null
-          cmpx_staked?: number | null
-          gtk_balance?: number | null
-          last_reset_date?: string | null
-          monthly_earned?: number | null
-          monthly_limit?: number | null
-          monthly_remaining?: never
-          total_referrals?: number | null
-          user_id?: string | null
-          world_id_claimed?: boolean | null
-          world_id_verified?: boolean | null
-        }
-        Update: {
-          cmpx_balance?: number | null
-          cmpx_staked?: number | null
-          gtk_balance?: number | null
-          last_reset_date?: string | null
-          monthly_earned?: number | null
-          monthly_limit?: number | null
-          monthly_remaining?: never
-          total_referrals?: number | null
-          user_id?: string | null
-          world_id_claimed?: boolean | null
-          world_id_verified?: boolean | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "user_tokens_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
     }
     Functions: {
       claim_world_id_reward: {
         Args: { user_id_param: string }
         Returns: Json
+      }
+      clean_expired_cache: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
       }
       complete_staking: {
         Args: { staking_id_param: string }
@@ -1802,6 +1977,15 @@ export type Database = {
       get_user_matches: {
         Args: { user_id_param: string }
         Returns: Json
+      }
+      log_security_event: {
+        Args: {
+          p_details?: Json
+          p_event_type: string
+          p_risk_level?: string
+          p_user_id: string
+        }
+        Returns: string
       }
       process_referral_reward: {
         Args: { new_user_id: string; referral_code_param: string }

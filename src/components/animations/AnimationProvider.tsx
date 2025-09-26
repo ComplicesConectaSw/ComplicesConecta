@@ -15,8 +15,8 @@ interface AnimationConfig {
 interface AnimationContextType {
   config: AnimationConfig;
   updateConfig: (newConfig: Partial<AnimationConfig>) => void;
-  triggerGlobalAnimation: (type: string, data?: any) => void;
-  globalAnimations: Record<string, any>;
+  triggerGlobalAnimation: (type: string, data?: Record<string, unknown>) => void;
+  globalAnimations: Record<string, Record<string, unknown>>;
 }
 
 // Default configuration
@@ -58,7 +58,7 @@ export const AnimationProvider: React.FC<AnimationProviderProps> = ({ children }
     };
   });
 
-  const [globalAnimations, setGlobalAnimations] = useState<Record<string, any>>({});
+  const [globalAnimations, setGlobalAnimations] = useState<Record<string, Record<string, unknown>>>({});
 
   const updateConfig = useCallback((newConfig: Partial<AnimationConfig>) => {
     const updatedConfig = { ...config, ...newConfig };
@@ -66,7 +66,7 @@ export const AnimationProvider: React.FC<AnimationProviderProps> = ({ children }
     localStorage.setItem('animation-config', JSON.stringify(updatedConfig));
   }, [config]);
 
-  const triggerGlobalAnimation = useCallback((type: string, data?: any) => {
+  const triggerGlobalAnimation = useCallback((type: string, data?: Record<string, unknown>) => {
     setGlobalAnimations(prev => ({
       ...prev,
       [type]: { ...data, timestamp: Date.now() }
@@ -119,7 +119,7 @@ export const useAnimationDuration = (baseDuration: number = 1) => {
 };
 
 // Hook to get animation variants with config applied
-export const useAnimationVariants = (baseVariants: any) => {
+export const useAnimationVariants = (baseVariants: Record<string, unknown>) => {
   const { config } = useAnimation();
   const duration = useAnimationDuration();
   
@@ -133,24 +133,25 @@ export const useAnimationVariants = (baseVariants: any) => {
   }
   
   // Apply duration multiplier to all transitions
-  const applyDuration = (variants: any): any => {
+  const applyDuration = (variants: Record<string, unknown>): Record<string, unknown> => {
     if (typeof variants !== 'object' || variants === null) {
       return variants;
     }
     
     const result = { ...variants };
     
-    if (result.transition) {
+    if (result.transition && typeof result.transition === 'object') {
+      const transition = result.transition as Record<string, unknown>;
       result.transition = {
-        ...result.transition,
-        duration: (result.transition.duration || 1) * duration,
+        ...transition,
+        duration: (typeof transition.duration === 'number' ? transition.duration : 1) * duration,
       };
     }
     
     // Recursively apply to nested objects
     Object.keys(result).forEach(key => {
       if (typeof result[key] === 'object' && result[key] !== null) {
-        result[key] = applyDuration(result[key]);
+        result[key] = applyDuration(result[key] as Record<string, unknown>);
       }
     });
     
@@ -182,7 +183,7 @@ export const useGlobalAnimationTriggers = () => {
       triggerGlobalAnimation('notification', { type, message }),
     
     // Match animations
-    triggerMatch: (user: any) => 
+    triggerMatch: (user: Record<string, unknown>) => 
       triggerGlobalAnimation('match', { user }),
     
     // Like animations
@@ -190,11 +191,11 @@ export const useGlobalAnimationTriggers = () => {
       triggerGlobalAnimation('like', { direction }),
     
     // Message animations
-    triggerMessage: (message: any) => 
+    triggerMessage: (message: Record<string, unknown>) => 
       triggerGlobalAnimation('message', { message }),
     
     // Achievement animations
-    triggerAchievement: (achievement: any) => 
+    triggerAchievement: (achievement: Record<string, unknown>) => 
       triggerGlobalAnimation('achievement', { achievement }),
   };
 };

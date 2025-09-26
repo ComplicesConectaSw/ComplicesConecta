@@ -10,7 +10,7 @@ export const test = base.extend({
     await page.addInitScript(() => {
       // Mock hCaptcha API
       (window as any).hcaptcha = {
-        render: (container: string | HTMLElement, config: any) => {
+        render: (container: string | HTMLElement, config: Record<string, unknown>) => {
           console.log('hCaptcha mock: render called');
           return 'mock-widget-id';
         },

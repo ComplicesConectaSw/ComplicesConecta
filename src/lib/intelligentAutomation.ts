@@ -315,10 +315,14 @@ export class IntelligentAutomationService {
    */
   private static getFieldValue(data: Record<string, unknown>, field: string): unknown {
     const fields = field.split('.');
-    let value = data;
+    let value: unknown = data;
     
     for (const f of fields) {
-      value = value?.[f];
+      if (value && typeof value === 'object') {
+        value = (value as Record<string, unknown>)[f];
+      } else {
+        return undefined;
+      }
     }
     
     return value;
@@ -397,11 +401,11 @@ export class IntelligentAutomationService {
     if (!userId) return;
 
     await NotificationService.createNotification({
-      userId,
+      userId: String(userId),
       title: typeof config.title === 'string' ? config.title : '',
-      type: this.validateNotificationType(config.type),
+      type: 'system',
       message: typeof config.message === 'string' ? config.message : '',
-      actionUrl: config.action_url,
+      actionUrl: typeof config.action_url === 'string' ? config.action_url : undefined,
       metadata: { automation: true, trigger_data: triggerData }
     });
   }
@@ -426,7 +430,7 @@ export class IntelligentAutomationService {
       const { data: userProfile } = await supabase
         .from('profiles')
         .select('interests, age, location, gender, looking_for')
-        .eq('id', userId)
+        .eq('id', String(userId))
         .single();
 
       if (userProfile) {
@@ -434,7 +438,7 @@ export class IntelligentAutomationService {
         const { data: potentialMatches } = await supabase
           .from('profiles')
           .select('id, name, interests, age')
-          .neq('id', userId)
+          .neq('id', String(userId))
           .limit(Number(config.max_suggestions) || 5);
 
         // Create match suggestions using existing fields
@@ -459,7 +463,7 @@ export class IntelligentAutomationService {
         .update({ 
           status: 'under_review'
         })
-        .eq('id', reportId);
+        .eq('id', String(reportId));
 
       if (error) {
         logger.error('Error updating report status:', { error: error.message });
@@ -517,9 +521,9 @@ export class IntelligentAutomationService {
     errorMessage?: string
   ): Promise<void> {
     try {
-      const execution: Omit<AutomationExecution, 'id'> = {
+      const execution = {
         rule_id: ruleId,
-        trigger_data: triggerData,
+        trigger_data: triggerData as Record<string, unknown>,
         executed_at: new Date().toISOString(),
         success,
         error_message: errorMessage

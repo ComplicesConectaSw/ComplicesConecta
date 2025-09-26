@@ -11,9 +11,9 @@ import { backupSystem, performManualBackup, getBackupStats } from '@/lib/backup-
 
 // Console logging para debugging de tests de integración
 const testLogger = {
-  info: (message: string, data?: any) => console.log(`🧪 [Integration.test] ${message}`, data || ''),
-  error: (message: string, error?: any) => console.error(`❌ [Integration.test] ${message}`, error || ''),
-  warn: (message: string, data?: any) => console.warn(`⚠️ [Integration.test] ${message}`, data || '')
+  info: (message: string, data?: unknown) => console.log(`🧪 [Integration.test] ${message}`, data || ''),
+  error: (message: string, error?: unknown) => console.error(`❌ [Integration.test] ${message}`, error || ''),
+  warn: (message: string, data?: unknown) => console.warn(`⚠️ [Integration.test] ${message}`, data || '')
 };
 
 describe('Sistema de Integración Completo', () => {

@@ -155,8 +155,8 @@ export class AdvancedFeaturesService {
 
     // Location compatibility
     const locationScore = this.calculateLocationCompatibility(
-      user1.location_preferences,
-      user2.location_preferences,
+      user1.location,
+      user2.location,
       config.filters.maxDistance
     );
     scores.location = locationScore;
@@ -173,9 +173,9 @@ export class AdvancedFeaturesService {
     scores.age = ageScore;
 
     // Personality compatibility
-    const personalityScore = this.calculatePersonalityCompatibility(
-      user1.personality_traits || {},
-      user2.personality_traits || {}
+    const personalityScore = this.calculateInterestCompatibility(
+      user1.interests || [],
+      user2.interests || []
     );
     scores.personality = personalityScore;
     if (personalityScore > 0.75) {
@@ -183,9 +183,9 @@ export class AdvancedFeaturesService {
     }
 
     // Lifestyle compatibility
-    const lifestyleScore = this.calculateLifestyleCompatibility(
-      user1.lifestyle_preferences || {},
-      user2.lifestyle_preferences || {}
+    const lifestyleScore = this.calculateInterestCompatibility(
+      user1.interests || [],
+      user2.interests || []
     );
     scores.lifestyle = lifestyleScore;
     if (lifestyleScore > 0.7) {
@@ -316,8 +316,20 @@ export class AdvancedFeaturesService {
     let user2Completeness = 0;
 
     for (const field of requiredFields) {
-      if (user1[field] && Object.keys(user1[field]).length > 0) user1Completeness++;
-      if (user2[field] && Object.keys(user2[field]).length > 0) user2Completeness++;
+      const value1 = user1[field as keyof ProfileRow];
+      const value2 = user2[field as keyof ProfileRow];
+      
+      if (field === 'age') {
+        if (value1 && typeof value1 === 'number') user1Completeness++;
+        if (value2 && typeof value2 === 'number') user2Completeness++;
+      } else if (field === 'interests') {
+        if (value1 && Array.isArray(value1) && value1.length > 0) user1Completeness++;
+        if (value2 && Array.isArray(value2) && value2.length > 0) user2Completeness++;
+      } else {
+        // For JSONB fields (personality_traits, lifestyle_preferences)
+        if (value1 && typeof value1 === 'object' && value1 !== null && Object.keys(value1).length > 0) user1Completeness++;
+        if (value2 && typeof value2 === 'object' && value2 !== null && Object.keys(value2).length > 0) user2Completeness++;
+      }
     }
 
     return ((user1Completeness + user2Completeness) / (requiredFields.length * 2));
@@ -342,19 +354,21 @@ export class AdvancedFeaturesService {
     try {
       const { data: profile } = await supabase
         .from('profiles')
-        .select('interests, bio, age, gender, account_type')
+        .select('interests, bio, age, gender, account_type, personality_traits')
         .eq('id', userId)
         .single();
 
       if (!profile?.interests || profile.interests.length === 0) return [];
 
       const insights: PersonalityInsight[] = [];
-      const traits = profile.personality_traits;
+      const traits = profile.personality_traits as Record<string, number> | null;
+
+      if (!traits) return [];
 
       // Analyze each personality trait
       if (traits.openness !== undefined) {
         insights.push({
-          trait: 'Apertura a la Experiencia',
+          trait: 'Apertura',
           score: traits.openness,
           description: this.getOpennessDescription(traits.openness),
           compatibility_factors: ['Creatividad', 'Aventura', 'Nuevas experiencias']
@@ -381,7 +395,7 @@ export class AdvancedFeaturesService {
 
       return insights;
     } catch (error) {
-      logger.error('Error calculating interest compatibility:', { error: error instanceof Error ? error.message : String(error) });
+      logger.error('Error generating personality insights:', { error: error instanceof Error ? error.message : String(error) });
       return [];
     }
   }
@@ -429,13 +443,13 @@ export class AdvancedFeaturesService {
     try {
       const { data: userProfile } = await supabase
         .from('profiles')
-        .select('interests, bio, age, gender')
+        .select('*')
         .eq('id', userId)
         .single();
 
       const { data: matchProfile } = await supabase
         .from('profiles')
-        .select('interests, bio, age, gender')
+        .select('*')
         .eq('id', matchId)
         .single();
 
@@ -457,7 +471,10 @@ export class AdvancedFeaturesService {
       }
 
       // Connection-based starters
-      if (userProfile.personality_traits?.extraversion > 60 && matchProfile.personality_traits?.extraversion > 60) {
+      const userTraits = userProfile.personality_traits as Record<string, number> | null;
+      const matchTraits = matchProfile.personality_traits as Record<string, number> | null;
+      
+      if ((userTraits?.extraversion || 0) > 60 && (matchTraits?.extraversion || 0) > 60) {
         starters.push({
           id: crypto.randomUUID(),
           category: 'personality',
@@ -615,12 +632,12 @@ export class AdvancedFeaturesService {
       // Get profiles of liked and passed users
       const { data: likedProfiles } = await supabase
         .from('profiles')
-        .select('interests, age, location, gender, account_type')
+        .select('*')
         .in('id', likedUsers);
 
       const { data: passedProfiles } = await supabase
         .from('profiles')
-        .select('interests, age, location, gender, account_type')
+        .select('*')
         .in('id', passedUsers);
 
       // Analyze patterns and update user preferences
@@ -656,7 +673,7 @@ export class AdvancedFeaturesService {
     if (likedProfiles.length === 0) return patterns;
 
     // Analyze age preferences
-    const likedAges = likedProfiles.map(p => p.age).filter(age => age);
+    const likedAges = likedProfiles.map(p => p.age).filter((age): age is number => age !== null);
     if (likedAges.length > 0) {
       patterns.preferred_age_range = [
         Math.min(...likedAges) - 2,
