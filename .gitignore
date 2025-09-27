@@ -208,12 +208,28 @@ diff.patch
 project-structure.md
 
 # Archivos con información sensible detectados
-docs-unified/deployment/DEPLOY.md
-docs-unified/deployment/VERCEL_SETUP.md
-docs-unified/deployment/DEPLOYMENT_INSTRUCTIONS.md
-docs-unified/tests/worldid/WORLDID_FUNCTION_TEST.md
-
 # Archivos de build con tokens embebidos
 android/app/build/intermediates/assets/release/mergeReleaseAssets/public/js/*.js
 android/app/src/main/assets/public/js/*.js
 dist/js/*.js
+
+# Scripts DevOps y herramientas de desarrollo (agregado 27/09/2025)
+README_DEVOPS.md
+README_IA.md
+INSTRUCCIONES_USUARIOS_DEMO.md
+herramienta_Git_supaBase3.0.ps1
+herramienta_Git_supaBase2.0.ps1
+herramienta_Git_supa.ps1
+GIT_HUB_Menu.ps1
+fix-supabase.ps1
+DocsCleaner.ps1
+DevOpsManagerUltra.ps1
+check-imports2.0.ps1
+check-imports.ps1
+check-imports\ copy.ps1
+
+# Documentación unificada movida a docs/
+docs-unified/
+
+# Checklist de correcciones temporales (agregado 27/09/2025)
+CHECKLIST_CORRECCION_TEMPORALES.md
