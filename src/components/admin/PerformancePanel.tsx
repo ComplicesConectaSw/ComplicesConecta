@@ -4,11 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
 import {
   Activity, Server, Database, Wifi, Cpu, 
   HardDrive, RefreshCw, AlertTriangle, CheckCircle,
-  TrendingUp, TrendingDown, BarChart3
+  TrendingUp, BarChart3
 } from 'lucide-react';
 
 interface SystemMetrics {
@@ -137,11 +136,7 @@ export default function PerformancePanel() {
     setIsLoading(true);
     try {
       await loadPerformanceData();
-      toast({
-        title: "Métricas actualizadas",
-        description: "Los datos de rendimiento han sido actualizados",
-      });
-    } catch (error) {
+    } catch {
       toast({
         title: "Error",
         description: "No se pudieron actualizar las métricas",

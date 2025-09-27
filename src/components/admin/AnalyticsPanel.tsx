@@ -9,7 +9,6 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -17,11 +16,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { Database } from '@/integrations/supabase/types';
 import {
   BarChart3, Users, Activity, UserPlus, TrendingUp, Download,
-  RefreshCw, Calendar, Eye, Heart, MessageCircle, Share,
-  BarChart, TrendingUp as ArrowTrendingUpIcon, DollarSign as CurrencyDollarIcon, Users as UserGroupIcon
+  RefreshCw, Eye, Heart, MessageCircle,
+  DollarSign as CurrencyDollarIcon
 } from 'lucide-react';
 
 // Importaciones para analytics de tokens
@@ -77,7 +75,7 @@ export default function AnalyticsPanel() {
   // Estados para analytics de tokens
   const [tokenMetrics, setTokenMetrics] = useState<TokenMetrics | null>(null);
   const [realTimeMetrics, setRealTimeMetrics] = useState<any>(null);
-  const [systemMetrics, setSystemMetrics] = useState<any>(null);
+  const [_systemMetrics, setSystemMetrics] = useState<any>(null);
   const [tokenLoading, setTokenLoading] = useState(true);
   const [tokenError, setTokenError] = useState<string | null>(null);
   const [isGeneratingReport, setIsGeneratingReport] = useState(false);
@@ -123,7 +121,7 @@ export default function AnalyticsPanel() {
       } else {
         setTokenError(response.error || 'Error cargando métricas de tokens');
       }
-    } catch (err) {
+    } catch {
       setTokenError('Error inesperado cargando métricas de tokens');
     } finally {
       setTokenLoading(false);
@@ -156,7 +154,7 @@ export default function AnalyticsPanel() {
       } else {
         setTokenError(response.error || 'Error generando reporte');
       }
-    } catch (err) {
+    } catch {
       setTokenError('Error inesperado generando reporte');
     } finally {
       setIsGeneratingReport(false);
@@ -822,7 +820,7 @@ export default function AnalyticsPanel() {
                   <Card>
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
-                        <ArrowTrendingUpIcon className="h-5 w-5" />
+                        <TrendingUp className="h-5 w-5" />
                         Actividad de Transacciones
                       </CardTitle>
                     </CardHeader>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Shield, Eye, CheckCircle, XCircle, Clock, AlertTriangle, User, Calendar, MessageSquare } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Shield, Eye, CheckCircle, XCircle, Clock, AlertTriangle, User } from 'lucide-react';
 import { profileReportService } from '@/services/ProfileReportService';
 import { toast } from 'sonner';
 
@@ -62,7 +61,7 @@ export const ProfileReportsPanel: React.FC = () => {
       } else {
         toast.error(result.error || 'Error al cargar reportes');
       }
-    } catch (error) {
+    } catch {
       toast.error('Error interno del servidor');
     } finally {
       setLoading(false);
@@ -74,7 +73,7 @@ export const ProfileReportsPanel: React.FC = () => {
     action: 'dismiss' | 'confirm',
     actionTaken?: string,
     resolutionNotes?: string,
-    suspensionDays?: number
+    _suspensionDays?: number
   ) => {
     setActionLoading(reportId);
     
@@ -92,7 +91,7 @@ export const ProfileReportsPanel: React.FC = () => {
       } else {
         toast.error(result.error || 'Error al procesar reporte');
       }
-    } catch (error) {
+    } catch {
       toast.error('Error interno del servidor');
     } finally {
       setActionLoading(null);
@@ -269,30 +268,23 @@ export const ProfileReportsPanel: React.FC = () => {
       </div>
 
       {/* Report Detail Modal */}
-      <AnimatePresence>
-        {selectedReport && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-              onClick={() => setSelectedReport(null)}
-            />
+      {selectedReport && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div
+            className="absolute inset-0 bg-black bg-opacity-50"
+            onClick={() => setSelectedReport(null)}
+          />
+          
+          <div
+            className="relative w-full max-w-2xl bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden"
+          >
+            <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                Detalles del Reporte
+              </h3>
+            </div>
             
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-2xl bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden"
-            >
-              <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  Detalles del Reporte
-                </h3>
-              </div>
-              
-              <div className="p-6 space-y-6">
+            <div className="p-6 space-y-6">
                 {/* User Info */}
                 <div className="grid grid-cols-2 gap-6">
                   <div>
@@ -359,10 +351,12 @@ export const ProfileReportsPanel: React.FC = () => {
                   </div>
                 )}
               </div>
-            </motion.div>
+            </div>
           </div>
         )}
-      </AnimatePresence>
+      </div>
     </div>
   );
 };
+
+export default ProfileReportsPanel;
