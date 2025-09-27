@@ -12,7 +12,6 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/lib/logger";
 import { Header } from "@/components/Header";
-import HeaderNav from "@/components/HeaderNav";
 
 const ProjectSupport = () => {
   const navigate = useNavigate();
@@ -84,7 +83,6 @@ const ProjectSupport = () => {
 
       // Obtener información adicional para auditoría
       const userAgent = navigator.userAgent;
-      const timestamp = new Date().toISOString();
 
       // Subir archivo CV si existe
       let cvUrl = null;
@@ -131,7 +129,6 @@ const ProjectSupport = () => {
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       const data = [mockData];
-      const error = null;
 
       // No hay error en la simulación, continuar con éxito
 
@@ -184,7 +181,6 @@ const ProjectSupport = () => {
 
       {/* Content */}
       <div className="relative z-10 min-h-screen">
-        <HeaderNav />
         <Header />
         
         {/* Page Header */}

@@ -1,4 +1,4 @@
-# 🎯 ComplicesConecta - Documentación Técnica Avanzada v3.3.1
+# 🎯 ComplicesConecta - Documentación Técnica Avanzada v3.4.0
 
 <div align="center">
 
@@ -11,11 +11,11 @@
 
 ### 📱 ¡Descarga la App Ahora!
 
-<a href="https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v3.3.1/app-release.apk" download>
-  <img src="https://img.shields.io/badge/📱_Descargar_APK-v3.3.1-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
+<a href="https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v3.4.0/app-release.apk" download>
+  <img src="https://img.shields.io/badge/📱_Descargar_APK-v3.4.0-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
 </a>
 
-**SHA256:** `Verificado - Build v3.3.1 con Sistema Analytics y ML Completo`
+**SHA256:** `Verificado - Build v3.4.0 con Optimización de Build y ProfileThemeDemo Mejorado`
 
 *🔒 Aplicación segura y verificada para Android*
 
@@ -47,7 +47,14 @@
 
 **Estado:** ✅ **PRODUCTION READY ENHANCED - PERFECT SCORE 100/100** 🏆  
 **Última Actualización:** 27 de Septiembre, 2025  
-**Versión:** 3.3.1 - Sistema Analytics y ML Completo
+**Versión:** 3.4.0 - Optimización de Build y ProfileThemeDemo Mejorado
+
+### 🚀 Nuevas Características v3.4.0
+- **⚡ Code-Splitting Avanzado**: Chunks optimizados por funcionalidad (admin, chat, profiles, tokens)
+- **🎨 ProfileThemeDemo Mejorado**: Funcionalidad completa con navegación React Router
+- **📦 Lazy Loading Centralizado**: Sistema unificado en `src/utils/lazyComponents.ts`
+- **🔧 Build Optimization**: Sin warnings de chunk size, todos los chunks < 500kB
+- **✅ TypeScript Perfecto**: 0 errores de compilación
 
 > **La plataforma de intercambio de parejas más exclusiva y segura de México +18**
 

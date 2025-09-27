@@ -21,6 +21,7 @@ import { validateModeratorRequest } from '@/lib/validations/moderator';
 interface FormData {
   fullName: string;
   email: string;
+  phone: string;
   experience: string;
   motivation: string;
   availability: string;
@@ -33,6 +34,7 @@ const ModeratorRequest = () => {
   const [formData, setFormData] = useState<FormData>({
     fullName: '',
     email: '',
+    phone: '',
     experience: '',
     motivation: '',
     availability: '',
@@ -70,7 +72,7 @@ const ModeratorRequest = () => {
       setLoading(true);
 
       // Verificar si ya existe una solicitud pendiente para este email
-      const { data: existingRequest, error: checkError } = await (supabase as any)
+      const { data: existingRequest } = await (supabase as any)
         .from('moderator_requests')
         .select('*')
         .eq('email', formData.email)
@@ -92,6 +94,7 @@ const ModeratorRequest = () => {
         .insert([{
           full_name: formData.fullName,
           email: formData.email,
+          phone: formData.phone,
           experience: formData.experience,
           motivation: formData.motivation,
           availability: formData.availability,
@@ -317,29 +320,14 @@ const ModeratorRequest = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
               {/* Información personal */}
-              <div className="space-y-4">
-                <h3 className="text-white font-semibold flex items-center gap-2">
+              <div className="space-y-3 sm:space-y-4">
+                <h3 className="text-white font-semibold flex items-center gap-2 text-sm sm:text-base">
                   <User className="h-4 w-4" />
                   Información Personal
                 </h3>
                 
-                <div>
-                  <label className="text-white text-sm mb-2 block">
-                    Nombre Completo *
-                  </label>
-                  <input
-                    type="text"
-                    name="fullName"
-                    value={formData.fullName}
-                    onChange={handleInputChange}
-                    className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50"
-                    placeholder="Tu nombre completo"
-                    required
-                  />
-                </div>
-
                 <div>
                   <label className="text-white text-sm mb-2 block">
                     Email *
@@ -349,8 +337,23 @@ const ModeratorRequest = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50"
+                    className="w-full p-2 sm:p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 text-sm sm:text-base"
                     placeholder="tu@email.com"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="text-white text-sm mb-2 block">
+                    Teléfono *
+                  </label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    className="w-full p-2 sm:p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 text-sm sm:text-base"
+                    placeholder="+34 600 000 000"
                     required
                   />
                 </div>

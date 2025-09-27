@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Header } from "@/components/Header";
 import NavigationEnhanced from "@/components/NavigationEnhanced";
 import { ProfileThemeShowcase } from '@/components/demo/ProfileThemeShowcase';
@@ -10,26 +11,33 @@ import { Palette, Eye, Users, Sparkles, Settings } from 'lucide-react';
 import { useProfileTheme, ProfileType, Gender, Theme, getAvailableThemes } from '@/hooks/useProfileTheme';
 
 const ProfileThemeDemo: React.FC = () => {
+  const navigate = useNavigate();
+  const [selectedTheme, setSelectedTheme] = useState<Theme>('dark');
   const [selectedProfileType, setSelectedProfileType] = useState<ProfileType>('single');
   const [selectedGenders, setSelectedGenders] = useState<Gender[]>(['male']);
-  const [selectedTheme, setSelectedTheme] = useState<Theme>('elegant');
   
-  const themeConfig = useProfileTheme(selectedProfileType, selectedGenders, selectedTheme);
   const availableThemes = getAvailableThemes();
+
+  // Usar el hook useProfileTheme con los valores actuales
+  const themeConfig = useProfileTheme(selectedProfileType, selectedGenders, selectedTheme);
 
   const handleProfileTypeChange = (type: ProfileType) => {
     setSelectedProfileType(type);
     if (type === 'single') {
-      setSelectedGenders(['male']);
+      setSelectedGenders([selectedGenders[0] || 'male']);
     } else {
-      setSelectedGenders(['male', 'female']);
+      setSelectedGenders([selectedGenders[0] || 'male', 'female']);
     }
   };
 
-  const handleGenderChange = (index: number, gender: Gender) => {
+  const handleGenderChange = (index: number, newGender: Gender) => {
     const newGenders = [...selectedGenders];
-    newGenders[index] = gender;
+    newGenders[index] = newGender;
     setSelectedGenders(newGenders);
+  };
+
+  const handleThemeChange = (newTheme: Theme) => {
+    setSelectedTheme(newTheme);
   };
 
   return (
@@ -129,7 +137,7 @@ const ProfileThemeDemo: React.FC = () => {
               <label className={`block text-sm font-medium ${themeConfig.textClass} mb-2`}>
                 Tema Premium
               </label>
-              <Select value={selectedTheme} onValueChange={(value: Theme) => setSelectedTheme(value)}>
+              <Select value={selectedTheme} onValueChange={handleThemeChange}>
                 <SelectTrigger className="bg-white/10 border-white/30 text-white">
                   <SelectValue placeholder="Selecciona un tema" />
                 </SelectTrigger>
@@ -247,12 +255,31 @@ const ProfileThemeDemo: React.FC = () => {
             que reflejan tu personalidad y estilo de vida.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <button className="bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-purple-50 transition-colors">
-              Crear Perfil Gratis
-            </button>
-            <button className="border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors">
+            <Button 
+              className="bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-purple-50 transition-colors"
+              onClick={() => {
+                // Verificar si está en modo demo o producción
+                const isDemo = localStorage.getItem('demo_authenticated') === 'true';
+                if (isDemo) {
+                  // En modo demo, navegar a perfil demo
+                  navigate('/profile-single');
+                } else {
+                  // En producción, navegar a auth
+                  navigate('/auth');
+                }
+              }}
+            >
+              {localStorage.getItem('demo_authenticated') === 'true' ? 'Ver Mi Perfil Demo' : 'Crear Perfil Gratis'}
+            </Button>
+            <Button 
+              className="border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors bg-transparent"
+              onClick={() => {
+                // Navegar a más demos o template demo
+                navigate('/template-demo');
+              }}
+            >
               Ver Más Demos
-            </button>
+            </Button>
           </div>
         </UnifiedCard>
       </div>

@@ -1,5 +1,4 @@
 import { Header } from '@/components/Header';
-import HeaderNav from '@/components/HeaderNav';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -76,7 +75,6 @@ const Legal: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 relative overflow-hidden">
-      <HeaderNav />
       <Header />
       
       {/* Animated Background Elements */}

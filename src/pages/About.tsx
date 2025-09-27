@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
-import HeaderNav from "@/components/HeaderNav";
 
 const About = () => {
   const navigate = useNavigate();
@@ -17,7 +16,6 @@ const About = () => {
         <div className="absolute -bottom-8 left-20 w-72 h-72 bg-red-500/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
       </div>
 
-      <HeaderNav />
       <Header />
       {/* Content */}
       <div className="relative z-10 min-h-screen">

@@ -6,7 +6,7 @@ import { CrossBrowserOptimizer } from '@/components/ui/CrossBrowserOptimizer';
 import { AccessibilityEnhancer } from '@/components/ui/AccessibilityEnhancer';
 import { MobileOptimizer } from '@/components/ui/MobileOptimizer';
 import { ThemeProvider } from '@/components/ui/ThemeProvider';
-import { Suspense, lazy } from "react";
+import { Suspense } from "react";
 import { AnimationProvider } from "@/components/animations/AnimationProvider";
 import { PageTransitionWrapper } from "@/components/animations/PageTransitions";
 import { AnimatedBackground, FloatingParticles } from "@/components/animations/GlobalAnimations";
@@ -22,57 +22,33 @@ import Auth from "@/pages/Auth";
 import NotFound from "@/pages/NotFound";
 import Events from "@/pages/Events";
 
-// Lazy loaded pages for performance optimization - Core features
-const Profiles = lazy(() => import("@/pages/Profiles"));
-const ProfileDetail = lazy(() => import("@/pages/ProfileDetail"));
-const Chat = lazy(() => import("@/pages/Chat"));
-const ChatInfo = lazy(() => import("@/pages/ChatInfo"));
-const Matches = lazy(() => import("@/pages/Matches"));
-const Requests = lazy(() => import("@/pages/Requests"));
-const Settings = lazy(() => import("@/pages/Settings"));
-const Discover = lazy(() => import("@/pages/Discover"));
-const Premium = lazy(() => import("@/pages/Premium"));
-const Dashboard = lazy(() => import("@/pages/Dashboard"));
+// Import optimized lazy components
+import { LazyComponents } from '@/utils/lazyComponents';
 
-// Secondary pages - loaded on demand
-const FAQ = lazy(() => import("@/pages/FAQ"));
-const Terms = lazy(() => import("@/pages/Terms"));
-const Privacy = lazy(() => import("@/pages/Privacy"));
-const Support = lazy(() => import("@/pages/Support"));
-const ProjectInfo = lazy(() => import("@/pages/ProjectInfo"));
-const Security = lazy(() => import("@/pages/Security"));
-const Guidelines = lazy(() => import("@/pages/Guidelines"));
-const Legal = lazy(() => import("@/pages/Legal"));
-
-// Token system - separate chunk
-const Tokens = lazy(() => import("@/pages/Tokens"));
-const TokensInfo = lazy(() => import("@/pages/TokensInfo"));
-const TokensPrivacy = lazy(() => import("@/pages/TokensPrivacy"));
-const TokensTerms = lazy(() => import("@/pages/TokensTerms"));
-const TokensLegal = lazy(() => import("@/pages/TokensLegal"));
-
-// Admin pages - separate chunk
-const Admin = lazy(() => import("@/pages/Admin"));
-const AdminProduction = lazy(() => import("@/pages/AdminProduction"));
-
-// Stories info pages
-const StoriesInfo = lazy(() => import("@/pages/StoriesInfo"));
-const ProfileSingle = lazy(() => import("@/pages/ProfileSingle"));
-const Stories = lazy(() => import("@/pages/Stories"));
-const ProfileCouple = lazy(() => import("@/pages/ProfileCouple"));
-const EditProfileSingle = lazy(() => import("@/pages/EditProfileSingle"));
-const EditProfileCouple = lazy(() => import("@/pages/EditProfileCouple"));
-const Feed = lazy(() => import("@/pages/Feed"));
-const About = lazy(() => import("@/pages/About"));
-const Careers = lazy(() => import("@/pages/Careers"));
-const AdminCareerApplications = lazy(() => import("@/pages/AdminCareerApplications"));
-const AdminModerators = lazy(() => import("@/pages/AdminModerators"));
-const ModeratorDashboard = lazy(() => import("@/pages/ModeratorDashboard"));
-const ModeratorRequest = lazy(() => import("@/pages/ModeratorRequest"));
-const Blog = lazy(() => import("@/pages/Blog"));
-const ChatAuthenticated = lazy(() => import("@/pages/ChatAuthenticated"));
-const Donations = lazy(() => import("@/pages/Donations"));
-const TemplateDemo = lazy(() => import("@/pages/TemplateDemo"));
+// Destructure for cleaner usage
+const {
+  // Core features
+  Profiles, ProfileDetail, Chat, ChatInfo, Matches, Requests, Settings, 
+  Discover, Premium, Dashboard,
+  
+  // Info/Legal pages
+  FAQ, Terms, Privacy, Support, ProjectInfo, Security, Guidelines, Legal, About,
+  
+  // Token system
+  Tokens, TokensInfo, TokensPrivacy, TokensTerms, TokensLegal,
+  
+  // Admin pages
+  Admin, AdminProduction, AdminCareerApplications, AdminModerators, ModeratorDashboard,
+  
+  // Stories and content
+  StoriesInfo, Stories, Feed, Blog,
+  
+  // Profile pages
+  ProfileSingle, ProfileCouple, EditProfileSingle, EditProfileCouple,
+  
+  // Other pages
+  Careers, ModeratorRequest, ChatAuthenticated, Donations, TemplateDemo
+} = LazyComponents;
 
 // Loading component for Suspense
 const PageLoader = () => (
