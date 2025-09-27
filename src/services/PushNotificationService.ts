@@ -164,7 +164,7 @@ export class PushNotificationService {
     settings: Record<string, any> = {}
   ): Promise<NotificationResponse> {
     try {
-      const { data, error } = await (supabase as any)
+      const { data: _data, error } = await (supabase as any)
         .from('user_notification_preferences')
         .upsert({
           user_id: userId,

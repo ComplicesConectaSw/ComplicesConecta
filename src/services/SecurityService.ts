@@ -56,7 +56,7 @@ class SecurityService {
    * Analiza actividad sospechosa de un usuario
    * TODO: Implementar análisis real con ML/IA
    */
-  async analyzeUserActivity(userId: string, timeframe: 'hour' | 'day' | 'week' = 'day'): Promise<SecurityAnalysis> {
+  async analyzeUserActivity(userId: string, _timeframe: 'hour' | 'day' | 'week' = 'day'): Promise<SecurityAnalysis> {
     try {
       // PLACEHOLDER: Análisis mock de actividad sospechosa
       const flags: SecurityFlag[] = [];
@@ -360,8 +360,8 @@ class SecurityService {
         userId: log.user_id || '',
         action: log.action_type || '',
         resource: log.resource_type || '',
-        details: log.request_data || {},
-        ipAddress: log.ip_address || '',
+        details: typeof log.request_data === 'object' && log.request_data !== null ? log.request_data as Record<string, any> : { data: log.request_data },
+        ipAddress: (log.ip_address || '') as string,
         userAgent: log.user_agent || '',
         timestamp: log.created_at || new Date().toISOString(),
         riskScore: log.fraud_score || 0
@@ -481,7 +481,7 @@ class SecurityService {
     }
   }
 
-  private async calculateEventRiskScore(action: string, details: Record<string, any>): Promise<number> {
+  private async calculateEventRiskScore(action: string, _details: Record<string, any>): Promise<number> {
     // PLACEHOLDER: Cálculo básico de risk score
     const riskScores: Record<string, number> = {
       'login': 1,

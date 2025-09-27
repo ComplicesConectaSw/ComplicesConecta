@@ -147,9 +147,9 @@ export const Header = () => {
     }
   };
   return (
-    <header className={`${navbarStyles.backgroundClass} ${navbarStyles.shadowClass} border-b ${navbarStyles.borderClass} sticky top-0 z-50 transition-all duration-300 py-2 sm:py-4`}>
-      <div className="container mx-auto px-2 sm:px-4">
-        <div className="flex items-center justify-between">
+    <header className={`${navbarStyles.backgroundClass} ${navbarStyles.shadowClass} border-b ${navbarStyles.borderClass} sticky top-0 z-50 transition-all duration-300 py-1 sm:py-2 md:py-4`}>
+      <div className="container mx-auto px-1 sm:px-2 md:px-4">
+        <div className="flex items-center justify-between gap-1 sm:gap-2">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-1 sm:space-x-2">
             <div className="relative">
@@ -484,6 +484,31 @@ export const Header = () => {
               </DropdownMenuContent>
             </DropdownMenu>
             
+            {/* Historias - Acceso directo más prominente */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base bg-transparent border-none p-2">
+                  Historias
+                  <ChevronDown className="h-3 w-3 ml-1" />
+                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="bg-background/95 backdrop-blur-sm border border-primary/20">
+                <DropdownMenuItem asChild>
+                  <Link to="/stories" className="flex items-center gap-2 w-full">
+                    <BookOpen className="h-4 w-4" />
+                    Ver Historias
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/stories-info" className="flex items-center gap-2 w-full">
+                    <Info className="h-4 w-4" />
+                    Información
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
             {/* Soporte Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

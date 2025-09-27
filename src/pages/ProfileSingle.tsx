@@ -394,7 +394,7 @@ const ProfileSingle: React.FC = () => {
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
                 <div className="aspect-square bg-gradient-to-br from-pink-400 to-purple-600 rounded-lg flex items-center justify-center overflow-hidden">
                   <img 
-                    src="/src/assets/profile-1.jpg" 
+                    src="/placeholder.svg" 
                     alt="Foto pública 1"
                     className="w-full h-full object-cover"
                     onError={(e) => {
@@ -488,8 +488,8 @@ const ProfileSingle: React.FC = () => {
                   images={[
                     {
                       id: '1',
-                      url: '/src/assets/people/privado/erocpriv.jpg',
-                      thumbnail: '/src/assets/people/privado/erocpriv.jpg',
+                      url: '/placeholder.svg',
+                      thumbnail: '/placeholder.svg',
                       uploadedAt: new Date()
                     }
                   ]}

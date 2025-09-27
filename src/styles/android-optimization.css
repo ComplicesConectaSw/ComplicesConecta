@@ -635,9 +635,10 @@ body {
 .header-nav,
 .navigation-enhanced,
 header {
-  background: rgba(0, 0, 0, 0.8) !important;
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.9) !important;
+  backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .header-nav .text-white,
@@ -661,13 +662,33 @@ header button:hover {
 @media (max-width: 768px) {
   .header-nav,
   header {
-    padding: 8px 12px !important;
-    min-height: 60px;
+    padding: 4px 8px !important;
+    min-height: 56px;
   }
   
   .header-nav h1,
   header h1 {
-    font-size: 1.5rem !important;
+    font-size: 1.25rem !important;
+    line-height: 1.2;
+  }
+  
+  /* Ensure header content doesn't overflow */
+  .header-nav .container,
+  header .container {
+    max-width: 100%;
+    padding: 0 4px;
+  }
+  
+  /* Compact navigation items */
+  .header-nav nav,
+  header nav {
+    gap: 0.25rem !important;
+  }
+  
+  .header-nav button,
+  header button {
+    padding: 4px 8px !important;
+    font-size: 0.75rem !important;
   }
 }
 
@@ -675,20 +696,27 @@ header button:hover {
 @media (max-width: 430px) {
   .header-nav,
   header {
-    padding: 6px 10px !important;
-    min-height: 56px;
+    padding: 2px 4px !important;
+    min-height: 52px;
   }
   
   .header-nav h1,
   header h1 {
-    font-size: 1.25rem !important;
+    font-size: 1rem !important;
+    line-height: 1.1;
   }
   
   .login-btn,
   .auth-button {
-    font-size: 14px !important;
-    padding: 6px 12px !important;
-    min-width: 100px;
+    font-size: 12px !important;
+    padding: 4px 8px !important;
+    min-width: 80px;
+  }
+  
+  /* Hide less important elements on very small screens */
+  .header-nav .hidden,
+  header .hidden {
+    display: none !important;
   }
 }
 

@@ -87,7 +87,7 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({
           storyId: currentStory.id.toString(),
           userId: currentUserId,
           createdAt: new Date(),
-          user: { id: currentUserId, name: "Usuario Demo", avatar: "/src/assets/people/profile-1.jpg" }
+          user: { id: currentUserId, name: "Usuario Demo", avatar: "/placeholder.svg" }
         };
         updatedStory.likes = updatedStory.likes || [];
         updatedStory.likes.push(newLike);
@@ -111,7 +111,7 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({
         userId: currentUserId,
         comment: newComment.trim(),
         createdAt: new Date(),
-        user: { id: currentUserId, name: "Usuario Demo", avatar: "/src/assets/people/profile-1.jpg" }
+        user: { id: currentUserId, name: "Usuario Demo", avatar: "/placeholder.svg" }
       };
       
       updatedStory.comments = updatedStory.comments || [];

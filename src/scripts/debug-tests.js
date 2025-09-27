@@ -13,38 +13,42 @@
  * ===========================================
  */
 
-const { spawn } = require("child_process");
+import { spawn } from "child_process";
+import { platform } from "os";
 
-// Obtener runner desde args o usar jest por defecto
+// Obtener runner desde args o usar vitest por defecto
 const args = process.argv.slice(2);
 const runnerArg = args.find(arg => arg.startsWith("--runner="));
-const runner = runnerArg ? runnerArg.split("=")[1] : "jest";
+const runner = runnerArg ? runnerArg.split("=")[1] : "vitest";
 
 let command, cmdArgs;
+const isWindows = platform() === "win32";
 
 switch (runner) {
   case "vitest":
-    command = "npx";
-    cmdArgs = ["vitest", "run", "--reporter=verbose"];
+    command = isWindows ? "npm.cmd" : "npm";
+    cmdArgs = ["run", "test"];
     break;
   case "playwright":
-    command = "npx";
-    cmdArgs = ["playwright", "test", "--reporter=list"];
+    command = isWindows ? "npm.cmd" : "npm";
+    cmdArgs = ["run", "test:e2e"];
     break;
   case "jest":
   default:
-    command = "npx";
-    cmdArgs = ["jest", "--runInBand", "--detectOpenHandles", "--verbose"];
+    command = isWindows ? "npm.cmd" : "npm";
+    cmdArgs = ["test"];
     break;
 }
 
 console.log("===========================================");
 console.log(`🚀 Ejecutando tests con runner: ${runner}`);
+console.log(`📦 Comando: ${command} ${cmdArgs.join(" ")}`);
 console.log("===========================================");
 
 // Lanzar proceso hijo con debugger habilitado
 const testProcess = spawn(command, cmdArgs, {
   stdio: ["inherit", "pipe", "pipe"],
+  shell: isWindows,
   env: {
     ...process.env,
     NODE_OPTIONS: "--inspect-brk" // habilita debugger para VSCode/Chrome
