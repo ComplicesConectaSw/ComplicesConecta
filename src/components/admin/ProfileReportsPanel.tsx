@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Shield, Eye, CheckCircle, XCircle, Clock, AlertTriangle, User } from 'lucide-react';
+import { Shield, Eye, CheckCircle, XCircle, Clock, User } from 'lucide-react';
 import { profileReportService } from '@/services/ProfileReportService';
 import { toast } from 'sonner';
 
@@ -69,14 +69,12 @@ export const ProfileReportsPanel: React.FC = () => {
   };
 
   const handleResolveReport = async (
-    reportId: string, 
+    reportId: string,
     action: 'dismiss' | 'confirm',
-    actionTaken?: string,
-    resolutionNotes?: string,
-    _suspensionDays?: number
+    resolutionNotes?: string
   ) => {
     setActionLoading(reportId);
-    
+
     try {
       const result = await profileReportService.resolveProfileReport(
         reportId,
@@ -133,18 +131,18 @@ export const ProfileReportsPanel: React.FC = () => {
             Reportes de Perfiles
           </h2>
         </div>
-        
+
         <div className="flex items-center space-x-2">
           <select
             value={filter}
-            onChange={(e) => setFilter(e.target.value as any)}
+            onChange={(e) => setFilter(e.target.value as 'all' | 'pending' | 'reviewed')}
             className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
           >
             <option value="all">Todos</option>
             <option value="pending">Pendientes</option>
             <option value="reviewed">Revisados</option>
           </select>
-          
+
           <button
             onClick={loadReports}
             className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
@@ -165,7 +163,7 @@ export const ProfileReportsPanel: React.FC = () => {
             {reports.filter(r => r.status === 'pending').length}
           </p>
         </div>
-        
+
         <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
           <div className="flex items-center space-x-2">
             <CheckCircle className="w-5 h-5 text-green-500" />
@@ -175,7 +173,7 @@ export const ProfileReportsPanel: React.FC = () => {
             {reports.filter(r => r.status === 'confirmed').length}
           </p>
         </div>
-        
+
         <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
           <div className="flex items-center space-x-2">
             <XCircle className="w-5 h-5 text-gray-500" />
@@ -185,10 +183,10 @@ export const ProfileReportsPanel: React.FC = () => {
             {reports.filter(r => r.status === 'dismissed').length}
           </p>
         </div>
-        
+
         <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
           <div className="flex items-center space-x-2">
-            <AlertTriangle className="w-5 h-5 text-red-500" />
+            <Shield className="w-5 h-5 text-red-500" />
             <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Total</span>
           </div>
           <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">
@@ -225,14 +223,14 @@ export const ProfileReportsPanel: React.FC = () => {
                           {report.reported_user?.full_name || 'Usuario desconocido'}
                         </span>
                       </div>
-                      
+
                       <span className={`px-2 py-1 text-xs font-medium rounded-full ${STATUS_COLORS[report.status as keyof typeof STATUS_COLORS]}`}>
                         {report.status === 'pending' ? 'Pendiente' :
-                         report.status === 'confirmed' ? 'Confirmado' :
-                         report.status === 'dismissed' ? 'Desestimado' : 'Revisado'}
+                          report.status === 'confirmed' ? 'Confirmado' :
+                          report.status === 'dismissed' ? 'Desestimado' : 'Revisado'}
                       </span>
                     </div>
-                    
+
                     <div className="space-y-1 text-sm text-gray-600 dark:text-gray-300">
                       <p>
                         <span className="font-medium">Motivo:</span> {REASON_LABELS[report.reason as keyof typeof REASON_LABELS] || report.reason}
@@ -250,7 +248,7 @@ export const ProfileReportsPanel: React.FC = () => {
                       )}
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center space-x-2 ml-4">
                     <button
                       onClick={() => setSelectedReport(report)}
@@ -274,7 +272,7 @@ export const ProfileReportsPanel: React.FC = () => {
             className="absolute inset-0 bg-black bg-opacity-50"
             onClick={() => setSelectedReport(null)}
           />
-          
+
           <div
             className="relative w-full max-w-2xl bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden"
           >
@@ -283,80 +281,77 @@ export const ProfileReportsPanel: React.FC = () => {
                 Detalles del Reporte
               </h3>
             </div>
-            
+
             <div className="p-6 space-y-6">
-                {/* User Info */}
-                <div className="grid grid-cols-2 gap-6">
-                  <div>
-                    <h4 className="font-medium text-gray-900 dark:text-white mb-2">Usuario Reportado</h4>
-                    <div className="space-y-1 text-sm text-gray-600 dark:text-gray-300">
-                      <p><span className="font-medium">Nombre:</span> {selectedReport.reported_user?.full_name}</p>
-                      <p><span className="font-medium">Email:</span> {selectedReport.reported_user?.email}</p>
-                      <p><span className="font-medium">Registro:</span> {selectedReport.reported_user?.created_at ? formatDate(selectedReport.reported_user.created_at) : 'N/A'}</p>
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <h4 className="font-medium text-gray-900 dark:text-white mb-2">Reportado por</h4>
-                    <div className="space-y-1 text-sm text-gray-600 dark:text-gray-300">
-                      <p><span className="font-medium">Nombre:</span> {selectedReport.reporter_user?.full_name}</p>
-                      <p><span className="font-medium">Email:</span> {selectedReport.reporter_user?.email}</p>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Report Details */}
+              {/* User Info */}
+              <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <h4 className="font-medium text-gray-900 dark:text-white mb-2">Detalles del Reporte</h4>
-                  <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
-                    <p><span className="font-medium">Motivo:</span> {REASON_LABELS[selectedReport.reason as keyof typeof REASON_LABELS]}</p>
-                    <p><span className="font-medium">Fecha:</span> {formatDate(selectedReport.created_at)}</p>
-                    {selectedReport.description && (
-                      <div>
-                        <span className="font-medium">Descripción:</span>
-                        <div className="mt-1 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                          {selectedReport.description}
-                        </div>
-                      </div>
-                    )}
+                  <h4 className="font-medium text-gray-900 dark:text-white mb-2">Usuario Reportado</h4>
+                  <div className="space-y-1 text-sm text-gray-600 dark:text-gray-300">
+                    <p><span className="font-medium">Nombre:</span> {selectedReport.reported_user?.full_name}</p>
+                    <p><span className="font-medium">Email:</span> {selectedReport.reported_user?.email}</p>
+                    <p><span className="font-medium">Registro:</span> {selectedReport.reported_user?.created_at ? formatDate(selectedReport.reported_user.created_at) : 'N/A'}</p>
                   </div>
                 </div>
-                
-                {/* Actions */}
-                {selectedReport.status === 'pending' && (
-                  <div className="flex space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
-                    <button
-                      onClick={() => handleResolveReport(selectedReport.id, 'dismiss', 'none', 'Reporte desestimado - no se encontró violación')}
-                      disabled={actionLoading === selectedReport.id}
-                      className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-50"
-                    >
-                      {actionLoading === selectedReport.id ? 'Procesando...' : 'Desestimar'}
-                    </button>
-                    
-                    <button
-                      onClick={() => handleResolveReport(selectedReport.id, 'confirm', 'warning', 'Advertencia por violación de normas')}
-                      disabled={actionLoading === selectedReport.id}
-                      className="flex-1 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition-colors disabled:opacity-50"
-                    >
-                      Advertir
-                    </button>
-                    
-                    <button
-                      onClick={() => handleResolveReport(selectedReport.id, 'confirm', 'temporary_suspension', 'Suspensión temporal por violación', 7)}
-                      disabled={actionLoading === selectedReport.id}
-                      className="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors disabled:opacity-50"
-                    >
-                      Suspender
-                    </button>
+
+                <div>
+                  <h4 className="font-medium text-gray-900 dark:text-white mb-2">Reportado por</h4>
+                  <div className="space-y-1 text-sm text-gray-600 dark:text-gray-300">
+                    <p><span className="font-medium">Nombre:</span> {selectedReport.reporter_user?.full_name}</p>
+                    <p><span className="font-medium">Email:</span> {selectedReport.reporter_user?.email}</p>
                   </div>
-                )}
+                </div>
               </div>
+
+              {/* Report Details */}
+              <div>
+                <h4 className="font-medium text-gray-900 dark:text-white mb-2">Detalles del Reporte</h4>
+                <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                  <p><span className="font-medium">Motivo:</span> {REASON_LABELS[selectedReport.reason as keyof typeof REASON_LABELS]}</p>
+                  <p><span className="font-medium">Fecha:</span> {formatDate(selectedReport.created_at)}</p>
+                  {selectedReport.description && (
+                    <div>
+                      <span className="font-medium">Descripción:</span>
+                      <div className="mt-1 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        {selectedReport.description}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Actions */}
+              {selectedReport.status === 'pending' && (
+                <div className="flex space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+                  <button
+                    onClick={() => handleResolveReport(selectedReport.id, 'dismiss', 'Reporte desestimado - no se encontró violación')}
+                    disabled={actionLoading === selectedReport.id}
+                    className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-50"
+                  >
+                    {actionLoading === selectedReport.id ? 'Procesando...' : 'Desestimar'}
+                  </button>
+
+                  <button
+                    onClick={() => handleResolveReport(selectedReport.id, 'confirm', 'Advertencia por violación de normas')}
+                    disabled={actionLoading === selectedReport.id}
+                    className="flex-1 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition-colors disabled:opacity-50"
+                  >
+                    Advertir
+                  </button>
+
+                  <button
+                    onClick={() => handleResolveReport(selectedReport.id, 'confirm', 'Suspensión temporal por violación')}
+                    disabled={actionLoading === selectedReport.id}
+                    className="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors disabled:opacity-50"
+                  >
+                    Suspender
+                  </button>
+                </div>
+              )}
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
-
-export default ProfileReportsPanel;
