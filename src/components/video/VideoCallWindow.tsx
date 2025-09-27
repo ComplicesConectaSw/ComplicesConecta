@@ -8,11 +8,11 @@ import {
   PhoneOff,
   Maximize2,
   Minimize2,
-  Settings
-} from 'lucide-react';
-import { useVideoChat } from '@/hooks/useVideoChat';
-import { useAuth } from '@/hooks/useAuth';
-import { logger } from '@/lib/logger';
+  Settings,
+  useVideoChat,
+  useAuth,
+  logger
+} from '@/imports';
 
 interface VideoCallWindowProps {
   targetUserId?: string;

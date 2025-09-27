@@ -1,11 +1,24 @@
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Coins, Gift, Users, TrendingUp, Copy, Check } from 'lucide-react';
-import { getUserTokenBalance, processReferralReward, validateReferralCode, TOKEN_CONFIG } from '@/lib/tokens';
-import { useToast } from '@/hooks/use-toast';
+import { 
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Badge,
+  Button,
+  Input,
+  Coins,
+  Gift,
+  Users,
+  TrendingUp,
+  Copy,
+  Check,
+  getUserTokenBalance,
+  processReferralReward,
+  validateReferralCode,
+  TOKEN_CONFIG,
+  useToast
+} from '@/imports';
 
 interface TokenBalanceProps {
   userId: string;

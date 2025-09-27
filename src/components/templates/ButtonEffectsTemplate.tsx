@@ -1,9 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { useProfileTheme } from '@/hooks/useProfileTheme';
-import { Gender, ProfileType, Theme } from '@/types/theme';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { 
+  useProfileTheme,
+  Gender,
+  ProfileType,
+  Theme,
+  Button,
+  cn
+} from '@/imports';
 
 interface ButtonEffectsTemplateProps {
   theme?: Theme;

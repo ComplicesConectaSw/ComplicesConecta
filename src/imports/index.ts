@@ -188,18 +188,30 @@ export { ScrollArea } from "@/components/ui/scroll-area";
 export { Alert, AlertDescription } from "@/components/ui/alert";
 export { TermsModal as UITermsModal } from "@/components/ui/TermsModal";
 export { UnifiedModal } from "@/components/ui/UnifiedModal";
+export { 
+  SidebarGroup, 
+  SidebarGroupContent, 
+  SidebarGroupLabel, 
+  SidebarMenu, 
+  SidebarMenuItem, 
+  SidebarMenuButton 
+} from "@/components/ui/sidebar";
 
 // =======================
 // HOOKS
 // =======================
 export { useToast } from "@/hooks/use-toast";
-export { useAuth } from "@/hooks/useAuth";
-export { useAuthMode } from "@/hooks/useAuthMode";
+export { useUserOnlineStatus } from "@/hooks/useOnlineStatus";
+export { useUserPreferences } from "@/hooks/useUserPreferences";
+export { useVideoChat } from "@/hooks/useVideoChat";
 export { useBiometricAuth } from "@/hooks/useBiometricAuth";
 export { useCouplePhotos } from "@/hooks/useCouplePhotos";
 export { useCoupleProfile } from "@/hooks/useCoupleProfile";
 export { useGeolocation } from "@/hooks/useGeolocation";
 export { useInterests } from "@/hooks/useInterests";
+export { useAuth } from "@/hooks/useAuth";
+export { useAuthMode } from "@/hooks/useAuthMode";
+export { useOnlineStatus } from "@/hooks/useOnlineStatus";
 export { useOnlineStatus, useUserOnlineStatus } from "@/hooks/useOnlineStatus";
 export { usePersistedState } from "@/hooks/usePersistedState";
 export { useProfileCache } from "@/hooks/useProfileCache";
@@ -226,6 +238,7 @@ export { ReportService } from "@/services/ReportService";
 export { SmartMatchingService } from "@/services/SmartMatchingService";
 export { TokenAnalyticsService } from "@/services/TokenAnalyticsService";
 export { postsService } from "@/services/postsService";
+export { reportService } from "@/services/ReportService";
 
 // =======================
 // UTILS & LIB
@@ -271,7 +284,7 @@ export { redisCache } from "@/lib/redis-cache";
 // =======================
 export { mainNavItems, premiumItems, settingsItems, mockUser } from "@/lib/data";
 export { RequestsService } from "@/lib/requests";
-export { Theme } from "@/hooks/useProfileTheme";
+// Theme type exported in TYPES section
 export { UserProfile } from "@/components/sidebar/UserProfile";
 export { CollapsedUserProfile } from "@/components/sidebar/CollapsedUserProfile";
 export { NavGroup } from "@/components/sidebar/NavGroup";
@@ -313,6 +326,8 @@ export {
   Camera, 
   Check, 
   CheckCircle,
+  Coins,
+  Copy,
   ChevronDown, 
   ChevronLeft, 
   ChevronRight, 
@@ -326,6 +341,7 @@ export {
   EyeOff, 
   Filter, 
   Fingerprint,
+  Flag,
   Gift,
   Globe,
   Heart,
@@ -337,10 +353,17 @@ export {
   LogOut, 
   Mail, 
   MapPin, 
+  Maximize2,
   Menu, 
   MessageCircle, 
+  MessageSquareOff,
+  Mic,
+  MicOff,
+  Minimize2,
   Moon, 
   MoreHorizontal, 
+  Phone,
+  PhoneOff,
   Plus, 
   Search, 
   Settings, 
@@ -351,10 +374,14 @@ export {
   Sun, 
   Target,
   Trash2, 
+  TrendingUp,
   Upload, 
   User, 
   UserPlus,
   Users, 
+  UserX,
+  Video,
+  VideoOff,
   X,
   XCircle,
   Zap
@@ -406,12 +433,18 @@ export { default as TokensInfo } from "@/pages/TokensInfo";
 // =======================
 export { logger } from "@/lib/logger";
 export { BiometricAuthService, type BiometricAuthResult } from "@/lib/multimediaSecurity";
+export { getUserTokenBalance, processReferralReward, validateReferralCode, TOKEN_CONFIG } from "@/lib/tokens";
 
 // =======================
 // INTEGRATIONS
 // =======================
 export { supabase } from "@/integrations/supabase/client";
 export type * from "@/integrations/supabase/types";
+
+// =======================
+// TYPES
+// =======================
+export type { Gender, ProfileType, Theme } from "@/types/theme";
 
 // =======================
 // DEMO & CONFIG
