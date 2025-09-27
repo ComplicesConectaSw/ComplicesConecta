@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Upload, X, Image as ImageIcon, Loader2, Users, Eye, EyeOff, Heart } from 'lucide-react';
+import { X, Image as ImageIcon, Loader2, Users, Eye, EyeOff, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';

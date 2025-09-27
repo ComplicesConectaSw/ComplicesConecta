@@ -6,7 +6,7 @@ import { UnifiedCard } from '@/components/ui/UnifiedCard';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Palette, Eye, Users, Sparkles, Settings, Heart } from 'lucide-react';
+import { Palette, Eye, Users, Sparkles, Settings } from 'lucide-react';
 import { useProfileTheme, ProfileType, Gender, Theme, getAvailableThemes } from '@/hooks/useProfileTheme';
 
 const ProfileThemeDemo: React.FC = () => {

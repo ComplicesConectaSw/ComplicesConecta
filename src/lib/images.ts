@@ -4,7 +4,6 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
-import type { Database } from '@/integrations/supabase/types';
 import { logger, logDatabaseOperation } from '@/lib/logger';
 
 // Interfaces para el sistema de imágenes

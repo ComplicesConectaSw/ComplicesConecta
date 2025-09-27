@@ -2,13 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
 import { 
   Heart, 
   MessageCircle, 
   Share2, 
   Eye, 
-  Clock, 
   X, 
   Send,
   Trash2,

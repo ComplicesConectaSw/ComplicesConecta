@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Home, 
-  Users, 
   MessageCircle, 
   Heart, 
   Search, 
@@ -11,8 +10,6 @@ import {
   User,
   UserPlus,
   Coins,
-  Menu,
-  X,
   LogOut
 } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';

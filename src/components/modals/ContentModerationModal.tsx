@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { ContentModerationService } from '@/services/ContentModerationService';
 import {
-  Shield, AlertTriangle, CheckCircle, XCircle, Eye, 
+  Shield, CheckCircle, XCircle, Eye, 
   FileText, Clock, Zap
 } from 'lucide-react';
 

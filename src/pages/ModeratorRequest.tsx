@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,21 +7,16 @@ import {
   AlertCircle, 
   ArrowLeft, 
   CheckCircle, 
-  Crown, 
   Mail, 
   Shield, 
   User, 
   Clock, 
-  Award, 
-  Target, 
-  Users, 
-  Send, 
   DollarSign,
   MessageSquare
 } from "lucide-react";
 import { useToast } from '@/hooks/use-toast';
 import { Link } from 'react-router-dom';
-import { validateModeratorRequest, type ModeratorRequestInput } from '@/lib/validations/moderator';
+import { validateModeratorRequest } from '@/lib/validations/moderator';
 
 interface FormData {
   fullName: string;

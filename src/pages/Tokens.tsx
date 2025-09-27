@@ -3,10 +3,10 @@
  * Dashboard completo para gestión de tokens en fase Beta
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft, Home, RefreshCw, BookOpen, FileText, MessageCircle, Coins, Info, ExternalLink, Bot, Heart, Sparkles, Star, Rocket, Users } from 'lucide-react';
+import { ArrowLeft, Home, Coins, Info, ExternalLink, Bot, Heart, Sparkles, Star, Rocket, Users } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
 import { useTokens } from '@/hooks/useTokens';
 import { TokenDashboard } from '@/components/tokens/TokenDashboard';

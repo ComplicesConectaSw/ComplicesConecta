@@ -1,36 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { isDemoCredential, getAppConfig, handleDemoAuth } from "@/lib/app-config";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Heart, Shield, Users, Zap } from "lucide-react";
+import { Shield, Users , ArrowLeft, Sparkles } from "lucide-react";
 import { useGeolocation } from "@/hooks/useGeolocation";
-import { MapPin, ArrowLeft, Sparkles } from "lucide-react";
-import { lifestyleInterests, getAutoInterests } from "@/lib/lifestyle-interests";
+
 import { LoginLoadingScreen } from "@/components/LoginLoadingScreen";
-import { LoadingScreen } from "@/components/LoadingScreen";
 import { useAuth } from "@/hooks/useAuth";
-import { EmailValidation } from "@/components/auth/EmailValidation";
-import { validateEmail } from "@/utils/emailValidation";
-import { logger } from '@/lib/logger';
-import { motion } from 'framer-motion';
-import { AnimatedButton } from '@/components/ui/AnimatedButton';
-import { AnimatedCard } from '@/components/ui/AnimatedCard';
 import { ResponsiveContainer } from '@/components/ui/ResponsiveContainer';
-import { ThemeInfoModal } from '@/components/auth/ThemeInfoModal';
-import { TermsModal } from '@/components/auth/TermsModal';
-import { ThemeModal } from '@/components/ThemeModal';
-import { useDemoThemeConfig, Theme } from '@/hooks/useProfileTheme';
+import { Theme } from '@/hooks/useProfileTheme';
 import { usePersistedState } from '@/hooks/usePersistedState';
-import { clearAllStorage, resetAuthState, debugStorage } from '@/utils/clearStorage';
 
 interface FormData {
   email: string;

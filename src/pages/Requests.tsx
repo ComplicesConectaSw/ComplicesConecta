@@ -8,8 +8,7 @@ import {
   UserPlus, 
   UserCheck, 
   UserX, 
-  Clock,
-  Camera, // For photo access
+  Clock, // For photo access
   GalleryHorizontal, // For gallery access
   MessageSquare, // For chat access
   MailQuestion,

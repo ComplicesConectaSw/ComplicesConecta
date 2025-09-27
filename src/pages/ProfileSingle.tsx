@@ -6,36 +6,23 @@ import { Badge } from '@/components/ui/badge';
 import { 
   Camera, 
   Heart, 
-  MessageCircle, 
   MapPin, 
-  Calendar, 
-  Users, 
   Edit, 
-  Lock, 
-  Verified,
-  Settings,
-  Eye,
-  EyeOff,
+  Lock,
   Flag,
   CheckCircle,
   Crown,
   Images
 } from 'lucide-react';
-import { Header } from '@/components/Header';
 import NavigationEnhanced from '@/components/NavigationEnhanced';
-import { ProfileTabs } from '@/components/profile/ProfileTabs';
-import { ProfileNavigation } from '@/components/profile/ProfileNavigation';
 import { ProfileNavTabs } from '@/components/profile/ProfileNavTabs';
 import { useAuth } from '@/hooks/useAuth';
-import { useProfileQuery } from '@/hooks/useProfileQuery';
 import { logger } from '@/lib/logger';
 import { usePersistedState } from '@/hooks/usePersistedState';
-import { generateDemoProfiles } from '@/demo/demoData';
 import type { Tables } from '@/integrations/supabase/types';
 import { PrivateImageRequest } from '@/components/profile/PrivateImageRequest';
 import { PrivateImageGallery } from '@/components/profile/PrivateImageGallery';
 import { ReportDialog } from '@/components/swipe/ReportDialog';
-import StoriesContainer from '@/components/stories/StoriesContainer';
 
 const ProfileSingle: React.FC = () => {
   const navigate = useNavigate();

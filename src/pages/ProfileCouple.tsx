@@ -2,18 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Heart, MessageCircle, MapPin, Verified, Crown, ArrowLeft, Settings, Share2, Users, Lock, Images, Camera, Flag } from "lucide-react";
+import { Heart, MapPin, Verified, Crown, Settings, Share2, Lock, Images, Flag } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import NavigationEnhanced from "@/components/NavigationEnhanced";
 import { generateMockCoupleProfiles, type CoupleProfileWithPartners } from "@/lib/coupleProfiles";
-import CoupleProfileHeader from "@/components/profile/CoupleProfileHeader";
 import { useAuth } from '@/hooks/useAuth';
 import { logger } from '@/lib/logger';
 import { usePersistedState } from '@/hooks/usePersistedState';
 import { PrivateImageRequest } from '@/components/profile/PrivateImageRequest';
 import { PrivateImageGallery } from '@/components/profile/PrivateImageGallery';
 import { ReportDialog } from '@/components/swipe/ReportDialog';
-import StoriesContainer from '@/components/stories/StoriesContainer';
 import { ProfileNavTabs } from '@/components/profile/ProfileNavTabs';
 
 const ProfileCouple: React.FC = () => {

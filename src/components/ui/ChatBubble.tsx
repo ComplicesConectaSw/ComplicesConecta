@@ -1,6 +1,6 @@
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, CheckCheck, Clock, Heart, Smile, MoreHorizontal } from "lucide-react";
+import { Check, CheckCheck, Clock, Smile, MoreHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ChatBubble as SimpleChatBubble } from "@/components/chat/ChatBubble";

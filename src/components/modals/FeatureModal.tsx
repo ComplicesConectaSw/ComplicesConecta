@@ -1,7 +1,6 @@
-import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Heart, Shield, Users, Zap, Crown, Lock, MapPin, Calendar } from "lucide-react";
+import { Heart, Shield, Users, Zap, Crown } from "lucide-react";
 
 interface FeatureModalProps {
   isOpen: boolean;

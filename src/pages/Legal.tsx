@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { Header } from '@/components/Header';
 import HeaderNav from '@/components/HeaderNav';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,8 +11,6 @@ import {
   AlertTriangle, 
   Users, 
   Lock,
-  CheckCircle,
-  ExternalLink,
   BookOpen,
   Gavel,
   Download,

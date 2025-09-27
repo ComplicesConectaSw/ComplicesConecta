@@ -1,6 +1,6 @@
 import { logger } from '@/lib/logger';
-import { redisCache, CacheKeys, CacheTTL } from '@/lib/redis-cache';
-import { analyticsMetrics, trackInteraction } from '@/lib/analytics-metrics';
+import { redisCache, CacheTTL } from '@/lib/redis-cache';
+import { trackInteraction } from '@/lib/analytics-metrics';
 
 /**
  * Sistema de Matching Optimizado con Machine Learning

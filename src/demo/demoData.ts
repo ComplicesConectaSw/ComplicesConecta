@@ -4,8 +4,7 @@
  */
 
 import { v4 as uuidv4 } from 'uuid';
-import { pickProfileImage, inferProfileKind, resetImageCounters, type ProfileType, type Gender } from '@/lib/media';
-import { Theme } from '@/hooks/useProfileTheme';
+import { pickProfileImage, resetImageCounters, type ProfileType, type Gender } from '@/lib/media';
 
 export interface DemoProfile {
   id: string;

@@ -9,7 +9,7 @@ import { MapPin, Send, Share2 } from 'lucide-react';
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { useToast } from "@/hooks/use-toast";
 import { logger } from '@/lib/logger';
-import type { MessageInsert, MessageWithSender } from '@/types/supabase-messages';
+import type { MessageInsert } from '@/types/supabase-messages';
 
 // Interfaces importadas de @/types/supabase-messages
 

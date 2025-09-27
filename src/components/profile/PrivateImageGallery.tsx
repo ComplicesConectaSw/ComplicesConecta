@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Eye, Lock, Unlock, Clock, Check, X } from 'lucide-react';
+import { Eye, Lock, Unlock, Check, X } from 'lucide-react';
 import { PrivateImageRequest } from './PrivateImageRequest';
-import { logger } from '@/lib/logger';
 
 interface PrivateImage {
   id: string;

@@ -39,8 +39,9 @@ describe('Roles y Permisos', () => {
 
   describe('Validación de roles de administrador', () => {
     it('debería identificar correctamente un perfil de administrador', async () => {
-      const _mockProfile: MockProfile = {
-        id: 'admin-123',
+      const _mockProfile = {
+        id: 'test-user-id',
+        user_id: 'test-user-id',
         role: 'admin',
         is_verified: true,
         is_demo: false,
@@ -64,7 +65,7 @@ describe('Roles y Permisos', () => {
         select: vi.fn().mockReturnValue({
           eq: vi.fn().mockReturnValue({
             single: vi.fn().mockResolvedValue({
-              data: mockProfile,
+              data: _mockProfile,
               error: null
             })
           })
@@ -108,7 +109,7 @@ describe('Roles y Permisos', () => {
         select: vi.fn().mockReturnValue({
           eq: vi.fn().mockReturnValue({
             single: vi.fn().mockResolvedValue({
-              data: mockProfile,
+              data: _mockProfile,
               error: null
             })
           })
@@ -153,7 +154,7 @@ describe('Roles y Permisos', () => {
         select: vi.fn().mockReturnValue({
           eq: vi.fn().mockReturnValue({
             single: vi.fn().mockResolvedValue({
-              data: mockProfile,
+              data: _mockProfile,
               error: null
             })
           })

@@ -31,7 +31,7 @@ import { Header } from '@/components/Header';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from '@/integrations/supabase/client';
-import { invitationService, type Invitation } from '@/lib/invitations';
+import { type Invitation } from '@/lib/invitations';
 import { appConfig } from '@/lib/app-config';
 import { logger } from '@/lib/logger';
 

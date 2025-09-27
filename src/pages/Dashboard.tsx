@@ -5,9 +5,7 @@ import { Footer } from "@/components/Footer";
 import { Gamification } from "@/components/gamification/Gamification";
 import { NotificationCenter } from "@/components/notifications/NotificationCenter";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Trophy, Users, Bell, BarChart3, TrendingUp } from 'lucide-react';
+import { Trophy, Bell, TrendingUp } from 'lucide-react';
 import ErrorBoundary from '@/components/ErrorBoundary';
 
 interface UserProfile {

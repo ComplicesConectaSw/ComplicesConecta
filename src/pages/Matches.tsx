@@ -2,15 +2,12 @@ import { useState, useEffect } from "react";
 // import { Header } from "@/components/Header";
 import NavigationEnhanced from "@/components/NavigationEnhanced";
 import { MatchCard } from "@/components/ui/MatchCard";
-import { ProfileCard } from "@/components/ui/ProfileCard";
-import { UnifiedTabs } from "@/components/ui/UnifiedTabs";
 import { UnifiedButton } from "@/components/ui/UnifiedButton";
 import { UnifiedCard } from "@/components/ui/UnifiedCard";
-import { Heart, MessageCircle, Sparkles, ArrowLeft, Flame, Users, Crown, Filter } from "lucide-react";
+import { Heart, MessageCircle, Sparkles, ArrowLeft, Flame, Users, Crown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { simpleMatchService, SimpleMatch } from "@/lib/simpleMatches";
-import MatchingService, { SupabaseProfile } from "@/lib/MatchingService";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { logger } from '@/lib/logger';
 
 // Professional profile images from Unsplash - Production ready

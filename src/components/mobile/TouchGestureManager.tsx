@@ -3,7 +3,7 @@
  * Implementa swipe, pinch, drag y otros gestos nativos móviles
  */
 
-import React, { useRef, useEffect, useCallback } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { logger } from '@/lib/logger';
 
 interface TouchPoint {

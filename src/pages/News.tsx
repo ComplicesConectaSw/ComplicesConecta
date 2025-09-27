@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { Header } from '@/components/Header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,13 +9,11 @@ import {
   Star, 
   Zap, 
   Shield, 
-  Users, 
-  Smartphone,
+  Users,
   Database,
   Palette,
   BarChart3,
-  Bell,
-  Lock
+  Bell
 } from 'lucide-react';
 
 const News: React.FC = () => {

@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Palette, Users, User, Heart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Theme, Gender, ProfileType } from '@/hooks/useProfileTheme';
-import { generateDemoProfiles, DemoProfile } from '@/demo/demoData';
+import { generateDemoProfiles } from '@/demo/demoData';
 
 interface ProfileThemeShowcaseProps {
   className?: string;

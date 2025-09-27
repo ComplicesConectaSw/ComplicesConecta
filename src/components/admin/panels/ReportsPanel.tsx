@@ -12,7 +12,6 @@ import {
   CheckCircleIcon,
   XCircleIcon,
   ClockIcon,
-  FunnelIcon,
   MagnifyingGlassIcon
 } from '@heroicons/react/24/outline'
 

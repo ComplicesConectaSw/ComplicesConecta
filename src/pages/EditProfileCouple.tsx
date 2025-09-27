@@ -8,7 +8,6 @@ import { ArrowLeft, Save, Camera, X, Users, MapPin, AlertCircle, Sun, Moon, Eye,
 import { useNavigate } from "react-router-dom";
 import NavigationEnhanced from "@/components/NavigationEnhanced";
 import ImageUpload from "@/components/profile/ImageUpload";
-import type { Tables } from '@/integrations/supabase/types';
 import { generateMockCouple } from "@/lib/data";
 import { lifestyleInterests } from "@/lib/lifestyle-interests";
 import { useGeolocation } from "@/hooks/useGeolocation";

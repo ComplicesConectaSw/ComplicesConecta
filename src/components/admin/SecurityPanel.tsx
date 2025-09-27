@@ -8,11 +8,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
-import { Database } from '@/integrations/supabase/types';
 import {
   Shield, AlertTriangle, Lock, Eye, Ban, UserX, Smartphone,
-  RefreshCw, Search, Settings, CheckCircle, XCircle, Activity
+  RefreshCw, Search, Settings, CheckCircle, XCircle
 } from 'lucide-react';
 
 type SecurityAlert = {

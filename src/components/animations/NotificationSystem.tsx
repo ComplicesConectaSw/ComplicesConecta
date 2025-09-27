@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
-import { useAnimation, useGlobalAnimationTriggers } from '@/components/animations/AnimationProvider';
-import { Heart, Star, MessageCircle, Trophy, AlertCircle, CheckCircle, X, Mail, Bell, UserPlus } from 'lucide-react';
+import { Heart, MessageCircle, Trophy, AlertCircle, CheckCircle, X, Mail, Bell, UserPlus } from 'lucide-react';
 
 // Notification types - Extended for v3.1
 export type NotificationType = 'match' | 'like' | 'message' | 'achievement' | 'success' | 'error' | 'warning' | 'info' | 'email' | 'request' | 'confirmation' | 'alert';

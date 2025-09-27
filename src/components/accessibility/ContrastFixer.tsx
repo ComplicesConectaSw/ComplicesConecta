@@ -3,7 +3,7 @@
  * Aplica mejoras de accesibilidad WCAG 2.1 AA
  */
 
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { logger } from '@/lib/logger';
 
 interface ContrastFixerProps {

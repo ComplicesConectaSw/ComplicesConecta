@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Home, MessageCircle, Heart, User, Settings, Users, Calendar, Coins, Search, UserPlus, LogOut } from 'lucide-react';
+import { Home, MessageCircle, Heart, User, Settings, Coins, Search, UserPlus, LogOut } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 // import { NavigationEnhanced } from '@/components/navigation/NavigationEnhanced';
 import { logger } from '@/lib/logger';

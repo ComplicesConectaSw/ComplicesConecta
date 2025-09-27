@@ -1,25 +1,19 @@
-import { useState, useEffect, useCallback, memo } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
+import { useState, useEffect, memo } from 'react';
+import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { 
-  Upload, 
   Lock, 
   Eye, 
   Heart, 
-  MessageCircle, 
-  Share2, 
-  Download,
+  MessageCircle,
   X,
   Plus,
-  Camera,
   Globe,
   EyeOff,
-  UserPlus,
-  ImageIcon
+  UserPlus
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { invitationService } from '@/lib/invitations';
 import { useAuth } from '@/hooks/useAuth';
 import { InvitationDialog } from "@/components/invitations/InvitationDialog";

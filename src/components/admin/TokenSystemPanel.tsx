@@ -12,7 +12,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { 
   Coins, 
   TrendingUp, 
-  TrendingDown, 
   Users, 
   Gift,
   ArrowUpRight,

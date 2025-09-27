@@ -1,6 +1,5 @@
 import React, { Suspense, lazy, useEffect } from 'react';
 import { AndroidThemeProvider } from './AndroidThemeProvider';
-import { LazyImageLoader } from './LazyImageLoader';
 import { cn } from '@/lib/utils';
 
 // Lazy load components para optimizar carga inicial

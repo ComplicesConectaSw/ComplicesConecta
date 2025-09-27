@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
-import type { ReactNode } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { logger } from '@/lib/logger';
 

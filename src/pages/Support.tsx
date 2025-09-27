@@ -1,4 +1,4 @@
-import { HelpCircle, Shield, MessageCircle, Phone, Mail, Clock, Search, ChevronDown, ChevronUp } from 'lucide-react';
+import { HelpCircle, Shield, MessageCircle, Mail, Clock, Search, ChevronDown, ChevronUp } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';

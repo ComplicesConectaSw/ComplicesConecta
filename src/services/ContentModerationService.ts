@@ -4,7 +4,6 @@
  * PLACEHOLDER: Retorna análisis mock seguros para mantener funcionalidad
  */
 
-import { supabase } from '@/integrations/supabase/client';
 
 export interface ModerationResult {
   isAppropriate: boolean;

@@ -19,6 +19,9 @@ vi.mock('@/integrations/supabase/client', () => ({
         or: vi.fn(() => ({
           order: vi.fn().mockRejectedValue(new Error('Mock Supabase error')),
           eq: vi.fn(() => ({
+            eq: vi.fn(() => ({
+              limit: vi.fn().mockRejectedValue(new Error('Mock Supabase error'))
+            })),
             limit: vi.fn().mockRejectedValue(new Error('Mock Supabase error'))
           }))
         })),

@@ -1,6 +1,6 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, MessageCircle, Share2, ChevronLeft, ChevronRight, Crown, EyeOff, MapPin, Eye } from "lucide-react";
+import { Heart, MessageCircle, Crown, EyeOff, MapPin, Eye } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

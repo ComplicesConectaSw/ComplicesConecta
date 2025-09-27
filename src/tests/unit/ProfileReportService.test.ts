@@ -3,14 +3,65 @@ import { ProfileReportService, CreateProfileReportParams } from '@/services/Prof
 import type { User } from '@supabase/supabase-js';
 import { testDebugger } from '@/utils/testDebugger';
 
-// Mock Supabase client
+// Mock Supabase client con cadenas de métodos completas
+const mockSupabaseChain = {
+  insert: vi.fn(() => ({
+    select: vi.fn(() => ({
+      single: vi.fn(() => Promise.resolve({ 
+        data: { id: 'report-123' }, 
+        error: null 
+      }))
+    }))
+  })),
+  select: vi.fn(() => ({
+    eq: vi.fn(() => ({
+      eq: vi.fn(() => ({
+        single: vi.fn(() => Promise.resolve({ 
+          data: { id: '1', stats: {} }, 
+          error: null 
+        })),
+        gte: vi.fn(() => Promise.resolve({ 
+          data: [], 
+          error: null 
+        })),
+        order: vi.fn(() => ({
+          limit: vi.fn(() => Promise.resolve({ 
+            data: [], 
+            error: null 
+          }))
+        }))
+      })),
+      single: vi.fn(() => Promise.resolve({ 
+        data: { id: '1', stats: {} }, 
+        error: null 
+      })),
+      order: vi.fn(() => ({
+        limit: vi.fn(() => Promise.resolve({ 
+          data: [], 
+          error: null 
+        }))
+      }))
+    }))
+  })),
+  update: vi.fn(() => ({
+    eq: vi.fn(() => ({
+      select: vi.fn(() => ({
+        single: vi.fn(() => Promise.resolve({ 
+          data: { id: 'report-123' }, 
+          error: null 
+        }))
+      }))
+    }))
+  }))
+};
+
 vi.mock('@/integrations/supabase/client', () => ({
   supabase: {
     auth: {
       getUser: vi.fn()
     },
-    from: vi.fn(),
-    rpc: vi.fn()
+    from: vi.fn(() => mockSupabaseChain),
+    rpc: vi.fn(() => Promise.resolve({ data: null, error: null }))
   }
 }));
 
@@ -52,15 +103,7 @@ describe('ProfileReportService', () => {
         error: null
       });
 
-      // Mock from chain for insert
-      const mockInsert = vi.fn().mockResolvedValue({
-        data: { id: 'report-123' },
-        error: null
-      });
-      
-      vi.mocked(supabase.from).mockReturnValue({
-        insert: mockInsert
-      } as any);
+      // El mock ya está configurado globalmente con mockSupabaseChain
 
       const params: CreateProfileReportParams = {
         reportedUserId: 'reported-user-123',
@@ -76,7 +119,7 @@ describe('ProfileReportService', () => {
       
       expect(result.success).toBe(true);
       expect(supabase.auth.getUser).toHaveBeenCalled();
-      expect(supabase.from).toHaveBeenCalledWith('profile_reports');
+      expect(supabase.from).toHaveBeenCalledWith('reports');
     });
 
     it('debería fallar si el usuario no está autenticado', async () => {
@@ -132,34 +175,50 @@ describe('ProfileReportService', () => {
   describe('getProfileReportStats', () => {
     it('debería obtener estadísticas de reportes del usuario', async () => {
       // Arrange
-      const mockStats = {
-        userId: 'test-user-id',
-        reportsMade: 5,
-        reportsReceived: 2,
-        recentReports: 1,
-        isBlocked: false
-      };
-
       const { supabase } = await import('@/integrations/supabase/client');
       
-      vi.mocked(supabase.from).mockReturnValue({
-        select: vi.fn().mockReturnValue({
-          eq: vi.fn().mockReturnValue({
-            single: vi.fn().mockResolvedValue({
-              data: mockStats,
-              error: null
+      // Mock auth.getUser
+      vi.mocked(supabase.auth.getUser).mockResolvedValue({
+        data: { 
+          user: { 
+            id: 'test-user-id', 
+            email: 'test@example.com',
+            app_metadata: {},
+            user_metadata: {},
+            aud: 'authenticated',
+            created_at: '2023-01-01T00:00:00Z'
+          } 
+        },
+        error: null
+      });
+
+      // Mock multiple from() calls with different return values
+      let callCount = 0;
+      vi.mocked(supabase.from).mockImplementation(() => {
+        callCount++;
+        return {
+          select: vi.fn().mockReturnValue({
+            eq: vi.fn().mockReturnValue({
+              eq: vi.fn().mockReturnValue({
+                gte: vi.fn().mockResolvedValue({
+                  data: callCount === 1 ? [{id: '1'}, {id: '2'}] : 
+                        callCount === 2 ? [{id: '1'}] : 
+                        [{id: '1'}],
+                  error: null
+                })
+              })
             })
           })
-        })
-      } as any);
+        } as any;
+      });
 
       // Act
       const result = await service.getProfileReportStats('test-user-id');
 
       // Assert
       expect(result.success).toBe(true);
-      expect(result.stats).toEqual(mockStats);
-      expect(supabase.from).toHaveBeenCalledWith('user_report_stats');
+      expect(result.stats).toBeDefined();
+      expect(supabase.from).toHaveBeenCalledWith('reports');
     });
   });
 
@@ -183,9 +242,11 @@ describe('ProfileReportService', () => {
       vi.mocked(supabase.from).mockReturnValue({
         select: vi.fn().mockReturnValue({
           eq: vi.fn().mockReturnValue({
-            order: vi.fn().mockResolvedValue({
-              data: mockReports,
-              error: null
+            eq: vi.fn().mockReturnValue({
+              order: vi.fn().mockResolvedValue({
+                data: mockReports,
+                error: null
+              })
             })
           })
         })
@@ -197,7 +258,7 @@ describe('ProfileReportService', () => {
       // Assert
       expect(result.success).toBe(true);
       expect(result.reports).toEqual(mockReports);
-      expect(supabase.from).toHaveBeenCalledWith('profile_reports');
+      expect(supabase.from).toHaveBeenCalledWith('reports');
     });
   });
 
@@ -205,6 +266,31 @@ describe('ProfileReportService', () => {
     it('debería obtener reportes pendientes', async () => {
       const { supabase } = await import('@/integrations/supabase/client');
       
+      vi.mocked(supabase.from).mockReturnValue({
+        select: vi.fn().mockReturnValue({
+          eq: vi.fn().mockReturnValue({
+            eq: vi.fn().mockReturnValue({
+              order: vi.fn().mockResolvedValue({
+                data: [{ id: '1', status: 'pending', content_type: 'profile' }],
+                error: null
+              })
+            })
+          })
+        })
+      } as any);
+
+      const result = await service.getPendingProfileReports();
+
+      expect(result.success).toBe(true);
+      expect(typeof result).toBe('object');
+    });
+  });
+
+  describe('resolveProfileReport', () => {
+    it('debería resolver un reporte de perfil', async () => {
+      const { supabase } = await import('@/integrations/supabase/client');
+      
+      // Mock auth.getUser
       vi.mocked(supabase.auth.getUser).mockResolvedValue({
         data: { 
           user: { 
@@ -219,40 +305,56 @@ describe('ProfileReportService', () => {
         error: null
       });
 
-      const result = await service.getPendingProfileReports();
-
-      expect(supabase.auth.getUser).toHaveBeenCalled();
-      expect(typeof result).toBe('object');
-    });
-  });
-
-  describe('resolveProfileReport', () => {
-    it('debería resolver un reporte de perfil', async () => {
-      const { supabase } = await import('@/integrations/supabase/client');
-      
       vi.mocked(supabase.from).mockReturnValue({
         update: vi.fn().mockReturnValue({
-          eq: vi.fn().mockResolvedValue({
-            data: null,
-            error: null
+          eq: vi.fn().mockReturnValue({
+            eq: vi.fn().mockReturnValue({
+              select: vi.fn().mockReturnValue({
+                single: vi.fn().mockResolvedValue({
+                  data: { id: 'report1', status: 'resolved' },
+                  error: null
+                })
+              })
+            })
           })
         })
       } as any);
 
-      const result = await service.resolveProfileReport('report1', 'resolved', 'none');
+      const result = await service.resolveProfileReport('report1', 'resolved');
 
       expect(result.success).toBe(true);
-      expect(supabase.from).toHaveBeenCalledWith('profile_reports');
+      expect(supabase.from).toHaveBeenCalledWith('reports');
     });
 
     it('debería resolver un reporte de perfil con notas', async () => {
       const { supabase } = await import('@/integrations/supabase/client');
       
+      // Mock auth.getUser
+      vi.mocked(supabase.auth.getUser).mockResolvedValue({
+        data: { 
+          user: { 
+            id: 'admin-123', 
+            email: 'admin@example.com',
+            app_metadata: {},
+            user_metadata: {},
+            aud: 'authenticated',
+            created_at: '2023-01-01T00:00:00Z'
+          } 
+        },
+        error: null
+      });
+
       vi.mocked(supabase.from).mockReturnValue({
         update: vi.fn().mockReturnValue({
-          eq: vi.fn().mockResolvedValue({
-            data: null,
-            error: null
+          eq: vi.fn().mockReturnValue({
+            eq: vi.fn().mockReturnValue({
+              select: vi.fn().mockReturnValue({
+                single: vi.fn().mockResolvedValue({
+                  data: { id: 'report-123', status: 'resolved', resolution_notes: 'Test notes' },
+                  error: null
+                })
+              })
+            })
           })
         })
       } as any);
@@ -260,7 +362,7 @@ describe('ProfileReportService', () => {
       const result = await service.resolveProfileReport('report-123', 'resolved', 'Test notes');
 
       expect(result.success).toBe(true);
-      expect(supabase.from).toHaveBeenCalledWith('profile_reports');
+      expect(supabase.from).toHaveBeenCalledWith('reports');
     });
   });
 

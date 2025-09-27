@@ -2,10 +2,9 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { UnifiedButton } from '@/components/ui/UnifiedButton';
 import { UnifiedCard } from '@/components/ui/UnifiedCard';
-import { UnifiedInput } from '@/components/ui/UnifiedInput';
-import { useAnimation, useAnimationVariants } from '@/components/animations/AnimationProvider';
+import { useAnimationVariants } from '@/components/animations/AnimationProvider';
 import { MagneticButton, RippleEffect, FloatingElement } from '@/components/animations/InteractiveAnimations';
-import { Heart, Star, MessageCircle, Users, Sparkles } from 'lucide-react';
+import { Heart, Star } from 'lucide-react';
 
 // Enhanced Animated Button with multiple effects
 interface EnhancedButtonProps {

@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Heart, MessageCircle, MapPin, Verified, Crown, Users, UserPlus, Star, X, Zap } from "lucide-react";
-import { InvitationDialog } from "@/components/invitations/InvitationDialog";
+import { Heart, MapPin, Verified, Star, X, Zap } from "lucide-react";
 import { logger } from '@/lib/logger';
 import { useUserOnlineStatus } from "@/hooks/useOnlineStatus";
 import { useNavigate } from "react-router-dom";
