@@ -1,21 +1,22 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Header } from "@/components/Header";
-import { HeroSection } from "@/components/HeroSection";
-import { ProfileCard } from "@/components/profile/MainProfileCard";
-import { Footer } from "@/components/Footer";
-import { BetaBanner } from "@/components/BetaBanner";
-import { LoadingScreen } from "@/components/LoadingScreen";
-import { WelcomeModal } from "@/components/WelcomeModal";
-import { FeatureModal } from "@/components/modals/FeatureModal";
-import { InstallAppModal } from "@/components/modals/InstallAppModal";
-import { ActionButtonsModal } from "@/components/modals/ActionButtonsModal";
-import { useScrollHide } from "@/hooks/useScrollHide";
+import { 
+  Header, 
+  HeroSection, 
+  Footer, 
+  BetaBanner, 
+  LoadingScreen, 
+  WelcomeModal, 
+  FeatureModal, 
+  InstallAppModal, 
+  ActionButtonsModal,
+  useScrollHide, 
+  logger, 
+  usePersistedState 
+} from "@/imports";
 import { Heart, Users, Shield, Zap, Sparkles, Star, Rocket, Smartphone as Android, Info, Briefcase, DollarSign, UserCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import "@/styles/animations.css";
-import { logger } from '@/lib/logger';
-import { usePersistedState } from '@/hooks/usePersistedState';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ModeratorApplicationForm from "@/components/forms/ModeratorApplicationForm";
 
@@ -263,12 +264,18 @@ const Index = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12 px-2">
                 {sampleProfiles.map((profile, index) => (
                   <div key={index} className={`animate-slide-up slide-up-delay-${index}`}>
-                    <ProfileCard 
-                      profile={profile} 
-                      onLike={() => {}} 
-                      onSuperLike={() => {}}
-                      onOpenModal={() => setShowActionButtonsModal(true)} 
-                    />
+                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+                      <div className="text-center">
+                        <img 
+                          src={profile.image} 
+                          alt={profile.name}
+                          className="w-full h-48 object-cover rounded-lg mb-3"
+                        />
+                        <h3 className="text-lg font-semibold text-white">{profile.name}, {profile.age}</h3>
+                        <p className="text-white/80 text-sm">{profile.location}</p>
+                        <p className="text-white/70 text-xs mt-2">{profile.profession}</p>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>

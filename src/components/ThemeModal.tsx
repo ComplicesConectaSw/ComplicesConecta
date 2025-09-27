@@ -1,8 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Palette } from 'lucide-react';
-import { Theme } from '@/hooks/useProfileTheme';
-import { ThemeSelector } from './ThemeSelector';
+import { Theme, ThemeSelector } from '@/imports';
 
 interface ThemeModalProps {
   isOpen: boolean;

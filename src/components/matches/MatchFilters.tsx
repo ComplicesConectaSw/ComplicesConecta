@@ -1,5 +1,4 @@
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Button, Badge } from "@/imports";
 import { Heart, Clock, MessageCircle, Users } from "lucide-react";
 
 interface MatchFiltersProps {

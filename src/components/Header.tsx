@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from "@/components/ui/button";
 import { 
+  Button,
   DropdownMenu, 
   DropdownMenuContent, 
   DropdownMenuItem, 
-  DropdownMenuTrigger 
-} from "@/components/ui/dropdown-menu";
+  DropdownMenuTrigger,
+  useAuth,
+  useToast
+} from '@/imports';
 import { 
   User, 
   LogOut, 
@@ -26,8 +28,6 @@ import {
   Scale,
   Menu 
 } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
-import { useToast } from '@/hooks/use-toast';
 import { NotificationBell } from "@/components/notifications/NotificationBell";
 import { useDemoThemeConfig, getNavbarStyles } from '@/hooks/useProfileTheme';
 import { ModeIndicator } from '@/components/ModeIndicator';

@@ -8,15 +8,17 @@ export * from '@/components/profile/ImageUpload';
 
 // Implementación legacy mantenida por compatibilidad
 import React, { useState, useRef } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Switch } from '@/components/ui/switch';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { 
+  Button,
+  Input,
+  Label,
+  Textarea,
+  Switch,
+  Card, CardContent, CardHeader, CardTitle,
+  useToast
+} from '@/imports';
 import { Upload, X, Image as ImageIcon } from 'lucide-react';
 // import { imagesService } from '@/lib/images'; // Temporarily disabled - service not available
-import { useToast } from '@/hooks/use-toast';
 
 interface ImageUploadProps {
   profileId: string;
@@ -26,9 +28,9 @@ interface ImageUploadProps {
 }
 
 export function ImageUpload({ 
-  profileId, 
+  profileId: _profileId, 
   onImageUploaded, 
-  type = 'gallery',
+  type: _type = 'gallery',
   maxFiles = 5 
 }: ImageUploadProps) {
   const [files, setFiles] = useState<File[]>([]);
@@ -123,7 +125,7 @@ export function ImageUpload({
         fileInputRef.current.value = '';
       }
 
-    } catch (error) {
+    } catch (_error) {
       toast({
         variant: "destructive",
         title: "Error inesperado",

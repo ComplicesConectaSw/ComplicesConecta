@@ -13,8 +13,7 @@ import {
   LogOut
 } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { logger } from '@/lib/logger';
-import { cn } from '@/lib/utils';
+import { logger, cn } from '@/imports';
 
 interface NavigationEnhancedProps {
   className?: string;

@@ -14,15 +14,11 @@ import {
   Crown,
   Images
 } from 'lucide-react';
-import NavigationEnhanced from '@/components/NavigationEnhanced';
-import { ProfileNavTabs } from '@/components/profile/ProfileNavTabs';
+import { NavigationEnhanced, ProfileNavTabs, PrivateImageRequest, PrivateImageGallery, ReportDialog } from '@/imports';
 import { useAuth } from '@/hooks/useAuth';
 import { logger } from '@/lib/logger';
 import { usePersistedState } from '@/hooks/usePersistedState';
 import type { Tables } from '@/integrations/supabase/types';
-import { PrivateImageRequest } from '@/components/profile/PrivateImageRequest';
-import { PrivateImageGallery } from '@/components/profile/PrivateImageGallery';
-import { ReportDialog } from '@/components/swipe/ReportDialog';
 
 const ProfileSingle: React.FC = () => {
   const navigate = useNavigate();

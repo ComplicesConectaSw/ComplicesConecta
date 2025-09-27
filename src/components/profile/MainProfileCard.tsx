@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { Heart, MapPin, Verified, Star, X, Zap } from "lucide-react";
-import { useUserOnlineStatus } from "@/hooks/useOnlineStatus";
-import { Button } from "@/components/ui/button";
+import { 
+  useOnlineStatus,
+  Button,
+  useToast,
+  logger,
+  useProfileTheme,
+  cn
+} from '@/imports';
 import { useNavigate } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
-import { logger } from '@/lib/logger';
-import { useProfileTheme, Gender, ProfileType, Theme } from '@/hooks/useProfileTheme';
-import { cn } from '@/lib/utils';
+import { Gender, ProfileType, Theme } from '@/hooks/useProfileTheme';
 import { validateProfileCard } from '@/lib/zod-schemas';
 
 interface ProfileCardProps {
@@ -51,7 +54,7 @@ export const MainProfileCard = ({
   onOpenModal, 
   useThemeBackground = false,
   variant = 'single',
-  showQuickActions = true,
+  showQuickActions: _showQuickActions = true,
   showViewProfile = true 
 }: ProfileCardProps) => {
   // Validar props con Zod
@@ -60,11 +63,11 @@ export const MainProfileCard = ({
   } catch (error) {
     logger.error('❌ Error validando ProfileCard:', { error });
   }
-  const { getUserOnlineStatus, getLastSeenTime } = useUserOnlineStatus();
+  const { getUserOnlineStatus, getLastSeenTime } = useOnlineStatus();
   const profileId = String(profile.id);
-  const isOnline = profile.isOnline ?? getUserOnlineStatus(profileId);
-  const lastSeen = profile.lastSeen ?? getLastSeenTime(profileId);
-  const { id, name, age, location, interests, image, rating, isOnline: onlineStatus = false, gender = 'male', partnerGender, accountType = 'single', theme } = profile;
+  const _isOnline = profile.isOnline ?? getUserOnlineStatus(profileId);
+  const _lastSeen = profile.lastSeen ?? getLastSeenTime(profileId);
+  const { id, name, age, location, interests, image, rating, isOnline: _onlineStatus = false, gender = 'male', partnerGender, accountType = 'single', theme } = profile;
   const navigate = useNavigate();
   const { toast } = useToast();
   const [imageError, setImageError] = useState(false);
@@ -119,7 +122,7 @@ export const MainProfileCard = ({
             src={image} 
             alt={name}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-            onError={(e) => {
+            onError={(_e) => {
               logger.info('Error loading image:', { image });
               setImageError(true);
             }}

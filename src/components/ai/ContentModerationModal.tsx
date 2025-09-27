@@ -5,14 +5,28 @@
 
 import React, { useState, useEffect } from 'react';
 import { Shield, AlertTriangle, CheckCircle, XCircle, Eye, Flag, MessageSquare, Image, FileText } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Textarea } from '@/components/ui/textarea';
-import { useContentModeration, type ModerationResult, type ContentToModerate } from '@/lib/ai/contentModeration';
-import { logger } from '@/lib/logger';
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogHeader, 
+  DialogTitle, 
+  DialogTrigger,
+  Button,
+  Badge,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+  Textarea,
+  useContentModeration,
+  logger
+} from '@/imports';
+import type { ModerationResult, ContentToModerate } from '@/lib/ai/contentModeration';
 
 interface ContentModerationModalProps {
   trigger?: React.ReactNode;
@@ -185,7 +199,7 @@ export const ContentModerationModal: React.FC<ContentModerationModalProps> = ({
     }
   };
 
-  const getSeverityColor = (severity: ModerationResult['severity']) => {
+  const _getSeverityColor = (severity: string) => {
     switch (severity) {
       case 'critical': return 'text-red-700 bg-red-100 border-red-300';
       case 'high': return 'text-orange-700 bg-orange-100 border-orange-300';
@@ -319,7 +333,7 @@ export const ContentModerationModal: React.FC<ContentModerationModalProps> = ({
                 <Textarea
                   placeholder={`Ingresa contenido de tipo "${testType}" para analizar...`}
                   value={testContent}
-                  onChange={(e) => setTestContent(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setTestContent(e.target.value)}
                   rows={4}
                 />
                 

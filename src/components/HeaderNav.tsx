@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
 import { 
   Search, 
   Users, 
@@ -16,9 +15,7 @@ import {
   FileText,
   ChevronDown
 } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
-import { Badge } from '@/components/ui/badge';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Button, useAuth, Badge, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/imports';
 
 
 interface HeaderNavProps {
@@ -28,7 +25,7 @@ interface HeaderNavProps {
 const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user: _user } = useAuth();
   const userIsAuthenticated = isAuthenticated();
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 

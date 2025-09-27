@@ -454,4 +454,5 @@ class ContentModerationService {
 }
 
 export const contentModerationService = new ContentModerationService();
+export { ContentModerationService };
 export default contentModerationService;

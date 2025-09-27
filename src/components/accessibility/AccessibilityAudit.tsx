@@ -4,11 +4,8 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { CheckCircle, AlertTriangle, XCircle, RefreshCw } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { Card, CardContent, CardHeader, CardTitle, Badge, Button, cn } from '@/imports';
 
 interface AccessibilityIssue {
   id: string;

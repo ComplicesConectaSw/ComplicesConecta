@@ -347,4 +347,5 @@ class SmartMatchingService {
 }
 
 export const smartMatchingService = new SmartMatchingService();
+export { SmartMatchingService };
 export default smartMatchingService;

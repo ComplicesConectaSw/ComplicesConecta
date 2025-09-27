@@ -1,5 +1,4 @@
-import { ProfileCard } from "@/components/profile/MainProfileCard";
-import { Button } from "@/components/ui/button";
+import { ProfileCard, Button } from "@/imports";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface Profile {

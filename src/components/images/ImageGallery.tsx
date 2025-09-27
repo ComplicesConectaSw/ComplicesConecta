@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { 
+  Button,
+  Card, CardContent,
+  Badge,
+  Dialog, DialogContent, DialogHeader, DialogTitle,
+  useToast,
+  useAuth,
+  logger
+} from '@/imports';
 import { Eye, Lock, Unlock, Trash2, MessageSquare } from 'lucide-react';
 import { getUserImages, deleteImage, ImageUpload } from '@/lib/images';
-import { useToast } from '@/hooks/use-toast';
-import { useAuth } from '@/hooks/useAuth';
-import { logger } from '@/lib/logger';
 
 interface ImageGalleryProps {
   profileId: string;
@@ -15,7 +17,7 @@ interface ImageGalleryProps {
   showUpload?: boolean;
 }
 
-export function ImageGallery({ profileId, isOwner = false, showUpload = false }: ImageGalleryProps) {
+export function ImageGallery({ profileId, isOwner = false, showUpload: _showUpload = false }: ImageGalleryProps) {
   const [images, setImages] = useState<ImageUpload[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState<ImageUpload | null>(null);
@@ -66,7 +68,7 @@ export function ImageGallery({ profileId, isOwner = false, showUpload = false }:
           description: "No se pudo eliminar la imagen",
         });
       }
-    } catch (error) {
+    } catch (_error) {
       toast({
         variant: "destructive",
         title: "Error inesperado",
@@ -85,7 +87,7 @@ export function ImageGallery({ profileId, isOwner = false, showUpload = false }:
         title: "Funcionalidad en desarrollo",
         description: "La solicitud de acceso estará disponible pronto.",
       });
-    } catch (error) {
+    } catch (_error) {
       toast({
         variant: "destructive",
         title: "Error inesperado",

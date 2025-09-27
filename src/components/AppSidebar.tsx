@@ -1,9 +1,4 @@
-import { Sidebar, SidebarContent, useSidebar } from '@/components/ui/sidebar';
-import { mainNavItems, premiumItems, settingsItems, mockUser } from '@/lib/data';
-import { UserProfile } from '@/components/sidebar/UserProfile';
-import { CollapsedUserProfile } from '@/components/sidebar/CollapsedUserProfile';
-import { NavGroup } from '@/components/sidebar/NavGroup';
-import { QuickActions } from '@/components/sidebar/QuickActions';
+import { Sidebar, SidebarContent, useSidebar, mainNavItems, premiumItems, settingsItems, mockUser, UserProfile, CollapsedUserProfile, NavGroup, QuickActions } from '@/imports';
 
 export function AppSidebar() {
   const { state } = useSidebar();

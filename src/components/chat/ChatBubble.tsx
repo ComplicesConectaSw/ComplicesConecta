@@ -9,8 +9,7 @@ export * from '@/components/ui/ChatBubble';
 // Implementación legacy mantenida por compatibilidad
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { cn } from '@/lib/utils';
+import { Avatar, AvatarFallback, AvatarImage, cn } from '@/imports';
 
 interface ChatBubbleProps {
   id: string;
@@ -23,7 +22,7 @@ interface ChatBubbleProps {
 }
 
 export const ChatBubbleLegacy: React.FC<ChatBubbleProps> = ({
-  id,
+  id: _id,
   message,
   isOwn,
   timestamp,

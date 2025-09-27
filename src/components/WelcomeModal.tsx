@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { X, Heart, Sparkles, Users, Gift, Star, Zap, HelpCircle, Globe, Shield } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Button, Card, CardContent, Badge } from "@/imports";
 
 interface WelcomeModalProps {
   isOpen: boolean;

@@ -1,12 +1,14 @@
 import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
+import { 
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger,
+  Button,
+  Textarea,
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+  Label,
+  useToast
+} from '@/imports';
 import { UserPlus, MessageCircle, Image, User } from 'lucide-react';
 import { invitationService } from '@/lib/invitations';
-import { useToast } from "@/hooks/use-toast";
 
 interface InvitationDialogProps {
   targetProfileId: string;
@@ -50,7 +52,7 @@ export function InvitationDialog({ targetProfileId, targetProfileName, children 
       setMessage('');
       setType('profile');
       setOpen(false);
-    } catch (error) {
+    } catch (_error) {
       toast({
         title: "Error",
         description: "No se pudo enviar la invitación. Inténtalo de nuevo.",

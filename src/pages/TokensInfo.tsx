@@ -23,7 +23,7 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { TOKEN_CONFIG } from '@/lib/tokens';
-import NavigationEnhanced from "@/components/NavigationEnhanced";
+import { NavigationEnhanced } from '@/imports';
 
 interface FAQItem {
   question: string;

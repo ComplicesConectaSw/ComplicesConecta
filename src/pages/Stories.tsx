@@ -1,7 +1,5 @@
 import React from 'react';
-import StoriesContainer from '@/components/stories/StoriesContainer';
-import NavigationEnhanced from '@/components/NavigationEnhanced';
-import { Header } from '@/components/Header';
+import { StoriesContainer, NavigationEnhanced, Header } from '@/imports';
 
 const Stories: React.FC = () => {
   // Detectar si el usuario está autenticado para mostrar navegación inferior

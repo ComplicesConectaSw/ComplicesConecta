@@ -4,7 +4,7 @@
  */
 
 import React, { useRef, useEffect } from 'react';
-import { logger } from '@/lib/logger';
+import { logger } from '@/imports';
 
 interface TouchPoint {
   x: number;

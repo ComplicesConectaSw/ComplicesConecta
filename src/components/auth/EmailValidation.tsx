@@ -7,7 +7,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { CheckCircle, XCircle, Loader2 } from 'lucide-react';
-import { logger } from '@/lib/logger';
+import { logger } from '@/imports';
 
 interface EmailValidationProps {
   email: string;

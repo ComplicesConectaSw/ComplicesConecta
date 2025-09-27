@@ -1,5 +1,5 @@
 import React from 'react';
-import { Badge } from "@/components/ui/badge";
+import { Badge } from '@/imports';
 import { appConfig } from '@/lib/app-config';
 
 interface ModeIndicatorProps {

@@ -9,11 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, Home, Coins, Info, ExternalLink, Bot, Heart, Sparkles, Star, Rocket, Users } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
 import { useTokens } from '@/hooks/useTokens';
-import { TokenDashboard } from '@/components/tokens/TokenDashboard';
-import { StakingModal } from '@/components/tokens/StakingModal';
-import { TokenChatBot } from '@/components/tokens/TokenChatBot';
-import NavigationEnhanced from "@/components/NavigationEnhanced";
-import { Header } from "@/components/Header";
+import { TokenDashboard, StakingModal, TokenChatBot, NavigationEnhanced, Header } from '@/imports';
 import { motion } from 'framer-motion';
 import { AnimatedButton } from '@/components/ui/AnimatedButton';
 

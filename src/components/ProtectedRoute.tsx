@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
-import { logger } from '@/lib/logger';
+import { useAuth, logger } from '@/imports';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -14,7 +13,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   requireAuth = true, 
   redirectTo = '/auth' 
 }) => {
-  const { user, loading, isAuthenticated } = useAuth();
+  const { user: _user, loading, isAuthenticated } = useAuth();
   const location = useLocation();
   const [isReady, setIsReady] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);

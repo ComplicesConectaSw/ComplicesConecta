@@ -1,5 +1,4 @@
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/AppSidebar";
+import { SidebarProvider, SidebarTrigger, AppSidebar } from "@/imports";
 
 interface AppLayoutProps {
   children: React.ReactNode;

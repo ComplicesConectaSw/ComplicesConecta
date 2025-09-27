@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Theme } from '@/hooks/useProfileTheme';
 import { Palette, Sun, Moon, Sparkles, Zap, Heart } from 'lucide-react';
+import { Theme } from '@/imports';
 
 interface ThemeSelectorProps {
   selectedTheme: Theme;

@@ -1,8 +1,7 @@
 import React from 'react';
 // import { motion, AnimatePresence } from 'framer-motion';
 import { X, Shield, FileText, ExternalLink, CheckCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
+import { Button, Checkbox } from '@/imports';
 
 interface TermsModalProps {
   isOpen: boolean;

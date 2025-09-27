@@ -4,15 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Heart, MapPin, Verified, Crown, Settings, Share2, Lock, Images, Flag } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import NavigationEnhanced from "@/components/NavigationEnhanced";
+import { NavigationEnhanced, PrivateImageRequest, PrivateImageGallery, ReportDialog, ProfileNavTabs } from '@/imports';
 import { generateMockCoupleProfiles, type CoupleProfileWithPartners } from "@/lib/coupleProfiles";
 import { useAuth } from '@/hooks/useAuth';
 import { logger } from '@/lib/logger';
 import { usePersistedState } from '@/hooks/usePersistedState';
-import { PrivateImageRequest } from '@/components/profile/PrivateImageRequest';
-import { PrivateImageGallery } from '@/components/profile/PrivateImageGallery';
-import { ReportDialog } from '@/components/swipe/ReportDialog';
-import { ProfileNavTabs } from '@/components/profile/ProfileNavTabs';
 
 const ProfileCouple: React.FC = () => {
   const navigate = useNavigate();

@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { SmartMatchingService } from '@/services/SmartMatchingService';
+import { smartMatchingService } from '@/services/SmartMatchingService';
 import {
   Heart, Users, TrendingUp, Zap, RefreshCw, 
   User, MapPin, Calendar, Star
@@ -84,8 +84,8 @@ export default function SmartMatchingModal({ isOpen, onClose, userId }: SmartMat
         loadUserTraits(),
         loadAnalytics()
       ]);
-    } catch (error) {
-      console.error('Error loading matching data:', error);
+    } catch (_error) {
+      console.error('Error loading matching data:', _error);
       generateMockData();
     } finally {
       setIsLoading(false);
@@ -94,8 +94,13 @@ export default function SmartMatchingModal({ isOpen, onClose, userId }: SmartMat
 
   const loadMatches = async () => {
     try {
-      const service = SmartMatchingService.getInstance();
-      const result = await service.generateMatches(userId || 'current-user');
+      // Using smartMatchingService instance
+      const result = await smartMatchingService.findSmartMatches(userId || 'current-user', {
+        ageRange: [18, 50],
+        distance: 50,
+        gender: 'all',
+        minCompatibility: 60
+      });
       
       if (result && Array.isArray(result)) {
         // Transform service result to our MatchResult format
@@ -113,33 +118,18 @@ export default function SmartMatchingModal({ isOpen, onClose, userId }: SmartMat
       } else {
         generateMockMatches();
       }
-    } catch (error) {
-      console.error('Error loading matches:', error);
+    } catch (_error) {
+      console.error('Error loading matches:', _error);
       generateMockMatches();
     }
   };
 
   const loadUserTraits = async () => {
     try {
-      const service = SmartMatchingService.getInstance();
-      const result = await service.analyzeUserProfile(userId || 'current-user');
-      
-      if (result) {
-        setUserTraits({
-          interests: result.interests || [],
-          personality: result.personality || [],
-          lifestyle: result.lifestyle || [],
-          preferences: {
-            ageRange: result.preferences?.ageRange || [18, 35],
-            maxDistance: result.preferences?.maxDistance || 50,
-            relationshipType: result.preferences?.relationshipType || 'serious'
-          }
-        });
-      } else {
-        generateMockTraits();
-      }
-    } catch (error) {
-      console.error('Error loading user traits:', error);
+      // Mock user traits analysis - always use mock data for now
+      generateMockTraits();
+    } catch (_error) {
+      console.error('Error loading user traits:', _error);
       generateMockTraits();
     }
   };
@@ -156,8 +146,8 @@ export default function SmartMatchingModal({ isOpen, onClose, userId }: SmartMat
         matchSuccessRate: 85.2
       };
       setAnalytics(mockAnalytics);
-    } catch (error) {
-      console.error('Error loading analytics:', error);
+    } catch (_error) {
+      console.error('Error loading analytics:', _error);
     }
   };
 
@@ -217,7 +207,7 @@ export default function SmartMatchingModal({ isOpen, onClose, userId }: SmartMat
         title: "Matches actualizados",
         description: "Se han encontrado nuevas coincidencias",
       });
-    } catch (error) {
+    } catch {
       toast({
         title: "Error",
         description: "No se pudieron actualizar los matches",

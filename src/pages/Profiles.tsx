@@ -4,8 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import NavigationEnhanced from '@/components/NavigationEnhanced';
-import { ContrastFixer } from '@/components/accessibility/ContrastFixer';
+import { NavigationEnhanced, ContrastFixer } from '@/imports';
 import { logger } from '@/lib/logger';
 import { 
   Search, 
@@ -37,7 +36,7 @@ interface Profile {
 }
 
 const Profiles: React.FC = () => {
-  const navigate = useNavigate();
+  const _navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const [aiSuggestions, setAiSuggestions] = useState<string[]>([]);
@@ -82,7 +81,7 @@ const Profiles: React.FC = () => {
     }
   };
 
-  const handleFilterChange = (filters: FilterState) => {
+  const _handleFilterChange = (filters: FilterState) => {
     logger.info('🔍 Filtros aplicados', { filters });
     // Lógica de filtrado simplificada
     setFilteredProfiles(allProfiles);

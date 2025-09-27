@@ -1,5 +1,5 @@
 import { Heart, Facebook, Instagram, Twitter, Mail, MessageCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/imports";
 import { Link } from "react-router-dom";
 
 export const Footer = () => {

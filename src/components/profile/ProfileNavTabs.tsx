@@ -12,7 +12,7 @@ import {
   MoreHorizontal
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import StoriesContainer from '@/components/stories/StoriesContainer';
+import { StoriesContainer } from '@/imports';
 import { ComingSoonModal } from '@/components/modals/ComingSoonModal';
 import { FeatureModal } from '@/components/modals/FeatureModal';
 

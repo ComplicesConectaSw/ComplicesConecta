@@ -3,8 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Shield, Users, Heart, Lock, FileText } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
+import { Header, Footer } from '@/imports';
 
 const Terms = () => {
   const _navigate = useNavigate();
