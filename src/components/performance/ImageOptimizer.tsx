@@ -12,9 +12,9 @@ import {
   createLazyLoader,
   preloadImage,
   type ImageOptimizationOptions,
-  type OptimizedImageProps
-} from '@/utils/imageOptimization';
-import { logger } from '@/lib/logger';
+  type OptimizedImageProps,
+  logger
+} from '@/imports';
 
 interface ImageOptimizerProps extends OptimizedImageProps {
   fallbackSrc?: string;

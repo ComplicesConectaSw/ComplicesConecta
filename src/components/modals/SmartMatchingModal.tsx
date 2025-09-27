@@ -142,7 +142,7 @@ export default function SmartMatchingModal({ isOpen, onClose, userId }: SmartMat
         averageCompatibility: matches.length > 0 
           ? matches.reduce((sum, match) => sum + match.compatibilityScore, 0) / matches.length 
           : 78.5,
-        topInterests: ['Música', 'Viajes', 'Deportes', 'Lectura', 'Cocina'],
+        topInterests: ['singles', 'soft', 'Exhibitions', 'trios', 'BSM'],
         matchSuccessRate: 85.2
       };
       setAnalytics(mockAnalytics);

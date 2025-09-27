@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Fingerprint, Shield, AlertCircle, CheckCircle, Loader } from 'lucide-react';
-import { useBiometricAuth } from '@/hooks/useBiometricAuth';
-import { useToast } from '@/hooks/use-toast';
+import { 
+  Fingerprint, 
+  Shield, 
+  AlertCircle, 
+  CheckCircle, 
+  Loader,
+  useBiometricAuth,
+  useToast
+} from '@/imports';
 
 /**
  * Componente para configuración de autenticación biométrica

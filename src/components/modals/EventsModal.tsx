@@ -1,8 +1,19 @@
 import React from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Calendar, MapPin, Users, Crown, Shield, Clock, Star } from 'lucide-react';
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogHeader, 
+  DialogTitle,
+  Button,
+  Badge,
+  Calendar,
+  MapPin,
+  Users,
+  Crown,
+  Shield,
+  Clock,
+  Star
+} from '@/imports';
 
 interface EventsModalProps {
   isOpen: boolean;

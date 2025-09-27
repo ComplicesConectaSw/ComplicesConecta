@@ -1,9 +1,12 @@
 import React, { useState, useRef } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { 
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Button,
+  Input,
+  Textarea,
   Camera, 
   Upload, 
   X, 
@@ -11,8 +14,8 @@ import {
   Globe, 
   Lock, 
   Loader2,
-  Image as ImageIcon 
-} from 'lucide-react';
+  Image as ImageIcon
+} from '@/imports';
 import { storyService } from './StoryService';
 import { CreateStoryData } from './StoryTypes';
 

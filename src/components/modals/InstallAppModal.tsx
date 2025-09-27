@@ -1,9 +1,16 @@
 import { useState } from "react";
-import { X, Smartphone, Download, Chrome, Globe } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { logger } from '@/lib/logger';
+import { 
+  X, 
+  Smartphone, 
+  Download, 
+  Chrome, 
+  Globe,
+  Button,
+  Card,
+  CardContent,
+  Badge,
+  logger
+} from '@/imports';
 
 interface InstallAppModalProps {
   isOpen: boolean;

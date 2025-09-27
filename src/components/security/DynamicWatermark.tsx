@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/imports';
 
 /**
  * Componente de watermark dinámico para contenido sensible

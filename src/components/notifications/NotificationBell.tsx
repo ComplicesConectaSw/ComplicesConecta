@@ -1,15 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { Bell, X, Check, Mail, UserPlus, AlertTriangle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/hooks/useAuth';
-import { useToast } from '@/hooks/use-toast';
-import { logger } from '@/lib/logger';
+import { 
+  Bell, 
+  X, 
+  Check, 
+  Mail, 
+  UserPlus, 
+  AlertTriangle,
+  Button,
+  Badge,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+  ScrollArea,
+  supabase,
+  useAuth,
+  useToast,
+  logger
+} from '@/imports';
 
 interface NotificationItem {
   id: string;

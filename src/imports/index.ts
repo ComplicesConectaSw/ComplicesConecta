@@ -170,6 +170,10 @@ export { Input } from "@/components/ui/input";
 export { Label } from "@/components/ui/label";
 export { Slider } from "@/components/ui/slider";
 export { Switch } from "@/components/ui/switch";
+export { DialogContent } from "@/components/ui/dialog";
+export { DialogDescription } from "@/components/ui/dialog";
+export { DialogHeader } from "@/components/ui/dialog";
+export { DialogTitle } from "@/components/ui/dialog";
 export { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 export { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -180,6 +184,7 @@ export { Progress } from "@/components/ui/progress";
 export { Checkbox } from "@/components/ui/checkbox";
 export { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 export { Separator } from "@/components/ui/separator";
+export { ScrollArea } from "@/components/ui/scroll-area";
 export { Alert, AlertDescription } from "@/components/ui/alert";
 export { TermsModal as UITermsModal } from "@/components/ui/TermsModal";
 export { UnifiedModal } from "@/components/ui/UnifiedModal";
@@ -195,7 +200,7 @@ export { useCouplePhotos } from "@/hooks/useCouplePhotos";
 export { useCoupleProfile } from "@/hooks/useCoupleProfile";
 export { useGeolocation } from "@/hooks/useGeolocation";
 export { useInterests } from "@/hooks/useInterests";
-export { useOnlineStatus } from "@/hooks/useOnlineStatus";
+export { useOnlineStatus, useUserOnlineStatus } from "@/hooks/useOnlineStatus";
 export { usePersistedState } from "@/hooks/usePersistedState";
 export { useProfileCache } from "@/hooks/useProfileCache";
 export { useProfileQuery } from "@/hooks/useProfileQuery";
@@ -229,7 +234,6 @@ export { LazyComponents } from "@/utils/lazyComponents";
 export { cn } from "@/lib/utils";
 // ⚠️ NOTA: supabase se importa desde integrations, no desde lib
 // export { supabase } from "@/lib/supabase";
-export { logger } from "@/lib/logger";
 export { useContentModeration } from "@/lib/ai/contentModeration";
 export { useSmartMatching } from "@/lib/ai/smartMatching";
 export { storage } from "@/lib/storage";
@@ -295,6 +299,68 @@ export { ProfileCard } from "@/components/profile/MainProfileCard";
 // export { worldidIntegration } from "@/lib/worldid-integration";
 
 // =======================
+// LUCIDE REACT ICONS
+// =======================
+export { 
+  AlertTriangle,
+  ArrowLeft, 
+  ArrowRight, 
+  BarChart3,
+  Bell, 
+  Bookmark,
+  Brain,
+  Calendar, 
+  Camera, 
+  Check, 
+  CheckCircle,
+  ChevronDown, 
+  ChevronLeft, 
+  ChevronRight, 
+  ChevronUp, 
+  Chrome,
+  Clock,
+  Crown,
+  Download,
+  Edit, 
+  Eye, 
+  EyeOff, 
+  Filter, 
+  Fingerprint,
+  Gift,
+  Globe,
+  Heart,
+  Home, 
+  Info, 
+  Loader,
+  Loader2,
+  Lock, 
+  LogOut, 
+  Mail, 
+  MapPin, 
+  Menu, 
+  MessageCircle, 
+  Moon, 
+  MoreHorizontal, 
+  Plus, 
+  Search, 
+  Settings, 
+  Shield,
+  Smartphone,
+  Sparkles,
+  Star, 
+  Sun, 
+  Target,
+  Trash2, 
+  Upload, 
+  User, 
+  UserPlus,
+  Users, 
+  X,
+  XCircle,
+  Zap
+} from "lucide-react";
+
+// =======================
 // PAGES
 // =======================
 export { default as About } from "@/pages/About";
@@ -334,6 +400,12 @@ export { default as TokensInfo } from "@/pages/TokensInfo";
 // export { default as Lifestyle } from "@/pages/Lifestyle";
 // export { default as Login } from "@/pages/Login";
 // export { default as Notifications } from "@/pages/Notifications";
+
+// =======================
+// LIB EXPORTS
+// =======================
+export { logger } from "@/lib/logger";
+export { BiometricAuthService, type BiometricAuthResult } from "@/lib/multimediaSecurity";
 
 // =======================
 // INTEGRATIONS

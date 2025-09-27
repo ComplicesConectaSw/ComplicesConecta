@@ -1,6 +1,16 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Heart, Shield, Users, Zap, Crown } from "lucide-react";
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogHeader, 
+  DialogTitle, 
+  DialogDescription,
+  Button,
+  Heart,
+  Shield,
+  Users,
+  Zap,
+  Crown
+} from '@/imports';
 
 interface FeatureModalProps {
   isOpen: boolean;

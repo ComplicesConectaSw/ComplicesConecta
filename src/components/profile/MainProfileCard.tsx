@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Heart, MapPin, Verified, Star, X, Zap } from "lucide-react";
 import { 
-  useOnlineStatus,
+  useUserOnlineStatus,
   Button,
   useToast,
   logger,
@@ -63,7 +63,7 @@ export const MainProfileCard = ({
   } catch (error) {
     logger.error('❌ Error validando ProfileCard:', { error });
   }
-  const { getUserOnlineStatus, getLastSeenTime } = useOnlineStatus();
+  const { getUserOnlineStatus, getLastSeenTime } = useUserOnlineStatus();
   const profileId = String(profile.id);
   const _isOnline = profile.isOnline ?? getUserOnlineStatus(profileId);
   const _lastSeen = profile.lastSeen ?? getLastSeenTime(profileId);

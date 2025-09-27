@@ -1,8 +1,18 @@
 import React from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Heart, Users, Target, Brain, Star, Zap } from 'lucide-react';
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogHeader, 
+  DialogTitle,
+  Button,
+  Badge,
+  Heart,
+  Users,
+  Target,
+  Brain,
+  Star,
+  Zap
+} from '@/imports';
 
 interface CompatibilityModalProps {
   isOpen: boolean;

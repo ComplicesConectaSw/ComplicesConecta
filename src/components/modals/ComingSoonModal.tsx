@@ -1,8 +1,15 @@
 import React from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Clock, Sparkles, Crown } from "lucide-react";
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogHeader, 
+  DialogTitle,
+  Button,
+  Badge,
+  Clock,
+  Sparkles,
+  Crown
+} from '@/imports';
 
 interface ComingSoonModalProps {
   isOpen: boolean;

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { UnifiedButton } from '@/components/ui/UnifiedButton';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
 import { 
+  UnifiedButton,
+  Avatar, 
+  AvatarFallback, 
+  AvatarImage,
+  Badge,
   Home, 
   Search, 
   Heart, 
@@ -15,10 +17,10 @@ import {
   Settings,
   LogOut,
   Crown,
-  Sparkles
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { useAuth } from '@/hooks/useAuth';
+  Sparkles,
+  cn,
+  useAuth
+} from '@/imports';
 
 interface NavigationItem {
   id: string;

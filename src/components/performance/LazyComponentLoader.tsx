@@ -4,8 +4,7 @@
  */
 
 import React, { Suspense, ComponentType, ReactNode } from 'react';
-import ErrorBoundary from '@/components/ErrorBoundary';
-import { logger } from '@/lib/logger';
+import { ErrorBoundary, logger } from '@/imports';
 
 interface LazyLoaderProps {
   children: ReactNode;

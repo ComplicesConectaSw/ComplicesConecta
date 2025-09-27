@@ -4,8 +4,10 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Heart, X, Zap } from 'lucide-react';
+  Heart,
+  X,
+  Zap
+} from '@/imports';
 
 interface ActionButtonsModalProps {
   isOpen: boolean;

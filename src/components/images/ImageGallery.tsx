@@ -68,7 +68,7 @@ export function ImageGallery({ profileId, isOwner = false, showUpload: _showUplo
           description: "No se pudo eliminar la imagen",
         });
       }
-    } catch (_error) {
+    } catch {
       toast({
         variant: "destructive",
         title: "Error inesperado",

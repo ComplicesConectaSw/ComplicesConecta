@@ -1,12 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Fingerprint, Eye, Shield, CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
-import { BiometricAuthService, BiometricAuthResult } from '@/lib/multimediaSecurity';
-import { useAuth } from '@/hooks/useAuth';
-import { logger } from '@/lib/logger';
+import { 
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Button,
+  Badge,
+  Alert,
+  AlertDescription,
+  Fingerprint,
+  Eye,
+  Shield,
+  CheckCircle,
+  XCircle,
+  AlertTriangle,
+  BiometricAuthService,
+  BiometricAuthResult,
+  useAuth,
+  logger
+} from '@/imports';
 
 interface BiometricAuthProps {
   onAuthSuccess?: (result: BiometricAuthResult) => void;

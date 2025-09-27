@@ -1,8 +1,20 @@
-import { Heart, MessageCircle, Users, MapPin, Calendar, Bookmark } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+import { 
+  Heart, 
+  MessageCircle, 
+  Users, 
+  MapPin, 
+  Calendar, 
+  Bookmark,
+  Button,
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Badge
+} from '@/imports';
 
 interface GroupCardProps {
   id: string;
