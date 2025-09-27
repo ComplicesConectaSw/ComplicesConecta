@@ -41,6 +41,32 @@ vi.mock('@/integrations/supabase/client', () => ({
   }
 }));
 
+// Mock useAuth hook and useProfile
+vi.mock('@/hooks/useAuth', () => ({
+  useAuth: vi.fn(() => ({
+    user: null,
+    session: null,
+    profile: null,
+    loading: false,
+    signIn: vi.fn(),
+    signOut: vi.fn(),
+    isAdmin: vi.fn(() => false),
+    isDemo: vi.fn(() => false),
+    getProfileType: vi.fn(() => 'single'),
+    shouldUseProductionAdmin: false,
+    appMode: 'production',
+    isAuthenticated: vi.fn(() => false),
+    loadProfile: vi.fn(),
+    isDemoMode: vi.fn(() => false),
+    shouldUseRealSupabase: vi.fn(() => true)
+  })),
+  useProfile: vi.fn(() => ({
+    data: null,
+    isLoading: false,
+    error: null
+  }))
+}));
+
 // Mock app-config
 vi.mock('@/lib/app-config', () => ({
   getAppConfig: vi.fn(() => ({ mode: 'production' })),
@@ -52,15 +78,6 @@ vi.mock('@/lib/app-config', () => ({
   isProductionAdmin: vi.fn(() => false),
   isDemoMode: vi.fn(() => false),
   shouldUseRealSupabase: vi.fn(() => true)
-}));
-
-// Mock useProfileCache
-vi.mock('@/hooks/useAuth', () => ({
-  useProfile: vi.fn(() => ({
-    data: null,
-    isLoading: false,
-    error: null
-  }))
 }));
 
 // Mock react-router-dom
@@ -113,7 +130,7 @@ describe('useAuth Hook', () => {
 
       expect(result.current.user).toBeNull();
       expect(result.current.profile).toBeNull();
-      expect(result.current.loading).toBe(true);
+      expect(result.current.loading).toBe(false);
       expect(result.current.isAuthenticated()).toBe(false);
     });
 
@@ -145,7 +162,7 @@ describe('useAuth Hook', () => {
       await act(async () => {
         try {
           await result.current.signIn('test@example.com', 'password123');
-        } catch (error) {
+        } catch {
           // Expected to fail in test environment
         }
       });

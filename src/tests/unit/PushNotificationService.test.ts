@@ -4,28 +4,43 @@
 
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { PushNotificationService } from '@/services/PushNotificationService'
+import { testDebugger } from '@/utils/testDebugger'
 
-// Mock de Supabase
-vi.mock('@/integrations/supabase/client', () => ({
-  supabase: {
-    from: vi.fn(() => ({
-      insert: vi.fn(() => ({
-        select: vi.fn(() => ({
-          single: vi.fn(() => Promise.resolve({ data: { id: '1' }, error: null }))
-        }))
-      })),
-      select: vi.fn(() => ({
-        eq: vi.fn(() => Promise.resolve({ data: [], error: null }))
-      })),
-      upsert: vi.fn(() => ({
-        select: vi.fn(() => ({
-          single: vi.fn(() => Promise.resolve({ data: { id: '1' }, error: null }))
-        }))
-      })),
-      update: vi.fn(() => ({
-        eq: vi.fn(() => Promise.resolve({ data: null, error: null }))
+// Mock de Supabase - FIXED: Return success: true in service responses
+const mockSupabaseChain = {
+  insert: vi.fn(() => ({
+    select: vi.fn(() => ({
+      single: vi.fn(() => Promise.resolve({ 
+        data: { id: '1', token: 'device_token_123' }, 
+        error: null 
       }))
     }))
+  })),
+  select: vi.fn(() => ({
+    eq: vi.fn(() => Promise.resolve({ 
+      data: [{ id: '1', preferences: {} }], 
+      error: null 
+    }))
+  })),
+  upsert: vi.fn(() => ({
+    select: vi.fn(() => ({
+      single: vi.fn(() => Promise.resolve({ 
+        data: { id: '1', token: 'device_token_123' }, 
+        error: null 
+      }))
+    }))
+  })),
+  update: vi.fn(() => ({
+    eq: vi.fn(() => Promise.resolve({ 
+      data: { id: '1' }, 
+      error: null 
+    }))
+  }))
+};
+
+vi.mock('@/integrations/supabase/client', () => ({
+  supabase: {
+    from: vi.fn(() => mockSupabaseChain)
   }
 }))
 
@@ -56,12 +71,16 @@ describe('PushNotificationService', () => {
 
   describe('registerDeviceToken', () => {
     it('should register device token successfully', async () => {
+      testDebugger.logTestStart('PushNotificationService - registerDeviceToken');
+      
       const result = await service.registerDeviceToken(
         'user123',
         'device_token_123',
         'android',
         { model: 'Test Device' }
       )
+      
+      testDebugger.logTestEnd('PushNotificationService - registerDeviceToken', result.success, result);
       
       expect(result.success).toBe(true)
       expect(result.token).toBeDefined()

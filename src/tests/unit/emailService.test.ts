@@ -22,11 +22,11 @@ vi.mock('@/integrations/supabase/client', () => ({
 }));
 
 describe('EmailService - Variables de Entorno', () => {
-  let emailService: EmailService;
+  let _emailService: EmailService;
 
   beforeEach(() => {
     vi.clearAllMocks();
-    emailService = new EmailService();
+    _emailService = new EmailService();
   });
 
   it('debe cargar variables de entorno desde import.meta.env', () => {

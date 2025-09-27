@@ -153,7 +153,7 @@ browsers.forEach(({ name, ...device }) => {
       if (viewport) {
         // Verificar clases responsive
         const body = page.locator('body');
-        const classes = await body.getAttribute('class') || '';
+        const _classes = await body.getAttribute('class') || '';
         
         if (viewport.width < 640) {
           // Móvil - verificar que no hay overflow horizontal

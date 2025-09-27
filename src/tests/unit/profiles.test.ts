@@ -149,28 +149,28 @@ describe('Profiles - Generación y Validación', () => {
     it('debe seleccionar imagen para perfil masculino', () => {
       const used = new Set<string>();
       const profile = { id: 'test1', name: 'Juan', gender: 'male' as const };
-      const image = pickProfileImage(profile, used);
+      const _image = pickProfileImage(profile, used);
 
-      expect(typeof image).toBe('string');
-      expect(image).toMatch(/https:\/\/images\.unsplash\.com/);
+      expect(typeof _image).toBe('string');
+      expect(_image).toMatch(/https:\/\/images\.unsplash\.com/);
     });
 
     it('debe seleccionar imagen para perfil femenino', () => {
       const used = new Set<string>();
       const profile = { id: 'test2', name: 'María', gender: 'female' as const };
-      const image = pickProfileImage(profile, used);
+      const _image = pickProfileImage(profile, used);
 
-      expect(typeof image).toBe('string');
-      expect(image).toMatch(/https:\/\/images\.unsplash\.com/);
+      expect(typeof _image).toBe('string');
+      expect(_image).toMatch(/https:\/\/images\.unsplash\.com/);
     });
 
     it('debe seleccionar imagen para pareja', () => {
       const used = new Set<string>();
       const profile = { id: 'test3', name: 'Ana & Carlos', type: 'couple' as const };
-      const image = pickProfileImage(profile, used);
+      const _image = pickProfileImage(profile, used);
 
-      expect(typeof image).toBe('string');
-      expect(image).toMatch(/https:\/\/images\.unsplash\.com/);
+      expect(typeof _image).toBe('string');
+      expect(_image).toMatch(/https:\/\/images\.unsplash\.com/);
     });
 
     it('debe evitar duplicados en selecciones múltiples', () => {
@@ -178,7 +178,7 @@ describe('Profiles - Generación y Validación', () => {
       
       for (let i = 0; i < 10; i++) {
         const profile = { id: `test${i}`, name: 'Juan', gender: 'male' as const };
-        const image = pickProfileImage(profile, used);
+        const _image = pickProfileImage(profile, used);
         // Note: used Set is updated inside the function
       }
 

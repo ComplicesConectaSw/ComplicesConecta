@@ -1,8 +1,8 @@
-import { describe, test, expect, beforeAll, afterAll, vi } from 'vitest';
+import { describe, test, expect, beforeAll, afterAll } from 'vitest';
 import { redisCache, CacheKeys, CacheTTL } from '@/lib/redis-cache';
 import { analyticsMetrics, trackPageView, trackInteraction } from '@/lib/analytics-metrics';
 import { mlMatchingEngine, calculateMLMatch } from '@/lib/ml-matching';
-import { backupSystem, performManualBackup, getBackupStats } from '@/lib/backup-system';
+import { performManualBackup, getBackupStats } from '@/lib/backup-system';
 
 /**
  * Tests de Integración del Sistema

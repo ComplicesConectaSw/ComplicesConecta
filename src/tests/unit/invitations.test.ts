@@ -1,8 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { 
-  invitationService,
-  Invitation,
-  GalleryPermission 
+  invitationService
 } from '@/lib/invitations';
 
 // Mock Supabase client - force fallback to mock data by throwing errors

@@ -3,7 +3,7 @@
  * Verifica la integración con la base de datos y funciones RPC
  */
 
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { createClient } from '@supabase/supabase-js';
 // Tipos básicos para Supabase sin dependencia externa
 interface Database {
@@ -31,7 +31,7 @@ const mockSupabaseUrl = 'https://test.supabase.co';
 const mockSupabaseKey = 'test-anon-key';
 
 // Cliente de prueba
-const supabase = createClient<Database>(mockSupabaseUrl, mockSupabaseKey);
+const _supabase = createClient<Database>(mockSupabaseUrl, mockSupabaseKey);
 
 describe('Supabase Integration Tests', () => {
   describe('Database Connection', () => {
@@ -87,7 +87,7 @@ describe('Supabase Integration Tests', () => {
     });
 
     it('should validate staking data before insertion', async () => {
-      const invalidStakingData = {
+      const _invalidStakingData = {
         user_id: 'invalid-uuid',
         token_type: 'invalid-token',
         amount: -50, // Cantidad negativa
@@ -113,7 +113,7 @@ describe('Supabase Integration Tests', () => {
 
   describe('RPC Functions', () => {
     it('should call start_staking RPC successfully', async () => {
-      const stakingParams = {
+      const _stakingParams = {
         user_id_param: '123e4567-e89b-12d3-a456-426614174000',
         amount_param: 100,
         duration_days: 30,
@@ -138,7 +138,7 @@ describe('Supabase Integration Tests', () => {
     });
 
     it('should handle RPC function errors', async () => {
-      const invalidParams = {
+      const _invalidParams = {
         user_id_param: 'invalid-uuid',
         amount_param: 0,
         duration_days: 0,

@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { calculateCompatibility, calculateMatchScore, getSharedInterests } from '@/lib/matching';
 
 describe('Matching Algorithm', () => {
-  const mockProfile1 = {
+  const _mockProfile1 = {
     id: '1',
     first_name: 'Ana',
     last_name: 'García',
@@ -27,7 +27,7 @@ describe('Matching Algorithm', () => {
     stats: { matches: 15, likes: 50, views: 100 }
   };
 
-  const mockProfile2 = {
+  const _mockProfile2 = {
     id: '2',
     first_name: 'Carlos',
     last_name: 'López',

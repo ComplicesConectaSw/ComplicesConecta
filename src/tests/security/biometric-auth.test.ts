@@ -1,8 +1,8 @@
 import React from 'react';
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 // Mock components and functions for testing
-const BiometricSettings = ({ userId }: { userId: string }) => {
+const BiometricSettings = ({ userId: _userId }: { userId: string }) => {
   return null; // Mock component
 };
 
@@ -79,7 +79,7 @@ const authenticateWithBiometric = async () => {
   }
 };
 
-const removeBiometric = async (credentialId?: string) => {
+const removeBiometric = async (_credentialId?: string) => {
   try {
     // Mock removal - in real implementation would delete from database
     return { success: true };

@@ -5,18 +5,12 @@
 
 import { describe, it, expect } from 'vitest';
 import {
-  validateProfileCard,
-  validateThemeSelector,  
-  validateEmail,
-  validateStaking,
-  validateTokenTransaction,
   ProfileCardSchema, 
   ThemeSelectorSchema,
   EmailValidationSchema as EmailSchema,
   StakingSchema,
   TokenTransactionSchema
 } from '@/lib/zod-schemas';
-import type { z } from 'zod';
 
 describe('Zod Schema Validation', () => {
   describe('ProfileCard Validation', () => {
@@ -27,7 +21,7 @@ describe('Zod Schema Validation', () => {
         age: 28,
         location: 'Ciudad de México, México',
         bio: 'Pareja aventurera buscando nuevas experiencias y conexiones auténticas',
-        interests: ['viajes', 'cenas románticas', 'baile', 'música'],
+        interests: ['lifestyle swinger', 'intercambio de parejas', 'fiestas temáticas', 'mentalidad abierta'],
         isOnline: true,
         verified: true
       };
@@ -49,7 +43,7 @@ describe('Zod Schema Validation', () => {
         location: 'Guadalajara, México',
         bio: 'Persona joven explorando nuevas experiencias',
         images: ['carlos.jpg'],
-        interests: ['música'],
+        interests: ['encuentros casuales'],
         isOnline: true,
         verified: true
       };
@@ -69,7 +63,7 @@ describe('Zod Schema Validation', () => {
         location: 'Monterrey, México',
         bio: 'Pareja liberal con mente abierta buscando diversión',
         images: ['pareja.jpg'],
-        interests: ['fiestas', 'socializar'],
+        interests: ['intercambio de parejas', 'eventos privados'],
         isOnline: true,
         verified: true
       };
@@ -249,7 +243,7 @@ describe('Zod Schema Validation', () => {
         location: 'Cancún, México',
         bio: 'Pareja divertida que disfruta de la vida nocturna y nuevas aventuras',
         images: ['carmen.jpg'],
-        interests: ['vida nocturna', 'playa', 'cocteles', 'encuentros'],
+        interests: ['lifestyle swinger', 'clubs privados', 'fiestas temáticas', 'intercambio de parejas'],
         isOnline: true,
         verified: true
       };

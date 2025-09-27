@@ -1,33 +1,38 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { ProfileReportsPanel } from '@/components/admin/ProfileReportsPanel';
+import { testDebugger } from '@/utils/testDebugger';
+import { profileReportService } from '@/services/ProfileReportService';
 
 // Mock services
-const mockProfileReportService = {
-  getPendingProfileReports: vi.fn(),
-  getProfileReportStats: vi.fn(),
-  resolveProfileReport: vi.fn()
-};
+vi.mock('@/services/ProfileReportService', () => {
+  const mockService = {
+    getPendingProfileReports: vi.fn(),
+    getProfileReportStats: vi.fn(),
+    resolveProfileReport: vi.fn()
+  };
+  
+  return {
+    ProfileReportService: vi.fn(() => mockService),
+    profileReportService: mockService
+  };
+});
 
-const mockReportService = {
-  getUserReportStats: vi.fn(),
-  getPendingReports: vi.fn(),
-  resolveReport: vi.fn()
-};
-
-vi.mock('@/services/ProfileReportService', () => ({
-  ProfileReportService: vi.fn(() => mockProfileReportService)
-}));
-
-vi.mock('@/services/ReportService', () => ({
-  ReportService: vi.fn(() => mockReportService)
-}));
+vi.mock('@/services/ReportService', () => {
+  const mockService = {
+    getUserReportStats: vi.fn(),
+    getPendingReports: vi.fn(),
+    resolveReport: vi.fn()
+  };
+  
+  return {
+    ReportService: vi.fn(() => mockService)
+  };
+});
 
 // Mock toast
-vi.mock('@/hooks/use-toast', () => ({
-  useToast: () => ({
-    toast: vi.fn()
-  })
+vi.mock('sonner', () => ({
+  toast: vi.fn()
 }));
 
 // Mock icons
@@ -50,29 +55,36 @@ describe('ProfileReportsPanel', () => {
     vi.clearAllMocks();
     
     // Setup default mocks
-    mockProfileReportService.getPendingProfileReports.mockResolvedValue({
+    const mockedService = vi.mocked(profileReportService);
+    mockedService.getPendingProfileReports.mockResolvedValue({
       success: true,
       reports: [
         {
           id: '1',
+          content_type: 'profile',
           reported_user_id: 'user1',
           reporter_user_id: 'user2',
+          reported_content_id: 'profile1',
           reason: 'harassment',
+          severity: 'medium',
           status: 'pending',
           description: 'Test report',
-          created_at: '2023-01-01T00:00:00Z'
+          resolution_notes: null,
+          reviewed_at: null,
+          reviewed_by: null,
+          created_at: '2023-01-01T00:00:00Z',
+          updated_at: '2023-01-01T00:00:00Z'
         }
       ]
     });
 
-    mockProfileReportService.getProfileReportStats.mockResolvedValue({
+    mockedService.getProfileReportStats.mockResolvedValue({
       success: true,
       stats: {
-        userId: 'user1',
         reportsMade: 2,
         reportsReceived: 1,
         recentReports: 0,
-        isBlocked: false
+        canReport: true
       }
     });
   });
@@ -90,7 +102,8 @@ describe('ProfileReportsPanel', () => {
   });
 
   it('debería manejar errores al cargar reportes', async () => {
-    mockProfileReportService.getPendingProfileReports.mockResolvedValue({
+    const mockedService = vi.mocked(profileReportService);
+    mockedService.getPendingProfileReports.mockResolvedValue({
       success: false,
       error: 'Error al cargar reportes'
     });
@@ -98,13 +111,22 @@ describe('ProfileReportsPanel', () => {
     render(<ProfileReportsPanel />);
     
     // El componente debería manejar el error gracefully
-    expect(mockProfileReportService.getPendingProfileReports).toHaveBeenCalled();
+    expect(mockedService.getPendingProfileReports).toHaveBeenCalled();
   });
 
-  it('debería llamar a los servicios correctos al montar', () => {
+  it('debería llamar a los servicios correctos al montar', async () => {
+    testDebugger.logTestStart('ProfileReportsPanel - service calls on mount');
+    
+    const mockedService = vi.mocked(profileReportService);
     render(<ProfileReportsPanel />);
     
-    expect(mockProfileReportService.getPendingProfileReports).toHaveBeenCalled();
+    // Wait for useEffect to complete
+    await waitFor(() => {
+      expect(mockedService.getPendingProfileReports).toHaveBeenCalled();
+    });
+    
+    testDebugger.verifyMockCalls('getPendingProfileReports', 1);
+    testDebugger.logTestEnd('ProfileReportsPanel - service calls on mount', true);
   });
 
   it('debería renderizar iconos correctamente', () => {

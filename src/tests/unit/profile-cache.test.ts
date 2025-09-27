@@ -57,8 +57,7 @@ vi.mock('@/integrations/supabase/client', () => ({
 const mockProfile = {
   id: 'test-user-id',
   user_id: 'test-user-id',
-  first_name: 'Test',
-  last_name: 'User',
+  name: 'Test User',
   email: 'test@example.com',
   age: 25,
   bio: 'Test bio',
@@ -286,7 +285,7 @@ describe('Profile Cache Tests', () => {
 
   describe('useUpdateProfile Hook', () => {
     it('debe actualizar perfil y invalidar cache', async () => {
-      const updatedProfile = { ...mockProfile, first_name: 'Updated' };
+      const updatedProfile = { ...mockProfile, name: 'Updated User' };
       const mockSupabaseResponse = {
         data: updatedProfile,
         error: null
@@ -307,7 +306,7 @@ describe('Profile Cache Tests', () => {
 
       const updateData = { 
         profileId: 'test-user-id', 
-        updates: { first_name: 'Updated' } 
+        updates: { bio: 'Updated bio' } 
       };
       
       await waitFor(async () => {
@@ -343,7 +342,7 @@ describe('Profile Cache Tests', () => {
 
       const updateData = { 
         profileId: 'test-user-id', 
-        updates: { first_name: 'Updated' } 
+        updates: { bio: 'Updated bio' } 
       };
       
       result.current.mutate(updateData);
@@ -377,25 +376,34 @@ describe('Profile Cache Tests', () => {
 
       const createData = {
         user_id: 'new-user-id',
-        first_name: 'New',
-        last_name: 'User',
-        display_name: 'New User',
-        email: 'new@example.com',
+        name: 'New User',
+        bio: null,
+        avatar_url: null,
         age: 30,
-        account_type: 'single' as const,
-        profile_type: 'single',
+        age_range_min: null,
+        age_range_max: null,
         gender: 'male' as const,
         interested_in: 'female' as const,
+        location: null,
+        latitude: null,
+        longitude: null,
+        share_location: false,
+        account_type: 'single' as const,
+        profile_type: 'single',
         is_premium: false,
         is_verified: false,
         is_demo: false,
         role: 'user',
-        bio: null,
-        location: null,
-        avatar_url: null,
-        latitude: null,
-        longitude: null,
-        share_location: false
+        personality_traits: null,
+        lifestyle_preferences: null,
+        location_preferences: null,
+        privacy_settings: null,
+        notification_settings: null,
+        subscription_status: null,
+        subscription_expires_at: null,
+        last_active_at: null,
+        blocked_at: null,
+        warnings_count: null
       };
       
       result.current.mutate(createData);

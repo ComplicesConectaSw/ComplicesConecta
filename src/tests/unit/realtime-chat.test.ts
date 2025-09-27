@@ -64,7 +64,7 @@ describe('Realtime Chat Tests', () => {
       
       (supabase.channel as any).mockReturnValue(mockChannel);
 
-      const channel = supabase.channel('chat-room')
+      const _channel = supabase.channel('chat-room')
         .on('postgres_changes', {
           event: 'INSERT',
           schema: 'public',

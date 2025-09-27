@@ -10,21 +10,21 @@ export const test = base.extend({
     await page.addInitScript(() => {
       // Mock hCaptcha API
       (window as any).hcaptcha = {
-        render: (container: string | HTMLElement, config: Record<string, unknown>) => {
+        render: (_container: string | HTMLElement, _config: Record<string, unknown>) => {
           console.log('hCaptcha mock: render called');
           return 'mock-widget-id';
         },
-        execute: async (widgetId: string) => {
+        execute: async (_widgetId: string) => {
           console.log('hCaptcha mock: execute called');
           return 'mock-captcha-token';
         },
-        reset: (widgetId?: string) => {
+        reset: (_widgetId?: string) => {
           console.log('hCaptcha mock: reset called');
         },
-        remove: (widgetId: string) => {
+        remove: (_widgetId: string) => {
           console.log('hCaptcha mock: remove called');
         },
-        getResponse: (widgetId?: string) => {
+        getResponse: (_widgetId?: string) => {
           console.log('hCaptcha mock: getResponse called');
           return 'mock-captcha-response';
         }
@@ -61,6 +61,7 @@ export const test = base.extend({
       });
     });
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     await use(page);
   },
 });

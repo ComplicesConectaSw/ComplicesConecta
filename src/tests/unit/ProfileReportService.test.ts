@@ -1,18 +1,17 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { ProfileReportService, CreateProfileReportParams } from '@/services/ProfileReportService';
 import type { User } from '@supabase/supabase-js';
+import { testDebugger } from '@/utils/testDebugger';
 
 // Mock Supabase client
-const mockSupabase = {
-  auth: {
-    getUser: vi.fn()
-  },
-  from: vi.fn(),
-  rpc: vi.fn()
-};
-
 vi.mock('@/integrations/supabase/client', () => ({
-  supabase: mockSupabase
+  supabase: {
+    auth: {
+      getUser: vi.fn()
+    },
+    from: vi.fn(),
+    rpc: vi.fn()
+  }
 }));
 
 vi.mock('@/lib/logger', () => ({
@@ -34,8 +33,12 @@ describe('ProfileReportService', () => {
 
   describe('createProfileReport', () => {
     it('debería crear un reporte exitosamente', async () => {
+      testDebugger.logTestStart('ProfileReportService - createProfileReport success');
+      
+      const { supabase } = await import('@/integrations/supabase/client');
+      
       // Mock usuario autenticado
-      mockSupabase.auth.getUser.mockResolvedValue({
+      vi.mocked(supabase.auth.getUser).mockResolvedValue({
         data: { 
           user: { 
             id: 'user-123', 
@@ -49,23 +52,40 @@ describe('ProfileReportService', () => {
         error: null
       });
 
+      // Mock from chain for insert
+      const mockInsert = vi.fn().mockResolvedValue({
+        data: { id: 'report-123' },
+        error: null
+      });
+      
+      vi.mocked(supabase.from).mockReturnValue({
+        insert: mockInsert
+      } as any);
+
       const params: CreateProfileReportParams = {
         reportedUserId: 'reported-user-123',
         reason: 'harassment',
         description: 'Test description'
       };
 
+      testDebugger.logSupabaseMock('insert', 'profile_reports', params);
+
       const result = await service.createProfileReport(params);
 
+      testDebugger.logTestEnd('ProfileReportService - createProfileReport success', result.success, result);
+      
       expect(result.success).toBe(true);
-      expect(mockSupabase.auth.getUser).toHaveBeenCalled();
+      expect(supabase.auth.getUser).toHaveBeenCalled();
+      expect(supabase.from).toHaveBeenCalledWith('profile_reports');
     });
 
     it('debería fallar si el usuario no está autenticado', async () => {
-      mockSupabase.auth.getUser.mockResolvedValue({
+      const { supabase } = await import('@/integrations/supabase/client');
+      
+      vi.mocked(supabase.auth.getUser).mockResolvedValue({
         data: { user: null },
         error: null
-      });
+      } as any);
 
       const params: CreateProfileReportParams = {
         reportedUserId: 'reported-user-123',
@@ -80,7 +100,9 @@ describe('ProfileReportService', () => {
     });
 
     it('debería fallar si el usuario intenta reportarse a sí mismo', async () => {
-      mockSupabase.auth.getUser.mockResolvedValue({
+      const { supabase } = await import('@/integrations/supabase/client');
+      
+      vi.mocked(supabase.auth.getUser).mockResolvedValue({
         data: { 
           user: { 
             id: 'user-123', 
@@ -118,7 +140,9 @@ describe('ProfileReportService', () => {
         isBlocked: false
       };
 
-      vi.mocked(mockSupabase.from).mockReturnValue({
+      const { supabase } = await import('@/integrations/supabase/client');
+      
+      vi.mocked(supabase.from).mockReturnValue({
         select: vi.fn().mockReturnValue({
           eq: vi.fn().mockReturnValue({
             single: vi.fn().mockResolvedValue({
@@ -135,7 +159,7 @@ describe('ProfileReportService', () => {
       // Assert
       expect(result.success).toBe(true);
       expect(result.stats).toEqual(mockStats);
-      expect(mockSupabase.from).toHaveBeenCalledWith('user_report_stats');
+      expect(supabase.from).toHaveBeenCalledWith('user_report_stats');
     });
   });
 
@@ -154,7 +178,9 @@ describe('ProfileReportService', () => {
         }
       ];
 
-      vi.mocked(mockSupabase.from).mockReturnValue({
+      const { supabase } = await import('@/integrations/supabase/client');
+      
+      vi.mocked(supabase.from).mockReturnValue({
         select: vi.fn().mockReturnValue({
           eq: vi.fn().mockReturnValue({
             order: vi.fn().mockResolvedValue({
@@ -171,13 +197,15 @@ describe('ProfileReportService', () => {
       // Assert
       expect(result.success).toBe(true);
       expect(result.reports).toEqual(mockReports);
-      expect(mockSupabase.from).toHaveBeenCalledWith('profile_reports');
+      expect(supabase.from).toHaveBeenCalledWith('profile_reports');
     });
   });
 
   describe('getPendingProfileReports', () => {
     it('debería obtener reportes pendientes', async () => {
-      vi.mocked(mockSupabase.auth.getUser).mockResolvedValue({
+      const { supabase } = await import('@/integrations/supabase/client');
+      
+      vi.mocked(supabase.auth.getUser).mockResolvedValue({
         data: { 
           user: { 
             id: 'admin-123', 
@@ -193,15 +221,16 @@ describe('ProfileReportService', () => {
 
       const result = await service.getPendingProfileReports();
 
-      expect(mockSupabase.auth.getUser).toHaveBeenCalled();
+      expect(supabase.auth.getUser).toHaveBeenCalled();
       expect(typeof result).toBe('object');
     });
   });
 
   describe('resolveProfileReport', () => {
     it('debería resolver un reporte de perfil', async () => {
-      // Arrange
-      vi.mocked(mockSupabase.from).mockReturnValue({
+      const { supabase } = await import('@/integrations/supabase/client');
+      
+      vi.mocked(supabase.from).mockReturnValue({
         update: vi.fn().mockReturnValue({
           eq: vi.fn().mockResolvedValue({
             data: null,
@@ -210,18 +239,16 @@ describe('ProfileReportService', () => {
         })
       } as any);
 
-      // Act
       const result = await service.resolveProfileReport('report1', 'resolved', 'none');
 
-      // Assert
       expect(result.success).toBe(true);
-      expect(mockSupabase.from).toHaveBeenCalledWith('profile_reports');
+      expect(supabase.from).toHaveBeenCalledWith('profile_reports');
     });
 
     it('debería resolver un reporte de perfil con notas', async () => {
-      // Arrange
-      const profileReportService = new ProfileReportService();
-      vi.mocked(mockSupabase.from).mockReturnValue({
+      const { supabase } = await import('@/integrations/supabase/client');
+      
+      vi.mocked(supabase.from).mockReturnValue({
         update: vi.fn().mockReturnValue({
           eq: vi.fn().mockResolvedValue({
             data: null,
@@ -230,18 +257,15 @@ describe('ProfileReportService', () => {
         })
       } as any);
 
-      // Act
-      const result = await profileReportService.resolveProfileReport('report-123', 'resolved', 'Test notes');
+      const result = await service.resolveProfileReport('report-123', 'resolved', 'Test notes');
 
-      // Assert
       expect(result.success).toBe(true);
-      expect(mockSupabase.from).toHaveBeenCalledWith('profile_reports');
+      expect(supabase.from).toHaveBeenCalledWith('profile_reports');
     });
   });
 
   describe('canUserReport', () => {
     it('debería verificar si el usuario puede reportar', async () => {
-      // Arrange
       const { supabase } = await import('@/integrations/supabase/client');
       vi.mocked(supabase.auth.getUser).mockResolvedValue({
         data: {
@@ -259,7 +283,7 @@ describe('ProfileReportService', () => {
 
       const result = await service.canUserReport('user1');
 
-      expect(mockSupabase.auth.getUser).toHaveBeenCalled();
+      expect(supabase.auth.getUser).toHaveBeenCalled();
       expect(typeof result).toBe('object');
     });
   });
