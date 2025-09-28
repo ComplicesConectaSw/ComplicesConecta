@@ -416,7 +416,9 @@ export const SingleRegistrationForm: React.FC<SingleRegistrationFormProps> = ({
           placeholder="Tu contraseña segura"
           required
         />
-        <PasswordValidator password={formData.password} />
+        <div className="text-xs text-white/70 mt-1">
+          La contraseña debe tener al menos 8 caracteres, incluir mayúsculas, minúsculas y números
+        </div>
       </div>
 
       <div>

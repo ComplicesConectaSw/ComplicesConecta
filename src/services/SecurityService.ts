@@ -5,6 +5,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { Json } from '@/types/supabase';
 
 export interface SecurityAnalysis {
   riskScore: number;
@@ -36,7 +37,7 @@ export interface AuditLogEntry {
   userId: string;
   action: string;
   resource: string;
-  details: Record<string, any>;
+  details: Json | null;
   ipAddress: string;
   userAgent: string;
   timestamp: string;
@@ -56,7 +57,7 @@ class SecurityService {
    * Analiza actividad sospechosa de un usuario
    * TODO: Implementar análisis real con ML/IA
    */
-  async analyzeUserActivity(userId: string, timeframe: 'hour' | 'day' | 'week' = 'day'): Promise<SecurityAnalysis> {
+  async analyzeUserActivity(userId: string, _timeframe: 'hour' | 'day' | 'week' = 'day'): Promise<SecurityAnalysis> {
     try {
       // PLACEHOLDER: Análisis mock de actividad sospechosa
       const flags: SecurityFlag[] = [];
@@ -235,7 +236,7 @@ class SecurityService {
     action: string;
     ipAddress: string;
     userAgent: string;
-    metadata?: Record<string, any>;
+    metadata?: Json | null;
   }): Promise<FraudAnalysis> {
     try {
       const patterns: string[] = [];
@@ -303,7 +304,7 @@ class SecurityService {
   async logSecurityEvent(
     userId: string,
     action: string,
-    details: Record<string, any>,
+    details: Json | null,
     ipAddress?: string,
     userAgent?: string
   ): Promise<void> {
@@ -360,8 +361,8 @@ class SecurityService {
         userId: log.user_id || '',
         action: log.action_type || '',
         resource: log.resource_type || '',
-        details: log.request_data || {},
-        ipAddress: log.ip_address || '',
+        details: log.request_data || null,
+        ipAddress: (log.ip_address as string) || 'unknown',
         userAgent: log.user_agent || '',
         timestamp: log.created_at || new Date().toISOString(),
         riskScore: log.fraud_score || 0
@@ -481,7 +482,7 @@ class SecurityService {
     }
   }
 
-  private async calculateEventRiskScore(action: string, details: Record<string, any>): Promise<number> {
+  private async calculateEventRiskScore(action: string, _details: Json | null): Promise<number> {
     // PLACEHOLDER: Cálculo básico de risk score
     const riskScores: Record<string, number> = {
       'login': 1,

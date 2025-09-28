@@ -14,6 +14,7 @@
 
 import { supabase } from '@/integrations/supabase/client'
 import { logger } from '@/lib/logger'
+import { Tables, Json } from '@/types/supabase'
 
 // Tipos de notificaciones soportadas
 export type NotificationType = 
@@ -32,26 +33,26 @@ export type NotificationStatus = 'pending' | 'sent' | 'delivered' | 'failed'
 export interface NotificationPayload {
   title: string
   body: string
-  data?: Record<string, any>
+  data?: Json | null
   imageUrl?: string
   clickAction?: string
 }
 
 export interface NotificationResponse {
   success: boolean
-  notification?: any
+  notification?: Tables<'notification_history'>
   error?: string
 }
 
 export interface PreferencesResponse {
   success: boolean
-  preferences?: any[]
+  preferences?: Tables<'notification_preferences'>[]
   error?: string
 }
 
 export interface DeviceTokenResponse {
   success: boolean
-  token?: any
+  token?: Tables<'user_device_tokens'>
   error?: string
 }
 
@@ -91,7 +92,7 @@ export class PushNotificationService {
     userId: string,
     deviceToken: string,
     deviceType: DeviceType,
-    deviceInfo: Record<string, any> = {}
+    deviceInfo: Json | null = null
   ): Promise<DeviceTokenResponse> {
     try {
       // Desactivar tokens antiguos del mismo dispositivo
@@ -161,10 +162,10 @@ export class PushNotificationService {
     notificationType: NotificationType,
     enabled: boolean,
     deliveryMethod: DeliveryMethod = 'push',
-    settings: Record<string, any> = {}
+    settings: Json | null = null
   ): Promise<NotificationResponse> {
     try {
-      const { data, error } = await (supabase as any)
+      const { data: _data, error } = await (supabase as any)
         .from('user_notification_preferences')
         .upsert({
           user_id: userId,
@@ -388,7 +389,7 @@ export class PushNotificationService {
   async getNotificationHistory(
     userId: string,
     limit: number = 50
-  ): Promise<{ success: boolean; notifications?: any[]; error?: string }> {
+  ): Promise<{ success: boolean; notifications?: Tables<'notification_history'>[]; error?: string }> {
     try {
       const { data, error } = await (supabase as any)
         .from('notification_history')

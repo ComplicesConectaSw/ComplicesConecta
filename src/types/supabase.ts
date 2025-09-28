@@ -12,6 +12,31 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: "13.0.4"
   }
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json
+          operationName?: string
+          query?: string
+          variables?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
       audit_logs: {
@@ -113,6 +138,66 @@ export type Database = {
         }
         Relationships: []
       }
+      career_applications: {
+        Row: {
+          correo: string
+          created_at: string | null
+          cv_url: string | null
+          domicilio: string | null
+          expectativas: string
+          experiencia: string
+          id: string
+          nombre: string
+          notes: string | null
+          puesto: string
+          referencias: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string | null
+          telefono: string
+          updated_at: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          correo: string
+          created_at?: string | null
+          cv_url?: string | null
+          domicilio?: string | null
+          expectativas: string
+          experiencia: string
+          id?: string
+          nombre: string
+          notes?: string | null
+          puesto: string
+          referencias?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string | null
+          telefono: string
+          updated_at?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          correo?: string
+          created_at?: string | null
+          cv_url?: string | null
+          domicilio?: string | null
+          expectativas?: string
+          experiencia?: string
+          id?: string
+          nombre?: string
+          notes?: string | null
+          puesto?: string
+          referencias?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string | null
+          telefono?: string
+          updated_at?: string | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       chat_invitations: {
         Row: {
           created_at: string | null
@@ -210,13 +295,6 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "chat_messages_room_id_fkey"
-            columns: ["room_id"]
-            isOneToOne: false
-            referencedRelation: "chat_rooms"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "chat_messages_sender_id_fkey"
             columns: ["sender_id"]
             isOneToOne: false
@@ -290,6 +368,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      compatibility_scores: {
+        Row: {
+          compatibility_score: number | null
+          id: number
+          last_calculated: string | null
+          shared_interests: number | null
+          total_interests: number | null
+          user1_id: string | null
+          user2_id: string | null
+        }
+        Insert: {
+          compatibility_score?: number | null
+          id?: number
+          last_calculated?: string | null
+          shared_interests?: number | null
+          total_interests?: number | null
+          user1_id?: string | null
+          user2_id?: string | null
+        }
+        Update: {
+          compatibility_score?: number | null
+          id?: number
+          last_calculated?: string | null
+          shared_interests?: number | null
+          total_interests?: number | null
+          user1_id?: string | null
+          user2_id?: string | null
+        }
+        Relationships: []
       }
       content_moderation: {
         Row: {
@@ -389,6 +497,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      explicit_preferences: {
+        Row: {
+          category: string
+          created_at: string | null
+          description: string | null
+          id: number
+          is_active: boolean | null
+          name: string
+          requires_verification: boolean | null
+          updated_at: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          description?: string | null
+          id?: number
+          is_active?: boolean | null
+          name: string
+          requires_verification?: boolean | null
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          description?: string | null
+          id?: number
+          is_active?: boolean | null
+          name?: string
+          requires_verification?: boolean | null
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       gallery_access_requests: {
         Row: {
@@ -716,6 +857,111 @@ export type Database = {
           target_id?: string | null
           target_type?: string
           target_user_id?: string | null
+        }
+        Relationships: []
+      }
+      moderator_requests: {
+        Row: {
+          acepta_terminos: boolean | null
+          correo: string
+          created_at: string | null
+          disponibilidad_horario: string
+          disponibilidad_horas: number
+          edad: number
+          experiencia_moderacion: string
+          id: string
+          motivacion: string
+          nombre: string
+          notes: string | null
+          referencias: string | null
+          rejection_reason: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string | null
+          telefono: string
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          acepta_terminos?: boolean | null
+          correo: string
+          created_at?: string | null
+          disponibilidad_horario: string
+          disponibilidad_horas: number
+          edad: number
+          experiencia_moderacion: string
+          id?: string
+          motivacion: string
+          nombre: string
+          notes?: string | null
+          referencias?: string | null
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string | null
+          telefono: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          acepta_terminos?: boolean | null
+          correo?: string
+          created_at?: string | null
+          disponibilidad_horario?: string
+          disponibilidad_horas?: number
+          edad?: number
+          experiencia_moderacion?: string
+          id?: string
+          motivacion?: string
+          nombre?: string
+          notes?: string | null
+          referencias?: string | null
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string | null
+          telefono?: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      moderators: {
+        Row: {
+          activated_at: string | null
+          created_at: string | null
+          created_by: string | null
+          id: string
+          notes: string | null
+          permissions: Json | null
+          role: string | null
+          status: string | null
+          suspended_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          activated_at?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          notes?: string | null
+          permissions?: Json | null
+          role?: string | null
+          status?: string | null
+          suspended_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          activated_at?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          notes?: string | null
+          permissions?: Json | null
+          role?: string | null
+          status?: string | null
+          suspended_at?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -1399,6 +1645,39 @@ export type Database = {
         }
         Relationships: []
       }
+      swinger_interests: {
+        Row: {
+          category: string
+          created_at: string | null
+          description: string | null
+          id: number
+          is_active: boolean | null
+          is_explicit: boolean | null
+          name: string
+          updated_at: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          description?: string | null
+          id?: number
+          is_active?: boolean | null
+          is_explicit?: boolean | null
+          name: string
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          description?: string | null
+          id?: number
+          is_active?: boolean | null
+          is_explicit?: boolean | null
+          name?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       system_metrics: {
         Row: {
           created_at: string
@@ -1639,6 +1918,73 @@ export type Database = {
         }
         Relationships: []
       }
+      user_explicit_preferences: {
+        Row: {
+          created_at: string | null
+          id: number
+          is_verified: boolean | null
+          preference_id: number | null
+          privacy_level: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: number
+          is_verified?: boolean | null
+          preference_id?: number | null
+          privacy_level?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: number
+          is_verified?: boolean | null
+          preference_id?: number | null
+          privacy_level?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_explicit_preferences_preference_id_fkey"
+            columns: ["preference_id"]
+            isOneToOne: false
+            referencedRelation: "explicit_preferences"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_interests: {
+        Row: {
+          created_at: string | null
+          id: number
+          interest_id: number | null
+          privacy_level: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: number
+          interest_id?: number | null
+          privacy_level?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: number
+          interest_id?: number | null
+          privacy_level?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_interests_interest_id_fkey"
+            columns: ["interest_id"]
+            isOneToOne: false
+            referencedRelation: "swinger_interests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_likes: {
         Row: {
           created_at: string | null
@@ -1876,6 +2222,10 @@ export type Database = {
       }
     }
     Functions: {
+      calculate_compatibility: {
+        Args: { user1_uuid: string; user2_uuid: string }
+        Returns: number
+      }
       claim_world_id_reward: {
         Args: { user_id_param: string }
         Returns: Json
@@ -1915,7 +2265,24 @@ export type Database = {
               p_profile_id: string
               p_user_id: string
             }
-        Returns: Json
+        Returns: {
+          comments_count: number
+          content: string
+          created_at: string
+          id: string
+          image_url: string
+          is_verified: boolean
+          likes_count: number
+          location: string
+          post_type: string
+          profile_avatar: string
+          profile_id: string
+          profile_name: string
+          shares_count: number
+          updated_at: string
+          user_id: string
+          video_url: string
+        }[]
       }
       generate_referral_code: {
         Args: { user_uuid: string }
@@ -2139,6 +2506,9 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {
       relationship_type: ["man-woman", "man-man", "woman-woman"],

@@ -1,24 +1,17 @@
 import { useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Checkbox } from '@/components/ui/checkbox';
 import { 
   AlertCircle, 
   ArrowLeft, 
-  CheckCircle, 
-  Mail, 
-  Shield, 
-  User, 
-  Clock, 
+  CheckCircle,
+  Shield,
+  User,
+  Clock,
   DollarSign,
-  MessageSquare,
-  Phone,
-  Send,
-  Award
+  Award,
+  Mail,
+  MessageSquare
 } from "lucide-react";
 import { useToast } from '@/hooks/use-toast';
 import { Link, useNavigate } from 'react-router-dom';
@@ -42,7 +35,7 @@ interface ModeratorFormData {
 const ModeratorRequest = () => {
   const { toast } = useToast();
   const { user } = useAuth();
-  const navigate = useNavigate();
+  const _navigate = useNavigate();
   const [formData, setFormData] = useState<ModeratorFormData>({
     nombre: '',
     telefono: '',
@@ -232,7 +225,7 @@ const ModeratorRequest = () => {
 
         <div className="max-w-4xl mx-auto p-6">
           {/* Información detallada sobre el rol */}
-        <Card className="bg-white/10 backdrop-blur-sm border-white/20 mb-6">
+          <Card className="bg-white/10 backdrop-blur-sm border-white/20 mb-6">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
               <Shield className="h-6 w-6 text-purple-400" />
@@ -578,6 +571,7 @@ const ModeratorRequest = () => {
             </form>
           </CardContent>
         </Card>
+        </div>
       </div>
     </div>
   );

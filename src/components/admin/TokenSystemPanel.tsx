@@ -148,7 +148,7 @@ export function TokenSystemPanel() {
     setUserBalances(mockBalances);
   };
 
-  const processRealTokenData = (data: any[]) => {
+  const processRealTokenData = (_data: any[]) => {
     // Procesar datos reales cuando estén disponibles
     // Por ahora usar datos mock
     generateMockData();
