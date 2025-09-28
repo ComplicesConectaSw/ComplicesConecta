@@ -123,7 +123,7 @@ export const EnhancedCard: React.FC<EnhancedCardProps> = ({
 
   return (
     <CardComponent
-      variants={variants}
+      variants={variants as any}
       initial="initial"
       animate="animate"
       whileHover="hover"
@@ -248,7 +248,7 @@ export const EnhancedProfileCard: React.FC<EnhancedProfileCardProps> = ({
               </div>
               
               <motion.div
-                variants={actionVariants}
+                variants={actionVariants as any}
                 initial="hidden"
                 animate="visible"
                 className="flex justify-center gap-4"
@@ -342,7 +342,7 @@ export const EnhancedChatMessage: React.FC<EnhancedChatMessageProps> = ({
 
   return (
     <motion.div
-      variants={messageVariants}
+      variants={messageVariants as any}
       initial="hidden"
       animate="visible"
       className={`flex ${message.isOwn ? 'justify-end' : 'justify-start'} mb-4`}
@@ -419,7 +419,7 @@ export const EnhancedNavItem: React.FC<EnhancedNavItemProps> = ({
         {icon}
         {badge && badge > 0 && (
           <motion.div
-            variants={badgeVariants}
+            variants={badgeVariants as any}
             initial="hidden"
             animate="visible"
             className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
