@@ -366,7 +366,7 @@ export const useNotificationHelpers = () => {
       });
     },
     
-    showMessage: (sender: { id: string; name: string }, message: string) => {
+    showMessage: (sender: { id: string; name: string }, _message: string) => {
       addNotification({
         type: 'message',
         title: 'Nuevo mensaje 💬',

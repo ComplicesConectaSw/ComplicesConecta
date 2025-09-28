@@ -57,7 +57,7 @@ export const EnhancedButton: React.FC<EnhancedButtonProps> = ({
   return (
     <WrapperComponent {...(ripple ? { className: 'inline-block' } : {})}>
       <ButtonComponent
-        variants={{ ...variants, ...pulseVariants }}
+        variants={{ ...variants, ...(pulseVariants as any) }}
         initial="idle"
         animate={pulse ? "animate" : "idle"}
         whileHover="hover"
@@ -170,6 +170,16 @@ export const EnhancedProfileCard: React.FC<EnhancedProfileCardProps> = ({
     back: { rotateY: 180 }
   });
 
+  const _textVariants = useAnimationVariants({
+    front: { opacity: 1 },
+    back: { opacity: 0 }
+  });
+
+  const _iconVariants = useAnimationVariants({
+    front: { opacity: 0 },
+    back: { opacity: 1 }
+  });
+
   const actionVariants = useAnimationVariants({
     hidden: { opacity: 0, y: 20 },
     visible: { 
@@ -185,7 +195,7 @@ export const EnhancedProfileCard: React.FC<EnhancedProfileCardProps> = ({
       style={{ perspective: 1000 }}
     >
       <motion.div
-        variants={cardVariants}
+        variants={cardVariants as any}
         animate={isFlipped ? 'back' : 'front'}
         transition={{ duration: 0.6 }}
         className="relative w-full h-full preserve-3d cursor-pointer"
@@ -398,7 +408,7 @@ export const EnhancedNavItem: React.FC<EnhancedNavItemProps> = ({
 
   return (
     <motion.button
-      variants={itemVariants}
+      variants={itemVariants as any}
       animate={isActive ? 'active' : 'inactive'}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
