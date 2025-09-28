@@ -89,7 +89,7 @@ const ProfileSingle: React.FC = () => {
               account_type: parsedUser.accountType || 'single',
               age_range_max: null,
               age_range_min: null,
-              avatar_url: '/placeholder.svg',
+              avatar_url: '/compliceslogo.png',
               blocked_at: null,
               blocked_reason: null,
               created_at: new Date().toISOString(),
@@ -398,14 +398,14 @@ const ProfileSingle: React.FC = () => {
                     alt="Foto pública 1"
                     className="w-full h-full object-cover"
                     onError={(e) => {
-                      e.currentTarget.src = '/placeholder.svg';
+                      e.currentTarget.src = '/compliceslogo.png';
                     }}
                   />
                   <Camera className="w-8 h-8 text-white hidden" />
                 </div>
                 <div className="aspect-square bg-gradient-to-br from-purple-400 to-blue-600 rounded-lg flex items-center justify-center overflow-hidden">
                   <img 
-                    src="/placeholder.svg" 
+                    src="/compliceslogo.png" 
                     alt="Foto pública 2"
                     className="w-full h-full object-cover"
                     onError={(e) => {
@@ -418,7 +418,7 @@ const ProfileSingle: React.FC = () => {
                 </div>
                 <div className="aspect-square bg-gradient-to-br from-blue-400 to-teal-600 rounded-lg flex items-center justify-center overflow-hidden">
                   <img 
-                    src="/placeholder.svg" 
+                    src="/compliceslogo.png" 
                     alt="Foto pública 3"
                     className="w-full h-full object-cover"
                     onError={(e) => {
@@ -440,7 +440,7 @@ const ProfileSingle: React.FC = () => {
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                   <div className="aspect-square rounded-lg overflow-hidden relative">
                     <img 
-                      src="/placeholder.svg" 
+                      src="/compliceslogo.png" 
                       alt="Foto privada 1"
                       className={`w-full h-full object-cover ${(profile as any)?.isOwner ? '' : 'filter blur-md'}`}
                     />
@@ -452,7 +452,7 @@ const ProfileSingle: React.FC = () => {
                   </div>
                   <div className="aspect-square rounded-lg overflow-hidden relative">
                     <img 
-                      src="/placeholder.svg" 
+                      src="/compliceslogo.png" 
                       alt="Foto privada 2"
                       className={`w-full h-full object-cover ${(profile as any)?.isOwner ? '' : 'filter blur-md'}`}
                     />
@@ -464,7 +464,7 @@ const ProfileSingle: React.FC = () => {
                   </div>
                   <div className="aspect-square rounded-lg overflow-hidden relative">
                     <img 
-                      src="/placeholder.svg" 
+                      src="/compliceslogo.png" 
                       alt="Foto privada 3"
                       className={`w-full h-full object-cover ${(profile as any)?.isOwner ? '' : 'filter blur-md'}`}
                     />

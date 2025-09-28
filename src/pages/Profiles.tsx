@@ -55,7 +55,7 @@ const Profiles: React.FC = () => {
       age: 28,
       location: "Ciudad de México",
       bio: "Amante de los viajes y la aventura",
-      images: ["/placeholder.svg"],
+      images: ["/compliceslogo.png"],
       interests: ["viajes", "música", "cocina"],
       isOnline: true,
       verified: true

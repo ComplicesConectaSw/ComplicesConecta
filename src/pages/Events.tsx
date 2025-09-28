@@ -46,10 +46,10 @@ const Events = () => {
       maxAttendees: 30,
       price: 2500,
       category: "VIP Exclusivo",
-      image: "/placeholder.svg",
+      image: "/compliceslogo.png",
       organizer: {
         name: "Elite Connections México",
-        avatar: "/placeholder.svg"
+        avatar: "/compliceslogo.png"
       },
       isJoined: true,
       isLiked: true,
@@ -67,10 +67,10 @@ const Events = () => {
       maxAttendees: 20,
       price: 1800,
       category: "Conexiones Swinger",
-      image: "/placeholder.svg",
+      image: "/compliceslogo.png",
       organizer: {
         name: "Intimate Gatherings GDL",
-        avatar: "/placeholder.svg"
+        avatar: "/compliceslogo.png"
       },
       isJoined: false,
       isLiked: true,
@@ -88,10 +88,10 @@ const Events = () => {
       maxAttendees: 40,
       price: 3200,
       category: "Ambiente Playero",
-      image: "/placeholder.svg",
+      image: "/compliceslogo.png",
       organizer: {
         name: "Aqua Lifestyle Cancún",
-        avatar: "/placeholder.svg"
+        avatar: "/compliceslogo.png"
       },
       isJoined: false,
       isLiked: false,
@@ -109,10 +109,10 @@ const Events = () => {
       maxMembers: 200,
       isPrivate: true,
       category: "Club VIP",
-      image: "/placeholder.svg",
+      image: "/compliceslogo.png",
       admin: {
         name: "Administración Elite México",
-        avatar: "/placeholder.svg"
+        avatar: "/compliceslogo.png"
       },
       lastActivity: "Hace 1h",
       isJoined: false,
@@ -129,10 +129,10 @@ const Events = () => {
       maxMembers: 120,
       isPrivate: false,
       category: "Principiantes",
-      image: "/placeholder.svg",
+      image: "/compliceslogo.png",
       admin: {
         name: "Coordinadores Swinger MX",
-        avatar: "/placeholder.svg"
+        avatar: "/compliceslogo.png"
       },
       lastActivity: "Hace 2h",
       isJoined: true,
@@ -149,10 +149,10 @@ const Events = () => {
       maxMembers: 250,
       isPrivate: true,
       category: "Eventos Playeros",
-      image: "/placeholder.svg",
+      image: "/compliceslogo.png",
       admin: {
         name: "Aqua Team Cancún",
-        avatar: "/placeholder.svg"
+        avatar: "/compliceslogo.png"
       },
       lastActivity: "Hace 30min",
       isJoined: false,

@@ -11,7 +11,6 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/lib/logger";
-import { Header } from "@/components/Header";
 import HeaderNav from "@/components/HeaderNav";
 
 const ProjectSupport = () => {
@@ -84,7 +83,7 @@ const ProjectSupport = () => {
 
       // Obtener información adicional para auditoría
       const userAgent = navigator.userAgent;
-      const timestamp = new Date().toISOString();
+      const _timestamp = new Date().toISOString();
 
       // Subir archivo CV si existe
       let cvUrl = null;
@@ -107,9 +106,10 @@ const ProjectSupport = () => {
         setUploadingFile(false);
       }
 
-      // Simular inserción en base de datos (tabla career_applications no existe)
-      const mockData = {
-        id: `career_${Date.now()}`,
+      // TODO: Implementar cuando la tabla career_applications esté disponible
+      // Simular inserción exitosa por ahora
+      const simulatedData = {
+        id: Date.now(),
         nombre: formData.nombre.trim(),
         telefono: formData.telefono.trim(),
         correo: formData.correo.trim().toLowerCase(),
@@ -119,24 +119,14 @@ const ProjectSupport = () => {
         referencias: formData.referencias.trim() || null,
         expectativas: formData.expectativas.trim(),
         cv_url: cvUrl,
-        status: 'pending',
-        user_agent: userAgent,
-        created_at: new Date().toISOString()
+        user_agent: userAgent
       };
 
-      // Log de la solicitud para auditoría
-      logger.info('📋 Solicitud de carrera procesada:', mockData);
-      
-      // Simular delay de red
+      // Simular delay de base de datos
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      const data = [mockData];
-      const error = null;
 
-      // No hay error en la simulación, continuar con éxito
-
-      logger.info('✅ Solicitud guardada exitosamente:', { 
-        id: data?.[0]?.id,
+      logger.info('✅ Solicitud guardada exitosamente (simulada):', { 
+        id: simulatedData.id,
         timestamp: new Date().toISOString()
       });
       
@@ -185,7 +175,6 @@ const ProjectSupport = () => {
       {/* Content */}
       <div className="relative z-10 min-h-screen">
         <HeaderNav />
-        <Header />
         
         {/* Page Header */}
         <div className="bg-black/30 backdrop-blur-sm border-b border-white/10 p-4">

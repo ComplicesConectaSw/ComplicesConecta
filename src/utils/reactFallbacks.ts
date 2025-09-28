@@ -28,12 +28,11 @@ export const initializeReactFallbacks = () => {
 export const ensureReactPolyfills = () => {
   if (typeof window !== 'undefined') {
     try {
-      // Import React dynamically to avoid UMD global reference
-      import('react').then((ReactModule) => {
-        (window as any).React = ReactModule;
-      }).catch(() => {
-        // Ignore if React module not found
-      });
+      // Use static import to avoid dynamic import warning
+      const React = require('react');
+      if (React) {
+        (window as any).React = React;
+      }
     } catch {
       // Ignore errors
     }

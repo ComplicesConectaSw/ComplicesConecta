@@ -48,7 +48,7 @@ const ChatAuthenticated = () => {
       id: "1",
       senderId: "user1",
       senderName: "María & Carlos",
-      senderAvatar: "/placeholder.svg",
+      senderAvatar: "/compliceslogo.png",
       message: "¡Hola a todos! ¿Alguien sabe de eventos este fin de semana?",
       timestamp: new Date(Date.now() - 300000),
       isPrivate: false
@@ -57,7 +57,7 @@ const ChatAuthenticated = () => {
       id: "2", 
       senderId: "user2",
       senderName: "Ana",
-      senderAvatar: "/placeholder.svg",
+      senderAvatar: "/compliceslogo.png",
       message: "Nosotros organizamos una reunión privada el sábado 🔥",
       timestamp: new Date(Date.now() - 180000),
       isPrivate: false
@@ -70,7 +70,7 @@ const ChatAuthenticated = () => {
         id: "p1",
         senderId: "user1",
         senderName: "María & Carlos",
-        senderAvatar: "/placeholder.svg",
+        senderAvatar: "/compliceslogo.png",
         message: "Hola, nos gustó mucho su perfil. ¿Les interesa conocernos?",
         timestamp: new Date(Date.now() - 3600000),
         isPrivate: true
@@ -83,7 +83,7 @@ const ChatAuthenticated = () => {
       id: "req1",
       fromUserId: "user3",
       fromUserName: "Roberto & Lisa",
-      fromUserAvatar: "/placeholder.svg",
+      fromUserAvatar: "/compliceslogo.png",
       message: "Nos encantaría chatear con ustedes. Somos una pareja experimentada.",
       timestamp: new Date(Date.now() - 7200000),
       status: 'pending'
@@ -92,7 +92,7 @@ const ChatAuthenticated = () => {
       id: "req2",
       fromUserId: "user4", 
       fromUserName: "Sofía",
-      fromUserAvatar: "/placeholder.svg",
+      fromUserAvatar: "/compliceslogo.png",
       message: "Hola! Soy nueva en esto, me gustaría conocer gente como ustedes.",
       timestamp: new Date(Date.now() - 1800000),
       status: 'pending'
@@ -103,19 +103,19 @@ const ChatAuthenticated = () => {
     {
       id: "user1",
       name: "María & Carlos",
-      avatar: "/placeholder.svg",
+      avatar: "/compliceslogo.png",
       isOnline: true
     },
     {
       id: "user2",
       name: "Ana",
-      avatar: "/placeholder.svg", 
+      avatar: "/compliceslogo.png", 
       isOnline: true
     },
     {
       id: "user5",
       name: "Diego & Carmen",
-      avatar: "/placeholder.svg",
+      avatar: "/compliceslogo.png",
       isOnline: true
     }
   ]);
@@ -138,7 +138,7 @@ const ChatAuthenticated = () => {
       id: Date.now().toString(),
       senderId: "current_user",
       senderName: "Tú",
-      senderAvatar: "/placeholder.svg",
+      senderAvatar: "/compliceslogo.png",
       message: currentMessage,
       timestamp: new Date(),
       isPrivate: activeTab === "private"
@@ -359,7 +359,7 @@ const ChatAuthenticated = () => {
                             <div className="border-b border-white/10 p-4">
                               <div className="flex items-center gap-3">
                                 <Avatar className="h-8 w-8">
-                                  <AvatarImage src="/placeholder.svg" />
+                                  <AvatarImage src="/compliceslogo.png" />
                                   <AvatarFallback>
                                     {onlineUsers.find(u => u.id === selectedPrivateChat)?.name[0]}
                                   </AvatarFallback>
