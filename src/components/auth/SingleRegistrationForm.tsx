@@ -1,19 +1,23 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { createClient } from '@supabase/supabase-js';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { PasswordValidator, isPasswordValid } from './PasswordValidator';
-import { NicknameValidator } from './NicknameValidator';
-import { InterestsSelector } from './InterestsSelector';
-import { TermsModal } from './TermsModal';
-import { createClient } from '@supabase/supabase-js';
-import { toast } from '@/hooks/use-toast';
-
+import { useToast } from '@/hooks/use-toast';
 import { User } from 'lucide-react';
+import { InterestsSelector } from './InterestsSelector';
+import { NicknameValidator } from './NicknameValidator';
+import { TermsModal } from './TermsModal';
+import { logger } from '@/lib/logger';
+
+// Configuración de Supabase
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 interface SingleRegistrationData {
   // Información personal
@@ -86,7 +90,10 @@ const INTERESTED_IN_OPTIONS = [
   'Otros'
 ];
 
-export const SingleRegistrationForm: React.FC<SingleRegistrationFormProps> = ({ onSuccess, onBack: _onBack }) => {
+export const SingleRegistrationForm: React.FC<SingleRegistrationFormProps> = ({
+  onSuccess: _onSuccess
+}) => {
+  const { toast } = useToast();
   const [formData, setFormData] = useState<SingleRegistrationData>({
     identity: '',
     firstName: '',
@@ -115,6 +122,7 @@ export const SingleRegistrationForm: React.FC<SingleRegistrationFormProps> = ({ 
 
   const [isLoading, setIsLoading] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false);
+  const [_showEmailVerification, setShowEmailVerification] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
 
   const handleInputChange = (field: keyof SingleRegistrationData, value: any) => {
@@ -144,6 +152,13 @@ export const SingleRegistrationForm: React.FC<SingleRegistrationFormProps> = ({ 
     return /^[a-zA-ZÀ-ÿ\u00f1\u00d1\s]+$/.test(name) && name.trim().length >= 2;
   };
 
+  const validatePassword = (password: string): boolean => {
+    return password.length >= 8 && 
+           /[A-Z]/.test(password) && 
+           /[a-z]/.test(password) && 
+           /\d/.test(password);
+  };
+
   const canProceedToStep2 = () => {
     return (
       formData.identity &&
@@ -160,7 +175,7 @@ export const SingleRegistrationForm: React.FC<SingleRegistrationFormProps> = ({ 
       formData.sexualOrientation.length > 0 &&
       validateEmail(formData.email) &&
       validatePhone(formData.phone) &&
-      isPasswordValid(formData.password) &&
+      validatePassword(formData.password) &&
       formData.password === formData.confirmPassword
     );
   };
@@ -206,51 +221,15 @@ export const SingleRegistrationForm: React.FC<SingleRegistrationFormProps> = ({ 
       if (authError) throw authError;
 
       if (authData.user) {
-        // Crear perfil en la tabla profiles
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .insert({
-            user_id: authData.user.id,
-            name: formData.useRealName 
-              ? `${formData.firstName} ${formData.lastName}`.trim()
-              : formData.nickname,
-            nickname: formData.nickname,
-            email: formData.email,
-            phone: formData.phone,
-            account_type: 'single',
-            age: parseInt(formData.age),
-            bio: formData.bio,
-            gender: formData.gender,
-            sexual_orientation: formData.sexualOrientation,
-            interests: formData.interests,
-            profile_theme: formData.profileTheme,
-            interested_in: formData.interestedIn,
-            identity: formData.identity,
-            use_real_name: formData.useRealName,
-            role: 'user',
-            is_verified: false
-          });
-
-        if (profileError) {
-          console.error('Error creating profile:', profileError);
-          throw new Error('Error al crear el perfil');
-        }
-
+        logger.info('✅ Usuario registrado exitosamente:', { userId: authData.user.id });
         toast({
           title: "¡Registro exitoso!",
-          description: "Por favor verifica tu email para activar tu cuenta",
+          description: "Se ha enviado un código de verificación a tu email.",
+          duration: 5000
         });
 
-        onSuccess({
-          user: authData.user,
-          profile: {
-            account_type: 'single',
-            name: formData.useRealName 
-              ? `${formData.firstName} ${formData.lastName}`.trim()
-              : formData.nickname,
-            nickname: formData.nickname
-          }
-        });
+        // Mostrar pantalla de verificación de email
+        setShowEmailVerification(true);
       }
     } catch (error: any) {
       toast({
@@ -343,6 +322,9 @@ export const SingleRegistrationForm: React.FC<SingleRegistrationFormProps> = ({ 
           setValidation(prev => ({ ...prev, nickname: { isValid, isAvailable } }))
         }
       />
+      <div className="text-xs text-white/70 mt-1">
+        La contraseña debe tener al menos 8 caracteres, incluir mayúsculas, minúsculas y números
+      </div>
 
       <div className="flex items-center space-x-2">
         <Checkbox
@@ -599,10 +581,11 @@ export const SingleRegistrationForm: React.FC<SingleRegistrationFormProps> = ({ 
       <TermsModal
         isOpen={showTermsModal}
         onClose={() => setShowTermsModal(false)}
-        onAccept={() => {
-          handleInputChange('acceptTerms', true);
+        onAccept={(accepted) => {
+          setFormData(prev => ({ ...prev, acceptTerms: accepted }));
           setShowTermsModal(false);
         }}
+        accepted={formData.acceptTerms}
       />
     </>
   );

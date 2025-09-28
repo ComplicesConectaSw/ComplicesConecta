@@ -231,8 +231,7 @@ const ModeratorRequest = () => {
         </div>
 
         <div className="max-w-4xl mx-auto p-6">
-
-        {/* Información detallada sobre el rol */}
+          {/* Información detallada sobre el rol */}
         <Card className="bg-white/10 backdrop-blur-sm border-white/20 mb-6">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">

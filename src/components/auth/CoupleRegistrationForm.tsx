@@ -10,7 +10,7 @@ import { PasswordValidator, isPasswordValid } from './PasswordValidator';
 import { NicknameValidator } from './NicknameValidator';
 import { InterestsSelector } from './InterestsSelector';
 import { TermsModal } from './TermsModal';
-import { Users, Heart, Mail, Phone, MapPin, FileText, Palette } from 'lucide-react';
+import { Users } from 'lucide-react';
 import { createClient } from '@supabase/supabase-js';
 import { toast } from '@/hooks/use-toast';
 
@@ -53,7 +53,7 @@ interface CoupleRegistrationData {
 
 interface CoupleRegistrationFormProps {
   onSuccess: (userData: any) => void;
-  onBack: () => void;
+  onBack?: () => void;
 }
 
 const GENDER_OPTIONS = [
@@ -92,7 +92,7 @@ const RELATIONSHIP_TYPES = [
 
 export const CoupleRegistrationForm: React.FC<CoupleRegistrationFormProps> = ({
   onSuccess,
-  onBack
+  onBack: _onBack
 }) => {
   const [formData, setFormData] = useState<CoupleRegistrationData>({
     hisFirstName: '',
@@ -154,7 +154,7 @@ export const CoupleRegistrationForm: React.FC<CoupleRegistrationFormProps> = ({
   };
 
   const validatePhone = (phone: string): boolean => {
-    const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+    const phoneRegex = /^[+]?[1-9]\d{0,15}$/;
     return phoneRegex.test(phone.replace(/\s/g, ''));
   };
 
@@ -709,10 +709,11 @@ export const CoupleRegistrationForm: React.FC<CoupleRegistrationFormProps> = ({
       <TermsModal
         isOpen={showTermsModal}
         onClose={() => setShowTermsModal(false)}
-        onAccept={() => {
-          handleInputChange('acceptTerms', true);
+        onAccept={(accepted) => {
+          handleInputChange('acceptTerms', accepted);
           setShowTermsModal(false);
         }}
+        accepted={formData.acceptTerms}
       />
     </>
   );

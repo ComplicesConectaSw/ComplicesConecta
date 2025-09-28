@@ -163,19 +163,19 @@ const Events = () => {
     }
   ];
 
-  const handleJoinEvent = (eventId: number) => {
+  const _handleJoinEvent = (eventId: number) => {
     logger.info('Join event:', { eventId });
   };
 
-  const handleLikeEvent = (eventId: number) => {
+  const _handleLikeEvent = (eventId: number) => {
     logger.info('Like event:', { eventId });
   };
 
-  const handleJoinGroup = (groupId: number) => {
+  const _handleJoinGroup = (groupId: number) => {
     logger.info('Join group:', { groupId });
   };
 
-  const handleViewGroup = (groupId: number) => {
+  const _handleViewGroup = (groupId: number) => {
     logger.info('View group:', { groupId });
   };
 
