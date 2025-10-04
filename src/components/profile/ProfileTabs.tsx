@@ -126,7 +126,7 @@ export const ProfileTabs: React.FC<ProfileTabsProps> = ({
 
   const renderOverviewTab = () => {
     if (profileType === 'single') {
-      const singleProfile = profile as SingleProfile;
+      const _singleProfile = profile as SingleProfile;
       return (
         <div className="space-y-6">
           {/* Basic Info */}
@@ -141,43 +141,43 @@ export const ProfileTabs: React.FC<ProfileTabsProps> = ({
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <p className="text-sm text-white/70">Nombre</p>
-                  <p className="font-medium">{singleProfile.first_name} {singleProfile.last_name}</p>
+                  <p className="font-medium">{_singleProfile.first_name} {_singleProfile.last_name}</p>
                 </div>
                 <div>
                   <p className="text-sm text-white/70">Edad</p>
-                  <p className="font-medium">{singleProfile.age} años</p>
+                  <p className="font-medium">{_singleProfile.age} años</p>
                 </div>
                 <div>
                   <p className="text-sm text-white/70">Género</p>
-                  <p className="font-medium capitalize">{(singleProfile as any).gender || 'No especificado'}</p>
+                  <p className="font-medium capitalize">{(_singleProfile as any).gender || 'No especificado'}</p>
                 </div>
                 <div>
                   <p className="text-sm text-white/70">Ubicación</p>
                   <p className="font-medium flex items-center gap-1">
                     <MapPin className="w-4 h-4" />
-                    {singleProfile.location || 'No especificada'}
+                    {_singleProfile.location || 'No especificada'}
                   </p>
                 </div>
               </div>
               
-              {singleProfile.bio && (
+              {_singleProfile.bio && (
                 <div>
                   <p className="text-sm text-white/70 mb-2">Biografía</p>
-                  <p className="text-white/90 leading-relaxed">{singleProfile.bio}</p>
+                  <p className="text-white/90 leading-relaxed">{_singleProfile.bio}</p>
                 </div>
               )}
             </CardContent>
           </Card>
 
           {/* Interests */}
-          {singleProfile.interests && singleProfile.interests.length > 0 && (
+          {_singleProfile.interests && _singleProfile.interests.length > 0 && (
             <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
               <CardHeader>
                 <CardTitle className="text-white">Intereses</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-wrap gap-2">
-                  {singleProfile.interests.map((interest, index) => (
+                  {_singleProfile.interests.map((interest, index) => (
                     <Badge 
                       key={index} 
                       variant="secondary" 
@@ -193,7 +193,7 @@ export const ProfileTabs: React.FC<ProfileTabsProps> = ({
         </div>
       );
     } else {
-      const coupleProfile = profile as CoupleProfile;
+      const _coupleProfile = profile as CoupleProfile;
       return (
         <div className="space-y-6">
           {/* Couple Info */}
@@ -206,44 +206,44 @@ export const ProfileTabs: React.FC<ProfileTabsProps> = ({
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="text-center">
-                <h3 className="text-xl font-bold mb-2">{coupleProfile.couple_name}</h3>
+                <h3 className="text-xl font-bold mb-2">{_coupleProfile.couple_name}</h3>
                 <p className="text-white/90 flex items-center justify-center gap-1">
                   <MapPin className="w-4 h-4" />
-                  {coupleProfile.location || 'Ubicación no especificada'}
+                  {_coupleProfile.location || 'Ubicación no especificada'}
                 </p>
               </div>
               
-              {coupleProfile.couple_bio && (
+              {_coupleProfile.couple_bio && (
                 <div className="bg-white/10 rounded-lg p-4">
                   <p className="text-sm text-white/70 mb-2">Sobre nosotros</p>
-                  <p className="text-white/90 leading-relaxed">{coupleProfile.couple_bio}</p>
+                  <p className="text-white/90 leading-relaxed">{_coupleProfile.couple_bio}</p>
                 </div>
               )}
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center p-4 bg-pink-500/20 rounded-lg border border-pink-400/30">
-                  <h4 className="font-semibold text-white mb-1">{coupleProfile.partner1_first_name}</h4>
-                  <p className="text-sm text-white/80">{coupleProfile.partner1_age} años</p>
-                  <p className="text-xs text-white/70 capitalize">{coupleProfile.partner1_gender}</p>
+                  <h4 className="font-semibold text-white mb-1">{_coupleProfile.partner1_first_name}</h4>
+                  <p className="text-sm text-white/80">{_coupleProfile.partner1_age} años</p>
+                  <p className="text-xs text-white/70 capitalize">{_coupleProfile.partner1_gender}</p>
                 </div>
                 <div className="text-center p-4 bg-purple-500/20 rounded-lg border border-purple-400/30">
-                  <h4 className="font-semibold text-white mb-1">{coupleProfile.partner2_first_name}</h4>
-                  <p className="text-sm text-white/80">{coupleProfile.partner2_age} años</p>
-                  <p className="text-xs text-white/70 capitalize">{coupleProfile.partner2_gender}</p>
+                  <h4 className="font-semibold text-white mb-1">{_coupleProfile.partner2_first_name}</h4>
+                  <p className="text-sm text-white/80">{_coupleProfile.partner2_age} años</p>
+                  <p className="text-xs text-white/70 capitalize">{_coupleProfile.partner2_gender}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
           {/* Interests */}
-          {coupleProfile.interests && coupleProfile.interests.length > 0 && (
+          {_coupleProfile.interests && _coupleProfile.interests.length > 0 && (
             <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
               <CardHeader>
                 <CardTitle className="text-white">Intereses Compartidos</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-wrap gap-2">
-                  {coupleProfile.interests.map((interest, index) => (
+                  {_coupleProfile.interests.map((interest, index) => (
                     <Badge 
                       key={index} 
                       variant="secondary" 
@@ -265,7 +265,7 @@ export const ProfileTabs: React.FC<ProfileTabsProps> = ({
     const isDemoMode = localStorage.getItem('demo_authenticated') === 'true';
     
     if (profileType === 'single') {
-      const singleProfile = profile as SingleProfile;
+      const _singleProfile = profile as SingleProfile;
       return (
         <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
           <CardHeader>
@@ -341,7 +341,7 @@ export const ProfileTabs: React.FC<ProfileTabsProps> = ({
         </Card>
       );
     } else {
-      const coupleProfile = profile as CoupleProfile;
+      const _coupleProfile = profile as CoupleProfile;
       return (
         <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
           <CardHeader>
@@ -414,29 +414,29 @@ export const ProfileTabs: React.FC<ProfileTabsProps> = ({
   const renderIndividualTab = () => {
     if (profileType !== 'couple') return null;
     
-    const coupleProfile = profile as CoupleProfile;
+    const _coupleProfile = profile as CoupleProfile;
     return (
       <div className="grid md:grid-cols-2 gap-6">
         {/* Partner 1 */}
         <Card className="bg-gradient-to-br from-pink-500/20 to-rose-500/20 backdrop-blur-md border-pink-400/30 text-white">
           <CardHeader>
             <CardTitle className="text-white text-center">
-              {coupleProfile.partner1_first_name}
+              {_coupleProfile.partner1_first_name}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="text-center">
               <div className="w-24 h-24 rounded-full bg-gradient-to-br from-pink-400 to-purple-600 flex items-center justify-center text-white text-2xl font-bold mx-auto mb-3">
-                {coupleProfile.partner1_first_name?.[0]?.toUpperCase()}
+                {_coupleProfile.partner1_first_name?.[0]?.toUpperCase()}
               </div>
-              <p className="text-white/90 font-medium">{coupleProfile.partner1_age} años</p>
-              <p className="text-sm text-white/80 capitalize">{coupleProfile.partner1_gender}</p>
+              <p className="text-white/90 font-medium">{_coupleProfile.partner1_age} años</p>
+              <p className="text-sm text-white/80 capitalize">{_coupleProfile.partner1_gender}</p>
             </div>
             
-            {coupleProfile.partner1_bio && (
+            {_coupleProfile.partner1_bio && (
               <div>
-                <h4 className="font-semibold text-white mb-2">Sobre {coupleProfile.partner1_first_name}:</h4>
-                <p className="text-sm text-white/90 leading-relaxed">{coupleProfile.partner1_bio}</p>
+                <h4 className="font-semibold text-white mb-2">Sobre {_coupleProfile.partner1_first_name}:</h4>
+                <p className="text-sm text-white/90 leading-relaxed">{_coupleProfile.partner1_bio}</p>
               </div>
             )}
           </CardContent>
@@ -446,22 +446,22 @@ export const ProfileTabs: React.FC<ProfileTabsProps> = ({
         <Card className="bg-gradient-to-br from-purple-500/20 to-blue-500/20 backdrop-blur-md border-purple-400/30 text-white">
           <CardHeader>
             <CardTitle className="text-white text-center">
-              {coupleProfile.partner2_first_name}
+              {_coupleProfile.partner2_first_name}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="text-center">
               <div className="w-24 h-24 rounded-full bg-gradient-to-br from-purple-400 to-pink-600 flex items-center justify-center text-white text-2xl font-bold mx-auto mb-3">
-                {coupleProfile.partner2_first_name?.[0]?.toUpperCase()}
+                {_coupleProfile.partner2_first_name?.[0]?.toUpperCase()}
               </div>
-              <p className="text-white/90 font-medium">{coupleProfile.partner2_age} años</p>
-              <p className="text-sm text-white/80 capitalize">{coupleProfile.partner2_gender}</p>
+              <p className="text-white/90 font-medium">{_coupleProfile.partner2_age} años</p>
+              <p className="text-sm text-white/80 capitalize">{_coupleProfile.partner2_gender}</p>
             </div>
             
-            {coupleProfile.partner2_bio && (
+            {_coupleProfile.partner2_bio && (
               <div>
-                <h4 className="font-semibold text-white mb-2">Sobre {coupleProfile.partner2_first_name}:</h4>
-                <p className="text-sm text-white/90 leading-relaxed">{coupleProfile.partner2_bio}</p>
+                <h4 className="font-semibold text-white mb-2">Sobre {_coupleProfile.partner2_first_name}:</h4>
+                <p className="text-sm text-white/90 leading-relaxed">{_coupleProfile.partner2_bio}</p>
               </div>
             )}
           </CardContent>

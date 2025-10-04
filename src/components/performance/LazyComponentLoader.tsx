@@ -54,10 +54,7 @@ const OptimizedLoader: React.FC<{ text?: string; minTime?: number }> = ({
 };
 
 // Error fallback optimizado
-const ErrorFallback: React.FC<{ error?: Error; retry?: () => void }> = ({ 
-  error, 
-  retry 
-}) => (
+const _defaultErrorFallback = ({ _error, _retry }: { _error: Error; _retry: () => void }) => (
   <div className="min-h-screen bg-hero-gradient flex items-center justify-center">
     <div className="text-center space-y-4 max-w-md mx-auto p-6">
       <div className="text-red-400 text-6xl mb-4">⚠️</div>
@@ -65,17 +62,17 @@ const ErrorFallback: React.FC<{ error?: Error; retry?: () => void }> = ({
       <p className="text-white/80 text-sm">
         Hubo un problema al cargar esta página. Por favor, intenta nuevamente.
       </p>
-      {error && (
+      {_error && (
         <details className="text-white/60 text-xs mt-2">
           <summary className="cursor-pointer">Detalles técnicos</summary>
           <pre className="mt-2 p-2 bg-black/20 rounded text-left overflow-auto">
-            {error.message}
+            {_error.message}
           </pre>
         </details>
       )}
-      {retry && (
+      {_retry && (
         <button
-          onClick={retry}
+          onClick={_retry}
           className="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition-colors"
         >
           Reintentar
@@ -97,7 +94,7 @@ export const LazyComponentLoader: React.FC<LazyLoaderProps> = ({
     <OptimizedLoader text={loadingText} minTime={minLoadingTime} />
   );
 
-  const defaultErrorFallback = errorFallback || <ErrorFallback />;
+  const _defaultErrorFallback = errorFallback || <div>Error</div>;
 
   return (
     <ErrorBoundary>

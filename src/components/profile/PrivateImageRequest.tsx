@@ -18,8 +18,8 @@ interface PrivateImageRequestProps {
 }
 
 export const PrivateImageRequest: React.FC<PrivateImageRequestProps> = ({
-  isOpen,
-  onClose,
+  isOpen: _isOpen,
+  onClose: _onClose,
   profileId,
   profileName,
   profileType = 'single',
