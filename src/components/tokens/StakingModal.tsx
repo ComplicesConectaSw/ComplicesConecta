@@ -53,7 +53,7 @@ export function StakingModal({ isOpen, onClose }: StakingModalProps) {
       } else {
         setError('No se pudo iniciar el staking');
       }
-    } catch (err) {
+    } catch {
       setError('Error iniciando staking');
     } finally {
       setLoading(false);

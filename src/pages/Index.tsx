@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { HeroSection } from "@/components/HeroSection";
-import { ProfileCard } from "@/components/profile/MainProfileCard";
+import CoupleProfileCard from "@/components/profile/CoupleProfileCard";
 import { Footer } from "@/components/Footer";
 import { BetaBanner } from "@/components/BetaBanner";
 import { LoadingScreen } from "@/components/LoadingScreen";
@@ -264,7 +264,7 @@ const Index = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12 px-2">
                 {sampleProfiles.map((profile, index) => (
                   <div key={index} className={`animate-slide-up slide-up-delay-${index}`}>
-                    <ProfileCard 
+                    <CoupleProfileCard 
                       profile={profile} 
                       onLike={() => {}} 
                       onSuperLike={() => {}}

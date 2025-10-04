@@ -13,8 +13,8 @@ import { useToast } from "@/hooks/use-toast";
 import { logger } from '@/lib/logger';
 
 const FAQ = () => {
-  const navigate = useNavigate();
-  const { toast } = useToast();
+  const _navigate = useNavigate();
+  const { toast: _toast } = useToast();
   const [feedback, setFeedback] = useState("");
   const [email, setEmail] = useState("");
   const [rating, setRating] = useState(0);
@@ -188,7 +188,7 @@ const FAQ = () => {
   const handleSubmitFeedback = () => {
     // Aquí se enviaría el feedback al backend
     logger.info("Feedback enviado:", { email, feedback, rating });
-    toast({
+    _toast({
       title: "¡Comentarios enviados!",
       description: "Gracias por tu feedback. Nos ayuda a mejorar la plataforma.",
     });
@@ -219,7 +219,7 @@ Fecha: ${new Date().toLocaleString()}
     const mailtoLink = `mailto:support@complicesconecta.com?subject=🐛 Reporte de Error Beta&body=${encodeURIComponent(emailBody)}`;
     window.location.href = mailtoLink;
     
-    toast({
+    _toast({
       title: "¡Reporte enviado!",
       description: "Se abrió tu cliente de email con el reporte. Envíalo para que podamos ayudarte.",
     });

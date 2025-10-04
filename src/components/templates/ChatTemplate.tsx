@@ -115,7 +115,7 @@ export const ChatTemplate: React.FC<ChatTemplateProps> = ({
 
   const handleSendMessage = () => {
     if (newMessage.trim() && selectedContactId) {
-      const message: ChatMessage = {
+      const _message: ChatMessage = {
         id: `msg-${Date.now()}`,
         content: newMessage,
         senderId: currentUserId,

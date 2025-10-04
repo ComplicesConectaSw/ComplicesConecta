@@ -99,7 +99,7 @@ const ChatAuthenticated = () => {
     }
   ]);
 
-  const [onlineUsers, setOnlineUsers] = useState<User[]>([
+  const [_onlineUsers, _setOnlineUsers] = useState<User[]>([
     {
       id: "user1",
       name: "María & Carlos",
@@ -215,7 +215,7 @@ const ChatAuthenticated = () => {
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-1">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <span className="text-white text-sm">{onlineUsers.length} en línea</span>
+                <span className="text-white text-sm">{_onlineUsers.length} en línea</span>
               </div>
             </div>
           </div>
@@ -280,7 +280,7 @@ const ChatAuthenticated = () => {
                   <h3 className="font-semibold text-white">En Línea</h3>
                 </div>
                 <div className="space-y-2">
-                  {onlineUsers.map((user) => (
+                  {_onlineUsers.map((user) => (
                     <div 
                       key={user.id}
                       className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 cursor-pointer transition-colors"

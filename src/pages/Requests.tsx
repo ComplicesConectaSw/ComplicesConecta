@@ -33,10 +33,10 @@ const Requests = () => {
   const [activeTab, setActiveTab] = useState<'received' | 'sent'>('received');
   
   // Migración localStorage → usePersistedState
-  const [demoAuth, setDemoAuth] = usePersistedState('demo_authenticated', 'false');
-  const [demoUser, setDemoUser] = usePersistedState<any>('demo_user', null);
+  const [_demoAuth, _setDemoAuth] = usePersistedState('demo_authenticated', 'false');
+  const [_demoUser, _setDemoUser] = usePersistedState<any>('demo_user', null);
 
-  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [_currentUserId, _setCurrentUserId] = useState<string | null>(null);
 
   const loadDemoInvitations = () => {
     // Solicitudes demo recibidas
@@ -103,38 +103,38 @@ const Requests = () => {
   };
   
   const loadInvitations = useCallback(async () => {
-    if (!currentUserId) return;
+    if (!_currentUserId) return;
     
     // Si es modo demo, no hacer llamadas reales
-    if (demoAuth === 'true') {
+    if (_demoAuth === 'true') {
       loadDemoInvitations();
       return;
     }
     
-    const { received, sent } = await invitationService.getInvitations(currentUserId);
+    const { received, sent } = await invitationService.getInvitations(_currentUserId);
     setReceivedInvitations(received);
     setSentInvitations(sent);
-  }, [currentUserId, demoAuth]);
+  }, [_currentUserId, _demoAuth]);
 
   useEffect(() => {
-    if (currentUserId) {
+    if (_currentUserId) {
       loadInvitations();
     }
-  }, [currentUserId, loadInvitations, navigate, demoAuth, demoUser]);
+  }, [_currentUserId, loadInvitations, navigate, _demoAuth, _demoUser]);
 
   useEffect(() => {
     // Detectar modo demo
-    const isDemoMode = demoAuth === 'true' && demoUser;
+    const isDemoMode = _demoAuth === 'true' && _demoUser;
     
     if (isDemoMode) {
       // Modo demo - usar datos mock
       try {
-        const parsedDemoUser = typeof demoUser === 'string' ? JSON.parse(demoUser) : demoUser;
-        setCurrentUserId(parsedDemoUser.id || 'demo-user-1');
+        const parsedDemoUser = typeof _demoUser === 'string' ? JSON.parse(_demoUser) : _demoUser;
+        _setCurrentUserId(parsedDemoUser.id || 'demo-user-1');
         loadDemoInvitations();
       } catch (error) {
         console.error('Error parsing demo user:', error);
-        setCurrentUserId('demo-user-1');
+        _setCurrentUserId('demo-user-1');
         loadDemoInvitations();
       }
       return;
@@ -161,18 +161,18 @@ const Requests = () => {
     // Usuario real autenticado
     const userId = user?.id;
     if (userId) {
-      setCurrentUserId(userId);
+      _setCurrentUserId(userId);
       logger.info('✅ Usuario real autenticado en Requests con ID:', { userId });
     } else {
       logger.info('❌ No se pudo obtener userId, redirigiendo a /auth');
       navigate('/auth');
     }
-  }, [demoAuth, demoUser, user]);
+  }, [_demoAuth, _demoUser, user]);
 
   const handleInvitationAction = async (invitationId: string, action: 'accept' | 'decline') => {
     try {
       // Si es modo demo, simular la acción
-      if (demoAuth === 'true') {
+      if (_demoAuth === 'true') {
         // Actualizar el estado local para demo
         setReceivedInvitations(prev => 
           prev.map(inv => 
@@ -198,7 +198,7 @@ const Requests = () => {
         description: `La invitación ha sido procesada correctamente.`,
       });
       loadInvitations(); // Refresh the list
-    } catch (error) {
+    } catch {
       toast({
         title: "Error",
         description: "No se pudo procesar la solicitud. Inténtalo de nuevo.",
@@ -233,8 +233,8 @@ const Requests = () => {
     }
   };
 
-  const pendingReceivedCount = receivedInvitations.filter(inv => inv.status === 'pending').length;
-  const acceptedCount = [...receivedInvitations, ...sentInvitations].filter(inv => inv.status === 'accepted').length;
+  const _pendingReceivedCount = receivedInvitations.filter(inv => inv.status === 'pending').length;
+  const _acceptedCount = [...receivedInvitations, ...sentInvitations].filter(inv => inv.status === 'accepted').length;
 
   if (!features.requests) {
     return (
@@ -258,7 +258,7 @@ const Requests = () => {
       </div>
 
       {/* Header removido para usuarios demo - solo NavigationLegacy */}
-      {demoAuth !== 'true' && <Header />}
+      {_demoAuth !== 'true' && <Header />}
       
       <div className="relative z-10 container mx-auto px-4 pt-20 pb-24">
         <div className="max-w-4xl mx-auto">
@@ -316,7 +316,7 @@ const Requests = () => {
                             {getStatusBadge(inv.status)}
                           </div>
                           {inv.message && <p className="text-sm text-white/70 bg-white/10 p-3 rounded-md mb-3">"{inv.message}"</p>}
-                          <p className="text-xs text-white/50">Recibido: {new Date(inv.created_at).toLocaleString()}</p>
+                          <p className="text-xs text-white/50">Recibido: {inv.created_at ? new Date(inv.created_at).toLocaleString() : 'Fecha no disponible'}</p>
                         </div>
                         {inv.status === 'pending' && (
                           <div className="flex gap-2 self-stretch sm:self-center">
@@ -353,7 +353,7 @@ const Requests = () => {
                           {getStatusBadge(inv.status)}
                         </div>
                         {inv.message && <p className="text-sm text-white/70 bg-white/10 p-3 rounded-md my-3">"{inv.message}"</p>}
-                        <p className="text-xs text-white/50">Enviado: {new Date(inv.created_at).toLocaleString()}</p>
+                        <p className="text-xs text-white/50">Enviado: {inv.created_at ? new Date(inv.created_at).toLocaleString() : 'Fecha no disponible'}</p>
                       </Card>
                     ))
                   )}

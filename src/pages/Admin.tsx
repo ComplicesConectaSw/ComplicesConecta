@@ -74,7 +74,7 @@ interface FAQItem {
 }
 
 const Admin = () => {
-  const { isAdmin, isAuthenticated, user } = useAuth();
+  const { isAdmin, isAuthenticated, user: _user } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
   
@@ -94,7 +94,7 @@ const Admin = () => {
   const [faqItems, setFaqItems] = useState<FAQItem[]>([]);
   const [invitations, setInvitations] = useState<Invitation[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
+  const [_selectedProfile, _setSelectedProfile] = useState<Profile | null>(null);
   const [newFaq, setNewFaq] = useState({ question: '', answer: '', category: 'general' });
   const [auditReport, setAuditReport] = useState<any>(null);
 
@@ -840,7 +840,7 @@ const Admin = () => {
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => setSelectedProfile(profile)}
+                          onClick={() => _setSelectedProfile(profile)}
                         >
                           <Edit className="w-4 h-4" />
                         </Button>
@@ -883,7 +883,7 @@ const Admin = () => {
                           </Badge>
                         </div>
                         <p className="text-sm text-white/80 mb-1">{invitation.message}</p>
-                        <p className="text-xs text-gray-400">Creada: {new Date(invitation.created_at).toLocaleString()}</p>
+                        <p className="text-xs text-gray-400">Creada: {invitation.created_at ? new Date(invitation.created_at).toLocaleString() : 'N/A'}</p>
                         {invitation.decided_at && (
                           <p className="text-xs text-gray-400">Decidida: {new Date(invitation.decided_at).toLocaleString()}</p>
                         )}

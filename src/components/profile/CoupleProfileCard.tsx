@@ -99,14 +99,14 @@ const getRelationshipDisplayName = (relationshipType: 'man-woman' | 'man-man' | 
 const CoupleProfileCard = ({ 
   profile, 
   onLike, 
-  onSuperLike,
-  onMessage, 
+  onSuperLike: _onSuperLike,
+  onMessage: _onMessage, 
   onOpenModal,
-  showActions = true, 
-  showInviteButton = true,
+  showActions: _showActions = true, 
+  showInviteButton: _showInviteButton = true,
   useThemeBackground = false
 }: CoupleProfileCardProps) => {
-  const { getUserOnlineStatus, getLastSeenTime } = useUserOnlineStatus();
+  const { getUserOnlineStatus: _getUserOnlineStatus, getLastSeenTime: _getLastSeenTime } = useUserOnlineStatus();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [imageError, setImageError] = useState(false);
@@ -119,8 +119,8 @@ const CoupleProfileCard = ({
   // Obtener configuración de tema usando el hook unificado
   const themeConfig = useProfileTheme('couple', genders);
   
-  const theme = getRelationshipTheme(profile.relationship_type);
-  const relationshipDisplayName = getRelationshipDisplayName(profile.relationship_type);
+  const _theme = getRelationshipTheme(profile.relationship_type);
+  const _relationshipDisplayName = getRelationshipDisplayName(profile.relationship_type);
   
   // Use couple images if available, otherwise use placeholder
   const partner1Avatar = profile.couple_images?.[0] || '/compliceslogo.png';

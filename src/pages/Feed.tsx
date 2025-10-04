@@ -12,11 +12,11 @@ import { logger } from '@/lib/logger';
 const Feed = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
+  const [_loadingMore, _setLoadingMore] = useState(false);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
-  const { isAuthenticated } = useAuth();
-  const { toast } = useToast();
+  const { user: _user, isAuthenticated: _isAuthenticated, loading: _authLoading } = useAuth();
+  const { toast: _toast } = useToast();
 
   // Cargar posts iniciales
   useEffect(() => {
@@ -39,7 +39,7 @@ const Feed = () => {
       setPage(pageNum);
     } catch (error) {
       logger.error('Error loading posts', { error });
-      toast({
+      _toast({
         title: "Error",
         description: "No se pudieron cargar las publicaciones",
         variant: "destructive"
@@ -63,7 +63,7 @@ const Feed = () => {
       );
     } catch (error) {
       logger.error('Error toggling like', { error });
-      toast({
+      _toast({
         title: "Error",
         description: "No se pudo procesar el like",
         variant: "destructive"
@@ -207,9 +207,9 @@ const Feed = () => {
             <Button 
               className="px-8 text-white border border-white/30 hover:bg-white/10 bg-transparent"
               onClick={handleLoadMore}
-              disabled={loadingMore}
+              disabled={_loadingMore}
             >
-              {loadingMore ? (
+              {_loadingMore ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin mr-2" />
                   Cargando...

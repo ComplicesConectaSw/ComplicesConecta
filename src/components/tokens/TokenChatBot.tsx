@@ -44,7 +44,7 @@ export function TokenChatBot() {
   const [currentStep, setCurrentStep] = useState<WizardStep>('greeting');
   const [userInput, setUserInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const [stakingAmount, setStakingAmount] = useState<number>(0);
+  const [_stakingAmount, setStakingAmount] = useState<number>(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const isInitialized = useRef(false);
 
@@ -244,7 +244,7 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
       } else {
         addBotMessage('⚠️ No se pudieron reclamar las recompensas. Inténtalo más tarde.');
       }
-    } catch (error) {
+    } catch {
       addBotMessage('❌ Error procesando recompensas. Por favor inténtalo de nuevo.');
     }
   };
@@ -322,10 +322,11 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
 • Puedes seguir ganando más CMPX mientras tanto
 
 ¡Gracias por apoyar la red ComplicesConecta! 🌟`);
-      } else {
-        addBotMessage(`❌ Error iniciando staking. Inténtalo de nuevo más tarde.`);
-      }
-    } catch (error) {
+              } else {
+                addBotMessage(`🤝 Tu staking ha sido cancelado.`);
+              }
+    } catch (_error) {
+      console.error('Error loading chat history:', _error);
       addBotMessage('❌ Error procesando staking. Por favor inténtalo de nuevo.');
     }
   };

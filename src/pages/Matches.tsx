@@ -28,10 +28,10 @@ export interface Match {
 
 const Matches = () => {
   const navigate = useNavigate();
-  const [matches, setMatches] = useState<Match[]>([]);
-  const [realMatches, setRealMatches] = useState<SimpleMatch[]>([]);
-  const [isProduction, setIsProduction] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [_matches, _setMatches] = useState<Match[]>([]);
+  const [_realMatches, _setRealMatches] = useState<SimpleMatch[]>([]);
+  const [_isProduction, _setIsProduction] = useState(false);
+  const [_isLoading, _setIsLoading] = useState(false);
   const [demoMatches] = useState<Match[]>([
     {
       id: 1,
@@ -113,21 +113,21 @@ const Matches = () => {
   useEffect(() => {
     const demoAuth = localStorage.getItem('demo_authenticated');
     const isDemo = demoAuth === 'true';
-    setIsProduction(!isDemo);
+    _setIsProduction(!isDemo);
 
     // SIEMPRE usar datos demo para respetar la lógica de negocio
     // No cargar datos reales hasta que el sistema esté completamente implementado
-    setMatches(demoMatches);
+    _setMatches(demoMatches);
     logger.info('🎭 Matches demo cargados (respetando lógica de negocio):', { count: demoMatches.length, isDemo });
   }, []);
 
   // Cargar matches reales de producción
-  const loadRealMatches = async (maxDistance?: number) => {
-    setIsLoading(true);
+  const _loadRealMatches = async (maxDistance?: number) => {
+    _setIsLoading(true);
     try {
       const result = await simpleMatchService.getMatches(20, maxDistance);
       if (result.success && result.matches) {
-        setRealMatches(result.matches);
+        _setRealMatches(result.matches);
         // Convertir matches reales al formato de la UI
         const convertedMatches: Match[] = result.matches.map((match, index) => ({
           id: parseInt(match.id),
@@ -141,14 +141,14 @@ const Matches = () => {
           hasUnreadMessage: match.isOnline,
           status: index < 2 ? 'new' : (index < 4 ? 'chatting' : 'viewed') as 'new' | 'viewed' | 'chatting'
         }));
-        setMatches(convertedMatches);
+        _setMatches(convertedMatches);
       }
     } catch (error) {
       logger.error('Error cargando matches:', { error: String(error) });
       // Fallback a datos demo en caso de error
-      setMatches(demoMatches);
+      _setMatches(demoMatches);
     } finally {
-      setIsLoading(false);
+      _setIsLoading(false);
     }
   };
 
@@ -354,7 +354,7 @@ const Matches = () => {
         {/* Matches Grid */}
         {filteredMatches.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
-            {isLoading ? (
+            {_isLoading ? (
               // Loading skeleton
               [...Array(6)].map((_, index) => (
                 <div key={index} className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 sm:p-6 animate-pulse transition-all duration-300">

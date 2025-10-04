@@ -14,7 +14,7 @@ const getDemoStories = (): Story[] => {
       userName = userType === 'couple' 
         ? `${parsedUser.first_name} & Pareja`
         : parsedUser.first_name || "Usuario Demo";
-    } catch (e) {
+    } catch {
       // Fallback to default
     }
   }
@@ -96,7 +96,7 @@ class StoryService {
     localStorage.setItem('demo_stories', JSON.stringify(stories));
   }
 
-  async getStories(userId?: number): Promise<Story[]> {
+  async getStories(_userId?: number): Promise<Story[]> {
     if (this.isDemoMode()) {
       const stories = this.getDemoStories();
       // Filtrar historias expiradas
@@ -109,8 +109,8 @@ class StoryService {
       // const response = await fetch('/api/stories');
       // return await response.json();
       return [];
-    } catch (error) {
-      console.error('Error fetching stories:', error);
+    } catch {
+      console.error('Error fetching stories');
       return [];
     }
   }
@@ -154,8 +154,8 @@ class StoryService {
       // });
       // return await response.json();
       return null;
-    } catch (error) {
-      console.error('Error creating story:', error);
+    } catch {
+      console.error('Error creating story');
       return null;
     }
   }
@@ -195,8 +195,8 @@ class StoryService {
       // const response = await fetch(`/api/stories/${storyId}/like`, { method: 'POST' });
       // return response.ok;
       return false;
-    } catch (error) {
-      console.error('Error liking story:', error);
+    } catch {
+      console.error('Error liking story');
       return false;
     }
   }
@@ -233,8 +233,8 @@ class StoryService {
       // });
       // return response.ok;
       return false;
-    } catch (error) {
-      console.error('Error commenting story:', error);
+    } catch {
+      console.error('Error commenting story');
       return false;
     }
   }
@@ -252,8 +252,8 @@ class StoryService {
       // const response = await fetch(`/api/stories/${storyId}`, { method: 'DELETE' });
       // return response.ok;
       return false;
-    } catch (error) {
-      console.error('Error deleting story:', error);
+    } catch {
+      console.error('Error deleting story');
       return false;
     }
   }
@@ -276,8 +276,8 @@ class StoryService {
       // const response = await fetch(`/api/stories/${storyId}/comments/${commentId}`, { method: 'DELETE' });
       // return response.ok;
       return false;
-    } catch (error) {
-      console.error('Error deleting comment:', error);
+    } catch {
+      console.error('Error deleting comment');
       return false;
     }
   }
@@ -294,8 +294,8 @@ class StoryService {
       // const data = await response.json();
       // return data.shareUrl;
       return null;
-    } catch (error) {
-      console.error('Error sharing story:', error);
+    } catch {
+      console.error('Error sharing story');
       return null;
     }
   }
@@ -319,8 +319,8 @@ class StoryService {
       // const response = await fetch(`/api/stories/${storyId}/view`, { method: 'POST' });
       // return response.ok;
       return false;
-    } catch (error) {
-      console.error('Error marking story as viewed:', error);
+    } catch {
+      console.error('Error marking story as viewed');
       return false;
     }
   }

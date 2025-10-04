@@ -92,7 +92,7 @@ export const CoupleImageGallery: React.FC<CoupleImageGalleryProps> = ({
         description: `${newImages.length} imagen(es) añadida(s) a la galería de pareja`,
       });
 
-    } catch (error) {
+    } catch {
       onError('Error al subir algunas imágenes a la galería');
     } finally {
       setIsUploading(false);
@@ -155,7 +155,7 @@ export const CoupleImageGallery: React.FC<CoupleImageGalleryProps> = ({
       } else {
         onError(result.error || 'Error al eliminar imagen');
       }
-    } catch (error) {
+    } catch {
       onError('Error inesperado al eliminar imagen');
     }
   };

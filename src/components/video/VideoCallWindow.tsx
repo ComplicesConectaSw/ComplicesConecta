@@ -38,7 +38,7 @@ export const VideoCallWindow: React.FC<VideoCallWindowProps> = ({
     isConnecting,
     isMuted,
     isVideoEnabled,
-    callId,
+    callId: _callId,
     remoteUserId,
     error,
     localVideoRef,
@@ -69,8 +69,8 @@ export const VideoCallWindow: React.FC<VideoCallWindowProps> = ({
       setIncomingCall(null);
       onCallEnd?.();
     },
-    onError: (error) => {
-      logger.error('Error in video call', { error: String(error), context: 'video-call' });
+    onError: (_error) => {
+      logger.error('Error in video call', { error: String(_error), context: 'video-call' });
     }
   });
 

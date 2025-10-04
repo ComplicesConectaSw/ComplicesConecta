@@ -26,12 +26,12 @@ import { ReportDialog } from '@/components/swipe/ReportDialog';
 
 const ProfileSingle: React.FC = () => {
   const navigate = useNavigate();
-  const { user, profile: authProfile, isAuthenticated } = useAuth();
-  const [profile, setProfile] = useState<Tables<'profiles'> | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [showPrivateImageRequest, setShowPrivateImageRequest] = useState(false);
-  const [privateImageAccess, setPrivateImageAccess] = usePersistedState<'none' | 'pending' | 'approved' | 'denied'>('private_image_access', 'none');
-  const [showReportDialog, setShowReportDialog] = useState(false);
+  const { user, profile: _authProfile, isAuthenticated: _isAuthenticated } = useAuth();
+  const [profile, _setProfile] = useState<Tables<'profiles'> | null>(null);
+  const [_isLoading, _setIsLoading] = useState(true);
+  const [_showPrivateImageRequest, _setShowPrivateImageRequest] = useState(false);
+  const [_privateImageAccess, _setPrivateImageAccess] = usePersistedState<'none' | 'pending' | 'approved' | 'denied'>('private_image_access', 'none');
+  const [_showReportDialog, _setShowReportDialog] = useState(false);
   
   // Determinar si es el perfil propio
   const isOwnProfile = user?.id === profile?.user_id;
@@ -53,8 +53,8 @@ const ProfileSingle: React.FC = () => {
   };
   
   // Migración localStorage → usePersistedState
-  const [demoAuth, setDemoAuth] = usePersistedState('demo_authenticated', 'false');
-  const [demoUser, setDemoUser] = usePersistedState<any>('demo_user', null);
+  const [_demoAuth, _setDemoAuth] = usePersistedState('demo_authenticated', 'false');
+  const [_demoUser, _setDemoUser] = usePersistedState<any>('demo_user', null);
 
   useEffect(() => {
     const loadProfile = async () => {

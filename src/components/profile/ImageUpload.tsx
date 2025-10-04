@@ -62,7 +62,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
       } else {
         onError(result.error || 'Error al subir imagen');
       }
-    } catch (error) {
+    } catch {
       onError('Error inesperado al subir imagen');
     } finally {
       setIsUploading(false);
@@ -114,7 +114,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
       } else {
         onError(result.error || 'Error al eliminar imagen');
       }
-    } catch (error) {
+    } catch {
       onError('Error inesperado al eliminar imagen');
     } finally {
       setIsUploading(false);
