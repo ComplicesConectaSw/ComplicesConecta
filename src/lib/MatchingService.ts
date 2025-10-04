@@ -544,7 +544,7 @@ export class MatchingService {
   /**
    * Suscribirse a nuevos matches
    */
-  static subscribeToMatches(callback: (match: Match) => void) {
+  static subscribeToMatches(_callback: (match: any) => void) {
     return supabase
       .channel('matches')
       .on('postgres_changes', 

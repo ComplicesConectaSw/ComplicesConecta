@@ -89,7 +89,7 @@ export const useBiometricAuth = () => {
     try {
       setIsLoading(true);
 
-      const { data, error } = await supabase
+      const { data: _data, error } = await supabase
         .from('profiles')
         .update({ 
           // Removed biometric_enabled as it doesn't exist in profiles table
@@ -162,10 +162,7 @@ export const useBiometricAuth = () => {
       }
 
       // Guardar credencial en base de datos
-      const credentialId = Array.from(new Uint8Array(credential.rawId))
-        .map(b => b.toString(16).padStart(2, '0'))
-        .join('');
-
+      const _credentialId = credential.id;
       const sessionId = crypto.randomUUID();
       const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(); // 24 horas
 

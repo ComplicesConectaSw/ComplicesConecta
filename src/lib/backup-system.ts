@@ -109,8 +109,8 @@ class BackupSystem {
           backupData.data[table] = tableData;
           
           console.log(`💾 Backup: Tabla ${table} respaldada - ${tableData.length} registros`);
-        } catch (error) {
-          console.error(`💾 Backup: Error en tabla ${table}`, error);
+        } catch (_error) {
+          console.error(`💾 Backup: Error en tabla ${table}`, _error);
           // Continuar con otras tablas
         }
       }
@@ -133,11 +133,11 @@ class BackupSystem {
 
       return metadata;
 
-    } catch (error) {
+    } catch (_error) {
       metadata.status = 'failed';
-      metadata.error = error instanceof Error ? error.message : 'Error desconocido';
+      metadata.error = _error instanceof Error ? _error.message : 'Error desconocido';
       
-      console.error('💾 Backup: Error en backup completo', error);
+      console.error('💾 Backup: Error en backup completo', _error);
       
       this.backupHistory.push(metadata);
       await this.saveBackupHistory();
@@ -180,8 +180,8 @@ class BackupSystem {
             backupData.data[table] = incrementalData;
             console.log(`💾 Backup: Tabla ${table} - ${incrementalData.length} cambios desde último backup`);
           }
-        } catch (error) {
-          console.error(`💾 Backup: Error incremental en tabla ${table}`, error);
+        } catch (_error) {
+          console.error(`💾 Backup: Error incremental en tabla ${table}`, _error);
         }
       }
 
@@ -210,11 +210,11 @@ class BackupSystem {
 
       return metadata;
 
-    } catch (error) {
+    } catch (_error) {
       metadata.status = 'failed';
-      metadata.error = error instanceof Error ? error.message : 'Error desconocido';
+      metadata.error = _error instanceof Error ? _error.message : 'Error desconocido';
       
-      console.error('💾 Backup: Error en backup incremental', error);
+      console.error('💾 Backup: Error en backup incremental', _error);
       
       this.backupHistory.push(metadata);
       await this.saveBackupHistory();
@@ -252,8 +252,8 @@ class BackupSystem {
       }
 
       return data || [];
-    } catch (error) {
-      console.error(`💾 Backup: Error accediendo a tabla ${table}`, error);
+    } catch (_error) {
+      console.error(`💾 Backup: Error accediendo a tabla ${table}`, _error);
       return [];
     }
   }
@@ -298,8 +298,8 @@ class BackupSystem {
       }
 
       return data || [];
-    } catch (error) {
-      console.error(`💾 Backup: Error en backup incremental de ${tableName}`, error);
+    } catch (_error) {
+      console.error(`💾 Backup: Error en backup incremental de ${tableName}`, _error);
       return [];
     }
   }
@@ -355,9 +355,9 @@ class BackupSystem {
       if (this.config.destination === 'cloud' || this.config.destination === 'both') {
         await this.saveBackupToCloud(backupData.metadata.id, backupJson);
       }
-    } catch (error) {
-      console.error('💾 Backup: Error al guardar backup', error);
-      throw error;
+    } catch (_error) {
+      console.error('💾 Backup: Error al guardar backup', _error);
+      throw _error;
     }
   }
 
@@ -369,7 +369,7 @@ class BackupSystem {
   }
 
   // Guardar backup en la nube (simulado)
-  private async saveBackupToCloud(backupId: string, data: string): Promise<void> {
+  private async saveBackupToCloud(backupId: string, _data: string): Promise<void> {
     // En un entorno real, esto subiría a AWS S3, Google Cloud Storage, etc.
     console.log(`💾 Backup: Simulando subida a la nube - backup_${backupId}`);
     
@@ -419,8 +419,8 @@ class BackupSystem {
       try {
         await this.deleteBackup(backup.id);
         console.log(`💾 Backup: Eliminado backup antiguo ${backup.id}`);
-      } catch (error) {
-        console.error(`💾 Backup: Error al eliminar backup ${backup.id}`, error);
+      } catch (_error) {
+        console.error(`💾 Backup: Error al eliminar backup ${backup.id}`, _error);
       }
     }
 
@@ -446,8 +446,8 @@ class BackupSystem {
   private async saveBackupHistory(): Promise<void> {
     try {
       localStorage.setItem('backup_history', JSON.stringify(this.backupHistory));
-    } catch (error) {
-      console.error('💾 Backup: Error al guardar historial', error);
+    } catch (_error) {
+      console.error('💾 Backup: Error al guardar historial', _error);
     }
   }
 
@@ -459,8 +459,8 @@ class BackupSystem {
         this.backupHistory = JSON.parse(saved);
         console.log(`💾 Backup: Historial cargado - ${this.backupHistory.length} backups`);
       }
-    } catch (error) {
-      console.error('💾 Backup: Error al cargar historial', error);
+    } catch (_error) {
+      console.error('💾 Backup: Error al cargar historial', _error);
       this.backupHistory = [];
     }
   }
@@ -504,7 +504,7 @@ class BackupSystem {
       }
 
       // En producción, restaurar datos reales
-      for (const [tableName, tableData] of Object.entries(backup.data)) {
+      for (const [tableName, _tableData] of Object.entries(backup.data)) {
         console.log(`💾 Backup: Restaurando tabla ${tableName}...`);
         // Aquí iría la lógica de restauración real
       }
@@ -512,8 +512,8 @@ class BackupSystem {
       console.log(`💾 Backup: Restauración completada desde ${backupId}`);
       return true;
 
-    } catch (error) {
-      console.error(`💾 Backup: Error en restauración desde ${backupId}`, error);
+    } catch (_error) {
+      console.error(`💾 Backup: Error en restauración desde ${backupId}`, _error);
       return false;
     }
   }

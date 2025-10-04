@@ -37,7 +37,7 @@ export function getRandomCoupleProfile() {
 }
 
 // Generador de perfiles mock aleatorios
-export const generateMockSingle = (includeOnlineStatus = true) => {
+export const generateMockSingle = (_includeOnlineStatus = true) => {
   const nombresF = ["Sofía", "Valentina", "Isabella", "Camila", "Lucía", "Daniela", "Gabriela", "Andrea"];
   const nombresM = ["Raúl", "Miguel", "Alejandro", "Fernando", "Roberto", "Javier", "Antonio", "Pablo"];
   
@@ -109,13 +109,13 @@ export const generateMockSingle = (includeOnlineStatus = true) => {
       likes: Math.floor(Math.random() * 200) + 50,
       views: Math.floor(Math.random() * 500) + 100
     },
-    ...(includeOnlineStatus && { isOnline: Math.random() > 0.5 })
+    ...(_includeOnlineStatus && { isOnline: Math.random() > 0.5 })
   };
   
   return profile;
 };
 
-export const generateMockCouple = (includeOnlineStatus = true) => {
+export const generateMockCouple = (_includeOnlineStatus = true) => {
   const nombresM = ["Julio", "Miguel", "Alejandro", "Fernando", "Roberto", "Javier", "Antonio", "Pablo"];
   const nombresF = ["Anabella", "María", "Carmen", "Elena", "Sofía", "Laura", "Patricia", "Isabel"];
   const apellidos = ["García", "Rodríguez", "López", "Martínez", "González", "Pérez", "Sánchez", "Ramírez"];
@@ -136,7 +136,7 @@ export const generateMockCouple = (includeOnlineStatus = true) => {
   
   const nombreM = nombresM[Math.floor(Math.random() * nombresM.length)];
   const nombreF = nombresF[Math.floor(Math.random() * nombresF.length)];
-  const apellido = apellidos[Math.floor(Math.random() * apellidos.length)];
+  const _apellido = apellidos[Math.floor(Math.random() * apellidos.length)];
   
   // Imágenes reales de Unsplash para parejas demo
   const coupleImages = [

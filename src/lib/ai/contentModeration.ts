@@ -147,10 +147,10 @@ class ContentModerationEngine {
 
       return result;
       
-    } catch (error) {
+    } catch (_error) {
       logger.error('❌ Error en moderación de contenido', { 
         contentType: content.type, 
-        error 
+        error: _error 
       });
       
       // Fallback seguro: rechazar en caso de error
@@ -394,8 +394,7 @@ class ContentModerationEngine {
     const flags: ModerationFlag[] = [];
 
     // Verificar que se mantenga el contexto apropiado
-    const hasAppropriateContext = Array.from(this.SWINGER_APPROPRIATE_TERMS)
-      .some(term => text.includes(term));
+    const _hasAppropriateContext = this.SWINGER_APPROPRIATE_TERMS.size > 0 && Array.from(this.SWINGER_APPROPRIATE_TERMS).some(term => text.includes(term));
 
     const hasInappropriateContext = text.includes('menor') || 
                                    text.includes('pago') ||

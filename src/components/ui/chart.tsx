@@ -98,7 +98,17 @@ ${colorConfig
   )
 }
 
-const ChartTooltip = RechartsPrimitive.Tooltip
+const ChartTooltip = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<typeof RechartsPrimitive.Tooltip>
+>(({ className, ..._props }, ref) => (
+  <RechartsPrimitive.Tooltip
+    ref={ref}
+    className={cn("grid min-w-[8rem] items-start gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl", className)}
+    {...props}
+  />
+))
+ChartTooltip.displayName = "ChartTooltip"
 
 const ChartTooltipContent = React.forwardRef<
   HTMLDivElement,
@@ -132,7 +142,7 @@ const ChartTooltipContent = React.forwardRef<
       color,
       nameKey,
       labelKey,
-      ...props
+      ..._props
     },
     ref
   ) => {

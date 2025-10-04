@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 export const useOnlineStatus = () => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
@@ -20,7 +20,7 @@ export const useOnlineStatus = () => {
 };
 
 // Hook para simular estado online/offline de usuarios demo
-export const useUserOnlineStatus = (userId?: string) => {
+export const useUserOnlineStatus = (_userId?: string) => {
   const [userOnlineStatus, setUserOnlineStatus] = useState<Record<string, boolean>>({});
   const systemOnline = useOnlineStatus();
 
@@ -43,6 +43,11 @@ export const useUserOnlineStatus = (userId?: string) => {
 
     return () => clearInterval(interval);
   }, [systemOnline]);
+
+  const _updateUserOnlineStatus = useCallback(async (_userId: string, _isOnline: boolean) => {
+    if (!systemOnline) return false;
+    return userOnlineStatus[_userId] ?? Math.random() > 0.3; // Por defecto 70% online
+  }, [systemOnline, userOnlineStatus]);
 
   const getUserOnlineStatus = (userId: string): boolean => {
     if (!systemOnline) return false;

@@ -1,10 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import type { Tables } from '@/integrations/supabase/types';
 import { logger } from '@/lib/logger';
 
 // Tipos para el cache de perfiles
-type Profile = Tables<'profiles'>;
+type Profile = any;
 
 // Keys para React Query
 export const profileKeys = {
@@ -132,8 +131,8 @@ export const useUpdateProfile = () => {
       
       // logger.info('✅ Perfil actualizado en cache:', { id: (data as any)?.id });
     },
-    onError: (error) => {
-      // logger.error('❌ Error en mutación de perfil:', error);
+    onError: (_error) => {
+      // logger.error('❌ Error en mutación de perfil:', _error);
     },
   });
 };

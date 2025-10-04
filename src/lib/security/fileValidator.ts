@@ -47,7 +47,7 @@ const SIZE_LIMITS = {
 } as const;
 
 // Firmas de archivos (magic numbers) para verificación de contenido
-const FILE_SIGNATURES = {
+const _FILE_SIGNATURES = {
   // Imágenes
   'image/jpeg': [
     [0xFF, 0xD8, 0xFF],                    // JPEG

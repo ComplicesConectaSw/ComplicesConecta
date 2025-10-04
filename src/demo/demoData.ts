@@ -62,7 +62,7 @@ export const generateDemoProfiles = (count: number = 20): DemoProfile[] => {
 
   resetImageCounters();
 
-  return Array.from({ length: count }, (_, i) => {
+  return Array.from({ length: count }).map((_, _i) => {
     const profileType: ProfileType = Math.random() > 0.7 ? 'couple' : 'single';
     const gender: Gender = Math.random() > 0.5 ? 'male' : 'female';
     const partnerGender: Gender = gender === 'male' ? 'female' : 'male';
