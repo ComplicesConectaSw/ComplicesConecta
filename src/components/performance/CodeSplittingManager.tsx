@@ -282,8 +282,8 @@ export function useCodeSplitting() {
 export const LazyComponents = {
   // Componentes de perfil - manejo seguro de imports
   ProfileCard: createLazyComponent(
-    () => import('@/components/profile/MainProfileCard').then(module => ({ 
-      default: (module as any).default || (module as any).MainProfileCard || module 
+    () => import('@/components/ui/ProfileCard').then(module => ({ 
+      default: (module as any).default || (module as any).ProfileCard || module 
     })),
     { chunkName: 'profile-card', preload: true }
   ),

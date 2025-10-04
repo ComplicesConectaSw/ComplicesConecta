@@ -343,7 +343,7 @@ const Discover = () => {
   }, [isAuthenticated, navigate, profiles.length, coupleProfiles.length]);
 
   const _handleProfileClick = (_profileId: string) => {
-    navigate(`/profile/${profile.id}`, { state: { profile } });
+    // Función no implementada - requiere perfil específico
   };
 
   const handleLike = (_profileId: number | string) => {

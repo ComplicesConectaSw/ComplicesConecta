@@ -29,8 +29,8 @@ export function ContrastFixer({ enabled = true, level = 'AA' }: ContrastFixerPro
           const elements = document.querySelectorAll(selector);
           elements.forEach(element => {
             const htmlElement = element as HTMLElement;
-            const computedStyle = window.getComputedStyle(htmlElement);
-            const backgroundColor = computedStyle.backgroundColor;
+            const _computedStyle = window.getComputedStyle(element);
+            const backgroundColor = _computedStyle.backgroundColor;
             
             // Detectar si está sobre fondo oscuro
             const isDarkBackground = 
@@ -60,7 +60,7 @@ export function ContrastFixer({ enabled = true, level = 'AA' }: ContrastFixerPro
         const inputs = document.querySelectorAll('input, textarea');
         inputs.forEach(input => {
           const htmlInput = input as HTMLInputElement;
-          const computedStyle = window.getComputedStyle(htmlInput);
+          const _computedStyle = window.getComputedStyle(htmlInput);
           
           // Aplicar estilo de placeholder con mejor contraste
           const styleSheet = document.createElement('style');
