@@ -27,7 +27,7 @@ interface MatchCardProps {
 }
 
 export const MatchCard: React.FC<MatchCardProps> = ({
-  id,
+  id: _id,
   name,
   age,
   bio,

@@ -74,13 +74,30 @@ export const ProfileGrid = ({
             <ProfileCard 
               profile={{
                 id: profile.id.toString(),
-                name: profile.name,
-                age: profile.age,
+                couple_name: profile.name || 'Usuario',
+                couple_bio: `${profile.age} años - ${profile.location}`,
+                relationship_type: 'man-woman' as const,
+                partner1_id: profile.id.toString(),
+                partner2_id: profile.id.toString(),
+                couple_images: [profile.image],
+                is_verified: false,
+                is_premium: false,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString(),
+                partner1_first_name: profile.name?.split(' ')[0] || 'Usuario',
+                partner1_last_name: profile.name?.split(' ').slice(1).join(' ') || '',
+                partner1_age: profile.age || 25,
+                partner1_bio: null,
+                partner1_gender: 'male',
+                partner2_first_name: 'Pareja',
+                partner2_last_name: '',
+                partner2_age: profile.age || 25,
+                partner2_bio: null,
+                partner2_gender: 'female',
                 location: profile.location,
-                image: profile.image,
+                isOnline: profile.isOnline,
                 interests: profile.interests,
-                rating: profile.rating,
-                isOnline: profile.isOnline
+                rating: profile.rating
               }}
               onOpenModal={() => {}}
             />

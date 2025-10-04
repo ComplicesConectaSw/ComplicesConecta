@@ -365,7 +365,7 @@ export const RealtimeChatIntegration = ({
                 </div>
               ))}
               
-              {isTyping && (
+              {_isTyping && (
                 <div className="flex justify-start">
                   <div className="bg-muted rounded-lg px-3 py-2">
                     <div className="flex space-x-1">

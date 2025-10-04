@@ -32,7 +32,7 @@ export const NavigationEnhanced: React.FC<NavigationEnhancedProps> = ({
 }) => {
   const { user } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [notifications, setNotifications] = useState(3);
+  const [_notifications, _setNotifications] = useState(3);
 
   const navigationItems = [
     {

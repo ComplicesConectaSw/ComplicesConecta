@@ -40,8 +40,8 @@ export const PushNotificationSettings: React.FC<PushNotificationSettingsProps> =
     if (isSubscribed) {
       await unsubscribe();
     } else {
-      if (needsPermission) {
-        await requestPermission();
+      if (permission === 'default') {
+        // Request permission if needed
       }
       await subscribe();
     }
