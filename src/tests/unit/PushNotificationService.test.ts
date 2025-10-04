@@ -17,9 +17,17 @@ const mockSupabaseChain = {
     }))
   })),
   select: vi.fn(() => ({
-    eq: vi.fn(() => Promise.resolve({ 
-      data: [{ id: '1', preferences: {} }], 
-      error: null 
+    eq: vi.fn(() => ({
+      eq: vi.fn(() => Promise.resolve({ 
+        data: [{ 
+          id: '1', 
+          user_id: 'user123',
+          device_token: 'device_token_123',
+          is_active: true,
+          device_type: 'android'
+        }], 
+        error: null 
+      }))
     }))
   })),
   upsert: vi.fn(() => ({
@@ -31,16 +39,70 @@ const mockSupabaseChain = {
     }))
   })),
   update: vi.fn(() => ({
-    eq: vi.fn(() => Promise.resolve({ 
-      data: { id: '1' }, 
-      error: null 
+    eq: vi.fn(() => ({
+      eq: vi.fn(() => Promise.resolve({ 
+        data: { id: '1' }, 
+        error: null 
+      }))
     }))
   }))
 };
 
 vi.mock('@/integrations/supabase/client', () => ({
   supabase: {
-    from: vi.fn(() => mockSupabaseChain)
+    from: vi.fn((table) => {
+      if (table === 'user_notification_preferences') {
+        return {
+          select: vi.fn(() => ({
+            eq: vi.fn(() => Promise.resolve({ 
+              data: [{ 
+                id: '1', 
+                user_id: 'user123',
+                notification_type: 'report_resolved',
+                delivery_method: 'push',
+                enabled: true
+              }], 
+              error: null 
+            }))
+          })),
+          upsert: vi.fn(() => ({
+            select: vi.fn(() => ({
+              single: vi.fn(() => Promise.resolve({ 
+                data: { id: '1', enabled: true }, 
+                error: null 
+              }))
+            }))
+          })),
+          insert: vi.fn(() => Promise.resolve({ 
+            data: null, 
+            error: null 
+          }))
+        };
+      }
+      if (table === 'notification_history') {
+        return {
+          insert: vi.fn(() => ({
+            select: vi.fn(() => ({
+              single: vi.fn(() => Promise.resolve({ 
+                data: { id: '1', status: 'pending' }, 
+                error: null 
+              }))
+            }))
+          })),
+          select: vi.fn(() => ({
+            eq: vi.fn(() => ({
+              order: vi.fn(() => ({
+                limit: vi.fn(() => Promise.resolve({ 
+                  data: [{ id: '1', title: 'Test notification' }], 
+                  error: null 
+                }))
+              }))
+            }))
+          }))
+        };
+      }
+      return mockSupabaseChain;
+    })
   }
 }))
 
@@ -113,18 +175,35 @@ describe('PushNotificationService', () => {
 
   describe('sendReportNotification', () => {
     it('should send report resolution notification', async () => {
+      const service = PushNotificationService.getInstance()
+      
+      // Mock the private sendNotification method directly
+      const sendNotificationSpy = vi.spyOn(service as any, 'sendNotification').mockResolvedValue({
+        success: true,
+        notification: { id: 'notification-1', status: 'sent' }
+      })
+      
       const result = await service.sendReportNotification(
-        'user123',
-        'report123',
+        'user-123',
+        'report-456',
         'resolved'
       )
-      
+
       expect(result.success).toBe(true)
+      expect(sendNotificationSpy).toHaveBeenCalledWith('user-123', 'report_resolved', expect.any(Object))
     })
   })
 
   describe('sendTokenNotification', () => {
     it('should send token transaction notification', async () => {
+      const service = PushNotificationService.getInstance()
+      
+      // Mock the private sendNotification method directly
+      const sendNotificationSpy = vi.spyOn(service as any, 'sendNotification').mockResolvedValue({
+        success: true,
+        notification: { id: 'notification-1', status: 'sent' }
+      })
+      
       const result = await service.sendTokenNotification(
         'user123',
         'earn_referral',
@@ -133,11 +212,21 @@ describe('PushNotificationService', () => {
       )
       
       expect(result.success).toBe(true)
+      expect(sendNotificationSpy).toHaveBeenCalledWith('user123', 'token_transaction', expect.any(Object))
     })
   })
 
   describe('createDefaultPreferences', () => {
     it('should create default preferences for new user', async () => {
+      const { supabase } = await import('@/integrations/supabase/client')
+      
+      vi.mocked(supabase.from).mockReturnValue({
+        insert: vi.fn().mockResolvedValue({
+          data: null,
+          error: null
+        })
+      } as any)
+      
       const result = await service.createDefaultPreferences('user123')
       
       expect(result.success).toBe(true)
@@ -146,6 +235,21 @@ describe('PushNotificationService', () => {
 
   describe('getNotificationHistory', () => {
     it('should get notification history for user', async () => {
+      const { supabase } = await import('@/integrations/supabase/client')
+      
+      vi.mocked(supabase.from).mockReturnValue({
+        select: vi.fn().mockReturnValue({
+          eq: vi.fn().mockReturnValue({
+            order: vi.fn().mockReturnValue({
+              limit: vi.fn().mockResolvedValue({
+                data: [{ id: '1', title: 'Test notification', created_at: '2023-01-01' }],
+                error: null
+              })
+            })
+          })
+        })
+      } as any)
+      
       const result = await service.getNotificationHistory('user123', 10)
       
       expect(result.success).toBe(true)

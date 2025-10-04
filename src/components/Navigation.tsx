@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Home, MessageCircle, Heart, User, Settings, Users, Calendar, Coins, Search, UserPlus, LogOut } from 'lucide-react';
+import { Home, MessageCircle, Heart, User, Settings, Coins, Search, UserPlus, LogOut } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 // import { NavigationEnhanced } from '@/components/navigation/NavigationEnhanced';
 import { logger } from '@/lib/logger';
@@ -46,7 +46,7 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
   const { features } = useFeatures();
   
   // Navegación siempre visible - sin efectos de scroll
-  const [isVisible] = useState(true);
+  const [_isVisible] = useState(true);
 
   // localStorage migrado a hooks tipados - todos los hooks al inicio
   const [isDemoAuthenticated] = usePersistedState('demo_authenticated', 'false');

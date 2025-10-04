@@ -6,7 +6,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import { validateStaking, validateTokenTransaction } from '@/lib/zod-schemas';
+import { validateStaking } from '@/lib/zod-schemas';
 import { isDemoMode, shouldUseRealSupabase, getAppConfig } from '@/lib/app-config';
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';

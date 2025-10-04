@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { 
@@ -200,7 +200,7 @@ const StoriesContainer: React.FC = () => {
           {/* Ejemplos de historias */}
           <div className="mb-6">
             <h4 className="text-lg font-semibold text-white mb-3 text-center">Ejemplos de Historias Populares</h4>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 px-2 sm:px-0">
               <div className="aspect-square bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg relative overflow-hidden">
                 <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white p-2">
                   <Camera className="h-6 w-6 mb-1" />
@@ -305,12 +305,23 @@ const StoriesContainer: React.FC = () => {
         </Button>
       </div>
 
-      {/* Lista de historias */}
-      <div className="flex space-x-4 overflow-x-auto pb-4">
+      {/* Lista de historias - Responsiva */}
+      <div className="flex space-x-3 sm:space-x-4 overflow-x-auto pb-4 scrollbar-hide px-1 sm:px-0">
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            .scrollbar-hide {
+              -ms-overflow-style: none;
+              scrollbar-width: none;
+            }
+            .scrollbar-hide::-webkit-scrollbar {
+              display: none;
+            }
+          `
+        }} />
         {/* Tu historia */}
         <div className="flex-shrink-0">
           <Card 
-            className="w-24 h-32 bg-black/30 backdrop-blur-sm border-white/10 cursor-pointer hover:scale-105 transition-transform relative overflow-hidden"
+            className="w-20 h-28 sm:w-24 sm:h-32 bg-black/30 backdrop-blur-sm border-white/10 cursor-pointer hover:scale-105 transition-transform relative overflow-hidden"
             onClick={handleCreateStory}
           >
             <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50"></div>
@@ -327,7 +338,7 @@ const StoriesContainer: React.FC = () => {
         {stories.map((story) => (
           <div key={story.id} className="flex-shrink-0">
             <Card 
-              className={`w-24 h-32 cursor-pointer hover:scale-105 transition-transform relative overflow-hidden ${
+              className={`w-20 h-28 sm:w-24 sm:h-32 cursor-pointer hover:scale-105 transition-transform relative overflow-hidden ${
                 story.isViewed ? 'border-gray-500' : 'border-purple-500 border-2'
               }`}
               onClick={() => handleViewStory(story)}
@@ -411,7 +422,7 @@ const StoriesContainer: React.FC = () => {
       {/* Estadísticas de historias */}
       <Card className="bg-black/30 backdrop-blur-sm border-white/10 p-4">
         <h3 className="font-semibold text-white mb-3">Estadísticas de Historias</h3>
-        <div className="grid grid-cols-3 gap-4 text-center">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
           <div>
             <p className="text-2xl font-bold text-white">{stories.length}</p>
             <p className="text-white/70 text-sm">Historias activas</p>

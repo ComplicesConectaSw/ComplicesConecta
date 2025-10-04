@@ -16,7 +16,6 @@ import {
   User, 
   MessageSquare,
   Image,
-  Heart,
   BarChart3,
   Filter,
   RefreshCw

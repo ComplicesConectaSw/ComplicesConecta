@@ -46,6 +46,9 @@ export interface UpdateCoupleProfileData {
   couple_name?: string;
   couple_bio?: string;
   couple_images?: string[];
+  couple_age?: string[];
+  couple_nickname?: string [];
+  couple_interest?: string[];
 }
 
 // Almacenamiento de datos simulados para desarrollo

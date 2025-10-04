@@ -3,7 +3,7 @@
  * Implementa swipe, pinch, drag y otros gestos nativos móviles
  */
 
-import React, { useRef, useEffect, useCallback } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { logger } from '@/lib/logger';
 
 interface TouchPoint {
@@ -198,7 +198,7 @@ export class TouchGestureManager {
     }
   };
 
-  private handleTouchEnd = (event: TouchEvent): void => {
+  private handleTouchEnd = (_event: TouchEvent): void => {
     if (this.isDragging) {
       // Finalizar drag
       if (this.callbacks.onDragEnd && this.touchCurrent) {

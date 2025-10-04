@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { Check, Palette } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Theme, getAvailableThemes, getThemeDisplayName } from '@/hooks/useProfileTheme';
-import { UnifiedButton } from '@/components/ui/UnifiedButton';
 import { Badge } from '@/components/ui/badge';
 import { validateThemeSelector } from '@/lib/zod-schemas';
 import { logger } from '@/lib/logger';

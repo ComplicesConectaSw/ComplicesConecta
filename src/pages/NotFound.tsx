@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Home, Heart, ArrowLeft, Search, Sparkles, Zap, Star } from "lucide-react";
+import { Home, Heart, Search, Sparkles, Zap, Star } from "lucide-react";
 import { logger } from '@/lib/logger';
 
 const NotFound = () => {

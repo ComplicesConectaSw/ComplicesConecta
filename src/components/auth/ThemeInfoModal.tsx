@@ -20,8 +20,8 @@ export const ThemeInfoModal: React.FC<ThemeInfoModalProps> = ({
   gender,
   partnerGender
 }) => {
-  const profileType: ProfileType = userType;
-  const genders: Gender[] = userType === 'couple' && partnerGender 
+  const _profileType: ProfileType = userType;
+  const _genders: Gender[] = userType === 'couple' && partnerGender 
     ? [gender, partnerGender] 
     : [gender];
 

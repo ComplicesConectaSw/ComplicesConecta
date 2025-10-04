@@ -64,7 +64,7 @@ export const ChatContainer: React.FC<ChatContainerProps> = ({
     setIsScrolledToBottom(isAtBottom);
   };
 
-  const formatTime = (timestamp: string) => {
+  const _formatTime = (timestamp: string) => {
     return new Date(timestamp).toLocaleTimeString('es-ES', {
       hour: '2-digit',
       minute: '2-digit'
@@ -145,7 +145,7 @@ export const ChatContainer: React.FC<ChatContainerProps> = ({
         }}
       >
         <AnimatePresence mode="popLayout">
-          {messages.map((message, index) => (
+          {messages.map((message, _index) => (
             <ChatBubble
               id={message.id}
               message={message.content}

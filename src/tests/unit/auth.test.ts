@@ -53,7 +53,7 @@ vi.mock('@/hooks/useAuth', () => ({
     isAdmin: vi.fn(() => false),
     isDemo: vi.fn(() => false),
     getProfileType: vi.fn(() => 'single'),
-    shouldUseProductionAdmin: false,
+    shouldUseProductionAdmin: vi.fn(() => false),
     appMode: 'production',
     isAuthenticated: vi.fn(() => false),
     loadProfile: vi.fn(),

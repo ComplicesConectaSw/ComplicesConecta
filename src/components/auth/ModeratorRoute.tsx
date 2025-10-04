@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
-import { UserRole, hasPermission } from '@/lib/roles';
 
 interface ModeratorRouteProps {
   children: React.ReactNode;

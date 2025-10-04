@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence, useAnimation, Variants } from 'framer-motion';
-import { Send, MoreVertical, Phone, Video, Image, Smile, Paperclip, Sparkles, Loader2 } from "lucide-react";
+import { Send, MoreVertical, Phone, Video, Image, Smile, Paperclip, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";

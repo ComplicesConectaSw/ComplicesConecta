@@ -1,4 +1,4 @@
-import { Heart, Users, Shield, Zap, MapPin, Calendar, Camera, MessageCircle, Star, Trophy, Gift, Sparkles, Search, UserPlus, Crown, BarChart3, Settings, Bell } from "lucide-react";
+import { Heart, Users, Shield, Calendar, MessageCircle, Search, UserPlus, Crown, BarChart3, Settings, Bell } from "lucide-react";
 
 export const mainNavItems = [
   { title: 'Descubrir', url: '/discover', icon: Search, badge: 'Nuevo' },

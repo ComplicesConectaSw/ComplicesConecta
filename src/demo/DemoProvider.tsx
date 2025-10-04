@@ -5,8 +5,8 @@
 
 import React, { createContext, useContext, ReactNode } from 'react';
 import { logger } from '@/lib/logger';
-import { Database } from '@/integrations/supabase/types';
-import { demoProfiles, demoMessages, demoInvitations, demoEvents, demoMatches } from '@/demo/demoData';
+import { Database } from '@/types/types';
+import { demoProfiles } from '@/demo/demoData';
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
 
@@ -49,14 +49,14 @@ export const DemoProvider: React.FC<DemoProviderProps> = ({ children }) => {
         );
       });
     }
-    
+
     return filtered as Profile[];
   };
 
   const mockAuth = {
-    login: async (email: string, password: string) => {
+    login: async (email: string, _password: string) => {
       logger.info('Demo login attempt:', { email });
-      
+
       // Mock successful login for demo users
       if (email.includes('demo') || email.includes('test')) {
         return {

@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Palette, Users, User, Heart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Theme, Gender, ProfileType } from '@/hooks/useProfileTheme';
-import { generateDemoProfiles, DemoProfile } from '@/demo/demoData';
+import { generateDemoProfiles } from '@/demo/demoData';
 
 interface ProfileThemeShowcaseProps {
   className?: string;
@@ -218,7 +218,7 @@ export const ProfileThemeShowcase: React.FC<ProfileThemeShowcaseProps> = ({
           animate="visible"
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
-          {demoProfiles.map((profile, index) => (
+          {demoProfiles.map((profile, _index) => (
             <motion.div
               key={profile.id}
               variants={itemVariants}

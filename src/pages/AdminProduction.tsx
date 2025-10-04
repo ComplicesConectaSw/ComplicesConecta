@@ -7,40 +7,27 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { 
   Users, 
   BarChart3, 
-  Download, 
   MessageSquare, 
-  Settings, 
   Shield, 
   Trash2, 
-  Edit, 
   Plus,
   Eye,
   CheckCircle,
   XCircle,
   Crown,
-  Activity,
   HelpCircle,
   ArrowLeft,
-  UserPlus,
   FileText,
-  Search,
-  Filter,
-  Calendar,
-  TrendingUp,
-  Bell,
-  AlertTriangle,
-  RefreshCw
+  AlertTriangle
 } from 'lucide-react';
 import { Header } from '@/components/Header';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from '@/integrations/supabase/client';
-import { invitationService, type Invitation } from '@/lib/invitations';
-import { isProductionAdmin } from '@/lib/app-config';
+import { type Invitation } from '@/lib/invitations';
 import { logger } from '@/lib/logger';
 
 interface Profile {

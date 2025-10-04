@@ -34,12 +34,9 @@ export function usePersistedState<T>(
           logger.info('Estado cargado desde localStorage:', { key, hasValue: !!parsed });
         }
         return parsed;
-      } catch (jsonError) {
-        // Si falla JSON, tratar como string simple
-        if (process.env.NODE_ENV === 'development' || key.includes('demo_') || key.includes('auth_')) {
-          logger.info('Estado cargado desde localStorage (string):', { key, value: item });
-        }
-        return item as T;
+      } catch {
+        // If JSON parsing fails, return the raw value
+        return item;
       }
     } catch (error) {
       logger.error('Error leyendo localStorage:', { key, error: String(error) });

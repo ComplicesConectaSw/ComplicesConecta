@@ -1,6 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
-import type { Database } from '@/integrations/supabase/types';
 import type { Json } from '@/integrations/supabase/types';
 import { NotificationService } from '@/lib/notifications';
 

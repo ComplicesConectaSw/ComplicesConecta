@@ -6,7 +6,6 @@
 import React, { ReactNode, useMemo } from 'react';
 import { DemoProvider } from '@/demo/DemoProvider';
 import { RealProvider } from '@/demo/RealProvider';
-import { getDataConfig } from '@/config/demo-production';
 import { logger } from '@/lib/logger';
 
 interface AppFactoryProps {

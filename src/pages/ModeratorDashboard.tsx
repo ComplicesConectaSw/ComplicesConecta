@@ -14,11 +14,10 @@ import {
   Eye,
   Ban,
   MessageSquare,
-  Calendar,
   User
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { UserRole, ModerationAction, ReportType, ReportStatus } from '@/lib/roles';
+import { ModerationAction, ReportType, ReportStatus } from '@/lib/roles';
 
 interface Report {
   id: string;

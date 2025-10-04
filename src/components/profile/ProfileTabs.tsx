@@ -14,13 +14,10 @@ import {
   Eye,
   Calendar,
   Grid3X3,
-  Play,
   Upload,
   Trash2
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { MainProfileCard } from '@/components/profile/MainProfileCard';
-import type { Database } from '@/integrations/supabase/types';
 
 type ProfileType = 'single' | 'couple';
 

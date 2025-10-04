@@ -37,7 +37,7 @@ interface Profile {
 }
 
 const Profiles: React.FC = () => {
-  const navigate = useNavigate();
+  const _navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const [aiSuggestions, setAiSuggestions] = useState<string[]>([]);
@@ -55,7 +55,7 @@ const Profiles: React.FC = () => {
       age: 28,
       location: "Ciudad de México",
       bio: "Amante de los viajes y la aventura",
-      images: ["/placeholder.svg"],
+      images: ["/compliceslogo.png"],
       interests: ["viajes", "música", "cocina"],
       isOnline: true,
       verified: true
@@ -82,7 +82,7 @@ const Profiles: React.FC = () => {
     }
   };
 
-  const handleFilterChange = (filters: FilterState) => {
+  const _handleFilterChange = (filters: FilterState) => {
     logger.info('🔍 Filtros aplicados', { filters });
     // Lógica de filtrado simplificada
     setFilteredProfiles(allProfiles);

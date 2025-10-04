@@ -1,25 +1,15 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, Users, Search, Plus, Phone, Video, MoreVertical, ArrowLeft, Heart, Flame, Send, Lock, Globe, UserPlus, Info } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { MessageCircle, Video, MoreVertical, ArrowLeft, Heart, Send, Lock, Globe, UserPlus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { UnifiedButton } from "@/components/ui/UnifiedButton";
 import { UnifiedInput } from "@/components/ui/UnifiedInput";
-import { UnifiedCard } from "@/components/ui/UnifiedCard";
-import { UnifiedTabs } from "@/components/ui/UnifiedTabs";
-import { ModernChatInterface } from "@/components/chat/ModernChatInterface";
-import { ChatContainer } from "@/components/chat/ChatContainer";
-import { ChatBubble } from "@/components/chat/ChatBubble";
-import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useFeatures } from "@/hooks/useFeatures";
 import { toast } from "@/hooks/use-toast";
 import NavigationEnhanced from "@/components/NavigationEnhanced";
 // import { Header } from "@/components/Header";
-import { InvitationDialog } from "@/components/invitations/InvitationDialog";
 import { mockPrivacySettings } from "@/lib/data";
 import { invitationService } from "@/lib/invitations";
-import { chatService, type ChatRoom, type ChatMessage } from "@/lib/chat";
 import { simpleChatService, type SimpleChatRoom, type SimpleChatMessage } from '@/lib/simpleChatService';
 import { logger } from '@/lib/logger';
 

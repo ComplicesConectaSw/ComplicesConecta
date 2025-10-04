@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Home, 
-  Users, 
   MessageCircle, 
   Heart, 
   Search, 
@@ -11,15 +10,13 @@ import {
   User,
   UserPlus,
   Coins,
-  Menu,
-  X,
   LogOut
 } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { logger } from '@/lib/logger';
 import { cn } from '@/lib/utils';
 
-interface NavigationEnhancedProps {
+interface _NavigationEnhancedProps {
   className?: string;
   showNotificationBadges?: boolean;
   enableAnimations?: boolean;
@@ -27,10 +24,10 @@ interface NavigationEnhancedProps {
 }
 
 const NavigationEnhanced: React.FC = () => {
-  const [activeItem, setActiveItem] = useState('feed');
+  const [_activeItem, _setActiveItem] = useState('feed');
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [_isMobileMenuOpen, _setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -43,7 +40,7 @@ const NavigationEnhanced: React.FC = () => {
   useEffect(() => {
     // Trigger re-render para aplicar nuevos estilos
     const timer = setTimeout(() => {
-      setActiveItem(prev => prev);
+      _setActiveItem(prev => prev);
     }, 100);
     return () => clearTimeout(timer);
   }, [navbarStyle, demoTheme]);
@@ -96,7 +93,7 @@ const NavigationEnhanced: React.FC = () => {
     const currentPath = location.pathname;
     const currentItem = navItems.find(item => item.path === currentPath);
     if (currentItem) {
-      setActiveItem(currentItem.id);
+      _setActiveItem(currentItem.id);
     }
   }, [location.pathname, navItems]);
 
@@ -145,7 +142,7 @@ const NavigationEnhanced: React.FC = () => {
   };
 
   // Animation variants
-  const navVariants = {
+  const _navVariants = {
     hidden: { 
       y: 100, 
       opacity: 0,
@@ -238,7 +235,7 @@ const NavigationEnhanced: React.FC = () => {
           
           <div className="relative flex items-center justify-between w-full max-w-full mx-auto px-1 overflow-x-auto scrollbar-hide">
             <div className="flex items-center justify-around w-full min-w-fit gap-1">
-              {navItems.map((item, index) => {
+              {navItems.map((item, _index) => {
                 const Icon = item.icon;
                 const isActive = location.pathname === item.path;
                 const notificationCount = 0;

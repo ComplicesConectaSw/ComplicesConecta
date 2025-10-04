@@ -15,9 +15,26 @@ vi.mock('@/integrations/supabase/client', () => ({
         }))
       })),
       select: vi.fn(() => ({
-        gte: vi.fn(() => ({
+        eq: vi.fn(() => ({
+          gte: vi.fn(() => ({
+            order: vi.fn(() => ({
+              limit: vi.fn(() => Promise.resolve({ data: [], error: null }))
+            }))
+          })),
           order: vi.fn(() => ({
             limit: vi.fn(() => Promise.resolve({ data: [], error: null }))
+          }))
+        })),
+        gte: vi.fn(() => ({
+          eq: vi.fn(() => ({
+            order: vi.fn(() => ({
+              limit: vi.fn(() => Promise.resolve({ data: [], error: null }))
+            }))
+          })),
+          order: vi.fn(() => ({
+            limit: vi.fn(() => ({
+              eq: vi.fn(() => Promise.resolve({ data: [], error: null }))
+            }))
           }))
         }))
       }))

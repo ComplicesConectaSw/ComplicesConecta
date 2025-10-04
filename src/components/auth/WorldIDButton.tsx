@@ -5,7 +5,6 @@ import React, { useState } from 'react';
 import { IDKitWidget, VerificationLevel, ISuccessResult } from '@worldcoin/idkit'
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { useWorldID } from "@/hooks/useWorldID"
 import { useAuth } from "@/hooks/useAuth"
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';

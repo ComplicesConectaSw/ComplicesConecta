@@ -15,6 +15,7 @@
 
 import { supabase } from '@/integrations/supabase/client'
 import { logger } from '@/lib/logger'
+import type { Json } from '@/types/types';
 
 // Tipos para las métricas del sistema
 export interface PerformanceMetrics {
@@ -34,7 +35,7 @@ export interface SystemMetric {
                'token_transactions' | 'report_activity' | 'memory_usage' | 'cpu_usage'
   metric_value: number
   metric_unit: 'ms' | 'count' | 'percentage' | 'bytes' | 'users'
-  metadata: Record<string, any>
+  metadata: Json | null
   recorded_at: string
   created_at: string
 }
@@ -77,7 +78,7 @@ export class PerformanceMonitoringService {
     type: SystemMetric['metric_type'],
     value: number,
     unit: SystemMetric['metric_unit'],
-    metadata: Record<string, any> = {}
+    metadata: Json | null = null
   ): Promise<MetricInsertResponse> {
     try {
       const { data, error } = await (supabase as any)

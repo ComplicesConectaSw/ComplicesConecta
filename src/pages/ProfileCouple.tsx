@@ -2,25 +2,23 @@ import React, { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Heart, MessageCircle, MapPin, Verified, Crown, ArrowLeft, Settings, Share2, Users, Lock, Images, Camera, Flag } from "lucide-react";
+import { Heart, MapPin, Verified, Crown, Settings, Share2, Lock, Images, Flag } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import NavigationEnhanced from "@/components/NavigationEnhanced";
 import { generateMockCoupleProfiles, type CoupleProfileWithPartners } from "@/lib/coupleProfiles";
-import CoupleProfileHeader from "@/components/profile/CoupleProfileHeader";
 import { useAuth } from '@/hooks/useAuth';
 import { logger } from '@/lib/logger';
 import { usePersistedState } from '@/hooks/usePersistedState';
 import { PrivateImageRequest } from '@/components/profile/PrivateImageRequest';
 import { PrivateImageGallery } from '@/components/profile/PrivateImageGallery';
 import { ReportDialog } from '@/components/swipe/ReportDialog';
-import StoriesContainer from '@/components/stories/StoriesContainer';
 import { ProfileNavTabs } from '@/components/profile/ProfileNavTabs';
 
 const ProfileCouple: React.FC = () => {
   const navigate = useNavigate();
   const [profile, setProfile] = useState<CoupleProfileWithPartners | null>(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'couple' | 'individual'>('couple');
+  const [_activeTab, _setActiveTab] = useState<'couple' | 'individual'>('couple');
   const [showPrivateImageRequest, setShowPrivateImageRequest] = useState(false);
   const [privateImageAccess, setPrivateImageAccess] = useState<'none' | 'pending' | 'approved' | 'denied'>('none');
   const [showReportDialog, setShowReportDialog] = useState(false);
@@ -46,8 +44,8 @@ const ProfileCouple: React.FC = () => {
   };
   
   // Migración localStorage → usePersistedState
-  const [demoAuth, setDemoAuth] = usePersistedState('demo_authenticated', 'false');
-  const [demoUser, setDemoUser] = usePersistedState<any>('demo_user', null);
+  const [demoAuth, _setDemoAuth] = usePersistedState('demo_authenticated', 'false');
+  const [demoUser, _setDemoUser] = usePersistedState<any>('demo_user', null);
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -349,8 +347,8 @@ const ProfileCouple: React.FC = () => {
                     images={[
                       {
                         id: '1',
-                        url: '/src/assets/people/privado/coupleprivjpg.jpg',
-                        thumbnail: '/src/assets/people/privado/coupleprivjpg.jpg',
+                        url: '/placeholder.svg',
+                        thumbnail: '/placeholder.svg',
                         uploadedAt: new Date()
                       }
                     ]}

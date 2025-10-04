@@ -2,13 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
 import { 
   Heart, 
   MessageCircle, 
   Share2, 
   Eye, 
-  Clock, 
   X, 
   Send,
   Trash2,
@@ -89,7 +87,7 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({
           storyId: currentStory.id.toString(),
           userId: currentUserId,
           createdAt: new Date(),
-          user: { id: currentUserId, name: "Usuario Demo", avatar: "/src/assets/people/profile-1.jpg" }
+          user: { id: currentUserId, name: "Usuario Demo", avatar: "/placeholder.svg" }
         };
         updatedStory.likes = updatedStory.likes || [];
         updatedStory.likes.push(newLike);
@@ -113,7 +111,7 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({
         userId: currentUserId,
         comment: newComment.trim(),
         createdAt: new Date(),
-        user: { id: currentUserId, name: "Usuario Demo", avatar: "/src/assets/people/profile-1.jpg" }
+        user: { id: currentUserId, name: "Usuario Demo", avatar: "/placeholder.svg" }
       };
       
       updatedStory.comments = updatedStory.comments || [];

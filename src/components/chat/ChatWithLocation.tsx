@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,7 +8,7 @@ import { MapPin, Send, Share2 } from 'lucide-react';
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { useToast } from "@/hooks/use-toast";
 import { logger } from '@/lib/logger';
-import type { MessageInsert, MessageWithSender } from '@/types/supabase-messages';
+import { supabase } from '@/integrations/supabase/client';
 
 // Interfaces importadas de @/types/supabase-messages
 
@@ -98,7 +97,7 @@ export const ChatWithLocation = ({ conversationId, currentUserId, otherUser }: C
 
     setIsLoading(true);
     try {
-      const messageData: MessageInsert = {
+      const messageData = {
         conversation_id: conversationId,
         sender_id: currentUserId,
         content: newMessage.trim() || "📍 Ubicación compartida",

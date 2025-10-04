@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Heart, Clock, MessageCircle, Filter, Users } from "lucide-react";
+import { Heart, Clock, MessageCircle, Users } from "lucide-react";
 
 interface MatchFiltersProps {
   currentFilter: 'all' | 'new' | 'recent' | 'unread';

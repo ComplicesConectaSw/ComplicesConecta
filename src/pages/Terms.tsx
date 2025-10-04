@@ -1,14 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Shield, Users, Heart, Lock, FileText } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Shield, Users, Heart, Lock, FileText } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 
 const Terms = () => {
-  const navigate = useNavigate();
+  const _navigate = useNavigate();
 
   return (
     <div className="min-h-screen relative overflow-hidden">

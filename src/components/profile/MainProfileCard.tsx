@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import { Heart, MessageCircle, MapPin, Verified, Star, Wifi, WifiOff, X, Zap } from "lucide-react";
+import { Heart, MapPin, Verified, Star, X, Zap } from "lucide-react";
 import { useUserOnlineStatus } from "@/hooks/useOnlineStatus";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { logger } from '@/lib/logger';
 import { useProfileTheme, Gender, ProfileType, Theme } from '@/hooks/useProfileTheme';
 import { cn } from '@/lib/utils';
-import { validateProfileCard, type ProfileCardProps as ZodProfileCardProps } from '@/lib/zod-schemas';
+import { validateProfileCard } from '@/lib/zod-schemas';
 
 interface ProfileCardProps {
   profile: {

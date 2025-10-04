@@ -1,6 +1,7 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import type { Database } from '@/integrations/supabase/types';
-import { logger } from '@/lib/logger';
+import type { Database } from '@/types/types';
+import { logger}  from '@/lib/logger';
+
 
 // Obtener las credenciales de Supabase desde las variables de entorno
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
@@ -11,6 +12,7 @@ if (!supabaseUrl || !supabaseAnonKey || supabaseUrl.includes('your-supabase-url-
   logger.warn('⚠️ Variables de Supabase usando valores placeholder - activando modo demo', {});
   logger.info('VITE_SUPABASE_URL:', { status: supabaseUrl ? '✅ Configurada' : '❌ Faltante' });
   logger.info('VITE_SUPABASE_ANON_KEY:', { status: supabaseAnonKey ? '✅ Configurada' : '❌ Faltante' });
+  
   // No lanzar error, permitir modo demo
 }
 
@@ -58,7 +60,7 @@ function getSupabaseClient(): SupabaseClient<Database> {
             } else {
               logger.info('✅ Permitiendo Supabase para admin demo:', { email: user.email });
             }
-          } catch (error) {
+          } catch {
             logger.info('🚫 Bloqueando Supabase - error parsing demo user', {});
             return Promise.reject(new Error('Demo mode active - parse error'));
           }

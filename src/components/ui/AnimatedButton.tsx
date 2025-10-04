@@ -2,8 +2,8 @@ import * as React from "react";
 import { motion, HTMLMotionProps } from "framer-motion";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { buttonVariants, type ButtonProps } from "@/components/ui/button";
-import { VariantProps } from "class-variance-authority";
+import { buttonVariants } from "@/components/ui/button";
+import { type VariantProps } from "class-variance-authority";
 
 interface AnimatedButtonProps extends Omit<HTMLMotionProps<"button">, "size">, VariantProps<typeof buttonVariants> {
   loading?: boolean;

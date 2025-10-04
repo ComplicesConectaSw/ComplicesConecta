@@ -10,6 +10,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { logger } from '@/lib/logger';
+import type { Database } from '@/types/types';
 
 interface NotificationItem {
   id: string;
@@ -34,6 +35,9 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ className = 
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
   const { toast } = useToast();
+
+  // Usar datos demo para usuarios demo para evitar errores de Supabase
+  const isDemo = user && (user as any)?.is_demo;
 
   // Load demo notifications for demo users
   const loadDemoNotifications = () => {
@@ -63,7 +67,7 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ className = 
 
   // Load notifications on mount and when user changes
   useEffect(() => {
-    if (user && !(user as any).is_demo) {
+    if (user && !isDemo) {
       loadNotifications();
       // Set up real-time subscription
       const subscription = supabase
@@ -79,11 +83,11 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ className = 
       return () => {
         subscription.unsubscribe();
       };
-    } else if ((user as any)?.is_demo) {
+    } else if (isDemo) {
       // Cargar notificaciones demo
       loadDemoNotifications();
     }
-  }, [user]);
+  }, [user, isDemo]);
 
   const loadNotifications = async () => {
     if (!user) return;
@@ -106,24 +110,24 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ className = 
 
       if (error) throw error;
 
-      const formattedNotifications: NotificationItem[] = data?.map((item: any) => ({
+      const formattedNotifications: NotificationItem[] = data?.map((item: Database['public']['Tables']['notifications']['Row']) => ({
         id: item.id,
-        type: item.type || 'system',
+        type: (item.type as 'email' | 'request' | 'alert' | 'system') || 'system',
         title: item.title || 'Notificación',
         message: item.message || '',
         read: item.read || false,
-        created_at: item.created_at,
-        action_url: item.action_url,
-        sender_id: item.sender_id,
-        sender_name: item.sender_name
+        created_at: item.created_at || new Date().toISOString(),
+        action_url: item.action_url || undefined,
+        sender_id: item.sender_id || undefined,
+        sender_name: item.sender_name || undefined
       })) || [];
 
       setNotifications(formattedNotifications);
       setUnreadCount(formattedNotifications.filter(n => !n.read).length);
     } catch (error) {
-      logger.error('Error loading notifications:', error as any);
+      logger.error('Error loading notifications:', { error: error instanceof Error ? error.message : String(error) });
       // Only show toast for non-demo users
-      if (!(user as any)?.is_demo) {
+      if (!user || !((user as any)?.is_demo)) {
         toast({
           title: "Error",
           description: "No se pudieron cargar las notificaciones",
@@ -139,7 +143,7 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ className = 
     try {
       const { error } = await supabase
         .from('notifications')
-        .update({ read: true } as never)
+        .update({ read: true })
         .eq('id', notificationId);
 
       if (error) throw error;
@@ -149,7 +153,7 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ className = 
       );
       setUnreadCount(prev => Math.max(0, prev - 1));
     } catch (error) {
-      logger.error('Error marking notification as read:', error as any);
+      logger.error('Error marking notification as read:', { error: error instanceof Error ? error.message : String(error) });
     }
   };
 
@@ -159,7 +163,7 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ className = 
     try {
       const { error } = await supabase
         .from('notifications')
-        .update({ read: true } as never)
+        .update({ read: true })
         .eq('user_id', user.id)
         .eq('read', false);
 
@@ -173,7 +177,7 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ className = 
         description: "Todas las notificaciones marcadas como leídas"
       });
     } catch (error) {
-      logger.error('Error marking all notifications as read:', error as any);
+      logger.error('Error marking all notifications as read:', { error: error instanceof Error ? error.message : String(error) });
       toast({
         title: "Error",
         description: "No se pudieron marcar las notificaciones como leídas",
@@ -197,7 +201,7 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ className = 
         return notification && !notification.read ? prev - 1 : prev;
       });
     } catch (error) {
-      logger.error('Error deleting notification:', error as any);
+      logger.error('Error deleting notification:', { error: error instanceof Error ? error.message : String(error) });
       toast({
         title: "Error",
         description: "No se pudo eliminar la notificación",

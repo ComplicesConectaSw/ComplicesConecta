@@ -9,7 +9,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
-import { Database } from '@/integrations/supabase/types';
+import { Database } from '@/types/types';
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
 
@@ -168,11 +168,12 @@ class ProductionMatchService {
       }
 
       // Calcular compatibilidad y crear matches
-      const userInterests = currentProfile.interests || [];
+      const userProfile = currentProfile;
+      const _userInterests = userProfile.interests || [];
       const compatibleMatches: ProductionMatch[] = [];
 
       for (const profile of profiles) {
-        const profileInterests = profile.interests || [];
+        const _profileInterests = profile.interests || [];
         const compatibilityScore = calculateCompatibility(currentProfile, profile);
         
         // Aplicar filtro de compatibilidad mínima

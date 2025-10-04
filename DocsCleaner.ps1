@@ -20,7 +20,7 @@ function Get-MarkdownGroups {
     return $groups
 }
 
-function Consolidar-Docs {
+function Invoke-DocsConsolidation {
     param(
         [string]$tema,
         [array]$files

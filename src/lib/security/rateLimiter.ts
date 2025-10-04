@@ -3,7 +3,7 @@
  * Protege endpoints sin modificar lógica de autenticación existente
  */
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { logger } from '@/lib/logger';
 
 interface RateLimitConfig {

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Tables } from "@/integrations/supabase/types";
 
-interface UserPreferences {
+interface _UserPreferences {
   interests: string[];
   // Define other preferences fields here if they exist
 }
@@ -136,7 +136,7 @@ export const PreferenceSearch = ({ onResultsChange, currentUserId }: PreferenceS
 
       // Filter by interests
       if (filters.interests.length > 0) {
-        filteredResults = filteredResults.filter((profile: Tables<'profiles'>) => {
+        filteredResults = filteredResults.filter((_profile: Tables<'profiles'>) => {
           // Mock preferences since user_preferences doesn't exist in current schema
           const mockPreferences = {
             interests: ['Lifestyle Swinger', 'Intercambio de Parejas', 'Eventos Lifestyle', 'Mentalidad Abierta'],

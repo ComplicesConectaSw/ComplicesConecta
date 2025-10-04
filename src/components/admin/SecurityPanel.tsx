@@ -8,11 +8,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
-import { Database } from '@/integrations/supabase/types';
 import {
   Shield, AlertTriangle, Lock, Eye, Ban, UserX, Smartphone,
-  RefreshCw, Search, Settings, CheckCircle, XCircle, Activity
+  RefreshCw, Search, Settings, CheckCircle, XCircle
 } from 'lucide-react';
 
 type SecurityAlert = {
@@ -57,7 +55,7 @@ export default function SecurityPanel() {
   });
   const [searchTerm, setSearchTerm] = useState('');
   const [alertFilter, setAlertFilter] = useState('all');
-  const [selectedAlert, setSelectedAlert] = useState<SecurityAlert | null>(null);
+  const [_selectedAlert, _setSelectedAlert] = useState<SecurityAlert | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -433,7 +431,7 @@ export default function SecurityPanel() {
                             <DialogTrigger asChild>
                               <Button 
                                 className="border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 h-8 px-3 text-sm"
-                                onClick={() => setSelectedAlert(alert)}
+                                onClick={() => _setSelectedAlert(alert)}
                               >
                                 <Settings className="w-4 h-4" />
                               </Button>

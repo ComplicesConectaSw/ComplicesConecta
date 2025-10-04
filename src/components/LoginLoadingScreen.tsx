@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Heart, Sparkles, Users, Zap, UserCheck, Shield } from "lucide-react";
+import { Heart, Sparkles, Users, UserCheck, Shield } from "lucide-react";
 
 export interface LoginLoadingScreenProps {
   onComplete: () => void;

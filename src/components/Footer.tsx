@@ -1,4 +1,4 @@
-import { Heart, Facebook, Instagram, Twitter, Mail, Phone, MessageCircle } from "lucide-react";
+import { Heart, Facebook, Instagram, Twitter, Mail, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 

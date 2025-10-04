@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Gift, Heart, Star, Crown, Sparkles, Send } from "lucide-react";
+import { Gift, Crown, Send } from "lucide-react";
 
 // Check if user is in demo mode
 const isDemoMode = () => {

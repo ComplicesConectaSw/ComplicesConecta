@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button';
 import { LogOut, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { createClient } from '@supabase/supabase-js';
 
 interface LogoutButtonProps {
   variant?: 'default' | 'ghost' | 'outline';

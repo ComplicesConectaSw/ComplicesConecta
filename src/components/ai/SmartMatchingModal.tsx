@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { Heart, Brain, MapPin, Star, Clock, Shield, X, Zap, Users } from 'lucide-react';
+import { Heart, Brain, MapPin, Star, Shield, Zap, Users } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';

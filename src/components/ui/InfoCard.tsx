@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { motion } from 'framer-motion';
 import { CheckCircle, ArrowRight } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import type { InfoCard as InfoCardType } from '@/lib/infoCards';
 
 interface InfoCardProps {

@@ -2,10 +2,9 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { UnifiedButton } from '@/components/ui/UnifiedButton';
 import { UnifiedCard } from '@/components/ui/UnifiedCard';
-import { UnifiedInput } from '@/components/ui/UnifiedInput';
-import { useAnimation, useAnimationVariants } from '@/components/animations/AnimationProvider';
+import { useAnimationVariants } from '@/components/animations/AnimationProvider';
 import { MagneticButton, RippleEffect, FloatingElement } from '@/components/animations/InteractiveAnimations';
-import { Heart, Star, MessageCircle, Users, Sparkles } from 'lucide-react';
+import { Heart, Star } from 'lucide-react';
 
 // Enhanced Animated Button with multiple effects
 interface EnhancedButtonProps {
@@ -58,7 +57,7 @@ export const EnhancedButton: React.FC<EnhancedButtonProps> = ({
   return (
     <WrapperComponent {...(ripple ? { className: 'inline-block' } : {})}>
       <ButtonComponent
-        variants={{ ...variants, ...pulseVariants }}
+        variants={{ ...variants, ...(pulseVariants as any) }}
         initial="idle"
         animate={pulse ? "animate" : "idle"}
         whileHover="hover"
@@ -124,7 +123,7 @@ export const EnhancedCard: React.FC<EnhancedCardProps> = ({
 
   return (
     <CardComponent
-      variants={variants}
+      variants={variants as any}
       initial="initial"
       animate="animate"
       whileHover="hover"
@@ -171,6 +170,16 @@ export const EnhancedProfileCard: React.FC<EnhancedProfileCardProps> = ({
     back: { rotateY: 180 }
   });
 
+  const _textVariants = useAnimationVariants({
+    front: { opacity: 1 },
+    back: { opacity: 0 }
+  });
+
+  const _iconVariants = useAnimationVariants({
+    front: { opacity: 0 },
+    back: { opacity: 1 }
+  });
+
   const actionVariants = useAnimationVariants({
     hidden: { opacity: 0, y: 20 },
     visible: { 
@@ -186,7 +195,7 @@ export const EnhancedProfileCard: React.FC<EnhancedProfileCardProps> = ({
       style={{ perspective: 1000 }}
     >
       <motion.div
-        variants={cardVariants}
+        variants={cardVariants as any}
         animate={isFlipped ? 'back' : 'front'}
         transition={{ duration: 0.6 }}
         className="relative w-full h-full preserve-3d cursor-pointer"
@@ -239,7 +248,7 @@ export const EnhancedProfileCard: React.FC<EnhancedProfileCardProps> = ({
               </div>
               
               <motion.div
-                variants={actionVariants}
+                variants={actionVariants as any}
                 initial="hidden"
                 animate="visible"
                 className="flex justify-center gap-4"
@@ -333,7 +342,7 @@ export const EnhancedChatMessage: React.FC<EnhancedChatMessageProps> = ({
 
   return (
     <motion.div
-      variants={messageVariants}
+      variants={messageVariants as any}
       initial="hidden"
       animate="visible"
       className={`flex ${message.isOwn ? 'justify-end' : 'justify-start'} mb-4`}
@@ -399,7 +408,7 @@ export const EnhancedNavItem: React.FC<EnhancedNavItemProps> = ({
 
   return (
     <motion.button
-      variants={itemVariants}
+      variants={itemVariants as any}
       animate={isActive ? 'active' : 'inactive'}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
@@ -410,7 +419,7 @@ export const EnhancedNavItem: React.FC<EnhancedNavItemProps> = ({
         {icon}
         {badge && badge > 0 && (
           <motion.div
-            variants={badgeVariants}
+            variants={badgeVariants as any}
             initial="hidden"
             animate="visible"
             className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"

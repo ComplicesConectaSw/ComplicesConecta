@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Save, Upload, Plus, X, LogOut, Sun, Moon, Eye, EyeOff } from "lucide-react";
+import { ArrowLeft, Save, X, Sun, Moon, Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { generateMockSingle } from "@/lib/data";
 import ImageUpload from "@/components/profile/ImageUpload";
@@ -13,7 +13,6 @@ import { getAppConfig } from "@/lib/app-config";
 import NavigationEnhanced from "@/components/NavigationEnhanced";
 import type { Tables } from '@/integrations/supabase/types';
 import { logger } from '@/lib/logger';
-import { usePersistedState } from '@/hooks/usePersistedState';
 import { useDemoThemeConfig, getNavbarStyles, useProfileTheme } from '@/hooks/useProfileTheme';
 import { motion } from 'framer-motion';
 

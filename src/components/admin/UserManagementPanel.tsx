@@ -20,7 +20,6 @@ import {
   Calendar,
   MapPin,
   Eye,
-  Edit,
   Trash2,
   Ban,
   CheckCircle,

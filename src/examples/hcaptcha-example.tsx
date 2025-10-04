@@ -4,8 +4,8 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { XCircle, CheckCircle, AlertCircle, Shield } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { XCircle, CheckCircle, Shield } from 'lucide-react';
 import { logger } from '@/lib/logger';
 
 /**
