@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Send, Users, MessageCircle, UserPlus, Search, MoreVertical, Phone, Video, Settings, ArrowLeft, Check, X, Lock } from 'lucide-react';
+import { ArrowLeft, Send, Users, Lock, MessageCircle, UserPlus, Check, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import NavigationEnhanced from "@/components/NavigationEnhanced";
 import { getDiverseAvatar } from '@/lib/media';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";

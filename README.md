@@ -19,13 +19,13 @@
 
 ### 📱 ¡Descarga la App Ahora!
 
-<a href="https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v3.4.0/app-release.apk" download>
-  <img src="https://img.shields.io/badge/📱_Descargar_APK-v3.4.0-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
+<a href="https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v.3.3.0/app-release.apk" download>
+  <img src="https://img.shields.io/badge/📱_Descargar_APK-v3.3.0-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
 </a>
 
-**APK Disponible**: [Descargar v3.4.0](https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v3.4.0/app-release.apk)
+**APK Disponible**: [Descargar v3.3.0](https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v.3.3.0/app-release.apk)
 
-**SHA256:** `Verificado - Build v3.4.0 con Optimización de Build y ProfileThemeDemo Mejorado`
+**SHA256:** `Verificado - Build v3.3.0 con Optimización de Build y ProfileThemeDemo Mejorado`
 
 *🔒 Aplicación segura y verificada para Android*
 
