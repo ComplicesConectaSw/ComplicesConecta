@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Calendar, MapPin, Users, Star, Heart, Search, AlertTriangle, X, ArrowLeft, Lock, Sparkles, Crown, Shield } from 'lucide-react';
+import { Heart, MapPin, Users, Calendar, AlertTriangle, X, ArrowLeft, Crown, Shield, Star, Sparkles, Search, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { getEventPlaceholder, getDiverseAvatar } from '@/lib/media';
 import NavigationEnhanced from "@/components/NavigationEnhanced";
 import { usePersistedState } from '@/hooks/usePersistedState';
 import { logger } from '@/lib/logger';
@@ -46,10 +47,10 @@ const Events = () => {
       maxAttendees: 30,
       price: 2500,
       category: "VIP Exclusivo",
-      image: "/compliceslogo.png",
+      image: getEventPlaceholder("event-1"),
       organizer: {
         name: "Elite Connections México",
-        avatar: "/compliceslogo.png"
+        avatar: getDiverseAvatar("org-1", "Elite Connections México", 'single')
       },
       isJoined: true,
       isLiked: true,
@@ -67,10 +68,10 @@ const Events = () => {
       maxAttendees: 20,
       price: 1800,
       category: "Conexiones Swinger",
-      image: "/compliceslogo.png",
+      image: getEventPlaceholder("event-2"),
       organizer: {
         name: "Intimate Gatherings GDL",
-        avatar: "/compliceslogo.png"
+        avatar: getDiverseAvatar("org-2", "Intimate Gatherings GDL", 'single')
       },
       isJoined: false,
       isLiked: true,
@@ -88,10 +89,10 @@ const Events = () => {
       maxAttendees: 40,
       price: 3200,
       category: "Ambiente Playero",
-      image: "/compliceslogo.png",
+      image: getEventPlaceholder("event-3"),
       organizer: {
         name: "Aqua Lifestyle Cancún",
-        avatar: "/compliceslogo.png"
+        avatar: getDiverseAvatar("org-3", "Aqua Lifestyle Cancún", 'single')
       },
       isJoined: false,
       isLiked: false,
@@ -109,10 +110,10 @@ const Events = () => {
       maxMembers: 200,
       isPrivate: true,
       category: "Club VIP",
-      image: "/compliceslogo.png",
+      image: getEventPlaceholder("club-1"),
       admin: {
         name: "Administración Elite México",
-        avatar: "/compliceslogo.png"
+        avatar: getDiverseAvatar("admin-1", "Administración Elite México", 'single')
       },
       lastActivity: "Hace 1h",
       isJoined: false,
@@ -129,10 +130,10 @@ const Events = () => {
       maxMembers: 120,
       isPrivate: false,
       category: "Principiantes",
-      image: "/compliceslogo.png",
+      image: getEventPlaceholder("club-2"),
       admin: {
         name: "Coordinadores Swinger MX",
-        avatar: "/compliceslogo.png"
+        avatar: getDiverseAvatar("admin-2", "Coordinadores Swinger MX", 'single')
       },
       lastActivity: "Hace 2h",
       isJoined: true,
@@ -149,10 +150,10 @@ const Events = () => {
       maxMembers: 250,
       isPrivate: true,
       category: "Eventos Playeros",
-      image: "/compliceslogo.png",
+      image: getEventPlaceholder("club-3"),
       admin: {
         name: "Aqua Team Cancún",
-        avatar: "/compliceslogo.png"
+        avatar: getDiverseAvatar("admin-3", "Aqua Team Cancún", 'single')
       },
       lastActivity: "Hace 30min",
       isJoined: false,

@@ -54,9 +54,9 @@ const Profiles: React.FC = () => {
       name: "Ana García",
       age: 28,
       location: "Ciudad de México",
-      bio: "Amante de los viajes y la aventura",
+      bio: "Mujer soltera explorando el lifestyle swinger con mentalidad abierta. Busco conexiones auténticas y experiencias nuevas en un ambiente de respeto mutuo.",
       images: ["/compliceslogo.png"],
-      interests: ["viajes", "música", "cocina"],
+      interests: ["Lifestyle Swinger", "Mentalidad Abierta", "Comunicación Abierta", "Experiencias Nuevas", "Respeto Mutuo", "Fotografía Erótica"],
       isOnline: true,
       verified: true
     }

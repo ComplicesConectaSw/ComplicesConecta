@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Heart, MessageCircle, Share2, MoreHorizontal, MapPin, Clock, CheckCircle, Loader2, Plus } from 'lucide-react';
-import { Header } from '@/components/Header';
+import { Heart, MessageCircle, Share2, MoreHorizontal, MapPin, Clock, Loader2, Plus, CheckCircle } from 'lucide-react';
 import NavigationEnhanced from "@/components/NavigationEnhanced";
+import Header from "@/components/Header";
+import { getDiverseAvatar } from '@/lib/media';
 import { postsService, type Post } from '@/services/postsService';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
@@ -128,7 +129,7 @@ const Feed = () => {
                   <div className="flex items-center justify-between p-4 pb-3">
                     <div className="flex items-center space-x-3">
                       <img
-                        src={post.profile?.avatar_url || '/compliceslogo.png'}
+                        src={post.profile?.avatar_url || getDiverseAvatar(post.profile?.id || 'default', post.profile?.name || 'Usuario')}
                         alt={post.profile?.name || 'Usuario'}
                         className="w-10 h-10 rounded-full object-cover"
                       />
