@@ -30,7 +30,7 @@ export const NavigationEnhanced: React.FC<NavigationEnhancedProps> = ({
   isDemoMode = false,
   className = ''
 }) => {
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [_notifications, _setNotifications] = useState(3);
 
@@ -54,7 +54,7 @@ export const NavigationEnhanced: React.FC<NavigationEnhancedProps> = ({
       icon: MessageCircle,
       label: 'Chat',
       ariaLabel: 'Abrir mensajes de chat',
-      badge: notifications > 0 ? notifications : null
+      badge: _notifications > 99 ? '99+' : _notifications
     },
     {
       path: '/matches',
@@ -181,13 +181,13 @@ export const NavigationEnhanced: React.FC<NavigationEnhancedProps> = ({
           <Button
             variant="ghost"
             size="sm"
-            className="relative p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-            aria-label={`Notificaciones${notifications > 0 ? ` (${notifications} nuevas)` : ''}`}
+            className="relative p-2 text-gray-600 dark:text-gray-300"
+            aria-label={`Notificaciones${_notifications > 0 ? ` (${_notifications} nuevas)` : ''}`}
           >
             <Bell className="w-5 h-5" aria-hidden="true" />
-            {notifications > 0 && (
+            {_notifications > 0 && (
               <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-xs min-w-[18px] h-[18px] flex items-center justify-center p-0">
-                {notifications}
+                {_notifications > 99 ? '99+' : _notifications}
               </Badge>
             )}
           </Button>
@@ -198,10 +198,10 @@ export const NavigationEnhanced: React.FC<NavigationEnhancedProps> = ({
             </div>
             <div className="hidden lg:block">
               <p className="text-sm font-medium text-gray-900 dark:text-white">
-                {user?.name || 'Usuario'}
+                {profile?.display_name || profile?.first_name || user?.email || 'Usuario'}
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                {user?.role === 'admin' ? 'Administrador' : 'Miembro'}
+                {profile?.role === 'admin' ? 'Administrador' : 'Miembro'}
               </p>
             </div>
           </div>
@@ -237,12 +237,12 @@ export const NavigationEnhanced: React.FC<NavigationEnhancedProps> = ({
                 variant="ghost"
                 size="sm"
                 className="p-2 text-gray-600 dark:text-gray-300"
-                aria-label={`Notificaciones${notifications > 0 ? ` (${notifications} nuevas)` : ''}`}
+                aria-label={`Notificaciones${_notifications > 0 ? ` (${_notifications} nuevas)` : ''}`}
               >
                 <Bell className="w-5 h-5" aria-hidden="true" />
-                {notifications > 0 && (
+                {_notifications > 0 && (
                   <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-xs min-w-[16px] h-[16px] flex items-center justify-center p-0">
-                    {notifications}
+                    {_notifications > 99 ? '99+' : _notifications}
                   </Badge>
                 )}
               </Button>
@@ -319,10 +319,10 @@ export const NavigationEnhanced: React.FC<NavigationEnhancedProps> = ({
                   </div>
                   <div>
                     <p className="text-sm font-medium text-gray-900 dark:text-white">
-                      {user?.name || 'Usuario'}
+                      {profile?.display_name || profile?.first_name || user?.email || 'Usuario'}
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-400">
-                      {user?.role === 'admin' ? 'Administrador' : 'Miembro'}
+                      {profile?.role === 'admin' ? 'Administrador' : 'Miembro'}
                     </p>
                   </div>
                 </div>

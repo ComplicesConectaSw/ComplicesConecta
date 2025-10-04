@@ -18,10 +18,9 @@ const Premium = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isDemoUser, setIsDemoUser] = useState(false);
-  const [_userType, _setUserType] = useState('');
   const [showComingSoonModal, setShowComingSoonModal] = useState(false);
   const [comingSoonTitle, setComingSoonTitle] = useState('');
-  const _userType = 'single'; // Added this line
+  const _userType = 'single';
   
   const [demoAuth, _setDemoAuth] = usePersistedState('demo_authenticated', 'false');
   const [demoUser, _setDemoUser] = usePersistedState<any>('demo_user', null);
@@ -30,9 +29,9 @@ const Premium = () => {
     // Verificar autenticación (demo o real)
     // Si hay sesión demo, usar esa
     if (demoAuth === 'true' && demoUser) {
-      const user = typeof demoUser === 'string' ? JSON.parse(demoUser) : demoUser;
+      const _user = typeof demoUser === 'string' ? JSON.parse(demoUser) : demoUser;
       setIsDemoUser(true);
-      _setUserType(user.accountType);
+      // _setUserType(user.accountType); // Variable removed, using constant _userType
       return;
     }
     
