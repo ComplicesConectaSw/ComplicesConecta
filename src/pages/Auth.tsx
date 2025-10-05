@@ -48,21 +48,21 @@ interface FormData {
 const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { getCurrentLocation, location, isLoading: locationLoading, error: locationError } = useGeolocation();
-  const { user, session, profile, loading, signIn, signOut, isAdmin, isDemo, getProfileType, shouldUseProductionAdmin, appMode } = useAuth();
+  const { getCurrentLocation: _getCurrentLocation, location: _location, isLoading: _locationLoading, error: _locationError } = useGeolocation();
+  const { user: _user, session: _session, profile: _profile, loading: _loading, signIn: _signIn, signOut: _signOut, isAdmin: _isAdmin, isDemo: _isDemo, getProfileType: _getProfileType, shouldUseProductionAdmin: _shouldUseProductionAdmin, appMode: _appMode } = useAuth();
   
   // Estado persistente para autenticación demo
-  const [demoUser, setDemoUser] = usePersistedState<any>('demo_user', null);
-  const [demoAuthenticated, setDemoAuthenticated] = usePersistedState<boolean>('demo_authenticated', false);
-  const [userType, setUserType] = usePersistedState<string>('userType', '');
+  const [_demoUser, _setDemoUser] = usePersistedState<any>('demo_user', null);
+  const [_demoAuthenticated, _setDemoAuthenticated] = usePersistedState<boolean>('demo_authenticated', false);
+  const [_userType, _setUserType] = usePersistedState<string>('userType', '');
   
   const [isLoading, setIsLoading] = useState(false);
-  const [_showResetPassword, setShowResetPassword] = useState(false);
-  const [_resetEmail, setResetEmail] = useState("");
+  const [__showResetPassword, _setShowResetPassword] = useState(false);
+  const [__resetEmail, _setResetEmail] = useState("");
   const [showLoginLoading, setShowLoginLoading] = useState(false);
-  const [_autoLocationRequested, setAutoLocationRequested] = useState(false);
-  const [_showThemeModal, setShowThemeModal] = useState(false);
-  const [_showTermsModal, setShowTermsModal] = useState(false);
+  const [__autoLocationRequested, _setAutoLocationRequested] = useState(false);
+  const [__showThemeModal, _setShowThemeModal] = useState(false);
+  const [__showTermsModal, _setShowTermsModal] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     email: '',
     password: '',
@@ -148,7 +148,7 @@ const Auth = () => {
     setIsLoading(true);
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { data: _data, error } = await supabase.auth.signInWithPassword({
         email: formData.email,
         password: formData.password,
       });

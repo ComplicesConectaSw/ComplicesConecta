@@ -34,7 +34,7 @@ interface ProfileCardProps {
     partner2_first_name?: string;
     partner2_age?: number;
   };
-  onLike?: (id: string) => void;
+  onLike?: (id: _string) => void;
   onSuperLike?: (profile: ProfileCardProps['profile']) => void;
   onOpenModal?: () => void;
   // Props de configuración
@@ -57,7 +57,7 @@ export const MainProfileCard = ({
   // Validar props con Zod
   try {
     validateProfileCard(profile);
-  } catch (_error) {
+  } catch (__error) {
     logger.error('❌ Error validando ProfileCard:', { error: _error });
   }
   const { getUserOnlineStatus, getLastSeenTime } = useUserOnlineStatus();
@@ -67,7 +67,7 @@ export const MainProfileCard = ({
   const { id, name, age, location, interests, image, rating, isOnline: _onlineStatus = false, gender = 'male', partnerGender, accountType = 'single', theme } = profile;
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [imageError, setImageError] = useState(false);
+  const [_imageError, setImageError] = useState(false);
 
   // Configurar géneros para el hook de tema
   const genders: Gender[] = accountType === 'couple' && partnerGender 
@@ -81,19 +81,19 @@ export const MainProfileCard = ({
     navigate(`/profile/${id}`);
   };
 
-  const handleLike = (e: React.MouseEvent) => {
+  const handleLike = (___e: any) => {
     e.stopPropagation();
     if (onLike) onLike(String(id));
     if (onOpenModal) onOpenModal();
   };
 
-  const handleSuperLike = (e: React.MouseEvent) => {
+  const handleSuperLike = (___e: any) => {
     e.stopPropagation();
     if (onSuperLike) onSuperLike(profile);
     if (onOpenModal) onOpenModal();
   };
 
-  const handleDislike = (e: React.MouseEvent) => {
+  const handleDislike = (___e: any) => {
     e.stopPropagation();
     if (onOpenModal) onOpenModal();
     toast({
@@ -110,7 +110,7 @@ export const MainProfileCard = ({
           ? `${themeConfig.backgroundClass} ${themeConfig.textClass}` 
           : "bg-card-gradient"
       )}
-      onClick={showViewProfile ? handleViewProfile : undefined}
+      onClick={showViewProfile ? _handleViewProfile : undefined}
     >
       {/* Image Container */}
       <div className="relative aspect-[3/4] overflow-hidden">
@@ -217,7 +217,7 @@ export const MainProfileCard = ({
 
         {/* Interests */}
         <div className="flex flex-wrap gap-1 sm:gap-2 mb-4">
-          {interests?.slice(0, 3).map((interest: string, index: number) => (
+          {interests?.slice(0, 3).map((interest: string, index: _number) => (
             <span 
               key={index}
               className="px-2 sm:px-3 py-1 bg-purple-100 text-purple-700 text-[10px] sm:text-xs rounded-full transition-colors hover:bg-purple-200 truncate max-w-[80px] sm:max-w-none"

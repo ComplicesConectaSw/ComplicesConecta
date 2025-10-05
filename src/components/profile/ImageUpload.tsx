@@ -3,8 +3,8 @@ import { Upload, X, Image as ImageIcon, Loader2 } from 'lucide-react';
 import { ProfileImageService, ImageUploadResult } from '@/lib/storage';
 
 interface ImageUploadProps {
-  onImageUploaded: (url: _string) => void;
-  onError: (error: _string) => void;
+  onImageUploaded: (url: __string) => void;
+  onError: (error: __string) => void;
   userId: string;
   currentImage?: string;
   type?: 'profile' | 'gallery';
@@ -30,7 +30,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileSelect = async (__file: any) => {
+  const handleFileSelect = async (____file: any) => {
     if (disabled || isUploading) return;
 
     setIsUploading(true);
@@ -62,21 +62,21 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
       } else {
         onError(result.error || 'Error al subir imagen');
       }
-    } catch (_error) {
+    } catch (__error) {
       onError('Error inesperado al subir imagen');
     } finally {
       setIsUploading(false);
     }
   };
 
-  const handleFileChange = (__e: any) => {
+  const handleFileChange = (____e: any) => {
     const file = e.target.files?.[0];
     if (file) {
       handleFileSelect(file);
     }
   };
 
-  const handleDrop = (__e: any) => {
+  const handleDrop = (____e: any) => {
     e.preventDefault();
     setDragActive(false);
     
@@ -86,12 +86,12 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
     }
   };
 
-  const handleDragOver = (__e: any) => {
+  const handleDragOver = (____e: any) => {
     e.preventDefault();
     setDragActive(true);
   };
 
-  const handleDragLeave = (__e: any) => {
+  const handleDragLeave = (____e: any) => {
     e.preventDefault();
     setDragActive(false);
   };
@@ -114,7 +114,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
       } else {
         onError(result.error || 'Error al eliminar imagen');
       }
-    } catch (_error) {
+    } catch (__error) {
       onError('Error inesperado al eliminar imagen');
     } finally {
       setIsUploading(false);

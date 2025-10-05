@@ -80,7 +80,7 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [dateRange, setDateRange] = useState('7d');
-  const [_filterType, setFilterType] = useState('all');
+  const [__filterType, setFilterType] = useState('all');
 
   // Verificar permisos de admin
   useEffect(() => {

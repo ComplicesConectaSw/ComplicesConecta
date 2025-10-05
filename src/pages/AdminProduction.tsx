@@ -97,7 +97,7 @@ interface FAQItem {
 }
 
 const AdminProduction = () => {
-  const { user, profile, isAuthenticated, isAdmin, loading } = useAuth();
+  const { user: _user, profile: _profile, isAuthenticated, isAdmin, loading } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
   
@@ -120,17 +120,17 @@ const AdminProduction = () => {
   });
   const [faqItems, setFaqItems] = useState<FAQItem[]>([]);
   const [invitations, setInvitations] = useState<Invitation[]>([]);
-  const [_dataLoading, setDataLoading] = useState(true);
-  const [_selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
+  const [__dataLoading, setDataLoading] = useState(true);
+  const [__selectedProfile, _setSelectedProfile] = useState<Profile | null>(null);
   const [newFaq, setNewFaq] = useState({ question: '', answer: '', category: 'general' });
-  const [_auditReport, setAuditReport] = useState<any>(null);
-  const [_notifications, setNotifications] = useState<NotificationStats[]>([]);
-  const [_systemAlerts, setSystemAlerts] = useState<SystemAlert[]>([]);
-  const [_dateFilter, setDateFilter] = useState('today');
-  const [_typeFilter, setTypeFilter] = useState('all');
-  const [_userFilter, setUserFilter] = useState('');
-  const [_searchTerm, setSearchTerm] = useState('');
-  const [_realTimeStats, setRealTimeStats] = useState(true);
+  const [__auditReport, _setAuditReport] = useState<any>(null);
+  const [__notifications, _setNotifications] = useState<NotificationStats[]>([]);
+  const [__systemAlerts, _setSystemAlerts] = useState<SystemAlert[]>([]);
+  const [__dateFilter, _setDateFilter] = useState('today');
+  const [__typeFilter, _setTypeFilter] = useState('all');
+  const [__userFilter, _setUserFilter] = useState('');
+  const [__searchTerm, _setSearchTerm] = useState('');
+  const [__realTimeStats, _setRealTimeStats] = useState(true);
 
   useEffect(() => {
     logger.info('🔄 AdminProduction - Verificando acceso...');
@@ -164,7 +164,7 @@ const AdminProduction = () => {
           navigate('/auth');
           return;
         }
-      } catch (error) {
+      } catch (_error) {
         logger.error('Error parsing demo user:', { error: String(error) });
       }
     }
@@ -217,7 +217,7 @@ const AdminProduction = () => {
         loadRealFAQ(),
         loadRealInvitations()
       ]);
-    } catch (error) {
+    } catch (_error) {
       logger.error('Error loading production admin data:', { error: String(error) });
       toast({
         title: "Error",
@@ -263,7 +263,7 @@ const AdminProduction = () => {
       }));
 
       setProfiles(mappedProfiles);
-    } catch (error) {
+    } catch (_error) {
       logger.error('Error in loadRealProfiles:', { error: String(error) });
     }
   };
@@ -275,7 +275,7 @@ const AdminProduction = () => {
         { count: totalUsers },
         { count: premiumUsers },
         { count: activeUsers },
-        { count: totalInvitations }
+        { count: _totalInvitations }
       ] = await Promise.all([
         supabase.from('profiles').select('*', { count: 'exact', head: true }),
         supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('is_premium', true),
@@ -292,14 +292,14 @@ const AdminProduction = () => {
       apkDownloadsResponse = { count: 0 };
 
       // Tabla app_metrics no existe en el esquema actual
-      appMetrics = null;
+      const _appMetrics = null;
 
       try {
         const tokensResponse = await supabase.from('user_token_balances').select('cmpx_balance');
         if (!tokensResponse.error) {
           tokenData = tokensResponse.data;
         }
-      } catch (error) {
+      } catch (_error) {
         logger.info('🪙 Tabla user_token_balances no disponible');
       }
 
@@ -340,7 +340,7 @@ const AdminProduction = () => {
         systemAlerts: 0,
         moderationQueue: 0
       });
-    } catch (error) {
+    } catch (_error) {
       logger.error('Error loading real stats:', { error: String(error) });
     }
   };
@@ -379,7 +379,7 @@ const AdminProduction = () => {
       
       setInvitations(mappedInvitations);
       logger.info('📧 Cargando invitaciones, total encontradas:', { count: data.length });
-    } catch (error) {
+    } catch (_error) {
       logger.error('Error loading invitations:', { error: String(error) });
       setInvitations([]);
     }
@@ -399,7 +399,7 @@ const AdminProduction = () => {
         title: "Perfil Eliminado",
         description: "El perfil ha sido eliminado exitosamente"
       });
-    } catch (error) {
+    } catch (_error) {
       toast({
         title: "Error",
         description: "Error al eliminar el perfil",
@@ -427,7 +427,7 @@ const AdminProduction = () => {
         title: "Estado Premium Actualizado",
         description: `El usuario ${!profile.is_premium ? 'ahora es' : 'ya no es'} premium`
       });
-    } catch (error) {
+    } catch (_error) {
       toast({
         title: "Error",
         description: "Error al actualizar el estado premium",

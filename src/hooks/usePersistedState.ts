@@ -12,7 +12,7 @@ import { logger } from '@/lib/logger';
 export function usePersistedState<T>(
   key: string,
   defaultValue: T
-): [T, (value: T | ((prev: T) => T)) => void] {
+): [T, (value: T | ((prev: _T) => T)) => void] {
   // Estado inicial con verificación SSR-safe
   const [state, setState] = useState<T>(() => {
     // Verificar si estamos en el cliente (no SSR)
@@ -41,14 +41,14 @@ export function usePersistedState<T>(
         }
         return item as T;
       }
-    } catch (_error) {
+    } catch (__error) {
       logger.error('Error leyendo localStorage:', { key, error: String(_error) });
       return defaultValue;
     }
   });
 
   // Función para actualizar estado y localStorage
-  const setValue = useCallback((value: T | ((prev: T) => T)) => {
+  const setValue = useCallback((value: T | ((prev: _T) => T)) => {
     try {
       const valueToStore = value instanceof Function ? value(state) : value;
       setState(valueToStore);
@@ -67,7 +67,7 @@ export function usePersistedState<T>(
           }
         }
       }
-    } catch (_error) {
+    } catch (__error) {
       logger.error('Error guardando en localStorage:', { key, error: String(_error) });
     }
   }, [key, state]);
@@ -76,13 +76,13 @@ export function usePersistedState<T>(
   useEffect(() => {
     if (typeof window === 'undefined') return;
     
-    const handleStorageChange = (e: any) => {
+    const handleStorageChange = (__e: any) => {
       if (e.key === key && e.newValue !== null) {
         try {
           const newValue = JSON.parse(e.newValue);
           setState(newValue);
           logger.info('Estado sincronizado desde storage event:', { key });
-        } catch (_error) {
+        } catch (__error) {
           logger.error('Error sincronizando storage event:', { key, error: String(_error) });
         }
       }
@@ -99,11 +99,11 @@ export function usePersistedState<T>(
  * Hook para limpiar localStorage de forma controlada
  */
 export function useClearPersistedState() {
-  return (_keys: string[]) => {
+  return (___keys: any) => {
     _keys.forEach(key => {
       try {
         window.localStorage.removeItem(key);
-      } catch (_error) {
+      } catch (__error) {
         console.warn(`Error removing localStorage key "${key}":`, _error);
       }
     });

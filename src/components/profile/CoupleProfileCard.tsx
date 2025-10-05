@@ -39,8 +39,8 @@ interface CoupleProfileWithPartners {
 
 interface CoupleProfileCardProps {
   profile: CoupleProfileWithPartners;
-  onLike?: (id: string) => void;
-  _onSuperLike?: (profile: CoupleProfileWithPartners) => void;
+  onLike?: (id: _string) => void;
+  _onSuperLike?: (profile: _CoupleProfileWithPartners) => void;
   _onMessage?: () => void;
   onOpenModal: () => void;
   _showActions?: boolean;
@@ -50,7 +50,7 @@ interface CoupleProfileCardProps {
 }
 
 // Get theme colors based on relationship type
-const getRelationshipTheme = (relationshipType: any) => {
+const getRelationshipTheme = (__relationshipType: any) => {
   switch (relationshipType) {
     case 'man-man':
       return {
@@ -78,13 +78,13 @@ const getRelationshipTheme = (relationshipType: any) => {
         border: 'border-purple-300',
         text: 'text-purple-600',
         hover: 'hover:bg-purple-50',
-        accent: 'bg-gradient-to-r from-purple-400 to-pink-500'
+        _accent: 'bg-gradient-to-r from-purple-400 to-pink-500'
       };
   }
 };
 
 // Get relationship type display name
-const getRelationshipDisplayName = (relationshipType: any) => {
+const getRelationshipDisplayName = (_relationshipType: any) => {
   switch (relationshipType) {
     case 'man-man':
       return 'Pareja Masculina';
@@ -131,17 +131,17 @@ const CoupleProfileCard = ({
     navigate(`/profile/${profile.id}`);
   };
 
-  const handleLike = (e: any) => {
+  const handleLike = (__e: any) => {
     e.stopPropagation();
     onOpenModal();
   };
 
-  const handleSuperLike = (e: any) => {
+  const handleSuperLike = (__e: any) => {
     e.stopPropagation();
     onOpenModal();
   };
 
-  const handleDislike = (e: any) => {
+  const handleDislike = (__e: any) => {
     e.stopPropagation();
     onOpenModal();
     toast({
@@ -292,7 +292,7 @@ const CoupleProfileCard = ({
 
         {/* Interests - Sincronizado con MainProfileCard */}
         <div className="flex flex-wrap gap-1 sm:gap-2 mb-4">
-          {profile.interests?.slice(0, 3).map((interest: string, index: number) => (
+          {profile.interests?.slice(0, 3).map((interest: string, index: _number) => (
             <span 
               key={index}
               className="px-2 sm:px-3 py-1 bg-purple-100 text-purple-700 text-[10px] sm:text-xs rounded-full transition-colors hover:bg-purple-200 truncate max-w-[80px] sm:max-w-none"

@@ -14,7 +14,7 @@ const getDemoStories = (): Story[] => {
       userName = userType === 'couple' 
         ? `${parsedUser.first_name} & Pareja`
         : parsedUser.first_name || "Usuario Demo";
-    } catch (_e) {
+    } catch (__e) {
       // Fallback to default
     }
   }
@@ -109,7 +109,7 @@ class StoryService {
       // const response = await fetch('/api/stories');
       // return await response.json();
       return [];
-    } catch (_error) {
+    } catch (__error) {
       console.error('Error fetching stories:', error);
       return [];
     }
@@ -154,7 +154,7 @@ class StoryService {
       // });
       // return await response.json();
       return null;
-    } catch (_error) {
+    } catch (__error) {
       console.error('Error creating story:', error);
       return null;
     }
@@ -195,7 +195,7 @@ class StoryService {
       // const response = await fetch(`/api/stories/${storyId}/like`, { method: 'POST' });
       // return response.ok;
       return false;
-    } catch (_error) {
+    } catch (__error) {
       console.error('Error liking story:', error);
       return false;
     }
@@ -233,7 +233,7 @@ class StoryService {
       // });
       // return response.ok;
       return false;
-    } catch (_error) {
+    } catch (__error) {
       console.error('Error commenting story:', error);
       return false;
     }
@@ -252,7 +252,7 @@ class StoryService {
       // const response = await fetch(`/api/stories/${storyId}`, { method: 'DELETE' });
       // return response.ok;
       return false;
-    } catch (_error) {
+    } catch (__error) {
       console.error('Error deleting story:', error);
       return false;
     }
@@ -276,7 +276,7 @@ class StoryService {
       // const response = await fetch(`/api/stories/${storyId}/comments/${commentId}`, { method: 'DELETE' });
       // return response.ok;
       return false;
-    } catch (_error) {
+    } catch (__error) {
       console.error('Error deleting comment:', error);
       return false;
     }
@@ -294,7 +294,7 @@ class StoryService {
       // const data = await response.json();
       // return data.shareUrl;
       return null;
-    } catch (_error) {
+    } catch (__error) {
       console.error('Error sharing story:', error);
       return null;
     }
@@ -319,7 +319,7 @@ class StoryService {
       // const response = await fetch(`/api/stories/${storyId}/view`, { method: 'POST' });
       // return response.ok;
       return false;
-    } catch (_error) {
+    } catch (__error) {
       console.error('Error marking story as viewed:', error);
       return false;
     }
