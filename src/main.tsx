@@ -16,11 +16,23 @@ import { initWebVitalsMonitoring } from '@/utils/webVitals'
 import { initializeCriticalPreloading } from '@/utils/preloading'
 import { androidSecurity } from '@/utils/androidSecurity'
 
-// Protección contra errores de wallets de criptomonedas
+// FALLBACK PREVENTIVO GLOBAL - Protección contra errores críticos
 if (typeof window !== 'undefined') {
-  // Silenciar errores específicos de wallets
+  // Interceptar errores globales que pueden causar pantalla blanca
   window.addEventListener('error', (event) => {
     const message = event.message || '';
+    
+    // Errores críticos de React/useLayoutEffect
+    if (message.includes('useLayoutEffect') || 
+        message.includes('Cannot read properties of undefined') ||
+        message.includes('React') ||
+        message.includes('ReactDOM')) {
+      console.error('🚨 Error crítico de React detectado:', message);
+      event.preventDefault();
+      return false;
+    }
+    
+    // Errores de wallets y redefiniciones
     if (message.includes('solana') || 
         message.includes('ethereum') || 
         message.includes('tronWeb') ||
@@ -32,9 +44,17 @@ if (typeof window !== 'undefined') {
     }
   });
 
-  // Interceptar errores no manejados
+  // Interceptar promesas no manejadas
   window.addEventListener('unhandledrejection', (event) => {
     const reason = event.reason?.message || String(event.reason);
+    
+    // Errores críticos de React
+    if (reason.includes('useLayoutEffect') || reason.includes('React')) {
+      console.error('🚨 Promise rejection crítica de React:', reason);
+      event.preventDefault();
+    }
+    
+    // Errores de wallets
     if (reason.includes('solana') || reason.includes('ethereum') || reason.includes('tronWeb')) {
       event.preventDefault();
       console.warn('⚠️ Wallet promise rejection silenced:', reason);

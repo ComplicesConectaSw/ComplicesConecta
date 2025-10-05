@@ -12,9 +12,11 @@ export interface WalletGlobals {
 
 /**
  * Inicializa de forma segura las propiedades globales de wallets
- * sin causar conflictos de redefinición
+ * sin causar conflictos de redefinición - POLYFILL PROTECTOR
  */
 export const safeWalletInit = (): void => {
+  if (typeof window === 'undefined') return;
+  
   try {
     const wallets = ['ethereum', 'solana', 'tronWeb', 'bybitWallet'] as const;
 
@@ -23,7 +25,7 @@ export const safeWalletInit = (): void => {
         // Verificar si la propiedad ya existe
         const descriptor = Object.getOwnPropertyDescriptor(window, wallet);
         
-        // Solo definir si no existe o es configurable
+        // POLYFILL PROTECTOR: Solo definir si no existe
         if (!descriptor) {
           Object.defineProperty(window, wallet, {
             value: undefined,
@@ -31,9 +33,13 @@ export const safeWalletInit = (): void => {
             configurable: true,
             enumerable: false
           });
+          console.debug(`[safeWalletInit] Polyfill creado para ${wallet}`);
         } else if (descriptor.configurable === false) {
           // Si existe pero no es configurable, no intentar redefinir
           console.debug(`[safeWalletInit] ${wallet} ya está definido y protegido`);
+        } else if (descriptor.writable === false) {
+          // Si existe pero no es escribible, no intentar modificar
+          console.debug(`[safeWalletInit] ${wallet} es read-only, respetando propiedad`);
         }
       } catch (walletError) {
         // Error específico por wallet, continuar con los demás
