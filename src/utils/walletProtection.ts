@@ -1,113 +1,25 @@
 /**
- * Wallet Extension Protection
- * Prevents conflicts between multiple wallet extensions
+ * Wallet Extension Protection - Safe Version
+ * Detects wallet conflicts without global modifications
  */
 
 /**
- * Initialize safe wallet objects to prevent extension conflicts
+ * Safe wallet detection without modifying global objects
  */
-const initializeSafeWalletObjects = () => {
-  if (typeof window === 'undefined') return;
-  
-  // Only initialize if properties don't already exist
-  if (!('ethereum' in window)) {
-    try {
-      Object.defineProperty(window, 'ethereum', {
-        value: null,
-        writable: true,
-        configurable: true,
-        enumerable: false
-      });
-    } catch (error) {
-      console.warn('[WalletProtection] Could not initialize ethereum placeholder:', error);
-    }
-  }
-  
-  if (!('solana' in window)) {
-    try {
-      Object.defineProperty(window, 'solana', {
-        value: null,
-        writable: true,
-        configurable: true,
-        enumerable: false
-      });
-    } catch (error) {
-      console.warn('[WalletProtection] Could not initialize solana placeholder:', error);
-    }
-  }
-  
-  if (!(window as any).tronWeb) {
-    try {
-      (window as any).tronWeb = null;
-    } catch (error) {
-      console.warn('[WalletProtection] Could not initialize tronWeb placeholder:', error);
-    }
-  }
-  
-  if (!('bybitWallet' in window)) {
-    try {
-      Object.defineProperty(window, 'bybitWallet', {
-        value: null,
-        writable: true,
-        configurable: true,
-        enumerable: false
-      });
-    } catch (error) {
-      console.warn('[WalletProtection] Could not initialize bybitWallet placeholder:', error);
-    }
-  }
-};
-
 export const initializeWalletProtection = () => {
   if (typeof window === 'undefined') return;
   
-  // Prevent wallet extensions from overriding global objects
-  const originalDefineProperty = Object.defineProperty;
+  // Simply detect and warn about conflicts without modifying anything
+  void detectWalletConflicts();
   
-  Object.defineProperty = function(obj: any, prop: string, descriptor: PropertyDescriptor) {
-    // Only intercept window object wallet properties
-    if (obj === window && (
-      prop === 'ethereum' || 
-      prop === 'solana' || 
-      prop === 'tronWeb' ||
-      prop === 'bybitWallet'
-    )) {
-      // Check if property already exists
-      if (prop in window) {
-        console.warn(`[WalletProtection] Property '${prop}' already exists, skipping redefinition`);
-        return obj;
-      }
-      
-      // Safe property definition with preventive checks
-      try {
-        const existing = Object.getOwnPropertyDescriptor(obj, prop);
-        if (existing && (!existing.writable && !existing.set)) {
-          console.warn(`[WalletProtection] Prevented redefinition of read-only property: ${prop}`);
-          return obj;
-        }
-        
-        return originalDefineProperty.call(this, obj, prop, {
-          ...descriptor,
-          configurable: true, // Ensure property can be reconfigured if needed
-          enumerable: descriptor.enumerable !== false
-        });
-      } catch (error) {
-        console.warn(`[WalletProtection] Safe fallback for ${prop}:`, error);
-        return obj;
-      }
-    }
-    
-    // For all other properties, use original behavior
-    try {
-      return originalDefineProperty.call(this, obj, prop, descriptor);
-    } catch (error) {
-      console.warn(`[WalletProtection] Property definition failed for ${prop}:`, error);
-      return obj;
-    }
-  };
-  
-  // Initialize safe wallet objects if they don't exist
-  initializeSafeWalletObjects();
+  // Add a single event listener for wallet injection detection
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => void detectWalletConflicts(), 1000);
+    });
+  } else {
+    setTimeout(() => void detectWalletConflicts(), 1000);
+  }
 };
 
 export const detectWalletConflicts = () => {

@@ -40,16 +40,24 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          // Vendor libraries
+          // Vendor libraries - más granular para reducir tamaño
           if (id.includes('node_modules')) {
-            // React ecosystem
-            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
+            // React ecosystem - separar React core de React Router
+            if (id.includes('react-router') || id.includes('react-router-dom')) {
+              return 'react-router-vendor';
+            }
+            if (id.includes('react') || id.includes('react-dom')) {
               return 'react-vendor';
             }
             
-            // UI libraries
-            if (id.includes('@radix-ui') || id.includes('shadcn')) {
-              return 'ui-vendor';
+            // Supabase - separar por ser muy pesado
+            if (id.includes('@supabase') || id.includes('supabase')) {
+              return 'supabase-vendor';
+            }
+            
+            // UI libraries - separar Radix UI
+            if (id.includes('@radix-ui')) {
+              return 'radix-vendor';
             }
             
             // Animation libraries
@@ -62,37 +70,65 @@ export default defineConfig({
               return 'query-vendor';
             }
             
-            // Crypto/Web3 libraries
+            // Capacitor - separar por ser pesado en móvil
+            if (id.includes('@capacitor')) {
+              return 'capacitor-vendor';
+            }
+            
+            // Crypto/Web3 libraries - carga dinámica
             if (id.includes('web3') || id.includes('ethers') || id.includes('@metamask') || 
                 id.includes('@solana') || id.includes('tronweb')) {
               return 'crypto-vendor';
             }
             
             // Icon libraries
-            if (id.includes('lucide-react')) {
+            if (id.includes('lucide-react') || id.includes('@heroicons')) {
               return 'icons-vendor';
+            }
+            
+            // Sentry - separar por ser opcional
+            if (id.includes('@sentry')) {
+              return 'sentry-vendor';
+            }
+            
+            // Hugging Face - muy pesado, separar
+            if (id.includes('@huggingface')) {
+              return 'ai-vendor';
+            }
+            
+            // Charts y visualización
+            if (id.includes('recharts') || id.includes('embla-carousel')) {
+              return 'charts-vendor';
+            }
+            
+            // Utilidades pequeñas
+            if (id.includes('clsx') || id.includes('class-variance-authority') || 
+                id.includes('tailwind-merge') || id.includes('date-fns') || 
+                id.includes('uuid') || id.includes('zod')) {
+              return 'utils-vendor';
             }
             
             // Other large vendors
             return 'vendor';
           }
           
-          // Application code chunking
+          // Application code chunking - más específico
           if (id.includes('src/')) {
-            // Admin pages
+            // Admin y moderación - carga bajo demanda
             if (id.includes('pages/Admin') || id.includes('pages/Moderator') || 
-                id.includes('components/admin/')) {
+                id.includes('components/admin/') || id.includes('components/moderation/')) {
               return 'admin-chunk';
             }
             
-            // Token system
-            if (id.includes('pages/Token') || id.includes('components/tokens/')) {
+            // Token system - funcionalidad específica
+            if (id.includes('pages/Token') || id.includes('components/tokens/') ||
+                id.includes('pages/Donations') || id.includes('pages/Premium')) {
               return 'token-chunk';
             }
             
             // Profile system
             if (id.includes('pages/Profile') || id.includes('pages/EditProfile') || 
-                id.includes('components/profile/')) {
+                id.includes('components/profile/') || id.includes('pages/Settings')) {
               return 'profile-chunk';
             }
             
@@ -101,33 +137,39 @@ export default defineConfig({
               return 'chat-chunk';
             }
             
-            // Stories and content
+            // Stories y contenido
             if (id.includes('pages/Stories') || id.includes('pages/Feed') || 
-                id.includes('pages/Blog') || id.includes('components/stories/')) {
+                id.includes('pages/Blog') || id.includes('components/stories/') ||
+                id.includes('pages/Events')) {
               return 'content-chunk';
             }
             
-            // Animation components
+            // Componentes de animación
             if (id.includes('components/animations/')) {
               return 'animation-chunk';
             }
             
-            // Info/Legal pages
+            // Páginas informativas - carga bajo demanda
             if (id.includes('pages/FAQ') || id.includes('pages/Terms') || 
                 id.includes('pages/Privacy') || id.includes('pages/Support') || 
                 id.includes('pages/Security') || id.includes('pages/Guidelines') || 
                 id.includes('pages/Legal') || id.includes('pages/About') || 
-                id.includes('pages/ProjectInfo')) {
+                id.includes('pages/ProjectInfo') || id.includes('pages/Careers')) {
               return 'info-chunk';
             }
             
-            // Core components
+            // Servicios y utilidades
+            if (id.includes('services/') || id.includes('lib/') || id.includes('utils/')) {
+              return 'services-chunk';
+            }
+            
+            // Core components UI
             if (id.includes('components/ui/') || id.includes('components/layout/')) {
               return 'ui-chunk';
             }
           }
           
-          // Default chunk for everything else
+          // Default chunk para todo lo demás
           return undefined;
         },
       },
@@ -137,7 +179,8 @@ export default defineConfig({
     },
     target: 'es2020',
     minify: 'esbuild',
-    chunkSizeWarningLimit: 1000,
+    chunkSizeWarningLimit: 500, // Reducido para detectar chunks grandes
+    assetsInlineLimit: 4096, // Inline assets pequeños
   },
   define: {
     global: 'globalThis',

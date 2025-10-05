@@ -168,9 +168,14 @@ const ProfileCouple: React.FC = () => {
                       url: window.location.href
                     }).catch(console.error);
                   } else {
-                    navigator.clipboard.writeText(window.location.href).then(() => 
-                      alert('Enlace copiado al portapapeles')
-                    ).catch(console.error);
+                    void (async () => {
+                      try {
+                        await navigator.clipboard.writeText(window.location.href);
+                        alert('Enlace copiado al portapapeles');
+                      } catch (error) {
+                        console.error('Error al copiar enlace:', error);
+                      }
+                    })();
                   }
                 }}
               >
