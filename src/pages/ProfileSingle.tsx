@@ -11,7 +11,7 @@ import {
   Crown,
   Images
 } from 'lucide-react';
-import NavigationEnhanced from '@/components/NavigationEnhanced';
+import HeaderNav from '@/components/HeaderNav';
 import { ProfileNavTabs } from '@/components/profile/ProfileNavTabs';
 import { useAuth } from '@/hooks/useAuth';
 import { logger } from '@/lib/logger';
@@ -201,7 +201,7 @@ const ProfileSingle: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-pink-800">
       {/* Navegación superior */}
-      <NavigationEnhanced />
+      <HeaderNav />
       
       {/* Header con navegación */}
       <div className="relative">

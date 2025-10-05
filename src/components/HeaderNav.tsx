@@ -174,7 +174,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
   };
 
   return (
-    <div className={`bg-black/30 backdrop-blur-sm border-b border-white/10 ${className}`}>
+    <header className={`bg-gradient-to-r from-purple-600/90 via-indigo-600/90 to-pink-600/90 backdrop-blur-sm border-b border-purple-400/40 shadow-xl shadow-purple-500/30 sticky top-0 z-50 transition-all duration-300 ${className}`}>
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between py-3">
           {/* Logo */}
@@ -334,31 +334,51 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
           </div>
         )}
 
-        {/* User Actions */}
-        <div className="flex items-center space-x-2">
-          {userIsAuthenticated ? (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate('/profile')}
-              className="text-white hover:bg-white/10"
-            >
-              <Users className="h-4 w-4" />
-              <span className="hidden sm:block ml-1">Perfil</span>
-            </Button>
-          ) : (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => navigate('/auth')}
-              className="border-white/20 text-white hover:bg-white/10"
-            >
-              <span className="text-xs">Iniciar Sesión</span>
-            </Button>
-          )}
-        </div>
+          {/* User Actions */}
+          <div className="flex items-center space-x-2">
+            {userIsAuthenticated ? (
+              <div className="flex items-center space-x-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => navigate('/profile')}
+                  className="text-white hover:bg-white/10"
+                >
+                  <Users className="h-4 w-4" />
+                  <span className="hidden sm:block ml-1">Perfil</span>
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => navigate('/premium')}
+                  className="border-pink-400/50 text-pink-300 hover:bg-pink-400/10 bg-pink-500/20"
+                >
+                  <span className="text-xs font-semibold">Premium</span>
+                </Button>
+              </div>
+            ) : (
+              <div className="flex items-center space-x-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => navigate('/auth')}
+                  className="border-white/30 text-white hover:bg-white/10 bg-white/5"
+                >
+                  <span className="text-xs font-medium">Iniciar Sesión</span>
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => navigate('/premium')}
+                  className="border-pink-400/50 text-pink-300 hover:bg-pink-400/10 bg-pink-500/20"
+                >
+                  <span className="text-xs font-semibold">Premium</span>
+                </Button>
+              </div>
+            )}
+          </div>
       </div>
-    </div>
+    </header>
   );
 };
 

@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { useProfileTheme, Gender } from '@/hooks/useProfileTheme';
 import { cn } from '@/lib/utils';
+import ProfileImagePlaceholder from '@/components/ui/ProfileImagePlaceholder';
 
 // Extended interface for couple profiles with database integration
 interface CoupleProfileWithPartners {
@@ -173,20 +174,12 @@ const CoupleProfileCard = ({
                 onLoad={() => logger.info('Partner 1 image loaded successfully:', { image: partner1Avatar })}
               />
             ) : (
-              <div className={cn(
-                "w-full h-full flex items-center justify-center",
-                useThemeBackground 
-                  ? themeConfig.backgroundClass 
-                  : "bg-gradient-to-br from-purple-400 to-pink-400"
-              )}>
-                <div className={cn(
-                  "text-center",
-                  useThemeBackground ? themeConfig.textClass : "text-white"
-                )}>
-                  <div className="text-6xl mb-2">👤</div>
-                  <p className="text-sm opacity-80">Imagen no disponible</p>
-                </div>
-              </div>
+              <ProfileImagePlaceholder
+                type="single"
+                name={`${profile.partner1_first_name} ${profile.partner1_last_name}`}
+                className="w-full h-full rounded-none"
+                iconSize="lg"
+              />
             )}
           </div>
           <div className="relative overflow-hidden">
@@ -199,20 +192,12 @@ const CoupleProfileCard = ({
                 onLoad={() => logger.info('Partner 2 image loaded successfully:', { image: partner2Avatar })}
               />
             ) : (
-              <div className={cn(
-                "w-full h-full flex items-center justify-center",
-                useThemeBackground 
-                  ? themeConfig.backgroundClass 
-                  : "bg-gradient-to-br from-blue-400 to-indigo-400"
-              )}>
-                <div className={cn(
-                  "text-center",
-                  useThemeBackground ? themeConfig.textClass : "text-white"
-                )}>
-                  <div className="text-6xl mb-2">👤</div>
-                  <p className="text-sm opacity-80">Imagen no disponible</p>
-                </div>
-              </div>
+              <ProfileImagePlaceholder
+                type="single"
+                name={`${profile.partner2_first_name} ${profile.partner2_last_name}`}
+                className="w-full h-full rounded-none"
+                iconSize="lg"
+              />
             )}
           </div>
         </div>

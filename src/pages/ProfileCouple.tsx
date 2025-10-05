@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Heart, MapPin, Verified, Crown, Settings, Share2, Lock, Images, Flag } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import NavigationEnhanced from "@/components/NavigationEnhanced";
+import HeaderNav from '@/components/HeaderNav';
 import { generateMockCoupleProfiles, type CoupleProfileWithPartners } from "@/lib/coupleProfiles";
 import { useAuth } from '@/hooks/useAuth';
 import { logger } from '@/lib/logger';
@@ -366,7 +366,7 @@ const ProfileCouple: React.FC = () => {
 
         {/* Navegación inferior fija */}
         <div className="fixed bottom-0 left-0 right-0 z-50">
-          <NavigationEnhanced />
+          <HeaderNav />
         </div>
       </div>
       
