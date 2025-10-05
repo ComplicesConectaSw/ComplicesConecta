@@ -12,7 +12,7 @@ import { logger } from '@/lib/logger';
 export function usePersistedState<T>(
   key: string,
   defaultValue: T
-): [T, (value: T | ((prev: _T) => T)) => void] {
+): [T, (value: T | ((prev: T) => T)) => void] {
   // Estado inicial con verificación SSR-safe
   const [state, setState] = useState<T>(() => {
     // Verificar si estamos en el cliente (no SSR)
@@ -21,6 +21,7 @@ export function usePersistedState<T>(
     }
     
     try {
+      const _keys = Object.keys(localStorage).filter((key: string) => key.startsWith('demo_'));
       const item = window.localStorage.getItem(key);
       if (item === null) {
         return defaultValue;
@@ -41,14 +42,14 @@ export function usePersistedState<T>(
         }
         return item as T;
       }
-    } catch (__error) {
-      logger.error('Error leyendo localStorage:', { key, error: String(_error) });
+    } catch (_error) {
+      logger.error('Error parsing localStorage value:', { key, error: _error });
       return defaultValue;
     }
   });
 
   // Función para actualizar estado y localStorage
-  const setValue = useCallback((value: T | ((prev: _T) => T)) => {
+  const setValue = useCallback((value: T | ((prev: T) => T)) => {
     try {
       const valueToStore = value instanceof Function ? value(state) : value;
       setState(valueToStore);
@@ -67,7 +68,7 @@ export function usePersistedState<T>(
           }
         }
       }
-    } catch (__error) {
+    } catch (_error) {
       logger.error('Error guardando en localStorage:', { key, error: String(_error) });
     }
   }, [key, state]);
@@ -77,12 +78,12 @@ export function usePersistedState<T>(
     if (typeof window === 'undefined') return;
     
     const handleStorageChange = (__e: any) => {
-      if (e.key === key && e.newValue !== null) {
+      if (__e.key === key && __e.newValue !== null) {
         try {
-          const newValue = JSON.parse(e.newValue);
+          const newValue = JSON.parse(__e.newValue);
           setState(newValue);
           logger.info('Estado sincronizado desde storage event:', { key });
-        } catch (__error) {
+        } catch (_error) {
           logger.error('Error sincronizando storage event:', { key, error: String(_error) });
         }
       }
@@ -99,11 +100,11 @@ export function usePersistedState<T>(
  * Hook para limpiar localStorage de forma controlada
  */
 export function useClearPersistedState() {
-  return (___keys: any) => {
-    _keys.forEach(key => {
+  return (keys: string[]) => {
+    keys.forEach((key: string) => {
       try {
         window.localStorage.removeItem(key);
-      } catch (__error) {
+      } catch (_error) {
         console.warn(`Error removing localStorage key "${key}":`, _error);
       }
     });

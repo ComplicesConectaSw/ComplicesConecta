@@ -2,7 +2,18 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Tables } from '@/integrations/supabase/types';
+// import { Tables } from '@/integrations/supabase/types';
+
+interface Invitation {
+  id: string;
+  from_profile: string;
+  to_profile: string;
+  message: string;
+  type: string;
+  status: string;
+  created_at: string;
+  decided_at: string | null;
+}
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
@@ -165,7 +176,7 @@ const AdminProduction = () => {
           return;
         }
       } catch (_error) {
-        logger.error('Error parsing demo user:', { error: String(error) });
+        logger.error('Error parsing demo user:', { error: String(_error) });
       }
     }
 
@@ -218,7 +229,7 @@ const AdminProduction = () => {
         loadRealInvitations()
       ]);
     } catch (_error) {
-      logger.error('Error loading production admin data:', { error: String(error) });
+      logger.error('Error loading production admin data:', { error: String(_error) });
       toast({
         title: "Error",
         description: "Error al cargar datos del panel de administración de producción",
@@ -243,7 +254,7 @@ const AdminProduction = () => {
       }
 
       // Mapear los datos de Supabase al tipo Profile local
-      const mappedProfiles: Profile[] = (data || []).map((profile: Tables<'profiles'>) => ({
+      const mappedProfiles: Profile[] = (data || []).map((profile: any) => ({
         id: profile.id,
         display_name: profile.name || 'Usuario',
         first_name: profile.name?.split(' ')[0] || 'Usuario',
@@ -264,7 +275,7 @@ const AdminProduction = () => {
 
       setProfiles(mappedProfiles);
     } catch (_error) {
-      logger.error('Error in loadRealProfiles:', { error: String(error) });
+      logger.error('Error in loadRealProfiles:', { error: String(_error) });
     }
   };
 
@@ -285,26 +296,26 @@ const AdminProduction = () => {
 
       // Intentar cargar métricas adicionales - tablas podrían no existir
       let apkDownloadsResponse = { count: 0 };
-      let appMetrics = null;
+      let __appMetrics = null;
       let tokenData = null;
 
       // Tabla apk_downloads no existe en el esquema actual
       apkDownloadsResponse = { count: 0 };
 
       // Tabla app_metrics no existe en el esquema actual
-      const _appMetrics = null;
+      __appMetrics = null;
 
       try {
         const tokensResponse = await supabase.from('user_token_balances').select('cmpx_balance');
         if (!tokensResponse.error) {
           tokenData = tokensResponse.data;
         }
-      } catch (_error) {
+      } catch {
         logger.info('🪙 Tabla user_token_balances no disponible');
       }
 
       // Función para obtener métricas específicas
-      const getMetricValue = (name: string) => {
+      const getMetricValue = (_name: string) => {
         // Como appMetrics es null, siempre retornamos 0
         return 0;
       };
@@ -341,7 +352,7 @@ const AdminProduction = () => {
         moderationQueue: 0
       });
     } catch (_error) {
-      logger.error('Error loading real stats:', { error: String(error) });
+      logger.error('Error loading app metrics:', { error: String(_error) });
     }
   };
 
@@ -378,9 +389,9 @@ const AdminProduction = () => {
       }));
       
       setInvitations(mappedInvitations);
-      logger.info('📧 Cargando invitaciones, total encontradas:', { count: data.length });
+      logger.info('📧 Cargando invitaciones, total encontradas:', { count: data?.length || 0 });
     } catch (_error) {
-      logger.error('Error loading invitations:', { error: String(error) });
+      logger.error('Error loading invitations:', { error: String(_error) });
       setInvitations([]);
     }
   };
@@ -399,7 +410,7 @@ const AdminProduction = () => {
         title: "Perfil Eliminado",
         description: "El perfil ha sido eliminado exitosamente"
       });
-    } catch (_error) {
+    } catch {
       toast({
         title: "Error",
         description: "Error al eliminar el perfil",
@@ -427,7 +438,7 @@ const AdminProduction = () => {
         title: "Estado Premium Actualizado",
         description: `El usuario ${!profile.is_premium ? 'ahora es' : 'ya no es'} premium`
       });
-    } catch (_error) {
+    } catch {
       toast({
         title: "Error",
         description: "Error al actualizar el estado premium",

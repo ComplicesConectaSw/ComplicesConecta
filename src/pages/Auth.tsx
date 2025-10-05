@@ -111,9 +111,9 @@ const Auth = () => {
       };
       
       // Establecer estado de autenticación demo
-      setDemoAuthenticated(true);
-      setDemoUser(demoCredentials);
-      setUserType('single');
+      _setDemoAuthenticated(true);
+      _setDemoUser(demoCredentials);
+      _setUserType('single');
       
       // Configurar localStorage para demo
       localStorage.setItem('demo_authenticated', 'true');

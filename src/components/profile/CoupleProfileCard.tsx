@@ -39,8 +39,8 @@ interface CoupleProfileWithPartners {
 
 interface CoupleProfileCardProps {
   profile: CoupleProfileWithPartners;
-  onLike?: (id: _string) => void;
-  _onSuperLike?: (profile: _CoupleProfileWithPartners) => void;
+  onLike?: (id: string) => void;
+  _onSuperLike?: (profile: CoupleProfileWithPartners) => void;
   _onMessage?: () => void;
   onOpenModal: () => void;
   _showActions?: boolean;
@@ -50,8 +50,8 @@ interface CoupleProfileCardProps {
 }
 
 // Get theme colors based on relationship type
-const getRelationshipTheme = (__relationshipType: any) => {
-  switch (relationshipType) {
+const _getRelationshipTheme = (__relationshipType: any) => {
+  switch (__relationshipType) {
     case 'man-man':
       return {
         gradient: 'from-blue-500 to-indigo-600',
@@ -85,7 +85,7 @@ const getRelationshipTheme = (__relationshipType: any) => {
 
 // Get relationship type display name
 const getRelationshipDisplayName = (_relationshipType: any) => {
-  switch (relationshipType) {
+  switch (_relationshipType) {
     case 'man-man':
       return 'Pareja Masculina';
     case 'woman-woman':
@@ -119,7 +119,7 @@ const CoupleProfileCard = ({
   // Obtener configuración de tema usando el hook unificado
   const themeConfig = useProfileTheme('couple', genders);
   
-  const _theme = getRelationshipTheme(profile.relationship_type);
+  const _isCouple = profile.relationship_type;
   const _relationshipDisplayName = getRelationshipDisplayName(profile.relationship_type);
   
   // Use couple images if available, otherwise use placeholder
@@ -131,18 +131,18 @@ const CoupleProfileCard = ({
     navigate(`/profile/${profile.id}`);
   };
 
-  const handleLike = (__e: any) => {
-    e.stopPropagation();
+  const handleLike = (_e: React.MouseEvent) => {
+    _e.stopPropagation();
     onOpenModal();
   };
 
-  const handleSuperLike = (__e: any) => {
-    e.stopPropagation();
+  const handleSuperLike = (_e: React.MouseEvent) => {
+    _e.stopPropagation();
     onOpenModal();
   };
 
-  const handleDislike = (__e: any) => {
-    e.stopPropagation();
+  const handleDislike = (_e: any) => {
+    _e.stopPropagation();
     onOpenModal();
     toast({
       title: "Perfil omitido",
@@ -292,7 +292,7 @@ const CoupleProfileCard = ({
 
         {/* Interests - Sincronizado con MainProfileCard */}
         <div className="flex flex-wrap gap-1 sm:gap-2 mb-4">
-          {profile.interests?.slice(0, 3).map((interest: string, index: _number) => (
+          {profile.interests?.slice(0, 3).map((interest: string, index: number) => (
             <span 
               key={index}
               className="px-2 sm:px-3 py-1 bg-purple-100 text-purple-700 text-[10px] sm:text-xs rounded-full transition-colors hover:bg-purple-200 truncate max-w-[80px] sm:max-w-none"
@@ -344,8 +344,8 @@ const CoupleProfileCard = ({
         
         {/* View Profile Button - Sincronizado con MainProfileCard */}
         <button
-          onClick={(e) => {
-            e.stopPropagation();
+          onClick={(_e) => {
+            _e.stopPropagation();
             handleViewProfile();
           }}
           className="w-full mt-2 text-gray-600 hover:text-gray-800 transition-colors text-xs sm:text-sm py-2 hover:bg-gray-100 rounded-md font-medium"

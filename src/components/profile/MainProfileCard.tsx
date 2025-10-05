@@ -34,7 +34,7 @@ interface ProfileCardProps {
     partner2_first_name?: string;
     partner2_age?: number;
   };
-  onLike?: (id: _string) => void;
+  onLike?: (id: string) => void;
   onSuperLike?: (profile: ProfileCardProps['profile']) => void;
   onOpenModal?: () => void;
   // Props de configuración
@@ -58,7 +58,7 @@ export const MainProfileCard = ({
   try {
     validateProfileCard(profile);
   } catch (__error) {
-    logger.error('❌ Error validando ProfileCard:', { error: _error });
+    logger.error('❌ Error validando ProfileCard:', { error: __error });
   }
   const { getUserOnlineStatus, getLastSeenTime } = useUserOnlineStatus();
   const profileId = String(profile.id);
@@ -81,19 +81,19 @@ export const MainProfileCard = ({
     navigate(`/profile/${id}`);
   };
 
-  const handleLike = (___e: any) => {
+  const handleLike = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (onLike) onLike(String(id));
     if (onOpenModal) onOpenModal();
   };
 
-  const handleSuperLike = (___e: any) => {
+  const handleSuperLike = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (onSuperLike) onSuperLike(profile);
     if (onOpenModal) onOpenModal();
   };
 
-  const handleDislike = (___e: any) => {
+  const handleDislike = (e: any) => {
     e.stopPropagation();
     if (onOpenModal) onOpenModal();
     toast({
@@ -110,17 +110,17 @@ export const MainProfileCard = ({
           ? `${themeConfig.backgroundClass} ${themeConfig.textClass}` 
           : "bg-card-gradient"
       )}
-      onClick={showViewProfile ? _handleViewProfile : undefined}
+      onClick={showViewProfile ? handleViewProfile : undefined}
     >
       {/* Image Container */}
       <div className="relative aspect-[3/4] overflow-hidden">
-        {!imageError && image ? (
+        {_imageError && image ? (
           <img 
             src={image} 
             alt={name}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             onError={(_e) => {
-              logger.info('Error loading image:', { image });
+              logger.error('Error loading image:', { error: _e });
               setImageError(true);
             }}
             onLoad={() => logger.info('Image loaded successfully:', { image })}
@@ -217,7 +217,7 @@ export const MainProfileCard = ({
 
         {/* Interests */}
         <div className="flex flex-wrap gap-1 sm:gap-2 mb-4">
-          {interests?.slice(0, 3).map((interest: string, index: _number) => (
+          {interests?.slice(0, 3).map((interest: string, index: number) => (
             <span 
               key={index}
               className="px-2 sm:px-3 py-1 bg-purple-100 text-purple-700 text-[10px] sm:text-xs rounded-full transition-colors hover:bg-purple-200 truncate max-w-[80px] sm:max-w-none"
@@ -253,8 +253,8 @@ export const MainProfileCard = ({
         
         {/* View Profile Button */}
         <button
-          onClick={(e) => {
-            e.stopPropagation();
+          onClick={(_e) => {
+            _e.stopPropagation();
             handleViewProfile();
           }}
           className="w-full mt-2 text-gray-600 hover:text-gray-800 transition-colors text-xs sm:text-sm py-2 hover:bg-gray-100 rounded-md font-medium"
