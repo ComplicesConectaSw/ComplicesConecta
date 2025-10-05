@@ -26,12 +26,35 @@ export const detectWalletConflicts = () => {
   if (typeof window === 'undefined') return [];
   
   const wallets: string[] = [];
-  const windowAny = window as any;
   
-  if (windowAny.ethereum) wallets.push('MetaMask/Ethereum');
-  if (windowAny.solana) wallets.push('Solana');
-  if (windowAny.tronWeb) wallets.push('TronLink');
-  if (windowAny.bybitWallet) wallets.push('Bybit');
+  try {
+    // Reutilizar funciones de detección robustas de wallets.ts
+    const { getInstalledWallets } = require('./wallets');
+    const installedWallets = getInstalledWallets();
+    
+    // Mapear nombres técnicos a nombres amigables
+    const walletNames = {
+      ethereum: 'MetaMask/Ethereum',
+      solana: 'Phantom/Solana',
+      tron: 'TronLink',
+      bybit: 'Bybit Wallet'
+    };
+    
+    installedWallets.forEach((wallet: string) => {
+      const friendlyName = walletNames[wallet as keyof typeof walletNames] || wallet;
+      wallets.push(friendlyName);
+    });
+    
+  } catch (error) {
+    console.warn('[WalletProtection] Error using wallets.ts detection, falling back:', error);
+    
+    // Fallback a detección simple
+    const windowAny = window as any;
+    if (windowAny.ethereum) wallets.push('MetaMask/Ethereum');
+    if (windowAny.solana) wallets.push('Phantom/Solana');
+    if (windowAny.tronWeb) wallets.push('TronLink');
+    if (windowAny.bybitWallet) wallets.push('Bybit Wallet');
+  }
   
   if (wallets.length > 1) {
     console.warn('[WalletProtection] Multiple wallet extensions detected:', wallets);

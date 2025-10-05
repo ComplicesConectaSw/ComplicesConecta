@@ -5,6 +5,7 @@ import './index.css'
 import './styles/header-fixes.css'
 import { initializeWalletProtection, detectWalletConflicts } from "./utils/walletProtection";
 import { initializeReactFallbacks, ensureReactPolyfills } from "./utils/reactFallbacks";
+import { initWalletsAsync } from './utils/safeWalletInit';
 import './styles/responsive.css'
 import './styles/text-overflow-fixes.css'
 import './styles/text-visibility-fixes.css'
@@ -129,6 +130,8 @@ async function initializeApp() {
     if (typeof window !== 'undefined') {
       void (async () => {
         try {
+          // Inicialización segura de wallets sin redefiniciones
+          await initWalletsAsync();
           initializeWalletProtection();
           detectWalletConflicts();
         } catch (error) {
