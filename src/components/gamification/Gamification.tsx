@@ -89,7 +89,7 @@ const getRarityColor = (rarity: string) => {
 };
 
 export const Gamification = () => {
-  const [selectedTab, setSelectedTab] = useState("achievements");
+  const [_selectedTab, _setSelectedTab] = useState('achievements');
   
   const experiencePercentage = (mockStats.experience / mockStats.nextLevelExp) * 100;
 

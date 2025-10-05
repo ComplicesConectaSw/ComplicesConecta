@@ -57,12 +57,12 @@ const Auth = () => {
   const [userType, setUserType] = usePersistedState<string>('userType', '');
   
   const [isLoading, setIsLoading] = useState(false);
-  const [showResetPassword, setShowResetPassword] = useState(false);
-  const [resetEmail, setResetEmail] = useState("");
+  const [_showResetPassword, setShowResetPassword] = useState(false);
+  const [_resetEmail, setResetEmail] = useState("");
   const [showLoginLoading, setShowLoginLoading] = useState(false);
-  const [autoLocationRequested, setAutoLocationRequested] = useState(false);
-  const [showThemeModal, setShowThemeModal] = useState(false);
-  const [showTermsModal, setShowTermsModal] = useState(false);
+  const [_autoLocationRequested, setAutoLocationRequested] = useState(false);
+  const [_showThemeModal, setShowThemeModal] = useState(false);
+  const [_showTermsModal, setShowTermsModal] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     email: '',
     password: '',

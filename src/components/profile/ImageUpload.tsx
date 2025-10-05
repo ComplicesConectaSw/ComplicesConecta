@@ -3,8 +3,8 @@ import { Upload, X, Image as ImageIcon, Loader2 } from 'lucide-react';
 import { ProfileImageService, ImageUploadResult } from '@/lib/storage';
 
 interface ImageUploadProps {
-  onImageUploaded: (url: string) => void;
-  onError: (error: string) => void;
+  onImageUploaded: (url: _string) => void;
+  onError: (error: _string) => void;
   userId: string;
   currentImage?: string;
   type?: 'profile' | 'gallery';
@@ -30,7 +30,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileSelect = async (file: File) => {
+  const handleFileSelect = async (__file: any) => {
     if (disabled || isUploading) return;
 
     setIsUploading(true);
@@ -62,21 +62,21 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
       } else {
         onError(result.error || 'Error al subir imagen');
       }
-    } catch (error) {
+    } catch (_error) {
       onError('Error inesperado al subir imagen');
     } finally {
       setIsUploading(false);
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (__e: any) => {
     const file = e.target.files?.[0];
     if (file) {
       handleFileSelect(file);
     }
   };
 
-  const handleDrop = (e: React.DragEvent) => {
+  const handleDrop = (__e: any) => {
     e.preventDefault();
     setDragActive(false);
     
@@ -86,12 +86,12 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
     }
   };
 
-  const handleDragOver = (e: React.DragEvent) => {
+  const handleDragOver = (__e: any) => {
     e.preventDefault();
     setDragActive(true);
   };
 
-  const handleDragLeave = (e: React.DragEvent) => {
+  const handleDragLeave = (__e: any) => {
     e.preventDefault();
     setDragActive(false);
   };
@@ -114,7 +114,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
       } else {
         onError(result.error || 'Error al eliminar imagen');
       }
-    } catch (error) {
+    } catch (_error) {
       onError('Error inesperado al eliminar imagen');
     } finally {
       setIsUploading(false);

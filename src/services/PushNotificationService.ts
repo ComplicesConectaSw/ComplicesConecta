@@ -167,7 +167,7 @@ export class PushNotificationService {
         .update({
           updated_at: new Date().toISOString()
         })
-        .eq('id', userId)
+        .eq('user_id', userId)
         .select()
         .single()
 
@@ -408,7 +408,7 @@ export class PushNotificationService {
         .update({
           updated_at: new Date().toISOString()
         })
-        .eq('id', userId)
+        .eq('user_id', userId)
 
       if (error) {
         logger.error('Error creando preferencias por defecto:', { error: error.message })

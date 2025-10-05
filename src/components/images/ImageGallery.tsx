@@ -10,14 +10,17 @@ import { useAuth } from '@/hooks/useAuth';
 import { logger } from '@/lib/logger';
 
 interface ImageGalleryProps {
-  profileId: string;
+  images: string[];
+  _onImageClick?: (index: number) => void;
+  _showUpload?: boolean;
+  _onUpload?: (file: File) => void;
+  profileId?: string;
   isOwner?: boolean;
-  showUpload?: boolean;
 }
 
-export function ImageGallery({ profileId, isOwner = false, showUpload = false }: ImageGalleryProps) {
-  const [images, setImages] = useState<ImageUpload[]>([]);
+export function ImageGallery({ images: _images, _onImageClick, _showUpload = false, _onUpload, profileId = '', isOwner = false }: ImageGalleryProps) {
   const [loading, setLoading] = useState(true);
+  const [images, setImages] = useState<ImageUpload[]>([]);
   const [selectedImage, setSelectedImage] = useState<ImageUpload | null>(null);
   const [requestingAccess, setRequestingAccess] = useState(false);
   const { user } = useAuth();
@@ -25,13 +28,13 @@ export function ImageGallery({ profileId, isOwner = false, showUpload = false }:
 
   useEffect(() => {
     loadImages();
-  }, [profileId]);
+  }, []);
 
   const loadImages = async () => {
     setLoading(true);
     try {
-      const images = await getUserImages(profileId, isOwner);
-      setImages(images);
+      const loadedImages = await getUserImages(profileId, isOwner);
+      setImages(loadedImages);
     } catch (error) {
       logger.error('Error loading images:', { error });
       toast({
@@ -67,6 +70,7 @@ export function ImageGallery({ profileId, isOwner = false, showUpload = false }:
         });
       }
     } catch (error) {
+      logger.error('Error deleting image:', { error });
       toast({
         variant: "destructive",
         title: "Error inesperado",
@@ -85,7 +89,8 @@ export function ImageGallery({ profileId, isOwner = false, showUpload = false }:
         title: "Funcionalidad en desarrollo",
         description: "La solicitud de acceso estará disponible pronto.",
       });
-    } catch (error) {
+    } catch (_error) {
+      logger.error('Error requesting access:', { error: _error });
       toast({
         variant: "destructive",
         title: "Error inesperado",

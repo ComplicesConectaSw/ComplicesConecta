@@ -51,20 +51,20 @@ export const MainProfileCard = ({
   onOpenModal, 
   useThemeBackground = false,
   variant = 'single',
-  showQuickActions = true,
+  showQuickActions: _showQuickActions = true,
   showViewProfile = true 
 }: ProfileCardProps) => {
   // Validar props con Zod
   try {
     validateProfileCard(profile);
-  } catch (error) {
-    logger.error('❌ Error validando ProfileCard:', { error });
+  } catch (_error) {
+    logger.error('❌ Error validando ProfileCard:', { error: _error });
   }
   const { getUserOnlineStatus, getLastSeenTime } = useUserOnlineStatus();
   const profileId = String(profile.id);
-  const isOnline = profile.isOnline ?? getUserOnlineStatus(profileId);
-  const lastSeen = profile.lastSeen ?? getLastSeenTime(profileId);
-  const { id, name, age, location, interests, image, rating, isOnline: onlineStatus = false, gender = 'male', partnerGender, accountType = 'single', theme } = profile;
+  const _isOnline = profile.isOnline ?? getUserOnlineStatus(profileId);
+  const _lastSeen = profile.lastSeen ?? getLastSeenTime(profileId);
+  const { id, name, age, location, interests, image, rating, isOnline: _onlineStatus = false, gender = 'male', partnerGender, accountType = 'single', theme } = profile;
   const navigate = useNavigate();
   const { toast } = useToast();
   const [imageError, setImageError] = useState(false);
@@ -119,7 +119,7 @@ export const MainProfileCard = ({
             src={image} 
             alt={name}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-            onError={(e) => {
+            onError={(_e) => {
               logger.info('Error loading image:', { image });
               setImageError(true);
             }}

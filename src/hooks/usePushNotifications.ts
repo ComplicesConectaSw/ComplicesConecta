@@ -201,7 +201,7 @@ export const usePushNotifications = ({
   }, [userId]);
 
   // Remove subscription from database
-  const removeSubscriptionFromDatabase = useCallback(async (pushSubscription: PushSubscription) => {
+  const removeSubscriptionFromDatabase = useCallback(async (_pushSubscription: PushSubscription) => {
     if (!userId) return;
 
     try {

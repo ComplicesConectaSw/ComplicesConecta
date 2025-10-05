@@ -51,6 +51,7 @@ export function InvitationDialog({ targetProfileId, targetProfileName, children 
       setType('profile');
       setOpen(false);
     } catch (error) {
+      console.error('Error sending invitation:', error);
       toast({
         title: "Error",
         description: "No se pudo enviar la invitación. Inténtalo de nuevo.",

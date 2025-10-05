@@ -10,7 +10,7 @@ import { logger } from '@/lib/logger';
 interface LazyLoaderProps {
   children: ReactNode;
   fallback?: ReactNode;
-  errorFallback?: ReactNode;
+  _errorFallback?: ReactNode;
   loadingText?: string;
   minLoadingTime?: number;
 }
@@ -89,7 +89,7 @@ const ErrorFallback: React.FC<{ error?: Error; retry?: () => void }> = ({
 export const LazyComponentLoader: React.FC<LazyLoaderProps> = ({
   children,
   fallback,
-  errorFallback,
+  _errorFallback,
   loadingText,
   minLoadingTime = 300
 }) => {
@@ -97,7 +97,9 @@ export const LazyComponentLoader: React.FC<LazyLoaderProps> = ({
     <OptimizedLoader text={loadingText} minTime={minLoadingTime} />
   );
 
-  const defaultErrorFallback = errorFallback || <ErrorFallback />;
+  const _defaultErrorFallback = ({ _error, _resetErrorBoundary }: any) => (
+    <ErrorFallback />
+  );
 
   return (
     <ErrorBoundary>

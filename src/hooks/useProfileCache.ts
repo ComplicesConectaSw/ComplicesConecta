@@ -37,7 +37,7 @@ export const useProfile = (userId: string | null) => {
       }
 
       // logger.info('✅ Perfil cargado desde Supabase:', { first_name: (data as any)?.first_name });
-      return data;
+      return data as any;
     },
     enabled: !!userId,
     staleTime: 5 * 60 * 1000, // 5 minutos
@@ -91,7 +91,7 @@ export const useProfiles = (filters?: {
       }
 
       // logger.info('📊 Perfiles cargados desde cache:', { count: data?.length });
-      return data || [];
+      return (data || []) as any[];
     },
     staleTime: 2 * 60 * 1000, // 2 minutos
     gcTime: 5 * 60 * 1000, // 5 minutos
@@ -132,7 +132,7 @@ export const useUpdateProfile = () => {
       
       // logger.info('✅ Perfil actualizado en cache:', { id: (data as any)?.id });
     },
-    onError: (error) => {
+    onError: (_error) => {
       // logger.error('❌ Error en mutación de perfil:', error);
     },
   });

@@ -34,15 +34,15 @@ export function usePersistedState<T>(
           logger.info('Estado cargado desde localStorage:', { key, hasValue: !!parsed });
         }
         return parsed;
-      } catch (jsonError) {
+      } catch {
         // Si falla JSON, tratar como string simple
         if (process.env.NODE_ENV === 'development' || key.includes('demo_') || key.includes('auth_')) {
           logger.info('Estado cargado desde localStorage (string):', { key, value: item });
         }
         return item as T;
       }
-    } catch (error) {
-      logger.error('Error leyendo localStorage:', { key, error: String(error) });
+    } catch (_error) {
+      logger.error('Error leyendo localStorage:', { key, error: String(_error) });
       return defaultValue;
     }
   });
@@ -67,8 +67,8 @@ export function usePersistedState<T>(
           }
         }
       }
-    } catch (error) {
-      logger.error('Error guardando en localStorage:', { key, error: String(error) });
+    } catch (_error) {
+      logger.error('Error guardando en localStorage:', { key, error: String(_error) });
     }
   }, [key, state]);
 
@@ -76,14 +76,14 @@ export function usePersistedState<T>(
   useEffect(() => {
     if (typeof window === 'undefined') return;
     
-    const handleStorageChange = (e: StorageEvent) => {
+    const handleStorageChange = (e: any) => {
       if (e.key === key && e.newValue !== null) {
         try {
           const newValue = JSON.parse(e.newValue);
           setState(newValue);
           logger.info('Estado sincronizado desde storage event:', { key });
-        } catch (error) {
-          logger.error('Error sincronizando storage event:', { key, error: String(error) });
+        } catch (_error) {
+          logger.error('Error sincronizando storage event:', { key, error: String(_error) });
         }
       }
     };
@@ -99,12 +99,12 @@ export function usePersistedState<T>(
  * Hook para limpiar localStorage de forma controlada
  */
 export function useClearPersistedState() {
-  return (keys: string[]) => {
-    keys.forEach(key => {
+  return (_keys: string[]) => {
+    _keys.forEach(key => {
       try {
         window.localStorage.removeItem(key);
-      } catch (error) {
-        console.warn(`Error removing localStorage key "${key}":`, error);
+      } catch (_error) {
+        console.warn(`Error removing localStorage key "${key}":`, _error);
       }
     });
   };

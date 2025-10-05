@@ -26,6 +26,7 @@ export default [
       'temp/**',
       'coverage/**',
       'playwright-report/**',
+      'playwright-report-e2e/**',
       'test-results/**'
     ]
   },

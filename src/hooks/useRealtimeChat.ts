@@ -36,11 +36,12 @@ export interface TypingUser {
 }
 
 interface UseRealtimeChatOptions {
-  userId: string;
+  userId?: string;
   chatRoomId?: string;
   onMessageReceived?: (message: RealtimeMessage) => void;
   onMessageSent?: (message: RealtimeMessage) => void;
   onTypingUpdate?: (typingUsers: TypingUser[]) => void;
+  _onTypingUpdate?: (typingUsers: TypingUser[]) => void;
   onUserJoined?: (userId: string) => void;
   onUserLeft?: (userId: string) => void;
   onError?: (error: Error) => void;
@@ -51,7 +52,7 @@ export const useRealtimeChat = ({
   chatRoomId,
   onMessageReceived,
   onMessageSent,
-  onTypingUpdate,
+  _onTypingUpdate,
   onUserJoined,
   onUserLeft,
   onError

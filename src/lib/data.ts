@@ -1,4 +1,4 @@
-import { Heart, Users, Shield, Zap, MapPin, Calendar, Camera, MessageCircle, Star, Trophy, Gift, Sparkles, Search, UserPlus, Crown, BarChart3, Settings, Bell } from "lucide-react";
+import { Heart, Users, Shield, Calendar, MessageCircle, Search, UserPlus, Crown, BarChart3, Settings, Bell } from "lucide-react";
 
 export const mainNavItems = [
   { title: 'Descubrir', url: '/discover', icon: Search, badge: 'Nuevo' },
@@ -73,12 +73,13 @@ export const generateMockSingle = (includeOnlineStatus = true) => {
     "Arte Erótico", "Literatura Erótica", "Entretenimiento Adulto", "Ambiente Seductor"
   ];
   
-  // Determinar género aleatoriamente
-  const esMujer = Math.random() > 0.5;
+  // Determinar género aleatoriamente con más entropía
+  const randomSeed = Math.random() * Date.now();
+  const esMujer = randomSeed % 2 > 1;
   const nombre = esMujer 
-    ? nombresF[Math.floor(Math.random() * nombresF.length)]
-    : nombresM[Math.floor(Math.random() * nombresM.length)];
-  const apellido = apellidos[Math.floor(Math.random() * apellidos.length)];
+    ? nombresF[Math.floor((Math.random() * Date.now()) % nombresF.length)]
+    : nombresM[Math.floor((Math.random() * Date.now()) % nombresM.length)];
+  const apellido = apellidos[Math.floor((Math.random() * Date.now()) % apellidos.length)];
   
   // Imágenes reales de Unsplash para perfiles demo
   const realImages = esMujer ? [
@@ -131,7 +132,7 @@ export const generateMockSingle = (includeOnlineStatus = true) => {
   return profile;
 };
 
-export const generateMockCouple = (includeOnlineStatus = true) => {
+export const generateMockCouple = (_includeOnlineStatus = true) => {
   const nombresM = ["Julio", "Miguel", "Alejandro", "Fernando", "Roberto", "Javier", "Antonio", "Pablo"];
   const nombresF = ["Anabella", "María", "Carmen", "Elena", "Sofía", "Laura", "Patricia", "Isabel"];
   const apellidos = ["García", "Rodríguez", "López", "Martínez", "González", "Pérez", "Sánchez", "Ramírez"];
@@ -168,7 +169,7 @@ export const generateMockCouple = (includeOnlineStatus = true) => {
   
   const nombreM = nombresM[Math.floor(Math.random() * nombresM.length)];
   const nombreF = nombresF[Math.floor(Math.random() * nombresF.length)];
-  const apellido = apellidos[Math.floor(Math.random() * apellidos.length)];
+  const _apellido = apellidos[Math.floor(Math.random() * apellidos.length)];
   
   // Imágenes reales de Unsplash para parejas demo
   const coupleImages = [

@@ -27,7 +27,7 @@ import { Header } from '@/components/Header';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from '@/integrations/supabase/client';
-import { type Invitation } from '@/lib/invitations';
+
 import { logger } from '@/lib/logger';
 
 interface Profile {
@@ -120,17 +120,17 @@ const AdminProduction = () => {
   });
   const [faqItems, setFaqItems] = useState<FAQItem[]>([]);
   const [invitations, setInvitations] = useState<Invitation[]>([]);
-  const [dataLoading, setDataLoading] = useState(true);
-  const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
+  const [_dataLoading, setDataLoading] = useState(true);
+  const [_selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
   const [newFaq, setNewFaq] = useState({ question: '', answer: '', category: 'general' });
-  const [auditReport, setAuditReport] = useState<any>(null);
-  const [notifications, setNotifications] = useState<NotificationStats[]>([]);
-  const [systemAlerts, setSystemAlerts] = useState<SystemAlert[]>([]);
-  const [dateFilter, setDateFilter] = useState('today');
-  const [typeFilter, setTypeFilter] = useState('all');
-  const [userFilter, setUserFilter] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [realTimeStats, setRealTimeStats] = useState(true);
+  const [_auditReport, setAuditReport] = useState<any>(null);
+  const [_notifications, setNotifications] = useState<NotificationStats[]>([]);
+  const [_systemAlerts, setSystemAlerts] = useState<SystemAlert[]>([]);
+  const [_dateFilter, setDateFilter] = useState('today');
+  const [_typeFilter, setTypeFilter] = useState('all');
+  const [_userFilter, setUserFilter] = useState('');
+  const [_searchTerm, setSearchTerm] = useState('');
+  const [_realTimeStats, setRealTimeStats] = useState(true);
 
   useEffect(() => {
     logger.info('🔄 AdminProduction - Verificando acceso...');

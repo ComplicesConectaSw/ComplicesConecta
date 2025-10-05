@@ -77,7 +77,7 @@ export const useCouplePhotos = (profileId?: string): UseCouplePhotosReturn => {
       const fileName = `${currentProfileId}/${partner}/${Date.now()}.${fileExt}`;
 
       // Subir archivo a Supabase Storage
-      const { data: uploadData, error: uploadError } = await supabase.storage
+      const { data: _uploadData, error: uploadError } = await supabase.storage
         .from('profile-images')
         .upload(fileName, file, {
           cacheControl: '3600',

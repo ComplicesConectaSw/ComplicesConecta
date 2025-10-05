@@ -161,6 +161,21 @@ describe('PushNotificationService', () => {
 
   describe('updateUserPreferences', () => {
     it('should update notification preferences', async () => {
+      const { supabase } = await import('@/integrations/supabase/client')
+      
+      vi.mocked(supabase.from).mockReturnValue({
+        update: vi.fn().mockReturnValue({
+          eq: vi.fn().mockReturnValue({
+            select: vi.fn().mockReturnValue({
+              single: vi.fn().mockResolvedValue({
+                data: { id: 'user123', updated_at: new Date().toISOString() },
+                error: null
+              })
+            })
+          })
+        })
+      } as any)
+
       const result = await service.updateUserPreferences(
         'user123',
         'report_resolved',
@@ -221,9 +236,11 @@ describe('PushNotificationService', () => {
       const { supabase } = await import('@/integrations/supabase/client')
       
       vi.mocked(supabase.from).mockReturnValue({
-        insert: vi.fn().mockResolvedValue({
-          data: null,
-          error: null
+        update: vi.fn().mockReturnValue({
+          eq: vi.fn().mockResolvedValue({
+            data: { id: 'user123', updated_at: new Date().toISOString() },
+            error: null
+          })
         })
       } as any)
       

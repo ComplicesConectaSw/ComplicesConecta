@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { ProfileImageService, ImageUploadResult } from '@/lib/storage';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
+import { logger } from '@/lib/logger';
 
 interface CoupleImage {
   id: string;
@@ -92,7 +93,8 @@ export const CoupleImageGallery: React.FC<CoupleImageGalleryProps> = ({
         description: `${newImages.length} imagen(es) añadida(s) a la galería de pareja`,
       });
 
-    } catch (error) {
+    } catch (_error) {
+      logger.error('Error subiendo imágenes:', { error: _error });
       onError('Error al subir algunas imágenes a la galería');
     } finally {
       setIsUploading(false);
@@ -155,8 +157,9 @@ export const CoupleImageGallery: React.FC<CoupleImageGalleryProps> = ({
       } else {
         onError(result.error || 'Error al eliminar imagen');
       }
-    } catch (error) {
-      onError('Error inesperado al eliminar imagen');
+    } catch (_error) {
+      logger.error('Error cargando galería:', { error: _error });
+      onError('Error al eliminar imagen');
     }
   };
 
