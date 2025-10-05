@@ -44,7 +44,7 @@ export function TokenChatBot() {
   const [currentStep, setCurrentStep] = useState<WizardStep>('greeting');
   const [userInput, setUserInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const [stakingAmount, setStakingAmount] = useState<number>(0);
+  const [_stakingAmount, _setStakingAmount] = useState<number>(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const isInitialized = useRef(false);
 
@@ -244,7 +244,7 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
       } else {
         addBotMessage('⚠️ No se pudieron reclamar las recompensas. Inténtalo más tarde.');
       }
-    } catch (error) {
+    } catch {
       addBotMessage('❌ Error procesando recompensas. Por favor inténtalo de nuevo.');
     }
   };
@@ -270,7 +270,7 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
     }
 
     addUserMessage(`${stakingAmount} CMPX`);
-    setStakingAmount(stakingAmount);
+    _setStakingAmount(stakingAmount);
     
     const rewardAmount = Math.round(stakingAmount * 0.1);
     const endDate = new Date();
@@ -325,7 +325,7 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
       } else {
         addBotMessage(`❌ Error iniciando staking. Inténtalo de nuevo más tarde.`);
       }
-    } catch (error) {
+    } catch {
       addBotMessage('❌ Error procesando staking. Por favor inténtalo de nuevo.');
     }
   };

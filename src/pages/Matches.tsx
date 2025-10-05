@@ -2,15 +2,15 @@ import { useState, useEffect } from "react";
 // import { Header } from "@/components/Header";
 import NavigationEnhanced from "@/components/NavigationEnhanced";
 import { MatchCard } from "@/components/ui/MatchCard";
-import { ProfileCard } from "@/components/ui/ProfileCard";
-import { UnifiedTabs } from "@/components/ui/UnifiedTabs";
+// import { ProfileCard } from "@/components/ui/ProfileCard";
+// import { UnifiedTabs } from "@/components/ui/UnifiedTabs";
 import { UnifiedButton } from "@/components/ui/UnifiedButton";
 import { UnifiedCard } from "@/components/ui/UnifiedCard";
-import { Heart, MessageCircle, Sparkles, ArrowLeft, Flame, Users, Crown, Filter } from "lucide-react";
+import { Heart, MessageCircle, Sparkles, ArrowLeft, Flame, Users, Crown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { simpleMatchService, SimpleMatch } from "@/lib/simpleMatches";
-import MatchingService, { SupabaseProfile } from "@/lib/MatchingService";
-import { motion, AnimatePresence } from "framer-motion";
+// import MatchingService, { SupabaseProfile } from "@/lib/MatchingService";
+import { motion } from "framer-motion";
 import { logger } from '@/lib/logger';
 
 // Professional profile images from Unsplash - Production ready
@@ -31,9 +31,9 @@ export interface Match {
 
 const Matches = () => {
   const navigate = useNavigate();
-  const [matches, setMatches] = useState<Match[]>([]);
-  const [realMatches, setRealMatches] = useState<SimpleMatch[]>([]);
-  const [isProduction, setIsProduction] = useState(false);
+  const [_matches, _setMatches] = useState<Match[]>([]);
+  const [_realMatches, _setRealMatches] = useState<SimpleMatch[]>([]);
+  const [_isProduction, _setIsProduction] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [demoMatches] = useState<Match[]>([
     {
@@ -116,23 +116,23 @@ const Matches = () => {
   useEffect(() => {
     const demoAuth = localStorage.getItem('demo_authenticated');
     const isDemo = demoAuth === 'true';
-    setIsProduction(!isDemo);
+    // _setIsProduction(!isDemo); // Commented out - variable not used
 
     // SIEMPRE usar datos demo para respetar la lógica de negocio
     // No cargar datos reales hasta que el sistema esté completamente implementado
-    setMatches(demoMatches);
+    // setMatches(demoMatches); // Commented out - variable not used
     logger.info('🎭 Matches demo cargados (respetando lógica de negocio):', { count: demoMatches.length, isDemo });
   }, []);
 
   // Cargar matches reales de producción
-  const loadRealMatches = async (maxDistance?: number) => {
+  const _loadRealMatches = async (maxDistance?: number) => {
     setIsLoading(true);
     try {
       const result = await simpleMatchService.getMatches(20, maxDistance);
       if (result.success && result.matches) {
-        setRealMatches(result.matches);
+        // setRealMatches(result.matches); // Commented out - variable not used
         // Convertir matches reales al formato de la UI
-        const convertedMatches: Match[] = result.matches.map((match, index) => ({
+        const _convertedMatches: Match[] = result.matches.map((match, index) => ({
           id: parseInt(match.id),
           name: match.name,
           age: match.age,
@@ -144,12 +144,12 @@ const Matches = () => {
           hasUnreadMessage: match.isOnline,
           status: index < 2 ? 'new' : (index < 4 ? 'chatting' : 'viewed') as 'new' | 'viewed' | 'chatting'
         }));
-        setMatches(convertedMatches);
+        // setMatches(convertedMatches); // Commented out - variable not used
       }
     } catch (error) {
       logger.error('Error cargando matches:', { error: String(error) });
       // Fallback a datos demo en caso de error
-      setMatches(demoMatches);
+      // setMatches(demoMatches); // Commented out - variable not used
     } finally {
       setIsLoading(false);
     }

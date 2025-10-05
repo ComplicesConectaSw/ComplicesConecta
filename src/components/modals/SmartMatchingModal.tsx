@@ -217,7 +217,7 @@ export default function SmartMatchingModal({ isOpen, onClose, userId }: SmartMat
         title: "Matches actualizados",
         description: "Se han encontrado nuevas coincidencias",
       });
-    } catch (error) {
+    } catch {
       toast({
         title: "Error",
         description: "No se pudieron actualizar los matches",

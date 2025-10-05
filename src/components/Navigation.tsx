@@ -41,30 +41,30 @@ const Navigation = ({ className }: NavigationProps) => {
 
 // Export del componente original para casos específicos
 export const NavigationLegacy = ({ className }: NavigationProps) => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { features } = useFeatures();
+  const _navigate = useNavigate();
+  const _location = useLocation();
+  const { features: _features } = useFeatures();
   
   // Navegación siempre visible - sin efectos de scroll
-  const [isVisible] = useState(true);
+  const [_isVisible] = useState(true);
 
   // localStorage migrado a hooks tipados - todos los hooks al inicio
-  const [isDemoAuthenticated] = usePersistedState('demo_authenticated', 'false');
+  const [_isDemoAuthenticated] = usePersistedState('demo_authenticated', 'false');
   const [demoUser] = usePersistedState('demo_user', null);
-  const [currentUserType] = usePersistedState('userType', null);
+  const [_currentUserType] = usePersistedState('userType', null);
   
-  const isAuthenticated = isDemoAuthenticated === 'true' && demoUser !== null && demoUser !== false;
+  const isAuthenticated = _isDemoAuthenticated === 'true' && demoUser !== null && demoUser !== false;
   
   // DEBUG: Logs optimizados para NavigationLegacy
   useEffect(() => {
     logger.info('🔍 NavigationLegacy - Estado completo:', {
-      isDemoAuthenticated,
+      isDemoAuthenticated: _isDemoAuthenticated,
       demoUser: !!demoUser,
       demoUserType: typeof demoUser,
-      currentUserType,
+      currentUserType: _currentUserType,
       isAuthenticated
     });
-  }, [isDemoAuthenticated, demoUser, currentUserType, isAuthenticated]);
+  }, [_isDemoAuthenticated, demoUser, _currentUserType, isAuthenticated]);
 
   const baseNavItems = [
     { id: 'feed', icon: Home, label: 'Inicio', path: '/feed' },
@@ -86,11 +86,11 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
   
   // Configuración específica para parejas
   const getSettingsPath = () => {
-    return currentUserType === 'couple' ? '/edit-profile-couple' : '/edit-profile-single';
+    return _currentUserType === 'couple' ? '/edit-profile-couple' : '/edit-profile-single';
   };
 
   // Agregar solicitudes si la función está habilitada
-  const navItems = features.requests 
+  const navItems = _features.requests 
     ? [
         ...baseNavItems.slice(0, 3), // feed, discover, chat
         { id: 'requests', icon: UserPlus, label: 'Solicitudes', path: '/requests' },
@@ -119,22 +119,22 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
       localStorage.removeItem('demo_user');
       localStorage.removeItem('userType');
       sessionStorage.clear();
-      navigate('/auth', { replace: true });
+      _navigate('/auth', { replace: true });
       return;
     }
 
     // Usar valores de hooks en lugar de localStorage directo
-    const userType = currentUserType;
-    const isDemoAuth = isDemoAuthenticated;
+    const userType = _currentUserType;
+    const isDemoAuth = _isDemoAuthenticated;
     
     logger.info('🔍 Navigation Debug:', { demoUser, userType, isDemoAuth, path });
     
     // Detectar tipo de usuario y redirigir al perfil correcto
     if (path === '/profile') {
       if (userType === 'couple') {
-        navigate('/profile-couple');
+        _navigate('/profile-couple');
       } else {
-        navigate('/profile-single');
+        _navigate('/profile-single');
       }
       return;
     }
@@ -155,13 +155,13 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
     }
     
     // Navegar a la ruta solicitada
-    navigate(path);
+    _navigate(path);
   };
 
   return (
     <nav className={cn(
       "fixed bottom-0 left-0 right-0 z-50",
-      currentUserType === 'couple' 
+      _currentUserType === 'couple' 
         ? "bg-gradient-to-r from-pink-900/95 via-rose-900/95 to-purple-900/95 backdrop-blur-xl border-t border-rose-300/40 shadow-2xl"
         : "bg-gradient-to-r from-purple-900/95 via-pink-900/95 to-red-900/95 backdrop-blur-xl border-t border-pink-300/40 shadow-2xl",
       "px-3 sm:px-6 py-3 safe-area-pb",
@@ -172,7 +172,7 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
         <div className="flex items-center justify-around w-full min-w-fit gap-1">
           {navItems.map((item) => {
             const Icon = item.icon;
-            const isActive = location.pathname === item.path;
+            const isActive = _location.pathname === item.path;
             
             return (
               <button
@@ -184,7 +184,7 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
                   "transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95",
                   "relative overflow-hidden backdrop-blur-sm",
                   isActive 
-                    ? currentUserType === 'couple'
+                    ? _currentUserType === 'couple'
                       ? "bg-gradient-to-r from-rose-300/20 to-pink-300/10 text-white shadow-xl border border-rose-300/30"
                       : "bg-gradient-to-r from-white/20 to-white/10 text-white shadow-xl border border-white/30"
                     : "text-white/85 hover:text-white hover:bg-white/10 hover:backdrop-blur-md"

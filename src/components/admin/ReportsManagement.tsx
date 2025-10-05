@@ -136,7 +136,7 @@ export const ReportsManagement: React.FC = () => {
     }
   };
 
-  const getSeverityColor = (severity: string) => {
+  const getSeverityColor = (severity: string | undefined) => {
     switch (severity) {
       case 'critical': return 'bg-red-500';
       case 'high': return 'bg-orange-500';
@@ -320,7 +320,7 @@ export const ReportsManagement: React.FC = () => {
                             <p><strong>Usuario reportado:</strong> {report.reported_user_email || 'N/A'}</p>
                           </div>
                           <div>
-                            <p><strong>Fecha:</strong> {new Date(report.created_at).toLocaleString()}</p>
+                            <p><strong>Fecha:</strong> {report.created_at ? new Date(report.created_at).toLocaleString() : 'N/A'}</p>
                             <p><strong>Estado:</strong> {report.status}</p>
                           </div>
                         </div>
@@ -376,7 +376,7 @@ export const ReportsManagement: React.FC = () => {
                   </div>
                   <div>
                     <p><strong>Tipo:</strong> {selectedReport.content_type}</p>
-                    <p><strong>Fecha:</strong> {new Date(selectedReport.created_at).toLocaleString()}</p>
+                    <p><strong>Fecha:</strong> {selectedReport.created_at ? new Date(selectedReport.created_at).toLocaleString() : 'N/A'}</p>
                   </div>
                 </div>
                 {selectedReport.description && (

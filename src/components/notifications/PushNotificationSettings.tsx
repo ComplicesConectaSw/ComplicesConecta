@@ -21,7 +21,7 @@ export const PushNotificationSettings: React.FC<PushNotificationSettingsProps> =
     isLoading,
     error,
     isSubscribed,
-    canSubscribe,
+    canSubscribe: _canSubscribe,
     needsPermission,
     requestPermission,
     subscribe,

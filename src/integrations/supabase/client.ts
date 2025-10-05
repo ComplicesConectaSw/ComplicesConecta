@@ -1,5 +1,5 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import type { Database } from '@/integrations/supabase/types';
+import { Database } from '@/types/database';
 import { logger } from '@/lib/logger';
 
 // Obtener las credenciales de Supabase desde las variables de entorno
@@ -58,7 +58,7 @@ function getSupabaseClient(): SupabaseClient<Database> {
             } else {
               logger.info('✅ Permitiendo Supabase para admin demo:', { email: user.email });
             }
-          } catch (error) {
+          } catch {
             logger.info('🚫 Bloqueando Supabase - error parsing demo user', {});
             return Promise.reject(new Error('Demo mode active - parse error'));
           }
@@ -99,25 +99,31 @@ const checkDemoMode = () => {
   return demoAuth === 'true';
 };
 
-if (!checkDemoMode()) {
-  supabase.auth.getSession().then(({ error }) => {
-    if (error) {
-      logger.warn('⚠️ Problema de conectividad con Supabase:', { error: error.message });
-      if (error.message.includes('Failed to fetch') || error.message.includes('CONNECTION_REFUSED') || error.message.includes('Invalid Refresh Token')) {
-        isDemoMode = true;
-        logger.info('🔄 Activando modo demo offline', {});
+const initializeSupabase = async () => {
+  if (!checkDemoMode()) {
+    try {
+      const { data: _data, error: _error } = await supabase.auth.getSession();
+      if (_error) {
+        logger.warn('⚠️ Problema de conectividad con Supabase:', { error: _error.message });
+        if (_error.message.includes('Failed to fetch') || _error.message.includes('CONNECTION_REFUSED') || _error.message.includes('Invalid Refresh Token')) {
+          isDemoMode = true;
+          logger.info('🔄 Activando modo demo offline', {});
+        } else {
+          logger.info('✅ Conectado exitosamente a Supabase', {});
+        }
       }
-    } else {
-      logger.info('✅ Conectado exitosamente a Supabase', {});
+    } catch (err) {
+      logger.warn('⚠️ No se pudo verificar la sesión de Supabase:', { error: err instanceof Error ? err.message : String(err) });
+      isDemoMode = true;
+      logger.info('🔄 Activando modo demo offline', {});
     }
-  }).catch((err) => {
-    logger.warn('⚠️ No se pudo verificar la sesión de Supabase:', { error: err.message });
+  } else {
     isDemoMode = true;
-    logger.info('🔄 Activando modo demo offline', {});
-  });
-} else {
-  isDemoMode = true;
-  logger.info('🔄 Modo demo activo - evitando conexión a Supabase', {});
-}
+    logger.info('🔄 Modo demo activo - evitando conexión a Supabase', {});
+  }
+};
+
+// Initialize on module load
+initializeSupabase();
 
 export { isDemoMode };

@@ -84,7 +84,7 @@ const ProjectSupport = () => {
 
       // Obtener información adicional para auditoría
       const userAgent = navigator.userAgent;
-      const timestamp = new Date().toISOString();
+      const _timestamp = new Date().toISOString();
 
       // Subir archivo CV si existe
       let cvUrl = null;
@@ -131,7 +131,7 @@ const ProjectSupport = () => {
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       const data = [mockData];
-      const error = null;
+      const _error = null;
 
       // No hay error en la simulación, continuar con éxito
 
@@ -160,13 +160,13 @@ const ProjectSupport = () => {
         aceptaTerminos: false
       });
 
-    } catch (error: any) {
-      logger.error('❌ Error al enviar solicitud:', { error: error.message });
+    } catch (_error: any) {
+      logger.error('❌ Error al enviar solicitud:', { error: _error.message });
       
       toast({
         variant: "destructive",
         title: "Error al enviar solicitud",
-        description: error.message || "Hubo un problema al procesar tu solicitud. Inténtalo de nuevo o contacta a ComplicesConectaSw@outlook.es"
+        description: _error.message || "Hubo un problema al procesar tu solicitud. Inténtalo de nuevo o contacta a ComplicesConectaSw@outlook.es"
       });
     } finally {
       setIsSubmitting(false);

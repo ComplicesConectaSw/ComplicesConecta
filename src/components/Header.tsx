@@ -33,11 +33,11 @@ import { useDemoThemeConfig, getNavbarStyles } from '@/hooks/useProfileTheme';
 import { ModeIndicator } from '@/components/ModeIndicator';
 
 export const Header = () => {
-  const navigate = useNavigate();
-  const { user, profile, isAuthenticated: authIsAuthenticated, isAdmin, signOut, loading } = useAuth();
+  const _navigate = useNavigate();
+  const { user, profile, isAuthenticated: authIsAuthenticated, isAdmin, signOut, loading: _loading } = useAuth();
   const [demoUser, setDemoUser] = useState<any>(null);
   const [isRunningInApp, setIsRunningInApp] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [_isScrolled, setIsScrolled] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const { toast } = useToast();
 

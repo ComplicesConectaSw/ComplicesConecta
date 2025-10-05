@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Palette, Heart, Sparkles, Users, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ProfileCard } from '@/components/ui/ProfileCard';
-import { Gender, ProfileType, Theme } from '@/hooks/useProfileTheme';
+import { Gender, Theme } from '@/hooks/useProfileTheme';
 
 interface ThemeInfoModalProps {
   isOpen: boolean;
@@ -20,10 +20,11 @@ export const ThemeInfoModal: React.FC<ThemeInfoModalProps> = ({
   gender,
   partnerGender
 }) => {
-  const profileType: ProfileType = userType;
-  const genders: Gender[] = userType === 'couple' && partnerGender 
-    ? [gender, partnerGender] 
-    : [gender];
+  // Variables para futura implementación de temas personalizados
+  // const _profileType: ProfileType = userType;
+  // const _genders: Gender[] = userType === 'couple' && partnerGender 
+  //   ? [gender, partnerGender] 
+  //   : [gender];
 
   const demoProfileProps = {
     id: 'demo-theme',

@@ -15,6 +15,7 @@ import { AnimationSettingsButton } from "@/components/animations/AnimationSettin
 import AdminRoute from '@/components/auth/AdminRoute';
 import ModeratorRoute from '@/components/auth/ModeratorRoute';
 import ProtectedRoute from '@/components/ProtectedRoute';
+import { AppFactory } from '@/demo/AppFactory';
 
 // Critical pages - loaded immediately
 import Index from "@/pages/Index";
@@ -95,14 +96,15 @@ const App = () => (
             <MobileOptimizer>
               <AnimationProvider>
                 <NotificationProvider>
-                <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-800 relative overflow-hidden">
-            <AnimatedBackground />
-            <FloatingParticles count={15} />
-            <AnimationSettingsButton />
-            <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-              <PageTransitionWrapper>
-                <Suspense fallback={<PageLoader />}>
-                  <Routes>
+                  <AppFactory>
+                    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-800 relative overflow-hidden">
+                      <AnimatedBackground />
+                      <FloatingParticles count={15} />
+                      <AnimationSettingsButton />
+                      <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+                        <PageTransitionWrapper>
+                          <Suspense fallback={<PageLoader />}>
+                            <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/auth" element={
                     <ProtectedRoute requireAuth={false}>
@@ -173,17 +175,18 @@ const App = () => (
                   <Route path="/template-demo" element={<TemplateDemo />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
-                </Routes>
-              </Suspense>
-            </PageTransitionWrapper>
-          </Router>
-            <Toaster />
-          </div>
-        </NotificationProvider>
-      </AnimationProvider>
-      </MobileOptimizer>
-      </AccessibilityEnhancer>
-      </CrossBrowserOptimizer>
+                            </Routes>
+                          </Suspense>
+                        </PageTransitionWrapper>
+                      </Router>
+                      <Toaster />
+                    </div>
+                  </AppFactory>
+                </NotificationProvider>
+              </AnimationProvider>
+            </MobileOptimizer>
+          </AccessibilityEnhancer>
+        </CrossBrowserOptimizer>
       </ThemeProvider>
     </TooltipProvider>
   </QueryClientProvider>

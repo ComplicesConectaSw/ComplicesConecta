@@ -1,6 +1,6 @@
 // Theme system types for ComplicesConecta v2.8.3
 
-export type Gender = 'male' | 'female';
+export type Gender = 'male' | 'female' | 'non-binary' | 'other';
 export type ProfileType = 'single' | 'couple';
 export type Theme = 'elegant' | 'modern' | 'vibrant';
 

@@ -12,20 +12,20 @@ export interface CreateReportParams {
 export interface Report {
   id: string;
   reporter_id: string;
-  reported_user_id?: string;
-  reported_content_id?: string;
+  reported_user_id: string | null;
+  reported_content_id: string | null;
   content_type: string;
   reason: string;
-  description?: string;
-  status: 'pending' | 'reviewing' | 'resolved' | 'dismissed' | 'escalated';
-  severity: 'low' | 'medium' | 'high' | 'critical';
-  action_taken?: string;
-  reviewed_by?: string;
-  reviewed_at?: string;
-  resolution_notes?: string;
-  is_false_positive: boolean;
-  created_at: string;
-  updated_at: string;
+  description?: string | null;
+  status: string;
+  severity?: string;
+  reviewed_by?: string | null;
+  reviewed_at?: string | null;
+  resolution_notes?: string | null;
+  action_taken?: string | null;
+  is_false_positive?: boolean | null;
+  created_at: string | null;
+  updated_at: string | null;
 }
 
 export interface ReportResponse {
@@ -45,6 +45,7 @@ export interface ReportStats {
   pendingReports: number;
   resolvedReports: number;
   dismissedReports: number;
+  accuracyRate: number;
 }
 
 export class ReportService {
@@ -56,19 +57,24 @@ export class ReportService {
         return { success: false, error: 'Usuario no autenticado' };
       }
 
+      if (!params.reportedUserId) {
+        return { success: false, error: 'ID de usuario reportado es requerido' };
+      }
+
       if (user.id === params.reportedUserId) {
         return { success: false, error: 'No puedes reportarte a ti mismo' };
       }
 
-      // Crear reporte usando insert directo con casting
-      const { data, error } = await (supabase as any)
+      // Crear reporte usando insert directo con tipos correctos
+      const { data, error } = await supabase
         .from('reports')
         .insert({
           reporter_id: user.id,
           reported_user_id: params.reportedUserId,
+          reported_content_id: params.reportedContentId || params.reportedUserId,
           content_type: params.contentType,
           reason: params.reason,
-          description: params.description,
+          description: params.description || null,
           status: 'pending'
         })
         .select()
@@ -96,7 +102,7 @@ export class ReportService {
         return { success: false, error: 'Usuario no autenticado' };
       }
 
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('reports')
         .select('*')
         .eq('reporter_id', user.id)
@@ -123,7 +129,7 @@ export class ReportService {
         return { success: false, error: 'Usuario no autenticado' };
       }
 
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('reports')
         .select('*')
         .eq('status', 'pending')
@@ -153,7 +159,7 @@ export class ReportService {
       const status = action === 'dismiss' ? 'dismissed' : 'resolved';
       const actionTaken = action === 'dismiss' ? 'none' : action;
 
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('reports')
         .update({
           status,
@@ -188,22 +194,24 @@ export class ReportService {
         return { success: false, error: 'Usuario no autenticado' };
       }
 
-      const { data, error } = await (supabase as any)
-        .from('user_report_stats')
-        .select('*')
-        .eq('user_id', user.id)
-        .single();
+      // Calcular estadísticas desde la tabla reports directamente
+      const { data: allReports, error } = await supabase
+        .from('reports')
+        .select('status')
+        .eq('reporter_id', user.id);
 
-      if (error && error.code !== 'PGRST116') {
+      if (error) {
         logger.error('Error fetching user report stats:', error);
         return { success: false, error: 'Error al obtener estadísticas' };
       }
 
+      const reports = allReports || [];
       const stats: ReportStats = {
-        totalReports: data?.total_reports || 0,
-        pendingReports: data?.pending_reports || 0,
-        resolvedReports: data?.resolved_reports || 0,
-        dismissedReports: data?.dismissed_reports || 0
+        totalReports: reports.length,
+        pendingReports: reports.filter(r => r.status === 'pending').length,
+        resolvedReports: reports.filter(r => r.status === 'resolved').length,
+        dismissedReports: reports.filter(r => r.status === 'dismissed').length,
+        accuracyRate: reports.length > 0 ? (reports.filter(r => r.status === 'resolved').length / reports.length) * 100 : 0
       };
 
       return { success: true, stats };
@@ -222,12 +230,14 @@ export class ReportService {
         return { success: false, error: 'Usuario no autenticado' };
       }
 
-      const { data, error } = await (supabase as any)
-        .from('report_notifications')
+      // Usar notification_history como alternativa
+      const { data, error } = await supabase
+        .from('notifications')
         .select('*')
         .eq('user_id', user.id)
-        .eq('read', false)
-        .order('created_at', { ascending: false });
+        .eq('type', 'report_update')
+        .order('created_at', { ascending: false })
+        .limit(10);
 
       if (error) {
         logger.error('Error fetching report notifications:', error);
@@ -244,20 +254,21 @@ export class ReportService {
 
   async isContentBlocked(contentId: string, contentType: string): Promise<{ success: boolean; isBlocked?: boolean; error?: string }> {
     try {
-      const { data, error } = await (supabase as any)
-        .from('blocked_content')
-        .select('id')
-        .eq('content_id', contentId)
+      // Verificar si hay reportes resueltos que indiquen contenido bloqueado
+      const { data, error } = await supabase
+        .from('reports')
+        .select('id, status')
+        .eq('reported_content_id', contentId)
         .eq('content_type', contentType)
-        .eq('is_active', true)
-        .single();
+        .eq('status', 'resolved');
 
-      if (error && error.code !== 'PGRST116') {
+      if (error) {
         logger.error('Error checking blocked content:', error);
         return { success: false, error: 'Error al verificar contenido bloqueado' };
       }
 
-      return { success: true, isBlocked: !!data };
+      const isBlocked = (data || []).length > 0;
+      return { success: true, isBlocked };
 
     } catch (error) {
       logger.error('Unexpected error in isContentBlocked:', { error: error instanceof Error ? error.message : String(error) });
@@ -273,7 +284,7 @@ export class ReportService {
         return { success: false, error: 'Usuario no autenticado' };
       }
 
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('reports')
         .select('status, content_type')
         .not('status', 'is', null);

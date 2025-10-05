@@ -55,7 +55,7 @@ export default function SecurityPanel() {
   });
   const [searchTerm, setSearchTerm] = useState('');
   const [alertFilter, setAlertFilter] = useState('all');
-  const [selectedAlert, setSelectedAlert] = useState<SecurityAlert | null>(null);
+  const [_selectedAlert, _setSelectedAlert] = useState<SecurityAlert | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -431,7 +431,7 @@ export default function SecurityPanel() {
                             <DialogTrigger asChild>
                               <Button 
                                 className="border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 h-8 px-3 text-sm"
-                                onClick={() => setSelectedAlert(alert)}
+                                onClick={() => _setSelectedAlert(alert)}
                               >
                                 <Settings className="w-4 h-4" />
                               </Button>

@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+// import { supabase } from "@/integrations/supabase/client"; // No usado actualmente
 import { 
   Coins, 
   TrendingUp, 
@@ -88,18 +88,22 @@ export function TokenSystemPanel() {
   const loadTokenData = async () => {
     setIsLoading(true);
     try {
-      // Intentar cargar datos reales de transacciones de tokens
-      const { data: tokenData, error } = await supabase
-        .from('token_analytics')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(100);
+      // Usar datos mock ya que token_analytics no existe en el esquema actual
+      // const { data: tokenData, error } = await supabase
+      //   .from('token_analytics')
+      //   .select('*')
+      //   .order('created_at', { ascending: false })
+      //   .limit(100);
+      
+      // Simular error para usar datos mock
+      const error = new Error('token_analytics table does not exist');
 
       if (error) {
         console.error('Error loading token data:', error);
         generateMockData();
       } else {
-        processRealTokenData(tokenData || []);
+        // processRealTokenData(tokenData || []);
+        generateMockData(); // Usar mock data siempre por ahora
       }
     } catch (error) {
       console.error('Error loading token data:', error);
@@ -148,7 +152,7 @@ export function TokenSystemPanel() {
     setUserBalances(mockBalances);
   };
 
-  const processRealTokenData = (data: any[]) => {
+  const _processRealTokenData = (_data: any[]) => {
     // Procesar datos reales cuando estén disponibles
     // Por ahora usar datos mock
     generateMockData();

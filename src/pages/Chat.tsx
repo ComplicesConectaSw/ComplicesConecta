@@ -47,7 +47,7 @@ const Chat = () => {
   const [tabError, setTabError] = useState<string | null>(null);
   const [hasChatAccess, setHasChatAccess] = useState<{[key: number]: boolean}>({});
   const [isProduction, setIsProduction] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [_isLoading, setIsLoading] = useState(false);
 
   // Detectar modo de operación (demo vs producción)
   useEffect(() => {
@@ -116,8 +116,8 @@ const Chat = () => {
           setRealMessages(prev => [...prev, message]);
         });
       }
-    } catch (error) {
-      logger.error('Error cargando mensajes:', { error: String(error) });
+    } catch (_error) {
+      logger.error('Error cargando mensajes:', { error: String(_error) });
     } finally {
       setIsLoading(false);
     }
@@ -137,8 +137,8 @@ const Chat = () => {
       } else {
         alert(result.error || 'Error al enviar mensaje');
       }
-    } catch (error) {
-      logger.error('Error enviando mensaje:', { error: String(error) });
+    } catch (_error) {
+      logger.error('Error enviando mensaje:', { error: String(_error) });
       alert('Error al enviar mensaje');
     }
   };
@@ -301,7 +301,7 @@ const Chat = () => {
     }
   };
 
-  const chats = getCurrentChats();
+  const _chats = getCurrentChats();
 
   useEffect(() => {
     if (selectedChat) {

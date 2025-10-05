@@ -114,17 +114,17 @@ const isDemoMode = (): boolean => {
 };
 
 export const PrivateMatches: React.FC = () => {
-  const { features, phase } = useFeatures();
-  const { user, profile } = useAuth();
-  const { toast } = useToast();
+  const { features: _features } = useFeatures();
+  const { user: _user, isAuthenticated: _isAuthenticated } = useAuth();
+  const { toast: _toast } = useToast();
   
-  const [matches, setMatches] = useState<PrivateMatch[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedMatch, setSelectedMatch] = useState<PrivateMatch | null>(null);
+  const [_matches, setMatches] = useState<PrivateMatch[]>([]);
+  const [_loading, setLoading] = useState(true);
+  const [_selectedMatch, _setSelectedMatch] = useState<PrivateMatch | null>(null);
   const [isProcessing, setIsProcessing] = useState<string | null>(null);
 
   // Verificar acceso a la funcionalidad
-  const hasAccess = features.privateMatches || isDemoMode();
+  const hasAccess = _features.privateMatches || isDemoMode();
 
   const loadPrivateMatches = useCallback(async () => {
     try {
@@ -139,7 +139,7 @@ export const PrivateMatches: React.FC = () => {
         return;
       }
 
-      if (!user?.id) {
+      if (!_user?.id) {
         setLoading(false);
         return;
       }
@@ -159,14 +159,14 @@ export const PrivateMatches: React.FC = () => {
             is_verified
           )
         `)
-        .eq('from_profile', user.id)
+        .eq('from_profile', _user.id)
         .eq('type', 'gallery')
         .in('status', ['pending', 'accepted'])
         .order('created_at', { ascending: false });
 
       if (error) {
         logger.error('Error loading private matches:', error);
-        toast({
+        _toast({
           variant: "destructive",
           title: "Error",
           description: "No se pudieron cargar los matches privados"
@@ -208,7 +208,7 @@ export const PrivateMatches: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [user?.id, toast]);
+  }, [_user?.id, _toast]);
 
   useEffect(() => {
     if (hasAccess) {
@@ -229,7 +229,7 @@ export const PrivateMatches: React.FC = () => {
               : match
           ));
           setIsProcessing(null);
-          toast({
+          _toast({
             title: action === 'accept' ? "¡Match aceptado!" : "Match rechazado",
             description: action === 'accept' 
               ? "Ahora pueden comenzar a chatear" 
@@ -239,7 +239,7 @@ export const PrivateMatches: React.FC = () => {
         return;
       }
 
-      if (!user?.id) return;
+      if (!_user?.id) return;
 
       // Actualizar estado del match en tabla invitations
       const updatePayload = { 
@@ -251,7 +251,7 @@ export const PrivateMatches: React.FC = () => {
         .from('invitations')
         .update(updatePayload)
         .eq('id', matchId)
-        .eq('from_profile', user.id);
+        .eq('from_profile', _user.id);
 
       if (error) {
         throw error;
@@ -264,7 +264,7 @@ export const PrivateMatches: React.FC = () => {
           : match
       ));
 
-      toast({
+      _toast({
         title: action === 'accept' ? "¡Match aceptado!" : "Match rechazado",
         description: action === 'accept' 
           ? "Ahora pueden comenzar a chatear" 
@@ -273,7 +273,7 @@ export const PrivateMatches: React.FC = () => {
 
     } catch (error) {
       logger.error('Error handling match action:', { error: error instanceof Error ? error.message : String(error) });
-      toast({
+      _toast({
         variant: "destructive",
         title: "Error",
         description: "No se pudo procesar la acción"
@@ -281,7 +281,7 @@ export const PrivateMatches: React.FC = () => {
     } finally {
       setIsProcessing(null);
     }
-  }, [user?.id, toast]);
+  }, [_user?.id, _toast]);
 
   const getMatchTypeIcon = useCallback((type: string) => {
     switch (type) {
@@ -334,7 +334,7 @@ export const PrivateMatches: React.FC = () => {
     );
   }
 
-  if (loading) {
+  if (_loading) {
     return (
       <Card className="bg-black/30 backdrop-blur-sm border-white/10">
         <CardHeader>
@@ -370,38 +370,40 @@ export const PrivateMatches: React.FC = () => {
             <Shield className="h-5 w-5 text-blue-400" />
             Matches Privados
             <Badge className="bg-blue-500/20 text-blue-300 border-blue-400/30">
-              {matches.length}
+              {_matches.length}
             </Badge>
           </div>
-          {phase !== 'beta' && (
-            <Badge className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-300 border-purple-400/30">
-              <Zap className="h-3 w-3 mr-1" />
-              Premium
-            </Badge>
-          )}
+          <Badge className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-300 border-purple-400/30">
+            <Zap className="h-3 w-3 mr-1" />
+            Premium
+          </Badge>
         </CardTitle>
       </CardHeader>
       <CardContent>
-        {matches.length === 0 ? (
+        {_matches.length === 0 ? (
           <div className="text-center py-8">
-            <div className="p-4 rounded-full bg-gray-700/30 w-fit mx-auto mb-4">
-              <Users className="h-8 w-8 text-gray-400" />
+            <div className="flex flex-col items-center space-y-4">
+              <div className="p-4 rounded-full bg-gradient-to-br from-purple-500/20 to-pink-500/20">
+                <Users className="h-8 w-8 text-purple-400" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-white mb-2">
+                  No hay matches privados disponibles
+                </h3>
+                <p className="text-white/60 text-sm">
+                  Los matches privados aparecerán aquí cuando estén disponibles
+                </p>
+              </div>
             </div>
-            <h3 className="text-lg font-medium text-white mb-2">
-              No hay matches privados
-            </h3>
-            <p className="text-gray-400 text-sm">
-              Nuestro algoritmo está trabajando para encontrar conexiones perfectas para ti.
-            </p>
           </div>
         ) : (
           <div className="space-y-4">
-            {matches.map((match) => (
-              <Card key={match.id} className="bg-gray-900/50 border-gray-700/50 hover:bg-gray-900/70 transition-colors">
+            {_matches.map((match: PrivateMatch) => (
+              <Card key={match.id} className="bg-black/20 border-white/10 hover:bg-black/30 transition-colors">
                 <CardContent className="p-4">
                   <div className="flex items-start space-x-4">
                     <div className="relative">
-                      <Avatar className="h-16 w-16">
+                      <Avatar className="h-16 w-16 border-2 border-white/20">
                         <AvatarImage 
                           src={match.matched_user.avatar_url} 
                           alt={match.matched_user.first_name} 

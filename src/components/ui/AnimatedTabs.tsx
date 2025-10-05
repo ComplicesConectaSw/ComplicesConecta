@@ -21,7 +21,7 @@ interface AnimatedTabsProps {
   onTabChange?: (tabId: string) => void;
 }
 
-const tabVariants = {
+const _tabVariants = {
   default: {
     active: "bg-primary text-primary-foreground shadow-sm",
     inactive: "text-muted-foreground hover:text-foreground hover:bg-muted/50"
@@ -40,7 +40,7 @@ const tabVariants = {
   }
 };
 
-const sizeVariants = {
+const _sizeVariants = {
   sm: "px-3 py-1.5 text-sm",
   md: "px-4 py-2 text-sm",
   lg: "px-6 py-3 text-base"
@@ -50,7 +50,7 @@ export const AnimatedTabs = ({
   tabs,
   defaultTab,
   variant = "default",
-  size = "md",
+  size: _size = "md",
   orientation = "horizontal",
   className,
   onTabChange

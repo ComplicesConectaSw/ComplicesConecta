@@ -13,7 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { logger } from '@/lib/logger';
 
 const FAQ = () => {
-  const navigate = useNavigate();
+  const _navigate = useNavigate();
   const { toast } = useToast();
   const [feedback, setFeedback] = useState("");
   const [email, setEmail] = useState("");

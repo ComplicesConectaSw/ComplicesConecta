@@ -57,7 +57,7 @@ export const ProfileReportsPanel: React.FC = () => {
     try {
       const result = await profileReportService.getPendingProfileReports();
       if (result.success && result.reports) {
-        setReports(result.reports as ProfileReport[]);
+        setReports(result.reports as unknown as ProfileReport[]);
       } else {
         toast.error(result.error || 'Error al cargar reportes');
       }

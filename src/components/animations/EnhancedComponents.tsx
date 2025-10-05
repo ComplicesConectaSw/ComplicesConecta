@@ -57,7 +57,7 @@ export const EnhancedButton: React.FC<EnhancedButtonProps> = ({
   return (
     <WrapperComponent {...(ripple ? { className: 'inline-block' } : {})}>
       <ButtonComponent
-        variants={{ ...variants, ...pulseVariants }}
+        variants={{ ...variants, ...pulseVariants } as any}
         initial="idle"
         animate={pulse ? "animate" : "idle"}
         whileHover="hover"
@@ -123,7 +123,7 @@ export const EnhancedCard: React.FC<EnhancedCardProps> = ({
 
   return (
     <CardComponent
-      variants={variants}
+      variants={variants as any}
       initial="initial"
       animate="animate"
       whileHover="hover"
@@ -185,7 +185,7 @@ export const EnhancedProfileCard: React.FC<EnhancedProfileCardProps> = ({
       style={{ perspective: 1000 }}
     >
       <motion.div
-        variants={cardVariants}
+        variants={cardVariants as any}
         animate={isFlipped ? 'back' : 'front'}
         transition={{ duration: 0.6 }}
         className="relative w-full h-full preserve-3d cursor-pointer"
@@ -238,7 +238,7 @@ export const EnhancedProfileCard: React.FC<EnhancedProfileCardProps> = ({
               </div>
               
               <motion.div
-                variants={actionVariants}
+                variants={actionVariants as any}
                 initial="hidden"
                 animate="visible"
                 className="flex justify-center gap-4"
@@ -332,7 +332,7 @@ export const EnhancedChatMessage: React.FC<EnhancedChatMessageProps> = ({
 
   return (
     <motion.div
-      variants={messageVariants}
+      variants={messageVariants as any}
       initial="hidden"
       animate="visible"
       className={`flex ${message.isOwn ? 'justify-end' : 'justify-start'} mb-4`}
@@ -398,7 +398,7 @@ export const EnhancedNavItem: React.FC<EnhancedNavItemProps> = ({
 
   return (
     <motion.button
-      variants={itemVariants}
+      variants={itemVariants as any}
       animate={isActive ? 'active' : 'inactive'}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
@@ -409,7 +409,7 @@ export const EnhancedNavItem: React.FC<EnhancedNavItemProps> = ({
         {icon}
         {badge && badge > 0 && (
           <motion.div
-            variants={badgeVariants}
+            variants={badgeVariants as any}
             initial="hidden"
             animate="visible"
             className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"

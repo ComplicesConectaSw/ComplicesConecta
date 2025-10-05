@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Tables } from "@/integrations/supabase/types";
 
-interface UserPreferences {
+interface _UserPreferences {
   interests: string[];
   // Define other preferences fields here if they exist
 }
@@ -120,7 +120,7 @@ export const PreferenceSearch = ({ onResultsChange, currentUserId }: PreferenceS
 
       // Filter by distance if location is available
       if (filters.location.latitude && filters.location.longitude) {
-        filteredResults = filteredResults.filter((profile: Tables<'profiles'>) => {
+        filteredResults = filteredResults.filter((profile: any) => {
           if (!(profile as any).latitude || !(profile as any).longitude) return false;
           
           const distance = calculateDistance(
@@ -136,7 +136,7 @@ export const PreferenceSearch = ({ onResultsChange, currentUserId }: PreferenceS
 
       // Filter by interests
       if (filters.interests.length > 0) {
-        filteredResults = filteredResults.filter((profile: Tables<'profiles'>) => {
+        filteredResults = filteredResults.filter((_profile: any) => {
           // Mock preferences since user_preferences doesn't exist in current schema
           const mockPreferences = {
             interests: ['Lifestyle Swinger', 'Intercambio de Parejas', 'Eventos Lifestyle', 'Mentalidad Abierta'],
@@ -151,7 +151,7 @@ export const PreferenceSearch = ({ onResultsChange, currentUserId }: PreferenceS
       }
 
       // Add distance and compatibility score
-      const enrichedResults = filteredResults.map((profile: Tables<'profiles'>) => {
+      const enrichedResults = filteredResults.map((profile: any) => {
         let distance = null;
         if (filters.location.latitude && filters.location.longitude && (profile as any).latitude && (profile as any).longitude) {
           distance = calculateDistance(

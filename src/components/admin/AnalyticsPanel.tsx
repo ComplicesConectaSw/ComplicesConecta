@@ -50,7 +50,7 @@ type DemographicData = {
   locationDistribution: { location: string; count: number; percentage: number }[];
 };
 
-export default function AnalyticsPanel() {
+export function AnalyticsPanel() {
   const [isLoading, setIsLoading] = useState(false);
   const [analyticsData, setAnalyticsData] = useState<AnalyticsData>({
     totalUsers: 0,

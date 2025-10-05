@@ -18,7 +18,7 @@ export const ButtonEffectsTemplate: React.FC<ButtonEffectsTemplateProps> = ({
   gender = 'male',
   className
 }) => {
-  const themeConfig = useProfileTheme(profileType, [gender], theme);
+  const themeConfig = useProfileTheme(profileType, [gender as any], theme);
 
   const buttonVariants = [
     {

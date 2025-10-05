@@ -28,16 +28,16 @@ const EditProfileSingle = () => {
     interests: [] as string[],
     avatar: ""
   });
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [_isLoading, setIsLoading] = useState(false);
+  const [_error, setError] = useState("");
+  const [_success, setSuccess] = useState("");
   const [userId, setUserId] = useState<string>("");
   const [profileLoaded, setProfileLoaded] = useState(false);
   
   // Demo theme configuration
   const { demoTheme, setDemoTheme, navbarStyle, setNavbarStyle } = useDemoThemeConfig();
   const themeConfig = useProfileTheme('single', ['male'], demoTheme);
-  const navbarStyles = getNavbarStyles(navbarStyle);
+  const _navbarStyles = getNavbarStyles(navbarStyle);
 
   // Forzar re-render cuando cambia el tema
   useEffect(() => {
@@ -175,7 +175,7 @@ const EditProfileSingle = () => {
   };
 
   const handleSave = async () => {
-    if (isLoading) return;
+    if (_isLoading) return;
     
     setIsLoading(true);
     setError('');
@@ -213,7 +213,7 @@ const EditProfileSingle = () => {
         }
       }
     } catch (error) {
-      setError('Error inesperado al guardar perfil');
+      setError('Error inesperado al guardar perfil: ' + (error instanceof Error ? error.message : String(error)));
     } finally {
       setIsLoading(false);
     }
@@ -228,7 +228,7 @@ const EditProfileSingle = () => {
     setError(error);
   };
 
-  const handleLogout = () => {
+  const _handleLogout = () => {
     // Limpiar datos de sesión demo
     localStorage.removeItem('demo_authenticated');
     localStorage.removeItem('demo_user');
@@ -269,11 +269,11 @@ const EditProfileSingle = () => {
           <h1 className="text-xl font-bold text-white">Editar Perfil</h1>
           <Button 
             onClick={handleSave}
-            disabled={isLoading}
+            disabled={_isLoading}
             className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
           >
             <Save className="h-4 w-4 mr-2" />
-            {isLoading ? 'Guardando...' : 'Guardar'}
+            {_isLoading ? 'Guardando...' : 'Guardar Cambios'}
           </Button>
         </div>
       </div>

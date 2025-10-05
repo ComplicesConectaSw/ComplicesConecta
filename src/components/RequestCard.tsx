@@ -1,12 +1,12 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Check, X, MessageCircle, Clock, User, CheckCircle } from 'lucide-react';
 import { RequestsService } from '@/lib/requests';
-import type { Database } from '@/integrations/supabase/types';
+import { Tables } from '@/integrations/supabase/types';
 import { logger } from '@/lib/logger';
 
 // Tipos estrictos basados en Supabase
-type ProfileRow = Database['public']['Tables']['profiles']['Row'];
-type InvitationRow = Database['public']['Tables']['invitations']['Row'];
+type _ProfileRow = Tables<'profiles'>;
+type _InvitationRow = Tables<'invitations'>;
 // Definir tipos de enum manualmente ya que no están en el schema
 type InvitationStatus = 'pending' | 'accepted' | 'declined' | 'revoked';
 type InvitationType = 'profile' | 'gallery' | 'chat';
@@ -48,7 +48,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
   type,
   onRequestUpdated
 }) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [_isLoading, setIsLoading] = useState(false);
   const abortControllerRef = useRef<AbortController | null>(null);
 
   // El perfil ya viene incluido en la consulta desde RequestsService
@@ -104,7 +104,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
 
   // Memoización de handlers con useCallback
   const handleAccept = useCallback(async () => {
-    if (isLoading) return;
+    if (_isLoading) return;
     
     abortControllerRef.current = new AbortController();
     setIsLoading(true);
@@ -123,10 +123,10 @@ export const RequestCard: React.FC<RequestCardProps> = ({
         setIsLoading(false);
       }
     }
-  }, [request.id, onRequestUpdated, isLoading]);
+  }, [request.id, onRequestUpdated, _isLoading]);
 
   const handleDecline = useCallback(async () => {
-    if (isLoading) return;
+    if (_isLoading) return;
     
     abortControllerRef.current = new AbortController();
     setIsLoading(true);
@@ -145,10 +145,10 @@ export const RequestCard: React.FC<RequestCardProps> = ({
         setIsLoading(false);
       }
     }
-  }, [request.id, onRequestUpdated, isLoading]);
+  }, [request.id, onRequestUpdated, _isLoading]);
 
   const handleDelete = useCallback(async () => {
-    if (isLoading) return;
+    if (_isLoading) return;
     
     abortControllerRef.current = new AbortController();
     setIsLoading(true);
@@ -167,7 +167,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
         setIsLoading(false);
       }
     }
-  }, [request.id, onRequestUpdated, isLoading]);
+  }, [request.id, onRequestUpdated, _isLoading]);
 
   // Early return con null-safe check después de todos los hooks
   if (!profile) return null;
@@ -238,7 +238,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
               <>
                 <button
                   onClick={handleAccept}
-                  disabled={isLoading}
+                  disabled={_isLoading}
                   className="flex items-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
                 >
                   <Check className="w-4 h-4" />
@@ -246,7 +246,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
                 </button>
                 <button
                   onClick={handleDecline}
-                  disabled={isLoading}
+                  disabled={_isLoading}
                   className="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
                 >
                   <X className="w-4 h-4" />
@@ -258,7 +258,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
             {type === 'sent' && request.status === 'pending' && (
               <button
                 onClick={handleDelete}
-                disabled={isLoading}
+                disabled={_isLoading}
                 className="flex items-center gap-2 px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
               >
                 <X className="w-4 h-4" />

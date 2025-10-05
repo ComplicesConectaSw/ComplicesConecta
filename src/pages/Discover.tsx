@@ -12,7 +12,6 @@ import CompatibilityModal from '@/components/modals/CompatibilityModal';
 import EventsModal from '@/components/modals/EventsModal';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from "@/hooks/use-toast";
-import { useIsMobile } from '@/hooks/use-mobile';
 import { useGeolocation } from '@/hooks/useGeolocation';
 import { pickProfileImage, inferProfileKind, resetImageCounters, type ProfileType, type Gender } from '@/lib/media';
 import { calculateDistance, getLocationDisplay } from '@/lib/distance-utils';
@@ -62,8 +61,8 @@ interface Filters {
 const Discover = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const isMobile = useIsMobile();
-  const { location, error: locationError } = useGeolocation();
+  const [_isMobile] = useState(false);
+  const { location } = useGeolocation();
   const { user, isAuthenticated } = useAuth();
   
   const [profiles, setProfiles] = useState<Profile[]>([]);
@@ -133,7 +132,7 @@ const Discover = () => {
 
     resetImageCounters();
 
-    const newProfiles: Profile[] = Array.from({ length: 50 }, (_, index) => {
+    const newProfiles: Profile[] = Array.from({ length: 50 }, (_, _index) => {
       const name = nombres[Math.floor(Math.random() * nombres.length)];
       const profileKind = inferProfileKind({ name });
       const profileType: ProfileType = profileKind.kind === 'couple' ? 'couple' : 'single';
@@ -342,11 +341,11 @@ const Discover = () => {
     }
   }, [isAuthenticated, navigate, profiles.length, coupleProfiles.length]);
 
-  const handleProfileClick = (profile: Profile) => {
-    navigate(`/profile/${profile.id}`, { state: { profile } });
-  };
+  const _handleProfileClick = useCallback((_profileId: string) => {
+    navigate(`/profile/${_profileId}`, { state: { profile: profiles.find(p => p.id === _profileId) } });
+  }, [profiles]);
 
-  const handleLike = (profileId: number | string) => {
+  const handleLike = (_profileId: number | string) => {
     if (!isAuthenticated) {
       setShowPremiumModal(true);
       return;
@@ -357,7 +356,7 @@ const Discover = () => {
     });
   };
 
-  const handleSuperLike = (profileId: number | string) => {
+  const _handleSuperLike = useCallback((_profileId: string) => {
     if (!isAuthenticated) {
       setShowSuperLikesModal(true);
       return;
@@ -367,23 +366,23 @@ const Discover = () => {
       description: "Has enviado un Super Like especial.",
       variant: "default",
     });
-  };
+  }, []);
 
-  const handlePass = (profileId: number | string) => {
+  const _handlePass = useCallback((_profileId: string) => {
     // Simplemente no mostrar mensaje para pass
-  };
+  }, []);
 
-  const handleCompatibilityClick = () => {
+  const _handleCompatibilityClick = useCallback(() => {
     if (!isAuthenticated) {
       setShowCompatibilityModal(true);
     }
-  };
+  }, []);
 
-  const handleEventsClick = () => {
+  const _handleEventsClick = useCallback(() => {
     if (!isAuthenticated) {
       setShowEventsModal(true);
     }
-  };
+  }, []);
 
   const handleViewProfile = (profileId: number | string) => {
     const profile = profiles.find(p => p.id === profileId.toString()) || 

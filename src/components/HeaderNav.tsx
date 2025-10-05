@@ -28,9 +28,9 @@ interface HeaderNavProps {
 const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user: _user } = useAuth();
   const userIsAuthenticated = isAuthenticated();
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [_openDropdown, setOpenDropdown] = useState<string | null>(null);
 
   const navItems = [
     {
@@ -132,7 +132,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
 
   const handleNavigation = (item: typeof navItems[0]) => {
     if (item.hasDropdown) {
-      setOpenDropdown(openDropdown === item.id ? null : item.id);
+      setOpenDropdown(_openDropdown === item.id ? null : item.id);
       return;
     }
     if (item.requiresAuth && !userIsAuthenticated) {
@@ -196,7 +196,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
 
               if (item.hasDropdown) {
                 return (
-                  <DropdownMenu key={item.id} open={openDropdown === item.id} onOpenChange={(open) => setOpenDropdown(open ? item.id : null)}>
+                  <DropdownMenu key={item.id} open={_openDropdown === item.id} onOpenChange={(open) => setOpenDropdown(open ? item.id : null)}>
                     <DropdownMenuTrigger asChild>
                       <Button
                         variant="ghost"

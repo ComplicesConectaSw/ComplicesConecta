@@ -92,7 +92,7 @@ export function AccessibilityAudit({ autoFix = false, onIssuesFound }: Accessibi
     grayTextElements.forEach((element, index) => {
       const computedStyle = window.getComputedStyle(element);
       const color = computedStyle.color;
-      const backgroundColor = computedStyle.backgroundColor;
+      const _backgroundColor = computedStyle.backgroundColor;
       
       // Verificación simplificada - en producción usaríamos una librería de contraste
       if (color.includes('rgb(156, 163, 175)') || color.includes('rgb(107, 114, 128)')) {

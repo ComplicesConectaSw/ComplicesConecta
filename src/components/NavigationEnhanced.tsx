@@ -16,7 +16,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { logger } from '@/lib/logger';
 import { cn } from '@/lib/utils';
 
-interface NavigationEnhancedProps {
+interface _NavigationEnhancedProps {
   className?: string;
   showNotificationBadges?: boolean;
   enableAnimations?: boolean;
@@ -24,10 +24,10 @@ interface NavigationEnhancedProps {
 }
 
 const NavigationEnhanced: React.FC = () => {
-  const [activeItem, setActiveItem] = useState('feed');
-  const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [_activeItem, setActiveItem] = useState('feed');
+  const [_isVisible, setIsVisible] = useState(true);
+  const [_lastScrollY, setLastScrollY] = useState(0);
+  const [_isMobileMenuOpen, _setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -61,9 +61,9 @@ const NavigationEnhanced: React.FC = () => {
   // Auto-hide navigation on scroll
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
+      const currentScrollY = _lastScrollY;
       
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+      if (currentScrollY > _lastScrollY && currentScrollY > 100) {
         // Scrolling down - hide navigation
         setIsVisible(false);
       } else {
@@ -76,7 +76,7 @@ const NavigationEnhanced: React.FC = () => {
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
+  }, [_lastScrollY]);
 
   // Agregar solicitudes si la función está habilitada
   const navItems = [
@@ -99,7 +99,7 @@ const NavigationEnhanced: React.FC = () => {
 
   // Solo mostrar navegación completa si está autenticado
   if (!isAuthenticated || !demoUser) {
-    return null; // Ocultar navegación si no está logueado
+    if (!_isVisible) return null; // Ocultar navegación si no está logueado
   }
 
   const handleLogout = () => {
@@ -142,7 +142,7 @@ const NavigationEnhanced: React.FC = () => {
   };
 
   // Animation variants
-  const navVariants = {
+  const _navVariants = {
     hidden: { 
       y: 100, 
       opacity: 0,
@@ -213,7 +213,7 @@ const NavigationEnhanced: React.FC = () => {
 
   return (
     <AnimatePresence>
-      {isVisible && (
+      {_isVisible && (
         <motion.nav
           initial={{ y: enableAnimations ? 100 : 0 }}
           animate={{ y: 0 }}
@@ -235,7 +235,7 @@ const NavigationEnhanced: React.FC = () => {
           
           <div className="relative flex items-center justify-between w-full max-w-full mx-auto px-1 overflow-x-auto scrollbar-hide">
             <div className="flex items-center justify-around w-full min-w-fit gap-1">
-              {navItems.map((item, index) => {
+              {navItems.map((item, _index) => {
                 const Icon = item.icon;
                 const isActive = location.pathname === item.path;
                 const notificationCount = 0;

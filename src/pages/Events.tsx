@@ -11,8 +11,8 @@ import { logger } from '@/lib/logger';
 
 const Events = () => {
   const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [activeTab, setActiveTab] = useState("events");
+  const [_searchQuery, setSearchQuery] = useState("");
+  const [_activeTab, setActiveTab] = useState("events");
   const [showAgeModal, setShowAgeModal] = useState(false);
 
   // Estado persistente para verificación de edad
@@ -20,7 +20,7 @@ const Events = () => {
 
   useEffect(() => {
     // Check if user has confirmed age verification
-    if (!ageVerified) {
+    if (_searchQuery.trim()) {
       setShowAgeModal(true);
     }
   }, [ageVerified]);
@@ -163,30 +163,30 @@ const Events = () => {
     }
   ];
 
-  const handleJoinEvent = (eventId: number) => {
+  const _handleJoinEvent = async (eventId: string) => {
     logger.info('Join event:', { eventId });
   };
 
-  const handleLikeEvent = (eventId: number) => {
+  const _handleLikeEvent = async (eventId: string) => {
     logger.info('Like event:', { eventId });
   };
 
-  const handleJoinGroup = (groupId: number) => {
+  const _handleJoinGroup = async (groupId: string) => {
     logger.info('Join group:', { groupId });
   };
 
-  const handleViewGroup = (groupId: number) => {
+  const _handleViewGroup = (groupId: string) => {
     logger.info('View group:', { groupId });
   };
 
   const filteredEvents = lifestyleEvents.filter(event =>
-    event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    event.description.toLowerCase().includes(searchQuery.toLowerCase())
+    event.title.toLowerCase().includes(_searchQuery.toLowerCase()) ||
+    event.description.toLowerCase().includes(_searchQuery.toLowerCase())
   );
 
   const filteredClubs = lifestyleClubs.filter(club =>
-    club.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    club.description.toLowerCase().includes(searchQuery.toLowerCase())
+    club.name.toLowerCase().includes(_searchQuery.toLowerCase()) ||
+    club.description.toLowerCase().includes(_searchQuery.toLowerCase())
   );
 
   return (
@@ -316,7 +316,7 @@ const Events = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/70 h-4 w-4" />
               <Input
                 placeholder="Buscar fiestas swinger, clubs privados, eventos en México..."
-                value={searchQuery}
+                value={_searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 bg-card/80 backdrop-blur-sm border-primary/20"
               />
@@ -329,7 +329,7 @@ const Events = () => {
               <Button
                 onClick={() => setActiveTab("events")}
                 className={`rounded-lg ${
-                  activeTab === "events" 
+                  _activeTab === "events" 
                     ? "bg-primary text-primary-foreground" 
                     : "bg-transparent hover:bg-gray-100 text-gray-700"
                 }`}
@@ -340,7 +340,7 @@ const Events = () => {
               <Button
                 onClick={() => setActiveTab("clubs")}
                 className={`rounded-lg ${
-                  activeTab === "clubs" 
+                  _activeTab === "clubs" 
                     ? "bg-primary text-primary-foreground" 
                     : "bg-transparent hover:bg-gray-100 text-gray-700"
                 }`}
@@ -352,7 +352,7 @@ const Events = () => {
           </div>
 
           {/* Events Section */}
-          {activeTab === "events" && (
+          {_activeTab === "events" && (
             <div className="space-y-6">
               {/* Events Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -433,7 +433,7 @@ const Events = () => {
           )}
 
           {/* Clubs Section */}
-          {activeTab === "clubs" && (
+          {_activeTab === "clubs" && (
             <div className="space-y-6">
               {/* Clubs Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

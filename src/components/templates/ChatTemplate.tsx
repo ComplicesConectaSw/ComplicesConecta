@@ -55,7 +55,7 @@ export const ChatTemplate: React.FC<ChatTemplateProps> = ({
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Get theme configuration
-  const themeConfig = useProfileTheme(profileType, [gender], theme);
+  const themeConfig = useProfileTheme(profileType, [gender as any], theme);
 
   // Demo data if none provided
   const demoContacts: ChatContact[] = contacts.length > 0 ? contacts : [
@@ -115,7 +115,8 @@ export const ChatTemplate: React.FC<ChatTemplateProps> = ({
 
   const handleSendMessage = () => {
     if (newMessage.trim() && selectedContactId) {
-      const message: ChatMessage = {
+      // Message object for future use
+      const _message: ChatMessage = {
         id: `msg-${Date.now()}`,
         content: newMessage,
         senderId: currentUserId,

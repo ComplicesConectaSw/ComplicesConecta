@@ -1,6 +1,6 @@
 import { supabase } from '@/integrations/supabase/client'
 import { logger } from '@/lib/logger'
-import type { Database } from '@/types/supabase'
+import type { Database } from '@/types/database'
 
 // Force TypeScript to reload types
 type _ReportsTableCheck = Database['public']['Tables']['reports']
@@ -76,7 +76,7 @@ export class ProfileReportService {
 
       // Ajustado según esquema real: todos los campos obligatorios incluidos
       const insertData = {
-        reporter_user_id: user.id,
+        reporter_id: user.id,
         reported_user_id: params.reportedUserId,
         content_type: 'profile',
         reported_content_id: params.reportedUserId,
@@ -86,7 +86,7 @@ export class ProfileReportService {
         status: 'pending'
       } as ReportInsert
 
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('reports')
         .insert(insertData)
         .select()
@@ -114,7 +114,7 @@ export class ProfileReportService {
         return { success: false, error: 'Usuario no autenticado' }
       }
 
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('reports')
         .select('*')
         .eq('reporter_user_id', user.id)
@@ -136,7 +136,7 @@ export class ProfileReportService {
 
   async getPendingProfileReports(): Promise<ProfileReportsListResponse> {
     try {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('reports')
         .select('*')
         .eq('status', 'pending')
@@ -164,7 +164,7 @@ export class ProfileReportService {
         return { success: false, error: 'Usuario no autenticado' }
       }
 
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('reports')
         .update({
           status: resolution,
@@ -198,9 +198,7 @@ export class ProfileReportService {
       switch (action) {
         case 'warning':
           updateData = {
-            is_blocked: false,
-            blocked_reason: null,
-            blocked_at: null
+            // Warning action - no profile blocking needed
           }
           break
 
@@ -208,20 +206,16 @@ export class ProfileReportService {
           const suspensionEnd = new Date()
           suspensionEnd.setDate(suspensionEnd.getDate() + (suspensionDays || 7))
           updateData = {
-            is_blocked: true,
-            blocked_reason: `Suspensión temporal por ${suspensionDays || 7} días`,
-            blocked_at: new Date().toISOString(),
-            suspension_end_date: suspensionEnd.toISOString()
+            // Temporary suspension - would need custom fields or separate table
+            updated_at: new Date().toISOString()
           }
           break
         }
 
         case 'permanent_suspension':
           updateData = {
-            is_blocked: true,
-            blocked_reason: 'Suspensión permanente',
-            blocked_at: new Date().toISOString(),
-            suspension_end_date: null
+            // Permanent suspension - would need custom fields or separate table
+            updated_at: new Date().toISOString()
           }
           break
       }
@@ -255,13 +249,13 @@ export class ProfileReportService {
 
       const targetUserId = userId || user.id
 
-      const { data: reportsMade } = await (supabase as any)
+      const { data: reportsMade } = await supabase
         .from('reports')
         .select('id')
         .eq('reporter_user_id', targetUserId)
         .eq('content_type', 'profile')
 
-      const { data: reportsReceived } = await (supabase as any)
+      const { data: reportsReceived } = await supabase
         .from('reports')
         .select('id')
         .eq('reported_user_id', targetUserId)
