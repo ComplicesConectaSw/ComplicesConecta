@@ -21,8 +21,12 @@ export default defineConfig({
     include: [
       'react',
       'react-dom',
-      'react/jsx-runtime'
-    ]
+      'react/jsx-runtime',
+      '@radix-ui/react-*'
+    ],
+    esbuildOptions: {
+      target: "es2020",
+    },
   },
   css: {
     postcss: './postcss.config.js',
@@ -44,6 +48,13 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
+        entryFileNames: "assets/[name]-[hash].js",
+        chunkFileNames: (chunkInfo) => {
+          if (chunkInfo.name.includes("react-vendor")) return "assets/vendor/react-vendor-[hash].js";
+          if (chunkInfo.name.includes("vendor")) return "assets/vendor/vendor-[hash].js";
+          return "assets/[name]-[hash].js";
+        },
+        inlineDynamicImports: false,
         manualChunks: (id) => {
           // Vendor libraries - más granular para reducir tamaño
           if (id.includes('node_modules')) {
@@ -194,7 +205,7 @@ export default defineConfig({
   },
   ssr: {
     // Externalize problematic packages for SSR compatibility
-    noExternal: [
+    noExternal: [ 
       // Keep these packages bundled for SSR
       '@supabase/supabase-js',
       '@radix-ui/react-*',

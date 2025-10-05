@@ -3,11 +3,10 @@
  * Fixes useLayoutEffect and other React hooks in SSR environments
  */
 
-import { useEffect, useLayoutEffect as originalUseLayoutEffect } from 'react';
+import { useSafeLayoutEffect } from './safeLayoutEffect';
 
 // Safe useLayoutEffect that falls back to useEffect in SSR
-export const useIsomorphicLayoutEffect = 
-  typeof window !== 'undefined' ? originalUseLayoutEffect : useEffect;
+export const useIsomorphicLayoutEffect = useSafeLayoutEffect;
 
 // Initialize React fallbacks for production builds
 export const initializeReactFallbacks = () => {
