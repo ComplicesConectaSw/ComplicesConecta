@@ -67,7 +67,6 @@ export const optimizeImageUrl = (
 
   // Para imágenes locales, agregar parámetros de optimización
   if (src.startsWith('/') || src.startsWith('./')) {
-    if (typeof window === 'undefined') return src;
     const url = new URL(src, window.location.origin);
     
     if (quality !== 85) url.searchParams.set('q', quality.toString());

@@ -52,7 +52,7 @@ const EditProfileCouple = () => {
   // Demo theme configuration
   const { demoTheme, setDemoTheme, navbarStyle, setNavbarStyle } = useDemoThemeConfig();
   const themeConfig = useProfileTheme('couple', ['male', 'female'], demoTheme);
-  const _navbarStyles = getNavbarStyles(navbarStyle);
+  const navbarStyles = getNavbarStyles(navbarStyle);
   
   const { location, error: locationError, getCurrentLocation } = useGeolocation();
   const [locationStatus, setLocationStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');

@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-// import { smartMatchingService } from '@/services/SmartMatchingService';
+import { SmartMatchingService } from '@/services/SmartMatchingService';
 import {
   Heart, Users, TrendingUp, Zap, RefreshCw, 
   User, MapPin, Calendar, Star
@@ -94,8 +94,8 @@ export default function SmartMatchingModal({ isOpen, onClose, userId }: SmartMat
 
   const loadMatches = async () => {
     try {
-      // Mock data since service method doesn't exist
-      const result: any[] = [];
+      const service = SmartMatchingService.getInstance();
+      const result = await service.generateMatches(userId || 'current-user');
       
       if (result && Array.isArray(result)) {
         // Transform service result to our MatchResult format
@@ -113,16 +113,16 @@ export default function SmartMatchingModal({ isOpen, onClose, userId }: SmartMat
       } else {
         generateMockMatches();
       }
-    } catch {
-      console.error('Error loading matches:');
+    } catch (error) {
+      console.error('Error loading matches:', error);
       generateMockMatches();
     }
   };
 
   const loadUserTraits = async () => {
     try {
-      // Mock data since service method doesn't exist
-      const result: any = null;
+      const service = SmartMatchingService.getInstance();
+      const result = await service.analyzeUserProfile(userId || 'current-user');
       
       if (result) {
         setUserTraits({
@@ -138,8 +138,8 @@ export default function SmartMatchingModal({ isOpen, onClose, userId }: SmartMat
       } else {
         generateMockTraits();
       }
-    } catch {
-      console.error('Error loading user traits:');
+    } catch (error) {
+      console.error('Error loading user traits:', error);
       generateMockTraits();
     }
   };
@@ -217,7 +217,7 @@ export default function SmartMatchingModal({ isOpen, onClose, userId }: SmartMat
         title: "Matches actualizados",
         description: "Se han encontrado nuevas coincidencias",
       });
-    } catch {
+    } catch (error) {
       toast({
         title: "Error",
         description: "No se pudieron actualizar los matches",

@@ -98,8 +98,8 @@ export const CreateStory: React.FC<CreateStoryProps> = ({ onStoryCreated, onClos
   };
 
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-2 sm:p-4">
-      <Card className="w-full max-w-md bg-black/40 backdrop-blur-md border-white/20 max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <Card className="w-full max-w-md bg-black/40 backdrop-blur-md border-white/20">
         <CardHeader className="pb-4">
           <div className="flex items-center justify-between">
             <CardTitle className="text-white flex items-center gap-2">
@@ -117,10 +117,10 @@ export const CreateStory: React.FC<CreateStoryProps> = ({ onStoryCreated, onClos
           </div>
         </CardHeader>
 
-        <CardContent className="space-y-3 sm:space-y-4">
+        <CardContent className="space-y-4">
           {/* Upload Area */}
           <div
-            className={`relative border-2 border-dashed rounded-lg p-4 sm:p-6 transition-colors ${
+            className={`relative border-2 border-dashed rounded-lg p-6 transition-colors ${
               dragActive 
                 ? 'border-purple-400 bg-purple-400/10' 
                 : 'border-white/30 hover:border-white/50'
@@ -134,7 +134,7 @@ export const CreateStory: React.FC<CreateStoryProps> = ({ onStoryCreated, onClos
                 <img 
                   src={selectedImage} 
                   alt="Preview" 
-                  className="w-full h-40 sm:h-48 object-cover rounded-lg"
+                  className="w-full h-48 object-cover rounded-lg"
                 />
                 <Button
                   onClick={() => setSelectedImage(null)}

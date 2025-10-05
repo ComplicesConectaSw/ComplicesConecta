@@ -490,22 +490,20 @@ export class IntelligentAutomationService {
         const moderatorId = moderators[0]?.user_id;
         
         // Notify moderator about new assignment
-        if (moderatorId) {
-          await NotificationService.createNotification({
-            userId: moderatorId,
-            type: 'alert',
-            title: 'Nueva asignación de moderación',
-            message: 'Se te ha asignado un nuevo caso para revisar',
-            actionUrl: '/admin/reports',
-            metadata: { 
-              automation: true, 
-              priority: config.priority || 'medium',
-              trigger_data: triggerData 
-            }
-          });
+        await NotificationService.createNotification({
+          userId: moderatorId,
+          type: 'alert',
+          title: 'Nueva asignación de moderación',
+          message: 'Se te ha asignado un nuevo caso para revisar',
+          actionUrl: '/admin/reports',
+          metadata: { 
+            automation: true, 
+            priority: config.priority || 'medium',
+            trigger_data: triggerData 
+          }
+        });
 
-          logger.info('Moderator assigned:', { moderatorId, triggerData });
-        }
+        logger.info('Moderator assigned:', { moderatorId, triggerData });
       }
     } catch (error) {
       logger.error('Error assigning moderator:', { error: error instanceof Error ? error.message : String(error) });

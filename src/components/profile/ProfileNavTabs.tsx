@@ -94,7 +94,7 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
                   {/* Post Image */}
                   <div className="aspect-video bg-gradient-to-br from-purple-400 to-pink-600 rounded-lg mb-3 overflow-hidden">
                     <img 
-                      src="/placeholder.svg" 
+                      src="/src/assets/profile-1.jpg" 
                       alt="Post"
                       className="w-full h-full object-cover"
                       onError={(e) => {
@@ -185,7 +185,7 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
               <div className="aspect-square bg-gradient-to-br from-pink-400 to-purple-600 rounded-lg overflow-hidden">
                 <img 
-                  src="/placeholder.svg" 
+                  src="/src/assets/profile-1.jpg" 
                   alt="Galería 1"
                   className="w-full h-full object-cover"
                   onError={(e) => {
@@ -195,7 +195,7 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
               </div>
               <div className="aspect-square bg-gradient-to-br from-purple-400 to-blue-600 rounded-lg overflow-hidden">
                 <img 
-                  src="/placeholder.svg" 
+                  src="/src/assets/profile-2.jpg" 
                   alt="Galería 2"
                   className="w-full h-full object-cover"
                   onError={(e) => {

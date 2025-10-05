@@ -60,7 +60,7 @@ export const RealtimeChatIntegration = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [currentMatch, setCurrentMatch] = useState<ChatMatch | null>(null);
-  const [_isTyping, _setIsTyping] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const channelRef = useRef<any>(null);
 
@@ -365,7 +365,7 @@ export const RealtimeChatIntegration = ({
                 </div>
               ))}
               
-              {_isTyping && (
+              {isTyping && (
                 <div className="flex justify-start">
                   <div className="bg-muted rounded-lg px-3 py-2">
                     <div className="flex space-x-1">

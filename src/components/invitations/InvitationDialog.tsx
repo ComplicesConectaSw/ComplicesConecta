@@ -50,7 +50,7 @@ export function InvitationDialog({ targetProfileId, targetProfileName, children 
       setMessage('');
       setType('profile');
       setOpen(false);
-    } catch {
+    } catch (error) {
       toast({
         title: "Error",
         description: "No se pudo enviar la invitación. Inténtalo de nuevo.",

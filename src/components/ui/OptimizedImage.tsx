@@ -1,94 +1,97 @@
-import React, { useState, useEffect } from 'react';
-import { cn } from '@/lib/utils';
-import { logger } from '@/lib/logger';
-import ProfileImagePlaceholder from './ProfileImagePlaceholder';
+import React, { useState, useEffect, useRef } from 'react';
+import { optimizeImageUrl, generateSrcSet, createLazyLoader, type OptimizedImageProps } from '@/utils/imageOptimization';
 
-interface OptimizedImageProps {
-  src: string;
-  alt: string;
-  className?: string;
-  fallbackSrc?: string;
-  onLoad?: () => void;
-  onError?: () => void;
-  priority?: boolean;
-  sizes?: string;
-  width?: number;
-  height?: number;
-  placeholderType?: 'single' | 'couple';
-  placeholderName?: string;
-}
-
-export const OptimizedImage: React.FC<OptimizedImageProps> = ({
+const OptimizedImage: React.FC<OptimizedImageProps> = ({
   src,
   alt,
   className = '',
-  fallbackSrc,
-  onLoad,
-  onError,
-  priority = false,
-  sizes,
   width,
   height,
-  placeholderType = 'single',
-  placeholderName = 'Usuario',
+  priority = false,
+  quality = 85,
+  ...props
 }) => {
-  const [currentSrc, setCurrentSrc] = useState(src);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+
+  // Generar URLs optimizadas
+  const optimizedSrc = optimizeImageUrl(src, { quality, width, height });
+  const srcSet = width ? generateSrcSet(src, [width, width * 1.5, width * 2]) : undefined;
 
   useEffect(() => {
-    setCurrentSrc(src);
-    setIsLoading(true);
-    setHasError(false);
-  }, [src]);
+    if (!priority && imgRef.current) {
+      // Configurar lazy loading para imágenes no prioritarias
+      observerRef.current = createLazyLoader();
+      
+      if (observerRef.current) {
+        observerRef.current.observe(imgRef.current);
+      }
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, [priority]);
 
   const handleLoad = () => {
-    setIsLoading(false);
-    setHasError(false);
-    onLoad?.();
-    logger.info('Image loaded successfully:', { src: currentSrc });
+    setIsLoaded(true);
   };
 
   const handleError = () => {
-    setIsLoading(false);
     setHasError(true);
-    
-    if (fallbackSrc && currentSrc !== fallbackSrc) {
-      setCurrentSrc(fallbackSrc);
-      logger.warn('Image failed to load, using fallback:', { original: src, fallback: fallbackSrc });
-    } else {
-      onError?.();
-      logger.error('Image failed to load:', { src: currentSrc });
-    }
+    setIsLoaded(true);
   };
+
+  // Placeholder mientras carga
+  const placeholderSrc = '/compliceslogo.png';
 
   if (hasError) {
     return (
-      <ProfileImagePlaceholder
-        type={placeholderType}
-        name={placeholderName}
-        className={className}
-        iconSize="lg"
-      />
+      <div 
+        className={`bg-gray-200 flex items-center justify-center ${className}`}
+        style={{ width, height }}
+      >
+        <span className="text-gray-700 dark:text-gray-200 text-sm">Error al cargar imagen</span>
+      </div>
     );
   }
 
   return (
-    <img
-      src={currentSrc}
-      alt={alt}
-      className={cn(
-        "transition-opacity duration-300",
-        isLoading ? "opacity-50" : "opacity-100",
-        className
+    <div className={`relative overflow-hidden ${className}`}>
+      {/* Imagen principal */}
+      <img
+        ref={imgRef}
+        src={priority ? optimizedSrc : placeholderSrc}
+        srcSet={priority ? srcSet : undefined}
+        data-src={priority ? undefined : optimizedSrc}
+        data-srcset={priority ? undefined : srcSet}
+        alt={alt}
+        width={width}
+        height={height}
+        onLoad={handleLoad}
+        onError={handleError}
+        className={`
+          transition-opacity duration-300
+          ${isLoaded ? 'opacity-100' : 'opacity-0'}
+          ${!priority ? 'lazy-loading' : ''}
+        `}
+        loading={priority ? 'eager' : 'lazy'}
+        decoding="async"
+        {...props}
+      />
+
+      {/* Skeleton loader */}
+      {!isLoaded && (
+        <div 
+          className="absolute inset-0 bg-gray-200 animate-pulse"
+          style={{ width, height }}
+        />
       )}
-      onLoad={handleLoad}
-      onError={handleError}
-      loading={priority ? "eager" : "lazy"}
-      sizes={sizes}
-      width={width}
-      height={height}
-    />
+    </div>
   );
 };
 

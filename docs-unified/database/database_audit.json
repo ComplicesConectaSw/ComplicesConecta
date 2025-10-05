@@ -1,0 +1,183 @@
+{
+  "timestamp": "2025-09-06T12:55:45.084Z",
+  "tables": {
+    "profiles": {
+      "exists": true,
+      "columns": 0,
+      "missingColumns": [
+        "id",
+        "first_name",
+        "last_name",
+        "email",
+        "avatar_url",
+        "interests",
+        "profile_type"
+      ],
+      "rlsEnabled": false,
+      "policiesCount": 0,
+      "status": "✅"
+    },
+    "user_roles": {
+      "exists": true,
+      "columns": 0,
+      "missingColumns": [
+        "id",
+        "user_id",
+        "role"
+      ],
+      "rlsEnabled": false,
+      "policiesCount": 0,
+      "status": "✅"
+    },
+    "invitations": {
+      "exists": true,
+      "columns": 0,
+      "missingColumns": [
+        "id",
+        "from_profile",
+        "to_profile",
+        "status",
+        "type"
+      ],
+      "rlsEnabled": false,
+      "policiesCount": 0,
+      "status": "✅"
+    },
+    "gallery_permissions": {
+      "exists": true,
+      "columns": 0,
+      "missingColumns": [
+        "id",
+        "profile_id",
+        "granted_to",
+        "granted_by"
+      ],
+      "rlsEnabled": false,
+      "policiesCount": 0,
+      "status": "✅"
+    },
+    "images": {
+      "exists": true,
+      "columns": 0,
+      "missingColumns": [
+        "id",
+        "profile_id",
+        "url",
+        "is_public",
+        "type"
+      ],
+      "rlsEnabled": false,
+      "policiesCount": 0,
+      "status": "✅"
+    },
+    "image_permissions": {
+      "exists": true,
+      "columns": 0,
+      "missingColumns": [],
+      "rlsEnabled": false,
+      "policiesCount": 0,
+      "status": "✅"
+    },
+    "gallery_access_requests": {
+      "exists": true,
+      "columns": 0,
+      "missingColumns": [],
+      "rlsEnabled": false,
+      "policiesCount": 0,
+      "status": "✅"
+    },
+    "chat_rooms": {
+      "exists": true,
+      "columns": 0,
+      "missingColumns": [
+        "id",
+        "name",
+        "is_public",
+        "created_by"
+      ],
+      "rlsEnabled": false,
+      "policiesCount": 0,
+      "status": "✅"
+    },
+    "chat_members": {
+      "exists": true,
+      "columns": 0,
+      "missingColumns": [
+        "id",
+        "room_id",
+        "profile_id",
+        "role"
+      ],
+      "rlsEnabled": false,
+      "policiesCount": 0,
+      "status": "✅"
+    },
+    "messages": {
+      "exists": true,
+      "columns": 0,
+      "missingColumns": [
+        "id",
+        "room_id",
+        "sender_id",
+        "content",
+        "message_type"
+      ],
+      "rlsEnabled": false,
+      "policiesCount": 0,
+      "status": "✅"
+    },
+    "chat_invitations": {
+      "exists": true,
+      "columns": 0,
+      "missingColumns": [],
+      "rlsEnabled": false,
+      "policiesCount": 0,
+      "status": "✅"
+    }
+  },
+  "storage": {
+    "profile-images": {
+      "exists": true,
+      "status": "✅"
+    },
+    "gallery-images": {
+      "exists": true,
+      "status": "✅"
+    },
+    "chat-media": {
+      "exists": true,
+      "status": "✅"
+    }
+  },
+  "summary": {
+    "tablesExist": 11,
+    "tablesTotal": 11,
+    "rlsEnabled": 0,
+    "bucketsExist": 3,
+    "bucketsTotal": 3,
+    "criticalIssues": [
+      "Tabla profiles: columnas faltantes id, first_name, last_name, email, avatar_url, interests, profile_type",
+      "Tabla profiles: RLS no habilitado",
+      "Tabla user_roles: columnas faltantes id, user_id, role",
+      "Tabla user_roles: RLS no habilitado",
+      "Tabla invitations: columnas faltantes id, from_profile, to_profile, status, type",
+      "Tabla invitations: RLS no habilitado",
+      "Tabla gallery_permissions: columnas faltantes id, profile_id, granted_to, granted_by",
+      "Tabla gallery_permissions: RLS no habilitado",
+      "Tabla images: columnas faltantes id, profile_id, url, is_public, type",
+      "Tabla images: RLS no habilitado",
+      "Tabla image_permissions: RLS no habilitado",
+      "Tabla gallery_access_requests: RLS no habilitado",
+      "Tabla chat_rooms: columnas faltantes id, name, is_public, created_by",
+      "Tabla chat_rooms: RLS no habilitado",
+      "Tabla chat_members: columnas faltantes id, room_id, profile_id, role",
+      "Tabla chat_members: RLS no habilitado",
+      "Tabla messages: columnas faltantes id, room_id, sender_id, content, message_type",
+      "Tabla messages: RLS no habilitado",
+      "Tabla chat_invitations: RLS no habilitado"
+    ],
+    "recommendations": [
+      "Aplicar políticas RLS a tablas sin protección"
+    ]
+  }
+}

@@ -46,9 +46,6 @@ export interface UpdateCoupleProfileData {
   couple_name?: string;
   couple_bio?: string;
   couple_images?: string[];
-  couple_age?: string[];
-  couple_nickname?: string [];
-  couple_interest?: string[];
 }
 
 // Almacenamiento de datos simulados para desarrollo
@@ -198,7 +195,7 @@ export const generateMockCoupleProfiles = (): CoupleProfileWithPartners[] => {
     {
       id: 'mock-couple-1',
       couple_name: 'Ana & Carlos',
-      couple_bio: 'Pareja swinger experimentada buscando conexiones auténticas en el lifestyle. Nos encanta explorar nuevas experiencias con respeto mutuo y comunicación abierta. Ambiente relajado y discreción total.',
+      couple_bio: 'Pareja aventurera buscando nuevas experiencias y conexiones auténticas. Nos encanta viajar, la buena comida y conocer gente interesante.',
       relationship_type: 'man-woman',
       partner1_id: 'mock-partner-1',
       partner2_id: 'mock-partner-2',
@@ -210,18 +207,18 @@ export const generateMockCoupleProfiles = (): CoupleProfileWithPartners[] => {
       partner1_first_name: 'Ana',
       partner1_last_name: 'García',
       partner1_age: 28,
-      partner1_bio: 'Diseñadora gráfica con mentalidad abierta, explorando el lifestyle swinger con comunicación y respeto',
+      partner1_bio: 'Diseñadora gráfica apasionada por el arte',
       partner1_gender: 'mujer',
       partner2_first_name: 'Carlos',
       partner2_last_name: 'Mendoza',
       partner2_age: 32,
-      partner2_bio: 'Ingeniero de software interesado en experiencias nuevas y conexiones auténticas en el lifestyle',
+      partner2_bio: 'Ingeniero de software y fotógrafo amateur',
       partner2_gender: 'hombre',
     },
     {
       id: 'mock-couple-2',
       couple_name: 'Miguel & David',
-      couple_bio: 'Pareja estable de 5 años explorando el lifestyle swinger con mentalidad abierta. Buscamos conexiones auténticas y experiencias nuevas con respeto mutuo y discreción.',
+      couple_bio: 'Pareja estable de 5 años, amantes del fitness y la vida saludable. Buscamos amistades y conexiones genuinas.',
       relationship_type: 'man-man',
       partner1_id: 'mock-partner-3',
       partner2_id: 'mock-partner-4',

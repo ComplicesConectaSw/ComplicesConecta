@@ -67,8 +67,8 @@ export const Parallax: React.FC<ParallaxProps> = ({
   offset = 50, 
   className = "" 
 }) => {
-  const [elementTop, _setElementTop] = useState(0);
-  const [clientHeight, _setClientHeight] = useState(0);
+  const [elementTop, setElementTop] = useState(0);
+  const [clientHeight, setClientHeight] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
 
   const initial = elementTop - clientHeight;

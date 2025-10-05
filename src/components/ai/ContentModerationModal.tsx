@@ -185,8 +185,8 @@ export const ContentModerationModal: React.FC<ContentModerationModalProps> = ({
     }
   };
 
-  const _getSeverityColor = (_severity: string) => {
-    switch (_severity) {
+  const getSeverityColor = (severity: ModerationResult['severity']) => {
+    switch (severity) {
       case 'critical': return 'text-red-700 bg-red-100 border-red-300';
       case 'high': return 'text-orange-700 bg-orange-100 border-orange-300';
       case 'medium': return 'text-yellow-700 bg-yellow-100 border-yellow-300';

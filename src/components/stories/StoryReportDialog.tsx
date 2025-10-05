@@ -140,7 +140,7 @@ export const StoryReportDialog = ({ storyId, storyAuthor, isOpen, onOpenChange, 
         });
       }
 
-    } catch {
+    } catch (error) {
       toast({
         title: "Error",
         description: "No se pudo enviar el reporte. Inténtalo de nuevo.",

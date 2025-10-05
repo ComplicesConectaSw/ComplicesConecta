@@ -298,7 +298,7 @@ export class AndroidSecurityManager {
       }
 
       return false;
-    } catch {
+    } catch (error) {
       return false;
     }
   }

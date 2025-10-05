@@ -93,7 +93,7 @@ const premiumFeatures = [
   }
 ];
 
-const _planHierarchy = ["free", "basic", "silver", "gold", "premium"];
+const planHierarchy = ["free", "basic", "silver", "gold", "premium"];
 
 export const PremiumFeatures = () => {
   const [currentPlan] = useState(mockUserSubscription.plan);

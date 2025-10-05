@@ -84,7 +84,7 @@ const ProjectSupport = () => {
 
       // Obtener información adicional para auditoría
       const userAgent = navigator.userAgent;
-      const _timestamp = new Date().toISOString();
+      const timestamp = new Date().toISOString();
 
       // Subir archivo CV si existe
       let cvUrl = null;
@@ -107,10 +107,9 @@ const ProjectSupport = () => {
         setUploadingFile(false);
       }
 
-      // TODO: Implementar cuando la tabla career_applications esté disponible
-      // Simular inserción exitosa por ahora
-      const _simulatedData = {
-        id: Date.now(),
+      // Simular inserción en base de datos (tabla career_applications no existe)
+      const mockData = {
+        id: `career_${Date.now()}`,
         nombre: formData.nombre.trim(),
         telefono: formData.telefono.trim(),
         correo: formData.correo.trim().toLowerCase(),
@@ -120,19 +119,24 @@ const ProjectSupport = () => {
         referencias: formData.referencias.trim() || null,
         expectativas: formData.expectativas.trim(),
         cv_url: cvUrl,
-        user_agent: userAgent
+        status: 'pending',
+        user_agent: userAgent,
+        created_at: new Date().toISOString()
       };
 
-      // Simular delay de base de datos
+      // Log de la solicitud para auditoría
+      logger.info('📋 Solicitud de carrera procesada:', mockData);
+      
+      // Simular delay de red
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      const _data = [supabase];
-      const _error = null;
+      const data = [mockData];
+      const error = null;
 
       // No hay error en la simulación, continuar con éxito
 
       logger.info('✅ Solicitud guardada exitosamente:', { 
-        // id: data?.[0]?.id, // Commented out - data may not have id property
+        id: data?.[0]?.id,
         timestamp: new Date().toISOString()
       });
       
@@ -156,13 +160,13 @@ const ProjectSupport = () => {
         aceptaTerminos: false
       });
 
-    } catch (_error) {
-      logger.error('❌ Error al enviar solicitud:', { error: _error instanceof Error ? _error.message : String(_error) });
+    } catch (error: any) {
+      logger.error('❌ Error al enviar solicitud:', { error: error.message });
       
       toast({
         variant: "destructive",
         title: "Error al enviar solicitud",
-        description: "Hubo un problema al procesar tu solicitud. Inténtalo de nuevo o contacta a ComplicesConectaSw@outlook.es"
+        description: error.message || "Hubo un problema al procesar tu solicitud. Inténtalo de nuevo o contacta a ComplicesConectaSw@outlook.es"
       });
     } finally {
       setIsSubmitting(false);

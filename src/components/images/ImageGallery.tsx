@@ -15,7 +15,7 @@ interface ImageGalleryProps {
   showUpload?: boolean;
 }
 
-export function ImageGallery({ profileId, isOwner = false, showUpload: _showUpload = false }: ImageGalleryProps) {
+export function ImageGallery({ profileId, isOwner = false, showUpload = false }: ImageGalleryProps) {
   const [images, setImages] = useState<ImageUpload[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState<ImageUpload | null>(null);
@@ -66,7 +66,7 @@ export function ImageGallery({ profileId, isOwner = false, showUpload: _showUplo
           description: "No se pudo eliminar la imagen",
         });
       }
-    } catch {
+    } catch (error) {
       toast({
         variant: "destructive",
         title: "Error inesperado",
@@ -85,7 +85,7 @@ export function ImageGallery({ profileId, isOwner = false, showUpload: _showUplo
         title: "Funcionalidad en desarrollo",
         description: "La solicitud de acceso estará disponible pronto.",
       });
-    } catch {
+    } catch (error) {
       toast({
         variant: "destructive",
         title: "Error inesperado",

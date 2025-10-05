@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { HeroSection } from "@/components/HeroSection";
-import CoupleProfileCard from "@/components/profile/CoupleProfileCard";
+import { ProfileCard } from "@/components/profile/MainProfileCard";
 import { Footer } from "@/components/Footer";
 import { BetaBanner } from "@/components/BetaBanner";
 import { LoadingScreen } from "@/components/LoadingScreen";
@@ -10,7 +10,7 @@ import { WelcomeModal } from "@/components/WelcomeModal";
 import { FeatureModal } from "@/components/modals/FeatureModal";
 import { InstallAppModal } from "@/components/modals/InstallAppModal";
 import { ActionButtonsModal } from "@/components/modals/ActionButtonsModal";
-// import StoriesContainer from "@/components/stories/StoriesContainer"; // Moved to HeaderNav
+import StoriesContainer from "@/components/stories/StoriesContainer";
 import { useScrollHide } from "@/hooks/useScrollHide";
 import { Heart, Users, Shield, Zap, Sparkles, Star, Rocket, Smartphone as Android, Info, Briefcase, DollarSign, UserCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -122,7 +122,7 @@ const Index = () => {
       name: "Antonio",
       age: 34,
       location: "Guadalajara",
-      interests: ["Intercambio de Parejas", "Eventos Swinger", "Comunidad Liberal"],
+      interests: ["Experiencias Grupales", "Clubs Liberales", "Aventuras Sensuales"],
       image: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=500&h=700&fit=crop&crop=faces&auto=format&q=80",
       rating: 4.8,
       isOnline: false,
@@ -135,7 +135,7 @@ const Index = () => {
       name: "Isabella",
       age: 27,
       location: "Monterrey",
-      interests: ["Tantra y Sensualidad", "Juegos de Rol", "Lifestyle Swinger"],
+      interests: ["Tantra y Sensualidad", "Juegos de Rol", "Experiencias Nuevas"],
       image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=500&h=700&fit=crop&crop=faces&auto=format&q=80",
       rating: 4.9,
       isOnline: true,
@@ -148,7 +148,7 @@ const Index = () => {
       name: "Mateo",
       age: 31,
       location: "Puebla",
-      interests: ["Encuentros Casuales", "Fantasías Compartidas", "Clubs Swinger México"],
+      interests: ["Encuentros Casuales", "Fantasías Compartidas", "Vida Nocturna Liberal"],
       image: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=500&h=700&fit=crop&crop=faces&auto=format&q=80",
       rating: 4.7,
       isOnline: true,
@@ -264,7 +264,7 @@ const Index = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12 px-2">
                 {sampleProfiles.map((profile, index) => (
                   <div key={index} className={`animate-slide-up slide-up-delay-${index}`}>
-                    <CoupleProfileCard 
+                    <ProfileCard 
                       profile={profile} 
                       onLike={() => {}} 
                       onSuperLike={() => {}}
@@ -278,6 +278,22 @@ const Index = () => {
           </div>
         </section>
 
+        {/* Stories Section */}
+        <section className="py-10 sm:py-20 relative">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                Historias Efímeras
+              </h2>
+              <p className="text-xl text-white/90 max-w-3xl mx-auto">
+                Comparte momentos especiales que desaparecen en 24 horas. Conecta de manera más íntima y espontánea.
+              </p>
+            </div>
+            <div className="max-w-4xl mx-auto">
+              <StoriesContainer />
+            </div>
+          </div>
+        </section>
 
         {/* About, Careers, Donations Section */}
         <section className="py-20 relative">

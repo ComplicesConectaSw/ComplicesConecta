@@ -61,14 +61,13 @@ export interface TokenStats {
 }
 
 export const useTokens = () => {
-  const { user, isDemo, appMode: _appMode } = useAuth();
+  const { user, isDemo, appMode } = useAuth();
   const [balance, setBalance] = useState<TokenBalance>({ cmpx: 0, gtk: 0 });
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [stakingRecords, setStakingRecords] = useState<StakingRecord[]>([]);
   const [rewards, setRewards] = useState<Reward[]>([]);
   const [loading, setLoading] = useState(false);
   const config = getAppConfig();
-  // const _appMode = getAppMode();
 
   // Cargar datos iniciales
   useEffect(() => {
@@ -82,11 +81,11 @@ export const useTokens = () => {
 
     try {
       setLoading(true);
-      logger.info(' Cargando datos de tokens', { mode: config.mode, demo: isDemo() });
+      logger.info('💰 Cargando datos de tokens', { mode: config.mode, demo: isDemo() });
       
       // Si es demo o no debemos usar Supabase real, usar datos mock
       if (isDemoMode()) {
-        logger.info(' Cargando datos de tokens demo', { user: user.email });
+        logger.info('🎭 Cargando datos de tokens demo', { user: user.email });
         
         // Balance demo basado en el tipo de usuario
         let demoBalance: TokenBalance = { cmpx: 1250, gtk: 850 };
@@ -106,7 +105,7 @@ export const useTokens = () => {
             if (parsedUser.accountType === 'couple') {
               demoBalance = { cmpx: 2000, gtk: 1500 };
             }
-          } catch {
+          } catch (error) {
             logger.warn('Error parsing demo user for balance');
           }
         }
@@ -192,10 +191,10 @@ export const useTokens = () => {
         ];
         setRewards(mockRewards);
         
-        logger.info(' Datos de tokens demo cargados - Balance:', demoBalance);
+        logger.info('✅ Datos de tokens demo cargados - Balance:', demoBalance);
       } else {
         // Cargar datos reales desde Supabase
-        logger.info(' Cargando datos de tokens reales desde Supabase...');
+        logger.info('🔗 Cargando datos de tokens reales desde Supabase...');
         
         try {
           // Cargar balance real (implementar cuando existan las tablas)
@@ -210,9 +209,9 @@ export const useTokens = () => {
           setStakingRecords([]);
           setRewards([]);
           
-          logger.info(' Datos reales no implementados aún - usando valores por defecto');
+          logger.info('ℹ️ Datos reales no implementados aún - usando valores por defecto');
         } catch (error) {
-          logger.error(' Error cargando datos reales:', { error });
+          logger.error('❌ Error cargando datos reales:', { error });
           // Fallback a datos vacíos
           setBalance({ cmpx: 0, gtk: 0 });
           setTransactions([]);
@@ -221,7 +220,7 @@ export const useTokens = () => {
         }
       }
     } catch (error) {
-      logger.error(' Error cargando datos de tokens:', { error });
+      logger.error('❌ Error cargando datos de tokens:', { error });
     } finally {
       setLoading(false);
     }
@@ -232,7 +231,7 @@ export const useTokens = () => {
     if (!user) return false;
     
     if (isDemo() || !shouldUseRealSupabase()) {
-      logger.info(' Simulando procesamiento de referido en modo demo');
+      logger.info('🎭 Simulando procesamiento de referido en modo demo');
       // Simular recompensa por referido
       const newTransaction: Transaction = {
         id: `demo-ref-${Date.now()}`,
@@ -247,17 +246,17 @@ export const useTokens = () => {
       
       setTransactions(prev => [newTransaction, ...prev]);
       setBalance(prev => ({ ...prev, cmpx: prev.cmpx + 50 }));
-      logger.info(' Referido procesado en demo - +50 CMPX');
+      logger.info('✅ Referido procesado en demo - +50 CMPX');
       return true;
     }
     
     try {
-      logger.info(' Procesando referido real:', { referredUserId });
+      logger.info('🔗 Procesando referido real:', { referredUserId });
       // TODO: Implementar lógica real de referidos con Supabase Edge Functions
-      logger.info(' Procesamiento de referidos reales no implementado aún');
+      logger.info('ℹ️ Procesamiento de referidos reales no implementado aún');
       return false;
     } catch (error) {
-      logger.error(' Error procesando referido:', { error });
+      logger.error('❌ Error procesando referido:', { error });
       return false;
     }
   };
@@ -267,7 +266,7 @@ export const useTokens = () => {
     if (!user) return false;
     
     if (isDemo() || !shouldUseRealSupabase()) {
-      logger.info(' Simulando staking en modo demo:', { tokenType, amount, duration });
+      logger.info('🎭 Simulando staking en modo demo:', { tokenType, amount, duration });
       
       // Verificar balance suficiente
       if (balance[tokenType] < amount) {
@@ -290,12 +289,12 @@ export const useTokens = () => {
       setStakingRecords(prev => [newStaking, ...prev]);
       setBalance(prev => ({ ...prev, [tokenType]: prev[tokenType] - amount }));
       
-      logger.info(' Staking procesado en demo:', { tokenType, amount, duration });
+      logger.info('✅ Staking procesado en demo:', { tokenType, amount, duration });
       return true;
     }
     
     try {
-      logger.info(' Procesando staking real:', { tokenType, amount, duration });
+      logger.info('🔗 Procesando staking real:', { tokenType, amount, duration });
       // Validar datos con Zod antes de enviar
       const stakingData = validateStaking({
         userId: user.id,
@@ -305,7 +304,7 @@ export const useTokens = () => {
       });
       
       // Usar función de Supabase para staking (tabla staking_records)
-      const { data: _data, error } = await (supabase as any).rpc('start_staking', {
+      const { data, error } = await (supabase as any).rpc('start_staking', {
         user_id_param: stakingData.userId,
         amount_param: stakingData.amount,
         duration_days: stakingData.duration,

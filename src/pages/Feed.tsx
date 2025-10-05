@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Heart, MessageCircle, Share2, MoreHorizontal, MapPin, Clock, Loader2, Plus, CheckCircle } from 'lucide-react';
+import { Heart, MessageCircle, Share2, MoreHorizontal, MapPin, Clock, CheckCircle, Loader2, Plus } from 'lucide-react';
+import { Header } from '@/components/Header';
 import NavigationEnhanced from "@/components/NavigationEnhanced";
-import Header from "@/components/Header";
-import { getDiverseAvatar } from '@/lib/media';
 import { postsService, type Post } from '@/services/postsService';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
@@ -13,11 +12,11 @@ import { logger } from '@/lib/logger';
 const Feed = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
-  const [_loadingMore, _setLoadingMore] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
-  const { user: _user, isAuthenticated: _isAuthenticated, loading: _authLoading } = useAuth();
-  const { toast: _toast } = useToast();
+  const { isAuthenticated } = useAuth();
+  const { toast } = useToast();
 
   // Cargar posts iniciales
   useEffect(() => {
@@ -40,7 +39,7 @@ const Feed = () => {
       setPage(pageNum);
     } catch (error) {
       logger.error('Error loading posts', { error });
-      _toast({
+      toast({
         title: "Error",
         description: "No se pudieron cargar las publicaciones",
         variant: "destructive"
@@ -64,7 +63,7 @@ const Feed = () => {
       );
     } catch (error) {
       logger.error('Error toggling like', { error });
-      _toast({
+      toast({
         title: "Error",
         description: "No se pudo procesar el like",
         variant: "destructive"
@@ -129,7 +128,7 @@ const Feed = () => {
                   <div className="flex items-center justify-between p-4 pb-3">
                     <div className="flex items-center space-x-3">
                       <img
-                        src={post.profile?.avatar_url || getDiverseAvatar(post.profile?.id || 'default', post.profile?.name || 'Usuario')}
+                        src={post.profile?.avatar_url || '/compliceslogo.png'}
                         alt={post.profile?.name || 'Usuario'}
                         className="w-10 h-10 rounded-full object-cover"
                       />
@@ -208,9 +207,9 @@ const Feed = () => {
             <Button 
               className="px-8 text-white border border-white/30 hover:bg-white/10 bg-transparent"
               onClick={handleLoadMore}
-              disabled={_loadingMore}
+              disabled={loadingMore}
             >
-              {_loadingMore ? (
+              {loadingMore ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin mr-2" />
                   Cargando...

@@ -6,7 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { contentModerationService } from '@/services/ContentModerationService';
+import { ContentModerationService } from '@/services/ContentModerationService';
 import {
   Shield, CheckCircle, XCircle, Eye, 
   FileText, Clock, Zap
@@ -96,19 +96,24 @@ export default function ContentModerationModal({ isOpen, onClose }: ContentModer
 
     setIsAnalyzing(true);
     try {
-      const service = contentModerationService;
-      const result = await service.analyzeContent({ text: testContent });
+      const service = ContentModerationService.getInstance();
+      const result = await service.analyzeContent(testContent);
       
       // Transform service result to our expected format
       const moderationResult: ModerationResult = {
         success: true,
-        isAppropriate: result.overallRisk < 0.5,
-        confidence: 1 - result.overallRisk,
-        flags: [],
-        recommendedAction: result.overallRisk < 0.5 ? 'approve' : 'review',
-        riskScore: result.overallRisk,
-        categories: ['text'],
-        explanation: `Análisis completado con ${((1 - result.overallRisk) * 100).toFixed(1)}% de confianza`
+        isAppropriate: result.isAppropriate,
+        confidence: result.confidence,
+        flags: result.flags.map(flag => ({
+          type: flag.type,
+          severity: 'medium' as const, // Default severity since it's not in the original flag
+          confidence: flag.confidence,
+          description: flag.description
+        })),
+        recommendedAction: result.isAppropriate ? 'approve' : 'review',
+        riskScore: 1 - result.confidence,
+        categories: result.categories,
+        explanation: `Análisis completado con ${(result.confidence * 100).toFixed(1)}% de confianza`
       };
 
       setAnalysisResult(moderationResult);

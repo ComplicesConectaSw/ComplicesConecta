@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { logger } from '@/lib/logger';
 
 export const BetaBanner = () => {
-  const [isVisible, _setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isAndroid, setIsAndroid] = useState(false);
 

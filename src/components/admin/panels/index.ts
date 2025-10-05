@@ -6,7 +6,7 @@
 export { ReportsPanel } from './ReportsPanel'
 export { UserManagementPanel } from './UserManagementPanel'
 export { TokenSystemPanel } from './TokenSystemPanel'
-export { default as AnalyticsPanel } from '../AnalyticsPanel'
+export { AnalyticsPanel } from './AnalyticsPanel'
 export { PerformancePanel } from './PerformancePanel'
 export { SecurityPanel } from './SecurityPanel'
 

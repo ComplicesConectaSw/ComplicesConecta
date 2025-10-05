@@ -61,7 +61,7 @@ export function TokenBalance({ userId }: TokenBalanceProps) {
           variant: "destructive"
         });
       }
-    } catch {
+    } catch (error) {
       toast({
         title: "Error",
         description: "Error al procesar el código de referido",
@@ -82,7 +82,7 @@ export function TokenBalance({ userId }: TokenBalanceProps) {
         description: "Código de referido copiado al portapapeles",
         variant: "default"
       });
-    } catch {
+    } catch (error) {
       toast({
         title: "Error",
         description: "No se pudo copiar el código",

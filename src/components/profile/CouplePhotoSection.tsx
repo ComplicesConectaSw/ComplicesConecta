@@ -86,7 +86,7 @@ export const CouplePhotoSection: React.FC<CouplePhotoSectionProps> = ({
 
   const PhotoGrid: React.FC<{ partner: 'el' | 'ella' }> = ({ partner }) => {
     const partnerPhotos = getPhotosByPartner(partner);
-    const _partnerColor = partner === 'el' ? 'text-blue-400' : 'text-pink-400';
+    const partnerColor = partner === 'el' ? 'blue' : 'pink';
     const partnerLabel = partner === 'el' ? 'Él' : 'Ella';
 
     return (

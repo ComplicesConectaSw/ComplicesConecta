@@ -1,11 +1,12 @@
 import React from 'react';
 import StoriesContainer from '@/components/stories/StoriesContainer';
 import NavigationEnhanced from '@/components/NavigationEnhanced';
-import { Header } from '@/components/Header';
+import HeaderNav from '@/components/HeaderNav';
 
 const Stories: React.FC = () => {
-  // Detectar si el usuario está autenticado para mostrar navegación inferior
-  const isAuthenticated = localStorage.getItem('demo_authenticated') === 'true';
+  // For now, use HeaderNav by default and NavigationEnhanced for demo profiles
+  // This will be properly configured when demo detection is implemented
+  const isDemoMode = false;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-800 relative overflow-hidden">
@@ -17,8 +18,12 @@ const Stories: React.FC = () => {
         <div className="absolute -bottom-32 left-20 w-96 h-96 bg-gradient-to-r from-secondary/20 to-primary/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
       </div>
 
-      {/* Header unificado */}
-      <Header />
+      {/* Navigation - Conditional based on demo mode */}
+      {isDemoMode ? (
+        <NavigationEnhanced />
+      ) : (
+        <HeaderNav />
+      )}
 
       {/* Main Content */}
       <div className="relative z-10 pt-20">
@@ -35,9 +40,6 @@ const Stories: React.FC = () => {
           <StoriesContainer />
         </div>
       </div>
-
-      {/* Navegación inferior para usuarios autenticados */}
-      {isAuthenticated && <NavigationEnhanced />}
     </div>
   );
 };

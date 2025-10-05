@@ -14,7 +14,6 @@
 
 import { supabase } from '@/integrations/supabase/client'
 import { logger } from '@/lib/logger'
-import type { Json } from '@/types/types';
 
 // Tipos de notificaciones soportadas
 export type NotificationType = 
@@ -33,7 +32,7 @@ export type NotificationStatus = 'pending' | 'sent' | 'delivered' | 'failed'
 export interface NotificationPayload {
   title: string
   body: string
-  data?: Json | null
+  data?: Record<string, any>
   imageUrl?: string
   clickAction?: string
 }
@@ -92,7 +91,7 @@ export class PushNotificationService {
     userId: string,
     deviceToken: string,
     deviceType: DeviceType,
-    deviceInfo: Json | null = null
+    deviceInfo: Record<string, any> = {}
   ): Promise<DeviceTokenResponse> {
     try {
       // Desactivar tokens antiguos del mismo dispositivo
@@ -162,10 +161,10 @@ export class PushNotificationService {
     notificationType: NotificationType,
     enabled: boolean,
     deliveryMethod: DeliveryMethod = 'push',
-    settings: Json | null = null
+    settings: Record<string, any> = {}
   ): Promise<NotificationResponse> {
     try {
-      const { data: _data, error } = await (supabase as any)
+      const { data, error } = await (supabase as any)
         .from('user_notification_preferences')
         .upsert({
           user_id: userId,

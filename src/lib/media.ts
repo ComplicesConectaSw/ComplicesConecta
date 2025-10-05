@@ -133,8 +133,8 @@ export function getProfileImageWithFallback(imagePath: string): string {
   // En producción, aquí podrías verificar si la imagen existe
   // Por ahora, usar fallbacks conocidos
   const fallbacks = [
-    '/placeholder.svg',
-    '/compliceslogo.png'
+    '/public/placeholder.svg',
+    '/public/compliceslogo.png'
   ];
   
   try {
@@ -142,31 +142,6 @@ export function getProfileImageWithFallback(imagePath: string): string {
   } catch {
     return fallbacks[0];
   }
-}
-
-// Función para obtener avatar diverso basado en ID
-export function getDiverseAvatar(userId: string, name: string = '', type: ProfileType = 'single'): string {
-  const used = new Set<string>();
-  return pickProfileImage({ id: userId, name, type, gender: undefined }, used);
-}
-
-// Función para obtener placeholder para eventos
-export function getEventPlaceholder(eventId: string): string {
-  const eventImages = [
-    'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=400&h=300&fit=crop',
-    'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400&h=300&fit=crop',
-    'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=400&h=300&fit=crop',
-    'https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=400&h=300&fit=crop',
-    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop'
-  ];
-  
-  // Usar hash simple del ID para seleccionar imagen consistente
-  const hash = eventId.split('').reduce((a, b) => {
-    a = ((a << 5) - a) + b.charCodeAt(0);
-    return a & a;
-  }, 0);
-  
-  return eventImages[Math.abs(hash) % eventImages.length];
 }
 
 // Función para obtener estadísticas de uso de imágenes

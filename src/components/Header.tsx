@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { 
   DropdownMenu, 
@@ -33,10 +33,11 @@ import { useDemoThemeConfig, getNavbarStyles } from '@/hooks/useProfileTheme';
 import { ModeIndicator } from '@/components/ModeIndicator';
 
 export const Header = () => {
-  const { user, profile, isAuthenticated: authIsAuthenticated, isAdmin, signOut } = useAuth();
+  const navigate = useNavigate();
+  const { user, profile, isAuthenticated: authIsAuthenticated, isAdmin, signOut, loading } = useAuth();
   const [demoUser, setDemoUser] = useState<any>(null);
   const [isRunningInApp, setIsRunningInApp] = useState(false);
-  const [_isScrolled, setIsScrolled] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const { toast } = useToast();
 
@@ -147,9 +148,9 @@ export const Header = () => {
     }
   };
   return (
-    <header className={`${navbarStyles.backgroundClass} ${navbarStyles.shadowClass} border-b ${navbarStyles.borderClass} sticky top-0 z-50 transition-all duration-300 py-1 sm:py-2 md:py-4`}>
-      <div className="container mx-auto px-1 sm:px-2 md:px-4">
-        <div className="flex items-center justify-between gap-1 sm:gap-2">
+    <header className={`${navbarStyles.backgroundClass} ${navbarStyles.shadowClass} border-b ${navbarStyles.borderClass} sticky top-0 z-50 transition-all duration-300 py-2 sm:py-4`}>
+      <div className="container mx-auto px-2 sm:px-4">
+        <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-1 sm:space-x-2">
             <div className="relative">
@@ -187,84 +188,41 @@ export const Header = () => {
           )}
 
           {/* Navigation - Ocultar en modo minimizado de APK */}
-          <nav className={`items-center space-x-2 lg:space-x-4 transition-all duration-300 ${
+          <nav className={`items-center space-x-3 lg:space-x-6 transition-all duration-300 ${
             isRunningInApp && isMinimized ? 'hidden' : 'hidden lg:flex'
           }`}>
-            {/* Descubrir Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base bg-transparent border-none p-2">
-                  Descubrir
-                  <ChevronDown className="h-3 w-3 ml-1" />
-                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="bg-background/95 backdrop-blur-sm border border-primary/20">
-                <DropdownMenuItem asChild>
-                  <Link to="/discover" className="flex items-center gap-2 w-full">
-                    <Users className="h-4 w-4" />
-                    Descubrir Perfiles
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/feed" className="flex items-center gap-2 w-full">
-                    <BookOpen className="h-4 w-4" />
-                    Feed
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/blog" className="flex items-center gap-2 w-full">
-                    <FileText className="h-4 w-4" />
-                    Blog
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/news" className="flex items-center gap-2 w-full">
-                    <BookOpen className="h-4 w-4" />
-                    Noticias
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            {/* Perfiles Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base bg-transparent border-none p-2">
-                  Perfiles
-                  <ChevronDown className="h-3 w-3 ml-1" />
-                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="bg-background/95 backdrop-blur-sm border border-primary/20">
-                <DropdownMenuItem asChild>
-                  <Link to="/profiles" className="flex items-center gap-2 w-full">
-                    <Users className="h-4 w-4" />
-                    Ver Perfiles
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/matches" className="flex items-center gap-2 w-full">
-                    <Heart className="h-4 w-4" />
-                    Matches
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/stories" className="flex items-center gap-2 w-full">
-                    <BookOpen className="h-4 w-4" />
-                    Stories
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/stories-info" className="flex items-center gap-2 w-full">
-                    <Info className="h-4 w-4" />
-                    Info Stories
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            {/* Eventos Link */}
+            <Link 
+              to="/discover" 
+              className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base"
+              aria-label="Ir a la página de descubrir perfiles"
+            >
+              Descubrir
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
+            </Link>
+            <Link 
+              to="/profiles" 
+              className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base"
+              aria-label="Ver todos los perfiles disponibles"
+            >
+              Perfiles
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
+            </Link>
+            <Link 
+              to="/matches" 
+              className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base"
+              aria-label="Ver mis matches y conexiones"
+            >
+              Matches
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
+            </Link>
+            <Link 
+              to="/chat-info" 
+              className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base"
+              aria-label="Acceder al chat y mensajes"
+            >
+              Chat
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
+            </Link>
             <Link 
               to="/events" 
               className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base"
@@ -273,68 +231,38 @@ export const Header = () => {
               Eventos
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
             </Link>
-
-            {/* Chat Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base bg-transparent border-none p-2">
-                  Chat
-                  <ChevronDown className="h-3 w-3 ml-1" />
-                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="bg-background/95 backdrop-blur-sm border border-primary/20">
-                <DropdownMenuItem asChild>
-                  <Link to="/chat" className="flex items-center gap-2 w-full">
-                    <Users className="h-4 w-4" />
-                    Chat Principal
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/chat-authenticated" className="flex items-center gap-2 w-full">
-                    <Shield className="h-4 w-4" />
-                    Chat Autenticado
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/chat-info" className="flex items-center gap-2 w-full">
-                    <Info className="h-4 w-4" />
-                    Info Chat
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            {/* Tokens Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base bg-transparent border-none p-2">
-                  Tokens
-                  <ChevronDown className="h-3 w-3 ml-1" />
-                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="bg-background/95 backdrop-blur-sm border border-primary/20">
-                <DropdownMenuItem asChild>
-                  <Link to="/tokens" className="flex items-center gap-2 w-full">
-                    <Coins className="h-4 w-4" />
-                    Tokens CMPX
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/tokens-info" className="flex items-center gap-2 w-full">
-                    <Info className="h-4 w-4" />
-                    Información
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/tokens-privacy" className="flex items-center gap-2 w-full">
-                    <Lock className="h-4 w-4" />
-                    Privacidad
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <Link 
+              to="/stories" 
+              className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base"
+              aria-label="Ver historias y contenido compartido"
+            >
+              Stories
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
+            </Link>
+            <Link 
+              to="/about" 
+              className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base"
+              aria-label="Información sobre la empresa y el proyecto"
+            >
+              Empresa
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
+            </Link>
+            <Link 
+              to="/moderator-request" 
+              className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base"
+              aria-label="Solicitar ser moderador de la plataforma"
+            >
+              Moderadores
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
+            </Link>
+            <Link 
+              to="/support" 
+              className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base"
+              aria-label="Obtener ayuda y soporte técnico"
+            >
+              Soporte
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
+            </Link>
           </nav>
 
           {/* Actions */}
@@ -346,32 +274,11 @@ export const Header = () => {
                   <Menu className="h-4 w-4 sm:h-5 sm:w-5" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="bg-background/95 backdrop-blur-sm border border-primary/20 w-56 max-h-96 overflow-y-auto">
-                {/* Descubrir */}
+              <DropdownMenuContent className="bg-background/95 backdrop-blur-sm border border-primary/20 w-56">
                 <DropdownMenuItem asChild>
                   <Link to="/discover" className="flex items-center gap-2 w-full">
                     <Users className="h-4 w-4" />
                     Descubrir
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/feed" className="flex items-center gap-2 w-full">
-                    <BookOpen className="h-4 w-4" />
-                    Feed
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/blog" className="flex items-center gap-2 w-full">
-                    <FileText className="h-4 w-4" />
-                    Blog
-                  </Link>
-                </DropdownMenuItem>
-                
-                {/* Perfiles */}
-                <DropdownMenuItem asChild>
-                  <Link to="/profiles" className="flex items-center gap-2 w-full">
-                    <Users className="h-4 w-4" />
-                    Perfiles
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
@@ -381,37 +288,29 @@ export const Header = () => {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/stories" className="flex items-center gap-2 w-full">
-                    <BookOpen className="h-4 w-4" />
-                    Stories
+                  <Link to="/chat-info" className="flex items-center gap-2 w-full">
+                    <Users className="h-4 w-4" />
+                    Chat
                   </Link>
                 </DropdownMenuItem>
-                
-                {/* Eventos */}
                 <DropdownMenuItem asChild>
                   <Link to="/events" className="flex items-center gap-2 w-full">
                     <Users className="h-4 w-4" />
                     Eventos
                   </Link>
                 </DropdownMenuItem>
-                
-                {/* Chat */}
                 <DropdownMenuItem asChild>
-                  <Link to="/chat" className="flex items-center gap-2 w-full">
-                    <Users className="h-4 w-4" />
-                    Chat
+                  <Link to="/stories" className="flex items-center gap-2 w-full">
+                    <BookOpen className="h-4 w-4" />
+                    Stories
                   </Link>
                 </DropdownMenuItem>
-                
-                {/* Tokens */}
                 <DropdownMenuItem asChild>
                   <Link to="/tokens" className="flex items-center gap-2 w-full">
                     <Coins className="h-4 w-4" />
                     Tokens CMPX
                   </Link>
                 </DropdownMenuItem>
-                
-                {/* Soporte */}
                 <DropdownMenuItem asChild>
                   <Link to="/support" className="flex items-center gap-2 w-full">
                     <HelpCircle className="h-4 w-4" />
@@ -419,54 +318,17 @@ export const Header = () => {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/faq" className="flex items-center gap-2 w-full">
-                    <HelpCircle className="h-4 w-4" />
-                    FAQ
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/guidelines" className="flex items-center gap-2 w-full">
-                    <BookOpen className="h-4 w-4" />
-                    Directrices
-                  </Link>
-                </DropdownMenuItem>
-                
-                {/* Empresa */}
-                <DropdownMenuItem asChild>
                   <Link to="/about" className="flex items-center gap-2 w-full">
                     <Info className="h-4 w-4" />
                     Empresa
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/project-info" className="flex items-center gap-2 w-full">
-                    <Info className="h-4 w-4" />
-                    Proyecto
+                  <Link to="/moderator-request" className="flex items-center gap-2 w-full">
+                    <Shield className="h-4 w-4" />
+                    Ser Moderador
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/careers" className="flex items-center gap-2 w-full">
-                    <Users className="h-4 w-4" />
-                    Carreras
-                  </Link>
-                </DropdownMenuItem>
-                
-                {/* Premium */}
-                <DropdownMenuItem asChild>
-                  <Link to="/premium" className="flex items-center gap-2 w-full">
-                    <Crown className="h-4 w-4" />
-                    Premium
-                  </Link>
-                </DropdownMenuItem>
-                
-                {/* Configuración */}
-                <DropdownMenuItem asChild>
-                  <Link to="/settings" className="flex items-center gap-2 w-full">
-                    <Settings className="h-4 w-4" />
-                    Configuración
-                  </Link>
-                </DropdownMenuItem>
-                
                 {!isAuthenticated && (
                   <DropdownMenuItem asChild>
                     <Link to="/auth" className="flex items-center gap-2 w-full">
@@ -484,107 +346,26 @@ export const Header = () => {
               </DropdownMenuContent>
             </DropdownMenu>
             
-            {/* Historias - Acceso directo más prominente */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button className="text-white hover:text-white transition-colors duration-300 relative group font-medium text-sm lg:text-base bg-transparent border-none p-2">
-                  Historias
-                  <ChevronDown className="h-3 w-3 ml-1" />
-                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="bg-background/95 backdrop-blur-sm border border-primary/20">
-                <DropdownMenuItem asChild>
-                  <Link to="/stories" className="flex items-center gap-2 w-full">
-                    <BookOpen className="h-4 w-4" />
-                    Ver Historias
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/stories-info" className="flex items-center gap-2 w-full">
-                    <Info className="h-4 w-4" />
-                    Información
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            {/* Soporte Dropdown */}
+            {/* Dropdown Menu for Info Pages */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button className="text-white hover:text-white transition-colors duration-300 relative group font-medium bg-transparent border-none">
-                  Soporte
+                  Información
                   <ChevronDown className="h-4 w-4 ml-1" />
                   <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="bg-background/95 backdrop-blur-sm border border-primary/20">
                 <DropdownMenuItem asChild>
-                  <Link to="/support" className="flex items-center gap-2 w-full">
-                    <HelpCircle className="h-4 w-4" />
-                    Soporte
+                  <Link to="/security" className="flex items-center gap-2 w-full">
+                    <Shield className="h-4 w-4" />
+                    Seguridad
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/faq" className="flex items-center gap-2 w-full">
-                    <HelpCircle className="h-4 w-4" />
-                    FAQ
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/guidelines" className="flex items-center gap-2 w-full">
-                    <BookOpen className="h-4 w-4" />
-                    Directrices
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            {/* Empresa Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button className="text-white hover:text-white transition-colors duration-300 relative group font-medium bg-transparent border-none">
-                  Empresa
-                  <ChevronDown className="h-4 w-4 ml-1" />
-                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="bg-background/95 backdrop-blur-sm border border-primary/20">
-                <DropdownMenuItem asChild>
-                  <Link to="/about" className="flex items-center gap-2 w-full">
-                    <Info className="h-4 w-4" />
-                    Acerca de
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/project-info" className="flex items-center gap-2 w-full">
-                    <Info className="h-4 w-4" />
-                    Proyecto
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/careers" className="flex items-center gap-2 w-full">
-                    <Users className="h-4 w-4" />
-                    Carreras
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            {/* Legal Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button className="text-white hover:text-white transition-colors duration-300 relative group font-medium bg-transparent border-none">
-                  Legal
-                  <ChevronDown className="h-4 w-4 ml-1" />
-                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="bg-background/95 backdrop-blur-sm border border-primary/20">
-                <DropdownMenuItem asChild>
-                  <Link to="/legal" className="flex items-center gap-2 w-full">
-                    <Scale className="h-4 w-4" />
-                    Marco Legal
+                  <Link to="/tokens" className="flex items-center gap-2 w-full">
+                    <Coins className="h-4 w-4" />
+                    Tokens CMPX
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
@@ -594,15 +375,33 @@ export const Header = () => {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
+                  <Link to="/guidelines" className="flex items-center gap-2 w-full">
+                    <BookOpen className="h-4 w-4" />
+                    📋 Directrices de la Comunidad
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
                   <Link to="/privacy" className="flex items-center gap-2 w-full">
                     <Lock className="h-4 w-4" />
                     Privacidad
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/security" className="flex items-center gap-2 w-full">
+                  <Link to="/legal" className="flex items-center gap-2 w-full text-white hover:text-white">
+                    <Scale className="h-4 w-4" />
+                    Marco Legal
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/moderator-request" className="flex items-center gap-2 w-full">
                     <Shield className="h-4 w-4" />
-                    Seguridad
+                    🛡️ Ser Moderador
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/project-info" className="flex items-center gap-2 w-full">
+                    <Info className="h-4 w-4" />
+                    Proyecto
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>

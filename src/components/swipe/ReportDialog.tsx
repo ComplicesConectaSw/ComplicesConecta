@@ -119,7 +119,7 @@ export const ReportDialog = ({ profileId, profileName, isOpen, onOpenChange, onR
         });
       }
 
-    } catch {
+    } catch (error) {
       toast({
         title: "Error",
         description: "No se pudo enviar el reporte. Inténtalo de nuevo.",

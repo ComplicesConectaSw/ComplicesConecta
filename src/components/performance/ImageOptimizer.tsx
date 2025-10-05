@@ -257,7 +257,7 @@ export const OptimizedImage: React.FC<ImageOptimizerProps> = ({
           onLoad?.();
         }
       }}
-      onError={(_e) => {
+      onError={(e) => {
         if (!hasError) {
           setHasError(true);
           onError?.(new Error('Image load failed'));

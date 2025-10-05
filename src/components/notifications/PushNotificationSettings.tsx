@@ -14,8 +14,6 @@ export const PushNotificationSettings: React.FC<PushNotificationSettingsProps> =
   const { user } = useAuth();
   const [showDetails, setShowDetails] = useState(false);
   
-  const _canSubscribe = 'serviceWorker' in navigator && 'PushManager' in window;
-  
   const {
     isSupported,
     permission,
@@ -23,6 +21,9 @@ export const PushNotificationSettings: React.FC<PushNotificationSettingsProps> =
     isLoading,
     error,
     isSubscribed,
+    canSubscribe,
+    needsPermission,
+    requestPermission,
     subscribe,
     unsubscribe,
     sendTestNotification
@@ -40,8 +41,8 @@ export const PushNotificationSettings: React.FC<PushNotificationSettingsProps> =
     if (isSubscribed) {
       await unsubscribe();
     } else {
-      if (permission === 'default') {
-        // Request permission if needed
+      if (needsPermission) {
+        await requestPermission();
       }
       await subscribe();
     }

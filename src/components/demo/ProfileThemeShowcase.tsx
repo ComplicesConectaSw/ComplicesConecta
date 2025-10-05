@@ -218,7 +218,7 @@ export const ProfileThemeShowcase: React.FC<ProfileThemeShowcaseProps> = ({
           animate="visible"
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
-          {demoProfiles.map((profile, _index) => (
+          {demoProfiles.map((profile, index) => (
             <motion.div
               key={profile.id}
               variants={itemVariants}

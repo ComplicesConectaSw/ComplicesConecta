@@ -39,7 +39,7 @@ export const ReportsPanel: React.FC = () => {
   const [filter, setFilter] = useState<FilterType>('all')
   const [severityFilter, setSeverityFilter] = useState<SeverityFilter>('all')
   const [searchTerm, setSearchTerm] = useState('')
-  const [_selectedReport, _setSelectedReport] = useState<Report | null>(null)
+  const [selectedReport, setSelectedReport] = useState<Report | null>(null)
   const [actionLoading, setActionLoading] = useState<string | null>(null)
 
   const reportService = new ProfileReportService()
@@ -91,7 +91,7 @@ export const ReportsPanel: React.FC = () => {
             ? { ...report, status: resolution }
             : report
         ))
-        _setSelectedReport(null)
+        setSelectedReport(null)
         logger.info('Reporte resuelto:', { reportId, resolution })
       } else {
         setError(response.error || 'Error resolviendo reporte')

@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Heart, MapPin, Users, Calendar, AlertTriangle, X, ArrowLeft, Crown, Shield, Star, Sparkles, Search, Lock } from 'lucide-react';
+import { Calendar, MapPin, Users, Star, Heart, Search, AlertTriangle, X, ArrowLeft, Lock, Sparkles, Crown, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { getEventPlaceholder, getDiverseAvatar } from '@/lib/media';
 import NavigationEnhanced from "@/components/NavigationEnhanced";
 import { usePersistedState } from '@/hooks/usePersistedState';
 import { logger } from '@/lib/logger';
@@ -47,10 +46,10 @@ const Events = () => {
       maxAttendees: 30,
       price: 2500,
       category: "VIP Exclusivo",
-      image: getEventPlaceholder("event-1"),
+      image: "/placeholder.svg",
       organizer: {
         name: "Elite Connections México",
-        avatar: getDiverseAvatar("org-1", "Elite Connections México", 'single')
+        avatar: "/placeholder.svg"
       },
       isJoined: true,
       isLiked: true,
@@ -68,10 +67,10 @@ const Events = () => {
       maxAttendees: 20,
       price: 1800,
       category: "Conexiones Swinger",
-      image: getEventPlaceholder("event-2"),
+      image: "/placeholder.svg",
       organizer: {
         name: "Intimate Gatherings GDL",
-        avatar: getDiverseAvatar("org-2", "Intimate Gatherings GDL", 'single')
+        avatar: "/placeholder.svg"
       },
       isJoined: false,
       isLiked: true,
@@ -89,10 +88,10 @@ const Events = () => {
       maxAttendees: 40,
       price: 3200,
       category: "Ambiente Playero",
-      image: getEventPlaceholder("event-3"),
+      image: "/placeholder.svg",
       organizer: {
         name: "Aqua Lifestyle Cancún",
-        avatar: getDiverseAvatar("org-3", "Aqua Lifestyle Cancún", 'single')
+        avatar: "/placeholder.svg"
       },
       isJoined: false,
       isLiked: false,
@@ -110,10 +109,10 @@ const Events = () => {
       maxMembers: 200,
       isPrivate: true,
       category: "Club VIP",
-      image: getEventPlaceholder("club-1"),
+      image: "/placeholder.svg",
       admin: {
         name: "Administración Elite México",
-        avatar: getDiverseAvatar("admin-1", "Administración Elite México", 'single')
+        avatar: "/placeholder.svg"
       },
       lastActivity: "Hace 1h",
       isJoined: false,
@@ -130,10 +129,10 @@ const Events = () => {
       maxMembers: 120,
       isPrivate: false,
       category: "Principiantes",
-      image: getEventPlaceholder("club-2"),
+      image: "/placeholder.svg",
       admin: {
         name: "Coordinadores Swinger MX",
-        avatar: getDiverseAvatar("admin-2", "Coordinadores Swinger MX", 'single')
+        avatar: "/placeholder.svg"
       },
       lastActivity: "Hace 2h",
       isJoined: true,
@@ -150,10 +149,10 @@ const Events = () => {
       maxMembers: 250,
       isPrivate: true,
       category: "Eventos Playeros",
-      image: getEventPlaceholder("club-3"),
+      image: "/placeholder.svg",
       admin: {
         name: "Aqua Team Cancún",
-        avatar: getDiverseAvatar("admin-3", "Aqua Team Cancún", 'single')
+        avatar: "/placeholder.svg"
       },
       lastActivity: "Hace 30min",
       isJoined: false,
@@ -164,19 +163,19 @@ const Events = () => {
     }
   ];
 
-  const _handleJoinEvent = (eventId: number) => {
+  const handleJoinEvent = (eventId: number) => {
     logger.info('Join event:', { eventId });
   };
 
-  const _handleLikeEvent = (eventId: number) => {
+  const handleLikeEvent = (eventId: number) => {
     logger.info('Like event:', { eventId });
   };
 
-  const _handleJoinGroup = (groupId: number) => {
+  const handleJoinGroup = (groupId: number) => {
     logger.info('Join group:', { groupId });
   };
 
-  const _handleViewGroup = (groupId: number) => {
+  const handleViewGroup = (groupId: number) => {
     logger.info('View group:', { groupId });
   };
 

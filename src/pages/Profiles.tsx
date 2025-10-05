@@ -37,7 +37,7 @@ interface Profile {
 }
 
 const Profiles: React.FC = () => {
-  const _navigate = useNavigate();
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const [aiSuggestions, setAiSuggestions] = useState<string[]>([]);
@@ -54,9 +54,9 @@ const Profiles: React.FC = () => {
       name: "Ana García",
       age: 28,
       location: "Ciudad de México",
-      bio: "Mujer soltera explorando el lifestyle swinger con mentalidad abierta. Busco conexiones auténticas y experiencias nuevas en un ambiente de respeto mutuo.",
-      images: ["/compliceslogo.png"],
-      interests: ["Lifestyle Swinger", "Mentalidad Abierta", "Comunicación Abierta", "Experiencias Nuevas", "Respeto Mutuo", "Fotografía Erótica"],
+      bio: "Amante de los viajes y la aventura",
+      images: ["/placeholder.svg"],
+      interests: ["viajes", "música", "cocina"],
       isOnline: true,
       verified: true
     }
@@ -82,7 +82,7 @@ const Profiles: React.FC = () => {
     }
   };
 
-  const _handleFilterChange = (filters: FilterState) => {
+  const handleFilterChange = (filters: FilterState) => {
     logger.info('🔍 Filtros aplicados', { filters });
     // Lógica de filtrado simplificada
     setFilteredProfiles(allProfiles);

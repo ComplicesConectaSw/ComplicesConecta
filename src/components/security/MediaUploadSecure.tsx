@@ -118,7 +118,7 @@ export const MediaUploadSecure: React.FC<MediaUploadSecureProps> = ({
           // Encrypt file if enabled
           if (enableEncryption) {
             try {
-              const { encryptedFile: _encryptedFile, keyId } = await MultimediaSecurityService.encryptFile(file, user.id);
+              const { encryptedFile, keyId } = await MultimediaSecurityService.encryptFile(file, user.id);
               
               setUploadedFiles(prev => prev.map(f => 
                 f.file === file 

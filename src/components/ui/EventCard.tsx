@@ -33,7 +33,7 @@ interface EventCardProps {
 }
 
 export const EventCard: React.FC<EventCardProps> = ({
-  id: _id,
+  id,
   title,
   description,
   date,

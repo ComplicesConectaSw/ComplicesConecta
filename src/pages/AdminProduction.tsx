@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-// import { Tables } from "@/integrations/supabase/types"; // No usado
+import { Tables } from '@/integrations/supabase/types';
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
@@ -97,7 +97,7 @@ interface FAQItem {
 }
 
 const AdminProduction = () => {
-  const { user: _user, profile: _profile, isAuthenticated, isAdmin, loading } = useAuth();
+  const { user, profile, isAuthenticated, isAdmin, loading } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
   
@@ -120,17 +120,17 @@ const AdminProduction = () => {
   });
   const [faqItems, setFaqItems] = useState<FAQItem[]>([]);
   const [invitations, setInvitations] = useState<Invitation[]>([]);
-  const [_dataLoading, _setDataLoading] = useState(true);
-  const [_selectedProfile, _setSelectedProfile] = useState<Profile | null>(null);
+  const [dataLoading, setDataLoading] = useState(true);
+  const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
   const [newFaq, setNewFaq] = useState({ question: '', answer: '', category: 'general' });
-  const [_auditReport, _setAuditReport] = useState<any>(null);
-  const [_notifications, _setNotifications] = useState<NotificationStats[]>([]);
-  const [_systemAlerts, _setSystemAlerts] = useState<SystemAlert[]>([]);
-  const [_dateFilter, _setDateFilter] = useState('today');
-  const [_typeFilter, _setTypeFilter] = useState('all');
-  const [_userFilter, _setUserFilter] = useState('');
-  const [_searchTerm, _setSearchTerm] = useState('');
-  const [_realTimeStats, _setRealTimeStats] = useState(true);
+  const [auditReport, setAuditReport] = useState<any>(null);
+  const [notifications, setNotifications] = useState<NotificationStats[]>([]);
+  const [systemAlerts, setSystemAlerts] = useState<SystemAlert[]>([]);
+  const [dateFilter, setDateFilter] = useState('today');
+  const [typeFilter, setTypeFilter] = useState('all');
+  const [userFilter, setUserFilter] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [realTimeStats, setRealTimeStats] = useState(true);
 
   useEffect(() => {
     logger.info('🔄 AdminProduction - Verificando acceso...');
@@ -209,7 +209,7 @@ const AdminProduction = () => {
   }, [loading, isAuthenticated, isAdmin, navigate, toast]);
 
   const loadProductionData = async () => {
-    _setDataLoading(true);
+    setDataLoading(true);
     try {
       await Promise.all([
         loadRealProfiles(),
@@ -225,7 +225,7 @@ const AdminProduction = () => {
         variant: "destructive"
       });
     } finally {
-      _setDataLoading(false);
+      setDataLoading(false);
     }
   };
 
@@ -243,7 +243,7 @@ const AdminProduction = () => {
       }
 
       // Mapear los datos de Supabase al tipo Profile local
-      const mappedProfiles: Profile[] = (data || []).map((profile: any) => ({
+      const mappedProfiles: Profile[] = (data || []).map((profile: Tables<'profiles'>) => ({
         id: profile.id,
         display_name: profile.name || 'Usuario',
         first_name: profile.name?.split(' ')[0] || 'Usuario',
@@ -275,7 +275,7 @@ const AdminProduction = () => {
         { count: totalUsers },
         { count: premiumUsers },
         { count: activeUsers },
-        { count: _totalInvitations }
+        { count: totalInvitations }
       ] = await Promise.all([
         supabase.from('profiles').select('*', { count: 'exact', head: true }),
         supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('is_premium', true),
@@ -285,26 +285,26 @@ const AdminProduction = () => {
 
       // Intentar cargar métricas adicionales - tablas podrían no existir
       let apkDownloadsResponse = { count: 0 };
-      // let appMetrics = null; // Variable no usada
+      let appMetrics = null;
       let tokenData = null;
 
       // Tabla apk_downloads no existe en el esquema actual
       apkDownloadsResponse = { count: 0 };
 
       // Tabla app_metrics no existe en el esquema actual
-      const _appMetrics = null;
+      appMetrics = null;
 
       try {
         const tokensResponse = await supabase.from('user_token_balances').select('cmpx_balance');
         if (!tokensResponse.error) {
           tokenData = tokensResponse.data;
         }
-      } catch {
+      } catch (error) {
         logger.info('🪙 Tabla user_token_balances no disponible');
       }
 
       // Función para obtener métricas específicas
-      const getMetricValue = (_name: string) => {
+      const getMetricValue = (name: string) => {
         // Como appMetrics es null, siempre retornamos 0
         return 0;
       };
@@ -399,7 +399,7 @@ const AdminProduction = () => {
         title: "Perfil Eliminado",
         description: "El perfil ha sido eliminado exitosamente"
       });
-    } catch {
+    } catch (error) {
       toast({
         title: "Error",
         description: "Error al eliminar el perfil",
@@ -420,15 +420,14 @@ const AdminProduction = () => {
 
       if (error) throw error;
 
-      setProfiles(profiles.map(p => 
+      setProfiles(profiles.map((p: Profile) => 
         p.id === profileId ? { ...p, is_premium: !p.is_premium } : p
       ));
-
       toast({
         title: "Estado Premium Actualizado",
-        description: `Usuario ${profile.is_premium ? 'degradado' : 'promovido'} exitosamente`
+        description: `El usuario ${!profile.is_premium ? 'ahora es' : 'ya no es'} premium`
       });
-    } catch {
+    } catch (error) {
       toast({
         title: "Error",
         description: "Error al actualizar el estado premium",
@@ -773,7 +772,7 @@ const AdminProduction = () => {
                         <p className="text-white font-medium">Invitación {invitation.type}</p>
                         <p className="text-white/60 text-sm">{invitation.message}</p>
                         <p className="text-white/40 text-xs">
-                          {invitation.created_at ? new Date(invitation.created_at).toLocaleDateString() : 'N/A'}
+                          {new Date(invitation.created_at).toLocaleDateString()}
                         </p>
                       </div>
                       <Badge 

@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { useProfileTheme, Gender } from '@/hooks/useProfileTheme';
 import { cn } from '@/lib/utils';
-import ProfileImagePlaceholder from '@/components/ui/ProfileImagePlaceholder';
 
 // Extended interface for couple profiles with database integration
 interface CoupleProfileWithPartners {
@@ -100,14 +99,14 @@ const getRelationshipDisplayName = (relationshipType: 'man-woman' | 'man-man' | 
 const CoupleProfileCard = ({ 
   profile, 
   onLike, 
-  onSuperLike: _onSuperLike,
-  onMessage: _onMessage, 
+  onSuperLike,
+  onMessage, 
   onOpenModal,
-  showActions: _showActions = true, 
-  showInviteButton: _showInviteButton = true,
+  showActions = true, 
+  showInviteButton = true,
   useThemeBackground = false
 }: CoupleProfileCardProps) => {
-  const { getUserOnlineStatus: _getUserOnlineStatus, getLastSeenTime: _getLastSeenTime } = useUserOnlineStatus();
+  const { getUserOnlineStatus, getLastSeenTime } = useUserOnlineStatus();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [imageError, setImageError] = useState(false);
@@ -120,8 +119,8 @@ const CoupleProfileCard = ({
   // Obtener configuración de tema usando el hook unificado
   const themeConfig = useProfileTheme('couple', genders);
   
-  const _theme = getRelationshipTheme(profile.relationship_type);
-  const _relationshipDisplayName = getRelationshipDisplayName(profile.relationship_type);
+  const theme = getRelationshipTheme(profile.relationship_type);
+  const relationshipDisplayName = getRelationshipDisplayName(profile.relationship_type);
   
   // Use couple images if available, otherwise use placeholder
   const partner1Avatar = profile.couple_images?.[0] || '/compliceslogo.png';
@@ -174,12 +173,20 @@ const CoupleProfileCard = ({
                 onLoad={() => logger.info('Partner 1 image loaded successfully:', { image: partner1Avatar })}
               />
             ) : (
-              <ProfileImagePlaceholder
-                type="single"
-                name={`${profile.partner1_first_name} ${profile.partner1_last_name}`}
-                className="w-full h-full rounded-none"
-                iconSize="lg"
-              />
+              <div className={cn(
+                "w-full h-full flex items-center justify-center",
+                useThemeBackground 
+                  ? themeConfig.backgroundClass 
+                  : "bg-gradient-to-br from-purple-400 to-pink-400"
+              )}>
+                <div className={cn(
+                  "text-center",
+                  useThemeBackground ? themeConfig.textClass : "text-white"
+                )}>
+                  <div className="text-6xl mb-2">👤</div>
+                  <p className="text-sm opacity-80">Imagen no disponible</p>
+                </div>
+              </div>
             )}
           </div>
           <div className="relative overflow-hidden">
@@ -192,12 +199,20 @@ const CoupleProfileCard = ({
                 onLoad={() => logger.info('Partner 2 image loaded successfully:', { image: partner2Avatar })}
               />
             ) : (
-              <ProfileImagePlaceholder
-                type="single"
-                name={`${profile.partner2_first_name} ${profile.partner2_last_name}`}
-                className="w-full h-full rounded-none"
-                iconSize="lg"
-              />
+              <div className={cn(
+                "w-full h-full flex items-center justify-center",
+                useThemeBackground 
+                  ? themeConfig.backgroundClass 
+                  : "bg-gradient-to-br from-blue-400 to-indigo-400"
+              )}>
+                <div className={cn(
+                  "text-center",
+                  useThemeBackground ? themeConfig.textClass : "text-white"
+                )}>
+                  <div className="text-6xl mb-2">👤</div>
+                  <p className="text-sm opacity-80">Imagen no disponible</p>
+                </div>
+              </div>
             )}
           </div>
         </div>

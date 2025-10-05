@@ -55,10 +55,10 @@ class ContentModerationService {
    * Modera contenido de texto (mensajes, bio, etc.)
    * TODO: Integrar con API de moderación real (OpenAI Moderation, Google Perspective)
    */
-  async moderateText(content: string, _context: 'message' | 'bio' | 'profile' = 'message'): Promise<ModerationResult> {
+  async moderateText(content: string, context: 'message' | 'bio' | 'profile' = 'message'): Promise<ModerationResult> {
     try {
       // PLACEHOLDER: Análisis mock de contenido de texto
-      const _textAnalysis = this.analyzeTextContent(content);
+      const textAnalysis = this.analyzeTextContent(content);
       
       const flags: ModerationFlag[] = [];
       let severity: ModerationResult['severity'] = 'low';
@@ -115,10 +115,10 @@ class ContentModerationService {
    * Modera imágenes subidas por usuarios
    * TODO: Integrar con servicio de análisis de imágenes (Google Vision, AWS Rekognition)
    */
-  async moderateImage(_imageUrl: string, _context: 'profile' | 'gallery' | 'message' = 'profile'): Promise<ModerationResult> {
+  async moderateImage(imageUrl: string, context: 'profile' | 'gallery' | 'message' = 'profile'): Promise<ModerationResult> {
     try {
       // PLACEHOLDER: Análisis mock de imágenes
-      const _imageAnalysis = this.analyzeImageContent(_imageUrl);
+      const imageAnalysis = this.analyzeImageContent(imageUrl);
       
       const flags: ModerationFlag[] = [];
       let severity: ModerationResult['severity'] = 'low';
@@ -307,7 +307,7 @@ class ContentModerationService {
   /**
    * Análisis básico de imágenes
    */
-  private analyzeImageContent(_imageUrl: string): ImageModerationResult {
+  private analyzeImageContent(imageUrl: string): ImageModerationResult {
     return {
       explicit_content: Math.random() * 0.2,
       violence: Math.random() * 0.1,

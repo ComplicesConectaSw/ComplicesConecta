@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Heart, MapPin, Verified, Crown, Settings, Share2, Lock, Images, Flag } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import HeaderNav from '@/components/HeaderNav';
+import NavigationEnhanced from "@/components/NavigationEnhanced";
 import { generateMockCoupleProfiles, type CoupleProfileWithPartners } from "@/lib/coupleProfiles";
 import { useAuth } from '@/hooks/useAuth';
 import { logger } from '@/lib/logger';
@@ -18,7 +18,7 @@ const ProfileCouple: React.FC = () => {
   const navigate = useNavigate();
   const [profile, setProfile] = useState<CoupleProfileWithPartners | null>(null);
   const [loading, setLoading] = useState(true);
-  const [_activeTab, _setActiveTab] = useState<'couple' | 'individual'>('couple');
+  const [activeTab, setActiveTab] = useState<'couple' | 'individual'>('couple');
   const [showPrivateImageRequest, setShowPrivateImageRequest] = useState(false);
   const [privateImageAccess, setPrivateImageAccess] = useState<'none' | 'pending' | 'approved' | 'denied'>('none');
   const [showReportDialog, setShowReportDialog] = useState(false);
@@ -44,8 +44,8 @@ const ProfileCouple: React.FC = () => {
   };
   
   // Migración localStorage → usePersistedState
-  const [demoAuth, _setDemoAuth] = usePersistedState('demo_authenticated', 'false');
-  const [demoUser, _setDemoUser] = usePersistedState<any>('demo_user', null);
+  const [demoAuth, setDemoAuth] = usePersistedState('demo_authenticated', 'false');
+  const [demoUser, setDemoUser] = usePersistedState<any>('demo_user', null);
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -168,14 +168,9 @@ const ProfileCouple: React.FC = () => {
                       url: window.location.href
                     }).catch(console.error);
                   } else {
-                    void (async () => {
-                      try {
-                        await navigator.clipboard.writeText(window.location.href);
-                        alert('Enlace copiado al portapapeles');
-                      } catch (error) {
-                        console.error('Error al copiar enlace:', error);
-                      }
-                    })();
+                    navigator.clipboard.writeText(window.location.href).then(() => 
+                      alert('Enlace copiado al portapapeles')
+                    ).catch(console.error);
                   }
                 }}
               >
@@ -352,8 +347,8 @@ const ProfileCouple: React.FC = () => {
                     images={[
                       {
                         id: '1',
-                        url: '/placeholder.svg',
-                        thumbnail: '/placeholder.svg',
+                        url: '/src/assets/people/privado/coupleprivjpg.jpg',
+                        thumbnail: '/src/assets/people/privado/coupleprivjpg.jpg',
                         uploadedAt: new Date()
                       }
                     ]}
@@ -366,7 +361,7 @@ const ProfileCouple: React.FC = () => {
 
         {/* Navegación inferior fija */}
         <div className="fixed bottom-0 left-0 right-0 z-50">
-          <HeaderNav />
+          <NavigationEnhanced />
         </div>
       </div>
       

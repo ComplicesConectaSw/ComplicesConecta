@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Send, Users, Lock, MessageCircle, UserPlus, Check, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { getDiverseAvatar } from '@/lib/media';
+import { ArrowLeft, Send, Users, Lock, MessageCircle, Check, X, UserPlus } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -42,11 +41,6 @@ const ChatAuthenticated = () => {
   const [currentMessage, setCurrentMessage] = useState("");
   const [activeTab, setActiveTab] = useState("public");
   const [selectedPrivateChat, setSelectedPrivateChat] = useState<string | null>(null);
-  const [onlineUsers] = useState([
-    { id: '1', name: 'Ana', avatar: getDiverseAvatar('1', 'Ana', 'single') },
-    { id: '2', name: 'Carlos', avatar: getDiverseAvatar('2', 'Carlos', 'single') },
-    { id: '3', name: 'María', avatar: getDiverseAvatar('3', 'María', 'couple') }
-  ]);
   
   // Mock data - en producción vendría de la API
   const [publicMessages, setPublicMessages] = useState<ChatMessage[]>([
@@ -54,8 +48,8 @@ const ChatAuthenticated = () => {
       id: "1",
       senderId: "user1",
       senderName: "María & Carlos",
-      senderAvatar: getDiverseAvatar('user1', 'María', 'couple'),
-      message: "¡Hola a todos! ¿Alguien sabe de eventos lifestyle este fin de semana?",
+      senderAvatar: "/placeholder.svg",
+      message: "¡Hola a todos! ¿Alguien sabe de eventos este fin de semana?",
       timestamp: new Date(Date.now() - 300000),
       isPrivate: false
     },
@@ -63,8 +57,8 @@ const ChatAuthenticated = () => {
       id: "2", 
       senderId: "user2",
       senderName: "Ana",
-      senderAvatar: getDiverseAvatar('user2', 'Ana', 'single'),
-      message: "Nosotros organizamos una reunión lifestyle privada el sábado 🔥",
+      senderAvatar: "/placeholder.svg",
+      message: "Nosotros organizamos una reunión privada el sábado 🔥",
       timestamp: new Date(Date.now() - 180000),
       isPrivate: false
     }
@@ -76,8 +70,8 @@ const ChatAuthenticated = () => {
         id: "p1",
         senderId: "user1",
         senderName: "María & Carlos",
-        senderAvatar: getDiverseAvatar('user1-private', 'María', 'couple'),
-        message: "Hola, nos gustó mucho su perfil swinger. ¿Les interesa conocernos en el lifestyle?",
+        senderAvatar: "/placeholder.svg",
+        message: "Hola, nos gustó mucho su perfil. ¿Les interesa conocernos?",
         timestamp: new Date(Date.now() - 3600000),
         isPrivate: true
       }
@@ -89,8 +83,8 @@ const ChatAuthenticated = () => {
       id: "req1",
       fromUserId: "user3",
       fromUserName: "Roberto & Lisa",
-      fromUserAvatar: getDiverseAvatar('user3', 'Roberto', 'couple'),
-      message: "Nos encantaría chatear con ustedes. Somos una pareja experimentada en el lifestyle swinger.",
+      fromUserAvatar: "/placeholder.svg",
+      message: "Nos encantaría chatear con ustedes. Somos una pareja experimentada.",
       timestamp: new Date(Date.now() - 7200000),
       status: 'pending'
     },
@@ -98,30 +92,30 @@ const ChatAuthenticated = () => {
       id: "req2",
       fromUserId: "user4", 
       fromUserName: "Sofía",
-      fromUserAvatar: getDiverseAvatar('user4', 'Sofía', 'single'),
-      message: "Hola! Soy nueva en el lifestyle, me gustaría conocer gente con experiencia como ustedes.",
+      fromUserAvatar: "/placeholder.svg",
+      message: "Hola! Soy nueva en esto, me gustaría conocer gente como ustedes.",
       timestamp: new Date(Date.now() - 1800000),
       status: 'pending'
     }
   ]);
 
-  const [_onlineUsers, _setOnlineUsers] = useState<User[]>([
+  const [onlineUsers, setOnlineUsers] = useState<User[]>([
     {
       id: "user1",
       name: "María & Carlos",
-      avatar: getDiverseAvatar('user1-online', 'María', 'couple'),
+      avatar: "/placeholder.svg",
       isOnline: true
     },
     {
       id: "user2",
       name: "Ana",
-      avatar: getDiverseAvatar('user1-online', 'María', 'couple'), 
+      avatar: "/placeholder.svg", 
       isOnline: true
     },
     {
       id: "user5",
       name: "Diego & Carmen",
-      avatar: getDiverseAvatar('user1-online', 'María', 'couple'),
+      avatar: "/placeholder.svg",
       isOnline: true
     }
   ]);
@@ -144,7 +138,7 @@ const ChatAuthenticated = () => {
       id: Date.now().toString(),
       senderId: "current_user",
       senderName: "Tú",
-      senderAvatar: getDiverseAvatar('current_user', 'Usuario', 'single'),
+      senderAvatar: "/placeholder.svg",
       message: currentMessage,
       timestamp: new Date(),
       isPrivate: activeTab === "private"
@@ -221,7 +215,7 @@ const ChatAuthenticated = () => {
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-1">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <span className="text-white text-sm">{_onlineUsers.length} en línea</span>
+                <span className="text-white text-sm">{onlineUsers.length} en línea</span>
               </div>
             </div>
           </div>
@@ -286,7 +280,7 @@ const ChatAuthenticated = () => {
                   <h3 className="font-semibold text-white">En Línea</h3>
                 </div>
                 <div className="space-y-2">
-                  {_onlineUsers.map((user) => (
+                  {onlineUsers.map((user) => (
                     <div 
                       key={user.id}
                       className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 cursor-pointer transition-colors"
@@ -365,9 +359,9 @@ const ChatAuthenticated = () => {
                             <div className="border-b border-white/10 p-4">
                               <div className="flex items-center gap-3">
                                 <Avatar className="h-8 w-8">
-                                  <AvatarImage src={getDiverseAvatar('chat-header', 'Usuario', 'single')} />
+                                  <AvatarImage src="/placeholder.svg" />
                                   <AvatarFallback>
-                                    {onlineUsers.find((u: any) => u.id === selectedPrivateChat)?.name[0]}
+                                    {onlineUsers.find(u => u.id === selectedPrivateChat)?.name[0]}
                                   </AvatarFallback>
                                 </Avatar>
                                 <div>

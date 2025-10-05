@@ -1,4 +1,4 @@
-import { Heart, Users, Shield, Calendar, MessageCircle, Search, UserPlus, Crown, BarChart3, Settings, Bell } from "lucide-react";
+import { Heart, Users, Shield, Zap, MapPin, Calendar, Camera, MessageCircle, Star, Trophy, Gift, Sparkles, Search, UserPlus, Crown, BarChart3, Settings, Bell } from "lucide-react";
 
 export const mainNavItems = [
   { title: 'Descubrir', url: '/discover', icon: Search, badge: 'Nuevo' },
@@ -37,7 +37,7 @@ export function getRandomCoupleProfile() {
 }
 
 // Generador de perfiles mock aleatorios
-export const generateMockSingle = (_includeOnlineStatus = true) => {
+export const generateMockSingle = (includeOnlineStatus = true) => {
   const nombresF = ["Sofía", "Valentina", "Isabella", "Camila", "Lucía", "Daniela", "Gabriela", "Andrea"];
   const nombresM = ["Raúl", "Miguel", "Alejandro", "Fernando", "Roberto", "Javier", "Antonio", "Pablo"];
   
@@ -45,16 +45,32 @@ export const generateMockSingle = (_includeOnlineStatus = true) => {
   const ubicaciones = ["CDMX", "Guadalajara", "Monterrey", "Puebla", "Tijuana", "León", "Querétaro", "Cancún", "Playa del Carmen", "Mérida"];
   const profesiones = ["Ingeniero/a", "Médico/a", "Abogado/a", "Diseñador/a", "Empresario/a", "Artista", "Profesor/a"];
   const intereses = [
+    // Categorías principales del lifestyle
     "Lifestyle Swinger", "Intercambio de Parejas", "Encuentros Casuales", "Fiestas Temáticas", 
-    "Clubs Privados", "Eventos Lifestyle", "Soft Swap", "Full Swap", "Unicornios", 
-    "Parejas Experimentadas", "Principiantes Curiosos", "Mentalidad Abierta", "Sin Tabúes", 
+    "Clubs Privados", "Eventos Lifestyle", "Intercambio Suave", "Intercambio Completo", "Terceras Personas", 
+    
+    // Niveles de experiencia
+    "Parejas Experimentadas", "Principiantes Curiosos", "Mentalidad Abierta", "Sin Prejuicios", 
+    
+    // Valores importantes
     "Comunicación Abierta", "Respeto Mutuo", "Discreción Total", "Ambiente Relajado", 
     "Experiencias Nuevas", "Conexiones Auténticas", "Diversión Adulta", "Aventuras Compartidas",
-    "Hoteles Temáticos", "Resorts Lifestyle", "Cruceros Swinger",
-    "Pool Parties", "Jacuzzi Sessions", "Masajes en Pareja", "Juegos de Rol",
-    "Fotografía Sensual", "Baile Sensual", "Cenas Íntimas", "Cócteles Exclusivos",
-    "Spa Couples", "Wellness Adulto", "Yoga en Pareja", "Fitness Compartido",
-    "Fiestas Privadas", "Conexiones Reales", "Ambiente Exclusivo", "Experiencias Únicas"
+    
+    // Lugares y eventos mexicanos
+    "Clubs Swinger México", "Fiestas Privadas CDMX", "Encuentros Guadalajara", "Eventos Monterrey",
+    "Reuniones Íntimas", "Jacuzzi Privado", "Masajes Tántricos", "Juegos Sensuales",
+    "Lifestyle México", "Eventos Exclusivos",
+    
+    // Cultura mexicana lifestyle
+    "Encuentros Íntimos", "Experiencias Sensuales", "Espacios Privados", "Libertad Sexual",
+    "Ambiente Sensual", "Intercambio Íntimo", "Conexión Física",
+    
+    // Actividades sensuales
+    "Fotografía Erótica", "Baile Sensual", "Cenas Íntimas", "Cócteles Afrodisíacos",
+    "Spa de Parejas", "Bienestar Adulto", "Experiencias Tántricas", "Actividades en Pareja",
+    
+    // Arte y entretenimiento adulto
+    "Arte Erótico", "Literatura Erótica", "Entretenimiento Adulto", "Ambiente Seductor"
   ];
   
   // Determinar género aleatoriamente
@@ -109,34 +125,50 @@ export const generateMockSingle = (_includeOnlineStatus = true) => {
       likes: Math.floor(Math.random() * 200) + 50,
       views: Math.floor(Math.random() * 500) + 100
     },
-    ...(_includeOnlineStatus && { isOnline: Math.random() > 0.5 })
+    ...(includeOnlineStatus && { isOnline: Math.random() > 0.5 })
   };
   
   return profile;
 };
 
-export const generateMockCouple = (_includeOnlineStatus = true) => {
+export const generateMockCouple = (includeOnlineStatus = true) => {
   const nombresM = ["Julio", "Miguel", "Alejandro", "Fernando", "Roberto", "Javier", "Antonio", "Pablo"];
   const nombresF = ["Anabella", "María", "Carmen", "Elena", "Sofía", "Laura", "Patricia", "Isabel"];
   const apellidos = ["García", "Rodríguez", "López", "Martínez", "González", "Pérez", "Sánchez", "Ramírez"];
   const ubicaciones = ["CDMX", "Guadalajara", "Monterrey", "Puebla", "Tijuana", "León", "Querétaro", "Cancún", "Playa del Carmen", "Mérida"];
   const profesiones = ["Ingeniero/a", "Médico/a", "Abogado/a", "Diseñador/a", "Empresario/a", "Artista", "Profesor/a"];
   const intereses = [
+    // Categorías principales del lifestyle
     "Lifestyle Swinger", "Intercambio de Parejas", "Encuentros Casuales", "Fiestas Temáticas", 
-    "Clubs Privados", "Eventos Lifestyle", "Soft Swap", "Full Swap", "Unicornios", 
-    "Parejas Experimentadas", "Principiantes Curiosos", "Mentalidad Abierta", "Sin Tabúes", 
+    "Clubs Privados", "Eventos Lifestyle", "Intercambio Suave", "Intercambio Completo", "Terceras Personas", 
+    
+    // Niveles de experiencia
+    "Parejas Experimentadas", "Principiantes Curiosos", "Mentalidad Abierta", "Sin Prejuicios", 
+    
+    // Valores importantes
     "Comunicación Abierta", "Respeto Mutuo", "Discreción Total", "Ambiente Relajado", 
     "Experiencias Nuevas", "Conexiones Auténticas", "Diversión Adulta", "Aventuras Compartidas",
-    "Hoteles Temáticos", "Resorts Lifestyle", "Cruceros Swinger",
-    "Pool Parties", "Jacuzzi Sessions", "Masajes en Pareja", "Juegos de Rol",
-    "Fotografía Sensual", "Baile Sensual", "Cenas Íntimas", "Cócteles Exclusivos",
-    "Spa Couples", "Wellness Adulto", "Yoga en Pareja", "Fitness Compartido",
-    "Fiestas Privadas", "Conexiones Reales", "Ambiente Exclusivo", "Experiencias Únicas"
+    
+    // Lugares y eventos mexicanos
+    "Clubs Swinger México", "Fiestas Privadas CDMX", "Encuentros Guadalajara", "Eventos Monterrey",
+    "Reuniones Íntimas", "Jacuzzi Privado", "Masajes Tántricos", "Juegos Sensuales",
+    "Lifestyle México", "Eventos Exclusivos",
+    
+    // Cultura mexicana lifestyle
+    "Encuentros Íntimos", "Experiencias Sensuales", "Espacios Privados", "Libertad Sexual",
+    "Ambiente Sensual", "Intercambio Íntimo", "Conexión Física",
+    
+    // Actividades sensuales
+    "Fotografía Erótica", "Baile Sensual", "Cenas Íntimas", "Cócteles Afrodisíacos",
+    "Spa de Parejas", "Bienestar Adulto", "Experiencias Tántricas", "Actividades en Pareja",
+    
+    // Arte y entretenimiento adulto
+    "Arte Erótico", "Literatura Erótica", "Entretenimiento Adulto", "Ambiente Seductor"
   ];
   
   const nombreM = nombresM[Math.floor(Math.random() * nombresM.length)];
   const nombreF = nombresF[Math.floor(Math.random() * nombresF.length)];
-  const _apellido = apellidos[Math.floor(Math.random() * apellidos.length)];
+  const apellido = apellidos[Math.floor(Math.random() * apellidos.length)];
   
   // Imágenes reales de Unsplash para parejas demo
   const coupleImages = [

@@ -3,10 +3,11 @@
  * Fixes useLayoutEffect and other React hooks in SSR environments
  */
 
-import { useSafeLayoutEffect } from './safeLayoutEffect';
+import { useEffect, useLayoutEffect as originalUseLayoutEffect } from 'react';
 
 // Safe useLayoutEffect that falls back to useEffect in SSR
-export const useIsomorphicLayoutEffect = useSafeLayoutEffect;
+export const useIsomorphicLayoutEffect = 
+  typeof window !== 'undefined' ? originalUseLayoutEffect : useEffect;
 
 // Initialize React fallbacks for production builds
 export const initializeReactFallbacks = () => {
@@ -27,11 +28,12 @@ export const initializeReactFallbacks = () => {
 export const ensureReactPolyfills = () => {
   if (typeof window !== 'undefined') {
     try {
-      // Use static import to avoid dynamic import warning
-      const React = require('react');
-      if (React) {
-        (window as any).React = React;
-      }
+      // Import React dynamically to avoid UMD global reference
+      import('react').then((ReactModule) => {
+        (window as any).React = ReactModule;
+      }).catch(() => {
+        // Ignore if React module not found
+      });
     } catch {
       // Ignore errors
     }

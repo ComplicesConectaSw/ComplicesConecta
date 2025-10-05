@@ -63,7 +63,7 @@ export const CoupleImageUpload: React.FC<CoupleImageUploadProps> = ({
       } else {
         onError(result.error || `Error al subir imagen de ${partnerNames[partner]}`);
       }
-    } catch {
+    } catch (error) {
       onError(`Error inesperado al subir imagen de ${partnerNames[partner]}`);
     } finally {
       setIsUploading(prev => ({ ...prev, [partner]: false }));
@@ -122,7 +122,7 @@ export const CoupleImageUpload: React.FC<CoupleImageUploadProps> = ({
       } else {
         onError(result.error || `Error al eliminar imagen de ${partnerNames[partner]}`);
       }
-    } catch {
+    } catch (error) {
       onError(`Error inesperado al eliminar imagen de ${partnerNames[partner]}`);
     } finally {
       setIsUploading(prev => ({ ...prev, [partner]: false }));

@@ -32,7 +32,7 @@ export const PerformancePanel: React.FC = () => {
       const currentMetrics = await performanceMonitor.collectCurrentMetrics()
       setMetrics(currentMetrics)
       setLoading(false)
-    } catch {
+    } catch (err) {
       setError('Error cargando métricas de performance')
       setLoading(false)
     }

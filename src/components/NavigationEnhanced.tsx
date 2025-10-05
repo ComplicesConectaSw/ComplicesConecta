@@ -16,7 +16,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { logger } from '@/lib/logger';
 import { cn } from '@/lib/utils';
 
-interface _NavigationEnhancedProps {
+interface NavigationEnhancedProps {
   className?: string;
   showNotificationBadges?: boolean;
   enableAnimations?: boolean;
@@ -24,10 +24,10 @@ interface _NavigationEnhancedProps {
 }
 
 const NavigationEnhanced: React.FC = () => {
-  const [_activeItem, _setActiveItem] = useState('feed');
+  const [activeItem, setActiveItem] = useState('feed');
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [_isMobileMenuOpen, _setIsMobileMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -40,7 +40,7 @@ const NavigationEnhanced: React.FC = () => {
   useEffect(() => {
     // Trigger re-render para aplicar nuevos estilos
     const timer = setTimeout(() => {
-      _setActiveItem(prev => prev);
+      setActiveItem(prev => prev);
     }, 100);
     return () => clearTimeout(timer);
   }, [navbarStyle, demoTheme]);
@@ -93,7 +93,7 @@ const NavigationEnhanced: React.FC = () => {
     const currentPath = location.pathname;
     const currentItem = navItems.find(item => item.path === currentPath);
     if (currentItem) {
-      _setActiveItem(currentItem.id);
+      setActiveItem(currentItem.id);
     }
   }, [location.pathname, navItems]);
 
@@ -142,7 +142,7 @@ const NavigationEnhanced: React.FC = () => {
   };
 
   // Animation variants
-  const _navVariants = {
+  const navVariants = {
     hidden: { 
       y: 100, 
       opacity: 0,
@@ -235,7 +235,7 @@ const NavigationEnhanced: React.FC = () => {
           
           <div className="relative flex items-center justify-between w-full max-w-full mx-auto px-1 overflow-x-auto scrollbar-hide">
             <div className="flex items-center justify-around w-full min-w-fit gap-1">
-              {navItems.map((item, _index) => {
+              {navItems.map((item, index) => {
                 const Icon = item.icon;
                 const isActive = location.pathname === item.path;
                 const notificationCount = 0;

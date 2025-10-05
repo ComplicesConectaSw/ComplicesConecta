@@ -47,7 +47,7 @@ const Chat = () => {
   const [tabError, setTabError] = useState<string | null>(null);
   const [hasChatAccess, setHasChatAccess] = useState<{[key: number]: boolean}>({});
   const [isProduction, setIsProduction] = useState(false);
-  const [_isLoading, _setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Detectar modo de operación (demo vs producción)
   useEffect(() => {
@@ -67,7 +67,7 @@ const Chat = () => {
         demoAccessMap[chat.id] = true;
       });
       setHasChatAccess(demoAccessMap);
-      _setIsLoading(false);
+      setIsLoading(false);
     }
   }, [navigate]);
 
@@ -88,7 +88,7 @@ const Chat = () => {
 
   // Cargar datos reales de chat para producción
   const loadRealChatData = async () => {
-    _setIsLoading(true);
+    setIsLoading(true);
     try {
       // Obtener salas del usuario
       const roomsResult = await simpleChatService.getUserChatRooms();
@@ -99,13 +99,13 @@ const Chat = () => {
     } catch (error) {
       logger.error('Error cargando datos de chat:', { error: String(error) });
     } finally {
-      _setIsLoading(false);
+      setIsLoading(false);
     }
   };
 
   // Cargar mensajes reales de una sala
   const loadRealMessages = async (roomId: string) => {
-    _setIsLoading(true);
+    setIsLoading(true);
     try {
       const result = await simpleChatService.getRoomMessages(roomId, 50);
       if (result.success && result.messages) {
@@ -119,7 +119,7 @@ const Chat = () => {
     } catch (error) {
       logger.error('Error cargando mensajes:', { error: String(error) });
     } finally {
-      _setIsLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -288,7 +288,7 @@ const Chat = () => {
     }
   ];
 
-  const _getCurrentChats = () => {
+  const getCurrentChats = () => {
     if (isProduction) {
       // Usar datos reales de Supabase
       const realChats = realRooms
@@ -301,7 +301,7 @@ const Chat = () => {
     }
   };
 
-  // const _chats = await loadChats(); // Código no válido fuera de función async
+  const chats = getCurrentChats();
 
   useEffect(() => {
     if (selectedChat) {

@@ -59,9 +59,10 @@ export const AdvancedFilters = ({ filters, onFiltersChange, onReset }: AdvancedF
   };
 
   const availableInterests = [
-    "Fiestas Privadas", "Intercambio", "Eventos VIP", "Discreción", 
-    "Experiencias Nuevas", "Unicornio", "Soft Swap", "Clubs Exclusivos", 
-    "Parejas Verificadas", "Lifestyle", "Naturaleza", "Viajes"
+    "Fiestas Privadas", "Intercambio de Parejas", "Eventos VIP", "Discreción Total", 
+    "Experiencias Nuevas", "Terceras Personas", "Intercambio Suave", "Clubs Exclusivos", 
+    "Parejas Verificadas", "Lifestyle Swinger", "Naturaleza", "Viajes",
+    "Intercambio Completo", "Clubs Swinger México", "Eventos Exclusivos", "Mentalidad Abierta"
   ];
 
   const relationshipTypes = [

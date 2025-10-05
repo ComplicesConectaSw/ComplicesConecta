@@ -23,7 +23,7 @@ interface ChatBubbleProps {
 }
 
 export const ChatBubbleLegacy: React.FC<ChatBubbleProps> = ({
-  id: _id,
+  id,
   message,
   isOwn,
   timestamp,

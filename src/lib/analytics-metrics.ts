@@ -1,5 +1,4 @@
 import { logger } from '@/lib/logger';
-import type { Json } from '@/types/types';
 import { redisCache, CacheKeys, CacheTTL } from '@/lib/redis-cache';
 
 /**
@@ -35,7 +34,7 @@ interface EventMetric {
   type: 'page_view' | 'interaction' | 'match_view' | 'message_sent' | 'profile_update' | 'token_transaction' | 'error';
   userId?: string;
   timestamp: number;
-  metadata?: Json | null;
+  metadata?: Record<string, any>;
 }
 
 class AnalyticsMetrics {
@@ -137,13 +136,10 @@ class AnalyticsMetrics {
             session.profileUpdates++;
             break;
           case 'token_transaction':
-            if (event.metadata && typeof event.metadata === 'object' && 'type' in event.metadata) {
-              const metadata = event.metadata as { type?: string; amount?: number };
-              if (metadata.type === 'earn') {
-                session.tokensEarned += metadata.amount || 0;
-              } else if (metadata.type === 'spend') {
-                session.tokensSpent += metadata.amount || 0;
-              }
+            if (event.metadata?.type === 'earn') {
+              session.tokensEarned += event.metadata.amount || 0;
+            } else if (event.metadata?.type === 'spend') {
+              session.tokensSpent += event.metadata.amount || 0;
             }
             break;
         }
@@ -397,7 +393,7 @@ export const trackTokenTransaction = (userId: string, type: 'earn' | 'spend', am
   });
 };
 
-export const trackError = (error: string, userId?: string, context?: Json | null) => {
+export const trackError = (error: string, userId?: string, context?: Record<string, any>) => {
   analyticsMetrics.trackEvent({
     type: 'error',
     userId,

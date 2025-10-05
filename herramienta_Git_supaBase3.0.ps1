@@ -110,7 +110,7 @@ function Sync-And-Clean() {
     $backup = New-Backup $global:backupDir
     if (-not $backup) { Write-Host "❌ No se pudo crear backup. Abortando."; return }
 
-    Clean-InvalidMigrations
+    Remove-InvalidMigrations
 
     Push-Location $global:projectDir
     $output = npx supabase db push 2>&1

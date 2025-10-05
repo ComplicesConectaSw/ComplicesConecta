@@ -47,7 +47,7 @@ export const SendRequestDialog: React.FC<SendRequestDialogProps> = ({
       } else {
         setError(result.error || 'Error al enviar solicitud');
       }
-    } catch {
+    } catch (error) {
       setError('Error inesperado al enviar solicitud');
     } finally {
       setIsLoading(false);

@@ -46,7 +46,7 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
   const { features } = useFeatures();
   
   // Navegación siempre visible - sin efectos de scroll
-  const [_isVisible] = useState(true);
+  const [isVisible] = useState(true);
 
   // localStorage migrado a hooks tipados - todos los hooks al inicio
   const [isDemoAuthenticated] = usePersistedState('demo_authenticated', 'false');

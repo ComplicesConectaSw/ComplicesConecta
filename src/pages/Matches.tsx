@@ -2,12 +2,15 @@ import { useState, useEffect } from "react";
 // import { Header } from "@/components/Header";
 import NavigationEnhanced from "@/components/NavigationEnhanced";
 import { MatchCard } from "@/components/ui/MatchCard";
+import { ProfileCard } from "@/components/ui/ProfileCard";
+import { UnifiedTabs } from "@/components/ui/UnifiedTabs";
 import { UnifiedButton } from "@/components/ui/UnifiedButton";
 import { UnifiedCard } from "@/components/ui/UnifiedCard";
-import { Heart, MessageCircle, Sparkles, ArrowLeft, Flame, Users, Crown } from "lucide-react";
+import { Heart, MessageCircle, Sparkles, ArrowLeft, Flame, Users, Crown, Filter } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { simpleMatchService, SimpleMatch } from "@/lib/simpleMatches";
-import { motion } from "framer-motion";
+import MatchingService, { SupabaseProfile } from "@/lib/MatchingService";
+import { motion, AnimatePresence } from "framer-motion";
 import { logger } from '@/lib/logger';
 
 // Professional profile images from Unsplash - Production ready
@@ -28,10 +31,10 @@ export interface Match {
 
 const Matches = () => {
   const navigate = useNavigate();
-  const [_matches, _setMatches] = useState<Match[]>([]);
-  const [_realMatches, _setRealMatches] = useState<SimpleMatch[]>([]);
-  const [_isProduction, _setIsProduction] = useState(false);
-  const [_isLoading, _setIsLoading] = useState(false);
+  const [matches, setMatches] = useState<Match[]>([]);
+  const [realMatches, setRealMatches] = useState<SimpleMatch[]>([]);
+  const [isProduction, setIsProduction] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [demoMatches] = useState<Match[]>([
     {
       id: 1,
@@ -63,7 +66,7 @@ const Matches = () => {
       age: 35,
       image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=600&fit=crop&crop=face",
       compatibility: 91,
-      mutualInterests: ["Soft Swap", "Clubs Exclusivos", "Parejas Verificadas"],
+      mutualInterests: ["Intercambio Suave", "Clubs Exclusivos", "Parejas Verificadas"],
       distance: 5.8,
       matchedAt: "Hace 3 días",
       hasUnreadMessage: false,
@@ -99,7 +102,7 @@ const Matches = () => {
       age: 34,
       image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=600&fit=crop&crop=face",
       compatibility: 92,
-      mutualInterests: ["Parejas Swinger", "Full Swap", "Eventos Exclusivos"],
+      mutualInterests: ["Parejas Swinger", "Intercambio Completo", "Eventos Exclusivos"],
       distance: 6.8,
       matchedAt: "Hace 2 días",
       hasUnreadMessage: false,
@@ -113,21 +116,21 @@ const Matches = () => {
   useEffect(() => {
     const demoAuth = localStorage.getItem('demo_authenticated');
     const isDemo = demoAuth === 'true';
-    _setIsProduction(!isDemo);
+    setIsProduction(!isDemo);
 
     // SIEMPRE usar datos demo para respetar la lógica de negocio
     // No cargar datos reales hasta que el sistema esté completamente implementado
-    _setMatches(demoMatches);
+    setMatches(demoMatches);
     logger.info('🎭 Matches demo cargados (respetando lógica de negocio):', { count: demoMatches.length, isDemo });
   }, []);
 
   // Cargar matches reales de producción
-  const _loadRealMatches = async (maxDistance?: number) => {
-    _setIsLoading(true);
+  const loadRealMatches = async (maxDistance?: number) => {
+    setIsLoading(true);
     try {
       const result = await simpleMatchService.getMatches(20, maxDistance);
       if (result.success && result.matches) {
-        _setRealMatches(result.matches);
+        setRealMatches(result.matches);
         // Convertir matches reales al formato de la UI
         const convertedMatches: Match[] = result.matches.map((match, index) => ({
           id: parseInt(match.id),
@@ -141,14 +144,14 @@ const Matches = () => {
           hasUnreadMessage: match.isOnline,
           status: index < 2 ? 'new' : (index < 4 ? 'chatting' : 'viewed') as 'new' | 'viewed' | 'chatting'
         }));
-        _setMatches(convertedMatches);
+        setMatches(convertedMatches);
       }
     } catch (error) {
       logger.error('Error cargando matches:', { error: String(error) });
       // Fallback a datos demo en caso de error
-      _setMatches(demoMatches);
+      setMatches(demoMatches);
     } finally {
-      _setIsLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -354,7 +357,7 @@ const Matches = () => {
         {/* Matches Grid */}
         {filteredMatches.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
-            {_isLoading ? (
+            {isLoading ? (
               // Loading skeleton
               [...Array(6)].map((_, index) => (
                 <div key={index} className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 sm:p-6 animate-pulse transition-all duration-300">

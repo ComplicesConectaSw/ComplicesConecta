@@ -26,9 +26,9 @@ interface ImageUploadProps {
 }
 
 export function ImageUpload({ 
-  profileId: _profileId, 
+  profileId, 
   onImageUploaded, 
-  type: _type = 'gallery',
+  type = 'gallery',
   maxFiles = 5 
 }: ImageUploadProps) {
   const [files, setFiles] = useState<File[]>([]);
@@ -123,7 +123,7 @@ export function ImageUpload({
         fileInputRef.current.value = '';
       }
 
-    } catch {
+    } catch (error) {
       toast({
         variant: "destructive",
         title: "Error inesperado",

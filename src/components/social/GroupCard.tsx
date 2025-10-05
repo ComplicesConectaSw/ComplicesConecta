@@ -25,7 +25,7 @@ interface GroupCardProps {
 }
 
 export const GroupCard = ({ 
-  id: _id, 
+  id, 
   name, 
   description, 
   image, 

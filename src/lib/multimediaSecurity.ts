@@ -91,7 +91,7 @@ export class MultimediaSecurityService {
     try {
       // 1. File size validation
       if (file.size > finalConfig.maxFileSize) {
-        result.errors.push(`Archivo demasiado grande. Máximo permitido: ${this.formatBytes(finalConfig.maxFileSize)}`);
+        result.errors.push(`Archivo demasiado grande. Máximo permitido: ${this.formatFileSize(finalConfig.maxFileSize)}`);
         result.isValid = false;
       }
 
@@ -147,15 +147,15 @@ export class MultimediaSecurityService {
       logger.info('Media security validation completed', {
         userId,
         fileName: file.name,
-        fileSize: this.formatBytes(result.metadata?.fileSize || 0),
+        fileSize: file.size,
         mimeType: file.type,
         isValid: result.isValid,
         errorsCount: result.errors.length
       });
 
       return result;
-    } catch (_error) {
-      logger.error('Error validating file:', { error: _error instanceof Error ? _error.message : String(_error) });
+    } catch (error) {
+      logger.error('Error validating file content:', { error: error instanceof Error ? error.message : String(error) });
       result.errors.push('Error interno de validación');
       result.isValid = false;
       return result;
@@ -195,7 +195,7 @@ export class MultimediaSecurityService {
           } else {
             resolve({ isValid: true, errors: [] });
           }
-        } catch {
+        } catch (error) {
           resolve({
             isValid: false,
             errors: ['Error al validar contenido del archivo']
@@ -262,7 +262,7 @@ export class MultimediaSecurityService {
   /**
    * Validate video content
    */
-  private static validateVideoContent(_bytes: Uint8Array): { isValid: boolean; errors: string[] } {
+  private static validateVideoContent(bytes: Uint8Array): { isValid: boolean; errors: string[] } {
     // Basic video validation - check for proper container format
     return { isValid: true, errors: [] };
   }
@@ -452,23 +452,13 @@ export class MultimediaSecurityService {
   }
 
   /**
-   * Format bytes to human readable string
+   * Format file size for display
    */
-  private static formatBytes(bytes: number): string {
-    if (bytes === 0) return '0 Bytes';
-    
-    const k = 1024;
+  private static formatFileSize(bytes: number): string {
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-  }
-
-  /**
-   * Validate file size
-   */
-  private static validateFileSize(bytes: number): boolean {
-    return this.formatBytes(bytes) !== '0 Bytes';
+    if (bytes === 0) return '0 Bytes';
+    const i = Math.floor(Math.log(bytes) / Math.log(1024));
+    return Math.round(bytes / Math.pow(1024, i) * 100) / 100 + ' ' + sizes[i];
   }
 
   /**
@@ -505,13 +495,53 @@ export class MultimediaSecurityService {
       combined.set(iv);
       combined.set(new Uint8Array(encryptedBuffer), iv.length);
 
-      return {
-        encryptedFile: new Blob([combined]),
-        keyId
-      };
-    } catch (_error) {
-      logger.error('Error encrypting file:', { error: _error instanceof Error ? _error.message : String(_error) });
-      throw _error;
+      const encryptedFile = new Blob([combined], { type: 'application/octet-stream' });
+
+      logger.info('File encrypted successfully', { userId, keyId, originalSize: file.size, encryptedSize: encryptedFile.size });
+
+      return { encryptedFile, keyId };
+    } catch (error) {
+      logger.error('Error in access control check:', { error: error instanceof Error ? error.message : String(error) });
+      throw new Error('Failed to encrypt file');
+    }
+  }
+
+  /**
+   * Decrypt file
+   */
+  static async decryptFile(encryptedBlob: Blob, keyId: string, userId: string): Promise<Blob> {
+    try {
+      // Retrieve encryption key
+      const keyBuffer = await this.retrieveEncryptionKey(keyId, userId);
+      
+      // Import key
+      const key = await crypto.subtle.importKey(
+        'raw',
+        keyBuffer,
+        { name: 'AES-GCM' },
+        false,
+        ['decrypt']
+      );
+
+      // Read encrypted data
+      const encryptedBuffer = await encryptedBlob.arrayBuffer();
+      const encryptedArray = new Uint8Array(encryptedBuffer);
+
+      // Extract IV and encrypted data
+      const iv = encryptedArray.slice(0, 12);
+      const encryptedData = encryptedArray.slice(12);
+
+      // Decrypt
+      const decryptedBuffer = await crypto.subtle.decrypt(
+        { name: 'AES-GCM', iv },
+        key,
+        encryptedData
+      );
+
+      return new Blob([decryptedBuffer]);
+    } catch (error) {
+      logger.error('Error decrypting file:', { error: error instanceof Error ? error.message : String(error) });
+      throw new Error('Failed to decrypt file');
     }
   }
 

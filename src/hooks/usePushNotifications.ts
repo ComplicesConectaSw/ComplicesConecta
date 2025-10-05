@@ -125,24 +125,16 @@ export const usePushNotifications = ({
       }
 
       // Subscribe to push manager
-      const _pushSubscription = await registration.pushManager.subscribe({
+      const pushSubscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(vapidPublicKey) as BufferSource
       });
-
-      const pushSubscription = {
-        ..._pushSubscription,
-        toJSON: () => _pushSubscription.toJSON(),
-        getKey: (key: string) => _pushSubscription.getKey(key as PushEncryptionKeyName),
-        unsubscribe: () => _pushSubscription.unsubscribe(),
-        options: _pushSubscription.options
-      };
 
       setSubscription(pushSubscription);
       onSubscriptionChange?.(pushSubscription);
 
       // Save subscription to database
-      await _handlePushSubscription(pushSubscription);
+      await saveSubscriptionToDatabase(pushSubscription);
 
       logger.info('✅ Suscripción push creada:', pushSubscription);
       return pushSubscription;
@@ -184,7 +176,7 @@ export const usePushNotifications = ({
   }, [subscription, onSubscriptionChange]);
 
   // Save subscription to Supabase (using profiles table for now)
-  const _handlePushSubscription = async (subscription: PushSubscription | null) => {
+  const saveSubscriptionToDatabase = useCallback(async (pushSubscription: PushSubscription) => {
     if (!userId) return;
 
     try {
@@ -192,9 +184,9 @@ export const usePushNotifications = ({
       // until the push_subscriptions table is created in the database
       const subscriptionData = {
         user_id: userId,
-        endpoint: subscription?.endpoint || '',
-        p256dh_key: subscription ? arrayBufferToBase64(subscription.getKey('p256dh')!) : '',
-        auth_key: subscription ? arrayBufferToBase64(subscription.getKey('auth')!) : '',
+        endpoint: pushSubscription.endpoint,
+        p256dh_key: arrayBufferToBase64(pushSubscription.getKey('p256dh')!),
+        auth_key: arrayBufferToBase64(pushSubscription.getKey('auth')!),
         user_agent: navigator.userAgent,
         is_active: true,
         created_at: new Date().toISOString()
@@ -206,10 +198,10 @@ export const usePushNotifications = ({
       logger.error('Error saving subscription to database:', { error: error instanceof Error ? error.message : String(error) });
       throw error;
     }
-  };
+  }, [userId]);
 
   // Remove subscription from database
-  const removeSubscriptionFromDatabase = async (_pushSubscription?: PushSubscription) => {
+  const removeSubscriptionFromDatabase = useCallback(async (pushSubscription: PushSubscription) => {
     if (!userId) return;
 
     try {
@@ -220,7 +212,7 @@ export const usePushNotifications = ({
       logger.error('Error removing subscription from database:', { error: error instanceof Error ? error.message : String(error) });
       throw error;
     }
-  };
+  }, [userId]);
 
   // Send test notification
   const sendTestNotification = useCallback(async () => {

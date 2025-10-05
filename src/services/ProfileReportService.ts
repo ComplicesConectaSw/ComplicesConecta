@@ -1,6 +1,6 @@
 import { supabase } from '@/integrations/supabase/client'
 import { logger } from '@/lib/logger'
-import type { Database } from '@/types/types'
+import type { Database } from '@/types/supabase'
 
 // Force TypeScript to reload types
 type _ReportsTableCheck = Database['public']['Tables']['reports']
@@ -75,8 +75,8 @@ export class ProfileReportService {
       }
 
       // Ajustado según esquema real: todos los campos obligatorios incluidos
-      const insertData: ReportInsert = {
-        reporter_id: user.id,
+      const insertData = {
+        reporter_user_id: user.id,
         reported_user_id: params.reportedUserId,
         content_type: 'profile',
         reported_content_id: params.reportedUserId,
@@ -84,7 +84,7 @@ export class ProfileReportService {
         description: params.description ?? null,
         severity: params.severity ?? 'medium',
         status: 'pending'
-      }
+      } as ReportInsert
 
       const { data, error } = await (supabase as any)
         .from('reports')
@@ -198,8 +198,9 @@ export class ProfileReportService {
       switch (action) {
         case 'warning':
           updateData = {
-            // Usar campos que existen en el esquema real
-            updated_at: new Date().toISOString()
+            is_blocked: false,
+            blocked_reason: null,
+            blocked_at: null
           }
           break
 
@@ -207,18 +208,20 @@ export class ProfileReportService {
           const suspensionEnd = new Date()
           suspensionEnd.setDate(suspensionEnd.getDate() + (suspensionDays || 7))
           updateData = {
-            // Usar campos que existen en el esquema real
-            is_active: false,
-            updated_at: new Date().toISOString()
+            is_blocked: true,
+            blocked_reason: `Suspensión temporal por ${suspensionDays || 7} días`,
+            blocked_at: new Date().toISOString(),
+            suspension_end_date: suspensionEnd.toISOString()
           }
           break
         }
 
         case 'permanent_suspension':
           updateData = {
-            // Usar campos que existen en el esquema real
-            is_active: false,
-            updated_at: new Date().toISOString()
+            is_blocked: true,
+            blocked_reason: 'Suspensión permanente',
+            blocked_at: new Date().toISOString(),
+            suspension_end_date: null
           }
           break
       }

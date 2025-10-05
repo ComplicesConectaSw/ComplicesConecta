@@ -198,7 +198,7 @@ export class TouchGestureManager {
     }
   };
 
-  private handleTouchEnd = (_event: TouchEvent): void => {
+  private handleTouchEnd = (event: TouchEvent): void => {
     if (this.isDragging) {
       // Finalizar drag
       if (this.callbacks.onDragEnd && this.touchCurrent) {

@@ -73,21 +73,19 @@ export const exampleUsage = () => {
   // Ejemplo de cómo usar la función de verificación migrada
   const token = 'token-from-hcaptcha-widget';
   
-  void (async () => {
-    try {
-      const result = await verifyHCaptcha(token, 'registration', 'user-123');
+  verifyHCaptcha(token, 'registration', 'user-123')
+    .then((result) => {
       if (result.success) {
         logger.info('✅ Verificación exitosa!', result.data);
         // Proceder con el registro/login del usuario
       } else {
-        logger.error('❌ Verificación fallida:', { message: result.message });
+        logger.info('❌ Verificación falló:', { message: result.message });
         // Mostrar error al usuario
       }
-    } catch (error) {
-      logger.error('💥 Error en verificación:', { error: error instanceof Error ? error.message : String(error) });
-      // Manejar error de red o servidor
-    }
-  })();
+    })
+    .catch((error) => {
+      logger.error('Error:', error);
+    });
 };
 
 /**

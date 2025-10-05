@@ -20,7 +20,7 @@ const NotFound = () => {
     setTimeout(() => setIsVisible(true), 100);
     
     // Generate random sparkle positions
-    const sparkles = Array.from({ length: 20 }, (_, _i) => ({
+    const sparkles = Array.from({ length: 12 }, (_, i) => ({
       x: Math.random() * 100,
       y: Math.random() * 100,
       delay: Math.random() * 3

@@ -1,4 +1,4 @@
-import { Component, ReactNode, ErrorInfo } from 'react';
+import React from 'react';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,15 +6,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 interface ErrorBoundaryState {
   hasError: boolean;
   error?: Error;
-  errorInfo?: ErrorInfo;
+  errorInfo?: React.ErrorInfo;
 }
 
 interface ErrorBoundaryProps {
-  children: ReactNode;
+  children: React.ReactNode;
   fallback?: React.ComponentType<{ error?: Error; resetError: () => void }>;
 }
 
-class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
   constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false };
@@ -24,7 +24,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error('🚨 Error capturado por ErrorBoundary:', error);
     console.error('📍 Información del error:', errorInfo);
     
@@ -86,7 +86,8 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
                 </Button>
                 <Button 
                   onClick={() => window.location.href = '/'}
-                  className="flex-1 border border-white/20 text-white hover:bg-white/10"
+                  variant="outline"
+                  className="flex-1 border-white/20 text-white hover:bg-white/10"
                 >
                   <Home className="w-4 h-4 mr-2" />
                   Inicio

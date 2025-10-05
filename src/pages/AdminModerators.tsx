@@ -43,7 +43,7 @@ const AdminModerators = () => {
   const [moderators, setModerators] = useState<Moderator[]>([]);
   const [requests, setRequests] = useState<ModeratorRequest[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, _setActiveTab] = useState("moderators");
+  const [activeTab, setActiveTab] = useState("moderators");
   
   // Formulario para crear moderador
   const [newModeratorEmail, setNewModeratorEmail] = useState("");
@@ -51,10 +51,10 @@ const AdminModerators = () => {
   const [isCreating, setIsCreating] = useState(false);
   
   // Modal de detalles
-  const [_selectedModerator, _setSelectedModerator] = useState<Moderator | null>(null);
-  const [_selectedRequest, _setSelectedRequest] = useState<ModeratorRequest | null>(null);
+  const [selectedModerator, setSelectedModerator] = useState<Moderator | null>(null);
+  const [selectedRequest, setSelectedRequest] = useState<ModeratorRequest | null>(null);
 
-  const _statusColors = {
+  const statusColors = {
     pending: 'bg-yellow-500',
     active: 'bg-green-500',
     suspended: 'bg-red-500',
@@ -76,8 +76,8 @@ const AdminModerators = () => {
     try {
       setLoading(true);
       await Promise.all([fetchModerators(), fetchRequests()]);
-    } catch {
-      logger.error('❌ Error al cargar datos');
+    } catch (error) {
+      logger.error('❌ Error al cargar datos:', { error });
     } finally {
       setLoading(false);
     }
@@ -93,12 +93,12 @@ const AdminModerators = () => {
       if (error) throw error;
       setModerators(data || []);
       logger.info('✅ Moderadores cargados:', { count: data?.length || 0 });
-    } catch {
-      logger.error('❌ Error al cargar moderadores');
+    } catch (error: any) {
+      logger.error('❌ Error al cargar moderadores:', { error: error.message });
       toast({
         variant: "destructive",
         title: "Error al cargar moderadores",
-        description: "No se pudieron cargar los moderadores"
+        description: error.message
       });
     }
   };
@@ -113,12 +113,12 @@ const AdminModerators = () => {
       if (error) throw error;
       setRequests(data || []);
       logger.info('✅ Solicitudes cargadas:', { count: data?.length || 0 });
-    } catch {
-      logger.error('❌ Error al cargar solicitudes');
+    } catch (error: any) {
+      logger.error('❌ Error al cargar solicitudes:', { error: error.message });
       toast({
         variant: "destructive",
         title: "Error al cargar solicitudes",
-        description: "No se pudieron cargar las solicitudes"
+        description: error.message
       });
     }
   };
@@ -171,12 +171,12 @@ const AdminModerators = () => {
       
       logger.info('✅ Moderador creado exitosamente:', { id: data[0].id });
 
-    } catch {
-      logger.error('❌ Error al crear moderador');
+    } catch (error: any) {
+      logger.error('❌ Error al crear moderador:', { error: error.message });
       toast({
         variant: "destructive",
         title: "Error al crear moderador",
-        description: "No se pudo crear el moderador"
+        description: error.message
       });
     } finally {
       setIsCreating(false);
@@ -208,12 +208,12 @@ const AdminModerators = () => {
 
       logger.info('✅ Status actualizado exitosamente');
 
-    } catch {
-      logger.error('❌ Error al actualizar status');
+    } catch (error: any) {
+      logger.error('❌ Error al actualizar status:', { error: error.message });
       toast({
         variant: "destructive",
         title: "Error al actualizar",
-        description: "No se pudo actualizar el estado"
+        description: error.message
       });
     }
   };
@@ -264,16 +264,16 @@ const AdminModerators = () => {
 
       // Recargar datos
       await fetchData();
-      _setSelectedRequest(null);
+      setSelectedRequest(null);
 
       logger.info('✅ Solicitud procesada exitosamente');
 
-    } catch {
-      logger.error('❌ Error al procesar solicitud');
+    } catch (error: any) {
+      logger.error('❌ Error al procesar solicitud:', { error: error.message });
       toast({
         variant: "destructive",
         title: "Error al procesar solicitud",
-        description: "No se pudo procesar la solicitud"
+        description: error.message
       });
     }
   };
@@ -332,7 +332,7 @@ const AdminModerators = () => {
 
         {/* Main Content */}
         <div className="max-w-7xl mx-auto p-3 sm:p-6">
-          <Tabs value={activeTab} onValueChange={_setActiveTab} className="space-y-4 sm:space-y-6">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6">
             <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 bg-white/10 backdrop-blur-md border-white/20 gap-1 sm:gap-0">
               <TabsTrigger value="moderators" className="text-white data-[state=active]:bg-white/20 text-xs sm:text-sm">
                 <Shield className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
@@ -439,7 +439,7 @@ const AdminModerators = () => {
                           <Button
                             size="sm"
                             variant="outline"
-                            onClick={() => _setSelectedRequest(request)}
+                            onClick={() => setSelectedRequest(request)}
                             className="bg-white/10 border-white/20 text-white hover:bg-white/20 flex-1 sm:flex-none"
                           >
                             <Eye className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-0" />
@@ -456,7 +456,7 @@ const AdminModerators = () => {
                           <Button
                             size="sm"
                             variant="outline"
-                            onClick={() => _setSelectedRequest(request)}
+                            onClick={() => setSelectedRequest(request)}
                             className="bg-red-500/20 border-red-500/30 text-red-300 hover:bg-red-500/30 flex-1 sm:flex-none"
                           >
                             <XCircle className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-0" />

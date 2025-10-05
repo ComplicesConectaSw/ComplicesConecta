@@ -1,4 +1,4 @@
-// Intereses específicos para la temática swinger/lifestyle 
+// Intereses específicos para la temática swinger/lifestyle mexicana
 export const lifestyleInterests = [
   // Categorías principales del lifestyle
   "Lifestyle Swinger", "Intercambio de Parejas", "Encuentros Casuales", "Fiestas Temáticas", 
@@ -11,12 +11,12 @@ export const lifestyleInterests = [
   "Comunicación Abierta", "Respeto Mutuo", "Discreción Total", "Ambiente Relajado", 
   "Experiencias Nuevas", "Conexiones Auténticas", "Diversión Adulta", "Aventuras Compartidas",
   
-  // Lugares y eventos 
+  // Lugares y eventos mexicanos
   "Clubs Swinger México", "Fiestas Privadas CDMX", "Encuentros Guadalajara", "Eventos Monterrey",
   "Reuniones Íntimas", "Jacuzzi Privado", "Masajes Tántricos", "Juegos Sensuales",
   "Lifestyle México", "Eventos Exclusivos",
   
-  // Cultura  lifestyle
+  // Cultura mexicana lifestyle
   "Encuentros Íntimos", "Experiencias Sensuales", "Espacios Privados", "Libertad Sexual",
   "Ambiente Sensual", "Intercambio Íntimo", "Conexión Física",
   
@@ -28,7 +28,7 @@ export const lifestyleInterests = [
   "Arte Erótico", "Literatura Erótica", "Entretenimiento Adulto", "Ambiente Seductor"
 ];
 
-// Categorías para el registro automático 
+// Categorías para el registro automático con temática mexicana
 export const interestCategories = {
   principiante: [
     "Principiantes Curiosos", "Mentalidad Abierta", "Comunicación Abierta", 

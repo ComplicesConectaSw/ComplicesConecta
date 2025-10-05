@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Camera, Clock, Eye, Heart, Users, Zap, Shield, Star } from 'lucide-react';
-import { Header } from '@/components/Header';
+import HeaderNav from '@/components/HeaderNav';
 
 const StoriesInfo = () => {
   const navigate = useNavigate();
@@ -51,7 +51,7 @@ const StoriesInfo = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-800 to-indigo-900">
-      <Header />
+      <HeaderNav />
       
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">

@@ -139,7 +139,7 @@ export const HCaptchaWidget: React.FC<HCaptchaWidgetProps> = ({
   };
 
   // Exponer métodos para uso externo mediante un ref separado
-  const _methodsRef = useRef({
+  const methodsRef = useRef({
     reset,
     execute
   });

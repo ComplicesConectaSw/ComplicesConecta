@@ -9,17 +9,17 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
-import type { Database } from '@/types/types';
+import type { Database } from '@/integrations/supabase/types';
 import { logger } from '@/lib/logger';
 
 // Helper function to get current user ID
-const _getCurrentUserId = async (): Promise<string | null> => {
+function getCurrentUserId(): string | null {
   // This should be replaced with actual auth context
   return supabase.auth.getUser().then(({ data }) => data.user?.id || null).catch(() => null) as any;
 }
 
 type MessageRow = Database['public']['Tables']['messages']['Row'];
-type _MessageInsert = Database['public']['Tables']['messages']['Insert'];
+type MessageInsert = Database['public']['Tables']['messages']['Insert'];
 
 export interface ChatRoom {
   id: string;
@@ -256,7 +256,7 @@ class ChatService {
   async sendMessage(
     roomId: string,
     content: string,
-    _messageType: 'text' | 'image' | 'system' = 'text',
+    messageType: 'text' | 'image' | 'file' = 'text'
   ): Promise<{ success: boolean; message?: ChatMessage; error?: string }> {
     try {
       const { data: user } = await supabase.auth.getUser();

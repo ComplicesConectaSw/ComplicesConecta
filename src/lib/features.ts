@@ -126,9 +126,9 @@ export function getFeatureFlags(): FeatureFlags {
 /**
  * Verifica si una función específica está habilitada
  */
-export const isFeatureEnabled = (_feature: keyof FeatureFlags): boolean => {
+export function isFeatureEnabled(feature: keyof FeatureFlags): boolean {
   const features = getFeatureFlags();
-  return features[_feature];
+  return features[feature];
 }
 
 /**
@@ -156,7 +156,7 @@ export function useFeatures() {
 /**
  * Obtiene mensaje explicativo para funciones deshabilitadas
  */
-export function getFeatureDisabledMessage(_feature: keyof FeatureFlags): string {
+export function getFeatureDisabledMessage(feature: keyof FeatureFlags): string {
   const currentPhase = getCurrentPhase();
   
   const messages: Record<AppPhase, string> = {

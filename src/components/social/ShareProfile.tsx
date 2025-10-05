@@ -30,7 +30,7 @@ export const ShareProfile = ({ isOpen, onClose, profileId, profileName }: ShareP
         title: "Enlace copiado",
         description: "El enlace del perfil se ha copiado al portapapeles"
       });
-    } catch {
+    } catch (error) {
       toast({
         title: "Error",
         description: "No se pudo copiar el enlace",

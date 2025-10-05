@@ -21,11 +21,11 @@ export const HCaptchaExample: React.FC = () => {
   // Site key de hCaptcha (obtener de hcaptcha.com)
   const HCAPTCHA_SITE_KEY = import.meta.env.VITE_HCAPTCHA_SITE_KEY || '10000000-ffff-ffff-ffff-000000000001';
 
-  const _handleVerify = (token: string, isValid: boolean) => {
-    logger.info('Verificación hCaptcha:', { token: token.substring(0, 10) + '...', valid: isValid });
+  const handleVerify = (captchaToken: string, isValid: boolean) => {
+    logger.info('Verificación hCaptcha:', { token: captchaToken.substring(0, 10) + '...', valid: isValid });
     
     if (isValid) {
-      setToken(token);
+      setToken(captchaToken);
       setIsVerified(true);
       setError('');
     } else {
@@ -35,14 +35,14 @@ export const HCaptchaExample: React.FC = () => {
     }
   };
 
-  const _handleError = (error: string) => {
-    logger.error('Error hCaptcha:', { error });
-    setError(`Error: ${error}`);
+  const handleError = (errorMessage: string) => {
+    logger.error('Error hCaptcha:', { error: errorMessage });
+    setError(`Error: ${errorMessage}`);
     setIsVerified(false);
     setToken('');
   };
 
-  const _handleExpire = () => {
+  const handleExpire = () => {
     logger.info('hCaptcha expirado', {});
     setIsVerified(false);
     setToken('');

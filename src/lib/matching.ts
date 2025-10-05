@@ -71,7 +71,7 @@ export function generateMatchReasons(sharedInterests: string[]): string[] {
     reasons.push("Priorizan la privacidad y discreción");
   }
   
-  if (sharedInterests.some(i => ["Pool Parties", "Clubs Privados", "Eventos Lifestyle"].includes(i))) {
+  if (sharedInterests.some(i => ["Fiestas Privadas", "Clubs Privados", "Eventos Lifestyle"].includes(i))) {
     reasons.push("Les gustan los eventos sociales del lifestyle");
   }
   
@@ -79,7 +79,7 @@ export function generateMatchReasons(sharedInterests: string[]): string[] {
     reasons.push("Disfrutan de vacaciones lifestyle");
   }
   
-  if (sharedInterests.some(i => ["Soft Swap", "Full Swap"].includes(i))) {
+  if (sharedInterests.some(i => ["Intercambio Suave", "Intercambio Completo"].includes(i))) {
     reasons.push("Compatibles en preferencias de intercambio");
   }
   

@@ -14,7 +14,7 @@ import { Header } from '@/components/Header';
 
 export default function ProjectInfo() {
   const navigate = useNavigate();
-  const { toast: _toast } = useToast();
+  const { toast } = useToast();
   const [activeTab, setActiveTab] = useState<'readme' | 'releases' | 'moderators'>('readme');
 
   return (

@@ -7,7 +7,7 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 
 const Terms = () => {
-  const _navigate = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen relative overflow-hidden">

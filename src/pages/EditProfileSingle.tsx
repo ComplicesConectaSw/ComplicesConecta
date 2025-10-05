@@ -29,16 +29,15 @@ const EditProfileSingle = () => {
     avatar: ""
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [_error, _setError] = useState<string | null>(null);
-  const [_success, _setSuccess] = useState<string | null>(null);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [userId, setUserId] = useState<string>("");
   const [profileLoaded, setProfileLoaded] = useState(false);
   
   // Demo theme configuration
   const { demoTheme, setDemoTheme, navbarStyle, setNavbarStyle } = useDemoThemeConfig();
-  const _navbarStyles = useProfileTheme();
   const themeConfig = useProfileTheme('single', ['male'], demoTheme);
-  const _navbarStyles2 = getNavbarStyles(navbarStyle);
+  const navbarStyles = getNavbarStyles(navbarStyle);
 
   // Forzar re-render cuando cambia el tema
   useEffect(() => {
@@ -95,7 +94,7 @@ const EditProfileSingle = () => {
           
           if (error) {
             logger.error('Error fetching profile:', { error: error.message });
-            _setError('Error al cargar perfil');
+            setError('Error al cargar perfil');
           } else if (profile) {
             const profileData = profile as any;
             setFormData({
@@ -134,7 +133,7 @@ const EditProfileSingle = () => {
         setIsLoading(false);
       }
     } catch (error) {
-      _setError('Error inesperado al cargar perfil');
+      setError('Error inesperado al cargar perfil');
       logger.error('Error loading profile:', { error: String(error) });
       
       // En caso de error, crear perfil demo como fallback
@@ -179,8 +178,8 @@ const EditProfileSingle = () => {
     if (isLoading) return;
     
     setIsLoading(true);
-    _setError('');
-    _setSuccess('');
+    setError('');
+    setSuccess('');
     
     try {
       if (getAppConfig().features.demoCredentials) {
@@ -192,7 +191,7 @@ const EditProfileSingle = () => {
           age: parseInt(formData.age) || undefined
         };
         localStorage.setItem('demo_user', JSON.stringify(updatedUser));
-        _setSuccess('Perfil guardado exitosamente (modo demo)');
+        setSuccess('Perfil guardado exitosamente (modo demo)');
       } else {
         // Modo producción - guardar en Supabase
         const nameParts = formData.name.split(' ');
@@ -208,13 +207,13 @@ const EditProfileSingle = () => {
           .eq('id', userId);
         
         if (error) {
-          _setError('Error al guardar perfil: ' + error.message);
+          setError('Error al guardar perfil: ' + error.message);
         } else {
-          _setSuccess('Perfil guardado exitosamente');
+          setSuccess('Perfil guardado exitosamente');
         }
       }
-    } catch {
-      _setError('Error inesperado al guardar perfil');
+    } catch (error) {
+      setError('Error inesperado al guardar perfil');
     } finally {
       setIsLoading(false);
     }
@@ -222,14 +221,14 @@ const EditProfileSingle = () => {
   
   const handleImageUploaded = (url: string) => {
     setFormData(prev => ({ ...prev, avatar: url }));
-    _setSuccess('Imagen subida exitosamente');
+    setSuccess('Imagen subida exitosamente');
   };
   
   const handleImageError = (error: string) => {
-    _setError(error);
+    setError(error);
   };
 
-  const _handleLogout = () => {
+  const handleLogout = () => {
     // Limpiar datos de sesión demo
     localStorage.removeItem('demo_authenticated');
     localStorage.removeItem('demo_user');

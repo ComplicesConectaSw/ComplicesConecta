@@ -107,29 +107,15 @@ class SmartMatchingService {
   ): Promise<SmartMatchResult[]> {
     try {
       // Obtener perfil del usuario actual
-      const { data: userProfileData } = await supabase
+      const { data: userProfile } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', userId)
         .single();
 
-      if (!userProfileData || !userProfileData.age) {
-        throw new Error('Usuario no encontrado o perfil incompleto');
+      if (!userProfile) {
+        throw new Error('Usuario no encontrado');
       }
-
-      const userProfile: MatchingProfile = {
-        id: userProfileData.id,
-        name: userProfileData.name || 'Usuario',
-        age: userProfileData.age as number,
-        gender: userProfileData.gender || 'no_especificado',
-        interested_in: userProfileData.interested_in || 'todos',
-        location: userProfileData.location || undefined,
-        bio: userProfileData.bio || undefined,
-        is_verified: userProfileData.is_verified || false,
-        is_premium: userProfileData.is_premium || false,
-        latitude: (userProfileData as any).latitude || undefined,
-        longitude: (userProfileData as any).longitude || undefined
-      };
 
       // Buscar perfiles candidatos
       const { data: candidates } = await supabase
@@ -164,8 +150,8 @@ class SmartMatchingService {
           bio: candidate.bio || undefined,
           is_verified: candidate.is_verified || false,
           is_premium: candidate.is_premium || false,
-          latitude: (candidate as any).latitude || undefined,
-          longitude: (candidate as any).longitude || undefined
+          latitude: candidate.latitude || undefined,
+          longitude: candidate.longitude || undefined
         };
 
         const compatibility = await this.calculateCompatibility(userProfile, validCandidate);
@@ -176,7 +162,7 @@ class SmartMatchingService {
           matchResults.push({
             profile: validCandidate,
             compatibility,
-            distance: distance ?? 0,
+            distance,
             matchReason: this.generatePrimaryMatchReason(compatibility)
           });
         }

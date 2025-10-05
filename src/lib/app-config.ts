@@ -74,7 +74,7 @@ export const DEMO_PASSWORDS: Record<string, string> = {
 };
 
 // Lista de emails admin para verificación rápida - CORREGIDA
-const _ADMIN_EMAILS = [
+const ADMIN_EMAILS = [
   'admin',                      // Admin demo solamente
   'djwacko28@gmail.com',        // Admin DEMO (no producción)
   'complicesconectasw@outlook.es'  // ÚNICO admin producción REAL
@@ -131,7 +131,7 @@ export const getProductionPassword = (email: string): string | null => {
 
 // Función centralizada para manejar autenticación demo (SIN complicesconectasw@outlook.es)
 export const handleDemoAuth = (email: string, accountType: string = 'single') => {
-  const _config = getAppConfig();
+  const config = getAppConfig();
   
   if (!isDemoCredential(email)) {
     logger.info('❌ Email no es credencial demo:', { email });
@@ -231,8 +231,8 @@ export const shouldUseRealSupabase = () => {
         const useSupabase = user.role === 'admin';
         logger.info('🎭 Usuario demo', { email: user.email, admin: user.role === 'admin', usarSupabase: useSupabase });
         return useSupabase;
-      } catch (_error) {
-        logger.error('❌ Error parsing demo user', { error: _error instanceof Error ? _error.message : String(_error) });
+      } catch (error) {
+        logger.error('❌ Error parsing demo user', { error: error instanceof Error ? error.message : String(error) });
         return false;
       }
     }

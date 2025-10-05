@@ -62,8 +62,8 @@ interface Filters {
 const Discover = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const _isMobile = useIsMobile();
-  const { location, error: _locationError } = useGeolocation();
+  const isMobile = useIsMobile();
+  const { location, error: locationError } = useGeolocation();
   const { user, isAuthenticated } = useAuth();
   
   const [profiles, setProfiles] = useState<Profile[]>([]);
@@ -133,7 +133,7 @@ const Discover = () => {
 
     resetImageCounters();
 
-    const newProfiles: Profile[] = Array.from({ length: 50 }, (_, _index) => {
+    const newProfiles: Profile[] = Array.from({ length: 50 }, (_, index) => {
       const name = nombres[Math.floor(Math.random() * nombres.length)];
       const profileKind = inferProfileKind({ name });
       const profileType: ProfileType = profileKind.kind === 'couple' ? 'couple' : 'single';
@@ -342,11 +342,11 @@ const Discover = () => {
     }
   }, [isAuthenticated, navigate, profiles.length, coupleProfiles.length]);
 
-  const _handleProfileClick = (_profileId: string) => {
-    // Función no implementada - requiere perfil específico
+  const handleProfileClick = (profile: Profile) => {
+    navigate(`/profile/${profile.id}`, { state: { profile } });
   };
 
-  const handleLike = (_profileId: number | string) => {
+  const handleLike = (profileId: number | string) => {
     if (!isAuthenticated) {
       setShowPremiumModal(true);
       return;
@@ -357,7 +357,7 @@ const Discover = () => {
     });
   };
 
-  const _handleSuperLike = (_profileId: string) => {
+  const handleSuperLike = (profileId: number | string) => {
     if (!isAuthenticated) {
       setShowSuperLikesModal(true);
       return;
@@ -369,17 +369,17 @@ const Discover = () => {
     });
   };
 
-  const _handlePass = (_profileId: string) => {
+  const handlePass = (profileId: number | string) => {
     // Simplemente no mostrar mensaje para pass
   };
 
-  const _handleCompatibilityClick = () => {
+  const handleCompatibilityClick = () => {
     if (!isAuthenticated) {
       setShowCompatibilityModal(true);
     }
   };
 
-  const _handleEventsClick = () => {
+  const handleEventsClick = () => {
     if (!isAuthenticated) {
       setShowEventsModal(true);
     }

@@ -1,4 +1,4 @@
-// Legacy wrapper for compatibility - using CoupleProfileCard as fallback
-import CoupleProfileCard from '@/components/profile/CoupleProfileCard';
-export default CoupleProfileCard;
-export { CoupleProfileCard as ProfileCard };
+// Legacy wrapper for compatibility - migrated to MainProfileCard
+import { MainProfileCard } from '@/components/profile/MainProfileCard';
+export default MainProfileCard;
+export { MainProfileCard as ProfileCard };
