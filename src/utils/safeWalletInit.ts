@@ -55,10 +55,16 @@ export const safeWalletInit = (): void => {
 
 /**
  * Detecta wallets disponibles de forma segura sin redefinir propiedades
- * Reutiliza la lógica de wallets.ts para evitar duplicación
+ * Reutiliza la lógica de wallets.ts para evitar duplicación - SSR SAFE
  */
 export const detectAvailableWallets = (): WalletGlobals => {
   const detected: WalletGlobals = {};
+  
+  // SSR Safety Check
+  if (typeof window === 'undefined') {
+    console.debug('[safeWalletInit] SSR detected, skipping wallet detection');
+    return detected;
+  }
   
   try {
     // Usar detección más robusta desde wallets.ts
@@ -83,18 +89,17 @@ export const detectAvailableWallets = (): WalletGlobals => {
     
     // Fallback a detección simple si falla la importación
     try {
-      if (typeof (window as any).ethereum !== 'undefined') {
-        detected.ethereum = (window as any).ethereum;
-      }
-      if (typeof (window as any).solana !== 'undefined') {
-        detected.solana = (window as any).solana;
-      }
-      if (typeof (window as any).tronWeb !== 'undefined') {
-        detected.tronWeb = (window as any).tronWeb;
-      }
-      if (typeof (window as any).bybitWallet !== 'undefined') {
-        detected.bybitWallet = (window as any).bybitWallet;
-      }
+      // Detección condicional segura para SSR
+      const hasEthereum = typeof window !== 'undefined' && typeof (window as any).ethereum !== 'undefined';
+      const hasSolana = typeof window !== 'undefined' && typeof (window as any).solana !== 'undefined';
+      const hasTron = typeof window !== 'undefined' && typeof (window as any).tronWeb !== 'undefined';
+      const hasBybit = typeof window !== 'undefined' && typeof (window as any).bybitWallet !== 'undefined';
+      
+      if (hasEthereum) detected.ethereum = (window as any).ethereum;
+      if (hasSolana) detected.solana = (window as any).solana;
+      if (hasTron) detected.tronWeb = (window as any).tronWeb;
+      if (hasBybit) detected.bybitWallet = (window as any).bybitWallet;
+      
     } catch (fallbackError) {
       console.warn('[safeWalletInit] Fallback detection failed:', fallbackError);
     }
@@ -104,20 +109,27 @@ export const detectAvailableWallets = (): WalletGlobals => {
 };
 
 /**
- * Inicialización asíncrona no bloqueante para evitar pantallas blancas
+ * Inicialización asíncrona no bloqueante para evitar pantallas blancas - SSR SAFE
  */
-export const initWalletsAsync = async (): Promise<WalletGlobals> => {
-  return new Promise((resolve) => {
-    // Usar setTimeout para no bloquear el render principal
-    setTimeout(() => {
-      try {
-        safeWalletInit();
-        const wallets = detectAvailableWallets();
-        resolve(wallets);
-      } catch (error) {
-        console.warn('[safeWalletInit] Error en inicialización asíncrona:', error);
-        resolve({});
-      }
-    }, 0);
-  });
+export const initWalletsAsync = async (): Promise<void> => {
+  // SSR Safety Check - no ejecutar en servidor
+  if (typeof window === 'undefined') {
+    console.debug('[safeWalletInit] SSR detected, skipping async wallet init');
+    return;
+  }
+  
+  // Ejecutar en el próximo tick para no bloquear el render inicial
+  await new Promise(resolve => setTimeout(resolve, 0));
+  
+  try {
+    const _detected = detectAvailableWallets(); // Detectar wallets disponibles
+    safeWalletInit(); // Inicializar polyfills seguros
+    
+    // Importar y ejecutar protección de wallets de forma asíncrona
+    const { detectWalletConflicts } = await import('./walletProtection');
+    await detectWalletConflicts();
+    
+  } catch (error) {
+    console.warn('[safeWalletInit] Error en inicialización asíncrona:', error);
+  }
 };

@@ -3,7 +3,7 @@ import { StrictMode } from 'react'
 import App from './App.tsx'
 import './index.css'
 import './styles/header-fixes.css'
-import { initializeWalletProtection, detectWalletConflicts } from "./utils/walletProtection";
+// Eliminada importación estática para evitar conflicto con importación dinámica
 import { initializeReactFallbacks, ensureReactPolyfills } from "./utils/reactFallbacks";
 import { initWalletsAsync } from './utils/safeWalletInit';
 import './styles/responsive.css'
@@ -152,8 +152,7 @@ async function initializeApp() {
         try {
           // Inicialización segura de wallets sin redefiniciones
           await initWalletsAsync();
-          initializeWalletProtection();
-          detectWalletConflicts();
+          // Las funciones de protección se ejecutan dentro de initWalletsAsync()
         } catch (error) {
           console.warn('⚠️ Wallet protection init failed (non-critical):', error);
         }

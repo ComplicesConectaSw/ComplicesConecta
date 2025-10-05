@@ -16,7 +16,10 @@
     "strict": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    
+    /* Tipos implícitos - deshabilitar para evitar errores */
+    "types": []
   },
   "include": ["vite.config.ts"]
 }

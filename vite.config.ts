@@ -36,6 +36,11 @@ export default defineConfig({
       'Cross-Origin-Opener-Policy': 'same-origin'
     }
   },
+  preview: {
+    host: true,
+    port: 8080,
+    cors: true
+  },
   build: {
     rollupOptions: {
       output: {
@@ -86,9 +91,9 @@ export default defineConfig({
               return 'icons-vendor';
             }
             
-            // Sentry - separar por ser opcional
+            // Sentry - incluir en vendor general para evitar chunk vacío
             if (id.includes('@sentry')) {
-              return 'sentry-vendor';
+              return 'vendor';
             }
             
             // Hugging Face - muy pesado, separar
@@ -186,5 +191,22 @@ export default defineConfig({
     global: 'globalThis',
     // Prevent wallet extension conflicts
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production'),
+  },
+  ssr: {
+    // Externalize problematic packages for SSR compatibility
+    noExternal: [
+      // Keep these packages bundled for SSR
+      '@supabase/supabase-js',
+      '@radix-ui/react-*',
+      'lucide-react'
+    ],
+    external: [
+      // Externalize heavy crypto libraries for SSR
+      'web3',
+      'ethers',
+      '@solana/web3.js',
+      'tronweb',
+      '@metamask/detect-provider'
+    ]
   },
 });

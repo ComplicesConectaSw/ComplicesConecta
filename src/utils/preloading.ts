@@ -119,7 +119,7 @@ export const setupPredictivePrefetching = (): void => {
     if (!link || !link.href) return;
     
     // Solo prefetch rutas internas
-    if (link.hostname !== window.location.hostname) return;
+    if (typeof window === 'undefined' || link.hostname !== window.location.hostname) return;
     
     prefetchTimeout = setTimeout(() => {
       prefetchRoute(link.href);
@@ -133,7 +133,7 @@ export const setupPredictivePrefetching = (): void => {
     if (!link || !link.href) return;
     
     // Solo prefetch rutas internas
-    if (link.hostname !== window.location.hostname) return;
+    if (typeof window === 'undefined' || link.hostname !== window.location.hostname) return;
     
     prefetchTimeout = setTimeout(() => {
       prefetchRoute(link.href);
@@ -159,7 +159,7 @@ export const setupViewportPrefetching = (): IntersectionObserver => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           const link = entry.target as HTMLAnchorElement;
-          if (link.href && link.hostname === window.location.hostname) {
+          if (link.href && typeof window !== 'undefined' && link.hostname === window.location.hostname) {
             prefetchRoute(link.href);
             observer.unobserve(link); // Solo prefetch una vez
           }

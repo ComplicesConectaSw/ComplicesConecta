@@ -81,8 +81,8 @@ const formatMetric = (metric: Metric): WebVitalsData => ({
   delta: metric.delta,
   id: metric.id,
   timestamp: Date.now(),
-  url: window.location.href,
-  userAgent: navigator.userAgent
+  url: typeof window !== 'undefined' ? window.location.href : '',
+  userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : ''
 });
 
 // Enviar métricas a analytics
@@ -227,12 +227,14 @@ export const measureCustomMetric = (name: string, startTime: number): void => {
     delta: duration,
     id: `${name}-${Date.now()}`,
     timestamp: Date.now(),
-    url: window.location.href,
-    userAgent: navigator.userAgent
+    url: typeof window !== 'undefined' ? window.location.href : '',
+    userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : ''
   };
   
   console.log(`📊 Custom metric ${name}: ${duration.toFixed(2)}ms`);
-  window.dispatchEvent(new CustomEvent('custommetric', { detail: data }));
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('custommetric', { detail: data }));
+  }
 };
 
 // Medir tiempo de carga de componente
