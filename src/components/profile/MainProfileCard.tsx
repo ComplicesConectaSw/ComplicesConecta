@@ -275,7 +275,7 @@ export const MainProfileCard = ({
             _e.stopPropagation();
             handleViewProfile();
           }}
-          className="w-full mt-3 text-purple-600 hover:text-purple-700 transition-all duration-300 text-sm py-2 hover:bg-purple-50 rounded-lg font-semibold border border-transparent hover:border-purple-200"
+          className="w-full mt-3 text-white bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 transition-all duration-300 text-sm py-2 rounded-lg font-semibold border border-purple-500 hover:border-purple-600 shadow-md hover:shadow-lg"
         >
           Ver Perfil Completo
         </button>

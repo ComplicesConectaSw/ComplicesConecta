@@ -354,7 +354,7 @@ const CoupleProfileCard = ({
             _e.stopPropagation();
             handleViewProfile();
           }}
-          className="w-full mt-2 text-gray-600 hover:text-gray-800 transition-colors text-xs sm:text-sm py-2 hover:bg-gray-100 rounded-md font-medium"
+          className="w-full mt-2 text-white bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 transition-all duration-300 text-xs sm:text-sm py-2 rounded-md font-medium border border-purple-500 hover:border-purple-600 shadow-md hover:shadow-lg"
         >
           Ver Perfil Completo
         </button>
