@@ -249,7 +249,7 @@ export const MainProfileCard = ({
           <Button 
             variant="outline" 
             size="action" 
-            className="flex-1 bg-white border-2 border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 font-semibold transition-all duration-300"
+            className="flex-1 bg-gradient-to-r from-pink-500 to-purple-600 border-2 border-pink-400 text-white hover:from-pink-600 hover:to-purple-700 hover:border-pink-500 font-semibold transition-all duration-300"
             onClick={handleDislike}
           >
             <X className="w-4 h-4 sm:w-5 sm:h-5 mr-2" strokeWidth={2.5} />
