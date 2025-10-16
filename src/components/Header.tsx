@@ -151,34 +151,12 @@ export const Header = () => {
     <header className={`bg-gradient-to-r from-emerald-900/95 via-teal-900/95 to-emerald-800/95 backdrop-blur-sm border-b border-emerald-400/40 sticky top-0 z-50 transition-all duration-300 py-2 sm:py-4`}>
       <div className="container mx-auto px-2 sm:px-4">
         <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-1 sm:space-x-2">
-            <div className="relative">
-              <Heart 
-                className="text-emerald-400 transition-all duration-300 h-8 w-8 sm:h-10 sm:w-10 animate-pulse" 
-                fill="currentColor"
-                style={{ animationDuration: '2s' }}
-              />
-              <div className="absolute inset-0 animate-float">
-                <Heart className="text-emerald-300 opacity-70 transition-all duration-300 h-8 w-8 sm:h-10 sm:w-10 animate-ping" fill="currentColor" />
-              </div>
-              <div className="absolute inset-0 animate-pulse">
-                <Heart className="text-emerald-400 opacity-30 transition-all duration-300 h-8 w-8 sm:h-10 sm:w-10" fill="currentColor" />
-              </div>
+          {/* Logo removido - ahora está en el contenido principal */}
+          <div className="flex items-center space-x-1 sm:space-x-2">
+            <div className="hidden sm:block">
+              <ModeIndicator />
             </div>
-            <div className="flex items-center gap-1 sm:gap-2">
-              <h1 className={`font-black bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent transition-all duration-300 stable-element ${
-                isRunningInApp && isMinimized ? 'text-base sm:text-lg' : 'text-xl sm:text-3xl'
-              }`}>
-                {isAuthenticated && profile?.nickname ? profile.nickname : 
-                 isAuthenticated && demoUser?.displayName ? demoUser.displayName :
-                 'ComplicesConecta'}
-              </h1>
-              <div className="hidden sm:block">
-                <ModeIndicator />
-              </div>
-            </div>
-          </Link>
+          </div>
 
           {/* Notification Bell - Solo para usuarios autenticados */}
           {isAuthenticated && (
