@@ -16,16 +16,38 @@ import { androidSecurity } from '@/utils/androidSecurity'
 
 // Protección contra errores de wallets de criptomonedas
 if (typeof window !== 'undefined') {
+  // Inicializar protección de wallets antes que cualquier extensión
+  initializeWalletProtection();
+  
   // Silenciar errores específicos de wallets
   window.addEventListener('error', (event) => {
     const message = event.message || '';
     if (message.includes('solana') || 
         message.includes('ethereum') || 
         message.includes('tronWeb') ||
+        message.includes('bybitWallet') ||
         message.includes('Cannot redefine property') ||
-        message.includes('Cannot assign to read only property')) {
+        message.includes('Cannot assign to read only property') ||
+        message.includes('Cannot set property chainId')) {
       event.preventDefault();
       console.warn('⚠️ Wallet extension error silenced:', message);
+      return false;
+    }
+  });
+  
+  // También capturar errores no manejados de promesas
+  window.addEventListener('unhandledrejection', (event) => {
+    const message = event.reason?.message || event.reason || '';
+    if (typeof message === 'string' && (
+      message.includes('solana') || 
+      message.includes('ethereum') || 
+      message.includes('tronWeb') ||
+      message.includes('bybitWallet') ||
+      message.includes('Cannot redefine property') ||
+      message.includes('Cannot assign to read only property')
+    )) {
+      event.preventDefault();
+      console.warn('⚠️ Wallet extension promise error silenced:', message);
       return false;
     }
   });

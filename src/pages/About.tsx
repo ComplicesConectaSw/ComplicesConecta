@@ -51,7 +51,7 @@ const About = () => {
                 </div>
                 <div className="bg-white/5 rounded-lg p-4">
                   <Award className="h-8 w-8 text-yellow-400 mx-auto mb-2" />
-                  <h3 className="text-white font-semibold text-sm">Desde 2024</h3>
+                  <h3 className="text-white font-semibold text-sm">Desde 2025</h3>
                   <p className="text-white/70 text-xs">Plataforma confiable y establecida</p>
                 </div>
               </div>

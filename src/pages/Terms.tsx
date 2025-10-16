@@ -38,7 +38,7 @@ const Terms = () => {
             </p>
             <Badge className="mt-4 bg-gray-200 text-gray-800">
               <FileText className="h-4 w-4 mr-1" />
-              Última actualización: Agosto 2024
+              Última actualización: Octubre 2025
             </Badge>
           </div>
 

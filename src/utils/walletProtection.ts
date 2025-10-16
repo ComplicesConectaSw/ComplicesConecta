@@ -4,6 +4,8 @@
  */
 
 export const initializeWalletProtection = () => {
+  if (typeof window === 'undefined') return;
+  
   // Prevent wallet extensions from overriding global objects
   const originalDefineProperty = Object.defineProperty;
   
@@ -21,6 +23,12 @@ export const initializeWalletProtection = () => {
         console.warn(`[WalletProtection] Prevented redefinition of read-only property: ${prop}`);
         return obj;
       }
+      
+      // Check if property is already defined on window
+      if (obj === window && window[prop as keyof Window]) {
+        console.warn(`[WalletProtection] Property ${prop} already exists on window, skipping redefinition`);
+        return obj;
+      }
     }
     
     try {
@@ -30,6 +38,23 @@ export const initializeWalletProtection = () => {
       return obj;
     }
   };
+  
+  // Additional protection for window properties
+  const protectedProps = ['ethereum', 'solana', 'tronWeb', 'bybitWallet'];
+  
+  protectedProps.forEach(prop => {
+    if (window[prop as keyof Window]) {
+      try {
+        Object.defineProperty(window, prop, {
+          value: window[prop as keyof Window],
+          writable: false,
+          configurable: false
+        });
+      } catch (error) {
+        // Property might already be protected, ignore
+      }
+    }
+  });
 };
 
 export const detectWalletConflicts = () => {
