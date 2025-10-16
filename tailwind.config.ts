@@ -277,7 +277,7 @@ export default {
 				"love-gradient": "linear-gradient(135deg, hsl(340 85% 65%), hsl(320 85% 65%))",
 				"passion-gradient": "linear-gradient(135deg, hsl(320 85% 65%), hsl(280 70% 60%))",
 				"romance-gradient": "linear-gradient(135deg, hsl(280 70% 60%), hsl(340 85% 65%))",
-				"card-gradient": "linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(0 0% 98%) 100%)",
+				"card-gradient": "linear-gradient(180deg, hsl(0 0% 100% / 0.1) 0%, hsl(0 0% 100% / 0.05) 100%)",
 				"glass-gradient": "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)",
 				"premium-gradient": "linear-gradient(135deg, hsl(45 95% 60%) 0%, hsl(340 85% 65%) 100%)",
 			},
