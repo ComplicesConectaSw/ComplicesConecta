@@ -524,6 +524,30 @@ header .flex:last-child {
   font-weight: 500;
 }
 
+/* ===== BLACK TEXT FIXES - CRÍTICO ===== */
+.text-black, .text-gray-900, .text-gray-950 {
+  color: #ffffff !important;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 1) !important;
+  font-weight: 600 !important;
+}
+
+/* Cualquier texto que sea negro o muy oscuro */
+[style*="color: black"], [style*="color: #000"], [style*="color: #000000"] {
+  color: #ffffff !important;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 1) !important;
+}
+
+/* Texto en elementos con fondo oscuro */
+.bg-gradient-to-br .text-black,
+.bg-gradient-to-r .text-black,
+.bg-purple-600 .text-black,
+.bg-blue-600 .text-black,
+[style*="background: linear-gradient"] .text-black {
+  color: #ffffff !important;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 1) !important;
+  font-weight: 600 !important;
+}
+
 /* ===== CARD TEXT VISIBILITY FIXES ===== */
 .card, .Card, [class*="bg-card-gradient"] {
   color: #ffffff;

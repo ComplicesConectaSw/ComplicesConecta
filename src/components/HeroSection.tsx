@@ -28,23 +28,23 @@ export const HeroSection = () => {
       {/* Main Content */}
       <div className="relative z-10 text-center px-4 max-w-6xl mx-auto">
         <div className="animate-slide-up">
-          {/* Logo ComplicesConecta - Nuevo */}
-          <div className="mb-8 flex justify-center">
-            <div className="flex items-center space-x-3 group">
+          {/* Logo ComplicesConecta - Mejorado */}
+          <div className="mb-12 flex justify-center">
+            <div className="flex items-center space-x-6 group">
               <div className="relative">
                 <Heart 
-                  className="text-pink-400 transition-all duration-300 h-12 w-12 sm:h-16 sm:w-16 animate-pulse group-hover:text-pink-300" 
+                  className="text-pink-400 transition-all duration-300 h-16 w-16 sm:h-20 sm:w-20 animate-pulse group-hover:text-pink-300" 
                   fill="currentColor"
                   style={{ animationDuration: '2s' }}
                 />
                 <div className="absolute inset-0 animate-float">
-                  <Heart className="text-pink-300 opacity-70 transition-all duration-300 h-12 w-12 sm:h-16 sm:w-16 animate-ping" fill="currentColor" />
+                  <Heart className="text-pink-300 opacity-70 transition-all duration-300 h-16 w-16 sm:h-20 sm:w-20 animate-ping" fill="currentColor" />
                 </div>
                 <div className="absolute inset-0 animate-pulse">
-                  <Heart className="text-pink-400 opacity-30 transition-all duration-300 h-12 w-12 sm:h-16 sm:w-16" fill="currentColor" />
+                  <Heart className="text-pink-400 opacity-30 transition-all duration-300 h-16 w-16 sm:h-20 sm:w-20" fill="currentColor" />
                 </div>
               </div>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black bg-gradient-to-r from-pink-400 to-rose-400 bg-clip-text text-transparent transition-all duration-300 group-hover:scale-105">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-black bg-gradient-to-r from-pink-400 to-rose-400 bg-clip-text text-transparent transition-all duration-300 group-hover:scale-105 tracking-wide">
                 ComplicesConecta
               </h1>
             </div>
