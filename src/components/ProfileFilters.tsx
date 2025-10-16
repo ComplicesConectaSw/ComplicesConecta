@@ -31,10 +31,11 @@ export const ProfileFilters = ({ onFilterChange }: ProfileFiltersProps) => {
     searchQuery: ""
   });
 
-  const locations = ["Todas", "Madrid", "Barcelona", "Valencia", "Sevilla", "Bilbao", "Granada"];
+  const locations = ["Todas", "Ciudad de México", "Guadalajara", "Monterrey", "Puebla", "Tijuana", "Cancún"];
   const interestOptions = [
-    "Arte", "Música", "Viajes", "Deporte", "Tecnología", "Cocina", 
-    "Fotografía", "Lectura", "Cine", "Naturaleza", "Yoga", "Danza"
+    "Lifestyle Swinger", "Intercambio de Parejas", "Eventos Lifestyle", "Mentalidad Abierta",
+    "Fiestas Temáticas", "Clubs Privados", "Experiencias Nuevas", "Ambiente Sensual",
+    "Arte Erótico", "Fotografía Erótica", "Conexiones Auténticas", "Diversión Adulta"
   ];
 
   const handleFilterUpdate = (newFilters: Partial<FilterState>) => {

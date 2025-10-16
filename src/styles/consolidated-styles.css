@@ -524,8 +524,8 @@ header .flex:last-child {
   font-weight: 500;
 }
 
-/* ===== BLACK TEXT FIXES - CRÍTICO ===== */
-.text-black, .text-gray-900, .text-gray-950 {
+/* ===== BLACK TEXT FIXES - CRÍTICO Y AGRESIVO ===== */
+.text-black, .text-gray-900, .text-gray-950, .text-gray-800, .text-gray-700, .text-gray-600 {
   color: #ffffff !important;
   text-shadow: 3px 3px 6px rgba(0, 0, 0, 1) !important;
   font-weight: 600 !important;
@@ -537,12 +537,41 @@ header .flex:last-child {
   text-shadow: 3px 3px 6px rgba(0, 0, 0, 1) !important;
 }
 
-/* Texto en elementos con fondo oscuro */
+/* Texto en elementos con fondo oscuro - AGRESIVO */
 .bg-gradient-to-br .text-black,
 .bg-gradient-to-r .text-black,
 .bg-purple-600 .text-black,
 .bg-blue-600 .text-black,
-[style*="background: linear-gradient"] .text-black {
+[style*="background: linear-gradient"] .text-black,
+.bg-gradient-to-br .text-gray-800,
+.bg-gradient-to-r .text-gray-800,
+.bg-purple-600 .text-gray-800,
+.bg-blue-600 .text-gray-800,
+[style*="background: linear-gradient"] .text-gray-800,
+.bg-gradient-to-br .text-gray-700,
+.bg-gradient-to-r .text-gray-700,
+.bg-purple-600 .text-gray-700,
+.bg-blue-600 .text-gray-700,
+[style*="background: linear-gradient"] .text-gray-700,
+.bg-gradient-to-br .text-gray-600,
+.bg-gradient-to-r .text-gray-600,
+.bg-purple-600 .text-gray-600,
+.bg-blue-600 .text-gray-600,
+[style*="background: linear-gradient"] .text-gray-600 {
+  color: #ffffff !important;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 1) !important;
+  font-weight: 600 !important;
+}
+
+/* Override específico para cards y elementos con fondo oscuro */
+.card .text-black, .Card .text-black,
+.card .text-gray-800, .Card .text-gray-800,
+.card .text-gray-700, .Card .text-gray-700,
+.card .text-gray-600, .Card .text-gray-600,
+.profile-card .text-black, .ProfileCard .text-black,
+.profile-card .text-gray-800, .ProfileCard .text-gray-800,
+.profile-card .text-gray-700, .ProfileCard .text-gray-700,
+.profile-card .text-gray-600, .ProfileCard .text-gray-600 {
   color: #ffffff !important;
   text-shadow: 3px 3px 6px rgba(0, 0, 0, 1) !important;
   font-weight: 600 !important;

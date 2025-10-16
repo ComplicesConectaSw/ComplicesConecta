@@ -143,7 +143,7 @@ export const demoProfiles = [
     is_verified: false,
     is_premium: true,
     role: 'user',
-    location: 'Barcelona, España',
+    location: 'Ciudad de México, México',
     interests: ['Lifestyle Swinger', 'Intercambio de Parejas', 'Eventos Lifestyle', 'Mentalidad Abierta'],
     created_at: '2024-01-16T14:30:00Z',
     updated_at: '2024-01-16T14:30:00Z'
@@ -161,7 +161,7 @@ export const demoProfiles = [
     is_verified: true,
     is_premium: true,
     role: 'user',
-    location: 'Valencia, España',
+    location: 'Guadalajara, México',
     interests: ['Intercambio de Parejas', 'Fiestas Temáticas', 'Clubs Privados', 'Experiencias Nuevas'],
     created_at: '2024-01-17T09:15:00Z',
     updated_at: '2024-01-17T09:15:00Z'
@@ -179,7 +179,7 @@ export const demoProfiles = [
     is_verified: true,
     is_premium: false,
     role: 'user',
-    location: 'Sevilla, España',
+    location: 'Monterrey, México',
     interests: ['Arte Erótico', 'Fotografía Erótica', 'Ambiente Sensual', 'Conexiones Auténticas'],
     created_at: '2024-01-18T16:45:00Z',
     updated_at: '2024-01-18T16:45:00Z'
@@ -197,7 +197,7 @@ export const demoProfiles = [
     is_verified: false,
     is_premium: false,
     role: 'user',
-    location: 'Bilbao, España',
+    location: 'Puebla, México',
     interests: ['Cenas Íntimas', 'Cócteles Afrodisíacos', 'Experiencias Sensuales', 'Diversión Adulta'],
     created_at: '2024-01-19T11:20:00Z',
     updated_at: '2024-01-19T11:20:00Z'

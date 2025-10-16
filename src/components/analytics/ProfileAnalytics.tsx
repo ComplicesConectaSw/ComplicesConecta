@@ -26,10 +26,10 @@ const mockAnalytics = {
       { range: "35+", percentage: 10 }
     ],
     locations: [
-      { city: "Madrid", percentage: 35 },
-      { city: "Barcelona", percentage: 28 },
-      { city: "Valencia", percentage: 15 },
-      { city: "Sevilla", percentage: 12 },
+      { city: "Ciudad de México", percentage: 35 },
+      { city: "Guadalajara", percentage: 28 },
+      { city: "Monterrey", percentage: 15 },
+      { city: "Puebla", percentage: 12 },
       { city: "Otros", percentage: 10 }
     ]
   },
