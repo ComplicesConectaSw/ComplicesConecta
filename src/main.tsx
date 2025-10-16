@@ -7,6 +7,7 @@ import { initializeReactFallbacks, ensureReactPolyfills } from "./utils/reactFal
 import './styles/responsive.css'
 import './styles/text-overflow-fixes.css'
 import './styles/text-visibility-fixes.css'
+import './styles/force-visibility.css'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import { initSentry } from '@/lib/sentry'
 import { DebugInfo } from '@/debug'
@@ -14,10 +15,30 @@ import { initWebVitalsMonitoring } from '@/utils/webVitals'
 import { initializeCriticalPreloading } from '@/utils/preloading'
 import { androidSecurity } from '@/utils/androidSecurity'
 
-// Protección contra errores de wallets de criptomonedas
+// Protección robusta contra errores de wallets de criptomonedas
 if (typeof window !== 'undefined') {
-  // Inicializar protección de wallets antes que cualquier extensión
+  // Inicializar protección de wallets ANTES que cualquier extensión
   initializeWalletProtection();
+  
+  // Interceptar TODOS los errores de wallets
+  const originalError = window.onerror;
+  window.onerror = function(message, source, lineno, colno, error) {
+    const errorMessage = message?.toString() || '';
+    if (errorMessage.includes('solana') || 
+        errorMessage.includes('ethereum') || 
+        errorMessage.includes('tronWeb') ||
+        errorMessage.includes('bybitWallet') ||
+        errorMessage.includes('Cannot redefine property') ||
+        errorMessage.includes('Cannot assign to read only property') ||
+        errorMessage.includes('Cannot set property chainId')) {
+      console.warn('🚫 Wallet error completely blocked:', errorMessage);
+      return true; // Prevent default error handling
+    }
+    if (originalError) {
+      return originalError.call(this, message, source, lineno, colno, error);
+    }
+    return false;
+  };
   
   // Silenciar errores específicos de wallets
   window.addEventListener('error', (event) => {
@@ -30,12 +51,13 @@ if (typeof window !== 'undefined') {
         message.includes('Cannot assign to read only property') ||
         message.includes('Cannot set property chainId')) {
       event.preventDefault();
-      console.warn('⚠️ Wallet extension error silenced:', message);
+      event.stopPropagation();
+      console.warn('🚫 Wallet extension error completely silenced:', message);
       return false;
     }
-  });
+  }, true); // Use capture phase
   
-  // También capturar errores no manejados de promesas
+  // Capturar errores no manejados de promesas
   window.addEventListener('unhandledrejection', (event) => {
     const message = event.reason?.message || event.reason || '';
     if (typeof message === 'string' && (
@@ -47,7 +69,7 @@ if (typeof window !== 'undefined') {
       message.includes('Cannot assign to read only property')
     )) {
       event.preventDefault();
-      console.warn('⚠️ Wallet extension promise error silenced:', message);
+      console.warn('🚫 Wallet extension promise error completely silenced:', message);
       return false;
     }
   });

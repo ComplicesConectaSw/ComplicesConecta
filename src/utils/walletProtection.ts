@@ -6,27 +6,25 @@
 export const initializeWalletProtection = () => {
   if (typeof window === 'undefined') return;
   
-  // Prevent wallet extensions from overriding global objects
+  // Intercept and prevent wallet extension conflicts
   const originalDefineProperty = Object.defineProperty;
+  const originalSetProperty = Object.setPrototypeOf;
   
+  // Override Object.defineProperty to prevent wallet conflicts
   Object.defineProperty = function(obj: any, prop: string, descriptor: PropertyDescriptor) {
-    // Allow our app to define properties, but prevent wallet conflicts
-    if (typeof window !== 'undefined' && (
-      prop === 'ethereum' || 
-      prop === 'solana' || 
-      prop === 'tronWeb' ||
-      prop === 'bybitWallet'
-    )) {
-      // Check if property already exists and is read-only
+    const walletProps = ['ethereum', 'solana', 'tronWeb', 'bybitWallet'];
+    
+    if (walletProps.includes(prop)) {
+      // Check if property already exists
       const existing = Object.getOwnPropertyDescriptor(obj, prop);
-      if (existing && (!existing.writable && !existing.set)) {
-        console.warn(`[WalletProtection] Prevented redefinition of read-only property: ${prop}`);
+      if (existing) {
+        console.warn(`[WalletProtection] Blocked redefinition of ${prop} - already exists`);
         return obj;
       }
       
-      // Check if property is already defined on window
-      if (obj === window && window[prop as keyof Window]) {
-        console.warn(`[WalletProtection] Property ${prop} already exists on window, skipping redefinition`);
+      // Check if trying to define on window
+      if (obj === window) {
+        console.warn(`[WalletProtection] Blocked window.${prop} definition`);
         return obj;
       }
     }
@@ -34,27 +32,52 @@ export const initializeWalletProtection = () => {
     try {
       return originalDefineProperty.call(this, obj, prop, descriptor);
     } catch (error) {
-      console.warn(`[WalletProtection] Property definition failed for ${prop}:`, error);
+      console.warn(`[WalletProtection] Property definition blocked for ${prop}:`, error);
       return obj;
     }
   };
   
-  // Additional protection for window properties
-  const protectedProps = ['ethereum', 'solana', 'tronWeb', 'bybitWallet'];
+  // Override Object.setPrototypeOf to prevent prototype pollution
+  Object.setPrototypeOf = function(obj: any, proto: any) {
+    if (obj === window && proto && typeof proto === 'object') {
+      console.warn('[WalletProtection] Blocked window prototype modification');
+      return obj;
+    }
+    return originalSetProperty.call(this, obj, proto);
+  };
   
-  protectedProps.forEach(prop => {
+  // Freeze critical window properties
+  const criticalProps = ['ethereum', 'solana', 'tronWeb', 'bybitWallet'];
+  criticalProps.forEach(prop => {
     if (window[prop as keyof Window]) {
       try {
+        Object.freeze(window[prop as keyof Window]);
         Object.defineProperty(window, prop, {
-          value: window[prop as keyof Window],
           writable: false,
-          configurable: false
+          configurable: false,
+          enumerable: true
         });
       } catch (error) {
-        // Property might already be protected, ignore
+        // Property might already be frozen
       }
     }
   });
+  
+  // Global error suppression for wallet-related errors
+  const originalConsoleError = console.error;
+  console.error = function(...args: any[]) {
+    const message = args.join(' ');
+    if (message.includes('Cannot redefine property') || 
+        message.includes('Cannot assign to read only property') ||
+        message.includes('solana') ||
+        message.includes('ethereum') ||
+        message.includes('tronWeb') ||
+        message.includes('bybitWallet')) {
+      console.warn('[WalletProtection] Suppressed wallet error:', message);
+      return;
+    }
+    originalConsoleError.apply(console, args);
+  };
 };
 
 export const detectWalletConflicts = () => {
