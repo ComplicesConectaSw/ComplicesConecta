@@ -186,7 +186,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
           </div>
 
           {/* Navigation Items */}
-          <div className="flex items-center space-x-1 sm:space-x-2 overflow-x-auto scrollbar-hide flex-1 justify-center px-2 max-w-[70%]">
+          <div className="flex items-center space-x-0.5 sm:space-x-1 overflow-x-auto scrollbar-hide flex-1 justify-center px-1 max-w-[60%]">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = isActivePath(item.path);
@@ -202,7 +202,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                         variant="ghost"
                         size="sm"
                         className={`
-                          relative flex items-center space-x-1 px-2 sm:px-3 py-2 rounded-lg transition-all duration-200 whitespace-nowrap
+                          relative flex items-center space-x-0.5 px-1 sm:px-2 py-1.5 rounded-lg transition-all duration-200 whitespace-nowrap
                           ${isActive 
                             ? 'bg-white/20 text-white shadow-lg' 
                             : 'text-white/80 hover:text-white hover:bg-white/10'
@@ -242,7 +242,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                   size="sm"
                   onClick={() => handleNavigation(item)}
                   className={`
-                    relative flex items-center space-x-1 px-2 sm:px-3 py-2 rounded-lg transition-all duration-200 whitespace-nowrap
+                    relative flex items-center space-x-0.5 px-1 sm:px-2 py-1.5 rounded-lg transition-all duration-200 whitespace-nowrap
                     ${isActive 
                       ? 'bg-white/20 text-white shadow-lg' 
                       : 'text-white/80 hover:text-white hover:bg-white/10'
@@ -287,9 +287,9 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                 variant="outline"
                 size="sm"
                 onClick={() => navigate('/auth')}
-                className="border-pink-400/50 text-white hover:bg-pink-500/20 px-3 sm:px-4 py-2 whitespace-nowrap text-sm font-medium bg-pink-500/10 transition-all duration-200 shadow-lg hover:shadow-pink-500/25 min-w-fit flex-shrink-0"
+                className="border-pink-400/50 text-white hover:bg-pink-500/20 px-2 py-1.5 whitespace-nowrap text-xs font-medium bg-pink-500/10 transition-all duration-200 shadow-lg hover:shadow-pink-500/25 min-w-fit flex-shrink-0"
               >
-                <span className="text-sm">Iniciar Sesión</span>
+                <span className="text-xs">Login</span>
               </Button>
             )}
           </div>

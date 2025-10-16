@@ -1,103 +1,128 @@
-/* Force visibility for all text elements */
+/* Force visibility for all text elements - ULTRA AGGRESSIVE */
 * {
   color: white !important;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9) !important;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 1) !important;
+  background-color: transparent !important;
 }
 
 /* Specific overrides for better contrast */
 h1, h2, h3, h4, h5, h6 {
   color: white !important;
-  text-shadow: 3px 3px 6px rgba(0, 0, 0, 1) !important;
+  text-shadow: 4px 4px 8px rgba(0, 0, 0, 1) !important;
   font-weight: bold !important;
+  background-color: transparent !important;
 }
 
 p, span, div {
   color: white !important;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9) !important;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 1) !important;
+  background-color: transparent !important;
 }
 
 /* Button text visibility */
 button, .btn {
   color: white !important;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9) !important;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 1) !important;
+  background-color: transparent !important;
 }
 
 /* Card text visibility */
 .card, .Card {
   color: white !important;
+  background-color: transparent !important;
 }
 
 .card h1, .card h2, .card h3, .card h4, .card h5, .card h6,
 .Card h1, .Card h2, .Card h3, .Card h4, .Card h5, .Card h6 {
   color: white !important;
-  text-shadow: 3px 3px 6px rgba(0, 0, 0, 1) !important;
+  text-shadow: 4px 4px 8px rgba(0, 0, 0, 1) !important;
+  background-color: transparent !important;
 }
 
 .card p, .card span, .card div,
 .Card p, .Card span, .Card div {
   color: white !important;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9) !important;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 1) !important;
+  background-color: transparent !important;
 }
 
 /* Navigation text visibility */
 nav, .nav, .navigation {
   color: white !important;
+  background-color: transparent !important;
 }
 
 nav *, .nav *, .navigation * {
   color: white !important;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9) !important;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 1) !important;
+  background-color: transparent !important;
 }
 
 /* Hero section text visibility */
 .hero, .HeroSection {
   color: white !important;
+  background-color: transparent !important;
 }
 
 .hero *, .HeroSection * {
   color: white !important;
-  text-shadow: 3px 3px 6px rgba(0, 0, 0, 1) !important;
+  text-shadow: 4px 4px 8px rgba(0, 0, 0, 1) !important;
+  background-color: transparent !important;
 }
 
 /* Force visibility for all text content */
 [class*="text-"] {
   color: white !important;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9) !important;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 1) !important;
+  background-color: transparent !important;
 }
 
 /* Override any opacity or transparency */
 [class*="opacity-"], [class*="transparent"] {
   opacity: 1 !important;
+  color: white !important;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 1) !important;
 }
 
 /* Force white text on any background */
 body, html {
   color: white !important;
+  background-color: transparent !important;
 }
 
 /* Mobile responsive text visibility */
 @media (max-width: 768px) {
   * {
     color: white !important;
-    text-shadow: 3px 3px 6px rgba(0, 0, 0, 1) !important;
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 1) !important;
+    background-color: transparent !important;
   }
   
   /* Ensure buttons are visible on mobile */
   button {
-    min-height: 44px !important;
-    padding: 12px 16px !important;
-    font-size: 16px !important;
+    min-height: 48px !important;
+    padding: 14px 18px !important;
+    font-size: 18px !important;
+    color: white !important;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 1) !important;
   }
   
   /* Ensure navigation is properly spaced */
   nav {
-    padding: 8px 16px !important;
+    padding: 10px 18px !important;
   }
   
   /* Ensure cards have proper spacing */
   .card, .Card {
-    margin: 8px !important;
-    padding: 16px !important;
+    margin: 10px !important;
+    padding: 18px !important;
+  }
+  
+  /* Force all text to be visible */
+  h1, h2, h3, h4, h5, h6 {
+    font-size: 1.2em !important;
+    color: white !important;
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 1) !important;
   }
 }
 
@@ -105,7 +130,8 @@ body, html {
 @media (min-width: 769px) and (max-width: 1024px) {
   * {
     color: white !important;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9) !important;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 1) !important;
+    background-color: transparent !important;
   }
 }
 
@@ -113,6 +139,23 @@ body, html {
 @media (min-width: 1025px) {
   * {
     color: white !important;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9) !important;
+    background-color: transparent !important;
   }
+}
+
+/* Specific fixes for common invisible text issues */
+.text-white, .text-white\/90, .text-white\/80, .text-white\/70 {
+  color: white !important;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 1) !important;
+}
+
+.text-gray-800, .text-gray-700, .text-gray-600, .text-gray-500 {
+  color: white !important;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 1) !important;
+}
+
+.text-black, .text-black\/90, .text-black\/80 {
+  color: white !important;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 1) !important;
 }
