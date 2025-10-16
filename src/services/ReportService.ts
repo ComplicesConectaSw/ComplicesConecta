@@ -7,6 +7,7 @@ export interface CreateReportParams {
   contentType: 'profile' | 'story' | 'post' | 'message' | 'comment';
   reason: string;
   description?: string;
+  severity?: 'low' | 'medium' | 'high' | 'critical';
 }
 
 export interface Report {
@@ -75,6 +76,7 @@ export class ReportService {
           content_type: params.contentType,
           reason: params.reason,
           description: params.description || null,
+          severity: params.severity || 'medium',
           status: 'pending'
         })
         .select()
@@ -311,6 +313,230 @@ export class ReportService {
 
     } catch (error) {
       logger.error('Error in getReportStatistics:', { error: error instanceof Error ? error.message : String(error) });
+      return { success: false, error: 'Error interno del servidor' };
+    }
+  }
+
+  // Método específico para resolver reportes de perfiles (compatibilidad con ProfileReportService)
+  async resolveProfileReport(reportId: string, resolution: 'resolved' | 'dismissed', notes?: string): Promise<ReportResponse> {
+    try {
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+      if (authError || !user) {
+        return { success: false, error: 'Usuario no autenticado' };
+      }
+
+      const { data, error } = await supabase
+        .from('reports')
+        .update({
+          status: resolution,
+          reviewed_at: new Date().toISOString(),
+          reviewed_by: user.id,
+          resolution_notes: notes
+        })
+        .eq('id', reportId)
+        .eq('content_type', 'profile')
+        .select()
+        .single();
+
+      if (error) {
+        logger.error('Error resolviendo reporte de perfil:', { error: error.message });
+        return { success: false, error: 'Error al resolver el reporte' };
+      }
+
+      logger.info('Reporte de perfil resuelto exitosamente:', { reportId, resolution });
+      return { success: true, data };
+
+    } catch (error) {
+      logger.error('Error inesperado en resolveProfileReport:', { error: error instanceof Error ? error.message : String(error) });
+      return { success: false, error: 'Error inesperado al resolver el reporte' };
+    }
+  }
+
+  // Métodos específicos para reportes de perfiles (migrados desde ProfileReportService)
+  async createProfileReport(params: { reportedUserId: string; reason: string; description?: string; severity?: 'low' | 'medium' | 'high' | 'critical' }): Promise<ReportResponse> {
+    return this.createReport({
+      reportedUserId: params.reportedUserId,
+      reportedContentId: params.reportedUserId,
+      contentType: 'profile',
+      reason: params.reason,
+      description: params.description,
+      severity: params.severity
+    });
+  }
+
+  async getUserProfileReports(): Promise<ReportsListResponse> {
+    try {
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
+      
+      if (authError || !user) {
+        return { success: false, error: 'Usuario no autenticado' };
+      }
+
+      const { data, error } = await supabase
+        .from('reports')
+        .select('*')
+        .eq('reporter_id', user.id)
+        .eq('content_type', 'profile')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        logger.error('Error obteniendo reportes de perfil del usuario:', error);
+        return { success: false, error: 'Error al obtener los reportes' };
+      }
+
+      return { success: true, reports: data || [] };
+
+    } catch (error) {
+      logger.error('Error inesperado en getUserProfileReports:', { error: error instanceof Error ? error.message : String(error) });
+      return { success: false, error: 'Error inesperado al obtener los reportes' };
+    }
+  }
+
+  async getPendingProfileReports(): Promise<ReportsListResponse> {
+    try {
+      const { data, error } = await supabase
+        .from('reports')
+        .select('*')
+        .eq('status', 'pending')
+        .eq('content_type', 'profile')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        logger.error('Error obteniendo reportes de perfil pendientes:', error);
+        return { success: false, error: 'Error al obtener los reportes pendientes' };
+      }
+
+      return { success: true, reports: data || [] };
+
+    } catch (error) {
+      logger.error('Error inesperado en getPendingProfileReports:', { error: error instanceof Error ? error.message : String(error) });
+      return { success: false, error: 'Error inesperado al obtener los reportes pendientes' };
+    }
+  }
+
+  async applyProfileAction(userId: string, action: 'warning' | 'temporary_suspension' | 'permanent_suspension', suspensionDays?: number): Promise<{ success: boolean; error?: string }> {
+    try {
+      let updateData: Record<string, any> = {};
+
+      switch (action) {
+        case 'warning':
+          updateData = {
+            // Acción de advertencia - no se necesita bloqueo de perfil
+          };
+          break;
+
+        case 'temporary_suspension': {
+          const suspensionEnd = new Date();
+          suspensionEnd.setDate(suspensionEnd.getDate() + (suspensionDays || 7));
+          updateData = {
+            // Suspensión temporal - requeriría campos personalizados o tabla separada
+            updated_at: new Date().toISOString()
+          };
+          break;
+        }
+
+        case 'permanent_suspension':
+          updateData = {
+            // Suspensión permanente - requeriría campos personalizados o tabla separada
+            updated_at: new Date().toISOString()
+          };
+          break;
+      }
+
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update(updateData)
+        .eq('id', userId);
+
+      if (updateError) {
+        logger.error('Error aplicando acción al perfil:', { error: updateError.message });
+        return { success: false, error: 'Error al aplicar la acción' };
+      }
+
+      logger.info('Acción aplicada al perfil exitosamente:', { userId, action });
+      return { success: true };
+
+    } catch (error) {
+      logger.error('Error inesperado en applyProfileAction:', { error: error instanceof Error ? error.message : String(error) });
+      return { success: false, error: 'Error inesperado al aplicar la acción' };
+    }
+  }
+
+  async getProfileReportStats(userId?: string): Promise<{ success: boolean; stats?: { reportsMade: number; reportsReceived: number; recentReports: number; canReport: boolean; reason?: string }; error?: string }> {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (!user) {
+        return { success: false, error: 'Usuario no autenticado' };
+      }
+
+      const targetUserId = userId || user.id;
+
+      const { data: reportsMade } = await supabase
+        .from('reports')
+        .select('id')
+        .eq('reporter_id', targetUserId)
+        .eq('content_type', 'profile');
+
+      const { data: reportsReceived } = await supabase
+        .from('reports')
+        .select('id')
+        .eq('reported_user_id', targetUserId)
+        .eq('content_type', 'profile');
+
+      const { data: recentReports } = await supabase
+        .from('reports')
+        .select('id')
+        .eq('reporter_id', targetUserId)
+        .eq('content_type', 'profile')
+        .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+
+      return {
+        success: true,
+        stats: {
+          reportsMade: reportsMade?.length || 0,
+          reportsReceived: reportsReceived?.length || 0,
+          recentReports: recentReports?.length || 0,
+          canReport: (recentReports?.length || 0) < 5
+        }
+      };
+
+    } catch (error) {
+      logger.error('Error inesperado en getProfileReportStats:', { error: error instanceof Error ? error.message : String(error) });
+      return { success: false, error: 'Error inesperado al obtener las estadísticas' };
+    }
+  }
+
+  async canUserReport(userId?: string): Promise<{ success: boolean; canReport?: boolean; reason?: string; error?: string }> {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (!user) {
+        return { success: false, error: 'Usuario no autenticado' };
+      }
+
+      const targetUserId = userId || user.id;
+
+      const { data: recentReports } = await supabase
+        .from('reports')
+        .select('id')
+        .eq('reporter_id', targetUserId)
+        .eq('content_type', 'profile')
+        .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+
+      if (recentReports && recentReports.length >= 5) {
+        return {
+          success: true,
+          canReport: false,
+          reason: 'Has excedido el límite de reportes diarios'
+        };
+      }
+
+      return { success: true, canReport: true };
+
+    } catch (error) {
+      logger.error('Error en canUserReport:', { error: error instanceof Error ? error.message : String(error) });
       return { success: false, error: 'Error interno del servidor' };
     }
   }

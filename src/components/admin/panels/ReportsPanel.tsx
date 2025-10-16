@@ -15,7 +15,7 @@ import {
   MagnifyingGlassIcon
 } from '@heroicons/react/24/outline'
 
-import { ProfileReportService } from '@/services/ProfileReportService'
+import { reportService } from '@/services/ReportService'
 import { logger } from '@/lib/logger'
 
 interface Report {
@@ -42,7 +42,7 @@ export const ReportsPanel: React.FC = () => {
   const [_selectedReport, _setSelectedReport] = useState<Report | null>(null)
   const [actionLoading, setActionLoading] = useState<string | null>(null)
 
-  const reportService = new ProfileReportService()
+  // Usar reportService importado directamente
 
   // Cargar reportes al montar el componente
   useEffect(() => {
@@ -188,7 +188,7 @@ export const ReportsPanel: React.FC = () => {
               type="text"
               placeholder="Buscar reportes..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.currentTarget.value)}
               className="w-full pl-10 pr-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-pink-500"
             />
           </div>
@@ -196,7 +196,7 @@ export const ReportsPanel: React.FC = () => {
         
         <select
           value={filter}
-          onChange={(e) => setFilter(e.target.value as FilterType)}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFilter(e.currentTarget.value as FilterType)}
           className="px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-pink-500"
         >
           <option value="all">Todos los estados</option>
@@ -207,7 +207,7 @@ export const ReportsPanel: React.FC = () => {
         
         <select
           value={severityFilter}
-          onChange={(e) => setSeverityFilter(e.target.value as SeverityFilter)}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSeverityFilter(e.currentTarget.value as SeverityFilter)}
           className="px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-pink-500"
         >
           <option value="all">Todas las severidades</option>
