@@ -193,39 +193,12 @@ const Index = () => {
   return (
     <div className="min-h-screen relative overflow-hidden bg-hero-gradient">
       {/* Fixed closing div tag */}
-      {/* Advanced Animated Background */}
+      {/* Simplified Background - Sin elementos fantasma */}
       <div className="fixed inset-0 z-0">
-        {/* Base Gradient - Removed to use main bg-hero-gradient */}
-        
-        {/* Animated Mesh Gradient - Simplificado para evitar elementos fantasma */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-primary/10 via-transparent to-accent/10"></div>
+        {/* Solo gradiente sutil */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-primary/5 via-transparent to-accent/5"></div>
         </div>
-        
-        {/* Floating Geometric Shapes - Simplificado para evitar elementos fantasma */}
-        <div className="absolute inset-0">
-          <div className="absolute top-20 left-20 w-32 h-32 bg-primary/3 rounded-full blur-2xl"></div>
-          <div className="absolute bottom-20 right-20 w-32 h-32 bg-accent/3 rounded-full blur-2xl"></div>
-        </div>
-        
-        {/* Particle Effects - Simplificado para evitar elementos fantasma */}
-        <div className="absolute inset-0">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <div
-              key={i}
-              className={`absolute w-1 h-1 bg-primary/10 rounded-full animate-float`}
-              style={{
-                left: `${20 + i * 15}%`,
-                top: `${30 + i * 10}%`,
-                animationDelay: `${i * 0.5}s`
-              }}
-            ></div>
-          ))}
-        </div>
-        
-        {/* Glowing Icons - Simplificado para evitar elementos fantasma */}
-        <Heart className="absolute top-32 left-1/4 w-6 h-6 text-primary/10 animate-float" fill="currentColor" />
-        <Sparkles className="absolute bottom-1/3 right-1/4 w-4 h-4 text-accent/10 animate-float" />
       </div>
       
       {/* Content */}
