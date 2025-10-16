@@ -207,13 +207,13 @@ export const MainProfileCard = ({
         <div className="flex items-center justify-between mb-4">
           <h3 className={cn(
             "text-lg sm:text-xl font-heading font-bold group-hover:text-primary transition-colors truncate",
-            useThemeBackground ? themeConfig.textClass : "text-gray-800"
+            useThemeBackground ? themeConfig.textClass : "text-white"
           )}>
             {name}, {age}
           </h3>
           <div className={cn(
             "flex items-center space-x-1",
-            useThemeBackground ? themeConfig.accentClass : "text-gray-600"
+            useThemeBackground ? themeConfig.accentClass : "text-white"
           )}>
             <MapPin className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
             <span className="text-xs sm:text-sm truncate font-medium">{location}</span>
@@ -238,7 +238,7 @@ export const MainProfileCard = ({
             );
           })}
           {interests && interests.length > 3 && (
-            <span className="px-3 py-1.5 bg-gray-100 text-gray-700 text-[11px] sm:text-xs rounded-full font-medium border border-gray-200">
+            <span className="px-3 py-1.5 bg-white/20 text-white text-[11px] sm:text-xs rounded-full font-medium border border-white/30">
               +{interests.length - 3}
             </span>
           )}

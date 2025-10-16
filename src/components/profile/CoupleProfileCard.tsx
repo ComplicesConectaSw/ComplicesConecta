@@ -277,13 +277,13 @@ const CoupleProfileCard = ({
         <div className="flex items-center justify-between mb-3">
           <h3 className={cn(
             "text-base sm:text-lg font-semibold group-hover:text-primary transition-colors truncate",
-            useThemeBackground ? themeConfig.textClass : "text-gray-800"
+            useThemeBackground ? themeConfig.textClass : "text-white"
           )}>
             {profile.couple_name}
           </h3>
           <div className={cn(
             "flex items-center space-x-1",
-            useThemeBackground ? themeConfig.accentClass : "text-gray-600"
+            useThemeBackground ? themeConfig.accentClass : "text-white"
           )}>
             <MapPin className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
             <span className="text-xs sm:text-sm truncate">{profile.location}</span>
@@ -301,7 +301,7 @@ const CoupleProfileCard = ({
             </span>
           ))}
           {profile.interests && profile.interests.length > 3 && (
-            <span className="px-2 sm:px-3 py-1 bg-gray-100 text-gray-600 text-[10px] sm:text-xs rounded-full">
+            <span className="px-2 sm:px-3 py-1 bg-white/20 text-white text-[10px] sm:text-xs rounded-full">
               +{profile.interests.length - 3}
             </span>
           )}
