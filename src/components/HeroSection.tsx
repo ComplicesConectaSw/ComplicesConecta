@@ -37,16 +37,16 @@ export const HeroSection = () => {
               <span className="block text-amber-600 drop-shadow-2xl">
                 Exclusiva
               </span>
-              <span className="block text-white/90 text-3xl sm:text-4xl md:text-5xl font-medium mt-2">
+              <span className="block text-white text-3xl sm:text-4xl md:text-5xl font-medium mt-2 drop-shadow-xl">
                 para Adultos +18
               </span>
             </h1>
           </div>
           
           {/* Subtitle - Corregido para coincidir con imagen */}
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-white mb-8 leading-relaxed">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-white mb-8 leading-relaxed drop-shadow-lg">
             Encuentra tu
-            <span className="block text-amber-600 font-bold">
+            <span className="block text-amber-600 font-bold drop-shadow-xl">
               Conexión Perfecta
             </span>
           </h2>
@@ -65,7 +65,7 @@ export const HeroSection = () => {
               Conecta con personas afines de manera segura y discreta
             </p>
             
-            <p className="text-base sm:text-lg md:text-xl text-white/95 leading-relaxed font-light drop-shadow-md">
+            <p className="text-base sm:text-lg md:text-xl text-white leading-relaxed font-light drop-shadow-md">
               Sistema de verificación KYC, chat encriptado y eventos exclusivos para la comunidad lifestyle
             </p>
           </div>
@@ -77,19 +77,19 @@ export const HeroSection = () => {
             <div className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-2 group-hover:scale-110 transition-transform duration-300">
               BETA
             </div>
-            <div className="text-white font-medium drop-shadow-md">Versión de Prueba</div>
+            <div className="text-white font-semibold drop-shadow-lg">Versión de Prueba</div>
           </div>
           <div className="text-center group">
             <div className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-2 group-hover:scale-110 transition-transform duration-300">
               100%
             </div>
-            <div className="text-white font-medium drop-shadow-md">Funciones Gratis</div>
+            <div className="text-white font-semibold drop-shadow-lg">Funciones Gratis</div>
           </div>
           <div className="text-center group">
             <div className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-2 group-hover:scale-110 transition-transform duration-300">
               ∞
             </div>
-            <div className="text-white font-medium drop-shadow-md">Posibilidades</div>
+            <div className="text-white font-semibold drop-shadow-lg">Posibilidades</div>
           </div>
         </div>
       </div>

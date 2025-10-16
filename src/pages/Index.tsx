@@ -252,7 +252,7 @@ const Index = () => {
         <section className="py-20 relative">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-xl">
                 Conoce Más Sobre ComplicesConecta
               </h2>
               <p className="text-xl text-white max-w-3xl mx-auto drop-shadow-md">
@@ -269,7 +269,7 @@ const Index = () => {
                       <Info className="h-8 w-8 text-white" />
                     </div>
                   </div>
-                  <CardTitle className="text-white text-center text-xl">
+                  <CardTitle className="text-white text-center text-xl drop-shadow-lg">
                     Acerca de Nosotros
                   </CardTitle>
                 </CardHeader>
@@ -297,7 +297,7 @@ const Index = () => {
                       <Briefcase className="h-8 w-8 text-white" />
                     </div>
                   </div>
-                  <CardTitle className="text-white text-center text-xl">
+                  <CardTitle className="text-white text-center text-xl drop-shadow-lg">
                     Únete al Equipo
                   </CardTitle>
                 </CardHeader>
@@ -325,7 +325,7 @@ const Index = () => {
                       <UserCheck className="h-8 w-8 text-white" />
                     </div>
                   </div>
-                  <CardTitle className="text-white text-center text-xl">
+                  <CardTitle className="text-white text-center text-xl drop-shadow-lg">
                     Ser Moderador
                   </CardTitle>
                 </CardHeader>
@@ -351,7 +351,7 @@ const Index = () => {
                       <DollarSign className="h-8 w-8 text-white" />
                     </div>
                   </div>
-                  <CardTitle className="text-white text-center text-xl">
+                  <CardTitle className="text-white text-center text-xl drop-shadow-lg">
                     Apoya el Proyecto
                   </CardTitle>
                 </CardHeader>
