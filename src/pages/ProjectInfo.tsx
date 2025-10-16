@@ -311,7 +311,7 @@ export default function ProjectInfo() {
                   onClick={() => window.open('https://github.com/complicesconecta/conecta-social-comunidad/releases', '_blank')}
                   className="bg-green-600 hover:bg-green-700"
                 >
-                  Descargar v1.3.3 (beta)
+                  Descargar v3.3.0
                 </Button>
               </CardContent>
             </Card>
