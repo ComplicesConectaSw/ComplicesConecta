@@ -148,27 +148,27 @@ export const Header = () => {
     }
   };
   return (
-    <header className={`${navbarStyles.backgroundClass} ${navbarStyles.shadowClass} border-b ${navbarStyles.borderClass} sticky top-0 z-50 transition-all duration-300 py-2 sm:py-4`}>
+    <header className={`bg-gradient-to-r from-emerald-900/95 via-teal-900/95 to-emerald-800/95 backdrop-blur-sm border-b border-emerald-400/40 sticky top-0 z-50 transition-all duration-300 py-2 sm:py-4`}>
       <div className="container mx-auto px-2 sm:px-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-1 sm:space-x-2">
             <div className="relative">
               <Heart 
-                className="text-primary transition-all duration-300 h-6 w-6 sm:h-8 sm:w-8 animate-pulse" 
+                className="text-emerald-400 transition-all duration-300 h-8 w-8 sm:h-10 sm:w-10 animate-pulse" 
                 fill="currentColor"
                 style={{ animationDuration: '2s' }}
               />
               <div className="absolute inset-0 animate-float">
-                <Heart className="text-primary-glow opacity-70 transition-all duration-300 h-6 w-6 sm:h-8 sm:w-8 animate-ping" fill="currentColor" />
+                <Heart className="text-emerald-300 opacity-70 transition-all duration-300 h-8 w-8 sm:h-10 sm:w-10 animate-ping" fill="currentColor" />
               </div>
               <div className="absolute inset-0 animate-pulse">
-                <Heart className="text-primary opacity-30 transition-all duration-300 h-6 w-6 sm:h-8 sm:w-8" fill="currentColor" />
+                <Heart className="text-emerald-400 opacity-30 transition-all duration-300 h-8 w-8 sm:h-10 sm:w-10" fill="currentColor" />
               </div>
             </div>
             <div className="flex items-center gap-1 sm:gap-2">
-              <h1 className={`font-bold bg-love-gradient bg-clip-text text-transparent transition-all duration-300 stable-element ${
-                isRunningInApp && isMinimized ? 'text-base sm:text-lg' : 'text-lg sm:text-2xl'
+              <h1 className={`font-black bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent transition-all duration-300 stable-element ${
+                isRunningInApp && isMinimized ? 'text-base sm:text-lg' : 'text-xl sm:text-3xl'
               }`}>
                 {isAuthenticated && profile?.nickname ? profile.nickname : 
                  isAuthenticated && demoUser?.displayName ? demoUser.displayName :
@@ -433,10 +433,10 @@ export const Header = () => {
               {!isAuthenticated ? (
                 <Button
                   asChild
-                  className="login-btn auth-button auth-button-mobile bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 px-3 py-1.5 text-sm font-weight-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                  className="login-btn auth-button auth-button-mobile bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white border-2 border-emerald-400 px-6 py-3 text-base font-black transition-all duration-300 shadow-2xl hover:shadow-emerald-500/50 transform hover:scale-110 rounded-xl"
                 >
                   <Link to="/auth" aria-label="Iniciar sesión en la plataforma">
-                    <User className="h-3 w-3 mr-1.5" />
+                    <User className="h-5 w-5 mr-2" />
                     <span className="hidden sm:inline">Iniciar Sesión</span>
                     <span className="sm:hidden">Login</span>
                   </Link>
