@@ -140,10 +140,10 @@ export const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
           <Button
             variant="ghost"
             size="sm"
-            className="absolute top-4 right-4 z-10 hover:bg-muted/50"
+            className="absolute top-4 right-4 z-20 hover:bg-red-500/20 hover:text-red-400 transition-all duration-200 p-2 rounded-full bg-black/20 backdrop-blur-sm"
             onClick={handleClose}
           >
-            <X className="h-4 w-4" />
+            <X className="h-5 w-5 text-white hover:text-red-400" />
           </Button>
 
           <CardContent className="p-8 text-center relative z-10">

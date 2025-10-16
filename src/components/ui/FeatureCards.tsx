@@ -17,22 +17,22 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
 }) => {
   return (
     <div className={cn(
-      "bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border border-gray-100",
+      "bg-gradient-to-br from-black/40 to-black/60 rounded-2xl p-8 shadow-soft hover:shadow-glow transition-all duration-300 transform hover:scale-105 border border-white/30 backdrop-blur-sm",
       className
     )}>
       {/* Icon */}
-      <div className="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center mb-4 mx-auto">
-        <div className="text-pink-600">
+      <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mb-6 mx-auto group-hover:bg-white/30 transition-colors shadow-lg border border-white/40">
+        <div className="text-white drop-shadow-lg">
           {icon}
         </div>
       </div>
       
       {/* Content */}
       <div className="text-center">
-        <h3 className="text-lg font-semibold text-gray-800 mb-2">
+        <h3 className="text-xl font-bold text-white mb-4 drop-shadow-lg">
           {title}
         </h3>
-        <p className="text-sm text-gray-600 leading-relaxed">
+        <p className="text-white leading-relaxed drop-shadow-md">
           {description}
         </p>
       </div>
@@ -70,16 +70,17 @@ export const FeatureCards: React.FC<FeatureCardsProps> = ({ className }) => {
 
   return (
     <div className={cn(
-      "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6",
+      "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto",
       className
     )}>
       {features.map((feature, index) => (
-        <FeatureCard
-          key={index}
-          icon={feature.icon}
-          title={feature.title}
-          description={feature.description}
-        />
+        <div key={index} className="text-center group hover:transform hover:scale-105 transition-all duration-300 cursor-pointer">
+          <FeatureCard
+            icon={feature.icon}
+            title={feature.title}
+            description={feature.description}
+          />
+        </div>
       ))}
     </div>
   );
