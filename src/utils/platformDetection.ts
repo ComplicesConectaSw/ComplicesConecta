@@ -4,6 +4,8 @@
  * Fecha: 16/10/2025
  */
 
+import React from 'react';
+
 export interface PlatformInfo {
   isAndroid: boolean;
   isIOS: boolean;
@@ -32,7 +34,7 @@ export function isRunningFromAPK(): boolean {
   }
   
   // Detectar Cordova (usado para APKs)
-  if (window.cordova) {
+  if ((window as any).cordova) {
     return true;
   }
   
@@ -178,7 +180,7 @@ export function getPlatformInfo(): PlatformInfo {
   return {
     isAndroid: isAndroid(),
     isIOS: isIOS(),
-    isWeb: !isAPK() && !isPWA(),
+    isWeb: !isRunningFromAPK() && !isPWA(),
     isAPK: isRunningFromAPK(),
     isCapacitor: isCapacitor(),
     isPWA: isPWA(),
@@ -215,6 +217,3 @@ export function usePlatformDetection() {
   
   return platformInfo;
 }
-
-// Importar React para el hook
-import React from 'react';
