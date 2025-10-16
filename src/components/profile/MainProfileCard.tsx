@@ -224,9 +224,9 @@ export const MainProfileCard = ({
         <div className="flex flex-wrap gap-2 sm:gap-2 mb-5">
           {interests?.slice(0, 3).map((interest: string, index: number) => {
             const colors = [
-              'bg-pink-100 text-pink-700 border border-pink-200', // Rosa con buen contraste
-              'bg-orange-100 text-orange-700 border border-orange-200', // Naranja con buen contraste
-              'bg-yellow-100 text-yellow-700 border border-yellow-200', // Amarillo con buen contraste
+              'bg-gradient-to-r from-pink-500 to-pink-600 text-white border border-pink-400', // Rosa sólido
+              'bg-gradient-to-r from-orange-500 to-orange-600 text-white border border-orange-400', // Naranja sólido
+              'bg-gradient-to-r from-amber-500 to-yellow-500 text-white border border-amber-400', // Ámbar sólido
             ];
             return (
               <span 
@@ -244,22 +244,28 @@ export const MainProfileCard = ({
           )}
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex space-x-3">
+        {/* Action Buttons - Alineados y centrados */}
+        <div className="flex justify-center items-center space-x-3 px-2">
           <Button 
             variant="outline" 
             size="action" 
-            className="flex-1 bg-gradient-to-r from-pink-500 to-purple-600 border-2 border-pink-400 text-white hover:from-pink-600 hover:to-purple-700 hover:border-pink-500 font-semibold transition-all duration-300"
+            className="flex-1 max-w-[140px] bg-gradient-to-r from-pink-500 to-purple-600 border-2 border-pink-400 text-white hover:from-pink-600 hover:to-purple-700 hover:border-pink-500 font-semibold transition-all duration-300 min-h-[44px] flex items-center justify-center"
             onClick={handleDislike}
           >
-            <X className="w-4 h-4 sm:w-5 sm:h-5 mr-2" strokeWidth={2.5} />
-            <span className="hidden sm:inline">Pasar</span>
-            <span className="sm:hidden">✕</span>
+            <X className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2 flex-shrink-0" strokeWidth={2.5} />
+            <span className="hidden sm:inline text-sm">Pasar</span>
+            <span className="sm:hidden text-sm">✕</span>
           </Button>
-          <Button variant="love" size="action" className="flex-1 font-bold" onClick={handleLike} disabled={!onLike}>
-            <Heart className="w-4 h-4 sm:w-5 sm:h-5 mr-2" strokeWidth={2.5} fill="currentColor" />
-            <span className="hidden sm:inline">Me Gusta</span>
-            <span className="sm:hidden">♥</span>
+          <Button 
+            variant="love" 
+            size="action" 
+            className="flex-1 max-w-[140px] font-bold min-h-[44px] flex items-center justify-center" 
+            onClick={handleLike} 
+            disabled={!onLike}
+          >
+            <Heart className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2 flex-shrink-0" strokeWidth={2.5} fill="currentColor" />
+            <span className="hidden sm:inline text-sm">Me Gusta</span>
+            <span className="sm:hidden text-sm">♥</span>
           </Button>
         </div>
         

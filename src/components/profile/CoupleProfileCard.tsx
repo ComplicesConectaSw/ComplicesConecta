@@ -323,22 +323,28 @@ const CoupleProfileCard = ({
           </div>
         </div>
 
-        {/* Action Buttons - Sincronizado con MainProfileCard */}
-        <div className="flex space-x-2">
+        {/* Action Buttons - Alineados y centrados */}
+        <div className="flex justify-center items-center space-x-2 px-2">
           <Button 
             variant="outline" 
             size="sm" 
-            className="flex-1 bg-background border-border text-gray-600 hover:bg-muted hover:text-gray-800 font-semibold"
+            className="flex-1 max-w-[120px] bg-gradient-to-r from-pink-500 to-purple-600 border-2 border-pink-400 text-white hover:from-pink-600 hover:to-purple-700 hover:border-pink-500 font-semibold transition-all duration-300 min-h-[40px] flex items-center justify-center"
             onClick={handleDislike}
           >
-            <X className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" strokeWidth={2.5} />
-            <span className="hidden sm:inline">Pasar</span>
-            <span className="sm:hidden">✕</span>
+            <X className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2 flex-shrink-0" strokeWidth={2.5} />
+            <span className="hidden sm:inline text-xs">Pasar</span>
+            <span className="sm:hidden text-xs">✕</span>
           </Button>
-          <Button variant="love" size="sm" className="flex-1" onClick={handleLike} disabled={!onLike}>
-            <Heart className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" strokeWidth={2.5} />
-            <span className="hidden sm:inline">Me Gusta</span>
-            <span className="sm:hidden">♥</span>
+          <Button 
+            variant="love" 
+            size="sm" 
+            className="flex-1 max-w-[120px] min-h-[40px] flex items-center justify-center" 
+            onClick={handleLike} 
+            disabled={!onLike}
+          >
+            <Heart className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2 flex-shrink-0" strokeWidth={2.5} />
+            <span className="hidden sm:inline text-xs">Me Gusta</span>
+            <span className="sm:hidden text-xs">♥</span>
           </Button>
         </div>
         
