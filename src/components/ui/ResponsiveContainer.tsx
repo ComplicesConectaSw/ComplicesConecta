@@ -1,73 +1,138 @@
-/**
- * Contenedor Responsivo Unificado
- * Componente para asegurar responsividad total en móviles, tabletas y desktop
- */
-
 import React from 'react';
-import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
 interface ResponsiveContainerProps {
   children: React.ReactNode;
   className?: string;
-  maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full';
+  variant?: 'default' | 'wide' | 'narrow' | 'full';
   padding?: 'none' | 'sm' | 'md' | 'lg' | 'xl';
-  animated?: boolean;
-  centerContent?: boolean;
 }
 
-const maxWidthClasses = {
-  sm: 'max-w-sm',
-  md: 'max-w-md', 
-  lg: 'max-w-lg',
-  xl: 'max-w-xl',
-  '2xl': 'max-w-2xl',
-  full: 'max-w-full'
+const variantClasses = {
+  default: 'max-w-7xl mx-auto',
+  wide: 'max-w-8xl mx-auto',
+  narrow: 'max-w-4xl mx-auto',
+  full: 'w-full',
 };
 
 const paddingClasses = {
   none: '',
-  sm: 'px-2 py-2 sm:px-4 sm:py-3',
-  md: 'px-4 py-4 sm:px-6 sm:py-6',
-  lg: 'px-6 py-6 sm:px-8 sm:py-8',
-  xl: 'px-8 py-8 sm:px-12 sm:py-12'
+  sm: 'px-4 sm:px-6 lg:px-8',
+  md: 'px-6 sm:px-8 lg:px-12',
+  lg: 'px-8 sm:px-12 lg:px-16',
+  xl: 'px-12 sm:px-16 lg:px-24',
 };
 
-export function ResponsiveContainer({
+export const ResponsiveContainer: React.FC<ResponsiveContainerProps> = ({
   children,
-  className = '',
-  maxWidth = 'full',
+  className,
+  variant = 'default',
   padding = 'md',
-  animated = true,
-  centerContent = true
-}: ResponsiveContainerProps) {
-  const containerClasses = cn(
-    'w-full',
-    maxWidthClasses[maxWidth],
-    paddingClasses[padding],
-    centerContent && 'mx-auto',
-    'safe-area-inset', // Para dispositivos con notch
-    className
-  );
-
-  if (animated) {
-    return (
-      <motion.div
-        className={containerClasses}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.3 }}
-      >
-        {children}
-      </motion.div>
-    );
-  }
-
+}) => {
   return (
-    <div className={containerClasses}>
+    <div
+      className={cn(
+        'w-full',
+        variantClasses[variant],
+        paddingClasses[padding],
+        className
+      )}
+    >
       {children}
     </div>
   );
+};
+
+interface ResponsiveGridProps {
+  children: React.ReactNode;
+  className?: string;
+  cols?: {
+    default?: number;
+    sm?: number;
+    md?: number;
+    lg?: number;
+    xl?: number;
+  };
+  gap?: 'sm' | 'md' | 'lg' | 'xl';
 }
 
-export default ResponsiveContainer;
+const gapClasses = {
+  sm: 'gap-2 sm:gap-3',
+  md: 'gap-4 sm:gap-6',
+  lg: 'gap-6 sm:gap-8',
+  xl: 'gap-8 sm:gap-12',
+};
+
+export const ResponsiveGrid: React.FC<ResponsiveGridProps> = ({
+  children,
+  className,
+  cols = { default: 1, sm: 2, md: 3, lg: 4 },
+  gap = 'md',
+}) => {
+  const gridCols = [
+    cols.default && `grid-cols-${cols.default}`,
+    cols.sm && `sm:grid-cols-${cols.sm}`,
+    cols.md && `md:grid-cols-${cols.md}`,
+    cols.lg && `lg:grid-cols-${cols.lg}`,
+    cols.xl && `xl:grid-cols-${cols.xl}`,
+  ].filter(Boolean).join(' ');
+
+  return (
+    <div
+      className={cn(
+        'grid',
+        gridCols,
+        gapClasses[gap],
+        className
+      )}
+    >
+      {children}
+    </div>
+  );
+};
+
+interface ResponsiveTextProps {
+  children: React.ReactNode;
+  className?: string;
+  size?: {
+    default?: string;
+    sm?: string;
+    md?: string;
+    lg?: string;
+    xl?: string;
+  };
+  weight?: 'light' | 'normal' | 'medium' | 'semibold' | 'bold';
+  align?: 'left' | 'center' | 'right';
+}
+
+export const ResponsiveText: React.FC<ResponsiveTextProps> = ({
+  children,
+  className,
+  size = { default: 'base', sm: 'lg', md: 'xl' },
+  weight = 'normal',
+  align = 'left',
+}) => {
+  const textSizes = [
+    size.default && `text-${size.default}`,
+    size.sm && `sm:text-${size.sm}`,
+    size.md && `md:text-${size.md}`,
+    size.lg && `lg:text-${size.lg}`,
+    size.xl && `xl:text-${size.xl}`,
+  ].filter(Boolean).join(' ');
+
+  const textWeight = `font-${weight}`;
+  const textAlign = `text-${align}`;
+
+  return (
+    <div
+      className={cn(
+        textSizes,
+        textWeight,
+        textAlign,
+        className
+      )}
+    >
+      {children}
+    </div>
+  );
+};

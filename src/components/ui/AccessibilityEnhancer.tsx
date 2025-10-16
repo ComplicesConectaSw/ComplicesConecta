@@ -1,176 +1,198 @@
-/**
- * Componente de Mejoras de Accesibilidad WCAG AA
- * Asegura contraste adecuado y legibilidad de textos
- */
-
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 
 interface AccessibilityEnhancerProps {
   children: React.ReactNode;
   className?: string;
+  focusVisible?: boolean;
+  reducedMotion?: boolean;
+  highContrast?: boolean;
+  largeText?: boolean;
 }
 
-export function AccessibilityEnhancer({ children, className }: AccessibilityEnhancerProps) {
+export const AccessibilityEnhancer: React.FC<AccessibilityEnhancerProps> = ({
+  children,
+  className,
+  focusVisible = true,
+  reducedMotion = true,
+  highContrast = true,
+  largeText = true,
+}) => {
+  const [preferences, setPreferences] = useState({
+    reducedMotion: false,
+    highContrast: false,
+    largeText: false,
+  });
+
   useEffect(() => {
-    // Aplicar mejoras de accesibilidad globales
-    const style = document.createElement('style');
-    style.textContent = `
-      /* Mejoras de contraste WCAG AA */
-      .text-low-contrast {
-        color: #ffffff !important;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-      }
-      
-      .text-medium-contrast {
-        color: #f8fafc !important;
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-      }
-      
-      .text-high-contrast {
-        color: #ffffff !important;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
-        font-weight: 500;
-      }
-      
-      /* Mejoras para fondos oscuros */
-      .bg-dark .text-gray-300,
-      .bg-dark .text-gray-400,
-      .bg-dark .text-gray-500 {
-        color: #e2e8f0 !important;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-      }
-      
-      /* Mejoras para botones */
-      .btn-accessible {
-        min-height: 44px;
-        min-width: 44px;
-        font-weight: 500;
-        border: 2px solid transparent;
-        transition: all 0.2s ease;
-      }
-      
-      .btn-accessible:focus {
-        outline: 2px solid #3b82f6;
-        outline-offset: 2px;
-      }
-      
-      /* Mejoras para enlaces */
-      .link-accessible {
-        text-decoration: underline;
-        text-underline-offset: 2px;
-        color: #60a5fa !important;
-      }
-      
-      .link-accessible:hover {
-        color: #93c5fd !important;
-        text-decoration-thickness: 2px;
-      }
-      
-      /* Mejoras para inputs */
-      .input-accessible {
-        border: 2px solid #374151;
-        background-color: rgba(255, 255, 255, 0.1);
-        color: #ffffff;
-      }
-      
-      .input-accessible:focus {
-        border-color: #3b82f6;
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-      }
-      
-      .input-accessible::placeholder {
-        color: #9ca3af;
-      }
-      
-      /* Mejoras para modales */
-      .modal-accessible {
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
-      }
-      
-      /* Mejoras para cards */
-      .card-accessible {
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(10px);
-      }
-      
-      .card-accessible:hover {
-        border-color: rgba(255, 255, 255, 0.2);
-        background: rgba(255, 255, 255, 0.08);
-      }
-      
-      /* Mejoras para navegación */
-      .nav-accessible {
-        background: rgba(0, 0, 0, 0.8);
-        backdrop-filter: blur(20px);
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-      }
-      
-      .nav-item-accessible {
-        color: #e2e8f0 !important;
-        font-weight: 500;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-      }
-      
-      .nav-item-accessible.active {
-        color: #ffffff !important;
-        background: rgba(147, 51, 234, 0.2);
-        border-radius: 8px;
-      }
-      
-      /* Mejoras para textos en gradientes */
-      .gradient-text-accessible {
-        background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        font-weight: 600;
-        text-shadow: none;
-      }
-      
-      /* Soporte para modo de alto contraste */
-      @media (prefers-contrast: high) {
-        .text-gray-300,
-        .text-gray-400,
-        .text-gray-500 {
-          color: #ffffff !important;
-          font-weight: 600 !important;
-        }
-        
-        .bg-white\\/10,
-        .bg-white\\/5 {
-          background-color: rgba(255, 255, 255, 0.2) !important;
-          border: 2px solid rgba(255, 255, 255, 0.3) !important;
-        }
-      }
-      
-      /* Soporte para motion reducido */
-      @media (prefers-reduced-motion: reduce) {
-        * {
-          animation-duration: 0.01ms !important;
-          animation-iteration-count: 1 !important;
-          transition-duration: 0.01ms !important;
-        }
-      }
-    `;
-    
-    document.head.appendChild(style);
-    
+    // Detectar preferencias del sistema
+    const mediaQueries = {
+      reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)'),
+      highContrast: window.matchMedia('(prefers-contrast: high)'),
+      largeText: window.matchMedia('(prefers-reduced-motion: no-preference)'),
+    };
+
+    const updatePreferences = () => {
+      setPreferences({
+        reducedMotion: mediaQueries.reducedMotion.matches,
+        highContrast: mediaQueries.highContrast.matches,
+        largeText: mediaQueries.largeText.matches,
+      });
+    };
+
+    // Configurar listeners
+    Object.values(mediaQueries).forEach(mq => {
+      mq.addEventListener('change', updatePreferences);
+    });
+
+    // Configuración inicial
+    updatePreferences();
+
     // Cleanup
     return () => {
-      if (document.head.contains(style)) {
-        document.head.removeChild(style);
-      }
+      Object.values(mediaQueries).forEach(mq => {
+        mq.removeEventListener('change', updatePreferences);
+      });
     };
   }, []);
 
+  const accessibilityClasses = cn(
+    // Focus visible mejorado
+    focusVisible && [
+      'focus-visible:outline-none',
+      'focus-visible:ring-2',
+      'focus-visible:ring-primary',
+      'focus-visible:ring-offset-2',
+      'focus-visible:ring-offset-background',
+    ],
+    
+    // Reducir movimiento si está habilitado
+    reducedMotion && preferences.reducedMotion && [
+      'motion-reduce:transition-none',
+      'motion-reduce:transform-none',
+      'motion-reduce:animate-none',
+    ],
+    
+    // Alto contraste
+    highContrast && preferences.highContrast && [
+      'border-2',
+      'border-foreground',
+      'bg-background',
+      'text-foreground',
+    ],
+    
+    // Texto grande
+    largeText && preferences.largeText && [
+      'text-lg',
+      'leading-relaxed',
+    ],
+    
+    className
+  );
+
   return (
-    <div className={cn('accessibility-enhanced', className)}>
+    <div className={accessibilityClasses}>
       {children}
     </div>
   );
+};
+
+interface FocusTrapProps {
+  children: React.ReactNode;
+  isActive: boolean;
+  className?: string;
 }
 
-export default AccessibilityEnhancer;
+export const FocusTrap: React.FC<FocusTrapProps> = ({
+  children,
+  isActive,
+  className,
+}) => {
+  useEffect(() => {
+    if (!isActive) return;
+
+    const focusableElements = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+    const firstFocusableElement = document.querySelector(focusableElements) as HTMLElement;
+    const focusableContent = document.querySelectorAll(focusableElements);
+    const lastFocusableElement = focusableContent[focusableContent.length - 1] as HTMLElement;
+
+    const handleTabKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab') return;
+
+      if (e.shiftKey) {
+        if (document.activeElement === firstFocusableElement) {
+          lastFocusableElement.focus();
+          e.preventDefault();
+        }
+      } else {
+        if (document.activeElement === lastFocusableElement) {
+          firstFocusableElement.focus();
+          e.preventDefault();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleTabKey);
+    firstFocusableElement?.focus();
+
+    return () => {
+      document.removeEventListener('keydown', handleTabKey);
+    };
+  }, [isActive]);
+
+  return (
+    <div className={className}>
+      {children}
+    </div>
+  );
+};
+
+interface ScreenReaderOnlyProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+export const ScreenReaderOnly: React.FC<ScreenReaderOnlyProps> = ({
+  children,
+  className,
+}) => {
+  return (
+    <span
+      className={cn(
+        'sr-only',
+        className
+      )}
+    >
+      {children}
+    </span>
+  );
+};
+
+interface SkipLinkProps {
+  href: string;
+  children: React.ReactNode;
+  className?: string;
+}
+
+export const SkipLink: React.FC<SkipLinkProps> = ({
+  href,
+  children,
+  className,
+}) => {
+  return (
+    <a
+      href={href}
+      className={cn(
+        'sr-only focus:not-sr-only',
+        'absolute top-4 left-4 z-50',
+        'px-4 py-2',
+        'bg-primary text-primary-foreground',
+        'rounded-md font-medium',
+        'transition-all duration-200',
+        className
+      )}
+    >
+      {children}
+    </a>
+  );
+};

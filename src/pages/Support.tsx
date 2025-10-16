@@ -9,7 +9,7 @@ import { Header } from '@/components/Header';
 import HeaderNav from '@/components/HeaderNav';
 
 const Support = () => {
-  const navigate = useNavigate();
+  const _navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
 

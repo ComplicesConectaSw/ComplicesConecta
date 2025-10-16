@@ -369,7 +369,7 @@ class BackupSystem {
   }
 
   // Guardar backup en la nube (simulado)
-  private async saveBackupToCloud(backupId: string, data: string): Promise<void> {
+  private async saveBackupToCloud(backupId: string, _data: string): Promise<void> {
     // En un entorno real, esto subiría a AWS S3, Google Cloud Storage, etc.
     console.log(`💾 Backup: Simulando subida a la nube - backup_${backupId}`);
     
@@ -504,7 +504,7 @@ class BackupSystem {
       }
 
       // En producción, restaurar datos reales
-      for (const [tableName, tableData] of Object.entries(backup.data)) {
+      for (const [tableName, _tableData] of Object.entries(backup.data)) {
         console.log(`💾 Backup: Restaurando tabla ${tableName}...`);
         // Aquí iría la lógica de restauración real
       }

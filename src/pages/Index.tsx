@@ -10,7 +10,7 @@ import { WelcomeModal } from "@/components/WelcomeModal";
 import { FeatureModal } from "@/components/modals/FeatureModal";
 import { InstallAppModal } from "@/components/modals/InstallAppModal";
 import { ActionButtonsModal } from "@/components/modals/ActionButtonsModal";
-import StoriesContainer from "@/components/stories/StoriesContainer";
+// StoriesContainer removido - ya está en HeaderNav
 import { useScrollHide } from "@/hooks/useScrollHide";
 import { Heart, Users, Shield, Zap, Sparkles, Star, Rocket, Smartphone as Android, Info, Briefcase, DollarSign, UserCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -197,40 +197,35 @@ const Index = () => {
       <div className="fixed inset-0 z-0">
         {/* Base Gradient - Removed to use main bg-hero-gradient */}
         
-        {/* Animated Mesh Gradient */}
-        <div className="absolute inset-0 opacity-40">
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-primary/20 via-transparent to-accent/20 animate-gradient-x"></div>
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent via-secondary/10 to-primary/15 animate-gradient-y"></div>
+        {/* Animated Mesh Gradient - Simplificado para evitar elementos fantasma */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-primary/10 via-transparent to-accent/10"></div>
         </div>
         
-        {/* Floating Geometric Shapes */}
+        {/* Floating Geometric Shapes - Simplificado para evitar elementos fantasma */}
         <div className="absolute inset-0">
-          <div className="absolute top-20 left-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-float-slow"></div>
-          <div className="absolute top-40 right-32 w-48 h-48 bg-accent/8 rounded-full blur-2xl animate-float-reverse"></div>
-          <div className="absolute bottom-32 left-1/3 w-80 h-80 bg-secondary/4 rounded-full blur-3xl animate-float-slow shape-delay-2"></div>
-          <div className="absolute bottom-20 right-20 w-56 h-56 bg-primary/6 rounded-full blur-2xl animate-float shape-delay-1"></div>
-          
-          {/* Hexagonal Patterns */}
-          <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-gradient-to-br from-primary/10 to-accent/10 transform rotate-45 animate-spin-slow blur-xl"></div>
-          <div className="absolute bottom-1/3 right-1/3 w-24 h-24 bg-gradient-to-br from-secondary/15 to-primary/10 transform rotate-12 animate-pulse blur-lg"></div>
+          <div className="absolute top-20 left-20 w-32 h-32 bg-primary/3 rounded-full blur-2xl"></div>
+          <div className="absolute bottom-20 right-20 w-32 h-32 bg-accent/3 rounded-full blur-2xl"></div>
         </div>
         
-        {/* Particle Effects */}
+        {/* Particle Effects - Simplificado para evitar elementos fantasma */}
         <div className="absolute inset-0">
-          {Array.from({ length: 20 }).map((_, i) => (
+          {Array.from({ length: 5 }).map((_, i) => (
             <div
               key={i}
-              className={`absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-${i + 1}`}
+              className={`absolute w-1 h-1 bg-primary/10 rounded-full animate-float`}
+              style={{
+                left: `${20 + i * 15}%`,
+                top: `${30 + i * 10}%`,
+                animationDelay: `${i * 0.5}s`
+              }}
             ></div>
           ))}
         </div>
         
-        {/* Glowing Icons */}
-        <Heart className="absolute top-32 left-1/4 w-8 h-8 text-primary/20 animate-float icon-delay-1" fill="currentColor" />
-        <Sparkles className="absolute top-1/3 right-1/4 w-6 h-6 text-accent/25 animate-float icon-delay-2" />
-        <Star className="absolute bottom-1/3 left-1/5 w-7 h-7 text-secondary/20 animate-float icon-delay-3" />
-        <Rocket className="absolute bottom-1/4 right-1/5 w-9 h-9 text-primary/15 animate-float icon-delay-4" />
-        <Users className="absolute top-1/2 left-1/6 w-8 h-8 text-accent/20 animate-float icon-delay-5" />
+        {/* Glowing Icons - Simplificado para evitar elementos fantasma */}
+        <Heart className="absolute top-32 left-1/4 w-6 h-6 text-primary/10 animate-float" fill="currentColor" />
+        <Sparkles className="absolute bottom-1/3 right-1/4 w-4 h-4 text-accent/10 animate-float" />
       </div>
       
       {/* Content */}
@@ -255,7 +250,7 @@ const Index = () => {
                 <p className="text-xl md:text-2xl text-white/95 max-w-4xl mx-auto leading-relaxed animate-slide-up font-medium px-4">
                   La plataforma <strong className="text-pink-300">más exclusiva</strong> para la comunidad lifestyle mexicana.
                   <br className="hidden md:block" />
-                  <span className="bg-gradient-to-r from-white to-pink-200 bg-clip-text text-transparent">
+                  <span className="text-pink-200">
                     Conexiones auténticas, experiencias únicas.
                   </span>
                 </p>
@@ -278,22 +273,7 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Stories Section */}
-        <section className="py-10 sm:py-20 relative">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                Historias Efímeras
-              </h2>
-              <p className="text-xl text-white/90 max-w-3xl mx-auto">
-                Comparte momentos especiales que desaparecen en 24 horas. Conecta de manera más íntima y espontánea.
-              </p>
-            </div>
-            <div className="max-w-4xl mx-auto">
-              <StoriesContainer />
-            </div>
-          </div>
-        </section>
+        {/* Stories Section - Removida porque ya está en HeaderNav */}
 
         {/* About, Careers, Donations Section */}
         <section className="py-20 relative">
@@ -325,8 +305,8 @@ const Index = () => {
                     Conoce nuestra misión, visión y valores. Descubre por qué ComplicesConecta es la plataforma más confiable para la comunidad lifestyle.
                   </p>
                   <Button 
-                    variant="outline" 
-                    className="border-white/30 text-white hover:bg-white/10 w-full"
+                    variant="default" 
+                    className="bg-white text-gray-800 hover:bg-gray-50 border border-gray-200 w-full"
                     asChild
                   >
                     <Link to="/about">
@@ -353,8 +333,8 @@ const Index = () => {
                     Forma parte de nuestro equipo innovador. Buscamos talento apasionado por la tecnología y la comunidad lifestyle.
                   </p>
                   <Button 
-                    variant="outline" 
-                    className="border-white/30 text-white hover:bg-white/10 w-full"
+                    variant="default" 
+                    className="bg-white text-gray-800 hover:bg-gray-50 border border-gray-200 w-full"
                     asChild
                   >
                     <Link to="/careers">
@@ -381,8 +361,8 @@ const Index = () => {
                     Ayuda a mantener una comunidad segura y respetuosa. Únete a nuestro equipo de moderadores voluntarios.
                   </p>
                   <Button 
-                    variant="outline" 
-                    className="border-white/30 text-white hover:bg-white/10 w-full"
+                    variant="default" 
+                    className="bg-white text-gray-800 hover:bg-gray-50 border border-gray-200 w-full"
                     onClick={() => setShowModeratorForm(true)}
                   >
                     Aplicar Ahora
@@ -407,8 +387,8 @@ const Index = () => {
                     Ayúdanos a crecer y mejorar la plataforma. Tu apoyo nos permite seguir innovando para la comunidad.
                   </p>
                   <Button 
-                    variant="outline" 
-                    className="border-white/30 text-white hover:bg-white/10 w-full"
+                    variant="default" 
+                    className="bg-white text-gray-800 hover:bg-gray-50 border border-gray-200 w-full"
                     asChild
                   >
                     <Link to="/donations">
@@ -425,10 +405,10 @@ const Index = () => {
         <section className="py-20 relative">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-foreground mb-4">
+              <h2 className="text-4xl font-bold text-white mb-4">
                 ¿Por qué elegir ComplicesConecta?
               </h2>
-              <p className="text-xl text-white max-w-3xl mx-auto">
+              <p className="text-xl text-white/90 max-w-3xl mx-auto">
                 La plataforma más segura y discreta para la comunidad swinger. Conectamos parejas y solteros 
                 con verificación avanzada, tecnología blockchain y total privacidad.
               </p>
@@ -474,7 +454,7 @@ const Index = () => {
                 Conecta con parejas y solteros liberales en un ambiente seguro y discreto. La aventura de tu vida te espera.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button variant="hero" size="xl" className="bg-white text-primary hover:bg-white/90" asChild>
+                <Button variant="default" size="xl" className="bg-white text-primary hover:bg-white/90" asChild>
                   <Link to="/auth">
                     <Heart className="mr-2 h-5 w-5" fill="currentColor" />
                     Crear Cuenta Gratis

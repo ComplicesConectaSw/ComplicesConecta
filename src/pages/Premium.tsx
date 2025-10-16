@@ -18,12 +18,12 @@ const Premium = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isDemoUser, setIsDemoUser] = useState(false);
-  const [userType, setUserType] = useState('');
+  const [_userType, _setUserType] = useState('');
   const [showComingSoonModal, setShowComingSoonModal] = useState(false);
   const [comingSoonTitle, setComingSoonTitle] = useState('');
 
-  const [demoAuth, setDemoAuth] = usePersistedState('demo_authenticated', 'false');
-  const [demoUser, setDemoUser] = usePersistedState<any>('demo_user', null);
+  const [demoAuth, _setDemoAuth] = usePersistedState('demo_authenticated', 'false');
+  const [demoUser, _setDemoUser] = usePersistedState<any>('demo_user', null);
 
   useEffect(() => {
     // Verificar autenticación (demo o real)
@@ -31,7 +31,7 @@ const Premium = () => {
     if (demoAuth === 'true' && demoUser) {
       const user = typeof demoUser === 'string' ? JSON.parse(demoUser) : demoUser;
       setIsDemoUser(true);
-      setUserType(user.accountType);
+      _setUserType(user.accountType);
       return;
     }
     
@@ -148,7 +148,7 @@ const Premium = () => {
                     asChild
                     className="w-full mt-4 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600"
                   >
-                    <a href="https://buy.stripe.com/bIY3fGdHKfWG5Gg9AA" target="_blank" rel="noopener noreferrer">Seleccionar</a>
+                    <a href="#" onClick={(e) => { e.preventDefault(); alert('Funcionalidad de pago disponible próximamente'); }}>Seleccionar</a>
                   </Button>
                 </CardContent>
               </Card>

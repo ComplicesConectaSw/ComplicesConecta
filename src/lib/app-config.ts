@@ -74,7 +74,7 @@ export const DEMO_PASSWORDS: Record<string, string> = {
 };
 
 // Lista de emails admin para verificación rápida - CORREGIDA
-const ADMIN_EMAILS = [
+const _ADMIN_EMAILS = [
   'admin',                      // Admin demo solamente
   'djwacko28@gmail.com',        // Admin DEMO (no producción)
   'complicesconectasw@outlook.es'  // ÚNICO admin producción REAL
@@ -131,7 +131,7 @@ export const getProductionPassword = (email: string): string | null => {
 
 // Función centralizada para manejar autenticación demo (SIN complicesconectasw@outlook.es)
 export const handleDemoAuth = (email: string, accountType: string = 'single') => {
-  const config = getAppConfig();
+  const _config = getAppConfig();
   
   if (!isDemoCredential(email)) {
     logger.info('❌ Email no es credencial demo:', { email });

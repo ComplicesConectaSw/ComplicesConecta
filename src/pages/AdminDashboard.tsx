@@ -59,7 +59,7 @@ interface SystemReport {
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
-  const { user, isAdmin } = useAuth();
+  const { user: _user, isAdmin } = useAuth();
   const { toast } = useToast();
   
   const [stats, setStats] = useState<DashboardStats>({
@@ -80,7 +80,7 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [dateRange, setDateRange] = useState('7d');
-  const [__filterType, setFilterType] = useState('all');
+  const [__filterType, _setFilterType] = useState('all');
 
   // Verificar permisos de admin
   useEffect(() => {
@@ -130,14 +130,14 @@ const AdminDashboard = () => {
       ).length || 0;
 
       // Obtener estadísticas de mensajes
-      const { data: messagesData, error: messagesError } = await supabase
+      const { data: messagesData, error: _messagesError } = await supabase
         .from('messages')
         .select('id');
 
       const totalMessages = messagesData?.length || 0;
 
       // Obtener reportes
-      const { data: reportsData, error: reportsError } = await supabase
+      const { data: reportsData, error: _reportsError } = await supabase
         .from('reports')
         .select('id')
         .eq('resolved', false);
@@ -145,7 +145,7 @@ const AdminDashboard = () => {
       const reportsCount = reportsData?.length || 0;
 
       // Obtener moderadores
-      const { data: moderatorsData, error: moderatorsError } = await supabase
+      const { data: moderatorsData, error: _moderatorsError } = await supabase
         .from('user_roles')
         .select('id')
         .eq('role', 'moderator');
@@ -153,14 +153,14 @@ const AdminDashboard = () => {
       const moderatorsCount = moderatorsData?.length || 0;
 
       // Obtener solicitudes de carrera
-      const { data: careerData, error: careerError } = await (supabase as any)
+      const { data: careerData, error: _careerError } = await (supabase as any)
         .from('career_applications')
         .select('id');
 
       const careerApplications = careerData?.length || 0;
 
       // Obtener solicitudes de moderadores
-      const { data: moderatorRequestsData, error: moderatorRequestsError } = await (supabase as any)
+      const { data: moderatorRequestsData, error: _moderatorRequestsError } = await (supabase as any)
         .from('moderator_requests')
         .select('id');
 

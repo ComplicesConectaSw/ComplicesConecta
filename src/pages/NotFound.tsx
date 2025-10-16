@@ -20,7 +20,7 @@ const NotFound = () => {
     setTimeout(() => setIsVisible(true), 100);
     
     // Generate random sparkle positions
-    const sparkles = Array.from({ length: 12 }, (_, i) => ({
+    const sparkles = Array.from({ length: 12 }, (_, _i) => ({
       x: Math.random() * 100,
       y: Math.random() * 100,
       delay: Math.random() * 3
@@ -90,11 +90,11 @@ const NotFound = () => {
         {/* Logo */}
         <div className="animate-fade-in">
           <img 
-            src="/compliceslogo.png" 
+            src="/placeholder.svg" 
             alt="ComplicesConecta" 
             className="mx-auto h-16 opacity-90 mb-8"
             onError={(e) => {
-              e.currentTarget.style.display = 'none';
+              e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMzIiIGN5PSIzMiIgcj0iMzIiIGZpbGw9IiM4QjVDRjYiLz4KPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5DUDwvdGV4dD4KPC9zdmc+';
             }}
           />
         </div>

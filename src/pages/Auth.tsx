@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -172,6 +172,77 @@ const Auth = () => {
     }
   };
 
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      // Validaciones adicionales
+      if (!formData.acceptTerms) {
+        throw new Error('Debes aceptar los términos y condiciones');
+      }
+
+      if (formData.age && parseInt(formData.age) < 18) {
+        throw new Error('Debes ser mayor de 18 años');
+      }
+
+      if (formData.accountType === 'couple' && formData.partnerAge && parseInt(formData.partnerAge) < 18) {
+        throw new Error('Tu pareja debe ser mayor de 18 años');
+      }
+
+      // Crear usuario en Supabase
+      const { data: _authData, error: authError } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          data: {
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+            display_name: formData.nickname,
+            account_type: formData.accountType,
+            profile_type: formData.accountType,
+            age: parseInt(formData.age),
+            gender: formData.gender,
+            interested_in: formData.interestedIn,
+            bio: formData.bio,
+            location: formData.location,
+            share_location: formData.shareLocation,
+            // Datos de pareja si aplica
+            ...(formData.accountType === 'couple' && {
+              partner_first_name: formData.partnerFirstName,
+              partner_last_name: formData.partnerLastName,
+              partner_display_name: formData.partnerNickname,
+              partner_age: parseInt(formData.partnerAge),
+              partner_gender: formData.partnerGender,
+              partner_interested_in: formData.partnerInterestedIn,
+            })
+          }
+        }
+      });
+
+      if (authError) throw authError;
+
+      toast({
+        title: "¡Cuenta creada exitosamente!",
+        description: "Revisa tu correo para verificar tu cuenta",
+      });
+
+      // Redirigir al login después del registro
+      setTimeout(() => {
+        navigate('/auth');
+      }, 2000);
+
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Error al crear cuenta",
+        description: error.message,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   if (showLoginLoading) {
     return <LoginLoadingScreen onComplete={() => setShowLoginLoading(false)} userType="single" />;
   }
@@ -199,7 +270,7 @@ const Auth = () => {
       </div>
 
       <div className="relative z-10 w-full max-w-md">
-        <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-2xl">
+        <Card className="bg-black/20 backdrop-blur-md border-white/20 shadow-2xl">
           <CardHeader className="text-center">
             <div className="flex justify-between items-center mb-4">
               <Button
@@ -301,11 +372,286 @@ const Auth = () => {
               </TabsContent>
               
               <TabsContent value="signup" data-testid="register-form">
-                <div className="space-y-4">
-                  <p className="text-center text-white/70">
-                    El registro estará disponible próximamente
-                  </p>
+                <form onSubmit={handleSignUp} className="space-y-4">
+                  {/* Tipo de Cuenta */}
+                  <div className="space-y-2">
+                    <Label>Tipo de Cuenta</Label>
+                    <div className="grid grid-cols-2 gap-2">
+                      <Button
+                        type="button"
+                        variant={formData.accountType === 'single' ? 'default' : 'outline'}
+                        onClick={() => handleInputChange('accountType', 'single')}
+                        className="text-sm"
+                      >
+                        👤 Soltero/a
+                      </Button>
+                      <Button
+                        type="button"
+                        variant={formData.accountType === 'couple' ? 'default' : 'outline'}
+                        onClick={() => handleInputChange('accountType', 'couple')}
+                        className="text-sm"
+                      >
+                        💑 Pareja
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Información Básica */}
+                  <div className="space-y-2">
+                    <Label htmlFor="firstName">Nombre</Label>
+                    <Input
+                      id="firstName"
+                      value={formData.firstName}
+                      onChange={(e) => handleInputChange('firstName', e.target.value)}
+                      required
+                      placeholder="Tu nombre"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="lastName">Apellido</Label>
+                    <Input
+                      id="lastName"
+                      value={formData.lastName}
+                      onChange={(e) => handleInputChange('lastName', e.target.value)}
+                      required
+                      placeholder="Tu apellido"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="nickname">Nombre de Usuario</Label>
+                    <Input
+                      id="nickname"
+                      value={formData.nickname}
+                      onChange={(e) => handleInputChange('nickname', e.target.value)}
+                      required
+                      placeholder="Nombre público"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="age">Edad</Label>
+                    <Input
+                      id="age"
+                      type="number"
+                      min="18"
+                      max="99"
+                      value={formData.age}
+                      onChange={(e) => handleInputChange('age', e.target.value)}
+                      required
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="gender">Género</Label>
+                    <select
+                      id="gender"
+                      value={formData.gender}
+                      onChange={(e) => handleInputChange('gender', e.target.value)}
+                      required
+                      className="w-full px-3 py-2 bg-black/20 border border-white/20 rounded-md text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    >
+                      <option value="">Selecciona tu género</option>
+                      <option value="male">Masculino</option>
+                      <option value="female">Femenino</option>
+                      <option value="non-binary">No binario</option>
+                      <option value="other">Otro</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="interestedIn">Interesado en</Label>
+                    <select
+                      id="interestedIn"
+                      value={formData.interestedIn}
+                      onChange={(e) => handleInputChange('interestedIn', e.target.value)}
+                      required
+                      className="w-full px-3 py-2 bg-black/20 border border-white/20 rounded-md text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    >
+                      <option value="">Selecciona tu interés</option>
+                      <option value="male">Hombres</option>
+                      <option value="female">Mujeres</option>
+                      <option value="both">Ambos</option>
+                      <option value="couples">Parejas</option>
+                    </select>
+                  </div>
+
+                  {/* Información de Pareja - Solo si es pareja */}
+                  {formData.accountType === 'couple' && (
+                    <>
+                      <div className="border-t border-white/20 pt-4">
+                        <h4 className="text-white font-medium mb-4">Información de tu Pareja</h4>
+                        
+                        <div className="space-y-2">
+                          <Label htmlFor="partnerFirstName">Nombre de tu Pareja</Label>
+                          <Input
+                            id="partnerFirstName"
+                            value={formData.partnerFirstName}
+                            onChange={(e) => handleInputChange('partnerFirstName', e.target.value)}
+                            required
+                            placeholder="Nombre de tu pareja"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="partnerLastName">Apellido de tu Pareja</Label>
+                          <Input
+                            id="partnerLastName"
+                            value={formData.partnerLastName}
+                            onChange={(e) => handleInputChange('partnerLastName', e.target.value)}
+                            required
+                            placeholder="Apellido de tu pareja"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="partnerNickname">Nombre de Usuario de tu Pareja</Label>
+                          <Input
+                            id="partnerNickname"
+                            value={formData.partnerNickname}
+                            onChange={(e) => handleInputChange('partnerNickname', e.target.value)}
+                            required
+                            placeholder="Nombre público de tu pareja"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="partnerAge">Edad de tu Pareja</Label>
+                          <Input
+                            id="partnerAge"
+                            type="number"
+                            min="18"
+                            max="99"
+                            value={formData.partnerAge}
+                            onChange={(e) => handleInputChange('partnerAge', e.target.value)}
+                            required
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="partnerGender">Género de tu Pareja</Label>
+                          <select
+                            id="partnerGender"
+                            value={formData.partnerGender}
+                            onChange={(e) => handleInputChange('partnerGender', e.target.value)}
+                            required
+                            className="w-full px-3 py-2 bg-black/20 border border-white/20 rounded-md text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                          >
+                            <option value="">Selecciona el género</option>
+                            <option value="male">Masculino</option>
+                            <option value="female">Femenino</option>
+                            <option value="non-binary">No binario</option>
+                            <option value="other">Otro</option>
+                          </select>
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="partnerInterestedIn">Interesado en</Label>
+                          <select
+                            id="partnerInterestedIn"
+                            value={formData.partnerInterestedIn}
+                            onChange={(e) => handleInputChange('partnerInterestedIn', e.target.value)}
+                            required
+                            className="w-full px-3 py-2 bg-black/20 border border-white/20 rounded-md text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                          >
+                            <option value="">Selecciona el interés</option>
+                            <option value="male">Hombres</option>
+                            <option value="female">Mujeres</option>
+                            <option value="both">Ambos</option>
+                            <option value="couples">Parejas</option>
+                          </select>
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  {/* Información Adicional */}
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Correo electrónico</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => handleInputChange('email', e.target.value)}
+                      required
+                      placeholder="tu@email.com"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="password">Contraseña</Label>
+                    <Input
+                      id="password"
+                      type="password"
+                      value={formData.password}
+                      onChange={(e) => handleInputChange('password', e.target.value)}
+                      required
+                      minLength={6}
+                      placeholder="Mínimo 6 caracteres"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="bio">Biografía</Label>
+                    <textarea
+                      id="bio"
+                      value={formData.bio}
+                      onChange={(e) => handleInputChange('bio', e.target.value)}
+                      required
+                      rows={3}
+                      placeholder="Cuéntanos sobre ti..."
+                      className="w-full px-3 py-2 bg-black/20 border border-white/20 rounded-md text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="location">Ubicación</Label>
+                    <Input
+                      id="location"
+                      value={formData.location}
+                      onChange={(e) => handleInputChange('location', e.target.value)}
+                      required
+                      placeholder="Ciudad, Estado"
+                    />
+                  </div>
+
+                  {/* Términos y Condiciones */}
+                  <div className="space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        id="acceptTerms"
+                        checked={formData.acceptTerms}
+                        onChange={(e) => handleInputChange('acceptTerms', e.target.checked)}
+                        required
+                        className="rounded"
+                      />
+                      <Label htmlFor="acceptTerms" className="text-sm text-white/80">
+                        Acepto los <Link to="/terms" className="text-purple-300 hover:underline">Términos y Condiciones</Link> y la <Link to="/privacy" className="text-purple-300 hover:underline">Política de Privacidad</Link>
+                      </Label>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        id="shareLocation"
+                        checked={formData.shareLocation}
+                        onChange={(e) => handleInputChange('shareLocation', e.target.checked)}
+                        className="rounded"
+                      />
+                      <Label htmlFor="shareLocation" className="text-sm text-white/80">
+                        Compartir mi ubicación para mejorar las coincidencias
+                      </Label>
+                    </div>
                 </div>
+
+                  <Button type="submit" className="w-full" disabled={isLoading}>
+                    {isLoading ? "Creando cuenta..." : "Crear Cuenta"}
+                  </Button>
+                </form>
               </TabsContent>
             </Tabs>
           </CardContent>

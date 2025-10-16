@@ -100,8 +100,8 @@ export class AdvancedFeaturesService {
 
       for (const match of potentialMatches) {
         const compatibility = await this.calculateAdvancedCompatibility(
-          userProfile,
-          match,
+          userProfile as unknown as ProfileRow,
+          match as unknown as ProfileRow,
           config
         );
 
@@ -220,7 +220,7 @@ export class AdvancedFeaturesService {
     if (interests1.length === 0 || interests2.length === 0) return 0.5;
 
     const common = interests1.filter(interest => interests2.includes(interest));
-    const total = new Set([...interests1, ...interests2]).size;
+    const _total = new Set([...interests1, ...interests2]).size;
 
     return common.length / Math.max(interests1.length, interests2.length);
   }
@@ -231,7 +231,7 @@ export class AdvancedFeaturesService {
   private static calculateLocationCompatibility(
     location1: string | null,
     location2: string | null,
-    maxDistance: number
+    _maxDistance: number
   ): number {
     if (!location1 || !location2) return 0.5;
 
@@ -354,45 +354,14 @@ export class AdvancedFeaturesService {
     try {
       const { data: profile } = await supabase
         .from('profiles')
-        .select('interests, bio, age, gender, account_type, personality_traits')
+        .select('interests, bio, age, gender, account_type')
         .eq('id', userId)
         .single();
 
       if (!profile?.interests || profile.interests.length === 0) return [];
 
       const insights: PersonalityInsight[] = [];
-      const traits = profile.personality_traits as Record<string, number> | null;
-
-      if (!traits) return [];
-
-      // Analyze each personality trait
-      if (traits.openness !== undefined) {
-        insights.push({
-          trait: 'Apertura',
-          score: traits.openness,
-          description: this.getOpennessDescription(traits.openness),
-          compatibility_factors: ['Creatividad', 'Aventura', 'Nuevas experiencias']
-        });
-      }
-
-      if (traits.conscientiousness !== undefined) {
-        insights.push({
-          trait: 'Responsabilidad',
-          score: traits.conscientiousness,
-          description: this.getConscientiousnessDescription(traits.conscientiousness),
-          compatibility_factors: ['Organización', 'Puntualidad', 'Planificación']
-        });
-      }
-
-      if (traits.extraversion !== undefined) {
-        insights.push({
-          trait: 'Extraversión',
-          score: traits.extraversion,
-          description: this.getExtraversionDescription(traits.extraversion),
-          compatibility_factors: ['Socialización', 'Energía', 'Comunicación']
-        });
-      }
-
+      // personality_traits column doesn't exist, return empty insights
       return insights;
     } catch (error) {
       logger.error('Error generating personality insights:', { error: error instanceof Error ? error.message : String(error) });
@@ -471,18 +440,7 @@ export class AdvancedFeaturesService {
       }
 
       // Connection-based starters
-      const userTraits = userProfile.personality_traits as Record<string, number> | null;
-      const matchTraits = matchProfile.personality_traits as Record<string, number> | null;
-      
-      if ((userTraits?.extraversion || 0) > 60 && (matchTraits?.extraversion || 0) > 60) {
-        starters.push({
-          id: crypto.randomUUID(),
-          category: 'personality',
-          text: 'Hola! Me gusta la conexión auténtica. ¿Qué buscas en una experiencia compartida?',
-          context_tags: ['connection', 'authentic'],
-          success_rate: 0.80
-        });
-      }
+      // personality_traits column doesn't exist, skip personality-based starters
 
       // Lifestyle conversation starters
       starters.push(
@@ -597,7 +555,7 @@ export class AdvancedFeaturesService {
   /**
    * Get advanced matching statistics
    */
-  static async getAdvancedMatchingStats(userId: string): Promise<{
+  static async getAdvancedMatchingStats(_userId: string): Promise<{
     totalRecommendations: number;
     viewedRecommendations: number;
     matchRate: number;
@@ -641,7 +599,7 @@ export class AdvancedFeaturesService {
         .in('id', passedUsers);
 
       // Analyze patterns and update user preferences
-      const preferenceUpdates = this.analyzePreferencePatterns(likedProfiles || [], passedProfiles || []);
+      const preferenceUpdates = this.analyzePreferencePatterns((likedProfiles || []) as unknown as ProfileRow[], (passedProfiles || []) as unknown as ProfileRow[]);
 
       // Update user preferences
       await supabase
@@ -661,7 +619,7 @@ export class AdvancedFeaturesService {
   /**
    * Analyze preference patterns from user behavior
    */
-  private static analyzePreferencePatterns(likedProfiles: ProfileRow[], passedProfiles: ProfileRow[]): Record<string, unknown> {
+  private static analyzePreferencePatterns(likedProfiles: ProfileRow[], _passedProfiles: ProfileRow[]): Record<string, unknown> {
     const patterns: Record<string, unknown> = {
       preferred_age_range: null,
       preferred_interests: [],

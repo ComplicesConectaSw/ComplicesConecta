@@ -53,8 +53,8 @@ const ProfileSingle: React.FC = () => {
   };
   
   // Migración localStorage → usePersistedState
-  const [demoAuth, setDemoAuth] = usePersistedState('demo_authenticated', 'false');
-  const [demoUser, setDemoUser] = usePersistedState<any>('demo_user', null);
+  const [demoAuth, _setDemoAuth] = usePersistedState('demo_authenticated', 'false');
+  const [demoUser, _setDemoUser] = usePersistedState<any>('demo_user', null);
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -107,7 +107,12 @@ const ProfileSingle: React.FC = () => {
               suspension_end_date: null,
               swinger_experience: null,
               updated_at: new Date().toISOString(),
-              warnings_count: null
+              warnings_count: null,
+              // Campos adicionales requeridos
+              lifestyle_preferences: null,
+              location_preferences: null,
+              personality_traits: null,
+              role: 'user'
             };
             
             setProfile(profileData);
@@ -394,7 +399,7 @@ const ProfileSingle: React.FC = () => {
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
                 <div className="aspect-square bg-gradient-to-br from-pink-400 to-purple-600 rounded-lg flex items-center justify-center overflow-hidden">
                   <img 
-                    src="/src/assets/profile-1.jpg" 
+                    src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=faces&auto=format&q=80" 
                     alt="Foto pública 1"
                     className="w-full h-full object-cover"
                     onError={(e) => {

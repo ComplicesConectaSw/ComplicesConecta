@@ -123,8 +123,8 @@ const CoupleProfileCard = ({
   const _relationshipDisplayName = getRelationshipDisplayName(profile.relationship_type);
   
   // Use couple images if available, otherwise use placeholder
-  const partner1Avatar = profile.couple_images?.[0] || '/compliceslogo.png';
-  const partner2Avatar = profile.couple_images?.[1] || '/compliceslogo.png';
+  const partner1Avatar = profile.couple_images?.[0] || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=600&fit=crop&crop=face';
+  const partner2Avatar = profile.couple_images?.[1] || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&crop=face';
 
   // Handlers sincronizados con MainProfileCard
   const handleViewProfile = () => {
@@ -184,7 +184,7 @@ const CoupleProfileCard = ({
                   useThemeBackground ? themeConfig.textClass : "text-white"
                 )}>
                   <div className="text-6xl mb-2">👤</div>
-                  <p className="text-sm opacity-80">Imagen no disponible</p>
+                  <p className="text-sm opacity-80">Cargando imagen...</p>
                 </div>
               </div>
             )}
@@ -210,7 +210,7 @@ const CoupleProfileCard = ({
                   useThemeBackground ? themeConfig.textClass : "text-white"
                 )}>
                   <div className="text-6xl mb-2">👤</div>
-                  <p className="text-sm opacity-80">Imagen no disponible</p>
+                  <p className="text-sm opacity-80">Cargando imagen...</p>
                 </div>
               </div>
             )}

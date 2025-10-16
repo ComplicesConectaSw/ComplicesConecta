@@ -394,7 +394,7 @@ class ContentModerationEngine {
     const flags: ModerationFlag[] = [];
 
     // Verificar que se mantenga el contexto apropiado
-    const hasAppropriateContext = Array.from(this.SWINGER_APPROPRIATE_TERMS)
+    const _hasAppropriateContext = Array.from(this.SWINGER_APPROPRIATE_TERMS)
       .some(term => text.includes(term));
 
     const hasInappropriateContext = text.includes('menor') || 

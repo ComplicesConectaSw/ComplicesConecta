@@ -1,10 +1,14 @@
 {
-    "folders": [
-        {
-            "path": "."
-        }
-    ],
-    "settings": {
-        "gitConfigUser.selectedProfile": "complicesconecta"
-    }
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"typescript.preferences.includePackageJsonAutoImports": "off",
+		"typescript.disableAutomaticTypeAcquisition": true,
+		"typescript.workspaceSymbols.scope": "currentProject",
+		"typescript.format.enable": true,
+		"typescript.validate.enable": true
+	}
 }

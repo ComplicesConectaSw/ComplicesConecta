@@ -99,7 +99,7 @@ const ChatAuthenticated = () => {
     }
   ]);
 
-  const [onlineUsers, setOnlineUsers] = useState<User[]>([
+  const [onlineUsers, _setOnlineUsers] = useState<User[]>([
     {
       id: "user1",
       name: "María & Carlos",

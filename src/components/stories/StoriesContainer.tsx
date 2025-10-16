@@ -54,7 +54,7 @@ const StoriesContainer: React.FC = () => {
             userId: 1,
             content: {
               type: 'image',
-              url: '/placeholder.svg'
+              url: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=600&fit=crop&crop=faces&auto=format&q=80'
             },
             createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 hours ago
             expiresAt: new Date(Date.now() + 22 * 60 * 60 * 1000).toISOString(), // 22 hours from now
@@ -64,7 +64,7 @@ const StoriesContainer: React.FC = () => {
             visibility: 'public',
             user: {
               name: 'Ana García',
-              avatar: '/placeholder.svg'
+              avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=faces&auto=format&q=80'
             }
           },
           {
@@ -72,7 +72,7 @@ const StoriesContainer: React.FC = () => {
             userId: 2,
             content: {
               type: 'image',
-              url: '/placeholder.svg'
+              url: 'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=400&h=600&fit=crop&crop=faces&auto=format&q=80'
             },
             createdAt: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(), // 4 hours ago
             expiresAt: new Date(Date.now() + 20 * 60 * 60 * 1000).toISOString(), // 20 hours from now
@@ -82,7 +82,7 @@ const StoriesContainer: React.FC = () => {
             visibility: 'public',
             user: {
               name: 'Carlos López',
-              avatar: '/placeholder.svg'
+              avatar: 'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=100&h=100&fit=crop&crop=faces&auto=format&q=80'
             }
           },
           {
@@ -90,7 +90,7 @@ const StoriesContainer: React.FC = () => {
             userId: 3,
             content: {
               type: 'image',
-              url: '/placeholder.svg'
+              url: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=600&fit=crop&crop=faces&auto=format&q=80'
             },
             createdAt: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(), // 6 hours ago
             expiresAt: new Date(Date.now() + 18 * 60 * 60 * 1000).toISOString(), // 18 hours from now
@@ -100,7 +100,7 @@ const StoriesContainer: React.FC = () => {
             visibility: 'private',
             user: {
               name: 'María Rodríguez',
-              avatar: '/placeholder.svg'
+              avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&h=100&fit=crop&crop=faces&auto=format&q=80'
             }
           }
         ];
@@ -200,7 +200,7 @@ const StoriesContainer: React.FC = () => {
           {/* Ejemplos de historias */}
           <div className="mb-6">
             <h4 className="text-lg font-semibold text-white mb-3 text-center">Ejemplos de Historias Populares</h4>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               <div className="aspect-square bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg relative overflow-hidden">
                 <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white p-2">
                   <Camera className="h-6 w-6 mb-1" />
@@ -217,6 +217,24 @@ const StoriesContainer: React.FC = () => {
                 <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white p-2">
                   <MessageCircle className="h-6 w-6 mb-1" />
                   <span className="text-xs font-medium text-center">Momento especial juntos</span>
+                </div>
+              </div>
+              <div className="aspect-square bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg relative overflow-hidden">
+                <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white p-2">
+                  <Heart className="h-6 w-6 mb-1" />
+                  <span className="text-xs font-medium text-center">Celebración especial</span>
+                </div>
+              </div>
+              <div className="aspect-square bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg relative overflow-hidden">
+                <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white p-2">
+                  <Play className="h-6 w-6 mb-1" />
+                  <span className="text-xs font-medium text-center">Video íntimo</span>
+                </div>
+              </div>
+              <div className="aspect-square bg-gradient-to-br from-yellow-500 to-orange-500 rounded-lg relative overflow-hidden">
+                <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white p-2">
+                  <Share2 className="h-6 w-6 mb-1" />
+                  <span className="text-xs font-medium text-center">Aventura compartida</span>
                 </div>
               </div>
             </div>
@@ -241,6 +259,33 @@ const StoriesContainer: React.FC = () => {
               <div className="flex items-center gap-2">
                 <Share2 className="h-4 w-4 text-green-400" />
                 <span>Experiencias y aventuras</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Lock className="h-4 w-4 text-yellow-400" />
+                <span>Contenido privado para parejas</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Globe className="h-4 w-4 text-cyan-400" />
+                <span>Viajes y escapadas</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Beneficios adicionales */}
+          <div className="mb-6 p-4 bg-gradient-to-r from-blue-500/10 to-teal-500/10 rounded-lg border border-blue-400/20">
+            <h4 className="font-semibold text-white mb-2">Beneficios de las Historias</h4>
+            <div className="grid md:grid-cols-3 gap-3 text-sm text-white/80">
+              <div className="flex items-center gap-2">
+                <Clock className="h-4 w-4 text-blue-400" />
+                <span>Desaparecen automáticamente</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Eye className="h-4 w-4 text-green-400" />
+                <span>Control de privacidad total</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <MessageCircle className="h-4 w-4 text-purple-400" />
+                <span>Comentarios privados</span>
               </div>
             </div>
           </div>
@@ -411,7 +456,7 @@ const StoriesContainer: React.FC = () => {
       {/* Estadísticas de historias */}
       <Card className="bg-black/30 backdrop-blur-sm border-white/10 p-4">
         <h3 className="font-semibold text-white mb-3">Estadísticas de Historias</h3>
-        <div className="grid grid-cols-3 gap-4 text-center">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
           <div>
             <p className="text-2xl font-bold text-white">{stories.length}</p>
             <p className="text-white/70 text-sm">Historias activas</p>

@@ -8,7 +8,7 @@ import { Footer } from '@/components/Footer';
 import HeaderNav from '@/components/HeaderNav';
 
 const Privacy = () => {
-  const navigate = useNavigate();
+  const _navigate = useNavigate();
 
   return (
     <div className="min-h-screen relative overflow-hidden">

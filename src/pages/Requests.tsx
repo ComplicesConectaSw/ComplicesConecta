@@ -33,8 +33,8 @@ const Requests = () => {
   const [activeTab, setActiveTab] = useState<'received' | 'sent'>('received');
   
   // Migración localStorage → usePersistedState
-  const [demoAuth, setDemoAuth] = usePersistedState('demo_authenticated', 'false');
-  const [demoUser, setDemoUser] = usePersistedState<any>('demo_user', null);
+  const [demoAuth, _setDemoAuth] = usePersistedState('demo_authenticated', 'false');
+  const [demoUser, _setDemoUser] = usePersistedState<any>('demo_user', null);
 
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
@@ -198,7 +198,7 @@ const Requests = () => {
         description: `La invitación ha sido procesada correctamente.`,
       });
       loadInvitations(); // Refresh the list
-    } catch (error) {
+    } catch {
       toast({
         title: "Error",
         description: "No se pudo procesar la solicitud. Inténtalo de nuevo.",
@@ -233,8 +233,8 @@ const Requests = () => {
     }
   };
 
-  const pendingReceivedCount = receivedInvitations.filter(inv => inv.status === 'pending').length;
-  const acceptedCount = [...receivedInvitations, ...sentInvitations].filter(inv => inv.status === 'accepted').length;
+  const _pendingReceivedCount = receivedInvitations.filter(inv => inv.status === 'pending').length;
+  const _acceptedCount = [...receivedInvitations, ...sentInvitations].filter(inv => inv.status === 'accepted').length;
 
   if (!features.requests) {
     return (
@@ -316,7 +316,7 @@ const Requests = () => {
                             {getStatusBadge(inv.status)}
                           </div>
                           {inv.message && <p className="text-sm text-white/70 bg-white/10 p-3 rounded-md mb-3">"{inv.message}"</p>}
-                          <p className="text-xs text-white/50">Recibido: {new Date(inv.created_at).toLocaleString()}</p>
+                          <p className="text-xs text-white/50">Recibido: {inv.created_at ? new Date(inv.created_at).toLocaleString() : 'Fecha no disponible'}</p>
                         </div>
                         {inv.status === 'pending' && (
                           <div className="flex gap-2 self-stretch sm:self-center">
@@ -353,7 +353,7 @@ const Requests = () => {
                           {getStatusBadge(inv.status)}
                         </div>
                         {inv.message && <p className="text-sm text-white/70 bg-white/10 p-3 rounded-md my-3">"{inv.message}"</p>}
-                        <p className="text-xs text-white/50">Enviado: {new Date(inv.created_at).toLocaleString()}</p>
+                        <p className="text-xs text-white/50">Enviado: {inv.created_at ? new Date(inv.created_at).toLocaleString() : 'Fecha no disponible'}</p>
                       </Card>
                     ))
                   )}

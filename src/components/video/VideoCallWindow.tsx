@@ -38,7 +38,7 @@ export const VideoCallWindow: React.FC<VideoCallWindowProps> = ({
     isConnecting,
     isMuted,
     isVideoEnabled,
-    callId,
+    callId: _callId,
     remoteUserId,
     error,
     localVideoRef,

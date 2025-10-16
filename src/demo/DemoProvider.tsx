@@ -54,7 +54,7 @@ export const DemoProvider: React.FC<DemoProviderProps> = ({ children }) => {
   };
 
   const mockAuth = {
-    login: async (email: string, password: string) => {
+    login: async (email: string, _password: string) => {
       logger.info('Demo login attempt:', { email });
       
       // Mock successful login for demo users

@@ -195,7 +195,7 @@ export class MultimediaSecurityService {
           } else {
             resolve({ isValid: true, errors: [] });
           }
-        } catch (error) {
+        } catch {
           resolve({
             isValid: false,
             errors: ['Error al validar contenido del archivo']
@@ -262,7 +262,7 @@ export class MultimediaSecurityService {
   /**
    * Validate video content
    */
-  private static validateVideoContent(bytes: Uint8Array): { isValid: boolean; errors: string[] } {
+  private static validateVideoContent(_bytes: Uint8Array): { isValid: boolean; errors: string[] } {
     // Basic video validation - check for proper container format
     return { isValid: true, errors: [] };
   }

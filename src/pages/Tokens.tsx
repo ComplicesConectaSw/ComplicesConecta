@@ -20,7 +20,7 @@ import { AnimatedButton } from '@/components/ui/AnimatedButton';
 
 export default function Tokens() {
   const [showStakingModal, setShowStakingModal] = useState(false);
-  const { balance, getBalanceMessage, getStakingMessage, refreshTokens } = useTokens();
+  const { balance: _balance, getBalanceMessage, getStakingMessage, refreshTokens } = useTokens();
   const navigate = useNavigate();
 
   const handleGoHome = () => {
@@ -276,8 +276,8 @@ export default function Tokens() {
                 </p>
                 <div className="text-xs text-white/90 space-y-1">
                   <p>🪙 <strong>Ejemplo de respuesta:</strong></p>
-                  <div className="bg-white/90 p-2 rounded border ml-2 sm:ml-4">
-                    <p className="break-words text-gray-900">{getBalanceMessage()}</p>
+                  <div className="bg-white/95 p-2 rounded border ml-2 sm:ml-4 shadow-sm">
+                    <p className="break-words text-gray-800">{getBalanceMessage()}</p>
                   </div>
                 </div>
               </div>
@@ -287,8 +287,8 @@ export default function Tokens() {
                   <strong>Explicación de staking:</strong>
                 </p>
                 <div className="text-xs text-white/90">
-                  <div className="bg-white/90 p-2 rounded border ml-2 sm:ml-4">
-                    <p className="break-words text-gray-900">{getStakingMessage()}</p>
+                  <div className="bg-white/95 p-2 rounded border ml-2 sm:ml-4 shadow-sm">
+                    <p className="break-words text-gray-800">{getStakingMessage()}</p>
                   </div>
                 </div>
               </div>

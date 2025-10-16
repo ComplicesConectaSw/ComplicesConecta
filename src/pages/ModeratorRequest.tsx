@@ -70,7 +70,7 @@ const ModeratorRequest = () => {
       setLoading(true);
 
       // Verificar si ya existe una solicitud pendiente para este email
-      const { data: existingRequest, error: checkError } = await (supabase as any)
+      const { data: existingRequest, error: _checkError } = await (supabase as any)
         .from('moderator_requests')
         .select('*')
         .eq('email', formData.email)

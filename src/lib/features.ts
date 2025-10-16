@@ -156,7 +156,7 @@ export function useFeatures() {
 /**
  * Obtiene mensaje explicativo para funciones deshabilitadas
  */
-export function getFeatureDisabledMessage(feature: keyof FeatureFlags): string {
+export function getFeatureDisabledMessage(_feature: keyof FeatureFlags): string {
   const currentPhase = getCurrentPhase();
   
   const messages: Record<AppPhase, string> = {

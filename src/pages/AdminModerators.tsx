@@ -51,10 +51,10 @@ const AdminModerators = () => {
   const [isCreating, setIsCreating] = useState(false);
   
   // Modal de detalles
-  const [selectedModerator, setSelectedModerator] = useState<Moderator | null>(null);
+  const [_selectedModerator, _setSelectedModerator] = useState<Moderator | null>(null);
   const [selectedRequest, setSelectedRequest] = useState<ModeratorRequest | null>(null);
 
-  const statusColors = {
+  const _statusColors = {
     pending: 'bg-yellow-500',
     active: 'bg-green-500',
     suspended: 'bg-red-500',

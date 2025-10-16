@@ -172,21 +172,21 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
 
   return (
     <div className={`bg-black/30 backdrop-blur-sm border-b border-white/10 ${className}`}>
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between py-3">
+      <div className="container mx-auto px-2 sm:px-4">
+        <div className="flex items-center justify-between py-2 sm:py-3 min-h-[60px]">
           {/* Logo */}
           <div 
-            className="flex items-center space-x-2 cursor-pointer"
+            className="flex items-center space-x-1 sm:space-x-2 cursor-pointer flex-shrink-0"
             onClick={() => navigate('/')}
           >
-            <Heart className="h-6 w-6 text-pink-500" fill="currentColor" />
-            <span className="text-white font-bold text-lg hidden sm:block">
+            <Heart className="h-5 w-5 sm:h-6 sm:w-6 text-pink-500" fill="currentColor" />
+            <span className="text-white font-bold text-sm sm:text-lg hidden md:block">
               ComplicesConecta
             </span>
           </div>
 
           {/* Navigation Items */}
-          <div className="flex items-center space-x-1 sm:space-x-2 overflow-x-auto">
+          <div className="flex items-center space-x-1 sm:space-x-2 overflow-x-auto scrollbar-hide max-w-full flex-1 justify-center">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = isActivePath(item.path);
@@ -202,7 +202,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                         variant="ghost"
                         size="sm"
                         className={`
-                          relative flex items-center space-x-1 px-2 sm:px-3 py-2 rounded-lg transition-all duration-200
+                          relative flex items-center space-x-1 px-2 sm:px-3 py-2 rounded-lg transition-all duration-200 whitespace-nowrap
                           ${isActive 
                             ? 'bg-white/20 text-white shadow-lg' 
                             : 'text-white/80 hover:text-white hover:bg-white/10'
@@ -210,7 +210,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                         `}
                       >
                         <Icon className={`h-4 w-4 ${isActive ? 'text-white' : item.color}`} />
-                        <span className="hidden md:block text-xs font-medium">
+                        <span className="hidden lg:block text-xs font-medium">
                           {item.label}
                         </span>
                         <ChevronDown className="h-3 w-3 ml-1" />
@@ -242,7 +242,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                   size="sm"
                   onClick={() => handleNavigation(item)}
                   className={`
-                    relative flex items-center space-x-1 px-2 sm:px-3 py-2 rounded-lg transition-all duration-200
+                    relative flex items-center space-x-1 px-2 sm:px-3 py-2 rounded-lg transition-all duration-200 whitespace-nowrap
                     ${isActive 
                       ? 'bg-white/20 text-white shadow-lg' 
                       : 'text-white/80 hover:text-white hover:bg-white/10'
@@ -250,7 +250,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                   `}
                 >
                   <Icon className={`h-4 w-4 ${isActive ? 'text-white' : item.color}`} />
-                  <span className="hidden md:block text-xs font-medium">
+                  <span className="hidden lg:block text-xs font-medium">
                     {item.label}
                   </span>
                   
@@ -271,25 +271,25 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
           </div>
 
           {/* User Actions */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
             {userIsAuthenticated ? (
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => navigate('/profile')}
-                className="text-white hover:bg-white/10"
+                className="text-white hover:bg-white/10 px-2 sm:px-3"
               >
                 <Users className="h-4 w-4" />
-                <span className="hidden sm:block ml-1">Perfil</span>
+                <span className="hidden lg:block ml-1 text-xs">Perfil</span>
               </Button>
             ) : (
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => navigate('/auth')}
-                className="border-white/20 text-white hover:bg-white/10"
+                className="border-white/20 text-white hover:bg-white/10 px-2 sm:px-3"
               >
-                <span className="text-xs">Iniciar Sesión</span>
+                <span className="text-xs">Iniciar</span>
               </Button>
             )}
           </div>
