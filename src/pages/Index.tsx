@@ -168,25 +168,29 @@ const Index = () => {
       icon: Heart,
       title: "Conexiones Auténticas",
       description: "Algoritmo inteligente que conecta personas con intereses reales en común",
-      type: 'connections' as const
+      type: 'connections' as const,
+      iconBg: "bg-gradient-to-r from-pink-500 to-pink-600"
     },
     {
       icon: Shield,
       title: "Verificación KYC Avanzada",
       description: "Perfiles verificados con tecnología blockchain y KYC para máxima seguridad y confianza",
-      type: 'verification' as const
+      type: 'verification' as const,
+      iconBg: "bg-gradient-to-r from-blue-500 to-blue-600"
     },
     {
       icon: Users,
       title: "Eventos Swinger Exclusivos",
       description: "Accede a fiestas privadas, encuentros y eventos exclusivos para la comunidad swinger",
-      type: 'events' as const
+      type: 'events' as const,
+      iconBg: "bg-gradient-to-r from-purple-500 to-purple-600"
     },
     {
       icon: Zap,
       title: "Sistema de Tokens CMPX/GTK",
       description: "Gana tokens participando, accede a funciones premium y eventos VIP",
-      type: 'tokens' as const
+      type: 'tokens' as const,
+      iconBg: "bg-gradient-to-r from-amber-500 to-orange-500"
     }
   ];
 
@@ -395,8 +399,8 @@ const Index = () => {
                   onClick={() => handleFeatureClick(feature.type)}
                 >
                   <div className="bg-card-gradient rounded-2xl p-8 shadow-soft hover:shadow-glow transition-all duration-300">
-                    <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-primary/20 transition-colors">
-                      <feature.icon className="h-8 w-8 text-primary" />
+                    <div className={`${feature.iconBg} w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-all duration-300 shadow-lg`}>
+                      <feature.icon className="h-8 w-8 text-white" />
                     </div>
                     <h3 className="text-xl font-bold text-white mb-4">
                       {feature.title}
