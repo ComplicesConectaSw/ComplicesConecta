@@ -148,8 +148,8 @@ export const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
 
           <CardContent className="p-8 text-center relative z-10">
             {/* Icon with Animation */}
-            <div className={`${currentStepData.bgColor} w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse-glow`}>
-              <IconComponent className={`w-10 h-10 ${currentStepData.color}`} />
+            <div className={`bg-gradient-to-r from-pink-500 to-purple-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse-glow`}>
+              <IconComponent className={`w-10 h-10 text-white`} />
             </div>
 
             {/* Special Badges */}
@@ -234,10 +234,10 @@ export const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
             {/* Action Buttons */}
             <div className="flex justify-between items-center space-x-4">
               <Button
-                variant="outline"
+                variant="default"
                 onClick={handlePrevious}
                 disabled={currentStep === 0}
-                className="flex-1"
+                className="flex-1 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white border-0"
               >
                 Anterior
               </Button>
