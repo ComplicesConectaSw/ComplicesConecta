@@ -172,11 +172,11 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
 
   return (
     <div className={`bg-black/30 backdrop-blur-sm border-b border-white/10 ${className}`}>
-      <div className="container mx-auto px-1 sm:px-2 max-w-full">
-        <div className="flex items-center justify-between py-2 sm:py-3 min-h-[60px] gap-1 sm:gap-2">
+      <div className="container mx-auto px-0 sm:px-1 max-w-full">
+        <div className="flex items-center justify-between py-2 sm:py-3 min-h-[60px] gap-0.5 sm:gap-1">
           {/* Logo */}
           <div 
-            className="flex items-center space-x-1 cursor-pointer flex-shrink-0 ml-1"
+            className="flex items-center space-x-1 cursor-pointer flex-shrink-0 ml-0.5"
             onClick={() => navigate('/')}
           >
             <Heart className="h-5 w-5 sm:h-6 sm:w-6 text-pink-500" fill="currentColor" />
@@ -186,7 +186,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
           </div>
 
           {/* Navigation Items */}
-          <div className="flex items-center space-x-0.5 sm:space-x-1 overflow-x-auto scrollbar-hide flex-1 justify-center px-0.5 max-w-[65%]">
+          <div className="flex items-center space-x-0.5 overflow-x-auto scrollbar-hide flex-1 justify-center px-0 max-w-[70%]">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = isActivePath(item.path);
@@ -271,7 +271,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
           </div>
 
           {/* User Actions */}
-          <div className="flex items-center space-x-0.5 sm:space-x-1 flex-shrink-0 mr-1">
+          <div className="flex items-center space-x-0.5 flex-shrink-0 mr-0.5">
             {userIsAuthenticated ? (
               <Button
                 variant="ghost"
@@ -287,9 +287,9 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                 variant="outline"
                 size="sm"
                 onClick={() => navigate('/auth')}
-                className="border-pink-400/50 text-white hover:bg-pink-500/20 px-1.5 sm:px-2 py-1.5 whitespace-nowrap text-xs sm:text-sm font-medium bg-pink-500/10 transition-all duration-200 shadow-lg hover:shadow-pink-500/25 min-w-fit flex-shrink-0"
+                className="border-pink-400/50 text-white hover:bg-pink-500/20 px-1 sm:px-1.5 py-1.5 whitespace-nowrap text-xs font-medium bg-pink-500/10 transition-all duration-200 shadow-lg hover:shadow-pink-500/25 min-w-fit flex-shrink-0"
               >
-                <span className="text-xs sm:text-sm">Iniciar Sesión</span>
+                <span className="text-xs">Iniciar Sesión</span>
               </Button>
             )}
           </div>
