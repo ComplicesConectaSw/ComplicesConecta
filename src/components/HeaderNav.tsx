@@ -172,11 +172,11 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
 
   return (
     <div className={`bg-black/30 backdrop-blur-sm border-b border-white/10 ${className}`}>
-      <div className="container mx-auto px-3 max-w-full">
+      <div className="container mx-auto px-4 max-w-full">
         <div className="flex items-center justify-between py-2 sm:py-3 min-h-[60px] gap-0.5 sm:gap-1">
           {/* Logo */}
           <div 
-            className="flex items-center space-x-1 cursor-pointer flex-shrink-0 -ml-1"
+            className="flex items-center space-x-1 cursor-pointer flex-shrink-0 ml-0"
             onClick={() => navigate('/')}
           >
             <Heart className="h-5 w-5 sm:h-6 sm:w-6 text-pink-500" fill="currentColor" />
@@ -271,7 +271,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
           </div>
 
           {/* User Actions */}
-          <div className="flex items-center space-x-0.5 flex-shrink-0 mr-3">
+          <div className="flex items-center space-x-0.5 flex-shrink-0 mr-4">
             {userIsAuthenticated ? (
               <Button
                 variant="ghost"
