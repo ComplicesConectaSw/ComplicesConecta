@@ -1,26 +1,23 @@
 /* Force visibility for all text elements - CORRECTED APPROACH */
-/* REMOVED: Global color override that was preventing custom colors */
-
-/* Specific overrides for better contrast - ONLY for invisible text */
-.text-gray-600, .text-gray-700, .text-gray-800 {
+* {
   color: #ffffff !important;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9) !important;
 }
 
 /* Specific overrides for better contrast */
 h1, h2, h3, h4, h5, h6 {
-  /* Only apply if text is invisible */
+  color: #ffffff !important;
   text-shadow: 3px 3px 6px rgba(0, 0, 0, 1) !important;
   font-weight: bold !important;
 }
 
 p, span, div {
-  /* Only apply shadow, not color override */
+  color: #ffffff !important;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9) !important;
 }
 
-/* Button text visibility - ONLY for invisible buttons */
-button.btn-invisible, .btn-invisible {
+/* Button text visibility */
+button, .btn {
   color: #ffffff !important;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9) !important;
 }
