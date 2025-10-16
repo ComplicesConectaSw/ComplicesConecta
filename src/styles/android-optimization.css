@@ -573,21 +573,21 @@
 }
 
 /* ===== MODERN GRADIENT BACKGROUNDS ===== */
-/* Global body background with modern gradient - REMOVED !important to allow custom colors */
+/* Global body background with modern gradient */
 body {
-  background: var(--primary-gradient);
-  color: #ffffff;
+  background: var(--primary-gradient) !important;
+  color: #ffffff !important;
   min-height: 100vh;
 }
 
-/* Main app container background - REMOVED !important */
+/* Main app container background */
 .min-h-screen {
-  background: var(--primary-gradient);
+  background: var(--primary-gradient) !important;
 }
 
-/* Page backgrounds with gradient - REMOVED !important */
+/* Page backgrounds with gradient */
 .bg-gradient-to-br {
-  background: var(--primary-gradient);
+  background: var(--primary-gradient) !important;
 }
 
 /* ===== CHATBOX TOKENS FIXES ===== */
