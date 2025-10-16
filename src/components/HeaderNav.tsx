@@ -1,302 +1,214 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
 import { 
-  Search, 
-  Users, 
   Heart, 
-  MessageCircle, 
+  Search, 
+  User, 
+  MessageSquare, 
   Calendar, 
-  Building, 
+  Users, 
+  Building2, 
+  Shield, 
   HelpCircle, 
   Info,
-  Crown,
-  Camera,
-  Coins,
-  FileText,
-  ChevronDown
+  DollarSign,
+  Settings,
+  Bell,
+  Menu,
+  X
 } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
+import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-
+import { useAuth } from '@/hooks/useAuth';
+import { logger } from '@/lib/logger';
 
 interface HeaderNavProps {
   className?: string;
 }
 
-const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
+export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { isAuthenticated, user: _user } = useAuth();
-  const userIsAuthenticated = isAuthenticated();
-  const [_openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const { user, isAuthenticated } = useAuth();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Detectar scroll para efecto de transparencia
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const navItems = [
-    {
-      id: 'discover',
-      label: 'Descubrir',
-      icon: Search,
-      path: '/discover',
-      color: 'text-pink-400',
-      requiresAuth: false
-    },
-    {
-      id: 'profiles',
-      label: 'Perfiles',
-      icon: Users,
-      path: '/profiles',
-      color: 'text-purple-400',
-      requiresAuth: false
-    },
-    {
-      id: 'historias',
-      label: 'Historias',
-      icon: Camera,
-      path: '/stories',
-      color: 'text-indigo-400',
-      requiresAuth: false,
-      hasDropdown: true
-    },
-    {
-      id: 'matches',
-      label: 'Matches',
-      icon: Heart,
-      path: '/matches',
-      color: 'text-red-400',
-      requiresAuth: false
-    },
-    {
-      id: 'chat',
-      label: 'Chat',
-      icon: MessageCircle,
-      path: '/chat',
-      color: 'text-blue-400',
-      requiresAuth: true
-    },
-    {
-      id: 'events',
-      label: 'Eventos',
-      icon: Calendar,
-      path: '/events',
-      color: 'text-yellow-400',
-      requiresAuth: false
-    },
-    {
-      id: 'empresa',
-      label: 'Empresa',
-      icon: Building,
-      path: '/about',
-      color: 'text-green-400',
-      requiresAuth: false
-    },
-    {
-      id: 'soporte',
-      label: 'Soporte',
-      icon: HelpCircle,
-      path: '/support',
-      color: 'text-orange-400',
-      requiresAuth: false
-    },
-    {
-      id: 'tokens',
-      label: 'Tokens',
-      icon: Coins,
-      path: '/tokens',
-      color: 'text-yellow-400',
-      requiresAuth: false,
-      hasDropdown: true
-    },
-    {
-      id: 'legal',
-      label: 'Legal',
-      icon: FileText,
-      path: '/legal',
-      color: 'text-gray-400',
-      requiresAuth: false,
-      hasDropdown: true
-    },
-    {
-      id: 'informacion',
-      label: 'Información',
-      icon: Info,
-      path: '/faq',
-      color: 'text-cyan-400',
-      requiresAuth: false
-    }
+    { name: 'Descubrir', path: '/discover', icon: Search },
+    { name: 'Perfiles', path: '/profiles', icon: User },
+    { name: 'Matches', path: '/matches', icon: Heart },
+    { name: 'Chat', path: '/chat', icon: MessageSquare },
+    { name: 'Eventos', path: '/events', icon: Calendar },
+    { name: 'Stories', path: '/stories', icon: Users },
+    { name: 'Empresa', path: '/about', icon: Building2 },
+    { name: 'Moderadores', path: '/moderators', icon: Shield },
+    { name: 'Soporte', path: '/support', icon: HelpCircle },
+    { name: 'Información', path: '/info', icon: Info }
   ];
 
-  const isActivePath = (path: string) => {
-    return location.pathname === path || location.pathname.startsWith(path + '/');
+  const isActive = (path: string) => {
+    return location.pathname === path;
   };
 
-  const handleNavigation = (item: typeof navItems[0]) => {
-    if (item.hasDropdown) {
-      setOpenDropdown(_openDropdown === item.id ? null : item.id);
-      return;
-    }
-    if (item.requiresAuth && !userIsAuthenticated) {
-      navigate('/auth');
-      return;
-    }
-    navigate(item.path);
+  const handleNavigation = (path: string) => {
+    navigate(path);
+    setIsMobileMenuOpen(false);
+    logger.info('Navigation:', { path });
   };
 
-  const getDropdownContent = (itemId: string) => {
-    switch (itemId) {
-      case 'historias':
-        return [
-          { label: 'Qué son las Historias', action: () => navigate('/stories/info') },
-          { label: 'Características', action: () => navigate('/stories/features') },
-          { label: 'Potencial y Beneficios', action: () => navigate('/stories/benefits') },
-          { label: 'Ver Historias', action: () => navigate('/stories') }
-        ];
-      case 'tokens':
-        return [
-          { label: 'Sistema CMPX/GTK', action: () => navigate('/tokens/info') },
-          { label: 'Cómo Ganar Tokens', action: () => navigate('/tokens/earn') },
-          { label: 'Privacidad Tokens', action: () => navigate('/tokens/privacy') },
-          { label: 'Términos Tokens', action: () => navigate('/tokens/terms') }
-        ];
-      case 'legal':
-        return [
-          { label: 'Términos de Servicio', action: () => navigate('/terms') },
-          { label: 'Política de Privacidad', action: () => navigate('/privacy') },
-          { label: 'Directrices', action: () => navigate('/guidelines') },
-          { label: 'Legal Completo', action: () => navigate('/legal') }
-        ];
-      default:
-        return [];
-    }
+  const handleLogin = () => {
+    navigate('/auth');
+    logger.info('Login initiated');
+  };
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
   return (
-    <div className={`bg-black/30 backdrop-blur-sm border-b border-white/10 ${className}`}>
-      <div className="container mx-auto px-0 max-w-full">
-        <div className="flex items-center justify-between py-2 sm:py-3 min-h-[60px] gap-0.5 sm:gap-1">
-          {/* Logo */}
-          <div 
-            className="flex items-center space-x-1 cursor-pointer flex-shrink-0"
-            onClick={() => navigate('/')}
-          >
-            <Heart className="h-5 w-5 sm:h-6 sm:w-6 text-pink-500" fill="currentColor" />
-            <span className="text-white font-bold text-sm sm:text-lg hidden md:block">
-              ComplicesConecta
-            </span>
-          </div>
+    <>
+      {/* Header Principal */}
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled 
+          ? 'bg-black/80 backdrop-blur-md border-b border-pink-500/20' 
+          : 'bg-gradient-to-r from-purple-900/95 via-pink-900/95 to-purple-800/95 backdrop-blur-sm border-b border-pink-400/30'
+      } ${className}`}>
+        
+        {/* Contenedor Principal */}
+        <div className="w-full">
+          <div className="flex items-center justify-between h-16 px-4 lg:px-6">
+            
+            {/* Logo - Izquierda */}
+            <div className="flex items-center space-x-3 flex-shrink-0">
+              <button
+                onClick={() => handleNavigation('/')}
+                className="flex items-center space-x-2 group transition-all duration-300 hover:scale-105"
+              >
+                <div className="relative">
+                  <Heart className="h-7 w-7 text-pink-400 group-hover:text-pink-300 transition-colors duration-300" fill="currentColor" />
+                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-pink-500 rounded-full animate-pulse"></div>
+                </div>
+                <span className="text-white font-bold text-lg lg:text-xl hidden sm:block bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
+                  ComplicesConecta
+                </span>
+              </button>
+            </div>
 
-          {/* Navigation Items */}
-          <div className="flex items-center space-x-0.5 overflow-x-auto scrollbar-hide flex-1 justify-center px-0 max-w-[65%]">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = isActivePath(item.path);
-              const showItem = !item.requiresAuth || userIsAuthenticated;
-
-              if (!showItem) return null;
-
-              if (item.hasDropdown) {
+            {/* Navegación Central - Desktop */}
+            <nav className="hidden lg:flex items-center space-x-1 flex-1 justify-center max-w-4xl mx-8">
+              {navItems.map((item) => {
+                const IconComponent = item.icon;
                 return (
-                  <DropdownMenu key={item.id} open={_openDropdown === item.id} onOpenChange={(open) => setOpenDropdown(open ? item.id : null)}>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className={`
-                          relative flex items-center space-x-0.5 px-1 sm:px-2 py-1.5 rounded-lg transition-all duration-200 whitespace-nowrap
-                          ${isActive 
-                            ? 'bg-white/20 text-white shadow-lg' 
-                            : 'text-white/80 hover:text-white hover:bg-white/10'
-                          }
-                        `}
-                      >
-                        <Icon className={`h-4 w-4 ${isActive ? 'text-white' : item.color}`} />
-                        <span className="hidden lg:block text-xs font-medium">
-                          {item.label}
-                        </span>
-                        <ChevronDown className="h-3 w-3 ml-1" />
-                        
-                        {isActive && (
-                          <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-white rounded-full" />
-                        )}
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="bg-black/90 border-white/20 backdrop-blur-sm">
-                      {getDropdownContent(item.id).map((dropdownItem, index) => (
-                        <DropdownMenuItem 
-                          key={index}
-                          onClick={dropdownItem.action}
-                          className="text-white hover:bg-white/10 cursor-pointer"
-                        >
-                          {dropdownItem.label}
-                        </DropdownMenuItem>
-                      ))}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                  <button
+                    key={item.name}
+                    onClick={() => handleNavigation(item.path)}
+                    className={`flex items-center space-x-1 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                      isActive(item.path)
+                        ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg shadow-pink-500/25'
+                        : 'text-white/80 hover:text-white hover:bg-white/10'
+                    }`}
+                  >
+                    <IconComponent className="h-4 w-4" />
+                    <span>{item.name}</span>
+                  </button>
                 );
-              }
+              })}
+            </nav>
 
-              return (
-                <Button
-                  key={item.id}
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => handleNavigation(item)}
-                  className={`
-                    relative flex items-center space-x-0.5 px-1 sm:px-2 py-1.5 rounded-lg transition-all duration-200 whitespace-nowrap
-                    ${isActive 
-                      ? 'bg-white/20 text-white shadow-lg' 
-                      : 'text-white/80 hover:text-white hover:bg-white/10'
-                    }
-                  `}
-                >
-                  <Icon className={`h-4 w-4 ${isActive ? 'text-white' : item.color}`} />
-                  <span className="hidden lg:block text-xs font-medium">
-                    {item.label}
-                  </span>
-                  
-                  {/* Active indicator */}
-                  {isActive && (
-                    <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-white rounded-full" />
-                  )}
-                  
-                  {/* Auth required badge for non-authenticated users */}
-                  {item.requiresAuth && !userIsAuthenticated && showItem && (
-                    <Badge variant="secondary" className="ml-1 text-xs">
-                      <Crown className="h-3 w-3" />
-                    </Badge>
-                  )}
-                </Button>
-              );
-            })}
-          </div>
+            {/* Acciones de Usuario - Derecha */}
+            <div className="flex items-center space-x-2 flex-shrink-0">
+              
+              {/* Iconos de Acción */}
+              <div className="hidden md:flex items-center space-x-1">
+                <button className="p-2 text-white/70 hover:text-pink-400 hover:bg-white/10 rounded-lg transition-all duration-300">
+                  <DollarSign className="h-5 w-5" />
+                </button>
+                <button className="p-2 text-white/70 hover:text-pink-400 hover:bg-white/10 rounded-lg transition-all duration-300">
+                  <HelpCircle className="h-5 w-5" />
+                </button>
+                <button className="p-2 text-white/70 hover:text-pink-400 hover:bg-white/10 rounded-lg transition-all duration-300">
+                  <Settings className="h-5 w-5" />
+                </button>
+                <button className="relative p-2 text-white/70 hover:text-pink-400 hover:bg-white/10 rounded-lg transition-all duration-300">
+                  <Bell className="h-5 w-5" />
+                  <Badge className="absolute -top-1 -right-1 h-5 w-5 bg-pink-500 text-white text-xs flex items-center justify-center">
+                    3
+                  </Badge>
+                </button>
+              </div>
 
-          {/* User Actions */}
-          <div className="flex items-center space-x-0.5 flex-shrink-0 mr-4">
-            {userIsAuthenticated ? (
+              {/* Botón de Login */}
               <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => navigate('/profile')}
-                className="text-white hover:bg-white/10 px-2 sm:px-3"
+                onClick={handleLogin}
+                className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold px-4 py-2 rounded-lg shadow-lg shadow-pink-500/25 transition-all duration-300 hover:shadow-pink-500/40 hover:scale-105 min-w-[120px]"
               >
-                <Users className="h-4 w-4" />
-                <span className="hidden lg:block ml-1 text-xs">Perfil</span>
+                <User className="h-4 w-4 mr-2" />
+                <span className="hidden sm:inline">Iniciar Sesión</span>
+                <span className="sm:hidden">Login</span>
               </Button>
-            ) : (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => navigate('/auth')}
-                className="border-pink-400/50 text-white hover:bg-pink-500/20 px-1 sm:px-1.5 py-1.5 whitespace-nowrap text-xs font-medium bg-pink-500/10 transition-all duration-200 shadow-lg hover:shadow-pink-500/25 min-w-fit flex-shrink-0"
+
+              {/* Botón Menú Móvil */}
+              <button
+                onClick={toggleMobileMenu}
+                className="lg:hidden p-2 text-white hover:text-pink-400 hover:bg-white/10 rounded-lg transition-all duration-300"
               >
-                <span className="text-xs">Iniciar Sesión</span>
-              </Button>
-            )}
+                {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+
+        {/* Menú Móvil */}
+        {isMobileMenuOpen && (
+          <div className="lg:hidden bg-black/95 backdrop-blur-md border-t border-pink-500/20">
+            <div className="px-4 py-4 space-y-2">
+              {navItems.map((item) => {
+                const IconComponent = item.icon;
+                return (
+                  <button
+                    key={item.name}
+                    onClick={() => handleNavigation(item.path)}
+                    className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-all duration-300 ${
+                      isActive(item.path)
+                        ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white'
+                        : 'text-white/80 hover:text-white hover:bg-white/10'
+                    }`}
+                  >
+                    <IconComponent className="h-5 w-5" />
+                    <span className="font-medium">{item.name}</span>
+                  </button>
+                );
+              })}
+              
+              {/* Acciones Móviles */}
+              <div className="pt-4 border-t border-white/10">
+                <div className="grid grid-cols-2 gap-2">
+                  <button className="flex items-center space-x-2 px-4 py-3 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300">
+                    <DollarSign className="h-5 w-5" />
+                    <span>Tokens</span>
+                  </button>
+                  <button className="flex items-center space-x-2 px-4 py-3 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300">
+                    <Settings className="h-5 w-5" />
+                    <span>Config</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </header>
+
+      {/* Espaciador para contenido */}
+      <div className="h-16"></div>
+    </>
   );
 };
-
-export default HeaderNav;
