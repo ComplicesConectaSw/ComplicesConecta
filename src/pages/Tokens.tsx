@@ -276,7 +276,7 @@ export default function Tokens() {
                 </p>
                 <div className="text-xs text-white/90 space-y-1">
                   <p>🪙 <strong>Ejemplo de respuesta:</strong></p>
-                  <div className="bg-white/95 p-2 rounded border ml-2 sm:ml-4 shadow-sm">
+                  <div className="bg-gradient-to-r from-pink-500/95 to-purple-600/95 p-2 rounded border border-pink-400/50 ml-2 sm:ml-4 shadow-sm">
                     <p className="break-words text-gray-800">{getBalanceMessage()}</p>
                   </div>
                 </div>
@@ -287,7 +287,7 @@ export default function Tokens() {
                   <strong>Explicación de staking:</strong>
                 </p>
                 <div className="text-xs text-white/90">
-                  <div className="bg-white/95 p-2 rounded border ml-2 sm:ml-4 shadow-sm">
+                  <div className="bg-gradient-to-r from-pink-500/95 to-purple-600/95 p-2 rounded border border-pink-400/50 ml-2 sm:ml-4 shadow-sm">
                     <p className="break-words text-gray-800">{getStakingMessage()}</p>
                   </div>
                 </div>

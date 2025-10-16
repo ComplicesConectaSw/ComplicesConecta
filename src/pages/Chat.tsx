@@ -648,7 +648,7 @@ const Chat = () => {
                         className={`max-w-[85%] sm:max-w-xs lg:max-w-sm px-3 sm:px-4 py-2 sm:py-3 rounded-2xl transition-all duration-300 hover:scale-102 ${
                           message.sender_id === localStorage.getItem('user_id')
                             ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
-                            : 'bg-white/95 text-gray-900 shadow-md border border-gray-200 backdrop-blur-sm'
+                            : 'bg-gradient-to-r from-pink-500/95 to-purple-600/95 text-white shadow-md border border-pink-400/50 backdrop-blur-sm'
                         }`}
                       >
                         <p className="text-xs sm:text-sm leading-relaxed break-words whitespace-pre-wrap overflow-wrap-anywhere hyphens-auto" style={{wordBreak: 'break-word', overflowWrap: 'anywhere'}}>{message.content}</p>
@@ -671,7 +671,7 @@ const Chat = () => {
                         className={`max-w-[85%] sm:max-w-xs lg:max-w-sm px-3 sm:px-4 py-2 sm:py-3 rounded-2xl transition-all duration-300 hover:scale-102 ${
                           message.senderId === 0
                             ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
-                            : 'bg-white/95 text-gray-900 shadow-md border border-gray-200 backdrop-blur-sm'
+                            : 'bg-gradient-to-r from-pink-500/95 to-purple-600/95 text-white shadow-md border border-pink-400/50 backdrop-blur-sm'
                         }`}
                       >
                         <p className="text-xs sm:text-sm leading-relaxed break-words whitespace-pre-wrap overflow-wrap-anywhere hyphens-auto" style={{wordBreak: 'break-word', overflowWrap: 'anywhere'}}>{message.content}</p>

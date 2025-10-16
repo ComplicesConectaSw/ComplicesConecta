@@ -72,7 +72,7 @@ export const ChatBubbleLegacy: React.FC<ChatBubbleProps> = ({
             "transition-all duration-300 ease-out",
             isOwn 
               ? "bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-br-md" 
-              : "bg-white/90 text-gray-800 rounded-bl-md hover:bg-white/95"
+              : "bg-gradient-to-r from-pink-500/90 to-purple-600/90 text-white rounded-bl-md hover:from-pink-500/95 hover:to-purple-600/95"
           )}
         >
           {/* Mensaje con efectos de gradiente */}

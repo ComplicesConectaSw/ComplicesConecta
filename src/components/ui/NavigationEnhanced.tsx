@@ -103,7 +103,7 @@ export const NavigationEnhanced: React.FC<NavigationEnhancedProps> = ({
     <>
       {/* Desktop Navigation */}
       <nav 
-        className={`hidden md:flex items-center justify-between bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 px-6 py-4 sticky top-0 z-40 ${className}`}
+        className={`hidden md:flex items-center justify-between bg-gradient-to-r from-pink-500/95 to-purple-600/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-pink-400/50 dark:border-gray-700 px-6 py-4 sticky top-0 z-40 ${className}`}
         role="navigation"
         aria-label="Navegación principal"
       >
@@ -211,7 +211,7 @@ export const NavigationEnhanced: React.FC<NavigationEnhancedProps> = ({
       {/* Mobile Navigation */}
       <div className="md:hidden mobile-nav-container">
         {/* Header móvil */}
-        <header className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 px-4 py-3 sticky top-0 z-50">
+        <header className="bg-gradient-to-r from-pink-500/95 to-purple-600/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-pink-400/50 dark:border-gray-700 px-4 py-3 sticky top-0 z-50">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-purple-600 rounded-lg flex items-center justify-center">
@@ -333,7 +333,7 @@ export const NavigationEnhanced: React.FC<NavigationEnhancedProps> = ({
 
         {/* Navegación inferior fija en móvil */}
         <nav 
-          className="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-t border-gray-200 dark:border-gray-700 px-2 py-2 z-40"
+          className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-pink-500/95 to-purple-600/95 dark:bg-gray-900/95 backdrop-blur-md border-t border-pink-400/50 dark:border-gray-700 px-2 py-2 z-40"
           role="navigation"
           aria-label="Navegación inferior"
         >

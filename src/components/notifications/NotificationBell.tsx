@@ -268,7 +268,7 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ className = 
               exit={{ opacity: 0, scale: 0.95, y: -10 }}
               className="absolute right-0 top-full mt-2 z-50 w-96 max-w-[90vw]"
             >
-              <Card className="shadow-xl border-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md">
+              <Card className="shadow-xl border-0 bg-gradient-to-r from-pink-500/95 to-purple-600/95 dark:bg-gray-900/95 backdrop-blur-md">
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg">Notificaciones</CardTitle>
