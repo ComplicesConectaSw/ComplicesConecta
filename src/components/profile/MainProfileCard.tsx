@@ -114,7 +114,7 @@ export const MainProfileCard = ({
     >
       {/* Image Container */}
       <div className="relative aspect-[3/4] overflow-hidden">
-        {!_imageError && image ? (
+        {!_imageError && image && image.startsWith('http') ? (
           <img 
             src={image} 
             alt={name}

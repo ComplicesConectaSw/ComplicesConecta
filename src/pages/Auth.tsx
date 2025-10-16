@@ -331,7 +331,7 @@ const Auth = () => {
               <TabsContent value="signin">
                 <form onSubmit={handleSignIn} className="space-y-4" data-testid="login-form">
                   <div className="space-y-2">
-                    <Label htmlFor="email">Correo electrónico</Label>
+                    <Label htmlFor="email" className="text-white font-medium">Correo electrónico</Label>
                     <Input
                       id="email"
                       type="email"
@@ -339,10 +339,11 @@ const Auth = () => {
                       onChange={(e) => handleInputChange("email", e.target.value)}
                       required
                       data-testid="email-input"
+                      className="bg-white/10 border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="password">Contraseña</Label>
+                    <Label htmlFor="password" className="text-white font-medium">Contraseña</Label>
                     <Input
                       id="password"
                       type="password"
@@ -351,6 +352,7 @@ const Auth = () => {
                       required
                       minLength={6}
                       data-testid="password-input"
+                      className="bg-white/10 border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
                     />
                   </div>
                   <Button type="submit" className="w-full" disabled={isLoading} data-testid="login-button">
@@ -375,7 +377,7 @@ const Auth = () => {
                 <form onSubmit={handleSignUp} className="space-y-4">
                   {/* Tipo de Cuenta */}
                   <div className="space-y-2">
-                    <Label>Tipo de Cuenta</Label>
+                    <Label className="text-white font-medium">Tipo de Cuenta</Label>
                     <div className="grid grid-cols-2 gap-2">
                       <Button
                         type="button"
@@ -398,40 +400,43 @@ const Auth = () => {
 
                   {/* Información Básica */}
                   <div className="space-y-2">
-                    <Label htmlFor="firstName">Nombre</Label>
+                    <Label htmlFor="firstName" className="text-white font-medium">Nombre</Label>
                     <Input
                       id="firstName"
                       value={formData.firstName}
                       onChange={(e) => handleInputChange('firstName', e.target.value)}
                       required
                       placeholder="Tu nombre"
+                      className="bg-white/10 border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="lastName">Apellido</Label>
+                    <Label htmlFor="lastName" className="text-white font-medium">Apellido</Label>
                     <Input
                       id="lastName"
                       value={formData.lastName}
                       onChange={(e) => handleInputChange('lastName', e.target.value)}
                       required
                       placeholder="Tu apellido"
+                      className="bg-white/10 border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="nickname">Nombre de Usuario</Label>
+                    <Label htmlFor="nickname" className="text-white font-medium">Nombre de Usuario</Label>
                     <Input
                       id="nickname"
                       value={formData.nickname}
                       onChange={(e) => handleInputChange('nickname', e.target.value)}
                       required
                       placeholder="Nombre público"
+                      className="bg-white/10 border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="age">Edad</Label>
+                    <Label htmlFor="age" className="text-white font-medium">Edad</Label>
                     <Input
                       id="age"
                       type="number"
@@ -440,17 +445,18 @@ const Auth = () => {
                       value={formData.age}
                       onChange={(e) => handleInputChange('age', e.target.value)}
                       required
+                      className="bg-white/10 border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="gender">Género</Label>
+                    <Label htmlFor="gender" className="text-white font-medium">Género</Label>
                     <select
                       id="gender"
                       value={formData.gender}
                       onChange={(e) => handleInputChange('gender', e.target.value)}
                       required
-                      className="w-full px-3 py-2 bg-black/20 border border-white/20 rounded-md text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                     >
                       <option value="">Selecciona tu género</option>
                       <option value="male">Masculino</option>
@@ -461,13 +467,13 @@ const Auth = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="interestedIn">Interesado en</Label>
+                    <Label htmlFor="interestedIn" className="text-white font-medium">Interesado en</Label>
                     <select
                       id="interestedIn"
                       value={formData.interestedIn}
                       onChange={(e) => handleInputChange('interestedIn', e.target.value)}
                       required
-                      className="w-full px-3 py-2 bg-black/20 border border-white/20 rounded-md text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                     >
                       <option value="">Selecciona tu interés</option>
                       <option value="male">Hombres</option>
@@ -484,40 +490,43 @@ const Auth = () => {
                         <h4 className="text-white font-medium mb-4">Información de tu Pareja</h4>
                         
                         <div className="space-y-2">
-                          <Label htmlFor="partnerFirstName">Nombre de tu Pareja</Label>
+                          <Label htmlFor="partnerFirstName" className="text-white font-medium">Nombre de tu Pareja</Label>
                           <Input
                             id="partnerFirstName"
                             value={formData.partnerFirstName}
                             onChange={(e) => handleInputChange('partnerFirstName', e.target.value)}
                             required
                             placeholder="Nombre de tu pareja"
+                            className="bg-white/10 border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
                           />
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlFor="partnerLastName">Apellido de tu Pareja</Label>
+                          <Label htmlFor="partnerLastName" className="text-white font-medium">Apellido de tu Pareja</Label>
                           <Input
                             id="partnerLastName"
                             value={formData.partnerLastName}
                             onChange={(e) => handleInputChange('partnerLastName', e.target.value)}
                             required
                             placeholder="Apellido de tu pareja"
+                            className="bg-white/10 border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
                           />
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlFor="partnerNickname">Nombre de Usuario de tu Pareja</Label>
+                          <Label htmlFor="partnerNickname" className="text-white font-medium">Nombre de Usuario de tu Pareja</Label>
                           <Input
                             id="partnerNickname"
                             value={formData.partnerNickname}
                             onChange={(e) => handleInputChange('partnerNickname', e.target.value)}
                             required
                             placeholder="Nombre público de tu pareja"
+                            className="bg-white/10 border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
                           />
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlFor="partnerAge">Edad de tu Pareja</Label>
+                          <Label htmlFor="partnerAge" className="text-white font-medium">Edad de tu Pareja</Label>
                           <Input
                             id="partnerAge"
                             type="number"
@@ -526,17 +535,18 @@ const Auth = () => {
                             value={formData.partnerAge}
                             onChange={(e) => handleInputChange('partnerAge', e.target.value)}
                             required
+                            className="bg-white/10 border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
                           />
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlFor="partnerGender">Género de tu Pareja</Label>
+                          <Label htmlFor="partnerGender" className="text-white font-medium">Género de tu Pareja</Label>
                           <select
                             id="partnerGender"
                             value={formData.partnerGender}
                             onChange={(e) => handleInputChange('partnerGender', e.target.value)}
                             required
-                            className="w-full px-3 py-2 bg-black/20 border border-white/20 rounded-md text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                           >
                             <option value="">Selecciona el género</option>
                             <option value="male">Masculino</option>
@@ -547,13 +557,13 @@ const Auth = () => {
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlFor="partnerInterestedIn">Interesado en</Label>
+                          <Label htmlFor="partnerInterestedIn" className="text-white font-medium">Interesado en</Label>
                           <select
                             id="partnerInterestedIn"
                             value={formData.partnerInterestedIn}
                             onChange={(e) => handleInputChange('partnerInterestedIn', e.target.value)}
                             required
-                            className="w-full px-3 py-2 bg-black/20 border border-white/20 rounded-md text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                           >
                             <option value="">Selecciona el interés</option>
                             <option value="male">Hombres</option>
@@ -568,7 +578,7 @@ const Auth = () => {
 
                   {/* Información Adicional */}
                   <div className="space-y-2">
-                    <Label htmlFor="email">Correo electrónico</Label>
+                    <Label htmlFor="email" className="text-white font-medium">Correo electrónico</Label>
                     <Input
                       id="email"
                       type="email"
@@ -576,11 +586,12 @@ const Auth = () => {
                       onChange={(e) => handleInputChange('email', e.target.value)}
                       required
                       placeholder="tu@email.com"
+                      className="bg-white/10 border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="password">Contraseña</Label>
+                    <Label htmlFor="password" className="text-white font-medium">Contraseña</Label>
                     <Input
                       id="password"
                       type="password"
@@ -589,11 +600,12 @@ const Auth = () => {
                       required
                       minLength={6}
                       placeholder="Mínimo 6 caracteres"
+                      className="bg-white/10 border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="bio">Biografía</Label>
+                    <Label htmlFor="bio" className="text-white font-medium">Biografía</Label>
                     <textarea
                       id="bio"
                       value={formData.bio}
@@ -601,18 +613,19 @@ const Auth = () => {
                       required
                       rows={3}
                       placeholder="Cuéntanos sobre ti..."
-                      className="w-full px-3 py-2 bg-black/20 border border-white/20 rounded-md text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
+                      className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="location">Ubicación</Label>
+                    <Label htmlFor="location" className="text-white font-medium">Ubicación</Label>
                     <Input
                       id="location"
                       value={formData.location}
                       onChange={(e) => handleInputChange('location', e.target.value)}
                       required
                       placeholder="Ciudad, Estado"
+                      className="bg-white/10 border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
                     />
                   </div>
 

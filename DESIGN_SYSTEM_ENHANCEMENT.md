@@ -376,3 +376,4 @@ El proyecto ahora cuenta con un sistema de diseño robusto, profesional y optimi
 **Desarrollador**: **Asistente IA Especializado en Diseño**
 
 
+

@@ -173,7 +173,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
   return (
     <div className={`bg-black/30 backdrop-blur-sm border-b border-white/10 ${className}`}>
       <div className="container mx-auto px-2 sm:px-4">
-        <div className="flex items-center justify-between py-2 sm:py-3 min-h-[60px]">
+        <div className="flex items-center justify-between py-2 sm:py-3 min-h-[60px] gap-1 sm:gap-2">
           {/* Logo */}
           <div 
             className="flex items-center space-x-1 sm:space-x-2 cursor-pointer flex-shrink-0"
@@ -186,7 +186,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
           </div>
 
           {/* Navigation Items */}
-          <div className="flex items-center space-x-1 sm:space-x-2 overflow-x-auto scrollbar-hide max-w-full flex-1 justify-center">
+          <div className="flex items-center space-x-0.5 sm:space-x-1 overflow-x-auto scrollbar-hide max-w-full flex-1 justify-center px-1">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = isActivePath(item.path);
@@ -202,7 +202,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                         variant="ghost"
                         size="sm"
                         className={`
-                          relative flex items-center space-x-1 px-2 sm:px-3 py-2 rounded-lg transition-all duration-200 whitespace-nowrap
+                          relative flex items-center space-x-1 px-1 sm:px-2 py-1.5 rounded-lg transition-all duration-200 whitespace-nowrap
                           ${isActive 
                             ? 'bg-white/20 text-white shadow-lg' 
                             : 'text-white/80 hover:text-white hover:bg-white/10'
@@ -242,7 +242,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                   size="sm"
                   onClick={() => handleNavigation(item)}
                   className={`
-                    relative flex items-center space-x-1 px-2 sm:px-3 py-2 rounded-lg transition-all duration-200 whitespace-nowrap
+                    relative flex items-center space-x-1 px-1 sm:px-2 py-1.5 rounded-lg transition-all duration-200 whitespace-nowrap
                     ${isActive 
                       ? 'bg-white/20 text-white shadow-lg' 
                       : 'text-white/80 hover:text-white hover:bg-white/10'
@@ -287,9 +287,9 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                 variant="outline"
                 size="sm"
                 onClick={() => navigate('/auth')}
-                className="border-white/20 text-white hover:bg-white/10 px-2 sm:px-3"
+                className="border-white/20 text-white hover:bg-white/10 px-2 sm:px-3 py-1.5 whitespace-nowrap text-xs"
               >
-                <span className="text-xs">Iniciar</span>
+                <span className="text-xs sm:text-sm font-medium">Iniciar Sesión</span>
               </Button>
             )}
           </div>
