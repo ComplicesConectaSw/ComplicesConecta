@@ -255,7 +255,7 @@ const Index = () => {
               <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
                 Conoce Más Sobre ComplicesConecta
               </h2>
-              <p className="text-xl text-white/90 max-w-3xl mx-auto">
+              <p className="text-xl text-white max-w-3xl mx-auto drop-shadow-md">
                 Descubre nuestra misión, únete a nuestro equipo o apoya nuestro crecimiento
               </p>
             </div>
@@ -274,7 +274,7 @@ const Index = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="text-center">
-                  <p className="text-white/90 mb-6">
+                  <p className="text-white mb-6 drop-shadow-sm">
                     Conoce nuestra misión, visión y valores. Descubre por qué ComplicesConecta es la plataforma más confiable para la comunidad lifestyle.
                   </p>
                   <Button 
@@ -302,7 +302,7 @@ const Index = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="text-center">
-                  <p className="text-white/90 mb-6">
+                  <p className="text-white drop-shadow-sm mb-6">
                     Forma parte de nuestro equipo innovador. Buscamos talento apasionado por la tecnología y la comunidad lifestyle.
                   </p>
                   <Button 
@@ -330,7 +330,7 @@ const Index = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="text-center">
-                  <p className="text-white/90 mb-6">
+                  <p className="text-white drop-shadow-sm mb-6">
                     Ayuda a mantener una comunidad segura y respetuosa. Únete a nuestro equipo de moderadores voluntarios.
                   </p>
                   <Button 
@@ -356,7 +356,7 @@ const Index = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="text-center">
-                  <p className="text-white/90 mb-6">
+                  <p className="text-white drop-shadow-sm mb-6">
                     Ayúdanos a crecer y mejorar la plataforma. Tu apoyo nos permite seguir innovando para la comunidad.
                   </p>
                   <Button 
@@ -381,7 +381,7 @@ const Index = () => {
               <h2 className="text-4xl font-bold text-white mb-4">
                 ¿Por qué elegir ComplicesConecta?
               </h2>
-              <p className="text-xl text-white/90 max-w-3xl mx-auto">
+              <p className="text-xl text-white drop-shadow-sm max-w-3xl mx-auto">
                 La plataforma más segura y discreta para la comunidad swinger. Conectamos parejas y solteros 
                 con verificación avanzada, tecnología blockchain y total privacidad.
               </p>
@@ -401,7 +401,7 @@ const Index = () => {
                     <h3 className="text-xl font-bold text-white mb-4">
                       {feature.title}
                     </h3>
-                    <p className="text-white/90 leading-relaxed">
+                    <p className="text-white drop-shadow-sm leading-relaxed">
                       {feature.description}
                     </p>
                   </div>
@@ -423,7 +423,7 @@ const Index = () => {
               <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
                 Atrévete a Vivir Nuevas Fantasías
               </h2>
-              <p className="text-xl text-white/90 mb-8">
+              <p className="text-xl text-white drop-shadow-sm mb-8">
                 Conecta con parejas y solteros liberales en un ambiente seguro y discreto. La aventura de tu vida te espera.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">

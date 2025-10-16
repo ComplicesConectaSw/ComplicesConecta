@@ -61,11 +61,11 @@ export const HeroSection = () => {
               </span>
             </div>
             
-            <p className="text-lg sm:text-xl md:text-2xl text-white/90 leading-relaxed font-medium mb-4">
+            <p className="text-lg sm:text-xl md:text-2xl text-white leading-relaxed font-medium mb-4 drop-shadow-lg">
               Conecta con personas afines de manera segura y discreta
             </p>
             
-            <p className="text-base sm:text-lg md:text-xl text-white/80 leading-relaxed font-light">
+            <p className="text-base sm:text-lg md:text-xl text-white/95 leading-relaxed font-light drop-shadow-md">
               Sistema de verificación KYC, chat encriptado y eventos exclusivos para la comunidad lifestyle
             </p>
           </div>
@@ -77,19 +77,19 @@ export const HeroSection = () => {
             <div className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-2 group-hover:scale-110 transition-transform duration-300">
               BETA
             </div>
-            <div className="text-white/80 font-medium">Versión de Prueba</div>
+            <div className="text-white font-medium drop-shadow-md">Versión de Prueba</div>
           </div>
           <div className="text-center group">
             <div className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-2 group-hover:scale-110 transition-transform duration-300">
               100%
             </div>
-            <div className="text-white/80 font-medium">Funciones Gratis</div>
+            <div className="text-white font-medium drop-shadow-md">Funciones Gratis</div>
           </div>
           <div className="text-center group">
             <div className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-2 group-hover:scale-110 transition-transform duration-300">
               ∞
             </div>
-            <div className="text-white/80 font-medium">Posibilidades</div>
+            <div className="text-white font-medium drop-shadow-md">Posibilidades</div>
           </div>
         </div>
       </div>

@@ -271,7 +271,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
           </div>
 
           {/* User Actions */}
-          <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0 ml-2 sm:ml-4">
+          <div className="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
             {userIsAuthenticated ? (
               <Button
                 variant="ghost"
@@ -287,10 +287,9 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                 variant="outline"
                 size="sm"
                 onClick={() => navigate('/auth')}
-                className="border-pink-400/50 text-white hover:bg-pink-500/20 px-3 sm:px-6 py-2 sm:py-3 whitespace-nowrap text-xs sm:text-sm font-medium bg-pink-500/10 transition-all duration-200 shadow-lg hover:shadow-pink-500/25 min-w-[80px] sm:min-w-[140px] flex-shrink-0"
+                className="border-white/30 text-white hover:bg-white/20 px-2 sm:px-4 py-1.5 sm:py-2 whitespace-nowrap text-xs sm:text-sm font-medium bg-white/10 transition-all duration-200 shadow-md hover:shadow-lg min-w-fit flex-shrink-0"
               >
-                <span className="hidden sm:inline">Iniciar Sesión</span>
-                <span className="sm:hidden">Login</span>
+                <span className="text-xs sm:text-sm">Iniciar Sesión</span>
               </Button>
             )}
           </div>
