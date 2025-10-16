@@ -172,11 +172,11 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
 
   return (
     <div className={`bg-black/30 backdrop-blur-sm border-b border-white/10 ${className}`}>
-      <div className="container mx-auto px-0 max-w-full">
+      <div className="container mx-auto px-2 max-w-full">
         <div className="flex items-center justify-between py-2 sm:py-3 min-h-[60px] gap-0.5 sm:gap-1">
           {/* Logo */}
           <div 
-            className="flex items-center space-x-1 cursor-pointer flex-shrink-0"
+            className="flex items-center space-x-1 cursor-pointer flex-shrink-0 -ml-2"
             onClick={() => navigate('/')}
           >
             <Heart className="h-5 w-5 sm:h-6 sm:w-6 text-pink-500" fill="currentColor" />
@@ -186,7 +186,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
           </div>
 
           {/* Navigation Items */}
-          <div className="flex items-center space-x-0.5 overflow-x-auto scrollbar-hide flex-1 justify-center px-0 max-w-[70%]">
+          <div className="flex items-center space-x-0.5 overflow-x-auto scrollbar-hide flex-1 justify-center px-0 max-w-[65%]">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = isActivePath(item.path);
@@ -271,7 +271,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
           </div>
 
           {/* User Actions */}
-          <div className="flex items-center space-x-0.5 flex-shrink-0 mr-0.5">
+          <div className="flex items-center space-x-0.5 flex-shrink-0 mr-2">
             {userIsAuthenticated ? (
               <Button
                 variant="ghost"
