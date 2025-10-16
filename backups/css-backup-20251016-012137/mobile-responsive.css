@@ -1,0 +1,426 @@
+/* Mobile Responsive Styles - ComplicesConecta v3.0.0 */
+/* Optimizado para 375x667 y pantallas pequeñas */
+
+/* Variables CSS para consistencia */
+:root {
+  --mobile-min-touch: 44px;
+  --mobile-font-base: 16px;
+  --mobile-line-height: 1.5;
+  --mobile-padding: 16px;
+  --mobile-margin: 12px;
+  --mobile-border-radius: 8px;
+  --mobile-transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Base mobile styles */
+@media (max-width: 640px) {
+  /* Prevenir zoom en iOS */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  textarea,
+  select {
+    font-size: var(--mobile-font-base) !important;
+    padding: 14px var(--mobile-padding);
+    border-radius: var(--mobile-border-radius);
+    line-height: var(--mobile-line-height);
+    min-height: var(--mobile-min-touch);
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Optimización específica para 375x667 (iPhone SE) */
+  @media (max-width: 375px) {
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="number"],
+    textarea,
+    select {
+      padding: 12px 14px;
+      font-size: 16px;
+    }
+  }
+
+  /* Botones táctiles optimizados */
+  button,
+  .btn,
+  [role="button"] {
+    min-height: var(--mobile-min-touch);
+    min-width: var(--mobile-min-touch);
+    padding: 12px var(--mobile-padding);
+    font-size: var(--mobile-font-base);
+    line-height: var(--mobile-line-height);
+    border-radius: var(--mobile-border-radius);
+    transition: var(--mobile-transition);
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Optimización específica para pantallas pequeñas */
+  @media (max-width: 375px) {
+    button,
+    .btn,
+    [role="button"] {
+      padding: 10px 12px;
+      font-size: 14px;
+      min-height: 40px;
+    }
+  }
+
+  /* Área táctil extendida para iconos */
+  .icon-button {
+    padding: 12px;
+    min-width: var(--mobile-min-touch);
+    min-height: var(--mobile-min-touch);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Formularios responsivos */
+  .form-container {
+    padding: var(--mobile-padding);
+    margin: var(--mobile-margin);
+    max-width: 100%;
+  }
+
+  .form-group {
+    margin-bottom: var(--mobile-padding);
+  }
+
+  .form-label {
+    font-size: var(--mobile-font-base);
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+    color: var(--foreground);
+  }
+
+  /* Grid responsivo */
+  .grid-responsive {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--mobile-margin);
+    padding: var(--mobile-padding);
+  }
+
+  .grid-responsive.two-cols {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  /* Modales móviles */
+  .modal-content {
+    margin: var(--mobile-padding);
+    max-height: calc(100vh - 32px);
+    border-radius: var(--mobile-border-radius);
+    padding: var(--mobile-padding);
+  }
+
+  .modal-header {
+    padding: var(--mobile-padding);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .modal-body {
+    padding: var(--mobile-padding);
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+  }
+
+  /* Navegación móvil */
+  .nav-mobile {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--background);
+    border-top: 1px solid var(--border);
+    padding: 8px var(--mobile-padding);
+    z-index: 50;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .nav-mobile .nav-item {
+    min-height: var(--mobile-min-touch);
+    padding: 8px 12px;
+    border-radius: var(--mobile-border-radius);
+    transition: var(--mobile-transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  /* Optimización para pantallas muy pequeñas */
+  @media (max-width: 375px) {
+    .nav-mobile {
+      padding: 6px 12px;
+    }
+    
+    .nav-mobile .nav-item {
+      padding: 6px 8px;
+      min-height: 40px;
+    }
+  }
+
+  /* Texto legible en móvil */
+  .text-mobile {
+    font-size: var(--mobile-font-base);
+    line-height: var(--mobile-line-height);
+    color: var(--foreground);
+  }
+
+  .text-mobile-small {
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--muted-foreground);
+  }
+
+  .text-mobile-large {
+    font-size: 18px;
+    line-height: 1.4;
+    font-weight: 600;
+    color: var(--foreground);
+  }
+
+  /* Cards responsivas */
+  .card-mobile {
+    padding: var(--mobile-padding);
+    margin: var(--mobile-margin);
+    border-radius: var(--mobile-border-radius);
+    background: var(--card);
+    border: 1px solid var(--border);
+  }
+
+  /* Espaciado consistente */
+  .space-y-mobile > * + * {
+    margin-top: var(--mobile-margin);
+  }
+
+  .space-x-mobile > * + * {
+    margin-left: var(--mobile-margin);
+  }
+
+  /* Flex containers responsivos */
+  .flex-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: var(--mobile-margin);
+  }
+
+  .flex-mobile-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  /* Imágenes responsivas */
+  .img-responsive {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--mobile-border-radius);
+  }
+
+  /* Estados de focus mejorados para móvil */
+  button:focus,
+  input:focus,
+  textarea:focus,
+  select:focus,
+  [tabindex]:focus {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px var(--ring);
+  }
+
+  /* Animaciones suaves */
+  .animate-mobile {
+    transition: var(--mobile-transition);
+  }
+
+  .animate-mobile:hover {
+    transform: translateY(-1px);
+  }
+
+  .animate-mobile:active {
+    transform: translateY(0);
+    transition-duration: 0.1s;
+  }
+
+  /* Scrollbars móviles */
+  .scroll-mobile {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+
+  .scroll-mobile::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .scroll-mobile::-webkit-scrollbar-track {
+    background: var(--muted);
+  }
+
+  .scroll-mobile::-webkit-scrollbar-thumb {
+    background: var(--muted-foreground);
+    border-radius: 2px;
+  }
+}
+
+/* Tablet específico (768x1024) */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .grid-tablet {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--mobile-padding);
+  }
+
+  .nav-tablet {
+    padding: 12px 24px;
+  }
+
+  .modal-tablet {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+/* Desktop optimizado (1920x1080+) */
+@media (min-width: 1025px) {
+  .grid-desktop {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+  }
+
+  .nav-desktop {
+    padding: 16px 32px;
+  }
+
+  .modal-desktop {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+}
+
+/* Utilidades específicas para ComplicesConecta */
+.profile-card-mobile {
+  padding: var(--mobile-padding);
+  border-radius: var(--mobile-border-radius);
+  background: var(--card);
+  border: 1px solid var(--border);
+  margin-bottom: var(--mobile-margin);
+}
+
+.profile-card-mobile .profile-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-card-mobile .profile-info {
+  flex: 1;
+  padding-left: var(--mobile-margin);
+}
+
+.profile-card-mobile .profile-name {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--foreground);
+}
+
+.profile-card-mobile .profile-details {
+  font-size: 14px;
+  color: var(--muted-foreground);
+  margin-top: 4px;
+}
+
+.chat-mobile {
+  padding-bottom: 80px; /* Espacio para navegación fija */
+}
+
+.chat-mobile .message {
+  padding: 12px var(--mobile-padding);
+  margin: 8px var(--mobile-margin);
+  border-radius: var(--mobile-border-radius);
+  max-width: 85%;
+  word-wrap: break-word;
+}
+
+.chat-mobile .message-input {
+  position: fixed;
+  bottom: 60px;
+  left: var(--mobile-padding);
+  right: var(--mobile-padding);
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--mobile-border-radius);
+  padding: 12px;
+}
+
+/* Estados de carga móvil */
+.loading-mobile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px var(--mobile-padding);
+  font-size: var(--mobile-font-base);
+  color: var(--muted-foreground);
+}
+
+.loading-mobile .spinner {
+  width: 24px;
+  height: 24px;
+  margin-right: 12px;
+  border: 2px solid var(--muted);
+  border-top: 2px solid var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Mejoras de contraste para móvil */
+@media (max-width: 640px) {
+  .text-contrast-high {
+    color: var(--foreground);
+    font-weight: 500;
+  }
+
+  .bg-contrast-high {
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+
+  .border-contrast-high {
+    border-color: var(--border);
+  }
+
+  /* Estados hover/focus mejorados */
+  .interactive-mobile:hover {
+    background-color: var(--accent);
+    color: var(--accent-foreground);
+  }
+
+  .interactive-mobile:focus {
+    background-color: var(--accent);
+    color: var(--accent-foreground);
+    outline: 2px solid var(--ring);
+  }
+
+  .interactive-mobile:active {
+    background-color: var(--accent);
+    transform: scale(0.98);
+  }
+}

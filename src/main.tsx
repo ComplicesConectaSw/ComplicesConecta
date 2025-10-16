@@ -2,12 +2,9 @@ import { createRoot } from 'react-dom/client'
 import { StrictMode } from 'react'
 import App from './App.tsx'
 import './index.css'
+import './styles/consolidated-styles.css'
 import { initializeWalletProtection, detectWalletConflicts } from "./utils/walletProtection";
 import { initializeReactFallbacks, ensureReactPolyfills } from "./utils/reactFallbacks";
-import './styles/responsive.css'
-import './styles/text-overflow-fixes.css'
-import './styles/text-visibility-fixes.css'
-import './styles/force-visibility.css'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import { initSentry } from '@/lib/sentry'
 import { DebugInfo } from '@/debug'
