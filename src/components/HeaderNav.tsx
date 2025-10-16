@@ -287,9 +287,9 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                 variant="outline"
                 size="sm"
                 onClick={() => navigate('/auth')}
-                className="border-pink-400/50 text-white hover:bg-pink-500/20 px-2 py-1.5 whitespace-nowrap text-xs font-medium bg-pink-500/10 transition-all duration-200 shadow-lg hover:shadow-pink-500/25 min-w-fit flex-shrink-0"
+                className="border-pink-400/50 text-white hover:bg-pink-500/20 px-2 sm:px-3 py-1.5 whitespace-nowrap text-xs sm:text-sm font-medium bg-pink-500/10 transition-all duration-200 shadow-lg hover:shadow-pink-500/25 min-w-fit flex-shrink-0"
               >
-                <span className="text-xs">Login</span>
+                <span className="text-xs sm:text-sm">Iniciar Sesión</span>
               </Button>
             )}
           </div>
