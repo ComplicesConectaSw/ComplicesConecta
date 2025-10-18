@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import NavigationEnhanced from '@/components/NavigationEnhanced';
+import HeaderNav from '@/components/HeaderNav';
 import { ContrastFixer } from '@/components/accessibility/ContrastFixer';
 import { logger } from '@/lib/logger';
 import { 
@@ -47,18 +47,106 @@ const Profiles: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const profilesPerPage = 9;
 
-  // Datos de ejemplo para evitar errores
+  // Datos de ejemplo expandidos para demostrar funcionalidad
   const mockProfiles: Profile[] = [
     {
       id: "1",
       name: "Ana García",
       age: 28,
       location: "Ciudad de México",
-      bio: "Amante de los viajes y la aventura",
+      bio: "Amante de los viajes y la aventura. Busco conexiones auténticas y experiencias únicas.",
       images: ["/placeholder.svg"],
-      interests: ["viajes", "música", "cocina"],
+      interests: ["viajes", "música", "cocina", "swinger"],
       isOnline: true,
       verified: true
+    },
+    {
+      id: "2",
+      name: "Carlos Mendoza",
+      age: 32,
+      location: "Guadalajara",
+      bio: "Profesional exitoso que disfruta del lifestyle alternativo. Discreto y respetuoso.",
+      images: ["/placeholder.svg"],
+      interests: ["lifestyle", "fitness", "gastronomía", "eventos privados"],
+      isOnline: true,
+      verified: true
+    },
+    {
+      id: "3",
+      name: "María Elena",
+      age: 26,
+      location: "Monterrey",
+      bio: "Artista creativa con mente abierta. Me encanta explorar nuevas experiencias.",
+      images: ["/placeholder.svg"],
+      interests: ["arte", "danza", "swinger", "cultura"],
+      isOnline: false,
+      verified: false
+    },
+    {
+      id: "4",
+      name: "Roberto Silva",
+      age: 35,
+      location: "Puebla",
+      bio: "Empresario aventurero que busca parejas para eventos exclusivos y viajes.",
+      images: ["/placeholder.svg"],
+      interests: ["viajes", "eventos privados", "lifestyle", "networking"],
+      isOnline: true,
+      verified: true
+    },
+    {
+      id: "5",
+      name: "Isabella Cruz",
+      age: 29,
+      location: "Tijuana",
+      bio: "Modelo profesional con pasión por la fotografía y los encuentros discretos.",
+      images: ["/placeholder.svg"],
+      interests: ["fotografía", "moda", "swinger", "eventos"],
+      isOnline: true,
+      verified: true
+    },
+    {
+      id: "6",
+      name: "Diego Herrera",
+      age: 31,
+      location: "Cancún",
+      bio: "Instructor de yoga y meditación. Busco conexiones espirituales y físicas.",
+      images: ["/placeholder.svg"],
+      interests: ["yoga", "meditación", "lifestyle", "bienestar"],
+      isOnline: false,
+      verified: true
+    },
+    {
+      id: "7",
+      name: "Valentina Ruiz",
+      age: 27,
+      location: "Mérida",
+      bio: "Psicóloga con enfoque en relaciones abiertas. Discreta y profesional.",
+      images: ["/placeholder.svg"],
+      interests: ["psicología", "relaciones", "swinger", "terapia"],
+      isOnline: true,
+      verified: true
+    },
+    {
+      id: "8",
+      name: "Alejandro Torres",
+      age: 33,
+      location: "León",
+      bio: "Chef reconocido que organiza cenas íntimas y eventos gastronómicos privados.",
+      images: ["/placeholder.svg"],
+      interests: ["gastronomía", "eventos privados", "cocina", "lifestyle"],
+      isOnline: true,
+      verified: true
+    },
+    {
+      id: "9",
+      name: "Camila Vega",
+      age: 25,
+      location: "Querétaro",
+      bio: "Estudiante de medicina con interés en explorar el lifestyle alternativo.",
+      images: ["/placeholder.svg"],
+      interests: ["medicina", "estudios", "swinger", "salud"],
+      isOnline: false,
+      verified: false
     }
   ];
 
@@ -70,11 +158,23 @@ const Profiles: React.FC = () => {
   const handleAiSearch = async (query: string) => {
     setIsSearching(true);
     try {
-      // Simulación de búsqueda IA
+      // Simulación de búsqueda IA con filtrado real
       await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Filtrar perfiles basado en la búsqueda
+      const filtered = allProfiles.filter(profile => 
+        profile.name.toLowerCase().includes(query.toLowerCase()) ||
+        profile.bio.toLowerCase().includes(query.toLowerCase()) ||
+        profile.location.toLowerCase().includes(query.toLowerCase()) ||
+        profile.interests.some(interest => 
+          interest.toLowerCase().includes(query.toLowerCase())
+        )
+      );
+      
+      setFilteredProfiles(filtered);
       setAiSearchMode(true);
-      setAiSuggestions(["parejas aventureras", "lifestyle México", "eventos privados"]);
-      logger.info('🤖 Búsqueda IA completada', { query });
+      setAiSuggestions(["parejas aventureras", "lifestyle México", "eventos privados", "swinger"]);
+      logger.info('🤖 Búsqueda IA completada', { query, results: filtered.length });
     } catch (error) {
       logger.error('❌ Error en búsqueda IA:', { error });
     } finally {
@@ -94,27 +194,47 @@ const Profiles: React.FC = () => {
   const currentProfiles = filteredProfiles.slice(startIndex, startIndex + profilesPerPage);
 
   const ProfileCard: React.FC<{ profile: Profile; onOpenModal: () => void }> = ({ profile }) => (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+    <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-105 bg-white/10 backdrop-blur-sm border-white/20">
       <CardContent className="p-4">
         <div className="flex items-center gap-3 mb-3">
-          <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold">
-            {profile.name.charAt(0)}
+          <div className="relative">
+            <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
+              {profile.name.charAt(0)}
+            </div>
+            {profile.isOnline && (
+              <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
+            )}
           </div>
-          <div>
-            <h3 className="font-semibold text-white">{profile.name}</h3>
+          <div className="flex-1">
+            <div className="flex items-center gap-2">
+              <h3 className="font-semibold text-white">{profile.name}</h3>
+              {profile.verified && (
+                <Badge className="bg-blue-500/20 text-blue-200 border border-blue-400/30 text-xs">
+                  ✓ Verificado
+                </Badge>
+              )}
+            </div>
             <p className="text-sm text-white/70">{profile.age} años • {profile.location}</p>
           </div>
         </div>
-        <p className="text-sm text-white/80 mb-3">{profile.bio}</p>
+        <p className="text-sm text-white/80 mb-3 line-clamp-2">{profile.bio}</p>
         <div className="flex flex-wrap gap-1 mb-3">
           {profile.interests.slice(0, 3).map((interest, idx) => (
-            <Badge key={idx} className="text-xs bg-white/20 text-white border-white/30">
+            <Badge key={idx} className="text-xs bg-white/20 text-white border-white/30 hover:bg-white/30 transition-colors">
               {interest}
             </Badge>
           ))}
+          {profile.interests.length > 3 && (
+            <Badge className="text-xs bg-white/10 text-white/70 border-white/20">
+              +{profile.interests.length - 3} más
+            </Badge>
+          )}
         </div>
-        <Button className="w-full px-3 py-1.5 text-sm">
-          Ver Perfil
+        <Button 
+          className="w-full px-3 py-2 text-sm bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 transition-all duration-200"
+          onClick={() => logger.info('Ver perfil:', { profileId: profile.id })}
+        >
+          Ver Perfil Completo
         </Button>
       </CardContent>
     </Card>
@@ -129,18 +249,18 @@ const Profiles: React.FC = () => {
       <MapPin className="absolute top-1/2 right-1/6 w-7 h-7 text-secondary/15 animate-pulse" />
       
       {/* Navegación */}
-      <NavigationEnhanced />
+      <HeaderNav />
       
       <main className="container mx-auto px-4 py-8">
         {/* Encabezado de página */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+        <div className="text-center mb-12 pt-8">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
             Descubre
-            <span className="block bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent mt-2">
               Tu Match Perfecto
             </span>
           </h1>
-          <p className="text-xl text-white/90 max-w-2xl mx-auto mb-8">
+          <p className="text-xl text-white/90 max-w-2xl mx-auto mb-8 leading-relaxed">
             Usa nuestra IA avanzada para encontrar personas compatibles basándose en personalidad, intereses y valores
           </p>
           
@@ -247,11 +367,14 @@ const Profiles: React.FC = () => {
             )}
           </div>
           <Button 
-            className="border border-white/30 text-white hover:bg-white/10 bg-transparent px-3 py-1.5 text-sm"
+            className="border border-white/30 text-white hover:bg-white/10 bg-transparent px-4 py-2 text-sm transition-all duration-200 hover:border-white/50"
             onClick={() => {
               setFilteredProfiles(allProfiles);
               setAiSearchMode(false);
               setSearchQuery("");
+              setAiSuggestions([]);
+              setCurrentPage(1);
+              logger.info('🧹 Filtros limpiados');
             }}
           >
             Limpiar filtros
