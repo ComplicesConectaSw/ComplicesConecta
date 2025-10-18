@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import "@/styles/animations.css";
 import { logger } from '@/lib/logger';
 import { useAuth } from '@/hooks/useAuth';
+import { usePersistedState } from '@/hooks/usePersistedState';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ModeratorApplicationForm from "@/components/forms/ModeratorApplicationForm";
 
