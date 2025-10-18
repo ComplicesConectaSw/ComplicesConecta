@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Header } from "@/components/Header";
+import HeaderNav from "@/components/HeaderNav";
 import { HeroSection } from "@/components/HeroSection";
 import { ProfileCard } from "@/components/profile/MainProfileCard";
 import { Footer } from "@/components/Footer";
@@ -242,7 +242,7 @@ const Index = () => {
       <div className="relative z-10">
         <BetaBanner />
         <div className="pt-16"> {/* Add padding for fixed banner */}
-          <Header />
+          <HeaderNav />
         </div>
       </div>
       
@@ -255,7 +255,7 @@ const Index = () => {
             <div className="text-center space-y-8">
               <div className="space-y-6">
                 <h1 data-testid="main-heading" className="text-4xl md:text-6xl font-bold text-white mb-6 animate-slide-up">
-                  Bienvenido a ComplicesConecta
+                  Bienvenido a la Plataforma Social
                 </h1>
                 <p className="text-xl md:text-2xl text-white/95 max-w-4xl mx-auto leading-relaxed animate-slide-up font-medium px-4">
                   La plataforma <strong className="text-pink-300">más exclusiva</strong> para la comunidad lifestyle mexicana.
@@ -290,7 +290,7 @@ const Index = () => {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-xl">
-                Conoce Más Sobre ComplicesConecta
+                Conoce Más Sobre Nuestra Plataforma
               </h2>
               <p className="text-xl text-white max-w-3xl mx-auto drop-shadow-md">
                 Descubre nuestra misión, únete a nuestro equipo o apoya nuestro crecimiento
@@ -312,7 +312,7 @@ const Index = () => {
                 </CardHeader>
                 <CardContent className="text-center">
                   <p className="text-white mb-6 drop-shadow-sm">
-                    Conoce nuestra misión, visión y valores. Descubre por qué ComplicesConecta es la plataforma más confiable para la comunidad lifestyle.
+                    Conoce nuestra misión, visión y valores. Descubre por qué somos la plataforma más confiable para la comunidad lifestyle.
                   </p>
                   <Button 
                     variant="default" 
@@ -416,7 +416,7 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold text-white mb-4">
-                ¿Por qué elegir ComplicesConecta?
+                ¿Por qué elegir nuestra plataforma?
               </h2>
               <p className="text-xl text-white drop-shadow-sm max-w-3xl mx-auto">
                 La plataforma más segura y discreta para la comunidad swinger. Conectamos parejas y solteros 

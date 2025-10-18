@@ -375,7 +375,7 @@ const Events = () => {
                         }}
                       />
                       <div className="absolute top-3 left-3">
-                        <Badge className="bg-pink-500/80 text-white border border-pink-400 shadow-lg">
+                        <Badge className="!bg-pink-500/80 !text-white !border-pink-400 !shadow-lg">
                           {event.category}
                         </Badge>
                       </div>
@@ -461,7 +461,7 @@ const Events = () => {
                         }}
                       />
                       <div className="absolute top-3 left-3">
-                        <Badge className="bg-purple-500/80 text-white border border-purple-400 shadow-lg">
+                        <Badge className="!bg-purple-500/80 !text-white !border-purple-400 !shadow-lg">
                           {club.category}
                         </Badge>
                       </div>
