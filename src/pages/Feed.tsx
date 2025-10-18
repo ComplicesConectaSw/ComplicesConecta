@@ -128,7 +128,7 @@ const Feed = () => {
                   <div className="flex items-center justify-between p-4 pb-3">
                     <div className="flex items-center space-x-3">
                       <img
-                        src={post.profile?.avatar_url || '/compliceslogo.png'}
+                        src={post.profile?.avatar_url || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face&auto=format&q=80'}
                         alt={post.profile?.name || 'Usuario'}
                         className="w-10 h-10 rounded-full object-cover"
                       />

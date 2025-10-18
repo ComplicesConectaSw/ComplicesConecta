@@ -85,7 +85,7 @@ const NavigationEnhanced: React.FC = () => {
     ...baseNavItems.slice(2), // chat, matches, tokens
     { id: 'requests', icon: UserPlus, label: 'Solicitudes', path: '/requests' },
     { id: 'profile', icon: User, label: 'Perfil', path: '/profile' },
-    { id: 'settings', icon: Settings, label: 'Configuración', path: '/edit-profile-single' },
+    { id: 'settings', icon: Settings, label: 'Configuración', path: '/settings' },
   ];
 
   // Update active item based on current path
@@ -99,7 +99,7 @@ const NavigationEnhanced: React.FC = () => {
 
   // Solo mostrar navegación completa si está autenticado
   if (!isAuthenticated || !demoUser) {
-    if (!_isVisible) return null; // Ocultar navegación si no está logueado
+    return null; // Ocultar navegación si no está logueado
   }
 
   const handleLogout = () => {
