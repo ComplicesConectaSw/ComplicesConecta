@@ -49,16 +49,16 @@ const Profiles: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const profilesPerPage = 9;
 
-  // Datos de ejemplo expandidos con información completa del respaldo
+  // Datos de ejemplo con intereses swinger y tipos de cuenta apropiados
   const mockProfiles: Profile[] = [
     {
       id: "1",
       name: "María Elena",
       age: 28,
       location: "Ciudad de México",
-      bio: "Fotógrafa profesional especializada en retratos. Me encanta capturar momentos únicos y explorar culturas a través de mis viajes. Practico yoga desde hace 5 años y disfruto cocinando platos de diferentes países.",
+      bio: "Fotógrafa profesional especializada en eventos privados. Discreta y respetuosa, busco conexiones auténticas en el ambiente swinger. Me encanta capturar momentos únicos y explorar nuevas experiencias.",
       images: ["https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=600&fit=crop&crop=face"],
-      interests: ["Fotografía", "Viajes", "Yoga", "Arte", "Cocina"],
+      interests: ["Swinger", "Eventos Privados", "Fotografía", "Discreción", "Intercambio"],
       isOnline: true,
       verified: true
     },
@@ -67,9 +67,9 @@ const Profiles: React.FC = () => {
       name: "Carlos Mendoza",
       age: 32,
       location: "Guadalajara",
-      bio: "Chef ejecutivo con 8 años de experiencia. Toco la guitarra en mis ratos libres y soy un apasionado del senderismo. Leo principalmente novela histórica y filosofía. Busco a alguien con quien compartir aventuras culinarias y conversaciones profundas.",
+      bio: "Chef ejecutivo con experiencia en eventos exclusivos. Discreto y profesional, organizo cenas íntimas para parejas aventureras. Busco conexiones maduras y respetuosas.",
       images: ["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face"],
-      interests: ["Cocina", "Música", "Senderismo", "Literatura"],
+      interests: ["Swinger", "Eventos Privados", "Gastronomía", "Parejas", "Discreción"],
       isOnline: false,
       verified: true
     },
@@ -78,9 +78,9 @@ const Profiles: React.FC = () => {
       name: "Gabriela",
       age: 26,
       location: "Monterrey",
-      bio: "Artista y escritora. Me encanta el café y las buenas conversaciones.",
+      bio: "Artista creativa con mente abierta. Discreta y respetuosa, disfruto explorando nuevas experiencias en el lifestyle alternativo.",
       images: ["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face"],
-      interests: ["Arte", "Lectura", "Café", "Cine", "Teatro"],
+      interests: ["Swinger", "Arte", "Lifestyle", "Discreción", "Nuevas Experiencias"],
       isOnline: true,
       verified: true
     },
@@ -89,9 +89,9 @@ const Profiles: React.FC = () => {
       name: "Diego",
       age: 30,
       location: "Puebla",
-      bio: "Desarrollador de software apasionado por el deporte y la vida sana.",
+      bio: "Profesional discreto que disfruta del lifestyle swinger. Busco parejas maduras para eventos privados y experiencias únicas.",
       images: ["https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&crop=face"],
-      interests: ["Deporte", "Tecnología", "Naturaleza", "Fitness"],
+      interests: ["Swinger", "Eventos Privados", "Parejas", "Discreción", "Fitness"],
       isOnline: true,
       verified: true
     },
@@ -100,9 +100,9 @@ const Profiles: React.FC = () => {
       name: "Laura",
       age: 29,
       location: "Tijuana",
-      bio: "Bailarina profesional que ama explorar nuevos sabores y culturas.",
+      bio: "Bailarina profesional que organiza eventos privados. Discreta y respetuosa, busco parejas aventureras para experiencias únicas.",
       images: ["https://images.unsplash.com/photo-1488716820095-cbe80883c496?w=400&h=600&fit=crop&crop=face"],
-      interests: ["Danza", "Música", "Viajes", "Gastronomía"],
+      interests: ["Swinger", "Eventos Privados", "Danza", "Parejas", "Discreción"],
       isOnline: true,
       verified: true
     },
@@ -111,9 +111,9 @@ const Profiles: React.FC = () => {
       name: "Javier",
       age: 27,
       location: "Cancún",
-      bio: "Surfista y fotógrafo de naturaleza. Siempre en busca de la ola perfecta.",
+      bio: "Fotógrafo especializado en eventos privados. Discreto y profesional, capturo momentos únicos en el ambiente swinger.",
       images: ["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face"],
-      interests: ["Surf", "Fotografía", "Aventura", "Naturaleza"],
+      interests: ["Swinger", "Fotografía", "Eventos Privados", "Discreción", "Aventura"],
       isOnline: false,
       verified: true
     },
@@ -122,9 +122,9 @@ const Profiles: React.FC = () => {
       name: "Carmen",
       age: 31,
       location: "Mérida",
-      bio: "Historiadora del arte con pasión por la arquitectura andaluza.",
+      bio: "Profesional discreta con experiencia en el lifestyle alternativo. Busco parejas maduras para eventos exclusivos y conexiones auténticas.",
       images: ["https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=600&fit=crop&crop=face"],
-      interests: ["Historia", "Arquitectura", "Vino", "Cultura"],
+      interests: ["Swinger", "Eventos Privados", "Parejas", "Discreción", "Cultura"],
       isOnline: true,
       verified: true
     },
@@ -133,9 +133,9 @@ const Profiles: React.FC = () => {
       name: "Pablo",
       age: 33,
       location: "León",
-      bio: "Emprendedor tech y ciclista apasionado. Construyendo el futuro.",
+      bio: "Emprendedor discreto que organiza eventos privados para parejas aventureras. Profesional y respetuoso.",
       images: ["https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&crop=face"],
-      interests: ["Ciclismo", "Tecnología", "Innovación", "Emprendimiento"],
+      interests: ["Swinger", "Eventos Privados", "Parejas", "Discreción", "Networking"],
       isOnline: true,
       verified: true
     },
@@ -144,9 +144,9 @@ const Profiles: React.FC = () => {
       name: "Isabella",
       age: 26,
       location: "Playa del Carmen",
-      bio: "Instructora de yoga y terapeuta holística. Conectando cuerpo, mente y espíritu.",
+      bio: "Instructora de yoga especializada en wellness para parejas. Discreta y profesional, busco conexiones auténticas en el lifestyle alternativo.",
       images: ["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face"],
-      interests: ["Yoga", "Meditación", "Naturaleza", "Wellness"],
+      interests: ["Swinger", "Wellness", "Parejas", "Discreción", "Yoga"],
       isOnline: true,
       verified: true
     }
@@ -156,6 +156,23 @@ const Profiles: React.FC = () => {
     setAllProfiles(mockProfiles);
     setFilteredProfiles(mockProfiles);
   }, []);
+
+  // Sugerencias de IA actualizadas para tema swinger
+  const generateAiSuggestions = (query: string) => {
+    const suggestions = [
+      "Parejas swinger experimentadas",
+      "Eventos privados discretos",
+      "Intercambio consensual",
+      "Lifestyle alternativo",
+      "Parejas aventureras",
+      "Eventos exclusivos",
+      "Discreción y respeto",
+      "Nuevas experiencias",
+      "Ambiente swinger",
+      "Conexiones auténticas"
+    ];
+    return suggestions.filter(s => s.toLowerCase().includes(query.toLowerCase())).slice(0, 3);
+  };
 
   const handleAiSearch = async (query: string) => {
     setIsSearching(true);
@@ -175,7 +192,7 @@ const Profiles: React.FC = () => {
       
       setFilteredProfiles(filtered);
       setAiSearchMode(true);
-      setAiSuggestions(["parejas aventureras", "lifestyle México", "eventos privados", "swinger"]);
+      setAiSuggestions(["parejas swinger", "eventos privados", "lifestyle alternativo", "discreción"]);
       logger.info('🤖 Búsqueda IA completada', { query, results: filtered.length });
     } catch (error) {
       logger.error('❌ Error en búsqueda IA:', { error });
@@ -184,10 +201,60 @@ const Profiles: React.FC = () => {
     }
   };
 
-  const _handleFilterChange = (filters: FilterState) => {
+  const handleFilterChange = (filters: FilterState) => {
     logger.info('🔍 Filtros aplicados', { filters });
-    // Lógica de filtrado simplificada
-    setFilteredProfiles(allProfiles);
+    
+    let filtered = allProfiles;
+
+    // Filtro por ubicación
+    if (filters.location && filters.location !== "all") {
+      filtered = filtered.filter(profile => 
+        profile.location.toLowerCase().includes(filters.location.toLowerCase())
+      );
+    }
+
+    // Filtro por rango de edad
+    if (filters.ageRange && filters.ageRange[0] !== 18 && filters.ageRange[1] !== 50) {
+      filtered = filtered.filter(profile => 
+        profile.age >= filters.ageRange[0] && profile.age <= filters.ageRange[1]
+      );
+    }
+
+    // Filtro por intereses
+    if (filters.interests && filters.interests.length > 0) {
+      filtered = filtered.filter(profile => 
+        filters.interests.some(interest => 
+          profile.interests.some(profileInterest => 
+            profileInterest.toLowerCase().includes(interest.toLowerCase())
+          )
+        )
+      );
+    }
+
+    // Filtro por solo online
+    if (filters.onlineOnly) {
+      filtered = filtered.filter(profile => profile.isOnline);
+    }
+
+    // Filtro por búsqueda de texto
+    if (filters.searchQuery && filters.searchQuery.trim() !== "") {
+      const query = filters.searchQuery.toLowerCase();
+      filtered = filtered.filter(profile => 
+        profile.name.toLowerCase().includes(query) ||
+        profile.bio.toLowerCase().includes(query) ||
+        profile.location.toLowerCase().includes(query) ||
+        profile.interests.some(interest => 
+          interest.toLowerCase().includes(query)
+        )
+      );
+    }
+
+    setFilteredProfiles(filtered);
+    setCurrentPage(1);
+    logger.info('✅ Filtros aplicados exitosamente', { 
+      originalCount: allProfiles.length, 
+      filteredCount: filtered.length 
+    });
   };
 
   // Paginación
@@ -354,10 +421,87 @@ const Profiles: React.FC = () => {
             <Filter className="h-5 w-5 text-muted-foreground" />
             <h3 className="text-lg font-semibold">Filtros Avanzados</h3>
           </div>
-          {/* Filtros simplificados para evitar dependencias faltantes */}
           <Card className="bg-white/10 backdrop-blur-sm border-white/20">
-            <CardContent className="p-4">
-              <p className="text-muted-foreground">Filtros disponibles próximamente</p>
+            <CardContent className="p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {/* Filtro por ubicación */}
+                <div>
+                  <label className="block text-sm font-medium text-white mb-2">Ubicación</label>
+                  <select 
+                    className="w-full p-2 bg-white/10 border border-white/20 rounded-md text-white"
+                    onChange={(e) => {
+                      const filters: FilterState = {
+                        location: e.target.value,
+                        ageRange: [18, 50],
+                        interests: [],
+                        onlineOnly: false,
+                        searchQuery: ""
+                      };
+                      handleFilterChange(filters);
+                    }}
+                  >
+                    <option value="all">Todas las ubicaciones</option>
+                    <option value="Ciudad de México">Ciudad de México</option>
+                    <option value="Guadalajara">Guadalajara</option>
+                    <option value="Monterrey">Monterrey</option>
+                    <option value="Puebla">Puebla</option>
+                    <option value="Tijuana">Tijuana</option>
+                    <option value="Cancún">Cancún</option>
+                    <option value="Mérida">Mérida</option>
+                    <option value="León">León</option>
+                    <option value="Playa del Carmen">Playa del Carmen</option>
+                  </select>
+                </div>
+
+                {/* Filtro por intereses */}
+                <div>
+                  <label className="block text-sm font-medium text-white mb-2">Intereses</label>
+                  <select 
+                    className="w-full p-2 bg-white/10 border border-white/20 rounded-md text-white"
+                    onChange={(e) => {
+                      const filters: FilterState = {
+                        location: "all",
+                        ageRange: [18, 50],
+                        interests: e.target.value ? [e.target.value] : [],
+                        onlineOnly: false,
+                        searchQuery: ""
+                      };
+                      handleFilterChange(filters);
+                    }}
+                  >
+                    <option value="">Todos los intereses</option>
+                    <option value="Swinger">Swinger</option>
+                    <option value="Eventos Privados">Eventos Privados</option>
+                    <option value="Parejas">Parejas</option>
+                    <option value="Discreción">Discreción</option>
+                    <option value="Intercambio">Intercambio</option>
+                    <option value="Lifestyle">Lifestyle</option>
+                    <option value="Nuevas Experiencias">Nuevas Experiencias</option>
+                  </select>
+                </div>
+
+                {/* Filtro por estado online */}
+                <div>
+                  <label className="block text-sm font-medium text-white mb-2">Estado</label>
+                  <select 
+                    className="w-full p-2 bg-white/10 border border-white/20 rounded-md text-white"
+                    onChange={(e) => {
+                      const filters: FilterState = {
+                        location: "all",
+                        ageRange: [18, 50],
+                        interests: [],
+                        onlineOnly: e.target.value === "online",
+                        searchQuery: ""
+                      };
+                      handleFilterChange(filters);
+                    }}
+                  >
+                    <option value="all">Todos</option>
+                    <option value="online">Solo online</option>
+                    <option value="offline">Solo offline</option>
+                  </select>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </div>
