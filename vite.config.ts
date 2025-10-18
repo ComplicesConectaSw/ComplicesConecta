@@ -31,6 +31,10 @@ export default defineConfig({
     host: true,
     port: 8080,
     cors: true,
+    hmr: {
+      port: 8080,
+      host: 'localhost'
+    },
     headers: {
       'Cross-Origin-Embedder-Policy': 'unsafe-none',
       'Cross-Origin-Opener-Policy': 'same-origin'
