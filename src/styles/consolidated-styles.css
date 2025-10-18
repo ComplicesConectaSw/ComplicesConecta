@@ -366,6 +366,31 @@ body {
   }
 }
 
+/* ===== NAVIGATION ENHANCED FIXES ===== */
+/* Asegurar que NavigationEnhanced esté siempre en la parte inferior */
+[data-testid="main-navigation"] {
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 50 !important;
+  transform: none !important;
+}
+
+/* Ocultar cualquier HeaderNav en páginas de perfiles */
+.profile-page .fixed.top-0,
+.profile-page header[class*="fixed"],
+.profile-page [class*="HeaderNav"] {
+  display: none !important;
+}
+
+/* Asegurar que NavigationEnhanced sea visible en páginas de perfiles */
+.profile-page [data-testid="main-navigation"] {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
 /* Desktop optimizations */
 @media (min-width: 1025px) {
   .nav-button-desktop {

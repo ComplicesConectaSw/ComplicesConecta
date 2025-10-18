@@ -132,7 +132,7 @@ const ProfileCouple: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-hero-gradient">
+    <div className="min-h-screen relative overflow-hidden bg-hero-gradient profile-page">
       <div className="fixed inset-0 z-0">
         <div className="absolute inset-0 opacity-40">
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-primary/20 via-transparent to-accent/20 animate-gradient-x"></div>

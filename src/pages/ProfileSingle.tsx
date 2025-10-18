@@ -195,7 +195,7 @@ const ProfileSingle: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-pink-800">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-pink-800 profile-page">
       {/* Navegación superior */}
       <NavigationEnhanced />
       

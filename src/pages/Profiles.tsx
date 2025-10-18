@@ -121,7 +121,7 @@ const Profiles: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 p-4 sm:p-6 lg:p-8 profile-page">
       <ContrastFixer enabled={true} level="AA" />
       
       {/* Elementos decorativos */}
