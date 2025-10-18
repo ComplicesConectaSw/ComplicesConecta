@@ -99,13 +99,13 @@ export const MatchCard: React.FC<MatchCardProps> = ({
               {/* Badges */}
               <div className="absolute top-3 left-3 flex flex-col gap-2">
                 {verified && (
-                  <Badge className="bg-blue-500 text-white text-xs">
+                  <Badge className="bg-blue-600 text-white text-xs shadow-lg border border-blue-400">
                     <Star className="h-3 w-3 mr-1 fill-current" />
                     Verificado
                   </Badge>
                 )}
                 {accountType === 'couple' && (
-                  <Badge className="bg-purple-500 text-white text-xs">
+                  <Badge className="bg-purple-600 text-white text-xs shadow-lg border border-purple-400">
                     <Users className="h-3 w-3 mr-1" />
                     Pareja
                   </Badge>
@@ -160,30 +160,30 @@ export const MatchCard: React.FC<MatchCardProps> = ({
               <UnifiedButton
                 variant="outline"
                 size="lg"
-                className="w-14 h-14 rounded-full border-2 border-gray-300 hover:border-red-400 hover:bg-red-50"
+                className="w-14 h-14 rounded-full border-2 border-red-400 bg-red-50 hover:border-red-500 hover:bg-red-100 shadow-lg"
                 onClick={onPass}
               >
-                <X className="h-6 w-6 text-gray-600 hover:text-red-500" />
+                <X className="h-6 w-6 text-red-600" />
               </UnifiedButton>
               
               {onSuperLike && (
                 <UnifiedButton
                   variant="outline"
                   size="lg"
-                  className="w-14 h-14 rounded-full border-2 border-blue-300 hover:border-blue-500 hover:bg-blue-50"
+                  className="w-14 h-14 rounded-full border-2 border-blue-400 bg-blue-50 hover:border-blue-500 hover:bg-blue-100 shadow-lg"
                   onClick={onSuperLike}
                 >
-                  <Sparkles className="h-6 w-6 text-blue-500" />
+                  <Sparkles className="h-6 w-6 text-blue-600" />
                 </UnifiedButton>
               )}
               
               <UnifiedButton
                 variant="outline"
                 size="lg"
-                className="w-14 h-14 rounded-full border-2 border-pink-300 hover:border-pink-500 hover:bg-pink-50"
+                className="w-14 h-14 rounded-full border-2 border-pink-400 bg-pink-50 hover:border-pink-500 hover:bg-pink-100 shadow-lg"
                 onClick={onLike}
               >
-                <Heart className="h-6 w-6 text-pink-500" />
+                <Heart className="h-6 w-6 text-pink-600" />
               </UnifiedButton>
             </div>
           </div>
@@ -234,13 +234,13 @@ export const MatchCard: React.FC<MatchCardProps> = ({
             {/* Badges */}
             <div className="absolute top-4 left-4 flex flex-col gap-2">
               {verified && (
-                <Badge className="bg-blue-500 text-white">
+                <Badge className="bg-blue-600 text-white shadow-lg border border-blue-400">
                   <Star className="h-4 w-4 mr-1 fill-current" />
                   Verificado
                 </Badge>
               )}
               {accountType === 'couple' && (
-                <Badge className="bg-purple-500 text-white">
+                <Badge className="bg-purple-600 text-white shadow-lg border border-purple-400">
                   <Users className="h-4 w-4 mr-1" />
                   Pareja
                 </Badge>
@@ -309,27 +309,27 @@ export const MatchCard: React.FC<MatchCardProps> = ({
             <UnifiedButton
               variant="outline"
               size="lg"
-              className="w-16 h-16 rounded-full border-2 border-gray-300 hover:border-red-400 hover:bg-red-50 transition-all duration-200"
+              className="w-16 h-16 rounded-full border-2 border-red-400 bg-red-50 hover:border-red-500 hover:bg-red-100 transition-all duration-200 shadow-lg"
               onClick={onPass}
             >
-              <X className="h-8 w-8 text-gray-600 hover:text-red-500" />
+              <X className="h-8 w-8 text-red-600" />
             </UnifiedButton>
             
             {onSuperLike && (
               <UnifiedButton
                 variant="outline"
                 size="lg"
-                className="w-16 h-16 rounded-full border-2 border-blue-300 hover:border-blue-500 hover:bg-blue-50 transition-all duration-200"
+                className="w-16 h-16 rounded-full border-2 border-blue-400 bg-blue-50 hover:border-blue-500 hover:bg-blue-100 transition-all duration-200 shadow-lg"
                 onClick={onSuperLike}
               >
-                <Sparkles className="h-8 w-8 text-blue-500" />
+                <Sparkles className="h-8 w-8 text-blue-600" />
               </UnifiedButton>
             )}
             
             <UnifiedButton
               gradient
               size="lg"
-              className="w-16 h-16 rounded-full transition-all duration-200 hover:scale-110"
+              className="w-16 h-16 rounded-full transition-all duration-200 hover:scale-110 shadow-lg bg-gradient-to-r from-pink-500 to-purple-500"
               onClick={onLike}
             >
               <Heart className="h-8 w-8 text-white" />

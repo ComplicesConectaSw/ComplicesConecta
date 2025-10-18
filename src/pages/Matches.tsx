@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-// import { Header } from "@/components/Header";
-import NavigationEnhanced from "@/components/NavigationEnhanced";
+import HeaderNav from "@/components/HeaderNav";
 import { MatchCard } from "@/components/ui/MatchCard";
 // import { ProfileCard } from "@/components/ui/ProfileCard";
 // import { UnifiedTabs } from "@/components/ui/UnifiedTabs";
@@ -40,7 +39,7 @@ const Matches = () => {
       id: 1,
       name: "Anabella & Julio",
       age: 32,
-      image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=600&fit=crop&crop=face",
+      image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&h=600&fit=crop&crop=face",
       compatibility: 98,
       mutualInterests: ["Fiestas Privadas", "Intercambio", "Eventos VIP"],
       distance: 1.2,
@@ -52,7 +51,7 @@ const Matches = () => {
       id: 2,
       name: "Sofía",
       age: 29,
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=600&fit=crop&crop=face",
+      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=600&fit=crop&crop=face",
       compatibility: 94,
       mutualInterests: ["Unicornio", "Experiencias Nuevas", "Discreción"],
       distance: 3.5,
@@ -64,7 +63,7 @@ const Matches = () => {
       id: 3,
       name: "Carmen & Roberto",
       age: 35,
-      image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=600&fit=crop&crop=face",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&crop=face",
       compatibility: 91,
       mutualInterests: ["Intercambio Suave", "Clubs Exclusivos", "Parejas Verificadas"],
       distance: 5.8,
@@ -88,7 +87,7 @@ const Matches = () => {
       id: 5,
       name: "Valentina",
       age: 27,
-      image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=600&fit=crop&crop=face",
+      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face",
       compatibility: 96,
       mutualInterests: ["Lifestyle", "Aventuras", "Discreción Total"],
       distance: 4.2,
@@ -226,15 +225,15 @@ const Matches = () => {
       </div>
       
       <div className="relative z-10">
-        <NavigationEnhanced />
+        <HeaderNav />
       
-        <main className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 max-w-6xl pb-24">
+        <main className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 max-w-6xl pt-24">
           {/* Back Button */}
           <div className="mb-6">
             <UnifiedButton 
               variant="outline" 
               onClick={() => navigate('/')}
-              className="bg-card/80 backdrop-blur-sm border-primary/20 hover:bg-primary/10 transition-all duration-300 text-white"
+              className="bg-gray-800/50 backdrop-blur-sm border-gray-600 hover:bg-gray-700/50 transition-all duration-300 text-gray-200 hover:text-white"
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Volver al Inicio
@@ -243,69 +242,69 @@ const Matches = () => {
 
           {/* Page Header */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-lg">
               Tus Matches
-              <span className="block bg-love-gradient bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent drop-shadow-lg">
                 Conexiones Swinger
               </span>
             </h1>
-            <p className="text-xl text-white/90 max-w-2xl mx-auto">
+            <p className="text-xl text-white/90 max-w-2xl mx-auto drop-shadow-md">
               Parejas y solteros verificados que han mostrado interés mutuo contigo en la comunidad swinger
             </p>
           </div>
 
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <UnifiedCard className="bg-card/80 backdrop-blur-sm border-primary/10">
+            <UnifiedCard className="bg-white/5 backdrop-blur-sm border-white/10 shadow-lg">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-white/70">Total Matches</p>
-                  <p className="text-3xl font-bold text-white">{currentMatches.length}</p>
+                  <p className="text-sm text-gray-200 font-medium">Total Matches</p>
+                  <p className="text-3xl font-bold text-white drop-shadow-lg">{currentMatches.length}</p>
                 </div>
-                <div className="bg-primary/10 p-3 rounded-full">
-                  <Heart className="h-6 w-6 text-primary" fill="currentColor" />
+                <div className="bg-pink-500/30 p-3 rounded-full shadow-md">
+                  <Heart className="h-6 w-6 text-pink-300" fill="currentColor" />
                 </div>
               </div>
             </UnifiedCard>
 
-            <UnifiedCard className="bg-card/80 backdrop-blur-sm border-primary/10">
+            <UnifiedCard className="bg-white/5 backdrop-blur-sm border-white/10 shadow-lg">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-white/70">Nuevos Matches</p>
-                  <p className="text-3xl font-bold text-white">
+                  <p className="text-sm text-gray-200 font-medium">Nuevos Matches</p>
+                  <p className="text-3xl font-bold text-white drop-shadow-lg">
                     {currentMatches.filter(m => m.status === 'new').length}
                   </p>
                 </div>
-                <div className="bg-accent/20 p-3 rounded-full">
-                  <Flame className="h-6 w-6 text-accent" />
+                <div className="bg-orange-500/30 p-3 rounded-full shadow-md">
+                  <Flame className="h-6 w-6 text-orange-300" />
                 </div>
               </div>
             </UnifiedCard>
 
-            <UnifiedCard className="bg-card/80 backdrop-blur-sm border-primary/10">
+            <UnifiedCard className="bg-white/5 backdrop-blur-sm border-white/10 shadow-lg">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-white/70">Conversaciones</p>
-                  <p className="text-3xl font-bold text-white">
+                  <p className="text-sm text-gray-200 font-medium">Conversaciones</p>
+                  <p className="text-3xl font-bold text-white drop-shadow-lg">
                     {currentMatches.filter(m => m.hasUnreadMessage).length}
                   </p>
                 </div>
-                <div className="bg-secondary/20 p-3 rounded-full">
-                  <MessageCircle className="h-6 w-6 text-primary" />
+                <div className="bg-blue-500/30 p-3 rounded-full shadow-md">
+                  <MessageCircle className="h-6 w-6 text-blue-300" />
                 </div>
               </div>
             </UnifiedCard>
 
-            <UnifiedCard className="bg-card/80 backdrop-blur-sm border-primary/10">
+            <UnifiedCard className="bg-white/5 backdrop-blur-sm border-white/10 shadow-lg">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-white/70">Compatibilidad</p>
-                  <p className="text-3xl font-bold text-white">
+                  <p className="text-sm text-gray-200 font-medium">Compatibilidad</p>
+                  <p className="text-3xl font-bold text-white drop-shadow-lg">
                     {currentMatches.length > 0 ? `${Math.round(currentMatches.reduce((acc, m) => acc + m.compatibility, 0) / currentMatches.length)}%` : '0%'}
                   </p>
                 </div>
-                <div className="bg-accent/20 p-3 rounded-full">
-                  <Crown className="h-6 w-6 text-accent" />
+                <div className="bg-yellow-500/30 p-3 rounded-full shadow-md">
+                  <Crown className="h-6 w-6 text-yellow-300" />
                 </div>
               </div>
             </UnifiedCard>
@@ -322,7 +321,11 @@ const Matches = () => {
             <UnifiedButton
               variant={filter === 'all' ? 'default' : 'outline'}
               onClick={() => setFilter('all')}
-              className={`flex items-center gap-2 ${filter === 'all' ? 'text-white' : 'text-white/90 hover:text-white'}`}
+              className={`flex items-center gap-2 ${
+                filter === 'all' 
+                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0 shadow-lg' 
+                  : 'bg-gray-800/50 text-gray-200 border-gray-600 hover:bg-gray-700/50 hover:text-white'
+              }`}
             >
               <Users className="h-4 w-4" />
               Todos ({currentMatches.length})
@@ -330,7 +333,11 @@ const Matches = () => {
             <UnifiedButton
               variant={filter === 'new' ? 'default' : 'outline'}
               onClick={() => setFilter('new')}
-              className={`flex items-center gap-2 ${filter === 'new' ? 'text-white' : 'text-white/90 hover:text-white'}`}
+              className={`flex items-center gap-2 ${
+                filter === 'new' 
+                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0 shadow-lg' 
+                  : 'bg-gray-800/50 text-gray-200 border-gray-600 hover:bg-gray-700/50 hover:text-white'
+              }`}
             >
               <Flame className="h-4 w-4" />
               Nuevos ({currentMatches.filter(m => m.status === 'new').length})
@@ -338,7 +345,11 @@ const Matches = () => {
             <UnifiedButton
               variant={filter === 'recent' ? 'default' : 'outline'}
               onClick={() => setFilter('recent')}
-              className={`flex items-center gap-2 ${filter === 'recent' ? 'text-white' : 'text-white/90 hover:text-white'}`}
+              className={`flex items-center gap-2 ${
+                filter === 'recent' 
+                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0 shadow-lg' 
+                  : 'bg-gray-800/50 text-gray-200 border-gray-600 hover:bg-gray-700/50 hover:text-white'
+              }`}
             >
               <Sparkles className="h-4 w-4" />
               Recientes ({currentMatches.filter(m => m.matchedAt.includes('horas') || m.matchedAt.includes('Ayer')).length})
@@ -346,7 +357,11 @@ const Matches = () => {
             <UnifiedButton
               variant={filter === 'unread' ? 'default' : 'outline'}
               onClick={() => setFilter('unread')}
-              className={`flex items-center gap-2 ${filter === 'unread' ? 'text-white' : 'text-white/90 hover:text-white'}`}
+              className={`flex items-center gap-2 ${
+                filter === 'unread' 
+                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0 shadow-lg' 
+                  : 'bg-gray-800/50 text-gray-200 border-gray-600 hover:bg-gray-700/50 hover:text-white'
+              }`}
             >
               <MessageCircle className="h-4 w-4" />
               No leídos ({currentMatches.filter(m => m.hasUnreadMessage).length})
@@ -407,6 +422,7 @@ const Matches = () => {
               size="lg"
               gradient={true}
               onClick={() => navigate('/discover')}
+              className="bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg hover:from-purple-700 hover:to-pink-700"
             >
               <Users className="mr-2 h-5 w-5" />
               Descubrir Perfiles Swinger
@@ -414,8 +430,6 @@ const Matches = () => {
           </div>
         )}
         </main>
-
-        <NavigationEnhanced />
       </div>
       
       {/* Custom Styles */}
