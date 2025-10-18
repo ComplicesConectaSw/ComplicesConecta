@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import AdminNav from '@/components/AdminNav';
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -206,14 +207,18 @@ const AdminCareerApplications = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 flex items-center justify-center">
-        <div className="text-white text-xl">Cargando solicitudes...</div>
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900">
+        <AdminNav userRole="admin" />
+        <div className="flex items-center justify-center h-64 pt-24">
+          <div className="text-white text-xl">Cargando solicitudes...</div>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 relative overflow-hidden">
+      <AdminNav userRole="admin" />
       {/* Animated Background Elements */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-10 w-72 h-72 bg-pink-500/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
@@ -222,7 +227,7 @@ const AdminCareerApplications = () => {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 min-h-screen">
+      <div className="relative z-10 min-h-screen pt-20">
         {/* Header */}
         <div className="bg-black/30 backdrop-blur-sm border-b border-white/10 p-3 sm:p-4">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between max-w-7xl mx-auto gap-3 sm:gap-0">

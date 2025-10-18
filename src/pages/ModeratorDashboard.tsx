@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import AdminNav from '@/components/AdminNav';
 import { 
   Shield, 
   AlertTriangle, 
@@ -339,8 +340,9 @@ const ModeratorDashboard = () => {
   const activeSuspensions = suspensions.filter(s => s.status === 'active');
 
   return (
-    <div className="min-h-screen bg-hero-gradient p-6">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-hero-gradient">
+      <AdminNav userRole="moderator" />
+      <div className="max-w-7xl mx-auto p-6 pt-24">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-white mb-2 flex items-center gap-2">
             <Shield className="h-8 w-8" />

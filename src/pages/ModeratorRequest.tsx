@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import AdminNav from '@/components/AdminNav';
 import { 
   AlertCircle, 
   ArrowLeft, 
@@ -121,8 +122,9 @@ const ModeratorRequest = () => {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-hero-gradient p-6">
-        <div className="max-w-2xl mx-auto">
+      <div className="min-h-screen bg-hero-gradient">
+        <AdminNav userRole="moderator" />
+        <div className="max-w-2xl mx-auto p-6 pt-24">
           <Card className="bg-white/10 backdrop-blur-sm border-white/20">
             <CardContent className="p-8 text-center">
               <CheckCircle className="h-16 w-16 text-green-400 mx-auto mb-6" />
@@ -158,8 +160,9 @@ const ModeratorRequest = () => {
   }
 
   return (
-    <div className="min-h-screen bg-hero-gradient p-6">
-      <div className="max-w-2xl mx-auto">
+    <div className="min-h-screen bg-hero-gradient">
+      <AdminNav userRole="moderator" />
+      <div className="max-w-2xl mx-auto p-6 pt-24">
         <div className="mb-8">
           <Link to="/" className="inline-flex items-center text-white/80 hover:text-white mb-4">
             <ArrowLeft className="h-4 w-4 mr-2" />

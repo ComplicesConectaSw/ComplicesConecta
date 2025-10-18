@@ -10,6 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
+import AdminNav from '@/components/AdminNav';
 import {
   Users,
   Shield,
@@ -454,7 +455,8 @@ const Admin = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-primary/5">
-      <div className="container mx-auto px-4 py-8">
+      <AdminNav userRole="admin" />
+      <div className="container mx-auto px-4 py-8 pt-24">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-2">Panel de Administración</h1>
           <p className="text-muted-foreground">Gestiona usuarios, estadísticas y configuraciones del sistema</p>
