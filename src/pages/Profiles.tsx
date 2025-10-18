@@ -13,7 +13,9 @@ import {
   Brain, 
   Sparkles, 
   Heart, 
-  MapPin 
+  MapPin,
+  ArrowLeft,
+  Users
 } from 'lucide-react';
 
 interface FilterState {
@@ -47,16 +49,16 @@ const Profiles: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const profilesPerPage = 9;
 
-  // Datos de ejemplo expandidos para demostrar funcionalidad
+  // Datos de ejemplo expandidos con información completa del respaldo
   const mockProfiles: Profile[] = [
     {
       id: "1",
-      name: "Ana García",
+      name: "María Elena",
       age: 28,
       location: "Ciudad de México",
-      bio: "Amante de los viajes y la aventura. Busco conexiones auténticas y experiencias únicas.",
-      images: ["/placeholder.svg"],
-      interests: ["viajes", "música", "cocina", "swinger"],
+      bio: "Fotógrafa profesional especializada en retratos. Me encanta capturar momentos únicos y explorar culturas a través de mis viajes. Practico yoga desde hace 5 años y disfruto cocinando platos de diferentes países.",
+      images: ["https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=600&fit=crop&crop=face"],
+      interests: ["Fotografía", "Viajes", "Yoga", "Arte", "Cocina"],
       isOnline: true,
       verified: true
     },
@@ -65,88 +67,88 @@ const Profiles: React.FC = () => {
       name: "Carlos Mendoza",
       age: 32,
       location: "Guadalajara",
-      bio: "Profesional exitoso que disfruta del lifestyle alternativo. Discreto y respetuoso.",
-      images: ["/placeholder.svg"],
-      interests: ["lifestyle", "fitness", "gastronomía", "eventos privados"],
-      isOnline: true,
+      bio: "Chef ejecutivo con 8 años de experiencia. Toco la guitarra en mis ratos libres y soy un apasionado del senderismo. Leo principalmente novela histórica y filosofía. Busco a alguien con quien compartir aventuras culinarias y conversaciones profundas.",
+      images: ["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face"],
+      interests: ["Cocina", "Música", "Senderismo", "Literatura"],
+      isOnline: false,
       verified: true
     },
     {
       id: "3",
-      name: "María Elena",
+      name: "Gabriela",
       age: 26,
       location: "Monterrey",
-      bio: "Artista creativa con mente abierta. Me encanta explorar nuevas experiencias.",
-      images: ["/placeholder.svg"],
-      interests: ["arte", "danza", "swinger", "cultura"],
-      isOnline: false,
-      verified: false
+      bio: "Artista y escritora. Me encanta el café y las buenas conversaciones.",
+      images: ["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face"],
+      interests: ["Arte", "Lectura", "Café", "Cine", "Teatro"],
+      isOnline: true,
+      verified: true
     },
     {
       id: "4",
-      name: "Roberto Silva",
-      age: 35,
+      name: "Diego",
+      age: 30,
       location: "Puebla",
-      bio: "Empresario aventurero que busca parejas para eventos exclusivos y viajes.",
-      images: ["/placeholder.svg"],
-      interests: ["viajes", "eventos privados", "lifestyle", "networking"],
+      bio: "Desarrollador de software apasionado por el deporte y la vida sana.",
+      images: ["https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&crop=face"],
+      interests: ["Deporte", "Tecnología", "Naturaleza", "Fitness"],
       isOnline: true,
       verified: true
     },
     {
       id: "5",
-      name: "Isabella Cruz",
+      name: "Laura",
       age: 29,
       location: "Tijuana",
-      bio: "Modelo profesional con pasión por la fotografía y los encuentros discretos.",
-      images: ["/placeholder.svg"],
-      interests: ["fotografía", "moda", "swinger", "eventos"],
+      bio: "Bailarina profesional que ama explorar nuevos sabores y culturas.",
+      images: ["https://images.unsplash.com/photo-1488716820095-cbe80883c496?w=400&h=600&fit=crop&crop=face"],
+      interests: ["Danza", "Música", "Viajes", "Gastronomía"],
       isOnline: true,
       verified: true
     },
     {
       id: "6",
-      name: "Diego Herrera",
-      age: 31,
+      name: "Javier",
+      age: 27,
       location: "Cancún",
-      bio: "Instructor de yoga y meditación. Busco conexiones espirituales y físicas.",
-      images: ["/placeholder.svg"],
-      interests: ["yoga", "meditación", "lifestyle", "bienestar"],
+      bio: "Surfista y fotógrafo de naturaleza. Siempre en busca de la ola perfecta.",
+      images: ["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face"],
+      interests: ["Surf", "Fotografía", "Aventura", "Naturaleza"],
       isOnline: false,
       verified: true
     },
     {
       id: "7",
-      name: "Valentina Ruiz",
-      age: 27,
+      name: "Carmen",
+      age: 31,
       location: "Mérida",
-      bio: "Psicóloga con enfoque en relaciones abiertas. Discreta y profesional.",
-      images: ["/placeholder.svg"],
-      interests: ["psicología", "relaciones", "swinger", "terapia"],
+      bio: "Historiadora del arte con pasión por la arquitectura andaluza.",
+      images: ["https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=600&fit=crop&crop=face"],
+      interests: ["Historia", "Arquitectura", "Vino", "Cultura"],
       isOnline: true,
       verified: true
     },
     {
       id: "8",
-      name: "Alejandro Torres",
+      name: "Pablo",
       age: 33,
       location: "León",
-      bio: "Chef reconocido que organiza cenas íntimas y eventos gastronómicos privados.",
-      images: ["/placeholder.svg"],
-      interests: ["gastronomía", "eventos privados", "cocina", "lifestyle"],
+      bio: "Emprendedor tech y ciclista apasionado. Construyendo el futuro.",
+      images: ["https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&crop=face"],
+      interests: ["Ciclismo", "Tecnología", "Innovación", "Emprendimiento"],
       isOnline: true,
       verified: true
     },
     {
       id: "9",
-      name: "Camila Vega",
-      age: 25,
-      location: "Querétaro",
-      bio: "Estudiante de medicina con interés en explorar el lifestyle alternativo.",
-      images: ["/placeholder.svg"],
-      interests: ["medicina", "estudios", "swinger", "salud"],
-      isOnline: false,
-      verified: false
+      name: "Isabella",
+      age: 26,
+      location: "Playa del Carmen",
+      bio: "Instructora de yoga y terapeuta holística. Conectando cuerpo, mente y espíritu.",
+      images: ["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face"],
+      interests: ["Yoga", "Meditación", "Naturaleza", "Wellness"],
+      isOnline: true,
+      verified: true
     }
   ];
 
@@ -198,9 +200,15 @@ const Profiles: React.FC = () => {
       <CardContent className="p-4">
         <div className="flex items-center gap-3 mb-3">
           <div className="relative">
-            <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
-              {profile.name.charAt(0)}
-            </div>
+            <img 
+              src={profile.images[0]} 
+              alt={profile.name}
+              className="w-12 h-12 rounded-full object-cover border-2 border-white/20"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = `https://ui-avatars.com/api/?name=${profile.name}&background=random&color=fff&size=48`;
+              }}
+            />
             {profile.isOnline && (
               <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
             )}
@@ -254,42 +262,42 @@ const Profiles: React.FC = () => {
       <main className="container mx-auto px-4 py-8 pt-24">
         {/* Encabezado de página */}
         <div className="text-center mb-12 pt-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight drop-shadow-lg">
+          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
             Descubre
-            <span className="block bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent mt-2 drop-shadow-lg">
+            <span className="block bg-love-gradient bg-clip-text text-transparent">
               Tu Match Perfecto
             </span>
           </h1>
-          <p className="text-xl text-white max-w-2xl mx-auto mb-8 leading-relaxed drop-shadow-md">
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
             Usa nuestra IA avanzada para encontrar personas compatibles basándose en personalidad, intereses y valores
           </p>
           
           {/* Sección de búsqueda IA */}
-          <Card className="max-w-2xl mx-auto mb-8 bg-white/10 backdrop-blur-sm border-white/20">
+          <Card className="max-w-2xl mx-auto mb-8 shadow-glow border-primary/20">
             <CardContent className="p-6">
               <div className="flex items-center gap-3 mb-4">
                 <div className="flex items-center gap-2">
-                  <Brain className="h-6 w-6 text-purple-400 drop-shadow-md" />
-                  <Sparkles className="h-5 w-5 text-pink-400 animate-pulse drop-shadow-md" />
+                  <Brain className="h-6 w-6 text-primary" />
+                  <Sparkles className="h-5 w-5 text-accent animate-pulse" />
                 </div>
-                <h3 className="text-lg font-semibold text-white drop-shadow-md">Búsqueda Inteligente por IA</h3>
+                <h3 className="text-lg font-semibold">Búsqueda Inteligente por IA</h3>
               </div>
               
               <div className="relative">
                 <div className="flex gap-2">
                   <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-white/70" />
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
                       placeholder="Busca parejas swinger, solteros lifestyle, eventos privados..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-10 pr-4 py-3 text-base bg-white/10 border-white/20 text-white placeholder:text-white/80"
+                      className="pl-10 pr-4 py-3 text-base"
                     />
                   </div>
                   <Button 
                     onClick={() => handleAiSearch(searchQuery)}
                     disabled={isSearching || searchQuery.length < 3}
-                    className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+                    className="px-6 py-3"
                   >
                     {isSearching ? (
                       <div className="flex items-center gap-2">
@@ -305,26 +313,27 @@ const Profiles: React.FC = () => {
                   </Button>
                 </div>
                 
-                {/* Sugerencias de IA */}
-                {aiSuggestions.length > 0 && (
-                  <div className="mt-3">
-                    <p className="text-sm text-white/90 mb-2">Sugerencias de IA:</p>
-                    <div className="flex flex-wrap gap-2">
-                      {aiSuggestions.map((suggestion, index) => (
-                        <Badge 
-                          key={index}
-                          className="cursor-pointer hover:bg-white/10 transition-colors border border-white/30 text-white bg-transparent"
-                          onClick={() => {
-                            setSearchQuery(suggestion);
-                            handleAiSearch(suggestion);
-                          }}
-                        >
-                          {suggestion}
-                        </Badge>
-                      ))}
+                  {/* Sugerencias de IA */}
+                  {aiSuggestions.length > 0 && (
+                    <div className="mt-3">
+                      <p className="text-sm text-muted-foreground mb-2">Sugerencias de IA:</p>
+                      <div className="flex flex-wrap gap-2">
+                        {aiSuggestions.map((suggestion, index) => (
+                          <Badge 
+                            key={index}
+                            variant="outline" 
+                            className="cursor-pointer hover:bg-primary/10 transition-colors"
+                            onClick={() => {
+                              setSearchQuery(suggestion);
+                              handleAiSearch(suggestion);
+                            }}
+                          >
+                            {suggestion}
+                          </Badge>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
               </div>
               
               {aiSearchMode && (
@@ -342,13 +351,13 @@ const Profiles: React.FC = () => {
         {/* Sección de filtros */}
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-4">
-            <Filter className="h-5 w-5 text-white drop-shadow-md" />
-            <h3 className="text-lg font-semibold text-white drop-shadow-md">Filtros Avanzados</h3>
+            <Filter className="h-5 w-5 text-muted-foreground" />
+            <h3 className="text-lg font-semibold">Filtros Avanzados</h3>
           </div>
           {/* Filtros simplificados para evitar dependencias faltantes */}
           <Card className="bg-white/10 backdrop-blur-sm border-white/20">
             <CardContent className="p-4">
-              <p className="text-white drop-shadow-md">Filtros disponibles próximamente</p>
+              <p className="text-muted-foreground">Filtros disponibles próximamente</p>
             </CardContent>
           </Card>
         </div>
@@ -356,18 +365,19 @@ const Profiles: React.FC = () => {
         {/* Resumen de resultados */}
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-4">
-            <p className="text-white drop-shadow-md font-medium">
+            <p className="text-muted-foreground">
               {filteredProfiles.length} perfiles encontrados
             </p>
             {aiSearchMode && (
-              <Badge className="bg-purple-500/20 text-purple-200 border border-purple-400/30 drop-shadow-md">
+              <Badge variant="secondary" className="bg-primary/10 text-primary">
                 <Brain className="h-3 w-3 mr-1" />
                 Ordenado por IA
               </Badge>
             )}
           </div>
           <Button 
-            className="border border-white/30 text-white hover:bg-white/10 bg-transparent px-4 py-2 text-sm transition-all duration-200 hover:border-white/50"
+            variant="outline" 
+            size="sm"
             onClick={() => {
               setFilteredProfiles(allProfiles);
               setAiSearchMode(false);
