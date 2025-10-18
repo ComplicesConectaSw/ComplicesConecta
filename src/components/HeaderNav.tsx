@@ -79,8 +79,8 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
       {/* Header Principal */}
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled 
-          ? 'bg-gradient-to-r from-emerald-900/90 via-teal-900/90 to-emerald-800/90 backdrop-blur-md border-b border-emerald-500/30' 
-          : 'bg-gradient-to-r from-emerald-900/95 via-teal-900/95 to-emerald-800/95 backdrop-blur-sm border-b border-emerald-400/40'
+          ? 'bg-gradient-to-r from-purple-900/90 via-pink-900/90 to-blue-900/90 backdrop-blur-md border-b border-purple-500/30' 
+          : 'bg-gradient-to-r from-purple-900/95 via-pink-900/95 to-blue-900/95 backdrop-blur-sm border-b border-purple-400/40'
       } ${className}`}>
         
         {/* Contenedor Principal */}
@@ -94,10 +94,10 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                 className="flex items-center space-x-3 group transition-all duration-300 hover:scale-110"
               >
                 <div className="relative">
-                  <Heart className="h-8 w-8 text-emerald-400 group-hover:text-emerald-300 transition-colors duration-300" fill="currentColor" />
-                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full animate-pulse"></div>
+                  <Heart className="h-8 w-8 text-pink-400 group-hover:text-pink-300 transition-colors duration-300" fill="currentColor" />
+                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-pink-500 rounded-full animate-pulse"></div>
                 </div>
-                <span className="text-white font-black text-xl lg:text-2xl hidden sm:block bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
+                <span className="text-white font-black text-xl lg:text-2xl hidden sm:block bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
                   ComplicesConecta
                 </span>
               </button>
@@ -149,7 +149,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
               {/* Botón de Login */}
               <Button
                 onClick={handleLogin}
-                className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold px-6 py-3 rounded-xl shadow-2xl shadow-emerald-500/30 transition-all duration-300 hover:shadow-emerald-500/50 hover:scale-110 min-w-[140px] border-2 border-emerald-400"
+                className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold px-6 py-3 rounded-xl shadow-2xl shadow-pink-500/30 transition-all duration-300 hover:shadow-pink-500/50 hover:scale-110 min-w-[140px] border-2 border-pink-400"
               >
                 <User className="h-5 w-5 mr-2" />
                 <span className="hidden sm:inline text-base">Iniciar Sesión</span>
@@ -169,7 +169,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
 
         {/* Menú Móvil */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden bg-black/95 backdrop-blur-md border-t border-pink-500/20">
+          <div className="lg:hidden bg-gradient-to-r from-purple-900/95 via-pink-900/95 to-blue-900/95 backdrop-blur-md border-t border-pink-500/20">
             <div className="px-4 py-4 space-y-2">
               {navItems.map((item) => {
                 const IconComponent = item.icon;

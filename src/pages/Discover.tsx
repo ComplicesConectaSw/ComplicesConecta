@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
 import { Heart, Flame, RefreshCw, Filter, Star, Home, User, Search } from 'lucide-react';
-import NavigationEnhanced from '@/components/NavigationEnhanced';
+import HeaderNav from '@/components/HeaderNav';
 import SuperLikesModal from '@/components/modals/SuperLikesModal';
 import PremiumModal from '@/components/modals/PremiumModal';
 import CompatibilityModal from '@/components/modals/CompatibilityModal';
@@ -432,7 +432,7 @@ const Discover = () => {
       </div>
       
       <div className="relative z-10">
-        <NavigationEnhanced />
+        <HeaderNav />
       </div>
       
       {/* Header con navegación */}
@@ -803,7 +803,7 @@ const Discover = () => {
         </div>
       </main>
       
-      <NavigationEnhanced />
+      {/* NavigationEnhanced removido - ahora usa HeaderNav */}
       
       {/* Presentation Modals */}
       <SuperLikesModal 
