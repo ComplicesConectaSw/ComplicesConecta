@@ -38,7 +38,7 @@ const Events = () => {
     {
       id: 1,
       title: "Encuentro Elegante - Parejas Selectas CDMX",
-      description: "Evento exclusivo para parejas verificadas con experiencia en el estilo de vida swinger en la Ciudad de México",
+      description: "Evento VIP exclusivo para parejas maduras y experimentadas en el lifestyle swinger. Ambiente elegante con cócteles premium, música sofisticada y espacios privados para conexiones auténticas en Polanco.",
       date: "2025-03-15",
       time: "21:00",
       location: "Villa Privada Polanco, CDMX",
@@ -46,7 +46,7 @@ const Events = () => {
       maxAttendees: 30,
       price: 2500,
       category: "VIP Exclusivo",
-      image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=400&h=300&fit=crop&crop=center",
+      image: "https://images.unsplash.com/photo-1519167758481-83f142bb8cba?w=400&h=300&fit=crop&crop=center",
       organizer: {
         name: "Elite Connections México",
         avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
@@ -59,7 +59,7 @@ const Events = () => {
     {
       id: 2,
       title: "Velada Íntima Swinger Guadalajara",
-      description: "Encuentro sofisticado para parejas que buscan conexiones auténticas y experiencias compartidas en ambiente swinger",
+      description: "Velada íntima para parejas que buscan experiencias compartidas en el ambiente swinger. Incluye sesiones de networking, actividades grupales discretas y espacios privados para conexiones profundas en Guadalajara.",
       date: "2025-03-20",
       time: "20:00",
       location: "Club Privado Zapopan, Jalisco",
@@ -67,7 +67,7 @@ const Events = () => {
       maxAttendees: 20,
       price: 1800,
       category: "Conexiones Swinger",
-      image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop&crop=center",
+      image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop&crop=center",
       organizer: {
         name: "Intimate Gatherings GDL",
         avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face"
@@ -80,7 +80,7 @@ const Events = () => {
     {
       id: 3,
       title: "Fiesta Acuática Swinger Cancún",
-      description: "Celebración en ambiente relajado con piscina climatizada para parejas del estilo de vida swinger en la Riviera Maya",
+      description: "Celebración acuática exclusiva para parejas del lifestyle swinger en la Riviera Maya. Piscina climatizada, jacuzzi privado, actividades acuáticas y ambiente relajado para conexiones íntimas en Cancún.",
       date: "2025-03-25",
       time: "15:00",
       location: "Resort Privado Playa del Carmen, Q.Roo",
@@ -104,12 +104,12 @@ const Events = () => {
     {
       id: 1,
       name: "Club Elite CDMX",
-      description: "Comunidad exclusiva para parejas verificadas con experiencia en el estilo de vida swinger en la Ciudad de México",
+      description: "Club VIP exclusivo para parejas maduras y experimentadas en el lifestyle swinger. Acceso a eventos privados, networking premium, actividades exclusivas y comunidad selecta en Ciudad de México.",
       memberCount: 156,
       maxMembers: 200,
       isPrivate: true,
       category: "Club VIP",
-      image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=400&h=300&fit=crop&crop=center",
+      image: "https://images.unsplash.com/photo-1519167758481-83f142bb8cba?w=400&h=300&fit=crop&crop=center",
       admin: {
         name: "Administración Elite México",
         avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
@@ -124,12 +124,12 @@ const Events = () => {
     {
       id: 2,
       name: "Swingers Principiantes México",
-      description: "Comunidad para parejas que inician en el estilo de vida swinger con ambiente relajado y educativo",
+      description: "Comunidad educativa para parejas que inician en el lifestyle swinger. Ambiente seguro, mentorías, talleres educativos, eventos de introducción y apoyo para parejas principiantes en México.",
       memberCount: 89,
       maxMembers: 120,
       isPrivate: false,
       category: "Principiantes",
-      image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop&crop=center",
+      image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop&crop=center",
       admin: {
         name: "Coordinadores Swinger MX",
         avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face"
@@ -144,7 +144,7 @@ const Events = () => {
     {
       id: 3,
       name: "Aqua Swinger Riviera Maya",
-      description: "Club especializado en eventos acuáticos y celebraciones swinger en destinos playeros de México",
+      description: "Club especializado en eventos acuáticos y celebraciones swinger en destinos playeros. Acceso a resorts exclusivos, actividades acuáticas, eventos temáticos y conexiones en ambiente tropical en Riviera Maya.",
       memberCount: 203,
       maxMembers: 250,
       isPrivate: true,
@@ -375,7 +375,7 @@ const Events = () => {
                         }}
                       />
                       <div className="absolute top-3 left-3">
-                        <Badge className="bg-accent text-white border border-accent">
+                        <Badge className="bg-pink-500/80 text-white border border-pink-400 shadow-lg">
                           {event.category}
                         </Badge>
                       </div>
@@ -404,8 +404,7 @@ const Events = () => {
                         </div>
                       </div>
 
-                      <div className="flex items-center justify-between">
-                        <span className="text-2xl font-bold text-primary">${event.price} MXN</span>
+                      <div className="flex items-center justify-end">
                         <Button 
                           className={`px-3 py-1 text-sm ${
                             event.isJoined 
@@ -462,7 +461,7 @@ const Events = () => {
                         }}
                       />
                       <div className="absolute top-3 left-3">
-                        <Badge className="bg-primary/20 text-primary border border-primary/30">
+                        <Badge className="bg-purple-500/80 text-white border border-purple-400 shadow-lg">
                           {club.category}
                         </Badge>
                       </div>
