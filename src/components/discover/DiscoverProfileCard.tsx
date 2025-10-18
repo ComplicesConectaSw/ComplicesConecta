@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Heart, Flame, CheckCircle, Crown, Star, MapPin, MessageCircle, User } from 'lucide-react';
-import type { Tables } from '@/integrations/supabase/types';
+import type { Tables } from '@/types/database';
 
 // Tipos estrictos basados en Supabase
 type _ProfileRow = Tables<'profiles'>;

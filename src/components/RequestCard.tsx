@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Check, X, MessageCircle, Clock, User, CheckCircle } from 'lucide-react';
 import { RequestsService } from '@/lib/requests';
-import { Tables } from '@/integrations/supabase/types';
+import { Tables } from '@/types/database';
 import { logger } from '@/lib/logger';
 
 // Tipos estrictos basados en Supabase
