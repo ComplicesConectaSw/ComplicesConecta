@@ -303,7 +303,7 @@ export const SingleRegistrationForm: React.FC<SingleRegistrationFormProps> = ({
           <Input
             value={formData.firstName}
             onChange={(e) => handleInputChange('firstName', e.target.value)}
-            className={`bg-white/10 text-white placeholder:text-white/50 ${
+            className={`bg-white/10 text-white placeholder:text-white/80 ${
               formData.firstName && !validateName(formData.firstName) ? 'border-red-400' : 'border-white/20'
             }`}
             placeholder="Tu nombre"
@@ -318,7 +318,7 @@ export const SingleRegistrationForm: React.FC<SingleRegistrationFormProps> = ({
           <Input
             value={formData.lastName}
             onChange={(e) => handleInputChange('lastName', e.target.value)}
-            className={`bg-white/10 text-white placeholder:text-white/50 ${
+            className={`bg-white/10 text-white placeholder:text-white/80 ${
               formData.lastName && !validateName(formData.lastName) ? 'border-red-400' : 'border-white/20'
             }`}
             placeholder="Tus apellidos"
@@ -336,7 +336,7 @@ export const SingleRegistrationForm: React.FC<SingleRegistrationFormProps> = ({
           type="number"
           value={formData.age}
           onChange={(e) => handleInputChange('age', e.target.value)}
-          className={`bg-white/10 text-white placeholder:text-white/50 ${
+          className={`bg-white/10 text-white placeholder:text-white/80 ${
             formData.age && parseInt(formData.age) < 18 ? 'border-red-400' : 'border-white/20'
           }`}
           placeholder="Tu edad"
@@ -412,7 +412,7 @@ export const SingleRegistrationForm: React.FC<SingleRegistrationFormProps> = ({
           type="email"
           value={formData.email}
           onChange={(e) => handleInputChange('email', e.target.value)}
-          className={`bg-white/10 text-white placeholder:text-white/50 ${
+          className={`bg-white/10 text-white placeholder:text-white/80 ${
             formData.email && !validateEmail(formData.email) ? 'border-red-400' : 'border-white/20'
           }`}
           placeholder="tu@email.com"
@@ -429,7 +429,7 @@ export const SingleRegistrationForm: React.FC<SingleRegistrationFormProps> = ({
           type="tel"
           value={formData.phone}
           onChange={(e) => handleInputChange('phone', e.target.value)}
-          className={`bg-white/10 text-white placeholder:text-white/50 ${
+          className={`bg-white/10 text-white placeholder:text-white/80 ${
             formData.phone && !validatePhone(formData.phone) ? 'border-red-400' : 'border-white/20'
           }`}
           placeholder="+52 55 1234 5678"
@@ -446,7 +446,7 @@ export const SingleRegistrationForm: React.FC<SingleRegistrationFormProps> = ({
           type="password"
           value={formData.password}
           onChange={(e) => handleInputChange('password', e.target.value)}
-          className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+          className="bg-white/10 border-white/20 text-white placeholder:text-white/80"
           placeholder="Tu contraseña segura"
           required
         />
@@ -461,7 +461,7 @@ export const SingleRegistrationForm: React.FC<SingleRegistrationFormProps> = ({
           type="password"
           value={formData.confirmPassword}
           onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
-          className={`bg-white/10 text-white placeholder:text-white/50 ${
+          className={`bg-white/10 text-white placeholder:text-white/80 ${
             formData.confirmPassword && formData.password !== formData.confirmPassword ? 'border-red-400' : 'border-white/20'
           }`}
           placeholder="Confirma tu contraseña"
@@ -509,7 +509,7 @@ export const SingleRegistrationForm: React.FC<SingleRegistrationFormProps> = ({
         <Textarea
           value={formData.bio}
           onChange={(e) => handleInputChange('bio', e.target.value)}
-          className="bg-white/10 border-white/20 text-white placeholder:text-white/50 min-h-[120px]"
+          className="bg-white/10 border-white/20 text-white placeholder:text-white/80 min-h-[120px]"
           placeholder="Cuéntanos sobre ti, tus gustos, lo que buscas..."
           required
         />

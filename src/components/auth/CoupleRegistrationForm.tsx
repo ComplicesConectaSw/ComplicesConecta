@@ -320,7 +320,7 @@ export const CoupleRegistrationForm: React.FC<CoupleRegistrationFormProps> = ({
             <Input
               value={formData.hisFirstName}
               onChange={(e) => handleInputChange('hisFirstName', e.target.value)}
-              className={`bg-white/10 text-white placeholder:text-white/50 ${
+              className={`bg-white/10 text-white placeholder:text-white/80 ${
                 formData.hisFirstName && !validateName(formData.hisFirstName) ? 'border-red-400' : 'border-white/20'
               }`}
               placeholder="Su nombre"
@@ -332,7 +332,7 @@ export const CoupleRegistrationForm: React.FC<CoupleRegistrationFormProps> = ({
             <Input
               value={formData.hisLastName}
               onChange={(e) => handleInputChange('hisLastName', e.target.value)}
-              className={`bg-white/10 text-white placeholder:text-white/50 ${
+              className={`bg-white/10 text-white placeholder:text-white/80 ${
                 formData.hisLastName && !validateName(formData.hisLastName) ? 'border-red-400' : 'border-white/20'
               }`}
               placeholder="Sus apellidos"
@@ -348,7 +348,7 @@ export const CoupleRegistrationForm: React.FC<CoupleRegistrationFormProps> = ({
               type="number"
               value={formData.hisAge}
               onChange={(e) => handleInputChange('hisAge', e.target.value)}
-              className={`bg-white/10 text-white placeholder:text-white/50 ${
+              className={`bg-white/10 text-white placeholder:text-white/80 ${
                 formData.hisAge && parseInt(formData.hisAge) < 18 ? 'border-red-400' : 'border-white/20'
               }`}
               placeholder="Su edad"
@@ -386,7 +386,7 @@ export const CoupleRegistrationForm: React.FC<CoupleRegistrationFormProps> = ({
             <Input
               value={formData.herFirstName}
               onChange={(e) => handleInputChange('herFirstName', e.target.value)}
-              className={`bg-white/10 text-white placeholder:text-white/50 ${
+              className={`bg-white/10 text-white placeholder:text-white/80 ${
                 formData.herFirstName && !validateName(formData.herFirstName) ? 'border-red-400' : 'border-white/20'
               }`}
               placeholder="Su nombre"
@@ -398,7 +398,7 @@ export const CoupleRegistrationForm: React.FC<CoupleRegistrationFormProps> = ({
             <Input
               value={formData.herLastName}
               onChange={(e) => handleInputChange('herLastName', e.target.value)}
-              className={`bg-white/10 text-white placeholder:text-white/50 ${
+              className={`bg-white/10 text-white placeholder:text-white/80 ${
                 formData.herLastName && !validateName(formData.herLastName) ? 'border-red-400' : 'border-white/20'
               }`}
               placeholder="Sus apellidos"
@@ -414,7 +414,7 @@ export const CoupleRegistrationForm: React.FC<CoupleRegistrationFormProps> = ({
               type="number"
               value={formData.herAge}
               onChange={(e) => handleInputChange('herAge', e.target.value)}
-              className={`bg-white/10 text-white placeholder:text-white/50 ${
+              className={`bg-white/10 text-white placeholder:text-white/80 ${
                 formData.herAge && parseInt(formData.herAge) < 18 ? 'border-red-400' : 'border-white/20'
               }`}
               placeholder="Su edad"
@@ -486,7 +486,7 @@ export const CoupleRegistrationForm: React.FC<CoupleRegistrationFormProps> = ({
           type="email"
           value={formData.email}
           onChange={(e) => handleInputChange('email', e.target.value)}
-          className={`bg-white/10 text-white placeholder:text-white/50 ${
+          className={`bg-white/10 text-white placeholder:text-white/80 ${
             formData.email && !validateEmail(formData.email) ? 'border-red-400' : 'border-white/20'
           }`}
           placeholder="pareja@email.com"
@@ -503,7 +503,7 @@ export const CoupleRegistrationForm: React.FC<CoupleRegistrationFormProps> = ({
           type="tel"
           value={formData.phone}
           onChange={(e) => handleInputChange('phone', e.target.value)}
-          className={`bg-white/10 text-white placeholder:text-white/50 ${
+          className={`bg-white/10 text-white placeholder:text-white/80 ${
             formData.phone && !validatePhone(formData.phone) ? 'border-red-400' : 'border-white/20'
           }`}
           placeholder="+52 55 1234 5678"
@@ -520,7 +520,7 @@ export const CoupleRegistrationForm: React.FC<CoupleRegistrationFormProps> = ({
           type="password"
           value={formData.password}
           onChange={(e) => handleInputChange('password', e.target.value)}
-          className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+          className="bg-white/10 border-white/20 text-white placeholder:text-white/80"
           placeholder="Contraseña segura para ambos"
           required
         />
@@ -533,7 +533,7 @@ export const CoupleRegistrationForm: React.FC<CoupleRegistrationFormProps> = ({
           type="password"
           value={formData.confirmPassword}
           onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
-          className={`bg-white/10 text-white placeholder:text-white/50 ${
+          className={`bg-white/10 text-white placeholder:text-white/80 ${
             formData.confirmPassword && formData.password !== formData.confirmPassword ? 'border-red-400' : 'border-white/20'
           }`}
           placeholder="Confirma la contraseña"
@@ -601,7 +601,7 @@ export const CoupleRegistrationForm: React.FC<CoupleRegistrationFormProps> = ({
         <Textarea
           value={formData.bio}
           onChange={(e) => handleInputChange('bio', e.target.value)}
-          className="bg-white/10 border-white/20 text-white placeholder:text-white/50 min-h-[120px]"
+          className="bg-white/10 border-white/20 text-white placeholder:text-white/80 min-h-[120px]"
           placeholder="Cuéntanos sobre ustedes como pareja, qué buscan, sus experiencias..."
           required
         />

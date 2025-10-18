@@ -1,4 +1,4 @@
-import { Header } from "@/components/Header";
+import NavigationEnhanced from '@/components/NavigationEnhanced';
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -60,7 +60,7 @@ const Settings = () => {
       </div>
       
       <div className="relative z-10">
-        <Header />
+        <NavigationEnhanced />
         
         <main className="container mx-auto px-4 py-8">
           {/* Back Button */}
