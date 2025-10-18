@@ -51,7 +51,7 @@ const Matches = () => {
       id: 2,
       name: "Sofía",
       age: 29,
-      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=600&fit=crop&crop=face",
+      image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=600&fit=crop&crop=face&v=2",
       compatibility: 94,
       mutualInterests: ["Unicornio", "Experiencias Nuevas", "Discreción"],
       distance: 3.5,
