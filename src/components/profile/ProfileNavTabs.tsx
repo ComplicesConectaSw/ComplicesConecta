@@ -98,7 +98,7 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
                       alt="Post"
                       className="w-full h-full object-cover"
                       onError={(e) => {
-                        e.currentTarget.src = '/placeholder.svg';
+                        e.currentTarget.src = 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face';
                       }}
                     />
                   </div>
@@ -189,7 +189,7 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
                   alt="Galería 1"
                   className="w-full h-full object-cover"
                   onError={(e) => {
-                    e.currentTarget.src = '/placeholder.svg';
+                    e.currentTarget.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&crop=face';
                   }}
                 />
               </div>
@@ -199,7 +199,7 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
                   alt="Galería 2"
                   className="w-full h-full object-cover"
                   onError={(e) => {
-                    e.currentTarget.src = '/placeholder.svg';
+                    e.currentTarget.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&crop=face';
                   }}
                 />
               </div>

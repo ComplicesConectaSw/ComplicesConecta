@@ -289,7 +289,7 @@ export const ProfileTabs: React.FC<ProfileTabsProps> = ({
               <div className="space-y-4">
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   <div className="aspect-square bg-gradient-to-br from-pink-400 to-purple-600 rounded-lg overflow-hidden relative group">
-                    <img src="/placeholder.svg" alt="Foto demo 1" className="w-full h-full object-cover" />
+                    <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face" alt="Foto demo 1" className="w-full h-full object-cover" />
                     {isOwnProfile && (
                       <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                         <Button size="sm" variant="destructive" className="opacity-90">
@@ -299,7 +299,7 @@ export const ProfileTabs: React.FC<ProfileTabsProps> = ({
                     )}
                   </div>
                   <div className="aspect-square bg-gradient-to-br from-purple-400 to-blue-600 rounded-lg overflow-hidden relative group">
-                    <img src="/placeholder.svg" alt="Foto demo 2" className="w-full h-full object-cover" />
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&crop=face" alt="Foto demo 2" className="w-full h-full object-cover" />
                     {isOwnProfile && (
                       <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                         <Button size="sm" variant="destructive" className="opacity-90">
@@ -309,7 +309,7 @@ export const ProfileTabs: React.FC<ProfileTabsProps> = ({
                     )}
                   </div>
                   <div className="aspect-square bg-gradient-to-br from-blue-400 to-teal-600 rounded-lg overflow-hidden relative group">
-                    <img src="/placeholder.svg" alt="Foto demo 3" className="w-full h-full object-cover" />
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face" alt="Foto demo 3" className="w-full h-full object-cover" />
                     {isOwnProfile && (
                       <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                         <Button size="sm" variant="destructive" className="opacity-90">

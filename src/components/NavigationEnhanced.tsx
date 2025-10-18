@@ -31,7 +31,7 @@ const NavigationEnhanced: React.FC = () => {
   const [_isMobileMenuOpen, _setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, profile, isAuthenticated, logout } = useAuth();
+  const { user, profile, isAuthenticated, signOut } = useAuth();
 
   // Configuración de tema y animaciones
   const [navbarStyle] = useState('floating');
@@ -112,7 +112,7 @@ const NavigationEnhanced: React.FC = () => {
     try {
       if (isRealAuthenticated) {
         // Logout para usuarios reales
-        await logout();
+        await signOut();
         logger.info('✅ Usuario real deslogueado exitosamente');
       } else {
         // Logout para usuarios demo
@@ -123,7 +123,7 @@ const NavigationEnhanced: React.FC = () => {
       }
       navigate('/auth');
     } catch (error) {
-      logger.error('❌ Error durante logout:', error);
+      logger.error('❌ Error durante logout:', { error: error instanceof Error ? error.message : String(error) });
       // Fallback: limpiar localStorage y redirigir
       localStorage.clear();
       navigate('/auth');
@@ -251,9 +251,9 @@ const NavigationEnhanced: React.FC = () => {
           transition={{ duration: 0.3, ease: 'easeInOut' }}
           className={cn(
             "fixed bottom-0 left-0 right-0 z-50 px-4 pb-safe-bottom",
-            "bg-white/80 backdrop-blur-xl",
-            "shadow-lg shadow-black/10",
-            "border-t border-gray-200/50",
+            "bg-white/90 backdrop-blur-xl",
+            "shadow-lg shadow-black/20",
+            "border-t border-gray-300/70",
             "stable-element"
           )}
           role="navigation"
@@ -286,8 +286,8 @@ const NavigationEnhanced: React.FC = () => {
                       "transition-all duration-300 ease-out overflow-hidden",
                       !enableAnimations && "transform hover:scale-105",
                       isActive 
-                        ? "text-white" 
-                        : "text-gray-600 hover:text-gray-800"
+                        ? "text-white font-semibold drop-shadow-lg" 
+                        : "text-gray-700 hover:text-gray-900 font-medium"
                     )}
                     data-testid={`nav-${item.id}`}
                   >
@@ -338,7 +338,7 @@ const NavigationEnhanced: React.FC = () => {
                   
                   <span className={cn(
                     "text-[10px] sm:text-xs font-medium transition-all duration-300 truncate max-w-[45px] sm:max-w-none relative z-10",
-                    isActive ? "text-white font-semibold" : "text-gray-600 group-hover:text-gray-800"
+                    isActive ? "text-white font-semibold drop-shadow-lg" : "text-gray-700 group-hover:text-gray-900 font-medium"
                   )}>
                     {item.label}
                   </span>
@@ -367,7 +367,7 @@ const NavigationEnhanced: React.FC = () => {
             "min-w-[45px] sm:min-w-[55px] w-[45px] sm:w-[55px] min-h-[45px] sm:min-h-[55px] group flex-shrink-0",
             "transition-all duration-300 ease-out transform hover:scale-105",
             "relative overflow-hidden",
-            "text-red-400 hover:text-red-300 hover:bg-red-500/20"
+            "text-red-600 hover:text-red-700 hover:bg-red-100/50"
           )}
           whileHover={enableAnimations ? { scale: 1.05 } : undefined}
           whileTap={enableAnimations ? { scale: 0.95 } : undefined}
@@ -381,7 +381,7 @@ const NavigationEnhanced: React.FC = () => {
           />
           <span className={cn(
             "text-[10px] sm:text-xs font-medium transition-all duration-300 truncate max-w-[45px] sm:max-w-none relative z-10",
-            "text-red-400/80 group-hover:text-red-300"
+            "text-red-600 group-hover:text-red-700 font-semibold"
           )}>
             Salir
           </span>

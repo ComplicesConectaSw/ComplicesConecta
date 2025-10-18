@@ -12,8 +12,6 @@ import { useTokens } from '@/hooks/useTokens';
 import { TokenDashboard } from '@/components/tokens/TokenDashboard';
 import { StakingModal } from '@/components/tokens/StakingModal';
 import { TokenChatBot } from '@/components/tokens/TokenChatBot';
-import NavigationEnhanced from "@/components/NavigationEnhanced";
-import Header from "@/components/Header";
 import HeaderNav from '@/components/HeaderNav';
 import { motion } from 'framer-motion';
 import { AnimatedButton } from '@/components/ui/AnimatedButton';
@@ -34,7 +32,6 @@ export default function Tokens() {
   return (
     <div className="min-h-screen relative overflow-hidden bg-hero-gradient pb-20">
       <HeaderNav />
-      <Header />
       {/* Advanced Animated Background - Same as Index */}
       <div className="fixed inset-0 z-0">
         {/* Animated Mesh Gradient */}
@@ -277,7 +274,7 @@ export default function Tokens() {
                 <div className="text-xs text-white/90 space-y-1">
                   <p>🪙 <strong>Ejemplo de respuesta:</strong></p>
                   <div className="bg-gradient-to-r from-pink-500/95 to-purple-600/95 p-2 rounded border border-pink-400/50 ml-2 sm:ml-4 shadow-sm">
-                    <p className="break-words text-gray-800">{getBalanceMessage()}</p>
+                    <p className="break-words text-white font-medium">{getBalanceMessage()}</p>
                   </div>
                 </div>
               </div>
@@ -288,7 +285,7 @@ export default function Tokens() {
                 </p>
                 <div className="text-xs text-white/90">
                   <div className="bg-gradient-to-r from-pink-500/95 to-purple-600/95 p-2 rounded border border-pink-400/50 ml-2 sm:ml-4 shadow-sm">
-                    <p className="break-words text-gray-800">{getStakingMessage()}</p>
+                    <p className="break-words text-white font-medium">{getStakingMessage()}</p>
                   </div>
                 </div>
               </div>
