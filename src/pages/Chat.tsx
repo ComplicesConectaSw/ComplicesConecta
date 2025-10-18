@@ -488,11 +488,11 @@ const Chat = () => {
                     <div
                       key={chat.id}
                       onClick={() => {
+                        console.log('Chat clicked:', chat.name, 'isProduction:', isProduction);
+                        setSelectedChat(chat);
                         if (isProduction) {
-                          setSelectedChat(chat);
                           loadRealMessages(chat.id.toString());
                         } else {
-                          setSelectedChat(chat);
                           loadMessages(chat.id);
                         }
                       }}
@@ -545,11 +545,11 @@ const Chat = () => {
                     <div
                       key={chat.id}
                       onClick={() => {
+                        console.log('Chat clicked:', chat.name, 'isProduction:', isProduction);
+                        setSelectedChat(chat);
                         if (isProduction) {
-                          setSelectedChat(chat);
                           loadRealMessages(chat.id.toString());
                         } else {
-                          setSelectedChat(chat);
                           loadMessages(chat.id);
                         }
                       }}
