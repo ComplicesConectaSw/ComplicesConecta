@@ -2,7 +2,6 @@ import { Heart, Users, Shield, Zap, Star, Award, Target, Camera, Play, Eye } fro
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
-import { Header } from "@/components/Header";
 import HeaderNav from "@/components/HeaderNav";
 
 const About = () => {
@@ -18,7 +17,6 @@ const About = () => {
       </div>
 
       <HeaderNav />
-      <Header />
       {/* Content */}
       <div className="relative z-10 min-h-screen">
 

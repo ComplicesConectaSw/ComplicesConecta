@@ -163,7 +163,7 @@ const Profiles: React.FC = () => {
                       placeholder="Busca parejas swinger, solteros lifestyle, eventos privados..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-10 pr-4 py-3 text-base bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                      className="pl-10 pr-4 py-3 text-base bg-white/10 border-white/20 text-white placeholder:text-white/80"
                     />
                   </div>
                   <Button 

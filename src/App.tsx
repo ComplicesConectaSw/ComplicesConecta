@@ -98,8 +98,10 @@ const App = () => (
                 <NotificationProvider>
                   <AppFactory>
                     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-800 relative overflow-hidden">
-                      <AnimatedBackground />
-                      <FloatingParticles count={15} />
+                      {/* AnimatedBackground disabled to prevent ghost elements */}
+                      {/* <AnimatedBackground /> */}
+                      {/* FloatingParticles disabled to prevent ghost elements */}
+                      {/* <FloatingParticles count={15} /> */}
                       <AnimationSettingsButton />
                       <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
                         <PageTransitionWrapper>
