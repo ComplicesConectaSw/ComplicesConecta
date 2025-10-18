@@ -222,6 +222,40 @@ export const SingleRegistrationForm: React.FC<SingleRegistrationFormProps> = ({
 
       if (authData.user) {
         logger.info('✅ Usuario registrado exitosamente:', { userId: authData.user.id });
+        
+        // Crear perfil en la tabla profiles
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .insert({
+            id: authData.user.id,
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+            display_name: formData.nickname,
+            nickname: formData.nickname,
+            email: formData.email,
+            phone: formData.phone,
+            account_type: 'single',
+            age: parseInt(formData.age),
+            gender: formData.gender,
+            sexual_orientation: formData.sexualOrientation,
+            bio: formData.bio,
+            interests: formData.interests,
+            profile_theme: formData.profileTheme,
+            interested_in: formData.interestedIn,
+            role: 'user',
+            is_verified: false,
+            is_demo: false,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          });
+
+        if (profileError) {
+          logger.error('❌ Error creando perfil:', profileError);
+          throw new Error('Error al crear el perfil de usuario');
+        }
+
+        logger.info('✅ Perfil creado exitosamente para usuario:', { userId: authData.user.id });
+        
         toast({
           title: "¡Registro exitoso!",
           description: "Se ha enviado un código de verificación a tu email.",

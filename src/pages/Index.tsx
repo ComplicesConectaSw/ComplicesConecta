@@ -16,7 +16,7 @@ import { Heart, Users, Shield, Zap, Sparkles, Star, Rocket, Smartphone as Androi
 import { Button } from "@/components/ui/button";
 import "@/styles/animations.css";
 import { logger } from '@/lib/logger';
-import { usePersistedState } from '@/hooks/usePersistedState';
+import { useAuth } from '@/hooks/useAuth';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ModeratorApplicationForm from "@/components/forms/ModeratorApplicationForm";
 
@@ -39,6 +39,9 @@ const Index = () => {
   const [demoAuthenticated] = usePersistedState<boolean>('demo_authenticated', false);
   const [demoUser] = usePersistedState<any>('demo_user', null);
   const [hasVisited, setHasVisited] = usePersistedState<boolean>('hasVisitedComplicesConecta', false);
+  
+  // Autenticación real
+  const { user, profile, isAuthenticated } = useAuth();
 
   // Verificar si el usuario está autenticado y detectar Android
   useEffect(() => {
@@ -63,6 +66,7 @@ const Index = () => {
 
   // Separar la lógica de redirección para evitar loops
   useEffect(() => {
+    // Redirección para usuarios demo
     if (!isLoading && demoAuthenticated && demoUser) {
       const redirectTimer = setTimeout(() => {
         try {
@@ -84,7 +88,35 @@ const Index = () => {
 
       return () => clearTimeout(redirectTimer);
     }
-  }, [isLoading, demoAuthenticated, demoUser, navigate]);
+    
+    // Redirección para usuarios reales autenticados
+    if (!isLoading && isAuthenticated() && user && profile) {
+      const redirectTimer = setTimeout(() => {
+        try {
+          const accountType = profile.account_type || 'single';
+          
+          logger.info('🔄 Redirigiendo usuario real autenticado:', { 
+            userId: user.id, 
+            accountType,
+            profileName: profile.first_name 
+          });
+          
+          // Redirigir al perfil correspondiente según el tipo de cuenta
+          if (accountType === 'couple') {
+            navigate('/profile-couple');
+          } else {
+            navigate('/profile-single');
+          }
+        } catch (error) {
+          logger.error('Error redirigiendo usuario real:', { error });
+          // Si hay error, redirigir al perfil single por defecto
+          navigate('/profile-single');
+        }
+      }, 500);
+
+      return () => clearTimeout(redirectTimer);
+    }
+  }, [isLoading, demoAuthenticated, demoUser, isAuthenticated, user, profile, navigate]);
 
   const handleLoadingComplete = () => {
     setIsLoading(false);

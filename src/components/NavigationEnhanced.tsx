@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Home, 
-  MessageCircle, 
-  Heart, 
-  Search, 
+import {
+  Home,
+  MessageCircle,
+  Heart,
+  Search,
   Calendar,
   Settings,
   User,
@@ -15,6 +15,7 @@ import {
 import { useLocation, useNavigate } from 'react-router-dom';
 import { logger } from '@/lib/logger';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/hooks/useAuth';
 
 interface _NavigationEnhancedProps {
   className?: string;
@@ -30,12 +31,13 @@ const NavigationEnhanced: React.FC = () => {
   const [_isMobileMenuOpen, _setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const { user, profile, isAuthenticated, logout } = useAuth();
 
   // Configuración de tema y animaciones
   const [navbarStyle] = useState('floating');
   const [demoTheme] = useState('default');
   const [enableAnimations] = useState(true);
-  
+
   // Forzar re-render cuando cambie el tema
   useEffect(() => {
     // Trigger re-render para aplicar nuevos estilos
@@ -45,9 +47,13 @@ const NavigationEnhanced: React.FC = () => {
     return () => clearTimeout(timer);
   }, [navbarStyle, demoTheme]);
 
-  // Verificar si el usuario está autenticado
-  const isAuthenticated = localStorage.getItem('demo_authenticated') === 'true';
+  // Verificar si el usuario está autenticado (real o demo)
+  const isDemoAuthenticated = localStorage.getItem('demo_authenticated') === 'true';
   const demoUser = localStorage.getItem('demo_user');
+  const isRealAuthenticated = isAuthenticated() && user && profile;
+  
+  // Usuario está autenticado si es demo O real
+  const isAuthenticatedUser = isDemoAuthenticated || isRealAuthenticated;
 
   const baseNavItems = [
     { id: 'feed', icon: Home, label: 'Inicio', path: '/feed' },
@@ -97,28 +103,54 @@ const NavigationEnhanced: React.FC = () => {
     }
   }, [location.pathname, navItems]);
 
-  // Solo mostrar navegación completa si está autenticado
-  if (!isAuthenticated || !demoUser) {
+  // Solo mostrar navegación completa si está autenticado (demo o real)
+  if (!isAuthenticatedUser) {
     return null; // Ocultar navegación si no está logueado
   }
 
-  const handleLogout = () => {
-    localStorage.removeItem('demo_authenticated');
-    localStorage.removeItem('demo_user');
-    localStorage.removeItem('userType');
-    navigate('/auth');
+  const handleLogout = async () => {
+    try {
+      if (isRealAuthenticated) {
+        // Logout para usuarios reales
+        await logout();
+        logger.info('✅ Usuario real deslogueado exitosamente');
+      } else {
+        // Logout para usuarios demo
+        localStorage.removeItem('demo_authenticated');
+        localStorage.removeItem('demo_user');
+        localStorage.removeItem('userType');
+        logger.info('✅ Usuario demo deslogueado exitosamente');
+      }
+      navigate('/auth');
+    } catch (error) {
+      logger.error('❌ Error durante logout:', error);
+      // Fallback: limpiar localStorage y redirigir
+      localStorage.clear();
+      navigate('/auth');
+    }
   };
 
   const handleNavigation = (path: string) => {
-    // SOLO verificar autenticación, NO hacer logout automático
-    const demoUser = localStorage.getItem('demo_user');
-    const userType = localStorage.getItem('userType');
-    const isDemo = localStorage.getItem('demo_authenticated') === 'true';
-    
-    logger.info('🔍 Navigation Debug:', { demoUser, userType, isDemo, path });
+    logger.info('🔍 Navigation Debug:', { 
+      isRealAuthenticated, 
+      isDemoAuthenticated, 
+      userType: localStorage.getItem('userType'),
+      accountType: profile?.account_type,
+      path 
+    });
     
     // Detectar tipo de usuario y redirigir al perfil correcto
     if (path === '/profile') {
+      let userType = 'single'; // Default
+      
+      if (isRealAuthenticated && profile) {
+        // Usuario real: usar account_type del perfil
+        userType = profile.account_type || 'single';
+      } else if (isDemoAuthenticated) {
+        // Usuario demo: usar userType del localStorage
+        userType = localStorage.getItem('userType') || 'single';
+      }
+      
       if (userType === 'couple') {
         navigate('/profile-couple');
       } else {
@@ -127,17 +159,15 @@ const NavigationEnhanced: React.FC = () => {
       return;
     }
     
-    // CRÍTICO: Solo verificar autenticación, NUNCA hacer logout automático
-    const isAuthenticated = isDemo || demoUser;
-    
-    if (!isAuthenticated) {
+    // Verificar autenticación (real o demo)
+    if (!isAuthenticatedUser) {
       logger.info('❌ Usuario no autenticado, redirigiendo a /auth');
       navigate('/auth');
       return;
     }
     
     // NAVEGACIÓN SEGURA: Mantener sesión activa al navegar
-    logger.info('✅ Navegando con sesión activa:', { path, isAuthenticated: true });
+    logger.info('✅ Navegando con sesión activa:', { path, isAuthenticatedUser: true });
     navigate(path);
   };
 
