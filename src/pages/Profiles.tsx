@@ -251,16 +251,16 @@ const Profiles: React.FC = () => {
       {/* Navegación */}
       <HeaderNav />
       
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-8 pt-24">
         {/* Encabezado de página */}
         <div className="text-center mb-12 pt-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight drop-shadow-lg">
             Descubre
-            <span className="block bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent mt-2">
+            <span className="block bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent mt-2 drop-shadow-lg">
               Tu Match Perfecto
             </span>
           </h1>
-          <p className="text-xl text-white/90 max-w-2xl mx-auto mb-8 leading-relaxed">
+          <p className="text-xl text-white max-w-2xl mx-auto mb-8 leading-relaxed drop-shadow-md">
             Usa nuestra IA avanzada para encontrar personas compatibles basándose en personalidad, intereses y valores
           </p>
           
@@ -269,10 +269,10 @@ const Profiles: React.FC = () => {
             <CardContent className="p-6">
               <div className="flex items-center gap-3 mb-4">
                 <div className="flex items-center gap-2">
-                  <Brain className="h-6 w-6 text-purple-400" />
-                  <Sparkles className="h-5 w-5 text-pink-400 animate-pulse" />
+                  <Brain className="h-6 w-6 text-purple-400 drop-shadow-md" />
+                  <Sparkles className="h-5 w-5 text-pink-400 animate-pulse drop-shadow-md" />
                 </div>
-                <h3 className="text-lg font-semibold text-white">Búsqueda Inteligente por IA</h3>
+                <h3 className="text-lg font-semibold text-white drop-shadow-md">Búsqueda Inteligente por IA</h3>
               </div>
               
               <div className="relative">
@@ -342,13 +342,13 @@ const Profiles: React.FC = () => {
         {/* Sección de filtros */}
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-4">
-            <Filter className="h-5 w-5 text-white/80" />
-            <h3 className="text-lg font-semibold text-white">Filtros Avanzados</h3>
+            <Filter className="h-5 w-5 text-white drop-shadow-md" />
+            <h3 className="text-lg font-semibold text-white drop-shadow-md">Filtros Avanzados</h3>
           </div>
           {/* Filtros simplificados para evitar dependencias faltantes */}
           <Card className="bg-white/10 backdrop-blur-sm border-white/20">
             <CardContent className="p-4">
-              <p className="text-white/70">Filtros disponibles próximamente</p>
+              <p className="text-white drop-shadow-md">Filtros disponibles próximamente</p>
             </CardContent>
           </Card>
         </div>
@@ -356,11 +356,11 @@ const Profiles: React.FC = () => {
         {/* Resumen de resultados */}
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-4">
-            <p className="text-white/90">
+            <p className="text-white drop-shadow-md font-medium">
               {filteredProfiles.length} perfiles encontrados
             </p>
             {aiSearchMode && (
-              <Badge className="bg-purple-500/20 text-purple-200 border border-purple-400/30">
+              <Badge className="bg-purple-500/20 text-purple-200 border border-purple-400/30 drop-shadow-md">
                 <Brain className="h-3 w-3 mr-1" />
                 Ordenado por IA
               </Badge>

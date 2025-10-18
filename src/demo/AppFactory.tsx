@@ -33,11 +33,6 @@ export const AppFactory: React.FC<AppFactoryProps> = ({ children }) => {
     
     return (
       <DemoProvider>
-        <div className="demo-mode-indicator">
-          <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">
-            MODO DEMO
-          </span>
-        </div>
         {children}
       </DemoProvider>
     );
@@ -47,11 +42,6 @@ export const AppFactory: React.FC<AppFactoryProps> = ({ children }) => {
   
   return (
     <RealProvider>
-      <div className="production-mode-indicator">
-        <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
-          MODO PRODUCCIÓN
-        </span>
-      </div>
       {children}
     </RealProvider>
   );
