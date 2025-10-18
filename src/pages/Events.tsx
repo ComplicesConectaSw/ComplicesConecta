@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import NavigationEnhanced from "@/components/NavigationEnhanced";
+import HeaderNav from "@/components/HeaderNav";
 import { usePersistedState } from '@/hooks/usePersistedState';
 import { logger } from '@/lib/logger';
 
@@ -39,17 +39,17 @@ const Events = () => {
       id: 1,
       title: "Encuentro Elegante - Parejas Selectas CDMX",
       description: "Evento exclusivo para parejas verificadas con experiencia en el estilo de vida swinger en la Ciudad de México",
-      date: "2024-03-15",
+      date: "2025-03-15",
       time: "21:00",
       location: "Villa Privada Polanco, CDMX",
       attendees: 24,
       maxAttendees: 30,
       price: 2500,
       category: "VIP Exclusivo",
-      image: "/placeholder.svg",
+      image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=400&h=300&fit=crop&crop=center",
       organizer: {
         name: "Elite Connections México",
-        avatar: "/placeholder.svg"
+        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
       },
       isJoined: true,
       isLiked: true,
@@ -60,17 +60,17 @@ const Events = () => {
       id: 2,
       title: "Velada Íntima Swinger Guadalajara",
       description: "Encuentro sofisticado para parejas que buscan conexiones auténticas y experiencias compartidas en ambiente swinger",
-      date: "2024-03-20",
+      date: "2025-03-20",
       time: "20:00",
       location: "Club Privado Zapopan, Jalisco",
       attendees: 16,
       maxAttendees: 20,
       price: 1800,
       category: "Conexiones Swinger",
-      image: "/placeholder.svg",
+      image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop&crop=center",
       organizer: {
         name: "Intimate Gatherings GDL",
-        avatar: "/placeholder.svg"
+        avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face"
       },
       isJoined: false,
       isLiked: true,
@@ -81,17 +81,17 @@ const Events = () => {
       id: 3,
       title: "Fiesta Acuática Swinger Cancún",
       description: "Celebración en ambiente relajado con piscina climatizada para parejas del estilo de vida swinger en la Riviera Maya",
-      date: "2024-03-25",
+      date: "2025-03-25",
       time: "15:00",
       location: "Resort Privado Playa del Carmen, Q.Roo",
       attendees: 32,
       maxAttendees: 40,
       price: 3200,
       category: "Ambiente Playero",
-      image: "/placeholder.svg",
+      image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&h=300&fit=crop&crop=center",
       organizer: {
         name: "Aqua Lifestyle Cancún",
-        avatar: "/placeholder.svg"
+        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=face"
       },
       isJoined: false,
       isLiked: false,
@@ -109,10 +109,10 @@ const Events = () => {
       maxMembers: 200,
       isPrivate: true,
       category: "Club VIP",
-      image: "/placeholder.svg",
+      image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=400&h=300&fit=crop&crop=center",
       admin: {
         name: "Administración Elite México",
-        avatar: "/placeholder.svg"
+        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
       },
       lastActivity: "Hace 1h",
       isJoined: false,
@@ -129,10 +129,10 @@ const Events = () => {
       maxMembers: 120,
       isPrivate: false,
       category: "Principiantes",
-      image: "/placeholder.svg",
+      image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop&crop=center",
       admin: {
         name: "Coordinadores Swinger MX",
-        avatar: "/placeholder.svg"
+        avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face"
       },
       lastActivity: "Hace 2h",
       isJoined: true,
@@ -149,10 +149,10 @@ const Events = () => {
       maxMembers: 250,
       isPrivate: true,
       category: "Eventos Playeros",
-      image: "/placeholder.svg",
+      image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&h=300&fit=crop&crop=center",
       admin: {
         name: "Aqua Team Cancún",
-        avatar: "/placeholder.svg"
+        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=face"
       },
       lastActivity: "Hace 30min",
       isJoined: false,
@@ -207,7 +207,7 @@ const Events = () => {
               <div className="flex gap-3">
                 <Button 
                   onClick={() => handleAgeConfirmation(false)}
-                  className="flex-1 border border-gray-300 bg-transparent hover:bg-gray-100 text-gray-700"
+                  className="flex-1 border border-white/30 bg-transparent hover:bg-white/10 text-white"
                 >
                   <X className="mr-2 h-4 w-4" />
                   Salir
@@ -268,9 +268,9 @@ const Events = () => {
       </div>
       
       <div className="relative z-10">
-        <NavigationEnhanced />
+        <HeaderNav />
         
-        <main className="container mx-auto px-4 py-8">
+        <main className="container mx-auto px-4 py-8 pt-24">
           {/* Back Button */}
           <div className="mb-6">
             <Button 
@@ -331,7 +331,7 @@ const Events = () => {
                 className={`rounded-lg ${
                   _activeTab === "events" 
                     ? "bg-primary text-primary-foreground" 
-                    : "bg-transparent hover:bg-gray-100 text-gray-700"
+                    : "bg-transparent hover:bg-white/10 text-white"
                 }`}
               >
                 <Calendar className="mr-2 h-4 w-4" />
@@ -342,7 +342,7 @@ const Events = () => {
                 className={`rounded-lg ${
                   _activeTab === "clubs" 
                     ? "bg-primary text-primary-foreground" 
-                    : "bg-transparent hover:bg-gray-100 text-gray-700"
+                    : "bg-transparent hover:bg-white/10 text-white"
                 }`}
               >
                 <Crown className="mr-2 h-4 w-4" />
@@ -367,6 +367,12 @@ const Events = () => {
                         src={event.image} 
                         alt={event.title}
                         className="w-full h-48 object-contain bg-gradient-to-br from-muted/20 to-muted/10"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          if (target.src !== 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=400&h=300&fit=crop&crop=center') {
+                            target.src = 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=400&h=300&fit=crop&crop=center';
+                          }
+                        }}
                       />
                       <div className="absolute top-3 left-3">
                         <Badge className="bg-accent text-white border border-accent">
@@ -403,7 +409,7 @@ const Events = () => {
                         <Button 
                           className={`px-3 py-1 text-sm ${
                             event.isJoined 
-                              ? "bg-gray-200 text-gray-700" 
+                              ? "bg-white/20 text-white border border-white/30"  
                               : "bg-primary text-primary-foreground"
                           }`}
                           disabled
@@ -448,6 +454,12 @@ const Events = () => {
                         src={club.image} 
                         alt={club.name}
                         className="w-full h-48 object-contain bg-gradient-to-br from-muted/20 to-muted/10"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          if (target.src !== 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=400&h=300&fit=crop&crop=center') {
+                            target.src = 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=400&h=300&fit=crop&crop=center';
+                          }
+                        }}
                       />
                       <div className="absolute top-3 left-3">
                         <Badge className="bg-primary/20 text-primary border border-primary/30">
@@ -489,9 +501,9 @@ const Events = () => {
                         <Button 
                           className={`px-3 py-1 text-sm ${
                             club.isJoined 
-                              ? "bg-gray-200 text-gray-700" 
+                              ? "bg-white/20 text-white border border-white/30"  
                               : club.isPending 
-                              ? "border border-gray-300 bg-transparent text-gray-700" 
+                              ? "border border-white/30 bg-transparent text-white" 
                               : "bg-primary text-primary-foreground"
                           }`}
                           disabled
