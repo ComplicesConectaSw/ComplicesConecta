@@ -17,7 +17,7 @@ import {
   Upload,
   Trash2
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { EnhancedGallery } from './EnhancedGallery';
 
 type ProfileType = 'single' | 'couple';
 
@@ -262,110 +262,22 @@ export const ProfileTabs: React.FC<ProfileTabsProps> = ({
   };
 
   const renderGalleryTab = () => {
-    const isDemoMode = localStorage.getItem('demo_authenticated') === 'true';
+    const profileId = profileType === 'single' 
+      ? (profile as SingleProfile).id || 'demo-user'
+      : (profile as CoupleProfile).id;
     
-    if (profileType === 'single') {
-      const _singleProfile = profile as SingleProfile;
-      return (
-        <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-white flex items-center gap-2">
-                <ImageIcon className="w-5 h-5" />
-                Mi Galería
-              </CardTitle>
-              {(isOwnProfile || isDemoMode) && (
-                <div className="flex gap-2">
-                  <Button size="sm" variant="outline" className="border-white/30 text-white hover:bg-white/10">
-                    <Upload className="w-4 h-4 mr-2" />
-                    Subir
-                  </Button>
-                </div>
-              )}
-            </div>
-          </CardHeader>
-          <CardContent>
-            {isDemoMode ? (
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  <div className="aspect-square bg-gradient-to-br from-pink-400 to-purple-600 rounded-lg overflow-hidden relative group">
-                    <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face" alt="Foto demo 1" className="w-full h-full object-cover" />
-                    {isOwnProfile && (
-                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                        <Button size="sm" variant="destructive" className="opacity-90">
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    )}
-                  </div>
-                  <div className="aspect-square bg-gradient-to-br from-purple-400 to-blue-600 rounded-lg overflow-hidden relative group">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&crop=face" alt="Foto demo 2" className="w-full h-full object-cover" />
-                    {isOwnProfile && (
-                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                        <Button size="sm" variant="destructive" className="opacity-90">
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    )}
-                  </div>
-                  <div className="aspect-square bg-gradient-to-br from-blue-400 to-teal-600 rounded-lg overflow-hidden relative group">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face" alt="Foto demo 3" className="w-full h-full object-cover" />
-                    {isOwnProfile && (
-                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                        <Button size="sm" variant="destructive" className="opacity-90">
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-lg p-3">
-                  <p className="text-yellow-200 text-sm text-center">
-                    📱 Modo Demo: Las funciones de edición están simuladas
-                  </p>
-                </div>
-              </div>
-            ) : (
-              <div className="text-center py-12">
-                <Grid3X3 className="w-12 h-12 mx-auto mb-4 text-white/40" />
-                <p className="text-white/60 mb-4">No hay posts aún</p>
-                {isOwnProfile && (
-                  <Button variant="outline" className="border-white/30 text-white hover:bg-white/10">
-                    <Upload className="w-4 h-4 mr-2" />
-                    Subir primera foto
-                  </Button>
-                )}
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      );
-    } else {
-      const _coupleProfile = profile as CoupleProfile;
-      return (
-        <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
-          <CardHeader>
-            <CardTitle className="text-white flex items-center gap-2">
-              <ImageIcon className="w-5 h-5" />
-              Galería de Pareja
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              <div className="aspect-square bg-gradient-to-br from-pink-200 to-purple-200 rounded-lg flex items-center justify-center">
-                <span className="text-gray-600 text-sm">Pareja Foto 1</span>
-              </div>
-              <div className="aspect-square bg-gradient-to-br from-purple-200 to-blue-200 rounded-lg flex items-center justify-center">
-                <span className="text-gray-600 text-sm">Pareja Foto 2</span>
-              </div>
-              <div className="aspect-square bg-gradient-to-br from-blue-200 to-pink-200 rounded-lg flex items-center justify-center">
-                <span className="text-gray-600 text-sm">Pareja Foto 3</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      );
-    }
+    const profileName = profileType === 'single'
+      ? `${(profile as SingleProfile).first_name || 'Usuario'} ${(profile as SingleProfile).last_name || ''}`.trim()
+      : (profile as CoupleProfile).couple_name;
+
+    return (
+      <EnhancedGallery
+        userId={profileId}
+        profileName={profileName}
+        profileType={profileType}
+        isOwner={isOwnProfile}
+      />
+    );
   };
 
   const renderStatsTab = () => {
