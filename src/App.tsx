@@ -64,12 +64,14 @@ const ProfileCouple = lazy(() => import("@/pages/ProfileCouple"));
 const EditProfileSingle = lazy(() => import("@/pages/EditProfileSingle"));
 const EditProfileCouple = lazy(() => import("@/pages/EditProfileCouple"));
 const Feed = lazy(() => import("@/pages/Feed"));
+const Info = lazy(() => import("@/pages/Info"));
 const About = lazy(() => import("@/pages/About"));
 const Careers = lazy(() => import("@/pages/Careers"));
 const AdminCareerApplications = lazy(() => import("@/pages/AdminCareerApplications"));
 const AdminModerators = lazy(() => import("@/pages/AdminModerators"));
 const ModeratorDashboard = lazy(() => import("@/pages/ModeratorDashboard"));
 const ModeratorRequest = lazy(() => import("@/pages/ModeratorRequest"));
+const Moderators = lazy(() => import("@/pages/Moderators"));
 const Blog = lazy(() => import("@/pages/Blog"));
 const ChatAuthenticated = lazy(() => import("@/pages/ChatAuthenticated"));
 const Donations = lazy(() => import("@/pages/Donations"));
@@ -153,6 +155,7 @@ const App = () => (
                   <Route path="/security" element={<Security />} />
                   <Route path="/guidelines" element={<Guidelines />} />
                   <Route path="/legal" element={<Legal />} />
+                  <Route path="/info" element={<Info />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/careers" element={<Careers />} />
                   <Route path="/admin/career-applications" element={
@@ -170,6 +173,7 @@ const App = () => (
                       <ModeratorDashboard />
                     </ModeratorRoute>
                   } />
+                  <Route path="/moderators" element={<Moderators />} />
                   <Route path="/moderator-request" element={<ModeratorRequest />} />
                   <Route path="/blog" element={<Blog />} />
                   <Route path="/chat-authenticated" element={<ChatAuthenticated />} />
