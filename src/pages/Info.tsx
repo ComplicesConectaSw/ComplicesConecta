@@ -115,7 +115,7 @@ const Info = () => {
                 <Card key={index} className="bg-card/80 backdrop-blur-sm border border-primary/10 text-center">
                   <CardContent className="p-6">
                     <div className="text-3xl font-bold text-white mb-2">{stat.number}</div>
-                    <div className="text-muted-foreground">{stat.label}</div>
+                    <div className="text-white/70">{stat.label}</div>
                   </CardContent>
                 </Card>
               ))}
@@ -135,7 +135,7 @@ const Info = () => {
                       {feature.icon}
                     </div>
                     <h3 className="text-xl font-semibold text-white mb-3">{feature.title}</h3>
-                    <p className="text-muted-foreground">{feature.description}</p>
+                    <p className="text-white/80">{feature.description}</p>
                   </CardContent>
                 </Card>
               ))}
@@ -162,14 +162,14 @@ const Info = () => {
                 <div className="grid md:grid-cols-2 gap-8">
                   <div>
                     <h3 className="text-xl font-semibold text-white mb-4">Nuestra Misión</h3>
-                    <p className="text-muted-foreground">
+                    <p className="text-white/80">
                       Crear la comunidad swinger más exclusiva y segura de México, donde las conexiones 
                       auténticas y el respeto mutuo son los pilares fundamentales de nuestra plataforma.
                     </p>
                   </div>
                   <div>
                     <h3 className="text-xl font-semibold text-white mb-4">Nuestros Valores</h3>
-                    <ul className="space-y-2 text-muted-foreground">
+                    <ul className="space-y-2 text-white/80">
                       <li className="flex items-center">
                         <CheckCircle className="h-4 w-4 text-green-400 mr-2" />
                         Discreción y privacidad
@@ -210,10 +210,10 @@ const Info = () => {
                       />
                       <div>
                         <h4 className="font-semibold text-white">{testimonial.name}</h4>
-                        <p className="text-sm text-muted-foreground">{testimonial.location}</p>
+                        <p className="text-sm text-white/70">{testimonial.location}</p>
                       </div>
                     </div>
-                    <p className="text-muted-foreground italic">"{testimonial.text}"</p>
+                    <p className="text-white/80 italic">"{testimonial.text}"</p>
                   </CardContent>
                 </Card>
               ))}

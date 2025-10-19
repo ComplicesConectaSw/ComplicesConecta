@@ -610,7 +610,7 @@ const Profiles: React.FC = () => {
                   {/* Sugerencias de IA */}
                   {aiSuggestions.length > 0 && (
                     <div className="mt-3">
-                      <p className="text-sm text-muted-foreground mb-2">Sugerencias de IA:</p>
+                      <p className="text-sm text-white/70 mb-2">Sugerencias de IA:</p>
                       <div className="flex flex-wrap gap-2">
                         {aiSuggestions.map((suggestion, index) => (
                           <Badge 

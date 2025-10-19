@@ -167,8 +167,8 @@ const Moderators = () => {
                       <Star className="h-4 w-4 text-yellow-400 fill-current mr-1" />
                       <span className="text-white font-medium">{moderator.rating}</span>
                     </div>
-                    <p className="text-muted-foreground text-sm mb-1">{moderator.experience}</p>
-                    <p className="text-muted-foreground text-sm">{moderator.location}</p>
+                    <p className="text-white/70 text-sm mb-1">{moderator.experience}</p>
+                    <p className="text-white/70 text-sm">{moderator.location}</p>
                   </CardContent>
                 </Card>
               ))}

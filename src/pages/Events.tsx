@@ -429,7 +429,7 @@ const Events = () => {
                   <h3 className="text-xl font-semibold text-foreground mb-2">
                     No se encontraron eventos
                   </h3>
-                  <p className="text-muted-foreground mb-6">
+                  <p className="text-white/70 mb-6">
                     Intenta con otros términos de búsqueda
                   </p>
                 </div>
@@ -523,7 +523,7 @@ const Events = () => {
                   <h3 className="text-xl font-semibold text-foreground mb-2">
                     No se encontraron clubs
                   </h3>
-                  <p className="text-muted-foreground mb-6">
+                  <p className="text-white/70 mb-6">
                     Intenta con otros términos de búsqueda
                   </p>
                 </div>
