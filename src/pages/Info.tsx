@@ -54,26 +54,6 @@ const Info = () => {
     { number: "100%", label: "Verificado" }
   ];
 
-  const testimonials = [
-    {
-      name: "María Elena",
-      location: "Ciudad de México",
-      text: "ComplicesConecta me ha permitido conocer personas increíbles de manera segura y discreta.",
-      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face"
-    },
-    {
-      name: "Carlos & Ana",
-      location: "Guadalajara",
-      text: "La plataforma más profesional y segura que hemos encontrado. Totalmente recomendada.",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
-    },
-    {
-      name: "Roberto",
-      location: "Monterrey",
-      text: "Excelente experiencia. La verificación de perfiles me da mucha confianza.",
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=face"
-    }
-  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-800 relative overflow-hidden">
@@ -135,7 +115,7 @@ const Info = () => {
                       {feature.icon}
                     </div>
                     <h3 className="text-xl font-semibold text-white mb-3">{feature.title}</h3>
-                    <p className="text-white/80">{feature.description}</p>
+                    <p className="text-white">{feature.description}</p>
                   </CardContent>
                 </Card>
               ))}
@@ -162,14 +142,14 @@ const Info = () => {
                 <div className="grid md:grid-cols-2 gap-8">
                   <div>
                     <h3 className="text-xl font-semibold text-white mb-4">Nuestra Misión</h3>
-                    <p className="text-white/80">
+                    <p className="text-white">
                       Crear la comunidad swinger más exclusiva y segura de México, donde las conexiones 
                       auténticas y el respeto mutuo son los pilares fundamentales de nuestra plataforma.
                     </p>
                   </div>
                   <div>
                     <h3 className="text-xl font-semibold text-white mb-4">Nuestros Valores</h3>
-                    <ul className="space-y-2 text-white/80">
+                    <ul className="space-y-2 text-white">
                       <li className="flex items-center">
                         <CheckCircle className="h-4 w-4 text-green-400 mr-2" />
                         Discreción y privacidad
@@ -193,32 +173,6 @@ const Info = () => {
             </Card>
           </section>
 
-          {/* Testimonials Section */}
-          <section className="mb-16">
-            <h2 className="text-3xl font-bold text-white mb-8 text-center">
-              Lo que dicen nuestros usuarios
-            </h2>
-            <div className="grid md:grid-cols-3 gap-6">
-              {testimonials.map((testimonial, index) => (
-                <Card key={index} className="bg-card/80 backdrop-blur-sm border border-primary/10">
-                  <CardContent className="p-6">
-                    <div className="flex items-center mb-4">
-                      <img
-                        src={testimonial.avatar}
-                        alt={testimonial.name}
-                        className="w-12 h-12 rounded-full mr-4 object-cover"
-                      />
-                      <div>
-                        <h4 className="font-semibold text-white">{testimonial.name}</h4>
-                        <p className="text-sm text-white/70">{testimonial.location}</p>
-                      </div>
-                    </div>
-                    <p className="text-white/80 italic">"{testimonial.text}"</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </section>
 
           {/* CTA Section */}
           <section className="text-center">

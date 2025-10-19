@@ -87,32 +87,6 @@ const Moderators = () => {
     }
   ];
 
-  const currentModerators = [
-    {
-      name: "María Elena",
-      role: "Moderador Senior",
-      experience: "2 años",
-      rating: 4.9,
-      location: "Ciudad de México",
-      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face"
-    },
-    {
-      name: "Carlos Mendoza",
-      role: "Moderador de Eventos",
-      experience: "1.5 años",
-      rating: 4.8,
-      location: "Guadalajara",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
-    },
-    {
-      name: "Ana Sofía",
-      role: "Moderador de Contenido",
-      experience: "1 año",
-      rating: 4.7,
-      location: "Monterrey",
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=face"
-    }
-  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-800 relative overflow-hidden">
@@ -147,33 +121,6 @@ const Moderators = () => {
             </p>
           </div>
 
-          {/* Current Moderators */}
-          <section className="mb-16">
-            <h2 className="text-3xl font-bold text-white mb-8 text-center">
-              Nuestro Equipo de Moderadores
-            </h2>
-            <div className="grid md:grid-cols-3 gap-6">
-              {currentModerators.map((moderator, index) => (
-                <Card key={index} className="bg-card/80 backdrop-blur-sm border border-primary/10">
-                  <CardContent className="p-6 text-center">
-                    <img
-                      src={moderator.avatar}
-                      alt={moderator.name}
-                      className="w-20 h-20 rounded-full mx-auto mb-4 object-cover"
-                    />
-                    <h3 className="text-xl font-semibold text-white mb-2">{moderator.name}</h3>
-                    <p className="text-primary mb-2">{moderator.role}</p>
-                    <div className="flex items-center justify-center mb-2">
-                      <Star className="h-4 w-4 text-yellow-400 fill-current mr-1" />
-                      <span className="text-white font-medium">{moderator.rating}</span>
-                    </div>
-                    <p className="text-white/70 text-sm mb-1">{moderator.experience}</p>
-                    <p className="text-white/70 text-sm">{moderator.location}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </section>
 
           {/* Available Positions */}
           <section className="mb-16">
