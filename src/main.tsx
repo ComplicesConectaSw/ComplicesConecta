@@ -20,15 +20,25 @@ if (typeof window !== 'undefined') {
   // Interceptar TODOS los errores de wallets
   const originalError = window.onerror;
   window.onerror = function(message, source, lineno, colno, error) {
-    const errorMessage = message?.toString() || '';
-    if (errorMessage.includes('solana') || 
-        errorMessage.includes('ethereum') || 
-        errorMessage.includes('tronWeb') ||
-        errorMessage.includes('bybitWallet') ||
-        errorMessage.includes('Cannot redefine property') ||
-        errorMessage.includes('Cannot assign to read only property') ||
-        errorMessage.includes('Cannot set property chainId')) {
-      console.warn('🚫 Wallet error completely blocked:', errorMessage);
+    const errorMessage = message?.toString().toLowerCase() || '';
+    const walletErrors = [
+      'solana',
+      'ethereum', 
+      'tronweb',
+      'bybit',
+      'metamask',
+      'cannot redefine property',
+      'cannot assign to read only property',
+      'cannot set property chainid',
+      'wallet must has at least one account',
+      'provider inject',
+      'chainid',
+      'tronweb is already initiated',
+      'bybit:page provider inject code'
+    ];
+    
+    if (walletErrors.some(err => errorMessage.includes(err))) {
+      console.log('🚫 [WalletProtection] Blocked wallet error:', message);
       return true; // Prevent default error handling
     }
     if (originalError) {
@@ -39,46 +49,53 @@ if (typeof window !== 'undefined') {
   
   // Silenciar errores específicos de wallets
   window.addEventListener('error', (event) => {
-    const message = event.message || '';
-    if (message.includes('solana') || 
-        message.includes('ethereum') || 
-        message.includes('tronWeb') ||
-        message.includes('bybitWallet') ||
-        message.includes('Cannot redefine property') ||
-        message.includes('Cannot assign to read only property') ||
-        message.includes('Cannot set property chainId')) {
+    const message = (event.message || '').toLowerCase();
+    const walletErrors = [
+      'solana',
+      'ethereum', 
+      'tronweb',
+      'bybit',
+      'metamask',
+      'cannot redefine property',
+      'cannot assign to read only property',
+      'cannot set property chainid',
+      'wallet must has at least one account',
+      'provider inject',
+      'chainid'
+    ];
+    
+    if (walletErrors.some(err => message.includes(err))) {
       event.preventDefault();
       event.stopPropagation();
-      console.warn('🚫 Wallet extension error completely silenced:', message);
+      console.log('🚫 [WalletProtection] Blocked wallet event error:', event.message);
       return false;
     }
   }, true); // Use capture phase
   
   // Capturar errores no manejados de promesas
   window.addEventListener('unhandledrejection', (event) => {
-    const message = event.reason?.message || event.reason || '';
-    if (typeof message === 'string' && (
-      message.includes('solana') || 
-      message.includes('ethereum') || 
-      message.includes('tronWeb') ||
-      message.includes('bybitWallet') ||
-      message.includes('Cannot redefine property') ||
-      message.includes('Cannot assign to read only property')
-    )) {
+    const message = (event.reason?.message || event.reason || '').toString().toLowerCase();
+    const walletErrors = [
+      'solana',
+      'ethereum', 
+      'tronweb',
+      'bybit',
+      'metamask',
+      'cannot redefine property',
+      'cannot assign to read only property',
+      'wallet must has at least one account',
+      'provider inject',
+      'chainid'
+    ];
+    
+    if (walletErrors.some(err => message.includes(err))) {
       event.preventDefault();
-      console.warn('🚫 Wallet extension promise error completely silenced:', message);
+      console.log('🚫 [WalletProtection] Blocked wallet promise rejection:', event.reason);
       return false;
     }
   });
 
-  // Interceptar errores no manejados
-  window.addEventListener('unhandledrejection', (event) => {
-    const reason = event.reason?.message || String(event.reason);
-    if (reason.includes('solana') || reason.includes('ethereum') || reason.includes('tronWeb')) {
-      event.preventDefault();
-      console.warn('⚠️ Wallet promise rejection silenced:', reason);
-    }
-  });
+  console.log('🛡️ [WalletProtection] Enhanced protection initialized successfully');
 }
 
 // Debug info for development only - minimized to reduce console noise
