@@ -43,7 +43,24 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: undefined,
+        manualChunks: (id) => {
+          // Create separate chunks for better loading
+          if (id.includes('node_modules')) {
+            if (id.includes('react') || id.includes('react-dom')) {
+              return 'react-vendor';
+            }
+            if (id.includes('lucide-react')) {
+              return 'icons';
+            }
+            return 'vendor';
+          }
+          if (id.includes('src/components/stories')) {
+            return 'stories';
+          }
+          if (id.includes('src/pages')) {
+            return 'pages';
+          }
+        },
       },
     },
     commonjsOptions: {
@@ -51,6 +68,7 @@ export default defineConfig({
     },
     target: 'es2020',
     minify: 'esbuild',
+    chunkSizeWarningLimit: 1000,
   },
   define: {
     global: 'globalThis',

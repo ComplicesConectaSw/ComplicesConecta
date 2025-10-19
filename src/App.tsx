@@ -64,6 +64,10 @@ const ProfileCouple = lazy(() => import("@/pages/ProfileCouple"));
 const EditProfileSingle = lazy(() => import("@/pages/EditProfileSingle"));
 const EditProfileCouple = lazy(() => import("@/pages/EditProfileCouple"));
 const Feed = lazy(() => import("@/pages/Feed"));
+const VideoChat = lazy(() => import("@/pages/VideoChat"));
+const VIPEvents = lazy(() => import("@/pages/VIPEvents"));
+const VirtualGifts = lazy(() => import("@/pages/VirtualGifts"));
+const Marketplace = lazy(() => import("@/pages/Marketplace"));
 const Info = lazy(() => import("@/pages/Info"));
 const About = lazy(() => import("@/pages/About"));
 const Careers = lazy(() => import("@/pages/Careers"));
@@ -155,6 +159,10 @@ const App = () => (
                   <Route path="/security" element={<Security />} />
                   <Route path="/guidelines" element={<Guidelines />} />
                   <Route path="/legal" element={<Legal />} />
+                  <Route path="/video-chat" element={<VideoChat />} />
+                  <Route path="/vip-events" element={<VIPEvents />} />
+                  <Route path="/virtual-gifts" element={<VirtualGifts />} />
+                  <Route path="/marketplace" element={<Marketplace />} />
                   <Route path="/info" element={<Info />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/careers" element={<Careers />} />
