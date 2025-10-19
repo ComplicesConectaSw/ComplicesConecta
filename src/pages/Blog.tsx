@@ -1,6 +1,7 @@
 import { ArrowLeft, Calendar, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import HeaderNav from "@/components/HeaderNav";
 
 const Blog = () => {
   const navigate = useNavigate();
@@ -36,6 +37,8 @@ const Blog = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-600 via-pink-500 to-indigo-600">
+      <HeaderNav />
+      
       {/* Header */}
       <div className="bg-black/30 backdrop-blur-sm border-b border-white/10 py-8">
         <div className="container mx-auto px-4">

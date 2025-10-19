@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Header } from "@/components/Header";
-import NavigationEnhanced from "@/components/NavigationEnhanced";
+import HeaderNav from "@/components/HeaderNav";
 import { ProfileThemeShowcase } from '@/components/demo/ProfileThemeShowcase';
 import { UnifiedCard } from '@/components/ui/UnifiedCard';
 import { Badge } from '@/components/ui/badge';
@@ -256,6 +256,8 @@ const ProfileThemeDemo: React.FC = () => {
           </div>
         </UnifiedCard>
       </div>
+      
+      <HeaderNav />
     </div>
   );
 };

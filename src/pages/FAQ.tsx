@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Header } from "@/components/Header";
+import HeaderNav from "@/components/HeaderNav";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -271,7 +271,7 @@ Fecha: ${new Date().toLocaleString()}
       </div>
       
       <div className="relative z-10">
-        <Header />
+        <HeaderNav />
         
         <main className="container mx-auto px-4 py-8">
 

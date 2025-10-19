@@ -9,6 +9,7 @@ import { ChatTemplate } from '@/components/templates/ChatTemplate';
 import { ButtonEffectsTemplate } from '@/components/templates/ButtonEffectsTemplate';
 import { useProfileTheme } from '@/hooks/useProfileTheme';
 import { Gender, ProfileType, Theme } from '@/types/theme';
+import HeaderNav from '@/components/HeaderNav';
 import { 
   Palette, 
   Smartphone, 
@@ -39,6 +40,8 @@ const TemplateDemo: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-800 p-4">
+      <HeaderNav />
+      
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <motion.div

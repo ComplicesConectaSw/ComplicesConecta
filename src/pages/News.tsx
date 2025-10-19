@@ -1,4 +1,4 @@
-import { Header } from '@/components/Header';
+import HeaderNav from '@/components/HeaderNav';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -117,7 +117,7 @@ const News: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-pink-800">
-      <Header />
+      <HeaderNav />
       
       {/* Page Header */}
       <div className="bg-black/80 backdrop-blur-md border-b border-white/30 p-4 shadow-lg">

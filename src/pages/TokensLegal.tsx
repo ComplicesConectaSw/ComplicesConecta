@@ -3,12 +3,15 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, Scale, AlertTriangle, Shield, FileText, Gavel, Info } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { AnimatedButton } from "@/components/ui/AnimatedButton";
+import HeaderNav from '@/components/HeaderNav';
 
 export default function TokensLegal() {
   const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900">
+      <HeaderNav />
+      
       {/* Header */}
       <div className="sticky top-0 z-50 bg-gradient-to-r from-purple-900/80 via-pink-900/80 to-red-900/80 backdrop-blur-md border-b border-white/10">
         <div className="container mx-auto px-4 py-4">
