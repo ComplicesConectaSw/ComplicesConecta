@@ -21,6 +21,7 @@ import Index from "@/pages/Index";
 import Auth from "@/pages/Auth";
 import NotFound from "@/pages/NotFound";
 import Events from "@/pages/Events";
+import Discover from "@/pages/Discover";
 
 // Lazy loaded pages for performance optimization - Core features
 const Profiles = lazy(() => import("@/pages/Profiles"));
@@ -30,7 +31,6 @@ const ChatInfo = lazy(() => import("@/pages/ChatInfo"));
 const Matches = lazy(() => import("@/pages/Matches"));
 const Requests = lazy(() => import("@/pages/Requests"));
 const Settings = lazy(() => import("@/pages/Settings"));
-const Discover = lazy(() => import("@/pages/Discover"));
 const Premium = lazy(() => import("@/pages/Premium"));
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
 

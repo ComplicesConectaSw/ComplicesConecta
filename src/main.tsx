@@ -77,7 +77,7 @@ if (typeof window !== 'undefined') {
     const message = (event.reason?.message || event.reason || '').toString().toLowerCase();
     const walletErrors = [
       'solana',
-      'ethereum', 
+      'ethereum',
       'tronweb',
       'bybit',
       'metamask',
@@ -87,6 +87,19 @@ if (typeof window !== 'undefined') {
       'provider inject',
       'chainid'
     ];
+    
+    // Manejar errores de carga de módulos dinámicos
+    if (message.includes('failed to fetch dynamically imported module') || 
+        message.includes('loading chunk') ||
+        message.includes('loading css chunk')) {
+      console.log('🔄 [ModuleLoader] Retrying failed module load:', event.reason);
+      // Retry logic for failed module loads
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+      event.preventDefault();
+      return false;
+    }
     
     if (walletErrors.some(err => message.includes(err))) {
       event.preventDefault();
