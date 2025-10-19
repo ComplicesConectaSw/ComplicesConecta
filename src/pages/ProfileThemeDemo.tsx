@@ -34,8 +34,7 @@ const ProfileThemeDemo: React.FC = () => {
 
   return (
     <div className={`min-h-screen ${themeConfig.backgroundClass}`}>
-      <Header />
-      <NavigationEnhanced />
+      <HeaderNav />
       
       <div className="container mx-auto px-4 py-8 space-y-8">
         {/* Hero Section */}
