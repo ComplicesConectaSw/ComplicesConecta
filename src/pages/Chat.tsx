@@ -6,8 +6,7 @@ import { UnifiedInput } from "@/components/ui/UnifiedInput";
 import { useNavigate } from "react-router-dom";
 import { useFeatures } from "@/hooks/useFeatures";
 import { toast } from "@/hooks/use-toast";
-import NavigationEnhanced from "@/components/NavigationEnhanced";
-// import { Header } from "@/components/Header";
+import HeaderNav from "@/components/HeaderNav";
 import { mockPrivacySettings } from "@/lib/data";
 import { invitationService } from "@/lib/invitations";
 import { simpleChatService, type SimpleChatRoom, type SimpleChatMessage } from '@/lib/simpleChatService';
@@ -379,6 +378,7 @@ const Chat = () => {
       </div>
 
       {/* Header removido para usuarios demo - solo NavigationLegacy */}
+      <HeaderNav />
       
       <div className="relative z-10 flex h-screen pt-16 pb-20">
         {/* Chat List Sidebar */}
@@ -814,8 +814,6 @@ const Chat = () => {
           )}
         </div>
       </div>
-
-      <NavigationEnhanced />
       
       {/* Custom Styles */}
       <style>{`
