@@ -54,54 +54,95 @@ const StoriesContainer: React.FC = () => {
             userId: 1,
             content: {
               type: 'image',
-              url: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=600&fit=crop&crop=faces&auto=format&q=80'
+              url: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=600&fit=crop&crop=faces&auto=format&q=80'
             },
             createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 hours ago
             expiresAt: new Date(Date.now() + 22 * 60 * 60 * 1000).toISOString(), // 22 hours from now
             views: 15,
             isViewed: false,
-            description: 'Mi primera historia en ComplicesConecta! 🎉',
+            description: 'Cena íntima en casa 🍷✨',
             visibility: 'public',
             user: {
               name: 'Ana García',
               avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=faces&auto=format&q=80'
-            }
+            },
+            location: 'Ciudad de México'
           },
           {
             id: 2,
             userId: 2,
             content: {
               type: 'image',
-              url: 'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=400&h=600&fit=crop&crop=faces&auto=format&q=80'
+              url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=600&fit=crop&crop=faces&auto=format&q=80'
             },
             createdAt: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(), // 4 hours ago
             expiresAt: new Date(Date.now() + 20 * 60 * 60 * 1000).toISOString(), // 20 hours from now
             views: 8,
             isViewed: false,
-            description: 'Explorando la ciudad 🌆',
+            description: 'Escapada de fin de semana 🌅',
             visibility: 'public',
             user: {
               name: 'Carlos López',
               avatar: 'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=100&h=100&fit=crop&crop=faces&auto=format&q=80'
-            }
+            },
+            location: 'Guadalajara'
           },
           {
             id: 3,
             userId: 3,
             content: {
               type: 'image',
-              url: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=600&fit=crop&crop=faces&auto=format&q=80'
+              url: 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400&h=600&fit=crop&crop=faces&auto=format&q=80'
             },
             createdAt: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(), // 6 hours ago
             expiresAt: new Date(Date.now() + 18 * 60 * 60 * 1000).toISOString(), // 18 hours from now
             views: 23,
             isViewed: false,
-            description: 'Momento especial ✨',
+            description: 'Momento especial juntos 💕',
             visibility: 'private',
             user: {
               name: 'María Rodríguez',
               avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&h=100&fit=crop&crop=faces&auto=format&q=80'
-            }
+            },
+            location: 'Monterrey'
+          },
+          {
+            id: 4,
+            userId: 4,
+            content: {
+              type: 'video',
+              url: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=600&fit=crop&crop=faces&auto=format&q=80'
+            },
+            createdAt: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(), // 1 hour ago
+            expiresAt: new Date(Date.now() + 23 * 60 * 60 * 1000).toISOString(), // 23 hours from now
+            views: 12,
+            isViewed: true,
+            description: 'Video íntimo para conexiones especiales 🔥',
+            visibility: 'private',
+            user: {
+              name: 'Roberto & Sofía',
+              avatar: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=100&h=100&fit=crop&crop=faces&auto=format&q=80'
+            },
+            location: 'Puebla'
+          },
+          {
+            id: 5,
+            userId: 5,
+            content: {
+              type: 'image',
+              url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=400&h=600&fit=crop&crop=faces&auto=format&q=80'
+            },
+            createdAt: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(), // 3 hours ago
+            expiresAt: new Date(Date.now() + 21 * 60 * 60 * 1000).toISOString(), // 21 hours from now
+            views: 19,
+            isViewed: false,
+            description: 'Celebración especial de la comunidad 🎉',
+            visibility: 'public',
+            user: {
+              name: 'Carmen & Luis',
+              avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=faces&auto=format&q=80'
+            },
+            location: 'Tijuana'
           }
         ];
         
@@ -174,7 +215,7 @@ const StoriesContainer: React.FC = () => {
             <h3 className="text-2xl font-semibold text-white mb-3">Historias Efímeras de ComplicesConecta</h3>
             <p className="text-white/90 text-lg leading-relaxed max-w-3xl mx-auto">
               Comparte momentos auténticos que desaparecen automáticamente en 24 horas. 
-              Conecta de manera más íntima y espontánea con otros miembros de la comunidad.
+              Conecta de manera más íntima y espontánea con otros miembros de la comunidad swinger mexicana.
             </p>
           </div>
 
@@ -202,36 +243,66 @@ const StoriesContainer: React.FC = () => {
             <h4 className="text-lg font-semibold text-white mb-3 text-center">Ejemplos de Historias Populares</h4>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               <div className="aspect-square bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg relative overflow-hidden">
+                <img 
+                  src="https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=400&fit=crop&crop=faces&auto=format&q=80" 
+                  alt="Cena íntima"
+                  className="w-full h-full object-cover"
+                />
                 <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white p-2">
                   <Camera className="h-6 w-6 mb-1" />
-                  <span className="text-xs font-medium text-center">Cena romántica en casa</span>
+                  <span className="text-xs font-medium text-center">Cena íntima en casa</span>
                 </div>
               </div>
               <div className="aspect-square bg-gradient-to-br from-blue-500 to-teal-500 rounded-lg relative overflow-hidden">
+                <img 
+                  src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop&crop=faces&auto=format&q=80" 
+                  alt="Viaje de fin de semana"
+                  className="w-full h-full object-cover"
+                />
                 <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white p-2">
                   <Globe className="h-6 w-6 mb-1" />
-                  <span className="text-xs font-medium text-center">Viaje de fin de semana</span>
+                  <span className="text-xs font-medium text-center">Escapada de fin de semana</span>
                 </div>
               </div>
               <div className="aspect-square bg-gradient-to-br from-orange-500 to-red-500 rounded-lg relative overflow-hidden">
+                <img 
+                  src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400&h=400&fit=crop&crop=faces&auto=format&q=80" 
+                  alt="Momento especial"
+                  className="w-full h-full object-cover"
+                />
                 <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white p-2">
                   <MessageCircle className="h-6 w-6 mb-1" />
                   <span className="text-xs font-medium text-center">Momento especial juntos</span>
                 </div>
               </div>
               <div className="aspect-square bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg relative overflow-hidden">
+                <img 
+                  src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=400&h=400&fit=crop&crop=faces&auto=format&q=80" 
+                  alt="Celebración"
+                  className="w-full h-full object-cover"
+                />
                 <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white p-2">
                   <Heart className="h-6 w-6 mb-1" />
                   <span className="text-xs font-medium text-center">Celebración especial</span>
                 </div>
               </div>
               <div className="aspect-square bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg relative overflow-hidden">
+                <img 
+                  src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop&crop=faces&auto=format&q=80" 
+                  alt="Video íntimo"
+                  className="w-full h-full object-cover"
+                />
                 <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white p-2">
                   <Play className="h-6 w-6 mb-1" />
                   <span className="text-xs font-medium text-center">Video íntimo</span>
                 </div>
               </div>
               <div className="aspect-square bg-gradient-to-br from-yellow-500 to-orange-500 rounded-lg relative overflow-hidden">
+                <img 
+                  src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&crop=faces&auto=format&q=80" 
+                  alt="Aventura compartida"
+                  className="w-full h-full object-cover"
+                />
                 <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white p-2">
                   <Share2 className="h-6 w-6 mb-1" />
                   <span className="text-xs font-medium text-center">Aventura compartida</span>
@@ -268,6 +339,14 @@ const StoriesContainer: React.FC = () => {
                 <Globe className="h-4 w-4 text-cyan-400" />
                 <span>Viajes y escapadas</span>
               </div>
+              <div className="flex items-center gap-2">
+                <Crown className="h-4 w-4 text-orange-400" />
+                <span>Eventos exclusivos de la comunidad</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <MessageCircle className="h-4 w-4 text-indigo-400" />
+                <span>Mensajes especiales para conexiones</span>
+              </div>
             </div>
           </div>
 
@@ -277,7 +356,7 @@ const StoriesContainer: React.FC = () => {
             <div className="grid md:grid-cols-3 gap-3 text-sm text-white/80">
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4 text-blue-400" />
-                <span>Desaparecen automáticamente</span>
+                <span>Desaparecen automáticamente en 24h</span>
               </div>
               <div className="flex items-center gap-2">
                 <Eye className="h-4 w-4 text-green-400" />
@@ -286,6 +365,18 @@ const StoriesContainer: React.FC = () => {
               <div className="flex items-center gap-2">
                 <MessageCircle className="h-4 w-4 text-purple-400" />
                 <span>Comentarios privados</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Lock className="h-4 w-4 text-yellow-400" />
+                <span>Contenido solo para conexiones</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Heart className="h-4 w-4 text-pink-400" />
+                <span>Reacciones discretas</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Crown className="h-4 w-4 text-orange-400" />
+                <span>Acceso exclusivo a eventos</span>
               </div>
             </div>
           </div>
