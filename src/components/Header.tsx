@@ -34,7 +34,7 @@ import { ModeIndicator } from '@/components/ModeIndicator';
 
 export const Header = () => {
   const _navigate = useNavigate();
-  const { user, profile, isAuthenticated: authIsAuthenticated, isAdmin, signOut, loading: _loading } = useAuth();
+  const { user, _profile, isAuthenticated: authIsAuthenticated, isAdmin, signOut, loading: _loading } = useAuth();
   const [demoUser, setDemoUser] = useState<any>(null);
   const [isRunningInApp, setIsRunningInApp] = useState(false);
   const [_isScrolled, setIsScrolled] = useState(false);
@@ -43,7 +43,7 @@ export const Header = () => {
 
   // Demo theme configuration
   const { navbarStyle } = useDemoThemeConfig();
-  const navbarStyles = getNavbarStyles(navbarStyle);
+  const _navbarStyles = getNavbarStyles(navbarStyle);
 
   // Determinar si está autenticado (demo o real)
   const isAuthenticated = authIsAuthenticated() || (localStorage.getItem('demo_authenticated') === 'true');

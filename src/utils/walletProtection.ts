@@ -69,7 +69,7 @@ export const initializeWalletProtection = () => {
     
     try {
       return originalDefineProperty.call(this, obj, prop, descriptor);
-    } catch (error) {
+    } catch {
       console.log(`[WalletProtection] Property definition blocked for ${prop}`);
       return obj;
     }
@@ -97,7 +97,7 @@ export const initializeWalletProtection = () => {
         });
         console.log(`[WalletProtection] Protected window.${prop}`);
       }
-    } catch (error) {
+    } catch {
       // Property might already be protected
     }
   });

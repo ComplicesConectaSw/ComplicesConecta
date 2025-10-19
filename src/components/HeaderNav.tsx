@@ -29,7 +29,7 @@ interface HeaderNavProps {
 export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, isAuthenticated } = useAuth();
+  const { _user, _isAuthenticated } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 

@@ -49,7 +49,7 @@ const NavigationEnhanced: React.FC = () => {
 
   // Verificar si el usuario está autenticado (real o demo)
   const isDemoAuthenticated = localStorage.getItem('demo_authenticated') === 'true';
-  const demoUser = localStorage.getItem('demo_user');
+  const _demoUser = localStorage.getItem('demo_user');
   const isRealAuthenticated = isAuthenticated() && user && profile;
   
   // Usuario está autenticado si es demo O real

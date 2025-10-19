@@ -12,10 +12,7 @@ import {
   MapPin,
   Star,
   Eye,
-  Calendar,
-  Grid3X3,
-  Upload,
-  Trash2
+  Calendar
 } from 'lucide-react';
 import { EnhancedGallery } from './EnhancedGallery';
 

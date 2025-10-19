@@ -12,7 +12,7 @@ import { InstallAppModal } from "@/components/modals/InstallAppModal";
 import { ActionButtonsModal } from "@/components/modals/ActionButtonsModal";
 // StoriesContainer removido - ya está en HeaderNav
 import { useScrollHide } from "@/hooks/useScrollHide";
-import { Heart, Users, Shield, Zap, Sparkles, Star, Rocket, Smartphone as Android, Info, Briefcase, DollarSign, UserCheck } from "lucide-react";
+import { Heart, Users, Shield, Zap, Smartphone as Android, Info, Briefcase, DollarSign, UserCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import "@/styles/animations.css";
 import { logger } from '@/lib/logger';

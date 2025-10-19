@@ -7,14 +7,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { 
   Eye, 
   Lock, 
-  Upload, 
   Trash2, 
   Heart, 
   MessageCircle,
   Globe,
-  UserPlus,
-  Check,
-  X
+  UserPlus
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
@@ -102,12 +99,12 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
   profileType,
   isOwner
 }) => {
-  const { user } = useAuth();
+  const { _user } = useAuth();
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
   const [loading, setLoading] = useState(true);
   const [isDemoMode, setIsDemoMode] = useState(false);
-  const [privateAccessRequests, setPrivateAccessRequests] = useState<any[]>([]);
+  const [_privateAccessRequests, _setPrivateAccessRequests] = useState<any[]>([]);
 
   useEffect(() => {
     checkModeAndLoadImages();
@@ -188,7 +185,7 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
     }
   };
 
-  const handleImageUpload = async (file: File) => {
+  const _handleImageUpload = async (file: File) => {
     if (isDemoMode) {
       // Simular upload en modo demo
       const newImage: GalleryImage = {

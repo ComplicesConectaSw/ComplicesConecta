@@ -9,7 +9,7 @@ import HeaderNav from '@/components/HeaderNav';
 
 const VirtualGifts = () => {
   const navigate = useNavigate();
-  const [selectedGift, setSelectedGift] = useState(null);
+  const [_selectedGift, _setSelectedGift] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
 
   const giftCategories = [

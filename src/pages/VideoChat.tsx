@@ -11,7 +11,7 @@ const VideoChat = () => {
   const [isVideoOn, setIsVideoOn] = useState(true);
   const [isMicOn, setIsMicOn] = useState(true);
   const [isCallActive, setIsCallActive] = useState(false);
-  const [participants, setParticipants] = useState([
+  const [_participants, _setParticipants] = useState([
     {
       id: 1,
       name: "María Elena",

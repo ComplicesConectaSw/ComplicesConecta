@@ -9,7 +9,6 @@ import { ThemeProvider } from '@/components/ui/ThemeProvider';
 import { Suspense, lazy } from "react";
 import { AnimationProvider } from "@/components/animations/AnimationProvider";
 import { PageTransitionWrapper } from "@/components/animations/PageTransitions";
-import { AnimatedBackground, FloatingParticles } from "@/components/animations/GlobalAnimations";
 import { NotificationProvider } from "@/components/animations/NotificationSystem";
 import { AnimationSettingsButton } from "@/components/animations/AnimationSettings";
 import AdminRoute from '@/components/auth/AdminRoute';

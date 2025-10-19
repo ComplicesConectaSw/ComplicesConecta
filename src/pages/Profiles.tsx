@@ -15,9 +15,7 @@ import {
   Brain, 
   Sparkles, 
   Heart, 
-  MapPin,
-  ArrowLeft,
-  Users
+  MapPin
 } from 'lucide-react';
 
 interface FilterState {
@@ -294,7 +292,7 @@ const Profiles: React.FC = () => {
   };
 
   // Sugerencias de IA actualizadas para tema swinger
-  const generateAiSuggestions = (query: string) => {
+  const _generateAiSuggestions = (query: string) => {
     const suggestions = [
       "Parejas swinger experimentadas",
       "Eventos privados discretos",

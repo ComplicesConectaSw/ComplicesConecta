@@ -1,9 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Info, ArrowLeft, Shield, Users, Heart, Star, Globe, Lock, CheckCircle } from 'lucide-react';
+import { Info as InfoIcon, ArrowLeft, Shield, Users, Heart, Star, Globe, Lock, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import HeaderNav from '@/components/HeaderNav';
 
 const Info = () => {
@@ -99,7 +98,7 @@ const Info = () => {
           {/* Header */}
           <div className="text-center mb-12">
             <div className="flex items-center justify-center mb-4">
-              <Info className="h-12 w-12 text-pink-400 mr-3" />
+              <InfoIcon className="h-12 w-12 text-pink-400 mr-3" />
               <h1 className="text-4xl md:text-5xl font-bold text-white">
                 Información
               </h1>
