@@ -3,6 +3,7 @@ import { StrictMode } from 'react'
 import App from './App.tsx'
 import './index.css'
 import './styles/consolidated-styles.css'
+import './styles/ui-fixes-contraste.css'
 import { initializeWalletProtection, detectWalletConflicts } from "./utils/walletProtection";
 import { initializeReactFallbacks, ensureReactPolyfills } from "./utils/reactFallbacks";
 import ErrorBoundary from '@/components/ErrorBoundary'
