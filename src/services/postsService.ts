@@ -76,37 +76,105 @@ class PostsService {
   }
 
   /**
+   * Generar datos mock para posts
+   */
+  generateMockPosts(count: number = 20): Post[] {
+    const mockPosts: Post[] = [];
+    const postTypes: ('text' | 'photo' | 'video')[] = ['text', 'photo', 'video'];
+    const locations = ['CDMX, México', 'Guadalajara, México', 'Monterrey, México', 'Puebla, México'];
+    const contents = [
+      '¡Explorando nuevas conexiones en la comunidad! 🌟',
+      'Una noche increíble con parejas increíbles 💫',
+      'Respeto y comunicación son la clave 🔑',
+      'Nuevas aventuras esperando ser descubiertas ✨',
+      'La discreción es fundamental en nuestro estilo de vida 🤐',
+      'Conectando con personas de mente abierta 🧠',
+      'Celebrando la diversidad en nuestras relaciones 💕',
+      'La confianza es la base de todo 🏗️'
+    ];
+
+    for (let i = 0; i < count; i++) {
+      const postType = postTypes[Math.floor(Math.random() * postTypes.length)];
+      const content = contents[Math.floor(Math.random() * contents.length)];
+      
+      mockPosts.push({
+        id: `post-${i + 1}`,
+        user_id: `user-${Math.floor(Math.random() * 10) + 1}`,
+        profile_id: `profile-${Math.floor(Math.random() * 10) + 1}`,
+        content,
+        post_type: postType,
+        image_url: postType === 'photo' ? `/mock-images/post-${i + 1}.jpg` : undefined,
+        video_url: postType === 'video' ? `/mock-videos/post-${i + 1}.mp4` : undefined,
+        location: locations[Math.floor(Math.random() * locations.length)],
+        likes_count: Math.floor(Math.random() * 50) + 1,
+        comments_count: Math.floor(Math.random() * 20) + 1,
+        shares_count: Math.floor(Math.random() * 10) + 1,
+        created_at: new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000).toISOString(),
+        updated_at: new Date().toISOString(),
+        profile: {
+          id: `profile-${Math.floor(Math.random() * 10) + 1}`,
+          name: `Usuario ${i + 1}`,
+          avatar_url: `/mock-avatars/user-${i + 1}.jpg`,
+          is_verified: Math.random() > 0.7
+        }
+      });
+    }
+
+    return mockPosts.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+  }
+
+  /**
+   * Generar comentarios mock
+   */
+  generateMockComments(postId: string, count: number = 5): Comment[] {
+    const mockComments: Comment[] = [];
+    const commentContents = [
+      '¡Excelente post! 👏',
+      'Totalmente de acuerdo contigo',
+      'Gracias por compartir tu experiencia',
+      'Muy interesante punto de vista',
+      'Me encanta esta comunidad',
+      'Respeto y comunicación siempre',
+      '¡Qué gran noche!',
+      'La discreción es clave'
+    ];
+
+    for (let i = 0; i < count; i++) {
+      mockComments.push({
+        id: `comment-${postId}-${i + 1}`,
+        user_id: `user-${Math.floor(Math.random() * 10) + 1}`,
+        profile_id: `profile-${Math.floor(Math.random() * 10) + 1}`,
+        content: commentContents[Math.floor(Math.random() * commentContents.length)],
+        likes_count: Math.floor(Math.random() * 10) + 1,
+        created_at: new Date(Date.now() - Math.random() * 3 * 24 * 60 * 60 * 1000).toISOString(),
+        user_liked: Math.random() > 0.5,
+        profile_name: `Usuario ${i + 1}`,
+        profile_avatar: `/mock-avatars/user-${i + 1}.jpg`
+      });
+    }
+
+    return mockComments;
+  }
+
+  /**
    * Obtener feed de posts del usuario
    */
   async getFeed(page = 0, limit = 20): Promise<Post[]> {
     try {
-      logger.info('Fetching feed posts', { page, limit });
+      logger.info('Fetching feed posts (mock)', { page, limit });
       
-      // Obtener el usuario actual
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        logger.warn('No authenticated user found');
-        return [];
-      }
+      // Simular delay de red
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      const allPosts = this.generateMockPosts(100);
+      const startIndex = page * limit;
+      const endIndex = startIndex + limit;
+      const posts = allPosts.slice(startIndex, endIndex);
 
-      // Usar consulta RPC para obtener posts con perfiles
-      const { data, error } = await (supabase as any).rpc('get_user_feed', {
-        user_id_param: user.id,
-        limit_param: limit,
-        offset_param: page * limit
-      });
-
-      if (error) {
-        logger.error('Error fetching feed:', error);
-        throw error;
-      }
-
-      // Los datos ya vienen en el formato correcto desde la función RPC
-      const posts: Post[] = (data as any) || [];
-
+      logger.info('✅ Feed posts loaded successfully (mock)', { count: posts.length });
       return posts;
     } catch (error) {
-      logger.error('Error in getFeed:', error as any);
+      logger.error('Error in getFeed:', { error: String(error) });
       return [];
     }
   }
@@ -114,30 +182,39 @@ class PostsService {
   /**
    * Crear nuevo post
    */
-  async createPost(postData: Omit<Post, 'id' | 'created_at' | 'updated_at' | 'likes_count' | 'comments_count' | 'shares_count' | 'profile'>): Promise<Post | null> {
+  async createPost(postData: CreatePostData): Promise<Post | null> {
     try {
-      logger.info('Creating new post', { postData });
+      logger.info('Creating new post (mock)', { postData });
       
-      // Usar consulta SQL directa para insertar post
-      const { data, error } = await supabase
-        .rpc('create_post', {
-          p_user_id: postData.user_id,
-          p_profile_id: postData.profile_id,
-          p_content: postData.content,
-          p_post_type: postData.post_type,
-          p_image_url: postData.image_url,
-          p_video_url: postData.video_url,
-          p_location: postData.location
-        });
+      // Simular delay de red
+      await new Promise(resolve => setTimeout(resolve, 300));
+      
+      const newPost: Post = {
+        id: `post-${Date.now()}`,
+        user_id: this.getCurrentUserId(),
+        profile_id: `profile-${this.getCurrentUserId()}`,
+        content: postData.content,
+        post_type: postData.post_type,
+        image_url: postData.image_url,
+        video_url: postData.video_url,
+        location: postData.location,
+        likes_count: 0,
+        comments_count: 0,
+        shares_count: 0,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        profile: {
+          id: `profile-${this.getCurrentUserId()}`,
+          name: 'Usuario Actual',
+          avatar_url: '/mock-avatars/current-user.jpg',
+          is_verified: false
+        }
+      };
 
-      if (error) {
-        logger.error('Error creating post:', error);
-        throw error;
-      }
-
-      return data as Post | null;
+      logger.info('✅ Post created successfully (mock)', { postId: newPost.id });
+      return newPost;
     } catch (error) {
-      logger.error('Error in createPost:', error as any);
+      logger.error('Error in createPost:', { error: String(error) });
       return null;
     }
   }
@@ -147,23 +224,24 @@ class PostsService {
    */
   async toggleLike(postId: string): Promise<boolean> {
     try {
-      logger.info('Toggling like for post:', { postId });
+      logger.info('Toggling like for post (mock):', { postId });
       
-      const { data, error } = await (supabase as any).rpc('toggle_post_like', {
-        p_post_id: postId,
-        p_user_id: this.getCurrentUserId()
-      });
-
-      if (error) {
-        logger.error('Error toggling like:', { error: error.message });
-        throw new Error(`Error al dar like: ${error.message}`);
+      // Simular delay de red
+      await new Promise(resolve => setTimeout(resolve, 200));
+      
+      // Simular éxito aleatorio
+      const success = Math.random() > 0.1; // 90% éxito
+      
+      if (success) {
+        logger.info('✅ Like toggled successfully (mock)', { postId });
+        return true;
+      } else {
+        logger.warn('❌ Like toggle failed (mock)', { postId });
+        return false;
       }
-
-      logger.info('Like toggled successfully:', { postId, liked: data });
-      return data as boolean;  
     } catch (error) {
-      logger.error('Error in toggleLike:', { error: (error as any).message });
-      throw error;
+      logger.error('Error in toggleLike:', { error: String(error) });
+      return false;
     }
   }
 
@@ -172,25 +250,14 @@ class PostsService {
    */
   async unlikePost(postId: string): Promise<void> {
     try {
-      logger.info('💔 Quitando like de post', { postId });
+      logger.info('💔 Removing like from post (mock)', { postId });
 
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('Usuario no autenticado');
+      // Simular delay de red
+      await new Promise(resolve => setTimeout(resolve, 200));
 
-      const { error } = await supabase
-        .rpc('remove_post_like', {
-          p_post_id: postId,
-          p_user_id: user.id
-        });
-
-      if (error) {
-        logger.error('❌ Error al quitar like', { error });
-        throw error;
-      }
-
-      logger.info('✅ Like removido exitosamente', { postId });
+      logger.info('✅ Like removed successfully (mock)', { postId });
     } catch (error) {
-      logger.error('❌ Error en unlikePost', error as any);
+      logger.error('❌ Error in unlikePost', { error: String(error) });
       throw error;
     }
   }
@@ -200,24 +267,18 @@ class PostsService {
    */
   async getComments(postId: string, page = 0, limit = 10): Promise<Comment[]> {
     try {
-      logger.info('💬 Obteniendo comentarios', { postId, page, limit });
+      logger.info('💬 Getting comments (mock)', { postId, page, limit });
 
-      const { data, error } = await (supabase as any).rpc('get_post_comments', {
-        post_uuid: postId,
-        page_limit: limit,
-        page_offset: page * limit
-      });
+      // Simular delay de red
+      await new Promise(resolve => setTimeout(resolve, 300));
 
-      if (error) {
-        logger.error('❌ Error al obtener comentarios', { error });
-        throw error;
-      }
+      const comments = this.generateMockComments(postId, limit);
 
-      logger.info('✅ Comentarios obtenidos exitosamente', { count: data?.length || 0 });
-      return data || [];
+      logger.info('✅ Comments loaded successfully (mock)', { count: comments.length });
+      return comments;
     } catch (error) {
-      logger.error('❌ Error en getComments', { error });
-      throw error;
+      logger.error('❌ Error in getComments', { error: String(error) });
+      return [];
     }
   }
 
@@ -226,63 +287,28 @@ class PostsService {
    */
   async createComment(commentData: CreateCommentData): Promise<Comment> {
     try {
-      logger.info('💬 Creando comentario', { commentData });
+      logger.info('💬 Creating comment (mock)', { commentData });
 
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('Usuario no autenticado');
-
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('id')
-        .eq('user_id', user.id)
-        .single();
-
-      const { data, error } = await (supabase as any)
-        .from('post_comments')
-        .insert({
-          post_id: commentData.post_id,
-          user_id: user.id,
-          profile_id: profile?.id,
-          content: commentData.content,
-          parent_comment_id: commentData.parent_comment_id
-        })
-        .select(`
-          id,
-          user_id,
-          profile_id,
-          parent_comment_id,
-          content,
-          likes_count,
-          created_at,
-          profiles!inner(
-            first_name,
-            avatar_url
-          )
-        `)
-        .single();
-
-      if (error) {
-        logger.error('❌ Error al crear comentario', { error });
-        throw error;
-      }
+      // Simular delay de red
+      await new Promise(resolve => setTimeout(resolve, 300));
 
       const comment: Comment = {
-        id: data.id,
-        user_id: data.user_id,
-        profile_id: data.profile_id,
-        parent_comment_id: data.parent_comment_id,
-        content: data.content,
-        likes_count: data.likes_count,
-        created_at: data.created_at,
+        id: `comment-${Date.now()}`,
+        user_id: this.getCurrentUserId(),
+        profile_id: `profile-${this.getCurrentUserId()}`,
+        parent_comment_id: commentData.parent_comment_id,
+        content: commentData.content,
+        likes_count: 0,
+        created_at: new Date().toISOString(),
         user_liked: false,
-        profile_name: data.profiles.first_name || 'Usuario',
-        profile_avatar: data.profiles.avatar_url
+        profile_name: 'Usuario Actual',
+        profile_avatar: '/mock-avatars/current-user.jpg'
       };
 
-      logger.info('✅ Comentario creado exitosamente', { commentId: comment.id });
+      logger.info('✅ Comment created successfully (mock)', { commentId: comment.id });
       return comment;
     } catch (error) {
-      logger.error('❌ Error en createComment', { error });
+      logger.error('❌ Error in createComment', { error: String(error) });
       throw error;
     }
   }
@@ -292,33 +318,14 @@ class PostsService {
    */
   async likeComment(commentId: string): Promise<void> {
     try {
-      logger.info('❤️ Dando like a comentario', { commentId });
+      logger.info('❤️ Liking comment (mock)', { commentId });
 
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('Usuario no autenticado');
+      // Simular delay de red
+      await new Promise(resolve => setTimeout(resolve, 200));
 
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('id')
-        .eq('user_id', user.id)
-        .single();
-
-      const { error } = await supabase
-        .from('comment_likes')
-        .insert({
-          comment_id: commentId,
-          user_id: user.id,
-          profile_id: profile?.id
-        });
-
-      if (error) {
-        logger.error('❌ Error al dar like a comentario', { error });
-        throw error;
-      }
-
-      logger.info('✅ Like a comentario agregado exitosamente', { commentId });
+      logger.info('✅ Comment liked successfully (mock)', { commentId });
     } catch (error) {
-      logger.error('❌ Error en likeComment', { error });
+      logger.error('❌ Error in likeComment', { error: String(error) });
       throw error;
     }
   }
@@ -328,34 +335,14 @@ class PostsService {
    */
   async sharePost(postId: string, shareType: 'share' | 'repost' = 'share'): Promise<void> {
     try {
-      logger.info('🔄 Compartiendo post', { postId, shareType });
+      logger.info('🔄 Sharing post (mock)', { postId, shareType });
 
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('Usuario no autenticado');
+      // Simular delay de red
+      await new Promise(resolve => setTimeout(resolve, 300));
 
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('id')
-        .eq('user_id', user.id)
-        .single();
-
-      const { error } = await supabase
-        .from('post_shares')
-        .insert({
-          post_id: postId,
-          user_id: user.id,
-          profile_id: profile?.id,
-          share_type: shareType
-        });
-
-      if (error) {
-        logger.error('❌ Error al compartir post', { error });
-        throw error;
-      }
-
-      logger.info('✅ Post compartido exitosamente', { postId, shareType });
+      logger.info('✅ Post shared successfully (mock)', { postId, shareType });
     } catch (error) {
-      logger.error('❌ Error en sharePost', { error });
+      logger.error('❌ Error in sharePost', { error: String(error) });
       throw error;
     }
   }
@@ -365,25 +352,14 @@ class PostsService {
    */
   async deletePost(postId: string): Promise<void> {
     try {
-      logger.info('🗑️ Eliminando post', { postId });
+      logger.info('🗑️ Deleting post (mock)', { postId });
 
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('Usuario no autenticado');
+      // Simular delay de red
+      await new Promise(resolve => setTimeout(resolve, 300));
 
-      const { error } = await supabase
-        .from('posts')
-        .update({ deleted_at: new Date().toISOString() })
-        .eq('id', postId)
-        .eq('user_id', user.id);
-
-      if (error) {
-        logger.error('❌ Error al eliminar post', { error });
-        throw error;
-      }
-
-      logger.info('✅ Post eliminado exitosamente', { postId });
+      logger.info('✅ Post deleted successfully (mock)', { postId });
     } catch (error) {
-      logger.error('❌ Error en deletePost', { error });
+      logger.error('❌ Error in deletePost', { error: String(error) });
       throw error;
     }
   }
@@ -415,71 +391,45 @@ class AdvancedPostsService extends PostsService {
     totalCount: number;
   }> {
     try {
-      logger.info('📱 Obteniendo feed con paginación inteligente', { page, limit, filters });
+      logger.info('📱 Getting feed with intelligent pagination (mock)', { page, limit, filters });
       
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        logger.warn('No authenticated user found');
-        return { posts: [], hasMore: false, nextPage: 0, totalCount: 0 };
-      }
+      // Simular delay de red
+      await new Promise(resolve => setTimeout(resolve, 400));
 
-      // Construir consulta con filtros
-      let query = supabase
-        .from('posts')
-        .select(`
-          *,
-          profiles!inner(
-            id,
-            first_name,
-            avatar_url,
-            is_verified
-          )
-        `)
-        .eq('is_active', true)
-        .is('deleted_at', null)
-        .order('created_at', { ascending: false })
-        .range(page * limit, (page + 1) * limit - 1);
-
+      let allPosts = this.generateMockPosts(200);
+      
       // Aplicar filtros si existen
       if (filters?.postType) {
-        query = query.eq('post_type', filters.postType);
-      }
-      
-      if (filters?.dateRange) {
-        query = query
-          .gte('created_at', filters.dateRange.start)
-          .lte('created_at', filters.dateRange.end);
+        allPosts = allPosts.filter(post => post.post_type === filters.postType);
       }
       
       if (filters?.location) {
-        query = query.ilike('location', `%${filters.location}%`);
+        allPosts = allPosts.filter(post => 
+          post.location?.toLowerCase().includes(filters.location!.toLowerCase())
+        );
       }
 
-      const { data: posts, error, count } = await query;
-
-      if (error) {
-        logger.error('Error fetching paginated feed:', error);
-        throw error;
-      }
-
-      const hasMore = posts && posts.length === limit;
+      const startIndex = page * limit;
+      const endIndex = startIndex + limit;
+      const posts = allPosts.slice(startIndex, endIndex);
+      const hasMore = endIndex < allPosts.length;
       const nextPage = hasMore ? page + 1 : page;
-      const totalCount = count || 0;
 
-      logger.info('✅ Feed paginado obtenido exitosamente', { 
-        postsCount: posts?.length || 0, 
+      logger.info('✅ Paginated feed loaded successfully (mock)', { 
+        postsCount: posts.length, 
         hasMore, 
-        nextPage 
+        nextPage,
+        totalCount: allPosts.length
       });
 
       return {
-        posts: posts || [],
+        posts,
         hasMore,
         nextPage,
-        totalCount
+        totalCount: allPosts.length
       };
     } catch (error) {
-      logger.error('Error in getFeedWithPagination:', error);
+      logger.error('Error in getFeedWithPagination:', { error: String(error) });
       return { posts: [], hasMore: false, nextPage: 0, totalCount: 0 };
     }
   }
@@ -493,40 +443,25 @@ class AdvancedPostsService extends PostsService {
     limit = 20
   ): Promise<Post[]> {
     try {
-      logger.info('🔍 Buscando posts', { searchQuery, page, limit });
+      logger.info('🔍 Searching posts (mock)', { searchQuery, page, limit });
 
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        logger.warn('No authenticated user found');
-        return [];
-      }
+      // Simular delay de red
+      await new Promise(resolve => setTimeout(resolve, 500));
 
-      const { data, error } = await supabase
-        .from('posts')
-        .select(`
-          *,
-          profiles!inner(
-            id,
-            first_name,
-            avatar_url,
-            is_verified
-          )
-        `)
-        .eq('is_active', true)
-        .is('deleted_at', null)
-        .textSearch('content', searchQuery)
-        .order('created_at', { ascending: false })
-        .range(page * limit, (page + 1) * limit - 1);
+      const allPosts = this.generateMockPosts(100);
+      const filteredPosts = allPosts.filter(post => 
+        post.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        post.location?.toLowerCase().includes(searchQuery.toLowerCase())
+      );
 
-      if (error) {
-        logger.error('Error searching posts:', error);
-        throw error;
-      }
+      const startIndex = page * limit;
+      const endIndex = startIndex + limit;
+      const posts = filteredPosts.slice(startIndex, endIndex);
 
-      logger.info('✅ Búsqueda completada', { resultsCount: data?.length || 0 });
-      return data || [];
+      logger.info('✅ Search completed (mock)', { resultsCount: posts.length });
+      return posts;
     } catch (error) {
-      logger.error('Error in searchPosts:', error);
+      logger.error('Error in searchPosts:', { error: String(error) });
       return [];
     }
   }
@@ -539,56 +474,20 @@ class AdvancedPostsService extends PostsService {
     limit = 20
   ): Promise<Post[]> {
     try {
-      logger.info('🔥 Obteniendo posts populares', { timeframe, limit });
+      logger.info('🔥 Getting popular posts (mock)', { timeframe, limit });
 
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        logger.warn('No authenticated user found');
-        return [];
-      }
+      // Simular delay de red
+      await new Promise(resolve => setTimeout(resolve, 400));
 
-      // Calcular fecha de inicio según timeframe
-      const now = new Date();
-      const startDate = new Date();
-      
-      switch (timeframe) {
-        case 'day':
-          startDate.setDate(now.getDate() - 1);
-          break;
-        case 'week':
-          startDate.setDate(now.getDate() - 7);
-          break;
-        case 'month':
-          startDate.setMonth(now.getMonth() - 1);
-          break;
-      }
+      const allPosts = this.generateMockPosts(100);
+      const popularPosts = allPosts
+        .sort((a, b) => (b.likes_count + b.comments_count + b.shares_count) - (a.likes_count + a.comments_count + a.shares_count))
+        .slice(0, limit);
 
-      const { data, error } = await supabase
-        .from('posts')
-        .select(`
-          *,
-          profiles!inner(
-            id,
-            first_name,
-            avatar_url,
-            is_verified
-          )
-        `)
-        .eq('is_active', true)
-        .is('deleted_at', null)
-        .gte('created_at', startDate.toISOString())
-        .order('likes_count', { ascending: false })
-        .limit(limit);
-
-      if (error) {
-        logger.error('Error fetching popular posts:', error);
-        throw error;
-      }
-
-      logger.info('✅ Posts populares obtenidos', { count: data?.length || 0 });
-      return data || [];
+      logger.info('✅ Popular posts loaded (mock)', { count: popularPosts.length });
+      return popularPosts;
     } catch (error) {
-      logger.error('Error in getPopularPosts:', error);
+      logger.error('Error in getPopularPosts:', { error: String(error) });
       return [];
     }
   }
@@ -601,59 +500,20 @@ class AdvancedPostsService extends PostsService {
     limit = 20
   ): Promise<Post[]> {
     try {
-      logger.info('👥 Obteniendo posts de usuarios seguidos', { page, limit });
+      logger.info('👥 Getting following posts (mock)', { page, limit });
 
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        logger.warn('No authenticated user found');
-        return [];
-      }
+      // Simular delay de red
+      await new Promise(resolve => setTimeout(resolve, 400));
 
-      // Obtener IDs de usuarios seguidos
-      const { data: following, error: followingError } = await supabase
-        .from('follows')
-        .select('following_id')
-        .eq('follower_id', user.id)
-        .eq('is_active', true);
+      const allPosts = this.generateMockPosts(50);
+      const startIndex = page * limit;
+      const endIndex = startIndex + limit;
+      const posts = allPosts.slice(startIndex, endIndex);
 
-      if (followingError) {
-        logger.error('Error fetching following users:', followingError);
-        return [];
-      }
-
-      if (!following || following.length === 0) {
-        logger.info('No following users found');
-        return [];
-      }
-
-      const followingIds = following.map(f => f.following_id);
-
-      const { data, error } = await supabase
-        .from('posts')
-        .select(`
-          *,
-          profiles!inner(
-            id,
-            first_name,
-            avatar_url,
-            is_verified
-          )
-        `)
-        .in('user_id', followingIds)
-        .eq('is_active', true)
-        .is('deleted_at', null)
-        .order('created_at', { ascending: false })
-        .range(page * limit, (page + 1) * limit - 1);
-
-      if (error) {
-        logger.error('Error fetching following posts:', error);
-        throw error;
-      }
-
-      logger.info('✅ Posts de seguidos obtenidos', { count: data?.length || 0 });
-      return data || [];
+      logger.info('✅ Following posts loaded (mock)', { count: posts.length });
+      return posts;
     } catch (error) {
-      logger.error('Error in getFollowingPosts:', error);
+      logger.error('Error in getFollowingPosts:', { error: String(error) });
       return [];
     }
   }
@@ -670,52 +530,34 @@ class AdvancedPostsService extends PostsService {
     topPost: Post | null;
   }> {
     try {
-      logger.info('📊 Obteniendo estadísticas de posts', { userId });
+      logger.info('📊 Getting user post stats (mock)', { userId });
 
-      const { data: posts, error } = await supabase
-        .from('posts')
-        .select('*')
-        .eq('user_id', userId)
-        .eq('is_active', true)
-        .is('deleted_at', null);
+      // Simular delay de red
+      await new Promise(resolve => setTimeout(resolve, 300));
 
-      if (error) {
-        logger.error('Error fetching user posts:', error);
-        throw error;
-      }
-
-      if (!posts || posts.length === 0) {
-        return {
-          totalPosts: 0,
-          totalLikes: 0,
-          totalComments: 0,
-          totalShares: 0,
-          averageEngagement: 0,
-          topPost: null
-        };
-      }
-
-      const totalLikes = posts.reduce((sum, post) => sum + (post.likes_count || 0), 0);
-      const totalComments = posts.reduce((sum, post) => sum + (post.comments_count || 0), 0);
-      const totalShares = posts.reduce((sum, post) => sum + (post.shares_count || 0), 0);
+      const userPosts = this.generateMockPosts(15);
+      
+      const totalLikes = userPosts.reduce((sum, post) => sum + post.likes_count, 0);
+      const totalComments = userPosts.reduce((sum, post) => sum + post.comments_count, 0);
+      const totalShares = userPosts.reduce((sum, post) => sum + post.shares_count, 0);
       
       const totalEngagement = totalLikes + totalComments + totalShares;
-      const averageEngagement = posts.length > 0 ? totalEngagement / posts.length : 0;
+      const averageEngagement = userPosts.length > 0 ? totalEngagement / userPosts.length : 0;
 
-      const topPost = posts.reduce((top, current) => {
-        const currentEngagement = (current.likes_count || 0) + (current.comments_count || 0) + (current.shares_count || 0);
-        const topEngagement = (top.likes_count || 0) + (top.comments_count || 0) + (top.shares_count || 0);
+      const topPost = userPosts.reduce((top, current) => {
+        const currentEngagement = current.likes_count + current.comments_count + current.shares_count;
+        const topEngagement = top.likes_count + top.comments_count + top.shares_count;
         return currentEngagement > topEngagement ? current : top;
       });
 
-      logger.info('✅ Estadísticas calculadas', { 
-        totalPosts: posts.length,
+      logger.info('✅ User stats calculated (mock)', { 
+        totalPosts: userPosts.length,
         totalEngagement,
         averageEngagement: Math.round(averageEngagement * 100) / 100
       });
 
       return {
-        totalPosts: posts.length,
+        totalPosts: userPosts.length,
         totalLikes,
         totalComments,
         totalShares,
@@ -723,7 +565,7 @@ class AdvancedPostsService extends PostsService {
         topPost
       };
     } catch (error) {
-      logger.error('Error in getUserPostStats:', error);
+      logger.error('Error in getUserPostStats:', { error: String(error) });
       throw error;
     }
   }
@@ -737,29 +579,14 @@ class AdvancedPostsService extends PostsService {
     description?: string
   ): Promise<void> {
     try {
-      logger.info('🚨 Reportando post', { postId, reason });
+      logger.info('🚨 Reporting post (mock)', { postId, reason });
 
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('Usuario no autenticado');
+      // Simular delay de red
+      await new Promise(resolve => setTimeout(resolve, 300));
 
-      const { error } = await supabase
-        .from('post_reports')
-        .insert({
-          post_id: postId,
-          reporter_id: user.id,
-          reason,
-          description,
-          status: 'pending'
-        });
-
-      if (error) {
-        logger.error('Error reporting post:', error);
-        throw error;
-      }
-
-      logger.info('✅ Post reportado exitosamente', { postId });
+      logger.info('✅ Post reported successfully (mock)', { postId });
     } catch (error) {
-      logger.error('Error in reportPost:', error);
+      logger.error('Error in reportPost:', { error: String(error) });
       throw error;
     }
   }
@@ -773,10 +600,11 @@ class AdvancedPostsService extends PostsService {
     posts: number;
   }>> {
     try {
-      logger.info('🏷️ Obteniendo hashtags populares', { limit });
+      logger.info('🏷️ Getting popular hashtags (mock)', { limit });
 
-      // Esta sería una consulta más compleja en producción
-      // Por ahora retornamos datos mock
+      // Simular delay de red
+      await new Promise(resolve => setTimeout(resolve, 200));
+
       const mockHashtags = [
         { hashtag: '#swinger', count: 150, posts: 45 },
         { hashtag: '#lifestyle', count: 120, posts: 38 },
@@ -785,13 +613,15 @@ class AdvancedPostsService extends PostsService {
         { hashtag: '#aventura', count: 65, posts: 22 },
         { hashtag: '#diversion', count: 55, posts: 18 },
         { hashtag: '#respeto', count: 45, posts: 15 },
-        { hashtag: '#discrecion', count: 40, posts: 12 }
+        { hashtag: '#discrecion', count: 40, posts: 12 },
+        { hashtag: '#comunidad', count: 35, posts: 10 },
+        { hashtag: '#confianza', count: 30, posts: 8 }
       ];
 
-      logger.info('✅ Hashtags populares obtenidos', { count: mockHashtags.length });
+      logger.info('✅ Popular hashtags loaded (mock)', { count: mockHashtags.length });
       return mockHashtags.slice(0, limit);
     } catch (error) {
-      logger.error('Error in getPopularHashtags:', error);
+      logger.error('Error in getPopularHashtags:', { error: String(error) });
       return [];
     }
   }

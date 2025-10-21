@@ -23,7 +23,7 @@ import {
 } from 'lucide-react';
 
 // Importaciones para analytics de tokens
-import { tokenAnalytics, TokenMetrics } from '@/services/TokenAnalyticsService';
+import TokenAnalyticsService, { TokenMetrics } from '@/services/TokenAnalyticsService';
 import { analyticsMetrics } from '@/lib/analytics-metrics';
 
 type AnalyticsData = {
@@ -114,7 +114,7 @@ export function AnalyticsPanel() {
   const loadTokenMetrics = async () => {
     try {
       setTokenLoading(true);
-      const response = await tokenAnalytics.generateCurrentMetrics();
+      const response = await TokenAnalyticsService.getInstance().generateCurrentMetrics();
       
       if (response.success && response.metrics) {
         setTokenMetrics(response.metrics);
@@ -143,7 +143,7 @@ export function AnalyticsPanel() {
   const generateTokenReport = async () => {
     try {
       setIsGeneratingReport(true);
-      const response = await tokenAnalytics.generateAutomaticReport('daily');
+      const response = await TokenAnalyticsService.getInstance().generateAutomaticReport('daily');
       
       if (response.success && response.report) {
         console.log('Reporte generado:', response.report);

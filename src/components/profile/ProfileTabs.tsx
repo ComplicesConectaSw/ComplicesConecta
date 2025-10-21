@@ -15,6 +15,7 @@ import {
   Calendar
 } from 'lucide-react';
 import { EnhancedGallery } from './EnhancedGallery';
+import { cn } from '@/lib/utils';
 
 type ProfileType = 'single' | 'couple';
 

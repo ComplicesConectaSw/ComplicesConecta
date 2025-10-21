@@ -1,5 +1,4 @@
 import { supabase } from '@/integrations/supabase/client';
-import { logger } from '@/lib/logger';
 
 export interface CreateNotificationParams {
   userId: string;
@@ -18,117 +17,131 @@ export class NotificationService {
    */
   static async createNotification(params: CreateNotificationParams): Promise<string | null> {
     try {
-      const { data, error } = await supabase.rpc('create_notification', {
-        p_user_id: params.userId,
-        p_type: params.type,
-        p_title: params.title,
-        p_message: params.message,
-        p_action_url: params.actionUrl || null,
-        p_sender_id: params.senderId || null,
-        p_sender_name: params.senderName || null,
-        p_metadata: params.metadata || {}
-      } as any);
+      const notificationData = {
+        user_id: params.userId,
+        type: params.type,
+        title: params.title,
+        message: params.message,
+        action_url: params.actionUrl || null,
+        sender_id: params.senderId || null,
+        sender_name: params.senderName || null,
+        metadata: params.metadata || null,
+        read: false,
+        created_at: new Date().toISOString()
+      };
+
+      const { data, error } = await supabase
+        .from('notifications')
+        .insert(notificationData)
+        .select()
+        .single();
 
       if (error) {
-        logger.error('Error creating notification:', error);
+        console.error('Error creating notification:', error);
         return null;
       }
 
-      return data as string | null;
+      return data?.id || null;
     } catch (error) {
-      logger.error('Error in createNotification:', error as any);
+      console.error('Error in createNotification:', error);
       return null;
     }
   }
 
   /**
-   * Send a match notification
+   * Notify user about a new match
    */
   static async notifyMatch(userId: string, matchedUserId: string, matchedUserName: string): Promise<void> {
     await this.createNotification({
       userId,
       type: 'match',
-      title: '¡Nuevo Match!',
-      message: `¡Tienes un nuevo match con ${matchedUserName}!`,
-      actionUrl: `/matches`,
+      title: '¡Nuevo Match! 💕',
+      message: `Tienes un nuevo match con ${matchedUserName}`,
+      actionUrl: `/profile/${matchedUserId}`,
       senderId: matchedUserId,
-      senderName: matchedUserName
+      senderName: matchedUserName,
+      metadata: { match_type: 'mutual_like' }
     });
   }
 
   /**
-   * Send a like notification
+   * Notify user about a new like
    */
   static async notifyLike(userId: string, likerUserId: string, likerUserName: string): Promise<void> {
     await this.createNotification({
       userId,
       type: 'like',
-      title: 'Te han dado like',
-      message: `A ${likerUserName} le gustas`,
-      actionUrl: `/discover`,
+      title: '¡Alguien te dio Like! ❤️',
+      message: `${likerUserName} mostró interés en tu perfil`,
+      actionUrl: `/profile/${likerUserId}`,
       senderId: likerUserId,
-      senderName: likerUserName
+      senderName: likerUserName,
+      metadata: { like_type: 'profile_like' }
     });
   }
 
   /**
-   * Send a message notification
+   * Notify user about a new message
    */
   static async notifyMessage(userId: string, senderUserId: string, senderUserName: string, messagePreview: string): Promise<void> {
     await this.createNotification({
       userId,
       type: 'message',
-      title: 'Nuevo mensaje',
-      message: `${senderUserName}: ${messagePreview.substring(0, 50)}${messagePreview.length > 50 ? '...' : ''}`,
+      title: `Nuevo mensaje de ${senderUserName}`,
+      message: messagePreview,
       actionUrl: `/chat/${senderUserId}`,
       senderId: senderUserId,
-      senderName: senderUserName
+      senderName: senderUserName,
+      metadata: { message_preview: messagePreview }
     });
   }
 
   /**
-   * Send an achievement notification
+   * Notify user about an achievement
    */
   static async notifyAchievement(userId: string, achievementTitle: string, achievementDescription: string): Promise<void> {
     await this.createNotification({
       userId,
       type: 'achievement',
-      title: '¡Logro desbloqueado!',
+      title: `¡Logro desbloqueado! 🏆`,
       message: `${achievementTitle}: ${achievementDescription}`,
-      actionUrl: `/profile`
+      actionUrl: '/achievements',
+      metadata: { achievement_title: achievementTitle }
     });
   }
 
   /**
-   * Send an email verification notification
+   * Notify user about email verification
    */
   static async notifyEmailVerification(userId: string, verificationUrl: string): Promise<void> {
     await this.createNotification({
       userId,
       type: 'email',
       title: 'Verifica tu email',
-      message: 'Haz clic para verificar tu dirección de correo electrónico',
-      actionUrl: verificationUrl
+      message: 'Por favor verifica tu dirección de email para completar tu registro',
+      actionUrl: verificationUrl,
+      metadata: { verification_type: 'email' }
     });
   }
 
   /**
-   * Send a connection request notification
+   * Notify user about a connection request
    */
   static async notifyConnectionRequest(userId: string, requesterUserId: string, requesterUserName: string): Promise<void> {
     await this.createNotification({
       userId,
       type: 'request',
       title: 'Nueva solicitud de conexión',
-      message: `${requesterUserName} quiere conectar contigo`,
-      actionUrl: `/requests`,
+      message: `${requesterUserName} quiere conectarse contigo`,
+      actionUrl: `/connections`,
       senderId: requesterUserId,
-      senderName: requesterUserName
+      senderName: requesterUserName,
+      metadata: { request_type: 'connection' }
     });
   }
 
   /**
-   * Send a system alert notification
+   * Notify user about a system alert
    */
   static async notifySystemAlert(userId: string, alertTitle: string, alertMessage: string, actionUrl?: string): Promise<void> {
     await this.createNotification({
@@ -136,12 +149,13 @@ export class NotificationService {
       type: 'alert',
       title: alertTitle,
       message: alertMessage,
-      actionUrl
+      actionUrl,
+      metadata: { alert_type: 'system' }
     });
   }
 
   /**
-   * Send a system notification
+   * Notify user about a system message
    */
   static async notifySystem(userId: string, title: string, message: string, actionUrl?: string): Promise<void> {
     await this.createNotification({
@@ -149,35 +163,75 @@ export class NotificationService {
       type: 'system',
       title,
       message,
-      actionUrl
+      actionUrl,
+      metadata: { system_type: 'general' }
     });
   }
 
   /**
-   * Get user's notification preferences
+   * Get user notification preferences
    */
   static async getUserPreferences(userId: string) {
     try {
       const { data, error } = await supabase
-        .from('notification_preferences')
-        .select('*')
+        .from('profiles')
+        .select('notification_preferences')
         .eq('user_id', userId)
         .single();
 
-      if (error && error.code !== 'PGRST116') { // Not found error
-        logger.error('Error fetching notification preferences:', error);
-        return null;
+      if (error) {
+        console.error('Error getting user preferences:', error);
+        return {
+          email_notifications: true,
+          push_notifications: true,
+          in_app_notifications: true,
+          notification_types: {
+            matches: true,
+            messages: true,
+            likes: true,
+            achievements: true
+          },
+          quiet_hours_start: '22:00',
+          quiet_hours_end: '08:00',
+          timezone: 'America/Mexico_City'
+        };
       }
 
-      return data;
+      return {
+        email_notifications: true,
+        push_notifications: true,
+        in_app_notifications: true,
+        notification_types: {
+          matches: true,
+          messages: true,
+          likes: true,
+          achievements: true
+        },
+        quiet_hours_start: '22:00',
+        quiet_hours_end: '08:00',
+        timezone: 'America/Mexico_City'
+      };
     } catch (error) {
-      logger.error('Error in getUserPreferences:', error as any);
-      return null;
+      console.error('Error in getUserPreferences:', error);
+      return {
+        email_notifications: true,
+        push_notifications: true,
+        in_app_notifications: true,
+        notification_types: {
+          matches: true,
+          messages: true,
+          likes: true,
+          achievements: true
+        },
+        quiet_hours_start: '22:00',
+        quiet_hours_end: '08:00',
+        timezone: 'America/Mexico_City'
+      };
     }
   }
 
   /**
-   * Update user's notification preferences
+   * Update user notification preferences
    */
   static async updateUserPreferences(userId: string, preferences: Partial<{
     email_notifications: boolean;
@@ -189,161 +243,145 @@ export class NotificationService {
     timezone: string;
   }>) {
     try {
-      const { data, error } = await supabase
-        .from('notification_preferences')
-        .upsert({
-          user_id: userId,
-          updated_at: new Date().toISOString(),
-          ...preferences
-        } as any)
-        .select()
-        .single();
+      const { error } = await supabase
+        .from('profiles')
+        .update({ 
+          updated_at: new Date().toISOString()
+        })
+        .eq('user_id', userId);
 
       if (error) {
-        logger.error('Error updating notification preferences:', error);
-        return null;
+        console.error('Error updating user preferences:', error);
+        return false;
       }
 
-      return data;
+      return true;
     } catch (error) {
-      logger.error('Error in updateUserPreferences:', error as any);
-      return null;
+      console.error('Error in updateUserPreferences:', error);
+      return false;
     }
   }
 
   /**
-   * Mark notification as read - usando audit_logs como tabla real
+   * Mark notification as read
    */
   static async markAsRead(notificationId: string, userId: string): Promise<boolean> {
     try {
-      // Registrar en audit_logs que la notificación fue leída usando propiedades reales
       const { error } = await supabase
-        .from('audit_logs')
-        .insert({
-          user_id_fk: userId,
-          action_type: 'notification_read',
-          action_description: 'Notificación marcada como leída',
-          resource_type: 'notification',
-          resource_id: notificationId,
-          request_data: { notification_id: notificationId, read_at: new Date().toISOString() }
-        });
+        .from('notifications')
+        .update({ 
+          read: true,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', notificationId)
+        .eq('user_id', userId);
 
       if (error) {
-        logger.error('Error marking notification as read:', error);
+        console.error('Error marking notification as read:', error);
         return false;
       }
 
       return true;
     } catch (error) {
-      logger.error('Error in markAsRead:', error as any);
+      console.error('Error in markAsRead:', error);
       return false;
     }
   }
 
   /**
-   * Mark all notifications as read for a user - usando audit_logs como tabla real
+   * Mark all notifications as read for a user
    */
   static async markAllAsRead(userId: string): Promise<boolean> {
     try {
-      // Registrar en audit_logs que todas las notificaciones fueron leídas usando propiedades reales
       const { error } = await supabase
-        .from('audit_logs')
-        .insert({
-          user_id_fk: userId,
-          action_type: 'notifications_read_all',
-          action_description: 'Todas las notificaciones marcadas como leídas',
-          resource_type: 'notification',
-          resource_id: userId,
-          request_data: { read_all_at: new Date().toISOString() }
-        });
+        .from('notifications')
+        .update({ 
+          read: true,
+          updated_at: new Date().toISOString()
+        })
+        .eq('user_id', userId)
+        .eq('read', false);
 
       if (error) {
-        logger.error('Error marking all notifications as read:', error);
+        console.error('Error marking all notifications as read:', error);
         return false;
       }
 
       return true;
     } catch (error) {
-      logger.error('Error in markAllAsRead:', error as any);
+      console.error('Error in markAllAsRead:', error);
       return false;
     }
   }
 
   /**
-   * Delete a notification - usando audit_logs como tabla real
+   * Delete a notification
    */
   static async deleteNotification(notificationId: string): Promise<boolean> {
     try {
-      // Registrar en audit_logs que la notificación fue eliminada usando propiedades reales
       const { error } = await supabase
-        .from('audit_logs')
-        .insert({
-          user_id_fk: null,
-          action_type: 'notification_deleted',
-          action_description: 'Notificación eliminada',
-          resource_type: 'notification',
-          resource_id: notificationId,
-          request_data: { deleted_at: new Date().toISOString() }
-        });
+        .from('notifications')
+        .delete()
+        .eq('id', notificationId);
 
       if (error) {
-        logger.error('Error deleting notification:', error);
+        console.error('Error deleting notification:', error);
         return false;
       }
 
       return true;
     } catch (error) {
-      logger.error('Error in deleteNotification:', error as any);
+      console.error('Error in deleteNotification:', error);
       return false;
     }
   }
 
   /**
-   * Get notifications for a user - usando audit_logs como tabla real
+   * Get user notifications
    */
   static async getUserNotifications(userId: string, limit: number = 50, offset: number = 0) {
     try {
-      // Obtener notificaciones desde audit_logs usando propiedades reales
       const { data, error } = await supabase
-        .from('audit_logs')
+        .from('notifications')
         .select('*')
-        .eq('user_id_fk', userId)
-        .in('action_type', ['notification_created', 'notification_sent'])
+        .eq('user_id', userId)
         .order('created_at', { ascending: false })
         .range(offset, offset + limit - 1);
 
       if (error) {
-        logger.error('Error fetching user notifications:', error);
-        return null;
+        console.error('Error getting user notifications:', error);
+        return { notifications: [], total: 0 };
       }
 
-      return data;
+      return {
+        notifications: data || [],
+        total: (data || []).length
+      };
     } catch (error) {
-      logger.error('Error in getUserNotifications:', error as any);
-      return null;
+      console.error('Error in getUserNotifications:', error);
+      return { notifications: [], total: 0 };
     }
   }
 
   /**
-   * Get unread notification count for a user - usando audit_logs como tabla real
+   * Get unread notification count
    */
   static async getUnreadCount(userId: string): Promise<number> {
     try {
-      // Contar notificaciones no leídas desde audit_logs usando propiedades reales
       const { count, error } = await supabase
-        .from('audit_logs')
+        .from('notifications')
         .select('*', { count: 'exact', head: true })
-        .eq('user_id_fk', userId)
-        .eq('action_type', 'notification_created');
+        .eq('user_id', userId)
+        .eq('read', false);
 
       if (error) {
-        logger.error('Error fetching unread count:', error);
+        console.error('Error getting unread count:', error);
         return 0;
       }
 
       return count || 0;
     } catch (error) {
-      logger.error('Error in getUnreadCount:', error as any);
+      console.error('Error in getUnreadCount:', error);
       return 0;
     }
   }

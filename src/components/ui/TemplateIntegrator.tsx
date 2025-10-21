@@ -82,7 +82,7 @@ export const TemplateIntegrator: React.FC<TemplateIntegratorProps> = ({ classNam
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateCompatibility | null>(null);
   const [selectedTheme, setSelectedTheme] = useState<Theme>('modern');
   const [profileType, setProfileType] = useState<ProfileType>('single');
-  const [gender, setGender] = useState<Gender>('male');
+  const [gender, setGender] = useState<'male' | 'female'>('male');
 
   // Get theme configuration for preview
   const themeConfig = useProfileTheme(profileType, [gender], selectedTheme);
@@ -228,7 +228,7 @@ export const TemplateIntegrator: React.FC<TemplateIntegratorProps> = ({ classNam
               <label className="block text-sm font-medium mb-2">Género</label>
               <select 
                 value={gender} 
-                onChange={(e) => setGender(e.target.value as Gender)}
+                onChange={(e) => setGender(e.target.value as 'male' | 'female')}
                 className="w-full p-2 border rounded-md"
               >
                 <option value="male">Masculino</option>

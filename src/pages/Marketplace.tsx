@@ -108,7 +108,7 @@ const Marketplace = () => {
     return matchesSearch && matchesCategory;
   });
 
-  const getBadgeColor = (badge) => {
+  const getBadgeColor = (badge: any) => {
     switch (badge) {
       case 'Más Popular': return 'bg-green-500/80';
       case 'Recomendado': return 'bg-blue-500/80';

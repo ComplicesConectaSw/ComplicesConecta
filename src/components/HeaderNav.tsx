@@ -29,7 +29,7 @@ interface HeaderNavProps {
 export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { _user, _isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -65,8 +65,8 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
     logger.info('Navigation:', { path });
     
     // Analytics tracking for navigation
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', 'navigation', {
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'navigation', {
         event_category: 'header_nav',
         event_label: path,
         value: 1
@@ -79,8 +79,8 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
     logger.info('Login initiated');
     
     // Analytics tracking for login click
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', 'login_click', {
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'login_click', {
         event_category: 'authentication',
         event_label: 'header_login',
         value: 1

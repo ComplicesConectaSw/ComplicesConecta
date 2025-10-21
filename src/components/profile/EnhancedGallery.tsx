@@ -99,7 +99,7 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
   profileType,
   isOwner
 }) => {
-  const { _user } = useAuth();
+  const { user } = useAuth();
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
   const [loading, setLoading] = useState(true);
@@ -132,28 +132,28 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
       
       // Cargar imágenes públicas
       const { data: publicImages, error: publicError } = await supabase
-        .from('gallery_images')
+        .from('media')
         .select('*')
         .eq('user_id', userId)
         .eq('is_public', true)
         .order('created_at', { ascending: false });
 
       if (publicError) {
-        logger.error('Error cargando imágenes públicas:', publicError);
+        logger.error('Error cargando imágenes públicas:', { error: String(publicError) });
       }
 
       // Cargar imágenes privadas si es el propietario o tiene acceso
       let privateImages: any[] = [];
       if (isOwner) {
         const { data: privateData, error: privateError } = await supabase
-          .from('gallery_images')
+          .from('media')
           .select('*')
           .eq('user_id', userId)
           .eq('is_public', false)
           .order('created_at', { ascending: false });
 
         if (privateError) {
-          logger.error('Error cargando imágenes privadas:', privateError);
+          logger.error('Error cargando imágenes privadas:', { error: String(privateError) });
         } else {
           privateImages = privateData || [];
         }
@@ -163,12 +163,12 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
       const allImages = [
         ...(publicImages || []),
         ...privateImages
-      ].map(img => ({
-        id: img.id,
-        url: img.image_url,
-        caption: img.caption,
-        isPublic: img.is_public,
-        uploadedAt: img.created_at,
+      ].map((img: any) => ({
+        id: img.id || 'unknown',
+        url: img.image_url || '/placeholder.svg',
+        caption: img.caption || '',
+        isPublic: img.is_public || false,
+        uploadedAt: img.created_at || new Date().toISOString(),
         likes: img.likes_count || 0,
         comments: img.comments_count || 0
       }));
@@ -176,7 +176,7 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
       setImages(allImages);
       logger.info('✅ Galería real cargada:', { userId, imageCount: allImages.length });
     } catch (error) {
-      logger.error('Error cargando galería real:', error);
+      logger.error('Error cargando galería real:', { error: String(error) });
       // Fallback a datos demo en caso de error
       setImages(getDemoImages(profileType));
       setIsDemoMode(true);
@@ -212,44 +212,43 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
         .upload(fileName, file);
 
       if (uploadError) {
-        logger.error('Error subiendo imagen:', uploadError);
+        logger.error('Error subiendo imagen:', { error: String(uploadError) });
         return;
       }
 
       // Guardar metadata en base de datos
       const { data: imageData, error: dbError } = await supabase
-        .from('gallery_images')
+        .from('media')
         .insert({
-          user_id: userId,
-          image_url: uploadData.path,
-          caption: 'Nueva imagen',
+          owner_id: userId,
+          storage_path: uploadData.path,
+          file_type: file.type,
           is_public: true,
-          likes_count: 0,
-          comments_count: 0
+          is_profile_photo: false
         })
         .select()
         .single();
 
       if (dbError) {
-        logger.error('Error guardando metadata:', dbError);
+        logger.error('Error guardando metadata:', { error: String(dbError) });
         return;
       }
 
       // Actualizar estado local
       const newImage: GalleryImage = {
-        id: imageData.id,
-        url: imageData.image_url,
-        caption: imageData.caption,
-        isPublic: imageData.is_public,
-        uploadedAt: imageData.created_at,
-        likes: imageData.likes_count,
-        comments: imageData.comments_count
+        id: imageData.id || 'unknown',
+        url: imageData.storage_path || '/placeholder.svg',
+        caption: 'Nueva imagen',
+        isPublic: imageData.is_public || false,
+        uploadedAt: imageData.created_at || new Date().toISOString(),
+        likes: 0,
+        comments: 0
       };
 
       setImages(prev => [newImage, ...prev]);
       logger.info('✅ Imagen real subida:', { imageId: imageData.id });
     } catch (error) {
-      logger.error('Error en upload:', error);
+      logger.error('Error en upload:', { error: String(error) });
     }
   };
 
@@ -263,12 +262,12 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
     try {
       // Eliminar de base de datos
       const { error: dbError } = await supabase
-        .from('gallery_images')
+        .from('media')
         .delete()
         .eq('id', imageId);
 
       if (dbError) {
-        logger.error('Error eliminando imagen:', dbError);
+        logger.error('Error eliminando imagen:', { error: String(dbError) });
         return;
       }
 
@@ -280,14 +279,14 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
           .remove([image.url]);
 
         if (storageError) {
-          logger.error('Error eliminando de storage:', storageError);
+          logger.error('Error eliminando de storage:', { error: String(storageError) });
         }
       }
 
       setImages(prev => prev.filter(img => img.id !== imageId));
       logger.info('✅ Imagen real eliminada:', { imageId });
     } catch (error) {
-      logger.error('Error eliminando imagen:', error);
+      logger.error('Error eliminando imagen:', { error: String(error) });
     }
   };
 
@@ -302,12 +301,12 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
 
     try {
       const { error } = await supabase
-        .from('gallery_images')
+        .from('media')
         .update({ is_public: !isPublic })
         .eq('id', imageId);
 
       if (error) {
-        logger.error('Error cambiando visibilidad:', error);
+        logger.error('Error cambiando visibilidad:', { error: String(error) });
         return;
       }
 
@@ -316,7 +315,7 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
       ));
       logger.info('✅ Visibilidad cambiada:', { imageId, isPublic: !isPublic });
     } catch (error) {
-      logger.error('Error cambiando visibilidad:', error);
+      logger.error('Error cambiando visibilidad:', { error: String(error) });
     }
   };
 

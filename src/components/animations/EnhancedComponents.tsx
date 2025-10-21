@@ -9,7 +9,7 @@ import { Heart, Star } from 'lucide-react';
 // Enhanced Animated Button with multiple effects
 interface EnhancedButtonProps {
   children: React.ReactNode;
-  variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link' | 'love' | 'hero' | 'premium';
+  variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link' | 'love' | 'premium';
   size?: 'default' | 'sm' | 'lg' | 'xl' | 'icon';
   className?: string;
   onClick?: () => void;

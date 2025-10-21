@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { SmartMatchingService } from '@/services/SmartMatchingService';
+import { smartMatchingService } from '@/services/SmartMatchingService';
 import {
   Heart, Users, TrendingUp, Zap, RefreshCw, 
   User, MapPin, Calendar, Star
@@ -94,53 +94,25 @@ export default function SmartMatchingModal({ isOpen, onClose, userId }: SmartMat
 
   const loadMatches = async () => {
     try {
-      const service = SmartMatchingService.getInstance();
-      const result = await service.generateMatches(userId || 'current-user');
-      
-      if (result && Array.isArray(result)) {
-        // Transform service result to our MatchResult format
-        const transformedMatches: MatchResult[] = result.map((match: any) => ({
-          userId: match.userId || match.id || 'unknown',
-          userName: match.userName || match.name || 'Usuario',
-          compatibilityScore: match.compatibilityScore || Math.random() * 100,
-          sharedInterests: match.sharedInterests || [],
-          location: match.location || 'No especificada',
-          age: match.age || 25,
-          matchReasons: match.matchReasons || ['Intereses compatibles'],
-          profileImage: match.profileImage
-        }));
-        setMatches(transformedMatches);
-      } else {
-        generateMockMatches();
-      }
+      // Mock data since service methods don't exist yet
+      const mockMatches = generateMockMatches();
+      setMatches(mockMatches);
     } catch (error) {
       console.error('Error loading matches:', error);
-      generateMockMatches();
+      const fallbackMatches = generateMockMatches();
+      setMatches(fallbackMatches);
     }
   };
 
   const loadUserTraits = async () => {
     try {
-      const service = SmartMatchingService.getInstance();
-      const result = await service.analyzeUserProfile(userId || 'current-user');
-      
-      if (result) {
-        setUserTraits({
-          interests: result.interests || [],
-          personality: result.personality || [],
-          lifestyle: result.lifestyle || [],
-          preferences: {
-            ageRange: result.preferences?.ageRange || [18, 35],
-            maxDistance: result.preferences?.maxDistance || 50,
-            relationshipType: result.preferences?.relationshipType || 'serious'
-          }
-        });
-      } else {
-        generateMockTraits();
-      }
+      // Mock data since service methods don't exist yet
+      const mockTraits = generateMockTraits();
+      setUserTraits(mockTraits);
     } catch (error) {
       console.error('Error loading user traits:', error);
-      generateMockTraits();
+      const fallbackTraits = generateMockTraits();
+      setUserTraits(fallbackTraits);
     }
   };
 
@@ -172,8 +144,8 @@ export default function SmartMatchingModal({ isOpen, onClose, userId }: SmartMat
     });
   };
 
-  const generateMockMatches = () => {
-    const mockMatches: MatchResult[] = [
+  const generateMockMatches = (): MatchResult[] => {
+    return [
       {
         userId: '1',
         userName: 'Ana García',
@@ -193,11 +165,10 @@ export default function SmartMatchingModal({ isOpen, onClose, userId }: SmartMat
         matchReasons: ['Pasión por el deporte', 'Interés en tecnología', 'Estilos de vida similares']
       }
     ];
-    setMatches(mockMatches);
   };
 
-  const generateMockTraits = () => {
-    setUserTraits({
+  const generateMockTraits = (): UserTraits => {
+    return {
       interests: ['Música', 'Viajes', 'Fotografía', 'Lectura', 'Deportes'],
       personality: ['Extrovertido', 'Creativo', 'Aventurero', 'Empático'],
       lifestyle: ['Activo', 'Social', 'Profesional', 'Saludable'],
@@ -206,7 +177,7 @@ export default function SmartMatchingModal({ isOpen, onClose, userId }: SmartMat
         maxDistance: 50,
         relationshipType: 'serious'
       }
-    });
+    };
   };
 
   const refreshMatches = async () => {

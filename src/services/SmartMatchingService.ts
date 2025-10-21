@@ -33,7 +33,7 @@ export interface CompatibilityScore {
 export interface SmartMatchResult {
   profile: MatchingProfile;
   compatibility: CompatibilityScore;
-  distance?: number;
+  distance?: number | null;
   matchReason: string;
 }
 
@@ -124,7 +124,7 @@ class SmartMatchingService {
         .neq('id', userId)
         .gte('age', preferences.ageRange[0])
         .lte('age', preferences.ageRange[1])
-        .eq('interested_in', preferences.gender)
+        .contains('interested_in', [preferences.gender])
         .limit(limit * 2); // Obtener más para filtrar por compatibilidad
 
       if (!candidates || candidates.length === 0) {
@@ -142,11 +142,11 @@ class SmartMatchingService {
 
         const validCandidate: MatchingProfile = {
           id: candidate.id,
-          name: candidate.name || 'Usuario',
+          name: `${candidate.first_name || ''} ${candidate.last_name || ''}`.trim() || 'Usuario',
           age: candidate.age as number, // Garantizado que no es null por la validación anterior
           gender: candidate.gender || 'no_especificado',
-          interested_in: candidate.interested_in || 'todos',
-          location: candidate.location || undefined,
+          interested_in: Array.isArray(candidate.interested_in) ? candidate.interested_in[0] || 'todos' : candidate.interested_in || 'todos',
+          location: 'CDMX, México', // Static location since location field doesn't exist in profiles table
           bio: candidate.bio || undefined,
           is_verified: candidate.is_verified || false,
           is_premium: candidate.is_premium || false,
@@ -154,10 +154,25 @@ class SmartMatchingService {
           longitude: candidate.longitude || undefined
         };
 
-        const compatibility = await this.calculateCompatibility(userProfile, validCandidate);
+        // Convert userProfile to MatchingProfile format
+        const userMatchingProfile: MatchingProfile = {
+          id: userProfile.id,
+          name: `${userProfile.first_name || ''} ${userProfile.last_name || ''}`.trim() || 'Usuario',
+          age: userProfile.age || 25,
+          gender: userProfile.gender || 'no_especificado',
+          interested_in: Array.isArray(userProfile.interested_in) ? userProfile.interested_in[0] || 'todos' : userProfile.interested_in || 'todos',
+          location: 'CDMX, México',
+          bio: userProfile.bio || undefined,
+          is_verified: userProfile.is_verified || false,
+          is_premium: userProfile.is_premium || false,
+          latitude: userProfile.latitude || undefined,
+          longitude: userProfile.longitude || undefined
+        };
+
+        const compatibility = await this.calculateCompatibility(userMatchingProfile, validCandidate);
         
         if (compatibility.overall >= preferences.minCompatibility) {
-          const distance = this.calculateDistance(userProfile, validCandidate);
+          const distance = this.calculateDistance(userMatchingProfile, validCandidate);
           
           matchResults.push({
             profile: validCandidate,

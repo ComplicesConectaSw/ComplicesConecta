@@ -1,6 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
-import type { Json } from '@/integrations/supabase/types';
+import type { Database } from '@/types/database';
 import { NotificationService } from '@/lib/notifications';
 
 export interface AutomationRule {
@@ -34,7 +34,7 @@ export interface AutomationAction {
 export interface AutomationExecution {
   id: string;
   rule_id: string;
-  trigger_data: Json;
+  trigger_data: Record<string, unknown>;
   executed_at: string;
   success: boolean;
   error_message?: string;
@@ -524,7 +524,7 @@ export class IntelligentAutomationService {
         
         // Notify moderator about new assignment
         await NotificationService.createNotification({
-          userId: moderatorId,
+          userId: moderatorId || 'unknown',
           type: 'alert',
           title: 'Nueva asignación de moderación',
           message: 'Se te ha asignado un nuevo caso para revisar',

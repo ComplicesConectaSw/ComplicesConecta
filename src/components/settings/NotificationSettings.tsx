@@ -252,7 +252,7 @@ export const NotificationSettings = () => {
             <li>• Recordatorios de conversaciones inactivas</li>
             <li>• Análisis de actividad personalizado</li>
           </ul>
-          <Button variant="hero" size="sm" className="bg-white text-primary hover:bg-white/90" onClick={() => navigate('/premium')}>
+          <Button variant="default" size="sm" className="bg-white text-primary hover:bg-white/90" onClick={() => navigate('/premium')}>
             Upgrade a Premium
           </Button>
         </CardContent>

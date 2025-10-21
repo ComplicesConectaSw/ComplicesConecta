@@ -97,7 +97,7 @@ export const ChatWithLocation = ({ conversationId, currentUserId, otherUser }: C
 
     setIsLoading(true);
     try {
-      const messageData: MessageInsert = {
+      const messageData = {
         conversation_id: conversationId,
         sender_id: currentUserId,
         content: newMessage.trim() || "📍 Ubicación compartida",

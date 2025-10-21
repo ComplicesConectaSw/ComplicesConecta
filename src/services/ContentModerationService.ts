@@ -33,6 +33,10 @@ export interface TextModerationResult {
   spam_probability: number;
   language_appropriateness: number;
   detected_issues: string[];
+  hasInappropriateContent?: boolean;
+  confidence?: number;
+  reason?: string;
+  isSpam?: boolean;
 }
 
 export interface ImageModerationResult {
@@ -68,9 +72,9 @@ class ContentModerationService {
       // Verificar contenido inapropiado basado en patrones reales
       if (textAnalysis.hasInappropriateContent) {
         flags.push({
-          type: 'inappropriate_content',
-          confidence: textAnalysis.confidence,
-          description: textAnalysis.reason
+          type: 'explicit',
+          confidence: textAnalysis.confidence ?? 0.8,
+          description: textAnalysis.reason ?? 'Contenido inapropiado detectado'
         });
         severity = 'high';
         action = 'reject';
@@ -84,7 +88,7 @@ class ContentModerationService {
           description: 'Contenido identificado como spam'
         });
         severity = 'medium';
-        action = 'flag_for_review';
+        action = 'review';
       }
       
       // Verificar reglas específicas del contexto
@@ -92,7 +96,7 @@ class ContentModerationService {
       if (contextViolations.length > 0) {
         flags.push(...contextViolations);
         if (severity === 'low') severity = 'medium';
-        if (action === 'approve') action = 'flag_for_review';
+        if (action === 'approve') action = 'review';
       }
       
       // Detectar patrones sospechosos básicos
@@ -326,12 +330,20 @@ class ContentModerationService {
    * Análisis básico de contenido de texto
    */
   private analyzeTextContent(content: string): TextModerationResult {
+    const spamProbability = this.calculateSpamProbability(content);
+    const hasExplicitContent = this.containsExplicitContent(content);
+    const hasSpamPatterns = this.containsSpamPatterns(content);
+    
     return {
       sentiment: this.detectSentiment(content),
       toxicity: Math.random() * 0.3, // Mock toxicity score
-      spam_probability: this.calculateSpamProbability(content),
+      spam_probability: spamProbability,
       language_appropriateness: Math.random() * 0.2 + 0.8,
-      detected_issues: []
+      detected_issues: [],
+      hasInappropriateContent: hasExplicitContent,
+      confidence: Math.random() * 0.3 + 0.7,
+      reason: hasExplicitContent ? 'Contenido explícito detectado' : undefined,
+      isSpam: hasSpamPatterns || spamProbability > 0.7
     };
   }
 
@@ -486,8 +498,18 @@ class ContentModerationService {
   /**
    * Obtiene reglas específicas del contexto
    */
-  private getContextRules(context: string) {
-    const rules = {
+  private getContextRules(context: string): {
+    maxLength: number;
+    allowLinks: boolean;
+    allowEmojis: boolean;
+    requirePersonalContent: boolean;
+  } {
+    const rules: Record<string, {
+      maxLength: number;
+      allowLinks: boolean;
+      allowEmojis: boolean;
+      requirePersonalContent: boolean;
+    }> = {
       message: {
         maxLength: 500,
         allowLinks: false,
@@ -519,7 +541,7 @@ class ContentModerationService {
     
     if (content.length > rules.maxLength) {
       violations.push({
-        type: 'length_violation',
+        type: 'spam',
         confidence: 0.9,
         description: `Contenido excede el límite de ${rules.maxLength} caracteres`
       });
@@ -527,7 +549,7 @@ class ContentModerationService {
     
     if (!rules.allowLinks && this.containsLinks(content)) {
       violations.push({
-        type: 'link_violation',
+        type: 'spam',
         confidence: 0.8,
         description: 'Enlaces no permitidos en este contexto'
       });

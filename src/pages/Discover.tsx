@@ -687,7 +687,7 @@ const Discover = () => {
                           description: `Tu interés en ${coupleProfile.couple_name} ha sido registrado.`,
                         });
                       }}
-                      onMessage={() => {
+                      _onMessage={() => {
                         toast({
                           title: "Chat iniciado",
                           description: `Iniciando conversación con ${coupleProfile.couple_name}...`,

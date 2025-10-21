@@ -113,7 +113,7 @@ export const PricingPlans = () => {
           Apóyanos para acelerar el desarrollo y recibir recompensas especiales.
         </p>
         <Button 
-          variant="hero" 
+          variant="default" 
           size="lg" 
           className="bg-white text-primary hover:bg-white/90"
           onClick={() => handleSubscribe("support")}

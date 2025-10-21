@@ -53,7 +53,7 @@ const AdminModerators = () => {
   
   // Modal de detalles
   const [_selectedModerator, _setSelectedModerator] = useState<Moderator | null>(null);
-  const [_selectedRequest, _setSelectedRequest] = useState<ModeratorRequest | null>(null);
+  const [selectedRequest, setSelectedRequest] = useState<ModeratorRequest | null>(null);
 
   const _statusColors = {
     pending: 'bg-yellow-500',

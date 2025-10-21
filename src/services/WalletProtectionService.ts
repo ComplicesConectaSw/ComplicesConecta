@@ -52,25 +52,25 @@ export class WalletProtectionService {
 
   private detectWalletConflicts(): void {
     // Detectar MetaMask
-    if (window.ethereum && window.ethereum.isMetaMask) {
+    if ((window as any).ethereum && (window as any).ethereum.isMetaMask) {
       console.log('🔍 MetaMask detectado');
       this.handleMetaMaskConflicts();
     }
 
     // Detectar Solana
-    if (window.solana) {
+    if ((window as any).solana) {
       console.log('🔍 Solana detectado');
       this.handleSolanaConflicts();
     }
 
     // Detectar TronLink
-    if (window.tronWeb) {
+    if ((window as any).tronWeb) {
       console.log('🔍 TronLink detectado');
       this.handleTronLinkConflicts();
     }
 
     // Detectar Bybit
-    if (window.bybit) {
+    if ((window as any).bybit) {
       console.log('🔍 Bybit detectado');
       this.handleBybitConflicts();
     }
@@ -79,9 +79,9 @@ export class WalletProtectionService {
   private handleMetaMaskConflicts(): void {
     // Prevenir errores de redefinición de ethereum
     try {
-      if (window.ethereum) {
+      if ((window as any).ethereum) {
         Object.defineProperty(window, 'ethereum', {
-          value: window.ethereum,
+          value: (window as any).ethereum,
           writable: false,
           configurable: true
         });
@@ -94,9 +94,9 @@ export class WalletProtectionService {
   private handleSolanaConflicts(): void {
     // Prevenir errores de redefinición de solana
     try {
-      if (window.solana) {
+      if ((window as any).solana) {
         Object.defineProperty(window, 'solana', {
-          value: window.solana,
+          value: (window as any).solana,
           writable: false,
           configurable: true
         });
@@ -109,9 +109,9 @@ export class WalletProtectionService {
   private handleTronLinkConflicts(): void {
     // Prevenir errores de redefinición de tronWeb
     try {
-      if (window.tronWeb) {
+      if ((window as any).tronWeb) {
         Object.defineProperty(window, 'tronWeb', {
-          value: window.tronWeb,
+          value: (window as any).tronWeb,
           writable: false,
           configurable: true
         });
@@ -124,9 +124,9 @@ export class WalletProtectionService {
   private handleBybitConflicts(): void {
     // Prevenir errores de redefinición de bybit
     try {
-      if (window.bybit) {
+      if ((window as any).bybit) {
         Object.defineProperty(window, 'bybit', {
-          value: window.bybit,
+          value: (window as any).bybit,
           writable: false,
           configurable: true
         });
@@ -145,10 +145,10 @@ export class WalletProtectionService {
   public getDetectedWallets(): string[] {
     const wallets: string[] = [];
     
-    if (window.ethereum && window.ethereum.isMetaMask) wallets.push('MetaMask');
-    if (window.solana) wallets.push('Solana');
-    if (window.tronWeb) wallets.push('TronLink');
-    if (window.bybit) wallets.push('Bybit');
+    if ((window as any).ethereum && (window as any).ethereum.isMetaMask) wallets.push('MetaMask');
+    if ((window as any).solana) wallets.push('Solana');
+    if ((window as any).tronWeb) wallets.push('TronLink');
+    if ((window as any).bybit) wallets.push('Bybit');
     
     return wallets;
   }

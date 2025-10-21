@@ -35,7 +35,7 @@ import { ModeIndicator } from '@/components/ModeIndicator';
 
 export const Header = () => {
   const _navigate = useNavigate();
-  const { user, _profile, isAuthenticated: authIsAuthenticated, isAdmin, signOut, loading: _loading } = useAuth();
+  const { user, profile, isAuthenticated: authIsAuthenticated, isAdmin, signOut, loading: _loading } = useAuth();
   const { isAuthenticated: unifiedIsAuthenticated, isDemo: _isDemo, isReal: _isReal, user: _unifiedUser, clearAuth: _clearAuth } = useUnifiedAuth();
   const [demoUser, setDemoUser] = useState<any>(null);
   const [isRunningInApp, setIsRunningInApp] = useState(false);

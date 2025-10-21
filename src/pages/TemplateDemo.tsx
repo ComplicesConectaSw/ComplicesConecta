@@ -26,7 +26,7 @@ import { cn } from '@/lib/utils';
 const TemplateDemo: React.FC = () => {
   const [selectedTheme, setSelectedTheme] = useState<Theme>('modern');
   const [profileType, setProfileType] = useState<ProfileType>('single');
-  const [gender, setGender] = useState<Gender>('male');
+  const [gender, setGender] = useState<'male' | 'female'>('male');
   const [activeTab, setActiveTab] = useState('integrator');
 
   const themeConfig = useProfileTheme(profileType, [gender], selectedTheme);
@@ -121,7 +121,7 @@ const TemplateDemo: React.FC = () => {
                   </label>
                   <select 
                     value={gender} 
-                    onChange={(e) => setGender(e.target.value as Gender)}
+                    onChange={(e) => setGender(e.target.value as 'male' | 'female')}
                     className="w-full p-2 bg-white/10 border border-white/20 rounded-md text-white"
                   >
                     <option value="male">Masculino</option>

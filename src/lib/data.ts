@@ -194,7 +194,7 @@ export const generateMockCouple = (_includeOnlineStatus = true) => {
     coupleName: `${nombreF} & ${nombreM}`,
     ages: [age1, age2],
     ageRange: `${age1}-${age2}`,
-    location: ubicaciones[Math.floor(Math.random() * ubicaciones.length)],
+    location: _ubicaciones[Math.floor(Math.random() * _ubicaciones.length)],
     bio: "Pareja experimentada en el lifestyle swinger. Buscamos nuevas experiencias y conexiones auténticas con otras parejas y singles en México.",
     lookingFor: "Conexiones auténticas y experiencias únicas",
     lifestyle: "Aventurero y espontáneo",
