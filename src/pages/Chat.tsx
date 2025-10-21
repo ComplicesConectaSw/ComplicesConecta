@@ -370,12 +370,8 @@ const Chat = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 relative overflow-hidden pb-20">
-      {/* Animated Background */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full mix-blend-multiply filter blur-xl animate-blob"></div>
-        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-pink-500/20 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000"></div>
-        <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-red-500/20 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-4000"></div>
-      </div>
+      {/* Background simplificado - sin elementos fantasma */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-pink-900/20 to-red-900/20"></div>
 
       {/* Header removido para usuarios demo - solo NavigationLegacy */}
       <HeaderNav />
@@ -817,22 +813,27 @@ const Chat = () => {
       
       {/* Custom Styles */}
       <style>{`
-        @keyframes blob {
-          0%, 100% { transform: translate(0px, 0px) scale(1); }
-          33% { transform: translate(30px, -50px) scale(1.1); }
-          66% { transform: translate(-20px, 20px) scale(0.9); }
+        /* Estilos simplificados - sin animaciones blob */
+        .chat-container {
+          scrollbar-width: thin;
+          scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
         }
         
-        .animate-blob {
-          animation: blob 7s infinite;
+        .chat-container::-webkit-scrollbar {
+          width: 6px;
         }
         
-        .animation-delay-2000 {
-          animation-delay: 2s;
+        .chat-container::-webkit-scrollbar-track {
+          background: transparent;
         }
         
-        .animation-delay-4000 {
-          animation-delay: 4s;
+        .chat-container::-webkit-scrollbar-thumb {
+          background: rgba(255, 255, 255, 0.3);
+          border-radius: 3px;
+        }
+        
+        .chat-container::-webkit-scrollbar-thumb:hover {
+          background: rgba(255, 255, 255, 0.5);
         }
       `}</style>
     </div>

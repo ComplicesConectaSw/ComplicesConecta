@@ -51,8 +51,8 @@ export const UnifiedCard: React.FC<UnifiedCardProps> = ({
         className={cn(
           "transition-all duration-300",
           glass && [
-            "bg-white/80 backdrop-blur-sm border-white/20",
-            "shadow-xl shadow-black/5"
+            "bg-white/10 backdrop-blur-md border-white/20",
+            "shadow-xl shadow-black/20"
           ],
           gradient && [
             "bg-gradient-to-br from-white to-gray-50",
@@ -65,12 +65,12 @@ export const UnifiedCard: React.FC<UnifiedCardProps> = ({
         {(title || description) && (
           <CardHeader className={cn("space-y-2", headerClassName)}>
             {title && (
-              <CardTitle className="text-lg font-semibold text-gray-900">
+              <CardTitle className="text-lg font-semibold text-white">
                 {title}
               </CardTitle>
             )}
             {description && (
-              <CardDescription className="text-gray-600">
+              <CardDescription className="text-white/80">
                 {description}
               </CardDescription>
             )}

@@ -166,30 +166,30 @@ export const MatchCard: React.FC<MatchCardProps> = ({
               <UnifiedButton
                 variant="outline"
                 size="lg"
-                className="w-14 h-14 rounded-full border-2 border-red-400 bg-red-50 hover:border-red-500 hover:bg-red-100 shadow-lg"
+                className="w-14 h-14 rounded-full border-2 border-red-400 bg-red-500/20 hover:border-red-500 hover:bg-red-500/30 shadow-lg"
                 onClick={onPass}
               >
-                <X className="h-6 w-6 text-red-600" />
+                <X className="h-6 w-6 text-red-400" />
               </UnifiedButton>
               
               {onSuperLike && (
                 <UnifiedButton
                   variant="outline"
                   size="lg"
-                  className="w-14 h-14 rounded-full border-2 border-blue-400 bg-blue-50 hover:border-blue-500 hover:bg-blue-100 shadow-lg"
+                  className="w-14 h-14 rounded-full border-2 border-blue-400 bg-blue-500/20 hover:border-blue-500 hover:bg-blue-500/30 shadow-lg"
                   onClick={onSuperLike}
                 >
-                  <Sparkles className="h-6 w-6 text-blue-600" />
+                  <Sparkles className="h-6 w-6 text-blue-400" />
                 </UnifiedButton>
               )}
               
               <UnifiedButton
                 variant="outline"
                 size="lg"
-                className="w-14 h-14 rounded-full border-2 border-pink-400 bg-pink-50 hover:border-pink-500 hover:bg-pink-100 shadow-lg"
+                className="w-14 h-14 rounded-full border-2 border-pink-400 bg-pink-500/20 hover:border-pink-500 hover:bg-pink-500/30 shadow-lg"
                 onClick={onLike}
               >
-                <Heart className="h-6 w-6 text-pink-600" />
+                <Heart className="h-6 w-6 text-pink-400" />
               </UnifiedButton>
             </div>
           </div>
@@ -317,24 +317,24 @@ export const MatchCard: React.FC<MatchCardProps> = ({
           </div>
           
           {/* Action buttons */}
-          <div className="p-6 bg-white flex justify-center gap-6">
+          <div className="p-6 bg-white/10 backdrop-blur-sm flex justify-center gap-6">
             <UnifiedButton
               variant="outline"
               size="lg"
-              className="w-16 h-16 rounded-full border-2 border-red-400 bg-red-50 hover:border-red-500 hover:bg-red-100 transition-all duration-200 shadow-lg"
+              className="w-16 h-16 rounded-full border-2 border-red-400 bg-red-500/20 hover:border-red-500 hover:bg-red-500/30 transition-all duration-200 shadow-lg"
               onClick={onPass}
             >
-              <X className="h-8 w-8 text-red-600" />
+              <X className="h-8 w-8 text-red-400" />
             </UnifiedButton>
             
             {onSuperLike && (
               <UnifiedButton
                 variant="outline"
                 size="lg"
-                className="w-16 h-16 rounded-full border-2 border-blue-400 bg-blue-50 hover:border-blue-500 hover:bg-blue-100 transition-all duration-200 shadow-lg"
+                className="w-16 h-16 rounded-full border-2 border-blue-400 bg-blue-500/20 hover:border-blue-500 hover:bg-blue-500/30 transition-all duration-200 shadow-lg"
                 onClick={onSuperLike}
               >
-                <Sparkles className="h-8 w-8 text-blue-600" />
+                <Sparkles className="h-8 w-8 text-blue-400" />
               </UnifiedButton>
             )}
             
