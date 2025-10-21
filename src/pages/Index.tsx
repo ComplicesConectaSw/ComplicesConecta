@@ -21,8 +21,7 @@ import { usePersistedState } from '@/hooks/usePersistedState';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ModeratorApplicationForm from "@/components/forms/ModeratorApplicationForm";
 
-// Professional profile images from Unsplash - Production ready
-// Removed local imports that fail in production
+import { getRandomProfileImage } from '@/lib/imageService';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -135,7 +134,7 @@ const Index = () => {
     return <LoadingScreen onComplete={handleLoadingComplete} />;
   }
 
-  // Professional sample profiles for presentation
+  // Professional sample profiles for presentation using dynamic image service
   const sampleProfiles = [
     {
       id: "1",
@@ -143,7 +142,7 @@ const Index = () => {
       age: 29,
       location: "Ciudad de México",
       interests: ["Intercambio de Parejas", "Fiestas Privadas", "Encuentros Íntimos"],
-      image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=500&h=700&fit=crop&crop=faces&auto=format&q=80",
+      image: getRandomProfileImage('female', { width: 500, height: 700 }),
       rating: 4.9,
       isOnline: true,
       bio: "Apasionada por la naturaleza y la creatividad. Buscando a alguien con quien compartir aventuras y conversaciones profundas.",
@@ -156,7 +155,7 @@ const Index = () => {
       age: 34,
       location: "Guadalajara",
       interests: ["Experiencias Grupales", "Clubs Liberales", "Aventuras Sensuales"],
-      image: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=500&h=700&fit=crop&crop=faces&auto=format&q=80",
+      image: getRandomProfileImage('male', { width: 500, height: 700 }),
       rating: 4.8,
       isOnline: false,
       bio: "Emprendedor y amante del mar. Disfruto de un buen vino y una compañía inteligente.",
@@ -169,7 +168,7 @@ const Index = () => {
       age: 27,
       location: "Monterrey",
       interests: ["Tantra y Sensualidad", "Juegos de Rol", "Experiencias Nuevas"],
-      image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=500&h=700&fit=crop&crop=faces&auto=format&q=80",
+      image: getRandomProfileImage('female', { width: 500, height: 700 }),
       rating: 4.9,
       isOnline: true,
       bio: "Explorando la riqueza cultural de México. Me encanta perderme en libros y descubrir nuevos lugares.",

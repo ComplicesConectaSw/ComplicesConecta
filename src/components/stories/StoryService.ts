@@ -1,4 +1,5 @@
 import { Story, CreateStoryData, StoryLike, StoryComment } from './StoryTypes';
+import { getRandomProfileImage } from '@/lib/imageService';
 
 // Mock data for demo mode - adapts to user profile type
 const getDemoStories = (): Story[] => {
@@ -6,7 +7,7 @@ const getDemoStories = (): Story[] => {
   const userType = localStorage.getItem('userType') || 'single';
   
   let userName = "Usuario Demo";
-  let userAvatar = "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face";
+  let userAvatar = getRandomProfileImage('female', { width: 150, height: 150 });
   
   if (demoUser) {
     try {
@@ -14,6 +15,10 @@ const getDemoStories = (): Story[] => {
       userName = userType === 'couple' 
         ? `${parsedUser.first_name} & Pareja`
         : parsedUser.first_name || "Usuario Demo";
+      
+      // Use dynamic image based on user gender
+      const userGender = parsedUser.gender || 'female';
+      userAvatar = getRandomProfileImage(userGender, { width: 150, height: 150 });
     } catch {
       // Fallback to default
     }
