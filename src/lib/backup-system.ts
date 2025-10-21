@@ -397,7 +397,7 @@ class BackupSystem {
   // Generar ID único para backup
   private generateBackupId(): string {
     const timestamp = Date.now();
-    const random = Math.random().toString(36).substr(2, 5);
+    const random = Math.random().toString(36).substring(2, 7);
     return `backup_${timestamp}_${random}`;
   }
 

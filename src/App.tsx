@@ -16,6 +16,29 @@ import ModeratorRoute from '@/components/auth/ModeratorRoute';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { AppFactory } from '@/demo/AppFactory';
 
+// ============================================================================
+// ESTRATEGIA DE CARGA DE PÁGINAS
+// ============================================================================
+// 
+// PÁGINAS CRÍTICAS (Carga Inmediata):
+// - Index: Página principal, debe cargar instantáneamente
+// - Auth: Autenticación, crítica para el flujo de usuario
+// - NotFound: Página de error, debe estar siempre disponible
+// - Events: Página principal de eventos
+// - Discover: Página principal de descubrimiento
+//
+// PÁGINAS CORE (Lazy Loading):
+// - Profiles, ProfileDetail: Funcionalidades principales
+// - Chat, ChatInfo: Sistema de chat
+// - Matches: Sistema de matches
+//
+// PÁGINAS ADMIN (Lazy Loading):
+// - Admin*, Moderator*: Panel administrativo
+//
+// PÁGINAS SECUNDARIAS (Lazy Loading):
+// - About, Terms, Privacy, etc.: Páginas informativas
+// ============================================================================
+
 // Critical pages - loaded immediately
 import Index from "@/pages/Index";
 import Auth from "@/pages/Auth";

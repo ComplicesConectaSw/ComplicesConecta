@@ -146,7 +146,7 @@ export const useVideoChat = ({
     try {
       setState(prev => ({ ...prev, isConnecting: true, error: null }));
       
-      const callId = `call_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      const callId = `call_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
       
       // Get user media
       const stream = await getUserMedia(state.isVideoEnabled, !state.isMuted);

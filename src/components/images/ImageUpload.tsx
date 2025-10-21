@@ -90,10 +90,10 @@ export function ImageUpload({
       for (const file of files) {
         // Mock image upload service - replace with real implementation
         const result = {
-          id: `mock-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+          id: `mock-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`,
           url: URL.createObjectURL(file),
           success: true,
-          imageId: `mock-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+          imageId: `mock-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`,
           error: null
         };
 

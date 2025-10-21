@@ -128,7 +128,7 @@ export class SupabaseLogger {
   private getSessionId(): string {
     let sessionId = sessionStorage.getItem('app-session-id');
     if (!sessionId) {
-      sessionId = `session-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      sessionId = `session-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
       sessionStorage.setItem('app-session-id', sessionId);
     }
     return sessionId;

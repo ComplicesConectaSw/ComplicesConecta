@@ -36,6 +36,8 @@ export function getRandomCoupleProfile() {
   return generateMockCouple();
 }
 
+import { getRandomProfileImage, getRandomMexicanCoordinates, getRandomProfileImages } from './imageService';
+
 // Generador de perfiles mock aleatorios
 export const generateMockSingle = (includeOnlineStatus = true) => {
   const nombresF = ["Sofía", "Valentina", "Isabella", "Camila", "Lucía", "Daniela", "Gabriela", "Andrea"];
@@ -81,23 +83,16 @@ export const generateMockSingle = (includeOnlineStatus = true) => {
     : nombresM[Math.floor((Math.random() * Date.now()) % nombresM.length)];
   const apellido = apellidos[Math.floor((Math.random() * Date.now()) % apellidos.length)];
   
-  // Imágenes reales de Unsplash para perfiles demo
-  const realImages = esMujer ? [
-    'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=500&fit=crop&crop=face',
-    'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=500&fit=crop&crop=face',
-    'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=500&fit=crop&crop=face',
-    'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=500&fit=crop&crop=face',
-    'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&h=500&fit=crop&crop=face'
-  ] : [
-    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=500&fit=crop&crop=face',
-    'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=500&fit=crop&crop=face',
-    'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=500&fit=crop&crop=face',
-    'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=500&fit=crop&crop=face',
-    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop&crop=face'
-  ];
+  // Generar coordenadas aleatorias para ciudades mexicanas
+  const coordinates = getRandomMexicanCoordinates();
+  
+  // Generar imágenes dinámicas
+  const gender = esMujer ? 'female' : 'male';
+  const avatarImage = getRandomProfileImage(gender);
+  const additionalImages = getRandomProfileImages(gender, 2);
   
   const profile = {
-    id: Math.random().toString(36).substr(2, 9),
+    id: Math.random().toString(36).substring(2, 11),
     name: `${nombre} ${apellido}`,
     first_name: nombre,
     last_name: apellido,
@@ -110,17 +105,17 @@ export const generateMockSingle = (includeOnlineStatus = true) => {
     relationship_type: 'single' as const,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
-    user_id: Math.random().toString(36).substr(2, 9),
-    latitude: Math.random() * 0.1 + 19.4, // CDMX area
-    longitude: Math.random() * 0.1 - 99.1, // CDMX area
+    user_id: Math.random().toString(36).substring(2, 11),
+    latitude: coordinates.lat,
+    longitude: coordinates.lng,
     share_location: Math.random() > 0.5,
     // Propiedades adicionales para compatibilidad con UI
-    location: ubicaciones[Math.floor(Math.random() * ubicaciones.length)],
+    location: coordinates.city,
     profession: profesiones[Math.floor(Math.random() * profesiones.length)],
     interests: intereses.slice(0, 3 + Math.floor(Math.random() * 3)),
-    avatar: realImages[Math.floor(Math.random() * realImages.length)],
+    avatar: avatarImage,
     verified: Math.random() > 0.3,
-    photos: [realImages[Math.floor(Math.random() * realImages.length)], realImages[Math.floor(Math.random() * realImages.length)]],
+    photos: additionalImages,
     stats: {
       matches: Math.floor(Math.random() * 50) + 10,
       likes: Math.floor(Math.random() * 200) + 50,

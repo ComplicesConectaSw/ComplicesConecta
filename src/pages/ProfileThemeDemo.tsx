@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Header } from "@/components/Header";
 import HeaderNav from "@/components/HeaderNav";
 import { ProfileThemeShowcase } from '@/components/demo/ProfileThemeShowcase';
 import { UnifiedCard } from '@/components/ui/UnifiedCard';
