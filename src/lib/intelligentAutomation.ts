@@ -51,16 +51,49 @@ export class IntelligentAutomationService {
     if (this.initialized) return;
 
     try {
+      logger.info('🤖 Initializing Intelligent Automation Service...');
+      
       // Load rules from database or create defaults
       await this.loadRules();
+      
+      if (this.rules.length === 0) {
+        logger.info('📋 Creating default automation rules...');
+        this.rules = await this.createDefaultRules();
+      }
       
       // Set up real-time listeners for triggers
       await this.setupTriggerListeners();
       
+      // Initialize performance monitoring
+      await this.initializePerformanceMonitoring();
+      
       this.initialized = true;
-      logger.info('Intelligent Automation Service initialized');
+      logger.info('✅ Intelligent Automation Service initialized successfully');
     } catch (error) {
-      logger.error('Error initializing automation service:', { error: error instanceof Error ? error.message : String(error) });
+      logger.error('❌ Error initializing automation service:', { error: error instanceof Error ? error.message : String(error) });
+    }
+  }
+
+  /**
+   * Initialize performance monitoring for automation rules
+   */
+  private static async initializePerformanceMonitoring(): Promise<void> {
+    try {
+      // Set up performance tracking for rule executions
+      const performanceMetrics = {
+        totalExecutions: 0,
+        successfulExecutions: 0,
+        failedExecutions: 0,
+        averageExecutionTime: 0,
+        lastExecutionTime: null as string | null
+      };
+
+      // Store metrics in localStorage for persistence
+      localStorage.setItem('automation_performance_metrics', JSON.stringify(performanceMetrics));
+      
+      logger.info('📊 Performance monitoring initialized for automation service');
+    } catch (error) {
+      logger.error('❌ Error initializing performance monitoring:', { error: error instanceof Error ? error.message : String(error) });
     }
   }
 

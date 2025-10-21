@@ -7,9 +7,23 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import HeaderNav from '@/components/HeaderNav';
 
+interface VirtualGift {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  icon: React.ComponentType<any>;
+  rarity: string;
+  bgColor: string;
+  color: string;
+  borderColor: string;
+  effect: string;
+}
+
 const VirtualGifts = () => {
   const navigate = useNavigate();
-  const [_selectedGift, _setSelectedGift] = useState(null);
+  const [_selectedGift, _setSelectedGift] = useState<VirtualGift | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
   const giftCategories = [
@@ -133,7 +147,7 @@ const VirtualGifts = () => {
     return matchesSearch;
   });
 
-  const getRarityColor = (rarity) => {
+  const getRarityColor = (rarity: string) => {
     switch (rarity) {
       case 'common': return 'bg-gray-500/80';
       case 'uncommon': return 'bg-green-500/80';
@@ -143,7 +157,7 @@ const VirtualGifts = () => {
     }
   };
 
-  const getRarityLabel = (rarity) => {
+  const getRarityLabel = (rarity: string) => {
     switch (rarity) {
       case 'common': return 'Común';
       case 'uncommon': return 'Poco Común';
@@ -225,7 +239,7 @@ const VirtualGifts = () => {
                 <Card 
                   key={gift.id} 
                   className={`bg-card/80 backdrop-blur-sm border ${gift.borderColor} hover:scale-105 transition-transform cursor-pointer`}
-                  onClick={() => setSelectedGift(gift)}
+                    onClick={() => _setSelectedGift(gift)}
                 >
                   <CardContent className="p-6 text-center">
                     <div className={`w-16 h-16 ${gift.bgColor} rounded-full flex items-center justify-center mx-auto mb-4`}>

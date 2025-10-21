@@ -273,6 +273,82 @@ export const detectPerformanceIssues = (): string[] => {
   return issues;
 };
 
+// Configuración de métricas realistas
+interface PerformanceMetrics {
+  lcp: number;
+  fid: number;
+  cls: number;
+  fcp: number;
+  ttfb: number;
+  timestamp: number;
+}
+
+// Almacenamiento local de métricas
+const metricsStorage: PerformanceMetrics[] = [];
+
+// Función para almacenar métricas localmente
+const _storeMetric = (metric: Partial<PerformanceMetrics>) => {
+  const timestamp = Date.now();
+  const storedMetric: PerformanceMetrics = {
+    lcp: metric.lcp || 0,
+    fid: metric.fid || 0,
+    cls: metric.cls || 0,
+    fcp: metric.fcp || 0,
+    ttfb: metric.ttfb || 0,
+    timestamp
+  };
+  
+  metricsStorage.push(storedMetric);
+  
+  // Mantener solo las últimas 50 métricas
+  if (metricsStorage.length > 50) {
+    metricsStorage.shift();
+  }
+  
+  // Guardar en localStorage para persistencia
+  try {
+    localStorage.setItem('webVitalsMetrics', JSON.stringify(metricsStorage.slice(-10)));
+  } catch {
+    console.warn('No se pudo guardar métricas en localStorage');
+  }
+};
+
+// Función para obtener métricas promedio
+export const getAverageMetrics = (): PerformanceMetrics | null => {
+  if (metricsStorage.length === 0) return null;
+  
+  const sum = metricsStorage.reduce((acc, metric) => ({
+    lcp: acc.lcp + metric.lcp,
+    fid: acc.fid + metric.fid,
+    cls: acc.cls + metric.cls,
+    fcp: acc.fcp + metric.fcp,
+    ttfb: acc.ttfb + metric.ttfb,
+    timestamp: 0
+  }), { lcp: 0, fid: 0, cls: 0, fcp: 0, ttfb: 0, timestamp: 0 });
+  
+  const count = metricsStorage.length;
+  
+  return {
+    lcp: sum.lcp / count,
+    fid: sum.fid / count,
+    cls: sum.cls / count,
+    fcp: sum.fcp / count,
+    ttfb: sum.ttfb / count,
+    timestamp: Date.now()
+  };
+};
+
+// Función para obtener métricas desde localStorage
+export const getStoredMetrics = (): PerformanceMetrics[] => {
+  try {
+    const stored = localStorage.getItem('webVitalsMetrics');
+    return stored ? JSON.parse(stored) : [];
+  } catch {
+    console.warn('No se pudieron cargar métricas desde localStorage');
+    return [];
+  }
+};
+
 export default {
   WebVitalsMonitor,
   initWebVitalsMonitoring,
@@ -280,5 +356,7 @@ export default {
   measureCustomMetric,
   measureComponentLoad,
   measureRouteChange,
-  detectPerformanceIssues
+  detectPerformanceIssues,
+  getAverageMetrics,
+  getStoredMetrics
 };

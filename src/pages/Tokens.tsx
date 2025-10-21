@@ -300,8 +300,7 @@ export default function Tokens() {
         />
       </div>
       
-      {/* Navigation Menu */}
-      <NavigationEnhanced />
+      {/* Navigation Menu - Removed NavigationEnhanced as it's not needed on this page */}
     </div>
   );
 }

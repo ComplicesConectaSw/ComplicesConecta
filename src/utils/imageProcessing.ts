@@ -117,104 +117,12 @@ export const createImagePreview = (file: File): Promise<string> => {
 };
 
 // Background removal utility (requires @huggingface/transformers)
-export const removeImageBackground = async (imageElement: HTMLImageElement): Promise<Blob> => {
+export const removeImageBackground = async (_imageElement: HTMLImageElement): Promise<Blob> => {
   try {
     logger.info('Starting background removal process...');
     
-    // Check if transformers is available
-    let transformers;
-    try {
-      transformers = await import('@huggingface/transformers');
-    } catch (importError) {
-      logger.error('Failed to import @huggingface/transformers:', { error: importError });
-      throw new Error('Background removal feature is not available. Please ensure @huggingface/transformers is properly installed.');
-    }
-    
-    const { pipeline, env } = transformers;
-    
-    // Configure transformers.js for web environment
-    env.allowLocalModels = false;
-    env.useBrowserCache = true;
-    env.allowRemoteModels = true;
-    
-    // Use CPU device for better compatibility
-    const segmenter = await pipeline('image-segmentation', 'Xenova/segformer-b0-finetuned-ade-512-512', {
-      device: 'cpu',
-      dtype: 'fp32'
-    });
-    
-    // Convert HTMLImageElement to canvas
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    
-    if (!ctx) throw new Error('Could not get canvas context');
-    
-    // Resize image if needed
-    const MAX_DIMENSION = 512; // Reduced for better performance
-    let width = imageElement.naturalWidth;
-    let height = imageElement.naturalHeight;
-    
-    if (width > MAX_DIMENSION || height > MAX_DIMENSION) {
-      if (width > height) {
-        height = Math.round((height * MAX_DIMENSION) / width);
-        width = MAX_DIMENSION;
-      } else {
-        width = Math.round((width * MAX_DIMENSION) / height);
-        height = MAX_DIMENSION;
-      }
-    }
-    
-    canvas.width = width;
-    canvas.height = height;
-    ctx.drawImage(imageElement, 0, 0, width, height);
-    
-    // Get image data as base64
-    const imageData = canvas.toDataURL('image/jpeg', 0.8);
-    
-    // Process with segmentation model
-    const result = await segmenter(imageData);
-    
-    if (!result || !Array.isArray(result) || result.length === 0 || !result[0].mask) {
-      throw new Error('Invalid segmentation result');
-    }
-    
-    // Create output canvas
-    const outputCanvas = document.createElement('canvas');
-    outputCanvas.width = canvas.width;
-    outputCanvas.height = canvas.height;
-    const outputCtx = outputCanvas.getContext('2d');
-    
-    if (!outputCtx) throw new Error('Could not get output canvas context');
-    
-    // Draw original image
-    outputCtx.drawImage(canvas, 0, 0);
-    
-    // Apply mask
-    const outputImageData = outputCtx.getImageData(0, 0, outputCanvas.width, outputCanvas.height);
-    const data = outputImageData.data;
-    
-    // Apply inverted mask to alpha channel
-    for (let i = 0; i < result[0].mask.data.length; i++) {
-      const alpha = Math.round(result[0].mask.data[i] * 255);
-      data[i * 4 + 3] = alpha;
-    }
-    
-    outputCtx.putImageData(outputImageData, 0, 0);
-    
-    // Convert to blob
-    return new Promise((resolve, reject) => {
-      outputCanvas.toBlob(
-        (blob) => {
-          if (blob) {
-            resolve(blob);
-          } else {
-            reject(new Error('Failed to create blob'));
-          }
-        },
-        'image/png',
-        1.0
-      );
-    });
+    // Feature not available - dependency removed
+    throw new Error('Background removal feature is not available. Please ensure @huggingface/transformers is properly installed.');
   } catch (error) {
     logger.error('Error removing background:', { error: error instanceof Error ? error.message : String(error) });
     throw error;
@@ -227,5 +135,268 @@ export const loadImageFromFile = (file: File): Promise<HTMLImageElement> => {
     img.onload = () => resolve(img);
     img.onerror = reject;
     img.src = URL.createObjectURL(file);
+  });
+};
+
+/**
+ * Optimizar imagen para diferentes tamaños y calidades
+ */
+export const optimizeImageForSize = async (
+  file: File, 
+  targetSize: 'thumbnail' | 'medium' | 'large' | 'original' = 'medium'
+): Promise<Blob> => {
+  const configs = {
+    thumbnail: { maxSize: 150, quality: 0.7 },
+    medium: { maxSize: 400, quality: 0.8 },
+    large: { maxSize: 800, quality: 0.9 },
+    original: { maxSize: 1200, quality: 0.95 }
+  };
+
+  const config = configs[targetSize];
+  
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        if (!ctx) {
+          reject(new Error('Could not get canvas context'));
+          return;
+        }
+
+        // Calcular nuevas dimensiones manteniendo aspect ratio
+        let { width, height } = img;
+        if (width > height) {
+          if (width > config.maxSize) {
+            height = Math.round((height * config.maxSize) / width);
+            width = config.maxSize;
+          }
+        } else {
+          if (height > config.maxSize) {
+            width = Math.round((width * config.maxSize) / height);
+            height = config.maxSize;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        ctx.drawImage(img, 0, 0, width, height);
+
+        canvas.toBlob(
+          (blob) => {
+            if (blob) {
+              resolve(blob);
+            } else {
+              reject(new Error('Failed to create optimized image'));
+            }
+          },
+          'image/jpeg',
+          config.quality
+        );
+      };
+      img.onerror = () => reject(new Error('Failed to load image'));
+      img.src = event.target?.result as string;
+    };
+    reader.onerror = () => reject(new Error('Failed to read file'));
+    reader.readAsDataURL(file);
+  });
+};
+
+/**
+ * Generar múltiples tamaños de una imagen
+ */
+export const generateImageVariants = async (file: File): Promise<{
+  thumbnail: Blob;
+  medium: Blob;
+  large: Blob;
+  original: Blob;
+}> => {
+  try {
+    const [thumbnail, medium, large, original] = await Promise.all([
+      optimizeImageForSize(file, 'thumbnail'),
+      optimizeImageForSize(file, 'medium'),
+      optimizeImageForSize(file, 'large'),
+      optimizeImageForSize(file, 'original')
+    ]);
+
+    return { thumbnail, medium, large, original };
+  } catch (error) {
+    logger.error('Error generating image variants:', { error });
+    throw error;
+  }
+};
+
+/**
+ * Detectar si una imagen es apropiada usando análisis básico
+ */
+export const analyzeImageContent = async (file: File): Promise<{
+  isAppropriate: boolean;
+  confidence: number;
+  detectedFeatures: string[];
+  warnings: string[];
+}> => {
+  try {
+    const img = await loadImageFromFile(file);
+    
+    // Análisis básico de contenido
+    const detectedFeatures: string[] = [];
+    const warnings: string[] = [];
+    
+    // Verificar dimensiones
+    if (img.width < 100 || img.height < 100) {
+      warnings.push('Imagen muy pequeña');
+    }
+    
+    if (img.width > 4000 || img.height > 4000) {
+      warnings.push('Imagen muy grande');
+    }
+    
+    // Verificar aspect ratio
+    const aspectRatio = img.width / img.height;
+    if (aspectRatio < 0.5 || aspectRatio > 2) {
+      warnings.push('Proporción inusual');
+    }
+    
+    // Análisis de colores básico
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    
+    if (ctx) {
+      canvas.width = Math.min(img.width, 100);
+      canvas.height = Math.min(img.height, 100);
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = imageData.data;
+      
+      let totalBrightness = 0;
+      let totalSaturation = 0;
+      
+      for (let i = 0; i < data.length; i += 4) {
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+        
+        // Calcular brillo
+        const brightness = (r + g + b) / 3;
+        totalBrightness += brightness;
+        
+        // Calcular saturación básica
+        const max = Math.max(r, g, b);
+        const min = Math.min(r, g, b);
+        const saturation = max === 0 ? 0 : (max - min) / max;
+        totalSaturation += saturation;
+      }
+      
+      const avgBrightness = totalBrightness / (data.length / 4);
+      const avgSaturation = totalSaturation / (data.length / 4);
+      
+      if (avgBrightness < 50) {
+        warnings.push('Imagen muy oscura');
+      } else if (avgBrightness > 200) {
+        warnings.push('Imagen muy brillante');
+      }
+      
+      if (avgSaturation < 0.1) {
+        detectedFeatures.push('imagen en escala de grises');
+      } else if (avgSaturation > 0.8) {
+        detectedFeatures.push('colores muy saturados');
+      }
+    }
+    
+    // Determinar si es apropiada
+    const isAppropriate = warnings.length === 0;
+    const confidence = Math.max(0.5, 1 - (warnings.length * 0.2));
+    
+    return {
+      isAppropriate,
+      confidence,
+      detectedFeatures,
+      warnings
+    };
+  } catch (error) {
+    logger.error('Error analyzing image content:', { error });
+    return {
+      isAppropriate: false,
+      confidence: 0,
+      detectedFeatures: [],
+      warnings: ['Error analizando imagen']
+    };
+  }
+};
+
+/**
+ * Comprimir imagen manteniendo calidad visual
+ */
+export const compressImage = async (
+  file: File, 
+  maxSizeKB: number = 500
+): Promise<Blob> => {
+  let quality = 0.9;
+  let blob: Blob;
+  
+  do {
+    blob = await optimizeImageForSize(file, 'large');
+    quality -= 0.1;
+    
+    if (quality <= 0.1) break;
+  } while (blob.size > maxSizeKB * 1024 && quality > 0.1);
+  
+  return blob;
+};
+
+/**
+ * Crear imagen con marca de agua
+ */
+export const addWatermark = async (
+  file: File, 
+  watermarkText: string = 'ComplicesConecta'
+): Promise<Blob> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        if (!ctx) {
+          reject(new Error('Could not get canvas context'));
+          return;
+        }
+        
+        canvas.width = img.width;
+        canvas.height = img.height;
+        
+        // Dibujar imagen original
+        ctx.drawImage(img, 0, 0);
+        
+        // Agregar marca de agua
+        ctx.font = '16px Arial';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(watermarkText, canvas.width - 10, canvas.height - 10);
+        
+        canvas.toBlob(
+          (blob) => {
+            if (blob) {
+              resolve(blob);
+            } else {
+              reject(new Error('Failed to create watermarked image'));
+            }
+          },
+          'image/jpeg',
+          0.9
+        );
+      };
+      img.onerror = () => reject(new Error('Failed to load image'));
+      img.src = event.target?.result as string;
+    };
+    reader.onerror = () => reject(new Error('Failed to read file'));
+    reader.readAsDataURL(file);
   });
 };

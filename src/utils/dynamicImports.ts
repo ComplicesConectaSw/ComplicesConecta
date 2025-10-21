@@ -169,10 +169,9 @@ export const loadHuggingFaceSDK = async () => {
   }
 
   try {
-    const hfModule = await import('@huggingface/transformers');
-    sdkCache.set('huggingface', hfModule);
-    console.log('[DynamicImports] Hugging Face SDK cargado exitosamente');
-    return hfModule;
+    // const hfModule = await import('@huggingface/transformers'); // Dependencia eliminada
+    console.warn('[DynamicImports] Hugging Face SDK no está disponible - dependencia eliminada');
+    return null;
   } catch (error) {
     console.warn('[DynamicImports] Error cargando Hugging Face SDK:', error);
     return null;

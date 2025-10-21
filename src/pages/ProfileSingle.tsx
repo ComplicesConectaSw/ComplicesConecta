@@ -12,7 +12,16 @@ import {
   Flag,
   CheckCircle,
   Crown,
-  Images
+  Images,
+  Share2,
+  Download,
+  Star,
+  Eye,
+  Users,
+  MessageCircle,
+  Calendar,
+  TrendingUp,
+  Award
 } from 'lucide-react';
 import NavigationEnhanced from '@/components/NavigationEnhanced';
 import { ProfileNavTabs } from '@/components/profile/ProfileNavTabs';
@@ -23,6 +32,8 @@ import type { Tables } from '@/types/database';
 import { PrivateImageRequest } from '@/components/profile/PrivateImageRequest';
 import { PrivateImageGallery } from '@/components/profile/PrivateImageGallery';
 import { ReportDialog } from '@/components/swipe/ReportDialog';
+import { motion } from 'framer-motion';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const ProfileSingle: React.FC = () => {
   const navigate = useNavigate();
@@ -32,6 +43,18 @@ const ProfileSingle: React.FC = () => {
   const [showPrivateImageRequest, setShowPrivateImageRequest] = useState(false);
   const [privateImageAccess, setPrivateImageAccess] = usePersistedState<'none' | 'pending' | 'approved' | 'denied'>('private_image_access', 'none');
   const [showReportDialog, setShowReportDialog] = useState(false);
+  const [activeTab, setActiveTab] = useState('overview');
+  const [profileStats, setProfileStats] = useState({
+    totalViews: 0,
+    totalLikes: 0,
+    totalMatches: 0,
+    profileCompleteness: 0,
+    lastActive: new Date(),
+    joinDate: new Date(),
+    verificationLevel: 0
+  });
+  const [recentActivity, setRecentActivity] = useState<any[]>([]);
+  const [achievements, setAchievements] = useState<any[]>([]);
   
   // Determinar si es el perfil propio
   const isOwnProfile = user?.id === profile?.user_id;
@@ -50,6 +73,78 @@ const ProfileSingle: React.FC = () => {
   const handleCommentPost = (postId: string) => {
     logger.info('Comentar post solicitado', { postId });
     // Implementar lógica de comentario
+  };
+
+  // Funciones para cargar datos adicionales
+  const loadProfileStats = async () => {
+    try {
+      // Simular carga de estadísticas
+      const mockStats = {
+        totalViews: Math.floor(Math.random() * 1000) + 100,
+        totalLikes: Math.floor(Math.random() * 500) + 50,
+        totalMatches: Math.floor(Math.random() * 100) + 10,
+        profileCompleteness: Math.floor(Math.random() * 40) + 60,
+        lastActive: new Date(Date.now() - Math.random() * 86400000),
+        joinDate: new Date(Date.now() - Math.random() * 365 * 86400000),
+        verificationLevel: Math.floor(Math.random() * 3) + 1
+      };
+      setProfileStats(mockStats);
+    } catch (error) {
+      logger.error('Error loading profile stats:', { error: String(error) });
+    }
+  };
+
+  const loadRecentActivity = async () => {
+    try {
+      // Simular actividad reciente
+      const mockActivity = [
+        { id: 1, type: 'like', description: 'Recibiste un like de María', time: '2 horas' },
+        { id: 2, type: 'view', description: 'Tu perfil fue visto 15 veces', time: '4 horas' },
+        { id: 3, type: 'match', description: 'Nuevo match con Carlos', time: '1 día' },
+        { id: 4, type: 'message', description: 'Nuevo mensaje de Ana', time: '2 días' }
+      ];
+      setRecentActivity(mockActivity);
+    } catch (error) {
+      logger.error('Error loading recent activity:', { error: String(error) });
+    }
+  };
+
+  const loadAchievements = async () => {
+    try {
+      // Simular logros
+      const mockAchievements = [
+        { id: 1, title: 'Primer Like', description: 'Recibiste tu primer like', icon: Heart, unlocked: true },
+        { id: 2, title: 'Perfil Completo', description: 'Completaste tu perfil al 100%', icon: CheckCircle, unlocked: true },
+        { id: 3, title: 'Popular', description: 'Recibiste 100 likes', icon: Star, unlocked: false },
+        { id: 4, title: 'Verificado', description: 'Tu perfil fue verificado', icon: Award, unlocked: profile?.is_verified || false }
+      ];
+      setAchievements(mockAchievements);
+    } catch (error) {
+      logger.error('Error loading achievements:', { error: String(error) });
+    }
+  };
+
+  const handleShareProfile = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: `Perfil de ${profile?.first_name || 'Usuario'}`,
+          text: `Mira el perfil de ${profile?.first_name || 'Usuario'} en ComplicesConecta`,
+          url: window.location.href
+        });
+      } else {
+        // Fallback para navegadores que no soportan Web Share API
+        navigator.clipboard.writeText(window.location.href);
+        logger.info('URL copiada al portapapeles');
+      }
+    } catch (error) {
+      logger.error('Error sharing profile:', { error: String(error) });
+    }
+  };
+
+  const handleDownloadProfile = () => {
+    logger.info('Descargar perfil solicitado');
+    // Implementar lógica de descarga de perfil
   };
   
   // Migración localStorage → usePersistedState
@@ -82,7 +177,8 @@ const ProfileSingle: React.FC = () => {
             // Crear perfil demo estático una sola vez
             const profileData: Tables<'profiles'> = {
               id: parsedUser.id || 'demo-single-1',
-              name: parsedUser.first_name || 'Sofía',
+              first_name: parsedUser.first_name || 'Sofía',
+              last_name: parsedUser.last_name || 'Demo',
               user_id: parsedUser.id || 'demo-user-1',
               age: 28,
               bio: 'Explorando nuevas conexiones y experiencias auténticas. Me encanta viajar, la música y conocer personas interesantes.',
@@ -90,33 +186,51 @@ const ProfileSingle: React.FC = () => {
               age_range_max: null,
               age_range_min: null,
               avatar_url: '/placeholder.svg',
-              blocked_at: null,
-              blocked_reason: null,
               created_at: new Date().toISOString(),
               gender: 'female',
               interested_in: null,
               interests: ['Viajes', 'Música', 'Arte', 'Cocina', 'Fotografía'],
               is_active: true,
-              is_blocked: false,
               is_demo: true,
               is_premium: false,
               is_verified: true,
-              location: 'Ciudad de México, México',
+              latitude: 19.4326,
+              longitude: -99.1332,
               looking_for: null,
               max_distance: null,
-              suspension_end_date: null,
               swinger_experience: null,
               updated_at: new Date().toISOString(),
-              warnings_count: null,
               // Campos adicionales requeridos
-              lifestyle_preferences: null,
-              location_preferences: null,
-              personality_traits: null,
-              role: 'user'
+              biometric_enabled: null,
+              biometric_last_used: null,
+              biometric_public_key: null,
+              display_name: null,
+              email: null,
+              experience_level: null,
+              is_online: false,
+              is_public: null,
+              last_active: null,
+              navbar_style: null,
+              partner_age: null,
+              partner_first_name: null,
+              payment_failed: null,
+              preferred_theme: null,
+              premium_expires_at: null,
+              premium_plan: null,
+              profile_type: null,
+              role: 'user',
+              stripe_customer_id: null,
+              stripe_subscription_id: null,
+              theme_updated_at: null,
+              webauthn_registered: null
             };
             
             setProfile(profileData);
             setIsLoading(false);
+            // Cargar datos adicionales
+            loadProfileStats();
+            loadRecentActivity();
+            loadAchievements();
             return;
           } catch (error) {
             logger.error('Error parseando usuario demo:', { error: String(error) });
@@ -205,7 +319,7 @@ const ProfileSingle: React.FC = () => {
         <div className="relative z-10 pt-8 pb-6 px-4">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-white mb-2">
-              Mi Perfil - {profile.name}
+              Mi Perfil - {profile.first_name}
             </h1>
           </div>
         </div>
@@ -221,7 +335,7 @@ const ProfileSingle: React.FC = () => {
                 {/* Avatar */}
                 <div className="relative flex-shrink-0">
                   <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-pink-400 to-purple-600 flex items-center justify-center text-white text-2xl sm:text-4xl font-bold">
-                    {profile.name?.[0]?.toUpperCase() || 'U'}
+                    {profile.first_name?.[0]?.toUpperCase() || 'U'}
                   </div>
                   {profile.is_verified && (
                     <div className="absolute -top-2 -right-2 bg-blue-500 rounded-full p-1">
@@ -238,7 +352,7 @@ const ProfileSingle: React.FC = () => {
                 {/* Información básica */}
                 <div className="flex-1 text-center sm:text-left">
                   <h2 className="text-xl sm:text-2xl font-bold mb-2">
-                    {profile.name}
+                    {profile.first_name} {profile.last_name}
                   </h2>
                   <div className="flex flex-wrap gap-2 justify-center sm:justify-start mb-4">
                     <Badge className="bg-white/20 text-white border-white/30 text-xs sm:text-sm">
@@ -249,7 +363,7 @@ const ProfileSingle: React.FC = () => {
                     </Badge>
                     <Badge className="bg-white/20 text-white border-white/30 flex items-center gap-1 text-xs sm:text-sm">
                       <MapPin className="w-3 h-3" />
-                      {profile.location || 'CDMX, México'}
+                      CDMX, México
                     </Badge>
                   </div>
                   
@@ -269,6 +383,24 @@ const ProfileSingle: React.FC = () => {
                       <Edit className="w-4 h-4" />
                       <span className="hidden sm:inline">Editar Perfil</span>
                       <span className="sm:hidden">Editar</span>
+                    </Button>
+                    
+                    <Button 
+                      onClick={handleShareProfile}
+                      className="bg-blue-500/20 hover:bg-blue-600/30 text-blue-200 border-blue-400/30 flex items-center gap-2 text-sm sm:text-base px-3 sm:px-4 py-2 border"
+                    >
+                      <Share2 className="w-4 h-4" />
+                      <span className="hidden sm:inline">Compartir</span>
+                      <span className="sm:hidden">Share</span>
+                    </Button>
+                    
+                    <Button 
+                      onClick={handleDownloadProfile}
+                      className="bg-green-500/20 hover:bg-green-600/30 text-green-200 border-green-400/30 flex items-center gap-2 text-sm sm:text-base px-3 sm:px-4 py-2 border"
+                    >
+                      <Download className="w-4 h-4" />
+                      <span className="hidden sm:inline">Descargar</span>
+                      <span className="sm:hidden">Download</span>
                     </Button>
                     
                     <Button 
@@ -321,34 +453,230 @@ const ProfileSingle: React.FC = () => {
             </CardContent>
           </Card>
 
-          {/* Estadísticas */}
+          {/* Estadísticas mejoradas */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-            <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
-              <CardContent className="p-3 sm:p-4 text-center">
-                <Heart className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-2 text-pink-400" />
-                <div className="text-lg sm:text-2xl font-bold">{(profile as any).likes || 0}</div>
-                <div className="text-xs sm:text-sm text-white/70">Likes</div>
-              </CardContent>
-            </Card>
-            <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
-              <CardContent className="p-3 sm:p-4 text-center">
-                <div className="text-lg sm:text-2xl font-bold text-purple-400">8</div>
-                <div className="text-xs sm:text-sm text-white/80">Conversaciones</div>
-              </CardContent>
-            </Card>
-            <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
-              <CardContent className="p-3 sm:p-4 text-center">
-                <div className="text-2xl font-bold text-blue-400">156</div>
-                <div className="text-sm text-white/80">Visitas</div>
-              </CardContent>
-            </Card>
-            <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
-              <CardContent className="p-4 text-center">
-                <div className="text-lg sm:text-2xl font-bold text-green-400">95%</div>
-                <div className="text-xs sm:text-sm text-white/80">Compatibilidad</div>
-              </CardContent>
-            </Card>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+            >
+              <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/15 transition-colors">
+                <CardContent className="p-3 sm:p-4 text-center">
+                  <Eye className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-2 text-blue-400" />
+                  <div className="text-lg sm:text-2xl font-bold">{profileStats.totalViews}</div>
+                  <div className="text-xs sm:text-sm text-white/70">Visitas</div>
+                </CardContent>
+              </Card>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/15 transition-colors">
+                <CardContent className="p-3 sm:p-4 text-center">
+                  <Heart className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-2 text-pink-400" />
+                  <div className="text-lg sm:text-2xl font-bold">{profileStats.totalLikes}</div>
+                  <div className="text-xs sm:text-sm text-white/70">Likes</div>
+                </CardContent>
+              </Card>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/15 transition-colors">
+                <CardContent className="p-3 sm:p-4 text-center">
+                  <Users className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-2 text-purple-400" />
+                  <div className="text-lg sm:text-2xl font-bold">{profileStats.totalMatches}</div>
+                  <div className="text-xs sm:text-sm text-white/70">Matches</div>
+                </CardContent>
+              </Card>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+              <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/15 transition-colors">
+                <CardContent className="p-3 sm:p-4 text-center">
+                  <TrendingUp className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-2 text-green-400" />
+                  <div className="text-lg sm:text-2xl font-bold">{profileStats.profileCompleteness}%</div>
+                  <div className="text-xs sm:text-sm text-white/70">Completo</div>
+                </CardContent>
+              </Card>
+            </motion.div>
           </div>
+
+          {/* Tabs de contenido avanzado */}
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="grid w-full grid-cols-4 bg-white/10 backdrop-blur-sm">
+              <TabsTrigger value="overview" className="data-[state=active]:bg-white/20 text-white">
+                <Eye className="w-4 h-4 mr-2" />
+                Resumen
+              </TabsTrigger>
+              <TabsTrigger value="activity" className="data-[state=active]:bg-white/20 text-white">
+                <Calendar className="w-4 h-4 mr-2" />
+                Actividad
+              </TabsTrigger>
+              <TabsTrigger value="achievements" className="data-[state=active]:bg-white/20 text-white">
+                <Award className="w-4 h-4 mr-2" />
+                Logros
+              </TabsTrigger>
+              <TabsTrigger value="analytics" className="data-[state=active]:bg-white/20 text-white">
+                <TrendingUp className="w-4 h-4 mr-2" />
+                Analytics
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="overview" className="mt-6">
+              {/* Contenido del resumen - ProfileNavTabs existente */}
+              <ProfileNavTabs 
+                isOwnProfile={isOwnProfile}
+                onUploadImage={handleUploadImage}
+                onDeletePost={handleDeletePost}
+                onCommentPost={handleCommentPost}
+              />
+            </TabsContent>
+
+            <TabsContent value="activity" className="mt-6">
+              <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
+                <CardHeader>
+                  <CardTitle className="text-white flex items-center gap-2">
+                    <Calendar className="w-5 h-5" />
+                    Actividad Reciente
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {recentActivity.map((activity) => (
+                      <motion.div
+                        key={activity.id}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="flex items-center gap-3 p-3 bg-white/5 rounded-lg"
+                      >
+                        <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+                          <MessageCircle className="w-4 h-4 text-white" />
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-white text-sm">{activity.description}</p>
+                          <p className="text-white/60 text-xs">{activity.time}</p>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="achievements" className="mt-6">
+              <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
+                <CardHeader>
+                  <CardTitle className="text-white flex items-center gap-2">
+                    <Award className="w-5 h-5" />
+                    Logros y Reconocimientos
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {achievements.map((achievement) => {
+                      const Icon = achievement.icon;
+                      return (
+                        <motion.div
+                          key={achievement.id}
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          className={`p-4 rounded-lg border ${
+                            achievement.unlocked 
+                              ? 'bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border-yellow-400/30' 
+                              : 'bg-white/5 border-white/20'
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                              achievement.unlocked 
+                                ? 'bg-gradient-to-br from-yellow-500 to-orange-500' 
+                                : 'bg-gray-600'
+                            }`}>
+                              <Icon className="w-5 h-5 text-white" />
+                            </div>
+                            <div>
+                              <h3 className={`font-semibold ${
+                                achievement.unlocked ? 'text-yellow-300' : 'text-white/60'
+                              }`}>
+                                {achievement.title}
+                              </h3>
+                              <p className="text-white/70 text-sm">{achievement.description}</p>
+                            </div>
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="analytics" className="mt-6">
+              <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
+                <CardHeader>
+                  <CardTitle className="text-white flex items-center gap-2">
+                    <TrendingUp className="w-5 h-5" />
+                    Analytics del Perfil
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="p-4 bg-white/5 rounded-lg">
+                        <h3 className="text-white font-semibold mb-2">Última Actividad</h3>
+                        <p className="text-white/70 text-sm">
+                          {profileStats.lastActive.toLocaleDateString('es-ES', {
+                            day: 'numeric',
+                            month: 'long',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })}
+                        </p>
+                      </div>
+                      <div className="p-4 bg-white/5 rounded-lg">
+                        <h3 className="text-white font-semibold mb-2">Miembro Desde</h3>
+                        <p className="text-white/70 text-sm">
+                          {profileStats.joinDate.toLocaleDateString('es-ES', {
+                            year: 'numeric',
+                            month: 'long'
+                          })}
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <div className="p-4 bg-white/5 rounded-lg">
+                      <h3 className="text-white font-semibold mb-3">Nivel de Verificación</h3>
+                      <div className="flex items-center gap-2">
+                        {Array.from({ length: 3 }).map((_, i) => (
+                          <div
+                            key={i}
+                            className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                              i < profileStats.verificationLevel
+                                ? 'bg-gradient-to-br from-green-500 to-emerald-500'
+                                : 'bg-gray-600'
+                            }`}
+                          >
+                            <CheckCircle className="w-4 h-4 text-white" />
+                          </div>
+                        ))}
+                        <span className="text-white/70 text-sm ml-2">
+                          Nivel {profileStats.verificationLevel} de 3
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
 
           {/* Profile Navigation Tabs - Estilo Twitter/Instagram */}
           <ProfileNavTabs 
@@ -486,7 +814,7 @@ const ProfileSingle: React.FC = () => {
               {privateImageAccess === 'approved' && (
                 <PrivateImageGallery 
                   profileId={profile?.id || ''}
-                  profileName={profile?.name || 'Usuario'}
+                  profileName={profile?.first_name || 'Usuario'}
                   profileType="single"
                   isOwner={false}
                   hasAccess={true}
@@ -511,7 +839,7 @@ const ProfileSingle: React.FC = () => {
           isOpen={showPrivateImageRequest}
           onClose={() => setShowPrivateImageRequest(false)}
           profileId={profile?.id || ''}
-          profileName={profile?.name || ''}
+          profileName={profile?.first_name || ''}
           profileType="single"
           onRequestSent={() => {
             setPrivateImageAccess('pending');
@@ -523,7 +851,7 @@ const ProfileSingle: React.FC = () => {
       {/* Modal de reporte */}
       <ReportDialog
         profileId={profile?.id || ''}
-        profileName={profile?.name || 'Usuario'}
+        profileName={profile?.first_name || 'Usuario'}
         isOpen={showReportDialog}
         onOpenChange={setShowReportDialog}
         onReport={(reason) => {

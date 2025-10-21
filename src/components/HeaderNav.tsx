@@ -63,11 +63,29 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
     navigate(path);
     setIsMobileMenuOpen(false);
     logger.info('Navigation:', { path });
+    
+    // Analytics tracking for navigation
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'navigation', {
+        event_category: 'header_nav',
+        event_label: path,
+        value: 1
+      });
+    }
   };
 
   const handleLogin = () => {
     navigate('/auth');
     logger.info('Login initiated');
+    
+    // Analytics tracking for login click
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'login_click', {
+        event_category: 'authentication',
+        event_label: 'header_login',
+        value: 1
+      });
+    }
   };
 
   const toggleMobileMenu = () => {

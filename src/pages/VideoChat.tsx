@@ -185,7 +185,7 @@ const VideoChat = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {participants.map((participant) => (
+                    {_participants.map((participant: any) => (
                       <div key={participant.id} className="flex items-center space-x-4 p-3 bg-gray-800/50 rounded-lg">
                         <img
                           src={participant.avatar}
@@ -227,7 +227,7 @@ const VideoChat = () => {
               <Card className="bg-card/80 backdrop-blur-sm border border-primary/10">
                 <CardContent className="p-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                    {participants.map((participant) => (
+                    {_participants.map((participant: any) => (
                       <div key={participant.id} className="relative bg-gray-800 rounded-lg aspect-video">
                         <div className="absolute inset-0 bg-gradient-to-br from-gray-700 to-gray-800 rounded-lg flex items-center justify-center">
                           <img

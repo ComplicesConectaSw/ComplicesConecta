@@ -12,33 +12,23 @@ import { initWebVitalsMonitoring } from '@/utils/webVitals'
 import { initializeCriticalPreloading } from '@/utils/preloading'
 import { androidSecurity } from '@/utils/androidSecurity'
 
-// Protección robusta contra errores de wallets de criptomonedas
+// Protección esencial contra errores de wallets de criptomonedas
 if (typeof window !== 'undefined') {
   // Inicializar protección de wallets ANTES que cualquier extensión
   initializeWalletProtection();
   
-  // Interceptar TODOS los errores de wallets
+  // Interceptar errores críticos de wallets únicamente
   const originalError = window.onerror;
   window.onerror = function(message, source, lineno, colno, error) {
     const errorMessage = message?.toString().toLowerCase() || '';
-    const walletErrors = [
-      'solana',
-      'ethereum', 
-      'tronweb',
-      'bybit',
-      'metamask',
+    const criticalWalletErrors = [
       'cannot redefine property',
       'cannot assign to read only property',
-      'cannot set property chainid',
-      'wallet must has at least one account',
-      'provider inject',
-      'chainid',
-      'tronweb is already initiated',
-      'bybit:page provider inject code'
+      'wallet must has at least one account'
     ];
     
-    if (walletErrors.some(err => errorMessage.includes(err))) {
-      console.log('🚫 [WalletProtection] Blocked wallet error:', message);
+    if (criticalWalletErrors.some(err => errorMessage.includes(err))) {
+      console.log('🚫 [WalletProtection] Blocked critical wallet error:', message);
       return true; // Prevent default error handling
     }
     if (originalError) {
@@ -47,45 +37,30 @@ if (typeof window !== 'undefined') {
     return false;
   };
   
-  // Silenciar errores específicos de wallets
+  // Silenciar errores críticos de wallets únicamente
   window.addEventListener('error', (event) => {
     const message = (event.message || '').toLowerCase();
-    const walletErrors = [
-      'solana',
-      'ethereum', 
-      'tronweb',
-      'bybit',
-      'metamask',
+    const criticalWalletErrors = [
       'cannot redefine property',
       'cannot assign to read only property',
-      'cannot set property chainid',
-      'wallet must has at least one account',
-      'provider inject',
-      'chainid'
+      'wallet must has at least one account'
     ];
     
-    if (walletErrors.some(err => message.includes(err))) {
+    if (criticalWalletErrors.some(err => message.includes(err))) {
       event.preventDefault();
       event.stopPropagation();
-      console.log('🚫 [WalletProtection] Blocked wallet event error:', event.message);
+      console.log('🚫 [WalletProtection] Blocked critical wallet event error:', event.message);
       return false;
     }
   }, true); // Use capture phase
   
-  // Capturar errores no manejados de promesas
+  // Capturar errores críticos de promesas de wallets
   window.addEventListener('unhandledrejection', (event) => {
     const message = (event.reason?.message || event.reason || '').toString().toLowerCase();
-    const walletErrors = [
-      'solana',
-      'ethereum',
-      'tronweb',
-      'bybit',
-      'metamask',
+    const criticalWalletErrors = [
       'cannot redefine property',
       'cannot assign to read only property',
-      'wallet must has at least one account',
-      'provider inject',
-      'chainid'
+      'wallet must has at least one account'
     ];
     
     // Manejar errores de carga de módulos dinámicos
@@ -101,9 +76,9 @@ if (typeof window !== 'undefined') {
       return false;
     }
     
-    if (walletErrors.some(err => message.includes(err))) {
+    if (criticalWalletErrors.some(err => message.includes(err))) {
       event.preventDefault();
-      console.log('🚫 [WalletProtection] Blocked wallet promise rejection:', event.reason);
+      console.log('🚫 [WalletProtection] Blocked critical wallet promise rejection:', event.reason);
       return false;
     }
   });

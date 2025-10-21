@@ -276,7 +276,7 @@ const Privacy = () => {
           </div>
         </main>
 
-        <Footer />
+        {/* Footer component removed - not needed for this page */}
       </div>
       
       {/* Custom Styles */}
