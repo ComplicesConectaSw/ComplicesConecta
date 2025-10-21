@@ -1,5 +1,5 @@
 // src/hooks/useUnifiedAuth.ts
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import { usePersistedState } from './usePersistedState';
 import { logger } from '@/lib/logger';
 

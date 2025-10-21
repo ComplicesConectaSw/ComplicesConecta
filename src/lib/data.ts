@@ -44,7 +44,7 @@ export const generateMockSingle = (includeOnlineStatus = true) => {
   const nombresM = ["Raúl", "Miguel", "Alejandro", "Fernando", "Roberto", "Javier", "Antonio", "Pablo"];
   
   const apellidos = ["García", "Rodríguez", "López", "Martínez", "González", "Pérez", "Sánchez", "Ramírez"];
-  const ubicaciones = ["CDMX", "Guadalajara", "Monterrey", "Puebla", "Tijuana", "León", "Querétaro", "Cancún", "Playa del Carmen", "Mérida"];
+  const _ubicaciones = ["CDMX", "Guadalajara", "Monterrey", "Puebla", "Tijuana", "León", "Querétaro", "Cancún", "Playa del Carmen", "Mérida"];
   const profesiones = ["Ingeniero/a", "Médico/a", "Abogado/a", "Diseñador/a", "Empresario/a", "Artista", "Profesor/a"];
   const intereses = [
     // Categorías principales del lifestyle
@@ -131,7 +131,7 @@ export const generateMockCouple = (_includeOnlineStatus = true) => {
   const nombresM = ["Julio", "Miguel", "Alejandro", "Fernando", "Roberto", "Javier", "Antonio", "Pablo"];
   const nombresF = ["Anabella", "María", "Carmen", "Elena", "Sofía", "Laura", "Patricia", "Isabel"];
   const apellidos = ["García", "Rodríguez", "López", "Martínez", "González", "Pérez", "Sánchez", "Ramírez"];
-  const ubicaciones = ["CDMX", "Guadalajara", "Monterrey", "Puebla", "Tijuana", "León", "Querétaro", "Cancún", "Playa del Carmen", "Mérida"];
+  const _ubicaciones = ["CDMX", "Guadalajara", "Monterrey", "Puebla", "Tijuana", "León", "Querétaro", "Cancún", "Playa del Carmen", "Mérida"];
   const profesiones = ["Ingeniero/a", "Médico/a", "Abogado/a", "Diseñador/a", "Empresario/a", "Artista", "Profesor/a"];
   const intereses = [
     // Categorías principales del lifestyle
