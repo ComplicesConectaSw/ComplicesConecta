@@ -432,8 +432,8 @@ SELECT
     SUM(comments_count) as total_comments,
     SUM(shares_count) as total_shares
 FROM posts,
-LATERAL unnest(hashtags) as hashtag
-WHERE is_public = true
+LATERAL unnest(COALESCE(hashtags, ARRAY[]::TEXT[])) as hashtag
+WHERE is_public = true AND hashtag IS NOT NULL AND hashtag != ''
 GROUP BY hashtag
 ORDER BY post_count DESC, total_likes DESC;
 

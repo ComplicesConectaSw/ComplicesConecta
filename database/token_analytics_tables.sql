@@ -75,8 +75,8 @@ CREATE TABLE IF NOT EXISTS user_staking (
 
 -- Create indexes
 CREATE INDEX IF NOT EXISTS idx_user_staking_user_id ON user_staking(user_id);
-CREATE INDEX IF NOT EXISTS idx_user_staking_is_active ON user_staking(is_active);
 CREATE INDEX IF NOT EXISTS idx_user_staking_staking_end_date ON user_staking(staking_end_date);
+CREATE INDEX IF NOT EXISTS idx_user_staking_staking_start_date ON user_staking(staking_start_date);
 
 -- =====================================================
 -- 4. TRANSACTIONS TABLE
@@ -238,8 +238,8 @@ CREATE OR REPLACE VIEW staking_metrics AS
 SELECT 
     COUNT(*) as total_staking_positions,
     SUM(staked_cmpx) as total_staked_amount,
-    COUNT(CASE WHEN is_active = true THEN 1 END) as active_positions,
-    COUNT(CASE WHEN is_active = false THEN 1 END) as completed_positions
+    COUNT(CASE WHEN staking_end_date IS NULL THEN 1 END) as active_positions,
+    COUNT(CASE WHEN staking_end_date IS NOT NULL THEN 1 END) as completed_positions
 FROM user_staking;
 
 -- =====================================================
