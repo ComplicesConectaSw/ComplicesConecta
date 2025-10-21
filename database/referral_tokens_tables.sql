@@ -38,28 +38,65 @@ CREATE INDEX IF NOT EXISTS idx_user_referral_balances_last_reset_date ON user_re
 -- =====================================================
 -- 2. REFERRAL REWARDS TABLE
 -- =====================================================
--- Table for storing referral rewards
-CREATE TABLE IF NOT EXISTS referral_rewards (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    inviter_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-    invited_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-    amount BIGINT NOT NULL,
-    reward_type VARCHAR(20) NOT NULL CHECK (reward_type IN ('referral_bonus', 'welcome_bonus')),
-    status VARCHAR(20) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'completed', 'failed')),
-    inviter_reward_amount BIGINT NOT NULL DEFAULT 0,
-    invited_reward_amount BIGINT NOT NULL DEFAULT 0,
-    referral_code VARCHAR(20) NOT NULL,
-    metadata JSONB DEFAULT '{}',
-    processed_at TIMESTAMP WITH TIME ZONE,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    
-    -- Ensure inviter and invited are different
-    CHECK (inviter_id != invited_id),
-    -- Ensure one reward per inviter-invited pair
-    UNIQUE(inviter_id, invited_id)
-);
+-- 2. REFERRAL REWARDS TABLE (USING EXISTING TABLE)
+-- =====================================================
+-- Note: This table already exists in the database as 'referral_rewards'
+-- We'll just add any missing columns if needed
 
--- Create indexes
+-- Add missing columns to existing referral_rewards table if they don't exist
+DO $$ 
+BEGIN
+    -- Add inviter_id column if it doesn't exist
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                   WHERE table_name = 'referral_rewards' AND column_name = 'inviter_id') THEN
+        ALTER TABLE referral_rewards ADD COLUMN inviter_id UUID REFERENCES auth.users(id);
+    END IF;
+    
+    -- Add invited_id column if it doesn't exist
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                   WHERE table_name = 'referral_rewards' AND column_name = 'invited_id') THEN
+        ALTER TABLE referral_rewards ADD COLUMN invited_id UUID REFERENCES auth.users(id);
+    END IF;
+    
+    -- Add referral_code column if it doesn't exist
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                   WHERE table_name = 'referral_rewards' AND column_name = 'referral_code') THEN
+        ALTER TABLE referral_rewards ADD COLUMN referral_code VARCHAR(20);
+    END IF;
+    
+    -- Add status column if it doesn't exist
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                   WHERE table_name = 'referral_rewards' AND column_name = 'status') THEN
+        ALTER TABLE referral_rewards ADD COLUMN status VARCHAR(20) DEFAULT 'pending';
+    END IF;
+    
+    -- Add inviter_reward_amount column if it doesn't exist
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                   WHERE table_name = 'referral_rewards' AND column_name = 'inviter_reward_amount') THEN
+        ALTER TABLE referral_rewards ADD COLUMN inviter_reward_amount BIGINT DEFAULT 0;
+    END IF;
+    
+    -- Add invited_reward_amount column if it doesn't exist
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                   WHERE table_name = 'referral_rewards' AND column_name = 'invited_reward_amount') THEN
+        ALTER TABLE referral_rewards ADD COLUMN invited_reward_amount BIGINT DEFAULT 0;
+    END IF;
+    
+    -- Add metadata column if it doesn't exist
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                   WHERE table_name = 'referral_rewards' AND column_name = 'metadata') THEN
+        ALTER TABLE referral_rewards ADD COLUMN metadata JSONB DEFAULT '{}';
+    END IF;
+    
+    -- Add processed_at column if it doesn't exist
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                   WHERE table_name = 'referral_rewards' AND column_name = 'processed_at') THEN
+        ALTER TABLE referral_rewards ADD COLUMN processed_at TIMESTAMP WITH TIME ZONE;
+    END IF;
+END $$;
+
+-- Create indexes for the existing table
+CREATE INDEX IF NOT EXISTS idx_referral_rewards_user_id ON referral_rewards(user_id);
 CREATE INDEX IF NOT EXISTS idx_referral_rewards_inviter_id ON referral_rewards(inviter_id);
 CREATE INDEX IF NOT EXISTS idx_referral_rewards_invited_id ON referral_rewards(invited_id);
 CREATE INDEX IF NOT EXISTS idx_referral_rewards_reward_type ON referral_rewards(reward_type);
@@ -136,52 +173,28 @@ CREATE POLICY "user_referral_balances_own_data" ON user_referral_balances
     FOR ALL USING (user_id = auth.uid());
 
 CREATE POLICY "user_referral_balances_admin_read" ON user_referral_balances
-    FOR SELECT USING (
-        EXISTS (
-            SELECT 1 FROM profiles 
-            WHERE profiles.user_id = auth.uid() 
-            AND profiles.role IN ('admin', 'moderator')
-        )
-    );
+    FOR SELECT USING (false); -- Disabled for now, no profiles dependency
 
 -- Referral Rewards policies
 CREATE POLICY "referral_rewards_own_data" ON referral_rewards
     FOR ALL USING (inviter_id = auth.uid() OR invited_id = auth.uid());
 
 CREATE POLICY "referral_rewards_admin_all" ON referral_rewards
-    FOR ALL USING (
-        EXISTS (
-            SELECT 1 FROM profiles 
-            WHERE profiles.user_id = auth.uid() 
-            AND profiles.role IN ('admin', 'moderator')
-        )
-    );
+    FOR ALL USING (false); -- Disabled for now, no profiles dependency
 
 -- Referral Transactions policies
 CREATE POLICY "referral_transactions_own_data" ON referral_transactions
     FOR ALL USING (user_id = auth.uid());
 
 CREATE POLICY "referral_transactions_admin_read" ON referral_transactions
-    FOR SELECT USING (
-        EXISTS (
-            SELECT 1 FROM profiles 
-            WHERE profiles.user_id = auth.uid() 
-            AND profiles.role IN ('admin', 'moderator')
-        )
-    );
+    FOR SELECT USING (false); -- Disabled for now, no profiles dependency
 
 -- Referral Statistics policies
 CREATE POLICY "referral_statistics_own_data" ON referral_statistics
     FOR ALL USING (user_id = auth.uid());
 
 CREATE POLICY "referral_statistics_admin_read" ON referral_statistics
-    FOR SELECT USING (
-        EXISTS (
-            SELECT 1 FROM profiles 
-            WHERE profiles.user_id = auth.uid() 
-            AND profiles.role IN ('admin', 'moderator')
-        )
-    );
+    FOR SELECT USING (false); -- Disabled for now, no profiles dependency
 
 -- =====================================================
 -- 6. FUNCTIONS AND TRIGGERS
@@ -246,6 +259,9 @@ CREATE TRIGGER update_referral_balance_trigger
     FOR EACH ROW EXECUTE FUNCTION update_referral_balance();
 
 -- Function to generate unique referral code
+-- Drop existing function if it exists to avoid type conflicts
+DROP FUNCTION IF EXISTS generate_referral_code(uuid);
+
 CREATE OR REPLACE FUNCTION generate_referral_code(user_id UUID)
 RETURNS VARCHAR(20) AS $$
 DECLARE
@@ -286,12 +302,11 @@ SELECT
     urb.total_referrals,
     urb.total_earned,
     urb.monthly_earned,
-    p.first_name,
-    p.last_name,
-    p.avatar_url,
+    'Usuario' as first_name,
+    'Anónimo' as last_name,
+    NULL as avatar_url,
     RANK() OVER (ORDER BY urb.total_referrals DESC, urb.total_earned DESC) as rank
 FROM user_referral_balances urb
-JOIN profiles p ON urb.user_id = p.user_id
 WHERE urb.total_referrals > 0
 ORDER BY urb.total_referrals DESC, urb.total_earned DESC;
 
@@ -323,13 +338,12 @@ SELECT
     COUNT(rr.id) as total_rewards,
     COUNT(CASE WHEN rr.status = 'completed' THEN 1 END) as completed_rewards,
     MAX(rr.created_at) as last_reward_date,
-    p.first_name,
-    p.last_name
+    'Usuario' as first_name,
+    'Anónimo' as last_name
 FROM user_referral_balances urb
 LEFT JOIN referral_rewards rr ON urb.user_id = rr.inviter_id
-LEFT JOIN profiles p ON urb.user_id = p.user_id
 GROUP BY urb.user_id, urb.referral_code, urb.total_referrals, urb.total_earned, 
-         urb.monthly_earned, urb.cmpx_balance, p.first_name, p.last_name;
+         urb.monthly_earned, urb.cmpx_balance;
 
 -- =====================================================
 -- COMPLETION MESSAGE

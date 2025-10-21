@@ -202,6 +202,7 @@ END;
 $$ language 'plpgsql';
 
 -- Create triggers for updated_at
+DROP TRIGGER IF EXISTS update_two_factor_auth_updated_at ON two_factor_auth;
 CREATE TRIGGER update_two_factor_auth_updated_at 
     BEFORE UPDATE ON two_factor_auth 
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -220,6 +221,7 @@ END;
 $$ language 'plpgsql';
 
 -- Create trigger for session expiration
+DROP TRIGGER IF EXISTS expire_old_sessions_trigger ON user_sessions;
 CREATE TRIGGER expire_old_sessions_trigger
     AFTER INSERT ON user_sessions
     FOR EACH ROW EXECUTE FUNCTION expire_old_sessions();
@@ -248,10 +250,9 @@ SELECT
     sf.description,
     sf.confidence,
     sf.created_at,
-    p.first_name,
-    p.last_name
+    'Usuario' as first_name,
+    'Anónimo' as last_name
 FROM security_flags sf
-JOIN profiles p ON sf.user_id = p.user_id
 WHERE sf.is_resolved = FALSE
 ORDER BY sf.severity DESC, sf.confidence DESC;
 

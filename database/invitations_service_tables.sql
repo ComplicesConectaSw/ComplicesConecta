@@ -9,34 +9,49 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- =====================================================
--- 1. INVITATIONS TABLE
+-- 1. INVITATIONS TABLE (USING EXISTING TABLE)
 -- =====================================================
--- Main table for storing invitations
-CREATE TABLE IF NOT EXISTS invitations (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    from_profile UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
-    to_profile UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
-    message TEXT,
-    invitation_type VARCHAR(20) NOT NULL CHECK (invitation_type IN ('profile', 'gallery', 'chat', 'event', 'meetup')),
-    status VARCHAR(20) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'accepted', 'declined', 'expired', 'cancelled')),
-    expires_at TIMESTAMP WITH TIME ZONE,
-    metadata JSONB DEFAULT '{}',
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    decided_at TIMESTAMP WITH TIME ZONE,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    
-    -- Ensure profiles are different
-    CHECK (from_profile != to_profile),
-    -- Ensure one invitation per from-to pair per type
-    UNIQUE(from_profile, to_profile, invitation_type)
-);
+-- Note: This table already exists in the database as 'invitations'
+-- We'll just add any missing columns if they don't exist
+
+-- Add missing columns to existing invitations table if they don't exist
+DO $$ 
+BEGIN
+    -- Check if invitations table exists
+    IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'invitations') THEN
+        -- Add invitation_type column if it doesn't exist (rename from type)
+        IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                       WHERE table_name = 'invitations' AND column_name = 'invitation_type') THEN
+            ALTER TABLE invitations ADD COLUMN invitation_type VARCHAR(20) CHECK (invitation_type IN ('profile', 'gallery', 'chat', 'event', 'meetup'));
+        END IF;
+        
+        -- Add expires_at column if it doesn't exist
+        IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                       WHERE table_name = 'invitations' AND column_name = 'expires_at') THEN
+            ALTER TABLE invitations ADD COLUMN expires_at TIMESTAMP WITH TIME ZONE;
+        END IF;
+        
+        -- Add metadata column if it doesn't exist
+        IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                       WHERE table_name = 'invitations' AND column_name = 'metadata') THEN
+            ALTER TABLE invitations ADD COLUMN metadata JSONB DEFAULT '{}';
+        END IF;
+        
+        -- Add status column if it doesn't exist
+        IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                       WHERE table_name = 'invitations' AND column_name = 'status') THEN
+            ALTER TABLE invitations ADD COLUMN status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending', 'accepted', 'declined', 'expired'));
+        END IF;
+        
+        -- Update existing NULL status values to 'pending'
+        UPDATE invitations SET status = 'pending' WHERE status IS NULL;
+    END IF;
+END $$;
 
 -- Create indexes for better performance
 CREATE INDEX IF NOT EXISTS idx_invitations_from_profile ON invitations(from_profile);
 CREATE INDEX IF NOT EXISTS idx_invitations_to_profile ON invitations(to_profile);
 CREATE INDEX IF NOT EXISTS idx_invitations_invitation_type ON invitations(invitation_type);
-CREATE INDEX IF NOT EXISTS idx_invitations_status ON invitations(status);
-CREATE INDEX IF NOT EXISTS idx_invitations_expires_at ON invitations(expires_at);
 CREATE INDEX IF NOT EXISTS idx_invitations_created_at ON invitations(created_at DESC);
 
 -- =====================================================
@@ -45,30 +60,28 @@ CREATE INDEX IF NOT EXISTS idx_invitations_created_at ON invitations(created_at 
 -- Table for storing gallery access permissions
 CREATE TABLE IF NOT EXISTS gallery_permissions (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    owner_profile UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
-    grantee_profile UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+    granted_by UUID REFERENCES profiles(user_id) ON DELETE CASCADE,
+    granted_to UUID REFERENCES profiles(user_id) ON DELETE CASCADE,
     permission_type VARCHAR(20) NOT NULL CHECK (permission_type IN ('view', 'download', 'comment', 'share')),
     status VARCHAR(20) NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'revoked', 'expired')),
     granted_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     expires_at TIMESTAMP WITH TIME ZONE,
     revoked_at TIMESTAMP WITH TIME ZONE,
-    revoked_by UUID REFERENCES profiles(id),
+    revoked_by UUID REFERENCES profiles(user_id),
     metadata JSONB DEFAULT '{}',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     
     -- Ensure profiles are different
-    CHECK (owner_profile != grantee_profile),
-    -- Ensure one permission per owner-grantee pair per type
-    UNIQUE(owner_profile, grantee_profile, permission_type)
+    CHECK (granted_by != granted_to),
+    -- Ensure one permission per granted_by-granted_to pair per type
+    UNIQUE(granted_by, granted_to, permission_type)
 );
 
 -- Create indexes
-CREATE INDEX IF NOT EXISTS idx_gallery_permissions_owner_profile ON gallery_permissions(owner_profile);
-CREATE INDEX IF NOT EXISTS idx_gallery_permissions_grantee_profile ON gallery_permissions(grantee_profile);
+CREATE INDEX IF NOT EXISTS idx_gallery_permissions_granted_by ON gallery_permissions(granted_by);
+CREATE INDEX IF NOT EXISTS idx_gallery_permissions_granted_to ON gallery_permissions(granted_to);
 CREATE INDEX IF NOT EXISTS idx_gallery_permissions_permission_type ON gallery_permissions(permission_type);
-CREATE INDEX IF NOT EXISTS idx_gallery_permissions_status ON gallery_permissions(status);
-CREATE INDEX IF NOT EXISTS idx_gallery_permissions_expires_at ON gallery_permissions(expires_at);
 
 -- =====================================================
 -- 3. INVITATION RESPONSES TABLE
@@ -104,7 +117,7 @@ CREATE TABLE IF NOT EXISTS invitation_templates (
     variables JSONB DEFAULT '{}',
     is_active BOOLEAN DEFAULT TRUE,
     usage_count INTEGER DEFAULT 0,
-    created_by UUID REFERENCES profiles(id),
+    created_by UUID REFERENCES profiles(user_id),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -147,8 +160,8 @@ ALTER TABLE invitation_analytics ENABLE ROW LEVEL SECURITY;
 -- Invitations policies
 CREATE POLICY "invitations_own_data" ON invitations
     FOR ALL USING (
-        from_profile IN (SELECT id FROM profiles WHERE user_id = auth.uid()) OR
-        to_profile IN (SELECT id FROM profiles WHERE user_id = auth.uid())
+        from_profile IN (SELECT user_id FROM profiles WHERE user_id = auth.uid()) OR
+        to_profile IN (SELECT user_id FROM profiles WHERE user_id = auth.uid())
     );
 
 CREATE POLICY "invitations_admin_read" ON invitations
@@ -163,8 +176,8 @@ CREATE POLICY "invitations_admin_read" ON invitations
 -- Gallery Permissions policies
 CREATE POLICY "gallery_permissions_own_data" ON gallery_permissions
     FOR ALL USING (
-        owner_profile IN (SELECT id FROM profiles WHERE user_id = auth.uid()) OR
-        grantee_profile IN (SELECT id FROM profiles WHERE user_id = auth.uid())
+        granted_by IN (SELECT user_id FROM profiles WHERE user_id = auth.uid()) OR
+        granted_to IN (SELECT user_id FROM profiles WHERE user_id = auth.uid())
     );
 
 CREATE POLICY "gallery_permissions_admin_read" ON gallery_permissions
@@ -181,8 +194,8 @@ CREATE POLICY "invitation_responses_own_data" ON invitation_responses
     FOR ALL USING (
         invitation_id IN (
             SELECT id FROM invitations 
-            WHERE from_profile IN (SELECT id FROM profiles WHERE user_id = auth.uid()) OR
-                  to_profile IN (SELECT id FROM profiles WHERE user_id = auth.uid())
+            WHERE from_profile IN (SELECT user_id FROM profiles WHERE user_id = auth.uid()) OR
+                  to_profile IN (SELECT user_id FROM profiles WHERE user_id = auth.uid())
         )
     );
 
@@ -204,8 +217,8 @@ CREATE POLICY "invitation_analytics_own_data" ON invitation_analytics
     FOR ALL USING (
         invitation_id IN (
             SELECT id FROM invitations 
-            WHERE from_profile IN (SELECT id FROM profiles WHERE user_id = auth.uid()) OR
-                  to_profile IN (SELECT id FROM profiles WHERE user_id = auth.uid())
+            WHERE from_profile IN (SELECT user_id FROM profiles WHERE user_id = auth.uid()) OR
+                  to_profile IN (SELECT user_id FROM profiles WHERE user_id = auth.uid())
         )
     );
 
@@ -249,10 +262,14 @@ CREATE OR REPLACE FUNCTION expire_old_invitations()
 RETURNS TRIGGER AS $$
 BEGIN
     -- Mark invitations as expired if they've passed their expiry date
-    UPDATE invitations 
-    SET status = 'expired', decided_at = NOW()
-    WHERE expires_at < NOW() 
-    AND status = 'pending';
+    -- Only if expires_at column exists
+    IF EXISTS (SELECT 1 FROM information_schema.columns 
+               WHERE table_name = 'invitations' AND column_name = 'expires_at') THEN
+        UPDATE invitations 
+        SET status = 'expired', decided_at = NOW()
+        WHERE expires_at < NOW() 
+        AND status = 'pending';
+    END IF;
     
     RETURN NEW;
 END;
@@ -268,10 +285,10 @@ CREATE OR REPLACE FUNCTION create_gallery_permission_on_accept()
 RETURNS TRIGGER AS $$
 BEGIN
     -- If invitation is accepted and type is gallery, create permission
-    IF NEW.status = 'accepted' AND NEW.invitation_type = 'gallery' THEN
-        INSERT INTO gallery_permissions (owner_profile, grantee_profile, permission_type)
+    IF NEW.status = 'accepted' AND (NEW.invitation_type = 'gallery' OR NEW.type = 'gallery') THEN
+        INSERT INTO gallery_permissions (granted_by, granted_to, permission_type)
         VALUES (NEW.from_profile, NEW.to_profile, 'view')
-        ON CONFLICT (owner_profile, grantee_profile, permission_type) DO NOTHING;
+        ON CONFLICT (granted_by, granted_to, permission_type) DO NOTHING;
     END IF;
     
     RETURN NEW;
@@ -291,51 +308,51 @@ CREATE TRIGGER create_gallery_permission_trigger
 CREATE OR REPLACE VIEW invitation_statistics AS
 SELECT 
     i.from_profile,
-    i.invitation_type,
+    COALESCE(i.invitation_type, i.type) as invitation_type,
     COUNT(*) as total_sent,
-    COUNT(CASE WHEN i.status = 'accepted' THEN 1 END) as accepted_count,
-    COUNT(CASE WHEN i.status = 'declined' THEN 1 END) as declined_count,
-    COUNT(CASE WHEN i.status = 'pending' THEN 1 END) as pending_count,
-    COUNT(CASE WHEN i.status = 'expired' THEN 1 END) as expired_count,
+    COUNT(CASE WHEN COALESCE(i.status, 'pending') = 'accepted' THEN 1 END) as accepted_count,
+    COUNT(CASE WHEN COALESCE(i.status, 'pending') = 'declined' THEN 1 END) as declined_count,
+    COUNT(CASE WHEN COALESCE(i.status, 'pending') = 'pending' THEN 1 END) as pending_count,
+    COUNT(CASE WHEN COALESCE(i.status, 'pending') = 'expired' THEN 1 END) as expired_count,
     ROUND(
-        COUNT(CASE WHEN i.status = 'accepted' THEN 1 END)::DECIMAL / 
-        NULLIF(COUNT(CASE WHEN i.status IN ('accepted', 'declined') THEN 1 END), 0) * 100, 
+        COUNT(CASE WHEN COALESCE(i.status, 'pending') = 'accepted' THEN 1 END)::DECIMAL / 
+        NULLIF(COUNT(CASE WHEN COALESCE(i.status, 'pending') IN ('accepted', 'declined') THEN 1 END), 0) * 100, 
         2
     ) as acceptance_rate,
     MAX(i.created_at) as last_sent_date
 FROM invitations i
-GROUP BY i.from_profile, i.invitation_type;
+GROUP BY i.from_profile, COALESCE(i.invitation_type, i.type);
 
 -- View for gallery permission summary
 CREATE OR REPLACE VIEW gallery_permission_summary AS
 SELECT 
-    gp.owner_profile,
+    gp.granted_by as owner_profile,
     gp.permission_type,
     COUNT(*) as total_permissions,
-    COUNT(CASE WHEN gp.status = 'active' THEN 1 END) as active_permissions,
-    COUNT(CASE WHEN gp.status = 'revoked' THEN 1 END) as revoked_permissions,
-    COUNT(CASE WHEN gp.status = 'expired' THEN 1 END) as expired_permissions,
+    COUNT(CASE WHEN COALESCE(gp.status, 'active') = 'active' THEN 1 END) as active_permissions,
+    COUNT(CASE WHEN COALESCE(gp.status, 'active') = 'revoked' THEN 1 END) as revoked_permissions,
+    COUNT(CASE WHEN COALESCE(gp.status, 'active') = 'expired' THEN 1 END) as expired_permissions,
     MAX(gp.granted_at) as last_granted_date
 FROM gallery_permissions gp
-GROUP BY gp.owner_profile, gp.permission_type;
+GROUP BY gp.granted_by, gp.permission_type;
 
 -- View for invitation performance by type
 CREATE OR REPLACE VIEW invitation_performance AS
 SELECT 
-    invitation_type,
+    COALESCE(invitation_type, type) as invitation_type,
     COUNT(*) as total_invitations,
-    COUNT(CASE WHEN status = 'accepted' THEN 1 END) as accepted,
-    COUNT(CASE WHEN status = 'declined' THEN 1 END) as declined,
-    COUNT(CASE WHEN status = 'pending' THEN 1 END) as pending,
-    COUNT(CASE WHEN status = 'expired' THEN 1 END) as expired,
+    COUNT(CASE WHEN COALESCE(status, 'pending') = 'accepted' THEN 1 END) as accepted,
+    COUNT(CASE WHEN COALESCE(status, 'pending') = 'declined' THEN 1 END) as declined,
+    COUNT(CASE WHEN COALESCE(status, 'pending') = 'pending' THEN 1 END) as pending,
+    COUNT(CASE WHEN COALESCE(status, 'pending') = 'expired' THEN 1 END) as expired,
     ROUND(
-        COUNT(CASE WHEN status = 'accepted' THEN 1 END)::DECIMAL / 
-        NULLIF(COUNT(CASE WHEN status IN ('accepted', 'declined') THEN 1 END), 0) * 100, 
+        COUNT(CASE WHEN COALESCE(status, 'pending') = 'accepted' THEN 1 END)::DECIMAL / 
+        NULLIF(COUNT(CASE WHEN COALESCE(status, 'pending') IN ('accepted', 'declined') THEN 1 END), 0) * 100, 
         2
     ) as acceptance_rate,
     AVG(EXTRACT(EPOCH FROM (decided_at - created_at))/3600) as avg_response_hours
 FROM invitations
-GROUP BY invitation_type
+GROUP BY COALESCE(invitation_type, type)
 ORDER BY total_invitations DESC;
 
 -- =====================================================

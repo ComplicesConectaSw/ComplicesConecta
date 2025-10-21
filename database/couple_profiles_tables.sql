@@ -17,14 +17,11 @@ CREATE TABLE IF NOT EXISTS couple_profiles (
     couple_name VARCHAR(255) NOT NULL,
     couple_bio TEXT,
     relationship_type VARCHAR(20) NOT NULL CHECK (relationship_type IN ('man-woman', 'man-man', 'woman-woman')),
-    partner1_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
-    partner2_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+    partner1_id UUID NOT NULL REFERENCES profiles(user_id) ON DELETE CASCADE,
+    partner2_id UUID NOT NULL REFERENCES profiles(user_id) ON DELETE CASCADE,
     couple_images TEXT[],
     is_verified BOOLEAN DEFAULT FALSE,
     is_premium BOOLEAN DEFAULT FALSE,
-    is_active BOOLEAN DEFAULT TRUE,
-    location VARCHAR(255),
-    interests TEXT[],
     looking_for TEXT,
     experience_level VARCHAR(50),
     preferences JSONB DEFAULT '{}',
@@ -41,11 +38,8 @@ CREATE TABLE IF NOT EXISTS couple_profiles (
 CREATE INDEX IF NOT EXISTS idx_couple_profiles_partner1_id ON couple_profiles(partner1_id);
 CREATE INDEX IF NOT EXISTS idx_couple_profiles_partner2_id ON couple_profiles(partner2_id);
 CREATE INDEX IF NOT EXISTS idx_couple_profiles_relationship_type ON couple_profiles(relationship_type);
-CREATE INDEX IF NOT EXISTS idx_couple_profiles_is_active ON couple_profiles(is_active);
 CREATE INDEX IF NOT EXISTS idx_couple_profiles_is_verified ON couple_profiles(is_verified);
 CREATE INDEX IF NOT EXISTS idx_couple_profiles_is_premium ON couple_profiles(is_premium);
-CREATE INDEX IF NOT EXISTS idx_couple_profiles_location ON couple_profiles(location);
-CREATE INDEX IF NOT EXISTS idx_couple_profiles_interests ON couple_profiles USING GIN(interests);
 CREATE INDEX IF NOT EXISTS idx_couple_profiles_created_at ON couple_profiles(created_at DESC);
 
 -- =====================================================
@@ -55,17 +49,34 @@ CREATE INDEX IF NOT EXISTS idx_couple_profiles_created_at ON couple_profiles(cre
 CREATE TABLE IF NOT EXISTS couple_profile_views (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     couple_profile_id UUID NOT NULL REFERENCES couple_profiles(id) ON DELETE CASCADE,
-    viewer_profile_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+    viewer_profile_id UUID NOT NULL REFERENCES profiles(user_id) ON DELETE CASCADE,
     viewed_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    viewed_date DATE DEFAULT CURRENT_DATE,
     
     -- Ensure one view per viewer per couple profile per day
-    UNIQUE(couple_profile_id, viewer_profile_id, DATE(viewed_at))
+    UNIQUE(couple_profile_id, viewer_profile_id, viewed_date)
 );
 
 -- Create indexes
 CREATE INDEX IF NOT EXISTS idx_couple_profile_views_couple_profile_id ON couple_profile_views(couple_profile_id);
 CREATE INDEX IF NOT EXISTS idx_couple_profile_views_viewer_profile_id ON couple_profile_views(viewer_profile_id);
 CREATE INDEX IF NOT EXISTS idx_couple_profile_views_viewed_at ON couple_profile_views(viewed_at);
+CREATE INDEX IF NOT EXISTS idx_couple_profile_views_viewed_date ON couple_profile_views(viewed_date);
+
+-- Function to update viewed_date when viewed_at changes
+CREATE OR REPLACE FUNCTION update_viewed_date()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.viewed_date = DATE(NEW.viewed_at);
+    RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+-- Create trigger for automatic viewed_date updates
+DROP TRIGGER IF EXISTS update_couple_profile_views_viewed_date ON couple_profile_views;
+CREATE TRIGGER update_couple_profile_views_viewed_date
+    BEFORE INSERT OR UPDATE ON couple_profile_views
+    FOR EACH ROW EXECUTE FUNCTION update_viewed_date();
 
 -- =====================================================
 -- 3. COUPLE PROFILE LIKES TABLE
@@ -74,7 +85,7 @@ CREATE INDEX IF NOT EXISTS idx_couple_profile_views_viewed_at ON couple_profile_
 CREATE TABLE IF NOT EXISTS couple_profile_likes (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     couple_profile_id UUID NOT NULL REFERENCES couple_profiles(id) ON DELETE CASCADE,
-    liker_profile_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+    liker_profile_id UUID NOT NULL REFERENCES profiles(user_id) ON DELETE CASCADE,
     liked_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     
     -- Ensure one like per liker per couple profile
@@ -117,11 +128,11 @@ CREATE INDEX IF NOT EXISTS idx_couple_profile_matches_matched_at ON couple_profi
 CREATE TABLE IF NOT EXISTS couple_profile_reports (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     couple_profile_id UUID NOT NULL REFERENCES couple_profiles(id) ON DELETE CASCADE,
-    reporter_profile_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+    reporter_profile_id UUID NOT NULL REFERENCES profiles(user_id) ON DELETE CASCADE,
     reason VARCHAR(50) NOT NULL CHECK (reason IN ('fake', 'inappropriate', 'harassment', 'spam', 'other')),
     description TEXT,
     status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending', 'reviewed', 'resolved', 'dismissed')),
-    reviewed_by UUID REFERENCES profiles(id),
+    reviewed_by UUID REFERENCES profiles(user_id),
     reviewed_at TIMESTAMP WITH TIME ZONE,
     resolution_notes TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
@@ -150,15 +161,18 @@ ALTER TABLE couple_profile_matches ENABLE ROW LEVEL SECURITY;
 ALTER TABLE couple_profile_reports ENABLE ROW LEVEL SECURITY;
 
 -- Couple Profiles policies
+DROP POLICY IF EXISTS "couple_profiles_public_read" ON couple_profiles;
 CREATE POLICY "couple_profiles_public_read" ON couple_profiles
-    FOR SELECT USING (is_active = true);
+    FOR SELECT USING (is_verified = true);
 
+DROP POLICY IF EXISTS "couple_profiles_own_all" ON couple_profiles;
 CREATE POLICY "couple_profiles_own_all" ON couple_profiles
     FOR ALL USING (
-        partner1_id IN (SELECT id FROM profiles WHERE user_id = auth.uid()) OR
-        partner2_id IN (SELECT id FROM profiles WHERE user_id = auth.uid())
+        partner1_id IN (SELECT user_id FROM profiles WHERE user_id = auth.uid()) OR
+        partner2_id IN (SELECT user_id FROM profiles WHERE user_id = auth.uid())
     );
 
+DROP POLICY IF EXISTS "couple_profiles_premium_read" ON couple_profiles;
 CREATE POLICY "couple_profiles_premium_read" ON couple_profiles
     FOR SELECT USING (
         is_premium = true AND 
@@ -170,41 +184,49 @@ CREATE POLICY "couple_profiles_premium_read" ON couple_profiles
     );
 
 -- Couple Profile Views policies
+DROP POLICY IF EXISTS "couple_profile_views_own_data" ON couple_profile_views;
 CREATE POLICY "couple_profile_views_own_data" ON couple_profile_views
-    FOR ALL USING (viewer_profile_id IN (SELECT id FROM profiles WHERE user_id = auth.uid()));
+    FOR ALL USING (viewer_profile_id IN (SELECT user_id FROM profiles WHERE user_id = auth.uid()));
 
+DROP POLICY IF EXISTS "couple_profile_views_public_read" ON couple_profile_views;
 CREATE POLICY "couple_profile_views_public_read" ON couple_profile_views
     FOR SELECT USING (true);
 
 -- Couple Profile Likes policies
+DROP POLICY IF EXISTS "couple_profile_likes_own_data" ON couple_profile_likes;
 CREATE POLICY "couple_profile_likes_own_data" ON couple_profile_likes
-    FOR ALL USING (liker_profile_id IN (SELECT id FROM profiles WHERE user_id = auth.uid()));
+    FOR ALL USING (liker_profile_id IN (SELECT user_id FROM profiles WHERE user_id = auth.uid()));
 
+DROP POLICY IF EXISTS "couple_profile_likes_public_read" ON couple_profile_likes;
 CREATE POLICY "couple_profile_likes_public_read" ON couple_profile_likes
     FOR SELECT USING (true);
 
 -- Couple Profile Matches policies
+DROP POLICY IF EXISTS "couple_profile_matches_own_data" ON couple_profile_matches;
 CREATE POLICY "couple_profile_matches_own_data" ON couple_profile_matches
     FOR ALL USING (
         couple_profile1_id IN (
             SELECT id FROM couple_profiles 
-            WHERE partner1_id IN (SELECT id FROM profiles WHERE user_id = auth.uid()) OR
-                  partner2_id IN (SELECT id FROM profiles WHERE user_id = auth.uid())
+            WHERE partner1_id IN (SELECT user_id FROM profiles WHERE user_id = auth.uid()) OR
+                  partner2_id IN (SELECT user_id FROM profiles WHERE user_id = auth.uid())
         ) OR
         couple_profile2_id IN (
             SELECT id FROM couple_profiles 
-            WHERE partner1_id IN (SELECT id FROM profiles WHERE user_id = auth.uid()) OR
-                  partner2_id IN (SELECT id FROM profiles WHERE user_id = auth.uid())
+            WHERE partner1_id IN (SELECT user_id FROM profiles WHERE user_id = auth.uid()) OR
+                  partner2_id IN (SELECT user_id FROM profiles WHERE user_id = auth.uid())
         )
     );
 
+DROP POLICY IF EXISTS "couple_profile_matches_public_read" ON couple_profile_matches;
 CREATE POLICY "couple_profile_matches_public_read" ON couple_profile_matches
     FOR SELECT USING (true);
 
 -- Couple Profile Reports policies
+DROP POLICY IF EXISTS "couple_profile_reports_own_data" ON couple_profile_reports;
 CREATE POLICY "couple_profile_reports_own_data" ON couple_profile_reports
-    FOR ALL USING (reporter_profile_id IN (SELECT id FROM profiles WHERE user_id = auth.uid()));
+    FOR ALL USING (reporter_profile_id IN (SELECT user_id FROM profiles WHERE user_id = auth.uid()));
 
+DROP POLICY IF EXISTS "couple_profile_reports_admin_read" ON couple_profile_reports;
 CREATE POLICY "couple_profile_reports_admin_read" ON couple_profile_reports
     FOR SELECT USING (
         EXISTS (
@@ -228,10 +250,12 @@ END;
 $$ language 'plpgsql';
 
 -- Create triggers for updated_at
+DROP TRIGGER IF EXISTS update_couple_profiles_updated_at ON couple_profiles;
 CREATE TRIGGER update_couple_profiles_updated_at 
     BEFORE UPDATE ON couple_profiles 
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_couple_profile_reports_updated_at ON couple_profile_reports;
 CREATE TRIGGER update_couple_profile_reports_updated_at 
     BEFORE UPDATE ON couple_profile_reports 
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -258,6 +282,7 @@ END;
 $$ language 'plpgsql';
 
 -- Create trigger for automatic matching
+DROP TRIGGER IF EXISTS create_couple_match_trigger ON couple_profile_likes;
 CREATE TRIGGER create_couple_match_trigger
     AFTER INSERT ON couple_profile_likes
     FOR EACH ROW EXECUTE FUNCTION create_couple_match();
@@ -278,21 +303,18 @@ SELECT
     COUNT(DISTINCT cpv.id) as total_views,
     COUNT(DISTINCT cpl.id) as total_likes,
     COUNT(DISTINCT cpm.id) as total_matches,
-    p1.first_name as partner1_first_name,
-    p1.last_name as partner1_last_name,
-    p1.age as partner1_age,
-    p2.first_name as partner2_first_name,
-    p2.last_name as partner2_last_name,
-    p2.age as partner2_age
+    'Usuario' as partner1_first_name,
+    'Anónimo' as partner1_last_name,
+    NULL as partner1_age,
+    'Usuario' as partner2_first_name,
+    'Anónimo' as partner2_last_name,
+    NULL as partner2_age
 FROM couple_profiles cp
 LEFT JOIN couple_profile_views cpv ON cp.id = cpv.couple_profile_id
 LEFT JOIN couple_profile_likes cpl ON cp.id = cpl.couple_profile_id
 LEFT JOIN couple_profile_matches cpm ON cp.id = cpm.couple_profile1_id OR cp.id = cpm.couple_profile2_id
-LEFT JOIN profiles p1 ON cp.partner1_id = p1.id
-LEFT JOIN profiles p2 ON cp.partner2_id = p2.id
-WHERE cp.is_active = true
-GROUP BY cp.id, cp.couple_name, cp.relationship_type, cp.is_verified, cp.is_premium, cp.created_at,
-         p1.first_name, p1.last_name, p1.age, p2.first_name, p2.last_name, p2.age;
+WHERE cp.is_verified = true
+GROUP BY cp.id, cp.couple_name, cp.relationship_type, cp.is_verified, cp.is_premium, cp.created_at;
 
 -- View for popular couple profiles
 CREATE OR REPLACE VIEW popular_couple_profiles AS
@@ -300,7 +322,6 @@ SELECT
     cp.id,
     cp.couple_name,
     cp.relationship_type,
-    cp.location,
     COUNT(DISTINCT cpl.id) as likes_count,
     COUNT(DISTINCT cpv.id) as views_count,
     COUNT(DISTINCT cpm.id) as matches_count,
@@ -309,8 +330,8 @@ FROM couple_profiles cp
 LEFT JOIN couple_profile_likes cpl ON cp.id = cpl.couple_profile_id
 LEFT JOIN couple_profile_views cpv ON cp.id = cpv.couple_profile_id
 LEFT JOIN couple_profile_matches cpm ON cp.id = cpm.couple_profile1_id OR cp.id = cpm.couple_profile2_id
-WHERE cp.is_active = true
-GROUP BY cp.id, cp.couple_name, cp.relationship_type, cp.location
+WHERE cp.is_verified = true
+GROUP BY cp.id, cp.couple_name, cp.relationship_type
 ORDER BY engagement_score DESC, likes_count DESC;
 
 -- =====================================================
