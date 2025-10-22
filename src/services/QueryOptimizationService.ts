@@ -265,7 +265,7 @@ class QueryOptimizationService {
 
     const queryFn = async () => {
       // Usar consulta directa para agregaciones complejas
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('token_analytics')
         .select('*')
         .gte('created_at', dateRange.start)

@@ -92,12 +92,12 @@ class InvitationsService {
 
       const userId = this.getCurrentUserId();
 
-      let query = (supabase as any)
+      let query = supabase
         .from('invitations')
         .select(`
           id,
           inviter_id,
-          invitee_email,
+          invited_user_id,
           invitation_type,
           type,
           status,
@@ -158,11 +158,11 @@ class InvitationsService {
 
       const userId = this.getCurrentUserId();
 
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('invitations')
         .insert({
           inviter_id: userId,
-          invitee_email: invitationData.invitee_email,
+          invited_user_id: invitationData.invitee_email, // Usar invited_user_id en lugar de invitee_email
           invitation_type: invitationData.invitation_type,
           type: invitationData.type,
           status: 'pending',
@@ -172,7 +172,7 @@ class InvitationsService {
         .select(`
           id,
           inviter_id,
-          invitee_email,
+          invited_user_id,
           invitation_type,
           type,
           status,
@@ -216,7 +216,7 @@ class InvitationsService {
     try {
       logger.info('Accepting invitation in Supabase', { invitationId });
 
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('invitations')
         .update({
           status: 'accepted',
@@ -278,7 +278,7 @@ class InvitationsService {
 
       const userId = this.getCurrentUserId();
 
-      let query = (supabase as any)
+      let query = supabase
         .from('gallery_permissions')
         .select('*')
         .eq('granted_to', userId)
@@ -313,7 +313,7 @@ class InvitationsService {
 
       const userId = this.getCurrentUserId();
 
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('gallery_permissions')
         .insert({
           gallery_owner_id: permissionData.gallery_owner_id,
@@ -346,7 +346,7 @@ class InvitationsService {
     try {
       logger.info('Revoking gallery permission in Supabase', { permissionId });
 
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('gallery_permissions')
         .update({
           status: 'revoked',
@@ -374,7 +374,7 @@ class InvitationsService {
     try {
       logger.info('Getting invitation templates from Supabase');
 
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('invitation_templates')
         .select('*')
         .eq('is_active', true)
@@ -407,7 +407,7 @@ class InvitationsService {
     try {
       logger.info('Getting invitation statistics from Supabase');
 
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('invitation_statistics')
         .select('*')
         .single();

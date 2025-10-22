@@ -163,7 +163,7 @@ class PostsService {
     try {
       logger.info('Fetching feed posts from Supabase', { page, limit });
       
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('stories')
         .select(`
           id,
@@ -219,7 +219,7 @@ class PostsService {
             .from('story_comments')
             .select('id', { count: 'exact' })
             .eq('story_id', post.id),
-          (supabase as any)
+          supabase
             .from('story_shares')
             .select('id', { count: 'exact' })
             .eq('story_id', post.id)
@@ -254,7 +254,7 @@ class PostsService {
       const userId = this.getCurrentUserId();
       
       // Crear el story en Supabase
-      const { data: storyData, error: storyError } = await (supabase as any)
+      const { data: storyData, error: storyError } = await supabase
         .from('stories')
         .insert({
           user_id: userId,
@@ -324,7 +324,7 @@ class PostsService {
       const userId = this.getCurrentUserId();
       
       // Verificar si ya existe un like
-      const { data: existingLike, error: checkError } = await (supabase as any)
+      const { data: existingLike, error: checkError } = await supabase
         .from('story_likes')
         .select('id')
         .eq('story_id', postId)
@@ -338,7 +338,7 @@ class PostsService {
 
       if (existingLike) {
         // Quitar like
-        const { error: deleteError } = await (supabase as any)
+        const { error: deleteError } = await supabase
           .from('story_likes')
           .delete()
           .eq('story_id', postId)
@@ -353,7 +353,7 @@ class PostsService {
         return true;
       } else {
         // Agregar like
-        const { error: insertError } = await (supabase as any)
+        const { error: insertError } = await supabase
           .from('story_likes')
           .insert({
             story_id: postId,
@@ -398,7 +398,7 @@ class PostsService {
     try {
       logger.info('💬 Getting comments from Supabase', { postId, page, limit });
 
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('story_comments')
         .select(`
           id,
@@ -419,14 +419,14 @@ class PostsService {
       // Obtener conteos de likes para cada comentario
       const comments: Comment[] = [];
       for (const comment of data || []) {
-        const { count: likesCount } = await (supabase as any)
+        const { count: likesCount } = await supabase
           .from('comment_likes')
           .select('id', { count: 'exact' })
           .eq('comment_id', comment.id);
 
         // Verificar si el usuario actual dio like
         const userId = this.getCurrentUserId();
-        const { data: userLike } = await (supabase as any)
+        const { data: userLike } = await supabase
           .from('comment_likes')
           .select('id')
           .eq('comment_id', comment.id)
@@ -464,7 +464,7 @@ class PostsService {
 
       const userId = this.getCurrentUserId();
 
-      const { data: commentDataResult, error } = await (supabase as any)
+      const { data: commentDataResult, error } = await supabase
         .from('story_comments')
         .insert({
           user_id: userId,

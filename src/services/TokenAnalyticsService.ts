@@ -94,7 +94,7 @@ export class TokenAnalyticsService {
         userStatsResult
       ] = await Promise.allSettled([
         // Obtener analytics más recientes
-        (supabase as any)
+        supabase
           .from('token_analytics')
           .select('*')
           .order('created_at', { ascending: false })
@@ -102,7 +102,7 @@ export class TokenAnalyticsService {
           .single(),
         
         // Obtener balances totales de usuarios
-        supabase
+        (supabase as any)
           .from('user_token_balances')
           .select('cmpx_balance, gtk_balance')
           .not('cmpx_balance', 'is', null)
@@ -195,7 +195,7 @@ export class TokenAnalyticsService {
       }
 
       // Obtener usuarios activos (aproximación)
-      const activeUsersResult = await (supabase as any)
+      const activeUsersResult = await supabase
         .from('profiles')
         .select('id')
         .not('last_seen', 'is', null)

@@ -106,7 +106,7 @@ class CoupleProfilesService {
     try {
       logger.info('Fetching couple profiles from Supabase', { page, limit, filters });
 
-      let query = (supabase as any)
+      let query = supabase
         .from('couple_profiles')
         .select(`
           id,
@@ -188,18 +188,18 @@ class CoupleProfilesService {
     try {
       logger.info('Creating couple profile in Supabase', { profileData });
 
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('couple_profiles')
         .insert({
-          couple_name: profileData.couple_name,
-          couple_bio: profileData.couple_bio,
-          relationship_type: profileData.relationship_type,
-          partner1_id: profileData.partner1_id,
-          partner2_id: profileData.partner2_id,
-          couple_images: profileData.couple_images || [],
-          preferences: profileData.preferences || {},
-          is_verified: false,
-          is_premium: false
+        couple_name: profileData.couple_name,
+        couple_bio: profileData.couple_bio || null,
+        relationship_type: profileData.relationship_type as "man-woman" | "man-man" | "woman-woman",
+        partner1_id: profileData.partner1_id,
+        partner2_id: profileData.partner2_id || null,
+        couple_images: profileData.couple_images || [],
+        preferences: profileData.preferences || {},
+        is_verified: false,
+        is_premium: false
         })
         .select(`
           id,
@@ -255,7 +255,7 @@ class CoupleProfilesService {
       const userId = this.getCurrentUserId();
 
       // Verificar si ya existe un like
-      const { data: existingLike, error: checkError } = await (supabase as any)
+      const { data: existingLike, error: checkError } = await supabase
         .from('couple_profile_likes')
         .select('id')
         .eq('couple_profile_id', profileId)
@@ -269,7 +269,7 @@ class CoupleProfilesService {
 
       if (existingLike) {
         // Quitar like
-        const { error: deleteError } = await (supabase as any)
+        const { error: deleteError } = await supabase
           .from('couple_profile_likes')
           .delete()
           .eq('couple_profile_id', profileId)
@@ -284,7 +284,7 @@ class CoupleProfilesService {
         return true;
       } else {
         // Agregar like
-        const { error: insertError } = await (supabase as any)
+        const { error: insertError } = await supabase
           .from('couple_profile_likes')
           .insert({
             couple_profile_id: profileId,
@@ -314,7 +314,7 @@ class CoupleProfilesService {
 
       const userId = this.getCurrentUserId();
 
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('couple_profile_views')
         .insert({
           couple_profile_id: profileId,
@@ -344,7 +344,7 @@ class CoupleProfilesService {
 
       const userId = this.getCurrentUserId();
 
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('couple_profile_reports')
         .insert({
           couple_profile_id: profileId,
@@ -386,13 +386,13 @@ class CoupleProfilesService {
         viewsResult,
         likesResult
       ] = await Promise.allSettled([
-        (supabase as any)
+        supabase
           .from('couple_profiles')
           .select('relationship_type, is_verified, is_premium'),
-        (supabase as any)
+        supabase
           .from('couple_profile_views')
           .select('id', { count: 'exact' }),
-        (supabase as any)
+        supabase
           .from('couple_profile_likes')
           .select('id', { count: 'exact' })
       ]);

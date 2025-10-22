@@ -96,7 +96,7 @@ class ReferralTokensService {
       }
 
       logger.info('✅ Referral code generated successfully', { code: data });
-      return data || `REF${userId.slice(-8).toUpperCase()}`;
+        return String(data) || `REF${userId.slice(-8).toUpperCase()}`;
     } catch (error) {
       logger.error('Error in generateReferralCode:', { error: String(error) });
       return `REF${userId.slice(-8).toUpperCase()}`;
@@ -110,7 +110,7 @@ class ReferralTokensService {
     try {
       logger.info('Getting user referral balance from Supabase', { userId });
 
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('user_referral_balances')
         .select('*')
         .eq('user_id', userId)
@@ -120,7 +120,7 @@ class ReferralTokensService {
         if (error.code === 'PGRST116') { // No rows found
           // Crear balance inicial si no existe
           const referralCode = await this.generateReferralCode(userId);
-          const { data: newBalance, error: createError } = await (supabase as any)
+          const { data: newBalance, error: createError } = await supabase
             .from('user_referral_balances')
             .insert({
               user_id: userId,
@@ -160,7 +160,7 @@ class ReferralTokensService {
     try {
       logger.info('Creating referral reward in Supabase', { rewardData });
 
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('referral_rewards')
         .insert({
           referrer_id: rewardData.referrer_id,
@@ -192,7 +192,7 @@ class ReferralTokensService {
     try {
       logger.info('Confirming referral reward in Supabase', { rewardId });
 
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('referral_rewards')
         .update({
           status: 'confirmed',
@@ -224,7 +224,7 @@ class ReferralTokensService {
     try {
       logger.info('Getting user referral transactions from Supabase', { userId, page, limit });
 
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('referral_transactions')
         .select('*')
         .eq('user_id', userId)
@@ -251,7 +251,7 @@ class ReferralTokensService {
     try {
       logger.info('Getting referral statistics from Supabase', { userId });
 
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('referral_statistics')
         .select('*')
         .eq('user_id', userId)
@@ -263,7 +263,7 @@ class ReferralTokensService {
           const balance = await this.getUserReferralBalance(userId);
           if (!balance) return null;
 
-          const { data: newStats, error: createError } = await (supabase as any)
+          const { data: newStats, error: createError } = await supabase
             .from('referral_statistics')
             .insert({
               user_id: userId,
@@ -310,7 +310,7 @@ class ReferralTokensService {
     try {
       logger.info('Getting referral leaderboard from Supabase', { limit });
 
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('referral_leaderboard')
         .select('*')
         .limit(limit);
@@ -343,7 +343,7 @@ class ReferralTokensService {
       logger.info('Processing referral in Supabase', { referralCode, newUserId });
 
       // Buscar el usuario que tiene el código de referido
-      const { data: referrerBalance, error: balanceError } = await (supabase as any)
+      const { data: referrerBalance, error: balanceError } = await supabase
         .from('user_referral_balances')
         .select('user_id')
         .eq('referral_code', referralCode)

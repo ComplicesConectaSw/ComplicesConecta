@@ -180,7 +180,7 @@ class SecurityService {
       };
       
       // Guardar en base de datos real
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('two_factor_auth')
         .upsert({
           user_id: userId,
@@ -223,7 +223,7 @@ class SecurityService {
   }> {
     try {
       // Obtener configuración 2FA del usuario
-      const { data: settings, error } = await (supabase as any)
+      const { data: settings, error } = await supabase
         .from('two_factor_auth')
         .select('*')
         .eq('user_id', userId)
@@ -365,7 +365,7 @@ class SecurityService {
     try {
       const riskScore = await this.calculateEventRiskScore(action, details);
       
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('audit_logs')
         .insert({
           user_id: userId,
