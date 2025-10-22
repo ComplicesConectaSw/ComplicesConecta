@@ -163,7 +163,7 @@ class PostsService {
     try {
       logger.info('Fetching feed posts from Supabase', { page, limit });
       
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('stories')
         .select(`
           id,
@@ -174,14 +174,7 @@ class PostsService {
           location,
           views_count,
           created_at,
-          updated_at,
-          profiles!stories_user_id_fkey (
-            id,
-            first_name,
-            last_name,
-            avatar_url,
-            is_verified
-          )
+          updated_at
         `)
         .eq('is_public', true)
         .order('created_at', { ascending: false })
@@ -193,10 +186,10 @@ class PostsService {
       }
 
       // Mapear datos de Supabase al formato esperado
-      const posts: Post[] = (data || []).map(story => ({
+      const posts: Post[] = (data || []).map((story: any) => ({
         id: story.id,
         user_id: story.user_id,
-        profile_id: story.profiles?.id || story.user_id,
+        profile_id: story.user_id,
         content: story.content || '',
         post_type: story.post_type as 'text' | 'photo' | 'video',
         image_url: story.media_urls?.[0] || undefined,
@@ -207,12 +200,7 @@ class PostsService {
         shares_count: 0, // Se calculará desde story_shares
         created_at: story.created_at,
         updated_at: story.updated_at,
-        profile: story.profiles ? {
-          id: story.profiles.id,
-          name: `${story.profiles.first_name || ''} ${story.profiles.last_name || ''}`.trim() || 'Usuario',
-          avatar_url: story.profiles.avatar_url || undefined,
-          is_verified: story.profiles.is_verified || false
-        } : {
+        profile: {
           id: story.user_id,
           name: 'Usuario',
           avatar_url: undefined,
@@ -223,15 +211,15 @@ class PostsService {
       // Obtener conteos de interacciones para cada post
       for (const post of posts) {
         const [likesResult, commentsResult, sharesResult] = await Promise.allSettled([
-          supabase
+          (supabase as any)
             .from('story_likes')
             .select('id', { count: 'exact' })
             .eq('story_id', post.id),
-          supabase
+          (supabase as any)
             .from('story_comments')
             .select('id', { count: 'exact' })
             .eq('story_id', post.id),
-          supabase
+          (supabase as any)
             .from('story_shares')
             .select('id', { count: 'exact' })
             .eq('story_id', post.id)
@@ -266,13 +254,13 @@ class PostsService {
       const userId = this.getCurrentUserId();
       
       // Crear el story en Supabase
-      const { data: storyData, error: storyError } = await supabase
+      const { data: storyData, error: storyError } = await (supabase as any)
         .from('stories')
         .insert({
           user_id: userId,
           description: postData.content,
           content_type: postData.post_type,
-          media_urls: postData.image_url || postData.video_url ? [postData.image_url || postData.video_url] : null,
+          content_url: postData.image_url || postData.video_url || '',
           location: postData.location || null,
           is_public: true,
           views_count: 0
@@ -282,18 +270,11 @@ class PostsService {
           user_id,
           description as content,
           content_type as post_type,
-          media_urls,
+          content_url,
           location,
           views_count,
           created_at,
-          updated_at,
-          profiles!stories_user_id_fkey (
-            id,
-            first_name,
-            last_name,
-            avatar_url,
-            is_verified
-          )
+          updated_at
         `)
         .single();
 
@@ -306,23 +287,18 @@ class PostsService {
       const newPost: Post = {
         id: storyData.id,
         user_id: storyData.user_id,
-        profile_id: storyData.profiles?.id || storyData.user_id,
+        profile_id: storyData.user_id,
         content: storyData.content || '',
         post_type: storyData.post_type as 'text' | 'photo' | 'video',
-        image_url: storyData.media_urls?.[0] || undefined,
-        video_url: storyData.post_type === 'video' ? storyData.media_urls?.[0] : undefined,
+        image_url: storyData.content_url || undefined,
+        video_url: storyData.post_type === 'video' ? storyData.content_url : undefined,
         location: storyData.location || undefined,
         likes_count: 0,
         comments_count: 0,
         shares_count: 0,
         created_at: storyData.created_at,
         updated_at: storyData.updated_at,
-        profile: storyData.profiles ? {
-          id: storyData.profiles.id,
-          name: `${storyData.profiles.first_name || ''} ${storyData.profiles.last_name || ''}`.trim() || 'Usuario',
-          avatar_url: storyData.profiles.avatar_url || undefined,
-          is_verified: storyData.profiles.is_verified || false
-        } : {
+        profile: {
           id: storyData.user_id,
           name: 'Usuario',
           avatar_url: undefined,
@@ -348,7 +324,7 @@ class PostsService {
       const userId = this.getCurrentUserId();
       
       // Verificar si ya existe un like
-      const { data: existingLike, error: checkError } = await supabase
+      const { data: existingLike, error: checkError } = await (supabase as any)
         .from('story_likes')
         .select('id')
         .eq('story_id', postId)
@@ -362,7 +338,7 @@ class PostsService {
 
       if (existingLike) {
         // Quitar like
-        const { error: deleteError } = await supabase
+        const { error: deleteError } = await (supabase as any)
           .from('story_likes')
           .delete()
           .eq('story_id', postId)
@@ -377,7 +353,7 @@ class PostsService {
         return true;
       } else {
         // Agregar like
-        const { error: insertError } = await supabase
+        const { error: insertError } = await (supabase as any)
           .from('story_likes')
           .insert({
             story_id: postId,
@@ -422,23 +398,16 @@ class PostsService {
     try {
       logger.info('💬 Getting comments from Supabase', { postId, page, limit });
 
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('story_comments')
         .select(`
           id,
           user_id,
           story_id,
-          parent_comment_id,
-          content,
-          created_at,
-          profiles!story_comments_user_id_fkey (
-            first_name,
-            last_name,
-            avatar_url
-          )
+          comment,
+          created_at
         `)
         .eq('story_id', postId)
-        .is('parent_comment_id', null) // Solo comentarios principales
         .order('created_at', { ascending: false })
         .range(page * limit, (page + 1) * limit - 1);
 
@@ -450,14 +419,14 @@ class PostsService {
       // Obtener conteos de likes para cada comentario
       const comments: Comment[] = [];
       for (const comment of data || []) {
-        const { count: likesCount } = await supabase
+        const { count: likesCount } = await (supabase as any)
           .from('comment_likes')
           .select('id', { count: 'exact' })
           .eq('comment_id', comment.id);
 
         // Verificar si el usuario actual dio like
         const userId = this.getCurrentUserId();
-        const { data: userLike } = await supabase
+        const { data: userLike } = await (supabase as any)
           .from('comment_likes')
           .select('id')
           .eq('comment_id', comment.id)
@@ -467,16 +436,14 @@ class PostsService {
         comments.push({
           id: comment.id,
           user_id: comment.user_id,
-          profile_id: comment.profiles?.id || comment.user_id,
-          parent_comment_id: comment.parent_comment_id,
-          content: comment.content,
+          profile_id: comment.user_id,
+          parent_comment_id: undefined,
+          content: comment.comment,
           likes_count: likesCount || 0,
           created_at: comment.created_at,
           user_liked: !!userLike,
-          profile_name: comment.profiles ? 
-            `${comment.profiles.first_name || ''} ${comment.profiles.last_name || ''}`.trim() || 'Usuario' : 
-            'Usuario',
-          profile_avatar: comment.profiles?.avatar_url || undefined
+          profile_name: 'Usuario',
+          profile_avatar: undefined
         });
       }
 
@@ -497,26 +464,19 @@ class PostsService {
 
       const userId = this.getCurrentUserId();
 
-      const { data: commentDataResult, error } = await supabase
+      const { data: commentDataResult, error } = await (supabase as any)
         .from('story_comments')
         .insert({
           user_id: userId,
           story_id: commentData.post_id,
-          parent_comment_id: commentData.parent_comment_id || null,
-          content: commentData.content
+          comment: commentData.content
         })
         .select(`
           id,
           user_id,
           story_id,
-          parent_comment_id,
-          content,
-          created_at,
-          profiles!story_comments_user_id_fkey (
-            first_name,
-            last_name,
-            avatar_url
-          )
+          comment,
+          created_at
         `)
         .single();
 
@@ -528,16 +488,14 @@ class PostsService {
       const comment: Comment = {
         id: commentDataResult.id,
         user_id: commentDataResult.user_id,
-        profile_id: commentDataResult.profiles?.id || commentDataResult.user_id,
-        parent_comment_id: commentDataResult.parent_comment_id,
-        content: commentDataResult.content,
+        profile_id: commentDataResult.user_id,
+        parent_comment_id: undefined,
+        content: commentDataResult.comment,
         likes_count: 0,
         created_at: commentDataResult.created_at,
         user_liked: false,
-        profile_name: commentDataResult.profiles ? 
-          `${commentDataResult.profiles.first_name || ''} ${commentDataResult.profiles.last_name || ''}`.trim() || 'Usuario' : 
-          'Usuario',
-        profile_avatar: commentDataResult.profiles?.avatar_url || undefined
+        profile_name: 'Usuario',
+        profile_avatar: undefined
       };
 
       logger.info('✅ Comment created successfully in Supabase', { commentId: comment.id });
