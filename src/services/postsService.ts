@@ -157,21 +157,98 @@ class PostsService {
   }
 
   /**
-   * Obtener feed de posts del usuario
+   * Obtener feed de posts del usuario usando datos reales de Supabase
    */
   async getFeed(page = 0, limit = 20): Promise<Post[]> {
     try {
-      logger.info('Fetching feed posts (mock)', { page, limit });
+      logger.info('Fetching feed posts from Supabase', { page, limit });
       
-      // Simular delay de red
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      const allPosts = this.generateMockPosts(100);
-      const startIndex = page * limit;
-      const endIndex = startIndex + limit;
-      const posts = allPosts.slice(startIndex, endIndex);
+      const { data, error } = await supabase
+        .from('stories')
+        .select(`
+          id,
+          user_id,
+          description as content,
+          content_type as post_type,
+          media_urls,
+          location,
+          views_count,
+          created_at,
+          updated_at,
+          profiles!stories_user_id_fkey (
+            id,
+            first_name,
+            last_name,
+            avatar_url,
+            is_verified
+          )
+        `)
+        .eq('is_public', true)
+        .order('created_at', { ascending: false })
+        .range(page * limit, (page + 1) * limit - 1);
 
-      logger.info('✅ Feed posts loaded successfully (mock)', { count: posts.length });
+      if (error) {
+        logger.error('Error fetching feed from Supabase:', error);
+        return [];
+      }
+
+      // Mapear datos de Supabase al formato esperado
+      const posts: Post[] = (data || []).map(story => ({
+        id: story.id,
+        user_id: story.user_id,
+        profile_id: story.profiles?.id || story.user_id,
+        content: story.content || '',
+        post_type: story.post_type as 'text' | 'photo' | 'video',
+        image_url: story.media_urls?.[0] || undefined,
+        video_url: story.post_type === 'video' ? story.media_urls?.[0] : undefined,
+        location: story.location || undefined,
+        likes_count: 0, // Se calculará desde story_likes
+        comments_count: 0, // Se calculará desde story_comments
+        shares_count: 0, // Se calculará desde story_shares
+        created_at: story.created_at,
+        updated_at: story.updated_at,
+        profile: story.profiles ? {
+          id: story.profiles.id,
+          name: `${story.profiles.first_name || ''} ${story.profiles.last_name || ''}`.trim() || 'Usuario',
+          avatar_url: story.profiles.avatar_url || undefined,
+          is_verified: story.profiles.is_verified || false
+        } : {
+          id: story.user_id,
+          name: 'Usuario',
+          avatar_url: undefined,
+          is_verified: false
+        }
+      }));
+
+      // Obtener conteos de interacciones para cada post
+      for (const post of posts) {
+        const [likesResult, commentsResult, sharesResult] = await Promise.allSettled([
+          supabase
+            .from('story_likes')
+            .select('id', { count: 'exact' })
+            .eq('story_id', post.id),
+          supabase
+            .from('story_comments')
+            .select('id', { count: 'exact' })
+            .eq('story_id', post.id),
+          supabase
+            .from('story_shares')
+            .select('id', { count: 'exact' })
+            .eq('story_id', post.id)
+        ]);
+
+        if (likesResult.status === 'fulfilled' && likesResult.value.count !== null) {
+          post.likes_count = likesResult.value.count;
+        }
+        if (commentsResult.status === 'fulfilled' && commentsResult.value.count !== null) {
+          post.comments_count = commentsResult.value.count;
+        }
+        if (sharesResult.status === 'fulfilled' && sharesResult.value.count !== null) {
+          post.shares_count = sharesResult.value.count;
+        }
+      }
+
+      logger.info('✅ Feed posts loaded successfully from Supabase', { count: posts.length });
       return posts;
     } catch (error) {
       logger.error('Error in getFeed:', { error: String(error) });
@@ -180,38 +257,80 @@ class PostsService {
   }
 
   /**
-   * Crear nuevo post
+   * Crear nuevo post usando datos reales de Supabase
    */
   async createPost(postData: CreatePostData): Promise<Post | null> {
     try {
-      logger.info('Creating new post (mock)', { postData });
+      logger.info('Creating new post in Supabase', { postData });
       
-      // Simular delay de red
-      await new Promise(resolve => setTimeout(resolve, 300));
+      const userId = this.getCurrentUserId();
       
+      // Crear el story en Supabase
+      const { data: storyData, error: storyError } = await supabase
+        .from('stories')
+        .insert({
+          user_id: userId,
+          description: postData.content,
+          content_type: postData.post_type,
+          media_urls: postData.image_url || postData.video_url ? [postData.image_url || postData.video_url] : null,
+          location: postData.location || null,
+          is_public: true,
+          views_count: 0
+        })
+        .select(`
+          id,
+          user_id,
+          description as content,
+          content_type as post_type,
+          media_urls,
+          location,
+          views_count,
+          created_at,
+          updated_at,
+          profiles!stories_user_id_fkey (
+            id,
+            first_name,
+            last_name,
+            avatar_url,
+            is_verified
+          )
+        `)
+        .single();
+
+      if (storyError) {
+        logger.error('Error creating story in Supabase:', storyError);
+        return null;
+      }
+
+      // Mapear datos de Supabase al formato esperado
       const newPost: Post = {
-        id: `post-${Date.now()}`,
-        user_id: this.getCurrentUserId(),
-        profile_id: `profile-${this.getCurrentUserId()}`,
-        content: postData.content,
-        post_type: postData.post_type,
-        image_url: postData.image_url,
-        video_url: postData.video_url,
-        location: postData.location,
+        id: storyData.id,
+        user_id: storyData.user_id,
+        profile_id: storyData.profiles?.id || storyData.user_id,
+        content: storyData.content || '',
+        post_type: storyData.post_type as 'text' | 'photo' | 'video',
+        image_url: storyData.media_urls?.[0] || undefined,
+        video_url: storyData.post_type === 'video' ? storyData.media_urls?.[0] : undefined,
+        location: storyData.location || undefined,
         likes_count: 0,
         comments_count: 0,
         shares_count: 0,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        profile: {
-          id: `profile-${this.getCurrentUserId()}`,
-          name: 'Usuario Actual',
-          avatar_url: '/mock-avatars/current-user.jpg',
+        created_at: storyData.created_at,
+        updated_at: storyData.updated_at,
+        profile: storyData.profiles ? {
+          id: storyData.profiles.id,
+          name: `${storyData.profiles.first_name || ''} ${storyData.profiles.last_name || ''}`.trim() || 'Usuario',
+          avatar_url: storyData.profiles.avatar_url || undefined,
+          is_verified: storyData.profiles.is_verified || false
+        } : {
+          id: storyData.user_id,
+          name: 'Usuario',
+          avatar_url: undefined,
           is_verified: false
         }
       };
 
-      logger.info('✅ Post created successfully (mock)', { postId: newPost.id });
+      logger.info('✅ Post created successfully in Supabase', { postId: newPost.id });
       return newPost;
     } catch (error) {
       logger.error('Error in createPost:', { error: String(error) });
@@ -220,24 +339,58 @@ class PostsService {
   }
 
   /**
-   * Dar like a un post
+   * Dar like a un post usando datos reales de Supabase
    */
   async toggleLike(postId: string): Promise<boolean> {
     try {
-      logger.info('Toggling like for post (mock):', { postId });
+      logger.info('Toggling like for post in Supabase:', { postId });
       
-      // Simular delay de red
-      await new Promise(resolve => setTimeout(resolve, 200));
+      const userId = this.getCurrentUserId();
       
-      // Simular éxito aleatorio
-      const success = Math.random() > 0.1; // 90% éxito
-      
-      if (success) {
-        logger.info('✅ Like toggled successfully (mock)', { postId });
+      // Verificar si ya existe un like
+      const { data: existingLike, error: checkError } = await supabase
+        .from('story_likes')
+        .select('id')
+        .eq('story_id', postId)
+        .eq('user_id', userId)
+        .single();
+
+      if (checkError && checkError.code !== 'PGRST116') { // PGRST116 = no rows found
+        logger.error('Error checking existing like:', checkError);
+        return false;
+      }
+
+      if (existingLike) {
+        // Quitar like
+        const { error: deleteError } = await supabase
+          .from('story_likes')
+          .delete()
+          .eq('story_id', postId)
+          .eq('user_id', userId);
+
+        if (deleteError) {
+          logger.error('Error removing like:', deleteError);
+          return false;
+        }
+
+        logger.info('✅ Like removed successfully', { postId });
         return true;
       } else {
-        logger.warn('❌ Like toggle failed (mock)', { postId });
-        return false;
+        // Agregar like
+        const { error: insertError } = await supabase
+          .from('story_likes')
+          .insert({
+            story_id: postId,
+            user_id: userId
+          });
+
+        if (insertError) {
+          logger.error('Error adding like:', insertError);
+          return false;
+        }
+
+        logger.info('✅ Like added successfully', { postId });
+        return true;
       }
     } catch (error) {
       logger.error('Error in toggleLike:', { error: String(error) });
@@ -263,18 +416,71 @@ class PostsService {
   }
 
   /**
-   * Obtener comentarios de un post
+   * Obtener comentarios de un post usando datos reales de Supabase
    */
   async getComments(postId: string, page = 0, limit = 10): Promise<Comment[]> {
     try {
-      logger.info('💬 Getting comments (mock)', { postId, page, limit });
+      logger.info('💬 Getting comments from Supabase', { postId, page, limit });
 
-      // Simular delay de red
-      await new Promise(resolve => setTimeout(resolve, 300));
+      const { data, error } = await supabase
+        .from('story_comments')
+        .select(`
+          id,
+          user_id,
+          story_id,
+          parent_comment_id,
+          content,
+          created_at,
+          profiles!story_comments_user_id_fkey (
+            first_name,
+            last_name,
+            avatar_url
+          )
+        `)
+        .eq('story_id', postId)
+        .is('parent_comment_id', null) // Solo comentarios principales
+        .order('created_at', { ascending: false })
+        .range(page * limit, (page + 1) * limit - 1);
 
-      const comments = this.generateMockComments(postId, limit);
+      if (error) {
+        logger.error('❌ Error getting comments from Supabase:', error);
+        return [];
+      }
 
-      logger.info('✅ Comments loaded successfully (mock)', { count: comments.length });
+      // Obtener conteos de likes para cada comentario
+      const comments: Comment[] = [];
+      for (const comment of data || []) {
+        const { count: likesCount } = await supabase
+          .from('comment_likes')
+          .select('id', { count: 'exact' })
+          .eq('comment_id', comment.id);
+
+        // Verificar si el usuario actual dio like
+        const userId = this.getCurrentUserId();
+        const { data: userLike } = await supabase
+          .from('comment_likes')
+          .select('id')
+          .eq('comment_id', comment.id)
+          .eq('user_id', userId)
+          .single();
+
+        comments.push({
+          id: comment.id,
+          user_id: comment.user_id,
+          profile_id: comment.profiles?.id || comment.user_id,
+          parent_comment_id: comment.parent_comment_id,
+          content: comment.content,
+          likes_count: likesCount || 0,
+          created_at: comment.created_at,
+          user_liked: !!userLike,
+          profile_name: comment.profiles ? 
+            `${comment.profiles.first_name || ''} ${comment.profiles.last_name || ''}`.trim() || 'Usuario' : 
+            'Usuario',
+          profile_avatar: comment.profiles?.avatar_url || undefined
+        });
+      }
+
+      logger.info('✅ Comments loaded successfully from Supabase', { count: comments.length });
       return comments;
     } catch (error) {
       logger.error('❌ Error in getComments', { error: String(error) });
@@ -283,29 +489,58 @@ class PostsService {
   }
 
   /**
-   * Crear comentario en un post
+   * Crear comentario en un post usando datos reales de Supabase
    */
   async createComment(commentData: CreateCommentData): Promise<Comment> {
     try {
-      logger.info('💬 Creating comment (mock)', { commentData });
+      logger.info('💬 Creating comment in Supabase', { commentData });
 
-      // Simular delay de red
-      await new Promise(resolve => setTimeout(resolve, 300));
+      const userId = this.getCurrentUserId();
+
+      const { data: commentDataResult, error } = await supabase
+        .from('story_comments')
+        .insert({
+          user_id: userId,
+          story_id: commentData.post_id,
+          parent_comment_id: commentData.parent_comment_id || null,
+          content: commentData.content
+        })
+        .select(`
+          id,
+          user_id,
+          story_id,
+          parent_comment_id,
+          content,
+          created_at,
+          profiles!story_comments_user_id_fkey (
+            first_name,
+            last_name,
+            avatar_url
+          )
+        `)
+        .single();
+
+      if (error) {
+        logger.error('❌ Error creating comment in Supabase:', error);
+        throw new Error(error.message);
+      }
 
       const comment: Comment = {
-        id: `comment-${Date.now()}`,
-        user_id: this.getCurrentUserId(),
-        profile_id: `profile-${this.getCurrentUserId()}`,
-        parent_comment_id: commentData.parent_comment_id,
-        content: commentData.content,
+        id: commentDataResult.id,
+        user_id: commentDataResult.user_id,
+        profile_id: commentDataResult.profiles?.id || commentDataResult.user_id,
+        parent_comment_id: commentDataResult.parent_comment_id,
+        content: commentDataResult.content,
         likes_count: 0,
-        created_at: new Date().toISOString(),
+        created_at: commentDataResult.created_at,
         user_liked: false,
-        profile_name: 'Usuario Actual',
-        profile_avatar: '/mock-avatars/current-user.jpg'
+        profile_name: commentDataResult.profiles ? 
+          `${commentDataResult.profiles.first_name || ''} ${commentDataResult.profiles.last_name || ''}`.trim() || 'Usuario' : 
+          'Usuario',
+        profile_avatar: commentDataResult.profiles?.avatar_url || undefined
       };
 
-      logger.info('✅ Comment created successfully (mock)', { commentId: comment.id });
+      logger.info('✅ Comment created successfully in Supabase', { commentId: comment.id });
       return comment;
     } catch (error) {
       logger.error('❌ Error in createComment', { error: String(error) });

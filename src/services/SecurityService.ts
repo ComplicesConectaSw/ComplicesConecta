@@ -179,16 +179,15 @@ class SecurityService {
         isEnabled: false // Se habilitará después de verificación
       };
       
-      // Guardar en base de datos - usando casting para tabla no tipada
+      // Guardar en base de datos real
       const { error } = await (supabase as any)
-        .from('user_2fa_settings')
+        .from('two_factor_auth')
         .upsert({
           user_id: userId,
           method,
           secret: setup.secret,
           backup_codes: backupCodes,
-          is_enabled: false,
-          created_at: new Date().toISOString()
+          is_enabled: false
         });
       
       if (error) {
@@ -223,9 +222,9 @@ class SecurityService {
     error?: string;
   }> {
     try {
-      // Obtener configuración 2FA del usuario - usando casting para tabla no tipada
+      // Obtener configuración 2FA del usuario
       const { data: settings, error } = await (supabase as any)
-        .from('user_2fa_settings')
+        .from('two_factor_auth')
         .select('*')
         .eq('user_id', userId)
         .eq('is_enabled', true)
@@ -237,7 +236,7 @@ class SecurityService {
       
       // PLACEHOLDER: Verificación mock (en producción usar TOTP library)
       const isValidCode = this.mockVerifyTOTP('mock_secret', code);
-      const isBackupCode = settings?.backup_codes ? (settings as any).backup_codes.includes(code) : false;
+      const isBackupCode = (settings as any)?.backup_codes ? (settings as any).backup_codes.includes(code) : false;
       
       if (!isValidCode && !isBackupCode) {
         // Log intento fallido
@@ -250,10 +249,10 @@ class SecurityService {
       }
       
       // Si usó backup code, removerlo de la lista
-      if (isBackupCode && settings.backup_codes) {
-        const updatedCodes = settings.backup_codes.filter((c: string) => c !== code);
+      if (isBackupCode && (settings as any).backup_codes) {
+        const updatedCodes = (settings as any).backup_codes.filter((c: string) => c !== code);
         await (supabase as any)
-          .from('user_2fa_settings')
+          .from('two_factor_auth')
           .update({ backup_codes: updatedCodes })
           .eq('user_id', userId);
       }
@@ -354,7 +353,7 @@ class SecurityService {
   }
 
   /**
-   * Registra evento de seguridad en audit log
+   * Registra evento de seguridad en audit log usando datos reales de Supabase
    */
   async logSecurityEvent(
     userId: string,
@@ -366,7 +365,7 @@ class SecurityService {
     try {
       const riskScore = await this.calculateEventRiskScore(action, details);
       
-      await (supabase as any)
+      const { error } = await (supabase as any)
         .from('audit_logs')
         .insert({
           user_id: userId,
@@ -376,17 +375,19 @@ class SecurityService {
           request_data: details,
           ip_address: ipAddress || 'unknown',
           user_agent: userAgent || 'unknown',
-          fraud_score: riskScore,
-          created_at: new Date().toISOString()
+          fraud_score: riskScore
         });
         
+      if (error) {
+        console.error('Error logging security event to Supabase:', error);
+      }
     } catch (error) {
       console.error('Error logging security event:', error);
     }
   }
 
   /**
-   * Obtiene logs de auditoría de un usuario
+   * Obtiene logs de auditoría de un usuario usando datos reales de Supabase
    */
   async getAuditLogs(
     userId: string,
@@ -407,6 +408,7 @@ class SecurityService {
         .range(offset, offset + limit - 1);
       
       if (error) {
+        console.error('Error getting audit logs from Supabase:', error);
         return { success: false, error: error.message };
       }
       

@@ -85,33 +85,127 @@ export class TokenAnalyticsService {
 
   async generateCurrentMetrics(): Promise<MetricsResponse> {
     try {
-      // Mock implementation with realistic data
-      const mockMetrics: TokenMetrics = {
+      // Obtener métricas reales de las tablas de Supabase
+      const [
+        tokenAnalyticsResult,
+        userBalancesResult,
+        stakingResult,
+        transactionsResult,
+        userStatsResult
+      ] = await Promise.allSettled([
+        // Obtener analytics más recientes
+        (supabase as any)
+          .from('token_analytics')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .single(),
+        
+        // Obtener balances totales de usuarios
+        supabase
+          .from('user_token_balances')
+          .select('cmpx_balance, gtk_balance')
+          .not('cmpx_balance', 'is', null)
+          .not('gtk_balance', 'is', null),
+        
+        // Obtener métricas de staking
+        (supabase as any)
+          .from('staking_records')
+          .select('amount, staking_duration as duration, created_at')
+          .eq('is_active', true),
+        
+        // Obtener transacciones recientes
+        (supabase as any)
+          .from('token_transactions')
+          .select('amount, token_type, created_at')
+          .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()),
+        
+        // Obtener estadísticas de usuarios
+        supabase
+          .from('profiles')
+          .select('created_at')
+          .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
+      ]);
+
+      // Procesar resultados y calcular métricas
+      const metrics: TokenMetrics = {
         totalSupply: {
-          cmpx: 1000000,
-          gtk: 5000000
+          cmpx: 1000000, // Supply fijo para CMPX
+          gtk: 5000000   // Supply fijo para GTK
         },
         circulatingSupply: {
-          cmpx: 750000,
-          gtk: 3750000
+          cmpx: 0,
+          gtk: 0
         },
         transactionVolume: {
-          cmpx: 50000,
-          gtk: 250000,
-          count: 1250
+          cmpx: 0,
+          gtk: 0,
+          count: 0
         },
         stakingMetrics: {
-          totalStaked: 200000,
-          activeStakers: 150,
-          avgDuration: 30
+          totalStaked: 0,
+          activeStakers: 0,
+          avgDuration: 0
         },
         userMetrics: {
-          activeUsers: 500,
-          newUsers: 25
+          activeUsers: 0,
+          newUsers: 0
         }
       };
 
-      return { success: true, metrics: mockMetrics };
+      // Calcular circulating supply desde balances de usuarios
+      if (userBalancesResult.status === 'fulfilled' && userBalancesResult.value.data) {
+        const balances = userBalancesResult.value.data;
+        metrics.circulatingSupply.cmpx = balances.reduce((sum, balance) => 
+          sum + (balance.cmpx_balance || 0), 0);
+        metrics.circulatingSupply.gtk = balances.reduce((sum, balance) => 
+          sum + (balance.gtk_balance || 0), 0);
+      }
+
+      // Calcular métricas de staking
+      if (stakingResult.status === 'fulfilled' && stakingResult.value.data) {
+        const stakingRecords = stakingResult.value.data;
+        metrics.stakingMetrics.totalStaked = stakingRecords.reduce((sum: number, record: any) => 
+          sum + (record.amount || 0), 0);
+        metrics.stakingMetrics.activeStakers = stakingRecords.length;
+        
+        if (stakingRecords.length > 0) {
+          metrics.stakingMetrics.avgDuration = stakingRecords.reduce((sum: number, record: any) => 
+            sum + (record.duration || 0), 0) / stakingRecords.length;
+        }
+      }
+
+      // Calcular volumen de transacciones
+      if (transactionsResult.status === 'fulfilled' && transactionsResult.value.data) {
+        const transactions = transactionsResult.value.data;
+        metrics.transactionVolume.count = transactions.length;
+        
+        transactions.forEach((transaction: any) => {
+          if (transaction.token_type === 'cmpx') {
+            metrics.transactionVolume.cmpx += transaction.amount || 0;
+          } else if (transaction.token_type === 'gtk') {
+            metrics.transactionVolume.gtk += transaction.amount || 0;
+          }
+        });
+      }
+
+      // Calcular métricas de usuarios
+      if (userStatsResult.status === 'fulfilled' && userStatsResult.value.data) {
+        metrics.userMetrics.newUsers = userStatsResult.value.data.length;
+      }
+
+      // Obtener usuarios activos (aproximación)
+      const activeUsersResult = await supabase
+        .from('profiles')
+        .select('id')
+        .not('last_seen', 'is', null)
+        .gte('last_seen', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString());
+      
+      if (activeUsersResult.data) {
+        metrics.userMetrics.activeUsers = activeUsersResult.data.length;
+      }
+
+      return { success: true, metrics };
     } catch (error) {
       console.error('Error generating metrics:', error);
       return { success: false, error: String(error) };
@@ -125,9 +219,7 @@ export class TokenAnalyticsService {
     metrics: TokenMetrics
   ): Promise<AnalyticsResponse> {
     try {
-      // Mock implementation since token_analytics table doesn't exist
-      const analyticsData: TokenAnalytics = {
-        id: crypto.randomUUID(),
+      const analyticsData = {
         period_type: periodType,
         period_start: periodStart.toISOString(),
         period_end: periodEnd.toISOString(),
@@ -144,17 +236,22 @@ export class TokenAnalyticsService {
           avgDuration: metrics.stakingMetrics.avgDuration,
           activeUsers: metrics.userMetrics.activeUsers,
           newUsers: metrics.userMetrics.newUsers
-        },
-        created_at: new Date().toISOString()
+        }
       };
 
-      // Store in localStorage as fallback
-      const existingData = localStorage.getItem('token_analytics') || '[]';
-      const data = JSON.parse(existingData);
-      data.push(analyticsData);
-      localStorage.setItem('token_analytics', JSON.stringify(data));
+      // Guardar en la base de datos real
+      const { data, error } = await (supabase as any)
+        .from('token_analytics')
+        .insert(analyticsData)
+        .select()
+        .single();
 
-      return { success: true, analytics: [analyticsData] };
+      if (error) {
+        console.error('Error saving analytics to database:', error);
+        return { success: false, error: error.message };
+      }
+
+      return { success: true, analytics: [data as any] };
     } catch (error) {
       console.error('Error in saveAnalytics:', error);
       return { success: false, error: String(error) };
@@ -166,18 +263,19 @@ export class TokenAnalyticsService {
     limit: number = 30
   ): Promise<AnalyticsResponse> {
     try {
-      // Mock implementation - return data from localStorage
-      const storedData = localStorage.getItem('token_analytics');
-      if (!storedData) {
-        return { success: true, analytics: [] };
+      const { data, error } = await (supabase as any)
+        .from('token_analytics')
+        .select('*')
+        .eq('period_type', periodType)
+        .order('created_at', { ascending: false })
+        .limit(limit);
+
+      if (error) {
+        console.error('Error getting historical analytics:', error);
+        return { success: false, error: error.message };
       }
 
-      const data = JSON.parse(storedData) as TokenAnalytics[];
-      const filteredData = data
-        .filter(item => item.period_type === periodType)
-        .slice(-limit);
-
-      return { success: true, analytics: filteredData };
+      return { success: true, analytics: (data || []) as TokenAnalytics[] };
     } catch (error) {
       console.error('Error getting historical analytics:', error);
       return { success: false, error: String(error) };
