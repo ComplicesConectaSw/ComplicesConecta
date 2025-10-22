@@ -195,7 +195,7 @@ export class TokenAnalyticsService {
       }
 
       // Obtener usuarios activos (aproximación)
-      const activeUsersResult = await supabase
+      const activeUsersResult = await (supabase as any)
         .from('profiles')
         .select('id')
         .not('last_seen', 'is', null)

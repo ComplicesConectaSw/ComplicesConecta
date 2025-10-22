@@ -211,11 +211,11 @@ class PostsService {
       // Obtener conteos de interacciones para cada post
       for (const post of posts) {
         const [likesResult, commentsResult, sharesResult] = await Promise.allSettled([
-          (supabase as any)
+          supabase
             .from('story_likes')
             .select('id', { count: 'exact' })
             .eq('story_id', post.id),
-          (supabase as any)
+          supabase
             .from('story_comments')
             .select('id', { count: 'exact' })
             .eq('story_id', post.id),
