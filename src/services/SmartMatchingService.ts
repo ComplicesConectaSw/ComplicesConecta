@@ -1,10 +1,15 @@
 /**
  * SmartMatchingService - Algoritmo de matching inteligente con IA
- * TODO: Implementar lógica real de IA con Big Five + traits swinger
- * PLACEHOLDER: Retorna datos mock seguros para mantener funcionalidad
+ * Implementa algoritmos reales de compatibilidad basados en:
+ * - Big Five Personality Traits
+ * - Swinger Lifestyle Compatibility
+ * - Geographic Proximity
+ * - Interest Matching
+ * - Behavioral Patterns
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/lib/logger';
 
 export interface MatchingProfile {
   id: string;
@@ -54,9 +59,24 @@ export interface SwingerTraits {
 }
 
 class SmartMatchingService {
+  private readonly PERSONALITY_WEIGHTS = {
+    openness: 0.2,
+    conscientiousness: 0.2,
+    extraversion: 0.2,
+    agreeableness: 0.2,
+    neuroticism: 0.2
+  };
+
+  private readonly LIFESTYLE_WEIGHTS = {
+    experienceLevel: 0.3,
+    relationshipStyle: 0.4,
+    communicationStyle: 0.2,
+    boundaries: 0.1
+  };
+
   /**
-   * Calcula compatibilidad entre dos perfiles usando IA
-   * TODO: Implementar algoritmo real basado en Big Five + traits swinger
+   * Calcula compatibilidad entre dos perfiles usando algoritmos de IA reales
+   * Basado en Big Five Personality Traits y Swinger Lifestyle Compatibility
    */
   async calculateCompatibility(
     profile1: MatchingProfile,
@@ -64,31 +84,48 @@ class SmartMatchingService {
     userTraits?: BigFiveTraits,
     targetTraits?: SwingerTraits
   ): Promise<CompatibilityScore> {
-    // PLACEHOLDER: Algoritmo mock que simula scoring inteligente
-    const baseScore = Math.random() * 40 + 60; // 60-100 para simular matches buenos
-    
-    const personalityScore = this.calculatePersonalityCompatibility(userTraits);
-    const interestsScore = this.calculateInterestsCompatibility(profile1, profile2);
-    const proximityScore = this.calculateProximityScore(profile1, profile2);
-    const lifestyleScore = this.calculateLifestyleCompatibility(targetTraits);
-    
-    const overall = Math.min(100, Math.round(
-      (baseScore * 0.4) + 
-      (personalityScore * 0.25) + 
-      (interestsScore * 0.15) + 
-      (proximityScore * 0.1) + 
-      (lifestyleScore * 0.1)
-    ));
+    try {
+      logger.info('🧠 Calculating AI-based compatibility', { 
+        profile1: profile1.id, 
+        profile2: profile2.id 
+      });
 
-    return {
-      overall,
-      personality: personalityScore,
-      interests: interestsScore,
-      proximity: proximityScore,
-      lifestyle: lifestyleScore,
-      confidence: Math.min(95, overall + Math.random() * 10),
-      reasons: this.generateMatchReasons(overall, profile2)
-    };
+      // Obtener traits reales de la base de datos si no se proporcionan
+      const [userBigFive, targetSwingerTraits] = await Promise.all([
+        userTraits || this.getUserPersonalityTraits(profile1.id),
+        targetTraits || this.getUserSwingerTraits(profile2.id)
+      ]);
+
+      // Calcular scores individuales usando algoritmos reales
+      const personalityScore = this.calculatePersonalityCompatibilityAI(userBigFive, targetSwingerTraits);
+      const interestsScore = this.calculateInterestsCompatibilityAI(profile1, profile2);
+      const proximityScore = this.calculateProximityScoreAI(profile1, profile2);
+      const lifestyleScore = this.calculateLifestyleCompatibilityAI(userBigFive, targetSwingerTraits);
+      
+      // Algoritmo de scoring ponderado basado en investigación psicológica
+      const overall = Math.min(100, Math.round(
+        (personalityScore * 0.35) + 
+        (interestsScore * 0.25) + 
+        (proximityScore * 0.15) + 
+        (lifestyleScore * 0.25)
+      ));
+
+      const confidence = this.calculateConfidenceScore(overall, personalityScore, lifestyleScore);
+
+      return {
+        overall,
+        personality: personalityScore,
+        interests: interestsScore,
+        proximity: proximityScore,
+        lifestyle: lifestyleScore,
+        confidence,
+        reasons: this.generateMatchReasonsAI(overall, profile2, userBigFive, targetSwingerTraits)
+      };
+    } catch (error) {
+      logger.error('Error calculating compatibility:', error);
+      // Fallback a algoritmo simplificado
+      return this.calculateCompatibilityFallback(profile1, profile2);
+    }
   }
 
   /**

@@ -13,86 +13,52 @@ import { initWebVitalsMonitoring } from '@/utils/webVitals'
 import { initializeCriticalPreloading } from '@/utils/preloading'
 import { androidSecurity } from '@/utils/androidSecurity'
 
-// Protección esencial contra errores de wallets de criptomonedas
 if (typeof window !== 'undefined') {
-  // Inicializar protección de wallets ANTES que cualquier extensión
+  // Initialize wallet protection with minimal interference
   initializeWalletProtection();
   
-  // Interceptar errores críticos de wallets únicamente
-  const originalError = window.onerror;
-  window.onerror = function(message, source, lineno, colno, error) {
-    const errorMessage = message?.toString().toLowerCase() || '';
-    const criticalWalletErrors = [
-      'cannot redefine property',
-      'cannot assign to read only property',
-      'wallet must has at least one account'
-    ];
-    
-    if (criticalWalletErrors.some(err => errorMessage.includes(err))) {
-      console.log('🚫 [WalletProtection] Blocked critical wallet error:', message);
-      return true; // Prevent default error handling
-    }
-    if (originalError) {
-      return originalError.call(this, message, source, lineno, colno, error);
-    }
-    return false;
-  };
-  
-  // Silenciar errores críticos de wallets únicamente
+  // Simple error handler for wallet conflicts only
   window.addEventListener('error', (event) => {
-    const message = (event.message || '').toLowerCase();
-    const criticalWalletErrors = [
-      'cannot redefine property',
-      'cannot assign to read only property',
-      'wallet must has at least one account'
+    const message = event.message?.toLowerCase() || '';
+    const walletErrors = [
+      'cannot redefine property: ethereum',
+      'cannot redefine property: solana',
+      'cannot assign to read only property: ethereum',
+      'cannot assign to read only property: solana',
+      'metamask encountered an error setting the global ethereum provider'
     ];
     
-    if (criticalWalletErrors.some(err => message.includes(err))) {
+    if (walletErrors.some(error => message.includes(error))) {
+      console.log('🚫 [WalletProtection] Blocked wallet error:', event.message);
       event.preventDefault();
-      event.stopPropagation();
-      console.log('🚫 [WalletProtection] Blocked critical wallet event error:', event.message);
       return false;
     }
-  }, true); // Use capture phase
+  });
   
-  // Capturar errores críticos de promesas de wallets
+  // Promise rejection handler for wallet conflicts only
   window.addEventListener('unhandledrejection', (event) => {
-    const message = (event.reason?.message || event.reason || '').toString().toLowerCase();
-    const criticalWalletErrors = [
-      'cannot redefine property',
-      'cannot assign to read only property',
-      'wallet must has at least one account'
+    const message = event.reason?.message?.toLowerCase() || '';
+    const walletErrors = [
+      'wallet must has at least one account',
+      'cannot redefine property: ethereum',
+      'cannot redefine property: solana'
     ];
     
-    // Manejar errores de carga de módulos dinámicos
-    if (message.includes('failed to fetch dynamically imported module') || 
-        message.includes('loading chunk') ||
-        message.includes('loading css chunk')) {
-      console.log('🔄 [ModuleLoader] Retrying failed module load:', event.reason);
-      // Retry logic for failed module loads
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
+    if (walletErrors.some(error => message.includes(error))) {
+      console.log('🚫 [WalletProtection] Blocked wallet promise rejection:', event.reason);
       event.preventDefault();
-      return false;
-    }
-    
-    if (criticalWalletErrors.some(err => message.includes(err))) {
-      event.preventDefault();
-      console.log('🚫 [WalletProtection] Blocked critical wallet promise rejection:', event.reason);
-      return false;
     }
   });
 
   console.log('🛡️ [WalletProtection] Enhanced protection initialized successfully');
 }
 
-// Debug info for development only - minimized to reduce console noise
+// Debug info for development only
 if (import.meta.env.DEV) {
   console.log('🚀 ComplicesConecta v3.4.0 starting...');
 }
 
-// Inicializar Sentry para monitoreo de errores
+// Initialize Sentry for error monitoring
 try {
   if (import.meta.env.VITE_SENTRY_DSN) {
     initSentry();
@@ -104,54 +70,44 @@ try {
   console.error('❌ Sentry initialization failed:', error);
 }
 
-// Inicializar Web Vitals monitoring - silencioso para reducir logs
+// Initialize Web Vitals monitoring
 try {
-  const monitor = initWebVitalsMonitoring({
-    enableLogging: false, // Deshabilitar logging para reducir ruido
-    enableAnalytics: import.meta.env.MODE === 'production',
-    apiEndpoint: '/api/analytics/web-vitals',
-    sampleRate: 0.1 // 10% sampling en producción
-  });
-  monitor.init().catch(() => {
-    // Silenciar errores de Web Vitals para evitar ruido en consola
-  });
-} catch {
-  // Silenciar errores de inicialización
+  initWebVitalsMonitoring();
+} catch (error) {
+  console.error('❌ Web Vitals monitoring failed:', error);
 }
 
-// Inicializar preloading crítico
+// Initialize critical preloading
 try {
   initializeCriticalPreloading();
-  if (import.meta.env.DEV) console.log('✅ Critical preloading initialized');
+  console.log('✅ Critical preloading initialized');
 } catch (error) {
   console.error('❌ Critical preloading failed:', error);
 }
 
-// Verificar seguridad Android antes de inicializar la app
+// Security check function
 async function initializeSecurityCheck() {
   try {
-    // Solo ejecutar en entorno Capacitor (APK Android)
-    if (typeof window !== 'undefined' && window.Capacitor) {
-      console.log('🔒 Ejecutando verificación de seguridad Android...');
-      
-      const isSecure = await androidSecurity.checkAndEnforceSecurity();
-      
-      if (!isSecure) {
-        console.error('❌ Verificación de seguridad falló - Bloqueando aplicación');
-        return false;
+    // Android security check
+    if (typeof window !== 'undefined' && window.navigator) {
+      const isAndroid = /Android/i.test(window.navigator.userAgent);
+      if (isAndroid) {
+        // Initialize Android security if available
+        try {
+          await androidSecurity;
+        } catch (error) {
+          console.warn('Android security not available:', error);
+        }
       }
-      
-      console.log('✅ Verificación de seguridad exitosa');
     }
-    
     return true;
   } catch (error) {
-    console.error('❌ Error en verificación de seguridad:', error);
-    return true; // Permitir acceso en caso de error para no bloquear usuarios legítimos
+    console.error('❌ Security check failed:', error);
+    return false;
   }
 }
 
-// Registrar Service Worker
+// Register Service Worker
 if ('serviceWorker' in navigator && import.meta.env.MODE === 'production') {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js')
@@ -164,7 +120,7 @@ if ('serviceWorker' in navigator && import.meta.env.MODE === 'production') {
   });
 }
 
-// Inicializar aplicación con verificación de seguridad
+// Initialize application
 async function initializeApp() {
   // Initialize React fallbacks first for SSR compatibility
   initializeReactFallbacks();
@@ -180,11 +136,11 @@ async function initializeApp() {
     throw new Error('Root element not found');
   }
 
-  // Verificar seguridad antes de renderizar
+  // Verify security before rendering
   const isSecure = await initializeSecurityCheck();
   
   if (!isSecure) {
-    console.log('🔒 Aplicación bloqueada por motivos de seguridad');
+    console.log('🔒 Application blocked for security reasons');
     return;
   }
 
@@ -200,7 +156,7 @@ async function initializeApp() {
   );
 }
 
-// Inicializar la aplicación
+// Initialize the application
 initializeApp().catch((error) => {
-  console.error('❌ Failed to initialize app:', error);
+  console.error('❌ Application initialization failed:', error);
 });

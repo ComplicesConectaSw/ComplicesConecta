@@ -68,6 +68,7 @@ export const MainProfileCard = ({
   const navigate = useNavigate();
   const { toast } = useToast();
   const [_imageError, setImageError] = useState(false);
+  const [currentImageSrc, setCurrentImageSrc] = useState(image);
 
   // Configurar géneros para el hook de tema
   const genders: Gender[] = accountType === 'couple' && partnerGender 
@@ -114,16 +115,32 @@ export const MainProfileCard = ({
     >
       {/* Image Container */}
       <div className="relative aspect-[3/4] overflow-hidden">
-        {!_imageError && image && image.startsWith('http') ? (
+        {!_imageError && currentImageSrc && currentImageSrc.startsWith('http') ? (
           <img 
-            src={image} 
+            src={currentImageSrc} 
             alt={name}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             onError={() => {
-              logger.error('Error loading image:', { image });
-              setImageError(true);
+              logger.warn('Image failed to load, trying fallback:', { image: currentImageSrc });
+              // Intentar con imagen de respaldo
+              const fallbackImages = [
+                'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=500&h=700&fit=crop&crop=face&q=80&auto=format',
+                'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=500&h=700&fit=crop&crop=face&q=80&auto=format',
+                'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=500&h=700&fit=crop&crop=face&q=80&auto=format'
+              ];
+              
+              const currentIndex = fallbackImages.indexOf(currentImageSrc);
+              const nextIndex = (currentIndex + 1) % fallbackImages.length;
+              
+              if (currentIndex === -1 || nextIndex === 0) {
+                // Si no es una imagen de respaldo o ya probamos todas, usar fallback visual
+                setImageError(true);
+              } else {
+                // Intentar con la siguiente imagen de respaldo
+                setCurrentImageSrc(fallbackImages[nextIndex]);
+              }
             }}
-            onLoad={() => logger.info('Image loaded successfully:', { image })}
+            onLoad={() => logger.info('Image loaded successfully:', { image: currentImageSrc })}
           />
         ) : (
           <div className={cn(

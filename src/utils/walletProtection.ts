@@ -12,24 +12,37 @@ export const initializeWalletProtection = () => {
   // Store original methods
   const originalDefineProperty = Object.defineProperty;
   const originalSetProperty = Object.setPrototypeOf;
+  
+  // Only suppress wallet-specific errors, not all errors
   const originalConsoleError = console.error;
   const originalConsoleWarn = console.warn;
   
-  // Enhanced error suppression
+  // Enhanced error suppression - ONLY for wallet conflicts
   console.error = function(...args: any[]) {
     const message = args.join(' ').toLowerCase();
     const walletErrors = [
-      'cannot redefine property',
-      'cannot assign to read only property',
-      'solana',
-      'ethereum', 
-      'tronweb',
-      'bybit',
-      'metamask',
+      'cannot redefine property: ethereum',
+      'cannot redefine property: solana',
+      'cannot assign to read only property: ethereum',
+      'cannot assign to read only property: solana',
       'wallet must has at least one account',
-      'chainid',
-      'provider inject'
+      'metamask encountered an error setting the global ethereum provider',
+      'tronweb is already initiated',
+      'bybit:page provider inject code'
     ];
+    
+    // NO suprimir errores de imágenes - estos son importantes para la funcionalidad
+    const imageErrors = [
+      'error loading image',
+      'image load failed',
+      'failed to load image'
+    ];
+    
+    if (imageErrors.some(error => message.includes(error))) {
+      // Permitir que los errores de imágenes se muestren normalmente
+      originalConsoleError.apply(console, args);
+      return;
+    }
     
     if (walletErrors.some(error => message.includes(error))) {
       console.log('[WalletProtection] Suppressed wallet error:', args[0]);
@@ -41,13 +54,8 @@ export const initializeWalletProtection = () => {
   console.warn = function(...args: any[]) {
     const message = args.join(' ').toLowerCase();
     const walletWarnings = [
-      'solana',
-      'ethereum',
-      'tronweb', 
-      'bybit',
-      'metamask',
-      'wallet',
-      'provider'
+      'tronweb is already initiated',
+      'bybit:page provider inject code'
     ];
     
     if (walletWarnings.some(warning => message.includes(warning))) {
@@ -57,25 +65,29 @@ export const initializeWalletProtection = () => {
     originalConsoleWarn.apply(console, args);
   };
   
-  // Override Object.defineProperty with enhanced protection
+  // Override Object.defineProperty with SELECTIVE protection
   Object.defineProperty = function(obj: any, prop: string, descriptor: PropertyDescriptor) {
-    const walletProps = ['ethereum', 'solana', 'tronWeb', 'bybitWallet', 'chainId'];
+    const walletProps = ['ethereum', 'solana', 'tronWeb', 'bybitWallet'];
     
-    if (walletProps.includes(prop)) {
-      // Always block wallet property redefinition
+    // Only block if it's trying to redefine an existing wallet property
+    if (walletProps.includes(prop) && obj === window && window[prop as keyof Window]) {
       console.log(`[WalletProtection] Blocked ${prop} redefinition`);
       return obj;
     }
     
     try {
       return originalDefineProperty.call(this, obj, prop, descriptor);
-    } catch {
-      console.log(`[WalletProtection] Property definition blocked for ${prop}`);
-      return obj;
+    } catch (error) {
+      // Only suppress wallet-related property errors
+      if (walletProps.includes(prop)) {
+        console.log(`[WalletProtection] Property definition blocked for ${prop}`);
+        return obj;
+      }
+      throw error; // Re-throw non-wallet errors
     }
   };
   
-  // Override Object.setPrototypeOf
+  // Override Object.setPrototypeOf - ONLY for window
   Object.setPrototypeOf = function(obj: any, proto: any) {
     if (obj === window) {
       console.log('[WalletProtection] Blocked window prototype modification');
@@ -84,15 +96,15 @@ export const initializeWalletProtection = () => {
     return originalSetProperty.call(this, obj, proto);
   };
   
-  // Freeze and protect critical window properties
+  // Protect critical window properties WITHOUT freezing them completely
   const criticalProps = ['ethereum', 'solana', 'tronWeb', 'bybitWallet'];
   criticalProps.forEach(prop => {
     try {
       if (window[prop as keyof Window]) {
-        Object.freeze(window[prop as keyof Window]);
+        // Make configurable but not writable to prevent redefinition
         Object.defineProperty(window, prop, {
           writable: false,
-          configurable: false,
+          configurable: true, // Allow reconfiguration if needed
           enumerable: true
         });
         console.log(`[WalletProtection] Protected window.${prop}`);
@@ -102,17 +114,15 @@ export const initializeWalletProtection = () => {
     }
   });
   
-  // Global error handler for uncaught errors
+  // Global error handler for uncaught errors - ONLY wallet-specific
   window.addEventListener('error', (event) => {
     const message = event.message?.toLowerCase() || '';
     const walletErrors = [
-      'cannot redefine property',
-      'cannot assign to read only property',
-      'solana',
-      'ethereum',
-      'tronweb',
-      'bybit',
-      'metamask'
+      'cannot redefine property: ethereum',
+      'cannot redefine property: solana',
+      'cannot assign to read only property: ethereum',
+      'cannot assign to read only property: solana',
+      'metamask encountered an error setting the global ethereum provider'
     ];
     
     if (walletErrors.some(error => message.includes(error))) {
@@ -122,15 +132,13 @@ export const initializeWalletProtection = () => {
     }
   });
   
-  // Promise rejection handler
+  // Promise rejection handler - ONLY wallet-specific
   window.addEventListener('unhandledrejection', (event) => {
     const message = event.reason?.message?.toLowerCase() || '';
     const walletErrors = [
       'wallet must has at least one account',
-      'chainid',
-      'provider',
-      'solana',
-      'ethereum'
+      'cannot redefine property: ethereum',
+      'cannot redefine property: solana'
     ];
     
     if (walletErrors.some(error => message.includes(error))) {
