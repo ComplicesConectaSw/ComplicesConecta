@@ -6,7 +6,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { contentModerationService } from '@/services/ContentModerationService';
 import {
   Shield, CheckCircle, XCircle, Eye, 
   FileText, Clock, Zap

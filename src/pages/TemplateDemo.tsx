@@ -8,7 +8,7 @@ import { TemplateIntegrator } from '@/components/ui/TemplateIntegrator';
 import { ChatTemplate } from '@/components/templates/ChatTemplate';
 import { ButtonEffectsTemplate } from '@/components/templates/ButtonEffectsTemplate';
 import { useProfileTheme } from '@/hooks/useProfileTheme';
-import { Gender, ProfileType, Theme } from '@/types/theme';
+import { ProfileType, Theme } from '@/types/theme';
 import HeaderNav from '@/components/HeaderNav';
 import { 
   Palette, 

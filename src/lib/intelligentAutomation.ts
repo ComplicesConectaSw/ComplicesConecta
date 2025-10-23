@@ -1,6 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
-import type { Database } from '@/types/database';
 import { NotificationService } from '@/lib/notifications';
 
 export interface AutomationRule {

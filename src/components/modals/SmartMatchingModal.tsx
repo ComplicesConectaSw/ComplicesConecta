@@ -6,7 +6,6 @@ import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { smartMatchingService } from '@/services/SmartMatchingService';
 import {
   Heart, Users, TrendingUp, Zap, RefreshCw, 
   User, MapPin, Calendar, Star

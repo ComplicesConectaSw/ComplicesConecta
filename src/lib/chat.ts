@@ -9,7 +9,6 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
-import type { Database } from '@/types/database';
 import { logger } from '@/lib/logger';
 
 // Helper function to get current user ID

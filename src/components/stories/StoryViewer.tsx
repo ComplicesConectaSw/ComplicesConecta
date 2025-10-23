@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useToast } from '@/hooks/use-toast';
 import { 
   Heart, 
   MessageCircle, 
@@ -34,6 +35,7 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({
   const [newComment, setNewComment] = useState('');
   const [isSubmittingComment, setIsSubmittingComment] = useState(false);
   const [progress, setProgress] = useState(0);
+  const { toast } = useToast();
 
   const isDemoMode = localStorage.getItem('demo_authenticated') === 'true';
   const currentUserId = "1"; // Usuario demo
@@ -135,7 +137,11 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({
         });
       } else {
         navigator.clipboard.writeText(shareUrl);
-        // TODO: Mostrar toast de "Link copiado"
+        toast({
+          title: "¡Enlace copiado!",
+          description: "El enlace de la historia se ha copiado al portapapeles",
+          duration: 3000,
+        });
       }
     }
   };
