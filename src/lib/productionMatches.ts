@@ -78,7 +78,8 @@ const calculateCompatibility = (user1: Profile, user2: Profile): number => {
   
   // Puntuación base por perfiles verificados
   if (user2.is_verified) score += 15;
-  if (false) score += 15; // is_premium no existe en la tabla
+  // TODO: Implementar cuando is_premium esté disponible en la tabla profiles
+  // if (user2.is_premium) score += 15;
   
   return Math.min(score, 100);
 };
@@ -93,7 +94,8 @@ const getMatchReasons = (user1: Profile, user2: Profile): string[] => {
   }
   
   if (user2.is_verified) reasons.push('Perfil verificado');
-  if (false) reasons.push('Usuario premium'); // is_premium no existe en la tabla
+  // TODO: Implementar cuando is_premium esté disponible en la tabla profiles
+  // if (user2.is_premium) reasons.push('Usuario premium');
   
   // Usar bypass para propiedades faltantes
   const user1Gender = (user1 as any).gender;

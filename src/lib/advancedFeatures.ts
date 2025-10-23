@@ -155,13 +155,14 @@ export class AdvancedFeaturesService {
 
     // Location compatibility - usar valores por defecto ya que latitude/longitude no existen en la tabla
     let locationScore = 0.5; // Score por defecto
-    if (false) { // latitude/longitude no existen en la tabla profiles
-      locationScore = this.calculateLocationCompatibility(
-        '0,0',
-        '0,0',
-        config.filters.maxDistance
-      );
-    }
+    // TODO: Implementar cuando latitude/longitude estén disponibles en la tabla profiles
+    // if (user1.latitude && user1.longitude && user2.latitude && user2.longitude) {
+    //   locationScore = this.calculateLocationCompatibility(
+    //     `${user1.latitude},${user1.longitude}`,
+    //     `${user2.latitude},${user2.longitude}`,
+    //     config.filters.maxDistance
+    //   );
+    // }
     scores.location = locationScore;
     if (locationScore > 0.8) {
       reasons.push('Ubicaciones ideales para encuentros discretos');
@@ -416,9 +417,11 @@ export class AdvancedFeaturesService {
     }
 
     // Account type compatibility - account_type no existe en la tabla
-    if (true) { // Siempre compatible ya que account_type no existe
-      compatibility += 0.2;
-    }
+    // TODO: Implementar cuando account_type esté disponible en la tabla profiles
+    // if (user1.account_type === user2.account_type) {
+    //   compatibility += 0.2;
+    // }
+    compatibility += 0.2; // Siempre compatible por defecto
 
     return Math.min(1.0, compatibility);
   }
@@ -821,15 +824,16 @@ export class AdvancedFeaturesService {
       }
 
       // Add location-based starters - latitude/longitude no existen en la tabla
-      if (false) { // latitude/longitude no existen en la tabla profiles
-        starters.push({
-          id: crypto.randomUUID(),
-          category: 'interests',
-          text: '¿Conoces buenos lugares discretos para encuentros?',
-          context_tags: ['location', 'recommendations', 'discretion'],
-          success_rate: 0.70
-        });
-      }
+      // TODO: Implementar cuando latitude/longitude estén disponibles en la tabla profiles
+      // if (user.latitude && user.longitude && match.latitude && match.longitude) {
+      //   starters.push({
+      //     id: crypto.randomUUID(),
+      //     category: 'interests',
+      //     text: '¿Conoces buenos lugares discretos para encuentros?',
+      //     context_tags: ['location', 'recommendations', 'discretion'],
+      //     success_rate: 0.70
+      //   });
+      // }
 
       // Sort by success rate and return top starters
       return starters

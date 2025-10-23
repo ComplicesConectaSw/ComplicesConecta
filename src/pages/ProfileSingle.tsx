@@ -315,11 +315,12 @@ const ProfileSingle: React.FC = () => {
                       <CheckCircle className="w-6 h-6 text-white" />
                     </div>
                   )}
-                  {false && (
+                  {/* TODO: Implementar cuando is_premium esté disponible en la tabla profiles */}
+                  {/* {profile.is_premium && (
                     <div className="absolute -bottom-2 -right-2 bg-yellow-500 rounded-full p-1">
                       <Crown className="w-6 h-6 text-white" />
                     </div>
-                  )}
+                  )} */}
                 </div>
 
                 {/* Información básica */}
