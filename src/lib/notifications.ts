@@ -1,4 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/lib/logger';
 
 export interface CreateNotificationParams {
   userId: string;
@@ -37,13 +38,13 @@ export class NotificationService {
         .single();
 
       if (error) {
-        console.error('Error creating notification:', error);
+        logger.error('Error creating notification:', { error: error.message });
         return null;
       }
 
       return data?.id || null;
     } catch (error) {
-      console.error('Error in createNotification:', error);
+      logger.error('Error in createNotification:', { error: error instanceof Error ? error.message : String(error) });
       return null;
     }
   }
@@ -180,7 +181,7 @@ export class NotificationService {
         .single();
 
       if (error) {
-        console.error('Error getting user preferences:', error);
+        logger.error('Error getting user preferences:', { error: error.message });
         return {
           email_notifications: true,
           push_notifications: true,
@@ -212,7 +213,7 @@ export class NotificationService {
         timezone: 'America/Mexico_City'
       };
     } catch (error) {
-      console.error('Error in getUserPreferences:', error);
+      logger.error('Error in getUserPreferences:', { error: error instanceof Error ? error.message : String(error) });
       return {
         email_notifications: true,
         push_notifications: true,
@@ -251,13 +252,13 @@ export class NotificationService {
         .eq('user_id', userId);
 
       if (error) {
-        console.error('Error updating user preferences:', error);
+        logger.error('Error updating user preferences:', { error: error.message });
         return false;
       }
 
       return true;
     } catch (error) {
-      console.error('Error in updateUserPreferences:', error);
+      logger.error('Error in updateUserPreferences:', { error: error instanceof Error ? error.message : String(error) });
       return false;
     }
   }
@@ -277,13 +278,13 @@ export class NotificationService {
         .eq('user_id', userId);
 
       if (error) {
-        console.error('Error marking notification as read:', error);
+        logger.error('Error marking notification as read:', { error: error.message });
         return false;
       }
 
       return true;
     } catch (error) {
-      console.error('Error in markAsRead:', error);
+      logger.error('Error in markAsRead:', { error: error instanceof Error ? error.message : String(error) });
       return false;
     }
   }
@@ -303,13 +304,13 @@ export class NotificationService {
         .eq('read', false);
 
       if (error) {
-        console.error('Error marking all notifications as read:', error);
+        logger.error('Error marking all notifications as read:', { error: error.message });
         return false;
       }
 
       return true;
     } catch (error) {
-      console.error('Error in markAllAsRead:', error);
+      logger.error('Error in markAllAsRead:', { error: error instanceof Error ? error.message : String(error) });
       return false;
     }
   }
@@ -325,13 +326,13 @@ export class NotificationService {
         .eq('id', notificationId);
 
       if (error) {
-        console.error('Error deleting notification:', error);
+        logger.error('Error deleting notification:', { error: error.message });
         return false;
       }
 
       return true;
     } catch (error) {
-      console.error('Error in deleteNotification:', error);
+      logger.error('Error in deleteNotification:', { error: error instanceof Error ? error.message : String(error) });
       return false;
     }
   }
@@ -349,7 +350,7 @@ export class NotificationService {
         .range(offset, offset + limit - 1);
 
       if (error) {
-        console.error('Error getting user notifications:', error);
+        logger.error('Error getting user notifications:', { error: error.message });
         return { notifications: [], total: 0 };
       }
 
@@ -358,7 +359,7 @@ export class NotificationService {
         total: (data || []).length
       };
     } catch (error) {
-      console.error('Error in getUserNotifications:', error);
+      logger.error('Error in getUserNotifications:', { error: error instanceof Error ? error.message : String(error) });
       return { notifications: [], total: 0 };
     }
   }
@@ -375,13 +376,13 @@ export class NotificationService {
         .eq('read', false);
 
       if (error) {
-        console.error('Error getting unread count:', error);
+        logger.error('Error getting unread count:', { error: error.message });
         return 0;
       }
 
       return count || 0;
     } catch (error) {
-      console.error('Error in getUnreadCount:', error);
+      logger.error('Error in getUnreadCount:', { error: error instanceof Error ? error.message : String(error) });
       return 0;
     }
   }

@@ -5,6 +5,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/lib/logger';
 
 export interface SecurityAnalysis {
   riskScore: number;
@@ -145,7 +146,7 @@ class SecurityService {
       };
       
     } catch (error) {
-      console.error('Error analyzing user activity:', error);
+      logger.error('Error analyzing user activity:', { error: error instanceof Error ? error.message : String(error) });
       return {
         riskScore: 0,
         riskLevel: 'low',
@@ -191,7 +192,7 @@ class SecurityService {
         });
       
       if (error) {
-        console.error('Error setting up 2FA:', error);
+        logger.error('Error setting up 2FA:', { error: error.message });
         return { success: false, error: error.message };
       }
       
@@ -205,7 +206,7 @@ class SecurityService {
       };
       
     } catch (error) {
-      console.error('Error setting up 2FA:', error);
+      logger.error('Error setting up 2FA:', { error: error instanceof Error ? error.message : String(error) });
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Error desconocido'
@@ -266,7 +267,7 @@ class SecurityService {
       return { success: true };
       
     } catch (error) {
-      console.error('Error verifying 2FA:', error);
+      logger.error('Error verifying 2FA:', { error: error instanceof Error ? error.message : String(error) });
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Error desconocido'
@@ -341,7 +342,7 @@ class SecurityService {
       };
       
     } catch (error) {
-      console.error('Error detecting fraud:', error);
+      logger.error('Error detecting fraud:', { error: error instanceof Error ? error.message : String(error) });
       return {
         isFraudulent: false,
         confidence: 0,
@@ -379,10 +380,10 @@ class SecurityService {
         });
         
       if (error) {
-        console.error('Error logging security event to Supabase:', error);
+        logger.error('Error logging security event to Supabase:', { error: error.message });
       }
     } catch (error) {
-      console.error('Error logging security event:', error);
+      logger.error('Error logging security event:', { error: error instanceof Error ? error.message : String(error) });
     }
   }
 
@@ -408,7 +409,7 @@ class SecurityService {
         .range(offset, offset + limit - 1);
       
       if (error) {
-        console.error('Error getting audit logs from Supabase:', error);
+        logger.error('Error getting audit logs from Supabase:', { error: error.message });
         return { success: false, error: error.message };
       }
       
@@ -432,7 +433,7 @@ class SecurityService {
       };
       
     } catch (error) {
-      console.error('Error getting audit logs:', error);
+      logger.error('Error getting audit logs:', { error: error instanceof Error ? error.message : String(error) });
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Error desconocido'

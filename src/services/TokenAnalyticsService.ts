@@ -1,4 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/lib/logger';
 
 export type PeriodType = 'hourly' | 'daily' | 'weekly' | 'monthly'
 
@@ -207,7 +208,7 @@ export class TokenAnalyticsService {
 
       return { success: true, metrics };
     } catch (error) {
-      console.error('Error generating metrics:', error);
+      logger.error('Error generating metrics:', { error: error instanceof Error ? error.message : String(error) });
       return { success: false, error: String(error) };
     }
   }
@@ -247,13 +248,13 @@ export class TokenAnalyticsService {
         .single();
 
       if (error) {
-        console.error('Error saving analytics to database:', error);
+        logger.error('Error saving analytics to database:', { error: error.message });
         return { success: false, error: error.message };
       }
 
       return { success: true, analytics: [data as any] };
     } catch (error) {
-      console.error('Error in saveAnalytics:', error);
+      logger.error('Error in saveAnalytics:', { error: error instanceof Error ? error.message : String(error) });
       return { success: false, error: String(error) };
     }
   }
@@ -271,13 +272,13 @@ export class TokenAnalyticsService {
         .limit(limit);
 
       if (error) {
-        console.error('Error getting historical analytics:', error);
+        logger.error('Error getting historical analytics:', { error: error.message });
         return { success: false, error: error.message };
       }
 
       return { success: true, analytics: (data || []) as TokenAnalytics[] };
     } catch (error) {
-      console.error('Error getting historical analytics:', error);
+      logger.error('Error getting historical analytics:', { error: error instanceof Error ? error.message : String(error) });
       return { success: false, error: String(error) };
     }
   }
@@ -328,7 +329,7 @@ export class TokenAnalyticsService {
       };
     } catch (error) {
       this.isGeneratingReports = false;
-      console.error('Error generating automatic report:', error);
+      logger.error('Error generating automatic report:', { error: error instanceof Error ? error.message : String(error) });
       return { success: false, error: String(error) };
     }
   }
@@ -338,21 +339,21 @@ export class TokenAnalyticsService {
     
     const intervalId = setInterval(async () => {
       try {
-        console.log('🔄 Generating automatic analytics report...');
+        logger.info('🔄 Generating automatic analytics report...');
         
         const report = await this.generateAutomaticReport('hourly');
         if (report.success) {
-          console.log('✅ Analytics report generated successfully');
+          logger.info('✅ Analytics report generated successfully');
         } else {
-          console.error('❌ Failed to generate analytics report:', report.error);
+          logger.error('❌ Failed to generate analytics report:', { error: report.error });
         }
       } catch (error) {
-        console.error('❌ Error in automatic analytics:', error);
+        logger.error('❌ Error in automatic analytics:', { error: error instanceof Error ? error.message : String(error) });
       }
     }, intervalMs);
 
     this.analyticsCache.set('automatic_analytics', intervalId);
-    console.log(`🚀 Automatic analytics started (every ${intervalHours} hours)`);
+    logger.info(`🚀 Automatic analytics started (every ${intervalHours} hours)`);
   }
 
   stopAutomaticAnalytics(): void {
@@ -360,7 +361,7 @@ export class TokenAnalyticsService {
     if (intervalId) {
       clearInterval(intervalId);
       this.analyticsCache.delete('automatic_analytics');
-      console.log('🛑 Automatic analytics stopped');
+      logger.info('🛑 Automatic analytics stopped');
     }
   }
 

@@ -187,6 +187,7 @@ const ProfileSingle: React.FC = () => {
               gender: 'female',
               interests: ['Lifestyle Swinger', 'Encuentros Discretos', 'Viajes', 'Música', 'Gastronomía', 'Arte', 'Fotografía', 'Eventos Sofisticados'],
               is_admin: false,
+              is_premium: false,
               is_online: false,
               is_verified: true,
               last_seen: new Date().toISOString(),
@@ -747,9 +748,9 @@ const ProfileSingle: React.FC = () => {
                     <img 
                       src="/placeholder.svg" 
                       alt="Foto privada 1"
-                      className={`w-full h-full object-cover ${(profile as any)?.isOwner ? '' : 'filter blur-md'}`}
+                      className={`w-full h-full object-cover ${isOwnProfile ? '' : 'filter blur-md'}`}
                     />
-                    {!(profile as any)?.isOwner && (
+                    {!isOwnProfile && (
                       <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
                         <Lock className="w-8 h-8 text-white" />
                       </div>
@@ -759,9 +760,9 @@ const ProfileSingle: React.FC = () => {
                     <img 
                       src="/placeholder.svg" 
                       alt="Foto privada 2"
-                      className={`w-full h-full object-cover ${(profile as any)?.isOwner ? '' : 'filter blur-md'}`}
+                      className={`w-full h-full object-cover ${isOwnProfile ? '' : 'filter blur-md'}`}
                     />
-                    {!(profile as any)?.isOwner && (
+                    {!isOwnProfile && (
                       <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
                         <Lock className="w-8 h-8 text-white" />
                       </div>
@@ -771,9 +772,9 @@ const ProfileSingle: React.FC = () => {
                     <img 
                       src="/placeholder.svg" 
                       alt="Foto privada 3"
-                      className={`w-full h-full object-cover ${(profile as any)?.isOwner ? '' : 'filter blur-md'}`}
+                      className={`w-full h-full object-cover ${isOwnProfile ? '' : 'filter blur-md'}`}
                     />
-                    {!(profile as any)?.isOwner && (
+                    {!isOwnProfile && (
                       <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
                         <Lock className="w-8 h-8 text-white" />
                       </div>

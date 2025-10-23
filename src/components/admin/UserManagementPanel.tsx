@@ -88,13 +88,13 @@ export function UserManagementPanel() {
       } else {
         const processedUsers = (profiles || []).map(profile => ({
           id: profile.id,
-          name: (profile as any).name || profile.bio?.split(' ')[0] || 'Usuario sin nombre',
+          name: profile.first_name || profile.bio?.split(' ')[0] || 'Usuario sin nombre',
           email: 'email@ejemplo.com', // Mock email
           age: profile.age || undefined,
           gender: profile.gender || undefined,
           location: profile.bio || 'No especificada',
           bio: profile.bio || undefined,
-          is_premium: (profile as any).is_premium || false,
+          is_premium: profile.is_premium || false,
           is_verified: false, // Mock verification
           created_at: profile.created_at || new Date().toISOString(),
           last_seen: 'Hace 2 horas', // Mock last seen
