@@ -97,7 +97,7 @@ export class PushNotificationService {
       // Desactivar tokens antiguos del mismo dispositivo
       await supabase
         .from('tokens')
-        .update({ is_active: false })
+        .update({ is_revoked: true })
         .eq('user_id', userId)
         .eq('token_type', 'device')
 
@@ -107,8 +107,9 @@ export class PushNotificationService {
         .insert({
           user_id: userId,
           token_type: 'device',
-          amount: 1,
-          is_active: true
+          token_hash: deviceToken,
+          expires_at: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(), // 1 año
+          is_revoked: false
         })
         .select()
         .single()
@@ -312,7 +313,7 @@ export class PushNotificationService {
         .from('tokens')
         .select('*')
         .eq('user_id', userId)
-        .eq('is_active', true)
+        .eq('is_revoked', false)
 
       if (tokensError || !deviceTokens || deviceTokens.length === 0) {
         logger.warn('No hay tokens de dispositivo activos para el usuario:', { userId })
@@ -342,12 +343,7 @@ export class PushNotificationService {
       // Actualizar estado en historial
       if (historyRecord) {
         const _status: NotificationStatus = successCount > 0 ? 'sent' : 'failed'
-        await supabase
-          .from('notifications')
-          .update({
-            updated_at: new Date().toISOString()
-          })
-          .eq('id', historyRecord.id)
+        // No actualizar updated_at ya que no existe en la tabla notifications
       }
 
       logger.info('Notificación enviada:', { 

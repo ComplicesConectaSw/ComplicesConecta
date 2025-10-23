@@ -202,11 +202,11 @@ export const coupleProfileUtils = {
    */
   async getCoupleProfileDetails(profileId: string): Promise<any | null> {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('couple_profiles_with_partners')
         .select('*')
         .or(`partner1_id.eq.${profileId},partner2_id.eq.${profileId}`)
-        .single() as { data: any | null, error: any };
+        .single();
 
       if (error) {
         logger.warn('No se encontró perfil de pareja:', { profileId, error: error.message });

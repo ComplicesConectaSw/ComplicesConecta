@@ -118,19 +118,19 @@ const AdminDashboard = () => {
       ).length || 0;
 
       // Obtener estadísticas de matches
-      const { data: matchesData, error: matchesError } = await supabase
+      const { data: matchesData, error: matchesError } = await (supabase as any)
         .from('matches')
-        .select('id, created_at') as { data: any[] | null, error: any };
+        .select('id, created_at');
 
       if (matchesError) throw matchesError;
 
       const totalMatches = matchesData?.length || 0;
-      const matchesToday = matchesData?.filter(m => 
+      const matchesToday = matchesData?.filter((m: any) => 
         new Date(m.created_at) >= today
       ).length || 0;
 
       // Obtener estadísticas de mensajes
-      const { data: messagesData, error: _messagesError } = await supabase
+      const { data: messagesData, error: _messagesError } = await (supabase as any)
         .from('messages')
         .select('id');
 
@@ -145,7 +145,7 @@ const AdminDashboard = () => {
       const reportsCount = reportsData?.length || 0;
 
       // Obtener moderadores
-      const { data: moderatorsData, error: _moderatorsError } = await supabase
+      const { data: moderatorsData, error: _moderatorsError } = await (supabase as any)
         .from('user_roles')
         .select('id')
         .eq('role', 'moderator');
@@ -257,7 +257,7 @@ const AdminDashboard = () => {
           break;
         }
         case 'matches': {
-          const { data: matchesData } = await supabase
+          const { data: matchesData } = await (supabase as any)
             .from('matches')
             .select('*');
           data = matchesData || [];

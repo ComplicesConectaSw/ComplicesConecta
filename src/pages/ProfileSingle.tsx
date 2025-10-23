@@ -57,7 +57,7 @@ const ProfileSingle: React.FC = () => {
   const [achievements, setAchievements] = useState<any[]>([]);
   
   // Determinar si es el perfil propio
-  const isOwnProfile = user?.id === profile?.user_id;
+  const isOwnProfile = user?.id === profile?.id;
 
   // Handlers para las acciones del perfil
   const handleUploadImage = () => {
@@ -179,50 +179,22 @@ const ProfileSingle: React.FC = () => {
               id: parsedUser.id || 'demo-single-1',
               first_name: parsedUser.first_name || 'Sofía',
               last_name: parsedUser.last_name || 'Demo',
-              user_id: parsedUser.id || 'demo-user-1',
               age: 28,
-              bio: 'Explorando nuevas conexiones y experiencias auténticas. Me encanta viajar, la música y conocer personas interesantes.',
-              account_type: parsedUser.accountType || 'single',
-              age_range_max: null,
-              age_range_min: null,
+              bio: 'Explorando conexiones auténticas en el lifestyle swinger. Disfruto de experiencias discretas, respeto mutuo y encuentros sofisticados. Me encanta viajar, la música y conocer parejas interesantes.',
               avatar_url: '/placeholder.svg',
               created_at: new Date().toISOString(),
+              email: parsedUser.email || 'sofia.demo@example.com',
               gender: 'female',
-              interested_in: null,
-              interests: ['Viajes', 'Música', 'Arte', 'Cocina', 'Fotografía'],
-              is_active: true,
-              is_demo: true,
-              is_premium: false,
-              is_verified: true,
-              latitude: 19.4326,
-              longitude: -99.1332,
-              looking_for: null,
-              max_distance: null,
-              swinger_experience: null,
-              updated_at: new Date().toISOString(),
-              // Campos adicionales requeridos
-              biometric_enabled: null,
-              biometric_last_used: null,
-              biometric_public_key: null,
-              display_name: null,
-              email: null,
-              experience_level: null,
+              interests: ['Lifestyle Swinger', 'Encuentros Discretos', 'Viajes', 'Música', 'Gastronomía', 'Arte', 'Fotografía', 'Eventos Sofisticados'],
+              is_admin: false,
               is_online: false,
-              is_public: null,
-              last_active: null,
-              navbar_style: null,
-              partner_age: null,
-              partner_first_name: null,
-              payment_failed: null,
-              preferred_theme: null,
-              premium_expires_at: null,
-              premium_plan: null,
-              profile_type: null,
+              is_verified: true,
+              last_seen: new Date().toISOString(),
+              location: 'CDMX, México',
               role: 'user',
-              stripe_customer_id: null,
-              stripe_subscription_id: null,
-              theme_updated_at: null,
-              webauthn_registered: null
+              updated_at: new Date().toISOString(),
+              username: parsedUser.username || 'sofia_demo'
+              // Campos adicionales para funcionalidades swinger se manejan por separado
             };
             
             setProfile(profileData);
@@ -342,7 +314,7 @@ const ProfileSingle: React.FC = () => {
                       <CheckCircle className="w-6 h-6 text-white" />
                     </div>
                   )}
-                  {profile.is_premium && (
+                  {false && (
                     <div className="absolute -bottom-2 -right-2 bg-yellow-500 rounded-full p-1">
                       <Crown className="w-6 h-6 text-white" />
                     </div>
@@ -693,7 +665,7 @@ const ProfileSingle: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-2">
-                {['Viajes', 'Música', 'Deportes', 'Cocina', 'Lectura', 'Cine', 'Arte', 'Naturaleza'].map((interest) => (
+                {['Lifestyle Swinger', 'Encuentros Discretos', 'Viajes', 'Música', 'Gastronomía', 'Arte', 'Fotografía', 'Eventos Sofisticados'].map((interest) => (
                   <Badge 
                     key={interest} 
                     className="bg-gradient-to-r from-pink-500/20 to-purple-600/20 text-white border-pink-400/30 hover:bg-pink-500/30 transition-colors"

@@ -13,9 +13,17 @@ export interface CoupleProfile {
   is_premium: boolean;
   looking_for?: string;
   experience_level?: string;
+  swinger_experience?: string;
+  interested_in?: string;
+  couple_interests?: string[];
   preferences: Record<string, any>;
   created_at: string;
   updated_at: string;
+  // Campos adicionales agregados
+  latitude?: number;
+  longitude?: number;
+  is_demo?: boolean;
+  total_views?: number;
   // Datos de los perfiles
   partner1?: {
     id: string;
@@ -66,7 +74,14 @@ export interface CreateCoupleProfileData {
   couple_images?: string[];
   looking_for?: string;
   experience_level?: string;
+  swinger_experience?: string;
+  interested_in?: string;
+  couple_interests?: string[];
   preferences?: Record<string, any>;
+  // Campos adicionales agregados
+  latitude?: number;
+  longitude?: number;
+  is_demo?: boolean;
 }
 
 class CoupleProfilesService {
@@ -199,7 +214,18 @@ class CoupleProfilesService {
         couple_images: profileData.couple_images || [],
         preferences: profileData.preferences || {},
         is_verified: false,
-        is_premium: false
+        is_premium: false,
+        // Campos adicionales para funcionalidades swinger
+        looking_for: profileData.looking_for || 'swinger',
+        experience_level: profileData.experience_level || 'beginner',
+        swinger_experience: profileData.swinger_experience || 'beginner',
+        interested_in: profileData.interested_in || 'couples',
+        couple_interests: profileData.couple_interests || ['Lifestyle Swinger', 'Encuentros Discretos'],
+        // Campos adicionales agregados
+        latitude: profileData.latitude,
+        longitude: profileData.longitude,
+        is_demo: profileData.is_demo || false,
+        total_views: 0
         })
         .select(`
           id,
@@ -212,6 +238,11 @@ class CoupleProfilesService {
           is_verified,
           is_premium,
           preferences,
+          looking_for,
+          experience_level,
+          swinger_experience,
+          interested_in,
+          couple_interests,
           created_at,
           updated_at
         `)
@@ -225,16 +256,16 @@ class CoupleProfilesService {
       const newProfile: CoupleProfile = {
         id: data.id,
         couple_name: data.couple_name,
-        couple_bio: data.couple_bio,
-        relationship_type: data.relationship_type,
+        couple_bio: data.couple_bio || undefined,
+        relationship_type: data.relationship_type as "man-woman" | "man-man" | "woman-woman",
         partner1_id: data.partner1_id,
-        partner2_id: data.partner2_id,
+        partner2_id: data.partner2_id || '',
         couple_images: data.couple_images || [],
         is_verified: data.is_verified || false,
         is_premium: data.is_premium || false,
-        preferences: data.preferences || {},
-        created_at: data.created_at,
-        updated_at: data.updated_at
+        preferences: data.preferences as Record<string, any> || {},
+        created_at: data.created_at || '',
+        updated_at: data.updated_at || ''
       };
 
       logger.info('✅ Couple profile created successfully in Supabase', { profileId: newProfile.id });

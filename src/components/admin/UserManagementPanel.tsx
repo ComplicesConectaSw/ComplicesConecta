@@ -94,7 +94,7 @@ export function UserManagementPanel() {
           gender: profile.gender || undefined,
           location: profile.bio || 'No especificada',
           bio: profile.bio || undefined,
-          is_premium: profile.is_premium || false,
+          is_premium: (profile as any).is_premium || false,
           is_verified: false, // Mock verification
           created_at: profile.created_at || new Date().toISOString(),
           last_seen: 'Hace 2 horas', // Mock last seen

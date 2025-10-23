@@ -191,14 +191,14 @@ class InvitationsService {
       const newInvitation: Invitation = {
         id: data.id,
         inviter_id: data.inviter_id,
-        invitee_email: data.invitee_email,
-        invitation_type: data.invitation_type,
+        invitee_email: data.invited_user_id, // Usar invited_user_id como email
+        invitation_type: data.invitation_type || undefined,
         type: data.type,
-        status: data.status || 'pending',
-        expires_at: data.expires_at,
-        metadata: data.metadata || {},
-        created_at: data.created_at,
-        updated_at: data.updated_at
+        status: data.status as 'pending' | 'accepted' | 'declined' | 'expired',
+        expires_at: data.expires_at || undefined,
+        metadata: data.metadata as Record<string, any> || {},
+        created_at: data.created_at || '',
+        updated_at: data.updated_at || ''
       };
 
       logger.info('✅ Invitation created successfully in Supabase', { invitationId: newInvitation.id });

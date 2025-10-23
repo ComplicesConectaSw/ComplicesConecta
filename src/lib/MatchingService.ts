@@ -83,7 +83,7 @@ export class MatchingService {
       }
 
       // Verificar si ya existe el like
-      const { data: existingLike } = await supabase
+      const { data: existingLike } = await (supabase as any)
         .from('user_likes')
         .select('*')
         .eq('liker_id', user.id)
@@ -95,18 +95,18 @@ export class MatchingService {
       }
 
       // Crear el like
-      const { error: likeError } = await supabase
+      const { error: likeError } = await (supabase as any)
         .from('user_likes')
         .insert({
           liker_id: user.id,
           liked_id: likedUserId,
           is_active: true
-        } as any);
+        });
 
       if (likeError) throw likeError;
 
       // Verificar si se creó un match (el trigger lo hace automáticamente)
-      const { data: newMatch } = await supabase
+      const { data: newMatch } = await (supabase as any)
         .from('matches')
         .select(`
           *,
@@ -161,7 +161,7 @@ export class MatchingService {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return [];
 
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('user_likes')
         .select('*')
         .eq('liker_id', user.id)
@@ -171,12 +171,12 @@ export class MatchingService {
       if (error) throw error;
       
       // Mapear datos de Supabase a nuestra interfaz UserLike usando propiedades reales
-      return (data || []).map(item => ({
-        id: item.id,
-        liker_id: item.user_id || user.id,
-        liked_id: item.liked_user_id || '',
+      return (data || []).map((item: any) => ({
+        id: String(item.id),
+        liker_id: item.liker_id,
+        liked_id: item.liked_id,
         created_at: item.created_at || new Date().toISOString(),
-        is_active: item.liked || true
+        is_active: item.is_active || true
       }));
 
     } catch (error) {
@@ -198,8 +198,8 @@ export class MatchingService {
       if (!user) return [];
 
       // Usar la función SQL helper
-      const { data, error } = await supabase
-        .rpc('get_user_matches', { user_id: user.id } as any);
+      const { data, error } = await (supabase as any)
+        .rpc('get_user_matches', { user_id: user.id });
 
       if (error) throw error;
 
@@ -235,7 +235,7 @@ export class MatchingService {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return null;
 
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('matches')
         .select(`
           *,
@@ -280,14 +280,14 @@ export class MatchingService {
       } = filters || {};
 
       // Usar la función SQL helper
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .rpc('get_potential_matches', {
           user_id: user.id,
           max_distance: maxDistance,
           min_age: minAge,
           max_age: maxAge,
           limit_count: limit
-        } as any);
+        });
 
       if (error) throw error;
 
@@ -373,7 +373,7 @@ export class MatchingService {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Usuario no autenticado');
 
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('match_interactions')
         .insert({
           match_id: matchId,
@@ -381,7 +381,7 @@ export class MatchingService {
           interaction_type: 'message',
           content: content.trim(),
           metadata: { timestamp: new Date().toISOString() }
-        } as any);
+        });
 
       if (error) throw error;
 
@@ -428,7 +428,7 @@ export class MatchingService {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return [];
 
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('match_interactions')
         .select('*')
         .eq('match_id', matchId)
@@ -439,13 +439,13 @@ export class MatchingService {
       if (error) throw error;
       
       // Mapear datos de Supabase a nuestra interfaz MatchInteraction usando propiedades reales
-      const mappedData = (data || []).map(item => ({
-        id: item.id,
+      const mappedData = (data || []).map((item: any) => ({
+        id: String(item.id),
         match_id: item.match_id || '',
         user_id: item.user_id || '',
         interaction_type: item.interaction_type as 'message' | 'like' | 'view' | 'block' | 'report',
-        content: undefined, // Esta propiedad no existe en la tabla real
-        metadata: undefined, // Esta propiedad no existe en la tabla real
+        content: item.content || undefined,
+        metadata: item.metadata || undefined,
         created_at: item.created_at || new Date().toISOString()
       }));
       

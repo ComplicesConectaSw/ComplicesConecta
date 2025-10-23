@@ -18,8 +18,8 @@ function _getCurrentUserId(): string | null {
   return supabase.auth.getUser().then(({ data }) => data.user?.id || null).catch(() => null) as any;
 }
 
-type MessageRow = Database['public']['Tables']['messages']['Row'];
-type _MessageInsert = Database['public']['Tables']['messages']['Insert'];
+type MessageRow = any; // messages table not in database.ts
+type _MessageInsert = any;
 
 export interface ChatRoom {
   id: string;
@@ -81,7 +81,7 @@ class ChatService {
   async getPublicRoom(): Promise<{ success: boolean; room?: ChatRoom; error?: string }> {
     try {
       // Buscar sala pública existente
-      const { data: existingRoom, error: searchError } = await supabase
+      const { data: existingRoom, error: searchError } = await (supabase as any)
         .from('chat_rooms')
         .select('*')
         .eq('is_public', true)
@@ -109,7 +109,7 @@ class ChatService {
         created_by: user.user.id
       };
 
-      const { data: newRoom, error: createError } = await supabase
+      const { data: newRoom, error: createError } = await (supabase as any)
         .from('chat_rooms')
         .insert(roomData)
         .select()
@@ -155,7 +155,7 @@ class ChatService {
         created_by: userId
       };
 
-      const { data: newRoom, error: roomError } = await supabase
+      const { data: newRoom, error: roomError } = await (supabase as any)
         .from('chat_rooms')
         .insert(roomData)
         .select()
@@ -173,7 +173,7 @@ class ChatService {
         is_muted: false
       };
 
-      await supabase.from('chat_members').insert(creatorMember);
+      await (supabase as any).from('chat_members').insert(creatorMember);
 
       // Agregar otros miembros
       const memberInserts: ChatMemberInsert[] = memberIds.map(memberId => ({
@@ -184,7 +184,7 @@ class ChatService {
       }));
 
       if (memberInserts.length > 0) {
-        await supabase.from('chat_members').insert(memberInserts as any);
+        await (supabase as any).from('chat_members').insert(memberInserts as any);
       }
 
       return {
@@ -317,7 +317,7 @@ class ChatService {
         return { success: false, error: 'Sin permisos para acceder a esta sala' };
       }
 
-      const { data: messages, error } = await supabase
+      const { data: messages, error } = await (supabase as any)
         .from('messages')
         .select(`
           *,
@@ -411,7 +411,7 @@ class ChatService {
       if (!user.user) return false;
 
       // Obtener información de la sala
-      const { data: room, error: roomError } = await supabase
+      const { data: room, error: roomError } = await (supabase as any)
         .from('chat_rooms')
         .select('is_public, created_by')
         .eq('id', roomId)
@@ -426,7 +426,7 @@ class ChatService {
       if ((room as any).created_by === user.user.id) return true;
 
       // Verificar si es miembro
-      const { data: member, error: memberError } = await supabase
+      const { data: member, error: memberError } = await (supabase as any)
         .from('chat_members')
         .select('id')
         .eq('room_id', roomId)
@@ -461,7 +461,7 @@ class ChatService {
         status: 'pending'
       };
 
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('chat_invitations')
         .insert(invitationData);
 
@@ -517,7 +517,7 @@ class ChatService {
           is_muted: false
         };
 
-        const { error: memberError } = await supabase
+        const { error: memberError } = await (supabase as any)
           .from('chat_members')
           .insert(memberData);
 
@@ -550,7 +550,7 @@ class ChatService {
         return { success: false, error: 'Usuario no autenticado' };
       }
 
-      const { data: invitations, error } = await supabase
+      const { data: invitations, error } = await (supabase as any)
         .from('chat_invitations')
         .select('*')
         .eq('to_profile', user.user.id)

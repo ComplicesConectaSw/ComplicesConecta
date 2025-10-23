@@ -110,7 +110,7 @@ export async function uploadImage(
       .getPublicUrl(fileName);
 
     // Guardar metadatos en la base de datos
-    const { data: dbData, error: dbError } = await supabase
+    const { data: dbData, error: dbError } = await (supabase as any)
       .from('images')
       .insert({
         profile_id: profileId,
@@ -120,7 +120,7 @@ export async function uploadImage(
         description,
         file_size: file.size,
         mime_type: file.type
-      } as any)
+      })
       .select()
       .single();
 
@@ -164,7 +164,7 @@ export async function getUserImages(
   includePrivate: boolean = false
 ): Promise<ImageUpload[]> {
   try {
-    let query = supabase
+    let query = (supabase as any)
       .from('images')
       .select('*')
       .eq('profile_id', profileId)
@@ -206,7 +206,7 @@ export async function getUserImages(
 export async function deleteImage(imageId: string, profileId: string): Promise<boolean> {
   try {
     // Obtener información de la imagen
-    const { data: image, error: fetchError } = await supabase
+    const { data: image, error: fetchError } = await (supabase as any)
       .from('images')
       .select('*')
       .eq('id', imageId)
@@ -233,7 +233,7 @@ export async function deleteImage(imageId: string, profileId: string): Promise<b
     }
 
     // Eliminar registro de la base de datos
-    const { error: deleteError } = await supabase
+    const { error: deleteError } = await (supabase as any)
       .from('images')
       .delete()
       .eq('id', imageId)
@@ -266,7 +266,7 @@ export async function deleteImage(imageId: string, profileId: string): Promise<b
  */
 export async function getPublicImages(limit: number = 20): Promise<ImageUpload[]> {
   try {
-    const { data, error } = await supabase
+    const { data, error } = await (supabase as any)
       .from('images')
       .select('*')
       .eq('is_public', true)

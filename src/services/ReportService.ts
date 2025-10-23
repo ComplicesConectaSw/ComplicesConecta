@@ -88,7 +88,7 @@ export class ReportService {
       }
 
       logger.info('Report created successfully:', { reportId: data?.id });
-      return { success: true, data };
+      return { success: true, data: data as Report };
 
     } catch (error) {
       logger.error('Unexpected error in createReport:', { error: error instanceof Error ? error.message : String(error) });
@@ -115,7 +115,7 @@ export class ReportService {
         return { success: false, error: 'Error al obtener los reportes' };
       }
 
-      return { success: true, reports: data || [] };
+      return { success: true, reports: (data || []) as Report[] };
 
     } catch (error) {
       logger.error('Unexpected error in getUserReports:', { error: error instanceof Error ? error.message : String(error) });
@@ -142,7 +142,7 @@ export class ReportService {
         return { success: false, error: 'Error al obtener reportes pendientes' };
       }
 
-      return { success: true, reports: data || [] };
+      return { success: true, reports: (data || []) as Report[] };
 
     } catch (error) {
       logger.error('Error in getPendingReports:', { error: error instanceof Error ? error.message : String(error) });
@@ -180,7 +180,7 @@ export class ReportService {
       }
 
       logger.info('Report resolved successfully:', { reportId, action });
-      return { success: true, data };
+      return { success: true, data: data as Report };
 
     } catch (error) {
       logger.error('Unexpected error in resolveReport:', { error: error instanceof Error ? error.message : String(error) });
@@ -345,7 +345,7 @@ export class ReportService {
       }
 
       logger.info('Reporte de perfil resuelto exitosamente:', { reportId, resolution });
-      return { success: true, data };
+      return { success: true, data: data as Report };
 
     } catch (error) {
       logger.error('Error inesperado en resolveProfileReport:', { error: error instanceof Error ? error.message : String(error) });
@@ -385,7 +385,7 @@ export class ReportService {
         return { success: false, error: 'Error al obtener los reportes' };
       }
 
-      return { success: true, reports: data || [] };
+      return { success: true, reports: (data || []) as Report[] };
 
     } catch (error) {
       logger.error('Error inesperado en getUserProfileReports:', { error: error instanceof Error ? error.message : String(error) });
@@ -407,7 +407,7 @@ export class ReportService {
         return { success: false, error: 'Error al obtener los reportes pendientes' };
       }
 
-      return { success: true, reports: data || [] };
+      return { success: true, reports: (data || []) as Report[] };
 
     } catch (error) {
       logger.error('Error inesperado en getPendingProfileReports:', { error: error instanceof Error ? error.message : String(error) });

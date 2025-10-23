@@ -131,10 +131,10 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
       setLoading(true);
       
       // Cargar imágenes públicas
-      const { data: publicImages, error: publicError } = await supabase
+      const { data: publicImages, error: publicError } = await (supabase as any)
         .from('media')
         .select('*')
-        .eq('user_id', userId)
+        .eq('owner_id', userId)
         .eq('is_public', true)
         .order('created_at', { ascending: false });
 
@@ -145,10 +145,10 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
       // Cargar imágenes privadas si es el propietario o tiene acceso
       let privateImages: any[] = [];
       if (isOwner) {
-        const { data: privateData, error: privateError } = await supabase
+        const { data: privateData, error: privateError } = await (supabase as any)
           .from('media')
           .select('*')
-          .eq('user_id', userId)
+          .eq('owner_id', userId)
           .eq('is_public', false)
           .order('created_at', { ascending: false });
 
@@ -217,7 +217,7 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
       }
 
       // Guardar metadata en base de datos
-      const { data: imageData, error: dbError } = await supabase
+      const { data: imageData, error: dbError } = await (supabase as any)
         .from('media')
         .insert({
           owner_id: userId,
@@ -236,11 +236,11 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
 
       // Actualizar estado local
       const newImage: GalleryImage = {
-        id: imageData.id || 'unknown',
-        url: imageData.storage_path || '/placeholder.svg',
+        id: String(imageData.id) || 'unknown',
+        url: (imageData as any).storage_path || '/placeholder.svg',
         caption: 'Nueva imagen',
-        isPublic: imageData.is_public || false,
-        uploadedAt: imageData.created_at || new Date().toISOString(),
+        isPublic: (imageData as any).is_public || false,
+        uploadedAt: (imageData as any).created_at || new Date().toISOString(),
         likes: 0,
         comments: 0
       };
@@ -261,7 +261,7 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
 
     try {
       // Eliminar de base de datos
-      const { error: dbError } = await supabase
+      const { error: dbError } = await (supabase as any)
         .from('media')
         .delete()
         .eq('id', imageId);
@@ -300,7 +300,7 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
     }
 
     try {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('media')
         .update({ is_public: !isPublic })
         .eq('id', imageId);

@@ -270,7 +270,7 @@ export class NotificationService {
       const { error } = await supabase
         .from('notifications')
         .update({ 
-          read: true,
+          is_read: true,
           updated_at: new Date().toISOString()
         })
         .eq('id', notificationId)
@@ -296,7 +296,7 @@ export class NotificationService {
       const { error } = await supabase
         .from('notifications')
         .update({ 
-          read: true,
+          is_read: true,
           updated_at: new Date().toISOString()
         })
         .eq('user_id', userId)

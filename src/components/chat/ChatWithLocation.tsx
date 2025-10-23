@@ -108,9 +108,9 @@ export const ChatWithLocation = ({ conversationId, currentUserId, otherUser }: C
         })
       };
 
-      // Usar tabla chat_messages que existe en la BD (38 tablas creadas)
-      const { error } = await (supabase
-        .from('chat_messages') as any)
+      // Usar tabla chat_messages que existe en la BD
+      const { error } = await (supabase as any)
+        .from('chat_messages')
         .insert([{
           conversation_id: messageData.conversation_id,
           sender_id: messageData.sender_id,

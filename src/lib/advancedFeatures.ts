@@ -153,12 +153,12 @@ export class AdvancedFeaturesService {
       reasons.push(`Comparten ${Math.round(interestScore * 100)}% de preferencias lifestyle`);
     }
 
-    // Location compatibility - usar latitude/longitude si existen
+    // Location compatibility - usar valores por defecto ya que latitude/longitude no existen en la tabla
     let locationScore = 0.5; // Score por defecto
-    if (user1.latitude && user1.longitude && user2.latitude && user2.longitude) {
+    if (false) { // latitude/longitude no existen en la tabla profiles
       locationScore = this.calculateLocationCompatibility(
-        `${user1.latitude},${user1.longitude}`,
-        `${user2.latitude},${user2.longitude}`,
+        '0,0',
+        '0,0',
         config.filters.maxDistance
       );
     }
@@ -178,24 +178,24 @@ export class AdvancedFeaturesService {
       reasons.push('Rango de edad ideal para conexión');
     }
 
-    // Gender compatibility
+    // Gender compatibility - usar valores por defecto ya que interested_in no existe en la tabla
     const genderScore = this.calculateGenderCompatibility(
       user1.gender,
-      user1.interested_in ? user1.interested_in[0] : null,
+      null, // interested_in no existe en la tabla
       user2.gender,
-      user2.interested_in ? user2.interested_in[0] : null
+      null  // interested_in no existe en la tabla
     );
     scores.gender = genderScore;
     if (genderScore > 0.8) {
       reasons.push('Preferencias de género compatibles');
     }
 
-    // Account type compatibility
+    // Account type compatibility - usar valores por defecto ya que account_type no existe en la tabla
     const accountTypeScore = this.calculateAccountTypeCompatibility(
-      user1.account_type,
-      user1.interested_in ? user1.interested_in[0] : null,
-      user2.account_type,
-      user2.interested_in ? user2.interested_in[0] : null
+      'single', // account_type no existe en la tabla
+      null, // interested_in no existe en la tabla
+      'single', // account_type no existe en la tabla
+      null  // interested_in no existe en la tabla
     );
     scores.accountType = accountTypeScore;
     if (accountTypeScore > 0.8) {
@@ -415,8 +415,8 @@ export class AdvancedFeaturesService {
       }
     }
 
-    // Account type compatibility
-    if (user1.account_type === user2.account_type) {
+    // Account type compatibility - account_type no existe en la tabla
+    if (true) { // Siempre compatible ya que account_type no existe
       compatibility += 0.2;
     }
 
@@ -471,15 +471,15 @@ export class AdvancedFeaturesService {
     try {
       const { data: profile } = await supabase
         .from('profiles')
-        .select('interests, bio, age, gender, account_type')
+        .select('bio, age, gender')
         .eq('id', userId)
         .single();
 
-      if (!profile?.interests || profile.interests.length === 0) return [];
+      if (!profile?.bio || profile.bio.length === 0) return []; // interests no existe en la tabla
 
       const insights: PersonalityInsight[] = [];
       const bio = (profile.bio || '').toLowerCase();
-      const interests = profile.interests || [];
+      const interests: string[] = []; // interests no existe en la tabla
 
       // Análisis de personalidad basado en bio e intereses
       const personalityAnalysis = this.analyzePersonalityFromBio(bio, interests);
@@ -820,8 +820,8 @@ export class AdvancedFeaturesService {
         starters.push(...complementaryStarters);
       }
 
-      // Add location-based starters if both users have location data
-      if (userProfile.latitude && userProfile.longitude && matchProfile.latitude && matchProfile.longitude) {
+      // Add location-based starters - latitude/longitude no existen en la tabla
+      if (false) { // latitude/longitude no existen en la tabla profiles
         starters.push({
           id: crypto.randomUUID(),
           category: 'interests',

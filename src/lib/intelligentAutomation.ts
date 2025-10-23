@@ -515,12 +515,12 @@ export class IntelligentAutomationService {
       // Find available moderator using profiles table
       const { data: moderators } = await supabase
         .from('profiles')
-        .select('id, user_id')
+        .select('id')
         .eq('account_type', 'admin')
         .limit(1);
 
       if (moderators && moderators.length > 0) {
-        const moderatorId = moderators[0]?.user_id;
+        const moderatorId = moderators[0]?.id;
         
         // Notify moderator about new assignment
         await NotificationService.createNotification({

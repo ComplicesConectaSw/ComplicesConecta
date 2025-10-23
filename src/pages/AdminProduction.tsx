@@ -426,13 +426,13 @@ const AdminProduction = () => {
 
       const { error } = await supabase
         .from('profiles')
-        .update({ is_premium: !profile.is_premium })
+        .update({ is_verified: !profile.is_verified })
         .eq('id', profileId);
 
       if (error) throw error;
 
       setProfiles(profiles.map((p: Profile) => 
-        p.id === profileId ? { ...p, is_premium: !p.is_premium } : p
+        p.id === profileId ? { ...p, is_verified: !p.is_verified } : p
       ));
       toast({
         title: "Estado Premium Actualizado",

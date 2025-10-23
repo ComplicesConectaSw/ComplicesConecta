@@ -174,7 +174,7 @@ export class SecureMediaService {
     reason?: string
   ): Promise<void> {
     try {
-      await supabase
+      await (supabase as any)
         .from('media_access_logs')
         .insert({
           user_id: userId,

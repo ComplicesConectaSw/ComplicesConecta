@@ -102,20 +102,20 @@ export class TokenAnalyticsService {
           .single(),
         
         // Obtener balances totales de usuarios
-        (supabase as any)
+        supabase
           .from('user_token_balances')
           .select('cmpx_balance, gtk_balance')
           .not('cmpx_balance', 'is', null)
           .not('gtk_balance', 'is', null),
         
         // Obtener métricas de staking
-        (supabase as any)
+        supabase
           .from('staking_records')
           .select('amount, staking_duration as duration, created_at')
           .eq('is_active', true),
         
         // Obtener transacciones recientes
-        (supabase as any)
+        supabase
           .from('token_transactions')
           .select('amount, token_type, created_at')
           .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()),

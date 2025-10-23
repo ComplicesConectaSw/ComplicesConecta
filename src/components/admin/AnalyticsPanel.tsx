@@ -179,10 +179,10 @@ export function AnalyticsPanel() {
       const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
 
       const totalUsers = profiles?.length || 0;
-      const newUsersToday = profiles?.filter(p => 
+      const newUsersToday = profiles?.filter((p: any) => 
         p.created_at && new Date(p.created_at) >= today
       ).length || 0;
-      const newUsersWeek = profiles?.filter(p => 
+      const newUsersWeek = profiles?.filter((p: any) => 
         p.created_at && new Date(p.created_at) >= weekAgo
       ).length || 0;
 
