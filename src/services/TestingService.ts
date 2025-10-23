@@ -223,7 +223,7 @@ class TestingService {
       // Test 3: Cache + Analytics integration
       async () => {
         const { advancedCacheService } = await import('./AdvancedCacheService');
-        const TokenAnalyticsService = (await import('./TokenAnalyticsService')).default;
+        const _TokenAnalyticsService = (await import('./TokenAnalyticsService')).default;
         
         await advancedCacheService.set('analytics_test', { test: true });
         const cached = await advancedCacheService.get<{ test: boolean }>('analytics_test');
@@ -256,7 +256,7 @@ class TestingService {
         const { smartMatchingService } = await import('./SmartMatchingService');
         
         // Simulate complete user flow
-        const posts = await postsService.getFeed(0, 5);
+        const _posts = await postsService.getFeed(0, 5);
         
         // Test matching with mock users
         const compatibility = await smartMatchingService.calculateCompatibility(
@@ -272,7 +272,7 @@ class TestingService {
       // Test 2: Content moderation flow
       async () => {
         const { contentModerationService } = await import('./ContentModerationService');
-        const { postsService } = await import('./postsService');
+        const { postsService: _postsService } = await import('./postsService');
         
         const testContent = 'This is a test post for moderation';
         const moderation = await contentModerationService.moderateText(testContent);

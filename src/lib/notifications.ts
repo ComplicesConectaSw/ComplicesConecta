@@ -174,7 +174,7 @@ export class NotificationService {
    */
   static async getUserPreferences(userId: string) {
     try {
-      const { data, error } = await supabase
+      const { data: _data, error } = await supabase
         .from('profiles')
         .select('notification_preferences')
         .eq('user_id', userId)
@@ -234,7 +234,7 @@ export class NotificationService {
   /**
    * Update user notification preferences
    */
-  static async updateUserPreferences(userId: string, preferences: Partial<{
+  static async updateUserPreferences(userId: string, _preferences: Partial<{
     email_notifications: boolean;
     push_notifications: boolean;
     in_app_notifications: boolean;

@@ -99,7 +99,7 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
   profileType,
   isOwner
 }) => {
-  const { user } = useAuth();
+  const { user: _user } = useAuth();
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
   const [loading, setLoading] = useState(true);

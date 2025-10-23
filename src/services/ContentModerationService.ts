@@ -454,7 +454,7 @@ class ContentModerationService {
   private generateModerationExplanation(
     flags: ModerationFlag[], 
     isAppropriate: boolean, 
-    textAnalysis?: any
+    _textAnalysis?: any
   ): string {
     if (flags.length === 0) {
       return 'Contenido apropiado y seguro para la plataforma';

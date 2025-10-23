@@ -88,7 +88,7 @@ export class TokenAnalyticsService {
     try {
       // Obtener métricas reales de las tablas de Supabase
       const [
-        tokenAnalyticsResult,
+        _tokenAnalyticsResult,
         userBalancesResult,
         stakingResult,
         transactionsResult,
@@ -372,7 +372,7 @@ export class TokenAnalyticsService {
       return trends;
     }
 
-    const latest = historical[historical.length - 1];
+    const _latest = historical[historical.length - 1];
     const previous = historical[historical.length - 2];
 
     trends.cmpx_supply_change = this.calculatePercentageChange(

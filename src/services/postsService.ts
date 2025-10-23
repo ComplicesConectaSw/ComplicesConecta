@@ -769,7 +769,7 @@ class AdvancedPostsService extends PostsService {
   async reportPost(
     postId: string,
     reason: 'spam' | 'inappropriate' | 'harassment' | 'fake' | 'other',
-    description?: string
+    _description?: string
   ): Promise<void> {
     try {
       logger.info('🚨 Reporting post (mock)', { postId, reason });

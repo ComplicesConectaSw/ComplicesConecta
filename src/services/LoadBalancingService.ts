@@ -432,10 +432,10 @@ class LoadBalancingService {
   }
 
   private cleanupExpiredSessions(): void {
-    const now = Date.now();
+    const _now = Date.now();
     let cleanedCount = 0;
 
-    for (const [sessionId, serverId] of this.sessionMap.entries()) {
+    for (const [sessionId, _serverId] of this.sessionMap.entries()) {
       // Simple cleanup based on session timeout
       // In a real implementation, you'd track session creation time
       if (Math.random() < 0.1) { // 10% chance to clean up (simulate expired sessions)

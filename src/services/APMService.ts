@@ -472,7 +472,7 @@ class APMService {
   /**
    * Crea una alerta de error
    */
-  private createErrorAlert(error: Error, context: any): void {
+  private createErrorAlert(error: Error, _context: any): void {
     this.createAlert(
       'application_error',
       `Application error: ${error.message}`,

@@ -11,7 +11,6 @@ import {
   Lock,
   Flag,
   CheckCircle,
-  Crown,
   Images,
   Share2,
   Download,
