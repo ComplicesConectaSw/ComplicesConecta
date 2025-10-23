@@ -23,6 +23,13 @@ export interface MatchingProfile {
   is_premium: boolean;
   latitude?: number;
   longitude?: number;
+  interests?: string[];
+  experience_level?: string;
+  looking_for?: string[];
+  age_range_min?: number;
+  age_range_max?: number;
+  max_distance?: number;
+  lastActive?: string;
 }
 
 export interface CompatibilityScore {
@@ -35,11 +42,37 @@ export interface CompatibilityScore {
   reasons: string[];
 }
 
+export interface MatchingPreferences {
+  ageRange: { min: number; max: number };
+  maxDistance: number;
+  experienceLevels: string[];
+  interests: string[];
+  lookingFor: string[];
+  verifiedOnly: boolean;
+  premiumOnly: boolean;
+}
+
+export interface MatchInsights {
+  compatibilityFactors: string[];
+  potentialChallenges: string[];
+  conversationStarters: string[];
+  activitySuggestions: string[];
+  riskAssessment: 'low' | 'medium' | 'high';
+}
+
 export interface SmartMatchResult {
   profile: MatchingProfile;
   compatibility: CompatibilityScore;
-  distance?: number | null;
+  distance: number | null;
   matchReason: string;
+}
+
+export interface AdvancedMatchResult extends SmartMatchResult {
+  insights: MatchInsights;
+  matchQuality: 'excellent' | 'good' | 'fair' | 'poor';
+  recommendationScore: number;
+  lastActive?: string;
+  mutualConnections?: number;
 }
 
 export interface BigFiveTraits {
@@ -302,31 +335,6 @@ class SmartMatchingService {
     return Math.min(100, score + Math.random() * 10 - 5);
   }
 
-  /**
-   * Calcula distancia entre dos perfiles usando Haversine
-   */
-  private calculateDistance(profile1: MatchingProfile, profile2: MatchingProfile): number | null {
-    if (!profile1.latitude || !profile1.longitude || 
-        !profile2.latitude || !profile2.longitude) {
-      return null;
-    }
-
-    const R = 6371; // Radio de la Tierra en km
-    const dLat = this.toRadians(profile2.latitude - profile1.latitude);
-    const dLon = this.toRadians(profile2.longitude - profile1.longitude);
-    
-    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-              Math.cos(this.toRadians(profile1.latitude)) * 
-              Math.cos(this.toRadians(profile2.latitude)) * 
-              Math.sin(dLon/2) * Math.sin(dLon/2);
-    
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    return R * c;
-  }
-
-  private toRadians(degrees: number): number {
-    return degrees * (Math.PI / 180);
-  }
 
   /**
    * Genera razones de compatibilidad
@@ -368,6 +376,282 @@ class SmartMatchingService {
     } else {
       return 'Compatibilidad moderada';
     }
+  }
+
+  /**
+   * Obtiene matches avanzados con insights detallados
+   */
+  async getAdvancedMatches(
+    userId: string, 
+    preferences: MatchingPreferences,
+    limit: number = 20
+  ): Promise<AdvancedMatchResult[]> {
+    try {
+      logger.info('🔍 Obteniendo matches avanzados', { userId, limit });
+
+      // Obtener perfil del usuario
+      const userProfile = await this.getUserProfile(userId);
+      if (!userProfile) {
+        throw new Error('Perfil de usuario no encontrado');
+      }
+
+      // Obtener candidatos potenciales
+      const candidates = await this.getPotentialCandidates(userProfile, preferences, limit * 2);
+      
+      // Calcular matches avanzados
+      const advancedMatches: AdvancedMatchResult[] = [];
+      
+      for (const candidate of candidates) {
+        const compatibility = await this.calculateCompatibility(userProfile, candidate);
+        const insights = await this.generateMatchInsights(userProfile, candidate, compatibility);
+        const matchQuality = this.determineMatchQuality(compatibility);
+        const recommendationScore = this.calculateRecommendationScore(compatibility, insights);
+        
+        const advancedMatch: AdvancedMatchResult = {
+          profile: candidate,
+          compatibility,
+          distance: this.calculateDistance(userProfile, candidate),
+          matchReason: this.generatePrimaryMatchReason(compatibility),
+          insights,
+          matchQuality,
+          recommendationScore,
+          lastActive: candidate.lastActive || new Date().toISOString(),
+          mutualConnections: await this.getMutualConnections(userId, candidate.id)
+        };
+        
+        advancedMatches.push(advancedMatch);
+      }
+
+      // Ordenar por score de recomendación
+      return advancedMatches
+        .sort((a, b) => b.recommendationScore - a.recommendationScore)
+        .slice(0, limit);
+
+    } catch (error) {
+      logger.error('Error obteniendo matches avanzados:', { error: String(error) });
+      return [];
+    }
+  }
+
+  /**
+   * Obtiene perfil de usuario desde Supabase
+   */
+  private async getUserProfile(userId: string): Promise<MatchingProfile | null> {
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
+
+      if (error || !data) {
+        logger.error('Error obteniendo perfil de usuario:', { error: error?.message });
+        return null;
+      }
+
+      return this.mapProfileToMatchingProfile(data);
+    } catch (error) {
+      logger.error('Error en getUserProfile:', { error: String(error) });
+      return null;
+    }
+  }
+
+  /**
+   * Obtiene candidatos potenciales basados en preferencias
+   */
+  private async getPotentialCandidates(
+    userProfile: MatchingProfile,
+    preferences: MatchingPreferences,
+    limit: number
+  ): Promise<MatchingProfile[]> {
+    try {
+      let query = supabase
+        .from('profiles')
+        .select('*')
+        .neq('id', userProfile.id)
+        .gte('age', preferences.ageRange.min)
+        .lte('age', preferences.ageRange.max);
+
+      if (preferences.verifiedOnly) {
+        query = query.eq('is_verified', true);
+      }
+
+      if (preferences.premiumOnly) {
+        query = query.eq('is_premium', true);
+      }
+
+      const { data, error } = await query.limit(limit);
+
+      if (error) {
+        logger.error('Error obteniendo candidatos:', { error: error.message });
+        return [];
+      }
+
+      return (data || []).map(profile => this.mapProfileToMatchingProfile(profile));
+    } catch (error) {
+      logger.error('Error en getPotentialCandidates:', { error: String(error) });
+      return [];
+    }
+  }
+
+  /**
+   * Mapea perfil de Supabase a MatchingProfile
+   */
+  private mapProfileToMatchingProfile(profile: any): MatchingProfile {
+    return {
+      id: profile.id,
+      name: profile.first_name || 'Usuario',
+      age: profile.age || 25,
+      gender: profile.gender || 'no especificado',
+      interested_in: profile.interested_in || 'todos',
+      location: profile.location,
+      bio: profile.bio,
+      is_verified: profile.is_verified || false,
+      is_premium: profile.is_premium || false,
+      latitude: profile.latitude,
+      longitude: profile.longitude,
+      interests: profile.interests || [],
+      experience_level: profile.experience_level,
+      looking_for: profile.looking_for || [],
+      age_range_min: profile.age_range_min,
+      age_range_max: profile.age_range_max,
+      max_distance: profile.max_distance,
+      lastActive: profile.last_active || profile.updated_at
+    };
+  }
+
+  /**
+   * Genera insights detallados del match
+   */
+  private async generateMatchInsights(
+    user: MatchingProfile,
+    candidate: MatchingProfile,
+    compatibility: CompatibilityScore
+  ): Promise<MatchInsights> {
+    const compatibilityFactors: string[] = [];
+    const potentialChallenges: string[] = [];
+    const conversationStarters: string[] = [];
+    const activitySuggestions: string[] = [];
+
+    // Factores de compatibilidad
+    if (compatibility.interests > 0.8) {
+      compatibilityFactors.push('Intereses muy similares');
+    }
+    if (compatibility.personality > 0.8) {
+      compatibilityFactors.push('Personalidades complementarias');
+    }
+    if (compatibility.lifestyle > 0.8) {
+      compatibilityFactors.push('Estilo de vida compatible');
+    }
+
+    // Desafíos potenciales
+    if (compatibility.interests < 0.5) {
+      potentialChallenges.push('Intereses diferentes');
+    }
+    if (compatibility.personality < 0.5) {
+      potentialChallenges.push('Personalidades muy diferentes');
+    }
+
+    // Iniciadores de conversación
+    if (user.interests && candidate.interests) {
+      const sharedInterests = user.interests.filter(interest => 
+        candidate.interests?.includes(interest)
+      );
+      if (sharedInterests.length > 0) {
+        conversationStarters.push(`¿Te gusta ${sharedInterests[0]}?`);
+      }
+    }
+
+    // Sugerencias de actividades
+    if (compatibility.lifestyle > 0.7) {
+      activitySuggestions.push('Encuentro discreto en lugar privado');
+      activitySuggestions.push('Cena romántica');
+    }
+
+    // Evaluación de riesgo
+    let riskAssessment: 'low' | 'medium' | 'high' = 'low';
+    if (compatibility.overall < 0.6) {
+      riskAssessment = 'high';
+    } else if (compatibility.overall < 0.8) {
+      riskAssessment = 'medium';
+    }
+
+    return {
+      compatibilityFactors,
+      potentialChallenges,
+      conversationStarters,
+      activitySuggestions,
+      riskAssessment
+    };
+  }
+
+  /**
+   * Determina la calidad del match
+   */
+  private determineMatchQuality(compatibility: CompatibilityScore): 'excellent' | 'good' | 'fair' | 'poor' {
+    if (compatibility.overall >= 0.9) return 'excellent';
+    if (compatibility.overall >= 0.8) return 'good';
+    if (compatibility.overall >= 0.6) return 'fair';
+    return 'poor';
+  }
+
+  /**
+   * Calcula score de recomendación
+   */
+  private calculateRecommendationScore(
+    compatibility: CompatibilityScore,
+    insights: MatchInsights
+  ): number {
+    let score = compatibility.overall * 100;
+    
+    // Bonus por factores positivos
+    score += insights.compatibilityFactors.length * 5;
+    
+    // Penalización por desafíos
+    score -= insights.potentialChallenges.length * 10;
+    
+    // Bonus por baja evaluación de riesgo
+    if (insights.riskAssessment === 'low') score += 15;
+    else if (insights.riskAssessment === 'medium') score += 5;
+    else score -= 10;
+    
+    return Math.max(0, Math.min(100, score));
+  }
+
+  /**
+   * Calcula distancia entre perfiles
+   */
+  private calculateDistance(user: MatchingProfile, candidate: MatchingProfile): number | null {
+    if (!user.latitude || !user.longitude || !candidate.latitude || !candidate.longitude) {
+      return null;
+    }
+
+    const R = 6371; // Radio de la Tierra en km
+    const dLat = this.deg2rad(candidate.latitude - user.latitude);
+    const dLon = this.deg2rad(candidate.longitude - user.longitude);
+    const a = 
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(this.deg2rad(user.latitude)) * Math.cos(this.deg2rad(candidate.latitude)) * 
+      Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    const distance = R * c;
+
+    return Math.round(distance * 10) / 10; // Redondear a 1 decimal
+  }
+
+  /**
+   * Convierte grados a radianes
+   */
+  private deg2rad(deg: number): number {
+    return deg * (Math.PI/180);
+  }
+
+  /**
+   * Obtiene conexiones mutuas (simulado)
+   */
+  private async getMutualConnections(userId: string, candidateId: string): Promise<number> {
+    // TODO: Implementar cuando tengamos tabla de conexiones
+    return Math.floor(Math.random() * 5); // Simulado
   }
 
   /**

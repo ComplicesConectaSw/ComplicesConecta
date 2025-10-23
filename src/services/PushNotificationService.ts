@@ -1,449 +1,294 @@
-/**
- * PushNotificationService v3.3.0
- * 
- * Servicio para gestión de notificaciones push usando Firebase Cloud Messaging
- * Maneja preferencias de usuario, tokens de dispositivos y envío de notificaciones
- * 
- * Funcionalidades:
- * - Gestión de tokens FCM por dispositivo
- * - Preferencias de notificaciones por usuario
- * - Envío de notificaciones tipadas
- * - Historial de notificaciones
- * - Integración con sistema de reportes y tokens
- */
+import { logger } from '@/lib/logger';
 
-import { supabase } from '@/integrations/supabase/client'
-import { logger } from '@/lib/logger'
-
-// Tipos de notificaciones soportadas
-export type NotificationType = 
-  | 'report_resolved' 
-  | 'token_transaction' 
-  | 'moderation_action'
-  | 'system_alert'
-  | 'match_notification'
-  | 'message_notification'
-
-export type DeliveryMethod = 'push' | 'email' | 'in_app' | 'sms'
-export type DeviceType = 'android' | 'ios' | 'web'
-export type NotificationStatus = 'pending' | 'sent' | 'delivered' | 'failed'
-
-// Interfaces para notificaciones
-export interface NotificationPayload {
-  title: string
-  body: string
-  data?: Record<string, any>
-  imageUrl?: string
-  clickAction?: string
+export interface PushSubscriptionData {
+  endpoint: string;
+  keys: {
+    p256dh: string;
+    auth: string;
+  };
 }
 
-export interface NotificationResponse {
-  success: boolean
-  notification?: any
-  error?: string
-}
-
-export interface PreferencesResponse {
-  success: boolean
-  preferences?: any[]
-  error?: string
-}
-
-export interface DeviceTokenResponse {
-  success: boolean
-  token?: any
-  error?: string
-}
-
-/**
- * Servicio principal de notificaciones push
- */
 export class PushNotificationService {
-  private static instance: PushNotificationService
-  private fcmServerKey: string | null = null
-
-  private constructor() {
-    this.initializeFirebase()
-  }
-
-  public static getInstance(): PushNotificationService {
-    if (!PushNotificationService.instance) {
-      PushNotificationService.instance = new PushNotificationService()
-    }
-    return PushNotificationService.instance
+  private static isSupported(): boolean {
+    return 'serviceWorker' in navigator && 'PushManager' in window;
   }
 
   /**
-   * Inicializar configuración de Firebase
+   * Register Service Worker for push notifications
    */
-  private initializeFirebase(): void {
-    this.fcmServerKey = process.env.VITE_FCM_SERVER_KEY || null
-    
-    if (!this.fcmServerKey) {
-      logger.warn('FCM Server Key no configurado - notificaciones push deshabilitadas')
-    }
-  }
-
-  /**
-   * Registrar token de dispositivo para un usuario
-   */
-  async registerDeviceToken(
-    userId: string,
-    deviceToken: string,
-    deviceType: DeviceType,
-    _deviceInfo: Record<string, any> = {}
-  ): Promise<DeviceTokenResponse> {
+  static async registerServiceWorker(): Promise<ServiceWorkerRegistration | null> {
     try {
-      // Desactivar tokens antiguos del mismo dispositivo
-      await supabase
-        .from('tokens')
-        .update({ is_revoked: true })
-        .eq('user_id', userId)
-        .eq('token_type', 'device')
-
-      // Insertar nuevo token
-      const { data, error } = await supabase
-        .from('tokens')
-        .insert({
-          user_id: userId,
-          token_type: 'device',
-          token_hash: deviceToken,
-          expires_at: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(), // 1 año
-          is_revoked: false
-        })
-        .select()
-        .single()
-
-      if (error) {
-        logger.error('Error registrando token de dispositivo:', { error: error.message })
-        return { success: false, error: error.message }
+      if (!this.isSupported()) {
+        logger.info('Push notifications not supported');
+        return null;
       }
 
-      logger.info('Token de dispositivo registrado:', { userId, deviceType })
-      return { success: true, token: data }
+      const registration = await navigator.serviceWorker.register('/sw-notifications.js', {
+        scope: '/'
+      });
 
+      logger.info('✅ Service Worker registrado:', { 
+        scope: registration.scope,
+        state: registration.active?.state 
+      });
+
+      return registration;
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
-      logger.error('Error inesperado registrando token:', { error: errorMessage })
-      return { success: false, error: errorMessage }
+      logger.error('Error registrando Service Worker:', { error: String(error) });
+      return null;
     }
   }
 
   /**
-   * Obtener preferencias de notificación de un usuario
+   * Request notification permission
    */
-  async getUserPreferences(userId: string): Promise<PreferencesResponse> {
+  static async requestPermission(): Promise<NotificationPermission> {
     try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('user_id', userId)
-
-      if (error) {
-        logger.error('Error obteniendo preferencias:', { error: error.message })
-        return { success: false, error: error.message }
+      if (!this.isSupported()) {
+        return 'denied';
       }
 
-      return { success: true, preferences: data || [] }
-
+      const permission = await Notification.requestPermission();
+      logger.info('Permiso de notificaciones:', { permission });
+      
+      return permission;
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
-      return { success: false, error: errorMessage }
+      logger.error('Error solicitando permiso:', { error: String(error) });
+      return 'denied';
     }
   }
 
   /**
-   * Actualizar preferencias de notificación
+   * Subscribe to push notifications
    */
-  async updateUserPreferences(
-    userId: string,
-    _notificationType: NotificationType,
-    _enabled: boolean,
-    _deliveryMethod: DeliveryMethod = 'push',
-    _settings: Record<string, any> = {}
-  ): Promise<NotificationResponse> {
+  static async subscribeToPush(): Promise<PushSubscriptionData | null> {
     try {
-      const { data: _data, error } = await supabase
-        .from('profiles')
-        .update({
-          updated_at: new Date().toISOString()
-        })
-        .eq('user_id', userId)
-        .select()
-        .single()
-
-      if (error) {
-        logger.error('Error actualizando preferencias:', { error: error.message })
-        return { success: false, error: error.message }
+      const registration = await this.registerServiceWorker();
+      if (!registration) {
+        return null;
       }
 
-      return { success: true }
+      const permission = await this.requestPermission();
+      if (permission !== 'granted') {
+        logger.info('Permiso de notificaciones denegado');
+        return null;
+      }
 
+      const subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: this.urlBase64ToUint8Array(
+          process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || ''
+        ) as unknown as ArrayBuffer
+      });
+
+      const subscriptionData: PushSubscriptionData = {
+        endpoint: subscription.endpoint,
+        keys: {
+          p256dh: this.arrayBufferToBase64(subscription.getKey('p256dh')!),
+          auth: this.arrayBufferToBase64(subscription.getKey('auth')!)
+        }
+      };
+
+      logger.info('✅ Suscripción a push notifications creada');
+      return subscriptionData;
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
-      return { success: false, error: errorMessage }
+      logger.error('Error suscribiéndose a push notifications:', { error: String(error) });
+      return null;
     }
   }
 
   /**
-   * Enviar notificación de reporte resuelto
+   * Unsubscribe from push notifications
    */
-  async sendReportNotification(
-    userId: string,
-    reportId: string,
-    resolution: 'resolved' | 'dismissed'
-  ): Promise<NotificationResponse> {
-    const title = resolution === 'resolved' 
-      ? '✅ Reporte Resuelto'
-      : '📋 Reporte Revisado'
-    
-    const body = resolution === 'resolved'
-      ? 'Tu reporte ha sido resuelto por nuestro equipo de moderación'
-      : 'Tu reporte ha sido revisado y archivado'
-
-    return this.sendNotification(userId, 'report_resolved', {
-      title,
-      body,
-      data: {
-        reportId,
-        resolution,
-        clickAction: `/reports/${reportId}`
-      }
-    })
-  }
-
-  /**
-   * Enviar notificación de transacción de tokens
-   */
-  async sendTokenNotification(
-    userId: string,
-    transactionType: string,
-    amount: number,
-    tokenType: 'CMPX' | 'GTK'
-  ): Promise<NotificationResponse> {
-    const isEarning = transactionType.startsWith('earn_')
-    const title = isEarning ? '🪙 Tokens Recibidos' : '💸 Tokens Gastados'
-    const body = isEarning 
-      ? `Has recibido ${amount} ${tokenType} tokens`
-      : `Has gastado ${amount} ${tokenType} tokens`
-
-    return this.sendNotification(userId, 'token_transaction', {
-      title,
-      body,
-      data: {
-        transactionType,
-        amount,
-        tokenType,
-        clickAction: '/tokens/dashboard'
-      }
-    })
-  }
-
-  /**
-   * Enviar notificación de acción de moderación
-   */
-  async sendModerationNotification(
-    userId: string,
-    action: string,
-    description: string
-  ): Promise<NotificationResponse> {
-    const title = '⚠️ Acción de Moderación'
-    const body = description
-
-    return this.sendNotification(userId, 'moderation_action', {
-      title,
-      body,
-      data: {
-        action,
-        description,
-        clickAction: '/profile/settings'
-      }
-    })
-  }
-
-  /**
-   * Enviar alerta del sistema
-   */
-  async sendSystemAlert(
-    userId: string,
-    alertType: string,
-    message: string
-  ): Promise<NotificationResponse> {
-    const title = '🔔 Alerta del Sistema'
-    const body = message
-
-    return this.sendNotification(userId, 'system_alert', {
-      title,
-      body,
-      data: {
-        alertType,
-        message,
-        clickAction: '/notifications'
-      }
-    })
-  }
-
-  /**
-   * Método principal para enviar notificaciones
-   */
-  private async sendNotification(
-    userId: string,
-    type: NotificationType,
-    payload: NotificationPayload
-  ): Promise<NotificationResponse> {
+  static async unsubscribeFromPush(): Promise<boolean> {
     try {
-      // Verificar preferencias del usuario
-      const preferences = await this.getUserPreferences(userId)
-      if (!preferences.success) {
-        return { success: false, error: 'No se pudieron obtener las preferencias' }
+      const registration = await navigator.serviceWorker.ready;
+      const subscription = await registration.pushManager.getSubscription();
+      
+      if (subscription) {
+        await subscription.unsubscribe();
+        logger.info('❌ Suscripción a push notifications cancelada');
+        return true;
       }
-
-      const userPreference = preferences.preferences?.find(
-        p => p.notification_type === type && p.delivery_method === 'push'
-      )
-
-      // Si el usuario ha deshabilitado este tipo de notificación, no enviar
-      if (userPreference && !userPreference.enabled) {
-        logger.info('Notificación omitida por preferencias del usuario:', { userId, type })
-        return { success: true }
-      }
-
-      // Obtener tokens de dispositivos activos
-      const { data: deviceTokens, error: tokensError } = await supabase
-        .from('tokens')
-        .select('*')
-        .eq('user_id', userId)
-        .eq('is_revoked', false)
-
-      if (tokensError || !deviceTokens || deviceTokens.length === 0) {
-        logger.warn('No hay tokens de dispositivo activos para el usuario:', { userId })
-        return { success: false, error: 'No hay dispositivos registrados' }
-      }
-
-      // Crear registro en historial
-      const { data: historyRecord, error: historyError } = await supabase
-        .from('notifications')
-        .insert({
-          user_id: userId,
-          type: type,
-          title: payload.title,
-          message: payload.body,
-          metadata: payload.data || {}
-        })
-        .select()
-        .single()
-
-      if (historyError) {
-        logger.error('Error creando historial de notificación:', { error: historyError.message })
-      }
-
-      // Simular envío FCM (en producción usaría Firebase Admin SDK)
-      const successCount = Math.random() > 0.1 ? deviceTokens.length : 0 // 90% éxito
-
-      // Actualizar estado en historial
-      if (historyRecord) {
-        const _status: NotificationStatus = successCount > 0 ? 'sent' : 'failed'
-        // No actualizar updated_at ya que no existe en la tabla notifications
-      }
-
-      logger.info('Notificación enviada:', { 
-        userId, 
-        type, 
-        devicesCount: deviceTokens.length, 
-        successCount 
-      })
-
-      return { 
-        success: successCount > 0, 
-        notification: historyRecord,
-        error: successCount === 0 ? 'Falló el envío a todos los dispositivos' : undefined
-      }
-
+      
+      return false;
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
-      logger.error('Error enviando notificación:', { error: errorMessage })
-      return { success: false, error: errorMessage }
+      logger.error('Error cancelando suscripción:', { error: String(error) });
+      return false;
     }
   }
 
   /**
-   * Obtener historial de notificaciones de un usuario
+   * Check if user is subscribed to push notifications
    */
-  async getNotificationHistory(
-    userId: string,
-    limit: number = 50
-  ): Promise<{ success: boolean; notifications?: any[]; error?: string }> {
+  static async isSubscribed(): Promise<boolean> {
     try {
-      const { data, error } = await supabase
-        .from('notifications')
-        .select('*')
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false })
-        .limit(limit)
-
-      if (error) {
-        return { success: false, error: error.message }
-      }
-
-      return { success: true, notifications: data || [] }
-
+      const registration = await navigator.serviceWorker.ready;
+      const subscription = await registration.pushManager.getSubscription();
+      return !!subscription;
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
-      return { success: false, error: errorMessage }
+      logger.error('Error verificando suscripción:', { error: String(error) });
+      return false;
     }
   }
 
   /**
-   * Crear preferencias por defecto para un nuevo usuario
+   * Get current push subscription
    */
-  async createDefaultPreferences(userId: string): Promise<NotificationResponse> {
+  static async getCurrentSubscription(): Promise<PushSubscriptionData | null> {
     try {
-      // Simplemente actualizar el perfil existente con timestamp
-      const { error } = await supabase
-        .from('profiles')
-        .update({
-          updated_at: new Date().toISOString()
-        })
-        .eq('user_id', userId)
-
-      if (error) {
-        logger.error('Error creando preferencias por defecto:', { error: error.message })
-        return { success: false, error: error.message }
+      const registration = await navigator.serviceWorker.ready;
+      const subscription = await registration.pushManager.getSubscription();
+      
+      if (!subscription) {
+        return null;
       }
 
-      logger.info('Preferencias por defecto creadas:', { userId })
-      return { success: true }
-
+      return {
+        endpoint: subscription.endpoint,
+        keys: {
+          p256dh: this.arrayBufferToBase64(subscription.getKey('p256dh')!),
+          auth: this.arrayBufferToBase64(subscription.getKey('auth')!)
+        }
+      };
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
-      return { success: false, error: errorMessage }
+      logger.error('Error obteniendo suscripción actual:', { error: String(error) });
+      return null;
+    }
+  }
+
+  /**
+   * Send test notification
+   */
+  static async sendTestNotification(): Promise<boolean> {
+    try {
+      const registration = await navigator.serviceWorker.ready;
+      
+      await registration.showNotification('Prueba de notificación', {
+        body: 'Esta es una notificación de prueba',
+        icon: '/icon-192x192.png',
+        badge: '/badge-72x72.png',
+        tag: 'test-notification',
+        requireInteraction: true
+        // actions: [
+        //   {
+        //     action: 'test',
+        //     title: 'Probar'
+        //   }
+        // ]
+      });
+
+      logger.info('📱 Notificación de prueba enviada');
+      return true;
+    } catch (error) {
+      logger.error('Error enviando notificación de prueba:', { error: String(error) });
+      return false;
+    }
+  }
+
+  /**
+   * Setup push notifications for a user
+   */
+  static async setupForUser(userId: string): Promise<boolean> {
+    try {
+      const subscriptionData = await this.subscribeToPush();
+      if (!subscriptionData) {
+        return false;
+      }
+
+      // TODO: Enviar subscriptionData al servidor para asociarlo con el usuario
+      logger.info('🔔 Push notifications configuradas para usuario:', { userId });
+      
+      return true;
+    } catch (error) {
+      logger.error('Error configurando push notifications:', { error: String(error) });
+      return false;
+    }
+  }
+
+  /**
+   * Convert URL-safe base64 to Uint8Array
+   */
+  private static urlBase64ToUint8Array(base64String: string): Uint8Array {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+      .replace(/-/g, '+')
+      .replace(/_/g, '/');
+
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+  }
+
+  /**
+   * Convert ArrayBuffer to base64
+   */
+  private static arrayBufferToBase64(buffer: ArrayBuffer): string {
+    const bytes = new Uint8Array(buffer);
+    let binary = '';
+    for (let i = 0; i < bytes.byteLength; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return window.btoa(binary);
+  }
+
+  /**
+   * Check notification permission status
+   */
+  static getPermissionStatus(): NotificationPermission {
+    if (!this.isSupported()) {
+      return 'denied';
+    }
+    return Notification.permission;
+  }
+
+  /**
+   * Show local notification
+   */
+  static async showLocalNotification(
+    title: string,
+    options?: NotificationOptions
+  ): Promise<boolean> {
+    try {
+      if (!this.isSupported()) {
+        return false;
+      }
+
+      const registration = await navigator.serviceWorker.ready;
+      await registration.showNotification(title, {
+        icon: '/icon-192x192.png',
+        badge: '/badge-72x72.png',
+        ...options
+      });
+
+      return true;
+    } catch (error) {
+      logger.error('Error mostrando notificación local:', { error: String(error) });
+      return false;
+    }
+  }
+
+  /**
+   * Clear all notifications
+   */
+  static async clearAllNotifications(): Promise<void> {
+    try {
+      const registration = await navigator.serviceWorker.ready;
+      const notifications = await registration.getNotifications();
+      
+      notifications.forEach(notification => {
+        notification.close();
+      });
+
+      logger.info('🧹 Todas las notificaciones limpiadas');
+    } catch (error) {
+      logger.error('Error limpiando notificaciones:', { error: String(error) });
     }
   }
 }
 
-// Exportar instancia singleton
-export const pushNotificationService = PushNotificationService.getInstance()
-
-// Utilidades para notificaciones específicas
-export const notificationUtils = {
-  /**
-   * Enviar notificación cuando se resuelve un reporte
-   */
-  async notifyReportResolution(reportId: string, reporterId: string, resolution: 'resolved' | 'dismissed') {
-    return pushNotificationService.sendReportNotification(reporterId, reportId, resolution)
-  },
-
-  /**
-   * Enviar notificación de transacción de tokens
-   */
-  async notifyTokenTransaction(userId: string, type: string, amount: number, tokenType: 'CMPX' | 'GTK') {
-    return pushNotificationService.sendTokenNotification(userId, type, amount, tokenType)
-  },
-
-  /**
-   * Enviar notificación de acción de moderación
-   */
-  async notifyModerationAction(userId: string, action: string, description: string) {
-    return pushNotificationService.sendModerationNotification(userId, action, description)
-  }
-}
+export default PushNotificationService;

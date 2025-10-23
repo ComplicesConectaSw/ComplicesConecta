@@ -1,343 +1,297 @@
-import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Switch } from "@/components/ui/switch";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  Bell, 
-  Heart, 
-  MessageCircle, 
-  Users, 
-  Calendar,
-  Settings,
-  Smartphone,
-  Mail,
-  Volume2,
-  Vibrate
-} from "lucide-react";
+import React, { useState } from 'react';
+import { Bell, X, Check, Trash2, Settings, Volume2, VolumeX } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Separator } from '@/components/ui/separator';
+import { Switch } from '@/components/ui/switch';
+import { useRealtimeNotifications } from '@/hooks/useRealtimeNotifications';
+import { NotificationService } from '@/lib/notifications';
 import { logger } from '@/lib/logger';
 
-// Mock notifications data
-const mockNotifications = [
-  {
-    id: 1,
-    type: "match",
-    title: "¡Nuevo Match!",
-    message: "Tienes un nuevo match con Ana M.",
-    time: "Hace 5 min",
-    read: false,
-    avatar: "A"
-  },
-  {
-    id: 2,
-    type: "message",
-    title: "Nuevo mensaje",
-    message: "Carlos R. te ha enviado un mensaje",
-    time: "Hace 15 min",
-    read: false,
-    avatar: "C"
-  },
-  {
-    id: 3,
-    type: "like",
-    title: "Alguien te dio like",
-    message: "Tienes 3 nuevos likes",
-    time: "Hace 1 hora",
-    read: true,
-    avatar: "?"
-  },
-  {
-    id: 4,
-    type: "event",
-    title: "Evento cerca",
-    message: "Speed Dating en tu zona - Mañana 20:00",
-    time: "Hace 2 horas",
-    read: true,
-    avatar: "📅"
-  },
-  {
-    id: 5,
-    type: "premium",
-    title: "Función Premium",
-    message: "¡Usa tu boost gratuito antes de que expire!",
-    time: "Hace 3 horas",
-    read: true,
-    avatar: "👑"
-  }
-];
+interface NotificationCenterProps {
+  userId: string;
+  className?: string;
+}
 
-const notificationSettings = [
-  {
-    category: "Matches",
-    icon: Heart,
-    color: "text-red-500",
-    settings: [
-      { id: "new_matches", label: "Nuevos matches", enabled: true },
-      { id: "mutual_likes", label: "Likes mutuos", enabled: true },
-      { id: "super_likes", label: "Super likes recibidos", enabled: true }
-    ]
-  },
-  {
-    category: "Mensajes",
-    icon: MessageCircle,
-    color: "text-blue-500",
-    settings: [
-      { id: "new_messages", label: "Nuevos mensajes", enabled: true },
-      { id: "message_reactions", label: "Reacciones a mensajes", enabled: false },
-      { id: "read_receipts", label: "Confirmaciones de lectura", enabled: true }
-    ]
-  },
-  {
-    category: "Social",
-    icon: Users,
-    color: "text-green-500",
-    settings: [
-      { id: "profile_views", label: "Vistas de perfil", enabled: false },
-      { id: "friend_joins", label: "Amigos se unen", enabled: true },
-      { id: "recommendations", label: "Recomendaciones", enabled: true }
-    ]
-  },
-  {
-    category: "Eventos",
-    icon: Calendar,
-    color: "text-purple-500",
-    settings: [
-      { id: "nearby_events", label: "Eventos cercanos", enabled: true },
-      { id: "event_reminders", label: "Recordatorios de eventos", enabled: true },
-      { id: "event_updates", label: "Actualizaciones de eventos", enabled: false }
-    ]
-  }
-];
+export function NotificationCenter({ userId, className }: NotificationCenterProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [preferences, setPreferences] = useState({
+    push_notifications: true,
+    sound_enabled: true,
+    auto_mark_read: false
+  });
 
-const getNotificationIcon = (type: string) => {
-  switch (type) {
-    case "match": return <Heart className="h-4 w-4 text-red-500" />;
-    case "message": return <MessageCircle className="h-4 w-4 text-blue-500" />;
-    case "like": return <Heart className="h-4 w-4 text-pink-500" />;
-    case "event": return <Calendar className="h-4 w-4 text-purple-500" />;
-    case "premium": return <span className="text-yellow-500">👑</span>;
-    default: return <Bell className="h-4 w-4 text-gray-500" />;
-  }
-};
+  const {
+    notifications,
+    unreadCount,
+    isLoading,
+    error,
+    markAsRead,
+    markAllAsRead,
+    deleteNotification,
+    refresh
+  } = useRealtimeNotifications({
+    userId,
+    enabled: true,
+    autoMarkAsRead: preferences.auto_mark_read,
+    showPushNotifications: preferences.push_notifications
+  });
 
-export const NotificationCenter = () => {
-  const [activeTab, setActiveTab] = useState("notifications");
-  const [settings, setSettings] = useState(notificationSettings);
-  
-  const unreadCount = mockNotifications.filter(n => !n.read).length;
-
-  const toggleSetting = (categoryIndex: number, settingIndex: number) => {
-    setSettings(prev => prev.map((category, cIndex) => 
-      cIndex === categoryIndex 
-        ? {
-            ...category,
-            settings: category.settings.map((setting, sIndex) =>
-              sIndex === settingIndex 
-                ? { ...setting, enabled: !setting.enabled }
-                : setting
-            )
-          }
-        : category
-    ));
+  const handleNotificationClick = async (notification: any) => {
+    if (!notification.is_read) {
+      await markAsRead(notification.id);
+    }
+    
+    // Navigate to action URL if available
+    if (notification.action_url) {
+      window.location.href = notification.action_url;
+    }
   };
 
-  const markAllAsRead = () => {
-    // In a real app, this would update the notifications
-    logger.info("Marking all as read");
+  const handleDeleteNotification = async (notificationId: string, event: React.MouseEvent) => {
+    event.stopPropagation();
+    await deleteNotification(notificationId);
+  };
+
+  const handleMarkAllAsRead = async () => {
+    await markAllAsRead();
+  };
+
+  const handleRefresh = async () => {
+    await refresh();
+  };
+
+  const toggleSettings = () => {
+    setShowSettings(!showSettings);
+  };
+
+  const updatePreference = async (key: string, value: boolean) => {
+    setPreferences(prev => ({ ...prev, [key]: value }));
+    
+    try {
+      await NotificationService.updateUserPreferences(userId, {
+        [key]: value
+      });
+    } catch (error) {
+      logger.error('Error updating preferences:', { error: String(error) });
+    }
+  };
+
+  const formatTimeAgo = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
+    
+    if (diffInMinutes < 1) return 'Ahora';
+    if (diffInMinutes < 60) return `${diffInMinutes}m`;
+    if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}h`;
+    return `${Math.floor(diffInMinutes / 1440)}d`;
+  };
+
+  const getNotificationIcon = (type: string) => {
+    switch (type) {
+      case 'match': return '💕';
+      case 'like': return '❤️';
+      case 'message': return '💬';
+      case 'achievement': return '🏆';
+      case 'alert': return '⚠️';
+      case 'system': return '🔔';
+      default: return '📢';
+    }
+  };
+
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'urgent': return 'text-red-600';
+      case 'high': return 'text-orange-600';
+      case 'normal': return 'text-blue-600';
+      case 'low': return 'text-gray-600';
+      default: return 'text-blue-600';
+    }
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold text-foreground">Notificaciones</h2>
-          <p className="text-muted-foreground">
-            Tienes {unreadCount} notificaciones sin leer
-          </p>
-        </div>
-        <Button variant="outline" onClick={markAllAsRead}>
-          Marcar todas como leídas
-        </Button>
-      </div>
+    <div className={`relative ${className}`}>
+      {/* Notification Bell Button */}
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={() => setIsOpen(!isOpen)}
+        className="relative"
+      >
+        <Bell className="h-5 w-5" />
+        {unreadCount > 0 && (
+          <Badge 
+            variant="destructive" 
+            className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 text-xs flex items-center justify-center"
+          >
+            {unreadCount > 99 ? '99+' : unreadCount}
+          </Badge>
+        )}
+      </Button>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2 bg-muted/50 rounded-2xl p-2">
-          <TabsTrigger value="notifications" className="rounded-xl">
-            <Bell className="h-4 w-4 mr-2" />
-            Notificaciones
+      {/* Notification Panel */}
+      {isOpen && (
+        <Card className="absolute right-0 top-12 w-96 z-50 shadow-lg">
+          <CardHeader className="pb-3">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-lg">Notificaciones</CardTitle>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleRefresh}
+                  disabled={isLoading}
+                >
+                  {isLoading ? '...' : 'Actualizar'}
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={toggleSettings}
+                >
+                  <Settings className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+            
             {unreadCount > 0 && (
-              <Badge variant="destructive" className="ml-2 text-xs">
-                {unreadCount}
-              </Badge>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">
+                  {unreadCount} sin leer
+                </span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleMarkAllAsRead}
+                  className="h-7"
+                >
+                  <Check className="h-3 w-3 mr-1" />
+                  Marcar todas como leídas
+                </Button>
+              </div>
             )}
-          </TabsTrigger>
-          <TabsTrigger value="settings" className="rounded-xl">
-            <Settings className="h-4 w-4 mr-2" />
-            Configuración
-          </TabsTrigger>
-        </TabsList>
+          </CardHeader>
 
-        <TabsContent value="notifications" className="space-y-4">
-          {mockNotifications.map((notification) => (
-            <Card 
-              key={notification.id}
-              className={`shadow-soft transition-all duration-300 cursor-pointer hover:shadow-glow ${
-                !notification.read ? "border-primary/30 bg-primary/5" : ""
-              }`}
-            >
-              <CardContent className="p-4">
-                <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0">
-                    <div className="w-10 h-10 bg-muted rounded-full flex items-center justify-center">
-                      {notification.avatar?.length === 1 ? (
-                        <span className="font-medium">{notification.avatar}</span>
+          <CardContent className="p-0">
+            {showSettings && (
+              <div className="p-4 border-b">
+                <h4 className="font-medium mb-3">Configuración</h4>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      {preferences.push_notifications ? (
+                        <Volume2 className="h-4 w-4" />
                       ) : (
-                        <span>{notification.avatar}</span>
+                        <VolumeX className="h-4 w-4" />
                       )}
+                      <span className="text-sm">Notificaciones push</span>
                     </div>
+                    <Switch
+                      checked={preferences.push_notifications}
+                      onCheckedChange={(checked) => updatePreference('push_notifications', checked)}
+                    />
                   </div>
                   
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2">
-                        {getNotificationIcon(notification.type)}
-                        <h4 className={`font-medium ${!notification.read ? "text-foreground" : "text-muted-foreground"}`}>
-                          {notification.title}
-                        </h4>
-                        {!notification.read && (
-                          <div className="w-2 h-2 bg-primary rounded-full"></div>
-                        )}
-                      </div>
-                      <span className="text-xs text-muted-foreground">
-                        {notification.time}
-                      </span>
-                    </div>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      {notification.message}
-                    </p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Sonido</span>
+                    <Switch
+                      checked={preferences.sound_enabled}
+                      onCheckedChange={(checked) => updatePreference('sound_enabled', checked)}
+                    />
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Marcar como leído automáticamente</span>
+                    <Switch
+                      checked={preferences.auto_mark_read}
+                      onCheckedChange={(checked) => updatePreference('auto_mark_read', checked)}
+                    />
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          ))}
-        </TabsContent>
+              </div>
+            )}
 
-        <TabsContent value="settings" className="space-y-6">
-          {/* Delivery Settings */}
-          <Card className="shadow-soft">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Smartphone className="h-5 w-5" />
-                Métodos de Entrega
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <Bell className="h-5 w-5 text-blue-500" />
-                  <div>
-                    <p className="font-medium">Notificaciones Push</p>
-                    <p className="text-sm text-muted-foreground">Recibir en el dispositivo</p>
-                  </div>
-                </div>
-                <Switch defaultChecked />
+            {error && (
+              <div className="p-4 text-center text-red-600 text-sm">
+                {error}
               </div>
-              
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <Mail className="h-5 w-5 text-green-500" />
-                  <div>
-                    <p className="font-medium">Email</p>
-                    <p className="text-sm text-muted-foreground">Resumen diario por correo</p>
-                  </div>
-                </div>
-                <Switch />
-              </div>
-              
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <Volume2 className="h-5 w-5 text-purple-500" />
-                  <div>
-                    <p className="font-medium">Sonido</p>
-                    <p className="text-sm text-muted-foreground">Reproducir sonido de notificación</p>
-                  </div>
-                </div>
-                <Switch defaultChecked />
-              </div>
-              
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <Vibrate className="h-5 w-5 text-orange-500" />
-                  <div>
-                    <p className="font-medium">Vibración</p>
-                    <p className="text-sm text-muted-foreground">Vibrar en notificaciones</p>
-                  </div>
-                </div>
-                <Switch defaultChecked />
-              </div>
-            </CardContent>
-          </Card>
+            )}
 
-          {/* Notification Categories */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Tipos de Notificación</h3>
-            {settings.map((category, categoryIndex) => {
-              const Icon = category.icon;
-              return (
-                <Card key={category.category} className="shadow-soft">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-base">
-                      <Icon className={`h-5 w-5 ${category.color}`} />
-                      {category.category}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    {category.settings.map((setting, settingIndex) => (
-                      <div key={setting.id} className="flex items-center justify-between">
-                        <div>
-                          <p className="font-medium text-sm">{setting.label}</p>
+            <ScrollArea className="h-96">
+              {notifications.length === 0 ? (
+                <div className="p-8 text-center text-muted-foreground">
+                  <Bell className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                  <p>No hay notificaciones</p>
+                </div>
+              ) : (
+                <div className="space-y-1">
+                  {notifications.map((notification, index) => (
+                    <div key={notification.id}>
+                      <div
+                        className={`p-4 hover:bg-muted/50 cursor-pointer transition-colors ${
+                          !notification.is_read ? 'bg-blue-50/50' : ''
+                        }`}
+                        onClick={() => handleNotificationClick(notification)}
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className="text-lg">
+                            {getNotificationIcon(notification.type)}
+                          </div>
+                          
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-1">
+                              <h4 className={`font-medium text-sm ${getPriorityColor(notification.priority)}`}>
+                                {notification.title}
+                              </h4>
+                              {!notification.is_read && (
+                                <div className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0" />
+                              )}
+                            </div>
+                            
+                            <p className="text-sm text-muted-foreground mb-2 line-clamp-2">
+                              {notification.message}
+                            </p>
+                            
+                            <div className="flex items-center justify-between">
+                              <span className="text-xs text-muted-foreground">
+                                {formatTimeAgo(notification.created_at)}
+                              </span>
+                              
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
+                                onClick={(e) => handleDeleteNotification(notification.id, e)}
+                              >
+                                <Trash2 className="h-3 w-3" />
+                              </Button>
+                            </div>
+                          </div>
                         </div>
-                        <Switch
-                          checked={setting.enabled}
-                          onCheckedChange={() => toggleSetting(categoryIndex, settingIndex)}
-                        />
                       </div>
-                    ))}
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-
-          {/* Quiet Hours */}
-          <Card className="shadow-soft">
-            <CardHeader>
-              <CardTitle>Horas Silenciosas</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-medium">Activar modo silencioso</p>
-                  <p className="text-sm text-muted-foreground">No recibir notificaciones durante ciertas horas</p>
+                      
+                      {index < notifications.length - 1 && <Separator />}
+                    </div>
+                  ))}
                 </div>
-                <Switch />
-              </div>
-              <div className="grid grid-cols-2 gap-4 opacity-50">
-                <div>
-                  <label className="text-sm font-medium">Desde</label>
-                  <p className="text-sm text-muted-foreground">22:00</p>
-                </div>
-                <div>
-                  <label className="text-sm font-medium">Hasta</label>
-                  <p className="text-sm text-muted-foreground">08:00</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+              )}
+            </ScrollArea>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
-};
+}
+
+export default NotificationCenter;

@@ -18,6 +18,15 @@ export interface CacheConfig {
   enablePersistentCache: boolean;
   enableMemoryCache: boolean;
   cleanupInterval: number; // seconds
+  enablePredictiveCache: boolean;
+  enableAdaptiveTTL: boolean;
+  enableDistributedCache: boolean;
+  cacheWarmingEnabled: boolean;
+  maxConcurrentRequests: number;
+  batchSize: number;
+  compressionThreshold: number; // bytes
+  evictionPolicy: 'lru' | 'lfu' | 'fifo' | 'adaptive';
+  priorityLevels: number;
 }
 
 export interface CacheEntry<T = any> {
@@ -29,6 +38,11 @@ export interface CacheEntry<T = any> {
   lastAccessed: number;
   compressed: boolean;
   size: number;
+  priority: number;
+  predictedAccessTime?: number;
+  accessPattern: 'frequent' | 'recent' | 'sporadic' | 'burst';
+  dependencies: string[];
+  tags: string[];
 }
 
 export interface CacheStats {
@@ -42,12 +56,33 @@ export interface CacheStats {
   totalMisses: number;
   averageAccessTime: number;
   compressionRatio: number;
+  predictiveHits: number;
+  adaptiveTTLAdjustments: number;
+  evictionCount: number;
+  warmingHits: number;
+  distributedSyncs: number;
+  performanceScore: number;
 }
 
 export interface CacheInvalidationRule {
   pattern: string;
-  strategy: 'exact' | 'prefix' | 'regex';
+  strategy: 'exact' | 'prefix' | 'regex' | 'dependency' | 'tag';
   priority: number;
+  cascade: boolean;
+}
+
+export interface CachePrediction {
+  key: string;
+  probability: number;
+  expectedAccessTime: number;
+  confidence: number;
+}
+
+export interface CacheWarmingStrategy {
+  patterns: string[];
+  priority: number;
+  frequency: number; // seconds
+  dependencies: string[];
 }
 
 class AdvancedCacheService {
@@ -60,7 +95,16 @@ class AdvancedCacheService {
     compressionEnabled: true,
     enablePersistentCache: true,
     enableMemoryCache: true,
-    cleanupInterval: 60 // 1 minute
+    cleanupInterval: 60, // 1 minute
+    enablePredictiveCache: true,
+    enableAdaptiveTTL: true,
+    enableDistributedCache: false,
+    cacheWarmingEnabled: true,
+    maxConcurrentRequests: 10,
+    batchSize: 50,
+    compressionThreshold: 1024, // 1KB
+    evictionPolicy: 'adaptive',
+    priorityLevels: 5
   };
 
   private stats = {
@@ -68,7 +112,12 @@ class AdvancedCacheService {
     misses: 0,
     totalAccessTime: 0,
     compressedSize: 0,
-    originalSize: 0
+    originalSize: 0,
+    predictiveHits: 0,
+    adaptiveTTLAdjustments: 0,
+    evictionCount: 0,
+    warmingHits: 0,
+    distributedSyncs: 0
   };
 
   private invalidationRules: CacheInvalidationRule[] = [];
@@ -253,6 +302,9 @@ class AdvancedCacheService {
       ? this.stats.compressedSize / this.stats.originalSize 
       : 1;
 
+    // Calcular score de rendimiento
+    const performanceScore = this.calculatePerformanceScore(hitRate, averageAccessTime, compressionRatio);
+
     return {
       memoryEntries: this.memoryCache.size,
       persistentEntries: 0, // TODO: Implementar conteo de entradas persistentes
@@ -263,8 +315,36 @@ class AdvancedCacheService {
       totalHits: this.stats.hits,
       totalMisses: this.stats.misses,
       averageAccessTime,
-      compressionRatio
+      compressionRatio,
+      predictiveHits: this.stats.predictiveHits,
+      adaptiveTTLAdjustments: this.stats.adaptiveTTLAdjustments,
+      evictionCount: this.stats.evictionCount,
+      warmingHits: this.stats.warmingHits,
+      distributedSyncs: this.stats.distributedSyncs,
+      performanceScore
     };
+  }
+
+  /**
+   * Calcula score de rendimiento general
+   */
+  private calculatePerformanceScore(hitRate: number, averageAccessTime: number, compressionRatio: number): number {
+    let score = 0;
+    
+    // Hit rate (40% del score)
+    score += hitRate * 40;
+    
+    // Velocidad de acceso (30% del score)
+    score += Math.max(0, 30 - (averageAccessTime / 2));
+    
+    // Compresión (20% del score)
+    score += Math.max(0, 20 - (compressionRatio * 20));
+    
+    // Predicciones exitosas (10% del score)
+    const predictiveRate = this.stats.predictiveHits / Math.max(this.stats.hits, 1);
+    score += predictiveRate * 10;
+    
+    return Math.min(score, 100);
   }
 
   /**
@@ -357,7 +437,11 @@ class AdvancedCacheService {
       accessCount: 1,
       lastAccessed: now,
       compressed,
-      size
+      size,
+      priority: 1, // Prioridad por defecto
+      accessPattern: 'recent',
+      dependencies: [],
+      tags: []
     };
 
     this.memoryCache.set(key, entry);
@@ -443,7 +527,11 @@ class AdvancedCacheService {
       accessCount: 1,
       lastAccessed: now,
       compressed,
-      size
+      size,
+      priority: 1,
+      accessPattern: 'recent',
+      dependencies: [],
+      tags: []
     };
 
     return new Promise((resolve, reject) => {
@@ -580,10 +668,10 @@ class AdvancedCacheService {
    */
   private setupDefaultInvalidationRules(): void {
     this.invalidationRules = [
-      { pattern: 'profiles:', strategy: 'prefix', priority: 1 },
-      { pattern: 'stories:', strategy: 'prefix', priority: 2 },
-      { pattern: 'analytics:', strategy: 'prefix', priority: 3 },
-      { pattern: 'user:', strategy: 'prefix', priority: 1 }
+      { pattern: 'profiles:', strategy: 'prefix', priority: 1, cascade: true },
+      { pattern: 'stories:', strategy: 'prefix', priority: 2, cascade: true },
+      { pattern: 'analytics:', strategy: 'prefix', priority: 3, cascade: false },
+      { pattern: 'user:', strategy: 'prefix', priority: 1, cascade: true }
     ];
   }
 
@@ -612,10 +700,359 @@ class AdvancedCacheService {
       misses: 0,
       totalAccessTime: 0,
       compressedSize: 0,
-      originalSize: 0
+      originalSize: 0,
+      predictiveHits: 0,
+      adaptiveTTLAdjustments: 0,
+      evictionCount: 0,
+      warmingHits: 0,
+      distributedSyncs: 0
     };
 
     logger.info('🧹 All cache cleared');
+  }
+
+  /**
+   * Cache predictivo - predice qué datos se necesitarán próximamente
+   */
+  async predictAndWarm(accessPattern: string[]): Promise<void> {
+    if (!this.config.enablePredictiveCache) return;
+
+    try {
+      const predictions = this.generatePredictions(accessPattern);
+      
+      for (const prediction of predictions) {
+        if (prediction.probability > 0.7) {
+          // Pre-cargar datos predichos
+          await this.warmCache(prediction.key);
+        }
+      }
+
+      logger.info('🔮 Predictive cache warming completed', { 
+        predictions: predictions.length 
+      });
+    } catch (error) {
+      logger.error('Error in predictive cache warming:', { error: String(error) });
+    }
+  }
+
+  /**
+   * Genera predicciones basadas en patrones de acceso
+   */
+  private generatePredictions(accessPattern: string[]): CachePrediction[] {
+    const predictions: CachePrediction[] = [];
+    const patternCounts = new Map<string, number>();
+    
+    // Analizar patrones de acceso
+    for (const pattern of accessPattern) {
+      patternCounts.set(pattern, (patternCounts.get(pattern) || 0) + 1);
+    }
+
+    // Generar predicciones basadas en frecuencia y secuencias
+    for (const [pattern, count] of patternCounts) {
+      const probability = Math.min(count / accessPattern.length, 1);
+      const confidence = this.calculateConfidence(pattern, accessPattern);
+      
+      predictions.push({
+        key: pattern,
+        probability,
+        expectedAccessTime: Date.now() + this.calculateExpectedDelay(pattern),
+        confidence
+      });
+    }
+
+    return predictions.sort((a, b) => b.probability - a.probability);
+  }
+
+  /**
+   * Calcula la confianza de una predicción
+   */
+  private calculateConfidence(pattern: string, accessPattern: string[]): number {
+    const recentPatterns = accessPattern.slice(-10); // Últimos 10 accesos
+    const frequency = recentPatterns.filter(p => p === pattern).length;
+    return Math.min(frequency / 10, 1);
+  }
+
+  /**
+   * Calcula el tiempo esperado hasta el próximo acceso
+   */
+  private calculateExpectedDelay(pattern: string): number {
+    const entry = this.memoryCache.get(pattern);
+    if (!entry) return 300000; // 5 minutos por defecto
+
+    const timeSinceLastAccess = Date.now() - entry.lastAccessed;
+    const averageInterval = timeSinceLastAccess / entry.accessCount;
+    
+    return Math.min(averageInterval, 1800000); // Máximo 30 minutos
+  }
+
+  /**
+   * Pre-carga datos en el cache
+   */
+  private async warmCache(key: string): Promise<void> {
+    try {
+      // Verificar si ya está en cache
+      if (this.memoryCache.has(key)) {
+        this.stats.warmingHits++;
+        return;
+      }
+
+      // TODO: Implementar lógica de pre-carga específica
+      // Por ejemplo, cargar desde API o base de datos
+      logger.debug('🔥 Cache warming:', { key });
+    } catch (error) {
+      logger.error('Error warming cache:', { key, error: String(error) });
+    }
+  }
+
+  /**
+   * TTL adaptativo - ajusta TTL basado en patrones de acceso
+   */
+  private adjustTTL(entry: CacheEntry): number {
+    if (!this.config.enableAdaptiveTTL) return entry.ttl;
+
+    const now = Date.now();
+    const timeSinceLastAccess = now - entry.lastAccessed;
+    const accessFrequency = entry.accessCount / ((now - entry.timestamp) / 1000);
+
+    let newTTL = entry.ttl;
+
+    // Ajustar TTL basado en frecuencia de acceso
+    if (accessFrequency > 0.1) { // Acceso frecuente
+      newTTL = Math.min(entry.ttl * 1.5, 3600); // Aumentar TTL hasta 1 hora
+    } else if (accessFrequency < 0.01) { // Acceso esporádico
+      newTTL = Math.max(entry.ttl * 0.5, 60); // Reducir TTL mínimo 1 minuto
+    }
+
+    if (newTTL !== entry.ttl) {
+      this.stats.adaptiveTTLAdjustments++;
+      logger.debug('🔄 TTL adjusted:', { 
+        key: entry.key, 
+        oldTTL: entry.ttl, 
+        newTTL 
+      });
+    }
+
+    return newTTL;
+  }
+
+  /**
+   * Política de evicción adaptativa
+   */
+  private evictEntries(): void {
+    const maxEntries = this.config.maxMemorySize * 1024 * 1024 / 1024; // Entradas aproximadas
+    if (this.memoryCache.size <= maxEntries) return;
+
+    const entriesToEvict = this.memoryCache.size - Math.floor(maxEntries * 0.8);
+    const entries = Array.from(this.memoryCache.entries());
+
+    let evictedCount = 0;
+
+    switch (this.config.evictionPolicy) {
+      case 'lru':
+        entries.sort(([, a], [, b]) => a.lastAccessed - b.lastAccessed);
+        break;
+      case 'lfu':
+        entries.sort(([, a], [, b]) => a.accessCount - b.accessCount);
+        break;
+      case 'fifo':
+        entries.sort(([, a], [, b]) => a.timestamp - b.timestamp);
+        break;
+      case 'adaptive':
+        entries.sort(([, a], [, b]) => {
+          const scoreA = this.calculateEvictionScore(a);
+          const scoreB = this.calculateEvictionScore(b);
+          return scoreA - scoreB;
+        });
+        break;
+    }
+
+    for (const [key, entry] of entries.slice(0, entriesToEvict)) {
+      this.memoryCache.delete(key);
+      evictedCount++;
+    }
+
+    this.stats.evictionCount += evictedCount;
+    logger.info('🗑️ Cache eviction completed:', { 
+      evictedCount, 
+      policy: this.config.evictionPolicy 
+    });
+  }
+
+  /**
+   * Calcula score de evicción para política adaptativa
+   */
+  private calculateEvictionScore(entry: CacheEntry): number {
+    const now = Date.now();
+    const age = now - entry.timestamp;
+    const timeSinceLastAccess = now - entry.lastAccessed;
+    const accessFrequency = entry.accessCount / (age / 1000);
+
+    // Score más alto = más probable de ser evictado
+    let score = 0;
+    
+    // Penalizar por edad
+    score += age / 1000000; // 1 punto por millón de ms
+    
+    // Penalizar por tiempo sin acceso
+    score += timeSinceLastAccess / 100000; // 1 punto por 100k ms
+    
+    // Bonificar por frecuencia de acceso
+    score -= accessFrequency * 100;
+    
+    // Bonificar por prioridad alta
+    score -= entry.priority * 10;
+    
+    // Penalizar por tamaño grande
+    score += entry.size / 10000; // 1 punto por 10KB
+
+    return score;
+  }
+
+  /**
+   * Cache distribuido - sincroniza con otros nodos
+   */
+  async syncWithDistributedCache(): Promise<void> {
+    if (!this.config.enableDistributedCache) return;
+
+    try {
+      // TODO: Implementar sincronización con Redis o similar
+      // Por ahora, simular sincronización
+      this.stats.distributedSyncs++;
+      
+      logger.info('🔄 Distributed cache sync completed');
+    } catch (error) {
+      logger.error('Error syncing distributed cache:', { error: String(error) });
+    }
+  }
+
+  /**
+   * Análisis de rendimiento del cache
+   */
+  getPerformanceAnalysis(): {
+    score: number;
+    recommendations: string[];
+    bottlenecks: string[];
+  } {
+    const stats = this.getStats();
+    const recommendations: string[] = [];
+    const bottlenecks: string[] = [];
+    let score = 0;
+
+    // Calcular score de rendimiento
+    score += stats.hitRate * 40; // 40% del score por hit rate
+    score += Math.min(stats.averageAccessTime / 10, 20); // 20% por velocidad
+    score += Math.min(stats.compressionRatio * 20, 20); // 20% por compresión
+    score += Math.min(stats.predictiveHits / 100, 20); // 20% por predicciones
+
+    // Generar recomendaciones
+    if (stats.hitRate < 0.7) {
+      recommendations.push('Considerar aumentar el tamaño del cache');
+      bottlenecks.push('Bajo hit rate');
+    }
+
+    if (stats.averageAccessTime > 50) {
+      recommendations.push('Optimizar algoritmos de acceso');
+      bottlenecks.push('Tiempo de acceso lento');
+    }
+
+    if (stats.compressionRatio > 0.8) {
+      recommendations.push('Mejorar algoritmo de compresión');
+      bottlenecks.push('Compresión ineficiente');
+    }
+
+    if (stats.memorySize > this.config.maxMemorySize * 1024 * 1024 * 0.9) {
+      recommendations.push('Aumentar límite de memoria o mejorar evicción');
+      bottlenecks.push('Memoria casi llena');
+    }
+
+    return {
+      score: Math.min(score, 100),
+      recommendations,
+      bottlenecks
+    };
+  }
+
+  /**
+   * Optimización automática del cache
+   */
+  async optimize(): Promise<void> {
+    try {
+      const analysis = this.getPerformanceAnalysis();
+      
+      // Aplicar optimizaciones automáticas
+      if (analysis.score < 70) {
+        // Ajustar configuración automáticamente
+        if (analysis.bottlenecks.includes('Bajo hit rate')) {
+          this.config.defaultTTL = Math.min(this.config.defaultTTL * 1.2, 1800);
+        }
+        
+        if (analysis.bottlenecks.includes('Memoria casi llena')) {
+          this.config.maxMemorySize = Math.min(this.config.maxMemorySize * 1.5, 200);
+        }
+        
+        // Limpiar cache si es necesario
+        await this.cleanup();
+        
+        logger.info('⚡ Cache optimization completed:', { 
+          score: analysis.score,
+          optimizations: analysis.recommendations.length 
+        });
+      }
+    } catch (error) {
+      logger.error('Error optimizing cache:', { error: String(error) });
+    }
+  }
+
+  /**
+   * Cache con dependencias - invalida entradas relacionadas
+   */
+  async invalidateByDependency(dependencyKey: string): Promise<void> {
+    try {
+      const keysToInvalidate: string[] = [];
+      
+      for (const [key, entry] of this.memoryCache.entries()) {
+        if (entry.dependencies.includes(dependencyKey)) {
+          keysToInvalidate.push(key);
+        }
+      }
+
+      for (const key of keysToInvalidate) {
+        await this.delete(key);
+      }
+
+      logger.info('🔗 Dependency invalidation completed:', { 
+        dependencyKey, 
+        invalidatedKeys: keysToInvalidate.length 
+      });
+    } catch (error) {
+      logger.error('Error invalidating by dependency:', { error: String(error) });
+    }
+  }
+
+  /**
+   * Cache con tags - invalida por etiquetas
+   */
+  async invalidateByTag(tag: string): Promise<void> {
+    try {
+      const keysToInvalidate: string[] = [];
+      
+      for (const [key, entry] of this.memoryCache.entries()) {
+        if (entry.tags.includes(tag)) {
+          keysToInvalidate.push(key);
+        }
+      }
+
+      for (const key of keysToInvalidate) {
+        await this.delete(key);
+      }
+
+      logger.info('🏷️ Tag invalidation completed:', { 
+        tag, 
+        invalidatedKeys: keysToInvalidate.length 
+      });
+    } catch (error) {
+      logger.error('Error invalidating by tag:', { error: String(error) });
+    }
   }
 
   /**
