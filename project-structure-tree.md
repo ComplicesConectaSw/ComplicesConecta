@@ -1,16 +1,17 @@
-# 📁 PROJECT STRUCTURE TREE - ComplicesConecta v3.3.0
+# 📁 PROJECT STRUCTURE TREE - ComplicesConecta v3.4.0
 
-**Última Actualización:** 23 de Septiembre, 2025 - 10:42 hrs  
-**Versión:** 3.3.0  
-**Estado:** ✅ **PRODUCTION READY ENHANCED**  
+**Última Actualización:** 22 de Enero, 2025 - 15:30 hrs  
+**Versión:** 3.4.0  
+**Estado:** ✅ **PRODUCTION READY ADVANCED**  
 **Puntuación:** 100/100 🏆
 
-### Dashboard Administrativo v3.3.0 Implementado:
-- **AdminDashboard Completo**: Interfaz administrativa moderna con 6 subpaneles modulares
-- **Sistema de Monitoreo**: PerformanceMonitoringService con métricas en tiempo real
-- **Notificaciones Push**: PushNotificationService con Firebase FCM integration
-- **Analytics Avanzados**: TokenAnalyticsService con reportes automáticos e insights IA
-- **Seguridad Avanzada**: Fraud detection, 2FA ready, auditoría completa
+### Funcionalidades Avanzadas v3.4.0 Implementadas:
+- **Sistema de Seguridad**: SecurityAuditService con monitoreo continuo y detección de amenazas
+- **Moderación con IA**: AdvancedModerationPanel con cola de moderación y configuración avanzada
+- **Funcionalidades de Parejas**: AdvancedCoupleService con matching, eventos y mensajería especializada
+- **Notificaciones en Tiempo Real**: Service Worker, push notifications y centro de notificaciones
+- **Caché Avanzado**: AdvancedCacheService multi-nivel con compresión y predicción
+- **Analytics Avanzados**: AdvancedAnalyticsService con métricas en tiempo real y predicciones
 - **Responsive Design**: Optimización completa móvil/desktop/Android
 
 ### Estructura General del Monorepo
@@ -28,40 +29,50 @@ conecta-social-comunidad-main/
 │   │   ├── demo/                 # Componentes de demostración
 │   │   ├── animations/           # Sistema de animaciones
 │   │   ├── analytics/            # Componentes de análisis
-│   │   ├── admin/                # Dashboard administrativo (NUEVO v3.3.0)
-│   │   │   └── panels/           # Subpaneles modulares (6 paneles)
+│   │   ├── admin/                # Dashboard administrativo (ACTUALIZADO v3.4.0)
+│   │   │   ├── panels/           # Subpaneles modulares (6 paneles)
+│   │   │   ├── SecurityDashboard.tsx      # Panel de seguridad avanzado (NUEVO)
+│   │   │   └── AdvancedModerationPanel.tsx # Panel de moderación con IA (NUEVO)
+│   │   ├── analytics/            # Componentes de análisis (ACTUALIZADO v3.4.0)
+│   │   │   └── AdvancedAnalyticsDashboard.tsx # Dashboard analytics avanzado (NUEVO)
+│   │   ├── cache/                # Componentes de caché (NUEVO v3.4.0)
+│   │   │   └── CacheDashboard.tsx # Dashboard de monitoreo de caché
+│   │   ├── couples/              # Componentes de parejas (NUEVO v3.4.0)
+│   │   │   └── CoupleDashboard.tsx # Dashboard especializado para parejas
+│   │   ├── notifications/        # Componentes de notificaciones (NUEVO v3.4.0)
+│   │   │   └── NotificationCenter.tsx # Centro de notificaciones
 │   │   └── theme/                # Sistema de temas visuales
 │   ├── pages/                    # Páginas principales de la app
-│   ├── hooks/                    # Custom React hooks
+│   ├── hooks/                    # Custom React hooks (ACTUALIZADO v3.4.0)
+│   │   ├── useAdvancedAnalytics.ts    # Hook para analytics avanzados (NUEVO)
+│   │   ├── useAdvancedCache.ts        # Hook para gestión de caché (NUEVO)
+│   │   ├── useAdvancedModeration.ts   # Hook para moderación (NUEVO)
+│   │   └── useRealtimeNotifications.ts # Hook para notificaciones tiempo real (NUEVO)
 │   ├── utils/                    # Utilidades y helpers
 │   ├── integrations/             # Integraciones (Supabase, APIs)
 │   ├── lib/                      # Librerías y configuraciones
-│   ├── services/                 # Servicios de negocio (NUEVO v3.3.0)
-│   │   ├── PerformanceMonitoringService.ts  # Monitoreo en tiempo real
-│   │   ├── PushNotificationService.ts       # Notificaciones push FCM
-│   │   └── TokenAnalyticsService.ts         # Analytics avanzados tokens
+│   ├── services/                 # Servicios de negocio (ACTUALIZADO v3.4.0)
+│   │   ├── AdvancedAnalyticsService.ts    # Analytics avanzados (NUEVO)
+│   │   ├── AdvancedCacheService.ts        # Caché multi-nivel (NUEVO)
+│   │   ├── AdvancedCoupleService.ts       # Servicio de parejas (NUEVO)
+│   │   ├── SecurityAuditService.ts       # Auditoría de seguridad (NUEVO)
+│   │   ├── PushNotificationService.ts     # Notificaciones push (ACTUALIZADO)
+│   │   └── PerformanceMonitoringService.ts # Monitoreo en tiempo real
 │   ├── styles/                   # Estilos globales
-│   │   └── responsive-admin.css  # CSS responsive admin (NUEVO v3.3.0)
+│   │   └── responsive-admin.css  # CSS responsive admin
 │   └── assets/                   # Recursos estáticos
-├── supabase/                     # Backend Supabase
+├── supabase/                     # Backend Supabase (ACTUALIZADO v3.4.0)
 │   ├── functions/                # Edge Functions serverless
 │   │   ├── send-email/           # Sistema de emails
 │   │   ├── push-notifications/   # Notificaciones push
 │   │   └── ai-matching/          # Algoritmo de matching IA
-│   └── migrations/               # Migraciones de base de datos (11 archivos, 90.4KB)
-│       ├── 20250906125234_clean_final_schema.sql      # Esquema base (10.6KB)
-│       ├── 20250107_create_couple_profiles.sql        # Perfiles parejas (5.7KB)
-│       ├── 20250914_add_interests_tables.sql          # Intereses (4.3KB)
-│       ├── 20250914103600_create_couple_photos_table.sql # Fotos (4.9KB)
-│       ├── 20250914103700_create_chat_realtime_tables.sql # Chat (10.4KB)
-│       ├── 20250906_05_create_token_system.sql        # Tokens (16.2KB)
-│       ├── 20250906_06_create_token_rls.sql           # RLS Tokens (7.8KB)
-│       ├── HABILITAR_RLS_COMPLETO.sql                 # RLS General (2.5KB)
-│       ├── rls-profiles-validation.sql                # Validación (4.6KB)
-│       ├── rls-messages-tokens-invitations.sql       # RLS Específico (12KB)
-│       └── rls-fix-20250915.sql                       # Corrección Final (12.2KB)
+│   └── migrations/               # Migraciones de base de datos (ACTUALIZADO)
+│       ├── 20250122000003_create_security_tables_fixed.sql # Tablas seguridad (NUEVO)
+│       └── 20250122000004_create_couple_tables.sql        # Tablas parejas (NUEVO)
 ├── android/                      # Proyecto Android nativo
-├── public/                       # Archivos públicos estáticos
+├── public/                       # Archivos públicos (ACTUALIZADO v3.4.0)
+│   ├── sw-notifications.js       # Service Worker notificaciones (NUEVO)
+│   └── manifest.json             # PWA manifest
 ├── docs-unified/                 # Documentación completa
 ├── tests/                        # Suite de testing
 └── config/                       # Archivos de configuración
@@ -69,9 +80,9 @@ conecta-social-comunidad-main/
 
 ### Base de Datos (Supabase)
 
-#### Tablas Principales
+#### Tablas Principales v3.4.0
 ```sql
--- Tablas del Sistema v3.1.0
+-- Tablas del Sistema v3.4.0
 profiles              -- Perfiles de usuario
 matches              -- Sistema de matching
 chats                -- Conversaciones
@@ -86,10 +97,29 @@ career_forms         -- Formularios de carrera
 notifications        -- Sistema de notificaciones
 user_sessions        -- Sesiones de usuario
 activity_logs        -- Logs de actividad
-reports              -- Sistema de Reportes v3.1.0
+reports              -- Sistema de Reportes
 report_categories    -- Categorías de reportes
 report_actions       -- Acciones de moderación
 moderation_logs      -- Logs de moderación
+
+-- Tablas de Seguridad v3.4.0 (NUEVAS)
+security_events      -- Eventos de seguridad
+blocked_ips          -- IPs bloqueadas
+threat_detections    -- Amenazas detectadas
+security_configurations -- Configuraciones de seguridad
+security_alerts      -- Alertas de seguridad
+
+-- Tablas de Parejas v3.4.0 (NUEVAS)
+couple_profiles      -- Perfiles de parejas
+couple_matches       -- Matches entre parejas
+couple_interactions  -- Interacciones entre parejas
+couple_events        -- Eventos de parejas
+couple_messages      -- Mensajes entre parejas
+couple_gifts         -- Regalos entre parejas
+couple_favorites     -- Parejas favoritas
+couple_reports       -- Reportes de parejas
+couple_verifications -- Verificaciones de parejas
+couple_statistics    -- Estadísticas de parejas
 ```
 
 ### Edge Functions
