@@ -811,7 +811,7 @@ class AdvancedCacheService {
     if (!this.config.enableAdaptiveTTL) return entry.ttl;
 
     const now = Date.now();
-    const timeSinceLastAccess = now - entry.lastAccessed;
+    const _timeSinceLastAccess = now - entry.lastAccessed;
     const accessFrequency = entry.accessCount / ((now - entry.timestamp) / 1000);
 
     let newTTL = entry.ttl;
@@ -866,7 +866,7 @@ class AdvancedCacheService {
         break;
     }
 
-    for (const [key, entry] of entries.slice(0, entriesToEvict)) {
+    for (const [key, _entry] of entries.slice(0, entriesToEvict)) {
       this.memoryCache.delete(key);
       evictedCount++;
     }

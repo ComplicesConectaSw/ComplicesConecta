@@ -139,14 +139,22 @@ export class AdvancedCoupleService {
     relationship_duration: number;
   }): Promise<CoupleProfile> {
     try {
-      const coupleProfile: Omit<CoupleProfile, 'id' | 'created_at' | 'updated_at'> = {
-        ...data,
-        is_active: true,
-        is_verified: false,
-        is_premium: false,
-        photos: [],
-        videos: [],
-        preferences: {
+      const coupleProfileData = {
+        partner1_id: data.partner1_id,
+        partner2_id: data.partner2_id,
+        couple_name: data.couple_name,
+        couple_bio: data.bio,
+        couple_interests: data.interests,
+        location: data.location,
+        latitude: data.latitude,
+        longitude: data.longitude,
+        age_range_min: data.age_range_min,
+        age_range_max: data.age_range_max,
+        looking_for: data.looking_for.join(','),
+        experience_level: data.experience_level,
+        relationship_type: data.relationship_type,
+        relationship_duration: data.relationship_duration,
+        preferences: JSON.stringify({
           gender_preferences: [],
           age_preferences: { min: 18, max: 65 },
           location_preferences: { max_distance: 50, cities: [] },
@@ -154,8 +162,8 @@ export class AdvancedCoupleService {
           communication_preferences: [],
           meeting_preferences: [],
           privacy_level: 'public'
-        },
-        statistics: {
+        }),
+        statistics: JSON.stringify({
           total_views: 0,
           total_likes: 0,
           total_matches: 0,
@@ -165,20 +173,20 @@ export class AdvancedCoupleService {
           last_active: new Date().toISOString(),
           join_date: new Date().toISOString(),
           verification_level: 0
-        },
-        compatibility_factors: {
+        }),
+        compatibility_factors: JSON.stringify({
           shared_interests: [],
           compatibility_score: 0,
           personality_match: 0,
           lifestyle_match: 0,
           location_compatibility: 0,
           experience_compatibility: 0
-        }
+        })
       };
 
       const { data: result, error } = await supabase
         .from('couple_profiles')
-        .insert(coupleProfile)
+        .insert(coupleProfileData)
         .select()
         .single();
 
@@ -187,8 +195,37 @@ export class AdvancedCoupleService {
         throw error;
       }
 
-      logger.info('Couple profile created', { coupleId: result.id });
-      return result;
+      // Convertir resultado a formato CoupleProfile
+      const coupleProfile: CoupleProfile = {
+        id: result.id,
+        partner1_id: result.partner1_id,
+        partner2_id: result.partner2_id,
+        couple_name: result.couple_name,
+        bio: result.couple_bio || '',
+        interests: result.couple_interests || [],
+        location: result.location || '',
+        latitude: result.latitude,
+        longitude: result.longitude,
+        age_range_min: result.age_range_min,
+        age_range_max: result.age_range_max,
+        looking_for: result.looking_for ? result.looking_for.split(',') : [],
+        experience_level: result.experience_level as any,
+        relationship_type: result.relationship_type as any,
+        relationship_duration: result.relationship_duration,
+        is_active: result.is_active,
+        is_verified: result.is_verified,
+        is_premium: result.is_premium,
+        photos: result.couple_images || [],
+        videos: [],
+        preferences: JSON.parse(result.preferences || '{}'),
+        statistics: JSON.parse(result.statistics || '{}'),
+        compatibility_factors: JSON.parse(result.compatibility_factors || '{}'),
+        created_at: result.created_at,
+        updated_at: result.updated_at
+      };
+
+      logger.info('Couple profile created', { coupleId: coupleProfile.id });
+      return coupleProfile;
     } catch (error) {
       logger.error('Error in createCoupleProfile:', { error: String(error) });
       throw error;
@@ -211,7 +248,38 @@ export class AdvancedCoupleService {
         return null;
       }
 
-      return data;
+      if (!data) return null;
+
+      // Convertir resultado a formato CoupleProfile
+      const coupleProfile: CoupleProfile = {
+        id: data.id,
+        partner1_id: data.partner1_id,
+        partner2_id: data.partner2_id,
+        couple_name: data.couple_name,
+        bio: data.couple_bio || '',
+        interests: data.couple_interests || [],
+        location: data.location || '',
+        latitude: data.latitude,
+        longitude: data.longitude,
+        age_range_min: data.age_range_min,
+        age_range_max: data.age_range_max,
+        looking_for: data.looking_for ? data.looking_for.split(',') : [],
+        experience_level: data.experience_level as any,
+        relationship_type: data.relationship_type as any,
+        relationship_duration: data.relationship_duration,
+        is_active: data.is_active,
+        is_verified: data.is_verified,
+        is_premium: data.is_premium,
+        photos: data.couple_images || [],
+        videos: [],
+        preferences: JSON.parse(data.preferences || '{}'),
+        statistics: JSON.parse(data.statistics || '{}'),
+        compatibility_factors: JSON.parse(data.compatibility_factors || '{}'),
+        created_at: data.created_at,
+        updated_at: data.updated_at
+      };
+
+      return coupleProfile;
     } catch (error) {
       logger.error('Error in getCoupleProfile:', { error: String(error) });
       return null;
@@ -241,7 +309,36 @@ export class AdvancedCoupleService {
         return [];
       }
 
-      return data || [];
+      if (!data) return [];
+
+      // Convertir resultados a formato CoupleProfile
+      return data.map((item: any) => ({
+        id: item.id,
+        partner1_id: item.partner1_id || '',
+        partner2_id: item.partner2_id || '',
+        couple_name: item.couple_name,
+        bio: item.couple_bio || '',
+        interests: item.couple_interests || [],
+        location: item.location || '',
+        latitude: item.latitude,
+        longitude: item.longitude,
+        age_range_min: item.age_range_min || 18,
+        age_range_max: item.age_range_max || 65,
+        looking_for: item.looking_for ? item.looking_for.split(',') : [],
+        experience_level: item.experience_level || 'beginner',
+        relationship_type: item.relationship_type || 'dating',
+        relationship_duration: item.relationship_duration || 0,
+        is_active: item.is_active || true,
+        is_verified: item.is_verified || false,
+        is_premium: item.is_premium || false,
+        photos: item.couple_images || [],
+        videos: [],
+        preferences: JSON.parse(item.preferences || '{}'),
+        statistics: JSON.parse(item.statistics || '{}'),
+        compatibility_factors: JSON.parse(item.compatibility_factors || '{}'),
+        created_at: item.created_at || new Date().toISOString(),
+        updated_at: item.updated_at || new Date().toISOString()
+      }));
     } catch (error) {
       logger.error('Error in getNearbyCouples:', { error: String(error) });
       return [];

@@ -53,7 +53,7 @@ export function useAdvancedCache<T>(
 
   // Función para obtener datos
   const fetchData = useCallback(async (forceRefresh = false): Promise<void> => {
-    const { key, ttl, priority = 1, dependencies = [], tags = [] } = optionsRef.current;
+    const { key, ttl, priority: _priority = 1, dependencies: _dependencies = [], tags: _tags = [] } = optionsRef.current;
     
     try {
       setState(prev => ({ ...prev, isLoading: true, error: null }));

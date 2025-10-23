@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { ContentModerationService, ModerationResult } from '@/services/ContentModerationService';
+import { contentModerationService, ModerationResult } from '@/services/ContentModerationService';
 import { logger } from '@/lib/logger';
 
 export interface ModerationQueueItem {
@@ -95,9 +95,9 @@ export const useAdvancedModeration = () => {
       
       setQueue(mockQueue);
       logger.info('Moderation queue loaded', { count: mockQueue.length });
-    } catch (err) {
+    } catch (_err) {
       setError('Error loading moderation queue');
-      logger.error('Error loading moderation queue:', { error: String(err) });
+      logger.error('Error loading moderation queue:', { error: String(_err) });
     } finally {
       setLoading(false);
     }
@@ -130,13 +130,13 @@ export const useAdvancedModeration = () => {
       
       switch (item.type) {
         case 'text':
-          result = await ContentModerationService.moderateText(item.content);
+          result = await contentModerationService.moderateText(item.content);
           break;
         case 'image':
-          result = await ContentModerationService.moderateImage(item.content);
+          result = await contentModerationService.moderateImage(item.content);
           break;
         case 'profile':
-          result = await ContentModerationService.moderateProfile({ 
+          result = await contentModerationService.moderateProfile({ 
             name: item.userName, 
             content: item.content 
           });

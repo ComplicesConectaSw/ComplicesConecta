@@ -8,17 +8,15 @@ import { Progress } from '@/components/ui/progress';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { ContentModerationService, ModerationResult, ModerationFlag } from '@/services/ContentModerationService';
+import { contentModerationService, ModerationResult } from '@/services/ContentModerationService';
 import {
   Shield,
   AlertTriangle,
   CheckCircle,
   Clock,
   TrendingUp,
-  Users,
   Activity,
   RefreshCw,
-  Download,
   Eye,
   Ban,
   Lock,
@@ -133,13 +131,13 @@ export const AdvancedModerationPanel: React.FC = () => {
       
       switch (item.type) {
         case 'text':
-          result = await ContentModerationService.moderateText(item.content);
+          result = await contentModerationService.moderateText(item.content);
           break;
         case 'image':
-          result = await ContentModerationService.moderateImage(item.content);
+          result = await contentModerationService.moderateImage(item.content);
           break;
         case 'profile':
-          result = await ContentModerationService.moderateProfile({ name: item.userName, content: item.content });
+          result = await contentModerationService.moderateProfile({ name: item.userName, content: item.content });
           break;
         default:
           throw new Error('Tipo de contenido no soportado');
@@ -152,7 +150,7 @@ export const AdvancedModerationPanel: React.FC = () => {
         title: "Moderación completada",
         description: `Contenido ${result.isAppropriate ? 'aprobado' : 'rechazado'}`,
       });
-    } catch (err) {
+    } catch {
       toast({
         title: "Error",
         description: "No se pudo moderar el contenido",
@@ -177,7 +175,7 @@ export const AdvancedModerationPanel: React.FC = () => {
         title: "Contenido aprobado",
         description: "El contenido ha sido aprobado",
       });
-    } catch (err) {
+    } catch {
       toast({
         title: "Error",
         description: "No se pudo aprobar el contenido",
@@ -200,7 +198,7 @@ export const AdvancedModerationPanel: React.FC = () => {
         title: "Contenido rechazado",
         description: "El contenido ha sido rechazado",
       });
-    } catch (err) {
+    } catch {
       toast({
         title: "Error",
         description: "No se pudo rechazar el contenido",

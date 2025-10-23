@@ -162,7 +162,7 @@ export const useBiometricAuth = () => {
       }
 
       // Guardar credencial en base de datos
-      const _credentialId = Array.from(new Uint8Array(credential.rawId))
+      const credentialId = Array.from(new Uint8Array(credential.rawId))
         .map(b => b.toString(16).padStart(2, '0'))
         .join('');
 
@@ -172,20 +172,27 @@ export const useBiometricAuth = () => {
       const deviceId = 'web-device-' + Date.now();
       const method = 'fingerprint';
       
-      // Store biometric session in localStorage instead of non-existent table
-      const sessionData = {
-        user_id: user.id,
-        session_type: method,
-        success: true,
-        created_at: new Date().toISOString()
-      };
-      
-      localStorage.setItem('biometric_session', JSON.stringify(sessionData));
-      logger.info('Sesión biométrica guardada localmente:', sessionData);
+      // Guardar sesión biométrica en la base de datos
+      const { error } = await supabase
+        .from('biometric_sessions')
+        .insert({
+          user_id: user.id,
+          session_id: sessionId,
+          session_type: method,
+          device_id: deviceId,
+          credential_id: credentialId,
+          success: true,
+          confidence: 1.0,
+          expires_at: expiresAt,
+          is_active: true
+        });
 
-      // No error variable exists after localStorage implementation
+      if (error) {
+        logger.error('Error guardando sesión biométrica:', { error: error.message });
+        throw new Error('Error guardando sesión biométrica');
+      }
 
-      logger.info('Registro biométrico exitoso:', { userId: user.id, deviceId });
+      logger.info('Registro biométrico exitoso:', { userId: user.id, deviceId, sessionId });
 
       return {
         success: true,
@@ -247,17 +254,20 @@ export const useBiometricAuth = () => {
       const sessionId = crypto.randomUUID();
       const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
 
-      // Update biometric session in localStorage instead of non-existent table
-      const existingSession = localStorage.getItem('biometric_session');
-      if (existingSession) {
-        const sessionData = JSON.parse(existingSession);
-        sessionData.last_used_at = new Date().toISOString();
-        sessionData.is_active = true;
-        localStorage.setItem('biometric_session', JSON.stringify(sessionData));
-        logger.info('Sesión biométrica actualizada localmente:', sessionData);
-      }
+      // Actualizar sesión biométrica en la base de datos
+      const { error: updateError } = await supabase
+        .from('biometric_sessions')
+        .update({
+          last_used_at: new Date().toISOString(),
+          is_active: true,
+          success: true
+        })
+        .eq('user_id', user.id)
+        .eq('is_active', true);
 
-      // updateError variable no longer exists after localStorage implementation
+      if (updateError) {
+        logger.error('Error actualizando sesión biométrica:', { error: updateError.message });
+      }
 
       logger.info('Autenticación biométrica exitosa:', { userId: user.id, sessionId });
 
@@ -311,7 +321,7 @@ export const useBiometricAuth = () => {
         // Limpiar sesión expirada
         await supabase
           .from('biometric_sessions')
-          .update({ is_active: false } as any)
+          .update({ is_active: false })
           .eq('session_id', sessionId);
         
         return false;
@@ -335,7 +345,7 @@ export const useBiometricAuth = () => {
     try {
       let query = supabase
         .from('biometric_sessions')
-        .update({ success: false });
+        .update({ is_active: false });
       
       if (sessionId) {
         query = query.eq('session_id', sessionId);

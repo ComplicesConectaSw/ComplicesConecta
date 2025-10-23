@@ -265,7 +265,7 @@ const AdminModerators = () => {
 
       // Recargar datos
       await fetchData();
-      setSelectedRequest(null);
+      _setSelectedRequest(null);
 
       logger.info('✅ Solicitud procesada exitosamente');
 
@@ -444,7 +444,7 @@ const AdminModerators = () => {
                           <Button
                             size="sm"
                             variant="outline"
-                            onClick={() => setSelectedRequest(request)}
+                            onClick={() => _setSelectedRequest(request)}
                             className="bg-white/10 border-white/20 text-white hover:bg-white/20 flex-1 sm:flex-none"
                           >
                             <Eye className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-0" />
@@ -461,7 +461,7 @@ const AdminModerators = () => {
                           <Button
                             size="sm"
                             variant="outline"
-                            onClick={() => setSelectedRequest(request)}
+                            onClick={() => _setSelectedRequest(request)}
                             className="bg-red-500/20 border-red-500/30 text-red-300 hover:bg-red-500/30 flex-1 sm:flex-none"
                           >
                             <XCircle className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-0" />

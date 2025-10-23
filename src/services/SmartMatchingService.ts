@@ -649,7 +649,7 @@ class SmartMatchingService {
   /**
    * Obtiene conexiones mutuas (simulado)
    */
-  private async getMutualConnections(userId: string, candidateId: string): Promise<number> {
+  private async getMutualConnections(_userId: string, _candidateId: string): Promise<number> {
     // TODO: Implementar cuando tengamos tabla de conexiones
     return Math.floor(Math.random() * 5); // Simulado
   }

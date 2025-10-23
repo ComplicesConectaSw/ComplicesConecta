@@ -3,7 +3,6 @@ import {
   advancedAnalyticsService, 
   AdvancedAnalyticsConfig, 
   AnalyticsDashboard,
-  UserBehaviorMetrics,
   PredictiveInsights,
   AnalyticsAlert
 } from '@/services/AdvancedAnalyticsService';
@@ -39,7 +38,6 @@ export function useAdvancedAnalytics(
     enableRealTimeUpdates = true,
     updateInterval = 30000,
     enableUserTracking = true,
-    enablePredictiveInsights = true,
     onAlert,
     onInsight
   } = options;

@@ -21,7 +21,7 @@ import { logger } from '@/lib/logger';
 
 export function CacheDashboard() {
   const { stats, performanceAnalysis, refreshStats, optimizeCache, clearCache, cleanupCache } = useCacheStats();
-  const { config, updateConfig, resetConfig } = useCacheConfig();
+  const { config: _config, updateConfig: _updateConfig, resetConfig } = useCacheConfig();
   const [isOptimizing, setIsOptimizing] = useState(false);
 
   const handleOptimize = async () => {
@@ -66,7 +66,7 @@ export function CacheDashboard() {
     return (value * 100).toFixed(1) + '%';
   };
 
-  const getPerformanceColor = (score: number): string => {
+  const _getPerformanceColor = (score: number): string => {
     if (score >= 80) return 'text-green-600';
     if (score >= 60) return 'text-yellow-600';
     return 'text-red-600';
@@ -250,7 +250,7 @@ export function CacheDashboard() {
                       <div>
                         <h4 className="text-sm font-medium mb-2">Recomendaciones:</h4>
                         <ul className="text-sm text-muted-foreground space-y-1">
-                          {performanceAnalysis.recommendations.map((rec, index) => (
+                          {performanceAnalysis.recommendations.map((rec: string, index: number) => (
                             <li key={index} className="flex items-start gap-2">
                               <span className="text-blue-600">•</span>
                               {rec}
@@ -264,7 +264,7 @@ export function CacheDashboard() {
                       <div>
                         <h4 className="text-sm font-medium mb-2">Cuellos de Botella:</h4>
                         <ul className="text-sm text-muted-foreground space-y-1">
-                          {performanceAnalysis.bottlenecks.map((bottleneck, index) => (
+                          {performanceAnalysis.bottlenecks.map((bottleneck: string, index: number) => (
                             <li key={index} className="flex items-start gap-2">
                               <span className="text-red-600">•</span>
                               {bottleneck}

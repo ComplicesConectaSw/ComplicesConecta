@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -15,13 +15,10 @@ import {
   AlertTriangle,
   CheckCircle,
   Clock,
-  BarChart3,
   Brain,
   Target,
-  Shield,
   Cpu,
   HardDrive,
-  Wifi,
   Bell
 } from 'lucide-react';
 import { 
@@ -48,11 +45,11 @@ export function AdvancedAnalyticsDashboard() {
   });
 
   const { realTimeMetrics, trends } = useAnalyticsMetrics();
-  const { allInsights, retentionInsights, conversionInsights, churnInsights } = usePredictiveInsights();
+  const { allInsights, retentionInsights, conversionInsights } = usePredictiveInsights();
   const { unresolvedAlerts, criticalAlerts, highAlerts } = useAnalyticsAlerts();
-  const { performanceMetrics, cachePerformance, memoryUsage } = usePerformanceMetrics();
+  const { cachePerformance, memoryUsage } = usePerformanceMetrics();
 
-  const [selectedTimeRange, setSelectedTimeRange] = useState<'1h' | '24h' | '7d' | '30d'>('24h');
+  const [_selectedTimeRange, _setSelectedTimeRange] = useState<'1h' | '24h' | '7d' | '30d'>('24h');
 
   const formatNumber = (num: number): string => {
     if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';

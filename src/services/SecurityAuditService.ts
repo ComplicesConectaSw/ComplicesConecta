@@ -98,15 +98,20 @@ export class SecurityAuditService {
    */
   async logSecurityEvent(event: Omit<SecurityEvent, 'id' | 'timestamp' | 'resolved'>): Promise<void> {
     try {
-      const securityEvent: Omit<SecurityEvent, 'id'> = {
-        ...event,
-        timestamp: new Date().toISOString(),
+      const securityEventData = {
+        user_id: event.userId,
+        event_type: event.eventType,
+        severity: event.severity,
+        description: event.description,
+        metadata: JSON.stringify(event.metadata),
+        ip_address: event.ipAddress,
+        user_agent: event.userAgent,
         resolved: false
       };
 
       const { error } = await supabase
         .from('security_events')
-        .insert(securityEvent);
+        .insert(securityEventData);
 
       if (error) {
         logger.error('Error logging security event:', { error: error.message });
@@ -154,7 +159,7 @@ export class SecurityAuditService {
         .from('security_events')
         .select('*')
         .gte('timestamp', oneHourAgo)
-        .eq('eventType', 'failed_login');
+        .eq('event_type', 'failed_login');
 
       if (error) {
         logger.error('Error checking suspicious activity:', { error: error.message });
@@ -163,8 +168,8 @@ export class SecurityAuditService {
 
       // Agrupar por IP y usuario
       const activityMap = new Map<string, number>();
-      recentEvents?.forEach(event => {
-        const key = `${event.ipAddress || 'unknown'}-${event.userId}`;
+      recentEvents?.forEach((event: any) => {
+        const key = `${event.ip_address || 'unknown'}-${event.user_id}`;
         activityMap.set(key, (activityMap.get(key) || 0) + 1);
       });
 
@@ -343,6 +348,13 @@ export class SecurityAuditService {
    */
   private async blockIPAddress(ipAddress: string, duration: string): Promise<void> {
     try {
+      const expiresAt = new Date();
+      if (duration.includes('hour')) {
+        expiresAt.setHours(expiresAt.getHours() + parseInt(duration));
+      } else if (duration.includes('day')) {
+        expiresAt.setDate(expiresAt.getDate() + parseInt(duration));
+      }
+
       const { error } = await supabase
         .from('blocked_ips')
         .insert({
@@ -350,7 +362,8 @@ export class SecurityAuditService {
           blocked_at: new Date().toISOString(),
           duration: duration,
           reason: 'Suspicious activity detected',
-          blocked_by: 'security_system'
+          blocked_by: 'security_system',
+          expires_at: expiresAt.toISOString()
         });
 
       if (error) {

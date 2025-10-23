@@ -10,7 +10,6 @@ import { advancedCoupleService, CoupleProfile, CoupleEvent, CoupleMatch } from '
 import {
   Users,
   Heart,
-  MapPin,
   Calendar,
   Star,
   TrendingUp,
@@ -19,14 +18,15 @@ import {
   Gift,
   Plus,
   Search,
-  Filter,
-  RefreshCw
+  RefreshCw,
+  AlertTriangle,
+  CheckCircle
 } from 'lucide-react';
 
 export const CoupleDashboard: React.FC = () => {
   const [coupleProfile, setCoupleProfile] = useState<CoupleProfile | null>(null);
   const [nearbyCouples, setNearbyCouples] = useState<CoupleProfile[]>([]);
-  const [compatibleCouples, setCompatibleCouples] = useState<CoupleProfile[]>([]);
+  const [_compatibleCouples, setCompatibleCouples] = useState<CoupleProfile[]>([]);
   const [coupleEvents, setCoupleEvents] = useState<CoupleEvent[]>([]);
   const [coupleMatches, setCoupleMatches] = useState<CoupleMatch[]>([]);
   const [loading, setLoading] = useState(true);
@@ -226,7 +226,7 @@ export const CoupleDashboard: React.FC = () => {
         title: "Like enviado",
         description: "Has enviado un like a la pareja",
       });
-    } catch (err) {
+    } catch {
       toast({
         title: "Error",
         description: "No se pudo enviar el like",
@@ -256,7 +256,7 @@ export const CoupleDashboard: React.FC = () => {
           )
         );
       }
-    } catch (err) {
+    } catch {
       toast({
         title: "Error",
         description: "No se pudo unir al evento",

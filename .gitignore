@@ -220,3 +220,6 @@ dist/js/*.js
 
 # Directorio de auditoría - archivos movidos durante limpieza del proyecto
 audit-files/
+
+# Directorio de documentación unificada (organizado)
+docs-unified/

@@ -217,7 +217,7 @@ const DashboardCore = () => {
           </TabsContent>
 
           <TabsContent value="notifications" className="space-y-6">
-            <NotificationCenter />
+            <NotificationCenter userId={userProfile?.name || 'demo-user'} />
           </TabsContent>
 
           <TabsContent value="analytics" className="space-y-6">

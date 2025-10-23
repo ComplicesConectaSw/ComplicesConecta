@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo, useMemo, useCallback } from 'react';
 import { Heart, MapPin, Verified, Star, X, Zap } from "lucide-react";
 import { useUserOnlineStatus } from "@/hooks/useOnlineStatus";
 import { Button } from "@/components/ui/button";
@@ -44,7 +44,7 @@ interface ProfileCardProps {
   showViewProfile?: boolean;
 }
 
-export const MainProfileCard = ({ 
+const MainProfileCardComponent = ({ 
   profile, 
   onLike, 
   onSuperLike, 
@@ -70,38 +70,41 @@ export const MainProfileCard = ({
   const [_imageError, setImageError] = useState(false);
   const [currentImageSrc, setCurrentImageSrc] = useState(image);
 
-  // Configurar géneros para el hook de tema
-  const genders: Gender[] = accountType === 'couple' && partnerGender 
-    ? [gender, partnerGender] 
-    : [gender];
+  // Configurar géneros para el hook de tema - memoizado
+  const genders: Gender[] = useMemo(() => 
+    accountType === 'couple' && partnerGender 
+      ? [gender, partnerGender] 
+      : [gender],
+    [accountType, gender, partnerGender]
+  );
   
   // Obtener configuración de tema
   const themeConfig = useProfileTheme(accountType, genders, theme);
 
-  const handleViewProfile = () => {
+  const handleViewProfile = useCallback(() => {
     navigate(`/profile/${id}`);
-  };
+  }, [navigate, id]);
 
-  const handleLike = (e: React.MouseEvent) => {
+  const handleLike = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
     if (onLike) onLike(String(id));
     if (onOpenModal) onOpenModal();
-  };
+  }, [onLike, onOpenModal, id]);
 
-  const handleSuperLike = (e: React.MouseEvent) => {
+  const handleSuperLike = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
     if (onSuperLike) onSuperLike(profile);
     if (onOpenModal) onOpenModal();
-  };
+  }, [onSuperLike, onOpenModal, profile]);
 
-  const handleDislike = (e: any) => {
+  const handleDislike = useCallback((e: any) => {
     e.stopPropagation();
     if (onOpenModal) onOpenModal();
     toast({
       title: "Perfil omitido",
       description: `Has pasado el perfil de ${variant === 'couple' ? profile.couple_name || name : name}`,
     });
-  };
+  }, [onOpenModal, variant, profile.couple_name, name]);
 
   return (
     <div 
@@ -300,6 +303,9 @@ export const MainProfileCard = ({
     </div>
   );
 };
+
+// Export con memo para optimización de performance
+export const MainProfileCard = memo(MainProfileCardComponent);
 
 // Export alias for backward compatibility
 export { MainProfileCard as ProfileCard };

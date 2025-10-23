@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
-import { securityAuditService, SecurityReport, SecurityMetrics, ThreatDetection } from '@/services/SecurityAuditService';
+import { securityAuditService, SecurityReport } from '@/services/SecurityAuditService';
 import {
   Shield,
   AlertTriangle,
