@@ -1,379 +1,318 @@
 /**
- * PerformanceMonitoringService v3.3.0
- * 
- * Servicio para monitoreo de performance en tiempo real
- * Recolecta métricas del sistema y las almacena en Supabase
- * 
- * Funcionalidades:
- * - Métricas de tiempo de respuesta
- * - Conteo de consultas SQL
- * - Tasa de errores
- * - Usuarios activos
- * - Transacciones de tokens
- * - Actividad de reportes
+ * PerformanceMonitoringService - Sistema de monitoreo de performance
+ * Monitorea tiempo de respuesta, consultas lentas y métricas de rendimiento
  */
 
-import { supabase } from '@/integrations/supabase/client'
-import { logger } from '@/lib/logger'
+import { logger } from '@/lib/logger';
 
-// Tipos para las métricas del sistema
-export interface PerformanceMetrics {
-  responseTime: number
-  queryCount: number
-  errorRate: number
-  activeUsers: number
-  tokenTransactions: number
-  reportActivity: number
-  memoryUsage?: number
-  cpuUsage?: number
+export interface PerformanceMetric {
+  operation: string;
+  duration: number;
+  timestamp: string;
+  success: boolean;
+  error?: string;
+  metadata?: Record<string, any>;
 }
 
-export interface SystemMetric {
-  id: string
-  metric_type: 'response_time' | 'query_count' | 'error_rate' | 'active_users' | 
-               'token_transactions' | 'report_activity' | 'memory_usage' | 'cpu_usage'
-  metric_value: number
-  metric_unit: 'ms' | 'count' | 'percentage' | 'bytes' | 'users'
-  metadata: Record<string, any>
-  recorded_at: string
-  created_at: string
+export interface QueryPerformance {
+  query: string;
+  duration: number;
+  rowsAffected?: number;
+  cacheHit?: boolean;
+  optimization?: string;
 }
 
-export interface MetricsResponse {
-  success: boolean
-  metrics?: SystemMetric[]
-  error?: string
+export interface PerformanceReport {
+  totalOperations: number;
+  averageResponseTime: number;
+  slowQueries: QueryPerformance[];
+  cacheHitRate: number;
+  errorRate: number;
+  recommendations: string[];
 }
 
-export interface MetricInsertResponse {
-  success: boolean
-  metric?: SystemMetric
-  error?: string
-}
-
-/**
- * Servicio principal de monitoreo de performance
- */
-export class PerformanceMonitoringService {
-  private static instance: PerformanceMonitoringService
-  private metricsCache: Map<string, any> = new Map()
-  private isMonitoring: boolean = false
+class PerformanceMonitoringService {
+  private static instance: PerformanceMonitoringService;
+  private metrics: PerformanceMetric[] = [];
+  private queryMetrics: QueryPerformance[] = [];
+  private readonly MAX_METRICS = 1000; // Mantener solo las últimas 1000 métricas
+  private readonly SLOW_QUERY_THRESHOLD = 1000; // 1 segundo
 
   private constructor() {
-    // Singleton pattern para evitar múltiples instancias
+    // Singleton pattern
   }
 
   public static getInstance(): PerformanceMonitoringService {
     if (!PerformanceMonitoringService.instance) {
-      PerformanceMonitoringService.instance = new PerformanceMonitoringService()
+      PerformanceMonitoringService.instance = new PerformanceMonitoringService();
     }
-    return PerformanceMonitoringService.instance
+    return PerformanceMonitoringService.instance;
   }
 
   /**
-   * Registrar una métrica individual en el sistema
+   * Registrar métrica de performance
    */
-  async recordMetric(
-    type: SystemMetric['metric_type'],
-    value: number,
-    unit: SystemMetric['metric_unit'],
-    metadata: Record<string, any> = {}
-  ): Promise<MetricInsertResponse> {
-    try {
-      const { data, error } = await (supabase as any)
-        .from('system_metrics')
-        .insert({
-          metric_type: type,
-          metric_value: value,
-          metric_unit: unit,
-          metadata,
-          recorded_at: new Date().toISOString()
-        })
-        .select()
-        .single()
+  recordMetric(operation: string, duration: number, success: boolean, error?: string, metadata?: Record<string, any>): void {
+    const metric: PerformanceMetric = {
+      operation,
+      duration,
+      timestamp: new Date().toISOString(),
+      success,
+      error,
+      metadata
+    };
 
-      if (error) {
-        logger.error('Error registrando métrica:', { error: error.message, type, value })
-        return { success: false, error: error.message }
-      }
+    this.metrics.push(metric);
 
-      logger.debug('Métrica registrada exitosamente:', { type, value, unit })
-      return { success: true, metric: data }
+    // Mantener solo las últimas métricas
+    if (this.metrics.length > this.MAX_METRICS) {
+      this.metrics = this.metrics.slice(-this.MAX_METRICS);
+    }
 
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
-      logger.error('Error inesperado registrando métrica:', { error: errorMessage })
-      return { success: false, error: errorMessage }
+    // Log consultas lentas
+    if (duration > this.SLOW_QUERY_THRESHOLD) {
+      logger.warn('🐌 Slow operation detected', {
+        operation,
+        duration: `${duration}ms`,
+        threshold: `${this.SLOW_QUERY_THRESHOLD}ms`,
+        metadata
+      });
     }
   }
 
   /**
-   * Obtener métricas del sistema por tipo y período
+   * Registrar métrica de consulta específica
    */
-  async getMetrics(
-    type?: SystemMetric['metric_type'],
-    hours: number = 24
-  ): Promise<MetricsResponse> {
-    try {
-      const startTime = new Date(Date.now() - hours * 60 * 60 * 1000).toISOString()
-      
-      let query = (supabase as any)
-        .from('system_metrics')
-        .select('*')
-        .gte('recorded_at', startTime)
-        .order('recorded_at', { ascending: false })
-        .limit(1000)
+  recordQuery(query: string, duration: number, rowsAffected?: number, cacheHit?: boolean, optimization?: string): void {
+    const queryMetric: QueryPerformance = {
+      query: this.sanitizeQuery(query),
+      duration,
+      rowsAffected,
+      cacheHit,
+      optimization
+    };
 
-      if (type) {
-        query = query.eq('metric_type', type)
-      }
+    this.queryMetrics.push(queryMetric);
 
-      const { data, error } = await query
+    // Mantener solo las últimas consultas
+    if (this.queryMetrics.length > this.MAX_METRICS) {
+      this.queryMetrics = this.queryMetrics.slice(-this.MAX_METRICS);
+    }
 
-      if (error) {
-        logger.error('Error obteniendo métricas:', { error: error.message })
-        return { success: false, error: error.message }
-      }
-
-      return { success: true, metrics: data || [] }
-
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
-      logger.error('Error inesperado obteniendo métricas:', { error: errorMessage })
-      return { success: false, error: errorMessage }
+    // Alertar sobre consultas lentas
+    if (duration > this.SLOW_QUERY_THRESHOLD) {
+      logger.warn('🐌 Slow query detected', {
+        query: this.sanitizeQuery(query),
+        duration: `${duration}ms`,
+        rowsAffected,
+        cacheHit,
+        optimization
+      });
     }
   }
 
   /**
-   * Recopilar métricas actuales del sistema
+   * Generar reporte de performance
    */
-  async collectCurrentMetrics(): Promise<PerformanceMetrics> {
-    const startTime = performance.now()
+  generateReport(timeframe: 'hour' | 'day' | 'week' = 'hour'): PerformanceReport {
+    const now = new Date();
+    const timeframeMs = this.getTimeframeMs(timeframe);
+    const cutoffTime = new Date(now.getTime() - timeframeMs);
 
-    try {
-      // Simular recolección de métricas (en producción se conectaría a APIs reales)
-      const metrics: PerformanceMetrics = {
-        responseTime: this.measureResponseTime(),
-        queryCount: await this.getQueryCount(),
-        errorRate: await this.getErrorRate(),
-        activeUsers: await this.getActiveUsers(),
-        tokenTransactions: await this.getTokenTransactions(),
-        reportActivity: await this.getReportActivity(),
-        memoryUsage: this.getMemoryUsage(),
-        cpuUsage: this.getCpuUsage()
-      }
+    // Filtrar métricas por timeframe
+    const recentMetrics = this.metrics.filter(m => 
+      new Date(m.timestamp) >= cutoffTime
+    );
 
-      const collectionTime = performance.now() - startTime
-      logger.debug('Métricas recolectadas:', { metrics, collectionTime: `${collectionTime}ms` })
+    const recentQueries = this.queryMetrics.filter(q => 
+      new Date().getTime() - timeframeMs <= Date.now()
+    );
 
-      return metrics
+    // Calcular estadísticas
+    const totalOperations = recentMetrics.length;
+    const averageResponseTime = totalOperations > 0 
+      ? recentMetrics.reduce((sum, m) => sum + m.duration, 0) / totalOperations 
+      : 0;
 
-    } catch (error) {
-      logger.error('Error recolectando métricas:', { error })
-      throw error
-    }
+    const slowQueries = recentQueries.filter(q => q.duration > this.SLOW_QUERY_THRESHOLD);
+
+    const cacheHits = recentQueries.filter(q => q.cacheHit).length;
+    const cacheHitRate = recentQueries.length > 0 ? (cacheHits / recentQueries.length) * 100 : 0;
+
+    const errors = recentMetrics.filter(m => !m.success).length;
+    const errorRate = totalOperations > 0 ? (errors / totalOperations) * 100 : 0;
+
+    // Generar recomendaciones
+    const recommendations = this.generateRecommendations({
+      averageResponseTime,
+      slowQueries: slowQueries.length,
+      cacheHitRate,
+      errorRate
+    });
+
+    return {
+      totalOperations,
+      averageResponseTime: Math.round(averageResponseTime * 100) / 100,
+      slowQueries,
+      cacheHitRate: Math.round(cacheHitRate * 100) / 100,
+      errorRate: Math.round(errorRate * 100) / 100,
+      recommendations
+    };
   }
 
   /**
-   * Iniciar monitoreo automático de métricas
+   * Decorador para medir tiempo de ejecución de funciones
    */
-  startMonitoring(intervalMinutes: number = 5): void {
-    if (this.isMonitoring) {
-      logger.warn('El monitoreo ya está activo')
-      return
-    }
+  measureExecution<T extends (...args: any[]) => any>(
+    operation: string,
+    fn: T,
+    metadata?: Record<string, any>
+  ): T {
+    return ((...args: Parameters<T>) => {
+      const startTime = performance.now();
+      let success = true;
+      let error: string | undefined;
 
-    this.isMonitoring = true
-    logger.info('Iniciando monitoreo de performance', { intervalMinutes })
-
-    const interval = setInterval(async () => {
       try {
-        const metrics = await this.collectCurrentMetrics()
+        const result = fn(...args);
         
-        // Registrar cada métrica individualmente
-        await Promise.all([
-          this.recordMetric('response_time', metrics.responseTime, 'ms'),
-          this.recordMetric('query_count', metrics.queryCount, 'count'),
-          this.recordMetric('error_rate', metrics.errorRate, 'percentage'),
-          this.recordMetric('active_users', metrics.activeUsers, 'users'),
-          this.recordMetric('token_transactions', metrics.tokenTransactions, 'count'),
-          this.recordMetric('report_activity', metrics.reportActivity, 'count'),
-          ...(metrics.memoryUsage ? [this.recordMetric('memory_usage', metrics.memoryUsage, 'bytes')] : []),
-          ...(metrics.cpuUsage ? [this.recordMetric('cpu_usage', metrics.cpuUsage, 'percentage')] : [])
-        ])
-
-      } catch (error) {
-        logger.error('Error en monitoreo automático:', { error })
-      }
-    }, intervalMinutes * 60 * 1000)
-
-    // Guardar referencia del interval para poder detenerlo
-    this.metricsCache.set('monitoringInterval', interval)
-  }
-
-  /**
-   * Detener monitoreo automático
-   */
-  stopMonitoring(): void {
-    const interval = this.metricsCache.get('monitoringInterval')
-    if (interval) {
-      clearInterval(interval)
-      this.metricsCache.delete('monitoringInterval')
-      this.isMonitoring = false
-      logger.info('Monitoreo de performance detenido')
-    }
-  }
-
-  /**
-   * Obtener estadísticas agregadas de métricas
-   */
-  async getAggregatedStats(hours: number = 24): Promise<{
-    success: boolean
-    stats?: Record<string, { avg: number; min: number; max: number; count: number }>
-    error?: string
-  }> {
-    try {
-      const { data, error } = await (supabase as any)
-        .from('system_metrics')
-        .select('metric_type, metric_value')
-        .gte('recorded_at', new Date(Date.now() - hours * 60 * 60 * 1000).toISOString())
-
-      if (error) {
-        return { success: false, error: error.message }
-      }
-
-      // Agregar estadísticas por tipo de métrica
-      const stats: Record<string, { avg: number; min: number; max: number; count: number }> = {}
-      
-      data?.forEach((metric: any) => {
-        const type = metric.metric_type
-        const value = parseFloat(metric.metric_value)
-
-        if (!stats[type]) {
-          stats[type] = { avg: 0, min: value, max: value, count: 0 }
+        // Si es una promesa, medir también su resolución
+        if (result && typeof result.then === 'function') {
+          return result
+            .then((res: any) => {
+              const duration = performance.now() - startTime;
+              this.recordMetric(operation, duration, true, undefined, metadata);
+              return res;
+            })
+            .catch((err: any) => {
+              const duration = performance.now() - startTime;
+              this.recordMetric(operation, duration, false, err.message, metadata);
+              throw err;
+            });
         }
 
-        stats[type].min = Math.min(stats[type].min, value)
-        stats[type].max = Math.max(stats[type].max, value)
-        stats[type].avg = ((stats[type].avg * stats[type].count) + value) / (stats[type].count + 1)
-        stats[type].count += 1
-      })
+        const duration = performance.now() - startTime;
+        this.recordMetric(operation, duration, true, undefined, metadata);
+        return result;
+      } catch (err) {
+        success = false;
+        error = err instanceof Error ? err.message : String(err);
+        const duration = performance.now() - startTime;
+        this.recordMetric(operation, duration, success, error, metadata);
+        throw err;
+      }
+    }) as T;
+  }
 
-      return { success: true, stats }
+  /**
+   * Limpiar métricas antiguas
+   */
+  cleanup(): void {
+    const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+    
+    this.metrics = this.metrics.filter(m => 
+      new Date(m.timestamp) >= oneWeekAgo
+    );
+    
+    this.queryMetrics = this.queryMetrics.filter(q => 
+      new Date().getTime() - 7 * 24 * 60 * 60 * 1000 <= Date.now()
+    );
 
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
-      return { success: false, error: errorMessage }
+    logger.info('🧹 Performance metrics cleaned up', {
+      metricsRemaining: this.metrics.length,
+      queriesRemaining: this.queryMetrics.length
+    });
+  }
+
+  /**
+   * Obtener métricas en tiempo real
+   */
+  getRealTimeMetrics(): {
+    operationsPerMinute: number;
+    averageResponseTime: number;
+    errorRate: number;
+    cacheHitRate: number;
+  } {
+    const oneMinuteAgo = new Date(Date.now() - 60 * 1000);
+    const recentMetrics = this.metrics.filter(m => 
+      new Date(m.timestamp) >= oneMinuteAgo
+    );
+
+    const recentQueries = this.queryMetrics.filter(q => 
+      new Date().getTime() - 60 * 1000 <= Date.now()
+    );
+
+    const operationsPerMinute = recentMetrics.length;
+    const averageResponseTime = operationsPerMinute > 0 
+      ? recentMetrics.reduce((sum, m) => sum + m.duration, 0) / operationsPerMinute 
+      : 0;
+
+    const errors = recentMetrics.filter(m => !m.success).length;
+    const errorRate = operationsPerMinute > 0 ? (errors / operationsPerMinute) * 100 : 0;
+
+    const cacheHits = recentQueries.filter(q => q.cacheHit).length;
+    const cacheHitRate = recentQueries.length > 0 ? (cacheHits / recentQueries.length) * 100 : 0;
+
+    return {
+      operationsPerMinute,
+      averageResponseTime: Math.round(averageResponseTime * 100) / 100,
+      errorRate: Math.round(errorRate * 100) / 100,
+      cacheHitRate: Math.round(cacheHitRate * 100) / 100
+    };
+  }
+
+  /**
+   * Helpers privados
+   */
+  private getTimeframeMs(timeframe: 'hour' | 'day' | 'week'): number {
+    switch (timeframe) {
+      case 'hour': return 60 * 60 * 1000;
+      case 'day': return 24 * 60 * 60 * 1000;
+      case 'week': return 7 * 24 * 60 * 60 * 1000;
+      default: return 60 * 60 * 1000;
     }
   }
 
-  // Métodos privados para recolección de métricas específicas
-
-  private measureResponseTime(): number {
-    // En producción, esto mediría el tiempo de respuesta real de las APIs
-    return Math.random() * 200 + 50 // Simular 50-250ms
+  private sanitizeQuery(query: string): string {
+    // Remover información sensible de las consultas
+    return query
+      .replace(/\b\d{4}-\d{2}-\d{2}\b/g, '[DATE]')
+      .replace(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g, '[EMAIL]')
+      .replace(/\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b/gi, '[UUID]')
+      .substring(0, 200); // Limitar longitud
   }
 
-  private async getQueryCount(): Promise<number> {
-    // En producción, esto consultaría métricas reales de Supabase
-    return Math.floor(Math.random() * 100) + 10
-  }
+  private generateRecommendations(stats: {
+    averageResponseTime: number;
+    slowQueries: number;
+    cacheHitRate: number;
+    errorRate: number;
+  }): string[] {
+    const recommendations: string[] = [];
 
-  private async getErrorRate(): Promise<number> {
-    // En producción, esto calcularía la tasa de error real
-    return Math.random() * 5 // Simular 0-5% de errores
-  }
-
-  private async getActiveUsers(): Promise<number> {
-    try {
-      // Contar usuarios activos en las últimas 24 horas
-      const { count, error } = await (supabase as any)
-        .from('profiles')
-        .select('*', { count: 'exact', head: true })
-        .gte('updated_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
-
-      return error ? 0 : (count || 0)
-    } catch {
-      return 0
+    if (stats.averageResponseTime > 500) {
+      recommendations.push('Considerar implementar más cache para reducir tiempo de respuesta');
     }
-  }
 
-  private async getTokenTransactions(): Promise<number> {
-    try {
-      // Contar transacciones de tokens en las últimas 24 horas
-      const { count, error } = await (supabase as any)
-        .from('transactions')
-        .select('*', { count: 'exact', head: true })
-        .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
-
-      return error ? 0 : (count || 0)
-    } catch {
-      return 0
+    if (stats.slowQueries > 5) {
+      recommendations.push('Revisar y optimizar consultas lentas identificadas');
     }
-  }
 
-  private async getReportActivity(): Promise<number> {
-    try {
-      // Contar reportes creados en las últimas 24 horas
-      const { count, error } = await (supabase as any)
-        .from('reports')
-        .select('*', { count: 'exact', head: true })
-        .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
-
-      return error ? 0 : (count || 0)
-    } catch {
-      return 0
+    if (stats.cacheHitRate < 70) {
+      recommendations.push('Mejorar estrategia de cache para aumentar hit rate');
     }
-  }
 
-  private getMemoryUsage(): number {
-    // En producción, esto obtendría métricas reales del sistema
-    if (typeof window !== 'undefined' && 'memory' in performance) {
-      return (performance as any).memory.usedJSHeapSize
+    if (stats.errorRate > 5) {
+      recommendations.push('Investigar y corregir errores frecuentes');
     }
-    return Math.random() * 100000000 // Simular uso de memoria
-  }
 
-  private getCpuUsage(): number {
-    // En producción, esto obtendría métricas reales de CPU
-    return Math.random() * 100 // Simular 0-100% de CPU
+    if (recommendations.length === 0) {
+      recommendations.push('Performance dentro de parámetros normales');
+    }
+
+    return recommendations;
   }
 }
 
-// Exportar instancia singleton
-export const performanceMonitor = PerformanceMonitoringService.getInstance()
-
-// Utilidades para medición de performance
-export const withPerformanceTracking = async <T>(
-  operation: () => Promise<T>,
-  operationName: string
-): Promise<T> => {
-  const startTime = performance.now()
-  
-  try {
-    const result = await operation()
-    const duration = performance.now() - startTime
-    
-    // Registrar métrica de tiempo de respuesta
-    await performanceMonitor.recordMetric(
-      'response_time',
-      duration,
-      'ms',
-      { operation: operationName, success: true }
-    )
-    
-    return result
-  } catch (error) {
-    const duration = performance.now() - startTime
-    
-    // Registrar métrica de error
-    await performanceMonitor.recordMetric(
-      'response_time',
-      duration,
-      'ms',
-      { operation: operationName, success: false, error: error instanceof Error ? error.message : 'Unknown error' }
-    )
-    
-    throw error
-  }
-}
+export const performanceMonitor = PerformanceMonitoringService.getInstance();
+export default performanceMonitor;

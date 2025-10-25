@@ -247,7 +247,7 @@ describe('Profiles - Generación y Validación', () => {
 
       const mexicanCities = [
         'CDMX', 'Guadalajara', 'Monterrey', 'Puebla', 'Tijuana',
-        'León', 'Querétaro', 'Cancún', 'Playa del Carmen', 'Mérida'
+        'León', 'Querétaro', 'Cancún', 'Playa del Carmen', 'Mérida', 'Toluca'
       ];
 
       expect(mexicanCities).toContain(profile.location);

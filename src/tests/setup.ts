@@ -5,6 +5,8 @@ import * as matchers from '@testing-library/jest-dom/matchers';
 
 // Import Supabase mock
 import './mocks/supabase';
+// Import Performance mocks
+import './mocks/performance';
 
 // extends Vitest's expect method with methods from react-testing-library
 expect.extend(matchers);
