@@ -1,4 +1,4 @@
-n# ==============================
+# ==============================
 # 🚀 DEVOPS MANAGER ULTRA (SAFE EDITION)
 # ==============================
 # Unificado: SUPABASE SQL MANAGER + GIT MANAGER PRO ULTRA
