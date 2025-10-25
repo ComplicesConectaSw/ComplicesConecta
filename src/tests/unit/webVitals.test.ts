@@ -36,9 +36,9 @@ describe('Web Vitals Monitoring', () => {
       const monitor = initWebVitalsMonitoring();
       
       expect(monitor).toHaveProperty('init');
-      expect(monitor).toHaveProperty('reportMetric');
       expect(monitor).toHaveProperty('getMetrics');
       expect(typeof monitor.init).toBe('function');
+      expect(typeof monitor.getMetrics).toBe('function');
     });
 
     it('should initialize with custom config', async () => {

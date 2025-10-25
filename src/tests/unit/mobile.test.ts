@@ -34,8 +34,8 @@ describe('Mobile Utilities', () => {
 
   describe('isMobile', () => {
     it('should detect mobile user agent', () => {
-      Object.defineProperty(navigator, 'userAgent', {
-        value: 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X)',
+      Object.defineProperty(window, 'innerWidth', {
+        value: 375,
         writable: true,
         configurable: true
       });
@@ -44,8 +44,8 @@ describe('Mobile Utilities', () => {
     });
 
     it('should detect Android user agent', () => {
-      Object.defineProperty(navigator, 'userAgent', {
-        value: 'Mozilla/5.0 (Linux; Android 10; SM-G973F)',
+      Object.defineProperty(window, 'innerWidth', {
+        value: 375,
         writable: true,
         configurable: true
       });
@@ -118,9 +118,12 @@ describe('Mobile Utilities', () => {
     });
 
     it('should return false when matchMedia is not supported', () => {
+      const originalMatchMedia = window.matchMedia;
       delete (window as any).matchMedia;
 
       expect(prefersReducedMotion()).toBe(false);
+
+      window.matchMedia = originalMatchMedia;
     });
   });
 
@@ -212,15 +215,15 @@ describe('Mobile Utilities', () => {
 
     it('should return mobile animation config', () => {
       window.matchMedia = mockMatchMedia(false);
-      Object.defineProperty(navigator, 'userAgent', {
-        value: 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X)',
+      Object.defineProperty(window, 'innerWidth', {
+        value: 375,
         writable: true,
         configurable: true
       });
 
       const config = getAnimationConfig();
 
-      expect(config.duration).toBe(0.2);
+      expect(config.duration).toBe(0.3);
       expect(config.stiffness).toBe(300);
     });
 

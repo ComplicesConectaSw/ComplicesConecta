@@ -121,7 +121,7 @@ describe('PushNotificationService', () => {
       const isSupported = vi.spyOn(PushNotificationService as any, 'isSupported')
       isSupported.mockReturnValue(true)
       
-      expect(PushNotificationService['isSupported']()).toBe(true)
+      expect(PushNotificationService.isSupported()).toBe(true)
     })
   })
 

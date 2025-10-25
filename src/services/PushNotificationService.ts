@@ -9,7 +9,7 @@ export interface PushSubscriptionData {
 }
 
 export class PushNotificationService {
-  private static isSupported(): boolean {
+  static isSupported(): boolean {
     return 'serviceWorker' in navigator && 'PushManager' in window;
   }
 

@@ -26,6 +26,11 @@ vi.mock('../../integrations/supabase/client', () => ({
   supabase: {
     from: vi.fn(() => ({
       select: vi.fn().mockReturnThis(),
+      insert: vi.fn(() => ({
+        select: vi.fn(() => ({
+          single: vi.fn(() => Promise.resolve({ data: mockAnalyticsData[0], error: null }))
+        }))
+      })),
       upsert: vi.fn(() => ({
         select: vi.fn(() => ({
           single: vi.fn(() => Promise.resolve({ data: { id: '1' }, error: null }))
