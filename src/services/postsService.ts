@@ -186,7 +186,7 @@ class PostsService {
       }
 
       // Mapear datos de Supabase al formato esperado
-      const posts: Post[] = (data || []).map((story: Tables<'posts'>) => ({
+      const posts: Post[] = (data || []).map((story: any) => ({
         id: story.id,
         user_id: story.user_id,
         profile_id: story.user_id,
@@ -307,21 +307,21 @@ class PostsService {
 
       // Mapear datos de Supabase al formato esperado
       const newPost: Post = {
-        id: storyData.id,
-        user_id: storyData.user_id,
-        profile_id: storyData.user_id,
-        content: storyData.content || '',
-        post_type: storyData.post_type as 'text' | 'photo' | 'video',
-        image_url: storyData.content_url || undefined,
-        video_url: storyData.post_type === 'video' ? storyData.content_url : undefined,
-        location: storyData.location || undefined,
+        id: (storyData as any).id,
+        user_id: (storyData as any).user_id,
+        profile_id: (storyData as any).user_id,
+        content: (storyData as any).content || '',
+        post_type: (storyData as any).post_type as 'text' | 'photo' | 'video',
+        image_url: (storyData as any).content_url || undefined,
+        video_url: (storyData as any).post_type === 'video' ? (storyData as any).content_url : undefined,
+        location: (storyData as any).location || undefined,
         likes_count: 0,
         comments_count: 0,
         shares_count: 0,
-        created_at: storyData.created_at,
-        updated_at: storyData.updated_at,
+        created_at: (storyData as any).created_at,
+        updated_at: (storyData as any).updated_at,
         profile: {
-          id: storyData.user_id,
+          id: (storyData as any).user_id,
           name: 'Usuario',
           avatar_url: undefined,
           is_verified: false

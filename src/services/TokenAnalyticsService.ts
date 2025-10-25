@@ -71,6 +71,7 @@ export interface ReportResponse {
 export class TokenAnalyticsService {
   private static instance: TokenAnalyticsService
   private analyticsCache: Map<string, { data: any; timestamp: number }> = new Map()
+  private intervalCache: Map<string, NodeJS.Timeout> = new Map()
   private readonly CACHE_TTL = 5 * 60 * 1000 // 5 minutos
   private isGeneratingReports: boolean = false
 
@@ -178,12 +179,12 @@ export class TokenAnalyticsService {
       // Calcular métricas de staking
       if (stakingResult.status === 'fulfilled' && stakingResult.value.data) {
         const stakingRecords = stakingResult.value.data;
-        metrics.stakingMetrics.totalStaked = stakingRecords.reduce((sum: number, record: Tables<'token_staking'>) => 
+        metrics.stakingMetrics.totalStaked = stakingRecords.reduce((sum: number, record: any) => 
           sum + (record.amount || 0), 0);
         metrics.stakingMetrics.activeStakers = stakingRecords.length;
         
         if (stakingRecords.length > 0) {
-          metrics.stakingMetrics.avgDuration = stakingRecords.reduce((sum: number, record: Tables<'token_staking'>) => 
+          metrics.stakingMetrics.avgDuration = stakingRecords.reduce((sum: number, record: any) => 
             sum + (record.duration || 0), 0) / stakingRecords.length;
         }
       }
@@ -193,7 +194,7 @@ export class TokenAnalyticsService {
         const transactions = transactionsResult.value.data;
         metrics.transactionVolume.count = transactions.length;
         
-        transactions.forEach((transaction: Tables<'token_transactions'>) => {
+        transactions.forEach((transaction: any) => {
           if (transaction.token_type === 'cmpx') {
             metrics.transactionVolume.cmpx += transaction.amount || 0;
           } else if (transaction.token_type === 'gtk') {
@@ -267,7 +268,7 @@ export class TokenAnalyticsService {
         return { success: false, error: error.message };
       }
 
-      return { success: true, analytics: [data] };
+      return { success: true, analytics: [data as TokenAnalytics] };
     } catch (error) {
       logger.error('Error in saveAnalytics:', { error: error instanceof Error ? error.message : String(error) });
       return { success: false, error: String(error) };
@@ -367,15 +368,15 @@ export class TokenAnalyticsService {
       }
     }, intervalMs);
 
-    this.analyticsCache.set('automatic_analytics', intervalId);
+    this.intervalCache.set('automatic_analytics', intervalId);
     logger.info(`🚀 Automatic analytics started (every ${intervalHours} hours)`);
   }
 
   stopAutomaticAnalytics(): void {
-    const intervalId = this.analyticsCache.get('automatic_analytics') as NodeJS.Timeout;
+    const intervalId = this.intervalCache.get('automatic_analytics');
     if (intervalId) {
       clearInterval(intervalId);
-      this.analyticsCache.delete('automatic_analytics');
+      this.intervalCache.delete('automatic_analytics');
       logger.info('🛑 Automatic analytics stopped');
     }
   }

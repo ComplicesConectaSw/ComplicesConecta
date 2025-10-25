@@ -248,7 +248,7 @@ class SecurityService {
       
       // Verificación real con TOTP usando speakeasy
       const isValidCode = speakeasy.totp.verify({
-        secret: settings.secret,
+        secret: settings.secret || '',
         encoding: 'base32',
         token: code,
         window: 2 // Permitir ventana de ±2 períodos de tiempo
@@ -432,7 +432,7 @@ class SecurityService {
       }
       
       // Mapear los datos de la base de datos al formato esperado
-      const mappedLogs: AuditLogEntry[] = (data || []).map((log: Tables<'security_events'>) => ({
+      const mappedLogs: AuditLogEntry[] = (data || []).map((log: any) => ({
         id: log.id,
         userId: log.user_id || '',
         action: log.action_type || '',
