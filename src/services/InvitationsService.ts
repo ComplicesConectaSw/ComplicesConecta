@@ -244,7 +244,7 @@ class InvitationsService {
     try {
       logger.info('Declining invitation in Supabase', { invitationId });
 
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('invitations')
         .update({
           status: 'declined',
@@ -425,12 +425,12 @@ class InvitationsService {
       }
 
       const stats = {
-        totalInvitations: (data as any)?.total_invitations || 0,
-        pendingInvitations: (data as any)?.pending_invitations || 0,
-        acceptedInvitations: (data as any)?.accepted_invitations || 0,
-        declinedInvitations: (data as any)?.declined_invitations || 0,
-        expiredInvitations: (data as any)?.expired_invitations || 0,
-        acceptanceRate: (data as any)?.acceptance_rate || 0
+        totalInvitations: data?.total_invitations || 0,
+        pendingInvitations: data?.pending_invitations || 0,
+        acceptedInvitations: data?.accepted_invitations || 0,
+        declinedInvitations: data?.declined_invitations || 0,
+        expiredInvitations: data?.expired_invitations || 0,
+        acceptanceRate: data?.acceptance_rate || 0
       };
 
       logger.info('✅ Invitation statistics loaded successfully', stats);

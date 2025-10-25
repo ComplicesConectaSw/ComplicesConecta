@@ -241,7 +241,7 @@ export class TokenAnalyticsService {
       };
 
       // Guardar en la base de datos real
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('token_analytics')
         .insert(analyticsData)
         .select()
@@ -252,7 +252,7 @@ export class TokenAnalyticsService {
         return { success: false, error: error.message };
       }
 
-      return { success: true, analytics: [data as any] };
+      return { success: true, analytics: [data] };
     } catch (error) {
       logger.error('Error in saveAnalytics:', { error: error instanceof Error ? error.message : String(error) });
       return { success: false, error: String(error) };
@@ -264,7 +264,7 @@ export class TokenAnalyticsService {
     limit: number = 30
   ): Promise<AnalyticsResponse> {
     try {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('token_analytics')
         .select('*')
         .eq('period_type', periodType)

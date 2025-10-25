@@ -109,7 +109,7 @@ export class SecurityAuditService {
         resolved: false
       };
 
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('security_events')
         .insert(securityEventData);
 
@@ -155,7 +155,7 @@ export class SecurityAuditService {
     try {
       const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
       
-      const { data: recentEvents, error } = await (supabase as any)
+      const { data: recentEvents, error } = await supabase
         .from('security_events')
         .select('*')
         .gte('timestamp', oneHourAgo)
@@ -186,7 +186,7 @@ export class SecurityAuditService {
             metadata: { ipAddress, attemptCount: count },
             ipAddress,
             resolved: false
-          } as any);
+          });
 
           // Bloquear IP temporalmente
           await this.blockIPAddress(ipAddress, '1 hour');
@@ -204,7 +204,7 @@ export class SecurityAuditService {
     try {
       const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
       
-      const { data: accessEvents, error } = await (supabase as any)
+      const { data: accessEvents, error } = await supabase
         .from('security_events')
         .select('*')
         .gte('timestamp', oneDayAgo)
@@ -230,7 +230,7 @@ export class SecurityAuditService {
           description: `Excessive data access detected: ${count} accesses in 24h`,
           metadata: { accessCount: count },
           resolved: false
-        } as any);
+        });
         }
       }
     } catch (error) {
@@ -244,7 +244,7 @@ export class SecurityAuditService {
   private async checkDataIntegrity(): Promise<void> {
     try {
       // Verificar perfiles duplicados
-      const { data: duplicateProfiles, error } = await (supabase as any)
+      const { data: duplicateProfiles, error } = await supabase
         .from('profiles')
         .select('email, count(*)')
         .group('email')
@@ -263,7 +263,7 @@ export class SecurityAuditService {
           description: `Duplicate profiles detected: ${duplicateProfiles.length} duplicates`,
           metadata: { duplicateCount: duplicateProfiles.length },
           resolved: false
-        } as any);
+        });
       }
     } catch (error) {
       logger.error('Error in checkDataIntegrity:', { error: String(error) });
@@ -276,7 +276,7 @@ export class SecurityAuditService {
   private async checkSecurityConfiguration(): Promise<void> {
     try {
       // Verificar usuarios sin 2FA habilitado
-      const { data: usersWithout2FA, error } = await (supabase as any)
+      const { data: usersWithout2FA, error } = await supabase
         .from('profiles')
         .select('id')
         .eq('two_factor_enabled', false)
@@ -295,7 +295,7 @@ export class SecurityAuditService {
           description: `Admin users without 2FA: ${usersWithout2FA.length} users`,
           metadata: { usersWithout2FA: usersWithout2FA.length },
           resolved: false
-        } as any);
+        });
       }
     } catch (error) {
       logger.error('Error in checkSecurityConfiguration:', { error: String(error) });
@@ -310,7 +310,7 @@ export class SecurityAuditService {
       const threats: ThreatDetection[] = [];
       
       // Analizar eventos críticos no resueltos
-      const { data: criticalEvents, error } = await (supabase as any)
+      const { data: criticalEvents, error } = await supabase
         .from('security_events')
         .select('*')
         .eq('severity', 'critical')
@@ -355,7 +355,7 @@ export class SecurityAuditService {
         expiresAt.setDate(expiresAt.getDate() + parseInt(duration));
       }
 
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('blocked_ips')
         .insert({
           ip_address: ipAddress,
@@ -383,7 +383,7 @@ export class SecurityAuditService {
     try {
       const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
       
-      const { data: events, error } = await (supabase as any)
+      const { data: events, error } = await supabase
         .from('security_events')
         .select('*')
         .gte('timestamp', oneWeekAgo);
@@ -425,7 +425,7 @@ export class SecurityAuditService {
       const metrics = await this.getSecurityMetrics();
       const threats = await this.analyzeThreats();
       
-      const { data: recentEvents, error } = await (supabase as any)
+      const { data: recentEvents, error } = await supabase
         .from('security_events')
         .select('*')
         .order('timestamp', { ascending: false })

@@ -237,7 +237,7 @@ class SecurityService {
       
       // PLACEHOLDER: Verificación mock (en producción usar TOTP library)
       const isValidCode = this.mockVerifyTOTP('mock_secret', code);
-      const isBackupCode = (settings as any)?.backup_codes ? (settings as any).backup_codes.includes(code) : false;
+      const isBackupCode = settings?.backup_codes ? settings.backup_codes.includes(code) : false;
       
       if (!isValidCode && !isBackupCode) {
         // Log intento fallido
@@ -250,9 +250,9 @@ class SecurityService {
       }
       
       // Si usó backup code, removerlo de la lista
-      if (isBackupCode && (settings as any).backup_codes) {
-        const updatedCodes = (settings as any).backup_codes.filter((c: string) => c !== code);
-        await (supabase as any)
+      if (isBackupCode && settings.backup_codes) {
+        const updatedCodes = settings.backup_codes.filter((c: string) => c !== code);
+        await supabase
           .from('two_factor_auth')
           .update({ backup_codes: updatedCodes })
           .eq('user_id', userId);
@@ -401,7 +401,7 @@ class SecurityService {
     error?: string;
   }> {
     try {
-      const { data, error, count } = await (supabase as any)
+      const { data, error, count } = await supabase
         .from('audit_logs')
         .select('*', { count: 'exact' })
         .eq('user_id', userId)

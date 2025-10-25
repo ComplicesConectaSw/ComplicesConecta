@@ -184,7 +184,7 @@ export class AdvancedCoupleService {
         })
       };
 
-      const { data: result, error } = await (supabase as any)
+      const { data: result, error } = await supabase
         .from('couple_profiles')
         .insert(coupleProfileData)
         .select()
@@ -209,8 +209,8 @@ export class AdvancedCoupleService {
         age_range_min: result.age_range_min,
         age_range_max: result.age_range_max,
         looking_for: result.looking_for ? result.looking_for.split(',') : [],
-        experience_level: result.experience_level as any,
-        relationship_type: result.relationship_type as any,
+        experience_level: result.experience_level as 'beginner' | 'intermediate' | 'advanced' | 'expert',
+        relationship_type: result.relationship_type as 'married' | 'dating' | 'engaged' | 'open_relationship',
         relationship_duration: result.relationship_duration,
         is_active: result.is_active,
         is_verified: result.is_verified,
@@ -237,7 +237,7 @@ export class AdvancedCoupleService {
    */
   async getCoupleProfile(coupleId: string): Promise<CoupleProfile | null> {
     try {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('couple_profiles')
         .select('*')
         .eq('id', coupleId)
@@ -264,8 +264,8 @@ export class AdvancedCoupleService {
         age_range_min: data.age_range_min,
         age_range_max: data.age_range_max,
         looking_for: data.looking_for ? data.looking_for.split(',') : [],
-        experience_level: data.experience_level as any,
-        relationship_type: data.relationship_type as any,
+        experience_level: data.experience_level as 'beginner' | 'intermediate' | 'advanced' | 'expert',
+        relationship_type: data.relationship_type as 'married' | 'dating' | 'engaged' | 'open_relationship',
         relationship_duration: data.relationship_duration,
         is_active: data.is_active,
         is_verified: data.is_verified,
@@ -296,7 +296,7 @@ export class AdvancedCoupleService {
     limit: number = 20
   ): Promise<CoupleProfile[]> {
     try {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .rpc('find_couples_by_proximity', {
           lat: latitude,
           lng: longitude,
@@ -353,7 +353,7 @@ export class AdvancedCoupleService {
     limit: number = 20
   ): Promise<CoupleProfile[]> {
     try {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .rpc('find_couples_by_compatibility', {
           couple_id: coupleId,
           limit_count: limit
@@ -391,7 +391,7 @@ export class AdvancedCoupleService {
         status: 'pending'
       };
 
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('couple_matches')
         .insert(coupleMatch)
         .select()
@@ -427,7 +427,7 @@ export class AdvancedCoupleService {
         metadata
       };
 
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('couple_interactions')
         .insert(interaction);
 
@@ -466,7 +466,7 @@ export class AdvancedCoupleService {
         participants: [] as string[]
       };
 
-      const { data: result, error } = await (supabase as any)
+      const { data: result, error } = await supabase
         .from('couple_events')
         .insert(coupleEvent)
         .select()
@@ -494,7 +494,7 @@ export class AdvancedCoupleService {
     limit: number = 20
   ): Promise<CoupleEvent[]> {
     try {
-      let query = (supabase as any)
+      let query = supabase
         .from('couple_events')
         .select('*')
         .eq('is_public', true)
@@ -529,10 +529,10 @@ export class AdvancedCoupleService {
    */
   async joinCoupleEvent(eventId: string, coupleId: string): Promise<boolean> {
     try {
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('couple_events')
         .update({
-          participants: (supabase as any).raw(`array_append(participants, '${coupleId}')`)
+          participants: supabase.raw(`array_append(participants, '${coupleId}')`)
         })
         .eq('id', eventId);
 
