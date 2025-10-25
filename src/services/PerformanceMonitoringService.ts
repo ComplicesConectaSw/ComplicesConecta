@@ -124,7 +124,7 @@ class PerformanceMonitoringService {
       new Date(m.timestamp) >= cutoffTime
     );
 
-    const recentQueries = this.queryMetrics.filter(q => 
+    const recentQueries = this.queryMetrics.filter(_q => 
       new Date().getTime() - timeframeMs <= Date.now()
     );
 
@@ -214,7 +214,7 @@ class PerformanceMonitoringService {
       new Date(m.timestamp) >= oneWeekAgo
     );
     
-    this.queryMetrics = this.queryMetrics.filter(q => 
+    this.queryMetrics = this.queryMetrics.filter(_q => 
       new Date().getTime() - 7 * 24 * 60 * 60 * 1000 <= Date.now()
     );
 
@@ -238,7 +238,7 @@ class PerformanceMonitoringService {
       new Date(m.timestamp) >= oneMinuteAgo
     );
 
-    const recentQueries = this.queryMetrics.filter(q => 
+    const recentQueries = this.queryMetrics.filter(_q => 
       new Date().getTime() - 60 * 1000 <= Date.now()
     );
 

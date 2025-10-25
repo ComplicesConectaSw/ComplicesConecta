@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useProfileTheme } from '@/hooks/useProfileTheme';
-import { Gender, ProfileType, Theme } from '@/types/theme';
+import { Gender, ProfileType, Theme } from '@/types/index';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 

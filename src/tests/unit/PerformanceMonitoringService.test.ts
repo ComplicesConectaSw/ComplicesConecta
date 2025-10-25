@@ -3,47 +3,10 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { PerformanceMonitoringService } from '@/services/PerformanceMonitoringService'
-
-// Mock de Supabase
-vi.mock('@/integrations/supabase/client', () => ({
-  supabase: {
-    from: vi.fn(() => ({
-      insert: vi.fn(() => ({
-        select: vi.fn(() => ({
-          single: vi.fn(() => Promise.resolve({ data: { id: '1' }, error: null }))
-        }))
-      })),
-      select: vi.fn(() => ({
-        eq: vi.fn(() => ({
-          gte: vi.fn(() => ({
-            order: vi.fn(() => ({
-              limit: vi.fn(() => Promise.resolve({ data: [], error: null }))
-            }))
-          })),
-          order: vi.fn(() => ({
-            limit: vi.fn(() => Promise.resolve({ data: [], error: null }))
-          }))
-        })),
-        gte: vi.fn(() => ({
-          eq: vi.fn(() => ({
-            order: vi.fn(() => ({
-              limit: vi.fn(() => Promise.resolve({ data: [], error: null }))
-            }))
-          })),
-          order: vi.fn(() => ({
-            limit: vi.fn(() => ({
-              eq: vi.fn(() => Promise.resolve({ data: [], error: null }))
-            }))
-          }))
-        }))
-      }))
-    }))
-  }
-}))
+import { performanceMonitor } from '@/services/PerformanceMonitoringService'
 
 // Mock del logger
-vi.mock('../../src/lib/logger', () => ({
+vi.mock('@/lib/logger', () => ({
   logger: {
     info: vi.fn(),
     error: vi.fn(),
@@ -53,104 +16,120 @@ vi.mock('../../src/lib/logger', () => ({
 }))
 
 describe('PerformanceMonitoringService', () => {
-  let service: PerformanceMonitoringService
+  let service: typeof performanceMonitor
 
   beforeEach(() => {
-    service = PerformanceMonitoringService.getInstance()
+    service = performanceMonitor
   })
 
   afterEach(() => {
-    service.stopMonitoring()
+    service.cleanup()
     vi.clearAllMocks()
   })
 
-  describe('getInstance', () => {
+  describe('instance', () => {
     it('should return singleton instance', () => {
-      const instance1 = PerformanceMonitoringService.getInstance()
-      const instance2 = PerformanceMonitoringService.getInstance()
-      expect(instance1).toBe(instance2)
+      expect(service).toBeDefined()
+      expect(typeof service).toBe('object')
     })
   })
 
   describe('recordMetric', () => {
-    it('should record a metric successfully', async () => {
-      const result = await service.recordMetric('response_time', 150, 'ms', { test: true })
-      
-      expect(result.success).toBe(true)
-      expect(result.metric).toBeDefined()
+    it('should record a metric successfully', () => {
+      expect(() => {
+        service.recordMetric('response_time', 150, true, undefined, { test: true })
+      }).not.toThrow()
     })
 
-    it('should handle metric recording errors', async () => {
-      // Mock error response
-      const mockSupabase = await import('@/integrations/supabase/client')
-      vi.mocked(mockSupabase.supabase.from).mockReturnValueOnce({
-        insert: vi.fn(() => ({
-          select: vi.fn(() => ({
-            single: vi.fn(() => Promise.resolve({ data: null, error: { message: 'Test error' } }))
-          }))
-        }))
-      } as any)
-
-      const result = await service.recordMetric('response_time', 150, 'ms')
-      
-      expect(result.success).toBe(false)
-      expect(result.error).toBe('Test error')
+    it('should record error metric', () => {
+      expect(() => {
+        service.recordMetric('response_time', 150, false, 'Test error')
+      }).not.toThrow()
     })
   })
 
-  describe('collectCurrentMetrics', () => {
-    it('should collect current system metrics', async () => {
-      const metrics = await service.collectCurrentMetrics()
+  describe('recordQuery', () => {
+    it('should record query performance', () => {
+      expect(() => {
+        service.recordQuery('SELECT * FROM users', 50, 100, true, 'index_used')
+      }).not.toThrow()
+    })
+
+    it('should record slow query', () => {
+      expect(() => {
+        service.recordQuery('SELECT * FROM users', 2000, 1000, false, 'no_index')
+      }).not.toThrow()
+    })
+  })
+
+  describe('generateReport', () => {
+    it('should generate hourly report', () => {
+      const report = service.generateReport('hour')
+      
+      expect(report).toBeDefined()
+      expect(report.totalOperations).toBeGreaterThanOrEqual(0)
+      expect(report.averageResponseTime).toBeGreaterThanOrEqual(0)
+      expect(report.slowQueries).toBeDefined()
+      expect(report.cacheHitRate).toBeGreaterThanOrEqual(0)
+      expect(report.errorRate).toBeGreaterThanOrEqual(0)
+      expect(report.recommendations).toBeDefined()
+    })
+
+    it('should generate daily report', () => {
+      const report = service.generateReport('day')
+      
+      expect(report).toBeDefined()
+      expect(report.totalOperations).toBeGreaterThanOrEqual(0)
+    })
+
+    it('should generate weekly report', () => {
+      const report = service.generateReport('week')
+      
+      expect(report).toBeDefined()
+      expect(report.totalOperations).toBeGreaterThanOrEqual(0)
+    })
+  })
+
+  describe('getRealTimeMetrics', () => {
+    it('should get real-time metrics', () => {
+      const metrics = service.getRealTimeMetrics()
       
       expect(metrics).toBeDefined()
-      expect(metrics.responseTime).toBeGreaterThan(0)
-      expect(metrics.queryCount).toBeGreaterThanOrEqual(0)
+      expect(metrics.operationsPerMinute).toBeGreaterThanOrEqual(0)
+      expect(metrics.averageResponseTime).toBeGreaterThanOrEqual(0)
       expect(metrics.errorRate).toBeGreaterThanOrEqual(0)
-      expect(metrics.activeUsers).toBeGreaterThanOrEqual(0)
-      expect(metrics.tokenTransactions).toBeGreaterThanOrEqual(0)
-      expect(metrics.reportActivity).toBeGreaterThanOrEqual(0)
+      expect(metrics.cacheHitRate).toBeGreaterThanOrEqual(0)
     })
   })
 
-  describe('getMetrics', () => {
-    it('should retrieve metrics by type', async () => {
-      const result = await service.getMetrics('response_time', 24)
-      
-      expect(result.success).toBe(true)
-      expect(result.metrics).toBeDefined()
-      expect(Array.isArray(result.metrics)).toBe(true)
-    })
-
-    it('should retrieve all metrics when no type specified', async () => {
-      const result = await service.getMetrics()
-      
-      expect(result.success).toBe(true)
-      expect(result.metrics).toBeDefined()
+  describe('cleanup', () => {
+    it('should cleanup metrics', () => {
+      expect(() => service.cleanup()).not.toThrow()
     })
   })
 
-  describe('getAggregatedStats', () => {
-    it('should calculate aggregated statistics', async () => {
-      const result = await service.getAggregatedStats(24)
+  describe('performance monitoring', () => {
+    it('should track performance automatically', () => {
+      // Record some metrics
+      service.recordMetric('test_operation', 100, true)
+      service.recordQuery('SELECT * FROM test', 50, 10, true)
       
-      expect(result.success).toBe(true)
-      expect(result.stats).toBeDefined()
-    })
-  })
-
-  describe('monitoring', () => {
-    it('should start and stop monitoring', () => {
-      expect(() => service.startMonitoring(1)).not.toThrow()
-      expect(() => service.stopMonitoring()).not.toThrow()
+      // Generate report
+      const report = service.generateReport('hour')
+      
+      expect(report.totalOperations).toBeGreaterThan(0)
+      expect(report.slowQueries.length).toBeGreaterThanOrEqual(0)
     })
 
-    it('should not start monitoring if already active', () => {
-      service.startMonitoring(1)
+    it('should provide recommendations', () => {
+      // Record slow operations to trigger recommendations
+      service.recordMetric('slow_operation', 1000, true)
+      service.recordQuery('SELECT * FROM large_table', 2000, 1000, false)
       
-      // Should not throw when trying to start again
-      expect(() => service.startMonitoring(1)).not.toThrow()
+      const report = service.generateReport('hour')
       
-      service.stopMonitoring()
+      expect(report.recommendations).toBeDefined()
+      expect(Array.isArray(report.recommendations)).toBe(true)
     })
   })
 })

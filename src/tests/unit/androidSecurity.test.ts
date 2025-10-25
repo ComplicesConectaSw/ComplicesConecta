@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { AndroidSecurityManager } from './androidSecurity';
+import { AndroidSecurityManager } from '../../utils/androidSecurity';
 
 // Mock de window.Capacitor
 const mockCapacitor = {

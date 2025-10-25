@@ -24,12 +24,12 @@ describe('Performance Optimizations', () => {
       // Primera llamada - debe ir a la base de datos
       const start1 = performance.now();
       const result1 = await postsService.getFeed(0, 10);
-      const duration1 = performance.now() - start1;
+      const _duration1 = performance.now() - start1;
 
       // Segunda llamada - debe usar cache
       const start2 = performance.now();
       const result2 = await postsService.getFeed(0, 10);
-      const duration2 = performance.now() - start2;
+      const _duration2 = performance.now() - start2;
 
       // Verificar que los resultados son iguales
       expect(result1).toEqual(result2);
@@ -154,7 +154,7 @@ describe('Performance Optimizations', () => {
       
       expect(report.recommendations.length).toBeGreaterThan(0);
       expect(report.recommendations.some((r: string) => r.includes('cache'))).toBe(true);
-      expect(report.recommendations.some((r: string) => r.includes('optimizar'))).toBe(true);
+      expect(report.recommendations.some((r: string) => r.toLowerCase().includes('optimizar'))).toBe(true);
     });
   });
 

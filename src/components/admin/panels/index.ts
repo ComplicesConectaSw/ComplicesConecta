@@ -7,7 +7,7 @@ export { ReportsPanel } from './ReportsPanel'
 export { UserManagementPanel } from './UserManagementPanel'
 export { TokenSystemPanel } from './TokenSystemPanel'
 export { AnalyticsPanel } from '../AnalyticsPanel'
-export { PerformancePanel } from './PerformancePanel'
+export { PerformancePanel } from '../PerformancePanel'
 export { SecurityPanel } from './SecurityPanel'
 
 // Tipos de paneles disponibles

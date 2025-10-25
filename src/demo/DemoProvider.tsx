@@ -5,7 +5,7 @@
 
 import React, { createContext, useContext, ReactNode } from 'react';
 import { logger } from '@/lib/logger';
-import { Database } from '@/types/database';
+import { Database } from '@/types/supabase';
 import { demoProfiles } from '@/demo/demoData';
 
 type Profile = Database['public']['Tables']['profiles']['Row'];

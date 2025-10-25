@@ -11,7 +11,7 @@ import {
   getBreakpoint,
   addTouchSupport,
   getAnimationConfig
-} from './mobile';
+} from '../../utils/mobile';
 
 // Mock de window.matchMedia
 const mockMatchMedia = (matches: boolean) => {

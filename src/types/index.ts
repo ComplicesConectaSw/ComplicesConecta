@@ -3,9 +3,10 @@
 
 export type UserRole = 'admin' | 'user' | 'demo';
 
-export type RelationshipType = 'single' | 'couple';
 
 export type Gender = 'male' | 'female' | 'non-binary' | 'other';
+export type ProfileType = 'single' | 'couple';
+export type Theme = 'elegant' | 'modern' | 'vibrant';
 
 export type InterestedIn = 'men' | 'women' | 'both' | 'non-binary';
 
@@ -20,7 +21,7 @@ export interface Profile {
   interested_in: InterestedIn;
   is_premium: boolean | null;
   is_verified: boolean | null;
-  relationship_type: RelationshipType;
+  relationship_type: ProfileType;
   created_at: string;
   updated_at: string;
   user_id: string | null;
@@ -142,7 +143,7 @@ export interface RegisterForm {
   firstName: string;
   lastName: string;
   age: number;
-  relationshipType: RelationshipType;
+  relationshipType: ProfileType;
 }
 
 // Component prop types
@@ -174,6 +175,20 @@ export interface FeatureFlags {
   chatSystem: boolean;
   eventSystem: boolean;
   tokenSystem: boolean;
+}
+
+export interface ProfileThemeConfig {
+  backgroundClass: string;
+  textClass: string;
+  accentClass: string;
+  borderClass: string;
+}
+
+export interface ThemeableProfile {
+  gender?: Gender;
+  partnerGender?: Gender;
+  theme?: Theme;
+  accountType?: ProfileType;
 }
 
 // Monitoring types

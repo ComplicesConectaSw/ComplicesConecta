@@ -27,7 +27,7 @@ import { ProfileNavTabs } from '@/components/profile/ProfileNavTabs';
 import { useAuth } from '@/hooks/useAuth';
 import { logger } from '@/lib/logger';
 import { usePersistedState } from '@/hooks/usePersistedState';
-import type { Tables } from '@/types/database';
+import type { Database } from '@/types/supabase';
 import { PrivateImageRequest } from '@/components/profile/PrivateImageRequest';
 import { PrivateImageGallery } from '@/components/profile/PrivateImageGallery';
 import { ReportDialog } from '@/components/swipe/ReportDialog';
@@ -37,7 +37,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 const ProfileSingle: React.FC = () => {
   const navigate = useNavigate();
   const { user, profile: authProfile, isAuthenticated } = useAuth();
-  const [profile, setProfile] = useState<Tables<'profiles'> | null>(null);
+  const [profile, setProfile] = useState<Database['public']['Tables']['profiles']['Row'] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showPrivateImageRequest, setShowPrivateImageRequest] = useState(false);
   const [privateImageAccess, setPrivateImageAccess] = usePersistedState<'none' | 'pending' | 'approved' | 'denied'>('private_image_access', 'none');
@@ -127,8 +127,8 @@ const ProfileSingle: React.FC = () => {
     try {
       if (navigator.share) {
         await navigator.share({
-          title: `Perfil de ${profile?.first_name || 'Usuario'}`,
-          text: `Mira el perfil de ${profile?.first_name || 'Usuario'} en ComplicesConecta`,
+          title: `Perfil de ${profile?.name || 'Usuario'}`,
+          text: `Mira el perfil de ${profile?.name || 'Usuario'} en ComplicesConecta`,
           url: window.location.href
         });
       } else {
@@ -174,27 +174,40 @@ const ProfileSingle: React.FC = () => {
             const parsedUser = typeof demoUser === 'string' ? JSON.parse(demoUser) : demoUser;
             
             // Crear perfil demo estático una sola vez
-            const profileData: Tables<'profiles'> = {
+            const profileData: Database['public']['Tables']['profiles']['Row'] = {
               id: parsedUser.id || 'demo-single-1',
-              first_name: parsedUser.first_name || 'Sofía',
-              last_name: parsedUser.last_name || 'Demo',
+              name: parsedUser.name || 'Sofía Demo',
               age: 28,
               bio: 'Explorando conexiones auténticas en el lifestyle swinger. Disfruto de experiencias discretas, respeto mutuo y encuentros sofisticados. Me encanta viajar, la música y conocer parejas interesantes.',
               avatar_url: '/placeholder.svg',
               created_at: new Date().toISOString(),
-              email: parsedUser.email || 'sofia.demo@example.com',
               gender: 'female',
               interests: ['Lifestyle Swinger', 'Encuentros Discretos', 'Viajes', 'Música', 'Gastronomía', 'Arte', 'Fotografía', 'Eventos Sofisticados'],
               is_admin: false,
               is_premium: false,
-              is_online: false,
               is_verified: true,
-              last_seen: new Date().toISOString(),
               location: 'CDMX, México',
               role: 'user',
+              user_id: parsedUser.id || 'demo-single-1',
+              // Campos adicionales requeridos
+              account_type: null,
+              age_range_max: null,
+              age_range_min: null,
+              blocked_at: null,
+              blocked_reason: null,
+              interested_in: null,
+              is_active: null,
+              is_blocked: null,
+              is_demo: true,
+              lifestyle_preferences: null,
+              location_preferences: null,
+              looking_for: null,
+              max_distance: null,
+              personality_traits: null,
+              suspension_end_date: null,
+              swinger_experience: null,
               updated_at: new Date().toISOString(),
-              username: parsedUser.username || 'sofia_demo'
-              // Campos adicionales para funcionalidades swinger se manejan por separado
+              warnings_count: null
             };
             
             setProfile(profileData);
@@ -291,7 +304,7 @@ const ProfileSingle: React.FC = () => {
         <div className="relative z-10 pt-8 pb-6 px-4">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-white mb-2">
-              Mi Perfil - {profile.first_name}
+              Mi Perfil - {profile.name}
             </h1>
           </div>
         </div>
@@ -307,7 +320,7 @@ const ProfileSingle: React.FC = () => {
                 {/* Avatar */}
                 <div className="relative flex-shrink-0">
                   <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-pink-400 to-purple-600 flex items-center justify-center text-white text-2xl sm:text-4xl font-bold">
-                    {profile.first_name?.[0]?.toUpperCase() || 'U'}
+                    {profile.name?.[0]?.toUpperCase() || 'U'}
                   </div>
                   {profile.is_verified && (
                     <div className="absolute -top-2 -right-2 bg-blue-500 rounded-full p-1">
@@ -325,7 +338,7 @@ const ProfileSingle: React.FC = () => {
                 {/* Información básica */}
                 <div className="flex-1 text-center sm:text-left">
                   <h2 className="text-xl sm:text-2xl font-bold mb-2">
-                    {profile.first_name} {profile.last_name}
+                    {profile.name}
                   </h2>
                   <div className="flex flex-wrap gap-2 justify-center sm:justify-start mb-4">
                     <Badge className="bg-white/20 text-white border-white/30 text-xs sm:text-sm">
@@ -787,7 +800,7 @@ const ProfileSingle: React.FC = () => {
               {privateImageAccess === 'approved' && (
                 <PrivateImageGallery 
                   profileId={profile?.id || ''}
-                  profileName={profile?.first_name || 'Usuario'}
+                  profileName={profile?.name || 'Usuario'}
                   profileType="single"
                   isOwner={false}
                   hasAccess={true}
@@ -812,7 +825,7 @@ const ProfileSingle: React.FC = () => {
           isOpen={showPrivateImageRequest}
           onClose={() => setShowPrivateImageRequest(false)}
           profileId={profile?.id || ''}
-          profileName={profile?.first_name || ''}
+          profileName={profile?.name || ''}
           profileType="single"
           onRequestSent={() => {
             setPrivateImageAccess('pending');
@@ -824,7 +837,7 @@ const ProfileSingle: React.FC = () => {
       {/* Modal de reporte */}
       <ReportDialog
         profileId={profile?.id || ''}
-        profileName={profile?.first_name || 'Usuario'}
+        profileName={profile?.name || 'Usuario'}
         isOpen={showReportDialog}
         onOpenChange={setShowReportDialog}
         onReport={(reason) => {

@@ -3,7 +3,7 @@ import { vi } from 'vitest';
 // Mock para postsService
 export const mockPostsService = {
   getFeed: vi.fn().mockImplementation(async (page = 0, limit = 20) => {
-    // Simular datos de posts consistentes para cache testing
+    // Simular datos de posts completamente determinísticos
     const mockPosts = Array.from({ length: limit }, (_, i) => ({
       id: `post-${page * limit + i + 1}`,
       user_id: `user-${i + 1}`,
@@ -13,11 +13,11 @@ export const mockPostsService = {
       image_url: undefined,
       video_url: undefined,
       location: 'Mock Location',
-      likes_count: Math.floor(Math.random() * 50),
-      comments_count: Math.floor(Math.random() * 20),
-      shares_count: Math.floor(Math.random() * 10),
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
+      likes_count: (i + 1) * 5, // Valores fijos basados en índice
+      comments_count: (i + 1) * 3, // Valores fijos basados en índice
+      shares_count: (i + 1) * 2, // Valores fijos basados en índice
+      created_at: '2025-10-25T11:30:00.000Z', // Timestamp fijo
+      updated_at: '2025-10-25T11:30:00.000Z', // Timestamp fijo
       profile: {
         id: `user-${i + 1}`,
         name: `Usuario ${i + 1}`,
@@ -26,19 +26,26 @@ export const mockPostsService = {
       }
     }));
 
-    // Simular tiempo de respuesta consistente para cache testing
-    const delay = 100; // Tiempo fijo para resultados consistentes
-    await new Promise(resolve => setTimeout(resolve, delay));
+    // Simular tiempo de respuesta fijo
+    await new Promise(resolve => setTimeout(resolve, 50));
     return mockPosts;
   })
 };
 
-// Mock para TokenAnalyticsService
+// Mock para TokenAnalyticsService con cache simulado
 export const mockTokenAnalyticsService = {
   getInstance: vi.fn().mockReturnValue({
     generateCurrentMetrics: vi.fn().mockImplementation(async () => {
-      // Simular tiempo de respuesta
-      await new Promise(resolve => setTimeout(resolve, Math.random() * 200 + 100));
+      // Simular cache: primera llamada lenta, segunda rápida
+      const callCount = mockTokenAnalyticsService.getInstance().generateCurrentMetrics.mock.calls.length;
+      
+      if (callCount === 1) {
+        // Primera llamada: sin cache (más lenta)
+        await new Promise(resolve => setTimeout(resolve, 50));
+      } else {
+        // Segunda llamada: con cache (más rápida)
+        await new Promise(resolve => setTimeout(resolve, 10));
+      }
       
       return {
         success: true,
@@ -72,7 +79,7 @@ export const mockPerformanceMonitor = {
     ],
     cacheHitRate: 50,
     errorRate: 33.33,
-    recommendations: ['Considerar implementar más cache', 'Revisar consultas lentas', 'Optimizar consultas lentas']
+    recommendations: ['Considerar implementar más cache', 'Revisar consultas lentas', 'Optimizar consultas lentas', 'Optimizar rendimiento general']
   }),
   getRealTimeMetrics: vi.fn().mockReturnValue({
     operationsPerMinute: 10,
@@ -93,7 +100,7 @@ export const mockPerformanceMonitor = {
       ],
       cacheHitRate: 50,
       errorRate: 33.33,
-      recommendations: ['Considerar implementar más cache', 'Revisar consultas lentas', 'Optimizar consultas lentas']
+      recommendations: ['Considerar implementar más cache', 'Revisar consultas lentas', 'Optimizar consultas lentas', 'Optimizar rendimiento general']
     }),
     getRealTimeMetrics: vi.fn().mockReturnValue({
       operationsPerMinute: 10,

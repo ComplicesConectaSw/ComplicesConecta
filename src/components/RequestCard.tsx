@@ -1,12 +1,12 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Check, X, MessageCircle, Clock, User, CheckCircle } from 'lucide-react';
 import { RequestsService } from '@/lib/requests';
-import { Tables } from '@/types/database';
+import { Database } from '@/types/supabase';
 import { logger } from '@/lib/logger';
 
 // Tipos estrictos basados en Supabase
-type _ProfileRow = Tables<'profiles'>;
-type _InvitationRow = Tables<'invitations'>;
+type _ProfileRow = Database['public']['Tables']['profiles']['Row'];
+type _InvitationRow = Database['public']['Tables']['invitations']['Row'];
 // Definir tipos de enum manualmente ya que no están en el schema
 type InvitationStatus = 'pending' | 'accepted' | 'declined' | 'revoked';
 type InvitationType = 'profile' | 'gallery' | 'chat';

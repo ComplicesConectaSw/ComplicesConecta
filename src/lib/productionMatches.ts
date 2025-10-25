@@ -9,7 +9,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
-import { Database } from '@/types/database';
+import { Database } from '@/types/supabase';
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
 

@@ -6,7 +6,7 @@
 import React, { createContext, useContext, ReactNode } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
-import { Database } from '@/types/database';
+import { Database } from '@/types/supabase';
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
 

@@ -223,3 +223,8 @@ audit-files/
 
 # Directorio de documentación unificada (organizado)
 docs-unified/
+
+# Directorios adicionales de auditoría y respaldos
+2025-01-22/
+backups/
+audit-files/

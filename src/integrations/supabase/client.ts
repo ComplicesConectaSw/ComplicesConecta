@@ -1,5 +1,5 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { Database } from '@/types/database';
+import { Database } from '@/types/supabase';
 import { logger } from '@/lib/logger';
 
 // Obtener las credenciales de Supabase desde las variables de entorno

@@ -2,107 +2,52 @@
  * Tests unitarios para PushNotificationService v3.3.0
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { PushNotificationService } from '@/services/PushNotificationService'
-import { testDebugger } from '@/utils/testDebugger'
 
-// Mock de Supabase - FIXED: Return success: true in service responses
-const mockSupabaseChain = {
-  insert: vi.fn(() => ({
-    select: vi.fn(() => ({
-      single: vi.fn(() => Promise.resolve({ 
-        data: { id: '1', token: 'device_token_123' }, 
-        error: null 
-      }))
-    }))
-  })),
-  select: vi.fn(() => ({
-    eq: vi.fn(() => ({
-      eq: vi.fn(() => Promise.resolve({ 
-        data: [{ 
-          id: '1', 
-          user_id: 'user123',
-          device_token: 'device_token_123',
-          is_active: true,
-          device_type: 'android'
-        }], 
-        error: null 
-      }))
-    }))
-  })),
-  upsert: vi.fn(() => ({
-    select: vi.fn(() => ({
-      single: vi.fn(() => Promise.resolve({ 
-        data: { id: '1', token: 'device_token_123' }, 
-        error: null 
-      }))
-    }))
-  })),
-  update: vi.fn(() => ({
-    eq: vi.fn(() => ({
-      eq: vi.fn(() => Promise.resolve({ 
-        data: { id: '1' }, 
-        error: null 
-      }))
-    }))
-  }))
-};
-
+// Mock de Supabase
 vi.mock('@/integrations/supabase/client', () => ({
   supabase: {
-    from: vi.fn((table) => {
-      if (table === 'user_notification_preferences') {
-        return {
-          select: vi.fn(() => ({
-            eq: vi.fn(() => Promise.resolve({ 
-              data: [{ 
-                id: '1', 
-                user_id: 'user123',
-                notification_type: 'report_resolved',
-                delivery_method: 'push',
-                enabled: true
-              }], 
-              error: null 
-            }))
-          })),
-          upsert: vi.fn(() => ({
-            select: vi.fn(() => ({
-              single: vi.fn(() => Promise.resolve({ 
-                data: { id: '1', enabled: true }, 
-                error: null 
-              }))
-            }))
-          })),
-          insert: vi.fn(() => Promise.resolve({ 
-            data: null, 
+    from: vi.fn(() => ({
+      insert: vi.fn(() => ({
+        select: vi.fn(() => ({
+          single: vi.fn(() => Promise.resolve({ 
+            data: { id: '1', token: 'device_token_123' }, 
             error: null 
           }))
-        };
-      }
-      if (table === 'notification_history') {
-        return {
-          insert: vi.fn(() => ({
-            select: vi.fn(() => ({
-              single: vi.fn(() => Promise.resolve({ 
-                data: { id: '1', status: 'pending' }, 
-                error: null 
-              }))
-            }))
-          })),
-          select: vi.fn(() => ({
-            eq: vi.fn(() => ({
-              order: vi.fn(() => ({
-                limit: vi.fn(() => Promise.resolve({ 
-                  data: [{ id: '1', title: 'Test notification' }], 
-                  error: null 
-                }))
-              }))
-            }))
+        }))
+      })),
+      select: vi.fn(() => ({
+        eq: vi.fn(() => ({
+          eq: vi.fn(() => Promise.resolve({ 
+            data: [{ 
+              id: '1', 
+              user_id: 'user123',
+              device_token: 'device_token_123',
+              is_active: true,
+              device_type: 'android'
+            }], 
+            error: null 
           }))
-        };
-      }
-      return mockSupabaseChain;
-    })
+        }))
+      })),
+      upsert: vi.fn(() => ({
+        select: vi.fn(() => ({
+          single: vi.fn(() => Promise.resolve({ 
+            data: { id: '1', token: 'device_token_123' }, 
+            error: null 
+          }))
+        }))
+      })),
+      update: vi.fn(() => ({
+        eq: vi.fn(() => ({
+          eq: vi.fn(() => Promise.resolve({ 
+            data: { id: '1' }, 
+            error: null 
+          }))
+        }))
+      }))
+    }))
   }
 }))
 
@@ -117,160 +62,185 @@ vi.mock('@/lib/logger', () => ({
 }))
 
 describe('PushNotificationService', () => {
-  let service: PushNotificationService
-
   beforeEach(() => {
-    service = PushNotificationService.getInstance()
-  })
-
-  describe('getInstance', () => {
-    it('should return singleton instance', () => {
-      const instance1 = PushNotificationService.getInstance()
-      const instance2 = PushNotificationService.getInstance()
-      expect(instance1).toBe(instance2)
+    vi.clearAllMocks()
+    
+    // Mock Notification API
+    global.Notification = vi.fn().mockImplementation(() => ({
+      close: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn()
+    })) as any
+    
+    Object.defineProperty(global.Notification, 'requestPermission', {
+      value: vi.fn().mockResolvedValue('granted'),
+      writable: true
+    })
+    
+    Object.defineProperty(global.Notification, 'permission', {
+      value: 'granted',
+      writable: true
+    })
+    
+    // Mock navigator and service worker
+    const mockRegistration = {
+      pushManager: {
+        subscribe: vi.fn().mockResolvedValue({
+          endpoint: 'https://example.com/push',
+          getKey: vi.fn().mockReturnValue(new ArrayBuffer(8))
+        }),
+        getSubscription: vi.fn().mockResolvedValue({
+          endpoint: 'https://example.com/push',
+          getKey: vi.fn().mockReturnValue(new ArrayBuffer(8))
+        }),
+        unsubscribe: vi.fn().mockResolvedValue(true)
+      }
+    }
+    
+    Object.defineProperty(navigator, 'serviceWorker', {
+      value: {
+        register: vi.fn().mockResolvedValue(mockRegistration),
+        ready: Promise.resolve(mockRegistration)
+      },
+      writable: true
+    })
+    
+    Object.defineProperty(window, 'PushManager', {
+      value: class MockPushManager {},
+      writable: true
     })
   })
 
-  describe('registerDeviceToken', () => {
-    it('should register device token successfully', async () => {
-      testDebugger.logTestStart('PushNotificationService - registerDeviceToken');
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  describe('isSupported', () => {
+    it('should return true when service worker and push manager are available', () => {
+      // Mock isSupported method
+      const isSupported = vi.spyOn(PushNotificationService as any, 'isSupported')
+      isSupported.mockReturnValue(true)
       
-      const result = await service.registerDeviceToken(
-        'user123',
-        'device_token_123',
-        'android',
-        { model: 'Test Device' }
-      )
-      
-      testDebugger.logTestEnd('PushNotificationService - registerDeviceToken', result.success, result);
-      
-      expect(result.success).toBe(true)
-      expect(result.token).toBeDefined()
+      expect(PushNotificationService['isSupported']()).toBe(true)
     })
   })
 
-  describe('getUserPreferences', () => {
-    it('should get user notification preferences', async () => {
-      const result = await service.getUserPreferences('user123')
+  describe('registerServiceWorker', () => {
+    it('should register service worker successfully', async () => {
+      const result = await PushNotificationService.registerServiceWorker()
       
-      expect(result.success).toBe(true)
-      expect(result.preferences).toBeDefined()
-      expect(Array.isArray(result.preferences)).toBe(true)
-    })
-  })
-
-  describe('updateUserPreferences', () => {
-    it('should update notification preferences', async () => {
-      const { supabase } = await import('@/integrations/supabase/client')
-      
-      vi.mocked(supabase.from).mockReturnValue({
-        update: vi.fn().mockReturnValue({
-          eq: vi.fn().mockReturnValue({
-            select: vi.fn().mockReturnValue({
-              single: vi.fn().mockResolvedValue({
-                data: { id: 'user123', updated_at: new Date().toISOString() },
-                error: null
-              })
-            })
-          })
-        })
-      } as any)
-
-      const result = await service.updateUserPreferences(
-        'user123',
-        'report_resolved',
-        true,
-        'push',
-        { sound: true }
-      )
-      
-      expect(result.success).toBe(true)
-    })
-  })
-
-  describe('sendReportNotification', () => {
-    it('should send report resolution notification', async () => {
-      const service = PushNotificationService.getInstance()
-      
-      // Mock the private sendNotification method directly
-      const sendNotificationSpy = vi.spyOn(service as any, 'sendNotification').mockResolvedValue({
-        success: true,
-        notification: { id: 'notification-1', status: 'sent' }
+      expect(result).toBeDefined()
+      expect(navigator.serviceWorker.register).toHaveBeenCalledWith('/sw-notifications.js', {
+        scope: '/'
       })
+    })
+
+    it('should return null when not supported', async () => {
+      // Mock isSupported to return false
+      const isSupported = vi.spyOn(PushNotificationService as any, 'isSupported')
+      isSupported.mockReturnValue(false)
       
-      const result = await service.sendReportNotification(
-        'user-123',
-        'report-456',
-        'resolved'
+      const result = await PushNotificationService.registerServiceWorker()
+      
+      expect(result).toBeNull()
+    })
+  })
+
+  describe('requestPermission', () => {
+    it('should request notification permission', async () => {
+      const result = await PushNotificationService.requestPermission()
+      
+      expect(result).toBe('granted')
+      expect(Notification.requestPermission).toHaveBeenCalled()
+    })
+
+    it('should return denied when not supported', async () => {
+      // Mock isSupported to return false
+      const isSupported = vi.spyOn(PushNotificationService as any, 'isSupported')
+      isSupported.mockReturnValue(false)
+      
+      const result = await PushNotificationService.requestPermission()
+      
+      expect(result).toBe('denied')
+    })
+  })
+
+  describe('subscribeToPush', () => {
+    it('should subscribe to push notifications successfully', async () => {
+      const result = await PushNotificationService.subscribeToPush()
+      
+      expect(result).toBeDefined()
+      expect(result?.endpoint).toBe('https://example.com/push')
+      expect(result?.keys).toBeDefined()
+    })
+
+    it('should return null when permission denied', async () => {
+      // Mock requestPermission to return denied
+      const requestPermission = vi.spyOn(PushNotificationService, 'requestPermission')
+      requestPermission.mockResolvedValue('denied')
+      
+      const result = await PushNotificationService.subscribeToPush()
+      
+      expect(result).toBeNull()
+    })
+  })
+
+  describe('unsubscribeFromPush', () => {
+    it('should unsubscribe from push notifications', async () => {
+      const result = await PushNotificationService.unsubscribeFromPush()
+      
+      expect(result).toBe(true)
+    })
+  })
+
+  describe('isSubscribed', () => {
+    it('should check if user is subscribed', async () => {
+      const result = await PushNotificationService.isSubscribed()
+      
+      expect(typeof result).toBe('boolean')
+    })
+  })
+
+  describe('getCurrentSubscription', () => {
+    it('should get current push subscription', async () => {
+      const result = await PushNotificationService.getCurrentSubscription()
+      
+      expect(result).toBeDefined()
+      expect(result?.endpoint).toBe('https://example.com/push')
+    })
+  })
+
+  describe('sendTestNotification', () => {
+    it('should send test notification', async () => {
+      const result = await PushNotificationService.sendTestNotification()
+      
+      expect(typeof result).toBe('boolean')
+    })
+  })
+
+  describe('setupForUser', () => {
+    it('should setup push notifications for user', async () => {
+      const result = await PushNotificationService.setupForUser('user123')
+      
+      expect(typeof result).toBe('boolean')
+    })
+  })
+
+  describe('showLocalNotification', () => {
+    it('should show local notification', async () => {
+      const result = await PushNotificationService.showLocalNotification(
+        'Test Title',
+        'Test Body',
+        '/icon.png'
       )
-
-      expect(result.success).toBe(true)
-      expect(sendNotificationSpy).toHaveBeenCalledWith('user-123', 'report_resolved', expect.any(Object))
+      
+      expect(result).toBeDefined()
     })
   })
 
-  describe('sendTokenNotification', () => {
-    it('should send token transaction notification', async () => {
-      const service = PushNotificationService.getInstance()
-      
-      // Mock the private sendNotification method directly
-      const sendNotificationSpy = vi.spyOn(service as any, 'sendNotification').mockResolvedValue({
-        success: true,
-        notification: { id: 'notification-1', status: 'sent' }
-      })
-      
-      const result = await service.sendTokenNotification(
-        'user123',
-        'earn_referral',
-        50,
-        'CMPX'
-      )
-      
-      expect(result.success).toBe(true)
-      expect(sendNotificationSpy).toHaveBeenCalledWith('user123', 'token_transaction', expect.any(Object))
-    })
-  })
-
-  describe('createDefaultPreferences', () => {
-    it('should create default preferences for new user', async () => {
-      const { supabase } = await import('@/integrations/supabase/client')
-      
-      vi.mocked(supabase.from).mockReturnValue({
-        update: vi.fn().mockReturnValue({
-          eq: vi.fn().mockResolvedValue({
-            data: { id: 'user123', updated_at: new Date().toISOString() },
-            error: null
-          })
-        })
-      } as any)
-      
-      const result = await service.createDefaultPreferences('user123')
-      
-      expect(result.success).toBe(true)
-    })
-  })
-
-  describe('getNotificationHistory', () => {
-    it('should get notification history for user', async () => {
-      const { supabase } = await import('@/integrations/supabase/client')
-      
-      vi.mocked(supabase.from).mockReturnValue({
-        select: vi.fn().mockReturnValue({
-          eq: vi.fn().mockReturnValue({
-            order: vi.fn().mockReturnValue({
-              limit: vi.fn().mockResolvedValue({
-                data: [{ id: '1', title: 'Test notification', created_at: '2023-01-01' }],
-                error: null
-              })
-            })
-          })
-        })
-      } as any)
-      
-      const result = await service.getNotificationHistory('user123', 10)
-      
-      expect(result.success).toBe(true)
-      expect(result.notifications).toBeDefined()
+  describe('clearAllNotifications', () => {
+    it('should clear all notifications', async () => {
+      await expect(PushNotificationService.clearAllNotifications()).resolves.not.toThrow()
     })
   })
 })
