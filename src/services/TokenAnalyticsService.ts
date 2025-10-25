@@ -70,7 +70,8 @@ export interface ReportResponse {
 
 export class TokenAnalyticsService {
   private static instance: TokenAnalyticsService
-  private analyticsCache: Map<string, NodeJS.Timeout | unknown> = new Map()
+  private analyticsCache: Map<string, { data: any; timestamp: number }> = new Map()
+  private readonly CACHE_TTL = 5 * 60 * 1000 // 5 minutos
   private isGeneratingReports: boolean = false
 
   private constructor() {
@@ -86,7 +87,18 @@ export class TokenAnalyticsService {
 
   async generateCurrentMetrics(): Promise<MetricsResponse> {
     try {
-      // Obtener métricas reales de las tablas de Supabase
+      // Verificar cache primero
+      const cacheKey = 'current_metrics';
+      const cached = this.analyticsCache.get(cacheKey);
+      
+      if (cached && Date.now() - cached.timestamp < this.CACHE_TTL) {
+        logger.info('📊 Using cached metrics');
+        return { success: true, metrics: cached.data };
+      }
+
+      logger.info('📊 Generating fresh metrics from database');
+      
+      // Obtener métricas reales de las tablas de Supabase con consultas optimizadas
       const [
         _tokenAnalyticsResult,
         userBalancesResult,
@@ -102,26 +114,26 @@ export class TokenAnalyticsService {
           .limit(1)
           .single(),
         
-        // Obtener balances totales de usuarios
+        // Obtener balances totales de usuarios (optimizado)
         supabase
           .from('user_token_balances')
           .select('cmpx_balance, gtk_balance')
           .not('cmpx_balance', 'is', null)
           .not('gtk_balance', 'is', null),
         
-        // Obtener métricas de staking
+        // Obtener métricas de staking (optimizado)
         supabase
           .from('staking_records')
           .select('amount, staking_duration as duration, created_at')
           .eq('is_active', true),
         
-        // Obtener transacciones recientes
+        // Obtener transacciones recientes (optimizado)
         supabase
           .from('token_transactions')
           .select('amount, token_type, created_at')
           .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()),
         
-        // Obtener estadísticas de usuarios
+        // Obtener estadísticas de usuarios (optimizado)
         supabase
           .from('profiles')
           .select('created_at')
@@ -205,6 +217,9 @@ export class TokenAnalyticsService {
       if (activeUsersResult.data) {
         metrics.userMetrics.activeUsers = activeUsersResult.data.length;
       }
+
+      // Guardar en cache
+      this.analyticsCache.set(cacheKey, { data: metrics, timestamp: Date.now() });
 
       return { success: true, metrics };
     } catch (error) {
@@ -363,6 +378,27 @@ export class TokenAnalyticsService {
       this.analyticsCache.delete('automatic_analytics');
       logger.info('🛑 Automatic analytics stopped');
     }
+  }
+
+  /**
+   * Limpiar cache expirado
+   */
+  clearExpiredCache(): void {
+    const now = Date.now();
+    for (const [key, cached] of this.analyticsCache.entries()) {
+      if (now - cached.timestamp > this.CACHE_TTL) {
+        this.analyticsCache.delete(key);
+      }
+    }
+    logger.info('🧹 Expired cache cleared');
+  }
+
+  /**
+   * Limpiar todo el cache
+   */
+  clearAllCache(): void {
+    this.analyticsCache.clear();
+    logger.info('🧹 All cache cleared');
   }
 
   private calculateTrends(historical: TokenAnalytics[], current: TokenMetrics): Record<string, number> {

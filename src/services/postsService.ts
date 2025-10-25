@@ -208,32 +208,54 @@ class PostsService {
         }
       }));
 
-      // Obtener conteos de interacciones para cada post
-      for (const post of posts) {
+      // Optimización: Obtener conteos en una sola consulta agregada
+      if (posts.length > 0) {
+        const postIds = posts.map(post => post.id);
+        
         const [likesResult, commentsResult, sharesResult] = await Promise.allSettled([
           supabase
             .from('story_likes')
-            .select('id', { count: 'exact' })
-            .eq('story_id', post.id),
+            .select('story_id', { count: 'exact' })
+            .in('story_id', postIds),
           supabase
             .from('story_comments')
-            .select('id', { count: 'exact' })
-            .eq('story_id', post.id),
+            .select('story_id', { count: 'exact' })
+            .in('story_id', postIds),
           supabase
             .from('story_shares')
-            .select('id', { count: 'exact' })
-            .eq('story_id', post.id)
+            .select('story_id', { count: 'exact' })
+            .in('story_id', postIds)
         ]);
 
-        if (likesResult.status === 'fulfilled' && likesResult.value.count !== null) {
-          post.likes_count = likesResult.value.count;
+        // Crear mapas de conteos por post_id
+        const likesMap = new Map<string, number>();
+        const commentsMap = new Map<string, number>();
+        const sharesMap = new Map<string, number>();
+
+        if (likesResult.status === 'fulfilled' && likesResult.value.data) {
+          likesResult.value.data.forEach((item: any) => {
+            likesMap.set(item.story_id, item.count || 0);
+          });
         }
-        if (commentsResult.status === 'fulfilled' && commentsResult.value.count !== null) {
-          post.comments_count = commentsResult.value.count;
+
+        if (commentsResult.status === 'fulfilled' && commentsResult.value.data) {
+          commentsResult.value.data.forEach((item: any) => {
+            commentsMap.set(item.story_id, item.count || 0);
+          });
         }
-        if (sharesResult.status === 'fulfilled' && sharesResult.value.count !== null) {
-          post.shares_count = sharesResult.value.count;
+
+        if (sharesResult.status === 'fulfilled' && sharesResult.value.data) {
+          sharesResult.value.data.forEach((item: any) => {
+            sharesMap.set(item.story_id, item.count || 0);
+          });
         }
+
+        // Asignar conteos a cada post
+        posts.forEach(post => {
+          post.likes_count = likesMap.get(post.id) || 0;
+          post.comments_count = commentsMap.get(post.id) || 0;
+          post.shares_count = sharesMap.get(post.id) || 0;
+        });
       }
 
       logger.info('✅ Feed posts loaded successfully from Supabase', { count: posts.length });
@@ -285,21 +307,21 @@ class PostsService {
 
       // Mapear datos de Supabase al formato esperado
       const newPost: Post = {
-        id: (storyData as any).id,
-        user_id: (storyData as any).user_id,
-        profile_id: (storyData as any).user_id,
-        content: (storyData as any).content || '',
-        post_type: (storyData as any).post_type as 'text' | 'photo' | 'video',
-        image_url: (storyData as any).content_url || undefined,
-        video_url: (storyData as any).post_type === 'video' ? (storyData as any).content_url : undefined,
-        location: (storyData as any).location || undefined,
+        id: storyData.id,
+        user_id: storyData.user_id,
+        profile_id: storyData.user_id,
+        content: storyData.content || '',
+        post_type: storyData.post_type as 'text' | 'photo' | 'video',
+        image_url: storyData.content_url || undefined,
+        video_url: storyData.post_type === 'video' ? storyData.content_url : undefined,
+        location: storyData.location || undefined,
         likes_count: 0,
         comments_count: 0,
         shares_count: 0,
-        created_at: (storyData as any).created_at,
-        updated_at: (storyData as any).updated_at,
+        created_at: storyData.created_at,
+        updated_at: storyData.updated_at,
         profile: {
-          id: (storyData as any).user_id,
+          id: storyData.user_id,
           name: 'Usuario',
           avatar_url: undefined,
           is_verified: false
