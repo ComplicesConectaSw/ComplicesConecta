@@ -1,11 +1,10 @@
-11
-# ==============================
+n# ==============================
 # 🚀 DEVOPS MANAGER ULTRA (SAFE EDITION)
 # ==============================
 # Unificado: SUPABASE SQL MANAGER + GIT MANAGER PRO ULTRA
 # Uso: Abrir PowerShell, ejecutar: .\DevOpsManagerUltra.ps1
 
-Param()
+Param( [string]$projectDir = "C:\Users\conej\Documents\conecta-social-comunidad-main", [string]$backupDir = "D:\complicesconecta_ultima_version_respaldo\supabase\migrations")
 
 # -----------------------------
 # Configuración inicial

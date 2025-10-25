@@ -173,7 +173,7 @@ export const useBiometricAuth = () => {
       const method = 'fingerprint';
       
       // Guardar sesión biométrica en la base de datos
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('biometric_sessions')
         .insert({
           user_id: user.id,
@@ -255,7 +255,7 @@ export const useBiometricAuth = () => {
       const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
 
       // Actualizar sesión biométrica en la base de datos
-      const { error: updateError } = await supabase
+      const { error: updateError } = await (supabase as any)
         .from('biometric_sessions')
         .update({
           last_used_at: new Date().toISOString(),
@@ -303,7 +303,7 @@ export const useBiometricAuth = () => {
     if (!user?.id) return false;
 
     try {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('biometric_sessions')
         .select('expires_at, is_active')
         .eq('session_id', sessionId)
@@ -319,7 +319,7 @@ export const useBiometricAuth = () => {
 
       if (now > expiresAt || !data.is_active) {
         // Limpiar sesión expirada
-        await supabase
+        await (supabase as any)
           .from('biometric_sessions')
           .update({ is_active: false })
           .eq('session_id', sessionId);
@@ -343,7 +343,7 @@ export const useBiometricAuth = () => {
     if (!user?.id) return false;
 
     try {
-      let query = supabase
+      let query = (supabase as any)
         .from('biometric_sessions')
         .update({ is_active: false });
       
