@@ -166,12 +166,12 @@ export class TokenAnalyticsService {
       // Calcular métricas de staking
       if (stakingResult.status === 'fulfilled' && stakingResult.value.data) {
         const stakingRecords = stakingResult.value.data;
-        metrics.stakingMetrics.totalStaked = stakingRecords.reduce((sum: number, record: any) => 
+        metrics.stakingMetrics.totalStaked = stakingRecords.reduce((sum: number, record: Tables<'token_staking'>) => 
           sum + (record.amount || 0), 0);
         metrics.stakingMetrics.activeStakers = stakingRecords.length;
         
         if (stakingRecords.length > 0) {
-          metrics.stakingMetrics.avgDuration = stakingRecords.reduce((sum: number, record: any) => 
+          metrics.stakingMetrics.avgDuration = stakingRecords.reduce((sum: number, record: Tables<'token_staking'>) => 
             sum + (record.duration || 0), 0) / stakingRecords.length;
         }
       }
@@ -181,7 +181,7 @@ export class TokenAnalyticsService {
         const transactions = transactionsResult.value.data;
         metrics.transactionVolume.count = transactions.length;
         
-        transactions.forEach((transaction: any) => {
+        transactions.forEach((transaction: Tables<'token_transactions'>) => {
           if (transaction.token_type === 'cmpx') {
             metrics.transactionVolume.cmpx += transaction.amount || 0;
           } else if (transaction.token_type === 'gtk') {

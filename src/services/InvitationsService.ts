@@ -122,7 +122,7 @@ class InvitationsService {
       }
 
       // Mapear datos de Supabase al formato esperado
-      const invitations: Invitation[] = (data || []).map((invitation: any) => ({
+      const invitations: Invitation[] = (data || []).map((invitation: Tables<'invitations'>) => ({
         id: invitation.id,
         inviter_id: invitation.inviter_id,
         invitee_email: invitation.invitee_email,

@@ -159,7 +159,7 @@ class CoupleProfilesService {
       }
 
       // Mapear datos de Supabase al formato esperado
-      const profiles: CoupleProfile[] = (data || []).map((profile: any) => ({
+      const profiles: CoupleProfile[] = (data || []).map((profile: Tables<'couple_profiles'>) => ({
         id: profile.id,
         couple_name: profile.couple_name,
         couple_bio: profile.couple_bio,
@@ -440,11 +440,11 @@ class CoupleProfilesService {
       if (profilesResult.status === 'fulfilled' && profilesResult.value.data) {
         const profiles = profilesResult.value.data;
         stats.totalProfiles = profiles.length;
-        stats.verifiedProfiles = profiles.filter((p: any) => p.is_verified).length;
-        stats.premiumProfiles = profiles.filter((p: any) => p.is_premium).length;
+        stats.verifiedProfiles = profiles.filter((p: Tables<'couple_profiles'>) => p.is_verified).length;
+        stats.premiumProfiles = profiles.filter((p: Tables<'couple_profiles'>) => p.is_premium).length;
 
         // Calcular distribución por tipo de relación
-        profiles.forEach((profile: any) => {
+        profiles.forEach((profile: Tables<'couple_profiles'>) => {
           const type = profile.relationship_type;
           stats.relationshipTypeDistribution[type] = (stats.relationshipTypeDistribution[type] || 0) + 1;
         });

@@ -186,7 +186,7 @@ class PostsService {
       }
 
       // Mapear datos de Supabase al formato esperado
-      const posts: Post[] = (data || []).map((story: any) => ({
+      const posts: Post[] = (data || []).map((story: Tables<'posts'>) => ({
         id: story.id,
         user_id: story.user_id,
         profile_id: story.user_id,

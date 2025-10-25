@@ -168,7 +168,7 @@ export class SecurityAuditService {
 
       // Agrupar por IP y usuario
       const activityMap = new Map<string, number>();
-      recentEvents?.forEach((event: any) => {
+      recentEvents?.forEach((event: Tables<'security_events'>) => {
         const key = `${event.ip_address || 'unknown'}-${event.user_id}`;
         activityMap.set(key, (activityMap.get(key) || 0) + 1);
       });
@@ -217,7 +217,7 @@ export class SecurityAuditService {
 
       // Detectar acceso excesivo a datos
       const accessCounts = new Map<string, number>();
-      accessEvents?.forEach((event: any) => {
+      accessEvents?.forEach((event: Tables<'security_events'>) => {
         accessCounts.set(event.userId, (accessCounts.get(event.userId) || 0) + 1);
       });
 
@@ -328,7 +328,7 @@ export class SecurityAuditService {
           threatType: 'suspicious_pattern',
           severity: 'critical',
           description: `${criticalEvents.length} critical security events detected`,
-          affectedUsers: [...new Set(criticalEvents.map((e: any) => e.userId))] as string[],
+          affectedUsers: [...new Set(criticalEvents.map((e: Tables<'security_events'>) => e.user_id))] as string[],
           detectedAt: new Date().toISOString(),
           status: 'active',
           mitigationActions: ['Review events', 'Implement additional monitoring', 'Notify security team'],
@@ -394,8 +394,8 @@ export class SecurityAuditService {
       }
 
       const totalEvents = events?.length || 0;
-      const criticalEvents = events?.filter((e: any) => e.severity === 'critical').length || 0;
-      const resolvedEvents = events?.filter((e: any) => e.resolved).length || 0;
+      const criticalEvents = events?.filter((e: Tables<'security_events'>) => e.severity === 'critical').length || 0;
+      const resolvedEvents = events?.filter((e: Tables<'security_events'>) => e.resolved).length || 0;
       
       const averageResponseTime = this.calculateAverageResponseTime(events || []);
       const threatDetectionRate = this.calculateThreatDetectionRate(events || []);
@@ -467,7 +467,7 @@ export class SecurityAuditService {
     };
   }
 
-  private calculateAverageResponseTime(events: any[]): number {
+  private calculateAverageResponseTime(events: Tables<'security_events'>[]): number {
     const resolvedEvents = events.filter(e => e.resolved && e.resolvedAt);
     if (resolvedEvents.length === 0) return 0;
     
@@ -480,12 +480,12 @@ export class SecurityAuditService {
     return totalTime / resolvedEvents.length / (1000 * 60); // minutos
   }
 
-  private calculateThreatDetectionRate(events: any[]): number {
+  private calculateThreatDetectionRate(events: Tables<'security_events'>[]): number {
     const suspiciousEvents = events.filter(e => e.eventType === 'suspicious_activity').length;
     return events.length > 0 ? (suspiciousEvents / events.length) * 100 : 0;
   }
 
-  private calculateFalsePositiveRate(events: any[]): number {
+  private calculateFalsePositiveRate(events: Tables<'security_events'>[]): number {
     const falsePositives = events.filter(e => e.metadata?.falsePositive).length;
     return events.length > 0 ? (falsePositives / events.length) * 100 : 0;
   }

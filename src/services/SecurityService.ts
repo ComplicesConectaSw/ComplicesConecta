@@ -414,7 +414,7 @@ class SecurityService {
       }
       
       // Mapear los datos de la base de datos al formato esperado
-      const mappedLogs: AuditLogEntry[] = (data || []).map((log: any) => ({
+      const mappedLogs: AuditLogEntry[] = (data || []).map((log: Tables<'security_events'>) => ({
         id: log.id,
         userId: log.user_id || '',
         action: log.action_type || '',

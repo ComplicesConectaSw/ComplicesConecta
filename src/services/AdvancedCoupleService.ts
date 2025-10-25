@@ -312,7 +312,7 @@ export class AdvancedCoupleService {
       if (!data) return [];
 
       // Convertir resultados a formato CoupleProfile
-      return data.map((item: any) => ({
+      return data.map((item: Tables<'couple_profiles'>) => ({
         id: item.id,
         partner1_id: item.partner1_id || '',
         partner2_id: item.partner2_id || '',
