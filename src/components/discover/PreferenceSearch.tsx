@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Database } from "@/types/supabase";
 
 interface _UserPreferences {
   interests: string[];
@@ -30,7 +31,7 @@ interface SearchFilters {
   isOnline: boolean;
 }
 
-type ProfileWithDistance = Tables<'profiles'> & {
+type ProfileWithDistance = Database['public']['Tables']['profiles']['Row'] & {
   distance: number | null;
   compatibilityScore: number;
 };
