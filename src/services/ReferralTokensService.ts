@@ -194,7 +194,9 @@ class ReferralTokensService {
           invited_id: rewardData.referee_id, // Usuario referido
           amount: rewardData.amount,
           description: `Referral reward for ${rewardData.amount} ${rewardData.reward_type}`,
-          claimed: false
+          claimed: false,
+          referral_code: `REF-${Date.now()}`, // Código temporal
+          reward_type: rewardData.reward_type
         })
         .select()
         .single();
@@ -437,30 +439,30 @@ class ReferralTokensService {
       }
 
       // Obtener balance actual
-      const { data: currentBalance, error: balanceError } = await supabase
+      const { data: currentBalanceData, error: balanceError2 } = await supabase
         .from('user_referral_balances')
         .select('total_referrals, total_earned, monthly_earned, cmpx_balance')
         .eq('user_id', referrerBalance.user_id)
         .single();
 
-      if (balanceError) {
-        logger.error('Error getting current balance:', balanceError);
+      if (balanceError2 || !currentBalanceData) {
+        logger.error('Error getting current balance:', balanceError2);
         return false;
       }
 
       // Actualizar balance del referidor
-      const { error: updateError } = await supabase
+      const { error: updateError2 } = await supabase
         .from('user_referral_balances')
         .update({
-          total_referrals: (currentBalance.total_referrals || 0) + 1,
-          total_earned: (currentBalance.total_earned || 0) + rewardData.amount,
-          monthly_earned: (currentBalance.monthly_earned || 0) + rewardData.amount,
-          cmpx_balance: (currentBalance.cmpx_balance || 0) + rewardData.amount
+          total_referrals: (currentBalanceData.total_referrals || 0) + 1,
+          total_earned: (currentBalanceData.total_earned || 0) + rewardData.amount,
+          monthly_earned: (currentBalanceData.monthly_earned || 0) + rewardData.amount,
+          cmpx_balance: (currentBalanceData.cmpx_balance || 0) + rewardData.amount
         })
         .eq('user_id', referrerBalance.user_id);
 
-      if (updateError) {
-        logger.error('Error updating referrer balance:', updateError);
+      if (updateError2) {
+        logger.error('Error updating referrer balance:', updateError2);
         return false;
       }
 

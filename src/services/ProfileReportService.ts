@@ -76,7 +76,7 @@ export class ProfileReportService {
 
       // Ajustado según esquema real: todos los campos obligatorios incluidos
       const insertData = {
-        reporter_id: user.id,
+        reporter_user_id: user.id,
         reported_user_id: params.reportedUserId,
         content_type: 'profile',
         reported_content_id: params.reportedUserId,

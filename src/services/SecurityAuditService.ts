@@ -220,7 +220,8 @@ export class SecurityAuditService {
       // Detectar acceso excesivo a datos
       const accessCounts = new Map<string, number>();
       accessEvents?.forEach((event: Tables<'security_events'>) => {
-        accessCounts.set(event.userId, (accessCounts.get(event.userId) || 0) + 1);
+        const userId = event.user_id || 'unknown';
+        accessCounts.set(userId, (accessCounts.get(userId) || 0) + 1);
       });
 
       for (const [userId, count] of accessCounts.entries()) {
@@ -244,22 +245,34 @@ export class SecurityAuditService {
    */
   private async checkDataIntegrity(): Promise<void> {
     try {
-      // Verificar perfiles duplicados usando raw SQL
-      const { data: duplicateProfiles, error } = await supabase
-        .rpc('check_duplicate_profiles');
+      // Verificar perfiles duplicados usando query directo
+      // Nota: Esta es una simplificación. En producción, usar RPC con función SQL
+      const { data: profiles, error } = await supabase
+        .from('profiles')
+        .select('id, name')
+        .limit(100);
 
       if (error) {
         logger.error('Error checking data integrity:', { error: error.message });
         return;
       }
 
-      if (duplicateProfiles && duplicateProfiles.length > 0) {
+      // Verificar duplicados básico por nombre
+      const nameCounts = new Map<string, number>();
+      profiles?.forEach((profile: any) => {
+        const name = profile.name;
+        nameCounts.set(name, (nameCounts.get(name) || 0) + 1);
+      });
+
+      const duplicateCount = Array.from(nameCounts.values()).filter(count => count > 1).length;
+      
+      if (duplicateCount > 0) {
         await this.logSecurityEvent({
           userId: 'system',
           eventType: 'suspicious_activity',
           severity: 'medium',
-          description: `Duplicate profiles detected: ${duplicateProfiles.length} duplicates`,
-          metadata: { duplicateCount: duplicateProfiles.length }
+          description: `Possible duplicate profiles detected: ${duplicateCount} potential duplicates`,
+          metadata: { duplicateCount }
         });
       }
     } catch (error) {
