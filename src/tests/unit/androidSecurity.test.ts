@@ -66,8 +66,8 @@ describe('AndroidSecurityManager', () => {
       
       const result = await securityManager.performSecurityCheck();
       
-      // In a clean environment, we expect no critical threats
-      expect(result.threats.filter(t => t.severity === 'critical')).toHaveLength(0);
+      // In a clean environment, we expect no threats
+      expect(result.threats.length).toBe(0);
     });
   });
 
