@@ -106,10 +106,7 @@ export const invitationService = {
       // Mapear datos de Supabase al formato esperado
       const mappedData = {
         ...data,
-        from_profile: data.inviter_id, // Cambiar a string como espera la interfaz
-        to_profile: data.invited_user_id, // Cambiar a string como espera la interfaz
-        message: (data.metadata as any)?.message || 'Invitación',
-        ...data
+        message: data.message || 'Invitación'
       };
       
       return mappedData;

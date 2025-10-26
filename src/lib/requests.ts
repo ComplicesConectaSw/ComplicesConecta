@@ -1,5 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
-import type { Database } from '@/types/database';
+import type { Database } from '@/types/supabase';
 
 // Tipos estrictos basados en Supabase
 type _ProfileRow = Database['public']['Tables']['profiles']['Row'];
