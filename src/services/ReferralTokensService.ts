@@ -139,14 +139,41 @@ class ReferralTokensService {
             return null;
           }
 
-          return newBalance as UserReferralBalance;
+          // Mapear a UserReferralBalance incluyendo campos faltantes
+          const balance: UserReferralBalance = {
+            id: newBalance.id,
+            user_id: newBalance.user_id,
+            referral_code: newBalance.referral_code,
+            total_referrals: newBalance.total_referrals,
+            total_earned: newBalance.total_earned,
+            monthly_earned: newBalance.monthly_earned,
+            cmpx_balance: newBalance.cmpx_balance,
+            gtk_balance: 0, // Valor por defecto
+            created_at: newBalance.created_at || new Date().toISOString(),
+            updated_at: newBalance.updated_at || new Date().toISOString()
+          };
+
+          return balance;
         }
         logger.error('Error getting referral balance:', error);
         return null;
       }
 
       logger.info('✅ Referral balance loaded successfully', { balance: data });
-      return data as UserReferralBalance;
+      // Mapear a UserReferralBalance incluyendo gtk_balance
+      return {
+        ...data,
+        gtk_balance: 0, // Valor por defecto
+        id: data.id,
+        user_id: data.user_id,
+        referral_code: data.referral_code,
+        total_referrals: data.total_referrals,
+        total_earned: data.total_earned,
+        monthly_earned: data.monthly_earned,
+        cmpx_balance: data.cmpx_balance,
+        created_at: data.created_at || '',
+        updated_at: data.updated_at || ''
+      };
     } catch (error) {
       logger.error('Error in getUserReferralBalance:', { error: String(error) });
       return null;
@@ -163,11 +190,11 @@ class ReferralTokensService {
       const { data, error } = await supabase
         .from('referral_rewards')
         .insert({
-          referrer_id: rewardData.referrer_id,
-          referee_id: rewardData.referee_id,
-          reward_type: rewardData.reward_type,
+          user_id: rewardData.referrer_id, // Usuario que refiere
+          invited_id: rewardData.referee_id, // Usuario referido
           amount: rewardData.amount,
-          status: 'pending'
+          description: `Referral reward for ${rewardData.amount} ${rewardData.reward_type}`,
+          claimed: false
         })
         .select()
         .single();
@@ -178,7 +205,20 @@ class ReferralTokensService {
       }
 
       logger.info('✅ Referral reward created successfully', { rewardId: data.id });
-      return data as ReferralReward;
+      
+      // Mapear a ReferralReward interface
+      const reward: ReferralReward = {
+        id: data.id,
+        referrer_id: rewardData.referrer_id,
+        referee_id: rewardData.referee_id,
+        reward_type: rewardData.reward_type,
+        amount: data.amount,
+        status: data.claimed ? 'confirmed' : 'pending',
+        created_at: data.created_at || new Date().toISOString(),
+        confirmed_at: data.claimed_at || undefined
+      };
+      
+      return reward;
     } catch (error) {
       logger.error('Error in createReferralReward:', { error: String(error) });
       return null;
@@ -195,8 +235,8 @@ class ReferralTokensService {
       const { error } = await supabase
         .from('referral_rewards')
         .update({
-          status: 'confirmed',
-          confirmed_at: new Date().toISOString()
+          claimed: true,
+          claimed_at: new Date().toISOString()
         })
         .eq('id', rewardId);
 
@@ -237,7 +277,18 @@ class ReferralTokensService {
       }
 
       logger.info('✅ Referral transactions loaded successfully', { count: data?.length || 0 });
-      return (data || []) as ReferralTransaction[];
+      
+      // Mapear a ReferralTransaction incluyendo token_type
+      return (data || []).map((tx: any) => ({
+        id: tx.id,
+        user_id: tx.user_id,
+        transaction_type: tx.transaction_type,
+        token_type: 'cmpx', // Por defecto CMPX
+        amount: tx.amount,
+        description: tx.description,
+        metadata: tx.metadata,
+        created_at: tx.created_at
+      }));
     } catch (error) {
       logger.error('Error in getUserReferralTransactions:', { error: String(error) });
       return [];
@@ -289,7 +340,20 @@ class ReferralTokensService {
       }
 
       logger.info('✅ Referral statistics loaded successfully', { stats: data });
-      return data as ReferralStatistics;
+      
+      // Mapear a ReferralStatistics incluyendo campos faltantes
+      return {
+        id: data.id,
+        user_id: data.user_id,
+        referral_code: data.referral_code,
+        total_referrals: 0, // Por defecto
+        active_referrals: 0, // Por defecto
+        total_earned: data.monthly_earned,
+        monthly_earned: data.monthly_earned,
+        conversion_rate: data.conversion_rate || 0,
+        created_at: data.created_at || '',
+        updated_at: data.updated_at || ''
+      };
     } catch (error) {
       logger.error('Error in getReferralStatistics:', { error: String(error) });
       return null;
@@ -310,9 +374,11 @@ class ReferralTokensService {
     try {
       logger.info('Getting referral leaderboard from Supabase', { limit });
 
+      // Usar user_referral_balances en lugar de referral_leaderboard que no existe
       const { data, error } = await supabase
-        .from('referral_leaderboard')
+        .from('user_referral_balances')
         .select('*')
+        .order('total_earned', { ascending: false })
         .limit(limit);
 
       if (error) {
@@ -321,14 +387,16 @@ class ReferralTokensService {
       }
 
       logger.info('✅ Referral leaderboard loaded successfully', { count: data?.length || 0 });
-      return (data || []) as Array<{
-        user_id: string;
-        referral_code: string;
-        total_referrals: number;
-        total_earned: number;
-        monthly_earned: number;
-        rank: number;
-      }>;
+      
+      // Mapear a formato de leaderboard
+      return (data || []).map((balance: any, index: number) => ({
+        user_id: balance.user_id,
+        referral_code: balance.referral_code,
+        total_referrals: balance.total_referrals,
+        total_earned: balance.total_earned,
+        monthly_earned: balance.monthly_earned,
+        rank: index + 1
+      }));
     } catch (error) {
       logger.error('Error in getReferralLeaderboard:', { error: String(error) });
       return [];
@@ -368,14 +436,26 @@ class ReferralTokensService {
         return false;
       }
 
-      // Actualizar balance del referidor usando SQL directo
-      const { error: updateError } = await (supabase as any)
+      // Obtener balance actual
+      const { data: currentBalance, error: balanceError } = await supabase
+        .from('user_referral_balances')
+        .select('total_referrals, total_earned, monthly_earned, cmpx_balance')
+        .eq('user_id', referrerBalance.user_id)
+        .single();
+
+      if (balanceError) {
+        logger.error('Error getting current balance:', balanceError);
+        return false;
+      }
+
+      // Actualizar balance del referidor
+      const { error: updateError } = await supabase
         .from('user_referral_balances')
         .update({
-          total_referrals: (supabase as any).sql`total_referrals + 1`,
-          total_earned: (supabase as any).sql`total_earned + ${rewardData.amount}`,
-          monthly_earned: (supabase as any).sql`monthly_earned + ${rewardData.amount}`,
-          cmpx_balance: (supabase as any).sql`cmpx_balance + ${rewardData.amount}`
+          total_referrals: (currentBalance.total_referrals || 0) + 1,
+          total_earned: (currentBalance.total_earned || 0) + rewardData.amount,
+          monthly_earned: (currentBalance.monthly_earned || 0) + rewardData.amount,
+          cmpx_balance: (currentBalance.cmpx_balance || 0) + rewardData.amount
         })
         .eq('user_id', referrerBalance.user_id);
 
