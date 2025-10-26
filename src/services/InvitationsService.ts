@@ -182,10 +182,10 @@ class InvitationsService {
 
       const newInvitation: Invitation = {
         id: data.id,
-        inviter_id: data.from_profile,
-        invitee_email: data.to_profile,
+        inviter_id: data.from_profile || '',
+        invitee_email: data.to_profile || '',
         invitation_type: undefined,
-        type: data.type,
+        type: data.type || 'connection',
         status: data.status as 'pending' | 'accepted' | 'declined' | 'expired',
         expires_at: undefined,
         metadata: invitationData.metadata || {},
