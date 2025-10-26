@@ -421,7 +421,7 @@ class PostsService {
           id,
           user_id,
           story_id,
-          comment,
+          content,
           created_at
         `)
         .eq('story_id', postId)
@@ -455,7 +455,7 @@ class PostsService {
           user_id: comment.user_id,
           profile_id: comment.user_id,
           parent_comment_id: undefined,
-          content: comment.comment || '',
+          content: comment.content || '',
           likes_count: likesCount || 0,
           created_at: comment.created_at || '',
           user_liked: !!userLike,
@@ -486,13 +486,13 @@ class PostsService {
         .insert({
           user_id: userId,
           story_id: commentData.post_id,
-          comment: commentData.content
+          content: commentData.content
         })
         .select(`
           id,
           user_id,
           story_id,
-          comment,
+          content,
           created_at
         `)
         .single();
@@ -507,7 +507,7 @@ class PostsService {
         user_id: commentDataResult.user_id,
         profile_id: commentDataResult.user_id,
         parent_comment_id: undefined,
-        content: commentDataResult.comment || '',
+        content: commentDataResult.content || '',
         likes_count: 0,
         created_at: commentDataResult.created_at || '',
         user_liked: false,
