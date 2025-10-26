@@ -11,7 +11,9 @@ import ImageUpload from "@/components/profile/ImageUpload";
 import { supabase } from "@/integrations/supabase/client";
 import { getAppConfig } from "@/lib/app-config";
 import NavigationEnhanced from "@/components/NavigationEnhanced";
-import type { Tables } from '@/types/database';
+import type { Database } from '@/types/supabase';
+
+type Tables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Row'];
 import { logger } from '@/lib/logger';
 import { useDemoThemeConfig, getNavbarStyles, useProfileTheme } from '@/hooks/useProfileTheme';
 import { motion } from 'framer-motion';

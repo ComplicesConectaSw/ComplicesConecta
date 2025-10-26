@@ -94,7 +94,7 @@ export class NotificationService {
         return null;
       }
 
-      return data?.id || null;
+      return data?.id ? String(data.id) : null;
     } catch (error) {
       logger.error('Error in createNotification:', { error: error instanceof Error ? error.message : String(error) });
       return null;
@@ -326,7 +326,7 @@ export class NotificationService {
           is_read: true,
           updated_at: new Date().toISOString()
         })
-        .eq('id', notificationId)
+        .eq('id', parseInt(notificationId))
         .eq('user_id', userId);
 
       if (error) {
@@ -375,7 +375,7 @@ export class NotificationService {
       const { error } = await supabase
         .from('notifications')
         .delete()
-        .eq('id', notificationId);
+        .eq('id', parseInt(notificationId));
 
       if (error) {
         logger.error('Error deleting notification:', { error: error.message });
@@ -754,7 +754,14 @@ export class NotificationService {
       const notifications = data || [];
       const totalSent = notifications.length;
       const totalRead = notifications.filter(n => n.is_read).length;
-      const totalClicked = notifications.filter(n => (n.metadata as any)?.clicked).length;
+      const totalClicked = notifications.filter(n => {
+        try {
+          const notifData = n.data as any;
+          return notifData?.clicked === true;
+        } catch {
+          return false;
+        }
+      }).length;
       const readRate = totalSent > 0 ? (totalRead / totalSent) * 100 : 0;
       const clickRate = totalSent > 0 ? (totalClicked / totalSent) * 100 : 0;
       const engagementScore = (readRate + clickRate) / 2;

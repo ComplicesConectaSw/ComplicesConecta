@@ -1,5 +1,8 @@
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
+import type { Database } from '@/types/supabase';
+
+type Tables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Row'];
 
 export interface CoupleProfile {
   id: string;
@@ -133,7 +136,6 @@ class CoupleProfilesService {
           couple_images,
           is_verified,
           is_premium,
-          preferences,
           created_at,
           updated_at
         `)
@@ -237,12 +239,8 @@ class CoupleProfilesService {
           couple_images,
           is_verified,
           is_premium,
-          preferences,
           looking_for,
           experience_level,
-          swinger_experience,
-          interested_in,
-          couple_interests,
           created_at,
           updated_at
         `)
