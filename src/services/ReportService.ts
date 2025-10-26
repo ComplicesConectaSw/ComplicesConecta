@@ -12,7 +12,7 @@ export interface CreateReportParams {
 
 export interface Report {
   id: string;
-  reporter_id: string;
+  reporter_user_id: string;
   reported_user_id: string | null;
   reported_content_id: string | null;
   content_type: string;
@@ -70,7 +70,7 @@ export class ReportService {
       const { data, error } = await supabase
         .from('reports')
         .insert({
-          reporter_id: user.id,
+          reporter_user_id: user.id,
           reported_user_id: params.reportedUserId,
           reported_content_id: params.reportedContentId || params.reportedUserId,
           content_type: params.contentType,
@@ -107,7 +107,7 @@ export class ReportService {
       const { data, error } = await supabase
         .from('reports')
         .select('*')
-        .eq('reporter_id', user.id)
+        .eq('reporter_user_id', user.id)
         .order('created_at', { ascending: false });
 
       if (error) {
@@ -200,7 +200,7 @@ export class ReportService {
       const { data: allReports, error } = await supabase
         .from('reports')
         .select('status')
-        .eq('reporter_id', user.id);
+        .eq('reporter_user_id', user.id);
 
       if (error) {
         logger.error('Error fetching user report stats:', error);
@@ -376,7 +376,7 @@ export class ReportService {
       const { data, error } = await supabase
         .from('reports')
         .select('*')
-        .eq('reporter_id', user.id)
+        .eq('reporter_user_id', user.id)
         .eq('content_type', 'profile')
         .order('created_at', { ascending: false });
 
@@ -476,7 +476,7 @@ export class ReportService {
       const { data: reportsMade } = await supabase
         .from('reports')
         .select('id')
-        .eq('reporter_id', targetUserId)
+        .eq('reporter_user_id', targetUserId)
         .eq('content_type', 'profile');
 
       const { data: reportsReceived } = await supabase
@@ -488,7 +488,7 @@ export class ReportService {
       const { data: recentReports } = await supabase
         .from('reports')
         .select('id')
-        .eq('reporter_id', targetUserId)
+        .eq('reporter_user_id', targetUserId)
         .eq('content_type', 'profile')
         .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
 
@@ -521,7 +521,7 @@ export class ReportService {
       const { data: recentReports } = await supabase
         .from('reports')
         .select('id')
-        .eq('reporter_id', targetUserId)
+        .eq('reporter_user_id', targetUserId)
         .eq('content_type', 'profile')
         .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
 
