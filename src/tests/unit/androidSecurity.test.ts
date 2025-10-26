@@ -132,21 +132,31 @@ describe('AndroidSecurityManager', () => {
 
   describe('checkDebuggableApp', () => {
     it('should return false in production environment', async () => {
-      // Mock production environment
+      // Mock production environment without dev tools
       delete (window as any).__REACT_DEVTOOLS_GLOBAL_HOOK__;
       delete (window as any).__VUE_DEVTOOLS_GLOBAL_HOOK__;
       delete (window as any).eruda;
+      delete (window as any).vConsole;
+      
+      // Mock console.clear to not be a function (production environment)
+      const originalClear = window.console.clear;
+      Object.defineProperty(window.console, 'clear', {
+        value: undefined,
+        writable: true,
+        configurable: true
+      });
       
       const result = await (securityManager as any).checkDebuggableApp();
       
-      // In test environment, some debugging tools might be detected
-      // So we just check that the method runs without error
-      expect(typeof result).toBe('boolean');
+      // In production without console.clear, should return false
+      expect(result).toBe(false);
       
-      // Restore any needed properties if the test setup needs them
-      if (typeof (window as any).__REACT_DEVTOOLS_GLOBAL_HOOK__ !== 'undefined') {
-        (window as any).__REACT_DEVTOOLS_GLOBAL_HOOK__ = undefined;
-      }
+      // Restore
+      Object.defineProperty(window.console, 'clear', {
+        value: originalClear,
+        writable: true,
+        configurable: true
+      });
     });
 
     it('should detect React DevTools', async () => {
