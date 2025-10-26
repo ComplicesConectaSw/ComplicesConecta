@@ -136,6 +136,7 @@ class CoupleProfilesService {
           couple_images,
           is_verified,
           is_premium,
+          preferences,
           created_at,
           updated_at
         `)
@@ -161,19 +162,19 @@ class CoupleProfilesService {
       }
 
       // Mapear datos de Supabase al formato esperado
-      const profiles: CoupleProfile[] = (data || []).map((profile: Tables<'couple_profiles'>) => ({
+      const profiles: CoupleProfile[] = (data || []).map((profile) => ({
         id: profile.id,
         couple_name: profile.couple_name,
-        couple_bio: profile.couple_bio,
-        relationship_type: profile.relationship_type,
+        couple_bio: profile.couple_bio ?? undefined,
+        relationship_type: (profile.relationship_type as 'man-woman' | 'man-man' | 'woman-woman') || 'man-woman',
         partner1_id: profile.partner1_id,
         partner2_id: profile.partner2_id,
         couple_images: profile.couple_images || [],
         is_verified: profile.is_verified || false,
         is_premium: profile.is_premium || false,
-        preferences: profile.preferences || {},
-        created_at: profile.created_at,
-        updated_at: profile.updated_at,
+        preferences: (profile.preferences as Record<string, any>) || {},
+        created_at: profile.created_at || '',
+        updated_at: profile.updated_at || '',
         partner1: {
           id: profile.partner1_id,
           first_name: 'Usuario',
@@ -208,42 +209,28 @@ class CoupleProfilesService {
       const { data, error } = await supabase
         .from('couple_profiles')
         .insert({
-        couple_name: profileData.couple_name,
-        couple_bio: profileData.couple_bio || null,
-        relationship_type: profileData.relationship_type as "man-woman" | "man-man" | "woman-woman",
-        partner1_id: profileData.partner1_id,
-        partner2_id: profileData.partner2_id || null,
-        couple_images: profileData.couple_images || [],
-        preferences: profileData.preferences || {},
-        is_verified: false,
-        is_premium: false,
-        // Campos adicionales para funcionalidades swinger
-        looking_for: profileData.looking_for || 'swinger',
-        experience_level: profileData.experience_level || 'beginner',
-        swinger_experience: profileData.swinger_experience || 'beginner',
-        interested_in: profileData.interested_in || 'couples',
-        couple_interests: profileData.couple_interests || ['Lifestyle Swinger', 'Encuentros Discretos'],
-        // Campos adicionales agregados
-        latitude: profileData.latitude,
-        longitude: profileData.longitude,
-        is_demo: profileData.is_demo || false,
-        total_views: 0
+          couple_name: profileData.couple_name,
+          couple_bio: profileData.couple_bio || null,
+          relationship_type: profileData.relationship_type,
+          partner1_id: profileData.partner1_id,
+          partner2_id: profileData.partner2_id,
+          couple_images: profileData.couple_images || null,
+          preferences: (profileData.preferences as any) || null,
+          is_verified: false,
+          is_premium: false,
+          // Campos adicionales para funcionalidades swinger
+          looking_for: profileData.looking_for || 'swinger',
+          experience_level: profileData.experience_level || 'beginner',
+          swinger_experience: profileData.swinger_experience || 'beginner',
+          interested_in: profileData.interested_in || 'couples',
+          couple_interests: profileData.couple_interests || null,
+          // Campos adicionales agregados
+          latitude: profileData.latitude || null,
+          longitude: profileData.longitude || null,
+          is_demo: profileData.is_demo || false,
+          total_views: 0
         })
-        .select(`
-          id,
-          couple_name,
-          couple_bio,
-          relationship_type,
-          partner1_id,
-          partner2_id,
-          couple_images,
-          is_verified,
-          is_premium,
-          looking_for,
-          experience_level,
-          created_at,
-          updated_at
-        `)
+        .select('*')
         .single();
 
       if (error) {
@@ -254,14 +241,14 @@ class CoupleProfilesService {
       const newProfile: CoupleProfile = {
         id: data.id,
         couple_name: data.couple_name,
-        couple_bio: data.couple_bio || undefined,
-        relationship_type: data.relationship_type as "man-woman" | "man-man" | "woman-woman",
+        couple_bio: data.couple_bio ?? undefined,
+        relationship_type: (data.relationship_type as 'man-woman' | 'man-man' | 'woman-woman') || 'man-woman',
         partner1_id: data.partner1_id,
-        partner2_id: data.partner2_id || '',
+        partner2_id: data.partner2_id,
         couple_images: data.couple_images || [],
         is_verified: data.is_verified || false,
         is_premium: data.is_premium || false,
-        preferences: data.preferences as Record<string, any> || {},
+        preferences: (data.preferences as Record<string, any>) || {},
         created_at: data.created_at || '',
         updated_at: data.updated_at || ''
       };
@@ -417,7 +404,7 @@ class CoupleProfilesService {
       ] = await Promise.allSettled([
         supabase
           .from('couple_profiles')
-          .select('relationship_type, is_verified, is_premium'),
+          .select('*'),
         supabase
           .from('couple_profile_views')
           .select('id', { count: 'exact' }),
@@ -438,12 +425,12 @@ class CoupleProfilesService {
       if (profilesResult.status === 'fulfilled' && profilesResult.value.data) {
         const profiles = profilesResult.value.data;
         stats.totalProfiles = profiles.length;
-        stats.verifiedProfiles = profiles.filter((p: Tables<'couple_profiles'>) => p.is_verified).length;
-        stats.premiumProfiles = profiles.filter((p: Tables<'couple_profiles'>) => p.is_premium).length;
+        stats.verifiedProfiles = profiles.filter((p) => p.is_verified).length;
+        stats.premiumProfiles = profiles.filter((p) => p.is_premium).length;
 
         // Calcular distribución por tipo de relación
-        profiles.forEach((profile: Tables<'couple_profiles'>) => {
-          const type = profile.relationship_type;
+        profiles.forEach((profile) => {
+          const type = profile.relationship_type || 'unknown';
           stats.relationshipTypeDistribution[type] = (stats.relationshipTypeDistribution[type] || 0) + 1;
         });
       }
