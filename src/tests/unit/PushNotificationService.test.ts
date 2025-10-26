@@ -61,7 +61,7 @@ vi.mock('@/lib/logger', () => ({
   }
 }))
 
-describe.skip('PushNotificationService', () => {
+describe('PushNotificationService', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     
@@ -115,10 +115,11 @@ describe.skip('PushNotificationService', () => {
     vi.restoreAllMocks()
   })
 
-  describe.skip('isSupported', () => {
+  describe('isSupported', () => {
     it('should return true when service worker and push manager are available', () => {
-      // Skipped: Service not fully implemented yet
-      expect(true).toBe(true)
+      // Service worker and push manager are available in the test environment
+      const result = PushNotificationService.isSupported()
+      expect(result).toBe(true)
     })
   })
 
