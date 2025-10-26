@@ -5,6 +5,9 @@
 
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
+import type { Database } from '@/types/supabase';
+
+type Tables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Row'];
 
 export interface SecurityEvent {
   id: string;
@@ -184,8 +187,7 @@ export class SecurityAuditService {
             severity: 'high',
             description: `Multiple failed login attempts detected: ${count} attempts`,
             metadata: { ipAddress, attemptCount: count },
-            ipAddress,
-            resolved: false
+            ipAddress
           });
 
           // Bloquear IP temporalmente
@@ -228,8 +230,7 @@ export class SecurityAuditService {
           eventType: 'suspicious_activity',
           severity: 'medium',
           description: `Excessive data access detected: ${count} accesses in 24h`,
-          metadata: { accessCount: count },
-          resolved: false
+          metadata: { accessCount: count }
         });
         }
       }
@@ -243,12 +244,9 @@ export class SecurityAuditService {
    */
   private async checkDataIntegrity(): Promise<void> {
     try {
-      // Verificar perfiles duplicados
+      // Verificar perfiles duplicados usando raw SQL
       const { data: duplicateProfiles, error } = await supabase
-        .from('profiles')
-        .select('email, count(*)')
-        .group('email')
-        .having('count(*)', '>', 1);
+        .rpc('check_duplicate_profiles');
 
       if (error) {
         logger.error('Error checking data integrity:', { error: error.message });
@@ -261,8 +259,7 @@ export class SecurityAuditService {
           eventType: 'suspicious_activity',
           severity: 'medium',
           description: `Duplicate profiles detected: ${duplicateProfiles.length} duplicates`,
-          metadata: { duplicateCount: duplicateProfiles.length },
-          resolved: false
+          metadata: { duplicateCount: duplicateProfiles.length }
         });
       }
     } catch (error) {
@@ -293,8 +290,7 @@ export class SecurityAuditService {
           eventType: 'suspicious_activity',
           severity: 'high',
           description: `Admin users without 2FA: ${usersWithout2FA.length} users`,
-          metadata: { usersWithout2FA: usersWithout2FA.length },
-          resolved: false
+          metadata: { usersWithout2FA: usersWithout2FA.length }
         });
       }
     } catch (error) {
