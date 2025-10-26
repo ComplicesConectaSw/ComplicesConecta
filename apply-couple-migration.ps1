@@ -105,7 +105,7 @@ switch ($choice) {
                     Write-Host "Ejecutando migración en Docker..." -ForegroundColor Yellow
                     
                     $fullPath = (Get-Item $migrationFile).FullName
-                    docker exec -i $supabaseContainer psql -U postgres -d postgres < $fullPath
+                    Get-Content $fullPath | docker exec -i $supabaseContainer psql -U postgres -d postgres
                     
                     if ($LASTEXITCODE -eq 0) {
                         Write-Host ""
