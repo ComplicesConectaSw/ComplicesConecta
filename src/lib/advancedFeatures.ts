@@ -1,7 +1,7 @@
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
 import { NotificationService } from '@/lib/notifications';
-import type { Database } from '@/types/database';
+import type { Database } from '@/types/supabase';
 
 type ProfileRow = Database['public']['Tables']['profiles']['Row'];
 
@@ -346,9 +346,9 @@ export class AdvancedFeaturesService {
     let compatibility = 0.5; // Base compatibility
 
     // Bio similarity analysis
-    const bioWords1 = bio1.toLowerCase().split(/\s+/).filter(word => word.length > 3);
-    const bioWords2 = bio2.toLowerCase().split(/\s+/).filter(word => word.length > 3);
-    const commonBioWords = bioWords1.filter(word => bioWords2.includes(word));
+    const bioWords1 = bio1.toLowerCase().split(/\s+/).filter((word: string) => word.length > 3);
+    const bioWords2 = bio2.toLowerCase().split(/\s+/).filter((word: string) => word.length > 3);
+    const commonBioWords = bioWords1.filter((word: string) => bioWords2.includes(word));
     
     if (bioWords1.length > 0 && bioWords2.length > 0) {
       compatibility += (commonBioWords.length / Math.max(bioWords1.length, bioWords2.length)) * 0.3;
@@ -366,11 +366,11 @@ export class AdvancedFeaturesService {
     for (const [_trait, keywords] of Object.entries(personalityKeywords)) {
       const user1HasTrait = keywords.some(keyword => 
         bio1.toLowerCase().includes(keyword) || 
-        interests1.some(interest => interest.toLowerCase().includes(keyword))
+        interests1.some((interest: string) => interest.toLowerCase().includes(keyword))
       );
       const user2HasTrait = keywords.some(keyword => 
         bio2.toLowerCase().includes(keyword) || 
-        interests2.some(interest => interest.toLowerCase().includes(keyword))
+        interests2.some((interest: string) => interest.toLowerCase().includes(keyword))
       );
 
       if (user1HasTrait && user2HasTrait) {
@@ -404,11 +404,11 @@ export class AdvancedFeaturesService {
     for (const [_category, keywords] of Object.entries(lifestyleCategories)) {
       const user1InCategory = keywords.some(keyword => 
         bio1.includes(keyword) || 
-        interests1.some(interest => interest.toLowerCase().includes(keyword))
+        interests1.some((interest: string) => interest.toLowerCase().includes(keyword))
       );
       const user2InCategory = keywords.some(keyword => 
         bio2.includes(keyword) || 
-        interests2.some(interest => interest.toLowerCase().includes(keyword))
+        interests2.some((interest: string) => interest.toLowerCase().includes(keyword))
       );
 
       if (user1InCategory && user2InCategory) {

@@ -1,9 +1,10 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import type { Tables } from '@/types/database';
+import type { Database } from '@/types/supabase';
 import { logger } from '@/lib/logger';
 
 // Tipos para el cache de perfiles
+type Tables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Row'];
 type Profile = Tables<'profiles'>;
 
 // Keys para React Query

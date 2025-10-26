@@ -632,6 +632,132 @@ export type Database = {
           },
         ]
       }
+      invitations: {
+        Row: {
+          created_at: string
+          decided_at: string | null
+          from_profile: string
+          id: string
+          message: string | null
+          status: string | null
+          to_profile: string
+          type: string | null
+        }
+        Insert: {
+          created_at?: string
+          decided_at?: string | null
+          from_profile: string
+          id?: string
+          message?: string | null
+          status?: string | null
+          to_profile: string
+          type?: string | null
+        }
+        Update: {
+          created_at?: string
+          decided_at?: string | null
+          from_profile?: string
+          id?: string
+          message?: string | null
+          status?: string | null
+          to_profile?: string
+          type?: string | null
+        }
+        Relationships: []
+      }
+      matches: {
+        Row: {
+          created_at: string
+          id: string
+          match_score: number | null
+          status: string | null
+          updated_at: string
+          user1_id: string
+          user2_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          match_score?: number | null
+          status?: string | null
+          updated_at?: string
+          user1_id: string
+          user2_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          match_score?: number | null
+          status?: string | null
+          updated_at?: string
+          user1_id?: string
+          user2_id?: string
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          action_url: string | null
+          created_at: string
+          data: Json | null
+          expires_at: string | null
+          group_key: string | null
+          id: number
+          is_read: boolean | null
+          message: string
+          priority: string | null
+          read: boolean | null
+          read_at: string | null
+          scheduled_for: string | null
+          sender_id: string | null
+          sender_name: string | null
+          title: string
+          type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          action_url?: string | null
+          created_at?: string
+          data?: Json | null
+          expires_at?: string | null
+          group_key?: string | null
+          id?: number
+          is_read?: boolean | null
+          message: string
+          priority?: string | null
+          read?: boolean | null
+          read_at?: string | null
+          scheduled_for?: string | null
+          sender_id?: string | null
+          sender_name?: string | null
+          title: string
+          type: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          action_url?: string | null
+          created_at?: string
+          data?: Json | null
+          expires_at?: string | null
+          group_key?: string | null
+          id?: number
+          is_read?: boolean | null
+          message?: string
+          priority?: string | null
+          read?: boolean | null
+          read_at?: string | null
+          scheduled_for?: string | null
+          sender_id?: string | null
+          sender_name?: string | null
+          title?: string
+          type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           age: number | null
@@ -710,6 +836,54 @@ export type Database = {
           role?: string | null
           updated_at?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      reports: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          reason: string
+          report_type: string
+          reported_content_id: string | null
+          reported_user_id: string | null
+          reporter_user_id: string
+          resolved_at: string | null
+          resolved_by: string | null
+          severity: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          reason: string
+          report_type: string
+          reported_content_id?: string | null
+          reported_user_id?: string | null
+          reporter_user_id: string
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          reason?: string
+          report_type?: string
+          reported_content_id?: string | null
+          reported_user_id?: string | null
+          reporter_user_id?: string
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string | null
+          status?: string
+          updated_at?: string
         }
         Relationships: []
       }
