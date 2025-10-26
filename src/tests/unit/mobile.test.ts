@@ -133,11 +133,13 @@ describe('Mobile Utilities', () => {
         expect(result).toBe(false);
       } finally {
         // Restore matchMedia
-        Object.defineProperty(window, 'matchMedia', {
-          value: originalMatchMedia,
-          writable: true,
-          configurable: true
-        });
+        if (originalMatchMedia) {
+          Object.defineProperty(window, 'matchMedia', {
+            value: originalMatchMedia,
+            writable: true,
+            configurable: true
+          });
+        }
       }
     });
   });
