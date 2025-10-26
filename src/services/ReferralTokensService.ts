@@ -321,9 +321,8 @@ class ReferralTokensService {
             .insert({
               user_id: userId,
               referral_code: balance.referral_code,
-              total_referrals: 0,
-              active_referrals: 0,
-              total_earned: 0,
+              period_start: new Date().toISOString(),
+              period_end: new Date().toISOString(),
               monthly_earned: 0,
               conversion_rate: 0
             })
@@ -335,7 +334,20 @@ class ReferralTokensService {
             return null;
           }
 
-          return newStats as ReferralStatistics;
+          // Mapear a ReferralStatistics con campos faltantes
+          return {
+            ...newStats,
+            total_referrals: 0, // Por defecto
+            active_referrals: 0, // Por defecto
+            id: newStats.id,
+            user_id: newStats.user_id,
+            referral_code: newStats.referral_code,
+            total_earned: 0,
+            monthly_earned: 0,
+            conversion_rate: 0,
+            created_at: newStats.created_at || '',
+            updated_at: newStats.created_at || ''
+          };
         }
         logger.error('Error getting referral statistics:', error);
         return null;

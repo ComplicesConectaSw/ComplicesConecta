@@ -162,8 +162,7 @@ class InvitationsService {
           from_profile: userId,
           to_profile: invitationData.invitee_email,
           type: invitationData.type || 'connection',
-          status: 'pending',
-          metadata: invitationData.metadata || {}
+          status: 'pending'
         })
         .select(`
           id,
@@ -171,7 +170,6 @@ class InvitationsService {
           to_profile,
           type,
           status,
-          metadata,
           created_at,
           updated_at
         `)
@@ -190,7 +188,7 @@ class InvitationsService {
         type: data.type,
         status: data.status as 'pending' | 'accepted' | 'declined' | 'expired',
         expires_at: undefined,
-        metadata: data.metadata as Record<string, any> || {},
+        metadata: invitationData.metadata || {},
         created_at: data.created_at || '',
         updated_at: data.updated_at || ''
       };
@@ -338,7 +336,19 @@ class InvitationsService {
       }
 
       logger.info('✅ Gallery permission created successfully in Supabase', { permissionId: data.id });
-      return data as GalleryPermission;
+      
+      // Mapear a GalleryPermission con campos requeridos
+      return {
+        id: data.id,
+        gallery_owner_id: permissionData.gallery_owner_id,
+        granted_by: data.granted_by || userId,
+        granted_to: permissionData.granted_to,
+        permission_type: permissionData.permission_type,
+        status: 'active',
+        expires_at: permissionData.expires_at,
+        created_at: data.created_at || '',
+        updated_at: data.created_at || ''
+      };
     } catch (error) {
       logger.error('Error in createGalleryPermission:', { error: String(error) });
       return null;
@@ -352,11 +362,10 @@ class InvitationsService {
     try {
       logger.info('Revoking gallery permission in Supabase', { permissionId });
 
+      // Actualizar permiso eliminándolo en lugar de cambiarlo
       const { error } = await supabase
         .from('gallery_permissions')
-        .update({
-          updated_at: new Date().toISOString()
-        })
+        .delete()
         .eq('id', permissionId);
 
       if (error) {

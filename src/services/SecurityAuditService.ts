@@ -447,11 +447,27 @@ export class SecurityAuditService {
       const recommendations = this.generateSecurityRecommendations(metrics, threats);
       const complianceStatus = await this.checkComplianceStatus();
 
+      // Mapear recentEvents a SecurityEvent[]
+      const mappedEvents: SecurityEvent[] = (recentEvents || []).map((event: any) => ({
+        id: event.id || '',
+        userId: event.user_id || '',
+        eventType: event.event_type as any,
+        severity: event.severity as any,
+        description: event.description || '',
+        metadata: event.metadata as Record<string, any> || {},
+        ipAddress: event.ip_address as string,
+        userAgent: event.user_agent as string,
+        timestamp: event.timestamp || '',
+        resolved: event.resolved || false,
+        resolvedAt: event.resolved_at || undefined,
+        resolvedBy: event.resolved_by || undefined
+      }));
+
       return {
         period: 'Last 7 days',
         metrics,
         topThreats: threats.slice(0, 5),
-        recentEvents: recentEvents || [],
+        recentEvents: mappedEvents,
         recommendations,
         complianceStatus
       };
@@ -477,12 +493,12 @@ export class SecurityAuditService {
   }
 
   private calculateAverageResponseTime(events: Tables<'security_events'>[]): number {
-    const resolvedEvents = events.filter(e => e.resolved && e.resolvedAt);
+    const resolvedEvents = events.filter(e => e.resolved && e.resolved_at);
     if (resolvedEvents.length === 0) return 0;
     
     const totalTime = resolvedEvents.reduce((sum, event) => {
-      const detected = new Date(event.timestamp).getTime();
-      const resolved = new Date(event.resolvedAt).getTime();
+      const detected = event.timestamp ? new Date(event.timestamp).getTime() : Date.now();
+      const resolved = event.resolved_at ? new Date(event.resolved_at).getTime() : Date.now();
       return sum + (resolved - detected);
     }, 0);
     
@@ -490,12 +506,15 @@ export class SecurityAuditService {
   }
 
   private calculateThreatDetectionRate(events: Tables<'security_events'>[]): number {
-    const suspiciousEvents = events.filter(e => e.eventType === 'suspicious_activity').length;
+    const suspiciousEvents = events.filter(e => e.event_type === 'suspicious_activity').length;
     return events.length > 0 ? (suspiciousEvents / events.length) * 100 : 0;
   }
 
   private calculateFalsePositiveRate(events: Tables<'security_events'>[]): number {
-    const falsePositives = events.filter(e => e.metadata?.falsePositive).length;
+    const falsePositives = events.filter(e => {
+      const meta = e.metadata as any;
+      return meta && typeof meta === 'object' && meta.falsePositive === true;
+    }).length;
     return events.length > 0 ? (falsePositives / events.length) * 100 : 0;
   }
 
