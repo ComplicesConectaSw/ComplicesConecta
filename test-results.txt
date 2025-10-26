@@ -1,0 +1,593 @@
+npm warn Unknown cli config "--run". This will stop working in the next major version of npm.
+
+> complices-conecta-sw@3.4.0 test
+> vitest
+
+
+[1m[44m DEV [49m[22m [34mv3.2.4 [39m[90mC:/Users/conej/Documents/conecta-social-comunidad-main[39m
+
+ [32mÔ£ô[39m src/tests/unit/roles.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [31mÔØ»[39m src/tests/unit/PushNotificationService.test.ts [2m([22m[2m14 tests[22m[2m | [22m[31m14 failed[39m[2m)[22m[32m 30[2mms[22m[39m
+[31m   [31m├ù[31m PushNotificationService[2m > [22misSupported[2m > [22mshould return true when service worker and push manager are available[39m[32m 7[2mms[22m[39m
+[31m     ÔåÆ PushNotificationService.isSupported is not a function[39m
+[31m   [31m├ù[31m PushNotificationService[2m > [22mregisterServiceWorker[2m > [22mshould register service worker successfully[39m[32m 2[2mms[22m[39m
+[31m     ÔåÆ PushNotificationService.registerServiceWorker is not a function[39m
+[31m   [31m├ù[31m PushNotificationService[2m > [22mregisterServiceWorker[2m > [22mshould return null when not supported[39m[32m 2[2mms[22m[39m
+[31m     ÔåÆ PushNotificationService.registerServiceWorker is not a function[39m
+[31m   [31m├ù[31m PushNotificationService[2m > [22mrequestPermission[2m > [22mshould request notification permission[39m[32m 1[2mms[22m[39m
+[31m     ÔåÆ PushNotificationService.requestPermission is not a function[39m
+[31m   [31m├ù[31m PushNotificationService[2m > [22mrequestPermission[2m > [22mshould return denied when not supported[39m[32m 1[2mms[22m[39m
+[31m     ÔåÆ PushNotificationService.requestPermission is not a function[39m
+[31m   [31m├ù[31m PushNotificationService[2m > [22msubscribeToPush[2m > [22mshould subscribe to push notifications successfully[39m[32m 1[2mms[22m[39m
+[31m     ÔåÆ PushNotificationService.subscribeToPush is not a function[39m
+[31m   [31m├ù[31m PushNotificationService[2m > [22msubscribeToPush[2m > [22mshould return null when permission denied[39m[32m 2[2mms[22m[39m
+[31m     ÔåÆ requestPermission does not exist[39m
+[31m   [31m├ù[31m PushNotificationService[2m > [22munsubscribeFromPush[2m > [22mshould unsubscribe from push notifications[39m[32m 1[2mms[22m[39m
+[31m     ÔåÆ PushNotificationService.unsubscribeFromPush is not a function[39m
+[31m   [31m├ù[31m PushNotificationService[2m > [22misSubscribed[2m > [22mshould check if user is subscribed[39m[32m 2[2mms[22m[39m
+[31m     ÔåÆ PushNotificationService.isSubscribed is not a function[39m
+[31m   [31m├ù[31m PushNotificationService[2m > [22mgetCurrentSubscription[2m > [22mshould get current push subscription[39m[32m 1[2mms[22m[39m
+[31m     ÔåÆ PushNotificationService.getCurrentSubscription is not a function[39m
+[31m   [31m├ù[31m PushNotificationService[2m > [22msendTestNotification[2m > [22mshould send test notification[39m[32m 1[2mms[22m[39m
+[31m     ÔåÆ PushNotificationService.sendTestNotification is not a function[39m
+[31m   [31m├ù[31m PushNotificationService[2m > [22msetupForUser[2m > [22mshould setup push notifications for user[39m[32m 1[2mms[22m[39m
+[31m     ÔåÆ PushNotificationService.setupForUser is not a function[39m
+[31m   [31m├ù[31m PushNotificationService[2m > [22mshowLocalNotification[2m > [22mshould show local notification[39m[32m 2[2mms[22m[39m
+[31m     ÔåÆ PushNotificationService.showLocalNotification is not a function[39m
+[31m   [31m├ù[31m PushNotificationService[2m > [22mclearAllNotifications[2m > [22mshould clear all notifications[39m[32m 2[2mms[22m[39m
+[31m     ÔåÆ PushNotificationService.clearAllNotifications is not a function[39m
+ [32mÔ£ô[39m src/tests/unit/androidSecurity.test.ts [2m([22m[2m20 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+[90mstdout[2m | src/tests/unit/localStorage-migration.test.ts
+[22m[39m[INFO] ­ƒöº Configuraci├│n de aplicaci├│n: {
+  "mode": "production",
+  "supabaseUrl": "Ô£à Configurada",
+  "supabaseKey": "Ô£à Configurada"
+}
+[INFO] ­ƒÜÇ ComplicesConecta iniciado {
+  "modo": "production"
+}
+[INFO] ­ƒöÉ Modo producci├│n activo - autenticaci├│n real requerida 
+[INFO] ­ƒÅó Credenciales producci├│n: {
+  "email": "complicesconectasw@outlook.es"
+}
+
+[90mstdout[2m | src/tests/unit/ProfileReportService.test.ts[2m > [22m[2mProfileReportService[2m > [22m[2mcreateProfileReport[2m > [22m[2mdeber├¡a crear un reporte exitosamente
+[22m[39m
+­ƒº¬ [TEST START] ProfileReportService - createProfileReport success
+
+[90mstdout[2m | src/tests/unit/ProfileReportService.test.ts[2m > [22m[2mProfileReportService[2m > [22m[2mcreateProfileReport[2m > [22m[2mdeber├¡a crear un reporte exitosamente
+[22m[39m
+­ƒùä´©Å [SUPABASE MOCK] insert on profile_reports
+­ƒôØ Data: {
+  "reportedUserId": "reported-user-123",
+  "reason": "harassment",
+  "description": "Test description"
+}
+
+stderr | src/tests/unit/invitations.test.ts > Invitations System > sendInvitation > should send a gallery invitation successfully
+[ERROR] ÔØî Error en sendInvitation: {
+  "error": "Mock Supabase error"
+}
+
+[90mstdout[2m | src/tests/unit/ProfileReportService.test.ts[2m > [22m[2mProfileReportService[2m > [22m[2mcreateProfileReport[2m > [22m[2mdeber├¡a crear un reporte exitosamente
+[22m[39m
+Ô£à [TEST END] ProfileReportService - createProfileReport success
+­ƒôè Result: {
+  "success": true,
+  "data": {
+    "id": "report-123"
+  }
+}
+
+stderr | src/tests/unit/invitations.test.ts > Invitations System > sendInvitation > should send a chat invitation successfully
+[ERROR] ÔØî Error en sendInvitation: {
+  "error": "Mock Supabase error"
+}
+
+stderr | src/tests/unit/invitations.test.ts > Invitations System > respondInvitation > should accept an invitation successfully
+[ERROR] ÔØî Error en sendInvitation: {
+  "error": "Mock Supabase error"
+}
+
+stderr | src/tests/unit/invitations.test.ts > Invitations System > respondInvitation > should accept an invitation successfully
+[ERROR] ÔØî Error en acceptInvitation: {
+  "error": "Mock Supabase error"
+}
+
+stderr | src/tests/unit/invitations.test.ts > Invitations System > respondInvitation > should reject an invitation successfully
+[ERROR] ÔØî Error en sendInvitation: {
+  "error": "Mock Supabase error"
+}
+
+[90mstdout[2m | src/tests/unit/localStorage-migration.test.ts[2m > [22m[2mlocalStorage Migration Tests[2m > [22m[2mConfiguraci├│n de modo de aplicaci├│n[2m > [22m[2mdebe determinar correctamente el uso de Supabase real
+[22m[39m[INFO] ­ƒöì shouldUseRealSupabase {
+  "modo": "production",
+  "demoAuth": null
+}
+[INFO] ­ƒÅó Modo producci├│n - usando Supabase real siempre 
+[INFO] ­ƒöì shouldUseRealSupabase {
+  "modo": "production",
+  "demoAuth": null
+}
+[INFO] ­ƒÅó Modo producci├│n - usando Supabase real siempre 
+
+stderr | src/tests/unit/invitations.test.ts > Invitations System > respondInvitation > should reject an invitation successfully
+[ERROR] ÔØî Error en declineInvitation: {
+  "error": "Mock Supabase error"
+}
+
+[90mstdout[2m | src/tests/unit/localStorage-migration.test.ts[2m > [22m[2mlocalStorage Migration Tests[2m > [22m[2mManejo de sesiones demo[2m > [22m[2mdebe crear sesi├│n demo sin almacenar datos sensibles
+[22m[39m[INFO] ÔØî Email no es credencial demo: {
+  "email": "demo@example.com"
+}
+
+stderr | src/tests/unit/invitations.test.ts > Invitations System > hasGalleryAccess > should return false when no access granted
+[ERROR] ÔØî Error en hasGalleryAccess: {
+  "error": "Mock Supabase error"
+}
+
+[90mstdout[2m | src/tests/unit/localStorage-migration.test.ts[2m > [22m[2mlocalStorage Migration Tests[2m > [22m[2mManejo de sesiones demo[2m > [22m[2mdebe limpiar correctamente sesiones demo
+[22m[39m[INFO] ­ƒº╣ Sesi├│n demo limpiada 
+
+stderr | src/tests/unit/invitations.test.ts > Invitations System > hasGalleryAccess > should return true after accepting gallery invitation
+[ERROR] ÔØî Error en hasGalleryAccess: {
+  "error": "Mock Supabase error"
+}
+
+stderr | src/tests/unit/invitations.test.ts > Invitations System > hasChatAccess > should return false when no access granted
+[ERROR] ÔØî Error en hasChatAccess: {
+  "error": "Mock Supabase error"
+}
+
+[90mstdout[2m | src/tests/unit/localStorage-migration.test.ts[2m > [22m[2mlocalStorage Migration Tests[2m > [22m[2mCompatibilidad hacia atr├ís[2m > [22m[2mdebe manejar datos legacy sin romper la aplicaci├│n
+[22m[39m[INFO] ­ƒöì shouldUseRealSupabase {
+  "modo": "production",
+  "demoAuth": null
+}
+[INFO] ­ƒÅó Modo producci├│n - usando Supabase real siempre 
+
+stderr | src/tests/unit/invitations.test.ts > Invitations System > hasChatAccess > should return true after accepting chat invitation
+[ERROR] ÔØî Error en sendInvitation: {
+  "error": "Mock Supabase error"
+}
+
+stderr | src/tests/unit/invitations.test.ts > Invitations System > hasChatAccess > should return true after accepting chat invitation
+[ERROR] ÔØî Error en acceptInvitation: {
+  "error": "Mock Supabase error"
+}
+
+[90mstdout[2m | src/tests/unit/localStorage-migration.test.ts[2m > [22m[2mlocalStorage Migration Tests[2m > [22m[2mCompatibilidad hacia atr├ís[2m > [22m[2mdebe migrar gradualmente sin p├®rdida de funcionalidad
+stderr | src/tests/unit/invitations.test.ts > Invitations System > hasChatAccess > should return true after accepting chat invitation
+[22m[39m[INFO] ­ƒöì shouldUseRealSupabase {
+[WARN] ÔÜá´©Å UUIDs inv├ílidos para hasChatAccess, usando fallback: {
+  "user1": "user2",
+  "modo": "production",
+  "demoAuth": null
+  "user2": "user1"
+}
+[INFO] ­ƒÅó Modo producci├│n - usando Supabase real siempre 
+}
+
+
+stderr | src/tests/unit/invitations.test.ts > Invitations System > getInvitations > should return empty arrays for new user
+[ERROR] ÔØî Error en getInvitations: {
+  "error": "Mock Supabase error"
+}
+
+stderr | src/tests/unit/invitations.test.ts > Invitations System > getInvitations > should return received invitations
+[ERROR] ÔØî Error en getInvitations: {
+  "error": "Mock Supabase error"
+}
+
+stderr | src/tests/unit/invitations.test.ts > Invitations System > getInvitations > should return sent invitations
+[ERROR] ÔØî Error en getInvitations: {
+  "error": "Mock Supabase error"
+}
+
+ [32mÔ£ô[39m src/tests/unit/localStorage-migration.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32mÔ£ô[39m src/tests/unit/ProfileReportService.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+ [32mÔ£ô[39m src/tests/unit/invitations.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 31[2mms[22m[39m
+ [32mÔ£ô[39m src/tests/unit/zod-validation.test.ts [2m([22m[2m19 tests[22m[2m)[22m[32m 35[2mms[22m[39m
+[90mstdout[2m | src/tests/unit/emailService.test.ts[2m > [22m[2mEmailService - Variables de Entorno[2m > [22m[2mdebe enviar email de confirmaci├│n con template correcto
+[22m[39m­ƒô¿ Enviando email con template: confirmation a test@example.com
+
+[90mstdout[2m | src/tests/unit/emailService.test.ts[2m > [22m[2mEmailService - Variables de Entorno[2m > [22m[2mdebe enviar email de confirmaci├│n con template correcto
+[22m[39mÔ£à Email enviado exitosamente con template: confirmation
+
+[90mstdout[2m | src/tests/unit/emailService.test.ts[2m > [22m[2mEmailService - Variables de Entorno[2m > [22m[2mdebe enviar email de confirmaci├│n con template correcto
+[22m[39m­ƒô¿ Email enviado usando template: confirmation
+
+[90mstdout[2m | src/tests/unit/emailService.test.ts[2m > [22m[2mEmailService - Variables de Entorno[2m > [22m[2mdebe enviar email de reset con template correcto
+[22m[39m­ƒöÉ Enviando email de reset de contrase├▒a a test@example.com
+­ƒô¿ Enviando email con template: reset-password a test@example.com
+
+[90mstdout[2m | src/tests/unit/emailService.test.ts[2m > [22m[2mEmailService - Variables de Entorno[2m > [22m[2mdebe enviar email de reset con template correcto
+[22m[39mÔ£à Email enviado exitosamente con template: reset-password
+
+[90mstdout[2m | src/tests/unit/emailService.test.ts[2m > [22m[2mEmailService - Variables de Entorno[2m > [22m[2mdebe manejar errores de Edge Function correctamente
+[22m[39m­ƒô¿ Enviando email con template: confirmation a test@example.com
+
+stderr | src/tests/unit/emailService.test.ts > EmailService - Variables de Entorno > debe manejar errores de Edge Function correctamente
+[ERROR] ÔØî Error HTTP en send-email: 500 
+[ERROR] ÔØî Error enviando email con template confirmation: {
+  "error": {}
+}
+
+ [32mÔ£ô[39m src/tests/unit/emailService.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+ [32mÔ£ô[39m src/tests/unit/ReportService.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32mÔ£ô[39m src/tests/unit/realtime-chat.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32mÔ£ô[39m src/tests/unit/PerformanceMonitoringService.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+stderr | src/tests/unit/webVitals.test.ts
+web-vitals not available: Error: [vitest] There was an error when mocking a module. If you are using "vi.mock" factory, make sure there are no top level variables inside, since this call is hoisted to top of the file. Read more: https://vitest.dev/api/vi.html#vi-mock
+    at ManualMockedModule.resolve (file:///C:/Users/conej/Documents/conecta-social-comunidad-main/node_modules/@vitest/mocker/dist/chunk-registry.js:160:24)
+    at VitestMocker.callFunctionMock (file:///C:/Users/conej/Documents/conecta-social-comunidad-main/node_modules/vitest/dist/chunks/execute.B7h3T_Hc.js:322:30)
+    ... 5 lines matching cause stack trace ...
+    at WebVitalsMonitor.init (C:\Users\conej\Documents\conecta-social-comunidad-main\src\utils\webVitals.ts:149:59)
+    at C:\Users\conej\Documents\conecta-social-comunidad-main\src\tests\unit\webVitals.test.ts:67:9 {
+  cause: Error: Module not found
+      at C:\Users\conej\Documents\conecta-social-comunidad-main\src\tests\unit\webVitals.test.ts:61:15
+      at ManualMockedModule.factory (file:///C:/Users/conej/Documents/conecta-social-comunidad-main/node_modules/vitest/dist/chunks/vi.bdSIJ99Y.js:3913:78)
+      at ManualMockedModule.resolve (file:///C:/Users/conej/Documents/conecta-social-comunidad-main/node_modules/@vitest/mocker/dist/chunk-registry.js:158:25)
+      at VitestMocker.callFunctionMock (file:///C:/Users/conej/Documents/conecta-social-comunidad-main/node_modules/vitest/dist/chunks/execute.B7h3T_Hc.js:322:30)
+      at VitestMocker.requestWithMock (file:///C:/Users/conej/Documents/conecta-social-comunidad-main/node_modules/vitest/dist/chunks/execute.B7h3T_Hc.js:433:22)
+      at VitestExecutor.dependencyRequest (file:///C:/Users/conej/Documents/conecta-social-comunidad-main/node_modules/vitest/dist/chunks/execute.B7h3T_Hc.js:692:36)
+      at request (file:///C:/Users/conej/Documents/conecta-social-comunidad-main/node_modules/vite-node/dist/client.mjs:264:16)
+      at processTicksAndRejections (node:internal/process/task_queues:95:5)
+      at getWebVitals (C:\Users\conej\Documents\conecta-social-comunidad-main\src\utils\webVitals.ts:7:23)
+      at WebVitalsMonitor.init (C:\Users\conej\Documents\conecta-social-comunidad-main\src\utils\webVitals.ts:149:59)
+}
+
+ [32mÔ£ô[39m src/tests/unit/webVitals.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32mÔ£ô[39m src/tests/unit/matching.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [31mÔØ»[39m src/tests/unit/mobile.test.ts [2m([22m[2m17 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 24[2mms[22m[39m
+   [32mÔ£ô[39m Mobile Utilities[2m > [22misMobile[2m > [22mshould detect mobile user agent[32m 2[2mms[22m[39m
+   [32mÔ£ô[39m Mobile Utilities[2m > [22misMobile[2m > [22mshould detect Android user agent[32m 1[2mms[22m[39m
+   [32mÔ£ô[39m Mobile Utilities[2m > [22misMobile[2m > [22mshould return false for desktop user agent[32m 0[2mms[22m[39m
+   [32mÔ£ô[39m Mobile Utilities[2m > [22misTouchDevice[2m > [22mshould detect touch support[32m 0[2mms[22m[39m
+   [32mÔ£ô[39m Mobile Utilities[2m > [22misTouchDevice[2m > [22mshould return false when no touch support[32m 0[2mms[22m[39m
+   [32mÔ£ô[39m Mobile Utilities[2m > [22misTouchDevice[2m > [22mshould detect touch via ontouchstart[32m 0[2mms[22m[39m
+   [32mÔ£ô[39m Mobile Utilities[2m > [22mprefersReducedMotion[2m > [22mshould detect reduced motion preference[32m 2[2mms[22m[39m
+   [32mÔ£ô[39m Mobile Utilities[2m > [22mprefersReducedMotion[2m > [22mshould return false when no reduced motion preference[32m 1[2mms[22m[39m
+[31m   [31m├ù[31m Mobile Utilities[2m > [22mprefersReducedMotion[2m > [22mshould return false when matchMedia is not supported[39m[32m 10[2mms[22m[39m
+[31m     ÔåÆ expected [Function] to not throw an error but 'TypeError: window.matchMedia is not aÔÇª' was thrown[39m
+   [32mÔ£ô[39m Mobile Utilities[2m > [22mgetBreakpoint[2m > [22mshould return mobile for small screens[32m 1[2mms[22m[39m
+   [32mÔ£ô[39m Mobile Utilities[2m > [22mgetBreakpoint[2m > [22mshould return tablet for medium screens[32m 0[2mms[22m[39m
+   [32mÔ£ô[39m Mobile Utilities[2m > [22mgetBreakpoint[2m > [22mshould return desktop for large screens[32m 0[2mms[22m[39m
+   [32mÔ£ô[39m Mobile Utilities[2m > [22maddTouchSupport[2m > [22mshould add touch support to element on touch device[32m 1[2mms[22m[39m
+   [32mÔ£ô[39m Mobile Utilities[2m > [22maddTouchSupport[2m > [22mshould not modify element on non-touch device[32m 1[2mms[22m[39m
+   [32mÔ£ô[39m Mobile Utilities[2m > [22mgetAnimationConfig[2m > [22mshould return no animation config for reduced motion[32m 1[2mms[22m[39m
+   [32mÔ£ô[39m Mobile Utilities[2m > [22mgetAnimationConfig[2m > [22mshould return mobile animation config[32m 1[2mms[22m[39m
+   [32mÔ£ô[39m Mobile Utilities[2m > [22mgetAnimationConfig[2m > [22mshould return desktop animation config[32m 1[2mms[22m[39m
+ [32mÔ£ô[39m src/tests/unit/auth.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 53[2mms[22m[39m
+ [32mÔ£ô[39m src/tests/unit/useToast.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+stderr | src/tests/unit/ProfileReportsPanel.test.tsx > ProfileReportsPanel > deber├¡a mostrar spinner de carga inicialmente
+Warning: An update to ProfileReportsPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+    at ProfileReportsPanel (C:\Users\conej\Documents\conecta-social-comunidad-main\src\components\admin\ProfileReportsPanel.tsx:27:67)
+Warning: An update to ProfileReportsPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+    at ProfileReportsPanel (C:\Users\conej\Documents\conecta-social-comunidad-main\src\components\admin\ProfileReportsPanel.tsx:27:67)
+
+ [31mÔØ»[39m src/tests/unit/TokenAnalyticsService.test.ts [2m([22m[2m7 tests[22m[2m | [22m[31m4 failed[39m[2m)[22m[32m 82[2mms[22m[39m
+   [32mÔ£ô[39m TokenAnalyticsService[2m > [22mgetInstance[2m > [22mshould return singleton instance[32m 2[2mms[22m[39m
+   [32mÔ£ô[39m TokenAnalyticsService[2m > [22mgenerateCurrentMetrics[2m > [22mshould generate current token metrics[32m 62[2mms[22m[39m
+[31m   [31m├ù[31m TokenAnalyticsService[2m > [22msaveAnalytics[2m > [22mshould save analytics for a period[39m[32m 7[2mms[22m[39m
+[31m     ÔåÆ expected undefined to be defined[39m
+   [32mÔ£ô[39m TokenAnalyticsService[2m > [22mgetHistoricalAnalytics[2m > [22mshould get historical analytics[32m 0[2mms[22m[39m
+[31m   [31m├ù[31m TokenAnalyticsService[2m > [22mgenerateAutomaticReport[2m > [22mshould generate automatic report[39m[32m 1[2mms[22m[39m
+[31m     ÔåÆ expected undefined to be defined[39m
+[31m   [31m├ù[31m TokenAnalyticsService[2m > [22mgenerateAutomaticReport[2m > [22mshould not generate report if already generating[39m[32m 4[2mms[22m[39m
+[31m     ÔåÆ expected true to be false // Object.is equality[39m
+[31m   [31m├ù[31m TokenAnalyticsService[2m > [22mautomatic analytics[2m > [22mshould start and stop automatic analytics[39m[32m 3[2mms[22m[39m
+[31m     ÔåÆ expected "spy" to be called 1 times, but got 0 times[39m
+stderr | src/tests/unit/ProfileReportsPanel.test.tsx > ProfileReportsPanel > deber├¡a manejar errores al cargar reportes
+Warning: An update to ProfileReportsPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+    at ProfileReportsPanel (C:\Users\conej\Documents\conecta-social-comunidad-main\src\components\admin\ProfileReportsPanel.tsx:27:67)
+
+[90mstdout[2m | src/tests/unit/ProfileReportsPanel.test.tsx[2m > [22m[2mProfileReportsPanel[2m > [22m[2mdeber├¡a llamar a los servicios correctos al montar
+[22m[39m
+­ƒº¬ [TEST START] ProfileReportsPanel - service calls on mount
+
+[90mstdout[2m | src/tests/unit/ProfileReportsPanel.test.tsx[2m > [22m[2mProfileReportsPanel[2m > [22m[2mdeber├¡a llamar a los servicios correctos al montar
+[22m[39m
+­ƒöì [MOCK VERIFY] getPendingProfileReports
+­ƒô× Expected: 1, Actual: 0
+ÔØî Verification: FAILED
+­ƒôï Available mocks: []
+
+Ô£à [TEST END] ProfileReportsPanel - service calls on mount
+
+ [32mÔ£ô[39m src/tests/unit/ProfileReportsPanel.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[32m 131[2mms[22m[39m
+ [32mÔ£ô[39m src/tests/unit/performance.test.ts [2m([22m[2m13 tests[22m[2m)[22m[33m 1394[2mms[22m[39m
+   [33m[2mÔ£ô[22m[39m Integration Performance Tests[2m > [22mshould maintain performance under load [33m 623[2mms[22m[39m
+ [32mÔ£ô[39m src/tests/unit/profiles.test.ts [2m([22m[2m24 tests[22m[2m)[22m[32m 26[2mms[22m[39m
+stderr | src/tests/unit/profile-cache.test.ts > Profile Cache Tests > useUpdateProfile Hook > debe manejar errores de actualizaci├│n
+[ERROR] ÔØî Error actualizando perfil: {}
+
+[90mstdout[2m | src/tests/unit/profile-cache.test.ts[2m > [22m[2mProfile Cache Tests[2m > [22m[2mCache Management[2m > [22m[2mdebe limpiar cache correctamente
+[22m[39m[INFO] ­ƒº╣ Cache de perfiles limpiado completamente 
+[INFO] ­ƒº╣ Cache de perfil espec├¡fico limpiado: {
+  "userId": "test-id"
+}
+[INFO] ­ƒº╣ Cache de listas de perfiles limpiado 
+
+ [32mÔ£ô[39m src/tests/unit/profile-cache.test.ts [2m([22m[2m15 tests[22m[2m)[22m[33m 3809[2mms[22m[39m
+   [33m[2mÔ£ô[22m[39m Profile Cache Tests[2m > [22museProfile Hook[2m > [22mdebe manejar errores de carga correctamente [33m 3065[2mms[22m[39m
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ» Failed Tests 19 ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»
+
+ FAIL  src/tests/unit/mobile.test.ts > Mobile Utilities > prefersReducedMotion > should return false when matchMedia is not supported
+AssertionError: expected [Function] to not throw an error but 'TypeError: window.matchMedia is not aÔÇª' was thrown
+
+- Expected: 
+undefined
+
++ Received: 
+"TypeError: window.matchMedia is not a function"
+
+ ÔØ» src/tests/unit/mobile.test.ts:128:50
+    126|       } catch (error) {
+    127|         // If deletion throws an error, just verify the function doesnÔÇª
+    128|         expect(() => prefersReducedMotion()).not.toThrow();
+       |                                                  ^
+    129|       } finally {
+    130|         window.matchMedia = originalMatchMedia;
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[1/19]ÔÄ»
+
+ FAIL  src/tests/unit/PushNotificationService.test.ts > PushNotificationService > isSupported > should return true when service worker and push manager are available
+TypeError: PushNotificationService.isSupported is not a function
+ ÔØ» src/tests/unit/PushNotificationService.test.ts:121:46
+    119|     it('should return true when service worker and push manager are avÔÇª
+    120|       // Service worker and push manager are available in the test envÔÇª
+    121|       const result = PushNotificationService.isSupported()
+       |                                              ^
+    122|       expect(result).toBe(true)
+    123|     })
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[2/19]ÔÄ»
+
+ FAIL  src/tests/unit/PushNotificationService.test.ts > PushNotificationService > registerServiceWorker > should register service worker successfully
+TypeError: PushNotificationService.registerServiceWorker is not a function
+ ÔØ» src/tests/unit/PushNotificationService.test.ts:128:52
+    126|   describe('registerServiceWorker', () => {
+    127|     it('should register service worker successfully', async () => {
+    128|       const result = await PushNotificationService.registerServiceWorkÔÇª
+       |                                                    ^
+    129|       
+    130|       expect(result).toBeDefined()
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[3/19]ÔÄ»
+
+ FAIL  src/tests/unit/PushNotificationService.test.ts > PushNotificationService > registerServiceWorker > should return null when not supported
+TypeError: PushNotificationService.registerServiceWorker is not a function
+ ÔØ» src/tests/unit/PushNotificationService.test.ts:141:52
+    139|       (navigator as any).serviceWorker = undefined;
+    140|       
+    141|       const result = await PushNotificationService.registerServiceWorkÔÇª
+       |                                                    ^
+    142|       
+    143|       expect(result).toBeNull()
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[4/19]ÔÄ»
+
+ FAIL  src/tests/unit/PushNotificationService.test.ts > PushNotificationService > requestPermission > should request notification permission
+TypeError: PushNotificationService.requestPermission is not a function
+ ÔØ» src/tests/unit/PushNotificationService.test.ts:152:52
+    150|   describe('requestPermission', () => {
+    151|     it('should request notification permission', async () => {
+    152|       const result = await PushNotificationService.requestPermission()
+       |                                                    ^
+    153|       
+    154|       expect(result).toBe('granted')
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[5/19]ÔÄ»
+
+ FAIL  src/tests/unit/PushNotificationService.test.ts > PushNotificationService > requestPermission > should return denied when not supported
+TypeError: PushNotificationService.requestPermission is not a function
+ ÔØ» src/tests/unit/PushNotificationService.test.ts:163:52
+    161|       (navigator as any).serviceWorker = undefined;
+    162|       
+    163|       const result = await PushNotificationService.requestPermission()
+       |                                                    ^
+    164|       
+    165|       expect(result).toBe('denied')
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[6/19]ÔÄ»
+
+ FAIL  src/tests/unit/PushNotificationService.test.ts > PushNotificationService > subscribeToPush > should subscribe to push notifications successfully
+TypeError: PushNotificationService.subscribeToPush is not a function
+ ÔØ» src/tests/unit/PushNotificationService.test.ts:174:52
+    172|   describe('subscribeToPush', () => {
+    173|     it('should subscribe to push notifications successfully', async ()ÔÇª
+    174|       const result = await PushNotificationService.subscribeToPush()
+       |                                                    ^
+    175|       
+    176|       expect(result).toBeDefined()
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[7/19]ÔÄ»
+
+ FAIL  src/tests/unit/PushNotificationService.test.ts > PushNotificationService > subscribeToPush > should return null when permission denied
+Error: requestPermission does not exist
+ ÔØ» src/tests/unit/PushNotificationService.test.ts:183:36
+    181|     it('should return null when permission denied', async () => {
+    182|       // Mock requestPermission to return denied
+    183|       const requestPermission = vi.spyOn(PushNotificationService, 'reqÔÇª
+       |                                    ^
+    184|       requestPermission.mockResolvedValue('denied')
+    185|       
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[8/19]ÔÄ»
+
+ FAIL  src/tests/unit/PushNotificationService.test.ts > PushNotificationService > unsubscribeFromPush > should unsubscribe from push notifications
+TypeError: PushNotificationService.unsubscribeFromPush is not a function
+ ÔØ» src/tests/unit/PushNotificationService.test.ts:194:52
+    192|   describe('unsubscribeFromPush', () => {
+    193|     it('should unsubscribe from push notifications', async () => {
+    194|       const result = await PushNotificationService.unsubscribeFromPushÔÇª
+       |                                                    ^
+    195|       
+    196|       expect(result).toBe(true)
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[9/19]ÔÄ»
+
+ FAIL  src/tests/unit/PushNotificationService.test.ts > PushNotificationService > isSubscribed > should check if user is subscribed
+TypeError: PushNotificationService.isSubscribed is not a function
+ ÔØ» src/tests/unit/PushNotificationService.test.ts:202:52
+    200|   describe('isSubscribed', () => {
+    201|     it('should check if user is subscribed', async () => {
+    202|       const result = await PushNotificationService.isSubscribed()
+       |                                                    ^
+    203|       
+    204|       expect(typeof result).toBe('boolean')
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[10/19]ÔÄ»
+
+ FAIL  src/tests/unit/PushNotificationService.test.ts > PushNotificationService > getCurrentSubscription > should get current push subscription
+TypeError: PushNotificationService.getCurrentSubscription is not a function
+ ÔØ» src/tests/unit/PushNotificationService.test.ts:210:52
+    208|   describe('getCurrentSubscription', () => {
+    209|     it('should get current push subscription', async () => {
+    210|       const result = await PushNotificationService.getCurrentSubscriptÔÇª
+       |                                                    ^
+    211|       
+    212|       expect(result).toBeDefined()
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[11/19]ÔÄ»
+
+ FAIL  src/tests/unit/PushNotificationService.test.ts > PushNotificationService > sendTestNotification > should send test notification
+TypeError: PushNotificationService.sendTestNotification is not a function
+ ÔØ» src/tests/unit/PushNotificationService.test.ts:219:52
+    217|   describe('sendTestNotification', () => {
+    218|     it('should send test notification', async () => {
+    219|       const result = await PushNotificationService.sendTestNotificatioÔÇª
+       |                                                    ^
+    220|       
+    221|       expect(typeof result).toBe('boolean')
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[12/19]ÔÄ»
+
+ FAIL  src/tests/unit/PushNotificationService.test.ts > PushNotificationService > setupForUser > should setup push notifications for user
+TypeError: PushNotificationService.setupForUser is not a function
+ ÔØ» src/tests/unit/PushNotificationService.test.ts:227:52
+    225|   describe('setupForUser', () => {
+    226|     it('should setup push notifications for user', async () => {
+    227|       const result = await PushNotificationService.setupForUser('user1ÔÇª
+       |                                                    ^
+    228|       
+    229|       expect(typeof result).toBe('boolean')
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[13/19]ÔÄ»
+
+ FAIL  src/tests/unit/PushNotificationService.test.ts > PushNotificationService > showLocalNotification > should show local notification
+TypeError: PushNotificationService.showLocalNotification is not a function
+ ÔØ» src/tests/unit/PushNotificationService.test.ts:235:52
+    233|   describe('showLocalNotification', () => {
+    234|     it('should show local notification', async () => {
+    235|       const result = await PushNotificationService.showLocalNotificatiÔÇª
+       |                                                    ^
+    236|         'Test Title',
+    237|         'Test Body',
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[14/19]ÔÄ»
+
+ FAIL  src/tests/unit/PushNotificationService.test.ts > PushNotificationService > clearAllNotifications > should clear all notifications
+TypeError: PushNotificationService.clearAllNotifications is not a function
+ ÔØ» src/tests/unit/PushNotificationService.test.ts:247:44
+    245|   describe('clearAllNotifications', () => {
+    246|     it('should clear all notifications', async () => {
+    247|       await expect(PushNotificationService.clearAllNotifications()).reÔÇª
+       |                                            ^
+    248|     })
+    249|   })
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[15/19]ÔÄ»
+
+ FAIL  src/tests/unit/TokenAnalyticsService.test.ts > TokenAnalyticsService > saveAnalytics > should save analytics for a period
+AssertionError: expected undefined to be defined
+ ÔØ» src/tests/unit/TokenAnalyticsService.test.ts:110:32
+    108|       
+    109|       expect(result.success).toBe(true)
+    110|       expect(result.analytics).toBeDefined()
+       |                                ^
+    111|     })
+    112|   })
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[16/19]ÔÄ»
+
+ FAIL  src/tests/unit/TokenAnalyticsService.test.ts > TokenAnalyticsService > generateAutomaticReport > should generate automatic report
+AssertionError: expected undefined to be defined
+ ÔØ» src/tests/unit/TokenAnalyticsService.test.ts:129:29
+    127|       
+    128|       expect(result.success).toBe(true)
+    129|       expect(result.report).toBeDefined()
+       |                             ^
+    130|       
+    131|       if (result.report) {
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[17/19]ÔÄ»
+
+ FAIL  src/tests/unit/TokenAnalyticsService.test.ts > TokenAnalyticsService > generateAutomaticReport > should not generate report if already generating
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ÔØ» src/tests/unit/TokenAnalyticsService.test.ts:146:31
+    144|       const result2 = await service.generateAutomaticReport('daily')
+    145|       
+    146|       expect(result2.success).toBe(false)
+       |                               ^
+    147|       expect(result2.error).toContain('Ya se est├í generando')
+    148|       
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[18/19]ÔÄ»
+
+ FAIL  src/tests/unit/TokenAnalyticsService.test.ts > TokenAnalyticsService > automatic analytics > should start and stop automatic analytics
+AssertionError: expected "spy" to be called 1 times, but got 0 times
+ ÔØ» src/tests/unit/TokenAnalyticsService.test.ts:164:31
+    162|       
+    163|       expect(() => service.startAutomaticAnalytics(1)).not.toThrow()
+    164|       expect(mockSetInterval).toHaveBeenCalledTimes(1)
+       |                               ^
+    165|       
+    166|       expect(() => service.stopAutomaticAnalytics()).not.toThrow()
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[19/19]ÔÄ»
+
+
+[2m Test Files [22m [1m[31m3 failed[39m[22m[2m | [22m[1m[32m18 passed[39m[22m[90m (21)[39m
+[2m      Tests [22m [1m[31m19 failed[39m[22m[2m | [22m[1m[32m220 passed[39m[22m[90m (239)[39m
+[2m   Start at [22m 01:44:55
+[2m   Duration [22m 12.12s[2m (transform 2.07s, setup 26.57s, collect 4.40s, tests 5.80s, environment 18.31s, prepare 7.68s)[22m
+
+[1m[41m FAIL [49m[22m [31mTests failed. Watching for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m

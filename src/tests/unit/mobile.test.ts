@@ -120,14 +120,24 @@ describe('Mobile Utilities', () => {
     it('should return false when matchMedia is not supported', () => {
       const originalMatchMedia = window.matchMedia;
       
+      // Temporarily remove matchMedia
+      Object.defineProperty(window, 'matchMedia', {
+        value: undefined,
+        writable: true,
+        configurable: true
+      });
+      
       try {
-        delete (window as any).matchMedia;
-        expect(prefersReducedMotion()).toBe(false);
-      } catch (error) {
-        // If deletion throws an error, just verify the function doesn't throw
-        expect(() => prefersReducedMotion()).not.toThrow();
+        // The function should handle the absence of matchMedia gracefully
+        const result = prefersReducedMotion();
+        expect(result).toBe(false);
       } finally {
-        window.matchMedia = originalMatchMedia;
+        // Restore matchMedia
+        Object.defineProperty(window, 'matchMedia', {
+          value: originalMatchMedia,
+          writable: true,
+          configurable: true
+        });
       }
     });
   });
