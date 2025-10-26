@@ -632,6 +632,39 @@ export type Database = {
           },
         ]
       }
+      gallery_permissions: {
+        Row: {
+          created_at: string
+          expires_at: string | null
+          granted_by: string
+          granted_to: string
+          id: string
+          profile_id: string
+          status: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string | null
+          granted_by: string
+          granted_to: string
+          id?: string
+          profile_id: string
+          status?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string | null
+          granted_by?: string
+          granted_to?: string
+          id?: string
+          profile_id?: string
+          status?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       invitations: {
         Row: {
           created_at: string
@@ -839,6 +872,51 @@ export type Database = {
         }
         Relationships: []
       }
+      referral_rewards: {
+        Row: {
+          claimed: boolean | null
+          claimed_at: string | null
+          created_at: string
+          id: string
+          referral_code: string | null
+          reward_amount: number
+          reward_type: string
+          status: string | null
+          updated_at: string
+          user_id: string
+          verification_method: string | null
+          worldid_proof: Json | null
+        }
+        Insert: {
+          claimed?: boolean | null
+          claimed_at?: string | null
+          created_at?: string
+          id?: string
+          referral_code?: string | null
+          reward_amount?: number
+          reward_type: string
+          status?: string | null
+          updated_at?: string
+          user_id: string
+          verification_method?: string | null
+          worldid_proof?: Json | null
+        }
+        Update: {
+          claimed?: boolean | null
+          claimed_at?: string | null
+          created_at?: string
+          id?: string
+          referral_code?: string | null
+          reward_amount?: number
+          reward_type?: string
+          status?: string | null
+          updated_at?: string
+          user_id?: string
+          verification_method?: string | null
+          worldid_proof?: Json | null
+        }
+        Relationships: []
+      }
       reports: {
         Row: {
           created_at: string
@@ -968,6 +1046,45 @@ export type Database = {
           proj4text?: string | null
           srid?: number
           srtext?: string | null
+        }
+        Relationships: []
+      }
+      user_token_balances: {
+        Row: {
+          cmpx_balance: number
+          created_at: string
+          gtk_balance: number
+          last_updated: string
+          total_earned: number
+          total_spent: number
+          user_id: string
+          worldid_nullifier_hash: string | null
+          worldid_verified: boolean | null
+          worldid_verified_at: string | null
+        }
+        Insert: {
+          cmpx_balance?: number
+          created_at?: string
+          gtk_balance?: number
+          last_updated?: string
+          total_earned?: number
+          total_spent?: number
+          user_id: string
+          worldid_nullifier_hash?: string | null
+          worldid_verified?: boolean | null
+          worldid_verified_at?: string | null
+        }
+        Update: {
+          cmpx_balance?: number
+          created_at?: string
+          gtk_balance?: number
+          last_updated?: string
+          total_earned?: number
+          total_spent?: number
+          user_id?: string
+          worldid_nullifier_hash?: string | null
+          worldid_verified?: boolean | null
+          worldid_verified_at?: string | null
         }
         Relationships: []
       }
