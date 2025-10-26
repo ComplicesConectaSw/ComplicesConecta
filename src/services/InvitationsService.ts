@@ -96,17 +96,15 @@ class InvitationsService {
         .from('invitations')
         .select(`
           id,
-          inviter_id,
-          invited_user_id,
-          invitation_type,
+          from_profile,
+          to_profile,
           type,
           status,
-          expires_at,
           metadata,
           created_at,
           updated_at
         `)
-        .eq('inviter_id', userId)
+        .eq('from_profile', userId)
         .order('created_at', { ascending: false })
         .range(page * limit, (page + 1) * limit - 1);
 
@@ -124,17 +122,17 @@ class InvitationsService {
       // Mapear datos de Supabase al formato esperado
       const invitations: Invitation[] = (data || []).map((invitation: any) => ({
         id: invitation.id,
-        inviter_id: invitation.inviter_id,
-        invitee_email: invitation.invitee_email,
-        invitation_type: invitation.invitation_type,
-        type: invitation.type,
+        inviter_id: invitation.from_profile,
+        invitee_email: invitation.to_profile, // Usar to_profile como ID
+        invitation_type: undefined, // No existe en la tabla
+        type: invitation.type || 'connection',
         status: invitation.status || 'pending',
-        expires_at: invitation.expires_at,
+        expires_at: undefined, // No existe en la tabla
         metadata: invitation.metadata || {},
-        created_at: invitation.created_at,
-        updated_at: invitation.updated_at,
+        created_at: invitation.created_at || '',
+        updated_at: invitation.updated_at || '',
         inviter: {
-          id: invitation.inviter_id,
+          id: invitation.from_profile,
           first_name: 'Usuario',
           last_name: 'Anónimo',
           avatar_url: undefined
@@ -161,22 +159,18 @@ class InvitationsService {
       const { data, error } = await supabase
         .from('invitations')
         .insert({
-          inviter_id: userId,
-          invited_user_id: invitationData.invitee_email, // Usar invited_user_id en lugar de invitee_email
-          invitation_type: invitationData.invitation_type,
-          type: invitationData.type,
+          from_profile: userId,
+          to_profile: invitationData.invitee_email,
+          type: invitationData.type || 'connection',
           status: 'pending',
-          expires_at: invitationData.expires_at,
           metadata: invitationData.metadata || {}
         })
         .select(`
           id,
-          inviter_id,
-          invited_user_id,
-          invitation_type,
+          from_profile,
+          to_profile,
           type,
           status,
-          expires_at,
           metadata,
           created_at,
           updated_at
@@ -190,12 +184,12 @@ class InvitationsService {
 
       const newInvitation: Invitation = {
         id: data.id,
-        inviter_id: data.inviter_id,
-        invitee_email: data.invited_user_id, // Usar invited_user_id como email
-        invitation_type: data.invitation_type || undefined,
+        inviter_id: data.from_profile,
+        invitee_email: data.to_profile,
+        invitation_type: undefined,
         type: data.type,
         status: data.status as 'pending' | 'accepted' | 'declined' | 'expired',
-        expires_at: data.expires_at || undefined,
+        expires_at: undefined,
         metadata: data.metadata as Record<string, any> || {},
         created_at: data.created_at || '',
         updated_at: data.updated_at || ''
@@ -297,7 +291,19 @@ class InvitationsService {
       }
 
       logger.info('✅ Gallery permissions loaded successfully from Supabase', { count: data?.length || 0 });
-      return (data || []) as GalleryPermission[];
+      
+      // Mapear a GalleryPermission con campos requeridos
+      return (data || []).map((perm: any) => ({
+        id: perm.id,
+        gallery_owner_id: perm.profile_id || perm.granted_by || '',
+        granted_by: perm.granted_by || '',
+        granted_to: perm.granted_to || '',
+        permission_type: perm.permission_type as 'view' | 'comment' | 'share',
+        status: 'active' as 'active' | 'revoked' | 'expired',
+        expires_at: undefined,
+        created_at: perm.created_at || '',
+        updated_at: perm.created_at || ''
+      }));
     } catch (error) {
       logger.error('Error in getUserGalleryPermissions:', { error: String(error) });
       return [];
@@ -349,7 +355,6 @@ class InvitationsService {
       const { error } = await supabase
         .from('gallery_permissions')
         .update({
-          status: 'revoked',
           updated_at: new Date().toISOString()
         })
         .eq('id', permissionId);
@@ -386,7 +391,17 @@ class InvitationsService {
       }
 
       logger.info('✅ Invitation templates loaded successfully from Supabase', { count: data?.length || 0 });
-      return (data || []) as InvitationTemplate[];
+      
+      // Mapear a InvitationTemplate con campo template_type
+      return (data || []).map((template: any) => ({
+        id: template.id,
+        template_name: template.template_name || template.name || '',
+        template_content: template.template_content || template.content || '',
+        template_type: template.invitation_type || template.type || 'default',
+        is_active: template.is_active !== false,
+        created_at: template.created_at || '',
+        updated_at: template.updated_at || ''
+      }));
     } catch (error) {
       logger.error('Error in getInvitationTemplates:', { error: String(error) });
       return [];
@@ -407,10 +422,13 @@ class InvitationsService {
     try {
       logger.info('Getting invitation statistics from Supabase');
 
+      const userId = this.getCurrentUserId();
+
+      // Obtener todas las invitaciones del usuario
       const { data, error } = await supabase
-        .from('invitation_statistics')
-        .select('*')
-        .single();
+        .from('invitations')
+        .select('status')
+        .eq('from_profile', userId);
 
       if (error) {
         logger.error('Error getting invitation statistics from Supabase:', error);
@@ -424,13 +442,21 @@ class InvitationsService {
         };
       }
 
+      const invitations = data || [];
+      const totalInvitations = invitations.length;
+      const pendingInvitations = invitations.filter((i: any) => i.status === 'pending').length;
+      const acceptedInvitations = invitations.filter((i: any) => i.status === 'accepted').length;
+      const declinedInvitations = invitations.filter((i: any) => i.status === 'declined').length;
+      const expiredInvitations = invitations.filter((i: any) => i.status === 'expired').length;
+      const acceptanceRate = totalInvitations > 0 ? (acceptedInvitations / totalInvitations) * 100 : 0;
+
       const stats = {
-        totalInvitations: data?.total_invitations || 0,
-        pendingInvitations: data?.pending_invitations || 0,
-        acceptedInvitations: data?.accepted_invitations || 0,
-        declinedInvitations: data?.declined_invitations || 0,
-        expiredInvitations: data?.expired_invitations || 0,
-        acceptanceRate: data?.acceptance_rate || 0
+        totalInvitations,
+        pendingInvitations,
+        acceptedInvitations,
+        declinedInvitations,
+        expiredInvitations,
+        acceptanceRate
       };
 
       logger.info('✅ Invitation statistics loaded successfully', stats);
