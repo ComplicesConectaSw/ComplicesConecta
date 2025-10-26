@@ -41,10 +41,13 @@
 
 ## Plan de Acción
 1. ✅ Corregir imports simples (requests.ts, invitations.ts)
-2. ⏳ Corregir CoupleProfilesService.ts (campos base)
-3. ⏳ Corregir AdvancedCoupleService.ts (campos base + tipos)
-4. ⏳ Corregir notifications.ts (tipos de ID)
-5. ⏳ Push final a GitHub
+2. ✅ Corregir notifications.ts (tipos de ID)
+3. ✅ Corregir EditProfileSingle.tsx (imports)
+4. ✅ Corregir CoupleProfilesService.ts (parcial - necesita migración)
+5. ✅ Corregir AdvancedCoupleService.ts (parcial - necesita migración)
+6. 🔄 **SIGUIENTE: Aplicar migración de BD**
+7. ⏳ Verificar errores post-migración
+8. ⏳ Push final a GitHub
 
 ## Notas
 - La tabla `couple_profiles` tiene campos adicionales en migraciones pero no todos están disponibles
