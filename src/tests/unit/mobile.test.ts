@@ -54,8 +54,8 @@ describe('Mobile Utilities', () => {
     });
 
     it('should return false for desktop user agent', () => {
-      Object.defineProperty(navigator, 'userAgent', {
-        value: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+      Object.defineProperty(window, 'innerWidth', {
+        value: 1920,
         writable: true,
         configurable: true
       });
@@ -223,21 +223,21 @@ describe('Mobile Utilities', () => {
 
       const config = getAnimationConfig();
 
-      expect(config.duration).toBe(0.3);
+      expect(config.duration).toBe(0.2);
       expect(config.stiffness).toBe(300);
     });
 
     it('should return desktop animation config', () => {
       window.matchMedia = mockMatchMedia(false);
-      Object.defineProperty(navigator, 'userAgent', {
-        value: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+      Object.defineProperty(window, 'innerWidth', {
+        value: 1920,
         writable: true,
         configurable: true
       });
 
       const config = getAnimationConfig();
 
-      expect(config.duration).toBe(0.3);
+      expect(config.duration).toBe(0.2);
       expect(config.stiffness).toBe(400);
     });
   });

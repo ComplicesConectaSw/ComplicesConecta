@@ -117,10 +117,7 @@ describe('PushNotificationService', () => {
 
   describe('isSupported', () => {
     it('should return true when service worker and push manager are available', () => {
-      // Mock isSupported method
-      const isSupported = vi.spyOn(PushNotificationService as any, 'isSupported')
-      isSupported.mockReturnValue(true)
-      
+      // Service worker and push manager are available in the test environment
       expect(PushNotificationService.isSupported()).toBe(true)
     })
   })
@@ -136,13 +133,16 @@ describe('PushNotificationService', () => {
     })
 
     it('should return null when not supported', async () => {
-      // Mock isSupported to return false
-      const isSupported = vi.spyOn(PushNotificationService as any, 'isSupported')
-      isSupported.mockReturnValue(false)
+      // Temporarily remove service worker support
+      const originalServiceWorker = navigator.serviceWorker;
+      (navigator as any).serviceWorker = undefined;
       
       const result = await PushNotificationService.registerServiceWorker()
       
       expect(result).toBeNull()
+      
+      // Restore
+      (navigator as any).serviceWorker = originalServiceWorker;
     })
   })
 
@@ -155,13 +155,16 @@ describe('PushNotificationService', () => {
     })
 
     it('should return denied when not supported', async () => {
-      // Mock isSupported to return false
-      const isSupported = vi.spyOn(PushNotificationService as any, 'isSupported')
-      isSupported.mockReturnValue(false)
+      // Temporarily remove service worker support
+      const originalServiceWorker = navigator.serviceWorker;
+      (navigator as any).serviceWorker = undefined;
       
       const result = await PushNotificationService.requestPermission()
       
       expect(result).toBe('denied')
+      
+      // Restore
+      (navigator as any).serviceWorker = originalServiceWorker;
     })
   })
 
