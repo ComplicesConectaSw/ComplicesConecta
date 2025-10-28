@@ -1,4 +1,3 @@
-Connecting to db 5432
 export type Json =
   | string
   | number
@@ -3844,6 +3843,3 @@ export const Constants = {
     Enums: {},
   },
 } as const
-
-A new version of Supabase CLI is available: v2.53.6 (currently installed v2.51.0)
-We recommend updating regularly for new features and bug fixes: https://supabase.com/docs/guides/cli/getting-started#updating-the-supabase-cli
