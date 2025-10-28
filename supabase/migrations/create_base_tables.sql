@@ -88,8 +88,10 @@ CREATE TABLE IF NOT EXISTS invitations (
 -- =====================================================
 
 -- Profiles indexes
-CREATE INDEX IF NOT EXISTS idx_profiles_username ON profiles(username);
-CREATE INDEX IF NOT EXISTS idx_profiles_email ON profiles(email);
+-- NOTA: Estas columnas (username, email) no existen en la tabla profiles actual
+-- La tabla profiles se crea en 20251027210448_create_core_and_advanced_tables.sql
+-- CREATE INDEX IF NOT EXISTS idx_profiles_username ON profiles(username);
+-- CREATE INDEX IF NOT EXISTS idx_profiles_email ON profiles(email);
 CREATE INDEX IF NOT EXISTS idx_profiles_is_verified ON profiles(is_verified);
 CREATE INDEX IF NOT EXISTS idx_profiles_is_online ON profiles(is_online);
 

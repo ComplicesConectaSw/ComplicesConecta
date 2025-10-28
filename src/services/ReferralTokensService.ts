@@ -148,7 +148,7 @@ class ReferralTokensService {
             total_earned: newBalance.total_earned || 0,
             monthly_earned: newBalance.monthly_earned || 0,
             cmpx_balance: newBalance.cmpx_balance || 0,
-            gtk_balance: newBalance.gtk_balance || 0,
+            gtk_balance: 0, // No existe en user_referral_balances
             created_at: newBalance.created_at || new Date().toISOString(),
             updated_at: newBalance.updated_at || new Date().toISOString()
           };
@@ -170,7 +170,7 @@ class ReferralTokensService {
         total_earned: data.total_earned || 0,
         monthly_earned: data.monthly_earned || 0,
         cmpx_balance: data.cmpx_balance || 0,
-        gtk_balance: data.gtk_balance || 0,
+        gtk_balance: 0, // No existe en user_referral_balances
         created_at: data.created_at || '',
         updated_at: data.updated_at || ''
       };
@@ -184,35 +184,25 @@ class ReferralTokensService {
    * Crear recompensa de referido usando datos reales de Supabase
    */
   async createReferralReward(rewardData: CreateReferralRewardData): Promise<ReferralReward | null> {
-    // NOTA: referral_rewards table no existe aún - necesita migración
-    // Temporalmente retornamos un mock hasta que la tabla se cree
-    logger.warn('referral_rewards table does not exist - returning mock data');
-    
-    const reward: ReferralReward = {
-      id: `mock-${Date.now()}`,
-      referrer_id: rewardData.referrer_id,
-      referee_id: rewardData.referee_id,
-      reward_type: rewardData.reward_type,
-      amount: rewardData.amount,
-      status: 'pending',
-      created_at: new Date().toISOString(),
-      confirmed_at: undefined
-    };
-    
-    return reward;
-    
-    /* TODO: Descomentar cuando referral_rewards exista
     try {
       logger.info('Creating referral reward in Supabase', { rewardData });
 
       const { data, error } = await supabase
         .from('referral_rewards')
         .insert({
-          user_id: rewardData.referrer_id,
-          reward_amount: rewardData.amount,
+          inviter_id: rewardData.referrer_id,
+          invited_id: rewardData.referee_id,
+          reward_type: rewardData.reward_type,
+          amount: rewardData.amount,
+          inviter_reward_amount: rewardData.amount,
+          invited_reward_amount: Math.floor(rewardData.amount * 0.5), // 50% para el invitado
+          status: 'pending',
           claimed: false,
           referral_code: `REF-${Date.now()}`,
-          reward_type: rewardData.reward_type
+          metadata: {
+            referrer_id: rewardData.referrer_id,
+            referee_id: rewardData.referee_id
+          }
         })
         .select()
         .single();
@@ -223,14 +213,14 @@ class ReferralTokensService {
       }
 
       logger.info('✅ Referral reward created successfully', { rewardId: data.id });
-      
+
       const reward: ReferralReward = {
         id: data.id,
         referrer_id: rewardData.referrer_id,
         referee_id: rewardData.referee_id,
         reward_type: rewardData.reward_type,
-        amount: data.reward_amount,
-        status: data.claimed ? 'confirmed' : 'pending',
+        amount: data.amount,
+        status: (data.status as 'pending' | 'confirmed' | 'cancelled') || 'pending',
         created_at: data.created_at || new Date().toISOString(),
         confirmed_at: data.claimed_at || undefined
       };
@@ -240,18 +230,12 @@ class ReferralTokensService {
       logger.error('Error in createReferralReward:', { error: String(error) });
       return null;
     }
-    */
   }
 
   /**
    * Confirmar recompensa de referido usando datos reales de Supabase
    */
   async confirmReferralReward(rewardId: string): Promise<boolean> {
-    // NOTA: referral_rewards table no existe aún - retornando mock
-    logger.warn('referral_rewards table does not exist - returning mock success');
-    return true;
-    
-    /* TODO: Descomentar cuando referral_rewards exista
     try {
       logger.info('Confirming referral reward in Supabase', { rewardId });
 
@@ -259,7 +243,9 @@ class ReferralTokensService {
         .from('referral_rewards')
         .update({
           claimed: true,
-          claimed_at: new Date().toISOString()
+          claimed_at: new Date().toISOString(),
+          status: 'confirmed',
+          processed_at: new Date().toISOString()
         })
         .eq('id', rewardId);
 
@@ -274,7 +260,6 @@ class ReferralTokensService {
       logger.error('Error in confirmReferralReward:', { error: String(error) });
       return false;
     }
-    */
   }
 
   /**
@@ -359,8 +344,8 @@ class ReferralTokensService {
           // Mapear a ReferralStatistics con campos faltantes
           return {
             ...newStats,
-            total_referrals: newStats.total_referrals || 0,
-            active_referrals: newStats.active_referrals || 0,
+            total_referrals: 0, // No existe en referral_statistics
+            active_referrals: 0, // No existe en referral_statistics
             id: newStats.id,
             user_id: newStats.user_id,
             referral_code: newStats.referral_code,
