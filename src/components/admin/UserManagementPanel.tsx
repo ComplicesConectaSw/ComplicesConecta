@@ -88,7 +88,7 @@ export function UserManagementPanel() {
       } else {
         const processedUsers = (profiles || []).map(profile => ({
           id: profile.id,
-          name: `${profile.first_name || ''} ${profile.last_name || ''}`.trim() || profile.bio?.split(' ')[0] || 'Usuario sin nombre',
+          name: profile.name || profile.bio?.split(' ')[0] || 'Usuario sin nombre',
           email: 'email@ejemplo.com', // Mock email
           age: profile.age || undefined,
           gender: profile.gender || undefined,

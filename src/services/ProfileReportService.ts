@@ -78,6 +78,7 @@ export class ProfileReportService {
       const insertData = {
         reporter_user_id: user.id,
         reported_user_id: params.reportedUserId,
+        content_type: 'profile', // Campo obligatorio en reports
         report_type: 'profile', // Cambiado de content_type a report_type
         reported_content_id: params.reportedUserId,
         reason: params.reason,

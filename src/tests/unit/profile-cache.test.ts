@@ -388,26 +388,26 @@ describe('Profile Cache Tests', () => {
         user_id: 'new-user-id',
         first_name: 'New',
         last_name: 'User',
+        name: 'New User',
         email: null,
         bio: null,
         avatar_url: null,
         age: 30,
         gender: 'male' as const,
-        interested_in: 'female',
         location: null,
         latitude: null,
         longitude: null,
+        interests: null,
+        is_verified: false,
+        is_online: false,
         is_admin: false,
         is_demo: false,
-        is_online: false,
         is_public: true,
-        is_verified: false,
         is_premium: false,
-        interests: null,
+        role: 'user',
         last_active: null,
-        premium_expires_at: null,
         premium_plan: null,
-        role: 'user'
+        premium_expires_at: null
       };
       
       result.current.mutate(createData);
