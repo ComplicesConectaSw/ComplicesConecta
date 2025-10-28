@@ -385,16 +385,14 @@ class SecurityService {
       const riskScore = await this.calculateEventRiskScore(action, details);
       
       const { error } = await supabase
-        .from('audit_logs')
+        .from('security_events')
         .insert({
           user_id: userId,
-          action_type: action,
-          action_description: `Evento de seguridad: ${action}`,
-          resource_type: 'security',
-          request_data: details,
+          event_type: action,
+          description: `Evento de seguridad: ${action}`,
+          metadata: details || {},
           ip_address: ipAddress || 'unknown',
-          user_agent: userAgent || 'unknown',
-          fraud_score: riskScore
+          severity: riskScore > 0.7 ? 'critical' : riskScore > 0.4 ? 'high' : 'medium'
         });
         
       if (error) {
@@ -420,7 +418,7 @@ class SecurityService {
   }> {
     try {
       const { data, error, count } = await supabase
-        .from('audit_logs')
+        .from('security_events')
         .select('*', { count: 'exact' })
         .eq('user_id', userId)
         .order('created_at', { ascending: false })
@@ -435,13 +433,13 @@ class SecurityService {
       const mappedLogs: AuditLogEntry[] = (data || []).map((log: any) => ({
         id: log.id,
         userId: log.user_id || '',
-        action: log.action_type || '',
-        resource: log.resource_type || '',
-        details: log.request_data || {},
+        action: log.event_type || '',
+        resource: 'security',
+        details: log.metadata || {},
         ipAddress: log.ip_address || '',
         userAgent: log.user_agent || '',
-        timestamp: log.created_at || new Date().toISOString(),
-        riskScore: log.fraud_score || 0
+        timestamp: log.timestamp || new Date().toISOString(),
+        riskScore: log.severity === 'critical' ? 0.9 : log.severity === 'high' ? 0.7 : 0.3
       }));
 
       return {

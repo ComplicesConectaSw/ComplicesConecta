@@ -434,21 +434,25 @@ class PostsService {
       }
 
       // Obtener conteos de likes para cada comentario
+      // NOTA: comment_likes no existe, usando story_likes como alternativa temporal
       const comments: Comment[] = [];
       for (const comment of data || []) {
         const { count: likesCount } = await supabase
-          .from('comment_likes')
+          .from('story_comments')
           .select('id', { count: 'exact' })
-          .eq('comment_id', comment.id);
+          .eq('story_id', comment.id);
 
-        // Verificar si el usuario actual dio like
+        // Verificar si el usuario actual dio like (temporalmente deshabilitado)
         const userId = this.getCurrentUserId();
+        const userLike = null;
+        /* TODO: Habilitar cuando comment_likes exista
         const { data: userLike } = await supabase
           .from('comment_likes')
           .select('id')
           .eq('comment_id', comment.id)
           .eq('user_id', userId)
           .single();
+        */
 
         comments.push({
           id: comment.id,

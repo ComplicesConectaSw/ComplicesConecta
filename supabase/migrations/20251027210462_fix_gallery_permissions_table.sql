@@ -12,7 +12,7 @@ BEGIN
         WHERE table_name = 'gallery_permissions' 
         AND column_name = 'gallery_owner_id'
     ) THEN
-        ALTER TABLE gallery_permissions ADD COLUMN gallery_owner_id TEXT REFERENCES profiles(id) ON DELETE CASCADE;
+        ALTER TABLE gallery_permissions ADD COLUMN gallery_owner_id UUID REFERENCES profiles(id) ON DELETE CASCADE;
     END IF;
     
     IF NOT EXISTS (
@@ -60,8 +60,9 @@ CREATE TRIGGER gallery_permissions_updated_at
     EXECUTE FUNCTION update_gallery_permissions_updated_at();
 
 -- Sincronizar gallery_owner_id con profile_id para registros existentes
-UPDATE gallery_permissions 
-SET gallery_owner_id = profile_id 
-WHERE gallery_owner_id IS NULL 
-  AND profile_id IS NOT NULL;
+-- NOTA: Comentado porque profile_id no existe - gallery_owner_id ya está en la tabla original
+-- UPDATE gallery_permissions 
+-- SET gallery_owner_id = profile_id 
+-- WHERE gallery_owner_id IS NULL 
+--   AND profile_id IS NOT NULL;
 

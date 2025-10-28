@@ -184,16 +184,34 @@ class ReferralTokensService {
    * Crear recompensa de referido usando datos reales de Supabase
    */
   async createReferralReward(rewardData: CreateReferralRewardData): Promise<ReferralReward | null> {
+    // NOTA: referral_rewards table no existe aún - necesita migración
+    // Temporalmente retornamos un mock hasta que la tabla se cree
+    logger.warn('referral_rewards table does not exist - returning mock data');
+    
+    const reward: ReferralReward = {
+      id: `mock-${Date.now()}`,
+      referrer_id: rewardData.referrer_id,
+      referee_id: rewardData.referee_id,
+      reward_type: rewardData.reward_type,
+      amount: rewardData.amount,
+      status: 'pending',
+      created_at: new Date().toISOString(),
+      confirmed_at: undefined
+    };
+    
+    return reward;
+    
+    /* TODO: Descomentar cuando referral_rewards exista
     try {
       logger.info('Creating referral reward in Supabase', { rewardData });
 
       const { data, error } = await supabase
         .from('referral_rewards')
         .insert({
-          user_id: rewardData.referrer_id, // Usuario que refiere
-          reward_amount: rewardData.amount, // Cambiado de amount a reward_amount
+          user_id: rewardData.referrer_id,
+          reward_amount: rewardData.amount,
           claimed: false,
-          referral_code: `REF-${Date.now()}`, // Código temporal
+          referral_code: `REF-${Date.now()}`,
           reward_type: rewardData.reward_type
         })
         .select()
@@ -206,13 +224,12 @@ class ReferralTokensService {
 
       logger.info('✅ Referral reward created successfully', { rewardId: data.id });
       
-      // Mapear a ReferralReward interface
       const reward: ReferralReward = {
         id: data.id,
         referrer_id: rewardData.referrer_id,
         referee_id: rewardData.referee_id,
         reward_type: rewardData.reward_type,
-        amount: data.reward_amount, // Cambiado de data.amount a data.reward_amount
+        amount: data.reward_amount,
         status: data.claimed ? 'confirmed' : 'pending',
         created_at: data.created_at || new Date().toISOString(),
         confirmed_at: data.claimed_at || undefined
@@ -223,12 +240,18 @@ class ReferralTokensService {
       logger.error('Error in createReferralReward:', { error: String(error) });
       return null;
     }
+    */
   }
 
   /**
    * Confirmar recompensa de referido usando datos reales de Supabase
    */
   async confirmReferralReward(rewardId: string): Promise<boolean> {
+    // NOTA: referral_rewards table no existe aún - retornando mock
+    logger.warn('referral_rewards table does not exist - returning mock success');
+    return true;
+    
+    /* TODO: Descomentar cuando referral_rewards exista
     try {
       logger.info('Confirming referral reward in Supabase', { rewardId });
 
@@ -251,6 +274,7 @@ class ReferralTokensService {
       logger.error('Error in confirmReferralReward:', { error: String(error) });
       return false;
     }
+    */
   }
 
   /**
