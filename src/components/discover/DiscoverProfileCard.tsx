@@ -2,9 +2,10 @@ import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Heart, Flame, CheckCircle, Crown, Star, MapPin, MessageCircle, User } from 'lucide-react';
-import type { Tables } from '@/types/database';
+import type { Database } from '@/types/supabase';
 
 // Tipos estrictos basados en Supabase
+type Tables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Row'];
 type _ProfileRow = Tables<'profiles'>;
 
 // Constantes
@@ -14,7 +15,7 @@ const FALLBACK_IMAGE_URL = 'https://images.unsplash.com/photo-1472099645785-5658
 interface DiscoverProfile {
   id: string;
   first_name: string;
-  last_name: string;
+  last_name?: string | null;
   age: number;
   bio: string | null;
   gender: string;
@@ -86,7 +87,7 @@ export const DiscoverProfileCard = React.memo<DiscoverProfileCardProps>(({ profi
   }, [profile.latitude, profile.longitude]);
 
   const getFullName = useCallback((): string => {
-    return `${profile.first_name} ${profile.last_name ?? ''}`.trim();
+    return `${profile.first_name} ${profile.last_name ?? ''}`.trim() || 'Usuario';
   }, [profile.first_name, profile.last_name]);
 
   return (

@@ -57,17 +57,27 @@ vi.mock('@/integrations/supabase/client', () => ({
 const mockProfile = {
   id: 'test-user-id',
   user_id: 'test-user-id',
-  name: 'Test User',
+  first_name: 'Test',
+  last_name: 'User',
   email: 'test@example.com',
   age: 25,
   bio: 'Test bio',
   location: 'Test City',
-  account_type: 'single',
   gender: 'male',
   interested_in: 'female',
-  is_premium: false,
+  is_admin: false,
+  is_demo: false,
+  is_online: false,
+  is_public: true,
   is_verified: true,
+  interests: null,
+  latitude: null,
+  longitude: null,
+  premium_expires_at: null,
+  premium_plan: null,
+  role: 'user',
   avatar_url: null,
+  last_active: null,
   created_at: '2024-01-01T00:00:00Z',
   updated_at: '2024-01-01T00:00:00Z'
 };
@@ -285,7 +295,7 @@ describe('Profile Cache Tests', () => {
 
   describe('useUpdateProfile Hook', () => {
     it('debe actualizar perfil y invalidar cache', async () => {
-      const updatedProfile = { ...mockProfile, name: 'Updated User' };
+      const updatedProfile = { ...mockProfile, first_name: 'Updated' };
       const mockSupabaseResponse = {
         data: updatedProfile,
         error: null
@@ -376,34 +386,27 @@ describe('Profile Cache Tests', () => {
 
       const createData = {
         user_id: 'new-user-id',
-        name: 'New User',
+        first_name: 'New',
+        last_name: 'User',
+        email: null,
         bio: null,
         avatar_url: null,
         age: 30,
-        age_range_min: null,
-        age_range_max: null,
         gender: 'male' as const,
-        interested_in: 'female' as const,
+        interested_in: 'female',
         location: null,
         latitude: null,
         longitude: null,
-        share_location: false,
-        account_type: 'single' as const,
-        profile_type: 'single',
-        is_premium: false,
-        is_verified: false,
+        is_admin: false,
         is_demo: false,
-        role: 'user',
-        personality_traits: null,
-        lifestyle_preferences: null,
-        location_preferences: null,
-        privacy_settings: null,
-        notification_settings: null,
-        subscription_status: null,
-        subscription_expires_at: null,
-        last_active_at: null,
-        blocked_at: null,
-        warnings_count: null
+        is_online: false,
+        is_public: true,
+        is_verified: false,
+        interests: null,
+        last_active: null,
+        premium_expires_at: null,
+        premium_plan: null,
+        role: 'user'
       };
       
       result.current.mutate(createData);
@@ -476,7 +479,8 @@ describe('Profile Cache Tests', () => {
       // Simular datos legacy
       localStorage.setItem('user_profile', JSON.stringify({
         id: 'legacy-id',
-        name: 'Legacy User'
+        first_name: 'Legacy',
+        last_name: 'User'
       }));
 
       const mockSupabaseResponse = {

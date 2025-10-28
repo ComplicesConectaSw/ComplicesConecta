@@ -56,7 +56,7 @@ export const ChatWithLocation = ({ conversationId, currentUserId, otherUser }: C
         id: msg.id,
         content: msg.content,
         sender_id: msg.sender_id,
-        sender_name: `${msg.sender?.first_name || ''} ${msg.sender?.last_name || ''}`.trim(),
+        sender_name: `${msg.sender?.first_name || ''} ${msg.sender?.last_name || ''}`.trim() || 'Usuario',
         created_at: msg.created_at,
         location: msg.location_latitude && msg.location_longitude ? {
           latitude: msg.location_latitude,

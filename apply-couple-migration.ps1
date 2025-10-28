@@ -91,7 +91,7 @@ switch ($choice) {
         
         # Verificar si Docker está corriendo
         try {
-            $dockerRunning = docker ps 2>$null
+            $null = docker ps 2>$null
             if ($LASTEXITCODE -eq 0) {
                 Write-Host "✅ Docker está corriendo" -ForegroundColor Green
                 Write-Host ""
