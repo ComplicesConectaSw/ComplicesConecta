@@ -74,7 +74,6 @@ describe('ProfileReportsPanel', () => {
           severity: 'medium',
           status: 'pending',
           description: 'Test report',
-          resolution_notes: null,
           reviewed_at: null,
           reviewed_by: null,
           created_at: '2023-01-01T00:00:00Z',

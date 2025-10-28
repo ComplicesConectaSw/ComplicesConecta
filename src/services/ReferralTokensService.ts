@@ -360,8 +360,8 @@ class ReferralTokensService {
         referral_code: data.referral_code,
         total_referrals: 0, // Por defecto
         active_referrals: 0, // Por defecto
-        total_earned: data.monthly_earned,
-        monthly_earned: data.monthly_earned,
+        total_earned: data.monthly_earned || 0,
+        monthly_earned: data.monthly_earned || 0,
         conversion_rate: data.conversion_rate || 0,
         created_at: data.created_at || '',
         updated_at: data.updated_at || ''

@@ -402,6 +402,7 @@ describe('Profile Cache Tests', () => {
         is_online: false,
         is_public: true,
         is_verified: false,
+        is_premium: false,
         interests: null,
         last_active: null,
         premium_expires_at: null,
