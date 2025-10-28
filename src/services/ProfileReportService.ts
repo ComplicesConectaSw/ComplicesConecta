@@ -78,7 +78,7 @@ export class ProfileReportService {
       const insertData = {
         reporter_user_id: user.id,
         reported_user_id: params.reportedUserId,
-        content_type: 'profile',
+        report_type: 'profile', // Cambiado de content_type a report_type
         reported_content_id: params.reportedUserId,
         reason: params.reason,
         description: params.description ?? null,
@@ -114,11 +114,11 @@ export class ProfileReportService {
         return { success: false, error: 'Usuario no autenticado' }
       }
 
-      const { data, error } = await supabase
+      const { data, error} = await supabase
         .from('reports')
         .select('*')
         .eq('reporter_user_id', user.id)
-        .eq('content_type', 'profile')
+        .eq('report_type', 'profile') // Cambiado de content_type a report_type
         .order('created_at', { ascending: false })
 
       if (error) {
@@ -140,7 +140,7 @@ export class ProfileReportService {
         .from('reports')
         .select('*')
         .eq('status', 'pending')
-        .eq('content_type', 'profile')
+        .eq('report_type', 'profile') // Cambiado de content_type a report_type
         .order('created_at', { ascending: false })
 
       if (error) {
@@ -168,12 +168,12 @@ export class ProfileReportService {
         .from('reports')
         .update({
           status: resolution,
-          reviewed_at: new Date().toISOString(),
-          reviewed_by: user.id,
-          resolution_notes: notes
+          resolved_at: new Date().toISOString(), // Cambiado de reviewed_at a resolved_at
+          resolved_by: user.id, // Cambiado de reviewed_by a resolved_by
+          description: notes // Usar description para las notas
         })
         .eq('id', reportId)
-        .eq('content_type', 'profile')
+        .eq('report_type', 'profile') // Cambiado de content_type a report_type
         .select()
         .single()
 
@@ -253,19 +253,19 @@ export class ProfileReportService {
         .from('reports')
         .select('id')
         .eq('reporter_user_id', targetUserId)
-        .eq('content_type', 'profile')
+        .eq('report_type', 'profile') // Cambiado de content_type a report_type
 
       const { data: reportsReceived } = await supabase
         .from('reports')
         .select('id')
         .eq('reported_user_id', targetUserId)
-        .eq('content_type', 'profile')
+        .eq('report_type', 'profile') // Cambiado de content_type a report_type
 
       const { data: recentReports } = await (supabase as any)
         .from('reports')
         .select('id')
         .eq('reporter_user_id', targetUserId)
-        .eq('content_type', 'profile')
+        .eq('report_type', 'profile') // Cambiado de content_type a report_type
         .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
 
       return {
@@ -298,7 +298,7 @@ export class ProfileReportService {
         .from('reports')
         .select('id')
         .eq('reporter_user_id', targetUserId)
-        .eq('content_type', 'profile')
+        .eq('report_type', 'profile') // Cambiado de content_type a report_type
         .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
 
       if (recentReports && recentReports.length >= 5) {
