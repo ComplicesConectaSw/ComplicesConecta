@@ -1,6 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
-import { performanceMonitor } from './PerformanceMonitoringService';
+import { performanceMonitoring } from './PerformanceMonitoringService';
 
 export interface Post {
   id: string;
@@ -167,7 +167,7 @@ class PostsService {
    * Obtener feed de posts del usuario usando datos reales de Supabase con optimización completa
    */
   async getFeed(page = 0, limit = 20): Promise<Post[]> {
-    return performanceMonitor.measureExecution(
+    return performanceMonitoring.measureExecution(
       'getFeed',
       async () => {
         try {
@@ -177,7 +177,7 @@ class PostsService {
           
           if (cached && Date.now() - cached.timestamp < this.FEED_CACHE_TTL) {
             logger.info('📊 Using cached feed data');
-            performanceMonitor.recordQuery('feed_cache_hit', 0, undefined, true, 'cache');
+            performanceMonitoring.recordQuery('feed_cache_hit', 0, undefined, true, 'cache');
             return cached.data;
           }
 
@@ -207,7 +207,7 @@ class PostsService {
             .range(page * limit, (page + 1) * limit - 1);
 
           const queryDuration = performance.now() - startTime;
-          performanceMonitor.recordQuery(
+          performanceMonitoring.recordQuery(
             'stories_with_aggregations',
             queryDuration,
             data?.length,
