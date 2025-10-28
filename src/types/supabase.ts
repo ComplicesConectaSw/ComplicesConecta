@@ -1,4 +1,3 @@
-Connecting to db 5432
 export type Json =
   | string
   | number
@@ -675,6 +674,7 @@ export type Database = {
           status: string | null
           to_profile: string
           type: string | null
+          updated_at: string | null
         }
         Insert: {
           created_at?: string
@@ -685,6 +685,7 @@ export type Database = {
           status?: string | null
           to_profile: string
           type?: string | null
+          updated_at?: string | null
         }
         Update: {
           created_at?: string
@@ -695,6 +696,7 @@ export type Database = {
           status?: string | null
           to_profile?: string
           type?: string | null
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -805,6 +807,7 @@ export type Database = {
           is_admin: boolean | null
           is_demo: boolean | null
           is_online: boolean | null
+          is_premium: boolean | null
           is_public: boolean | null
           is_verified: boolean | null
           last_active: string | null
@@ -831,6 +834,7 @@ export type Database = {
           is_admin?: boolean | null
           is_demo?: boolean | null
           is_online?: boolean | null
+          is_premium?: boolean | null
           is_public?: boolean | null
           is_verified?: boolean | null
           last_active?: string | null
@@ -857,6 +861,7 @@ export type Database = {
           is_admin?: boolean | null
           is_demo?: boolean | null
           is_online?: boolean | null
+          is_premium?: boolean | null
           is_public?: boolean | null
           is_verified?: boolean | null
           last_active?: string | null
@@ -1013,6 +1018,7 @@ export type Database = {
       }
       reports: {
         Row: {
+          content_type: string | null
           created_at: string
           description: string | null
           id: string
@@ -1028,6 +1034,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          content_type?: string | null
           created_at?: string
           description?: string | null
           id?: string
@@ -1043,6 +1050,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          content_type?: string | null
           created_at?: string
           description?: string | null
           id?: string
@@ -3205,5 +3213,3 @@ export const Constants = {
   },
 } as const
 
-A new version of Supabase CLI is available: v2.53.6 (currently installed v2.51.0)
-We recommend updating regularly for new features and bug fixes: https://supabase.com/docs/guides/cli/getting-started#updating-the-supabase-cli

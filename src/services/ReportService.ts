@@ -74,6 +74,7 @@ export class ReportService {
           reported_user_id: params.reportedUserId,
           reported_content_id: params.reportedContentId || params.reportedUserId,
           content_type: params.contentType,
+          report_type: params.contentType, // También establecer report_type
           reason: params.reason,
           description: params.description || null,
           severity: params.severity || 'medium',

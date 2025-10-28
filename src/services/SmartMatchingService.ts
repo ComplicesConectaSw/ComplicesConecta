@@ -214,7 +214,7 @@ class SmartMatchingService {
 
         const validCandidate: MatchingProfile = {
           id: candidate.id,
-          name: candidate.name || 'Usuario',
+          name: `${candidate.first_name || ''} ${candidate.last_name || ''}`.trim() || 'Usuario',
           age: candidate.age as number, // Garantizado que no es null por la validación anterior
           gender: candidate.gender || 'no_especificado',
           interested_in: 'todos', // Valor por defecto ya que no existe en la tabla
@@ -229,7 +229,7 @@ class SmartMatchingService {
         // Convert userProfile to MatchingProfile format
         const userMatchingProfile: MatchingProfile = {
           id: userProfile.id,
-          name: userProfile.name || 'Usuario',
+          name: `${userProfile.first_name || ''} ${userProfile.last_name || ''}`.trim() || 'Usuario',
           age: userProfile.age || 25,
           gender: userProfile.gender || 'no_especificado',
           interested_in: 'todos', // Valor por defecto ya que no existe en la tabla

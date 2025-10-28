@@ -317,10 +317,10 @@ class InvitationsService {
 
       const userId = this.getCurrentUserId();
 
-      const { data, error } = await supabase
+      const { data, error} = await supabase
         .from('gallery_permissions')
         .insert({
-          gallery_owner_id: permissionData.gallery_owner_id,
+          profile_id: permissionData.gallery_owner_id, // Usar profile_id en lugar de gallery_owner_id
           granted_by: userId,
           granted_to: permissionData.granted_to,
           permission_type: permissionData.permission_type,
