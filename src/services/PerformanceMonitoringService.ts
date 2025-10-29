@@ -9,6 +9,7 @@
  */
 
 import { logger } from '@/lib/logger';
+import { supabase } from '@/integrations/supabase/client';
 
 // =====================================================
 // INTERFACES
@@ -71,8 +72,10 @@ class PerformanceMonitoringService {
   private metrics: PerformanceMetric[] = [];
   private thresholds: PerformanceThreshold[] = DEFAULT_THRESHOLDS;
   private observers: PerformanceObserver[] = [];
+  private sessionId: string;
 
   constructor() {
+    this.sessionId = crypto.randomUUID();
     this.initializeObservers();
   }
 
@@ -161,6 +164,11 @@ class PerformanceMonitoringService {
 
     // Check thresholds
     this.checkThresholds(fullMetric);
+
+    // Persistir en base de datos (async sin await para no bloquear)
+    this.persistMetric(fullMetric).catch(err => 
+      logger.debug('Failed to persist metric:', { error: String(err) })
+    );
 
     // Keep only last 1000 metrics to avoid memory issues
     if (this.metrics.length > 1000) {
@@ -367,6 +375,85 @@ class PerformanceMonitoringService {
     if (fcpMetric) vitals.fcp = fcpMetric.value;
 
     return vitals;
+  }
+
+  // =====================================================
+  // MÉTODOS DE PERSISTENCIA EN BASE DE DATOS
+  // =====================================================
+
+  /**
+   * Persistir métricas de performance en la base de datos
+   */
+  private async persistMetric(metric: PerformanceMetric): Promise<void> {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      await supabase.from('performance_metrics').insert({
+        session_id: this.sessionId,
+        metric_name: metric.name,
+        value: metric.value,
+        unit: metric.unit,
+        user_id: user?.id || null,
+        url: window.location.href,
+        user_agent: navigator.userAgent,
+        metadata: metric.metadata || {}
+      });
+    } catch (error) {
+      logger.error('Error persisting performance metric:', { error: String(error) });
+    }
+  }
+
+  /**
+   * Persistir Web Vitals en la base de datos
+   */
+  async persistWebVitals(): Promise<void> {
+    try {
+      const vitals = this.getWebVitals();
+      const { data: { user } } = await supabase.auth.getUser();
+
+      await supabase.from('web_vitals_history').insert({
+        lcp: vitals.lcp || null,
+        fcp: vitals.fcp || null,
+        fid: vitals.fid || null,
+        cls: vitals.cls || null,
+        ttfb: vitals.ttfb || null,
+        url: window.location.href,
+        user_agent: navigator.userAgent,
+        user_id: user?.id || null,
+        metadata: {}
+      });
+
+      logger.info('✅ Web Vitals persisted to database');
+    } catch (error) {
+      logger.error('Error persisting Web Vitals:', { error: String(error) });
+    }
+  }
+
+  /**
+   * Persistir todas las métricas actuales en batch
+   */
+  async persistAllMetrics(): Promise<void> {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      const metricsToInsert = this.metrics.map(metric => ({
+        session_id: this.sessionId,
+        metric_name: metric.name,
+        value: metric.value,
+        unit: metric.unit,
+        user_id: user?.id || null,
+        url: window.location.href,
+        user_agent: navigator.userAgent,
+        metadata: metric.metadata || {}
+      }));
+
+      if (metricsToInsert.length > 0) {
+        await supabase.from('performance_metrics').insert(metricsToInsert);
+        logger.info(`✅ ${metricsToInsert.length} metrics persisted to database`);
+      }
+    } catch (error) {
+      logger.error('Error persisting metrics batch:', { error: String(error) });
+    }
   }
 }
 

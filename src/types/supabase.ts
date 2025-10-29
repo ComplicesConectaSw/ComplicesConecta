@@ -780,6 +780,57 @@ export type Database = {
           },
         ]
       }
+      error_alerts: {
+        Row: {
+          category: string
+          created_at: string | null
+          error_message: string
+          error_stack: string | null
+          id: string
+          metadata: Json | null
+          resolved: boolean | null
+          resolved_at: string | null
+          resolved_by: string | null
+          severity: string
+          timestamp: string | null
+          url: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          category?: string
+          created_at?: string | null
+          error_message: string
+          error_stack?: string | null
+          id?: string
+          metadata?: Json | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+          timestamp?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          error_message?: string
+          error_stack?: string | null
+          id?: string
+          metadata?: Json | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+          timestamp?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       gallery_permissions: {
         Row: {
           created_at: string | null
@@ -1030,6 +1081,45 @@ export type Database = {
           },
         ]
       }
+      monitoring_sessions: {
+        Row: {
+          created_at: string | null
+          duration_seconds: number | null
+          ended_at: string | null
+          id: string
+          metadata: Json | null
+          page_views: number | null
+          started_at: string | null
+          total_errors: number | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          duration_seconds?: number | null
+          ended_at?: string | null
+          id?: string
+          metadata?: Json | null
+          page_views?: number | null
+          started_at?: string | null
+          total_errors?: number | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          duration_seconds?: number | null
+          ended_at?: string | null
+          id?: string
+          metadata?: Json | null
+          page_views?: number | null
+          started_at?: string | null
+          total_errors?: number | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
           action_url: string | null
@@ -1090,6 +1180,48 @@ export type Database = {
           type?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      performance_metrics: {
+        Row: {
+          created_at: string | null
+          id: string
+          metadata: Json | null
+          metric_name: string
+          session_id: string
+          timestamp: string | null
+          unit: string | null
+          url: string | null
+          user_agent: string | null
+          user_id: string | null
+          value: number
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          metric_name: string
+          session_id: string
+          timestamp?: string | null
+          unit?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+          value: number
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          metric_name?: string
+          session_id?: string
+          timestamp?: string | null
+          unit?: string | null
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+          value?: number
         }
         Relationships: []
       }
@@ -1880,6 +2012,51 @@ export type Database = {
         }
         Relationships: []
       }
+      web_vitals_history: {
+        Row: {
+          cls: number | null
+          created_at: string | null
+          fcp: number | null
+          fid: number | null
+          id: string
+          lcp: number | null
+          metadata: Json | null
+          timestamp: string | null
+          ttfb: number | null
+          url: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          cls?: number | null
+          created_at?: string | null
+          fcp?: number | null
+          fid?: number | null
+          id?: string
+          lcp?: number | null
+          metadata?: Json | null
+          timestamp?: string | null
+          ttfb?: number | null
+          url: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          cls?: number | null
+          created_at?: string | null
+          fcp?: number | null
+          fid?: number | null
+          id?: string
+          lcp?: number | null
+          metadata?: Json | null
+          timestamp?: string | null
+          ttfb?: number | null
+          url?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       geography_columns: {
@@ -1924,6 +2101,28 @@ export type Database = {
         }
         Relationships: []
       }
+      performance_metrics_daily: {
+        Row: {
+          avg_value: number | null
+          date: string | null
+          max_value: number | null
+          median_value: number | null
+          metric_name: string | null
+          min_value: number | null
+          p95_value: number | null
+          total_count: number | null
+        }
+        Relationships: []
+      }
+      unresolved_errors_summary: {
+        Row: {
+          category: string | null
+          last_error_at: string | null
+          severity: string | null
+          total_errors: number | null
+        }
+        Relationships: []
+      }
       user_staking_summary: {
         Row: {
           active_stakes: number | null
@@ -1942,6 +2141,23 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      web_vitals_daily: {
+        Row: {
+          avg_cls: number | null
+          avg_fcp: number | null
+          avg_fid: number | null
+          avg_lcp: number | null
+          avg_ttfb: number | null
+          date: string | null
+          good_cls_count: number | null
+          good_fcp_count: number | null
+          good_fid_count: number | null
+          good_lcp_count: number | null
+          good_ttfb_count: number | null
+          total_measurements: number | null
+        }
+        Relationships: []
       }
     }
     Functions: {

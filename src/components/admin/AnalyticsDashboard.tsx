@@ -21,6 +21,7 @@ import {
 import performanceMonitoring from '@/services/PerformanceMonitoringService';
 import errorAlertService from '@/services/ErrorAlertService';
 import { logger } from '@/lib/logger';
+import { AlertConfigPanel } from './AlertConfigPanel';
 
 // =====================================================
 // INTERFACES
@@ -101,6 +102,7 @@ export const AnalyticsDashboard: React.FC = () => {
 
   const [refreshInterval, setRefreshInterval] = useState<number>(5000);
   const [autoRefresh, setAutoRefresh] = useState<boolean>(true);
+  const [activeTab, setActiveTab] = useState<'overview' | 'config'>('overview');
 
   // =====================================================
   // EFFECTS
@@ -214,8 +216,43 @@ export const AnalyticsDashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* Metrics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Tabs */}
+      <div className="border-b border-gray-200 dark:border-gray-700">
+        <div className="flex space-x-4">
+          <button
+            onClick={() => setActiveTab('overview')}
+            className={`pb-3 px-1 border-b-2 transition-colors ${
+              activeTab === 'overview'
+                ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+            }`}
+          >
+            <span className="flex items-center space-x-2">
+              <ChartBarIcon className="h-5 w-5" />
+              <span className="font-medium">Overview</span>
+            </span>
+          </button>
+          <button
+            onClick={() => setActiveTab('config')}
+            className={`pb-3 px-1 border-b-2 transition-colors ${
+              activeTab === 'config'
+                ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+            }`}
+          >
+            <span className="flex items-center space-x-2">
+              <CheckCircleIcon className="h-5 w-5" />
+              <span className="font-medium">Configuración</span>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      {/* Tab Content */}
+      {activeTab === 'overview' && (
+        <>
+          {/* Metrics Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Avg Load Time */}
         <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
           <div className="flex items-center justify-between">
@@ -404,6 +441,15 @@ export const AnalyticsDashboard: React.FC = () => {
           )}
         </div>
       </div>
+        </>
+      )}
+
+      {/* Config Tab */}
+      {activeTab === 'config' && (
+        <div className="mt-6">
+          <AlertConfigPanel />
+        </div>
+      )}
     </div>
   );
 };

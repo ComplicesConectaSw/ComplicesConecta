@@ -13,7 +13,8 @@ import {
   X,
   Home,
   Briefcase,
-  AlertTriangle
+  AlertTriangle,
+  Activity
 } from 'lucide-react';
 
 interface AdminNavProps {
@@ -55,6 +56,7 @@ export const AdminNav: React.FC<AdminNavProps> = ({
     // Admin items
     return [
       { id: 'dashboard', label: 'Dashboard', path: '/admin', icon: BarChart3 },
+      { id: 'analytics', label: 'Analytics', path: '/admin/analytics', icon: Activity },
       { id: 'users', label: 'Usuarios', path: '/admin-production', icon: Users },
       { id: 'moderators', label: 'Moderadores', path: '/admin/moderators', icon: Shield },
       { id: 'careers', label: 'Empleos', path: '/admin/career-applications', icon: Briefcase },

@@ -9,6 +9,7 @@
  */
 
 import { logger } from '@/lib/logger';
+import { supabase } from '@/integrations/supabase/client';
 
 // =====================================================
 // INTERFACES
@@ -210,6 +211,11 @@ class ErrorAlertService {
     // Notify listeners
     this.notifyListeners(alert);
 
+    // Persistir en base de datos (async sin await para no bloquear)
+    this.persistAlert(alert).catch(err => 
+      logger.debug('Failed to persist alert:', { error: String(err) })
+    );
+
     // Keep only last 500 alerts in memory
     if (this.alerts.length > 500) {
       this.alerts = this.alerts.slice(-500);
@@ -350,6 +356,12 @@ class ErrorAlertService {
       alert.resolved = true;
       alert.resolvedAt = new Date();
       this.persistAlerts();
+      
+      // Actualizar en base de datos
+      this.updateAlertResolution(alertId, true).catch(err =>
+        logger.debug('Failed to update alert resolution:', { error: String(err) })
+      );
+      
       logger.info(`✅ Alert resolved: ${alertId}`);
     }
   }
@@ -471,6 +483,111 @@ class ErrorAlertService {
     }
 
     return false;
+  }
+
+  // =====================================================
+  // MÉTODOS DE PERSISTENCIA EN BASE DE DATOS
+  // =====================================================
+
+  /**
+   * Persistir alerta en la base de datos
+   */
+  private async persistAlert(alert: ErrorAlert): Promise<void> {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      await supabase.from('error_alerts').insert({
+        error_message: alert.message,
+        error_stack: alert.stack || null,
+        category: alert.category,
+        severity: alert.severity,
+        resolved: alert.resolved,
+        resolved_at: alert.resolvedAt?.toISOString() || null,
+        resolved_by: null,
+        user_id: user?.id || alert.userId || null,
+        url: typeof window !== 'undefined' ? window.location.href : null,
+        user_agent: typeof navigator !== 'undefined' ? navigator.userAgent : null,
+        metadata: alert.metadata || {}
+      });
+    } catch (error) {
+      logger.error('Error persisting alert:', { error: String(error) });
+    }
+  }
+
+  /**
+   * Actualizar estado de resolución en la base de datos
+   */
+  private async updateAlertResolution(alertId: string, resolved: boolean): Promise<void> {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      await supabase.from('error_alerts').update({
+        resolved,
+        resolved_at: resolved ? new Date().toISOString() : null,
+        resolved_by: resolved ? user?.id || null : null
+      }).eq('id', alertId);
+
+      logger.info(`✅ Alert resolution updated in database: ${alertId}`);
+    } catch (error) {
+      logger.error('Error updating alert resolution:', { error: String(error) });
+    }
+  }
+
+  /**
+   * Obtener alertas desde la base de datos
+   */
+  async getAlertsFromDatabase(filter?: {
+    severity?: ErrorAlert['severity'];
+    category?: ErrorAlert['category'];
+    resolved?: boolean;
+    limit?: number;
+  }): Promise<ErrorAlert[]> {
+    try {
+      let query = supabase
+        .from('error_alerts')
+        .select('*')
+        .order('timestamp', { ascending: false });
+
+      if (filter?.severity) {
+        query = query.eq('severity', filter.severity);
+      }
+
+      if (filter?.category) {
+        query = query.eq('category', filter.category);
+      }
+
+      if (filter?.resolved !== undefined) {
+        query = query.eq('resolved', filter.resolved);
+      }
+
+      if (filter?.limit) {
+        query = query.limit(filter.limit);
+      }
+
+      const { data, error } = await query;
+
+      if (error) {
+        logger.error('Error fetching alerts from database:', error);
+        return [];
+      }
+
+      return (data || []).map((row: any) => ({
+        id: row.id,
+        severity: row.severity,
+        category: row.category,
+        message: row.error_message,
+        error: row.error_message,
+        stack: row.error_stack || undefined,
+        timestamp: new Date(row.timestamp || row.created_at),
+        userId: row.user_id || undefined,
+        metadata: row.metadata || {},
+        resolved: row.resolved || false,
+        resolvedAt: row.resolved_at ? new Date(row.resolved_at) : undefined
+      }));
+    } catch (error) {
+      logger.error('Error in getAlertsFromDatabase:', { error: String(error) });
+      return [];
+    }
   }
 }
 

@@ -95,6 +95,7 @@ const About = lazy(() => import("@/pages/About"));
 const Careers = lazy(() => import("@/pages/Careers"));
 const AdminCareerApplications = lazy(() => import("@/pages/AdminCareerApplications"));
 const AdminModerators = lazy(() => import("@/pages/AdminModerators"));
+const AdminAnalytics = lazy(() => import("@/pages/AdminAnalytics"));
 const ModeratorDashboard = lazy(() => import("@/pages/ModeratorDashboard"));
 const ModeratorRequest = lazy(() => import("@/pages/ModeratorRequest"));
 const Moderators = lazy(() => import("@/pages/Moderators"));
@@ -215,6 +216,11 @@ const App = () => (
                   <Route path="/admin/moderators" element={
                     <AdminRoute>
                       <AdminModerators />
+                    </AdminRoute>
+                  } />
+                  <Route path="/admin/analytics" element={
+                    <AdminRoute>
+                      <AdminAnalytics />
                     </AdminRoute>
                   } />
                   <Route path="/moderators/dashboard" element={
