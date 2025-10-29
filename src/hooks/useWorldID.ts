@@ -40,7 +40,7 @@ export const useWorldID = () => {
       setStatus(prev => ({ ...prev, isLoading: true }));
       setError(null);
 
-      // TODO: Verificar contra tabla worldid_verifications cuando exista
+       // TODO: Verificar contra tabla worldid_verifications cuando exista
       // Por ahora, retornar estado no verificado
       logger.info('🌍 World ID verification check (pendiente implementación de tabla worldid_verifications)');
       

@@ -3,7 +3,10 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { performanceMonitor } from '@/services/PerformanceMonitoringService'
+import performanceMonitoring from '@/services/PerformanceMonitoringService'
+
+// Usar performanceMonitoring como performanceMonitor para compatibilidad
+const performanceMonitor = performanceMonitoring
 
 // Mock del logger
 vi.mock('@/lib/logger', () => ({

@@ -239,7 +239,7 @@ describe('ProtectedMedia Component', () => {
   it('should prevent drag and drop', () => {
     const TestComponent = () => {
       return React.createElement(ProtectedMedia, {
-        mediaId: 'test-id',
+        _mediaId: 'test-id',
         onAccessDenied: () => {}
       });
     };
@@ -256,10 +256,7 @@ describe('ProtectedMedia Component', () => {
   it('should show access denied message when unauthorized', async () => {
     const mockOnAccessDenied = vi.fn();
     
-    const TestComponent = () => {
-      return render(React.createElement(ProtectedMedia, { _mediaId: 'test-media-1', onAccessDenied: mockOnAccessDenied }));
-    };
-    render(React.createElement(TestComponent));
+    render(React.createElement(ProtectedMedia, { _mediaId: 'test-media-1', onAccessDenied: mockOnAccessDenied }));
 
     // Simulate access denied
     fireEvent.click(screen.getByTestId('simulate-access-denied'));

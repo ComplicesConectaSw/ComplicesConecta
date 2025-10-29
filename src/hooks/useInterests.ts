@@ -4,20 +4,23 @@ import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { logger } from '@/lib/logger';
 
-// Tipos temporales hasta que se actualice el schema de Supabase
+// Interfaces actualizadas para coincidir con el schema de Supabase
 
 export interface Interest {
-  id: string;
+  id: number; // SERIAL en la BD
   name: string;
   category: string;
-  description?: string;
-  is_popular?: boolean;
+  description?: string | null;
+  is_explicit?: boolean | null;
+  is_active?: boolean | null;
+  created_at?: string | null;
+  updated_at?: string | null;
 }
 
 export interface UserInterest {
-  interest_id: string;
+  interest_id: number; // INTEGER en la BD
   interest: Interest;
-  created_at: string;
+  created_at: string | null;
 }
 
 export const useInterests = () => {
@@ -75,15 +78,17 @@ export const useInterests = () => {
   }, [user?.id]);
 
   // Agregar interés al usuario
-  const addInterest = useCallback(async (interestId: string) => {
+  const addInterest = useCallback(async (interestId: string | number) => {
     if (!user?.id) return;
 
     try {
+      const numericId = typeof interestId === 'string' ? parseInt(interestId, 10) : interestId;
+      
       const { error } = await supabase
         .from('user_interests')
         .insert({
           user_id: user.id,
-          interest_id: parseInt(interestId, 10) // swinger_interests usa INTEGER
+          interest_id: numericId
         });
 
       if (error) throw error;
@@ -106,15 +111,17 @@ export const useInterests = () => {
   }, [user?.id, loadUserInterests, toast]);
 
   // Remover interés del usuario
-  const removeInterest = useCallback(async (interestId: string) => {
+  const removeInterest = useCallback(async (interestId: string | number) => {
     if (!user?.id) return;
 
     try {
+      const numericId = typeof interestId === 'string' ? parseInt(interestId, 10) : interestId;
+      
       const { error } = await supabase
         .from('user_interests')
         .delete()
         .eq('user_id', user.id)
-        .eq('interest_id', parseInt(interestId, 10));
+        .eq('interest_id', numericId);
 
       if (error) throw error;
 
@@ -136,8 +143,9 @@ export const useInterests = () => {
   }, [user?.id, loadUserInterests, toast]);
 
   // Verificar si el usuario tiene un interés específico
-  const hasInterest = useCallback((interestId: string) => {
-    return userInterests.some(ui => ui.interest_id === interestId);
+  const hasInterest = useCallback((interestId: string | number) => {
+    const numericId = typeof interestId === 'string' ? parseInt(interestId, 10) : interestId;
+    return userInterests.some(ui => ui.interest_id === numericId);
   }, [userInterests]);
 
   // Obtener intereses por categoría
@@ -163,9 +171,13 @@ export const useInterests = () => {
     );
   }, [interests]);
 
-  // Obtener intereses populares
+  // Obtener intereses populares (los más comunes o explícitos)
   const getPopularInterests = useCallback(() => {
-    return interests.filter(interest => interest.is_popular);
+    // Retornar intereses no explícitos y activos como "populares"
+    return interests.filter(interest => 
+      interest.is_active !== false && 
+      interest.is_explicit !== true
+    );
   }, [interests]);
 
   // Sincronizar intereses del perfil con la tabla interests
@@ -181,10 +193,15 @@ export const useInterests = () => {
 
       // Luego, agregar los nuevos intereses
       if (profileInterests.length > 0) {
-        const interestInserts = profileInterests.map(interestName => ({
-          user_id: user.id,
-          interest_id: interests.find(i => i.name === interestName)?.id
-        })).filter(item => item.interest_id); // Solo incluir intereses válidos
+        const interestInserts = profileInterests
+          .map(interestName => {
+            const interest = interests.find(i => i.name === interestName);
+            return interest ? {
+              user_id: user.id,
+              interest_id: interest.id // Ya es número
+            } : null;
+          })
+          .filter((item): item is { user_id: string; interest_id: number } => item !== null); // Type guard
 
         if (interestInserts.length > 0) {
           const { error } = await supabase

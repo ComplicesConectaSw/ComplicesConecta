@@ -1771,6 +1771,39 @@ export type Database = {
           },
         ]
       }
+      swinger_interests: {
+        Row: {
+          category: string
+          created_at: string | null
+          description: string | null
+          id: number
+          is_active: boolean | null
+          is_explicit: boolean | null
+          name: string
+          updated_at: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          description?: string | null
+          id?: number
+          is_active?: boolean | null
+          is_explicit?: boolean | null
+          name: string
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          description?: string | null
+          id?: number
+          is_active?: boolean | null
+          is_explicit?: boolean | null
+          name?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       token_analytics: {
         Row: {
           active_stakers: number | null
@@ -1929,6 +1962,38 @@ export type Database = {
           },
         ]
       }
+      user_interests: {
+        Row: {
+          created_at: string | null
+          id: number
+          interest_id: number
+          privacy_level: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: number
+          interest_id: number
+          privacy_level?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: number
+          interest_id?: number
+          privacy_level?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_interests_interest_id_fkey"
+            columns: ["interest_id"]
+            isOneToOne: false
+            referencedRelation: "swinger_interests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_referral_balances: {
         Row: {
           cmpx_balance: number | null
@@ -2057,8 +2122,177 @@ export type Database = {
         }
         Relationships: []
       }
+      worldid_rewards: {
+        Row: {
+          claimed: boolean | null
+          claimed_at: string | null
+          created_at: string | null
+          id: string
+          metadata: Json | null
+          reward_amount: number
+          reward_type: string
+          transaction_id: string | null
+          user_id: string
+          verification_id: string
+        }
+        Insert: {
+          claimed?: boolean | null
+          claimed_at?: string | null
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          reward_amount?: number
+          reward_type?: string
+          transaction_id?: string | null
+          user_id: string
+          verification_id: string
+        }
+        Update: {
+          claimed?: boolean | null
+          claimed_at?: string | null
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          reward_amount?: number
+          reward_type?: string
+          transaction_id?: string | null
+          user_id?: string
+          verification_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "worldid_rewards_verification_id_fkey"
+            columns: ["verification_id"]
+            isOneToOne: false
+            referencedRelation: "active_worldid_verifications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "worldid_rewards_verification_id_fkey"
+            columns: ["verification_id"]
+            isOneToOne: false
+            referencedRelation: "worldid_verifications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      worldid_statistics: {
+        Row: {
+          created_at: string | null
+          device_verifications: number | null
+          id: string
+          metadata: Json | null
+          orb_verifications: number | null
+          period_end: string
+          period_start: string
+          total_rewards_distributed: number | null
+          total_verifications: number | null
+          unique_users: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          device_verifications?: number | null
+          id?: string
+          metadata?: Json | null
+          orb_verifications?: number | null
+          period_end: string
+          period_start: string
+          total_rewards_distributed?: number | null
+          total_verifications?: number | null
+          unique_users?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          device_verifications?: number | null
+          id?: string
+          metadata?: Json | null
+          orb_verifications?: number | null
+          period_end?: string
+          period_start?: string
+          total_rewards_distributed?: number | null
+          total_verifications?: number | null
+          unique_users?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      worldid_verifications: {
+        Row: {
+          action_id: string
+          created_at: string | null
+          expires_at: string | null
+          id: string
+          is_active: boolean | null
+          merkle_root: string | null
+          metadata: Json | null
+          nullifier_hash: string
+          proof: Json
+          signal_hash: string | null
+          updated_at: string | null
+          user_id: string
+          verification_level: string
+          verified_at: string | null
+        }
+        Insert: {
+          action_id: string
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          merkle_root?: string | null
+          metadata?: Json | null
+          nullifier_hash: string
+          proof: Json
+          signal_hash?: string | null
+          updated_at?: string | null
+          user_id: string
+          verification_level?: string
+          verified_at?: string | null
+        }
+        Update: {
+          action_id?: string
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          merkle_root?: string | null
+          metadata?: Json | null
+          nullifier_hash?: string
+          proof?: Json
+          signal_hash?: string | null
+          updated_at?: string | null
+          user_id?: string
+          verification_level?: string
+          verified_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
+      active_worldid_verifications: {
+        Row: {
+          action_id: string | null
+          claimed: boolean | null
+          claimed_at: string | null
+          created_at: string | null
+          expires_at: string | null
+          id: string | null
+          is_active: boolean | null
+          merkle_root: string | null
+          metadata: Json | null
+          nullifier_hash: string | null
+          proof: Json | null
+          reward_amount: number | null
+          signal_hash: string | null
+          updated_at: string | null
+          user_id: string | null
+          verification_level: string | null
+          verified_at: string | null
+        }
+        Relationships: []
+      }
       geography_columns: {
         Row: {
           coord_dimension: number | null

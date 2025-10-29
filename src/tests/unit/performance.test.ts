@@ -5,8 +5,11 @@
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { postsService } from '../../services/postsService';
-import { performanceMonitor } from '../../services/PerformanceMonitoringService';
+import performanceMonitoring from '../../services/PerformanceMonitoringService';
 import { TokenAnalyticsService } from '../../services/TokenAnalyticsService';
+
+// Usar performanceMonitoring como performanceMonitor para compatibilidad con tests
+const performanceMonitor = performanceMonitoring;
 
 describe('Performance Optimizations', () => {
   beforeEach(() => {
