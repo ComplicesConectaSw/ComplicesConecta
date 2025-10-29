@@ -40,33 +40,17 @@ export const useWorldID = () => {
       setStatus(prev => ({ ...prev, isLoading: true }));
       setError(null);
 
-      const { data, error } = await supabase
-        .from('user_token_balances')
-        .select(`
-          worldid_verified,
-          worldid_nullifier_hash,
-          worldid_verified_at,
-          cmpx_balance
-        `)
-        .eq('user_id', user.id)
-        .single();
-
-      if (error && error.code !== 'PGRST116') {
-        throw error;
-      }
-
-      if (data) {
-        // Get total rewards from World ID verifications
-        setStatus({
-          isVerified: false,
-          isLoading: false,
-          nullifierHash: undefined,
-          verifiedAt: undefined,
-          verificationLevel: undefined
-        });  
-      } else {
-        setStatus({ isVerified: false, isLoading: false });
-      }
+      // TODO: Verificar contra tabla worldid_verifications cuando exista
+      // Por ahora, retornar estado no verificado
+      logger.info('🌍 World ID verification check (pendiente implementación de tabla worldid_verifications)');
+      
+      setStatus({
+        isVerified: false,
+        isLoading: false,
+        nullifierHash: undefined,
+        verifiedAt: undefined,
+        verificationLevel: undefined
+      });
     } catch (err) {
       logger.error('Error checking verification status:', { error: String(err) });
       setError(err instanceof Error ? err.message : 'Error desconocido');

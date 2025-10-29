@@ -32,8 +32,8 @@ export const useInterests = () => {
   const loadInterests = useCallback(async () => {
     try {
       setLoading(true);
-      const { data, error } = await (supabase as any)
-        .from('interests')
+      const { data, error } = await supabase
+        .from('swinger_interests')
         .select('*')
         .order('category', { ascending: true })
         .order('name', { ascending: true });
@@ -57,11 +57,12 @@ export const useInterests = () => {
     if (!user?.id) return;
 
     try {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('user_interests')
         .select(`
           interest_id,
-          interest:interests(id, name, category)
+          created_at,
+          interest:swinger_interests(id, name, category, description)
         `)
         .eq('user_id', user.id);
 
@@ -78,11 +79,11 @@ export const useInterests = () => {
     if (!user?.id) return;
 
     try {
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('user_interests')
         .insert({
           user_id: user.id,
-          interest_id: interestId
+          interest_id: parseInt(interestId, 10) // swinger_interests usa INTEGER
         });
 
       if (error) throw error;
@@ -109,11 +110,11 @@ export const useInterests = () => {
     if (!user?.id) return;
 
     try {
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('user_interests')
         .delete()
         .eq('user_id', user.id)
-        .eq('interest_id', interestId);
+        .eq('interest_id', parseInt(interestId, 10));
 
       if (error) throw error;
 
@@ -186,7 +187,7 @@ export const useInterests = () => {
         })).filter(item => item.interest_id); // Solo incluir intereses válidos
 
         if (interestInserts.length > 0) {
-          const { error } = await (supabase as any)
+          const { error } = await supabase
             .from('user_interests')
             .insert(interestInserts);
 
