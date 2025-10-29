@@ -181,48 +181,48 @@ class ReferralTokensService {
   }
 
   /**
-   * Crear recompensa de referido usando datos reales de Supabase
+   * Crear recompensa de referido usando transacciones de Supabase
+   * NOTA: La tabla referral_rewards no existe, usamos referral_transactions
    */
   async createReferralReward(rewardData: CreateReferralRewardData): Promise<ReferralReward | null> {
     try {
-      logger.info('Creating referral reward in Supabase', { rewardData });
+      logger.info('Creating referral reward via transaction', { rewardData });
 
+      // Crear transacción de recompensa
       const { data, error } = await supabase
-        .from('referral_rewards')
+        .from('referral_transactions')
         .insert({
-          inviter_id: rewardData.referrer_id,
-          invited_id: rewardData.referee_id,
-          reward_type: rewardData.reward_type,
+          user_id: rewardData.referrer_id,
+          transaction_type: 'earn',
+          token_type: rewardData.reward_type,
           amount: rewardData.amount,
-          inviter_reward_amount: rewardData.amount,
-          invited_reward_amount: Math.floor(rewardData.amount * 0.5), // 50% para el invitado
-          status: 'pending',
-          claimed: false,
-          referral_code: `REF-${Date.now()}`,
+          description: `Recompensa de referido: ${rewardData.referee_id}`,
           metadata: {
             referrer_id: rewardData.referrer_id,
-            referee_id: rewardData.referee_id
+            referee_id: rewardData.referee_id,
+            reward_type: rewardData.reward_type
           }
         })
         .select()
         .single();
 
       if (error) {
-        logger.error('Error creating referral reward:', error);
+        logger.error('Error creating referral reward transaction:', error);
         return null;
       }
 
-      logger.info('✅ Referral reward created successfully', { rewardId: data.id });
+      logger.info('✅ Referral reward created successfully', { transactionId: data.id });
 
+      // Mapear transacción a formato ReferralReward
       const reward: ReferralReward = {
         id: data.id,
         referrer_id: rewardData.referrer_id,
         referee_id: rewardData.referee_id,
         reward_type: rewardData.reward_type,
         amount: data.amount,
-        status: (data.status as 'pending' | 'confirmed' | 'cancelled') || 'pending',
+        status: 'confirmed', // Las transacciones se confirman inmediatamente
         created_at: data.created_at || new Date().toISOString(),
-        confirmed_at: data.claimed_at || undefined
+        confirmed_at: data.created_at || new Date().toISOString()
       };
       
       return reward;
@@ -233,28 +233,13 @@ class ReferralTokensService {
   }
 
   /**
-   * Confirmar recompensa de referido usando datos reales de Supabase
+   * Confirmar recompensa de referido
+   * NOTA: Con referral_transactions las recompensas ya se confirman automáticamente
    */
   async confirmReferralReward(rewardId: string): Promise<boolean> {
     try {
-      logger.info('Confirming referral reward in Supabase', { rewardId });
-
-      const { error } = await supabase
-        .from('referral_rewards')
-        .update({
-          claimed: true,
-          claimed_at: new Date().toISOString(),
-          status: 'confirmed',
-          processed_at: new Date().toISOString()
-        })
-        .eq('id', rewardId);
-
-      if (error) {
-        logger.error('Error confirming referral reward:', error);
-        return false;
-      }
-
-      logger.info('✅ Referral reward confirmed successfully', { rewardId });
+      logger.info('Referral reward already confirmed via transaction', { rewardId });
+      // Las transacciones se confirman inmediatamente al crearlas
       return true;
     } catch (error) {
       logger.error('Error in confirmReferralReward:', { error: String(error) });

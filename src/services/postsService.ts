@@ -167,53 +167,63 @@ class PostsService {
    * Obtener feed de posts del usuario usando datos reales de Supabase con optimización completa
    */
   async getFeed(page = 0, limit = 20): Promise<Post[]> {
-    return performanceMonitoring.measureExecution(
-      'getFeed',
-      async () => {
-        try {
-          // Verificar cache primero
-          const cacheKey = `feed_${page}_${limit}`;
-          const cached = this.feedCache.get(cacheKey);
-          
-          if (cached && Date.now() - cached.timestamp < this.FEED_CACHE_TTL) {
-            logger.info('📊 Using cached feed data');
-            performanceMonitoring.recordQuery('feed_cache_hit', 0, undefined, true, 'cache');
-            return cached.data;
-          }
+    try {
+      const operationStart = performance.now();
+      
+      // Verificar cache primero
+      const cacheKey = `feed_${page}_${limit}`;
+      const cached = this.feedCache.get(cacheKey);
+      
+      if (cached && Date.now() - cached.timestamp < this.FEED_CACHE_TTL) {
+        logger.info('📊 Using cached feed data');
+        performanceMonitoring.recordMetric({
+          name: 'feed_cache_hit',
+          value: 0,
+          unit: 'ms',
+          category: 'custom',
+          metadata: { page, limit, cached: true }
+        });
+        return cached.data;
+      }
 
-          logger.info('Fetching feed posts from Supabase with optimized queries', { page, limit });
-          
-          const startTime = performance.now();
-          
-          // CONSULTA OPTIMIZADA: Una sola consulta con agregaciones
-          const { data, error } = await supabase
-            .from('stories')
-            .select(`
-              id,
-              user_id,
-              description as content,
-              content_type as post_type,
-              media_urls,
-              location,
-              views_count,
-              created_at,
-              updated_at,
-              story_likes(count),
-              story_comments(count),
-              story_shares(count)
-            `)
-            .eq('is_public', true)
-            .order('created_at', { ascending: false })
-            .range(page * limit, (page + 1) * limit - 1);
+      logger.info('Fetching feed posts from Supabase with optimized queries', { page, limit });
+      
+      const startTime = performance.now();
+      
+      // CONSULTA OPTIMIZADA: Una sola consulta con agregaciones
+      const { data, error } = await supabase
+        .from('stories')
+        .select(`
+          id,
+          user_id,
+          description as content,
+          content_type as post_type,
+          media_urls,
+          location,
+          views_count,
+          created_at,
+          updated_at,
+          story_likes(count),
+          story_comments(count),
+          story_shares(count)
+        `)
+        .eq('is_public', true)
+        .order('created_at', { ascending: false })
+        .range(page * limit, (page + 1) * limit - 1);
 
-          const queryDuration = performance.now() - startTime;
-          performanceMonitoring.recordQuery(
-            'stories_with_aggregations',
-            queryDuration,
-            data?.length,
-            false,
-            '90% reduction in queries'
-          );
+      const queryDuration = performance.now() - startTime;
+      performanceMonitoring.recordMetric({
+        name: 'stories_query',
+        value: queryDuration,
+        unit: 'ms',
+        category: 'network',
+        metadata: {
+          page,
+          limit,
+          resultCount: data?.length || 0,
+          optimization: '90% reduction in queries'
+        }
+      });
 
           if (error) {
             logger.error('Error fetching feed from Supabase:', error);
@@ -246,19 +256,16 @@ class PostsService {
           // Guardar en cache
           this.feedCache.set(cacheKey, { data: posts, timestamp: Date.now() });
 
-          logger.info('✅ Feed posts loaded successfully with optimized queries', { 
-            count: posts.length,
-            optimization: '90% reduction in queries',
-            queryTime: `${queryDuration.toFixed(2)}ms`
-          });
-          return posts;
-        } catch (error) {
-          logger.error('Error in getFeed:', { error: String(error) });
-          return [];
-        }
-      },
-      { page, limit }
-    )();
+      logger.info('✅ Feed posts loaded successfully with optimized queries', { 
+        count: posts.length,
+        optimization: '90% reduction in queries',
+        queryTime: `${queryDuration.toFixed(2)}ms`
+      });
+      return posts;
+    } catch (error) {
+      logger.error('Error in getFeed:', { error: String(error) });
+      return [];
+    }
   }
 
   /**

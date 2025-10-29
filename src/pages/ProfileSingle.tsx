@@ -189,25 +189,19 @@ const ProfileSingle: React.FC = () => {
               location: 'CDMX, México',
               role: 'user',
               user_id: parsedUser.id || 'demo-single-1',
-              // Campos adicionales requeridos
-              account_type: null,
-              age_range_max: null,
-              age_range_min: null,
-              blocked_at: null,
-              blocked_reason: null,
-              interested_in: null,
-              is_active: null,
-              is_blocked: null,
-              is_demo: true,
-              lifestyle_preferences: null,
-              location_preferences: null,
-              looking_for: null,
-              max_distance: null,
-              personality_traits: null,
-              suspension_end_date: null,
-              swinger_experience: null,
               updated_at: new Date().toISOString(),
-              warnings_count: null
+              // Campos opcionales
+              email: null,
+              first_name: null,
+              last_name: null,
+              is_online: false,
+              is_demo: true,
+              is_public: true,
+              last_active: null,
+              premium_plan: null,
+              premium_expires_at: null,
+              latitude: null,
+              longitude: null
             };
             
             setProfile(profileData);
