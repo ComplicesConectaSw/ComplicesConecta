@@ -62,51 +62,83 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          // Create separate chunks for better loading
+          // Vendor libraries - split by size and usage
           if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('react-dom')) {
-              return 'react-vendor';
+            // React core (small, critical)
+            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
+              return 'react-core';
+            }
+            // UI libraries (medium)
+            if (id.includes('@radix-ui')) {
+              return 'ui-radix';
             }
             if (id.includes('lucide-react')) {
-              return 'icons';
+              return 'ui-icons';
             }
             if (id.includes('framer-motion')) {
-              return 'animations';
+              return 'ui-animations';
             }
+            // Charts and visualization (large)
+            if (id.includes('recharts') || id.includes('d3-')) {
+              return 'charts';
+            }
+            // Supabase and database (medium)
+            if (id.includes('@supabase') || id.includes('@tanstack/react-query')) {
+              return 'data-layer';
+            }
+            // Monitoring tools (medium)
+            if (id.includes('@sentry') || id.includes('@datadog')) {
+              return 'monitoring';
+            }
+            // Form handling (medium)
+            if (id.includes('react-hook-form') || id.includes('zod') || id.includes('@hookform')) {
+              return 'forms';
+            }
+            // Utilities (small)
+            if (id.includes('date-fns') || id.includes('clsx') || id.includes('tailwind-merge')) {
+              return 'utils';
+            }
+            // Rest of vendor code
             return 'vendor';
           }
-          // Critical pages - bundle together
+          
+          // Application code splitting
+          // Admin pages (lazy loaded)
+          if (id.includes('src/pages/Admin') || id.includes('src/pages/Moderator')) {
+            return 'admin';
+          }
+          // Analytics dashboard (lazy loaded)
+          if (id.includes('src/components/admin/Analytics') || 
+              id.includes('src/services/PerformanceMonitoring') ||
+              id.includes('src/services/ErrorAlert')) {
+            return 'analytics';
+          }
+          // Chat features (lazy loaded)
+          if (id.includes('src/pages/Chat') || id.includes('src/components/chat')) {
+            return 'chat';
+          }
+          // Profile pages (medium priority)
+          if (id.includes('src/pages/Profile') || id.includes('src/components/profile')) {
+            return 'profiles';
+          }
+          // Critical entry pages (bundle together, small)
           if (id.includes('src/pages/Index') || 
               id.includes('src/pages/Auth') || 
-              id.includes('src/pages/Discover') ||
-              id.includes('src/pages/Events')) {
-            return 'critical-pages';
+              id.includes('src/components/HeroSection') ||
+              id.includes('src/components/HeaderNav')) {
+            return 'entry';
           }
-          // Core features
-          if (id.includes('src/pages/Profiles') || 
-              id.includes('src/pages/Matches') || 
-              id.includes('src/pages/Chat')) {
-            return 'core-features';
+          // Discover and Events (medium priority)
+          if (id.includes('src/pages/Discover') || id.includes('src/pages/Events')) {
+            return 'discover';
           }
-          // Admin pages
-          if (id.includes('src/pages/Admin') || 
-              id.includes('src/pages/Moderator')) {
-            return 'admin-pages';
-          }
-          // Other pages
-          if (id.includes('src/pages')) {
+          // All other pages
+          if (id.includes('src/pages/')) {
             return 'pages';
-          }
-          // Components
-          if (id.includes('src/components')) {
-            return 'components';
           }
         },
         // Ensure consistent chunk naming
-        chunkFileNames: (chunkInfo) => {
-          const facadeModuleId = chunkInfo.facadeModuleId ? chunkInfo.facadeModuleId.split('/').pop() : 'chunk';
-          return `assets/${facadeModuleId}-[hash].js`;
-        },
+        chunkFileNames: 'assets/[name]-[hash].js',
         entryFileNames: 'assets/[name]-[hash].js',
         assetFileNames: 'assets/[name]-[hash].[ext]'
       },
@@ -115,12 +147,25 @@ export default defineConfig({
       transformMixedEsModules: true,
     },
     target: 'es2020',
-    minify: 'esbuild',
-    chunkSizeWarningLimit: 1000,
+    minify: 'terser', // Usar terser para mejor compresión
+    terserOptions: {
+      compress: {
+        drop_console: true, // Eliminar console.log en producción
+        drop_debugger: true,
+        pure_funcs: ['console.log', 'console.info', 'console.debug'],
+      },
+      format: {
+        comments: false, // Remover comentarios
+      },
+    },
+    chunkSizeWarningLimit: 800, // Reducir límite para mejor splitting
     // Ensure proper module resolution
     modulePreload: {
       polyfill: true
-    }
+    },
+    // Optimize CSS
+    cssCodeSplit: true,
+    cssMinify: true,
   },
   define: {
     global: 'globalThis',
