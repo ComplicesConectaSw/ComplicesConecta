@@ -1312,6 +1312,75 @@ export type Database = {
         }
         Relationships: []
       }
+      referral_rewards: {
+        Row: {
+          amount: number
+          claimed: boolean | null
+          claimed_at: string | null
+          created_at: string | null
+          description: string | null
+          expires_at: string | null
+          id: string
+          invited_id: string | null
+          invited_reward_amount: number | null
+          inviter_id: string | null
+          inviter_reward_amount: number | null
+          metadata: Json | null
+          processed_at: string | null
+          referral_code: string
+          reward_type: string
+          status: string | null
+          updated_at: string | null
+          user_id: string
+          verification_method: string | null
+          worldid_proof: Json | null
+        }
+        Insert: {
+          amount?: number
+          claimed?: boolean | null
+          claimed_at?: string | null
+          created_at?: string | null
+          description?: string | null
+          expires_at?: string | null
+          id?: string
+          invited_id?: string | null
+          invited_reward_amount?: number | null
+          inviter_id?: string | null
+          inviter_reward_amount?: number | null
+          metadata?: Json | null
+          processed_at?: string | null
+          referral_code: string
+          reward_type: string
+          status?: string | null
+          updated_at?: string | null
+          user_id: string
+          verification_method?: string | null
+          worldid_proof?: Json | null
+        }
+        Update: {
+          amount?: number
+          claimed?: boolean | null
+          claimed_at?: string | null
+          created_at?: string | null
+          description?: string | null
+          expires_at?: string | null
+          id?: string
+          invited_id?: string | null
+          invited_reward_amount?: number | null
+          inviter_id?: string | null
+          inviter_reward_amount?: number | null
+          metadata?: Json | null
+          processed_at?: string | null
+          referral_code?: string
+          reward_type?: string
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string
+          verification_method?: string | null
+          worldid_proof?: Json | null
+        }
+        Relationships: []
+      }
       referral_statistics: {
         Row: {
           active_referrals: number | null
