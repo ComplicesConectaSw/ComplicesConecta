@@ -7,7 +7,7 @@ import './styles/ui-fixes-contraste.css'
 import { initializeWalletProtection, detectWalletConflicts } from "./utils/walletProtection";
 import { initializeReactFallbacks, ensureReactPolyfills } from "./utils/reactFallbacks";
 import ErrorBoundary from '@/components/ErrorBoundary'
-import { initSentry } from '@/lib/sentry'
+import { initSentry } from '@/config/sentry.config'
 import { DebugInfo } from '@/debug'
 import { initWebVitalsMonitoring } from '@/utils/webVitals'
 import { initializeCriticalPreloading } from '@/utils/preloading'

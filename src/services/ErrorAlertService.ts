@@ -10,6 +10,7 @@
 
 import { logger } from '@/lib/logger';
 import { supabase } from '@/integrations/supabase/client';
+import webhookService from './WebhookService';
 
 // New Relic integration (only in browser context)
 let newrelic: any = null;
@@ -249,6 +250,24 @@ class ErrorAlertService {
         logger.debug('Failed to send alert to New Relic:', { error: String(error) });
       }
     }
+
+    // 🆕 Enviar a Webhooks configurados
+    webhookService.sendNotification({
+      event: 'error',
+      severity: alert.severity,
+      title: `Error ${alert.severity.toUpperCase()}: ${alert.category}`,
+      message: alert.message,
+      timestamp: alert.timestamp.toISOString(),
+      source: 'ErrorAlertService',
+      userId: alert.userId,
+      metadata: {
+        id: alert.id,
+        stack: alert.stack,
+        ...alert.metadata
+      }
+    }).catch(err => 
+      logger.debug('Failed to send webhook notification:', { error: String(err) })
+    );
 
     // Keep only last 500 alerts in memory
     if (this.alerts.length > 500) {
