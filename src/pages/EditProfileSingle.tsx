@@ -12,6 +12,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { getAppConfig } from "@/lib/app-config";
 import NavigationEnhanced from "@/components/NavigationEnhanced";
 import type { Database } from '@/types/supabase';
+import { SAFE_INTERESTS, EXPLICIT_INTERESTS } from '@/lib/lifestyle-interests';
+import { ExplicitInterestsEditor } from '@/components/settings/ExplicitInterestsEditor';
 
 type Tables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Row'];
 import { logger } from '@/lib/logger';
@@ -28,6 +30,7 @@ const EditProfileSingle = () => {
     profession: "",
     bio: "",
     interests: [] as string[],
+    explicitInterests: [] as string[],
     avatar: ""
   });
   const [_isLoading, setIsLoading] = useState(false);
@@ -47,11 +50,8 @@ const EditProfileSingle = () => {
     logger.info('Tema actualizado', { demoTheme, navbarStyle });
   }, [demoTheme, navbarStyle]);
 
-  const availableInterests = [
-    "Lifestyle Swinger", "Intercambio de Parejas", "Encuentros Casuales", "Comunicación Abierta", 
-    "Respeto Mutuo", "Experiencias Nuevas", "Discreción Total", "Fiestas Privadas", "Clubs Exclusivos", "Conexiones Reales",
-    "Aventuras", "Diversión", "Hoteles Temáticos", "Eventos VIP", "Masajes Sensuales", "Fotografía Sensual"
-  ];
+  // Usar intereses seguros desde la fuente única de verdad
+  const availableInterests = SAFE_INTERESTS;
 
   const loadProfile = useCallback(async () => {
     if (profileLoaded) return;
@@ -403,6 +403,14 @@ const EditProfileSingle = () => {
             </p>
           </CardContent>
         </Card>
+
+        {/* 🔒 Intereses Explícitos (Post-Registro) */}
+        <ExplicitInterestsEditor
+          selectedInterests={formData.explicitInterests}
+          onInterestsChange={(interests) => setFormData(prev => ({ ...prev, explicitInterests: interests }))}
+          onSave={handleSubmit}
+          className="bg-white/10 backdrop-blur-md border-white/20"
+        />
 
         {/* 🎨 Personalización Visual */}
         <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-glow">

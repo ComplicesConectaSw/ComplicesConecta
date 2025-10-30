@@ -9,7 +9,8 @@ import { useNavigate } from "react-router-dom";
 import NavigationEnhanced from "@/components/NavigationEnhanced";
 import ImageUpload from "@/components/profile/ImageUpload";
 import { generateMockCouple } from "@/lib/data";
-import { lifestyleInterests } from "@/lib/lifestyle-interests";
+import { SAFE_INTERESTS, lifestyleInterests } from "@/lib/lifestyle-interests";
+import { ExplicitInterestsEditor } from '@/components/settings/ExplicitInterestsEditor';
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { logger } from '@/lib/logger';
 import { useDemoThemeConfig, getNavbarStyles, useProfileTheme } from '@/hooks/useProfileTheme';
@@ -23,6 +24,7 @@ const EditProfileCouple = () => {
     location: "",
     bio: "",
     interests: [] as string[],
+    explicitInterests: [] as string[],
     partner1: {
       firstName: "",
       lastName: "",
@@ -57,7 +59,7 @@ const EditProfileCouple = () => {
   const { location, error: locationError, getCurrentLocation } = useGeolocation();
   const [locationStatus, setLocationStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
-  const availableInterests = lifestyleInterests;
+  const availableInterests = SAFE_INTERESTS;
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -667,6 +669,14 @@ const EditProfileCouple = () => {
             </p>
           </CardContent>
         </Card>
+
+        {/* 🔒 Intereses Explícitos (Post-Registro) */}
+        <ExplicitInterestsEditor
+          selectedInterests={formData.explicitInterests}
+          onInterestsChange={(interests) => setFormData(prev => ({ ...prev, explicitInterests: interests }))}
+          onSave={handleSubmit}
+          className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-md border-purple-300/30"
+        />
 
         {/* 🎨 Personalización Visual */}
         <Card className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-md border-purple-300/30 shadow-lg">
