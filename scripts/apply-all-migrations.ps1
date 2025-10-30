@@ -43,7 +43,7 @@ Write-Host "  2. 20251030_create_chat_summaries.sql (Chat Summaries ML)" -Foregr
 Write-Host ""
 
 # Función para aplicar migración SQL
-function Apply-Migration {
+function Invoke-Migration {
     param(
         [string]$MigrationFile,
         [string]$Description
@@ -96,14 +96,14 @@ function Apply-Migration {
 $success = @()
 
 if (-not $SkipAI) {
-    $result = Apply-Migration `
+    $result = Invoke-Migration `
         -MigrationFile "supabase/migrations/20251030_create_ai_tables.sql" `
         -Description "AI-Native Layer Tables"
     $success += $result
 }
 
 if (-not $SkipChat) {
-    $result = Apply-Migration `
+    $result = Invoke-Migration `
         -MigrationFile "supabase/migrations/20251030_create_chat_summaries.sql" `
         -Description "Chat Summaries ML Tables"
     $success += $result

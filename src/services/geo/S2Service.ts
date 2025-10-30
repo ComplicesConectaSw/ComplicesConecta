@@ -18,15 +18,16 @@
  * @date 2025-10-30
  */
 
-import { S2 } from 's2-geometry';
+// @ts-ignore - s2-geometry no tiene types oficiales
+import * as S2 from 's2-geometry';
 
-export interface S2Config {
+interface S2Config {
   defaultLevel: number;
   maxLevel: number;
   minLevel: number;
 }
 
-export interface S2Cell {
+interface S2Cell {
   id: string;
   level: number;
   lat: number;
