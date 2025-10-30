@@ -8,12 +8,18 @@
  * - Fallback a scoring legacy (zero breaking changes)
  * - Cache para optimización
  * 
+ * v3.5.0-alpha Fase 1.2:
+ * - Integración PyTorch/TensorFlow.js
+ * - Lazy loading de modelo ML
+ * - Tensor management optimizado
+ * 
  * @version 3.5.0
  * @date 2025-10-30
  */
 
 import { supabase } from '@/lib/supabase';
 import type { Profile } from '@/types/supabase';
+import { pytorchModel } from './models/PyTorchScoringModel';
 
 // Types
 export interface CompatibilityFeatures {
@@ -240,34 +246,43 @@ export class AILayerService {
 
   /**
    * Llama al modelo ML para predicción
+   * v3.5.0: Usa PyTorch/TensorFlow.js con fallback automático
    * @private
    */
   private async callMLModel(features: CompatibilityFeatures): Promise<number> {
-    // TODO: Implementar llamada real a ML model (TensorFlow.js o API)
-    // Por ahora, simulación simple basada en features
+    try {
+      // Usar modelo PyTorch/TensorFlow.js (Fase 1.2)
+      console.log('[AI] Using PyTorch model for prediction');
+      const score = await pytorchModel.predict(features);
+      console.log('[AI] PyTorch prediction successful:', score.toFixed(3));
+      return score;
+    } catch (error) {
+      console.warn('[AI] PyTorch model failed, using fallback algorithm:', error);
+      
+      // Fallback: algoritmo simple basado en features
+      // (mismo que usa PyTorchScoringModel internamente)
+      const normalized = {
+        likes: Math.min((features.likesGiven + features.likesReceived) / 10, 1),
+        engagement: Math.min(features.commentsCount / 50, 1),
+        proximity: Math.max(1 - features.proximityKm / 100, 0),
+        sharedInterests: Math.min(features.sharedInterestsCount / 10, 1),
+        ageGap: Math.max(1 - features.ageGap / 20, 0),
+        bigFive: features.bigFiveCompatibility,
+        swinger: features.swingerTraitsScore,
+      };
 
-    // Normalizar features (0-1)
-    const normalized = {
-      likes: Math.min((features.likesGiven + features.likesReceived) / 10, 1),
-      engagement: Math.min(features.commentsCount / 50, 1),
-      proximity: Math.max(1 - features.proximityKm / 100, 0),
-      sharedInterests: Math.min(features.sharedInterestsCount / 10, 1),
-      ageGap: Math.max(1 - features.ageGap / 20, 0),
-      bigFive: features.bigFiveCompatibility,
-      swinger: features.swingerTraitsScore,
-    };
+      // Weighted sum (pesos ajustables por entrenamiento)
+      const score =
+        normalized.likes * 0.15 +
+        normalized.engagement * 0.1 +
+        normalized.proximity * 0.15 +
+        normalized.sharedInterests * 0.2 +
+        normalized.ageGap * 0.1 +
+        normalized.bigFive * 0.2 +
+        normalized.swinger * 0.1;
 
-    // Weighted sum (pesos ajustables por entrenamiento)
-    const score =
-      normalized.likes * 0.15 +
-      normalized.engagement * 0.1 +
-      normalized.proximity * 0.15 +
-      normalized.sharedInterests * 0.2 +
-      normalized.ageGap * 0.1 +
-      normalized.bigFive * 0.2 +
-      normalized.swinger * 0.1;
-
-    return Math.min(Math.max(score, 0), 1);
+      return Math.min(Math.max(score, 0), 1);
+    }
   }
 
   /**
