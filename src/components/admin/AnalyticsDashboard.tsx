@@ -15,7 +15,8 @@ import {
   CheckCircleIcon,
   ClockIcon,
   ServerIcon,
-  SignalIcon
+  SignalIcon,
+  ShieldCheckIcon
 } from '@heroicons/react/24/outline';
 
 import performanceMonitoring from '@/services/PerformanceMonitoringService';
@@ -24,6 +25,7 @@ import { logger } from '@/lib/logger';
 import { AlertConfigPanel } from './AlertConfigPanel';
 import { ExportButton } from './ExportButton';
 import { NotificationSettings } from './NotificationSettings';
+import { ModerationMetricsPanel } from './ModerationMetrics';
 import type { ExportData } from '@/utils/reportExport';
 
 // =====================================================
@@ -105,7 +107,7 @@ export const AnalyticsDashboard: React.FC = () => {
 
   const [refreshInterval, setRefreshInterval] = useState<number>(5000);
   const [autoRefresh, setAutoRefresh] = useState<boolean>(true);
-  const [activeTab, setActiveTab] = useState<'overview' | 'config'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'config' | 'moderation'>('overview');
 
   // =====================================================
   // EFFECTS
@@ -250,6 +252,21 @@ export const AnalyticsDashboard: React.FC = () => {
               <span className="font-medium">Overview</span>
             </span>
           </button>
+          
+          <button
+            onClick={() => setActiveTab('moderation')}
+            className={`pb-3 px-1 border-b-2 transition-colors ${
+              activeTab === 'moderation'
+                ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+            }`}
+          >
+            <span className="flex items-center space-x-2">
+              <ShieldCheckIcon className="h-5 w-5" />
+              <span className="font-medium">Moderación</span>
+            </span>
+          </button>
+          
           <button
             onClick={() => setActiveTab('config')}
             className={`pb-3 px-1 border-b-2 transition-colors ${
@@ -460,6 +477,11 @@ export const AnalyticsDashboard: React.FC = () => {
         </div>
       </div>
         </>
+      )}
+
+      {/* Moderation Tab */}
+      {activeTab === 'moderation' && (
+        <ModerationMetricsPanel refreshInterval={refreshInterval / 1000} />
       )}
 
       {/* Config Tab */}
