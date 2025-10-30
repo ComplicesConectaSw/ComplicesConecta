@@ -65,12 +65,29 @@ export const DEMO_CREDENTIALS = [
   'djwacko28@gmail.com'        // Admin DEMO - usa datos demo
 ];
 
-// Contraseñas demo por email (INCLUIR djwacko28@gmail.com)
-export const DEMO_PASSWORDS: Record<string, string> = {
+// Contraseñas demo por email - MIGRADO A VARIABLES DE ENTORNO
+// Fallback a valores por defecto solo para desarrollo
+const DEFAULT_DEMO_PASSWORDS: Record<string, string> = {
   'single@outlook.es': '123456',
   'pareja@outlook.es': '123456',
   'admin': '123456',
   'djwacko28@gmail.com': 'Magy_Wacko_nala28' // Admin DEMO
+};
+
+// Función auxiliar para obtener contraseña desde env o fallback
+const getPasswordFromEnv = (email: string): string | null => {
+  // Convertir email a formato de variable de entorno
+  // Ejemplo: single@outlook.es -> SINGLE_OUTLOOK_ES
+  const envKey = email.toUpperCase()
+    .replace('@', '_')
+    .replace('.', '_')
+    .replace('-', '_');
+  
+  // Buscar en variables de entorno primero
+  const envPassword = import.meta.env[`VITE_DEMO_PASSWORD_${envKey}`];
+  
+  // Si no existe en env, usar fallback (solo desarrollo)
+  return envPassword || DEFAULT_DEMO_PASSWORDS[email] || null;
 };
 
 // Lista de emails admin para verificación rápida - CORREGIDA
@@ -80,10 +97,11 @@ const _ADMIN_EMAILS = [
   'complicesconectasw@outlook.es'  // ÚNICO admin producción REAL
 ];
 
-// Configuración de credenciales para modo producción
+// Configuración de credenciales para modo producción - MIGRADO A VARIABLES DE ENTORNO
+// Fallback a valor por defecto solo para desarrollo
 export const productionCredentials = {
   email: 'complicesconectasw@outlook.es',
-  password: 'Magy_Wacko_nala28'
+  password: import.meta.env.VITE_PROD_PASSWORD_COMPLICESCONECTASW || 'Magy_Wacko_nala28' // Fallback
 };
 
 // Función para verificar si es credencial demo
@@ -109,7 +127,7 @@ export const isDemoAdmin = (email: string): boolean => {
   return normalizedEmail === 'admin' || normalizedEmail === 'djwacko28@gmail.com';
 };
 
-// Función para obtener contraseña demo
+// Función para obtener contraseña demo - USA VARIABLES DE ENTORNO
 export const getDemoPassword = (email: string): string | null => {
   const normalizedEmail = email.toLowerCase().trim()
     .replace('@otlook.es', '@outlook.es')
@@ -117,14 +135,18 @@ export const getDemoPassword = (email: string): string | null => {
     .replace('@outlok.es', '@outlook.es')
     .replace('@outook.es', '@outlook.es');
   
-  return DEMO_PASSWORDS[normalizedEmail] || null;
+  // Usar función auxiliar que consulta env primero, luego fallback
+  return getPasswordFromEnv(normalizedEmail);
 };
 
-// Función para obtener contraseña de producción
+
+
+// Función para obtener contraseña de producción - USA VARIABLES DE ENTORNO
 export const getProductionPassword = (email: string): string | null => {
   const normalizedEmail = email.toLowerCase().trim();
   if (normalizedEmail === 'complicesconectasw@outlook.es') {
-    return 'Magy_Wacko_nala28';
+    // Prioridad: variable de entorno, luego fallback
+    return import.meta.env.VITE_PROD_PASSWORD_COMPLICESCONECTASW || 'Magy_Wacko_nala28';
   }
   return null;
 };
