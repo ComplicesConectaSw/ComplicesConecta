@@ -17,8 +17,8 @@
  * @date 2025-10-30
  */
 
-import { supabase } from '@/lib/supabase';
-import type { Profile } from '@/types/supabase';
+import { supabase } from '@/integrations/supabase/client';
+import type { Profile } from '@/types/supabase-generated';
 import { pytorchModel } from './models/PyTorchScoringModel';
 
 // Types

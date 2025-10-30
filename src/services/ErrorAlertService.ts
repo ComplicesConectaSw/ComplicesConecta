@@ -302,7 +302,7 @@ class ErrorAlertService {
   private executeAction(action: AlertAction, alert: ErrorAlert): void {
     try {
       switch (action.type) {
-        case 'console':
+        case 'console': {
           const consoleMethod = console[action.level];
           consoleMethod(`[${alert.severity.toUpperCase()}] ${alert.message}`, {
             category: alert.category,
@@ -310,6 +310,7 @@ class ErrorAlertService {
             metadata: alert.metadata
           });
           break;
+        }
 
         case 'notification':
           if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'granted') {
