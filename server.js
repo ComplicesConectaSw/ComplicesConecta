@@ -4,11 +4,16 @@
  */
 
 // 1. IMPORTANTE: New Relic debe ser lo primero
-require('newrelic');
+import newrelic from 'newrelic';
 
-const express = require('express');
-const path = require('path');
-const compression = require('compression');
+import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import compression from 'compression';
+
+// Para __dirname en ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
