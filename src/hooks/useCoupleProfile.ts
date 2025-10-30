@@ -217,7 +217,7 @@ export const useCreateCoupleProfile = () => {
 
       throw new Error('No data returned from couple profile creation');
     },
-    onSuccess: (data) => {
+    onSuccess: (data: CoupleProfile) => {
       // Invalidate and refetch couple profiles
       queryClient.invalidateQueries({ queryKey: ['couple-profiles'] });
       queryClient.invalidateQueries({ queryKey: ['couple-profile', data.id] });
@@ -259,7 +259,7 @@ export const useUpdateCoupleProfile = () => {
 
       throw new Error('No data returned from couple profile update');
     },
-    onSuccess: (data) => {
+    onSuccess: (data: CoupleProfile) => {
       // Update cache for specific couple profile
       queryClient.setQueryData(['couple-profile', data.id], data);
       
@@ -295,7 +295,7 @@ export const useDeleteCoupleProfile = () => {
       logger.info('✅ Couple profile deleted successfully:', { coupleId });
       return coupleId;
     },
-    onSuccess: (coupleId) => {
+    onSuccess: (coupleId: string) => {
       // Remove from cache
       queryClient.removeQueries({ queryKey: ['couple-profile', coupleId] });
       

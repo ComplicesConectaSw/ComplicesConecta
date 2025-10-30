@@ -125,7 +125,7 @@ export const useUpdateProfile = () => {
 
       return data;
     },
-    onSuccess: (data) => {
+    onSuccess: (data: Profile) => {
       // Invalidar cache específico del perfil
       queryClient.invalidateQueries({ queryKey: profileKeys.detail(data.id) });
       // Invalidar listas de perfiles
@@ -133,7 +133,7 @@ export const useUpdateProfile = () => {
       
       // logger.info('✅ Perfil actualizado en cache:', { id: (data as any)?.id });
     },
-    onError: (_error) => {
+    onError: (_error: Error) => {
       // logger.error('❌ Error en mutación de perfil:', error);
     },
   });
@@ -160,7 +160,7 @@ export const useCreateProfile = () => {
 
       return data;
     },
-    onSuccess: (data) => {
+    onSuccess: (data: Profile) => {
       // Invalidar listas de perfiles para incluir el nuevo
       queryClient.invalidateQueries({ queryKey: profileKeys.lists() });
       // Agregar al cache individual
