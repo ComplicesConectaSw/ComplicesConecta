@@ -229,6 +229,10 @@ docs-unified/
 backups/
 audit-files/
 
+# Directorios de documentación temporales (no subir a GitHub)
+docs-unified/
+docs/
+
 # Docker (ignorar archivos temporales y builds)
 .docker/
 docker-compose.override.yml

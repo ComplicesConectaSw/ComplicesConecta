@@ -38,6 +38,17 @@ tests
 *.md
 docs
 docs-unified
+audit-files
+backups
+2025-01-22
+
+# Archivos de resumen de sesiones
+*_SESION_*.md
+*_FINAL_*.md
+*_COMPLETADA_*.md
+RESUMEN_*.md
+REPORTE_*.md
+SINCRONIZACION_*.md
 
 # Misc
 .DS_Store
