@@ -22,9 +22,8 @@ Write-Host "
 
 # Verificar si Docker está corriendo
 Write-Host "🔍 Verificando Docker..." -ForegroundColor Yellow
-$dockerRunning = $null
 try {
-    $dockerRunning = docker ps 2>&1
+    $null = docker ps 2>&1
     if ($LASTEXITCODE -ne 0) {
         throw "Docker no está corriendo"
     }

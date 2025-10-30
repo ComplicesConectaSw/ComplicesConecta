@@ -18,8 +18,10 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
-import type { Profile } from '@/types/supabase-generated';
+import type { Database } from '@/types/supabase-generated';
 import { pytorchModel } from './models/PyTorchScoringModel';
+
+type Profile = Database['public']['Tables']['profiles']['Row'];
 
 // Types
 export interface CompatibilityFeatures {
@@ -202,7 +204,7 @@ export class AILayerService {
       .eq('liked_id', userId1);
 
     // Feature 2: Comments count (engagement)
-    const { count: commentsCount } = await supabase
+    const { count: commentsCount } = await (supabase as any)
       .from('comments')
       .select('*', { count: 'exact', head: true })
       .or(`author_id.eq.${userId1},author_id.eq.${userId2}`);
@@ -375,7 +377,7 @@ export class AILayerService {
     score: AIScore
   ): Promise<void> {
     try {
-      await supabase.from('ai_compatibility_scores').insert({
+      await (supabase as any).from('ai_compatibility_scores').insert({
         user1_id: userId1,
         user2_id: userId2,
         ai_score: score.method === 'ai' || score.method === 'hybrid' ? score.score : null,

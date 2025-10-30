@@ -310,7 +310,7 @@ ${messagesText}`;
   private async checkRateLimit(userId: string): Promise<void> {
     const today = new Date().toISOString().split('T')[0];
     
-    const { count } = await supabase
+    const { count } = await (supabase as any)
       .from('summary_requests')
       .select('*', { count: 'exact', head: true })
       .eq('user_id', userId)
@@ -328,7 +328,7 @@ ${messagesText}`;
   private async getCachedSummary(chatId: string): Promise<ChatSummary | null> {
     const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
     
-    const { data, error } = await supabase
+    const { data, error } = await (supabase as any)
       .from('chat_summaries')
       .select('*')
       .eq('chat_id', chatId)
@@ -340,14 +340,14 @@ ${messagesText}`;
     if (error || !data) return null;
     
     return {
-      id: data.id,
-      chatId: data.chat_id,
-      summary: data.summary,
-      sentiment: data.sentiment as 'positive' | 'neutral' | 'negative',
-      topics: data.topics as string[],
-      messageCount: data.message_count,
-      method: data.method as 'gpt4' | 'bart' | 'fallback',
-      createdAt: new Date(data.created_at),
+      id: (data as any).id,
+      chatId: (data as any).chat_id,
+      summary: (data as any).summary,
+      sentiment: (data as any).sentiment as 'positive' | 'neutral' | 'negative',
+      topics: (data as any).topics as string[],
+      messageCount: (data as any).message_count,
+      method: (data as any).method as 'gpt4' | 'bart' | 'fallback',
+      createdAt: new Date((data as any).created_at),
     };
   }
 
@@ -372,7 +372,7 @@ ${messagesText}`;
       id: msg.id,
       sender: (msg.sender as any)?.name || 'Usuario',
       content: msg.content,
-      created_at: msg.created_at,
+      created_at: msg.created_at || '',
     }));
   }
 
@@ -381,7 +381,7 @@ ${messagesText}`;
    * @private
    */
   private async saveSummary(summary: ChatSummary): Promise<void> {
-    const { error } = await supabase.from('chat_summaries').insert({
+    const { error } = await (supabase as any).from('chat_summaries').insert({
       id: summary.id,
       chat_id: summary.chatId,
       summary: summary.summary,
@@ -402,7 +402,7 @@ ${messagesText}`;
    * @private
    */
   private async logSummaryRequest(userId: string, chatId: string): Promise<void> {
-    const { error } = await supabase.from('summary_requests').insert({
+    const { error } = await (supabase as any).from('summary_requests').insert({
       user_id: userId,
       chat_id: chatId,
     });
@@ -422,7 +422,7 @@ ${messagesText}`;
   }> {
     const today = new Date().toISOString().split('T')[0];
     
-    const { count } = await supabase
+    const { count } = await (supabase as any)
       .from('summary_requests')
       .select('*', { count: 'exact', head: true })
       .eq('user_id', userId)

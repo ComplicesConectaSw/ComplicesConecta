@@ -131,9 +131,9 @@ export function SummaryModal({ isOpen, onClose, summary, error }: SummaryModalPr
                 </Badge>
               )}
               
-              {summary.message_count && (
+              {summary.messageCount && (
                 <Badge variant="secondary">
-                  {summary.message_count} mensajes
+                  {summary.messageCount} mensajes
                 </Badge>
               )}
             </div>
