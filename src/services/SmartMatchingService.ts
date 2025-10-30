@@ -6,10 +6,16 @@
  * - Geographic Proximity
  * - Interest Matching
  * - Behavioral Patterns
+ * 
+ * v3.5.0: AI-Native Layer integration (Grindr/FB 2025 best practices)
+ * - ML-powered compatibility scoring (optional via feature flag)
+ * - Fallback automático a algoritmo legacy
+ * - Zero breaking changes garantizado
  */
 
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
+import { aiLayerService } from './ai/AILayerService';
 
 export interface MatchingProfile {
   id: string;
@@ -110,6 +116,8 @@ class SmartMatchingService {
   /**
    * Calcula compatibilidad entre dos perfiles usando algoritmos de IA reales
    * Basado en Big Five Personality Traits y Swinger Lifestyle Compatibility
+   * 
+   * v3.5.0: AI-Native Layer - ML-powered scoring con fallback automático
    */
   async calculateCompatibility(
     profile1: MatchingProfile,
@@ -118,26 +126,58 @@ class SmartMatchingService {
     targetTraits?: SwingerTraits
   ): Promise<CompatibilityScore> {
     try {
-      logger.info('🧠 Calculating AI-based compatibility', { 
+      logger.info('🧠 Calculating compatibility', { 
         profile1: profile1.id, 
-        profile2: profile2.id 
+        profile2: profile2.id,
+        aiEnabled: aiLayerService.isEnabled()
       });
 
-      // Calcular scores individuales usando algoritmos existentes
+      // Función de scoring legacy (usado como fallback)
+      const calculateLegacyScore = async (): Promise<number> => {
+        // Calcular scores individuales usando algoritmos existentes
+        const personalityScore = this.calculatePersonalityCompatibility(userTraits);
+        const interestsScore = this.calculateInterestsCompatibility(profile1, profile2);
+        const proximityScore = this.calculateProximityScore(profile1, profile2);
+        const lifestyleScore = this.calculateLifestyleCompatibility(targetTraits);
+        
+        // Algoritmo de scoring ponderado basado en investigación psicológica
+        const overall = Math.min(100, Math.round(
+          (personalityScore * 0.35) + 
+          (interestsScore * 0.25) + 
+          (proximityScore * 0.15) + 
+          (lifestyleScore * 0.25)
+        ));
+
+        // Normalizar a rango 0-1 para AILayerService
+        return overall / 100;
+      };
+
+      // AI-Native scoring (v3.5.0)
+      // Si AI está habilitado, usa ML prediction con fallback automático
+      // Si AI está deshabilitado, usa algoritmo legacy (zero breaking changes)
+      const aiResult = await aiLayerService.predictCompatibility(
+        profile1.id,
+        profile2.id,
+        calculateLegacyScore
+      );
+
+      // Desnormalizar score (0-1 → 0-100)
+      const overall = Math.round(aiResult.score * 100);
+
+      // Calcular scores individuales (para compatibilidad con UI existente)
       const personalityScore = this.calculatePersonalityCompatibility(userTraits);
       const interestsScore = this.calculateInterestsCompatibility(profile1, profile2);
       const proximityScore = this.calculateProximityScore(profile1, profile2);
       const lifestyleScore = this.calculateLifestyleCompatibility(targetTraits);
-      
-      // Algoritmo de scoring ponderado basado en investigación psicológica
-      const overall = Math.min(100, Math.round(
-        (personalityScore * 0.35) + 
-        (interestsScore * 0.25) + 
-        (proximityScore * 0.15) + 
-        (lifestyleScore * 0.25)
-      ));
 
-      const confidence = Math.min(100, Math.round(overall * 0.8 + Math.random() * 20));
+      const confidence = Math.round(aiResult.confidence * 100);
+
+      logger.info('✅ Compatibility calculated', {
+        overall,
+        method: aiResult.method,
+        confidence,
+        aiEnabled: aiLayerService.isEnabled()
+      });
 
       return {
         overall,
