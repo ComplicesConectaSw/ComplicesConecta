@@ -22,6 +22,9 @@ import performanceMonitoring from '@/services/PerformanceMonitoringService';
 import errorAlertService from '@/services/ErrorAlertService';
 import { logger } from '@/lib/logger';
 import { AlertConfigPanel } from './AlertConfigPanel';
+import { ExportButton } from './ExportButton';
+import { NotificationSettings } from './NotificationSettings';
+import type { ExportData } from '@/utils/reportExport';
 
 // =====================================================
 // INTERFACES
@@ -213,6 +216,21 @@ export const AnalyticsDashboard: React.FC = () => {
           >
             🔄 Refresh Now
           </button>
+
+          {/* Botón de Exportación */}
+          <ExportButton
+            data={{
+              metrics: performanceMonitoring.getAllMetrics(),
+              alerts: errorAlertService.getAll(),
+              report: performanceMonitoring.generateReport(24), // Últimas 24 horas
+              metadata: {
+                exportDate: new Date().toISOString(),
+                appVersion: '3.4.1',
+                totalRecords: performanceMonitoring.getAllMetrics().length + errorAlertService.getAll().length
+              }
+            }}
+            className="bg-green-600 hover:bg-green-700 text-white border-green-600"
+          />
         </div>
       </div>
 
@@ -446,8 +464,9 @@ export const AnalyticsDashboard: React.FC = () => {
 
       {/* Config Tab */}
       {activeTab === 'config' && (
-        <div className="mt-6">
+        <div className="mt-6 space-y-6">
           <AlertConfigPanel />
+          <NotificationSettings />
         </div>
       )}
     </div>
