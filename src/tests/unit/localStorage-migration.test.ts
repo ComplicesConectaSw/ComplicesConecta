@@ -78,7 +78,6 @@ describe('localStorage Migration Tests', () => {
       
       // Flags permitidos después de la migración
       const allowedFlags = [
-        'apoyo_authenticated',
         'demo_authenticated', 
         'userType'
       ];
@@ -121,53 +120,12 @@ describe('localStorage Migration Tests', () => {
     });
   });
 
-  describe('Autenticación de usuario especial (Apoyo)', () => {
-    it('debe mantener solo flag de autenticación para usuario Apoyo', () => {
-      // Simular autenticación de usuario especial
-      localStorage.setItem('apoyo_authenticated', 'true');
-      
-      // NO debe haber datos de usuario almacenados
-      expect(localStorage.getItem('apoyo_user')).toBeNull();
-      expect(localStorage.getItem('apoyo_session')).toBeNull();
-      
-      // Solo el flag de autenticación
-      expect(localStorage.getItem('apoyo_authenticated')).toBe('true');
-    });
-
-    it('debe limpiar datos obsoletos de usuario Apoyo', () => {
-      // Simular datos obsoletos que deben ser limpiados
-      localStorage.setItem('apoyo_authenticated', 'true');
-      localStorage.setItem('apoyo_user', JSON.stringify({ id: 'apoyo-id' }));
-      localStorage.setItem('apoyo_session', JSON.stringify({ token: 'old-token' }));
-
-      // Verificar que los datos obsoletos existen
-      expect(localStorage.getItem('apoyo_user')).toBeTruthy();
-      expect(localStorage.getItem('apoyo_session')).toBeTruthy();
-
-      // Simular limpieza (como se hace en useAuth)
-      localStorage.removeItem('apoyo_user');
-      localStorage.removeItem('apoyo_session');
-
-      // Verificar limpieza exitosa
-      expect(localStorage.getItem('apoyo_user')).toBeNull();
-      expect(localStorage.getItem('apoyo_session')).toBeNull();
-      expect(localStorage.getItem('apoyo_authenticated')).toBe('true');
-    });
-  });
-
   describe('Configuración de modo de aplicación', () => {
     it('debe determinar correctamente el uso de Supabase real', () => {
       // Limpiar localStorage
       localStorage.clear();
       
-      // Caso 1: Usuario Apoyo autenticado
-      localStorage.setItem('apoyo_authenticated', 'true');
-      expect(shouldUseRealSupabase()).toBe(true);
-
-      // Limpiar y probar caso 2
-      localStorage.clear();
-      
-      // Caso 2: Modo producción (siempre usa Supabase real)
+      // Modo producción (siempre usa Supabase real)
       // La implementación actual siempre retorna true en producción
       expect(shouldUseRealSupabase()).toBe(true);
     });
@@ -288,11 +246,9 @@ describe('localStorage Migration Tests', () => {
 
     it('debe validar integridad de flags de sesión', () => {
       // Configurar flags válidos
-      localStorage.setItem('apoyo_authenticated', 'true');
       localStorage.setItem('demo_authenticated', 'false');
 
       // Verificar que solo valores booleanos string son aceptados
-      expect(['true', 'false'].includes(localStorage.getItem('apoyo_authenticated') || '')).toBe(true);
       expect(['true', 'false'].includes(localStorage.getItem('demo_authenticated') || '')).toBe(true);
     });
   });
@@ -300,7 +256,7 @@ describe('localStorage Migration Tests', () => {
   describe('Performance y cache', () => {
     it('debe evitar almacenamiento excesivo en localStorage', () => {
       // Simular uso normal de la aplicación
-      localStorage.setItem('apoyo_authenticated', 'true');
+      localStorage.setItem('demo_authenticated', 'true');
       localStorage.setItem('userType', 'admin');
 
       // Verificar que el uso de localStorage es mínimo

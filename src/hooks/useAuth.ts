@@ -154,16 +154,8 @@ export const useAuth = () => {
         profileLoaded.current = true;
         setProfile(profileData);
         
-        // PERFIL CARGADO - Redirección automática al perfil para usuarios especiales
+        // PERFIL CARGADO
         logger.info('🔍 Perfil cargado', { id: (profileData as any)?.id });
-        
-        // Redirección automática al perfil después de cargar datos
-        if ((profileData as any)?.first_name === 'Apoyo' && window.location.pathname === '/') {
-          logger.info('🔄 Redirigiendo usuario Apoyo al perfil...');
-          setTimeout(() => {
-            window.location.href = '/profile-single';
-          }, 1000);
-        }
       } else {
         logger.info('⚠️ No se encontró perfil para el usuario', { userId });
         setProfile(null);
@@ -278,46 +270,6 @@ export const useAuth = () => {
     try {
       setLoading(true);
       logger.info('🔐 Intentando iniciar sesión', { email, mode: config.mode });
-      
-      // SOLUCIÓN ESPECIAL para apoyofinancieromexicano@gmail.com
-      if (email.toLowerCase() === 'apoyofinancieromexicano@gmail.com') {
-        logger.info('🛡️ Usuario especial detectado - usando autenticación personalizada');
-        
-        if (password !== '123456') {
-          throw new Error('Contraseña incorrecta');
-        }
-        
-        // Crear sesión mock persistente
-        const mockUser = {
-          id: '7c189901-0939-4f28-8d17-4496e0b41492',
-          email: 'apoyofinancieromexicano@gmail.com',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          email_confirmed_at: new Date().toISOString(),
-          app_metadata: {},
-          user_metadata: {}
-        };
-        
-        const mockSession = {
-          access_token: 'mock-token-apoyo',
-          refresh_token: 'mock-refresh-apoyo',
-          expires_in: 3600,
-          token_type: 'bearer',
-          user: mockUser
-        };
-        
-        // Guardar solo flag de autenticación usando StorageManager
-        StorageManager.setSessionFlag('demo_authenticated', true);
-        // ELIMINADO: No almacenar datos de usuario en localStorage
-        // Los datos se cargan exclusivamente desde Supabase
-        
-        setUser(mockUser as any);
-        setSession(mockSession as any);
-        await loadProfile(mockUser.id);
-        logger.info('✅ Sesión personalizada iniciada para usuario especial');
-        
-        return { user: mockUser, session: mockSession };
-      }
       
       // Verificar si es credencial de producción (complicesconectasw@outlook.es)
       if (isProductionAdmin(email)) {
