@@ -73,6 +73,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Trigger para validar en insert/update
+DROP TRIGGER IF EXISTS trigger_validate_s2_cell ON profiles;
 CREATE TRIGGER trigger_validate_s2_cell
 BEFORE INSERT OR UPDATE ON profiles
 FOR EACH ROW

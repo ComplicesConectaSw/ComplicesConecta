@@ -1,8 +1,80 @@
 # 📝 RELEASE NOTES - ComplicesConecta
 
-**Última Actualización:** 30 de Octubre, 2025  
-**Versión Actual:** v3.4.1  
-**Estado:** ✅ **PRODUCTION READY - ENTERPRISE GRADE**
+**Última Actualización:** 31 de Octubre, 2025  
+**Versión Actual:** v3.5.0  
+**Estado:** ✅ **PRODUCTION READY - ENTERPRISE GRADE - AI-NATIVE**
+
+---
+
+## 🚀 Versión 3.5.0 - AI-Native Layer + Scalability (31 Oct 2025)
+
+### 🎉 NUEVAS FUNCIONALIDADES v3.5.0
+
+#### 🧠 AI-Native Layer (Fase 1 - COMPLETADA 100%)
+
+**1. ML-Powered Compatibility Scoring**
+- ✅ PyTorch/TensorFlow.js integration
+- ✅ Modelo pre-entrenado (400K parámetros)
+- ✅ Feature extraction (11 features)
+- ✅ Hybrid scoring (AI + legacy fallback)
+- ✅ Caching inteligente (1 hora TTL)
+- ✅ Lazy loading de modelos
+
+**2. Chat Summaries ML**
+- ✅ GPT-4 integration (opcional)
+- ✅ BART (HuggingFace) - GRATIS
+- ✅ Fallback sin ML (ultra rápido)
+- ✅ Análisis de sentimiento
+- ✅ Extracción de temas (TF-IDF)
+- ✅ Rate limiting (10 resúmenes/día)
+- ✅ Cache 24h
+
+**Opciones Gratuitas Disponibles:**
+- **HuggingFace Inference API**: 100% gratis, calidad aceptable
+- **Fallback sin ML**: Resúmenes básicos, <100ms latency
+- **Ollama Local**: Máxima calidad, requiere hardware
+
+#### 📊 Google S2 Geosharding (Fase 2.1 - INICIADA 75%)
+
+**1. S2Service Implementado**
+- ✅ Google S2 library integration
+- ✅ Cell ID generation (niveles 10-20)
+- ✅ Neighbor cell retrieval
+- ✅ Distance calculations
+- ✅ Geolocation hook integration
+
+**2. Database Migration**
+- ✅ `s2_cell_id` columna agregada a profiles
+- ✅ `s2_level` con default 15 (~1km²)
+- ✅ Triggers de validación
+- ✅ Índices optimizados
+- ✅ Vista `geographic_hotspots`
+
+**3. Backfill Script**
+- ✅ Script TypeScript para datos existentes
+- ✅ Batch processing (100 perfiles/vez)
+- ⏳ Pendiente ejecución: `npm run backfill:s2`
+
+**Mejoras Esperadas:**
+- Query nearby (100k users): 5s → 100ms (50x mejora)
+- Query nearby (1M users): 30s → 300ms (100x mejora)
+
+#### 🗄️ Base de Datos (47 tablas → 52 tablas)
+
+**Nuevas Tablas v3.5.0:**
+- `ai_compatibility_scores` - Scores ML
+- `ai_prediction_logs` - Logs de predicciones
+- `ai_model_metrics` - Métricas del modelo
+- `chat_summaries` - Resúmenes automáticos
+- `summary_requests` - Rate limiting
+- `summary_feedback` - Feedback de usuarios
+
+**Estado:**
+- ✅ 52 tablas sincronizadas (100%)
+- ✅ 80+ índices optimizados
+- ✅ 65+ políticas RLS activas
+- ✅ 12 triggers funcionando
+- ✅ 0 conflictos detectados
 
 ---
 

@@ -64,6 +64,7 @@ CREATE INDEX IF NOT EXISTS idx_ai_scores_created ON ai_compatibility_scores(crea
 -- RLS
 ALTER TABLE ai_compatibility_scores ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS ai_scores_select_own ON ai_compatibility_scores;
 CREATE POLICY ai_scores_select_own
 ON ai_compatibility_scores FOR SELECT
 USING (user1_id = auth.uid() OR user2_id = auth.uid());
@@ -123,6 +124,7 @@ CREATE INDEX IF NOT EXISTS idx_chat_summaries_method ON chat_summaries(method);
 
 ALTER TABLE chat_summaries ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS chat_summaries_select_own ON chat_summaries;
 CREATE POLICY chat_summaries_select_own
 ON chat_summaries FOR SELECT
 USING (
@@ -146,10 +148,12 @@ CREATE INDEX IF NOT EXISTS idx_summary_requests_created ON summary_requests(crea
 
 ALTER TABLE summary_requests ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS summary_requests_select_own ON summary_requests;
 CREATE POLICY summary_requests_select_own
 ON summary_requests FOR SELECT
 USING (user_id = auth.uid());
 
+DROP POLICY IF EXISTS summary_requests_insert_own ON summary_requests;
 CREATE POLICY summary_requests_insert_own
 ON summary_requests FOR INSERT
 WITH CHECK (user_id = auth.uid());
@@ -169,6 +173,7 @@ CREATE INDEX IF NOT EXISTS idx_summary_feedback_user ON summary_feedback(user_id
 
 ALTER TABLE summary_feedback ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS summary_feedback_insert_own ON summary_feedback;
 CREATE POLICY summary_feedback_insert_own
 ON summary_feedback FOR INSERT
 WITH CHECK (user_id = auth.uid());
