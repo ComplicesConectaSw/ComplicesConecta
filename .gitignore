@@ -242,3 +242,5 @@ docker-compose.override.yml
 # Docker volumes y datos
 docker-data/
 docker-volumes/
+# Sentry Config File
+sentry.properties

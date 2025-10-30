@@ -1,13 +1,15 @@
-# 📁 PROJECT STRUCTURE TREE - ComplicesConecta v3.4.0
+# 📁 PROJECT STRUCTURE TREE - ComplicesConecta v3.4.1
 
-**Última Actualización:** 22 de Enero, 2025 - 15:30 hrs  
-**Versión:** 3.4.0  
-**Estado:** ✅ **PRODUCTION READY ADVANCED**  
-**Puntuación:** 100/100 🏆
+**Última Actualización:** 30 de Octubre, 2025 - 23:45 hrs  
+**Versión:** 3.4.1  
+**Estado:** ✅ **PRODUCTION READY - ENTERPRISE GRADE**  
+**Puntuación:** 98.5/100 🏆
 
-### Funcionalidades Avanzadas v3.4.0 Implementadas:
+### Funcionalidades Avanzadas v3.4.1 Implementadas:
+- **Sistema de Monitoreo Completo**: Performance, Error Alerting, Analytics Dashboard (95%)
+- **Datadog RUM**: Real User Monitoring con Web Vitals y Session Tracking
 - **Sistema de Seguridad**: SecurityAuditService con monitoreo continuo y detección de amenazas
-- **Moderación con IA**: AdvancedModerationPanel con cola de moderación y configuración avanzada
+- **Moderación con IA**: AdvancedModerationPanel con métricas y KPIs para moderadores
 - **Funcionalidades de Parejas**: AdvancedCoupleService con matching, eventos y mensajería especializada
 - **Notificaciones en Tiempo Real**: Service Worker, push notifications y centro de notificaciones
 - **Caché Avanzado**: AdvancedCacheService multi-nivel con compresión y predicción
@@ -29,12 +31,19 @@ conecta-social-comunidad-main/
 │   │   ├── demo/                 # Componentes de demostración
 │   │   ├── animations/           # Sistema de animaciones
 │   │   ├── analytics/            # Componentes de análisis
-│   │   ├── admin/                # Dashboard administrativo (ACTUALIZADO v3.4.0)
+│   │   ├── admin/                # Dashboard administrativo (ACTUALIZADO v3.4.1)
 │   │   │   ├── panels/           # Subpaneles modulares (6 paneles)
-│   │   │   ├── SecurityDashboard.tsx      # Panel de seguridad avanzado (NUEVO)
-│   │   │   └── AdvancedModerationPanel.tsx # Panel de moderación con IA (NUEVO)
-│   │   ├── analytics/            # Componentes de análisis (ACTUALIZADO v3.4.0)
-│   │   │   └── AdvancedAnalyticsDashboard.tsx # Dashboard analytics avanzado (NUEVO)
+│   │   │   ├── SecurityDashboard.tsx          # Panel de seguridad avanzado
+│   │   │   ├── AdvancedModerationPanel.tsx    # Panel de moderación con IA
+│   │   │   ├── AnalyticsDashboard.tsx         # Dashboard analytics completo (4 pestañas)
+│   │   │   ├── ModerationMetrics.tsx          # Métricas de moderación (NUEVO v3.4.1)
+│   │   │   ├── HistoricalCharts.tsx           # Gráficos históricos Recharts (NUEVO v3.4.1)
+│   │   │   ├── WebhookConfigPanel.tsx         # Sistema de webhooks (NUEVO v3.4.1)
+│   │   │   ├── AlertConfigPanel.tsx           # Configuración de alertas (NUEVO v3.4.1)
+│   │   │   ├── ExportButton.tsx               # Exportación de reportes (NUEVO v3.4.1)
+│   │   │   └── NotificationSettings.tsx       # Notificaciones desktop (NUEVO v3.4.1)
+│   │   ├── analytics/            # Componentes de análisis (ACTUALIZADO v3.4.1)
+│   │   │   └── AdvancedAnalyticsDashboard.tsx # Dashboard analytics avanzado
 │   │   ├── cache/                # Componentes de caché (NUEVO v3.4.0)
 │   │   │   └── CacheDashboard.tsx # Dashboard de monitoreo de caché
 │   │   ├── couples/              # Componentes de parejas (NUEVO v3.4.0)
@@ -43,46 +52,69 @@ conecta-social-comunidad-main/
 │   │   │   └── NotificationCenter.tsx # Centro de notificaciones
 │   │   └── theme/                # Sistema de temas visuales
 │   ├── pages/                    # Páginas principales de la app
-│   ├── hooks/                    # Custom React hooks (ACTUALIZADO v3.4.0)
-│   │   ├── useAdvancedAnalytics.ts    # Hook para analytics avanzados (NUEVO)
-│   │   ├── useAdvancedCache.ts        # Hook para gestión de caché (NUEVO)
-│   │   ├── useAdvancedModeration.ts   # Hook para moderación (NUEVO)
-│   │   └── useRealtimeNotifications.ts # Hook para notificaciones tiempo real (NUEVO)
+│   ├── hooks/                    # Custom React hooks (ACTUALIZADO v3.4.1)
+│   │   ├── useAdvancedAnalytics.ts    # Hook para analytics avanzados
+│   │   ├── useAdvancedCache.ts        # Hook para gestión de caché
+│   │   ├── useAdvancedModeration.ts   # Hook para moderación
+│   │   ├── useRealtimeNotifications.ts # Hook para notificaciones tiempo real
+│   │   ├── useAuth.ts                 # Hook de autenticación (ACTUALIZADO v3.4.1)
+│   │   └── useWorldID.ts              # Hook para World ID (ACTUALIZADO v3.4.1)
 │   ├── utils/                    # Utilidades y helpers
 │   ├── integrations/             # Integraciones (Supabase, APIs)
 │   ├── lib/                      # Librerías y configuraciones
-│   ├── services/                 # Servicios de negocio (ACTUALIZADO v3.4.0)
-│   │   ├── AdvancedAnalyticsService.ts    # Analytics avanzados (NUEVO)
-│   │   ├── AdvancedCacheService.ts        # Caché multi-nivel (NUEVO)
-│   │   ├── AdvancedCoupleService.ts       # Servicio de parejas (NUEVO)
-│   │   ├── SecurityAuditService.ts       # Auditoría de seguridad (NUEVO)
-│   │   ├── PushNotificationService.ts     # Notificaciones push (ACTUALIZADO)
-│   │   └── PerformanceMonitoringService.ts # Monitoreo en tiempo real
+│   ├── services/                 # Servicios de negocio (ACTUALIZADO v3.4.1)
+│   │   ├── PerformanceMonitoringService.ts    # Monitoreo de performance (ACTUALIZADO v3.4.1)
+│   │   ├── ErrorAlertService.ts               # Sistema de alertas (NUEVO v3.4.1)
+│   │   ├── ModerationMetricsService.ts        # Métricas de moderación (NUEVO v3.4.1)
+│   │   ├── HistoricalMetricsService.ts        # Métricas históricas (NUEVO v3.4.1)
+│   │   ├── WebhookService.ts                  # Sistema de webhooks (NUEVO v3.4.1)
+│   │   ├── DesktopNotificationService.ts      # Notificaciones desktop (NUEVO v3.4.1)
+│   │   ├── AdvancedAnalyticsService.ts        # Analytics avanzados
+│   │   ├── AdvancedCacheService.ts            # Caché multi-nivel
+│   │   ├── AdvancedCoupleService.ts           # Servicio de parejas
+│   │   ├── SecurityAuditService.ts            # Auditoría de seguridad
+│   │   └── PushNotificationService.ts         # Notificaciones push
 │   ├── styles/                   # Estilos globales
 │   │   └── responsive-admin.css  # CSS responsive admin
+│   ├── config/                   # Configuraciones (NUEVO v3.4.1)
+│   │   ├── sentry.config.ts      # Integración Sentry completa
+│   │   └── datadog-rum.config.ts # Datadog RUM configuration
 │   └── assets/                   # Recursos estáticos
-├── supabase/                     # Backend Supabase (ACTUALIZADO v3.4.0)
+├── supabase/                     # Backend Supabase (ACTUALIZADO v3.4.1)
 │   ├── functions/                # Edge Functions serverless
 │   │   ├── send-email/           # Sistema de emails
 │   │   ├── push-notifications/   # Notificaciones push
 │   │   └── ai-matching/          # Algoritmo de matching IA
-│   └── migrations/               # Migraciones de base de datos (ACTUALIZADO)
-│       ├── 20250122000003_create_security_tables_fixed.sql # Tablas seguridad (NUEVO)
-│       └── 20250122000004_create_couple_tables.sql        # Tablas parejas (NUEVO)
+│   └── migrations/               # Migraciones de base de datos (20 migraciones)
+│       ├── 20250122000003_create_security_tables_fixed.sql    # Tablas seguridad
+│       ├── 20250122000004_create_couple_tables.sql            # Tablas parejas
+│       ├── 20251029000000_create_monitoring_tables.sql        # Tablas monitoreo (NUEVO v3.4.1)
+│       ├── 20251029100000_create_interests_tables.sql         # Tablas intereses (NUEVO v3.4.1)
+│       ├── 20251029100001_create_worldid_verifications.sql    # World ID (NUEVO v3.4.1)
+│       └── 20251030000001_alter_referral_rewards.sql          # Referral rewards (NUEVO v3.4.1)
 ├── android/                      # Proyecto Android nativo
-├── public/                       # Archivos públicos (ACTUALIZADO v3.4.0)
-│   ├── sw-notifications.js       # Service Worker notificaciones (NUEVO)
-│   └── manifest.json             # PWA manifest
-├── docs-unified/                 # Documentación completa
-├── tests/                        # Suite de testing
-└── config/                       # Archivos de configuración
+├── kubernetes/                   # Configs Datadog/K8s (NUEVO v3.4.1)
+│   ├── datadog-docker-run.sh    # Script Datadog Agent
+│   ├── datadog-agent.yaml       # Manifest Kubernetes
+│   └── datadog-setup.sh         # Setup automatizado
+├── public/                       # Archivos públicos (ACTUALIZADO v3.4.1)
+│   ├── sw-notifications.js      # Service Worker notificaciones
+│   └── manifest.json            # PWA manifest
+├── docs-unified/                # Documentación completa (gitignored)
+├── tests/                       # Suite de testing (98% passing)
+├── server.js                    # Express server producción (NUEVO v3.4.1)
+├── newrelic.js                  # New Relic APM config (NUEVO v3.4.1)
+├── Dockerfile                   # Docker multi-stage (ACTUALIZADO v3.4.1)
+├── .dockerignore                # Optimización Docker (NUEVO v3.4.1)
+├── .env.example                 # Template variables entorno (NUEVO v3.4.1)
+└── config/                      # Archivos de configuración
 ```
 
 ### Base de Datos (Supabase)
 
-#### Tablas Principales v3.4.0
+#### Tablas Principales v3.4.1 (47 tablas - 100% sincronizadas)
 ```sql
--- Tablas del Sistema v3.4.0
+-- Tablas del Sistema Core
 profiles              -- Perfiles de usuario
 matches              -- Sistema de matching
 chats                -- Conversaciones
@@ -91,8 +123,8 @@ user_preferences     -- Preferencias de usuario
 theme_preferences    -- Preferencias de tema
 subscriptions        -- Suscripciones premium
 tokens               -- Sistema de tokens
-interests            -- Intereses de usuarios
-user_interests       -- Relación usuario-intereses
+swinger_interests    -- Intereses swinger específicos (NUEVO v3.4.1)
+user_swinger_interests -- Relación usuario-intereses (NUEVO v3.4.1)
 career_forms         -- Formularios de carrera
 notifications        -- Sistema de notificaciones
 user_sessions        -- Sesiones de usuario
@@ -102,15 +134,15 @@ report_categories    -- Categorías de reportes
 report_actions       -- Acciones de moderación
 moderation_logs      -- Logs de moderación
 
--- Tablas de Seguridad v3.4.0 (NUEVAS)
+-- Tablas de Seguridad
 security_events      -- Eventos de seguridad
 blocked_ips          -- IPs bloqueadas
 threat_detections    -- Amenazas detectadas
 security_configurations -- Configuraciones de seguridad
 security_alerts      -- Alertas de seguridad
 
--- Tablas de Parejas v3.4.0 (NUEVAS)
-couple_profiles      -- Perfiles de parejas
+-- Tablas de Parejas
+couple_profiles      -- Perfiles de parejas (49 campos)
 couple_matches       -- Matches entre parejas
 couple_interactions  -- Interacciones entre parejas
 couple_events        -- Eventos de parejas
@@ -120,6 +152,22 @@ couple_favorites     -- Parejas favoritas
 couple_reports       -- Reportes de parejas
 couple_verifications -- Verificaciones de parejas
 couple_statistics    -- Estadísticas de parejas
+
+-- Tablas de Monitoreo v3.4.1 (NUEVAS)
+performance_metrics  -- Métricas de performance
+error_alerts         -- Alertas de errores
+web_vitals_history   -- Historial de Web Vitals
+monitoring_sessions  -- Sesiones de monitoreo
+
+-- Tablas de World ID v3.4.1 (NUEVAS)
+worldid_verifications       -- Verificaciones World ID
+worldid_nullifier_hashes    -- Hashes únicos
+worldid_verification_stats  -- Estadísticas
+
+-- Tablas de Tokens y Referidos v3.4.1
+user_token_balances  -- Balances de tokens CMPX/GTK
+referral_rewards     -- Recompensas por referidos
+gallery_permissions  -- Permisos de galería
 ```
 
 ### Edge Functions

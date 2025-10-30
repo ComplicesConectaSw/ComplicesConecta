@@ -15,6 +15,7 @@ import {
 import { StorageManager } from '@/lib/storage-manager';
 import { logger } from '@/lib/logger';
 import { usePersistedState } from '@/hooks/usePersistedState';
+import { setDatadogUser, clearDatadogUser } from '@/config/datadog-rum.config';
 
 interface Profile {
   id: string;
@@ -156,6 +157,17 @@ export const useAuth = () => {
         
         // PERFIL CARGADO
         logger.info('🔍 Perfil cargado', { id: (profileData as any)?.id });
+        
+        // Actualizar usuario en Datadog RUM
+        try {
+          setDatadogUser(
+            (profileData as any)?.id || userId,
+            (profileData as any)?.email,
+            (profileData as any)?.display_name || (profileData as any)?.first_name
+          );
+        } catch (error) {
+          // Silenciar errores de Datadog en desarrollo
+        }
       } else {
         logger.info('⚠️ No se encontró perfil para el usuario', { userId });
         setProfile(null);
@@ -261,6 +273,13 @@ export const useAuth = () => {
       setUser(null);
       setSession(null);
       setProfile(null);
+      
+      // Limpiar usuario en Datadog RUM
+      try {
+        clearDatadogUser();
+      } catch (error) {
+        // Silenciar errores de Datadog
+      }
     } catch (error) {
       logger.error('❌ Error en signOut', { error });
     }

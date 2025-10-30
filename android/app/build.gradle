@@ -1,3 +1,8 @@
+
+plugins {
+    id 'io.sentry.android.gradle' version '5.12.1'
+}
+
 apply plugin: 'com.android.application'
 
 android {
@@ -52,4 +57,14 @@ try {
     }
 } catch(Exception e) {
     logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
+}
+
+
+sentry {
+    org = "complicesconecta"
+    projectName = "android"
+
+    // this will upload your source code to Sentry to show it as part of the stack traces
+    // disable if you don't want to expose your sources
+    includeSourceContext = true
 }

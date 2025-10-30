@@ -8,6 +8,7 @@ import { initializeWalletProtection, detectWalletConflicts } from "./utils/walle
 import { initializeReactFallbacks, ensureReactPolyfills } from "./utils/reactFallbacks";
 import ErrorBoundary from '@/components/ErrorBoundary'
 import { initSentry } from '@/config/sentry.config'
+import { initializeDatadogRUM } from '@/config/datadog-rum.config'
 import { DebugInfo } from '@/debug'
 import { initWebVitalsMonitoring } from '@/utils/webVitals'
 import { initializeCriticalPreloading } from '@/utils/preloading'
@@ -88,6 +89,14 @@ if (typeof window !== 'undefined') {
 // Debug info for development only
 if (import.meta.env.DEV) {
   console.log('🚀 ComplicesConecta v3.4.0 starting...');
+}
+
+// Initialize Datadog RUM for frontend monitoring
+try {
+  initializeDatadogRUM();
+  if (import.meta.env.DEV) console.log('📊 Datadog RUM initialized');
+} catch (error) {
+  console.error('❌ Datadog RUM initialization failed:', error);
 }
 
 // Initialize Sentry for error monitoring
