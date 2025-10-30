@@ -35,6 +35,7 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/newrelic.js ./newrelic.js
+COPY --from=builder /app/server.js ./server.js
 
 # ================================
 # New Relic Configuration
@@ -61,6 +62,6 @@ USER nodejs
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
   CMD node -e "require('http').get('http://localhost:3000/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
 
-# Comando de inicio (require newrelic debe ser lo primero)
-CMD ["node", "-r", "newrelic", "dist/server.js"]
+# Comando de inicio (newrelic ya está requerido en server.js)
+CMD ["node", "server.js"]
 
