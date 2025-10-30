@@ -11,6 +11,12 @@
 import { logger } from '@/lib/logger';
 import { supabase } from '@/integrations/supabase/client';
 
+// New Relic integration (only in browser context)
+let newrelic: any = null;
+if (typeof window !== 'undefined' && (window as any).newrelic) {
+  newrelic = (window as any).newrelic;
+}
+
 // =====================================================
 // INTERFACES
 // =====================================================
@@ -215,6 +221,34 @@ class ErrorAlertService {
     this.persistAlert(alert).catch(err => 
       logger.debug('Failed to persist alert:', { error: String(err) })
     );
+
+    // 🆕 Enviar a New Relic si está disponible
+    if (newrelic) {
+      try {
+        // Enviar error a New Relic
+        const error = alertData.error instanceof Error 
+          ? alertData.error 
+          : new Error(alertData.message);
+        
+        newrelic.noticeError(error, {
+          severity: alert.severity,
+          category: alert.category,
+          userId: alert.userId,
+          ...(alert.metadata || {})
+        });
+
+        // También enviar como custom event
+        newrelic.addPageAction('ErrorAlert', {
+          severity: alert.severity,
+          category: alert.category,
+          message: alert.message,
+          userId: alert.userId,
+          timestamp: alert.timestamp.toISOString()
+        });
+      } catch (error) {
+        logger.debug('Failed to send alert to New Relic:', { error: String(error) });
+      }
+    }
 
     // Keep only last 500 alerts in memory
     if (this.alerts.length > 500) {

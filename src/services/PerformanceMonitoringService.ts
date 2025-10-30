@@ -11,6 +11,12 @@
 import { logger } from '@/lib/logger';
 import { supabase } from '@/integrations/supabase/client';
 
+// New Relic integration (only in browser context)
+let newrelic: any = null;
+if (typeof window !== 'undefined' && (window as any).newrelic) {
+  newrelic = (window as any).newrelic;
+}
+
 // =====================================================
 // INTERFACES
 // =====================================================
@@ -169,6 +175,22 @@ class PerformanceMonitoringService {
     this.persistMetric(fullMetric).catch(err => 
       logger.debug('Failed to persist metric:', { error: String(err) })
     );
+
+    // 🆕 Enviar a New Relic si está disponible
+    if (newrelic) {
+      try {
+        newrelic.addPageAction('PerformanceMetric', {
+          name: fullMetric.name,
+          value: fullMetric.value,
+          unit: fullMetric.unit,
+          category: fullMetric.category,
+          timestamp: fullMetric.timestamp.toISOString(),
+          ...(fullMetric.metadata || {})
+        });
+      } catch (error) {
+        logger.debug('Failed to send metric to New Relic:', { error: String(error) });
+      }
+    }
 
     // Keep only last 1000 metrics to avoid memory issues
     if (this.metrics.length > 1000) {
