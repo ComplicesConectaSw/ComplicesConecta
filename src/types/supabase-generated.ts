@@ -1,3 +1,4 @@
+Connecting to db 5432
 export type Json =
   | string
   | number
@@ -34,6 +35,183 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_compatibility_scores: {
+        Row: {
+          ai_score: number | null
+          confidence_score: number | null
+          created_at: string | null
+          features: Json | null
+          final_score: number
+          id: string
+          legacy_score: number | null
+          model_version: string | null
+          prediction_method: string | null
+          updated_at: string | null
+          user1_id: string
+          user2_id: string
+        }
+        Insert: {
+          ai_score?: number | null
+          confidence_score?: number | null
+          created_at?: string | null
+          features?: Json | null
+          final_score: number
+          id?: string
+          legacy_score?: number | null
+          model_version?: string | null
+          prediction_method?: string | null
+          updated_at?: string | null
+          user1_id: string
+          user2_id: string
+        }
+        Update: {
+          ai_score?: number | null
+          confidence_score?: number | null
+          created_at?: string | null
+          features?: Json | null
+          final_score?: number
+          id?: string
+          legacy_score?: number | null
+          model_version?: string | null
+          prediction_method?: string | null
+          updated_at?: string | null
+          user1_id?: string
+          user2_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_compatibility_scores_user1_id_fkey"
+            columns: ["user1_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_compatibility_scores_user2_id_fkey"
+            columns: ["user2_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_model_metrics: {
+        Row: {
+          accuracy_score: number | null
+          avg_prediction_time_ms: number | null
+          cache_hit_rate: number | null
+          conversation_rate: number | null
+          created_at: string | null
+          error_rate: number | null
+          f1_score: number | null
+          id: string
+          match_rate: number | null
+          model_version: string
+          period_end: string
+          period_start: string
+          precision_score: number | null
+          predictions_count: number | null
+          recall_score: number | null
+          satisfaction_score: number | null
+        }
+        Insert: {
+          accuracy_score?: number | null
+          avg_prediction_time_ms?: number | null
+          cache_hit_rate?: number | null
+          conversation_rate?: number | null
+          created_at?: string | null
+          error_rate?: number | null
+          f1_score?: number | null
+          id?: string
+          match_rate?: number | null
+          model_version: string
+          period_end: string
+          period_start: string
+          precision_score?: number | null
+          predictions_count?: number | null
+          recall_score?: number | null
+          satisfaction_score?: number | null
+        }
+        Update: {
+          accuracy_score?: number | null
+          avg_prediction_time_ms?: number | null
+          cache_hit_rate?: number | null
+          conversation_rate?: number | null
+          created_at?: string | null
+          error_rate?: number | null
+          f1_score?: number | null
+          id?: string
+          match_rate?: number | null
+          model_version?: string
+          period_end?: string
+          period_start?: string
+          precision_score?: number | null
+          predictions_count?: number | null
+          recall_score?: number | null
+          satisfaction_score?: number | null
+        }
+        Relationships: []
+      }
+      ai_prediction_logs: {
+        Row: {
+          cache_hit: boolean | null
+          error_message: string | null
+          fallback_used: boolean | null
+          features: Json
+          id: string
+          method: string
+          model_version: string | null
+          prediction_time_ms: number | null
+          score: number
+          timestamp: string | null
+          user1_id: string
+          user2_id: string
+        }
+        Insert: {
+          cache_hit?: boolean | null
+          error_message?: string | null
+          fallback_used?: boolean | null
+          features?: Json
+          id?: string
+          method: string
+          model_version?: string | null
+          prediction_time_ms?: number | null
+          score: number
+          timestamp?: string | null
+          user1_id: string
+          user2_id: string
+        }
+        Update: {
+          cache_hit?: boolean | null
+          error_message?: string | null
+          fallback_used?: boolean | null
+          features?: Json
+          id?: string
+          method?: string
+          model_version?: string | null
+          prediction_time_ms?: number | null
+          score?: number
+          timestamp?: string | null
+          user1_id?: string
+          user2_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_prediction_logs_user1_id_fkey"
+            columns: ["user1_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_prediction_logs_user2_id_fkey"
+            columns: ["user2_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       analytics_events: {
         Row: {
           event_data: Json | null
@@ -2752,6 +2930,19 @@ export type Database = {
         Returns: boolean
       }
       geomfromewkt: { Args: { "": string }; Returns: unknown }
+      get_ai_compatibility_score: {
+        Args: { p_user1_id: string; p_user2_id: string }
+        Returns: number
+      }
+      get_model_stats: {
+        Args: { p_model_version: string; p_period_hours?: number }
+        Returns: {
+          avg_score: number
+          cache_hit_rate: number
+          error_count: number
+          total_predictions: number
+        }[]
+      }
       gettransactionid: { Args: never; Returns: unknown }
       longtransactionsenabled: { Args: never; Returns: boolean }
       populate_geometry_columns:
