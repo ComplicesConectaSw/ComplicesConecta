@@ -188,7 +188,7 @@ export class AILayerService {
       throw new Error('Profiles not found');
     }
 
-    const [user1, user2] = profiles as Profile[];
+    const [user1, user2] = profiles as any[];
 
     // Feature 1: Likes intercambiados
     const { count: likesGiven } = await supabase

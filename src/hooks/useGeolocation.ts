@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { logger } from '@/lib/logger';
+import { s2Service } from '@/services/geo/S2Service';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface LocationCoordinates {
   latitude: number;
@@ -9,6 +11,8 @@ export interface LocationCoordinates {
   altitudeAccuracy?: number | null;
   heading?: number | null;
   speed?: number | null;
+  s2CellId?: string; // S2 cell ID para geosharding
+  s2Level?: number;  // Nivel de precisión S2
 }
 
 export interface GeolocationState {
