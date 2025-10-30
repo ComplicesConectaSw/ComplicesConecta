@@ -228,3 +228,13 @@ docs-unified/
 2025-01-22/
 backups/
 audit-files/
+
+# Docker (ignorar archivos temporales y builds)
+.docker/
+docker-compose.override.yml
+*.dockerfile.backup
+.dockerignore.backup
+
+# Docker volumes y datos
+docker-data/
+docker-volumes/

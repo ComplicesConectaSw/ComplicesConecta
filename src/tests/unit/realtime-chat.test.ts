@@ -56,20 +56,22 @@ describe('Realtime Chat Tests', () => {
     });
 
     it('should handle realtime subscriptions', () => {
-      const mockOn = vi.fn(() => ({ subscribe: vi.fn() }));
+      const mockSubscribe = vi.fn();
+      const mockOn = vi.fn(() => ({ subscribe: mockSubscribe }));
       const mockChannel = {
         on: mockOn,
+        subscribe: mockSubscribe,
         unsubscribe: vi.fn()
       };
       
       (supabase.channel as any).mockReturnValue(mockChannel);
 
-      const _channel = supabase.channel('chat-room')
-        .on('postgres_changes', {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'chat_messages'
-        }, () => {});
+      const channel = supabase.channel('chat-room');
+      channel.on('postgres_changes', {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'chat_messages'
+      }, () => {});
 
       expect(mockOn).toHaveBeenCalledWith(
         'postgres_changes',
