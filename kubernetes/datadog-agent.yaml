@@ -1,0 +1,112 @@
+# Datadog Agent Configuration for ComplicesConecta v3.4.1
+# Platform: Kubernetes (EKS)
+apiVersion: v1
+kind: DatadogAgent
+metadata:
+  name: datadog
+  namespace: default
+spec:
+  global:
+    # Usar el site US5 según tu configuración
+    site: "us5.datadoghq.com"
+    credentials:
+      apiSecret:
+        secretName: "datadog-secret"
+        keyName: "api-key"
+  
+  # Features habilitadas
+  features:
+    # Infrastructure Monitoring (INCLUIDO por defecto)
+    infrastructureMonitoring:
+      enabled: true
+    
+    # Application Performance Monitoring (OPCIONAL - según capturas está deshabilitado)
+    apm:
+      enabled: false
+      # Si decides habilitarlo después:
+      # enabled: true
+      # hostPort: 8126
+    
+    # Log Management (OPCIONAL - según capturas está deshabilitado)
+    logCollection:
+      enabled: false
+      # Si decides habilitarlo después:
+      # enabled: true
+      # containerCollectAll: true
+    
+    # DDOT Collector (según capturas está deshabilitado)
+    ddotCollector:
+      enabled: false
+  
+  # Agent configuration
+  agent:
+    image:
+      name: "gcr.io/datadoghq/agent:latest"
+    
+    # Environment tag para segmentar telemetría
+    env:
+      - name: DD_ENV
+        value: "production"  # o "development" según tu caso
+      
+      - name: DD_SERVICE
+        value: "complicesconecta"
+      
+      - name: DD_VERSION
+        value: "3.4.1"
+      
+      # Tags adicionales
+      - name: DD_TAGS
+        value: "env:production project:complicesconecta platform:kubernetes"
+    
+    # Recursos del contenedor
+    resources:
+      requests:
+        memory: "256Mi"
+        cpu: "200m"
+      limits:
+        memory: "512Mi"
+        cpu: "500m"
+    
+    # Health checks
+    livenessProbe:
+      httpGet:
+        path: /health
+        port: 5555
+      initialDelaySeconds: 15
+      periodSeconds: 15
+      timeoutSeconds: 5
+    
+    readinessProbe:
+      httpGet:
+        path: /ready
+        port: 5555
+      initialDelaySeconds: 15
+      periodSeconds: 15
+      timeoutSeconds: 5
+  
+  # Cluster Agent (recomendado para Kubernetes)
+  clusterAgent:
+    enabled: true
+    image:
+      name: "gcr.io/datadoghq/cluster-agent:latest"
+    
+    resources:
+      requests:
+        memory: "256Mi"
+        cpu: "200m"
+      limits:
+        memory: "512Mi"
+        cpu: "500m"
+
+---
+# Secret para almacenar la API Key de Datadog
+# IMPORTANTE: Reemplazar YOUR_API_KEY con tu API key real
+apiVersion: v1
+kind: Secret
+metadata:
+  name: datadog-secret
+  namespace: default
+type: Opaque
+stringData:
+  api-key: "YOUR_API_KEY_HERE"  # ⚠️ Reemplazar con tu API key de Datadog
+
