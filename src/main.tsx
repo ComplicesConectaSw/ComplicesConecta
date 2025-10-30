@@ -17,40 +17,72 @@ if (typeof window !== 'undefined') {
   // Initialize wallet protection with minimal interference
   initializeWalletProtection();
   
-  // Simple error handler for wallet conflicts only
+  // SILENCIAR COMPLETAMENTE TODOS LOS ERRORES DE WALLET
   window.addEventListener('error', (event) => {
     const message = event.message?.toLowerCase() || '';
+    const filename = event.filename?.toLowerCase() || '';
+    
     const walletErrors = [
-      'cannot redefine property: ethereum',
-      'cannot redefine property: solana',
-      'cannot assign to read only property: ethereum',
-      'cannot assign to read only property: solana',
-      'metamask encountered an error setting the global ethereum provider'
+      'cannot redefine property',
+      'cannot assign to read only property',
+      'metamask encountered an error',
+      'tronweb is already initiated',
+      'cannot set property chainid',
+      'bybit:page provider'
     ];
     
-    if (walletErrors.some(error => message.includes(error))) {
-      console.log('🚫 [WalletProtection] Blocked wallet error:', event.message);
+    const walletFiles = [
+      'solana.js',
+      'inpage.js',
+      'evmask.js',
+      'dist.94abdbf1.js'
+    ];
+    
+    // Bloquear si es error de wallet O archivo de wallet
+    if (walletErrors.some(error => message.includes(error)) || 
+        walletFiles.some(file => filename.includes(file))) {
+      event.stopImmediatePropagation();
       event.preventDefault();
       return false;
     }
-  });
+  }, true); // Capturar en fase de captura
   
-  // Promise rejection handler for wallet conflicts only
+  // Promise rejection handler - SILENCIAR TODO DE WALLETS
   window.addEventListener('unhandledrejection', (event) => {
-    const message = event.reason?.message?.toLowerCase() || '';
+    const message = event.reason?.message?.toLowerCase() || event.reason?.toString()?.toLowerCase() || '';
     const walletErrors = [
-      'wallet must has at least one account',
-      'cannot redefine property: ethereum',
-      'cannot redefine property: solana'
+      'wallet',
+      'ethereum',
+      'solana',
+      'tronweb',
+      'metamask',
+      'bybit',
+      'chainid'
     ];
     
     if (walletErrors.some(error => message.includes(error))) {
-      console.log('🚫 [WalletProtection] Blocked wallet promise rejection:', event.reason);
+      event.stopImmediatePropagation();
       event.preventDefault();
     }
-  });
+  }, true);
 
-  console.log('🛡️ [WalletProtection] Enhanced protection initialized successfully');
+  // Sobrescribir console.error temporalmente para wallets
+  const originalConsoleError = console.error;
+  console.error = (...args) => {
+    const message = args.join(' ').toLowerCase();
+    const isWalletError = [
+      'wallet',
+      'ethereum',
+      'solana',
+      'metamask',
+      'tronweb',
+      'bybit'
+    ].some(keyword => message.includes(keyword));
+    
+    if (!isWalletError) {
+      originalConsoleError.apply(console, args);
+    }
+  };
 }
 
 // Debug info for development only
