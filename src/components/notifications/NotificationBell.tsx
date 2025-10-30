@@ -139,8 +139,8 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ className = 
     try {
       const { error } = await supabase
         .from('notifications')
-        .update({ read: true } as never)
-        .eq('id', notificationId);
+        .update({ read: true } as any)
+        .eq('id', parseInt(notificationId, 10));
 
       if (error) throw error;
 
@@ -159,7 +159,7 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ className = 
     try {
       const { error } = await supabase
         .from('notifications')
-        .update({ read: true } as never)
+        .update({ read: true } as any)
         .eq('user_id', user.id)
         .eq('read', false);
 
@@ -187,7 +187,7 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ className = 
       const { error } = await supabase
         .from('notifications')
         .delete()
-        .eq('id', notificationId);
+        .eq('id', parseInt(notificationId, 10));
 
       if (error) throw error;
 

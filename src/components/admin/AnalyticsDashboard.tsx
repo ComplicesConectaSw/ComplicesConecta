@@ -220,13 +220,13 @@ export const AnalyticsDashboard: React.FC = () => {
           {/* Botón de Exportación */}
           <ExportButton
             data={{
-              metrics: performanceMonitoring.getAllMetrics(),
-              alerts: errorAlertService.getAll(),
+              metrics: performanceMonitoring.getMetrics({}),
+              alerts: errorAlertService.getAlerts({}),
               report: performanceMonitoring.generateReport(24), // Últimas 24 horas
               metadata: {
                 exportDate: new Date().toISOString(),
                 appVersion: '3.4.1',
-                totalRecords: performanceMonitoring.getAllMetrics().length + errorAlertService.getAll().length
+                totalRecords: performanceMonitoring.getMetrics({}).length + errorAlertService.getAlerts({}).length
               }
             }}
             className="bg-green-600 hover:bg-green-700 text-white border-green-600"

@@ -58,7 +58,7 @@ class DesktopNotificationService {
         return JSON.parse(saved);
       }
     } catch (error) {
-      logger.error('Error loading notification config:', error);
+      logger.error('Error loading notification config:', { error: String(error) });
     }
 
     // Configuración por defecto
@@ -77,7 +77,7 @@ class DesktopNotificationService {
     try {
       localStorage.setItem('notification_config', JSON.stringify(this.config));
     } catch (error) {
-      logger.error('Error saving notification config:', error);
+      logger.error('Error saving notification config:', { error: String(error) });
     }
   }
 
@@ -87,7 +87,7 @@ class DesktopNotificationService {
   private checkPermission(): void {
     if ('Notification' in window) {
       this.permission = Notification.permission;
-      logger.info('Notification permission:', this.permission);
+      logger.info('Notification permission:', { permission: this.permission });
     } else {
       logger.warn('Browser does not support notifications');
     }
@@ -118,7 +118,7 @@ class DesktopNotificationService {
         return false;
       }
     } catch (error) {
-      logger.error('Error requesting notification permission:', error);
+      logger.error('Error requesting notification permission:', { error: String(error) });
       return false;
     }
   }
@@ -188,9 +188,9 @@ class DesktopNotificationService {
         }
       };
 
-      logger.info('✅ Notification shown:', options.title);
+      logger.info('✅ Notification shown:', { title: options.title });
     } catch (error) {
-      logger.error('Error showing notification:', error);
+      logger.error('Error showing notification:', { error: String(error) });
     }
   }
 
@@ -300,7 +300,7 @@ class DesktopNotificationService {
 
       return true;
     } catch (error) {
-      logger.error('Error testing notification:', error);
+      logger.error('Error testing notification:', { error: String(error) });
       return false;
     }
   }
