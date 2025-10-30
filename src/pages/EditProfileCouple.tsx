@@ -90,6 +90,7 @@ const EditProfileCouple = () => {
           location: profileData.location || "",
           bio: profileData.bio || "",
           interests: profileData.interests || [],
+          explicitInterests: [],
           partner1: {
             firstName: profileData.partner1?.name?.split(' ')[0] || "",
             lastName: profileData.partner1?.name?.split(' ')[1] || "",
@@ -125,6 +126,7 @@ const EditProfileCouple = () => {
           location: fallbackProfile.location || "",
           bio: fallbackProfile.bio || "",
           interests: fallbackProfile.interests || [],
+          explicitInterests: [],
           partner1: {
             firstName: fallbackProfile.partner1?.name?.split(' ')[0] || "",
             lastName: fallbackProfile.partner1?.name?.split(' ')[1] || "",
@@ -674,7 +676,7 @@ const EditProfileCouple = () => {
         <ExplicitInterestsEditor
           selectedInterests={formData.explicitInterests}
           onInterestsChange={(interests) => setFormData(prev => ({ ...prev, explicitInterests: interests }))}
-          onSave={handleSubmit}
+          onSave={handleSave}
           className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-md border-purple-300/30"
         />
 

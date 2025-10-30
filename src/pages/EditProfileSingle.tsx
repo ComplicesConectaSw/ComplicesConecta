@@ -73,6 +73,7 @@ const EditProfileSingle = () => {
             location: profileData.location,
             profession: profileData.profession || '',
             interests: profileData.interests || [],
+            explicitInterests: [],
             avatar: profileData.avatar || ''
           });
           setUserId(user.id);
@@ -106,6 +107,7 @@ const EditProfileSingle = () => {
               location: `${profileData.latitude || ''}, ${profileData.longitude || ''}`,
               profession: '',
               interests: [],
+              explicitInterests: [],
               avatar: ''
             });
             setUserId(user.id);
@@ -125,6 +127,7 @@ const EditProfileSingle = () => {
         location: newProfile.location,
         profession: newProfile.profession,
         interests: newProfile.interests,
+        explicitInterests: [],
         avatar: newProfile.avatar
       });
       
@@ -147,6 +150,7 @@ const EditProfileSingle = () => {
         location: fallbackProfile.location,
         profession: fallbackProfile.profession,
         interests: fallbackProfile.interests,
+        explicitInterests: [],
         avatar: fallbackProfile.avatar
       });
       setUserId(fallbackProfile.id);
@@ -408,7 +412,7 @@ const EditProfileSingle = () => {
         <ExplicitInterestsEditor
           selectedInterests={formData.explicitInterests}
           onInterestsChange={(interests) => setFormData(prev => ({ ...prev, explicitInterests: interests }))}
-          onSave={handleSubmit}
+          onSave={handleSave}
           className="bg-white/10 backdrop-blur-md border-white/20"
         />
 
