@@ -61,8 +61,13 @@ app.get('/api/status', (req, res) => {
 });
 
 // SPA fallback - todas las rutas no encontradas van a index.html
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+app.use((req, res, next) => {
+  // Si la ruta no es un archivo estático, servir index.html
+  if (!req.path.match(/\.[a-z]+$/i)) {
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+  } else {
+    next();
+  }
 });
 
 // Error handler
