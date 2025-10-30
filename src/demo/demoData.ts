@@ -5,6 +5,7 @@
 
 import { v4 as uuidv4 } from 'uuid';
 import { pickProfileImage, resetImageCounters, type ProfileType, type Gender } from '@/lib/media';
+import { getAutoInterests } from '@/lib/lifestyle-interests';
 
 export interface DemoProfile {
   id: string;
@@ -44,20 +45,14 @@ export const generateDemoProfiles = (count: number = 20): DemoProfile[] => {
   ];
 
   const bios = [
-    'Aventurero en busca de nuevas experiencias y conexiones auténticas.',
-    'Amante de la vida, los viajes y las buenas conversaciones.',
-    'Explorando el mundo del lifestyle swinger con mente abierta.',
-    'Buscando parejas y personas afines para compartir momentos únicos.',
-    'Discreto, respetuoso y con ganas de conocer gente interesante.',
-    'Pareja liberal en busca de otras parejas para intercambios.',
-    'Nuevo en esto, pero con muchas ganas de aprender y disfrutar.',
-    'Experiencia y diversión garantizada. Siempre con respeto.'
-  ];
-
-  const interesesList = [
-    ['Viajes', 'Gastronomía', 'Música'], ['Deportes', 'Cine', 'Lectura'],
-    ['Arte', 'Baile', 'Fotografía'], ['Cocina', 'Yoga', 'Naturaleza'],
-    ['Tecnología', 'Fitness', 'Aventura'], ['Teatro', 'Vino', 'Historia']
+    'Explorando el lifestyle swinger con mente abierta y respeto. Busco conexiones auténticas y experiencias compartidas.',
+    'Pareja liberal en busca de otras parejas afines para intercambios. Discreción y comunicación abierta son clave.',
+    'Nuevo en el lifestyle swinger, pero con muchas ganas de conocer gente interesante y vivir nuevas experiencias.',
+    'Experiencia en el lifestyle, buscando parejas y singles para momentos únicos. Siempre con respeto mutuo.',
+    'Discreto y respetuoso. Me encanta la vida social del lifestyle y conocer personas afines.',
+    'Pareja experimentada buscando conexiones reales en el lifestyle swinger. Comunicación y límites claros.',
+    'Aventurero del lifestyle swinger en busca de parejas y personas para compartir diversión adulta.',
+    'Buscando explorar el lifestyle con parejas de mente abierta. Discreción total y ambiente relajado.'
   ];
 
   resetImageCounters();
@@ -67,13 +62,20 @@ export const generateDemoProfiles = (count: number = 20): DemoProfile[] => {
     const gender: Gender = Math.random() > 0.5 ? 'male' : 'female';
     const partnerGender: Gender = gender === 'male' ? 'female' : 'male';
     
+    // Nivel de experiencia aleatorio para intereses más variados
+    const experienceLevels = ['principiante', 'intermedio', 'experimentado'];
+    const experienceLevel = experienceLevels[Math.floor(Math.random() * experienceLevels.length)];
+    
+    // Generar intereses automáticos apropiados para el lifestyle swinger
+    const interests = getAutoInterests(profileType, experienceLevel, gender);
+    
     return {
       id: uuidv4(),
       name: nombres[Math.floor(Math.random() * nombres.length)],
       age: Math.floor(Math.random() * 20) + 25,
       location: ubicaciones[Math.floor(Math.random() * ubicaciones.length)],
       distance: Math.floor(Math.random() * 50) + 1,
-      interests: interesesList[Math.floor(Math.random() * interesesList.length)],
+      interests,
       image: pickProfileImage({ id: uuidv4(), name: nombres[Math.floor(Math.random() * nombres.length)], type: profileType, gender }, new Set()),
       bio: bios[Math.floor(Math.random() * bios.length)],
       isOnline: Math.random() > 0.3,

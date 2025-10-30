@@ -1,6 +1,7 @@
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
+import { SAFE_INTERESTS } from '@/lib/lifestyle-interests';
 
 interface InterestsSelectorProps {
   selectedInterests: string[];
@@ -10,48 +11,8 @@ interface InterestsSelectorProps {
   label?: string;
 }
 
-// Intereses adaptados al lifestyle swinger (apropiados para registro - no explícitos)
-const AVAILABLE_INTERESTS = [
-  // Encuentros Swinger
-  'Intercambio de parejas',
-  'Soft swap',
-  'Full swap',
-  'Encuentros grupales',
-  'Tríos',
-  'Fiestas swinger',
-  'Clubs swinger',
-  'Eventos lifestyle',
-  
-  // Dinámicas de Pareja
-  'Hotwife',
-  'Cuckold',
-  'Stag/Vixen',
-  'Parejas abiertas',
-  'Relaciones libres',
-  'Poliamor',
-  'Swinging ocasional',
-  'Lifestyle comprometido',
-  
-  // Preferencias Sexuales
-  'Voyeurismo',
-  'Exhibicionismo',
-  'BDSM ligero',
-  'Juegos de rol',
-  'Fantasías compartidas',
-  'Experiencias nuevas',
-  'Mentalidad abierta',
-  'Sin tabúes',
-  
-  // Comunidad Swinger
-  'Networking swinger',
-  'Amistad con beneficios',
-  'Comunidad lifestyle',
-  'Eventos temáticos',
-  'Fiestas privadas',
-  'Encuentros discretos',
-  'Conexiones auténticas',
-  'Respeto y consentimiento'
-];
+// Usar intereses seguros (no explícitos) para el registro inicial
+const AVAILABLE_INTERESTS = SAFE_INTERESTS;
 
 export const InterestsSelector: React.FC<InterestsSelectorProps> = ({
   selectedInterests,
