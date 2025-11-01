@@ -7,8 +7,6 @@ import { UnifiedButton } from "@/components/ui/UnifiedButton";
 import { UnifiedCard } from "@/components/ui/UnifiedCard";
 import { Heart, MessageCircle, Sparkles, ArrowLeft, Flame, Users, Crown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { simpleMatchService, SimpleMatch } from "@/lib/simpleMatches";
-// import MatchingService, { SupabaseProfile } from "@/lib/MatchingService";
 import { motion } from "framer-motion";
 import { logger } from '@/lib/logger';
 
@@ -31,7 +29,6 @@ export interface Match {
 const Matches = () => {
   const navigate = useNavigate();
   const [_matches, _setMatches] = useState<Match[]>([]);
-  const [_realMatches, _setRealMatches] = useState<SimpleMatch[]>([]);
   const [_isProduction, _setIsProduction] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [demoMatches] = useState<Match[]>([
@@ -122,37 +119,6 @@ const Matches = () => {
     // setMatches(demoMatches); // Commented out - variable not used
     logger.info('🎭 Matches demo cargados (respetando lógica de negocio):', { count: demoMatches.length, isDemo });
   }, []);
-
-  // Cargar matches reales de producción
-  const _loadRealMatches = async (maxDistance?: number) => {
-    setIsLoading(true);
-    try {
-      const result = await simpleMatchService.getMatches(20, maxDistance);
-      if (result.success && result.matches) {
-        // setRealMatches(result.matches); // Commented out - variable not used
-        // Convertir matches reales al formato de la UI
-        const _convertedMatches: Match[] = result.matches.map((match, index) => ({
-          id: parseInt(match.id),
-          name: match.name,
-          age: match.age,
-          image: match.images[0] || "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=600&fit=crop&crop=face",
-          compatibility: match.compatibility,
-          mutualInterests: match.reasons,
-          distance: match.distance,
-          matchedAt: match.lastSeen.includes('T') ? 'Hace unas horas' : match.lastSeen,
-          hasUnreadMessage: match.isOnline,
-          status: index < 2 ? 'new' : (index < 4 ? 'chatting' : 'viewed') as 'new' | 'viewed' | 'chatting'
-        }));
-        // setMatches(convertedMatches); // Commented out - variable not used
-      }
-    } catch (error) {
-      logger.error('Error cargando matches:', { error: String(error) });
-      // Fallback a datos demo en caso de error
-      // setMatches(demoMatches); // Commented out - variable not used
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const currentMatches = demoMatches; // Siempre usar datos demo para respetar lógica de negocio
   const filteredMatches = currentMatches.filter(match => {
