@@ -389,9 +389,14 @@ import { Suspense, useEffect } from 'react';
 **Commit 20:** `c5f2aef` - Actualizar métricas finales - 19 commits documentados  
 **Commit 21:** `45e5701` - Finalizar refactorización completa + integrar variables de producción  
 **Commit 22:** `1c22eb1` - Agregar consolidación final v3.5.0  
-**Commit 23:** `e4d7a92` - Limpiar secretos de documentación y agregar setup rápido
+**Commit 23:** `e4d7a92` - Limpiar secretos de documentación y agregar setup rápido  
+**Commit 24:** `3cfc276` - Actualizar commits finales en REFACTORIZACION_AUDITORIA  
+**Commit 25:** `5638a97` - Sincronizar index.html Android con cambios de logo placeholder  
+**Commit 26:** `a5c8893` - Suprimir completamente errores de wallets y logo faltante  
+**Commit 27:** `0cbd4d7` - Corregir error de tipos en preloading.ts  
+**Commit 28:** `934322d` - Corregir PostCSS config - usar Tailwind v3 en lugar de v4 (ROOT CAUSE FIX)
 
-**Estado:** ✅ Todos los cambios pusheados a origin/master (23 commits)
+**Estado:** ✅ Todos los cambios pusheados a origin/master (28 commits)
 
 ---
 
