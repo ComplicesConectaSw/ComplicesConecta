@@ -387,18 +387,18 @@ const Events = () => {
                     </div>
                     <CardContent className="p-6">
                       <h3 className="font-bold text-lg text-foreground mb-2">{event.title}</h3>
-                      <p className="text-white text-sm mb-4">{event.description}</p>
+                      <p className="text-foreground/80 text-sm mb-4">{event.description}</p>
                       
                       <div className="space-y-2 mb-4">
-                        <div className="flex items-center gap-2 text-sm text-white">
+                        <div className="flex items-center gap-2 text-sm text-foreground/80">
                           <Calendar className="h-4 w-4" />
                           {event.date} - {event.time}
                         </div>
-                        <div className="flex items-center gap-2 text-sm text-white">
+                        <div className="flex items-center gap-2 text-sm text-foreground/80">
                           <MapPin className="h-4 w-4" />
                           {event.location}
                         </div>
-                        <div className="flex items-center gap-2 text-sm text-white">
+                        <div className="flex items-center gap-2 text-sm text-foreground/80">
                           <Users className="h-4 w-4" />
                           {event.attendees}/{event.maxAttendees} parejas ({event.ageRange})
                         </div>
@@ -470,7 +470,7 @@ const Events = () => {
                           <Shield className="h-5 w-5 text-green-400 drop-shadow-lg" />
                         )}
                         {club.isPrivate && (
-                          <Lock className="h-5 w-5 text-yellow-400 drop-shadow-lg" />
+                          <Lock className="h-5 w-5 text-accent drop-shadow-lg" />
                         )}
                       </div>
                     </div>

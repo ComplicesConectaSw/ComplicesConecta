@@ -363,7 +363,7 @@ const Auth = () => {
                   <Button 
                     type="button" 
                     variant="outline" 
-                    className="w-full border-purple-300 text-purple-600 hover:bg-purple-50"
+                    className="w-full border-purple-400 text-white hover:bg-purple-500/20 hover:text-white"
                     onClick={handleDemoLogin}
                     data-testid="demo-login-button"
                   >

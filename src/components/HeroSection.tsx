@@ -56,7 +56,7 @@ export const HeroSection = () => {
               <span className="block text-white drop-shadow-2xl">
                 Plataforma Social
               </span>
-              <span className="block text-amber-600 drop-shadow-2xl">
+              <span className="block text-white drop-shadow-[0_4px_20px_rgba(0,0,0,0.8)]">
                 Exclusiva
               </span>
               <span className="block text-white text-3xl sm:text-4xl md:text-5xl font-medium mt-2 drop-shadow-xl">
@@ -68,7 +68,7 @@ export const HeroSection = () => {
           {/* Subtitle - Corregido para coincidir con imagen */}
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-white mb-8 leading-relaxed drop-shadow-lg">
             Encuentra tu
-            <span className="block text-amber-600 font-bold drop-shadow-xl">
+            <span className="block text-white font-bold drop-shadow-[0_4px_20px_rgba(0,0,0,0.8)]">
               Conexión Perfecta
             </span>
           </h2>
