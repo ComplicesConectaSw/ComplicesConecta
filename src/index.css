@@ -1,70 +1,12 @@
 /* Import cross-browser compatibility styles */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
-@import './styles/mobile-responsive.css';
-@import './styles/accessibility.css';
-@import './styles/android-optimization.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Custom scrollbar styles - Professional Design */
-.custom-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(139, 92, 246, 0.5) rgba(255, 255, 255, 0.1);
-}
+/* Custom scrollbar styles moved to consolidated-styles.css to avoid conflicts */
 
-.custom-scrollbar::-webkit-scrollbar {
-  width: 8px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  margin: 2px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.8), rgba(219, 39, 119, 0.8));
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, rgba(139, 92, 246, 1), rgba(219, 39, 119, 1));
-  transform: scale(1.1);
-  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.5);
-}
-
-/* Animaciones profesionales */
-@keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  33% { transform: translateY(-10px) rotate(1deg); }
-  66% { transform: translateY(5px) rotate(-1deg); }
-}
-
-@keyframes fade-in {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 5px rgba(168, 85, 247, 0.4); }
-  50% { box-shadow: 0 0 20px rgba(168, 85, 247, 0.8); }
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-.animate-fade-in {
-  animation: fade-in 0.6s ease-out forwards;
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
-}
+/* Animations moved to consolidated-styles.css to avoid conflicts */
 
 /* Hover animations for buttons and interactive elements */
 .btn-animated {
@@ -94,22 +36,7 @@
   transform: scale(0.95);
 }
 
-/* Scroll personalizado - Completamente oculto */
-.custom-scrollbar {
-  /* Ocultar scrollbar en WebKit browsers (Chrome, Safari, Edge) */
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
-}
-
-.custom-scrollbar::-webkit-scrollbar {
-  display: none; /* WebKit browsers */
-}
-
-/* Scroll suave */
-.custom-scrollbar {
-  scroll-behavior: smooth;
-}
+/* Custom scrollbar moved to consolidated-styles.css */
 
 /* Scroll invisible pero funcional para contenedores específicos */
 .invisible-scroll {
@@ -151,11 +78,7 @@
 .particle-15 { top: 55%; left: 65%; animation-duration: 9s; animation-delay: 0.3s; }
 .particle-16 { top: 65%; left: 95%; animation-duration: 8s; animation-delay: 3.8s; }
 
-/* Fondo suave para mejor experiencia visual */
-body {
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
-  min-height: 100vh;
-}
+/* Body styles moved to consolidated-styles.css to avoid conflicts */
 
 /* Mejoras para Android WebView */
 @media screen and (max-width: 768px) {
