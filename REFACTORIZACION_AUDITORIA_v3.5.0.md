@@ -394,9 +394,11 @@ import { Suspense, useEffect } from 'react';
 **Commit 25:** `5638a97` - Sincronizar index.html Android con cambios de logo placeholder  
 **Commit 26:** `a5c8893` - Suprimir completamente errores de wallets y logo faltante  
 **Commit 27:** `0cbd4d7` - Corregir error de tipos en preloading.ts  
-**Commit 28:** `934322d` - Corregir PostCSS config - usar Tailwind v3 en lugar de v4 (ROOT CAUSE FIX)
+**Commit 28:** `934322d` - Corregir PostCSS config - usar Tailwind v3 en lugar de v4 (ROOT CAUSE FIX)  
+**Commit 29:** `653a95b` - Actualizar commits finales hasta 28  
+**Commit 30:** `ad5b64b` - Mejorar contraste de texto en Hero, Auth, Events y Tabs
 
-**Estado:** ✅ Todos los cambios pusheados a origin/master (28 commits)
+**Estado:** ✅ Todos los cambios pusheados a origin/master (30 commits)
 
 ---
 
