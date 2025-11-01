@@ -18,8 +18,7 @@ export const CRITICAL_ROUTES = [
 
 // Recursos críticos para precargar
 export const CRITICAL_RESOURCES = [
-  { href: '/compliceslogo.png', as: 'image', priority: 'high' },
-  // Removido placeholder.svg que causaba warnings
+  // Logo removido - usar placeholder.svg o favicon.ico en su lugar
   // Fuentes críticas se añadirían aquí
 ] as const;
 

@@ -36,7 +36,16 @@ if (typeof window !== 'undefined') {
       'solana.js',
       'inpage.js',
       'evmask.js',
-      'dist.94abdbf1.js'
+      'evmask.js:5',
+      'evmask.js:',
+      'dist.94abdbf1.js',
+      'solana.js:3',
+      'solana.js:',
+      'inpage.js:154',
+      'inpage.js:168',
+      'inpage.js:',
+      'tronlink',
+      'bybit'
     ];
     
     // Bloquear si es error de wallet O archivo de wallet
@@ -77,11 +86,33 @@ if (typeof window !== 'undefined') {
       'solana',
       'metamask',
       'tronweb',
-      'bybit'
+      'bybit',
+      'evmask',
+      'cannot redefine property',
+      'cannot assign to read only property',
+      'typeerror'
     ].some(keyword => message.includes(keyword));
     
     if (!isWalletError) {
       originalConsoleError.apply(console, args);
+    }
+  };
+  
+  // También bloquear console.warn para wallets
+  const originalConsoleWarn = console.warn;
+  console.warn = (...args) => {
+    const message = args.join(' ').toLowerCase();
+    const isWalletWarning = [
+      'wallet',
+      'ethereum',
+      'solana',
+      'metamask',
+      'tronweb',
+      'bybit'
+    ].some(keyword => message.includes(keyword));
+    
+    if (!isWalletWarning) {
+      originalConsoleWarn.apply(console, args);
     }
   };
 }
