@@ -1,3 +1,13 @@
+# ⚠️ ARCHIVO MOVIDO A RESPALDO - NO USAR EN PRODUCCIÓN
+
+**Fecha:** 01 Nov 2025  
+**Razón:** Información consolidada en REFACTORIZACION_AUDITORIA_v3.5.0.md
+
+Este archivo contiene documentación obsoleta de sesiones pasadas.  
+La información ha sido consolidada en el documento principal de refactorización.
+
+---
+
 # 📊 PROGRESO SESIÓN - ComplicesConecta v3.5.0
 
 **Fecha:** 01 de Noviembre, 2025  
