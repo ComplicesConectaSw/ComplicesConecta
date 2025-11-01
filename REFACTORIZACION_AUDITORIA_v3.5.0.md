@@ -398,9 +398,10 @@ import { Suspense, useEffect } from 'react';
 **Commit 29:** `653a95b` - Actualizar commits finales hasta 28  
 **Commit 30:** `ad5b64b` - Mejorar contraste de texto en Hero, Auth, Events y Tabs  
 **Commit 31:** `e2736aa` - Consolidación final documentación v3.5.0  
-**Commit 32:** `587b278` - Auditoría completa BD - 107 tablas verificadas
+**Commit 32:** `587b278` - Auditoría completa BD - 107 tablas verificadas  
+**Commit 33:** `d6ea238` - Actualizar READMEs y project-structure finales
 
-**Estado:** ✅ Todos los cambios pusheados a origin/master (32 commits)
+**Estado:** ✅ Todos los cambios pusheados a origin/master (33 commits)
 
 ---
 
