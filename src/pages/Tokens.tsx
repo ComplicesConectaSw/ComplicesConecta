@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Página principal de Tokens CMPX/GTK
  * Dashboard completo para gestión de tokens en fase Beta
  */
@@ -300,7 +300,7 @@ export default function Tokens() {
         />
       </div>
       
-      {/* Navigation Menu - Removed NavigationEnhanced as it's not needed on this page */}
+      {/* Navigation Menu - Removed Navigation as it's not needed on this page */}
     </div>
   );
 }

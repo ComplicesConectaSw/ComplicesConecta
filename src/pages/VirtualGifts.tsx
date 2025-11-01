@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Gift, Heart, Star, Crown, Sparkles, ArrowLeft, Send, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';

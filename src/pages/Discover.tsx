@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, memo } from 'react';
+﻿import { useState, useEffect, useCallback, memo } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -803,7 +803,7 @@ const Discover = () => {
         </div>
       </main>
       
-      {/* NavigationEnhanced removido - ahora usa HeaderNav */}
+      {/* Navigation removido - ahora usa HeaderNav */}
       
       {/* Presentation Modals */}
       <SuperLikesModal 

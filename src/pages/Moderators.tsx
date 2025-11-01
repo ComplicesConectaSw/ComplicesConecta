@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Shield, Users, CheckCircle, AlertTriangle, Star, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';

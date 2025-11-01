@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { useUnifiedAuth } from '@/hooks/useUnifiedAuth';
 import { logger } from '@/lib/logger';
 
 interface ProtectedRouteProps {
@@ -15,8 +14,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   requireAuth = true, 
   redirectTo = '/auth' 
 }) => {
-  const { loading, isAuthenticated: legacyIsAuthenticated } = useAuth();
-  const { isAuthenticated: unifiedIsAuthenticated, isDemo, isReal } = useUnifiedAuth();
+  const { loading, isAuthenticated, isDemo } = useAuth();
   const location = useLocation();
   const [isReady, setIsReady] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
@@ -24,20 +22,17 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   useEffect(() => {
     // Esperar a que termine la carga inicial y verificar autenticación
     if (!loading) {
-      // Usar autenticación unificada como fuente principal
-      const authResult = unifiedIsAuthenticated || legacyIsAuthenticated();
+      const authResult = isAuthenticated();
       setAuthenticated(authResult);
       setIsReady(true);
       
       logger.info('🔐 ProtectedRoute: Verificación de autenticación', {
-        unified: unifiedIsAuthenticated,
-        legacy: legacyIsAuthenticated(),
-        isDemo,
-        isReal,
+        isAuthenticated: authResult,
+        isDemo: isDemo(),
         path: location.pathname
       });
     }
-  }, [loading, unifiedIsAuthenticated, legacyIsAuthenticated, isDemo, isReal, location.pathname]);
+  }, [loading, isAuthenticated, isDemo, location.pathname]);
 
   // Mostrar loading mientras se verifica la autenticación
   if (!isReady || loading) {

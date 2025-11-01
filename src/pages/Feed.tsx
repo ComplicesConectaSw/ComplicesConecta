@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Heart, MessageCircle, Share2, MoreHorizontal, MapPin, Clock, CheckCircle, Loader2, Plus } from 'lucide-react';
-import NavigationEnhanced from '@/components/NavigationEnhanced';
+import Navigation from '@/components/Navigation';
 import { postsService, type Post } from '@/services/postsService';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
@@ -90,7 +90,7 @@ const Feed = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-secondary/20 pb-20">
-      <NavigationEnhanced />
+      <Navigation />
       
       <main className="container mx-auto px-4 py-6 max-w-2xl">
         <div className="text-center mb-6">
@@ -221,7 +221,7 @@ const Feed = () => {
         )}
       </main>
 
-      <NavigationEnhanced />
+      <Navigation />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+﻿import { useState, useEffect, useCallback } from "react";
 import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -14,7 +14,7 @@ import {
   MailQuestion,
   Send
 } from "lucide-react";
-import NavigationEnhanced from "@/components/NavigationEnhanced";
+import Navigation from "@/components/Navigation";
 import { useFeatures } from "@/hooks/useFeatures";
 import { invitationService, type Invitation } from "@/lib/invitations";
 import { useAuth } from '@/hooks/useAuth';
@@ -364,7 +364,7 @@ const Requests = () => {
         </div>
       </div>
 
-      <NavigationEnhanced />
+      <Navigation />
       
       <style>{`
         @keyframes blob {

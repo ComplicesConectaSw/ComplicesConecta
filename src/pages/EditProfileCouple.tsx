@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Save, Camera, X, Users, MapPin, AlertCircle, Sun, Moon, Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import NavigationEnhanced from "@/components/NavigationEnhanced";
+import Navigation from "@/components/Navigation";
 import ImageUpload from "@/components/profile/ImageUpload";
 import { generateMockCouple } from "@/lib/data";
 import { SAFE_INTERESTS, lifestyleInterests } from "@/lib/lifestyle-interests";
@@ -795,7 +795,7 @@ const EditProfileCouple = () => {
         </Card>
       </div>
 
-      <NavigationEnhanced />
+      <Navigation />
     </div>
   );
 };

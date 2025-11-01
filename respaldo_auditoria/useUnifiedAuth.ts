@@ -1,7 +1,11 @@
 // src/hooks/useUnifiedAuth.ts
+// ARCHIVO MOVIDO A RESPALDO - NO USAR EN PRODUCCIÓN
+// Fecha: 01 Nov 2025
+// Razon: Consolidación de hooks de autenticación
+
 import { useCallback } from 'react';
-import { usePersistedState } from './usePersistedState';
-import { logger } from '@/lib/logger';
+import { usePersistedState } from '../src/hooks/usePersistedState';
+import { logger } from '../src/lib/logger';
 
 export interface DemoUser {
   id: string;

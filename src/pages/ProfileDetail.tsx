@@ -1,10 +1,10 @@
-import { useParams, useNavigate } from "react-router-dom";
+﻿import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, Heart, MessageCircle, MapPin, Star, Shield, Camera } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import NavigationEnhanced from '@/components/NavigationEnhanced';
+import Navigation from '@/components/Navigation';
 import { Footer } from "@/components/Footer";
 import { logger } from '@/lib/logger';
 
@@ -106,7 +106,7 @@ const ProfileDetail = () => {
   if (!profile) {
     return (
       <div className="min-h-screen bg-background">
-        <NavigationEnhanced />
+        <Navigation />
         <main className="container mx-auto px-4 py-8 text-center">
           <h1 className="text-2xl font-bold text-foreground mb-4">Perfil no encontrado</h1>
           <Button onClick={() => navigate("/profiles")} className="text-white bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700">
@@ -128,7 +128,7 @@ const ProfileDetail = () => {
       </div>
       
       <div className="relative z-10">
-        <NavigationEnhanced />
+        <Navigation />
         
         <main className="container mx-auto px-4 py-8">
         {/* Back Button */}

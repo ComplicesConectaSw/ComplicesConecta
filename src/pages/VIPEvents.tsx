@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Crown, Calendar, MapPin, Users, Star, Clock, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';

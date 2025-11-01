@@ -1,5 +1,9 @@
-import { usePersistedState } from '@/hooks/usePersistedState';
-import { logger } from '@/lib/logger';
+// ARCHIVO MOVIDO A RESPALDO - NO USAR EN PRODUCCIÓN
+// Fecha: 01 Nov 2025
+// Razon: Consolidación de hooks de autenticación
+
+import { usePersistedState } from '../src/hooks/usePersistedState';
+import { logger } from '../src/lib/logger';
 
 export type AuthMode = 'demo' | 'real';
 

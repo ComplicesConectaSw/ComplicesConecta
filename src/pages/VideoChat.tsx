@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Video, VideoOff, Mic, MicOff, Phone, PhoneOff, Users, Settings, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';

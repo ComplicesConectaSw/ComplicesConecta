@@ -1,9 +1,6 @@
-import React, { Suspense, lazy, useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { AndroidThemeProvider } from './AndroidThemeProvider';
 import { cn } from '@/lib/utils';
-
-// Lazy load components para optimizar carga inicial
-const _NavigationEnhanced = lazy(() => import('@/components/NavigationEnhanced'));
 
 interface AndroidOptimizedAppProps {
   children: React.ReactNode;

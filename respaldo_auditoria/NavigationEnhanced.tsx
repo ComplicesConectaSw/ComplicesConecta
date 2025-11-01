@@ -1,3 +1,7 @@
+// ARCHIVO MOVIDO A RESPALDO - NO USAR EN PRODUCCIÓN
+// Fecha: 01 Nov 2025
+// Razon: Componente nunca utilizado, duplicado de HeaderNav
+
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -13,9 +17,9 @@ import {
   LogOut
 } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { logger } from '@/lib/logger';
-import { cn } from '@/lib/utils';
-import { useAuth } from '@/hooks/useAuth';
+import { logger } from '../src/lib/logger';
+import { cn } from '../src/lib/utils';
+import { useAuth } from '../src/hooks/useAuth';
 
 interface _NavigationEnhancedProps {
   className?: string;

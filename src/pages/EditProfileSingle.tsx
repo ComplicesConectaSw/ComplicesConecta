@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+﻿import { useState, useEffect, useCallback } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,7 +10,7 @@ import { generateMockSingle } from "@/lib/data";
 import ImageUpload from "@/components/profile/ImageUpload";
 import { supabase } from "@/integrations/supabase/client";
 import { getAppConfig } from "@/lib/app-config";
-import NavigationEnhanced from "@/components/NavigationEnhanced";
+import Navigation from "@/components/Navigation";
 import type { Database } from '@/types/supabase';
 import { SAFE_INTERESTS, EXPLICIT_INTERESTS } from '@/lib/lifestyle-interests';
 import { ExplicitInterestsEditor } from '@/components/settings/ExplicitInterestsEditor';
@@ -527,7 +527,7 @@ const EditProfileSingle = () => {
         </Card>
       </div>
 
-      <NavigationEnhanced />
+      <Navigation />
       
       {/* Custom Styles */}
       <style>{`
