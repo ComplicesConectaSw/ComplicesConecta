@@ -396,9 +396,11 @@ import { Suspense, useEffect } from 'react';
 **Commit 27:** `0cbd4d7` - Corregir error de tipos en preloading.ts  
 **Commit 28:** `934322d` - Corregir PostCSS config - usar Tailwind v3 en lugar de v4 (ROOT CAUSE FIX)  
 **Commit 29:** `653a95b` - Actualizar commits finales hasta 28  
-**Commit 30:** `ad5b64b` - Mejorar contraste de texto en Hero, Auth, Events y Tabs
+**Commit 30:** `ad5b64b` - Mejorar contraste de texto en Hero, Auth, Events y Tabs  
+**Commit 31:** `e2736aa` - Consolidación final documentación v3.5.0  
+**Commit 32:** `587b278` - Auditoría completa BD - 107 tablas verificadas
 
-**Estado:** ✅ Todos los cambios pusheados a origin/master (30 commits)
+**Estado:** ✅ Todos los cambios pusheados a origin/master (32 commits)
 
 ---
 
