@@ -12,13 +12,49 @@
  */
 
 import { createClient } from '@supabase/supabase-js';
+import { config } from 'dotenv';
+import { readFileSync, existsSync } from 'fs';
 import { s2Service } from '../src/services/geo/S2Service';
+
+// Cargar variables de entorno
+config();
+
+// Si no hay .env cargado por dotenv, intentar cargar manualmente
+if (existsSync('.env')) {
+  const envContent = readFileSync('.env', 'utf8');
+  const envLines = envContent.split('\n');
+  
+  envLines.forEach(line => {
+    if (line.trim() && !line.startsWith('#')) {
+      const [key, ...valueParts] = line.split('=');
+      if (key && valueParts.length) {
+        const value = valueParts.join('=').trim();
+        if (!process.env[key]) {
+          process.env[key] = value;
+        }
+      }
+    }
+  });
+}
 
 // Configuración
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL || '';
+// Priorizar SUPABASE_SERVICE_ROLE_KEY para bypass RLS
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY || '';
 const BATCH_SIZE = 100;
 const DEFAULT_LEVEL = 15; // ~1km²
+
+if (!SUPABASE_URL) {
+  console.error('❌ Error: VITE_SUPABASE_URL no configurada en archivo .env');
+  console.error('Por favor, crea un archivo .env con las credenciales de Supabase');
+  process.exit(1);
+}
+
+if (!SUPABASE_SERVICE_KEY) {
+  console.error('❌ Error: No se encontró clave de autenticación');
+  console.error('Configura SUPABASE_SERVICE_ROLE_KEY o VITE_SUPABASE_ANON_KEY en .env');
+  process.exit(1);
+}
 
 // Cliente Supabase con service role (bypass RLS)
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
@@ -40,9 +76,26 @@ async function backfillS2Cells() {
   console.log('║     ComplicesConecta v3.5.0                                    ║');
   console.log('║                                                                ║');
   console.log('╚════════════════════════════════════════════════════════════════╝\n');
+  
+  console.log('🔗 Testing Supabase connection...');
+  console.log(`   URL: ${SUPABASE_URL.substring(0, 30)}...`);
+  console.log(`   Key: ${SUPABASE_SERVICE_KEY ? '✅ Configured' : '❌ Missing'}\n`);
 
   try {
-    // 1. Contar perfiles sin s2_cell_id pero con lat/lng
+    // 1. Verificar conexión básica primero
+    console.log('🔍 Verificando conexión con BD...');
+    const { data: testData, error: testError } = await supabase
+      .from('profiles')
+      .select('id')
+      .limit(1);
+    
+    if (testError) {
+      console.error('❌ Error de conexión:', testError);
+      throw testError;
+    }
+    console.log('✅ Conexión OK\n');
+    
+    // 2. Contar perfiles sin s2_cell_id pero con lat/lng
     console.log('📊 Contando perfiles a procesar...');
     const { count, error: countError } = await supabase
       .from('profiles')
@@ -52,6 +105,12 @@ async function backfillS2Cells() {
       .is('s2_cell_id', null);
 
     if (countError) {
+      console.error('❌ Error details:', {
+        message: countError.message,
+        details: countError.details,
+        hint: countError.hint,
+        code: countError.code,
+      });
       throw new Error(`Error counting profiles: ${countError.message}`);
     }
 
@@ -191,15 +250,13 @@ async function backfillS2Cells() {
   }
 }
 
-// Ejecutar
-if (require.main === module) {
-  backfillS2Cells().then(() => {
-    process.exit(0);
-  }).catch((error) => {
-    console.error('Fatal error:', error);
-    process.exit(1);
-  });
-}
+// Ejecutar directamente (ES modules)
+backfillS2Cells().then(() => {
+  process.exit(0);
+}).catch((error) => {
+  console.error('Fatal error:', error);
+  process.exit(1);
+});
 
 export { backfillS2Cells };
 
