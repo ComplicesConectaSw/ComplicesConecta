@@ -1,7 +1,7 @@
 # ⚙️ CONFIGURACIÓN .ENV - ComplicesConecta v3.5.0
 
-**Fecha:** 30 de Octubre, 2025  
-**Versión:** 3.5.0-alpha (Fase 1.2 completa)
+**Fecha:** 01 de Noviembre, 2025  
+**Versión:** 3.5.0 (Fase 1.1, 1.2, 1.3 completas + Fase 2.1 S2 Geosharding)
 
 ---
 
@@ -18,17 +18,17 @@ Guía completa para configurar variables de entorno necesarias para funcionalida
 ```env
 VITE_SUPABASE_URL=https://tu-proyecto.supabase.co
 VITE_SUPABASE_ANON_KEY=tu-anon-key-aqui
-VITE_SUPABASE_SERVICE_ROLE_KEY=tu-service-role-key-aqui
+SUPABASE_SERVICE_ROLE_KEY=tu-service-role-key-aqui
 ```
 
 **Dónde obtenerlas:**
 - Supabase Dashboard → Settings → API
 - `ANON_KEY`: Para cliente (frontend)
-- `SERVICE_ROLE_KEY`: Para operaciones admin (backend)
+- `SERVICE_ROLE_KEY`: Para operaciones admin (backend), backfill S2, y scripts
 
 ---
 
-### 2. **AI/ML Features** (Fase 1.1 y 1.2)
+### 2. **AI/ML Features** (Fase 1.1, 1.2 y 1.3)
 
 ```env
 # Feature Flag Principal
@@ -42,6 +42,12 @@ VITE_AI_PREDICTION_TIMEOUT=5000
 
 # TTL del cache de scores (ms) - 1 hora
 VITE_AI_CACHE_TTL=3600000
+
+# Chat Summaries (Fase 1.3)
+VITE_AI_CHAT_SUMMARIES_ENABLED=true
+VITE_AI_SUMMARY_PROVIDER=auto
+VITE_OPENAI_API_KEY=sk-proj-xxxxx
+VITE_HUGGINGFACE_API_KEY=hf_xxxxx
 ```
 
 **Valores recomendados:**
@@ -52,6 +58,10 @@ VITE_AI_CACHE_TTL=3600000
 | `VITE_AI_MODEL_VERSION` | `v1-base` | `v1-base` | Versión del modelo ML |
 | `VITE_AI_PREDICTION_TIMEOUT` | `5000` | `3000` | Timeout en ms |
 | `VITE_AI_CACHE_TTL` | `3600000` | `1800000` | Cache: 1h dev, 30min prod |
+| `VITE_AI_CHAT_SUMMARIES_ENABLED` | `true` | `true` | Habilitar resúmenes de chat |
+| `VITE_AI_SUMMARY_PROVIDER` | `auto` | `auto` | Auto-selección de proveedor |
+| `VITE_OPENAI_API_KEY` | Opcional | Opcional | Para GPT-4 (~$0.01/resumen) |
+| `VITE_HUGGINGFACE_API_KEY` | Opcional | Opcional | Para BART (gratis) |
 
 **⚠️ IMPORTANTE:**
 - `VITE_AI_NATIVE_ENABLED=false` es **SEGURO** para producción (usa algoritmo legacy)
@@ -82,7 +92,9 @@ NEW_RELIC_LICENSE_KEY=tu-new-relic-license-key
 
 ```env
 # World ID (verificación humana)
-VITE_WORLD_APP_ID=tu-world-app-id
+WORLD_APP_SECRET=api_a2V5XzdlYzRjN2E5OGYzYjBiMzE2MmNlZDA0ZmZlYjlhZjBk
+WORLD_VERIFY_ENDPOINT=https://developer.worldcoin.org/api/v1/verify
+NEXT_PUBLIC_WORLD_APP_ID=app_staging_your_app_id_here
 ```
 
 ---
@@ -114,7 +126,7 @@ cp .env.example .env
 4. Copia:
    - `Project URL` → `VITE_SUPABASE_URL`
    - `anon public` → `VITE_SUPABASE_ANON_KEY`
-   - `service_role` → `VITE_SUPABASE_SERVICE_ROLE_KEY`
+   - `service_role` → `SUPABASE_SERVICE_ROLE_KEY`
 
 ### Paso 3: Configurar AI Features
 
@@ -183,7 +195,7 @@ npm run dev
 
 ```env
 # ❌ MAL: Keys públicas
-VITE_SUPABASE_SERVICE_ROLE_KEY=public-key-here
+SUPABASE_SERVICE_ROLE_KEY=public-key-here
 
 # ❌ MAL: Hardcodear en código
 const API_KEY = "sk-12345...";

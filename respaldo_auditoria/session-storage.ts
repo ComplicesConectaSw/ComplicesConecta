@@ -1,3 +1,13 @@
+/**
+ * ⚠️ ARCHIVO MOVIDO A RESPALDO - NO USAR EN PRODUCCIÓN
+ * 
+ * Fecha: 01 Nov 2025
+ * Razón: 0 referencias - funcionalidad duplicada en storage-manager.ts
+ * 
+ * Este archivo contiene utilidades de session storage obsoletas.
+ * Use storage-manager.ts para toda funcionalidad de almacenamiento.
+ */
+
 import { logger } from '@/lib/logger';
 // Session storage utilities - only for UI flags and temporary data
 // Profile data should use React Query + Supabase
