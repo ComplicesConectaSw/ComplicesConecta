@@ -9,8 +9,9 @@
    - `recover/*` → Recuperación desde backups
    - **v3.4.0**: `feature/advanced-*` → Funcionalidades avanzadas (seguridad, moderación, parejas)
    - **v3.4.1**: `feature/monitoring-*` → Sistema de monitoreo y analytics
-   - **NUEVO v3.5.0**: `feature/ai-native-*` → AI/ML layers (compatibility, chat summaries)
-   - **NUEVO v3.5.0**: `feature/scalability-*` → S2 Geosharding, Neo4j
+   - **v3.5.0**: `feature/ai-native-*` → AI/ML layers (compatibility, chat summaries) ✅
+   - **v3.5.0**: `feature/scalability-*` → S2 Geosharding, Neo4j ✅
+   - **v3.5.0**: `feature/refactoring-*` → Consolidación código + CSS ✅
 
 2. **SQL y Backups**
    - Todos los `.sql` y migraciones quedan excluidos en `.gitignore`
