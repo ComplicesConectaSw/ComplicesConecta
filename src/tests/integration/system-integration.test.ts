@@ -1,7 +1,7 @@
 import { describe, test, expect, beforeAll, afterAll } from 'vitest';
 import { redisCache, CacheKeys, CacheTTL } from '@/lib/redis-cache';
 import { analyticsMetrics, trackPageView, trackInteraction } from '@/lib/analytics-metrics';
-import { mlMatchingEngine, calculateMLMatch } from '@/lib/ml-matching';
+// import { mlMatchingEngine, calculateMLMatch } from '@/lib/ml-matching'; // DEPRECATED: Moved to respaldo
 import { performManualBackup, getBackupStats } from '@/lib/backup-system';
 
 /**
@@ -176,7 +176,8 @@ describe('Sistema de Integración Completo', () => {
     });
   });
 
-  describe('Sistema de ML Matching', () => {
+  // DEPRECATED: Sistema de ML Matching movido a respaldo_auditoria
+  describe.skip('Sistema de ML Matching', () => {
     test('debe calcular score ML entre perfiles', async () => {
       testLogger.info('Test: ML Matching - cálculo de score');
       
@@ -229,20 +230,21 @@ describe('Sistema de Integración Completo', () => {
           }
         };
 
-        testLogger.info('Calculando score ML entre perfiles');
-        const mlScore = await calculateMLMatch(userProfile, candidateProfile);
-        testLogger.info('Score ML calculado', mlScore);
+        // DEPRECATED: ML matching moved to respaldo_auditoria
+        // testLogger.info('Calculando score ML entre perfiles');
+        // const mlScore = await calculateMLMatch(userProfile, candidateProfile);
+        // testLogger.info('Score ML calculado', mlScore);
         
-        expect(mlScore).toHaveProperty('profileId', 'candidate-1');
-        expect(mlScore).toHaveProperty('mlScore');
-        expect(mlScore).toHaveProperty('factors');
-        expect(mlScore).toHaveProperty('confidence');
-        expect(mlScore).toHaveProperty('reasoning');
+        // expect(mlScore).toHaveProperty('profileId', 'candidate-1');
+        // expect(mlScore).toHaveProperty('mlScore');
+        // expect(mlScore).toHaveProperty('factors');
+        // expect(mlScore).toHaveProperty('confidence');
+        // expect(mlScore).toHaveProperty('reasoning');
         
-        expect(mlScore.mlScore).toBeGreaterThan(0);
-        expect(mlScore.mlScore).toBeLessThanOrEqual(1);
+        // expect(mlScore.mlScore).toBeGreaterThan(0);
+        // expect(mlScore.mlScore).toBeLessThanOrEqual(1);
         
-        testLogger.info('Test de ML matching completado exitosamente');
+        testLogger.info('Test de ML matching saltado (deprecado)');
       } catch (error) {
         testLogger.error('Error en test de ML matching', error);
         throw error;
@@ -252,20 +254,22 @@ describe('Sistema de Integración Completo', () => {
     test('debe obtener estadísticas del modelo ML', () => {
       testLogger.info('Test: ML Matching - estadísticas del modelo');
       
-      try {
-        const modelStats = mlMatchingEngine.getModelStats();
-        testLogger.info('Estadísticas del modelo ML obtenidas', modelStats);
+      // DEPRECATED: ML matching moved to respaldo_auditoria
+      // try {
+      //   const modelStats = mlMatchingEngine.getModelStats();
+      //   testLogger.info('Estadísticas del modelo ML obtenidas', modelStats);
         
-        expect(modelStats).toHaveProperty('weights');
-        expect(modelStats).toHaveProperty('trainingExamples');
-        expect(modelStats).toHaveProperty('learningRate');
-        expect(modelStats).toHaveProperty('isTraining');
+      //   expect(modelStats).toHaveProperty('weights');
+      //   expect(modelStats).toHaveProperty('trainingExamples');
+      //   expect(modelStats).toHaveProperty('learningRate');
+      //   expect(modelStats).toHaveProperty('isTraining');
         
-        testLogger.info('Test de estadísticas ML completado');
-      } catch (error) {
-        testLogger.error('Error en test de estadísticas ML', error);
-        throw error;
-      }
+      //   testLogger.info('Test de estadísticas ML completado');
+      // } catch (error) {
+      //   testLogger.error('Error en test de estadísticas ML', error);
+      //   throw error;
+      // }
+      testLogger.info('Test de estadísticas ML saltado (deprecado)');
     });
   });
 
@@ -386,13 +390,14 @@ describe('Sistema de Integración Completo', () => {
 
         const mockCandidateProfile = { ...mockUserProfile, id: 'candidate-integration' };
         
-        const mlScore = await calculateMLMatch(mockUserProfile, mockCandidateProfile);
-        testLogger.info('Score ML calculado en integración', { score: mlScore.mlScore });
+        // DEPRECATED: ML matching moved to respaldo
+        // const mlScore = await calculateMLMatch(mockUserProfile, mockCandidateProfile);
+        // testLogger.info('Score ML calculado en integración', { score: mlScore.mlScore });
         
-        // Trackear resultado
-        trackInteraction(userId, 'matching_result', `score_${Math.round(mlScore.mlScore * 100)}`);
+        // Trackear resultado simulado
+        trackInteraction(userId, 'matching_result', 'score_0');
         
-        testLogger.info('Integración ML + analytics exitosa');
+        testLogger.info('Integración analytics exitosa (ML matching deprecated)');
       } catch (error) {
         testLogger.error('Error en integración ML + analytics', error);
         throw error;
