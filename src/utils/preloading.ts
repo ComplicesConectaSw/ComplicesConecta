@@ -182,7 +182,9 @@ export const setupViewportPrefetching = (): IntersectionObserver => {
 export const initializeCriticalPreloading = async (): Promise<void> => {
   try {
     // Precargar recursos críticos
-    await preloadResources(CRITICAL_RESOURCES.map(resource => ({ ...resource })));
+    if (CRITICAL_RESOURCES.length > 0) {
+      await preloadResources([...CRITICAL_RESOURCES]);
+    }
     
     // Preconnect a dominios importantes
     preconnectDomain('https://fonts.googleapis.com');
