@@ -387,9 +387,11 @@ import { Suspense, useEffect } from 'react';
 **Commit 18:** `c3da507` - Todas las fases completadas - Análisis Storage/Media finalizado  
 **Commit 19:** `eefc78a` - Commit 18 agregado  
 **Commit 20:** `c5f2aef` - Actualizar métricas finales - 19 commits documentados  
-**Commit 21:** `45e5701` - Finalizar refactorización completa + integrar variables de producción
+**Commit 21:** `45e5701` - Finalizar refactorización completa + integrar variables de producción  
+**Commit 22:** `1c22eb1` - Agregar consolidación final v3.5.0  
+**Commit 23:** `e4d7a92` - Limpiar secretos de documentación y agregar setup rápido
 
-**Estado:** ✅ Todos los cambios pusheados a origin/master (21 commits)
+**Estado:** ✅ Todos los cambios pusheados a origin/master (23 commits)
 
 ---
 
