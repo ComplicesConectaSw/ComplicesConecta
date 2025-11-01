@@ -87,8 +87,8 @@ VITE_API_URL=https://complicesconecta.vercel.app/api
 ### 3. **Seguridad - hCaptcha** ⚠️ RECOMENDADAS
 
 ```env
-VITE_HCAPTCHA_SITE_KEY=3c5a435c-a6f8-4460-a8ee-c3bc79f077ac
-VITE_HCAPTCHA_SECRET=tu-hcaptcha-secret-aqui
+VITE_HCAPTCHA_SITE_KEY=tu-site-key-aqui
+VITE_HCAPTCHA_SECRET=tu-secret-key-aqui
 ```
 
 **🔗 Dónde obtenerlas:**
@@ -265,8 +265,8 @@ SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhY
 SUPABASE_JWT_SECRET=[TU_JWT_SECRET_AQUI]
 
 # hCaptcha (RECOMENDADAS)
-VITE_HCAPTCHA_SITE_KEY=3c5a435c-a6f8-4460-a8ee-c3bc79f077ac
-VITE_HCAPTCHA_SECRET=tu-hcaptcha-secret-aqui
+VITE_HCAPTCHA_SITE_KEY=tu-site-key-aqui
+VITE_HCAPTCHA_SECRET=tu-secret-key-aqui
 
 # Stripe (RECOMENDADAS)
 VITE_STRIPE_PUBLISHABLE_KEY=pk_live_[TU_STRIPE_PUBLISHABLE_KEY]
@@ -284,8 +284,8 @@ STRIPE_PRICE_ID_CONTRIBUTOR_MXN=price_contributor_300_mxn
 STRIPE_PRICE_ID_VIP_SUPPORTER_MXN=price_vip_supporter_600_mxn
 STRIPE_PRICE_ID_FOUNDING_MEMBER_MXN=price_founding_member_1000_mxn
 
-# JWT Secret
-SUPABASE_JWT_SECRET=uOFYrRCMwVe2bHfxDZe15eZu1GYZm0nTf3ez6Yl7mmx40D1lj0zFXb5/mCcHmznMMy+rbOgauO9j1hQnngASTQ==
+# JWT Secret (obtener de Supabase Dashboard → Settings → API)
+SUPABASE_JWT_SECRET=tu-jwt-secret-aqui
 
 # Application Mode
 VITE_APP_MODE=production
@@ -294,7 +294,7 @@ STRIPE_CANCEL_URL=https://complicesconecta.com/premium/cancel
 STRIPE_CUSTOMER_PORTAL_URL=https://complicesconecta.com/premium/portal
 
 # World ID (OPCIONAL)
-WORLD_APP_SECRET=api_a2V5XzdlYzRjN2E5OGYzYjBiMzE2MmNlZDA0ZmZlYjlhZjBkOnNrX2JlZjRhOWMzMzBlOWZmZWJiYzllMzk5NjQ1NDJkMGRhZTZkYWU5YmYyMmI5NTAyNg
+WORLD_APP_SECRET=api_tu_world_secret_key
 WORLD_VERIFY_ENDPOINT=https://developer.worldcoin.org/api/v1/verify
 NEXT_PUBLIC_WORLD_APP_ID=app_staging_your_app_id_here
 
@@ -380,6 +380,64 @@ console.log('AI Enabled:', import.meta.env.VITE_AI_CHAT_SUMMARIES_ENABLED);
 
 ### Error: "Chat Summaries not working"
 **Solución:** Configura al menos `VITE_HUGGINGFACE_API_KEY` (gratis)
+
+---
+
+## 📝 SETUP RÁPIDO - PASO A PASO
+
+### Paso 1: Crear archivo .env
+
+```bash
+# Copia el archivo de ejemplo
+cp .env.example .env
+
+# O crea desde cero
+touch .env
+```
+
+### Paso 2: Configurar variables críticas
+
+Edita `.env` y configura AL MENOS estas variables:
+
+```env
+# 1. SUPABASE (obligatorio)
+VITE_SUPABASE_URL=https://axtvqnozatbmllvwzuim.supabase.co
+VITE_SUPABASE_ANON_KEY=[TU_CLAVE_ANON]
+SUPABASE_SERVICE_ROLE_KEY=[TU_CLAVE_SERVICE]
+
+# 2. Entorno básico (obligatorio)
+VITE_APP_ENV=production
+VITE_APP_MODE=production
+```
+
+### Paso 3: Verificar configuración
+
+```bash
+# Verificar que .env existe
+ls -la .env
+
+# Verificar que no está en Git
+git status .env  # Debe mostrar "not tracked"
+
+# Probar build
+npm run build
+```
+
+### Paso 4: Variables opcionales (mejoran funcionalidad)
+
+Una vez que la app funciona, agrega variables opcionales:
+
+```env
+# IA Gratuita (Chat Summaries)
+VITE_AI_CHAT_SUMMARIES_ENABLED=true
+VITE_HUGGINGFACE_API_KEY=[TU_TOKEN_HF]
+
+# Captcha (Seguridad)
+VITE_HCAPTCHA_SITE_KEY=[TU_SITE_KEY]
+
+# Stripe (Pagos)
+VITE_STRIPE_PUBLISHABLE_KEY=[TU_PUBLISHABLE_KEY]
+```
 
 ---
 

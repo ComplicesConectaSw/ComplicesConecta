@@ -77,9 +77,16 @@ Ver `REFACTORIZACION_AUDITORIA_v3.5.0.md` sección "Git Commits" para lista comp
 
 ## 📚 DOCUMENTACIÓN PRINCIPAL
 
-1. **VARIABLES_ENTORNO_PRODUCCION.md** - Guía completa de variables
-2. **REFACTORIZACION_AUDITORIA_v3.5.0.md** - Master refactorización
-3. **AUDITORIA_ACTUALIZADA_v3.5.0.md** - Auditoría post-refactorización
+1. **VARIABLES_ENTORNO_PRODUCCION.md** - Guía completa de variables con enlaces
+2. **.env.example** - Template para crear tu archivo .env
+3. **REFACTORIZACION_AUDITORIA_v3.5.0.md** - Master refactorización
+4. **AUDITORIA_ACTUALIZADA_v3.5.0.md** - Auditoría post-refactorización
+5. **CONFIGURACION_ENV_v3.5.0.md** - Configuración detallada de variables
+
+⚠️ **IMPORTANTE:** 
+- NUNCA subas tu archivo `.env` a GitHub
+- Usa `.env.example` como template
+- Verifica que `.gitignore` incluye `.env` y `.env.*`
 
 ---
 
