@@ -73,6 +73,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
     { name: 'Marketplace', path: '/marketplace', icon: ShoppingBag, category: 'Servicios' },
     { name: 'Blog', path: '/blog', icon: FileText, category: 'Contenido' },
     { name: 'Noticias', path: '/news', icon: Bell, category: 'Contenido' },
+    { name: 'Inversores', path: '/investors', icon: DollarSign, category: 'Acerca de' },
     { name: 'Empresa', path: '/about', icon: Building2, category: 'Acerca de' },
     { name: 'Carreras', path: '/careers', icon: Building2, category: 'Acerca de' },
     { name: 'Donaciones', path: '/donations', icon: DollarSign, category: 'Acerca de' },
