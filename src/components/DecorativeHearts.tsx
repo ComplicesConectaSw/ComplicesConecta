@@ -26,14 +26,30 @@ export const DecorativeHearts: React.FC<DecorativeHeartsProps> = ({
 
   const hearts = Array.from({ length: count }, (_, i) => {
     const pos = positions[i % positions.length];
-    return {
+    const heartData: {
+      id: number;
+      top?: string;
+      left?: string;
+      right?: string;
+      bottom?: string;
+      size: number;
+      delay: number;
+      duration: number;
+      opacity: number;
+    } = {
       id: i,
-      ...pos,
       size: Math.random() * 16 + 12, // Entre 12px y 28px - más grandes
       delay: i * 0.8, // Delay escalonado más espaciado
       duration: Math.random() * 4 + 8, // Entre 8s y 12s - más lentas
       opacity: Math.random() * 0.4 + 0.3, // Entre 0.3 y 0.7 - más visibles
     };
+    
+    if (pos.top) heartData.top = pos.top;
+    if (pos.left) heartData.left = pos.left;
+    if (pos.right) heartData.right = pos.right;
+    if (pos.bottom) heartData.bottom = pos.bottom;
+    
+    return heartData;
   });
 
   return (
@@ -43,10 +59,10 @@ export const DecorativeHearts: React.FC<DecorativeHeartsProps> = ({
           key={heart.id}
           className="absolute text-white animate-float"
           style={{
-            ...('top' in heart && heart.top && { top: heart.top }),
-            ...('left' in heart && heart.left && { left: heart.left }),
-            ...('right' in heart && heart.right && { right: heart.right }),
-            ...('bottom' in heart && heart.bottom && { bottom: heart.bottom }),
+            ...(heart.top && { top: heart.top }),
+            ...(heart.left && { left: heart.left }),
+            ...(heart.right && { right: heart.right }),
+            ...(heart.bottom && { bottom: heart.bottom }),
             width: `${heart.size}px`,
             height: `${heart.size}px`,
             opacity: heart.opacity,

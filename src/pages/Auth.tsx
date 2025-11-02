@@ -15,6 +15,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { ResponsiveContainer } from '@/components/ui/ResponsiveContainer';
 import { Theme } from '@/hooks/useProfileTheme';
 import { usePersistedState } from '@/hooks/usePersistedState';
+import { DecorativeHearts } from '@/components/DecorativeHearts';
 
 interface FormData {
   email: string;
@@ -281,29 +282,15 @@ const Auth = () => {
   }
 
   return (
-    <ResponsiveContainer className="min-h-screen bg-gradient-to-br from-blue-600 via-purple-600 to-purple-900 flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Animated background particles */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-1"></div>
-        <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-2"></div>
-        <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-3"></div>
-        <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-4"></div>
-        <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-5"></div>
-        <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-6"></div>
-        <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-7"></div>
-        <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-8"></div>
-        <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-9"></div>
-        <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-10"></div>
-        <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-11"></div>
-        <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-12"></div>
-        <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-13"></div>
-        <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-14"></div>
-        <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-15"></div>
-        <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-16"></div>
-      </div>
-
+    <ResponsiveContainer className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Corazones decorativos flotantes */}
+      <DecorativeHearts count={6} />
+      
+      {/* Background completamente uniforme - sin bloques visibles */}
+      
       <div className="relative z-10 w-full max-w-md">
-        <Card className="bg-black/20 backdrop-blur-md border-white/20 shadow-2xl">
+        {/* Card con glassmorphism mejorado inspirado en las plantillas */}
+        <Card className="bg-white/10 backdrop-blur-xl border-white/30 shadow-2xl rounded-2xl overflow-hidden">
           <CardHeader className="text-center">
             <div className="flex justify-between items-center mb-4">
               <Button
@@ -390,20 +377,22 @@ const Auth = () => {
                   </div>
                   <Button 
                     type="submit" 
-                    className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold shadow-lg transition-all duration-300" 
+                    className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold shadow-lg transition-all duration-300 hover:scale-105 active:scale-95" 
                     disabled={isLoading} 
                     data-testid="login-button"
+                    style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}
                   >
                     {isLoading ? "Iniciando sesión..." : "Iniciar Sesión"}
                   </Button>
                   
-                  {/* Demo Login Button */}
+                  {/* Demo Login Button con glassmorphism mejorado */}
                   <Button 
                     type="button" 
                     variant="outline" 
-                    className="w-full border-purple-400 text-white hover:bg-purple-500/20 hover:text-white"
+                    className="w-full border-2 border-purple-400/50 bg-white/10 backdrop-blur-sm text-white font-semibold hover:bg-purple-500/30 hover:border-purple-400 hover:text-white transition-all duration-300 hover:scale-105 active:scale-95"
                     onClick={handleDemoLogin}
                     data-testid="demo-login-button"
+                    style={{ textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}
                   >
                     <Sparkles className="w-4 h-4 mr-2" />
                     Acceso Demo
@@ -699,7 +688,12 @@ const Auth = () => {
                     </div>
                 </div>
 
-                  <Button type="submit" className="w-full" disabled={isLoading}>
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold shadow-lg transition-all duration-300 hover:scale-105 active:scale-95" 
+                    disabled={isLoading}
+                    style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}
+                  >
                     {isLoading ? "Creando cuenta..." : "Crear Cuenta"}
                   </Button>
                 </form>
