@@ -153,20 +153,22 @@ const DashboardCore = () => {
 
   return (
     <div className="min-h-screen bg-background" data-testid="dashboard-container">
-      {/* Debug info visible */}
-      <div style={{
-        position: 'fixed',
-        top: '10px',
-        left: '10px',
-        background: 'rgba(0,0,0,0.8)',
-        color: 'white',
-        padding: '10px',
-        fontSize: '12px',
-        zIndex: 9999,
-        borderRadius: '4px'
-      }}>
-        Dashboard Debug: Ready={isReady ? 'YES' : 'NO'}, Profile={userProfile?.name || 'NULL'}, Type={userProfile?.userType || 'NULL'}
-      </div>
+      {/* Debug info visible solo en desarrollo */}
+      {process.env.NODE_ENV === 'development' && (
+        <div style={{
+          position: 'fixed',
+          top: '10px',
+          left: '10px',
+          background: 'rgba(0,0,0,0.8)',
+          color: 'white',
+          padding: '10px',
+          fontSize: '12px',
+          zIndex: 9999,
+          borderRadius: '4px'
+        }}>
+          Dashboard Debug: Ready={isReady ? 'YES' : 'NO'}, Profile={userProfile?.name || 'NULL'}, Type={userProfile?.userType || 'NULL'}
+        </div>
+      )}
       
       <HeaderNav />
       
