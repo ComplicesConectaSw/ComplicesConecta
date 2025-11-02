@@ -33,7 +33,7 @@ WHERE s2_cell_id IS NOT NULL;
 CREATE INDEX IF NOT EXISTS idx_profiles_s2_active
 ON profiles(s2_cell_id, updated_at DESC)
 WHERE s2_cell_id IS NOT NULL 
-  AND blocked_at IS NULL;
+  AND is_public = true;
 
 -- Índice para buscar por nivel específico
 CREATE INDEX IF NOT EXISTS idx_profiles_s2_level
@@ -109,7 +109,7 @@ BEGIN
     p.account_type
   FROM profiles p
   WHERE p.s2_cell_id = ANY(cell_ids)
-    AND p.blocked_at IS NULL
+    AND p.is_public = true
     AND p.latitude IS NOT NULL
     AND p.longitude IS NOT NULL
   ORDER BY p.updated_at DESC
@@ -138,7 +138,7 @@ BEGIN
     p.s2_level
   FROM profiles p
   WHERE p.s2_cell_id IS NOT NULL
-    AND p.blocked_at IS NULL
+    AND p.is_public = true
   GROUP BY p.s2_cell_id, p.s2_level
   ORDER BY user_count DESC;
 END;
@@ -160,7 +160,7 @@ SELECT
   MAX(updated_at) AS last_activity
 FROM profiles
 WHERE s2_cell_id IS NOT NULL
-  AND blocked_at IS NULL
+  AND is_public = true
   AND updated_at > NOW() - INTERVAL '7 days'
 GROUP BY s2_cell_id, s2_level
 HAVING COUNT(*) >= 5
