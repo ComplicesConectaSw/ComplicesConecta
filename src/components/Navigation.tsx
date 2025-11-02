@@ -54,6 +54,9 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
   const [demoUser] = usePersistedState('demo_user', null);
   const [_currentUserType] = usePersistedState('userType', null);
   
+  // Determinar si está autenticado PRIMERO
+  const isAuthenticated = _isDemoAuthenticated === 'true' && demoUser !== null && demoUser !== false;
+  
   // Obtener navbarStyle desde localStorage (compatibilidad con demo_navbar_style y navbarStyle)
   const [demoNavbarStyle] = usePersistedState<'transparent' | 'solid'>('demo_navbar_style', 'solid');
   const [prodNavbarStyle] = usePersistedState<'transparent' | 'solid'>('user_navbar_style', 'solid');
@@ -66,8 +69,6 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
   
   // Obtener estilos del navbar según la configuración
   const navbarStyles = getNavbarStyles(navbarStyleState || 'solid');
-  
-  const isAuthenticated = _isDemoAuthenticated === 'true' && demoUser !== null && demoUser !== false;
   
   // DEBUG: Logs optimizados para NavigationLegacy
   useEffect(() => {
