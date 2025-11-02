@@ -106,11 +106,11 @@
 /* Gradientes optimizados */
 .hero-gradient {
   background: linear-gradient(135deg, 
-    #667eea 0%, 
-    #764ba2 25%, 
-    #f093fb 50%, 
-    #f5576c 75%, 
-    #4facfe 100%
+    #3b82f6 0%, 
+    #6366f1 25%, 
+    #8b5cf6 50%, 
+    #7c3aed 75%, 
+    #5b21b6 100%
   );
 }
 
