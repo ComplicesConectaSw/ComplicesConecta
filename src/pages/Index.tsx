@@ -273,7 +273,8 @@ const Index = () => {
       <div className="relative z-10">
         <BetaBanner />
         <div className="pt-16"> {/* Add padding for fixed banner */}
-          <HeaderNav />
+          {/* SOLO mostrar HeaderNav si NO hay sesión demo/producción iniciada */}
+          {!demoAuthenticated && !isAuthenticated() && <HeaderNav />}
         </div>
       </div>
       

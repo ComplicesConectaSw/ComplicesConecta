@@ -66,48 +66,24 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
     });
   }, [_isDemoAuthenticated, demoUser, _currentUserType, isAuthenticated]);
 
-  const baseNavItems = [
-    { id: 'feed', icon: Home, label: 'Inicio', path: '/feed' },
+  // SOLO mostrar navegación si hay sesión demo/producción iniciada
+  if (!isAuthenticated) {
+    logger.info('⚠️ NavigationLegacy - No autenticado, NO mostrar navegación inferior');
+    return null; // NO mostrar navegación si no hay sesión
+  }
+  
+  logger.info('✅ NavigationLegacy - Mostrando navegación completa para usuario autenticado');
+  
+  // Items de navegación según la imagen: Inicio, Descubrir, Chat, Solicitudes, Matches, Tokens, Perfil
+  const navItems = [
+    { id: 'inicio', icon: Home, label: 'Inicio', path: '/feed' },
     { id: 'discover', icon: Search, label: 'Descubrir', path: '/discover' },
     { id: 'chat', icon: MessageCircle, label: 'Chat', path: '/chat' },
+    { id: 'requests', icon: UserPlus, label: 'Solicitudes', path: '/requests' },
     { id: 'matches', icon: Heart, label: 'Matches', path: '/matches' },
     { id: 'tokens', icon: Coins, label: 'Tokens', path: '/tokens' },
+    { id: 'profile', icon: User, label: 'Perfil', path: '/profile' }
   ];
-
-  // Navegación completamente estática - sin efectos de scroll
-
-  // SIEMPRE mostrar navegación para usuarios demo - FIX CRÍTICO
-  if (!isAuthenticated) {
-    logger.info('⚠️ NavigationLegacy - No autenticado pero mostrando navegación demo');
-    // NO return null - mostrar navegación siempre para demo
-  }
-  
-  logger.info('✅ NavigationLegacy - Mostrando navegación completa');
-  
-  // Configuración específica para parejas
-  const getSettingsPath = () => {
-    return _currentUserType === 'couple' ? '/edit-profile-couple' : '/edit-profile-single';
-  };
-
-  // Agregar solicitudes si la función está habilitada
-  const navItems = _features.requests 
-    ? [
-        ...baseNavItems.slice(0, 3), // feed, discover, chat
-        { id: 'requests', icon: UserPlus, label: 'Solicitudes', path: '/requests' },
-        ...baseNavItems.slice(3), // matches, tokens
-        { id: 'profile', icon: User, label: 'Perfil', path: '/profile' },
-        { id: 'settings', icon: Settings, label: 'Configuración', path: getSettingsPath() },
-      ]
-    : [
-        ...baseNavItems,
-        { id: 'profile', icon: User, label: 'Perfil', path: '/profile' },
-        { id: 'settings', icon: Settings, label: 'Configuración', path: getSettingsPath() },
-      ];
-
-  // Agregar botón de logout si está autenticado
-  if (isAuthenticated) {
-    navItems.push({ id: 'logout', icon: LogOut, label: 'Salir', path: '/logout' });
-  }
 
   const handleNavigation = (path: string) => {
     // Manejar logout especial - usar hooks para limpiar estado
@@ -131,39 +107,30 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
     
     // Detectar tipo de usuario y redirigir al perfil correcto
     if (path === '/profile') {
-      if (userType === 'couple') {
-        _navigate('/profile-couple');
-      } else {
-        _navigate('/profile-single');
-      }
+      const profilePath = _currentUserType === 'couple' ? '/profile-couple' : '/profile-single';
+      logger.info('🔄 Redirigiendo al perfil según tipo de cuenta', { userType: _currentUserType, profilePath });
+      _navigate(profilePath);
       return;
     }
     
-    // SIEMPRE permitir navegación para usuarios demo - FIX CRÍTICO
+    // Verificar autenticación antes de navegar
     const isAuthenticatedForNav = isDemoAuth === 'true' && demoUser;
     
     if (!isAuthenticatedForNav) {
-      logger.info('⚠️ Usuario no autenticado pero permitiendo navegación demo');
-      // NO redirigir a /auth - permitir navegación demo
-    }
-    
-    // Rutas que requieren verificación adicional para parejas
-    const coupleRoutes = ['/feed', '/discover', '/chat', '/matches', '/tokens'];
-    
-    if (coupleRoutes.includes(path) && userType === 'couple') {
-      logger.info('✅ Navegación de pareja autorizada', { path });
+      logger.warn('⚠️ Usuario no autenticado, redirigiendo a auth');
+      _navigate('/auth', { replace: true });
+      return;
     }
     
     // Navegar a la ruta solicitada
+    logger.info('✅ Navegación autorizada', { path, userType: _currentUserType });
     _navigate(path);
   };
 
   return (
     <nav className={cn(
       "fixed bottom-0 left-0 right-0 z-50",
-      _currentUserType === 'couple' 
-        ? "bg-gradient-to-r from-pink-900/95 via-rose-900/95 to-purple-900/95 backdrop-blur-xl border-t border-rose-300/40 shadow-2xl"
-        : "bg-gradient-to-r from-purple-900/95 via-pink-900/95 to-red-900/95 backdrop-blur-xl border-t border-pink-300/40 shadow-2xl",
+      "bg-gradient-to-r from-purple-900/95 via-purple-800/95 to-blue-900/95 backdrop-blur-xl border-t border-purple-500/40 shadow-2xl",
       "px-3 sm:px-6 py-3 safe-area-pb",
       "translate-y-0 opacity-100",
       className
@@ -184,9 +151,7 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
                   "transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95",
                   "relative overflow-hidden backdrop-blur-sm",
                   isActive 
-                    ? _currentUserType === 'couple'
-                      ? "bg-gradient-to-r from-rose-300/20 to-pink-300/10 text-white shadow-xl border border-rose-300/30"
-                      : "bg-gradient-to-r from-white/20 to-white/10 text-white shadow-xl border border-white/30"
+                    ? "bg-gradient-to-r from-purple-500/30 to-blue-500/20 text-white shadow-xl border border-purple-400/50"
                     : "text-white/85 hover:text-white hover:bg-white/10 hover:backdrop-blur-md"
                 )}
               >
@@ -203,12 +168,9 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
               />
               <span className={cn(
                 "text-[10px] sm:text-xs font-medium transition-all duration-300 relative z-10 leading-tight",
-                isActive ? "text-white font-semibold" : "text-white/85 group-hover:text-white",
-                // Prevenir cortes en textos largos usando line-clamp o text-balance
-                item.id === 'settings' && "hidden sm:inline",
-                item.id === 'requests' && "hidden sm:inline"
+                isActive ? "text-white font-semibold" : "text-white/85 group-hover:text-white"
               )}>
-                {item.id === 'settings' ? 'Config' : item.id === 'requests' ? 'Solicitudes' : item.label}
+                {item.label}
               </span>
             </button>
           );
@@ -222,7 +184,7 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
       </div>
       
       {/* Decorative gradient line */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-pink-300/50 to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-400/50 to-transparent" />
     </nav>
   );
 };
