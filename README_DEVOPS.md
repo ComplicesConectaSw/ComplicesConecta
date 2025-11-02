@@ -10,6 +10,7 @@ Script unificado para manejar:
 - **v3.4.1**: Monitoreo completo con Datadog Agent + New Relic APM
 - **v3.5.0**: AI/ML integration + S2 Geosharding + Database scaling ✅
 - **v3.5.0**: Refactorización masiva + CSS optimizado + PostCSS corregido ✅
+- **v3.5.0**: Correcciones React en producción + Linting + Documentación consolidada ✅
 
 ## 📋 Requisitos
 - PowerShell 7+
@@ -20,6 +21,8 @@ Script unificado para manejar:
 - **v3.4.0**: Service Workers habilitados para notificaciones push
 - **NUEVO v3.4.1**: Datadog API Key para monitoreo
 - **NUEVO v3.4.1**: New Relic License Key para APM
+- **v3.5.0**: .gitignore actualizado para archivos .env copy*
+- **v3.5.0**: Historial Git limpiado (sin secretos)
 
 ## ▶️ Uso
 ```powershell

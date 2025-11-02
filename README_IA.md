@@ -12,13 +12,14 @@
    - **v3.5.0**: `feature/ai-native-*` → AI/ML layers (compatibility, chat summaries) ✅
    - **v3.5.0**: `feature/scalability-*` → S2 Geosharding, Neo4j ✅
    - **v3.5.0**: `feature/refactoring-*` → Consolidación código + CSS ✅
+   - **v3.5.0**: `fix/react-chunks-*` → Corrección React en producción ✅
 
 2. **SQL y Backups**
    - Todos los `.sql` y migraciones quedan excluidos en `.gitignore`
    - Backups locales guardados en `D:\complicesconecta_ultima_version_respaldo\supabase\migrations`
    - **v3.4.0**: Migraciones de seguridad y parejas incluidas
    - **v3.4.1**: 20 migraciones aplicadas (47 tablas sincronizadas 100%)
-   - **NUEVO v3.5.0**: 25 migraciones aplicadas (52 tablas sincronizadas 100%)
+   - **NUEVO v3.5.0**: 25 migraciones aplicadas (107 tablas sincronizadas 100%)
 
 3. **Flujo de trabajo con IA/ML**
    - IA genera migraciones o código → Validar con `npm run type-check`
@@ -34,7 +35,9 @@
    - Docs y reportes deben consolidarse (ej: `AUDIT_REPORT.md` mensual, no múltiples sueltos)
    - **v3.4.0**: Monitoreo continuo de amenazas y moderación automática
    - **v3.4.1**: Documentación consolidada en 4 archivos maestros + eliminación de redundantes
-   - **NUEVO v3.5.0**: Documentación consolidada en 1 archivo maestro (`SINCRONIZACION_BD_COMPLETADA_v3.5.0.md`)
+   - **NUEVO v3.5.0**: Documentación consolidada en 1 archivo maestro (`DOCUMENTACION_MAESTRA_v3.5.0.md`)
+   - **v3.5.0**: React chunks corregidos (vendor bundle principal)
+   - **v3.5.0**: Tests y servicios corregidos (0 errores linting)
 
 5. **AI/ML Strategy v3.5.0** 🆕
    - **PyTorch/TensorFlow.js**: Modelos pre-entrenados para compatibility scoring
