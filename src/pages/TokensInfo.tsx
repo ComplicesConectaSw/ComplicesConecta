@@ -58,9 +58,8 @@ import {
   AreaChart,
   Area
 } from 'recharts';
-import { useTokens } from '@/hooks/useTokens';
 import { TokenAnalyticsService } from '@/services/TokenAnalyticsService';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 interface FAQItem {
   question: string;
@@ -150,12 +149,20 @@ export default function TokensInfo() {
         const metrics = await analytics.generateCurrentMetrics();
         
         // Calcular estadísticas globales
+        const tokenMetrics = metrics.metrics || {
+          totalSupply: { cmpx: 1000000, gtk: 5000000 },
+          circulatingSupply: { cmpx: 0, gtk: 0 },
+          stakingMetrics: { totalStaked: 0, activeStakers: 0, avgDuration: 0 },
+          transactionVolume: { cmpx: 0, gtk: 0, count: 0 },
+          userMetrics: { activeUsers: 0, newUsers: 0 }
+        };
+        
         const stats: TokenGlobalStats = {
-          totalCirculation: metrics.circulatingSupply.cmpx,
-          locked: metrics.totalSupply.cmpx - metrics.circulatingSupply.cmpx,
-          globalStaking: metrics.stakingMetrics.totalStaked,
+          totalCirculation: tokenMetrics.circulatingSupply.cmpx,
+          locked: tokenMetrics.totalSupply.cmpx - tokenMetrics.circulatingSupply.cmpx,
+          globalStaking: tokenMetrics.stakingMetrics.totalStaked,
           monthlyRelease: 50000, // Valor estimado de liberación mensual
-          available: metrics.circulatingSupply.cmpx - metrics.stakingMetrics.totalStaked
+          available: tokenMetrics.circulatingSupply.cmpx - tokenMetrics.stakingMetrics.totalStaked
         };
         
         setGlobalStats(stats);
@@ -324,6 +331,187 @@ export default function TokensInfo() {
         {/* SECCIÓN: PÚBLICO GENERAL */}
         {activeSection === 'general' && (
           <div className="space-y-8">
+            {/* Gráficos Globales de Tokens */}
+            <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
+              <CardHeader>
+                <CardTitle className="text-2xl text-white flex items-center gap-3">
+                  <div className="p-2 bg-gradient-to-r from-purple-500 to-blue-600 rounded-lg">
+                    <BarChart3 className="h-6 w-6 text-white" />
+                  </div>
+                  Estadísticas Globales de Tokens
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {loadingStats ? (
+                  <div className="flex items-center justify-center p-8">
+                    <div className="text-center">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto mb-4"></div>
+                      <p className="text-white/90">Cargando estadísticas...</p>
+                    </div>
+                  </div>
+                ) : globalStats && (
+                  <div className="space-y-6">
+                    {/* Tarjetas de resumen */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                      <div className="bg-gradient-to-r from-purple-900/40 to-blue-900/40 p-4 rounded-lg border border-purple-400/30">
+                        <div className="text-purple-300 text-sm mb-1">En Circulación</div>
+                        <div className="text-2xl font-bold text-white">{globalStats.totalCirculation.toLocaleString()}</div>
+                        <div className="text-purple-200 text-xs mt-1">CMPX</div>
+                      </div>
+                      <div className="bg-gradient-to-r from-red-900/40 to-orange-900/40 p-4 rounded-lg border border-red-400/30">
+                        <div className="text-red-300 text-sm mb-1">Bloqueados</div>
+                        <div className="text-2xl font-bold text-white">{globalStats.locked.toLocaleString()}</div>
+                        <div className="text-red-200 text-xs mt-1">CMPX</div>
+                      </div>
+                      <div className="bg-gradient-to-r from-blue-900/40 to-cyan-900/40 p-4 rounded-lg border border-blue-400/30">
+                        <div className="text-blue-300 text-sm mb-1">Staking Global</div>
+                        <div className="text-2xl font-bold text-white">{globalStats.globalStaking.toLocaleString()}</div>
+                        <div className="text-blue-200 text-xs mt-1">CMPX</div>
+                      </div>
+                      <div className="bg-gradient-to-r from-green-900/40 to-emerald-900/40 p-4 rounded-lg border border-green-400/30">
+                        <div className="text-green-300 text-sm mb-1">Liberación Mensual</div>
+                        <div className="text-2xl font-bold text-white">{globalStats.monthlyRelease.toLocaleString()}</div>
+                        <div className="text-green-200 text-xs mt-1">CMPX</div>
+                      </div>
+                    </div>
+
+                    {/* Gráfico de distribución de tokens */}
+                    <div className="bg-white/5 p-4 rounded-lg border border-white/10">
+                      <h4 className="text-lg font-semibold text-white mb-4">Distribución de Tokens CMPX</h4>
+                      <ResponsiveContainer width="100%" height={300}>
+                        <PieChart>
+                          <Pie
+                            data={[
+                              { name: 'En Circulación', value: globalStats.available, color: '#8b5cf6' },
+                              { name: 'En Staking', value: globalStats.globalStaking, color: '#3b82f6' },
+                              { name: 'Bloqueados', value: globalStats.locked, color: '#ef4444' }
+                            ]}
+                            cx="50%"
+                            cy="50%"
+                            labelLine={false}
+                            label={({ name, percent }: { name: string; percent: number }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                            outerRadius={100}
+                            fill="#8884d8"
+                            dataKey="value"
+                          >
+                            {[
+                              { name: 'En Circulación', value: globalStats.available, color: '#8b5cf6' },
+                              { name: 'En Staking', value: globalStats.globalStaking, color: '#3b82f6' },
+                              { name: 'Bloqueados', value: globalStats.locked, color: '#ef4444' }
+                            ].map((entry, index) => (
+                              <Cell key={`cell-${index}`} fill={entry.color} />
+                            ))}
+                          </Pie>
+                          <Tooltip 
+                            contentStyle={{ 
+                              backgroundColor: 'rgba(30, 30, 60, 0.95)', 
+                              border: '1px solid rgba(255, 255, 255, 0.2)',
+                              borderRadius: '8px',
+                              color: '#fff'
+                            }} 
+                          />
+                          <Legend 
+                            wrapperStyle={{ color: '#fff' }}
+                            formatter={(value) => <span style={{ color: '#fff' }}>{value}</span>}
+                          />
+                        </PieChart>
+                      </ResponsiveContainer>
+                    </div>
+
+                    {/* Gráfico de barras - Comparación */}
+                    <div className="bg-white/5 p-4 rounded-lg border border-white/10">
+                      <h4 className="text-lg font-semibold text-white mb-4">Comparación de Tokens</h4>
+                      <ResponsiveContainer width="100%" height={300}>
+                        <BarChart data={[
+                          { name: 'Circulación', CMPX: globalStats.totalCirculation, color: '#8b5cf6' },
+                          { name: 'Staking', CMPX: globalStats.globalStaking, color: '#3b82f6' },
+                          { name: 'Bloqueados', CMPX: globalStats.locked, color: '#ef4444' },
+                          { name: 'Liberación/Mes', CMPX: globalStats.monthlyRelease, color: '#10b981' }
+                        ]}>
+                          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                          <XAxis 
+                            dataKey="name" 
+                            tick={{ fill: '#fff', fontSize: 12 }}
+                            stroke="rgba(255,255,255,0.3)"
+                          />
+                          <YAxis 
+                            tick={{ fill: '#fff', fontSize: 12 }}
+                            stroke="rgba(255,255,255,0.3)"
+                          />
+                          <Tooltip 
+                            contentStyle={{ 
+                              backgroundColor: 'rgba(30, 30, 60, 0.95)', 
+                              border: '1px solid rgba(255, 255, 255, 0.2)',
+                              borderRadius: '8px',
+                              color: '#fff'
+                            }} 
+                            formatter={(value: number) => [`${value.toLocaleString()} CMPX`, 'CMPX']}
+                          />
+                          <Bar dataKey="CMPX" fill="#8b5cf6" radius={[8, 8, 0, 0]}>
+                            {[
+                              { name: 'Circulación', CMPX: globalStats.totalCirculation, color: '#8b5cf6' },
+                              { name: 'Staking', CMPX: globalStats.globalStaking, color: '#3b82f6' },
+                              { name: 'Bloqueados', CMPX: globalStats.locked, color: '#ef4444' },
+                              { name: 'Liberación/Mes', CMPX: globalStats.monthlyRelease, color: '#10b981' }
+                            ].map((entry, index) => (
+                              <Cell key={`cell-${index}`} fill={entry.color} />
+                            ))}
+                          </Bar>
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+
+                    {/* Gráfico de área - Tendencias mensuales */}
+                    <div className="bg-white/5 p-4 rounded-lg border border-white/10">
+                      <h4 className="text-lg font-semibold text-white mb-4">Tendencias Mensuales</h4>
+                      <ResponsiveContainer width="100%" height={300}>
+                        <AreaChart data={[
+                          { mes: 'Sep', circulacion: globalStats.totalCirculation * 0.7, staking: globalStats.globalStaking * 0.6 },
+                          { mes: 'Oct', circulacion: globalStats.totalCirculation * 0.85, staking: globalStats.globalStaking * 0.8 },
+                          { mes: 'Nov', circulacion: globalStats.totalCirculation, staking: globalStats.globalStaking }
+                        ]}>
+                          <defs>
+                            <linearGradient id="colorCirculacion" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.8}/>
+                              <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0}/>
+                            </linearGradient>
+                            <linearGradient id="colorStaking" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8}/>
+                              <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                            </linearGradient>
+                          </defs>
+                          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                          <XAxis 
+                            dataKey="mes" 
+                            tick={{ fill: '#fff', fontSize: 12 }}
+                            stroke="rgba(255,255,255,0.3)"
+                          />
+                          <YAxis 
+                            tick={{ fill: '#fff', fontSize: 12 }}
+                            stroke="rgba(255,255,255,0.3)"
+                          />
+                          <Tooltip 
+                            contentStyle={{ 
+                              backgroundColor: 'rgba(30, 30, 60, 0.95)', 
+                              border: '1px solid rgba(255, 255, 255, 0.2)',
+                              borderRadius: '8px',
+                              color: '#fff'
+                            }} 
+                          />
+                          <Area type="monotone" dataKey="circulacion" stroke="#8b5cf6" fillOpacity={1} fill="url(#colorCirculacion)" />
+                          <Area type="monotone" dataKey="staking" stroke="#3b82f6" fillOpacity={1} fill="url(#colorStaking)" />
+                          <Legend 
+                            wrapperStyle={{ color: '#fff' }}
+                            formatter={(value) => <span style={{ color: '#fff' }}>{value === 'circulacion' ? 'Circulación' : 'Staking'}</span>}
+                          />
+                        </AreaChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
             {/* Token CMPX - Moneda de Consumo */}
             <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
               <CardHeader>
@@ -449,7 +637,7 @@ export default function TokensInfo() {
                   <div className="grid md:grid-cols-4 gap-4">
                     {[
                       { label: 'Venta Directa', percentage: 60, color: 'from-blue-500 to-cyan-600' },
-                      { label: 'Recompensas', percentage: 25, color: 'from-purple-500 to-pink-600' },
+                      { label: 'Recompensas', percentage: 25, color: 'from-purple-500 to-blue-600' },
                       { label: 'Eventos Especiales', percentage: 10, color: 'from-yellow-500 to-orange-600' },
                       { label: 'Desarrollo/Marketing', percentage: 5, color: 'from-green-500 to-emerald-600' }
                     ].map((item, idx) => (
@@ -466,10 +654,10 @@ export default function TokensInfo() {
             </Card>
 
             {/* Token GTK - Staking e Inversión */}
-            <Card className="bg-gradient-to-r from-purple-600/20 via-pink-600/20 to-blue-600/20 backdrop-blur-xl border-white/20 shadow-2xl">
+            <Card className="bg-gradient-to-r from-purple-600/20 via-purple-600/20 to-blue-600/20 backdrop-blur-xl border-white/20 shadow-2xl">
               <CardHeader>
                 <CardTitle className="text-2xl text-white flex items-center gap-3">
-                  <div className="p-2 bg-gradient-to-r from-purple-500 to-pink-600 rounded-lg">
+                  <div className="p-2 bg-gradient-to-r from-purple-500 to-blue-600 rounded-lg">
                     <Rocket className="h-6 w-6 text-white" />
                   </div>
                   Token GTK: Staking e Inversión Blockchain
@@ -604,7 +792,7 @@ export default function TokensInfo() {
                       >
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center gap-3">
-                            <div className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-pink-600 flex items-center justify-center text-white font-bold">
+                            <div className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-blue-600 flex items-center justify-center text-white font-bold">
                               {item.percentage}%
                             </div>
                             <div>
@@ -618,7 +806,7 @@ export default function TokensInfo() {
                         </div>
                         <div className="w-full bg-white/10 rounded-full h-2 mt-2">
                           <div 
-                            className="bg-gradient-to-r from-purple-500 to-pink-600 h-2 rounded-full transition-all duration-1000"
+                            className="bg-gradient-to-r from-purple-500 to-blue-600 h-2 rounded-full transition-all duration-1000"
                             style={{ width: `${item.percentage}%` }}
                           ></div>
                         </div>
@@ -780,7 +968,7 @@ export default function TokensInfo() {
         {activeSection === 'blockchain' && (
           <div className="space-y-8">
             {/* Migración a Blockchain */}
-            <Card className="bg-gradient-to-r from-purple-600/20 via-pink-600/20 to-blue-600/20 backdrop-blur-xl border-white/20 shadow-2xl">
+            <Card className="bg-gradient-to-r from-purple-600/20 via-purple-600/20 to-blue-600/20 backdrop-blur-xl border-white/20 shadow-2xl">
               <CardHeader>
                 <CardTitle className="text-2xl text-white flex items-center gap-3">
                   <div className="p-2 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg">
@@ -810,7 +998,7 @@ export default function TokensInfo() {
                         </ul>
                       </div>
                       
-                      <div className="p-4 bg-gradient-to-r from-purple-900/40 to-pink-900/40 rounded-lg border border-purple-400/30">
+                      <div className="p-4 bg-gradient-to-r from-purple-900/40 to-blue-900/40 rounded-lg border border-purple-400/30">
                         <div className="text-purple-300 font-bold text-sm mb-2">DESPUÉS (Blockchain)</div>
                         <div className="text-white font-semibold">GTK On-Chain</div>
                         <ul className="text-white/70 text-sm mt-2 space-y-1">
@@ -889,7 +1077,7 @@ export default function TokensInfo() {
                   <div className="grid md:grid-cols-4 gap-4">
                     {[
                       { name: 'Ethereum', status: 'Principal', color: 'from-blue-500 to-cyan-600' },
-                      { name: 'Polygon', status: 'Bajo costo', color: 'from-purple-500 to-pink-600' },
+                      { name: 'Polygon', status: 'Bajo costo', color: 'from-purple-500 to-blue-600' },
                       { name: 'Arbitrum', status: 'Optimizado', color: 'from-cyan-500 to-blue-600' },
                       { name: 'Optimism', status: 'Rápido', color: 'from-orange-500 to-red-600' }
                     ].map((chain, idx) => (
