@@ -562,6 +562,41 @@ header .flex:last-child {
   text-shadow: 3px 3px 6px rgba(0, 0, 0, 1) !important;
 }
 
+/* ===== INPUTS Y TEXTAREAS CON GRADIENTES ===== */
+/* Forzar gradientes en inputs y textareas en fondos con gradiente */
+.bg-gradient-to-br input,
+.bg-gradient-to-br textarea,
+.bg-gradient-to-r input,
+.bg-gradient-to-r textarea,
+[style*="background: linear-gradient"] input,
+[style*="background: linear-gradient"] textarea {
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(10px);
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+}
+
+.bg-gradient-to-br input::placeholder,
+.bg-gradient-to-br textarea::placeholder,
+.bg-gradient-to-r input::placeholder,
+.bg-gradient-to-r textarea::placeholder,
+[style*="background: linear-gradient"] input::placeholder,
+[style*="background: linear-gradient"] textarea::placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Inputs y textareas con bg-white/bg-gray en fondos oscuros - cambiar a gradiente */
+.bg-gradient-to-br .bg-white,
+.bg-gradient-to-br .bg-gray-50,
+.bg-gradient-to-br .bg-gray-100,
+.bg-gradient-to-r .bg-white,
+.bg-gradient-to-r .bg-gray-50,
+.bg-gradient-to-r .bg-gray-100 {
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(10px);
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
 /* Texto en elementos con fondo oscuro - AGRESIVO */
 .bg-gradient-to-br .text-black,
 .bg-gradient-to-r .text-black,

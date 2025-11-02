@@ -402,7 +402,10 @@ export class NotificationService {
         .range(offset, offset + limit - 1);
 
       if (error) {
-        logger.error('Error getting user notifications:', { error: error.message });
+        // Silenciar errores de API key inválido para evitar spam en consola
+        if (!error.message.includes('Invalid API key')) {
+          logger.error('Error getting user notifications:', { error: error.message });
+        }
         return { notifications: [], total: 0 };
       }
 
@@ -428,7 +431,10 @@ export class NotificationService {
         .eq('read', false);
 
       if (error) {
-        logger.error('Error getting unread count:', { error: error.message });
+        // Silenciar errores de API key inválido para evitar spam en consola
+        if (!error.message.includes('Invalid API key') && error.message.trim() !== '') {
+          logger.error('Error getting unread count:', { error: error.message });
+        }
         return 0;
       }
 

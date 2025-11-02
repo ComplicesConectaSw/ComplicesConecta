@@ -144,7 +144,7 @@ class UserVerificationService {
 
       // 1. Subir selfie a Storage temporal
       const selfieFileName = `verification/${userId}/${Date.now()}-selfie.jpg`;
-      const { data: uploadData, error: uploadError } = await supabase.storage
+      const { data: _uploadData, error: uploadError } = await supabase.storage
         .from('profile-images')
         .upload(selfieFileName, selfieData.selfieFile, {
           cacheControl: '3600',
@@ -161,7 +161,7 @@ class UserVerificationService {
       }
 
       // 2. Obtener URL de selfie
-      const { data: urlData } = supabase.storage
+      const { data: _urlData } = supabase.storage
         .from('profile-images')
         .getPublicUrl(selfieFileName);
 
@@ -284,7 +284,7 @@ class UserVerificationService {
   /**
    * Verifica teléfono (SMS)
    */
-  async verifyPhone(userId: string, phoneNumber: string, code: string): Promise<VerificationResult> {
+  async verifyPhone(_userId: string, _phoneNumber: string, _code: string): Promise<VerificationResult> {
     try {
       // TODO: Implementar verificación por SMS
       // Por ahora, retornar como no implementado
@@ -383,7 +383,7 @@ class UserVerificationService {
   private async updateVerificationStatus(
     userId: string,
     method: 'world_id' | 'selfie' | 'document' | 'phone' | 'email',
-    metadata?: {
+    _metadata?: {
       verificationLevel?: string;
       nullifierHash?: string;
       documentType?: string;

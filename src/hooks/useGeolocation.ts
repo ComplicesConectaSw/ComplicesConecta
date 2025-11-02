@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { logger } from '@/lib/logger';
 import { s2Service } from '@/services/geo/S2Service';
-import { supabase } from '@/integrations/supabase/client';
 
 export interface LocationCoordinates {
   latitude: number;

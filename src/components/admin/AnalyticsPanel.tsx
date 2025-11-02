@@ -178,11 +178,13 @@ export function AnalyticsPanel() {
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
       const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
 
+      type ProfileRow = { id: string; created_at: string | null; is_premium: boolean | null };
+      
       const totalUsers = profiles?.length || 0;
-      const newUsersToday = profiles?.filter((p: any) => 
+      const newUsersToday = (profiles as ProfileRow[])?.filter((p) => 
         p.created_at && new Date(p.created_at) >= today
       ).length || 0;
-      const newUsersWeek = profiles?.filter((p: any) => 
+      const newUsersWeek = (profiles as ProfileRow[])?.filter((p) => 
         p.created_at && new Date(p.created_at) >= weekAgo
       ).length || 0;
 
@@ -403,11 +405,11 @@ export function AnalyticsPanel() {
               {lastUpdate.toLocaleTimeString()}
             </span>
           )}
-          <Button onClick={exportData} className="border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 h-8 px-3 text-sm">
+          <Button onClick={exportData} className="border border-white/30 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 h-8 px-3 text-sm shadow-md">
             <Download className="w-4 h-4 mr-2" />
             Exportar
           </Button>
-          <Button onClick={refreshData} disabled={isLoading} className="border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 h-8 px-3 text-sm">
+          <Button onClick={refreshData} disabled={isLoading} className="border border-white/30 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 h-8 px-3 text-sm shadow-md disabled:opacity-50">
             <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
             Actualizar
           </Button>

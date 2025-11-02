@@ -182,7 +182,7 @@ describe('Sistema de Integración Completo', () => {
       testLogger.info('Test: ML Matching - cálculo de score');
       
       try {
-        const userProfile = {
+        const _userProfile = {
           id: 'user-1',
           age: 28,
           interests: ['lifestyle', 'swinger', 'parejas'],
@@ -206,7 +206,7 @@ describe('Sistema de Integración Completo', () => {
           }
         };
 
-        const candidateProfile = {
+        const _candidateProfile = {
           id: 'candidate-1',
           age: 30,
           interests: ['lifestyle', 'parejas', 'eventos'],
@@ -388,7 +388,7 @@ describe('Sistema de Integración Completo', () => {
           }
         };
 
-        const mockCandidateProfile = { ...mockUserProfile, id: 'candidate-integration' };
+        const _mockCandidateProfile = { ...mockUserProfile, id: 'candidate-integration' };
         
         // DEPRECATED: ML matching moved to respaldo
         // const mlScore = await calculateMLMatch(mockUserProfile, mockCandidateProfile);

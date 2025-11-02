@@ -81,7 +81,7 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
     });
   }, [_isDemoAuthenticated, demoUser, _currentUserType, isAuthenticated]);
 
-  const baseNavItems = [
+  const _baseNavItems = [
     { id: 'feed', icon: Home, label: 'Inicio', path: '/feed' },
     { id: 'discover', icon: Search, label: 'Descubrir', path: '/discover' },
     { id: 'chat', icon: MessageCircle, label: 'Chat', path: '/chat' },

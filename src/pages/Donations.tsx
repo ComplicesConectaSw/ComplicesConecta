@@ -198,7 +198,7 @@ const Donations = () => {
                 className="flex-1 px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50"
                 onChange={(e) => setSelectedAmount(Number(e.target.value))}
               />
-              <Button className="bg-white text-purple-600 hover:bg-white/90">
+              <Button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300">
                 Seleccionar
               </Button>
             </div>

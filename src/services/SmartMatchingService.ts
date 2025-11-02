@@ -183,7 +183,7 @@ class SmartMatchingService {
 
       // Aplicar filtros
       if (options.filters) {
-        const { ageRange, gender, verifiedOnly, hasPhotos } = options.filters;
+        const { ageRange, gender, verifiedOnly, hasPhotos: _hasPhotos } = options.filters;
 
         if (ageRange) {
           query = query.gte('age', ageRange.min).lte('age', ageRange.max);

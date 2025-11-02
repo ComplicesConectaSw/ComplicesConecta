@@ -34,7 +34,7 @@ const Index = () => {
   const [showInstallModal, setShowInstallModal] = useState(false);
   const [showActionButtonsModal, setShowActionButtonsModal] = useState(false);
   const [showModeratorForm, setShowModeratorForm] = useState(false);
-  const isWelcomeVisible = useScrollHide(50);
+  const _isWelcomeVisible = useScrollHide(50);
 
   // Estado persistente
   const [demoAuthenticated] = usePersistedState<boolean>('demo_authenticated', false);

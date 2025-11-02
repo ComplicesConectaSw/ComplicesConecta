@@ -147,7 +147,7 @@ export default function PerformancePanel() {
         ? responseTimeMetrics.reduce((sum, m) => sum + Number(m.value || 0), 0) / responseTimeMetrics.length
         : 150;
 
-      const avgLoadTime = loadTimeMetrics.length > 0
+      const _avgLoadTime = loadTimeMetrics.length > 0
         ? loadTimeMetrics.reduce((sum, m) => sum + Number(m.value || 0), 0) / loadTimeMetrics.length
         : 250;
 

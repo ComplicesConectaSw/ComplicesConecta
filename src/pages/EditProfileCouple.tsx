@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import ImageUpload from "@/components/profile/ImageUpload";
 import { generateMockCouple } from "@/lib/data";
-import { SAFE_INTERESTS, lifestyleInterests } from "@/lib/lifestyle-interests";
+import { SAFE_INTERESTS } from "@/lib/lifestyle-interests";
 import { ExplicitInterestsEditor } from '@/components/settings/ExplicitInterestsEditor';
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { logger } from '@/lib/logger';

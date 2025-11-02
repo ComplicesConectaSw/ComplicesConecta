@@ -348,10 +348,10 @@ export function TokenSystemPanel() {
                 </div>
 
                 <div className="flex justify-end gap-2">
-                  <Button className="border border-gray-300 bg-white text-gray-700 hover:bg-gray-50" onClick={() => setShowAdjustmentModal(false)}>
+                  <Button className="border border-white/30 bg-white/10 backdrop-blur-md text-white hover:bg-white/20" onClick={() => setShowAdjustmentModal(false)}>
                     Cancelar
                   </Button>
-                  <Button onClick={handleTokenAdjustment}>
+                  <Button onClick={handleTokenAdjustment} className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white">
                     Aplicar Ajuste
                   </Button>
                 </div>
@@ -359,7 +359,7 @@ export function TokenSystemPanel() {
             </DialogContent>
           </Dialog>
 
-          <Button onClick={loadTokenData} disabled={isLoading} className="border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">
+          <Button onClick={loadTokenData} disabled={isLoading} className="border border-white/30 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 disabled:opacity-50">
             <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
             Actualizar
           </Button>

@@ -22,8 +22,6 @@ import {
   Rocket,
   CheckCircle2,
   Sparkles,
-  Globe,
-  Lock,
   Eye
 } from 'lucide-react';
 import { motion } from 'framer-motion';

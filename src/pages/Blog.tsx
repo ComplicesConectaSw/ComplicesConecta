@@ -98,7 +98,11 @@ const Blog = () => {
                   </div>
                 </div>
                 
-                <Button variant="outline" className="w-full border-white/20 text-white hover:bg-white/10">
+                <Button 
+                  variant="glass" 
+                  className="w-full border-white/30 text-white font-semibold hover:bg-white/20 hover:border-white/40 shadow-lg hover:shadow-xl transition-all duration-300"
+                  onClick={() => navigate(`/blog/${post.id}`)}
+                >
                   Leer más
                 </Button>
               </div>

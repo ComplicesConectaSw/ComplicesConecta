@@ -12,7 +12,6 @@
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { AILayerService } from '@/services/ai/AILayerService';
-import type { AIScore } from '@/services/ai/AILayerService';
 
 describe('AILayerService', () => {
   let aiLayer: AILayerService;

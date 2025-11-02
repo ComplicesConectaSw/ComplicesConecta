@@ -81,7 +81,7 @@ export function initSentry(config: Partial<SentryConfig> = {}): void {
     replaysOnErrorSampleRate: finalConfig.replaysOnErrorSampleRate,
 
     // Before Send - filtrar información sensible
-    beforeSend(event, hint) {
+    beforeSend(event, _hint) {
       // Filtrar datos sensibles
       if (event.request) {
         // Remover headers sensibles

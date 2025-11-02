@@ -379,7 +379,7 @@ class SecurityService {
     action: string,
     details: Record<string, any>,
     ipAddress?: string,
-    userAgent?: string
+    _userAgent?: string
   ): Promise<void> {
     try {
       const riskScore = await this.calculateEventRiskScore(action, details);

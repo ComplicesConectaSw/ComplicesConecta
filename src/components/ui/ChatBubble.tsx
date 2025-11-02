@@ -160,7 +160,7 @@ export const ChatBubble = React.memo<ChatBubbleProps>(function ChatBubble({
                 ? isPrivate
                   ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white"
                   : "bg-blue-500 text-white"
-                : "bg-white text-gray-800 border border-gray-200"
+                : "bg-white/10 backdrop-blur-md text-white border border-white/20"
             )}
           >
             {/* Private Message Indicator */}

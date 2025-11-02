@@ -261,7 +261,7 @@ export const CouplePhotoSection: React.FC<CouplePhotoSectionProps> = ({
           <div className="w-full border-t border-gray-200" />
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="px-4 bg-white text-gray-500 flex items-center gap-2">
+          <span className="px-4 bg-white/10 backdrop-blur-md text-white border border-white/20 flex items-center gap-2">
             <Heart className="w-4 h-4 text-red-400" />
             Pareja
             <Heart className="w-4 h-4 text-red-400" />

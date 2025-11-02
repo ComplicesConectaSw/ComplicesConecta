@@ -15,7 +15,7 @@ import { datadogRum } from '@datadog/browser-rum';
 import { datadogLogs } from '@datadog/browser-logs';
 
 // Configuración de entorno
-const isDev = import.meta.env.DEV;
+const _isDev = import.meta.env.DEV;
 const isProduction = import.meta.env.PROD;
 
 /**
@@ -224,7 +224,7 @@ export function trackError(error: Error, context?: Record<string, any>) {
 /**
  * Iniciar transacción manual (para medir performance de operaciones específicas)
  */
-export function startTransaction(name: string, type: string = 'custom') {
+export function startTransaction(name: string, _type: string = 'custom') {
   try {
     datadogRum.startView(name);
     return {

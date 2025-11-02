@@ -168,7 +168,7 @@ class PostsService {
    */
   async getFeed(page = 0, limit = 20): Promise<Post[]> {
     try {
-      const operationStart = performance.now();
+      const _operationStart = performance.now();
       
       // Verificar cache primero
       const cacheKey = `feed_${page}_${limit}`;
@@ -454,7 +454,7 @@ class PostsService {
           .eq('story_id', comment.id);
 
         // Verificar si el usuario actual dio like (temporalmente deshabilitado)
-        const userId = this.getCurrentUserId();
+        const _userId = this.getCurrentUserId();
         const userLike = null;
         /* TODO: Habilitar cuando comment_likes exista
         const { data: userLike } = await supabase

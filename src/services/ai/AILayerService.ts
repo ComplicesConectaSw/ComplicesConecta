@@ -291,7 +291,7 @@ export class AILayerService {
    * Calcula compatibilidad Big Five (del scoring actual)
    * @private
    */
-  private calculateBigFiveCompatibility(user1: Profile, user2: Profile): number {
+  private calculateBigFiveCompatibility(_user1: Profile, _user2: Profile): number {
     // Placeholder: implementar lógica real del SmartMatchingService
     return 0.75;
   }
@@ -300,7 +300,7 @@ export class AILayerService {
    * Calcula score de swinger traits (del scoring actual)
    * @private
    */
-  private calculateSwingerTraitsScore(user1: Profile, user2: Profile): number {
+  private calculateSwingerTraitsScore(_user1: Profile, _user2: Profile): number {
     // Placeholder: implementar lógica real del SmartMatchingService
     return 0.8;
   }

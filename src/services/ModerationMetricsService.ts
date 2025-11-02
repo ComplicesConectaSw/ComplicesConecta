@@ -267,7 +267,7 @@ class ModerationMetricsService {
       // Contar moderadores únicos
       const uniqueModerators = new Set(data.map(r => r.resolved_by));
       return uniqueModerators.size;
-    } catch (error) {
+    } catch (_error) {
       return 0;
     }
   }

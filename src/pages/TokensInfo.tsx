@@ -9,8 +9,7 @@ import {
   Shield, 
   Gift, 
   TrendingUp, 
-  Lock, 
-  Unlock,
+  Lock,
   ChevronDown,
   ChevronUp,
   Star,
@@ -31,7 +30,6 @@ import {
   Crown,
   Ticket,
   Sparkles,
-  Award,
   CheckCircle2
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -53,8 +51,6 @@ import {
   Tooltip, 
   Legend, 
   ResponsiveContainer,
-  LineChart,
-  Line,
   AreaChart,
   Area
 } from 'recharts';

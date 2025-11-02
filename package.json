@@ -26,8 +26,8 @@
     "scaffold:templates": "npx tsx scripts/import-templates.ts",
     "audit:repo": "npx tsx scripts/audit-project.ts --report",
     "audit:fix": "npx tsx scripts/audit-project.ts --fix",
-    "test:lint-robust": "node scripts/test-lint.js",
-    "test:type-robust": "node scripts/test-type-check.js",
+    "test:lint-robust": "node scripts/test-lint-robust.cjs",
+    "test:type-robust": "node scripts/test-type-check-robust.cjs",
     "security:progress": "node scripts/security-progress-check.js",
     "token:verify": "node scripts/verify-token.js",
     "security:scan": "node scripts/security-check.js"

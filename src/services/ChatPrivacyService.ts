@@ -342,7 +342,7 @@ class ChatPrivacyService {
       if (!request) return;
 
       // Crear permiso bidireccional
-      const permissions = [
+      const _permissions = [
         {
           user_id: request.from_profile,
           other_user_id: request.to_profile,

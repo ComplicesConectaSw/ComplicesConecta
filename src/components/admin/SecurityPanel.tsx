@@ -285,7 +285,7 @@ export default function SecurityPanel() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button onClick={loadSecurityData} disabled={isLoading} className="border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">
+          <Button onClick={loadSecurityData} disabled={isLoading} className="border border-white/30 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 disabled:opacity-50">
             <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
             Actualizar
           </Button>
@@ -430,7 +430,7 @@ export default function SecurityPanel() {
                           <Dialog>
                             <DialogTrigger asChild>
                               <Button 
-                                className="border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 h-8 px-3 text-sm"
+                                className="border border-white/30 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 h-8 px-3 text-sm shadow-md"
                                 onClick={() => _setSelectedAlert(alert)}
                               >
                                 <Settings className="w-4 h-4" />
@@ -455,7 +455,7 @@ export default function SecurityPanel() {
                                 <div className="flex gap-2">
                                   {alert.status === 'open' && (
                                     <Button 
-                                      className="border border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
+                                      className="border border-white/30 bg-white/10 backdrop-blur-md text-white hover:bg-white/20"
                                       onClick={() => handleAlertAction(alert.id, 'investigate')}
                                     >
                                       <Eye className="w-4 h-4 mr-2" />
@@ -466,7 +466,7 @@ export default function SecurityPanel() {
                                   {(alert.status === 'open' || alert.status === 'investigating') && (
                                     <>
                                       <Button 
-                                        className="border border-green-300 bg-white text-green-600 hover:bg-green-50"
+                                        className="border border-green-300 bg-green-500/20 backdrop-blur-md text-white hover:bg-green-500/30"
                                         onClick={() => handleAlertAction(alert.id, 'resolve')}
                                       >
                                         <CheckCircle className="w-4 h-4 mr-2" />
@@ -474,7 +474,7 @@ export default function SecurityPanel() {
                                       </Button>
                                       
                                       <Button 
-                                        className="border border-gray-300 bg-white text-gray-600 hover:bg-gray-50"
+                                        className="border border-white/30 bg-white/10 backdrop-blur-md text-white hover:bg-white/20"
                                         onClick={() => handleAlertAction(alert.id, 'false_positive')}
                                       >
                                         <XCircle className="w-4 h-4 mr-2" />
@@ -508,25 +508,25 @@ export default function SecurityPanel() {
               {isLoading ? (
                 <div className="text-center py-8">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-                  <p className="mt-2 text-gray-600">Cargando estado 2FA...</p>
+                  <p className="mt-2 text-white/80">Cargando estado 2FA...</p>
                 </div>
               ) : (
                 <div className="space-y-3">
                   {user2FAStatus.map((user) => (
-                    <div key={user.user_id} className="flex items-center justify-between p-3 border rounded-lg">
+                    <div key={user.user_id} className="flex items-center justify-between p-3 border rounded-lg bg-white/10 backdrop-blur-md border-white/20">
                       <div>
-                        <div className="font-medium">{user.user_name}</div>
-                        <div className="text-sm text-gray-600">
+                        <div className="font-medium text-white">{user.user_name}</div>
+                        <div className="text-sm text-white/80">
                           {user.has_2fa ? `2FA habilitado ${user.enabled_at ? 'el ' + new Date(user.enabled_at).toLocaleDateString() : ''}` : '2FA no habilitado'}
                         </div>
                       </div>
 
                       <div className="flex items-center gap-3">
-                        <Badge className={user.has_2fa ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>
+                        <Badge className={user.has_2fa ? 'bg-green-500/20 text-green-300 border-green-300/30' : 'bg-red-500/20 text-red-300 border-red-300/30'}>
                           {user.has_2fa ? 'Habilitado' : 'Deshabilitado'}
                         </Badge>
                         <Button 
-                          className="border border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
+                          className="border border-white/30 bg-white/10 backdrop-blur-md text-white hover:bg-white/20"
                           onClick={() => handle2FAToggle(user.user_id)}
                         >
                           {user.has_2fa ? 'Deshabilitar' : 'Habilitar'} 2FA

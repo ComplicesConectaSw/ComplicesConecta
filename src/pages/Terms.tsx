@@ -26,16 +26,16 @@ const Terms = () => {
         <main className="container mx-auto px-4 py-8">
 
           <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
               Términos y Condiciones
-              <span className="block bg-love-gradient bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-transparent">
                 ComplicesConecta
               </span>
             </h1>
             <p className="text-xl text-white font-medium max-w-2xl mx-auto">
               Condiciones de uso para nuestra plataforma de conexiones para adultos
             </p>
-            <Badge className="mt-4 bg-gray-200 text-gray-800">
+            <Badge className="mt-4 bg-white/10 border-white/30 text-white backdrop-blur-sm">
               <FileText className="h-4 w-4 mr-1" />
               Última actualización: Octubre 2025
             </Badge>
@@ -43,19 +43,19 @@ const Terms = () => {
 
           <div className="max-w-4xl mx-auto space-y-8">
             {/* Aceptación de Términos */}
-            <Card className="bg-card/80 backdrop-blur-sm border border-primary/10">
+            <Card className="bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Shield className="h-5 w-5 text-primary" />
+                <CardTitle className="flex items-center gap-2 text-white">
+                  <Shield className="h-5 w-5 text-purple-300" />
                   1. Aceptación de Términos
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <p className="text-white/90">
+                <p className="text-white/80">
                   Al acceder y utilizar ComplicesConecta, usted acepta estar sujeto a estos términos y condiciones. 
                   Si no está de acuerdo con alguna parte de estos términos, no debe utilizar nuestro servicio.
                 </p>
-                <p className="text-white/90">
+                <p className="text-white/80">
                   Esta plataforma está destinada exclusivamente para adultos mayores de 18 años que buscan 
                   conexiones dentro del estilo de vida alternativo para parejas.
                 </p>
@@ -63,116 +63,116 @@ const Terms = () => {
             </Card>
 
             {/* Elegibilidad */}
-            <Card className="bg-card/80 backdrop-blur-sm border border-primary/10">
+            <Card className="bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Users className="h-5 w-5 text-primary" />
+                <CardTitle className="flex items-center gap-2 text-white">
+                  <Users className="h-5 w-5 text-purple-300" />
                   2. Elegibilidad y Registro
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <p className="text-white/90">
-                  <strong>Requisitos de edad:</strong> Debe tener al menos 18 años para usar este servicio.
+                <p className="text-white/80">
+                  <strong className="text-white">Requisitos de edad:</strong> Debe tener al menos 18 años para usar este servicio.
                 </p>
-                <p className="text-white/90">
-                  <strong>Verificación:</strong> Nos reservamos el derecho de solicitar verificación de identidad 
+                <p className="text-white/80">
+                  <strong className="text-white">Verificación:</strong> Nos reservamos el derecho de solicitar verificación de identidad 
                   y edad en cualquier momento.
                 </p>
-                <p className="text-white/90">
-                  <strong>Información veraz:</strong> Debe proporcionar información precisa y actualizada 
+                <p className="text-white/80">
+                  <strong className="text-white">Información veraz:</strong> Debe proporcionar información precisa y actualizada 
                   durante el registro.
                 </p>
-                <p className="text-white/90">
-                  <strong>Una cuenta por persona:</strong> No está permitido crear múltiples cuentas.
+                <p className="text-white/80">
+                  <strong className="text-white">Una cuenta por persona:</strong> No está permitido crear múltiples cuentas.
                 </p>
               </CardContent>
             </Card>
 
             {/* Conducta del Usuario */}
-            <Card className="bg-card/80 backdrop-blur-sm border border-primary/10">
+            <Card className="bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Heart className="h-5 w-5 text-primary" />
+                <CardTitle className="flex items-center gap-2 text-white">
+                  <Heart className="h-5 w-5 text-purple-300" />
                   3. Conducta del Usuario
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <p className="text-white/90">
-                  <strong>Respeto mutuo:</strong> Mantenga siempre un trato respetuoso hacia otros usuarios.
+                <p className="text-white/80">
+                  <strong className="text-white">Respeto mutuo:</strong> Mantenga siempre un trato respetuoso hacia otros usuarios.
                 </p>
-                <p className="text-white/90">
-                  <strong>Consentimiento:</strong> Todas las interacciones deben ser consensuales. 
+                <p className="text-white/80">
+                  <strong className="text-white">Consentimiento:</strong> Todas las interacciones deben ser consensuales. 
                   No se tolerará el acoso o comportamiento no deseado.
                 </p>
-                <p className="text-white/90">
-                  <strong>Contenido apropiado:</strong> No publique contenido ilegal, ofensivo o que viole 
+                <p className="text-white/80">
+                  <strong className="text-white">Contenido apropiado:</strong> No publique contenido ilegal, ofensivo o que viole 
                   los derechos de terceros.
                 </p>
-                <p className="text-white/90">
-                  <strong>Privacidad:</strong> Respete la privacidad de otros usuarios. No comparta información 
+                <p className="text-white/80">
+                  <strong className="text-white">Privacidad:</strong> Respete la privacidad de otros usuarios. No comparta información 
                   personal sin consentimiento.
                 </p>
               </CardContent>
             </Card>
 
             {/* Privacidad y Seguridad */}
-            <Card className="bg-card/80 backdrop-blur-sm border border-primary/10">
+            <Card className="bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Lock className="h-5 w-5 text-primary" />
+                <CardTitle className="flex items-center gap-2 text-white">
+                  <Lock className="h-5 w-5 text-purple-300" />
                   4. Privacidad y Seguridad
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <p className="text-white/90">
-                  <strong>Protección de datos:</strong> Implementamos medidas de seguridad para proteger 
+                <p className="text-white/80">
+                  <strong className="text-white">Protección de datos:</strong> Implementamos medidas de seguridad para proteger 
                   su información personal.
                 </p>
-                <p className="text-white/90">
-                  <strong>Uso de información:</strong> Su información se utiliza únicamente para mejorar 
+                <p className="text-white/80">
+                  <strong className="text-white">Uso de información:</strong> Su información se utiliza únicamente para mejorar 
                   su experiencia en la plataforma.
                 </p>
-                <p className="text-white/90">
-                  <strong>Terceros:</strong> No vendemos ni compartimos su información personal con terceros 
+                <p className="text-white/80">
+                  <strong className="text-white">Terceros:</strong> No vendemos ni compartimos su información personal con terceros 
                   sin su consentimiento explícito.
                 </p>
-                <p className="text-white/90">
-                  <strong>Cookies:</strong> Utilizamos cookies para mejorar la funcionalidad del sitio.
+                <p className="text-white/80">
+                  <strong className="text-white">Cookies:</strong> Utilizamos cookies para mejorar la funcionalidad del sitio.
                 </p>
               </CardContent>
             </Card>
 
             {/* Servicios Premium */}
-            <Card className="bg-card/80 backdrop-blur-sm border border-primary/10">
+            <Card className="bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl">
               <CardHeader>
-                <CardTitle>5. Servicios Premium y Pagos</CardTitle>
+                <CardTitle className="text-white">5. Servicios Premium y Pagos</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <p className="text-white/90">
-                  <strong>Suscripciones:</strong> Los servicios premium requieren suscripción mensual o anual.
+                <p className="text-white/80">
+                  <strong className="text-white">Suscripciones:</strong> Los servicios premium requieren suscripción mensual o anual.
                 </p>
-                <p className="text-white/90">
-                  <strong>Tokens CMPX:</strong> Sistema de tokens para funciones especiales y eventos exclusivos.
+                <p className="text-white/80">
+                  <strong className="text-white">Tokens CMPX:</strong> Sistema de tokens para funciones especiales y eventos exclusivos.
                 </p>
-                <p className="text-white/90">
-                  <strong>Reembolsos:</strong> Las políticas de reembolso se aplican según las leyes locales.
+                <p className="text-white/80">
+                  <strong className="text-white">Reembolsos:</strong> Las políticas de reembolso se aplican según las leyes locales.
                 </p>
-                <p className="text-white/90">
-                  <strong>Cancelación:</strong> Puede cancelar su suscripción en cualquier momento desde su perfil.
+                <p className="text-white/80">
+                  <strong className="text-white">Cancelación:</strong> Puede cancelar su suscripción en cualquier momento desde su perfil.
                 </p>
               </CardContent>
             </Card>
 
             {/* Limitación de Responsabilidad */}
-            <Card className="bg-card/80 backdrop-blur-sm border border-primary/10">
+            <Card className="bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl">
               <CardHeader>
-                <CardTitle>6. Limitación de Responsabilidad</CardTitle>
+                <CardTitle className="text-white">6. Limitación de Responsabilidad</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <p className="text-white/90">
+                <p className="text-white/80">
                   ComplicesConecta actúa como plataforma de conexión. No somos responsables de:
                 </p>
-                <ul className="list-disc list-inside text-white/90 space-y-2">
+                <ul className="list-disc list-inside text-white/80 space-y-2">
                   <li>Encuentros o relaciones que se desarrollen fuera de la plataforma</li>
                   <li>Verificación de la identidad de todos los usuarios</li>
                   <li>Contenido generado por usuarios</li>
@@ -182,16 +182,16 @@ const Terms = () => {
             </Card>
 
             {/* Modificaciones */}
-            <Card className="bg-card/80 backdrop-blur-sm border border-primary/10">
+            <Card className="bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl">
               <CardHeader>
-                <CardTitle>7. Modificaciones de los Términos</CardTitle>
+                <CardTitle className="text-white">7. Modificaciones de los Términos</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <p className="text-white/90">
+                <p className="text-white/80">
                   Nos reservamos el derecho de modificar estos términos en cualquier momento. 
                   Los cambios importantes serán notificados con al menos 30 días de anticipación.
                 </p>
-                <p className="text-white/90">
+                <p className="text-white/80">
                   El uso continuado del servicio después de las modificaciones constituye 
                   la aceptación de los nuevos términos.
                 </p>
@@ -199,17 +199,17 @@ const Terms = () => {
             </Card>
 
             {/* Contacto */}
-            <Card className="bg-card/80 backdrop-blur-sm border border-primary/10">
+            <Card className="bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl">
               <CardHeader>
-                <CardTitle>8. Contacto</CardTitle>
+                <CardTitle className="text-white">8. Contacto</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-white/90">
+                <p className="text-white/80">
                   Para preguntas sobre estos términos, contacte con nosotros a través de:
                 </p>
-                <p className="text-white/90 mt-2">
-                  <strong>Email:</strong> <a href="mailto:legal@complicesconecta.com" className="text-primary hover:underline">legal@complicesconecta.com</a><br />
-                  <strong>Dirección:</strong> Madrid, España
+                <p className="text-white/80 mt-2">
+                  <strong className="text-white">Email:</strong> <a href="mailto:legal@complicesconecta.com" className="text-purple-300 hover:underline hover:text-purple-200">legal@complicesconecta.com</a><br />
+                  <strong className="text-white">Dirección:</strong> Madrid, España
                 </p>
               </CardContent>
             </Card>

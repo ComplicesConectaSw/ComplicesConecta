@@ -1,4 +1,4 @@
-import { Heart, Sparkles, Users } from "lucide-react";
+import { Heart } from "lucide-react";
 
 export const HeroSection = () => {
   return (

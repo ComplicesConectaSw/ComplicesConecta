@@ -1,5 +1,5 @@
 ﻿import { useState, useEffect } from "react";
-import { MessageCircle, Video, MoreVertical, ArrowLeft, Heart, Send, Lock, Globe, UserPlus, Image as ImageIcon, UserPlus as UserPlusIcon } from "lucide-react";
+import { MessageCircle, Video, MoreVertical, ArrowLeft, Heart, Send, Lock, Globe, UserPlus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { UnifiedButton } from "@/components/ui/UnifiedButton";
 import { UnifiedInput } from "@/components/ui/UnifiedInput";

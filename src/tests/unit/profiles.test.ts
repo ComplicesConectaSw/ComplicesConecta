@@ -245,7 +245,7 @@ describe('Profiles - Generación y Validación', () => {
     it('debe usar ubicaciones mexicanas válidas', () => {
       const profile = generateMockSingle();
 
-      const mexicanCities = [
+      const _mexicanCities = [
         'CDMX', 'Guadalajara', 'Monterrey', 'Puebla', 'Tijuana',
         'León', 'Querétaro', 'Cancún', 'Playa del Carmen', 'Mérida', 'Toluca',
         'Aguascalientes', 'Morelia', 'Colima', 'Durango', 'Chihuahua',

@@ -122,12 +122,12 @@ const Support = () => {
 
           {/* Search Bar */}
           <div className="relative max-w-md mx-auto">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-300 w-5 h-5" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/70 w-5 h-5 z-10" />
             <Input
               placeholder="Buscar en preguntas frecuentes..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 py-3 text-lg"
+              className="pl-10 py-3 text-lg bg-white/10 backdrop-blur-md border-white/20 text-white placeholder-white/50 focus:ring-2 focus:ring-purple-400 focus:border-purple-400"
             />
           </div>
         </div>
@@ -213,20 +213,42 @@ const Support = () => {
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-white mb-1">Nombre</label>
-                  <Input id="name" placeholder="Tu nombre" required />
+                  <Input 
+                    id="name" 
+                    placeholder="Tu nombre" 
+                    required 
+                    className="bg-white/10 backdrop-blur-md border-white/20 text-white placeholder-white/50 focus:ring-2 focus:ring-purple-400 focus:border-purple-400"
+                  />
                 </div>
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-white mb-1">Email</label>
-                  <Input id="email" type="email" placeholder="tu@email.com" required />
+                  <Input 
+                    id="email" 
+                    type="email" 
+                    placeholder="tu@email.com" 
+                    required 
+                    className="bg-white/10 backdrop-blur-md border-white/20 text-white placeholder-white/50 focus:ring-2 focus:ring-purple-400 focus:border-purple-400"
+                  />
                 </div>
               </div>
               <div>
                 <label htmlFor="subject" className="block text-sm font-medium text-white mb-1">Asunto</label>
-                <Input id="subject" placeholder="¿En qué podemos ayudarte?" required />
+                <Input 
+                  id="subject" 
+                  placeholder="¿En qué podemos ayudarte?" 
+                  required 
+                  className="bg-white/10 backdrop-blur-md border-white/20 text-white placeholder-white/50 focus:ring-2 focus:ring-purple-400 focus:border-purple-400"
+                />
               </div>
               <div>
                 <label htmlFor="message" className="block text-sm font-medium text-white mb-1">Mensaje</label>
-                <Textarea id="message" placeholder="Describe tu consulta con detalle..." required rows={6} />
+                <Textarea 
+                  id="message" 
+                  placeholder="Describe tu consulta con detalle..." 
+                  required 
+                  rows={6}
+                  className="bg-white/10 backdrop-blur-md border-white/20 text-white placeholder-white/50 focus:ring-2 focus:ring-purple-400 focus:border-purple-400"
+                />
               </div>
               <Button 
                 type="submit" 

@@ -7,7 +7,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
 import type { Database } from '@/types/supabase';
 
-type Tables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Row'];
+type _Tables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Row'];
 
 export interface CoupleProfile {
   id: string;

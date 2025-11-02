@@ -63,7 +63,7 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [_isLoading, setIsLoading] = useState(false);
   const [chatPermission, setChatPermission] = useState<ChatRequest | null>(null);
   const [hasPermission, setHasPermission] = useState(false);
   const [isRequestingPermission, setIsRequestingPermission] = useState(false);
@@ -154,7 +154,7 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
           description: 'Esperando respuesta del usuario...'
         });
       }
-    } catch (error) {
+    } catch (_error) {
       toast({
         variant: 'destructive',
         title: 'Error',
@@ -309,7 +309,7 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
         });
         setShowGalleryRequest(false);
       }
-    } catch (error) {
+    } catch (_error) {
       toast({
         variant: 'destructive',
         title: 'Error',
@@ -330,7 +330,7 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
         title: 'Ubicación actualizada',
         description: 'Tu ubicación se compartirá en el próximo mensaje'
       });
-    } catch (error) {
+    } catch (_error) {
       toast({
         variant: 'destructive',
         title: 'Error',

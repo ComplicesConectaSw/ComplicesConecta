@@ -412,7 +412,7 @@ export function UserManagementPanel() {
                         <Dialog>
                           <DialogTrigger asChild>
                             <Button 
-                              className="border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 h-8 px-3 text-sm"
+                              className="border border-white/30 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 h-8 px-3 text-sm shadow-md"
                               onClick={() => setSelectedUser(user)}
                             >
                               <MoreHorizontal className="w-4 h-4" />

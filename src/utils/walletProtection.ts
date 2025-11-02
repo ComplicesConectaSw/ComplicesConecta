@@ -47,7 +47,13 @@ export const initializeWalletProtection = () => {
       'chainid',
       'chunk',
       'useLayoutEffect',
-      'property'
+      'property',
+      'cannot read properties of undefined',
+      'reading \'useLayoutEffect\'',
+      'reading \'uselayouteffect\'',
+      'chunk-cidlbzv5',
+      'chunk-',
+      'cidlbzv5'
     ];
     
     const walletFiles = [

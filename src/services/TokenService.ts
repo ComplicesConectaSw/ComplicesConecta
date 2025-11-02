@@ -478,7 +478,7 @@ class TokenService {
   /**
    * Obtiene analytics de tokens
    */
-  async getAnalytics(userId: string, period: 'hourly' | 'daily' | 'weekly' | 'monthly' = 'daily') {
+  async getAnalytics(userId: string, _period: 'hourly' | 'daily' | 'weekly' | 'monthly' = 'daily') {
     return this.analyticsService.generateCurrentMetrics();
   }
 

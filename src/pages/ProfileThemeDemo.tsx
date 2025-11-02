@@ -245,10 +245,10 @@ const ProfileThemeDemo: React.FC = () => {
             que reflejan tu personalidad y estilo de vida.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <button className="bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-purple-50 transition-colors">
+            <button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-6 py-3 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
               Crear Perfil Gratis
             </button>
-            <button className="border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors">
+            <button className="border-2 border-white/30 bg-white/10 backdrop-blur-md text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/20 transition-all duration-300">
               Ver Más Demos
             </button>
           </div>

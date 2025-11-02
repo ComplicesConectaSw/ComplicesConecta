@@ -113,10 +113,10 @@ const ProfileDetail = () => {
 
   if (!profile) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900">
         {hasActiveSession ? <Navigation /> : <HeaderNav />}
         <main className="container mx-auto px-4 py-8 text-center">
-          <h1 className="text-2xl font-bold text-foreground mb-4">Perfil no encontrado</h1>
+          <h1 className="text-2xl font-bold text-white mb-4">Perfil no encontrado</h1>
           <Button onClick={() => navigate("/profiles")} className="text-white bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700">
             Volver a perfiles
           </Button>
@@ -154,7 +154,7 @@ const ProfileDetail = () => {
           {/* Main Profile Info */}
           <div className="lg:col-span-2 space-y-6">
             {/* Profile Header */}
-            <Card className="shadow-soft">
+            <Card className="bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl">
               <CardContent className="p-6">
                 <div className="flex flex-col md:flex-row gap-6">
                     <div className="flex-shrink-0">
@@ -184,7 +184,7 @@ const ProfileDetail = () => {
                     </Avatar>
                     <div className="flex items-center justify-center mt-2">
                       <div className={`w-3 h-3 rounded-full ${profile.isOnline ? 'bg-green-500' : 'bg-gray-400'}`} />
-                      <span className="text-sm text-muted-foreground ml-2">
+                      <span className="text-sm text-white/80 ml-2">
                         {profile.isOnline ? 'En línea' : 'Desconectado'}
                       </span>
                     </div>
@@ -192,11 +192,11 @@ const ProfileDetail = () => {
                   
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <h1 className="text-3xl font-bold text-foreground">{profile.name}</h1>
-                      <Badge className="bg-gray-200 text-gray-800">{profile.age} años</Badge>
+                      <h1 className="text-3xl font-bold text-white">{profile.name}</h1>
+                      <Badge className="bg-white/10 border-white/30 text-white backdrop-blur-sm">{profile.age} años</Badge>
                     </div>
                     
-                    <div className="flex items-center gap-4 text-muted-foreground mb-4">
+                    <div className="flex items-center gap-4 text-white/80 mb-4">
                       <div className="flex items-center gap-1">
                         <MapPin className="h-4 w-4" />
                         <span>{profile.location}</span>
@@ -207,15 +207,15 @@ const ProfileDetail = () => {
                       </div>
                     </div>
                     
-                    <p className="text-lg text-foreground mb-4">{profile.bio}</p>
+                    <p className="text-lg text-white mb-4">{profile.bio}</p>
                     
                     <div className="flex items-center gap-2 mb-4">
                       <Shield className="h-4 w-4 text-green-500" />
-                      <span className="text-sm text-muted-foreground">Perfil verificado</span>
+                      <span className="text-sm text-white/80">Perfil verificado</span>
                     </div>
                     
-                    <p className="text-sm text-muted-foreground">
-                      <strong>Profesión:</strong> {profile.profession}
+                    <p className="text-sm text-white/80">
+                      <strong className="text-white">Profesión:</strong> {profile.profession}
                     </p>
                   </div>
                 </div>
@@ -223,25 +223,25 @@ const ProfileDetail = () => {
             </Card>
 
             {/* About Section */}
-            <Card className="shadow-soft">
+            <Card className="bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl">
               <CardContent className="p-6">
-                <h2 className="text-xl font-semibold text-foreground mb-4">Sobre mí</h2>
+                <h2 className="text-xl font-semibold text-white mb-4">Sobre mí</h2>
                 <div className="space-y-4">
                   <div>
-                    <h3 className="font-medium text-foreground mb-2">Qué busco</h3>
-                    <p className="text-muted-foreground">{profile.lookingFor}</p>
+                    <h3 className="font-medium text-white mb-2">Qué busco</h3>
+                    <p className="text-white/80">{profile.lookingFor}</p>
                   </div>
                   
                   <div>
-                    <h3 className="font-medium text-foreground mb-2">Educación</h3>
-                    <p className="text-muted-foreground">{profile.education}</p>
+                    <h3 className="font-medium text-white mb-2">Educación</h3>
+                    <p className="text-white/80">{profile.education}</p>
                   </div>
                   
                   <div>
-                    <h3 className="font-medium text-foreground mb-2">Idiomas</h3>
+                    <h3 className="font-medium text-white mb-2">Idiomas</h3>
                     <div className="flex flex-wrap gap-2">
                       {profile.languages.map((lang) => (
-                        <Badge key={lang} className="border border-gray-300 bg-transparent text-gray-700">{lang}</Badge>
+                        <Badge key={lang} className="border border-white/30 bg-white/10 backdrop-blur-sm text-white">{lang}</Badge>
                       ))}
                     </div>
                   </div>
@@ -258,7 +258,7 @@ const ProfileDetail = () => {
                     <div>
                       <h3 className="font-medium text-white mb-3">Intereses principales</h3>
                       <div className="flex flex-wrap gap-2 items-start content-start min-h-[80px]">
-                        {profile.interests.map((interest, index) => (
+                        {profile.interests.map((interest, _index) => (
                           <Badge 
                             key={interest} 
                             className="bg-purple-200/80 text-purple-900 border border-purple-300/50 px-3 py-1.5 text-sm font-semibold whitespace-nowrap"
@@ -273,7 +273,7 @@ const ProfileDetail = () => {
                     <div>
                       <h3 className="font-medium text-white mb-3">Otros hobbies</h3>
                       <div className="flex flex-wrap gap-2 items-start content-start min-h-[80px]">
-                        {profile.hobbies.map((hobby, index) => (
+                        {profile.hobbies.map((hobby, _index) => (
                           <Badge 
                             key={hobby} 
                             className="bg-pink-200/80 text-pink-900 border border-pink-300/50 px-3 py-1.5 text-sm font-semibold whitespace-nowrap"
@@ -290,9 +290,9 @@ const ProfileDetail = () => {
             </Card>
 
             {/* Photo Gallery */}
-            <Card className="shadow-soft">
+            <Card className="bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl">
               <CardContent className="p-6">
-                <h2 className="text-xl font-semibold text-foreground mb-4 flex items-center gap-2">
+                <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
                   <Camera className="h-5 w-5" />
                   Fotos
                 </h2>
@@ -315,7 +315,7 @@ const ProfileDetail = () => {
           {/* Action Sidebar */}
           <div className="space-y-6">
             {/* Action Buttons */}
-            <Card className="shadow-soft">
+            <Card className="bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl">
               <CardContent className="p-6">
                 <div className="space-y-4">
                   <Button 
@@ -347,7 +347,7 @@ const ProfileDetail = () => {
                         alert('Perfil reportado. Gracias por ayudarnos a mantener la comunidad segura.');
                       }
                     }}
-                    className="w-full border border-gray-300 bg-transparent text-gray-700 hover:bg-gray-100 px-6 py-3 text-lg"
+                    className="w-full border border-white/30 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 px-6 py-3 text-lg transition-all duration-300"
                   >
                     Reportar perfil
                   </Button>
@@ -356,31 +356,31 @@ const ProfileDetail = () => {
             </Card>
 
             {/* Quick Info */}
-            <Card className="shadow-soft">
+            <Card className="bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl">
               <CardContent className="p-6">
-                <h3 className="font-semibold text-foreground mb-4">Información rápida</h3>
+                <h3 className="font-semibold text-white mb-4">Información rápida</h3>
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Edad:</span>
-                    <span className="text-foreground">{profile.age} años</span>
+                    <span className="text-white/80">Edad:</span>
+                    <span className="text-white">{profile.age} años</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Ubicación:</span>
-                    <span className="text-foreground">{profile.location}</span>
+                    <span className="text-white/80">Ubicación:</span>
+                    <span className="text-white">{profile.location}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Profesión:</span>
-                    <span className="text-foreground">{profile.profession}</span>
+                    <span className="text-white/80">Profesión:</span>
+                    <span className="text-white">{profile.profession}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Valoración:</span>
-                    <span className="text-foreground flex items-center gap-1">
+                    <span className="text-white/80">Valoración:</span>
+                    <span className="text-white flex items-center gap-1">
                       <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
                       {profile.rating}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Estado:</span>
+                    <span className="text-white/80">Estado:</span>
                     <span className={`text-sm ${profile.isOnline ? 'text-green-600' : 'text-white'}`}>
                       {profile.isOnline ? 'En línea' : 'Desconectado'}
                     </span>
@@ -390,14 +390,14 @@ const ProfileDetail = () => {
             </Card>
 
             {/* Compatibility */}
-            <Card className="shadow-soft">
+            <Card className="bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl">
               <CardContent className="p-6">
-                <h3 className="font-semibold text-foreground mb-4">Compatibilidad</h3>
+                <h3 className="font-semibold text-white mb-4">Compatibilidad</h3>
                 <div className="space-y-3">
                   <div>
                     <div className="flex justify-between text-sm mb-1">
-                      <span className="text-muted-foreground">Intereses comunes</span>
-                      <span className="text-foreground">85%</span>
+                      <span className="text-white/80">Intereses comunes</span>
+                      <span className="text-white">85%</span>
                     </div>
                     <div className="w-full bg-muted rounded-full h-2">
                       <div className="bg-primary h-2 rounded-full w-[85%]"></div>
@@ -406,8 +406,8 @@ const ProfileDetail = () => {
                   
                   <div>
                     <div className="flex justify-between text-sm mb-1">
-                      <span className="text-muted-foreground">Proximidad</span>
-                      <span className="text-foreground">92%</span>
+                      <span className="text-white/80">Proximidad</span>
+                      <span className="text-white">92%</span>
                     </div>
                     <div className="w-full bg-muted rounded-full h-2">
                       <div className="bg-primary h-2 rounded-full w-[92%]"></div>
@@ -416,8 +416,8 @@ const ProfileDetail = () => {
                   
                   <div>
                     <div className="flex justify-between text-sm mb-1">
-                      <span className="text-muted-foreground">Estilo de vida</span>
-                      <span className="text-foreground">78%</span>
+                      <span className="text-white/80">Estilo de vida</span>
+                      <span className="text-white">78%</span>
                     </div>
                     <div className="w-full bg-muted rounded-full h-2">
                       <div className="bg-primary h-2 rounded-full w-[78%]"></div>
@@ -429,7 +429,7 @@ const ProfileDetail = () => {
                   <p className="text-sm text-primary font-medium text-center">
                     ¡Gran compatibilidad! 🎉
                   </p>
-                  <p className="text-xs text-muted-foreground text-center mt-1">
+                  <p className="text-xs text-white/80 text-center mt-1">
                     Tienes muchas cosas en común
                   </p>
                 </div>

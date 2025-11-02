@@ -11,7 +11,7 @@
  * - Error handling
  */
 
-import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { PyTorchScoringModel } from '@/services/ai/models/PyTorchScoringModel';
 import type { CompatibilityFeatures } from '@/services/ai/AILayerService';
 

@@ -8,19 +8,40 @@ if (typeof window !== 'undefined') {
   // Forzar React disponible globalmente de forma inmediata
   (window as any).React = React;
   
-  // Asegurar TODOS los hooks críticos inmediatamente
+  // Asegurar TODOS los hooks críticos inmediatamente - CON FALLBACKS ROBUSTOS
   const winReact = (window as any).React;
   if (winReact) {
-    // Asegurar useLayoutEffect con fallback a useEffect si no está disponible
+    // CRÍTICO: Asegurar useLayoutEffect primero con fallback robusto
     if (!winReact.useLayoutEffect) {
-      winReact.useLayoutEffect = winReact.useLayoutEffect || winReact.useEffect || function() { return winReact.useEffect.apply(this, arguments); };
+      if (React.useLayoutEffect) {
+        winReact.useLayoutEffect = React.useLayoutEffect;
+      } else if (React.useEffect) {
+        winReact.useLayoutEffect = React.useEffect;
+      } else {
+        // Fallback final: función que retorna no-op cleanup
+        winReact.useLayoutEffect = function(callback: any, _deps?: any) {
+          if (typeof callback === 'function') {
+            try {
+              return callback();
+            } catch (_e) {
+              return function() {};
+            }
+          }
+          return function() {};
+        };
+      }
     }
+    
+    // Asegurar useEffect
+    if (!winReact.useEffect) {
+      winReact.useEffect = React.useEffect || function() { return function() {}; };
+    }
+    
     // Asegurar todos los otros hooks críticos
-    winReact.useEffect = winReact.useEffect || function() {};
-    winReact.useState = winReact.useState || function() {};
-    winReact.useMemo = winReact.useMemo || function() {};
-    winReact.useCallback = winReact.useCallback || function() {};
-    winReact.createElement = winReact.createElement || function() {};
+    winReact.useState = winReact.useState || React.useState || function() { return [null, function() {}]; };
+    winReact.useMemo = winReact.useMemo || React.useMemo || function(fn: any) { return fn(); };
+    winReact.useCallback = winReact.useCallback || React.useCallback || function(fn: any) { return fn; };
+    winReact.createElement = winReact.createElement || React.createElement || function() { return null; };
     winReact.StrictMode = winReact.StrictMode || StrictMode;
   }
   
@@ -29,6 +50,28 @@ if (typeof window !== 'undefined') {
     (window as any).ReactDOM = {
       createRoot: createRoot
     };
+  }
+  
+  // PROTECCIÓN EXTRA: Interceptar acceso a useLayoutEffect en chunks lazy
+  try {
+    Object.defineProperty(window, 'React', {
+      get: () => {
+        const react = (window as any).React || React;
+        // Asegurar useLayoutEffect cada vez que se accede
+        if (react && !react.useLayoutEffect) {
+          react.useLayoutEffect = React.useLayoutEffect || React.useEffect || function() { return function() {}; };
+        }
+        return react;
+      },
+      configurable: true,
+      enumerable: true
+    });
+  } catch (e) {
+    // Si falla, asegurar directamente
+    (window as any).React = React;
+    if (!(window as any).React.useLayoutEffect) {
+      (window as any).React.useLayoutEffect = React.useLayoutEffect || React.useEffect || function() { return function() {}; };
+    }
   }
 }
 
@@ -85,7 +128,13 @@ if (typeof window !== 'undefined') {
       'not available',
       'chunk',
       'useLayoutEffect',
-      'property'
+      'property',
+      'cannot read properties of undefined',
+      'reading \'useLayoutEffect\'',
+      'reading \'uselayouteffect\'',
+      'chunk-cidlbzv5',
+      'chunk-',
+      'cidlbzv5'
     ];
     
     const walletFiles = [
@@ -140,7 +189,13 @@ if (typeof window !== 'undefined') {
       'wallet',
       'chunk',
       'useLayoutEffect',
-      'property'
+      'property',
+      'cannot read properties of undefined',
+      'reading \'useLayoutEffect\'',
+      'reading \'uselayouteffect\'',
+      'chunk-cidlbzv5',
+      'chunk-',
+      'cidlbzv5'
     ];
     
     // Capturar por mensaje O stack trace

@@ -33,7 +33,7 @@ const Matches = () => {
   const { isAuthenticated } = useAuth();
   const [_matches, _setMatches] = useState<Match[]>([]);
   const [_isProduction, _setIsProduction] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, _setIsLoading] = useState(false);
   
   // Verificar si hay sesión activa (demo o producción)
   const hasActiveSession = typeof isAuthenticated === 'function' ? isAuthenticated() : !!isAuthenticated;

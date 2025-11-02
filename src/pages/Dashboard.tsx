@@ -14,23 +14,12 @@ interface UserProfile {
   email: string;
 }
 
-// Debug helper para logging detallado - Solo en desarrollo
+  // Debug helper para logging detallado - Solo en desarrollo
 const debugLog = (message: string, data?: any) => {
-  const timestamp = new Date().toISOString();
-  console.log(`🔍 [Dashboard Debug ${timestamp}] ${message}`, data || '');
-  
-  // También agregar al DOM para debugging visual - SOLO EN DESARROLLO
-  if (typeof window !== 'undefined' && import.meta.env.DEV) {
-    const debugDiv = document.getElementById('dashboard-debug') || (() => {
-      const div = document.createElement('div');
-      div.id = 'dashboard-debug';
-      div.style.cssText = 'position:fixed;top:0;right:0;background:rgba(0,0,0,0.8);color:white;padding:10px;font-size:12px;max-width:400px;max-height:300px;overflow-y:auto;z-index:9999;';
-      document.body.appendChild(div);
-      return div;
-    })();
-    
-    debugDiv.innerHTML += `<div>${timestamp}: ${message} ${data ? JSON.stringify(data, null, 2) : ''}</div>`;
-    debugDiv.scrollTop = debugDiv.scrollHeight;
+  // Solo loguear en consola en desarrollo, NO agregar al DOM para evitar overlays
+  if (import.meta.env.DEV) {
+    const timestamp = new Date().toISOString();
+    console.log(`🔍 [Dashboard Debug ${timestamp}] ${message}`, data || '');
   }
 };
 
@@ -155,22 +144,7 @@ const DashboardCore = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 relative overflow-hidden" data-testid="dashboard-container">
-      {/* Debug info visible solo en desarrollo */}
-      {import.meta.env.DEV && (
-        <div style={{
-          position: 'fixed',
-          top: '10px',
-          left: '10px',
-          background: 'rgba(0,0,0,0.8)',
-          color: 'white',
-          padding: '10px',
-          fontSize: '12px',
-          zIndex: 9999,
-          borderRadius: '4px'
-        }}>
-          Dashboard Debug: Ready={isReady ? 'YES' : 'NO'}, Profile={userProfile?.name || 'NULL'}, Type={userProfile?.userType || 'NULL'}
-        </div>
-      )}
+      {/* Debug info removido para evitar overlays que cubren contenido */}
       
       <HeaderNav />
       
@@ -248,13 +222,11 @@ const Dashboard = () => {
     debugLog('🎯 Dashboard: Componente principal inicializando con ErrorBoundary');
   }
   
-  // Limpiar panel de debug si existe en producción
+  // Limpiar panel de debug si existe (siempre, no solo en producción)
   useEffect(() => {
-    if (!import.meta.env.DEV) {
-      const debugDiv = document.getElementById('dashboard-debug');
-      if (debugDiv) {
-        debugDiv.remove();
-      }
+    const debugDiv = document.getElementById('dashboard-debug');
+    if (debugDiv) {
+      debugDiv.remove();
     }
   }, []);
   

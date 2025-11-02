@@ -286,7 +286,7 @@ class DataPrivacyService {
 
       // 4. Eliminar posts
       try {
-        const { data: posts, error: postsError } = await (supabase as any)
+        const { data: posts, error: _postsError } = await (supabase as any)
           .from('posts')
           .select('id')
           .eq('user_id', userId);
@@ -309,7 +309,7 @@ class DataPrivacyService {
 
       // 5. Eliminar stories
       try {
-        const { data: stories, error: storiesError } = await supabase
+        const { data: stories, error: _storiesError } = await supabase
           .from('stories')
           .select('id')
           .eq('user_id', userId);
