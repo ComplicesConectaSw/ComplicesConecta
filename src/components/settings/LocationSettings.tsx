@@ -24,15 +24,32 @@ export const LocationSettings = () => {
     await getCurrentLocation();
   };
 
-  const handleSave = () => {
-    logger.info("Settings saved:", {
-      searchRadius: searchRadius[0],
-      autoDetectLocation,
-      showDistance,
-      preciseLocation,
-      locationHistory,
-    });
-    // Aquí iría la lógica para guardar en el backend
+  const handleSave = async () => {
+    try {
+      logger.info("Guardando configuración de ubicación:", {
+        searchRadius: searchRadius[0],
+        autoDetectLocation,
+        showDistance,
+        preciseLocation,
+        locationHistory,
+        s2Level: s2Level[0],
+        geolocationEnabled
+      });
+      
+      // TODO: Guardar s2_level en perfil del usuario
+      // const { data: { user } } = await supabase.auth.getUser();
+      // if (user) {
+      //   await supabase
+      //     .from('profiles')
+      //     .update({ s2_level: s2Level[0] })
+      //     .eq('user_id', user.id);
+      // }
+      
+      // Aquí iría la lógica para guardar en el backend
+      logger.info("✅ Configuración de ubicación guardada");
+    } catch (error) {
+      logger.error("Error guardando configuración:", { error });
+    }
   };
 
   return (
@@ -170,6 +187,52 @@ export const LocationSettings = () => {
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
+                <Label htmlFor="geolocation-enabled">Activar geolocalización</Label>
+                <p className="text-sm text-muted-foreground">
+                  Permitir que la app use tu ubicación
+                </p>
+              </div>
+              <Switch 
+                id="geolocation-enabled" 
+                checked={geolocationEnabled}
+                onCheckedChange={(enabled) => {
+                  setGeolocationEnabled(enabled);
+                  if (!enabled) {
+                    logger.info("Geolocalización desactivada por usuario");
+                  }
+                }}
+              />
+            </div>
+
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label htmlFor="s2-level">Precisión de ubicación: Nivel {s2Level[0]}</Label>
+                  <p className="text-sm text-muted-foreground">
+                    Nivel {s2Level[0]}: ~{s2Level[0] <= 12 ? "100+" : s2Level[0] <= 15 ? "1" : "0.1"}km² (más bajo = más privacidad)
+                  </p>
+                </div>
+              </div>
+              <Slider
+                value={s2Level}
+                onValueChange={(value) => {
+                  setS2Level(value);
+                  logger.info("S2 Level ajustado", { level: value[0] });
+                }}
+                max={20}
+                min={10}
+                step={1}
+                className="w-full"
+                disabled={!geolocationEnabled}
+              />
+              <div className="flex justify-between text-xs text-muted-foreground">
+                <span>Nivel 10 (Bajo - ~100km²)</span>
+                <span>Nivel 20 (Alto - ~0.01km²)</span>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div>
                 <Label htmlFor="precise-location">Ubicación precisa</Label>
                 <p className="text-sm text-muted-foreground">
                   Usar GPS para ubicación más exacta
@@ -179,6 +242,7 @@ export const LocationSettings = () => {
                 id="precise-location" 
                 checked={preciseLocation}
                 onCheckedChange={setPreciseLocation}
+                disabled={!geolocationEnabled}
               />
             </div>
 
@@ -193,6 +257,7 @@ export const LocationSettings = () => {
                 id="location-history" 
                 checked={locationHistory}
                 onCheckedChange={setLocationHistory}
+                disabled={!geolocationEnabled}
               />
             </div>
           </div>

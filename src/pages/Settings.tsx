@@ -168,47 +168,95 @@ const Settings = () => {
             </Card>
           </div>
 
-          {/* Features Section */}
+          {/* Settings Tabs */}
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold text-white mb-2">Configuración</h1>
               <p className="text-white/80">Personaliza tu experiencia en ComplicesConecta</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {swingerFeatures.map((feature, index) => (
-                <Card 
-                  key={index} 
-                  className="bg-card/80 backdrop-blur-sm border border-primary/10 cursor-pointer hover:bg-card/90 transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/20"
-                  onClick={() => {
-                    if (feature.title === "Verificación Lifestyle KYC") {
-                      navigate('/profile-single');
-                    } else if (feature.title === "Chat Íntimo Encriptado") {
-                      navigate('/chat-info');
-                    } else if (feature.title === "Encuentros Gelocalizados") {
-                      navigate('/discover');
-                    } else if (feature.title === "Fiestas Privadas VIP") {
-                      navigate('/events');
-                    }
-                  }}
-                >
+
+            <Tabs defaultValue="privacy" className="w-full">
+              <TabsList className="grid w-full grid-cols-3 bg-white/10 backdrop-blur-sm border-white/20">
+                <TabsTrigger value="privacy" className="flex items-center gap-2 data-[state=active]:bg-white/20">
+                  <Lock className="h-4 w-4" />
+                  Privacidad
+                </TabsTrigger>
+                <TabsTrigger value="location" className="flex items-center gap-2 data-[state=active]:bg-white/20">
+                  <MapPin className="h-4 w-4" />
+                  Ubicación
+                </TabsTrigger>
+                <TabsTrigger value="features" className="flex items-center gap-2 data-[state=active]:bg-white/20">
+                  <SettingsIcon className="h-4 w-4" />
+                  Características
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="privacy" className="mt-6">
+                <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-lg">
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-3">
-                      <feature.icon className="h-6 w-6 text-primary" />
-                      <span className="text-white">{feature.title}</span>
-                      <Badge 
-                        variant={feature.status === "Premium" ? "destructive" : "secondary"}
-                        className="ml-auto"
-                      >
-                        {feature.status}
-                      </Badge>
+                    <CardTitle className="text-white flex items-center gap-2">
+                      <Lock className="h-5 w-5" />
+                      Configuración de Privacidad
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-white">{feature.description}</p>
+                    <PrivacySettings />
                   </CardContent>
                 </Card>
-              ))}
-            </div>
+              </TabsContent>
+
+              <TabsContent value="location" className="mt-6">
+                <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-lg">
+                  <CardHeader>
+                    <CardTitle className="text-white flex items-center gap-2">
+                      <MapPin className="h-5 w-5" />
+                      Configuración de Ubicación
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <LocationSettings />
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="features" className="mt-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {swingerFeatures.map((feature, index) => (
+                    <Card 
+                      key={index} 
+                      className="bg-card/80 backdrop-blur-sm border border-primary/10 cursor-pointer hover:bg-card/90 transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/20"
+                      onClick={() => {
+                        if (feature.title === "Verificación Lifestyle KYC") {
+                          navigate('/profile-single');
+                        } else if (feature.title === "Chat Íntimo Encriptado") {
+                          navigate('/chat-info');
+                        } else if (feature.title === "Encuentros Gelocalizados") {
+                          navigate('/discover');
+                        } else if (feature.title === "Fiestas Privadas VIP") {
+                          navigate('/events');
+                        }
+                      }}
+                    >
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-3">
+                          <feature.icon className="h-6 w-6 text-primary" />
+                          <span className="text-white">{feature.title}</span>
+                          <Badge 
+                            variant={feature.status === "Premium" ? "destructive" : "secondary"}
+                            className="ml-auto"
+                          >
+                            {feature.status}
+                          </Badge>
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-white">{feature.description}</p>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </TabsContent>
+            </Tabs>
           </div>
 
           {/* Premium Upgrade */}
