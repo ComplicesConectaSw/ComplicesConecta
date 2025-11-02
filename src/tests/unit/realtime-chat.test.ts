@@ -45,12 +45,12 @@ describe('Realtime Chat Tests', () => {
 
       const result = await supabase.from('chat_messages').insert({
         content: 'test message',
-        user_id: 'test-user'
+        sender_id: 'test-user'
       });
 
       expect(mockInsert).toHaveBeenCalledWith({
         content: 'test message',
-        user_id: 'test-user'
+        sender_id: 'test-user'
       });
       expect(result.error).toBeNull();
     });
@@ -124,7 +124,7 @@ describe('Realtime Chat Tests', () => {
 
       const result = await supabase.from('chat_messages').insert({
         content: 'test message',
-        user_id: 'test-user'
+        sender_id: 'test-user'
       });
 
       expect(result.error).toBeDefined();
