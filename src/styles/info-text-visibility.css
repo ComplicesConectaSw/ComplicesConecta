@@ -94,18 +94,115 @@
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.9)) !important;
 }
 
-/* ===== RESPONSIVE ===== */
+/* ===== RESPONSIVE - ANDROID OPTIMIZED ===== */
 
-@media (max-width: 768px) {
+/* Android Mobile - Optimización específica */
+@media screen and (max-width: 768px) {
   .bg-purple-800\/90 .text-white {
-    font-weight: 700;
-    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.95);
+    font-weight: 700 !important;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.95) !important;
+    font-size: 16px; /* Evita zoom automático en Android */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
   
   .text-white\/90,
   .text-white\/70 {
-    font-weight: 600;
-    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.95);
+    font-weight: 600 !important;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.95) !important;
+    font-size: 16px;
+  }
+  
+  /* Cards en móvil Android */
+  .bg-purple-800\/90 {
+    padding: 16px !important;
+    margin: 8px !important;
+  }
+  
+  /* Textos en cards móvil */
+  .bg-purple-800\/90 h3 {
+    font-size: 18px !important;
+    line-height: 1.4 !important;
+  }
+  
+  .bg-purple-800\/90 p {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+  }
+}
+
+/* Android pequeño (360px - Galaxy S5, etc) */
+@media screen and (max-width: 360px) {
+  .bg-purple-800\/90 .text-white {
+    font-size: 14px !important;
+    font-weight: 700 !important;
+  }
+  
+  .bg-purple-800\/90 h3 {
+    font-size: 16px !important;
+  }
+  
+  .bg-purple-800\/90 p {
+    font-size: 13px !important;
+  }
+  
+  /* Touch targets más grandes en Android pequeño */
+  .bg-purple-800\/90 button {
+    min-height: 48px !important;
+    padding: 12px 16px !important;
+  }
+}
+
+/* Android landscape */
+@media screen and (orientation: landscape) and (max-width: 768px) {
+  .bg-purple-800\/90 {
+    padding: 12px !important;
+  }
+  
+  .bg-purple-800\/90 h3 {
+    font-size: 16px !important;
+  }
+  
+  .bg-purple-800\/90 p {
+    font-size: 13px !important;
+  }
+}
+
+/* ===== CORRECCIONES TEXTOS GRISES EN ANDROID ===== */
+
+/* Todos los textos grises en fondos purple - Forzar blanco en Android */
+.bg-purple-800\/90 .text-gray-600,
+.bg-purple-800\/90 .text-gray-500,
+.bg-purple-800\/90 .text-gray-400,
+.bg-purple-800\/90 .text-gray-300,
+.bg-gradient-to-r .text-gray-600,
+.bg-gradient-to-r .text-gray-500,
+.bg-gradient-to-r .text-gray-400 {
+  color: #ffffff !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9) !important;
+  font-weight: 600 !important;
+}
+
+/* Textos grises en cards purple */
+.bg-purple-800\/90 p.text-gray-600,
+.bg-purple-800\/90 span.text-gray-600,
+.bg-purple-800\/90 div.text-gray-600 {
+  color: #ffffff !important;
+  font-weight: 500 !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Android específico - Mejorar contraste */
+@media screen and (max-width: 768px) {
+  /* Forzar blancos en todos los grises sobre purple */
+  .bg-purple-800\/90 .text-gray-600,
+  .bg-purple-800\/90 .text-gray-500,
+  .bg-purple-800\/90 .text-gray-400 {
+    color: #ffffff !important;
+    text-shadow: 0 3px 6px rgba(0, 0, 0, 1) !important;
+    font-weight: 600 !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
@@ -115,5 +212,27 @@
 .bg-purple-800\/90 * {
   font-weight: 500;
   letter-spacing: 0.01em;
+}
+
+/* ===== ANDROID WEBVIEW OPTIMIZATIONS ===== */
+
+/* Prevenir zoom automático en inputs */
+@media screen and (max-width: 768px) {
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  
+  /* Touch targets más grandes */
+  button,
+  a,
+  [role="button"] {
+    min-height: 44px !important;
+    min-width: 44px !important;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0.2);
+  }
 }
 
