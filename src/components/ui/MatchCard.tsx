@@ -381,7 +381,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({
 
       {/* Modal de Me Gusta */}
       <Dialog open={showLikeModal} onOpenChange={setShowLikeModal}>
-        <DialogContent className="bg-gradient-to-br from-purple-900 via-pink-900 to-purple-900 text-white border-purple-500/30">
+        <DialogContent className="bg-gradient-to-br from-purple-900 via-purple-800 to-purple-900 text-white border-purple-500/30 z-[100]">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-xl">
               <Heart className="h-6 w-6 text-pink-400" fill="currentColor" />
@@ -410,7 +410,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({
 
       {/* Modal de Super Like */}
       <Dialog open={showSuperLikeModal} onOpenChange={setShowSuperLikeModal}>
-        <DialogContent className="bg-gradient-to-br from-blue-900 via-purple-900 to-blue-900 text-white border-blue-500/30">
+        <DialogContent className="bg-gradient-to-br from-blue-900 via-purple-900 to-blue-900 text-white border-blue-500/30 z-[100]">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-xl">
               <Sparkles className="h-6 w-6 text-blue-400" />

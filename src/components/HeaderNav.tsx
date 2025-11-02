@@ -112,10 +112,10 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                 className="flex items-center space-x-3 group transition-all duration-300 hover:scale-110"
               >
                 <div className="relative">
-                  <Heart className="h-8 w-8 text-pink-400 group-hover:text-pink-300 transition-colors duration-300" fill="currentColor" />
-                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-pink-500 rounded-full animate-pulse"></div>
+                  <Heart className="h-8 w-8 text-purple-400 group-hover:text-purple-300 transition-colors duration-300" fill="currentColor" />
+                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-purple-500 rounded-full animate-pulse"></div>
                 </div>
-                <span className="text-white font-black text-xl lg:text-2xl hidden sm:block bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
+                <span className="text-white font-black text-xl lg:text-2xl hidden sm:block bg-gradient-to-r from-purple-300 to-blue-300 bg-clip-text text-transparent">
                   ComplicesConecta
                 </span>
               </button>
@@ -131,7 +131,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                     onClick={() => handleNavigation(item.path)}
                     className={`flex items-center space-x-1 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
                       isActive(item.path)
-                        ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg shadow-pink-500/25'
+                        ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-500/25'
                         : 'text-white/80 hover:text-white hover:bg-white/10'
                     }`}
                   >
@@ -167,7 +167,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
               {/* Botón de Login */}
               <Button
                 onClick={handleLogin}
-                className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold px-6 py-3 rounded-xl shadow-2xl shadow-pink-500/30 transition-all duration-300 hover:shadow-pink-500/50 hover:scale-110 min-w-[140px] border-2 border-pink-400"
+                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold px-6 py-3 rounded-xl shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:shadow-purple-500/50 hover:scale-110 min-w-[140px] border-2 border-purple-400"
               >
                 <User className="h-5 w-5 mr-2" />
                 <span className="hidden sm:inline text-base">Iniciar Sesión</span>
@@ -187,7 +187,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
 
         {/* Menú Móvil */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden bg-gradient-to-r from-purple-900/95 via-pink-900/95 to-blue-900/95 backdrop-blur-md border-t border-pink-500/20">
+          <div className="lg:hidden bg-gradient-to-r from-purple-900/95 via-purple-900/95 to-blue-900/95 backdrop-blur-md border-t border-purple-500/20">
             <div className="px-4 py-4 space-y-2">
               {navItems.map((item) => {
                 const IconComponent = item.icon;
@@ -197,7 +197,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                     onClick={() => handleNavigation(item.path)}
                     className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-all duration-300 ${
                       isActive(item.path)
-                        ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white'
+                        ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white'
                         : 'text-white/80 hover:text-white hover:bg-white/10'
                     }`}
                   >
