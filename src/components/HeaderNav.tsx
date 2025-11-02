@@ -165,21 +165,21 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
             </div>
 
             {/* Navegación Central - Desktop */}
-            <nav className="hidden lg:flex items-center space-x-2 flex-1 justify-center mx-8">
-              {mainNavItems.map((item) => {
+            <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2 flex-1 justify-center mx-4 xl:mx-8 overflow-x-auto scrollbar-hide">
+              {mainNavItems.slice(0, 4).map((item) => {
                 const IconComponent = item.icon;
                 return (
                   <button
                     key={item.name}
                     onClick={() => handleNavigation(item.path)}
-                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                    className={`flex items-center space-x-1 xl:space-x-2 px-2 xl:px-4 py-2 rounded-lg text-xs xl:text-sm font-medium transition-all duration-300 flex-shrink-0 ${
                       isActive(item.path)
                         ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-500/25'
                         : 'text-white/90 hover:text-white hover:bg-white/10'
                     }`}
                   >
-                    <IconComponent className="h-4 w-4" />
-                    <span className="whitespace-nowrap">{item.name}</span>
+                    <IconComponent className="h-4 w-4 flex-shrink-0" />
+                    <span className="whitespace-nowrap hidden xl:inline">{item.name}</span>
                   </button>
                 );
               })}
@@ -187,39 +187,45 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
               {/* Menú desplegable "Más" */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className="flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 transition-all duration-300">
-                    <MoreHorizontal className="h-4 w-4" />
+                  <button className="flex items-center space-x-1 xl:space-x-2 px-2 xl:px-4 py-2 rounded-lg text-xs xl:text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 transition-all duration-300 flex-shrink-0">
+                    <MoreHorizontal className="h-4 w-4 flex-shrink-0" />
                     <span className="whitespace-nowrap">Más</span>
-                    <ChevronDown className="h-3 w-3" />
+                    <ChevronDown className="h-3 w-3 flex-shrink-0" />
                   </button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56 bg-purple-900/95 border-purple-500/30 backdrop-blur-md">
-                  {['Comunidad', 'Servicios', 'Contenido', 'Acerca de', 'Ayuda', 'Legal'].map((category) => {
-                    const categoryItems = secondaryNavItems.filter(item => item.category === category);
-                    if (categoryItems.length === 0) return null;
-                    
-                    return (
-                      <div key={category}>
-                        <DropdownMenuLabel className="text-purple-300 text-xs font-semibold">
-                          {category}
-                        </DropdownMenuLabel>
-                        {categoryItems.map((item) => {
-                          const IconComponent = item.icon;
-                          return (
-                            <DropdownMenuItem
-                              key={item.name}
-                              onClick={() => handleNavigation(item.path)}
-                              className="text-white hover:bg-purple-500/20 hover:text-white cursor-pointer"
-                            >
-                              <IconComponent className="h-4 w-4 mr-2" />
-                              {item.name}
-                            </DropdownMenuItem>
-                          );
-                        })}
-                        <DropdownMenuSeparator className="bg-purple-500/20" />
-                      </div>
-                    );
-                  })}
+                <DropdownMenuContent 
+                  className="w-56 sm:w-64 bg-purple-900/95 border-purple-500/30 backdrop-blur-md max-h-[80vh] overflow-y-auto z-[200]"
+                  align="end"
+                  sideOffset={5}
+                >
+                  <div className="max-h-[calc(80vh-2rem)] overflow-y-auto overscroll-contain">
+                    {['Comunidad', 'Servicios', 'Contenido', 'Acerca de', 'Ayuda', 'Legal'].map((category) => {
+                      const categoryItems = secondaryNavItems.filter(item => item.category === category);
+                      if (categoryItems.length === 0) return null;
+                      
+                      return (
+                        <div key={category}>
+                          <DropdownMenuLabel className="text-purple-300 text-xs font-semibold px-2 py-1.5 sticky top-0 bg-purple-900/95 z-10">
+                            {category}
+                          </DropdownMenuLabel>
+                          {categoryItems.map((item) => {
+                            const IconComponent = item.icon;
+                            return (
+                              <DropdownMenuItem
+                                key={item.name}
+                                onClick={() => handleNavigation(item.path)}
+                                className="text-white hover:bg-purple-500/20 hover:text-white cursor-pointer px-2 py-2"
+                              >
+                                <IconComponent className="h-4 w-4 mr-2 flex-shrink-0" />
+                                <span className="truncate">{item.name}</span>
+                              </DropdownMenuItem>
+                            );
+                          })}
+                          <DropdownMenuSeparator className="bg-purple-500/20 my-1" />
+                        </div>
+                      );
+                    })}
+                  </div>
                 </DropdownMenuContent>
               </DropdownMenu>
             </nav>
@@ -240,7 +246,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                 </button>
                 <button className="relative p-2 text-white/70 hover:text-purple-400 hover:bg-white/10 rounded-lg transition-all duration-300">
                   <Bell className="h-5 w-5" />
-                  <Badge className="absolute -top-1 -right-1 h-5 w-5 bg-purple-500 text-white text-xs flex items-center justify-center">
+                  <Badge className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1.5 bg-purple-500 text-white text-xs flex items-center justify-center rounded-full shadow-lg border-2 border-purple-600 z-10">
                     3
                   </Badge>
                 </button>
@@ -249,11 +255,11 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
               {/* Botón de Login */}
               <Button
                 onClick={handleLogin}
-                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold px-6 py-3 rounded-xl shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:shadow-purple-500/50 hover:scale-110 min-w-[140px] border-2 border-purple-400"
+                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold px-3 sm:px-6 py-2 sm:py-3 rounded-xl shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:shadow-purple-500/50 hover:scale-105 sm:hover:scale-110 min-w-[100px] sm:min-w-[140px] border-2 border-purple-400 flex items-center justify-center"
               >
-                <User className="h-5 w-5 mr-2" />
-                <span className="hidden sm:inline text-base">Iniciar Sesión</span>
-                <span className="sm:hidden text-sm">Login</span>
+                <User className="h-4 w-4 sm:h-5 sm:w-5 sm:mr-2 flex-shrink-0" />
+                <span className="hidden sm:inline text-sm sm:text-base">Iniciar Sesión</span>
+                <span className="sm:hidden text-xs">Login</span>
               </Button>
 
               {/* Botón Menú Móvil */}

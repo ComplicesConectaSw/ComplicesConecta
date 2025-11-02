@@ -7,6 +7,7 @@ import './styles/consolidated-styles.css'
 import './styles/ui-fixes-contraste.css'
 import './styles/info-text-visibility.css'
 import './styles/header-nav-protection.css'
+import './styles/responsive-fixes.css'
 import { initializeWalletProtection, detectWalletConflicts } from "./utils/walletProtection";
 import { initializeReactFallbacks, ensureReactPolyfills } from "./utils/reactFallbacks";
 import ErrorBoundary from '@/components/ErrorBoundary'

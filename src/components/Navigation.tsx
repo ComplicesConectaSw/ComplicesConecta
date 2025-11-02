@@ -202,10 +202,13 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
                 )} 
               />
               <span className={cn(
-                "text-xs sm:text-sm font-medium transition-all duration-300 truncate max-w-[50px] sm:max-w-none relative z-10",
-                isActive ? "text-white font-semibold" : "text-white/85 group-hover:text-white"
+                "text-[10px] sm:text-xs font-medium transition-all duration-300 relative z-10 leading-tight",
+                isActive ? "text-white font-semibold" : "text-white/85 group-hover:text-white",
+                // Prevenir cortes en textos largos usando line-clamp o text-balance
+                item.id === 'settings' && "hidden sm:inline",
+                item.id === 'requests' && "hidden sm:inline"
               )}>
-                {item.label}
+                {item.id === 'settings' ? 'Config' : item.id === 'requests' ? 'Solicitudes' : item.label}
               </span>
             </button>
           );

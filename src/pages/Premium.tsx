@@ -135,15 +135,26 @@ const Premium = () => {
                   <div className="text-3xl font-bold text-primary">$100 MXN</div>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 mb-3">
                     <Badge variant="secondary" className="bg-blue-100 text-blue-800">
                       <Star className="h-3 w-3 mr-1" />
                       Badge de Supporter
                     </Badge>
                   </div>
-                  <p className="text-sm text-white">• Acceso anticipado a noticias</p>
-                  <p className="text-sm text-white">• Nuestro agradecimiento eterno</p>
-                  <p className="text-sm text-white">• Reconocimiento en la comunidad</p>
+                  <ul className="space-y-2 list-none">
+                    <li className="text-sm text-white flex items-start gap-2">
+                      <span className="text-blue-400 mt-1">•</span>
+                      <span>Acceso anticipado a noticias</span>
+                    </li>
+                    <li className="text-sm text-white flex items-start gap-2">
+                      <span className="text-blue-400 mt-1">•</span>
+                      <span>Nuestro agradecimiento eterno</span>
+                    </li>
+                    <li className="text-sm text-white flex items-start gap-2">
+                      <span className="text-blue-400 mt-1">•</span>
+                      <span>Reconocimiento en la comunidad</span>
+                    </li>
+                  </ul>
                   <Button 
                     asChild
                     className="w-full mt-4 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600"
@@ -163,15 +174,26 @@ const Premium = () => {
                   <div className="text-3xl font-bold text-primary">$300 MXN</div>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 mb-3">
                     <Badge variant="secondary" className="bg-purple-100 text-purple-800">
                       <Crown className="h-3 w-3 mr-1" />
                       Badge Contributor
                     </Badge>
                   </div>
-                  <p className="text-sm text-white">• Todo lo anterior</p>
-                  <p className="text-sm text-white">• Acceso a contenido exclusivo</p>
-                  <p className="text-sm text-white">• Participación en encuestas</p>
+                  <ul className="space-y-2 list-none">
+                    <li className="text-sm text-white flex items-start gap-2">
+                      <span className="text-purple-400 mt-1">•</span>
+                      <span>Todo lo anterior</span>
+                    </li>
+                    <li className="text-sm text-white flex items-start gap-2">
+                      <span className="text-purple-400 mt-1">•</span>
+                      <span>Acceso a contenido exclusivo</span>
+                    </li>
+                    <li className="text-sm text-white flex items-start gap-2">
+                      <span className="text-purple-400 mt-1">•</span>
+                      <span>Participación en encuestas</span>
+                    </li>
+                  </ul>
                   <Button 
                     className="w-full mt-4 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600"
                     onClick={() => {
@@ -190,9 +212,9 @@ const Premium = () => {
               </Card>
 
               {/* VIP Supporter Plan */}
-              <Card className="bg-card/80 backdrop-blur-sm border-2 border-amber-400/50 hover:border-amber-400 transition-all duration-300 hover:scale-105 relative">
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <Badge className="bg-amber-500 text-white">
+              <Card className="bg-card/80 backdrop-blur-sm border-2 border-amber-400/50 hover:border-amber-400 transition-all duration-300 hover:scale-105 relative overflow-visible">
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10 px-2">
+                  <Badge className="bg-amber-500 text-white whitespace-nowrap shadow-lg border-2 border-amber-600">
                     <Sparkles className="h-3 w-3 mr-1" />
                     Popular
                   </Badge>
@@ -205,15 +227,26 @@ const Premium = () => {
                   <div className="text-3xl font-bold text-primary">$600 MXN</div>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 mb-3">
                     <Badge variant="secondary" className="bg-amber-100 text-amber-800">
                       <Crown className="h-3 w-3 mr-1" />
                       Badge VIP Dorado
                     </Badge>
                   </div>
-                  <p className="text-sm text-white">• Todo lo anterior</p>
-                  <p className="text-sm text-white">• Acceso beta a nuevas funciones</p>
-                  <p className="text-sm text-white">• Consulta directa con el equipo</p>
+                  <ul className="space-y-2 list-none">
+                    <li className="text-sm text-white flex items-start gap-2">
+                      <span className="text-amber-400 mt-1">•</span>
+                      <span>Todo lo anterior</span>
+                    </li>
+                    <li className="text-sm text-white flex items-start gap-2">
+                      <span className="text-amber-400 mt-1">•</span>
+                      <span>Acceso beta a nuevas funciones</span>
+                    </li>
+                    <li className="text-sm text-white flex items-start gap-2">
+                      <span className="text-amber-400 mt-1">•</span>
+                      <span>Consulta directa con el equipo</span>
+                    </li>
+                  </ul>
                   <Button 
                     className="w-full mt-4 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600"
                     onClick={() => {

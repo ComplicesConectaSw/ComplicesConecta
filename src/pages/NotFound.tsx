@@ -89,14 +89,11 @@ const NotFound = () => {
       <div className="relative z-10 text-center space-y-8 p-8 max-w-2xl mx-auto">
         {/* Logo */}
         <div className="animate-fade-in">
-          <img 
-            src="/placeholder.svg" 
-            alt="ComplicesConecta" 
-            className="mx-auto h-16 opacity-90 mb-8"
-            onError={(e) => {
-              e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMzIiIGN5PSIzMiIgcj0iMzIiIGZpbGw9IiM4QjVDRjYiLz4KPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5DUDwvdGV4dD4KPC9zdmc+';
-            }}
-          />
+          <div className="mx-auto w-16 h-16 mb-8 flex items-center justify-center">
+            <div className="w-16 h-16 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 flex items-center justify-center shadow-lg">
+              <span className="text-white font-bold text-2xl">CC</span>
+            </div>
+          </div>
         </div>
 
         {/* 404 Number with Animation */}
@@ -132,7 +129,7 @@ const NotFound = () => {
                 size="lg"
                 className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white rounded-2xl px-8 py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:rotate-1 group"
               >
-                <Link to="/">
+                <Link to="/" className="flex items-center justify-center">
                   <Home className="mr-2 h-5 w-5 group-hover:animate-bounce" />
                   Volver al Inicio
                 </Link>
@@ -142,7 +139,7 @@ const NotFound = () => {
                 asChild 
                 variant="outline" 
                 size="lg"
-                className="border-white/20 text-white hover:bg-white/10 rounded-2xl px-8 py-6 text-lg backdrop-blur-sm hover:border-pink-400/50 transition-all duration-300 transform hover:scale-105 hover:-rotate-1 group"
+                className="border-white/20 bg-white/10 text-white hover:bg-white/20 rounded-2xl px-8 py-6 text-lg backdrop-blur-sm hover:border-pink-400/50 transition-all duration-300 transform hover:scale-105 hover:-rotate-1 group font-semibold"
               >
                 <Link to="/discover">
                   <Search className="mr-2 h-5 w-5 group-hover:animate-spin" />
@@ -158,12 +155,12 @@ const NotFound = () => {
           </div>
         </Card>
 
-        {/* Decorative Elements */}
-        <div className={`flex justify-center space-x-4 transition-all duration-1000 delay-1000 ${isVisible ? 'animate-fade-in-delay-4' : 'opacity-0'}`}>
+        {/* Decorative Elements - Fixed positioning to prevent clipping */}
+        <div className={`flex justify-center space-x-4 mt-8 pb-4 transition-all duration-1000 delay-1000 ${isVisible ? 'animate-fade-in-delay-4' : 'opacity-0'}`}>
           {[...Array(5)].map((_, i) => (
             <div 
               key={i}
-              className="relative"
+              className="relative p-2"
             >
               <Star 
                 className="w-4 h-4 text-yellow-400/60 animate-twinkle"

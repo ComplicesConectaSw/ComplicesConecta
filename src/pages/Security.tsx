@@ -27,40 +27,40 @@ const SecurityPage = () => {
         </div>
 
         {/* Security Features Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          <Card className="bg-white/10 border-white/20 shadow-lg hover:shadow-xl transition-shadow">
-            <CardHeader className="text-center">
-              <Lock className="h-12 w-12 text-white mx-auto mb-4" />
-              <CardTitle className="text-xl text-white">Encriptación de Datos</CardTitle>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12">
+          <Card className="bg-white/10 border-white/20 shadow-lg hover:shadow-xl transition-shadow overflow-hidden min-h-[250px]">
+            <CardHeader className="text-center pb-3">
+              <Lock className="h-12 w-12 text-white mx-auto mb-4 flex-shrink-0" />
+              <CardTitle className="text-lg sm:text-xl text-white break-words px-2">Encriptación de Datos</CardTitle>
             </CardHeader>
-            <CardContent>
-              <p className="text-white font-medium text-center">
+            <CardContent className="px-4">
+              <p className="text-sm sm:text-base text-white font-medium text-center break-words leading-relaxed">
                 Todos tus datos están protegidos con encriptación de nivel bancario 
                 AES-256 tanto en tránsito como en reposo.
               </p>
             </CardContent>
           </Card>
 
-          <Card className="bg-white/10 border-white/20 shadow-lg hover:shadow-xl transition-shadow">
-            <CardHeader className="text-center">
-              <UserCheck className="h-12 w-12 text-white mx-auto mb-4" />
-              <CardTitle className="text-xl text-white">Verificación KYC</CardTitle>
+          <Card className="bg-white/10 border-white/20 shadow-lg hover:shadow-xl transition-shadow overflow-hidden min-h-[250px]">
+            <CardHeader className="text-center pb-3">
+              <UserCheck className="h-12 w-12 text-white mx-auto mb-4 flex-shrink-0" />
+              <CardTitle className="text-lg sm:text-xl text-white break-words px-2">Verificación KYC</CardTitle>
             </CardHeader>
-            <CardContent>
-              <p className="text-white font-medium text-center">
+            <CardContent className="px-4">
+              <p className="text-sm sm:text-base text-white font-medium text-center break-words leading-relaxed">
                 Sistema de verificación de identidad para garantizar que todos 
                 los usuarios sean personas reales y auténticas.
               </p>
             </CardContent>
           </Card>
 
-          <Card className="bg-white/10 border-white/20 shadow-lg hover:shadow-xl transition-shadow">
+          <Card className="bg-white/10 border-white/20 shadow-lg hover:shadow-xl transition-shadow overflow-hidden">
             <CardHeader className="text-center">
-              <Eye className="h-12 w-12 text-white mx-auto mb-4" />
-              <CardTitle className="text-xl text-white">Control de Privacidad</CardTitle>
+              <Eye className="h-12 w-12 text-white mx-auto mb-4 flex-shrink-0" />
+              <CardTitle className="text-xl text-white break-words px-2">Control de Privacidad</CardTitle>
             </CardHeader>
-            <CardContent>
-              <p className="text-white font-medium text-center">
+            <CardContent className="px-4">
+              <p className="text-white font-medium text-center break-words leading-relaxed">
                 Tú decides qué información compartir y con quién. Control total 
                 sobre la visibilidad de tu perfil y contenido.
               </p>
