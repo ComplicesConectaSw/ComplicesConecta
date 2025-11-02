@@ -17,8 +17,21 @@ import {
   PlusIcon
 } from '@heroicons/react/24/outline';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Switch } from '@/components/ui/switch';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { logger } from '@/lib/logger';
 import errorAlertService, { AlertRule } from '@/services/ErrorAlertService';
+import { useToast } from '@/hooks/use-toast';
 // performanceMonitoring - preparado para uso futuro en configuración avanzada
 // import performanceMonitoring from '@/services/PerformanceMonitoringService';
 
@@ -120,9 +133,20 @@ const ALERT_PRESETS: AlertConfig[] = [
 export const AlertConfigPanel: React.FC = () => {
   const [configs, setConfigs] = useState<AlertConfig[]>(ALERT_PRESETS);
   const [activeTab, setActiveTab] = useState<'performance' | 'error'>('performance');
-  // Variables preparadas para futuras funcionalidades de edición
-  const [_editingConfig, _setEditingConfig] = useState<AlertConfig | null>(null);
-  const [_showAddDialog, _setShowAddDialog] = useState(false);
+  const [editingConfig, setEditingConfig] = useState<AlertConfig | null>(null);
+  const [showAddDialog, setShowAddDialog] = useState(false);
+  const [newConfig, setNewConfig] = useState<Partial<AlertConfig>>({
+    name: '',
+    type: 'performance',
+    enabled: true,
+    conditions: {},
+    actions: {
+      notification: true,
+      email: false,
+      console: true
+    }
+  });
+  const { toast } = useToast();
 
   useEffect(() => {
     loadConfigs();
@@ -207,17 +231,77 @@ export const AlertConfigPanel: React.FC = () => {
     saveConfigs(newConfigs);
   };
 
-  // Funciones preparadas para futuras funcionalidades
-  const _addConfig = (config: AlertConfig) => {
-    const newConfigs = [...configs, config];
-    saveConfigs(newConfigs);
-    _setShowAddDialog(false);
+  const addConfig = () => {
+    if (!newConfig.name || !newConfig.type) {
+      toast({
+        title: "Error",
+        description: "Por favor completa todos los campos requeridos",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (editingConfig) {
+      // Modo edición
+      const updatedConfig: AlertConfig = {
+        ...editingConfig,
+        name: newConfig.name!,
+        type: newConfig.type!,
+        enabled: newConfig.enabled ?? true,
+        conditions: newConfig.conditions || {},
+        actions: newConfig.actions || {
+          notification: true,
+          email: false,
+          console: true
+        }
+      };
+      updateConfig(updatedConfig);
+    } else {
+      // Modo creación
+      const config: AlertConfig = {
+        id: `custom-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        name: newConfig.name!,
+        type: newConfig.type!,
+        enabled: newConfig.enabled ?? true,
+        conditions: newConfig.conditions || {},
+        actions: newConfig.actions || {
+          notification: true,
+          email: false,
+          console: true
+        }
+      };
+
+      const newConfigs = [...configs, config];
+      saveConfigs(newConfigs);
+      toast({
+        title: "Éxito",
+        description: "Alerta creada exitosamente"
+      });
+    }
+
+    setShowAddDialog(false);
+    setEditingConfig(null);
+    setNewConfig({
+      name: '',
+      type: 'performance',
+      enabled: true,
+      conditions: {},
+      actions: {
+        notification: true,
+        email: false,
+        console: true
+      }
+    });
   };
 
-  const _updateConfig = (config: AlertConfig) => {
+  const updateConfig = (config: AlertConfig) => {
     const newConfigs = configs.map((c) => (c.id === config.id ? config : c));
     saveConfigs(newConfigs);
-    _setEditingConfig(null);
+    setEditingConfig(null);
+    toast({
+      title: "Éxito",
+      description: "Alerta actualizada exitosamente"
+    });
   };
 
   const testAlert = (config: AlertConfig) => {
@@ -261,10 +345,8 @@ export const AlertConfigPanel: React.FC = () => {
           </p>
         </div>
         <Button
-          onClick={() => _setShowAddDialog(true)}
+          onClick={() => setShowAddDialog(true)}
           className="bg-blue-600 hover:bg-blue-700 text-white"
-          disabled
-          title="Funcionalidad en desarrollo"
         >
           <PlusIcon className="h-4 w-4 mr-2" />
           Nueva Alerta
@@ -377,7 +459,17 @@ export const AlertConfigPanel: React.FC = () => {
                 🧪 Probar
               </Button>
               <Button
-                onClick={() => _setEditingConfig(config)}
+                onClick={() => {
+                  setEditingConfig(config);
+                  setNewConfig({
+                    name: config.name,
+                    type: config.type,
+                    enabled: config.enabled,
+                    conditions: config.conditions,
+                    actions: config.actions
+                  });
+                  setShowAddDialog(true);
+                }}
                 variant="outline"
                 size="sm"
                 className="flex-1 text-gray-300 border-gray-600 hover:bg-gray-700"
@@ -403,17 +495,226 @@ export const AlertConfigPanel: React.FC = () => {
           <ExclamationTriangleIcon className="h-12 w-12 text-gray-500 mx-auto mb-3" />
           <p className="text-gray-400">No hay alertas configuradas para {activeTab}</p>
           <Button
-            onClick={() => _setShowAddDialog(true)}
+            onClick={() => setShowAddDialog(true)}
             variant="outline"
             className="mt-4"
-            disabled
-            title="Funcionalidad en desarrollo"
           >
             <PlusIcon className="h-4 w-4 mr-2" />
             Agregar Primera Alerta
           </Button>
         </div>
       )}
+
+      {/* Dialog para Agregar/Editar Alerta */}
+      <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
+        <DialogContent className="bg-slate-800 text-white border-slate-700 max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>
+              {editingConfig ? 'Editar Alerta' : 'Nueva Alerta'}
+            </DialogTitle>
+            <DialogDescription className="text-gray-400">
+              {editingConfig 
+                ? 'Modifica la configuración de la alerta'
+                : 'Crea una nueva alerta personalizada para monitorear el sistema'
+              }
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4 py-4">
+            {/* Nombre */}
+            <div className="space-y-2">
+              <Label htmlFor="alert-name">Nombre de la Alerta</Label>
+              <Input
+                id="alert-name"
+                value={newConfig.name || ''}
+                onChange={(e) => setNewConfig({ ...newConfig, name: e.target.value })}
+                placeholder="Ej: Tiempo de carga crítico"
+                className="bg-slate-700 border-slate-600 text-white"
+              />
+            </div>
+
+            {/* Tipo */}
+            <div className="space-y-2">
+              <Label htmlFor="alert-type">Tipo de Alerta</Label>
+              <Select
+                value={newConfig.type}
+                onValueChange={(value) => setNewConfig({ ...newConfig, type: value as 'performance' | 'error' })}
+              >
+                <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
+                  <SelectValue placeholder="Selecciona el tipo" />
+                </SelectTrigger>
+                <SelectContent className="bg-slate-800 border-slate-700">
+                  <SelectItem value="performance">Performance</SelectItem>
+                  <SelectItem value="error">Error</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Condiciones para Performance */}
+            {newConfig.type === 'performance' && (
+              <>
+                <div className="space-y-2">
+                  <Label htmlFor="alert-metric">Métrica</Label>
+                  <Select
+                    value={newConfig.conditions?.metric || ''}
+                    onValueChange={(value) => setNewConfig({
+                      ...newConfig,
+                      conditions: { ...newConfig.conditions, metric: value }
+                    })}
+                  >
+                    <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
+                      <SelectValue placeholder="Selecciona la métrica" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-slate-800 border-slate-700">
+                      <SelectItem value="pageLoadTime">Tiempo de Carga de Página</SelectItem>
+                      <SelectItem value="apiResponseTime">Tiempo de Respuesta API</SelectItem>
+                      <SelectItem value="memoryUsage">Uso de Memoria</SelectItem>
+                      <SelectItem value="cpuUsage">Uso de CPU</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="alert-operator">Operador</Label>
+                    <Select
+                      value={newConfig.conditions?.operator || '>='}
+                      onValueChange={(value) => setNewConfig({
+                        ...newConfig,
+                        conditions: { ...newConfig.conditions, operator: value as '>' | '<' | '=' | '>=' | '<=' }
+                      })}
+                    >
+                      <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-slate-800 border-slate-700">
+                        <SelectItem value=">">Mayor que (&gt;)</SelectItem>
+                        <SelectItem value="<">Menor que (&lt;)</SelectItem>
+                        <SelectItem value=">=">Mayor o igual (&gt;=)</SelectItem>
+                        <SelectItem value="<=">Menor o igual (&lt;=)</SelectItem>
+                        <SelectItem value="=">Igual (=)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="alert-threshold">Umbral</Label>
+                    <Input
+                      id="alert-threshold"
+                      type="number"
+                      value={newConfig.conditions?.threshold || ''}
+                      onChange={(e) => setNewConfig({
+                        ...newConfig,
+                        conditions: { ...newConfig.conditions, threshold: Number(e.target.value) }
+                      })}
+                      placeholder="1000"
+                      className="bg-slate-700 border-slate-600 text-white"
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* Condiciones para Error */}
+            {newConfig.type === 'error' && (
+              <div className="space-y-2">
+                <Label htmlFor="alert-severity">Severidad</Label>
+                <Select
+                  value={newConfig.conditions?.severity || 'medium'}
+                  onValueChange={(value) => setNewConfig({
+                    ...newConfig,
+                    conditions: { ...newConfig.conditions, severity: value as 'low' | 'medium' | 'high' | 'critical' }
+                  })}
+                >
+                  <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-slate-800 border-slate-700">
+                    <SelectItem value="low">Baja</SelectItem>
+                    <SelectItem value="medium">Media</SelectItem>
+                    <SelectItem value="high">Alta</SelectItem>
+                    <SelectItem value="critical">Crítica</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+
+            {/* Acciones */}
+            <div className="space-y-3 border-t border-slate-700 pt-4">
+              <Label>Acciones a Ejecutar</Label>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-300">Notificación del navegador</span>
+                <Switch
+                  checked={newConfig.actions?.notification ?? true}
+                  onCheckedChange={(checked) => setNewConfig({
+                    ...newConfig,
+                    actions: { ...newConfig.actions, notification: checked }
+                  })}
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-300">Registro en consola</span>
+                <Switch
+                  checked={newConfig.actions?.console ?? true}
+                  onCheckedChange={(checked) => setNewConfig({
+                    ...newConfig,
+                    actions: { ...newConfig.actions, console: checked }
+                  })}
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-300">Enviar por email</span>
+                <Switch
+                  checked={newConfig.actions?.email ?? false}
+                  onCheckedChange={(checked) => setNewConfig({
+                    ...newConfig,
+                    actions: { ...newConfig.actions, email: checked }
+                  })}
+                />
+              </div>
+            </div>
+
+            {/* Estado */}
+            <div className="flex items-center justify-between border-t border-slate-700 pt-4">
+              <span className="text-sm text-gray-300">Alerta Habilitada</span>
+              <Switch
+                checked={newConfig.enabled ?? true}
+                onCheckedChange={(checked) => setNewConfig({ ...newConfig, enabled: checked })}
+              />
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setShowAddDialog(false);
+                setEditingConfig(null);
+                setNewConfig({
+                  name: '',
+                  type: 'performance',
+                  enabled: true,
+                  conditions: {},
+                  actions: {
+                    notification: true,
+                    email: false,
+                    console: true
+                  }
+                });
+              }}
+              className="text-gray-300 border-slate-600 hover:bg-slate-700"
+            >
+              Cancelar
+            </Button>
+            <Button
+              onClick={addConfig}
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              {editingConfig ? 'Actualizar' : 'Crear'} Alerta
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
