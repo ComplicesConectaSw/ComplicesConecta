@@ -64,7 +64,8 @@ export default defineConfig({
         manualChunks: (id) => {
           // Vendor libraries - split by size and usage
           if (id.includes('node_modules')) {
-            // React core DEBE estar inline en vendor principal para evitar errores
+            // CRÍTICO: React core DEBE estar en vendor pero cargarse PRIMERO
+            // Mantenerlo en vendor pero asegurar que se carga antes que otros chunks
             if (id.includes('react/') || id.includes('react-dom/') || id.includes('react-router')) {
               return 'vendor';
             }

@@ -256,6 +256,31 @@ if ('serviceWorker' in navigator && import.meta.env.MODE === 'production') {
 // Initialize application with enhanced error handling
 async function initializeApp() {
   try {
+    // CRÍTICO: Asegurar React disponible globalmente PRIMERO, antes de cualquier otra cosa
+    if (typeof window !== 'undefined') {
+      // Forzar React disponible globalmente inmediatamente - debe estar ANTES de cualquier import dinámico
+      (window as any).React = React;
+      
+      // Asegurar todos los hooks críticos estén disponibles ANTES de cargar chunks
+      const winReact = (window as any).React;
+      if (winReact) {
+        winReact.useLayoutEffect = winReact.useLayoutEffect || winReact.useEffect;
+        winReact.useEffect = winReact.useEffect;
+        winReact.useState = winReact.useState;
+        winReact.useMemo = winReact.useMemo;
+        winReact.useCallback = winReact.useCallback;
+        winReact.createElement = winReact.createElement;
+      }
+      
+      // También asegurar que ReactDOM esté disponible globalmente
+      if (!(window as any).ReactDOM) {
+        const { createRoot: createRootFromClient } = await import('react-dom/client');
+        (window as any).ReactDOM = {
+          createRoot: createRootFromClient
+        };
+      }
+    }
+    
     // Initialize React fallbacks first for SSR compatibility
     initializeReactFallbacks();
     ensureReactPolyfills();
