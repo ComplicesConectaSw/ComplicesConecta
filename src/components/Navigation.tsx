@@ -175,7 +175,7 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
       }
       
       // Navegar a la ruta solicitada - asegurar que siempre navegue
-      logger.info('🚀 Navegando a:', path);
+      logger.info('🚀 Navegando a:', { path });
       _navigate(path, { replace: false });
     } catch (error) {
       logger.error('❌ Error en handleNavigation:', { error: String(error), path });
