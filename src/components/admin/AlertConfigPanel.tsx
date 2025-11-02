@@ -648,7 +648,11 @@ export const AlertConfigPanel: React.FC = () => {
                   checked={newConfig.actions?.notification ?? true}
                   onCheckedChange={(checked) => setNewConfig({
                     ...newConfig,
-                    actions: { ...newConfig.actions, notification: checked }
+                    actions: { 
+                      notification: checked,
+                      console: newConfig.actions?.console ?? true,
+                      email: newConfig.actions?.email ?? false
+                    }
                   })}
                 />
               </div>
@@ -658,7 +662,11 @@ export const AlertConfigPanel: React.FC = () => {
                   checked={newConfig.actions?.console ?? true}
                   onCheckedChange={(checked) => setNewConfig({
                     ...newConfig,
-                    actions: { ...newConfig.actions, console: checked }
+                    actions: { 
+                      notification: newConfig.actions?.notification ?? true,
+                      console: checked,
+                      email: newConfig.actions?.email ?? false
+                    }
                   })}
                 />
               </div>
@@ -668,7 +676,11 @@ export const AlertConfigPanel: React.FC = () => {
                   checked={newConfig.actions?.email ?? false}
                   onCheckedChange={(checked) => setNewConfig({
                     ...newConfig,
-                    actions: { ...newConfig.actions, email: checked }
+                    actions: { 
+                      notification: newConfig.actions?.notification ?? true,
+                      console: newConfig.actions?.console ?? true,
+                      email: checked
+                    }
                   })}
                 />
               </div>

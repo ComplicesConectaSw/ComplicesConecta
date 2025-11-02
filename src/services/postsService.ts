@@ -104,7 +104,7 @@ class PostsService {
         profile_id: `profile-${Math.floor(Math.random() * 10) + 1}`,
         content,
         post_type: postType,
-        image_url: postType === 'photo' ? `/mock-images/post-${i + 1}.jpg` : undefined,
+        image_url: postType === 'photo' ? `https://images.unsplash.com/photo-${1500000000000 + i}?w=400&h=400&fit=crop&auto=format&q=80` : undefined,
         video_url: postType === 'video' ? `/mock-videos/post-${i + 1}.mp4` : undefined,
         location: locations[Math.floor(Math.random() * locations.length)],
         likes_count: Math.floor(Math.random() * 50) + 1,
@@ -114,8 +114,8 @@ class PostsService {
         updated_at: new Date().toISOString(),
         profile: {
           id: `profile-${Math.floor(Math.random() * 10) + 1}`,
-          name: `Usuario ${i + 1}`,
-          avatar_url: `/mock-avatars/user-${i + 1}.jpg`,
+          name: ['Ana García', 'Carlos López', 'María & Juan', 'Laura Martínez', 'Roberto Silva', 'Sofía & David', 'Elena Ruiz', 'Diego Torres'][i % 8] || `Usuario ${i + 1}`,
+          avatar_url: `https://images.unsplash.com/photo-${1494790108755 + i}?w=100&h=100&fit=crop&crop=faces&auto=format&q=80`,
           is_verified: Math.random() > 0.7
         }
       });
@@ -225,9 +225,13 @@ class PostsService {
         }
       });
 
-          if (error) {
-            logger.error('Error fetching feed from Supabase:', error);
-            return [];
+          // Si hay error o no hay datos, usar posts demo
+          if (error || !data || data.length === 0) {
+            logger.warn('No feed data from Supabase, using demo posts', { error });
+            const demoPosts = this.generateMockPosts(10);
+            // Guardar en cache para evitar llamadas repetidas
+            this.feedCache.set(cacheKey, { data: demoPosts, timestamp: Date.now() });
+            return demoPosts;
           }
 
           // Mapear datos con conteos incluidos (90% reducción en consultas)

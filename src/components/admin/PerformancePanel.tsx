@@ -181,7 +181,7 @@ export default function PerformancePanel() {
       setRecentMetrics(formattedMetrics.slice(0, 5));
 
     } catch (error) {
-      logger.error('Error loading system metrics:', error);
+      logger.error('Error loading system metrics:', { error: error instanceof Error ? error.message : String(error) });
       generateMockMetrics();
     }
   };
@@ -222,7 +222,7 @@ export default function PerformancePanel() {
 
       setRecentMetrics(formattedMetrics.slice(0, 5));
     } catch (error) {
-      logger.error('Error loading recent metrics:', error);
+      logger.error('Error loading recent metrics:', { error: error instanceof Error ? error.message : String(error) });
       generateMockRecentMetrics();
     }
   };
@@ -319,13 +319,13 @@ export default function PerformancePanel() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Panel de Rendimiento</h2>
-          <p className="text-gray-600">Monitoreo en tiempo real del sistema</p>
+          <h2 className="text-2xl font-bold text-white">Panel de Rendimiento</h2>
+          <p className="text-white/80">Monitoreo en tiempo real del sistema</p>
         </div>
         <Button 
           onClick={refreshMetrics}
           disabled={isLoading}
-          className="border border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
+          className="border border-white/20 bg-white/10 backdrop-blur-md text-white hover:bg-white/20"
         >
           <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
           Actualizar
@@ -333,61 +333,61 @@ export default function PerformancePanel() {
       </div>
 
       {/* System Health Overview */}
-      <Card className={health.bgColor}>
+      <Card className={`bg-white/10 backdrop-blur-md border border-white/20 ${health.status === 'healthy' ? 'border-green-400/30' : health.status === 'warning' ? 'border-yellow-400/30' : 'border-red-400/30'}`}>
         <CardContent className="pt-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               {health.status === 'healthy' ? (
-                <CheckCircle className={`w-8 h-8 ${health.color}`} />
+                <CheckCircle className={`w-8 h-8 text-green-400`} />
               ) : (
-                <AlertTriangle className={`w-8 h-8 ${health.color}`} />
+                <AlertTriangle className={`w-8 h-8 ${health.status === 'warning' ? 'text-yellow-400' : 'text-red-400'}`} />
               )}
               <div>
-                <h3 className={`text-lg font-semibold ${health.color}`}>
+                <h3 className={`text-lg font-semibold text-white`}>
                   Estado del Sistema: {health.status === 'healthy' ? 'Saludable' : 
                                      health.status === 'warning' ? 'Advertencia' : 'Crítico'}
                 </h3>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-white/80">
                   Uptime: {performanceData.uptime.toFixed(2)}% | 
                   Tasa de Error: {performanceData.errorRate.toFixed(2)}%
                 </p>
               </div>
             </div>
             <div className="text-right">
-              <div className="text-2xl font-bold text-gray-900">
+              <div className="text-2xl font-bold text-white">
                 {performanceData.throughput.toFixed(0)} req/s
               </div>
-              <div className="text-sm text-gray-600">Throughput</div>
+              <div className="text-sm text-white/80">Throughput</div>
             </div>
           </div>
         </CardContent>
       </Card>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="overview">Resumen</TabsTrigger>
-          <TabsTrigger value="metrics">Métricas</TabsTrigger>
-          <TabsTrigger value="history">Historial</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-3 bg-white/10 backdrop-blur-md border border-white/20">
+          <TabsTrigger value="overview" className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-blue-500 data-[state=active]:text-white">Resumen</TabsTrigger>
+          <TabsTrigger value="metrics" className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-blue-500 data-[state=active]:text-white">Métricas</TabsTrigger>
+          <TabsTrigger value="history" className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-blue-500 data-[state=active]:text-white">Historial</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-4">
           {/* System Metrics Grid */}
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <Card>
+            <Card className="bg-white/10 backdrop-blur-md border border-white/20">
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="text-2xl font-bold text-blue-600">
+                    <div className="text-2xl font-bold text-blue-400">
                       {systemMetrics.cpu.toFixed(1)}%
                     </div>
-                    <div className="text-sm text-gray-600">CPU Usage</div>
+                    <div className="text-sm text-white/80">CPU Usage</div>
                   </div>
-                  <Cpu className="w-8 h-8 text-blue-600" />
+                  <Cpu className="w-8 h-8 text-blue-400" />
                 </div>
                 <div className="mt-2">
-                  <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="w-full bg-white/20 rounded-full h-2">
                     <div 
-                      className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                      className="bg-blue-400 h-2 rounded-full transition-all duration-300"
                       style={{ width: `${Math.min(systemMetrics.cpu, 100)}%` }}
                     ></div>
                   </div>
@@ -395,21 +395,21 @@ export default function PerformancePanel() {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="bg-white/10 backdrop-blur-md border border-white/20">
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="text-2xl font-bold text-green-600">
+                    <div className="text-2xl font-bold text-green-400">
                       {systemMetrics.memory.toFixed(1)}%
                     </div>
-                    <div className="text-sm text-gray-600">Memory</div>
+                    <div className="text-sm text-white/80">Memory</div>
                   </div>
-                  <Server className="w-8 h-8 text-green-600" />
+                  <Server className="w-8 h-8 text-green-400" />
                 </div>
                 <div className="mt-2">
-                  <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="w-full bg-white/20 rounded-full h-2">
                     <div 
-                      className="bg-green-600 h-2 rounded-full transition-all duration-300"
+                      className="bg-green-400 h-2 rounded-full transition-all duration-300"
                       style={{ width: `${Math.min(systemMetrics.memory, 100)}%` }}
                     ></div>
                   </div>
@@ -417,21 +417,21 @@ export default function PerformancePanel() {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="bg-white/10 backdrop-blur-md border border-white/20">
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="text-2xl font-bold text-purple-600">
+                    <div className="text-2xl font-bold text-purple-400">
                       {systemMetrics.disk.toFixed(1)}%
                     </div>
-                    <div className="text-sm text-gray-600">Disk I/O</div>
+                    <div className="text-sm text-white/80">Disk I/O</div>
                   </div>
-                  <HardDrive className="w-8 h-8 text-purple-600" />
+                  <HardDrive className="w-8 h-8 text-purple-400" />
                 </div>
                 <div className="mt-2">
-                  <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="w-full bg-white/20 rounded-full h-2">
                     <div 
-                      className="bg-purple-600 h-2 rounded-full transition-all duration-300"
+                      className="bg-purple-400 h-2 rounded-full transition-all duration-300"
                       style={{ width: `${Math.min(systemMetrics.disk, 100)}%` }}
                     ></div>
                   </div>
@@ -439,21 +439,21 @@ export default function PerformancePanel() {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="bg-white/10 backdrop-blur-md border border-white/20">
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="text-2xl font-bold text-orange-600">
+                    <div className="text-2xl font-bold text-orange-400">
                       {systemMetrics.network.toFixed(1)}%
                     </div>
-                    <div className="text-sm text-gray-600">Network</div>
+                    <div className="text-sm text-white/80">Network</div>
                   </div>
-                  <Wifi className="w-8 h-8 text-orange-600" />
+                  <Wifi className="w-8 h-8 text-orange-400" />
                 </div>
                 <div className="mt-2">
-                  <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="w-full bg-white/20 rounded-full h-2">
                     <div 
-                      className="bg-orange-600 h-2 rounded-full transition-all duration-300"
+                      className="bg-orange-400 h-2 rounded-full transition-all duration-300"
                       style={{ width: `${Math.min(systemMetrics.network, 100)}%` }}
                     ></div>
                   </div>
@@ -464,70 +464,70 @@ export default function PerformancePanel() {
 
           {/* Performance Metrics */}
           <div className="grid gap-4 md:grid-cols-2">
-            <Card>
+            <Card className="bg-white/10 backdrop-blur-md border border-white/20">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5" />
+                <CardTitle className="flex items-center gap-2 text-white">
+                  <TrendingUp className="w-5 h-5 text-purple-400" />
                   Métricas de Rendimiento
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">Tiempo de Respuesta</span>
-                  <Badge className="bg-blue-50 text-blue-700 border-blue-200">
+                  <span className="text-sm font-medium text-white">Tiempo de Respuesta</span>
+                  <Badge className="bg-blue-500/20 text-blue-300 border-blue-400/30">
                     {performanceData.responseTime.toFixed(0)}ms
                   </Badge>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">Throughput</span>
-                  <Badge className="bg-green-50 text-green-700 border-green-200">
+                  <span className="text-sm font-medium text-white">Throughput</span>
+                  <Badge className="bg-green-500/20 text-green-300 border-green-400/30">
                     {performanceData.throughput.toFixed(0)} req/s
                   </Badge>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">Tasa de Error</span>
-                  <Badge className={`${performanceData.errorRate > 3 ? 'bg-red-50 text-red-700 border-red-200' : 'bg-green-50 text-green-700 border-green-200'}`}>
+                  <span className="text-sm font-medium text-white">Tasa de Error</span>
+                  <Badge className={`${performanceData.errorRate > 3 ? 'bg-red-500/20 text-red-300 border-red-400/30' : 'bg-green-500/20 text-green-300 border-green-400/30'}`}>
                     {performanceData.errorRate.toFixed(2)}%
                   </Badge>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">Uptime</span>
-                  <Badge className="bg-green-50 text-green-700 border-green-200">
+                  <span className="text-sm font-medium text-white">Uptime</span>
+                  <Badge className="bg-green-500/20 text-green-300 border-green-400/30">
                     {performanceData.uptime.toFixed(2)}%
                   </Badge>
                 </div>
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="bg-white/10 backdrop-blur-md border border-white/20">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Database className="w-5 h-5" />
+                <CardTitle className="flex items-center gap-2 text-white">
+                  <Database className="w-5 h-5 text-purple-400" />
                   Estado de la Base de Datos
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">Conexiones Activas</span>
-                  <Badge className="bg-blue-50 text-blue-700 border-blue-200">
+                  <span className="text-sm font-medium text-white">Conexiones Activas</span>
+                  <Badge className="bg-blue-500/20 text-blue-300 border-blue-400/30">
                     {Math.floor(Math.random() * 50) + 10}
                   </Badge>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">Consultas por Segundo</span>
-                  <Badge className="bg-green-50 text-green-700 border-green-200">
+                  <span className="text-sm font-medium text-white">Consultas por Segundo</span>
+                  <Badge className="bg-green-500/20 text-green-300 border-green-400/30">
                     {Math.floor(Math.random() * 100) + 50}
                   </Badge>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">Tiempo de Consulta Promedio</span>
-                  <Badge className="bg-yellow-50 text-yellow-700 border-yellow-200">
+                  <span className="text-sm font-medium text-white">Tiempo de Consulta Promedio</span>
+                  <Badge className="bg-yellow-500/20 text-yellow-300 border-yellow-400/30">
                     {(Math.random() * 10 + 5).toFixed(1)}ms
                   </Badge>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">Cache Hit Rate</span>
-                  <Badge className="bg-green-50 text-green-700 border-green-200">
+                  <span className="text-sm font-medium text-white">Cache Hit Rate</span>
+                  <Badge className="bg-green-500/20 text-green-300 border-green-400/30">
                     {(95 + Math.random() * 4).toFixed(1)}%
                   </Badge>
                 </div>
@@ -537,42 +537,42 @@ export default function PerformancePanel() {
         </TabsContent>
 
         <TabsContent value="metrics" className="space-y-4">
-          <Card>
+          <Card className="bg-white/10 backdrop-blur-md border border-white/20">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <BarChart3 className="w-5 h-5" />
+              <CardTitle className="flex items-center gap-2 text-white">
+                <BarChart3 className="w-5 h-5 text-purple-400" />
                 Métricas Detalladas
               </CardTitle>
             </CardHeader>
             <CardContent>
               {isLoading ? (
                 <div className="text-center py-8">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-                  <p className="mt-2 text-gray-600">Cargando métricas...</p>
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-400 mx-auto"></div>
+                  <p className="mt-2 text-white/80">Cargando métricas...</p>
                 </div>
               ) : recentMetrics.length === 0 ? (
                 <div className="text-center py-8">
-                  <BarChart3 className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-600">No hay métricas disponibles</p>
+                  <BarChart3 className="w-12 h-12 text-white/60 mx-auto mb-4" />
+                  <p className="text-white/80">No hay métricas disponibles</p>
                 </div>
               ) : (
                 <div className="space-y-3">
                   {recentMetrics.map((metric) => (
-                    <div key={metric.id} className="flex items-center justify-between p-3 border rounded-lg">
+                    <div key={metric.id} className="flex items-center justify-between p-3 border border-white/20 rounded-lg bg-white/5 backdrop-blur-sm">
                       <div className="flex items-center gap-3">
-                        {getMetricIcon(metric.metric_name)}
+                        <div className="text-white">{getMetricIcon(metric.metric_name)}</div>
                         <div>
-                          <div className="font-medium">{metric.metric_name}</div>
-                          <div className="text-sm text-gray-600">
+                          <div className="font-medium text-white">{metric.metric_name}</div>
+                          <div className="text-sm text-white/80">
                             {new Date(metric.recorded_at).toLocaleString()}
                           </div>
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="font-semibold">
+                        <div className="font-semibold text-white">
                           {formatMetricValue(metric.metric_value, metric.metric_unit)}
                         </div>
-                        <Badge className="bg-gray-50 text-gray-700 border-gray-200 text-xs">
+                        <Badge className="bg-purple-500/20 text-purple-300 border-purple-400/30 text-xs">
                           {metric.metric_type}
                         </Badge>
                       </div>
@@ -585,29 +585,29 @@ export default function PerformancePanel() {
         </TabsContent>
 
         <TabsContent value="history" className="space-y-4">
-          <Card>
+          <Card className="bg-white/10 backdrop-blur-md border border-white/20">
             <CardHeader>
-              <CardTitle>Historial de Métricas</CardTitle>
+              <CardTitle className="text-white">Historial de Métricas</CardTitle>
             </CardHeader>
             <CardContent>
               {metrics.length === 0 ? (
                 <div className="text-center py-8">
-                  <Activity className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-600">No hay historial disponible</p>
+                  <Activity className="w-12 h-12 text-white/60 mx-auto mb-4" />
+                  <p className="text-white/80">No hay historial disponible</p>
                 </div>
               ) : (
                 <div className="space-y-2">
                   {metrics.map((metric) => (
-                    <div key={metric.id} className="flex items-center justify-between p-2 hover:bg-gray-50 rounded">
+                    <div key={metric.id} className="flex items-center justify-between p-2 hover:bg-white/10 rounded border border-white/10 bg-white/5 backdrop-blur-sm">
                       <div className="flex items-center gap-2">
-                        {getMetricIcon(metric.metric_name)}
-                        <span className="text-sm">{metric.metric_name}</span>
+                        <div className="text-white">{getMetricIcon(metric.metric_name)}</div>
+                        <span className="text-sm text-white">{metric.metric_name}</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium">
+                        <span className="text-sm font-medium text-white">
                           {formatMetricValue(metric.metric_value, metric.metric_unit)}
                         </span>
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-white/60">
                           {new Date(metric.recorded_at).toLocaleTimeString()}
                         </span>
                       </div>

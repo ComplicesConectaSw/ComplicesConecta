@@ -12,7 +12,7 @@ export { AnalyticsPanel } from '../AnalyticsPanel'
 
 
 export { default as PerformancePanel } from '../PerformancePanel'
-export { SecurityPanel } from '../SecurityPanel'
+export { default as SecurityPanel } from '../SecurityPanel'
 
 // Tipos de paneles disponibles
 export type PanelType = 

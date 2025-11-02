@@ -96,44 +96,44 @@ export const Gamification = () => {
   return (
     <div className="space-y-6">
       {/* Level and Progress */}
-      <Card className="shadow-soft bg-gradient-to-r from-primary/10 to-primary-glow/10">
+      <Card className="shadow-soft bg-white/10 backdrop-blur-md border border-white/20">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle className="flex items-center gap-2">
-                <Trophy className="h-6 w-6 text-primary" />
+              <CardTitle className="flex items-center gap-2 text-white">
+                <Trophy className="h-6 w-6 text-purple-400" />
                 Nivel {mockStats.level}
               </CardTitle>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-white/80">
                 {mockStats.experience} / {mockStats.nextLevelExp} XP
               </p>
             </div>
             <div className="text-right">
-              <p className="text-sm text-muted-foreground">Puntos totales</p>
-              <p className="text-2xl font-bold text-primary">{mockStats.totalPoints.toLocaleString()}</p>
+              <p className="text-sm text-white/80">Puntos totales</p>
+              <p className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">{mockStats.totalPoints.toLocaleString()}</p>
             </div>
           </div>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             <div className="space-y-2">
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between text-sm text-white">
                 <span>Progreso al Nivel {mockStats.level + 1}</span>
                 <span>{Math.round(experiencePercentage)}%</span>
               </div>
-              <Progress value={experiencePercentage} className="h-3" />
+              <Progress value={experiencePercentage} className="h-3 bg-white/20" />
             </div>
             
             <div className="grid grid-cols-2 gap-4">
-              <div className="text-center p-3 bg-background/50 rounded-lg">
-                <Flame className="h-6 w-6 text-orange-500 mx-auto mb-1" />
-                <p className="text-sm text-muted-foreground">Racha actual</p>
-                <p className="text-lg font-semibold text-foreground">{mockStats.streak} días</p>
+              <div className="text-center p-3 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
+                <Flame className="h-6 w-6 text-orange-400 mx-auto mb-1" />
+                <p className="text-sm text-white/80">Racha actual</p>
+                <p className="text-lg font-semibold text-white">{mockStats.streak} días</p>
               </div>
-              <div className="text-center p-3 bg-background/50 rounded-lg">
-                <Target className="h-6 w-6 text-green-500 mx-auto mb-1" />
-                <p className="text-sm text-muted-foreground">Mejor racha</p>
-                <p className="text-lg font-semibold text-foreground">{mockStats.longestStreak} días</p>
+              <div className="text-center p-3 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
+                <Target className="h-6 w-6 text-green-400 mx-auto mb-1" />
+                <p className="text-sm text-white/80">Mejor racha</p>
+                <p className="text-lg font-semibold text-white">{mockStats.longestStreak} días</p>
               </div>
             </div>
           </div>
@@ -142,8 +142,8 @@ export const Gamification = () => {
 
       {/* Achievements Grid */}
       <div>
-        <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-          <Award className="h-5 w-5" />
+        <h3 className="text-xl font-semibold mb-4 flex items-center gap-2 text-white">
+          <Award className="h-5 w-5 text-purple-400" />
           Logros
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -154,10 +154,10 @@ export const Gamification = () => {
             return (
               <Card
                 key={achievement.id}
-                className={`shadow-soft transition-all duration-300 ${
+                className={`shadow-soft transition-all duration-300 bg-white/10 backdrop-blur-md border ${
                   isUnlocked 
-                    ? "border-primary/30 bg-primary/5" 
-                    : "opacity-70 border-dashed"
+                    ? "border-purple-400/30" 
+                    : "opacity-70 border-dashed border-white/20"
                 }`}
               >
                 <CardHeader className="pb-3">
@@ -172,7 +172,7 @@ export const Gamification = () => {
                       </div>
                       <div>
                         <h4 className={`font-medium ${
-                          isUnlocked ? "text-foreground" : "text-muted-foreground"
+                          isUnlocked ? "text-white" : "text-white/60"
                         }`}>
                           {achievement.title}
                         </h4>
@@ -196,19 +196,19 @@ export const Gamification = () => {
                 </CardHeader>
                 
                 <CardContent>
-                  <p className="text-sm text-muted-foreground mb-3">
+                  <p className="text-sm text-white/80 mb-3">
                     {achievement.description}
                   </p>
                   
                   {!isUnlocked && achievement.progress !== undefined && achievement.target && (
                     <div className="space-y-2">
-                      <div className="flex justify-between text-xs">
+                      <div className="flex justify-between text-xs text-white/80">
                         <span>Progreso</span>
                         <span>{achievement.progress} / {achievement.target}</span>
                       </div>
                       <Progress 
                         value={(achievement.progress / achievement.target) * 100} 
-                        className="h-2" 
+                        className="h-2 bg-white/20" 
                       />
                     </div>
                   )}
@@ -226,55 +226,55 @@ export const Gamification = () => {
       </div>
 
       {/* Daily Challenges */}
-      <Card className="shadow-soft">
+      <Card className="shadow-soft bg-white/10 backdrop-blur-md border border-white/20">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Calendar className="h-5 w-5" />
+          <CardTitle className="flex items-center gap-2 text-white">
+            <Calendar className="h-5 w-5 text-purple-400" />
             Desafíos Diarios
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+            <div className="flex items-center justify-between p-3 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
               <div className="flex items-center space-x-3">
-                <Heart className="h-5 w-5 text-red-500" />
+                <Heart className="h-5 w-5 text-red-400" />
                 <div>
-                  <p className="font-medium">5 Likes Diarios</p>
-                  <p className="text-sm text-muted-foreground">Da like a 5 perfiles</p>
+                  <p className="font-medium text-white">5 Likes Diarios</p>
+                  <p className="text-sm text-white/80">Da like a 5 perfiles</p>
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-sm font-medium">3/5</p>
-                <Badge variant="outline" className="text-xs">+50 XP</Badge>
+                <p className="text-sm font-medium text-white">3/5</p>
+                <Badge variant="outline" className="text-xs border-purple-400/50 text-purple-300">+50 XP</Badge>
               </div>
             </div>
             
-            <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+            <div className="flex items-center justify-between p-3 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
               <div className="flex items-center space-x-3">
-                <MessageCircle className="h-5 w-5 text-blue-500" />
+                <MessageCircle className="h-5 w-5 text-blue-400" />
                 <div>
-                  <p className="font-medium">Iniciar Conversación</p>
-                  <p className="text-sm text-muted-foreground">Envía un mensaje a un nuevo match</p>
+                  <p className="font-medium text-white">Iniciar Conversación</p>
+                  <p className="text-sm text-white/80">Envía un mensaje a un nuevo match</p>
                 </div>
               </div>
               <div className="text-right">
-                <Badge variant="secondary" className="bg-green-100 text-green-700">
+                <Badge variant="secondary" className="bg-green-500/20 text-green-300 border-green-400/30">
                   ✓ Completado
                 </Badge>
               </div>
             </div>
             
-            <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+            <div className="flex items-center justify-between p-3 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
               <div className="flex items-center space-x-3">
-                <Zap className="h-5 w-5 text-yellow-500" />
+                <Zap className="h-5 w-5 text-yellow-400" />
                 <div>
-                  <p className="font-medium">Actualizar Perfil</p>
-                  <p className="text-sm text-muted-foreground">Actualiza tu biografía o fotos</p>
+                  <p className="font-medium text-white">Actualizar Perfil</p>
+                  <p className="text-sm text-white/80">Actualiza tu biografía o fotos</p>
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-sm font-medium">0/1</p>
-                <Badge variant="outline" className="text-xs">+100 XP</Badge>
+                <p className="text-sm font-medium text-white">0/1</p>
+                <Badge variant="outline" className="text-xs border-purple-400/50 text-purple-300">+100 XP</Badge>
               </div>
             </div>
           </div>
@@ -282,10 +282,10 @@ export const Gamification = () => {
       </Card>
 
       {/* Leaderboard Preview */}
-      <Card className="shadow-soft">
+      <Card className="shadow-soft bg-white/10 backdrop-blur-md border border-white/20">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Trophy className="h-5 w-5" />
+          <CardTitle className="flex items-center gap-2 text-white">
+            <Trophy className="h-5 w-5 text-purple-400" />
             Tabla de Posiciones Semanal
           </CardTitle>
         </CardHeader>
@@ -300,33 +300,33 @@ export const Gamification = () => {
             ].map((user) => (
               <div 
                 key={user.rank} 
-                className={`flex items-center justify-between p-3 rounded-lg ${
-                  user.isCurrentUser ? "bg-primary/10 border border-primary/30" : "bg-muted/30"
+                className={`flex items-center justify-between p-3 rounded-lg border ${
+                  user.isCurrentUser ? "bg-purple-500/20 border-purple-400/30" : "bg-white/10 backdrop-blur-sm border-white/20"
                 }`}
               >
                 <div className="flex items-center space-x-3">
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
-                    user.rank === 1 ? "bg-yellow-100 text-yellow-800" :
-                    user.rank === 2 ? "bg-gray-100 text-gray-800" :
-                    user.rank === 3 ? "bg-orange-100 text-orange-800" :
-                    "bg-muted text-muted-foreground"
+                    user.rank === 1 ? "bg-yellow-400/30 text-yellow-200 border border-yellow-400/50" :
+                    user.rank === 2 ? "bg-gray-400/30 text-gray-200 border border-gray-400/50" :
+                    user.rank === 3 ? "bg-orange-400/30 text-orange-200 border border-orange-400/50" :
+                    "bg-white/20 text-white border border-white/30"
                   }`}>
                     {user.rank}
                   </div>
-                  <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-medium">
+                  <div className="w-8 h-8 bg-gradient-to-br from-purple-400 to-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">
                     {user.avatar}
                   </div>
                   <div>
-                    <p className={`font-medium ${user.isCurrentUser ? "text-primary" : ""}`}>
+                    <p className={`font-medium ${user.isCurrentUser ? "text-purple-300" : "text-white"}`}>
                       {user.name} {user.isCurrentUser && "(Tú)"}
                     </p>
                   </div>
                 </div>
-                <p className="font-semibold">{user.points.toLocaleString()} pts</p>
+                <p className="font-semibold text-white">{user.points.toLocaleString()} pts</p>
               </div>
             ))}
           </div>
-          <Button variant="outline" className="w-full mt-4">
+          <Button variant="outline" className="w-full mt-4 border-purple-400/50 text-purple-300 hover:bg-purple-500/20 hover:text-white">
             Ver Tabla Completa
           </Button>
         </CardContent>

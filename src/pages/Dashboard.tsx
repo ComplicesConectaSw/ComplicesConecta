@@ -133,10 +133,10 @@ const DashboardCore = () => {
   // Si no está listo, mostrar loading
   if (!authChecked || !isReady) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 flex items-center justify-center">
         <div className="text-center space-y-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-          <p className="text-muted-foreground">Cargando Dashboard...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-400 mx-auto"></div>
+          <p className="text-white/80">Cargando Dashboard...</p>
           <div data-testid="loading-dashboard" className="sr-only">Loading</div>
         </div>
       </div>
@@ -152,9 +152,9 @@ const DashboardCore = () => {
   });
 
   return (
-    <div className="min-h-screen bg-background" data-testid="dashboard-container">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 relative overflow-hidden" data-testid="dashboard-container">
       {/* Debug info visible solo en desarrollo */}
-      {process.env.NODE_ENV === 'development' && (
+      {import.meta.env.DEV && (
         <div style={{
           position: 'fixed',
           top: '10px',
@@ -175,40 +175,40 @@ const DashboardCore = () => {
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8 max-w-full overflow-x-hidden">
         {/* Page Header */}
         <div className="text-center mb-8 sm:mb-12">
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4 px-2" data-testid="dashboard-title">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-white mb-4 px-2" data-testid="dashboard-title">
             Panel de Control
-            <span className="block bg-love-gradient bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-transparent">
               Tu Progreso y Actividad
             </span>
           </h1>
           
           {/* User Profile Info for E2E Tests - Siempre renderizar para tests */}
           <div className="mb-4 text-sm text-white/80">
-            <span data-testid="profile-name">
+            <span data-testid="profile-name" className="text-white font-semibold">
               {userProfile?.name || 'Usuario Test'}
             </span>
-            <span className="mx-2">•</span>
-            <span data-testid="user-type">
+            <span className="mx-2 text-white/60">•</span>
+            <span data-testid="user-type" className="text-white/80">
               {userProfile?.userType || 'single'}
             </span>
           </div>
           
-          <p className="text-lg sm:text-xl text-white max-w-2xl mx-auto px-4">
+          <p className="text-lg sm:text-xl text-white/90 max-w-2xl mx-auto px-4">
             Revisa tus logros, notificaciones y estadísticas de progreso
           </p>
         </div>
 
         <Tabs defaultValue="gamification" className="space-y-6 sm:space-y-8">
-          <TabsList className="grid w-full grid-cols-3 bg-muted/50 rounded-2xl p-1 sm:p-2 max-w-2xl mx-auto text-xs sm:text-sm">
-            <TabsTrigger value="gamification" className="rounded-xl">
+          <TabsList className="grid w-full grid-cols-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-1 sm:p-2 max-w-2xl mx-auto text-xs sm:text-sm">
+            <TabsTrigger value="gamification" className="rounded-xl text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-blue-500 data-[state=active]:text-white">
               <Trophy className="h-4 w-4 mr-2" />
               Logros
             </TabsTrigger>
-            <TabsTrigger value="notifications" className="rounded-xl">
+            <TabsTrigger value="notifications" className="rounded-xl text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-blue-500 data-[state=active]:text-white">
               <Bell className="h-4 w-4 mr-2" />
               Notificaciones
             </TabsTrigger>
-            <TabsTrigger value="analytics" className="rounded-xl">
+            <TabsTrigger value="analytics" className="rounded-xl text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-blue-500 data-[state=active]:text-white">
               <TrendingUp className="h-4 w-4 mr-2" />
               Analytics
             </TabsTrigger>
@@ -224,9 +224,9 @@ const DashboardCore = () => {
 
           <TabsContent value="analytics" className="space-y-6">
             <div className="text-center py-12">
-              <TrendingUp className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Analytics Detallados</h3>
-              <p className="text-muted-foreground">
+              <TrendingUp className="h-16 w-16 text-white/60 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-2 text-white">Analytics Detallados</h3>
+              <p className="text-white/80">
                 Esta sección mostrará estadísticas avanzadas de tu perfil y actividad
               </p>
             </div>

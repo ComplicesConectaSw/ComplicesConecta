@@ -253,7 +253,7 @@ const EditProfileSingle = () => {
   }
 
   return (
-    <div className={`min-h-screen ${themeConfig.backgroundClass} relative overflow-hidden pb-20`}>
+    <div className={`min-h-screen ${themeConfig.backgroundClass} relative overflow-hidden pb-20`} style={{ background: themeConfig.backgroundClass ? undefined : 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #6366f1 100%)' }}>
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full mix-blend-multiply filter blur-xl animate-blob"></div>
@@ -288,17 +288,19 @@ const EditProfileSingle = () => {
         {/* Foto de perfil */}
         <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-glow">
           <CardContent className="p-6">
-            <h3 className={`font-semibold ${themeConfig.textClass} mb-4`}>Foto de perfil</h3>
-            <div className="w-32 h-32 mx-auto">
-              <ImageUpload
-                onImageUploaded={handleImageUploaded}
-                onError={handleImageError}
-                userId={userId}
-                currentImage={formData.avatar}
-                type="profile"
-                profileType="single"
-                className="w-full h-full"
-              />
+            <h3 className={`font-semibold ${themeConfig.textClass} mb-4 text-center`}>Foto de perfil</h3>
+            <div className="flex items-center justify-center">
+              <div className="w-32 h-32 flex items-center justify-center">
+                <ImageUpload
+                  onImageUploaded={handleImageUploaded}
+                  onError={handleImageError}
+                  userId={userId}
+                  currentImage={formData.avatar}
+                  type="profile"
+                  profileType="single"
+                  className="w-full h-full"
+                />
+              </div>
             </div>
             <p className="text-xs text-white/70 text-center mt-2">
               Sube una foto clara de tu rostro para aumentar tus conexiones
