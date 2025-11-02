@@ -34,12 +34,12 @@ export default function TokensLegal() {
       <div className="container mx-auto px-4 py-8 space-y-8">
         {/* Hero */}
         <div className="text-center space-y-4">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-red-500 to-orange-500 rounded-full mb-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full mb-4">
             <Scale className="h-8 w-8 text-white" />
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-white">
             Responsabilidad Legal
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400">
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
               Sistema de Tokens CMPX/GTK
             </span>
           </h1>
@@ -50,21 +50,21 @@ export default function TokensLegal() {
         </div>
 
         {/* Aviso Legal Principal */}
-        <Card className="bg-gradient-to-r from-red-900/80 to-orange-900/80 backdrop-blur-sm border border-red-400/30">
+        <Card className="bg-gradient-to-r from-purple-900/80 to-blue-900/80 backdrop-blur-sm border border-purple-400/30">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
-              <AlertTriangle className="h-6 w-6 text-red-400" />
+              <AlertTriangle className="h-6 w-6 text-purple-300" />
               Aviso Legal Importante
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4 text-white/80">
-            <div className="bg-red-900/50 p-4 rounded-lg border border-red-400/30">
-              <h4 className="font-bold text-red-200 mb-3">DESCARGO DE RESPONSABILIDAD</h4>
-              <p className="text-red-100 mb-3">
+            <div className="bg-purple-900/50 p-4 rounded-lg border border-purple-400/30">
+              <h4 className="font-bold text-purple-200 mb-3">DESCARGO DE RESPONSABILIDAD</h4>
+              <p className="text-purple-100 mb-3">
                 Los tokens CMPX son créditos digitales internos SIN VALOR MONETARIO REAL durante la fase beta. 
                 ComplicesConecta no garantiza ningún valor económico presente o futuro de estos tokens.
               </p>
-              <ul className="list-disc list-inside space-y-1 text-sm text-red-100">
+              <ul className="list-disc list-inside space-y-1 text-sm text-purple-100">
                 <li>NO son instrumentos financieros regulados</li>
                 <li>NO constituyen inversión ni activos digitales</li>
                 <li>NO tienen garantía de conversión a dinero real</li>
@@ -86,33 +86,33 @@ export default function TokensLegal() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-4">
                 <h4 className="font-semibold text-white">Jurisdicción Aplicable:</h4>
-                <div className="bg-blue-900/30 p-4 rounded-lg">
+                <div className="bg-purple-900/30 p-4 rounded-lg border border-purple-400/20">
                   <ul className="space-y-2 text-sm">
-                    <li><strong className="text-blue-200">País:</strong> Estados Unidos Mexicanos</li>
-                    <li><strong className="text-blue-200">Legislación:</strong> Ley Federal de Protección de Datos Personales</li>
-                    <li><strong className="text-blue-200">Regulador:</strong> CONDUSEF (servicios financieros)</li>
-                    <li><strong className="text-blue-200">Tribunales:</strong> Federales de México</li>
+                    <li><strong className="text-purple-200">País:</strong> <span className="text-purple-100">Estados Unidos Mexicanos</span></li>
+                    <li><strong className="text-purple-200">Legislación:</strong> <span className="text-purple-100">Ley Federal de Protección de Datos Personales</span></li>
+                    <li><strong className="text-purple-200">Regulador:</strong> <span className="text-purple-100">CONDUSEF (servicios financieros)</span></li>
+                    <li><strong className="text-purple-200">Tribunales:</strong> <span className="text-purple-100">Federales de México</span></li>
                   </ul>
                 </div>
               </div>
               
               <div className="space-y-4">
                 <h4 className="font-semibold text-white">Cumplimiento Normativo:</h4>
-                <div className="bg-blue-900/30 p-4 rounded-lg">
+                <div className="bg-purple-900/30 p-4 rounded-lg border border-purple-400/20">
                   <ul className="space-y-2 text-sm">
-                    <li><strong className="text-blue-200">KYC:</strong> Verificación de identidad requerida</li>
-                    <li><strong className="text-blue-200">AML:</strong> Monitoreo anti-lavado de dinero</li>
-                    <li><strong className="text-blue-200">Reportes:</strong> Transacciones sospechosas a autoridades</li>
-                    <li><strong className="text-blue-200">Auditorías:</strong> Revisiones periódicas del sistema</li>
+                    <li><strong className="text-purple-200">KYC:</strong> <span className="text-purple-100">Verificación de identidad requerida</span></li>
+                    <li><strong className="text-purple-200">AML:</strong> <span className="text-purple-100">Monitoreo anti-lavado de dinero</span></li>
+                    <li><strong className="text-purple-200">Reportes:</strong> <span className="text-purple-100">Transacciones sospechosas a autoridades</span></li>
+                    <li><strong className="text-purple-200">Auditorías:</strong> <span className="text-purple-100">Revisiones periódicas del sistema</span></li>
                   </ul>
                 </div>
               </div>
             </div>
             
-            <div className="bg-yellow-900/30 p-4 rounded-lg">
-              <p className="text-yellow-200">
-                <strong>Nota:</strong> El marco regulatorio puede cambiar. ComplicesConecta se compromete 
-                a cumplir con todas las regulaciones aplicables y notificar cambios importantes.
+            <div className="bg-blue-900/30 p-4 rounded-lg border border-blue-400/20">
+              <p className="text-blue-200">
+                <strong>Nota:</strong> <span className="text-blue-100">El marco regulatorio puede cambiar. ComplicesConecta se compromete 
+                a cumplir con todas las regulaciones aplicables y notificar cambios importantes.</span>
               </p>
             </div>
           </CardContent>
@@ -131,9 +131,9 @@ export default function TokensLegal() {
               <h4 className="font-semibold text-white">ComplicesConecta NO será responsable por:</h4>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-purple-900/30 p-4 rounded-lg">
+                <div className="bg-purple-900/30 p-4 rounded-lg border border-purple-400/20">
                   <h5 className="font-semibold text-purple-200 mb-2">Pérdidas Económicas:</h5>
-                  <ul className="list-disc list-inside space-y-1 text-sm">
+                  <ul className="list-disc list-inside space-y-1 text-sm text-purple-100">
                     <li>Pérdida de valor de tokens CMPX</li>
                     <li>Oportunidades de inversión perdidas</li>
                     <li>Gastos incurridos por uso del sistema</li>
@@ -141,9 +141,9 @@ export default function TokensLegal() {
                   </ul>
                 </div>
                 
-                <div className="bg-purple-900/30 p-4 rounded-lg">
+                <div className="bg-purple-900/30 p-4 rounded-lg border border-purple-400/20">
                   <h5 className="font-semibold text-purple-200 mb-2">Problemas Técnicos:</h5>
-                  <ul className="list-disc list-inside space-y-1 text-sm">
+                  <ul className="list-disc list-inside space-y-1 text-sm text-purple-100">
                     <li>Interrupciones del servicio</li>
                     <li>Errores en el sistema de tokens</li>
                     <li>Pérdida de datos por fallas técnicas</li>
@@ -151,9 +151,9 @@ export default function TokensLegal() {
                   </ul>
                 </div>
                 
-                <div className="bg-purple-900/30 p-4 rounded-lg">
+                <div className="bg-purple-900/30 p-4 rounded-lg border border-purple-400/20">
                   <h5 className="font-semibold text-purple-200 mb-2">Acciones de Terceros:</h5>
-                  <ul className="list-disc list-inside space-y-1 text-sm">
+                  <ul className="list-disc list-inside space-y-1 text-sm text-purple-100">
                     <li>Hackeos o ataques cibernéticos</li>
                     <li>Fraudes por parte de usuarios</li>
                     <li>Cambios regulatorios gubernamentales</li>
@@ -161,9 +161,9 @@ export default function TokensLegal() {
                   </ul>
                 </div>
                 
-                <div className="bg-purple-900/30 p-4 rounded-lg">
+                <div className="bg-purple-900/30 p-4 rounded-lg border border-purple-400/20">
                   <h5 className="font-semibold text-purple-200 mb-2">Decisiones del Usuario:</h5>
-                  <ul className="list-disc list-inside space-y-1 text-sm">
+                  <ul className="list-disc list-inside space-y-1 text-sm text-purple-100">
                     <li>Mal uso del sistema de referidos</li>
                     <li>Compartir credenciales de acceso</li>
                     <li>Violación de términos de uso</li>
@@ -173,10 +173,10 @@ export default function TokensLegal() {
               </div>
             </div>
             
-            <div className="bg-red-900/30 p-4 rounded-lg">
-              <p className="text-red-200">
-                <strong>Límite Máximo de Responsabilidad:</strong> En ningún caso la responsabilidad total 
-                de ComplicesConecta excederá el equivalente a $100 USD por usuario afectado.
+            <div className="bg-blue-900/30 p-4 rounded-lg border border-blue-400/20">
+              <p className="text-blue-200">
+                <strong>Límite Máximo de Responsabilidad:</strong> <span className="text-blue-100">En ningún caso la responsabilidad total 
+                de ComplicesConecta excederá el equivalente a $100 USD por usuario afectado.</span>
               </p>
             </div>
           </CardContent>
@@ -192,9 +192,9 @@ export default function TokensLegal() {
           </CardHeader>
           <CardContent className="space-y-4 text-white/80">
             <div className="space-y-4">
-              <div className="bg-green-900/30 p-4 rounded-lg">
-                <h4 className="font-semibold text-green-200 mb-2">Responsabilidades del Usuario:</h4>
-                <ul className="list-disc list-inside space-y-1 text-sm text-green-100">
+              <div className="bg-purple-900/30 p-4 rounded-lg border border-purple-400/20">
+                <h4 className="font-semibold text-purple-200 mb-2">Responsabilidades del Usuario:</h4>
+                <ul className="list-disc list-inside space-y-1 text-sm text-purple-100">
                   <li>Consultar con un asesor fiscal sobre implicaciones tributarias</li>
                   <li>Declarar beneficios obtenidos según legislación local</li>
                   <li>Mantener registros de transacciones para efectos fiscales</li>
@@ -202,9 +202,9 @@ export default function TokensLegal() {
                 </ul>
               </div>
               
-              <div className="bg-yellow-900/30 p-4 rounded-lg">
-                <h4 className="font-semibold text-yellow-200 mb-2">Posición de ComplicesConecta:</h4>
-                <p className="text-yellow-100 text-sm">
+              <div className="bg-blue-900/30 p-4 rounded-lg border border-blue-400/20">
+                <h4 className="font-semibold text-blue-200 mb-2">Posición de ComplicesConecta:</h4>
+                <p className="text-blue-100 text-sm">
                   ComplicesConecta NO proporciona asesoramiento fiscal ni garantiza el tratamiento 
                   tributario de los tokens. Los usuarios son responsables de cumplir con sus 
                   obligaciones fiscales locales.
@@ -227,21 +227,21 @@ export default function TokensLegal() {
               <div className="space-y-4">
                 <h4 className="font-semibold text-white">Proceso de Resolución:</h4>
                 <div className="space-y-3">
-                  <div className="bg-orange-900/30 p-3 rounded-lg">
-                    <h5 className="font-semibold text-orange-200 text-sm">1. Contacto Directo</h5>
-                    <p className="text-xs text-orange-100 mt-1">
+                  <div className="bg-purple-900/30 p-3 rounded-lg border border-purple-400/20">
+                    <h5 className="font-semibold text-purple-200 text-sm">1. Contacto Directo</h5>
+                    <p className="text-xs text-purple-100 mt-1">
                       Comunicación directa con soporte técnico (24-48 horas)
                     </p>
                   </div>
-                  <div className="bg-orange-900/30 p-3 rounded-lg">
-                    <h5 className="font-semibold text-orange-200 text-sm">2. Mediación</h5>
-                    <p className="text-xs text-orange-100 mt-1">
+                  <div className="bg-purple-900/30 p-3 rounded-lg border border-purple-400/20">
+                    <h5 className="font-semibold text-purple-200 text-sm">2. Mediación</h5>
+                    <p className="text-xs text-purple-100 mt-1">
                       Proceso de mediación con tercero neutral (30 días)
                     </p>
                   </div>
-                  <div className="bg-orange-900/30 p-3 rounded-lg">
-                    <h5 className="font-semibold text-orange-200 text-sm">3. Arbitraje</h5>
-                    <p className="text-xs text-orange-100 mt-1">
+                  <div className="bg-purple-900/30 p-3 rounded-lg border border-purple-400/20">
+                    <h5 className="font-semibold text-purple-200 text-sm">3. Arbitraje</h5>
+                    <p className="text-xs text-purple-100 mt-1">
                       Arbitraje vinculante según reglas de CANACO (90 días)
                     </p>
                   </div>
@@ -250,17 +250,17 @@ export default function TokensLegal() {
               
               <div className="space-y-4">
                 <h4 className="font-semibold text-white">Información Legal:</h4>
-                <div className="bg-orange-900/30 p-4 rounded-lg text-sm">
-                  <p><strong className="text-orange-200">Empresa:</strong> ComplicesConecta S.A. de C.V.</p>
-                  <p><strong className="text-orange-200">RFC:</strong> CCO240901ABC</p>
-                  <p><strong className="text-orange-200">Domicilio:</strong> Ciudad de México, México</p>
-                  <p><strong className="text-orange-200">Representante Legal:</strong> [Nombre del Director]</p>
-                  <p><strong className="text-orange-200">Email Legal:</strong> legal@complicesconecta.com</p>
+                <div className="bg-purple-900/30 p-4 rounded-lg text-sm border border-purple-400/20">
+                  <p><strong className="text-purple-200">Empresa:</strong> <span className="text-purple-100">ComplicesConecta S.A. de C.V.</span></p>
+                  <p><strong className="text-purple-200">RFC:</strong> <span className="text-purple-100">CCO240901ABC</span></p>
+                  <p><strong className="text-purple-200">Domicilio:</strong> <span className="text-purple-100">Ciudad de México, México</span></p>
+                  <p><strong className="text-purple-200">Representante Legal:</strong> <span className="text-purple-100">Ing. Juan Carlos Méndez Nataren</span></p>
+                  <p><strong className="text-purple-200">Email Legal:</strong> <span className="text-purple-100">legal@complicesconecta.com</span></p>
                 </div>
               </div>
             </div>
             
-            <div className="bg-blue-900/30 p-4 rounded-lg">
+            <div className="bg-blue-900/30 p-4 rounded-lg border border-blue-400/20">
               <h4 className="font-semibold text-blue-200 mb-2">Derechos del Usuario:</h4>
               <ul className="list-disc list-inside space-y-1 text-sm text-blue-100">
                 <li>Derecho a la información clara y transparente</li>
@@ -285,25 +285,25 @@ export default function TokensLegal() {
             <div className="space-y-4">
               <div>
                 <h4 className="font-semibold text-white mb-2">Procedimiento para Cambios:</h4>
-                <div className="bg-cyan-900/30 p-4 rounded-lg">
-                  <ul className="list-disc list-inside space-y-2 text-sm text-cyan-100">
-                    <li><strong>Cambios Menores:</strong> Notificación por email con 7 días de anticipación</li>
-                    <li><strong>Cambios Importantes:</strong> Notificación con 30 días de anticipación</li>
-                    <li><strong>Cambios Críticos:</strong> Consentimiento explícito requerido</li>
-                    <li><strong>Emergencias:</strong> Implementación inmediata con notificación posterior</li>
+                <div className="bg-purple-900/30 p-4 rounded-lg border border-purple-400/20">
+                  <ul className="list-disc list-inside space-y-2 text-sm text-purple-100">
+                    <li><strong className="text-purple-200">Cambios Menores:</strong> Notificación por email con 7 días de anticipación</li>
+                    <li><strong className="text-purple-200">Cambios Importantes:</strong> Notificación con 30 días de anticipación</li>
+                    <li><strong className="text-purple-200">Cambios Críticos:</strong> Consentimiento explícito requerido</li>
+                    <li><strong className="text-purple-200">Emergencias:</strong> Implementación inmediata con notificación posterior</li>
                   </ul>
                 </div>
               </div>
               
               <div>
                 <h4 className="font-semibold text-white mb-2">Historial de Versiones:</h4>
-                <div className="bg-cyan-900/30 p-4 rounded-lg">
+                <div className="bg-purple-900/30 p-4 rounded-lg border border-purple-400/20">
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-cyan-200">Versión 1.0</span>
-                      <span className="text-cyan-100">3 de septiembre de 2025</span>
+                      <span className="text-purple-200 font-semibold">Versión 1.0</span>
+                      <span className="text-purple-100">3 de septiembre de 2025</span>
                     </div>
-                    <p className="text-cyan-100">Versión inicial para fase beta</p>
+                    <p className="text-purple-100">Versión inicial para fase beta</p>
                   </div>
                 </div>
               </div>

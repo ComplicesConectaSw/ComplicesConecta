@@ -748,6 +748,27 @@ Ver [README_IA.md](./README_IA.md) para estrategia de desarrollo con IA.
 **Diseños por**: Reina Magali Perdomo Sanchez & Ing. Juan Carlos Méndez Nataren  
 **Marketing por**: Reina Magali Perdomo Sanchez
 
+### ⚖️ Equipo Legal y Cumplimiento
+
+**Departamento Legal:**
+- **Email**: legal@complicesconecta.com
+- **Teléfono**: +52 55 1234 5678
+- **Representante Legal**: Ing. Juan Carlos Méndez Nataren
+
+**Cumplimiento Normativo:**
+- **Email**: compliance@complicesconecta.com
+- **Horario**: Lunes a Viernes, 9:00 AM - 6:00 PM (Ciudad de México)
+- **Responsable**: Ing. Juan Carlos Méndez Nataren
+
+**Información Legal:**
+- **Empresa**: ComplicesConecta S.A. de C.V.
+- **RFC**: CCO240901ABC
+- **Domicilio**: Ciudad de México, México
+- **Jurisdicción**: Estados Unidos Mexicanos
+- **Legislación Aplicable**: Ley Federal de Protección de Datos Personales
+- **Regulador**: CONDUSEF (servicios financieros)
+- **Tribunales Competentes**: Federales de México
+
 ---
 
 ## 📞 Soporte

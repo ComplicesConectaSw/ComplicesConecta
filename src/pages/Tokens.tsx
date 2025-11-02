@@ -22,7 +22,11 @@ import { AnimatedButton } from '@/components/ui/AnimatedButton';
 export default function Tokens() {
   const [showStakingModal, setShowStakingModal] = useState(false);
   const { balance: _balance, getBalanceMessage, getStakingMessage, refreshTokens } = useTokens();
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  
+  // Determinar si hay sesión activa para mostrar Navigation o HeaderNav
+  const hasActiveSession = isAuthenticated();
 
   const handleGoHome = () => {
     navigate('/');

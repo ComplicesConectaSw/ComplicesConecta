@@ -41,6 +41,26 @@ import Navigation from "@/components/Navigation";
 import { useAuth } from '@/hooks/useAuth';
 import { DecorativeHearts } from '@/components/DecorativeHearts';
 import { motion } from 'framer-motion';
+import { 
+  BarChart, 
+  Bar, 
+  PieChart, 
+  Pie, 
+  Cell, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  Legend, 
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  AreaChart,
+  Area
+} from 'recharts';
+import { useTokens } from '@/hooks/useTokens';
+import { TokenAnalyticsService } from '@/services/TokenAnalyticsService';
+import { useEffect, useState } from 'react';
 
 interface FAQItem {
   question: string;
@@ -101,15 +121,61 @@ const faqData: FAQItem[] = [
   }
 ];
 
+interface TokenGlobalStats {
+  totalCirculation: number;
+  locked: number;
+  globalStaking: number;
+  monthlyRelease: number;
+  available: number;
+}
+
 export default function TokensInfo() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const [expandedFAQ, setExpandedFAQ] = useState<number | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [activeSection, setActiveSection] = useState<'general' | 'investors' | 'blockchain'>('general');
+  const [globalStats, setGlobalStats] = useState<TokenGlobalStats | null>(null);
+  const [loadingStats, setLoadingStats] = useState(true);
   
   // Determinar si hay sesión activa para mostrar Navigation o HeaderNav
   const hasActiveSession = isAuthenticated();
+  
+  // Cargar estadísticas globales
+  useEffect(() => {
+    const loadGlobalStats = async () => {
+      try {
+        setLoadingStats(true);
+        const analytics = TokenAnalyticsService.getInstance();
+        const metrics = await analytics.generateCurrentMetrics();
+        
+        // Calcular estadísticas globales
+        const stats: TokenGlobalStats = {
+          totalCirculation: metrics.circulatingSupply.cmpx,
+          locked: metrics.totalSupply.cmpx - metrics.circulatingSupply.cmpx,
+          globalStaking: metrics.stakingMetrics.totalStaked,
+          monthlyRelease: 50000, // Valor estimado de liberación mensual
+          available: metrics.circulatingSupply.cmpx - metrics.stakingMetrics.totalStaked
+        };
+        
+        setGlobalStats(stats);
+      } catch (error) {
+        console.error('Error cargando estadísticas globales:', error);
+        // Valores por defecto en caso de error
+        setGlobalStats({
+          totalCirculation: 0,
+          locked: 0,
+          globalStaking: 0,
+          monthlyRelease: 0,
+          available: 0
+        });
+      } finally {
+        setLoadingStats(false);
+      }
+    };
+    
+    loadGlobalStats();
+  }, []);
 
   const filteredFAQ = selectedCategory === 'all' 
     ? faqData 
@@ -223,7 +289,7 @@ export default function TokensInfo() {
               onClick={() => setActiveSection('general')}
               className={`px-6 py-3 rounded-lg transition-all duration-300 ${
                 activeSection === 'general' 
-                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg' 
+                  ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg' 
                   : 'bg-white/10 text-white/80 hover:bg-white/20 border border-white/20'
               }`}
             >
@@ -234,7 +300,7 @@ export default function TokensInfo() {
               onClick={() => setActiveSection('investors')}
               className={`px-6 py-3 rounded-lg transition-all duration-300 ${
                 activeSection === 'investors' 
-                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg' 
+                  ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg' 
                   : 'bg-white/10 text-white/80 hover:bg-white/20 border border-white/20'
               }`}
             >
@@ -245,7 +311,7 @@ export default function TokensInfo() {
               onClick={() => setActiveSection('blockchain')}
               className={`px-6 py-3 rounded-lg transition-all duration-300 ${
                 activeSection === 'blockchain' 
-                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg' 
+                  ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg' 
                   : 'bg-white/10 text-white/80 hover:bg-white/20 border border-white/20'
               }`}
             >
