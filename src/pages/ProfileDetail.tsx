@@ -24,7 +24,8 @@ const ProfileDetail = () => {
   const demoUser = localStorage.getItem('demo_user');
   
   // Determinar si hay sesión activa (demo o producción)
-  const hasActiveSession = (demoAuth === 'true' && demoUser) || (isAuthenticated && user);
+  const authStatus = typeof isAuthenticated === 'function' ? isAuthenticated() : isAuthenticated;
+  const hasActiveSession = (demoAuth === 'true' && demoUser) || (authStatus && user);
   
   // Allow access in demo mode or if user is authenticated
   if (demoAuth !== 'true' && !demoUser) {

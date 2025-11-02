@@ -44,10 +44,10 @@ export const DecorativeHearts: React.FC<DecorativeHeartsProps> = ({
       opacity: Math.random() * 0.4 + 0.3, // Entre 0.3 y 0.7 - más visibles
     };
     
-    if (pos.top) heartData.top = pos.top;
-    if (pos.left) heartData.left = pos.left;
-    if (pos.right) heartData.right = pos.right;
-    if (pos.bottom) heartData.bottom = pos.bottom;
+    if ('top' in pos && typeof pos.top === 'string') heartData.top = pos.top;
+    if ('left' in pos && typeof pos.left === 'string') heartData.left = pos.left;
+    if ('right' in pos && typeof pos.right === 'string') heartData.right = pos.right;
+    if ('bottom' in pos && typeof pos.bottom === 'string') heartData.bottom = pos.bottom;
     
     return heartData;
   });
