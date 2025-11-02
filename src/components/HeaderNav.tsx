@@ -244,16 +244,53 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
               
               {/* Iconos de Acción */}
               <div className="hidden md:flex items-center space-x-1">
-                <button className="p-2 text-white/70 hover:text-purple-400 hover:bg-white/10 rounded-lg transition-all duration-300">
+                <button 
+                  onClick={() => {
+                    handleNavigation('/tokens');
+                    logger.info('Tokens icon clicked');
+                  }}
+                  className="p-2 text-white/70 hover:text-purple-400 hover:bg-white/10 rounded-lg transition-all duration-300"
+                  title="Tokens"
+                >
                   <DollarSign className="h-5 w-5" />
                 </button>
-                <button className="p-2 text-white/70 hover:text-purple-400 hover:bg-white/10 rounded-lg transition-all duration-300">
+                <button 
+                  onClick={() => {
+                    handleNavigation('/faq');
+                    logger.info('Help icon clicked');
+                  }}
+                  className="p-2 text-white/70 hover:text-purple-400 hover:bg-white/10 rounded-lg transition-all duration-300"
+                  title="Ayuda"
+                >
                   <HelpCircle className="h-5 w-5" />
                 </button>
-                <button className="p-2 text-white/70 hover:text-purple-400 hover:bg-white/10 rounded-lg transition-all duration-300">
+                <button 
+                  onClick={() => {
+                    if (isAuthenticated()) {
+                      handleNavigation('/settings');
+                    } else {
+                      handleNavigation('/info');
+                    }
+                    logger.info('Settings icon clicked');
+                  }}
+                  className="p-2 text-white/70 hover:text-purple-400 hover:bg-white/10 rounded-lg transition-all duration-300"
+                  title="Configuración"
+                >
                   <Settings className="h-5 w-5" />
                 </button>
-                <button className="relative p-2 text-white/70 hover:text-purple-400 hover:bg-white/10 rounded-lg transition-all duration-300">
+                <button 
+                  onClick={() => {
+                    if (isAuthenticated()) {
+                      // TODO: Abrir NotificationCenter dropdown o navegar a página de notificaciones
+                      handleNavigation('/notifications');
+                    } else {
+                      handleNavigation('/news');
+                    }
+                    logger.info('Notifications icon clicked');
+                  }}
+                  className="relative p-2 text-white/70 hover:text-purple-400 hover:bg-white/10 rounded-lg transition-all duration-300"
+                  title="Notificaciones"
+                >
                   <Bell className="h-5 w-5" />
                   <Badge className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1.5 bg-purple-500 text-white text-xs flex items-center justify-center rounded-full shadow-lg border-2 border-purple-600 z-10">
                     3
@@ -380,11 +417,23 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
               {/* Acciones Móviles */}
               <div className="pt-4 border-t border-white/10">
                 <div className="grid grid-cols-2 gap-2">
-                  <button className="flex items-center space-x-2 px-4 py-3 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300">
+                  <button 
+                    onClick={() => handleNavigation('/tokens')}
+                    className="flex items-center space-x-2 px-4 py-3 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300"
+                  >
                     <DollarSign className="h-5 w-5" />
                     <span>Tokens</span>
                   </button>
-                  <button className="flex items-center space-x-2 px-4 py-3 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300">
+                  <button 
+                    onClick={() => {
+                      if (isAuthenticated()) {
+                        handleNavigation('/settings');
+                      } else {
+                        handleNavigation('/info');
+                      }
+                    }}
+                    className="flex items-center space-x-2 px-4 py-3 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300"
+                  >
                     <Settings className="h-5 w-5" />
                     <span>Config</span>
                   </button>
