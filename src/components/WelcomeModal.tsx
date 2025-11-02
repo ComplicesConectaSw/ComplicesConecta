@@ -120,20 +120,20 @@ export const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
           isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
         }`}
       >
-        <Card className="w-full max-w-lg shadow-glow border-0 overflow-hidden relative">
+        <Card className="w-full max-w-lg shadow-glow border-0 overflow-hidden relative bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 border-purple-500/30">
           {/* Animated Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/5"></div>
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-accent to-secondary"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-900/90 via-purple-800/90 to-blue-900/90"></div>
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 via-blue-500 to-purple-500"></div>
           
           {/* Floating Elements */}
           <div className="absolute top-4 right-4 opacity-20">
-            <Sparkles className="w-6 h-6 text-accent animate-float" />
+            <Sparkles className="w-6 h-6 text-blue-400 animate-float" />
           </div>
           <div className="absolute bottom-4 left-4 opacity-15">
-            <Star className="w-5 h-5 text-primary animate-float" style={{ animationDelay: '0.5s' }} />
+            <Star className="w-5 h-5 text-purple-400 animate-float" style={{ animationDelay: '0.5s' }} />
           </div>
           <div className="absolute top-1/2 right-6 opacity-10">
-            <Zap className="w-4 h-4 text-secondary animate-float" style={{ animationDelay: '1s' }} />
+            <Zap className="w-4 h-4 text-blue-400 animate-float" style={{ animationDelay: '1s' }} />
           </div>
 
           {/* Close Button */}
@@ -148,8 +148,8 @@ export const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
 
           <CardContent className="p-8 text-center relative z-10">
             {/* Icon with Animation */}
-            <div className={`bg-gradient-to-r from-pink-500 to-purple-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse-glow`}>
-              <IconComponent className={`w-10 h-10 text-white`} />
+            <div className={`bg-gradient-to-r from-purple-600 to-blue-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse-glow shadow-lg shadow-purple-500/50`}>
+              <IconComponent className={`w-10 h-10 text-white drop-shadow-md`} />
             </div>
 
             {/* Special Badges */}
@@ -198,16 +198,16 @@ export const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
 
             {/* Content */}
             <div className="space-y-4 animate-slide-up">
-              <h2 className="text-2xl font-bold text-white">
+              <h2 className="text-2xl font-bold text-white drop-shadow-lg">
                 {currentStepData.title}
               </h2>
-              <h3 className="text-lg text-white font-medium">
+              <h3 className="text-lg text-white font-semibold drop-shadow-md">
                 {currentStepData.subtitle}
               </h3>
-              <p className="text-white/90 leading-relaxed">
+              <p className="text-white font-medium leading-relaxed drop-shadow-md">
                 {currentStepData.description}
                 {currentStep === 1 && (
-                  <span className="inline-flex items-center gap-1 ml-1 text-primary font-medium">
+                  <span className="inline-flex items-center gap-1 ml-1 text-purple-300 font-semibold drop-shadow-sm">
                     <HelpCircle className="w-4 h-4" />
                     FAQ
                   </span>
@@ -222,10 +222,10 @@ export const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
                   key={index}
                   className={`w-3 h-3 rounded-full transition-all duration-300 ${
                     index === currentStep 
-                      ? 'bg-primary scale-125' 
+                      ? 'bg-purple-500 scale-125 shadow-lg shadow-purple-500/50' 
                       : index < currentStep 
-                        ? 'bg-primary/60' 
-                        : 'bg-muted'
+                        ? 'bg-purple-400/80' 
+                        : 'bg-white/30'
                   }`}
                 />
               ))}
@@ -237,7 +237,7 @@ export const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
                 variant="default"
                 onClick={handlePrevious}
                 disabled={currentStep === 0}
-                className="flex-1 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white border-0"
+                className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold border-0 shadow-lg shadow-purple-500/30"
               >
                 Anterior
               </Button>
@@ -261,14 +261,14 @@ export const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
             {/* Skip Option */}
             <button
               onClick={handleClose}
-              className="text-sm text-white/70 hover:text-white transition-colors mt-4 underline"
+              className="text-sm text-white font-medium hover:text-purple-300 transition-colors mt-4 underline drop-shadow-sm"
             >
               Saltar introducción
             </button>
           </CardContent>
 
           {/* Animated Border Effect */}
-          <div className="absolute inset-0 border-2 border-transparent bg-gradient-to-r from-primary/20 via-accent/20 to-secondary/20 rounded-lg animate-pulse opacity-50"></div>
+          <div className="absolute inset-0 border-2 border-purple-500/30 bg-gradient-to-r from-purple-500/10 via-blue-500/10 to-purple-500/10 rounded-lg animate-pulse opacity-50"></div>
         </Card>
       </div>
     </div>
