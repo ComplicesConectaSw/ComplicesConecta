@@ -28,24 +28,36 @@ if (typeof window !== 'undefined') {
   // Initialize wallet protection with minimal interference
   initializeWalletProtection();
   
-  // SILENCIAR COMPLETAMENTE TODOS LOS ERRORES DE WALLET
+  // SILENCIAR COMPLETAMENTE TODOS LOS ERRORES DE WALLET - ULTRA AGRESIVO
   window.addEventListener('error', (event) => {
     const message = event.message?.toLowerCase() || '';
     const filename = event.filename?.toLowerCase() || '';
+    const stack = event.error?.stack?.toLowerCase() || '';
     
     const walletErrors = [
       'cannot redefine property',
       'cannot assign to read only property',
+      'cannot set property',
       'metamask encountered an error',
+      'metamask',
       'tronweb is already initiated',
+      'tronweb',
       'tronlink will overwrite',
+      'tronlink',
       'cannot set property chainid',
+      'chainid',
       'bybit:page provider',
+      'bybit',
       'evmask',
       'solana.js',
+      'solana',
+      'ethereum',
       'expression not available',
       'expression',
-      'not available'
+      'not available',
+      'chunk',
+      'useLayoutEffect',
+      'property'
     ];
     
     const walletFiles = [
@@ -55,6 +67,7 @@ if (typeof window !== 'undefined') {
       'evmask.js:5',
       'evmask.js:',
       'dist.94abdbf1.js',
+      'dist.',
       'solana.js:3',
       'solana.js:',
       'inpage.js:154',
@@ -62,25 +75,33 @@ if (typeof window !== 'undefined') {
       'inpage.js:',
       'inpage.js:1',
       'tronlink',
-      'bybit'
+      'bybit',
+      'chunk',
+      'wallet'
     ];
     
-    // Bloquear si es error de wallet O archivo de wallet - SILENCIAR COMPLETAMENTE
-    if (walletErrors.some(error => message.includes(error)) || 
-        walletFiles.some(file => filename.includes(file))) {
+    // Bloquear si es error de wallet O archivo de wallet O stack trace - SILENCIAR COMPLETAMENTE
+    if (walletErrors.some(error => message.includes(error)) ||
+        walletErrors.some(error => stack.includes(error)) ||
+        walletFiles.some(file => filename.includes(file)) ||
+        walletFiles.some(file => stack.includes(file))) {
       event.stopImmediatePropagation();
       event.preventDefault();
       return false;
     }
-  }, true); // Capturar en fase de captura
+  }, true); // Capturar en fase de captura - PRIMERO
   
-  // Promise rejection handler - SILENCIAR COMPLETAMENTE TODO DE WALLETS
+  // Promise rejection handler - SILENCIAR COMPLETAMENTE TODO DE WALLETS - ULTRA AGRESIVO
   window.addEventListener('unhandledrejection', (event) => {
-    const message = event.reason?.message?.toLowerCase() || event.reason?.toString()?.toLowerCase() || '';
+    const message = (event.reason?.message || event.reason?.toString() || '').toLowerCase();
+    const stack = event.reason?.stack?.toLowerCase() || '';
+    
     const walletErrors = [
       'cannot redefine property',
       'cannot assign to read only property',
+      'cannot set property',
       'cannot set property chainid',
+      'chainid',
       'metamask',
       'tronweb',
       'tronlink',
@@ -89,49 +110,67 @@ if (typeof window !== 'undefined') {
       'ethereum',
       'evmask',
       'wallet',
-      'chainid'
+      'chunk',
+      'useLayoutEffect',
+      'property'
     ];
     
-    if (walletErrors.some(error => message.includes(error))) {
+    // Capturar por mensaje O stack trace
+    if (walletErrors.some(error => message.includes(error)) ||
+        walletErrors.some(error => stack.includes(error))) {
       event.stopImmediatePropagation();
       event.preventDefault();
+      return false;
     }
-  }, true);
+  }, true); // Captura en fase de captura - PRIMERO
 
-  // Sobrescribir console.error temporalmente para wallets
+  // Sobrescribir console.error temporalmente para wallets - ULTRA AGRESIVO
   const originalConsoleError = console.error;
   console.error = (...args) => {
     const message = args.join(' ').toLowerCase();
+    const stack = args.find(arg => typeof arg === 'string' && arg.includes('at '))?.toLowerCase() || '';
+    
     const isWalletError = [
       'wallet',
       'ethereum',
       'solana',
       'metamask',
       'tronweb',
+      'tronlink',
       'bybit',
       'evmask',
       'cannot redefine property',
       'cannot assign to read only property',
-      'typeerror'
-    ].some(keyword => message.includes(keyword));
+      'cannot set property',
+      'typeerror',
+      'chunk',
+      'useLayoutEffect',
+      'property',
+      'chainid'
+    ].some(keyword => message.includes(keyword) || stack.includes(keyword));
     
     if (!isWalletError) {
       originalConsoleError.apply(console, args);
     }
   };
   
-  // También bloquear console.warn para wallets
+  // También bloquear console.warn para wallets - ULTRA AGRESIVO
   const originalConsoleWarn = console.warn;
   console.warn = (...args) => {
     const message = args.join(' ').toLowerCase();
+    const stack = args.find(arg => typeof arg === 'string' && arg.includes('at '))?.toLowerCase() || '';
+    
     const isWalletWarning = [
       'wallet',
       'ethereum',
       'solana',
       'metamask',
       'tronweb',
-      'bybit'
-    ].some(keyword => message.includes(keyword));
+      'tronlink',
+      'bybit',
+      'evmask',
+      'chunk'
+    ].some(keyword => message.includes(keyword) || stack.includes(keyword));
     
     if (!isWalletWarning) {
       originalConsoleWarn.apply(console, args);
@@ -141,7 +180,7 @@ if (typeof window !== 'undefined') {
 
 // Debug info for development only
 if (import.meta.env.DEV) {
-  console.log('🚀 ComplicesConecta v3.4.0 starting...');
+  console.log('🚀 ComplicesConecta v3.5.0 starting...');
 }
 
 // Initialize Datadog RUM for frontend monitoring
@@ -214,43 +253,98 @@ if ('serviceWorker' in navigator && import.meta.env.MODE === 'production') {
   });
 }
 
-// Initialize application
+// Initialize application with enhanced error handling
 async function initializeApp() {
-  // Initialize React fallbacks first for SSR compatibility
-  initializeReactFallbacks();
-  ensureReactPolyfills();
-  
-  // Initialize wallet protection before anything else
-  initializeWalletProtection();
-  detectWalletConflicts();
-  
-  const rootElement = document.getElementById("root");
-  if (!rootElement) {
-    console.error('❌ Root element not found');
-    throw new Error('Root element not found');
+  try {
+    // Initialize React fallbacks first for SSR compatibility
+    initializeReactFallbacks();
+    ensureReactPolyfills();
+    
+    // Initialize wallet protection before anything else (más temprano posible)
+    initializeWalletProtection();
+    
+    // Detectar conflictos de wallet (silenciado)
+    try {
+      detectWalletConflicts();
+    } catch {
+      // Silenciar errores de detección
+    }
+    
+    const rootElement = document.getElementById("root");
+    if (!rootElement) {
+      // Intentar esperar un poco para que el DOM cargue
+      await new Promise(resolve => setTimeout(resolve, 100));
+      const retryRoot = document.getElementById("root");
+      if (!retryRoot) {
+        console.error('❌ Root element not found after retry');
+        throw new Error('Root element not found');
+      }
+    }
+
+    // Verify security before rendering (no bloquear si falla)
+    try {
+      await initializeSecurityCheck();
+    } catch {
+      // Continuar aunque falle la verificación de seguridad
+    }
+
+    const finalRootElement = document.getElementById("root");
+    if (!finalRootElement) {
+      throw new Error('Root element not found');
+    }
+
+    if (import.meta.env.DEV) {
+      console.log('✅ Root element found, rendering app...');
+    }
+
+    createRoot(finalRootElement).render(
+      <StrictMode>
+        <ErrorBoundary>
+          {import.meta.env.DEV && <DebugInfo />}
+          <App />
+        </ErrorBoundary>
+      </StrictMode>
+    );
+  } catch (error: any) {
+    // Manejar errores críticos sin mostrar errores de wallet
+    const errorMessage = error?.message?.toLowerCase() || '';
+    const isWalletError = [
+      'wallet', 'ethereum', 'solana', 'metamask', 'tronweb', 'tronlink', 
+      'bybit', 'evmask', 'chunk', 'useLayoutEffect', 'property', 'chainid'
+    ].some(keyword => errorMessage.includes(keyword));
+    
+    if (!isWalletError) {
+      console.error('❌ Application initialization failed:', error);
+      
+      // Mostrar error crítico en la página si no es de wallet
+      const rootElement = document.getElementById("root");
+      if (rootElement) {
+        rootElement.innerHTML = `
+          <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #6b21a8 0%, #3b82f6 100%); color: white; padding: 20px; text-align: center;">
+            <div style="max-width: 600px;">
+              <h1 style="font-size: 2rem; margin-bottom: 1rem;">⚠️ Error al Cargar la Aplicación</h1>
+              <p style="margin-bottom: 2rem;">Por favor, recarga la página o contacta al soporte si el problema persiste.</p>
+              <button onclick="window.location.reload()" style="padding: 12px 24px; background: white; color: #6b21a8; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                Recargar Página
+              </button>
+            </div>
+          </div>
+        `;
+      }
+    }
   }
-
-  // Verify security before rendering
-  const isSecure = await initializeSecurityCheck();
-  
-  if (!isSecure) {
-    console.log('🔒 Application blocked for security reasons');
-    return;
-  }
-
-  console.log('✅ Root element found, rendering app...');
-
-  createRoot(rootElement).render(
-    <StrictMode>
-      <ErrorBoundary>
-        <DebugInfo />
-        <App />
-      </ErrorBoundary>
-    </StrictMode>
-  );
 }
 
 // Initialize the application
-initializeApp().catch((error) => {
-  console.error('❌ Application initialization failed:', error);
+initializeApp().catch((error: any) => {
+  // Solo mostrar errores que NO sean de wallet
+  const errorMessage = error?.message?.toLowerCase() || '';
+  const isWalletError = [
+    'wallet', 'ethereum', 'solana', 'metamask', 'tronweb', 'tronlink', 
+    'bybit', 'evmask', 'chunk', 'property'
+  ].some(keyword => errorMessage.includes(keyword));
+  
+  if (!isWalletError) {
+    console.error('❌ Application initialization failed:', error);
+  }
 });

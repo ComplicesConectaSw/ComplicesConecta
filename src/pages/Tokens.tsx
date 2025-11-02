@@ -13,6 +13,8 @@ import { TokenDashboard } from '@/components/tokens/TokenDashboard';
 import { StakingModal } from '@/components/tokens/StakingModal';
 import { TokenChatBot } from '@/components/tokens/TokenChatBot';
 import HeaderNav from '@/components/HeaderNav';
+import Navigation from '@/components/Navigation';
+import { useAuth } from '@/hooks/useAuth';
 import { DecorativeHearts } from '@/components/DecorativeHearts';
 import { motion } from 'framer-motion';
 import { AnimatedButton } from '@/components/ui/AnimatedButton';
@@ -32,7 +34,7 @@ export default function Tokens() {
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 pb-20">
-      <HeaderNav />
+      {hasActiveSession ? <Navigation /> : <HeaderNav />}
       {/* Corazones decorativos flotantes */}
       <DecorativeHearts count={6} />
       {/* Background Uniforme - Sin múltiples formas */}

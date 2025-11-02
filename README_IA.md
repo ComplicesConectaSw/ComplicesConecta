@@ -14,6 +14,9 @@
   - **v3.5.0**: `feature/refactoring-*` → Consolidación código + CSS ✅
   - **v3.5.0**: `fix/react-chunks-*` → Corrección React en producción ✅
   - **v3.5.0**: `feature/chat-privacy-*` → ChatRoom + MessageList + ChatPrivacyService ✅
+  - **v3.5.0**: `fix/wallet-errors-*` → Silenciamiento ultra agresivo de errores wallet ✅
+  - **v3.5.0**: `fix/ui-visibility-*` → Correcciones de textos invisibles y colores rosa ✅
+  - **v3.5.0**: `fix/navigation-conditional-*` → Navegación condicional HeaderNav/Navigation ✅
 
 2. **SQL y Backups**
    - Todos los `.sql` y migraciones quedan excluidos en `.gitignore`
@@ -39,8 +42,13 @@
    - **v3.4.0**: Monitoreo continuo de amenazas y moderación automática
    - **v3.4.1**: Documentación consolidada en 4 archivos maestros + eliminación de redundantes
    - **NUEVO v3.5.0**: Documentación consolidada en 1 archivo maestro (`DOCUMENTACION_MAESTRA_v3.5.0.md`)
-   - **v3.5.0**: React chunks corregidos (vendor bundle principal)
-   - **v3.5.0**: Tests y servicios corregidos (0 errores linting)
+  - **v3.5.0**: React chunks corregidos (vendor bundle principal)
+  - **v3.5.0**: Tests y servicios corregidos (0 errores linting)
+  - **v3.5.0**: Wallet errors silenciados ultra agresivo (captura por mensaje, archivo, stack)
+  - **v3.5.0**: React polyfills mejorados (todos los hooks disponibles globalmente)
+  - **v3.5.0**: Correcciones UI (botón "Todas", textos invisibles en TokenChatBot)
+  - **v3.5.0**: Navegación condicional (HeaderNav/Navigation según autenticación)
+  - **v3.5.0**: Documentación interna de tokens solo para usuarios autenticados
 
 5. **AI/ML Strategy v3.5.0** 🆕
    - **PyTorch/TensorFlow.js**: Modelos pre-entrenados para compatibility scoring

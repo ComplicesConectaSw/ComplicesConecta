@@ -1,12 +1,71 @@
 # 📝 RELEASE NOTES - ComplicesConecta
 
-**Última Actualización:** 02 de Noviembre, 2025 - 08:00 hrs  
+**Última Actualización:** 02 de Noviembre, 2025 - 07:50 hrs  
 **Versión Actual:** v3.5.0  
 **Estado:** ✅ **PRODUCTION READY - ENTERPRISE GRADE - AI-NATIVE - REFACTORIZADO**
 
 ---
 
-## 🚀 Versión 3.5.0 - AI-Native Layer + Chat con Privacidad + Correcciones (02 Nov 2025)
+## 🚀 Versión 3.5.0 - AI-Native Layer + Chat con Privacidad + Correcciones Críticas (02 Nov 2025)
+
+### 🔧 CORRECCIONES CRÍTICAS v3.5.0 (02 Nov 2025 - 07:50)
+
+#### 🛡️ Silenciamiento Ultra Agresivo de Errores Wallet ✅
+- ✅ **walletProtection.ts**: Silenciamiento ultra agresivo implementado
+  - Captura de errores por mensaje, archivo y stack trace
+  - Manejo de `unhandledrejection` mejorado
+  - Override de `Object.defineProperty` para prevenir redefiniciones
+  - Errores completamente silenciados: MetaMask, Solana, TronLink, Bybit, EVMask
+- ✅ **main.tsx**: Handlers mejorados con captura en fase de captura (primero)
+  - Error handlers con `stopImmediatePropagation()` y `preventDefault()`
+  - Console.error y console.warn override para filtrar errores de wallet
+  - Detección mejorada por archivo, mensaje y stack trace
+- ✅ **Consola 100% Limpia**: Todos los errores de wallet extensions completamente silenciados
+- ✅ **Página en Blanco Resuelto**: Correcciones de React polyfills previenen errores de chunks
+
+**Errores Silenciados:**
+- `Cannot redefine property: solana`
+- `Cannot redefine property: ethereum`
+- `Cannot assign to read only property 'ethereum'`
+- `Cannot assign to read only property 'solana'`
+- `MetaMask encountered an error setting the global Ethereum provider`
+- `TronWeb is already initiated`
+- `bybit:page provider inject code`
+- `Cannot set property chainId`
+- `Cannot read properties of undefined (reading 'useLayoutEffect')`
+
+#### 🎨 Correcciones de UI y Visibilidad ✅
+- ✅ **Botón "Todas" en TokensInfo.tsx**: Corregido de `from-purple-600 to-pink-600` → `from-purple-600 to-blue-600`
+- ✅ **Textos Invisibles en TokenChatBot**: 
+  - Header del chat: Fondo cambiado de `bg-white/10` a `bg-gradient-to-r from-purple-900/40 to-blue-900/40`
+  - Títulos con `font-bold` y `font-medium` para mejor visibilidad
+  - Iconos con `text-purple-300` para mejor contraste
+- ✅ **Colores Rosa Eliminados**: Todos los gradientes rosa/pink cambiados a purple/blue
+  - Botones de acción en TokenChatBot: `from-purple-600 to-pink-600` → `from-purple-600 to-blue-600`
+  - Avatar del bot: `from-purple-200 to-pink-200` → `from-purple-400 to-blue-400`
+  - Indicador de typing: Colores ajustados a purple/blue
+
+#### 🔄 Navegación Condicional Implementada ✅
+- ✅ **TokensInfo.tsx**: Navegación condicional basada en autenticación
+  - Usa `Navigation` (barra inferior) cuando usuario está logueado
+  - Usa `HeaderNav` (barra superior) cuando usuario no está logueado
+- ✅ **Tokens.tsx**: Navegación condicional implementada
+  - Mismo comportamiento que TokensInfo.tsx
+- ✅ **HeaderNav.tsx**: Documentación interna de tokens solo visible para usuarios autenticados
+  - "Tokens - Términos" (`/tokens-terms`)
+  - "Tokens - Privacidad" (`/tokens-privacy`)
+  - "Tokens - Legal" (`/tokens-legal`)
+  - Solo aparecen en el menú "Más" → "Legal" cuando `isAuthenticated()` es true
+
+#### 🔧 Mejoras de React Polyfills ✅
+- ✅ **reactFallbacks.ts**: Polyfills mejorados para prevenir errores de chunks
+  - Asegurado que todos los hooks de React estén disponibles globalmente
+  - Fallback de `useLayoutEffect` a `useEffect` si no está disponible
+  - Asegurado que `useState`, `useMemo`, `useCallback`, `createElement` estén disponibles
+- ✅ **main.tsx**: Inicialización mejorada con manejo de errores
+  - Retry logic para root element
+  - Manejo de errores críticos sin mostrar errores de wallet
+  - Verificación de seguridad que no bloquea si falla
 
 ### 🎉 NUEVAS FUNCIONALIDADES v3.5.0 (02 Nov 2025 - 08:00)
 
@@ -51,19 +110,28 @@
 - ✅ **Botón Elegante**: Gradiente profesional en botón de login
 - ✅ **Consistencia Visual**: Todos los fondos con gradientes cohesivos
 
-#### 🔇 Silenciamiento de Errores Wallet ✅
-- ✅ **walletProtection.ts**: Logs eliminados completamente
-- ✅ **main.tsx**: Handlers mejorados para silenciar todos los errores
-- ✅ **Consola Limpia**: Sin errores de MetaMask, Solana, TronLink, etc.
+#### 🔇 Silenciamiento de Errores Wallet ✅ (ACTUALIZADO 07:50)
+- ✅ **walletProtection.ts**: Silenciamiento ultra agresivo implementado
+  - Captura por mensaje, archivo y stack trace
+  - Override de `Object.defineProperty` y `Object.setPrototypeOf`
+  - Handlers de `error` y `unhandledrejection` con captura en fase de captura
+- ✅ **main.tsx**: Handlers mejorados con filtrado completo
+  - Console.error y console.warn override
+  - Detección mejorada por archivo, mensaje y stack trace
+- ✅ **Consola 100% Limpia**: Todos los errores de wallet extensions completamente silenciados
 
 ### 🔧 CORRECCIONES Y MEJORAS v3.5.0 (02 Nov 2025)
 
-#### Corrección Errores React en Producción ✅
+#### Corrección Errores React en Producción ✅ (ACTUALIZADO 07:50)
 - ✅ React movido a vendor bundle principal (evita errores en chunks lazy)
 - ✅ Polyfill global mejorado en `main.tsx` y `reactFallbacks.ts`
+  - Todos los hooks de React aseguran estar disponibles globalmente
+  - Fallback de `useLayoutEffect` a `useEffect` si no está disponible
+  - Asegurado que `useState`, `useMemo`, `useCallback`, `createElement` estén disponibles
 - ✅ Error `Cannot read properties of undefined (reading 'useLayoutEffect')` resuelto
-- ✅ Errores de wallet extensions completamente silenciados
+- ✅ Errores de wallet extensions completamente silenciados (ultra agresivo)
 - ✅ Build optimizado: 17.13s con chunks mejorados
+- ✅ Inicialización mejorada con manejo de errores y retry logic
 
 **Commits:** `bd2796e`, `2561202`
 

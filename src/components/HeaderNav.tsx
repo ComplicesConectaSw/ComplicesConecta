@@ -20,7 +20,8 @@ import {
   Lock,
   Crown,
   ChevronDown,
-  MoreHorizontal
+  MoreHorizontal,
+  Scale
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -83,7 +84,13 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
     { name: 'Términos', path: '/terms', icon: FileText, category: 'Legal' },
     { name: 'Privacidad', path: '/privacy', icon: Lock, category: 'Legal' },
     { name: 'Seguridad', path: '/security', icon: Shield, category: 'Legal' },
-    { name: 'Proyecto', path: '/project-info', icon: FileText, category: 'Legal' }
+    { name: 'Proyecto', path: '/project-info', icon: FileText, category: 'Legal' },
+    // Documentación interna de tokens - Solo para usuarios autenticados
+    ...(isAuthenticated() ? [
+      { name: 'Tokens - Términos', path: '/tokens-terms', icon: FileText, category: 'Legal' },
+      { name: 'Tokens - Privacidad', path: '/tokens-privacy', icon: Lock, category: 'Legal' },
+      { name: 'Tokens - Legal', path: '/tokens-legal', icon: Scale, category: 'Legal' }
+    ] : [])
   ];
 
   const isActive = (path: string) => {

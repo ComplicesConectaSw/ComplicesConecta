@@ -395,12 +395,12 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
 
   return (
     <Card className="token-chatbox w-full max-w-2xl mx-auto h-[600px] flex flex-col">
-      <CardHeader className="border-b border-white/20 bg-white/10 backdrop-filter backdrop-blur-md flex-shrink-0">
-        <CardTitle className="flex items-center gap-2 text-white">
-          <Bot className="h-5 w-5 text-white" />
+      <CardHeader className="border-b border-white/20 bg-gradient-to-r from-purple-900/40 to-blue-900/40 backdrop-filter backdrop-blur-md flex-shrink-0">
+        <CardTitle className="flex items-center gap-2 text-white font-bold">
+          <Bot className="h-5 w-5 text-purple-300" />
           🤖 Asistente de Tokens CMPX/GTK
         </CardTitle>
-        <p className="text-sm text-white/90">
+        <p className="text-sm text-white font-medium">
           Tu guía personal para tokens en fase Beta
         </p>
       </CardHeader>
@@ -417,8 +417,8 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
               )}
             >
               {message.type === 'bot' && (
-                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-200 to-pink-200 flex items-center justify-center flex-shrink-0 shadow-sm">
-                  <Bot className="h-4 w-4 text-purple-600" />
+                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-400 to-blue-400 flex items-center justify-center flex-shrink-0 shadow-sm">
+                  <Bot className="h-4 w-4 text-white" />
                 </div>
               )}
               
@@ -471,14 +471,14 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
           
           {isTyping && (
             <div className="flex gap-3 justify-start">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-200 to-pink-200 flex items-center justify-center flex-shrink-0 shadow-sm">
-                <Bot className="h-4 w-4 text-purple-700" />
+              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-400 to-blue-400 flex items-center justify-center flex-shrink-0 shadow-sm">
+                <Bot className="h-4 w-4 text-white" />
               </div>
-              <div className="bg-gradient-to-r from-purple-100 to-pink-100 border border-purple-300 rounded-lg p-3 shadow-sm">
+              <div className="bg-gradient-to-r from-purple-800/40 to-blue-800/40 border border-purple-400/50 rounded-lg p-3 shadow-sm">
                 <div className="flex space-x-1">
-                  <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce"></div>
-                  <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                  <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                  <div className="w-2 h-2 bg-purple-300 rounded-full animate-bounce"></div>
+                  <div className="w-2 h-2 bg-blue-300 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                  <div className="w-2 h-2 bg-purple-300 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                 </div>
               </div>
             </div>
@@ -502,7 +502,7 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
               onClick={handleSendMessage}
               disabled={!userInput.trim() || isTyping}
               size="sm"
-              className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0"
+              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0"
             >
               <Send className="h-4 w-4" />
             </Button>
