@@ -147,7 +147,7 @@ VITE_AI_PREDICTION_TIMEOUT=3000
 VITE_AI_CACHE_TTL=1800000
 VITE_AI_CHAT_SUMMARIES_ENABLED=true
 VITE_AI_SUMMARY_PROVIDER=auto
-VITE_OPENAI_API_KEY=sk-proj-xxxxx  # Opcional (pago)
+VITE_OPENAI_API_KEY=sk-proj-xxxxx  # Configurada en .env.local (no commitear)
 VITE_HUGGINGFACE_API_KEY=hf_xxxxx  # Recomendado (gratis)
 ```
 

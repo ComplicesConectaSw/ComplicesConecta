@@ -37,6 +37,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 const ProfileSingle: React.FC = () => {
   const navigate = useNavigate();
   const { user, profile: authProfile, isAuthenticated } = useAuth();
+  
+  // Función helper para verificar autenticación
+  const checkAuth = () => {
+    return typeof isAuthenticated === 'function' ? isAuthenticated() : !!isAuthenticated;
+  };
   const [profile, setProfile] = useState<Database['public']['Tables']['profiles']['Row'] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showPrivateImageRequest, setShowPrivateImageRequest] = useState(false);
@@ -288,25 +293,36 @@ const ProfileSingle: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-blue-800 profile-page">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 profile-page relative overflow-hidden">
+      {/* Background decorativo */}
+      <div className="fixed inset-0 z-0 bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900">
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-purple-500/10 via-transparent to-blue-500/10"></div>
+        </div>
+      </div>
+      
       {/* Navegación superior */}
       <Navigation />
       
       {/* Header con navegación */}
-      <div className="relative">
-        <div className="absolute inset-0 bg-black/20" />
-        <div className="relative z-10 pt-8 pb-6 px-4">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold text-white mb-2">
+      <div className="relative z-10">
+        <div className="pt-20 pb-6 px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2 drop-shadow-lg">
               Mi Perfil - {profile.name}
             </h1>
+            {checkAuth() && (
+              <p className="text-white/80 text-sm sm:text-base">
+                Logueado como: {user?.email || 'Usuario'}
+              </p>
+            )}
           </div>
         </div>
       </div>
 
       {/* Contenido principal con scroll personalizado */}
-      <div className="relative z-10 pb-20 px-2 sm:px-4 max-h-[calc(100vh-140px)] overflow-y-auto custom-scrollbar">
-        <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6">
+      <div className="relative z-10 pb-20 px-2 sm:px-4 overflow-y-auto custom-scrollbar">
+        <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6 py-4">
           {/* Información principal del perfil */}
           <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
             <CardContent className="p-4 sm:p-6">

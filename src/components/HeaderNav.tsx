@@ -42,7 +42,7 @@ interface HeaderNavProps {
 export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user: _user, isAuthenticated: _isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -252,15 +252,65 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                 </button>
               </div>
 
-              {/* Botón de Login */}
-              <Button
-                onClick={handleLogin}
-                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold px-3 sm:px-6 py-2 sm:py-3 rounded-xl shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:shadow-purple-500/50 hover:scale-105 sm:hover:scale-110 min-w-[100px] sm:min-w-[140px] border-2 border-purple-400 flex items-center justify-center"
-              >
-                <User className="h-4 w-4 sm:h-5 sm:w-5 sm:mr-2 flex-shrink-0" />
-                <span className="hidden sm:inline text-sm sm:text-base">Iniciar Sesión</span>
-                <span className="sm:hidden text-xs">Login</span>
-              </Button>
+              {/* Botón de Login/Perfil - Muestra estado de autenticación */}
+              {isAuthenticated() ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold px-3 sm:px-6 py-2 sm:py-3 rounded-xl shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:shadow-purple-500/50 hover:scale-105 sm:hover:scale-110 min-w-[100px] sm:min-w-[140px] border-2 border-purple-400 flex items-center justify-center"
+                    >
+                      <User className="h-4 w-4 sm:h-5 sm:w-5 sm:mr-2 flex-shrink-0" />
+                      <span className="hidden sm:inline text-sm sm:text-base truncate max-w-[120px]">
+                        {user?.email?.split('@')[0] || 'Perfil'}
+                      </span>
+                      <span className="sm:hidden text-xs">Perfil</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="bg-purple-900/95 backdrop-blur-xl border-purple-500/30 text-white w-56">
+                    <DropdownMenuLabel className="text-white font-semibold">
+                      {user?.email || 'Usuario'}
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator className="bg-purple-500/30" />
+                    <DropdownMenuItem 
+                      onClick={() => navigate('/profile')}
+                      className="text-white hover:bg-purple-700/50 cursor-pointer"
+                    >
+                      <User className="h-4 w-4 mr-2" />
+                      Mi Perfil
+                    </DropdownMenuItem>
+                    <DropdownMenuItem 
+                      onClick={() => navigate('/settings')}
+                      className="text-white hover:bg-purple-700/50 cursor-pointer"
+                    >
+                      <Settings className="h-4 w-4 mr-2" />
+                      Configuración
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator className="bg-purple-500/30" />
+                    <DropdownMenuItem 
+                      onClick={() => {
+                        localStorage.removeItem('demo_authenticated');
+                        localStorage.removeItem('demo_user');
+                        localStorage.removeItem('userType');
+                        sessionStorage.clear();
+                        navigate('/auth', { replace: true });
+                        window.location.reload();
+                      }}
+                      className="text-red-300 hover:bg-red-900/50 cursor-pointer"
+                    >
+                      Cerrar Sesión
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Button
+                  onClick={handleLogin}
+                  className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold px-3 sm:px-6 py-2 sm:py-3 rounded-xl shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:shadow-purple-500/50 hover:scale-105 sm:hover:scale-110 min-w-[100px] sm:min-w-[140px] border-2 border-purple-400 flex items-center justify-center"
+                >
+                  <User className="h-4 w-4 sm:h-5 sm:w-5 sm:mr-2 flex-shrink-0" />
+                  <span className="hidden sm:inline text-sm sm:text-base">Iniciar Sesión</span>
+                  <span className="sm:hidden text-xs">Login</span>
+                </Button>
+              )}
 
               {/* Botón Menú Móvil */}
               <button
