@@ -38,7 +38,10 @@ if (typeof window !== 'undefined') {
       'cannot set property chainid',
       'bybit:page provider',
       'evmask',
-      'solana.js'
+      'solana.js',
+      'expression not available',
+      'expression',
+      'not available'
     ];
     
     const walletFiles = [

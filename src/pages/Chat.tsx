@@ -517,9 +517,9 @@ const Chat = () => {
                               {chat.name}
                               <Lock className="h-3 w-3 text-purple-300" />
                             </h3>
-                            <span className="text-xs text-white/60">{chat.timestamp}</span>
+                            <span className="text-xs text-white/90 font-medium">{chat.timestamp}</span>
                           </div>
-                          <p className="text-sm text-white/70 truncate">{chat.lastMessage}</p>
+                          <p className="text-sm text-white/90 truncate font-medium">{chat.lastMessage}</p>
                         </div>
                         {chat.unreadCount > 0 && (
                           <div className="bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
@@ -570,9 +570,9 @@ const Chat = () => {
                               {chat.name}
                               <Globe className="h-3 w-3 text-green-300" />
                             </h3>
-                            <span className="text-xs text-white/60">{chat.timestamp}</span>
+                            <span className="text-xs text-white/90 font-medium">{chat.timestamp}</span>
                           </div>
-                          <p className="text-sm text-white/70 truncate">{chat.lastMessage}</p>
+                          <p className="text-sm text-white/90 truncate font-medium">{chat.lastMessage}</p>
                         </div>
                         {chat.unreadCount > 0 && (
                           <div className="bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">

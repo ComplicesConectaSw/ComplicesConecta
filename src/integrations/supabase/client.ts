@@ -7,10 +7,16 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 // Validar que las variables de entorno estén configuradas
-if (!supabaseUrl || !supabaseAnonKey || supabaseUrl.includes('your-supabase-url-here') || supabaseAnonKey.includes('your-supabase-anon-key-here')) {
-  logger.warn('⚠️ Variables de Supabase usando valores placeholder - activando modo demo', {});
-  logger.info('VITE_SUPABASE_URL:', { status: supabaseUrl ? '✅ Configurada' : '❌ Faltante' });
-  logger.info('VITE_SUPABASE_ANON_KEY:', { status: supabaseAnonKey ? '✅ Configurada' : '❌ Faltante' });
+const isPlaceholderUrl = !supabaseUrl || supabaseUrl.includes('your-supabase-url-here') || supabaseUrl.includes('placeholder');
+const isPlaceholderKey = !supabaseAnonKey || supabaseAnonKey.includes('your-supabase-anon-key-here') || supabaseAnonKey.includes('placeholder-key');
+
+if (isPlaceholderUrl || isPlaceholderKey) {
+  logger.warn('⚠️ Variables de Supabase usando valores placeholder - activando modo demo', {
+    urlConfigured: !isPlaceholderUrl,
+    keyConfigured: !isPlaceholderKey
+  });
+  logger.info('VITE_SUPABASE_URL:', { status: supabaseUrl && !isPlaceholderUrl ? '✅ Configurada' : '❌ Faltante/Placeholder' });
+  logger.info('VITE_SUPABASE_ANON_KEY:', { status: supabaseAnonKey && !isPlaceholderKey ? '✅ Configurada' : '❌ Faltante/Placeholder' });
   // No lanzar error, permitir modo demo
 }
 
@@ -27,9 +33,17 @@ function getSupabaseClient(): SupabaseClient<Database> {
   }
 
   logger.info('🆕 Creando nueva instancia de Supabase', {});
+  // Validar credenciales antes de crear cliente
+  const finalUrl = (supabaseUrl && !supabaseUrl.includes('placeholder') && !supabaseUrl.includes('your-supabase-url-here')) 
+    ? supabaseUrl 
+    : 'https://placeholder.supabase.co';
+  const finalKey = (supabaseAnonKey && !supabaseAnonKey.includes('placeholder-key') && !supabaseAnonKey.includes('your-supabase-anon-key-here')) 
+    ? supabaseAnonKey 
+    : 'placeholder-key';
+  
   supabaseInstance = createClient<Database>(
-  supabaseUrl || 'https://placeholder.supabase.co', 
-  supabaseAnonKey || 'placeholder-key', 
+  finalUrl, 
+  finalKey, 
   {
     auth: {
       persistSession: true,

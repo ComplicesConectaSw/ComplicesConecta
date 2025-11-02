@@ -49,7 +49,7 @@ const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { getCurrentLocation: _getCurrentLocation, location: _location, isLoading: _locationLoading, error: _locationError } = useGeolocation();
-  const { user: _user, session: _session, profile: _profile, loading: _loading, signIn: _signIn, signOut: _signOut, isAdmin: _isAdmin, isDemo: _isDemo, getProfileType: _getProfileType, shouldUseProductionAdmin: _shouldUseProductionAdmin, appMode: _appMode } = useAuth();
+  const { user: _user, session: _session, profile: _profile, loading: _loading, signIn, signOut: _signOut, isAdmin: _isAdmin, isDemo: _isDemo, getProfileType: _getProfileType, shouldUseProductionAdmin: _shouldUseProductionAdmin, appMode: _appMode } = useAuth();
   
   // Estado persistente para autenticación demo
   const [_demoUser, _setDemoUser] = usePersistedState<any>('demo_user', null);
@@ -146,29 +146,60 @@ const Auth = () => {
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setShowLoginLoading(true);
 
     try {
-      const { data: _data, error } = await supabase.auth.signInWithPassword({
-        email: formData.email,
-        password: formData.password,
-      });
+      // Usar el método signIn del hook useAuth que maneja correctamente demo y producción
+      const result = await signIn(formData.email, formData.password, formData.accountType || 'single');
 
-      if (error) throw error;
+      if (result && result.user) {
+        toast({
+          title: "Inicio de sesión exitoso",
+          description: "Bienvenido de vuelta a ComplicesConecta",
+        });
 
-      toast({
-        title: "Inicio de sesión exitoso",
-        description: "Bienvenido de vuelta",
-      });
+        // Redirigir según el tipo de cuenta
+        const accountType = result.user.user_metadata?.account_type || 
+                           result.user.user_metadata?.accountType || 
+                           formData.accountType || 
+                           'single';
 
-      navigate('/feed');
+        setTimeout(() => {
+          if (accountType === 'couple') {
+            navigate('/profile-couple');
+          } else {
+            navigate('/profile-single');
+          }
+        }, 1500);
+      } else {
+        throw new Error('No se recibieron datos de usuario');
+      }
     } catch (error: any) {
+      // Mejorar mensajes de error
+      let errorMessage = 'Error al iniciar sesión';
+      
+      if (error?.message) {
+        if (error.message.includes('Invalid API key')) {
+          errorMessage = 'Error de configuración. Por favor, contacta al soporte.';
+        } else if (error.message.includes('Invalid login credentials') || error.message.includes('Invalid credentials')) {
+          errorMessage = 'Correo electrónico o contraseña incorrectos';
+        } else if (error.message.includes('Email not confirmed')) {
+          errorMessage = 'Por favor, confirma tu correo electrónico antes de iniciar sesión';
+        } else if (error.message.includes('User not found')) {
+          errorMessage = 'Usuario no encontrado. Verifica tu correo electrónico';
+        } else {
+          errorMessage = error.message;
+        }
+      }
+
       toast({
         variant: "destructive",
         title: "Error al iniciar sesión",
-        description: error.message,
+        description: errorMessage,
       });
     } finally {
       setIsLoading(false);
+      setShowLoginLoading(false);
     }
   };
 
@@ -302,22 +333,22 @@ const Auth = () => {
               </Button>
             </div>
             <CardTitle className="text-2xl font-bold text-white">ComplicesConecta</CardTitle>
-            <CardDescription className="text-white/70">
-              Conecta con personas afines en un entorno seguro
+            <CardDescription className="text-white/90 font-medium">
+              Conecta con personas afines en un entorno seguro y discreto
             </CardDescription>
             
             <div className="flex justify-center space-x-8 mt-6 mb-4">
               <div className="text-center">
                 <Shield className="h-6 w-6 text-green-400 mx-auto mb-1" />
-                <p className="text-xs text-white">Seguro</p>
+                <p className="text-xs text-white font-medium">Seguro</p>
               </div>
               <div className="text-center">
                 <Users className="h-6 w-6 text-blue-400 mx-auto mb-1" />
-                <p className="text-xs text-white">Comunidad</p>
+                <p className="text-xs text-white font-medium">Comunidad</p>
               </div>
               <div className="text-center">
                 <Sparkles className="h-6 w-6 text-pink-400 mx-auto mb-1" />
-                <p className="text-xs text-white">IA Match</p>
+                <p className="text-xs text-white font-medium">IA Match</p>
               </div>
             </div>
           </CardHeader>
