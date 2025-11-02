@@ -105,6 +105,8 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
   const [loading, setLoading] = useState(true);
   const [isDemoMode, setIsDemoMode] = useState(false);
   const [_privateAccessRequests, _setPrivateAccessRequests] = useState<any[]>([]);
+  const [imagesPerPage] = useState(12); // Mostrar 12 imágenes por página
+  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     checkModeAndLoadImages();
