@@ -120,29 +120,42 @@ const Index = () => {
 
   const handleLoadingComplete = () => {
     setIsLoading(false);
-    // Mostrar modal de bienvenida si es la primera visita
-    // Verificar hasVisited después de que el loading complete
-    const visited = localStorage.getItem('hasVisitedComplicesConecta') === 'true';
-    const demoAuth = localStorage.getItem('demo_authenticated') === 'true';
-    const isAuth = isAuthenticated();
-    
-    logger.info('🔍 Verificando condiciones para modal de bienvenida:', {
-      hasVisited: visited,
-      demoAuthenticated: demoAuth,
-      isAuthenticated: isAuth
-    });
-    
-    if (!visited && !demoAuth && !isAuth) {
-      logger.info('✅ Mostrando modal de bienvenida');
-      setTimeout(() => {
-        setShowWelcome(true);
-      }, 1000);
-    } else {
-      logger.info('❌ Modal de bienvenida no se mostrará:', {
-        reason: visited ? 'Ya visitó' : demoAuth ? 'Demo activo' : 'Autenticado'
-      });
-    }
   };
+  
+  // Efecto para mostrar modal de bienvenida en primera visita
+  useEffect(() => {
+    // Esperar a que termine el loading y luego verificar
+    if (!isLoading) {
+      const checkAndShowWelcome = () => {
+        const visited = localStorage.getItem('hasVisitedComplicesConecta') === 'true';
+        const demoAuth = localStorage.getItem('demo_authenticated') === 'true';
+        const isAuth = isAuthenticated();
+        
+        logger.info('🔍 Verificando condiciones para modal de bienvenida:', {
+          hasVisited: visited,
+          demoAuthenticated: demoAuth,
+          isAuthenticated: isAuth,
+          showWelcome: showWelcome
+        });
+        
+        // Solo mostrar si no se ha visitado, no hay demo activo, no está autenticado y el modal no está ya visible
+        if (!visited && !demoAuth && !isAuth && !showWelcome) {
+          logger.info('✅ Mostrando modal de bienvenida - Primera visita');
+          setTimeout(() => {
+            setShowWelcome(true);
+          }, 1200);
+        } else {
+          logger.info('❌ Modal de bienvenida no se mostrará:', {
+            reason: visited ? 'Ya visitó' : demoAuth ? 'Demo activo' : isAuth ? 'Autenticado' : 'Ya mostrado'
+          });
+        }
+      };
+      
+      // Ejecutar después de un pequeño delay para asegurar que el DOM esté listo
+      const timer = setTimeout(checkAndShowWelcome, 800);
+      return () => clearTimeout(timer);
+    }
+  }, [isLoading, showWelcome, isAuthenticated]);
 
   const handleWelcomeClose = () => {
     setShowWelcome(false);
