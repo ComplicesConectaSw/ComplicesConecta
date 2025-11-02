@@ -125,11 +125,11 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
 
   return (
     <>
-      {/* Header Principal */}
+      {/* Header Principal con gradiente difuminado */}
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled 
-          ? 'bg-gradient-to-r from-purple-950/95 via-purple-950/95 to-purple-950/95 backdrop-blur-md border-b border-purple-500/30' 
-          : 'bg-gradient-to-r from-purple-950/98 via-purple-950/98 to-purple-950/98 backdrop-blur-sm border-b border-purple-400/40'
+          ? 'bg-gradient-to-b from-purple-900/90 via-purple-800/85 to-transparent backdrop-blur-md border-b border-purple-500/20' 
+          : 'bg-gradient-to-b from-purple-900/95 via-purple-800/90 to-purple-700/80 backdrop-blur-sm border-b border-purple-400/30'
       } ${className}`}>
         
         {/* Contenedor Principal */}
@@ -142,11 +142,24 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                 onClick={() => handleNavigation('/')}
                 className="flex items-center space-x-3 group transition-all duration-300 hover:scale-110"
               >
-                <div className="relative">
-                  <Heart className="h-8 w-8 text-purple-400 group-hover:text-purple-300 transition-colors duration-300" fill="currentColor" />
-                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-purple-500 rounded-full animate-pulse"></div>
+                <div className="relative animate-heart-float">
+                  <Heart 
+                    className="h-8 w-8 text-purple-400 group-hover:text-purple-300 transition-all duration-300 animate-heart-beat" 
+                    fill="currentColor" 
+                    style={{
+                      filter: 'drop-shadow(0 0 10px rgba(168, 85, 247, 0.6))',
+                      animation: 'heartBeat 1.5s ease-in-out infinite, heartGlow 2s ease-in-out infinite'
+                    }}
+                  />
+                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-purple-500 rounded-full animate-pulse shadow-lg shadow-purple-500/50"></div>
+                  {/* Partículas flotantes */}
+                  <div className="absolute inset-0 pointer-events-none">
+                    <div className="absolute top-0 left-0 w-1 h-1 bg-purple-300 rounded-full animate-particle-1"></div>
+                    <div className="absolute top-1 right-0 w-1 h-1 bg-blue-300 rounded-full animate-particle-2"></div>
+                    <div className="absolute bottom-0 left-1 w-1 h-1 bg-purple-400 rounded-full animate-particle-3"></div>
+                  </div>
                 </div>
-                <span className="text-white font-black text-xl lg:text-2xl hidden sm:block bg-gradient-to-r from-purple-300 to-blue-300 bg-clip-text text-transparent">
+                <span className="text-white font-black text-xl lg:text-2xl hidden sm:block bg-gradient-to-r from-purple-300 via-pink-300 to-blue-300 bg-clip-text text-transparent animate-gradient-x">
                   ComplicesConecta
                 </span>
               </button>
