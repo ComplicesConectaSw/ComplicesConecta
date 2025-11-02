@@ -83,7 +83,7 @@ const Info = () => {
                 Información
               </h1>
             </div>
-            <p className="text-xl text-white/90 max-w-3xl mx-auto">
+            <p className="text-xl text-white font-medium max-w-3xl mx-auto drop-shadow-lg">
               Conoce más sobre ComplicesConecta, la plataforma social más exclusiva y segura para la comunidad swinger en México
             </p>
           </div>
@@ -92,10 +92,10 @@ const Info = () => {
           <section className="mb-16">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {stats.map((stat, index) => (
-                <Card key={index} className="bg-card/80 backdrop-blur-sm border border-primary/10 text-center">
+                <Card key={index} className="bg-purple-800/90 backdrop-blur-sm border border-purple-500/30 text-center shadow-lg">
                   <CardContent className="p-6">
-                    <div className="text-3xl font-bold text-white mb-2">{stat.number}</div>
-                    <div className="text-white/70">{stat.label}</div>
+                    <div className="text-3xl font-bold text-white mb-2 drop-shadow-md">{stat.number}</div>
+                    <div className="text-white font-medium drop-shadow-md">{stat.label}</div>
                   </CardContent>
                 </Card>
               ))}
@@ -109,13 +109,13 @@ const Info = () => {
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {features.map((feature, index) => (
-                <Card key={index} className="bg-card/80 backdrop-blur-sm border border-primary/10">
+                <Card key={index} className="bg-purple-800/90 backdrop-blur-sm border border-purple-500/30 shadow-lg">
                   <CardContent className="p-6">
-                    <div className={`${feature.color} mb-4`}>
+                    <div className={`${feature.color} mb-4 drop-shadow-md`}>
                       {feature.icon}
                     </div>
-                    <h3 className="text-xl font-semibold text-white mb-3">{feature.title}</h3>
-                    <p className="text-white">{feature.description}</p>
+                    <h3 className="text-xl font-bold text-white mb-3 drop-shadow-md">{feature.title}</h3>
+                    <p className="text-white font-medium leading-relaxed drop-shadow-sm">{feature.description}</p>
                   </CardContent>
                 </Card>
               ))}
@@ -124,15 +124,15 @@ const Info = () => {
 
           {/* About Section */}
           <section className="mb-16">
-            <Card className="bg-card/80 backdrop-blur-sm border border-primary/10">
+            <Card className="bg-purple-800/90 backdrop-blur-sm border border-purple-500/30 shadow-lg">
               <CardHeader>
-                <CardTitle className="text-white text-2xl text-center">
+                <CardTitle className="text-white text-2xl text-center font-bold drop-shadow-md">
                   Sobre ComplicesConecta
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="text-center">
-                  <p className="text-lg text-white/90 max-w-4xl mx-auto">
+                  <p className="text-lg text-white font-medium max-w-4xl mx-auto leading-relaxed drop-shadow-md">
                     ComplicesConecta es la plataforma social más exclusiva y segura diseñada específicamente 
                     para la comunidad swinger mexicana. Nuestra misión es crear un espacio donde parejas y 
                     solteros puedan conectar de manera auténtica, discreta y verificada.
@@ -141,29 +141,29 @@ const Info = () => {
                 
                 <div className="grid md:grid-cols-2 gap-8">
                   <div>
-                    <h3 className="text-xl font-semibold text-white mb-4">Nuestra Misión</h3>
-                    <p className="text-white">
+                    <h3 className="text-xl font-bold text-white mb-4 drop-shadow-md">Nuestra Misión</h3>
+                    <p className="text-white font-medium leading-relaxed drop-shadow-sm">
                       Crear la comunidad swinger más exclusiva y segura de México, donde las conexiones 
                       auténticas y el respeto mutuo son los pilares fundamentales de nuestra plataforma.
                     </p>
                   </div>
                   <div>
-                    <h3 className="text-xl font-semibold text-white mb-4">Nuestros Valores</h3>
-                    <ul className="space-y-2 text-white">
-                      <li className="flex items-center">
-                        <CheckCircle className="h-4 w-4 text-green-400 mr-2" />
+                    <h3 className="text-xl font-bold text-white mb-4 drop-shadow-md">Nuestros Valores</h3>
+                    <ul className="space-y-2 text-white font-medium">
+                      <li className="flex items-center drop-shadow-sm">
+                        <CheckCircle className="h-5 w-5 text-green-400 mr-2 flex-shrink-0" />
                         Discreción y privacidad
                       </li>
-                      <li className="flex items-center">
-                        <CheckCircle className="h-4 w-4 text-green-400 mr-2" />
+                      <li className="flex items-center drop-shadow-sm">
+                        <CheckCircle className="h-5 w-5 text-green-400 mr-2 flex-shrink-0" />
                         Respeto mutuo
                       </li>
-                      <li className="flex items-center">
-                        <CheckCircle className="h-4 w-4 text-green-400 mr-2" />
+                      <li className="flex items-center drop-shadow-sm">
+                        <CheckCircle className="h-5 w-5 text-green-400 mr-2 flex-shrink-0" />
                         Autenticidad
                       </li>
-                      <li className="flex items-center">
-                        <CheckCircle className="h-4 w-4 text-green-400 mr-2" />
+                      <li className="flex items-center drop-shadow-sm">
+                        <CheckCircle className="h-5 w-5 text-green-400 mr-2 flex-shrink-0" />
                         Seguridad total
                       </li>
                     </ul>
@@ -176,12 +176,12 @@ const Info = () => {
 
           {/* CTA Section */}
           <section className="text-center">
-            <Card className="bg-gradient-to-r from-pink-500/20 to-purple-600/20 backdrop-blur-sm border border-pink-400/30">
+            <Card className="bg-gradient-to-r from-pink-600/90 to-purple-700/90 backdrop-blur-sm border border-pink-400/50 shadow-lg">
               <CardContent className="p-8">
-                <h2 className="text-3xl font-bold text-white mb-4">
+                <h2 className="text-3xl font-bold text-white mb-4 drop-shadow-lg">
                   ¿Listo para unirte a nuestra comunidad?
                 </h2>
-                <p className="text-xl text-white/90 mb-6 max-w-2xl mx-auto">
+                <p className="text-xl text-white font-medium mb-6 max-w-2xl mx-auto drop-shadow-md">
                   Descubre conexiones auténticas en un ambiente seguro y discreto diseñado especialmente para ti
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
