@@ -58,6 +58,18 @@ export const useGeolocation = () => {
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
+        // Calcular S2 cell ID automáticamente
+        let s2CellId: string | undefined;
+        let s2Level: number | undefined;
+        
+        try {
+          const defaultLevel = 15; // ~1km² (ideal para matching urbano)
+          s2CellId = s2Service.getCell(position.coords.latitude, position.coords.longitude, defaultLevel);
+          s2Level = defaultLevel;
+        } catch (error) {
+          logger.warn('Error calculating S2 cell ID:', { error: error instanceof Error ? error.message : String(error) });
+        }
+
         setState({
           location: {
             latitude: position.coords.latitude,
@@ -66,7 +78,9 @@ export const useGeolocation = () => {
             altitude: position.coords.altitude,
             altitudeAccuracy: position.coords.altitudeAccuracy,
             heading: position.coords.heading,
-            speed: position.coords.speed
+            speed: position.coords.speed,
+            s2CellId,
+            s2Level
           },
           error: null,
           isLoading: false,
@@ -118,6 +132,18 @@ export const useGeolocation = () => {
 
     const id = navigator.geolocation.watchPosition(
       (position) => {
+        // Calcular S2 cell ID automáticamente
+        let s2CellId: string | undefined;
+        let s2Level: number | undefined;
+        
+        try {
+          const defaultLevel = 15; // ~1km² (ideal para matching urbano)
+          s2CellId = s2Service.getCell(position.coords.latitude, position.coords.longitude, defaultLevel);
+          s2Level = defaultLevel;
+        } catch (error) {
+          logger.warn('Error calculating S2 cell ID:', { error: error instanceof Error ? error.message : String(error) });
+        }
+
         setState(prev => ({
           ...prev,
           location: {
@@ -127,7 +153,9 @@ export const useGeolocation = () => {
             altitude: position.coords.altitude,
             altitudeAccuracy: position.coords.altitudeAccuracy,
             heading: position.coords.heading,
-            speed: position.coords.speed
+            speed: position.coords.speed,
+            s2CellId,
+            s2Level
           },
           error: null,
           isLoading: false,
