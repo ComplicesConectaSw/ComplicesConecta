@@ -333,6 +333,74 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
 
       {/* Espaciador para contenido */}
       <div className="h-16"></div>
+      
+      {/* Animaciones personalizadas del corazón */}
+      <style>{`
+        @keyframes heartBeat {
+          0%, 100% { transform: scale(1); }
+          10%, 30% { transform: scale(1.1); }
+          20%, 40% { transform: scale(1.05); }
+        }
+        
+        @keyframes heartGlow {
+          0%, 100% { 
+            filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.6)); 
+          }
+          50% { 
+            filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.9)) 
+                    drop-shadow(0 0 30px rgba(236, 72, 153, 0.5)); 
+          }
+        }
+        
+        @keyframes heartFloat {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-3px); }
+        }
+        
+        .animate-heart-float {
+          animation: heartFloat 3s ease-in-out infinite;
+        }
+        
+        @keyframes particle-1 {
+          0% { transform: translate(0, 0) scale(0); opacity: 0; }
+          50% { opacity: 1; }
+          100% { transform: translate(-10px, -15px) scale(1); opacity: 0; }
+        }
+        
+        @keyframes particle-2 {
+          0% { transform: translate(0, 0) scale(0); opacity: 0; }
+          50% { opacity: 1; }
+          100% { transform: translate(10px, -20px) scale(1); opacity: 0; }
+        }
+        
+        @keyframes particle-3 {
+          0% { transform: translate(0, 0) scale(0); opacity: 0; }
+          50% { opacity: 1; }
+          100% { transform: translate(-5px, 15px) scale(1); opacity: 0; }
+        }
+        
+        .animate-particle-1 {
+          animation: particle-1 2s ease-in-out infinite;
+        }
+        
+        .animate-particle-2 {
+          animation: particle-2 2.5s ease-in-out infinite 0.5s;
+        }
+        
+        .animate-particle-3 {
+          animation: particle-3 3s ease-in-out infinite 1s;
+        }
+        
+        @keyframes gradient-x {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+        
+        .animate-gradient-x {
+          background-size: 200% 200%;
+          animation: gradient-x 3s ease infinite;
+        }
+      `}</style>
     </>
   );
 };
