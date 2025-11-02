@@ -33,7 +33,7 @@ export const HeroSection = () => {
             <div className="flex items-center space-x-6 group">
               <div className="relative">
                 <Heart 
-                  className="text-white transition-all duration-300 h-16 w-16 sm:h-20 sm:w-20 animate-pulse group-hover:text-pink-200 drop-shadow-[0_4px_20px_rgba(255,255,255,0.8)]" 
+                  className="text-white transition-all duration-300 h-16 w-16 sm:h-20 sm:w-20 animate-pulse group-hover:text-purple-200 drop-shadow-[0_4px_20px_rgba(255,255,255,0.8)]" 
                   fill="currentColor"
                   stroke="white"
                   strokeWidth="2"

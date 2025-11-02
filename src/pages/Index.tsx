@@ -236,7 +236,7 @@ const Index = () => {
       <div className="fixed inset-0 z-0">
         {/* Solo gradiente sutil */}
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-primary/5 via-transparent to-accent/5"></div>
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-blue-500/5 via-transparent to-purple-500/5"></div>
         </div>
       </div>
       
