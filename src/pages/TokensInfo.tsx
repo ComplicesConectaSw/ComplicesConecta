@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -55,7 +55,6 @@ import {
   Area
 } from 'recharts';
 import { TokenAnalyticsService } from '@/services/TokenAnalyticsService';
-import { useEffect } from 'react';
 
 interface FAQItem {
   question: string;

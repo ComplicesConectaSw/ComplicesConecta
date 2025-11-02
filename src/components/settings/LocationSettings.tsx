@@ -7,6 +7,7 @@ import { Switch } from "@/components/ui/switch";
 import { MapPin, Navigation, AlertCircle } from "lucide-react";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { logger } from '@/lib/logger';
+import { s2Service } from '@/services/geo/S2Service';
 
 export const LocationSettings = () => {
   const [searchRadius, setSearchRadius] = useState([25]);
@@ -14,6 +15,8 @@ export const LocationSettings = () => {
   const [showDistance, setShowDistance] = useState(true);
   const [preciseLocation, setPreciseLocation] = useState(true);
   const [locationHistory, setLocationHistory] = useState(false);
+  const [s2Level, setS2Level] = useState([15]); // Nivel de precisión S2 (10-20)
+  const [geolocationEnabled, setGeolocationEnabled] = useState(true);
   const { location, error, isLoading, getCurrentLocation } = useGeolocation();
 
   const handleLocationPermission = async () => {

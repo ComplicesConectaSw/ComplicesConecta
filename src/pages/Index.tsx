@@ -128,26 +128,25 @@ const Index = () => {
     // Esperar a que termine el loading y luego verificar
     if (!isLoading) {
       const checkAndShowWelcome = () => {
-        const visited = localStorage.getItem('hasVisitedComplicesConecta') === 'true';
         const demoAuth = localStorage.getItem('demo_authenticated') === 'true';
         const isAuth = isAuthenticated();
         
         logger.info('🔍 Verificando condiciones para modal de bienvenida:', {
-          hasVisited: visited,
+          hasVisited: hasVisited,
           demoAuthenticated: demoAuth,
           isAuthenticated: isAuth,
           showWelcome: showWelcome
         });
         
         // Solo mostrar si no se ha visitado, no hay demo activo, no está autenticado y el modal no está ya visible
-        if (!visited && !demoAuth && !isAuth && !showWelcome) {
+        if (!hasVisited && !demoAuth && !isAuth && !showWelcome) {
           logger.info('✅ Mostrando modal de bienvenida - Primera visita');
           setTimeout(() => {
             setShowWelcome(true);
           }, 1200);
         } else {
           logger.info('❌ Modal de bienvenida no se mostrará:', {
-            reason: visited ? 'Ya visitó' : demoAuth ? 'Demo activo' : isAuth ? 'Autenticado' : 'Ya mostrado'
+            reason: hasVisited ? 'Ya visitó' : demoAuth ? 'Demo activo' : isAuth ? 'Autenticado' : 'Ya mostrado'
           });
         }
       };
@@ -156,7 +155,7 @@ const Index = () => {
       const timer = setTimeout(checkAndShowWelcome, 800);
       return () => clearTimeout(timer);
     }
-  }, [isLoading, showWelcome, isAuthenticated]);
+  }, [isLoading, showWelcome, isAuthenticated, hasVisited]);
 
   const handleWelcomeClose = () => {
     setShowWelcome(false);

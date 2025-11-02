@@ -29,6 +29,7 @@ export default [
       'playwright-report-e2e/**',
       'test-results/**',
       'respaldo_auditoria/**',
+      'backups/**',
       '**/*.bak',
       '**/BACKUP_*'
     ]

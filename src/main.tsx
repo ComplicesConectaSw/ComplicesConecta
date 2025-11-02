@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client'
 import * as React from 'react'
-import { StrictMode } from 'react'
+const { StrictMode } = React
 
 // CRÍTICO: Asegurar React disponible globalmente INMEDIATAMENTE, ANTES DE CUALQUIER OTRA COSA
 // Esto debe estar ANTES de cualquier otro import o código que pueda cargar chunks

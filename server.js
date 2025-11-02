@@ -4,7 +4,7 @@
  */
 
 // 1. IMPORTANTE: New Relic debe ser lo primero
-// eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line unused-imports/no-unused-imports
 import newrelic from 'newrelic'; // Usado automáticamente por el agente
 
 import express from 'express';

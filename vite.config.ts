@@ -79,9 +79,17 @@ export default defineConfig({
             if (id.includes('framer-motion')) {
               return 'ui-animations';
             }
-            // Charts and visualization (large)
+            // Charts and visualization (large) - lazy load para reducir bundle inicial
             if (id.includes('recharts') || id.includes('d3-')) {
               return 'charts';
+            }
+            // TensorFlow y ML (large) - lazy load
+            if (id.includes('@tensorflow') || id.includes('onnxruntime') || id.includes('@huggingface')) {
+              return 'ml';
+            }
+            // Capacitor (mobile) - lazy load si no es necesario en web
+            if (id.includes('@capacitor') && !id.includes('@capacitor/core')) {
+              return 'mobile';
             }
             // Supabase and database (medium)
             if (id.includes('@supabase') || id.includes('@tanstack/react-query')) {
@@ -133,7 +141,23 @@ export default defineConfig({
           if (id.includes('src/pages/Discover') || id.includes('src/pages/Events')) {
             return 'discover';
           }
-          // All other pages
+          // Large pages - split individualmente para mejor lazy loading
+          if (id.includes('src/pages/Admin') || id.includes('src/pages/Moderator')) {
+            // Ya manejado arriba como 'admin'
+            return 'admin';
+          }
+          if (id.includes('src/pages/Chat')) {
+            // Ya manejado arriba como 'chat'
+            return 'chat';
+          }
+          // Split por tamaño: páginas grandes separadas
+          if (id.includes('src/pages/Tokens') || id.includes('src/pages/Premium')) {
+            return 'premium';
+          }
+          if (id.includes('src/pages/Profile') && !id.includes('Edit')) {
+            return 'profiles';
+          }
+          // All other pages - agrupar páginas pequeñas
           if (id.includes('src/pages/')) {
             return 'pages';
           }
@@ -153,13 +177,27 @@ export default defineConfig({
       compress: {
         drop_console: true, // Eliminar console.log en producción
         drop_debugger: true,
-        pure_funcs: ['console.log', 'console.info', 'console.debug'],
+        pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.trace'],
+        passes: 2, // Múltiples passes para mejor compresión
+        ecma: 2020,
+        unsafe: false,
+        unsafe_comps: false,
+        unsafe_math: false,
+        unsafe_proto: false,
+        collapse_vars: true,
+        reduce_vars: true,
+        dead_code: true,
+        unused: true,
       },
       format: {
         comments: false, // Remover comentarios
+        ecma: 2020,
+      },
+      mangle: {
+        safari10: true,
       },
     },
-    chunkSizeWarningLimit: 800, // Reducir límite para mejor splitting
+    chunkSizeWarningLimit: 500, // Reducir límite para forzar mejor splitting (de 800 a 500)
     // Ensure proper module resolution
     modulePreload: {
       polyfill: true
@@ -167,6 +205,10 @@ export default defineConfig({
     // Optimize CSS
     cssCodeSplit: true,
     cssMinify: true,
+    // Optimización adicional: compresión más agresiva
+    reportCompressedSize: true,
+    // Optimizar assets
+    assetsInlineLimit: 4096, // Inline assets menores a 4KB
   },
   define: {
     global: 'globalThis',

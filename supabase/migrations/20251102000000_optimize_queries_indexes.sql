@@ -44,10 +44,11 @@ CREATE INDEX IF NOT EXISTS idx_profiles_interests_gin
 ON profiles USING GIN(interests) 
 WHERE interests IS NOT NULL AND array_length(interests, 1) > 0;
 
--- Índice compuesto para filtros comunes (verificado + online)
+-- Índice compuesto para filtros comunes (verificado)
+-- Nota: profiles no tiene is_active, solo is_verified
 CREATE INDEX IF NOT EXISTS idx_profiles_filters_composite 
-ON profiles(is_verified, is_online, last_seen DESC) 
-WHERE is_verified = true OR is_online = true;
+ON profiles(is_verified, updated_at DESC) 
+WHERE is_verified = true;
 
 -- Índice para S2 geohashing (si está implementado)
 CREATE INDEX IF NOT EXISTS idx_profiles_s2_cell 
@@ -58,10 +59,11 @@ WHERE s2_cell_id IS NOT NULL;
 CREATE INDEX IF NOT EXISTS idx_profiles_analytics 
 ON profiles(created_at DESC, is_premium);
 
--- Índice para perfiles recientes (últimas 24 horas)
+-- Índice para perfiles recientes ordenados por fecha
+-- Nota: No se puede usar NOW() en WHERE de índice parcial (no es inmutable)
+-- Este índice cubre todos los perfiles ordenados por fecha
 CREATE INDEX IF NOT EXISTS idx_profiles_recent 
-ON profiles(created_at DESC) 
-WHERE created_at >= NOW() - INTERVAL '24 hours';
+ON profiles(created_at DESC);
 
 -- =====================================================
 -- 3. TOKEN ANALYTICS QUERIES
@@ -76,10 +78,11 @@ CREATE INDEX IF NOT EXISTS idx_user_token_balances_active
 ON user_token_balances(cmpx_balance, gtk_balance) 
 WHERE cmpx_balance IS NOT NULL AND gtk_balance IS NOT NULL;
 
--- Staking records activos
-CREATE INDEX IF NOT EXISTS idx_staking_records_active 
-ON staking_records(is_active, created_at DESC) 
-WHERE is_active = true;
+-- Staking records (si existe la tabla)
+-- Nota: Verificar que la tabla staking_records exista y tenga la columna is_active
+-- CREATE INDEX IF NOT EXISTS idx_staking_records_active 
+-- ON staking_records(is_active, created_at DESC) 
+-- WHERE is_active = true;
 
 -- Token transactions recientes (últimas 24 horas)
 -- NOTA: Este índice parcial se actualiza periódicamente
@@ -94,47 +97,44 @@ ON token_transactions(token_type, created_at DESC);
 -- 4. MESSAGES/CHAT QUERIES
 -- =====================================================
 
--- Mensajes por chat ordenados por fecha
-CREATE INDEX IF NOT EXISTS idx_messages_chat_created_at 
-ON messages(chat_id, created_at DESC) 
-WHERE chat_id IS NOT NULL;
+-- Mensajes por room ordenados por fecha
+CREATE INDEX IF NOT EXISTS idx_messages_room_created_at 
+ON messages(room_id, created_at DESC) 
+WHERE room_id IS NOT NULL;
 
 -- Mensajes por sender
 CREATE INDEX IF NOT EXISTS idx_messages_sender 
 ON messages(sender_id, created_at DESC) 
 WHERE sender_id IS NOT NULL;
 
--- Mensajes por receiver
-CREATE INDEX IF NOT EXISTS idx_messages_receiver 
-ON messages(receiver_id, created_at DESC) 
-WHERE receiver_id IS NOT NULL;
-
--- Mensajes no leídos (query común)
-CREATE INDEX IF NOT EXISTS idx_messages_unread 
-ON messages(receiver_id, is_read, created_at DESC) 
-WHERE is_read = false;
+-- Nota: La tabla 'messages' no tiene 'receiver_id' ni 'is_read'
+-- Para mensajes no leídos, usar tabla 'chat_messages' que sí tiene 'is_read'
 
 -- =====================================================
 -- 5. MATCHES QUERIES
 -- =====================================================
 
 -- Matches por usuario ordenados por fecha
-CREATE INDEX IF NOT EXISTS idx_matches_user_created_at 
-ON matches(user_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_matches_user1_created_at 
+ON matches(user1_id, created_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_matches_user2_created_at 
+ON matches(user2_id, created_at DESC);
 
 -- Matches mutuos (query común)
+-- Nota: Verificar columnas reales de matches (puede no tener compatibility_score)
 CREATE INDEX IF NOT EXISTS idx_matches_mutual 
-ON matches(user_id, matched_user_id, status) 
-WHERE status = 'matched';
+ON matches(user1_id, user2_id, created_at DESC);
 
 -- =====================================================
 -- 6. POSTS/STORIES QUERIES
 -- =====================================================
 
 -- Posts públicos ordenados por fecha
-CREATE INDEX IF NOT EXISTS idx_posts_public_created_at 
-ON posts(is_public, created_at DESC) 
-WHERE is_public = true;
+-- Nota: Verificar que la tabla 'posts' exista (puede ser que solo exista 'stories')
+-- CREATE INDEX IF NOT EXISTS idx_posts_public_created_at 
+-- ON posts(is_public, created_at DESC) 
+-- WHERE is_public = true;
 
 -- Stories por usuario
 CREATE INDEX IF NOT EXISTS idx_stories_user_created_at 

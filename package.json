@@ -28,6 +28,8 @@
     "audit:fix": "npx tsx scripts/audit-project.ts --fix",
     "test:lint-robust": "node scripts/test-lint-robust.cjs",
     "test:type-robust": "node scripts/test-type-check-robust.cjs",
+    "validate:types": "node scripts/validate-supabase-types.cjs",
+    "update:types": "echo 'Para regenerar tipos ejecutar: npx supabase gen types typescript --project-id YOUR_PROJECT_ID > src/types/supabase.ts'",
     "security:progress": "node scripts/security-progress-check.js",
     "token:verify": "node scripts/verify-token.js",
     "security:scan": "node scripts/security-check.js"

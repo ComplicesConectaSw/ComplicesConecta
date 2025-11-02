@@ -427,7 +427,7 @@
 #### 15.1 Protección de Datos Personales Sensibles
 - [ ] **Datos sensibles cifrados**: Verificar que datos como orientación sexual, preferencias, ubicación estén cifrados ⏳ Pendiente verificación - `DataPrivacyService.ts` existe pero pendiente revisar implementación de cifrado específica para datos sensibles. Se recomienda verificar que RLS en Supabase protege datos y considerar cifrado adicional para campos ultra-sensibles
 - [ ] **Consentimiento explícito**: Validar que se requiera consentimiento explícito para compartir datos ⚠️ VERIFICADO PARCIAL - `DataPrivacyService.ts` existe con métodos relacionados. Pendiente verificar flujo de consentimiento explícito en UI antes de compartir datos
-- [x] **Política de privacidad**: Verificar que política de privacidad sea clara y accesible ✅ VERIFICADO - `Terms.tsx` existe (página de términos y condiciones). Se recomienda crear página dedicada `Privacy.tsx` o sección específica de privacidad en Terms.tsx si no existe
+- [x] **Política de privacidad**: Verificar que política de privacidad sea clara y accesible ✅ VERIFICADO - `Privacy.tsx` existe (página dedicada de política de privacidad) y `Terms.tsx` existe (página de términos y condiciones con sección de privacidad). Ambas páginas son accesibles desde UI (`/privacy` y `/terms`)
 - [ ] **Transparencia en uso de datos**: Validar que usuarios sepan cómo se usan sus datos ⏳ Pendiente verificación - Se recomienda agregar sección en Terms/Privacy explicando uso de datos
 - [ ] **No venta de datos**: Verificar que no se vendan datos sin consentimiento explícito ⏳ Pendiente verificación - Se recomienda declaración explícita en términos de servicio
 

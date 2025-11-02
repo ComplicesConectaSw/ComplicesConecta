@@ -2,7 +2,9 @@
 
 **Fecha:** 02 de Noviembre, 2025  
 **Versión:** 3.5.0  
-**Estado:** ✅ Script SQL Listo | ⏳ Requiere Ejecución en Supabase
+**Estado:** ✅ Script SQL Aplicado en Local | ⏳ Requiere Aplicación en Remoto
+
+**Nota:** El script de migración `20251102000000_optimize_queries_indexes.sql` ha sido aplicado exitosamente en Supabase local. Todas las queries han sido corregidas según el esquema real. Pendiente aplicar en remoto y ejecutar EXPLAIN ANALYZE.
 
 ---
 
