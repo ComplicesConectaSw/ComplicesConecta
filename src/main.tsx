@@ -272,11 +272,10 @@ async function initializeApp() {
         winReact.createElement = winReact.createElement;
       }
       
-      // También asegurar que ReactDOM esté disponible globalmente
+      // También asegurar que ReactDOM esté disponible globalmente (usar el import ya disponible)
       if (!(window as any).ReactDOM) {
-        const { createRoot: createRootFromClient } = await import('react-dom/client');
         (window as any).ReactDOM = {
-          createRoot: createRootFromClient
+          createRoot: createRoot
         };
       }
     }
@@ -295,6 +294,7 @@ async function initializeApp() {
       // Silenciar errores de detección
     }
     
+    // CRÍTICO: Limpiar el contenido del root ANTES de buscar el elemento
     const rootElement = document.getElementById("root");
     if (!rootElement) {
       // Intentar esperar un poco para que el DOM cargue
@@ -306,16 +306,20 @@ async function initializeApp() {
       }
     }
 
+    // CRÍTICO: Limpiar cualquier contenido HTML del fallback de loading
+    const finalRootElement = document.getElementById("root");
+    if (!finalRootElement) {
+      throw new Error('Root element not found');
+    }
+    
+    // Limpiar el contenido del loading fallback
+    finalRootElement.innerHTML = '';
+
     // Verify security before rendering (no bloquear si falla)
     try {
       await initializeSecurityCheck();
     } catch {
       // Continuar aunque falle la verificación de seguridad
-    }
-
-    const finalRootElement = document.getElementById("root");
-    if (!finalRootElement) {
-      throw new Error('Root element not found');
     }
 
     if (import.meta.env.DEV) {
