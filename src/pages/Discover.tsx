@@ -90,6 +90,34 @@ const Discover = () => {
     relationshipType: []
   });
 
+  // Intereses generales (para todos los usuarios)
+  const generalInterests = [
+    'Lifestyle', 'Aventura', 'Diversión', 'Respeto', 'Discreción', 
+    'Experiencia', 'Naturaleza', 'Viajes', 'Música', 'Arte', 
+    'Deportes', 'Cine', 'Literatura', 'Tecnología', 'Gastronomía'
+  ];
+
+  // Intereses explícitos (solo para perfiles demo y producción)
+  const explicitInterests = [
+    'Swinger', 'Parejas', 'Intercambio', 'Liberal', 'Soft Swap',
+    'Hard Swap', 'Clubs Exclusivos', 'Eventos VIP', 'Fiestas Privadas',
+    'Tantra', 'BDSM', 'Poliamor', 'Cuckolding', 'Hotwife', 'Lifestyle Swinger'
+  ];
+
+  // Determinar si el usuario es demo/producción
+  const isDemoOrProduction = () => {
+    if (!isAuthenticated || !user) return false;
+    const demoAuth = localStorage.getItem('demo_authenticated') === 'true';
+    const isDemoUser = user.email === 'single@outlook.es' || user.email === 'pareja@outlook.es';
+    // También considerar usuarios de producción (que tienen cuenta real)
+    return demoAuth && isDemoUser || (isAuthenticated && !isDemoUser);
+  };
+
+  // Intereses disponibles según el tipo de usuario
+  const availableInterests = isDemoOrProduction() 
+    ? [...generalInterests, ...explicitInterests]
+    : generalInterests;
+
   // Load couple profiles
   const loadCoupleProfiles = useCallback(async () => {
     try {
@@ -187,7 +215,20 @@ const Discover = () => {
       // Filtrar perfiles individuales reales
       const filtered = profiles.filter(profile => {
         const ageMatch = profile.age >= filters.ageRange[0] && profile.age <= filters.ageRange[1];
-        const distanceMatch = !location || profile.distance <= filters.distance;
+        
+        // Filtro de distancia mejorado - siempre aplicar si hay distancia disponible
+        let distanceMatch = true;
+        if (location) {
+          // Si el perfil tiene distancia calculada, usarla
+          if (profile.distance !== undefined) {
+            distanceMatch = profile.distance <= filters.distance;
+          } else {
+            // Si no tiene distancia pero tiene coordenadas, calcularla
+            // Esto se maneja en loadRealProfiles, así que aquí solo verificamos la distancia ya calculada
+            distanceMatch = true; // Permitir si no hay distancia disponible
+          }
+        }
+        
         const interestsMatch = filters.interests.length === 0 || 
           filters.interests.some(interest => profile.interests.includes(interest));
         const verifiedMatch = !filters.verified || profile.isVerified;
@@ -203,8 +244,24 @@ const Discover = () => {
       const filteredCouples = coupleProfiles.filter(couple => {
         const avgAge = (couple.partner1_age + couple.partner2_age) / 2;
         const ageMatch = avgAge >= filters.ageRange[0] && avgAge <= filters.ageRange[1];
-        const distanceMatch = true; // No distance filtering for couples yet
-        const interestsMatch = true; // No interests filtering for couples yet
+        
+        // Filtro de distancia para parejas
+        let distanceMatch = true;
+        if (location && couple.location) {
+          // Calcular distancia si hay coordenadas disponibles
+          const coupleDistance = calculateDistance(
+            location,
+            couple.latitude && couple.longitude 
+              ? { latitude: couple.latitude, longitude: couple.longitude } 
+              : null
+          );
+          distanceMatch = coupleDistance <= filters.distance;
+        }
+        
+        const interestsMatch = filters.interests.length === 0 || 
+          filters.interests.some(interest => 
+            couple.interests && couple.interests.includes(interest)
+          );
         const verifiedMatch = !filters.verified || couple.is_verified;
         const premiumMatch = !filters.premium || couple.is_premium;
         const onlineMatch = !filters.online || couple.isOnline;
@@ -561,9 +618,12 @@ const Discover = () => {
               <div className="mb-6">
                 <label className="block text-sm font-semibold text-white mb-3">
                   Intereses
+                  {isDemoOrProduction() && (
+                    <span className="ml-2 text-xs text-purple-300">(Demo/Producción)</span>
+                  )}
                 </label>
                 <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto p-3 bg-white/20 rounded-lg border border-white/30">
-                  {['Lifestyle', 'Swinger', 'Parejas', 'Intercambio', 'Liberal', 'Aventura', 'Diversión', 'Respeto', 'Discreción', 'Experiencia'].map((interest: string) => (
+                  {availableInterests.map((interest: string) => (
                     <Badge
                       key={interest}
                       className={`cursor-pointer text-xs font-medium transition-all duration-200 hover:scale-105 ${
