@@ -32,7 +32,13 @@ export const initializeWalletProtection = () => {
       'tronlink will overwrite',
       'bybit:page provider inject code',
       'evmask',
-      'solana.js'
+      'solana.js',
+      'evmask.js',
+      'inpage.js',
+      'cannot redefine property: tronweb',
+      'expression not available',
+      'expression',
+      'not available'
     ];
     
     // NO suprimir errores de imágenes - estos son importantes para la funcionalidad

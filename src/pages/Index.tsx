@@ -120,8 +120,11 @@ const Index = () => {
 
   const handleLoadingComplete = () => {
     setIsLoading(false);
-    if (!hasVisited) {
-      setTimeout(() => setShowWelcome(true), 500);
+    // Mostrar modal de bienvenida si es la primera visita (o si no hay sesión activa)
+    if (!hasVisited && !demoAuthenticated && !isAuthenticated()) {
+      setTimeout(() => {
+        setShowWelcome(true);
+      }, 800);
     }
   };
 

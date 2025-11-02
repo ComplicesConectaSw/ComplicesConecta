@@ -431,6 +431,7 @@ const Chat = () => {
                 onClick={() => {
                   setTabError(null);
                   setActiveTab('private');
+                  setSelectedChat(null); // Limpiar chat seleccionado al cambiar tab
                   logger.info('🔒 Cambiando a tab privado');
                 }}
               >
@@ -453,6 +454,7 @@ const Chat = () => {
                 onClick={() => {
                   setTabError(null);
                   setActiveTab('public');
+                  setSelectedChat(null); // Limpiar chat seleccionado al cambiar tab
                   logger.info('🌐 Cambiando a tab público');
                 }}
               >
@@ -476,7 +478,7 @@ const Chat = () => {
             {/* Tab Content */}
             {activeTab === 'private' && (
               <div className="mt-4">
-                <div className="text-white/70 text-sm mb-3 px-2">
+                <div className="text-white font-medium text-sm mb-3 px-2 drop-shadow-md">
                   💬 Chats privados con tus conexiones
                 </div>
                 <div className="space-y-2">
@@ -533,7 +535,7 @@ const Chat = () => {
             
             {activeTab === 'public' && (
               <div className="mt-4">
-                <div className="text-white/70 text-sm mb-3 px-2">
+                <div className="text-white font-medium text-sm mb-3 px-2 drop-shadow-md">
                   🌍 Salas públicas de la comunidad
                 </div>
                 <div className="space-y-2">

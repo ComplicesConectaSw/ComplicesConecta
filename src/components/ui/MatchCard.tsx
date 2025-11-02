@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { UnifiedCard } from '@/components/ui/UnifiedCard';
 import { UnifiedButton } from '@/components/ui/UnifiedButton';
 import { Badge } from '@/components/ui/badge';
 import { Heart, X, Star, MapPin, Users, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 
 interface MatchCardProps {
   id: string;
@@ -45,6 +52,9 @@ export const MatchCard: React.FC<MatchCardProps> = ({
   className,
   variant = 'swipe'
 }) => {
+  const [showLikeModal, setShowLikeModal] = useState(false);
+  const [showSuperLikeModal, setShowSuperLikeModal] = useState(false);
+
   const cardVariants = {
     hidden: { opacity: 0, scale: 0.8, rotateY: -30 },
     visible: { 
@@ -323,6 +333,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({
               size="lg"
               className="w-16 h-16 rounded-full border-2 border-red-400 bg-red-500/20 hover:border-red-500 hover:bg-red-500/30 transition-all duration-200 shadow-lg"
               onClick={onPass}
+              title="Pasar este perfil"
             >
               <X className="h-8 w-8 text-red-400" />
             </UnifiedButton>
@@ -332,7 +343,11 @@ export const MatchCard: React.FC<MatchCardProps> = ({
                 variant="outline"
                 size="lg"
                 className="w-16 h-16 rounded-full border-2 border-blue-400 bg-blue-500/20 hover:border-blue-500 hover:bg-blue-500/30 transition-all duration-200 shadow-lg"
-                onClick={onSuperLike}
+                onClick={() => {
+                  setShowSuperLikeModal(true);
+                  if (onSuperLike) onSuperLike();
+                }}
+                title="Super Like - Destaca tu interés"
               >
                 <Sparkles className="h-8 w-8 text-blue-400" />
               </UnifiedButton>
@@ -342,13 +357,81 @@ export const MatchCard: React.FC<MatchCardProps> = ({
               gradient
               size="lg"
               className="w-16 h-16 rounded-full transition-all duration-200 hover:scale-110 shadow-lg bg-gradient-to-r from-pink-500 to-purple-500"
-              onClick={onLike}
+              onClick={() => {
+                setShowLikeModal(true);
+                if (onLike) onLike();
+              }}
+              title="Me Gusta - Si también te gusta, será un match"
             >
               <Heart className="h-8 w-8 text-white" />
             </UnifiedButton>
           </div>
         </div>
       </UnifiedCard>
+
+      {/* Modal de Me Gusta */}
+      <Dialog open={showLikeModal} onOpenChange={setShowLikeModal}>
+        <DialogContent className="bg-gradient-to-br from-purple-900 via-pink-900 to-purple-900 text-white border-purple-500/30">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-xl">
+              <Heart className="h-6 w-6 text-pink-400" fill="currentColor" />
+              ¡Me Gusta Enviado!
+            </DialogTitle>
+            <DialogDescription className="text-white/80">
+              ¿Qué significa dar "Me Gusta"?
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <p className="text-white/90 leading-relaxed">
+              Has expresado interés en este perfil. Si <strong className="text-pink-300">{name}</strong> también te da "Me Gusta", 
+              ¡será un <strong className="text-purple-300">match</strong>! 💕
+            </p>
+            <div className="bg-white/10 rounded-lg p-4 space-y-2">
+              <p className="text-sm font-semibold text-pink-300">¿Qué sucede ahora?</p>
+              <ul className="text-sm text-white/80 space-y-1 list-disc list-inside">
+                <li>La otra persona recibirá una notificación</li>
+                <li>Si también te da "Me Gusta", podrán empezar a chatear</li>
+                <li>Tu perfil aparecerá en su sección de "Matches"</li>
+              </ul>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal de Super Like */}
+      <Dialog open={showSuperLikeModal} onOpenChange={setShowSuperLikeModal}>
+        <DialogContent className="bg-gradient-to-br from-blue-900 via-purple-900 to-blue-900 text-white border-blue-500/30">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-xl">
+              <Sparkles className="h-6 w-6 text-blue-400" />
+              ¡Super Like Enviado!
+            </DialogTitle>
+            <DialogDescription className="text-white/80">
+              Has destacado tu interés de forma especial
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <p className="text-white/90 leading-relaxed">
+              Has enviado un <strong className="text-blue-300">Super Like</strong> a <strong className="text-purple-300">{name}</strong>. 
+              Esto significa que estás muy interesado/a y destacarás entre otros perfiles. ⭐
+            </p>
+            <div className="bg-white/10 rounded-lg p-4 space-y-2">
+              <p className="text-sm font-semibold text-blue-300">¿Por qué usar Super Like?</p>
+              <ul className="text-sm text-white/80 space-y-1 list-disc list-inside">
+                <li>Tu perfil aparecerá destacado en su lista de matches</li>
+                <li>Aumenta las probabilidades de que te respondan</li>
+                <li>Muestra un interés genuino y especial</li>
+                <li>Se usa tokens CMPX para destacar tu perfil</li>
+              </ul>
+            </div>
+            <div className="bg-blue-500/20 border border-blue-400/30 rounded-lg p-3">
+              <p className="text-xs text-blue-200">
+                💡 <strong>Tip:</strong> Usa Super Like de forma estratégica en perfiles que realmente te interesan mucho.
+              </p>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </motion.div>
   );
 };
