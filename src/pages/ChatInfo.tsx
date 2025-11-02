@@ -24,8 +24,8 @@ const ChatInfo = () => {
     <div className="min-h-screen android-fix relative overflow-hidden bg-gradient-to-br from-purple-600 via-pink-500 to-indigo-600">
       {/* Background matching other pages */}
       <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-600/90 via-pink-500/90 to-indigo-600/90"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-400/20 via-pink-400/20 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-600/90 via-purple-500/90 to-indigo-600/90"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-400/20 via-purple-400/20 to-transparent"></div>
       </div>
 
       <div className="relative z-10 min-h-screen">
