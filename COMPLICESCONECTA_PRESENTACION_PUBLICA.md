@@ -148,8 +148,8 @@ Nuestro sistema de mensajería no es solo texto. Incluye:
 - ✅ Sistema de matching con IA (100%)
 - ✅ Chat en tiempo real con privacidad (100%)
 - ✅ Sistema de perfiles (100%)
-- ✅ Panel administrativo (95%)
-- ✅ Monitoreo y analytics (95%)
+- ✅ Panel administrativo (95%) - Ver detalles en FALTANTES_PARA_100_PERCENT_v3.5.0.md
+- ✅ Monitoreo y analytics (95%) - Ver detalles en FALTANTES_PARA_100_PERCENT_v3.5.0.md
 
 **En Desarrollo:**
 - 🚧 Optimización de performance
