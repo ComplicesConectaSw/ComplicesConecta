@@ -649,9 +649,9 @@ const Chat = () => {
                             : 'bg-gradient-to-r from-blue-500/95 to-purple-600/95 text-white shadow-md border border-blue-400/50 backdrop-blur-sm'
                         }`}
                       >
-                        <p className="text-xs sm:text-sm leading-relaxed break-words whitespace-pre-wrap overflow-wrap-anywhere hyphens-auto" style={{wordBreak: 'break-word', overflowWrap: 'anywhere'}}>{message.content}</p>
-                        <p className={`text-xs mt-1 ${
-                          message.sender_id === localStorage.getItem('user_id') ? 'text-purple-100' : 'text-gray-700 dark:text-gray-200'
+                        <p className="text-xs sm:text-sm leading-relaxed break-words whitespace-pre-wrap overflow-wrap-anywhere hyphens-auto font-medium text-white drop-shadow-md" style={{wordBreak: 'break-word', overflowWrap: 'anywhere'}}>{message.content}</p>
+                        <p className={`text-xs mt-1 font-medium ${
+                          message.sender_id === localStorage.getItem('user_id') ? 'text-purple-100 drop-shadow-sm' : 'text-white/90 drop-shadow-sm'
                         }`}>
                           {new Date(message.created_at).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}
                         </p>
@@ -672,9 +672,9 @@ const Chat = () => {
                             : 'bg-gradient-to-r from-blue-500/95 to-purple-600/95 text-white shadow-md border border-blue-400/50 backdrop-blur-sm'
                         }`}
                       >
-                        <p className="text-xs sm:text-sm leading-relaxed break-words whitespace-pre-wrap overflow-wrap-anywhere hyphens-auto" style={{wordBreak: 'break-word', overflowWrap: 'anywhere'}}>{message.content}</p>
-                        <p className={`text-xs mt-1 ${
-                          message.senderId === 0 ? 'text-purple-100' : 'text-gray-700 dark:text-gray-200'
+                        <p className="text-xs sm:text-sm leading-relaxed break-words whitespace-pre-wrap overflow-wrap-anywhere hyphens-auto font-medium text-white drop-shadow-md" style={{wordBreak: 'break-word', overflowWrap: 'anywhere'}}>{message.content}</p>
+                        <p className={`text-xs mt-1 font-medium ${
+                          message.senderId === 0 ? 'text-purple-100 drop-shadow-sm' : 'text-white/90 drop-shadow-sm'
                         }`}>
                           {message.timestamp}
                         </p>

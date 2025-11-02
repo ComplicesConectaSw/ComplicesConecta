@@ -67,7 +67,7 @@ const Events = () => {
       maxAttendees: 20,
       price: 1800,
       category: "Conexiones Swinger",
-      image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop&crop=center",
+      image: "https://images.unsplash.com/photo-1519167758481-83f142bb8cba?w=400&h=300&fit=crop&crop=center",
       organizer: {
         name: "Intimate Gatherings GDL",
         avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face"

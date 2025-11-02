@@ -426,12 +426,22 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
                 className={cn(
                   "max-w-[80%] rounded-lg p-3 break-words overflow-hidden",
                   message.type === 'user'
-                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-md'
-                    : 'bg-white/15 backdrop-filter backdrop-blur-md text-white border border-white/20 shadow-sm'
+                    ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-md'
+                    : 'bg-gradient-to-r from-purple-800/95 via-purple-700/95 to-blue-800/95 backdrop-filter backdrop-blur-md text-white border border-purple-400/50 shadow-lg'
                 )}
               >
-                <div className="whitespace-pre-wrap text-sm leading-relaxed break-words max-h-40 overflow-y-auto overflow-wrap-break-word hyphens-auto">
-                  {message.content}
+                <div className="whitespace-pre-wrap text-sm leading-relaxed break-words max-h-40 overflow-y-auto overflow-wrap-break-word hyphens-auto font-medium text-white drop-shadow-md">
+                  {message.content.split('\n').map((line, idx) => {
+                    // Detectar bullets y aplicar estilos especiales
+                    if (line.trim().startsWith('•')) {
+                      return (
+                        <div key={idx} className="text-white font-medium drop-shadow-md mb-1">
+                          {line}
+                        </div>
+                      );
+                    }
+                    return <div key={idx}>{line}</div>;
+                  })}
                 </div>
                 
                 {message.actions && (
@@ -452,7 +462,7 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
               </div>
               
               {message.type === 'user' && (
-                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center flex-shrink-0 shadow-md">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 flex items-center justify-center flex-shrink-0 shadow-md">
                   <User className="h-4 w-4 text-white" />
                 </div>
               )}

@@ -49,9 +49,9 @@ export const MessageList: React.FC<MessageListProps> = ({
   if (messages.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-full text-center p-8">
-        <div className="text-muted-foreground space-y-2">
-          <p className="text-lg font-medium">No hay mensajes aún</p>
-          <p className="text-sm">Comienza la conversación enviando un mensaje</p>
+        <div className="text-white/90 space-y-2">
+          <p className="text-lg font-medium drop-shadow-md">No hay mensajes aún</p>
+          <p className="text-sm font-medium drop-shadow-sm">Comienza la conversación enviando un mensaje</p>
         </div>
       </div>
     );
@@ -106,11 +106,11 @@ export const MessageList: React.FC<MessageListProps> = ({
                 className={cn(
                   'rounded-lg px-4 py-2 break-words',
                   isOwn
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-muted text-foreground'
+                    ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg'
+                    : 'bg-gradient-to-r from-blue-500/95 to-purple-600/95 text-white shadow-md border border-blue-400/50 backdrop-blur-sm'
                 )}
               >
-                <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                <p className="text-sm whitespace-pre-wrap font-medium drop-shadow-md">{message.content}</p>
                 
                 {/* Ubicación compartida */}
                 {message.location && (
@@ -127,7 +127,7 @@ export const MessageList: React.FC<MessageListProps> = ({
               {/* Tiempo */}
               <span
                 className={cn(
-                  'text-xs text-muted-foreground mt-1 px-1',
+                  'text-xs text-white/90 font-medium drop-shadow-sm mt-1 px-1',
                   isOwn ? 'text-right' : 'text-left'
                 )}
               >

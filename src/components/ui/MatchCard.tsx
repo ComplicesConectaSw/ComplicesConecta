@@ -187,7 +187,15 @@ export const MatchCard: React.FC<MatchCardProps> = ({
                   variant="outline"
                   size="lg"
                   className="w-14 h-14 rounded-full border-2 border-blue-400 bg-blue-500/20 hover:border-blue-500 hover:bg-blue-500/30 shadow-lg"
-                  onClick={onSuperLike}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setShowSuperLikeModal(true);
+                    setTimeout(() => {
+                      if (onSuperLike) onSuperLike();
+                    }, 100);
+                  }}
+                  title="Super Like - Destaca tu interés"
                 >
                   <Sparkles className="h-6 w-6 text-blue-400" />
                 </UnifiedButton>
@@ -197,7 +205,15 @@ export const MatchCard: React.FC<MatchCardProps> = ({
                 variant="outline"
                 size="lg"
                 className="w-14 h-14 rounded-full border-2 border-purple-400 bg-purple-500/20 hover:border-purple-500 hover:bg-purple-500/30 shadow-lg"
-                onClick={onLike}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setShowLikeModal(true);
+                  setTimeout(() => {
+                    if (onLike) onLike();
+                  }, 100);
+                }}
+                title="Me Gusta - Si también te gusta, será un match"
               >
                 <Heart className="h-6 w-6 text-purple-400" />
               </UnifiedButton>
