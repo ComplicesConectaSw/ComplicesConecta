@@ -14,13 +14,13 @@ interface UserProfile {
   email: string;
 }
 
-// Debug helper para logging detallado
+// Debug helper para logging detallado - Solo en desarrollo
 const debugLog = (message: string, data?: any) => {
   const timestamp = new Date().toISOString();
   console.log(`🔍 [Dashboard Debug ${timestamp}] ${message}`, data || '');
   
-  // También agregar al DOM para debugging visual
-  if (typeof window !== 'undefined') {
+  // También agregar al DOM para debugging visual - SOLO EN DESARROLLO
+  if (typeof window !== 'undefined' && import.meta.env.DEV) {
     const debugDiv = document.getElementById('dashboard-debug') || (() => {
       const div = document.createElement('div');
       div.id = 'dashboard-debug';
@@ -143,13 +143,15 @@ const DashboardCore = () => {
     );
   }
 
-  // Debug del render
-  debugLog('🎨 Dashboard: Renderizando Dashboard completo', {
-    userProfile,
-    isReady,
-    authChecked,
-    currentUrl: window.location.href
-  });
+  // Debug del render - Solo en desarrollo
+  if (import.meta.env.DEV) {
+    debugLog('🎨 Dashboard: Renderizando Dashboard completo', {
+      userProfile,
+      isReady,
+      authChecked,
+      currentUrl: window.location.href
+    });
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 relative overflow-hidden" data-testid="dashboard-container">
@@ -241,7 +243,20 @@ const DashboardCore = () => {
 
 // Componente Dashboard principal con ErrorBoundary
 const Dashboard = () => {
-  debugLog('🎯 Dashboard: Componente principal inicializando con ErrorBoundary');
+  // Solo log en desarrollo
+  if (import.meta.env.DEV) {
+    debugLog('🎯 Dashboard: Componente principal inicializando con ErrorBoundary');
+  }
+  
+  // Limpiar panel de debug si existe en producción
+  useEffect(() => {
+    if (!import.meta.env.DEV) {
+      const debugDiv = document.getElementById('dashboard-debug');
+      if (debugDiv) {
+        debugDiv.remove();
+      }
+    }
+  }, []);
   
   return (
     <ErrorBoundary>

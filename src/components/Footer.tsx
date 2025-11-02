@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export const Footer = () => {
   return (
-    <footer className="bg-gradient-to-br from-pink-900 via-purple-900 via-purple-800 to-blue-900 text-white border-t border-purple-500/30">
+    <footer className="bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 text-white border-t border-purple-500/30">
       <div className="container mx-auto px-4 py-12">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">

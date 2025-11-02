@@ -541,11 +541,234 @@ const Investors: React.FC = () => {
           </Card>
         </motion.section>
 
-        {/* Call to Action Final */}
+        {/* Próximas Funcionalidades */}
+        <motion.section
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 1.2 }}
+        >
+          <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
+            <CardHeader>
+              <CardTitle className="text-3xl font-bold text-white flex items-center gap-3">
+                <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg">
+                  <Sparkles className="h-6 w-6 text-white" />
+                </div>
+                Próximas Funcionalidades
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid md:grid-cols-3 gap-6">
+                {[
+                  {
+                    period: "Corto Plazo (3-6 meses)",
+                    items: [
+                      "Video Chat en tiempo real",
+                      "Mapas Interactivos de usuarios cercanos",
+                      "Sistema de Regalos Virtuales ampliado",
+                      "Analytics Personalizados"
+                    ],
+                    color: "from-blue-500/20 to-cyan-500/20"
+                  },
+                  {
+                    period: "Mediano Plazo (6-12 meses)",
+                    items: [
+                      "Asistente Virtual Avanzado con IA",
+                      "App iOS Nativa",
+                      "Expansión Internacional",
+                      "Suscripciones Premium exclusivas"
+                    ],
+                    color: "from-purple-500/20 to-pink-500/20"
+                  },
+                  {
+                    period: "Largo Plazo (12+ meses)",
+                    items: [
+                      "Red Social Expandida",
+                      "Eventos en Vivo con Streaming",
+                      "Contenido Original educativo",
+                      "Ecosistema Completo integrado"
+                    ],
+                    color: "from-green-500/20 to-emerald-500/20"
+                  }
+                ].map((roadmap, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 1.3 + idx * 0.1 }}
+                    className={`p-6 rounded-xl border border-white/20 bg-gradient-to-br ${roadmap.color} backdrop-blur-sm`}
+                  >
+                    <h4 className="text-xl font-bold text-white mb-4">{roadmap.period}</h4>
+                    <ul className="space-y-2">
+                      {roadmap.items.map((item, itemIdx) => (
+                        <li key={itemIdx} className="flex items-start gap-2 text-white/80">
+                          <ArrowRight className="h-4 w-4 text-purple-400 flex-shrink-0 mt-1" />
+                          <span className="text-sm">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </motion.div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </motion.section>
+
+        {/* Valores y Principios */}
+        <motion.section
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 1.3 }}
+        >
+          <Card className="bg-gradient-to-r from-purple-600/20 via-pink-600/20 to-blue-600/20 backdrop-blur-xl border-white/20 shadow-2xl">
+            <CardHeader>
+              <CardTitle className="text-3xl font-bold text-white flex items-center gap-3">
+                <div className="p-2 bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg">
+                  <Heart className="h-6 w-6 text-white" />
+                </div>
+                Valores y Principios
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid md:grid-cols-2 gap-6">
+                {[
+                  {
+                    title: "Privacidad Primero",
+                    desc: "Tus datos son tuyos. Control total sobre quién te ve y te contacta. Transparencia en el manejo de información.",
+                    icon: <Lock className="h-6 w-6" />,
+                    color: "from-blue-500 to-cyan-600"
+                  },
+                  {
+                    title: "Seguridad Garantizada",
+                    desc: "Verificación de identidad, moderación activa y sistema de reportes efectivo para una experiencia segura.",
+                    icon: <Shield className="h-6 w-6" />,
+                    color: "from-green-500 to-emerald-600"
+                  },
+                  {
+                    title: "Comunidad Respetuosa",
+                    desc: "Zero tolerancia a acoso. Ambiente seguro y discreto. Conexiones consensuadas y auténticas.",
+                    icon: <Users className="h-6 w-6" />,
+                    color: "from-purple-500 to-pink-600"
+                  },
+                  {
+                    title: "Innovación Continua",
+                    desc: "Mejoras constantes basadas en tecnología de punta. Feedback de usuarios integrado al desarrollo.",
+                    icon: <Zap className="h-6 w-6" />,
+                    color: "from-orange-500 to-red-600"
+                  }
+                ].map((value, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, x: idx % 2 === 0 ? -20 : 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 1.4 + idx * 0.1 }}
+                    className="p-6 bg-white/10 rounded-xl border border-white/20 hover:border-purple-400/50 transition-all duration-300"
+                  >
+                    <div className={`inline-flex p-3 rounded-lg bg-gradient-to-r ${value.color} text-white mb-4`}>
+                      {value.icon}
+                    </div>
+                    <h4 className="text-xl font-bold text-white mb-3">{value.title}</h4>
+                    <p className="text-white/70 leading-relaxed">{value.desc}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </motion.section>
+
+        {/* Oportunidad de Inversión */}
         <motion.section
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 1.4 }}
+        >
+          <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
+            <CardHeader>
+              <CardTitle className="text-3xl font-bold text-white flex items-center gap-3">
+                <div className="p-2 bg-gradient-to-r from-yellow-500 to-orange-600 rounded-lg">
+                  <Target className="h-6 w-6 text-white" />
+                </div>
+                ¿Por qué ComplicesConecta?
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-6">
+                {[
+                  {
+                    title: "Mercado en Crecimiento",
+                    points: [
+                      "Mercado de apps sociales para adultos en expansión global",
+                      "México: 40M+ usuarios potenciales",
+                      "Creciente demanda de plataformas seguras y verificadas",
+                      "Mercado blockchain social: $50B+ proyectado para 2026"
+                    ],
+                    icon: <TrendingUp className="h-6 w-6" />,
+                    color: "from-green-500 to-emerald-600"
+                  },
+                  {
+                    title: "Tecnología Diferenciadora",
+                    points: [
+                      "Primera plataforma en México con IA nativa integrada",
+                      "Sistema de privacidad más avanzado del mercado",
+                      "Arquitectura preparada para escalar masivamente",
+                      "Primera plataforma social en México con economía tokenizada"
+                    ],
+                    icon: <Brain className="h-6 w-6" />,
+                    color: "from-blue-500 to-purple-600"
+                  },
+                  {
+                    title: "Economía Tokenizada Innovadora",
+                    points: [
+                      "Token GTK con potencial de apreciación (suministro limitado)",
+                      "Token CMPX para ingresos recurrentes",
+                      "Modelo probado: inspirado en Axie Infinity, The Sandbox",
+                      "Roadmap blockchain claro: Q2-Q4 2026"
+                    ],
+                    icon: <Coins className="h-6 w-6" />,
+                    color: "from-yellow-500 to-orange-600"
+                  },
+                  {
+                    title: "Posicionamiento Estratégico",
+                    points: [
+                      "Enfoque en calidad sobre cantidad",
+                      "Comunidad exclusiva y verificada",
+                      "Discreción y seguridad como pilares",
+                      "Primeros mover advantage en espacio blockchain social México"
+                    ],
+                    icon: <Star className="h-6 w-6" />,
+                    color: "from-purple-500 to-pink-600"
+                  }
+                ].map((reason, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 1.5 + idx * 0.1 }}
+                    className="p-6 bg-white/10 rounded-xl border border-white/20 hover:border-purple-400/50 transition-all duration-300"
+                  >
+                    <div className={`inline-flex p-3 rounded-lg bg-gradient-to-r ${reason.color} text-white mb-4`}>
+                      {reason.icon}
+                    </div>
+                    <h4 className="text-xl font-bold text-white mb-4">{reason.title}</h4>
+                    <ul className="space-y-2">
+                      {reason.points.map((point, pointIdx) => (
+                        <li key={pointIdx} className="flex items-start gap-2 text-white/80 text-sm">
+                          <CheckCircle2 className="h-4 w-4 text-purple-400 flex-shrink-0 mt-0.5" />
+                          <span>{point}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </motion.div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </motion.section>
+
+        {/* Call to Action Final */}
+        <motion.section
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 1.5 }}
           className="text-center pt-8"
         >
           <Card className="bg-gradient-to-r from-purple-600/30 via-pink-600/30 to-blue-600/30 backdrop-blur-xl border-purple-400/30 shadow-2xl">
