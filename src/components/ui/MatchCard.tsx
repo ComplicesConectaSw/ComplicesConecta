@@ -412,21 +412,21 @@ export const MatchCard: React.FC<MatchCardProps> = ({
       <Dialog open={showSuperLikeModal} onOpenChange={setShowSuperLikeModal}>
         <DialogContent className="bg-gradient-to-br from-blue-900 via-purple-900 to-blue-900 text-white border-blue-500/30 z-[100]">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-xl">
+            <DialogTitle className="flex items-center gap-2 text-xl font-bold text-white drop-shadow-lg">
               <Sparkles className="h-6 w-6 text-blue-400" />
               ¡Super Like Enviado!
             </DialogTitle>
-            <DialogDescription className="text-white/80">
+            <DialogDescription className="text-white font-medium drop-shadow-md">
               Has destacado tu interés de forma especial
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
-            <p className="text-white/90 leading-relaxed">
+            <p className="text-white font-medium leading-relaxed drop-shadow-md">
               Has enviado un <strong className="text-blue-300">Super Like</strong> a <strong className="text-purple-300">{name}</strong>. 
               Esto significa que estás muy interesado/a y destacarás entre otros perfiles. ⭐
             </p>
             <div className="bg-white/10 rounded-lg p-4 space-y-2">
-              <p className="text-sm font-semibold text-blue-300">¿Por qué usar Super Like?</p>
+              <p className="text-sm font-bold text-blue-300 drop-shadow-sm">¿Por qué usar Super Like?</p>
               <ul className="text-sm text-white font-medium space-y-1 list-disc list-inside drop-shadow-sm">
                 <li>Tu perfil aparecerá destacado en su lista de matches</li>
                 <li>Aumenta las probabilidades de que te respondan</li>
