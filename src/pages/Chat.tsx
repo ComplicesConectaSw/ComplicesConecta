@@ -422,7 +422,7 @@ const Chat = () => {
             </div>
             
             {/* Tabs para Private/Public */}
-            <div className="flex gap-2 bg-white/10 backdrop-blur-sm rounded-lg p-1">
+            <div className="flex gap-2 bg-gradient-to-r from-purple-900/30 to-blue-900/30 backdrop-blur-sm rounded-lg p-1 border border-purple-400/20">
               <UnifiedButton
                 variant={activeTab === 'private' ? 'default' : 'ghost'}
                 size="sm"
@@ -481,7 +481,7 @@ const Chat = () => {
             {/* Tab Content */}
             {activeTab === 'private' && (
               <div className="mt-4">
-                <div className="text-white font-medium text-sm mb-3 px-2 drop-shadow-md">
+                <div className="text-white font-semibold text-sm mb-3 px-2 drop-shadow-lg">
                   💬 Chats privados con tus conexiones
                 </div>
                 <div className="space-y-2">
@@ -538,7 +538,7 @@ const Chat = () => {
             
             {activeTab === 'public' && (
               <div className="mt-4">
-                <div className="text-white font-medium text-sm mb-3 px-2 drop-shadow-md">
+                <div className="text-white font-semibold text-sm mb-3 px-2 drop-shadow-lg">
                   🌍 Salas públicas de la comunidad
                 </div>
                 <div className="space-y-2">
@@ -626,7 +626,7 @@ const Chat = () => {
                         <Globe className="h-4 w-4 text-green-300" />
                       )}
                     </div>
-                    <p className="text-sm text-white/60">
+                    <p className="text-sm text-white/90 drop-shadow-md">
                       {selectedChat.roomType === 'public' 
                         ? `Sala pública • ${Math.floor(Math.random() * 50) + 10} miembros activos`
                         : selectedChat.isOnline ? 'En línea' : `Última vez ${selectedChat.timestamp}`
@@ -790,24 +790,24 @@ const Chat = () => {
               </div>
             </>
           ) : (
-            <div className="flex-1 flex items-center justify-center">
-              <div className="text-center text-white/60">
-                <MessageCircle className="h-16 w-16 mx-auto mb-4 opacity-50" />
-                <h3 className="text-xl font-semibold mb-2">Selecciona una conversación</h3>
-                <p className="mb-4">
+              <div className="flex-1 flex items-center justify-center">
+              <div className="text-center text-white">
+                <MessageCircle className="h-16 w-16 mx-auto mb-4 text-white opacity-80 drop-shadow-lg" />
+                <h3 className="text-xl font-semibold mb-2 text-white drop-shadow-md">Selecciona una conversación</h3>
+                <p className="mb-4 text-white/90 drop-shadow-md">
                   {activeTab === 'private' 
                     ? 'Elige un chat privado para conversar de forma segura'
                     : 'Únete a una sala pública para conocer la comunidad'
                   }
                 </p>
                 <div className="flex items-center justify-center text-sm space-x-4">
-                  <div className="flex items-center">
-                    <Lock className="h-4 w-4 mr-1 text-purple-400" />
-                    <span>Chats privados encriptados</span>
+                  <div className="flex items-center text-white/90">
+                    <Lock className="h-4 w-4 mr-1 text-purple-300" />
+                    <span className="drop-shadow-md">Chats privados encriptados</span>
                   </div>
-                  <div className="flex items-center">
-                    <Globe className="h-4 w-4 mr-1 text-green-400" />
-                    <span>Salas públicas moderadas</span>
+                  <div className="flex items-center text-white/90">
+                    <Globe className="h-4 w-4 mr-1 text-green-300" />
+                    <span className="drop-shadow-md">Salas públicas moderadas</span>
                   </div>
                 </div>
               </div>

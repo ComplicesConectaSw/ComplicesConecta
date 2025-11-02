@@ -38,10 +38,10 @@ export const DecorativeHearts: React.FC<DecorativeHeartsProps> = ({
       opacity: number;
     } = {
       id: i,
-      size: Math.random() * 16 + 12, // Entre 12px y 28px - más grandes
-      delay: i * 0.8, // Delay escalonado más espaciado
-      duration: Math.random() * 4 + 8, // Entre 8s y 12s - más lentas
-      opacity: Math.random() * 0.4 + 0.3, // Entre 0.3 y 0.7 - más visibles
+      size: Math.random() * 20 + 16, // Entre 16px y 36px - más grandes y visibles
+      delay: i * 1.2, // Delay escalonado más espaciado para mejor distribución
+      duration: Math.random() * 6 + 12, // Entre 12s y 18s - mucho más lentas
+      opacity: Math.random() * 0.5 + 0.5, // Entre 0.5 y 1.0 - más visibles
     };
     
     if ('top' in pos && typeof pos.top === 'string') heartData.top = pos.top;
@@ -53,11 +53,11 @@ export const DecorativeHearts: React.FC<DecorativeHeartsProps> = ({
   });
 
   return (
-    <div className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}>
+    <div className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`} style={{ willChange: 'transform' }}>
       {hearts.map((heart) => (
         <Heart
           key={heart.id}
-          className="absolute text-white animate-float"
+          className="absolute text-white animate-float-heart-slow"
           style={{
             ...(heart.top && { top: heart.top }),
             ...(heart.left && { left: heart.left }),
@@ -68,11 +68,13 @@ export const DecorativeHearts: React.FC<DecorativeHeartsProps> = ({
             opacity: heart.opacity,
             animationDelay: `${heart.delay}s`,
             animationDuration: `${heart.duration}s`,
-            filter: 'drop-shadow(0 4px 12px rgba(255,255,255,0.5))',
+            filter: 'drop-shadow(0 4px 12px rgba(255,255,255,0.6))',
+            willChange: 'transform, opacity',
+            transform: 'translateZ(0)', // Force hardware acceleration
           }}
           fill="currentColor"
-          stroke="rgba(255,255,255,0.3)"
-          strokeWidth="1"
+          stroke="rgba(255,255,255,0.5)"
+          strokeWidth="1.5"
         />
       ))}
     </div>

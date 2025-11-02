@@ -62,6 +62,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
     { name: 'Descubrir', path: '/discover', icon: Search },
     { name: 'Matches', path: '/matches', icon: Heart },
     { name: 'Chat', path: '/chat', icon: MessageSquare },
+    { name: 'Noticias', path: '/news', icon: Bell },
     { name: 'Eventos', path: '/events', icon: Calendar },
     { name: 'Tokens', path: '/tokens', icon: DollarSign }
   ];

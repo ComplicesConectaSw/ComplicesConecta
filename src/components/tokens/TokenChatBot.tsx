@@ -395,19 +395,19 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
 
   return (
     <Card className="token-chatbox w-full max-w-2xl mx-auto h-[600px] flex flex-col">
-      <CardHeader className="border-b border-white/20 bg-gradient-to-r from-purple-900/40 to-blue-900/40 backdrop-filter backdrop-blur-md flex-shrink-0">
-        <CardTitle className="flex items-center gap-2 text-white font-bold">
+      <CardHeader className="border-b border-white/20 bg-gradient-to-r from-purple-900/80 to-blue-900/80 backdrop-filter backdrop-blur-md flex-shrink-0 shadow-lg">
+        <CardTitle className="flex items-center gap-2 text-white font-bold drop-shadow-md">
           <Bot className="h-5 w-5 text-purple-300" />
           🤖 Asistente de Tokens CMPX/GTK
         </CardTitle>
-        <p className="text-sm text-white font-medium">
+        <p className="text-sm text-white font-medium drop-shadow-md">
           Tu guía personal para tokens en fase Beta
         </p>
       </CardHeader>
       
-      <CardContent className="flex-1 flex flex-col p-0">
+      <CardContent className="flex-1 flex flex-col p-0 bg-gradient-to-b from-purple-900/10 to-blue-900/10">
         {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-white/5 backdrop-filter backdrop-blur-sm">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-purple-900/20 to-blue-900/20 backdrop-filter backdrop-blur-sm">
           {messages.map((message) => (
             <div
               key={message.id}
@@ -430,7 +430,7 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
                     : 'bg-gradient-to-r from-purple-800/95 via-purple-700/95 to-blue-800/95 backdrop-filter backdrop-blur-md text-white border border-purple-400/50 shadow-lg'
                 )}
               >
-                <div className="whitespace-pre-wrap text-sm leading-relaxed break-words max-h-40 overflow-y-auto overflow-wrap-break-word hyphens-auto font-medium text-white drop-shadow-md">
+                <div className="whitespace-pre-wrap text-sm leading-relaxed break-words max-h-40 overflow-y-auto overflow-wrap-break-word hyphens-auto font-semibold text-white drop-shadow-lg">
                   {message.content.split('\n').map((line, idx) => {
                     // Detectar bullets y aplicar estilos especiales
                     if (line.trim().startsWith('•')) {
@@ -488,7 +488,7 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
         </div>
         
         {/* Input Area */}
-        <div className="border-t border-white/20 p-4 bg-white/10 backdrop-filter backdrop-blur-md flex-shrink-0">
+        <div className="border-t border-white/30 p-4 bg-gradient-to-r from-purple-900/50 to-blue-900/50 backdrop-filter backdrop-blur-md flex-shrink-0 shadow-lg">
           <div className="flex gap-2">
             <Input
               value={userInput}
