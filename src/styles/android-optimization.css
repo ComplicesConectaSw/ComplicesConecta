@@ -632,12 +632,36 @@ body {
 
 /* ===== HEADER AND NAVIGATION IMPROVEMENTS ===== */
 /* Enhanced header styles for better contrast and responsiveness */
-.header-nav,
+/* NOTA: HeaderNav tiene su propio gradiente, no sobrescribir */
 .navigation-enhanced,
-header {
+header:not([class*="HeaderNav"]):not([class*="bg-gradient"]) {
   background: rgba(0, 0, 0, 0.8) !important;
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Permitir que HeaderNav use su gradiente personalizado */
+.header-nav-main,
+header.header-nav-main,
+header[class*="header-nav-main"],
+header[class*="bg-gradient-to-b"] {
+  background-image: inherit !important;
+  background: inherit !important;
+  /* Proteger gradiente difuminado purple/blue */
+}
+
+/* Asegurar que ningún estilo sobrescriba el gradiente del header principal */
+.header-nav-main.bg-gradient-to-b {
+  background: linear-gradient(to bottom, 
+    rgba(88, 28, 135, 0.95) 0%, 
+    rgba(107, 33, 168, 0.90) 50%, 
+    rgba(126, 34, 206, 0.80) 100%
+  ) !important;
+  background-image: linear-gradient(to bottom, 
+    rgba(88, 28, 135, 0.95) 0%, 
+    rgba(107, 33, 168, 0.90) 50%, 
+    rgba(126, 34, 206, 0.80) 100%
+  ) !important;
 }
 
 .header-nav .text-white,

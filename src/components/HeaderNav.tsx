@@ -69,7 +69,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
   // Items secundarios - en menú desplegable
   const secondaryNavItems = [
     { name: 'Perfiles', path: '/profiles', icon: User, category: 'Comunidad' },
-    { name: 'Feed', path: '/feed', icon: Users, category: 'Comunidad' },
+    // Feed removido: tiene su propio navegador y es exclusivo para perfiles demo/producción
     { name: 'Premium', path: '/premium', icon: Crown, category: 'Servicios' },
     { name: 'Marketplace', path: '/marketplace', icon: ShoppingBag, category: 'Servicios' },
     { name: 'Blog', path: '/blog', icon: FileText, category: 'Contenido' },
@@ -126,7 +126,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
   return (
     <>
       {/* Header Principal con gradiente difuminado */}
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      <header className={`header-nav-main fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled 
           ? 'bg-gradient-to-b from-purple-900/90 via-purple-800/85 to-transparent backdrop-blur-md border-b border-purple-500/20' 
           : 'bg-gradient-to-b from-purple-900/95 via-purple-800/90 to-purple-700/80 backdrop-blur-sm border-b border-purple-400/30'

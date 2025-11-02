@@ -1,0 +1,69 @@
+/* ===== HEADER NAV PROTECTION - v3.5.1 ===== */
+/* Protección específica para HeaderNav gradiente difuminado */
+/* Evitar que otros estilos sobrescriban el gradiente purple/blue */
+
+.header-nav-main,
+header.header-nav-main {
+  /* Proteger gradiente difuminado */
+  background-image: linear-gradient(to bottom, 
+    rgba(88, 28, 135, 0.95) 0%, 
+    rgba(107, 33, 168, 0.90) 50%, 
+    rgba(126, 34, 206, 0.80) 100%
+  ) !important;
+  
+  /* Asegurar backdrop blur funcione */
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  
+  /* Proteger borde */
+  border-bottom: 1px solid rgba(168, 85, 247, 0.3) !important;
+}
+
+/* Cuando está scrolled */
+.header-nav-main.bg-gradient-to-b.from-purple-900\/90 {
+  background-image: linear-gradient(to bottom, 
+    rgba(88, 28, 135, 0.90) 0%, 
+    rgba(107, 33, 168, 0.85) 50%, 
+    transparent 100%
+  ) !important;
+}
+
+/* Proteger animación del corazón */
+.header-nav-main .animate-heart-beat,
+.header-nav-main .animate-heart-float {
+  animation: heartBeat 1.5s ease-in-out infinite, 
+             heartFloat 3s ease-in-out infinite !important;
+}
+
+/* Proteger gradiente del texto del logo */
+.header-nav-main span.bg-gradient-to-r.from-purple-300.via-pink-300 {
+  background: linear-gradient(to right, 
+    rgba(196, 181, 253, 1) 0%, 
+    rgba(249, 168, 212, 1) 50%, 
+    rgba(147, 197, 253, 1) 100%
+  ) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  background-size: 200% 200% !important;
+}
+
+/* Asegurar que ningún estilo global sobrescriba el header */
+body header.header-nav-main,
+html header.header-nav-main {
+  background: inherit !important;
+  background-image: inherit !important;
+}
+
+/* Protección contra estilos responsive que puedan interferir */
+@media (max-width: 1024px) {
+  .header-nav-main {
+    background-image: inherit !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-nav-main {
+    background-image: inherit !important;
+  }
+}
+
