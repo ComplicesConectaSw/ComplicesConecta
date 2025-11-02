@@ -2,9 +2,8 @@ import { Heart, Sparkles, Users } from "lucide-react";
 
 export const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Gradient - Uniforme continuo sin bordes - púrpura/azul */}
-      <div className="fixed inset-0 bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 -z-10" />
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900">
+      {/* Sin background adicional - el section tiene el background directamente */}
       
       {/* Elementos decorativos sutiles - sin orbs que creen bordes */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">

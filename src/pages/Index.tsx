@@ -259,8 +259,8 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      {/* Background uniforme continuo sin bordes - sin elementos adicionales */}
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900">
+      {/* Background uniforme continuo - aplicado directamente al contenedor principal */}
       {/* Content */}
       <div className="relative z-10">
         <BetaBanner />
@@ -269,7 +269,7 @@ const Index = () => {
         </div>
       </div>
       
-      <main>
+      <main className="bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900">
         <HeroSection />
         
         {/* Featured Profiles Section */}
