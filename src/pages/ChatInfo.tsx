@@ -21,7 +21,7 @@ const ChatInfo = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen android-fix relative overflow-hidden bg-gradient-to-br from-purple-600 via-pink-500 to-indigo-600">
+    <div className="min-h-screen android-fix relative overflow-hidden bg-gradient-to-br from-purple-600 via-purple-500 to-indigo-600">
       {/* Background matching other pages */}
       <div className="fixed inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-purple-600/90 via-purple-500/90 to-indigo-600/90"></div>
@@ -113,7 +113,7 @@ const ChatInfo = () => {
                     <span>Moderación profesional</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
-                    <Heart className="h-4 w-4 text-pink-400" />
+                    <Heart className="h-4 w-4 text-purple-400" />
                     <span>Ambiente respetuoso</span>
                   </div>
                 </div>
@@ -133,7 +133,7 @@ const ChatInfo = () => {
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="p-4 bg-white/5 rounded-lg border border-white/10">
                   <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 bg-gradient-to-r from-red-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold">
+                    <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center text-white font-bold">
                       🔥
                     </div>
                     <div>
@@ -215,7 +215,7 @@ const ChatInfo = () => {
           <div className="text-center">
             <Button 
               onClick={() => navigate('/chat-authenticated')}
-              className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-8 py-3 rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
+              className="bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700 text-white px-8 py-3 rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
             >
               <MessageCircle className="h-5 w-5 mr-2" />
               Comenzar a Chatear

@@ -344,7 +344,7 @@ const Requests = () => {
                     </Card>
                   ) : (
                     sentInvitations.map((inv) => (
-                      <Card key={inv.id} className="p-4 bg-gradient-to-br from-purple-900/30 via-pink-900/20 to-red-900/30 backdrop-blur-sm border-white/10 card-accessible">
+                      <Card key={inv.id} className="p-4 bg-gradient-to-br from-purple-900/30 via-purple-800/20 to-blue-900/30 backdrop-blur-sm border-white/10 card-accessible">
                         <div className="flex justify-between items-start">
                           <div className="flex items-center text-sm text-white/80">
                             {getInvitationTypeIcon(inv.type)}
