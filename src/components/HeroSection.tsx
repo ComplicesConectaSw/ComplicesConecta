@@ -4,22 +4,10 @@ export const HeroSection = () => {
   return (
     <section className="relative flex items-center justify-center overflow-hidden py-16 sm:py-24">
       {/* Sin background aquí - el background está en el contenedor principal */}
-      {/* Sin elementos decorativos adicionales que creen bloques */}
-        {/* Floating Hearts - Muy sutiles */}
-        <Heart className="absolute top-20 left-10 w-8 h-8 text-white/20 drop-shadow-lg animate-float" fill="currentColor" stroke="white" strokeWidth="1" />
-        <Heart className="absolute top-32 right-16 w-6 h-6 text-white/15 drop-shadow-lg animate-float" style={{ animationDelay: '1s' }} fill="currentColor" stroke="white" strokeWidth="1" />
-        <Heart className="absolute bottom-32 left-20 w-6 h-6 text-white/15 drop-shadow-lg animate-float" style={{ animationDelay: '2s' }} fill="currentColor" stroke="white" strokeWidth="1" />
-        
-        {/* Sparkles - Muy sutiles */}
-        <Sparkles className="absolute top-40 right-20 w-4 h-4 text-white/10 animate-bounce-gentle" style={{ animationDelay: '0.5s' }} />
-        <Sparkles className="absolute bottom-40 left-16 w-5 h-5 text-white/8 animate-bounce-gentle" style={{ animationDelay: '1.5s' }} />
-        
-        {/* Users Icon - Muy sutil */}
-        <Users className="absolute bottom-20 right-10 w-8 h-8 text-white/10 animate-float" style={{ animationDelay: '0.5s' }} />
-      </div>
-
+      {/* Sin elementos decorativos adicionales que creen bloques visibles */}
+      
       {/* Main Content */}
-      <div className="relative z-10 text-center px-4 max-w-6xl mx-auto">
+      <div className="relative text-center px-4 max-w-6xl mx-auto w-full">
         <div className="animate-slide-up">
           {/* Logo ComplicesConecta - Mejorado */}
           <div className="mb-12 flex justify-center">
