@@ -159,8 +159,10 @@ const Auth = () => {
         });
 
         // Redirigir según el tipo de cuenta
-        const accountType = result.user.user_metadata?.account_type || 
-                           result.user.user_metadata?.accountType || 
+        const userWithMetadata = result.user as any;
+        const accountType = userWithMetadata?.user_metadata?.account_type || 
+                           userWithMetadata?.user_metadata?.accountType || 
+                           userWithMetadata?.accountType ||
                            formData.accountType || 
                            'single';
 
