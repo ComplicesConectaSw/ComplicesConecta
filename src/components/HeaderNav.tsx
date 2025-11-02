@@ -6,7 +6,6 @@ import {
   User, 
   MessageSquare, 
   Calendar, 
-  Users, 
   Building2, 
   Shield, 
   HelpCircle, 
