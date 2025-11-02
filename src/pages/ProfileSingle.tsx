@@ -329,8 +329,21 @@ const ProfileSingle: React.FC = () => {
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
                 {/* Avatar */}
                 <div className="relative flex-shrink-0">
-                  <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-purple-400 to-blue-600 flex items-center justify-center text-white text-2xl sm:text-4xl font-bold">
-                    {profile.name?.[0]?.toUpperCase() || 'U'}
+                  <div className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden bg-gradient-to-br from-purple-400 to-blue-600 flex items-center justify-center text-white text-2xl sm:text-4xl font-bold">
+                    {profile.avatar_url && profile.avatar_url !== '/placeholder.svg' ? (
+                      <img
+                        src={profile.avatar_url}
+                        alt={profile.name || 'Avatar'}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                        }}
+                      />
+                    ) : null}
+                    <span className={profile.avatar_url && profile.avatar_url !== '/placeholder.svg' ? 'hidden' : ''}>
+                      {profile.name?.[0]?.toUpperCase() || 'U'}
+                    </span>
                   </div>
                   {profile.is_verified && (
                     <div className="absolute -top-2 -right-2 bg-blue-500 rounded-full p-1">

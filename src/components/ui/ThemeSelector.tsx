@@ -54,7 +54,7 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
         <select
           value={selectedTheme || ''}
           onChange={(e) => onThemeChange(e.target.value as Theme || undefined)}
-          className="text-sm border border-gray-300 rounded-md px-2 py-1 bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+          className="text-sm border border-white/30 rounded-md px-2 py-1 bg-white/10 backdrop-blur-sm text-white focus:ring-2 focus:ring-purple-500 focus:border-purple-400"
         >
           <option value="">Por defecto</option>
           {themes.map((theme) => (

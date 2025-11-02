@@ -7,6 +7,7 @@ import { logger } from '@/lib/logger';
 import { useFeatures } from '@/hooks/useFeatures';
 import { usePersistedState } from '@/hooks/usePersistedState';
 import { cn } from '@/lib/utils';
+import { getNavbarStyles } from '@/hooks/useProfileTheme';
 
 interface NavigationProps {
   className?: string;
@@ -52,6 +53,19 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
   const [_isDemoAuthenticated] = usePersistedState('demo_authenticated', 'false');
   const [demoUser] = usePersistedState('demo_user', null);
   const [_currentUserType] = usePersistedState('userType', null);
+  
+  // Obtener navbarStyle desde localStorage (compatibilidad con demo_navbar_style y navbarStyle)
+  const [demoNavbarStyle] = usePersistedState<'transparent' | 'solid'>('demo_navbar_style', 'solid');
+  const [prodNavbarStyle] = usePersistedState<'transparent' | 'solid'>('user_navbar_style', 'solid');
+  const [legacyNavbarStyle] = usePersistedState<'transparent' | 'solid'>('navbarStyle', 'solid');
+  
+  // Determinar qué estilo usar (prioridad: demo_navbar_style > user_navbar_style > navbarStyle > 'solid')
+  const navbarStyleState = isAuthenticated 
+    ? (demoNavbarStyle || prodNavbarStyle || legacyNavbarStyle || 'solid')
+    : (demoNavbarStyle || legacyNavbarStyle || 'solid');
+  
+  // Obtener estilos del navbar según la configuración
+  const navbarStyles = getNavbarStyles(navbarStyleState || 'solid');
   
   const isAuthenticated = _isDemoAuthenticated === 'true' && demoUser !== null && demoUser !== false;
   
@@ -176,7 +190,10 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
   return (
     <nav className={cn(
       "fixed bottom-0 left-0 right-0 z-50",
-      "bg-gradient-to-r from-purple-900/95 via-purple-800/95 to-blue-900/95 backdrop-blur-xl border-t border-purple-500/40 shadow-2xl",
+      navbarStyles.backgroundClass, // Aplicar estilo según navbarStyle
+      navbarStyles.shadowClass, // Aplicar sombra según estilo
+      navbarStyles.borderClass ? `border-t ${navbarStyles.borderClass}` : "border-t border-purple-500/40",
+      "backdrop-blur-xl",
       "px-2 sm:px-4 py-2 sm:py-3 safe-area-pb",
       "translate-y-0 opacity-100",
       className

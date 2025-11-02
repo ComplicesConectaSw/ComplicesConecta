@@ -226,7 +226,7 @@ const Settings = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 
-                  className="bg-white text-primary hover:bg-white/90 font-semibold px-6 py-3 text-lg"
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold px-6 py-3 text-lg shadow-lg"
                   onClick={() => navigate('/premium')}
                 >
                   <Crown className="mr-2 h-5 w-5" />
