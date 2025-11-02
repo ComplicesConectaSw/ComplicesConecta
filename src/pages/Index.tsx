@@ -306,7 +306,7 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Stories Section - Removida porque ya está en HeaderNav */}
+        {/* Stories Section - Removida porque ya está en HeaderNav (sin elementos fantasma) */}
 
         {/* About, Careers, Donations Section */}
         <section className="py-20 relative">
