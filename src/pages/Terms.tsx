@@ -3,17 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { Shield, Users, Heart, Lock, FileText } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
+import HeaderNav from '@/components/HeaderNav';
 
 const Terms = () => {
   const _navigate = useNavigate();
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 relative overflow-hidden">
       {/* Animated Background */}
       <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-background via-muted/30 to-secondary/20"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-purple-800/20 to-blue-900/20"></div>
         
         {/* Animated Gradient Orbs */}
         <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
@@ -22,7 +21,7 @@ const Terms = () => {
       </div>
       
       <div className="relative z-10">
-        <Header />
+        <HeaderNav />
         
         <main className="container mx-auto px-4 py-8">
 
@@ -216,8 +215,6 @@ const Terms = () => {
             </Card>
           </div>
         </main>
-
-        <Footer />
       </div>
       
       {/* Custom Styles */}

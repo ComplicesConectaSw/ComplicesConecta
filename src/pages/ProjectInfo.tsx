@@ -10,7 +10,7 @@ import { ArrowLeft, FileText, GitBranch, Shield, Users, Send, Info, Lock, Code, 
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import { logger } from '@/lib/logger';
-import { Header } from '@/components/Header';
+import HeaderNav from '@/components/HeaderNav';
 
 export default function ProjectInfo() {
   const navigate = useNavigate();
@@ -18,8 +18,8 @@ export default function ProjectInfo() {
   const [activeTab, setActiveTab] = useState<'readme' | 'releases' | 'moderators'>('readme');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900">
-      <Header />
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900">
+      <HeaderNav />
       
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
@@ -83,7 +83,7 @@ export default function ProjectInfo() {
                     </p>
                   </div>
 
-                  <blockquote className="border-l-4 border-pink-500 pl-4 italic text-xl text-white/90 mb-8">
+                  <blockquote className="border-l-4 border-purple-500 pl-4 italic text-xl text-white/90 mb-8">
                     La plataforma de intercambio de parejas más exclusiva y segura de México +18
                   </blockquote>
 
@@ -120,7 +120,7 @@ export default function ProjectInfo() {
                   <h2 className="text-2xl font-bold text-white mb-4">📊 Métricas del Proyecto</h2>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
                     <div className="bg-white/5 rounded-lg p-4">
-                      <div className="text-2xl font-bold text-pink-400">220+</div>
+                      <div className="text-2xl font-bold text-purple-400">220+</div>
                       <div className="text-white/70">Archivos</div>
                     </div>
                     <div className="bg-white/5 rounded-lg p-4">
@@ -316,7 +316,7 @@ export default function ProjectInfo() {
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-r from-purple-900/80 to-pink-900/80 backdrop-blur-sm border border-purple-400/30">
+            <Card className="bg-gradient-to-r from-purple-900/80 to-purple-800/80 backdrop-blur-sm border border-purple-400/30">
               <CardContent className="p-6 text-center">
                 <Info className="h-8 w-8 text-purple-400 mx-auto mb-3" />
                 <h3 className="text-lg font-semibold text-white mb-2">Soporte</h3>

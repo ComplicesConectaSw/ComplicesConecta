@@ -8,7 +8,7 @@ const SecurityPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-600 via-pink-500 to-indigo-600">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900">
       <HeaderNav />
       <div className="container mx-auto px-4 py-8">
 
@@ -220,7 +220,7 @@ const SecurityPage = () => {
           </p>
           <Button
             onClick={() => navigate('/support')}
-            className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold px-6 py-3 transition-all duration-300 hover:scale-105"
+            className="bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700 text-white font-semibold px-6 py-3 transition-all duration-300 hover:scale-105"
           >
             Contactar Soporte
           </Button>

@@ -18,6 +18,7 @@ import {
   X,
   ShoppingBag,
   FileText,
+  Lock,
   Crown
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -63,7 +64,11 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
     { name: 'Premium', path: '/premium', icon: Crown },
     { name: 'FAQ', path: '/faq', icon: HelpCircle },
     { name: 'Información', path: '/info', icon: Info },
-    { name: 'Términos', path: '/terms', icon: FileText }
+    { name: 'Términos', path: '/terms', icon: FileText },
+    { name: 'Privacidad', path: '/privacy', icon: Lock },
+    { name: 'Seguridad', path: '/security', icon: Shield },
+    { name: 'Soporte', path: '/support', icon: HelpCircle },
+    { name: 'Proyecto', path: '/project-info', icon: FileText }
   ];
 
   const isActive = (path: string) => {
