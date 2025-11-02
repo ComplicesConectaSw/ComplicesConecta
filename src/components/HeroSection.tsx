@@ -3,8 +3,8 @@ import { Heart, Sparkles, Users } from "lucide-react";
 export const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Gradient - Gradiente azul-púrpura sin rosa/naranja */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-purple-600 to-purple-900" />
+      {/* Background Gradient - Uniforme púrpura/azul sin rosa */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900" />
       
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">

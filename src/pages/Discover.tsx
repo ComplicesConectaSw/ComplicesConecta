@@ -72,7 +72,9 @@ const Discover = () => {
   const [filteredProfiles, setFilteredProfiles] = useState<Profile[]>([]);
   const [filteredDemoProfiles, setFilteredDemoProfiles] = useState<DemoProfile[]>([]);
   const [filteredCoupleProfiles, setFilteredCoupleProfiles] = useState<CoupleProfileWithPartners[]>([]);
-  const [showFilters, setShowFilters] = useState(false);
+  // Filtros siempre visibles - función premium habilitada en beta
+  const [showFilters, setShowFilters] = useState(true);
+  const [isPremium] = useState(true); // En beta, todos tienen acceso premium
   const [showCouples, setShowCouples] = useState(false);
   
   // Modal states
@@ -423,12 +425,12 @@ const Discover = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 relative overflow-hidden pb-20">
-      {/* Animated Background */}
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 relative overflow-hidden pb-20">
+      {/* Animated Background - Uniforme púrpura/azul */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full mix-blend-multiply filter blur-xl animate-blob"></div>
-        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-pink-500/20 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000"></div>
-        <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-red-500/20 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-4000"></div>
+        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-blue-500/20 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-purple-600/20 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-4000"></div>
       </div>
       
       <div className="relative z-10">
@@ -522,9 +524,15 @@ const Discover = () => {
             >
               <GlassCard className="w-full lg:w-80 p-4 lg:p-6" variant="colored">
               <h3 className="text-lg font-semibold mb-4 text-white flex items-center gap-2">
-                <span className="bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent font-bold">
+                <Filter className="h-5 w-5 text-purple-300" />
+                <span className="bg-gradient-to-r from-purple-300 to-blue-300 bg-clip-text text-transparent font-bold">
                   Filtros Avanzados
                 </span>
+                {!isPremium && (
+                  <Badge className="ml-2 bg-yellow-500/30 text-yellow-300 border-yellow-400/50 text-xs">
+                    Premium
+                  </Badge>
+                )}
               </h3>
               
               {/* Edad */}
@@ -568,7 +576,7 @@ const Discover = () => {
                       key={interest}
                       className={`cursor-pointer text-xs font-medium transition-all duration-200 hover:scale-105 ${
                         filters.interests.includes(interest) 
-                          ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0 shadow-lg" 
+                          ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white border-0 shadow-lg" 
                           : "border-white/60 text-white hover:border-white hover:bg-white/20 border bg-transparent"
                       }`}
                       onClick={() => {
@@ -588,7 +596,7 @@ const Discover = () => {
 
               {/* Tipo de Relación */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-purple-800 mb-3">
+                <label className="block text-sm font-semibold text-white mb-3">
                   Tipo de Relación
                 </label>
                 <div className="grid grid-cols-2 gap-2">
@@ -599,8 +607,8 @@ const Discover = () => {
                         key={type}
                         className={`cursor-pointer text-xs p-2 text-center transition-all duration-200 ${
                           isSelected 
-                            ? "bg-purple-600 text-white border-purple-600 hover:bg-purple-700" 
-                            : "border-purple-300 text-purple-700 hover:border-purple-500 hover:bg-purple-50 border bg-transparent"
+                            ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white border-0 shadow-lg" 
+                            : "border-white/60 text-white hover:border-white hover:bg-white/20 border bg-transparent"
                         }`}
                         onClick={() => {
                           setFilters(prev => ({
@@ -620,11 +628,11 @@ const Discover = () => {
 
               {/* Verificación */}
               <div className="mb-4">
-                <label className="flex items-center gap-2 text-sm font-medium text-purple-800 cursor-pointer">
+                <label className="flex items-center gap-2 text-sm font-medium text-white cursor-pointer">
                   <input 
                     type="checkbox" 
                     checked={filters.verified}
-                    className="w-4 h-4 text-purple-600 border-purple-300 rounded focus:ring-purple-500"
+                    className="w-4 h-4 text-purple-600 border-white/30 rounded focus:ring-purple-500 bg-white/10"
                     onChange={(e) => {
                       setFilters(prev => ({
                         ...prev,
@@ -707,7 +715,7 @@ const Discover = () => {
                 // Show content based on authentication status
                 <>
                   {/* Usuarios NO autenticados: Cards de filtros demo */}
-                  {!isAuthenticated() && filterCards.map((card, index) => (
+                  {!isAuthenticated && filterCards.map((card, index) => (
                     <FilterDemoCardComponent
                       key={card.id}
                       card={card}
@@ -717,7 +725,7 @@ const Discover = () => {
                   ))}
                   
                   {/* Usuarios autenticados con credenciales demo: Perfiles demo */}
-                  {isAuthenticated() && user?.email === 'single@outlook.es' && filteredDemoProfiles.map((profile, index) => (
+                  {isAuthenticated && user?.email === 'single@outlook.es' && filteredDemoProfiles.map((profile, index) => (
                     <motion.div
                       key={profile.id}
                       initial={{ opacity: 0, y: 50 }}
@@ -744,7 +752,7 @@ const Discover = () => {
                   ))}
                   
                   {/* Usuarios autenticados con credenciales demo: Perfiles demo */}
-                  {isAuthenticated() && user?.email === 'pareja@outlook.es' && filteredDemoProfiles.map((profile, index) => (
+                  {isAuthenticated && user?.email === 'pareja@outlook.es' && filteredDemoProfiles.map((profile, index) => (
                     <motion.div
                       key={profile.id}
                       initial={{ opacity: 0, y: 50 }}
