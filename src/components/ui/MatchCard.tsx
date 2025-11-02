@@ -383,22 +383,22 @@ export const MatchCard: React.FC<MatchCardProps> = ({
       <Dialog open={showLikeModal} onOpenChange={setShowLikeModal}>
         <DialogContent className="bg-gradient-to-br from-purple-900 via-purple-800 to-purple-900 text-white border-purple-500/30 z-[100]">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-xl">
-              <Heart className="h-6 w-6 text-pink-400" fill="currentColor" />
+            <DialogTitle className="flex items-center gap-2 text-xl font-bold text-white drop-shadow-lg">
+              <Heart className="h-6 w-6 text-purple-400" fill="currentColor" />
               ¡Me Gusta Enviado!
             </DialogTitle>
-            <DialogDescription className="text-white/80">
+            <DialogDescription className="text-white font-medium drop-shadow-md">
               ¿Qué significa dar "Me Gusta"?
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
-            <p className="text-white/90 leading-relaxed">
-              Has expresado interés en este perfil. Si <strong className="text-pink-300">{name}</strong> también te da "Me Gusta", 
-              ¡será un <strong className="text-purple-300">match</strong>! 💕
+            <p className="text-white font-medium leading-relaxed drop-shadow-md">
+              Has expresado interés en este perfil. Si <strong className="text-purple-300">{name}</strong> también te da "Me Gusta", 
+              ¡será un <strong className="text-blue-300">match</strong>! 💕
             </p>
             <div className="bg-white/10 rounded-lg p-4 space-y-2">
-              <p className="text-sm font-semibold text-pink-300">¿Qué sucede ahora?</p>
-              <ul className="text-sm text-white/80 space-y-1 list-disc list-inside">
+              <p className="text-sm font-bold text-purple-300 drop-shadow-sm">¿Qué sucede ahora?</p>
+              <ul className="text-sm text-white font-medium space-y-1 list-disc list-inside drop-shadow-sm">
                 <li>La otra persona recibirá una notificación</li>
                 <li>Si también te da "Me Gusta", podrán empezar a chatear</li>
                 <li>Tu perfil aparecerá en su sección de "Matches"</li>
@@ -427,7 +427,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({
             </p>
             <div className="bg-white/10 rounded-lg p-4 space-y-2">
               <p className="text-sm font-semibold text-blue-300">¿Por qué usar Super Like?</p>
-              <ul className="text-sm text-white/80 space-y-1 list-disc list-inside">
+              <ul className="text-sm text-white font-medium space-y-1 list-disc list-inside drop-shadow-sm">
                 <li>Tu perfil aparecerá destacado en su lista de matches</li>
                 <li>Aumenta las probabilidades de que te respondan</li>
                 <li>Muestra un interés genuino y especial</li>
@@ -435,7 +435,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({
               </ul>
             </div>
             <div className="bg-blue-500/20 border border-blue-400/30 rounded-lg p-3">
-              <p className="text-xs text-blue-200">
+              <p className="text-xs text-blue-200 font-medium drop-shadow-sm">
                 💡 <strong>Tip:</strong> Usa Super Like de forma estratégica en perfiles que realmente te interesan mucho.
               </p>
             </div>
