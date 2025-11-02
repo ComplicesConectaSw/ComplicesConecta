@@ -5,8 +5,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Navigation from '@/components/Navigation';
+import HeaderNav from '@/components/HeaderNav';
 import { Footer } from "@/components/Footer";
 import { logger } from '@/lib/logger';
+import { useAuth } from '@/hooks/useAuth';
 
 // Professional profile images from Unsplash - Production ready
 // Removed local imports that fail in production
@@ -14,10 +16,14 @@ import { logger } from '@/lib/logger';
 const ProfileDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user, isAuthenticated } = useAuth();
 
   // Verificar autenticación demo
   const demoAuth = localStorage.getItem('demo_authenticated');
   const demoUser = localStorage.getItem('demo_user');
+  
+  // Determinar si hay sesión activa (demo o producción)
+  const hasActiveSession = (demoAuth === 'true' && demoUser) || (isAuthenticated && user);
   
   // Allow access in demo mode or if user is authenticated
   if (demoAuth !== 'true' && !demoUser) {
@@ -106,7 +112,7 @@ const ProfileDetail = () => {
   if (!profile) {
     return (
       <div className="min-h-screen bg-background">
-        <Navigation />
+        {hasActiveSession ? <Navigation /> : <HeaderNav />}
         <main className="container mx-auto px-4 py-8 text-center">
           <h1 className="text-2xl font-bold text-foreground mb-4">Perfil no encontrado</h1>
           <Button onClick={() => navigate("/profiles")} className="text-white bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700">
@@ -128,7 +134,7 @@ const ProfileDetail = () => {
       </div>
       
       <div className="relative z-10">
-        <Navigation />
+        {hasActiveSession ? <Navigation /> : <HeaderNav />}
         
         <main className="container mx-auto px-4 py-8">
         {/* Back Button */}
@@ -147,10 +153,30 @@ const ProfileDetail = () => {
             <Card className="shadow-soft">
               <CardContent className="p-6">
                 <div className="flex flex-col md:flex-row gap-6">
-                  <div className="flex-shrink-0">
+                    <div className="flex-shrink-0">
                     <Avatar className="w-32 h-32">
-                      <AvatarImage src={profile.image} alt={profile.name} />
-                      <AvatarFallback>{profile.name[0]}</AvatarFallback>
+                      <AvatarImage 
+                        src={profile.image} 
+                        alt={profile.name}
+                        onError={(e) => {
+                          // Si la imagen falla, usar fallback de Unsplash
+                          const fallbackImages = [
+                            'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face&auto=format&q=80',
+                            'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face&auto=format&q=80',
+                            'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face&auto=format&q=80'
+                          ];
+                          const randomFallback = fallbackImages[Math.floor(Math.random() * fallbackImages.length)];
+                          if (e.currentTarget.src !== randomFallback) {
+                            e.currentTarget.src = randomFallback;
+                          } else {
+                            // Si también falla el fallback, ocultar imagen y mostrar fallback
+                            e.currentTarget.style.display = 'none';
+                          }
+                        }}
+                      />
+                      <AvatarFallback className="bg-gradient-to-br from-purple-400 to-pink-400 text-white text-2xl font-bold">
+                        {profile.name[0]}
+                      </AvatarFallback>
                     </Avatar>
                     <div className="flex items-center justify-center mt-2">
                       <div className={`w-3 h-3 rounded-full ${profile.isOnline ? 'bg-green-500' : 'bg-gray-400'}`} />
@@ -227,18 +253,30 @@ const ProfileDetail = () => {
                   <div className="space-y-4">
                     <div>
                       <h3 className="font-medium text-white mb-3">Intereses principales</h3>
-                      <div className="flex flex-wrap gap-2 min-h-[80px]">
-                        {profile.interests.map((interest) => (
-                          <Badge key={interest} className="bg-purple-200/80 text-purple-900 border border-purple-300/50 px-3 py-1 text-sm font-semibold">{interest}</Badge>
+                      <div className="flex flex-wrap gap-2 items-start content-start min-h-[80px]">
+                        {profile.interests.map((interest, index) => (
+                          <Badge 
+                            key={interest} 
+                            className="bg-purple-200/80 text-purple-900 border border-purple-300/50 px-3 py-1.5 text-sm font-semibold whitespace-nowrap"
+                            style={{ flexShrink: 0 }}
+                          >
+                            {interest}
+                          </Badge>
                         ))}
                       </div>
                     </div>
                     
                     <div>
                       <h3 className="font-medium text-white mb-3">Otros hobbies</h3>
-                      <div className="flex flex-wrap gap-2 min-h-[80px]">
-                        {profile.hobbies.map((hobby) => (
-                          <Badge key={hobby} className="bg-pink-200/80 text-pink-900 border border-pink-300/50 px-3 py-1 text-sm font-semibold">{hobby}</Badge>
+                      <div className="flex flex-wrap gap-2 items-start content-start min-h-[80px]">
+                        {profile.hobbies.map((hobby, index) => (
+                          <Badge 
+                            key={hobby} 
+                            className="bg-pink-200/80 text-pink-900 border border-pink-300/50 px-3 py-1.5 text-sm font-semibold whitespace-nowrap"
+                            style={{ flexShrink: 0 }}
+                          >
+                            {hobby}
+                          </Badge>
                         ))}
                       </div>
                     </div>
