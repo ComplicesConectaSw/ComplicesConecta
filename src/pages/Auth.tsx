@@ -434,7 +434,7 @@ const Auth = () => {
                       onChange={(e) => handleInputChange('firstName', e.target.value)}
                       required
                       placeholder="Tu nombre"
-                      className="bg-white/10 border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="bg-white/10 border-white/20 text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500"
                     />
                   </div>
 
@@ -446,7 +446,7 @@ const Auth = () => {
                       onChange={(e) => handleInputChange('lastName', e.target.value)}
                       required
                       placeholder="Tu apellido"
-                      className="bg-white/10 border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="bg-white/10 border-white/20 text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500"
                     />
                   </div>
 
@@ -458,7 +458,7 @@ const Auth = () => {
                       onChange={(e) => handleInputChange('nickname', e.target.value)}
                       required
                       placeholder="Nombre público"
-                      className="bg-white/10 border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="bg-white/10 border-white/20 text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500"
                     />
                   </div>
 
@@ -483,13 +483,16 @@ const Auth = () => {
                       value={formData.gender}
                       onChange={(e) => handleInputChange('gender', e.target.value)}
                       required
-                      className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500 [&>option]:bg-purple-900 [&>option]:text-white"
+                      style={{
+                        colorScheme: 'dark'
+                      }}
                     >
-                      <option value="">Selecciona tu género</option>
-                      <option value="male">Masculino</option>
-                      <option value="female">Femenino</option>
-                      <option value="non-binary">No binario</option>
-                      <option value="other">Otro</option>
+                      <option value="" className="bg-purple-900 text-white">Selecciona tu género</option>
+                      <option value="male" className="bg-purple-900 text-white">Masculino</option>
+                      <option value="female" className="bg-purple-900 text-white">Femenino</option>
+                      <option value="non-binary" className="bg-purple-900 text-white">No binario</option>
+                      <option value="other" className="bg-purple-900 text-white">Otro</option>
                     </select>
                   </div>
 
@@ -500,13 +503,16 @@ const Auth = () => {
                       value={formData.interestedIn}
                       onChange={(e) => handleInputChange('interestedIn', e.target.value)}
                       required
-                      className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500 [&>option]:bg-purple-900 [&>option]:text-white"
+                      style={{
+                        colorScheme: 'dark'
+                      }}
                     >
-                      <option value="">Selecciona tu interés</option>
-                      <option value="male">Hombres</option>
-                      <option value="female">Mujeres</option>
-                      <option value="both">Ambos</option>
-                      <option value="couples">Parejas</option>
+                      <option value="" className="bg-purple-900 text-white">Selecciona tu interés</option>
+                      <option value="male" className="bg-purple-900 text-white">Hombres</option>
+                      <option value="female" className="bg-purple-900 text-white">Mujeres</option>
+                      <option value="both" className="bg-purple-900 text-white">Ambos</option>
+                      <option value="couples" className="bg-purple-900 text-white">Parejas</option>
                     </select>
                   </div>
 
@@ -524,7 +530,7 @@ const Auth = () => {
                             onChange={(e) => handleInputChange('partnerFirstName', e.target.value)}
                             required
                             placeholder="Nombre de tu pareja"
-                            className="bg-white/10 border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            className="bg-white/10 border-white/20 text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500"
                           />
                         </div>
 
@@ -536,7 +542,7 @@ const Auth = () => {
                             onChange={(e) => handleInputChange('partnerLastName', e.target.value)}
                             required
                             placeholder="Apellido de tu pareja"
-                            className="bg-white/10 border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            className="bg-white/10 border-white/20 text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500"
                           />
                         </div>
 
@@ -548,7 +554,7 @@ const Auth = () => {
                             onChange={(e) => handleInputChange('partnerNickname', e.target.value)}
                             required
                             placeholder="Nombre público de tu pareja"
-                            className="bg-white/10 border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            className="bg-white/10 border-white/20 text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500"
                           />
                         </div>
 
@@ -562,7 +568,7 @@ const Auth = () => {
                             value={formData.partnerAge}
                             onChange={(e) => handleInputChange('partnerAge', e.target.value)}
                             required
-                            className="bg-white/10 border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            className="bg-white/10 border-white/20 text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500"
                           />
                         </div>
 
@@ -573,13 +579,16 @@ const Auth = () => {
                             value={formData.partnerGender}
                             onChange={(e) => handleInputChange('partnerGender', e.target.value)}
                             required
-                            className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500 [&>option]:bg-purple-900 [&>option]:text-white"
+                            style={{
+                              colorScheme: 'dark'
+                            }}
                           >
-                            <option value="">Selecciona el género</option>
-                            <option value="male">Masculino</option>
-                            <option value="female">Femenino</option>
-                            <option value="non-binary">No binario</option>
-                            <option value="other">Otro</option>
+                            <option value="" className="bg-purple-900 text-white">Selecciona el género</option>
+                            <option value="male" className="bg-purple-900 text-white">Masculino</option>
+                            <option value="female" className="bg-purple-900 text-white">Femenino</option>
+                            <option value="non-binary" className="bg-purple-900 text-white">No binario</option>
+                            <option value="other" className="bg-purple-900 text-white">Otro</option>
                           </select>
                         </div>
 
@@ -590,13 +599,16 @@ const Auth = () => {
                             value={formData.partnerInterestedIn}
                             onChange={(e) => handleInputChange('partnerInterestedIn', e.target.value)}
                             required
-                            className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500 [&>option]:bg-purple-900 [&>option]:text-white"
+                            style={{
+                              colorScheme: 'dark'
+                            }}
                           >
-                            <option value="">Selecciona el interés</option>
-                            <option value="male">Hombres</option>
-                            <option value="female">Mujeres</option>
-                            <option value="both">Ambos</option>
-                            <option value="couples">Parejas</option>
+                            <option value="" className="bg-purple-900 text-white">Selecciona el interés</option>
+                            <option value="male" className="bg-purple-900 text-white">Hombres</option>
+                            <option value="female" className="bg-purple-900 text-white">Mujeres</option>
+                            <option value="both" className="bg-purple-900 text-white">Ambos</option>
+                            <option value="couples" className="bg-purple-900 text-white">Parejas</option>
                           </select>
                         </div>
                       </div>
@@ -613,7 +625,7 @@ const Auth = () => {
                       onChange={(e) => handleInputChange('email', e.target.value)}
                       required
                       placeholder="tu@email.com"
-                      className="bg-white/10 border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="bg-white/10 border-white/20 text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500"
                     />
                   </div>
 
@@ -627,7 +639,7 @@ const Auth = () => {
                       required
                       minLength={6}
                       placeholder="Mínimo 6 caracteres"
-                      className="bg-white/10 border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="bg-white/10 border-white/20 text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500"
                     />
                   </div>
 
@@ -640,7 +652,7 @@ const Auth = () => {
                       required
                       rows={3}
                       placeholder="Cuéntanos sobre ti..."
-                      className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
+                      className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
                     />
                   </div>
 
@@ -652,7 +664,7 @@ const Auth = () => {
                       onChange={(e) => handleInputChange('location', e.target.value)}
                       required
                       placeholder="Ciudad, Estado"
-                      className="bg-white/10 border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="bg-white/10 border-white/20 text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500"
                     />
                   </div>
 

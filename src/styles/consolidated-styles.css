@@ -1064,4 +1064,76 @@ header.sticky {
   }
 }
 
+/* ===== SELECT DROPDOWN VISIBILITY FIXES ===== */
+/* Asegurar que los selects y sus opciones sean visibles */
+select {
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+select option {
+  background-color: #4c1d95 !important; /* purple-900 */
+  color: #ffffff !important;
+  padding: 8px 12px;
+  font-weight: 500;
+}
+
+/* Cuando el select está abierto (focus), las opciones deben ser visibles */
+select:focus option:checked {
+  background-color: #7c3aed !important; /* purple-600 */
+  color: #ffffff !important;
+}
+
+select:focus option:hover {
+  background-color: #6d28d9 !important; /* purple-700 */
+  color: #ffffff !important;
+}
+
+/* Placeholder text visibility fixes */
+input::placeholder,
+textarea::placeholder {
+  color: rgba(255, 255, 255, 0.9) !important;
+  opacity: 1 !important;
+}
+
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+  color: rgba(255, 255, 255, 0.9) !important;
+  opacity: 1 !important;
+}
+
+input::-moz-placeholder,
+textarea::-moz-placeholder {
+  color: rgba(255, 255, 255, 0.9) !important;
+  opacity: 1 !important;
+}
+
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+  color: rgba(255, 255, 255, 0.9) !important;
+  opacity: 1 !important;
+}
+
+input:-moz-placeholder,
+textarea:-moz-placeholder {
+  color: rgba(255, 255, 255, 0.9) !important;
+  opacity: 1 !important;
+}
+
+/* Select dropdown styling for better visibility */
+select[class*="bg-white/10"] option,
+select[class*="bg-white/10"] {
+  color-scheme: dark;
+}
+
+/* Forced visibility for select options */
+select option[value=""] {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+select option[value]:not([value=""]) {
+  color: #ffffff !important;
+  background-color: #4c1d95 !important;
+}
+
 /* ===== FIN DEL ARCHIVO CONSOLIDADO ===== */
