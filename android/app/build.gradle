@@ -21,11 +21,46 @@ android {
             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    signingConfigs {
+        // Debug usa el keystore por defecto de Android si existe, si no, no se configura
+        // y Android Studio usará su propia configuración por defecto
+        debug {
+            // Android Studio generará automáticamente el keystore de debug si no existe
+        }
+        release {
+            // Configuración de release - puede estar vacía inicialmente
+            // Se puede configurar desde keystore.properties o manualmente en Android Studio
+            def keystorePropertiesFile = rootProject.file("keystore.properties")
+            if (keystorePropertiesFile.exists()) {
+                try {
+                    def keystoreProperties = new Properties()
+                    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+                    if (keystoreProperties['storeFile']) {
+                        storeFile rootProject.file(keystoreProperties['storeFile'])
+                        storePassword keystoreProperties['storePassword']
+                        keyAlias keystoreProperties['keyAlias']
+                        keyPassword keystoreProperties['keyPassword']
+                    }
+                } catch (Exception e) {
+                    logger.warn("No se pudo cargar keystore.properties: ${e.message}")
+                }
+            }
+        }
+    }
     buildTypes {
+        debug {
+            // Debug puede usar signingConfigs.debug si está configurado, si no usará el por defecto
+            minifyEnabled false
+            debuggable true
+        }
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // Solo asignar signingConfig si está configurado
+            if (signingConfigs.release.storeFile != null) {
+                signingConfig signingConfigs.release
+            }
         }
     }
 }
