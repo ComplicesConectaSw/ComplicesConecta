@@ -86,7 +86,7 @@ const VideoChat = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-800 relative overflow-hidden">
       {/* Background Elements */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-pink-900/20 to-blue-900/20"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-purple-800/20 to-blue-900/20"></div>
       
       <div className="relative z-10">
         <HeaderNav />
@@ -106,7 +106,7 @@ const VideoChat = () => {
           {/* Header */}
           <div className="text-center mb-8">
             <div className="flex items-center justify-center mb-4">
-              <Video className="h-12 w-12 text-pink-400 mr-3" />
+              <Video className="h-12 w-12 text-purple-400 mr-3" />
               <h1 className="text-4xl md:text-5xl font-bold text-white">
                 Video Chat P2P
               </h1>
@@ -319,7 +319,7 @@ const VideoChat = () => {
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center space-x-3">
-                        <Video className="h-5 w-5 text-pink-400" />
+                        <Video className="h-5 w-5 text-purple-400" />
                         <span className="text-white font-medium">{call.type.toUpperCase()}</span>
                       </div>
                       <Badge className="bg-gray-600/80 text-white text-xs">

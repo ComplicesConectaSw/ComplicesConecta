@@ -38,7 +38,7 @@
 
 /* ===== CARDS CON GRADIENTE ===== */
 
-.bg-gradient-to-r.from-pink-600\/90 .text-white,
+.bg-gradient-to-r.from-purple-600\/90 .text-white,
 .bg-gradient-to-r.from-purple-700\/90 .text-white {
   color: #ffffff !important;
   text-shadow: 0 2px 5px rgba(0, 0, 0, 0.9);

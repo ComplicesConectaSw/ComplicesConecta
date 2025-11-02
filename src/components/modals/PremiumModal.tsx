@@ -50,9 +50,9 @@ const PremiumModal: React.FC<PremiumModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-lg bg-gradient-to-br from-purple-900/95 via-pink-900/95 to-red-900/95 backdrop-blur-md border-white/20 text-white">
+      <DialogContent className="sm:max-w-lg bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 backdrop-blur-md border-purple-500/30 text-white z-[100]">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-xl">
+          <DialogTitle className="flex items-center gap-2 text-xl font-bold text-white drop-shadow-lg">
             <Crown className="h-6 w-6 text-yellow-400" />
             ComplicesConecta Premium
           </DialogTitle>
@@ -60,13 +60,13 @@ const PremiumModal: React.FC<PremiumModalProps> = ({
         
         <div className="space-y-4">
           <div className="text-center">
-            <div className="mx-auto w-16 h-16 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center mb-4">
-              <Crown className="h-8 w-8 text-white" />
+            <div className="mx-auto w-16 h-16 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center mb-4 shadow-lg shadow-yellow-500/50">
+              <Crown className="h-8 w-8 text-white drop-shadow-md" />
             </div>
-            <h3 className="text-lg font-semibold mb-2">
+            <h3 className="text-lg font-bold mb-2 text-white drop-shadow-lg">
               Desbloquea el poder completo
             </h3>
-            <p className="text-white/80 text-sm">
+            <p className="text-white font-medium text-sm drop-shadow-md">
               Accede a funciones exclusivas y vive experiencias únicas en la comunidad swinger más premium.
             </p>
           </div>
@@ -78,8 +78,8 @@ const PremiumModal: React.FC<PremiumModalProps> = ({
                 <div key={index} className="flex items-start gap-3 p-3 bg-white/10 rounded-lg">
                   <Icon className={`h-5 w-5 ${feature.color} mt-0.5`} />
                   <div className="flex-1">
-                    <p className="font-medium">{feature.title}</p>
-                    <p className="text-xs text-white/70">{feature.description}</p>
+                    <p className="font-bold text-white drop-shadow-md">{feature.title}</p>
+                    <p className="text-xs text-white/90 font-medium drop-shadow-sm">{feature.description}</p>
                   </div>
                   <Check className="h-4 w-4 text-green-400" />
                 </div>
@@ -89,17 +89,17 @@ const PremiumModal: React.FC<PremiumModalProps> = ({
 
           <div className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 p-4 rounded-lg border border-yellow-500/30">
             <div className="flex items-center justify-between mb-2">
-              <span className="font-medium">Precio especial de lanzamiento</span>
-              <Badge variant="secondary" className="bg-yellow-500/20 text-yellow-300">
+              <span className="font-bold text-white drop-shadow-md">Precio especial de lanzamiento</span>
+              <Badge variant="secondary" className="bg-yellow-500/30 text-yellow-300 border-yellow-400/50 font-medium">
                 -50% OFF
               </Badge>
             </div>
             <div className="flex items-baseline gap-2">
-              <span className="text-2xl font-bold text-white">$299</span>
-              <span className="text-sm text-white/60 line-through">$599</span>
-              <span className="text-sm text-white/80">/ mes</span>
+              <span className="text-2xl font-bold text-white drop-shadow-lg">$299</span>
+              <span className="text-sm text-white/70 line-through font-medium">$599</span>
+              <span className="text-sm text-white font-medium drop-shadow-sm">/ mes</span>
             </div>
-            <p className="text-xs text-white/70 mt-1">
+            <p className="text-xs text-white/90 font-medium mt-1 drop-shadow-sm">
               Cancela cuando quieras • Sin compromisos
             </p>
           </div>

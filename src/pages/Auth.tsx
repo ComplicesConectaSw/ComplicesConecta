@@ -281,7 +281,7 @@ const Auth = () => {
   }
 
   return (
-    <ResponsiveContainer className="min-h-screen bg-gradient-to-br from-blue-600 via-purple-600 via-pink-500 to-purple-900 flex items-center justify-center p-4 relative overflow-hidden">
+    <ResponsiveContainer className="min-h-screen bg-gradient-to-br from-blue-600 via-purple-600 to-purple-900 flex items-center justify-center p-4 relative overflow-hidden">
       {/* Animated background particles */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-1"></div>
@@ -349,7 +349,7 @@ const Auth = () => {
                 <p className="text-xs text-white font-medium">Comunidad</p>
               </div>
               <div className="text-center">
-                <Sparkles className="h-6 w-6 text-pink-400 mx-auto mb-1" />
+                <Sparkles className="h-6 w-6 text-purple-400 mx-auto mb-1" />
                 <p className="text-xs text-white font-medium">IA Match</p>
               </div>
             </div>

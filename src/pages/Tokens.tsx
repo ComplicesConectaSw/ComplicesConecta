@@ -71,7 +71,7 @@ export default function Tokens() {
       </div>
       <div className="container mx-auto px-4 py-6 max-w-4xl relative z-10">
         {/* Enhanced Header with Navigation Buttons */}
-        <div className="bg-gradient-to-r from-purple-900/90 to-pink-900/90 backdrop-blur-md border-b border-purple-300/30 p-3 sm:p-4 shadow-lg flex-shrink-0 rounded-t-xl mb-6">
+        <div className="bg-gradient-to-r from-purple-900/90 to-purple-800/90 backdrop-blur-md border-b border-purple-300/30 p-3 sm:p-4 shadow-lg flex-shrink-0 rounded-t-xl mb-6">
           <div className="flex items-center justify-between">
             <AnimatedButton
               onClick={handleGoBack}
@@ -273,7 +273,7 @@ export default function Tokens() {
                 </p>
                 <div className="text-xs text-white/90 space-y-1">
                   <p>🪙 <strong>Ejemplo de respuesta:</strong></p>
-                  <div className="bg-gradient-to-r from-pink-500/95 to-purple-600/95 p-2 rounded border border-pink-400/50 ml-2 sm:ml-4 shadow-sm">
+                  <div className="bg-gradient-to-r from-purple-500/95 to-blue-600/95 p-2 rounded border border-purple-400/50 ml-2 sm:ml-4 shadow-sm">
                     <p className="break-words text-white font-medium">{getBalanceMessage()}</p>
                   </div>
                 </div>
@@ -284,7 +284,7 @@ export default function Tokens() {
                   <strong>Explicación de staking:</strong>
                 </p>
                 <div className="text-xs text-white/90">
-                  <div className="bg-gradient-to-r from-pink-500/95 to-purple-600/95 p-2 rounded border border-pink-400/50 ml-2 sm:ml-4 shadow-sm">
+                  <div className="bg-gradient-to-r from-purple-500/95 to-blue-600/95 p-2 rounded border border-purple-400/50 ml-2 sm:ml-4 shadow-sm">
                     <p className="break-words text-white font-medium">{getStakingMessage()}</p>
                   </div>
                 </div>

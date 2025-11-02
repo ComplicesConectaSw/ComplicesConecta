@@ -97,7 +97,7 @@ const VIPEvents = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-800 relative overflow-hidden">
       {/* Background Elements */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-pink-900/20 to-blue-900/20"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-purple-800/20 to-blue-900/20"></div>
       
       <div className="relative z-10">
         <HeaderNav />
@@ -137,7 +137,7 @@ const VIPEvents = () => {
                   variant={selectedFilter === filter.id ? "default" : "outline"}
                   className={
                     selectedFilter === filter.id
-                      ? "bg-gradient-to-r from-pink-500 to-purple-600 text-white"
+                      ? "bg-gradient-to-r from-purple-500 to-blue-600 text-white"
                       : "border-white/30 text-white hover:bg-white/10"
                   }
                 >
@@ -223,7 +223,7 @@ const VIPEvents = () => {
                     <div className="text-sm text-muted-foreground">
                       Host: <span className="text-white">{event.host}</span>
                     </div>
-                    <Button className="bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:from-pink-600 hover:to-purple-700">
+                    <Button className="bg-gradient-to-r from-purple-500 to-blue-600 text-white hover:from-purple-600 hover:to-blue-700">
                       Solicitar Invitación
                     </Button>
                   </div>
@@ -270,7 +270,7 @@ const VIPEvents = () => {
 
           {/* CTA Section */}
           <section className="text-center">
-            <Card className="bg-gradient-to-r from-pink-500/20 to-purple-600/20 backdrop-blur-sm border border-pink-400/30">
+            <Card className="bg-gradient-to-r from-purple-500/20 to-blue-600/20 backdrop-blur-sm border border-purple-400/30">
               <CardContent className="p-8">
                 <h2 className="text-3xl font-bold text-white mb-4">
                   ¿Listo para vivir experiencias VIP?

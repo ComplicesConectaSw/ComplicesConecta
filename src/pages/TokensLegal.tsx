@@ -9,11 +9,11 @@ export default function TokensLegal() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900">
       <HeaderNav />
       
       {/* Header */}
-      <div className="sticky top-0 z-50 bg-gradient-to-r from-purple-900/80 via-pink-900/80 to-red-900/80 backdrop-blur-md border-b border-white/10">
+      <div className="sticky top-0 z-50 bg-gradient-to-r from-purple-900/80 via-purple-800/80 to-blue-900/80 backdrop-blur-md border-b border-white/10">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <AnimatedButton
@@ -312,7 +312,7 @@ export default function TokensLegal() {
         </Card>
 
         {/* Contacto Legal */}
-        <Card className="bg-gradient-to-r from-purple-900/80 to-pink-900/80 backdrop-blur-sm border border-purple-400/30">
+        <Card className="bg-gradient-to-r from-purple-900/80 to-purple-800/80 backdrop-blur-sm border border-purple-400/30">
           <CardContent className="p-6 text-center">
             <h3 className="text-xl font-bold text-white mb-4">Contacto Legal</h3>
             <p className="text-white/80 mb-6">

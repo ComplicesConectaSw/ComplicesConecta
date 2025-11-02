@@ -170,7 +170,7 @@ const VirtualGifts = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-800 relative overflow-hidden">
       {/* Background Elements */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-pink-900/20 to-blue-900/20"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-purple-800/20 to-blue-900/20"></div>
       
       <div className="relative z-10">
         <HeaderNav />
@@ -190,7 +190,7 @@ const VirtualGifts = () => {
           {/* Header */}
           <div className="text-center mb-12">
             <div className="flex items-center justify-center mb-4">
-              <Gift className="h-12 w-12 text-pink-400 mr-3" />
+              <Gift className="h-12 w-12 text-purple-400 mr-3" />
               <h1 className="text-4xl md:text-5xl font-bold text-white">
                 Regalos Virtuales
               </h1>
@@ -263,7 +263,7 @@ const VirtualGifts = () => {
                     </div>
                     
                     <Button 
-                      className="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:from-pink-600 hover:to-purple-700"
+                      className="w-full bg-gradient-to-r from-purple-500 to-blue-600 text-white hover:from-purple-600 hover:to-blue-700"
                       onClick={(e) => {
                         e.stopPropagation();
                         // Lógica para enviar regalo
@@ -289,7 +289,7 @@ const VirtualGifts = () => {
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center space-x-3">
-                        <Gift className="h-5 w-5 text-pink-400" />
+                        <Gift className="h-5 w-5 text-purple-400" />
                         <span className="text-white font-medium">{gift.gift}</span>
                       </div>
                       <Badge className="bg-gray-600/80 text-white text-xs">
@@ -359,7 +359,7 @@ const VirtualGifts = () => {
 
           {/* CTA Section */}
           <section className="text-center">
-            <Card className="bg-gradient-to-r from-pink-500/20 to-purple-600/20 backdrop-blur-sm border border-pink-400/30">
+            <Card className="bg-gradient-to-r from-purple-500/20 to-blue-600/20 backdrop-blur-sm border border-purple-400/30">
               <CardContent className="p-8">
                 <h2 className="text-3xl font-bold text-white mb-4">
                   ¿Necesitas más tokens CMPX?
@@ -370,7 +370,7 @@ const VirtualGifts = () => {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button 
                     onClick={() => navigate('/tokens')}
-                    className="bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:from-pink-600 hover:to-purple-700 px-8 py-3"
+                    className="bg-gradient-to-r from-purple-500 to-blue-600 text-white hover:from-purple-600 hover:to-blue-700 px-8 py-3"
                   >
                     <ShoppingCart className="mr-2 h-5 w-5" />
                     Comprar Tokens

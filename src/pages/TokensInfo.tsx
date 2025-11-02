@@ -100,7 +100,7 @@ export default function TokensInfo() {
   return (
     <div className="min-h-screen bg-hero-gradient">
       {/* Header */}
-      <div className="sticky top-0 z-50 bg-gradient-to-r from-purple-900/90 to-pink-900/90 backdrop-blur-md border-b border-white/20">
+      <div className="sticky top-0 z-50 bg-gradient-to-r from-purple-900/90 to-purple-800/90 backdrop-blur-md border-b border-white/20">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Button
@@ -155,7 +155,7 @@ export default function TokensInfo() {
             </CardContent>
           </Card>
           
-          <Card className="bg-gradient-to-r from-purple-900/80 to-pink-900/80 backdrop-blur-sm border border-white/10">
+          <Card className="bg-gradient-to-r from-purple-900/80 to-purple-800/80 backdrop-blur-sm border border-white/10">
             <CardContent className="p-6 text-center">
               <TrendingUp className="h-8 w-8 text-purple-400 mx-auto mb-3" />
               <div className="text-2xl font-bold text-white">{TOKEN_CONFIG.MONTHLY_LIMIT}</div>
@@ -309,7 +309,7 @@ export default function TokensInfo() {
         </div>
 
         {/* Security */}
-        <Card className="bg-gradient-to-r from-red-900/80 to-pink-900/80 backdrop-blur-sm border border-white/10 animate-slide-up">
+        <Card className="bg-gradient-to-r from-red-900/80 to-purple-900/80 backdrop-blur-sm border border-white/10 animate-slide-up">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
               <Shield className="h-6 w-6 text-red-400" />

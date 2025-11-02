@@ -78,7 +78,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({
   const getCompatibilityColor = () => {
     if (compatibility >= 80) return "from-green-400 to-emerald-500";
     if (compatibility >= 60) return "from-yellow-400 to-orange-500";
-    return "from-pink-400 to-red-500";
+    return "from-purple-400 to-red-500";
   };
 
   const getDistanceText = () => {
@@ -196,10 +196,10 @@ export const MatchCard: React.FC<MatchCardProps> = ({
               <UnifiedButton
                 variant="outline"
                 size="lg"
-                className="w-14 h-14 rounded-full border-2 border-pink-400 bg-pink-500/20 hover:border-pink-500 hover:bg-pink-500/30 shadow-lg"
+                className="w-14 h-14 rounded-full border-2 border-purple-400 bg-purple-500/20 hover:border-purple-500 hover:bg-purple-500/30 shadow-lg"
                 onClick={onLike}
               >
-                <Heart className="h-6 w-6 text-pink-400" />
+                <Heart className="h-6 w-6 text-purple-400" />
               </UnifiedButton>
             </div>
           </div>
@@ -361,7 +361,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({
             <UnifiedButton
               gradient
               size="lg"
-              className="w-16 h-16 rounded-full transition-all duration-200 hover:scale-110 shadow-lg bg-gradient-to-r from-pink-500 to-purple-500"
+              className="w-16 h-16 rounded-full transition-all duration-200 hover:scale-110 shadow-lg bg-gradient-to-r from-purple-500 to-blue-500"
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();

@@ -169,10 +169,10 @@ export default function ContentModerationModal({ isOpen, onClose }: ContentModer
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 text-white border-purple-500/30 z-[100]">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Shield className="w-5 h-5 text-blue-600" />
+          <DialogTitle className="flex items-center gap-2 text-white font-bold text-xl drop-shadow-lg">
+            <Shield className="w-5 h-5 text-blue-400" />
             Moderación de Contenido
           </DialogTitle>
         </DialogHeader>
@@ -187,13 +187,13 @@ export default function ContentModerationModal({ isOpen, onClose }: ContentModer
           <TabsContent value="analysis" className="space-y-4">
             {analysisResult ? (
               <div className="space-y-4">
-                <Card>
+                <Card className="bg-white/10 border-white/20">
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
+                    <CardTitle className="flex items-center gap-2 text-white font-bold drop-shadow-lg">
                       {analysisResult.isAppropriate ? (
-                        <CheckCircle className="w-5 h-5 text-green-600" />
+                        <CheckCircle className="w-5 h-5 text-green-400" />
                       ) : (
-                        <XCircle className="w-5 h-5 text-red-600" />
+                        <XCircle className="w-5 h-5 text-red-400" />
                       )}
                       Resultado del Análisis
                     </CardTitle>
@@ -202,20 +202,20 @@ export default function ContentModerationModal({ isOpen, onClose }: ContentModer
                     <div className="grid gap-4 md:grid-cols-2">
                       <div className="space-y-2">
                         <div className="flex justify-between">
-                          <span className="text-sm">Estado:</span>
-                          <Badge className={analysisResult.isAppropriate ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>
+                          <span className="text-sm font-medium text-white drop-shadow-sm">Estado:</span>
+                          <Badge className={analysisResult.isAppropriate ? 'bg-green-600/30 text-green-300 border-green-400/50' : 'bg-red-600/30 text-red-300 border-red-400/50'}>
                             {analysisResult.isAppropriate ? 'Apropiado' : 'Requiere Revisión'}
                           </Badge>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-sm">Confianza:</span>
-                          <Badge className="bg-blue-100 text-blue-800">
+                          <span className="text-sm font-medium text-white drop-shadow-sm">Confianza:</span>
+                          <Badge className="bg-blue-600/30 text-blue-300 border-blue-400/50">
                             {(analysisResult.confidence * 100).toFixed(1)}%
                           </Badge>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-sm">Acción Recomendada:</span>
-                          <Badge className={getActionColor(analysisResult.recommendedAction)}>
+                          <span className="text-sm font-medium text-white drop-shadow-sm">Acción Recomendada:</span>
+                          <Badge className={`${getActionColor(analysisResult.recommendedAction).replace('bg-', 'bg-').replace('text-', 'text-white/90 ')} border-white/30`}>
                             {analysisResult.recommendedAction === 'approve' ? 'Aprobar' :
                              analysisResult.recommendedAction === 'review' ? 'Revisar' : 'Rechazar'}
                           </Badge>
@@ -223,18 +223,18 @@ export default function ContentModerationModal({ isOpen, onClose }: ContentModer
                       </div>
                       <div className="space-y-2">
                         <div className="flex justify-between">
-                          <span className="text-sm">Puntuación de Riesgo:</span>
-                          <Badge className={analysisResult.riskScore > 0.7 ? 'bg-red-100 text-red-800' : 
-                                          analysisResult.riskScore > 0.3 ? 'bg-yellow-100 text-yellow-800' : 
-                                          'bg-green-100 text-green-800'}>
+                          <span className="text-sm font-medium text-white drop-shadow-sm">Puntuación de Riesgo:</span>
+                          <Badge className={analysisResult.riskScore > 0.7 ? 'bg-red-600/30 text-red-300 border-red-400/50' : 
+                                          analysisResult.riskScore > 0.3 ? 'bg-yellow-600/30 text-yellow-300 border-yellow-400/50' : 
+                                          'bg-green-600/30 text-green-300 border-green-400/50'}>
                             {(analysisResult.riskScore * 100).toFixed(1)}%
                           </Badge>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-sm">Categorías:</span>
+                          <span className="text-sm font-medium text-white drop-shadow-sm">Categorías:</span>
                           <div className="flex gap-1">
                             {analysisResult.categories.map((category, index) => (
-                              <Badge key={index} className="border border-gray-200 text-xs">
+                              <Badge key={index} className="border border-white/30 text-white bg-white/10 text-xs font-medium">
                                 {category}
                               </Badge>
                             ))}
@@ -245,18 +245,18 @@ export default function ContentModerationModal({ isOpen, onClose }: ContentModer
 
                     {analysisResult.flags.length > 0 && (
                       <div>
-                        <h4 className="font-medium mb-2">Alertas Detectadas:</h4>
+                        <h4 className="font-bold mb-2 text-white drop-shadow-md">Alertas Detectadas:</h4>
                         <div className="space-y-2">
                           {analysisResult.flags.map((flag, index) => (
-                            <div key={index} className="p-3 border rounded-lg">
+                            <div key={index} className="p-3 border border-white/20 rounded-lg bg-white/10">
                               <div className="flex items-center justify-between mb-1">
-                                <span className="font-medium">{flag.type}</span>
-                                <Badge className={getSeverityColor(flag.severity)}>
+                                <span className="font-bold text-white drop-shadow-sm">{flag.type}</span>
+                                <Badge className={`${getSeverityColor(flag.severity).replace('bg-', 'bg-').replace('text-', 'text-white/90 ')} border-white/30`}>
                                   {flag.severity}
                                 </Badge>
                               </div>
-                              <p className="text-sm text-gray-600">{flag.description}</p>
-                              <p className="text-xs text-gray-500 mt-1">
+                              <p className="text-sm text-white/90 font-medium drop-shadow-sm">{flag.description}</p>
+                              <p className="text-xs text-white/80 mt-1 drop-shadow-sm">
                                 Confianza: {(flag.confidence * 100).toFixed(1)}%
                               </p>
                             </div>
@@ -266,8 +266,8 @@ export default function ContentModerationModal({ isOpen, onClose }: ContentModer
                     )}
 
                     <div>
-                      <h4 className="font-medium mb-2">Explicación:</h4>
-                      <p className="text-sm text-gray-600 p-3 bg-gray-50 rounded-lg">
+                      <h4 className="font-bold mb-2 text-white drop-shadow-md">Explicación:</h4>
+                      <p className="text-sm text-white/90 font-medium p-3 bg-white/10 rounded-lg border border-white/20 drop-shadow-sm">
                         {analysisResult.explanation}
                       </p>
                     </div>
@@ -275,12 +275,12 @@ export default function ContentModerationModal({ isOpen, onClose }: ContentModer
                 </Card>
               </div>
             ) : (
-              <Card>
+              <Card className="bg-white/10 border-white/20">
                 <CardContent className="pt-6">
                   <div className="text-center py-8">
-                    <Eye className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <p className="text-gray-600">No hay análisis disponible</p>
-                    <p className="text-sm text-gray-500">Ve a la pestaña "Probar Contenido" para analizar texto</p>
+                    <Eye className="w-12 h-12 text-white/60 mx-auto mb-4" />
+                    <p className="text-white font-medium drop-shadow-md">No hay análisis disponible</p>
+                    <p className="text-sm text-white/80 drop-shadow-sm">Ve a la pestaña "Probar Contenido" para analizar texto</p>
                   </div>
                 </CardContent>
               </Card>
@@ -288,16 +288,16 @@ export default function ContentModerationModal({ isOpen, onClose }: ContentModer
           </TabsContent>
 
           <TabsContent value="test" className="space-y-4">
-            <Card>
+            <Card className="bg-white/10 border-white/20">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <FileText className="w-5 h-5" />
+                <CardTitle className="flex items-center gap-2 text-white font-bold drop-shadow-lg">
+                  <FileText className="w-5 h-5 text-purple-400" />
                   Probar Contenido
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium mb-2 block">
+                  <label className="text-sm font-bold mb-2 block text-white drop-shadow-md">
                     Contenido a analizar:
                   </label>
                   <Textarea
@@ -305,14 +305,14 @@ export default function ContentModerationModal({ isOpen, onClose }: ContentModer
                     value={testContent}
                     onChange={(e) => setTestContent(e.target.value)}
                     rows={6}
-                    className="w-full"
+                    className="w-full bg-white/10 border-white/30 text-white placeholder:text-white/50"
                   />
                 </div>
                 <div className="flex gap-2">
                   <Button 
                     onClick={analyzeContent}
                     disabled={isAnalyzing || !testContent.trim()}
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold"
                   >
                     {isAnalyzing ? (
                       <>
@@ -327,7 +327,7 @@ export default function ContentModerationModal({ isOpen, onClose }: ContentModer
                     )}
                   </Button>
                   <Button 
-                    className="border border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
+                    className="border border-white/30 bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm"
                     onClick={() => setTestContent('')}
                   >
                     Limpiar
@@ -338,40 +338,40 @@ export default function ContentModerationModal({ isOpen, onClose }: ContentModer
           </TabsContent>
 
           <TabsContent value="history" className="space-y-4">
-            <Card>
+            <Card className="bg-white/10 border-white/20">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Clock className="w-5 h-5" />
+                <CardTitle className="flex items-center gap-2 text-white font-bold drop-shadow-lg">
+                  <Clock className="w-5 h-5 text-purple-400" />
                   Historial de Moderación
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 {moderationHistory.length === 0 ? (
                   <div className="text-center py-8">
-                    <Clock className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <p className="text-gray-600">No hay historial disponible</p>
+                    <Clock className="w-12 h-12 text-white/60 mx-auto mb-4" />
+                    <p className="text-white font-medium drop-shadow-md">No hay historial disponible</p>
                   </div>
                 ) : (
                   <div className="space-y-3">
                     {moderationHistory.map((entry) => (
-                      <div key={entry.id} className="p-4 border rounded-lg">
+                      <div key={entry.id} className="p-4 border border-white/20 rounded-lg bg-white/10">
                         <div className="flex items-start justify-between mb-2">
                           <div className="flex-1">
-                            <p className="text-sm font-medium mb-1">
+                            <p className="text-sm font-bold mb-1 text-white drop-shadow-sm">
                               {entry.content.length > 100 
                                 ? `${entry.content.substring(0, 100)}...` 
                                 : entry.content}
                             </p>
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs text-white/80 font-medium drop-shadow-sm">
                               {new Date(entry.timestamp).toLocaleString()} • {entry.moderator}
                             </p>
                           </div>
-                          <Badge className={getActionColor(entry.result.recommendedAction)}>
+                          <Badge className={`${getActionColor(entry.result.recommendedAction).replace('bg-', 'bg-').replace('text-', 'text-white/90 ')} border-white/30`}>
                             {entry.result.recommendedAction === 'approve' ? 'Aprobado' :
                              entry.result.recommendedAction === 'review' ? 'Revisión' : 'Rechazado'}
                           </Badge>
                         </div>
-                        <div className="flex gap-2 text-xs">
+                        <div className="flex gap-2 text-xs text-white/90 font-medium drop-shadow-sm">
                           <span>Confianza: {(entry.result.confidence * 100).toFixed(1)}%</span>
                           <span>•</span>
                           <span>Riesgo: {(entry.result.riskScore * 100).toFixed(1)}%</span>

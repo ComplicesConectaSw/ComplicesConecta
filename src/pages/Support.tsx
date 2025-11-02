@@ -110,7 +110,7 @@ const Support = () => {
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Hero Section */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full mb-6">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-purple-500 to-blue-600 rounded-full mb-6">
             <HelpCircle className="w-10 h-10 text-white" />
           </div>
           <h2 className="text-4xl font-bold text-white mb-4">
@@ -135,9 +135,9 @@ const Support = () => {
         {/* Contact Methods */}
         <div className="grid md:grid-cols-3 gap-6 mb-12">
           {contactMethods.map((method, index) => (
-            <Card key={index} className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-sm border-purple-300/30 hover:shadow-lg transition-shadow">
+            <Card key={index} className="bg-gradient-to-br from-purple-500/20 to-blue-500/20 backdrop-blur-sm border-purple-300/30 hover:shadow-lg transition-shadow">
               <CardContent className="p-6 text-center">
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-400/30 to-pink-400/30 rounded-xl flex items-center justify-center mx-auto mb-4 border border-purple-300/20">
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-400/30 to-blue-400/30 rounded-xl flex items-center justify-center mx-auto mb-4 border border-purple-300/20">
                   <method.icon className="w-6 h-6 text-purple-200" />
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">{method.title}</h3>
@@ -157,10 +157,10 @@ const Support = () => {
           {filteredFaqs.length > 0 ? (
             <div className="space-y-6">
               {filteredFaqs.map((category, categoryIndex) => (
-                <Card key={categoryIndex} className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-sm border-purple-300/30">
+                <Card key={categoryIndex} className="bg-gradient-to-br from-purple-500/20 to-blue-500/20 backdrop-blur-sm border-purple-300/30">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-3 text-white">
-                      <div className="w-10 h-10 bg-gradient-to-br from-purple-400/30 to-pink-400/30 rounded-lg flex items-center justify-center border border-purple-300/20">
+                      <div className="w-10 h-10 bg-gradient-to-br from-purple-400/30 to-blue-400/30 rounded-lg flex items-center justify-center border border-purple-300/20">
                         <category.icon className="w-5 h-5 text-purple-200" />
                       </div>
                       {category.title}
@@ -174,11 +174,11 @@ const Support = () => {
                           <div key={faqIndex} className="border-b border-purple-300/20 last:border-b-0 pb-4 last:pb-0">
                             <button
                               onClick={() => setExpandedFaq(expandedFaq === globalIndex ? null : globalIndex)}
-                              className="w-full text-left flex items-center justify-between py-2 hover:text-pink-600 transition-colors"
+                              className="w-full text-left flex items-center justify-between py-2 hover:text-purple-600 transition-colors"
                             >
                               <span className="font-medium text-white">{faq.q}</span>
                               {expandedFaq === globalIndex ? 
-                                <ChevronUp className="w-5 h-5 text-pink-600" /> : 
+                                <ChevronUp className="w-5 h-5 text-purple-600" /> : 
                                 <ChevronDown className="w-5 h-5 text-purple-300" />
                               }
                             </button>
@@ -203,7 +203,7 @@ const Support = () => {
         </div>
 
         {/* Contact Form */}
-        <Card className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-sm border-purple-300/30">
+        <Card className="bg-gradient-to-br from-purple-500/20 to-blue-500/20 backdrop-blur-sm border-purple-300/30">
           <CardHeader>
             <CardTitle className="text-center text-white">¿No encontraste lo que buscabas?</CardTitle>
             <p className="text-center text-white font-medium">Envíanos un mensaje y te ayudaremos personalmente</p>
@@ -230,7 +230,7 @@ const Support = () => {
               </div>
               <Button 
                 type="submit" 
-                className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white py-3"
+                className="w-full bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700 text-white py-3"
               >
                 Enviar Mensaje
               </Button>

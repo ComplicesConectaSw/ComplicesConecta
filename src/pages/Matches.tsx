@@ -210,7 +210,7 @@ const Matches = () => {
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-lg">
               Tus Matches
-              <span className="block bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent drop-shadow-lg">
+              <span className="block bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent drop-shadow-lg">
                 Conexiones Swinger
               </span>
             </h1>
@@ -227,8 +227,8 @@ const Matches = () => {
                   <p className="text-sm text-gray-200 font-medium">Total Matches</p>
                   <p className="text-3xl font-bold text-white drop-shadow-lg">{currentMatches.length}</p>
                 </div>
-                <div className="bg-pink-500/30 p-3 rounded-full shadow-md">
-                  <Heart className="h-6 w-6 text-pink-300" fill="currentColor" />
+                <div className="bg-purple-500/30 p-3 rounded-full shadow-md">
+                  <Heart className="h-6 w-6 text-purple-300" fill="currentColor" />
                 </div>
               </div>
             </UnifiedCard>
@@ -289,7 +289,7 @@ const Matches = () => {
               onClick={() => setFilter('all')}
               className={`flex items-center gap-2 ${
                 filter === 'all' 
-                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0 shadow-lg' 
+                  ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white border-0 shadow-lg' 
                   : 'bg-gray-800/50 text-gray-200 border-gray-600 hover:bg-gray-700/50 hover:text-white'
               }`}
             >
@@ -301,7 +301,7 @@ const Matches = () => {
               onClick={() => setFilter('new')}
               className={`flex items-center gap-2 ${
                 filter === 'new' 
-                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0 shadow-lg' 
+                  ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white border-0 shadow-lg' 
                   : 'bg-gray-800/50 text-gray-200 border-gray-600 hover:bg-gray-700/50 hover:text-white'
               }`}
             >
@@ -313,7 +313,7 @@ const Matches = () => {
               onClick={() => setFilter('recent')}
               className={`flex items-center gap-2 ${
                 filter === 'recent' 
-                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0 shadow-lg' 
+                  ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white border-0 shadow-lg' 
                   : 'bg-gray-800/50 text-gray-200 border-gray-600 hover:bg-gray-700/50 hover:text-white'
               }`}
             >
@@ -325,7 +325,7 @@ const Matches = () => {
               onClick={() => setFilter('unread')}
               className={`flex items-center gap-2 ${
                 filter === 'unread' 
-                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0 shadow-lg' 
+                  ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white border-0 shadow-lg' 
                   : 'bg-gray-800/50 text-gray-200 border-gray-600 hover:bg-gray-700/50 hover:text-white'
               }`}
             >
@@ -374,7 +374,7 @@ const Matches = () => {
           </div>
         ) : (
           <div className="text-center py-12 sm:py-16 px-4">
-            <div className="bg-gradient-to-br from-purple-200/30 to-pink-200/30 rounded-full w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center mx-auto mb-4 shadow-lg border border-purple-300/20 transition-all duration-300 hover:scale-105">
+            <div className="bg-gradient-to-br from-purple-200/30 to-blue-200/30 rounded-full w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center mx-auto mb-4 shadow-lg border border-purple-300/20 transition-all duration-300 hover:scale-105">
               <Heart className="h-10 w-10 sm:h-12 sm:w-12 text-white/70" />
             </div>
             <h3 className="text-lg sm:text-xl font-semibold text-white mb-2">
@@ -388,7 +388,7 @@ const Matches = () => {
               size="lg"
               gradient={true}
               onClick={() => navigate('/discover')}
-              className="bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg hover:from-purple-700 hover:to-pink-700"
+              className="bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg hover:from-purple-700 hover:to-blue-700"
             >
               <Users className="mr-2 h-5 w-5" />
               Descubrir Perfiles Swinger

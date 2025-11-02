@@ -143,7 +143,7 @@ export const InstallAppModal = ({ isOpen, onClose }: InstallAppModalProps) => {
             )}
           </div>
           
-          <CardContent className="p-3 sm:p-6 space-y-4 sm:space-y-6 bg-gradient-to-br from-purple-900/20 to-pink-900/20 backdrop-blur-sm">
+          <CardContent className="p-3 sm:p-6 space-y-4 sm:space-y-6 bg-gradient-to-br from-purple-900/20 to-blue-900/20 backdrop-blur-sm">
             {isAPK ? (
               <div className="space-y-4 text-center">
                 <div className="bg-green-900/30 border border-green-500/30 rounded-lg p-4">

@@ -228,10 +228,10 @@ export default function SmartMatchingModal({ isOpen, onClose, userId }: SmartMat
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 text-white border-purple-500/30 z-[100]">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Heart className="w-5 h-5 text-pink-600" />
+          <DialogTitle className="flex items-center gap-2 text-white font-bold text-xl drop-shadow-lg">
+            <Heart className="w-5 h-5 text-purple-400" />
             Smart Matching IA
           </DialogTitle>
         </DialogHeader>
@@ -245,11 +245,11 @@ export default function SmartMatchingModal({ isOpen, onClose, userId }: SmartMat
 
           <TabsContent value="matches" className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold">Tus Matches ({matches.length})</h3>
+              <h3 className="text-lg font-bold text-white drop-shadow-lg">Tus Matches ({matches.length})</h3>
               <Button 
                 onClick={refreshMatches}
                 disabled={isLoading}
-                className="border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 h-8 px-3 text-sm"
+                className="border border-white/30 bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm h-8 px-3 text-sm font-medium"
               >
                 <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
                 Actualizar
@@ -258,33 +258,33 @@ export default function SmartMatchingModal({ isOpen, onClose, userId }: SmartMat
 
             {isLoading ? (
               <div className="text-center py-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-600 mx-auto"></div>
-                <p className="mt-2 text-gray-600">Buscando matches...</p>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto"></div>
+                <p className="mt-2 text-white font-medium drop-shadow-md">Buscando matches...</p>
               </div>
             ) : matches.length === 0 ? (
-              <Card>
+              <Card className="bg-white/10 border-white/20">
                 <CardContent className="pt-6">
                   <div className="text-center py-8">
-                    <Heart className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <p className="text-gray-600">No hay matches disponibles</p>
-                    <p className="text-sm text-gray-500">Actualiza tu perfil para mejorar las coincidencias</p>
+                    <Heart className="w-12 h-12 text-white/60 mx-auto mb-4" />
+                    <p className="text-white font-medium drop-shadow-md">No hay matches disponibles</p>
+                    <p className="text-sm text-white/80 drop-shadow-sm">Actualiza tu perfil para mejorar las coincidencias</p>
                   </div>
                 </CardContent>
               </Card>
             ) : (
               <div className="grid gap-4 md:grid-cols-2">
                 {matches.map((match) => (
-                  <Card key={match.userId} className="hover:shadow-md transition-shadow">
+                  <Card key={match.userId} className="hover:shadow-md transition-shadow bg-white/10 border-white/20">
                     <CardContent className="pt-6">
                       <div className="space-y-3">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
-                            <div className="w-12 h-12 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold">
+                            <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-blue-600 rounded-full flex items-center justify-center text-white font-semibold shadow-lg shadow-purple-500/50">
                               {match.userName.charAt(0)}
                             </div>
                             <div>
-                              <h4 className="font-semibold">{match.userName}</h4>
-                              <div className="flex items-center gap-1 text-sm text-gray-600">
+                              <h4 className="font-bold text-white drop-shadow-md">{match.userName}</h4>
+                              <div className="flex items-center gap-1 text-sm text-white/90 font-medium drop-shadow-sm">
                                 <MapPin className="w-3 h-3" />
                                 {match.location}
                                 <span>•</span>
@@ -294,18 +294,18 @@ export default function SmartMatchingModal({ isOpen, onClose, userId }: SmartMat
                             </div>
                           </div>
                           <div className="text-center">
-                            <div className={`text-2xl font-bold ${getCompatibilityColor(match.compatibilityScore)}`}>
+                            <div className={`text-2xl font-bold drop-shadow-lg ${getCompatibilityColor(match.compatibilityScore).replace('text-', 'text-white ')}`}>
                               {match.compatibilityScore.toFixed(0)}%
                             </div>
-                            <div className="text-xs text-gray-500">Compatibilidad</div>
+                            <div className="text-xs text-white/80 font-medium drop-shadow-sm">Compatibilidad</div>
                           </div>
                         </div>
 
                         <div>
-                          <div className="text-sm font-medium mb-1">Intereses compartidos:</div>
+                          <div className="text-sm font-bold mb-1 text-white drop-shadow-md">Intereses compartidos:</div>
                           <div className="flex flex-wrap gap-1">
                             {match.sharedInterests.map((interest: string, index: number) => (
-                              <Badge key={index} className="border border-pink-200 text-pink-700 bg-pink-50 text-xs">
+                              <Badge key={index} className="border border-purple-300/50 text-white bg-purple-600/30 text-xs font-medium drop-shadow-sm">
                                 {interest}
                               </Badge>
                             ))}
@@ -313,11 +313,11 @@ export default function SmartMatchingModal({ isOpen, onClose, userId }: SmartMat
                         </div>
 
                         <div>
-                          <div className="text-sm font-medium mb-1">Razones del match:</div>
-                          <ul className="text-sm text-gray-600 space-y-1">
+                          <div className="text-sm font-bold mb-1 text-white drop-shadow-md">Razones del match:</div>
+                          <ul className="text-sm text-white/90 font-medium space-y-1 drop-shadow-sm">
                             {match.matchReasons.map((reason, index) => (
                               <li key={index} className="flex items-center gap-1">
-                                <Star className="w-3 h-3 text-yellow-500" />
+                                <Star className="w-3 h-3 text-yellow-400" />
                                 {reason}
                               </li>
                             ))}
@@ -325,11 +325,11 @@ export default function SmartMatchingModal({ isOpen, onClose, userId }: SmartMat
                         </div>
 
                         <div className="flex gap-2 pt-2">
-                          <Button className="flex-1 bg-pink-600 hover:bg-pink-700 text-white">
+                          <Button className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold shadow-lg shadow-purple-500/30">
                             <Heart className="w-4 h-4 mr-2" />
                             Me Gusta
                           </Button>
-                          <Button className="border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">
+                          <Button className="border border-white/30 bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm">
                             Ver Perfil
                           </Button>
                         </div>
@@ -351,12 +351,12 @@ export default function SmartMatchingModal({ isOpen, onClose, userId }: SmartMat
               </CardHeader>
               <CardContent className="space-y-6">
                 <div>
-                  <h4 className="font-medium mb-3">Intereses</h4>
+                  <h4 className="font-bold mb-3 text-white drop-shadow-md">Intereses</h4>
                   <div className="flex flex-wrap gap-2 mb-3">
                     {userTraits.interests.map((interest, index) => (
                       <Badge 
                         key={index} 
-                        className="border border-blue-200 text-blue-700 bg-blue-50 cursor-pointer hover:bg-blue-100"
+                        className="border border-purple-300/50 text-white bg-purple-600/30 cursor-pointer hover:bg-purple-700/40 font-medium drop-shadow-sm"
                         onClick={() => removeInterest(interest)}
                       >
                         {interest} ×
@@ -369,19 +369,19 @@ export default function SmartMatchingModal({ isOpen, onClose, userId }: SmartMat
                       value={newInterest}
                       onChange={(e) => setNewInterest(e.target.value)}
                       onKeyPress={(e) => e.key === 'Enter' && addInterest()}
-                      className="flex-1"
+                      className="flex-1 bg-white/10 border-white/30 text-white placeholder:text-white/50"
                     />
-                    <Button onClick={addInterest} disabled={!newInterest.trim()}>
+                    <Button onClick={addInterest} disabled={!newInterest.trim()} className="bg-purple-600 hover:bg-purple-700 text-white">
                       Agregar
                     </Button>
                   </div>
                 </div>
 
                 <div>
-                  <h4 className="font-medium mb-3">Personalidad</h4>
+                  <h4 className="font-bold mb-3 text-white drop-shadow-md">Personalidad</h4>
                   <div className="flex flex-wrap gap-2">
                     {userTraits.personality.map((trait, index) => (
-                      <Badge key={index} className="border border-purple-200 text-purple-700 bg-purple-50">
+                      <Badge key={index} className="border border-purple-300/50 text-white bg-purple-600/30 font-medium drop-shadow-sm">
                         {trait}
                       </Badge>
                     ))}
@@ -389,10 +389,10 @@ export default function SmartMatchingModal({ isOpen, onClose, userId }: SmartMat
                 </div>
 
                 <div>
-                  <h4 className="font-medium mb-3">Estilo de Vida</h4>
+                  <h4 className="font-bold mb-3 text-white drop-shadow-md">Estilo de Vida</h4>
                   <div className="flex flex-wrap gap-2">
                     {userTraits.lifestyle.map((style, index) => (
-                      <Badge key={index} className="border border-green-200 text-green-700 bg-green-50">
+                      <Badge key={index} className="border border-blue-300/50 text-white bg-blue-600/30 font-medium drop-shadow-sm">
                         {style}
                       </Badge>
                     ))}
@@ -400,17 +400,17 @@ export default function SmartMatchingModal({ isOpen, onClose, userId }: SmartMat
                 </div>
 
                 <div>
-                  <h4 className="font-medium mb-3">Preferencias</h4>
+                  <h4 className="font-bold mb-3 text-white drop-shadow-md">Preferencias</h4>
                   <div className="grid gap-3 md:grid-cols-2">
-                    <div className="p-3 border rounded-lg">
-                      <div className="text-sm font-medium">Rango de Edad</div>
-                      <div className="text-sm text-gray-600">
+                    <div className="p-3 border border-white/20 rounded-lg bg-white/5">
+                      <div className="text-sm font-bold text-white drop-shadow-sm">Rango de Edad</div>
+                      <div className="text-sm text-white/90 font-medium drop-shadow-sm">
                         {userTraits.preferences.ageRange[0]} - {userTraits.preferences.ageRange[1]} años
                       </div>
                     </div>
-                    <div className="p-3 border rounded-lg">
-                      <div className="text-sm font-medium">Distancia Máxima</div>
-                      <div className="text-sm text-gray-600">
+                    <div className="p-3 border border-white/20 rounded-lg bg-white/5">
+                      <div className="text-sm font-bold text-white drop-shadow-sm">Distancia Máxima</div>
+                      <div className="text-sm text-white/90 font-medium drop-shadow-sm">
                         {userTraits.preferences.maxDistance} km
                       </div>
                     </div>
@@ -422,69 +422,69 @@ export default function SmartMatchingModal({ isOpen, onClose, userId }: SmartMat
 
           <TabsContent value="analytics" className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              <Card>
+              <Card className="bg-white/10 border-white/20">
                 <CardContent className="pt-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="text-2xl font-bold text-blue-600">{analytics.totalMatches}</div>
-                      <div className="text-sm text-gray-600">Total Matches</div>
+                      <div className="text-2xl font-bold text-blue-300 drop-shadow-lg">{analytics.totalMatches}</div>
+                      <div className="text-sm text-white/90 font-medium drop-shadow-sm">Total Matches</div>
                     </div>
-                    <Users className="w-8 h-8 text-blue-600" />
+                    <Users className="w-8 h-8 text-blue-400" />
                   </div>
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="bg-white/10 border-white/20">
                 <CardContent className="pt-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="text-2xl font-bold text-green-600">
+                      <div className="text-2xl font-bold text-green-300 drop-shadow-lg">
                         {analytics.averageCompatibility.toFixed(1)}%
                       </div>
-                      <div className="text-sm text-gray-600">Compatibilidad Promedio</div>
+                      <div className="text-sm text-white/90 font-medium drop-shadow-sm">Compatibilidad Promedio</div>
                     </div>
-                    <TrendingUp className="w-8 h-8 text-green-600" />
+                    <TrendingUp className="w-8 h-8 text-green-400" />
                   </div>
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="bg-white/10 border-white/20">
                 <CardContent className="pt-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="text-2xl font-bold text-purple-600">
+                      <div className="text-2xl font-bold text-purple-300 drop-shadow-lg">
                         {analytics.matchSuccessRate.toFixed(1)}%
                       </div>
-                      <div className="text-sm text-gray-600">Tasa de Éxito</div>
+                      <div className="text-sm text-white/90 font-medium drop-shadow-sm">Tasa de Éxito</div>
                     </div>
-                    <Zap className="w-8 h-8 text-purple-600" />
+                    <Zap className="w-8 h-8 text-purple-400" />
                   </div>
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="bg-white/10 border-white/20">
                 <CardContent className="pt-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="text-2xl font-bold text-pink-600">
+                      <div className="text-2xl font-bold text-blue-300 drop-shadow-lg">
                         {analytics.topInterests.length}
                       </div>
-                      <div className="text-sm text-gray-600">Intereses Top</div>
+                      <div className="text-sm text-white/90 font-medium drop-shadow-sm">Intereses Top</div>
                     </div>
-                    <Star className="w-8 h-8 text-pink-600" />
+                    <Star className="w-8 h-8 text-yellow-400" />
                   </div>
                 </CardContent>
               </Card>
             </div>
 
-            <Card>
+            <Card className="bg-white/10 border-white/20">
               <CardHeader>
-                <CardTitle>Intereses Más Populares</CardTitle>
+                <CardTitle className="text-white font-bold drop-shadow-lg">Intereses Más Populares</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-wrap gap-2">
                   {analytics.topInterests.map((interest, index) => (
-                    <Badge key={index} className="border border-gray-200 bg-gray-50 text-gray-700">
+                    <Badge key={index} className="border border-purple-300/50 text-white bg-purple-600/30 font-medium drop-shadow-sm">
                       #{index + 1} {interest}
                     </Badge>
                   ))}

@@ -369,16 +369,16 @@ const Chat = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 relative overflow-hidden pb-20">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 relative overflow-hidden pb-20">
       {/* Background simplificado - sin elementos fantasma */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-pink-900/20 to-red-900/20"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-purple-800/20 to-blue-900/20"></div>
 
       {/* Header removido para usuarios demo - solo NavigationLegacy */}
       <HeaderNav />
       
       <div className="relative z-10 flex h-screen pt-16 pb-20">
         {/* Chat List Sidebar */}
-        <div className="w-full sm:w-80 flex-shrink-0 bg-gradient-to-br from-purple-900/40 via-pink-900/40 to-purple-800/40 backdrop-blur-sm border-r border-white/10 flex flex-col">
+        <div className="w-full sm:w-80 flex-shrink-0 bg-gradient-to-br from-purple-900/40 via-purple-800/40 to-blue-900/40 backdrop-blur-sm border-r border-white/10 flex flex-col">
           <div className="p-4 border-b border-white/10">
             <div className="flex items-center gap-3 mb-4">
               <UnifiedButton 
@@ -448,7 +448,7 @@ const Chat = () => {
                 size="sm"
                 className={`flex-1 flex items-center gap-2 transition-all duration-200 ${
                   activeTab === 'public' 
-                    ? 'bg-pink-500 text-white shadow-lg' 
+                    ? 'bg-purple-500 text-white shadow-lg' 
                     : 'text-white/70 hover:text-white hover:bg-white/10'
                 }`}
                 onClick={() => {
@@ -559,7 +559,7 @@ const Chat = () => {
                     >
                       <div className="flex items-center space-x-3">
                         <div className="relative">
-                          <div className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-lg border-2 border-white/20">
+                          <div className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold text-lg border-2 border-white/20">
                             {chat.name.charAt(0)}
                           </div>
                           <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-400 rounded-full border-2 border-black/50"></div>
@@ -589,11 +589,11 @@ const Chat = () => {
         </div>
 
         {/* Área de chat */}
-        <div className={`${selectedChat ? 'block' : 'hidden md:block'} flex-1 flex flex-col bg-gradient-to-br from-purple-900/20 via-pink-900/20 to-purple-800/20 backdrop-blur-sm`}>
+        <div className={`${selectedChat ? 'block' : 'hidden md:block'} flex-1 flex flex-col bg-gradient-to-br from-purple-900/20 via-purple-800/20 to-blue-900/20 backdrop-blur-sm`}>
           {selectedChat ? (
             <>
               {/* Header del chat */}
-              <div className="p-4 border-b border-white/10 bg-gradient-to-r from-purple-900/30 via-pink-900/30 to-purple-800/30">
+              <div className="p-4 border-b border-white/10 bg-gradient-to-r from-purple-900/30 via-purple-800/30 to-blue-900/30">
                 <div className="flex items-center space-x-3">
                   <UnifiedButton 
                     variant="ghost" 
@@ -604,7 +604,7 @@ const Chat = () => {
                     <ArrowLeft className="h-4 w-4" />
                   </UnifiedButton>
                   {selectedChat.roomType === 'public' ? (
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold border-2 border-white/20">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold border-2 border-white/20">
                       {selectedChat.name.charAt(0)}
                     </div>
                   ) : (
@@ -645,8 +645,8 @@ const Chat = () => {
                       <div
                         className={`max-w-[85%] sm:max-w-xs lg:max-w-sm px-3 sm:px-4 py-2 sm:py-3 rounded-2xl transition-all duration-300 hover:scale-102 ${
                           message.sender_id === localStorage.getItem('user_id')
-                            ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
-                            : 'bg-gradient-to-r from-pink-500/95 to-purple-600/95 text-white shadow-md border border-pink-400/50 backdrop-blur-sm'
+                            ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg'
+                            : 'bg-gradient-to-r from-blue-500/95 to-purple-600/95 text-white shadow-md border border-blue-400/50 backdrop-blur-sm'
                         }`}
                       >
                         <p className="text-xs sm:text-sm leading-relaxed break-words whitespace-pre-wrap overflow-wrap-anywhere hyphens-auto" style={{wordBreak: 'break-word', overflowWrap: 'anywhere'}}>{message.content}</p>
@@ -668,8 +668,8 @@ const Chat = () => {
                       <div
                         className={`max-w-[85%] sm:max-w-xs lg:max-w-sm px-3 sm:px-4 py-2 sm:py-3 rounded-2xl transition-all duration-300 hover:scale-102 ${
                           message.senderId === 0
-                            ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
-                            : 'bg-gradient-to-r from-pink-500/95 to-purple-600/95 text-white shadow-md border border-pink-400/50 backdrop-blur-sm'
+                            ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg'
+                            : 'bg-gradient-to-r from-blue-500/95 to-purple-600/95 text-white shadow-md border border-blue-400/50 backdrop-blur-sm'
                         }`}
                       >
                         <p className="text-xs sm:text-sm leading-relaxed break-words whitespace-pre-wrap overflow-wrap-anywhere hyphens-auto" style={{wordBreak: 'break-word', overflowWrap: 'anywhere'}}>{message.content}</p>
@@ -685,9 +685,9 @@ const Chat = () => {
               </div>
 
               {/* Input para enviar mensajes */}
-              <div className="p-4 border-t border-white/10 bg-gradient-to-r from-purple-900/30 via-pink-900/30 to-purple-800/30 chat-input">
+              <div className="p-4 border-t border-white/10 bg-gradient-to-r from-purple-900/30 via-purple-800/30 to-blue-900/30 chat-input">
                 {selectedChat?.isPrivate && !hasChatAccess[selectedChat.id] ? (
-                  <div className="text-center space-y-4 bg-gradient-to-br from-purple-900/50 via-pink-900/50 to-purple-800/50 rounded-lg p-6 border border-white/20">
+                  <div className="text-center space-y-4 bg-gradient-to-br from-purple-900/50 via-purple-800/50 to-blue-900/50 rounded-lg p-6 border border-white/20">
                     <div className="flex items-center justify-center text-white mb-3">
                       <Lock className="h-6 w-6 mr-2" />
                       <span className="font-semibold text-lg">Chat privado bloqueado</span>
@@ -737,7 +737,7 @@ const Chat = () => {
                       <UnifiedButton
                         onClick={() => navigate('/requests')}
                         variant="outline"
-                        className="flex-1 border-pink-400/50 text-pink-300 hover:bg-pink-500/20 text-xs py-2"
+                        className="flex-1 border-purple-400/50 text-purple-300 hover:bg-purple-500/20 text-xs py-2"
                       >
                         <UserPlus className="h-3 w-3 mr-1" />
                         Solicitudes
@@ -772,7 +772,7 @@ const Chat = () => {
                         onClick={handleSendMessage}
                         disabled={!newMessage.trim()}
                         gradient={true}
-                        className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0"
+                        className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0"
                       >
                         <Send className="h-4 w-4" />
                       </UnifiedButton>

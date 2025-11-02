@@ -233,7 +233,7 @@ const Index = () => {
       title: "Conexiones Auténticas",
       description: "Algoritmo inteligente que conecta personas con intereses reales en común",
       type: 'connections' as const,
-      iconBg: "bg-gradient-to-r from-pink-500 to-pink-600"
+      iconBg: "bg-gradient-to-r from-purple-500 to-purple-600"
     },
     {
       icon: Shield,
@@ -289,9 +289,9 @@ const Index = () => {
                   Bienvenido a la Plataforma Social
                 </h1>
                 <p className="text-xl md:text-2xl text-white/95 max-w-4xl mx-auto leading-relaxed animate-slide-up font-medium px-4">
-                  La plataforma <strong className="text-pink-300">más exclusiva</strong> para la comunidad lifestyle mexicana.
+                  La plataforma <strong className="text-purple-300">más exclusiva</strong> para la comunidad lifestyle mexicana.
                   <br className="hidden md:block" />
-                  <span className="text-pink-200">
+                  <span className="text-purple-200">
                     Conexiones auténticas, experiencias únicas.
                   </span>
                 </p>
@@ -347,7 +347,7 @@ const Index = () => {
                   </p>
                   <Button 
                     variant="default" 
-                    className="bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:from-pink-600 hover:to-purple-700 border border-pink-400 w-full"
+                    className="bg-gradient-to-r from-purple-500 to-blue-600 text-white hover:from-purple-600 hover:to-blue-700 border border-purple-400 w-full"
                     asChild
                   >
                     <Link to="/about">
@@ -361,7 +361,7 @@ const Index = () => {
               <Card className="bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/15 transition-all duration-300 hover:scale-105">
                 <CardHeader>
                   <div className="flex items-center justify-center mb-4">
-                    <div className="p-3 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full">
+                    <div className="p-3 bg-gradient-to-r from-purple-500 to-blue-600 rounded-full">
                       <Briefcase className="h-8 w-8 text-white" />
                     </div>
                   </div>
@@ -375,7 +375,7 @@ const Index = () => {
                   </p>
                   <Button 
                     variant="default" 
-                    className="bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:from-pink-600 hover:to-purple-700 border border-pink-400 w-full"
+                    className="bg-gradient-to-r from-purple-500 to-blue-600 text-white hover:from-purple-600 hover:to-blue-700 border border-purple-400 w-full"
                     asChild
                   >
                     <Link to="/careers">
@@ -403,7 +403,7 @@ const Index = () => {
                   </p>
                   <Button 
                     variant="default" 
-                    className="bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:from-pink-600 hover:to-purple-700 border border-pink-400 w-full"
+                    className="bg-gradient-to-r from-purple-500 to-blue-600 text-white hover:from-purple-600 hover:to-blue-700 border border-purple-400 w-full"
                     onClick={() => setShowModeratorForm(true)}
                   >
                     Aplicar Ahora
@@ -429,7 +429,7 @@ const Index = () => {
                   </p>
                   <Button 
                     variant="default" 
-                    className="bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:from-pink-600 hover:to-purple-700 border border-pink-400 w-full"
+                    className="bg-gradient-to-r from-purple-500 to-blue-600 text-white hover:from-purple-600 hover:to-blue-700 border border-purple-400 w-full"
                     asChild
                   >
                     <Link to="/donations">
@@ -495,7 +495,7 @@ const Index = () => {
                 Conecta con parejas y solteros liberales en un ambiente seguro y discreto. La aventura de tu vida te espera.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button variant="default" size="xl" className="bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:from-pink-600 hover:to-purple-700" asChild>
+                <Button variant="default" size="xl" className="bg-gradient-to-r from-purple-500 to-blue-600 text-white hover:from-purple-600 hover:to-blue-700" asChild>
                   <Link to="/auth">
                     <Heart className="mr-2 h-5 w-5" fill="currentColor" />
                     Crear Cuenta Gratis

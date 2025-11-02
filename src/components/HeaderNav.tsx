@@ -15,7 +15,10 @@ import {
   Settings,
   Bell,
   Menu,
-  X
+  X,
+  ShoppingBag,
+  FileText,
+  Crown
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -43,16 +46,24 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
   }, []);
 
   const navItems = [
+    { name: 'Inicio', path: '/', icon: Heart },
     { name: 'Descubrir', path: '/discover', icon: Search },
     { name: 'Perfiles', path: '/profiles', icon: User },
     { name: 'Matches', path: '/matches', icon: Heart },
     { name: 'Chat', path: '/chat', icon: MessageSquare },
+    { name: 'Feed', path: '/feed', icon: Users },
     { name: 'Eventos', path: '/events', icon: Calendar },
-    { name: 'Stories', path: '/stories', icon: Users },
+    { name: 'Tokens', path: '/tokens', icon: DollarSign },
+    { name: 'Marketplace', path: '/marketplace', icon: ShoppingBag },
+    { name: 'Blog', path: '/blog', icon: FileText },
+    { name: 'Noticias', path: '/news', icon: Bell },
     { name: 'Empresa', path: '/about', icon: Building2 },
-    { name: 'Moderadores', path: '/moderators', icon: Shield },
-    { name: 'Soporte', path: '/support', icon: HelpCircle },
-    { name: 'Información', path: '/info', icon: Info }
+    { name: 'Donaciones', path: '/donations', icon: DollarSign },
+    { name: 'Carreras', path: '/careers', icon: Building2 },
+    { name: 'Premium', path: '/premium', icon: Crown },
+    { name: 'FAQ', path: '/faq', icon: HelpCircle },
+    { name: 'Información', path: '/info', icon: Info },
+    { name: 'Términos', path: '/terms', icon: FileText }
   ];
 
   const isActive = (path: string) => {
@@ -147,18 +158,18 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
               
               {/* Iconos de Acción */}
               <div className="hidden md:flex items-center space-x-1">
-                <button className="p-2 text-white/70 hover:text-pink-400 hover:bg-white/10 rounded-lg transition-all duration-300">
+                <button className="p-2 text-white/70 hover:text-purple-400 hover:bg-white/10 rounded-lg transition-all duration-300">
                   <DollarSign className="h-5 w-5" />
                 </button>
-                <button className="p-2 text-white/70 hover:text-pink-400 hover:bg-white/10 rounded-lg transition-all duration-300">
+                <button className="p-2 text-white/70 hover:text-purple-400 hover:bg-white/10 rounded-lg transition-all duration-300">
                   <HelpCircle className="h-5 w-5" />
                 </button>
-                <button className="p-2 text-white/70 hover:text-pink-400 hover:bg-white/10 rounded-lg transition-all duration-300">
+                <button className="p-2 text-white/70 hover:text-purple-400 hover:bg-white/10 rounded-lg transition-all duration-300">
                   <Settings className="h-5 w-5" />
                 </button>
-                <button className="relative p-2 text-white/70 hover:text-pink-400 hover:bg-white/10 rounded-lg transition-all duration-300">
+                <button className="relative p-2 text-white/70 hover:text-purple-400 hover:bg-white/10 rounded-lg transition-all duration-300">
                   <Bell className="h-5 w-5" />
-                  <Badge className="absolute -top-1 -right-1 h-5 w-5 bg-pink-500 text-white text-xs flex items-center justify-center">
+                  <Badge className="absolute -top-1 -right-1 h-5 w-5 bg-purple-500 text-white text-xs flex items-center justify-center">
                     3
                   </Badge>
                 </button>
@@ -177,7 +188,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
               {/* Botón Menú Móvil */}
               <button
                 onClick={toggleMobileMenu}
-                className="lg:hidden p-2 text-white hover:text-pink-400 hover:bg-white/10 rounded-lg transition-all duration-300"
+                className="lg:hidden p-2 text-white hover:text-purple-400 hover:bg-white/10 rounded-lg transition-all duration-300"
               >
                 {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </button>

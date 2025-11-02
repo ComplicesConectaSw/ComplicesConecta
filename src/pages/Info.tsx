@@ -25,7 +25,7 @@ const Info = () => {
       icon: <Heart className="h-6 w-6" />,
       title: "Conexiones Auténticas",
       description: "Algoritmo inteligente que conecta personas con intereses y valores compatibles.",
-      color: "text-pink-400"
+      color: "text-purple-400"
     },
     {
       icon: <Lock className="h-6 w-6" />,
@@ -58,7 +58,7 @@ const Info = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-800 relative overflow-hidden">
       {/* Background Elements */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-pink-900/20 to-blue-900/20"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-purple-800/20 to-blue-900/20"></div>
       
       <div className="relative z-10">
         <HeaderNav />
@@ -78,7 +78,7 @@ const Info = () => {
           {/* Header */}
           <div className="text-center mb-12">
             <div className="flex items-center justify-center mb-4">
-              <InfoIcon className="h-12 w-12 text-pink-400 mr-3" />
+              <InfoIcon className="h-12 w-12 text-purple-400 mr-3" />
               <h1 className="text-4xl md:text-5xl font-bold text-white">
                 Información
               </h1>
@@ -176,7 +176,7 @@ const Info = () => {
 
           {/* CTA Section */}
           <section className="text-center">
-            <Card className="bg-gradient-to-r from-pink-600/90 to-purple-700/90 backdrop-blur-sm border border-pink-400/50 shadow-lg">
+            <Card className="bg-gradient-to-r from-purple-600/90 to-blue-700/90 backdrop-blur-sm border border-purple-400/50 shadow-lg">
               <CardContent className="p-8">
                 <h2 className="text-3xl font-bold text-white mb-4 drop-shadow-lg">
                   ¿Listo para unirte a nuestra comunidad?
@@ -187,7 +187,7 @@ const Info = () => {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button 
                     onClick={() => navigate('/auth')}
-                    className="bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:from-pink-600 hover:to-purple-700 px-8 py-3"
+                    className="bg-gradient-to-r from-purple-500 to-blue-600 text-white hover:from-purple-600 hover:to-blue-700 px-8 py-3"
                   >
                     Crear Cuenta Gratis
                   </Button>

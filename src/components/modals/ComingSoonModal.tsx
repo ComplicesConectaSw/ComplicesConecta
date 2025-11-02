@@ -21,31 +21,31 @@ export const ComingSoonModal: React.FC<ComingSoonModalProps> = ({
 }) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md bg-gradient-to-br from-purple-900/95 via-pink-900/95 to-red-900/95 backdrop-blur-md border-white/20">
+      <DialogContent className="sm:max-w-md bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 backdrop-blur-md border-purple-500/30 text-white z-[100]">
         <DialogHeader>
           <div className="flex items-center justify-center mb-4">
             <div className="relative">
-              <Crown className="h-12 w-12 text-yellow-400 animate-pulse" />
-              <Sparkles className="h-6 w-6 text-pink-400 absolute -top-1 -right-1 animate-bounce" />
+              <Crown className="h-12 w-12 text-yellow-400 animate-pulse drop-shadow-lg" />
+              <Sparkles className="h-6 w-6 text-blue-400 absolute -top-1 -right-1 animate-bounce" />
             </div>
           </div>
-          <DialogTitle className="text-center text-white text-xl font-bold">
+          <DialogTitle className="text-center text-white text-xl font-bold drop-shadow-lg">
             {title}
           </DialogTitle>
         </DialogHeader>
         
         <div className="text-center space-y-4">
-          <Badge variant="outline" className="bg-yellow-500/20 text-yellow-300 border-yellow-500/50">
+          <Badge variant="outline" className="bg-yellow-500/30 text-yellow-300 border-yellow-400/50 font-medium">
             <Clock className="h-3 w-3 mr-1" />
             Próximamente
           </Badge>
           
-          <p className="text-white/80 text-sm leading-relaxed">
+          <p className="text-white font-medium text-sm leading-relaxed drop-shadow-md">
             {description}
           </p>
           
-          <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
-            <p className="text-white/70 text-xs">
+          <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm border border-white/20">
+            <p className="text-white/90 text-xs font-medium drop-shadow-sm">
               🚀 Estamos trabajando en funciones {feature} increíbles que estarán disponibles 
               una vez que ComplicesConecta complete su fase Beta.
             </p>
@@ -53,7 +53,7 @@ export const ComingSoonModal: React.FC<ComingSoonModalProps> = ({
           
           <Button 
             onClick={onClose}
-            className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold"
+            className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold shadow-lg shadow-purple-500/30"
           >
             Entendido
           </Button>

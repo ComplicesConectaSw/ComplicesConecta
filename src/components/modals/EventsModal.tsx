@@ -71,9 +71,9 @@ const EventsModal: React.FC<EventsModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-2xl bg-gradient-to-br from-purple-900/95 via-pink-900/95 to-red-900/95 backdrop-blur-md border-white/20 text-white max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-2xl bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 backdrop-blur-md border-purple-500/30 text-white max-h-[90vh] overflow-y-auto z-[100]">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-xl">
+          <DialogTitle className="flex items-center gap-2 text-xl font-bold text-white drop-shadow-lg">
             <Calendar className="h-6 w-6 text-purple-400" />
             Eventos VIP Exclusivos
           </DialogTitle>
@@ -81,13 +81,13 @@ const EventsModal: React.FC<EventsModalProps> = ({
         
         <div className="space-y-6">
           <div className="text-center">
-            <div className="mx-auto w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mb-4">
-              <Calendar className="h-8 w-8 text-white" />
+            <div className="mx-auto w-16 h-16 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center mb-4 shadow-lg shadow-purple-500/50">
+              <Calendar className="h-8 w-8 text-white drop-shadow-md" />
             </div>
-            <h3 className="text-lg font-semibold mb-2">
+            <h3 className="text-lg font-bold mb-2 text-white drop-shadow-lg">
               Vive experiencias únicas
             </h3>
-            <p className="text-white/80 text-sm">
+            <p className="text-white font-medium text-sm drop-shadow-md">
               Accede a eventos exclusivos de la comunidad swinger más premium de México.
             </p>
           </div>
@@ -142,7 +142,7 @@ const EventsModal: React.FC<EventsModalProps> = ({
                   <div className="mt-2">
                     <div className="w-full bg-white/20 rounded-full h-1.5">
                       <div 
-                        className="h-1.5 rounded-full bg-gradient-to-r from-purple-400 to-pink-400"
+                        className="h-1.5 rounded-full bg-gradient-to-r from-purple-400 to-blue-400"
                         style={{ width: `${(event.attendees / event.maxAttendees) * 100}%` }}
                       ></div>
                     </div>
