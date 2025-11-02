@@ -1,6 +1,38 @@
 import { createRoot } from 'react-dom/client'
 import * as React from 'react'
 import { StrictMode } from 'react'
+
+// CRÍTICO: Asegurar React disponible globalmente INMEDIATAMENTE, ANTES DE CUALQUIER OTRA COSA
+// Esto debe estar ANTES de cualquier otro import o código que pueda cargar chunks
+if (typeof window !== 'undefined') {
+  // Forzar React disponible globalmente de forma inmediata
+  (window as any).React = React;
+  
+  // Asegurar TODOS los hooks críticos inmediatamente
+  const winReact = (window as any).React;
+  if (winReact) {
+    // Asegurar useLayoutEffect con fallback a useEffect si no está disponible
+    if (!winReact.useLayoutEffect) {
+      winReact.useLayoutEffect = winReact.useLayoutEffect || winReact.useEffect || function() { return winReact.useEffect.apply(this, arguments); };
+    }
+    // Asegurar todos los otros hooks críticos
+    winReact.useEffect = winReact.useEffect || function() {};
+    winReact.useState = winReact.useState || function() {};
+    winReact.useMemo = winReact.useMemo || function() {};
+    winReact.useCallback = winReact.useCallback || function() {};
+    winReact.createElement = winReact.createElement || function() {};
+    winReact.StrictMode = winReact.StrictMode || StrictMode;
+  }
+  
+  // También asegurar ReactDOM inmediatamente
+  if (!(window as any).ReactDOM) {
+    (window as any).ReactDOM = {
+      createRoot: createRoot
+    };
+  }
+}
+
+// Ahora sí, importar el resto de las dependencias
 import App from './App.tsx'
 import './index.css'
 import './styles/consolidated-styles.css'
@@ -19,12 +51,8 @@ import { initWebVitalsMonitoring } from '@/utils/webVitals'
 import { initializeCriticalPreloading } from '@/utils/preloading'
 import { androidSecurity } from '@/utils/androidSecurity'
 
-// CRÍTICO: Asegurar que React esté disponible globalmente ANTES de cualquier código
+// Continuar con wallet protection después de asegurar React
 if (typeof window !== 'undefined') {
-  // Asegurar React disponible para todos los chunks
-  if (!(window as any).React) {
-    (window as any).React = React;
-  }
   // Initialize wallet protection with minimal interference
   initializeWalletProtection();
   
@@ -256,23 +284,37 @@ if ('serviceWorker' in navigator && import.meta.env.MODE === 'production') {
 // Initialize application with enhanced error handling
 async function initializeApp() {
   try {
-    // CRÍTICO: Asegurar React disponible globalmente PRIMERO, antes de cualquier otra cosa
+    // React ya está disponible globalmente (establecido al inicio del archivo)
+    // Solo re-asegurar que no se haya perdido durante el proceso
     if (typeof window !== 'undefined') {
-      // Forzar React disponible globalmente inmediatamente - debe estar ANTES de cualquier import dinámico
-      (window as any).React = React;
-      
-      // Asegurar todos los hooks críticos estén disponibles ANTES de cargar chunks
-      const winReact = (window as any).React;
-      if (winReact) {
-        winReact.useLayoutEffect = winReact.useLayoutEffect || winReact.useEffect;
-        winReact.useEffect = winReact.useEffect;
-        winReact.useState = winReact.useState;
-        winReact.useMemo = winReact.useMemo;
-        winReact.useCallback = winReact.useCallback;
-        winReact.createElement = winReact.createElement;
+      if (!(window as any).React) {
+        (window as any).React = React;
       }
       
-      // También asegurar que ReactDOM esté disponible globalmente (usar el import ya disponible)
+      // Re-asegurar todos los hooks críticos por si acaso
+      const winReact = (window as any).React;
+      if (winReact) {
+        // CRÍTICO: Asegurar useLayoutEffect con fallback robusto
+        if (!winReact.useLayoutEffect) {
+          if (React.useLayoutEffect) {
+            winReact.useLayoutEffect = React.useLayoutEffect;
+          } else if (React.useEffect) {
+            winReact.useLayoutEffect = React.useEffect;
+          } else {
+            // Fallback final: función no-op
+            winReact.useLayoutEffect = function() { return function() {}; };
+          }
+        }
+        // Asegurar todos los otros hooks
+        if (!winReact.useEffect) winReact.useEffect = React.useEffect || function() {};
+        if (!winReact.useState) winReact.useState = React.useState || function() {};
+        if (!winReact.useMemo) winReact.useMemo = React.useMemo || function() {};
+        if (!winReact.useCallback) winReact.useCallback = React.useCallback || function() {};
+        if (!winReact.createElement) winReact.createElement = React.createElement || function() {};
+        if (!winReact.StrictMode) winReact.StrictMode = StrictMode;
+      }
+      
+      // Re-asegurar ReactDOM
       if (!(window as any).ReactDOM) {
         (window as any).ReactDOM = {
           createRoot: createRoot
@@ -280,12 +322,11 @@ async function initializeApp() {
       }
     }
     
-    // Initialize React fallbacks first for SSR compatibility
+    // Initialize React fallbacks first for SSR compatibility (redundante pero seguro)
     initializeReactFallbacks();
     ensureReactPolyfills();
     
-    // Initialize wallet protection before anything else (más temprano posible)
-    initializeWalletProtection();
+    // Wallet protection ya inicializado al inicio del archivo
     
     // Detectar conflictos de wallet (silenciado)
     try {

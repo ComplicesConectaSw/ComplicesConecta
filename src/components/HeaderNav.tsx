@@ -280,15 +280,13 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                 </button>
                 <button 
                   onClick={() => {
-                    // Si está autenticado, mostrar notificaciones inline o navegar a dashboard
                     if (isAuthenticated()) {
-                      // Por ahora, navegar a dashboard donde se muestran notificaciones
-                      handleNavigation('/dashboard');
+                      // TODO: Abrir NotificationCenter dropdown o navegar a página de notificaciones
+                      handleNavigation('/notifications');
                     } else {
-                      // Si no está autenticado, mostrar noticias
                       handleNavigation('/news');
                     }
-                    logger.info('Notifications icon clicked', { isAuthenticated: isAuthenticated() });
+                    logger.info('Notifications icon clicked');
                   }}
                   className="relative p-2 text-white/70 hover:text-purple-400 hover:bg-white/10 rounded-lg transition-all duration-300"
                   title="Notificaciones"
