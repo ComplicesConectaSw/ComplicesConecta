@@ -9,6 +9,7 @@ import HeaderNav from '@/components/HeaderNav';
 import { Footer } from "@/components/Footer";
 import { logger } from '@/lib/logger';
 import { useAuth } from '@/hooks/useAuth';
+import { DecorativeHearts } from '@/components/DecorativeHearts';
 
 // Professional profile images from Unsplash - Production ready
 // Removed local imports that fail in production
@@ -126,6 +127,8 @@ const ProfileDetail = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 relative overflow-hidden">
+      {/* Corazones decorativos flotantes */}
+      <DecorativeHearts count={5} />
       {/* Animated Background Elements */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-10 w-72 h-72 bg-pink-500/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>

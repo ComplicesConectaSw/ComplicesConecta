@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useFeatures } from "@/hooks/useFeatures";
 import { toast } from "@/hooks/use-toast";
 import HeaderNav from "@/components/HeaderNav";
+import { DecorativeHearts } from '@/components/DecorativeHearts';
 import { mockPrivacySettings } from "@/lib/data";
 import { invitationService } from "@/lib/invitations";
 import { simpleChatService, type SimpleChatRoom, type SimpleChatMessage } from '@/lib/simpleChatService';
@@ -370,6 +371,8 @@ const Chat = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 relative overflow-hidden pb-20">
+      {/* Corazones decorativos flotantes */}
+      <DecorativeHearts count={5} />
       {/* Background simplificado - sin elementos fantasma */}
       <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-purple-800/20 to-blue-900/20"></div>
 

@@ -10,6 +10,7 @@ import { WelcomeModal } from "@/components/WelcomeModal";
 import { FeatureModal } from "@/components/modals/FeatureModal";
 import { InstallAppModal } from "@/components/modals/InstallAppModal";
 import { ActionButtonsModal } from "@/components/modals/ActionButtonsModal";
+import { DecorativeHearts } from "@/components/DecorativeHearts";
 // StoriesContainer removido - ya está en HeaderNav
 import { useScrollHide } from "@/hooks/useScrollHide";
 import { Heart, Users, Shield, Zap, Smartphone as Android, Info, Briefcase, DollarSign, UserCheck } from "lucide-react";
@@ -261,6 +262,8 @@ const Index = () => {
   return (
     <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-pink-900 via-purple-900 via-purple-800 to-blue-900">
       {/* Background uniforme continuo rosa-púrpura-azul - aplicado directamente al contenedor principal */}
+      {/* Corazones decorativos flotantes */}
+      <DecorativeHearts count={8} />
       {/* Content */}
       <div className="relative z-10">
         <BetaBanner />

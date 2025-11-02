@@ -26,6 +26,7 @@ import { AnimatedProfileCard } from '@/components/ui/AnimatedProfileCard';
 import { AnimatedButton } from '@/components/ui/AnimatedButton';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { motion } from 'framer-motion';
+import { DecorativeHearts } from '@/components/DecorativeHearts';
 import { logger } from '@/lib/logger';
 
 // Definición del tipo para un perfil
@@ -479,10 +480,12 @@ const Discover = () => {
     });
   };
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 relative overflow-hidden pb-20">
-      {/* Animated Background */}
-      <div className="absolute inset-0 overflow-hidden">
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 relative overflow-hidden pb-20">
+        {/* Corazones decorativos flotantes */}
+        <DecorativeHearts count={6} />
+        {/* Animated Background */}
+        <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full mix-blend-multiply filter blur-xl animate-blob"></div>
         <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-pink-500/20 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000"></div>
         <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-red-500/20 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-4000"></div>
@@ -767,7 +770,7 @@ const Discover = () => {
                 // Show content based on authentication status
                 <>
                   {/* Usuarios NO autenticados: Cards de filtros demo */}
-                  {!isAuthenticated() && filterCards.map((card, index) => (
+                  {!isAuthenticated && filterCards.map((card, index) => (
                     <FilterDemoCardComponent
                       key={card.id}
                       card={card}
@@ -777,7 +780,7 @@ const Discover = () => {
                   ))}
                   
                   {/* Usuarios autenticados con credenciales demo: Perfiles demo */}
-                  {isAuthenticated() && user?.email === 'single@outlook.es' && filteredDemoProfiles.map((profile, index) => (
+                  {isAuthenticated && user?.email === 'single@outlook.es' && filteredDemoProfiles.map((profile, index) => (
                     <motion.div
                       key={profile.id}
                       initial={{ opacity: 0, y: 50 }}
@@ -804,7 +807,7 @@ const Discover = () => {
                   ))}
                   
                   {/* Usuarios autenticados con credenciales demo: Perfiles demo */}
-                  {isAuthenticated() && user?.email === 'pareja@outlook.es' && filteredDemoProfiles.map((profile, index) => (
+                  {isAuthenticated && user?.email === 'pareja@outlook.es' && filteredDemoProfiles.map((profile, index) => (
                     <motion.div
                       key={profile.id}
                       initial={{ opacity: 0, y: 50 }}
@@ -831,7 +834,7 @@ const Discover = () => {
                   ))}
                   
                   {/* Usuarios autenticados reales: Perfiles reales */}
-                  {isAuthenticated() && user?.email !== 'single@outlook.es' && user?.email !== 'pareja@outlook.es' && filteredProfiles.map((profile, index) => (
+                  {isAuthenticated && user?.email !== 'single@outlook.es' && user?.email !== 'pareja@outlook.es' && filteredProfiles.map((profile, index) => (
                     <motion.div
                       key={profile.id}
                       initial={{ opacity: 0, y: 50 }}

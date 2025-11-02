@@ -194,11 +194,11 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent 
-                  className="w-56 sm:w-64 bg-purple-900/95 border-purple-500/30 backdrop-blur-md max-h-[80vh] overflow-y-auto z-[200]"
+                  className="w-56 sm:w-64 bg-purple-900/95 border-purple-500/30 backdrop-blur-md max-h-[80vh] overflow-y-auto z-[200] custom-scrollbar"
                   align="end"
                   sideOffset={5}
                 >
-                  <div className="max-h-[calc(80vh-2rem)] overflow-y-auto overscroll-contain">
+                  <div className="max-h-[calc(80vh-2rem)] overflow-y-auto overscroll-contain custom-scrollbar-inner">
                     {['Comunidad', 'Servicios', 'Contenido', 'Acerca de', 'Ayuda', 'Legal'].map((category) => {
                       const categoryItems = secondaryNavItems.filter(item => item.category === category);
                       if (categoryItems.length === 0) return null;
