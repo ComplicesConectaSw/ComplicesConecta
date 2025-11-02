@@ -4,7 +4,8 @@
  */
 
 // 1. IMPORTANTE: New Relic debe ser lo primero
-import newrelic from 'newrelic';
+// eslint-disable-next-line no-unused-vars
+import newrelic from 'newrelic'; // Usado automáticamente por el agente
 
 import express from 'express';
 import path from 'path';
@@ -71,7 +72,8 @@ app.use((req, res, next) => {
 });
 
 // Error handler
-app.use((err, req, res, next) => {
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, _next) => {
   console.error('Server error:', err);
   res.status(500).json({
     error: 'Internal Server Error',

@@ -28,7 +28,7 @@ import { NotificationSettings } from './NotificationSettings';
 import { ModerationMetricsPanel } from './ModerationMetrics';
 import { HistoricalCharts } from './HistoricalCharts';
 import { WebhookConfigPanel } from './WebhookConfigPanel';
-import type { ExportData } from '@/utils/reportExport';
+// ExportData se usa como tipo en props de ExportButton, no necesita import directo
 
 // =====================================================
 // INTERFACES

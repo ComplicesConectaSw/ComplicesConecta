@@ -248,7 +248,7 @@ const Auth = () => {
   }
 
   return (
-    <ResponsiveContainer className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center p-4 relative overflow-hidden">
+    <ResponsiveContainer className="min-h-screen bg-gradient-to-br from-blue-600 via-purple-600 via-pink-500 to-purple-900 flex items-center justify-center p-4 relative overflow-hidden">
       {/* Animated background particles */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-1"></div>
@@ -355,7 +355,12 @@ const Auth = () => {
                       className="bg-white/10 border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
                     />
                   </div>
-                  <Button type="submit" className="w-full" disabled={isLoading} data-testid="login-button">
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold shadow-lg transition-all duration-300" 
+                    disabled={isLoading} 
+                    data-testid="login-button"
+                  >
                     {isLoading ? "Iniciando sesión..." : "Iniciar Sesión"}
                   </Button>
                   

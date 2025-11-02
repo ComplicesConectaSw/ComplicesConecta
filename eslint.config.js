@@ -27,7 +27,10 @@ export default [
       'coverage/**',
       'playwright-report/**',
       'playwright-report-e2e/**',
-      'test-results/**'
+      'test-results/**',
+      'respaldo_auditoria/**',
+      '**/*.bak',
+      '**/BACKUP_*'
     ]
   },
   {

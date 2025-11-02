@@ -165,7 +165,7 @@ export const useAuth = () => {
             (profileData as any)?.email,
             (profileData as any)?.display_name || (profileData as any)?.first_name
           );
-        } catch (error) {
+        } catch {
           // Silenciar errores de Datadog en desarrollo
         }
       } else {
@@ -277,7 +277,7 @@ export const useAuth = () => {
       // Limpiar usuario en Datadog RUM
       try {
         clearDatadogUser();
-      } catch (error) {
+      } catch {
         // Silenciar errores de Datadog
       }
     } catch (error) {

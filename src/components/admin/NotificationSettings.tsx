@@ -89,7 +89,8 @@ export const NotificationSettings: React.FC = () => {
           variant: "destructive",
         });
       }
-    } catch (error) {
+    } catch (err) {
+      logger.error('Error probando notificaciones:', { error: err instanceof Error ? err.message : String(err) });
       toast({
         title: "Error",
         description: "Error al probar las notificaciones",

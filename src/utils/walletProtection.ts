@@ -25,10 +25,14 @@ export const initializeWalletProtection = () => {
       'cannot redefine property: solana',
       'cannot assign to read only property: ethereum',
       'cannot assign to read only property: solana',
+      'cannot set property chainid',
       'wallet must has at least one account',
       'metamask encountered an error setting the global ethereum provider',
       'tronweb is already initiated',
-      'bybit:page provider inject code'
+      'tronlink will overwrite',
+      'bybit:page provider inject code',
+      'evmask',
+      'solana.js'
     ];
     
     // NO suprimir errores de imágenes - estos son importantes para la funcionalidad
@@ -44,8 +48,9 @@ export const initializeWalletProtection = () => {
       return;
     }
     
+    // SILENCIAR COMPLETAMENTE errores de wallet
     if (walletErrors.some(error => message.includes(error))) {
-      console.log('[WalletProtection] Suppressed wallet error:', args[0]);
+      // No mostrar nada en consola
       return;
     }
     originalConsoleError.apply(console, args);
@@ -55,11 +60,14 @@ export const initializeWalletProtection = () => {
     const message = args.join(' ').toLowerCase();
     const walletWarnings = [
       'tronweb is already initiated',
-      'bybit:page provider inject code'
+      'tronlink will overwrite',
+      'bybit:page provider inject code',
+      'download the react devtools'
     ];
     
+    // SILENCIAR COMPLETAMENTE warnings de wallet
     if (walletWarnings.some(warning => message.includes(warning))) {
-      console.log('[WalletProtection] Suppressed wallet warning:', args[0]);
+      // No mostrar nada en consola
       return;
     }
     originalConsoleWarn.apply(console, args);
@@ -71,7 +79,7 @@ export const initializeWalletProtection = () => {
     
     // Only block if it's trying to redefine an existing wallet property
     if (walletProps.includes(prop) && obj === window && window[prop as keyof Window]) {
-      console.log(`[WalletProtection] Blocked ${prop} redefinition`);
+      // Silenciar completamente - no mostrar logs
       return obj;
     }
     
@@ -80,7 +88,7 @@ export const initializeWalletProtection = () => {
     } catch (error) {
       // Only suppress wallet-related property errors
       if (walletProps.includes(prop)) {
-        console.log(`[WalletProtection] Property definition blocked for ${prop}`);
+        // Silenciar completamente - no mostrar logs
         return obj;
       }
       throw error; // Re-throw non-wallet errors
@@ -107,7 +115,7 @@ export const initializeWalletProtection = () => {
           configurable: true, // Allow reconfiguration if needed
           enumerable: true
         });
-        console.log(`[WalletProtection] Protected window.${prop}`);
+        // Silenciar - no mostrar logs
       }
     } catch {
       // Property might already be protected
@@ -126,7 +134,7 @@ export const initializeWalletProtection = () => {
     ];
     
     if (walletErrors.some(error => message.includes(error))) {
-      console.log('[WalletProtection] Suppressed uncaught wallet error:', event.message);
+      // Silenciar completamente - no mostrar logs
       event.preventDefault();
       return false;
     }
@@ -142,12 +150,12 @@ export const initializeWalletProtection = () => {
     ];
     
     if (walletErrors.some(error => message.includes(error))) {
-      console.log('[WalletProtection] Suppressed wallet promise rejection:', event.reason);
+      // Silenciar completamente - no mostrar logs
       event.preventDefault();
     }
   });
   
-  console.log('[WalletProtection] Enhanced protection initialized successfully');
+  // Wallet protection initialized silently
 };
 
 export const detectWalletConflicts = () => {

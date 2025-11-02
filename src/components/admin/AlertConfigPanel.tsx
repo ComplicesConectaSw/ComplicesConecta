@@ -19,7 +19,8 @@ import {
 import { Button } from '@/components/ui/button';
 import { logger } from '@/lib/logger';
 import errorAlertService, { AlertRule } from '@/services/ErrorAlertService';
-import performanceMonitoring from '@/services/PerformanceMonitoringService';
+// performanceMonitoring - preparado para uso futuro en configuración avanzada
+// import performanceMonitoring from '@/services/PerformanceMonitoringService';
 
 // =====================================================
 // INTERFACES
@@ -119,8 +120,9 @@ const ALERT_PRESETS: AlertConfig[] = [
 export const AlertConfigPanel: React.FC = () => {
   const [configs, setConfigs] = useState<AlertConfig[]>(ALERT_PRESETS);
   const [activeTab, setActiveTab] = useState<'performance' | 'error'>('performance');
-  const [editingConfig, setEditingConfig] = useState<AlertConfig | null>(null);
-  const [showAddDialog, setShowAddDialog] = useState(false);
+  // Variables preparadas para futuras funcionalidades de edición
+  const [_editingConfig, _setEditingConfig] = useState<AlertConfig | null>(null);
+  const [_showAddDialog, _setShowAddDialog] = useState(false);
 
   useEffect(() => {
     loadConfigs();
@@ -205,16 +207,17 @@ export const AlertConfigPanel: React.FC = () => {
     saveConfigs(newConfigs);
   };
 
-  const addConfig = (config: AlertConfig) => {
+  // Funciones preparadas para futuras funcionalidades
+  const _addConfig = (config: AlertConfig) => {
     const newConfigs = [...configs, config];
     saveConfigs(newConfigs);
-    setShowAddDialog(false);
+    _setShowAddDialog(false);
   };
 
-  const updateConfig = (config: AlertConfig) => {
+  const _updateConfig = (config: AlertConfig) => {
     const newConfigs = configs.map((c) => (c.id === config.id ? config : c));
     saveConfigs(newConfigs);
-    setEditingConfig(null);
+    _setEditingConfig(null);
   };
 
   const testAlert = (config: AlertConfig) => {
@@ -258,8 +261,10 @@ export const AlertConfigPanel: React.FC = () => {
           </p>
         </div>
         <Button
-          onClick={() => setShowAddDialog(true)}
+          onClick={() => _setShowAddDialog(true)}
           className="bg-blue-600 hover:bg-blue-700 text-white"
+          disabled
+          title="Funcionalidad en desarrollo"
         >
           <PlusIcon className="h-4 w-4 mr-2" />
           Nueva Alerta
@@ -372,7 +377,7 @@ export const AlertConfigPanel: React.FC = () => {
                 🧪 Probar
               </Button>
               <Button
-                onClick={() => setEditingConfig(config)}
+                onClick={() => _setEditingConfig(config)}
                 variant="outline"
                 size="sm"
                 className="flex-1 text-gray-300 border-gray-600 hover:bg-gray-700"
@@ -398,9 +403,11 @@ export const AlertConfigPanel: React.FC = () => {
           <ExclamationTriangleIcon className="h-12 w-12 text-gray-500 mx-auto mb-3" />
           <p className="text-gray-400">No hay alertas configuradas para {activeTab}</p>
           <Button
-            onClick={() => setShowAddDialog(true)}
+            onClick={() => _setShowAddDialog(true)}
             variant="outline"
             className="mt-4"
+            disabled
+            title="Funcionalidad en desarrollo"
           >
             <PlusIcon className="h-4 w-4 mr-2" />
             Agregar Primera Alerta

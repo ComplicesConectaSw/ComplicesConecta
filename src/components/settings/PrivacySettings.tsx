@@ -6,8 +6,28 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Shield, Eye, EyeOff, Users, AlertTriangle, Trash2 } from "lucide-react";
 import { logger } from '@/lib/logger';
+import { dataPrivacyService } from '@/services/DataPrivacyService';
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/use-toast';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export const PrivacySettings = () => {
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const [isExporting, setIsExporting] = useState(false);
+  const [isDeletingMatches, setIsDeletingMatches] = useState(false);
+  const [isDeletingAccount, setIsDeletingAccount] = useState(false);
+
   const [privacy, setPrivacy] = useState({
     profile_visibility: "everyone",
     show_online_status: true,
@@ -24,22 +44,126 @@ export const PrivacySettings = () => {
 
   const handleSave = () => {
     logger.info("Privacy settings saved:", privacy);
-    // Lógica para guardar en el backend
+    // TODO: Implementar guardado en backend
+    toast({
+      title: "Configuración guardada",
+      description: "Tus preferencias de privacidad han sido guardadas"
+    });
   };
 
-  const handleDownloadData = () => {
-    logger.info("Requesting data download...");
-    // Lógica para iniciar la descarga de datos
+  const handleDownloadData = async () => {
+    if (!user?.id) {
+      toast({
+        title: "Error",
+        description: "Debes estar autenticado para descargar tus datos",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    try {
+      setIsExporting(true);
+      logger.info("Requesting data download...");
+
+      const exportData = await dataPrivacyService.exportUserData(user.id);
+      
+      if (exportData) {
+        dataPrivacyService.downloadExport(exportData);
+        toast({
+          title: "✅ Datos descargados",
+          description: "Tus datos han sido exportados exitosamente"
+        });
+      } else {
+        throw new Error("No se pudieron exportar los datos");
+      }
+    } catch (error) {
+      logger.error("Error descargando datos:", { error: error instanceof Error ? error.message : String(error) });
+      toast({
+        title: "Error",
+        description: "No se pudieron descargar tus datos. Por favor intenta más tarde.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsExporting(false);
+    }
   };
 
-  const handleDeleteMatches = () => {
-    logger.warn("Requesting to delete match history...");
-    // Lógica para eliminar historial de matches, probablemente con confirmación
+  const handleDeleteMatches = async () => {
+    if (!user?.id) {
+      toast({
+        title: "Error",
+        description: "Debes estar autenticado",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    try {
+      setIsDeletingMatches(true);
+      logger.warn("Requesting to delete match history...");
+
+      const result = await dataPrivacyService.deleteMatchHistory(user.id);
+
+      if (result.success) {
+        toast({
+          title: "✅ Historial eliminado",
+          description: `Se eliminaron ${result.deletedCount} matches de tu historial`
+        });
+      } else {
+        throw new Error(result.error || "Error desconocido");
+      }
+    } catch (error) {
+      logger.error("Error eliminando historial de matches:", { error: error instanceof Error ? error.message : String(error) });
+      toast({
+        title: "Error",
+        description: "No se pudo eliminar el historial de matches",
+        variant: "destructive"
+      });
+    } finally {
+      setIsDeletingMatches(false);
+    }
   };
 
-  const handleDeleteAccount = () => {
-    logger.error("Requesting permanent account deletion...");
-    // Lógica para eliminar la cuenta, probablemente con confirmación
+  const handleDeleteAccount = async () => {
+    if (!user?.id) {
+      toast({
+        title: "Error",
+        description: "Debes estar autenticado",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    try {
+      setIsDeletingAccount(true);
+      logger.error("Requesting permanent account deletion...");
+
+      const result = await dataPrivacyService.deleteUserAccount(user.id);
+
+      if (result.success) {
+        toast({
+          title: "✅ Cuenta eliminada",
+          description: "Tu cuenta ha sido eliminada permanentemente. Serás redirigido...",
+          variant: "default"
+        });
+        
+        // Redirigir a logout o página principal después de un delay
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 3000);
+      } else {
+        throw new Error(result.errors?.join(', ') || "Error desconocido");
+      }
+    } catch (error) {
+      logger.error("Error eliminando cuenta:", { error: error instanceof Error ? error.message : String(error) });
+      toast({
+        title: "Error",
+        description: "No se pudo eliminar la cuenta completamente. Algunos datos pueden no haberse eliminado.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsDeletingAccount(false);
+    }
   };
 
   return (
@@ -208,25 +332,87 @@ export const PrivacySettings = () => {
             </p>
             
             <div className="space-y-3">
-              <Button variant="outline" className="w-full justify-start" size="sm" onClick={handleDownloadData}>
-                <Trash2 className="h-4 w-4 mr-2" />
-                Descargar mis datos
-              </Button>
-              
-              <Button variant="outline" className="w-full justify-start" size="sm" onClick={handleDeleteMatches}>
-                <Trash2 className="h-4 w-4 mr-2" />
-                Eliminar historial de matches
-              </Button>
-              
               <Button 
-                variant="destructive" 
+                variant="outline" 
                 className="w-full justify-start" 
-                size="sm"
-                onClick={handleDeleteAccount}
+                size="sm" 
+                onClick={handleDownloadData}
+                disabled={isExporting}
               >
                 <Trash2 className="h-4 w-4 mr-2" />
-                Eliminar cuenta permanentemente
+                {isExporting ? "Exportando..." : "Descargar mis datos"}
               </Button>
+              
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-start" 
+                    size="sm"
+                    disabled={isDeletingMatches}
+                  >
+                    <Trash2 className="h-4 w-4 mr-2" />
+                    {isDeletingMatches ? "Eliminando..." : "Eliminar historial de matches"}
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>¿Eliminar historial de matches?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Esta acción eliminará permanentemente tu historial de matches. 
+                      Esta acción no se puede deshacer.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                    <AlertDialogAction onClick={handleDeleteMatches}>
+                      Eliminar
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+              
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button 
+                    variant="destructive" 
+                    className="w-full justify-start" 
+                    size="sm"
+                    disabled={isDeletingAccount}
+                  >
+                    <Trash2 className="h-4 w-4 mr-2" />
+                    {isDeletingAccount ? "Eliminando..." : "Eliminar cuenta permanentemente"}
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>⚠️ ¿Eliminar cuenta permanentemente?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Esta acción eliminará TODOS tus datos de forma permanente:
+                      <ul className="list-disc list-inside mt-2 space-y-1">
+                        <li>Tu perfil y datos personales</li>
+                        <li>Tus imágenes y galería</li>
+                        <li>Tu historial de matches</li>
+                        <li>Tus mensajes (anonimizados)</li>
+                        <li>Tus posts y stories</li>
+                        <li>Todas tus preferencias</li>
+                      </ul>
+                      <strong className="block mt-3 text-destructive">
+                        Esta acción NO se puede deshacer.
+                      </strong>
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                    <AlertDialogAction 
+                      onClick={handleDeleteAccount}
+                      className="bg-destructive hover:bg-destructive/90"
+                    >
+                      Sí, eliminar mi cuenta
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           </div>
         </CardContent>

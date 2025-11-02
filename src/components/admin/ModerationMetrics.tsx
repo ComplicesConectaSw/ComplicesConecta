@@ -14,7 +14,7 @@ import {
   ClockIcon,
   ExclamationTriangleIcon,
   CheckCircleIcon,
-  XCircleIcon,
+  // XCircleIcon - preparado para uso futuro
   UserGroupIcon,
   ChartBarIcon,
   FlagIcon

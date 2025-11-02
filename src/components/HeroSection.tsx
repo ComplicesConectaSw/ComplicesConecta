@@ -3,15 +3,15 @@ import { Heart, Sparkles, Users } from "lucide-react";
 export const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Gradient - Corregido para coincidir con imagen */}
-      <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-500 via-pink-500 to-purple-800" />
+      {/* Background Gradient - Mejorado: Gradiente azul-rosa */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-purple-600 via-pink-500 to-purple-900" />
       
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Floating Hearts */}
-        <Heart className="absolute top-20 left-10 w-8 h-8 text-white/20 animate-float" fill="currentColor" />
-        <Heart className="absolute top-32 right-16 w-6 h-6 text-white/30 animate-float" style={{ animationDelay: '1s' }} fill="currentColor" />
-        <Heart className="absolute bottom-32 left-20 w-6 h-6 text-white/25 animate-float" style={{ animationDelay: '2s' }} fill="currentColor" />
+        {/* Floating Hearts - Mejorado contraste */}
+        <Heart className="absolute top-20 left-10 w-8 h-8 text-white/60 drop-shadow-lg animate-float" fill="currentColor" stroke="white" strokeWidth="1" />
+        <Heart className="absolute top-32 right-16 w-6 h-6 text-white/70 drop-shadow-lg animate-float" style={{ animationDelay: '1s' }} fill="currentColor" stroke="white" strokeWidth="1" />
+        <Heart className="absolute bottom-32 left-20 w-6 h-6 text-white/65 drop-shadow-lg animate-float" style={{ animationDelay: '2s' }} fill="currentColor" stroke="white" strokeWidth="1" />
         
         {/* Sparkles */}
         <Sparkles className="absolute top-40 right-20 w-4 h-4 text-white/40 animate-bounce-gentle" style={{ animationDelay: '0.5s' }} />
@@ -33,18 +33,20 @@ export const HeroSection = () => {
             <div className="flex items-center space-x-6 group">
               <div className="relative">
                 <Heart 
-                  className="text-pink-400 transition-all duration-300 h-16 w-16 sm:h-20 sm:w-20 animate-pulse group-hover:text-pink-300" 
+                  className="text-white transition-all duration-300 h-16 w-16 sm:h-20 sm:w-20 animate-pulse group-hover:text-pink-200 drop-shadow-[0_4px_20px_rgba(255,255,255,0.8)]" 
                   fill="currentColor"
-                  style={{ animationDuration: '2s' }}
+                  stroke="white"
+                  strokeWidth="2"
+                  style={{ animationDuration: '2s', filter: 'drop-shadow(0 4px 20px rgba(255,255,255,0.8))' }}
                 />
                 <div className="absolute inset-0 animate-float">
-                  <Heart className="text-pink-300 opacity-70 transition-all duration-300 h-16 w-16 sm:h-20 sm:w-20 animate-ping" fill="currentColor" />
+                  <Heart className="text-white opacity-80 transition-all duration-300 h-16 w-16 sm:h-20 sm:w-20 animate-ping drop-shadow-lg" fill="currentColor" stroke="white" strokeWidth="1" />
                 </div>
                 <div className="absolute inset-0 animate-pulse">
-                  <Heart className="text-pink-400 opacity-30 transition-all duration-300 h-16 w-16 sm:h-20 sm:w-20" fill="currentColor" />
+                  <Heart className="text-white opacity-50 transition-all duration-300 h-16 w-16 sm:h-20 sm:w-20 drop-shadow-md" fill="currentColor" stroke="white" strokeWidth="1" />
                 </div>
               </div>
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-black bg-gradient-to-r from-pink-400 to-rose-400 bg-clip-text text-transparent transition-all duration-300 group-hover:scale-105 tracking-wide">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-white drop-shadow-[0_4px_20px_rgba(0,0,0,0.8)] transition-all duration-300 group-hover:scale-105 tracking-wide">
                 ComplicesConecta
               </h1>
             </div>

@@ -22,7 +22,6 @@ import webhookService, {
   type WebhookProvider,
   type WebhookEventType
 } from '@/services/WebhookService';
-import { logger } from '@/lib/logger';
 
 // =====================================================
 // COMPONENT

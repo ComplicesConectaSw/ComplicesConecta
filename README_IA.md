@@ -9,10 +9,11 @@
    - `recover/*` → Recuperación desde backups
    - **v3.4.0**: `feature/advanced-*` → Funcionalidades avanzadas (seguridad, moderación, parejas)
    - **v3.4.1**: `feature/monitoring-*` → Sistema de monitoreo y analytics
-   - **v3.5.0**: `feature/ai-native-*` → AI/ML layers (compatibility, chat summaries) ✅
-   - **v3.5.0**: `feature/scalability-*` → S2 Geosharding, Neo4j ✅
-   - **v3.5.0**: `feature/refactoring-*` → Consolidación código + CSS ✅
-   - **v3.5.0**: `fix/react-chunks-*` → Corrección React en producción ✅
+  - **v3.5.0**: `feature/ai-native-*` → AI/ML layers (compatibility, chat summaries) ✅
+  - **v3.5.0**: `feature/scalability-*` → S2 Geosharding, Neo4j ✅
+  - **v3.5.0**: `feature/refactoring-*` → Consolidación código + CSS ✅
+  - **v3.5.0**: `fix/react-chunks-*` → Corrección React en producción ✅
+  - **v3.5.0**: `feature/chat-privacy-*` → ChatRoom + MessageList + ChatPrivacyService ✅
 
 2. **SQL y Backups**
    - Todos los `.sql` y migraciones quedan excluidos en `.gitignore`
@@ -20,6 +21,8 @@
    - **v3.4.0**: Migraciones de seguridad y parejas incluidas
    - **v3.4.1**: 20 migraciones aplicadas (47 tablas sincronizadas 100%)
    - **NUEVO v3.5.0**: 25 migraciones aplicadas (107 tablas sincronizadas 100%)
+  - **NUEVO v3.5.0**: Componentes de chat implementados (ChatRoom, MessageList)
+  - **NUEVO v3.5.0**: Sistema de privacidad de chat completo (ChatPrivacyService)
 
 3. **Flujo de trabajo con IA/ML**
    - IA genera migraciones o código → Validar con `npm run type-check`

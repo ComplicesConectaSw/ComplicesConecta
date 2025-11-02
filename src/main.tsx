@@ -34,8 +34,11 @@ if (typeof window !== 'undefined') {
       'cannot assign to read only property',
       'metamask encountered an error',
       'tronweb is already initiated',
+      'tronlink will overwrite',
       'cannot set property chainid',
-      'bybit:page provider'
+      'bybit:page provider',
+      'evmask',
+      'solana.js'
     ];
     
     const walletFiles = [
@@ -50,11 +53,12 @@ if (typeof window !== 'undefined') {
       'inpage.js:154',
       'inpage.js:168',
       'inpage.js:',
+      'inpage.js:1',
       'tronlink',
       'bybit'
     ];
     
-    // Bloquear si es error de wallet O archivo de wallet
+    // Bloquear si es error de wallet O archivo de wallet - SILENCIAR COMPLETAMENTE
     if (walletErrors.some(error => message.includes(error)) || 
         walletFiles.some(file => filename.includes(file))) {
       event.stopImmediatePropagation();
@@ -63,16 +67,21 @@ if (typeof window !== 'undefined') {
     }
   }, true); // Capturar en fase de captura
   
-  // Promise rejection handler - SILENCIAR TODO DE WALLETS
+  // Promise rejection handler - SILENCIAR COMPLETAMENTE TODO DE WALLETS
   window.addEventListener('unhandledrejection', (event) => {
     const message = event.reason?.message?.toLowerCase() || event.reason?.toString()?.toLowerCase() || '';
     const walletErrors = [
-      'wallet',
-      'ethereum',
-      'solana',
-      'tronweb',
+      'cannot redefine property',
+      'cannot assign to read only property',
+      'cannot set property chainid',
       'metamask',
+      'tronweb',
+      'tronlink',
       'bybit',
+      'solana',
+      'ethereum',
+      'evmask',
+      'wallet',
       'chainid'
     ];
     

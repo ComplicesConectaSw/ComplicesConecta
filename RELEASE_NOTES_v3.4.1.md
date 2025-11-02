@@ -1,12 +1,60 @@
 # 📝 RELEASE NOTES - ComplicesConecta
 
-**Última Actualización:** 02 de Noviembre, 2025  
+**Última Actualización:** 02 de Noviembre, 2025 - 08:00 hrs  
 **Versión Actual:** v3.5.0  
 **Estado:** ✅ **PRODUCTION READY - ENTERPRISE GRADE - AI-NATIVE - REFACTORIZADO**
 
 ---
 
-## 🚀 Versión 3.5.0 - AI-Native Layer + Scalability + Correcciones React (02 Nov 2025)
+## 🚀 Versión 3.5.0 - AI-Native Layer + Chat con Privacidad + Correcciones (02 Nov 2025)
+
+### 🎉 NUEVAS FUNCIONALIDADES v3.5.0 (02 Nov 2025 - 08:00)
+
+#### 💬 Sistema de Chat con Privacidad Completo ✅
+- ✅ **ChatRoom.tsx** - Componente principal con sistema de privacidad
+  - Solicitar permiso para chatear con otros usuarios
+  - Aceptar/denegar solicitudes de chat
+  - Verificación de permisos antes de enviar mensajes
+  - Interfaz moderna y responsive
+- ✅ **MessageList.tsx** - Lista de mensajes formateada
+  - Distingue mensajes propios y ajenos
+  - Indicadores de tiempo (formato relativo)
+  - Soporte para ubicaciones compartidas
+  - Empty state cuando no hay mensajes
+- ✅ **ChatPrivacyService.ts** - Servicio de privacidad
+  - Gestión completa de permisos de chat
+  - Integración con sistema de invitaciones
+  - Solicitud de acceso a galería privada desde chat
+  - Verificación de permisos bidireccional
+- ✅ **Geolocalización en Chat**
+  - Compartir ubicación en mensajes
+  - Integración con S2Service para geohashing
+  - Botón de compartir ubicación en interfaz
+- ✅ **Permisos de Galería Privada**
+  - Solicitar acceso desde el chat
+  - Integración con InvitationsService
+  - Verificación automática de permisos
+- ✅ **VideoChatService.ts** - Preparación futura
+  - Estructura base para video chat
+  - Verificación de permisos preparada
+  - Listo para integración WebRTC
+
+**Archivos Creados:**
+- `src/components/chat/ChatRoom.tsx` (502 líneas)
+- `src/components/chat/MessageList.tsx` (144 líneas)
+- `src/services/ChatPrivacyService.ts` (456 líneas)
+- `src/services/VideoChatService.ts` (144 líneas)
+
+#### 🎨 Mejoras Visuales CSS ✅
+- ✅ **Gradientes Azul-Rosa**: Implementados en HeroSection y Auth
+- ✅ **Visibilidad Mejorada**: Texto y corazones con mejor contraste
+- ✅ **Botón Elegante**: Gradiente profesional en botón de login
+- ✅ **Consistencia Visual**: Todos los fondos con gradientes cohesivos
+
+#### 🔇 Silenciamiento de Errores Wallet ✅
+- ✅ **walletProtection.ts**: Logs eliminados completamente
+- ✅ **main.tsx**: Handlers mejorados para silenciar todos los errores
+- ✅ **Consola Limpia**: Sin errores de MetaMask, Solana, TronLink, etc.
 
 ### 🔧 CORRECCIONES Y MEJORAS v3.5.0 (02 Nov 2025)
 
@@ -90,7 +138,7 @@
 - Query nearby (100k users): 5s → 100ms (50x mejora)
 - Query nearby (1M users): 30s → 300ms (100x mejora)
 
-#### 🗄️ Base de Datos (47 tablas → 52 tablas)
+#### 🗄️ Base de Datos (107 tablas operativas)
 
 **Nuevas Tablas v3.5.0:**
 - `ai_compatibility_scores` - Scores ML
@@ -99,9 +147,10 @@
 - `chat_summaries` - Resúmenes automáticos
 - `summary_requests` - Rate limiting
 - `summary_feedback` - Feedback de usuarios
+- Tablas de chat: `chat_messages`, `chat_rooms`, `chat_invitations`, `chat_members`
 
 **Estado:**
-- ✅ 52 tablas sincronizadas (100%)
+- ✅ 107 tablas sincronizadas (100%)
 - ✅ 80+ índices optimizados
 - ✅ 65+ políticas RLS activas
 - ✅ 12 triggers funcionando
