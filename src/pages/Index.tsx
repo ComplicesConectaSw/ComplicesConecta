@@ -269,11 +269,11 @@ const Index = () => {
         </div>
       </div>
       
-      <main className="bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900">
+      <main>
         <HeroSection />
         
         {/* Featured Profiles Section */}
-        <section className="py-10 sm:py-20 relative bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900">
+        <section className="py-10 sm:py-20 relative">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center space-y-8">
               <div className="space-y-6">
@@ -309,7 +309,7 @@ const Index = () => {
         {/* Stories Section - Removida porque ya está en HeaderNav */}
 
         {/* About, Careers, Donations Section */}
-        <section className="py-20 relative bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900">
+        <section className="py-20 relative">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-xl">
@@ -435,7 +435,7 @@ const Index = () => {
         </section>
 
         {/* Features Section */}
-        <section className="py-20 relative bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900">
+        <section className="py-20 relative">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold text-white mb-4">
@@ -472,7 +472,7 @@ const Index = () => {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 relative overflow-hidden">
+        <section className="py-20 relative overflow-hidden">
           {/* Sin elementos adicionales que creen bordes */}
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8 relative z-10 max-w-6xl">
             <div className="max-w-3xl mx-auto">

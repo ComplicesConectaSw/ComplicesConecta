@@ -2,11 +2,9 @@ import { Heart, Sparkles, Users } from "lucide-react";
 
 export const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900">
-      {/* Sin background adicional - el section tiene el background directamente */}
-      
-      {/* Elementos decorativos sutiles - sin orbs que creen bordes */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    <section className="relative flex items-center justify-center overflow-hidden py-16 sm:py-24">
+      {/* Sin background aquí - el background está en el contenedor principal */}
+      {/* Sin elementos decorativos adicionales que creen bloques */}
         {/* Floating Hearts - Muy sutiles */}
         <Heart className="absolute top-20 left-10 w-8 h-8 text-white/20 drop-shadow-lg animate-float" fill="currentColor" stroke="white" strokeWidth="1" />
         <Heart className="absolute top-32 right-16 w-6 h-6 text-white/15 drop-shadow-lg animate-float" style={{ animationDelay: '1s' }} fill="currentColor" stroke="white" strokeWidth="1" />
