@@ -158,7 +158,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                     <div className="absolute bottom-0 left-1 w-1 h-1 bg-purple-400 rounded-full animate-particle-3"></div>
                   </div>
                 </div>
-                <span className="text-white font-black text-xl lg:text-2xl hidden sm:block bg-gradient-to-r from-purple-300 via-pink-300 to-blue-300 bg-clip-text text-transparent animate-gradient-x">
+                <span className="text-white font-black text-xl lg:text-2xl hidden sm:block bg-gradient-to-r from-purple-300 via-purple-200 to-blue-300 bg-clip-text text-transparent animate-gradient-x">
                   ComplicesConecta
                 </span>
               </button>
