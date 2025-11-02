@@ -19,10 +19,20 @@ import {
   ShoppingBag,
   FileText,
   Lock,
-  Crown
+  Crown,
+  ChevronDown,
+  MoreHorizontal
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+  DropdownMenuLabel
+} from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/hooks/useAuth';
 import { logger } from '@/lib/logger';
 
@@ -46,29 +56,34 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navItems = [
+  // Items principales - siempre visibles
+  const mainNavItems = [
     { name: 'Inicio', path: '/', icon: Heart },
     { name: 'Descubrir', path: '/discover', icon: Search },
-    { name: 'Perfiles', path: '/profiles', icon: User },
     { name: 'Matches', path: '/matches', icon: Heart },
     { name: 'Chat', path: '/chat', icon: MessageSquare },
-    { name: 'Feed', path: '/feed', icon: Users },
     { name: 'Eventos', path: '/events', icon: Calendar },
-    { name: 'Tokens', path: '/tokens', icon: DollarSign },
-    { name: 'Marketplace', path: '/marketplace', icon: ShoppingBag },
-    { name: 'Blog', path: '/blog', icon: FileText },
-    { name: 'Noticias', path: '/news', icon: Bell },
-    { name: 'Empresa', path: '/about', icon: Building2 },
-    { name: 'Donaciones', path: '/donations', icon: DollarSign },
-    { name: 'Carreras', path: '/careers', icon: Building2 },
-    { name: 'Premium', path: '/premium', icon: Crown },
-    { name: 'FAQ', path: '/faq', icon: HelpCircle },
-    { name: 'Información', path: '/info', icon: Info },
-    { name: 'Términos', path: '/terms', icon: FileText },
-    { name: 'Privacidad', path: '/privacy', icon: Lock },
-    { name: 'Seguridad', path: '/security', icon: Shield },
-    { name: 'Soporte', path: '/support', icon: HelpCircle },
-    { name: 'Proyecto', path: '/project-info', icon: FileText }
+    { name: 'Tokens', path: '/tokens', icon: DollarSign }
+  ];
+
+  // Items secundarios - en menú desplegable
+  const secondaryNavItems = [
+    { name: 'Perfiles', path: '/profiles', icon: User, category: 'Comunidad' },
+    { name: 'Feed', path: '/feed', icon: Users, category: 'Comunidad' },
+    { name: 'Premium', path: '/premium', icon: Crown, category: 'Servicios' },
+    { name: 'Marketplace', path: '/marketplace', icon: ShoppingBag, category: 'Servicios' },
+    { name: 'Blog', path: '/blog', icon: FileText, category: 'Contenido' },
+    { name: 'Noticias', path: '/news', icon: Bell, category: 'Contenido' },
+    { name: 'Empresa', path: '/about', icon: Building2, category: 'Acerca de' },
+    { name: 'Carreras', path: '/careers', icon: Building2, category: 'Acerca de' },
+    { name: 'Donaciones', path: '/donations', icon: DollarSign, category: 'Acerca de' },
+    { name: 'FAQ', path: '/faq', icon: HelpCircle, category: 'Ayuda' },
+    { name: 'Información', path: '/info', icon: Info, category: 'Ayuda' },
+    { name: 'Soporte', path: '/support', icon: HelpCircle, category: 'Ayuda' },
+    { name: 'Términos', path: '/terms', icon: FileText, category: 'Legal' },
+    { name: 'Privacidad', path: '/privacy', icon: Lock, category: 'Legal' },
+    { name: 'Seguridad', path: '/security', icon: Shield, category: 'Legal' },
+    { name: 'Proyecto', path: '/project-info', icon: FileText, category: 'Legal' }
   ];
 
   const isActive = (path: string) => {
@@ -138,24 +153,63 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
             </div>
 
             {/* Navegación Central - Desktop */}
-            <nav className="hidden lg:flex items-center space-x-1 flex-1 justify-center max-w-4xl mx-8">
-              {navItems.map((item) => {
+            <nav className="hidden lg:flex items-center space-x-2 flex-1 justify-center mx-8">
+              {mainNavItems.map((item) => {
                 const IconComponent = item.icon;
                 return (
                   <button
                     key={item.name}
                     onClick={() => handleNavigation(item.path)}
-                    className={`flex items-center space-x-1 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
                       isActive(item.path)
                         ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-500/25'
-                        : 'text-white/80 hover:text-white hover:bg-white/10'
+                        : 'text-white/90 hover:text-white hover:bg-white/10'
                     }`}
                   >
                     <IconComponent className="h-4 w-4" />
-                    <span>{item.name}</span>
+                    <span className="whitespace-nowrap">{item.name}</span>
                   </button>
                 );
               })}
+              
+              {/* Menú desplegable "Más" */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 transition-all duration-300">
+                    <MoreHorizontal className="h-4 w-4" />
+                    <span className="whitespace-nowrap">Más</span>
+                    <ChevronDown className="h-3 w-3" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56 bg-purple-900/95 border-purple-500/30 backdrop-blur-md">
+                  {['Comunidad', 'Servicios', 'Contenido', 'Acerca de', 'Ayuda', 'Legal'].map((category) => {
+                    const categoryItems = secondaryNavItems.filter(item => item.category === category);
+                    if (categoryItems.length === 0) return null;
+                    
+                    return (
+                      <div key={category}>
+                        <DropdownMenuLabel className="text-purple-300 text-xs font-semibold">
+                          {category}
+                        </DropdownMenuLabel>
+                        {categoryItems.map((item) => {
+                          const IconComponent = item.icon;
+                          return (
+                            <DropdownMenuItem
+                              key={item.name}
+                              onClick={() => handleNavigation(item.path)}
+                              className="text-white hover:bg-purple-500/20 hover:text-white cursor-pointer"
+                            >
+                              <IconComponent className="h-4 w-4 mr-2" />
+                              {item.name}
+                            </DropdownMenuItem>
+                          );
+                        })}
+                        <DropdownMenuSeparator className="bg-purple-500/20" />
+                      </div>
+                    );
+                  })}
+                </DropdownMenuContent>
+              </DropdownMenu>
             </nav>
 
             {/* Acciones de Usuario - Derecha */}
@@ -205,7 +259,8 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
         {isMobileMenuOpen && (
           <div className="lg:hidden bg-gradient-to-r from-purple-900/95 via-purple-900/95 to-blue-900/95 backdrop-blur-md border-t border-purple-500/20">
             <div className="px-4 py-4 space-y-2">
-              {navItems.map((item) => {
+              {/* Items principales */}
+              {mainNavItems.map((item) => {
                 const IconComponent = item.icon;
                 return (
                   <button
@@ -219,6 +274,28 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                   >
                     <IconComponent className="h-5 w-5" />
                     <span className="font-medium">{item.name}</span>
+                  </button>
+                );
+              })}
+              
+              {/* Separador */}
+              <div className="border-t border-white/10 my-4"></div>
+              
+              {/* Items secundarios */}
+              {secondaryNavItems.map((item) => {
+                const IconComponent = item.icon;
+                return (
+                  <button
+                    key={item.name}
+                    onClick={() => handleNavigation(item.path)}
+                    className={`w-full flex items-center space-x-3 px-4 py-2 rounded-lg text-left transition-all duration-300 ${
+                      isActive(item.path)
+                        ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white'
+                        : 'text-white/70 hover:text-white hover:bg-white/10'
+                    }`}
+                  >
+                    <IconComponent className="h-4 w-4" />
+                    <span className="font-medium text-sm">{item.name}</span>
                   </button>
                 );
               })}
