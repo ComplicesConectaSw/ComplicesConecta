@@ -1,4 +1,5 @@
 import { createRoot } from 'react-dom/client'
+import * as React from 'react'
 import { StrictMode } from 'react'
 import App from './App.tsx'
 import './index.css'
@@ -14,7 +15,12 @@ import { initWebVitalsMonitoring } from '@/utils/webVitals'
 import { initializeCriticalPreloading } from '@/utils/preloading'
 import { androidSecurity } from '@/utils/androidSecurity'
 
+// CRÍTICO: Asegurar que React esté disponible globalmente ANTES de cualquier código
 if (typeof window !== 'undefined') {
+  // Asegurar React disponible para todos los chunks
+  if (!(window as any).React) {
+    (window as any).React = React;
+  }
   // Initialize wallet protection with minimal interference
   initializeWalletProtection();
   

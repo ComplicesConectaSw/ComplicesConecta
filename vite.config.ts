@@ -64,9 +64,9 @@ export default defineConfig({
         manualChunks: (id) => {
           // Vendor libraries - split by size and usage
           if (id.includes('node_modules')) {
-            // React core (small, critical)
-            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
-              return 'react-core';
+            // React core DEBE estar inline en vendor principal para evitar errores
+            if (id.includes('react/') || id.includes('react-dom/') || id.includes('react-router')) {
+              return 'vendor';
             }
             // UI libraries (medium)
             if (id.includes('@radix-ui')) {
@@ -98,7 +98,7 @@ export default defineConfig({
             if (id.includes('date-fns') || id.includes('clsx') || id.includes('tailwind-merge')) {
               return 'utils';
             }
-            // Rest of vendor code
+            // Rest of vendor code - INCLUYE REACT AQUÍ
             return 'vendor';
           }
           
