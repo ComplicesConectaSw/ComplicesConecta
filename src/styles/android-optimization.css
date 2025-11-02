@@ -17,7 +17,7 @@
   /* Modern gradient background */
   --primary-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
   --secondary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --accent-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --accent-gradient: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
 }
 
 /* Resoluciones Android comunes */
