@@ -259,16 +259,8 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-hero-gradient">
-      {/* Fixed closing div tag */}
-      {/* Simplified Background - Sin elementos fantasma */}
-      <div className="fixed inset-0 z-0">
-        {/* Solo gradiente sutil */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-blue-500/5 via-transparent to-purple-500/5"></div>
-        </div>
-      </div>
-      
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Background uniforme continuo sin bordes - sin elementos adicionales */}
       {/* Content */}
       <div className="relative z-10">
         <BetaBanner />
@@ -281,7 +273,7 @@ const Index = () => {
         <HeroSection />
         
         {/* Featured Profiles Section */}
-        <section className="py-10 sm:py-20 relative">
+        <section className="py-10 sm:py-20 relative bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center space-y-8">
               <div className="space-y-6">
@@ -317,7 +309,7 @@ const Index = () => {
         {/* Stories Section - Removida porque ya está en HeaderNav */}
 
         {/* About, Careers, Donations Section */}
-        <section className="py-20 relative">
+        <section className="py-20 relative bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-xl">
@@ -443,7 +435,7 @@ const Index = () => {
         </section>
 
         {/* Features Section */}
-        <section className="py-20 relative">
+        <section className="py-20 relative bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold text-white mb-4">
@@ -480,12 +472,8 @@ const Index = () => {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 bg-love-gradient relative overflow-hidden">
-          {/* Enhanced CTA Background */}
-          <div className="absolute inset-0">
-            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-primary/20 via-accent/30 to-secondary/20 animate-gradient-x"></div>
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1),transparent_70%)]"></div>
-          </div>
+        <section className="py-20 bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 relative overflow-hidden">
+          {/* Sin elementos adicionales que creen bordes */}
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8 relative z-10 max-w-6xl">
             <div className="max-w-3xl mx-auto">
               <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">

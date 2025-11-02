@@ -38,7 +38,7 @@ export const BetaBanner = () => {
         ${isScrolled ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}
       `}
     >
-      <Card className="rounded-none border-0 bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 shadow-lg">
+      <Card className="rounded-none border-0 bg-gradient-to-r from-purple-600 via-purple-700 to-blue-700 shadow-lg">
         <CardContent className="p-3 sm:p-4">
           <div className="flex items-center justify-between max-w-7xl mx-auto">
             <div className="flex items-center space-x-3 flex-1 min-w-0">

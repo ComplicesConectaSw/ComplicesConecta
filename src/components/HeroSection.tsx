@@ -3,26 +3,22 @@ import { Heart, Sparkles, Users } from "lucide-react";
 export const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Gradient - Uniforme púrpura/azul sin rosa */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900" />
+      {/* Background Gradient - Uniforme continuo sin bordes - púrpura/azul */}
+      <div className="fixed inset-0 bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 -z-10" />
       
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Floating Hearts - Mejorado contraste */}
-        <Heart className="absolute top-20 left-10 w-8 h-8 text-white/60 drop-shadow-lg animate-float" fill="currentColor" stroke="white" strokeWidth="1" />
-        <Heart className="absolute top-32 right-16 w-6 h-6 text-white/70 drop-shadow-lg animate-float" style={{ animationDelay: '1s' }} fill="currentColor" stroke="white" strokeWidth="1" />
-        <Heart className="absolute bottom-32 left-20 w-6 h-6 text-white/65 drop-shadow-lg animate-float" style={{ animationDelay: '2s' }} fill="currentColor" stroke="white" strokeWidth="1" />
+      {/* Elementos decorativos sutiles - sin orbs que creen bordes */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Floating Hearts - Muy sutiles */}
+        <Heart className="absolute top-20 left-10 w-8 h-8 text-white/20 drop-shadow-lg animate-float" fill="currentColor" stroke="white" strokeWidth="1" />
+        <Heart className="absolute top-32 right-16 w-6 h-6 text-white/15 drop-shadow-lg animate-float" style={{ animationDelay: '1s' }} fill="currentColor" stroke="white" strokeWidth="1" />
+        <Heart className="absolute bottom-32 left-20 w-6 h-6 text-white/15 drop-shadow-lg animate-float" style={{ animationDelay: '2s' }} fill="currentColor" stroke="white" strokeWidth="1" />
         
-        {/* Sparkles */}
-        <Sparkles className="absolute top-40 right-20 w-4 h-4 text-white/40 animate-bounce-gentle" style={{ animationDelay: '0.5s' }} />
-        <Sparkles className="absolute bottom-40 left-16 w-5 h-5 text-white/30 animate-bounce-gentle" style={{ animationDelay: '1.5s' }} />
+        {/* Sparkles - Muy sutiles */}
+        <Sparkles className="absolute top-40 right-20 w-4 h-4 text-white/10 animate-bounce-gentle" style={{ animationDelay: '0.5s' }} />
+        <Sparkles className="absolute bottom-40 left-16 w-5 h-5 text-white/8 animate-bounce-gentle" style={{ animationDelay: '1.5s' }} />
         
-        {/* Users Icon */}
-        <Users className="absolute bottom-20 right-10 w-8 h-8 text-white/20 animate-float" style={{ animationDelay: '0.5s' }} />
-        
-        {/* Gradient Orbs */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse-glow" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-accent/20 to-secondary/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse-glow" style={{ animationDelay: '1s' }} />
+        {/* Users Icon - Muy sutil */}
+        <Users className="absolute bottom-20 right-10 w-8 h-8 text-white/10 animate-float" style={{ animationDelay: '0.5s' }} />
       </div>
 
       {/* Main Content */}
