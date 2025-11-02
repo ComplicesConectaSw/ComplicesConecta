@@ -97,8 +97,8 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
       {/* Header Principal */}
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled 
-          ? 'bg-gradient-to-r from-purple-950/95 via-purple-900/95 to-purple-950/95 backdrop-blur-md border-b border-purple-500/30' 
-          : 'bg-gradient-to-r from-purple-950/98 via-purple-900/98 to-purple-950/98 backdrop-blur-sm border-b border-purple-400/40'
+          ? 'bg-gradient-to-r from-purple-950/95 via-purple-950/95 to-purple-950/95 backdrop-blur-md border-b border-purple-500/30' 
+          : 'bg-gradient-to-r from-purple-950/98 via-purple-950/98 to-purple-950/98 backdrop-blur-sm border-b border-purple-400/40'
       } ${className}`}>
         
         {/* Contenedor Principal */}
