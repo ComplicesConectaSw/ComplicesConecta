@@ -182,6 +182,10 @@ webpack-bundle-analyzer-report.html
 **/*_duplicate.*
 **/*_copy.*
 **/*_backup.*
+**/* copy*
+**/* copy.*
+*.env copy*
+*.env copy.*
 
 # Scripts SQL temporales (v2.2.0 - organizados en scripts/temp/)
 scripts/temp/
