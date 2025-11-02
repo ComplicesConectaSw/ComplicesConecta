@@ -1,5 +1,5 @@
 ﻿import { useState, useEffect } from "react";
-import { MessageCircle, Video, MoreVertical, ArrowLeft, Heart, Send, Lock, Globe, UserPlus } from "lucide-react";
+import { MessageCircle, Video, MoreVertical, ArrowLeft, Heart, Send, Lock, Globe, UserPlus, Image as ImageIcon, UserPlus as UserPlusIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { UnifiedButton } from "@/components/ui/UnifiedButton";
 import { UnifiedInput } from "@/components/ui/UnifiedInput";
@@ -7,11 +7,13 @@ import { useNavigate } from "react-router-dom";
 import { useFeatures } from "@/hooks/useFeatures";
 import { toast } from "@/hooks/use-toast";
 import HeaderNav from "@/components/HeaderNav";
+import Navigation from "@/components/Navigation";
 import { DecorativeHearts } from '@/components/DecorativeHearts';
 import { mockPrivacySettings } from "@/lib/data";
 import { invitationService } from "@/lib/invitations";
 import { simpleChatService, type SimpleChatRoom, type SimpleChatMessage } from '@/lib/simpleChatService';
 import { logger } from '@/lib/logger';
+import { useAuth } from '@/hooks/useAuth';
 
 export interface ChatUser {
   id: number;
@@ -36,6 +38,7 @@ export interface Message {
 const Chat = () => {
   const navigate = useNavigate();
   const { features } = useFeatures();
+  const { isAuthenticated } = useAuth();
 
   // Estados para chat real y demo
   const [selectedChat, setSelectedChat] = useState<ChatUser | null>(null);
@@ -48,6 +51,9 @@ const Chat = () => {
   const [hasChatAccess, setHasChatAccess] = useState<{[key: number]: boolean}>({});
   const [isProduction, setIsProduction] = useState(false);
   const [_isLoading, setIsLoading] = useState(false);
+  
+  // Verificar si hay sesión activa (demo o producción)
+  const hasActiveSession = typeof isAuthenticated === 'function' ? isAuthenticated() : !!isAuthenticated;
 
   // Detectar modo de operación (demo vs producción)
   useEffect(() => {
@@ -370,16 +376,18 @@ const Chat = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 relative overflow-hidden pb-20">
-      {/* Corazones decorativos flotantes */}
-      <DecorativeHearts count={5} />
-      {/* Background simplificado - sin elementos fantasma */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-purple-800/20 to-blue-900/20"></div>
-
-      {/* Header removido para usuarios demo - solo NavigationLegacy */}
-      <HeaderNav />
+    <div className={`min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 relative overflow-hidden ${hasActiveSession ? '' : 'pb-20'}`}>
+      <DecorativeHearts />
       
-      <div className="relative z-10 flex h-screen pt-16 pb-20">
+      {/* Background decorativo uniforme */}
+      <div className="fixed inset-0 z-0 bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900">
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-purple-800/20 to-blue-900/20"></div>
+      </div>
+
+      {/* Navegación condicional */}
+      {hasActiveSession ? <Navigation /> : <HeaderNav />}
+      
+      <div className={`relative z-10 flex h-screen ${hasActiveSession ? 'pt-4' : 'pt-16'} ${hasActiveSession ? 'pb-4' : 'pb-20'}`}>
         {/* Chat List Sidebar */}
         <div className="w-full sm:w-80 flex-shrink-0 bg-gradient-to-br from-purple-900/40 via-purple-800/40 to-blue-900/40 backdrop-blur-sm border-r border-white/10 flex flex-col">
           <div className="p-4 border-b border-white/10">

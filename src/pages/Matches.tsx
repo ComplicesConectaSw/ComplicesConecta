@@ -1,5 +1,6 @@
 ﻿import { useState, useEffect } from "react";
 import HeaderNav from "@/components/HeaderNav";
+import Navigation from "@/components/Navigation";
 import { MatchCard } from "@/components/ui/MatchCard";
 // import { ProfileCard } from "@/components/ui/ProfileCard";
 // import { UnifiedTabs } from "@/components/ui/UnifiedTabs";
@@ -9,6 +10,7 @@ import { Heart, MessageCircle, Sparkles, ArrowLeft, Flame, Users, Crown } from "
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { logger } from '@/lib/logger';
+import { useAuth } from '@/hooks/useAuth';
 
 // Professional profile images from Unsplash - Production ready
 // Removed local imports that fail in production
@@ -28,9 +30,13 @@ export interface Match {
 
 const Matches = () => {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
   const [_matches, _setMatches] = useState<Match[]>([]);
   const [_isProduction, _setIsProduction] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  
+  // Verificar si hay sesión activa (demo o producción)
+  const hasActiveSession = typeof isAuthenticated === 'function' ? isAuthenticated() : !!isAuthenticated;
   const [demoMatches] = useState<Match[]>([
     {
       id: 1,
@@ -191,9 +197,9 @@ const Matches = () => {
       </div>
       
       <div className="relative z-10">
-        <HeaderNav />
+        {hasActiveSession ? <Navigation /> : <HeaderNav />}
       
-        <main className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 max-w-6xl pt-24">
+        <main className={`container mx-auto px-2 sm:px-4 py-4 sm:py-8 max-w-6xl ${hasActiveSession ? 'pt-4' : 'pt-24'}`}>
           {/* Back Button */}
           <div className="mb-6">
             <UnifiedButton 
