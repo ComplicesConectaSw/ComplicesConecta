@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Check, CheckCheck, Clock, Smile, MoreHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ChatBubble as SimpleChatBubble } from "@/components/chat/ChatBubble";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface ChatBubbleProps {
   id: string;
@@ -61,16 +61,54 @@ export const ChatBubble = React.memo<ChatBubbleProps>(function ChatBubble({
     setShowReactions(false);
   }, [id, onReact]);
 
-  // Si no hay funcionalidades avanzadas, usar el componente simple
+  // Componente simple integrado (sin funcionalidades avanzadas)
   if (!reactions?.length && !onReact && !onReply && !isPrivate) {
     return (
-      <SimpleChatBubble
-        id={id}
-        message={message}
-        isOwn={isOwn}
-        timestamp={timestamp}
-        className={className}
-      />
+      <motion.div
+        initial={{ opacity: 0, y: 20, scale: 0.8 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
+        className={cn("flex gap-3 mb-4 group", isOwn ? "flex-row-reverse" : "flex-row", className)}
+      >
+        {!isOwn && senderAvatar && (
+          <Avatar className="w-8 h-8 flex-shrink-0">
+            <AvatarImage src={senderAvatar} alt={senderName} />
+            <AvatarFallback className="text-xs bg-gradient-to-br from-purple-500 to-blue-600 text-white">
+              {senderName?.charAt(0)?.toUpperCase() || 'U'}
+            </AvatarFallback>
+          </Avatar>
+        )}
+        
+        <div className={cn("flex flex-col max-w-[70%]", isOwn ? "items-end" : "items-start")}>
+          {!isOwn && senderName && (
+            <span className="text-xs text-gray-500 mb-1 px-2">{senderName}</span>
+          )}
+          
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            className={cn(
+              "relative px-4 py-3 rounded-2xl shadow-sm backdrop-blur-sm border border-white/10 transition-all duration-300 ease-out",
+              isOwn 
+                ? "bg-gradient-to-r from-purple-500 to-blue-600 text-white rounded-br-md" 
+                : "bg-gradient-to-r from-blue-500/90 to-purple-600/90 text-white rounded-bl-md hover:from-blue-500/95 hover:to-purple-600/95"
+            )}
+          >
+            <p className="text-sm leading-relaxed break-words text-white">{message}</p>
+            <span className={cn("text-xs opacity-70 mt-1 block", isOwn ? "text-white/80" : "text-white/80")}>
+              {timestamp}
+            </span>
+          </motion.div>
+        </div>
+        
+        {isOwn && senderAvatar && (
+          <Avatar className="w-8 h-8 flex-shrink-0">
+            <AvatarImage src={senderAvatar} alt="Tú" />
+            <AvatarFallback className="text-xs bg-gradient-to-br from-purple-500 to-blue-600 text-white">
+              Tú
+            </AvatarFallback>
+          </Avatar>
+        )}
+      </motion.div>
     );
   }
 

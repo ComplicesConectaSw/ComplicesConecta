@@ -288,13 +288,8 @@ export const LazyComponents = {
     { chunkName: 'profile-card', preload: true }
   ),
   
-  // Componentes de chat - manejo seguro de imports
-  ChatWindow: createLazyComponent(
-    () => import('@/components/chat/ChatWindow').then(module => ({ 
-      default: (module as any).default || (module as any).ChatWindow || module 
-    })),
-    { chunkName: 'chat-window', preload: false }
-  ),
+  // Componentes de chat - ChatRoom es el componente principal usado
+  // ChatWindow eliminado - no se usaba realmente
   
   // Componentes de animación - manejo seguro de imports
   AnimationSettings: createLazyComponent(
