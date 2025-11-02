@@ -21,35 +21,29 @@ android {
             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    // NOTA: signingConfigs se maneja automáticamente por Android Studio
+    // Cuando uses "Sign and Build" en Android Studio, se abrirá el asistente de firma
+    // Si necesitas configurar signingConfigs manualmente, crea un archivo keystore.properties
+    // en el directorio android/ con las siguientes propiedades:
+    //   storeFile=path/to/keystore.jks
+    //   storePassword=tu_password
+    //   keyAlias=tu_alias
+    //   keyPassword=tu_password
     signingConfigs {
-        // Debug usa el keystore por defecto de Android si existe, si no, no se configura
-        // y Android Studio usará su propia configuración por defecto
-        debug {
-            // Android Studio generará automáticamente el keystore de debug si no existe
-        }
         release {
-            // Configuración de release - puede estar vacía inicialmente
-            // Se puede configurar desde keystore.properties o manualmente en Android Studio
             def keystorePropertiesFile = rootProject.file("keystore.properties")
             if (keystorePropertiesFile.exists()) {
-                try {
-                    def keystoreProperties = new Properties()
-                    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-                    if (keystoreProperties['storeFile']) {
-                        storeFile rootProject.file(keystoreProperties['storeFile'])
-                        storePassword keystoreProperties['storePassword']
-                        keyAlias keystoreProperties['keyAlias']
-                        keyPassword keystoreProperties['keyPassword']
-                    }
-                } catch (Exception e) {
-                    logger.warn("No se pudo cargar keystore.properties: ${e.message}")
-                }
+                def keystoreProperties = new Properties()
+                keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+                storeFile rootProject.file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
             }
         }
     }
     buildTypes {
         debug {
-            // Debug puede usar signingConfigs.debug si está configurado, si no usará el por defecto
             minifyEnabled false
             debuggable true
         }
@@ -57,8 +51,9 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            // Solo asignar signingConfig si está configurado
-            if (signingConfigs.release.storeFile != null) {
+            // Asignar signingConfig solo si keystore.properties existe y está configurado
+            // Si no existe, Android Studio mostrará el asistente de firma al usar "Sign and Build"
+            if (file(rootProject.file("keystore.properties")).exists()) {
                 signingConfig signingConfigs.release
             }
         }
