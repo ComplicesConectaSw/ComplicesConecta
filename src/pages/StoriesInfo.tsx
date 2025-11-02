@@ -50,7 +50,7 @@ const StoriesInfo = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-800 to-indigo-900">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900">
       <HeaderNav />
       
       <div className="container mx-auto px-4 py-8">
@@ -59,7 +59,7 @@ const StoriesInfo = () => {
           <div className="text-center mb-12">
             <div className="flex justify-center mb-6">
               <div className="p-4 bg-white/10 rounded-full backdrop-blur-sm">
-                <Camera className="h-12 w-12 text-pink-400" />
+                <Camera className="h-12 w-12 text-purple-400" />
               </div>
             </div>
             <h1 className="text-4xl font-bold text-white mb-4">
@@ -105,7 +105,7 @@ const StoriesInfo = () => {
                   <Card key={index} className="bg-white/10 border-white/20 backdrop-blur-sm">
                     <CardContent className="p-6">
                       <div className="flex items-start space-x-4">
-                        <div className="p-3 bg-gradient-to-r from-pink-500 to-purple-500 rounded-lg">
+                        <div className="p-3 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg">
                           <Icon className="h-6 w-6 text-white" />
                         </div>
                         <div>
@@ -130,7 +130,7 @@ const StoriesInfo = () => {
                   <Card key={index} className="bg-white/10 border-white/20 backdrop-blur-sm text-center">
                     <CardContent className="p-6">
                       <div className="flex justify-center mb-4">
-                        <div className="p-3 bg-gradient-to-r from-indigo-500 to-pink-500 rounded-full">
+                        <div className="p-3 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full">
                           <Icon className="h-8 w-8 text-white" />
                         </div>
                       </div>
@@ -151,7 +151,7 @@ const StoriesInfo = () => {
             <CardContent className="text-white/80">
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="text-center p-4 bg-white/5 rounded-lg">
-                  <Camera className="h-8 w-8 text-pink-400 mx-auto mb-3" />
+                  <Camera className="h-8 w-8 text-purple-400 mx-auto mb-3" />
                   <h4 className="font-semibold text-white mb-2">Cena romántica en casa</h4>
                   <p className="text-sm text-white/70">Comparte momentos íntimos y especiales</p>
                 </div>
@@ -173,7 +173,7 @@ const StoriesInfo = () => {
           <div className="text-center">
             <Button 
               onClick={() => navigate('/stories')}
-              className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white px-8 py-3 text-lg font-semibold"
+              className="bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700 text-white px-8 py-3 text-lg font-semibold"
             >
               Explorar Historias
             </Button>

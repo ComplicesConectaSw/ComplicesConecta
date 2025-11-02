@@ -1,5 +1,5 @@
 ﻿import { useState, useEffect } from "react";
-import { Header } from "@/components/Header";
+import HeaderNav from "@/components/HeaderNav";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -82,7 +82,7 @@ const Premium = () => {
       </div>
 
       <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
-        <Header />
+        <HeaderNav />
         
         <main className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 max-w-7xl">
           {/* Back Button */}

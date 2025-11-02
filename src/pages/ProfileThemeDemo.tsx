@@ -113,7 +113,7 @@ const ProfileThemeDemo: React.FC = () => {
                     </Button>
                     <Button
                       onClick={() => handleGenderChange(index, 'female')}
-                      className={`flex-1 ${gender === 'female' ? 'bg-pink-500/80 text-white' : 'border border-white/30 text-white hover:bg-white/10 bg-transparent'}`}
+                      className={`flex-1 ${gender === 'female' ? 'bg-purple-500/80 text-white' : 'border border-white/30 text-white hover:bg-white/10 bg-transparent'}`}
                     >
                       👩 Femenino
                     </Button>
@@ -220,7 +220,7 @@ const ProfileThemeDemo: React.FC = () => {
                 <p className="text-sm">Tonos azules, grises y metálicos que transmiten confianza y elegancia</p>
               </div>
               <div>
-                <h4 className="font-medium text-pink-700 mb-1">👩 Perfiles Femeninos</h4>
+                <h4 className="font-medium text-purple-700 mb-1">👩 Perfiles Femeninos</h4>
                 <p className="text-sm">Tonos púrpuras, rosas y dorados que evocan calidez y modernidad</p>
               </div>
               <div>
@@ -236,7 +236,7 @@ const ProfileThemeDemo: React.FC = () => {
         </div>
 
         {/* Call to Action */}
-        <UnifiedCard className="p-8 text-center bg-gradient-to-r from-purple-600 to-pink-600 text-white">
+        <UnifiedCard className="p-8 text-center bg-gradient-to-r from-purple-600 to-blue-600 text-white">
           <h3 className="text-2xl font-bold mb-4">
             ¿Listo para Personalizar tu Perfil?
           </h3>

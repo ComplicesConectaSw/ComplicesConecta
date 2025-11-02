@@ -11,7 +11,6 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/lib/logger";
-import { Header } from "@/components/Header";
 import HeaderNav from "@/components/HeaderNav";
 
 const ProjectSupport = () => {
@@ -185,7 +184,6 @@ const ProjectSupport = () => {
       {/* Content */}
       <div className="relative z-10 min-h-screen">
         <HeaderNav />
-        <Header />
         
         {/* Page Header */}
         <div className="bg-black/30 backdrop-blur-sm border-b border-white/10 p-4">

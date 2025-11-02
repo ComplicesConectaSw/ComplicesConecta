@@ -273,7 +273,7 @@ const ProfileSingle: React.FC = () => {
 
   if (!profile) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-pink-800 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-blue-800 flex items-center justify-center">
         <Card className="w-full max-w-md mx-4">
           <CardContent className="p-6 text-center">
             <h2 className="text-xl font-semibold mb-2">Perfil no encontrado</h2>
@@ -288,7 +288,7 @@ const ProfileSingle: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-pink-800 profile-page">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-blue-800 profile-page">
       {/* Navegación superior */}
       <Navigation />
       
@@ -313,7 +313,7 @@ const ProfileSingle: React.FC = () => {
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
                 {/* Avatar */}
                 <div className="relative flex-shrink-0">
-                  <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-pink-400 to-purple-600 flex items-center justify-center text-white text-2xl sm:text-4xl font-bold">
+                  <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-purple-400 to-blue-600 flex items-center justify-center text-white text-2xl sm:text-4xl font-bold">
                     {profile.name?.[0]?.toUpperCase() || 'U'}
                   </div>
                   {profile.is_verified && (
@@ -455,7 +455,7 @@ const ProfileSingle: React.FC = () => {
             >
               <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/15 transition-colors">
                 <CardContent className="p-3 sm:p-4 text-center">
-                  <Heart className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-2 text-pink-400" />
+                  <Heart className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-2 text-purple-400" />
                   <div className="text-lg sm:text-2xl font-bold">{profileStats.totalLikes}</div>
                   <div className="text-xs sm:text-sm text-white/70">Likes</div>
                 </CardContent>
@@ -537,7 +537,7 @@ const ProfileSingle: React.FC = () => {
                         animate={{ opacity: 1, x: 0 }}
                         className="flex items-center gap-3 p-3 bg-white/5 rounded-lg"
                       >
-                        <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+                        <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-blue-500 rounded-full flex items-center justify-center">
                           <MessageCircle className="w-4 h-4 text-white" />
                         </div>
                         <div className="flex-1">
@@ -676,7 +676,7 @@ const ProfileSingle: React.FC = () => {
                 {['Lifestyle Swinger', 'Encuentros Discretos', 'Viajes', 'Música', 'Gastronomía', 'Arte', 'Fotografía', 'Eventos Sofisticados'].map((interest) => (
                   <Badge 
                     key={interest} 
-                    className="bg-gradient-to-r from-pink-500/20 to-purple-600/20 text-white border-pink-400/30 hover:bg-pink-500/30 transition-colors"
+                    className="bg-gradient-to-r from-purple-500/20 to-blue-600/20 text-white border-purple-400/30 hover:bg-purple-500/30 transition-colors"
                   >
                     {interest}
                   </Badge>
@@ -705,7 +705,7 @@ const ProfileSingle: React.FC = () => {
               
               {/* Galería pública siempre visible */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
-                <div className="aspect-square bg-gradient-to-br from-pink-400 to-purple-600 rounded-lg flex items-center justify-center overflow-hidden">
+                <div className="aspect-square bg-gradient-to-br from-purple-400 to-blue-600 rounded-lg flex items-center justify-center overflow-hidden">
                   <img 
                     src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=faces&auto=format&q=80" 
                     alt="Foto pública 1"

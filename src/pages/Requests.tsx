@@ -1,5 +1,5 @@
 ﻿import { useState, useEffect, useCallback } from "react";
-import { Header } from "@/components/Header";
+import HeaderNav from "@/components/HeaderNav";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -238,7 +238,7 @@ const Requests = () => {
 
   if (!features.requests) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 flex items-center justify-center">
         <Card className="p-8 text-center bg-card/80 backdrop-blur-sm">
           <UserX className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
           <h2 className="text-xl font-semibold mb-2">Función no disponible</h2>
@@ -249,16 +249,16 @@ const Requests = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 relative overflow-hidden pb-20">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 relative overflow-hidden pb-20">
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full mix-blend-multiply filter blur-xl animate-blob"></div>
-        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-pink-500/20 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000"></div>
+        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000"></div>
         <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-red-500/20 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-4000"></div>
       </div>
 
       {/* Header removido para usuarios demo - solo NavigationLegacy */}
-      {demoAuth !== 'true' && <Header />}
+      {demoAuth !== 'true' && <HeaderNav />}
       
       <div className="relative z-10 container mx-auto px-4 pt-20 pb-24">
         <div className="max-w-4xl mx-auto">
@@ -267,7 +267,7 @@ const Requests = () => {
             <p className="text-white/80 text-lg">Gestiona tus invitaciones recibidas y enviadas</p>
           </div>
 
-          <div className="bg-gradient-to-br from-purple-900/40 via-pink-900/30 to-red-900/40 backdrop-blur-sm rounded-xl border border-white/10 p-6">
+          <div className="bg-gradient-to-br from-purple-900/40 via-purple-800/30 to-blue-900/40 backdrop-blur-sm rounded-xl border border-white/10 p-6">
             <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'received' | 'sent')} className="w-full">
               <TabsList className="grid w-full grid-cols-2 bg-white/10 backdrop-blur-sm rounded-lg mb-6">
                 <TabsTrigger 
@@ -299,14 +299,14 @@ const Requests = () => {
               <TabsContent value="received" className="mt-6">
                 <div className="space-y-4">
                   {receivedInvitations.length === 0 ? (
-                    <Card className="p-8 text-center bg-gradient-to-br from-purple-900/30 via-pink-900/20 to-red-900/30 backdrop-blur-sm border-white/10">
+                    <Card className="p-8 text-center bg-gradient-to-br from-purple-900/30 via-purple-800/20 to-blue-900/30 backdrop-blur-sm border-white/10">
                       <UserPlus className="h-16 w-16 mx-auto mb-4 text-white/50" />
                       <h3 className="text-xl font-semibold text-white mb-2">No hay invitaciones recibidas</h3>
                       <p className="text-white/70">Cuando alguien te envíe una invitación, aparecerá aquí.</p>
                     </Card>
                   ) : (
                     receivedInvitations.map((inv) => (
-                      <Card key={inv.id} className="p-4 bg-gradient-to-br from-purple-900/30 via-pink-900/20 to-red-900/30 backdrop-blur-sm border-white/10 flex flex-col sm:flex-row items-start gap-4 card-accessible">
+                      <Card key={inv.id} className="p-4 bg-gradient-to-br from-purple-900/30 via-purple-800/20 to-blue-900/30 backdrop-blur-sm border-white/10 flex flex-col sm:flex-row items-start gap-4 card-accessible">
                         <div className="flex-1">
                           <div className="flex justify-between items-start mb-2">
                             <div className="flex items-center text-sm text-white/80">
@@ -337,7 +337,7 @@ const Requests = () => {
               <TabsContent value="sent" className="mt-6">
                 <div className="space-y-4">
                   {sentInvitations.length === 0 ? (
-                    <Card className="p-8 text-center bg-gradient-to-br from-purple-900/30 via-pink-900/20 to-red-900/30 backdrop-blur-sm border-white/10">
+                    <Card className="p-8 text-center bg-gradient-to-br from-purple-900/30 via-purple-800/20 to-blue-900/30 backdrop-blur-sm border-white/10">
                       <Send className="h-16 w-16 mx-auto mb-4 text-white/50" />
                       <h3 className="text-xl font-semibold text-white mb-2">No has enviado invitaciones</h3>
                       <p className="text-white/70">Explora perfiles y envía invitaciones para conectar.</p>

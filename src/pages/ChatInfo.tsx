@@ -1,4 +1,4 @@
-﻿import { Header } from "@/components/Header";
+﻿import HeaderNav from "@/components/HeaderNav";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -29,7 +29,7 @@ const ChatInfo = () => {
       </div>
 
       <div className="relative z-10 min-h-screen">
-        <Header />
+        <HeaderNav />
         
         <div className="container mx-auto px-4 py-8 max-w-4xl">
           {/* Header Section */}
