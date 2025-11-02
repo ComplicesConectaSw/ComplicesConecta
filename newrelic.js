@@ -8,7 +8,7 @@ exports.config = {
   /**
    * Array of application names.
    */
-  app_name: ['ComplicesConecta'],
+  app_name: ['complicesconecta'],
   /**
    * Your New Relic license key.
    */

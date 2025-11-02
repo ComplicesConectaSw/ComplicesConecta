@@ -41,6 +41,8 @@ COPY --from=builder /app/server.js ./server.js
 # New Relic Configuration
 # ================================
 ENV NEW_RELIC_NO_CONFIG_FILE=true
+ENV NEW_RELIC_LICENSE_KEY=6f647c9c6eaa46100c049ab77e900462FFFFNRAL
+ENV NEW_RELIC_APP_NAME=complicesconecta
 ENV NEW_RELIC_DISTRIBUTED_TRACING_ENABLED=true
 ENV NEW_RELIC_LOG=stdout
 ENV NEW_RELIC_AI_MONITORING_ENABLED=true
