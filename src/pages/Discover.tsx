@@ -13,7 +13,6 @@ import EventsModal from '@/components/modals/EventsModal';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from "@/hooks/use-toast";
 import { useGeolocation } from '@/hooks/useGeolocation';
-import { useFeatures } from '@/hooks/useFeatures';
 import { pickProfileImage, inferProfileKind, resetImageCounters, type ProfileType, type Gender } from '@/lib/media';
 import { calculateDistance, getLocationDisplay } from '@/lib/distance-utils';
 import { type CoupleProfileWithPartners } from "@/lib/coupleProfiles";
@@ -167,18 +166,10 @@ const Discover = () => {
     setFilteredProfiles(newProfiles);
   }, []);
 
-  // Aplicar filtros - Funciona igual para perfiles demo y reales
+  // Aplicar filtros
   useEffect(() => {
     const applyFilters = () => {
-      // Si los filtros están deshabilitados, mostrar todos los perfiles
-      if (!filtersEnabled) {
-        setFilteredDemoProfiles(demoProfiles);
-        setFilteredProfiles(profiles);
-        setFilteredCoupleProfiles(coupleProfiles);
-        return;
-      }
-
-      // Filtrar perfiles demo (misma lógica que perfiles reales)
+      // Filtrar perfiles demo
       const filteredDemo = demoProfiles.filter(profile => {
         const ageMatch = profile.age >= filters.ageRange[0] && profile.age <= filters.ageRange[1];
         const distanceMatch = !location || profile.distance <= filters.distance;
@@ -193,7 +184,7 @@ const Discover = () => {
       
       setFilteredDemoProfiles(filteredDemo);
 
-      // Filtrar perfiles individuales reales (misma lógica que perfiles demo)
+      // Filtrar perfiles individuales reales
       const filtered = profiles.filter(profile => {
         const ageMatch = profile.age >= filters.ageRange[0] && profile.age <= filters.ageRange[1];
         const distanceMatch = !location || profile.distance <= filters.distance;
@@ -208,7 +199,7 @@ const Discover = () => {
       
       setFilteredProfiles(filtered);
 
-      // Filtrar perfiles de parejas (misma lógica)
+      // Filtrar perfiles de parejas
       const filteredCouples = coupleProfiles.filter(couple => {
         const avgAge = (couple.partner1_age + couple.partner2_age) / 2;
         const ageMatch = avgAge >= filters.ageRange[0] && avgAge <= filters.ageRange[1];
@@ -225,7 +216,7 @@ const Discover = () => {
     };
 
     applyFilters();
-  }, [filters, demoProfiles, profiles, coupleProfiles, location, filtersEnabled]);
+  }, [filters, demoProfiles, profiles, coupleProfiles, location]);
 
   // Función para cargar perfiles reales desde Supabase
   const loadRealProfiles = useCallback(async () => {
@@ -431,16 +422,13 @@ const Discover = () => {
     });
   };
 
-  const { features, isBeta } = useFeatures();
-  const filtersEnabled = isBeta || features.advancedFilters || false;
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 relative overflow-hidden pb-20">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 relative overflow-hidden pb-20">
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full mix-blend-multiply filter blur-xl animate-blob"></div>
-        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-blue-500/20 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000"></div>
-        <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-purple-600/20 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-4000"></div>
+        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-pink-500/20 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-red-500/20 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-4000"></div>
       </div>
       
       <div className="relative z-10">
@@ -449,11 +437,6 @@ const Discover = () => {
       
       {/* Header con navegación */}
       <div className="bg-white/10 backdrop-blur-md border-b border-white/20 p-4 shadow-lg relative z-10">
-        <div className="max-w-6xl mx-auto mb-2">
-          <p className="text-sm text-white/90 font-medium text-center">
-            🔥 Plataforma exclusiva +18 para el ambiente swinger.
-          </p>
-        </div>
         <div className="flex items-center justify-between max-w-6xl mx-auto">
           <div className="flex items-center space-x-2 sm:space-x-4">
             <Button
@@ -474,8 +457,7 @@ const Discover = () => {
           
           <h1 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
             <Search className="h-5 w-5 sm:h-6 sm:w-6" />
-            <span className="hidden sm:inline">Conecta con</span>
-            <span className="hidden sm:inline bg-gradient-to-r from-purple-300 to-blue-300 bg-clip-text text-transparent font-bold">Parejas y Solteros</span>
+            <span className="hidden sm:inline">Descubrir</span>
           </h1>
           
           <div className="flex items-center space-x-1 sm:space-x-2">
@@ -513,12 +495,12 @@ const Discover = () => {
           transition={{ duration: 0.5 }}
         >
           <GlassCard className="text-center p-4">
-            <Heart className="h-6 w-6 mx-auto mb-2 text-purple-400" />
+            <Heart className="h-6 w-6 mx-auto mb-2 text-red-500" />
             <div className="text-2xl font-bold text-white">12</div>
             <div className="text-sm text-white/80">Likes</div>
           </GlassCard>
           <GlassCard className="text-center p-4">
-            <Flame className="h-6 w-6 mx-auto mb-2 text-blue-400" />
+            <Flame className="h-6 w-6 mx-auto mb-2 text-orange-500" />
             <div className="text-2xl font-bold text-white">5</div>
             <div className="text-sm text-white/80">Super Likes</div>
           </GlassCard>
@@ -540,50 +522,24 @@ const Discover = () => {
             >
               <GlassCard className="w-full lg:w-80 p-4 lg:p-6" variant="colored">
               <h3 className="text-lg font-semibold mb-4 text-white flex items-center gap-2">
-                <Filter className="h-5 w-5 text-purple-400" />
-                <span className="font-bold text-white">
+                <span className="bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent font-bold">
                   Filtros Avanzados
                 </span>
-                {filtersEnabled && (
-                  <Badge className="bg-purple-600/30 text-purple-300 border-purple-400/50 text-xs">
-                    {isBeta ? 'Beta' : 'Premium'}
-                  </Badge>
-                )}
               </h3>
-              {!filtersEnabled && (
-                <div className="mb-4 p-3 bg-yellow-500/20 border border-yellow-500/30 rounded-lg">
-                  <p className="text-xs text-yellow-300">
-                    ⚠️ Los filtros avanzados son una función premium. {isBeta ? 'Habilitada durante la fase beta.' : 'Requiere suscripción premium para acceder.'}
-                  </p>
-                </div>
-              )}
               
               {/* Edad */}
               <div className="mb-6">
                 <label className="block text-sm font-semibold text-white mb-3">
                   Edad: {filters.ageRange[0]} - {filters.ageRange[1]} años
                 </label>
-                <div className="relative">
-                  <Slider
-                    value={filters.ageRange}
-                    onValueChange={(value: number[]) => {
-                      if (filtersEnabled) {
-                        setFilters(prev => ({ ...prev, ageRange: value as [number, number] }));
-                      } else {
-                        toast({
-                          title: "Función Premium",
-                          description: "Los filtros avanzados requieren suscripción premium. Habilitada durante la fase beta.",
-                          variant: "default"
-                        });
-                      }
-                    }}
-                    min={18}
-                    max={65}
-                    step={1}
-                    className="w-full [&_[data-orientation=horizontal]]:bg-purple-700/50 [&_[data-orientation=horizontal]_div]:bg-gradient-to-r [&_[data-orientation=horizontal]_div]:from-purple-500 [&_[data-orientation=horizontal]_div]:to-blue-500 [&_button]:bg-purple-400 [&_button]:border-purple-300"
-                    disabled={!filtersEnabled}
-                  />
-                </div>
+                <Slider
+                  value={filters.ageRange}
+                  onValueChange={(value: number[]) => setFilters(prev => ({ ...prev, ageRange: value as [number, number] }))}
+                  min={18}
+                  max={65}
+                  step={1}
+                  className="w-full"
+                />
               </div>
               
               {/* Distancia */}
@@ -591,27 +547,14 @@ const Discover = () => {
                 <label className="block text-sm font-semibold text-white mb-3">
                   Distancia: {filters.distance} km
                 </label>
-                <div className="relative">
-                  <Slider
-                    value={[filters.distance]}
-                    onValueChange={(value: number[]) => {
-                      if (filtersEnabled) {
-                        setFilters(prev => ({ ...prev, distance: value[0] }));
-                      } else {
-                        toast({
-                          title: "Función Premium",
-                          description: "Los filtros avanzados requieren suscripción premium. Habilitada durante la fase beta.",
-                          variant: "default"
-                        });
-                      }
-                    }}
-                    min={1}
-                    max={100}
-                    step={1}
-                    className="w-full [&_[data-orientation=horizontal]]:bg-purple-700/50 [&_[data-orientation=horizontal]_div]:bg-gradient-to-r [&_[data-orientation=horizontal]_div]:from-purple-500 [&_[data-orientation=horizontal]_div]:to-blue-500 [&_button]:bg-purple-400 [&_button]:border-purple-300"
-                    disabled={!filtersEnabled}
-                  />
-                </div>
+                <Slider
+                  value={[filters.distance]}
+                  onValueChange={(value: number[]) => setFilters(prev => ({ ...prev, distance: value[0] }))}
+                  min={1}
+                  max={100}
+                  step={1}
+                  className="w-full"
+                />
               </div>
               
               {/* Intereses */}
@@ -625,24 +568,16 @@ const Discover = () => {
                       key={interest}
                       className={`cursor-pointer text-xs font-medium transition-all duration-200 hover:scale-105 ${
                         filters.interests.includes(interest) 
-                          ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white border-0 shadow-lg" 
+                          ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0 shadow-lg" 
                           : "border-white/60 text-white hover:border-white hover:bg-white/20 border bg-transparent"
                       }`}
                       onClick={() => {
-                        if (filtersEnabled) {
-                          setFilters(prev => ({
-                            ...prev,
-                            interests: prev.interests.includes(interest)
-                              ? prev.interests.filter(i => i !== interest)
-                              : [...prev.interests, interest]
-                          }));
-                        } else {
-                          toast({
-                            title: "Función Premium",
-                            description: "Los filtros avanzados requieren suscripción premium. Habilitada durante la fase beta.",
-                            variant: "default"
-                          });
-                        }
+                        setFilters(prev => ({
+                          ...prev,
+                          interests: prev.interests.includes(interest)
+                            ? prev.interests.filter(i => i !== interest)
+                            : [...prev.interests, interest]
+                        }));
                       }}
                     >
                       {interest}
@@ -653,7 +588,7 @@ const Discover = () => {
 
               {/* Tipo de Relación */}
               <div className="mb-6">
-                <label className="block text-sm font-semibold text-white mb-3">
+                <label className="block text-sm font-medium text-purple-800 mb-3">
                   Tipo de Relación
                 </label>
                 <div className="grid grid-cols-2 gap-2">
@@ -664,24 +599,16 @@ const Discover = () => {
                         key={type}
                         className={`cursor-pointer text-xs p-2 text-center transition-all duration-200 ${
                           isSelected 
-                            ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white border-0 hover:from-purple-700 hover:to-blue-700 shadow-lg" 
-                            : "border-white/60 text-white hover:border-white hover:bg-white/20 border bg-transparent"
+                            ? "bg-purple-600 text-white border-purple-600 hover:bg-purple-700" 
+                            : "border-purple-300 text-purple-700 hover:border-purple-500 hover:bg-purple-50 border bg-transparent"
                         }`}
                         onClick={() => {
-                          if (filtersEnabled) {
-                            setFilters(prev => ({
-                              ...prev,
-                              relationshipType: isSelected 
-                                ? prev.relationshipType.filter(t => t !== type)
-                                : [...prev.relationshipType, type]
-                            }));
-                          } else {
-                            toast({
-                              title: "Función Premium",
-                              description: "Los filtros avanzados requieren suscripción premium. Habilitada durante la fase beta.",
-                              variant: "default"
-                            });
-                          }
+                          setFilters(prev => ({
+                            ...prev,
+                            relationshipType: isSelected 
+                              ? prev.relationshipType.filter(t => t !== type)
+                              : [...prev.relationshipType, type]
+                          }));
                         }}
                       >
                         {type}
@@ -691,76 +618,21 @@ const Discover = () => {
                 </div>
               </div>
 
-              {/* Verificación y Premium */}
-              <div className="mb-4 space-y-3">
-                <label className="flex items-center gap-2 text-sm font-semibold text-white cursor-pointer">
+              {/* Verificación */}
+              <div className="mb-4">
+                <label className="flex items-center gap-2 text-sm font-medium text-purple-800 cursor-pointer">
                   <input 
                     type="checkbox" 
                     checked={filters.verified}
-                    disabled={!filtersEnabled}
-                    className="w-4 h-4 text-purple-600 border-purple-300 rounded focus:ring-purple-500 disabled:opacity-50"
+                    className="w-4 h-4 text-purple-600 border-purple-300 rounded focus:ring-purple-500"
                     onChange={(e) => {
-                      if (filtersEnabled) {
-                        setFilters(prev => ({
-                          ...prev,
-                          verified: e.target.checked
-                        }));
-                      } else {
-                        toast({
-                          title: "Función Premium",
-                          description: "Los filtros avanzados requieren suscripción premium. Habilitada durante la fase beta.",
-                          variant: "default"
-                        });
-                      }
+                      setFilters(prev => ({
+                        ...prev,
+                        verified: e.target.checked
+                      }));
                     }}
                   />
-                  <span className="text-white">Solo perfiles verificados</span>
-                </label>
-                <label className="flex items-center gap-2 text-sm font-semibold text-white cursor-pointer">
-                  <input 
-                    type="checkbox" 
-                    checked={filters.premium}
-                    disabled={!filtersEnabled}
-                    className="w-4 h-4 text-purple-600 border-purple-300 rounded focus:ring-purple-500 disabled:opacity-50"
-                    onChange={(e) => {
-                      if (filtersEnabled) {
-                        setFilters(prev => ({
-                          ...prev,
-                          premium: e.target.checked
-                        }));
-                      } else {
-                        toast({
-                          title: "Función Premium",
-                          description: "Los filtros avanzados requieren suscripción premium. Habilitada durante la fase beta.",
-                          variant: "default"
-                        });
-                      }
-                    }}
-                  />
-                  <span className="text-white">Solo perfiles premium</span>
-                </label>
-                <label className="flex items-center gap-2 text-sm font-semibold text-white cursor-pointer">
-                  <input 
-                    type="checkbox" 
-                    checked={filters.online}
-                    disabled={!filtersEnabled}
-                    className="w-4 h-4 text-purple-600 border-purple-300 rounded focus:ring-purple-500 disabled:opacity-50"
-                    onChange={(e) => {
-                      if (filtersEnabled) {
-                        setFilters(prev => ({
-                          ...prev,
-                          online: e.target.checked
-                        }));
-                      } else {
-                        toast({
-                          title: "Función Premium",
-                          description: "Los filtros avanzados requieren suscripción premium. Habilitada durante la fase beta.",
-                          variant: "default"
-                        });
-                      }
-                    }}
-                  />
-                  <span className="text-white">Solo usuarios en línea</span>
+                  Solo perfiles verificados
                 </label>
               </div>
 

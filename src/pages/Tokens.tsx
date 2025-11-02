@@ -30,10 +30,45 @@ export default function Tokens() {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gray-900 pb-20">
+    <div className="min-h-screen relative overflow-hidden bg-hero-gradient pb-20">
       <HeaderNav />
-      {/* Background gris uniforme como otras páginas */}
-      <div className="fixed inset-0 z-0 bg-gray-900" />
+      {/* Advanced Animated Background - Same as Index */}
+      <div className="fixed inset-0 z-0">
+        {/* Animated Mesh Gradient */}
+        <div className="absolute inset-0 opacity-40">
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-primary/20 via-transparent to-accent/20 animate-gradient-x"></div>
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent via-secondary/10 to-primary/15 animate-gradient-y"></div>
+        </div>
+        
+        {/* Floating Geometric Shapes */}
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-float-slow"></div>
+          <div className="absolute top-40 right-32 w-48 h-48 bg-accent/8 rounded-full blur-2xl animate-float-reverse"></div>
+          <div className="absolute bottom-32 left-1/3 w-80 h-80 bg-secondary/4 rounded-full blur-3xl animate-float-slow shape-delay-2"></div>
+          <div className="absolute bottom-20 right-20 w-56 h-56 bg-primary/6 rounded-full blur-2xl animate-float shape-delay-1"></div>
+          
+          {/* Hexagonal Patterns */}
+          <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-gradient-to-br from-primary/10 to-accent/10 transform rotate-45 animate-spin-slow blur-xl"></div>
+          <div className="absolute bottom-1/3 right-1/3 w-24 h-24 bg-gradient-to-br from-secondary/15 to-primary/10 transform rotate-12 animate-pulse blur-lg"></div>
+        </div>
+        
+        {/* Particle Effects */}
+        <div className="absolute inset-0">
+          {Array.from({ length: 20 }).map((_, i) => (
+            <div
+              key={i}
+              className={`absolute w-2 h-2 bg-primary/20 rounded-full animate-float particle-${i + 1}`}
+            ></div>
+          ))}
+        </div>
+        
+        {/* Glowing Icons */}
+        <Heart className="absolute top-32 left-1/4 w-8 h-8 text-primary/20 animate-float icon-delay-1" fill="currentColor" />
+        <Sparkles className="absolute top-1/3 right-1/4 w-6 h-6 text-accent/25 animate-float icon-delay-2" />
+        <Star className="absolute bottom-1/3 left-1/5 w-7 h-7 text-secondary/20 animate-float icon-delay-3" />
+        <Rocket className="absolute bottom-1/4 right-1/5 w-9 h-9 text-primary/15 animate-float icon-delay-4" />
+        <Users className="absolute top-1/2 left-1/6 w-8 h-8 text-accent/20 animate-float icon-delay-5" />
+      </div>
       <div className="container mx-auto px-4 py-6 max-w-4xl relative z-10">
         {/* Enhanced Header with Navigation Buttons */}
         <div className="bg-gradient-to-r from-purple-900/90 to-purple-800/90 backdrop-blur-md border-b border-purple-300/30 p-3 sm:p-4 shadow-lg flex-shrink-0 rounded-t-xl mb-6">
