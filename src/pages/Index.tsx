@@ -120,11 +120,27 @@ const Index = () => {
 
   const handleLoadingComplete = () => {
     setIsLoading(false);
-    // Mostrar modal de bienvenida si es la primera visita (o si no hay sesión activa)
-    if (!hasVisited && !demoAuthenticated && !isAuthenticated()) {
+    // Mostrar modal de bienvenida si es la primera visita
+    // Verificar hasVisited después de que el loading complete
+    const visited = localStorage.getItem('hasVisitedComplicesConecta') === 'true';
+    const demoAuth = localStorage.getItem('demo_authenticated') === 'true';
+    const isAuth = isAuthenticated();
+    
+    logger.info('🔍 Verificando condiciones para modal de bienvenida:', {
+      hasVisited: visited,
+      demoAuthenticated: demoAuth,
+      isAuthenticated: isAuth
+    });
+    
+    if (!visited && !demoAuth && !isAuth) {
+      logger.info('✅ Mostrando modal de bienvenida');
       setTimeout(() => {
         setShowWelcome(true);
-      }, 800);
+      }, 1000);
+    } else {
+      logger.info('❌ Modal de bienvenida no se mostrará:', {
+        reason: visited ? 'Ya visitó' : demoAuth ? 'Demo activo' : 'Autenticado'
+      });
     }
   };
 
@@ -490,7 +506,7 @@ const Index = () => {
       </main>
 
       <Footer />
-      {showWelcome && isWelcomeVisible && <WelcomeModal isOpen={showWelcome} onClose={handleWelcomeClose} />}
+      {showWelcome && <WelcomeModal isOpen={showWelcome} onClose={handleWelcomeClose} />}
       <InstallAppModal isOpen={showInstallModal} onClose={() => setShowInstallModal(false)} />
       <FeatureModal
         isOpen={showFeatureModal}

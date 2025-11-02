@@ -343,9 +343,14 @@ export const MatchCard: React.FC<MatchCardProps> = ({
                 variant="outline"
                 size="lg"
                 className="w-16 h-16 rounded-full border-2 border-blue-400 bg-blue-500/20 hover:border-blue-500 hover:bg-blue-500/30 transition-all duration-200 shadow-lg"
-                onClick={() => {
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
                   setShowSuperLikeModal(true);
-                  if (onSuperLike) onSuperLike();
+                  // Llamar la función después de un pequeño delay para asegurar que el modal se muestre
+                  setTimeout(() => {
+                    if (onSuperLike) onSuperLike();
+                  }, 100);
                 }}
                 title="Super Like - Destaca tu interés"
               >
@@ -357,9 +362,14 @@ export const MatchCard: React.FC<MatchCardProps> = ({
               gradient
               size="lg"
               className="w-16 h-16 rounded-full transition-all duration-200 hover:scale-110 shadow-lg bg-gradient-to-r from-pink-500 to-purple-500"
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 setShowLikeModal(true);
-                if (onLike) onLike();
+                // Llamar la función después de un pequeño delay para asegurar que el modal se muestre
+                setTimeout(() => {
+                  if (onLike) onLike();
+                }, 100);
               }}
               title="Me Gusta - Si también te gusta, será un match"
             >
