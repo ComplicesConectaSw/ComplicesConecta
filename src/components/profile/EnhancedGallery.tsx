@@ -359,13 +359,18 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
 
           <TabsContent value="public" className="mt-6">
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {publicImages.map((image) => (
+              {(showAll ? publicImages : publicImages.slice(0, imagesPerPage)).map((image) => (
                 <div key={image.id} className="relative group">
                   <img
-                    src={image.url}
-                    alt={image.caption}
+                    src={image.url || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM5MzZFNkYiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNGNDMzOTYiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2cpIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+8J+TniBJbWFnZW48L3RleHQ+PC9zdmc+'}
+                    alt={image.caption || 'Imagen'}
                     className="w-full h-48 object-cover rounded-lg cursor-pointer"
                     onClick={() => setSelectedImage(image)}
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM5MzZFNkYiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNGNDMzOTYiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2cpIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+8J+TniBJbWFnZW48L3RleHQ+PC9zdmc+';
+                      target.onerror = null;
+                    }}
                   />
                   {isOwner && (
                     <div className="absolute top-2 right-2 flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -395,21 +400,48 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
                       {image.comments}
                     </Badge>
                   </div>
+                  </div>
+                ))}
+              </div>
+              {publicImages.length > imagesPerPage && !showAll && (
+                <div className="text-center mt-6">
+                  <Button
+                    onClick={() => setShowAll(true)}
+                    className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white font-semibold px-6 py-2 shadow-lg drop-shadow-md"
+                  >
+                    Ver todas las imágenes ({publicImages.length})
+                  </Button>
                 </div>
-              ))}
-            </div>
-          </TabsContent>
+              )}
+              {showAll && publicImages.length > imagesPerPage && (
+                <div className="text-center mt-6">
+                  <Button
+                    onClick={() => setShowAll(false)}
+                    variant="outline"
+                    className="border-2 border-white/50 hover:bg-white/20 text-white font-semibold px-6 py-2 backdrop-blur-sm"
+                  >
+                    Mostrar menos
+                  </Button>
+                </div>
+              )}
+            </TabsContent>
 
           <TabsContent value="private" className="mt-6">
             {isOwner ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {privateImages.map((image) => (
+              <>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {(showAll ? privateImages : privateImages.slice(0, imagesPerPage)).map((image) => (
                   <div key={image.id} className="relative group">
                     <img
-                      src={image.url}
-                      alt={image.caption}
+                      src={image.url || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM5MzZFNkYiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNGNDMzOTYiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2cpIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+8J+TniBJbWFnZW48L3RleHQ+PC9zdmc+'}
+                      alt={image.caption || 'Imagen'}
                       className="w-full h-48 object-cover rounded-lg cursor-pointer"
                       onClick={() => setSelectedImage(image)}
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM5MzZFNkYiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNGNDMzOTYiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2cpIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+8J+TniBJbWFnZW48L3RleHQ+PC9zdmc+';
+                        target.onerror = null;
+                      }}
                     />
                     <div className="absolute top-2 right-2 flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
                       <Button
@@ -439,7 +471,29 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
                     </div>
                   </div>
                 ))}
-              </div>
+                </div>
+                {privateImages.length > imagesPerPage && !showAll && (
+                  <div className="text-center mt-6">
+                    <Button
+                      onClick={() => setShowAll(true)}
+                      className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white font-semibold px-6 py-2 shadow-lg drop-shadow-md"
+                    >
+                      Ver todas las imágenes ({privateImages.length})
+                    </Button>
+                  </div>
+                )}
+                {showAll && privateImages.length > imagesPerPage && (
+                  <div className="text-center mt-6">
+                    <Button
+                      onClick={() => setShowAll(false)}
+                      variant="outline"
+                      className="border-2 border-white/50 hover:bg-white/20 text-white font-semibold px-6 py-2 backdrop-blur-sm"
+                    >
+                      Mostrar menos
+                    </Button>
+                  </div>
+                )}
+              </>
             ) : (
               <div className="text-center py-8">
                 <Lock className="w-12 h-12 text-gray-400 mx-auto mb-4" />

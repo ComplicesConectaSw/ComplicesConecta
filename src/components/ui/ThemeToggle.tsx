@@ -30,28 +30,47 @@ export function ThemeToggle() {
         className="bg-gradient-to-r from-pink-500/95 to-purple-600/95 dark:bg-gray-900/95 backdrop-blur-sm border-pink-400/50 dark:border-gray-700/50 shadow-xl"
       >
         <DropdownMenuItem 
-          onClick={() => setTheme('light')}
-          className="cursor-pointer hover:bg-purple-100 dark:hover:bg-purple-900/50 transition-colors"
+          onClick={() => {
+            setTheme('light');
+            // Forzar actualización inmediata
+            const root = document.documentElement;
+            root.classList.remove('dark');
+            root.classList.add('light');
+          }}
+          className="cursor-pointer hover:bg-purple-100 dark:hover:bg-purple-900/50 transition-colors text-foreground"
         >
-          <Sun className="mr-2 h-4 w-4" />
-          <span>Claro</span>
-          {theme === 'light' && <span className="ml-auto text-purple-600">✓</span>}
+          <Sun className="mr-2 h-4 w-4 text-yellow-500" />
+          <span className="font-medium drop-shadow-sm">Claro</span>
+          {theme === 'light' && <span className="ml-auto text-purple-600 dark:text-purple-400 font-bold">✓</span>}
         </DropdownMenuItem>
         <DropdownMenuItem 
-          onClick={() => setTheme('dark')}
-          className="cursor-pointer hover:bg-purple-100 dark:hover:bg-purple-900/50 transition-colors"
+          onClick={() => {
+            setTheme('dark');
+            // Forzar actualización inmediata
+            const root = document.documentElement;
+            root.classList.remove('light');
+            root.classList.add('dark');
+          }}
+          className="cursor-pointer hover:bg-purple-100 dark:hover:bg-purple-900/50 transition-colors text-foreground"
         >
-          <Moon className="mr-2 h-4 w-4" />
-          <span>Oscuro</span>
-          {theme === 'dark' && <span className="ml-auto text-purple-600">✓</span>}
+          <Moon className="mr-2 h-4 w-4 text-blue-400" />
+          <span className="font-medium drop-shadow-sm">Oscuro</span>
+          {theme === 'dark' && <span className="ml-auto text-purple-600 dark:text-purple-400 font-bold">✓</span>}
         </DropdownMenuItem>
         <DropdownMenuItem 
-          onClick={() => setTheme('system')}
-          className="cursor-pointer hover:bg-purple-100 dark:hover:bg-purple-900/50 transition-colors"
+          onClick={() => {
+            setTheme('system');
+            // Aplicar tema del sistema inmediatamente
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const root = document.documentElement;
+            root.classList.remove('light', 'dark');
+            root.classList.add(prefersDark ? 'dark' : 'light');
+          }}
+          className="cursor-pointer hover:bg-purple-100 dark:hover:bg-purple-900/50 transition-colors text-foreground"
         >
-          <Monitor className="mr-2 h-4 w-4" />
-          <span>Sistema</span>
-          {theme === 'system' && <span className="ml-auto text-purple-600">✓</span>}
+          <Monitor className="mr-2 h-4 w-4 text-gray-500 dark:text-gray-400" />
+          <span className="font-medium drop-shadow-sm">Sistema</span>
+          {theme === 'system' && <span className="ml-auto text-purple-600 dark:text-purple-400 font-bold">✓</span>}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

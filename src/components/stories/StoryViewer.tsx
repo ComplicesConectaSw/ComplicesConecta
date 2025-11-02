@@ -215,14 +215,19 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({
           {currentStory.content.type === 'image' ? (
             <div className="relative h-full">
               <img 
-                src={currentStory.content.url} 
+                src={currentStory.content.url || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM5MzZFNkYiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNGNDMzOTYiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2cpIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+8J+TniBJbWFnZW4gTm8gRGlzcG9uaWJsZTwvdGV4dD48L3N2Zz4='} 
                 alt="Historia"
                 className="w-full h-full object-cover"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM5MzZFNkYiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNGNDMzOTYiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2cpIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+8J+TniBJbWFnZW4gTm8gRGlzcG9uaWJsZTwvdGV4dD48L3N2Zz4=';
+                  target.onerror = null; // Prevenir loops infinitos
+                }}
               />
               {currentStory.description && (
                 <div className="absolute bottom-20 left-4 right-4">
                   <div className="bg-black/50 backdrop-blur-sm rounded-lg p-3">
-                    <p className="text-white text-sm">{currentStory.description}</p>
+                    <p className="text-white text-sm drop-shadow-lg">{currentStory.description}</p>
                   </div>
                 </div>
               )}
@@ -303,31 +308,42 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({
           {showComments && (
             <div className="bg-black/50 backdrop-blur-sm rounded-lg p-3 max-h-40 overflow-y-auto">
               <div className="space-y-2 mb-3">
-                {currentStory.comments?.map((comment) => (
-                  <div key={comment.id} className="flex items-start gap-2">
-                    <img 
-                      src={comment.user.avatar} 
-                      alt={comment.user.name}
-                      className="w-6 h-6 rounded-full"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <p className="text-white text-xs font-medium">{comment.user.name}</p>
-                        {(isOwner || comment.userId === currentUserId) && (
-                          <Button
-                            onClick={() => handleDeleteComment(comment.id)}
-                            size="sm"
-                            variant="ghost"
-                            className="h-4 w-4 p-0 text-red-400 hover:bg-red-400/10"
-                          >
-                            <Trash2 className="h-3 w-3" />
-                          </Button>
-                        )}
+                {currentStory.comments && currentStory.comments.length > 0 ? (
+                  currentStory.comments
+                    .filter(comment => comment.comment && comment.comment.trim().length > 0) // Filtrar comentarios vacíos
+                    .map((comment) => (
+                      <div key={comment.id} className="flex items-start gap-2">
+                        <img 
+                          src={comment.user.avatar || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMiIgZmlsbD0iIzkzNkU2RiIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LXNpemU9IjEwIiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiPuKGkiBCPC90ZXh0Pjwvc3ZnPg=='} 
+                          alt={comment.user.name}
+                          className="w-6 h-6 rounded-full border border-white/20 flex-shrink-0"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMiIgZmlsbD0iIzkzNkU2RiIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LXNpemU9IjEwIiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiPuKGkiBCPC90ZXh0Pjwvc3ZnPg==';
+                            target.onerror = null;
+                          }}
+                        />
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2">
+                            <p className="text-white text-xs font-medium drop-shadow-md">{comment.user.name}</p>
+                            {(isOwner || comment.userId === currentUserId) && (
+                              <Button
+                                onClick={() => handleDeleteComment(comment.id)}
+                                size="sm"
+                                variant="ghost"
+                                className="h-4 w-4 p-0 text-red-400 hover:bg-red-400/10"
+                              >
+                                <Trash2 className="h-3 w-3" />
+                              </Button>
+                            )}
+                          </div>
+                          <p className="text-white/90 text-xs drop-shadow-md">{comment.comment}</p>
+                        </div>
                       </div>
-                      <p className="text-white/80 text-xs">{comment.comment}</p>
-                    </div>
-                  </div>
-                ))}
+                    ))
+                ) : (
+                  <p className="text-white/60 text-xs text-center py-2">No hay comentarios aún</p>
+                )}
               </div>
               
               <div className="flex gap-2">
@@ -342,9 +358,10 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({
                   onClick={handleComment}
                   disabled={!newComment.trim() || isSubmittingComment}
                   size="sm"
-                  className="bg-purple-500 hover:bg-purple-600"
+                  className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white font-semibold shadow-lg drop-shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <Send className="h-4 w-4" />
+                  <Send className="h-4 w-4 mr-1" />
+                  <span className="drop-shadow-md">Enviar</span>
                 </Button>
               </div>
             </div>

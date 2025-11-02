@@ -127,9 +127,14 @@ const Feed = () => {
                   <div className="flex items-center justify-between p-4 pb-3">
                     <div className="flex items-center space-x-3">
                       <img
-                        src={post.profile?.avatar_url || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face&auto=format&q=80'}
+                        src={post.profile?.avatar_url || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIyMCIgY3k9IjIwIiByPSIyMCIgZmlsbD0iIzkzNkU2RiIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LXNpemU9IjE2IiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiPuKGkiBCPC90ZXh0Pjwvc3ZnPg=='}
                         alt={post.profile?.name || 'Usuario'}
-                        className="w-10 h-10 rounded-full object-cover"
+                        className="w-10 h-10 rounded-full object-cover border border-purple-400/30"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIyMCIgY3k9IjIwIiByPSIyMCIgZmlsbD0iIzkzNkU2RiIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LXNpemU9IjE2IiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiPuKGkiBCPC90ZXh0Pjwvc3ZnPg==';
+                          target.onerror = null;
+                        }}
                       />
                       <div>
                         <div className="flex items-center space-x-2">
@@ -166,9 +171,14 @@ const Feed = () => {
                   {post.image_url && (
                     <div className="px-4 pb-3">
                       <img
-                        src={post.image_url}
+                        src={post.image_url || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM5MzZFNkYiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNGNDMzOTYiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2cpIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtc2l6ZT0iMjAiIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+8J+TniBJbWFnZW48L3RleHQ+PC9zdmc+'}
                         alt="Post image"
                         className="w-full rounded-lg max-h-96 object-cover"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM5MzZFNkYiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNGNDMzOTYiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2cpIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtc2l6ZT0iMjAiIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+8J+TniBJbWFnZW48L3RleHQ+PC9zdmc+';
+                          target.onerror = null;
+                        }}
                       />
                     </div>
                   )}
@@ -178,19 +188,19 @@ const Feed = () => {
                     <div className="flex items-center space-x-4">
                       <Button
                         onClick={() => handleLike(post)}
-                        className="flex items-center space-x-2 text-muted-foreground hover:text-red-500 bg-transparent hover:bg-white/10 border-none px-2 py-1 text-sm"
+                        className="flex items-center space-x-2 text-white hover:text-red-400 bg-transparent hover:bg-white/10 border-none px-2 py-1 text-sm font-semibold drop-shadow-md"
                       >
                         <Heart className="w-5 h-5" />
-                        <span>{post.likes_count}</span>
+                        <span className="drop-shadow-md">{post.likes_count}</span>
                       </Button>
                       
-                      <Button className="flex items-center space-x-2 text-muted-foreground bg-transparent hover:bg-white/10 border-none px-2 py-1 text-sm">
+                      <Button className="flex items-center space-x-2 text-white bg-transparent hover:bg-white/10 border-none px-2 py-1 text-sm font-semibold drop-shadow-md">
                         <MessageCircle className="w-5 h-5" />
-                        <span>{post.comments_count}</span>
+                        <span className="drop-shadow-md">{post.comments_count}</span>
                       </Button>
                     </div>
                     
-                    <Button className="text-muted-foreground bg-transparent hover:bg-white/10 border-none px-2 py-1 text-sm">
+                    <Button className="text-white bg-transparent hover:bg-white/10 border-none px-2 py-1 text-sm drop-shadow-md">
                       <Share2 className="w-5 h-5" />
                     </Button>
                   </div>
@@ -204,17 +214,17 @@ const Feed = () => {
         {!loading && posts.length > 0 && hasMore && (
           <div className="text-center mt-8">
             <Button 
-              className="px-8 text-white border border-white/30 hover:bg-white/10 bg-transparent"
+              className="px-8 py-3 text-white font-semibold border-2 border-white/50 hover:bg-white/20 bg-gradient-to-r from-purple-600/50 to-blue-600/50 backdrop-blur-sm shadow-lg drop-shadow-lg transition-all duration-300"
               onClick={handleLoadMore}
               disabled={loadingMore}
             >
               {loadingMore ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                  Cargando...
+                  <span className="drop-shadow-md">Cargando...</span>
                 </>
               ) : (
-                'Cargar más publicaciones'
+                <span className="drop-shadow-md">Cargar más publicaciones</span>
               )}
             </Button>
           </div>

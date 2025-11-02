@@ -46,16 +46,30 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
     setIsLoaded(true);
   };
 
-  // Placeholder mientras carga
+  // Fallback image - usar un placeholder más robusto
+  const fallbackImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjNzMzNzgwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7imqIgSW1hZ2VuPC90ZXh0Pjwvc3ZnPg==';
   const placeholderSrc = '/compliceslogo.png';
 
   if (hasError) {
     return (
       <div 
-        className={`bg-gray-200 flex items-center justify-center ${className}`}
+        className={`bg-gradient-to-br from-purple-900/50 to-blue-900/50 flex items-center justify-center border border-purple-400/30 rounded-lg ${className}`}
         style={{ width, height }}
       >
-        <span className="text-gray-700 dark:text-gray-200 text-sm">Error al cargar imagen</span>
+        <img 
+          src={fallbackImage} 
+          alt="Imagen no disponible"
+          className="w-full h-full object-cover opacity-50"
+          onError={(e) => {
+            // Si el fallback también falla, mostrar un div con gradiente
+            const target = e.target as HTMLImageElement;
+            target.style.display = 'none';
+            const parent = target.parentElement;
+            if (parent) {
+              parent.innerHTML = '<div class="flex flex-col items-center justify-center w-full h-full text-white/70"><svg class="w-12 h-12 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg><span class="text-sm">Imagen no disponible</span></div>';
+            }
+          }}
+        />
       </div>
     );
   }

@@ -28,10 +28,17 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
       setActualTheme(resolvedTheme);
       
-      // Apply theme to document
+      // Apply theme to document - forzar actualización inmediata
       const root = document.documentElement;
       root.classList.remove('light', 'dark');
       root.classList.add(resolvedTheme);
+      
+      // Actualizar también en localStorage para persistencia inmediata
+      try {
+        localStorage.setItem('theme', theme);
+      } catch (e) {
+        logger.warn('No se pudo guardar tema en localStorage:', { error: e instanceof Error ? e.message : String(e) });
+      }
       
       // Update meta theme-color for mobile browsers
       const metaThemeColor = document.querySelector('meta[name="theme-color"]');
@@ -39,9 +46,14 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         metaThemeColor.setAttribute('content', resolvedTheme === 'dark' ? '#1a1a1a' : '#ffffff');
       }
 
+      // Forzar re-render de componentes que dependen del tema
+      const event = new CustomEvent('theme-change', { detail: { theme: resolvedTheme } });
+      window.dispatchEvent(event);
+
       logger.info('🎨 Theme updated:', { theme, resolvedTheme });
     };
 
+    // Ejecutar inmediatamente
     updateTheme();
 
     // Listen for system theme changes
@@ -53,7 +65,15 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     };
 
     mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
+    
+    // También escuchar eventos personalizados de cambio de tema
+    const handleThemeChange = () => updateTheme();
+    window.addEventListener('theme-change', handleThemeChange);
+    
+    return () => {
+      mediaQuery.removeEventListener('change', handleChange);
+      window.removeEventListener('theme-change', handleThemeChange);
+    };
   }, [theme]);
 
   const value: ThemeContextType = {
