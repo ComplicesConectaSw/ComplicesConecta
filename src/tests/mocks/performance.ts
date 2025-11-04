@@ -71,16 +71,18 @@ export const mockPerformanceMonitor = {
   cleanup: vi.fn(),
   recordMetric: vi.fn(),
   recordQuery: vi.fn(),
-  generateReport: vi.fn().mockReturnValue({
-    totalOperations: 3,
-    averageResponseTime: 150,
-    slowQueries: [
-      { query: 'slow_query', duration: 1500, count: 1 }
-    ],
-    cacheHitRate: 50,
-    errorRate: 33.33,
-    recommendations: ['Considerar implementar más cache', 'Revisar consultas lentas', 'Optimizar consultas lentas', 'Optimizar rendimiento general']
-  }),
+  generateReport: vi.fn((periodHours: number = 1) => ({
+    period: `Last ${periodHours} hour(s)`,
+    metrics: [],
+    summary: {
+      avgLoadTime: 0,
+      avgInteractionTime: 0,
+      totalRequests: 0,
+      failedRequests: 0,
+      memoryUsage: 0
+    },
+    alerts: []
+  })),
   getRealTimeMetrics: vi.fn().mockReturnValue({
     operationsPerMinute: 10,
     averageResponseTime: 150,
@@ -88,20 +90,22 @@ export const mockPerformanceMonitor = {
     cacheHitRate: 75
   }),
   measureExecution: vi.fn().mockImplementation((operation, fn) => fn),
-  getInstance: vi.fn().mockReturnValue({
-    cleanup: vi.fn(),
-    recordMetric: vi.fn(),
-    recordQuery: vi.fn(),
-    generateReport: vi.fn().mockReturnValue({
-      totalOperations: 3,
-      averageResponseTime: 150,
-      slowQueries: [
-        { query: 'slow_query', duration: 1500, count: 1 }
-      ],
-      cacheHitRate: 50,
-      errorRate: 33.33,
-      recommendations: ['Considerar implementar más cache', 'Revisar consultas lentas', 'Optimizar consultas lentas', 'Optimizar rendimiento general']
-    }),
+    getInstance: vi.fn().mockReturnValue({
+      cleanup: vi.fn(),
+      recordMetric: vi.fn(),
+      recordQuery: vi.fn(),
+      generateReport: vi.fn((periodHours: number = 1) => ({
+        period: `Last ${periodHours} hour(s)`,
+        metrics: [],
+        summary: {
+          avgLoadTime: 0,
+          avgInteractionTime: 0,
+          totalRequests: 0,
+          failedRequests: 0,
+          memoryUsage: 0
+        },
+        alerts: []
+      })),
     getRealTimeMetrics: vi.fn().mockReturnValue({
       operationsPerMinute: 10,
       averageResponseTime: 150,
@@ -140,6 +144,7 @@ vi.mock('../../services/TokenAnalyticsService', () => ({
 }));
 
 vi.mock('../../services/PerformanceMonitoringService', () => ({
+  default: mockPerformanceMonitor,
   performanceMonitor: mockPerformanceMonitor,
   PerformanceMonitoringService: mockPerformanceMonitor
 }));

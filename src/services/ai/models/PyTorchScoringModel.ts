@@ -74,7 +74,17 @@ export class PyTorchScoringModel {
       
       // En desarrollo/producción, el modelo debe estar en public/models/
       // TODO: En producción real, cargar desde CDN o S3
-      this.model = await tf.loadLayersModel(this.config.modelPath);
+      // En tests, el mock de TensorFlow manejará esto
+      try {
+        this.model = await tf.loadLayersModel(this.config.modelPath);
+      } catch (loadError) {
+        // Si falla la carga (ej: en tests sin modelo real), usar fallback
+        if (typeof window !== 'undefined' && this.config.modelPath.startsWith('/models/')) {
+          // En ambiente de tests, permitir que el mock maneje el error
+          throw loadError;
+        }
+        throw loadError;
+      }
       
       const loadTime = Date.now() - startTime;
       console.log(`[PyTorch] ✅ Model loaded successfully in ${loadTime}ms`);
@@ -125,10 +135,26 @@ export class PyTorchScoringModel {
     ], this.config.inputShape as [number, number]);
 
     try {
+      // Si no hay modelo después de intentar cargar, usar fallback
+      if (!this.model) {
+        console.log('[PyTorch] Model not available, using fallback');
+        inputTensor.dispose();
+        return this.fallbackPrediction(features);
+      }
+
       // Predicción ML
-      const prediction = this.model!.predict(inputTensor) as tf.Tensor;
-      const scoreArray = await prediction.data();
-      const score = scoreArray[0];
+      const prediction = this.model.predict(inputTensor) as tf.Tensor;
+      
+      // Intentar obtener datos usando .data() primero, luego .array() como fallback
+      let score: number;
+      try {
+        const scoreData = await prediction.data();
+        score = scoreData[0];
+      } catch {
+        // Fallback a .array() si .data() falla
+        const scoreArray = await prediction.array();
+        score = (scoreArray as number[][])[0][0];
+      }
 
       // Limpiar tensors para evitar memory leaks
       inputTensor.dispose();
@@ -142,7 +168,11 @@ export class PyTorchScoringModel {
       return clampedScore;
     } catch (error) {
       // Cleanup en caso de error
-      inputTensor.dispose();
+      try {
+        inputTensor.dispose();
+      } catch {
+        // Ignorar errores de cleanup
+      }
       console.error('[PyTorch] Prediction error:', error);
       
       // Fallback a algoritmo simple

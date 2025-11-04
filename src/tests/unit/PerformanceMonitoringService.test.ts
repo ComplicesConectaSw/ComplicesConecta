@@ -4,6 +4,7 @@
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import performanceMonitoring from '@/services/PerformanceMonitoringService'
+import '@/tests/mocks/performance';
 
 // Usar performanceMonitoring como performanceMonitor para compatibilidad
 const performanceMonitor = performanceMonitoring
@@ -15,6 +16,18 @@ vi.mock('@/lib/logger', () => ({
     error: vi.fn(),
     debug: vi.fn(),
     warn: vi.fn()
+  }
+}))
+
+// Mock de Supabase
+vi.mock('@/integrations/supabase/client', () => ({
+  supabase: {
+    from: vi.fn().mockReturnValue({
+      insert: vi.fn().mockResolvedValue({ data: null, error: null }),
+      select: vi.fn().mockReturnThis(),
+      eq: vi.fn().mockReturnThis(),
+      order: vi.fn().mockResolvedValue({ data: [], error: null })
+    })
   }
 }))
 

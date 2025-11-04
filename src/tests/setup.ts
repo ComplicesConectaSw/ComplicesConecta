@@ -7,6 +7,8 @@ import * as matchers from '@testing-library/jest-dom/matchers';
 import './mocks/supabase';
 // Import Performance mocks
 import './mocks/performance';
+// Import TensorFlow mock
+import './mocks/tensorflow';
 
 // extends Vitest's expect method with methods from react-testing-library
 expect.extend(matchers);

@@ -108,6 +108,12 @@ export const createMockSupabaseClient = () => {
     queryChain.limit = vi.fn().mockReturnValue(queryChain);
     queryChain.range = vi.fn().mockReturnValue(queryChain);
     
+    // Mutation methods
+    queryChain.insert = vi.fn().mockReturnValue(queryChain);
+    queryChain.update = vi.fn().mockReturnValue(queryChain);
+    queryChain.upsert = vi.fn().mockReturnValue(queryChain);
+    queryChain.delete = vi.fn().mockReturnValue(queryChain);
+    
     // Final execution methods
     queryChain.single = vi.fn().mockResolvedValue({
       data: Array.isArray(mockData) ? mockData[0] : mockData,
@@ -163,7 +169,7 @@ export const createMockSupabaseClient = () => {
     if (table === 'profiles') {
       return createQueryBuilder(mockProfiles);
     }
-    if (table === 'couple_profile_likes' || table === 'comments') {
+    if (table === 'couple_profile_likes' || table === 'story_comments') {
       // Para queries de count, retornar estructura apropiada
       const countBuilder = createQueryBuilder([], true);
       // Override select para detectar queries de count
@@ -178,6 +184,12 @@ export const createMockSupabaseClient = () => {
         return countBuilder;
       });
       return countBuilder;
+    }
+    // Para compatibility_predictions (tabla de logs)
+    if (table === 'compatibility_predictions') {
+      const insertBuilder = createQueryBuilder(null);
+      insertBuilder.select = vi.fn().mockReturnValue(insertBuilder);
+      return insertBuilder;
     }
     // Default mock
     return createQueryBuilder([]);

@@ -117,10 +117,10 @@ class ModerationMetricsService {
             critical: reports.filter(r => r.severity === 'critical').length,
           },
           byType: {
-            profile: reports.filter(r => r.report_type === 'profile').length,
-            post: reports.filter(r => r.report_type === 'post').length,
-            message: reports.filter(r => r.report_type === 'message').length,
-            other: reports.filter(r => !['profile', 'post', 'message'].includes(r.report_type || '')).length,
+            profile: reports.filter(r => (r.content_type || r.report_type) === 'profile').length,
+            post: reports.filter(r => (r.content_type || r.report_type) === 'post' || (r.content_type || r.report_type) === 'story').length,
+            message: reports.filter(r => (r.content_type || r.report_type) === 'message').length,
+            other: reports.filter(r => !['profile', 'post', 'story', 'message'].includes((r.content_type || r.report_type) || '')).length,
           },
           avgResolutionTime: this.calculateAvgResolutionTime(reports),
           last24Hours: this.getReportsInTimeRange(reports, 24),
@@ -267,7 +267,7 @@ class ModerationMetricsService {
       // Contar moderadores únicos
       const uniqueModerators = new Set(data.map(r => r.resolved_by));
       return uniqueModerators.size;
-    } catch (_error) {
+    } catch {
       return 0;
     }
   }

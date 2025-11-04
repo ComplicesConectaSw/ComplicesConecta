@@ -23,7 +23,7 @@ if (typeof window !== 'undefined') {
           if (typeof callback === 'function') {
             try {
               return callback();
-            } catch (_e) {
+            } catch {
               return function() {};
             }
           }
@@ -66,7 +66,7 @@ if (typeof window !== 'undefined') {
       configurable: true,
       enumerable: true
     });
-  } catch (e) {
+  } catch {
     // Si falla, asegurar directamente
     (window as any).React = React;
     if (!(window as any).React.useLayoutEffect) {
