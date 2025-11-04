@@ -33,6 +33,8 @@ Entendemos que la discreción es fundamental. Por eso implementamos:
 - **Galerías privadas protegidas**: Tu contenido privado solo es visible para personas que tú apruebes explícitamente
 - **Sistema de verificación**: Múltiples métodos para asegurar que los perfiles sean reales y auténticos
 - **Geolocalización inteligente**: Comparte tu ubicación solo cuando tú lo decidas, con precisión controlada
+- **Verificador IA de Consentimiento**: Sistema proactivo que detecta patrones de consentimiento en mensajes, cumpliendo con la **Ley Olimpia**
+- **Row Level Security (RLS)**: 122 políticas de seguridad activas que garantizan que cada usuario solo accede a sus propios datos
 
 ### 💬 **Experiencia de Chat Avanzada**
 
@@ -58,7 +60,11 @@ Nuestro sistema de mensajería no es solo texto. Incluye:
 
 - **Base de datos escalable**: 107 tablas optimizadas para manejar crecimiento masivo (PostgreSQL/Supabase)
 - **Neo4j Graph Database**: Base de datos de grafo para conexiones sociales (200x más rápido que PostgreSQL)
-- **Seguridad multicapa**: 65+ políticas de seguridad activas
+  - **¿Qué es Neo4j?** Es una base de datos de grafos que almacena relaciones entre usuarios como conexiones directas (nodos y relaciones)
+  - **¿Para qué sirve?** Permite encontrar amigos mutuos en ~10ms (vs 2s en PostgreSQL), recomendaciones "friends of friends" en ~50ms (vs 10s), y calcular el camino más corto entre usuarios
+  - **Beneficio para usuarios**: Matches más inteligentes basados en conexiones sociales reales, no solo en preferencias
+  - **Beneficio para inversores**: Tecnología de vanguardia que escala a millones de usuarios sin degradación de performance
+- **Seguridad multicapa**: 122 políticas RLS activas que garantizan acceso granular a datos
 - **Monitoreo en tiempo real**: Sistema completo de analytics y alertas
 - **Performance optimizado**: Consultas geográficas 50-300 veces más rápidas con tecnología Google S2
 - **Queries sociales optimizadas**: Amigos mutuos y recomendaciones sociales 200x más rápidas con Neo4j
@@ -87,6 +93,52 @@ Nuestro sistema de mensajería no es solo texto. Incluye:
 - ✅ Sistema de tokens y recompensas (CMPX y GTK)
 - ✅ Moderación automática y manual
 - ✅ Dashboard administrativo completo
+- ✅ **Verificador IA de Consentimiento** (cumplimiento Ley Olimpia)
+- ✅ **Galerías NFT-Verificadas** (verificación de autenticidad con blockchain)
+- ✅ **Matching Predictivo con Neo4j** (conexiones sociales inteligentes)
+- ✅ **Eventos Virtuales Sostenibles** (con tokens CMPX como recompensas)
+
+---
+
+## 🛡️ Cumplimiento Legal y Protección: Ley Olimpia
+
+### ¿Qué es la Ley Olimpia?
+
+La **Ley Olimpia** es una reforma legislativa mexicana que tipifica como delito la violencia digital, específicamente la difusión de contenido íntimo sin consentimiento. Es una ley federal que protege a las personas contra el acoso, la difusión no consensuada de imágenes íntimas, y la violencia en medios digitales.
+
+**En ComplicesConecta, nos tomamos muy en serio el cumplimiento de esta ley y la protección de nuestros usuarios.**
+
+### 🔍 Verificador IA de Consentimiento
+
+Hemos implementado un **sistema proactivo de verificación de consentimiento** que utiliza inteligencia artificial para:
+
+1. **Detectar patrones de consentimiento** en mensajes de chat en tiempo real
+2. **Analizar el contexto** de las conversaciones para identificar posibles situaciones de riesgo
+3. **Advertir a los usuarios** antes de enviar mensajes que puedan ser problemáticos
+4. **Registrar verificaciones** de consentimiento para auditoría y cumplimiento legal
+5. **Bloquear automáticamente** mensajes que no cumplan con estándares de consentimiento explícito
+
+**¿Cómo funciona?**
+
+- **Análisis en tiempo real**: Cada mensaje es analizado antes de enviarse
+- **Niveles de confianza**: El sistema calcula un nivel de confianza del consentimiento (0-100%)
+- **Sugerencias proactivas**: Si detecta riesgo, sugiere acciones como "¿Estás seguro de que quieres enviar esto?" o "Solicita consentimiento explícito antes de continuar"
+- **Registro de verificaciones**: Todas las verificaciones se guardan en la base de datos para cumplimiento legal
+
+**Beneficios:**
+- ✅ **Protección legal**: Cumplimiento activo con la Ley Olimpia
+- ✅ **Prevención**: Evita situaciones problemáticas antes de que ocurran
+- ✅ **Tranquilidad para usuarios**: Saben que están protegidos
+- ✅ **Confianza para inversores**: Demuestra compromiso con la seguridad y cumplimiento legal
+
+**Ejemplo de uso:**
+```
+Usuario 1: "¿Quieres que compartamos fotos íntimas?"
+Sistema: ⚠️ ADVERTENCIA - Asegúrate de tener consentimiento explícito antes de continuar.
+Usuario 1: "Sí, tengo tu consentimiento explícito"
+Usuario 2: "Sí, doy mi consentimiento explícito"
+Sistema: ✅ Consentimiento verificado. Puedes proceder.
+```
 
 ---
 

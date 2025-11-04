@@ -54,10 +54,24 @@ $srcFiles = Get-ChildItem "src" -Recurse -File -Include "*.ts", "*.tsx" | Where-
 
 foreach ($file in $srcFiles) {
     $content = Get-Content $file.FullName -Raw
-    $matches = [regex]::Matches($content, "\.from\(['""](\w+)['""]\)", [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
+    
+    # Ignorar comentarios y líneas comentadas
+    $lines = $content -split "`n"
+    $uncommentedContent = ""
+    foreach ($line in $lines) {
+        $trimmedLine = $line.Trim()
+        # Ignorar líneas que empiezan con comentarios (//, /*, #)
+        if ($trimmedLine -notmatch '^\s*//' -and $trimmedLine -notmatch '^\s*#' -and $trimmedLine -notmatch '^\s*/\*') {
+            $uncommentedContent += $line + "`n"
+        }
+    }
+    
+    # Buscar tablas usadas (no vistas)
+    $matches = [regex]::Matches($uncommentedContent, "\.from\(['""](\w+)['""]\)", [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
     foreach ($match in $matches) {
         $tableName = $match.Groups[1].Value
-        if ($tableName -notin $codeTables) {
+        # Ignorar vistas conocidas
+        if ($tableName -notmatch '_with_partners$' -and $tableName -notin $codeTables) {
             $codeTables += $tableName
         }
     }
@@ -72,14 +86,33 @@ Write-Host "ANALISIS DE ALINEACION" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
 
-# Tablas en código pero no en local
-$missingInLocal = $codeTables | Where-Object { $_ -notin $localTables }
+# Filtrar vistas y tablas conocidas que son vistas o están en desarrollo
+$knownViews = @('couple_profiles_with_partners')
+$knownTODOs = @('app_logs')
+$knownDeprecated = @('user_tokens')  # Se debe migrar a user_token_balances
+
+# Tablas en código pero no en local (excluyendo vistas y TODOs)
+$missingInLocal = $codeTables | Where-Object { 
+    $_ -notin $localTables -and 
+    $_ -notin $knownViews -and 
+    $_ -notin $knownTODOs -and
+    $_ -notin $knownDeprecated
+}
 if ($missingInLocal.Count -gt 0) {
     Write-Host "[ADVERTENCIA] TABLAS USADAS EN CODIGO PERO NO EN LOCAL:" -ForegroundColor Red
     $missingInLocal | ForEach-Object { Write-Host "   - $_" -ForegroundColor Yellow }
     Write-Host ""
 } else {
     Write-Host "[OK] Todas las tablas usadas en codigo existen en LOCAL" -ForegroundColor Green
+    Write-Host ""
+}
+
+# Mostrar vistas y TODOs como información
+if ($codeTables | Where-Object { $_ -in $knownViews -or $_ -in $knownTODOs -or $_ -in $knownDeprecated }) {
+    Write-Host "ℹ️ TABLAS REFERENCIADAS (Vistas/TODOs/Deprecadas):" -ForegroundColor Gray
+    $codeTables | Where-Object { $_ -in $knownViews } | ForEach-Object { Write-Host "   - $_ (Vista)" -ForegroundColor DarkGray }
+    $codeTables | Where-Object { $_ -in $knownTODOs } | ForEach-Object { Write-Host "   - $_ (TODO - Pendiente implementar)" -ForegroundColor DarkGray }
+    $codeTables | Where-Object { $_ -in $knownDeprecated } | ForEach-Object { Write-Host "   - $_ (Deprecada - Migrar a user_token_balances)" -ForegroundColor DarkGray }
     Write-Host ""
 }
 

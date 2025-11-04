@@ -1,6 +1,6 @@
-﻿-- =====================================================
+-- =====================================================
 -- MIGRACIONES PARA APLICAR EN REMOTO (Supabase Dashboard)
--- Generado: 2025-11-04 22:00:00
+-- Generado: 2025-11-04 03:14:26
 -- Version: 3.5.0
 -- =====================================================
 -- 
@@ -10,7 +10,6 @@
 -- 3. Ejecutar el script
 -- 4. Verificar que las tablas se crearon correctamente
 -- 
--- NOTA: Este script es idempotente (puede ejecutarse multiples veces)
 -- =====================================================
 
 -- =====================================================
@@ -39,10 +38,6 @@ CREATE TABLE IF NOT EXISTS comment_likes (
     UNIQUE(comment_id, user_id)
 );
 
--- Agregar columna user_id si no existe (para tablas existentes)
-ALTER TABLE comment_likes ADD COLUMN IF NOT EXISTS user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE;
-ALTER TABLE comment_likes ADD COLUMN IF NOT EXISTS comment_id UUID REFERENCES story_comments(id) ON DELETE CASCADE;
-
 -- Create indexes
 CREATE INDEX IF NOT EXISTS idx_comment_likes_comment_id ON comment_likes(comment_id);
 CREATE INDEX IF NOT EXISTS idx_comment_likes_user_id ON comment_likes(user_id);
@@ -55,9 +50,11 @@ ALTER TABLE comment_likes ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Users can view all comment likes" ON comment_likes;
 CREATE POLICY "Users can view all comment likes" ON comment_likes
     FOR SELECT USING (true);
+
 DROP POLICY IF EXISTS "Users can create their own comment likes" ON comment_likes;
 CREATE POLICY "Users can create their own comment likes" ON comment_likes
     FOR INSERT WITH CHECK (auth.uid() = user_id);
+
 DROP POLICY IF EXISTS "Users can delete their own comment likes" ON comment_likes;
 CREATE POLICY "Users can delete their own comment likes" ON comment_likes
     FOR DELETE USING (auth.uid() = user_id);
@@ -79,10 +76,6 @@ CREATE TABLE IF NOT EXISTS user_roles (
     UNIQUE(user_id, role)
 );
 
--- Agregar columnas si no existen (para tablas existentes)
-ALTER TABLE user_roles ADD COLUMN IF NOT EXISTS user_id UUID REFERENCES profiles(id) ON DELETE CASCADE;
-ALTER TABLE user_roles ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT true;
-
 -- Create indexes
 CREATE INDEX IF NOT EXISTS idx_user_roles_user_id ON user_roles(user_id);
 CREATE INDEX IF NOT EXISTS idx_user_roles_role ON user_roles(role);
@@ -95,6 +88,7 @@ ALTER TABLE user_roles ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Users can view their own roles" ON user_roles;
 CREATE POLICY "Users can view their own roles" ON user_roles
     FOR SELECT USING (user_id = auth.uid());
+
 DROP POLICY IF EXISTS "Admins can manage all roles" ON user_roles;
 CREATE POLICY "Admins can manage all roles" ON user_roles
     FOR ALL USING (
@@ -124,9 +118,6 @@ CREATE TABLE IF NOT EXISTS career_applications (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Agregar columna user_id si no existe (para tablas existentes)
-ALTER TABLE career_applications ADD COLUMN IF NOT EXISTS user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE;
-
 -- Create indexes
 CREATE INDEX IF NOT EXISTS idx_career_applications_user_id ON career_applications(user_id);
 CREATE INDEX IF NOT EXISTS idx_career_applications_status ON career_applications(status);
@@ -139,6 +130,7 @@ ALTER TABLE career_applications ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Users can view their own career applications" ON career_applications;
 CREATE POLICY "Users can view their own career applications" ON career_applications
     FOR ALL USING (auth.uid() = user_id);
+
 DROP POLICY IF EXISTS "Admins can view all career applications" ON career_applications;
 CREATE POLICY "Admins can view all career applications" ON career_applications
     FOR SELECT USING (
@@ -166,9 +158,6 @@ CREATE TABLE IF NOT EXISTS moderator_requests (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Agregar columna user_id si no existe (para tablas existentes)
-ALTER TABLE moderator_requests ADD COLUMN IF NOT EXISTS user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE;
-
 -- Create indexes
 CREATE INDEX IF NOT EXISTS idx_moderator_requests_user_id ON moderator_requests(user_id);
 CREATE INDEX IF NOT EXISTS idx_moderator_requests_status ON moderator_requests(status);
@@ -181,6 +170,7 @@ ALTER TABLE moderator_requests ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Users can view their own moderator requests" ON moderator_requests;
 CREATE POLICY "Users can view their own moderator requests" ON moderator_requests
     FOR ALL USING (auth.uid() = user_id);
+
 DROP POLICY IF EXISTS "Admins can view all moderator requests" ON moderator_requests;
 CREATE POLICY "Admins can view all moderator requests" ON moderator_requests
     FOR SELECT USING (
@@ -236,6 +226,10 @@ COMMENT ON TABLE moderator_requests IS 'Solicitudes para ser moderador';
 
 
 -- =====================================================
+-- FIN MIGRACION: 20251104000000_create_missing_admin_tables.sql
+-- =====================================================
+
+-- =====================================================
 -- MIGRACION: 20251104000001_create_moderation_tables.sql
 -- =====================================================
 
@@ -263,12 +257,6 @@ CREATE TABLE IF NOT EXISTS moderators (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Agregar columnas si no existen (para tablas existentes)
-ALTER TABLE moderators ADD COLUMN IF NOT EXISTS user_id UUID REFERENCES profiles(id) ON DELETE CASCADE;
-ALTER TABLE moderators ADD COLUMN IF NOT EXISTS moderator_id VARCHAR(50);
-ALTER TABLE moderators ADD COLUMN IF NOT EXISTS level VARCHAR(20) DEFAULT 'junior' CHECK (level IN ('junior', 'senior', 'lead'));
-ALTER TABLE moderators ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT true;
-
 -- Create indexes
 CREATE INDEX IF NOT EXISTS idx_moderators_user_id ON moderators(user_id);
 CREATE INDEX IF NOT EXISTS idx_moderators_moderator_id ON moderators(moderator_id);
@@ -282,6 +270,7 @@ ALTER TABLE moderators ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Users can view their own moderator record" ON moderators;
 CREATE POLICY "Users can view their own moderator record" ON moderators
     FOR SELECT USING (user_id = auth.uid());
+
 DROP POLICY IF EXISTS "Admins can manage all moderators" ON moderators;
 CREATE POLICY "Admins can manage all moderators" ON moderators
     FOR ALL USING (
@@ -309,10 +298,6 @@ CREATE TABLE IF NOT EXISTS moderation_logs (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Agregar columnas si no existen (para tablas existentes)
-ALTER TABLE moderation_logs ADD COLUMN IF NOT EXISTS moderator_id UUID REFERENCES moderators(id) ON DELETE CASCADE;
-ALTER TABLE moderation_logs ADD COLUMN IF NOT EXISTS severity VARCHAR(20) DEFAULT 'low' CHECK (severity IN ('low', 'medium', 'high', 'critical'));
-
 -- Create indexes
 CREATE INDEX IF NOT EXISTS idx_moderation_logs_moderator_id ON moderation_logs(moderator_id);
 CREATE INDEX IF NOT EXISTS idx_moderation_logs_action_type ON moderation_logs(action_type);
@@ -334,6 +319,7 @@ CREATE POLICY "Moderators can view their own logs" ON moderation_logs
             AND m.user_id = auth.uid()
         )
     );
+
 DROP POLICY IF EXISTS "Admins can view all moderation logs" ON moderation_logs;
 CREATE POLICY "Admins can view all moderation logs" ON moderation_logs
     FOR SELECT USING (
@@ -344,6 +330,7 @@ CREATE POLICY "Admins can view all moderation logs" ON moderation_logs
             AND ur.is_active = true
         )
     );
+
 DROP POLICY IF EXISTS "Moderators can create logs" ON moderation_logs;
 CREATE POLICY "Moderators can create logs" ON moderation_logs
     FOR INSERT WITH CHECK (
@@ -373,11 +360,6 @@ CREATE TABLE IF NOT EXISTS user_suspensions (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Agregar columnas si no existen (para tablas existentes)
-ALTER TABLE user_suspensions ADD COLUMN IF NOT EXISTS user_id UUID REFERENCES profiles(id) ON DELETE CASCADE;
-ALTER TABLE user_suspensions ADD COLUMN IF NOT EXISTS moderator_id UUID REFERENCES moderators(id) ON DELETE SET NULL;
-ALTER TABLE user_suspensions ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT true;
-
 -- Create indexes
 CREATE INDEX IF NOT EXISTS idx_user_suspensions_user_id ON user_suspensions(user_id);
 CREATE INDEX IF NOT EXISTS idx_user_suspensions_moderator_id ON user_suspensions(moderator_id);
@@ -392,6 +374,7 @@ ALTER TABLE user_suspensions ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Users can view their own suspensions" ON user_suspensions;
 CREATE POLICY "Users can view their own suspensions" ON user_suspensions
     FOR SELECT USING (user_id = auth.uid());
+
 DROP POLICY IF EXISTS "Moderators can view all suspensions" ON user_suspensions;
 CREATE POLICY "Moderators can view all suspensions" ON user_suspensions
     FOR SELECT USING (
@@ -401,6 +384,7 @@ CREATE POLICY "Moderators can view all suspensions" ON user_suspensions
             AND m.is_active = true
         )
     );
+
 DROP POLICY IF EXISTS "Moderators can manage suspensions" ON user_suspensions;
 CREATE POLICY "Moderators can manage suspensions" ON user_suspensions
     FOR ALL USING (
@@ -448,6 +432,10 @@ COMMENT ON TABLE user_suspensions IS 'Suspensiones de usuarios';
 
 
 -- =====================================================
+-- FIN MIGRACION: 20251104000001_create_moderation_tables.sql
+-- =====================================================
+
+-- =====================================================
 -- MIGRACION: 20251104000002_create_media_tables.sql
 -- =====================================================
 
@@ -484,11 +472,6 @@ CREATE TABLE IF NOT EXISTS media (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Agregar columnas si no existen (para tablas existentes)
-ALTER TABLE media ADD COLUMN IF NOT EXISTS user_id UUID REFERENCES profiles(id) ON DELETE CASCADE;
-ALTER TABLE media ADD COLUMN IF NOT EXISTS is_public BOOLEAN DEFAULT false;
-ALTER TABLE media ADD COLUMN IF NOT EXISTS is_verified BOOLEAN DEFAULT false;
-
 -- Create indexes
 CREATE INDEX IF NOT EXISTS idx_media_user_id ON media(user_id);
 CREATE INDEX IF NOT EXISTS idx_media_file_type ON media(file_type);
@@ -503,15 +486,19 @@ ALTER TABLE media ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Users can view public media" ON media;
 CREATE POLICY "Users can view public media" ON media
     FOR SELECT USING (is_public = true);
+
 DROP POLICY IF EXISTS "Users can view their own media" ON media;
 CREATE POLICY "Users can view their own media" ON media
     FOR SELECT USING (auth.uid() = user_id);
+
 DROP POLICY IF EXISTS "Users can create their own media" ON media;
 CREATE POLICY "Users can create their own media" ON media
     FOR INSERT WITH CHECK (auth.uid() = user_id);
+
 DROP POLICY IF EXISTS "Users can update their own media" ON media;
 CREATE POLICY "Users can update their own media" ON media
     FOR UPDATE USING (auth.uid() = user_id);
+
 DROP POLICY IF EXISTS "Users can delete their own media" ON media;
 CREATE POLICY "Users can delete their own media" ON media
     FOR DELETE USING (auth.uid() = user_id);
@@ -539,14 +526,6 @@ CREATE TABLE IF NOT EXISTS images (
     sort_order INTEGER DEFAULT 0
 );
 
--- Agregar columnas si no existen (para tablas existentes)
-ALTER TABLE images ADD COLUMN IF NOT EXISTS profile_id UUID REFERENCES auth.users(id) ON DELETE CASCADE;
-ALTER TABLE images ADD COLUMN IF NOT EXISTS is_public BOOLEAN DEFAULT true;
-ALTER TABLE images ADD COLUMN IF NOT EXISTS is_verified BOOLEAN DEFAULT false;
-ALTER TABLE images ADD COLUMN IF NOT EXISTS is_featured BOOLEAN DEFAULT false;
-ALTER TABLE images ADD COLUMN IF NOT EXISTS uploaded_at TIMESTAMP WITH TIME ZONE DEFAULT NOW();
-ALTER TABLE images ADD COLUMN IF NOT EXISTS sort_order INTEGER DEFAULT 0;
-
 -- Create indexes
 CREATE INDEX IF NOT EXISTS idx_images_profile_id ON images(profile_id);
 CREATE INDEX IF NOT EXISTS idx_images_is_public ON images(is_public);
@@ -562,15 +541,19 @@ ALTER TABLE images ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Users can view public images" ON images;
 CREATE POLICY "Users can view public images" ON images
     FOR SELECT USING (is_public = true);
+
 DROP POLICY IF EXISTS "Users can view their own images" ON images;
 CREATE POLICY "Users can view their own images" ON images
     FOR SELECT USING (auth.uid() = profile_id);
+
 DROP POLICY IF EXISTS "Users can create their own images" ON images;
 CREATE POLICY "Users can create their own images" ON images
     FOR INSERT WITH CHECK (auth.uid() = profile_id);
+
 DROP POLICY IF EXISTS "Users can update their own images" ON images;
 CREATE POLICY "Users can update their own images" ON images
     FOR UPDATE USING (auth.uid() = profile_id);
+
 DROP POLICY IF EXISTS "Users can delete their own images" ON images;
 CREATE POLICY "Users can delete their own images" ON images
     FOR DELETE USING (auth.uid() = profile_id);
@@ -591,10 +574,6 @@ CREATE TABLE IF NOT EXISTS media_access_logs (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Agregar columnas si no existen (para tablas existentes)
-ALTER TABLE media_access_logs ADD COLUMN IF NOT EXISTS user_id UUID REFERENCES profiles(id) ON DELETE CASCADE;
-ALTER TABLE media_access_logs ADD COLUMN IF NOT EXISTS action VARCHAR(20) CHECK (action IN ('view', 'download', 'denied', 'upload', 'delete'));
-
 -- Create indexes
 CREATE INDEX IF NOT EXISTS idx_media_access_logs_user_id ON media_access_logs(user_id);
 CREATE INDEX IF NOT EXISTS idx_media_access_logs_media_id ON media_access_logs(media_id);
@@ -608,9 +587,11 @@ ALTER TABLE media_access_logs ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Users can view their own access logs" ON media_access_logs;
 CREATE POLICY "Users can view their own access logs" ON media_access_logs
     FOR SELECT USING (user_id = auth.uid());
+
 DROP POLICY IF EXISTS "System can log access" ON media_access_logs;
 CREATE POLICY "System can log access" ON media_access_logs
     FOR INSERT WITH CHECK (true);
+
 DROP POLICY IF EXISTS "Admins can view all access logs" ON media_access_logs;
 CREATE POLICY "Admins can view all access logs" ON media_access_logs
     FOR SELECT USING (
@@ -668,29 +649,40 @@ COMMENT ON TABLE media_access_logs IS 'Logs de acceso a medios';
 
 
 -- =====================================================
+-- FIN MIGRACION: 20251104000002_create_media_tables.sql
+-- =====================================================
+
+-- =====================================================
 -- VERIFICACION DE TABLAS CREADAS
 -- =====================================================
 
 -- Verificar tablas creadas
-SELECT table_name 
-FROM information_schema.tables 
-WHERE table_schema = 'public' 
-  AND table_name IN (
-    'comment_likes',
-    'user_roles',
-    'career_applications',
-    'moderator_requests',
-    'moderators',
-    'moderation_logs',
-    'user_suspensions',
-    'media',
-    'images',
-    'media_access_logs'
-  )
-ORDER BY table_name;
+SELECT 
+    table_name,
+    CASE 
+        WHEN EXISTS (
+            SELECT 1 FROM information_schema.tables 
+            WHERE table_schema = 'public' 
+            AND table_name = table_name
+        ) THEN '✓ Existe'
+        ELSE '✗ No existe'
+    END as estado
+FROM (VALUES
+    ('comment_likes'),
+    ('user_roles'),
+    ('career_applications'),
+    ('moderator_requests'),
+    ('moderators'),
+    ('moderation_logs'),
+    ('user_suspensions'),
+    ('media'),
+    ('images'),
+    ('media_access_logs')
+) AS t(table_name);
 
 -- Contar total de tablas
-SELECT COUNT(*) as total_tablas
+SELECT 
+    COUNT(*) as total_tablas
 FROM information_schema.tables 
 WHERE table_schema = 'public' 
 AND table_type = 'BASE TABLE';
@@ -698,3 +690,4 @@ AND table_type = 'BASE TABLE';
 -- =====================================================
 -- FIN DEL SCRIPT
 -- =====================================================
+

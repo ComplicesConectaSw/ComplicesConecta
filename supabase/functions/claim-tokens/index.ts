@@ -106,8 +106,8 @@ async function checkMonthlyLimits(
   amount: number
 ): Promise<{ canClaim: boolean; error?: string; userTokens?: any }> {
   const { data: userTokens } = await supabaseClient
-    .from('user_tokens')
-    .select('cmpx_balance, monthly_earned, monthly_limit')
+    .from('user_token_balances')
+    .select('cmpx_balance, gtk_balance')
     .eq('user_id', userId)
     .single()
 

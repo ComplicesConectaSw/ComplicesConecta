@@ -18,9 +18,9 @@ export const SAFE_INTERESTS = [
   "Reuniones Sociales", "Cenas Temáticas", "Cócteles Elegantes", "Viajes en Pareja",
   "Spa de Parejas", "Bienestar en Pareja", "Actividades en Pareja", "Conexión de Parejas",
   
-  // Cultura y entretenimiento
-  "Baile en Pareja", "Música en Vivo", "Arte y Cultura", "Fotografía Artística",
-  "Teatro Adulto", "Cine de Arte", "Literatura", "Entretenimiento Nocturno"
+  // Ambiente y experiencias lifestyle
+  "Ambiente Elegante", "Música Ambiente", "Iluminación Intima", "Espacios Privados",
+  "Ambiente Relajado", "Experiencias Sensuales", "Bienestar Integral", "Entretenimiento Adulto"
 ];
 
 // ========================================
@@ -91,13 +91,13 @@ export function getAutoInterests(
     // Intereses para singles según género
     if (gender === 'female') {
       additionalInterests = [
-        "Baile en Pareja", "Spa de Parejas", "Arte y Cultura",
-        "Fotografía Artística", "Cócteles Elegantes", "Teatro Adulto"
+        "Ambiente Elegante", "Spa de Parejas", "Bienestar Integral",
+        "Iluminación Intima", "Cócteles Elegantes", "Experiencias Sensuales"
       ];
     } else {
       additionalInterests = [
         "Eventos Lifestyle", "Clubs Swinger México", "Reuniones Sociales",
-        "Música en Vivo", "Entretenimiento Nocturno", "Fotografía Artística"
+        "Música Ambiente", "Entretenimiento Adulto", "Espacios Privados"
       ];
     }
   }
