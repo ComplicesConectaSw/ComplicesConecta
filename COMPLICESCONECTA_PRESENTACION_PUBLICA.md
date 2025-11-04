@@ -2,7 +2,10 @@
 
 **Versión:** 3.5.0  
 **Fecha:** Noviembre, 2025  
+**Última Actualización:** 05 de Noviembre, 2025  
 **Estado:** ✅ Plataforma en Desarrollo Beta - Neo4j Operativo
+
+> **📚 Para desarrolladores: [INSTALACION_SETUP_v3.5.0.md](./INSTALACION_SETUP_v3.5.0.md) - Guía completa de instalación y configuración**
 
 ---
 

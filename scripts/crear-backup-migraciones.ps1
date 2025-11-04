@@ -36,7 +36,7 @@ $copiedCount = 0
 foreach ($file in $migrationFiles) {
     Copy-Item $file.FullName -Destination $backupSubDir -Force
     $copiedCount++
-    Write-Host "  ✓ $($file.Name)" -ForegroundColor Gray
+    Write-Host "  [OK] $($file.Name)" -ForegroundColor Gray
 }
 
 Write-Host ""
@@ -55,7 +55,7 @@ $additionalScripts = @(
 foreach ($script in $additionalScripts) {
     if (Test-Path $script) {
         Copy-Item $script -Destination $backupSubDir -Force
-        Write-Host "  ✓ $(Split-Path $script -Leaf)" -ForegroundColor Gray
+        Write-Host "  [OK] $(Split-Path $script -Leaf)" -ForegroundColor Gray
     }
 }
 

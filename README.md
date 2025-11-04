@@ -27,11 +27,12 @@
 ## 📚 Índice de Documentación
 
 ### **📋 Documentación Técnica**
+- **[🔧 Guía de Instalación](./INSTALACION_SETUP_v3.5.0.md)** - Guía completa paso a paso de instalación y configuración
 - **[🏗️ Estructura del Proyecto](./project-structure-tree.md)** - Árbol detallado del monorepo
 - **[📝 Notas de Lanzamiento](./RELEASE_NOTES_v3.4.1.md)** - Historial completo de versiones
 - **[⚙️ DevOps Guide](./README_DEVOPS.md)** - Guía de operaciones y deployment
 - **[🤖 IA Integration Guide](./README_IA.md)** - Estrategia de desarrollo con IA
-- **[📚 Documentación Maestra Completa](./DOCUMENTACION_MAESTRA_COMPLETA_v3.5.0.md)** - Documentación consolidada completa (BD, Migraciones, S2, Vercel)
+- **[📚 Documentación Maestra Completa](./DOCUMENTACION_CONSOLIDADA_MAESTRA_v3.5.0.md)** - Documentación consolidada completa (BD, Migraciones, S2, Vercel)
 - **[📝 Memorias de Sesiones](./MEMORIAS_SESIONES_CONSOLIDADAS_v3.5.0.md)** - Memorias consolidadas de sesiones y avances
 
 ---
@@ -279,14 +280,9 @@ Crear la comunidad swinger más exclusiva y segura de México, donde parejas y s
 
 ## 🚀 Quick Start
 
-### Prerequisitos
-- Node.js 20+
-- npm o bun
-- Supabase CLI
-- Docker (opcional, para New Relic)
-- Git
+> **📚 Para una guía completa de instalación y configuración, consulta [INSTALACION_SETUP_v3.5.0.md](./INSTALACION_SETUP_v3.5.0.md)**
 
-### Instalación
+### Inicio Rápido
 
 ```bash
 # Clonar el repositorio
@@ -300,44 +296,25 @@ npm install
 cp .env.example .env
 # Editar .env con tus credenciales
 
-# Iniciar Supabase local
+# Iniciar servicios
 npx supabase start
-
-# Ejecutar migraciones
-npx supabase migration up --local
-
-# Generar tipos
-npx supabase gen types typescript --local > src/types/supabase.ts
+docker-compose up -d neo4j
 
 # Iniciar servidor de desarrollo
 npm run dev
 ```
 
-### Variables de Entorno Requeridas
+### Documentación de Instalación
 
-```env
-# Supabase
-VITE_SUPABASE_URL=your_supabase_url
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-
-# Sentry (opcional)
-VITE_SENTRY_DSN=your_sentry_dsn
-SENTRY_ORG=your_org
-SENTRY_PROJECT=your_project
-SENTRY_AUTH_TOKEN=your_auth_token
-
-# New Relic (opcional)
-NEW_RELIC_LICENSE_KEY=your_license_key
-NEW_RELIC_APP_NAME=ComplicesConecta
-
-# Worldcoin (opcional)
-VITE_WORLD_ID_APP_ID=your_worldcoin_app_id
-VITE_WORLD_ID_ACTION=your_worldcoin_action
-
-# App
-VITE_APP_VERSION=3.4.1
-VITE_APP_ENV=development
-```
+- **[INSTALACION_SETUP_v3.5.0.md](./INSTALACION_SETUP_v3.5.0.md)** - Guía completa paso a paso
+  - Prerrequisitos y verificación
+  - Instalación de dependencias
+  - Configuración de variables de entorno
+  - Configuración de base de datos (Supabase y Neo4j)
+  - Configuración de Docker
+  - Configuración de Android
+  - Troubleshooting
+  - Diagramas de flujo
 
 ---
 

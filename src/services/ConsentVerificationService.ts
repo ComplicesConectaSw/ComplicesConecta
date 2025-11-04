@@ -420,10 +420,8 @@ class ConsentVerificationService {
    */
   async saveVerification(verification: ConsentVerification): Promise<ConsentVerification> {
     try {
-      // Guardar en BD (crear tabla si no existe)
-      // NOTA: La tabla consent_verifications se creará con la migración
-      // Por ahora, usar 'any' para evitar errores de TypeScript hasta que se apliquen las migraciones
-      const { data, error } = await (supabase as any)
+      // Guardar en BD
+      const { data, error } = await supabase
         .from('consent_verifications')
         .insert({
           message_id: verification.messageId,
@@ -471,9 +469,7 @@ class ConsentVerificationService {
    */
   async getVerificationHistory(userId: string, limit: number = 50): Promise<ConsentVerification[]> {
     try {
-      // NOTA: La tabla consent_verifications se creará con la migración
-      // Por ahora, usar 'any' para evitar errores de TypeScript hasta que se apliquen las migraciones
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('consent_verifications')
         .select('*')
         .eq('user_id', userId)

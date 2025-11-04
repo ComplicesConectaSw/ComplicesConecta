@@ -28,7 +28,7 @@ const Privacy = () => {
             </p>
             <Badge variant="secondary" className="mt-4 bg-white/10 border-white/30 text-white backdrop-blur-sm">
               <Shield className="h-4 w-4 mr-1" />
-              Última actualización: Agosto 2025
+              Última actualización: Noviembre 2025 - v3.5.0
             </Badge>
           </div>
 
@@ -115,8 +115,8 @@ const Privacy = () => {
                   nuestras funcionalidades.
                 </p>
                 <p className="text-white/80">
-                  <strong className="text-white">Cumplimiento legal:</strong> Cuando sea requerido por ley o para proteger 
-                  nuestros derechos legales.
+                  <strong className="text-white">Cumplimiento legal:</strong> Cumplimos con GDPR, LFPDPPP (México) y Ley 
+                  Olimpia. Cuando sea requerido por ley o para proteger nuestros derechos legales.
                 </p>
               </CardContent>
             </Card>
@@ -182,20 +182,24 @@ const Privacy = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-white/80">
-                  <strong className="text-white">Encriptación:</strong> Utilizamos encriptación SSL/TLS para proteger 
-                  la transmisión de datos.
+                  <strong className="text-white">Encriptación AES-GCM:</strong> Utilizamos encriptación de grado militar 
+                  para proteger la transmisión y almacenamiento de datos.
                 </p>
                 <p className="text-white/80">
-                  <strong className="text-white">Acceso limitado:</strong> Solo el personal autorizado tiene acceso a 
-                  información personal.
+                  <strong className="text-white">Row Level Security (RLS):</strong> 122 políticas RLS activas protegiendo 
+                  acceso a datos sensibles a nivel de base de datos.
                 </p>
                 <p className="text-white/80">
-                  <strong className="text-white">Monitoreo:</strong> Supervisamos continuamente nuestros sistemas para 
-                  detectar vulnerabilidades.
+                  <strong className="text-white">Verificación IA de Consentimiento:</strong> Sistema proactivo de detección 
+                  de consentimiento en chats (Ley Olimpia compliance).
+                </p>
+                <p className="text-white/80">
+                  <strong className="text-white">Monitoreo 24/7:</strong> Supervisamos continuamente nuestros sistemas 
+                  con Sentry, New Relic y Datadog para detectar vulnerabilidades.
                 </p>
                 <p className="text-white/80">
                   <strong className="text-white">Respaldo seguro:</strong> Sus datos se almacenan de forma segura con 
-                  copias de seguridad regulares.
+                  copias de seguridad regulares y geo-redundancia.
                 </p>
               </CardContent>
             </Card>

@@ -32,27 +32,27 @@ const News: React.FC = () => {
   const versionUpdates = [
     {
       version: "v3.5.0",
-      date: "02 Nov 2025",
-      title: "AI-Native Layer + Chat con Privacidad + Correcciones",
+      date: "05 Nov 2025",
+      title: "Features Innovadoras + Neo4j Operativo + Documentación Consolidada",
       type: "major",
       icon: <Brain className="h-6 w-6" />,
       highlights: [
-        "Sistema de Chat con Privacidad Completo - Solicitar permisos para chatear",
-        "ChatRoom.tsx y MessageList.tsx - Interfaz moderna y responsive",
-        "ChatPrivacyService.ts - Gestión completa de permisos bidireccional",
-        "Geolocalización en Chat - Compartir ubicación integrada con S2Service",
-        "Permisos de Galería Privada - Solicitar acceso desde el chat",
-        "VideoChatService.ts preparado para futura integración WebRTC",
-        "AI-Native Layer 100% completo - ML Compatibility Scoring + Chat Summaries",
-        "Mejoras Visuales CSS - Gradientes azul-rosa profesionales",
-        "Errores de wallet extensions completamente silenciados",
-        "Base de datos: 107 tablas operativas (100% sincronizadas)"
+        "✅ Verificador IA de Consentimiento en Chats - Servicio + Migración + Integración",
+        "✅ Galerías NFT-Verificadas - Servicio + Migración + UI completa",
+        "✅ Matching Predictivo con Graphs Sociales - Neo4j + IA integrado",
+        "✅ Eventos Virtuales Sostenibles con Tokens - Servicio completo",
+        "✅ Neo4j Graph Database 100% operativo - Docker + Scripts + Sincronización",
+        "✅ Documentación consolidada - DOCUMENTACION_CONSOLIDADA_MAESTRA_v3.5.0.md",
+        "✅ Guía de instalación completa - INSTALACION_SETUP_v3.5.0.md",
+        "✅ 107 tablas en base de datos - 122 políticas RLS activas",
+        "✅ Tests: 260 passed | 14 skipped - 100% pasando",
+        "✅ TypeScript: 0 errores - ESLint: 0 errores críticos"
       ],
       color: "from-purple-500 via-pink-500 to-blue-600",
       stats: {
         tablas: 107,
-        archivos: "4 nuevos componentes",
-        performance: "Build: 17.13s optimizado"
+        features: "4 innovadoras",
+        neo4j: "100% operativo"
       }
     },
     {
@@ -196,14 +196,14 @@ const News: React.FC = () => {
   };
 
   const stats = {
-    funcionalidades: 50,
-    versiones: 15,
+    funcionalidades: 54,
+    versiones: 16,
     typescript: 100,
     qa: 96,
     tablas: 107,
-    rls: 65,
-    indices: 80,
-    triggers: 12
+    rls: 122,
+    indices: 209,
+    triggers: 35
   };
 
   return (

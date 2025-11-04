@@ -141,8 +141,8 @@ const Investors: React.FC = () => {
                 </div>
                 <div className="p-4 bg-white/5 rounded-lg border border-white/10">
                   <Brain className="h-8 w-8 text-purple-400 mb-3" />
-                  <h4 className="font-semibold text-white mb-2">IA Nativa Integrada</h4>
-                  <p className="text-white/70 text-sm">Algoritmos ML para matching inteligente y resúmenes automáticos</p>
+                  <h4 className="font-semibold text-white mb-2">IA Nativa + Neo4j</h4>
+                  <p className="text-white/70 text-sm">Algoritmos ML para matching inteligente. Neo4j Graph Database para conexiones sociales. Verificador IA de Consentimiento.</p>
                 </div>
                 <div className="p-4 bg-white/5 rounded-lg border border-white/10">
                   <Shield className="h-8 w-8 text-green-400 mb-3" />
@@ -359,22 +359,26 @@ const Investors: React.FC = () => {
                     Arquitectura Empresarial
                   </h4>
                   <ul className="space-y-2 text-white/80">
-                    <li className="flex items-start gap-2">
-                      <ChevronRight className="h-5 w-5 text-purple-400 flex-shrink-0 mt-0.5" />
-                      <span><strong>107 tablas</strong> optimizadas para escalabilidad masiva</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <ChevronRight className="h-5 w-5 text-purple-400 flex-shrink-0 mt-0.5" />
-                      <span><strong>65+ políticas RLS</strong> de seguridad multicapa</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <ChevronRight className="h-5 w-5 text-purple-400 flex-shrink-0 mt-0.5" />
-                      <span><strong>Google S2 Geosharding</strong> - Consultas 50-300x más rápidas</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <ChevronRight className="h-5 w-5 text-purple-400 flex-shrink-0 mt-0.5" />
-                      <span><strong>Monitoreo en tiempo real</strong> con analytics y alertas</span>
-                    </li>
+                      <li className="flex items-start gap-2">
+                        <ChevronRight className="h-5 w-5 text-purple-400 flex-shrink-0 mt-0.5" />
+                        <span><strong>107 tablas</strong> optimizadas para escalabilidad masiva</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <ChevronRight className="h-5 w-5 text-purple-400 flex-shrink-0 mt-0.5" />
+                        <span><strong>122 políticas RLS</strong> de seguridad multicapa</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <ChevronRight className="h-5 w-5 text-purple-400 flex-shrink-0 mt-0.5" />
+                        <span><strong>Google S2 Geosharding</strong> - Consultas 50-300x más rápidas</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <ChevronRight className="h-5 w-5 text-purple-400 flex-shrink-0 mt-0.5" />
+                        <span><strong>Neo4j Graph Database</strong> - 200x más rápido en queries sociales</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <ChevronRight className="h-5 w-5 text-purple-400 flex-shrink-0 mt-0.5" />
+                        <span><strong>Monitoreo en tiempo real</strong> con Sentry, New Relic, Datadog</span>
+                      </li>
                   </ul>
                 </div>
                 
@@ -396,10 +400,18 @@ const Investors: React.FC = () => {
                       <ChevronRight className="h-5 w-5 text-blue-400 flex-shrink-0 mt-0.5" />
                       <span><strong>Aprendizaje continuo</strong> - Mejora con cada interacción</span>
                     </li>
-                    <li className="flex items-start gap-2">
-                      <ChevronRight className="h-5 w-5 text-blue-400 flex-shrink-0 mt-0.5" />
-                      <span><strong>Hybrid scoring</strong> - AI + legacy fallback</span>
-                    </li>
+                      <li className="flex items-start gap-2">
+                        <ChevronRight className="h-5 w-5 text-blue-400 flex-shrink-0 mt-0.5" />
+                        <span><strong>Hybrid scoring</strong> - AI + legacy fallback</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <ChevronRight className="h-5 w-5 text-blue-400 flex-shrink-0 mt-0.5" />
+                        <span><strong>Verificador IA de Consentimiento</strong> - Detección proactiva en chats (Ley Olimpia)</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <ChevronRight className="h-5 w-5 text-blue-400 flex-shrink-0 mt-0.5" />
+                        <span><strong>Matching Predictivo con Graphs</strong> - Neo4j + IA para conexiones emocionales</span>
+                      </li>
                   </ul>
                 </div>
               </div>
@@ -503,12 +515,14 @@ const Investors: React.FC = () => {
                     {[
                       "Arquitectura base (100%)",
                       "Sistema de autenticación y seguridad (100%)",
-                      "Base de datos y backend (100%)",
-                      "Sistema de matching con IA (100%)",
-                      "Chat en tiempo real con privacidad (100%)",
-                      "Sistema de perfiles (100%)",
+                      "Base de datos y backend (100%) - 107 tablas, 122 RLS",
+                      "Sistema de matching con IA + Neo4j (100%)",
+                      "Chat en tiempo real con verificación IA (100%)",
+                      "Sistema de perfiles + Galerías NFT (100%)",
                       "Panel administrativo (95%)",
-                      "Monitoreo y analytics (95%)"
+                      "Monitoreo y analytics (95%)",
+                      "4 Features Innovadoras (100%)",
+                      "Neo4j Graph Database (100%)"
                     ].map((item, idx) => (
                       <li key={idx} className="flex items-center gap-2">
                         <CheckCircle2 className="h-4 w-4 text-green-400 flex-shrink-0" />
@@ -523,11 +537,11 @@ const Investors: React.FC = () => {
                   <div className="grid grid-cols-2 gap-4">
                     {[
                       { label: "Tablas DB", value: "107" },
-                      { label: "Políticas RLS", value: "65+" },
-                      { label: "Índices", value: "80+" },
-                      { label: "Triggers", value: "12" },
-                      { label: "Tests Passing", value: "98%" },
-                      { label: "QA Score", value: "96/100" }
+                      { label: "Políticas RLS", value: "122" },
+                      { label: "Índices", value: "209" },
+                      { label: "Triggers", value: "35" },
+                      { label: "Tests Passing", value: "100%" },
+                      { label: "QA Score", value: "87/100" }
                     ].map((metric, idx) => (
                       <div key={idx} className="p-3 bg-white/5 rounded-lg border border-white/10 text-center">
                         <div className="text-2xl font-bold text-white">{metric.value}</div>
@@ -559,26 +573,28 @@ const Investors: React.FC = () => {
             <CardContent>
               <div className="grid md:grid-cols-3 gap-6">
                 {[
-                  {
-                    period: "Corto Plazo (3-6 meses)",
-                    items: [
-                      "Video Chat en tiempo real",
-                      "Mapas Interactivos de usuarios cercanos",
-                      "Sistema de Regalos Virtuales ampliado",
-                      "Analytics Personalizados"
-                    ],
-                    color: "from-blue-500/20 to-cyan-500/20"
-                  },
-                  {
-                    period: "Mediano Plazo (6-12 meses)",
-                    items: [
-                      "Asistente Virtual Avanzado con IA",
-                      "App iOS Nativa",
-                      "Expansión Internacional",
-                      "Suscripciones Premium exclusivas"
-                    ],
-                    color: "from-purple-500/20 to-pink-500/20"
-                  },
+                    {
+                      period: "Corto Plazo (3-6 meses)",
+                      items: [
+                        "Video Chat en tiempo real con WebRTC",
+                        "Mapas Interactivos con S2 Geohashing",
+                        "Sistema de Regalos Virtuales ampliado",
+                        "Analytics Personalizados",
+                        "Dashboard de Neo4j Graph Analytics"
+                      ],
+                      color: "from-blue-500/20 to-cyan-500/20"
+                    },
+                    {
+                      period: "Mediano Plazo (6-12 meses)",
+                      items: [
+                        "Asistente Virtual Avanzado con IA",
+                        "App iOS Nativa",
+                        "Expansión Internacional",
+                        "Suscripciones Premium exclusivas",
+                        "Integración completa de blockchain (GTK)"
+                      ],
+                      color: "from-purple-500/20 to-pink-500/20"
+                    },
                   {
                     period: "Largo Plazo (12+ meses)",
                     items: [

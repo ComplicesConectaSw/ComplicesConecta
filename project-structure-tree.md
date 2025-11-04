@@ -227,27 +227,51 @@ process-reports/     -- Procesamiento de reportes v3.1.0
 
 ## 🔄 Flujo de Desarrollo
 
-### 1. **Desarrollo Local**
-```bash
-bun install          # Instalar dependencias
-bun run dev         # Servidor de desarrollo
-bun run test        # Ejecutar tests
-bun run build       # Build de producción
+> **📚 Para una guía completa de instalación y configuración, consulta [INSTALACION_SETUP_v3.5.0.md](./INSTALACION_SETUP_v3.5.0.md)**
+
+### Diagrama de Flujo de Desarrollo
+
+```mermaid
+graph LR
+    A[Iniciar Día] --> B[Iniciar Supabase]
+    B --> C[Iniciar Neo4j]
+    C --> D[npm run dev]
+    D --> E[Desarrollar Features]
+    E --> F[Ejecutar Tests]
+    F --> G{¿Tests OK?}
+    G -->|No| H[Corregir Errores]
+    H --> E
+    G -->|Sí| I[Linting]
+    I --> J{¿Lint OK?}
+    J -->|No| K[Corregir Estilo]
+    K --> E
+    J -->|Sí| L[Commit Cambios]
+    L --> M[Push a Repositorio]
+    M --> N[Fin de Día]
 ```
 
-### 2. **Desarrollo Móvil**
+### Comandos Principales
+
 ```bash
-bun run build       # Build web
-npx cap sync        # Sincronizar con Capacitor
+# Desarrollo Local
+npm run dev         # Servidor de desarrollo
+npm test           # Ejecutar tests
+npm run build      # Build de producción
+
+# Desarrollo Móvil
+npm run build      # Build web
+npx cap sync       # Sincronizar con Capacitor
 npx cap open android # Abrir Android Studio
+
+# Base de Datos
+supabase start     # Iniciar Supabase local
+supabase db reset  # Resetear base de datos
+supabase gen types # Generar tipos TypeScript
 ```
 
-### 3. **Base de Datos**
-```bash
-supabase start      # Iniciar Supabase local
-supabase db reset   # Resetear base de datos
-supabase gen types  # Generar tipos TypeScript
-```
+### Ver Documentación Completa
+
+- **[INSTALACION_SETUP_v3.5.0.md](./INSTALACION_SETUP_v3.5.0.md)** - Guía completa de instalación
 
 ## 🚀 Estado del Proyecto v2.8.6
 

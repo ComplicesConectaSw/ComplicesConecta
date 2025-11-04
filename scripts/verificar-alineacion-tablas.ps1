@@ -42,7 +42,7 @@ if ($backupConsolidado) {
     $backupTables = $backupTables | Sort-Object
     Write-Host "   Tablas definidas en backup: $($backupTables.Count)" -ForegroundColor Green
 } else {
-    Write-Host "   ⚠️ No se encontró backup consolidado" -ForegroundColor Red
+    Write-Host "   [ADVERTENCIA] No se encontro backup consolidado" -ForegroundColor Red
     $backupTables = @()
 }
 Write-Host ""
@@ -75,11 +75,11 @@ Write-Host ""
 # Tablas en código pero no en local
 $missingInLocal = $codeTables | Where-Object { $_ -notin $localTables }
 if ($missingInLocal.Count -gt 0) {
-    Write-Host "⚠️ TABLAS USADAS EN CODIGO PERO NO EN LOCAL:" -ForegroundColor Red
+    Write-Host "[ADVERTENCIA] TABLAS USADAS EN CODIGO PERO NO EN LOCAL:" -ForegroundColor Red
     $missingInLocal | ForEach-Object { Write-Host "   - $_" -ForegroundColor Yellow }
     Write-Host ""
 } else {
-    Write-Host "✅ Todas las tablas usadas en código existen en LOCAL" -ForegroundColor Green
+    Write-Host "[OK] Todas las tablas usadas en codigo existen en LOCAL" -ForegroundColor Green
     Write-Host ""
 }
 
@@ -97,7 +97,7 @@ if ($backupTables.Count -gt 0) {
     $missingFromLocal = $backupTables | Where-Object { $_ -notin $localTables }
     
     if ($missingFromBackup.Count -gt 0) {
-        Write-Host "⚠️ TABLAS EN LOCAL PERO NO EN BACKUP:" -ForegroundColor Yellow
+        Write-Host "[ADVERTENCIA] TABLAS EN LOCAL PERO NO EN BACKUP:" -ForegroundColor Yellow
         $missingFromBackup | ForEach-Object { Write-Host "   - $_" -ForegroundColor Yellow }
         Write-Host ""
     }
@@ -124,6 +124,6 @@ Write-Host ""
 
 # 6. Lista completa de tablas en local
 Write-Host "LISTA COMPLETA DE TABLAS EN LOCAL:" -ForegroundColor Cyan
-$localTables | ForEach-Object { Write-Host "  ✓ $_" -ForegroundColor Gray }
+$localTables | ForEach-Object { Write-Host "  [OK] $_" -ForegroundColor Gray }
 Write-Host ""
 

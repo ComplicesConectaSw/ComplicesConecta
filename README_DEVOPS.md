@@ -29,11 +29,23 @@ Script unificado para manejar:
 - **v3.5.0**: Historial Git limpiado (sin secretos)
 
 ## ▶️ Uso
+
+> **📚 Para una guía completa de instalación y configuración inicial, consulta [INSTALACION_SETUP_v3.5.0.md](./INSTALACION_SETUP_v3.5.0.md)**
+
 ```powershell
 pwsh
 cd C:\Users\conej\Documents\conecta-social-comunidad-main
 .\DevOpsManagerUltra.ps1
 ```
+
+### Primera Instalación
+
+Antes de usar DevOpsManagerUltra, asegúrate de haber completado la instalación inicial:
+
+1. **Instalar dependencias**: Ver [INSTALACION_SETUP_v3.5.0.md](./INSTALACION_SETUP_v3.5.0.md#instalación-de-dependencias)
+2. **Configurar variables de entorno**: Ver [INSTALACION_SETUP_v3.5.0.md](./INSTALACION_SETUP_v3.5.0.md#configuración-de-variables-de-entorno)
+3. **Configurar base de datos**: Ver [INSTALACION_SETUP_v3.5.0.md](./INSTALACION_SETUP_v3.5.0.md#configuración-de-base-de-datos)
+4. **Configurar Docker**: Ver [INSTALACION_SETUP_v3.5.0.md](./INSTALACION_SETUP_v3.5.0.md#configuración-de-docker)
 
 ## 🛡️ Seguridad Avanzada v3.4.1
 - Antes de cada operación destructiva → crea backup automático

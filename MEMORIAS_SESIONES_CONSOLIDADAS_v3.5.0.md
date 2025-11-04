@@ -1,9 +1,11 @@
 # 📝 Memorias de Sesiones y Avances Consolidadas - ComplicesConecta v3.5.0
 
 **Fecha:** 02-03 de Noviembre, 2025  
-**Última Actualización:** 03 de Noviembre, 2025 - 22:37 hrs  
+**Última Actualización:** 05 de Noviembre, 2025  
 **Versión:** 3.5.0  
 **Estado:** ✅ CONSOLIDADAS Y ACTUALIZADAS
+
+> **📚 Para guía de instalación y configuración, consulta [INSTALACION_SETUP_v3.5.0.md](./INSTALACION_SETUP_v3.5.0.md)**
 
 ---
 

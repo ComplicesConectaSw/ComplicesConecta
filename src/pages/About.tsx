@@ -50,8 +50,8 @@ const About = () => {
                 </div>
                 <div className="bg-white/5 rounded-lg p-4">
                   <Award className="h-8 w-8 text-yellow-400 mx-auto mb-2" />
-                  <h3 className="text-white font-semibold text-sm">Desde 2025</h3>
-                  <p className="text-white/70 text-xs">Plataforma confiable y establecida</p>
+                  <h3 className="text-white font-semibold text-sm">v3.5.0 Beta</h3>
+                  <p className="text-white/70 text-xs">AI-Native - Neo4j - Production Ready</p>
                 </div>
               </div>
             </CardContent>
@@ -148,18 +148,23 @@ const About = () => {
                 </div>
                 <div className="bg-white/5 rounded-lg p-4 hover:bg-white/10 transition-colors">
                   <Eye className="h-8 w-8 text-pink-400 mb-3" />
-                  <h4 className="font-semibold text-white mb-2">Fotos Privadas</h4>
-                  <p className="text-white/70 text-sm">Sistema de solicitud de acceso a contenido íntimo con watermarks</p>
+                  <h4 className="font-semibold text-white mb-2">Galerías NFT-Verificadas</h4>
+                  <p className="text-white/70 text-sm">Perfiles y galerías como NFTs mintados con GTK tokens</p>
                 </div>
                 <div className="bg-white/5 rounded-lg p-4 hover:bg-white/10 transition-colors">
                   <Play className="h-8 w-8 text-orange-400 mb-3" />
-                  <h4 className="font-semibold text-white mb-2">Chat Multimedia</h4>
-                  <p className="text-white/70 text-sm">Mensajes, fotos y videos con cifrado end-to-end</p>
+                  <h4 className="font-semibold text-white mb-2">Verificador IA de Consentimiento</h4>
+                  <p className="text-white/70 text-sm">Detección proactiva de consentimiento en chats con IA</p>
                 </div>
                 <div className="bg-white/5 rounded-lg p-4 hover:bg-white/10 transition-colors">
                   <Award className="h-8 w-8 text-yellow-400 mb-3" />
-                  <h4 className="font-semibold text-white mb-2">Eventos Exclusivos</h4>
-                  <p className="text-white/70 text-sm">Acceso a fiestas y encuentros lifestyle verificados</p>
+                  <h4 className="font-semibold text-white mb-2">Matching Predictivo con Graphs</h4>
+                  <p className="text-white/70 text-sm">Neo4j + IA para conexiones "friends-of-friends" emocionales</p>
+                </div>
+                <div className="bg-white/5 rounded-lg p-4 hover:bg-white/10 transition-colors">
+                  <Zap className="h-8 w-8 text-green-400 mb-3" />
+                  <h4 className="font-semibold text-white mb-2">Eventos Virtuales Sostenibles</h4>
+                  <p className="text-white/70 text-sm">Eventos eco-friendly con recompensas CMPX</p>
                 </div>
               </div>
             </CardContent>
@@ -171,20 +176,20 @@ const About = () => {
               <h3 className="text-2xl font-bold text-white mb-6 text-center">Nuestra Comunidad en Números</h3>
               <div className="grid md:grid-cols-4 gap-6 text-center">
                 <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-lg p-6">
-                  <div className="text-3xl font-bold text-white mb-2">5,247</div>
-                  <div className="text-white/70 text-sm">Miembros Verificados</div>
+                  <div className="text-3xl font-bold text-white mb-2">v3.5.0</div>
+                  <div className="text-white/70 text-sm">Versión Actual</div>
                 </div>
                 <div className="bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-lg p-6">
-                  <div className="text-3xl font-bold text-white mb-2">12,891</div>
-                  <div className="text-white/70 text-sm">Matches Exitosos</div>
+                  <div className="text-3xl font-bold text-white mb-2">107</div>
+                  <div className="text-white/70 text-sm">Tablas Base de Datos</div>
                 </div>
                 <div className="bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-lg p-6">
-                  <div className="text-3xl font-bold text-white mb-2">98.7%</div>
-                  <div className="text-white/70 text-sm">Satisfacción Usuario</div>
+                  <div className="text-3xl font-bold text-white mb-2">100%</div>
+                  <div className="text-white/70 text-sm">Tests Pasando</div>
                 </div>
                 <div className="bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-lg p-6">
-                  <div className="text-3xl font-bold text-white mb-2">24/7</div>
-                  <div className="text-white/70 text-sm">Soporte Técnico</div>
+                  <div className="text-3xl font-bold text-white mb-2">AI</div>
+                  <div className="text-white/70 text-sm">Nativo + Neo4j</div>
                 </div>
               </div>
             </CardContent>

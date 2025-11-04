@@ -4,6 +4,8 @@
 **Versión Actual:** v3.5.0  
 **Estado:** ✅ **PRODUCTION READY - ENTERPRISE GRADE - AI-NATIVE - REFACTORIZADO - DOCKER BUILD SUCCESSFUL - NEO4J OPERATIVO**
 
+> **📚 Para guía completa de instalación y configuración, consulta [INSTALACION_SETUP_v3.5.0.md](./INSTALACION_SETUP_v3.5.0.md)**
+
 ---
 
 ## 🚀 Versión 3.5.0 - AI-Native Layer + Chat con Privacidad + Correcciones Críticas (02 Nov 2025)

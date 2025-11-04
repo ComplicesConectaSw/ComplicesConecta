@@ -55,15 +55,15 @@ const Support = () => {
       questions: [
         {
           q: "¿Qué son los tokens CMPX/GTK?",
-          a: "CMPX son tokens internos para funciones premium, mientras que GTK son tokens blockchain para el ecosistema completo. Ambos te dan acceso a funciones exclusivas."
+          a: "CMPX son tokens internos para consumo (suministro ilimitado) que puedes usar para funciones premium, regalos virtuales y eventos VIP. GTK son tokens blockchain (suministro limitado) para staking e inversión, con roadmap hacia blockchain en Q2-Q4 2026."
         },
         {
           q: "¿Cómo puedo ganar tokens?",
-          a: "Puedes ganar tokens completando tu perfil, invitando amigos, participando en eventos y siendo activo en la comunidad."
+          a: "Puedes ganar CMPX invitando amigos (50 CMPX por referido, límite 500/mes), completando tu perfil (25 CMPX), login diario (5 CMPX), verificación World ID (100 CMPX - próximamente), o comprándolos directamente. GTK tokens estarán disponibles para staking en Q2-Q4 2026."
         },
         {
           q: "¿Qué funciones premium están disponibles?",
-          a: "Con tokens premium puedes acceder a chat ilimitado, ver quién visitó tu perfil, acceso a eventos VIP y funciones de matching avanzadas."
+          a: "Con CMPX puedes acceder a Super Like (10 CMPX), Boost de Perfil (50 CMPX), Regalos Virtuales (50-500 CMPX), Video Llamadas (75-200 CMPX), Eventos VIP (200-1000 CMPX), Galerías NFT (100-1000 CMPX), Chat Premium (100 CMPX/mes), y más. Ver guía completa en /tokens-info."
         }
       ]
     }

@@ -36,7 +36,7 @@ const SecurityPage = () => {
             <CardContent className="px-4">
               <p className="text-sm sm:text-base text-white font-medium text-center break-words leading-relaxed">
                 Todos tus datos están protegidos con encriptación de nivel bancario 
-                AES-256 tanto en tránsito como en reposo.
+                AES-GCM tanto en tránsito como en reposo. 122 políticas RLS activas.
               </p>
             </CardContent>
           </Card>
@@ -106,7 +106,19 @@ const SecurityPage = () => {
                 <div className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-400 mr-3 mt-0.5 flex-shrink-0" />
                   <p className="text-white font-medium">
-                    <strong>Cumplimiento GDPR</strong> y normativas internacionales de protección de datos
+                    <strong>Cumplimiento GDPR/LFPDPPP + Ley Olimpia</strong> y normativas internacionales de protección de datos. Verificador IA de Consentimiento implementado.
+                  </p>
+                </div>
+                <div className="flex items-start">
+                  <CheckCircle className="h-5 w-5 text-green-400 mr-3 mt-0.5 flex-shrink-0" />
+                  <p className="text-white font-medium">
+                    <strong>Row Level Security (RLS):</strong> 122 políticas RLS activas protegiendo acceso a datos sensibles
+                  </p>
+                </div>
+                <div className="flex items-start">
+                  <CheckCircle className="h-5 w-5 text-green-400 mr-3 mt-0.5 flex-shrink-0" />
+                  <p className="text-white font-medium">
+                    <strong>Neo4j Graph Database:</strong> Análisis de conexiones sospechosas y detección de fraude avanzada
                   </p>
                 </div>
               </div>

@@ -13,6 +13,7 @@ ALTER TABLE matches ENABLE ROW LEVEL SECURITY;
 -- Eliminar políticas existentes si existen (para evitar conflictos)
 DROP POLICY IF EXISTS "Users can view their own matches" ON matches;
 DROP POLICY IF EXISTS "System can create matches" ON matches;
+DROP POLICY IF EXISTS "Users can create matches" ON matches;
 DROP POLICY IF EXISTS "Users can update their own matches" ON matches;
 DROP POLICY IF EXISTS "Users can delete their own matches" ON matches;
 
