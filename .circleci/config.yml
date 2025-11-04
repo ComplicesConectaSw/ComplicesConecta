@@ -28,7 +28,8 @@ jobs:
       - run:
           name: Instalar openssh-client para checkout SSH
           command: sudo apt-get update && sudo apt-get install -y openssh-client
-      - checkout
+      - checkout:
+          method: full  # Usar full checkout para compatibilidad con herramientas de análisis
       - restore_cache:
           <<: *cache_key
       - run:
@@ -57,7 +58,8 @@ jobs:
       - run:
           name: Instalar openssh-client para checkout SSH
           command: sudo apt-get update && sudo apt-get install -y openssh-client
-      - checkout
+      - checkout:
+          method: full  # Usar full checkout para compatibilidad con herramientas de análisis
       - restore_cache:
           <<: *cache_key
       - run:
@@ -92,7 +94,8 @@ jobs:
       - run:
           name: Instalar openssh-client para checkout SSH
           command: sudo apt-get update && sudo apt-get install -y openssh-client
-      - checkout
+      - checkout:
+          method: full  # Usar full checkout para compatibilidad con herramientas de análisis
       - restore_cache:
           <<: *cache_key
       - run:
@@ -125,7 +128,8 @@ jobs:
       - run:
           name: Instalar openssh-client para checkout SSH
           command: sudo apt-get update && sudo apt-get install -y openssh-client
-      - checkout
+      - checkout:
+          method: full  # Usar full checkout para compatibilidad con herramientas de análisis
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
       - restore_cache:
@@ -156,7 +160,8 @@ jobs:
       - run:
           name: Instalar openssh-client para checkout SSH
           command: sudo apt-get update && sudo apt-get install -y openssh-client
-      - checkout
+      - checkout:
+          method: full  # Usar full checkout para compatibilidad con herramientas de análisis
       - attach_workspace:
           at: .
       - run:
@@ -192,7 +197,8 @@ jobs:
       - run:
           name: Instalar openssh-client para checkout SSH
           command: sudo apt-get update && sudo apt-get install -y openssh-client
-      - checkout
+      - checkout:
+          method: full  # Usar full checkout para compatibilidad con herramientas de análisis
       - attach_workspace:
           at: .
       - run:
@@ -241,7 +247,8 @@ jobs:
       - run:
           name: Instalar openssh-client para checkout SSH
           command: sudo apt-get update && sudo apt-get install -y openssh-client
-      - checkout
+      - checkout:
+          method: full  # Usar full checkout para compatibilidad con herramientas de análisis
       - attach_workspace:
           at: .
       - run:
@@ -263,7 +270,8 @@ jobs:
       - run:
           name: Instalar openssh-client para checkout SSH
           command: sudo apt-get update && sudo apt-get install -y openssh-client
-      - checkout
+      - checkout:
+          method: full  # Usar full checkout para compatibilidad con herramientas de análisis
       - attach_workspace:
           at: .
       - run:
