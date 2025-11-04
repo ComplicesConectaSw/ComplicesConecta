@@ -84,7 +84,7 @@ async function backfillS2Cells() {
   try {
     // 1. Verificar conexión básica primero
     console.log('🔍 Verificando conexión con BD...');
-    const { data: testData, error: testError } = await supabase
+    const { error: testError } = await supabase
       .from('profiles')
       .select('id')
       .limit(1);

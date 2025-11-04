@@ -134,7 +134,7 @@ function checkNoExposedTokens() {
       console.log('  ✅ No se encontraron tokens expuestos en archivos trackeados');
       return true;
     }
-  } catch (error) {
+  } catch {
     console.log('  ✅ No se encontraron tokens expuestos (grep sin resultados)');
     return true;
   }

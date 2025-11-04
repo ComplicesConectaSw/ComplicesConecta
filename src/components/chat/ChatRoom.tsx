@@ -22,6 +22,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useGeolocation } from '@/hooks/useGeolocation';
 import { useToast } from '@/hooks/use-toast';
 import { chatPrivacyService, ChatRequest } from '@/services/ChatPrivacyService';
+import { consentVerificationService } from '@/services/ConsentVerificationService';
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
 import { MessageList } from './MessageList';
@@ -240,7 +241,7 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
   };
 
   /**
-   * Enviar mensaje
+   * Enviar mensaje con verificación de consentimiento
    */
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -248,6 +249,41 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
     if (!newMessage.trim() || !user?.id || !hasPermission) return;
 
     try {
+      // Verificar consentimiento antes de enviar (Feature: Verificador IA de Consentimiento)
+      const verification = await consentVerificationService.verifyConsentBeforeSend(
+        user.id,
+        recipientId,
+        newMessage.trim(),
+        'text'
+      );
+
+      // Si requiere confirmación y no tiene consentimiento explícito, mostrar advertencia
+      if (verification.analysis.requiresConfirmation && 
+          verification.analysis.consentLevel !== 'explicit' &&
+          verification.analysis.suggestedAction === 'review') {
+        toast({
+          variant: 'default',
+          title: 'Confirmación requerida',
+          description: verification.analysis.explanation || 'El mensaje requiere confirmación explícita'
+        });
+        // Continuar con el envío pero loguear para revisión
+        logger.info('Mensaje enviado con consentimiento ambiguo', {
+          userId: user.id.substring(0, 8) + '***',
+          recipientId: recipientId.substring(0, 8) + '***',
+          consentLevel: verification.analysis.consentLevel
+        });
+      }
+
+      // Si está bloqueado, no enviar
+      if (verification.analysis.suggestedAction === 'block') {
+        toast({
+          variant: 'destructive',
+          title: 'Mensaje bloqueado',
+          description: 'El mensaje no puede ser enviado por falta de consentimiento'
+        });
+        return;
+      }
+
       const messageData: any = {
         sender_id: user.id,
         content: newMessage.trim(),
@@ -260,11 +296,21 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
         messageData.location_longitude = location.longitude;
       }
 
-      const { error } = await supabase
+      const { data: insertedMessage, error } = await supabase
         .from('chat_messages')
-        .insert(messageData);
+        .insert(messageData)
+        .select()
+        .single();
 
       if (error) throw error;
+
+      // Actualizar verificación con messageId
+      if (insertedMessage?.id && !verification.verified) {
+        await consentVerificationService.saveVerification({
+          ...verification,
+          messageId: insertedMessage.id
+        });
+      }
 
       setNewMessage('');
       inputRef.current?.focus();

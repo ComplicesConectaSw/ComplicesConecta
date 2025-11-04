@@ -3,7 +3,6 @@ dist/
 build/
 node_modules/
 android/
-android/app/build/
 .vscode/
 supabase/functions/
 scripts/
@@ -17,6 +16,12 @@ test-results/
 respaldo_auditoria/
 backups/
 reports/
+dev-scripts/
+audit-files/
+docs-unified/
+docs/
+docs-public/
+workflows-desactivados/
 
 # Archivos específicos generados
 *.config.js
@@ -29,12 +34,110 @@ capacitor.config.ts
 **/*.bundle.js
 **/vendor*.js
 **/vendor*.mjs
+*.log
+*.patch
+*.diff
+*_backup.*
+*_old.*
+*_temp.*
+*.apk
+*.aab
+*.map
+*.tsbuildinfo
+*.html.js
+*.js.html
+*.generated.html
 
 # Archivos generados en public (excepto sw.js y sw-notifications.js que son código fuente)
 public/assets/
 public/models/
 public/app-release.apk
 
+# Archivos temporales de testing
+test_*.md
+
+# Archivos de configuración con credenciales reales
+.env
+.env.local
+.env.production
+.env.demo
+**/supabase/config.toml
+**/supabase/.env
+
+# Logs y archivos temporales con información sensible
+logs/
+.cache/
+.temp/
+.tmp/
+tmp/
+
+# Coverage reports (archivos generados automáticamente)
+*.lcov
+.nyc_output/
+
+# Chunk analysis and bundle reports
+stats.html
+bundle-analyzer-report.html
+webpack-bundle-analyzer-report.html
+
+# Duplicate files cleanup
+**/duplicate_*
+**/*_duplicate.*
+**/*_copy.*
+**/* copy*
+**/* copy.*
+*.env copy*
+*.env copy.*
+
+# Scripts SQL temporales
+scripts/temp/
+scripts/*_temp.sql
+scripts/*_fix.sql
+scripts/*_create_*.sql
+scripts/*_admin*.sql
+scripts/step_by_step.sql
+scripts/simple_fix.sql
+scripts/create_admin_profile.sql
+scripts/fix_rls_profiles.sql
+scripts/create_missing_tables.sql
+
+# Archivos temporales
+diff.patch
+project-structure.md
+
+# Archivos con información sensible detectados
+docs-unified/deployment/DEPLOY.md
+docs-unified/deployment/VERCEL_SETUP.md
+docs-unified/deployment/DEPLOYMENT_INSTRUCTIONS.md
+docs-unified/tests/worldid/WORLDID_FUNCTION_TEST.md
+
+# Archivos de build con tokens embebidos
+android/app/build/intermediates/assets/release/mergeReleaseAssets/public/js/*.js
+android/app/src/main/assets/public/js/*.js
+dist/js/*.js
+
+# Directorios adicionales de auditoría y respaldos
+2025-01-22/
+token-system-spec-updated/
+worldid-integration/
+**/token-system-spec/
+**/DEV_README.md
+**/INTEGRATION_PROMPT.md
+**/referrals.sql
+**/GTKToken.sol
+**/StakingGTK.sol
+GITIGNORE_SNIPPET.txt
+
+# Docker (ignorar archivos temporales y builds)
+.docker/
+docker-compose.override.yml
+*.dockerfile.backup
+.dockerignore.backup
+docker-data/
+docker-volumes/
+
+# Sentry Config File
+sentry.properties
+
 # Service workers son código fuente, deben ser lintados
 # NO ignorar: public/sw.js, public/sw-notifications.js
-

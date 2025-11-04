@@ -15,7 +15,6 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import crypto from 'crypto';
-import { fileURLToPath } from 'url';
 
 // Configuration
 const EXCLUDE_DIRS = [

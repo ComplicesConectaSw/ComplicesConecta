@@ -163,7 +163,7 @@ self.addEventListener('notificationclick', (event) => {
   }
 
   // Open or focus app window
-  const promiseChain = clients.matchAll({
+  const promiseChain = self.clients.matchAll({
     type: 'window',
     includeUncontrolled: true
   }).then((windowClients) => {
@@ -182,7 +182,7 @@ self.addEventListener('notificationclick', (event) => {
     if (matchingClient) {
       return matchingClient.focus();
     } else {
-      return clients.openWindow(urlToOpen);
+      return self.clients.openWindow(urlToOpen);
     }
   });
 

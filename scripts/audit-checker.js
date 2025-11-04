@@ -88,7 +88,7 @@ function checkChecklist(report) {
   const checklist = report.checklist_dashboard;
   let totalItems = 0;
   let passedItems = 0;
-  let failedItems = [];
+  const failedItems = [];
   
   Object.keys(checklist).forEach(category => {
     const items = checklist[category];
