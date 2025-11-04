@@ -29,6 +29,9 @@ android {
     //   keyAlias=tu_alias
     //   keyPassword=tu_password
     signingConfigs {
+        debug {
+            // Debug signing config uses debug keystore automatically
+        }
         release {
             def keystorePropertiesFile = rootProject.file("keystore.properties")
             if (keystorePropertiesFile.exists()) {
@@ -39,6 +42,8 @@ android {
                 keyAlias keystoreProperties['keyAlias']
                 keyPassword keystoreProperties['keyPassword']
             }
+            // Si no existe keystore.properties, signingConfig.release quedará vacío
+            // Android Studio mostrará el asistente de firma al generar APK/Bundle firmado
         }
     }
     buildTypes {
@@ -52,9 +57,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             // Asignar signingConfig solo si keystore.properties existe y está configurado
             // Si no existe, Android Studio mostrará el asistente de firma al usar "Sign and Build"
-            if (file(rootProject.file("keystore.properties")).exists()) {
+            def keystoreProps = rootProject.file("keystore.properties")
+            if (keystoreProps.exists()) {
                 signingConfig signingConfigs.release
             }
+            // Si no existe keystore.properties, release usará el keystore por defecto de Android Studio
         }
     }
 }
