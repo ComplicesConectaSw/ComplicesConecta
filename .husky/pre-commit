@@ -1,3 +1,28 @@
+#!/bin/sh
+
+# Solo ejecutar en desarrollo local, no en CI/CD
+if [ -n "$CI" ] || [ -n "$CIRCLECI" ] || [ -n "$GITHUB_ACTIONS" ]; then
+  echo "⚠️ CI/CD detectado, saltando pre-commit hooks"
+  exit 0
+fi
+
+# Verificar que estamos en un repo git
+if [ ! -d ".git" ]; then
+  echo "⚠️ No se detectó directorio .git, saltando pre-commit hooks"
+  exit 0
+fi
+
+# Verificar que npm está disponible
+if ! command -v npm &> /dev/null; then
+  echo "⚠️ npm no está disponible, saltando pre-commit hooks"
+  exit 0
+fi
+
 # Ejecutar lint y type-check antes de commit
-npm run lint
-npm run type-check
+echo "🔍 Ejecutando lint..."
+npm run lint || exit 1
+
+echo "🔍 Ejecutando type-check..."
+npm run type-check || exit 1
+
+echo "✅ Pre-commit checks pasados exitosamente"
