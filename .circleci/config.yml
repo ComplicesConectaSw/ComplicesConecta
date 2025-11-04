@@ -25,6 +25,9 @@ jobs:
     environment:
       <<: *environment
     steps:
+      - run:
+          name: Instalar openssh-client para checkout SSH
+          command: sudo apt-get update && sudo apt-get install -y openssh-client
       - checkout
       - restore_cache:
           <<: *cache_key
@@ -51,6 +54,9 @@ jobs:
       <<: *environment
       PATH: "${PATH}:${HOME}/.local/bin:${CIRCLE_WORKING_DIRECTORY}/node_modules/.bin"
     steps:
+      - run:
+          name: Instalar openssh-client para checkout SSH
+          command: sudo apt-get update && sudo apt-get install -y openssh-client
       - checkout
       - restore_cache:
           <<: *cache_key
@@ -83,6 +89,9 @@ jobs:
       <<: *environment
       PATH: "${PATH}:${HOME}/.local/bin:${CIRCLE_WORKING_DIRECTORY}/node_modules/.bin"
     steps:
+      - run:
+          name: Instalar openssh-client para checkout SSH
+          command: sudo apt-get update && sudo apt-get install -y openssh-client
       - checkout
       - restore_cache:
           <<: *cache_key
@@ -113,6 +122,9 @@ jobs:
       <<: *environment
       PATH: "${PATH}:${HOME}/.local/bin:${CIRCLE_WORKING_DIRECTORY}/node_modules/.bin"
     steps:
+      - run:
+          name: Instalar openssh-client para checkout SSH
+          command: sudo apt-get update && sudo apt-get install -y openssh-client
       - checkout
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
@@ -141,6 +153,9 @@ jobs:
       <<: *environment
       PATH: "${PATH}:${HOME}/.local/bin:${CIRCLE_WORKING_DIRECTORY}/node_modules/.bin"
     steps:
+      - run:
+          name: Instalar openssh-client para checkout SSH
+          command: sudo apt-get update && sudo apt-get install -y openssh-client
       - checkout
       - attach_workspace:
           at: .
@@ -220,6 +235,9 @@ jobs:
       <<: *environment
       PATH: "${PATH}:${HOME}/.local/bin:${CIRCLE_WORKING_DIRECTORY}/node_modules/.bin"
     steps:
+      - run:
+          name: Instalar openssh-client para checkout SSH
+          command: sudo apt-get update && sudo apt-get install -y openssh-client
       - checkout
       - attach_workspace:
           at: .
@@ -239,6 +257,9 @@ jobs:
     environment:
       <<: *environment
     steps:
+      - run:
+          name: Instalar openssh-client para checkout SSH
+          command: sudo apt-get update && sudo apt-get install -y openssh-client
       - checkout
       - attach_workspace:
           at: .
