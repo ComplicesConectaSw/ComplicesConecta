@@ -25,6 +25,9 @@ jobs:
     environment:
       <<: *environment
     steps:
+      - run:
+          name: Configurar git para usar HTTPS
+          command: git config --global url."https://github.com/".insteadOf git@github.com:
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
           # Usar HTTPS en lugar de SSH para evitar necesidad de openssh-client
@@ -53,6 +56,9 @@ jobs:
       <<: *environment
       PATH: "${PATH}:${HOME}/.local/bin:${CIRCLE_WORKING_DIRECTORY}/node_modules/.bin"
     steps:
+      - run:
+          name: Configurar git para usar HTTPS
+          command: git config --global url."https://github.com/".insteadOf git@github.com:
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
           # Usar HTTPS en lugar de SSH para evitar necesidad de openssh-client
@@ -87,6 +93,9 @@ jobs:
       <<: *environment
       PATH: "${PATH}:${HOME}/.local/bin:${CIRCLE_WORKING_DIRECTORY}/node_modules/.bin"
     steps:
+      - run:
+          name: Configurar git para usar HTTPS
+          command: git config --global url."https://github.com/".insteadOf git@github.com:
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
           # Usar HTTPS en lugar de SSH para evitar necesidad de openssh-client
@@ -119,6 +128,9 @@ jobs:
       <<: *environment
       PATH: "${PATH}:${HOME}/.local/bin:${CIRCLE_WORKING_DIRECTORY}/node_modules/.bin"
     steps:
+      - run:
+          name: Configurar git para usar HTTPS
+          command: git config --global url."https://github.com/".insteadOf git@github.com:
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
           # Usar HTTPS en lugar de SSH para evitar necesidad de openssh-client
@@ -149,6 +161,9 @@ jobs:
       <<: *environment
       PATH: "${PATH}:${HOME}/.local/bin:${CIRCLE_WORKING_DIRECTORY}/node_modules/.bin"
     steps:
+      - run:
+          name: Configurar git para usar HTTPS
+          command: git config --global url."https://github.com/".insteadOf git@github.com:
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
           # Usar HTTPS en lugar de SSH para evitar necesidad de openssh-client
@@ -184,6 +199,9 @@ jobs:
       <<: *environment
       JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
     steps:
+      - run:
+          name: Configurar git para usar HTTPS
+          command: git config --global url."https://github.com/".insteadOf git@github.com:
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
           # Usar HTTPS en lugar de SSH para evitar necesidad de openssh-client
@@ -232,6 +250,9 @@ jobs:
       <<: *environment
       PATH: "${PATH}:${HOME}/.local/bin:${CIRCLE_WORKING_DIRECTORY}/node_modules/.bin"
     steps:
+      - run:
+          name: Configurar git para usar HTTPS
+          command: git config --global url."https://github.com/".insteadOf git@github.com:
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
           # Usar HTTPS en lugar de SSH para evitar necesidad de openssh-client
@@ -253,6 +274,9 @@ jobs:
     environment:
       <<: *environment
     steps:
+      - run:
+          name: Configurar git para usar HTTPS
+          command: git config --global url."https://github.com/".insteadOf git@github.com:
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
           # Usar HTTPS en lugar de SSH para evitar necesidad de openssh-client
