@@ -40,11 +40,9 @@ interface ChatMessage {
   sender_id: string;
   receiver_id: string;
   created_at: string;
-  location?: {
-    latitude: number;
-    longitude: number;
-    address?: string;
-  };
+  location_latitude?: number;
+  location_longitude?: number;
+  location_address?: string;
   is_own: boolean;
 }
 
@@ -63,7 +61,6 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState('');
-  const [_isLoading, setIsLoading] = useState(false);
   const [chatPermission, setChatPermission] = useState<ChatRequest | null>(null);
   const [hasPermission, setHasPermission] = useState(false);
   const [isRequestingPermission, setIsRequestingPermission] = useState(false);
@@ -154,7 +151,7 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
           description: 'Esperando respuesta del usuario...'
         });
       }
-    } catch (_error) {
+    } catch {
       toast({
         variant: 'destructive',
         title: 'Error',
@@ -171,7 +168,6 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
   const loadMessages = async () => {
     if (!user?.id) return;
 
-    setIsLoading(true);
     try {
       // Buscar mensajes usando room_id si existe, o filtrar por sender_id
       let query = supabase
@@ -205,8 +201,6 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
       logger.error('Error cargando mensajes:', {
         error: error instanceof Error ? error.message : String(error)
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -262,10 +256,8 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
 
       // Agregar geolocalización si está disponible
       if (location?.latitude && location?.longitude) {
-        messageData.location = {
-          latitude: location.latitude,
-          longitude: location.longitude
-        };
+        messageData.location_latitude = location.latitude;
+        messageData.location_longitude = location.longitude;
       }
 
       const { error } = await supabase
@@ -309,7 +301,7 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
         });
         setShowGalleryRequest(false);
       }
-    } catch (_error) {
+    } catch {
       toast({
         variant: 'destructive',
         title: 'Error',
@@ -330,7 +322,7 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
         title: 'Ubicación actualizada',
         description: 'Tu ubicación se compartirá en el próximo mensaje'
       });
-    } catch (_error) {
+    } catch {
       toast({
         variant: 'destructive',
         title: 'Error',

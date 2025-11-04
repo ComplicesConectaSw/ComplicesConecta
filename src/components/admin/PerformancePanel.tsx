@@ -80,6 +80,7 @@ export default function PerformancePanel() {
       // Consultar métricas reales de la base de datos
       const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
       
+      // Usar performance_metrics (la tabla que existe)
       const { data, error } = await supabase
         .from('performance_metrics')
         .select('*')
@@ -100,7 +101,7 @@ export default function PerformancePanel() {
         return;
       }
 
-      // Procesar métricas reales
+      // Procesar métricas reales de performance_metrics
       const cpuMetrics = data.filter(m => 
         m.metric_name?.toLowerCase().includes('cpu') || 
         m.metric_name?.toLowerCase().includes('cpuusage')
@@ -119,7 +120,7 @@ export default function PerformancePanel() {
         m.metric_name?.toLowerCase().includes('resourceloadtime')
       );
 
-      // Calcular promedios
+      // Calcular promedios usando 'value' de performance_metrics
       const avgCpu = cpuMetrics.length > 0
         ? cpuMetrics.reduce((sum, m) => sum + Number(m.value || 0), 0) / cpuMetrics.length
         : 0;
@@ -166,6 +167,7 @@ export default function PerformancePanel() {
       });
 
       // Convertir a formato SystemMetric para uso en tabs
+      // Usando performance_metrics (timestamp, value, unit)
       const formattedMetrics: SystemMetric[] = data.slice(0, 100).map((m: any) => ({
         id: m.id,
         metric_name: m.metric_name || 'Unknown',
@@ -191,6 +193,7 @@ export default function PerformancePanel() {
       // Cargar métricas más recientes (últimos 10 minutos)
       const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000).toISOString();
       
+      // Usar performance_metrics (la tabla que existe)
       const { data, error } = await supabase
         .from('performance_metrics')
         .select('*')
@@ -209,6 +212,7 @@ export default function PerformancePanel() {
         return;
       }
 
+      // Usando performance_metrics (timestamp, value, unit)
       const formattedMetrics: SystemMetric[] = data.map((m: any) => ({
         id: m.id,
         metric_name: m.metric_name || 'Unknown',

@@ -7,7 +7,6 @@ import { Switch } from "@/components/ui/switch";
 import { MapPin, Navigation, AlertCircle } from "lucide-react";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { logger } from '@/lib/logger';
-import { s2Service } from '@/services/geo/S2Service';
 
 export const LocationSettings = () => {
   const [searchRadius, setSearchRadius] = useState([25]);

@@ -338,6 +338,26 @@ if ('serviceWorker' in navigator && import.meta.env.MODE === 'production') {
 
 // Initialize application with enhanced error handling
 async function initializeApp() {
+  // Timeout de seguridad: si no se monta en 5 segundos, forzar montaje
+  const mountTimeout = setTimeout(() => {
+    const rootElement = document.getElementById("root");
+    if (rootElement && !rootElement.hasChildNodes()) {
+      console.error('⚠️ Forzando montaje de React después de timeout de seguridad');
+      try {
+        rootElement.innerHTML = '';
+        createRoot(rootElement).render(
+          <StrictMode>
+            <ErrorBoundary>
+              <App />
+            </ErrorBoundary>
+          </StrictMode>
+        );
+      } catch (error) {
+        console.error('❌ Error crítico montando React:', error);
+      }
+    }
+  }, 5000);
+
   try {
     // React ya está disponible globalmente (establecido al inicio del archivo)
     // Solo re-asegurar que no se haya perdido durante el proceso
@@ -430,7 +450,12 @@ async function initializeApp() {
         </ErrorBoundary>
       </StrictMode>
     );
+    
+    // Limpiar timeout de seguridad ya que el montaje fue exitoso
+    clearTimeout(mountTimeout);
   } catch (error: any) {
+    // Limpiar timeout de seguridad en caso de error
+    clearTimeout(mountTimeout);
     // Manejar errores críticos sin mostrar errores de wallet
     const errorMessage = error?.message?.toLowerCase() || '';
     const isWalletError = [

@@ -18,7 +18,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
-import type { Database } from '@/types/supabase-generated';
+import type { Database } from '@/types/supabase';
 import { pytorchModel } from './models/PyTorchScoringModel';
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
@@ -203,11 +203,11 @@ export class AILayerService {
       .eq('liker_id', userId2)
       .eq('liked_id', userId1);
 
-    // Feature 2: Comments count (engagement)
-    const { count: commentsCount } = await (supabase as any)
-      .from('comments')
+    // Feature 2: Comments count (engagement) - usando story_comments
+    const { count: commentsCount } = await supabase
+      .from('story_comments')
       .select('*', { count: 'exact', head: true })
-      .or(`author_id.eq.${userId1},author_id.eq.${userId2}`);
+      .or(`user_id.eq.${userId1},user_id.eq.${userId2}`);
 
     // Feature 3: Proximidad (Haversine)
     const proximityKm = this.calculateDistance(

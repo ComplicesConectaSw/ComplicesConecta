@@ -81,14 +81,6 @@ export const NavigationLegacy = ({ className }: NavigationProps) => {
     });
   }, [_isDemoAuthenticated, demoUser, _currentUserType, isAuthenticated]);
 
-  const _baseNavItems = [
-    { id: 'feed', icon: Home, label: 'Inicio', path: '/feed' },
-    { id: 'discover', icon: Search, label: 'Descubrir', path: '/discover' },
-    { id: 'chat', icon: MessageCircle, label: 'Chat', path: '/chat' },
-    { id: 'matches', icon: Heart, label: 'Matches', path: '/matches' },
-    { id: 'tokens', icon: Coins, label: 'Tokens', path: '/tokens' },
-  ];
-
   // Navegación completamente estática - sin efectos de scroll
 
   // SIEMPRE mostrar navegación para usuarios demo - FIX CRÍTICO

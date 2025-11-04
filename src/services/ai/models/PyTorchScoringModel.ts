@@ -101,7 +101,7 @@ export class PyTorchScoringModel {
     if (!this.model) {
       try {
         await this.load();
-      } catch (_error) {
+      } catch {
         console.error('[PyTorch] Model load failed, using fallback');
         return this.fallbackPrediction(features);
       }

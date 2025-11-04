@@ -17,12 +17,12 @@ DROP POLICY IF EXISTS "Users can update their own matches" ON matches;
 DROP POLICY IF EXISTS "Users can delete their own matches" ON matches;
 
 -- Política para SELECT: Usuarios pueden ver sus propios matches
--- Nota: user1_id y user2_id son TEXT, no UUID, por lo que comparamos como texto
+-- Nota: user1_id y user2_id son UUID, no TEXT
 CREATE POLICY "Users can view their own matches" ON matches
     FOR SELECT 
     USING (
-        auth.uid()::text = user1_id OR 
-        auth.uid()::text = user2_id
+        auth.uid() = user1_id::uuid OR 
+        auth.uid() = user2_id::uuid
     );
 
 -- Política para INSERT: Sistema puede crear matches automáticamente
@@ -30,7 +30,7 @@ CREATE POLICY "Users can view their own matches" ON matches
 CREATE POLICY "Users can create matches" ON matches
     FOR INSERT 
     WITH CHECK (
-        auth.uid()::text = user1_id OR
+        auth.uid() = user1_id::uuid OR
         -- Permitir que el sistema cree matches automáticamente
         -- (por ejemplo, desde triggers o funciones)
         EXISTS (
@@ -44,20 +44,20 @@ CREATE POLICY "Users can create matches" ON matches
 CREATE POLICY "Users can update their own matches" ON matches
     FOR UPDATE 
     USING (
-        auth.uid()::text = user1_id OR 
-        auth.uid()::text = user2_id
+        auth.uid() = user1_id::uuid OR 
+        auth.uid() = user2_id::uuid
     )
     WITH CHECK (
-        auth.uid()::text = user1_id OR 
-        auth.uid()::text = user2_id
+        auth.uid() = user1_id::uuid OR 
+        auth.uid() = user2_id::uuid
     );
 
 -- Política para DELETE: Usuarios pueden eliminar sus propios matches
 CREATE POLICY "Users can delete their own matches" ON matches
     FOR DELETE 
     USING (
-        auth.uid()::text = user1_id OR 
-        auth.uid()::text = user2_id
+        auth.uid() = user1_id::uuid OR 
+        auth.uid() = user2_id::uuid
     );
 
 -- Verificar que RLS está habilitado

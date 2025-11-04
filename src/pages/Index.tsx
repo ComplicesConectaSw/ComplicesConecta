@@ -12,7 +12,6 @@ import { InstallAppModal } from "@/components/modals/InstallAppModal";
 import { ActionButtonsModal } from "@/components/modals/ActionButtonsModal";
 import { DecorativeHearts } from "@/components/DecorativeHearts";
 // StoriesContainer removido - ya está en HeaderNav
-import { useScrollHide } from "@/hooks/useScrollHide";
 import { Heart, Users, Shield, Zap, Smartphone as Android, Info, Briefcase, DollarSign, UserCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import "@/styles/animations.css";
@@ -34,7 +33,6 @@ const Index = () => {
   const [showInstallModal, setShowInstallModal] = useState(false);
   const [showActionButtonsModal, setShowActionButtonsModal] = useState(false);
   const [showModeratorForm, setShowModeratorForm] = useState(false);
-  const _isWelcomeVisible = useScrollHide(50);
 
   // Estado persistente
   const [demoAuthenticated] = usePersistedState<boolean>('demo_authenticated', false);
@@ -58,11 +56,20 @@ const Index = () => {
     setIsRunningInApp(isInWebView());
     
     // Mostrar loading screen al cargar la página
+    // Timeout garantizado para evitar que se quede en loading indefinidamente
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1500); // Reducir tiempo de loading
+    }, 2000); // 2 segundos máximo - siempre mostrar contenido
 
-    return () => clearTimeout(timer);
+    // Fallback adicional: si después de 3 segundos sigue cargando, forzar
+    const fallbackTimer = setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(fallbackTimer);
+    };
   }, []); // Remover dependencias para evitar re-renders
 
   // Separar la lógica de redirección para evitar loops

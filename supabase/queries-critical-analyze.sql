@@ -23,6 +23,7 @@
 
 -- Query 1.1: Feed público ordenado por fecha
 -- Prioridad: ALTA (query más frecuente)
+-- Usa media_url (compatible con ambos entornos: local y remoto)
 EXPLAIN ANALYZE
 SELECT 
   id,
@@ -83,6 +84,7 @@ LIMIT 20;
 
 -- Query 2.1: Perfiles con filtros básicos (edad, género)
 -- Prioridad: ALTA (query de búsqueda principal)
+-- NOTA: Si is_online no existe, aplicar migración 20251103000001_fix_profiles_online_column.sql
 EXPLAIN ANALYZE
 SELECT *
 FROM profiles
@@ -90,7 +92,6 @@ WHERE age >= 18
   AND age <= 35
   AND gender = 'male'
   AND is_verified = true
-  AND is_active = true
 ORDER BY updated_at DESC
 LIMIT 20;
 
@@ -102,7 +103,6 @@ WHERE age >= 25
   AND age <= 40
   AND gender = 'female'
   AND is_verified = true
-  AND is_active = true
   AND interests && ARRAY['Intercambio de Parejas', 'Fiestas Privadas']
 ORDER BY updated_at DESC
 LIMIT 20;
@@ -126,8 +126,7 @@ WHERE age >= 18
   AND age <= 50
   AND gender = 'male'
   AND is_verified = true
-  AND is_active = true
-  AND account_type = 'single'
+  AND (account_type = 'single' OR account_type IS NULL)
   AND interests && ARRAY['Intercambio de Parejas']
 ORDER BY updated_at DESC, created_at DESC
 LIMIT 20;
@@ -267,9 +266,9 @@ ORDER BY created_at DESC;
 EXPLAIN ANALYZE
 SELECT 
   id,
-  total_transactions,
-  total_staked,
-  active_users,
+  transaction_count,
+  total_staked_cmpx,
+  active_stakers,
   created_at
 FROM token_analytics
 WHERE created_at >= NOW() - INTERVAL '7 days'
@@ -286,7 +285,8 @@ SELECT
   id,
   reported_user_id,
   reporter_user_id,
-  report_type,
+  content_type,
+  reason,
   status,
   created_at
 FROM reports
@@ -299,11 +299,12 @@ EXPLAIN ANALYZE
 SELECT 
   id,
   reported_user_id,
-  report_type,
+  content_type,
+  reason,
   status,
   created_at
 FROM reports
-WHERE report_type = 'inappropriate_content'
+WHERE reason = 'inappropriate_content'
   AND status = 'pending'
 ORDER BY created_at ASC
 LIMIT 50;

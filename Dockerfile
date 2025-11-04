@@ -15,7 +15,8 @@ WORKDIR /app
 COPY package*.json ./
 
 # Instalar dependencias (con legacy-peer-deps para resolver conflictos)
-RUN npm ci --legacy-peer-deps --omit=dev
+# --ignore-scripts evita ejecutar scripts como "prepare" que requiere husky (dev dependency)
+RUN npm ci --legacy-peer-deps --omit=dev --ignore-scripts
 
 # Copiar código fuente
 COPY . .

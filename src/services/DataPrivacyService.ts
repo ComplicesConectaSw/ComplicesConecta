@@ -105,9 +105,9 @@ class DataPrivacyService {
           .order('created_at', { ascending: false })
           .limit(1000),
 
-        // Posts (tabla puede no existir en tipos generados)
-        (supabase as any)
-          .from('posts')
+        // Stories (tabla correcta, posts era obsoleta)
+        supabase
+          .from('stories')
           .select('*')
           .eq('user_id', userId),
 
@@ -131,12 +131,9 @@ class DataPrivacyService {
           .select('*')
           .eq('user_id', userId),
 
-        // Preferencias (tabla puede no existir en tipos generados)
-        (supabase as any)
-          .from('user_preferences')
-          .select('*')
-          .eq('user_id', userId)
-          .single()
+        // Preferencias (almacenadas en profiles JSONB o couple_profiles.preferences)
+        // Nota: user_preferences no existe como tabla, se usa profiles.privacy_settings o couple_profiles.preferences
+        Promise.resolve({ data: null, error: null })
       ]);
 
       const exportData: UserDataExport = {
@@ -287,13 +284,13 @@ class DataPrivacyService {
       // 4. Eliminar posts
       try {
         const { data: posts, error: _postsError } = await (supabase as any)
-          .from('posts')
+          .from('stories')
           .select('id')
           .eq('user_id', userId);
 
         if (posts && posts.length > 0) {
           const { error: deletePostsError } = await (supabase as any)
-            .from('posts')
+            .from('stories')
             .delete()
             .eq('user_id', userId);
 

@@ -93,13 +93,9 @@ const ModeratorDashboard = () => {
   };
 
   const fetchReports = async () => {
-    const { data, error } = await (supabase as any)
-      .from('user_reports')
-      .select(`
-        *,
-        reporter:profiles!user_reports_reporter_id_fkey(email),
-        reported_user:profiles!user_reports_reported_user_id_fkey(email)
-      `)
+    const { data, error } = await supabase
+      .from('reports')
+      .select('*')
       .order('created_at', { ascending: false });
 
     if (error) {
@@ -107,11 +103,37 @@ const ModeratorDashboard = () => {
       return;
     }
 
-    const reportsWithEmails = data?.map((report: any) => ({
-      ...report,
-      reporter_email: report.reporter?.email,
-      reported_user_email: report.reported_user?.email
-    })) || [];
+    // Obtener emails de reporter y reported_user desde profiles
+    const reportsWithEmails = await Promise.all(
+      (data || []).map(async (report: any) => {
+        let reporterEmail = null;
+        let reportedUserEmail = null;
+        
+        if (report.reporter_user_id) {
+          const { data: reporterProfile } = await supabase
+            .from('profiles')
+            .select('email')
+            .eq('user_id', report.reporter_user_id)
+            .single();
+          reporterEmail = reporterProfile?.email || null;
+        }
+        
+        if (report.reported_user_id) {
+          const { data: reportedProfile } = await supabase
+            .from('profiles')
+            .select('email')
+            .eq('user_id', report.reported_user_id)
+            .single();
+          reportedUserEmail = reportedProfile?.email || null;
+        }
+        
+        return {
+          ...report,
+          reporter_email: reporterEmail,
+          reported_user_email: reportedUserEmail
+        };
+      })
+    );
 
     setReports(reportsWithEmails);
   };
@@ -186,7 +208,7 @@ const ModeratorDashboard = () => {
       // Actualizar el estado del reporte
       const newStatus = action === 'approve' ? 'resolved' : 'dismissed';
       const { error: updateError } = await (supabase as any)
-        .from('user_reports')
+        .from('reports')
         .update({ 
           status: newStatus,
           updated_at: new Date().toISOString()

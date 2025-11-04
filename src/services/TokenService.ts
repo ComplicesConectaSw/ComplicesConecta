@@ -44,13 +44,13 @@ export interface StakingRecord {
   user_id: string;
   token_type: 'cmpx' | 'gtk';
   amount: number;
-  apy: number; // Annual Percentage Yield
-  duration_days: number;
   start_date: string;
-  end_date?: string;
-  rewards_earned: number;
+  end_date: string;
+  reward_percentage?: number;
+  reward_claimed?: boolean;
   status: 'active' | 'completed' | 'cancelled';
   created_at: string;
+  updated_at: string;
 }
 
 export interface Reward {
@@ -376,9 +376,6 @@ class TokenService {
         throw new Error('Balance insuficiente para staking');
       }
 
-      // Calcular APY según tipo de token
-      const apy = tokenType === 'cmpx' ? 8.0 : 12.5;
-
       // Restar tokens del balance (bloquear)
       await this.spendTokens(userId, tokenType, amount, 'Staking - Tokens bloqueados', {
         staking_duration: durationDays
@@ -388,18 +385,20 @@ class TokenService {
       const startDate = new Date();
       const endDate = new Date(startDate);
       endDate.setDate(endDate.getDate() + durationDays);
-
-      const { data, error } = await (supabase as any)
-        .from('user_staking')
+      
+      // Calcular APY según tipo de token
+      const apy = tokenType === 'cmpx' ? 8.0 : 12.5;
+      
+      const { data, error } = await supabase
+        .from('staking_records')
         .insert({
           user_id: userId,
           token_type: tokenType,
           amount,
-          apy,
-          duration_days: durationDays,
           start_date: startDate.toISOString(),
           end_date: endDate.toISOString(),
-          rewards_earned: 0,
+          reward_percentage: apy,
+          reward_claimed: false,
           status: 'active'
         })
         .select()
@@ -429,38 +428,42 @@ class TokenService {
       logger.info('✅ Completando staking', { stakingId, userId: userId.substring(0, 8) + '***' });
 
       // Obtener registro de staking
-      const { data: staking, error: fetchError } = await (supabase as any)
-        .from('user_staking')
+      const { data: staking, error: fetchError } = await supabase
+        .from('staking_records')
         .select('*')
         .eq('id', stakingId)
         .eq('user_id', userId)
+        .eq('status', 'active')
         .single();
 
       if (fetchError || !staking) {
         throw new Error('Staking no encontrado');
       }
 
-      // Calcular recompensas
-      const daysStaked = Math.floor(
-        (new Date(staking.end_date).getTime() - new Date(staking.start_date).getTime()) / (1000 * 60 * 60 * 24)
-      );
-      const dailyRate = staking.apy / 365 / 100;
-      const rewardsEarned = staking.amount * dailyRate * daysStaked;
+      // Calcular recompensas basado en duración y APY
+      const startDate = new Date(staking.start_date);
+      const endDate = new Date(staking.end_date);
+      const now = new Date();
+      const actualEndDate = now < endDate ? now : endDate;
+      const daysStaked = Math.floor((actualEndDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+      const apy = staking.reward_percentage || 10.0;
+      const dailyRate = apy / 365 / 100;
+      const rewardsEarned = Math.floor(staking.amount * dailyRate * daysStaked);
 
-      // Actualizar staking
-      await (supabase as any)
-        .from('user_staking')
+      // Actualizar staking como completado
+      await supabase
+        .from('staking_records')
         .update({
           status: 'completed',
-          rewards_earned: rewardsEarned,
-          completed_at: new Date().toISOString()
+          reward_claimed: true,
+          updated_at: new Date().toISOString()
         })
         .eq('id', stakingId);
 
       // Agregar tokens de vuelta + recompensas
-      await this.addTokens(userId, staking.token_type, staking.amount, 'reward', 'Staking completado - Tokens liberados');
+      await this.addTokens(userId, staking.token_type as 'cmpx' | 'gtk', staking.amount, 'reward', 'Staking completado - Tokens liberados');
       if (rewardsEarned > 0) {
-        await this.addTokens(userId, staking.token_type, rewardsEarned, 'reward', 'Recompensas de staking');
+        await this.addTokens(userId, staking.token_type as 'cmpx' | 'gtk', rewardsEarned, 'reward', 'Recompensas de staking');
       }
 
       logger.info('✅ Staking completado exitosamente', {
