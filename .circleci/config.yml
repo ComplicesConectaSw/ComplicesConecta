@@ -81,6 +81,7 @@ jobs:
       - image: cimg/node:20.19.2
     environment:
       <<: *environment
+      PATH: "${PATH}:${HOME}/.local/bin:${CIRCLE_WORKING_DIRECTORY}/node_modules/.bin"
     steps:
       - checkout
       - restore_cache:
@@ -91,6 +92,11 @@ jobs:
             if [ ! -d "node_modules" ]; then
               npm ci
             fi
+      - run:
+          name: Configurar PATH
+          command: |
+            export PATH="${PATH}:$(pwd)/node_modules/.bin"
+            echo "PATH configurado: ${PATH}"
       - run:
           name: Ejecutar tests unitarios
           command: npm run test:run
@@ -105,6 +111,7 @@ jobs:
       - image: cimg/node:20.19.2-browsers
     environment:
       <<: *environment
+      PATH: "${PATH}:${HOME}/.local/bin:${CIRCLE_WORKING_DIRECTORY}/node_modules/.bin"
     steps:
       - checkout
       - browser-tools/install-chrome
@@ -117,6 +124,11 @@ jobs:
             if [ ! -d "node_modules" ]; then
               npm ci
             fi
+      - run:
+          name: Configurar PATH
+          command: |
+            export PATH="${PATH}:$(pwd)/node_modules/.bin"
+            echo "PATH configurado: ${PATH}"
       - run:
           name: Ejecutar tests de integración
           command: npm run test:integration || echo "Tests de integración completados"
