@@ -32,8 +32,8 @@
 - **[📝 Notas de Lanzamiento](./RELEASE_NOTES_v3.4.1.md)** - Historial completo de versiones
 - **[⚙️ DevOps Guide](./README_DEVOPS.md)** - Guía de operaciones y deployment
 - **[🤖 IA Integration Guide](./README_IA.md)** - Estrategia de desarrollo con IA
-- **[📚 Documentación Maestra Completa](./DOCUMENTACION_CONSOLIDADA_MAESTRA_v3.5.0.md)** - Documentación consolidada completa (BD, Migraciones, S2, Vercel)
-- **[📝 Memorias de Sesiones](./MEMORIAS_SESIONES_CONSOLIDADAS_v3.5.0.md)** - Memorias consolidadas de sesiones y avances
+- **[📚 Documentación Maestra Unificada](./DOCUMENTACION_MAESTRA_UNIFICADA_v3.5.0.md)** - Documentación consolidada completa (BD, Migraciones, S2, Vercel, Neo4j, Features)
+- **[📝 Memorias de Sesiones Unificadas](./MEMORIAS_SESIONES_UNIFICADAS_v3.5.0.md)** - Memorias consolidadas de sesiones y avances
 
 ---
 

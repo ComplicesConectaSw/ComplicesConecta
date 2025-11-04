@@ -41,7 +41,9 @@
    - **v3.4.1**: Validación con linting 0 errores antes de cada commit
    - **NUEVO v3.5.0**: Tests unitarios para servicios AI (AILayerService, ChatSummaryService)
 
-> **📚 Para configuración inicial del entorno, consulta [INSTALACION_SETUP_v3.5.0.md](./INSTALACION_SETUP_v3.5.0.md)**
+> **📚 Para configuración inicial del entorno, consulta [INSTALACION_SETUP_v3.5.0.md](./INSTALACION_SETUP_v3.5.0.md)**  
+> **📚 Para documentación maestra completa, consulta [DOCUMENTACION_MAESTRA_UNIFICADA_v3.5.0.md](./DOCUMENTACION_MAESTRA_UNIFICADA_v3.5.0.md)**  
+> **📚 Para memorias de sesiones, consulta [MEMORIAS_SESIONES_UNIFICADAS_v3.5.0.md](./MEMORIAS_SESIONES_UNIFICADAS_v3.5.0.md)**
 
 4. **Prevención de caos**
    - No se crean duplicados de carpetas sin confirmación

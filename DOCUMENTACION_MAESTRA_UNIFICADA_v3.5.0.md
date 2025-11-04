@@ -1,10 +1,10 @@
-# 📚 DOCUMENTACIÓN CONSOLIDADA MAESTRA - ComplicesConecta v3.5.0
+# 📚 DOCUMENTACIÓN MAESTRA UNIFICADA - ComplicesConecta v3.5.0
 
 **Fecha:** 05 de Noviembre, 2025  
 **Última Actualización:** 05 de Noviembre, 2025  
 **Versión:** 3.5.0  
-**Tipo:** Documentación Consolidada y Unificada  
-**Estado:** ✅ CONSOLIDADA Y ACTUALIZADA - PRODUCTION READY
+**Tipo:** Documentación Consolidada y Unificada Completa  
+**Estado:** ✅ CONSOLIDADA Y ACTUALIZADA - PRODUCTION READY - NEO4J OPERATIVO
 
 > **📚 Para guía completa de instalación y configuración, consulta [INSTALACION_SETUP_v3.5.0.md](./INSTALACION_SETUP_v3.5.0.md)**
 
@@ -19,8 +19,12 @@
 5. [Implementación Neo4j](#implementación-neo4j)
 6. [Estado de Migraciones](#estado-de-migraciones)
 7. [Base de Datos](#base-de-datos)
-8. [Próximos Pasos](#próximos-pasos)
-9. [Checklist Final](#checklist-final)
+8. [S2 Geohashing y Backfill](#s2-geohashing-y-backfill)
+9. [Troubleshooting de Vercel](#troubleshooting-de-vercel)
+10. [Resultados de Performance](#resultados-de-performance)
+11. [Correcciones Realizadas](#correcciones-realizadas)
+12. [Próximos Pasos](#próximos-pasos)
+13. [Checklist Final](#checklist-final)
 
 ---
 
@@ -186,132 +190,6 @@
 - ⚠️ Pendiente benchmarks S2 vs PostGIS
 - ⚠️ Pendiente optimización de índices Neo4j (script disponible)
 
-#### 15. ⚠️ PRIVACIDAD Y PROTECCIÓN DE DATOS - 85/100
-- ✅ DataPrivacyService implementado
-- ✅ Política de privacidad accesible
-- ✅ Términos de servicio actualizados
-- ✅ S2 Geohashing para privacidad
-- ✅ RLS protegiendo datos sensibles
-- ✅ **ConsentVerificationService implementado** (NUEVO)
-
-**Problemas Encontrados:**
-- ⚠️ Pendiente verificación de cifrado específico para datos ultra-sensibles
-- ⚠️ Pendiente verificación de LGPD (México) compliance
-
-#### 17. ⚠️ VERIFICACIÓN DE IDENTIDAD - 70/100
-- ✅ World ID integration implementada
-- ✅ Tabla worldid_verifications existe
-- [ ] Sistema de verificación por selfie ⏳
-- [ ] Sistema de verificación por documento ⏳
-- [ ] Badges de verificación en UI ⏳
-
-#### 18. ⚠️ MODERACIÓN DE CONTENIDO - 65/100
-- ✅ ContentModerationService implementado
-- ✅ ReportDialog implementado
-- ✅ AdvancedModerationPanel existe
-- ✅ **ConsentVerificationService implementado** (NUEVO)
-- [ ] Detección automática de contenido inapropiado ⏳
-- [ ] Detección automática de acoso ⏳
-
-#### 20. ⚠️ SISTEMA DE CHAT - 75/100
-- ✅ Chat en tiempo real implementado
-- ✅ TypingIndicator implementado
-- ✅ ChatSummaryService implementado
-- ✅ **ConsentVerificationService integrado en ChatRoom** (NUEVO)
-- [ ] Cifrado end-to-end ⏳
-- [ ] Presencia online en tiempo real ⏳
-- [ ] Read receipts ⏳
-
-#### 21. ✅ SISTEMA DE MATCHING - 90/100
-- ✅ SmartMatchingService implementado
-- ✅ AILayerService integrado
-- ✅ Neo4j para enriquecimiento social
-- ✅ S2 para búsquedas geográficas
-- ✅ Recomendaciones FOF implementadas
-- ✅ **PredictiveMatchingService implementado** (NUEVO)
-
-**Problemas Encontrados:**
-- ⚠️ Pendiente verificación de que queries usen s2_cell_id
-- ⚠️ Pendiente A/B testing para optimizar algoritmo
-
-#### 22. ⚠️ PERFILES Y PRESENTACIÓN - 70/100
-- ✅ ProfileSingle.tsx implementado
-- ✅ Profiles.tsx implementado
-- ✅ MainProfileCard.tsx implementado
-- ✅ ProfileTabs.tsx implementado
-- ✅ **NFTGalleryManager.tsx implementado** (NUEVO)
-- [ ] Verificar galerías privadas/públicas ⏳
-- [ ] Verificar control de visibilidad de perfil ⏳
-
-#### 23. ⚠️ MONETIZACIÓN - 50/100
-- ✅ TokenService con CMPX/GTK implementado
-- ✅ Staking (interfaces implementadas)
-- ✅ tokenPremium.ts implementado
-- ✅ PremiumFeatures.tsx implementado
-- ✅ Edge functions Stripe implementadas
-- [ ] Verificar suscripciones Stripe funcionando completamente ⏳
-- [ ] Verificar bloqueo de features premium para usuarios free ⏳
-
-#### 26. ✅ ESCALABILIDAD - 100/100
-- ✅ S2 Geohashing para escalabilidad geográfica
-- ✅ Neo4j para escalabilidad social
-- ✅ Índices optimizados (209 PostgreSQL + Neo4j)
-- ✅ Arquitectura preparada para millones de usuarios
-
-#### 27. ⚠️ BETA TESTING - 10/100
-- ✅ Error tracking (Sentry) configurado
-- [ ] Crear programa de beta testers ⏳
-- [ ] Implementar sistema de feedback ⏳
-- [ ] Implementar bug reporting desde UI ⏳
-
-#### 28. ⚠️ INTEGRACIONES - 40/100
-- ⚠️ Stripe - Edge functions implementadas, pendiente verificación funcional
-- ✅ Email Service - Supabase Auth (emails de verificación)
-- ✅ Push Notifications - PushNotificationService.ts implementado
-- ✅ Monitoreo - New Relic, Sentry, Datadog configurados
-
-#### 29. ⚠️ ACCESIBILIDAD - 60/100
-- ✅ AccessibilityAudit.tsx implementado
-- ✅ Verificación de contraste, ARIA, keyboard navigation
-- ✅ accessibility.css implementado
-- ✅ E2E Accessibility Tests implementados
-- [ ] Verificar cumplimiento WCAG 2.1 AA completo ⏳
-- [ ] Verificar screen readers funcionando ⏳
-
-#### 30. ❌ COMPETITIVE ANALYSIS - 0/100
-- [ ] Crear matriz comparativa con competidores ⏳
-- [ ] Comparar features core vs competencia ⏳
-- [ ] Identificar features únicas ⏳
-
-#### 31. ⚠️ INTEGRACIÓN BLOCKCHAIN - 60/100
-- ✅ TokenService con CMPX y GTK implementado
-- ✅ Roadmap blockchain documentado
-- ✅ **NFTGalleryService implementado** (NUEVO - stub para Q2 2026)
-- [ ] Smart contracts preparados ⏳
-- [ ] Wallet integration ⏳
-- [ ] DAO structure definida ⏳
-
-#### 32. ⚠️ PRUEBAS DE USABILIDAD Y UX - 70/100
-- ✅ UI moderna y responsive
-- ✅ 5 temas visuales implementados
-- [ ] A/B testing para matching ⏳
-- [ ] A/B testing para chat ⏳
-- [ ] Onboarding flow optimizado ⏳
-
-#### 33. ⚠️ COMPLIANCE CON REGULACIONES - 75/100
-- ✅ Verificación de edad (>=18)
-- ✅ Términos de servicio claros
-- ✅ Política de privacidad accesible
-- ✅ **ConsentVerificationService implementado** (NUEVO - Ley Olimpia)
-- [ ] Age gating robusto ⏳
-- [ ] Zero tolerance acoso documentado ⏳
-
-#### 34. ⚠️ SOSTENIBILIDAD - 65/100
-- ✅ Arquitectura cloud eficiente
-- ✅ **SustainableEventsService implementado** (NUEVO)
-- [ ] Green hosting ⏳
-- [ ] Optimización energética ⏳
-
 ---
 
 ## 🚀 FEATURES INNOVADORAS
@@ -352,12 +230,6 @@
 - ✅ Integración con chat para verificación antes de enviar
 - ✅ Historial de verificaciones por usuario
 
-**Niveles de Consentimiento:**
-- `explicit` - Consentimiento explícito (90%+ confianza)
-- `implicit` - Consentimiento implícito (70-90% confianza)
-- `ambiguous` - Consentimiento ambiguo (50-70% confianza)
-- `negative` - Falta de consentimiento (<50% confianza)
-
 ### 2️⃣ Galerías NFT-Verificadas
 
 **Feature Innovadora:** Perfiles/galerías como NFTs mintados con GTK
@@ -371,31 +243,15 @@
 - ✅ `src/services/NFTGalleryService.ts` (412 líneas)
 - ✅ `supabase/migrations/20251105000001_create_nft_galleries.sql`
 - ✅ `src/components/profile/NFTGalleryManager.tsx` (580 líneas)
-- ✅ `src/components/tokens/TokenBalance.tsx` - Sección NFT agregada
-- ✅ `src/components/tokens/TokenDashboard.tsx` - Sección NFT agregada
-- ✅ `src/components/tokens/StakingModal.tsx` - Mencionado NFTs en tips
-- ✅ `src/components/images/ImageGallery.tsx` - Badge NFT en imágenes verificadas
-- ✅ `src/components/images/ImageUpload.tsx` - Opción para agregar a galería NFT
-- ✅ `src/demo/demoData.ts` - Ejemplos de galerías NFT en perfiles demo
-- ✅ Tipos de Supabase regenerados
-- ✅ `(as any)` removidos
+- ✅ Integración en componentes de tokens e imágenes
+- ✅ Ejemplos en `demoData.ts`
 
 **Funcionalidades:**
 - ✅ Crear galerías NFT (sin mint aún)
 - ✅ Mint galerías/imágenes usando GTK tokens (stub para Q2 2026)
 - ✅ Verificación de autenticidad
-- ✅ Galerías públicas/privadas
-- ✅ Metadata de NFT (contract, token ID, network)
-- ✅ UI para crear/mint galerías (NFTGalleryManager.tsx)
-- ✅ Integración en componentes de tokens (TokenBalance, TokenDashboard, StakingModal)
-- ✅ Integración en componentes de imágenes (ImageGallery, ImageUpload)
+- ✅ UI para crear/mint galerías
 - ✅ Badge NFT en imágenes verificadas
-- ✅ Ejemplos de galerías NFT en perfiles demo
-
-**Costos de Mint (GTK):**
-- Galería completa: 1,000 GTK
-- Imagen individual: 100 GTK
-- Perfil completo: 5,000 GTK (futuro)
 
 ### 3️⃣ Matching Predictivo con Graphs Sociales
 
@@ -415,12 +271,6 @@
 - ✅ Análisis de conexión emocional
 - ✅ Score emocional (0-100)
 - ✅ Score predictivo combinado (compatibility + emotional + social)
-- ✅ Confianza en predicción (0-100)
-
-**Algoritmo de Score Predictivo:**
-- 60% compatibilidad tradicional (algoritmo existente)
-- 25% score emocional (conexiones en grafo)
-- 15% fuerza de conexión (amigos mutuos, path length)
 
 ### 4️⃣ Eventos Virtuales Sostenibles con Tokens
 
@@ -432,8 +282,9 @@
 **Impacto:** Retención +15%, alineado con sostenibilidad 2025
 
 **Implementación:**
-- ✅ `src/services/SustainableEventsService.ts` (500 líneas)
+- ✅ `src/services/SustainableEventsService.ts` (453 líneas)
 - ✅ Integración con `src/services/AdvancedCoupleService.ts`
+- ✅ Corrección: `earnTokens` → `addTokens` (método correcto)
 
 **Funcionalidades:**
 - ✅ Crear eventos virtuales sostenibles
@@ -441,13 +292,6 @@
 - ✅ Recompensas CMPX por participación
 - ✅ Tracking de huella de carbono ahorrada
 - ✅ Score de sostenibilidad (0-100)
-- ✅ Estadísticas de sostenibilidad por usuario
-
-**Tipos de Eventos:**
-- `virtual_party` - Fiesta virtual (50 CMPX, 50 kg CO2 ahorrado)
-- `virtual_meetup` - Meetup virtual (30 CMPX, 30 kg CO2)
-- `eco_challenge` - Desafío ecológico (100 CMPX, 20 kg CO2)
-- `sustainable_workshop` - Workshop sostenible (75 CMPX, 40 kg CO2)
 
 ---
 
@@ -464,7 +308,7 @@
    - Compatible con Vite y Node.js (scripts)
 
 2. **`docker-compose.yml`** ✅
-   - Configuración de Neo4j Community Edition
+   - Configuración de Neo4j Community Edition 5.15
    - Puertos: 7474 (Browser UI), 7687 (Bolt)
    - Volúmenes: data, logs, import, plugins
    - Health check configurado
@@ -474,8 +318,7 @@
    - Sincroniza: usuarios, matches, likes
    - Batch processing (100 registros)
    - Carga variables de entorno con dotenv
-   - **Correcciones:** Columnas corregidas (name en lugar de email/first_name/last_name, select('*') para matches, couple_profile_likes con liker_profile_id)
-   - **Metadata aplanado:** Neo4j no soporta objetos anidados, metadata se aplana correctamente
+   - **Correcciones:** Columnas ajustadas (name, select('*'), couple_profile_likes)
 
 4. **`scripts/verify-neo4j.ts`** ✅
    - Script de verificación de conexión
@@ -534,11 +377,7 @@
 - Bonus por conexiones FOF (15 puntos por conexión)
 - Fallback a matching tradicional si no hay FOF
 
-**Métodos Nuevos en SmartMatchingService:**
-- `enrichWithSocialConnections()` - Enriquece matches con conexiones sociales
-- `getRecommendedUsers()` - Obtiene recomendaciones FOF
-
-#### Correcciones Implementadas:
+#### Correcciones Implementadas (05 Nov 2025):
 
 ✅ **Compatibilidad Vite/Node.js:**
 - `env-utils.ts` creado para manejar variables de entorno en ambos contextos
@@ -548,16 +387,42 @@
 
 ✅ **Errores Corregidos:**
 - Error de `import.meta.env` en scripts Node.js → Resuelto con `env-utils.ts`
-- Error de linting en `logger.warn()` → Corregido (usar objeto en lugar de string)
-- Error de resolución de módulo `neo4j-driver` → Corregido en ESLint config
-- Query Cypher en `getFriendsOfFriends()` → Corregido
-- **Error de columnas en sync-postgres-to-neo4j.ts** (05 Nov 2025):
+- **Error de columnas en sync-postgres-to-neo4j.ts:**
   - `profiles.email` no existe → Usar `name` (columna existe)
   - `matches.match_score` no existe → Usar `select('*')` y mapear dinámicamente
   - `couple_profile_likes.liker_id` no existe → Usar `liker_profile_id` y `couple_profile_id`
-- **Error de metadata anidado en Neo4j** (05 Nov 2025):
+- **Error de metadata anidado en Neo4j:**
   - Neo4j no soporta objetos anidados → Metadata aplanado en `createUser()`
   - Query Cypher `ON CREATE SET` corregida → Sintaxis correcta con `ON CREATE` y `ON MATCH`
+
+#### Configuración Requerida:
+
+**Variables de Entorno en `.env`:**
+```bash
+# Supabase
+VITE_SUPABASE_URL=https://axtvqnozatbmllvwzuim.supabase.co
+VITE_SUPABASE_ANON_KEY=your_anon_key_here
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key_here
+
+# Neo4j Configuration
+VITE_NEO4J_ENABLED=true
+VITE_NEO4J_URI=bolt://localhost:7687
+VITE_NEO4J_USER=neo4j
+VITE_NEO4J_PASSWORD=complices2025
+VITE_NEO4J_DATABASE=neo4j
+```
+
+**Scripts Disponibles:**
+```bash
+# Verificar conexión
+npm run verify:neo4j
+
+# Sincronizar datos
+npm run sync:neo4j
+
+# Setup de índices
+npm run setup:neo4j-indexes
+```
 
 #### Próximos Pasos Recomendados:
 
@@ -673,20 +538,183 @@
 - `couple_profiles_with_partners` - VIEW generada automáticamente por Supabase
 - `user_tokens` - Referencia comentada en código (usa `user_token_balances`)
 
-**Tablas No Usadas en Código (normal):**
-- `ai_model_metrics` - Analytics
-- `ai_prediction_logs` - Analytics
-- `analytics_events` - Analytics
-- `cache_statistics` - Analytics
-- `invitation_statistics` - Analytics
-- `monitoring_sessions` - Analytics
-- `story_shares` - Analytics
-- `summary_feedback` - Analytics
-- `worldid_rewards` - Analytics
-- `worldid_statistics` - Analytics
-- `worldid_verifications` - Analytics
+---
 
-**Nota:** Estas tablas son para analytics y métricas, es normal que no se usen directamente en el código del frontend.
+## 🌍 S2 GEOHASHING Y BACKFILL
+
+### ✅ Completado
+
+#### 1. Estructura S2 Implementada ✅
+- ✅ `S2Service.ts` completamente funcional
+- ✅ Script `backfill-s2-cells.ts` implementado
+- ✅ Hook `useGeolocation` integrado con S2
+- ✅ Migraciones BD con columnas S2 aplicadas
+- ✅ Librería `s2-geometry@1.2.10` instalada
+
+#### 2. Funcionalidades S2 ✅
+- ✅ Conversión lat/lng → S2 cell ID
+- ✅ Celdas vecinas (9 celdas)
+- ✅ Nivel óptimo según radio
+- ✅ Queries optimizadas por celda
+- ✅ Validación de coordenadas
+
+### ⏳ Pendiente
+
+#### Backfill Ejecución
+- ⏳ Requiere credenciales válidas de Supabase
+- ⏳ Se puede ejecutar con: `npm run backfill:s2`
+- ⏳ Procesa perfiles en batches de 100
+
+#### Benchmarks
+- ⏳ Medir performance S2 vs PostGIS
+- ⏳ Comparar tiempos de queries nearby
+- ⏳ Optimizar según resultados
+
+---
+
+## 🔧 TROUBLESHOOTING DE VERCEL
+
+### 🚨 Problema Reportado
+
+**Síntoma:** La aplicación se queda en pantalla de "Cargando..." indefinidamente en Vercel.
+
+**URL afectada:** `https://complices-conecta.vercel.app`
+
+### ✅ Correcciones Aplicadas
+
+#### 1. Inicialización de Supabase No Bloqueante
+
+**Archivo:** `src/integrations/supabase/client.ts`
+
+**Problema:** La función `initializeSupabase()` se ejecutaba al cargar el módulo y podía bloquear el renderizado si había problemas de conexión o variables de entorno faltantes.
+
+**Solución:**
+- ✅ Ejecución diferida con `setTimeout(100ms)` para no bloquear renderizado inicial
+- ✅ Timeout de 5 segundos para evitar que se quede colgado
+- ✅ Manejo robusto de errores con fallback a modo demo
+
+#### 2. Timeouts Garantizados en Loading Screen
+
+**Archivo:** `src/pages/Index.tsx`
+
+**Problema:** El estado de loading podía quedarse indefinidamente si alguna condición no se cumplía.
+
+**Solución:**
+- ✅ Timeout principal de 2 segundos
+- ✅ Timeout de fallback de 3 segundos (fuerza mostrar contenido)
+- ✅ Garantiza que el loading siempre termine
+
+#### 3. Timeout de Seguridad para Montaje de React
+
+**Archivo:** `src/main.tsx`
+
+**Problema:** Si algo bloqueaba el montaje de React, la app quedaba en loading indefinidamente.
+
+**Solución:**
+- ✅ Timeout de seguridad de 5 segundos
+- ✅ Fuerza el montaje de React si no se ha completado
+- ✅ Manejo de errores mejorado
+
+### 🔍 Verificaciones en Vercel
+
+#### Variables de Entorno Requeridas
+
+Verificar que estén configuradas en Vercel Dashboard:
+
+1. **VITE_SUPABASE_URL** (OBLIGATORIA)
+   - Valor: `https://axtvqnozatbmllvwzuim.supabase.co`
+   - Obtener de: [Supabase Dashboard](https://supabase.com/dashboard) → Settings → API
+
+2. **VITE_SUPABASE_ANON_KEY** (OBLIGATORIA)
+   - Valor: Clave anon key de Supabase
+   - Obtener de: [Supabase Dashboard](https://supabase.com/dashboard) → Settings → API
+
+---
+
+## 📈 RESULTADOS DE PERFORMANCE
+
+### EXPLAIN ANALYZE - Local (Docker)
+
+**Tiempos de Ejecución:**
+
+| Query | Planning Time | Execution Time | Total Time | Estado |
+|-------|---------------|----------------|------------|--------|
+| Query 1.1 (Feed) | 0.495 ms | 0.051 ms | 0.546 ms | ✅ Excelente |
+| Query 2.1 (Perfiles) | 0.985 ms | 0.147 ms | 1.132 ms | ✅ Excelente |
+| Query 3.1 (Mensajes) | 0.773 ms | 0.162 ms | 0.935 ms | ✅ Excelente |
+| Query 7.1 (S2 Cell) | 1.305 ms | 0.156 ms | 1.461 ms | ✅ Excelente |
+| Query 7.3 (Función S2) | 0.842 ms | 1.157 ms | 1.999 ms | ✅ Excelente |
+
+**Tiempo total:** ~5 ms para todas las queries críticas
+
+### EXPLAIN ANALYZE - Remoto (Supabase)
+
+**Tiempos de Ejecución:**
+
+| Query | Planning Time | Execution Time | Total Time | Estado |
+|-------|---------------|----------------|------------|--------|
+| Query 7.3 (Simple) | 0.077 ms | 0.363 ms | 0.440 ms | ✅ Excelente |
+| Query 7.3 (InitPlan) | 0.100 ms | 1.519 ms | 1.619 ms | ✅ Excelente |
+
+**Comparación Local vs Remoto:**
+- ✅ Remoto muestra tiempos ligeramente mejores
+- ✅ Ambos entornos operativos
+- ✅ Performance excelente en ambos
+
+---
+
+## 🔧 CORRECCIONES REALIZADAS
+
+### 1. Correcciones en Migraciones
+
+#### Error 1: `20251102010000_enable_rls_matches.sql`
+**Error:** `ERROR: 42883: operator does not exist: text = uuid`
+
+**Causa:** Comparación incorrecta de tipos UUID
+
+**Corrección:** ✅
+- Cambiado `auth.uid()::text = user1_id` a `auth.uid() = user1_id::uuid`
+- Aplicado en todas las políticas (SELECT, INSERT, UPDATE, DELETE)
+
+#### Error 2: `20251031000000_add_s2_geohash.sql`
+**Error:** `ERROR: 42703: column "is_public" does not exist`
+
+**Corrección:** ✅
+- Removida condición `is_public = true` de índices y funciones
+- Función `get_profiles_in_cells` corregida con casts apropiados
+
+#### Error 3: `migraciones-para-remoto.sql`
+**Error:** `ERROR: 42710: policy "Users can view all comment likes" already exists`
+
+**Corrección:** ✅
+- Agregado `DROP POLICY IF EXISTS` antes de cada `CREATE POLICY`
+- Script ahora es idempotente
+
+### 2. Correcciones en Código
+
+#### SustainableEventsService.ts - ✅ CORREGIDO
+**Problema:** Usaba `earnTokens()` que no existe en TokenService
+
+**Solución:**
+- ✅ `earnTokens` → `addTokens` (método correcto de TokenService)
+- ✅ Parámetros corregidos: `userId`, `tokenType`, `amount`, `transactionType`, `description`, `metadata`
+
+#### .husky/pre-commit - ✅ CORREGIDO
+**Problema:** Líneas problemáticas para Husky v10.0.0
+
+**Solución:**
+- ✅ Removidas líneas: `#!/usr/bin/env sh` y `. "$(dirname -- "$0")/_/husky.sh"`
+- ✅ Script ahora compatible con Husky v10.0.0
+
+### 3. Referencias Obsoletas Corregidas
+
+**Total:** 8 referencias corregidas
+
+1. ✅ `posts` → `stories` (2 referencias)
+2. ✅ `comments` → `story_comments` (1 referencia)
+3. ✅ `user_staking` → `staking_records` (3 referencias)
+4. ✅ `user_reports` → `reports` (2 referencias)
+5. ✅ `user_preferences` → Comentado (1 referencia)
 
 ---
 
@@ -773,9 +801,11 @@
 - [x] Matching Predictivo - Integrado en SmartMatchingService
 - [x] Eventos Virtuales Sostenibles - Servicio creado
 - [x] Eventos Virtuales Sostenibles - Integrado con AdvancedCoupleService
+- [x] Eventos Virtuales Sostenibles - Corregido `earnTokens` → `addTokens`
 - [x] Edge Function Neo4j - Función base creada
 - [x] Tests RLS - Estructura base creada
 - [x] Correcciones linting - Todos los archivos
+- [x] Correcciones .husky/pre-commit - Compatible con v10.0.0
 - [x] Documentación - Completa
 
 ### Pendiente: ⏳
@@ -858,9 +888,9 @@ El proyecto **ComplicesConecta v3.5.0** está en **excelente estado** para produ
 
 **Fecha de Consolidación:** 05 de Noviembre, 2025  
 **Versión:** 3.5.0  
-**Estado:** ✅ DOCUMENTACIÓN CONSOLIDADA - PRODUCTION READY
+**Estado:** ✅ DOCUMENTACIÓN CONSOLIDADA Y UNIFICADA - PRODUCTION READY
 
 ---
 
-*Este documento consolida toda la información del proyecto ComplicesConecta v3.5.0, incluyendo auditoría, features innovadoras, implementación Neo4j, estado de migraciones, y próximos pasos.*
+*Este documento consolida toda la información del proyecto ComplicesConecta v3.5.0, incluyendo auditoría, features innovadoras, implementación Neo4j, estado de migraciones, base de datos, S2 geohashing, troubleshooting de Vercel, resultados de performance, correcciones realizadas, y próximos pasos.*
 

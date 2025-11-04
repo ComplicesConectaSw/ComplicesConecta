@@ -4,6 +4,9 @@
 **Versión:** 3.5.0  
 **Estado:** ✅ GUÍA COMPLETA DE INSTALACIÓN Y CONFIGURACIÓN
 
+> **📚 Para documentación maestra completa, consulta [DOCUMENTACION_MAESTRA_UNIFICADA_v3.5.0.md](./DOCUMENTACION_MAESTRA_UNIFICADA_v3.5.0.md)**  
+> **📚 Para memorias de sesiones, consulta [MEMORIAS_SESIONES_UNIFICADAS_v3.5.0.md](./MEMORIAS_SESIONES_UNIFICADAS_v3.5.0.md)**
+
 ---
 
 ## 📋 ÍNDICE

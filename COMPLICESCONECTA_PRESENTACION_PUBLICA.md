@@ -5,7 +5,10 @@
 **Última Actualización:** 05 de Noviembre, 2025  
 **Estado:** ✅ Plataforma en Desarrollo Beta - Neo4j Operativo
 
-> **📚 Para desarrolladores: [INSTALACION_SETUP_v3.5.0.md](./INSTALACION_SETUP_v3.5.0.md) - Guía completa de instalación y configuración**
+> **📚 Para desarrolladores:**  
+> **- [INSTALACION_SETUP_v3.5.0.md](./INSTALACION_SETUP_v3.5.0.md)** - Guía completa de instalación y configuración  
+> **- [DOCUMENTACION_MAESTRA_UNIFICADA_v3.5.0.md](./DOCUMENTACION_MAESTRA_UNIFICADA_v3.5.0.md)** - Documentación técnica completa  
+> **- [MEMORIAS_SESIONES_UNIFICADAS_v3.5.0.md](./MEMORIAS_SESIONES_UNIFICADAS_v3.5.0.md)** - Memorias de sesiones y avances
 
 ---
 

@@ -1,4 +1,8 @@
-# 🤝 Guía de Contribución - ComplicesConecta
+# 🤝 Guía de Contribución - ComplicesConecta v3.5.0
+
+**Última Actualización:** 05 de Noviembre, 2025  
+**Versión:** 3.5.0  
+**Estado:** ✅ ACTUALIZADO
 
 ¡Gracias por tu interés en contribuir a ComplicesConecta! Esta guía te ayudará a entender cómo puedes participar en el desarrollo de la plataforma swinger más exclusiva de México.
 
@@ -82,6 +86,8 @@ git checkout -b feature/nombre-descriptivo
 - **Supabase CLI** (para backend)
 
 ### **⚡ Instalación Rápida**
+> **📚 Para guía completa de instalación y configuración, consulta [INSTALACION_SETUP_v3.5.0.md](./INSTALACION_SETUP_v3.5.0.md)**
+
 ```bash
 # 1. Instalar dependencias
 bun install

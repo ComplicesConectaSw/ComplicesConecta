@@ -1,6 +1,3 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
 # Ejecutar lint y type-check antes de commit
 npm run lint
 npm run type-check

@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [3.5.0] - 2025-11-05
 
+> **📚 Para documentación completa, consulta [DOCUMENTACION_MAESTRA_UNIFICADA_v3.5.0.md](./DOCUMENTACION_MAESTRA_UNIFICADA_v3.5.0.md)**
+
 ### Fixed - Neo4j Integration Corrections
 - **sync-postgres-to-neo4j.ts**: Fixed column references (name instead of email/first_name/last_name, select('*') for matches)
 - **Neo4jService.createUser()**: Fixed nested metadata issue (Neo4j doesn't support nested objects, metadata flattened)
