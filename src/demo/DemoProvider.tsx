@@ -8,6 +8,14 @@ import { logger } from '@/lib/logger';
 import { Database } from '@/types/supabase';
 import { demoProfiles } from '@/demo/demoData';
 
+// CRÍTICO: Asegurar createContext disponible antes de usar
+const safeCreateContext = <T,>(defaultValue: T | null): React.Context<T | null> => {
+  if (typeof window !== 'undefined' && (window as any).React?.createContext) {
+    return (window as any).React.createContext(defaultValue);
+  }
+  return createContext<T | null>(defaultValue);
+};
+
 type Profile = Database['public']['Tables']['profiles']['Row'];
 
 interface DemoContextType {
@@ -22,7 +30,7 @@ interface DemoContextType {
   };
 }
 
-const DemoContext = createContext<DemoContextType | null>(null);
+const DemoContext = safeCreateContext<DemoContextType | null>(null);
 
 interface DemoProviderProps {
   children: ReactNode;

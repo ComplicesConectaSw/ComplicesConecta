@@ -1,5 +1,13 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
+// CRÍTICO: Asegurar createContext disponible antes de usar
+const safeCreateContext = <T,>(defaultValue: T | undefined): React.Context<T | undefined> => {
+  if (typeof window !== 'undefined' && (window as any).React?.createContext) {
+    return (window as any).React.createContext(defaultValue);
+  }
+  return createContext<T | undefined>(defaultValue);
+};
+
 interface AccessibilitySettings {
   highContrast: boolean;
   largeText: boolean;
@@ -25,7 +33,7 @@ const defaultSettings: AccessibilitySettings = {
   focusVisible: true,
 };
 
-const AccessibilityContext = createContext<AccessibilityContextType | undefined>(undefined);
+const AccessibilityContext = safeCreateContext<AccessibilityContextType | undefined>(undefined);
 
 interface AccessibilityProviderProps {
   children: ReactNode;

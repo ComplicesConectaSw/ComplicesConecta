@@ -24,6 +24,14 @@ const SIDEBAR_WIDTH_MOBILE = "18rem"
 const _SIDEBAR_WIDTH_ICON = "3rem"
 const SIDEBAR_KEYBOARD_SHORTCUT = "b"
 
+// CRÍTICO: Asegurar createContext disponible antes de usar
+const safeCreateContext = <T,>(defaultValue: T | null): React.Context<T | null> => {
+  if (typeof window !== 'undefined' && (window as any).React?.createContext) {
+    return (window as any).React.createContext(defaultValue);
+  }
+  return React.createContext<T | null>(defaultValue);
+};
+
 type SidebarContext = {
   state: "expanded" | "collapsed"
   open: boolean
@@ -34,7 +42,7 @@ type SidebarContext = {
   toggleSidebar: () => void
 }
 
-const SidebarContext = React.createContext<SidebarContext | null>(null)
+const SidebarContext = safeCreateContext<SidebarContext | null>(null)
 
 function useSidebar() {
   const context = React.useContext(SidebarContext)

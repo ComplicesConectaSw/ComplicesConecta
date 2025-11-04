@@ -2,6 +2,14 @@ import React, { createContext, useContext, useState, useCallback } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { logger } from '@/lib/logger';
 
+// CRÍTICO: Asegurar createContext disponible antes de usar
+const safeCreateContext = <T,>(defaultValue: T | undefined): React.Context<T | undefined> => {
+  if (typeof window !== 'undefined' && (window as any).React?.createContext) {
+    return (window as any).React.createContext(defaultValue);
+  }
+  return createContext<T | undefined>(defaultValue);
+};
+
 // Animation configuration interface
 interface AnimationConfig {
   reducedMotion: boolean;
@@ -27,7 +35,7 @@ const defaultConfig: AnimationConfig = {
 };
 
 // Create context
-const AnimationContext = createContext<AnimationContextType | undefined>(undefined);
+const AnimationContext = safeCreateContext<AnimationContextType | undefined>(undefined);
 
 // Animation speed multipliers
 const speedMultipliers = {

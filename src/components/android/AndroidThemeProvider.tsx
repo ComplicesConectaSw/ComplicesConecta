@@ -1,5 +1,13 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
+// CRÍTICO: Asegurar createContext disponible antes de usar
+const safeCreateContext = <T,>(defaultValue: T | undefined): React.Context<T | undefined> => {
+  if (typeof window !== 'undefined' && (window as any).React?.createContext) {
+    return (window as any).React.createContext(defaultValue);
+  }
+  return createContext<T | undefined>(defaultValue);
+};
+
 type ThemeMode = 'light' | 'dark' | 'system';
 
 interface AndroidThemeContextType {
@@ -9,7 +17,7 @@ interface AndroidThemeContextType {
   toggleTheme: () => void;
 }
 
-const AndroidThemeContext = createContext<AndroidThemeContextType | undefined>(undefined);
+const AndroidThemeContext = safeCreateContext<AndroidThemeContextType | undefined>(undefined);
 
 interface AndroidThemeProviderProps {
   children: ReactNode;
