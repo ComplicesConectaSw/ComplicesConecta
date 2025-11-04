@@ -10,16 +10,14 @@ import unusedImports from 'eslint-plugin-unused-imports'
 export default [
   {
     ignores: [
+      // Directorios completos generados
       'dist/**',
       'build/**',
       'node_modules/**',
       'android/**',
+      'android/app/build/**',
       '.vscode/**',
-      'public/**',
       'supabase/functions/**',
-      '*.config.js',
-      '*.config.ts',
-      'capacitor.config.ts',
       'scripts/**',
       'tests/**',
       'src/test/**',
@@ -30,11 +28,28 @@ export default [
       'test-results/**',
       'respaldo_auditoria/**',
       'backups/**',
+      'reports/**',
+      // Archivos específicos
+      '*.config.js',
+      '*.config.ts',
+      'capacitor.config.ts',
       '**/*.bak',
       '**/BACKUP_*',
       '**/*.ps1',
       '**/*.min.js',
-      '**/*.bundle.js'
+      '**/*.bundle.js',
+      // Archivos generados específicos (dist y android build)
+      'dist/**/*.js',
+      'dist/**/*.mjs',
+      'android/app/build/**/*.js',
+      'android/app/build/**/*.mjs',
+      // Vendor files generados
+      '**/vendor*.js',
+      '**/vendor*.mjs',
+      // Archivos en public que son generados (excepto sw.js y sw-notifications.js que son código fuente)
+      'public/assets/**',
+      'public/models/**',
+      'public/app-release.apk'
     ],
     rules: {
       // Reglas generales sin plugins
@@ -89,7 +104,8 @@ export default [
 
       // Import plugin rules
       'import/no-unresolved': ['error', {
-        ignore: ['neo4j-driver']
+        ignore: ['neo4j-driver'],
+        caseSensitive: true
       }],
       'import/named': 'error',
       'import/no-duplicates': 'warn',
@@ -161,7 +177,8 @@ export default [
 
       // Import plugin rules
       'import/no-unresolved': ['error', {
-        ignore: ['neo4j-driver']
+        ignore: ['neo4j-driver'],
+        caseSensitive: true
       }],
       'import/named': 'error',
       'import/no-duplicates': 'warn',

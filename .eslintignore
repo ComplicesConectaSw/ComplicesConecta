@@ -1,0 +1,40 @@
+# Archivos y directorios generados
+dist/
+build/
+node_modules/
+android/
+android/app/build/
+.vscode/
+supabase/functions/
+scripts/
+tests/
+src/test/
+temp/
+coverage/
+playwright-report/
+playwright-report-e2e/
+test-results/
+respaldo_auditoria/
+backups/
+reports/
+
+# Archivos específicos generados
+*.config.js
+*.config.ts
+capacitor.config.ts
+**/*.bak
+**/BACKUP_*
+**/*.ps1
+**/*.min.js
+**/*.bundle.js
+**/vendor*.js
+**/vendor*.mjs
+
+# Archivos generados en public (excepto sw.js y sw-notifications.js que son código fuente)
+public/assets/
+public/models/
+public/app-release.apk
+
+# Service workers son código fuente, deben ser lintados
+# NO ignorar: public/sw.js, public/sw-notifications.js
+
