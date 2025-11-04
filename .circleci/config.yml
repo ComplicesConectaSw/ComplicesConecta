@@ -189,6 +189,9 @@ jobs:
       <<: *environment
       JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
     steps:
+      - run:
+          name: Instalar openssh-client para checkout SSH
+          command: sudo apt-get update && sudo apt-get install -y openssh-client
       - checkout
       - attach_workspace:
           at: .
