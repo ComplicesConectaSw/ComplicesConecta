@@ -4,8 +4,9 @@
  */
 
 // 1. IMPORTANTE: New Relic debe ser lo primero
-// eslint-disable-next-line unused-imports/no-unused-imports
-import newrelic from 'newrelic'; // Usado automáticamente por el agente
+// eslint-disable-next-line no-unused-vars
+// @ts-ignore - Side-effect import, no se usa directamente
+import newrelic from 'newrelic'; // Usado automáticamente por el agente (side-effect import)
 
 import express from 'express';
 import path from 'path';
