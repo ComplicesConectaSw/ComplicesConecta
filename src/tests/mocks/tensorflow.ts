@@ -20,12 +20,28 @@ const createMockModel = () => {
 export const mockTensorFlow = {
   loadLayersModel: vi.fn((path: string) => {
     // Simular carga exitosa del modelo
-    // Manejar tanto rutas relativas como absolutas
-    if (path && (path.startsWith('/models/') || path.includes('model.json') || path.startsWith('http'))) {
+    // Solo aceptar paths válidos específicos (no cualquier path con 'model.json')
+    // Esto permite que los tests de fallback funcionen correctamente
+    const isValidPath = path && (
+      // Path principal esperado en tests
+      path.startsWith('/models/compatibility-v1/model.json') ||
+      // URLs HTTP/HTTPS
+      path.startsWith('http://') ||
+      path.startsWith('https://') ||
+      // Otros paths en /models/ que terminen en /model.json y NO contengan 'nonexistent'
+      (path.startsWith('/models/') && 
+       path.endsWith('/model.json') && 
+       !path.includes('nonexistent'))
+    );
+    
+    if (isValidPath) {
       console.log(`[Mock TensorFlow] Loading model from: ${path}`);
       return Promise.resolve(createMockModel());
     }
-    // Para rutas inválidas, rechazar
+    
+    // Para rutas inválidas (como '/nonexistent/model.json' o 'invalid-path'), rechazar
+    // Esto permite que los tests de fallback funcionen correctamente
+    console.log(`[Mock TensorFlow] Rejecting invalid path: ${path}`);
     return Promise.reject(new Error(`Failed to load model from: ${path}`));
   }),
   tensor: vi.fn().mockReturnValue({
@@ -58,4 +74,3 @@ vi.mock('@tensorflow/tfjs', () => {
     tidy: mockTensorFlow.tidy
   };
 });
-
