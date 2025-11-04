@@ -38,7 +38,7 @@ const FAQ = () => {
       faqs: [
         {
           question: "¿Cómo funciona la verificación KYC?",
-          answer: "Utilizamos tecnología blockchain avanzada para verificar la identidad de todos nuestros miembros. Este proceso garantiza que solo personas reales y verificadas accedan a la plataforma."
+          answer: "Utilizamos tecnología blockchain avanzada y verificación de identidad para verificar la identidad de todos nuestros miembros. El sistema incluye verificación de documentos oficiales, selfie biométrica y verificación telefónica. Este proceso garantiza que solo personas reales y verificadas accedan a la plataforma."
         },
         {
           question: "¿Qué documentos necesito para verificarme?",
@@ -57,7 +57,7 @@ const FAQ = () => {
       faqs: [
         {
           question: "¿Es seguro el chat privado?",
-          answer: "Absolutamente. Todas las conversaciones están encriptadas end-to-end. Tu privacidad y discreción son nuestra máxima prioridad."
+          answer: "Absolutamente. Todas las conversaciones están encriptadas end-to-end con AES-GCM. Además, implementamos el Verificador IA de Consentimiento que detecta proactivamente patrones de consentimiento en los mensajes, cumpliendo con la Ley Olimpia. Tu privacidad y discreción son nuestra máxima prioridad."
         },
         {
           question: "¿Cómo protegen mis datos personales?",
@@ -76,7 +76,7 @@ const FAQ = () => {
       faqs: [
         {
           question: "¿Cómo funcionan las galerías privadas?",
-          answer: "Las galerías privadas te permiten compartir fotos íntimas solo con personas que hayas autorizado. Tienes control total sobre quién puede acceder."
+          answer: "Las galerías privadas te permiten compartir fotos íntimas solo con personas que hayas autorizado. Tienes control total sobre quién puede acceder. Además, puedes crear Galerías NFT-Verificadas usando tokens GTK, lo que garantiza autenticidad y verificación de tus galerías."
         },
         {
           question: "¿Cómo envío una invitación de galería?",

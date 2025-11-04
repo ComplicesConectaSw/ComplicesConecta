@@ -29,7 +29,7 @@ const Legal: React.FC = () => {
       description: "Condiciones de uso de la plataforma ComplicesConecta",
       icon: <Gavel className="h-6 w-6" />,
       file: "TERMS_OF_SERVICE.md",
-      lastUpdated: "2025-09-23",
+      lastUpdated: "2025-11-05",
       category: "Términos"
     },
     {
@@ -37,7 +37,7 @@ const Legal: React.FC = () => {
       description: "Cómo protegemos y manejamos tu información personal",
       icon: <Shield className="h-6 w-6" />,
       file: "PRIVACY_POLICY.md",
-      lastUpdated: "2025-09-23",
+      lastUpdated: "2025-11-05",
       category: "Privacidad"
     },
     {
@@ -45,7 +45,7 @@ const Legal: React.FC = () => {
       description: "Marco regulatorio y cumplimiento en territorio mexicano",
       icon: <Scale className="h-6 w-6" />,
       file: "LEGAL_COMPLIANCE_MEXICO.md", 
-      lastUpdated: "2025-09-23",
+      lastUpdated: "2025-11-05",
       category: "Cumplimiento"
     },
     {
@@ -53,7 +53,7 @@ const Legal: React.FC = () => {
       description: "Limitaciones y exclusiones de responsabilidad",
       icon: <AlertTriangle className="h-6 w-6" />,
       file: "DISCLAIMER.md",
-      lastUpdated: "2025-09-23", 
+      lastUpdated: "2025-11-05", 
       category: "Legal"
     },
     {
@@ -61,7 +61,7 @@ const Legal: React.FC = () => {
       description: "Resumen de medidas de seguridad implementadas",
       icon: <Lock className="h-6 w-6" />,
       file: "SECURITY_AUDIT_OVERVIEW.md",
-      lastUpdated: "2025-09-23",
+      lastUpdated: "2025-11-05",
       category: "Seguridad"
     },
     {
@@ -69,7 +69,7 @@ const Legal: React.FC = () => {
       description: "Cómo contribuir al desarrollo de la plataforma",
       icon: <Users className="h-6 w-6" />,
       file: "CONTRIBUTING.md",
-      lastUpdated: "2025-09-23",
+      lastUpdated: "2025-11-05",
       category: "Desarrollo"
     }
   ];
