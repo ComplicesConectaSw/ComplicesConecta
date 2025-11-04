@@ -224,10 +224,11 @@ class SustainableEventsService {
         .eq('id', eventId);
 
       // 5. Otorgar recompensa CMPX
-      await tokenService.earnTokens(
+      await tokenService.addTokens(
         userId,
         'cmpx',
         cmpxReward,
+        'reward',
         `Participación en evento sostenible: ${event.title}`,
         {
           event_id: eventId,
