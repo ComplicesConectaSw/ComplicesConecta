@@ -28,6 +28,7 @@ jobs:
       - run:
           name: Instalar Git y configurar para usar HTTPS
           command: |
+            mkdir -p /var/lib/apt/lists/partial
             apt-get update
             apt-get install -y git
             git config --global url."https://github.com/".insteadOf git@github.com:
@@ -63,6 +64,7 @@ jobs:
       - run:
           name: Instalar Git y configurar para usar HTTPS
           command: |
+            mkdir -p /var/lib/apt/lists/partial
             apt-get update
             apt-get install -y git
             git config --global url."https://github.com/".insteadOf git@github.com:
@@ -104,6 +106,7 @@ jobs:
       - run:
           name: Instalar Git y configurar para usar HTTPS
           command: |
+            mkdir -p /var/lib/apt/lists/partial
             apt-get update
             apt-get install -y git
             git config --global url."https://github.com/".insteadOf git@github.com:
