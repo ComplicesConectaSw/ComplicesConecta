@@ -139,10 +139,16 @@ jobs:
       - image: cimg/node:20.19.2
     environment:
       <<: *environment
+      PATH: "${PATH}:${HOME}/.local/bin:${CIRCLE_WORKING_DIRECTORY}/node_modules/.bin"
     steps:
       - checkout
       - attach_workspace:
           at: .
+      - run:
+          name: Configurar PATH
+          command: |
+            export PATH="${PATH}:$(pwd)/node_modules/.bin"
+            echo "PATH configurado: ${PATH}"
       - run:
           name: Build de producción
           command: npm run build
@@ -212,10 +218,16 @@ jobs:
       - image: cimg/node:20.19.2
     environment:
       <<: *environment
+      PATH: "${PATH}:${HOME}/.local/bin:${CIRCLE_WORKING_DIRECTORY}/node_modules/.bin"
     steps:
       - checkout
       - attach_workspace:
           at: .
+      - run:
+          name: Configurar PATH
+          command: |
+            export PATH="${PATH}:$(pwd)/node_modules/.bin"
+            echo "PATH configurado: ${PATH}"
       - run:
           name: Auditoría de seguridad
           command: npm audit --audit-level moderate || echo "Auditoría completada con warnings"
