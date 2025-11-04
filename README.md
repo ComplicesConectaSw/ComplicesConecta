@@ -31,7 +31,8 @@
 - **[📝 Notas de Lanzamiento](./RELEASE_NOTES_v3.4.1.md)** - Historial completo de versiones
 - **[⚙️ DevOps Guide](./README_DEVOPS.md)** - Guía de operaciones y deployment
 - **[🤖 IA Integration Guide](./README_IA.md)** - Estrategia de desarrollo con IA
-- **[📚 Documentación Maestra](./DOCUMENTACION_MAESTRA_v3.5.0.md)** - Documentación consolidada completa
+- **[📚 Documentación Maestra Completa](./DOCUMENTACION_MAESTRA_COMPLETA_v3.5.0.md)** - Documentación consolidada completa (BD, Migraciones, S2, Vercel)
+- **[📝 Memorias de Sesiones](./MEMORIAS_SESIONES_CONSOLIDADAS_v3.5.0.md)** - Memorias consolidadas de sesiones y avances
 
 ---
 
@@ -81,6 +82,8 @@
 - ✅ **80+ Índices Optimizados** - Queries optimizadas
 - ✅ **65+ Políticas RLS** - Seguridad completa
 - ✅ **12 Triggers Activos** - Automatización de procesos
+- ✅ **Docker Build Exitoso** - Imagen `complicesconecta:latest` creada (191.9s)
+- ✅ **Backup Consolidado** - Actualizado y verificado
 
 #### 🔧 Refactorización Completa v3.5.0
 - ✅ **PostCSS Config** - Corregido Tailwind v3 vs v4 (ROOT CAUSE)
