@@ -56,6 +56,9 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
   },
 });
 
+// Reinicializar Neo4jService con variables de entorno cargadas
+neo4jService.reinitialize();
+
 interface SyncOptions {
   usersOnly?: boolean;
   matchesOnly?: boolean;
@@ -73,7 +76,7 @@ async function syncUsers(batchSize: number = 100): Promise<void> {
   while (hasMore) {
     const { data: profiles, error } = await supabase
       .from('profiles')
-      .select('id, user_id, name, email, age, location, gender, created_at')
+      .select('id, user_id, name, age, location, gender, created_at')
       .range(offset, offset + batchSize - 1)
       .order('created_at', { ascending: true });
 
@@ -112,7 +115,7 @@ async function syncMatches(batchSize: number = 100): Promise<void> {
   while (hasMore) {
     const { data: matches, error } = await supabase
       .from('matches')
-      .select('id, user1_id, user2_id, created_at, score')
+      .select('*')
       .range(offset, offset + batchSize - 1)
       .order('created_at', { ascending: true });
 
@@ -127,7 +130,12 @@ async function syncMatches(batchSize: number = 100): Promise<void> {
     }
 
     for (const match of matches) {
-      await neo4jService.syncMatchFromPostgres(match.user1_id, match.user2_id, match);
+      // match_score puede no existir, usar 0 como default
+      const score = (match as any).match_score || (match as any).score || 0;
+      await neo4jService.syncMatchFromPostgres(match.user1_id, match.user2_id, {
+        ...match,
+        score,
+      });
       totalSynced++;
     }
 
@@ -148,14 +156,18 @@ async function syncLikes(batchSize: number = 100): Promise<void> {
   let totalSynced = 0;
 
   while (hasMore) {
+    // Nota: couple_profile_likes es para couple_profiles, no para profiles individuales
+    // Por ahora, solo sincronizamos likes si existen en la base de datos
+    // Si hay una tabla de likes para profiles individuales, usar esa en su lugar
     const { data: likes, error } = await supabase
       .from('couple_profile_likes')
-      .select('id, liker_id, liked_id, created_at')
+      .select('id, liker_profile_id, couple_profile_id, liked_at')
       .range(offset, offset + batchSize - 1)
-      .order('created_at', { ascending: true });
+      .order('liked_at', { ascending: true });
 
     if (error) {
       console.error('❌ Error obteniendo likes:', error);
+      console.log('⚠️  Nota: couple_profile_likes es para couple_profiles. Si necesitas likes de profiles individuales, usa otra tabla.');
       break;
     }
 
@@ -164,12 +176,29 @@ async function syncLikes(batchSize: number = 100): Promise<void> {
       break;
     }
 
+    // couple_profile_likes usa liker_profile_id y couple_profile_id
+    // Necesitamos obtener los user_id de los couple_profiles
     for (const like of likes) {
-      await neo4jService.createLike(like.liker_id, like.liked_id, {
-        like_id: like.id,
-        created_at: like.created_at,
-      });
-      totalSynced++;
+      // Obtener user_id de los couple_profiles
+      const { data: likerCouple } = await supabase
+        .from('couple_profiles')
+        .select('user_id')
+        .eq('id', like.liker_profile_id)
+        .single();
+      
+      const { data: likedCouple } = await supabase
+        .from('couple_profiles')
+        .select('user_id')
+        .eq('id', like.couple_profile_id)
+        .single();
+
+      if (likerCouple?.user_id && likedCouple?.user_id) {
+        await neo4jService.createLike(likerCouple.user_id, likedCouple.user_id, {
+          like_id: like.id,
+          created_at: like.liked_at,
+        });
+        totalSynced++;
+      }
     }
 
     offset += batchSize;

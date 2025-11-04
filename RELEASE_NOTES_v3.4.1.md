@@ -1,8 +1,8 @@
 # 📝 RELEASE NOTES - ComplicesConecta
 
-**Última Actualización:** 03 de Noviembre, 2025 - 22:37 hrs  
+**Última Actualización:** 05 de Noviembre, 2025  
 **Versión Actual:** v3.5.0  
-**Estado:** ✅ **PRODUCTION READY - ENTERPRISE GRADE - AI-NATIVE - REFACTORIZADO - DOCKER BUILD SUCCESSFUL**
+**Estado:** ✅ **PRODUCTION READY - ENTERPRISE GRADE - AI-NATIVE - REFACTORIZADO - DOCKER BUILD SUCCESSFUL - NEO4J OPERATIVO**
 
 ---
 
@@ -212,6 +212,14 @@
 - ✅ `src/lib/env-utils.ts` - Helper para variables de entorno
 - ✅ `src/lib/logger.ts` - Actualizado para compatibilidad Vite/Node.js
 - ✅ Scripts cargan variables de entorno con `dotenv`
+
+**6. Correcciones y Optimizaciones Neo4j (05 Nov 2025)** ✅
+- ✅ Script `sync-postgres-to-neo4j.ts` corregido: Columnas ajustadas a schema real (name en lugar de email, select('*') para matches)
+- ✅ `Neo4jService.createUser()` corregido: Metadata aplanado (Neo4j no soporta objetos anidados)
+- ✅ Query Cypher corregida: Sintaxis `ON CREATE SET` y `ON MATCH SET` válida
+- ✅ Script `setup-neo4j-indexes.ts` creado: Configuración automática de índices y constraints
+- ✅ Script `setup:neo4j-indexes` agregado a package.json
+- ✅ Sincronización exitosa: 4 usuarios sincronizados correctamente
 
 **Mejoras Esperadas:**
 - Amigos mutuos: 2s → 10ms (200x mejora)

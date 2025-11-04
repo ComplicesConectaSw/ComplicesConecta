@@ -77,11 +77,13 @@ Este reporte consolida toda la información del proyecto ComplicesConecta v3.5.0
    - Volúmenes: data, logs, import, plugins
    - Health check configurado
 
-3. **`scripts/sync-postgres-to-neo4j.ts`** ✅
+3. **`scripts/sync-postgres-to-neo4j.ts`** ✅ (ACTUALIZADO 05 Nov 2025)
    - Script de sincronización inicial
    - Sincroniza: usuarios, matches, likes
    - Batch processing (100 registros)
    - Carga variables de entorno con dotenv
+   - **Correcciones:** Columnas corregidas (name en lugar de email/first_name/last_name, select('*') para matches, couple_profile_likes con liker_profile_id)
+   - **Metadata aplanado:** Neo4j no soporta objetos anidados, metadata se aplana correctamente
 
 4. **`scripts/verify-neo4j.ts`** ✅
    - Script de verificación de conexión
@@ -93,10 +95,10 @@ Este reporte consolida toda la información del proyecto ComplicesConecta v3.5.0
    - Compatible con Vite (`import.meta.env`) y Node.js (`process.env`)
    - Funciones: `getEnvVar()`, `getViteEnv()`, `isDevelopment()`, `isProduction()`
 
-6. **`package.json`** ✅
+6. **`package.json`** ✅ (ACTUALIZADO 05 Nov 2025)
    - Dependencia `neo4j-driver@^5.15.0` instalada
    - Dependencia `dotenv` instalada
-   - Scripts: `sync:neo4j`, `verify:neo4j`
+   - Scripts: `sync:neo4j`, `verify:neo4j`, `setup:neo4j-indexes` (NUEVO)
 
 #### Funcionalidades Implementadas:
 
@@ -152,6 +154,13 @@ Este reporte consolida toda la información del proyecto ComplicesConecta v3.5.0
 - Error de linting en `logger.warn()` → Corregido (usar objeto en lugar de string)
 - Error de resolución de módulo `neo4j-driver` → Corregido en ESLint config
 - Query Cypher en `getFriendsOfFriends()` → Corregido
+- **Error de columnas en sync-postgres-to-neo4j.ts** (05 Nov 2025):
+  - `profiles.email` no existe → Usar `name` (columna existe)
+  - `matches.match_score` no existe → Usar `select('*')` y mapear dinámicamente
+  - `couple_profile_likes.liker_id` no existe → Usar `liker_profile_id` y `couple_profile_id`
+- **Error de metadata anidado en Neo4j** (05 Nov 2025):
+  - Neo4j no soporta objetos anidados → Metadata aplanado en `createUser()`
+  - Query Cypher `ON CREATE SET` corregida → Sintaxis correcta con `ON CREATE` y `ON MATCH`
 
 ---
 
@@ -811,12 +820,14 @@ conecta-social-comunidad-main/
 - [x] Instalar dependencias (neo4j-driver, dotenv)
 - [x] Iniciar Neo4j con Docker Compose
 
-### Configuración: ⏳
+### Configuración: ✅ COMPLETADO (05 Nov 2025)
 - [x] Instalar dependencias (`npm install`) ✅
 - [x] Iniciar Neo4j (`docker-compose up -d neo4j`) ✅
-- [ ] Configurar variables de entorno en `.env` (pendiente agregar service role key)
-- [ ] Ejecutar verificación (`npm run verify:neo4j`)
-- [ ] Ejecutar sincronización inicial (`npm run sync:neo4j`)
+- [x] Configurar variables de entorno en `.env` ✅ (VITE_SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY agregados)
+- [x] Ejecutar verificación (`npm run verify:neo4j`) ✅ (Conexión exitosa)
+- [x] Ejecutar sincronización inicial (`npm run sync:neo4j`) ✅ (4 usuarios sincronizados, 0 matches/likes por falta de datos en BD)
+- [x] Script de setup de índices creado (`setup-neo4j-indexes.ts`) ✅
+- [x] Script `setup:neo4j-indexes` agregado a package.json ✅
 
 ---
 
@@ -895,9 +906,11 @@ El proyecto **ComplicesConecta v3.5.0** está en un estado excelente:
 - ✅ **Production Ready:** AI-Native, Enterprise Grade
 
 **Próximos Pasos Inmediatos:**
-1. Agregar Service Role Key a `.env`
-2. Ejecutar verificación Neo4j
-3. Ejecutar sincronización inicial
+1. ✅ Agregar Service Role Key a `.env` (COMPLETADO 05 Nov 2025)
+2. ✅ Ejecutar verificación Neo4j (COMPLETADO 05 Nov 2025)
+3. ✅ Ejecutar sincronización inicial (COMPLETADO 05 Nov 2025 - 4 usuarios sincronizados)
+4. ⏳ Ejecutar setup de índices (`npm run setup:neo4j-indexes`)
+5. ⏳ Verificar que estadísticas del grafo muestren usuarios correctamente
 
 ---
 

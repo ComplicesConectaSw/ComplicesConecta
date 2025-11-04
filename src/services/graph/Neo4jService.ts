@@ -54,6 +54,7 @@ class Neo4jService {
   private driver: Driver | null = null;
   private config: Neo4jConfig;
   private isEnabled: boolean;
+  private initialized: boolean = false;
 
   constructor() {
     this.config = {
@@ -65,10 +66,65 @@ class Neo4jService {
 
     this.isEnabled = getViteEnv('NEO4J_ENABLED') === 'true';
 
+    // Solo inicializar si las variables están disponibles (contexto Vite)
+    // En scripts Node.js, se llamará reinitialize() después de cargar .env
+    if (this.isEnabled && (typeof import.meta !== 'undefined' && import.meta.env)) {
+      this.initializeDriver();
+    }
+    // No mostrar advertencia en el constructor, se mostrará en reinitialize() si es necesario
+  }
+
+  /**
+   * Reinicializa el servicio con nuevas variables de entorno
+   * Útil para scripts Node.js que cargan .env después de la importación
+   */
+  reinitialize(): void {
+    // Cerrar driver existente de forma síncrona si es posible
+    if (this.driver) {
+      // Cerrar el driver de forma síncrona (no esperamos el cierre completo)
+      this.driver.close().catch(() => {
+        // Ignorar errores al cerrar
+      });
+      this.driver = null;
+    }
+
+    // Intentar obtener valores de múltiples fuentes
+    const uri = getViteEnv('NEO4J_URI') 
+      || process.env.VITE_NEO4J_URI 
+      || process.env.NEO4J_URI 
+      || 'bolt://localhost:7687';
+    
+    const user = getViteEnv('NEO4J_USER') 
+      || process.env.VITE_NEO4J_USER 
+      || process.env.NEO4J_USER 
+      || 'neo4j';
+    
+    const password = getViteEnv('NEO4J_PASSWORD') 
+      || process.env.VITE_NEO4J_PASSWORD 
+      || process.env.NEO4J_PASSWORD 
+      || 'complices2025';
+    
+    const database = getViteEnv('NEO4J_DATABASE') 
+      || process.env.VITE_NEO4J_DATABASE 
+      || process.env.NEO4J_DATABASE 
+      || 'neo4j';
+
+    this.config = { uri, user, password, database };
+
+    // Verificar si está habilitado desde múltiples fuentes
+    const enabledVite = getViteEnv('NEO4J_ENABLED');
+    const enabledProcess = process.env.VITE_NEO4J_ENABLED || process.env.NEO4J_ENABLED;
+    
+    this.isEnabled = enabledVite === 'true' 
+      || enabledProcess === 'true'
+      || enabledProcess === '1';
+
     if (this.isEnabled) {
       this.initializeDriver();
+      this.initialized = true;
     } else {
-      logger.info('⚠️ Neo4j está deshabilitado. Set VITE_NEO4J_ENABLED=true para habilitar.');
+      console.log('[INFO] ⚠️ Neo4j está deshabilitado. Set VITE_NEO4J_ENABLED=true para habilitar.');
+      this.initialized = false;
     }
   }
 
@@ -131,19 +187,32 @@ class Neo4jService {
 
     const session = this.driver.session({ database: this.config.database });
     try {
+      // Aplanar metadata para Neo4j (no soporta objetos anidados)
+      const flatMetadata: Record<string, any> = {
+        id: userId,
+      };
+      
+      if (metadata.name) flatMetadata.name = metadata.name;
+      if (metadata.email) flatMetadata.email = metadata.email;
+      if (metadata.createdAt) flatMetadata.created_at = metadata.createdAt;
+      if (metadata.metadata) {
+        // Aplanar metadata anidado
+        if (metadata.metadata.age) flatMetadata.age = metadata.metadata.age;
+        if (metadata.metadata.location) flatMetadata.location = metadata.metadata.location;
+        if (metadata.metadata.gender) flatMetadata.gender = metadata.metadata.gender;
+      }
+
       await session.run(
         `
         MERGE (u:User {id: $userId})
-        SET u += $metadata,
-            u.updated_at = datetime()
-        ON CREATE SET u.created_at = datetime()
+        ON CREATE SET u.created_at = datetime(),
+                     u += $metadata
+        ON MATCH SET u += $metadata,
+                     u.updated_at = datetime()
         `,
         {
           userId,
-          metadata: {
-            ...metadata,
-            id: userId,
-          },
+          metadata: flatMetadata,
         }
       );
 
@@ -379,9 +448,15 @@ class Neo4jService {
    * Sincroniza un usuario desde PostgreSQL a Neo4j
    */
   async syncUserFromPostgres(userId: string, profileData: Record<string, any>): Promise<void> {
+    // Usar name si existe, sino usar first_name + last_name
+    const displayName = profileData.name || 
+      (profileData.first_name && profileData.last_name 
+        ? `${profileData.first_name} ${profileData.last_name}` 
+        : profileData.first_name || profileData.last_name || null);
+    
     await this.createUser(userId, {
-      name: profileData.name,
-      email: profileData.email,
+      name: displayName || undefined,
+      email: profileData.email || undefined, // email puede no existir en la tabla
       createdAt: profileData.created_at,
       metadata: {
         age: profileData.age,

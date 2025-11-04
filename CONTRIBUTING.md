@@ -560,11 +560,11 @@ Al contribuir a ComplicesConecta, aceptas que tus contribuciones serán licencia
 
 <div align="center">
 
-### 🤝 # 🤝 CONTRIBUTING - ComplicesConecta v3.3.0
+### 🤝 # 🤝 CONTRIBUTING - ComplicesConecta v3.5.0
 
-**Última Actualización:** 23 de Septiembre, 2025 - 10:46 hrs  
-**Versión:** 3.3.0  
-**Estado:** ✅ **PRODUCTION READY ENHANCED**
+**Última Actualización:** 05 de Noviembre, 2025  
+**Versión:** 3.5.0  
+**Estado:** ✅ **PRODUCTION READY ENHANCED** + **NEO4J INTEGRATION**
 
 **[Crear Issue](https://github.com/ComplicesConectaSw/ComplicesConecta/issues/new)** | **[Fork Proyecto](https://github.com/ComplicesConectaSw/ComplicesConecta/fork)** | **[Ver Documentación](./docs-unified/)**
 

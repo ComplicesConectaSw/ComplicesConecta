@@ -39,6 +39,9 @@ async function verify() {
   console.log('🔍 Verificando conexión con Neo4j...\n');
 
   try {
+    // Reinicializar Neo4jService con variables de entorno cargadas
+    neo4jService.reinitialize();
+
     // Verificar conexión
     const isConnected = await neo4jService.verifyConnection();
 

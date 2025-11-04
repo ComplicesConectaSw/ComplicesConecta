@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.5.0] - 2025-11-05
+
+### Fixed - Neo4j Integration Corrections
+- **sync-postgres-to-neo4j.ts**: Fixed column references (name instead of email/first_name/last_name, select('*') for matches)
+- **Neo4jService.createUser()**: Fixed nested metadata issue (Neo4j doesn't support nested objects, metadata flattened)
+- **Query Cypher**: Fixed syntax with correct `ON CREATE SET` and `ON MATCH SET` clauses
+- **couple_profile_likes**: Fixed column references (liker_profile_id and couple_profile_id instead of liker_id/liked_id)
+
+### Added - Neo4j Setup Script
+- **setup-neo4j-indexes.ts**: New script for automatic Neo4j index and constraint setup
+- **setup:neo4j-indexes**: New npm script added to package.json
+
+### Updated - Neo4j Status
+- **Operational**: Neo4j running, connection verified, 4 users synchronized successfully
+- **Environment Variables**: VITE_SUPABASE_ANON_KEY and SUPABASE_SERVICE_ROLE_KEY added to .env
+
+### Updated - Documentation
+- All documentation files updated to reflect Neo4j operational status
+- Corrections and optimizations documented in all relevant files
+
 ## [3.3.0] - 2025-09-23
 
 ### Added - Dashboard Administrativo

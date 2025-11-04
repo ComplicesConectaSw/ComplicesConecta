@@ -664,10 +664,11 @@ Los tests que fallan están relacionados con mocks de Supabase que no implementa
   - `src/lib/logger.ts` - Actualizado para compatibilidad Vite/Node.js
   - Scripts cargan variables de entorno con `dotenv`
 
-- ✅ **Variables de Entorno**:
+- ✅ **Variables de Entorno** (ACTUALIZADO 05 Nov 2025):
   - Configuradas en `.env`: `VITE_NEO4J_ENABLED`, `VITE_NEO4J_URI`, `VITE_NEO4J_USER`, `VITE_NEO4J_PASSWORD`, `VITE_NEO4J_DATABASE`
   - `VITE_SUPABASE_URL` verificado: `https://axtvqnozatbmllvwzuim.supabase.co`
-  - `SUPABASE_SERVICE_ROLE_KEY` configurado
+  - `VITE_SUPABASE_ANON_KEY` agregado (05 Nov 2025)
+  - `SUPABASE_SERVICE_ROLE_KEY` configurado (05 Nov 2025)
 
 - ✅ **Dependencias**:
   - `neo4j-driver@^5.15.0` instalado
@@ -678,11 +679,27 @@ Los tests que fallan están relacionados con mocks de Supabase que no implementa
 - ✅ **SUGERENCIAS_ADICIONALES_IMPLEMENTACION_NEO4J_v3.5.0.md**: Sugerencias adicionales
 - ✅ Documentos consolidados: `IMPLEMENTACION_NEO4J_COMPLETADA_v3.5.0.md` y `NEXT_STEPS_NEO4J_INTEGRATION_v3.5.0.md` → `GUIA_COMPLETA_NEO4J_v3.5.0.md`
 
+### Correcciones y Optimizaciones (05 Nov 2025)
+- ✅ **Script sync-postgres-to-neo4j.ts corregido:**
+  - Columnas ajustadas: `name` en lugar de `email/first_name/last_name` (schema real)
+  - `matches` usa `select('*')` para evitar errores de columnas inexistentes
+  - `couple_profile_likes` usa `liker_profile_id` y `couple_profile_id` (schema real)
+- ✅ **Neo4jService.createUser() corregido:**
+  - Metadata aplanado (Neo4j no soporta objetos anidados)
+  - Query Cypher corregida: Sintaxis `ON CREATE SET` y `ON MATCH SET` válida
+- ✅ **Script setup-neo4j-indexes.ts creado:**
+  - Configuración automática de índices y constraints
+  - Script `setup:neo4j-indexes` agregado a package.json
+- ✅ **Sincronización exitosa:**
+  - 4 usuarios sincronizados correctamente
+  - 0 matches/likes sincronizados (no hay datos en BD para sincronizar)
+
 ### Próximos Pasos
-- ⏳ Iniciar Neo4j con Docker Compose (`docker-compose up -d neo4j`)
-- ⏳ Ejecutar verificación (`npm run verify:neo4j`)
-- ⏳ Ejecutar sincronización inicial (`npm run sync:neo4j`)
+- ✅ Iniciar Neo4j con Docker Compose (`docker-compose up -d neo4j`) - COMPLETADO 03 Nov 2025
+- ✅ Ejecutar verificación (`npm run verify:neo4j`) - COMPLETADO 05 Nov 2025 (Conexión exitosa)
+- ✅ Ejecutar sincronización inicial (`npm run sync:neo4j`) - COMPLETADO 05 Nov 2025 (4 usuarios sincronizados)
 - ⏳ Probar integración con SmartMatchingService
+- ⏳ Ejecutar setup de índices (`npm run setup:neo4j-indexes`)
 
 ### Beneficios Esperados
 - **Amigos Mutuos**: ~2s (PostgreSQL) → ~10ms (Neo4j) = **200x mejora**

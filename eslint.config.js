@@ -31,7 +31,10 @@ export default [
       'respaldo_auditoria/**',
       'backups/**',
       '**/*.bak',
-      '**/BACKUP_*'
+      '**/BACKUP_*',
+      '**/*.ps1',
+      '**/*.min.js',
+      '**/*.bundle.js'
     ],
     rules: {
       // Reglas generales sin plugins

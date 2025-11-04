@@ -125,9 +125,10 @@ conecta-social-comunidad-main/
 │       ├── 20251029100000_create_interests_tables.sql         # Tablas intereses (NUEVO v3.4.1)
 │       ├── 20251029100001_create_worldid_verifications.sql    # World ID (NUEVO v3.4.1)
 │       └── 20251030000001_alter_referral_rewards.sql          # Referral rewards (NUEVO v3.4.1)
-├── scripts/                      # Scripts de utilidad (16+ scripts)
-│   ├── sync-postgres-to-neo4j.ts              # Sincronización PostgreSQL → Neo4j (NUEVO v3.5.0)
-│   └── verify-neo4j.ts                        # Verificación conexión Neo4j (NUEVO v3.5.0)
+├── scripts/                      # Scripts de utilidad (17+ scripts)
+│   ├── sync-postgres-to-neo4j.ts              # Sincronización PostgreSQL → Neo4j (NUEVO v3.5.0, CORREGIDO 05 Nov 2025)
+│   ├── verify-neo4j.ts                        # Verificación conexión Neo4j (NUEVO v3.5.0)
+│   └── setup-neo4j-indexes.ts                # Setup de índices Neo4j (NUEVO v3.5.0)
 ├── docker-compose.yml            # Docker Compose con Neo4j (ACTUALIZADO v3.5.0)
 ├── android/                      # Proyecto Android nativo
 ├── kubernetes/                   # Configs Datadog/K8s (NUEVO v3.4.1)
