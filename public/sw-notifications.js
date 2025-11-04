@@ -5,7 +5,7 @@ const CACHE_NAME = 'notifications-v1';
 const NOTIFICATION_TAG = 'complices-conecta-notification';
 
 // Instalar Service Worker
-self.addEventListener('install', (_event) => {
+self.addEventListener('install', () => {
   console.log('🔧 Service Worker instalado');
   self.skipWaiting();
 });

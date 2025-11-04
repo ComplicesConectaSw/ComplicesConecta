@@ -420,7 +420,7 @@ class SustainableEventsService {
   /**
    * Obtiene estadísticas de sostenibilidad de un usuario
    */
-  async getUserSustainabilityStats(userId: string): Promise<{
+  async getUserSustainabilityStats(_userId: string): Promise<{
     eventsAttended: number;
     totalCMPXEarned: number;
     totalCarbonSaved: number; // kg CO2

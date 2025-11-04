@@ -1,5 +1,4 @@
 // Service Worker Avanzado - ComplicesConecta v2.9.0
-const CACHE_NAME = 'complicesconecta-v2.9.0';
 const STATIC_CACHE = 'static-v2.9.0';
 const DYNAMIC_CACHE = 'dynamic-v2.9.0';
 const IMAGE_CACHE = 'images-v2.9.0';
@@ -230,7 +229,7 @@ async function networkFirst(request, cacheName) {
     const response = await fetch(request);
     cache.put(request, response.clone());
     return response;
-  } catch (error) {
+  } catch {
     const cached = await cache.match(request);
     return cached || new Response('Offline', { status: 503 });
   }
@@ -290,7 +289,7 @@ async function handleImageRequest(request) {
     }
     
     return response;
-  } catch (error) {
+  } catch {
     // Retornar placeholder en caso de error
     return cache.match('/placeholder.svg') || 
            new Response('', { status: 404 });
