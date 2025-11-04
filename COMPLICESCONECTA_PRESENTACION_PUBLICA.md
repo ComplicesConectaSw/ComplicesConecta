@@ -58,7 +58,7 @@ Nuestro sistema de mensajería no es solo texto. Incluye:
 
 ### Arquitectura Empresarial
 
-- **Base de datos escalable**: 107 tablas optimizadas para manejar crecimiento masivo (PostgreSQL/Supabase)
+- **Base de datos escalable**: 113 tablas en remoto, 66 en local (PostgreSQL/Supabase) - Optimizadas para manejar crecimiento masivo
 - **Neo4j Graph Database**: Base de datos de grafo para conexiones sociales (200x más rápido que PostgreSQL)
   - **¿Qué es Neo4j?** Es una base de datos de grafos que almacena relaciones entre usuarios como conexiones directas (nodos y relaciones)
   - **¿Para qué sirve?** Permite encontrar amigos mutuos en ~10ms (vs 2s en PostgreSQL), recomendaciones "friends of friends" en ~50ms (vs 10s), y calcular el camino más corto entre usuarios
