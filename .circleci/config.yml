@@ -25,10 +25,14 @@ jobs:
     environment:
       <<: *environment
     steps:
+      - run:
+          name: Configurar Git para usar HTTPS
+          command: |
+            git config --global url."https://github.com/".insteadOf git@github.com:
+            git config --global url."https://".insteadOf git://
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
           path: ~/project  # Directorio de trabajo
-          repository: https://github.com/ComplicesConectaSw/ComplicesConecta.git  # URL HTTPS explícita
       - restore_cache:
           <<: *cache_key
       - run:
@@ -54,10 +58,14 @@ jobs:
       <<: *environment
       PATH: "${PATH}:${HOME}/.local/bin:${CIRCLE_WORKING_DIRECTORY}/node_modules/.bin"
     steps:
+      - run:
+          name: Configurar Git para usar HTTPS
+          command: |
+            git config --global url."https://github.com/".insteadOf git@github.com:
+            git config --global url."https://".insteadOf git://
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
           path: ~/project  # Directorio de trabajo
-          repository: https://github.com/ComplicesConectaSw/ComplicesConecta.git  # URL HTTPS explícita
       - restore_cache:
           <<: *cache_key
       - run:
@@ -89,10 +97,14 @@ jobs:
       <<: *environment
       PATH: "${PATH}:${HOME}/.local/bin:${CIRCLE_WORKING_DIRECTORY}/node_modules/.bin"
     steps:
+      - run:
+          name: Configurar Git para usar HTTPS
+          command: |
+            git config --global url."https://github.com/".insteadOf git@github.com:
+            git config --global url."https://".insteadOf git://
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
           path: ~/project  # Directorio de trabajo
-          repository: https://github.com/ComplicesConectaSw/ComplicesConecta.git  # URL HTTPS explícita
       - restore_cache:
           <<: *cache_key
       - run:
