@@ -3,9 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Coins, Gift, Users, TrendingUp, Copy, Check } from 'lucide-react';
+import { Coins, Gift, Users, TrendingUp, Copy, Check, Sparkles, Image as ImageIcon } from 'lucide-react';
 import { getUserTokenBalance, processReferralReward, validateReferralCode, TOKEN_CONFIG } from '@/lib/tokens';
 import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 interface TokenBalanceProps {
   userId: string;
@@ -17,6 +18,7 @@ export function TokenBalance({ userId }: TokenBalanceProps) {
   const [isProcessing, setIsProcessing] = useState(false);
   const [copied, setCopied] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setBalance(getUserTokenBalance(userId));
@@ -210,6 +212,45 @@ export function TokenBalance({ userId }: TokenBalanceProps) {
         </CardContent>
       </Card>
 
+      {/* Galerías NFT */}
+      <Card className="bg-gradient-to-r from-purple-900/80 to-indigo-900/80 backdrop-blur-sm border border-white/10">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-white">
+            <Sparkles className="h-5 w-5 text-purple-400" />
+            Galerías NFT-Verificadas
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="text-sm text-white/80">
+            Convierte tus galerías en NFTs verificados usando tokens <strong className="text-purple-300">GTK</strong>. 
+            Verifica la autenticidad de tus fotos en blockchain.
+          </div>
+          
+          <div className="grid grid-cols-2 gap-3 text-sm">
+            <div className="p-3 bg-white/10 rounded-lg">
+              <div className="text-white/70 mb-1">Costo Galería</div>
+              <div className="text-lg font-semibold text-white">1,000 GTK</div>
+            </div>
+            <div className="p-3 bg-white/10 rounded-lg">
+              <div className="text-white/70 mb-1">Costo Imagen</div>
+              <div className="text-lg font-semibold text-white">100 GTK</div>
+            </div>
+          </div>
+
+          <Button
+            onClick={() => navigate('/profile?tab=nft-galleries')}
+            className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white"
+          >
+            <ImageIcon className="h-4 w-4 mr-2" />
+            Gestionar Galerías NFT
+          </Button>
+
+          <div className="text-xs text-white/60 text-center">
+            💡 Los NFTs se activarán en blockchain en Q2 2026. Actualmente en preparación.
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Información del Sistema */}
       <Card className="bg-card/80 backdrop-blur-sm border border-primary/10">
         <CardContent className="pt-6">
@@ -234,6 +275,7 @@ export function TokenBalance({ userId }: TokenBalanceProps) {
           
           <div className="mt-4 text-xs text-white/60 text-center">
             Los CMPX son tokens internos de ComplicesConecta. En futuras versiones podrán convertirse en GTK (blockchain).
+            Los GTK se usan para mint NFTs y hacer staking.
           </div>
         </CardContent>
       </Card>

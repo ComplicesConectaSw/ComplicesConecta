@@ -14,7 +14,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Upload, X, Image as ImageIcon } from 'lucide-react';
+import { Upload, X, Image as ImageIcon, Sparkles } from 'lucide-react';
 // import { imagesService } from '@/lib/images'; // Temporarily disabled - service not available
 import { useToast } from '@/hooks/use-toast';
 
@@ -34,6 +34,7 @@ export function ImageUpload({
   const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
   const [isPublic, setIsPublic] = useState(true);
+  const [addToNFTGallery, setAddToNFTGallery] = useState(false);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [uploading, setUploading] = useState(false);
@@ -194,6 +195,24 @@ export function ImageUpload({
             {isPublic ? 'Imagen pública (visible para todos)' : 'Imagen privada (requiere permiso)'}
           </Label>
         </div>
+
+        {/* Opción para agregar a galería NFT */}
+        <div className="flex items-center space-x-2 p-3 bg-purple-500/10 border border-purple-400/30 rounded-lg">
+          <Switch
+            id="add-to-nft"
+            checked={addToNFTGallery}
+            onCheckedChange={setAddToNFTGallery}
+          />
+          <Label htmlFor="add-to-nft" className="flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-purple-400" />
+            <span>Agregar a galería NFT (requiere GTK)</span>
+          </Label>
+        </div>
+        {addToNFTGallery && (
+          <div className="text-xs text-purple-300/80 bg-purple-500/10 p-2 rounded border border-purple-400/30">
+            💡 Esta imagen se agregará a una galería NFT. Para mint como NFT necesitarás 100 GTK por imagen o 1,000 GTK por galería completa.
+          </div>
+        )}
 
         {/* Metadatos opcionales */}
         <div className="space-y-2">

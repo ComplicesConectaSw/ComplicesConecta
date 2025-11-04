@@ -97,6 +97,10 @@ export function StakingModal({ isOpen, onClose }: StakingModalProps) {
                         Es como una alcancía especial: guardas tus CMPX por 30 días 
                         y al final recibes un <strong>+10% de recompensa</strong>.
                       </p>
+                      <p className="text-sm text-white/80 break-words mt-2">
+                        💡 <strong>Tip:</strong> Los tokens GTK también se pueden usar para hacer staking 
+                        (hasta 18% APY) y para mint NFTs de tus galerías (1,000 GTK por galería).
+                      </p>
                       <div className="bg-white/20 backdrop-blur-sm p-2 rounded border border-white/30">
                         <p className="text-xs text-white break-words">
                           💡 <strong>Ejemplo:</strong> Si pones 100 CMPX, en 30 días tendrás 110 CMPX

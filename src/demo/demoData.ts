@@ -109,7 +109,19 @@ export const demoProfiles = [
     id: 'demo-1',
     first_name: 'Ana',
     last_name: 'García',
-    display_name: 'Ana & Carlos'
+    display_name: 'Ana & Carlos',
+    // NFT Gallery example
+    nft_galleries: [
+      {
+        id: 'nft-demo-1',
+        gallery_name: 'Mi Verano 2025',
+        is_verified: true,
+        nft_network: 'polygon',
+        nft_token_id: '#12345',
+        minted_at: '2025-06-15T10:30:00Z',
+        images_count: 12
+      }
+    ]
   },
   {
     id: 'demo-6',
@@ -130,7 +142,19 @@ export const demoProfiles = [
     updated_at: '2024-02-20T13:10:00Z',
     avatar_url: '/profile-2.jpg',
     interests: ['negocios', 'networking', 'lujo', 'experiencias_exclusivas', 'vida_social'],
-    location: 'Tijuana, Baja California'
+    location: 'Tijuana, Baja California',
+    // NFT Gallery example
+    nft_galleries: [
+      {
+        id: 'nft-demo-6',
+        gallery_name: 'Experiencias VIP',
+        is_verified: true,
+        nft_network: 'polygon',
+        nft_token_id: '#67890',
+        minted_at: '2025-07-20T14:15:00Z',
+        images_count: 8
+      }
+    ]
   },
   {
     id: 'demo-2',
@@ -166,7 +190,28 @@ export const demoProfiles = [
     location: 'Guadalajara, México',
     interests: ['Intercambio de Parejas', 'Fiestas Temáticas', 'Clubs Privados', 'Experiencias Nuevas'],
     created_at: '2024-01-17T09:15:00Z',
-    updated_at: '2024-01-17T09:15:00Z'
+    updated_at: '2024-01-17T09:15:00Z',
+    // NFT Gallery example - Premium couple with verified NFT
+    nft_galleries: [
+      {
+        id: 'nft-demo-couple-1',
+        gallery_name: 'Aventuras Compartidas',
+        is_verified: true,
+        nft_network: 'polygon',
+        nft_token_id: '#11111',
+        minted_at: '2025-08-10T16:45:00Z',
+        images_count: 20
+      },
+      {
+        id: 'nft-demo-couple-2',
+        gallery_name: 'Momentos Especiales',
+        is_verified: true,
+        nft_network: 'polygon',
+        nft_token_id: '#22222',
+        minted_at: '2025-09-05T11:20:00Z',
+        images_count: 15
+      }
+    ]
   },
   {
     id: 'demo-3',
@@ -184,7 +229,19 @@ export const demoProfiles = [
     location: 'Monterrey, México',
     interests: ['Arte Erótico', 'Fotografía Erótica', 'Ambiente Sensual', 'Conexiones Auténticas'],
     created_at: '2024-01-18T16:45:00Z',
-    updated_at: '2024-01-18T16:45:00Z'
+    updated_at: '2024-01-18T16:45:00Z',
+    // NFT Gallery example - Artist with verified NFT portfolio
+    nft_galleries: [
+      {
+        id: 'nft-demo-3',
+        gallery_name: 'Portafolio Artístico',
+        is_verified: true,
+        nft_network: 'polygon',
+        nft_token_id: '#33333',
+        minted_at: '2025-05-12T09:00:00Z',
+        images_count: 25
+      }
+    ]
   },
   {
     id: 'demo-4',

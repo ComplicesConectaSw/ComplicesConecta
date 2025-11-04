@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useTokens } from '@/hooks/useTokens';
-import { Coins, TrendingUp, Lock, Gift, Users, Calendar } from 'lucide-react';
+import { Coins, TrendingUp, Lock, Gift, Users, Calendar, Sparkles } from 'lucide-react';
 
 export function TokenDashboard() {
   const {
@@ -280,6 +280,44 @@ export function TokenDashboard() {
                 💰 <strong>Gana 50 CMPX</strong> por cada amigo que invites y se registre.
                 Tu amigo también recibe <strong>50 CMPX de bienvenida</strong>.
               </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Galerías NFT-Verificadas */}
+      <Card className="bg-gradient-to-r from-purple-900/80 to-indigo-900/80 backdrop-blur-md border-white/20 shadow-xl">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-white">
+            <Sparkles className="h-5 w-5" />
+            🎨 Galerías NFT-Verificadas
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="bg-purple-500/20 backdrop-blur-sm p-4 rounded-lg border border-purple-400/30">
+              <p className="text-sm text-white mb-2">
+                💡 <strong>¿Qué son los NFTs?</strong>
+              </p>
+              <p className="text-sm text-white/90 break-words">
+                Convierte tus galerías en NFTs verificados usando tokens GTK. 
+                Verifica la autenticidad de tus fotos en blockchain y aumenta el valor de tu perfil.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="p-3 bg-white/20 backdrop-blur-sm rounded-lg border border-white/30">
+                <div className="text-xs text-white/70 mb-1">Costo Galería</div>
+                <div className="text-lg font-semibold text-white">1,000 GTK</div>
+              </div>
+              <div className="p-3 bg-white/20 backdrop-blur-sm rounded-lg border border-white/30">
+                <div className="text-xs text-white/70 mb-1">Costo Imagen</div>
+                <div className="text-lg font-semibold text-white">100 GTK</div>
+              </div>
+            </div>
+
+            <div className="text-xs text-white/60 text-center">
+              ⚠️ Los NFTs se activarán en blockchain en Q2 2026. Actualmente en preparación.
             </div>
           </div>
         </CardContent>

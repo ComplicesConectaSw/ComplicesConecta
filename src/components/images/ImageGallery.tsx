@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Eye, Lock, Unlock, Trash2, MessageSquare } from 'lucide-react';
+import { Eye, Lock, Unlock, Trash2, MessageSquare, Sparkles } from 'lucide-react';
 import { getUserImages, deleteImage, ImageUpload } from '@/lib/images';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
@@ -268,8 +268,8 @@ function ImageCard({ image, isOwner, onView, onDelete }: ImageCardProps) {
           </Button>
         </div>
 
-        {/* Badge de privacidad */}
-        <div className="absolute top-2 left-2">
+        {/* Badges de privacidad y NFT */}
+        <div className="absolute top-2 left-2 flex flex-col gap-1">
           <Badge variant={image.is_public ? "default" : "secondary"} className="text-xs">
             {image.is_public ? (
               <Unlock className="h-3 w-3 mr-1" />
@@ -278,6 +278,13 @@ function ImageCard({ image, isOwner, onView, onDelete }: ImageCardProps) {
             )}
             {image.is_public ? 'Pública' : 'Privada'}
           </Badge>
+          {/* Badge NFT si la imagen está en una galería NFT */}
+          {(image as any).is_nft_verified && (
+            <Badge variant="outline" className="text-xs bg-purple-500/20 border-purple-400/50 text-purple-200">
+              <Sparkles className="h-3 w-3 mr-1" />
+              NFT-Verificado
+            </Badge>
+          )}
         </div>
 
         {/* Botón eliminar para propietario */}
