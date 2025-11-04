@@ -110,16 +110,17 @@ export const demoProfiles = [
     first_name: 'Ana',
     last_name: 'García',
     display_name: 'Ana & Carlos',
-    // NFT Gallery example
+    // NFT Gallery example - Lifestyle Swinger
     nft_galleries: [
       {
         id: 'nft-demo-1',
-        gallery_name: 'Mi Verano 2025',
+        gallery_name: 'Aventuras Lifestyle',
         is_verified: true,
         nft_network: 'polygon',
         nft_token_id: '#12345',
         minted_at: '2025-06-15T10:30:00Z',
-        images_count: 12
+        images_count: 12,
+        description: 'Galería NFT verificada de experiencias compartidas en el lifestyle'
       }
     ]
   },
@@ -143,16 +144,17 @@ export const demoProfiles = [
     avatar_url: '/profile-2.jpg',
     interests: ['negocios', 'networking', 'lujo', 'experiencias_exclusivas', 'vida_social'],
     location: 'Tijuana, Baja California',
-    // NFT Gallery example
+    // NFT Gallery example - Business & Lifestyle
     nft_galleries: [
       {
         id: 'nft-demo-6',
-        gallery_name: 'Experiencias VIP',
+        gallery_name: 'Eventos Exclusivos',
         is_verified: true,
         nft_network: 'polygon',
         nft_token_id: '#67890',
         minted_at: '2025-07-20T14:15:00Z',
-        images_count: 8
+        images_count: 8,
+        description: 'Galería NFT de eventos exclusivos y experiencias premium'
       }
     ]
   },
@@ -195,21 +197,23 @@ export const demoProfiles = [
     nft_galleries: [
       {
         id: 'nft-demo-couple-1',
-        gallery_name: 'Aventuras Compartidas',
+        gallery_name: 'Encuentros Lifestyle',
         is_verified: true,
         nft_network: 'polygon',
         nft_token_id: '#11111',
         minted_at: '2025-08-10T16:45:00Z',
-        images_count: 20
+        images_count: 20,
+        description: 'Galería NFT verificada de encuentros y experiencias compartidas'
       },
       {
         id: 'nft-demo-couple-2',
-        gallery_name: 'Momentos Especiales',
+        gallery_name: 'Fiestas Privadas',
         is_verified: true,
         nft_network: 'polygon',
         nft_token_id: '#22222',
         minted_at: '2025-09-05T11:20:00Z',
-        images_count: 15
+        images_count: 15,
+        description: 'Galería NFT de fiestas privadas y eventos exclusivos'
       }
     ]
   },
@@ -234,12 +238,13 @@ export const demoProfiles = [
     nft_galleries: [
       {
         id: 'nft-demo-3',
-        gallery_name: 'Portafolio Artístico',
+        gallery_name: 'Arte Sensual',
         is_verified: true,
         nft_network: 'polygon',
         nft_token_id: '#33333',
         minted_at: '2025-05-12T09:00:00Z',
-        images_count: 25
+        images_count: 25,
+        description: 'Galería NFT de arte erótico y fotografía sensual verificada'
       }
     ]
   },

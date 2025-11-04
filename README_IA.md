@@ -18,6 +18,7 @@
   - **v3.5.0**: `fix/wallet-errors-*` → Silenciamiento ultra agresivo de errores wallet ✅
   - **v3.5.0**: `fix/ui-visibility-*` → Correcciones de textos invisibles y colores rosa ✅
   - **v3.5.0**: `fix/navigation-conditional-*` → Navegación condicional HeaderNav/Navigation ✅
+  - **v3.5.0**: `feature/nft-integration-*` → Integración NFT en componentes de tokens e imágenes ✅
 
 2. **SQL y Backups**
    - Todos los `.sql` y migraciones quedan excluidos en `.gitignore`
@@ -27,6 +28,9 @@
    - **NUEVO v3.5.0**: 25 migraciones aplicadas (107 tablas sincronizadas 100%)
   - **NUEVO v3.5.0**: Componentes de chat implementados (ChatRoom, MessageList)
   - **NUEVO v3.5.0**: Sistema de privacidad de chat completo (ChatPrivacyService)
+  - **NUEVO v3.5.0**: Integración NFT en componentes de tokens (TokenBalance, TokenDashboard, StakingModal)
+  - **NUEVO v3.5.0**: Integración NFT en componentes de imágenes (ImageGallery, ImageUpload)
+  - **NUEVO v3.5.0**: Ejemplos de galerías NFT en perfiles demo
 
 3. **Flujo de trabajo con IA/ML**
    - IA genera migraciones o código → Validar con `npm run type-check`

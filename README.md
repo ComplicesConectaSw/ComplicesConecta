@@ -351,6 +351,7 @@ conecta-social-comunidad-main/
 │   │   ├── DataPrivacyService.ts             # GDPR compliance
 │   │   ├── UserVerificationService.ts        # Verificación unificada
 │   │   ├── TokenService.ts                   # Gestión de tokens
+│   │   ├── NFTGalleryService.ts              # Servicio de galerías NFT
 │   │   └── ... (30+ servicios más)
 │   ├── config/                   # Configuraciones
 │   │   └── sentry.config.ts      # Configuración de Sentry

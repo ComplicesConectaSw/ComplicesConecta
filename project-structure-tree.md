@@ -49,6 +49,15 @@ conecta-social-comunidad-main/
 │   │   ├── discover/             # Funcionalidad de descubrimiento
 │   │   ├── events/               # Gestión de eventos VIP
 │   │   ├── profile/              # Gestión de perfiles
+│   │   │   └── NFTGalleryManager.tsx # Gestor de galerías NFT (NUEVO v3.5.0)
+│   │   ├── tokens/               # Componentes de tokens (ACTUALIZADO v3.5.0)
+│   │   │   ├── TokenBalance.tsx       # Balance con sección NFT (NUEVO v3.5.0)
+│   │   │   ├── TokenDashboard.tsx    # Dashboard con sección NFT (NUEVO v3.5.0)
+│   │   │   ├── TokenChatBot.tsx      # Chat bot de tokens
+│   │   │   └── StakingModal.tsx       # Modal de staking con tips NFT (NUEVO v3.5.0)
+│   │   ├── images/               # Componentes de imágenes (ACTUALIZADO v3.5.0)
+│   │   │   ├── ImageGallery.tsx      # Galería con badge NFT (NUEVO v3.5.0)
+│   │   │   └── ImageUpload.tsx        # Subida con opción NFT (NUEVO v3.5.0)
 │   │   ├── ui/                   # Componentes UI base
 │   │   ├── auth/                 # Componentes de autenticación
 │   │   ├── demo/                 # Componentes de demostración
@@ -96,6 +105,7 @@ conecta-social-comunidad-main/
 │   │   ├── DataPrivacyService.ts              # GDPR compliance (NUEVO v3.5.0)
 │   │   ├── UserVerificationService.ts         # Verificación unificada (NUEVO v3.5.0)
 │   │   ├── TokenService.ts                    # Gestión de tokens (NUEVO v3.5.0)
+│   │   ├── NFTGalleryService.ts               # Servicio de galerías NFT (NUEVO v3.5.0)
 │   │   ├── PerformanceMonitoringService.ts    # Monitoreo de performance (ACTUALIZADO v3.4.1)
 │   │   ├── ErrorAlertService.ts               # Sistema de alertas (NUEVO v3.4.1)
 │   │   ├── ModerationMetricsService.ts        # Métricas de moderación (NUEVO v3.4.1)

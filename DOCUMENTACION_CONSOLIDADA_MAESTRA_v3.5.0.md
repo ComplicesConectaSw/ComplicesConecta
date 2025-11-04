@@ -371,6 +371,12 @@
 - ✅ `src/services/NFTGalleryService.ts` (412 líneas)
 - ✅ `supabase/migrations/20251105000001_create_nft_galleries.sql`
 - ✅ `src/components/profile/NFTGalleryManager.tsx` (580 líneas)
+- ✅ `src/components/tokens/TokenBalance.tsx` - Sección NFT agregada
+- ✅ `src/components/tokens/TokenDashboard.tsx` - Sección NFT agregada
+- ✅ `src/components/tokens/StakingModal.tsx` - Mencionado NFTs en tips
+- ✅ `src/components/images/ImageGallery.tsx` - Badge NFT en imágenes verificadas
+- ✅ `src/components/images/ImageUpload.tsx` - Opción para agregar a galería NFT
+- ✅ `src/demo/demoData.ts` - Ejemplos de galerías NFT en perfiles demo
 - ✅ Tipos de Supabase regenerados
 - ✅ `(as any)` removidos
 
@@ -380,7 +386,11 @@
 - ✅ Verificación de autenticidad
 - ✅ Galerías públicas/privadas
 - ✅ Metadata de NFT (contract, token ID, network)
-- ✅ UI para crear/mint galerías
+- ✅ UI para crear/mint galerías (NFTGalleryManager.tsx)
+- ✅ Integración en componentes de tokens (TokenBalance, TokenDashboard, StakingModal)
+- ✅ Integración en componentes de imágenes (ImageGallery, ImageUpload)
+- ✅ Badge NFT en imágenes verificadas
+- ✅ Ejemplos de galerías NFT en perfiles demo
 
 **Costos de Mint (GTK):**
 - Galería completa: 1,000 GTK

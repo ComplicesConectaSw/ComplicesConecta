@@ -94,7 +94,7 @@ Nuestro sistema de mensajería no es solo texto. Incluye:
 - ✅ Moderación automática y manual
 - ✅ Dashboard administrativo completo
 - ✅ **Verificador IA de Consentimiento** (cumplimiento Ley Olimpia)
-- ✅ **Galerías NFT-Verificadas** (verificación de autenticidad con blockchain)
+- ✅ **Galerías NFT-Verificadas** (verificación de autenticidad con blockchain - Integrado en TokenBalance, TokenDashboard, ImageGallery, ImageUpload)
 - ✅ **Matching Predictivo con Neo4j** (conexiones sociales inteligentes)
 - ✅ **Eventos Virtuales Sostenibles** (con tokens CMPX como recompensas)
 
