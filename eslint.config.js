@@ -8,6 +8,7 @@ import importPlugin from 'eslint-plugin-import'
 import unusedImports from 'eslint-plugin-unused-imports'
 
 export default [
+  // Ignores globales (deben estar primero)
   {
     ignores: [
       // Directorios completos generados
@@ -15,7 +16,7 @@ export default [
       'build/**',
       'node_modules/**',
       'android/**',
-      'android/app/build/**',
+      'android/app/**',
       '.vscode/**',
       'supabase/functions/**',
       'scripts/**',
@@ -38,23 +39,27 @@ export default [
       '**/*.ps1',
       '**/*.min.js',
       '**/*.bundle.js',
-      // Archivos generados específicos (dist y android build)
+      // Archivos generados específicos
       'dist/**/*.js',
       'dist/**/*.mjs',
-      'android/app/build/**/*.js',
-      'android/app/build/**/*.mjs',
+      'android/**/*.js',
+      'android/**/*.mjs',
       // Vendor files generados
       '**/vendor*.js',
       '**/vendor*.mjs',
       // Archivos en public que son generados (excepto sw.js y sw-notifications.js que son código fuente)
       'public/assets/**',
       'public/models/**',
-      'public/app-release.apk'
-    ],
-    rules: {
-      // Reglas generales sin plugins
-    }
+      'public/app-release.apk',
+      // Archivos específicos generados
+      '**/native-bridge.js',
+      '**/*-UMueESM8.js',
+      '**/*-cofmjEzh.js',
+      '**/*-BHieyP4h.js',
+      '**/*-B1Cv6Wjs.js'
+    ]
   },
+  // Configuración para archivos JS/JSX
   {
     files: ['**/*.{js,jsx}'],
     languageOptions: {
