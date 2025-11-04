@@ -4,7 +4,7 @@
  */
 
 // 1. IMPORTANTE: New Relic debe ser lo primero
-// eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line no-unused-vars, unused-imports/no-unused-imports
 // @ts-ignore - Side-effect import, no se usa directamente
 import newrelic from 'newrelic'; // Usado automáticamente por el agente (side-effect import)
 
