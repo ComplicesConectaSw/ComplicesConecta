@@ -103,4 +103,28 @@ sentry {
     // this will upload your source code to Sentry to show it as part of the stack traces
     // disable if you don't want to expose your sources
     includeSourceContext = true
+    
+    // Auto upload ProGuard/R8 mapping files (habilitado si hay token configurado)
+    autoUploadProguardMapping = project.findProperty("SENTRY_AUTH_TOKEN") != null || System.getenv("SENTRY_AUTH_TOKEN") != null
+    
+    // Auto upload source bundle files (habilitado si hay token configurado)
+    autoUploadSourceContext = project.findProperty("SENTRY_AUTH_TOKEN") != null || System.getenv("SENTRY_AUTH_TOKEN") != null
+    
+    // Skip upload tasks if no auth token is configured
+    tracingInstrumentation {
+        enabled = false
+    }
+}
+
+// Configurar token de Sentry desde gradle.properties o variable de entorno
+def sentryToken = project.findProperty("SENTRY_AUTH_TOKEN") ?: System.getenv("SENTRY_AUTH_TOKEN")
+if (sentryToken) {
+    // Sentry CLI leerá el token de gradle.properties o variable de entorno automáticamente
+    logger.info("Sentry auth token configured. Upload tasks will be enabled.")
+} else {
+    // Deshabilitar tareas de Sentry si no hay token configurado
+    tasks.matching { it.name.startsWith('uploadSentry') || it.name.startsWith('sentryBundle') }.configureEach {
+        enabled = false
+        logger.warn("Sentry auth token not configured. Skipping ${it.name} task.")
+    }
 }
