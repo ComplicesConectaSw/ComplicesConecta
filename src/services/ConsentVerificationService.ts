@@ -240,10 +240,10 @@ class ConsentVerificationService {
       // Usar AILayerService para análisis de sentimiento si está disponible
       if (this.aiLayer && metadata?.previousMessages) {
         // Analizar contexto de conversación
-        const conversationContext = metadata.previousMessages
-          .slice(-5) // Últimos 5 mensajes
-          .map(m => m.content)
-          .join(' ');
+        // const conversationContext = metadata.previousMessages
+        //   .slice(-5) // Últimos 5 mensajes
+        //   .map(m => m.content)
+        //   .join(' ');
 
         // Aquí podrías usar IA para análisis más profundo
         // Por ahora, análisis básico
@@ -278,7 +278,7 @@ class ConsentVerificationService {
    */
   private determineConsentLevel(
     patternAnalysis: { explicit: number; negative: number; ambiguous: number },
-    contextAnalysis: { sentiment: string; urgency: string; requiresExplicitConsent: boolean }
+    _contextAnalysis: { sentiment: string; urgency: string; requiresExplicitConsent: boolean }
   ): ConsentAnalysis['consentLevel'] {
     if (patternAnalysis.negative > 0 && patternAnalysis.explicit === 0) {
       return 'negative';
@@ -402,7 +402,7 @@ class ConsentVerificationService {
   private generateExplanation(
     consentLevel: ConsentAnalysis['consentLevel'],
     confidence: number,
-    context: string
+    _context: string
   ): string {
     const explanations = {
       explicit: `Consentimiento explícito detectado (${confidence}% confianza). Mensaje aprobado.`,
