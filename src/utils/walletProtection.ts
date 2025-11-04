@@ -27,6 +27,7 @@ export const initializeWalletProtection = () => {
       'cannot set property chainid',
       'cannot set property',
       'read only property',
+      'which has only a getter',
       'wallet must has at least one account',
       'wallet must have',
       'wallet must',
@@ -40,9 +41,11 @@ export const initializeWalletProtection = () => {
       'bybit:page provider',
       'bybit',
       'evmask',
-      'solana.js',
       'evmask.js',
+      'solana.js',
       'inpage.js',
+      'evmAsk.js',
+      'data-layer',
       'expression not available',
       'expression',
       'not available',
@@ -56,6 +59,7 @@ export const initializeWalletProtection = () => {
       'cannot read properties of undefined',
       'reading \'useLayoutEffect\'',
       'reading \'uselayouteffect\'',
+      'reading \'createContext\'',
       'chunk-cidlbzv5',
       'chunk-',
       'cidlbzv5',
@@ -132,12 +136,41 @@ export const initializeWalletProtection = () => {
   
   // Override Object.defineProperty with SELECTIVE protection - ULTRA AGRESIVO
   Object.defineProperty = function(obj: any, prop: string, descriptor: PropertyDescriptor) {
-    const walletProps = ['ethereum', 'solana', 'tronWeb', 'bybitWallet', 'tronweb', 'chainId'];
+    const walletProps = ['ethereum', 'solana', 'tronWeb', 'bybitWallet', 'tronweb', 'chainId', 'chainid'];
     
-    // Only block if it's trying to redefine an existing wallet property
-    if (walletProps.includes(prop.toLowerCase()) && obj === window && window[prop as keyof Window]) {
-      // Silenciar completamente - no mostrar logs, solo retornar
-      return obj;
+    // Si es una propiedad de wallet en window, permitir siempre sin errores
+    if (obj === window && walletProps.includes(prop.toLowerCase())) {
+      try {
+        // Intentar definir la propiedad normalmente
+        const existingDesc = Object.getOwnPropertyDescriptor(window, prop);
+        
+        // Si ya existe y es configurable, intentar redefinir
+        if (existingDesc && existingDesc.configurable) {
+          try {
+            return originalDefineProperty.call(this, obj, prop, descriptor);
+          } catch {
+            // Si falla, simplemente retornar el objeto sin error
+            return obj;
+          }
+        }
+        
+        // Si no es configurable, intentar hacerlo configurable primero
+        if (existingDesc && !existingDesc.configurable) {
+          // No podemos hacer nada, solo retornar sin error
+          return obj;
+        }
+        
+        // Si no existe, intentar crearlo
+        try {
+          return originalDefineProperty.call(this, obj, prop, descriptor);
+        } catch {
+          // Si falla, simplemente retornar el objeto sin error
+          return obj;
+        }
+      } catch {
+        // Cualquier error de wallet, simplemente retornar sin error
+        return obj;
+      }
     }
     
     try {
@@ -146,9 +179,11 @@ export const initializeWalletProtection = () => {
       // Only suppress wallet-related property errors
       const errorMessage = error?.message?.toLowerCase() || '';
       const isWalletError = walletProps.includes(prop.toLowerCase()) || 
-                           walletProps.some(wp => errorMessage.includes(wp));
+                           walletProps.some(wp => errorMessage.includes(wp)) ||
+                           errorMessage.includes('cannot redefine property') ||
+                           errorMessage.includes('cannot assign to read only property');
       
-      if (isWalletError) {
+      if (isWalletError && obj === window) {
         // Silenciar completamente - no mostrar logs, solo retornar
         return obj;
       }
