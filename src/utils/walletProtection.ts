@@ -241,8 +241,10 @@ export const initializeWalletProtection = () => {
   
   // Promise rejection handler - ULTRA AGRESIVO - CAPTURA TODO
   window.addEventListener('unhandledrejection', (event) => {
-    const message = (event.reason?.message || event.reason?.toString() || '').toLowerCase();
-    const stack = event.reason?.stack?.toLowerCase() || '';
+    const reason = event.reason;
+    const message = (reason?.message || reason?.toString() || '').toLowerCase();
+    const stack = reason?.stack?.toLowerCase() || '';
+    const code = reason?.code?.toString() || '';
     
     const walletErrors = [
       'wallet must has at least one account',
@@ -273,9 +275,23 @@ export const initializeWalletProtection = () => {
       '4001'
     ];
     
-    // Capturar por mensaje O stack trace
+    const walletFiles = [
+      'solana.js',
+      'inpage.js',
+      'evmask.js',
+      'evmAsk.js',
+      'dist.94abdbf1.js',
+      'data-layer',
+      'chunk',
+      'wallet'
+    ];
+    
+    // Capturar por mensaje, código, stack trace o archivos de wallet
     if (walletErrors.some(error => message.includes(error)) ||
-        walletErrors.some(error => stack.includes(error))) {
+        walletErrors.some(error => stack.includes(error)) ||
+        walletFiles.some(file => stack.includes(file)) ||
+        code === '4001' ||
+        (reason && typeof reason === 'object' && 'code' in reason && reason.code === 4001)) {
       // Silenciar completamente - detener propagación
       event.stopImmediatePropagation();
       event.preventDefault();
