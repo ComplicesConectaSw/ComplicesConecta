@@ -222,7 +222,9 @@ export const initializeWalletProtection = () => {
       'solana.js',
       'inpage.js',
       'evmask.js',
+      'evmAsk.js',
       'dist.94abdbf1.js',
+      'data-layer',
       'chunk',
       'wallet'
     ];
