@@ -26,8 +26,12 @@ export const initializeWalletProtection = () => {
       'cannot assign to read only property',
       'cannot set property chainid',
       'cannot set property',
+      'read only property',
       'wallet must has at least one account',
+      'wallet must have',
+      'wallet must',
       'metamask encountered an error',
+      'metamask encountered',
       'metamask',
       'tronweb is already initiated',
       'tronweb',
@@ -45,6 +49,7 @@ export const initializeWalletProtection = () => {
       'solana',
       'ethereum',
       'chainid',
+      'chain id',
       'chunk',
       'useLayoutEffect',
       'property',
@@ -53,14 +58,18 @@ export const initializeWalletProtection = () => {
       'reading \'uselayouteffect\'',
       'chunk-cidlbzv5',
       'chunk-',
-      'cidlbzv5'
+      'cidlbzv5',
+      'code 4001',
+      '4001'
     ];
     
     const walletFiles = [
       'solana.js',
       'inpage.js',
       'evmask.js',
+      'evmAsk.js',
       'dist.94abdbf1.js',
+      'data-layer',
       'chunk',
       'wallet',
       'metamask',
@@ -97,14 +106,20 @@ export const initializeWalletProtection = () => {
       'tronweb is already initiated',
       'tronlink will overwrite',
       'bybit:page provider inject code',
+      'bybit:page provider',
       'download the react devtools',
       'wallet',
+      'wallet must',
       'metamask',
+      'metamask encountered',
       'tronweb',
       'tronlink',
       'bybit',
       'solana',
-      'ethereum'
+      'ethereum',
+      'inpage.js',
+      'evmask.js',
+      'data-layer'
     ];
     
     // SILENCIAR COMPLETAMENTE warnings de wallet
@@ -178,18 +193,29 @@ export const initializeWalletProtection = () => {
       'cannot redefine property',
       'cannot assign to read only property',
       'cannot set property',
+      'read only property',
+      'wallet must has at least one account',
+      'wallet must have',
+      'wallet must',
       'metamask encountered an error',
+      'metamask encountered',
       'metamask',
+      'tronweb is already initiated',
       'tronweb',
+      'tronlink will overwrite',
       'tronlink',
+      'bybit:page provider',
       'bybit',
       'solana',
       'ethereum',
       'chainid',
+      'chain id',
       'wallet',
       'evmask',
       'expression not available',
-      'expression'
+      'expression',
+      'code 4001',
+      '4001'
     ];
     
     const walletFiles = [
@@ -220,19 +246,31 @@ export const initializeWalletProtection = () => {
     
     const walletErrors = [
       'wallet must has at least one account',
+      'wallet must have',
+      'wallet must',
       'cannot redefine property',
       'cannot assign to read only property',
+      'read only property',
       'cannot set property',
+      'cannot set property chainid',
+      'metamask encountered an error',
+      'metamask encountered',
       'metamask',
+      'tronweb is already initiated',
       'tronweb',
+      'tronlink will overwrite',
       'tronlink',
+      'bybit:page provider',
       'bybit',
       'solana',
       'ethereum',
       'chainid',
+      'chain id',
       'wallet',
       'evmask',
-      'chunk'
+      'chunk',
+      'code 4001',
+      '4001'
     ];
     
     // Capturar por mensaje O stack trace

@@ -109,7 +109,12 @@ if (typeof window !== 'undefined') {
       'cannot redefine property',
       'cannot assign to read only property',
       'cannot set property',
+      'read only property',
+      'wallet must has at least one account',
+      'wallet must have',
+      'wallet must',
       'metamask encountered an error',
+      'metamask encountered',
       'metamask',
       'tronweb is already initiated',
       'tronweb',
@@ -117,6 +122,7 @@ if (typeof window !== 'undefined') {
       'tronlink',
       'cannot set property chainid',
       'chainid',
+      'chain id',
       'bybit:page provider',
       'bybit',
       'evmask',
@@ -134,7 +140,9 @@ if (typeof window !== 'undefined') {
       'reading \'uselayouteffect\'',
       'chunk-cidlbzv5',
       'chunk-',
-      'cidlbzv5'
+      'cidlbzv5',
+      'code 4001',
+      '4001'
     ];
     
     const walletFiles = [
@@ -143,6 +151,7 @@ if (typeof window !== 'undefined') {
       'evmask.js',
       'evmask.js:5',
       'evmask.js:',
+      'evmAsk.js',
       'dist.94abdbf1.js',
       'dist.',
       'solana.js:3',
@@ -151,6 +160,7 @@ if (typeof window !== 'undefined') {
       'inpage.js:168',
       'inpage.js:',
       'inpage.js:1',
+      'data-layer',
       'tronlink',
       'bybit',
       'chunk',
@@ -170,18 +180,29 @@ if (typeof window !== 'undefined') {
   
   // Promise rejection handler - SILENCIAR COMPLETAMENTE TODO DE WALLETS - ULTRA AGRESIVO
   window.addEventListener('unhandledrejection', (event) => {
-    const message = (event.reason?.message || event.reason?.toString() || '').toLowerCase();
-    const stack = event.reason?.stack?.toLowerCase() || '';
+    const reason = event.reason;
+    const message = (reason?.message || reason?.toString() || '').toLowerCase();
+    const stack = reason?.stack?.toLowerCase() || '';
+    const code = reason?.code?.toString() || '';
     
     const walletErrors = [
+      'wallet must has at least one account',
+      'wallet must have',
+      'wallet must',
       'cannot redefine property',
       'cannot assign to read only property',
       'cannot set property',
       'cannot set property chainid',
+      'read only property',
       'chainid',
+      'chain id',
+      'metamask encountered an error',
       'metamask',
+      'tronweb is already initiated',
       'tronweb',
+      'tronlink will overwrite',
       'tronlink',
+      'bybit:page provider',
       'bybit',
       'solana',
       'ethereum',
@@ -195,12 +216,27 @@ if (typeof window !== 'undefined') {
       'reading \'uselayouteffect\'',
       'chunk-cidlbzv5',
       'chunk-',
-      'cidlbzv5'
+      'cidlbzv5',
+      'code 4001',
+      '4001'
     ];
     
-    // Capturar por mensaje O stack trace
+    const walletFiles = [
+      'solana.js',
+      'inpage.js',
+      'evmask.js',
+      'dist.94abdbf1.js',
+      'data-layer',
+      'chunk',
+      'wallet'
+    ];
+    
+    // Capturar por mensaje, código, stack trace o archivos de wallet
     if (walletErrors.some(error => message.includes(error)) ||
-        walletErrors.some(error => stack.includes(error))) {
+        walletErrors.some(error => stack.includes(error)) ||
+        walletFiles.some(file => stack.includes(file)) ||
+        code === '4001' ||
+        (reason && typeof reason === 'object' && 'code' in reason && reason.code === 4001)) {
       event.stopImmediatePropagation();
       event.preventDefault();
       return false;
@@ -215,6 +251,7 @@ if (typeof window !== 'undefined') {
     
     const isWalletError = [
       'wallet',
+      'wallet must',
       'ethereum',
       'solana',
       'metamask',
@@ -224,12 +261,20 @@ if (typeof window !== 'undefined') {
       'evmask',
       'cannot redefine property',
       'cannot assign to read only property',
+      'read only property',
       'cannot set property',
       'typeerror',
       'chunk',
       'useLayoutEffect',
       'property',
-      'chainid'
+      'chainid',
+      'chain id',
+      'code 4001',
+      '4001',
+      'inpage.js',
+      'evmask.js',
+      'evmAsk.js',
+      'data-layer'
     ].some(keyword => message.includes(keyword) || stack.includes(keyword));
     
     if (!isWalletError) {
@@ -245,6 +290,7 @@ if (typeof window !== 'undefined') {
     
     const isWalletWarning = [
       'wallet',
+      'wallet must',
       'ethereum',
       'solana',
       'metamask',
@@ -252,7 +298,13 @@ if (typeof window !== 'undefined') {
       'tronlink',
       'bybit',
       'evmask',
-      'chunk'
+      'chunk',
+      'tronweb is already initiated',
+      'tronlink will overwrite',
+      'bybit:page provider',
+      'inpage.js',
+      'evmask.js',
+      'data-layer'
     ].some(keyword => message.includes(keyword) || stack.includes(keyword));
     
     if (!isWalletWarning) {
