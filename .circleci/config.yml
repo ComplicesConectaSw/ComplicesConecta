@@ -27,7 +27,10 @@ jobs:
     steps:
       - run:
           name: Instalar openssh-client para checkout SSH
-          command: apt-get update && apt-get install -y openssh-client
+          command: |
+            mkdir -p /var/lib/apt/lists/partial
+            apt-get update
+            apt-get install -y openssh-client
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
       - restore_cache:
@@ -57,7 +60,10 @@ jobs:
     steps:
       - run:
           name: Instalar openssh-client para checkout SSH
-          command: apt-get update && apt-get install -y openssh-client
+          command: |
+            mkdir -p /var/lib/apt/lists/partial
+            apt-get update
+            apt-get install -y openssh-client
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
       - restore_cache:
@@ -93,7 +99,10 @@ jobs:
     steps:
       - run:
           name: Instalar openssh-client para checkout SSH
-          command: apt-get update && apt-get install -y openssh-client
+          command: |
+            mkdir -p /var/lib/apt/lists/partial
+            apt-get update
+            apt-get install -y openssh-client
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
       - restore_cache:
@@ -127,7 +136,10 @@ jobs:
     steps:
       - run:
           name: Instalar openssh-client para checkout SSH
-          command: apt-get update && apt-get install -y openssh-client
+          command: |
+            mkdir -p /var/lib/apt/lists/partial
+            apt-get update
+            apt-get install -y openssh-client
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
       - browser-tools/install-chrome
@@ -159,7 +171,10 @@ jobs:
     steps:
       - run:
           name: Instalar openssh-client para checkout SSH
-          command: apt-get update && apt-get install -y openssh-client
+          command: |
+            mkdir -p /var/lib/apt/lists/partial
+            apt-get update
+            apt-get install -y openssh-client
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
       - attach_workspace:
@@ -196,7 +211,10 @@ jobs:
     steps:
       - run:
           name: Instalar openssh-client para checkout SSH
-          command: apt-get update && apt-get install -y openssh-client
+          command: |
+            mkdir -p /var/lib/apt/lists/partial
+            apt-get update
+            apt-get install -y openssh-client
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
       - attach_workspace:
@@ -246,7 +264,10 @@ jobs:
     steps:
       - run:
           name: Instalar openssh-client para checkout SSH
-          command: apt-get update && apt-get install -y openssh-client
+          command: |
+            mkdir -p /var/lib/apt/lists/partial
+            apt-get update
+            apt-get install -y openssh-client
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
       - attach_workspace:
@@ -269,7 +290,10 @@ jobs:
     steps:
       - run:
           name: Instalar openssh-client para checkout SSH
-          command: apt-get update && apt-get install -y openssh-client
+          command: |
+            mkdir -p /var/lib/apt/lists/partial
+            apt-get update
+            apt-get install -y openssh-client
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
       - attach_workspace:
