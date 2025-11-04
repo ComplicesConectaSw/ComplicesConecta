@@ -8,6 +8,17 @@ if (typeof window !== 'undefined') {
   // Forzar React disponible globalmente de forma inmediata
   (window as any).React = React;
   
+  // CRÍTICO: Asegurar createContext disponible inmediatamente
+  if (!(window as any).React.createContext) {
+    (window as any).React.createContext = React.createContext;
+  }
+  
+  // Asegurar polyfill si existe
+  if ((window as any).__REACT_POLYFILL__ && (window as any).__REACT_POLYFILL__.createContext) {
+    // Reemplazar con el real si está disponible
+    (window as any).React.createContext = React.createContext || (window as any).__REACT_POLYFILL__.createContext;
+  }
+  
   // Asegurar TODOS los hooks críticos inmediatamente - CON FALLBACKS ROBUSTOS
   const winReact = (window as any).React;
   if (winReact) {

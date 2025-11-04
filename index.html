@@ -21,6 +21,25 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@ComplicesConectaSW" />
     <meta name="twitter:image" content="/placeholder.svg" />
+    <!-- CRÍTICO: Asegurar React disponible globalmente ANTES de chunks -->
+    <script>
+      // POLYFILL REACT: Asegurar que React.createContext esté disponible globalmente
+      // Esto debe ejecutarse ANTES de que cualquier chunk se cargue
+      if (typeof window !== 'undefined') {
+        // Crear stub de React si no existe aún
+        window.__REACT_POLYFILL__ = window.__REACT_POLYFILL__ || {};
+        window.__REACT_POLYFILL__.createContext = window.__REACT_POLYFILL__.createContext || function(defaultValue) {
+          var context = {
+            _currentValue: defaultValue,
+            Provider: null,
+            Consumer: null
+          };
+          context.Provider = { _context: context };
+          context.Consumer = { _context: context };
+          return context;
+        };
+      }
+    </script>
     <!-- SOLUCIÓN ALTERNATIVA: Hacer propiedades de wallet configurables ANTES de que las extensiones las toquen -->
     <script>
       // EJECUCIÓN INMEDIATA SIN IIFE - MÁXIMA PRIORIDAD

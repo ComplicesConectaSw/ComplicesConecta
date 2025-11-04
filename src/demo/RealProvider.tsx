@@ -4,6 +4,11 @@
  */
 
 import React, { createContext, useContext, ReactNode } from 'react';
+
+// CRÍTICO: Asegurar createContext disponible antes de usar
+const safeCreateContext = (typeof window !== 'undefined' && (window as any).React?.createContext)
+  ? (window as any).React.createContext
+  : createContext;
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
 import { Database } from '@/types/supabase';
@@ -23,7 +28,7 @@ interface RealContextType {
   };
 }
 
-const RealContext = createContext<RealContextType | null>(null);
+const RealContext = safeCreateContext<RealContextType | null>(null);
 
 interface RealProviderProps {
   children: ReactNode;
