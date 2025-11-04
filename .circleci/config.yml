@@ -27,7 +27,8 @@ jobs:
     steps:
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
-          ssh_keys: false  # Forzar uso de HTTPS en lugar de SSH
+          path: ~/project  # Directorio de trabajo
+          repository: https://github.com/ComplicesConectaSw/ComplicesConecta.git  # URL HTTPS explícita
       - restore_cache:
           <<: *cache_key
       - run:
@@ -55,7 +56,8 @@ jobs:
     steps:
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
-          ssh_keys: false  # Forzar uso de HTTPS en lugar de SSH
+          path: ~/project  # Directorio de trabajo
+          repository: https://github.com/ComplicesConectaSw/ComplicesConecta.git  # URL HTTPS explícita
       - restore_cache:
           <<: *cache_key
       - run:
@@ -89,7 +91,8 @@ jobs:
     steps:
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
-          ssh_keys: false  # Forzar uso de HTTPS en lugar de SSH
+          path: ~/project  # Directorio de trabajo
+          repository: https://github.com/ComplicesConectaSw/ComplicesConecta.git  # URL HTTPS explícita
       - restore_cache:
           <<: *cache_key
       - run:
@@ -121,7 +124,8 @@ jobs:
     steps:
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
-          ssh_keys: false  # Forzar uso de HTTPS en lugar de SSH
+          path: ~/project  # Directorio de trabajo
+          repository: https://github.com/ComplicesConectaSw/ComplicesConecta.git  # URL HTTPS explícita
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
       - restore_cache:
@@ -151,7 +155,8 @@ jobs:
     steps:
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
-          ssh_keys: false  # Forzar uso de HTTPS en lugar de SSH
+          path: ~/project  # Directorio de trabajo
+          repository: https://github.com/ComplicesConectaSw/ComplicesConecta.git  # URL HTTPS explícita
       - attach_workspace:
           at: .
       - run:
@@ -186,7 +191,8 @@ jobs:
     steps:
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
-          ssh_keys: false  # Forzar uso de HTTPS en lugar de SSH
+          path: ~/project  # Directorio de trabajo
+          repository: https://github.com/ComplicesConectaSw/ComplicesConecta.git  # URL HTTPS explícita
       - attach_workspace:
           at: .
       - run:
@@ -234,7 +240,8 @@ jobs:
     steps:
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
-          ssh_keys: false  # Forzar uso de HTTPS en lugar de SSH
+          path: ~/project  # Directorio de trabajo
+          repository: https://github.com/ComplicesConectaSw/ComplicesConecta.git  # URL HTTPS explícita
       - attach_workspace:
           at: .
       - run:
@@ -255,7 +262,8 @@ jobs:
     steps:
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
-          ssh_keys: false  # Forzar uso de HTTPS en lugar de SSH
+          path: ~/project  # Directorio de trabajo
+          repository: https://github.com/ComplicesConectaSw/ComplicesConecta.git  # URL HTTPS explícita
       - attach_workspace:
           at: .
       - run:
