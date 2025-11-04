@@ -14,6 +14,7 @@
     "sync:neo4j": "tsx scripts/sync-postgres-to-neo4j.ts",
     "verify:neo4j": "tsx scripts/verify-neo4j.ts",
     "setup:neo4j-indexes": "tsx scripts/setup-neo4j-indexes.ts",
+    "explain:analyze:remote": "tsx scripts/run-explain-analyze-remote.ts",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",

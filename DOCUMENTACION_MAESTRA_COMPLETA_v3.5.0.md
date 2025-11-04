@@ -636,9 +636,9 @@ VITE_SUPABASE_ANON_KEY=tu-anon-key-aqui
 - [x] Alineación local/remoto/backup verificada
 
 ### Pendiente (Opcional):
-- [ ] Ejecutar EXPLAIN ANALYZE completo en remoto
-- [ ] Backfill S2 para perfiles existentes
-- [ ] Benchmarks S2 vs PostGIS
+- [ ] Ejecutar EXPLAIN ANALYZE completo en remoto (Script creado: `npm run explain:analyze:remote`)
+- [ ] Backfill S2 para perfiles existentes (Script disponible: `npm run backfill:s2`)
+- [ ] Benchmarks S2 vs PostGIS (Script pendiente de creación)
 
 ---
 

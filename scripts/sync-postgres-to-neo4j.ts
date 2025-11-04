@@ -19,7 +19,6 @@ import { config } from 'dotenv';
 import { existsSync, readFileSync } from 'fs';
 import { createClient } from '@supabase/supabase-js';
 import { neo4jService } from '../src/services/graph/Neo4jService';
-import { logger } from '../src/lib/logger';
 
 // Cargar variables de entorno desde .env
 config();

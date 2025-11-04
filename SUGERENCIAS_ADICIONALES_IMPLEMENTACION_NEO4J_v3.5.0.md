@@ -162,9 +162,9 @@ npm run sync:neo4j
 
 ## 🚀 SUGERENCIAS ADICIONALES DE IMPLEMENTACIÓN
 
-### 1. **Integración con SmartMatchingService** 🔴 ALTA PRIORIDAD
+### 1. **Integración con SmartMatchingService** ✅ COMPLETADO
 
-**Sugerencia:** Integrar Neo4j en `SmartMatchingService.ts` para enriquecer matches con conexiones sociales.
+**Estado:** ✅ **IMPLEMENTADO** - Integración con Neo4j completada en `SmartMatchingService.ts`.
 
 **Implementación:**
 ```typescript
@@ -277,9 +277,9 @@ serve(async (req) => {
 
 ---
 
-### 3. **Recomendaciones "Friends of Friends"** 🟡 MEDIA PRIORIDAD
+### 3. **Recomendaciones "Friends of Friends"** ✅ COMPLETADO
 
-**Sugerencia:** Implementar feature de recomendaciones basadas en conexiones sociales.
+**Estado:** ✅ **IMPLEMENTADO** - Método `getRecommendedUsers()` implementado en `SmartMatchingService.ts`.
 
 **Implementación:**
 ```typescript
@@ -547,14 +547,14 @@ VITE_NEO4J_ENABLED=true
 2. ✅ **Iniciar Neo4j:** `docker-compose up -d neo4j`
 3. ✅ **Configurar variables de entorno**
 4. ✅ **Ejecutar sincronización inicial:** `npm run sync:neo4j`
-5. ⏳ **Integrar con SmartMatchingService**
+5. ✅ **Integrar con SmartMatchingService** - COMPLETADO
 
 ### Prioridad Media (Implementar Próximamente):
 
 6. ⏳ **Sincronización automática en tiempo real**
-7. ⏳ **Recomendaciones "friends of friends"**
+7. ✅ **Recomendaciones "friends of friends"** - COMPLETADO
 8. ⏳ **Tests unitarios e integración**
-9. ⏳ **Optimización de performance (índices)**
+9. ⏳ **Optimización de performance (índices)** - Script disponible: `npm run setup:neo4j-indexes`
 
 ### Prioridad Baja (Implementar a Futuro):
 
