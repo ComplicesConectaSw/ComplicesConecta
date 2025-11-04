@@ -23,6 +23,10 @@
    - `Privacy.tsx` - Actualizado con Ley Olimpia y RLS
    - `Security.tsx` - Actualizado con Neo4j y verificador IA
    - `Investors.tsx` - Actualizado con métricas técnicas y roadmap
+   - `Terms.tsx` - Actualizado con fecha Noviembre 2025 - v3.5.0
+   - `Blog.tsx` - Actualizado con entrada sobre features v3.5.0
+   - `FAQ.tsx` - Actualizado con respuestas sobre Verificador IA, Galerías NFT, Neo4j
+   - `Legal.tsx` - Actualizado con fechas Noviembre 2025
 
 3. ✅ **Alineación Supabase**
    - Script de verificación ejecutado
@@ -32,6 +36,7 @@
 4. ✅ **Commit y Push a GitHub**
    - Commit: `6f94436` - Actualización completa v3.5.0
    - Commit: `09ded21` - Actualización memoria de sesiones
+   - Commit: `6cde581` - Actualización final páginas restantes (Terms, Blog, FAQ, Legal)
    - Push exitoso a `origin/master`
    - Todos los cambios subidos a GitHub
 
@@ -224,7 +229,10 @@ npm run setup:neo4j-indexes
 - ✅ Privacy.tsx
 - ✅ Security.tsx
 - ✅ Investors.tsx
-- ⏳ Otras páginas (si faltan)
+- ✅ Terms.tsx
+- ✅ Blog.tsx
+- ✅ FAQ.tsx
+- ✅ Legal.tsx
 
 ---
 
