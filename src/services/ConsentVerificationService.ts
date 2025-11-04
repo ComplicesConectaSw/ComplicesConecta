@@ -13,7 +13,7 @@
 
 import { logger } from '@/lib/logger';
 import { supabase } from '@/integrations/supabase/client';
-import { AILayerService } from './ai/AILayerService';
+// import { AILayerService } from './ai/AILayerService'; // Usar solo si está disponible
 
 export interface ConsentAnalysis {
   consentLevel: 'explicit' | 'implicit' | 'ambiguous' | 'negative';
@@ -37,7 +37,7 @@ export interface ConsentVerification {
 
 class ConsentVerificationService {
   private static instance: ConsentVerificationService;
-  private aiLayer: AILayerService;
+  // private aiLayer: AILayerService; // Usar solo si está disponible
 
   // Patrones de consentimiento explícito (español MX)
   private readonly CONSENT_PATTERNS = {
@@ -64,7 +64,7 @@ class ConsentVerificationService {
   ];
 
   constructor() {
-    this.aiLayer = AILayerService.getInstance();
+    // this.aiLayer = AILayerService.getInstance(); // Usar solo si está disponible
   }
 
   static getInstance(): ConsentVerificationService {
@@ -238,7 +238,8 @@ class ConsentVerificationService {
   }> {
     try {
       // Usar AILayerService para análisis de sentimiento si está disponible
-      if (this.aiLayer && metadata?.previousMessages) {
+      // if (this.aiLayer && metadata?.previousMessages) {
+      if (metadata?.previousMessages) {
         // Analizar contexto de conversación
         // const conversationContext = metadata.previousMessages
         //   .slice(-5) // Últimos 5 mensajes
@@ -420,7 +421,9 @@ class ConsentVerificationService {
   async saveVerification(verification: ConsentVerification): Promise<ConsentVerification> {
     try {
       // Guardar en BD (crear tabla si no existe)
-      const { data, error } = await supabase
+      // NOTA: La tabla consent_verifications se creará con la migración
+      // Por ahora, usar 'any' para evitar errores de TypeScript hasta que se apliquen las migraciones
+      const { data, error } = await (supabase as any)
         .from('consent_verifications')
         .insert({
           message_id: verification.messageId,
@@ -468,7 +471,9 @@ class ConsentVerificationService {
    */
   async getVerificationHistory(userId: string, limit: number = 50): Promise<ConsentVerification[]> {
     try {
-      const { data, error } = await supabase
+      // NOTA: La tabla consent_verifications se creará con la migración
+      // Por ahora, usar 'any' para evitar errores de TypeScript hasta que se apliquen las migraciones
+      const { data, error } = await (supabase as any)
         .from('consent_verifications')
         .select('*')
         .eq('user_id', userId)
@@ -480,7 +485,7 @@ class ConsentVerificationService {
         return [];
       }
 
-      return (data || []).map(item => ({
+      return (data || []).map((item: any) => ({
         messageId: item.message_id,
         userId: item.user_id,
         recipientId: item.recipient_id,

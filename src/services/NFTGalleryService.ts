@@ -93,7 +93,9 @@ class NFTGalleryService {
     try {
       logger.info('📸 Creando galería NFT', { userId: userId.substring(0, 8) + '***' });
 
-      const { data: gallery, error } = await supabase
+      // NOTA: La tabla nft_galleries se creará con la migración
+      // Por ahora, usar 'any' para evitar errores de TypeScript hasta que se apliquen las migraciones
+      const { data: gallery, error } = await (supabase as any)
         .from('nft_galleries')
         .insert({
           user_id: userId,
@@ -151,7 +153,7 @@ class NFTGalleryService {
       // 3. Actualizar galería con información de NFT
       // NOTA: En Q2 2026, aquí se llamaría al smart contract para mint real
       // Por ahora, simulamos el mint guardando metadata
-      const { data: gallery, error } = await supabase
+      const { data: gallery, error } = await (supabase as any)
         .from('nft_galleries')
         .update({
           nft_network: request.network,
@@ -197,7 +199,8 @@ class NFTGalleryService {
     metadata?: Record<string, any>
   ): Promise<NFTGalleryImage> {
     try {
-      const { data: image, error } = await supabase
+      // NOTA: La tabla nft_gallery_images se creará con la migración
+      const { data: image, error } = await (supabase as any)
         .from('nft_gallery_images')
         .insert({
           gallery_id: galleryId,
@@ -250,7 +253,7 @@ class NFTGalleryService {
       );
 
       // 3. Actualizar imagen con información de NFT
-      const { data: image, error } = await supabase
+      const { data: image, error } = await (supabase as any)
         .from('nft_gallery_images')
         .update({
           nft_network: request.network,
@@ -286,7 +289,8 @@ class NFTGalleryService {
    */
   async getUserGalleries(userId: string): Promise<NFTGallery[]> {
     try {
-      const { data, error } = await supabase
+      // NOTA: La tabla nft_galleries se creará con la migración
+      const { data, error } = await (supabase as any)
         .from('nft_galleries')
         .select('*')
         .eq('user_id', userId)
@@ -309,7 +313,8 @@ class NFTGalleryService {
    */
   async getPublicGalleries(limit: number = 20): Promise<NFTGallery[]> {
     try {
-      const { data, error } = await supabase
+      // NOTA: La tabla nft_galleries se creará con la migración
+      const { data, error } = await (supabase as any)
         .from('nft_galleries')
         .select('*')
         .eq('is_public', true)
@@ -334,7 +339,8 @@ class NFTGalleryService {
    */
   async getGalleryImages(galleryId: string): Promise<NFTGalleryImage[]> {
     try {
-      const { data, error } = await supabase
+      // NOTA: La tabla nft_gallery_images se creará con la migración
+      const { data, error } = await (supabase as any)
         .from('nft_gallery_images')
         .select('*')
         .eq('gallery_id', galleryId)
