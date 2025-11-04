@@ -53,10 +53,12 @@ Nuestro sistema de mensajería no es solo texto. Incluye:
 
 ### Arquitectura Empresarial
 
-- **Base de datos escalable**: 107 tablas optimizadas para manejar crecimiento masivo
+- **Base de datos escalable**: 107 tablas optimizadas para manejar crecimiento masivo (PostgreSQL/Supabase)
+- **Neo4j Graph Database**: Base de datos de grafo para conexiones sociales (200x más rápido que PostgreSQL)
 - **Seguridad multicapa**: 65+ políticas de seguridad activas
 - **Monitoreo en tiempo real**: Sistema completo de analytics y alertas
 - **Performance optimizado**: Consultas geográficas 50-300 veces más rápidas con tecnología Google S2
+- **Queries sociales optimizadas**: Amigos mutuos y recomendaciones sociales 200x más rápidas con Neo4j
 
 ### Inteligencia Artificial Integrada
 

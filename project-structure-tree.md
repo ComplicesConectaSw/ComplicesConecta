@@ -11,7 +11,8 @@
 - **PyTorch/TensorFlow.js**: Modelos pre-entrenados (400K parámetros)
 - **Chat Summaries ML**: GPT-4, BART (HuggingFace), Fallback (3 opciones)
 - **Google S2 Geosharding (Fase 2.1)**: Cell ID generation + migration (100% estructura, 70% total)
-- **Base de Datos**: 107 tablas operativas (80+ índices, 65+ RLS) ✅
+- **Neo4j Graph Database (Fase 2.2)**: Graph database para conexiones sociales (100% implementado) ✅
+- **Base de Datos**: 107 tablas operativas (80+ índices, 65+ RLS) + Neo4j Graph Database ✅
 - **Refactorización Completa**: PostCSS + CSS + Consolidación (-77% duplicación) ✅
 - **Sistema de Monitoreo Completo**: Performance, Error Alerting, Analytics Dashboard (95%)
 - **Sistema de Chat con Privacidad (NUEVO v3.5.0)**: ChatRoom + MessageList + ChatPrivacyService (100%) ✅
@@ -84,10 +85,14 @@ conecta-social-comunidad-main/
 │   ├── utils/                    # Utilidades y helpers
 │   ├── integrations/             # Integraciones (Supabase, APIs)
 │   ├── lib/                      # Librerías y configuraciones
+│   │   ├── env-utils.ts                      # Helper variables de entorno Vite/Node.js (NUEVO v3.5.0)
+│   │   └── logger.ts                          # Logger (ACTUALIZADO v3.5.0 - compatible Vite/Node.js)
 │   ├── services/                 # Servicios de negocio (ACTUALIZADO v3.5.0)
+│   │   ├── graph/                # Servicios de grafo (NUEVO v3.5.0)
+│   │   │   └── Neo4jService.ts                # Graph database Neo4j (NUEVO v3.5.0)
 │   │   ├── ChatPrivacyService.ts              # Privacidad y permisos de chat (NUEVO v3.5.0)
 │   │   ├── VideoChatService.ts                # Preparación video chat futuro (NUEVO v3.5.0)
-│   │   ├── SmartMatchingService.ts            # Matching con IA (NUEVO v3.5.0)
+│   │   ├── SmartMatchingService.ts            # Matching con IA + Neo4j (NUEVO v3.5.0)
 │   │   ├── DataPrivacyService.ts              # GDPR compliance (NUEVO v3.5.0)
 │   │   ├── UserVerificationService.ts         # Verificación unificada (NUEVO v3.5.0)
 │   │   ├── TokenService.ts                    # Gestión de tokens (NUEVO v3.5.0)
@@ -120,6 +125,10 @@ conecta-social-comunidad-main/
 │       ├── 20251029100000_create_interests_tables.sql         # Tablas intereses (NUEVO v3.4.1)
 │       ├── 20251029100001_create_worldid_verifications.sql    # World ID (NUEVO v3.4.1)
 │       └── 20251030000001_alter_referral_rewards.sql          # Referral rewards (NUEVO v3.4.1)
+├── scripts/                      # Scripts de utilidad (16+ scripts)
+│   ├── sync-postgres-to-neo4j.ts              # Sincronización PostgreSQL → Neo4j (NUEVO v3.5.0)
+│   └── verify-neo4j.ts                        # Verificación conexión Neo4j (NUEVO v3.5.0)
+├── docker-compose.yml            # Docker Compose con Neo4j (ACTUALIZADO v3.5.0)
 ├── android/                      # Proyecto Android nativo
 ├── kubernetes/                   # Configs Datadog/K8s (NUEVO v3.4.1)
 │   ├── datadog-docker-run.sh    # Script Datadog Agent

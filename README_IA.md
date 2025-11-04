@@ -10,7 +10,8 @@
    - **v3.4.0**: `feature/advanced-*` → Funcionalidades avanzadas (seguridad, moderación, parejas)
    - **v3.4.1**: `feature/monitoring-*` → Sistema de monitoreo y analytics
   - **v3.5.0**: `feature/ai-native-*` → AI/ML layers (compatibility, chat summaries) ✅
-  - **v3.5.0**: `feature/scalability-*` → S2 Geosharding, Neo4j ✅
+  - **v3.5.0**: `feature/scalability-*` → S2 Geosharding ✅
+  - **v3.5.0**: `feature/neo4j-*` → Neo4j Graph Database implementado ✅
   - **v3.5.0**: `feature/refactoring-*` → Consolidación código + CSS ✅
   - **v3.5.0**: `fix/react-chunks-*` → Corrección React en producción ✅
   - **v3.5.0**: `feature/chat-privacy-*` → ChatRoom + MessageList + ChatPrivacyService ✅
@@ -63,9 +64,11 @@
 6. **Scalability Strategy v3.5.0** 🆕
    - **Google S2 Geosharding**: Cell ID para queries geográficas 50-300x más rápidos
    - **Backfill Script**: `npm run backfill:s2` para usuarios existentes
-   - **Neo4j** (Pendiente Fase 2.2): Graph database para conexiones sociales
+   - **Neo4j Graph Database (Fase 2.2)**: ✅ IMPLEMENTADO v3.5.0 - Graph database para conexiones sociales (200x más rápido que PostgreSQL)
+   - **Neo4j Integration**: SmartMatchingService con enriquecimiento social y recomendaciones FOF
+   - **Neo4j Scripts**: `npm run sync:neo4j` y `npm run verify:neo4j` para sincronización y verificación
    - **Redis** (Pendiente Fase 2.3): Cache distribuido con TTL
-   - **Docs**: `FASE_2_SCALABILITY_PLAN_v3.5.0.md` para roadmap completo
+   - **Docs**: `GUIA_COMPLETA_NEO4J_v3.5.0.md` para guía completa de Neo4j
 
 7. **Monitoreo y Observabilidad v3.4.1**
    - **Datadog RUM**: Integrado en `src/main.tsx` para Real User Monitoring

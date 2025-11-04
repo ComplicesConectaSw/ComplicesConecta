@@ -5,6 +5,8 @@
  * with structured, configurable logging for production use.
  */
 
+import { isDevelopment, isProduction } from './env-utils';
+
 type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 
 interface LogContext {
@@ -20,8 +22,13 @@ interface LogEntry {
 }
 
 class Logger {
-  private isDevelopment = import.meta.env.DEV;
-  private isProduction = import.meta.env.PROD;
+  private isDevelopment: boolean;
+  private isProduction: boolean;
+
+  constructor() {
+    this.isDevelopment = isDevelopment();
+    this.isProduction = isProduction();
+  }
 
   private formatMessage(level: LogLevel, message: string, context?: LogContext): LogEntry {
     return {

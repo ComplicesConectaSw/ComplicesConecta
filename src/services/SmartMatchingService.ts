@@ -10,6 +10,7 @@
 import { smartMatchingEngine, type UserProfile, type MatchScore, type MatchingContext } from '@/lib/ai/smartMatching';
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
+import { neo4jService } from './graph/Neo4jService';
 
 export interface MatchFilters {
   ageRange?: { min: number; max: number };
@@ -83,24 +84,46 @@ class SmartMatchingService {
         options.context
       );
 
-      // 4. Filtrar por score mínimo
-      const minScore = options.filters?.minScore || 30;
-      const filteredMatches = matches.filter(m => m.totalScore >= minScore);
+      // 4. Enriquecer con conexiones sociales (Neo4j) si está habilitado
+      const enrichedMatches = await this.enrichWithSocialConnections(
+        userId,
+        matches,
+        options
+      );
 
-      // 5. Calcular estadísticas
+      // 5. Filtrar por score mínimo (incluyendo social score)
+      const minScore = options.filters?.minScore || 30;
+      const filteredMatches = enrichedMatches.filter(m => {
+        const totalScore = m.totalScore + (m.socialScore || 0);
+        return totalScore >= minScore;
+      });
+
+      // 6. Ordenar por score total (compatibility + social)
+      filteredMatches.sort((a, b) => {
+        const scoreA = a.totalScore + (a.socialScore || 0);
+        const scoreB = b.totalScore + (b.socialScore || 0);
+        return scoreB - scoreA;
+      });
+
+      // 7. Calcular estadísticas
       const stats = {
         totalCandidates: candidates.length,
         matchesFound: filteredMatches.length,
         averageScore: filteredMatches.length > 0
-          ? Math.round(filteredMatches.reduce((sum, m) => sum + m.totalScore, 0) / filteredMatches.length)
+          ? Math.round(filteredMatches.reduce((sum, m) => sum + m.totalScore + (m.socialScore || 0), 0) / filteredMatches.length)
           : 0,
-        highQualityMatches: filteredMatches.filter(m => m.totalScore >= 70).length
+        highQualityMatches: filteredMatches.filter(m => m.totalScore + (m.socialScore || 0) >= 70).length
       };
 
+      const isNeo4jEnabled = typeof import.meta !== 'undefined' && import.meta.env 
+        ? import.meta.env.VITE_NEO4J_ENABLED === 'true'
+        : process.env.VITE_NEO4J_ENABLED === 'true';
+      
       logger.info('✅ Matches encontrados', {
         userId: userId.substring(0, 8) + '***',
         total: filteredMatches.length,
-        avgScore: stats.averageScore
+        avgScore: stats.averageScore,
+        neo4jEnabled: isNeo4jEnabled
       });
 
       return {
@@ -357,6 +380,197 @@ class SmartMatchingService {
     });
 
     return Math.round(completeness);
+  }
+
+  /**
+   * Enriquece matches con conexiones sociales desde Neo4j
+   */
+  private async enrichWithSocialConnections(
+    userId: string,
+    matches: MatchScore[],
+    _options: MatchSearchOptions
+  ): Promise<(MatchScore & { socialScore?: number; mutualFriends?: string[]; mutualFriendsCount?: number })[]> {
+    // Verificar si Neo4j está habilitado
+    const isNeo4jEnabled = typeof import.meta !== 'undefined' && import.meta.env 
+      ? import.meta.env.VITE_NEO4J_ENABLED === 'true'
+      : process.env.VITE_NEO4J_ENABLED === 'true';
+    
+    if (!isNeo4jEnabled) {
+      logger.debug('Neo4j deshabilitado, saltando enriquecimiento social');
+      return matches;
+    }
+
+    try {
+      // Enriquecer cada match con conexiones sociales
+      const enrichedMatches = await Promise.all(
+        matches.map(async (match) => {
+          try {
+            // Obtener amigos mutuos desde Neo4j
+            const mutualFriends = await neo4jService.getMutualFriends(userId, match.userId);
+            
+            // Calcular social score basado en conexiones
+            // Bonus por amigos mutuos: 10 puntos por cada amigo mutuo (máximo 50 puntos)
+            const socialScore = Math.min(mutualFriends.length * 10, 50);
+            
+            // Bonus adicional si hay muchos amigos mutuos (indicador de confianza)
+            const trustBonus = mutualFriends.length >= 3 ? 20 : 0;
+            const totalSocialScore = socialScore + trustBonus;
+
+            logger.debug('Match enriquecido con conexiones sociales', {
+              userId: userId.substring(0, 8) + '***',
+              matchUserId: match.userId.substring(0, 8) + '***',
+              mutualFriendsCount: mutualFriends.length,
+              socialScore: totalSocialScore
+            });
+
+            return {
+              ...match,
+              socialScore: totalSocialScore,
+              mutualFriends,
+              mutualFriendsCount: mutualFriends.length
+            };
+          } catch (error) {
+            // Si falla Neo4j, continuar sin enriquecimiento
+            logger.warn('Error enriqueciendo match con Neo4j, continuando sin enriquecimiento', {
+              userId: userId.substring(0, 8) + '***',
+              matchUserId: match.userId.substring(0, 8) + '***',
+              error: error instanceof Error ? error.message : String(error)
+            });
+            return match;
+          }
+        })
+      );
+
+      return enrichedMatches;
+    } catch (error) {
+      // Si falla completamente, retornar matches originales
+      logger.error('Error enriqueciendo matches con Neo4j, retornando matches originales', {
+        error: error instanceof Error ? error.message : String(error)
+      });
+      return matches;
+    }
+  }
+
+  /**
+   * Obtiene recomendaciones basadas en "friends of friends"
+   */
+  async getRecommendedUsers(
+    userId: string,
+    limit: number = 10,
+    options: MatchSearchOptions = {}
+  ): Promise<MatchSearchResult> {
+    // Verificar si Neo4j está habilitado
+    const isNeo4jEnabled = typeof import.meta !== 'undefined' && import.meta.env 
+      ? import.meta.env.VITE_NEO4J_ENABLED === 'true'
+      : process.env.VITE_NEO4J_ENABLED === 'true';
+    
+    if (!isNeo4jEnabled) {
+      logger.debug('Neo4j deshabilitado, usando matching tradicional');
+      return this.findMatches(userId, { ...options, limit });
+    }
+
+    try {
+      logger.info('🔍 Obteniendo recomendaciones FOF para usuario', {
+        userId: userId.substring(0, 8) + '***'
+      });
+
+      // 1. Obtener friends of friends desde Neo4j
+      const fofRecommendations = await neo4jService.getFriendsOfFriends(
+        userId,
+        limit * 2, // Obtener más para filtrar después
+        options.excludeMatched || true
+      );
+
+      if (fofRecommendations.length === 0) {
+        logger.info('No hay recomendaciones FOF, usando matching tradicional');
+        return this.findMatches(userId, { ...options, limit });
+      }
+
+      // 2. Obtener perfiles desde PostgreSQL
+      const fofUserIds = fofRecommendations.map(f => f.userId);
+      const { data: profiles, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .in('user_id', fofUserIds)
+        .eq('is_public', true);
+
+      if (error || !profiles || profiles.length === 0) {
+        logger.warn('No se encontraron perfiles para recomendaciones FOF');
+        return this.findMatches(userId, { ...options, limit });
+      }
+
+      // 3. Convertir a UserProfile y calcular matches
+      const userProfile = await this.getUserProfile(userId);
+      if (!userProfile) {
+        logger.warn('Perfil de usuario no encontrado');
+        return this.emptyResult();
+      }
+
+      const userProfiles = profiles
+        .map(p => this.mapToUserProfile(p))
+        .filter(Boolean) as UserProfile[];
+
+      const matches = smartMatchingEngine.findBestMatches(
+        userProfile,
+        userProfiles,
+        limit,
+        options.context
+      );
+
+      // 4. Enriquecer con información FOF
+      const enrichedMatches = matches.map(match => {
+        const fof = fofRecommendations.find(f => f.userId === match.userId);
+        return {
+          ...match,
+          socialScore: (fof?.mutualCount || 0) * 15, // Bonus por conexiones FOF
+          mutualFriendsCount: fof?.mutualCount || 0,
+          isFOFRecommendation: true
+        };
+      });
+
+      // 5. Filtrar por score mínimo
+      const minScore = options.filters?.minScore || 30;
+      const filteredMatches = enrichedMatches.filter(m => {
+        const totalScore = m.totalScore + (m.socialScore || 0);
+        return totalScore >= minScore;
+      });
+
+      // 6. Ordenar por score total
+      filteredMatches.sort((a, b) => {
+        const scoreA = a.totalScore + (a.socialScore || 0);
+        const scoreB = b.totalScore + (b.socialScore || 0);
+        return scoreB - scoreA;
+      });
+
+      // 7. Calcular estadísticas
+      const stats = {
+        totalCandidates: profiles.length,
+        matchesFound: filteredMatches.length,
+        averageScore: filteredMatches.length > 0
+          ? Math.round(filteredMatches.reduce((sum, m) => sum + m.totalScore + (m.socialScore || 0), 0) / filteredMatches.length)
+          : 0,
+        highQualityMatches: filteredMatches.filter(m => m.totalScore + (m.socialScore || 0) >= 70).length
+      };
+
+      logger.info('✅ Recomendaciones FOF obtenidas', {
+        userId: userId.substring(0, 8) + '***',
+        total: filteredMatches.length,
+        avgScore: stats.averageScore
+      });
+
+      return {
+        matches: filteredMatches.slice(0, limit),
+        total: filteredMatches.length,
+        stats
+      };
+    } catch (error) {
+      logger.error('❌ Error obteniendo recomendaciones FOF:', {
+        error: error instanceof Error ? error.message : String(error),
+        userId: userId.substring(0, 8) + '***'
+      });
+      // Fallback a matching tradicional
+      return this.findMatches(userId, { ...options, limit });
+    }
   }
 
   /**

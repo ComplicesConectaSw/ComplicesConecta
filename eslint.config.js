@@ -32,7 +32,10 @@ export default [
       'backups/**',
       '**/*.bak',
       '**/BACKUP_*'
-    ]
+    ],
+    rules: {
+      // Reglas generales sin plugins
+    }
   },
   {
     files: ['**/*.{js,jsx}'],
@@ -82,7 +85,9 @@ export default [
       'react-refresh/only-export-components': 'warn',
 
       // Import plugin rules
-      'import/no-unresolved': 'error',
+      'import/no-unresolved': ['error', {
+        ignore: ['neo4j-driver']
+      }],
       'import/named': 'error',
       'import/no-duplicates': 'warn',
       'import/no-unused-modules': 'warn',
@@ -127,6 +132,9 @@ export default [
         typescript: {
           alwaysTryTypes: true,
           project: './tsconfig.json'
+        },
+        node: {
+          extensions: ['.js', '.jsx', '.ts', '.tsx']
         }
       }
     },
@@ -149,7 +157,9 @@ export default [
       'react-refresh/only-export-components': 'off',
 
       // Import plugin rules
-      'import/no-unresolved': 'error',
+      'import/no-unresolved': ['error', {
+        ignore: ['neo4j-driver']
+      }],
       'import/named': 'error',
       'import/no-duplicates': 'warn',
       'import/no-unused-modules': 'warn',
