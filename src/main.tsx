@@ -5,18 +5,34 @@ const { StrictMode } = React
 // CRÍTICO: Asegurar React disponible globalmente INMEDIATAMENTE, ANTES DE CUALQUIER OTRA COSA
 // Esto debe estar ANTES de cualquier otro import o código que pueda cargar chunks
 if (typeof window !== 'undefined') {
+  // Logging para diagnóstico
+  const debugLog = (event: string, data?: any) => {
+    if ((window as any).__LOADING_DEBUG__) {
+      (window as any).__LOADING_DEBUG__.log(event, data);
+    }
+  };
+  
+  debugLog('MAIN_TSX_START', { hasReact: !!React, hasCreateContext: !!React.createContext });
+  
   // Forzar React disponible globalmente de forma inmediata
   (window as any).React = React;
+  debugLog('REACT_ASSIGNED_GLOBAL', { hasReact: !!(window as any).React });
   
   // CRÍTICO: Asegurar createContext disponible inmediatamente
   if (!(window as any).React.createContext) {
+    debugLog('REACT_CONTEXT_MISSING', { hasReact: !!(window as any).React });
     (window as any).React.createContext = React.createContext;
+    debugLog('REACT_CONTEXT_ASSIGNED', { hasCreateContext: !!(window as any).React.createContext });
+  } else {
+    debugLog('REACT_CONTEXT_ALREADY_EXISTS', { hasCreateContext: !!(window as any).React.createContext });
   }
   
   // Asegurar polyfill si existe
   if ((window as any).__REACT_POLYFILL__ && (window as any).__REACT_POLYFILL__.createContext) {
+    debugLog('POLYFILL_FOUND', { hasPolyfill: !!(window as any).__REACT_POLYFILL__.createContext });
     // Reemplazar con el real si está disponible
     (window as any).React.createContext = React.createContext || (window as any).__REACT_POLYFILL__.createContext;
+    debugLog('POLYFILL_APPLIED', { hasCreateContext: !!(window as any).React.createContext });
   }
   
   // Asegurar TODOS los hooks críticos inmediatamente - CON FALLBACKS ROBUSTOS
@@ -401,9 +417,19 @@ if ('serviceWorker' in navigator && import.meta.env.MODE === 'production') {
 
 // Initialize application with enhanced error handling
 async function initializeApp() {
+  // Logging para diagnóstico
+  const debugLog = (event: string, data?: any) => {
+    if ((window as any).__LOADING_DEBUG__) {
+      (window as any).__LOADING_DEBUG__.log(event, data);
+    }
+  };
+  
+  debugLog('INIT_APP_START', { timestamp: performance.now() });
+  
   // Timeout de seguridad: si no se monta en 5 segundos, forzar montaje
   const mountTimeout = setTimeout(() => {
     const rootElement = document.getElementById("root");
+    debugLog('MOUNT_TIMEOUT_TRIGGERED', { hasRoot: !!rootElement, hasChildren: rootElement?.hasChildNodes() });
     if (rootElement && !rootElement.hasChildNodes()) {
       console.error('⚠️ Forzando montaje de React después de timeout de seguridad');
       try {
@@ -415,13 +441,16 @@ async function initializeApp() {
             </ErrorBoundary>
           </StrictMode>
         );
+        debugLog('MOUNT_FORCED_SUCCESS', {});
       } catch (error) {
         console.error('❌ Error crítico montando React:', error);
+        debugLog('MOUNT_FORCED_ERROR', { error: error instanceof Error ? error.message : String(error) });
       }
     }
   }, 5000);
 
   try {
+    debugLog('INIT_APP_TRY_START', {});
     // React ya está disponible globalmente (establecido al inicio del archivo)
     // Solo re-asegurar que no se haya perdido durante el proceso
     if (typeof window !== 'undefined') {
@@ -474,37 +503,56 @@ async function initializeApp() {
     }
     
     // CRÍTICO: Limpiar el contenido del root ANTES de buscar el elemento
+    debugLog('ROOT_ELEMENT_SEARCH', {});
     const rootElement = document.getElementById("root");
     if (!rootElement) {
+      debugLog('ROOT_ELEMENT_NOT_FOUND', { waiting: 100 });
       // Intentar esperar un poco para que el DOM cargue
       await new Promise(resolve => setTimeout(resolve, 100));
       const retryRoot = document.getElementById("root");
       if (!retryRoot) {
         console.error('❌ Root element not found after retry');
+        debugLog('ROOT_ELEMENT_NOT_FOUND_RETRY', { error: 'Root element not found' });
         throw new Error('Root element not found');
       }
+      debugLog('ROOT_ELEMENT_FOUND_RETRY', {});
+    } else {
+      debugLog('ROOT_ELEMENT_FOUND', {});
     }
 
     // CRÍTICO: Limpiar cualquier contenido HTML del fallback de loading
     const finalRootElement = document.getElementById("root");
     if (!finalRootElement) {
+      debugLog('ROOT_ELEMENT_MISSING', { error: 'Root element not found' });
       throw new Error('Root element not found');
     }
     
     // Limpiar el contenido del loading fallback
+    debugLog('ROOT_ELEMENT_CLEARING', { innerHTML: finalRootElement.innerHTML.length });
     finalRootElement.innerHTML = '';
 
     // Verify security before rendering (no bloquear si falla)
+    debugLog('SECURITY_CHECK_START', {});
     try {
       await initializeSecurityCheck();
-    } catch {
+      debugLog('SECURITY_CHECK_SUCCESS', {});
+    } catch (error) {
+      debugLog('SECURITY_CHECK_FAILED', { error: error instanceof Error ? error.message : String(error) });
       // Continuar aunque falle la verificación de seguridad
     }
+
+    // Verificar React antes de renderizar
+    debugLog('REACT_VERIFICATION', { 
+      hasReact: !!(window as any).React,
+      hasCreateContext: !!(window as any).React?.createContext,
+      hasReactDOM: !!(window as any).ReactDOM
+    });
 
     if (import.meta.env.DEV) {
       console.log('✅ Root element found, rendering app...');
     }
 
+    debugLog('REACT_RENDER_START', { timestamp: performance.now() });
     createRoot(finalRootElement).render(
       <StrictMode>
         <ErrorBoundary>
@@ -513,12 +561,36 @@ async function initializeApp() {
         </ErrorBoundary>
       </StrictMode>
     );
+    debugLog('REACT_RENDER_SUCCESS', { timestamp: performance.now() });
     
     // Limpiar timeout de seguridad ya que el montaje fue exitoso
     clearTimeout(mountTimeout);
+    debugLog('INIT_APP_SUCCESS', { timestamp: performance.now() });
+    
+    // Log reporte final después de un breve delay para capturar todos los eventos
+    setTimeout(() => {
+      if ((window as any).__LOADING_DEBUG__) {
+        const report = (window as any).__LOADING_DEBUG__.getReport();
+        debugLog('LOADING_REPORT_FINAL', report);
+        if (import.meta.env.DEV) {
+          console.log('📊 Reporte de carga completo:', report);
+          console.log('💡 Para ver el reporte en producción, ejecuta: window.__LOADING_DEBUG__.getReport()');
+        }
+      }
+    }, 1000);
   } catch (error: any) {
     // Limpiar timeout de seguridad en caso de error
     clearTimeout(mountTimeout);
+    const errorMsg = error instanceof Error ? error.message : String(error);
+    debugLog('INIT_APP_ERROR', { error: errorMsg, stack: error instanceof Error ? error.stack : undefined });
+    
+    // Log reporte de error
+    if ((window as any).__LOADING_DEBUG__) {
+      const report = (window as any).__LOADING_DEBUG__.getReport();
+      debugLog('LOADING_REPORT_ERROR', report);
+      console.error('📊 Reporte de carga al error:', report);
+    }
+    
     // Manejar errores críticos sin mostrar errores de wallet
     const errorMessage = error?.message?.toLowerCase() || '';
     const isWalletError = [
@@ -536,10 +608,14 @@ async function initializeApp() {
           <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #6b21a8 0%, #3b82f6 100%); color: white; padding: 20px; text-align: center;">
             <div style="max-width: 600px;">
               <h1 style="font-size: 2rem; margin-bottom: 1rem;">⚠️ Error al Cargar la Aplicación</h1>
-              <p style="margin-bottom: 2rem;">Por favor, recarga la página o contacta al soporte si el problema persiste.</p>
-              <button onclick="window.location.reload()" style="padding: 12px 24px; background: white; color: #6b21a8; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">
+              <p style="margin-bottom: 1rem;">Por favor, recarga la página o contacta al soporte si el problema persiste.</p>
+              <p style="font-size: 0.875rem; margin-bottom: 2rem; opacity: 0.8;">Error: ${errorMsg}</p>
+              <button onclick="window.location.reload()" style="padding: 12px 24px; background: white; color: #6b21a8; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-right: 10px;">
                 Recargar Página
               </button>
+              ${import.meta.env.DEV ? `<button onclick="console.log(window.__LOADING_DEBUG__?.getReport())" style="padding: 12px 24px; background: rgba(255,255,255,0.2); color: white; border: 1px solid white; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                Ver Reporte de Carga
+              </button>` : ''}
             </div>
           </div>
         `;

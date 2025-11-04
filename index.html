@@ -23,12 +23,37 @@
     <meta name="twitter:image" content="/placeholder.svg" />
     <!-- CRÍTICO: Asegurar React disponible globalmente ANTES de chunks -->
     <script>
+      // LOGGING: Inicializar sistema de logging para diagnóstico
+      window.__LOADING_DEBUG__ = {
+        timestamps: [],
+        events: [],
+        log: function(event, data) {
+          var timestamp = performance.now();
+          this.timestamps.push(timestamp);
+          this.events.push({ event: event, timestamp: timestamp, data: data || {} });
+          if (window.location.hostname === 'localhost' || window.location.hostname.includes('dev')) {
+            console.log('[LOADING]', event, data || '');
+          }
+        },
+        getReport: function() {
+          return {
+            events: this.events,
+            duration: this.timestamps.length > 0 ? this.timestamps[this.timestamps.length - 1] - this.timestamps[0] : 0,
+            reactAvailable: typeof window !== 'undefined' && !!(window as any).React,
+            reactContextAvailable: typeof window !== 'undefined' && !!(window as any).React && !!(window as any).React.createContext
+          };
+        }
+      };
+      
       // POLYFILL REACT: Asegurar que React.createContext esté disponible globalmente
       // Esto debe ejecutarse ANTES de que cualquier chunk se cargue
+      window.__LOADING_DEBUG__.log('POLYFILL_INIT', { timestamp: Date.now() });
+      
       if (typeof window !== 'undefined') {
         // Crear stub de React si no existe aún
         window.__REACT_POLYFILL__ = window.__REACT_POLYFILL__ || {};
         window.__REACT_POLYFILL__.createContext = window.__REACT_POLYFILL__.createContext || function(defaultValue) {
+          window.__LOADING_DEBUG__.log('POLYFILL_CREATE_CONTEXT_USED', { defaultValue: defaultValue });
           var context = {
             _currentValue: defaultValue,
             Provider: null,
@@ -38,6 +63,7 @@
           context.Consumer = { _context: context };
           return context;
         };
+        window.__LOADING_DEBUG__.log('POLYFILL_CREATED', { hasReact: !!(window as any).React });
       }
     </script>
     <!-- SOLUCIÓN ALTERNATIVA: Hacer propiedades de wallet configurables ANTES de que las extensiones las toquen -->

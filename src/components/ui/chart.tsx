@@ -5,9 +5,18 @@ import { cn } from "@/lib/utils"
 
 // CRÍTICO: Asegurar createContext disponible antes de usar
 const safeCreateContext = <T,>(defaultValue: T | null): React.Context<T | null> => {
+  const debugLog = (event: string, data?: any) => {
+    if (typeof window !== 'undefined' && (window as any).__LOADING_DEBUG__) {
+      (window as any).__LOADING_DEBUG__.log(event, data);
+    }
+  };
+  
   if (typeof window !== 'undefined' && (window as any).React?.createContext) {
+    debugLog('SAFE_CREATE_CONTEXT_GLOBAL', { provider: 'Chart', hasGlobal: true });
     return (window as any).React.createContext(defaultValue);
   }
+  
+  debugLog('SAFE_CREATE_CONTEXT_FALLBACK', { provider: 'Chart', hasGlobal: false, hasLocal: !!React.createContext });
   return React.createContext<T | null>(defaultValue);
 };
 

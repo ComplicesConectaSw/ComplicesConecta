@@ -2,9 +2,18 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 
 // CRÍTICO: Asegurar createContext disponible antes de usar
 const safeCreateContext = <T,>(defaultValue: T | undefined): React.Context<T | undefined> => {
+  const debugLog = (event: string, data?: any) => {
+    if (typeof window !== 'undefined' && (window as any).__LOADING_DEBUG__) {
+      (window as any).__LOADING_DEBUG__.log(event, data);
+    }
+  };
+  
   if (typeof window !== 'undefined' && (window as any).React?.createContext) {
+    debugLog('SAFE_CREATE_CONTEXT_GLOBAL', { provider: 'AccessibilityProvider', hasGlobal: true });
     return (window as any).React.createContext(defaultValue);
   }
+  
+  debugLog('SAFE_CREATE_CONTEXT_FALLBACK', { provider: 'AccessibilityProvider', hasGlobal: false, hasLocal: !!createContext });
   return createContext<T | undefined>(defaultValue);
 };
 

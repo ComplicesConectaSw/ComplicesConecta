@@ -123,8 +123,8 @@ TypeError: Cannot set property chainId of [object Object] which has only a gette
 
 ### Prioridad Baja (Optimización)
 
-- [ ] **Mejorar mensajes de error para debugging**
-- [ ] **Agregar logging para diagnosticar problemas de carga**
+- [x] **Mejorar mensajes de error para debugging** ✅
+- [x] **Agregar logging para diagnosticar problemas de carga** ✅
 
 ---
 
