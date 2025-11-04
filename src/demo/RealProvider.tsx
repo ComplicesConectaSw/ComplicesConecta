@@ -6,9 +6,12 @@
 import React, { createContext, useContext, ReactNode } from 'react';
 
 // CRÍTICO: Asegurar createContext disponible antes de usar
-const safeCreateContext = (typeof window !== 'undefined' && (window as any).React?.createContext)
-  ? (window as any).React.createContext
-  : createContext;
+const safeCreateContext = <T,>(defaultValue: T | null): React.Context<T | null> => {
+  if (typeof window !== 'undefined' && (window as any).React?.createContext) {
+    return (window as any).React.createContext(defaultValue);
+  }
+  return createContext<T | null>(defaultValue);
+};
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
 import { Database } from '@/types/supabase';
