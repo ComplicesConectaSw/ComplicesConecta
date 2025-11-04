@@ -25,14 +25,9 @@ jobs:
     environment:
       <<: *environment
     steps:
-      - run:
-          name: Instalar openssh-client para checkout SSH
-          command: |
-            mkdir -p /var/lib/apt/lists/partial
-            apt-get update
-            apt-get install -y openssh-client
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
+          # Usar HTTPS en lugar de SSH para evitar necesidad de openssh-client
       - restore_cache:
           <<: *cache_key
       - run:
@@ -58,14 +53,9 @@ jobs:
       <<: *environment
       PATH: "${PATH}:${HOME}/.local/bin:${CIRCLE_WORKING_DIRECTORY}/node_modules/.bin"
     steps:
-      - run:
-          name: Instalar openssh-client para checkout SSH
-          command: |
-            mkdir -p /var/lib/apt/lists/partial
-            apt-get update
-            apt-get install -y openssh-client
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
+          # Usar HTTPS en lugar de SSH para evitar necesidad de openssh-client
       - restore_cache:
           <<: *cache_key
       - run:
@@ -97,14 +87,9 @@ jobs:
       <<: *environment
       PATH: "${PATH}:${HOME}/.local/bin:${CIRCLE_WORKING_DIRECTORY}/node_modules/.bin"
     steps:
-      - run:
-          name: Instalar openssh-client para checkout SSH
-          command: |
-            mkdir -p /var/lib/apt/lists/partial
-            apt-get update
-            apt-get install -y openssh-client
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
+          # Usar HTTPS en lugar de SSH para evitar necesidad de openssh-client
       - restore_cache:
           <<: *cache_key
       - run:
@@ -134,14 +119,9 @@ jobs:
       <<: *environment
       PATH: "${PATH}:${HOME}/.local/bin:${CIRCLE_WORKING_DIRECTORY}/node_modules/.bin"
     steps:
-      - run:
-          name: Instalar openssh-client para checkout SSH
-          command: |
-            mkdir -p /var/lib/apt/lists/partial
-            apt-get update
-            apt-get install -y openssh-client
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
+          # Usar HTTPS en lugar de SSH para evitar necesidad de openssh-client
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
       - restore_cache:
@@ -169,14 +149,9 @@ jobs:
       <<: *environment
       PATH: "${PATH}:${HOME}/.local/bin:${CIRCLE_WORKING_DIRECTORY}/node_modules/.bin"
     steps:
-      - run:
-          name: Instalar openssh-client para checkout SSH
-          command: |
-            mkdir -p /var/lib/apt/lists/partial
-            apt-get update
-            apt-get install -y openssh-client
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
+          # Usar HTTPS en lugar de SSH para evitar necesidad de openssh-client
       - attach_workspace:
           at: .
       - run:
@@ -209,14 +184,9 @@ jobs:
       <<: *environment
       JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
     steps:
-      - run:
-          name: Instalar openssh-client para checkout SSH
-          command: |
-            mkdir -p /var/lib/apt/lists/partial
-            apt-get update
-            apt-get install -y openssh-client
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
+          # Usar HTTPS en lugar de SSH para evitar necesidad de openssh-client
       - attach_workspace:
           at: .
       - run:
@@ -262,14 +232,9 @@ jobs:
       <<: *environment
       PATH: "${PATH}:${HOME}/.local/bin:${CIRCLE_WORKING_DIRECTORY}/node_modules/.bin"
     steps:
-      - run:
-          name: Instalar openssh-client para checkout SSH
-          command: |
-            mkdir -p /var/lib/apt/lists/partial
-            apt-get update
-            apt-get install -y openssh-client
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
+          # Usar HTTPS en lugar de SSH para evitar necesidad de openssh-client
       - attach_workspace:
           at: .
       - run:
@@ -288,14 +253,9 @@ jobs:
     environment:
       <<: *environment
     steps:
-      - run:
-          name: Instalar openssh-client para checkout SSH
-          command: |
-            mkdir -p /var/lib/apt/lists/partial
-            apt-get update
-            apt-get install -y openssh-client
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
+          # Usar HTTPS en lugar de SSH para evitar necesidad de openssh-client
       - attach_workspace:
           at: .
       - run:
