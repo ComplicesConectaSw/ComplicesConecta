@@ -27,7 +27,7 @@ jobs:
     steps:
       - run:
           name: Configurar git para usar HTTPS
-          command: git config --global url."https://github.com/".insteadOf git@github.com:
+          command: 'git config --global url."https://github.com/".insteadOf git@github.com:'
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
           # Usar HTTPS en lugar de SSH para evitar necesidad de openssh-client
@@ -58,7 +58,7 @@ jobs:
     steps:
       - run:
           name: Configurar git para usar HTTPS
-          command: git config --global url."https://github.com/".insteadOf git@github.com:
+          command: 'git config --global url."https://github.com/".insteadOf git@github.com:'
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
           # Usar HTTPS en lugar de SSH para evitar necesidad de openssh-client
@@ -95,7 +95,7 @@ jobs:
     steps:
       - run:
           name: Configurar git para usar HTTPS
-          command: git config --global url."https://github.com/".insteadOf git@github.com:
+          command: 'git config --global url."https://github.com/".insteadOf git@github.com:'
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
           # Usar HTTPS en lugar de SSH para evitar necesidad de openssh-client
@@ -130,7 +130,7 @@ jobs:
     steps:
       - run:
           name: Configurar git para usar HTTPS
-          command: git config --global url."https://github.com/".insteadOf git@github.com:
+          command: 'git config --global url."https://github.com/".insteadOf git@github.com:'
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
           # Usar HTTPS en lugar de SSH para evitar necesidad de openssh-client
@@ -163,7 +163,7 @@ jobs:
     steps:
       - run:
           name: Configurar git para usar HTTPS
-          command: git config --global url."https://github.com/".insteadOf git@github.com:
+          command: 'git config --global url."https://github.com/".insteadOf git@github.com:'
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
           # Usar HTTPS en lugar de SSH para evitar necesidad de openssh-client
@@ -201,7 +201,7 @@ jobs:
     steps:
       - run:
           name: Configurar git para usar HTTPS
-          command: git config --global url."https://github.com/".insteadOf git@github.com:
+          command: 'git config --global url."https://github.com/".insteadOf git@github.com:'
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
           # Usar HTTPS en lugar de SSH para evitar necesidad de openssh-client
@@ -252,7 +252,7 @@ jobs:
     steps:
       - run:
           name: Configurar git para usar HTTPS
-          command: git config --global url."https://github.com/".insteadOf git@github.com:
+          command: 'git config --global url."https://github.com/".insteadOf git@github.com:'
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
           # Usar HTTPS en lugar de SSH para evitar necesidad de openssh-client
@@ -276,7 +276,7 @@ jobs:
     steps:
       - run:
           name: Configurar git para usar HTTPS
-          command: git config --global url."https://github.com/".insteadOf git@github.com:
+          command: 'git config --global url."https://github.com/".insteadOf git@github.com:'
       - checkout:
           method: full  # Usar full checkout para compatibilidad con herramientas de análisis
           # Usar HTTPS en lugar de SSH para evitar necesidad de openssh-client
