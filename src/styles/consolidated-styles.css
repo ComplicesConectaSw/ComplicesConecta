@@ -733,8 +733,7 @@ button:focus, a:focus {
 
 /* ===== CROSS-BROWSER COMPATIBILITY ===== */
 .sticky {
-  position: -webkit-sticky;
-  position: sticky;
+  position: sticky; /* Firefox no reconoce -webkit-sticky, usar sticky estándar */
 }
 
 .z-50 {
