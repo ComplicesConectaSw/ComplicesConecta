@@ -606,7 +606,7 @@ if (-not $SkipNullChecks) {
                         
                         # También verificar si está dentro de un bloque try-catch que tiene null check al inicio
                         if (-not $hasNullCheckInContext) {
-                            # Buscar bloque try anterior
+                            # Buscar bloque try anterior (hasta 50 líneas atrás)
                             $tryStart = -1
                             for ($j = [Math]::Max(0, $i - 50); $j -lt $i; $j++) {
                                 if ($lines[$j] -match "^\s*try\s*\{") {
@@ -617,14 +617,15 @@ if (-not $SkipNullChecks) {
                             
                             # Si está en un try, buscar null check en las primeras líneas del try
                             if ($tryStart -ge 0) {
-                                # Buscar null check en las primeras 15 líneas del try
-                                for ($j = $tryStart + 1; $j -lt [Math]::Min($tryStart + 16, $i); $j++) {
+                                # Buscar null check en las primeras 20 líneas del try
+                                for ($j = $tryStart + 1; $j -lt [Math]::Min($tryStart + 21, $i); $j++) {
                                     $tryLine = $lines[$j]
                                     if ($tryLine -match "(if\s*\([^)]*!supabase|if\s*\([^)]*supabase\s*===?\s*null|if\s*\([^)]*supabase\s*!==?\s*null)" -and
                                         $tryLine -notmatch "^\s*//") {
-                                        # Verificar que haya return/throw después
-                                        for ($k = $j + 1; $k -lt [Math]::Min($j + 6, $i); $k++) {
+                                        # Verificar que haya return/throw después (hasta 10 líneas después del null check)
+                                        for ($k = $j + 1; $k -lt [Math]::Min($j + 11, $i + 1); $k++) {
                                             if ($lines[$k] -match "return|throw|continue") {
+                                                # Si hay return/throw después del null check, todas las líneas siguientes en el try están protegidas
                                                 $hasNullCheckInContext = $true
                                                 break
                                             }
