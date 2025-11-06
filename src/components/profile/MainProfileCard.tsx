@@ -123,8 +123,21 @@ const MainProfileCardComponent = ({
             src={currentImageSrc} 
             alt={name}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-            onError={() => {
-              logger.warn('Image failed to load, trying fallback:', { image: currentImageSrc });
+            crossOrigin="anonymous"
+            onError={(e) => {
+              // Silenciar errores de CORS/OpaqueResponseBlocking
+              const target = e.target as HTMLImageElement;
+              const error = e.nativeEvent as any;
+              
+              // Verificar si es un error de CORS/OpaqueResponseBlocking
+              const isCorsError = error?.message?.includes('OpaqueResponseBlocking') || 
+                                error?.message?.includes('CORS') ||
+                                target.src.includes('unsplash.com');
+              
+              if (!isCorsError) {
+                logger.warn('Image failed to load, trying fallback:', { image: currentImageSrc });
+              }
+              
               // Intentar con imagen de respaldo
               const fallbackImages = [
                 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=500&h=700&fit=crop&crop=face&q=80&auto=format',
