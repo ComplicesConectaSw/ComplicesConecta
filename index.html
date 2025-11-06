@@ -420,7 +420,15 @@
           return stack.indexOf(file) !== -1;
         }) || code === '4001' || (reason && typeof reason === 'object' && 'code' in reason && reason.code === 4001);
         
-        if (isWalletError) {
+        // IGNORAR errores de OpaqueResponseBlocking y CORS (son normales con imágenes de Unsplash)
+        var isOpaqueResponseError = msg.indexOf('opaqueresponseblocking') !== -1 ||
+                                    msg.indexOf('opaque response blocking') !== -1 ||
+                                    msg.indexOf('a resource is blocked') !== -1 ||
+                                    msg.indexOf('resource is blocked') !== -1 ||
+                                    msg.indexOf('unsplash.com') !== -1 ||
+                                    msg.indexOf('photo-') !== -1;
+        
+        if (isWalletError || isOpaqueResponseError) {
           e.stopImmediatePropagation();
           e.preventDefault();
           return false;
