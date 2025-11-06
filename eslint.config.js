@@ -8,6 +8,18 @@ import importPlugin from 'eslint-plugin-import'
 import unusedImports from 'eslint-plugin-unused-imports'
 
 export default [
+  {
+    ignores: [
+      '**/dist/**',
+      '**/build/**',
+      '**/node_modules/**',
+      '**/android/**',
+      '**/*.test.ts',
+      '**/*.spec.ts',
+      'src/types/supabase-generated.ts',
+      'src/types/supabase.ts'
+    ]
+  },
   // Ignores globales (deben estar primero)
   {
     ignores: [

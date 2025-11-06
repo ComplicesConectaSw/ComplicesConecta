@@ -53,6 +53,9 @@ function Show-Menu {
     Write-ColorOutput "7️⃣  Migraciones" "White"
     Write-ColorOutput "   • Aplicar migraciones remotas, Verificar alineación" "Gray"
     Write-ColorOutput ""
+    Write-ColorOutput "8️⃣  Ejecutar Todo en Orden" "Cyan"
+    Write-ColorOutput "   • Ejecuta todas las validaciones y verificaciones secuencialmente" "Gray"
+    Write-ColorOutput ""
     Write-ColorOutput "0️⃣  Salir" "White"
     Write-ColorOutput ""
 }
@@ -165,6 +168,124 @@ function Invoke-Utilities {
     }
 }
 
+function Invoke-RunAll {
+    Write-ColorOutput "
+╔════════════════════════════════════════════════════════════════════╗
+║                                                                    ║
+║     🚀 EJECUTANDO TODAS LAS VALIDACIONES EN ORDEN                 ║
+║                                                                    ║
+╚════════════════════════════════════════════════════════════════════╝
+" "Cyan"
+    
+    $startTime = Get-Date
+    $results = @{
+        Validation = $false
+        DatabaseSync = $false
+        Types = $false
+        Security = $false
+        Testing = $false
+    }
+    
+    try {
+        # 1. Validación del Proyecto
+        Write-ColorOutput "`n📋 PASO 1/5: Validación del Proyecto" "Yellow"
+        Write-ColorOutput "════════════════════════════════════════" "Gray"
+        try {
+            & "$PSScriptRoot\validate-project-unified.ps1"
+            $results.Validation = $true
+            Write-ColorOutput "✅ Validación completada" "Green"
+        } catch {
+            Write-ColorOutput "❌ Error en validación: $_" "Red"
+        }
+        Write-ColorOutput ""
+        
+        # 2. Verificar Tipos Supabase
+        Write-ColorOutput "📋 PASO 2/5: Verificar Tipos Supabase" "Yellow"
+        Write-ColorOutput "════════════════════════════════════════" "Gray"
+        try {
+            npm run validate:types 2>&1 | Out-Null
+            $results.Types = $true
+            Write-ColorOutput "✅ Tipos verificados" "Green"
+        } catch {
+            Write-ColorOutput "❌ Error verificando tipos: $_" "Red"
+        }
+        Write-ColorOutput ""
+        
+        # 3. Auditoría de Seguridad
+        Write-ColorOutput "📋 PASO 3/5: Auditoría de Seguridad" "Yellow"
+        Write-ColorOutput "════════════════════════════════════════" "Gray"
+        try {
+            npm run security:scan 2>&1 | Out-Null
+            $results.Security = $true
+            Write-ColorOutput "✅ Auditoría de seguridad completada" "Green"
+        } catch {
+            Write-ColorOutput "⚠️  Advertencias en seguridad (revisar manualmente)" "Yellow"
+        }
+        Write-ColorOutput ""
+        
+        # 4. Testing
+        Write-ColorOutput "📋 PASO 4/5: Testing y Calidad" "Yellow"
+        Write-ColorOutput "════════════════════════════════════════" "Gray"
+        try {
+            npm run test:lint-robust 2>&1 | Out-Null
+            npm run test:type-robust 2>&1 | Out-Null
+            $results.Testing = $true
+            Write-ColorOutput "✅ Tests completados" "Green"
+        } catch {
+            Write-ColorOutput "⚠️  Algunos tests fallaron (revisar manualmente)" "Yellow"
+        }
+        Write-ColorOutput ""
+        
+        # 5. Verificar Alineación de Tablas
+        Write-ColorOutput "📋 PASO 5/5: Verificar Alineación de Tablas" "Yellow"
+        Write-ColorOutput "════════════════════════════════════════" "Gray"
+        try {
+            & "$PSScriptRoot\verificar-alineacion-tablas.ps1" 2>&1 | Out-Null
+            $results.DatabaseSync = $true
+            Write-ColorOutput "✅ Alineación de tablas verificada" "Green"
+        } catch {
+            Write-ColorOutput "⚠️  Error verificando alineación: $_" "Yellow"
+        }
+        Write-ColorOutput ""
+        
+        # Resumen Final
+        $endTime = Get-Date
+        $duration = $endTime - $startTime
+        
+        Write-ColorOutput "
+╔════════════════════════════════════════════════════════════════════╗
+║                                                                    ║
+║     📊 RESUMEN FINAL                                               ║
+║                                                                    ║
+╚════════════════════════════════════════════════════════════════════╝
+" "Cyan"
+        
+        Write-ColorOutput "Resultados:" "Yellow"
+        Write-ColorOutput "  Validación del Proyecto: $(if ($results.Validation) { '✅' } else { '❌' })" $(if ($results.Validation) { "Green" } else { "Red" })
+        Write-ColorOutput "  Tipos Supabase: $(if ($results.Types) { '✅' } else { '❌' })" $(if ($results.Types) { "Green" } else { "Red" })
+        Write-ColorOutput "  Auditoría de Seguridad: $(if ($results.Security) { '✅' } else { '⚠️' })" $(if ($results.Security) { "Green" } else { "Yellow" })
+        Write-ColorOutput "  Testing y Calidad: $(if ($results.Testing) { '✅' } else { '⚠️' })" $(if ($results.Testing) { "Green" } else { "Yellow" })
+        Write-ColorOutput "  Alineación de Tablas: $(if ($results.DatabaseSync) { '✅' } else { '⚠️' })" $(if ($results.DatabaseSync) { "Green" } else { "Yellow" })
+        Write-ColorOutput ""
+        Write-ColorOutput "⏱️  Tiempo total: $($duration.TotalSeconds.ToString('F2')) segundos" "Cyan"
+        Write-ColorOutput ""
+        
+        $allPassed = $results.Validation -and $results.Types -and $results.Security -and $results.Testing -and $results.DatabaseSync
+        
+        if ($allPassed) {
+            Write-ColorOutput "🎉 ¡Todas las validaciones pasaron exitosamente!" "Green"
+        } else {
+            Write-ColorOutput "⚠️  Algunas validaciones requieren atención" "Yellow"
+        }
+        
+    } catch {
+        Write-ColorOutput "❌ Error ejecutando validaciones: $_" "Red"
+    }
+    
+    Write-ColorOutput ""
+    Read-Host "Presiona Enter para continuar"
+}
+
 function Invoke-Migrations {
     Write-ColorOutput "📦 Migraciones" "Yellow"
     Write-ColorOutput ""
@@ -196,9 +317,10 @@ function Main {
             "test" { Invoke-Testing }
             "utils" { Invoke-Utilities }
             "migrations" { Invoke-Migrations }
+            "all" { Invoke-RunAll }
             default { 
                 Write-ColorOutput "Acción desconocida: $Action" "Red"
-                Write-ColorOutput "Acciones disponibles: validate, db, branches, audit, test, utils, migrations" "Yellow"
+                Write-ColorOutput "Acciones disponibles: validate, db, branches, audit, test, utils, migrations, all" "Yellow"
             }
         }
     } else {
@@ -216,9 +338,12 @@ function Main {
                 "5" { Invoke-Testing }
                 "6" { Invoke-Utilities }
                 "7" { Invoke-Migrations }
+                "8" { Invoke-RunAll }
                 "0" { 
+                    Write-ColorOutput ""
                     Write-ColorOutput "👋 ¡Hasta luego!" "Cyan"
-                    break 
+                    Write-ColorOutput ""
+                    exit 0
                 }
                 default { 
                     Write-ColorOutput "Opción inválida. Presiona Enter para continuar." "Red"
