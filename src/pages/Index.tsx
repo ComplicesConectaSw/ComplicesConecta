@@ -212,6 +212,12 @@ const Index = () => {
     if (!isLoading && !loadingTimeoutPassed) {
       setLoadingTimeoutPassed(true);
     }
+    
+    // CRÍTICO: También establecer loadingTimeoutPassed cuando el timeout se ejecuta
+    // Esto asegura que el contenido se muestre incluso si isLoading no cambia
+    if (loadingTimeoutExecutedRef.current && !loadingTimeoutPassed) {
+      setLoadingTimeoutPassed(true);
+    }
   }, [isLoading, loadingTimeoutPassed]);
 
   // DEBUG: Log del estado de renderizado (debe estar antes del return condicional)
