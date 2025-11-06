@@ -44,6 +44,11 @@ export const ChatWithLocation = ({ conversationId, currentUserId, otherUser }: C
 
   const fetchMessages = useCallback(async () => {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return;
+      }
+      
       const { data, error } = await supabase
         .from('messages')
         .select("*, sender:profiles!sender_id(*)")
@@ -72,6 +77,11 @@ export const ChatWithLocation = ({ conversationId, currentUserId, otherUser }: C
   }, [conversationId]);
 
   const subscribeToMessages = useCallback(() => {
+    if (!supabase) {
+      logger.error('Supabase no está disponible');
+      return () => {};
+    }
+    
     const channel = supabase
       .channel(`messages:${conversationId}`)
       .on('postgres_changes', 
@@ -107,6 +117,16 @@ export const ChatWithLocation = ({ conversationId, currentUserId, otherUser }: C
           location_address: "Ubicación actual"
         })
       };
+
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "No se pudo enviar el mensaje.",
+        });
+        return;
+      }
 
       // Usar tabla chat_messages que existe en la BD
       const { error } = await (supabase as any)

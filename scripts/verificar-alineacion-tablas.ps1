@@ -120,7 +120,26 @@ if ($codeTables | Where-Object { $_ -in $knownViews -or $_ -in $knownTODOs -or $
 $unusedInLocal = $localTables | Where-Object { $_ -notin $codeTables -and $_ -ne "spatial_ref_sys" }
 if ($unusedInLocal.Count -gt 0) {
     Write-Host "ℹ️ TABLAS EN LOCAL PERO NO USADAS EN CODIGO:" -ForegroundColor Gray
-    $unusedInLocal | ForEach-Object { Write-Host "   - $_" -ForegroundColor DarkGray }
+    Write-Host "   (Estas tablas están preparadas para funcionalidades futuras o sistemas de auditoría)" -ForegroundColor DarkGray
+    $unusedInLocal | ForEach-Object { 
+        $reason = ""
+        switch ($_) {
+            "ai_model_metrics" { $reason = " - Métricas de modelos IA (futuro)" }
+            "ai_prediction_logs" { $reason = " - Logs de predicciones IA (futuro)" }
+            "analytics_events" { $reason = " - Eventos de analytics (puede usarse en Edge Functions)" }
+            "app_logs" { $reason = " - Sistema de logging (TODO)" }
+            "cache_statistics" { $reason = " - Estadísticas de caché (optimización futura)" }
+            "invitation_statistics" { $reason = " - Estadísticas de invitaciones (analytics)" }
+            "monitoring_sessions" { $reason = " - Sesiones de monitoreo v3.4.1" }
+            "story_shares" { $reason = " - Compartidos de historias" }
+            "summary_feedback" { $reason = " - Feedback de resúmenes de chat" }
+            "worldid_rewards" { $reason = " - Recompensas World ID v3.4.1" }
+            "worldid_statistics" { $reason = " - Estadísticas World ID v3.4.1" }
+            "worldid_verifications" { $reason = " - Verificaciones World ID v3.4.1" }
+            default { $reason = " - Tabla preparada para uso futuro" }
+        }
+        Write-Host "   - $_$reason" -ForegroundColor DarkGray 
+    }
     Write-Host ""
 }
 
@@ -131,7 +150,14 @@ if ($backupTables.Count -gt 0) {
     
     if ($missingFromBackup.Count -gt 0) {
         Write-Host "[ADVERTENCIA] TABLAS EN LOCAL PERO NO EN BACKUP:" -ForegroundColor Yellow
-        $missingFromBackup | ForEach-Object { Write-Host "   - $_" -ForegroundColor Yellow }
+        Write-Host "   (Estas tablas pueden ser del sistema o creadas manualmente)" -ForegroundColor DarkGray
+        $missingFromBackup | ForEach-Object { 
+            if ($_ -eq "spatial_ref_sys") {
+                Write-Host "   - $_ (Tabla del sistema PostGIS - NO debe estar en migraciones)" -ForegroundColor Green
+            } else {
+                Write-Host "   - $_" -ForegroundColor Yellow 
+            }
+        }
         Write-Host ""
     }
     
@@ -149,6 +175,10 @@ Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "Tablas en LOCAL: $($localTables.Count)" -ForegroundColor Green
 Write-Host "Tablas en BACKUP: $($backupTables.Count)" -ForegroundColor Green
 Write-Host "Tablas usadas en CODIGO: $($codeTables.Count)" -ForegroundColor Green
+Write-Host ""
+Write-Host "📊 NOTA: Las tablas en supabase.ts (115) son tipos generados desde Supabase REMOTO." -ForegroundColor Cyan
+Write-Host "   Puede haber diferencias entre LOCAL (67) y REMOTO (115) si las migraciones" -ForegroundColor DarkGray
+Write-Host "   no están sincronizadas. Ejecuta 'npx supabase db pull' para sincronizar." -ForegroundColor DarkGray
 Write-Host ""
 Write-Host "Tablas faltantes en LOCAL: $($missingInLocal.Count)" -ForegroundColor $(if ($missingInLocal.Count -eq 0) { "Green" } else { "Red" })
 Write-Host "Tablas no usadas en código: $($unusedInLocal.Count)" -ForegroundColor Gray

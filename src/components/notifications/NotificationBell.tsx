@@ -66,6 +66,11 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ className = 
     if (user && !(user as any).is_demo) {
       loadNotifications();
       // Set up real-time subscription
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return;
+      }
+      
       const subscription = supabase
         .channel('notifications')
         .on('postgres_changes', 
@@ -97,6 +102,13 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ className = 
     
     setLoading(true);
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        setNotifications([]);
+        setUnreadCount(0);
+        return;
+      }
+      
       const { data, error } = await supabase
         .from('notifications')
         .select('*')
@@ -137,6 +149,11 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ className = 
 
   const markAsRead = async (notificationId: string) => {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return;
+      }
+      
       const { error } = await supabase
         .from('notifications')
         .update({ read: true } as any)
@@ -157,6 +174,11 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ className = 
     if (!user) return;
 
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return;
+      }
+      
       const { error } = await supabase
         .from('notifications')
         .update({ read: true } as any)
@@ -184,6 +206,11 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ className = 
 
   const deleteNotification = async (notificationId: string) => {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return;
+      }
+      
       const { error } = await supabase
         .from('notifications')
         .delete()

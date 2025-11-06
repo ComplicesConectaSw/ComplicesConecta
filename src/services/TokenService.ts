@@ -482,15 +482,22 @@ class TokenService {
 
       // Calcular recompensas basado en duración y APY
       const startDate = new Date(staking.start_date);
-      const endDate = new Date(staking.end_date);
+      const endDate = staking.end_date ? new Date(staking.end_date) : null;
       const now = new Date();
-      const actualEndDate = now < endDate ? now : endDate;
-      const daysStaked = Math.floor((actualEndDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
-      const apy = staking.reward_percentage || 10.0;
+      const actualEndDate = endDate && now < endDate ? now : (endDate || now);
+      const daysStaked = endDate 
+        ? Math.floor((actualEndDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24))
+        : 0;
+      const apy = staking.apy || 10.0;
       const dailyRate = apy / 365 / 100;
       const rewardsEarned = Math.floor(staking.amount * dailyRate * daysStaked);
 
       // Actualizar staking como completado
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return false;
+      }
+      
       await supabase
         .from('staking_records')
         .update({

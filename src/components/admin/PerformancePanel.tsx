@@ -77,6 +77,12 @@ export default function PerformancePanel() {
 
   const loadSystemMetrics = async () => {
     try {
+      if (!supabase) {
+        logger.warn('Supabase no está disponible');
+        generateMockMetrics();
+        return;
+      }
+      
       // Consultar métricas reales de la base de datos
       const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
       
@@ -190,6 +196,12 @@ export default function PerformancePanel() {
 
   const loadRecentMetrics = async () => {
     try {
+      if (!supabase) {
+        logger.warn('Supabase no está disponible');
+        generateMockRecentMetrics();
+        return;
+      }
+      
       // Cargar métricas más recientes (últimos 10 minutos)
       const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000).toISOString();
       

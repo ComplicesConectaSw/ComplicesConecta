@@ -196,17 +196,28 @@ const ProfileSingle: React.FC = () => {
               user_id: parsedUser.id || 'demo-single-1',
               updated_at: new Date().toISOString(),
               // Campos opcionales
-              email: null,
-              first_name: null,
-              last_name: null,
-              is_online: false,
+              account_type: null,
+              age_range_max: null,
+              age_range_min: null,
+              blocked_at: null,
+              blocked_reason: null,
+              is_active: true,
+              is_blocked: false,
               is_demo: true,
-              is_public: true,
-              last_active: null,
-              premium_plan: null,
-              premium_expires_at: null,
+              is_online: false,
+              interested_in: null,
+              lifestyle_preferences: null,
+              location_preferences: null,
               latitude: null,
-              longitude: null
+              longitude: null,
+              looking_for: null,
+              max_distance: null,
+              personality_traits: null,
+              s2_cell_id: null,
+              s2_level: null,
+              suspension_end_date: null,
+              swinger_experience: null,
+              warnings_count: null
             };
             
             setProfile(profileData);

@@ -22,7 +22,7 @@ El análisis cubrirá estructura, dependencias, código fuente, configuraciones 
 4. Realizar **validaciones inteligentes**:
    - Comprobar integridad de dependencias (`npm ls react`, `npm ls react-dom`).
    - Verificar compatibilidad React/Vite/Build.
-   - Confirmar rutas válidas para entornos WEB / Android / iOS.
+   - Confirmar rutas válidas para entornos WEB / Android / iOS /DESKTOP/ MOBIL /TABLET 
 5. Si se detectan errores menores o inconsistencias triviales:
    - Aplicar **Autofix Seguro** (reparación automática con respaldo previo).
    - Generar confirmación antes de aplicar cambios críticos.
@@ -39,7 +39,7 @@ El análisis cubrirá estructura, dependencias, código fuente, configuraciones 
 - Variables de entorno (.env).
 - Versiones de dependencias clave (React, React-DOM, Vite, Tailwind, etc.).
 - Configuración de build.
-- Entornos activos (WEB / Android / iOS).
+- Entornos activos (WEB / Android / iOS / DESKTOP / MOBIL / TABLET )
 
 Si algún parámetro falta, **el sistema debe generarlo o solicitar confirmación** antes de continuar.
 
@@ -112,3 +112,5 @@ Respaldo previo: C:\Users\conej\Documents\REspaldo de audioria
 - Confirmar manualmente los parches de dependencias o imports.
 - Las reparaciones automáticas deben mantener compatibilidad de entorno.
 - Revertir cualquier cambio que rompa el build o cause errores posteriores.
+- No Romper Logicas de Negocio
+- Si Exiten Reglas Previamente establecidad RESPERTARLAS NO BRINCAR O OMITIR DICHAS REGLAS PRE ESTABLECIDAS  

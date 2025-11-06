@@ -178,21 +178,61 @@ if (-not $SkipTypeCheck) {
     try {
         $typeCheckOutput = npm run type-check 2>&1 | Out-String
         $typeCheckLines = $typeCheckOutput -split "`n"
-        $errors = ($typeCheckLines | Where-Object { 
-            $_ -match "error TS" -or 
-            $_ -match "Type error" -or 
-            $_ -match "Cannot find" -or 
-            ($_ -match "Property" -and $_ -match "does not exist")
-        }).Count
         
-        $script:Results.typeCheck = @{
-            status = if ($errors -gt 0) { "failed" } else { "success" }
-            errors = $errors
-            output = $typeCheckOutput
+        $errors = @()
+        $errorFiles = @{}
+        
+        foreach ($line in $typeCheckLines) {
+            # Detectar errores de TypeScript con formato: file.ts(line,col): error TSXXXX: message
+            if ($line -match "([^\s]+\.(ts|tsx))\((\d+),(\d+)\):\s*error TS\d+:\s*(.+)") {
+                $fileName = $matches[1]
+                $lineNum = $matches[3]
+                $colNum = $matches[4]
+                $message = $matches[5]
+                
+                if (-not $errorFiles.ContainsKey($fileName)) {
+                    $errorFiles[$fileName] = @()
+                }
+                $errorFiles[$fileName] += "${lineNum}:${colNum} - $message"
+                $errors += $line
+            }
+            # También detectar errores sin formato de línea/columna
+            elseif ($line -match "error TS\d+:" -or 
+                    $line -match "Type error" -or 
+                    $line -match "Cannot find" -or 
+                    ($line -match "Property" -and $line -match "does not exist") -or
+                    ($line -match "La propiedad" -and $line -match "no existe")) {
+                $errors += $line
+            }
         }
         
-        if ($errors -gt 0) {
-            Write-ColorOutput "   ❌ Errores de TypeScript: $errors" "Red"
+        $script:Results.typeCheck = @{
+            status = if ($errors.Count -gt 0) { "failed" } else { "success" }
+            errors = $errors.Count
+            output = $typeCheckOutput
+            errorFiles = $errorFiles
+        }
+        
+        if ($errors.Count -gt 0) {
+            Write-ColorOutput "   ❌ Errores de TypeScript: $($errors.Count)" "Red"
+            if ($errorFiles.Keys.Count -gt 0) {
+                foreach ($file in $errorFiles.Keys) {
+                    $filePath = Get-ChildItem -Path $SourcePath -Recurse -Filter $file -ErrorAction SilentlyContinue | Select-Object -First 1
+                    if ($filePath) {
+                        Write-ColorOutput "      - $($filePath.FullName)" "Red"
+                        foreach ($errorDetail in $errorFiles[$file]) {
+                            Write-ColorOutput "        $errorDetail" "Gray"
+                        }
+                    } else {
+                        Write-ColorOutput "      - $file" "Red"
+                    }
+                }
+            } else {
+                # Si no se detectaron archivos específicos, mostrar las primeras líneas de error
+                $errors | Select-Object -First 10 | ForEach-Object {
+                    Write-ColorOutput "      $_" "Gray"
+                }
+            }
             $script:Results.summary.failedChecks++
         } else {
             Write-ColorOutput "   ✅ Sin errores de TypeScript" "Green"
@@ -412,10 +452,28 @@ if (-not $SkipSupabase) {
         if ($supabaseExists) {
             Write-ColorOutput "   ✅ supabase.ts encontrado ($($supabaseInfo.tableCount) tablas)" "Green"
             
+            # Verificar si los archivos son idénticos (mismo hash)
+            $filesIdentical = $false
+            if ($generatedExists) {
+                try {
+                    $supabaseHash = (Get-FileHash $supabaseTypesPath -Algorithm SHA256).Hash
+                    $generatedHash = (Get-FileHash $supabaseGeneratedPath -Algorithm SHA256).Hash
+                    $filesIdentical = ($supabaseHash -eq $generatedHash)
+                    
+                    if ($filesIdentical) {
+                        Write-ColorOutput "   ✅ Archivos idénticos (correcto tras regeneración)" "Green"
+                        Write-ColorOutput "      📝 supabase.ts es el archivo usado en el código" "Gray"
+                        Write-ColorOutput "      📝 supabase-generated.ts es el archivo generado automáticamente" "Gray"
+                    }
+                } catch {
+                    # Si falla el hash, continuar con la validación normal
+                }
+            }
+            
             $needsRegeneration = $false
             $regenerationReason = ""
             
-            if ($generatedExists) {
+            if ($generatedExists -and -not $filesIdentical) {
                 if ($generatedInfo.modified -gt $supabaseInfo.modified) {
                     $needsRegeneration = $true
                     $regenerationReason = "supabase-generated.ts es más reciente"

@@ -119,12 +119,9 @@ const ModeratorDashboard = () => {
           if (!supabase) {
             reporterEmail = null;
           } else {
-            const { data: reporterProfile } = await supabase
-              .from('profiles')
-              .select('email')
-              .eq('user_id', report.reporter_user_id)
-              .single();
-            reporterEmail = reporterProfile?.email || null;
+            // Obtener email desde auth.users usando RPC o simplemente usar user_id
+            // Como profiles no tiene email, usamos el user_id directamente
+            reporterEmail = report.reporter_user_id || null;
           }
         }
         
@@ -132,12 +129,9 @@ const ModeratorDashboard = () => {
           if (!supabase) {
             reportedUserEmail = null;
           } else {
-            const { data: reportedProfile } = await supabase
-              .from('profiles')
-              .select('email')
-              .eq('user_id', report.reported_user_id)
-              .single();
-            reportedUserEmail = reportedProfile?.email || null;
+            // Obtener email desde auth.users usando RPC o simplemente usar user_id
+            // Como profiles no tiene email, usamos el user_id directamente
+            reportedUserEmail = report.reported_user_id || null;
           }
         }
         
@@ -153,12 +147,17 @@ const ModeratorDashboard = () => {
   };
 
   const fetchModerationLogs = async () => {
+    if (!supabase) {
+      logger.error('Supabase no está disponible');
+      return;
+    }
+    
     const { data, error } = await (supabase as any)
       .from('moderation_logs')
       .select(`
         *,
-        moderator:profiles!moderation_logs_moderator_id_fkey(email),
-        target_user:profiles!moderation_logs_target_user_id_fkey(email)
+        moderator:profiles!moderation_logs_moderator_id_fkey(name),
+        target_user:profiles!moderation_logs_target_user_id_fkey(name)
       `)
       .order('created_at', { ascending: false })
       .limit(50);
@@ -170,8 +169,8 @@ const ModeratorDashboard = () => {
 
     const logsWithEmails = data?.map((log: any) => ({
       ...log,
-      moderator_email: log.moderator?.email,
-      target_user_email: log.target_user?.email
+      moderator_email: log.moderator?.name || log.moderator_id || 'Moderador',
+      target_user_email: log.target_user?.name || log.target_user_id || 'Usuario'
     })) || [];
 
     setModerationLogs(logsWithEmails);
@@ -187,8 +186,8 @@ const ModeratorDashboard = () => {
       .from('user_suspensions')
       .select(`
         *,
-        user:profiles!user_suspensions_user_id_fkey(email),
-        suspended_by_user:profiles!user_suspensions_suspended_by_fkey(email)
+        user:profiles!user_suspensions_user_id_fkey(name),
+        suspended_by_user:profiles!user_suspensions_suspended_by_fkey(name)
       `)
       .eq('status', 'active')
       .order('created_at', { ascending: false });
@@ -200,8 +199,8 @@ const ModeratorDashboard = () => {
 
     const suspensionsWithEmails = data?.map((suspension: any) => ({
       ...suspension,
-      user_email: suspension.user?.email,
-      suspended_by_email: suspension.suspended_by_user?.email
+      user_email: suspension.user?.name || suspension.user_id || 'Usuario',
+      suspended_by_email: suspension.suspended_by_user?.name || suspension.suspended_by || 'Sistema'
     })) || [];
 
     setSuspensions(suspensionsWithEmails);

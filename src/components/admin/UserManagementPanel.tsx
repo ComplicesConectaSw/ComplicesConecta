@@ -77,6 +77,12 @@ export function UserManagementPanel() {
   const loadUsers = async () => {
     setIsLoading(true);
     try {
+      if (!supabase) {
+        console.error('Supabase no está disponible');
+        generateMockUsers();
+        return;
+      }
+      
       const { data: profiles, error } = await supabase
         .from('profiles')
         .select('*')

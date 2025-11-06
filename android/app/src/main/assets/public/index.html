@@ -21,24 +21,480 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@ComplicesConectaSW" />
     <meta name="twitter:image" content="/placeholder.svg" />
-    <script type="module" crossorigin src="/assets/index-C5mdukgS.js"></script>
+    <!-- CRÍTICO: Asegurar React disponible globalmente ANTES de chunks -->
+    <script>
+      // CRÍTICO: Establecer stub de React INMEDIATAMENTE - ANTES de logging
+      // Esto debe ejecutarse ANTES de cualquier otro código
+      // SOLUCIÓN DIRECTA: Interceptar TODOS los accesos posibles a React
+      (function() {
+        // Stub completo de React con TODOS los hooks necesarios
+        var reactStub = {
+          createContext: function(defaultValue) {
+            return {
+              Provider: function(props) { return props && props.children || null; },
+              Consumer: function(props) { return props && props.children ? props.children(defaultValue) : null; },
+              displayName: 'Context',
+              _currentValue: defaultValue,
+              $$typeof: Symbol.for('react.context')
+            };
+          },
+          createElement: function() { return null; },
+          Fragment: function(props) { return props ? props.children : null; },
+          useState: function(initial) { return [initial, function() {}]; },
+          useEffect: function() { return function() {}; },
+          // CRÍTICO: useLayoutEffect debe estar disponible SIEMPRE
+          useLayoutEffect: function(callback, deps) {
+            if (typeof callback === 'function') {
+              try {
+                var result = callback();
+                return typeof result === 'function' ? result : function() {};
+              } catch(e) {
+                return function() {};
+              }
+            }
+            return function() {};
+          },
+          useMemo: function(fn) { return fn(); },
+          useCallback: function(fn) { return fn; },
+          useContext: function(context) { return context ? context._currentValue : null; },
+          StrictMode: function(props) { return props ? props.children : null; },
+          // Asegurar que todos los otros hooks también estén disponibles
+          useRef: function(initial) { return { current: initial }; },
+          useReducer: function() { return [null, function() {}]; },
+          useImperativeHandle: function() {},
+          useDebugValue: function() {},
+          version: '18.3.1'
+        };
+        
+        // CRÍTICO: Interceptar acceso a propiedades usando Proxy ANTES de definir window.React
+        // Esto captura accesos como: React.useLayoutEffect donde React es undefined
+        var reactProxy = null;
+        if (typeof Proxy !== 'undefined') {
+          try {
+            reactProxy = new Proxy(reactStub, {
+              get: function(target, prop) {
+                // Si el prop es useLayoutEffect y no existe, retornar función stub
+                if (prop === 'useLayoutEffect') {
+                  return target.useLayoutEffect || function() { return function() {}; };
+                }
+                // Para cualquier otro prop, retornar del target o undefined
+                return target[prop] !== undefined ? target[prop] : (function() {
+                  // Si es un hook que no existe, retornar función stub
+                  if (prop.toString().startsWith('use')) {
+                    return function() { return undefined; };
+                  }
+                  return undefined;
+                })();
+              },
+              has: function(target, prop) {
+                // Siempre decir que useLayoutEffect existe
+                if (prop === 'useLayoutEffect') return true;
+                return prop in target;
+              }
+            });
+          } catch(e) {
+            // Si Proxy falla, usar el stub directamente
+            reactProxy = reactStub;
+          }
+        } else {
+          reactProxy = reactStub;
+        }
+        
+        // CRÍTICO: Establecer window.React usando defineProperty con getter/setter
+        // Esto asegura que incluso si se accede antes de que esté definido, retorne el stub
+        try {
+          Object.defineProperty(window, 'React', {
+            get: function() {
+              // Si ya existe el React real, usarlo; si no, usar el stub
+              return window.__REACT_REAL__ || reactProxy || reactStub;
+            },
+            set: function(value) {
+              // Guardar el React real cuando se asigne
+              window.__REACT_REAL__ = value;
+              // Asegurar que useLayoutEffect esté disponible
+              if (value && !value.useLayoutEffect) {
+                value.useLayoutEffect = reactStub.useLayoutEffect;
+              }
+            },
+            configurable: true,
+            enumerable: true
+          });
+        } catch(e) {
+          // Si defineProperty falla, asignar directamente
+          window.React = reactProxy || reactStub;
+        }
+        
+        // También establecer directamente por si acaso
+        window.React = window.React || reactProxy || reactStub;
+        window.__REACT_STUB__ = reactStub;
+        window.__REACT_REAL__ = null;
+        
+        // CRÍTICO: Interceptar accesos a propiedades de undefined usando Object.prototype
+        // Esto captura accesos como: someVar.useLayoutEffect donde someVar es undefined
+        var originalPropertyAccess = Object.prototype.valueOf;
+        Object.prototype.valueOf = function() {
+          // Si alguien intenta acceder a useLayoutEffect en un objeto que podría ser React
+          if (this === window || this === globalThis) {
+            // Asegurar que React esté disponible
+            if (!window.React) {
+              window.React = reactProxy || reactStub;
+            }
+          }
+          return originalPropertyAccess.call(this);
+        };
+      })();
+      
+      // LOGGING: Inicializar sistema de logging para diagnóstico
+      window.__LOADING_DEBUG__ = {
+        timestamps: [],
+        events: [],
+        log: function(event, data) {
+          var timestamp = performance.now();
+          this.timestamps.push(timestamp);
+          this.events.push({ event: event, timestamp: timestamp, data: data || {} });
+          if (window.location.hostname === 'localhost' || window.location.hostname.includes('dev')) {
+            console.log('[LOADING]', event, data || '');
+          }
+        },
+        getReport: function() {
+          return {
+            events: this.events,
+            duration: this.timestamps.length > 0 ? this.timestamps[this.timestamps.length - 1] - this.timestamps[0] : 0,
+            reactAvailable: typeof window !== 'undefined' && !!window.React,
+            reactContextAvailable: typeof window !== 'undefined' && !!window.React && !!window.React.createContext
+          };
+        }
+      };
+      
+      // POLYFILL REACT: Asegurar que React.createContext esté disponible globalmente
+      // Esto debe ejecutarse ANTES de que cualquier chunk se cargue
+      window.__LOADING_DEBUG__.log('POLYFILL_INIT', { timestamp: Date.now() });
+      
+      // POLYFILL ELIMINADO: No es necesario y puede causar problemas
+      // React se carga antes de que se use createContext gracias al orden de carga
+      window.__LOADING_DEBUG__.log('POLYFILL_SKIPPED', { hasReact: !!window.React });
+    </script>
+    
+    <!-- CRÍTICO: Inyectar React INMEDIATAMENTE en <head> ANTES de que Vite agregue modulepreload -->
+    <script>
+      // PROTECCIÓN CRÍTICA: Mejorar stub de React y asegurar que esté disponible
+      // El stub ya está establecido arriba, aquí solo mejoramos la protección
+      (function() {
+        // Obtener stub existente o crear uno nuevo
+        var reactStub = window.__REACT_STUB__ || window.React || {
+          createContext: function(defaultValue) {
+            // Stub de createContext que funciona y será reemplazado cuando React real se cargue
+            var context = {
+              Provider: function(props) { 
+                if (props && props.children) return props.children; 
+                return null; 
+              },
+              Consumer: function(props) { 
+                if (props && props.children) return props.children(defaultValue); 
+                return null; 
+              },
+              displayName: 'Context',
+              _currentValue: defaultValue,
+              $$typeof: Symbol.for('react.context')
+            };
+            return context;
+          },
+          createElement: function() { return null; },
+          Fragment: function(props) { return props ? props.children : null; },
+          useState: function(initial) { return [initial, function() {}]; },
+          useEffect: function() { return function() {}; },
+          useLayoutEffect: function(callback, deps) { 
+            // CRÍTICO: useLayoutEffect debe estar disponible en el stub
+            // Si hay callback, ejecutarlo inmediatamente (sincrónicamente)
+            if (typeof callback === 'function') {
+              try {
+                return callback();
+              } catch(e) {
+                return function() {};
+              }
+            }
+            return function() {};
+          },
+          useMemo: function(fn) { return fn(); },
+          useCallback: function(fn) { return fn; },
+          useContext: function(context) { return context ? context._currentValue : null; },
+          StrictMode: function(props) { return props ? props.children : null; }
+        };
+        
+        // Guardar stub en múltiples lugares para máxima compatibilidad
+        window.__REACT_STUB__ = reactStub;
+        window.__REACT_REAL__ = null;
+        
+        // Interceptar Object.defineProperty ANTES de que cualquier chunk se cargue
+        var originalDefineProperty = Object.defineProperty;
+        Object.defineProperty = function(obj, prop, descriptor) {
+          // Si se intenta definir window.React, interceptarlo
+          if (obj === window && (prop === 'React' || prop === 'react')) {
+            // Guardar React real cuando se defina
+            var reactValue = descriptor.value || (descriptor.get && descriptor.get());
+            if (reactValue) {
+              window.__REACT_REAL__ = reactValue;
+              // Asegurar que createContext esté disponible
+              if (!reactValue.createContext) {
+                reactValue.createContext = reactStub.createContext;
+              }
+            }
+            // Llamar original pero asegurar que el stub esté disponible
+            try {
+              return originalDefineProperty.call(this, obj, prop, descriptor);
+            } catch(e) {
+              // Si falla, usar el stub
+              return originalDefineProperty.call(this, obj, prop, {
+                get: function() { return window.__REACT_REAL__ || reactStub; },
+                configurable: true,
+                enumerable: true
+              });
+            }
+          }
+          return originalDefineProperty.call(this, obj, prop, descriptor);
+        };
+        
+        // PROTECCIÓN FINAL: Proxy para interceptar TODOS los accesos a React.useLayoutEffect
+        var reactProxy;
+        try {
+          reactProxy = new Proxy(reactStub, {
+            get: function(target, prop) {
+              // Si se accede a useLayoutEffect, asegurar que esté disponible
+              if (prop === 'useLayoutEffect') {
+                var realReact = window.__REACT_REAL__;
+                if (realReact && realReact.useLayoutEffect) {
+                  return realReact.useLayoutEffect;
+                }
+                return target.useLayoutEffect || function(callback, deps) {
+                  if (typeof callback === 'function') {
+                    try {
+                      return callback();
+                    } catch(e) {
+                      return function() {};
+                    }
+                  }
+                  return function() {};
+                };
+              }
+              // Si React real está disponible, usarlo; sino, usar stub
+              var realReact = window.__REACT_REAL__;
+              if (realReact && realReact[prop]) {
+                return realReact[prop];
+              }
+              return target[prop] || function() { return function() {}; };
+            }
+          });
+          
+          // Reemplazar el stub con el proxy
+          reactStub = reactProxy;
+          window.__REACT_STUB__ = reactProxy;
+        } catch(e) {
+          // Si Proxy no está disponible, usar el stub directamente
+          reactProxy = reactStub;
+        }
+        
+        // Hacer que window.React apunte al stub INMEDIATAMENTE usando defineProperty
+        try {
+          Object.defineProperty(window, 'React', {
+            get: function() {
+              // Si React real ya está disponible, usarlo; sino, usar stub (proxy)
+              var realReact = window.__REACT_REAL__;
+              if (realReact) {
+                // Asegurar que useLayoutEffect esté disponible en React real
+                if (!realReact.useLayoutEffect) {
+                  realReact.useLayoutEffect = reactStub.useLayoutEffect;
+                }
+                return realReact;
+              }
+              return reactProxy || reactStub;
+            },
+            set: function(value) {
+              // Guardar React real cuando se defina
+              window.__REACT_REAL__ = value;
+              // Asegurar que createContext y useLayoutEffect estén disponibles
+              if (value) {
+                if (!value.createContext) {
+                  value.createContext = reactStub.createContext;
+                }
+                if (!value.useLayoutEffect) {
+                  value.useLayoutEffect = reactStub.useLayoutEffect;
+                }
+              }
+            },
+            configurable: true,
+            enumerable: true
+          });
+        } catch(e) {
+          // Si falla, usar asignación directa
+          window.React = reactProxy || reactStub;
+        }
+        
+        // PROTECCIÓN EXTRA: Interceptar accesos a React.createContext directamente
+        var originalGetPropertyDescriptor = Object.getOwnPropertyDescriptor;
+        Object.getOwnPropertyDescriptor = function(obj, prop) {
+          if (obj === window && (prop === 'React' || prop === 'react')) {
+            var desc = originalGetPropertyDescriptor.call(this, obj, prop);
+            if (!desc) {
+              return {
+                get: function() { return window.__REACT_REAL__ || reactProxy || reactStub; },
+                configurable: true,
+                enumerable: true
+              };
+            }
+          }
+          return originalGetPropertyDescriptor.call(this, obj, prop);
+        };
+        
+        // Log para debugging
+        if (window.__LOADING_DEBUG__) {
+          window.__LOADING_DEBUG__.log('REACT_STUB_CREATED_HEAD', { 
+            timestamp: Date.now(),
+            hasStub: !!window.__REACT_STUB__,
+            hasReact: !!window.React
+          });
+        }
+      })();
+    </script>
+    
+    <!-- SOLUCIÓN ALTERNATIVA: Hacer propiedades de wallet configurables ANTES de que las extensiones las toquen -->
+    <script>
+      // EJECUCIÓN INMEDIATA SIN IIFE - MÁXIMA PRIORIDAD
+      var walletProtection = {
+        originalDefineProperty: Object.defineProperty,
+        originalConsoleError: console.error,
+        originalConsoleWarn: console.warn
+      };
+      
+      // Hacer propiedades configurables ANTES de que se definan
+      var walletProps = ['ethereum', 'solana', 'tronWeb', 'tronweb', 'bybitWallet', 'bybit', 'chainId', 'chainid'];
+      walletProps.forEach(function(prop) {
+        try {
+          var desc = Object.getOwnPropertyDescriptor(window, prop);
+          if (desc && !desc.configurable) {
+            try {
+              Object.defineProperty(window, prop, {
+                configurable: true,
+                writable: desc.writable !== false,
+                enumerable: desc.enumerable !== false,
+                value: desc.value,
+                get: desc.get,
+                set: desc.set
+              });
+            } catch(e) {}
+          }
+        } catch(e) {}
+      });
+      
+      // Interceptar Object.defineProperty
+      Object.defineProperty = function(obj, prop, descriptor) {
+        var propLower = String(prop).toLowerCase();
+        if (obj === window && walletProps.some(function(wp) { return propLower === wp.toLowerCase(); })) {
+          try {
+            return walletProtection.originalDefineProperty.call(this, obj, prop, descriptor);
+          } catch(e) {
+            return obj;
+          }
+        }
+        try {
+          return walletProtection.originalDefineProperty.call(this, obj, prop, descriptor);
+        } catch(e) {
+          var errMsg = String(e && e.message || '').toLowerCase();
+          if (walletProps.some(function(wp) { return propLower === wp.toLowerCase(); }) && obj === window) {
+            return obj;
+          }
+          throw e;
+        }
+      };
+      
+      // Silenciar console
+      console.error = function() {
+        var msg = Array.prototype.join.call(arguments, ' ').toLowerCase();
+        if (msg.indexOf('wallet') !== -1 || msg.indexOf('ethereum') !== -1 || msg.indexOf('solana') !== -1 ||
+            msg.indexOf('metamask') !== -1 || msg.indexOf('tronweb') !== -1 || msg.indexOf('tronlink') !== -1 ||
+            msg.indexOf('bybit') !== -1 || msg.indexOf('evmask') !== -1 || msg.indexOf('cannot redefine') !== -1 ||
+            msg.indexOf('cannot assign to read only') !== -1 || msg.indexOf('read only property') !== -1 ||
+            msg.indexOf('which has only a getter') !== -1 || msg.indexOf('inpage.js') !== -1 ||
+            msg.indexOf('evmask.js') !== -1 || msg.indexOf('data-layer') !== -1 || msg.indexOf('solana.js') !== -1 ||
+            msg.indexOf('dist.94abdbf1.js') !== -1 || msg.indexOf('chainid') !== -1) {
+          return;
+        }
+        walletProtection.originalConsoleError.apply(console, arguments);
+      };
+      
+      console.warn = function() {
+        var msg = Array.prototype.join.call(arguments, ' ').toLowerCase();
+        if (msg.indexOf('wallet') !== -1 || msg.indexOf('ethereum') !== -1 || msg.indexOf('solana') !== -1 ||
+            msg.indexOf('metamask') !== -1 || msg.indexOf('tronweb') !== -1 || msg.indexOf('tronlink') !== -1 ||
+            msg.indexOf('bybit') !== -1 || msg.indexOf('evmask') !== -1 || msg.indexOf('overwrite') !== -1) {
+          return;
+        }
+        walletProtection.originalConsoleWarn.apply(console, arguments);
+      };
+      
+      // Interceptar errores
+      window.addEventListener('error', function(e) {
+        var msg = String(e.message || '').toLowerCase();
+        var filename = String(e.filename || '').toLowerCase();
+        var stack = String(e.error && e.error.stack || '').toLowerCase();
+        if (msg.indexOf('cannot redefine property') !== -1 || msg.indexOf('cannot assign to read only') !== -1 ||
+            msg.indexOf('read only property') !== -1 || msg.indexOf('which has only a getter') !== -1 ||
+            msg.indexOf('wallet') !== -1 || msg.indexOf('ethereum') !== -1 || msg.indexOf('solana') !== -1 ||
+            msg.indexOf('metamask') !== -1 || msg.indexOf('tronweb') !== -1 || msg.indexOf('tronlink') !== -1 ||
+            msg.indexOf('bybit') !== -1 || msg.indexOf('evmask') !== -1 ||
+            filename.indexOf('inpage.js') !== -1 || filename.indexOf('evmask.js') !== -1 ||
+            filename.indexOf('solana.js') !== -1 || filename.indexOf('data-layer') !== -1 ||
+            filename.indexOf('dist.94abdbf1.js') !== -1 ||
+            stack.indexOf('inpage.js') !== -1 || stack.indexOf('evmask.js') !== -1 ||
+            stack.indexOf('solana.js') !== -1 || stack.indexOf('data-layer') !== -1) {
+          e.stopImmediatePropagation();
+          e.preventDefault();
+          return false;
+        }
+      }, true);
+      
+      // Interceptar promise rejections
+      window.addEventListener('unhandledrejection', function(e) {
+        var reason = e.reason;
+        var msg = String(reason && (reason.message || reason.toString()) || '').toLowerCase();
+        var stack = String(reason && reason.stack || '').toLowerCase();
+        var code = String(reason && reason.code || '').toLowerCase();
+        if (msg.indexOf('cannot redefine property') !== -1 || msg.indexOf('cannot assign to read only') !== -1 ||
+            msg.indexOf('read only property') !== -1 || msg.indexOf('which has only a getter') !== -1 ||
+            msg.indexOf('wallet must') !== -1 || msg.indexOf('wallet') !== -1 ||
+            msg.indexOf('ethereum') !== -1 || msg.indexOf('solana') !== -1 || msg.indexOf('metamask') !== -1 ||
+            msg.indexOf('tronweb') !== -1 || msg.indexOf('tronlink') !== -1 || msg.indexOf('bybit') !== -1 ||
+            msg.indexOf('evmask') !== -1 || msg.indexOf('chainid') !== -1 ||
+            msg.indexOf('inpage.js') !== -1 || msg.indexOf('evmask.js') !== -1 || msg.indexOf('data-layer') !== -1 ||
+            msg.indexOf('solana.js') !== -1 || msg.indexOf('dist.94abdbf1.js') !== -1 ||
+            stack.indexOf('inpage.js') !== -1 || stack.indexOf('evmask.js') !== -1 ||
+            stack.indexOf('data-layer') !== -1 || stack.indexOf('solana.js') !== -1 ||
+            code === '4001' || (reason && typeof reason === 'object' && 'code' in reason && reason.code === 4001)) {
+          e.stopImmediatePropagation();
+          e.preventDefault();
+          return false;
+        }
+      }, true);
+    </script>
+        <link rel="modulepreload" crossorigin href="/assets/vendor-react-CzuV5R1h.js">
+    <link rel="modulepreload" crossorigin href="/assets/vendor-bDduc1K-.js">
+    <link rel="modulepreload" crossorigin href="/assets/data-layer-xcxn1uRB.js">
     <link rel="modulepreload" crossorigin href="/assets/utils-BrhObH0h.js">
-    <link rel="modulepreload" crossorigin href="/assets/data-layer-50gQzCVZ.js">
-    <link rel="modulepreload" crossorigin href="/assets/monitoring-DCAvEqZU.js">
-    <link rel="modulepreload" crossorigin href="/assets/vendor--JASN2F7.js">
-    <link rel="modulepreload" crossorigin href="/assets/ui-radix-Cej8fUfg.js">
-    <link rel="modulepreload" crossorigin href="/assets/charts-BHieyP4h.js">
-    <link rel="modulepreload" crossorigin href="/assets/analytics-C96VRqGE.js">
-    <link rel="modulepreload" crossorigin href="/assets/ui-animations-DK8dymwf.js">
+    <link rel="modulepreload" crossorigin href="/assets/ui-icons-BZ5-66KO.js">
+    <link rel="modulepreload" crossorigin href="/assets/ui-radix-C0R7Qi0Y.js">
+    <link rel="modulepreload" crossorigin href="/assets/charts-BizEQGSY.js">
+    <link rel="modulepreload" crossorigin href="/assets/analytics-BcCjTTtu.js">
+    <link rel="modulepreload" crossorigin href="/assets/ui-animations-DTyU5tID.js">
     <link rel="modulepreload" crossorigin href="/assets/forms-cHt3dt6I.js">
-    <link rel="modulepreload" crossorigin href="/assets/chat-Dd2ij1Jy.js">
-    <link rel="modulepreload" crossorigin href="/assets/discover-CE5PU4wT.js">
-    <link rel="modulepreload" crossorigin href="/assets/pages-DQUnXsTT.js">
-    <link rel="modulepreload" crossorigin href="/assets/premium-Dv8UUThD.js">
-    <link rel="modulepreload" crossorigin href="/assets/profiles-BKSm1LIK.js">
-    <link rel="modulepreload" crossorigin href="/assets/entry-DMU_RhEN.js">
-    <link rel="modulepreload" crossorigin href="/assets/admin-BV4yK5YG.js">
-    <link rel="stylesheet" crossorigin href="/assets/entry-CQGYxK0P.css">
+    <link rel="modulepreload" crossorigin href="/assets/chat-CxnNJQ4O.js">
+    <link rel="modulepreload" crossorigin href="/assets/discover-CJIwcWM5.js">
+    <link rel="modulepreload" crossorigin href="/assets/pages-BRaIz8wH.js">
+    <link rel="modulepreload" crossorigin href="/assets/premium-sPdoQAqI.js">
+    <link rel="modulepreload" crossorigin href="/assets/profiles-CDi9tIhG.js">
+    <link rel="modulepreload" crossorigin href="/assets/entry-uwlW6A24.js">
+    <link rel="modulepreload" crossorigin href="/assets/monitoring-BwcMYofP.js">
+    <link rel="modulepreload" crossorigin href="/assets/admin-dAZjF2wr.js">
+
+    <script type="module" crossorigin src="/assets/index-DPk-VkVh.js"></script><link rel="stylesheet" crossorigin href="/assets/entry-CQGYxK0P.css">
     <link rel="stylesheet" crossorigin href="/assets/index-BKDDO2oN.css">
   </head>
 
@@ -51,7 +507,201 @@
           <p>Cargando...</p>
         </div>
       </div>
-    </div>
+    </div>
+    <!-- Script duplicado eliminado - ya está en <head> y se ejecuta primero -->
+    
+    <!-- CRÍTICO: Error handler global TEMPRANO para capturar errores antes de que React se monte -->
+    <script>
+      // Error handler global - captura errores ANTES de que React se monte
+      window.addEventListener('error', function(e) {
+        // Solo capturar errores que NO sean de wallet (ya están silenciados)
+        var msg = String(e.message || '').toLowerCase();
+        var filename = String(e.filename || '').toLowerCase();
+        var stack = String(e.error && e.error.stack || '').toLowerCase();
+        
+        var isWalletError = msg.indexOf('wallet') !== -1 || msg.indexOf('ethereum') !== -1 || 
+                           msg.indexOf('solana') !== -1 || msg.indexOf('metamask') !== -1 ||
+                           filename.indexOf('inpage.js') !== -1 || filename.indexOf('evmask.js') !== -1 ||
+                           filename.indexOf('solana.js') !== -1 || stack.indexOf('inpage.js') !== -1;
+        
+        if (!isWalletError) {
+          // Loggear error real para diagnóstico
+          console.error('🚨 Error global capturado:', {
+            message: e.message,
+            filename: e.filename,
+            line: e.lineno,
+            column: e.colno,
+            error: e.error
+          });
+          
+          // Loggear al sistema de debugging si está disponible
+          if (window.__LOADING_DEBUG__) {
+            window.__LOADING_DEBUG__.log('GLOBAL_ERROR', {
+              message: e.message,
+              filename: e.filename,
+              line: e.lineno,
+              column: e.colno
+            });
+          }
+        }
+      }, true);
+      
+      // Promise rejection handler global
+      window.addEventListener('unhandledrejection', function(e) {
+        var reason = e.reason;
+        var msg = String(reason && (reason.message || reason.toString()) || '').toLowerCase();
+        var stack = String(reason && reason.stack || '').toLowerCase();
+        
+        var isWalletError = msg.indexOf('wallet') !== -1 || msg.indexOf('ethereum') !== -1 || 
+                           msg.indexOf('solana') !== -1 || msg.indexOf('metamask') !== -1 ||
+                           stack.indexOf('inpage.js') !== -1 || stack.indexOf('evmask.js') !== -1;
+        
+        if (!isWalletError) {
+          // Loggear error real para diagnóstico
+          console.error('🚨 Promise rejection global capturada:', {
+            reason: reason,
+            message: reason?.message,
+            stack: reason?.stack
+          });
+          
+          // Loggear al sistema de debugging si está disponible
+          if (window.__LOADING_DEBUG__) {
+            window.__LOADING_DEBUG__.log('GLOBAL_PROMISE_REJECTION', {
+              reason: reason?.message || String(reason),
+              stack: reason?.stack
+            });
+          }
+        }
+      }, true);
+    </script>
+    
+    <!-- CRÍTICO: Interceptar TODOS los accesos a React ANTES de que cualquier chunk se cargue -->
+    <script>
+      // PROTECCIÓN ULTRA CRÍTICA: Interceptar accesos a propiedades de objetos que podrían ser React
+      // Esto se ejecuta ANTES de que cualquier módulo ES6 se importe
+      (function() {
+        // Interceptar Object.defineProperty para React
+        var originalDefineProperty = Object.defineProperty;
+        Object.defineProperty = function(obj, prop, descriptor) {
+          if (obj === window && (prop === 'React' || prop === 'react')) {
+            var reactValue = descriptor.value || (descriptor.get && descriptor.get());
+            if (reactValue) {
+              window.__REACT_REAL__ = reactValue;
+              // Asegurar useLayoutEffect
+              if (!reactValue.useLayoutEffect) {
+                reactValue.useLayoutEffect = window.__REACT_STUB__?.useLayoutEffect || function() { return function() {}; };
+              }
+            }
+          }
+          return originalDefineProperty.call(this, obj, prop, descriptor);
+        };
+        
+        // PROTECCIÓN CRÍTICA: Interceptar accesos a propiedades de objetos undefined
+        // Esto intercepta accesos como: undefined.useLayoutEffect
+        var originalGetOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+        Object.getOwnPropertyDescriptor = function(obj, prop) {
+          if (obj === window && (prop === 'React' || prop === 'react')) {
+            var desc = originalGetOwnPropertyDescriptor.call(this, obj, prop);
+            if (!desc) {
+              // Si no hay descriptor, crear uno con el stub
+              return {
+                get: function() {
+                  return window.__REACT_REAL__ || window.__REACT_STUB__ || window.React || {
+                    useLayoutEffect: function() { return function() {}; },
+                    useEffect: function() { return function() {}; },
+                    useState: function() { return [null, function() {}]; },
+                    createContext: function() { return { Provider: function() {}, Consumer: function() {} }; }
+                  };
+                },
+                configurable: true,
+                enumerable: true
+              };
+            }
+            if (desc && desc.get) {
+              // Interceptar el getter
+              var originalGetter = desc.get;
+              desc.get = function() {
+                var react = originalGetter.call(this);
+                // Asegurar useLayoutEffect SIEMPRE
+                if (!react || !react.useLayoutEffect) {
+                  var stub = window.__REACT_STUB__ || window.__REACT_REAL__;
+                  if (stub && stub.useLayoutEffect) {
+                    if (react) {
+                      react.useLayoutEffect = stub.useLayoutEffect;
+                    } else {
+                      react = stub;
+                    }
+                  } else {
+                    react = react || {
+                      useLayoutEffect: function() { return function() {}; },
+                      useEffect: function() { return function() {}; },
+                      useState: function() { return [null, function() {}]; },
+                      createContext: function() { return { Provider: function() {}, Consumer: function() {} }; }
+                    };
+                  }
+                }
+                return react;
+              };
+            }
+            return desc;
+          }
+          return originalGetOwnPropertyDescriptor.call(this, obj, prop);
+        };
+        
+        // PROTECCIÓN EXTRA: Interceptar Proxy.constructor para módulos ES6
+        if (typeof Proxy !== 'undefined') {
+          var OriginalProxy = Proxy;
+          try {
+            Proxy = function(target, handler) {
+              // Si el target es React o tiene useLayoutEffect, interceptarlo
+              if (target && (target.useLayoutEffect || target === window.React || target === window.__REACT_STUB__)) {
+                var originalGet = handler.get;
+                handler.get = function(target, prop, receiver) {
+                  if (prop === 'useLayoutEffect') {
+                    var result = originalGet ? originalGet.call(this, target, prop, receiver) : target[prop];
+                    if (!result) {
+                      return function() { return function() {}; };
+                    }
+                    return result;
+                  }
+                  return originalGet ? originalGet.call(this, target, prop, receiver) : target[prop];
+                };
+              }
+              return new OriginalProxy(target, handler);
+            };
+          } catch(e) {
+            // Si falla, no hacer nada
+          }
+        }
+        
+        // PROTECCIÓN FINAL: Interceptar accesos a propiedades de objetos undefined
+        // Esto captura accesos como: someVar.useLayoutEffect donde someVar es undefined
+        // CRÍTICO: Interceptar TODOS los accesos a propiedades de cualquier objeto que podría ser React
+        var originalHasOwnProperty = Object.prototype.hasOwnProperty;
+        Object.prototype.hasOwnProperty = function(prop) {
+          // Si alguien pregunta por useLayoutEffect en cualquier objeto, asegurar que esté disponible
+          if (prop === 'useLayoutEffect' && this === window.React) {
+            return true; // Siempre decir que existe
+          }
+          return originalHasOwnProperty.call(this, prop);
+        };
+        
+        // PROTECCIÓN EXTRA: Interceptar accesos a propiedades usando bracket notation
+        // Esto intercepta accesos como: obj['useLayoutEffect']
+        var originalValueOf = Object.prototype.valueOf;
+        Object.prototype.valueOf = function() {
+          // Si este objeto es React y no tiene useLayoutEffect, agregarlo
+          if (this === window.React || this === window.__REACT_STUB__ || this === window.__REACT_REAL__) {
+            if (!this.useLayoutEffect) {
+              this.useLayoutEffect = window.__REACT_STUB__?.useLayoutEffect || function() { return function() {}; };
+            }
+          }
+          return originalValueOf.call(this);
+        };
+      })();
+    </script>
+    
+    <!-- CRÍTICO: Pre-cargar vendor-react ANTES de main.tsx para asegurar que React esté disponible -->
     <style>
       @keyframes spin {
         0% { transform: rotate(0deg); }

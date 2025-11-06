@@ -139,7 +139,7 @@ class ReferralTokensService {
               total_earned: 0,
               monthly_earned: 0,
               cmpx_balance: 0,
-              gtk_balance: 0
+              last_reset_date: new Date().toISOString()
             })
             .select()
             .single();
@@ -158,7 +158,7 @@ class ReferralTokensService {
             total_earned: newBalance.total_earned || 0,
             monthly_earned: newBalance.monthly_earned || 0,
             cmpx_balance: newBalance.cmpx_balance || 0,
-            gtk_balance: newBalance.gtk_balance || 0, // Existe en user_referral_balances
+            gtk_balance: 0, // No existe en user_referral_balances, usar 0 por defecto
             created_at: newBalance.created_at || new Date().toISOString(),
             updated_at: newBalance.updated_at || new Date().toISOString()
           };
@@ -180,7 +180,7 @@ class ReferralTokensService {
         total_earned: data.total_earned || 0,
         monthly_earned: data.monthly_earned || 0,
         cmpx_balance: data.cmpx_balance || 0,
-        gtk_balance: data.gtk_balance || 0, // Existe en user_referral_balances
+        gtk_balance: 0, // No existe en user_referral_balances, usar 0 por defecto
         created_at: data.created_at || '',
         updated_at: data.updated_at || ''
       };
@@ -204,19 +204,30 @@ class ReferralTokensService {
       }
 
       // Crear transacción de recompensa
+      // Obtener balance actual para calcular balance_before y balance_after
+      const currentBalance = await this.getUserReferralBalance(rewardData.referrer_id);
+      const balanceBefore = currentBalance?.cmpx_balance || 0;
+      const balanceAfter = balanceBefore + rewardData.amount;
+
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return null;
+      }
+
       const { data, error } = await supabase
         .from('referral_transactions')
         .insert({
           user_id: rewardData.referrer_id,
           transaction_type: 'earn',
-          token_type: rewardData.reward_type,
           amount: rewardData.amount,
+          balance_before: balanceBefore,
+          balance_after: balanceAfter,
           description: `Recompensa de referido: ${rewardData.referee_id}`,
           metadata: {
             referrer_id: rewardData.referrer_id,
             referee_id: rewardData.referee_id,
             reward_type: rewardData.reward_type
-          }
+          } as any
         })
         .select()
         .single();
@@ -292,16 +303,16 @@ class ReferralTokensService {
 
       logger.info('✅ Referral transactions loaded successfully', { count: data?.length || 0 });
       
-      // Mapear a ReferralTransaction incluyendo token_type
+      // Mapear a ReferralTransaction
       return (data || []).map((tx: any) => ({
         id: tx.id,
         user_id: tx.user_id,
-        transaction_type: tx.transaction_type,
-        token_type: 'cmpx', // Por defecto CMPX
+        transaction_type: tx.transaction_type as 'earn' | 'spend' | 'transfer',
+        token_type: (tx.metadata as any)?.reward_type || 'cmpx' as 'cmpx' | 'gtk', // Obtener del metadata
         amount: tx.amount,
-        description: tx.description,
+        description: tx.description || '',
         metadata: tx.metadata,
-        created_at: tx.created_at
+        created_at: tx.created_at || ''
       }));
     } catch (error) {
       logger.error('Error in getUserReferralTransactions:', { error: String(error) });
@@ -346,6 +357,9 @@ class ReferralTokensService {
               period_start: new Date().toISOString(),
               period_end: new Date().toISOString(),
               monthly_earned: 0,
+              total_earned: 0,
+              total_invites: 0,
+              successful_invites: 0,
               conversion_rate: 0
             })
             .select()
@@ -359,8 +373,8 @@ class ReferralTokensService {
           // Mapear a ReferralStatistics con campos faltantes
           return {
             ...newStats,
-            total_referrals: 0, // No existe en referral_statistics
-            active_referrals: 0, // No existe en referral_statistics
+            total_referrals: newStats.total_invites || 0, // Mapear desde total_invites
+            active_referrals: newStats.successful_invites || 0, // Mapear desde successful_invites
             id: newStats.id,
             user_id: newStats.user_id,
             referral_code: newStats.referral_code,
@@ -368,7 +382,7 @@ class ReferralTokensService {
             monthly_earned: newStats.monthly_earned || 0,
             conversion_rate: newStats.conversion_rate || 0,
             created_at: newStats.created_at || '',
-            updated_at: newStats.created_at || ''
+            updated_at: newStats.updated_at || ''
           };
         }
         logger.error('Error getting referral statistics:', error);
@@ -382,9 +396,9 @@ class ReferralTokensService {
         id: data.id,
         user_id: data.user_id,
         referral_code: data.referral_code,
-        total_referrals: 0, // Por defecto
-        active_referrals: 0, // Por defecto
-        total_earned: data.monthly_earned || 0,
+        total_referrals: data.total_invites || 0, // Mapear desde total_invites
+        active_referrals: data.successful_invites || 0, // Mapear desde successful_invites
+        total_earned: data.total_earned || 0,
         monthly_earned: data.monthly_earned || 0,
         conversion_rate: data.conversion_rate || 0,
         created_at: data.created_at || '',

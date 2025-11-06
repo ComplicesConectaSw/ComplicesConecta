@@ -403,9 +403,7 @@ class PredictiveMatchingService {
 
       return (data || []).map(profile => ({
         id: profile.user_id || profile.id || '',
-        name: profile.first_name && profile.last_name 
-          ? `${profile.first_name} ${profile.last_name}` 
-          : profile.first_name || profile.last_name || 'Usuario',
+        name: profile.name || 'Usuario',
         age: profile.age || 0,
         gender: (profile.gender === 'male' || profile.gender === 'female' ? 'single' : 'pareja') as 'single' | 'pareja',
         location: {

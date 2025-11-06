@@ -148,8 +148,10 @@ export class AdvancedCoupleService {
         couple_name: data.couple_name,
         couple_bio: data.bio,
         relationship_type: 'man-woman' as 'man-woman' | 'man-man' | 'woman-woman', // Mapear al enum correcto
-        looking_for: data.looking_for.join(','),
-        experience_level: data.experience_level
+        couple_images: null,
+        preferences: null,
+        is_verified: false,
+        is_premium: false
       };
 
       if (!supabase) {
@@ -181,8 +183,8 @@ export class AdvancedCoupleService {
         longitude: data.longitude,
         age_range_min: data.age_range_min, // Usar del input
         age_range_max: data.age_range_max, // Usar del input
-        looking_for: result.looking_for ? result.looking_for.split(',') : [],
-        experience_level: result.experience_level as 'beginner' | 'intermediate' | 'advanced' | 'expert',
+        looking_for: data.looking_for, // Usar del input ya que no existe en DB
+        experience_level: data.experience_level, // Usar del input ya que no existe en DB
         relationship_type: data.relationship_type, // Usar del input
         relationship_duration: data.relationship_duration, // Usar del input
         is_active: true, // Valor por defecto
@@ -266,8 +268,8 @@ export class AdvancedCoupleService {
         longitude: undefined,
         age_range_min: 18, // Valor por defecto
         age_range_max: 65, // Valor por defecto
-        looking_for: data.looking_for ? data.looking_for.split(',') : [],
-        experience_level: (data.experience_level as 'beginner' | 'intermediate' | 'advanced' | 'expert') || 'beginner',
+        looking_for: [], // No existe en DB, usar array vacío
+        experience_level: 'beginner', // Valor por defecto ya que no existe en DB
         relationship_type: 'married', // Valor por defecto - mapear desde relationship_type de DB
         relationship_duration: 0, // No se almacena en DB
         is_active: true, // Valor por defecto
@@ -355,8 +357,8 @@ export class AdvancedCoupleService {
         longitude: undefined,
         age_range_min: 18,
         age_range_max: 65,
-        looking_for: item.looking_for ? item.looking_for.split(',') : [],
-        experience_level: (item.experience_level as 'beginner' | 'intermediate' | 'advanced' | 'expert') || 'beginner',
+        looking_for: [], // No existe en DB
+        experience_level: 'beginner' as 'beginner' | 'intermediate' | 'advanced' | 'expert', // Valor por defecto
         relationship_type: 'married',
         relationship_duration: 0,
         is_active: true,
