@@ -3,6 +3,8 @@
  * Herramienta para debugging avanzado de tests fallidos
  */
 
+import { logger } from '@/lib/logger';
+
 export class TestDebugger {
   private static instance: TestDebugger;
   private testResults: Map<string, any> = new Map();
@@ -18,17 +20,15 @@ export class TestDebugger {
 
   // 🔍 Logging con contexto detallado
   logTestStart(testName: string, context?: any) {
-    console.log(`\n🧪 [TEST START] ${testName}`);
-    if (context) {
-      console.log(`📋 Context:`, JSON.stringify(context, null, 2));
-    }
+    logger.debug(`🧪 [TEST START] ${testName}`, { context });
   }
 
   logTestEnd(testName: string, success: boolean, result?: any) {
     const status = success ? '✅' : '❌';
-    console.log(`\n${status} [TEST END] ${testName}`);
-    if (result) {
-      console.log(`📊 Result:`, JSON.stringify(result, null, 2));
+    if (success) {
+      logger.debug(`${status} [TEST END] ${testName}`, { result });
+    } else {
+      logger.error(`${status} [TEST END] ${testName}`, { result });
     }
     this.testResults.set(testName, { success, result, timestamp: new Date() });
   }
@@ -40,49 +40,32 @@ export class TestDebugger {
       this.mockCalls.set(mockName, []);
     }
     this.mockCalls.get(mockName)!.push(call);
-    console.log(`🎭 [MOCK CALL] ${mockName}`, { args, returnValue });
+    logger.debug(`🎭 [MOCK CALL] ${mockName}`, { args, returnValue });
   }
 
   // ❌ Error tracking con stack trace
   logError(testName: string, error: any, context?: any) {
-    console.error(`\n💥 [ERROR] ${testName}`);
-    console.error(`🔥 Error:`, error);
-    console.error(`📍 Stack:`, error.stack);
-    if (context) {
-      console.error(`🔍 Context:`, JSON.stringify(context, null, 2));
-    }
+    logger.error(`💥 [ERROR] ${testName}`, { 
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      context 
+    });
     this.errors.push({ test: testName, error, context });
   }
 
   // 🔬 Component state debugging
   logComponentState(componentName: string, state: any, props?: any) {
-    console.log(`\n🎨 [COMPONENT] ${componentName}`);
-    console.log(`📦 State:`, JSON.stringify(state, null, 2));
-    if (props) {
-      console.log(`⚙️ Props:`, JSON.stringify(props, null, 2));
-    }
+    logger.debug(`🎨 [COMPONENT] ${componentName}`, { state, props });
   }
 
   // 🌐 Supabase mock debugging
   logSupabaseMock(operation: string, table: string, data?: any, result?: any) {
-    console.log(`\n🗄️ [SUPABASE MOCK] ${operation} on ${table}`);
-    if (data) {
-      console.log(`📝 Data:`, JSON.stringify(data, null, 2));
-    }
-    if (result) {
-      console.log(`📋 Result:`, JSON.stringify(result, null, 2));
-    }
+    logger.debug(`🗄️ [SUPABASE MOCK] ${operation} on ${table}`, { data, result });
   }
 
   // 🎣 Hook debugging
   logHookCall(hookName: string, params?: any, result?: any) {
-    console.log(`\n🎣 [HOOK] ${hookName}`);
-    if (params) {
-      console.log(`📥 Params:`, JSON.stringify(params, null, 2));
-    }
-    if (result) {
-      console.log(`📤 Result:`, JSON.stringify(result, null, 2));
-    }
+    logger.debug(`🎣 [HOOK] ${hookName}`, { params, result });
   }
 
   // 📊 Generar reporte de debugging
@@ -97,8 +80,7 @@ export class TestDebugger {
       testResults: Object.fromEntries(this.testResults)
     };
 
-    console.log(`\n📊 [DEBUG REPORT]`);
-    console.log(JSON.stringify(report, null, 2));
+    logger.info(`📊 [DEBUG REPORT]`, report);
     
     return JSON.stringify(report, null, 2);
   }
@@ -108,7 +90,7 @@ export class TestDebugger {
     this.testResults.clear();
     this.mockCalls.clear();
     this.errors = [];
-    console.log(`\n🧹 [DEBUG RESET] Estado limpiado`);
+    logger.debug(`🧹 [DEBUG RESET] Estado limpiado`);
   }
 
   // 🔍 Verificar mocks específicos
@@ -116,12 +98,15 @@ export class TestDebugger {
     const calls = this.mockCalls.get(mockName) || [];
     const success = calls.length >= expectedCalls;
     
-    console.log(`\n🔍 [MOCK VERIFY] ${mockName}`);
-    console.log(`📞 Expected: ${expectedCalls}, Actual: ${calls.length}`);
-    console.log(`${success ? '✅' : '❌'} Verification: ${success ? 'PASSED' : 'FAILED'}`);
-    
-    if (!success) {
-      console.log(`📋 Available mocks:`, Array.from(this.mockCalls.keys()));
+    if (success) {
+      logger.debug(`🔍 [MOCK VERIFY] ${mockName}`, { expected: expectedCalls, actual: calls.length, status: 'PASSED' });
+    } else {
+      logger.warn(`🔍 [MOCK VERIFY] ${mockName}`, { 
+        expected: expectedCalls, 
+        actual: calls.length, 
+        status: 'FAILED',
+        availableMocks: Array.from(this.mockCalls.keys())
+      });
     }
     
     return success;
@@ -129,20 +114,19 @@ export class TestDebugger {
 
   // 🎯 Debugging específico para ProfileReportsPanel
   debugProfileReportsPanel(component: any, expectedTexts: string[]) {
-    console.log(`\n🎯 [PROFILE REPORTS DEBUG]`);
-    console.log(`🔍 Looking for texts:`, expectedTexts);
-    
-    if (component && component.container) {
-      console.log(`📄 Component HTML:`, component.container.innerHTML);
-    }
+    logger.debug(`🎯 [PROFILE REPORTS DEBUG]`, { 
+      expectedTexts,
+      html: component?.container?.innerHTML 
+    });
     
     expectedTexts.forEach(text => {
       try {
         const _element = component.getByText(text);
-        console.log(`✅ Found: "${text}"`);
+        logger.debug(`✅ Found: "${text}"`);
       } catch (error) {
-        console.log(`❌ Missing: "${text}"`);
-        console.log(`🔍 Error:`, (error as Error).message);
+        logger.warn(`❌ Missing: "${text}"`, { 
+          error: error instanceof Error ? error.message : String(error) 
+        });
       }
     });
   }

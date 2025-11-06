@@ -3,6 +3,7 @@
  * Este archivo puede ser ejecutado para probar la funcionalidad básica de cada servicio
  */
 
+import { logger } from '@/lib/logger';
 import { TokenAnalyticsService } from './TokenAnalyticsService';
 import { postsService } from './postsService';
 import { securityService } from './SecurityService';
@@ -20,7 +21,7 @@ class IntegrationTester {
   }> = [];
 
   async runAllTests(): Promise<void> {
-    console.log('🚀 Iniciando tests de integración con Supabase...\n');
+    logger.info('🚀 Iniciando tests de integración con Supabase...');
 
     // Test TokenAnalyticsService
     await this.testTokenAnalyticsService();
@@ -45,7 +46,7 @@ class IntegrationTester {
   }
 
   private async testTokenAnalyticsService(): Promise<void> {
-    console.log('📊 Probando TokenAnalyticsService...');
+    logger.info('📊 Probando TokenAnalyticsService...');
     
     const service = TokenAnalyticsService.getInstance();
     
@@ -55,7 +56,7 @@ class IntegrationTester {
       if (!result.success) {
         throw new Error(result.error || 'Error desconocido');
       }
-      console.log('  ✅ Métricas generadas:', result.metrics);
+      logger.debug('  ✅ Métricas generadas', { metrics: result.metrics });
     });
 
     // Test 2: Obtener analytics históricos
@@ -64,17 +65,17 @@ class IntegrationTester {
       if (!result.success) {
         throw new Error(result.error || 'Error desconocido');
       }
-      console.log('  ✅ Analytics históricos obtenidos:', result.analytics?.length || 0, 'registros');
+      logger.debug('  ✅ Analytics históricos obtenidos', { count: result.analytics?.length || 0 });
     });
   }
 
   private async testPostsService(): Promise<void> {
-    console.log('📝 Probando PostsService...');
+    logger.info('📝 Probando PostsService...');
     
     // Test 1: Obtener feed
     await this.runTest('PostsService', 'getFeed', async () => {
       const posts = await postsService.getFeed(0, 5);
-      console.log('  ✅ Feed obtenido:', posts.length, 'posts');
+      logger.debug('  ✅ Feed obtenido', { count: posts.length });
     });
 
     // Test 2: Obtener comentarios (si hay posts)
@@ -82,15 +83,15 @@ class IntegrationTester {
       const posts = await postsService.getFeed(0, 1);
       if (posts.length > 0) {
         const comments = await postsService.getComments(posts[0].id, 0, 5);
-        console.log('  ✅ Comentarios obtenidos:', comments.length, 'comentarios');
+        logger.debug('  ✅ Comentarios obtenidos', { count: comments.length });
       } else {
-        console.log('  ⚠️ No hay posts para probar comentarios');
+        logger.debug('  ⚠️ No hay posts para probar comentarios');
       }
     });
   }
 
   private async testSecurityService(): Promise<void> {
-    console.log('🛡️ Probando SecurityService...');
+    logger.info('🛡️ Probando SecurityService...');
     
     const testUserId = 'test-user-id';
     
@@ -100,67 +101,67 @@ class IntegrationTester {
       if (!result.success) {
         throw new Error(result.error || 'Error desconocido');
       }
-      console.log('  ✅ Logs de auditoría obtenidos:', result.logs?.length || 0, 'registros');
+      logger.debug('  ✅ Logs de auditoría obtenidos', { count: result.logs?.length || 0 });
     });
 
     // Test 2: Analizar actividad del usuario
     await this.runTest('SecurityService', 'analyzeUserActivity', async () => {
       const result = await securityService.analyzeUserActivity(testUserId, 'day');
-      console.log('  ✅ Análisis de actividad completado:', result.riskLevel);
+      logger.debug('  ✅ Análisis de actividad completado', { riskLevel: result.riskLevel });
     });
   }
 
   private async testCoupleProfilesService(): Promise<void> {
-    console.log('👫 Probando CoupleProfilesService...');
+    logger.info('👫 Probando CoupleProfilesService...');
     
     // Test 1: Obtener perfiles de parejas
     await this.runTest('CoupleProfilesService', 'getCoupleProfiles', async () => {
       const profiles = await coupleProfilesService.getCoupleProfiles(0, 5);
-      console.log('  ✅ Perfiles de parejas obtenidos:', profiles.length, 'perfiles');
+      logger.debug('  ✅ Perfiles de parejas obtenidos', { count: profiles.length });
     });
 
     // Test 2: Obtener estadísticas
     await this.runTest('CoupleProfilesService', 'getCoupleProfileStats', async () => {
       const stats = await coupleProfilesService.getCoupleProfileStats();
-      console.log('  ✅ Estadísticas obtenidas:', stats.totalProfiles, 'perfiles totales');
+      logger.debug('  ✅ Estadísticas obtenidas', { totalProfiles: stats.totalProfiles });
     });
   }
 
   private async testReferralTokensService(): Promise<void> {
-    console.log('🎁 Probando ReferralTokensService...');
+    logger.info('🎁 Probando ReferralTokensService...');
     
     const testUserId = 'test-user-id';
     
     // Test 1: Generar código de referido
     await this.runTest('ReferralTokensService', 'generateReferralCode', async () => {
       const code = await referralTokensService.generateReferralCode(testUserId);
-      console.log('  ✅ Código de referido generado:', code);
+      logger.debug('  ✅ Código de referido generado', { code });
     });
 
     // Test 2: Obtener balance de referidos
     await this.runTest('ReferralTokensService', 'getUserReferralBalance', async () => {
       const balance = await referralTokensService.getUserReferralBalance(testUserId);
       if (balance) {
-        console.log('  ✅ Balance obtenido:', balance.referral_code);
+        logger.debug('  ✅ Balance obtenido', { referralCode: balance.referral_code });
       } else {
-        console.log('  ⚠️ No se pudo obtener balance (puede ser normal si no existe)');
+        logger.debug('  ⚠️ No se pudo obtener balance (puede ser normal si no existe)');
       }
     });
   }
 
   private async testInvitationsService(): Promise<void> {
-    console.log('📧 Probando InvitationsService...');
+    logger.info('📧 Probando InvitationsService...');
     
     // Test 1: Obtener invitaciones del usuario
     await this.runTest('InvitationsService', 'getUserInvitations', async () => {
       const invitations = await invitationsService.getUserInvitations(0, 5);
-      console.log('  ✅ Invitaciones obtenidas:', invitations.length, 'invitaciones');
+      logger.debug('  ✅ Invitaciones obtenidas', { count: invitations.length });
     });
 
     // Test 2: Obtener plantillas de invitación
     await this.runTest('InvitationsService', 'getInvitationTemplates', async () => {
       const templates = await invitationsService.getInvitationTemplates();
-      console.log('  ✅ Plantillas obtenidas:', templates.length, 'plantillas');
+      logger.debug('  ✅ Plantillas obtenidas', { count: templates.length });
     });
   }
 
@@ -186,15 +187,17 @@ class IntegrationTester {
   }
 
   private showResults(): void {
-    console.log('\n📋 RESULTADOS DE TESTS DE INTEGRACIÓN');
-    console.log('=====================================\n');
-
     const successfulTests = this.results.filter(r => r.success).length;
     const totalTests = this.results.length;
     const successRate = (successfulTests / totalTests) * 100;
+    const totalDuration = this.results.reduce((sum, r) => sum + r.duration, 0);
 
-    console.log(`✅ Tests exitosos: ${successfulTests}/${totalTests} (${successRate.toFixed(1)}%)`);
-    console.log(`⏱️ Tiempo total: ${this.results.reduce((sum, r) => sum + r.duration, 0)}ms\n`);
+    logger.info('📋 RESULTADOS DE TESTS DE INTEGRACIÓN', {
+      successful: successfulTests,
+      total: totalTests,
+      successRate: `${successRate.toFixed(1)}%`,
+      totalDuration: `${totalDuration}ms`
+    });
 
     // Mostrar detalles por servicio
     const services = [...new Set(this.results.map(r => r.service))];
@@ -204,25 +207,25 @@ class IntegrationTester {
       const serviceSuccess = serviceResults.filter(r => r.success).length;
       const serviceTotal = serviceResults.length;
       
-      console.log(`${service}:`);
-      serviceResults.forEach(result => {
-        const status = result.success ? '✅' : '❌';
-        const duration = `${result.duration}ms`;
-        console.log(`  ${status} ${result.test} (${duration})`);
-        if (!result.success && result.error) {
-          console.log(`    Error: ${result.error}`);
-        }
+      logger.info(`${service}:`, {
+        success: serviceSuccess,
+        total: serviceTotal,
+        results: serviceResults.map(r => ({
+          test: r.test,
+          success: r.success,
+          duration: `${r.duration}ms`,
+          error: r.error
+        }))
       });
-      console.log(`  Resumen: ${serviceSuccess}/${serviceTotal} exitosos\n`);
     });
 
     if (successRate === 100) {
-      console.log('🎉 ¡Todos los tests pasaron exitosamente!');
-      console.log('🚀 Los servicios están listos para usar con datos reales de Supabase.');
+      logger.info('🎉 ¡Todos los tests pasaron exitosamente!');
+      logger.info('🚀 Los servicios están listos para usar con datos reales de Supabase.');
     } else if (successRate >= 80) {
-      console.log('⚠️ La mayoría de tests pasaron. Revisar los fallos antes de producción.');
+      logger.warn('⚠️ La mayoría de tests pasaron. Revisar los fallos antes de producción.');
     } else {
-      console.log('❌ Varios tests fallaron. Revisar la configuración de Supabase.');
+      logger.error('❌ Varios tests fallaron. Revisar la configuración de Supabase.');
     }
   }
 }
@@ -235,7 +238,9 @@ export async function runIntegrationTests(): Promise<void> {
 
 // Ejecutar tests si se llama directamente
 if (typeof window === 'undefined') {
-  runIntegrationTests().catch(console.error);
+  runIntegrationTests().catch((error) => {
+    logger.error('Error ejecutando tests de integración:', { error });
+  });
 }
 
 export default IntegrationTester;

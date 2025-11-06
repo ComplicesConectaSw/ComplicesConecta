@@ -584,7 +584,7 @@ class SecurityService {
       return (count || 0) > limit;
       
     } catch (error) {
-      console.error('Error checking action velocity:', error);
+      logger.error('Error checking action velocity:', { error });
       return false;
     }
   }
