@@ -216,7 +216,7 @@
             var desc = originalGetPropertyDescriptor.call(this, obj, prop);
             if (!desc) {
               return {
-                get: function() { return window.__REACT_REAL__ || reactStub; },
+                get: function() { return window.__REACT_REAL__ || reactProxy || reactStub; },
                 configurable: true,
                 enumerable: true
               };
@@ -224,70 +224,6 @@
           }
           return originalGetPropertyDescriptor.call(this, obj, prop);
         };
-        
-        // PROTECCIÓN ULTRA CRÍTICA: Interceptar accesos a React.useLayoutEffect ANTES de que chunks se carguen
-        // Esto asegura que SIEMPRE hay un valor disponible, incluso si React no está cargado
-        var originalGetOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
-        Object.getOwnPropertyDescriptor = function(obj, prop) {
-          // Si alguien pregunta por React.useLayoutEffect ANTES de que React esté cargado
-          if (obj === window && (prop === 'React' || prop === 'react')) {
-            var desc = originalGetOwnPropertyDescriptor.call(this, obj, prop);
-            if (desc && desc.get) {
-              // Interceptar el getter para asegurar que useLayoutEffect esté disponible
-              var originalGetter = desc.get;
-              desc.get = function() {
-                var react = originalGetter.call(this);
-                if (!react || !react.useLayoutEffect) {
-                  // Si React no tiene useLayoutEffect, usar el stub
-                  return window.__REACT_REAL__ || reactStub;
-                }
-                return react;
-              };
-            }
-            return desc;
-          }
-          return originalGetOwnPropertyDescriptor.call(this, obj, prop);
-        };
-        
-        // PROTECCIÓN FINAL: Proxy para interceptar TODOS los accesos a React.useLayoutEffect
-        try {
-          var reactProxy = new Proxy(reactStub, {
-            get: function(target, prop) {
-              // Si se accede a useLayoutEffect, asegurar que esté disponible
-              if (prop === 'useLayoutEffect') {
-                return target.useLayoutEffect || function() { return function() {}; };
-              }
-              // Si React real está disponible, usarlo; sino, usar stub
-              var realReact = window.__REACT_REAL__;
-              if (realReact && realReact[prop]) {
-                return realReact[prop];
-              }
-              return target[prop] || function() { return function() {}; };
-            }
-          });
-          
-          // Reemplazar el stub con el proxy
-          reactStub = reactProxy;
-          window.__REACT_STUB__ = reactProxy;
-          
-          // Actualizar window.React con el proxy
-          try {
-            Object.defineProperty(window, 'React', {
-              get: function() {
-                return window.__REACT_REAL__ || reactProxy;
-              },
-              set: function(value) {
-                window.__REACT_REAL__ = value;
-              },
-              configurable: true,
-              enumerable: true
-            });
-          } catch(e) {
-            window.React = reactProxy;
-          }
-        } catch(e) {
-          // Si Proxy no está disponible, usar el stub directamente
-        }
         
         // Log para debugging
         if (window.__LOADING_DEBUG__) {
