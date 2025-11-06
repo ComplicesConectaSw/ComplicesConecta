@@ -25,7 +25,7 @@ const MALE_IMAGE_IDS = [
   '1507003211169-0a1dd7228f2d', // Hombre profesional
   '1472099645785-5658abf4ff4e', // Hombre casual
   '1500648767791-00dcc994a43e', // Hombre joven
-  '1507003211169-0a1dd7228f2d', // Hombre maduro (reemplazada - la anterior devolvía 404)
+  '1507003211169-0a1dd7228f2d', // Hombre maduro (reemplazada - la anterior devolvía 404, usando profesional como fallback)
 ];
 
 const FEMALE_IMAGE_IDS = [
