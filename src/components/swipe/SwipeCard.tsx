@@ -144,17 +144,21 @@ export const SwipeCard = ({
   };
 
   const getCardStyle = () => {
+    // Asegurar que dragOffset siempre tenga valores numéricos válidos
+    const x = typeof dragOffset.x === 'number' && !isNaN(dragOffset.x) ? dragOffset.x : 0;
+    const y = typeof dragOffset.y === 'number' && !isNaN(dragOffset.y) ? dragOffset.y : 0;
+    
     if (isAnimating) {
       return {
-        transform: `translate(${dragOffset.x > 0 ? '400px' : '-400px'}, ${dragOffset.y}px) rotate(${dragOffset.x > 0 ? '30deg' : '-30deg'})`,
+        transform: `translate(${x > 0 ? '400px' : '-400px'}, ${y}px) rotate(${x > 0 ? '30deg' : '-30deg'})`,
         transition: 'transform 0.3s ease-out',
         opacity: 0
       };
     }
     
-    const rotation = dragOffset.x * 0.1;
+    const rotation = x * 0.1;
     return {
-      transform: `translate(${dragOffset.x}px, ${dragOffset.y}px) rotate(${rotation}deg)`,
+      transform: `translate(${x}px, ${y}px) rotate(${rotation}deg)`,
       transition: isDragging ? 'none' : 'transform 0.3s ease-out'
     };
   };
