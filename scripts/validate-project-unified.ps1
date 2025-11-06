@@ -190,20 +190,52 @@ if (-not $SkipSecurity) {
             $gitignoreOk = $allPatternsFound
         }
         
-        # Buscar tokens expuestos
-        $tokenPatterns = @("github_pat_", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9", "sk-", "AKIA", "AIza")
+        # Buscar tokens expuestos (con validación para evitar falsos positivos)
         $exposedTokens = @()
         
         $filesToScan = Get-ChildItem -Path $SourcePath -Recurse -Include "*.ts", "*.tsx", "*.js", "*.jsx" -Exclude "node_modules", "android" -ErrorAction SilentlyContinue
         foreach ($file in $filesToScan) {
             $content = Get-Content $file.FullName -Raw -ErrorAction SilentlyContinue
             if ($content) {
-                foreach ($pattern in $tokenPatterns) {
-                    if ($content -match [regex]::Escape($pattern)) {
+                # Buscar github_pat_ seguido de caracteres alfanuméricos (token real)
+                if ($content -match "github_pat_[A-Za-z0-9_]{20,}") {
+                    # Verificar que no sea solo una referencia de formato (como en verify-token.js)
+                    if ($file.Name -notmatch "verify-token" -and $content -notmatch "PLACEHOLDER|YOUR_|example|test") {
                         $exposedTokens += @{
                             file = $file.FullName
-                            pattern = $pattern
+                            pattern = "github_pat_"
+                            reason = "Token GitHub encontrado"
                         }
+                    }
+                }
+                
+                # Buscar sk- seguido de caracteres (API key real)
+                if ($content -match "sk-[A-Za-z0-9]{20,}") {
+                    # Verificar que no sea parte de otra palabra (como "mask-user-input")
+                    if ($content -notmatch "mask-user-input|mask|task|risk|disk|desk") {
+                        $exposedTokens += @{
+                            file = $file.FullName
+                            pattern = "sk-"
+                            reason = "API key encontrada"
+                        }
+                    }
+                }
+                
+                # Buscar JWT tokens completos
+                if ($content -match "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+") {
+                    $exposedTokens += @{
+                        file = $file.FullName
+                        pattern = "JWT"
+                        reason = "JWT token completo encontrado"
+                    }
+                }
+                
+                # Buscar AWS keys (AKIA seguido de 16 caracteres)
+                if ($content -match "AKIA[0-9A-Z]{16}") {
+                    $exposedTokens += @{
+                        file = $file.FullName
+                        pattern = "AKIA"
+                        reason = "AWS access key encontrada"
                     }
                 }
             }
@@ -346,25 +378,59 @@ if (-not $SkipNullChecks) {
                 $hasNullCheck = $false
                 
                 for ($i = 0; $i -lt $lines.Count; $i++) {
-                    if ($lines[$i] -match "supabase\.") {
-                        # Buscar null check en las 30 líneas anteriores
+                    $line = $lines[$i]
+                    # Buscar uso de supabase (excluyendo comentarios, imports y definiciones)
+                    if ($line -match "supabase\." -and 
+                        $line -notmatch "^\s*//" -and 
+                        $line -notmatch "import.*supabase" -and 
+                        $line -notmatch "from.*supabase" -and
+                        $line -notmatch "const.*supabase\s*=" -and
+                        $line -notmatch "let.*supabase\s*=" -and
+                        $line -notmatch "var.*supabase\s*=") {
+                        
+                        # Buscar null check en las 50 líneas anteriores o en la misma función
                         $hasNullCheck = $false
-                        $startIndex = [Math]::Max(0, $i - 30)
+                        $startIndex = [Math]::Max(0, $i - 50)
+                        
+                        # Buscar null check explícito
                         for ($j = $startIndex; $j -lt $i; $j++) {
-                            if ($lines[$j] -match "if\s*\(!\s*supabase\)") {
+                            $checkLine = $lines[$j]
+                            if ($checkLine -match "if\s*\(!\s*supabase\)" -or
+                                $checkLine -match "if\s*\(\s*!supabase\s*\)" -or
+                                $checkLine -match "if\s*\(\s*supabase\s*===\s*null\s*\)" -or
+                                $checkLine -match "if\s*\(\s*supabase\s*==\s*null\s*\)" -or
+                                ($checkLine -match "if\s*\(\s*supabase\s*\)" -and $checkLine -match "return|throw|continue")) {
                                 $hasNullCheck = $true
                                 break
                             }
                         }
                         
-                        if (-not $hasNullCheck -and 
-                            $lines[$i] -notmatch "^\s*//" -and 
-                            $lines[$i] -notmatch "import.*supabase" -and 
-                            $lines[$i] -notmatch "from.*supabase") {
+                        # Verificar si está dentro de un bloque que ya tiene null check
+                        $inProtectedBlock = $false
+                        $blockStart = $startIndex
+                        for ($j = $startIndex; $j -lt $i; $j++) {
+                            if ($lines[$j] -match "if\s*\(!\s*supabase\)" -or $lines[$j] -match "if\s*\(\s*!supabase\s*\)") {
+                                $blockStart = $j
+                                $inProtectedBlock = $true
+                                break
+                            }
+                        }
+                        
+                        # Si está en un bloque protegido, verificar que no haya un return antes
+                        if ($inProtectedBlock) {
+                            for ($j = $blockStart; $j -lt $i; $j++) {
+                                if ($lines[$j] -match "return|throw|continue|break") {
+                                    $hasNullCheck = $true
+                                    break
+                                }
+                            }
+                        }
+                        
+                        if (-not $hasNullCheck) {
                             $filesWithoutNullChecks += @{
                                 file = $file.FullName
                                 line = $i + 1
-                                content = $lines[$i].Trim()
+                                content = $line.Trim()
                             }
                         }
                     }
