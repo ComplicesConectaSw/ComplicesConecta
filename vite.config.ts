@@ -74,12 +74,6 @@ export default defineConfig({
     headers: {
       'Cross-Origin-Embedder-Policy': 'unsafe-none',
       'Cross-Origin-Opener-Policy': 'same-origin'
-    },
-    // CRÍTICO: Configurar source maps para desarrollo
-    // Deshabilitar source maps para dependencias de node_modules para evitar errores
-    sourcemapIgnoreList: (sourcePath) => {
-      // Ignorar source maps de node_modules para evitar errores en consola
-      return sourcePath.includes('node_modules');
     }
   },
   build: {
