@@ -50,7 +50,17 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         let resolvedTheme: 'light' | 'dark';
 
         if (theme === 'system') {
-          resolvedTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          // Detectar preferencia del sistema automáticamente
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          resolvedTheme = prefersDark ? 'dark' : 'light';
+          
+          // También verificar hora del día para dark mode automático (opcional)
+          const hour = new Date().getHours();
+          const autoDarkMode = import.meta.env.VITE_AUTO_DARK_MODE === 'true';
+          if (autoDarkMode && (hour >= 20 || hour < 6)) {
+            // Forzar dark mode entre 8 PM y 6 AM si está habilitado
+            resolvedTheme = 'dark';
+          }
         } else {
           resolvedTheme = theme;
         }

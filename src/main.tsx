@@ -52,7 +52,7 @@ if (typeof window !== 'undefined') {
         winReact.useLayoutEffect = React.useEffect;
       } else {
         // Fallback final: función que retorna no-op cleanup
-        winReact.useLayoutEffect = function(callback: () => void | (() => void), _deps?: unknown[]) {
+        winReact.useLayoutEffect = function(callback: () => void | (() => void), _deps?: readonly unknown[]) {
           if (typeof callback === 'function') {
             try {
               return callback();
@@ -101,6 +101,8 @@ import { initializeReactFallbacks, ensureReactPolyfills } from "./utils/reactFal
 import ErrorBoundary from '@/components/ErrorBoundary'
 import { initSentry } from '@/config/sentry.config'
 import { initializeDatadogRUM } from '@/config/datadog-rum.config'
+import { initPostHog } from '@/config/posthog.config'
+import { oneSignalService } from '@/services/notifications/OneSignalService'
 import { DebugInfo } from '@/debug'
 import { initWebVitalsMonitoring } from '@/utils/webVitals'
 import { initializeCriticalPreloading } from '@/utils/preloading'
@@ -129,6 +131,20 @@ try {
 } catch (error) {
   logger.error('Datadog RUM initialization failed', { error });
 }
+
+// Initialize PostHog Analytics (async, no bloquea)
+initPostHog().then(() => {
+  if (import.meta.env.DEV) logger.info('PostHog initialized');
+}).catch((error) => {
+  logger.error('PostHog initialization failed', { error });
+});
+
+// Initialize OneSignal Push Notifications (async, no bloquea)
+oneSignalService.requestPermission().then(() => {
+  if (import.meta.env.DEV) logger.info('OneSignal initialized');
+}).catch((error) => {
+  logger.error('OneSignal initialization failed', { error });
+});
 
 // Initialize Sentry for error monitoring
 try {
@@ -374,8 +390,8 @@ async function initializeApp() {
     }
     
     // CRÍTICO: Mostrar TODOS los errores para diagnóstico
-    const errorMessage = error?.message?.toLowerCase() || '';
-    const errorStack = error?.stack?.toLowerCase() || '';
+    const errorMessage = (error as Error)?.message?.toLowerCase() || '';
+    const errorStack = (error as Error)?.stack?.toLowerCase() || '';
     
     // Determinar si es error de wallet (para logging, pero NO ocultar visualmente)
     const isWalletError = [
@@ -385,8 +401,8 @@ async function initializeApp() {
     
     // SIEMPRE mostrar error en consola para diagnóstico (aunque sea de wallet)
     logger.error('Application initialization failed', {
-      message: error?.message,
-      stack: error?.stack,
+      message: (error as Error)?.message,
+      stack: (error as Error)?.stack,
       isWalletError: isWalletError,
       error: error
     });
@@ -403,7 +419,7 @@ async function initializeApp() {
             <div style="max-width: 600px;">
               <h1 style="font-size: 2rem; margin-bottom: 1rem;">⚠️ Error al Cargar la Aplicación</h1>
               <p style="margin-bottom: 1rem;">Por favor, recarga la página o contacta al soporte si el problema persiste.</p>
-              <p style="font-size: 0.875rem; margin-bottom: 2rem; opacity: 0.8;">Error: ${errorMsg}</p>
+              <p style="font-size: 0.875rem; margin-bottom: 2rem; opacity: 0.8;">Error: ${(error as Error)?.message || errorMsg}</p>
               <button onclick="window.location.reload()" style="padding: 12px 24px; background: white; color: #6b21a8; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-right: 10px;">
                 Recargar Página
               </button>
@@ -422,8 +438,8 @@ async function initializeApp() {
 initializeApp().catch((error: unknown) => {
   // CRÍTICO: Mostrar TODOS los errores para diagnóstico, incluso si son de wallet
   // Solo silenciar en consola, pero siempre mostrar en pantalla
-  const errorMessage = error?.message?.toLowerCase() || '';
-  const errorStack = error?.stack?.toLowerCase() || '';
+  const errorMessage = (error as Error)?.message?.toLowerCase() || '';
+  const errorStack = (error as Error)?.stack?.toLowerCase() || '';
   
   // Determinar si es error de wallet (para logging, pero NO ocultar visualmente)
   const isWalletError = [
@@ -433,8 +449,8 @@ initializeApp().catch((error: unknown) => {
   
   // SIEMPRE mostrar error en consola para diagnóstico (aunque sea de wallet)
   logger.error('Application initialization failed', {
-    message: error?.message,
-    stack: error?.stack,
+    message: (error as Error)?.message,
+    stack: (error as Error)?.stack,
     isWalletError: isWalletError,
     error: error
   });
@@ -448,7 +464,7 @@ initializeApp().catch((error: unknown) => {
           <div style="max-width: 600px;">
             <h1 style="font-size: 2rem; margin-bottom: 1rem;">⚠️ Error al Cargar la Aplicación</h1>
             <p style="margin-bottom: 1rem;">Por favor, recarga la página o contacta al soporte si el problema persiste.</p>
-            <p style="font-size: 0.875rem; margin-bottom: 2rem; opacity: 0.8;">Error: ${error?.message || 'Error desconocido'}</p>
+            <p style="font-size: 0.875rem; margin-bottom: 2rem; opacity: 0.8;">Error: ${(error as Error)?.message || 'Error desconocido'}</p>
             <button onclick="window.location.reload()" style="padding: 12px 24px; background: white; color: #6b21a8; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-right: 10px;">
               Recargar Página
             </button>
