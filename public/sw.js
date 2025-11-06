@@ -1,7 +1,8 @@
-// Service Worker Avanzado - ComplicesConecta v2.9.0
-const STATIC_CACHE = 'static-v2.9.0';
-const DYNAMIC_CACHE = 'dynamic-v2.9.0';
-const IMAGE_CACHE = 'images-v2.9.0';
+// Service Worker Avanzado - ComplicesConecta v3.0.0
+// CRÍTICO: Actualizar versión para forzar limpieza de caches antiguos
+const STATIC_CACHE = 'static-v3.0.0';
+const DYNAMIC_CACHE = 'dynamic-v3.0.0';
+const IMAGE_CACHE = 'images-v3.0.0';
 
 // Recursos estáticos críticos
 const STATIC_ASSETS = [
@@ -47,6 +48,26 @@ self.addEventListener('install', (event) => {
 // Activate event - clean old caches
 self.addEventListener('activate', (event) => {
   console.log('🚀 Service Worker activando...');
+  
+  // CRÍTICO: Limpiar TODOS los caches antiguos para forzar recarga de chunks
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          // Eliminar TODOS los caches que no sean los actuales
+          if (!cacheName.startsWith('static-v3.0.0') && 
+              !cacheName.startsWith('dynamic-v3.0.0') && 
+              !cacheName.startsWith('images-v3.0.0')) {
+            console.log('🗑️ Eliminando cache antiguo:', cacheName);
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    }).then(() => {
+      console.log('✅ Service Worker activado con caches limpiados');
+      return self.clients.claim();
+    })
+  );
   
   const currentCaches = [STATIC_CACHE, DYNAMIC_CACHE, IMAGE_CACHE];
   
