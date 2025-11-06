@@ -31,7 +31,7 @@ const MALE_IMAGE_IDS = [
 const FEMALE_IMAGE_IDS = [
   '1544005313-94ddf0286df2', // Mujer sonriendo
   '1580489944761-15a19d654956', // Mujer profesional
-  '1494790108755-2616b612b786', // Mujer casual
+  '1599566150163-29194dcaad36', // Mujer casual (reemplazada - la anterior devolvía 404)
   '1508214751196-bcfd4ca60f91', // Mujer joven
   '1534528741775-53994a69daeb', // Mujer madura
 ];
