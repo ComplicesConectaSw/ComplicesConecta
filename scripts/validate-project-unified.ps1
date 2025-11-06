@@ -544,13 +544,29 @@ if (-not $SkipTableValidation) {
         $tableReferences = @{}
         $sourceFiles = Get-ChildItem -Path $SourcePath -Recurse -Include "*.ts", "*.tsx" -Exclude "*.test.ts", "*.spec.ts", "*.test.tsx", "*.spec.tsx", "node_modules", "android" -ErrorAction SilentlyContinue
         
+        # Buckets de Storage conocidos (no son tablas)
+        $storageBuckets = @("profile-images", "gallery-images", "career-files", "media", "avatars", "couple-photos")
+        
         foreach ($file in $sourceFiles) {
             $content = Get-Content $file.FullName -Raw -ErrorAction SilentlyContinue
             if ($content) {
-                # Buscar patrones como supabase.from('table_name')
+                # Buscar patrones como supabase.from('table_name') pero NO storage.from()
+                # Excluir líneas que contengan .storage.from() ya que son buckets, no tablas
                 $fromMatches = [regex]::Matches($content, "\.from\(['""]([^'""]+)['""]\)")
                 foreach ($match in $fromMatches) {
                     $tableName = $match.Groups[1].Value
+                    
+                    # Obtener contexto alrededor del match para verificar si es storage
+                    $matchIndex = $match.Index
+                    $contextStart = [Math]::Max(0, $matchIndex - 50)
+                    $contextEnd = [Math]::Min($content.Length, $matchIndex + $match.Length + 50)
+                    $context = $content.Substring($contextStart, $contextEnd - $contextStart)
+                    
+                    # Excluir si es un bucket de storage o si está en contexto de storage
+                    if ($storageBuckets -contains $tableName -or $context -match "\.storage\.from\(") {
+                        continue
+                    }
+                    
                     if (-not $tableReferences.ContainsKey($tableName)) {
                         $tableReferences[$tableName] = @()
                     }
@@ -563,13 +579,38 @@ if (-not $SkipTableValidation) {
         $missingTables = @()
         $unusedTables = @()
         
+        # Obtener también vistas de los tipos
+        $viewsInTypes = @()
+        if (Test-Path $supabaseTypesPath) {
+            $supabaseContent = Get-Content $supabaseTypesPath -Raw
+            
+            # Buscar vistas dentro del bloque Views
+            $viewsRegex = [regex]::new("public:\s*\{[\s\S]*?Views:\s*\{([\s\S]*?)\}\s*Functions:", [System.Text.RegularExpressions.RegexOptions]::Singleline)
+            $viewsMatch = $viewsRegex.Match($supabaseContent)
+            
+            if ($viewsMatch.Success) {
+                $viewsBlock = $viewsMatch.Groups[1].Value
+                $viewNameRegex = [regex]::new("^\s+(\w+):\s*\{", [System.Text.RegularExpressions.RegexOptions]::Multiline)
+                $viewNameMatches = $viewNameRegex.Matches($viewsBlock)
+                foreach ($match in $viewNameMatches) {
+                    $viewName = $match.Groups[1].Value
+                    if ($viewName -notmatch "^(Views|Functions|Enums|CompositeTypes|Row|Insert|Update|Relationships)$") {
+                        $viewsInTypes += $viewName
+                    }
+                }
+            }
+        }
+        
+        # Combinar tablas y vistas para comparación
+        $allTypesInDatabase = $tablesInTypes + $viewsInTypes
+        
         foreach ($table in $tableReferences.Keys) {
-            if ($table -notin $tablesInTypes) {
+            if ($table -notin $allTypesInDatabase) {
                 $missingTables += $table
             }
         }
         
-        foreach ($table in $tablesInTypes) {
+        foreach ($table in $allTypesInDatabase) {
             if ($table -notin $tableReferences.Keys) {
                 $unusedTables += $table
             }

@@ -83,13 +83,21 @@ function validateSupabaseTypes() {
   const readTables = (filePath, fileName) => {
     try {
       const content = fs.readFileSync(filePath, 'utf8');
-      const tableMatches = content.match(/Tables:\s*\{([^}]+)\}/g);
-      if (tableMatches) {
+      
+      // Buscar el bloque Tables completo usando regex multilínea
+      const tablesBlockMatch = content.match(/public:\s*\{[\s\S]*?Tables:\s*\{([\s\S]*?)\}\s*Views:/);
+      if (tablesBlockMatch) {
+        const tablesBlock = tablesBlockMatch[1];
         const tables = [];
-        const tableRegex = /(\w+):\s*\{/g;
+        // Buscar todas las definiciones de tabla: nombre: {
+        const tableRegex = /^\s+(\w+):\s*\{/gm;
         let match;
-        while ((match = tableRegex.exec(tableMatches[0])) !== null) {
-          tables.push(match[1]);
+        while ((match = tableRegex.exec(tablesBlock)) !== null) {
+          const tableName = match[1];
+          // Excluir palabras clave que no son nombres de tablas
+          if (!['Tables', 'Views', 'Functions', 'Enums', 'CompositeTypes', 'Row', 'Insert', 'Update', 'Relationships'].includes(tableName)) {
+            tables.push(tableName);
+          }
         }
         return { count: tables.length, tables: tables.slice(0, 10) };
       }
