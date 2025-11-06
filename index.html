@@ -53,6 +53,126 @@
       // React se carga antes de que se use createContext gracias al orden de carga
       window.__LOADING_DEBUG__.log('POLYFILL_SKIPPED', { hasReact: !!(window as any).React });
     </script>
+    
+    <!-- CRÍTICO: Inyectar React INMEDIATAMENTE en <head> ANTES de que Vite agregue modulepreload -->
+    <script>
+      // PROTECCIÓN CRÍTICA: Asegurar que React esté disponible INMEDIATAMENTE en <head>
+      // Esto se ejecuta ANTES de que Vite agregue modulepreload en el build
+      // SOLUCIÓN ULTRA AGRESIVA: Interceptar TODOS los accesos a React antes de que se cargue
+      (function() {
+        // Crear stub de React INMEDIATAMENTE con createContext funcional
+        var reactStub = {
+          createContext: function(defaultValue) {
+            // Stub de createContext que funciona y será reemplazado cuando React real se cargue
+            var context = {
+              Provider: function(props) { 
+                if (props && props.children) return props.children; 
+                return null; 
+              },
+              Consumer: function(props) { 
+                if (props && props.children) return props.children(defaultValue); 
+                return null; 
+              },
+              displayName: 'Context',
+              _currentValue: defaultValue,
+              $$typeof: Symbol.for('react.context')
+            };
+            return context;
+          },
+          createElement: function() { return null; },
+          Fragment: function(props) { return props ? props.children : null; },
+          useState: function(initial) { return [initial, function() {}]; },
+          useEffect: function() { return function() {}; },
+          useLayoutEffect: function() { return function() {}; },
+          useMemo: function(fn) { return fn(); },
+          useCallback: function(fn) { return fn; },
+          useContext: function(context) { return context ? context._currentValue : null; },
+          StrictMode: function(props) { return props ? props.children : null; }
+        };
+        
+        // Guardar stub en múltiples lugares para máxima compatibilidad
+        window.__REACT_STUB__ = reactStub;
+        window.__REACT_REAL__ = null;
+        
+        // Interceptar Object.defineProperty ANTES de que cualquier chunk se cargue
+        var originalDefineProperty = Object.defineProperty;
+        Object.defineProperty = function(obj, prop, descriptor) {
+          // Si se intenta definir window.React, interceptarlo
+          if (obj === window && (prop === 'React' || prop === 'react')) {
+            // Guardar React real cuando se defina
+            var reactValue = descriptor.value || (descriptor.get && descriptor.get());
+            if (reactValue) {
+              window.__REACT_REAL__ = reactValue;
+              // Asegurar que createContext esté disponible
+              if (!reactValue.createContext) {
+                reactValue.createContext = reactStub.createContext;
+              }
+            }
+            // Llamar original pero asegurar que el stub esté disponible
+            try {
+              return originalDefineProperty.call(this, obj, prop, descriptor);
+            } catch(e) {
+              // Si falla, usar el stub
+              return originalDefineProperty.call(this, obj, prop, {
+                get: function() { return window.__REACT_REAL__ || reactStub; },
+                configurable: true,
+                enumerable: true
+              });
+            }
+          }
+          return originalDefineProperty.call(this, obj, prop, descriptor);
+        };
+        
+        // Hacer que window.React apunte al stub INMEDIATAMENTE usando defineProperty
+        try {
+          Object.defineProperty(window, 'React', {
+            get: function() {
+              // Si React real ya está disponible, usarlo; sino, usar stub
+              return window.__REACT_REAL__ || reactStub;
+            },
+            set: function(value) {
+              // Guardar React real cuando se defina
+              window.__REACT_REAL__ = value;
+              // Asegurar que createContext esté disponible
+              if (value && !value.createContext) {
+                value.createContext = reactStub.createContext;
+              }
+            },
+            configurable: true,
+            enumerable: true
+          });
+        } catch(e) {
+          // Si falla, usar asignación directa
+          window.React = reactStub;
+        }
+        
+        // PROTECCIÓN EXTRA: Interceptar accesos a React.createContext directamente
+        var originalGetPropertyDescriptor = Object.getOwnPropertyDescriptor;
+        Object.getOwnPropertyDescriptor = function(obj, prop) {
+          if (obj === window && (prop === 'React' || prop === 'react')) {
+            var desc = originalGetPropertyDescriptor.call(this, obj, prop);
+            if (!desc) {
+              return {
+                get: function() { return window.__REACT_REAL__ || reactStub; },
+                configurable: true,
+                enumerable: true
+              };
+            }
+          }
+          return originalGetPropertyDescriptor.call(this, obj, prop);
+        };
+        
+        // Log para debugging
+        if (window.__LOADING_DEBUG__) {
+          window.__LOADING_DEBUG__.log('REACT_STUB_CREATED_HEAD', { 
+            timestamp: Date.now(),
+            hasStub: !!window.__REACT_STUB__,
+            hasReact: !!window.React
+          });
+        }
+      })();
+    </script>
+    
     <!-- SOLUCIÓN ALTERNATIVA: Hacer propiedades de wallet configurables ANTES de que las extensiones las toquen -->
     <script>
       // EJECUCIÓN INMEDIATA SIN IIFE - MÁXIMA PRIORIDAD
@@ -185,125 +305,6 @@
       </div>
     </div>
     <!-- Script duplicado eliminado - ya está en <head> y se ejecuta primero -->
-    
-    <!-- CRÍTICO: Inyectar React ANTES de que cualquier chunk se cargue -->
-    <script>
-      // PROTECCIÓN CRÍTICA: Asegurar que React esté disponible ANTES de que cualquier chunk se cargue
-      // Esto se ejecuta ANTES de que main.tsx o cualquier chunk se cargue
-      // SOLUCIÓN ULTRA AGRESIVA: Interceptar TODOS los accesos a React antes de que se cargue
-      (function() {
-        // Crear stub de React INMEDIATAMENTE con createContext funcional
-        var reactStub = {
-          createContext: function(defaultValue) {
-            // Stub de createContext que funciona y será reemplazado cuando React real se cargue
-            var context = {
-              Provider: function(props) { 
-                if (props && props.children) return props.children; 
-                return null; 
-              },
-              Consumer: function(props) { 
-                if (props && props.children) return props.children(defaultValue); 
-                return null; 
-              },
-              displayName: 'Context',
-              _currentValue: defaultValue,
-              $$typeof: Symbol.for('react.context')
-            };
-            return context;
-          },
-          createElement: function() { return null; },
-          Fragment: function(props) { return props ? props.children : null; },
-          useState: function(initial) { return [initial, function() {}]; },
-          useEffect: function() { return function() {}; },
-          useLayoutEffect: function() { return function() {}; },
-          useMemo: function(fn) { return fn(); },
-          useCallback: function(fn) { return fn; },
-          useContext: function(context) { return context ? context._currentValue : null; },
-          StrictMode: function(props) { return props ? props.children : null; }
-        };
-        
-        // Guardar stub en múltiples lugares para máxima compatibilidad
-        window.__REACT_STUB__ = reactStub;
-        window.__REACT_REAL__ = null;
-        
-        // Interceptar Object.defineProperty ANTES de que cualquier chunk se cargue
-        var originalDefineProperty = Object.defineProperty;
-        Object.defineProperty = function(obj, prop, descriptor) {
-          // Si se intenta definir window.React, interceptarlo
-          if (obj === window && (prop === 'React' || prop === 'react')) {
-            // Guardar React real cuando se defina
-            var reactValue = descriptor.value || (descriptor.get && descriptor.get());
-            if (reactValue) {
-              window.__REACT_REAL__ = reactValue;
-              // Asegurar que createContext esté disponible
-              if (!reactValue.createContext) {
-                reactValue.createContext = reactStub.createContext;
-              }
-            }
-            // Llamar original pero asegurar que el stub esté disponible
-            try {
-              return originalDefineProperty.call(this, obj, prop, descriptor);
-            } catch(e) {
-              // Si falla, usar el stub
-              return originalDefineProperty.call(this, obj, prop, {
-                get: function() { return window.__REACT_REAL__ || reactStub; },
-                configurable: true,
-                enumerable: true
-              });
-            }
-          }
-          return originalDefineProperty.call(this, obj, prop, descriptor);
-        };
-        
-        // Hacer que window.React apunte al stub INMEDIATAMENTE usando defineProperty
-        try {
-          Object.defineProperty(window, 'React', {
-            get: function() {
-              // Si React real ya está disponible, usarlo; sino, usar stub
-              return window.__REACT_REAL__ || reactStub;
-            },
-            set: function(value) {
-              // Guardar React real cuando se defina
-              window.__REACT_REAL__ = value;
-              // Asegurar que createContext esté disponible
-              if (value && !value.createContext) {
-                value.createContext = reactStub.createContext;
-              }
-            },
-            configurable: true,
-            enumerable: true
-          });
-        } catch(e) {
-          // Si falla, usar asignación directa
-          window.React = reactStub;
-        }
-        
-        // PROTECCIÓN EXTRA: Interceptar accesos a React.createContext directamente
-        var originalGetPropertyDescriptor = Object.getOwnPropertyDescriptor;
-        Object.getOwnPropertyDescriptor = function(obj, prop) {
-          if (obj === window && (prop === 'React' || prop === 'react')) {
-            var desc = originalGetPropertyDescriptor.call(this, obj, prop);
-            if (!desc) {
-              return {
-                get: function() { return window.__REACT_REAL__ || reactStub; },
-                configurable: true,
-                enumerable: true
-              };
-            }
-          }
-          return originalGetPropertyDescriptor.call(this, obj, prop);
-        };
-        
-        // Log para debugging
-        if (window.__LOADING_DEBUG__) {
-          window.__LOADING_DEBUG__.log('REACT_STUB_CREATED', { 
-            timestamp: Date.now(),
-            hasStub: !!window.__REACT_STUB__,
-            hasReact: !!window.React
-          });
-        }
-      })();
-    </script>
     
     <!-- CRÍTICO: Error handler global TEMPRANO para capturar errores antes de que React se monte -->
     <script>
