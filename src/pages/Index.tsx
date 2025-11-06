@@ -59,20 +59,27 @@ const Index = () => {
     
     setIsRunningInApp(isInWebView());
     
-    // Mostrar loading screen al cargar la página
-    // Timeout garantizado para evitar que se quede en loading indefinidamente
-    const timer = setTimeout(() => {
+    // CRÍTICO: Timeout garantizado para evitar que se quede en loading indefinidamente
+    // Múltiples timeouts de seguridad para asegurar que siempre se muestre el contenido
+    const timer1 = setTimeout(() => {
+      logger.info('⏱️ Timeout 1: Forzando setIsLoading(false)');
       setIsLoading(false);
-    }, 2000); // 2 segundos máximo - siempre mostrar contenido
+    }, 1500); // 1.5 segundos - timeout más agresivo
 
-    // Fallback adicional: si después de 3 segundos sigue cargando, forzar
-    const fallbackTimer = setTimeout(() => {
+    const timer2 = setTimeout(() => {
+      logger.info('⏱️ Timeout 2: Forzando setIsLoading(false)');
       setIsLoading(false);
-    }, 3000);
+    }, 2000); // 2 segundos - timeout principal
+
+    const timer3 = setTimeout(() => {
+      logger.info('⏱️ Timeout 3: Forzando setIsLoading(false)');
+      setIsLoading(false);
+    }, 3000); // 3 segundos - fallback final
 
     return () => {
-      clearTimeout(timer);
-      clearTimeout(fallbackTimer);
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(timer3);
     };
   }, []); // Remover dependencias para evitar re-renders
 
@@ -190,7 +197,23 @@ const Index = () => {
     setHasVisited(true);
   };
 
-  if (isLoading) {
+  // CRÍTICO: Asegurar que el contenido siempre se muestre, incluso si isLoading está en true
+  // Solo mostrar LoadingScreen si realmente está cargando Y no ha pasado el timeout de seguridad
+  const [loadingTimeoutPassed, setLoadingTimeoutPassed] = useState(false);
+  
+  useEffect(() => {
+    // Timeout de seguridad: después de 2 segundos, forzar mostrar contenido
+    const safetyTimer = setTimeout(() => {
+      setLoadingTimeoutPassed(true);
+      setIsLoading(false);
+      logger.info('⏱️ Timeout de seguridad: Forzando mostrar contenido');
+    }, 2000);
+    
+    return () => clearTimeout(safetyTimer);
+  }, []);
+  
+  // Solo mostrar LoadingScreen si está cargando Y el timeout de seguridad no ha pasado
+  if (isLoading && !loadingTimeoutPassed) {
     return <LoadingScreen onComplete={handleLoadingComplete} />;
   }
 
