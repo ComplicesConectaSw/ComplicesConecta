@@ -991,8 +991,16 @@
                            msg.indexOf('cannot assign to read only') !== -1 ||
                            (hasUndefinedMessage && isWalletFile); // IGNORAR errores undefined de wallet
         
-        // IGNORAR errores de Vite, wallet y OpaqueResponseBlocking
-        if (!isViteModuleError && !isWalletError && !isOpaqueResponseError) {
+        // IGNORAR errores sin información útil (message, filename, line, column todos undefined)
+        // Estos errores generalmente son de wallet o extensiones y no son útiles para diagnóstico
+        var hasNoUsefulInfo = (!e.message || e.message === 'undefined' || e.message === '') &&
+                              (!e.filename || e.filename === 'undefined' || e.filename === '') &&
+                              (!e.lineno || e.lineno === 0) &&
+                              (!e.colno || e.colno === 0) &&
+                              (!e.error || e.error === undefined);
+        
+        // IGNORAR errores de Vite, wallet, OpaqueResponseBlocking y errores sin información útil
+        if (!isViteModuleError && !isWalletError && !isOpaqueResponseError && !hasNoUsefulInfo) {
           // Loggear error real para diagnóstico
           console.error('🚨 Error global capturado:', {
             message: e.message,

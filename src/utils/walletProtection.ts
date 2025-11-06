@@ -237,6 +237,21 @@ export const initializeWalletProtection = () => {
   
   // Global error handler for uncaught errors - ULTRA AGRESIVO - CAPTURA TODO
   window.addEventListener('error', (event) => {
+    // IGNORAR errores sin información útil (message, filename, line, column todos undefined)
+    // Estos errores generalmente son de wallet o extensiones y no son útiles para diagnóstico
+    const hasNoUsefulInfo = (!event.message || event.message === 'undefined' || event.message === '') &&
+                            (!event.filename || event.filename === 'undefined' || event.filename === '') &&
+                            (!event.lineno || event.lineno === 0) &&
+                            (!event.colno || event.colno === 0) &&
+                            (!event.error || event.error === undefined);
+    
+    // Si no hay información útil, probablemente es de wallet - silenciar completamente
+    if (hasNoUsefulInfo) {
+      event.stopImmediatePropagation();
+      event.preventDefault();
+      return false;
+    }
+    
     const message = event.message?.toLowerCase() || '';
     const filename = event.filename?.toLowerCase() || '';
     const stack = event.error?.stack?.toLowerCase() || '';
