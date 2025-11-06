@@ -34,6 +34,9 @@
 - **[🤖 IA Integration Guide](./README_IA.md)** - Estrategia de desarrollo con IA
 - **[📚 Documentación Maestra Unificada](./DOCUMENTACION_MAESTRA_UNIFICADA_v3.5.0.md)** - Documentación consolidada completa (BD, Migraciones, S2, Vercel, Neo4j, Features)
 - **[📝 Memorias de Sesiones Unificadas](./MEMORIAS_SESIONES_UNIFICADAS_v3.5.0.md)** - Memorias consolidadas de sesiones y avances
+- **[🔍 Resumen de Sesión y Soluciones](./RESUMEN_SESION_SOLUCIONES_CONSOLIDADO.md)** - Resumen consolidado de sesiones y soluciones aplicadas
+- **[🚨 Diagnóstico de Vercel](./DIAGNOSTICO_VERCEL_CONSOLIDADO.md)** - Diagnóstico completo de problemas en Vercel y soluciones
+- **[🔧 Auditoría useLayoutEffect](./AUDITORIA_USELAYOUTEFFECT_CONSOLIDADO.md)** - Auditoría técnica completa del error useLayoutEffect
 
 ---
 

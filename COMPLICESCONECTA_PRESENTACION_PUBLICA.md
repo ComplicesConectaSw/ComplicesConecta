@@ -8,7 +8,10 @@
 > **📚 Para desarrolladores:**  
 > **- [INSTALACION_SETUP_v3.5.0.md](./INSTALACION_SETUP_v3.5.0.md)** - Guía completa de instalación y configuración  
 > **- [DOCUMENTACION_MAESTRA_UNIFICADA_v3.5.0.md](./DOCUMENTACION_MAESTRA_UNIFICADA_v3.5.0.md)** - Documentación técnica completa  
-> **- [MEMORIAS_SESIONES_UNIFICADAS_v3.5.0.md](./MEMORIAS_SESIONES_UNIFICADAS_v3.5.0.md)** - Memorias de sesiones y avances
+> **- [MEMORIAS_SESIONES_UNIFICADAS_v3.5.0.md](./MEMORIAS_SESIONES_UNIFICADAS_v3.5.0.md)** - Memorias de sesiones y avances  
+> **- [RESUMEN_SESION_SOLUCIONES_CONSOLIDADO.md](./RESUMEN_SESION_SOLUCIONES_CONSOLIDADO.md)** - Resumen consolidado de sesiones y soluciones  
+> **- [DIAGNOSTICO_VERCEL_CONSOLIDADO.md](./DIAGNOSTICO_VERCEL_CONSOLIDADO.md)** - Diagnóstico completo de problemas en Vercel  
+> **- [AUDITORIA_USELAYOUTEFFECT_CONSOLIDADO.md](./AUDITORIA_USELAYOUTEFFECT_CONSOLIDADO.md)** - Auditoría técnica del error useLayoutEffect
 
 ---
 
