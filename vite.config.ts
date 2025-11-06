@@ -65,22 +65,24 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      output: {
-        manualChunks: (id) => {
-          // Vendor libraries - split by size and usage
-          if (id.includes('node_modules')) {
-            // CRÍTICO: React core DEBE estar en chunk separado y cargarse PRIMERO
-            // Esto asegura que React esté disponible antes que cualquier otro chunk
-            // IMPORTANTE: Verificar tanto 'react/' como 'react' para capturar todos los módulos
-            if (id.includes('node_modules/react/') || 
-                id.includes('node_modules/react-dom/') ||
-                (id.includes('node_modules/react') && !id.includes('react-router') && !id.includes('react-query') && !id.includes('react-hook-form'))) {
-              return 'vendor-react';
-            }
-            // React Router después de React
-            if (id.includes('react-router')) {
-              return 'vendor';
-            }
+             output: {
+               manualChunks: (id) => {
+                 // Vendor libraries - split by size and usage
+                 if (id.includes('node_modules')) {
+                   // CRÍTICO: React core DEBE estar en chunk separado y cargarse PRIMERO
+                   // Esto asegura que React esté disponible antes que cualquier otro chunk
+                   // IMPORTANTE: Verificar tanto 'react/' como 'react' para capturar todos los módulos
+                   if (id.includes('node_modules/react/') || 
+                       id.includes('node_modules/react-dom/') ||
+                       (id.includes('node_modules/react') && !id.includes('react-router') && !id.includes('react-query') && !id.includes('react-hook-form'))) {
+                     return 'vendor-react';
+                   }
+                   // React Router después de React - PERO DEBE ESTAR EN vendor-react también
+                   // para asegurar que React esté disponible cuando se carga
+                   if (id.includes('react-router')) {
+                     // Mover react-router a vendor-react para asegurar que React esté disponible
+                     return 'vendor-react';
+                   }
             // UI libraries (medium)
             if (id.includes('@radix-ui')) {
               return 'ui-radix';
