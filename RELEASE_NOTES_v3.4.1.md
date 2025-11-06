@@ -1,6 +1,6 @@
 # 📝 RELEASE NOTES - ComplicesConecta
 
-**Última Actualización:** 05 de Noviembre, 2025  
+**Última Actualización:** 06 de Noviembre, 2025  
 **Versión Actual:** v3.5.0  
 **Estado:** ✅ **PRODUCTION READY - ENTERPRISE GRADE - AI-NATIVE - REFACTORIZADO - DOCKER BUILD SUCCESSFUL - NEO4J OPERATIVO**
 
@@ -10,7 +10,23 @@
 
 ---
 
-## 🚀 Versión 3.5.0 - AI-Native Layer + Chat con Privacidad + Correcciones Críticas (02 Nov 2025)
+## 🚀 Versión 3.5.0 - AI-Native Layer + Chat con Privacidad + Correcciones Críticas (02-06 Nov 2025)
+
+### 🔧 CORRECCIONES Y MEJORAS v3.5.0 (06 Nov 2025)
+
+#### 📊 Migraciones de Base de Datos - Campos de Registro ✅
+- ✅ **Migración `20251106043953_add_first_last_name_to_profiles.sql`**: Agregados campos `first_name` y `last_name` a tabla `profiles`
+  - Campos necesarios para registro de usuarios individuales y parejas
+  - Migración automática de datos existentes desde `name` → `first_name` + `last_name`
+  - Índices creados para búsquedas optimizadas (`idx_profiles_first_name`, `idx_profiles_last_name`)
+  - Aplicada exitosamente en LOCAL y REMOTO
+- ✅ **Migración `20251106043954_add_preferences_to_couple_profiles.sql`**: Agregado campo `preferences` (JSONB) a tabla `couple_profiles`
+  - Almacena preferencias de género, orientación sexual, etc. necesarias para registro de parejas
+  - Estructura JSON para `partner1`, `partner2` y `couple_preferences`
+  - Índice GIN creado para búsquedas eficientes (`idx_couple_profiles_preferences`)
+  - Aplicada exitosamente en LOCAL y REMOTO
+- ✅ **Tipos Supabase Regenerados**: Tipos TypeScript actualizados con nuevos campos
+- ✅ **Código Actualizado**: `CoupleProfilesService.ts` actualizado para usar `preferences` correctamente
 
 ### 🔧 CORRECCIONES CRÍTICAS v3.5.0 (02 Nov 2025 - 07:50)
 

@@ -1,7 +1,7 @@
 # 📚 DOCUMENTACIÓN MAESTRA UNIFICADA - ComplicesConecta v3.5.0
 
 **Fecha:** 05 de Noviembre, 2025  
-**Última Actualización:** 05 de Noviembre, 2025  
+**Última Actualización:** 06 de Noviembre, 2025  
 **Versión:** 3.5.0  
 **Tipo:** Documentación Consolidada y Unificada Completa  
 **Estado:** ✅ CONSOLIDADA Y ACTUALIZADA - PRODUCTION READY - NEO4J OPERATIVO
@@ -459,16 +459,23 @@ npm run setup:neo4j-indexes
 
 ### Migraciones Aplicadas en Local (Docker):
 
-**Total:** 37 migraciones aplicadas (100%)
+**Total:** 39 migraciones aplicadas (100%)
 
-**Migraciones Nuevas (2):**
+**Migraciones Nuevas (4):**
 - ✅ `20251105000000_create_consent_verifications.sql` - **Aplicada en LOCAL**
 - ✅ `20251105000001_create_nft_galleries.sql` - **Aplicada en LOCAL**
+- ✅ `20251106043953_add_first_last_name_to_profiles.sql` - **Aplicada en LOCAL y REMOTO** (06 Nov 2025)
+- ✅ `20251106043954_add_preferences_to_couple_profiles.sql` - **Aplicada en LOCAL y REMOTO** (06 Nov 2025)
 
 **Tablas Nuevas Creadas (3):**
 - ✅ `consent_verifications` - Tabla creada
 - ✅ `nft_galleries` - Tabla creada
 - ✅ `nft_gallery_images` - Tabla creada
+
+**Campos Nuevos Agregados (06 Nov 2025):**
+- ✅ `profiles.first_name` - Campo agregado (VARCHAR(100))
+- ✅ `profiles.last_name` - Campo agregado (VARCHAR(100))
+- ✅ `couple_profiles.preferences` - Campo agregado (JSONB)
 
 ### Migraciones Pendientes en Remoto:
 
@@ -476,7 +483,11 @@ npm run setup:neo4j-indexes
 - ⏳ `20251105000000_create_consent_verifications.sql` - **PENDIENTE**
 - ⏳ `20251105000001_create_nft_galleries.sql` - **PENDIENTE**
 
-**Nota:** Estas migraciones están listas para aplicarse manualmente en el SQL Editor de Supabase. Incluyen `DROP POLICY IF EXISTS` y `DROP TRIGGER IF EXISTS` para evitar conflictos.
+**Migraciones Aplicadas (06 Nov 2025):**
+- ✅ `20251106043953_add_first_last_name_to_profiles.sql` - **APLICADA EN REMOTO**
+- ✅ `20251106043954_add_preferences_to_couple_profiles.sql` - **APLICADA EN REMOTO**
+
+**Nota:** Las migraciones de campos de registro (06 Nov 2025) ya fueron aplicadas exitosamente en remoto. Las migraciones de consent_verifications y nft_galleries están listas para aplicarse manualmente en el SQL Editor de Supabase. Incluyen `DROP POLICY IF EXISTS` y `DROP TRIGGER IF EXISTS` para evitar conflictos.
 
 ### Migraciones con Conflictos (Ya Corregidas):
 

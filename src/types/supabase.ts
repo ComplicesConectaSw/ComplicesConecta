@@ -1693,6 +1693,7 @@ export type Database = {
           is_verified: boolean | null
           partner1_id: string
           partner2_id: string
+          preferences: Json | null
           relationship_type: Database["public"]["Enums"]["relationship_type"]
           updated_at: string | null
         }
@@ -1706,6 +1707,7 @@ export type Database = {
           is_verified?: boolean | null
           partner1_id: string
           partner2_id: string
+          preferences?: Json | null
           relationship_type: Database["public"]["Enums"]["relationship_type"]
           updated_at?: string | null
         }
@@ -1719,6 +1721,7 @@ export type Database = {
           is_verified?: boolean | null
           partner1_id?: string
           partner2_id?: string
+          preferences?: Json | null
           relationship_type?: Database["public"]["Enums"]["relationship_type"]
           updated_at?: string | null
         }
@@ -3417,6 +3420,7 @@ export type Database = {
           blocked_at: string | null
           blocked_reason: string | null
           created_at: string | null
+          first_name: string | null
           gender: string | null
           id: string
           interested_in: string | null
@@ -3428,6 +3432,7 @@ export type Database = {
           is_online: boolean | null
           is_premium: boolean | null
           is_verified: boolean | null
+          last_name: string | null
           latitude: number | null
           lifestyle_preferences: Json | null
           location: string | null
@@ -3456,6 +3461,7 @@ export type Database = {
           blocked_at?: string | null
           blocked_reason?: string | null
           created_at?: string | null
+          first_name?: string | null
           gender?: string | null
           id?: string
           interested_in?: string | null
@@ -3467,6 +3473,7 @@ export type Database = {
           is_online?: boolean | null
           is_premium?: boolean | null
           is_verified?: boolean | null
+          last_name?: string | null
           latitude?: number | null
           lifestyle_preferences?: Json | null
           location?: string | null
@@ -3495,6 +3502,7 @@ export type Database = {
           blocked_at?: string | null
           blocked_reason?: string | null
           created_at?: string | null
+          first_name?: string | null
           gender?: string | null
           id?: string
           interested_in?: string | null
@@ -3506,6 +3514,7 @@ export type Database = {
           is_online?: boolean | null
           is_premium?: boolean | null
           is_verified?: boolean | null
+          last_name?: string | null
           latitude?: number | null
           lifestyle_preferences?: Json | null
           location?: string | null

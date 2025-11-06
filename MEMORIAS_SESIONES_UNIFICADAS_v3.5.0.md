@@ -1,7 +1,7 @@
 # 📝 MEMORIAS DE SESIONES UNIFICADAS - ComplicesConecta v3.5.0
 
 **Fecha:** 05 de Noviembre, 2025  
-**Última Actualización:** 05 de Noviembre, 2025  
+**Última Actualización:** 06 de Noviembre, 2025  
 **Versión:** 3.5.0  
 **Estado:** ✅ CONSOLIDADAS Y ACTUALIZADAS
 
@@ -34,7 +34,7 @@
 ### Progreso General del Proyecto
 - **Auditoría:** 46.5% completado (173/372 items)
 - **Linting:** 0 errores, 8 warnings (-89% de reducción desde inicio)
-- **Migraciones:** 37 aplicadas exitosamente (100%)
+- **Migraciones:** 39 aplicadas exitosamente (100%) - Incluye migraciones de campos de registro (06 Nov 2025)
 - **Tests:** 260 passed | 14 skipped (100% pasando)
 - **Deployment:** Problema de loading infinito en Vercel corregido
 - **Neo4j:** 100% implementado y operativo
@@ -77,6 +77,22 @@
    - Archivos obsoletos identificados para eliminación
 
 ---
+
+## 📝 MEMORIA DE SESIÓN - 06 NOV 2025
+
+### Tareas Completadas
+
+1. ✅ **Migraciones de Campos de Registro**
+   - Migración `20251106043953_add_first_last_name_to_profiles.sql` aplicada exitosamente
+     - Agregados `first_name` y `last_name` a tabla `profiles`
+     - Migración automática de datos existentes desde `name`
+     - Índices creados para optimización
+   - Migración `20251106043954_add_preferences_to_couple_profiles.sql` aplicada exitosamente
+     - Agregado campo `preferences` (JSONB) a tabla `couple_profiles`
+     - Estructura JSON para preferencias de parejas (género, orientación sexual, etc.)
+     - Índice GIN creado para búsquedas eficientes
+   - Tipos Supabase regenerados con nuevos campos
+   - `CoupleProfilesService.ts` actualizado para usar `preferences` correctamente
 
 ## 📝 MEMORIA DE SESIÓN - 05 NOV 2025
 

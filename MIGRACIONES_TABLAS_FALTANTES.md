@@ -1,7 +1,53 @@
 # Migraciones Creadas para Tablas Faltantes
 
 **Fecha:** 2025-11-06  
+**Última Actualización:** 2025-11-06  
 **Problema:** 2 tablas referenciadas en código pero no en tipos Supabase
+
+## Migraciones de Campos de Registro (06 Nov 2025) ✅
+
+### 1. `20251106043953_add_first_last_name_to_profiles.sql` ✅ APLICADA
+- **Estado:** Aplicada exitosamente en LOCAL y REMOTO
+- **Descripción:** Agrega campos `first_name` y `last_name` a tabla `profiles`
+- **Campos agregados:**
+  - `first_name` (VARCHAR(100)) - Nombre del usuario
+  - `last_name` (VARCHAR(100)) - Apellido del usuario
+- **Características:**
+  - ✅ Migración automática de datos existentes desde `name` → `first_name` + `last_name`
+  - ✅ Índices creados: `idx_profiles_first_name`, `idx_profiles_last_name`
+  - ✅ Comentarios de columnas agregados
+
+### 2. `20251106043954_add_preferences_to_couple_profiles.sql` ✅ APLICADA
+- **Estado:** Aplicada exitosamente en LOCAL y REMOTO
+- **Descripción:** Agrega campo `preferences` (JSONB) a tabla `couple_profiles`
+- **Campo agregado:**
+  - `preferences` (JSONB, DEFAULT '{}') - Preferencias de la pareja
+- **Estructura JSON esperada:**
+  ```json
+  {
+    "partner1": {
+      "gender": "male" | "female",
+      "sexual_orientation": "heterosexual" | "gay" | "bisexual" | "lesbian" | "trans" | "other",
+      "interested_in": ["men", "women", "couples", "trans"]
+    },
+    "partner2": {
+      "gender": "male" | "female",
+      "sexual_orientation": "heterosexual" | "gay" | "bisexual" | "lesbian" | "trans" | "other",
+      "interested_in": ["men", "women", "couples", "trans"]
+    },
+    "couple_preferences": {
+      "interested_in": ["men", "women", "couples", "trans"],
+      "age_range": { "min": 18, "max": 65 },
+      "location_preferences": { "max_distance": 50 }
+    }
+  }
+  ```
+- **Características:**
+  - ✅ Índice GIN creado: `idx_couple_profiles_preferences`
+  - ✅ Comentario de columna agregado
+  - ✅ Default value: `{}`
+
+---
 
 ## Tablas Identificadas
 

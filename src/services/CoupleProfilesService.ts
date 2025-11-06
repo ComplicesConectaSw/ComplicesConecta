@@ -227,18 +227,7 @@ class CoupleProfilesService {
           couple_images: profileData.couple_images || null,
           preferences: (profileData.preferences as any) || null,
           is_verified: false,
-          is_premium: false,
-          // Campos adicionales para funcionalidades swinger
-          looking_for: profileData.looking_for || 'swinger',
-          experience_level: profileData.experience_level || 'beginner',
-          swinger_experience: profileData.swinger_experience || 'beginner',
-          interested_in: profileData.interested_in || 'couples',
-          couple_interests: profileData.couple_interests || null,
-          // Campos adicionales agregados
-          latitude: profileData.latitude || null,
-          longitude: profileData.longitude || null,
-          is_demo: profileData.is_demo || false,
-          total_views: 0
+          is_premium: false
         })
         .select('*')
         .single();
