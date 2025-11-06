@@ -130,18 +130,18 @@
         window.__REACT_REAL__ = null;
         
         // CRÍTICO: Interceptar accesos a propiedades de undefined usando Object.prototype
-        // Esto captura accesos como: someVar.useLayoutEffect donde someVar es undefined
-        var originalPropertyAccess = Object.prototype.valueOf;
-        Object.prototype.valueOf = function() {
-          // Si alguien intenta acceder a useLayoutEffect en un objeto que podría ser React
-          if (this === window || this === globalThis) {
-            // Asegurar que React esté disponible
-            if (!window.React) {
-              window.React = reactProxy || reactStub;
-            }
-          }
-          return originalPropertyAccess.call(this);
-        };
+        // ELIMINADO: Este interceptor causaba recursión infinita
+        // var originalPropertyAccess = Object.prototype.valueOf;
+        // Object.prototype.valueOf = function() {
+        //   // Si alguien intenta acceder a useLayoutEffect en un objeto que podría ser React
+        //   if (this === window || this === globalThis) {
+        //     // Asegurar que React esté disponible
+        //     if (!window.React) {
+        //       window.React = reactProxy || reactStub;
+        //     }
+        //   }
+        //   return originalPropertyAccess.call(this);
+        // };
       })();
       
       // LOGGING: Inicializar sistema de logging para diagnóstico
@@ -254,34 +254,50 @@
           return originalDefineProperty.call(this, obj, prop, descriptor);
         };
         
-        // PROTECCIÓN FINAL: Proxy para interceptar TODOS los accesos a React.useLayoutEffect
+        // PROTECCIÓN FINAL: Proxy simplificado para evitar recursión infinita
         var reactProxy;
+        var reactGetterCalled = false; // Flag para evitar recursión
         try {
           reactProxy = new Proxy(reactStub, {
             get: function(target, prop) {
-              // Si se accede a useLayoutEffect, asegurar que esté disponible
-              if (prop === 'useLayoutEffect') {
-                var realReact = window.__REACT_REAL__;
-                if (realReact && realReact.useLayoutEffect) {
-                  return realReact.useLayoutEffect;
-                }
-                return target.useLayoutEffect || function(callback, deps) {
-                  if (typeof callback === 'function') {
-                    try {
-                      return callback();
-                    } catch(e) {
-                      return function() {};
-                    }
+              // Evitar recursión: si ya estamos accediendo, usar stub directamente
+              if (reactGetterCalled) {
+                return target[prop] || function() { return function() {}; };
+              }
+              
+              reactGetterCalled = true;
+              try {
+                // Si se accede a useLayoutEffect, asegurar que esté disponible
+                if (prop === 'useLayoutEffect') {
+                  var realReact = window.__REACT_REAL__;
+                  if (realReact && realReact.useLayoutEffect) {
+                    reactGetterCalled = false;
+                    return realReact.useLayoutEffect;
                   }
-                  return function() {};
-                };
+                  reactGetterCalled = false;
+                  return target.useLayoutEffect || function(callback, deps) {
+                    if (typeof callback === 'function') {
+                      try {
+                        return callback();
+                      } catch(e) {
+                        return function() {};
+                      }
+                    }
+                    return function() {};
+                  };
+                }
+                // Si React real está disponible, usarlo; sino, usar stub
+                var realReact = window.__REACT_REAL__;
+                if (realReact && realReact[prop]) {
+                  reactGetterCalled = false;
+                  return realReact[prop];
+                }
+                reactGetterCalled = false;
+                return target[prop] || function() { return function() {}; };
+              } catch(e) {
+                reactGetterCalled = false;
+                return target[prop] || function() { return function() {}; };
               }
-              // Si React real está disponible, usarlo; sino, usar stub
-              var realReact = window.__REACT_REAL__;
-              if (realReact && realReact[prop]) {
-                return realReact[prop];
-              }
-              return target[prop] || function() { return function() {}; };
             }
           });
           
@@ -294,19 +310,33 @@
         }
         
         // Hacer que window.React apunte al stub INMEDIATAMENTE usando defineProperty
+        // SIMPLIFICADO: Evitar recursión infinita en el getter
         try {
+          var windowReactGetterCalled = false; // Flag para evitar recursión
           Object.defineProperty(window, 'React', {
             get: function() {
-              // Si React real ya está disponible, usarlo; sino, usar stub (proxy)
-              var realReact = window.__REACT_REAL__;
-              if (realReact) {
-                // Asegurar que useLayoutEffect esté disponible en React real
-                if (!realReact.useLayoutEffect) {
-                  realReact.useLayoutEffect = reactStub.useLayoutEffect;
-                }
-                return realReact;
+              // Evitar recursión infinita
+              if (windowReactGetterCalled) {
+                return reactStub;
               }
-              return reactProxy || reactStub;
+              windowReactGetterCalled = true;
+              try {
+                // Si React real ya está disponible, usarlo; sino, usar stub (proxy)
+                var realReact = window.__REACT_REAL__;
+                if (realReact) {
+                  // Asegurar que useLayoutEffect esté disponible en React real
+                  if (!realReact.useLayoutEffect) {
+                    realReact.useLayoutEffect = reactStub.useLayoutEffect;
+                  }
+                  windowReactGetterCalled = false;
+                  return realReact;
+                }
+                windowReactGetterCalled = false;
+                return reactProxy || reactStub;
+              } catch(e) {
+                windowReactGetterCalled = false;
+                return reactStub;
+              }
             },
             set: function(value) {
               // Guardar React real cuando se defina
@@ -330,20 +360,21 @@
         }
         
         // PROTECCIÓN EXTRA: Interceptar accesos a React.createContext directamente
-        var originalGetPropertyDescriptor = Object.getOwnPropertyDescriptor;
-        Object.getOwnPropertyDescriptor = function(obj, prop) {
-          if (obj === window && (prop === 'React' || prop === 'react')) {
-            var desc = originalGetPropertyDescriptor.call(this, obj, prop);
-            if (!desc) {
-              return {
-                get: function() { return window.__REACT_REAL__ || reactProxy || reactStub; },
-                configurable: true,
-                enumerable: true
-              };
-            }
-          }
-          return originalGetPropertyDescriptor.call(this, obj, prop);
-        };
+        // ELIMINADO: Este interceptor causaba recursión infinita
+        // var originalGetPropertyDescriptor = Object.getOwnPropertyDescriptor;
+        // Object.getOwnPropertyDescriptor = function(obj, prop) {
+        //   if (obj === window && (prop === 'React' || prop === 'react')) {
+        //     var desc = originalGetPropertyDescriptor.call(this, obj, prop);
+        //     if (!desc) {
+        //       return {
+        //         get: function() { return window.__REACT_REAL__ || reactProxy || reactStub; },
+        //         configurable: true,
+        //         enumerable: true
+        //       };
+        //     }
+        //   }
+        //   return originalGetPropertyDescriptor.call(this, obj, prop);
+        // };
         
         // Log para debugging
         if (window.__LOADING_DEBUG__) {
@@ -576,107 +607,107 @@
         };
         
         // PROTECCIÓN CRÍTICA: Interceptar accesos a propiedades de objetos undefined
-        // Esto intercepta accesos como: undefined.useLayoutEffect
-        var originalGetOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
-        Object.getOwnPropertyDescriptor = function(obj, prop) {
-          if (obj === window && (prop === 'React' || prop === 'react')) {
-            var desc = originalGetOwnPropertyDescriptor.call(this, obj, prop);
-            if (!desc) {
-              // Si no hay descriptor, crear uno con el stub
-              return {
-                get: function() {
-                  return window.__REACT_REAL__ || window.__REACT_STUB__ || window.React || {
-                    useLayoutEffect: function() { return function() {}; },
-                    useEffect: function() { return function() {}; },
-                    useState: function() { return [null, function() {}]; },
-                    createContext: function() { return { Provider: function() {}, Consumer: function() {} }; }
-                  };
-                },
-                configurable: true,
-                enumerable: true
-              };
-            }
-            if (desc && desc.get) {
-              // Interceptar el getter
-              var originalGetter = desc.get;
-              desc.get = function() {
-                var react = originalGetter.call(this);
-                // Asegurar useLayoutEffect SIEMPRE
-                if (!react || !react.useLayoutEffect) {
-                  var stub = window.__REACT_STUB__ || window.__REACT_REAL__;
-                  if (stub && stub.useLayoutEffect) {
-                    if (react) {
-                      react.useLayoutEffect = stub.useLayoutEffect;
-                    } else {
-                      react = stub;
-                    }
-                  } else {
-                    react = react || {
-                      useLayoutEffect: function() { return function() {}; },
-                      useEffect: function() { return function() {}; },
-                      useState: function() { return [null, function() {}]; },
-                      createContext: function() { return { Provider: function() {}, Consumer: function() {} }; }
-                    };
-                  }
-                }
-                return react;
-              };
-            }
-            return desc;
-          }
-          return originalGetOwnPropertyDescriptor.call(this, obj, prop);
-        };
+        // ELIMINADO: Este interceptor causaba recursión infinita - simplificado
+        // var originalGetOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+        // Object.getOwnPropertyDescriptor = function(obj, prop) {
+        //   if (obj === window && (prop === 'React' || prop === 'react')) {
+        //     var desc = originalGetOwnPropertyDescriptor.call(this, obj, prop);
+        //     if (!desc) {
+        //       // Si no hay descriptor, crear uno con el stub
+        //       return {
+        //         get: function() {
+        //           return window.__REACT_REAL__ || window.__REACT_STUB__ || window.React || {
+        //             useLayoutEffect: function() { return function() {}; },
+        //             useEffect: function() { return function() {}; },
+        //             useState: function() { return [null, function() {}]; },
+        //             createContext: function() { return { Provider: function() {}, Consumer: function() {} }; }
+        //           };
+        //         },
+        //         configurable: true,
+        //         enumerable: true
+        //       };
+        //     }
+        //     if (desc && desc.get) {
+        //       // Interceptar el getter
+        //       var originalGetter = desc.get;
+        //       desc.get = function() {
+        //         var react = originalGetter.call(this);
+        //         // Asegurar useLayoutEffect SIEMPRE
+        //         if (!react || !react.useLayoutEffect) {
+        //           var stub = window.__REACT_STUB__ || window.__REACT_REAL__;
+        //           if (stub && stub.useLayoutEffect) {
+        //             if (react) {
+        //               react.useLayoutEffect = stub.useLayoutEffect;
+        //             } else {
+        //               react = stub;
+        //             }
+        //           } else {
+        //             react = react || {
+        //               useLayoutEffect: function() { return function() {}; },
+        //               useEffect: function() { return function() {}; },
+        //               useState: function() { return [null, function() {}]; },
+        //               createContext: function() { return { Provider: function() {}, Consumer: function() {} }; }
+        //             };
+        //           }
+        //         }
+        //         return react;
+        //       };
+        //     }
+        //     return desc;
+        //   }
+        //   return originalGetOwnPropertyDescriptor.call(this, obj, prop);
+        // };
         
         // PROTECCIÓN EXTRA: Interceptar Proxy.constructor para módulos ES6
-        if (typeof Proxy !== 'undefined') {
-          var OriginalProxy = Proxy;
-          try {
-            Proxy = function(target, handler) {
-              // Si el target es React o tiene useLayoutEffect, interceptarlo
-              if (target && (target.useLayoutEffect || target === window.React || target === window.__REACT_STUB__)) {
-                var originalGet = handler.get;
-                handler.get = function(target, prop, receiver) {
-                  if (prop === 'useLayoutEffect') {
-                    var result = originalGet ? originalGet.call(this, target, prop, receiver) : target[prop];
-                    if (!result) {
-                      return function() { return function() {}; };
-                    }
-                    return result;
-                  }
-                  return originalGet ? originalGet.call(this, target, prop, receiver) : target[prop];
-                };
-              }
-              return new OriginalProxy(target, handler);
-            };
-          } catch(e) {
-            // Si falla, no hacer nada
-          }
-        }
+        // ELIMINADO: Este interceptor causaba recursión infinita
+        // if (typeof Proxy !== 'undefined') {
+        //   var OriginalProxy = Proxy;
+        //   try {
+        //     Proxy = function(target, handler) {
+        //       // Si el target es React o tiene useLayoutEffect, interceptarlo
+        //       if (target && (target.useLayoutEffect || target === window.React || target === window.__REACT_STUB__)) {
+        //         var originalGet = handler.get;
+        //         handler.get = function(target, prop, receiver) {
+        //           if (prop === 'useLayoutEffect') {
+        //             var result = originalGet ? originalGet.call(this, target, prop, receiver) : target[prop];
+        //             if (!result) {
+        //               return function() { return function() {}; };
+        //             }
+        //             return result;
+        //           }
+        //           return originalGet ? originalGet.call(this, target, prop, receiver) : target[prop];
+        //         };
+        //       }
+        //       return new OriginalProxy(target, handler);
+        //     };
+        //   } catch(e) {
+        //     // Si falla, no hacer nada
+        //   }
+        // }
         
         // PROTECCIÓN FINAL: Interceptar accesos a propiedades de objetos undefined
-        // Esto captura accesos como: someVar.useLayoutEffect donde someVar es undefined
-        // CRÍTICO: Interceptar TODOS los accesos a propiedades de cualquier objeto que podría ser React
-        var originalHasOwnProperty = Object.prototype.hasOwnProperty;
-        Object.prototype.hasOwnProperty = function(prop) {
-          // Si alguien pregunta por useLayoutEffect en cualquier objeto, asegurar que esté disponible
-          if (prop === 'useLayoutEffect' && this === window.React) {
-            return true; // Siempre decir que existe
-          }
-          return originalHasOwnProperty.call(this, prop);
-        };
+        // ELIMINADO: Estos interceptores causaban recursión infinita
+        // var originalHasOwnProperty = Object.prototype.hasOwnProperty;
+        // Object.prototype.hasOwnProperty = function(prop) {
+        //   // Si alguien pregunta por useLayoutEffect en cualquier objeto, asegurar que esté disponible
+        //   if (prop === 'useLayoutEffect' && this === window.React) {
+        //     return true; // Siempre decir que existe
+        //   }
+        //   return originalHasOwnProperty.call(this, prop);
+        // };
         
         // PROTECCIÓN EXTRA: Interceptar accesos a propiedades usando bracket notation
-        // Esto intercepta accesos como: obj['useLayoutEffect']
-        var originalValueOf = Object.prototype.valueOf;
-        Object.prototype.valueOf = function() {
-          // Si este objeto es React y no tiene useLayoutEffect, agregarlo
-          if (this === window.React || this === window.__REACT_STUB__ || this === window.__REACT_REAL__) {
-            if (!this.useLayoutEffect) {
-              this.useLayoutEffect = window.__REACT_STUB__?.useLayoutEffect || function() { return function() {}; };
-            }
-          }
-          return originalValueOf.call(this);
-        };
+        // ELIMINADO: Este interceptor causaba recursión infinita
+        // var originalValueOf = Object.prototype.valueOf;
+        // Object.prototype.valueOf = function() {
+        //   // Si este objeto es React y no tiene useLayoutEffect, agregarlo
+        //   if (this === window.React || this === window.__REACT_STUB__ || this === window.__REACT_REAL__) {
+        //     if (!this.useLayoutEffect) {
+        //       this.useLayoutEffect = window.__REACT_STUB__?.useLayoutEffect || function() { return function() {}; };
+        //     }
+        //   }
+        //   return originalValueOf.call(this);
+        // };
       })();
     </script>
     
