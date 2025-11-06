@@ -67,8 +67,17 @@ function Write-ColorOutput {
         "Yellow" = "Yellow"
         "Blue" = "Cyan"
         "Bold" = "White"
+        "White" = "White"
     }
-    Write-Host $Message -ForegroundColor $colorMap[$Color]
+    
+    # Obtener color del mapa o usar White por defecto
+    $selectedColor = if ($colorMap.ContainsKey($Color)) {
+        $colorMap[$Color]
+    } else {
+        "White"
+    }
+    
+    Write-Host $Message -ForegroundColor $selectedColor
 }
 
 # Crear directorio de reportes
