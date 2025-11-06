@@ -441,11 +441,16 @@ if (-not $SkipSupabase) {
                                 
                                 if ($tablesMatch.Success) {
                                     $tablesBlock = $tablesMatch.Groups[1].Value
-                                    $tableNameRegex = [regex]::new("^\s+(\w+):\s*\{[\s\S]*?Row:", [System.Text.RegularExpressions.RegexOptions]::Multiline)
+                                    $tableNameRegex = [regex]::new("^\s+(\w+):\s*\{", [System.Text.RegularExpressions.RegexOptions]::Multiline)
                                     $tableNameMatches = $tableNameRegex.Matches($tablesBlock)
                                     foreach ($match in $tableNameMatches) {
                                         $tableName = $match.Groups[1].Value
-                                        if ($tableName -notmatch "^(Tables|Views|Functions|Enums|CompositeTypes|Row|Insert|Update|Relationships)$" -and $tableName -notmatch "^_") {
+                                        # Verificar que después del nombre hay un bloque con Row: (es una tabla real)
+                                        $matchEnd = $match.Index + $match.Length
+                                        $nextPart = $tablesBlock.Substring($matchEnd, [Math]::Min(200, $tablesBlock.Length - $matchEnd))
+                                        if ($nextPart -match "Row:" -and 
+                                            $tableName -notmatch "^(Tables|Views|Functions|Enums|CompositeTypes|Row|Insert|Update|Relationships)$" -and 
+                                            $tableName -notmatch "^_") {
                                             $tables += $tableName
                                         }
                                     }
