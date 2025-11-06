@@ -340,12 +340,18 @@ if (-not $SkipSupabase) {
             if ($tablesMatch.Success) {
                 $tablesBlock = $tablesMatch.Groups[1].Value
                 # Buscar todas las definiciones de tabla: nombre: { seguido de Row:
-                $tableNameRegex = [regex]::new("^\s+(\w+):\s*\{[\s\S]*?Row:", [System.Text.RegularExpressions.RegexOptions]::Multiline)
+                # Usar un patrón más específico que busque nombre: { seguido de espacios y luego Row:
+                $tableNameRegex = [regex]::new("^\s+(\w+):\s*\{", [System.Text.RegularExpressions.RegexOptions]::Multiline)
                 $tableNameMatches = $tableNameRegex.Matches($tablesBlock)
                 foreach ($match in $tableNameMatches) {
                     $tableName = $match.Groups[1].Value
-                    # Excluir palabras clave como "Tables", "Views", "Functions", etc.
-                    if ($tableName -notmatch "^(Tables|Views|Functions|Enums|CompositeTypes|Row|Insert|Update|Relationships)$" -and $tableName -notmatch "^_") {
+                    # Verificar que después del nombre hay un bloque con Row: (es una tabla real)
+                    $matchEnd = $match.Index + $match.Length
+                    $nextPart = $tablesBlock.Substring($matchEnd, [Math]::Min(200, $tablesBlock.Length - $matchEnd))
+                    # Verificar que tiene Row: y NO es Row:, Insert:, Update:, Relationships:
+                    if ($nextPart -match "Row:" -and 
+                        $tableName -notmatch "^(Tables|Views|Functions|Enums|CompositeTypes|Row|Insert|Update|Relationships)$" -and 
+                        $tableName -notmatch "^_") {
                         $tables += $tableName
                     }
                 }
@@ -372,12 +378,17 @@ if (-not $SkipSupabase) {
             if ($tablesMatch.Success) {
                 $tablesBlock = $tablesMatch.Groups[1].Value
                 # Buscar todas las definiciones de tabla: nombre: { seguido de Row:
-                $tableNameRegex = [regex]::new("^\s+(\w+):\s*\{[\s\S]*?Row:", [System.Text.RegularExpressions.RegexOptions]::Multiline)
+                $tableNameRegex = [regex]::new("^\s+(\w+):\s*\{", [System.Text.RegularExpressions.RegexOptions]::Multiline)
                 $tableNameMatches = $tableNameRegex.Matches($tablesBlock)
                 foreach ($match in $tableNameMatches) {
                     $tableName = $match.Groups[1].Value
-                    # Excluir palabras clave como "Tables", "Views", "Functions", etc.
-                    if ($tableName -notmatch "^(Tables|Views|Functions|Enums|CompositeTypes|Row|Insert|Update|Relationships)$" -and $tableName -notmatch "^_") {
+                    # Verificar que después del nombre hay un bloque con Row: (es una tabla real)
+                    $matchEnd = $match.Index + $match.Length
+                    $nextPart = $tablesBlock.Substring($matchEnd, [Math]::Min(200, $tablesBlock.Length - $matchEnd))
+                    # Verificar que tiene Row: y NO es Row:, Insert:, Update:, Relationships:
+                    if ($nextPart -match "Row:" -and 
+                        $tableName -notmatch "^(Tables|Views|Functions|Enums|CompositeTypes|Row|Insert|Update|Relationships)$" -and 
+                        $tableName -notmatch "^_") {
                         $tables += $tableName
                     }
                 }
@@ -592,7 +603,7 @@ if (-not $SkipNullChecks) {
                                     if ($checkLine -match "(if\s*\([^)]*!supabase|if\s*\([^)]*supabase\s*===?\s*null|if\s*\([^)]*supabase\s*!==?\s*null|if\s*\([^)]*supabase\s*\|\||if\s*\([^)]*supabase\s*&&|if\s*\([^)]*supabase\s*\?\.|!supabase|supabase\s*===?\s*null|supabase\s*!==?\s*null)" -and
                                         $checkLine -notmatch "^\s*//") {
                                         # Verificar que haya un return/throw después del null check
-                                        for ($k = $checkLineIdx + 1; $k -lt [Math]::Min($checkLineIdx + 5, $i); $k++) {
+                                        for ($k = $checkLineIdx + 1; $k -lt [Math]::Min($checkLineIdx + 10, $i + 1); $k++) {
                                             if ($lines[$k] -match "return|throw|continue") {
                                                 $hasNullCheckInContext = $true
                                                 break
