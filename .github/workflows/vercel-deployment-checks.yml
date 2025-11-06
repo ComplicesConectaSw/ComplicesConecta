@@ -36,6 +36,9 @@ jobs:
         with:
           name: Vercel - complices-conecta: complicesconectassw
         if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true
 
   type-check:
     name: Type Check
@@ -61,6 +64,9 @@ jobs:
         with:
           name: Vercel - complices-conecta: complicesconectassw
         if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true
 
   build:
     name: Build
@@ -86,4 +92,7 @@ jobs:
         with:
           name: Vercel - complices-conecta: complicesconectassw
         if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true
 
