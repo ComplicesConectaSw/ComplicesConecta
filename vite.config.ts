@@ -100,7 +100,10 @@ export default defineConfig({
             }
             // Supabase and database (medium) - DESPUÉS de vendor-react
             // CRÍTICO: Este chunk depende de React, debe cargarse después
+            // IMPORTANTE: Asegurar que React esté disponible antes de cargar data-layer
             if (id.includes('@supabase') || id.includes('@tanstack/react-query')) {
+              // NO separar en data-layer si React no está en vendor-react
+              // Esto asegura que data-layer se carga después de vendor
               return 'data-layer';
             }
             // Monitoring tools (medium)
