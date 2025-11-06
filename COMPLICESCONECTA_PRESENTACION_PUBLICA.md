@@ -39,7 +39,10 @@ Entendemos que la discreción es fundamental. Por eso implementamos:
 - **Galerías privadas protegidas**: Tu contenido privado solo es visible para personas que tú apruebes explícitamente
 - **Sistema de verificación**: Múltiples métodos para asegurar que los perfiles sean reales y auténticos
 - **Geolocalización inteligente**: Comparte tu ubicación solo cuando tú lo decidas, con precisión controlada
-- **Verificador IA de Consentimiento**: Sistema proactivo que detecta patrones de consentimiento en mensajes, cumpliendo con la **Ley Olimpia**
+- **Verificador IA de Consentimiento**: Sistema proactivo que detecta patrones de consentimiento en mensajes en tiempo real, cumpliendo con la **Ley Olimpia MX** (auto-pause si consenso <80%)
+- **Galerías NFT-Verificadas**: Galerías privadas verificadas con NFTs mintados (requiere 100 GTK en staking)
+- **Matching Predictivo con IA Emocional**: Sistema de matching que analiza conexiones sociales y química emocional usando Neo4j + GPT-4
+- **Eventos Virtuales Sostenibles**: Eventos virtuales con tracking de CO2 ahorrado y recompensas en tokens CMPX
 - **Row Level Security (RLS)**: 122 políticas de seguridad activas que garantizan que cada usuario solo accede a sus propios datos
 
 ### 💬 **Experiencia de Chat Avanzada**
@@ -79,6 +82,8 @@ Nuestro sistema de mensajería no es solo texto. Incluye:
 
 - **Modelos de Machine Learning**: Sistema de scoring de compatibilidad con 400,000 parámetros
 - **Procesamiento de lenguaje natural**: Análisis de conversaciones y extracción de temas
+- **Verificación de Consentimiento con IA**: Sistema real-time que analiza mensajes para detectar patrones de consentimiento (cumplimiento Ley Olimpia MX)
+- **Matching Predictivo**: Algoritmo "friends-of-friends" con análisis emocional usando GPT-4
 - **Aprendizaje continuo**: El sistema mejora con cada interacción
 
 ---

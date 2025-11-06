@@ -35,6 +35,10 @@
 - **Responsive Design**: Optimización completa móvil/desktop/Android
 - **Sistema de Estilos Completo**: Tailwind CSS v4 + 19 archivos CSS especializados ✅
 - **Análisis de Estilos**: Auditoría completa realizada (06 Nov 2025) ✅
+- **IA Consent Verification**: Sistema real-time de verificación de consentimiento en chats (Ley Olimpia MX) ✅
+- **NFT-Verified Galleries**: Galerías NFT con GTK staking (100 GTK requeridos) ✅
+- **Predictive Matching**: Matching predictivo con Neo4j + IA Emocional (friends-of-friends) ✅
+- **Sustainable Virtual Events**: Eventos virtuales con tracking CO2 y recompensas CMPX ✅
 
 ### Estructura General del Monorepo
 
@@ -107,7 +111,16 @@ conecta-social-comunidad-main/
 │   │   ├── DataPrivacyService.ts              # GDPR compliance (NUEVO v3.5.0)
 │   │   ├── UserVerificationService.ts         # Verificación unificada (NUEVO v3.5.0)
 │   │   ├── TokenService.ts                    # Gestión de tokens (NUEVO v3.5.0)
-│   │   ├── NFTGalleryService.ts               # Servicio de galerías NFT (NUEVO v3.5.0)
+│   │   ├── ai/                                # Servicios de IA (ACTUALIZADO v3.5.0)
+│   │   │   ├── AILayerService.ts              # Capa base ML (ACTUALIZADO v3.5.0)
+│   │   │   ├── ConsentVerificationService.ts  # Verificación consentimiento chats (NUEVO v3.5.0)
+│   │   │   └── ChatSummaryService.ts         # Resúmenes automáticos de chats
+│   │   ├── nft/                               # Servicios NFT (NUEVO v3.5.0)
+│   │   │   └── NFTGalleryService.ts           # Galerías NFT con GTK staking (NUEVO v3.5.0)
+│   │   ├── matching/                          # Servicios de matching (ACTUALIZADO v3.5.0)
+│   │   │   └── GraphMatchingService.ts       # Matching predictivo Neo4j + IA (NUEVO v3.5.0)
+│   │   ├── events/                            # Servicios de eventos (ACTUALIZADO v3.5.0)
+│   │   │   └── VirtualEventsService.ts        # Eventos virtuales sostenibles (NUEVO v3.5.0)
 │   │   ├── PerformanceMonitoringService.ts    # Monitoreo de performance (ACTUALIZADO v3.4.1)
 │   │   ├── ErrorAlertService.ts               # Sistema de alertas (NUEVO v3.4.1)
 │   │   ├── ModerationMetricsService.ts        # Métricas de moderación (NUEVO v3.4.1)

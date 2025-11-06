@@ -74,6 +74,8 @@
 - ✅ **Opciones Gratuitas** - HuggingFace API (100% gratis)
 - ✅ **Rate Limiting** - 10 resúmenes/día por usuario
 - ✅ **Cache Inteligente** - 1h para scores, 24h para resúmenes
+- ✅ **IA Consent Verification** - Verificación real-time de consentimiento en chats con NLP (Ley Olimpia MX)
+- ✅ **Predictive Matching** - Matching predictivo con Neo4j + IA Emocional (friends-of-friends)
 
 #### 📊 Google S2 Geosharding (ESTRUCTURA 100%, TOTAL 70%)
 - ✅ **S2Service** - Cell ID generation (niveles 10-20)
@@ -88,6 +90,7 @@
 - ✅ **Sincronización** - Scripts `sync-postgres-to-neo4j.ts` y `verify-neo4j.ts` (corregidos 05 Nov 2025)
 - ✅ **Setup de Índices** - Script `setup-neo4j-indexes.ts` para optimización automática
 - ✅ **Integración** - SmartMatchingService con enriquecimiento social y recomendaciones FOF
+- ✅ **GraphMatchingService** - Matching predictivo con algoritmo "friends-of-friends" + IA Emocional (NUEVO 06 Nov 2025)
 - ✅ **Performance** - 200x más rápido para queries de conexiones sociales
 - ✅ **Variables de Entorno** - Configuradas en `.env` (VITE_SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY)
 - ✅ **Operativo** - Neo4j corriendo, conexión verificada, 4 usuarios sincronizados (05 Nov 2025)
@@ -150,6 +153,8 @@ Crear la comunidad swinger más exclusiva y segura de México, donde parejas y s
 ### 💕 **Experiencia Social Premium con IA**
 - **💬 Chat en Tiempo Real**: WebSockets con Supabase Realtime, typing indicators y presencia
 - **🔒 Sistema de Privacidad en Chat**: Solicitar/aceptar/denegar chats, control total de quien puede contactarte
+- **🤖 IA Consent Verification**: Verificación real-time de consentimiento en chats con NLP (cumplimiento Ley Olimpia MX)
+- **🖼️ Galerías NFT-Verificadas**: Galerías privadas verificadas con NFTs mintados (requiere 100 GTK staking)
 - **🖼️ Permisos de Galería desde Chat**: Solicitar acceso a galerías privadas directamente desde el chat
 - **📍 Geolocalización en Chat**: Compartir ubicación en mensajes para encuentros
 - **📹 Video Chat P2P**: Preparado para implementación futura con WebRTC
@@ -158,8 +163,10 @@ Crear la comunidad swinger más exclusiva y segura de México, donde parejas y s
 - **🖼️ Galerías Privadas**: Contenido público y privado por usuario
 - **👫 Perfiles de Pareja Avanzados**: Sistema completo con UI distintiva
 - **🎭 Eventos VIP Exclusivos**: Fiestas privadas y encuentros verificados
+- **🌱 Eventos Virtuales Sostenibles**: Eventos virtuales con tracking CO2 y recompensas CMPX (50 por participación)
 - **🎁 Regalos Virtuales**: Sistema de tokens CMPX y GTK
 - **🤖 Asistente IA Interactivo**: Guía paso a paso para gestión de tokens
+- **🧠 Matching Predictivo**: Matching inteligente con Neo4j + IA Emocional (friends-of-friends)
 
 ### 🔐 **Seguridad y Privacidad Avanzada**
 - **🔒 Autenticación Dual**: Demo mode + Real mode con Supabase Auth

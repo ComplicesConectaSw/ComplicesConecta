@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.5.0] - 2025-11-06
+
+### Added - Features Innovadoras Completas
+- **IA Consent Verification in Chats**: Sistema real-time de verificación de consentimiento usando NLP con OpenAI GPT-4, auto-pause si consenso <80% (Ley Olimpia MX)
+- **NFT-Verified Galleries**: Galerías NFT con GTK staking (100 GTK requeridos), mint ERC-721 stub en Polygon, integración con gallery_permissions
+- **Predictive Matching con Social Graphs**: Matching predictivo usando Neo4j + IA Emocional, algoritmo "friends-of-friends" con peso emocional, score ML 400k params
+- **Sustainable Virtual Events**: Eventos virtuales con tracking CO2, recompensas CMPX (50 por participación), acceso VIP con GTK/Premium
+
+### Fixed - Correcciones de Servicios
+- **ContentModerationService.ts**: Corregido tipo `Json` para `metadata` en inserción de `moderation_logs`
+- **VirtualEventsService.ts**: Corregido manejo de valores `null` en `couple_id`, `created_at`, `updated_at` al mapear eventos
+
+### Added - Migraciones SQL
+- `20251106_01_consent_verification.sql`: Tabla `consent_verifications` con scoring y estado
+- `20251106_02_nft_staking.sql`: Tablas `nft_galleries`, `nft_tokens`, `nft_ownership`, `nft_staking_requirements`
+- `20251106_03_graph_matching.sql`: Tablas `graph_matches`, `social_connections`, `emotional_scores`
+- `20251106_04_virtual_events.sql`: Campos de sostenibilidad en `couple_events`
+
 ## [3.5.0] - 2025-11-05
 
 > **📚 Para documentación completa, consulta [DOCUMENTACION_MAESTRA_UNIFICADA_v3.5.0.md](./DOCUMENTACION_MAESTRA_UNIFICADA_v3.5.0.md)**

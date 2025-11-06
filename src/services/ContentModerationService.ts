@@ -9,6 +9,7 @@
 
 import { logger } from '@/lib/logger';
 import { supabase } from '@/integrations/supabase/client';
+import type { Json } from '@/types/supabase';
 import type { ProfileData, TextAnalysis, ContextRules } from '@/types/content-moderation.types';
 
 
@@ -862,7 +863,7 @@ class ContentModerationService {
             confidence: result.confidence,
             flags: result.flags,
             userId
-          } as Record<string, unknown>
+          } as Json
         });
 
       if (error) {

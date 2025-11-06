@@ -20,6 +20,10 @@
   - **v3.5.0**: `fix/navigation-conditional-*` → Navegación condicional HeaderNav/Navigation ✅
   - **v3.5.0**: `feature/nft-integration-*` → Integración NFT en componentes de tokens e imágenes ✅
   - **v3.5.0**: `feature/styles-audit-*` → Análisis completo de estilos y limpieza (06 Nov 2025) ✅
+  - **v3.5.0**: `feature/consent-verification-*` → IA Consent Verification en chats (Ley Olimpia MX) ✅
+  - **v3.5.0**: `feature/nft-galleries-*` → Galerías NFT-Verificadas con GTK Staking ✅
+  - **v3.5.0**: `feature/graph-matching-*` → Predictive Matching con Neo4j + IA Emocional ✅
+  - **v3.5.0**: `feature/virtual-events-*` → Sustainable Virtual Events con CMPX Rewards ✅
 
 2. **SQL y Backups**
    - Todos los `.sql` y migraciones quedan excluidos en `.gitignore`
@@ -33,6 +37,10 @@
   - **NUEVO v3.5.0**: Integración NFT en componentes de imágenes (ImageGallery, ImageUpload)
   - **NUEVO v3.5.0**: Ejemplos de galerías NFT en perfiles demo
   - **NUEVO v3.5.0**: Análisis de Estilos Completo - 19 archivos CSS documentados, `App.css` vacío eliminado
+  - **NUEVO v3.5.0**: IA Consent Verification - Sistema real-time de verificación de consentimiento en chats (Ley Olimpia MX)
+  - **NUEVO v3.5.0**: NFT-Verified Galleries - Galerías NFT con GTK staking (100 GTK requeridos)
+  - **NUEVO v3.5.0**: Predictive Matching - Matching predictivo con Neo4j + IA Emocional (friends-of-friends)
+  - **NUEVO v3.5.0**: Sustainable Virtual Events - Eventos virtuales con tracking CO2 y recompensas CMPX
 
 3. **Flujo de trabajo con IA/ML**
    - IA genera migraciones o código → Validar con `npm run type-check`

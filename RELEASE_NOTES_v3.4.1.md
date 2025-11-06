@@ -10,7 +10,76 @@
 
 ---
 
-## 🚀 Versión 3.5.0 - AI-Native Layer + Chat con Privacidad + Correcciones Críticas (02-06 Nov 2025)
+## 🚀 Versión 3.5.0 - AI-Native Layer + Chat con Privacidad + Correcciones Críticas + Features Innovadoras (02-06 Nov 2025)
+
+### 🎉 NUEVAS FEATURES INNOVADORAS v3.5.0 (06 Nov 2025)
+
+#### 💬 IA Consent Verification in Chats ✅ (Feature 1 - COMPLETADA)
+- ✅ **ConsentVerificationService.ts** - Sistema real-time de verificación de consentimiento usando NLP con OpenAI
+- ✅ **Análisis NLP con GPT-4**: Análisis de mensajes en tiempo real para detectar patrones de consentimiento
+- ✅ **Scoring de Consenso**: Sistema de puntuación 0-100 basado en historial de mensajes
+- ✅ **Auto-pause Automático**: Pausa automática de chat si consenso <80% (cumplimiento Ley Olimpia MX)
+- ✅ **Integración con Chat**: Monitoreo automático de `chat_messages` con Supabase Realtime
+- ✅ **Fallback Inteligente**: Análisis con patrones si OpenAI no está disponible
+- ✅ **Cumplimiento Legal**: Sistema diseñado para cumplir con Ley Olimpia MX (protección contra acoso digital)
+
+**Archivos Creados:**
+- `src/services/ai/ConsentVerificationService.ts` (577 líneas)
+
+**Migraciones SQL:**
+- `20251106_01_consent_verification.sql` - Tabla `consent_verifications` con scoring y estado
+
+#### 🖼️ NFT-Verified Galleries con GTK Staking ✅ (Feature 2 - COMPLETADA)
+- ✅ **NFTGalleryService.ts** - Servicio completo de gestión de galerías NFT
+- ✅ **GTK Staking Requerido**: Requiere 100 GTK en staking para mint NFT (tabla `tokens_gtk`)
+- ✅ **Mint ERC-721 Stub**: Integración con Polygon stub para mint de NFTs
+- ✅ **Galerías Privadas NFT**: Solo usuarios con NFT pueden ver galerías privadas verificadas
+- ✅ **UI Completa**: Botón "Mint NFT" en perfil + badge verificado en imágenes
+- ✅ **Integración con Gallery Permissions**: Sistema de permisos integrado con `gallery_permissions`
+- ✅ **Componentes Actualizados**: TokenBalance, TokenDashboard, StakingModal, ImageGallery, ImageUpload
+
+**Archivos Creados:**
+- `src/services/nft/NFTGalleryService.ts` (456 líneas)
+- `src/components/profile/NFTGalleryManager.tsx` (234 líneas)
+
+**Migraciones SQL:**
+- `20251106_02_nft_staking.sql` - Tablas `nft_galleries`, `nft_tokens`, `nft_ownership`, `nft_staking_requirements`
+
+#### 🧠 Predictive Matching con Social Graphs ✅ (Feature 3 - COMPLETADA)
+- ✅ **GraphMatchingService.ts** - Sistema de matching predictivo usando Neo4j + IA Emocional
+- ✅ **Neo4j Integration**: Usa grafo social `(user)-[:LIKES|DISLIKES|VISITED]->(profile)`
+- ✅ **Friends-of-Friends Algorithm**: Algoritmo "friends-of-friends" con peso emocional
+- ✅ **IA Emocional**: GPT-4 analiza chats para determinar química emocional
+- ✅ **Score 400k Params**: Modelo ML con 400k parámetros para compatibilidad + química + valores
+- ✅ **Reemplaza Matching Actual**: Integrado con SmartMatchingService en Discover
+- ✅ **Enriquecimiento Social**: Recomendaciones basadas en conexiones sociales reales
+
+**Archivos Creados:**
+- `src/services/matching/GraphMatchingService.ts` (523 líneas)
+
+**Migraciones SQL:**
+- `20251106_03_graph_matching.sql` - Tablas `graph_matches`, `social_connections`, `emotional_scores`
+
+#### 🌱 Sustainable Virtual Events con CMPX Rewards ✅ (Feature 4 - COMPLETADA)
+- ✅ **VirtualEventsService.ts** - Servicio completo de eventos virtuales sostenibles
+- ✅ **Extiende couple_events**: Nuevos campos para tracking de sostenibilidad
+- ✅ **Tracking CO2 Ahorrado**: Cálculo automático de CO2 ahorrado por evento virtual
+- ✅ **CMPX Rewards**: 50 CMPX reward por participar en evento virtual
+- ✅ **VIP Access**: Acceso VIP solo con GTK o Premium
+- ✅ **Integración con TokenService**: Recompensas automáticas en CMPX
+- ✅ **Integración con SustainabilityService**: Tracking de impacto ambiental
+
+**Archivos Creados:**
+- `src/services/events/VirtualEventsService.ts` (301 líneas)
+
+**Migraciones SQL:**
+- `20251106_04_virtual_events.sql` - Campos `co2_saved`, `cmpx_reward`, `is_vip`, `event_type` en `couple_events`
+
+#### 🔧 Correcciones de Servicios (06 Nov 2025)
+- ✅ **ContentModerationService.ts**: Corregido tipo `Json` para `metadata` en `moderation_logs`
+- ✅ **VirtualEventsService.ts**: Corregido manejo de `null` en `couple_id`, `created_at`, `updated_at`
+- ✅ **AILayerService.ts**: Sin errores, tipos correctos
+- ✅ **ConsentVerificationService.ts**: Sin errores, funcionando correctamente
 
 ### 🔧 CORRECCIONES Y MEJORAS v3.5.0 (06 Nov 2025)
 
