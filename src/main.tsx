@@ -1,7 +1,10 @@
 import { createRoot } from 'react-dom/client'
 import * as React from 'react'
 const { StrictMode } = React
+import EnvDebug from './EnvDebug';
 
+// Dentro del render
+<EnvDebug />
 // CRÍTICO: Asegurar React disponible globalmente INMEDIATAMENTE, ANTES DE CUALQUIER OTRA COSA
 // Esto debe estar ANTES de cualquier otro import o código que pueda cargar chunks
 if (typeof window !== 'undefined') {

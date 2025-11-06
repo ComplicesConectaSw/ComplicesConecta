@@ -1,7 +1,7 @@
 # Documentación de Auditoría Consolidada - ComplicesConecta v3.5.0
 
 **Fecha:** 2025-11-06  
-**Versión:** 3.5.0  
+**Versión:** 3.5.2  
 **Estado:** ✅ Consolidado y Actualizado
 
 ---
