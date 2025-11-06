@@ -82,6 +82,7 @@ export const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
 
   useEffect(() => {
     if (isOpen) {
+
       // CRÍTICO: Establecer isVisible inmediatamente cuando isOpen es true
       // Esto evita que el modal se quede en estado invisible y bloquee la UI
       setIsVisible(true);
