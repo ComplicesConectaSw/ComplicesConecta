@@ -10,6 +10,9 @@
  * - Notificaciones discretas
  */
 
+import { logger } from '@/lib/logger';
+import type { GtagParameters, MessagePayload, NotificationData } from '@/types/google.types';
+
 // Configuración de servicios de Google
 interface GoogleServicesConfig {
   analytics?: boolean;
@@ -19,8 +22,13 @@ interface GoogleServicesConfig {
 
 // Estado de inicialización
 let isInitialized = false;
-let analytics: any = null;
-let messaging: any = null;
+let analytics: {
+  logEvent: (eventName: string, parameters?: GtagParameters) => void;
+} | null = null;
+let messaging: {
+  getToken: () => Promise<string>;
+  onMessage: (callback: (payload: MessagePayload) => void) => void;
+} | null = null;
 
 // Configuración por defecto (desarrollo)
 const defaultConfig: GoogleServicesConfig = {
@@ -34,12 +42,12 @@ const defaultConfig: GoogleServicesConfig = {
  */
 export const initializeGoogleServices = async (config: GoogleServicesConfig = defaultConfig): Promise<boolean> => {
   if (isInitialized) {
-    console.log('✅ Google Services ya inicializados');
+    logger.info('Google Services ya inicializados');
     return true;
   }
 
   try {
-    console.log('🚀 Inicializando Google Services (Supabase-based)...');
+    logger.info('Inicializando Google Services (Supabase-based)...');
 
     // Inicializar Analytics si está habilitado
     if (config.analytics) {
@@ -52,11 +60,11 @@ export const initializeGoogleServices = async (config: GoogleServicesConfig = de
     }
 
     isInitialized = true;
-    console.log('✅ Google Services inicializados exitosamente');
+    logger.info('Google Services inicializados exitosamente');
     return true;
 
   } catch (error) {
-    console.error('❌ Error inicializando Google Services:', error);
+    logger.error('Error inicializando Google Services', { error });
     return false;
   }
 };
@@ -67,18 +75,22 @@ export const initializeGoogleServices = async (config: GoogleServicesConfig = de
 const initializeAnalytics = async (): Promise<void> => {
   try {
     // Verificar si Google Analytics está disponible globalmente
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      analytics = (window as any).gtag;
-      console.log('✅ Google Analytics inicializado');
+    if (typeof window !== 'undefined' && window.gtag) {
+      analytics = {
+        logEvent: (eventName: string, parameters?: GtagParameters) => {
+          window.gtag?.('event', eventName, parameters);
+        }
+      };
+      logger.info('Google Analytics inicializado');
     } else {
       throw new Error('Google Analytics not available');
     }
   } catch {
-    console.warn('⚠️ Google Analytics no disponible, usando modo demo');
+    logger.warn('Google Analytics no disponible, usando modo demo');
     // Simular Analytics para desarrollo
     analytics = {
-      logEvent: (eventName: string, parameters?: any) => {
-        console.log(`📊 Analytics Event: ${eventName}`, parameters);
+      logEvent: (eventName: string, parameters?: GtagParameters) => {
+        logger.debug(`Analytics Event: ${eventName}`, { parameters });
       }
     };
   }
@@ -96,23 +108,25 @@ const initializeMessaging = async (): Promise<void> => {
           // Simular token para desarrollo
           return 'demo-push-token-123';
         },
-        onMessage: (_callback: any) => {
-          console.log('📱 Push listener registrado');
+        onMessage: (_callback: (payload: MessagePayload) => void) => {
+          logger.debug('Push listener registrado');
+          // En desarrollo, no hay mensajes reales
         }
       };
       
-      console.log('✅ Web Push Messaging inicializado');
+      logger.info('Web Push Messaging inicializado');
     } else {
       throw new Error('Push API not supported');
     }
   } catch {
-    console.warn('⚠️ Push Messaging no disponible, usando modo demo');
+    logger.warn('Push Messaging no disponible, usando modo demo');
     // Simular Messaging para desarrollo
     messaging = {
       getToken: async () => 'demo-token-123',
-      onMessage: (_callback: any) => {
-        console.log('📱 Messaging listener registrado');
-      }
+        onMessage: (_callback: (payload: MessagePayload) => void) => {
+          logger.debug('Messaging listener registrado');
+          // En desarrollo, no hay mensajes reales
+        }
     };
   }
 };
@@ -125,7 +139,7 @@ const _requestNotificationPermission = async (): Promise<string | null> => {
     const permission = await Notification.requestPermission();
     
     if (permission === 'granted') {
-      console.log('✅ Permisos de notificación concedidos');
+      logger.info('Permisos de notificación concedidos');
       
       // Obtener token de push
       if (messaging) {
@@ -133,10 +147,10 @@ const _requestNotificationPermission = async (): Promise<string | null> => {
         return token;
       }
     } else {
-      console.warn('⚠️ Permisos de notificación denegados');
+      logger.warn('Permisos de notificación denegados');
     }
   } catch (error) {
-    console.error('❌ Error solicitando permisos:', error);
+    logger.error('Error solicitando permisos', { error });
   }
   
   return null;
@@ -148,21 +162,21 @@ const _requestNotificationPermission = async (): Promise<string | null> => {
 export const getPushToken = async (): Promise<string | null> => {
   try {
     if (!messaging) {
-      console.warn('⚠️ Messaging no inicializado');
+      logger.warn('Messaging no inicializado');
       return null;
     }
 
     const token = await messaging.getToken();
 
     if (token) {
-      console.log('✅ Token Push obtenido:', token.substring(0, 20) + '...');
+      logger.info(`Token Push obtenido: ${token.substring(0, 20)}...`);
       return token;
     } else {
-      console.warn('⚠️ No se pudo obtener token Push');
+      logger.warn('No se pudo obtener token Push');
       return null;
     }
   } catch (error) {
-    console.error('❌ Error obteniendo token Push:', error);
+    logger.error('Error obteniendo token Push', { error });
     return null;
   }
 };
@@ -170,23 +184,23 @@ export const getPushToken = async (): Promise<string | null> => {
 /**
  * Registrar evento de Analytics
  */
-export const logAnalyticsEvent = (eventName: string, parameters?: any): void => {
+export const logAnalyticsEvent = (eventName: string, parameters?: GtagParameters): void => {
   try {
     if (analytics && analytics.logEvent) {
       analytics.logEvent(eventName, parameters);
     } else {
       // Fallback para desarrollo
-      console.log(`📊 Analytics Event: ${eventName}`, parameters);
+      logger.debug(`Analytics Event: ${eventName}`, { parameters });
     }
   } catch (error) {
-    console.error('❌ Error registrando evento:', error);
+    logger.error('Error registrando evento', { error });
   }
 };
 
 /**
  * Registrar evento específico del lifestyle swinger
  */
-export const logSwingerEvent = (eventType: string, parameters?: any): void => {
+export const logSwingerEvent = (eventType: string, parameters?: GtagParameters): void => {
   try {
     // Agregar contexto específico para eventos swinger
     const swingerContext = {
@@ -199,7 +213,7 @@ export const logSwingerEvent = (eventType: string, parameters?: any): void => {
 
     logAnalyticsEvent(eventType, swingerContext);
   } catch (error) {
-    console.error('❌ Error registrando evento swinger:', error);
+    logger.error('Error registrando evento swinger', { error });
   }
 };
 
@@ -278,13 +292,13 @@ export const AnalyticsEvents = {
 export const setupMessageListener = (): void => {
   try {
     if (!messaging) {
-      console.warn('⚠️ Messaging no inicializado');
+      logger.warn('Messaging no inicializado');
       return;
     }
 
     // Usar Web Push API en lugar de Firebase
-    messaging.onMessage((payload: any) => {
-      console.log('📱 Mensaje recibido:', payload);
+    messaging.onMessage((payload: MessagePayload) => {
+      logger.debug('Mensaje recibido', { payload });
       
       // Mostrar notificación personalizada
       if (payload.notification) {
@@ -292,16 +306,16 @@ export const setupMessageListener = (): void => {
       }
     });
     
-    console.log('✅ Message listener configurado');
+    logger.info('Message listener configurado');
   } catch (error) {
-    console.error('❌ Error configurando listener:', error);
+    logger.error('Error configurando listener', { error });
   }
 };
 
 /**
  * Mostrar notificación personalizada - Optimizada para discreción
  */
-const showCustomNotification = (notification: any): void => {
+const showCustomNotification = (notification: NotificationData): void => {
   try {
     if ('Notification' in window && Notification.permission === 'granted') {
       // Configuración discreta para notificaciones
@@ -318,10 +332,12 @@ const showCustomNotification = (notification: any): void => {
         }
       };
 
-      new Notification(notification.title, notificationOptions);
+      if (notification.title) {
+        new Notification(notification.title, notificationOptions);
+      }
     }
   } catch (error) {
-    console.error('❌ Error mostrando notificación:', error);
+    logger.error('Error mostrando notificación', { error });
   }
 };
 
@@ -350,7 +366,7 @@ export const cleanupGoogleServices = (): void => {
   isInitialized = false;
   messaging = null;
   analytics = null;
-  console.log('🧹 Google Services limpiados');
+  logger.debug('Google Services limpiados');
 };
 
 export default {

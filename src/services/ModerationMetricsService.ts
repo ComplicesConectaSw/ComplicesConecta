@@ -10,10 +10,13 @@
 
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
+import type { Database } from '@/types/supabase';
 
 // =====================================================
 // INTERFACES
 // =====================================================
+
+type Report = Database['public']['Tables']['reports']['Row'];
 
 export interface ModerationMetrics {
   reports: {
@@ -122,10 +125,10 @@ class ModerationMetricsService {
             critical: reports.filter(r => r.severity === 'critical').length,
           },
           byType: {
-            profile: reports.filter(r => (r.content_type || r.report_type) === 'profile').length,
-            post: reports.filter(r => (r.content_type || r.report_type) === 'post' || (r.content_type || r.report_type) === 'story').length,
-            message: reports.filter(r => (r.content_type || r.report_type) === 'message').length,
-            other: reports.filter(r => !['profile', 'post', 'story', 'message'].includes((r.content_type || r.report_type) || '')).length,
+            profile: reports.filter(r => r.content_type === 'profile').length,
+            post: reports.filter(r => r.content_type === 'post' || r.content_type === 'story').length,
+            message: reports.filter(r => r.content_type === 'message').length,
+            other: reports.filter(r => !['profile', 'post', 'story', 'message'].includes(r.content_type || '')).length,
           },
           avgResolutionTime: this.calculateAvgResolutionTime(reports),
           last24Hours: this.getReportsInTimeRange(reports, 24),
@@ -133,7 +136,7 @@ class ModerationMetricsService {
         },
         moderators: {
           activeCount: await this.getActiveModeratorsCount(),
-          totalActions: reports.filter(r => r.resolved_by).length,
+          totalActions: reports.filter(r => r.reviewed_by).length,
           avgResponseTime: this.calculateAvgResponseTime(reports),
         }
       };
@@ -234,23 +237,25 @@ class ModerationMetricsService {
   // PRIVATE HELPERS
   // =====================================================
 
-  private calculateAvgResolutionTime(reports: any[]): number {
-    const resolved = reports.filter(r => r.resolved_at && r.created_at);
+  private calculateAvgResolutionTime(reports: Report[]): number {
+    // Usar reviewed_at en lugar de resolved_at (la tabla reports usa reviewed_at)
+    const resolved = reports.filter(r => r.reviewed_at && r.created_at);
     
     if (resolved.length === 0) return 0;
 
     const totalTime = resolved.reduce((sum, report) => {
       const created = new Date(report.created_at).getTime();
-      const resolvedAt = new Date(report.resolved_at).getTime();
-      return sum + (resolvedAt - created);
+      const reviewedAt = new Date(report.reviewed_at || report.created_at).getTime();
+      return sum + (reviewedAt - created);
     }, 0);
 
     // Retornar en horas
     return totalTime / resolved.length / (1000 * 60 * 60);
   }
 
-  private calculateAvgResponseTime(reports: any[]): number {
-    const actioned = reports.filter(r => r.resolved_by && r.created_at && r.updated_at);
+  private calculateAvgResponseTime(reports: Report[]): number {
+    // Usar reviewed_by en lugar de resolved_by (la tabla reports usa reviewed_by)
+    const actioned = reports.filter(r => r.reviewed_by && r.created_at && r.updated_at);
     
     if (actioned.length === 0) return 0;
 
@@ -264,7 +269,7 @@ class ModerationMetricsService {
     return totalTime / actioned.length / (1000 * 60 * 60);
   }
 
-  private getReportsInTimeRange(reports: any[], hours: number): number {
+  private getReportsInTimeRange(reports: Report[], hours: number): number {
     const cutoff = Date.now() - (hours * 60 * 60 * 1000);
     return reports.filter(r => new Date(r.created_at).getTime() > cutoff).length;
   }
@@ -278,14 +283,14 @@ class ModerationMetricsService {
 
       const { data, error } = await supabase
         .from('reports')
-        .select('resolved_by')
-        .not('resolved_by', 'is', null)
-        .gte('resolved_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+        .select('reviewed_by')
+        .not('reviewed_by', 'is', null)
+        .gte('reviewed_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
 
       if (error || !data) return 0;
 
       // Contar moderadores únicos
-      const uniqueModerators = new Set(data.map(r => r.resolved_by));
+      const uniqueModerators = new Set(data.map(r => r.reviewed_by).filter(Boolean));
       return uniqueModerators.size;
     } catch {
       return 0;

@@ -24,6 +24,13 @@ import { logger } from '@/lib/logger';
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
 
+/**
+ * Perfil con intereses relacionados
+ */
+interface ProfileWithInterests extends Profile {
+  interests?: Array<{ id: string; [key: string]: unknown }>;
+}
+
 // Types
 export interface CompatibilityFeatures {
   likesGiven: number;
@@ -193,7 +200,7 @@ export class AILayerService {
       throw new Error('Profiles not found');
     }
 
-    const [user1, user2] = profiles as any[];
+    const [user1, user2] = profiles as ProfileWithInterests[];
 
     // Feature 1: Likes intercambiados
     const { count: likesGiven } = await supabase
@@ -223,8 +230,12 @@ export class AILayerService {
     );
 
     // Feature 4: Shared interests
-    const user1Interests = new Set((user1 as any).interests?.map((i: any) => i.id) || []);
-    const user2Interests = new Set((user2 as any).interests?.map((i: any) => i.id) || []);
+    const user1Interests = new Set(
+      user1.interests?.map((i) => i.id).filter((id): id is string => typeof id === 'string') || []
+    );
+    const user2Interests = new Set(
+      user2.interests?.map((i) => i.id).filter((id): id is string => typeof id === 'string') || []
+    );
     const sharedInterestsCount = [...user1Interests].filter((i) =>
       user2Interests.has(i)
     ).length;
@@ -238,17 +249,103 @@ export class AILayerService {
     // Feature 7: Swinger traits score (del scoring actual)
     const swingerTraitsScore = this.calculateSwingerTraitsScore(user1, user2);
 
+    // Feature 8: Response time (calcular desde mensajes)
+    const responseTimeMs = await this.calculateResponseTime(userId1, userId2);
+
     return {
       likesGiven: likesGiven || 0,
       likesReceived: likesReceived || 0,
       commentsCount: commentsCount || 0,
       proximityKm,
-      responseTimeMs: 0, // TODO: calcular desde mensajes
+      responseTimeMs,
       sharedInterestsCount,
       ageGap,
       bigFiveCompatibility,
       swingerTraitsScore,
     };
+  }
+
+  /**
+   * Calcula el tiempo promedio de respuesta entre dos usuarios basándose en mensajes
+   * @private
+   */
+  private async calculateResponseTime(userId1: string, userId2: string): Promise<number> {
+    if (!supabase) {
+      return 0;
+    }
+
+    try {
+      // Obtener mensajes entre los dos usuarios
+      // Buscar en chat_messages donde sender_id es uno de los usuarios
+      // y room_id contiene mensajes del otro usuario
+      const { data: messages, error } = await supabase
+        .from('chat_messages')
+        .select('id, sender_id, created_at, room_id')
+        .in('sender_id', [userId1, userId2])
+        .order('created_at', { ascending: true })
+        .limit(100); // Limitar a los últimos 100 mensajes para eficiencia
+
+      if (error || !messages || messages.length < 2) {
+        return 0; // No hay suficientes mensajes para calcular
+      }
+
+      // Filtrar mensajes que pertenecen a conversaciones entre estos dos usuarios
+      // Obtener room_ids donde ambos usuarios han enviado mensajes
+      const roomIds = new Set(messages.map(m => m.room_id).filter(Boolean));
+      
+      if (roomIds.size === 0) {
+        return 0; // No hay salas compartidas
+      }
+
+      // Verificar que ambos usuarios han enviado mensajes en las mismas salas
+      const messagesInSharedRooms = messages.filter(m => 
+        m.room_id && roomIds.has(m.room_id)
+      );
+
+      if (messagesInSharedRooms.length < 2) {
+        return 0; // No hay suficientes mensajes en salas compartidas
+      }
+
+      // Calcular tiempos de respuesta
+      const responseTimes: number[] = [];
+      
+      for (let i = 0; i < messagesInSharedRooms.length - 1; i++) {
+        const currentMsg = messagesInSharedRooms[i];
+        const nextMsg = messagesInSharedRooms[i + 1];
+
+        // Solo calcular si el siguiente mensaje es del otro usuario
+        if (currentMsg.sender_id !== nextMsg.sender_id && 
+            currentMsg.room_id === nextMsg.room_id &&
+            currentMsg.created_at && 
+            nextMsg.created_at) {
+          
+          const currentTime = new Date(currentMsg.created_at).getTime();
+          const nextTime = new Date(nextMsg.created_at).getTime();
+          const responseTime = nextTime - currentTime;
+
+          // Solo considerar tiempos de respuesta razonables (menos de 7 días)
+          if (responseTime > 0 && responseTime < 7 * 24 * 60 * 60 * 1000) {
+            responseTimes.push(responseTime);
+          }
+        }
+      }
+
+      if (responseTimes.length === 0) {
+        return 0; // No se pudieron calcular tiempos de respuesta
+      }
+
+      // Calcular promedio en milisegundos
+      const avgResponseTime = responseTimes.reduce((sum, time) => sum + time, 0) / responseTimes.length;
+      
+      return Math.round(avgResponseTime);
+    } catch (error) {
+      logger.warn('Error calculando tiempo de respuesta', { 
+        error: error instanceof Error ? error.message : String(error),
+        userId1: userId1.substring(0, 8) + '***',
+        userId2: userId2.substring(0, 8) + '***'
+      });
+      return 0;
+    }
   }
 
   /**

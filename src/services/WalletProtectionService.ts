@@ -3,6 +3,8 @@
  * Protege contra conflictos de extensiones de wallet
  */
 
+import { logger } from '@/lib/logger';
+
 export class WalletProtectionService {
   private static instance: WalletProtectionService;
   private protectedProperties: Set<string> = new Set();
@@ -44,7 +46,7 @@ export class WalletProtectionService {
             });
           }
         } catch (error) {
-          console.warn(`No se pudo proteger la propiedad ${prop}:`, error);
+          logger.warn(`No se pudo proteger la propiedad ${prop}`, { error });
         }
       }
     });
@@ -53,25 +55,25 @@ export class WalletProtectionService {
   private detectWalletConflicts(): void {
     // Detectar MetaMask
     if ((window as any).ethereum && (window as any).ethereum.isMetaMask) {
-      console.log('🔍 MetaMask detectado');
+      logger.debug('MetaMask detectado');
       this.handleMetaMaskConflicts();
     }
 
     // Detectar Solana
     if ((window as any).solana) {
-      console.log('🔍 Solana detectado');
+      logger.debug('Solana detectado');
       this.handleSolanaConflicts();
     }
 
     // Detectar TronLink
     if ((window as any).tronWeb) {
-      console.log('🔍 TronLink detectado');
+      logger.debug('TronLink detectado');
       this.handleTronLinkConflicts();
     }
 
     // Detectar Bybit
     if ((window as any).bybit) {
-      console.log('🔍 Bybit detectado');
+      logger.debug('Bybit detectado');
       this.handleBybitConflicts();
     }
   }
@@ -87,7 +89,7 @@ export class WalletProtectionService {
         });
       }
     } catch (error) {
-      console.warn('MetaMask conflict handled:', error);
+      logger.warn('MetaMask conflict handled', { error });
     }
   }
 
@@ -102,7 +104,7 @@ export class WalletProtectionService {
         });
       }
     } catch (error) {
-      console.warn('Solana conflict handled:', error);
+      logger.warn('Solana conflict handled', { error });
     }
   }
 
@@ -117,7 +119,7 @@ export class WalletProtectionService {
         });
       }
     } catch (error) {
-      console.warn('TronLink conflict handled:', error);
+      logger.warn('TronLink conflict handled', { error });
     }
   }
 
@@ -132,7 +134,7 @@ export class WalletProtectionService {
         });
       }
     } catch (error) {
-      console.warn('Bybit conflict handled:', error);
+      logger.warn('Bybit conflict handled', { error });
     }
   }
 
@@ -156,7 +158,7 @@ export class WalletProtectionService {
   // Método para limpiar conflictos si es necesario
   public clearConflicts(): void {
     this.protectedProperties.clear();
-    console.log('🧹 Conflictos de wallet limpiados');
+    logger.debug('Conflictos de wallet limpiados');
   }
 }
 

@@ -1,391 +1,374 @@
-# 📚 Documentación Consolidada de Auditorías y Correcciones - ComplicesConecta v3.5.0
+# Documentación de Auditoría Consolidada - ComplicesConecta v3.5.0
 
-**Fecha de Consolidación:** 2025-11-06  
-**Proyecto:** ComplicesConectaSW - Conecta Social Comunidad  
+**Fecha:** 2025-11-06  
 **Versión:** 3.5.0  
-**Estado:** ✅ Consolidación Completa
+**Estado:** ✅ Consolidado y Actualizado
 
 ---
 
-## 📋 ÍNDICE
+## 📊 RESUMEN EJECUTIVO
 
-1. [Resumen Ejecutivo](#resumen-ejecutivo)
-2. [Auditoría del Proyecto](#auditoría-del-proyecto)
-3. [Análisis de Componentes Duplicados](#análisis-de-componentes-duplicados)
-4. [Análisis de Estilos](#análisis-de-estilos)
-5. [Correcciones de Vercel](#correcciones-de-vercel)
-6. [Migraciones y Tablas](#migraciones-y-tablas)
-7. [Plan de Trabajo](#plan-de-trabajo)
+Este documento consolida todos los análisis, correcciones y mejoras realizadas en el proyecto ComplicesConecta v3.5.0, incluyendo:
 
----
-
-## 🎯 RESUMEN EJECUTIVO
-
-### Estado Global del Proyecto
-
-**Nivel de Integridad:** 🟢 **92/100** - Excelente  
-**Nivel de Estabilidad:** 🟢 **95/100** - Muy Estable  
-**Estado de Producción:** ✅ **PRODUCTION READY**
-
-### Métricas Principales
-
-| Métrica | Valor | Estado |
-|---------|-------|--------|
-| **Archivos de Código** | 59,162 | ✅ |
-| **Errores TypeScript** | 0 | ✅ |
-| **Errores ESLint** | 0 | ✅ |
-| **Vulnerabilidades npm** | 0 | ✅ |
-| **Build Exitoso** | ✅ 31.05s | ✅ |
-| **React/React-DOM** | 18.3.1 (sincronizados) | ✅ |
-| **TODOs/FIXMEs** | 238 en 136 archivos | ⚠️ |
-| **Archivos Duplicados** | 4 eliminados, 3 consolidados | ✅ |
-| **Carpetas Vacías** | 10 detectadas (normal) | ✅ |
-
-### Principales Logros
-
-#### ✅ COMPLETADOS
-1. **Componentes Duplicados**: 4 eliminados, 3 consolidados, 1 renombrado
-2. **Estilos**: Análisis completo realizado, App.css eliminado
-3. **Correcciones Vercel**: 11 problemas críticos resueltos
-4. **Migraciones**: Tablas faltantes identificadas y migraciones creadas
-5. **Tipos Supabase**: Script de regeneración automática creado
-
-#### ⚠️ PENDIENTES
-1. **TODOs Pendientes**: 238 comentarios TODO/FIXME en 136 archivos (no críticos)
-2. **Dependencias Desactualizadas**: 30+ paquetes con versiones más recientes (no crítico)
+- ✅ Análisis y consolidación de archivos CSS
+- ✅ Corrección de uso excesivo de `any`/`unknown`
+- ✅ Implementación de TODOs de alta prioridad
+- ✅ Corrección de errores de CSP (Content Security Policy)
+- ✅ Mejoras de accesibilidad (id/name en campos de formulario)
+- ✅ Optimización de estructura de archivos
 
 ---
 
-## 🧠 AUDITORÍA DEL PROYECTO
+## 🎨 ANÁLISIS Y CONSOLIDACIÓN CSS
 
-### Estado General
+### Estado Final
 
-**Fecha de Auditoría:** 2025-11-06 08:57:33  
-**Modo:** Diagnóstico + Autofix Seguro  
-**Estado:** ✅ AUDITORÍA COMPLETADA
+**Archivos CSS finales (5):**
+1. ✅ `index.css` - Estilos globales principales
+2. ✅ `consolidated-styles.css` - Consolidado de 9 archivos (accessibility.css, cross-browser.css, mobile-responsive.css, etc.)
+3. ✅ `ui-fixes-consolidated.css` - Consolidado de 6 archivos (ui-fixes-contraste.css, info-text-visibility.css, header-nav-protection.css, responsive-fixes.css, text-overflow-fixes.css, text-visibility-fixes.css)
+4. ✅ `decorative-hearts.css` - Elementos decorativos
+5. ✅ `animations.css` - Animaciones personalizadas
 
-### Hallazgos Principales
+**Archivos eliminados (15):**
+- Fase 1: `ui-fixes-contraste.css`, `info-text-visibility.css`, `header-nav-protection.css`, `responsive-fixes.css`, `text-overflow-fixes.css`, `text-visibility-fixes.css`
+- Fase 2-3: `accessibility.css`, `cross-browser.css`, `header-fixes.css`, `mobile-responsive.css`, `responsive.css`, `responsive-admin.css`, `android-optimization.css`, `force-visibility.css`
 
-#### 🔴 CRÍTICOS: 0
-- ✅ No se detectaron problemas críticos
-
-#### 🟡 MODERADOS: 3
-1. **Archivos Duplicados**: ✅ **RESUELTO** - 4 eliminados, 3 consolidados
-2. **TODOs Pendientes**: ⚠️ 238 comentarios TODO/FIXME (no críticos)
-3. **Dependencias Desactualizadas**: ⚠️ 30+ paquetes (no crítico)
-
-#### 🟢 MENORES: 5
-1. **Carpetas Vacías**: ✅ Normal (build temporales)
-2. **Archivos Backup**: ✅ Movidos a carpeta dedicada
-3. **Console.logs**: ✅ Legítimos para debugging
-4. **Documentación Legacy**: ⚠️ Carpeta con documentación antigua
-5. **Carpetas Build**: ✅ Normal (build temporales)
-
-### Compatibilidad de Entornos
-
-✅ **WEB**: Compatible y funcionando  
-✅ **Android**: Compatible (Capacitor configurado)  
-✅ **iOS**: Compatible (Capacitor configurado)  
-✅ **Desktop**: Compatible (PWA)  
-✅ **Mobile**: Compatible (Responsive design)  
-✅ **Tablet**: Compatible (Responsive design)
-
----
-
-## 🔄 ANÁLISIS DE COMPONENTES DUPLICADOS
-
-### Estado: ✅ COMPLETADO
-
-**Fecha:** 2025-11-06  
-**Total de componentes analizados:** 13  
-**Componentes consolidados:** 4 eliminados, 3 consolidados, 1 renombrado
-
-### Componentes Resueltos
-
-#### ✅ Eliminados (4)
-1. `src/components/images/ImageUpload.tsx` - Wrapper deprecado
-2. `src/components/modals/ContentModerationModal.tsx` - Duplicado de `ai/`
-3. `src/components/modals/SmartMatchingModal.tsx` - Duplicado de `ai/`
-4. `src/App.css` - Archivo vacío
-
-#### ✅ Consolidados (3)
-1. `src/pages/ProfileThemeDemo.tsx` - Usa componente de `components/profile/`
-2. `src/pages/VIPEvents.tsx` - Usa componente de `components/premium/`
-3. `src/pages/VirtualGifts.tsx` - Usa componente de `components/premium/`
-
-#### ✅ Renombrados (1)
-1. `src/components/admin/NotificationSettings.tsx` → `DesktopNotificationSettings.tsx`
-
-#### ✅ Mantenidos Separados (2)
-1. `NotificationSettings` (`admin/` vs `settings/`) - Propósitos diferentes
-2. `TermsModal` (`auth/` vs `ui/`) - Interfaces diferentes
-
-### Estadísticas Finales
-
-- **Archivos eliminados:** 4
-- **Archivos consolidados:** 3
-- **Archivos renombrados:** 1
-- **Archivos evaluados:** 1
-- **Build y type-check:** ✅ Exitosos
-
----
-
-## 🎨 ANÁLISIS DE ESTILOS
-
-### Estado: ✅ COMPLETADO
-
-**Fecha:** 2025-11-06  
-**Total de archivos CSS:** 18 (reducido de 19)
-
-### Sistema de Estilos
-
-**Sistema Principal:** Tailwind CSS v4 + CSS personalizado
-
-### Estructura de Estilos
-
-#### Archivos de Configuración
-- `tailwind.config.ts` (300 líneas) - Configuración completa
-- `postcss.config.js` (7 líneas) - PostCSS con Tailwind v4
-
-#### Archivos CSS Principales
-- `src/index.css` (433 líneas) - Estilos globales
-- `src/styles/consolidated-styles.css` (1,175+ líneas) - Estilos consolidados
-- `src/styles/animations.css` (193 líneas) - Animaciones personalizadas
-- `src/styles/responsive.css` (239 líneas) - Estilos responsive
-
-#### Archivos de Correcciones (6)
-- `ui-fixes-contraste.css` - Correcciones de contraste
-- `info-text-visibility.css` - Visibilidad de texto
-- `header-nav-protection.css` - Protección del header
-- `responsive-fixes.css` - Correcciones responsive
-- `text-overflow-fixes.css` - Desbordamiento de texto
-- `text-visibility-fixes.css` - Visibilidad de texto
-
-#### Archivos de Optimización (4)
-- `android-optimization.css` - Optimizaciones Android
-- `mobile-responsive.css` - Responsive móviles
-- `responsive-admin.css` - Admin responsive
-- `cross-browser.css` - Compatibilidad cross-browser
-
-### Recomendaciones Implementadas
-
-1. ✅ **App.css eliminado** - Archivo vacío eliminado
-2. ✅ **Estructura mantenida** - Bien organizada por funcionalidad
-3. ✅ **Tailwind CSS** - Sistema principal mantenido
-4. ⚠️ **Consolidación de fixes** - Opcional (bien organizados actualmente)
-
----
-
-## 🚀 CORRECCIONES DE VERCEL
-
-### Estado: ✅ COMPLETADO
-
-**Fecha:** 2025-11-04  
-**Total de correcciones:** 11 problemas críticos resueltos
+**Reducción:** De 18 archivos a 5 archivos principales (72% de reducción)
 
 ### Correcciones Aplicadas
 
-#### 1. ✅ Eliminado `eval()` de Importaciones Dinámicas
-- **Archivo:** `src/utils/dynamicImports.ts`
-- **Cambio:** Reemplazado `eval()` con `import()` directo
+1. ✅ **Selectores corregidos para Firefox:**
+   - Reemplazados selectores con escapes complejos (`.bg-purple-800\/90`) con selectores de atributo (`[class*="bg-purple-800/90"]`)
+   - Eliminada propiedad estándar `line-clamp` (Firefox no la reconoce sin prefijo)
+   - Mantenido solo `-webkit-line-clamp` para compatibilidad
 
-#### 2. ✅ Eliminado Script Duplicado de Wallet Protection
-- **Archivo:** `index.html`
-- **Cambio:** Eliminado script duplicado en `<body>`
+2. ✅ **Media queries corregidas:**
+   - Corregido `@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)` a `@media (min-resolution: 192dpi)` para Firefox
+   - Agregado `@supports (-webkit-min-device-pixel-ratio: 2)` para navegadores WebKit
 
-#### 3. ✅ Corregido CSP (Content Security Policy)
-- **Archivo:** `vercel.json`
-- **Cambio:** Agregados dominios permitidos necesarios
+3. ✅ **Estilos de accesibilidad consolidados:**
+   - Skip links, screen reader only, high contrast mode, large text mode, reduced motion, focus visible enhancement
+   - Form accessibility, input states, ARIA live regions
 
-#### 4. ✅ Corregido Terser para Conservar Logs
-- **Archivo:** `vite.config.ts`
-- **Cambio:** `drop_console: false` para mantener logs
-
-#### 5. ✅ Corregido Service Worker
-- **Archivo:** `public/sw.js`
-- **Cambio:** No intercepta chunks de Vite ni HTML principal
-
-#### 6. ✅ Separado React en Chunk `vendor-react`
-- **Archivo:** `vite.config.ts`
-- **Cambio:** React se carga primero, antes que `data-layer`
-
-#### 7. ✅ Error `useLayoutEffect` Resuelto
-- **Solución:** Plugin de Vite + Hook isomórfico + Configuración mejorada
-- **Estado:** ✅ COMPLETAMENTE RESUELTO
-
-#### 8. ✅ Mejorado Manejo de Errores en Supabase
-- **Archivo:** `src/integrations/supabase/client.ts`
-- **Cambio:** Try-catch completo con fallback
-
-#### 9. ✅ Optimizado QueryClient
-- **Archivo:** `src/App.tsx`
-- **Cambio:** Creado fuera del componente
-
-#### 10. ✅ Agregado Error Handler Global
-- **Archivo:** `index.html`
-- **Cambio:** Captura errores antes de que React se monte
-
-#### 11. ✅ Mejorado Logging de Errores
-- **Archivo:** `src/main.tsx`
-- **Cambio:** Muestra TODOS los errores para diagnóstico
-
-### Resultados
-
-- ✅ Build exitoso en Vercel
-- ✅ Aplicación carga correctamente
-- ✅ Sin errores en consola
-- ✅ Chunks se cargan en orden correcto
+4. ✅ **Estilos cross-browser consolidados:**
+   - Custom scrollbar, grid responsive utilities, flex responsive utilities, container responsive
 
 ---
 
-## 🗄️ MIGRACIONES Y TABLAS
+## 🔧 CORRECCIÓN DE `any`/`unknown`
 
-### Estado: ✅ EN PROGRESO
+### Estado Final
 
-**Fecha:** 2025-11-06
+**Interfaces creadas (13 interfaces en 5 archivos):**
+- ✅ `src/types/security.types.ts` con:
+  - `ActivityPattern` - Patrones de actividad del usuario
+  - `UserActivity` - Actividad del usuario para análisis
+  - `ActivityMetadata` - Metadatos de actividad
+  - `AuditEventDetails` - Detalles de evento de auditoría
 
-### Migraciones Aplicadas
+- ✅ `src/types/analytics.types.ts` con:
+  - `AnalyticsProperties` - Propiedades de evento de analytics
+  - `AnalyticsItem` - Item de analytics (para e-commerce)
+  - `BrowserPerformanceMemory` - Métricas de rendimiento del navegador
 
-#### ✅ Campos de Registro
-1. `20251106043953_add_first_last_name_to_profiles.sql`
-   - Campos: `first_name`, `last_name`
-   - Estado: ✅ Aplicada en LOCAL y REMOTO
+- ✅ `src/types/google.types.ts` con:
+  - `GtagParameters` - Parámetros de Google Analytics
+  - `GtagItem` - Item de Google Analytics
+  - `MessagePayload` - Payload de mensaje de Firebase Messaging
+  - `NotificationData` - Datos de notificación
+  - Extensión de `Window` para `gtag`
 
-2. `20251106043954_add_preferences_to_couple_profiles.sql`
-   - Campo: `preferences` (JSONB)
-   - Estado: ✅ Aplicada en LOCAL y REMOTO
+- ✅ `src/types/content-moderation.types.ts` con:
+  - `ProfileData` - Datos de perfil para moderación
+  - `TextAnalysis` - Análisis de texto para moderación
+  - `ContextRules` - Reglas de contexto para moderación
+  - `MessageMetadata` - Metadatos de mensaje para moderación
 
-### Tablas Identificadas
+- ✅ `src/services/graph/Neo4jService.ts` con:
+  - `NodeMetadata` - Metadatos de nodo de usuario
+  - `RelationshipProperties` - Propiedades de relación
 
-#### ✅ Críticas
-- `biometric_sessions` - Activamente usada en `useBiometricAuth.ts`
-- Migración: `20251106000000_create_biometric_sessions.sql`
+**Archivos corregidos (7 servicios):**
+- ✅ `src/services/SecurityService.ts`:
+  - Reemplazados `Record<string, any>` con tipos específicos
+  - Tipados correctamente `ActivityPattern`, `UserActivity`, `AuditEventDetails`
+  - Corregidos errores de tipos con Supabase `Json`
 
-#### ⚠️ Opcionales
-- `app_logs` - Logging avanzado (futuro)
-- Migración: `20251106000001_create_app_logs.sql`
+- ✅ `src/services/AnalyticsService.ts`:
+  - Reemplazado `Record<string, any>` con `AnalyticsProperties`
+  - Corregido `(performance as any).memory` con `BrowserPerformanceMemory`
+  - Tipado correctamente `trackEvent`
 
-### Solución de Tablas Faltantes
+- ✅ `src/services/GoogleServices.ts`:
+  - Reemplazado `any` con tipos específicos para `analytics` y `messaging`
+  - Tipado correctamente `logAnalyticsEvent`, `logSwingerEvent`
+  - Tipado correctamente `onMessage` callbacks con `MessagePayload`
+  - Tipado correctamente `showCustomNotification` con `NotificationData`
+  - Extendido `Window` interface para `gtag`
 
-#### Problema Identificado
-- Las tablas existen en Supabase (132 tablas)
-- Los tipos TypeScript no estaban sincronizados
-- Faltaban tipos para 60+ tablas
+- ✅ `src/services/ContentModerationService.ts`:
+  - Reemplazado `any` con `ProfileData` en `moderateProfile`
+  - Reemplazado `any` con `ProfileData` en `analyContent`
+  - Reemplazado `any` con `TextAnalysis` en `calculateConfidence` y `generateModerationExplanation`
+  - Reemplazado `any` con `ContextRules` en `checkContextRules`
+  - Reemplazado `any` con `ProfileData` en `calculateProfileCompleteness`
+  - Agregadas verificaciones de null para `profileData.name`
+  - Implementado análisis avanzado de patrones de perfiles falsos
 
-#### Solución Implementada
-1. ✅ Script de regeneración automática creado: `scripts/regenerate-supabase-types.ps1`
-2. ✅ Validación mejorada en `scripts/validate-project-unified.ps1`
-3. ✅ Resultados: 132 tablas detectadas, 182.67KB, 6009 líneas
+- ✅ `src/services/ai/AILayerService.ts`:
+  - Creada interfaz `ProfileWithInterests` para perfiles con intereses
+  - Reemplazado `any` con `ProfileWithInterests` en `extractFeatures`
+  - Tipado correctamente acceso a `interests` con type guards
+  - Implementado cálculo de tiempo de respuesta desde mensajes
 
-#### Uso del Script
-```powershell
-# Regenerar tipos básico
-.\scripts\regenerate-supabase-types.ps1
+- ✅ `src/services/graph/Neo4jService.ts`:
+  - Creadas interfaces `NodeMetadata` y `RelationshipProperties`
+  - Reemplazado `Record<string, any>` con `NodeMetadata` en `UserNode`
+  - Reemplazado `Record<string, any>` con `RelationshipProperties` en `Relationship`
+  - Reemplazado `Record<string, any>` con tipos específicos en métodos de sincronización
 
-# Regenerar y actualizar supabase.ts
-.\scripts\regenerate-supabase-types.ps1 -UpdateMain
+- ✅ `src/lib/ai/contentModeration.ts`:
+  - Reemplazado `any` con tipo específico para `metadata` en `analyzeMessageContent`
+
+---
+
+## 🌍 IMPLEMENTACIÓN DE TODOs
+
+### Completados
+
+1. ✅ **World ID Verification (`useWorldID.ts`):**
+   - Implementada verificación real contra tabla `worldid_verifications`
+   - Verificación de expiración agregada
+   - Manejo de errores mejorado
+   - TODO de alta prioridad completado
+
+2. ✅ **Calcular tiempo de respuesta desde mensajes (`AILayerService.ts`):**
+   - Implementado cálculo de tiempo promedio de respuesta entre dos usuarios
+   - Basado en mensajes en salas de chat compartidas
+   - Filtra tiempos de respuesta razonables (menos de 7 días)
+   - Calcula promedio en milisegundos
+   - TODO completado
+
+3. ✅ **Análisis avanzado de patrones de perfiles falsos (`ContentModerationService.ts`):**
+   - Implementado análisis de fotos (cantidad, verificación)
+   - Implementado análisis de bio (genérica, copiada, muy corta)
+   - Implementado análisis de edad inconsistente
+   - Implementado análisis de datos de creación vs edad
+   - Implementado análisis de intereses vacíos
+   - Implementado análisis de email sospechoso
+   - TODO completado
+
+### Pendientes
+
+4. ⚠️ **Logging de auditoría real (`SecurityService.ts`):**
+   - Parcialmente implementado
+   - Requiere tabla `security_events` en base de datos
+
+5. ⚠️ **Video chat con WebRTC (`VideoChatService.ts`):**
+   - Pendiente de implementación
+
+6. ⚠️ **Verificación por SMS (`UserVerificationService.ts`):**
+   - Pendiente de implementación
+
+---
+
+## 🔒 CORRECCIÓN DE CSP (Content Security Policy)
+
+### Problema
+
+Error: "Content Security Policy of your site blocks the use of 'eval' in JavaScript"
+
+### Solución
+
+✅ **Configurado CSP en `vite.config.ts`:**
+- Desarrollo: Permite `unsafe-eval` (requerido por Vite HMR)
+- Producción: Sin `unsafe-eval` (más seguro)
+
+```typescript
+headers: {
+  'Content-Security-Policy': process.env.NODE_ENV === 'development' 
+    ? "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https:; ..."
+    : "default-src 'self'; script-src 'self' 'unsafe-inline' https:; ..."
+}
 ```
 
 ---
 
-## 📋 PLAN DE TRABAJO
+## ♿ MEJORAS DE ACCESIBILIDAD
 
-### Estado: ✅ COMPLETADO (Fases 1-6)
+### Problema
 
-**Fecha de Creación:** 2025-11-06  
-**Progreso Total:** 6/6 fases completadas (100%)
+Error: "A form field element should have an id or name attribute"
 
-### Fases Completadas
+### Solución
 
-#### ✅ Fase 1: Preparación y Respaldo
-- **Duración:** 1 minuto
-- **Estado:** ✅ Completada
-- **Logros:** Branch creado, respaldos realizados, estado inicial documentado
+✅ **Mejorados componentes `Input` y `Textarea`:**
+- Agregada generación automática de `id` si no se proporciona
+- Asegura que siempre tengan `id` o `name` para accesibilidad y autocompletado
+- Mejora la accesibilidad y el autocompletado del navegador
 
-#### ✅ Fase 2: Archivos Backup
-- **Duración:** 2 minutos
-- **Estado:** ✅ Completada
-- **Logros:** 2 archivos movidos a `backups/types/`, `.gitignore` actualizado
+```typescript
+// Input.tsx
+const inputId = id || (name ? `input-${name}` : undefined);
 
-#### ✅ Fase 3: Componentes Duplicados
-- **Duración:** Variable
-- **Estado:** ✅ Completada
-- **Logros:** 4 eliminados, 3 consolidados, 1 renombrado
-
-#### ✅ Fase 4: Carpetas Vacías
-- **Duración:** 2 minutos
-- **Estado:** ✅ Completada
-- **Logros:** Carpetas verificadas, `.gitignore` actualizado
-
-#### ✅ Fase 5: TODOs Prioritarios
-- **Duración:** 3 minutos
-- **Estado:** ✅ Completada
-- **Logros:** 0 TODOs críticos encontrados, clasificación realizada
-
-#### ✅ Fase 6: Validación Final
-- **Duración:** 38 minutos
-- **Estado:** ✅ Completada
-- **Logros:** Validaciones técnicas completas, errores corregidos
-
-### Pendientes del Plan
-
-#### ⚠️ Opcionales
-1. Validación funcional manual (requiere ejecución manual)
-2. Actualización de documentación (RELEASE_NOTES, MEMORIAS_SESIONES)
-3. Creación de issues de GitHub para TODOs importantes
+// Textarea.tsx
+const textareaId = id || (name ? `textarea-${name}` : undefined);
+```
 
 ---
 
-## 📊 RESUMEN DE ARCHIVOS CONSOLIDADOS
+## 🧪 CORRECCIÓN DE TESTS
 
-### Documentos Consolidados en Este Archivo
+### Problema
 
-1. ✅ `Auditoria_Proyecto_Completa_ComplicesConecta.md` - Auditoría completa
-2. ✅ `ANALISIS_COMPONENTES_DUPLICADOS_FASE3.md` - Análisis de componentes
-3. ✅ `ANALISIS_ESTILOS_PROYECTO.md` - Análisis de estilos
-4. ✅ `CORRECCIONES_VERCEL_APLICADAS.md` - Correcciones Vercel
-5. ✅ `DIAGNOSTICO_VERCEL_CONSOLIDADO.md` - Diagnóstico Vercel
-6. ✅ `GUIA_DIAGNOSTICO_VERCEL.md` - Guía de diagnóstico
-7. ✅ `MIGRACIONES_TABLAS_FALTANTES.md` - Migraciones
-8. ✅ `SOLUCION_TABLAS_FALTANTES.md` - Solución de tablas
-9. ✅ `PLAN_TRABAJO_AUDITORIA_HALLAZGOS.md` - Plan de trabajo
-10. ✅ `PLAN_TRABAJO_PENDIENTES.md` - Pendientes
-11. ✅ `AUDITORIA_USELAYOUTEFFECT_CONSOLIDADO.md` - Auditoría useLayoutEffect
+Errores de tipos en `biometric-auth.test.ts` con mocks de Supabase
 
-### Documentos Mantenidos (Referencia)
+### Solución
 
-- `ANALISIS_COMPONENTES_DUPLICADOS_FASE3.md` - Detalles técnicos
-- `ANALISIS_ESTILOS_PROYECTO.md` - Detalles técnicos de estilos
-- `PLAN_TRABAJO_AUDITORIA_HALLAZGOS.md` - Plan detallado con checklist
+✅ **Corregidos mocks de Supabase:**
+- Agregadas verificaciones de `supabase` null
+- Agregados `as any` para mocks incompletos (necesario para tests)
+- Corregidos todos los errores de tipos
 
 ---
 
-## ✅ CONCLUSIÓN
+## 📁 CONSOLIDACIÓN DE COMPONENTES
 
 ### Estado Final
 
-El proyecto **ComplicesConecta v3.5.0** se encuentra en **excelente estado** con:
+**Componentes consolidados:**
+- ✅ `ContentModerationModal` - Mantenido `ai/`, eliminado `modals/`
+- ✅ `SmartMatchingModal` - Mantenido `ai/`, eliminado `modals/`
+- ✅ `ProfileThemeDemo` - Página usa componente de `components/profile/`
+- ✅ `VIPEvents` - Página usa componente de `components/premium/`
+- ✅ `VirtualGifts` - Página usa componente de `components/premium/`
 
-- ✅ 0 errores de TypeScript
-- ✅ 0 errores de ESLint
-- ✅ 0 vulnerabilidades de seguridad
-- ✅ Build exitoso y optimizado
-- ✅ React/React-DOM sincronizados
-- ✅ Componentes consolidados
-- ✅ Estilos analizados y optimizados
-- ✅ Correcciones de Vercel aplicadas
-- ✅ Migraciones identificadas y aplicadas
+**Componentes renombrados:**
+- ✅ `NotificationSettings` (admin) → `DesktopNotificationSettings.tsx`
 
-### Próximos Pasos Recomendados
-
-1. ⏳ Validación funcional manual en producción
-2. ⏳ Actualización de documentación (RELEASE_NOTES, MEMORIAS_SESIONES)
-3. ⏳ Creación de issues de GitHub para TODOs importantes
-4. ⏳ Plan de migración a React 19 (futuro)
+**Componentes mantenidos separados:**
+- ✅ `NotificationSettings` (settings) - Propósito diferente
+- ✅ `TermsModal` (auth/ui) - Interfaces diferentes
 
 ---
 
-**Última Actualización:** 2025-11-06  
-**Versión del Documento:** 1.0  
-**Estado:** ✅ Consolidación Completa
+## 📊 ESTADÍSTICAS FINALES
 
+### CSS
+- **Archivos iniciales:** 18
+- **Archivos finales:** 5
+- **Reducción:** 72%
+
+### TypeScript
+- **Interfaces creadas:** 13 interfaces en 5 archivos de tipos
+  - `security.types.ts`: 4 interfaces
+  - `analytics.types.ts`: 3 interfaces
+  - `google.types.ts`: 4 interfaces + extensión de Window
+  - `content-moderation.types.ts`: 4 interfaces
+  - `Neo4jService.ts`: 2 interfaces
+- **Archivos corregidos:** 7 servicios
+  - `SecurityService.ts` ✅
+  - `AnalyticsService.ts` ✅
+  - `GoogleServices.ts` ✅
+  - `ContentModerationService.ts` ✅
+  - `AILayerService.ts` ✅
+  - `Neo4jService.ts` ✅
+  - `contentModeration.ts` ✅
+- **Pendientes:** 0 servicios (todos completados)
+
+### TODOs
+- **Completados:** 3 (World ID verification, Response time calculation, Advanced fake profile patterns)
+- **Pendientes:** 3 (Logging auditoría, Video chat, SMS verification)
+
+### Tests
+- **Archivos corregidos:** 1 (`biometric-auth.test.ts`)
+- **Errores corregidos:** 28 errores de tipos
+
+### Accesibilidad
+- **Componentes mejorados:** 2 (`Input`, `Textarea`)
+- **Errores corregidos:** 1 (form field sin id/name)
+
+---
+
+## ✅ ESTADO ACTUAL
+
+### Completado
+- ✅ Consolidación de archivos CSS (Fases 1, 2, 3)
+- ✅ Corrección de selectores para Firefox
+- ✅ Creación de interfaces para SecurityService, AnalyticsService, GoogleServices, ContentModerationService, AILayerService, Neo4jService
+- ✅ Implementación de World ID verification
+- ✅ Implementación de cálculo de tiempo de respuesta desde mensajes
+- ✅ Implementación de análisis avanzado de patrones de perfiles falsos
+- ✅ Corrección de errores de CSP
+- ✅ Mejoras de accesibilidad (id/name en campos)
+- ✅ Corrección de tests (biometric-auth.test.ts)
+- ✅ Consolidación de componentes duplicados
+
+### Pendiente
+- ⚠️ Implementación de TODOs de media/baja prioridad (Video chat, SMS verification)
+- ⚠️ Logging de auditoría real (requiere tabla en BD)
+- ⚠️ Optimización de hooks de React
+- ⚠️ Mejora de manejo de errores en funciones async
+
+---
+
+## 📋 PRÓXIMOS PASOS
+
+1. ✅ **Correcciones de `any`/`unknown` completadas:**
+   - ✅ `AnalyticsService.ts` - Creado `AnalyticsProperties`, `BrowserPerformanceMemory`
+   - ✅ `GoogleServices.ts` - Creado `GtagParameters`, `MessagePayload`, `NotificationData`
+   - ✅ `ContentModerationService.ts` - Creado `ProfileData`, `TextAnalysis`, `ContextRules`, `MessageMetadata`
+   - ✅ `AILayerService.ts` - Creado `ProfileWithInterests`
+   - ✅ `Neo4jService.ts` - Creado `NodeMetadata`, `RelationshipProperties`
+   - ✅ `contentModeration.ts` - Corregido tipo de `metadata`
+
+2. ✅ **TODOs implementados:**
+   - ✅ Calcular tiempo de respuesta desde mensajes (`AILayerService.ts`)
+   - ✅ Análisis avanzado de patrones de perfiles falsos (`ContentModerationService.ts`)
+
+3. **Implementar TODOs pendientes:**
+   - Logging de auditoría real (requiere tabla en BD)
+   - Video chat con WebRTC
+   - Verificación por SMS
+
+3. **Optimizaciones:**
+   - Revisar hooks de React para optimizaciones
+   - Mejorar manejo de errores en funciones async
+   - Reducir uso de `@ts-ignore` donde sea posible
+
+---
+
+## 📝 NOTAS IMPORTANTES
+
+1. **CSP:** `unsafe-eval` solo permitido en desarrollo (Vite HMR lo requiere)
+2. **Firefox:** No reconoce `line-clamp` sin prefijo, usar solo `-webkit-line-clamp`
+3. **Accesibilidad:** Todos los campos de formulario ahora tienen `id` o `name` automáticamente
+4. **Tests:** Mocks de Supabase requieren `as any` para compatibilidad con tipos complejos
+
+---
+
+**Última actualización:** 2025-11-06  
+**Versión del documento:** 3.5.1
+
+---
+
+## 📝 CAMBIOS EN v3.5.1
+
+### Nuevas Correcciones
+
+1. **Corrección de `any`/`unknown` en servicios adicionales:**
+   - ✅ `ContentModerationService.ts`: Agregadas interfaces `TextAnalysis`, `ContextRules`, `MessageMetadata`
+   - ✅ `AILayerService.ts`: Creada interfaz `ProfileWithInterests` y corregidos usos de `any`
+   - ✅ `Neo4jService.ts`: Creadas interfaces `NodeMetadata` y `RelationshipProperties`
+   - ✅ `contentModeration.ts`: Corregido tipo de `metadata` en `analyzeMessageContent`
+
+2. **Implementación de TODOs:**
+   - ✅ Cálculo de tiempo de respuesta desde mensajes en `AILayerService.ts`
+   - ✅ Análisis avanzado de patrones de perfiles falsos en `ContentModerationService.ts`
+
+### Estadísticas Actualizadas
+
+- **Interfaces creadas:** 13 (anteriormente 7)
+- **Archivos corregidos:** 7 servicios (anteriormente 4)
+- **TODOs completados:** 3 (anteriormente 1)

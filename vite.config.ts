@@ -77,7 +77,26 @@ export default defineConfig({
     },
     headers: {
       'Cross-Origin-Embedder-Policy': 'unsafe-none',
-      'Cross-Origin-Opener-Policy': 'same-origin'
+      'Cross-Origin-Opener-Policy': 'same-origin',
+      // CSP: Permitir unsafe-eval solo en desarrollo (Vite lo requiere para HMR)
+      'Content-Security-Policy': process.env.NODE_ENV === 'development' 
+        ? "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; connect-src 'self' https: ws: wss:;"
+        : "default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; connect-src 'self' https: ws: wss:;"
+    },
+    // Evitar errores de source maps de extensiones del navegador
+    sourcemapIgnoreList: (sourcePath) => {
+      // Ignorar source maps de extensiones del navegador (installHook.js, etc.)
+      return sourcePath.includes('chrome-extension') || 
+             sourcePath.includes('moz-extension') || 
+             sourcePath.includes('installHook') ||
+             sourcePath.includes('<anonymous>') ||
+             sourcePath.includes('react_devtools_backend');
+    },
+    // Configurar middleware para ignorar requests de source maps de extensiones
+    middlewareMode: false,
+    fs: {
+      // Permitir servir archivos fuera de root si es necesario
+      strict: false
     }
   },
   build: {

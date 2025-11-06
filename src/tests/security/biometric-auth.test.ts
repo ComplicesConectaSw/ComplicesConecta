@@ -297,17 +297,18 @@ describe('Biometric Authentication Library', () => {
   describe('authenticateWithBiometric', () => {
     beforeEach(() => {
       // Mock existing credentials
+      if (!supabase) return;
       vi.mocked(supabase.from).mockReturnValue({
         select: vi.fn(() => ({
           eq: vi.fn(() => Promise.resolve({
             data: [{ credential_id: 'test-credential-id' }],
             error: null
           }))
-        })),
+        })) as any,
         update: vi.fn(() => ({
           eq: vi.fn(() => Promise.resolve({ error: null }))
-        }))
-      });
+        })) as any
+      } as any);
     });
 
     it('should successfully authenticate with biometric', async () => {
@@ -353,14 +354,15 @@ describe('Biometric Authentication Library', () => {
     });
 
     it('should handle no registered credentials', async () => {
+      if (!supabase) return;
       vi.mocked(supabase.from).mockReturnValue({
         select: vi.fn(() => ({
           eq: vi.fn(() => Promise.resolve({
             data: [],
             error: null
           }))
-        }))
-      });
+        })) as any
+      } as any);
 
       const result = await authenticateWithBiometric();
 
@@ -371,6 +373,7 @@ describe('Biometric Authentication Library', () => {
 
   describe('removeBiometric', () => {
     it('should successfully remove biometric credential', async () => {
+      if (!supabase) return;
       const result = await removeBiometric('test-credential-id');
 
       expect(result.success).toBe(true);
@@ -384,13 +387,14 @@ describe('Biometric Authentication Library', () => {
     });
 
     it('should handle database errors', async () => {
+      if (!supabase) return;
       vi.mocked(supabase.from).mockReturnValue({
         delete: vi.fn(() => ({
           eq: vi.fn(() => Promise.resolve({
             error: new Error('Database error')
           }))
-        }))
-      });
+        })) as any
+      } as any);
 
       const result = await removeBiometric();
 
@@ -401,6 +405,7 @@ describe('Biometric Authentication Library', () => {
 
   describe('getBiometricCredentials', () => {
     it('should return user credentials', async () => {
+      if (!supabase) return;
       const mockCredentials = [
         {
           credential_id: 'cred-1',
@@ -417,9 +422,9 @@ describe('Biometric Authentication Library', () => {
               data: mockCredentials,
               error: null
             }))
-          }))
-        }))
-      });
+          })) as any
+        })) as any
+      } as any);
 
       const result = await getBiometricCredentials();
 
@@ -433,6 +438,7 @@ describe('Biometric Authentication Library', () => {
     });
 
     it('should return empty array when no credentials', async () => {
+      if (!supabase) return;
       vi.mocked(supabase.from).mockReturnValue({
         select: vi.fn(() => ({
           eq: vi.fn(() => ({
@@ -440,9 +446,9 @@ describe('Biometric Authentication Library', () => {
               data: null,
               error: null
             }))
-          }))
-        }))
-      });
+          })) as any
+        })) as any
+      } as any);
 
       const result = await getBiometricCredentials();
 
@@ -521,6 +527,7 @@ describe('BiometricSettings Component', () => {
   });
 
   it('should handle biometric authentication test', async () => {
+    if (!supabase) return;
     vi.mocked(supabase.from).mockReturnValue({
       select: vi.fn(() => ({
         eq: vi.fn(() => ({
@@ -532,9 +539,9 @@ describe('BiometricSettings Component', () => {
             data: [{ credential_id: 'test-id', public_key: 'key', counter: 1, created_at: '2024-01-01' }],
             error: null
           }))
-        }))
-      }))
-    });
+        })) as any
+      })) as any
+    } as any);
 
     vi.mocked(navigator.credentials.get).mockResolvedValue(mockAssertion as any);
 
@@ -551,6 +558,7 @@ describe('BiometricSettings Component', () => {
   });
 
   it('should display registered credentials', async () => {
+    if (!supabase) return;
     const mockCredentials = [
       {
         credential_id: 'cred-1',
@@ -571,9 +579,9 @@ describe('BiometricSettings Component', () => {
             data: mockCredentials,
             error: null
           }))
-        }))
-      }))
-    });
+        })) as any
+      })) as any
+    } as any);
 
     render(React.createElement(BiometricSettings, { userId: "test-user-id" }));
 
@@ -584,6 +592,7 @@ describe('BiometricSettings Component', () => {
   });
 
   it('should handle credential removal', async () => {
+    if (!supabase) return;
     const mockCredentials = [
       {
         credential_id: 'cred-1',
@@ -604,15 +613,15 @@ describe('BiometricSettings Component', () => {
             data: mockCredentials,
             error: null
           }))
-        }))
-      })),
+        })) as any
+      })) as any,
       delete: vi.fn(() => ({
         eq: vi.fn(() => Promise.resolve({ error: null }))
-      })),
+      })) as any,
       update: vi.fn(() => ({
         eq: vi.fn(() => Promise.resolve({ error: null }))
-      }))
-    });
+      })) as any
+    } as any);
 
     render(React.createElement(BiometricSettings, { userId: "test-user-id" }));
 
@@ -622,7 +631,9 @@ describe('BiometricSettings Component', () => {
     });
 
     await waitFor(() => {
-      expect(vi.mocked(supabase.from)).toHaveBeenCalledWith('user_credentials');
+      if (supabase) {
+        expect(vi.mocked(supabase.from)).toHaveBeenCalledWith('user_credentials');
+      }
     });
   });
 

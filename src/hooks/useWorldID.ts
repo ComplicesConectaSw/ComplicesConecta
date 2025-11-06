@@ -40,16 +40,71 @@ export const useWorldID = () => {
       setStatus(prev => ({ ...prev, isLoading: true }));
       setError(null);
 
-       // TODO: Verificar contra tabla worldid_verifications cuando exista
-      // Por ahora, retornar estado no verificado
-      logger.info('🌍 World ID verification check (pendiente implementación de tabla worldid_verifications)');
+      // Verificar contra tabla worldid_verifications
+      if (!supabase) {
+        logger.warn('Supabase no está disponible para verificación World ID');
+        setStatus({
+          isVerified: false,
+          isLoading: false,
+          nullifierHash: undefined,
+          verifiedAt: undefined,
+          verificationLevel: undefined
+        });
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from('worldid_verifications')
+        .select('id, nullifier_hash, verified_at, verification_level, is_active, expires_at')
+        .eq('user_id', user.id)
+        .eq('is_active', true)
+        .order('verified_at', { ascending: false })
+        .limit(1)
+        .single();
+
+      if (error) {
+        // Si no hay verificación, no es un error crítico
+        if (error.code === 'PGRST116') {
+          logger.debug('Usuario no tiene verificación World ID activa');
+          setStatus({
+            isVerified: false,
+            isLoading: false,
+            nullifierHash: undefined,
+            verifiedAt: undefined,
+            verificationLevel: undefined
+          });
+          return;
+        }
+        throw error;
+      }
+
+      // Verificar si la verificación no ha expirado
+      const isExpired = data.expires_at && new Date(data.expires_at) < new Date();
       
+      if (isExpired) {
+        logger.debug('Verificación World ID expirada');
+        setStatus({
+          isVerified: false,
+          isLoading: false,
+          nullifierHash: undefined,
+          verifiedAt: undefined,
+          verificationLevel: undefined
+        });
+        return;
+      }
+
+      // Usuario verificado
+      logger.info('✅ Usuario verificado con World ID', {
+        nullifierHash: data.nullifier_hash?.substring(0, 8) + '***',
+        level: data.verification_level
+      });
+
       setStatus({
-        isVerified: false,
+        isVerified: true,
         isLoading: false,
-        nullifierHash: undefined,
-        verifiedAt: undefined,
-        verificationLevel: undefined
+        nullifierHash: data.nullifier_hash,
+        verifiedAt: data.verified_at || undefined,
+        verificationLevel: data.verification_level || undefined
       });
     } catch (err) {
       logger.error('Error checking verification status:', { error: String(err) });

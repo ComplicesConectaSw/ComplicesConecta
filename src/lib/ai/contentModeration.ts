@@ -331,7 +331,7 @@ class ContentModerationEngine {
   /**
    * Analiza contenido de mensajes
    */
-  private analyzeMessageContent(text: string, metadata?: any): ModerationFlag[] {
+  private analyzeMessageContent(text: string, metadata?: { recipientId?: string; [key: string]: unknown }): ModerationFlag[] {
     const flags: ModerationFlag[] = [];
 
     // Los mensajes privados pueden ser más permisivos

@@ -25,17 +25,37 @@ export interface Neo4jConfig {
   database?: string;
 }
 
+/**
+ * Metadatos de nodo de usuario
+ */
+export interface NodeMetadata {
+  age?: number;
+  location?: string;
+  gender?: string;
+  [key: string]: unknown;
+}
+
 export interface UserNode {
   id: string;
   name?: string;
   email?: string;
   createdAt?: string;
-  metadata?: Record<string, any>;
+  metadata?: NodeMetadata;
+}
+
+/**
+ * Propiedades de relación
+ */
+export interface RelationshipProperties {
+  created_at?: string;
+  match_id?: string;
+  score?: number;
+  [key: string]: unknown;
 }
 
 export interface Relationship {
   type: 'MATCHED_WITH' | 'LIKED' | 'FOLLOWS' | 'FRIENDS_WITH' | 'BLOCKED';
-  properties?: Record<string, any>;
+  properties?: RelationshipProperties;
 }
 
 export interface MutualConnection {
@@ -188,7 +208,7 @@ class Neo4jService {
     const session = this.driver.session({ database: this.config.database });
     try {
       // Aplanar metadata para Neo4j (no soporta objetos anidados)
-      const flatMetadata: Record<string, any> = {
+      const flatMetadata: Record<string, unknown> = {
         id: userId,
       };
       
@@ -197,7 +217,7 @@ class Neo4jService {
       if (metadata.createdAt) flatMetadata.created_at = metadata.createdAt;
       if (metadata.metadata) {
         // Aplanar metadata anidado
-        if (metadata.metadata.age) flatMetadata.age = metadata.metadata.age;
+        if (metadata.metadata.age !== undefined) flatMetadata.age = metadata.metadata.age;
         if (metadata.metadata.location) flatMetadata.location = metadata.metadata.location;
         if (metadata.metadata.gender) flatMetadata.gender = metadata.metadata.gender;
       }
@@ -232,7 +252,7 @@ class Neo4jService {
   /**
    * Crea una relación de match entre dos usuarios
    */
-  async createMatch(user1Id: string, user2Id: string, metadata: Record<string, any> = {}): Promise<void> {
+  async createMatch(user1Id: string, user2Id: string, metadata: RelationshipProperties = {}): Promise<void> {
     if (!this.isEnabled || !this.driver) {
       logger.warn('⚠️ Neo4j deshabilitado. No se creó match:', { user1Id, user2Id });
       return;
@@ -276,7 +296,7 @@ class Neo4jService {
   /**
    * Crea una relación de like
    */
-  async createLike(likerId: string, likedId: string, metadata: Record<string, any> = {}): Promise<void> {
+  async createLike(likerId: string, likedId: string, metadata: RelationshipProperties = {}): Promise<void> {
     if (!this.isEnabled || !this.driver) {
       return;
     }
@@ -447,7 +467,17 @@ class Neo4jService {
   /**
    * Sincroniza un usuario desde PostgreSQL a Neo4j
    */
-  async syncUserFromPostgres(userId: string, profileData: Record<string, any>): Promise<void> {
+  async syncUserFromPostgres(userId: string, profileData: {
+    name?: string;
+    first_name?: string;
+    last_name?: string;
+    email?: string;
+    created_at?: string;
+    age?: number;
+    location?: string;
+    gender?: string;
+    [key: string]: unknown;
+  }): Promise<void> {
     // Usar name si existe, sino usar first_name + last_name
     const displayName = profileData.name || 
       (profileData.first_name && profileData.last_name 
@@ -469,7 +499,12 @@ class Neo4jService {
   /**
    * Sincroniza un match desde PostgreSQL a Neo4j
    */
-  async syncMatchFromPostgres(user1Id: string, user2Id: string, matchData: Record<string, any>): Promise<void> {
+  async syncMatchFromPostgres(user1Id: string, user2Id: string, matchData: {
+    id?: string;
+    created_at?: string;
+    score?: number;
+    [key: string]: unknown;
+  }): Promise<void> {
     await this.createMatch(user1Id, user2Id, {
       match_id: matchData.id,
       created_at: matchData.created_at,

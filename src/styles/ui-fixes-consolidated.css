@@ -400,7 +400,8 @@ header.header-nav-main {
 }
 
 /* Cuando está scrolled */
-.header-nav-main.bg-gradient-to-b.from-purple-900\/90 {
+/* Firefox: Usar selectores de atributo en lugar de escapes complejos */
+.header-nav-main[class*="bg-gradient-to-b"][class*="from-purple-900/90"] {
   background-image: linear-gradient(to bottom, 
     rgba(88, 28, 135, 0.90) 0%, 
     rgba(107, 33, 168, 0.85) 50%, 
@@ -416,7 +417,8 @@ header.header-nav-main {
 }
 
 /* Proteger gradiente del texto del logo */
-.header-nav-main span.bg-gradient-to-r.from-purple-300.via-pink-300 {
+/* Firefox: Usar selectores de atributo en lugar de escapes complejos */
+.header-nav-main span[class*="bg-gradient-to-r"][class*="from-purple-300"][class*="via-pink-300"] {
   background: linear-gradient(to right, 
     rgba(196, 181, 253, 1) 0%, 
     rgba(249, 168, 212, 1) 50%, 
@@ -562,7 +564,6 @@ html header.header-nav-main {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
-  line-clamp: 2; /* Propiedad estándar para compatibilidad */
   /* Firefox no reconoce line-clamp sin prefijo, usar solo -webkit-line-clamp */
   text-overflow: ellipsis;
 }
@@ -572,7 +573,6 @@ html header.header-nav-main {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
-  line-clamp: 3; /* Propiedad estándar para compatibilidad */
   /* Firefox no reconoce line-clamp sin prefijo, usar solo -webkit-line-clamp */
   text-overflow: ellipsis;
 }
@@ -595,7 +595,6 @@ html header.header-nav-main {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
-  line-clamp: 3; /* Propiedad estándar para compatibilidad */
   /* Firefox no reconoce line-clamp sin prefijo, usar solo -webkit-line-clamp */
   text-overflow: ellipsis;
   line-height: 1.4;
@@ -645,7 +644,6 @@ html header.header-nav-main {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
-    line-clamp: 2; /* Propiedad estándar para compatibilidad */
     /* Firefox no reconoce line-clamp sin prefijo, usar solo -webkit-line-clamp */
     text-overflow: ellipsis;
   }
@@ -677,7 +675,6 @@ html header.header-nav-main {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
-    line-clamp: 2; /* Propiedad estándar para compatibilidad */
     /* Firefox no reconoce line-clamp sin prefijo, usar solo -webkit-line-clamp */
     text-overflow: ellipsis;
     max-height: 3em;
@@ -714,7 +711,6 @@ html header.header-nav-main {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
-  line-clamp: 2; /* Propiedad estándar para compatibilidad */
   /* Firefox no reconoce line-clamp sin prefijo, usar solo -webkit-line-clamp */
   text-overflow: ellipsis;
 }
@@ -786,7 +782,6 @@ html header.header-nav-main {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
-  line-clamp: 2; /* Propiedad estándar para compatibilidad */
   /* Firefox no reconoce line-clamp sin prefijo, usar solo -webkit-line-clamp */
   text-overflow: ellipsis;
 }

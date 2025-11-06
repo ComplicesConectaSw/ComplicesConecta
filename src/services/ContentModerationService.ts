@@ -8,6 +8,8 @@
  */
 
 import { logger } from '@/lib/logger';
+import { supabase } from '@/integrations/supabase/client';
+import type { ProfileData, TextAnalysis, ContextRules } from '@/types/content-moderation.types';
 
 
 export interface ModerationResult {
@@ -185,13 +187,11 @@ class ContentModerationService {
   /**
    * Realiza análisis completo de texto usando algoritmos de IA
    */
-  private async performTextAnalysis(content: string): Promise<{
+  private async performTextAnalysis(content: string): Promise<TextAnalysis & {
     toxicity: number;
     spam_probability: number;
     explicit_score: number;
-    sentiment: 'positive' | 'neutral' | 'negative';
     language_appropriateness: number;
-    detected_issues: string[];
   }> {
     const normalizedContent = content.toLowerCase().trim();
     
@@ -431,7 +431,7 @@ class ContentModerationService {
   /**
    * Calcula la confianza del análisis
    */
-  private calculateConfidence(textAnalysis: any, flags: ModerationFlag[]): number {
+  private calculateConfidence(textAnalysis: TextAnalysis, flags: ModerationFlag[]): number {
     let confidence = 0.8; // Base confidence
     
     // Ajustar confianza basado en flags
@@ -440,7 +440,7 @@ class ContentModerationService {
     });
     
     // Ajustar confianza basado en longitud del contenido
-    const contentLength = textAnalysis.detected_issues.length;
+    const contentLength = textAnalysis.detected_issues?.length || 0;
     if (contentLength > 0) {
       confidence -= contentLength * 0.05;
     }
@@ -454,7 +454,7 @@ class ContentModerationService {
   private generateModerationExplanation(
     flags: ModerationFlag[], 
     isAppropriate: boolean, 
-    _textAnalysis?: any
+    _textAnalysis?: TextAnalysis
   ): string {
     if (flags.length === 0) {
       return 'Contenido apropiado y seguro para la plataforma';
@@ -501,7 +501,7 @@ class ContentModerationService {
       };
       
     } catch (error) {
-      console.error('Error moderating image:', error);
+      logger.error('Error moderating image', { error });
       return {
         isAppropriate: true,
         confidence: 0.5,
@@ -515,13 +515,14 @@ class ContentModerationService {
 
   /**
    * Analiza perfil completo para detectar perfiles falsos
-   * TODO: Implementar análisis avanzado de patrones de perfiles falsos
+   * Implementa análisis avanzado de patrones de perfiles falsos
    */
-  async moderateProfile(profileData: any): Promise<ModerationResult> {
+  async moderateProfile(profileData: ProfileData): Promise<ModerationResult> {
     try {
       const flags: ModerationFlag[] = [];
       let severity: ModerationResult['severity'] = 'low';
       let action: ModerationResult['action'] = 'approve';
+      let totalConfidence = 0;
       
       // Análisis básico de completitud del perfil
       const completeness = this.calculateProfileCompleteness(profileData);
@@ -532,23 +533,39 @@ class ContentModerationService {
           confidence: 0.6,
           description: 'Perfil incompleto - posible perfil falso'
         });
+        totalConfidence += 0.6;
         severity = 'medium';
         action = 'review';
       }
       
       // Detectar patrones sospechosos en el nombre
-      if (this.hasSuspiciousName(profileData.name)) {
+      if (profileData.name && this.hasSuspiciousName(profileData.name)) {
         flags.push({
           type: 'fake_profile',
           confidence: 0.7,
           description: 'Nombre sospechoso detectado'
         });
+        totalConfidence += 0.7;
+        severity = 'medium';
+        action = 'review';
+      }
+
+      // Análisis avanzado de patrones de perfiles falsos
+      const advancedPatterns = this.detectAdvancedFakeProfilePatterns(profileData);
+      flags.push(...advancedPatterns);
+      totalConfidence += advancedPatterns.reduce((sum, flag) => sum + flag.confidence, 0);
+
+      // Actualizar severidad y acción basado en confianza total
+      if (totalConfidence >= 0.8) {
+        severity = 'high';
+        action = 'reject';
+      } else if (totalConfidence >= 0.6) {
         severity = 'medium';
         action = 'review';
       }
       
       const isAppropriate = flags.length === 0 || flags.every(f => f.confidence < 0.7);
-      const confidence = Math.random() * 0.2 + 0.8;
+      const confidence = Math.min(1, totalConfidence / Math.max(1, flags.length));
       
       return {
         isAppropriate,
@@ -560,7 +577,7 @@ class ContentModerationService {
       };
       
     } catch (error) {
-      console.error('Error moderating profile:', error);
+      logger.error('Error moderating profile', { error });
       return {
         isAppropriate: true,
         confidence: 0.5,
@@ -573,12 +590,186 @@ class ContentModerationService {
   }
 
   /**
+   * Detecta patrones avanzados de perfiles falsos
+   * @private
+   */
+  private detectAdvancedFakeProfilePatterns(profileData: ProfileData): ModerationFlag[] {
+    const flags: ModerationFlag[] = [];
+
+    // 1. Análisis de fotos
+    const photosCount = profileData.photos?.length || 0;
+    if (photosCount === 0) {
+      flags.push({
+        type: 'fake_profile',
+        confidence: 0.5,
+        description: 'Perfil sin fotos - indicador de perfil falso'
+      });
+    } else if (photosCount < 2) {
+      flags.push({
+        type: 'fake_profile',
+        confidence: 0.3,
+        description: 'Perfil con muy pocas fotos - posible perfil falso'
+      });
+    }
+
+    // 2. Análisis de bio genérica o copiada
+    if (profileData.bio) {
+      const bioAnalysis = this.analyzeBioPatterns(profileData.bio);
+      if (bioAnalysis.isGeneric) {
+        flags.push({
+          type: 'fake_profile',
+          confidence: 0.4,
+          description: 'Bio genérica o copiada detectada'
+        });
+      }
+      if (bioAnalysis.isTooShort) {
+        flags.push({
+          type: 'fake_profile',
+          confidence: 0.3,
+          description: 'Bio muy corta - posible perfil falso'
+        });
+      }
+    } else {
+      flags.push({
+        type: 'fake_profile',
+        confidence: 0.4,
+        description: 'Perfil sin bio - indicador de perfil falso'
+      });
+    }
+
+    // 3. Análisis de edad inconsistente
+    if (profileData.age) {
+      if (profileData.age < 18) {
+        flags.push({
+          type: 'fake_profile',
+          confidence: 0.9,
+          description: 'Edad menor a 18 años - perfil inválido'
+        });
+      } else if (profileData.age > 100) {
+        flags.push({
+          type: 'fake_profile',
+          confidence: 0.6,
+          description: 'Edad sospechosamente alta'
+        });
+      }
+    }
+
+    // 4. Análisis de datos de creación vs edad
+    if (profileData.created_at && profileData.age) {
+      const createdAt = new Date(profileData.created_at);
+      const now = new Date();
+      const accountAgeDays = (now.getTime() - createdAt.getTime()) / (1000 * 60 * 60 * 24);
+      
+      // Si la cuenta es muy nueva pero la edad es muy alta, es sospechoso
+      if (accountAgeDays < 7 && profileData.age > 50) {
+        flags.push({
+          type: 'fake_profile',
+          confidence: 0.5,
+          description: 'Cuenta muy nueva con edad alta - posible perfil falso'
+        });
+      }
+    }
+
+    // 5. Análisis de intereses vacíos o genéricos
+    const interestsCount = profileData.interests?.length || 0;
+    if (interestsCount === 0) {
+      flags.push({
+        type: 'fake_profile',
+        confidence: 0.4,
+        description: 'Perfil sin intereses - posible perfil falso'
+      });
+    }
+
+    // 6. Análisis de email sospechoso
+    if (profileData.email) {
+      const emailAnalysis = this.analyzeEmailPatterns(profileData.email);
+      if (emailAnalysis.isSuspicious) {
+        flags.push({
+          type: 'fake_profile',
+          confidence: 0.5,
+          description: 'Email con patrones sospechosos'
+        });
+      }
+    }
+
+    return flags;
+  }
+
+  /**
+   * Analiza patrones en la bio
+   * @private
+   */
+  private analyzeBioPatterns(bio: string): {
+    isGeneric: boolean;
+    isTooShort: boolean;
+    isCopied: boolean;
+  } {
+    const bioLower = bio.toLowerCase().trim();
+    
+    // Bios genéricas comunes
+    const genericBios = [
+      'hola',
+      'hi',
+      'hello',
+      'busco',
+      'looking for',
+      'disponible',
+      'available',
+      'contacto',
+      'contact me'
+    ];
+
+    const isGeneric = genericBios.some(pattern => bioLower === pattern || bioLower.startsWith(pattern + ' '));
+    const isTooShort = bio.length < 20;
+    
+    // Detectar posibles bios copiadas (muy similares a otras)
+    // Por ahora, solo verificamos si es exactamente igual a patrones comunes
+    const isCopied = false; // Se puede implementar comparación con base de datos
+
+    return { isGeneric, isTooShort, isCopied };
+  }
+
+  /**
+   * Analiza patrones en el email
+   * @private
+   */
+  private analyzeEmailPatterns(email: string): {
+    isSuspicious: boolean;
+    reason?: string;
+  } {
+    const emailLower = email.toLowerCase();
+    
+    // Patrones sospechosos de email
+    const suspiciousPatterns = [
+      /^test\d*@/i,
+      /^fake\d*@/i,
+      /^spam\d*@/i,
+      /^temp\d*@/i,
+      /@temp\./i,
+      /@fake\./i,
+      /@test\./i,
+      /\d{10,}@/i, // Muchos números al inicio
+    ];
+
+    for (const pattern of suspiciousPatterns) {
+      if (pattern.test(emailLower)) {
+        return {
+          isSuspicious: true,
+          reason: 'Email con patrones sospechosos detectados'
+        };
+      }
+    }
+
+    return { isSuspicious: false };
+  }
+
+  /**
    * Análisis completo de contenido
    */
   async analyzeContent(content: {
     text?: string;
     imageUrl?: string;
-    profileData?: any;
+    profileData?: ProfileData;
   }): Promise<ContentAnalysis> {
     const analysis: ContentAnalysis = {
       overallRisk: 0
@@ -622,7 +813,7 @@ class ContentModerationService {
 
   /**
    * Guarda resultado de moderación en logs
-   * TODO: Implementar sistema de logs de moderación en BD
+   * Implementado sistema de logs de moderación en BD
    */
   async logModerationResult(
     contentType: 'text' | 'image' | 'profile',
@@ -631,16 +822,60 @@ class ContentModerationService {
     userId?: string
   ): Promise<void> {
     try {
-      // PLACEHOLDER: Guardar en tabla moderation_logs (por crear)
-      console.log('Logging moderation result:', {
-        contentType,
-        contentId,
-        result,
-        userId,
-        timestamp: new Date().toISOString()
-      });
+      if (!supabase) {
+        logger.warn('Supabase no está disponible, no se puede registrar log de moderación');
+        return;
+      }
+
+      // Obtener el ID del moderador actual (si existe)
+      const { data: { user } } = await supabase.auth.getUser();
+      const moderatorId = user?.id || userId || 'system';
+
+      // Mapear contentType a target_type de moderation_logs
+      const targetTypeMap: Record<'text' | 'image' | 'profile', string> = {
+        text: 'content',
+        image: 'content',
+        profile: 'user'
+      };
+
+      // Mapear action a action_type de moderation_logs
+      const actionTypeMap: Record<ModerationResult['action'], string> = {
+        approve: 'approve',
+        review: 'edit',
+        reject: 'reject',
+        ban: 'ban'
+      };
+
+      // Insertar en moderation_logs
+      const { error } = await supabase
+        .from('moderation_logs')
+        .insert({
+          moderator_id: moderatorId,
+          action_type: actionTypeMap[result.action] || 'edit',
+          target_type: targetTypeMap[contentType] || 'content',
+          target_id: contentId,
+          description: result.explanation,
+          severity: result.severity,
+          metadata: {
+            contentType,
+            isAppropriate: result.isAppropriate,
+            confidence: result.confidence,
+            flags: result.flags,
+            userId
+          } as Record<string, unknown>
+        });
+
+      if (error) {
+        logger.error('Error guardando log de moderación', { error });
+      } else {
+        logger.debug('Log de moderación guardado exitosamente', {
+          contentType,
+          contentId,
+          action: result.action
+        });
+      }
     } catch (error) {
-      console.error('Error logging moderation result:', error);
+      logger.error('Error logging moderation result', { error });
     }
   }
 
@@ -741,19 +976,25 @@ class ContentModerationService {
   /**
    * Calcula completitud del perfil
    */
-  private calculateProfileCompleteness(profileData: any): number {
+  private calculateProfileCompleteness(profileData: ProfileData): number {
     if (!profileData) return 0;
     
     let score = 0;
-    const fields = ['name', 'bio', 'age', 'location', 'avatar_url'];
+    const fields: (keyof ProfileData)[] = ['name', 'bio', 'age', 'location'];
     
     fields.forEach(field => {
-      if (profileData[field] && profileData[field].toString().trim().length > 0) {
+      const value = profileData[field];
+      if (value !== undefined && value !== null && String(value).trim().length > 0) {
         score += 0.2;
       }
     });
     
-    return score;
+    // Verificar avatar_url si existe en profileData
+    if (profileData.photos && profileData.photos.length > 0) {
+      score += 0.2;
+    }
+    
+    return Math.min(1, score);
   }
 
   /**
@@ -798,18 +1039,8 @@ class ContentModerationService {
   /**
    * Obtiene reglas específicas del contexto
    */
-  private getContextRules(context: string): {
-    maxLength: number;
-    allowLinks: boolean;
-    allowEmojis: boolean;
-    requirePersonalContent: boolean;
-  } {
-    const rules: Record<string, {
-      maxLength: number;
-      allowLinks: boolean;
-      allowEmojis: boolean;
-      requirePersonalContent: boolean;
-    }> = {
+  private getContextRules(context: string): ContextRules {
+    const rules: Record<string, ContextRules> = {
       message: {
         maxLength: 500,
         allowLinks: false,
@@ -836,7 +1067,7 @@ class ContentModerationService {
   /**
    * Verifica reglas específicas del contexto
    */
-  private checkContextRules(content: string, rules: any): ModerationFlag[] {
+  private checkContextRules(content: string, rules: ContextRules): ModerationFlag[] {
     const violations: ModerationFlag[] = [];
     
     if (content.length > rules.maxLength) {

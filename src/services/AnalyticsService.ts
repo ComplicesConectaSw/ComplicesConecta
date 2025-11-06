@@ -3,6 +3,9 @@
  * Sistema de métricas y analytics realistas
  */
 
+import { logger } from '@/lib/logger';
+import type { AnalyticsProperties, BrowserPerformanceMemory } from '@/types/analytics.types';
+
 // Tipos de eventos
 interface AnalyticsEvent {
   name: string;
@@ -13,7 +16,7 @@ interface AnalyticsEvent {
   timestamp: number;
   userId?: string;
   sessionId: string;
-  properties?: Record<string, any>;
+  properties?: AnalyticsProperties;
 }
 
 // Métricas de usuario
@@ -93,7 +96,7 @@ export const initializeAnalytics = (config: Partial<AnalyticsConfig> = {}): void
     setupUserTracking();
   }
   
-  console.log('📊 Analytics inicializado:', {
+  logger.info('Analytics inicializado', {
     sessionId: currentSessionId,
     config: currentConfig
   });
@@ -128,7 +131,7 @@ const setupPerformanceTracking = (): void => {
   // Medir uso de memoria
   if ('memory' in performance) {
     setInterval(() => {
-      const memory = (performance as any).memory;
+      const memory = (performance as { memory?: BrowserPerformanceMemory }).memory;
       if (memory) {
         trackEvent('performance', 'memory_usage', 'heap', memory.usedJSHeapSize);
       }
@@ -181,7 +184,7 @@ export const trackEvent = (
   action: string,
   label?: string,
   value?: number,
-  properties?: Record<string, any>
+  properties?: AnalyticsProperties
 ): void => {
   if (!currentConfig.enableTracking) return;
   
@@ -214,7 +217,7 @@ export const trackEvent = (
   
   // Debug
   if (currentConfig.debugMode) {
-    console.log('📊 Event tracked:', event);
+    logger.debug('Event tracked', { event });
   }
   
   // Enviar a servidor si está configurado
@@ -368,7 +371,7 @@ const sendEventToServer = async (event: AnalyticsEvent): Promise<void> => {
       keepalive: true
     });
   } catch (error) {
-    console.warn('⚠️ Error enviando evento a servidor:', error);
+    logger.warn('Error enviando evento a servidor', { error });
   }
 };
 
@@ -391,7 +394,7 @@ const loadStoredMetrics = (): void => {
       });
     }
   } catch (error) {
-    console.warn('⚠️ Error cargando métricas almacenadas:', error);
+    logger.warn('Error cargando métricas almacenadas', { error });
   }
 };
 
@@ -405,7 +408,7 @@ const saveMetricsToStorage = (): void => {
     const userMetricsObj = Object.fromEntries(userMetricsStorage);
     localStorage.setItem('analytics_user_metrics', JSON.stringify(userMetricsObj));
   } catch (error) {
-    console.warn('⚠️ Error guardando métricas:', error);
+    logger.warn('Error guardando métricas', { error });
   }
 };
 
@@ -455,7 +458,7 @@ export const clearAnalyticsData = (): void => {
   localStorage.removeItem('analytics_events');
   localStorage.removeItem('analytics_user_metrics');
   
-  console.log('🧹 Datos de analytics limpiados');
+  logger.debug('Datos de analytics limpiados');
 };
 
 // Guardar métricas cada 5 minutos

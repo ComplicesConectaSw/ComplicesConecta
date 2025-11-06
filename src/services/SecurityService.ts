@@ -7,6 +7,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
 import * as speakeasy from 'speakeasy';
 import * as QRCode from 'qrcode';
+import type { ActivityPattern, UserActivity, ActivityMetadata, AuditEventDetails } from '@/types/security.types';
+import type { Json } from '@/types/supabase';
 
 export interface SecurityAnalysis {
   riskScore: number;
@@ -38,7 +40,7 @@ export interface AuditLogEntry {
   userId: string;
   action: string;
   resource: string;
-  details: Record<string, any>;
+  details: AuditEventDetails;
   ipAddress: string;
   userAgent: string;
   timestamp: string;
@@ -57,7 +59,7 @@ class SecurityService {
   /**
    * Obtiene patrones de actividad del usuario
    */
-  private async getUserActivityPatterns(_userId: string, _timeframe: string) {
+  private async getUserActivityPatterns(_userId: string, _timeframe: string): Promise<ActivityPattern> {
     // Simulación de patrones basados en datos reales
     return {
       loginFrequency: Math.random() * 10, // logins por período
@@ -72,7 +74,7 @@ class SecurityService {
   /**
    * Detecta actividad inusual basada en patrones
    */
-  private detectUnusualActivity(patterns: any): boolean {
+  private detectUnusualActivity(patterns: ActivityPattern): boolean {
     // Lógica realista de detección
     const unusualIndicators = [
       patterns.loginFrequency > 20, // Más de 20 logins por período
@@ -89,7 +91,7 @@ class SecurityService {
   /**
    * Analiza patrones de comportamiento del usuario
    */
-  private async analyzeBehaviorPattern(userId: string, activity: any) {
+  private async analyzeBehaviorPattern(userId: string, activity: UserActivity) {
     // Simulación de análisis de comportamiento realista
     const suspiciousActions = ['rapid_profile_views', 'mass_messaging', 'unusual_login_times'];
     const isSuspiciousAction = suspiciousActions.includes(activity.action);
@@ -316,7 +318,7 @@ class SecurityService {
     action: string;
     ipAddress: string;
     userAgent: string;
-    metadata?: Record<string, any>;
+    metadata?: ActivityMetadata;
   }): Promise<FraudAnalysis> {
     try {
       const patterns: string[] = [];
@@ -348,7 +350,11 @@ class SecurityService {
       }
       
       // Verificar patrones de comportamiento sospechoso
-      const behaviorPattern = await this.analyzeBehaviorPattern(userId, activity);
+      const behaviorPattern = await this.analyzeBehaviorPattern(userId, {
+        ...activity,
+        userId,
+        timestamp: new Date().toISOString()
+      } as UserActivity);
       if (behaviorPattern.isSuspicious) {
         patterns.push('suspicious_behavior');
         riskFactors.push(behaviorPattern.reason);
@@ -392,7 +398,7 @@ class SecurityService {
   async logSecurityEvent(
     userId: string,
     action: string,
-    details: Record<string, any>,
+    details: AuditEventDetails | Record<string, unknown>,
     ipAddress?: string,
     _userAgent?: string
   ): Promise<void> {
@@ -402,7 +408,15 @@ class SecurityService {
         return;
       }
 
-      const riskScore = await this.calculateEventRiskScore(action, details);
+      const auditDetails: AuditEventDetails = {
+        action,
+        ...(details as Record<string, unknown>)
+      } as AuditEventDetails;
+
+      const riskScore = await this.calculateEventRiskScore(action, auditDetails);
+      
+      // Convertir AuditEventDetails a Json para Supabase
+      const metadataJson: Json = auditDetails as unknown as Json;
       
       const { error } = await supabase
         .from('security_events')
@@ -410,7 +424,7 @@ class SecurityService {
           user_id: userId,
           event_type: action,
           description: `Evento de seguridad: ${action}`,
-          metadata: details || {},
+          metadata: metadataJson,
           ip_address: ipAddress || 'unknown',
           severity: riskScore > 0.7 ? 'critical' : riskScore > 0.4 ? 'high' : 'medium'
         });
@@ -455,13 +469,25 @@ class SecurityService {
       }
       
       // Mapear los datos de la base de datos al formato esperado
-      const mappedLogs: AuditLogEntry[] = (data || []).map((log: any) => ({
+      const mappedLogs: AuditLogEntry[] = (data || []).map((log: {
+        id: string;
+        user_id?: string | null;
+        event_type?: string;
+        metadata?: unknown;
+        ip_address?: unknown;
+        user_agent?: string | null;
+        timestamp?: string | null;
+        severity?: string;
+      }) => ({
         id: log.id,
         userId: log.user_id || '',
         action: log.event_type || '',
         resource: 'security',
-        details: log.metadata || {},
-        ipAddress: log.ip_address || '',
+        details: {
+          action: log.event_type || '',
+          ...(log.metadata as Record<string, unknown> || {})
+        } as AuditEventDetails,
+        ipAddress: typeof log.ip_address === 'string' ? log.ip_address : '',
         userAgent: log.user_agent || '',
         timestamp: log.timestamp || new Date().toISOString(),
         riskScore: log.severity === 'critical' ? 0.9 : log.severity === 'high' ? 0.7 : 0.3
@@ -589,7 +615,7 @@ class SecurityService {
     }
   }
 
-  private async calculateEventRiskScore(action: string, _details: Record<string, any>): Promise<number> {
+  private async calculateEventRiskScore(action: string, _details: AuditEventDetails): Promise<number> {
     // PLACEHOLDER: Cálculo básico de risk score
     const riskScores: Record<string, number> = {
       'login': 1,
