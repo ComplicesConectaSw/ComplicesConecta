@@ -74,9 +74,20 @@ export default defineConfig({
     headers: {
       'Cross-Origin-Embedder-Policy': 'unsafe-none',
       'Cross-Origin-Opener-Policy': 'same-origin'
+    },
+    // CRÍTICO: Configurar source maps para desarrollo
+    // Deshabilitar source maps para dependencias de node_modules para evitar errores
+    sourcemapIgnoreList: (sourcePath) => {
+      // Ignorar source maps de node_modules para evitar errores en consola
+      return sourcePath.includes('node_modules');
     }
   },
   build: {
+    // CRÍTICO: Configurar source maps para producción
+    // En desarrollo, Vite genera source maps automáticamente
+    // En producción, solo generar source maps si hay credenciales de Sentry
+    sourcemap: process.env.NODE_ENV === 'production' && 
+               process.env.SENTRY_AUTH_TOKEN ? true : false,
     // CRÍTICO: Asegurar que las entradas preserven sus firmas para mejor resolución de dependencias
     rollupOptions: {
       preserveEntrySignatures: 'strict',
