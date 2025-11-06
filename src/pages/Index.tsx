@@ -593,10 +593,7 @@ const Index = () => {
         </div>
       )}
       
-      {/* Loading Screen */}
-      {isLoading && (
-        <LoadingScreen onComplete={handleLoadingComplete} />
-      )}
+      {/* Loading Screen - REMOVIDO: Ya está manejado arriba con loadingTimeoutPassed */}
     </div>
   );
 };

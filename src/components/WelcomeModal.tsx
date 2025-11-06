@@ -82,7 +82,12 @@ export const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
 
   useEffect(() => {
     if (isOpen) {
+      // CRÍTICO: Establecer isVisible inmediatamente cuando isOpen es true
+      // Esto evita que el modal se quede en estado invisible y bloquee la UI
       setIsVisible(true);
+    } else {
+      // Si se cierra, resetear isVisible después de la animación
+      setIsVisible(false);
     }
   }, [isOpen]);
 
@@ -113,8 +118,20 @@ export const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
 
   if (!isOpen) return null;
 
+  // CRÍTICO: Asegurar que el modal siempre sea visible cuando isOpen es true
+  // Si isVisible es false pero isOpen es true, forzar isVisible a true
+  const shouldBeVisible = isOpen && isVisible;
+  
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+    <div 
+      className={`fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm ${
+        shouldBeVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'
+      }`}
+      style={{ 
+        pointerEvents: shouldBeVisible ? 'auto' : 'none',
+        transition: 'opacity 0.3s ease-in-out'
+      }}
+    >
       <div 
         className={`transition-all duration-500 transform ${
           isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
