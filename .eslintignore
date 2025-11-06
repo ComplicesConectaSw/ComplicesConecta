@@ -1,0 +1,16 @@
+# Generated files
+src/types/supabase-generated.ts
+src/types/supabase.ts
+
+# Build outputs
+dist/
+build/
+node_modules/
+
+# Test files
+*.test.ts
+*.spec.ts
+
+# Android
+android/
+

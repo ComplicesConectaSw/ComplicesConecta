@@ -72,7 +72,7 @@ $criticalTables = @(
     "ai_model_metrics",
     "chat_summaries",
     "summary_requests",
-    "summary_feedback",
+    "summary_feedback"
     
     # Tablas S2 (Fase 2.1)
     # Nota: profiles y couple_profiles deben tener columnas s2_cell_id
