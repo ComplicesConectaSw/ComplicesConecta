@@ -4,6 +4,7 @@
  */
 
 import { logger } from '@/lib/logger';
+import type { WindowWithWallets } from '@/types/wallet.types';
 
 export class WalletProtectionService {
   private static instance: WalletProtectionService;
@@ -53,26 +54,28 @@ export class WalletProtectionService {
   }
 
   private detectWalletConflicts(): void {
+    const win = window as WindowWithWallets;
+    
     // Detectar MetaMask
-    if ((window as any).ethereum && (window as any).ethereum.isMetaMask) {
+    if (win.ethereum && win.ethereum.isMetaMask) {
       logger.debug('MetaMask detectado');
       this.handleMetaMaskConflicts();
     }
 
     // Detectar Solana
-    if ((window as any).solana) {
+    if (win.solana) {
       logger.debug('Solana detectado');
       this.handleSolanaConflicts();
     }
 
     // Detectar TronLink
-    if ((window as any).tronWeb) {
+    if (win.tronWeb) {
       logger.debug('TronLink detectado');
       this.handleTronLinkConflicts();
     }
 
     // Detectar Bybit
-    if ((window as any).bybit) {
+    if (win.bybit) {
       logger.debug('Bybit detectado');
       this.handleBybitConflicts();
     }
@@ -81,9 +84,10 @@ export class WalletProtectionService {
   private handleMetaMaskConflicts(): void {
     // Prevenir errores de redefinición de ethereum
     try {
-      if ((window as any).ethereum) {
+      const win = window as WindowWithWallets;
+      if (win.ethereum) {
         Object.defineProperty(window, 'ethereum', {
-          value: (window as any).ethereum,
+          value: win.ethereum,
           writable: false,
           configurable: true
         });
@@ -96,9 +100,10 @@ export class WalletProtectionService {
   private handleSolanaConflicts(): void {
     // Prevenir errores de redefinición de solana
     try {
-      if ((window as any).solana) {
+      const win = window as WindowWithWallets;
+      if (win.solana) {
         Object.defineProperty(window, 'solana', {
-          value: (window as any).solana,
+          value: win.solana,
           writable: false,
           configurable: true
         });
@@ -111,9 +116,10 @@ export class WalletProtectionService {
   private handleTronLinkConflicts(): void {
     // Prevenir errores de redefinición de tronWeb
     try {
-      if ((window as any).tronWeb) {
+      const win = window as WindowWithWallets;
+      if (win.tronWeb) {
         Object.defineProperty(window, 'tronWeb', {
-          value: (window as any).tronWeb,
+          value: win.tronWeb,
           writable: false,
           configurable: true
         });
@@ -126,9 +132,10 @@ export class WalletProtectionService {
   private handleBybitConflicts(): void {
     // Prevenir errores de redefinición de bybit
     try {
-      if ((window as any).bybit) {
+      const win = window as WindowWithWallets;
+      if (win.bybit) {
         Object.defineProperty(window, 'bybit', {
-          value: (window as any).bybit,
+          value: win.bybit,
           writable: false,
           configurable: true
         });
@@ -146,11 +153,12 @@ export class WalletProtectionService {
   // Método público para obtener lista de wallets detectados
   public getDetectedWallets(): string[] {
     const wallets: string[] = [];
+    const win = window as WindowWithWallets;
     
-    if ((window as any).ethereum && (window as any).ethereum.isMetaMask) wallets.push('MetaMask');
-    if ((window as any).solana) wallets.push('Solana');
-    if ((window as any).tronWeb) wallets.push('TronLink');
-    if ((window as any).bybit) wallets.push('Bybit');
+    if (win.ethereum && win.ethereum.isMetaMask) wallets.push('MetaMask');
+    if (win.solana) wallets.push('Solana');
+    if (win.tronWeb) wallets.push('TronLink');
+    if (win.bybit) wallets.push('Bybit');
     
     return wallets;
   }

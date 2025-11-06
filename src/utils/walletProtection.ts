@@ -152,34 +152,55 @@ export const initializeWalletProtection = () => {
   };
   
   // Override Object.defineProperty with SELECTIVE protection - ULTRA AGRESIVO
+  // Maneja propiedades de solo lectura de extensiones de wallet
   Object.defineProperty = function(obj: any, prop: string, descriptor: PropertyDescriptor) {
     const walletProps = ['ethereum', 'solana', 'tronWeb', 'bybitWallet', 'tronweb', 'chainId', 'chainid'];
     
-    // Si es una propiedad de wallet en window, permitir siempre sin errores
+    // Si es una propiedad de wallet en window, manejar propiedades de solo lectura
     if (obj === window && walletProps.includes(prop.toLowerCase())) {
       try {
-        // Intentar definir la propiedad normalmente
+        // Intentar obtener el descriptor existente
         const existingDesc = Object.getOwnPropertyDescriptor(window, prop);
+        
+        // Si ya existe y NO es configurable (read-only), no intentar redefinir
+        if (existingDesc && !existingDesc.configurable) {
+          // Propiedad de solo lectura - simplemente retornar sin error
+          return obj;
+        }
         
         // Si ya existe y es configurable, intentar redefinir
         if (existingDesc && existingDesc.configurable) {
           try {
             return originalDefineProperty.call(this, obj, prop, descriptor);
-          } catch {
-            // Si falla, simplemente retornar el objeto sin error
-            return obj;
+          } catch (error: any) {
+            // Si falla por "read only property", simplemente retornar sin error
+            const errorMessage = error?.message?.toLowerCase() || '';
+            if (errorMessage.includes('read only') || 
+                errorMessage.includes('cannot assign') ||
+                errorMessage.includes('cannot redefine')) {
+              return obj;
+            }
+            // Otro tipo de error, reintentar con descriptor más permisivo
+            try {
+              const permissiveDescriptor = {
+                ...descriptor,
+                configurable: true,
+                writable: true
+              };
+              return originalDefineProperty.call(this, obj, prop, permissiveDescriptor);
+            } catch {
+              return obj;
+            }
           }
-        }
-        
-        // Si no es configurable, intentar hacerlo configurable primero
-        if (existingDesc && !existingDesc.configurable) {
-          // No podemos hacer nada, solo retornar sin error
-          return obj;
         }
         
         // Si no existe, intentar crearlo
         try {
-          return originalDefineProperty.call(this, obj, prop, descriptor);
+          return originalDefineProperty.call(this, obj, prop, {
+            ...descriptor,
+            configurable: true,
+            writable: true
+          });
         } catch {
           // Si falla, simplemente retornar el objeto sin error
           return obj;
@@ -198,7 +219,8 @@ export const initializeWalletProtection = () => {
       const isWalletError = walletProps.includes(prop.toLowerCase()) || 
                            walletProps.some(wp => errorMessage.includes(wp)) ||
                            errorMessage.includes('cannot redefine property') ||
-                           errorMessage.includes('cannot assign to read only property');
+                           errorMessage.includes('cannot assign to read only property') ||
+                           errorMessage.includes('read only property');
       
       if (isWalletError && obj === window) {
         // Silenciar completamente - no mostrar logs, solo retornar

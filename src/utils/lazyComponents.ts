@@ -1,7 +1,7 @@
 import { lazy } from 'react';
 
 // Lazy loading with chunk names for better debugging
-export const LazyComponents = {
+export const LazyPages = {
   // Admin components - separate chunk
   Admin: lazy(() => import(/* webpackChunkName: "admin" */ "@/pages/Admin")),
   AdminProduction: lazy(() => import(/* webpackChunkName: "admin" */ "@/pages/AdminProduction")),

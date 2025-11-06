@@ -20,6 +20,7 @@ import OpenAI from 'openai';
 import { HfInference } from '@huggingface/inference';
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
+import type { ChatSummaryRow } from '@/types/chat-summary.types';
 
 export interface ChatSummary {
   id: string;
@@ -315,7 +316,7 @@ ${messagesText}`;
     
     const today = new Date().toISOString().split('T')[0];
     
-    const { count } = await (supabase as any)
+    const { count } = await supabase
       .from('summary_requests')
       .select('*', { count: 'exact', head: true })
       .eq('user_id', userId)
@@ -337,7 +338,7 @@ ${messagesText}`;
     
     const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
     
-    const { data, error } = await (supabase as any)
+    const { data, error } = await supabase
       .from('chat_summaries')
       .select('*')
       .eq('chat_id', chatId)
@@ -348,15 +349,17 @@ ${messagesText}`;
     
     if (error || !data) return null;
     
+    const summaryRow = data as ChatSummaryRow;
+    
     return {
-      id: (data as any).id,
-      chatId: (data as any).chat_id,
-      summary: (data as any).summary,
-      sentiment: (data as any).sentiment as 'positive' | 'neutral' | 'negative',
-      topics: (data as any).topics as string[],
-      messageCount: (data as any).message_count,
-      method: (data as any).method as 'gpt4' | 'bart' | 'fallback',
-      createdAt: new Date((data as any).created_at),
+      id: summaryRow.id,
+      chatId: summaryRow.chat_id,
+      summary: summaryRow.summary,
+      sentiment: (summaryRow.sentiment || 'neutral') as 'positive' | 'neutral' | 'negative',
+      topics: (summaryRow.topics as string[]) || [],
+      messageCount: summaryRow.message_count || 0,
+      method: (summaryRow.method || 'fallback') as 'gpt4' | 'bart' | 'fallback',
+      createdAt: new Date(summaryRow.created_at || new Date().toISOString()),
     };
   }
 
@@ -398,7 +401,7 @@ ${messagesText}`;
       throw new Error('Supabase no está disponible');
     }
     
-    const { error } = await (supabase as any).from('chat_summaries').insert({
+    const { error } = await supabase.from('chat_summaries').insert({
       id: summary.id,
       chat_id: summary.chatId,
       summary: summary.summary,
@@ -424,7 +427,7 @@ ${messagesText}`;
       return;
     }
     
-    const { error } = await (supabase as any).from('summary_requests').insert({
+    const { error } = await supabase.from('summary_requests').insert({
       user_id: userId,
       chat_id: chatId,
     });
@@ -452,7 +455,7 @@ ${messagesText}`;
     
     const today = new Date().toISOString().split('T')[0];
     
-    const { count } = await (supabase as any)
+    const { count } = await supabase
       .from('summary_requests')
       .select('*', { count: 'exact', head: true })
       .eq('user_id', userId)

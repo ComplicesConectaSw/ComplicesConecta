@@ -79,9 +79,10 @@ export default defineConfig({
       'Cross-Origin-Embedder-Policy': 'unsafe-none',
       'Cross-Origin-Opener-Policy': 'same-origin',
       // CSP: Permitir unsafe-eval solo en desarrollo (Vite lo requiere para HMR)
+      // Permitir vercel.live en frame-src para Vercel Live Preview
       'Content-Security-Policy': process.env.NODE_ENV === 'development' 
-        ? "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; connect-src 'self' https: ws: wss:;"
-        : "default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; connect-src 'self' https: ws: wss:;"
+        ? "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; connect-src 'self' https: ws: wss:; frame-src 'self' https://vercel.live;"
+        : "default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; connect-src 'self' https: ws: wss:; frame-src 'self' https://vercel.live;"
     },
     // Evitar errores de source maps de extensiones del navegador
     sourcemapIgnoreList: (sourcePath) => {
