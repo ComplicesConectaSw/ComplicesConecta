@@ -147,7 +147,13 @@ export default defineConfig({
             if (id.includes('date-fns') || id.includes('clsx') || id.includes('tailwind-merge')) {
               return 'utils';
             }
-            // Rest of vendor code - INCLUYE REACT AQUÍ
+            // Rest of vendor code - PERO NO DEBE INCLUIR REACT
+            // CRÍTICO: Asegurar que React NO esté en vendor chunk
+            // Si alguna dependencia de vendor intenta usar React, debe estar en vendor-react
+            if (id.includes('react') && !id.includes('react-router') && !id.includes('react-query') && !id.includes('react-hook-form')) {
+              // Si es React pero no está capturado arriba, forzar a vendor-react
+              return 'vendor-react';
+            }
             return 'vendor';
           }
           

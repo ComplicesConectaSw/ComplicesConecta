@@ -482,6 +482,102 @@
       }, true);
     </script>
     
+    <!-- CRÍTICO: Interceptar TODOS los accesos a React ANTES de que cualquier chunk se cargue -->
+    <script>
+      // PROTECCIÓN ULTRA CRÍTICA: Interceptar accesos a React.useLayoutEffect a nivel de módulo
+      // Esto se ejecuta ANTES de que cualquier módulo ES6 se importe
+      (function() {
+        // Interceptar Module namespace objects ANTES de que se creen
+        var originalDefineProperty = Object.defineProperty;
+        var originalGetOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+        var originalGetPrototypeOf = Object.getPrototypeOf;
+        
+        // Interceptar Object.defineProperty para React
+        Object.defineProperty = function(obj, prop, descriptor) {
+          if (obj === window && (prop === 'React' || prop === 'react')) {
+            var reactValue = descriptor.value || (descriptor.get && descriptor.get());
+            if (reactValue) {
+              window.__REACT_REAL__ = reactValue;
+              // Asegurar useLayoutEffect
+              if (!reactValue.useLayoutEffect) {
+                reactValue.useLayoutEffect = window.__REACT_STUB__?.useLayoutEffect || function() { return function() {}; };
+              }
+            }
+          }
+          return originalDefineProperty.call(this, obj, prop, descriptor);
+        };
+        
+        // Interceptar Object.getOwnPropertyDescriptor para React
+        Object.getOwnPropertyDescriptor = function(obj, prop) {
+          if (obj === window && (prop === 'React' || prop === 'react')) {
+            var desc = originalGetOwnPropertyDescriptor.call(this, obj, prop);
+            if (desc && desc.get) {
+              // Interceptar el getter
+              var originalGetter = desc.get;
+              desc.get = function() {
+                var react = originalGetter.call(this);
+                // Asegurar useLayoutEffect SIEMPRE
+                if (!react || !react.useLayoutEffect) {
+                  var stub = window.__REACT_STUB__ || window.__REACT_REAL__;
+                  if (stub && stub.useLayoutEffect) {
+                    if (react) {
+                      react.useLayoutEffect = stub.useLayoutEffect;
+                    } else {
+                      react = stub;
+                    }
+                  } else {
+                    react = react || {
+                      useLayoutEffect: function() { return function() {}; },
+                      useEffect: function() { return function() {}; },
+                      useState: function() { return [null, function() {}]; }
+                    };
+                  }
+                }
+                return react;
+              };
+            } else if (!desc) {
+              // Si no hay descriptor, crear uno con el stub
+              return {
+                get: function() {
+                  return window.__REACT_REAL__ || window.__REACT_STUB__ || window.React || {
+                    useLayoutEffect: function() { return function() {}; },
+                    useEffect: function() { return function() {}; },
+                    useState: function() { return [null, function() {}]; }
+                  };
+                },
+                configurable: true,
+                enumerable: true
+              };
+            }
+            return desc;
+          }
+          return originalGetOwnPropertyDescriptor.call(this, obj, prop);
+        };
+        
+        // Interceptar Proxy para módulos ES6
+        if (typeof Proxy !== 'undefined') {
+          var OriginalProxy = Proxy;
+          Proxy = function(target, handler) {
+            // Si el target es React o tiene useLayoutEffect, interceptarlo
+            if (target && (target.useLayoutEffect || target === window.React || target === window.__REACT_STUB__)) {
+              var originalGet = handler.get;
+              handler.get = function(target, prop, receiver) {
+                if (prop === 'useLayoutEffect') {
+                  var result = originalGet ? originalGet.call(this, target, prop, receiver) : target[prop];
+                  if (!result) {
+                    return function() { return function() {}; };
+                  }
+                  return result;
+                }
+                return originalGet ? originalGet.call(this, target, prop, receiver) : target[prop];
+              };
+            }
+            return new OriginalProxy(target, handler);
+          };
+        }
+      })();
+    </script>
+    
     <!-- CRÍTICO: Pre-cargar vendor-react ANTES de main.tsx para asegurar que React esté disponible -->
     <script type="module">
       // Asegurar que React esté disponible antes de cargar cualquier módulo
