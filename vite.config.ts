@@ -2,11 +2,15 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 import { sentryVitePlugin } from "@sentry/vite-plugin";
+import { reactOrderPlugin } from "./vite-plugin-react-order";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react(),
+    // CRÍTICO: Plugin para asegurar que vendor-react se cargue ANTES que vendor
+    // Esto resuelve el error "Cannot read properties of undefined (reading 'useLayoutEffect')"
+    reactOrderPlugin(),
     // Sentry plugin para source maps (solo en producción y con configuración completa)
     process.env.NODE_ENV === 'production' && 
     process.env.SENTRY_ORG && 
