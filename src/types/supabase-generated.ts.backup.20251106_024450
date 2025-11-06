@@ -1,4 +1,3 @@
-Connecting to db 5432
 export type Json =
   | string
   | number
@@ -259,50 +258,6 @@ export type Database = {
           },
         ]
       }
-      app_logs: {
-        Row: {
-          context: Json | null
-          created_at: string | null
-          id: string
-          ip_address: unknown
-          level: string
-          message: string
-          metadata: Json | null
-          user_agent: string | null
-          user_id: string | null
-        }
-        Insert: {
-          context?: Json | null
-          created_at?: string | null
-          id?: string
-          ip_address?: unknown
-          level?: string
-          message: string
-          metadata?: Json | null
-          user_agent?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          context?: Json | null
-          created_at?: string | null
-          id?: string
-          ip_address?: unknown
-          level?: string
-          message?: string
-          metadata?: Json | null
-          user_agent?: string | null
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "app_logs_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       biometric_sessions: {
         Row: {
           confidence: number | null
@@ -431,48 +386,6 @@ export type Database = {
           miss_count?: number | null
           size_bytes?: number | null
           ttl_seconds?: number | null
-        }
-        Relationships: []
-      }
-      career_applications: {
-        Row: {
-          cover_letter: string | null
-          created_at: string | null
-          experience_years: number | null
-          id: string
-          position: string
-          resume_url: string | null
-          reviewed_at: string | null
-          reviewed_by: string | null
-          status: string | null
-          updated_at: string | null
-          user_id: string
-        }
-        Insert: {
-          cover_letter?: string | null
-          created_at?: string | null
-          experience_years?: number | null
-          id?: string
-          position: string
-          resume_url?: string | null
-          reviewed_at?: string | null
-          reviewed_by?: string | null
-          status?: string | null
-          updated_at?: string | null
-          user_id: string
-        }
-        Update: {
-          cover_letter?: string | null
-          created_at?: string | null
-          experience_years?: number | null
-          id?: string
-          position?: string
-          resume_url?: string | null
-          reviewed_at?: string | null
-          reviewed_by?: string | null
-          status?: string | null
-          updated_at?: string | null
-          user_id?: string
         }
         Relationships: []
       }
@@ -663,91 +576,6 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
-      }
-      comment_likes: {
-        Row: {
-          comment_id: string
-          created_at: string | null
-          id: string
-          user_id: string
-        }
-        Insert: {
-          comment_id: string
-          created_at?: string | null
-          id?: string
-          user_id: string
-        }
-        Update: {
-          comment_id?: string
-          created_at?: string | null
-          id?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "comment_likes_comment_id_fkey"
-            columns: ["comment_id"]
-            isOneToOne: false
-            referencedRelation: "story_comments"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      consent_verifications: {
-        Row: {
-          confidence: number
-          consent_level: string
-          created_at: string
-          explanation: string | null
-          id: string
-          message_id: string | null
-          recipient_id: string
-          requires_confirmation: boolean
-          suggested_action: string
-          updated_at: string
-          user_id: string
-          verified: boolean
-          verified_at: string | null
-        }
-        Insert: {
-          confidence: number
-          consent_level: string
-          created_at?: string
-          explanation?: string | null
-          id?: string
-          message_id?: string | null
-          recipient_id: string
-          requires_confirmation?: boolean
-          suggested_action: string
-          updated_at?: string
-          user_id: string
-          verified?: boolean
-          verified_at?: string | null
-        }
-        Update: {
-          confidence?: number
-          consent_level?: string
-          created_at?: string
-          explanation?: string | null
-          id?: string
-          message_id?: string | null
-          recipient_id?: string
-          requires_confirmation?: boolean
-          suggested_action?: string
-          updated_at?: string
-          user_id?: string
-          verified?: boolean
-          verified_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "consent_verifications_message_id_fkey"
-            columns: ["message_id"]
-            isOneToOne: false
-            referencedRelation: "messages"
-            referencedColumns: ["id"]
-          },
-        ]
       }
       couple_events: {
         Row: {
@@ -1255,63 +1083,6 @@ export type Database = {
         }
         Relationships: []
       }
-      images: {
-        Row: {
-          alt_text: string | null
-          file_size: number | null
-          height: number | null
-          id: string
-          is_featured: boolean | null
-          is_public: boolean | null
-          is_verified: boolean | null
-          metadata: Json | null
-          mime_type: string | null
-          profile_id: string
-          sort_order: number | null
-          tags: string[] | null
-          updated_at: string | null
-          uploaded_at: string | null
-          url: string
-          width: number | null
-        }
-        Insert: {
-          alt_text?: string | null
-          file_size?: number | null
-          height?: number | null
-          id?: string
-          is_featured?: boolean | null
-          is_public?: boolean | null
-          is_verified?: boolean | null
-          metadata?: Json | null
-          mime_type?: string | null
-          profile_id: string
-          sort_order?: number | null
-          tags?: string[] | null
-          updated_at?: string | null
-          uploaded_at?: string | null
-          url: string
-          width?: number | null
-        }
-        Update: {
-          alt_text?: string | null
-          file_size?: number | null
-          height?: number | null
-          id?: string
-          is_featured?: boolean | null
-          is_public?: boolean | null
-          is_verified?: boolean | null
-          metadata?: Json | null
-          mime_type?: string | null
-          profile_id?: string
-          sort_order?: number | null
-          tags?: string[] | null
-          updated_at?: string | null
-          uploaded_at?: string | null
-          url?: string
-          width?: number | null
-        }
-        Relationships: []
-      }
       invitation_statistics: {
         Row: {
           acceptance_rate: number | null
@@ -1476,128 +1247,6 @@ export type Database = {
         }
         Relationships: []
       }
-      media: {
-        Row: {
-          created_at: string | null
-          duration: number | null
-          file_name: string
-          file_path: string
-          file_size: number | null
-          file_type: string
-          file_url: string
-          height: number | null
-          id: string
-          is_public: boolean | null
-          is_verified: boolean | null
-          metadata: Json | null
-          mime_type: string | null
-          tags: string[] | null
-          thumbnail_url: string | null
-          updated_at: string | null
-          user_id: string
-          width: number | null
-        }
-        Insert: {
-          created_at?: string | null
-          duration?: number | null
-          file_name: string
-          file_path: string
-          file_size?: number | null
-          file_type: string
-          file_url: string
-          height?: number | null
-          id?: string
-          is_public?: boolean | null
-          is_verified?: boolean | null
-          metadata?: Json | null
-          mime_type?: string | null
-          tags?: string[] | null
-          thumbnail_url?: string | null
-          updated_at?: string | null
-          user_id: string
-          width?: number | null
-        }
-        Update: {
-          created_at?: string | null
-          duration?: number | null
-          file_name?: string
-          file_path?: string
-          file_size?: number | null
-          file_type?: string
-          file_url?: string
-          height?: number | null
-          id?: string
-          is_public?: boolean | null
-          is_verified?: boolean | null
-          metadata?: Json | null
-          mime_type?: string | null
-          tags?: string[] | null
-          thumbnail_url?: string | null
-          updated_at?: string | null
-          user_id?: string
-          width?: number | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "media_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      media_access_logs: {
-        Row: {
-          action: string
-          created_at: string | null
-          id: string
-          ip_address: unknown
-          media_id: string | null
-          media_path: string
-          reason: string | null
-          user_agent: string | null
-          user_id: string
-        }
-        Insert: {
-          action: string
-          created_at?: string | null
-          id?: string
-          ip_address?: unknown
-          media_id?: string | null
-          media_path: string
-          reason?: string | null
-          user_agent?: string | null
-          user_id: string
-        }
-        Update: {
-          action?: string
-          created_at?: string | null
-          id?: string
-          ip_address?: unknown
-          media_id?: string | null
-          media_path?: string
-          reason?: string | null
-          user_agent?: string | null
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "media_access_logs_media_id_fkey"
-            columns: ["media_id"]
-            isOneToOne: false
-            referencedRelation: "media"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "media_access_logs_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       messages: {
         Row: {
           content: string
@@ -1648,130 +1297,6 @@ export type Database = {
           },
         ]
       }
-      moderation_logs: {
-        Row: {
-          action_type: string
-          created_at: string | null
-          details: Json | null
-          id: string
-          moderator_id: string
-          reason: string | null
-          severity: string | null
-          target_id: string
-          target_type: string
-        }
-        Insert: {
-          action_type: string
-          created_at?: string | null
-          details?: Json | null
-          id?: string
-          moderator_id: string
-          reason?: string | null
-          severity?: string | null
-          target_id: string
-          target_type: string
-        }
-        Update: {
-          action_type?: string
-          created_at?: string | null
-          details?: Json | null
-          id?: string
-          moderator_id?: string
-          reason?: string | null
-          severity?: string | null
-          target_id?: string
-          target_type?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "moderation_logs_moderator_id_fkey"
-            columns: ["moderator_id"]
-            isOneToOne: false
-            referencedRelation: "moderators"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      moderator_requests: {
-        Row: {
-          created_at: string | null
-          experience: string | null
-          id: string
-          motivation: string
-          reviewed_at: string | null
-          reviewed_by: string | null
-          status: string | null
-          updated_at: string | null
-          user_id: string
-        }
-        Insert: {
-          created_at?: string | null
-          experience?: string | null
-          id?: string
-          motivation: string
-          reviewed_at?: string | null
-          reviewed_by?: string | null
-          status?: string | null
-          updated_at?: string | null
-          user_id: string
-        }
-        Update: {
-          created_at?: string | null
-          experience?: string | null
-          id?: string
-          motivation?: string
-          reviewed_at?: string | null
-          reviewed_by?: string | null
-          status?: string | null
-          updated_at?: string | null
-          user_id?: string
-        }
-        Relationships: []
-      }
-      moderators: {
-        Row: {
-          assigned_at: string | null
-          created_at: string | null
-          id: string
-          is_active: boolean | null
-          level: string
-          moderator_id: string | null
-          permissions: Json | null
-          updated_at: string | null
-          user_id: string
-        }
-        Insert: {
-          assigned_at?: string | null
-          created_at?: string | null
-          id?: string
-          is_active?: boolean | null
-          level?: string
-          moderator_id?: string | null
-          permissions?: Json | null
-          updated_at?: string | null
-          user_id: string
-        }
-        Update: {
-          assigned_at?: string | null
-          created_at?: string | null
-          id?: string
-          is_active?: boolean | null
-          level?: string
-          moderator_id?: string | null
-          permissions?: Json | null
-          updated_at?: string | null
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "moderators_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: true
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       monitoring_sessions: {
         Row: {
           created_at: string | null
@@ -1810,127 +1335,6 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
-      }
-      nft_galleries: {
-        Row: {
-          created_at: string
-          description: string | null
-          gallery_name: string
-          id: string
-          is_public: boolean
-          is_verified: boolean
-          metadata: Json | null
-          minted_at: string | null
-          minted_with_gtk: number | null
-          nft_contract_address: string | null
-          nft_network: string | null
-          nft_token_id: string | null
-          profile_id: string | null
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          description?: string | null
-          gallery_name: string
-          id?: string
-          is_public?: boolean
-          is_verified?: boolean
-          metadata?: Json | null
-          minted_at?: string | null
-          minted_with_gtk?: number | null
-          nft_contract_address?: string | null
-          nft_network?: string | null
-          nft_token_id?: string | null
-          profile_id?: string | null
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          description?: string | null
-          gallery_name?: string
-          id?: string
-          is_public?: boolean
-          is_verified?: boolean
-          metadata?: Json | null
-          minted_at?: string | null
-          minted_with_gtk?: number | null
-          nft_contract_address?: string | null
-          nft_network?: string | null
-          nft_token_id?: string | null
-          profile_id?: string | null
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "nft_galleries_profile_id_fkey"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      nft_gallery_images: {
-        Row: {
-          created_at: string
-          gallery_id: string
-          id: string
-          image_hash: string | null
-          image_url: string
-          is_verified: boolean
-          metadata: Json | null
-          minted_at: string | null
-          minted_with_gtk: number | null
-          nft_contract_address: string | null
-          nft_network: string | null
-          nft_token_id: string | null
-          sort_order: number
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          gallery_id: string
-          id?: string
-          image_hash?: string | null
-          image_url: string
-          is_verified?: boolean
-          metadata?: Json | null
-          minted_at?: string | null
-          minted_with_gtk?: number | null
-          nft_contract_address?: string | null
-          nft_network?: string | null
-          nft_token_id?: string | null
-          sort_order?: number
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          gallery_id?: string
-          id?: string
-          image_hash?: string | null
-          image_url?: string
-          is_verified?: boolean
-          metadata?: Json | null
-          minted_at?: string | null
-          minted_with_gtk?: number | null
-          nft_contract_address?: string | null
-          nft_network?: string | null
-          nft_token_id?: string | null
-          sort_order?: number
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "nft_gallery_images_gallery_id_fkey"
-            columns: ["gallery_id"]
-            isOneToOne: false
-            referencedRelation: "nft_galleries"
-            referencedColumns: ["id"]
-          },
-        ]
       }
       notifications: {
         Row: {
@@ -2039,7 +1443,6 @@ export type Database = {
       }
       profiles: {
         Row: {
-          account_type: string | null
           age: number | null
           avatar_url: string | null
           bio: string | null
@@ -2070,7 +1473,6 @@ export type Database = {
           user_id: string
         }
         Insert: {
-          account_type?: string | null
           age?: number | null
           avatar_url?: string | null
           bio?: string | null
@@ -2101,7 +1503,6 @@ export type Database = {
           user_id: string
         }
         Update: {
-          account_type?: string | null
           age?: number | null
           avatar_url?: string | null
           bio?: string | null
@@ -2491,7 +1892,6 @@ export type Database = {
           id: string
           is_public: boolean | null
           location: string | null
-          media_url: string | null
           media_urls: string[] | null
           updated_at: string | null
           user_id: string
@@ -2506,7 +1906,6 @@ export type Database = {
           id?: string
           is_public?: boolean | null
           location?: string | null
-          media_url?: string | null
           media_urls?: string[] | null
           updated_at?: string | null
           user_id: string
@@ -2521,7 +1920,6 @@ export type Database = {
           id?: string
           is_public?: boolean | null
           location?: string | null
-          media_url?: string | null
           media_urls?: string[] | null
           updated_at?: string | null
           user_id?: string
@@ -2998,114 +2396,6 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "user_referral_balances_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      user_roles: {
-        Row: {
-          created_at: string | null
-          expires_at: string | null
-          granted_at: string | null
-          granted_by: string | null
-          id: string
-          is_active: boolean | null
-          role: string
-          updated_at: string | null
-          user_id: string
-        }
-        Insert: {
-          created_at?: string | null
-          expires_at?: string | null
-          granted_at?: string | null
-          granted_by?: string | null
-          id?: string
-          is_active?: boolean | null
-          role: string
-          updated_at?: string | null
-          user_id: string
-        }
-        Update: {
-          created_at?: string | null
-          expires_at?: string | null
-          granted_at?: string | null
-          granted_by?: string | null
-          id?: string
-          is_active?: boolean | null
-          role?: string
-          updated_at?: string | null
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "user_roles_granted_by_fkey"
-            columns: ["granted_by"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "user_roles_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      user_suspensions: {
-        Row: {
-          created_at: string | null
-          duration_days: number | null
-          ends_at: string | null
-          id: string
-          is_active: boolean | null
-          moderator_id: string
-          reason: string
-          starts_at: string | null
-          suspension_type: string
-          updated_at: string | null
-          user_id: string
-        }
-        Insert: {
-          created_at?: string | null
-          duration_days?: number | null
-          ends_at?: string | null
-          id?: string
-          is_active?: boolean | null
-          moderator_id: string
-          reason: string
-          starts_at?: string | null
-          suspension_type?: string
-          updated_at?: string | null
-          user_id: string
-        }
-        Update: {
-          created_at?: string | null
-          duration_days?: number | null
-          ends_at?: string | null
-          id?: string
-          is_active?: boolean | null
-          moderator_id?: string
-          reason?: string
-          starts_at?: string | null
-          suspension_type?: string
-          updated_at?: string | null
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "user_suspensions_moderator_id_fkey"
-            columns: ["moderator_id"]
-            isOneToOne: false
-            referencedRelation: "moderators"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "user_suspensions_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
@@ -3813,7 +3103,6 @@ export type Database = {
           longitude: number
           name: string
           s2_cell_id: string
-          updated_at: string
         }[]
       }
       get_summary_stats: {

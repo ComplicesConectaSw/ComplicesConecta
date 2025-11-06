@@ -221,50 +221,6 @@ export type Database = {
         }
         Relationships: []
       }
-      app_logs: {
-        Row: {
-          context: Json | null
-          created_at: string | null
-          id: string
-          ip_address: unknown
-          level: string
-          message: string
-          metadata: Json | null
-          user_agent: string | null
-          user_id: string | null
-        }
-        Insert: {
-          context?: Json | null
-          created_at?: string | null
-          id?: string
-          ip_address?: unknown
-          level?: string
-          message: string
-          metadata?: Json | null
-          user_agent?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          context?: Json | null
-          created_at?: string | null
-          id?: string
-          ip_address?: unknown
-          level?: string
-          message?: string
-          metadata?: Json | null
-          user_agent?: string | null
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "app_logs_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       app_metrics: {
         Row: {
           created_at: string | null
@@ -393,62 +349,6 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
-      }
-      biometric_sessions: {
-        Row: {
-          confidence: number | null
-          created_at: string | null
-          credential_id: string | null
-          device_id: string | null
-          expires_at: string
-          id: string
-          is_active: boolean | null
-          last_used_at: string | null
-          public_key: string | null
-          session_id: string
-          session_type: string
-          success: boolean | null
-          user_id: string
-        }
-        Insert: {
-          confidence?: number | null
-          created_at?: string | null
-          credential_id?: string | null
-          device_id?: string | null
-          expires_at: string
-          id?: string
-          is_active?: boolean | null
-          last_used_at?: string | null
-          public_key?: string | null
-          session_id: string
-          session_type: string
-          success?: boolean | null
-          user_id: string
-        }
-        Update: {
-          confidence?: number | null
-          created_at?: string | null
-          credential_id?: string | null
-          device_id?: string | null
-          expires_at?: string
-          id?: string
-          is_active?: boolean | null
-          last_used_at?: string | null
-          public_key?: string | null
-          session_id?: string
-          session_type?: string
-          success?: boolean | null
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "biometric_sessions_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
       }
       blocked_ips: {
         Row: {

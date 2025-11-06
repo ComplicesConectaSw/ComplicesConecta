@@ -471,10 +471,11 @@ if (-not $SkipNullChecks) {
                         $line -notmatch "Cargando.*desde Supabase" -and
                         $line -notmatch "Iniciando.*con Supabase") {
                         
-                        # Verificar null check en las 10 líneas anteriores o en la misma línea
+                        # Verificar null check en las 10 líneas anteriores, en la misma línea, o al inicio de la función
                         $hasNullCheckInContext = $false
                         $checkRange = [Math]::Max(0, $i - 10)..$i
                         
+                        # Primero buscar en el contexto inmediato
                         foreach ($checkLineIdx in $checkRange) {
                             $checkLine = $lines[$checkLineIdx]
                             # Verificar patrones de null check más completos (incluyendo optional chaining y checks en la misma línea)
@@ -482,6 +483,48 @@ if (-not $SkipNullChecks) {
                                 $checkLine -notmatch "^\s*//") {
                                 $hasNullCheckInContext = $true
                                 break
+                            }
+                        }
+                        
+                        # Si no se encontró en el contexto inmediato, buscar al inicio de la función
+                        if (-not $hasNullCheckInContext) {
+                            # Buscar inicio de función (async function, const function =, function name, arrow function)
+                            $functionStart = -1
+                            for ($j = $i; $j -ge 0; $j--) {
+                                $prevLine = $lines[$j]
+                                # Detectar inicio de función
+                                if ($prevLine -match "^\s*(async\s+)?(function\s+\w+|const\s+\w+\s*=\s*(async\s+)?\(|const\s+\w+\s*=\s*(async\s+)?function|^\s*\w+\s*:\s*(async\s+)?\(|^\s*\w+\s*=\s*(async\s+)?\()") {
+                                    $functionStart = $j
+                                    break
+                                }
+                                # Detectar inicio de método de clase
+                                if ($prevLine -match "^\s*(async\s+)?\w+\s*\([^)]*\)\s*\{") {
+                                    $functionStart = $j
+                                    break
+                                }
+                                # Si encontramos una llave de cierre de función anterior, detener
+                                if ($prevLine -match "^\s*\}\s*$" -and $j -lt $i - 5) {
+                                    break
+                                }
+                            }
+                            
+                            # Si encontramos inicio de función, buscar null check en las primeras 20 líneas
+                            if ($functionStart -ge 0) {
+                                $functionCheckRange = $functionStart..[Math]::Min($functionStart + 20, $i)
+                                foreach ($checkLineIdx in $functionCheckRange) {
+                                    $checkLine = $lines[$checkLineIdx]
+                                    if ($checkLine -match "(if\s*\([^)]*!supabase|if\s*\([^)]*supabase\s*===?\s*null|if\s*\([^)]*supabase\s*!==?\s*null|if\s*\([^)]*supabase\s*\|\||if\s*\([^)]*supabase\s*&&|if\s*\([^)]*supabase\s*\?\.|!supabase|supabase\s*===?\s*null|supabase\s*!==?\s*null)" -and
+                                        $checkLine -notmatch "^\s*//") {
+                                        # Verificar que haya un return/throw después del null check
+                                        for ($k = $checkLineIdx + 1; $k -lt [Math]::Min($checkLineIdx + 5, $i); $k++) {
+                                            if ($lines[$k] -match "return|throw|continue") {
+                                                $hasNullCheckInContext = $true
+                                                break
+                                            }
+                                        }
+                                        if ($hasNullCheckInContext) { break }
+                                    }
+                                }
                             }
                         }
                         
