@@ -79,27 +79,9 @@ if (typeof window !== 'undefined') {
     };
   }
   
-  // PROTECCIÓN EXTRA: Interceptar acceso a useLayoutEffect en chunks lazy
-  try {
-    Object.defineProperty(window, 'React', {
-      get: () => {
-        const react = (window as any).React || React;
-        // Asegurar useLayoutEffect cada vez que se accede
-        if (react && !react.useLayoutEffect) {
-          react.useLayoutEffect = React.useLayoutEffect || React.useEffect || function() { return function() {}; };
-        }
-        return react;
-      },
-      configurable: true,
-      enumerable: true
-    });
-  } catch {
-    // Si falla, asegurar directamente
-    (window as any).React = React;
-    if (!(window as any).React.useLayoutEffect) {
-      (window as any).React.useLayoutEffect = React.useLayoutEffect || React.useEffect || function() { return function() {}; };
-    }
-  }
+  // ELIMINADO: Object.defineProperty para window.React - Ya está en index.html y causa recursión infinita
+  // El stub de React ya está establecido en index.html antes de que este código se ejecute
+  // No necesitamos redefinirlo aquí
 }
 
 // Ahora sí, importar el resto de las dependencias
