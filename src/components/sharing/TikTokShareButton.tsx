@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Share2 } from 'lucide-react';
 import { shareToTikTok, isTikTokAvailable } from '@/utils/tiktokShare';
 import { logger } from '@/lib/logger';
+import { trackEvent } from '@/config/posthog.config';
 
 interface TikTokShareButtonProps {
   url?: string;
@@ -40,6 +41,12 @@ export const TikTokShareButton: React.FC<TikTokShareButtonProps> = ({
 
       if (success) {
         logger.info('✅ Contenido compartido en TikTok');
+        // Track en PostHog
+        trackEvent('tiktok_share', {
+          url: url || window.location.href,
+          hasText: !!text,
+          hashtagsCount: hashtags?.length || 0
+        });
       }
     } catch (error) {
       logger.error('Error compartiendo en TikTok', { error });

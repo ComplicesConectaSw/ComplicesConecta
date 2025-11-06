@@ -23,7 +23,6 @@ import {
   Award
 } from 'lucide-react';
 import { TikTokShareButton } from '@/components/sharing/TikTokShareButton';
-import { shareProfileToTikTok } from '@/utils/tiktokShare';
 import { trackEvent } from '@/config/posthog.config';
 import Navigation from '@/components/Navigation';
 import { ProfileNavTabs } from '@/components/profile/ProfileNavTabs';
@@ -152,17 +151,6 @@ const ProfileSingle: React.FC = () => {
       });
     } catch (error) {
       logger.error('Error sharing profile:', { error: String(error) });
-    }
-  };
-
-  const handleTikTokShare = async () => {
-    if (profile?.id && profile?.name) {
-      const success = await shareProfileToTikTok(profile.id, profile.name);
-      if (success) {
-        trackEvent('profile_shared_tiktok', {
-          profileId: profile.id.substring(0, 8) + '***'
-        });
-      }
     }
   };
 
