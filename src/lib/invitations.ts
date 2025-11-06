@@ -48,6 +48,11 @@ const mockGalleryPermissions: GalleryPermission[] = [
 export const invitationService = {
   async sendInvitation(from_profile: string, to_profile: string, type: 'profile' | 'gallery' | 'chat', message?: string): Promise<Invitation> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        throw new Error('Supabase no está disponible');
+      }
+      
       const { data, error } = await (supabase as any)
         .from('invitations')
         .insert({
@@ -95,6 +100,11 @@ export const invitationService = {
     
     // Return the updated invitation
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        throw new Error('Supabase no está disponible');
+      }
+      
       const { data, error } = await supabase
         .from('invitations')
         .select('*')
@@ -122,6 +132,11 @@ export const invitationService = {
 
   async acceptInvitation(invitationId: string): Promise<void> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        throw new Error('Supabase no está disponible');
+      }
+      
       const { error } = await (supabase as any)
         .from('invitations')
         .update({ 
@@ -147,6 +162,11 @@ export const invitationService = {
 
   async declineInvitation(invitationId: string): Promise<void> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        throw new Error('Supabase no está disponible');
+      }
+      
       const { error } = await (supabase as any)
         .from('invitations')
         .update({ 
@@ -172,6 +192,11 @@ export const invitationService = {
 
   async getInvitations(profileId: string): Promise<{ received: Invitation[], sent: Invitation[] }> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        throw new Error('Supabase no está disponible');
+      }
+      
       // Obtener invitaciones recibidas - compatible con ambos esquemas
       const { data: receivedData, error: receivedError } = await supabase
         .from('invitations')
@@ -213,6 +238,11 @@ export const invitationService = {
 
   async hasGalleryAccess(owner: string, grantee: string): Promise<boolean> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return false;
+      }
+      
       const { data, error } = await supabase
         .from('gallery_permissions')
         .select('id')
@@ -239,6 +269,11 @@ export const invitationService = {
 
   async revokeGalleryAccess(owner: string, grantee: string): Promise<void> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        throw new Error('Supabase no está disponible');
+      }
+      
       const { error } = await (supabase as any)
         .from('gallery_permissions')
         .update({ status: 'revoked' })
@@ -281,6 +316,11 @@ export const invitationService = {
         );
       }
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return false;
+      }
+      
       const { data, error } = await supabase
         .from('invitations')
         .select('id')

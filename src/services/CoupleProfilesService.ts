@@ -124,6 +124,11 @@ class CoupleProfilesService {
     try {
       logger.info('Fetching couple profiles from Supabase', { page, limit, filters });
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return [];
+      }
+
       let query = supabase
         .from('couple_profiles')
         .select(`
@@ -206,6 +211,11 @@ class CoupleProfilesService {
     try {
       logger.info('Creating couple profile in Supabase', { profileData });
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return null;
+      }
+
       const { data, error } = await supabase
         .from('couple_profiles')
         .insert({
@@ -268,6 +278,11 @@ class CoupleProfilesService {
     try {
       logger.info('Liking couple profile in Supabase:', { profileId });
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return false;
+      }
+
       const userId = this.getCurrentUserId();
 
       // Verificar si ya existe un like
@@ -328,6 +343,11 @@ class CoupleProfilesService {
     try {
       logger.info('Recording couple profile view in Supabase:', { profileId });
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return;
+      }
+
       const userId = this.getCurrentUserId();
 
       const { error } = await supabase
@@ -357,6 +377,11 @@ class CoupleProfilesService {
   ): Promise<boolean> {
     try {
       logger.info('Reporting couple profile in Supabase:', { profileId, reason });
+
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return false;
+      }
 
       const userId = this.getCurrentUserId();
 
@@ -396,6 +421,18 @@ class CoupleProfilesService {
   }> {
     try {
       logger.info('Getting couple profile stats from Supabase');
+
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return {
+          totalProfiles: 0,
+          verifiedProfiles: 0,
+          premiumProfiles: 0,
+          totalViews: 0,
+          totalLikes: 0,
+          relationshipTypeDistribution: {}
+        };
+      }
 
       const [
         profilesResult,

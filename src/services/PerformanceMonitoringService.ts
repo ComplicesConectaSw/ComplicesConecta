@@ -408,6 +408,11 @@ class PerformanceMonitoringService {
    */
   private async persistMetric(metric: PerformanceMetric): Promise<void> {
     try {
+      if (!supabase) {
+        logger.debug('Supabase no está disponible, omitiendo persistencia de métrica');
+        return;
+      }
+
       const { data: { user } } = await supabase.auth.getUser();
       
       await supabase.from('performance_metrics').insert({
@@ -430,6 +435,11 @@ class PerformanceMonitoringService {
    */
   async persistWebVitals(): Promise<void> {
     try {
+      if (!supabase) {
+        logger.debug('Supabase no está disponible, omitiendo persistencia de Web Vitals');
+        return;
+      }
+
       const vitals = this.getWebVitals();
       const { data: { user } } = await supabase.auth.getUser();
 
@@ -456,6 +466,11 @@ class PerformanceMonitoringService {
    */
   async persistAllMetrics(): Promise<void> {
     try {
+      if (!supabase) {
+        logger.debug('Supabase no está disponible, omitiendo persistencia de métricas');
+        return;
+      }
+
       const { data: { user } } = await supabase.auth.getUser();
       
       const metricsToInsert = this.metrics.map(metric => ({

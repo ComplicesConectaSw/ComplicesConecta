@@ -31,6 +31,12 @@ export const useSupabaseTheme = () => {
       setIsLoading(true);
       setError(null);
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        setError('Supabase no está disponible');
+        return;
+      }
+
       const { data, error: fetchError } = await supabase
         .from('profiles')
         .select('preferred_theme, navbar_style, theme_updated_at')
@@ -77,6 +83,12 @@ export const useSupabaseTheme = () => {
     }
 
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        setError('Supabase no está disponible');
+        return false;
+      }
+      
       const updateData = {
         preferred_theme: theme,
         navbar_style: navbar,
@@ -147,7 +159,7 @@ export const useSupabaseTheme = () => {
 
   // Suscribirse a cambios en tiempo real (opcional)
   useEffect(() => {
-    if (!user?.id) return;
+    if (!user?.id || !supabase) return;
 
     const subscription = supabase
       .channel('theme_changes')

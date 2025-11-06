@@ -35,6 +35,13 @@ export const useInterests = () => {
   const loadInterests = useCallback(async () => {
     try {
       setLoading(true);
+      
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        setError('Supabase no está disponible');
+        return;
+      }
+      
       const { data, error } = await supabase
         .from('swinger_interests')
         .select('*')
@@ -60,6 +67,12 @@ export const useInterests = () => {
     if (!user?.id) return;
 
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        setError('Supabase no está disponible');
+        return;
+      }
+      
       const { data, error } = await supabase
         .from('user_interests')
         .select(`
@@ -82,6 +95,16 @@ export const useInterests = () => {
     if (!user?.id) return;
 
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        toast({
+          title: "Error",
+          description: "Supabase no está disponible",
+          variant: "destructive",
+        });
+        return;
+      }
+      
       const numericId = typeof interestId === 'string' ? parseInt(interestId, 10) : interestId;
       
       const { error } = await supabase
@@ -115,6 +138,16 @@ export const useInterests = () => {
     if (!user?.id) return;
 
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        toast({
+          title: "Error",
+          description: "Supabase no está disponible",
+          variant: "destructive",
+        });
+        return;
+      }
+      
       const numericId = typeof interestId === 'string' ? parseInt(interestId, 10) : interestId;
       
       const { error } = await supabase
@@ -185,6 +218,11 @@ export const useInterests = () => {
     if (!user?.id) return;
 
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return;
+      }
+      
       // Primero, eliminar todos los intereses actuales del usuario
       await supabase
         .from('user_interests')

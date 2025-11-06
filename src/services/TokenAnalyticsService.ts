@@ -99,6 +99,12 @@ export class TokenAnalyticsService {
 
       logger.info('📊 Generating fresh metrics from database');
       
+      // Verificar que supabase esté disponible
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return { success: false, error: 'Supabase no está disponible' };
+      }
+      
       // Obtener métricas reales de las tablas de Supabase con consultas optimizadas
       const [
         _tokenAnalyticsResult,
@@ -125,8 +131,8 @@ export class TokenAnalyticsService {
         // Obtener métricas de staking (optimizado)
         supabase
           .from('staking_records')
-          .select('amount, staking_duration as duration, created_at')
-          .eq('is_active', true),
+          .select('amount, start_date, end_date, created_at')
+          .eq('status', 'active'),
         
         // Obtener transacciones recientes (optimizado)
         supabase
@@ -184,8 +190,16 @@ export class TokenAnalyticsService {
         metrics.stakingMetrics.activeStakers = stakingRecords.length;
         
         if (stakingRecords.length > 0) {
-          metrics.stakingMetrics.avgDuration = stakingRecords.reduce((sum: number, record: any) => 
-            sum + (record.duration || 0), 0) / stakingRecords.length;
+          // Calcular duración promedio desde start_date y end_date
+          metrics.stakingMetrics.avgDuration = stakingRecords.reduce((sum: number, record: any) => {
+            if (record.start_date && record.end_date) {
+              const start = new Date(record.start_date);
+              const end = new Date(record.end_date);
+              const days = Math.floor((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+              return sum + days;
+            }
+            return sum;
+          }, 0) / stakingRecords.length;
         }
       }
 
@@ -209,6 +223,11 @@ export class TokenAnalyticsService {
       }
 
       // Obtener usuarios activos (aproximación)
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return { success: false, error: 'Supabase no está disponible' };
+      }
+
       const activeUsersResult = await supabase
         .from('profiles')
         .select('id')
@@ -256,6 +275,12 @@ export class TokenAnalyticsService {
         }
       };
 
+      // Verificar que supabase esté disponible
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return { success: false, error: 'Supabase no está disponible' };
+      }
+
       // Guardar en la base de datos real
       const { data, error } = await supabase
         .from('token_analytics')
@@ -280,6 +305,11 @@ export class TokenAnalyticsService {
     limit: number = 30
   ): Promise<AnalyticsResponse> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return { success: false, error: 'Supabase no está disponible' };
+      }
+      
       const { data, error } = await supabase
         .from('token_analytics')
         .select('*')

@@ -110,6 +110,11 @@ class ReferralTokensService {
     try {
       logger.info('Getting user referral balance from Supabase', { userId });
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return null;
+      }
+
       const { data, error } = await supabase
         .from('user_referral_balances')
         .select('*')
@@ -120,6 +125,11 @@ class ReferralTokensService {
         if (error.code === 'PGRST116') { // No rows found
           // Crear balance inicial si no existe
           const referralCode = await this.generateReferralCode(userId);
+          if (!supabase) {
+            logger.error('Supabase no está disponible');
+            return null;
+          }
+          
           const { data: newBalance, error: createError } = await supabase
             .from('user_referral_balances')
             .insert({
@@ -148,7 +158,7 @@ class ReferralTokensService {
             total_earned: newBalance.total_earned || 0,
             monthly_earned: newBalance.monthly_earned || 0,
             cmpx_balance: newBalance.cmpx_balance || 0,
-            gtk_balance: 0, // No existe en user_referral_balances
+            gtk_balance: newBalance.gtk_balance || 0, // Existe en user_referral_balances
             created_at: newBalance.created_at || new Date().toISOString(),
             updated_at: newBalance.updated_at || new Date().toISOString()
           };
@@ -170,7 +180,7 @@ class ReferralTokensService {
         total_earned: data.total_earned || 0,
         monthly_earned: data.monthly_earned || 0,
         cmpx_balance: data.cmpx_balance || 0,
-        gtk_balance: 0, // No existe en user_referral_balances
+        gtk_balance: data.gtk_balance || 0, // Existe en user_referral_balances
         created_at: data.created_at || '',
         updated_at: data.updated_at || ''
       };
@@ -187,6 +197,11 @@ class ReferralTokensService {
   async createReferralReward(rewardData: CreateReferralRewardData): Promise<ReferralReward | null> {
     try {
       logger.info('Creating referral reward via transaction', { rewardData });
+
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return null;
+      }
 
       // Crear transacción de recompensa
       const { data, error } = await supabase
@@ -258,6 +273,11 @@ class ReferralTokensService {
     try {
       logger.info('Getting user referral transactions from Supabase', { userId, page, limit });
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return [];
+      }
+
       const { data, error } = await supabase
         .from('referral_transactions')
         .select('*')
@@ -296,6 +316,11 @@ class ReferralTokensService {
     try {
       logger.info('Getting referral statistics from Supabase', { userId });
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return null;
+      }
+
       const { data, error } = await supabase
         .from('referral_statistics')
         .select('*')
@@ -307,6 +332,11 @@ class ReferralTokensService {
           // Crear estadísticas iniciales si no existen
           const balance = await this.getUserReferralBalance(userId);
           if (!balance) return null;
+
+          if (!supabase) {
+            logger.error('Supabase no está disponible');
+            return null;
+          }
 
           const { data: newStats, error: createError } = await supabase
             .from('referral_statistics')
@@ -380,6 +410,11 @@ class ReferralTokensService {
     try {
       logger.info('Getting referral leaderboard from Supabase', { limit });
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return [];
+      }
+
       // Usar user_referral_balances en lugar de referral_leaderboard que no existe
       const { data, error } = await supabase
         .from('user_referral_balances')
@@ -416,6 +451,11 @@ class ReferralTokensService {
     try {
       logger.info('Processing referral in Supabase', { referralCode, newUserId });
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return false;
+      }
+
       // Buscar el usuario que tiene el código de referido
       const { data: referrerBalance, error: balanceError } = await supabase
         .from('user_referral_balances')
@@ -443,6 +483,11 @@ class ReferralTokensService {
       }
 
       // Obtener balance actual
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return false;
+      }
+      
       const { data: currentBalanceData, error: balanceError2 } = await supabase
         .from('user_referral_balances')
         .select('total_referrals, total_earned, monthly_earned, cmpx_balance')
@@ -455,6 +500,11 @@ class ReferralTokensService {
       }
 
       // Actualizar balance del referidor
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return false;
+      }
+      
       const { error: updateError2 } = await supabase
         .from('user_referral_balances')
         .update({

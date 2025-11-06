@@ -68,6 +68,16 @@ class UserVerificationService {
     try {
       logger.info('🌍 Verificando con World ID', { userId: userId.substring(0, 8) + '***' });
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return {
+          success: false,
+          method: 'world_id',
+          verified: false,
+          error: 'Supabase no está disponible'
+        };
+      }
+
       // Llamar a la edge function de World ID
       const { data, error } = await supabase.functions.invoke('worldid-verify', {
         body: {
@@ -141,6 +151,16 @@ class UserVerificationService {
   ): Promise<VerificationResult> {
     try {
       logger.info('📸 Verificando con selfie', { userId: userId.substring(0, 8) + '***' });
+
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return {
+          success: false,
+          method: 'selfie',
+          verified: false,
+          error: 'Supabase no está disponible'
+        };
+      }
 
       // 1. Subir selfie a Storage temporal
       const selfieFileName = `verification/${userId}/${Date.now()}-selfie.jpg`;
@@ -218,6 +238,16 @@ class UserVerificationService {
         userId: userId.substring(0, 8) + '***',
         type: documentData.documentType
       });
+
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return {
+          success: false,
+          method: 'document',
+          verified: false,
+          error: 'Supabase no está disponible'
+        };
+      }
 
       // 1. Subir documento a Storage (cifrado/privado)
       const documentFileName = `verification/${userId}/${Date.now()}-${documentData.documentType}.jpg`;
@@ -319,6 +349,19 @@ class UserVerificationService {
     badges: string[];
   }> {
     try {
+      if (!supabase) {
+        logger.debug('Supabase no está disponible, retornando estado no verificado');
+        return {
+          worldId: false,
+          selfie: false,
+          document: false,
+          phone: false,
+          email: false,
+          overall: 'unverified',
+          badges: []
+        };
+      }
+
       const { data: profile, error } = await (supabase as any)
         .from('profiles')
         .select('is_verified, email_verified_at, phone_verified_at')
@@ -416,6 +459,11 @@ class UserVerificationService {
       // Si hay al menos una verificación, marcar como verificado
       if (updateData.is_verified || updateData.phone_verified_at || updateData.email_verified_at) {
         updateData.is_verified = true;
+      }
+
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return;
       }
 
       const { error } = await supabase

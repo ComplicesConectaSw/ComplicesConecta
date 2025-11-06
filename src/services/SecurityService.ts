@@ -186,6 +186,11 @@ class SecurityService {
       };
       
       // Guardar en base de datos real
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return { success: false, error: 'Supabase no está disponible' };
+      }
+
       const { error } = await supabase
         .from('two_factor_auth')
         .upsert({
@@ -234,6 +239,11 @@ class SecurityService {
     error?: string;
   }> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return { success: false, error: 'Supabase no está disponible' };
+      }
+
       // Obtener configuración 2FA del usuario
       const { data: settings, error } = await supabase
         .from('two_factor_auth')
@@ -269,6 +279,11 @@ class SecurityService {
       
       // Si usó backup code, removerlo de la lista
       if (isBackupCode && settings.backup_codes) {
+        if (!supabase) {
+          logger.error('Supabase no está disponible');
+          return { success: false, error: 'Supabase no está disponible' };
+        }
+
         const updatedCodes = settings.backup_codes.filter((c: string) => c !== code);
         await supabase
           .from('two_factor_auth')
@@ -382,6 +397,11 @@ class SecurityService {
     _userAgent?: string
   ): Promise<void> {
     try {
+      if (!supabase) {
+        logger.debug('Supabase no está disponible, omitiendo log de seguridad');
+        return;
+      }
+
       const riskScore = await this.calculateEventRiskScore(action, details);
       
       const { error } = await supabase
@@ -417,6 +437,11 @@ class SecurityService {
     error?: string;
   }> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return { success: false, error: 'Supabase no está disponible' };
+      }
+
       const { data, error, count } = await supabase
         .from('security_events')
         .select('*', { count: 'exact' })

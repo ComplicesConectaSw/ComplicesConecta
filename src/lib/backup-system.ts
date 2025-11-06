@@ -242,6 +242,11 @@ class BackupSystem {
         return this.generateMockBackupData(table);
       }
 
+      if (!supabase) {
+        console.warn(`💾 Backup: Supabase no está disponible para tabla ${table}`);
+        return [];
+      }
+      
       const { data, error } = await supabase
         .from(table as any)
         .select('*')
@@ -285,6 +290,11 @@ class BackupSystem {
         return this.generateMockBackupData(tableName, 2);
       }
 
+      if (!supabase) {
+        console.warn(`💾 Backup: Supabase no está disponible para tabla ${tableName}`);
+        return [];
+      }
+      
       const lastBackupTime = new Date(sinceTimestamp);
       
       const { data, error } = await supabase

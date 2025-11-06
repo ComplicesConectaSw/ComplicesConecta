@@ -67,6 +67,11 @@ class DataPrivacyService {
       logger.info('📥 Exportando datos del usuario', { userId: userId.substring(0, 8) + '***' });
 
       // Obtener todos los datos del usuario en paralelo
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return null;
+      }
+
       const [
         profileResult,
         imagesResult,
@@ -188,6 +193,11 @@ class DataPrivacyService {
 
       // 1. Eliminar imágenes del Storage y BD
       try {
+        if (!supabase) {
+          logger.error('Supabase no está disponible');
+          throw new Error('Supabase no está disponible');
+        }
+
         const { data: images } = await (supabase as any)
           .from('images')
           .select('id, url, is_public')
@@ -198,6 +208,11 @@ class DataPrivacyService {
           const buckets = ['profile-images', 'gallery-images'];
           for (const bucket of buckets) {
             try {
+              if (!supabase) {
+                errors.push('Supabase no está disponible');
+                continue;
+              }
+
               const filesToDelete = images
                 .map((img: any) => {
                   const fileName = img.url?.split('/').pop();
@@ -205,7 +220,7 @@ class DataPrivacyService {
                 })
                 .filter(Boolean) as string[];
 
-              if (filesToDelete.length > 0) {
+              if (filesToDelete.length > 0 && supabase) {
                 await supabase.storage.from(bucket).remove(filesToDelete);
               }
             } catch (storageError) {
@@ -232,6 +247,11 @@ class DataPrivacyService {
 
       // 2. Anonimizar mensajes (no eliminar completamente por seguridad/legal)
       try {
+        if (!supabase) {
+          errors.push('Supabase no está disponible');
+          throw new Error('Supabase no está disponible');
+        }
+
         const { data: messages } = await supabase
           .from('chat_messages')
           .select('id')
@@ -260,6 +280,11 @@ class DataPrivacyService {
 
       // 3. Eliminar matches
       try {
+        if (!supabase) {
+          errors.push('Supabase no está disponible');
+          throw new Error('Supabase no está disponible');
+        }
+
         const { data: matches } = await supabase
           .from('matches')
           .select('id')
@@ -306,6 +331,11 @@ class DataPrivacyService {
 
       // 5. Eliminar stories
       try {
+        if (!supabase) {
+          errors.push('Supabase no está disponible');
+          throw new Error('Supabase no está disponible');
+        }
+
         const { data: stories, error: _storiesError } = await supabase
           .from('stories')
           .select('id')
@@ -329,6 +359,11 @@ class DataPrivacyService {
 
       // 6. Eliminar notificaciones
       try {
+        if (!supabase) {
+          errors.push('Supabase no está disponible');
+          throw new Error('Supabase no está disponible');
+        }
+
         const { error: deleteNotificationsError } = await supabase
           .from('notifications')
           .delete()
@@ -345,6 +380,11 @@ class DataPrivacyService {
 
       // 7. Eliminar perfil
       try {
+        if (!supabase) {
+          errors.push('Supabase no está disponible');
+          throw new Error('Supabase no está disponible');
+        }
+
         const { error: deleteProfileError } = await supabase
           .from('profiles')
           .delete()
@@ -403,6 +443,15 @@ class DataPrivacyService {
   async deleteMatchHistory(userId: string): Promise<{ success: boolean; deletedCount: number; error?: string }> {
     try {
       logger.info('🗑️ Eliminando historial de matches', { userId: userId.substring(0, 8) + '***' });
+
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return {
+          success: false,
+          deletedCount: 0,
+          error: 'Supabase no está disponible'
+        };
+      }
 
       const { data: matches, error: selectError } = await supabase
         .from('matches')

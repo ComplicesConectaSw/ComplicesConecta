@@ -86,6 +86,12 @@ const EditProfileSingle = () => {
       
       // Si no hay demo auth, intentar con Supabase
       if (getAppConfig().features.demoCredentials) {
+        if (!supabase) {
+          logger.error('Supabase no está disponible');
+          setError('Supabase no está disponible');
+          return;
+        }
+        
         const { data: { user } } = await supabase.auth.getUser();
         
         if (user) {

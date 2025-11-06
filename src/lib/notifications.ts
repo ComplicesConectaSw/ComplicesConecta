@@ -66,6 +66,11 @@ export class NotificationService {
    */
   static async createNotification(params: CreateNotificationParams): Promise<string | null> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return null;
+      }
+
       const notificationData = {
         user_id: params.userId,
         type: params.type,
@@ -226,6 +231,24 @@ export class NotificationService {
    */
   static async getUserPreferences(userId: string) {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return {
+          email_notifications: true,
+          push_notifications: true,
+          in_app_notifications: true,
+          notification_types: {
+            matches: true,
+            messages: true,
+            likes: true,
+            achievements: true
+          },
+          quiet_hours_start: '22:00',
+          quiet_hours_end: '08:00',
+          timezone: 'America/Mexico_City'
+        };
+      }
+
       const { data: _data, error } = await supabase
         .from('profiles')
         .select('notification_preferences')
@@ -296,6 +319,11 @@ export class NotificationService {
     timezone: string;
   }>) {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return false;
+      }
+
       const { error } = await supabase
         .from('profiles')
         .update({ 
@@ -320,6 +348,11 @@ export class NotificationService {
    */
   static async markAsRead(notificationId: string, userId: string): Promise<boolean> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return false;
+      }
+
       const { error } = await supabase
         .from('notifications')
         .update({ 
@@ -346,6 +379,11 @@ export class NotificationService {
    */
   static async markAllAsRead(userId: string): Promise<boolean> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return false;
+      }
+
       const { error } = await supabase
         .from('notifications')
         .update({ 
@@ -372,6 +410,11 @@ export class NotificationService {
    */
   static async deleteNotification(notificationId: string): Promise<boolean> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return false;
+      }
+
       const { error } = await supabase
         .from('notifications')
         .delete()
@@ -394,6 +437,11 @@ export class NotificationService {
    */
   static async getUserNotifications(userId: string, limit: number = 50, offset: number = 0) {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return { notifications: [], total: 0 };
+      }
+
       const { data, error } = await supabase
         .from('notifications')
         .select('*')
@@ -424,6 +472,11 @@ export class NotificationService {
    */
   static async getUnreadCount(userId: string): Promise<number> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return 0;
+      }
+
       const { count, error } = await supabase
         .from('notifications')
         .select('*', { count: 'exact', head: true })
@@ -450,6 +503,11 @@ export class NotificationService {
    */
   static subscribeToNotifications(userId: string, handler: RealtimeNotificationHandler): RealtimeChannel | null {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return null;
+      }
+
       // Cancel existing subscription if any
       this.unsubscribeFromNotifications(userId);
 
@@ -517,7 +575,7 @@ export class NotificationService {
    */
   static unsubscribeFromNotifications(userId: string): void {
     const channel = this.realtimeChannels.get(userId);
-    if (channel) {
+    if (channel && supabase) {
       supabase.removeChannel(channel);
       this.realtimeChannels.delete(userId);
       this.notificationHandlers.delete(userId);
@@ -587,6 +645,11 @@ export class NotificationService {
    */
   static async groupNotifications(userId: string, groupKey: string, limit: number = 5): Promise<any[]> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return [];
+      }
+
       const { data, error } = await supabase
         .from('notifications')
         .select('*')
@@ -625,6 +688,11 @@ export class NotificationService {
         const existingNotification = existingGroup[0];
         const updatedCount = (existingNotification.metadata?.count || 1) + notifications.length;
         
+        if (!supabase) {
+          logger.error('Supabase no está disponible');
+          return null;
+        }
+
         const { error } = await supabase
           .from('notifications')
           .update({
@@ -701,6 +769,11 @@ export class NotificationService {
    */
   static async processScheduledNotifications(): Promise<void> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return;
+      }
+
       const now = new Date().toISOString();
       
       const { data, error } = await supabase
@@ -720,12 +793,14 @@ export class NotificationService {
         await this.sendPushNotification(notification);
         
         // Mark as processed
-        await supabase
-          .from('notifications')
-          .update({ 
-            is_read: true
-          })
-          .eq('id', notification.id);
+        if (supabase) {
+          await supabase
+            .from('notifications')
+            .update({ 
+              is_read: true
+            })
+            .eq('id', notification.id);
+        }
       }
 
       logger.info('⏰ Procesadas notificaciones programadas:', { count: (data || []).length });
@@ -739,6 +814,19 @@ export class NotificationService {
    */
   static async getNotificationAnalytics(userId: string): Promise<NotificationAnalytics> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return {
+          total_sent: 0,
+          total_read: 0,
+          total_clicked: 0,
+          read_rate: 0,
+          click_rate: 0,
+          engagement_score: 0,
+          last_activity: new Date().toISOString()
+        };
+      }
+
       const { data, error } = await supabase
         .from('notifications')
         .select('*')
@@ -835,6 +923,11 @@ export class NotificationService {
    */
   static async cleanupExpiredNotifications(): Promise<void> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return;
+      }
+
       const now = new Date().toISOString();
       
       const { error } = await supabase

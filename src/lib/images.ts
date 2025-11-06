@@ -81,6 +81,12 @@ export async function uploadImage(
       return { success: false, error: validation.error };
     }
 
+    // Verificar que Supabase esté disponible
+    if (!supabase) {
+      logger.error('Supabase no está disponible');
+      return { success: false, error: 'Supabase no está disponible' };
+    }
+
     // Determinar bucket según privacidad
     const bucket = isPublic ? STORAGE_BUCKETS.GALLERY : STORAGE_BUCKETS.PROFILE;
     const fileExt = file.name.split('.').pop();
@@ -132,7 +138,9 @@ export async function uploadImage(
         context: 'image-metadata-save'
       });
       // Limpiar archivo subido si falla la BD
-      await supabase.storage.from(bucket).remove([fileName]);
+      if (supabase) {
+        await supabase.storage.from(bucket).remove([fileName]);
+      }
       return { success: false, error: 'Error al guardar información de la imagen' };
     }
 
@@ -164,6 +172,11 @@ export async function getUserImages(
   includePrivate: boolean = false
 ): Promise<ImageUpload[]> {
   try {
+    if (!supabase) {
+      logger.error('Supabase no está disponible');
+      return [];
+    }
+
     let query = (supabase as any)
       .from('images')
       .select('*')
@@ -205,6 +218,11 @@ export async function getUserImages(
  */
 export async function deleteImage(imageId: string, profileId: string): Promise<boolean> {
   try {
+    if (!supabase) {
+      logger.error('Supabase no está disponible');
+      return false;
+    }
+
     // Obtener información de la imagen
     const { data: image, error: fetchError } = await (supabase as any)
       .from('images')
@@ -229,10 +247,17 @@ export async function deleteImage(imageId: string, profileId: string): Promise<b
 
     // Eliminar archivo del Storage
     if (fileName) {
-      await supabase.storage.from(bucket).remove([`${profileId}/${fileName}`]);
+      if (supabase) {
+        await supabase.storage.from(bucket).remove([`${profileId}/${fileName}`]);
+      }
     }
 
     // Eliminar registro de la base de datos
+    if (!supabase) {
+      logger.error('Supabase no está disponible');
+      return false;
+    }
+
     const { error: deleteError } = await (supabase as any)
       .from('images')
       .delete()
@@ -266,6 +291,11 @@ export async function deleteImage(imageId: string, profileId: string): Promise<b
  */
 export async function getPublicImages(limit: number = 20): Promise<ImageUpload[]> {
   try {
+    if (!supabase) {
+      logger.error('Supabase no está disponible');
+      return [];
+    }
+
     const { data, error } = await (supabase as any)
       .from('images')
       .select('*')

@@ -101,6 +101,11 @@ export class SecurityAuditService {
    */
   async logSecurityEvent(event: Omit<SecurityEvent, 'id' | 'timestamp' | 'resolved'>): Promise<void> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return;
+      }
+
       const securityEventData = {
         user_id: event.userId,
         event_type: event.eventType,
@@ -156,6 +161,11 @@ export class SecurityAuditService {
    */
   private async checkSuspiciousActivity(): Promise<void> {
     try {
+      if (!supabase) {
+        logger.debug('Supabase no está disponible');
+        return;
+      }
+
       const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
       
       const { data: recentEvents, error } = await supabase
@@ -204,13 +214,18 @@ export class SecurityAuditService {
    */
   private async checkAnomalousAccess(): Promise<void> {
     try {
+      if (!supabase) {
+        logger.debug('Supabase no está disponible');
+        return;
+      }
+
       const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
       
       const { data: accessEvents, error } = await supabase
         .from('security_events')
         .select('*')
         .gte('timestamp', oneDayAgo)
-        .eq('eventType', 'data_access');
+        .eq('event_type', 'data_access');
 
       if (error) {
         logger.error('Error checking anomalous access:', { error: error.message });
@@ -245,6 +260,11 @@ export class SecurityAuditService {
    */
   private async checkDataIntegrity(): Promise<void> {
     try {
+      if (!supabase) {
+        logger.debug('Supabase no está disponible');
+        return;
+      }
+
       // Verificar perfiles duplicados usando query directo
       // Nota: Esta es una simplificación. En producción, usar RPC con función SQL
       const { data: profiles, error } = await supabase
@@ -285,6 +305,11 @@ export class SecurityAuditService {
    */
   private async checkSecurityConfiguration(): Promise<void> {
     try {
+      if (!supabase) {
+        logger.debug('Supabase no está disponible');
+        return;
+      }
+
       // Verificar usuarios sin 2FA habilitado
       const { data: usersWithout2FA, error } = await supabase
         .from('profiles')
@@ -316,6 +341,11 @@ export class SecurityAuditService {
    */
   async analyzeThreats(): Promise<ThreatDetection[]> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return [];
+      }
+
       const threats: ThreatDetection[] = [];
       
       // Analizar eventos críticos no resueltos
@@ -357,6 +387,11 @@ export class SecurityAuditService {
    */
   private async blockIPAddress(ipAddress: string, duration: string): Promise<void> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return;
+      }
+
       const expiresAt = new Date();
       if (duration.includes('hour')) {
         expiresAt.setHours(expiresAt.getHours() + parseInt(duration));
@@ -390,6 +425,11 @@ export class SecurityAuditService {
    */
   async getSecurityMetrics(): Promise<SecurityMetrics> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return this.getDefaultMetrics();
+      }
+
       const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
       
       const { data: events, error } = await supabase
@@ -431,6 +471,11 @@ export class SecurityAuditService {
    */
   async generateSecurityReport(): Promise<SecurityReport> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        throw new Error('Supabase no está disponible');
+      }
+
       const metrics = await this.getSecurityMetrics();
       const threats = await this.analyzeThreats();
       

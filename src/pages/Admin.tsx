@@ -267,6 +267,16 @@ const Admin = () => {
 
   const _handleDeleteProfile = async (profileId: string) => {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        toast({
+          title: "Error",
+          description: "Supabase no está disponible",
+          variant: "destructive"
+        });
+        return;
+      }
+
       const { error } = await supabase
         .from('profiles')
         .delete()
@@ -291,6 +301,16 @@ const Admin = () => {
 
   const _handleToggleVerification = async (profileId: string, currentStatus: boolean) => {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        toast({
+          title: "Error",
+          description: "Supabase no está disponible",
+          variant: "destructive"
+        });
+        return;
+      }
+
       const { error } = await (supabase as any)
         .from('profiles')
         .update({ 

@@ -171,6 +171,11 @@ class SmartMatchingService {
    */
   private async getUserProfile(userId: string): Promise<UserProfile | null> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return null;
+      }
+
       const { data: profile, error } = await supabase
         .from('profiles')
         .select('*')
@@ -198,6 +203,11 @@ class SmartMatchingService {
     options: MatchSearchOptions
   ): Promise<any[]> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return [];
+      }
+
       let query = supabase
         .from('profiles')
         .select('*')
@@ -225,6 +235,11 @@ class SmartMatchingService {
 
       // Excluir ya matcheados
       if (options.excludeMatched) {
+        if (!supabase) {
+          logger.error('Supabase no está disponible');
+          return [];
+        }
+
         const { data: existingMatches } = await supabase
           .from('matches')
           .select('user1_id, user2_id')
@@ -487,6 +502,11 @@ class SmartMatchingService {
       }
 
       // 2. Obtener perfiles desde PostgreSQL
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return this.emptyResult();
+      }
+
       const fofUserIds = fofRecommendations.map(f => f.userId);
       const { data: profiles, error } = await supabase
         .from('profiles')

@@ -152,6 +152,11 @@ export class AdvancedCoupleService {
         experience_level: data.experience_level
       };
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        throw new Error('Supabase no está disponible');
+      }
+
       const { data: result, error } = await supabase
         .from('couple_profiles')
         .insert(coupleProfileData)
@@ -230,6 +235,11 @@ export class AdvancedCoupleService {
    */
   async getCoupleProfile(coupleId: string): Promise<CoupleProfile | null> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return null;
+      }
+
       const { data, error } = await supabase
         .from('couple_profiles')
         .select('*')
@@ -314,6 +324,11 @@ export class AdvancedCoupleService {
     limit: number = 20
   ): Promise<CoupleProfile[]> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return [];
+      }
+
       // RPC no existe, usar query simple
       const { data, error } = await supabase
         .from('couple_profiles')
@@ -422,6 +437,11 @@ export class AdvancedCoupleService {
         status: 'pending'
       };
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        throw new Error('Supabase no está disponible');
+      }
+
       const { data, error } = await supabase
         .from('couple_matches')
         .insert(coupleMatchData)
@@ -471,6 +491,11 @@ export class AdvancedCoupleService {
         metadata
       };
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        throw new Error('Supabase no está disponible');
+      }
+
       const { error } = await supabase
         .from('couple_interactions')
         .insert(interaction);
@@ -509,6 +534,11 @@ export class AdvancedCoupleService {
         ...data,
         participants: [] as string[]
       };
+
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        throw new Error('Supabase no está disponible');
+      }
 
       const { data: result, error } = await supabase
         .from('couple_events')
@@ -555,6 +585,11 @@ export class AdvancedCoupleService {
     limit: number = 20
   ): Promise<CoupleEvent[]> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return [];
+      }
+
       let query = supabase
         .from('couple_events')
         .select('*')
@@ -604,6 +639,11 @@ export class AdvancedCoupleService {
    */
   async joinCoupleEvent(eventId: string, coupleId: string): Promise<boolean> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return false;
+      }
+
       // Primero obtener los participantes actuales
       const { data: event, error: fetchError } = await supabase
         .from('couple_events')

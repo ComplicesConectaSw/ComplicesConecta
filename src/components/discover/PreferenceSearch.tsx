@@ -90,7 +90,15 @@ export const PreferenceSearch = ({ onResultsChange, currentUserId }: PreferenceS
   const searchProfiles = async () => {
     setIsSearching(true);
     try {
-      let query = supabase
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        setIsSearching(false);
+        return;
+      }
+
+      const supabaseClient = supabase;
+
+      let query = supabaseClient
         .from('profiles')
         .select(`
           *,

@@ -354,6 +354,12 @@ export const useVideoChat = ({
   useEffect(() => {
     if (!userId) return;
 
+    if (!supabase) {
+      logger.error('Supabase no está disponible');
+      onError?.('Supabase no está disponible');
+      return;
+    }
+
     logger.info('Setting up video call signaling channel');
 
     const channel = supabase.channel(`video_calls_${userId}`, {

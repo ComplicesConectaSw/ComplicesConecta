@@ -52,6 +52,11 @@ export interface ReportStats {
 export class ReportService {
   async createReport(params: CreateReportParams): Promise<ReportResponse> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return { success: false, error: 'Supabase no está disponible' };
+      }
+
       const { data: { user }, error: authError } = await supabase.auth.getUser();
       
       if (authError || !user) {
@@ -99,6 +104,11 @@ export class ReportService {
 
   async getUserReports(): Promise<ReportsListResponse> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return { success: false, error: 'Supabase no está disponible' };
+      }
+
       const { data: { user }, error: authError } = await supabase.auth.getUser();
       
       if (authError || !user) {
@@ -126,6 +136,11 @@ export class ReportService {
 
   async getPendingReports(): Promise<ReportsListResponse> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return { success: false, error: 'Supabase no está disponible' };
+      }
+
       const { data: { user }, error: authError } = await supabase.auth.getUser();
       
       if (authError || !user) {
@@ -153,6 +168,11 @@ export class ReportService {
 
   async resolveReport(reportId: string, action: 'warning' | 'suspension' | 'ban' | 'dismiss', notes?: string): Promise<ReportResponse> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return { success: false, error: 'Supabase no está disponible' };
+      }
+
       const { data: { user }, error: authError } = await supabase.auth.getUser();
       
       if (authError || !user) {
@@ -160,14 +180,15 @@ export class ReportService {
       }
 
       const status = action === 'dismiss' ? 'dismissed' : 'resolved';
-      const actionTaken = action === 'dismiss' ? 'none' : action;
+      
+      // Usar description para almacenar notas de resolución (action_taken y resolution_notes no existen en el esquema)
+      const description = notes ? `${notes} (Action: ${action})` : `Action: ${action}`;
 
       const { data, error } = await supabase
         .from('reports')
         .update({
           status,
-          action_taken: actionTaken,
-          resolution_notes: notes,
+          description: description, // Usar description para almacenar notas de resolución
           resolved_by: user.id,
           resolved_at: new Date().toISOString()
         })
@@ -191,6 +212,11 @@ export class ReportService {
 
   async getUserReportStats(): Promise<{ success: boolean; stats?: ReportStats; error?: string }> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return { success: false, error: 'Supabase no está disponible' };
+      }
+
       const { data: { user }, error: authError } = await supabase.auth.getUser();
       
       if (authError || !user) {
@@ -227,6 +253,11 @@ export class ReportService {
 
   async getReportNotifications(): Promise<{ success: boolean; notifications?: unknown[]; error?: string }> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return { success: false, error: 'Supabase no está disponible' };
+      }
+
       const { data: { user }, error: authError } = await supabase.auth.getUser();
       
       if (authError || !user) {
@@ -257,6 +288,11 @@ export class ReportService {
 
   async isContentBlocked(contentId: string, contentType: string): Promise<{ success: boolean; isBlocked?: boolean; error?: string }> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return { success: false, error: 'Supabase no está disponible' };
+      }
+
       // Verificar si hay reportes resueltos que indiquen contenido bloqueado
       const { data, error } = await supabase
         .from('reports')
@@ -281,6 +317,11 @@ export class ReportService {
 
   async getReportStatistics(): Promise<{ success: boolean; stats?: Record<string, unknown>; error?: string }> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return { success: false, error: 'Supabase no está disponible' };
+      }
+
       const { data: { user }, error: authError } = await supabase.auth.getUser();
       
       if (authError || !user) {
@@ -321,6 +362,11 @@ export class ReportService {
   // Método específico para resolver reportes de perfiles (compatibilidad con ProfileReportService)
   async resolveProfileReport(reportId: string, resolution: 'resolved' | 'dismissed', notes?: string): Promise<ReportResponse> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return { success: false, error: 'Supabase no está disponible' };
+      }
+
       const { data: { user }, error: authError } = await supabase.auth.getUser();
 
       if (authError || !user) {
@@ -368,6 +414,11 @@ export class ReportService {
 
   async getUserProfileReports(): Promise<ReportsListResponse> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return { success: false, error: 'Supabase no está disponible' };
+      }
+
       const { data: { user }, error: authError } = await supabase.auth.getUser();
       
       if (authError || !user) {
@@ -396,6 +447,11 @@ export class ReportService {
 
   async getPendingProfileReports(): Promise<ReportsListResponse> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return { success: false, error: 'Supabase no está disponible' };
+      }
+
       const { data, error } = await supabase
         .from('reports')
         .select('*')
@@ -418,6 +474,11 @@ export class ReportService {
 
   async applyProfileAction(userId: string, action: 'warning' | 'temporary_suspension' | 'permanent_suspension', suspensionDays?: number): Promise<{ success: boolean; error?: string }> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return { success: false, error: 'Supabase no está disponible' };
+      }
+
       let updateData: Record<string, any> = {};
 
       switch (action) {
@@ -466,6 +527,11 @@ export class ReportService {
 
   async getProfileReportStats(userId?: string): Promise<{ success: boolean; stats?: { reportsMade: number; reportsReceived: number; recentReports: number; canReport: boolean; reason?: string }; error?: string }> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return { success: false, error: 'Supabase no está disponible' };
+      }
+
       const { data: { user } } = await supabase.auth.getUser();
 
       if (!user) {
@@ -511,6 +577,11 @@ export class ReportService {
 
   async canUserReport(userId?: string): Promise<{ success: boolean; canReport?: boolean; reason?: string; error?: string }> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return { success: false, error: 'Supabase no está disponible' };
+      }
+
       const { data: { user } } = await supabase.auth.getUser();
 
       if (!user) {

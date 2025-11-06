@@ -308,6 +308,10 @@ ${messagesText}`;
    * @private
    */
   private async checkRateLimit(userId: string): Promise<void> {
+    if (!supabase) {
+      throw new Error('Supabase no está disponible');
+    }
+    
     const today = new Date().toISOString().split('T')[0];
     
     const { count } = await (supabase as any)
@@ -326,6 +330,10 @@ ${messagesText}`;
    * @private
    */
   private async getCachedSummary(chatId: string): Promise<ChatSummary | null> {
+    if (!supabase) {
+      return null;
+    }
+    
     const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
     
     const { data, error } = await (supabase as any)
@@ -356,6 +364,10 @@ ${messagesText}`;
    * @private
    */
   private async fetchMessages(chatId: string): Promise<ChatMessage[]> {
+    if (!supabase) {
+      throw new Error('Supabase no está disponible');
+    }
+    
     const { data, error } = await supabase
       .from('messages')
       .select('id, content, sender_id, created_at, sender:profiles(name)')
@@ -381,6 +393,10 @@ ${messagesText}`;
    * @private
    */
   private async saveSummary(summary: ChatSummary): Promise<void> {
+    if (!supabase) {
+      throw new Error('Supabase no está disponible');
+    }
+    
     const { error } = await (supabase as any).from('chat_summaries').insert({
       id: summary.id,
       chat_id: summary.chatId,
@@ -402,6 +418,11 @@ ${messagesText}`;
    * @private
    */
   private async logSummaryRequest(userId: string, chatId: string): Promise<void> {
+    if (!supabase) {
+      console.warn('[ChatSummary] Supabase no está disponible, no se puede registrar request');
+      return;
+    }
+    
     const { error } = await (supabase as any).from('summary_requests').insert({
       user_id: userId,
       chat_id: chatId,
@@ -420,6 +441,14 @@ ${messagesText}`;
     limit: number;
     remaining: number;
   }> {
+    if (!supabase) {
+      return {
+        usedToday: 0,
+        limit: this.config.rateLimitPerDay,
+        remaining: this.config.rateLimitPerDay
+      };
+    }
+    
     const today = new Date().toISOString().split('T')[0];
     
     const { count } = await (supabase as any)

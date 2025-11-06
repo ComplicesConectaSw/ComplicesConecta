@@ -173,6 +173,10 @@ class QueryOptimizationService {
     const cacheKey = `profiles_${JSON.stringify(filters)}_${pagination.page}_${pagination.limit}`;
 
     const queryFn = async () => {
+      if (!supabase) {
+        throw new Error('Supabase no está disponible');
+      }
+
       let query = supabase.from('profiles').select('*');
 
       // Aplicar filtros con índices optimizados
@@ -223,6 +227,10 @@ class QueryOptimizationService {
     const cacheKey = `stories_${userId || 'all'}_${pagination.page}_${pagination.limit}`;
 
     const queryFn = async () => {
+      if (!supabase) {
+        throw new Error('Supabase no está disponible');
+      }
+
       let query = supabase
         .from('stories')
         .select(`
@@ -264,6 +272,10 @@ class QueryOptimizationService {
     const cacheKey = `analytics_${dateRange.start}_${dateRange.end}_${metrics.join('_')}`;
 
     const queryFn = async () => {
+      if (!supabase) {
+        throw new Error('Supabase no está disponible');
+      }
+
       // Usar consulta directa para agregaciones complejas
       const { data, error } = await supabase
         .from('token_analytics')

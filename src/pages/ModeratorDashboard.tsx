@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AdminNav from '@/components/AdminNav';
+import { logger } from '@/lib/logger';
 import { 
   Shield, 
   AlertTriangle, 
@@ -93,6 +94,11 @@ const ModeratorDashboard = () => {
   };
 
   const fetchReports = async () => {
+    if (!supabase) {
+      console.error('Supabase no está disponible');
+      return;
+    }
+    
     const { data, error } = await supabase
       .from('reports')
       .select('*')
@@ -110,21 +116,29 @@ const ModeratorDashboard = () => {
         let reportedUserEmail = null;
         
         if (report.reporter_user_id) {
-          const { data: reporterProfile } = await supabase
-            .from('profiles')
-            .select('email')
-            .eq('user_id', report.reporter_user_id)
-            .single();
-          reporterEmail = reporterProfile?.email || null;
+          if (!supabase) {
+            reporterEmail = null;
+          } else {
+            const { data: reporterProfile } = await supabase
+              .from('profiles')
+              .select('email')
+              .eq('user_id', report.reporter_user_id)
+              .single();
+            reporterEmail = reporterProfile?.email || null;
+          }
         }
         
         if (report.reported_user_id) {
-          const { data: reportedProfile } = await supabase
-            .from('profiles')
-            .select('email')
-            .eq('user_id', report.reported_user_id)
-            .single();
-          reportedUserEmail = reportedProfile?.email || null;
+          if (!supabase) {
+            reportedUserEmail = null;
+          } else {
+            const { data: reportedProfile } = await supabase
+              .from('profiles')
+              .select('email')
+              .eq('user_id', report.reported_user_id)
+              .single();
+            reportedUserEmail = reportedProfile?.email || null;
+          }
         }
         
         return {
@@ -164,6 +178,11 @@ const ModeratorDashboard = () => {
   };
 
   const fetchSuspensions = async () => {
+    if (!supabase) {
+      console.error('Supabase no está disponible');
+      return;
+    }
+    
     const { data, error } = await (supabase as any)
       .from('user_suspensions')
       .select(`
@@ -199,6 +218,11 @@ const ModeratorDashboard = () => {
     }
 
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return;
+      }
+      
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) return;
 
@@ -271,6 +295,11 @@ const ModeratorDashboard = () => {
 
   const liftSuspension = async (suspensionId: string) => {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return;
+      }
+      
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) return;
 

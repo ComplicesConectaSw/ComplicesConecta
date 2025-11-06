@@ -74,6 +74,12 @@ export const useRealtimeChat = ({
     try {
       logger.info('📥 Cargando mensajes históricos para sala:', { roomId });
       
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        setIsLoading(false);
+        return;
+      }
+      
       // Usar tabla messages existente con estructura compatible
       const { data, error } = await (supabase as any)
         .from('messages')
@@ -124,6 +130,12 @@ export const useRealtimeChat = ({
 
     try {
       logger.info('📤 Enviando mensaje:', { content, messageType, chatRoomId });
+
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        onError?.(new Error('Supabase no está disponible'));
+        return;
+      }
 
       const { data, error } = await (supabase as any)
         .from('messages')
@@ -211,6 +223,11 @@ export const useRealtimeChat = ({
     if (!chatRoomId || !userId) return;
 
     logger.info('Initializing realtime chat for conversation:', { conversationId: chatRoomId });
+    
+    if (!supabase) {
+      logger.error('Supabase no está disponible');
+      return;
+    }
     
     // Crear canal único para la sala de chat
     const channel = supabase.channel(`chat_room_${chatRoomId}`, {

@@ -45,6 +45,11 @@ export class SecureMediaService {
       }
 
       // Generar URL firmada temporal
+      if (!supabase || !supabase.storage) {
+        logger.error('Supabase Storage no está disponible');
+        return null;
+      }
+      
       const { data, error } = await supabase.storage
         .from('media')
         .createSignedUrl(mediaPath, this.SIGNED_URL_EXPIRY);
@@ -84,6 +89,11 @@ export class SecureMediaService {
    */
   static async checkMediaPermissions(userId: string, mediaOwnerId: string): Promise<MediaPermissions> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return { canView: false, canDownload: false, role: 'user' };
+      }
+      
       // Obtener información del usuario actual
       const { data: currentUser, error: userError } = await supabase
         .from('profiles')
@@ -142,6 +152,11 @@ export class SecureMediaService {
    */
   private static async isPublicContent(ownerId: string): Promise<boolean> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return false;
+      }
+      
       const { data: profile, error } = await supabase
         .from('profiles')
         .select('privacy_settings')
@@ -174,6 +189,11 @@ export class SecureMediaService {
     reason?: string
   ): Promise<void> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return;
+      }
+      
       await (supabase as any)
         .from('media_access_logs')
         .insert({

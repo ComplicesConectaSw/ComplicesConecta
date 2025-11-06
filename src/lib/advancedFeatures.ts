@@ -77,6 +77,11 @@ export class AdvancedFeaturesService {
     config: AdvancedMatchingConfig
   ): Promise<SmartRecommendation[]> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return [];
+      }
+      
       // Get user profile and preferences
       const { data: userProfile } = await supabase
         .from('profiles')
@@ -472,6 +477,11 @@ export class AdvancedFeaturesService {
    */
   static async generatePersonalityInsights(userId: string): Promise<PersonalityInsight[]> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return [];
+      }
+      
       const { data: profile } = await supabase
         .from('profiles')
         .select('bio, age, gender')
@@ -707,6 +717,11 @@ export class AdvancedFeaturesService {
     matchId: string
   ): Promise<ConversationStarter[]> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return [];
+      }
+      
       const { data: userProfile } = await supabase
         .from('profiles')
         .select('*')
@@ -1028,6 +1043,11 @@ export class AdvancedFeaturesService {
     };
   }> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        throw new Error('Supabase no está disponible');
+      }
+      
       const { data: userProfile } = await supabase
         .from('profiles')
         .select('*')
@@ -1266,6 +1286,11 @@ export class AdvancedFeaturesService {
         .filter(i => i.action === 'passed')
         .map(i => i.target_user_id);
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return;
+      }
+      
       // Get profiles of liked and passed users
       const { data: likedProfiles } = await supabase
         .from('profiles')

@@ -213,6 +213,16 @@ export const CoupleRegistrationForm: React.FC<CoupleRegistrationFormProps> = ({
     setIsLoading(true);
 
     try {
+      if (!supabase) {
+        toast({
+          variant: "destructive",
+          title: "Error de conexión",
+          description: "No se pudo conectar con el servidor",
+        });
+        setIsLoading(false);
+        return;
+      }
+      
       // Registrar usuario en Supabase Auth
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: formData.email,
@@ -230,6 +240,10 @@ export const CoupleRegistrationForm: React.FC<CoupleRegistrationFormProps> = ({
 
       if (authData.user) {
         // Crear perfil de pareja en la tabla couple_profiles
+        if (!supabase) {
+          throw new Error('Supabase no está disponible');
+        }
+        
         const { error: coupleProfileError } = await supabase
           .from('couple_profiles')
           .insert({

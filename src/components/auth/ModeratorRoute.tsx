@@ -16,6 +16,13 @@ const ModeratorRoute = ({ children }: ModeratorRouteProps) => {
 
   const checkModeratorAccess = async () => {
     try {
+      if (!supabase) {
+        console.error('Supabase no está disponible');
+        setIsModerator(false);
+        setLoading(false);
+        return;
+      }
+      
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session?.user) {
@@ -38,6 +45,12 @@ const ModeratorRoute = ({ children }: ModeratorRouteProps) => {
       }
 
       // Verificar si es moderador activo
+      if (!supabase) {
+        setIsModerator(false);
+        setLoading(false);
+        return;
+      }
+      
       const { data: moderator, error } = await (supabase as any)
         .from('moderators')
         .select('*')

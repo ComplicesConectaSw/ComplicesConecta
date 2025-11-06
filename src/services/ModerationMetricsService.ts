@@ -85,6 +85,11 @@ class ModerationMetricsService {
     }
 
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return this.getDefaultMetrics();
+      }
+
       // Obtener todos los reportes
       const { data: reports, error } = await supabase
         .from('reports')
@@ -149,6 +154,11 @@ class ModerationMetricsService {
    */
   async getReportTrends(days: number = 7): Promise<ReportTrend[]> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return [];
+      }
+
       const startDate = new Date();
       startDate.setDate(startDate.getDate() - days);
 
@@ -197,6 +207,11 @@ class ModerationMetricsService {
    */
   async getHighPriorityReports(): Promise<number> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return 0;
+      }
+
       const { count, error } = await supabase
         .from('reports')
         .select('*', { count: 'exact', head: true })
@@ -256,6 +271,11 @@ class ModerationMetricsService {
 
   private async getActiveModeratorsCount(): Promise<number> {
     try {
+      if (!supabase) {
+        logger.debug('Supabase no está disponible');
+        return 0;
+      }
+
       const { data, error } = await supabase
         .from('reports')
         .select('resolved_by')

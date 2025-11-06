@@ -84,6 +84,10 @@ export const RequestsService = {
    */
   async sendRequest(data: SendRequestData): Promise<ApiResponse> {
     try {
+      if (!supabase) {
+        return { success: false, error: 'Supabase no está disponible' };
+      }
+      
       const { data: user } = await supabase.auth.getUser();
       if (!user?.user) {
         return { success: false, error: 'Usuario no autenticado' };
@@ -133,6 +137,10 @@ export const RequestsService = {
     response: 'accepted' | 'declined'
   ): Promise<ApiResponse> {
     try {
+      if (!supabase) {
+        return { success: false, error: 'Supabase no está disponible' };
+      }
+      
       const { error } = await (supabase as any)
         .from('invitations')
         .update({ 
@@ -159,6 +167,10 @@ export const RequestsService = {
    */
   async getReceivedRequests(): Promise<RequestsResponse> {
     try {
+      if (!supabase) {
+        return { data: [], error: 'Supabase no está disponible' };
+      }
+      
       const { data: user } = await supabase.auth.getUser();
       if (!user?.user) {
         return { data: [], error: 'Usuario no autenticado' };
@@ -207,6 +219,10 @@ export const RequestsService = {
    */
   async getSentRequests(): Promise<RequestsResponse> {
     try {
+      if (!supabase) {
+        return { data: [], error: 'Supabase no está disponible' };
+      }
+      
       const { data: user } = await supabase.auth.getUser();
       if (!user?.user) {
         return { data: [], error: 'Usuario no autenticado' };
@@ -254,6 +270,13 @@ export const RequestsService = {
    */
   async getRequestsStats(): Promise<StatsResponse> {
     try {
+      if (!supabase) {
+        return { 
+          data: { pending_sent: 0, pending_received: 0, accepted: 0, declined: 0 },
+          error: 'Supabase no está disponible' 
+        };
+      }
+      
       const { data: user } = await supabase.auth.getUser();
       if (!user?.user) {
         return { 
@@ -311,6 +334,10 @@ export const RequestsService = {
    */
   async checkConnection(userId: string): Promise<ConnectionCheckResponse> {
     try {
+      if (!supabase) {
+        return { connected: false, error: 'Supabase no está disponible' };
+      }
+      
       const { data: user } = await supabase.auth.getUser();
       if (!user?.user) {
         return { connected: false, error: 'Usuario no autenticado' };
@@ -348,6 +375,10 @@ export const RequestsService = {
    */
   async deleteRequest(requestId: string): Promise<ApiResponse> {
     try {
+      if (!supabase) {
+        return { success: false, error: 'Supabase no está disponible' };
+      }
+      
       const { error } = await supabase
         .from('invitations')
         .delete()

@@ -15,6 +15,10 @@ export const useProfileQuery = () => {
     queryFn: async () => {
       if (!user?.id) return null;
       
+      if (!supabase) {
+        throw new Error('Supabase no está disponible');
+      }
+      
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
@@ -35,6 +39,10 @@ export const useProfileQuery = () => {
   const updateProfileMutation = useMutation({
     mutationFn: async (updates: Partial<Profile>) => {
       if (!user?.id) throw new Error('No user authenticated');
+
+      if (!supabase) {
+        throw new Error('Supabase no está disponible');
+      }
 
       const { data, error } = await (supabase as any)
         .from('profiles')

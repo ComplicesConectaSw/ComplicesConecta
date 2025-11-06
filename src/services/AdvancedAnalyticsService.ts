@@ -174,6 +174,21 @@ export class AdvancedAnalyticsService {
     const timestamp = new Date().toISOString();
     
     try {
+      if (!supabase) {
+        logger.debug('Supabase no está disponible, retornando métricas por defecto');
+        return {
+          timestamp,
+          activeUsers: 0,
+          pageViews: 0,
+          apiCalls: 0,
+          errorRate: 0,
+          averageResponseTime: 0,
+          cacheHitRate: 0,
+          memoryUsage: 0,
+          cpuUsage: 0
+        };
+      }
+
       // Obtener métricas de usuarios activos
       const activeUsersResult = await supabase
         .from('profiles')
@@ -351,6 +366,11 @@ export class AdvancedAnalyticsService {
    */
   private async predictUserRetention(): Promise<PredictiveInsights | null> {
     try {
+      if (!supabase) {
+        logger.debug('Supabase no está disponible');
+        return null;
+      }
+
       // Obtener datos de usuarios activos
       const activeUsersResult = await supabase
         .from('profiles')

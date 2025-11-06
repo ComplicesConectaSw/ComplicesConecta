@@ -175,6 +175,11 @@ const Profiles: React.FC = () => {
       setIsLoading(true);
       logger.info('🔄 Cargando perfiles reales desde Supabase...');
       
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return [];
+      }
+      
       const { data: profiles, error } = await supabase
         .from('profiles')
         .select(`

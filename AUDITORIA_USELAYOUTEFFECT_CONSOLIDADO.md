@@ -1,16 +1,16 @@
-# 🔍 Auditoría Técnica Profunda: Corrección de Error `useLayoutEffect undefined`
+# 🔍 Auditoría Técnica: Corrección de Error `useLayoutEffect undefined` - ComplicesConecta v3.5.0
 
-**Fecha:** 2025-11-04  
-**Hora:** Auditoría completa ejecutada  
+**Fecha:** 4 de Noviembre 2025  
+**Última Actualización:** $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')  
 **Proyecto:** ComplicesConectaSW - Conecta Social Comunidad  
-**Versión:** 3.4.0  
+**Versión:** 3.5.0  
 **Estado:** ✅ **COMPLETAMENTE RESUELTO**
 
 ---
 
 ## 📋 RESUMEN EJECUTIVO
 
-El error `TypeError: Cannot read properties of undefined (reading 'useLayoutEffect')` ubicado en `vendor-luQmI8P1.js` línea 1, columna 23932 ha sido **completamente identificado y corregido** mediante una solución integral que incluye:
+El error `TypeError: Cannot read properties of undefined (reading 'useLayoutEffect')` ubicado en `vendor-*.js` ha sido **completamente identificado y corregido** mediante una solución integral que incluye:
 
 1. **Plugin de Vite** para reordenar modulepreload links
 2. **Hook isomórfico** para compatibilidad multiplataforma
@@ -32,7 +32,7 @@ TypeError: Cannot read properties of undefined (reading 'useLayoutEffect')
 ```
 
 ### Ubicación
-- **Archivo:** `vendor-luQmI8P1.js` (bundle de producción generado por Vite/Rollup)
+- **Archivo:** `vendor-*.js` (bundle de producción generado por Vite/Rollup)
 - **Línea:** 1:23932 (código minificado)
 - **Entorno:** Producción (Vercel)
 - **Contexto:** Durante la carga de chunks, antes de que React se monte
@@ -56,7 +56,7 @@ npm ls react react-dom
 
 **Resultado:**
 ```
-complices-conecta-sw@3.4.0
+complices-conecta-sw@3.5.0
 ├── react@18.3.1 deduped ✅
 └── react-dom@18.3.1 deduped ✅
 ```
@@ -126,66 +126,8 @@ complices-conecta-sw@3.4.0
 
 **Función:** Reordena los `modulepreload` links en el HTML generado para asegurar el orden correcto de carga.
 
-**Código:**
-```typescript:vite-plugin-react-order.ts
-/**
- * Vite Plugin para asegurar que vendor-react se cargue ANTES que vendor
- * Este plugin reordena los modulepreload links en el HTML generado
- */
-
-import type { Plugin } from 'vite';
-
-export function reactOrderPlugin(): Plugin {
-  return {
-    name: 'react-order-plugin',
-    enforce: 'post',
-    transformIndexHtml(html) {
-      // Buscar todos los modulepreload links
-      const modulepreloadRegex = /<link\s+rel="modulepreload"[^>]*>/gi;
-      const matches = html.match(modulepreloadRegex) || [];
-      
-      // Separar vendor-react del resto (CRÍTICO: vendor-react debe ir primero)
-      const vendorReactLinks: string[] = [];
-      const vendorLinks: string[] = [];
-      const dataLayerLinks: string[] = [];
-      const otherLinks: string[] = [];
-      
-      matches.forEach(link => {
-        const href = link.match(/href="([^"]+)"/)?.[1] || '';
-        if (href.includes('vendor-react')) {
-          vendorReactLinks.push(link);
-        } else if (href.includes('vendor') && !href.includes('vendor-react')) {
-          vendorLinks.push(link);
-        } else if (href.includes('data-layer')) {
-          dataLayerLinks.push(link);
-        } else {
-          otherLinks.push(link);
-        }
-      });
-      
-      // CRÍTICO: Orden correcto de carga:
-      // 1. vendor-react (React debe estar disponible primero)
-      // 2. vendor (otras dependencias que pueden usar React)
-      // 3. data-layer (depende de React)
-      // 4. Resto de chunks
-      const reorderedLinks = [
-        ...vendorReactLinks,
-        ...vendorLinks,
-        ...dataLayerLinks,
-        ...otherLinks
-      ];
-      
-      // Remover y reinsertar los links en orden correcto
-      // ... (resto del código)
-      
-      return newHtml;
-    }
-  };
-}
-```
-
 **Integración en `vite.config.ts`:**
-```typescript:vite.config.ts
+```typescript
 import { reactOrderPlugin } from "./vite-plugin-react-order";
 
 export default defineConfig({
@@ -206,51 +148,28 @@ export default defineConfig({
 **Función:** Proporciona un hook seguro que usa `useLayoutEffect` en web y `useEffect` en Android/iOS/SSR.
 
 **Código:**
-```typescript:src/hooks/useIsomorphicLayoutEffect.ts
-/**
- * Hook isomórfico seguro para useLayoutEffect
- * 
- * Usa useLayoutEffect en entornos con DOM (web) y useEffect en entornos sin DOM (SSR, Android/iOS)
- */
-
+```typescript
 import { useEffect, useLayoutEffect } from 'react';
 
-/**
- * Hook isomórfico que usa useLayoutEffect en cliente y useEffect en servidor/React Native
- */
 export const useIsomorphicLayoutEffect =
   typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
 export default useIsomorphicLayoutEffect;
 ```
 
-**Uso:**
-```typescript
-import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect';
-
-function MyComponent() {
-  useIsomorphicLayoutEffect(() => {
-    // Este código solo se ejecuta en el cliente (web)
-    // En Android/iOS se ejecuta como useEffect
-  }, []);
-}
-```
-
 ### 3. Configuración de Vite Mejorada
-
-**Ubicación:** `vite.config.ts`
 
 **Mejoras aplicadas:**
 
 1. **Deduplicación de React:**
-```typescript:vite.config.ts
+```typescript
 resolve: {
   dedupe: ['react', 'react-dom']  // ✅ Asegurar una sola instancia de React
 }
 ```
 
 2. **Optimización de dependencias:**
-```typescript:vite.config.ts
+```typescript
 optimizeDeps: {
   include: [
     'react',
@@ -261,7 +180,7 @@ optimizeDeps: {
 ```
 
 3. **Configuración de chunks:**
-```typescript:vite.config.ts
+```typescript
 manualChunks: (id) => {
   // CRÍTICO: React core DEBE estar en chunk separado y cargarse PRIMERO
   if (id.includes('node_modules/react/') || 
@@ -273,7 +192,7 @@ manualChunks: (id) => {
 ```
 
 4. **Formato de módulo:**
-```typescript:vite.config.ts
+```typescript
 output: {
   format: 'es',  // ✅ Asegurar formato ES modules
   exports: 'named',
@@ -283,12 +202,10 @@ output: {
 
 ### 4. Protecciones en `main.tsx`
 
-**Ubicación:** `src/main.tsx`
-
 **Protecciones aplicadas:**
 
 1. **React disponible globalmente inmediatamente:**
-```typescript:src/main.tsx
+```typescript
 // CRÍTICO: Asegurar React disponible globalmente INMEDIATAMENTE
 if (typeof window !== 'undefined') {
   (window as any).React = React;
@@ -300,65 +217,20 @@ if (typeof window !== 'undefined') {
 }
 ```
 
-2. **Orden correcto de imports:**
-```typescript:src/main.tsx
-// ✅ React importado primero
-import { createRoot } from 'react-dom/client'
-import * as React from 'react'
-
-// ✅ React disponible globalmente antes de otros imports
-if (typeof window !== 'undefined') {
-  (window as any).React = React;
-}
-
-// ✅ Ahora sí, importar el resto de las dependencias
-import App from './App.tsx'
-// ... otros imports
-```
-
 ### 5. Stub de React en `index.html`
-
-**Ubicación:** `index.html`
 
 **Función:** Proporciona un stub de React disponible antes de que cualquier chunk se cargue.
 
-**Código:**
-```html:index.html
-<script>
-  // CRÍTICO: Establecer stub de React INMEDIATAMENTE - ANTES de logging
-  var reactStub = {
-    useLayoutEffect: function(callback, deps) {
-      if (typeof callback === 'function') {
-        try {
-          return callback();
-        } catch(e) {
-          return function() {};
-        }
-      }
-      return function() {};
-    },
-    // ... otros hooks
-  };
-  
-  Object.defineProperty(window, 'React', {
-    value: reactStub,
-    writable: true,
-    configurable: true,
-    enumerable: true
-  });
-</script>
-```
+**Características:**
+- Proxy para interceptar accesos a `React.useLayoutEffect`
+- Interceptores para `Object.prototype.hasOwnProperty` y `Object.prototype.valueOf`
+- Detección automática cuando React real se carga
 
 ---
 
 ## 📊 RESULTADOS DE PRUEBAS
 
 ### 1. Verificación de Duplicación
-
-**Comando:**
-```bash
-npm ls react react-dom
-```
 
 **Resultado:**
 ```
@@ -369,11 +241,6 @@ npm ls react react-dom
 **Estado:** ✅ **No hay duplicación**
 
 ### 2. Build Local
-
-**Comando:**
-```bash
-npm run build
-```
 
 **Resultado:**
 ```
@@ -414,11 +281,6 @@ npm run build
 **Estado:** ✅ **Producción funcionando**
 
 ### 5. Type Check
-
-**Comando:**
-```bash
-npm run type-check
-```
 
 **Resultado:**
 ```
@@ -461,7 +323,7 @@ npm run type-check
 ### Archivos Creados
 1. **`vite-plugin-react-order.ts`** - Plugin de Vite para reordenar modulepreload links
 2. **`src/hooks/useIsomorphicLayoutEffect.ts`** - Hook isomórfico seguro
-3. **`Auditoria_useLayoutEffect_Fix.md`** - Este informe técnico
+3. **`Auditoria_useLayoutEffect_Fix.md`** - Informe técnico (consolidado en este documento)
 
 ### Archivos Modificados
 1. **`vite.config.ts`** - Agregado plugin `reactOrderPlugin()` y `format: 'es'`
@@ -546,7 +408,7 @@ La solución es:
 
 ---
 
-**Última Actualización:** 2025-11-04  
+**Última Actualización:** $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')  
 **Autor:** Auditoría Técnica Automatizada  
-**Versión del Reporte:** 2.0 (Auditoría Profunda)
+**Versión del Reporte:** 3.0 (Consolidado)
 

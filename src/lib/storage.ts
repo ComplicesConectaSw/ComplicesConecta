@@ -26,6 +26,13 @@ export async function uploadImage(
   options: ImageUploadOptions
 ): Promise<ImageUploadResult> {
   try {
+    if (!supabase) {
+      return {
+        success: false,
+        error: 'Supabase no está disponible'
+      };
+    }
+
     // Validar tipo de archivo
     const allowedTypes = options.allowedTypes || DEFAULT_OPTIONS.allowedTypes!;
     if (!allowedTypes.includes(file.type)) {
@@ -90,6 +97,13 @@ export async function deleteImage(
   filePath: string
 ): Promise<{ success: boolean; error?: string }> {
   try {
+    if (!supabase) {
+      return {
+        success: false,
+        error: 'Supabase no está disponible'
+      };
+    }
+
     const { error } = await supabase.storage
       .from(bucket)
       .remove([filePath]);

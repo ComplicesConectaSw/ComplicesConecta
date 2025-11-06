@@ -90,6 +90,11 @@ class InvitationsService {
     try {
       logger.info('Getting user invitations from Supabase', { page, limit, status });
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return [];
+      }
+
       const userId = this.getCurrentUserId();
 
       let query = supabase
@@ -154,6 +159,11 @@ class InvitationsService {
     try {
       logger.info('Creating invitation in Supabase', { invitationData });
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return null;
+      }
+
       const userId = this.getCurrentUserId();
 
       const { data, error } = await supabase
@@ -208,6 +218,11 @@ class InvitationsService {
     try {
       logger.info('Accepting invitation in Supabase', { invitationId });
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return false;
+      }
+
       const { error } = await supabase
         .from('invitations')
         .update({
@@ -235,6 +250,11 @@ class InvitationsService {
   async declineInvitation(invitationId: string): Promise<boolean> {
     try {
       logger.info('Declining invitation in Supabase', { invitationId });
+
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return false;
+      }
 
       const { error } = await supabase
         .from('invitations')
@@ -267,6 +287,11 @@ class InvitationsService {
   ): Promise<GalleryPermission[]> {
     try {
       logger.info('Getting user gallery permissions from Supabase', { page, limit, status });
+
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return [];
+      }
 
       const userId = this.getCurrentUserId();
 
@@ -315,6 +340,11 @@ class InvitationsService {
     try {
       logger.info('Creating gallery permission in Supabase', { permissionData });
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return null;
+      }
+
       const userId = this.getCurrentUserId();
 
       const { data, error} = await supabase
@@ -362,6 +392,11 @@ class InvitationsService {
     try {
       logger.info('Revoking gallery permission in Supabase', { permissionId });
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return false;
+      }
+
       // Actualizar permiso eliminándolo en lugar de cambiarlo
       const { error } = await supabase
         .from('gallery_permissions')
@@ -387,6 +422,11 @@ class InvitationsService {
   async getInvitationTemplates(): Promise<InvitationTemplate[]> {
     try {
       logger.info('Getting invitation templates from Supabase');
+
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return [];
+      }
 
       const { data, error } = await supabase
         .from('invitation_templates')
@@ -430,6 +470,18 @@ class InvitationsService {
   }> {
     try {
       logger.info('Getting invitation statistics from Supabase');
+
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return {
+          totalInvitations: 0,
+          pendingInvitations: 0,
+          acceptedInvitations: 0,
+          declinedInvitations: 0,
+          expiredInvitations: 0,
+          acceptanceRate: 0
+        };
+      }
 
       const userId = this.getCurrentUserId();
 

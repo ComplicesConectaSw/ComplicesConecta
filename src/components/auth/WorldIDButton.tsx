@@ -64,6 +64,16 @@ export const WorldIDButton: React.FC<WorldIDButtonProps> = ({
     setIsVerifying(true);
 
     try {
+      if (!supabase) {
+        toast({
+          title: "Error de conexión",
+          description: "No se pudo conectar con el servidor",
+          variant: "destructive"
+        });
+        setIsVerifying(false);
+        return;
+      }
+      
       // Call our Edge Function for World ID verification
       const { data, error } = await supabase.functions.invoke('worldid-verify', {
         body: {

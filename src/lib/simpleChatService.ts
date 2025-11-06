@@ -34,6 +34,11 @@ export class SimpleChatService {
     error?: string;
   }> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return { success: false, error: 'Supabase no está disponible' };
+      }
+
       const { data: user } = await supabase.auth.getUser();
       if (!user.user) {
         return { success: false, error: 'Usuario no autenticado' };
@@ -101,6 +106,11 @@ export class SimpleChatService {
     error?: string;
   }> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return { success: false, error: 'Supabase no está disponible' };
+      }
+
       const { data: messages, error } = await (supabase as any)
         .from('messages')
         .select('*')
@@ -149,6 +159,11 @@ export class SimpleChatService {
     error?: string;
   }> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return { success: false, error: 'Supabase no está disponible' };
+      }
+
       const { data: user } = await supabase.auth.getUser();
       if (!user.user) {
         return { success: false, error: 'Usuario no autenticado' };
@@ -202,6 +217,14 @@ export class SimpleChatService {
   }
 
   subscribeToRoomMessages(roomId: string, callback: (message: SimpleChatMessage) => void) {
+    if (!supabase) {
+      logger.error('Supabase no está disponible');
+      return {
+        unsubscribe: () => {},
+        channel: null as any
+      };
+    }
+
     const subscription = supabase
       .channel(`room-${roomId}`)
       .on(
@@ -214,6 +237,12 @@ export class SimpleChatService {
         },
         async (payload) => {
           const newMessage = payload.new as any;
+          
+          // Verificar que supabase esté disponible antes de usarlo
+          if (!supabase) {
+            logger.error('Supabase no está disponible en callback');
+            return;
+          }
           
           // Obtener información del remitente
           const { data: profile } = await (supabase as any)

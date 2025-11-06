@@ -75,6 +75,14 @@ export const HCaptchaWidget: React.FC<HCaptchaWidgetProps> = ({
           logger.info('hCaptcha token recibido, verificando en backend...', { token: token.substring(0, 10) + '...' });
           
           try {
+            if (!supabase) {
+              logger.error('Supabase no está disponible');
+              if (onError) {
+                onError('Supabase no está disponible');
+              }
+              return;
+            }
+
             // Verify token using Supabase Edge Function
             const { data, error } = await supabase.functions.invoke('hcaptcha-verify', {
               body: { 

@@ -106,6 +106,11 @@ export const useAuth = () => {
     try {
       logger.info('🔍 Iniciando verificación de autenticación', { userId });
       
+      if (!supabase) {
+        logger.error('❌ Supabase no está disponible');
+        return;
+      }
+      
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
@@ -223,6 +228,12 @@ export const useAuth = () => {
     if (shouldUseRealSupabase()) {
       logger.info('🔗 Configurando autenticación Supabase real...');
       
+      if (!supabase) {
+        logger.error('❌ Supabase no está disponible');
+        setLoading(false);
+        return;
+      }
+      
       // Obtener sesión actual de Supabase
       supabase.auth.getSession().then(({ data: { session } }) => {
         setSession(session);
@@ -261,6 +272,10 @@ export const useAuth = () => {
       } else {
         // Cerrar sesión real de Supabase
         logger.info('🔗 Cerrando sesión real de Supabase...');
+        if (!supabase) {
+          logger.error('❌ Supabase no está disponible');
+          return;
+        }
         const { error } = await supabase.auth.signOut();
         if (error) {
           logger.info('🔍 Estado de carga de perfil', { loading });
@@ -296,6 +311,12 @@ export const useAuth = () => {
         
         // IMPORTANTE: Limpiar cualquier sesión demo antes de autenticar producción
         clearDemoAuth();
+        
+        if (!supabase) {
+          logger.error('❌ Supabase no está disponible');
+          setLoading(false);
+          throw new Error('Supabase no está disponible');
+        }
         
         const { data, error } = await supabase.auth.signInWithPassword({
           email,
@@ -339,6 +360,12 @@ export const useAuth = () => {
       
       // Limpiar cualquier sesión demo antes de autenticar
       clearDemoAuth();
+      
+      if (!supabase) {
+        logger.error('❌ Supabase no está disponible');
+        setLoading(false);
+        throw new Error('Supabase no está disponible');
+      }
       
       const { data, error } = await supabase.auth.signInWithPassword({
         email,

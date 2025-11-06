@@ -242,6 +242,11 @@ const AdminProduction = () => {
 
   const loadRealProfiles = async () => {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return;
+      }
+      
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
@@ -281,6 +286,11 @@ const AdminProduction = () => {
 
   const loadRealStats = async () => {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return;
+      }
+      
       // Obtener estadísticas básicas de profiles
       const [
         { count: totalUsers },
@@ -306,9 +316,14 @@ const AdminProduction = () => {
       __appMetrics = null;
 
       try {
-        const tokensResponse = await supabase.from('user_token_balances').select('cmpx_balance');
-        if (!tokensResponse.error) {
-          tokenData = tokensResponse.data;
+        if (!supabase) {
+          logger.error('Supabase no está disponible');
+          tokenData = null;
+        } else {
+          const tokensResponse = await supabase.from('user_token_balances').select('cmpx_balance');
+          if (!tokensResponse.error) {
+            tokenData = tokensResponse.data;
+          }
         }
       } catch {
         logger.info('🪙 Tabla user_token_balances no disponible');
@@ -364,6 +379,12 @@ const AdminProduction = () => {
 
   const loadRealInvitations = async () => {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        setInvitations([]);
+        return;
+      }
+      
       // Intentar primero con 'chat_invitations' como sugiere Supabase
       const { data, error } = await supabase
         .from('invitations')
@@ -398,6 +419,16 @@ const AdminProduction = () => {
 
   const handleDeleteProfile = async (profileId: string) => {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        toast({
+          title: "Error",
+          description: "Supabase no está disponible",
+          variant: "destructive"
+        });
+        return;
+      }
+      
       const { error } = await supabase
         .from('profiles')
         .delete()
@@ -421,6 +452,16 @@ const AdminProduction = () => {
 
   const handleTogglePremium = async (profileId: string) => {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        toast({
+          title: "Error",
+          description: "Supabase no está disponible",
+          variant: "destructive"
+        });
+        return;
+      }
+      
       const profile = profiles.find(p => p.id === profileId);
       if (!profile) return;
 

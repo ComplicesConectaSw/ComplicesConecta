@@ -64,6 +64,17 @@ const AdminCareerApplications = () => {
       setLoading(true);
       logger.info('📋 Cargando solicitudes de carrera...');
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Supabase no está disponible"
+        });
+        setLoading(false);
+        return;
+      }
+
       const { data, error } = await (supabase as any)
         .from('career_applications')
         .select('*')
@@ -97,6 +108,16 @@ const AdminCareerApplications = () => {
   const updateApplicationStatus = async (id: string, newStatus: string) => {
     try {
       logger.info('🔄 Actualizando status de solicitud:', { id, newStatus });
+
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Supabase no está disponible"
+        });
+        return;
+      }
 
       const { error } = await (supabase as any)
         .from('career_applications')
@@ -140,6 +161,16 @@ const AdminCareerApplications = () => {
   const downloadCV = async (cvUrl: string, applicantName: string) => {
     try {
       logger.info('📥 Descargando CV:', { cvUrl, applicantName });
+
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Supabase no está disponible"
+        });
+        return;
+      }
 
       const { data, error } = await supabase.storage
         .from('career-files')

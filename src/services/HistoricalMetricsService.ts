@@ -83,6 +83,11 @@ class HistoricalMetricsService {
     const { hours = 24, interval = 'hour' } = options;
     
     try {
+      if (!supabase) {
+        logger.debug('Supabase no está disponible, retornando datos vacíos');
+        return this.getEmptyPerformanceTrends();
+      }
+
       const startTime = new Date(Date.now() - hours * 60 * 60 * 1000);
       
       const { data, error } = await supabase
@@ -122,6 +127,11 @@ class HistoricalMetricsService {
     const { hours = 24, interval = 'hour' } = options;
     
     try {
+      if (!supabase) {
+        logger.debug('Supabase no está disponible, retornando datos vacíos');
+        return this.getEmptyErrorTrends();
+      }
+
       const startTime = new Date(Date.now() - hours * 60 * 60 * 1000);
       
       const { data, error } = await supabase
@@ -162,6 +172,11 @@ class HistoricalMetricsService {
     const { hours = 24, interval = 'hour' } = options;
     
     try {
+      if (!supabase) {
+        logger.debug('Supabase no está disponible, retornando datos vacíos');
+        return this.getEmptyWebVitalsTrends();
+      }
+
       const startTime = new Date(Date.now() - hours * 60 * 60 * 1000);
       
       const { data, error } = await supabase
@@ -202,6 +217,11 @@ class HistoricalMetricsService {
     const { days = 7, interval = 'day' } = options;
     
     try {
+      if (!supabase) {
+        logger.debug('Supabase no está disponible, retornando datos vacíos');
+        return this.getEmptyModerationTrends();
+      }
+
       const startTime = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
       
       const { data, error } = await supabase

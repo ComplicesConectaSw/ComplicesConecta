@@ -420,6 +420,14 @@ class ConsentVerificationService {
    */
   async saveVerification(verification: ConsentVerification): Promise<ConsentVerification> {
     try {
+      if (!supabase) {
+        logger.warn('Supabase no está disponible, retornando verificación sin guardar');
+        return {
+          ...verification,
+          messageId: verification.messageId || 'pending'
+        };
+      }
+
       // Guardar en BD
       const { data, error } = await supabase
         .from('consent_verifications')
@@ -469,6 +477,11 @@ class ConsentVerificationService {
    */
   async getVerificationHistory(userId: string, limit: number = 50): Promise<ConsentVerification[]> {
     try {
+      if (!supabase) {
+        logger.debug('Supabase no está disponible, retornando array vacío');
+        return [];
+      }
+
       const { data, error } = await supabase
         .from('consent_verifications')
         .select('*')

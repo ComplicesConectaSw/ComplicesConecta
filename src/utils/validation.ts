@@ -57,6 +57,11 @@ export const validateCoupleAge = (birthDate1: string, birthDate2: string) => {
  */
 export const validateUniqueEmail = async (email: string): Promise<boolean> => {
   try {
+    if (!supabase) {
+      logger.error('Supabase no está disponible');
+      return false;
+    }
+
     const { data, error } = await supabase
       .from('profiles')
       .select('id')

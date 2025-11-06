@@ -29,9 +29,8 @@ export interface ProfileReport {
   reported_content_id: string
   reported_user_id: string
   reporter_user_id: string
-  resolution_notes: string | null
-  reviewed_at: string | null
-  reviewed_by: string | null
+  // resolution_notes, reviewed_at, reviewed_by no existen en el esquema
+  // Usar resolved_at y resolved_by en su lugar
   severity: string
   status: string
   updated_at: string
@@ -64,6 +63,10 @@ export interface ProfileReportStatsResponse {
 export class ProfileReportService {
   async createProfileReport(params: CreateProfileReportParams): Promise<ProfileReportResponse> {
     try {
+      if (!supabase) {
+        return { success: false, error: 'Supabase no está disponible' }
+      }
+
       const { data: { user }, error: authError } = await supabase.auth.getUser()
 
       if (authError || !user) {
@@ -109,6 +112,10 @@ export class ProfileReportService {
 
   async getUserProfileReports(): Promise<ProfileReportsListResponse> {
     try {
+      if (!supabase) {
+        return { success: false, error: 'Supabase no está disponible' }
+      }
+
       const { data: { user }, error: authError } = await supabase.auth.getUser()
 
       if (authError || !user) {
@@ -137,6 +144,10 @@ export class ProfileReportService {
 
   async getPendingProfileReports(): Promise<ProfileReportsListResponse> {
     try {
+      if (!supabase) {
+        return { success: false, error: 'Supabase no está disponible' }
+      }
+
       const { data, error } = await supabase
         .from('reports')
         .select('*')
@@ -159,6 +170,10 @@ export class ProfileReportService {
 
   async resolveProfileReport(reportId: string, resolution: 'resolved' | 'dismissed', notes?: string): Promise<ProfileReportResponse> {
     try {
+      if (!supabase) {
+        return { success: false, error: 'Supabase no está disponible' }
+      }
+
       const { data: { user }, error: authError } = await supabase.auth.getUser()
 
       if (authError || !user) {
@@ -169,12 +184,12 @@ export class ProfileReportService {
         .from('reports')
         .update({
           status: resolution,
-          resolved_at: new Date().toISOString(), // Cambiado de reviewed_at a resolved_at
-          resolved_by: user.id, // Cambiado de reviewed_by a resolved_by
-          description: notes // Usar description para las notas
+          resolved_at: new Date().toISOString(),
+          resolved_by: user.id,
+          description: notes ? `${notes} (Resolution: ${resolution})` : `Resolution: ${resolution}` // Usar description para almacenar notas
         })
         .eq('id', reportId)
-        .eq('report_type', 'profile') // Cambiado de content_type a report_type
+        .eq('report_type', 'profile')
         .select()
         .single()
 
@@ -194,6 +209,10 @@ export class ProfileReportService {
 
   async applyProfileAction(userId: string, action: 'warning' | 'temporary_suspension' | 'permanent_suspension', suspensionDays?: number): Promise<{ success: boolean; error?: string }> {
     try {
+      if (!supabase) {
+        return { success: false, error: 'Supabase no está disponible' }
+      }
+
       let updateData: Partial<ProfilesTable['Update']> = {}
 
       switch (action) {
@@ -242,6 +261,10 @@ export class ProfileReportService {
 
   async getProfileReportStats(userId?: string): Promise<ProfileReportStatsResponse> {
     try {
+      if (!supabase) {
+        return { success: false, error: 'Supabase no está disponible' }
+      }
+
       const { data: { user } } = await supabase.auth.getUser()
 
       if (!user) {
@@ -287,6 +310,10 @@ export class ProfileReportService {
 
   async canUserReport(userId?: string): Promise<{ success: boolean; canReport?: boolean; reason?: string; error?: string }> {
     try {
+      if (!supabase) {
+        return { success: false, error: 'Supabase no está disponible' }
+      }
+
       const { data: { user } } = await supabase.auth.getUser()
 
       if (!user) {

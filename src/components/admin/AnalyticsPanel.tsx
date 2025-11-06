@@ -163,6 +163,12 @@ export function AnalyticsPanel() {
 
   const loadUserAnalytics = async () => {
     try {
+      if (!supabase) {
+        console.error('Supabase no está disponible');
+        generateMockAnalytics();
+        return;
+      }
+      
       const { data: profiles, error } = await supabase
         .from('profiles')
         .select('id, created_at, is_premium')
@@ -237,6 +243,12 @@ export function AnalyticsPanel() {
 
   const loadDemographicData = async () => {
     try {
+      if (!supabase) {
+        console.error('Supabase no está disponible');
+        generateMockDemographics();
+        return;
+      }
+      
       const { data: profiles, error } = await supabase
         .from('profiles')
         .select('age, gender, bio')

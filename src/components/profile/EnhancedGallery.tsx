@@ -150,6 +150,14 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
     try {
       setLoading(true);
       
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        setImages(getDemoImages(profileType));
+        setIsDemoMode(true);
+        setLoading(false);
+        return;
+      }
+      
       // Cargar imágenes públicas
       const { data: publicImages, error: publicError } = await (supabase as any)
         .from('media')
@@ -224,6 +232,11 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
 
     try {
       // Upload real a Supabase Storage
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return;
+      }
+      
       const fileExt = file.name.split('.').pop();
       const fileName = `${userId}/${Date.now()}.${fileExt}`;
       
@@ -280,6 +293,11 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
     }
 
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return;
+      }
+      
       // Eliminar de base de datos
       const { error: dbError } = await (supabase as any)
         .from('media')
@@ -293,7 +311,7 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
 
       // Eliminar de storage
       const image = images.find(img => img.id === imageId);
-      if (image) {
+      if (image && supabase) {
         const { error: storageError } = await supabase.storage
           .from('gallery-images')
           .remove([image.url]);
@@ -320,6 +338,11 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
     }
 
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return;
+      }
+      
       const { error } = await (supabase as any)
         .from('media')
         .update({ is_public: !isPublic })

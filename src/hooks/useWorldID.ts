@@ -96,6 +96,11 @@ export const useWorldID = () => {
     if (!user?.id) return [];
 
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return [];
+      }
+      
       const { data, error } = await supabase
         .from('referral_rewards')
         .select(`
@@ -125,6 +130,11 @@ export const useWorldID = () => {
     if (!user?.id) return { current: 0, limit: 500, remaining: 500 };
 
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return { current: 0, limit: 500, remaining: 500 };
+      }
+      
       const currentMonth = new Date().toISOString().slice(0, 7) + '-01';
       
       const { data, error } = await supabase

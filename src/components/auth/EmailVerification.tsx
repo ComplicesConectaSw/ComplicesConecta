@@ -63,6 +63,17 @@ export const EmailVerification: React.FC<EmailVerificationProps> = ({
 
     setIsVerifying(true);
     try {
+      if (!supabase) {
+        logger.error('❌ Supabase no está disponible');
+        toast({
+          title: "Error de conexión",
+          description: "No se pudo conectar con el servidor",
+          variant: "destructive"
+        });
+        setIsVerifying(false);
+        return;
+      }
+      
       // Verificar el código OTP con Supabase
       const { data, error } = await supabase.auth.verifyOtp({
         email,
@@ -104,6 +115,17 @@ export const EmailVerification: React.FC<EmailVerificationProps> = ({
   const handleResendCode = async () => {
     setIsResending(true);
     try {
+      if (!supabase) {
+        logger.error('❌ Supabase no está disponible');
+        toast({
+          title: "Error de conexión",
+          description: "No se pudo conectar con el servidor",
+          variant: "destructive"
+        });
+        setIsResending(false);
+        return;
+      }
+      
       const { error } = await supabase.auth.resend({
         type: 'signup',
         email,

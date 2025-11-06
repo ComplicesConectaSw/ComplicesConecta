@@ -3,8 +3,11 @@ import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Users, Calendar, MessageSquare, Heart, Crown, Shield, Zap, Star, MapPin } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ArrowLeft, Users, Calendar, MessageSquare, Heart, Crown, Shield, Zap, Star, MapPin, Lock, Settings as SettingsIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { PrivacySettings } from "@/components/settings/PrivacySettings";
+import { LocationSettings } from "@/components/settings/LocationSettings";
 
 const Settings = () => {
   const navigate = useNavigate();

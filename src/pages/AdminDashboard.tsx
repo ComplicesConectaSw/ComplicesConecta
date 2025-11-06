@@ -95,6 +95,13 @@ const AdminDashboard = () => {
     try {
       setRefreshing(true);
       
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        setLoading(false);
+        setRefreshing(false);
+        return;
+      }
+      
       // Obtener estadísticas de usuarios
       const { data: usersData, error: usersError } = await supabase
         .from('profiles')
@@ -244,6 +251,16 @@ const AdminDashboard = () => {
 
   const exportData = async (type: string) => {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        toast({
+          title: "Error",
+          description: "Supabase no está disponible",
+          variant: "destructive"
+        });
+        return;
+      }
+      
       let data: any[] = [];
       let filename = '';
 

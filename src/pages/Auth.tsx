@@ -225,6 +225,10 @@ const Auth = () => {
       }
 
       // Crear usuario en Supabase
+      if (!supabase) {
+        throw new Error('Supabase no está disponible');
+      }
+      
       const { data: _authData, error: authError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,

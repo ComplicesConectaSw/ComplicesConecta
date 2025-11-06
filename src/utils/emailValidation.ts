@@ -20,6 +20,11 @@ export const validateEmailFormat = (email: string): boolean => {
  */
 export const checkEmailUniqueness = async (email: string): Promise<boolean> => {
   try {
+    if (!supabase) {
+      logger.error('Supabase no está disponible');
+      throw new Error('Supabase no está disponible');
+    }
+
     // Verificar solo en profiles (auth.users no es accesible directamente)
     const { data: profiles, error: profileError } = await supabase
       .from('profiles')

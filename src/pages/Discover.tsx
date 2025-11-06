@@ -278,6 +278,12 @@ const Discover = () => {
         logger.info('🔗 Cargando perfiles reales desde Supabase...');
       }
       
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        generateRandomProfiles();
+        return;
+      }
+      
       const { data: realProfiles, error } = await supabase
         .from('profiles')
         .select('*')

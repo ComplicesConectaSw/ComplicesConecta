@@ -205,6 +205,16 @@ export const SingleRegistrationForm: React.FC<SingleRegistrationFormProps> = ({
     setIsLoading(true);
 
     try {
+      if (!supabase) {
+        toast({
+          variant: "destructive",
+          title: "Error de conexión",
+          description: "No se pudo conectar con el servidor",
+        });
+        setIsLoading(false);
+        return;
+      }
+      
       // Registrar usuario en Supabase Auth
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: formData.email,
@@ -222,6 +232,10 @@ export const SingleRegistrationForm: React.FC<SingleRegistrationFormProps> = ({
 
       if (authData.user) {
         logger.info('✅ Usuario registrado exitosamente:', { userId: authData.user.id });
+        
+        if (!supabase) {
+          throw new Error('Supabase no está disponible');
+        }
         
         // Crear perfil en la tabla profiles
         const { error: profileError } = await supabase

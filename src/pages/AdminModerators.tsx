@@ -86,6 +86,16 @@ const AdminModerators = () => {
 
   const fetchModerators = async () => {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Supabase no está disponible"
+        });
+        return;
+      }
+      
       const { data, error } = await (supabase as any)
         .from('moderators')
         .select('*')
@@ -106,6 +116,16 @@ const AdminModerators = () => {
 
   const fetchRequests = async () => {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Supabase no está disponible"
+        });
+        return;
+      }
+      
       const { data, error } = await (supabase as any)
         .from('moderator_requests')
         .select('*')
@@ -138,10 +158,34 @@ const AdminModerators = () => {
       setIsCreating(true);
       logger.info('👑 Creando nuevo moderador:', { email: newModeratorEmail, name: newModeratorName });
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Supabase no está disponible"
+        });
+        return;
+      }
+
       // Generar token de activación
       const activationToken = crypto.randomUUID();
       const expiresAt = new Date();
       expiresAt.setHours(expiresAt.getHours() + 24); // 24 horas
+
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Supabase no está disponible"
+        });
+        setIsCreating(false);
+        return;
+      }
+
+      const { data: userData } = await supabase.auth.getUser();
+      const userId = userData?.user?.id;
 
       const { data, error } = await (supabase as any)
         .from('moderators')
@@ -151,7 +195,7 @@ const AdminModerators = () => {
           status: 'pending',
           activation_token: activationToken,
           activation_expires_at: expiresAt.toISOString(),
-          created_by: (await supabase.auth.getUser()).data.user?.id
+          created_by: userId
         }])
         .select();
 
@@ -188,6 +232,16 @@ const AdminModerators = () => {
     try {
       logger.info('🔄 Actualizando status de moderador:', { moderatorId, newStatus });
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Supabase no está disponible"
+        });
+        return;
+      }
+
       const { error } = await (supabase as any)
         .from('moderators')
         .update({ status: newStatus })
@@ -223,11 +277,24 @@ const AdminModerators = () => {
     try {
       logger.info('📋 Procesando solicitud:', { requestId, action, reason });
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Supabase no está disponible"
+        });
+        return;
+      }
+
+      const { data: userData } = await supabase.auth.getUser();
+      const userId = userData?.user?.id;
+
       const { error } = await (supabase as any)
         .from('moderator_requests')
         .update({
           status: action,
-          reviewed_by: (await supabase.auth.getUser()).data.user?.id,
+          reviewed_by: userId,
           reviewed_at: new Date().toISOString(),
           rejection_reason: reason || null
         })
@@ -251,7 +318,7 @@ const AdminModerators = () => {
               status: 'pending',
               activation_token: activationToken,
               activation_expires_at: expiresAt.toISOString(),
-              created_by: (await supabase.auth.getUser()).data.user?.id
+              created_by: userId
             }]);
         }
       }

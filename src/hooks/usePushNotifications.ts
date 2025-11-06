@@ -219,6 +219,12 @@ export const usePushNotifications = ({
     if (!subscription || !userId) return;
 
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        setError('Supabase no está disponible');
+        return;
+      }
+
       const { error } = await supabase.functions.invoke('send-push-notification', {
         body: {
           user_id: userId,

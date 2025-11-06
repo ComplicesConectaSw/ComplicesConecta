@@ -89,6 +89,12 @@ const ProjectSupport = () => {
       let cvUrl = null;
       if (formData.cv) {
         setUploadingFile(true);
+        
+        if (!supabase) {
+          logger.error('Supabase no está disponible');
+          throw new Error('Supabase no está disponible');
+        }
+        
         const fileExt = formData.cv.name.split('.').pop();
         const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
         

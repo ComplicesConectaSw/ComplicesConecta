@@ -28,6 +28,11 @@ export interface CoupleProfileCompatibility {
 export const coupleProfileCompatibility: CoupleProfileCompatibility = {
   async isCoupleProfile(profileId: string): Promise<boolean> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return false;
+      }
+      
       // Verificar si el perfil tiene account_type = 'couple'
       const { data: profile, error } = await supabase
         .from('profiles')
@@ -57,6 +62,11 @@ export const coupleProfileCompatibility: CoupleProfileCompatibility = {
       }
       
       // Si es perfil de pareja, obtener los IDs de ambos partners
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return [profileId];
+      }
+      
       const { data: coupleProfile, error } = await supabase
         .from('couple_profiles')
         .select('partner1_id, partner2_id')
@@ -168,6 +178,11 @@ export const coupleProfileUtils = {
     }
   ): Promise<string | null> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return null;
+      }
+      
       const { data, error } = (await supabase
         .from('couple_profiles')
         .insert({
@@ -202,6 +217,11 @@ export const coupleProfileUtils = {
    */
   async getCoupleProfileDetails(profileId: string): Promise<any | null> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return null;
+      }
+      
       const { data, error } = await (supabase as any)
         .from('couple_profiles_with_partners')
         .select('*')

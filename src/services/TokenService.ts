@@ -89,6 +89,11 @@ class TokenService {
     try {
       logger.info('💰 Obteniendo balance de tokens', { userId: userId.substring(0, 8) + '***' });
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return null;
+      }
+
       const { data, error } = await supabase
         .from('user_token_balances')
         .select('cmpx_balance, gtk_balance')
@@ -116,6 +121,11 @@ class TokenService {
    */
   private async createInitialBalance(userId: string): Promise<TokenBalance> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return { cmpx: 0, gtk: 0 };
+      }
+
       const initialBalance: TokenBalance = {
         cmpx: 100, // Tokens de bienvenida
         gtk: 0
@@ -170,6 +180,11 @@ class TokenService {
       const newBalance = tokenType === 'cmpx'
         ? balance.cmpx + amount
         : balance.gtk + amount;
+
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return false;
+      }
 
       // Actualizar balance
       const updateField = tokenType === 'cmpx' ? 'cmpx_balance' : 'gtk_balance';
@@ -241,6 +256,11 @@ class TokenService {
 
       const newBalance = currentBalance - amount;
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return false;
+      }
+
       // Actualizar balance
       const updateField = tokenType === 'cmpx' ? 'cmpx_balance' : 'gtk_balance';
       const { error: updateError } = await supabase
@@ -289,6 +309,11 @@ class TokenService {
     metadata?: Record<string, any>;
   }): Promise<void> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return;
+      }
+
       await (supabase as any)
         .from('token_transactions')
         .insert({
@@ -313,6 +338,11 @@ class TokenService {
     }
   ): Promise<TokenTransaction[]> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return [];
+      }
+
       let query = (supabase as any)
         .from('token_transactions')
         .select('*')
@@ -389,6 +419,11 @@ class TokenService {
       // Calcular APY según tipo de token
       const apy = tokenType === 'cmpx' ? 8.0 : 12.5;
       
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return null;
+      }
+
       const { data, error } = await supabase
         .from('staking_records')
         .insert({
@@ -426,6 +461,11 @@ class TokenService {
   async completeStaking(stakingId: string, userId: string): Promise<boolean> {
     try {
       logger.info('✅ Completando staking', { stakingId, userId: userId.substring(0, 8) + '***' });
+
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return false;
+      }
 
       // Obtener registro de staking
       const { data: staking, error: fetchError } = await supabase

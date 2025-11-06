@@ -548,6 +548,11 @@ class ErrorAlertService {
    */
   private async persistAlert(alert: ErrorAlert): Promise<void> {
     try {
+      if (!supabase) {
+        logger.debug('Supabase no está disponible, omitiendo persistencia de alerta');
+        return;
+      }
+
       const { data: { user } } = await supabase.auth.getUser();
       
       await supabase.from('error_alerts').insert({
@@ -573,6 +578,11 @@ class ErrorAlertService {
    */
   private async updateAlertResolution(alertId: string, resolved: boolean): Promise<void> {
     try {
+      if (!supabase) {
+        logger.debug('Supabase no está disponible, omitiendo actualización de resolución');
+        return;
+      }
+
       const { data: { user } } = await supabase.auth.getUser();
       
       await supabase.from('error_alerts').update({
@@ -597,6 +607,11 @@ class ErrorAlertService {
     limit?: number;
   }): Promise<ErrorAlert[]> {
     try {
+      if (!supabase) {
+        logger.debug('Supabase no está disponible, retornando array vacío');
+        return [];
+      }
+
       let query = supabase
         .from('error_alerts')
         .select('*')

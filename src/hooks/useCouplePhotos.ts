@@ -39,6 +39,12 @@ export const useCouplePhotos = (profileId?: string): UseCouplePhotosReturn => {
       setLoading(true);
       setError(null);
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        setError('Supabase no está disponible');
+        return;
+      }
+
       const { data, error: fetchError } = await supabase
         .from('couple_profiles')
         .select('couple_images, id, created_at')
@@ -71,6 +77,11 @@ export const useCouplePhotos = (profileId?: string): UseCouplePhotosReturn => {
 
     try {
       setError(null);
+
+      if (!supabase || !supabase.storage) {
+        logger.error('Supabase Storage no está disponible');
+        throw new Error('Supabase Storage no está disponible');
+      }
 
       // Generar nombre único para el archivo
       const fileExt = file.name.split('.').pop();
@@ -142,6 +153,11 @@ export const useCouplePhotos = (profileId?: string): UseCouplePhotosReturn => {
       const photoToDelete = photos.find(p => p.id === photoId);
       if (!photoToDelete) throw new Error('Foto no encontrada');
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        throw new Error('Supabase no está disponible');
+      }
+
       // Obtener las imágenes actuales del perfil
       const { data: currentProfile, error: fetchError } = await supabase
         .from('couple_profiles')
@@ -155,14 +171,16 @@ export const useCouplePhotos = (profileId?: string): UseCouplePhotosReturn => {
       const photoToDeleteUrl = photoToDelete.url;
       
       // Eliminar archivo de storage (extraer path de la URL)
-      const urlParts = photoToDeleteUrl.split('/');
-      const storagePath = urlParts.slice(-3).join('/');
-      const { error: storageError } = await supabase.storage
-        .from('profile-images')
-        .remove([storagePath]);
+      if (supabase.storage) {
+        const urlParts = photoToDeleteUrl.split('/');
+        const storagePath = urlParts.slice(-3).join('/');
+        const { error: storageError } = await supabase.storage
+          .from('profile-images')
+          .remove([storagePath]);
 
-      if (storageError) {
-        logger.warn('Error deleting from storage:', storageError);
+        if (storageError) {
+          logger.warn('Error deleting from storage:', storageError);
+        }
       }
 
       // Eliminar de la base de datos (remover de array)
@@ -189,6 +207,11 @@ export const useCouplePhotos = (profileId?: string): UseCouplePhotosReturn => {
   const setMainPhoto = async (photoId: string, partner: 'el' | 'ella') => {
     try {
       setError(null);
+
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        throw new Error('Supabase no está disponible');
+      }
 
       // Obtener las imágenes actuales
       const { data: currentProfile, error: profileError } = await supabase

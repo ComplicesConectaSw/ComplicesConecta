@@ -17,6 +17,13 @@ const AdminRoute = ({ children }: AdminRouteProps) => {
 
   const checkAdminAccess = async () => {
     try {
+      if (!supabase) {
+        logger.error('❌ Supabase no está disponible');
+        setIsAdmin(false);
+        setLoading(false);
+        return;
+      }
+      
       // Verificar si hay sesión activa
       const { data: { session }, error: sessionError } = await supabase.auth.getSession();
       

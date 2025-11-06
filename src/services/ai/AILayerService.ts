@@ -178,6 +178,10 @@ export class AILayerService {
     userId1: string,
     userId2: string
   ): Promise<CompatibilityFeatures> {
+    if (!supabase) {
+      throw new Error('Supabase no está disponible');
+    }
+
     // Obtener perfiles
     const { data: profiles } = await supabase
       .from('profiles')
@@ -377,6 +381,11 @@ export class AILayerService {
     score: AIScore
   ): Promise<void> {
     try {
+      if (!supabase) {
+        console.warn('[AI] Supabase no está disponible, no se puede registrar predicción');
+        return;
+      }
+
       await (supabase as any).from('ai_compatibility_scores').insert({
         user1_id: userId1,
         user2_id: userId2,

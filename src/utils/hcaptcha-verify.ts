@@ -29,6 +29,15 @@ export const verifyHCaptcha = async (
       };
     }
 
+    // Verificar que Supabase esté disponible
+    if (!supabase) {
+      logger.error('Supabase no está disponible');
+      return {
+        success: false,
+        message: 'Supabase no está disponible'
+      };
+    }
+
     // Llamar a la Edge Function de Supabase para verificación segura
     const { data, error } = await supabase.functions.invoke('hcaptcha-verify', {
       body: { token, action, userId }

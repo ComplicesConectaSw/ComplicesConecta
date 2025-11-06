@@ -201,6 +201,11 @@ class PredictiveMatchingService {
    */
   private async getSharedInterests(userId: string, candidateId: string): Promise<string[]> {
     try {
+      if (!supabase) {
+        logger.debug('Supabase no está disponible, retornando array vacío');
+        return [];
+      }
+
       // Obtener intereses de ambos usuarios
       const [userInterests, candidateInterests] = await Promise.all([
         supabase
@@ -217,8 +222,8 @@ class PredictiveMatchingService {
         return [];
       }
 
-      const userInterestIds = new Set((userInterests.data || []).map(i => i.interest_id));
-      const candidateInterestIds = new Set((candidateInterests.data || []).map(i => i.interest_id));
+      const userInterestIds = new Set((userInterests.data || []).map(i => String(i.interest_id)));
+      const candidateInterestIds = new Set((candidateInterests.data || []).map(i => String(i.interest_id)));
       
       // Encontrar intereses compartidos
       const shared = [...userInterestIds].filter(id => candidateInterestIds.has(id));
@@ -235,6 +240,11 @@ class PredictiveMatchingService {
    */
   private async calculateBehavioralSimilarity(userId: string, candidateId: string): Promise<number> {
     try {
+      if (!supabase) {
+        logger.debug('Supabase no está disponible, retornando valor por defecto');
+        return 50; // Fallback
+      }
+
       // Obtener actividad reciente de ambos usuarios
       const [userActivity, candidateActivity] = await Promise.all([
         supabase
@@ -376,6 +386,11 @@ class PredictiveMatchingService {
    */
   private async getProfilesByIds(userIds: string[]): Promise<UserProfile[]> {
     try {
+      if (!supabase) {
+        logger.debug('Supabase no está disponible, retornando array vacío');
+        return [];
+      }
+
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
@@ -387,17 +402,55 @@ class PredictiveMatchingService {
       }
 
       return (data || []).map(profile => ({
-        userId: profile.user_id,
+        id: profile.user_id || profile.id || '',
+        name: profile.first_name && profile.last_name 
+          ? `${profile.first_name} ${profile.last_name}` 
+          : profile.first_name || profile.last_name || 'Usuario',
         age: profile.age || 0,
-        gender: profile.gender || '',
-        location: profile.location || '',
+        gender: (profile.gender === 'male' || profile.gender === 'female' ? 'single' : 'pareja') as 'single' | 'pareja',
+        location: {
+          city: profile.location || '',
+          coordinates: profile.latitude && profile.longitude 
+            ? { lat: profile.latitude, lng: profile.longitude }
+            : undefined
+        },
         interests: [], // TODO: Obtener intereses
-        bio: profile.bio || '',
-        verified: profile.is_verified || false,
+        personality: {
+          openness: 50,
+          conscientiousness: 50,
+          extraversion: 50,
+          agreeableness: 50,
+          neuroticism: 50,
+          adventurousness: 50,
+          discretion: 50
+        },
+        preferences: {
+          ageRange: { min: 18, max: 65 },
+          genderPreference: ['single', 'pareja'],
+          maxDistance: 50,
+          interests: [],
+          dealBreakers: [],
+          importance: {
+            personality: 30,
+            interests: 25,
+            location: 20,
+            activity: 15,
+            verification: 10
+          }
+        },
         activity: {
-          lastActive: profile.updated_at || new Date().toISOString(),
-          matchCount: 0, // TODO: Obtener de matches
-          messageCount: 0 // TODO: Obtener de messages
+          lastActive: new Date(profile.updated_at || Date.now()),
+          responseRate: 0,
+          profileCompleteness: 0,
+          photosCount: 0,
+          messagesExchanged: 0,
+          meetingsArranged: 0
+        },
+        verification: {
+          isVerified: profile.is_verified || false,
+          photoVerified: false,
+          phoneVerified: false,
+          idVerified: false
         }
       }));
     } catch (error) {

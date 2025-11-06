@@ -90,6 +90,11 @@ class ChatPrivacyService {
         return existing;
       }
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return null;
+      }
+
       // Crear solicitud de chat
       const { data, error } = await supabase
         .from('invitations')
@@ -127,6 +132,11 @@ class ChatPrivacyService {
     try {
       logger.info('✅ Aceptando solicitud de chat', { requestId });
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return false;
+      }
+
       const { error } = await supabase
         .from('invitations')
         .update({
@@ -163,6 +173,11 @@ class ChatPrivacyService {
     try {
       logger.info('❌ Denegando solicitud de chat', { requestId });
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return false;
+      }
+
       const { error } = await supabase
         .from('invitations')
         .update({
@@ -194,6 +209,11 @@ class ChatPrivacyService {
    */
   async getChatRequest(fromUserId: string, toUserId: string): Promise<ChatRequest | null> {
     try {
+      if (!supabase) {
+        logger.debug('Supabase no está disponible');
+        return null;
+      }
+
       const { data, error } = await supabase
         .from('invitations')
         .select('*, from_profile:profiles!invitations_from_profile_fkey(*), to_profile:profiles!invitations_to_profile_fkey(*)')
@@ -221,6 +241,11 @@ class ChatPrivacyService {
    */
   async getChatRequests(userId: string): Promise<ChatRequest[]> {
     try {
+      if (!supabase) {
+        logger.debug('Supabase no está disponible, retornando array vacío');
+        return [];
+      }
+
       const { data, error } = await supabase
         .from('invitations')
         .select('*, from_profile:profiles!invitations_from_profile_fkey(*), to_profile:profiles!invitations_to_profile_fkey(*)')
@@ -332,6 +357,11 @@ class ChatPrivacyService {
    */
   private async createChatPermission(requestId: string): Promise<void> {
     try {
+      if (!supabase) {
+        logger.debug('Supabase no está disponible');
+        return;
+      }
+
       // Obtener la solicitud
       const { data: request } = await supabase
         .from('invitations')

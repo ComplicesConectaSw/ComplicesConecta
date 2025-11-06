@@ -26,6 +26,11 @@ export const useProfile = (userId: string | null) => {
       // Comentado para reducir logs en tests
       // logger.info('🔍 Cargando perfil desde Supabase:', { userId });
       
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        throw new Error('Supabase no está disponible');
+      }
+      
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
@@ -61,6 +66,11 @@ export const useProfiles = (filters?: {
     queryKey: profileKeys.list(filterKey),
     queryFn: async (): Promise<Profile[]> => {
       // logger.info('📊 Cargando perfiles con filtros:', { limit: filters?.limit });
+      
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        throw new Error('Supabase no está disponible');
+      }
       
       let query = supabase.from('profiles').select('*');
       
@@ -108,6 +118,11 @@ export const useUpdateProfile = () => {
     mutationFn: async ({ profileId, updates }: { profileId: string; updates: Partial<Profile> }) => {
       // logger.info('💾 Actualizando perfil en Supabase:', { profileId });
       
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        throw new Error('Supabase no está disponible');
+      }
+      
       const { data, error } = await (supabase as any)
         .from('profiles')
         .update({
@@ -147,6 +162,11 @@ export const useCreateProfile = () => {
     mutationFn: async (newProfile: Omit<Profile, 'id' | 'created_at' | 'updated_at'>) => {
       // logger.info('📝 Creando nuevo perfil:', { first_name: (newProfile as any)?.first_name });
       
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        throw new Error('Supabase no está disponible');
+      }
+      
       const { data, error } = await (supabase as any)
         .from('profiles')
         .insert(newProfile)
@@ -179,6 +199,11 @@ export const usePrefetchProfile = () => {
     queryClient.prefetchQuery({
       queryKey: profileKeys.detail(userId),
       queryFn: async () => {
+        if (!supabase) {
+          logger.error('Supabase no está disponible');
+          return null;
+        }
+        
         const { data } = await supabase
           .from('profiles')
           .select('*')

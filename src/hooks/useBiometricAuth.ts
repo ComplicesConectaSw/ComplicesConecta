@@ -58,6 +58,11 @@ export const useBiometricAuth = () => {
     if (!user?.id) return false;
 
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return false;
+      }
+
       const { data, error } = await supabase
         .from('profiles')
         .select('biometric_enabled')
@@ -88,6 +93,12 @@ export const useBiometricAuth = () => {
 
     try {
       setIsLoading(true);
+
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        setIsLoading(false);
+        return false;
+      }
 
       const { data: _data, error } = await supabase
         .from('profiles')
@@ -173,6 +184,11 @@ export const useBiometricAuth = () => {
       const method = 'fingerprint';
       
       // Guardar sesión biométrica en la base de datos
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        throw new Error('Supabase no está disponible');
+      }
+
       const { error } = await (supabase as any)
         .from('biometric_sessions')
         .insert({
@@ -255,6 +271,18 @@ export const useBiometricAuth = () => {
       const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
 
       // Actualizar sesión biométrica en la base de datos
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return {
+          success: false,
+          method: 'biometric',
+          confidence: 0,
+          sessionId: '',
+          expiresAt: '',
+          error: 'Supabase no está disponible'
+        };
+      }
+
       const { error: updateError } = await (supabase as any)
         .from('biometric_sessions')
         .update({
@@ -303,6 +331,11 @@ export const useBiometricAuth = () => {
     if (!user?.id) return false;
 
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return false;
+      }
+
       const { data, error } = await (supabase as any)
         .from('biometric_sessions')
         .select('expires_at, is_active')
@@ -319,10 +352,12 @@ export const useBiometricAuth = () => {
 
       if (now > expiresAt || !data.is_active) {
         // Limpiar sesión expirada
-        await (supabase as any)
-          .from('biometric_sessions')
-          .update({ is_active: false })
-          .eq('session_id', sessionId);
+        if (supabase) {
+          await (supabase as any)
+            .from('biometric_sessions')
+            .update({ is_active: false })
+            .eq('session_id', sessionId);
+        }
         
         return false;
       }
@@ -343,6 +378,11 @@ export const useBiometricAuth = () => {
     if (!user?.id) return false;
 
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return false;
+      }
+
       let query = (supabase as any)
         .from('biometric_sessions')
         .update({ is_active: false });

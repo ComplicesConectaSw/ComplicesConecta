@@ -144,8 +144,16 @@ export const PrivateMatches: React.FC = () => {
         return;
       }
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        setLoading(false);
+        return;
+      }
+
+      const supabaseClient = supabase;
+
       // Usar tabla invitations para matches premium (invitaciones especiales)
-      const { data, error } = await supabase
+      const { data, error } = await supabaseClient
         .from('invitations')
         .select(`
           *,

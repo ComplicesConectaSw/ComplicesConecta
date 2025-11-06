@@ -93,6 +93,11 @@ class NFTGalleryService {
     try {
       logger.info('📸 Creando galería NFT', { userId: userId.substring(0, 8) + '***' });
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        throw new Error('Supabase no está disponible');
+      }
+
       const { data: gallery, error } = await supabase
         .from('nft_galleries')
         .insert({
@@ -151,6 +156,11 @@ class NFTGalleryService {
       // 3. Actualizar galería con información de NFT
       // NOTA: En Q2 2026, aquí se llamaría al smart contract para mint real
       // Por ahora, simulamos el mint guardando metadata
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        throw new Error('Supabase no está disponible');
+      }
+
       const { data: gallery, error } = await supabase
         .from('nft_galleries')
         .update({
@@ -197,6 +207,11 @@ class NFTGalleryService {
     metadata?: Record<string, any>
   ): Promise<NFTGalleryImage> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        throw new Error('Supabase no está disponible');
+      }
+
       const { data: image, error } = await supabase
         .from('nft_gallery_images')
         .insert({
@@ -250,6 +265,11 @@ class NFTGalleryService {
       );
 
       // 3. Actualizar imagen con información de NFT
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        throw new Error('Supabase no está disponible');
+      }
+
       const { data: image, error } = await supabase
         .from('nft_gallery_images')
         .update({
@@ -286,6 +306,11 @@ class NFTGalleryService {
    */
   async getUserGalleries(userId: string): Promise<NFTGallery[]> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return [];
+      }
+
       const { data, error } = await supabase
         .from('nft_galleries')
         .select('*')
@@ -309,6 +334,11 @@ class NFTGalleryService {
    */
   async getPublicGalleries(limit: number = 20): Promise<NFTGallery[]> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return [];
+      }
+
       const { data, error } = await supabase
         .from('nft_galleries')
         .select('*')
@@ -334,6 +364,11 @@ class NFTGalleryService {
    */
   async getGalleryImages(galleryId: string): Promise<NFTGalleryImage[]> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return [];
+      }
+
       const { data, error } = await supabase
         .from('nft_gallery_images')
         .select('*')

@@ -170,6 +170,11 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
     if (!user?.id) return;
 
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return;
+      }
+
       // Buscar mensajes usando room_id si existe, o filtrar por sender_id
       let query = supabase
         .from('chat_messages')
@@ -211,6 +216,11 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
   const subscribeToMessages = () => {
     if (!user?.id) return;
 
+    if (!supabase) {
+      logger.error('Supabase no está disponible');
+      return () => {};
+    }
+
     const channel = supabase
       .channel(`chat:${recipientId}`)
       .on(
@@ -236,7 +246,9 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      if (supabase) {
+        supabase.removeChannel(channel);
+      }
     };
   };
 
@@ -294,6 +306,16 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
       if (location?.latitude && location?.longitude) {
         messageData.location_latitude = location.latitude;
         messageData.location_longitude = location.longitude;
+      }
+
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        toast({
+          variant: 'destructive',
+          title: 'Error',
+          description: 'No se pudo enviar el mensaje'
+        });
+        return;
       }
 
       const { data: insertedMessage, error } = await supabase

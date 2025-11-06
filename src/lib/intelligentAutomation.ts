@@ -257,6 +257,11 @@ export class IntelligentAutomationService {
    */
   private static async setupTriggerListeners(): Promise<void> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible, no se pueden configurar listeners');
+        return;
+      }
+
       // Listen for new user signups
       supabase
         .channel('user_signups')
@@ -457,6 +462,11 @@ export class IntelligentAutomationService {
     if (!userId) return;
 
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return;
+      }
+
       // Get user preferences and create intelligent suggestions
       const { data: userProfile } = await supabase
         .from('profiles')
@@ -488,6 +498,11 @@ export class IntelligentAutomationService {
     if (!reportId) return;
 
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return;
+      }
+
       // Flag content for review using existing reports table
       const { error } = await supabase
         .from('reports')
@@ -511,6 +526,11 @@ export class IntelligentAutomationService {
    */
   private static async executeAssignModerator(config: Record<string, string | number | boolean | null>, triggerData: Record<string, unknown>): Promise<void> {
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return;
+      }
+
       // Find available moderator using profiles table
       const { data: moderators } = await supabase
         .from('profiles')

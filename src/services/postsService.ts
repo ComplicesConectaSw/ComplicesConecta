@@ -188,6 +188,13 @@ class PostsService {
 
       logger.info('Fetching feed posts from Supabase with optimized queries', { page, limit });
       
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        const demoPosts = this.generateMockPosts(10);
+        this.feedCache.set(cacheKey, { data: demoPosts, timestamp: Date.now() });
+        return demoPosts;
+      }
+      
       const startTime = performance.now();
       
       // CONSULTA OPTIMIZADA: Una sola consulta con agregaciones
@@ -279,6 +286,11 @@ class PostsService {
     try {
       logger.info('Creating new post in Supabase', { postData });
       
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return null;
+      }
+      
       const userId = this.getCurrentUserId();
       
       // Crear el story en Supabase
@@ -348,6 +360,11 @@ class PostsService {
   async toggleLike(postId: string): Promise<boolean> {
     try {
       logger.info('Toggling like for post in Supabase:', { postId });
+      
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return false;
+      }
       
       const userId = this.getCurrentUserId();
       
@@ -426,6 +443,11 @@ class PostsService {
     try {
       logger.info('💬 Getting comments from Supabase', { postId, page, limit });
 
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return [];
+      }
+
       const { data, error } = await supabase
         .from('story_comments')
         .select(`
@@ -448,6 +470,10 @@ class PostsService {
       // NOTA: comment_likes no existe, usando story_likes como alternativa temporal
       const comments: Comment[] = [];
       for (const comment of data || []) {
+        if (!supabase) {
+          break;
+        }
+        
         const { count: likesCount } = await supabase
           .from('story_comments')
           .select('id', { count: 'exact' })
@@ -493,6 +519,11 @@ class PostsService {
   async createComment(commentData: CreateCommentData): Promise<Comment> {
     try {
       logger.info('💬 Creating comment in Supabase', { commentData });
+
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        throw new Error('Supabase no está disponible');
+      }
 
       const userId = this.getCurrentUserId();
 
