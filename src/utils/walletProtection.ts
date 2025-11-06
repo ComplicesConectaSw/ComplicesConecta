@@ -7,6 +7,18 @@
 export const initializeWalletProtection = () => {
   if (typeof window === 'undefined') return;
   
+  // Verificar si ya hay protección activa desde index.html
+  // Si ya existe, solo refuerza sin duplicar interceptores
+  const hasExistingProtection = (window as any).__WALLET_PROTECTION_ACTIVE__;
+  if (hasExistingProtection) {
+    // Protección ya activa desde index.html, solo marcar como reforzada
+    (window as any).__WALLET_PROTECTION_REINFORCED__ = true;
+    return;
+  }
+  
+  // Marcar protección como activa
+  (window as any).__WALLET_PROTECTION_ACTIVE__ = true;
+  
   // SILENCIAR COMPLETAMENTE - No logs de inicialización
   // Store original methods
   const originalDefineProperty = Object.defineProperty;
