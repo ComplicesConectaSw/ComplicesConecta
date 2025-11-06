@@ -289,15 +289,27 @@ if (-not $SkipSupabase) {
         if ($supabaseExists) {
             $supabaseFile = Get-Item $supabaseTypesPath
             $supabaseContent = Get-Content $supabaseTypesPath -Raw
-            $tableMatches = [regex]::Matches($supabaseContent, "Tables:\s*\{([^}]+)\}")
+            
+            # Buscar todas las definiciones de tablas dentro del bloque Tables
+            # Patrón: nombre_tabla: { seguido de Row:
+            $tableRegex = [regex]::new("public:\s*\{[\s\S]*?Tables:\s*\{([\s\S]*?)\}\s*Views:", [System.Text.RegularExpressions.RegexOptions]::Singleline)
+            $tablesMatch = $tableRegex.Match($supabaseContent)
             $tables = @()
-            if ($tableMatches.Count -gt 0) {
-                $tableRegex = [regex]::new("(\w+):\s*\{")
-                $tableMatches = $tableRegex.Matches($tableMatches[0].Value)
-                foreach ($match in $tableMatches) {
-                    $tables += $match.Groups[1].Value
+            
+            if ($tablesMatch.Success) {
+                $tablesBlock = $tablesMatch.Groups[1].Value
+                # Buscar todas las definiciones de tabla: nombre: {
+                $tableNameRegex = [regex]::new("^\s+(\w+):\s*\{", [System.Text.RegularExpressions.RegexOptions]::Multiline)
+                $tableNameMatches = $tableNameRegex.Matches($tablesBlock)
+                foreach ($match in $tableNameMatches) {
+                    $tableName = $match.Groups[1].Value
+                    # Excluir palabras clave como "Tables", "Views", "Functions", etc.
+                    if ($tableName -notmatch "^(Tables|Views|Functions|Enums|CompositeTypes|Row|Insert|Update|Relationships)$") {
+                        $tables += $tableName
+                    }
                 }
             }
+            
             $supabaseInfo = @{
                 exists = $true
                 size = $supabaseFile.Length
@@ -310,15 +322,26 @@ if (-not $SkipSupabase) {
         if ($generatedExists) {
             $generatedFile = Get-Item $supabaseGeneratedPath
             $generatedContent = Get-Content $supabaseGeneratedPath -Raw
-            $tableMatches = [regex]::Matches($generatedContent, "Tables:\s*\{([^}]+)\}")
+            
+            # Buscar todas las definiciones de tablas dentro del bloque Tables
+            $tableRegex = [regex]::new("public:\s*\{[\s\S]*?Tables:\s*\{([\s\S]*?)\}\s*Views:", [System.Text.RegularExpressions.RegexOptions]::Singleline)
+            $tablesMatch = $tableRegex.Match($generatedContent)
             $tables = @()
-            if ($tableMatches.Count -gt 0) {
-                $tableRegex = [regex]::new("(\w+):\s*\{")
-                $tableMatches = $tableRegex.Matches($tableMatches[0].Value)
-                foreach ($match in $tableMatches) {
-                    $tables += $match.Groups[1].Value
+            
+            if ($tablesMatch.Success) {
+                $tablesBlock = $tablesMatch.Groups[1].Value
+                # Buscar todas las definiciones de tabla: nombre: {
+                $tableNameRegex = [regex]::new("^\s+(\w+):\s*\{", [System.Text.RegularExpressions.RegexOptions]::Multiline)
+                $tableNameMatches = $tableNameRegex.Matches($tablesBlock)
+                foreach ($match in $tableNameMatches) {
+                    $tableName = $match.Groups[1].Value
+                    # Excluir palabras clave como "Tables", "Views", "Functions", etc.
+                    if ($tableName -notmatch "^(Tables|Views|Functions|Enums|CompositeTypes|Row|Insert|Update|Relationships)$") {
+                        $tables += $tableName
+                    }
                 }
             }
+            
             $generatedInfo = @{
                 exists = $true
                 size = $generatedFile.Length
@@ -497,12 +520,22 @@ if (-not $SkipTableValidation) {
         
         if (Test-Path $supabaseTypesPath) {
             $supabaseContent = Get-Content $supabaseTypesPath -Raw
-            $tableMatches = [regex]::Matches($supabaseContent, "Tables:\s*\{([^}]+)\}")
-            if ($tableMatches.Count -gt 0) {
-                $tableRegex = [regex]::new("(\w+):\s*\{")
-                $tableMatches = $tableRegex.Matches($tableMatches[0].Value)
-                foreach ($match in $tableMatches) {
-                    $tablesInTypes += $match.Groups[1].Value
+            
+            # Buscar todas las definiciones de tablas dentro del bloque Tables
+            $tableRegex = [regex]::new("public:\s*\{[\s\S]*?Tables:\s*\{([\s\S]*?)\}\s*Views:", [System.Text.RegularExpressions.RegexOptions]::Singleline)
+            $tablesMatch = $tableRegex.Match($supabaseContent)
+            
+            if ($tablesMatch.Success) {
+                $tablesBlock = $tablesMatch.Groups[1].Value
+                # Buscar todas las definiciones de tabla: nombre: {
+                $tableNameRegex = [regex]::new("^\s+(\w+):\s*\{", [System.Text.RegularExpressions.RegexOptions]::Multiline)
+                $tableNameMatches = $tableNameRegex.Matches($tablesBlock)
+                foreach ($match in $tableNameMatches) {
+                    $tableName = $match.Groups[1].Value
+                    # Excluir palabras clave como "Tables", "Views", "Functions", etc.
+                    if ($tableName -notmatch "^(Tables|Views|Functions|Enums|CompositeTypes|Row|Insert|Update|Relationships)$") {
+                        $tablesInTypes += $tableName
+                    }
                 }
             }
         }

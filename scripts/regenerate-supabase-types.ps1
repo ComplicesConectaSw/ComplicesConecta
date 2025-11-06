@@ -75,11 +75,16 @@ try {
     # Generar tipos en archivo temporal primero
     $tempFile = "src/types/supabase-generated.tmp.ts"
     
+    # Eliminar archivo temporal si existe
+    if (Test-Path $tempFile) {
+        Remove-Item $tempFile -Force
+    }
+    
     $output = npx supabase gen types typescript --project-id $ProjectId 2>&1 | Out-String
     
     if ($LASTEXITCODE -eq 0) {
         # Guardar output en archivo
-        $output | Set-Content $tempFile -Encoding UTF8
+        $output | Set-Content $tempFile -Encoding UTF8 -Force
         
         # Verificar que el archivo tiene contenido válido
         $content = Get-Content $tempFile -Raw
