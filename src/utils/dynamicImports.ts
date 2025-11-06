@@ -81,10 +81,11 @@ export const loadEthersSDK = async (): Promise<EthersSDK | null> => {
       return null;
     }
     
+    // Ethers v6 tiene una estructura diferente - es un namespace, no un objeto con propiedades
     const sdk = {
       ethers: ethersModule.ethers || ethersModule,
-      providers: ethersModule.providers || {},
-      utils: ethersModule.utils || {}
+      providers: (ethersModule as any).providers || {},
+      utils: (ethersModule as any).utils || {}
     };
     
     sdkCache.set('ethers', sdk);

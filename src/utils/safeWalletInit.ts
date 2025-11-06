@@ -57,7 +57,7 @@ export const safeWalletInit = (): void => {
  * Detecta wallets disponibles de forma segura sin redefinir propiedades
  * Reutiliza la lógica de wallets.ts para evitar duplicación - SSR SAFE
  */
-export const detectAvailableWallets = (): WalletGlobals => {
+export const detectAvailableWallets = async (): Promise<WalletGlobals> => {
   const detected: WalletGlobals = {};
   
   // SSR Safety Check
@@ -68,7 +68,7 @@ export const detectAvailableWallets = (): WalletGlobals => {
   
   try {
     // Usar detección más robusta desde wallets.ts
-    const { getEthereumProvider, getSolanaProvider, getTronProvider, getBybitProvider } = require('./wallets');
+    const { getEthereumProvider, getSolanaProvider, getTronProvider, getBybitProvider } = await import('./wallets');
     
     // Detectar usando funciones seguras existentes
     const ethereum = getEthereumProvider();
@@ -122,12 +122,12 @@ export const initWalletsAsync = async (): Promise<void> => {
   await new Promise(resolve => setTimeout(resolve, 0));
   
   try {
-    const _detected = detectAvailableWallets(); // Detectar wallets disponibles
+    const _detected = await detectAvailableWallets(); // Detectar wallets disponibles
     safeWalletInit(); // Inicializar polyfills seguros
     
     // Importar y ejecutar protección de wallets de forma asíncrona
     const { detectWalletConflicts } = await import('./walletProtection');
-    await detectWalletConflicts();
+    detectWalletConflicts();
     
   } catch (error) {
     console.warn('[safeWalletInit] Error en inicialización asíncrona:', error);
