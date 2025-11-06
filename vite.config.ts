@@ -66,7 +66,10 @@ export default defineConfig({
           if (id.includes('node_modules')) {
             // CRÍTICO: React core DEBE estar en chunk separado y cargarse PRIMERO
             // Esto asegura que React esté disponible antes que cualquier otro chunk
-            if (id.includes('react/') || id.includes('react-dom/')) {
+            // IMPORTANTE: Verificar tanto 'react/' como 'react' para capturar todos los módulos
+            if (id.includes('node_modules/react/') || 
+                id.includes('node_modules/react-dom/') ||
+                (id.includes('node_modules/react') && !id.includes('react-router') && !id.includes('react-query') && !id.includes('react-hook-form'))) {
               return 'vendor-react';
             }
             // React Router después de React
@@ -205,7 +208,9 @@ export default defineConfig({
     chunkSizeWarningLimit: 500, // Reducir límite para forzar mejor splitting (de 800 a 500)
     // Ensure proper module resolution
     modulePreload: {
-      polyfill: true
+      polyfill: true,
+      // CRÍTICO: Preload de chunks críticos para asegurar orden de carga
+      // Vite maneja automáticamente las dependencias, pero esto ayuda a asegurar orden
     },
     // Optimize CSS
     cssCodeSplit: true,

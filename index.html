@@ -191,55 +191,77 @@
       // PROTECCIÓN CRÍTICA: Asegurar que React esté disponible ANTES de que cualquier chunk se cargue
       // Esto se ejecuta ANTES de que main.tsx o cualquier chunk se cargue
       (function() {
-        // Interceptar cualquier intento de usar createContext antes de que React esté disponible
-        var originalDefineProperty = Object.defineProperty;
-        var reactContextCheck = false;
-        
-        // Interceptar Object.defineProperty para detectar cuando se intenta definir window.React
-        Object.defineProperty = function(obj, prop, descriptor) {
-          if (obj === window && prop === 'React') {
-            // React está siendo definido - marcar como disponible
-            reactContextCheck = true;
-            var result = originalDefineProperty.call(this, obj, prop, descriptor);
-            // Asegurar que createContext esté disponible
-            if (window.React && !window.React.createContext) {
-              // Si React no tiene createContext, agregar fallback
-              window.React.createContext = function(defaultValue) {
-                // Fallback básico - será reemplazado cuando React real se cargue
-                return {
-                  Provider: function() { return null; },
-                  Consumer: function() { return null; },
-                  _currentValue: defaultValue
-                };
-              };
-            }
-            return result;
-          }
-          return originalDefineProperty.call(this, obj, prop, descriptor);
+        // Crear stub de React INMEDIATAMENTE para que esté disponible cuando chunks se carguen
+        window.__REACT_STUB__ = {
+          createContext: function(defaultValue) {
+            // Stub de createContext que será reemplazado cuando React real se cargue
+            var context = {
+              Provider: function(props) { return props.children; },
+              Consumer: function(props) { return props.children(defaultValue); },
+              displayName: 'Context',
+              _currentValue: defaultValue,
+              $$typeof: Symbol.for('react.context')
+            };
+            return context;
+          },
+          createElement: function() { return null; },
+          Fragment: function(props) { return props.children; },
+          useState: function(initial) { return [initial, function() {}]; },
+          useEffect: function() { return function() {}; },
+          useLayoutEffect: function() { return function() {}; },
+          useMemo: function(fn) { return fn(); },
+          useCallback: function(fn) { return fn; },
+          useContext: function(context) { return context._currentValue; },
+          StrictMode: function(props) { return props.children; }
         };
         
-        // Interceptar acceso a window.React antes de que se defina
+        // Hacer que window.React apunte al stub INMEDIATAMENTE
         Object.defineProperty(window, 'React', {
           get: function() {
-            // Si React no está disponible, retornar stub
-            return window.__REACT_STUB__ || null;
+            // Si React real ya está disponible, usarlo; sino, usar stub
+            return window.__REACT_REAL__ || window.__REACT_STUB__;
           },
           set: function(value) {
-            window.__REACT_STUB__ = value;
-            // Asegurar createContext
+            // Guardar React real cuando se defina
+            window.__REACT_REAL__ = value;
+            // Asegurar que createContext esté disponible
             if (value && !value.createContext) {
-              value.createContext = function(defaultValue) {
-                return {
-                  Provider: function() { return null; },
-                  Consumer: function() { return null; },
-                  _currentValue: defaultValue
-                };
-              };
+              value.createContext = window.__REACT_STUB__.createContext;
             }
           },
           configurable: true,
           enumerable: true
         });
+        
+        // Interceptar Object.defineProperty para detectar cuando se intenta definir window.React
+        var originalDefineProperty = Object.defineProperty;
+        Object.defineProperty = function(obj, prop, descriptor) {
+          if (obj === window && prop === 'React') {
+            // React está siendo definido - guardar como real
+            window.__REACT_REAL__ = descriptor.value || (descriptor.get && descriptor.get());
+            // Asegurar que createContext esté disponible
+            if (window.__REACT_REAL__ && !window.__REACT_REAL__.createContext) {
+              window.__REACT_REAL__.createContext = window.__REACT_STUB__.createContext;
+            }
+            // Llamar original pero asegurar que el stub esté disponible
+            try {
+              return originalDefineProperty.call(this, obj, prop, descriptor);
+            } catch(e) {
+              // Si falla, usar el stub
+              return originalDefineProperty.call(this, obj, prop, {
+                get: function() { return window.__REACT_REAL__ || window.__REACT_STUB__; },
+                configurable: true,
+                enumerable: true
+              });
+            }
+          }
+          return originalDefineProperty.call(this, obj, prop, descriptor);
+        };
+        
+        // Log para debugging
+        if (window.__LOADING_DEBUG__) {
+          window.__LOADING_DEBUG__.log('REACT_STUB_CREATED', { timestamp: Date.now() });
+        }
       })();
     </script>
     
