@@ -98,6 +98,9 @@ export const useCouplePhotos = (profileId?: string): UseCouplePhotosReturn => {
       if (uploadError) throw uploadError;
 
       // Obtener URL pública
+      if (!supabase || !supabase.storage) {
+        throw new Error('Supabase Storage no está disponible');
+      }
       const { data: { publicUrl } } = supabase.storage
         .from('profile-images')
         .getPublicUrl(fileName);

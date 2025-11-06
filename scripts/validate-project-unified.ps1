@@ -379,14 +379,19 @@ if (-not $SkipNullChecks) {
                 
                 for ($i = 0; $i -lt $lines.Count; $i++) {
                     $line = $lines[$i]
-                    # Buscar uso de supabase (excluyendo comentarios, imports y definiciones)
+                    # Buscar uso de supabase (excluyendo comentarios, imports, definiciones y localStorage)
                     if ($line -match "supabase\." -and 
                         $line -notmatch "^\s*//" -and 
                         $line -notmatch "import.*supabase" -and 
                         $line -notmatch "from.*supabase" -and
                         $line -notmatch "const.*supabase\s*=" -and
                         $line -notmatch "let.*supabase\s*=" -and
-                        $line -notmatch "var.*supabase\s*=") {
+                        $line -notmatch "var.*supabase\s*=" -and
+                        $line -notmatch "localStorage.*supabase" -and
+                        $line -notmatch "sessionStorage.*supabase" -and
+                        $line -notmatch "createClient.*supabase" -and
+                        $line -notmatch "placeholder\.supabase" -and
+                        $line -notmatch "PLACEHOLDER") {
                         
                         # Buscar null check en las 50 líneas anteriores o en la misma función
                         $hasNullCheck = $false
