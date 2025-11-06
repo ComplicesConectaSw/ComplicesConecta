@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from "react";
+﻿import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import HeaderNav from "@/components/HeaderNav";
 import { HeroSection } from "@/components/HeroSection";
@@ -41,6 +41,10 @@ const Index = () => {
   
   // Autenticación real
   const { user, profile, isAuthenticated } = useAuth();
+  
+  // Ref para evitar múltiples ejecuciones del efecto del modal de bienvenida
+  const welcomeModalChecked = useRef(false);
+  const welcomeModalTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Verificar si el usuario está autenticado y detectar Android
   useEffect(() => {
@@ -132,9 +136,18 @@ const Index = () => {
   
   // Efecto para mostrar modal de bienvenida en primera visita
   useEffect(() => {
+    // Limpiar timeout anterior si existe
+    if (welcomeModalTimeoutRef.current) {
+      clearTimeout(welcomeModalTimeoutRef.current);
+      welcomeModalTimeoutRef.current = null;
+    }
+    
     // Esperar a que termine el loading y luego verificar
-    if (!isLoading) {
+    if (!isLoading && !welcomeModalChecked.current) {
       const checkAndShowWelcome = () => {
+        // Marcar como verificado inmediatamente para evitar múltiples ejecuciones
+        welcomeModalChecked.current = true;
+        
         const demoAuth = localStorage.getItem('demo_authenticated') === 'true';
         const isAuth = isAuthenticated();
         
@@ -142,14 +155,16 @@ const Index = () => {
           hasVisited: hasVisited,
           demoAuthenticated: demoAuth,
           isAuthenticated: isAuth,
-          showWelcome: showWelcome
+          showWelcome: showWelcome,
+          alreadyChecked: welcomeModalChecked.current
         });
         
         // Solo mostrar si no se ha visitado, no hay demo activo, no está autenticado y el modal no está ya visible
         if (!hasVisited && !demoAuth && !isAuth && !showWelcome) {
           logger.info('✅ Mostrando modal de bienvenida - Primera visita');
-          setTimeout(() => {
+          welcomeModalTimeoutRef.current = setTimeout(() => {
             setShowWelcome(true);
+            welcomeModalTimeoutRef.current = null;
           }, 1200);
         } else {
           logger.info('❌ Modal de bienvenida no se mostrará:', {
@@ -159,10 +174,16 @@ const Index = () => {
       };
       
       // Ejecutar después de un pequeño delay para asegurar que el DOM esté listo
-      const timer = setTimeout(checkAndShowWelcome, 800);
-      return () => clearTimeout(timer);
+      welcomeModalTimeoutRef.current = setTimeout(checkAndShowWelcome, 800);
     }
-  }, [isLoading, showWelcome, isAuthenticated, hasVisited]);
+    
+    return () => {
+      if (welcomeModalTimeoutRef.current) {
+        clearTimeout(welcomeModalTimeoutRef.current);
+        welcomeModalTimeoutRef.current = null;
+      }
+    };
+  }, [isLoading, isAuthenticated, hasVisited]); // Removido showWelcome de dependencias para evitar loops
 
   const handleWelcomeClose = () => {
     setShowWelcome(false);
