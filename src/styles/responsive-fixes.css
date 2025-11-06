@@ -90,7 +90,7 @@
 /* Fix para iOS Safari */
 @supports (-webkit-touch-callout: none) {
   .header-nav-main {
-    position: -webkit-sticky;
+    position: sticky; /* Firefox no reconoce -webkit-sticky, usar sticky estándar */
   }
 }
 

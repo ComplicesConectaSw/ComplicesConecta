@@ -229,8 +229,7 @@ body, html {
 /* ===== CRITICAL LAYOUT FIXES ===== */
 /* Prevent layout shifts and ensure consistent rendering */
 .sticky {
-  position: -webkit-sticky !important;
-  position: sticky !important;
+    position: sticky !important; /* Firefox no reconoce -webkit-sticky, usar sticky estándar */
 }
 
 .z-50 {
