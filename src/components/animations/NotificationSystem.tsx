@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createContext } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { Heart, MessageCircle, Trophy, AlertCircle, CheckCircle, X, Mail, Bell, UserPlus } from 'lucide-react';
 
@@ -26,7 +26,24 @@ interface NotificationContextType {
   clearAll: () => void;
 }
 
-const NotificationContext = React.createContext<NotificationContextType | undefined>(undefined);
+// CRÍTICO: Asegurar createContext disponible antes de usar
+const safeCreateContext = <T,>(defaultValue: T | undefined): React.Context<T | undefined> => {
+  const debugLog = (event: string, data?: any) => {
+    if (typeof window !== 'undefined' && (window as any).__LOADING_DEBUG__) {
+      (window as any).__LOADING_DEBUG__.log(event, data);
+    }
+  };
+  
+  if (typeof window !== 'undefined' && (window as any).React?.createContext) {
+    debugLog('SAFE_CREATE_CONTEXT_GLOBAL', { provider: 'NotificationSystem', hasGlobal: true });
+    return (window as any).React.createContext(defaultValue);
+  }
+  
+  debugLog('SAFE_CREATE_CONTEXT_FALLBACK', { provider: 'NotificationSystem', hasGlobal: false, hasLocal: !!createContext });
+  return createContext<T | undefined>(defaultValue);
+};
+
+const NotificationContext = safeCreateContext<NotificationContextType>(undefined);
 
 // Notification provider
 export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {

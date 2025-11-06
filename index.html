@@ -49,22 +49,9 @@
       // Esto debe ejecutarse ANTES de que cualquier chunk se cargue
       window.__LOADING_DEBUG__.log('POLYFILL_INIT', { timestamp: Date.now() });
       
-      if (typeof window !== 'undefined') {
-        // Crear stub de React si no existe aún
-        window.__REACT_POLYFILL__ = window.__REACT_POLYFILL__ || {};
-        window.__REACT_POLYFILL__.createContext = window.__REACT_POLYFILL__.createContext || function(defaultValue) {
-          window.__LOADING_DEBUG__.log('POLYFILL_CREATE_CONTEXT_USED', { defaultValue: defaultValue });
-          var context = {
-            _currentValue: defaultValue,
-            Provider: null,
-            Consumer: null
-          };
-          context.Provider = { _context: context };
-          context.Consumer = { _context: context };
-          return context;
-        };
-        window.__LOADING_DEBUG__.log('POLYFILL_CREATED', { hasReact: !!(window as any).React });
-      }
+      // POLYFILL ELIMINADO: No es necesario y puede causar problemas
+      // React se carga antes de que se use createContext gracias al orden de carga
+      window.__LOADING_DEBUG__.log('POLYFILL_SKIPPED', { hasReact: !!(window as any).React });
     </script>
     <!-- SOLUCIÓN ALTERNATIVA: Hacer propiedades de wallet configurables ANTES de que las extensiones las toquen -->
     <script>
@@ -197,106 +184,7 @@
         </div>
       </div>
     </div>
-    <!-- Protección de wallets ANTES de que se carguen las extensiones -->
-    <script>
-      (function() {
-        'use strict';
-        // Protección ULTRA TEMPRANA - ANTES de que se carguen las extensiones de wallet
-        const originalDefineProperty = Object.defineProperty;
-        const originalConsoleError = console.error;
-        const originalConsoleWarn = console.warn;
-        
-        // Silenciar console.error para wallets
-        console.error = function(...args) {
-          const msg = args.join(' ').toLowerCase();
-          if (msg.includes('wallet') || msg.includes('ethereum') || msg.includes('solana') || 
-              msg.includes('metamask') || msg.includes('tronweb') || msg.includes('tronlink') ||
-              msg.includes('bybit') || msg.includes('evmask') || msg.includes('cannot redefine') ||
-              msg.includes('cannot assign to read only') || msg.includes('read only property') ||
-              msg.includes('which has only a getter') || msg.includes('inpage.js') ||
-              msg.includes('evmAsk.js') || msg.includes('data-layer') || msg.includes('solana.js')) {
-            return;
-          }
-          originalConsoleError.apply(console, args);
-        };
-        
-        // Silenciar console.warn para wallets
-        console.warn = function(...args) {
-          const msg = args.join(' ').toLowerCase();
-          if (msg.includes('wallet') || msg.includes('ethereum') || msg.includes('solana') ||
-              msg.includes('metamask') || msg.includes('tronweb') || msg.includes('tronlink') ||
-              msg.includes('bybit') || msg.includes('evmask')) {
-            return;
-          }
-          originalConsoleWarn.apply(console, args);
-        };
-        
-        // Interceptar Object.defineProperty para propiedades de wallet
-        Object.defineProperty = function(obj, prop, descriptor) {
-          const walletProps = ['ethereum', 'solana', 'tronWeb', 'bybitWallet', 'tronweb', 'chainId', 'chainid'];
-          
-          if (obj === window && walletProps.includes(prop.toLowerCase())) {
-            try {
-              const existing = Object.getOwnPropertyDescriptor(window, prop);
-              if (existing && !existing.configurable) {
-                // Propiedad no configurable, solo retornar sin error
-                return obj;
-              }
-              return originalDefineProperty.call(this, obj, prop, descriptor);
-            } catch {
-              // Cualquier error, solo retornar sin error
-              return obj;
-            }
-          }
-          
-          try {
-            return originalDefineProperty.call(this, obj, prop, descriptor);
-          } catch (error) {
-            const errMsg = (error?.message || '').toLowerCase();
-            if (walletProps.includes(prop.toLowerCase()) && obj === window &&
-                (errMsg.includes('cannot redefine') || errMsg.includes('read only'))) {
-              return obj;
-            }
-            throw error;
-          }
-        };
-        
-        // Interceptar errores globales
-        window.addEventListener('error', function(e) {
-          const msg = (e.message || '').toLowerCase();
-          const filename = (e.filename || '').toLowerCase();
-          
-          if (msg.includes('cannot redefine property') || msg.includes('cannot assign to read only') ||
-              msg.includes('read only property') || msg.includes('which has only a getter') ||
-              msg.includes('wallet') || msg.includes('ethereum') || msg.includes('solana') ||
-              filename.includes('inpage.js') || filename.includes('evmAsk.js') ||
-              filename.includes('solana.js') || filename.includes('data-layer')) {
-            e.stopImmediatePropagation();
-            e.preventDefault();
-            return false;
-          }
-        }, true);
-        
-        // Interceptar promise rejections
-        window.addEventListener('unhandledrejection', function(e) {
-          const reason = e.reason;
-          const msg = (reason?.message || reason?.toString() || '').toLowerCase();
-          const code = reason?.code?.toString() || '';
-          
-          if (msg.includes('cannot redefine property') || msg.includes('cannot assign to read only') ||
-              msg.includes('read only property') || msg.includes('which has only a getter') ||
-              msg.includes('wallet must') || msg.includes('wallet') ||
-              msg.includes('ethereum') || msg.includes('solana') || msg.includes('metamask') ||
-              msg.includes('tronweb') || msg.includes('tronlink') || msg.includes('bybit') ||
-              msg.includes('inpage.js') || msg.includes('evmAsk.js') || msg.includes('data-layer') ||
-              code === '4001' || (reason && typeof reason === 'object' && 'code' in reason && reason.code === 4001)) {
-            e.stopImmediatePropagation();
-            e.preventDefault();
-            return false;
-          }
-        }, true);
-      })();
-    </script>
+    <!-- Script duplicado eliminado - ya está en <head> y se ejecuta primero -->
     <script type="module" src="/src/main.tsx"></script>
     <style>
       @keyframes spin {

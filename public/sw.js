@@ -254,6 +254,18 @@ self.addEventListener('fetch', (event) => {
 
   const url = new URL(event.request.url);
   
+  // CRÍTICO: No interceptar chunks de Vite - deben cargarse siempre desde red
+  // Los chunks de Vite tienen formato: /assets/[name]-[hash].js
+  if (url.pathname.startsWith('/assets/') && url.pathname.endsWith('.js')) {
+    // Chunks de JavaScript: siempre desde red, sin cache para evitar problemas de carga
+    return; // No interceptar, dejar que el navegador maneje
+  }
+  
+  // CRÍTICO: No interceptar el HTML principal - debe cargarse siempre desde red
+  if (url.pathname === '/' || url.pathname === '/index.html') {
+    return; // No interceptar, dejar que el navegador maneje
+  }
+  
   // Estrategia por tipo de recurso
   if (CACHE_STRATEGIES.static.test(url.pathname)) {
     // Recursos estáticos: Cache First

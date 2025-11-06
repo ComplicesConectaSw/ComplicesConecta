@@ -175,9 +175,9 @@ export default defineConfig({
     minify: 'terser', // Usar terser para mejor compresión
     terserOptions: {
       compress: {
-        drop_console: true, // Eliminar console.log en producción
+        drop_console: false, // Conservar console para debugging (especialmente console.error y console.warn)
         drop_debugger: true,
-        pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.trace'],
+        pure_funcs: [], // No eliminar funciones console para mantener capacidad de debugging
         passes: 2, // Múltiples passes para mejor compresión
         ecma: 2020,
         unsafe: false,
