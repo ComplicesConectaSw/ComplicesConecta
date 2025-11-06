@@ -23,6 +23,55 @@
     <meta name="twitter:image" content="/placeholder.svg" />
     <!-- CRÍTICO: Asegurar React disponible globalmente ANTES de chunks -->
     <script>
+      // CRÍTICO: Establecer stub de React INMEDIATAMENTE - ANTES de logging
+      // Esto debe ejecutarse ANTES de cualquier otro código
+      (function() {
+        var reactStub = {
+          createContext: function(defaultValue) {
+            return {
+              Provider: function(props) { return props && props.children || null; },
+              Consumer: function(props) { return props && props.children ? props.children(defaultValue) : null; },
+              displayName: 'Context',
+              _currentValue: defaultValue,
+              $$typeof: Symbol.for('react.context')
+            };
+          },
+          createElement: function() { return null; },
+          Fragment: function(props) { return props ? props.children : null; },
+          useState: function(initial) { return [initial, function() {}]; },
+          useEffect: function() { return function() {}; },
+          useLayoutEffect: function(callback, deps) {
+            if (typeof callback === 'function') {
+              try {
+                return callback();
+              } catch(e) {
+                return function() {};
+              }
+            }
+            return function() {};
+          },
+          useMemo: function(fn) { return fn(); },
+          useCallback: function(fn) { return fn; },
+          useContext: function(context) { return context ? context._currentValue : null; },
+          StrictMode: function(props) { return props ? props.children : null; }
+        };
+        
+        // CRÍTICO: Establecer window.React INMEDIATAMENTE - antes de cualquier import
+        try {
+          Object.defineProperty(window, 'React', {
+            value: reactStub,
+            writable: true,
+            configurable: true,
+            enumerable: true
+          });
+        } catch(e) {
+          window.React = reactStub;
+        }
+        
+        window.__REACT_STUB__ = reactStub;
+        window.__REACT_REAL__ = null;
+      })();
+      
       // LOGGING: Inicializar sistema de logging para diagnóstico
       window.__LOADING_DEBUG__ = {
         timestamps: [],
@@ -56,12 +105,11 @@
     
     <!-- CRÍTICO: Inyectar React INMEDIATAMENTE en <head> ANTES de que Vite agregue modulepreload -->
     <script>
-      // PROTECCIÓN CRÍTICA: Asegurar que React esté disponible INMEDIATAMENTE en <head>
-      // Esto se ejecuta ANTES de que Vite agregue modulepreload en el build
-      // SOLUCIÓN ULTRA AGRESIVA: Interceptar TODOS los accesos a React antes de que se cargue
+      // PROTECCIÓN CRÍTICA: Mejorar stub de React y asegurar que esté disponible
+      // El stub ya está establecido arriba, aquí solo mejoramos la protección
       (function() {
-        // Crear stub de React INMEDIATAMENTE con createContext funcional
-        var reactStub = {
+        // Obtener stub existente o crear uno nuevo
+        var reactStub = window.__REACT_STUB__ || window.React || {
           createContext: function(defaultValue) {
             // Stub de createContext que funciona y será reemplazado cuando React real se cargue
             var context = {
