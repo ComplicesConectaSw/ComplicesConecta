@@ -211,14 +211,11 @@ export default defineConfig({
         // Ensure consistent chunk naming
         chunkFileNames: 'assets/[name]-[hash].js',
         entryFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]',
-        // CRÍTICO: Asegurar que vendor-react se cargue como dependencia de otros chunks
-        // Esto fuerza a que se cargue primero
-        chunkLoadingGlobal: 'vendorReactChunk'
+        assetFileNames: 'assets/[name]-[hash].[ext]'
       },
       // CRÍTICO: Asegurar orden de dependencias explícito
+      // NO externalizar React - debe estar en el bundle
       external: (id) => {
-        // NO externalizar React - debe estar en el bundle
         return false;
       },
     },

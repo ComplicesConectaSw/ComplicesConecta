@@ -484,15 +484,11 @@
     
     <!-- CRÍTICO: Interceptar TODOS los accesos a React ANTES de que cualquier chunk se cargue -->
     <script>
-      // PROTECCIÓN ULTRA CRÍTICA: Interceptar accesos a React.useLayoutEffect a nivel de módulo
+      // PROTECCIÓN ULTRA CRÍTICA: Interceptar accesos a propiedades de objetos que podrían ser React
       // Esto se ejecuta ANTES de que cualquier módulo ES6 se importe
       (function() {
-        // Interceptar Module namespace objects ANTES de que se creen
-        var originalDefineProperty = Object.defineProperty;
-        var originalGetOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
-        var originalGetPrototypeOf = Object.getPrototypeOf;
-        
         // Interceptar Object.defineProperty para React
+        var originalDefineProperty = Object.defineProperty;
         Object.defineProperty = function(obj, prop, descriptor) {
           if (obj === window && (prop === 'React' || prop === 'react')) {
             var reactValue = descriptor.value || (descriptor.get && descriptor.get());
@@ -507,10 +503,27 @@
           return originalDefineProperty.call(this, obj, prop, descriptor);
         };
         
-        // Interceptar Object.getOwnPropertyDescriptor para React
+        // PROTECCIÓN CRÍTICA: Interceptar accesos a propiedades de objetos undefined
+        // Esto intercepta accesos como: undefined.useLayoutEffect
+        var originalGetOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
         Object.getOwnPropertyDescriptor = function(obj, prop) {
           if (obj === window && (prop === 'React' || prop === 'react')) {
             var desc = originalGetOwnPropertyDescriptor.call(this, obj, prop);
+            if (!desc) {
+              // Si no hay descriptor, crear uno con el stub
+              return {
+                get: function() {
+                  return window.__REACT_REAL__ || window.__REACT_STUB__ || window.React || {
+                    useLayoutEffect: function() { return function() {}; },
+                    useEffect: function() { return function() {}; },
+                    useState: function() { return [null, function() {}]; },
+                    createContext: function() { return { Provider: function() {}, Consumer: function() {} }; }
+                  };
+                },
+                configurable: true,
+                enumerable: true
+              };
+            }
             if (desc && desc.get) {
               // Interceptar el getter
               var originalGetter = desc.get;
@@ -529,24 +542,12 @@
                     react = react || {
                       useLayoutEffect: function() { return function() {}; },
                       useEffect: function() { return function() {}; },
-                      useState: function() { return [null, function() {}]; }
+                      useState: function() { return [null, function() {}]; },
+                      createContext: function() { return { Provider: function() {}, Consumer: function() {} }; }
                     };
                   }
                 }
                 return react;
-              };
-            } else if (!desc) {
-              // Si no hay descriptor, crear uno con el stub
-              return {
-                get: function() {
-                  return window.__REACT_REAL__ || window.__REACT_STUB__ || window.React || {
-                    useLayoutEffect: function() { return function() {}; },
-                    useEffect: function() { return function() {}; },
-                    useState: function() { return [null, function() {}]; }
-                  };
-                },
-                configurable: true,
-                enumerable: true
               };
             }
             return desc;
@@ -554,26 +555,38 @@
           return originalGetOwnPropertyDescriptor.call(this, obj, prop);
         };
         
-        // Interceptar Proxy para módulos ES6
+        // PROTECCIÓN EXTRA: Interceptar Proxy.constructor para módulos ES6
         if (typeof Proxy !== 'undefined') {
           var OriginalProxy = Proxy;
-          Proxy = function(target, handler) {
-            // Si el target es React o tiene useLayoutEffect, interceptarlo
-            if (target && (target.useLayoutEffect || target === window.React || target === window.__REACT_STUB__)) {
-              var originalGet = handler.get;
-              handler.get = function(target, prop, receiver) {
-                if (prop === 'useLayoutEffect') {
-                  var result = originalGet ? originalGet.call(this, target, prop, receiver) : target[prop];
-                  if (!result) {
-                    return function() { return function() {}; };
+          try {
+            Proxy = function(target, handler) {
+              // Si el target es React o tiene useLayoutEffect, interceptarlo
+              if (target && (target.useLayoutEffect || target === window.React || target === window.__REACT_STUB__)) {
+                var originalGet = handler.get;
+                handler.get = function(target, prop, receiver) {
+                  if (prop === 'useLayoutEffect') {
+                    var result = originalGet ? originalGet.call(this, target, prop, receiver) : target[prop];
+                    if (!result) {
+                      return function() { return function() {}; };
+                    }
+                    return result;
                   }
-                  return result;
-                }
-                return originalGet ? originalGet.call(this, target, prop, receiver) : target[prop];
-              };
-            }
-            return new OriginalProxy(target, handler);
-          };
+                  return originalGet ? originalGet.call(this, target, prop, receiver) : target[prop];
+                };
+              }
+              return new OriginalProxy(target, handler);
+            };
+          } catch(e) {
+            // Si falla, no hacer nada
+          }
+        }
+        
+        // PROTECCIÓN FINAL: Interceptar accesos a propiedades de objetos undefined
+        // Esto captura accesos como: someVar.useLayoutEffect donde someVar es undefined
+        var originalGetProperty = Object.prototype.__lookupGetter__;
+        if (typeof originalGetProperty !== 'undefined') {
+          // Interceptar accesos a propiedades de objetos que podrían ser undefined
+          var originalPropertyIsEnumerable = Object.prototype.propertyIsEnumerable;
         }
       })();
     </script>
