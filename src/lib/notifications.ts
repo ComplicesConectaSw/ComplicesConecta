@@ -1,6 +1,8 @@
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
 import { RealtimeChannel } from '@supabase/supabase-js';
+import { trackEvent } from '@/config/posthog.config';
+import { oneSignalService } from '@/services/notifications/OneSignalService';
 
 export interface CreateNotificationParams {
   userId: string;
@@ -99,6 +101,24 @@ export class NotificationService {
         return null;
       }
 
+      // Enviar push notification vía OneSignal
+      if (data?.id) {
+        oneSignalService.sendNotification(
+          params.userId,
+          params.title,
+          params.message
+        ).catch((err) => {
+          logger.warn('Error enviando push notification', { error: err });
+        });
+      }
+
+      // Track event en PostHog
+      trackEvent('notification_created', {
+        type: params.type,
+        priority: params.priority || 'normal',
+        userId: params.userId.substring(0, 8) + '***'
+      });
+
       return data?.id ? String(data.id) : null;
     } catch (error) {
       logger.error('Error in createNotification:', { error: error instanceof Error ? error.message : String(error) });
@@ -119,6 +139,12 @@ export class NotificationService {
       senderId: matchedUserId,
       senderName: matchedUserName,
       metadata: { match_type: 'mutual_like' }
+    });
+
+    // Track en PostHog
+    trackEvent('match_notification', {
+      userId: userId.substring(0, 8) + '***',
+      matchedUserId: matchedUserId.substring(0, 8) + '***'
     });
   }
 
@@ -151,6 +177,12 @@ export class NotificationService {
       senderId: senderUserId,
       senderName: senderUserName,
       metadata: { message_preview: messagePreview }
+    });
+
+    // Track en PostHog
+    trackEvent('message_notification', {
+      userId: userId.substring(0, 8) + '***',
+      senderUserId: senderUserId.substring(0, 8) + '***'
     });
   }
 

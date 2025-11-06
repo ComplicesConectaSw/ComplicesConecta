@@ -22,6 +22,9 @@ import {
   TrendingUp,
   Award
 } from 'lucide-react';
+import { TikTokShareButton } from '@/components/sharing/TikTokShareButton';
+import { shareProfileToTikTok } from '@/utils/tiktokShare';
+import { trackEvent } from '@/config/posthog.config';
 import Navigation from '@/components/Navigation';
 import { ProfileNavTabs } from '@/components/profile/ProfileNavTabs';
 import { useAuth } from '@/hooks/useAuth';
@@ -141,8 +144,25 @@ const ProfileSingle: React.FC = () => {
         navigator.clipboard.writeText(window.location.href);
         logger.info('URL copiada al portapapeles');
       }
+      
+      // Track en PostHog
+      trackEvent('profile_shared', {
+        profileId: profile?.id?.substring(0, 8) + '***',
+        method: navigator.share ? 'native' : 'clipboard'
+      });
     } catch (error) {
       logger.error('Error sharing profile:', { error: String(error) });
+    }
+  };
+
+  const handleTikTokShare = async () => {
+    if (profile?.id && profile?.name) {
+      const success = await shareProfileToTikTok(profile.id, profile.name);
+      if (success) {
+        trackEvent('profile_shared_tiktok', {
+          profileId: profile.id.substring(0, 8) + '***'
+        });
+      }
     }
   };
 
@@ -413,6 +433,15 @@ const ProfileSingle: React.FC = () => {
                       <span className="hidden sm:inline">Compartir</span>
                       <span className="sm:hidden">Share</span>
                     </Button>
+                    
+                    <TikTokShareButton
+                      url={window.location.href}
+                      text={`Mira el perfil de ${profile?.name || 'Usuario'} en ComplicesConecta 🔥`}
+                      hashtags={['ComplicesConecta', 'Swinger', 'Mexico', 'Dating']}
+                      className="bg-black/20 hover:bg-black/30 text-white border-white/30 flex items-center gap-2 text-sm sm:text-base px-3 sm:px-4 py-2"
+                      variant="outline"
+                      size="md"
+                    />
                     
                     <Button 
                       onClick={handleDownloadProfile}

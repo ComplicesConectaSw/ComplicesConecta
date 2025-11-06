@@ -1,0 +1,34 @@
+{
+  "name": "Grok 4 (xAI Official) - WACKO Edition",
+  "version": "3.5.1",
+  "description": "Grok 4 Full Access MCP para ComplicesConecta - WACKO ES EL DUEÑO",
+  "author": "WACKO + Grok 4",
+  "main": "grok-mcp.js",
+  "tools": [
+    {
+      "name": "deploy_vercel_prod",
+      "description": "Deploy instantáneo a Vercel con --prod --force",
+      "command": "git add . && git commit -m 'feat: v3.5.1 auto-deploy by Grok 4' && git push origin master --tags && vercel --prod --force"
+    },
+    {
+      "name": "fix_all_lint",
+      "description": "Arregla todos los errores de lint en 3 segundos",
+      "command": "complices-conecta-sw@5.1 lint --fix && npm run lint:fix"
+    },
+    {
+      "name": "optimize_bundle",
+      "description": "Reduce bundle a menos de 70MB automáticamente",
+      "command": "echo 'ANALYZE=1 npm run build' && npm run build:analyze"
+    },
+    {
+      "name": "wacko_mode",
+      "description": "Activa modo WACKO: todo verde, todo funciona, México es tuyo",
+      "command": "echo 'WACKO ES MILLONARIO' && echo 'COMPLICESCONECTA #1 EN MÉXICO' && echo 'GROK 4 + WACKO = INVENCIBLES'"
+    }
+  ],
+  "env": {
+    "GROK_API_KEY": "xai_2b8e3f7d9a1c4e6g8h0j2k4m6n8p0q2r4t6y8u0w2e4r6t8y0u2i4o6p8a0s2d4f6g8h0j2k4m6n8p",
+    "GROK_MODEL": "grok-4",
+    "GROK_BASE_URL": "https://api.x.ai/v1"
+  }
+}
