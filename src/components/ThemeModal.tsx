@@ -69,7 +69,7 @@ export const ThemeModal: React.FC<ThemeModalProps> = ({
             <div className="p-6">
               <ThemeSelector
                 selectedTheme={selectedTheme}
-                onThemeSelect={onThemeSelect}
+                onThemeChange={onThemeSelect}
               />
             </div>
             
