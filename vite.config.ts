@@ -64,9 +64,13 @@ export default defineConfig({
         manualChunks: (id) => {
           // Vendor libraries - split by size and usage
           if (id.includes('node_modules')) {
-            // CRÍTICO: React core DEBE estar en vendor pero cargarse PRIMERO
-            // Mantenerlo en vendor pero asegurar que se carga antes que otros chunks
-            if (id.includes('react/') || id.includes('react-dom/') || id.includes('react-router')) {
+            // CRÍTICO: React core DEBE estar en chunk separado y cargarse PRIMERO
+            // Esto asegura que React esté disponible antes que cualquier otro chunk
+            if (id.includes('react/') || id.includes('react-dom/')) {
+              return 'vendor-react';
+            }
+            // React Router después de React
+            if (id.includes('react-router')) {
               return 'vendor';
             }
             // UI libraries (medium)
@@ -91,7 +95,8 @@ export default defineConfig({
             if (id.includes('@capacitor') && !id.includes('@capacitor/core')) {
               return 'mobile';
             }
-            // Supabase and database (medium)
+            // Supabase and database (medium) - DESPUÉS de vendor-react
+            // CRÍTICO: Este chunk depende de React, debe cargarse después
             if (id.includes('@supabase') || id.includes('@tanstack/react-query')) {
               return 'data-layer';
             }

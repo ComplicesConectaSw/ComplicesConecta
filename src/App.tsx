@@ -135,7 +135,21 @@ const _ProfilePageLoader = () => (
   </div>
 );
 
-const queryClient = new QueryClient();
+// CRÍTICO: Crear QueryClient fuera del componente para evitar recreación en cada render
+// Configuración optimizada para producción
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 3,
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000, // 5 minutos
+      gcTime: 10 * 60 * 1000, // 10 minutos (antes cacheTime)
+    },
+    mutations: {
+      retry: 1,
+    },
+  },
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
