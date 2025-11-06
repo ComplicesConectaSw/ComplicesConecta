@@ -64,15 +64,16 @@ const Index = () => {
     
     // CRÍTICO: Timeout garantizado para evitar que se quede en loading indefinidamente
     // Usar un solo timeout con cleanup mechanism para evitar múltiples actualizaciones de estado
-    // El timeout se cancela automáticamente si el componente se desmonta o si isLoading ya es false
-    if (!loadingTimeoutExecutedRef.current && isLoading) {
+    // El timeout se ejecuta solo una vez al montar el componente y se cancela si el componente se desmonta
+    if (!loadingTimeoutExecutedRef.current && !loadingTimeoutRef.current) {
       loadingTimeoutRef.current = setTimeout(() => {
         // Verificar que aún estamos en loading antes de actualizar
-        if (isLoading && !loadingTimeoutExecutedRef.current) {
+        if (!loadingTimeoutExecutedRef.current) {
           loadingTimeoutExecutedRef.current = true;
           logger.info('⏱️ Timeout de seguridad: Forzando setIsLoading(false) y mostrar contenido');
           setIsLoading(false);
           setLoadingTimeoutPassed(true);
+          loadingTimeoutRef.current = null;
         }
       }, 2000); // 2 segundos - timeout único y suficiente
     }
@@ -83,7 +84,7 @@ const Index = () => {
         loadingTimeoutRef.current = null;
       }
     };
-  }, [isLoading]); // Incluir isLoading para cancelar si ya cambió
+  }, []); // Sin dependencias - solo se ejecuta una vez al montar
 
   // Separar la lógica de redirección para evitar loops
   useEffect(() => {
