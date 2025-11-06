@@ -1,11 +1,10 @@
-/* Import cross-browser compatibility styles */
+/* Import Google Fonts - DEBE estar al principio del archivo */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 /* Tailwind CSS v4 - El plugin @tailwindcss/postcss procesa automáticamente */
 /* No es necesario usar @import "tailwindcss" - el plugin PostCSS lo maneja */
 
 /* Custom scrollbar styles moved to consolidated-styles.css to avoid conflicts */
-
 /* Animations moved to consolidated-styles.css to avoid conflicts */
 
 /* Hover animations for buttons and interactive elements */
@@ -35,8 +34,6 @@
 .active\:scale-95:active {
   transform: scale(0.95);
 }
-
-/* Custom scrollbar moved to consolidated-styles.css */
 
 /* Scroll invisible pero funcional para contenedores específicos */
 .invisible-scroll {
@@ -77,8 +74,6 @@
 .particle-14 { top: 85%; left: 15%; animation-duration: 7s; animation-delay: 4.5s; }
 .particle-15 { top: 55%; left: 65%; animation-duration: 9s; animation-delay: 0.3s; }
 .particle-16 { top: 65%; left: 95%; animation-duration: 8s; animation-delay: 3.8s; }
-
-/* Body styles moved to consolidated-styles.css to avoid conflicts */
 
 /* Mejoras para Android WebView */
 @media screen and (max-width: 768px) {
@@ -190,7 +185,6 @@
 
 /* ComplicesConecta Design System - All colors, gradients, fonts, etc defined here. 
 All colors MUST be HSL. */
-
 @layer base {
   :root {
     --background: 350 20% 99%;
