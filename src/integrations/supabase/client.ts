@@ -95,7 +95,7 @@ function getSupabaseClient(): SupabaseClient<Database> {
         return fetch(url, {
           ...options,
           headers: {
-            ...options.headers,
+            ...(options?.headers || {}),
             'apikey': supabaseAnonKey || 'placeholder-key',
             'Authorization': `Bearer ${supabaseAnonKey || 'placeholder-key'}`,
             'Access-Control-Allow-Origin': '*',
@@ -189,6 +189,13 @@ const initializeSupabase = async () => {
         const timeoutPromise = new Promise((_, reject) => 
           setTimeout(() => reject(new Error('Timeout')), 5000)
         );
+        
+        // CRÍTICO: Verificar que supabase no sea null antes de usarlo
+        if (!supabase) {
+          safeLogger.warn('⚠️ Supabase no está disponible, activando modo demo', {});
+          isDemoMode = true;
+          return;
+        }
         
         const sessionPromise = supabase.auth.getSession();
         
