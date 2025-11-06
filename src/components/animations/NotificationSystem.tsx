@@ -216,7 +216,16 @@ const NotificationItem: React.FC<{ notification: Notification }> = ({ notificati
 
 // Notification container
 const NotificationContainer: React.FC = () => {
-  const { notifications } = useNotifications();
+  // CRÍTICO: Los hooks deben llamarse siempre, no condicionalmente
+  // Usar useContext directamente y manejar el caso undefined después
+  const context = React.useContext(NotificationContext);
+  
+  // Si no hay provider, retornar null silenciosamente
+  if (!context) {
+    return null;
+  }
+  
+  const { notifications } = context;
 
   return (
     <div className="fixed top-4 right-4 z-50 pointer-events-none">

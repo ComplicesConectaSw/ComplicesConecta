@@ -44,7 +44,7 @@ const defaultConfig: AnimationConfig = {
 };
 
 // Create context
-const AnimationContext = safeCreateContext<AnimationContextType | undefined>(undefined);
+export const AnimationContext = safeCreateContext<AnimationContextType | undefined>(undefined);
 
 // Animation speed multipliers
 const speedMultipliers = {

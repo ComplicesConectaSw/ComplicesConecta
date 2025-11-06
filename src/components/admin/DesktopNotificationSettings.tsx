@@ -1,10 +1,11 @@
 /**
  * =====================================================
- * NOTIFICATION SETTINGS COMPONENT
+ * DESKTOP NOTIFICATION SETTINGS COMPONENT
  * =====================================================
  * Panel de configuración de notificaciones de escritorio
+ * Específico para administradores - configuración avanzada
  * Fecha: 2025-01-29
- * Versión: v3.4.1
+ * Versión: v3.5.0
  * =====================================================
  */
 
@@ -23,7 +24,7 @@ import { logger } from '@/lib/logger';
 // COMPONENT
 // =====================================================
 
-export const NotificationSettings: React.FC = () => {
+export const DesktopNotificationSettings: React.FC = () => {
   const { toast } = useToast();
   const [config, setConfig] = useState<NotificationConfig>(desktopNotificationService.getConfig());
   const [permission, setPermission] = useState<NotificationPermission>(desktopNotificationService.getPermissionStatus());
@@ -284,5 +285,5 @@ export const NotificationSettings: React.FC = () => {
   );
 };
 
-export default NotificationSettings;
+export default DesktopNotificationSettings;
 

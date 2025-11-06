@@ -69,9 +69,14 @@ export const initializeWalletProtection = () => {
     
     const walletFiles = [
       'solana.js',
+      'solana.js:3',
       'inpage.js',
+      'inpage.js:154',
+      'inpage.js:168',
+      'inpage.js:1',
       'evmask.js',
       'evmAsk.js',
+      'evmAsk.js:5',
       'dist.94abdbf1.js',
       'data-layer',
       'chunk',
@@ -314,9 +319,14 @@ export const initializeWalletProtection = () => {
     
     const walletFiles = [
       'solana.js',
+      'solana.js:3',
       'inpage.js',
+      'inpage.js:154',
+      'inpage.js:168',
+      'inpage.js:1',
       'evmask.js',
       'evmAsk.js',
+      'evmAsk.js:5',
       'dist.94abdbf1.js',
       'data-layer',
       'chunk',

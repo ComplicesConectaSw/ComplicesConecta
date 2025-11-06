@@ -24,7 +24,7 @@ import errorAlertService from '@/services/ErrorAlertService';
 import { logger } from '@/lib/logger';
 import { AlertConfigPanel } from './AlertConfigPanel';
 import { ExportButton } from './ExportButton';
-import { NotificationSettings } from './NotificationSettings';
+import { DesktopNotificationSettings } from './DesktopNotificationSettings';
 import { ModerationMetricsPanel } from './ModerationMetrics';
 import { HistoricalCharts } from './HistoricalCharts';
 import { WebhookConfigPanel } from './WebhookConfigPanel';
@@ -511,7 +511,7 @@ export const AnalyticsDashboard: React.FC = () => {
       {activeTab === 'config' && (
         <div className="mt-6 space-y-6">
           <AlertConfigPanel />
-          <NotificationSettings />
+          <DesktopNotificationSettings />
           <WebhookConfigPanel />
         </div>
       )}

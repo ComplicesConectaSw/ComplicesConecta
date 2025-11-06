@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { useAnimation } from '@/components/animations/AnimationProvider';
+import { AnimationContext } from '@/components/animations/AnimationProvider';
 import { UnifiedButton } from '@/components/ui/UnifiedButton';
 import { UnifiedCard } from '@/components/ui/UnifiedCard';
 import { Settings, Zap, Eye, Sparkles, Palette } from 'lucide-react';
@@ -11,7 +11,24 @@ interface AnimationSettingsProps {
 }
 
 export const AnimationSettings: React.FC<AnimationSettingsProps> = ({ isOpen, onClose }) => {
-  const { config, updateConfig } = useAnimation();
+  // CRÍTICO: Los hooks deben llamarse siempre, no condicionalmente
+  // Usar useContext directamente y manejar el caso undefined después
+  const context = React.useContext(AnimationContext);
+  
+  // Si no hay provider, mostrar mensaje o retornar null
+  if (!context) {
+    if (!isOpen) return null;
+    return (
+      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-lg p-6 text-white">
+          <p>AnimationProvider no está disponible</p>
+          <button onClick={onClose} className="mt-4 px-4 py-2 bg-white/20 rounded">Cerrar</button>
+        </div>
+      </div>
+    );
+  }
+  
+  const { config, updateConfig } = context;
 
   const overlayVariants = {
     hidden: { opacity: 0 },

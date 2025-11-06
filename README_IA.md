@@ -19,6 +19,7 @@
   - **v3.5.0**: `fix/ui-visibility-*` → Correcciones de textos invisibles y colores rosa ✅
   - **v3.5.0**: `fix/navigation-conditional-*` → Navegación condicional HeaderNav/Navigation ✅
   - **v3.5.0**: `feature/nft-integration-*` → Integración NFT en componentes de tokens e imágenes ✅
+  - **v3.5.0**: `feature/styles-audit-*` → Análisis completo de estilos y limpieza (06 Nov 2025) ✅
 
 2. **SQL y Backups**
    - Todos los `.sql` y migraciones quedan excluidos en `.gitignore`
@@ -31,6 +32,7 @@
   - **NUEVO v3.5.0**: Integración NFT en componentes de tokens (TokenBalance, TokenDashboard, StakingModal)
   - **NUEVO v3.5.0**: Integración NFT en componentes de imágenes (ImageGallery, ImageUpload)
   - **NUEVO v3.5.0**: Ejemplos de galerías NFT en perfiles demo
+  - **NUEVO v3.5.0**: Análisis de Estilos Completo - 19 archivos CSS documentados, `App.css` vacío eliminado
 
 3. **Flujo de trabajo con IA/ML**
    - IA genera migraciones o código → Validar con `npm run type-check`
