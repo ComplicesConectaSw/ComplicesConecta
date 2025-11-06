@@ -21,6 +21,24 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
   }
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    // CRÍTICO: Ignorar errores de wallet que no deberían bloquear la aplicación
+    const errorMessage = error?.message || '';
+    const errorStack = error?.stack || '';
+    const isWalletError = 
+      errorMessage.includes('solana') ||
+      errorMessage.includes('ethereum') ||
+      errorMessage.includes('wallet') ||
+      errorMessage.includes('Cannot redefine property') ||
+      errorMessage.includes('Cannot assign to read only property') ||
+      errorStack.includes('solana.js') ||
+      errorStack.includes('inpage.js') ||
+      errorStack.includes('evmAsk.js');
+    
+    if (isWalletError) {
+      // No establecer hasError para errores de wallet
+      return { hasError: false };
+    }
+    
     return { hasError: true, error };
   }
 
