@@ -44,7 +44,6 @@ export const loadWeb3SDK = async (): Promise<Web3SDK | null> => {
   try {
     // Importación dinámica directa (sin eval para evitar problemas con CSP)
     // @ts-ignore - Módulo opcional, puede no estar instalado
-    // eslint-disable-next-line import/no-unresolved
     const web3Module = await import('web3').catch(() => null);
     if (!web3Module) {
       console.warn('[DynamicImports] Web3 SDK no está instalado');
@@ -76,7 +75,6 @@ export const loadEthersSDK = async (): Promise<EthersSDK | null> => {
   try {
     // Importación dinámica directa (sin eval para evitar problemas con CSP)
     // @ts-ignore - Módulo opcional, puede no estar instalado
-    // eslint-disable-next-line import/no-unresolved
     const ethersModule = await import('ethers').catch(() => null);
     if (!ethersModule) {
       console.warn('[DynamicImports] Ethers SDK no está instalado');
@@ -109,7 +107,6 @@ export const loadSolanaSDK = async (): Promise<SolanaSDK | null> => {
   try {
     // Importación dinámica directa (sin eval para evitar problemas con CSP)
     // @ts-ignore - Módulo opcional, puede no estar instalado
-    // eslint-disable-next-line import/no-unresolved
     const solanaModule = await import('@solana/web3.js').catch(() => null);
     if (!solanaModule) {
       console.warn('[DynamicImports] Solana SDK no está instalado');
@@ -143,7 +140,6 @@ export const loadTronSDK = async (): Promise<TronSDK | null> => {
   try {
     // Importación dinámica directa (sin eval para evitar problemas con CSP)
     // @ts-ignore - Módulo opcional, puede no estar instalado
-    // eslint-disable-next-line import/no-unresolved
     const tronModule = await import('tronweb').catch(() => null);
     if (!tronModule) {
       console.warn('[DynamicImports] TronWeb SDK no está instalado');
