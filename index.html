@@ -482,6 +482,17 @@
       }, true);
     </script>
     
+    <!-- CRÍTICO: Pre-cargar vendor-react ANTES de main.tsx para asegurar que React esté disponible -->
+    <script type="module">
+      // Asegurar que React esté disponible antes de cargar cualquier módulo
+      if (!window.React) {
+        console.error('❌ React no está disponible antes de cargar módulos');
+        // Forzar uso del stub si está disponible
+        if (window.__REACT_STUB__) {
+          window.React = window.__REACT_STUB__;
+        }
+      }
+    </script>
     <script type="module" src="/src/main.tsx"></script>
     <style>
       @keyframes spin {

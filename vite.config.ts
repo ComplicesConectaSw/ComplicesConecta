@@ -45,7 +45,21 @@ export default defineConfig({
       'react',
       'react-dom',
       'react/jsx-runtime'
-    ]
+    ],
+    // CRÍTICO: Asegurar que React se pre-bundle correctamente
+    esbuildOptions: {
+      define: {
+        global: 'globalThis'
+      }
+    }
+  },
+  // CRÍTICO: Asegurar que React se resuelva correctamente en todos los chunks
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+    // Asegurar que React se resuelva desde node_modules
+    dedupe: ['react', 'react-dom']
   },
   css: {
     postcss: './postcss.config.js',
@@ -64,25 +78,38 @@ export default defineConfig({
     }
   },
   build: {
+    // CRÍTICO: Asegurar que las entradas preserven sus firmas para mejor resolución de dependencias
     rollupOptions: {
-             output: {
-               manualChunks: (id) => {
-                 // Vendor libraries - split by size and usage
-                 if (id.includes('node_modules')) {
-                   // CRÍTICO: React core DEBE estar en chunk separado y cargarse PRIMERO
-                   // Esto asegura que React esté disponible antes que cualquier otro chunk
-                   // IMPORTANTE: Verificar tanto 'react/' como 'react' para capturar todos los módulos
-                   if (id.includes('node_modules/react/') || 
-                       id.includes('node_modules/react-dom/') ||
-                       (id.includes('node_modules/react') && !id.includes('react-router') && !id.includes('react-query') && !id.includes('react-hook-form'))) {
-                     return 'vendor-react';
-                   }
-                   // React Router después de React - PERO DEBE ESTAR EN vendor-react también
-                   // para asegurar que React esté disponible cuando se carga
-                   if (id.includes('react-router')) {
-                     // Mover react-router a vendor-react para asegurar que React esté disponible
-                     return 'vendor-react';
-                   }
+      preserveEntrySignatures: 'strict',
+      output: {
+        // CRÍTICO: Asegurar que React se exporte correctamente en el chunk
+        exports: 'named',
+        // CRÍTICO: Asegurar que los chunks se carguen en el orden correcto
+        manualChunks: (id) => {
+          // Vendor libraries - split by size and usage
+          if (id.includes('node_modules')) {
+            // CRÍTICO: React core DEBE estar en chunk separado y cargarse PRIMERO
+            // Esto asegura que React esté disponible antes que cualquier otro chunk
+            // IMPORTANTE: Capturar TODOS los módulos de React, incluyendo subdirectorios
+            if (id.includes('node_modules/react/') || 
+                id.includes('node_modules/react-dom/') ||
+                id.includes('node_modules/react/index.js') ||
+                id.includes('node_modules/react/index') ||
+                id.includes('node_modules/react/cjs/') ||
+                id.includes('node_modules/react/umd/') ||
+                (id.includes('node_modules/react') && 
+                 !id.includes('react-router') && 
+                 !id.includes('react-query') && 
+                 !id.includes('react-hook-form') &&
+                 !id.includes('react-hot-toast'))) {
+              return 'vendor-react';
+            }
+            // React Router después de React - PERO DEBE ESTAR EN vendor-react también
+            // para asegurar que React esté disponible cuando se carga
+            if (id.includes('react-router')) {
+              // Mover react-router a vendor-react para asegurar que React esté disponible
+              return 'vendor-react';
+            }
             // UI libraries (medium)
             if (id.includes('@radix-ui')) {
               return 'ui-radix';
@@ -183,7 +210,15 @@ export default defineConfig({
         // Ensure consistent chunk naming
         chunkFileNames: 'assets/[name]-[hash].js',
         entryFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]'
+        assetFileNames: 'assets/[name]-[hash].[ext]',
+        // CRÍTICO: Asegurar que vendor-react se cargue como dependencia de otros chunks
+        // Esto fuerza a que se cargue primero
+        chunkLoadingGlobal: 'vendorReactChunk'
+      },
+      // CRÍTICO: Asegurar orden de dependencias explícito
+      external: (id) => {
+        // NO externalizar React - debe estar en el bundle
+        return false;
       },
     },
     commonjsOptions: {
