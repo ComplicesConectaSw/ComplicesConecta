@@ -81,6 +81,8 @@ export default defineConfig({
     rollupOptions: {
       preserveEntrySignatures: 'strict',
       output: {
+        // CRÍTICO: Asegurar formato de módulo correcto para mejor resolución
+        format: 'es',
         // CRÍTICO: Asegurar que React se exporte correctamente en el chunk
         exports: 'named',
         // CRÍTICO: Asegurar que los chunks se carguen en el orden correcto
