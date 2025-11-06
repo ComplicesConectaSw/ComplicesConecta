@@ -32,6 +32,9 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+    // CRÍTICO: Asegurar que React se resuelva correctamente en todos los chunks
+    // Evitar duplicación de React en múltiples chunks
+    dedupe: ['react', 'react-dom']
   },
   optimizeDeps: {
     exclude: [
@@ -52,14 +55,6 @@ export default defineConfig({
         global: 'globalThis'
       }
     }
-  },
-  // CRÍTICO: Asegurar que React se resuelva correctamente en todos los chunks
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
-    // Asegurar que React se resuelva desde node_modules
-    dedupe: ['react', 'react-dom']
   },
   css: {
     postcss: './postcss.config.js',
