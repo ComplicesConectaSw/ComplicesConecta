@@ -23,7 +23,128 @@
     <meta name="twitter:image" content="/placeholder.svg" />
     
     <!-- CRÍTICO: PROTECCIÓN DE WALLETS - DEBE EJECUTARSE PRIMERO ANTES DE CUALQUIER OTRO SCRIPT -->
-    <!-- SOLUCIÓN BASADA EN MEJORES PRÁCTICAS: Interceptar ANTES de que las extensiones se carguen -->
+    <!-- SOLUCIÓN ULTRA AGRESIVA: Interceptar Object.defineProperty ANTES de que las extensiones se carguen -->
+    <!-- TÉCNICA: Hacer propiedades configurables PROACTIVAMENTE usando Object.defineProperty con configurable:true -->
+    <script>
+      // EJECUCIÓN INMEDIATA SIN IIFE - MÁXIMA PRIORIDAD
+      // Esta técnica intercepta Object.defineProperty ANTES de que las extensiones lo usen
+      (function() {
+        'use strict';
+        
+        // Guardar el Object.defineProperty ORIGINAL antes de que cualquier extensión lo modifique
+        var _originalDefineProperty = Object.defineProperty;
+        var _originalGetOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+        
+        // Lista de propiedades de wallet que necesitamos proteger
+        var _walletProps = ['ethereum', 'solana', 'tronWeb', 'tronweb', 'bybitWallet', 'bybit', 'chainId', 'chainid'];
+        
+        // TÉCNICA CRÍTICA: Hacer propiedades configurables ANTES de que las extensiones las definan
+        // Esto se ejecuta INMEDIATAMENTE, antes de que cualquier extensión se cargue
+        _walletProps.forEach(function(prop) {
+          try {
+            var desc = _originalGetOwnPropertyDescriptor(window, prop);
+            if (desc) {
+              // Si la propiedad ya existe, intentar hacerla configurable
+              if (!desc.configurable) {
+                try {
+                  // Intentar eliminar la propiedad primero (solo si es posible)
+                  delete window[prop];
+                } catch(e) {
+                  // Si no se puede eliminar, intentar redefinirla como configurable
+                  try {
+                    _originalDefineProperty(window, prop, {
+                      configurable: true,
+                      writable: desc.writable !== false,
+                      enumerable: desc.enumerable !== false,
+                      value: desc.value,
+                      get: desc.get,
+                      set: desc.set
+                    });
+                  } catch(e2) {
+                    // Si falla, continuar - la propiedad ya está protegida por otra extensión
+                  }
+                }
+              }
+            } else {
+              // Si la propiedad no existe, crear un placeholder configurable
+              try {
+                _originalDefineProperty(window, prop, {
+                  configurable: true,
+                  writable: true,
+                  enumerable: true,
+                  value: undefined
+                });
+              } catch(e) {
+                // Si falla, continuar
+              }
+            }
+          } catch(e) {
+            // Silenciar errores al configurar propiedades
+          }
+        });
+        
+        // Interceptar Object.defineProperty de forma ULTRA AGRESIVA
+        // Esta función se ejecuta ANTES de que las extensiones intenten definir propiedades
+        Object.defineProperty = function(obj, prop, descriptor) {
+          var propLower = String(prop).toLowerCase();
+          var isWalletProp = _walletProps.some(function(wp) { return propLower === wp.toLowerCase(); });
+          
+          // Si es una propiedad de wallet en window, manejar de forma especial
+          if (obj === window && isWalletProp) {
+            // CRÍTICO: Asegurar que el descriptor sea configurable
+            if (descriptor && typeof descriptor === 'object') {
+              descriptor.configurable = true;
+              // Si no tiene writable, establecerlo como true por defecto
+              if (descriptor.writable === undefined && !descriptor.get && !descriptor.set) {
+                descriptor.writable = true;
+              }
+            }
+            
+            // Intentar definir normalmente con descriptor configurable
+            try {
+              return _originalDefineProperty.call(this, obj, prop, descriptor);
+            } catch(e) {
+              // Si falla, verificar si es porque ya existe y no es configurable
+              try {
+                var existingDesc = _originalGetOwnPropertyDescriptor(window, prop);
+                if (existingDesc && !existingDesc.configurable) {
+                  // Propiedad no configurable - intentar hacerla configurable primero
+                  try {
+                    // Intentar eliminar la propiedad
+                    delete window[prop];
+                    // Si se puede eliminar, definirla de nuevo como configurable
+                    return _originalDefineProperty.call(this, obj, prop, descriptor);
+                  } catch(e2) {
+                    // Si no se puede eliminar ni redefinir, simplemente retornar sin error
+                    return obj;
+                  }
+                }
+                // Si es configurable, intentar de nuevo
+                return _originalDefineProperty.call(this, obj, prop, descriptor);
+              } catch(e2) {
+                // Cualquier error, simplemente retornar sin error
+                return obj;
+              }
+            }
+          }
+          
+          // Para otras propiedades, intentar normalmente
+          try {
+            return _originalDefineProperty.call(this, obj, prop, descriptor);
+          } catch(e) {
+            // Si es error relacionado con wallet, silenciar
+            var errMsg = String(e && e.message || '').toLowerCase();
+            if ((isWalletProp && obj === window) || 
+                (errMsg.indexOf('cannot redefine property') !== -1 && isWalletProp) ||
+                (errMsg.indexOf('cannot assign to read only') !== -1 && isWalletProp) ||
+                (errMsg.indexOf('read only property') !== -1 && isWalletProp)) {
+              return obj;
+            }
+            throw e;
+          }
+        };
+      })();
+    </script>
     <script>
       // PROTECCIÓN ULTRA AGRESIVA DE WALLETS - SIN IIFE PARA EJECUCIÓN INMEDIATA
       // Basado en mejores prácticas: interceptar Object.defineProperty antes de extensiones

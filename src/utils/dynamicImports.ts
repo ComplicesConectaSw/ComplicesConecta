@@ -43,7 +43,7 @@ export const loadWeb3SDK = async (): Promise<Web3SDK | null> => {
 
   try {
     // Importación dinámica directa (sin eval para evitar problemas con CSP)
-    // @ts-ignore - Módulo opcional, puede no estar instalado
+    // Módulo opcional: web3 está instalado pero puede no estar disponible en runtime
     const web3Module = await import('web3').catch(() => null);
     if (!web3Module) {
       console.warn('[DynamicImports] Web3 SDK no está instalado');
@@ -74,7 +74,7 @@ export const loadEthersSDK = async (): Promise<EthersSDK | null> => {
 
   try {
     // Importación dinámica directa (sin eval para evitar problemas con CSP)
-    // @ts-ignore - Módulo opcional, puede no estar instalado
+    // Módulo opcional: ethers está instalado pero puede no estar disponible en runtime
     const ethersModule = await import('ethers').catch(() => null);
     if (!ethersModule) {
       console.warn('[DynamicImports] Ethers SDK no está instalado');
@@ -106,7 +106,7 @@ export const loadSolanaSDK = async (): Promise<SolanaSDK | null> => {
 
   try {
     // Importación dinámica directa (sin eval para evitar problemas con CSP)
-    // @ts-ignore - Módulo opcional, puede no estar instalado
+    // Módulo opcional: @solana/web3.js está instalado pero puede no estar disponible en runtime
     const solanaModule = await import('@solana/web3.js').catch(() => null);
     if (!solanaModule) {
       console.warn('[DynamicImports] Solana SDK no está instalado');
@@ -139,7 +139,7 @@ export const loadTronSDK = async (): Promise<TronSDK | null> => {
 
   try {
     // Importación dinámica directa (sin eval para evitar problemas con CSP)
-    // @ts-ignore - Módulo opcional, puede no estar instalado
+    // Módulo opcional: tronweb está instalado pero puede no estar disponible en runtime
     const tronModule = await import('tronweb').catch(() => null);
     if (!tronModule) {
       console.warn('[DynamicImports] TronWeb SDK no está instalado');
