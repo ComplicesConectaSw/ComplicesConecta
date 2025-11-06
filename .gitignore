@@ -152,6 +152,7 @@ android/app/build/
 android/app/release/
 android/gradle/
 android/.gradle/
+android/.fastRequest/
 *.apk
 *.aab
 
