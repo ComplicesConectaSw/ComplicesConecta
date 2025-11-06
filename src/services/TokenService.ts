@@ -484,10 +484,10 @@ class TokenService {
       const startDate = new Date(staking.start_date);
       const endDate = staking.end_date ? new Date(staking.end_date) : null;
       const now = new Date();
-      const actualEndDate = endDate && now < endDate ? now : (endDate || now);
-      const daysStaked = endDate 
-        ? Math.floor((actualEndDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24))
-        : 0;
+      // Si end_date es null, usar fecha actual; si existe pero es futura, usar fecha actual
+      const actualEndDate = endDate && endDate > now ? now : (endDate || now);
+      // Calcular días staked: siempre calcular desde startDate hasta actualEndDate
+      const daysStaked = Math.max(0, Math.floor((actualEndDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)));
       const apy = staking.apy || 10.0;
       const dailyRate = apy / 365 / 100;
       const rewardsEarned = Math.floor(staking.amount * dailyRate * daysStaked);
