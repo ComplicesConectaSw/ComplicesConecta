@@ -9,6 +9,26 @@
 
 ## 🚀 Configuración Rápida
 
+### ⚠️ IMPORTANTE: Obtener Authtoken de ngrok
+
+**El authtoken de ngrok es DIFERENTE a otros tokens (como xAI, OpenAI, etc.)**
+
+Para obtener tu authtoken de ngrok:
+
+1. **Ir a:** https://dashboard.ngrok.com/get-started/your-authtoken
+2. **Iniciar sesión o crear cuenta** (gratis)
+3. **Copiar tu authtoken** (se ve como: `2abc123def456ghi789jkl012mno345pqr678stu901vwx234yz_5ABCD6EFGH7IJKL8MNOP`)
+4. **Ejecutar:**
+
+```powershell
+ngrok config add-authtoken TU_AUTHTOKEN_AQUI
+```
+
+**O usar el script:**
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/configure-ngrok.ps1 -AuthToken TU_AUTHTOKEN_AQUI
+```
+
 ### Opción 1: ngrok (Recomendado)
 
 #### Paso 1: Configurar Authtoken
@@ -19,6 +39,11 @@
 
 ```bash
 ngrok config add-authtoken YOUR_AUTH_TOKEN
+```
+
+**O usar el script de configuración:**
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/configure-ngrok.ps1 -AuthToken YOUR_AUTH_TOKEN
 ```
 
 #### Paso 2: Iniciar Túnel
