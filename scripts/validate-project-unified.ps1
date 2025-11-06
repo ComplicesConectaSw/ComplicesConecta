@@ -481,8 +481,24 @@ if (-not $SkipNullChecks) {
                             # Verificar patrones de null check más completos (incluyendo optional chaining y checks en la misma línea)
                             if ($checkLine -match "(if\s*\([^)]*!supabase|if\s*\([^)]*supabase\s*===?\s*null|if\s*\([^)]*supabase\s*!==?\s*null|if\s*\([^)]*supabase\s*\|\||if\s*\([^)]*supabase\s*&&|if\s*\([^)]*supabase\s*\?\.|supabase\s*\?\.|!supabase|supabase\s*===?\s*null|supabase\s*!==?\s*null|supabase\s*&&|supabase\s*\|\|)" -and
                                 $checkLine -notmatch "^\s*//") {
-                                $hasNullCheckInContext = $true
-                                break
+                                # Verificar que haya un return/throw después del null check (dentro de 5 líneas)
+                                $hasReturnAfter = $false
+                                for ($k = $checkLineIdx + 1; $k -lt [Math]::Min($checkLineIdx + 6, $i + 1); $k++) {
+                                    if ($lines[$k] -match "return|throw|continue") {
+                                        $hasReturnAfter = $true
+                                        break
+                                    }
+                                }
+                                # Si hay return/throw después del null check, está protegido
+                                if ($hasReturnAfter) {
+                                    $hasNullCheckInContext = $true
+                                    break
+                                }
+                                # También considerar si el null check está en un if que protege el código siguiente
+                                if ($checkLineIdx -lt $i -and $checkLine -match "if\s*\([^)]*!supabase") {
+                                    $hasNullCheckInContext = $true
+                                    break
+                                }
                             }
                         }
                         
