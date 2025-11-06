@@ -211,13 +211,27 @@ const Index = () => {
     
     return () => clearTimeout(safetyTimer);
   }, []);
+
+  // DEBUG: Log del estado de renderizado (debe estar antes del return condicional)
+  useEffect(() => {
+    logger.info('📊 Estado de renderizado Index:', {
+      isLoading,
+      loadingTimeoutPassed,
+      showWelcome,
+      hasVisited,
+      isAuthenticated: isAuthenticated(),
+      user: !!user,
+      profile: !!profile
+    });
+  }, [isLoading, loadingTimeoutPassed, showWelcome, hasVisited, user, profile]);
   
   // Solo mostrar LoadingScreen si está cargando Y el timeout de seguridad no ha pasado
   if (isLoading && !loadingTimeoutPassed) {
+    logger.info('⏳ Mostrando LoadingScreen:', { isLoading, loadingTimeoutPassed });
     return <LoadingScreen onComplete={handleLoadingComplete} />;
   }
 
-  // Professional sample profiles for presentation using dynamic image service
+  logger.info('✅ Renderizando contenido principal de Index');
   const sampleProfiles = [
     {
       id: "1",
