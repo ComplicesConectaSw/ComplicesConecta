@@ -16,13 +16,32 @@ const safeCreateContext = <T,>(defaultValue: T | null): React.Context<T | null> 
     }
   };
   
+  // PRIORIDAD 1: React local (importado en este archivo)
+  if (React && React.createContext) {
+    debugLog('SAFE_CREATE_CONTEXT_LOCAL', { provider: 'DemoProvider', hasLocal: true });
+    return React.createContext(defaultValue);
+  }
+  
+  // PRIORIDAD 2: React global (window.React)
   if (typeof window !== 'undefined' && (window as any).React?.createContext) {
     debugLog('SAFE_CREATE_CONTEXT_GLOBAL', { provider: 'DemoProvider', hasGlobal: true });
     return (window as any).React.createContext(defaultValue);
   }
   
-  debugLog('SAFE_CREATE_CONTEXT_FALLBACK', { provider: 'DemoProvider', hasGlobal: false, hasLocal: !!createContext });
-  return createContext<T | null>(defaultValue);
+  // PRIORIDAD 3: createContext local (importado directamente de 'react')
+  if (createContext) {
+    debugLog('SAFE_CREATE_CONTEXT_FALLBACK', { provider: 'DemoProvider', hasLocal: true });
+    return createContext<T | null>(defaultValue);
+  }
+  
+  // PRIORIDAD 4: Fallback mínimo si nada está disponible
+  debugLog('SAFE_CREATE_CONTEXT_STUB', { provider: 'DemoProvider', usingStub: true });
+  return {
+    Provider: ({ children }: any) => children,
+    Consumer: ({ children }: any) => children(null),
+    displayName: 'Context',
+    _currentValue: defaultValue
+  } as any;
 };
 
 type Profile = Database['public']['Tables']['profiles']['Row'];

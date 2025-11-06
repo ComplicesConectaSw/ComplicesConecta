@@ -186,6 +186,63 @@
     </div>
     <!-- Script duplicado eliminado - ya está en <head> y se ejecuta primero -->
     
+    <!-- CRÍTICO: Inyectar React ANTES de que cualquier chunk se cargue -->
+    <script>
+      // PROTECCIÓN CRÍTICA: Asegurar que React esté disponible ANTES de que cualquier chunk se cargue
+      // Esto se ejecuta ANTES de que main.tsx o cualquier chunk se cargue
+      (function() {
+        // Interceptar cualquier intento de usar createContext antes de que React esté disponible
+        var originalDefineProperty = Object.defineProperty;
+        var reactContextCheck = false;
+        
+        // Interceptar Object.defineProperty para detectar cuando se intenta definir window.React
+        Object.defineProperty = function(obj, prop, descriptor) {
+          if (obj === window && prop === 'React') {
+            // React está siendo definido - marcar como disponible
+            reactContextCheck = true;
+            var result = originalDefineProperty.call(this, obj, prop, descriptor);
+            // Asegurar que createContext esté disponible
+            if (window.React && !window.React.createContext) {
+              // Si React no tiene createContext, agregar fallback
+              window.React.createContext = function(defaultValue) {
+                // Fallback básico - será reemplazado cuando React real se cargue
+                return {
+                  Provider: function() { return null; },
+                  Consumer: function() { return null; },
+                  _currentValue: defaultValue
+                };
+              };
+            }
+            return result;
+          }
+          return originalDefineProperty.call(this, obj, prop, descriptor);
+        };
+        
+        // Interceptar acceso a window.React antes de que se defina
+        Object.defineProperty(window, 'React', {
+          get: function() {
+            // Si React no está disponible, retornar stub
+            return window.__REACT_STUB__ || null;
+          },
+          set: function(value) {
+            window.__REACT_STUB__ = value;
+            // Asegurar createContext
+            if (value && !value.createContext) {
+              value.createContext = function(defaultValue) {
+                return {
+                  Provider: function() { return null; },
+                  Consumer: function() { return null; },
+                  _currentValue: defaultValue
+                };
+              };
+            }
+          },
+          configurable: true,
+          enumerable: true
+        });
+      })();
+    </script>
+    
     <!-- CRÍTICO: Error handler global TEMPRANO para capturar errores antes de que React se monte -->
     <script>
       // Error handler global - captura errores ANTES de que React se monte

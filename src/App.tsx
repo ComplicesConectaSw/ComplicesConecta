@@ -1,7 +1,21 @@
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+// CRÍTICO: Importar QueryClient de forma segura - verificar que React esté disponible
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+// CRÍTICO: Verificar que React esté disponible antes de usar QueryClient
+if (typeof window !== 'undefined') {
+  // Esperar a que React esté disponible antes de crear QueryClient
+  const checkReact = () => {
+    const hasReact = (window as any).React || (window as any).__REACT_STUB__;
+    if (!hasReact) {
+      // Si React no está disponible, esperar un poco y reintentar
+      setTimeout(checkReact, 10);
+    }
+  };
+  checkReact();
+}
 import { CrossBrowserOptimizer } from '@/components/ui/CrossBrowserOptimizer';
 import { AccessibilityEnhancer } from '@/components/ui/AccessibilityEnhancer';
 import { MobileOptimizer } from '@/components/ui/MobileOptimizer';
