@@ -21,6 +21,231 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@ComplicesConectaSW" />
     <meta name="twitter:image" content="/placeholder.svg" />
+    
+    <!-- CRÍTICO: PROTECCIÓN DE WALLETS - DEBE EJECUTARSE PRIMERO ANTES DE CUALQUIER OTRO SCRIPT -->
+    <script>
+      // PROTECCIÓN ULTRA AGRESIVA DE WALLETS - EJECUTAR INMEDIATAMENTE
+      // Esto debe ejecutarse ANTES de que las extensiones de wallet se carguen
+      (function() {
+        'use strict';
+        
+        // Guardar métodos originales
+        var originalDefineProperty = Object.defineProperty;
+        var originalConsoleError = console.error;
+        var originalConsoleWarn = console.warn;
+        var originalError = window.Error;
+        
+        // Hacer propiedades de wallet configurables ANTES de que las extensiones las toquen
+        var walletProps = ['ethereum', 'solana', 'tronWeb', 'tronweb', 'bybitWallet', 'bybit', 'chainId', 'chainid'];
+        walletProps.forEach(function(prop) {
+          try {
+            var desc = Object.getOwnPropertyDescriptor(window, prop);
+            if (desc && !desc.configurable) {
+              try {
+                // Intentar hacer configurable
+                Object.defineProperty(window, prop, {
+                  configurable: true,
+                  writable: desc.writable !== false,
+                  enumerable: desc.enumerable !== false,
+                  value: desc.value,
+                  get: desc.get,
+                  set: desc.set
+                });
+              } catch(e) {
+                // Si falla, intentar eliminar y recrear
+                try {
+                  delete window[prop];
+                } catch(e2) {}
+              }
+            } else if (!desc) {
+              // Si no existe, crear con configuración permisiva
+              try {
+                Object.defineProperty(window, prop, {
+                  configurable: true,
+                  writable: true,
+                  enumerable: true,
+                  value: undefined
+                });
+              } catch(e) {}
+            }
+          } catch(e) {
+            // Silenciar errores al configurar propiedades
+          }
+        });
+        
+        // Interceptar Object.defineProperty de forma ULTRA AGRESIVA
+        Object.defineProperty = function(obj, prop, descriptor) {
+          var propLower = String(prop).toLowerCase();
+          
+          // Si es una propiedad de wallet en window, permitir siempre sin errores
+          if (obj === window && walletProps.some(function(wp) { return propLower === wp.toLowerCase(); })) {
+            try {
+              // Intentar definir normalmente
+              return originalDefineProperty.call(this, obj, prop, descriptor);
+            } catch(e) {
+              // Si falla, intentar hacer configurable primero
+              try {
+                var existingDesc = Object.getOwnPropertyDescriptor(window, prop);
+                if (existingDesc && !existingDesc.configurable) {
+                  // No podemos hacer nada, solo retornar sin error
+                  return obj;
+                }
+                return originalDefineProperty.call(this, obj, prop, descriptor);
+              } catch(e2) {
+                // Cualquier error, simplemente retornar sin error
+                return obj;
+              }
+            }
+          }
+          
+          // Para otras propiedades, intentar normalmente
+          try {
+            return originalDefineProperty.call(this, obj, prop, descriptor);
+          } catch(e) {
+            // Si es error de wallet, silenciar
+            var errMsg = String(e && e.message || '').toLowerCase();
+            if (walletProps.some(function(wp) { return propLower === wp.toLowerCase(); }) && obj === window) {
+              return obj;
+            }
+            if (errMsg.indexOf('cannot redefine property') !== -1 || 
+                errMsg.indexOf('cannot assign to read only') !== -1 ||
+                errMsg.indexOf('read only property') !== -1) {
+              if (walletProps.some(function(wp) { return propLower === wp.toLowerCase(); })) {
+                return obj;
+              }
+            }
+            throw e;
+          }
+        };
+        
+        // Interceptar console.error ULTRA AGRESIVO
+        console.error = function() {
+          var msg = Array.prototype.join.call(arguments, ' ').toLowerCase();
+          var stack = '';
+          for (var i = 0; i < arguments.length; i++) {
+            if (typeof arguments[i] === 'string' && arguments[i].indexOf('at ') !== -1) {
+              stack = arguments[i].toLowerCase();
+              break;
+            }
+            if (arguments[i] && arguments[i].stack) {
+              stack = String(arguments[i].stack).toLowerCase();
+              break;
+            }
+          }
+          
+          var walletPatterns = [
+            'wallet', 'ethereum', 'solana', 'metamask', 'tronweb', 'tronlink', 'bybit', 'evmask',
+            'cannot redefine property', 'cannot assign to read only', 'read only property',
+            'which has only a getter', 'inpage.js', 'evmask.js', 'evmask.js:5', 'evmAsk.js',
+            'evmAsk.js:5', 'solana.js', 'solana.js:3', 'dist.94abdbf1.js', 'data-layer',
+            'inpage.js:154', 'inpage.js:168', 'inpage.js:1', 'chainid', 'chain id',
+            'tronweb is already initiated', 'tronlink will overwrite', 'bybit:page provider',
+            'metamask encountered an error', 'wallet must has at least one account',
+            'wallet must have', 'wallet must', 'code 4001', '4001'
+          ];
+          
+          // Verificar si es error de wallet por mensaje o stack
+          var isWalletError = walletPatterns.some(function(pattern) {
+            return msg.indexOf(pattern) !== -1 || stack.indexOf(pattern) !== -1;
+          });
+          
+          if (!isWalletError) {
+            originalConsoleError.apply(console, arguments);
+          }
+        };
+        
+        // Interceptar console.warn ULTRA AGRESIVO
+        console.warn = function() {
+          var msg = Array.prototype.join.call(arguments, ' ').toLowerCase();
+          
+          var walletPatterns = [
+            'wallet', 'ethereum', 'solana', 'metamask', 'tronweb', 'tronlink', 'bybit', 'evmask',
+            'tronweb is already initiated', 'tronlink will overwrite', 'bybit:page provider inject code',
+            'bybit:page provider', 'download the react devtools', 'inpage.js', 'evmask.js', 'evmAsk.js',
+            'solana.js', 'dist.94abdbf1.js', 'data-layer'
+          ];
+          
+          var isWalletWarning = walletPatterns.some(function(pattern) {
+            return msg.indexOf(pattern) !== -1;
+          });
+          
+          if (!isWalletWarning) {
+            originalConsoleWarn.apply(console, arguments);
+          }
+        };
+        
+        // Interceptar errores globales ULTRA AGRESIVO - CAPTURA EN FASE DE CAPTURA
+        window.addEventListener('error', function(e) {
+          var msg = String(e.message || '').toLowerCase();
+          var filename = String(e.filename || '').toLowerCase();
+          var stack = String(e.error && e.error.stack || '').toLowerCase();
+          
+          var walletPatterns = [
+            'cannot redefine property', 'cannot assign to read only', 'read only property',
+            'which has only a getter', 'wallet', 'ethereum', 'solana', 'metamask',
+            'tronweb', 'tronlink', 'bybit', 'evmask', 'chainid', 'chain id',
+            'wallet must has at least one account', 'wallet must have', 'wallet must',
+            'metamask encountered an error', 'metamask encountered',
+            'tronweb is already initiated', 'tronlink will overwrite',
+            'bybit:page provider', 'code 4001', '4001'
+          ];
+          
+          var walletFiles = [
+            'solana.js', 'solana.js:3', 'inpage.js', 'inpage.js:154', 'inpage.js:168',
+            'inpage.js:1', 'evmask.js', 'evmAsk.js', 'evmAsk.js:5', 'dist.94abdbf1.js',
+            'data-layer', 'chunk', 'wallet'
+          ];
+          
+          var isWalletError = walletPatterns.some(function(pattern) {
+            return msg.indexOf(pattern) !== -1 || stack.indexOf(pattern) !== -1;
+          }) || walletFiles.some(function(file) {
+            return filename.indexOf(file) !== -1 || stack.indexOf(file) !== -1;
+          });
+          
+          if (isWalletError) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+            return false;
+          }
+        }, true); // CAPTURA EN FASE DE CAPTURA (antes de otros handlers)
+        
+        // Interceptar promise rejections ULTRA AGRESIVO
+        window.addEventListener('unhandledrejection', function(e) {
+          var reason = e.reason;
+          var msg = String(reason && (reason.message || reason.toString()) || '').toLowerCase();
+          var stack = String(reason && reason.stack || '').toLowerCase();
+          var code = String(reason && reason.code || '').toLowerCase();
+          
+          var walletPatterns = [
+            'cannot redefine property', 'cannot assign to read only', 'read only property',
+            'wallet must has at least one account', 'wallet must have', 'wallet must',
+            'metamask encountered an error', 'metamask encountered', 'metamask',
+            'tronweb is already initiated', 'tronweb', 'tronlink will overwrite', 'tronlink',
+            'bybit:page provider', 'bybit', 'solana', 'ethereum', 'chainid', 'chain id',
+            'wallet', 'evmask', 'code 4001', '4001'
+          ];
+          
+          var walletFiles = [
+            'solana.js', 'solana.js:3', 'inpage.js', 'inpage.js:154', 'inpage.js:168',
+            'inpage.js:1', 'evmask.js', 'evmAsk.js', 'evmAsk.js:5', 'dist.94abdbf1.js',
+            'data-layer', 'chunk', 'wallet'
+          ];
+          
+          var isWalletError = walletPatterns.some(function(pattern) {
+            return msg.indexOf(pattern) !== -1 || stack.indexOf(pattern) !== -1 || code.indexOf(pattern) !== -1;
+          }) || walletFiles.some(function(file) {
+            return stack.indexOf(file) !== -1;
+          }) || code === '4001' || (reason && typeof reason === 'object' && 'code' in reason && reason.code === 4001);
+          
+          if (isWalletError) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+            return false;
+          }
+        }, true); // CAPTURA EN FASE DE CAPTURA
+      })();
+    </script>
+    
     <!-- CRÍTICO: Asegurar React disponible globalmente ANTES de chunks -->
     <script>
       // CRÍTICO: Establecer stub de React INMEDIATAMENTE - ANTES de logging

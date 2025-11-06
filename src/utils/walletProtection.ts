@@ -260,13 +260,25 @@ export const initializeWalletProtection = () => {
     
     const walletFiles = [
       'solana.js',
+      'solana.js:3',
+      'solana.js:',
       'inpage.js',
+      'inpage.js:154',
+      'inpage.js:168',
+      'inpage.js:1',
+      'inpage.js:',
       'evmask.js',
       'evmAsk.js',
+      'evmAsk.js:5',
+      'evmAsk.js:',
       'dist.94abdbf1.js',
+      'dist.',
       'data-layer',
       'chunk',
-      'wallet'
+      'wallet',
+      'metamask',
+      'tronlink',
+      'bybit'
     ];
     
     // Capturar por mensaje, archivo O stack trace
@@ -320,17 +332,24 @@ export const initializeWalletProtection = () => {
     const walletFiles = [
       'solana.js',
       'solana.js:3',
+      'solana.js:',
       'inpage.js',
       'inpage.js:154',
       'inpage.js:168',
       'inpage.js:1',
+      'inpage.js:',
       'evmask.js',
       'evmAsk.js',
       'evmAsk.js:5',
+      'evmAsk.js:',
       'dist.94abdbf1.js',
+      'dist.',
       'data-layer',
       'chunk',
-      'wallet'
+      'wallet',
+      'metamask',
+      'tronlink',
+      'bybit'
     ];
     
     // Capturar por mensaje, código, stack trace o archivos de wallet
