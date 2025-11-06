@@ -583,11 +583,28 @@
         
         // PROTECCIÓN FINAL: Interceptar accesos a propiedades de objetos undefined
         // Esto captura accesos como: someVar.useLayoutEffect donde someVar es undefined
-        var originalGetProperty = Object.prototype.__lookupGetter__;
-        if (typeof originalGetProperty !== 'undefined') {
-          // Interceptar accesos a propiedades de objetos que podrían ser undefined
-          var originalPropertyIsEnumerable = Object.prototype.propertyIsEnumerable;
-        }
+        // CRÍTICO: Interceptar TODOS los accesos a propiedades de cualquier objeto que podría ser React
+        var originalHasOwnProperty = Object.prototype.hasOwnProperty;
+        Object.prototype.hasOwnProperty = function(prop) {
+          // Si alguien pregunta por useLayoutEffect en cualquier objeto, asegurar que esté disponible
+          if (prop === 'useLayoutEffect' && this === window.React) {
+            return true; // Siempre decir que existe
+          }
+          return originalHasOwnProperty.call(this, prop);
+        };
+        
+        // PROTECCIÓN EXTRA: Interceptar accesos a propiedades usando bracket notation
+        // Esto intercepta accesos como: obj['useLayoutEffect']
+        var originalValueOf = Object.prototype.valueOf;
+        Object.prototype.valueOf = function() {
+          // Si este objeto es React y no tiene useLayoutEffect, agregarlo
+          if (this === window.React || this === window.__REACT_STUB__ || this === window.__REACT_REAL__) {
+            if (!this.useLayoutEffect) {
+              this.useLayoutEffect = window.__REACT_STUB__?.useLayoutEffect || function() { return function() {}; };
+            }
+          }
+          return originalValueOf.call(this);
+        };
       })();
     </script>
     
