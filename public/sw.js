@@ -50,25 +50,6 @@ self.addEventListener('activate', (event) => {
   console.log('🚀 Service Worker activando...');
   
   // CRÍTICO: Limpiar TODOS los caches antiguos para forzar recarga de chunks
-  event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          // Eliminar TODOS los caches que no sean los actuales
-          if (!cacheName.startsWith('static-v3.0.0') && 
-              !cacheName.startsWith('dynamic-v3.0.0') && 
-              !cacheName.startsWith('images-v3.0.0')) {
-            console.log('🗑️ Eliminando cache antiguo:', cacheName);
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    }).then(() => {
-      console.log('✅ Service Worker activado con caches limpiados');
-      return self.clients.claim();
-    })
-  );
-  
   const currentCaches = [STATIC_CACHE, DYNAMIC_CACHE, IMAGE_CACHE];
   
   event.waitUntil(
