@@ -6,7 +6,16 @@
 import React, { ReactNode, useMemo } from 'react';
 import { DemoProvider } from '@/demo/DemoProvider';
 import { RealProvider } from '@/demo/RealProvider';
+
+// CRÍTICO: Importar logger de forma segura con fallback
 import { logger } from '@/lib/logger';
+
+// Fallback logger si el import falla (no debería pasar, pero por seguridad)
+const safeLogger = logger || {
+  info: (...args: any[]) => console.log('[INFO]', ...args),
+  warn: (...args: any[]) => console.warn('[WARN]', ...args),
+  error: (...args: any[]) => console.error('[ERROR]', ...args),
+};
 
 interface AppFactoryProps {
   children: ReactNode;
@@ -18,7 +27,7 @@ export const AppFactory: React.FC<AppFactoryProps> = ({ children }) => {
     const mode = import.meta.env.VITE_APP_MODE;
     const isDemo = mode === 'demo' || mode === 'development';
     
-    logger.info('AppFactory: Modo detectado', { 
+    safeLogger.info('AppFactory: Modo detectado', { 
       mode, 
       isDemo,
       env: import.meta.env.MODE 
@@ -29,7 +38,7 @@ export const AppFactory: React.FC<AppFactoryProps> = ({ children }) => {
 
   // Renderizar provider apropiado según el modo
   if (isDemoMode) {
-    logger.info('AppFactory: Usando DemoProvider');
+    safeLogger.info('AppFactory: Usando DemoProvider');
     
     return (
       <DemoProvider>
@@ -38,7 +47,7 @@ export const AppFactory: React.FC<AppFactoryProps> = ({ children }) => {
     );
   }
 
-  logger.info('AppFactory: Usando RealProvider');
+  safeLogger.info('AppFactory: Usando RealProvider');
   
   return (
     <RealProvider>

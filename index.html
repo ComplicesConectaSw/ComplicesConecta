@@ -185,6 +185,72 @@
       </div>
     </div>
     <!-- Script duplicado eliminado - ya está en <head> y se ejecuta primero -->
+    
+    <!-- CRÍTICO: Error handler global TEMPRANO para capturar errores antes de que React se monte -->
+    <script>
+      // Error handler global - captura errores ANTES de que React se monte
+      window.addEventListener('error', function(e) {
+        // Solo capturar errores que NO sean de wallet (ya están silenciados)
+        var msg = String(e.message || '').toLowerCase();
+        var filename = String(e.filename || '').toLowerCase();
+        var stack = String(e.error && e.error.stack || '').toLowerCase();
+        
+        var isWalletError = msg.indexOf('wallet') !== -1 || msg.indexOf('ethereum') !== -1 || 
+                           msg.indexOf('solana') !== -1 || msg.indexOf('metamask') !== -1 ||
+                           filename.indexOf('inpage.js') !== -1 || filename.indexOf('evmask.js') !== -1 ||
+                           filename.indexOf('solana.js') !== -1 || stack.indexOf('inpage.js') !== -1;
+        
+        if (!isWalletError) {
+          // Loggear error real para diagnóstico
+          console.error('🚨 Error global capturado:', {
+            message: e.message,
+            filename: e.filename,
+            line: e.lineno,
+            column: e.colno,
+            error: e.error
+          });
+          
+          // Loggear al sistema de debugging si está disponible
+          if (window.__LOADING_DEBUG__) {
+            window.__LOADING_DEBUG__.log('GLOBAL_ERROR', {
+              message: e.message,
+              filename: e.filename,
+              line: e.lineno,
+              column: e.colno
+            });
+          }
+        }
+      }, true);
+      
+      // Promise rejection handler global
+      window.addEventListener('unhandledrejection', function(e) {
+        var reason = e.reason;
+        var msg = String(reason && (reason.message || reason.toString()) || '').toLowerCase();
+        var stack = String(reason && reason.stack || '').toLowerCase();
+        
+        var isWalletError = msg.indexOf('wallet') !== -1 || msg.indexOf('ethereum') !== -1 || 
+                           msg.indexOf('solana') !== -1 || msg.indexOf('metamask') !== -1 ||
+                           stack.indexOf('inpage.js') !== -1 || stack.indexOf('evmask.js') !== -1;
+        
+        if (!isWalletError) {
+          // Loggear error real para diagnóstico
+          console.error('🚨 Promise rejection global capturada:', {
+            reason: reason,
+            message: reason?.message,
+            stack: reason?.stack
+          });
+          
+          // Loggear al sistema de debugging si está disponible
+          if (window.__LOADING_DEBUG__) {
+            window.__LOADING_DEBUG__.log('GLOBAL_PROMISE_REJECTION', {
+              reason: reason?.message || String(reason),
+              stack: reason?.stack
+            });
+          }
+        }
+      }, true);
+    </script>
+    
     <script type="module" src="/src/main.tsx"></script>
     <style>
       @keyframes spin {
