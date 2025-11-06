@@ -110,6 +110,47 @@ if (-not $SkipLint) {
         
         if ($errors -gt 0) {
             Write-ColorOutput "   ❌ Errores de linting: $errors" "Red"
+            
+            # Extraer y mostrar detalles de errores
+            $errorLines = $lintLines | Where-Object { 
+                $_ -match "error" -and $_ -notmatch "warning" -and $_ -match "\.(ts|tsx|js|jsx):"
+            }
+            
+            if ($errorLines.Count -gt 0) {
+                Write-ColorOutput "   📋 Detalles de errores:" "Yellow"
+                $errorFiles = @{}
+                foreach ($line in $errorLines) {
+                    # Extraer archivo y línea del error
+                    if ($line -match "([^\\\/]+\.(ts|tsx|js|jsx)):(\d+):(\d+)") {
+                        $fileName = $matches[1]
+                        $lineNum = $matches[3]
+                        $colNum = $matches[4]
+                        
+                        if (-not $errorFiles.ContainsKey($fileName)) {
+                            $errorFiles[$fileName] = @()
+                        }
+                        $errorFiles[$fileName] += "${lineNum}:${colNum}"
+                    } elseif ($line -match "([^\\\/]+\.(ts|tsx|js|jsx))") {
+                        $fileName = $matches[1]
+                        if (-not $errorFiles.ContainsKey($fileName)) {
+                            $errorFiles[$fileName] = @()
+                        }
+                    }
+                }
+                
+                foreach ($file in $errorFiles.Keys) {
+                    $filePath = Get-ChildItem -Path $SourcePath -Recurse -Filter $file -ErrorAction SilentlyContinue | Select-Object -First 1
+                    if ($filePath) {
+                        Write-ColorOutput "      - $($filePath.FullName)" "Red"
+                        if ($errorFiles[$file].Count -gt 0) {
+                            Write-ColorOutput "        Líneas: $($errorFiles[$file] -join ', ')" "Gray"
+                        }
+                    } else {
+                        Write-ColorOutput "      - $file" "Red"
+                    }
+                }
+            }
+            
             $script:Results.summary.failedChecks++
         } elseif ($warnings -gt 0) {
             Write-ColorOutput "   ⚠️  Warnings de linting: $warnings" "Yellow"
@@ -468,7 +509,7 @@ if (-not $SkipNullChecks) {
                             }
                         }
                         
-                        if (-not $hasNullCheck) {
+                        if (-not $hasNullCheckInContext) {
                             $filesWithoutNullChecks += @{
                                 file = $file.FullName
                                 line = $i + 1
