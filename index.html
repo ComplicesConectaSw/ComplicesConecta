@@ -39,8 +39,8 @@
           return {
             events: this.events,
             duration: this.timestamps.length > 0 ? this.timestamps[this.timestamps.length - 1] - this.timestamps[0] : 0,
-            reactAvailable: typeof window !== 'undefined' && !!(window as any).React,
-            reactContextAvailable: typeof window !== 'undefined' && !!(window as any).React && !!(window as any).React.createContext
+            reactAvailable: typeof window !== 'undefined' && !!window.React,
+            reactContextAvailable: typeof window !== 'undefined' && !!window.React && !!window.React.createContext
           };
         }
       };
@@ -51,7 +51,7 @@
       
       // POLYFILL ELIMINADO: No es necesario y puede causar problemas
       // React se carga antes de que se use createContext gracias al orden de carga
-      window.__LOADING_DEBUG__.log('POLYFILL_SKIPPED', { hasReact: !!(window as any).React });
+      window.__LOADING_DEBUG__.log('POLYFILL_SKIPPED', { hasReact: !!window.React });
     </script>
     
     <!-- CRÍTICO: Inyectar React INMEDIATAMENTE en <head> ANTES de que Vite agregue modulepreload -->
@@ -83,7 +83,18 @@
           Fragment: function(props) { return props ? props.children : null; },
           useState: function(initial) { return [initial, function() {}]; },
           useEffect: function() { return function() {}; },
-          useLayoutEffect: function() { return function() {}; },
+          useLayoutEffect: function(callback, deps) { 
+            // CRÍTICO: useLayoutEffect debe estar disponible en el stub
+            // Si hay callback, ejecutarlo inmediatamente (sincrónicamente)
+            if (typeof callback === 'function') {
+              try {
+                return callback();
+              } catch(e) {
+                return function() {};
+              }
+            }
+            return function() {};
+          },
           useMemo: function(fn) { return fn(); },
           useCallback: function(fn) { return fn; },
           useContext: function(context) { return context ? context._currentValue : null; },
