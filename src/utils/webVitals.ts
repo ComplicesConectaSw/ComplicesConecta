@@ -4,7 +4,7 @@ import { Metric } from 'web-vitals';
 // Importación dinámica para evitar errores de build
 const getWebVitals = async () => {
   try {
-    // @ts-expect-error - web-vitals puede no estar disponible en algunos entornos
+    // @ts-ignore - Módulo opcional, TypeScript puede quejarse si no está resuelto
     const webVitals = await import('web-vitals');
     
     // Definir la interfaz para web-vitals
