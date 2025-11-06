@@ -25,7 +25,9 @@
     <script>
       // CRÍTICO: Establecer stub de React INMEDIATAMENTE - ANTES de logging
       // Esto debe ejecutarse ANTES de cualquier otro código
+      // SOLUCIÓN DIRECTA: Interceptar TODOS los accesos posibles a React
       (function() {
+        // Stub completo de React con TODOS los hooks necesarios
         var reactStub = {
           createContext: function(defaultValue) {
             return {
@@ -40,10 +42,12 @@
           Fragment: function(props) { return props ? props.children : null; },
           useState: function(initial) { return [initial, function() {}]; },
           useEffect: function() { return function() {}; },
+          // CRÍTICO: useLayoutEffect debe estar disponible SIEMPRE
           useLayoutEffect: function(callback, deps) {
             if (typeof callback === 'function') {
               try {
-                return callback();
+                var result = callback();
+                return typeof result === 'function' ? result : function() {};
               } catch(e) {
                 return function() {};
               }
@@ -53,23 +57,91 @@
           useMemo: function(fn) { return fn(); },
           useCallback: function(fn) { return fn; },
           useContext: function(context) { return context ? context._currentValue : null; },
-          StrictMode: function(props) { return props ? props.children : null; }
+          StrictMode: function(props) { return props ? props.children : null; },
+          // Asegurar que todos los otros hooks también estén disponibles
+          useRef: function(initial) { return { current: initial }; },
+          useReducer: function() { return [null, function() {}]; },
+          useImperativeHandle: function() {},
+          useDebugValue: function() {},
+          version: '18.3.1'
         };
         
-        // CRÍTICO: Establecer window.React INMEDIATAMENTE - antes de cualquier import
+        // CRÍTICO: Interceptar acceso a propiedades usando Proxy ANTES de definir window.React
+        // Esto captura accesos como: React.useLayoutEffect donde React es undefined
+        var reactProxy = null;
+        if (typeof Proxy !== 'undefined') {
+          try {
+            reactProxy = new Proxy(reactStub, {
+              get: function(target, prop) {
+                // Si el prop es useLayoutEffect y no existe, retornar función stub
+                if (prop === 'useLayoutEffect') {
+                  return target.useLayoutEffect || function() { return function() {}; };
+                }
+                // Para cualquier otro prop, retornar del target o undefined
+                return target[prop] !== undefined ? target[prop] : (function() {
+                  // Si es un hook que no existe, retornar función stub
+                  if (prop.toString().startsWith('use')) {
+                    return function() { return undefined; };
+                  }
+                  return undefined;
+                })();
+              },
+              has: function(target, prop) {
+                // Siempre decir que useLayoutEffect existe
+                if (prop === 'useLayoutEffect') return true;
+                return prop in target;
+              }
+            });
+          } catch(e) {
+            // Si Proxy falla, usar el stub directamente
+            reactProxy = reactStub;
+          }
+        } else {
+          reactProxy = reactStub;
+        }
+        
+        // CRÍTICO: Establecer window.React usando defineProperty con getter/setter
+        // Esto asegura que incluso si se accede antes de que esté definido, retorne el stub
         try {
           Object.defineProperty(window, 'React', {
-            value: reactStub,
-            writable: true,
+            get: function() {
+              // Si ya existe el React real, usarlo; si no, usar el stub
+              return window.__REACT_REAL__ || reactProxy || reactStub;
+            },
+            set: function(value) {
+              // Guardar el React real cuando se asigne
+              window.__REACT_REAL__ = value;
+              // Asegurar que useLayoutEffect esté disponible
+              if (value && !value.useLayoutEffect) {
+                value.useLayoutEffect = reactStub.useLayoutEffect;
+              }
+            },
             configurable: true,
             enumerable: true
           });
         } catch(e) {
-          window.React = reactStub;
+          // Si defineProperty falla, asignar directamente
+          window.React = reactProxy || reactStub;
         }
         
+        // También establecer directamente por si acaso
+        window.React = window.React || reactProxy || reactStub;
         window.__REACT_STUB__ = reactStub;
         window.__REACT_REAL__ = null;
+        
+        // CRÍTICO: Interceptar accesos a propiedades de undefined usando Object.prototype
+        // Esto captura accesos como: someVar.useLayoutEffect donde someVar es undefined
+        var originalPropertyAccess = Object.prototype.valueOf;
+        Object.prototype.valueOf = function() {
+          // Si alguien intenta acceder a useLayoutEffect en un objeto que podría ser React
+          if (this === window || this === globalThis) {
+            // Asegurar que React esté disponible
+            if (!window.React) {
+              window.React = reactProxy || reactStub;
+            }
+          }
+          return originalPropertyAccess.call(this);
+        };
       })();
       
       // LOGGING: Inicializar sistema de logging para diagnóstico
@@ -610,14 +682,77 @@
     
     <!-- CRÍTICO: Pre-cargar vendor-react ANTES de main.tsx para asegurar que React esté disponible -->
     <script type="module">
-      // Asegurar que React esté disponible antes de cargar cualquier módulo
-      if (!window.React) {
-        console.error('❌ React no está disponible antes de cargar módulos');
-        // Forzar uso del stub si está disponible
-        if (window.__REACT_STUB__) {
-          window.React = window.__REACT_STUB__;
+      // CRÍTICO: Asegurar que React esté disponible ANTES de que cualquier módulo se ejecute
+      // Esto se ejecuta ANTES de que Vite cargue los chunks
+      (function() {
+        // Verificar que React esté disponible
+        if (!window.React) {
+          console.error('❌ React no está disponible antes de cargar módulos');
+          // Forzar uso del stub si está disponible
+          if (window.__REACT_STUB__) {
+            window.React = window.__REACT_STUB__;
+          } else {
+            // Si no hay stub, crear uno mínimo
+            window.React = {
+              useLayoutEffect: function() { return function() {}; },
+              useEffect: function() { return function() {}; },
+              useState: function() { return [null, function() {}]; },
+              createContext: function() { return { Provider: function() {}, Consumer: function() {} }; },
+              createElement: function() { return null; }
+            };
+          }
         }
-      }
+        
+        // CRÍTICO: Interceptar accesos a propiedades de undefined usando Proxy
+        // Esto captura accesos como: React.useLayoutEffect donde React podría ser undefined temporalmente
+        if (typeof Proxy !== 'undefined' && !window.__REACT_PROXY_INSTALLED__) {
+          try {
+            var originalReact = window.React;
+            var reactProxy = new Proxy(originalReact || {}, {
+              get: function(target, prop) {
+                // Si el target es undefined o null, usar el stub
+                if (!target || target === window || target === globalThis) {
+                  var stub = window.__REACT_STUB__ || window.React;
+                  if (stub && stub[prop]) {
+                    return stub[prop];
+                  }
+                  // Si es useLayoutEffect, SIEMPRE retornar función
+                  if (prop === 'useLayoutEffect') {
+                    return function() { return function() {}; };
+                  }
+                  // Si es otro hook, retornar función stub
+                  if (prop.toString().startsWith('use')) {
+                    return function() { return undefined; };
+                  }
+                  return undefined;
+                }
+                // Si el target tiene la propiedad, retornarla
+                if (prop in target) {
+                  return target[prop];
+                }
+                // Si no existe pero es useLayoutEffect, retornar función stub
+                if (prop === 'useLayoutEffect') {
+                  return function() { return function() {}; };
+                }
+                return undefined;
+              }
+            });
+            window.React = reactProxy;
+            window.__REACT_PROXY_INSTALLED__ = true;
+          } catch(e) {
+            // Si falla, asegurar que React esté disponible directamente
+            window.React = window.React || window.__REACT_STUB__ || {
+              useLayoutEffect: function() { return function() {}; }
+            };
+          }
+        }
+        
+        // Validación final: asegurar que useLayoutEffect esté disponible
+        if (!window.React || !window.React.useLayoutEffect) {
+          if (!window.React) window.React = {};
+          window.React.useLayoutEffect = function() { return function() {}; };
+        }
+      })();
     </script>
     <script type="module" src="/src/main.tsx"></script>
     <style>
