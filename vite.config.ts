@@ -12,26 +12,27 @@ export default defineConfig({
     // Esto resuelve el error "Cannot read properties of undefined (reading 'useLayoutEffect')"
     reactOrderPlugin(),
     // Sentry plugin para source maps (solo en producción y con configuración completa)
-    process.env.NODE_ENV === 'production' && 
-    process.env.SENTRY_ORG && 
-    process.env.SENTRY_PROJECT && 
-    process.env.SENTRY_AUTH_TOKEN && 
-    sentryVitePlugin({
-      org: process.env.SENTRY_ORG,
-      project: process.env.SENTRY_PROJECT,
-      authToken: process.env.SENTRY_AUTH_TOKEN,
-      telemetry: false, // Deshabilitar telemetría para evitar warnings
-      sourcemaps: {
-        assets: './dist/**',
-      },
-      release: {
-        name: `complicesconecta@${process.env.npm_package_version || '3.4.1'}`,
-        uploadLegacySourcemaps: './dist',
-      },
-      // Solo subir source maps si hay credenciales
-      disable: !process.env.SENTRY_AUTH_TOKEN
-    })
-  ].filter(Boolean),
+    ...(process.env.NODE_ENV === 'production' && 
+        process.env.SENTRY_ORG && 
+        process.env.SENTRY_PROJECT && 
+        process.env.SENTRY_AUTH_TOKEN ? [
+      sentryVitePlugin({
+        org: process.env.SENTRY_ORG,
+        project: process.env.SENTRY_PROJECT,
+        authToken: process.env.SENTRY_AUTH_TOKEN,
+        telemetry: false, // Deshabilitar telemetría para evitar warnings
+        sourcemaps: {
+          assets: './dist/**',
+        },
+        release: {
+          name: `complicesconecta@${process.env.npm_package_version || '3.4.1'}`,
+          uploadLegacySourcemaps: './dist',
+        },
+        // Solo subir source maps si hay credenciales
+        disable: !process.env.SENTRY_AUTH_TOKEN
+      })
+    ] : [])
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
