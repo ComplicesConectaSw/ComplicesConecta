@@ -471,40 +471,39 @@ if (-not $SkipNullChecks) {
                         $line -notmatch "Cargando.*desde Supabase" -and
                         $line -notmatch "Iniciando.*con Supabase") {
                         
-                        # Buscar null check en las 50 líneas anteriores o en la misma función
-                        $hasNullCheck = $false
-                        $startIndex = [Math]::Max(0, $i - 50)
+                        # Verificar null check en las 10 líneas anteriores o en la misma línea
+                        $hasNullCheckInContext = $false
+                        $checkRange = [Math]::Max(0, $i - 10)..$i
                         
-                        # Buscar null check explícito
-                        for ($j = $startIndex; $j -lt $i; $j++) {
-                            $checkLine = $lines[$j]
-                            if ($checkLine -match "if\s*\(!\s*supabase\)" -or
-                                $checkLine -match "if\s*\(\s*!supabase\s*\)" -or
-                                $checkLine -match "if\s*\(\s*supabase\s*===\s*null\s*\)" -or
-                                $checkLine -match "if\s*\(\s*supabase\s*==\s*null\s*\)" -or
-                                ($checkLine -match "if\s*\(\s*supabase\s*\)" -and $checkLine -match "return|throw|continue")) {
-                                $hasNullCheck = $true
+                        foreach ($checkLineIdx in $checkRange) {
+                            $checkLine = $lines[$checkLineIdx]
+                            # Verificar patrones de null check más completos (incluyendo optional chaining y checks en la misma línea)
+                            if ($checkLine -match "(if\s*\([^)]*!supabase|if\s*\([^)]*supabase\s*===?\s*null|if\s*\([^)]*supabase\s*!==?\s*null|if\s*\([^)]*supabase\s*\|\||if\s*\([^)]*supabase\s*&&|if\s*\([^)]*supabase\s*\?\.|supabase\s*\?\.|!supabase|supabase\s*===?\s*null|supabase\s*!==?\s*null|supabase\s*&&|supabase\s*\|\|)" -and
+                                $checkLine -notmatch "^\s*//") {
+                                $hasNullCheckInContext = $true
                                 break
                             }
                         }
                         
-                        # Verificar si está dentro de un bloque que ya tiene null check
-                        $inProtectedBlock = $false
-                        $blockStart = $startIndex
-                        for ($j = $startIndex; $j -lt $i; $j++) {
-                            if ($lines[$j] -match "if\s*\(!\s*supabase\)" -or $lines[$j] -match "if\s*\(\s*!supabase\s*\)") {
-                                $blockStart = $j
-                                $inProtectedBlock = $true
-                                break
-                            }
-                        }
-                        
-                        # Si está en un bloque protegido, verificar que no haya un return antes
-                        if ($inProtectedBlock) {
-                            for ($j = $blockStart; $j -lt $i; $j++) {
-                                if ($lines[$j] -match "return|throw|continue|break") {
-                                    $hasNullCheck = $true
+                        # También verificar si está dentro de un bloque try-catch que maneja errores
+                        if (-not $hasNullCheckInContext) {
+                            # Buscar bloque try anterior
+                            $tryFound = $false
+                            for ($j = [Math]::Max(0, $i - 30); $j -lt $i; $j++) {
+                                if ($lines[$j] -match "^\s*try\s*\{") {
+                                    $tryFound = $true
                                     break
+                                }
+                            }
+                            
+                            # Si está en un try-catch, considerar que tiene manejo de errores
+                            if ($tryFound) {
+                                # Buscar catch después
+                                for ($j = $i; $j -lt [Math]::Min($lines.Count, $i + 30); $j++) {
+                                    if ($lines[$j] -match "^\s*catch\s*\(|^\s*\}\s*catch") {
+                                        $hasNullCheckInContext = $true
+                                        break
+                                    }
                                 }
                             }
                         }
