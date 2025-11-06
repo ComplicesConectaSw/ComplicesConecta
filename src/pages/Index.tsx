@@ -45,6 +45,9 @@ const Index = () => {
   // Ref para evitar múltiples ejecuciones del efecto del modal de bienvenida
   const welcomeModalChecked = useRef(false);
   const welcomeModalTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  // Ref para rastrear si el timeout de loading ya se ejecutó
+  const loadingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const loadingTimeoutExecutedRef = useRef(false);
 
   // Verificar si el usuario está autenticado y detectar Android
   useEffect(() => {
@@ -60,28 +63,27 @@ const Index = () => {
     setIsRunningInApp(isInWebView());
     
     // CRÍTICO: Timeout garantizado para evitar que se quede en loading indefinidamente
-    // Múltiples timeouts de seguridad para asegurar que siempre se muestre el contenido
-    const timer1 = setTimeout(() => {
-      logger.info('⏱️ Timeout 1: Forzando setIsLoading(false)');
-      setIsLoading(false);
-    }, 1500); // 1.5 segundos - timeout más agresivo
-
-    const timer2 = setTimeout(() => {
-      logger.info('⏱️ Timeout 2: Forzando setIsLoading(false)');
-      setIsLoading(false);
-    }, 2000); // 2 segundos - timeout principal
-
-    const timer3 = setTimeout(() => {
-      logger.info('⏱️ Timeout 3: Forzando setIsLoading(false)');
-      setIsLoading(false);
-    }, 3000); // 3 segundos - fallback final
+    // Usar un solo timeout con cleanup mechanism para evitar múltiples actualizaciones de estado
+    // El timeout se cancela automáticamente si el componente se desmonta o si isLoading ya es false
+    if (!loadingTimeoutExecutedRef.current && isLoading) {
+      loadingTimeoutRef.current = setTimeout(() => {
+        // Verificar que aún estamos en loading antes de actualizar
+        if (isLoading && !loadingTimeoutExecutedRef.current) {
+          loadingTimeoutExecutedRef.current = true;
+          logger.info('⏱️ Timeout de seguridad: Forzando setIsLoading(false) y mostrar contenido');
+          setIsLoading(false);
+          setLoadingTimeoutPassed(true);
+        }
+      }, 2000); // 2 segundos - timeout único y suficiente
+    }
 
     return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
+      if (loadingTimeoutRef.current) {
+        clearTimeout(loadingTimeoutRef.current);
+        loadingTimeoutRef.current = null;
+      }
     };
-  }, []); // Remover dependencias para evitar re-renders
+  }, [isLoading]); // Incluir isLoading para cancelar si ya cambió
 
   // Separar la lógica de redirección para evitar loops
   useEffect(() => {
@@ -201,16 +203,15 @@ const Index = () => {
   // Solo mostrar LoadingScreen si realmente está cargando Y no ha pasado el timeout de seguridad
   const [loadingTimeoutPassed, setLoadingTimeoutPassed] = useState(false);
   
+  // Este timeout está consolidado con el timeout principal en el useEffect anterior
+  // No necesita un timeout separado - se maneja junto con loadingTimeoutRef
   useEffect(() => {
-    // Timeout de seguridad: después de 2 segundos, forzar mostrar contenido
-    const safetyTimer = setTimeout(() => {
+    // El timeout de seguridad se maneja en el useEffect principal (líneas 65-77)
+    // Solo establecer loadingTimeoutPassed cuando isLoading cambia a false
+    if (!isLoading && !loadingTimeoutPassed) {
       setLoadingTimeoutPassed(true);
-      setIsLoading(false);
-      logger.info('⏱️ Timeout de seguridad: Forzando mostrar contenido');
-    }, 2000);
-    
-    return () => clearTimeout(safetyTimer);
-  }, []);
+    }
+  }, [isLoading, loadingTimeoutPassed]);
 
   // DEBUG: Log del estado de renderizado (debe estar antes del return condicional)
   useEffect(() => {
