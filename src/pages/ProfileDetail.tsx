@@ -45,7 +45,7 @@ const ProfileDetail = () => {
       age: 28,
       location: "Tu Ciudad",
       interests: ["Música", "Viajes", "Arte"],
-      image: "https://images.unsplash.com/photo-1494790108755-2616b332c1c0?w=400&h=600&fit=crop&crop=face",
+      image: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=400&h=600&fit=crop&crop=face",
       rating: 4.8,
       isOnline: true,
       bio: "Este es un perfil de demostración para la versión Beta de ComplicesConecta.",
@@ -54,7 +54,7 @@ const ProfileDetail = () => {
       languages: ["Español", "Inglés"],
       hobbies: ["Testing", "Feedback"],
       lookingFor: "Probar la aplicación y dar feedback valioso",
-      images: ["https://images.unsplash.com/photo-1494790108755-2616b332c1c0?w=400&h=600&fit=crop&crop=face", "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face"],
+      images: ["https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=400&h=600&fit=crop&crop=face", "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face"],
     },
     {
       id: 2,
@@ -71,7 +71,7 @@ const ProfileDetail = () => {
       languages: ["Español", "Catalán", "Inglés"],
       hobbies: ["Guitarra", "Escalada", "Lectura", "Degustación de vinos"],
       lookingFor: "Alguien con quien compartir buena comida y mejores conversaciones",
-      images: ["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face", "https://images.unsplash.com/photo-1494790108755-2616b332c1c0?w=400&h=600&fit=crop&crop=face", "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&crop=face"],
+      images: ["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face", "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=400&h=600&fit=crop&crop=face", "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&crop=face"],
     },
     {
       id: 3,
@@ -88,7 +88,7 @@ const ProfileDetail = () => {
       languages: ["Español", "Inglés", "Italiano"],
       hobbies: ["Escritura creativa", "Pintura al óleo", "Teatro amateur", "Cafés especiales"],
       lookingFor: "Una persona creativa que aprecie el arte y las conversaciones profundas",
-      images: ["https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=600&fit=crop&crop=face", "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&crop=face", "https://images.unsplash.com/photo-1494790108755-2616b332c1c0?w=400&h=600&fit=crop&crop=face"],
+      images: ["https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=600&fit=crop&crop=face", "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&crop=face", "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=400&h=600&fit=crop&crop=face"],
     },
     {
       id: 4,

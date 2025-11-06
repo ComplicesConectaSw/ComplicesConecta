@@ -305,6 +305,14 @@
         var urlLower = String(url || '').toLowerCase();
         var stackLower = String(error && error.stack || '').toLowerCase();
         
+        // IGNORAR errores de OpaqueResponseBlocking y CORS (son normales con imágenes de Unsplash)
+        var isOpaqueResponseError = msgLower.indexOf('opaqueresponseblocking') !== -1 ||
+                                    msgLower.indexOf('opaque response blocking') !== -1 ||
+                                    msgLower.indexOf('a resource is blocked') !== -1 ||
+                                    msgLower.indexOf('resource is blocked') !== -1 ||
+                                    urlLower.indexOf('unsplash.com') !== -1 ||
+                                    msgLower.indexOf('photo-') !== -1;
+        
         var _walletPatterns = [
           'cannot redefine property', 'cannot assign to read only', 'read only property',
           'which has only a getter', 'wallet', 'ethereum', 'solana', 'metamask',
@@ -328,7 +336,7 @@
           return urlLower.indexOf(file) !== -1 || stackLower.indexOf(file) !== -1;
         });
         
-        if (isWalletError) {
+        if (isWalletError || isOpaqueResponseError) {
           return true; // Prevenir propagación del error
         }
         
@@ -344,6 +352,14 @@
         var msg = String(e.message || '').toLowerCase();
         var filename = String(e.filename || '').toLowerCase();
         var stack = String(e.error && e.error.stack || '').toLowerCase();
+        
+        // IGNORAR errores de OpaqueResponseBlocking y CORS (son normales con imágenes de Unsplash)
+        var isOpaqueResponseError = msg.indexOf('opaqueresponseblocking') !== -1 ||
+                                    msg.indexOf('opaque response blocking') !== -1 ||
+                                    msg.indexOf('a resource is blocked') !== -1 ||
+                                    msg.indexOf('resource is blocked') !== -1 ||
+                                    filename.indexOf('unsplash.com') !== -1 ||
+                                    msg.indexOf('photo-') !== -1;
         
         var _walletPatterns = [
           'cannot redefine property', 'cannot assign to read only', 'read only property',
@@ -368,7 +384,7 @@
           return filename.indexOf(file) !== -1 || stack.indexOf(file) !== -1;
         });
         
-        if (isWalletError) {
+        if (isWalletError || isOpaqueResponseError) {
           e.stopImmediatePropagation();
           e.preventDefault();
           return false;
@@ -947,6 +963,14 @@
                           filename.indexOf('wallet') !== -1 || filename.indexOf('dist.') !== -1 ||
                           filename.indexOf('chunk') !== -1 || filename.indexOf('data-layer') !== -1;
         
+        // IGNORAR errores de OpaqueResponseBlocking y CORS (son normales con imágenes de Unsplash)
+        var isOpaqueResponseError = msg.indexOf('opaqueresponseblocking') !== -1 ||
+                                    msg.indexOf('opaque response blocking') !== -1 ||
+                                    msg.indexOf('a resource is blocked') !== -1 ||
+                                    msg.indexOf('resource is blocked') !== -1 ||
+                                    filename.indexOf('unsplash.com') !== -1 ||
+                                    (hasUndefinedMessage && (filename.indexOf('unsplash.com') !== -1 || msg.indexOf('photo-') !== -1));
+        
         var isWalletError = msg.indexOf('wallet') !== -1 || msg.indexOf('ethereum') !== -1 || 
                            msg.indexOf('solana') !== -1 || msg.indexOf('metamask') !== -1 ||
                            filename.indexOf('inpage.js') !== -1 || filename.indexOf('evmask.js') !== -1 ||
@@ -959,8 +983,8 @@
                            msg.indexOf('cannot assign to read only') !== -1 ||
                            (hasUndefinedMessage && isWalletFile); // IGNORAR errores undefined de wallet
         
-        // IGNORAR errores de Vite y wallet
-        if (!isViteModuleError && !isWalletError) {
+        // IGNORAR errores de Vite, wallet y OpaqueResponseBlocking
+        if (!isViteModuleError && !isWalletError && !isOpaqueResponseError) {
           // Loggear error real para diagnóstico
           console.error('🚨 Error global capturado:', {
             message: e.message,
@@ -988,11 +1012,19 @@
         var msg = String(reason && (reason.message || reason.toString()) || '').toLowerCase();
         var stack = String(reason && reason.stack || '').toLowerCase();
         
+        // IGNORAR errores de OpaqueResponseBlocking y CORS (son normales con imágenes de Unsplash)
+        var isOpaqueResponseError = msg.indexOf('opaqueresponseblocking') !== -1 ||
+                                    msg.indexOf('opaque response blocking') !== -1 ||
+                                    msg.indexOf('a resource is blocked') !== -1 ||
+                                    msg.indexOf('resource is blocked') !== -1 ||
+                                    msg.indexOf('unsplash.com') !== -1 ||
+                                    msg.indexOf('photo-') !== -1;
+        
         var isWalletError = msg.indexOf('wallet') !== -1 || msg.indexOf('ethereum') !== -1 || 
                            msg.indexOf('solana') !== -1 || msg.indexOf('metamask') !== -1 ||
                            stack.indexOf('inpage.js') !== -1 || stack.indexOf('evmask.js') !== -1;
         
-        if (!isWalletError) {
+        if (!isWalletError && !isOpaqueResponseError) {
           // Loggear error real para diagnóstico
           console.error('🚨 Promise rejection global capturada:', {
             reason: reason,

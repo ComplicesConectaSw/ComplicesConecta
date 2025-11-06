@@ -42,7 +42,7 @@ const mockGalleryImages: GalleryImage[] = [
   {
     id: 1,
     userId: "1",
-    url: "https://images.unsplash.com/photo-1494790108755-2616c96d2e9c?w=400&h=400&fit=crop&crop=face",
+    url: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=400&h=400&fit=crop&crop=face",
     caption: "Disfrutando el día",
     isPublic: true,
     createdAt: "2024-01-15T10:30:00Z",
@@ -94,7 +94,7 @@ const Gallery = ({ userId, isOwner = false, canViewPrivate = false, profileName 
     const newImage: GalleryImage = {
       id: Date.now(),
       userId,
-      url: `https://images.unsplash.com/photo-${Math.random() > 0.5 ? '1494790108755-2616c96d2e9c' : '1472099645785-5658abf4ff4e'}?w=400&h=400&fit=crop&crop=face`,
+      url: `https://images.unsplash.com/photo-${Math.random() > 0.5 ? '1599566150163-29194dcaad36' : '1472099645785-5658abf4ff4e'}?w=400&h=400&fit=crop&crop=face`,
       caption: isPublic ? "Nueva foto pública" : "Nueva foto privada",
       isPublic,
       createdAt: new Date().toISOString(),
