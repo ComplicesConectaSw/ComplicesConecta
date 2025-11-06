@@ -8,18 +8,6 @@ import importPlugin from 'eslint-plugin-import'
 import unusedImports from 'eslint-plugin-unused-imports'
 
 export default [
-  {
-    ignores: [
-      '**/dist/**',
-      '**/build/**',
-      '**/node_modules/**',
-      '**/android/**',
-      '**/*.test.ts',
-      '**/*.spec.ts',
-      'src/types/supabase-generated.ts',
-      'src/types/supabase.ts'
-    ]
-  },
   // Ignores globales (deben estar primero)
   {
     ignores: [
@@ -68,7 +56,13 @@ export default [
       '**/*-UMueESM8.js',
       '**/*-cofmjEzh.js',
       '**/*-BHieyP4h.js',
-      '**/*-B1Cv6Wjs.js'
+      '**/*-B1Cv6Wjs.js',
+      // Archivos de tipos generados de Supabase
+      'src/types/supabase-generated.ts',
+      'src/types/supabase.ts',
+      // Archivos de test
+      '**/*.test.ts',
+      '**/*.spec.ts'
     ]
   },
   // Configuración para archivos JS/JSX
