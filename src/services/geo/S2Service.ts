@@ -20,6 +20,7 @@
 
 // @ts-ignore - s2-geometry no tiene types oficiales
 import * as S2 from 's2-geometry';
+import { logger } from '@/lib/logger';
 
 interface S2Config {
   defaultLevel: number;
@@ -83,7 +84,7 @@ export class S2Service {
       // Retornar como token (string compacto)
       return parentCell.toToken();
     } catch (error) {
-      console.error('[S2Service] Error getting cell:', error);
+      logger.error('Error getting cell', { error });
       throw error;
     }
   }
@@ -124,7 +125,7 @@ export class S2Service {
         ...neighbors.map((n: any) => n.toToken()),
       ];
     } catch (error) {
-      console.error('[S2Service] Error getting neighbor cells:', error);
+      logger.error('Error getting neighbor cells', { error });
       return [cellId]; // Fallback: solo la celda actual
     }
   }
@@ -213,7 +214,7 @@ export class S2Service {
         lng: latLng.lngDegrees,
       };
     } catch (error) {
-      console.error('[S2Service] Error converting cell to lat/lng:', error);
+      logger.error('Error converting cell to lat/lng', { error });
       throw error;
     }
   }
@@ -255,7 +256,7 @@ export class S2Service {
    */
   clearCache(): void {
     // Placeholder para cache futuro
-    console.log('[S2Service] Cache cleared');
+    logger.info('Cache cleared');
   }
 }
 

@@ -54,13 +54,11 @@ export const initializeReactFallbacks = () => {
     }
   } else {
     // In SSR environment, replace useLayoutEffect with useEffect
-    try {
-      const ReactModule = require('react');
-      if (ReactModule && ReactModule.useLayoutEffect) {
-        ReactModule.useLayoutEffect = ReactModule.useEffect;
-      }
-    } catch {
-      // Ignore if React module not available
+    // Note: In SSR, React is already imported at the top, so we use it directly
+    // If React is not available, the import would have failed already
+    if (React.useLayoutEffect && React.useEffect) {
+      // In SSR, useLayoutEffect should use useEffect as fallback
+      // This is handled by useIsomorphicLayoutEffect export
     }
   }
 };

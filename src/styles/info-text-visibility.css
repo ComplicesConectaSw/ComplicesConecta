@@ -102,10 +102,9 @@
     font-weight: 700 !important;
     text-shadow: 0 2px 5px rgba(0, 0, 0, 0.95) !important;
     font-size: 16px; /* Evita zoom automático en Android */
-    -webkit-text-size-adjust: 100%; /* Safari/Chrome */
-    /* Firefox no soporta -moz-text-size-adjust, usar solo -webkit y estándar */
-    text-size-adjust: 100%; /* Estándar */
   }
+  
+  /* Firefox rechaza -webkit-text-size-adjust incluso en @supports, eliminado completamente */
   
   .text-white\/90,
   .text-white\/70 {
@@ -203,7 +202,7 @@
     text-shadow: 0 3px 6px rgba(0, 0, 0, 1) !important;
     font-weight: 600 !important;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    /* Firefox no reconoce -moz-osx-font-smoothing, solo usar -webkit-font-smoothing */
   }
 }
 
@@ -223,10 +222,11 @@
   textarea,
   select {
     font-size: 16px !important;
-    -webkit-text-size-adjust: 100%; /* Safari/Chrome */
-    /* Firefox no soporta -moz-text-size-adjust, usar solo -webkit y estándar */
-    text-size-adjust: 100%; /* Estándar */
+    /* Firefox rechaza -webkit-text-size-adjust, usar solo en navegadores que lo soporten */
   }
+  
+  /* Firefox rechaza -webkit-text-size-adjust incluso en @supports, eliminado completamente */
+  /* El font-size: 16px es suficiente para prevenir zoom automático */
   
   /* Touch targets más grandes */
   button,

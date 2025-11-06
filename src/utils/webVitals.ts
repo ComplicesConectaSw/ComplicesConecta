@@ -1,5 +1,6 @@
 // Monitoreo de Core Web Vitals - ComplicesConecta v3.3.0
 import { Metric } from 'web-vitals';
+import { logger } from '@/lib/logger';
 
 // Importación dinámica para evitar errores de build
 const getWebVitals = async () => {
@@ -26,7 +27,7 @@ const getWebVitals = async () => {
       getTTFB: vitalsModule.getTTFB || (() => {})
     };
   } catch (error) {
-    console.warn('web-vitals not available:', error);
+    logger.warn('web-vitals not available', { error });
     return {
       getCLS: () => {},
       getFID: () => {},
@@ -103,14 +104,14 @@ const sendToAnalytics = async (data: WebVitalsData, config: WebVitalsConfig): Pr
       keepalive: true
     });
   } catch (error) {
-    console.error('Failed to send web vitals data:', error);
+    logger.error('Failed to send web vitals data', { error });
   }
 };
 
 // Logger para desarrollo
 const logMetric = (data: WebVitalsData): void => {
   const emoji = data.rating === 'good' ? '✅' : data.rating === 'needs-improvement' ? '⚠️' : '❌';
-  console.log(`${emoji} ${data.name}: ${data.value.toFixed(2)}ms (${data.rating})`);
+  logger.info(`${emoji} ${data.name}: ${data.value.toFixed(2)}ms (${data.rating})`, { metric: data });
 };
 
 // Clase principal para monitoreo
@@ -156,7 +157,7 @@ export class WebVitalsMonitor {
       getLCP(handleMetric);
       getTTFB(handleMetric);
     } catch (error) {
-      console.error('Error loading web-vitals:', error);
+      logger.error('Error loading web-vitals', { error });
     }
   }
 
@@ -232,7 +233,7 @@ export const measureCustomMetric = (name: string, startTime: number): void => {
     userAgent: navigator.userAgent
   };
   
-  console.log(`📊 Custom metric ${name}: ${duration.toFixed(2)}ms`);
+  logger.info(`Custom metric ${name}: ${duration.toFixed(2)}ms`, { metric: data });
   window.dispatchEvent(new CustomEvent('custommetric', { detail: data }));
 };
 
@@ -310,7 +311,7 @@ const _storeMetric = (metric: Partial<PerformanceMetrics>) => {
   try {
     localStorage.setItem('webVitalsMetrics', JSON.stringify(metricsStorage.slice(-10)));
   } catch {
-    console.warn('No se pudo guardar métricas en localStorage');
+    logger.warn('No se pudo guardar métricas en localStorage');
   }
 };
 
@@ -345,7 +346,7 @@ export const getStoredMetrics = (): PerformanceMetrics[] => {
     const stored = localStorage.getItem('webVitalsMetrics');
     return stored ? JSON.parse(stored) : [];
   } catch {
-    console.warn('No se pudieron cargar métricas desde localStorage');
+    logger.warn('No se pudieron cargar métricas desde localStorage');
     return [];
   }
 };

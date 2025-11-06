@@ -20,6 +20,7 @@
 import { supabase } from '@/integrations/supabase/client';
 import type { Database } from '@/types/supabase';
 import { pytorchModel } from './models/PyTorchScoringModel';
+import { logger } from '@/lib/logger';
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
 
@@ -98,7 +99,7 @@ export class AILayerService {
     if (this.config.cacheEnabled) {
       const cached = this.getFromCache(cacheKey);
       if (cached) {
-        console.log('[AI] Cache hit for compatibility prediction');
+        logger.debug('Cache hit for compatibility prediction');
         return cached;
       }
     }
@@ -152,7 +153,7 @@ export class AILayerService {
       await this.logPrediction(userId1, userId2, result);
       return result;
     } catch (error) {
-      console.error('[AI] ML prediction failed, falling back to legacy:', error);
+      logger.error('ML prediction failed, falling back to legacy', { error });
 
       if (this.config.fallbackEnabled) {
         const legacyScore = await legacyScoreFn();
@@ -258,12 +259,12 @@ export class AILayerService {
   private async callMLModel(features: CompatibilityFeatures): Promise<number> {
     try {
       // Usar modelo PyTorch/TensorFlow.js (Fase 1.2)
-      console.log('[AI] Using PyTorch model for prediction');
+      logger.debug('Using PyTorch model for prediction');
       const score = await pytorchModel.predict(features);
-      console.log('[AI] PyTorch prediction successful:', score.toFixed(3));
+      logger.debug(`PyTorch prediction successful: ${score.toFixed(3)}`);
       return score;
     } catch (error) {
-      console.warn('[AI] PyTorch model failed, using fallback algorithm:', error);
+      logger.warn('PyTorch model failed, using fallback algorithm', { error });
       
       // Fallback: algoritmo simple basado en features
       // (mismo que usa PyTorchScoringModel internamente)
@@ -382,7 +383,7 @@ export class AILayerService {
   ): Promise<void> {
     try {
       if (!supabase) {
-        console.warn('[AI] Supabase no está disponible, no se puede registrar predicción');
+        logger.warn('Supabase no está disponible, no se puede registrar predicción');
         return;
       }
 
@@ -396,7 +397,7 @@ export class AILayerService {
         features: score.features || {},
       });
     } catch (error) {
-      console.warn('[AI] Failed to log prediction:', error);
+      logger.warn('Failed to log prediction', { error });
     }
   }
 

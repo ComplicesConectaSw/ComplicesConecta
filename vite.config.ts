@@ -58,7 +58,10 @@ export default defineConfig({
     esbuildOptions: {
       define: {
         global: 'globalThis'
-      }
+      },
+      // Deshabilitar source maps para dependencias pre-bundled en desarrollo
+      // Esto evita errores de "NetworkError when attempting to fetch resource" para .map files
+      sourcemap: false
     }
   },
   css: {

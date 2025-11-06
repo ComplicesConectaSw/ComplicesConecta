@@ -43,12 +43,12 @@ export const resetAuthState = () => {
 
 // Función para debug - mostrar todo el localStorage
 export const debugStorage = () => {
-  console.log('📋 Estado actual del localStorage:');
+  logger.debug('Estado actual del localStorage');
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
     if (key) {
       const value = localStorage.getItem(key);
-      console.log(`${key}: ${value}`);
+      logger.debug(`${key}: ${value}`);
     }
   }
 };

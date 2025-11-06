@@ -3,6 +3,8 @@
  * Detecta root, modo desarrollador y otras amenazas de seguridad
  */
 
+import { logger } from '@/lib/logger';
+
 // Extender la interfaz Window para incluir Capacitor
 declare global {
   interface Window {
@@ -120,7 +122,7 @@ export class AndroidSecurityManager {
 
       return false;
     } catch (error) {
-      console.warn('Error checking root access:', error);
+      logger.warn('Error checking root access', { error });
       return false;
     }
   }
@@ -173,7 +175,7 @@ export class AndroidSecurityManager {
 
       return false;
     } catch (error) {
-      console.warn('Error checking developer mode:', error);
+      logger.warn('Error checking developer mode', { error });
       return false;
     }
   }
@@ -223,7 +225,7 @@ export class AndroidSecurityManager {
 
       return false;
     } catch (error) {
-      console.warn('Error checking debuggable app:', error);
+      logger.warn('Error checking debuggable app', { error });
       return false;
     }
   }
@@ -269,7 +271,7 @@ export class AndroidSecurityManager {
 
       return false;
     } catch (error) {
-      console.warn('Error checking emulator:', error);
+      logger.warn('Error checking emulator', { error });
       return false;
     }
   }

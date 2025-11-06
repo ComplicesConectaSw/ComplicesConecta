@@ -18,6 +18,7 @@
 
 import * as tf from '@tensorflow/tfjs';
 import type { CompatibilityFeatures } from '../AILayerService';
+import { logger } from '@/lib/logger';
 
 export interface ModelConfig {
   modelPath: string;
@@ -53,13 +54,13 @@ export class PyTorchScoringModel {
   async load(): Promise<void> {
     // Si ya está cargado, return
     if (this.model) {
-      console.log('[PyTorch] Model already loaded');
+      logger.debug('Model already loaded');
       return;
     }
 
     // Si está cargando, esperar
     if (this.isLoading) {
-      console.log('[PyTorch] Model is loading, waiting...');
+      logger.debug('Model is loading, waiting...');
       while (this.isLoading) {
         await new Promise(resolve => setTimeout(resolve, 100));
       }
@@ -70,7 +71,7 @@ export class PyTorchScoringModel {
     const startTime = Date.now();
 
     try {
-      console.log(`[PyTorch] Loading model from: ${this.config.modelPath}`);
+      logger.info(`Loading model from: ${this.config.modelPath}`);
       
       // En desarrollo/producción, el modelo debe estar en public/models/
       // TODO: En producción real, cargar desde CDN o S3
@@ -87,12 +88,13 @@ export class PyTorchScoringModel {
       }
       
       const loadTime = Date.now() - startTime;
-      console.log(`[PyTorch] ✅ Model loaded successfully in ${loadTime}ms`);
-      console.log(`[PyTorch] Model version: ${this.config.version}`);
-      console.log(`[PyTorch] Input shape: ${this.config.inputShape}`);
-      console.log(`[PyTorch] Output shape: ${this.config.outputShape}`);
+      logger.info(`Model loaded successfully in ${loadTime}ms`, {
+        version: this.config.version,
+        inputShape: this.config.inputShape,
+        outputShape: this.config.outputShape
+      });
     } catch (error) {
-      console.error('[PyTorch] ❌ Error loading model:', error);
+      logger.error('Error loading model', { error });
       this.model = null;
       throw new Error(`Failed to load PyTorch model: ${error}`);
     } finally {
@@ -112,7 +114,7 @@ export class PyTorchScoringModel {
       try {
         await this.load();
       } catch {
-        console.error('[PyTorch] Model load failed, using fallback');
+        logger.error('Model load failed, using fallback');
         return this.fallbackPrediction(features);
       }
     }
@@ -137,7 +139,7 @@ export class PyTorchScoringModel {
     try {
       // Si no hay modelo después de intentar cargar, usar fallback
       if (!this.model) {
-        console.log('[PyTorch] Model not available, using fallback');
+        logger.warn('Model not available, using fallback');
         inputTensor.dispose();
         return this.fallbackPrediction(features);
       }
@@ -163,7 +165,7 @@ export class PyTorchScoringModel {
       // Clamp score al rango válido (0-1)
       const clampedScore = Math.min(Math.max(score, 0), 1);
       
-      console.log(`[PyTorch] Prediction: ${clampedScore.toFixed(3)}`);
+      logger.debug(`Prediction: ${clampedScore.toFixed(3)}`);
       
       return clampedScore;
     } catch (error) {
@@ -173,7 +175,7 @@ export class PyTorchScoringModel {
       } catch {
         // Ignorar errores de cleanup
       }
-      console.error('[PyTorch] Prediction error:', error);
+      logger.error('Prediction error', { error });
       
       // Fallback a algoritmo simple
       return this.fallbackPrediction(features);
@@ -213,7 +215,7 @@ export class PyTorchScoringModel {
    * @private
    */
   private fallbackPrediction(features: CompatibilityFeatures): number {
-    console.log('[PyTorch] Using fallback prediction algorithm');
+    logger.debug('Using fallback prediction algorithm');
     
     const normalized = this.normalizeFeatures(features);
 
@@ -239,7 +241,7 @@ export class PyTorchScoringModel {
     if (this.model) {
       this.model.dispose();
       this.model = null;
-      console.log('[PyTorch] Model disposed, memory freed');
+      logger.info('Model disposed, memory freed');
     }
   }
 
@@ -267,7 +269,7 @@ export class PyTorchScoringModel {
       await this.load();
     }
 
-    console.log('[PyTorch] Warming up model...');
+    logger.info('Warming up model...');
     
     // Predicción dummy
     const dummyFeatures: CompatibilityFeatures = {
@@ -284,7 +286,7 @@ export class PyTorchScoringModel {
 
     await this.predict(dummyFeatures);
     
-    console.log('[PyTorch] Model warmed up');
+    logger.info('Model warmed up');
   }
 }
 

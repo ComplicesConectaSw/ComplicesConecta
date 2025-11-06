@@ -18,7 +18,7 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
-  line-clamp: 2;
+  /* Firefox no reconoce line-clamp sin prefijo, usar solo -webkit-line-clamp */
   text-overflow: ellipsis;
 }
 
@@ -27,7 +27,7 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
-  line-clamp: 3;
+  /* Firefox no reconoce line-clamp sin prefijo, usar solo -webkit-line-clamp */
   text-overflow: ellipsis;
 }
 
@@ -49,7 +49,7 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
-  line-clamp: 3;
+  /* Firefox no reconoce line-clamp sin prefijo, usar solo -webkit-line-clamp */
   text-overflow: ellipsis;
   line-height: 1.4;
 }
@@ -98,7 +98,7 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
-    line-clamp: 2;
+    /* Firefox no reconoce line-clamp sin prefijo, usar solo -webkit-line-clamp */
     text-overflow: ellipsis;
   }
 }
@@ -129,7 +129,7 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
-  line-clamp: 2;
+  /* Firefox no reconoce line-clamp sin prefijo, usar solo -webkit-line-clamp */
   text-overflow: ellipsis;
   max-height: 3em;
   line-height: 1.5;
@@ -165,7 +165,7 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
-  line-clamp: 2;
+  /* Firefox no reconoce line-clamp sin prefijo, usar solo -webkit-line-clamp */
   text-overflow: ellipsis;
 }
 
@@ -236,6 +236,6 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
-  line-clamp: 2;
+  /* Firefox no reconoce line-clamp sin prefijo, usar solo -webkit-line-clamp */
   text-overflow: ellipsis;
 }

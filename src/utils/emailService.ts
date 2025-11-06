@@ -45,7 +45,7 @@ export class EmailService {
     try {
       // Validar email con Zod
       validateEmail({ email: to, template });
-      console.info(`📨 Enviando email con template: ${template} a ${to}`);
+      logger.info(`Enviando email con template: ${template}`, { to });
       
       const response = await fetch(`${this.baseUrl}/functions/v1/send-email`, {
         method: 'POST',
@@ -66,7 +66,7 @@ export class EmailService {
       }
 
       const result = await response.json();
-      console.info(`✅ Email enviado exitosamente con template: ${template}`);
+      logger.info(`Email enviado exitosamente con template: ${template}`, { to });
       return result;
     } catch (error) {
       logger.error(`❌ Error enviando email con template ${template}:`, { error });
@@ -75,7 +75,7 @@ export class EmailService {
   }
 
   static async sendWelcomeEmail(to: string, confirmationUrl: string, userName?: string) {
-    console.info(`👋 Enviando email de bienvenida a ${userName || 'usuario'} (${to})`);
+    logger.info(`Enviando email de bienvenida`, { to, userName });
     return this.sendEmail('welcome', to, { confirmationUrl, userName });
   }
 
@@ -85,7 +85,7 @@ export class EmailService {
   }
 
   static async sendPasswordResetEmail(to: string, resetUrl: string) {
-    console.info(`🔐 Enviando email de reset de contraseña a ${to}`);
+    logger.info(`Enviando email de reset de contraseña`, { to });
     const result = await this.sendEmail('reset-password', to, { resetUrl });
     return result.success === true;
   }
@@ -99,7 +99,7 @@ export class EmailService {
     matchScore?: number;
     distance?: number;
   }) {
-    console.info(`💕 Enviando notificación de match a ${to} - Match: ${matchData.matchName}`);
+    logger.info(`Enviando notificación de match`, { to, matchName: matchData.matchName });
     return this.sendEmail('match', to, matchData);
   }
 
@@ -111,7 +111,7 @@ export class EmailService {
     eventPrice: string;
     eventUrl: string;
   }) {
-    console.info(`🎉 Enviando invitación de evento a ${to} - Evento: ${eventData.eventName}`);
+    logger.info(`Enviando invitación de evento`, { to, eventName: eventData.eventName });
     return this.sendEmail('event', to, eventData);
   }
 }

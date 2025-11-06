@@ -250,3 +250,29 @@ docker-data/
 docker-volumes/
 # Sentry Config File
 sentry.properties
+
+# Archivos de documentación y análisis (no subir a GitHub)
+ANALISIS_*.md
+REPORTE_*.md
+RESUMEN_*.md
+DOCUMENTACION_*.md
+MEMORIAS_*.md
+PLAN_*.md
+ComplicesConecta_Diagnostico*.md
+DEPENDENCIAS_*.md
+*_AUDITORIA_*.md
+*_CONSOLIDADO_*.md
+*_UNIFICADO_*.md
+*_CONSOLIDADA_*.md
+*_UNIFICADA_*.md
+*_DIAGNOSTICO_*.md
+*_DIAGNOSTICO*.md
+*_HALLAZGOS*.md
+*_SOLUCIONES_*.md
+*_VALIDACION_*.md
+*_COMPARACION_*.md
+*_CORRECCIONES_*.md
+*_ESTILOS_*.md
+*_COMPONENTES_*.md
+*_DUPLICADOS_*.md
+*_CONFLICTOS_*.md

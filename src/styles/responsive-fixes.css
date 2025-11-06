@@ -77,7 +77,7 @@
 /* Mejorar visibilidad en todos los navegadores */
 * {
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Firefox no reconoce -moz-osx-font-smoothing, solo usar -webkit-font-smoothing */
 }
 
 /* Asegurar compatibilidad cross-browser */

@@ -142,7 +142,7 @@ Object.defineProperty(global, 'crypto', {
   }
 });
 
-// Mock Supabase
+// Mock Supabase - debe estar antes del import
 vi.mock('@/integrations/supabase/client', () => ({
   supabase: {
     auth: {
@@ -174,6 +174,9 @@ vi.mock('@/integrations/supabase/client', () => ({
     }))
   }
 }));
+
+// Import después del mock
+import { supabase } from '@/integrations/supabase/client';
 
 describe('Biometric Authentication Library', () => {
   beforeEach(() => {
@@ -294,7 +297,7 @@ describe('Biometric Authentication Library', () => {
   describe('authenticateWithBiometric', () => {
     beforeEach(() => {
       // Mock existing credentials
-      vi.mocked(require('@/integrations/supabase/client').supabase.from).mockReturnValue({
+      vi.mocked(supabase.from).mockReturnValue({
         select: vi.fn(() => ({
           eq: vi.fn(() => Promise.resolve({
             data: [{ credential_id: 'test-credential-id' }],
@@ -350,7 +353,7 @@ describe('Biometric Authentication Library', () => {
     });
 
     it('should handle no registered credentials', async () => {
-      vi.mocked(require('@/integrations/supabase/client').supabase.from).mockReturnValue({
+      vi.mocked(supabase.from).mockReturnValue({
         select: vi.fn(() => ({
           eq: vi.fn(() => Promise.resolve({
             data: [],
@@ -371,7 +374,7 @@ describe('Biometric Authentication Library', () => {
       const result = await removeBiometric('test-credential-id');
 
       expect(result.success).toBe(true);
-      expect(vi.mocked(require('@/integrations/supabase/client').supabase.from)).toHaveBeenCalledWith('user_credentials');
+      expect(vi.mocked(supabase.from)).toHaveBeenCalledWith('user_credentials');
     });
 
     it('should remove all credentials when no specific ID provided', async () => {
@@ -381,7 +384,7 @@ describe('Biometric Authentication Library', () => {
     });
 
     it('should handle database errors', async () => {
-      vi.mocked(require('@/integrations/supabase/client').supabase.from).mockReturnValue({
+      vi.mocked(supabase.from).mockReturnValue({
         delete: vi.fn(() => ({
           eq: vi.fn(() => Promise.resolve({
             error: new Error('Database error')
@@ -407,7 +410,7 @@ describe('Biometric Authentication Library', () => {
         }
       ];
 
-      vi.mocked(require('@/integrations/supabase/client').supabase.from).mockReturnValue({
+      vi.mocked(supabase.from).mockReturnValue({
         select: vi.fn(() => ({
           eq: vi.fn(() => ({
             order: vi.fn(() => Promise.resolve({
@@ -430,7 +433,7 @@ describe('Biometric Authentication Library', () => {
     });
 
     it('should return empty array when no credentials', async () => {
-      vi.mocked(require('@/integrations/supabase/client').supabase.from).mockReturnValue({
+      vi.mocked(supabase.from).mockReturnValue({
         select: vi.fn(() => ({
           eq: vi.fn(() => ({
             order: vi.fn(() => Promise.resolve({
@@ -518,7 +521,7 @@ describe('BiometricSettings Component', () => {
   });
 
   it('should handle biometric authentication test', async () => {
-    vi.mocked(require('@/integrations/supabase/client').supabase.from).mockReturnValue({
+    vi.mocked(supabase.from).mockReturnValue({
       select: vi.fn(() => ({
         eq: vi.fn(() => ({
           single: vi.fn(() => Promise.resolve({
@@ -557,7 +560,7 @@ describe('BiometricSettings Component', () => {
       }
     ];
 
-    vi.mocked(require('@/integrations/supabase/client').supabase.from).mockReturnValue({
+    vi.mocked(supabase.from).mockReturnValue({
       select: vi.fn(() => ({
         eq: vi.fn(() => ({
           single: vi.fn(() => Promise.resolve({
@@ -590,7 +593,7 @@ describe('BiometricSettings Component', () => {
       }
     ];
 
-    vi.mocked(require('@/integrations/supabase/client').supabase.from).mockReturnValue({
+    vi.mocked(supabase.from).mockReturnValue({
       select: vi.fn(() => ({
         eq: vi.fn(() => ({
           single: vi.fn(() => Promise.resolve({
@@ -619,7 +622,7 @@ describe('BiometricSettings Component', () => {
     });
 
     await waitFor(() => {
-      expect(vi.mocked(require('@/integrations/supabase/client').supabase.from)).toHaveBeenCalledWith('user_credentials');
+      expect(vi.mocked(supabase.from)).toHaveBeenCalledWith('user_credentials');
     });
   });
 

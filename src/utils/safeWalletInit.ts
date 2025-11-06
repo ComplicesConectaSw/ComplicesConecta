@@ -3,6 +3,8 @@
  * Previene errores "Cannot redefine property" y pantallas blancas
  */
 
+import { logger } from '@/lib/logger';
+
 export interface WalletGlobals {
   ethereum?: any;
   solana?: any;
@@ -33,23 +35,23 @@ export const safeWalletInit = (): void => {
             configurable: true,
             enumerable: false
           });
-          console.debug(`[safeWalletInit] Polyfill creado para ${wallet}`);
+          logger.debug(`Polyfill creado para ${wallet}`);
         } else if (descriptor.configurable === false) {
           // Si existe pero no es configurable, no intentar redefinir
-          console.debug(`[safeWalletInit] ${wallet} ya está definido y protegido`);
+          logger.debug(`${wallet} ya está definido y protegido`);
         } else if (descriptor.writable === false) {
           // Si existe pero no es escribible, no intentar modificar
-          console.debug(`[safeWalletInit] ${wallet} es read-only, respetando propiedad`);
+          logger.debug(`${wallet} es read-only, respetando propiedad`);
         }
       } catch (walletError) {
         // Error específico por wallet, continuar con los demás
-        console.debug(`[safeWalletInit] No se pudo inicializar ${wallet}:`, walletError);
+        logger.debug(`No se pudo inicializar ${wallet}`, { error: walletError });
       }
     });
 
-    console.info('[safeWalletInit] Wallet globals inicializados correctamente ✅');
+    logger.info('Wallet globals inicializados correctamente');
   } catch (error) {
-    console.warn('[safeWalletInit] Error durante inicialización, continuando:', error);
+    logger.warn('Error durante inicialización, continuando', { error });
   }
 };
 
@@ -62,7 +64,7 @@ export const detectAvailableWallets = async (): Promise<WalletGlobals> => {
   
   // SSR Safety Check
   if (typeof window === 'undefined') {
-    console.debug('[safeWalletInit] SSR detected, skipping wallet detection');
+    logger.debug('SSR detected, skipping wallet detection');
     return detected;
   }
   
@@ -83,9 +85,9 @@ export const detectAvailableWallets = async (): Promise<WalletGlobals> => {
     const bybitWallet = getBybitProvider();
     if (bybitWallet) detected.bybitWallet = bybitWallet;
     
-    console.info('[safeWalletInit] Wallets detectadas:', Object.keys(detected));
+    logger.info('Wallets detectadas', { wallets: Object.keys(detected) });
   } catch (error) {
-    console.warn('[safeWalletInit] Error detectando wallets:', error);
+    logger.warn('Error detectando wallets', { error });
     
     // Fallback a detección simple si falla la importación
     try {
@@ -101,7 +103,7 @@ export const detectAvailableWallets = async (): Promise<WalletGlobals> => {
       if (hasBybit) detected.bybitWallet = (window as any).bybitWallet;
       
     } catch (fallbackError) {
-      console.warn('[safeWalletInit] Fallback detection failed:', fallbackError);
+      logger.warn('Fallback detection failed', { error: fallbackError });
     }
   }
   
@@ -114,7 +116,7 @@ export const detectAvailableWallets = async (): Promise<WalletGlobals> => {
 export const initWalletsAsync = async (): Promise<void> => {
   // SSR Safety Check - no ejecutar en servidor
   if (typeof window === 'undefined') {
-    console.debug('[safeWalletInit] SSR detected, skipping async wallet init');
+    logger.debug('SSR detected, skipping async wallet init');
     return;
   }
   
@@ -130,6 +132,6 @@ export const initWalletsAsync = async (): Promise<void> => {
     detectWalletConflicts();
     
   } catch (error) {
-    console.warn('[safeWalletInit] Error en inicialización asíncrona:', error);
+    logger.warn('Error en inicialización asíncrona', { error });
   }
 };

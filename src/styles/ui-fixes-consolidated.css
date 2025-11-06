@@ -19,30 +19,32 @@
 /* ===== MEJORAS DE CONTRASTE EN HOVER ===== */
 
 /* Botones con hover mejorado */
-.text-white.hover\:bg-white\/10:hover,
-.hover\:bg-white\/10:hover {
+/* Firefox: Usar selectores de atributo en lugar de escapes complejos */
+[class*="hover:bg-white/10"]:hover,
+[class*="bg-white/10"]:hover {
   background-color: rgba(255, 255, 255, 0.2) !important;
 }
 
 /* Botones con fondo transparente mejorado */
-.bg-white\/10 {
+[class*="bg-white/10"] {
   background-color: rgba(255, 255, 255, 0.15) !important;
 }
 
-.border-white\/20 {
+[class*="border-white/20"] {
   border-color: rgba(255, 255, 255, 0.3) !important;
 }
 
 /* ===== MEJORAS ESPECÍFICAS PARA ELEMENTOS CRÍTICOS ===== */
 
 /* Botones de navegación */
-.text-white.hover\:bg-white\/20:hover {
+/* Firefox: Usar selectores de atributo */
+[class*="hover:bg-white/20"]:hover {
   background-color: rgba(255, 255, 255, 0.25) !important;
   backdrop-filter: blur(8px);
 }
 
 /* Tarjetas con fondo transparente */
-.bg-white\/10.backdrop-blur-md {
+[class*="bg-white/10"][class*="backdrop-blur-md"] {
   background-color: rgba(255, 255, 255, 0.18) !important;
   border: 1px solid rgba(255, 255, 255, 0.25) !important;
 }
@@ -51,13 +53,14 @@
 
 /* Asegurar que textos importantes no desaparezcan en móvil */
 @media (max-width: 640px) {
-  .hidden.sm\:inline {
+  /* Firefox: Usar selectores de atributo en lugar de escapes */
+  [class*="hidden"][class*="sm:inline"] {
     display: inline !important;
     font-size: 0.75rem !important;
   }
   
   /* Iconos más consistentes en móvil */
-  .h-3.w-3.sm\:h-4.sm\:w-4 {
+  [class*="h-3"][class*="w-3"][class*="sm:h-4"][class*="sm:w-4"] {
     height: 1rem !important;
     width: 1rem !important;
   }
@@ -66,7 +69,8 @@
 /* ===== MEJORAS DE ACCESIBILIDAD ===== */
 
 /* Mejor contraste para elementos focuseables */
-.focus\:outline-none:focus {
+/* Firefox: Usar selector de atributo */
+[class*="focus:outline-none"]:focus {
   outline: 2px solid rgba(255, 255, 255, 0.5) !important;
   outline-offset: 2px !important;
 }
@@ -80,19 +84,20 @@
 /* ===== CORRECCIONES ESPECÍFICAS DETECTADAS ===== */
 
 /* AdminModerators.tsx - Botones con mejor contraste */
-.bg-white\/10.border-white\/20.text-white.hover\:bg-white\/20 {
+/* Firefox: Usar selectores de atributo */
+[class*="bg-white/10"][class*="border-white/20"][class*="text-white"][class*="hover:bg-white/20"] {
   background-color: rgba(255, 255, 255, 0.15) !important;
   border-color: rgba(255, 255, 255, 0.3) !important;
 }
 
-.bg-white\/10.border-white\/20.text-white.hover\:bg-white\/20:hover {
+[class*="bg-white/10"][class*="border-white/20"][class*="text-white"][class*="hover:bg-white/20"]:hover {
   background-color: rgba(255, 255, 255, 0.25) !important;
   transform: translateY(-1px);
   transition: all 0.2s ease;
 }
 
 /* Tabs con mejor visibilidad */
-.data-\[state\=active\]\:bg-white\/20[data-state="active"] {
+[data-state="active"][class*="bg-white/20"] {
   background-color: rgba(255, 255, 255, 0.25) !important;
   border-bottom: 2px solid rgba(255, 255, 255, 0.5) !important;
 }
@@ -100,10 +105,11 @@
 /* ===== ANIMACIONES SUAVES ===== */
 
 /* Transiciones mejoradas para todos los elementos hover */
-.hover\:bg-white\/10,
-.hover\:bg-white\/20,
-.bg-white\/10,
-.border-white\/20 {
+/* Firefox: Usar selectores de atributo */
+[class*="hover:bg-white/10"],
+[class*="hover:bg-white/20"],
+[class*="bg-white/10"],
+[class*="border-white/20"] {
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
@@ -115,7 +121,7 @@
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
   }
   
-  .bg-white\/10 {
+  [class*="bg-white/10"] {
     background-color: rgba(255, 255, 255, 0.12) !important;
   }
 }
@@ -127,40 +133,41 @@
 /* ===== TEXTOS EN CARDS CON FONDO PURPLE ===== */
 
 /* Todos los textos blancos en cards purple - Mejorar contraste */
-.bg-purple-800\/90 .text-white,
-.bg-purple-800\/90 p,
-.bg-purple-800\/90 h3,
-.bg-purple-800\/90 li {
+/* Firefox: Usar selectores de atributo en lugar de escapes complejos */
+[class*="bg-purple-800/90"] .text-white,
+[class*="bg-purple-800/90"] p,
+[class*="bg-purple-800/90"] h3,
+[class*="bg-purple-800/90"] li {
   color: #ffffff !important;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
   font-weight: 600;
 }
 
-.bg-purple-800\/90 .text-white\/90,
-.bg-purple-800\/90 .text-white\/70 {
+[class*="bg-purple-800/90"] [class*="text-white/90"],
+[class*="bg-purple-800/90"] [class*="text-white/70"] {
   color: #ffffff !important;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
   font-weight: 600;
 }
 
 /* Títulos en cards */
-.bg-purple-800\/90 h3,
-.bg-purple-800\/90 .text-xl {
+[class*="bg-purple-800/90"] h3,
+[class*="bg-purple-800/90"] .text-xl {
   font-weight: 700;
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
 }
 
 /* Descripciones */
-.bg-purple-800\/90 p {
+[class*="bg-purple-800/90"] p {
   font-weight: 500;
   line-height: 1.7;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
 }
 
 /* ===== CARDS CON GRADIENTE ===== */
-
-.bg-gradient-to-r.from-purple-600\/90 .text-white,
-.bg-gradient-to-r.from-purple-700\/90 .text-white {
+/* Firefox: Usar selectores de atributo */
+[class*="bg-gradient-to-r"][class*="from-purple-600/90"] .text-white,
+[class*="bg-gradient-to-r"][class*="from-purple-700/90"] .text-white {
   color: #ffffff !important;
   text-shadow: 0 2px 5px rgba(0, 0, 0, 0.9);
   font-weight: 600;
@@ -169,19 +176,20 @@
 /* ===== TEXTOS CON OPACIDAD - MEJORAR ===== */
 
 /* Reemplazar todos los text-white/X con text-white sólido */
-.text-white\/90 {
+/* Firefox: Usar selectores de atributo */
+[class*="text-white/90"] {
   color: #ffffff !important;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
   font-weight: 500;
 }
 
-.text-white\/70 {
+[class*="text-white/70"] {
   color: #ffffff !important;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
   font-weight: 500;
 }
 
-.text-white\/80 {
+[class*="text-white/80"] {
   color: #ffffff !important;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
   font-weight: 500;
@@ -219,35 +227,37 @@
 
 /* Android Mobile - Optimización específica */
 @media screen and (max-width: 768px) {
-  .bg-purple-800\/90 .text-white {
+  /* Firefox: Usar selectores de atributo */
+  [class*="bg-purple-800/90"] .text-white {
     font-weight: 700 !important;
     text-shadow: 0 2px 5px rgba(0, 0, 0, 0.95) !important;
     font-size: 16px; /* Evita zoom automático en Android */
-    -webkit-text-size-adjust: 100%; /* Safari/Chrome */
-    /* Firefox no soporta -moz-text-size-adjust, usar solo -webkit y estándar */
-    text-size-adjust: 100%; /* Estándar */
+    /* Firefox rechaza -webkit-text-size-adjust y text-size-adjust, eliminado para compatibilidad */
   }
   
-  .text-white\/90,
-  .text-white\/70 {
+  /* Firefox rechaza -webkit-text-size-adjust incluso en @supports, eliminado completamente */
+  /* El font-size: 16px es suficiente para prevenir zoom automático */
+  
+  [class*="text-white/90"],
+  [class*="text-white/70"] {
     font-weight: 600 !important;
     text-shadow: 0 2px 5px rgba(0, 0, 0, 0.95) !important;
     font-size: 16px;
   }
   
   /* Cards en móvil Android */
-  .bg-purple-800\/90 {
+  [class*="bg-purple-800/90"] {
     padding: 16px !important;
     margin: 8px !important;
   }
   
   /* Textos en cards móvil */
-  .bg-purple-800\/90 h3 {
+  [class*="bg-purple-800/90"] h3 {
     font-size: 18px !important;
     line-height: 1.4 !important;
   }
   
-  .bg-purple-800\/90 p {
+  [class*="bg-purple-800/90"] p {
     font-size: 14px !important;
     line-height: 1.6 !important;
   }
@@ -255,21 +265,22 @@
 
 /* Android pequeño (360px - Galaxy S5, etc) */
 @media screen and (max-width: 360px) {
-  .bg-purple-800\/90 .text-white {
+  /* Firefox: Usar selectores de atributo */
+  [class*="bg-purple-800/90"] .text-white {
     font-size: 14px !important;
     font-weight: 700 !important;
   }
   
-  .bg-purple-800\/90 h3 {
+  [class*="bg-purple-800/90"] h3 {
     font-size: 16px !important;
   }
   
-  .bg-purple-800\/90 p {
+  [class*="bg-purple-800/90"] p {
     font-size: 13px !important;
   }
   
   /* Touch targets más grandes en Android pequeño */
-  .bg-purple-800\/90 button {
+  [class*="bg-purple-800/90"] button {
     min-height: 48px !important;
     padding: 12px 16px !important;
   }
@@ -277,15 +288,16 @@
 
 /* Android landscape */
 @media screen and (orientation: landscape) and (max-width: 768px) {
-  .bg-purple-800\/90 {
+  /* Firefox: Usar selectores de atributo */
+  [class*="bg-purple-800/90"] {
     padding: 12px !important;
   }
   
-  .bg-purple-800\/90 h3 {
+  [class*="bg-purple-800/90"] h3 {
     font-size: 16px !important;
   }
   
-  .bg-purple-800\/90 p {
+  [class*="bg-purple-800/90"] p {
     font-size: 13px !important;
   }
 }
@@ -293,10 +305,11 @@
 /* ===== CORRECCIONES TEXTOS GRISES EN ANDROID ===== */
 
 /* Todos los textos grises en fondos purple - Forzar blanco en Android */
-.bg-purple-800\/90 .text-gray-600,
-.bg-purple-800\/90 .text-gray-500,
-.bg-purple-800\/90 .text-gray-400,
-.bg-purple-800\/90 .text-gray-300,
+/* Firefox: Usar selectores de atributo */
+[class*="bg-purple-800/90"] .text-gray-600,
+[class*="bg-purple-800/90"] .text-gray-500,
+[class*="bg-purple-800/90"] .text-gray-400,
+[class*="bg-purple-800/90"] .text-gray-300,
 .bg-gradient-to-r .text-gray-600,
 .bg-gradient-to-r .text-gray-500,
 .bg-gradient-to-r .text-gray-400 {
@@ -306,9 +319,9 @@
 }
 
 /* Textos grises en cards purple */
-.bg-purple-800\/90 p.text-gray-600,
-.bg-purple-800\/90 span.text-gray-600,
-.bg-purple-800\/90 div.text-gray-600 {
+[class*="bg-purple-800/90"] p.text-gray-600,
+[class*="bg-purple-800/90"] span.text-gray-600,
+[class*="bg-purple-800/90"] div.text-gray-600 {
   color: #ffffff !important;
   font-weight: 500 !important;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8) !important;
@@ -317,21 +330,22 @@
 /* Android específico - Mejorar contraste */
 @media screen and (max-width: 768px) {
   /* Forzar blancos en todos los grises sobre purple */
-  .bg-purple-800\/90 .text-gray-600,
-  .bg-purple-800\/90 .text-gray-500,
-  .bg-purple-800\/90 .text-gray-400 {
+  /* Firefox: Usar selectores de atributo */
+  [class*="bg-purple-800/90"] .text-gray-600,
+  [class*="bg-purple-800/90"] .text-gray-500,
+  [class*="bg-purple-800/90"] .text-gray-400 {
     color: #ffffff !important;
     text-shadow: 0 3px 6px rgba(0, 0, 0, 1) !important;
     font-weight: 600 !important;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    /* Firefox no reconoce -moz-osx-font-smoothing, solo usar -webkit-font-smoothing */
   }
 }
 
 /* ===== ACCESIBILIDAD WCAG AAA ===== */
 
 /* Contraste mínimo 7:1 */
-.bg-purple-800\/90 * {
+[class*="bg-purple-800/90"] * {
   font-weight: 500;
   letter-spacing: 0.01em;
 }
@@ -344,10 +358,11 @@
   textarea,
   select {
     font-size: 16px !important;
-    -webkit-text-size-adjust: 100%; /* Safari/Chrome */
-    /* Firefox no soporta -moz-text-size-adjust, usar solo -webkit y estándar */
-    text-size-adjust: 100%; /* Estándar */
+    /* Firefox rechaza -webkit-text-size-adjust, usar solo en navegadores que lo soporten */
   }
+  
+  /* Firefox rechaza -webkit-text-size-adjust incluso en @supports, eliminado completamente */
+  /* El font-size: 16px es suficiente para prevenir zoom automático */
   
   /* Touch targets más grandes */
   button,
@@ -513,7 +528,7 @@ html header.header-nav-main {
 /* Mejorar visibilidad en todos los navegadores */
 * {
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Firefox no reconoce -moz-osx-font-smoothing, solo usar -webkit-font-smoothing */
 }
 
 /* Asegurar compatibilidad cross-browser */
@@ -547,7 +562,8 @@ html header.header-nav-main {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
-  line-clamp: 2;
+  line-clamp: 2; /* Propiedad estándar para compatibilidad */
+  /* Firefox no reconoce line-clamp sin prefijo, usar solo -webkit-line-clamp */
   text-overflow: ellipsis;
 }
 
@@ -556,7 +572,8 @@ html header.header-nav-main {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
-  line-clamp: 3;
+  line-clamp: 3; /* Propiedad estándar para compatibilidad */
+  /* Firefox no reconoce line-clamp sin prefijo, usar solo -webkit-line-clamp */
   text-overflow: ellipsis;
 }
 
@@ -578,7 +595,8 @@ html header.header-nav-main {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
-  line-clamp: 3;
+  line-clamp: 3; /* Propiedad estándar para compatibilidad */
+  /* Firefox no reconoce line-clamp sin prefijo, usar solo -webkit-line-clamp */
   text-overflow: ellipsis;
   line-height: 1.4;
 }
@@ -627,7 +645,8 @@ html header.header-nav-main {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
-    line-clamp: 2;
+    line-clamp: 2; /* Propiedad estándar para compatibilidad */
+    /* Firefox no reconoce line-clamp sin prefijo, usar solo -webkit-line-clamp */
     text-overflow: ellipsis;
   }
 }
@@ -652,17 +671,18 @@ html header.header-nav-main {
   max-width: 200px;
 }
 
-.message-preview,
-.notification-preview {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  text-overflow: ellipsis;
-  max-height: 3em;
-  line-height: 1.5;
-}
+  .message-preview,
+  .notification-preview {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2; /* Propiedad estándar para compatibilidad */
+    /* Firefox no reconoce line-clamp sin prefijo, usar solo -webkit-line-clamp */
+    text-overflow: ellipsis;
+    max-height: 3em;
+    line-height: 1.5;
+  }
 
 /* Correcciones para formularios */
 .form-label,
@@ -694,7 +714,8 @@ html header.header-nav-main {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
-  line-clamp: 2;
+  line-clamp: 2; /* Propiedad estándar para compatibilidad */
+  /* Firefox no reconoce line-clamp sin prefijo, usar solo -webkit-line-clamp */
   text-overflow: ellipsis;
 }
 
@@ -765,7 +786,8 @@ html header.header-nav-main {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
-  line-clamp: 2;
+  line-clamp: 2; /* Propiedad estándar para compatibilidad */
+  /* Firefox no reconoce line-clamp sin prefijo, usar solo -webkit-line-clamp */
   text-overflow: ellipsis;
 }
 
@@ -805,7 +827,8 @@ html header.header-nav-main {
 /* ===== CORRECCIONES ESPECÍFICAS POR COMPONENTE ===== */
 
 /* Página de Tokens - Textos de ejemplo */
-.bg-white\/90 .text-gray-900 {
+/* Firefox: Usar selectores de atributo */
+[class*="bg-white/90"] .text-gray-900 {
   color: #111827 !important;
   font-weight: 600;
 }
@@ -841,7 +864,8 @@ html header.header-nav-main {
 }
 
 /* Cards con fondo oscuro - Textos blancos */
-.bg-white\/10 .text-gray-400,
+/* Firefox: Usar selectores de atributo */
+[class*="bg-white/10"] .text-gray-400,
 .backdrop-blur-sm .text-gray-400 {
   color: #ffffff !important;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
@@ -863,17 +887,18 @@ html header.header-nav-main {
 }
 
 /* Textos con opacidad - Mejorar visibilidad */
-.text-white\/60 {
+/* Firefox: Usar selectores de atributo */
+[class*="text-white/60"] {
   color: rgba(255, 255, 255, 0.9) !important;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
 }
 
-.text-white\/70 {
+[class*="text-white/70"] {
   color: rgba(255, 255, 255, 0.95) !important;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 }
 
-.text-white\/80 {
+[class*="text-white/80"] {
   color: rgba(255, 255, 255, 0.98) !important;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }

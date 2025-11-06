@@ -123,7 +123,7 @@ class Neo4jService {
       this.initializeDriver();
       this.initialized = true;
     } else {
-      console.log('[INFO] ⚠️ Neo4j está deshabilitado. Set VITE_NEO4J_ENABLED=true para habilitar.');
+      logger.warn('Neo4j está deshabilitado. Set VITE_NEO4J_ENABLED=true para habilitar.');
       this.initialized = false;
     }
   }

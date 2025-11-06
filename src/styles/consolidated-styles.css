@@ -136,7 +136,7 @@ body {
   min-height: 100vh;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Firefox no reconoce -moz-osx-font-smoothing, solo usar -webkit-font-smoothing */
   text-rendering: optimizeLegibility;
 }
 
@@ -441,11 +441,12 @@ header .flex:last-child {
 }
 
 @media (max-width: 1024px) {
-  header nav.hidden.lg\\:flex {
+  /* Firefox: Usar selectores de atributo en lugar de escapes complejos */
+  header nav[class*="hidden"][class*="lg:flex"] {
     display: none;
   }
   
-  header button.lg\\:hidden {
+  header button[class*="lg:hidden"] {
     display: flex;
   }
 }
@@ -557,6 +558,8 @@ header .flex:last-child {
 }
 
 /* Cualquier texto que sea negro o muy oscuro */
+/* Firefox: Escapar correctamente los espacios en selectores de atributo */
+[style*="color:black"], [style*="color:#000"], [style*="color:#000000"],
 [style*="color: black"], [style*="color: #000"], [style*="color: #000000"] {
   color: #ffffff !important;
   text-shadow: 3px 3px 6px rgba(0, 0, 0, 1) !important;
@@ -568,6 +571,9 @@ header .flex:last-child {
 .bg-gradient-to-br textarea,
 .bg-gradient-to-r input,
 .bg-gradient-to-r textarea,
+/* Firefox: Escapar correctamente los espacios en selectores de atributo */
+[style*="background:linear-gradient"] input,
+[style*="background:linear-gradient"] textarea,
 [style*="background: linear-gradient"] input,
 [style*="background: linear-gradient"] textarea {
   background: rgba(255, 255, 255, 0.1) !important;
@@ -580,6 +586,9 @@ header .flex:last-child {
 .bg-gradient-to-br textarea::placeholder,
 .bg-gradient-to-r input::placeholder,
 .bg-gradient-to-r textarea::placeholder,
+/* Firefox: Escapar correctamente los espacios en selectores de atributo */
+[style*="background:linear-gradient"] input::placeholder,
+[style*="background:linear-gradient"] textarea::placeholder,
 [style*="background: linear-gradient"] input::placeholder,
 [style*="background: linear-gradient"] textarea::placeholder {
   color: rgba(255, 255, 255, 0.6) !important;
@@ -602,21 +611,26 @@ header .flex:last-child {
 .bg-gradient-to-r .text-black,
 .bg-purple-600 .text-black,
 .bg-blue-600 .text-black,
+/* Firefox: Escapar correctamente los espacios en selectores de atributo */
+[style*="background:linear-gradient"] .text-black,
 [style*="background: linear-gradient"] .text-black,
 .bg-gradient-to-br .text-gray-800,
 .bg-gradient-to-r .text-gray-800,
 .bg-purple-600 .text-gray-800,
 .bg-blue-600 .text-gray-800,
+[style*="background:linear-gradient"] .text-gray-800,
 [style*="background: linear-gradient"] .text-gray-800,
 .bg-gradient-to-br .text-gray-700,
 .bg-gradient-to-r .text-gray-700,
 .bg-purple-600 .text-gray-700,
 .bg-blue-600 .text-gray-700,
+[style*="background:linear-gradient"] .text-gray-700,
 [style*="background: linear-gradient"] .text-gray-700,
 .bg-gradient-to-br .text-gray-600,
 .bg-gradient-to-r .text-gray-600,
 .bg-purple-600 .text-gray-600,
 .bg-blue-600 .text-gray-600,
+[style*="background:linear-gradient"] .text-gray-600,
 [style*="background: linear-gradient"] .text-gray-600 {
   color: #ffffff !important;
   text-shadow: 3px 3px 6px rgba(0, 0, 0, 1) !important;
@@ -689,15 +703,16 @@ header .flex:last-child {
   box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
 }
 
-.hover\:scale-102:hover {
+/* Firefox: Usar selectores de atributo en lugar de escapes complejos */
+[class*="hover:scale-102"]:hover {
   transform: scale(1.02);
 }
 
-.hover\:scale-105:hover {
+[class*="hover:scale-105"]:hover {
   transform: scale(1.05);
 }
 
-.active\:scale-95:active {
+[class*="active:scale-95"]:active {
   transform: scale(0.95);
 }
 
@@ -775,7 +790,8 @@ header.sticky {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
-  line-clamp: 2;
+  line-clamp: 2; /* Propiedad estándar para compatibilidad */
+  /* Firefox no reconoce line-clamp sin prefijo, usar solo -webkit-line-clamp */
   text-overflow: ellipsis;
 }
 
@@ -784,7 +800,8 @@ header.sticky {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
-  line-clamp: 3;
+  line-clamp: 3; /* Propiedad estándar para compatibilidad */
+  /* Firefox no reconoce line-clamp sin prefijo, usar solo -webkit-line-clamp */
   text-overflow: ellipsis;
 }
 
@@ -1089,7 +1106,7 @@ header.sticky {
   /* Pantallas de alta densidad */
   .high-dpi {
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    /* Firefox no reconoce -moz-osx-font-smoothing, solo usar -webkit-font-smoothing */
   }
   
   .high-dpi .icon {
@@ -1142,11 +1159,8 @@ textarea::-moz-placeholder {
   opacity: 1 !important;
 }
 
-input:-ms-input-placeholder,
-textarea:-ms-input-placeholder {
-  color: rgba(255, 255, 255, 0.9) !important;
-  opacity: 1 !important;
-}
+/* -ms-input-placeholder solo para IE/Edge antiguos - Firefox lo rechaza completamente */
+/* Eliminado para evitar errores en Firefox */
 
 input:-moz-placeholder,
 textarea:-moz-placeholder {

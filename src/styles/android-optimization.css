@@ -154,13 +154,12 @@
 /* Android WebView optimizations */
 .android-webview {
   /* Prevenir zoom automático */
-  -webkit-text-size-adjust: 100%;
-  -ms-text-size-adjust: 100%;
-  text-size-adjust: 100%;
+  /* Firefox rechaza -webkit-text-size-adjust, -ms-text-size-adjust y text-size-adjust */
+  /* El font-size: 16px es suficiente para prevenir zoom automático */
   
   /* Mejorar rendering */
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Firefox no reconoce -moz-osx-font-smoothing, solo usar -webkit-font-smoothing */
   
   /* Optimizar scrolling */
   -webkit-overflow-scrolling: touch;

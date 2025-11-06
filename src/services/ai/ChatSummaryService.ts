@@ -19,6 +19,7 @@
 import OpenAI from 'openai';
 import { HfInference } from '@huggingface/inference';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/lib/logger';
 
 export interface ChatSummary {
   id: string;
@@ -63,14 +64,14 @@ export class ChatSummaryService {
         apiKey: openaiKey, 
         dangerouslyAllowBrowser: true // Solo para desarrollo
       });
-      console.log('[ChatSummary] OpenAI initialized');
+      logger.info('OpenAI initialized');
     }
 
     // Inicializar HuggingFace si hay API key
     const hfKey = import.meta.env.VITE_HUGGINGFACE_API_KEY;
     if (hfKey) {
       this.hf = new HfInference(hfKey);
-      console.log('[ChatSummary] HuggingFace initialized');
+      logger.info('HuggingFace initialized');
     }
   }
 
@@ -91,7 +92,7 @@ export class ChatSummaryService {
     chatId: string,
     userId: string
   ): Promise<ChatSummary> {
-    console.log('[ChatSummary] Generating summary for chat:', chatId);
+    logger.info('Generating summary for chat', { chatId });
 
     // 1. Verificar rate limit
     await this.checkRateLimit(userId);
@@ -99,7 +100,7 @@ export class ChatSummaryService {
     // 2. Verificar cache
     const cached = await this.getCachedSummary(chatId);
     if (cached) {
-      console.log('[ChatSummary] Cache hit, returning cached summary');
+      logger.info('Cache hit, returning cached summary', { chatId });
       return cached;
     }
 
@@ -110,7 +111,7 @@ export class ChatSummaryService {
       throw new Error('No messages found in chat');
     }
 
-    console.log(`[ChatSummary] Processing ${messages.length} messages`);
+    logger.info(`Processing ${messages.length} messages`, { chatId, messageCount: messages.length });
 
     // 4. Generar resumen usando ML
     let summary: string;
@@ -118,20 +119,20 @@ export class ChatSummaryService {
 
     try {
       if (this.config.provider === 'openai' || (this.config.provider === 'auto' && this.openai)) {
-        console.log('[ChatSummary] Using GPT-4');
+        logger.debug('Using GPT-4');
         summary = await this.generateWithGPT4(messages);
         method = 'gpt4';
       } else if (this.config.provider === 'huggingface' && this.hf) {
-        console.log('[ChatSummary] Using BART (HuggingFace)');
+        logger.debug('Using BART (HuggingFace)');
         summary = await this.generateWithBART(messages);
         method = 'bart';
       } else {
-        console.log('[ChatSummary] Using fallback method');
+        logger.debug('Using fallback method');
         summary = this.generateFallback(messages);
         method = 'fallback';
       }
     } catch (error) {
-      console.warn('[ChatSummary] ML generation failed, using fallback:', error);
+      logger.warn('ML generation failed, using fallback', { error });
       summary = this.generateFallback(messages);
       method = 'fallback';
     }
@@ -154,7 +155,7 @@ export class ChatSummaryService {
       createdAt: new Date(),
     };
 
-    console.log('[ChatSummary] Summary generated:', {
+    logger.info('Summary generated', {
       method,
       sentiment,
       topics,
@@ -376,7 +377,7 @@ ${messagesText}`;
       .limit(this.config.maxMessagesPerSummary);
     
     if (error) {
-      console.error('[ChatSummary] Error fetching messages:', error);
+      logger.error('Error fetching messages', { error, chatId });
       throw error;
     }
 
@@ -408,7 +409,7 @@ ${messagesText}`;
     });
 
     if (error) {
-      console.error('[ChatSummary] Error saving summary:', error);
+      logger.error('Error saving summary', { error, summaryId: summary.id });
       throw error;
     }
   }
@@ -419,7 +420,7 @@ ${messagesText}`;
    */
   private async logSummaryRequest(userId: string, chatId: string): Promise<void> {
     if (!supabase) {
-      console.warn('[ChatSummary] Supabase no está disponible, no se puede registrar request');
+      logger.warn('Supabase no está disponible, no se puede registrar request', { userId, chatId });
       return;
     }
     
@@ -429,7 +430,7 @@ ${messagesText}`;
     });
 
     if (error) {
-      console.warn('[ChatSummary] Error logging request:', error);
+      logger.warn('Error logging request', { error, userId, chatId });
     }
   }
 

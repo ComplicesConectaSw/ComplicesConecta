@@ -99,6 +99,7 @@ import { DebugInfo } from '@/debug'
 import { initWebVitalsMonitoring } from '@/utils/webVitals'
 import { initializeCriticalPreloading } from '@/utils/preloading'
 import { androidSecurity } from '@/utils/androidSecurity'
+import { logger } from '@/lib/logger'
 
 // Continuar con wallet protection después de asegurar React
 if (typeof window !== 'undefined') {
@@ -112,42 +113,42 @@ if (typeof window !== 'undefined') {
 
 // Debug info for development only
 if (import.meta.env.DEV) {
-  console.log('🚀 ComplicesConecta v3.5.0 starting...');
+  logger.info('ComplicesConecta v3.5.0 starting...');
 }
 
 // Initialize Datadog RUM for frontend monitoring
 try {
   initializeDatadogRUM();
-  if (import.meta.env.DEV) console.log('📊 Datadog RUM initialized');
+  if (import.meta.env.DEV) logger.info('Datadog RUM initialized');
 } catch (error) {
-  console.error('❌ Datadog RUM initialization failed:', error);
+  logger.error('Datadog RUM initialization failed', { error });
 }
 
 // Initialize Sentry for error monitoring
 try {
   if (import.meta.env.VITE_SENTRY_DSN) {
     initSentry();
-    if (import.meta.env.DEV) console.log('✅ Sentry initialized');
+    if (import.meta.env.DEV) logger.info('Sentry initialized');
   } else {
-    if (import.meta.env.DEV) console.log('⚠️ Sentry DSN not configured');
+    if (import.meta.env.DEV) logger.debug('Sentry DSN not configured');
   }
 } catch (error) {
-  console.error('❌ Sentry initialization failed:', error);
+  logger.error('Sentry initialization failed', { error });
 }
 
 // Initialize Web Vitals monitoring
 try {
   initWebVitalsMonitoring();
 } catch (error) {
-  console.error('❌ Web Vitals monitoring failed:', error);
+  logger.error('Web Vitals monitoring failed', { error });
 }
 
 // Initialize critical preloading
 try {
   initializeCriticalPreloading();
-  console.log('✅ Critical preloading initialized');
+  logger.info('Critical preloading initialized');
 } catch (error) {
-  console.error('❌ Critical preloading failed:', error);
+  logger.error('Critical preloading failed', { error });
 }
 
 // Security check function
@@ -159,15 +160,18 @@ async function initializeSecurityCheck() {
       if (isAndroid) {
         // Initialize Android security if available
         try {
-          await androidSecurity;
+          // androidSecurity es una instancia de AndroidSecurityManager
+          if (androidSecurity && typeof androidSecurity.performSecurityCheck === 'function') {
+            await androidSecurity.performSecurityCheck();
+          }
         } catch (error) {
-          console.warn('Android security not available:', error);
+          logger.warn('Android security not available', { error });
         }
       }
     }
     return true;
   } catch (error) {
-    console.error('❌ Security check failed:', error);
+    logger.error('Security check failed', { error });
     return false;
   }
 }
@@ -177,10 +181,10 @@ if ('serviceWorker' in navigator && import.meta.env.MODE === 'production') {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js')
       .then((registration) => {
-        console.log('✅ Service Worker registered:', registration);
+        logger.info('Service Worker registered', { registration });
       })
       .catch((error) => {
-        console.error('❌ Service Worker registration failed:', error);
+        logger.error('Service Worker registration failed', { error });
       });
   });
 }
@@ -201,7 +205,7 @@ async function initializeApp() {
     const rootElement = document.getElementById("root");
     debugLog('MOUNT_TIMEOUT_TRIGGERED', { hasRoot: !!rootElement, hasChildren: rootElement?.hasChildNodes() });
     if (rootElement && !rootElement.hasChildNodes()) {
-      console.error('⚠️ Forzando montaje de React después de timeout de seguridad');
+      logger.warn('Forzando montaje de React después de timeout de seguridad');
       try {
         rootElement.innerHTML = '';
         createRoot(rootElement).render(
@@ -213,7 +217,7 @@ async function initializeApp() {
         );
         debugLog('MOUNT_FORCED_SUCCESS', {});
       } catch (error) {
-        console.error('❌ Error crítico montando React:', error);
+        logger.error('Error crítico montando React', { error });
         debugLog('MOUNT_FORCED_ERROR', { error: error instanceof Error ? error.message : String(error) });
       }
     }
@@ -281,7 +285,7 @@ async function initializeApp() {
       await new Promise(resolve => setTimeout(resolve, 100));
       const retryRoot = document.getElementById("root");
       if (!retryRoot) {
-        console.error('❌ Root element not found after retry');
+        logger.error('Root element not found after retry');
         debugLog('ROOT_ELEMENT_NOT_FOUND_RETRY', { error: 'Root element not found' });
         throw new Error('Root element not found');
       }
@@ -319,7 +323,7 @@ async function initializeApp() {
     });
 
     if (import.meta.env.DEV) {
-      console.log('✅ Root element found, rendering app...');
+      logger.info('Root element found, rendering app...');
     }
 
     debugLog('REACT_RENDER_START', { timestamp: performance.now() });
@@ -343,8 +347,8 @@ async function initializeApp() {
         const report = (window as any).__LOADING_DEBUG__.getReport();
         debugLog('LOADING_REPORT_FINAL', report);
         if (import.meta.env.DEV) {
-          console.log('📊 Reporte de carga completo:', report);
-          console.log('💡 Para ver el reporte en producción, ejecuta: window.__LOADING_DEBUG__.getReport()');
+          logger.info('Reporte de carga completo', { report });
+          logger.debug('Para ver el reporte en producción, ejecuta: window.__LOADING_DEBUG__.getReport()');
         }
       }
     }, 1000);
@@ -358,7 +362,7 @@ async function initializeApp() {
     if ((window as any).__LOADING_DEBUG__) {
       const report = (window as any).__LOADING_DEBUG__.getReport();
       debugLog('LOADING_REPORT_ERROR', report);
-      console.error('📊 Reporte de carga al error:', report);
+      logger.error('Reporte de carga al error', { report });
     }
     
     // CRÍTICO: Mostrar TODOS los errores para diagnóstico
@@ -372,7 +376,7 @@ async function initializeApp() {
     ].some(keyword => errorMessage.includes(keyword) || errorStack.includes(keyword));
     
     // SIEMPRE mostrar error en consola para diagnóstico (aunque sea de wallet)
-    console.error('❌ Application initialization failed:', {
+    logger.error('Application initialization failed', {
       message: error?.message,
       stack: error?.stack,
       isWalletError: isWalletError,
@@ -381,7 +385,7 @@ async function initializeApp() {
     
     // SIEMPRE mostrar error visual si no es de wallet
     if (!isWalletError) {
-      console.error('❌ Application initialization failed (no wallet error):', error);
+      logger.error('Application initialization failed (no wallet error)', { error });
       
       // Mostrar error crítico en la página si no es de wallet
       const rootElement = document.getElementById("root");
@@ -420,7 +424,7 @@ initializeApp().catch((error: any) => {
   ].some(keyword => errorMessage.includes(keyword) || errorStack.includes(keyword));
   
   // SIEMPRE mostrar error en consola para diagnóstico (aunque sea de wallet)
-  console.error('❌ Application initialization failed:', {
+  logger.error('Application initialization failed', {
     message: error?.message,
     stack: error?.stack,
     isWalletError: isWalletError,

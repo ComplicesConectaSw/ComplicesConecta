@@ -4,6 +4,8 @@
  * Integrates with dynamic imports for heavy SDK loading
  */
 
+import { logger } from '@/lib/logger';
+
 // Dynamic imports disponibles para uso futuro
 // import { loadWeb3SDK, loadEthersSDK, loadSolanaSDK, loadTronSDK } from './dynamicImports';
 
@@ -53,7 +55,7 @@ export const getEthereumProvider = (): EthereumProvider | null => {
     const provider = (window as any).ethereum;
     return provider && typeof provider.request === 'function' ? provider : null;
   } catch (error) {
-    console.warn('[WalletUtils] Error accessing Ethereum provider:', error);
+    logger.warn('Error accessing Ethereum provider', { error });
     return null;
   }
 };
@@ -65,7 +67,7 @@ export const getSolanaProvider = (): SolanaProvider | null => {
     const provider = (window as any).solana;
     return provider && (provider.isPhantom || typeof provider.connect === 'function') ? provider : null;
   } catch (error) {
-    console.warn('[WalletUtils] Error accessing Solana provider:', error);
+    logger.warn('Error accessing Solana provider', { error });
     return null;
   }
 };
@@ -77,7 +79,7 @@ export const getTronProvider = (): TronProvider | null => {
     const provider = (window as any).tronWeb;
     return provider && (provider.ready || typeof provider.request === 'function') ? provider : null;
   } catch (error) {
-    console.warn('[WalletUtils] Error accessing Tron provider:', error);
+    logger.warn('Error accessing Tron provider', { error });
     return null;
   }
 };
@@ -89,7 +91,7 @@ export const getBybitProvider = (): BybitProvider | null => {
     const provider = (window as any).bybitWallet;
     return provider && typeof provider.request === 'function' ? provider : null;
   } catch (error) {
-    console.warn('[WalletUtils] Error accessing Bybit provider:', error);
+    logger.warn('Error accessing Bybit provider', { error });
     return null;
   }
 };
@@ -167,7 +169,7 @@ export const connectEthereumWallet = async (): Promise<string[]> => {
     });
     return accounts;
   } catch (error) {
-    console.error('[WalletUtils] Ethereum connection failed:', error);
+    logger.error('Ethereum connection failed', { error });
     throw error;
   }
 };
@@ -182,7 +184,7 @@ export const connectSolanaWallet = async (): Promise<string> => {
     const response = await provider.connect();
     return response.publicKey.toString();
   } catch (error) {
-    console.error('[WalletUtils] Solana connection failed:', error);
+    logger.error('Solana connection failed', { error });
     throw error;
   }
 };
@@ -203,7 +205,7 @@ export const connectTronWallet = async (): Promise<string> => {
     });
     return account[0];
   } catch (error) {
-    console.error('[WalletUtils] Tron connection failed:', error);
+    logger.error('Tron connection failed', { error });
     throw error;
   }
 };
@@ -221,7 +223,7 @@ export const switchEthereumNetwork = async (chainId: string): Promise<void> => {
       params: [{ chainId }]
     });
   } catch (error) {
-    console.error('[WalletUtils] Network switch failed:', error);
+    logger.error('Network switch failed', { error });
     throw error;
   }
 };
@@ -243,7 +245,7 @@ export const addWalletEventListener = (
   })();
 
   if (!provider || typeof provider.on !== 'function') {
-    console.warn(`[WalletUtils] Cannot add event listener for ${walletType}: provider not available`);
+    logger.warn(`Cannot add event listener for ${walletType}: provider not available`);
     return () => {}; // Return no-op cleanup function
   }
 
@@ -257,7 +259,7 @@ export const addWalletEventListener = (
       }
     };
   } catch (error) {
-    console.error(`[WalletUtils] Failed to add event listener for ${walletType}:`, error);
+    logger.error(`Failed to add event listener for ${walletType}`, { error });
     return () => {};
   }
 };

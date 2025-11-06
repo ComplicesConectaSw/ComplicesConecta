@@ -72,11 +72,11 @@ const uploadSecureMedia = async ({ file }: { file: File }) => {
 };
 
 const logSecurityEvent = async (event: string, data: any) => {
-  const { supabase } = require('@/integrations/supabase/client');
+  const { supabase } = await import('@/integrations/supabase/client');
   return supabase.from('security_logs').insert({ event, data });
 };
 
-// Mock Supabase
+// Mock Supabase - debe estar antes del import
 vi.mock('@/integrations/supabase/client', () => ({
   supabase: {
     auth: {
@@ -204,7 +204,7 @@ describe('Media Access Security', () => {
       await logSecurityEvent('test_event', { test: 'data' });
 
       // Verify the log was inserted
-      expect(vi.mocked(require('@/integrations/supabase/client').supabase.from)).toHaveBeenCalledWith('security_logs');
+      expect(vi.mocked(supabase.from)).toHaveBeenCalledWith('security_logs');
     });
   });
 });
@@ -365,27 +365,30 @@ describe('MediaUploader Component', () => {
 
 describe('Security Event Logging', () => {
   it('should log media access events', async () => {
+    const { supabase } = await import('@/integrations/supabase/client');
     await logSecurityEvent('media_accessed', {
       media_id: 'test-id',
       user_id: 'user-id',
       access_level: 'full'
     });
 
-    expect(vi.mocked(require('@/integrations/supabase/client').supabase.from)).toHaveBeenCalledWith('security_logs');
+    expect(vi.mocked(supabase.from)).toHaveBeenCalledWith('security_logs');
   });
 
   it('should log suspicious activities', async () => {
+    const { supabase } = await import('@/integrations/supabase/client');
     await logSecurityEvent('suspicious_activity', {
       activity: 'multiple_download_attempts',
       media_id: 'test-id'
     });
 
-    expect(vi.mocked(require('@/integrations/supabase/client').supabase.from)).toHaveBeenCalledWith('security_logs');
+    expect(vi.mocked(supabase.from)).toHaveBeenCalledWith('security_logs');
   });
 
   it('should handle logging errors gracefully', async () => {
+    const { supabase } = await import('@/integrations/supabase/client');
     // Mock database error
-    vi.mocked(require('@/integrations/supabase/client').supabase.from).mockReturnValueOnce({
+    vi.mocked(supabase.from).mockReturnValueOnce({
       insert: vi.fn(() => Promise.resolve({ error: new Error('DB Error') }))
     });
 

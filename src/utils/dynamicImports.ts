@@ -6,6 +6,8 @@
  * Se cargan dinámicamente solo si están disponibles en node_modules.
  */
 
+import { logger } from '@/lib/logger';
+
 // Tipos para los SDKs
 export interface Web3SDK {
   Web3: any;
@@ -47,7 +49,7 @@ export const loadWeb3SDK = async (): Promise<Web3SDK | null> => {
     // @ts-ignore - Módulo opcional, TypeScript puede quejarse si no está resuelto
     const web3Module = await import('web3').catch(() => null);
     if (!web3Module) {
-      console.warn('[DynamicImports] Web3 SDK no está instalado');
+      logger.warn('Web3 SDK no está instalado');
       return null;
     }
     
@@ -57,10 +59,10 @@ export const loadWeb3SDK = async (): Promise<Web3SDK | null> => {
     };
     
     sdkCache.set('web3', sdk);
-    console.log('[DynamicImports] Web3 SDK cargado exitosamente');
+    logger.info('Web3 SDK cargado exitosamente');
     return sdk;
   } catch (error) {
-    console.warn('[DynamicImports] Web3 SDK no disponible:', error);
+    logger.warn('Web3 SDK no disponible', { error });
     return null;
   }
 };
@@ -79,7 +81,7 @@ export const loadEthersSDK = async (): Promise<EthersSDK | null> => {
     // @ts-ignore - Módulo opcional, TypeScript puede quejarse si no está resuelto
     const ethersModule = await import('ethers').catch(() => null);
     if (!ethersModule) {
-      console.warn('[DynamicImports] Ethers SDK no está instalado');
+      logger.warn('Ethers SDK no está instalado');
       return null;
     }
     
@@ -91,10 +93,10 @@ export const loadEthersSDK = async (): Promise<EthersSDK | null> => {
     };
     
     sdkCache.set('ethers', sdk);
-    console.log('[DynamicImports] Ethers SDK cargado exitosamente');
+    logger.info('Ethers SDK cargado exitosamente');
     return sdk;
   } catch (error) {
-    console.warn('[DynamicImports] Ethers SDK no disponible:', error);
+    logger.warn('Ethers SDK no disponible', { error });
     return null;
   }
 };
@@ -113,7 +115,7 @@ export const loadSolanaSDK = async (): Promise<SolanaSDK | null> => {
     // @ts-ignore - Módulo opcional, TypeScript puede quejarse si no está resuelto
     const solanaModule = await import('@solana/web3.js').catch(() => null);
     if (!solanaModule) {
-      console.warn('[DynamicImports] Solana SDK no está instalado');
+      logger.warn('Solana SDK no está instalado');
       return null;
     }
     
@@ -125,10 +127,10 @@ export const loadSolanaSDK = async (): Promise<SolanaSDK | null> => {
     };
     
     sdkCache.set('solana', sdk);
-    console.log('[DynamicImports] Solana SDK cargado exitosamente');
+    logger.info('Solana SDK cargado exitosamente');
     return sdk;
   } catch (error) {
-    console.warn('[DynamicImports] Solana SDK no disponible:', error);
+    logger.warn('Solana SDK no disponible', { error });
     return null;
   }
 };
@@ -147,7 +149,7 @@ export const loadTronSDK = async (): Promise<TronSDK | null> => {
     // @ts-ignore - Módulo opcional, TypeScript puede quejarse si no está resuelto
     const tronModule = await import('tronweb').catch(() => null);
     if (!tronModule) {
-      console.warn('[DynamicImports] TronWeb SDK no está instalado');
+      logger.warn('TronWeb SDK no está instalado');
       return null;
     }
     
@@ -157,10 +159,10 @@ export const loadTronSDK = async (): Promise<TronSDK | null> => {
     };
     
     sdkCache.set('tron', sdk);
-    console.log('[DynamicImports] Tron SDK cargado exitosamente');
+    logger.info('Tron SDK cargado exitosamente');
     return sdk;
   } catch (error) {
-    console.warn('[DynamicImports] Tron SDK no disponible:', error);
+    logger.warn('Tron SDK no disponible', { error });
     return null;
   }
 };
@@ -175,10 +177,10 @@ export const loadHuggingFaceSDK = async () => {
 
   try {
     // const hfModule = await import('@huggingface/transformers'); // Dependencia eliminada
-    console.warn('[DynamicImports] Hugging Face SDK no está disponible - dependencia eliminada');
+    logger.warn('Hugging Face SDK no está disponible - dependencia eliminada');
     return null;
   } catch (error) {
-    console.warn('[DynamicImports] Error cargando Hugging Face SDK:', error);
+    logger.warn('Error cargando Hugging Face SDK', { error });
     return null;
   }
 };
@@ -213,7 +215,7 @@ export const preloadCriticalSDKs = async () => {
  */
 export const clearSDKCache = () => {
   sdkCache.clear();
-  console.log('[DynamicImports] Cache de SDKs limpiado');
+  logger.info('Cache de SDKs limpiado');
 };
 
 /**

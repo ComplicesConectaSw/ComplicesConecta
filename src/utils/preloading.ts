@@ -1,5 +1,7 @@
 // Utilidades para preloading de rutas críticas - ComplicesConecta v2.9.0
 
+import { logger } from '@/lib/logger';
+
 export interface PreloadOptions {
   priority?: 'high' | 'low';
   as?: 'script' | 'style' | 'font' | 'image' | 'fetch';
@@ -59,7 +61,7 @@ export const preloadResource = (href: string, options: PreloadOptions = {}): Pro
 export const preloadResources = async (resources: Array<{ href: string } & PreloadOptions>): Promise<void> => {
   const promises = resources.map(({ href, ...options }) => 
     preloadResource(href, options).catch(error => {
-      console.warn(`Failed to preload ${href}:`, error);
+      logger.warn(`Failed to preload ${href}`, { error });
     })
   );
   
@@ -193,9 +195,9 @@ export const initializeCriticalPreloading = async (): Promise<void> => {
     // DNS prefetch para APIs externas
     dnsPrefetch('//api.complicesconecta.app');
     
-    console.log('✅ Critical preloading initialized');
+    logger.info('Critical preloading initialized');
   } catch (error) {
-    console.error('❌ Error initializing critical preloading:', error);
+    logger.error('Error initializing critical preloading', { error });
   }
 };
 
