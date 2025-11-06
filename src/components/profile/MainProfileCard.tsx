@@ -140,7 +140,7 @@ const MainProfileCardComponent = ({
               
               // Intentar con imagen de respaldo
               const fallbackImages = [
-                'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=500&h=700&fit=crop&crop=face&q=80&auto=format',
+                'https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=500&h=700&fit=crop&crop=face&q=80&auto=format',
                 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=500&h=700&fit=crop&crop=face&q=80&auto=format',
                 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=500&h=700&fit=crop&crop=face&q=80&auto=format'
               ];

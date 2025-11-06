@@ -34,40 +34,54 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [actualTheme, setActualTheme] = useState<'light' | 'dark'>('light');
 
   useEffect(() => {
+    // Flag para evitar recursión infinita
+    let isUpdating = false;
+    
     const updateTheme = () => {
-      let resolvedTheme: 'light' | 'dark';
-
-      if (theme === 'system') {
-        resolvedTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      } else {
-        resolvedTheme = theme;
+      // CRÍTICO: Prevenir recursión infinita
+      if (isUpdating) {
+        return;
       }
-
-      setActualTheme(resolvedTheme);
       
-      // Apply theme to document - forzar actualización inmediata
-      const root = document.documentElement;
-      root.classList.remove('light', 'dark');
-      root.classList.add(resolvedTheme);
+      isUpdating = true;
       
-      // Actualizar también en localStorage para persistencia inmediata
       try {
-        localStorage.setItem('theme', theme);
-      } catch (e) {
-        logger.warn('No se pudo guardar tema en localStorage:', { error: e instanceof Error ? e.message : String(e) });
-      }
-      
-      // Update meta theme-color for mobile browsers
-      const metaThemeColor = document.querySelector('meta[name="theme-color"]');
-      if (metaThemeColor) {
-        metaThemeColor.setAttribute('content', resolvedTheme === 'dark' ? '#1a1a1a' : '#ffffff');
-      }
+        let resolvedTheme: 'light' | 'dark';
 
-      // Forzar re-render de componentes que dependen del tema
-      const event = new CustomEvent('theme-change', { detail: { theme: resolvedTheme } });
-      window.dispatchEvent(event);
+        if (theme === 'system') {
+          resolvedTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        } else {
+          resolvedTheme = theme;
+        }
 
-      logger.info('🎨 Theme updated:', { theme, resolvedTheme });
+        setActualTheme(resolvedTheme);
+        
+        // Apply theme to document - forzar actualización inmediata
+        const root = document.documentElement;
+        root.classList.remove('light', 'dark');
+        root.classList.add(resolvedTheme);
+        
+        // Actualizar también en localStorage para persistencia inmediata
+        try {
+          localStorage.setItem('theme', theme);
+        } catch (e) {
+          logger.warn('No se pudo guardar tema en localStorage:', { error: e instanceof Error ? e.message : String(e) });
+        }
+        
+        // Update meta theme-color for mobile browsers
+        const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+        if (metaThemeColor) {
+          metaThemeColor.setAttribute('content', resolvedTheme === 'dark' ? '#1a1a1a' : '#ffffff');
+        }
+
+        // CRÍTICO: NO disparar evento theme-change aquí para evitar recursión
+        // El evento theme-change solo debe dispararse desde fuera del componente
+        // Si otros componentes necesitan saber del cambio, pueden usar el contexto
+
+        logger.info('🎨 Theme updated:', { theme, resolvedTheme });
+      } finally {
+        isUpdating = false;
+      }
     };
 
     // Ejecutar inmediatamente
@@ -76,20 +90,18 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     // Listen for system theme changes
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleChange = () => {
-      if (theme === 'system') {
+      if (theme === 'system' && !isUpdating) {
         updateTheme();
       }
     };
 
     mediaQuery.addEventListener('change', handleChange);
     
-    // También escuchar eventos personalizados de cambio de tema
-    const handleThemeChange = () => updateTheme();
-    window.addEventListener('theme-change', handleThemeChange);
+    // ELIMINADO: Listener de theme-change que causaba recursión infinita
+    // Los componentes deben usar el contexto useTheme() en lugar de escuchar eventos
     
     return () => {
       mediaQuery.removeEventListener('change', handleChange);
-      window.removeEventListener('theme-change', handleThemeChange);
     };
   }, [theme]);
 
