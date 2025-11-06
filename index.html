@@ -931,6 +931,15 @@
         var filename = String(e.filename || '').toLowerCase();
         var stack = String(e.error && e.error.stack || '').toLowerCase();
         
+        // IGNORAR errores de carga de módulos de Vite (son temporales durante la carga inicial)
+        var isViteModuleError = filename.indexOf('@vite/client') !== -1 ||
+                                filename.indexOf('@vite/') !== -1 ||
+                                filename.indexOf('@react-refresh') !== -1 ||
+                                filename.indexOf('html-proxy') !== -1 ||
+                                filename.indexOf('?html-proxy') !== -1 ||
+                                msg.indexOf('loading failed for the module') !== -1 ||
+                                msg.indexOf('failed to load module') !== -1;
+        
         // IGNORAR errores con message undefined que vienen de archivos de wallet
         var hasUndefinedMessage = !e.message || e.message === 'undefined' || e.message === '';
         var isWalletFile = filename.indexOf('inpage.js') !== -1 || filename.indexOf('evmask.js') !== -1 ||
@@ -950,7 +959,8 @@
                            msg.indexOf('cannot assign to read only') !== -1 ||
                            (hasUndefinedMessage && isWalletFile); // IGNORAR errores undefined de wallet
         
-        if (!isWalletError) {
+        // IGNORAR errores de Vite y wallet
+        if (!isViteModuleError && !isWalletError) {
           // Loggear error real para diagnóstico
           console.error('🚨 Error global capturado:', {
             message: e.message,
