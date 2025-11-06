@@ -331,21 +331,21 @@ if (-not $SkipSupabase) {
             $supabaseFile = Get-Item $supabaseTypesPath
             $supabaseContent = Get-Content $supabaseTypesPath -Raw
             
-            # Buscar todas las definiciones de tablas dentro del bloque Tables
-            # Patrón: nombre_tabla: { seguido de Row:
-            $tableRegex = [regex]::new("public:\s*\{[\s\S]*?Tables:\s*\{([\s\S]*?)\}\s*Views:", [System.Text.RegularExpressions.RegexOptions]::Singleline)
+            # Buscar todas las definiciones de tablas dentro del bloque Tables de public
+            # Patrón: public: { Tables: { nombre_tabla: { Row:
+            $tableRegex = [regex]::new("public:\s*\{[\s\S]*?Tables:\s*\{([\s\S]*?)\}\s*(Views|Functions):", [System.Text.RegularExpressions.RegexOptions]::Singleline)
             $tablesMatch = $tableRegex.Match($supabaseContent)
             $tables = @()
             
             if ($tablesMatch.Success) {
                 $tablesBlock = $tablesMatch.Groups[1].Value
-                # Buscar todas las definiciones de tabla: nombre: {
-                $tableNameRegex = [regex]::new("^\s+(\w+):\s*\{", [System.Text.RegularExpressions.RegexOptions]::Multiline)
+                # Buscar todas las definiciones de tabla: nombre: { seguido de Row:
+                $tableNameRegex = [regex]::new("^\s+(\w+):\s*\{[\s\S]*?Row:", [System.Text.RegularExpressions.RegexOptions]::Multiline)
                 $tableNameMatches = $tableNameRegex.Matches($tablesBlock)
                 foreach ($match in $tableNameMatches) {
                     $tableName = $match.Groups[1].Value
                     # Excluir palabras clave como "Tables", "Views", "Functions", etc.
-                    if ($tableName -notmatch "^(Tables|Views|Functions|Enums|CompositeTypes|Row|Insert|Update|Relationships)$") {
+                    if ($tableName -notmatch "^(Tables|Views|Functions|Enums|CompositeTypes|Row|Insert|Update|Relationships)$" -and $tableName -notmatch "^_") {
                         $tables += $tableName
                     }
                 }
@@ -364,20 +364,20 @@ if (-not $SkipSupabase) {
             $generatedFile = Get-Item $supabaseGeneratedPath
             $generatedContent = Get-Content $supabaseGeneratedPath -Raw
             
-            # Buscar todas las definiciones de tablas dentro del bloque Tables
-            $tableRegex = [regex]::new("public:\s*\{[\s\S]*?Tables:\s*\{([\s\S]*?)\}\s*Views:", [System.Text.RegularExpressions.RegexOptions]::Singleline)
+            # Buscar todas las definiciones de tablas dentro del bloque Tables de public
+            $tableRegex = [regex]::new("public:\s*\{[\s\S]*?Tables:\s*\{([\s\S]*?)\}\s*(Views|Functions):", [System.Text.RegularExpressions.RegexOptions]::Singleline)
             $tablesMatch = $tableRegex.Match($generatedContent)
             $tables = @()
             
             if ($tablesMatch.Success) {
                 $tablesBlock = $tablesMatch.Groups[1].Value
-                # Buscar todas las definiciones de tabla: nombre: {
-                $tableNameRegex = [regex]::new("^\s+(\w+):\s*\{", [System.Text.RegularExpressions.RegexOptions]::Multiline)
+                # Buscar todas las definiciones de tabla: nombre: { seguido de Row:
+                $tableNameRegex = [regex]::new("^\s+(\w+):\s*\{[\s\S]*?Row:", [System.Text.RegularExpressions.RegexOptions]::Multiline)
                 $tableNameMatches = $tableNameRegex.Matches($tablesBlock)
                 foreach ($match in $tableNameMatches) {
                     $tableName = $match.Groups[1].Value
                     # Excluir palabras clave como "Tables", "Views", "Functions", etc.
-                    if ($tableName -notmatch "^(Tables|Views|Functions|Enums|CompositeTypes|Row|Insert|Update|Relationships)$") {
+                    if ($tableName -notmatch "^(Tables|Views|Functions|Enums|CompositeTypes|Row|Insert|Update|Relationships)$" -and $tableName -notmatch "^_") {
                         $tables += $tableName
                     }
                 }
@@ -400,18 +400,73 @@ if (-not $SkipSupabase) {
         
         if ($supabaseExists) {
             Write-ColorOutput "   ✅ supabase.ts encontrado ($($supabaseInfo.tableCount) tablas)" "Green"
+            
+            $needsRegeneration = $false
+            $regenerationReason = ""
+            
             if ($generatedExists) {
                 if ($generatedInfo.modified -gt $supabaseInfo.modified) {
-                    Write-ColorOutput "   ⚠️  supabase-generated.ts es más reciente" "Yellow"
-                    Write-ColorOutput "      💡 Ejecutar: .\scripts\regenerate-supabase-types.ps1 -UpdateMain" "Yellow"
+                    $needsRegeneration = $true
+                    $regenerationReason = "supabase-generated.ts es más reciente"
                 }
             }
             
             # Verificar si hay menos de 100 tablas (probablemente desactualizado)
             if ($supabaseInfo.tableCount -lt 100) {
-                Write-ColorOutput "   ⚠️  Pocas tablas detectadas ($($supabaseInfo.tableCount))" "Yellow"
-                Write-ColorOutput "      💡 Los tipos pueden estar desactualizados" "Yellow"
-                Write-ColorOutput "      💡 Ejecutar: .\scripts\regenerate-supabase-types.ps1 -UpdateMain" "Yellow"
+                $needsRegeneration = $true
+                $regenerationReason = "Pocas tablas detectadas ($($supabaseInfo.tableCount))"
+            }
+            
+            # Ejecutar regeneración automática si es necesario
+            if ($needsRegeneration) {
+                Write-ColorOutput "   ⚠️  $regenerationReason" "Yellow"
+                Write-ColorOutput "   🔄 Ejecutando regeneración automática de tipos..." "Cyan"
+                
+                try {
+                    $regenerateScript = "scripts\regenerate-supabase-types.ps1"
+                    if (Test-Path $regenerateScript) {
+                        $regenerateOutput = & pwsh -ExecutionPolicy Bypass -File $regenerateScript -UpdateMain 2>&1 | Out-String
+                        
+                        if ($LASTEXITCODE -eq 0) {
+                            Write-ColorOutput "   ✅ Tipos regenerados exitosamente" "Green"
+                            
+                            # Recargar información después de regenerar
+                            if (Test-Path $supabaseTypesPath) {
+                                $supabaseFile = Get-Item $supabaseTypesPath
+                                $supabaseContent = Get-Content $supabaseTypesPath -Raw
+                                
+                                $tableRegex = [regex]::new("public:\s*\{[\s\S]*?Tables:\s*\{([\s\S]*?)\}\s*(Views|Functions):", [System.Text.RegularExpressions.RegexOptions]::Singleline)
+                                $tablesMatch = $tableRegex.Match($supabaseContent)
+                                $tables = @()
+                                
+                                if ($tablesMatch.Success) {
+                                    $tablesBlock = $tablesMatch.Groups[1].Value
+                                    $tableNameRegex = [regex]::new("^\s+(\w+):\s*\{[\s\S]*?Row:", [System.Text.RegularExpressions.RegexOptions]::Multiline)
+                                    $tableNameMatches = $tableNameRegex.Matches($tablesBlock)
+                                    foreach ($match in $tableNameMatches) {
+                                        $tableName = $match.Groups[1].Value
+                                        if ($tableName -notmatch "^(Tables|Views|Functions|Enums|CompositeTypes|Row|Insert|Update|Relationships)$" -and $tableName -notmatch "^_") {
+                                            $tables += $tableName
+                                        }
+                                    }
+                                }
+                                
+                                $supabaseInfo.tableCount = $tables.Count
+                                Write-ColorOutput "   📊 Tablas detectadas después de regeneración: $($supabaseInfo.tableCount)" "Cyan"
+                            }
+                        } else {
+                            Write-ColorOutput "   ❌ Error regenerando tipos:" "Red"
+                            Write-ColorOutput "      $regenerateOutput" "Yellow"
+                            Write-ColorOutput "      Continuando con validación..." "Yellow"
+                        }
+                    } else {
+                        Write-ColorOutput "   ⚠️  Script de regeneración no encontrado: $regenerateScript" "Yellow"
+                        Write-ColorOutput "      💡 Ejecutar manualmente: .\scripts\regenerate-supabase-types.ps1 -UpdateMain" "Yellow"
+                    }
+                } catch {
+                    Write-ColorOutput "   ❌ Error ejecutando regeneración: $($_.Exception.Message)" "Red"
+                    Write-ColorOutput "      Continuando con validación..." "Yellow"
+                }
             }
             
             $script:Results.summary.passedChecks++
@@ -544,24 +599,42 @@ if (-not $SkipNullChecks) {
                             }
                         }
                         
-                        # También verificar si está dentro de un bloque try-catch que maneja errores
+                        # También verificar si está dentro de un bloque try-catch que tiene null check al inicio
                         if (-not $hasNullCheckInContext) {
                             # Buscar bloque try anterior
-                            $tryFound = $false
-                            for ($j = [Math]::Max(0, $i - 30); $j -lt $i; $j++) {
+                            $tryStart = -1
+                            for ($j = [Math]::Max(0, $i - 50); $j -lt $i; $j++) {
                                 if ($lines[$j] -match "^\s*try\s*\{") {
-                                    $tryFound = $true
+                                    $tryStart = $j
                                     break
                                 }
                             }
                             
-                            # Si está en un try-catch, considerar que tiene manejo de errores
-                            if ($tryFound) {
-                                # Buscar catch después
-                                for ($j = $i; $j -lt [Math]::Min($lines.Count, $i + 30); $j++) {
-                                    if ($lines[$j] -match "^\s*catch\s*\(|^\s*\}\s*catch") {
-                                        $hasNullCheckInContext = $true
-                                        break
+                            # Si está en un try, buscar null check en las primeras líneas del try
+                            if ($tryStart -ge 0) {
+                                # Buscar null check en las primeras 15 líneas del try
+                                for ($j = $tryStart + 1; $j -lt [Math]::Min($tryStart + 16, $i); $j++) {
+                                    $tryLine = $lines[$j]
+                                    if ($tryLine -match "(if\s*\([^)]*!supabase|if\s*\([^)]*supabase\s*===?\s*null|if\s*\([^)]*supabase\s*!==?\s*null)" -and
+                                        $tryLine -notmatch "^\s*//") {
+                                        # Verificar que haya return/throw después
+                                        for ($k = $j + 1; $k -lt [Math]::Min($j + 6, $i); $k++) {
+                                            if ($lines[$k] -match "return|throw|continue") {
+                                                $hasNullCheckInContext = $true
+                                                break
+                                            }
+                                        }
+                                        if ($hasNullCheckInContext) { break }
+                                    }
+                                }
+                                
+                                # Si no se encontró null check pero hay catch, considerar protegido
+                                if (-not $hasNullCheckInContext) {
+                                    for ($j = $i; $j -lt [Math]::Min($lines.Count, $i + 30); $j++) {
+                                        if ($lines[$j] -match "^\s*catch\s*\(|^\s*\}\s*catch") {
+                                            $hasNullCheckInContext = $true
+                                            break
+                                        }
                                     }
                                 }
                             }
@@ -620,19 +693,19 @@ if (-not $SkipTableValidation) {
         if (Test-Path $supabaseTypesPath) {
             $supabaseContent = Get-Content $supabaseTypesPath -Raw
             
-            # Buscar todas las definiciones de tablas dentro del bloque Tables
-            $tableRegex = [regex]::new("public:\s*\{[\s\S]*?Tables:\s*\{([\s\S]*?)\}\s*Views:", [System.Text.RegularExpressions.RegexOptions]::Singleline)
+            # Buscar todas las definiciones de tablas dentro del bloque Tables de public
+            $tableRegex = [regex]::new("public:\s*\{[\s\S]*?Tables:\s*\{([\s\S]*?)\}\s*(Views|Functions):", [System.Text.RegularExpressions.RegexOptions]::Singleline)
             $tablesMatch = $tableRegex.Match($supabaseContent)
             
             if ($tablesMatch.Success) {
                 $tablesBlock = $tablesMatch.Groups[1].Value
-                # Buscar todas las definiciones de tabla: nombre: {
-                $tableNameRegex = [regex]::new("^\s+(\w+):\s*\{", [System.Text.RegularExpressions.RegexOptions]::Multiline)
+                # Buscar todas las definiciones de tabla: nombre: { seguido de Row:
+                $tableNameRegex = [regex]::new("^\s+(\w+):\s*\{[\s\S]*?Row:", [System.Text.RegularExpressions.RegexOptions]::Multiline)
                 $tableNameMatches = $tableNameRegex.Matches($tablesBlock)
                 foreach ($match in $tableNameMatches) {
                     $tableName = $match.Groups[1].Value
                     # Excluir palabras clave como "Tables", "Views", "Functions", etc.
-                    if ($tableName -notmatch "^(Tables|Views|Functions|Enums|CompositeTypes|Row|Insert|Update|Relationships)$") {
+                    if ($tableName -notmatch "^(Tables|Views|Functions|Enums|CompositeTypes|Row|Insert|Update|Relationships)$" -and $tableName -notmatch "^_") {
                         $tablesInTypes += $tableName
                     }
                 }
@@ -683,8 +756,8 @@ if (-not $SkipTableValidation) {
         if (Test-Path $supabaseTypesPath) {
             $supabaseContent = Get-Content $supabaseTypesPath -Raw
             
-            # Buscar vistas dentro del bloque Views
-            $viewsRegex = [regex]::new("public:\s*\{[\s\S]*?Views:\s*\{([\s\S]*?)\}\s*Functions:", [System.Text.RegularExpressions.RegexOptions]::Singleline)
+            # Buscar vistas dentro del bloque Views de public
+            $viewsRegex = [regex]::new("public:\s*\{[\s\S]*?Views:\s*\{([\s\S]*?)\}\s*(Functions|Enums):", [System.Text.RegularExpressions.RegexOptions]::Singleline)
             $viewsMatch = $viewsRegex.Match($supabaseContent)
             
             if ($viewsMatch.Success) {
@@ -693,7 +766,7 @@ if (-not $SkipTableValidation) {
                 $viewNameMatches = $viewNameRegex.Matches($viewsBlock)
                 foreach ($match in $viewNameMatches) {
                     $viewName = $match.Groups[1].Value
-                    if ($viewName -notmatch "^(Views|Functions|Enums|CompositeTypes|Row|Insert|Update|Relationships)$") {
+                    if ($viewName -notmatch "^(Views|Functions|Enums|CompositeTypes|Row|Insert|Update|Relationships)$" -and $viewName -notmatch "^_") {
                         $viewsInTypes += $viewName
                     }
                 }
