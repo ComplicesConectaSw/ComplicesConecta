@@ -255,7 +255,7 @@ class ConsentVerificationService {
     messages: Array<{ content: string; sender_id: string; created_at: string }>,
     senderId: string,
     userId1: string,
-    userId2: string
+    _userId2: string
   ): Promise<ConsentScore> {
     if (!this.openai) {
       throw new Error('OpenAI no está disponible');
@@ -321,7 +321,7 @@ Responde SOLO con un JSON válido en este formato exacto:
    */
   private analyzeWithPatterns(
     messages: Array<{ content: string; sender_id: string }>,
-    senderId: string
+    _senderId: string
   ): ConsentScore {
     const text = messages.map(m => m.content.toLowerCase()).join(' ');
 

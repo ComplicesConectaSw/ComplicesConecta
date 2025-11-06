@@ -65,9 +65,6 @@ export function isTikTokAvailable(): boolean {
     return false;
   }
 
-  // Verificar si estamos en móvil (TikTok funciona mejor en móvil)
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  
   // TikTok siempre está disponible vía web
   return true;
 }

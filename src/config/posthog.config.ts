@@ -43,7 +43,7 @@ export async function initPostHog(): Promise<void> {
           autocapture: true,
           capture_pageview: true,
           capture_pageleave: true,
-          loaded: (ph) => {
+          loaded: (_ph) => {
             logger.info('✅ PostHog inicializado correctamente');
             
             // Identificar usuario si está autenticado

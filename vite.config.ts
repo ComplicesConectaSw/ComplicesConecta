@@ -105,7 +105,7 @@ export default defineConfig(({ mode }) => {
         format: { comments: false },
         mangle: { safari10: true },
       },
-      chunkSizeWarningLimit: 500,
+      chunkSizeWarningLimit: 400,
       reportCompressedSize: true,
       assetsInlineLimit: 4096,
     },

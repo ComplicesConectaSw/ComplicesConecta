@@ -35,3 +35,11 @@ IMPORT_AUDIT_REPORT.md
 IMPORT_CORRECTIONS_REPORT.md
 *.md
 !README.md
+
+# Ignore Android build files (too large for Vercel)
+android/
+*.apk
+*.aab
+sentry-wizard.exe
+dist/app-release.apk
+public/app-release.apk

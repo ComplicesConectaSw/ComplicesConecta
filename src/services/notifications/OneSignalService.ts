@@ -161,7 +161,7 @@ class OneSignalService {
     userId: string,
     title: string,
     message: string,
-    data?: Record<string, unknown>
+    _data?: Record<string, unknown>
   ): Promise<boolean> {
     try {
       if (!supabase) {

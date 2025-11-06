@@ -9,7 +9,6 @@
 
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
-import { tokenService } from '@/services/TokenService';
 import { polygonStubService } from './PolygonStubService';
 
 export interface NFTVerification {

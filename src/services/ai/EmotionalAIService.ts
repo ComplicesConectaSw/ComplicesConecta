@@ -86,7 +86,7 @@ class EmotionalAIService {
   private async analyzeWithGPT4(
     messages: Array<{ content: string; sender_id: string; created_at: string }>,
     userId1: string,
-    userId2: string
+    _userId2: string
   ): Promise<EmotionalAnalysis> {
     if (!this.openai) {
       throw new Error('OpenAI no está disponible');
