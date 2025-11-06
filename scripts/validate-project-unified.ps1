@@ -339,11 +339,21 @@ if (-not $SkipSupabase) {
             if ($generatedExists) {
                 if ($generatedInfo.modified -gt $supabaseInfo.modified) {
                     Write-ColorOutput "   ⚠️  supabase-generated.ts es más reciente" "Yellow"
+                    Write-ColorOutput "      💡 Ejecutar: .\scripts\regenerate-supabase-types.ps1 -UpdateMain" "Yellow"
                 }
             }
+            
+            # Verificar si hay menos de 100 tablas (probablemente desactualizado)
+            if ($supabaseInfo.tableCount -lt 100) {
+                Write-ColorOutput "   ⚠️  Pocas tablas detectadas ($($supabaseInfo.tableCount))" "Yellow"
+                Write-ColorOutput "      💡 Los tipos pueden estar desactualizados" "Yellow"
+                Write-ColorOutput "      💡 Ejecutar: .\scripts\regenerate-supabase-types.ps1 -UpdateMain" "Yellow"
+            }
+            
             $script:Results.summary.passedChecks++
         } else {
             Write-ColorOutput "   ❌ supabase.ts no encontrado" "Red"
+            Write-ColorOutput "      💡 Ejecutar: .\scripts\regenerate-supabase-types.ps1 -UpdateMain" "Yellow"
             $script:Results.summary.failedChecks++
         }
         $script:Results.summary.totalChecks++
