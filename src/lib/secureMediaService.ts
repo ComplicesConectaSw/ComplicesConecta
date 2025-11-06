@@ -50,12 +50,20 @@ export class SecureMediaService {
         return null;
       }
       
-      const { data, error } = await supabase.storage
-        .from('media')
-        .createSignedUrl(mediaPath, this.SIGNED_URL_EXPIRY);
-
-      if (error || !data) {
-        logger.error('Error generando URL firmada:', { error: error?.message, mediaPath });
+      let signedUrl: string | null = null;
+      try {
+        const { data, error } = await supabase.storage
+          .from('media')
+          .createSignedUrl(mediaPath, this.SIGNED_URL_EXPIRY);
+        
+        if (error || !data) {
+          logger.error('Error generando URL firmada:', { error: error?.message, mediaPath });
+          return null;
+        }
+        
+        signedUrl = data.signedUrl;
+      } catch (error) {
+        logger.error('Excepción al generar URL firmada:', { error, mediaPath });
         return null;
       }
 

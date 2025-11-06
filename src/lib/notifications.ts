@@ -576,10 +576,14 @@ export class NotificationService {
   static unsubscribeFromNotifications(userId: string): void {
     const channel = this.realtimeChannels.get(userId);
     if (channel && supabase) {
-      supabase.removeChannel(channel);
-      this.realtimeChannels.delete(userId);
-      this.notificationHandlers.delete(userId);
-      logger.info('❌ Suscripción a notificaciones cancelada', { userId });
+      try {
+        supabase.removeChannel(channel);
+        this.realtimeChannels.delete(userId);
+        this.notificationHandlers.delete(userId);
+        logger.info('❌ Suscripción a notificaciones cancelada', { userId });
+      } catch (error) {
+        logger.error('Error al cancelar suscripción:', { error, userId });
+      }
     }
   }
 

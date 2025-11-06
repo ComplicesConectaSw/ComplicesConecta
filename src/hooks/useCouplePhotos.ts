@@ -104,6 +104,10 @@ export const useCouplePhotos = (profileId?: string): UseCouplePhotosReturn => {
       const { data: { publicUrl } } = supabase.storage
         .from('profile-images')
         .getPublicUrl(fileName);
+      
+      if (!publicUrl) {
+        throw new Error('No se pudo obtener la URL pública de la imagen');
+      }
 
       // Verificar si es la primera foto de este partner (será principal por defecto)
       const existingPhotos = photos.filter(p => p.partner === partner);

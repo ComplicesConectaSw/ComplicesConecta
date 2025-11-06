@@ -138,7 +138,7 @@ export async function uploadImage(
         context: 'image-metadata-save'
       });
       // Limpiar archivo subido si falla la BD
-      if (supabase) {
+      if (supabase && supabase.storage) {
         await supabase.storage.from(bucket).remove([fileName]);
       }
       return { success: false, error: 'Error al guardar información de la imagen' };

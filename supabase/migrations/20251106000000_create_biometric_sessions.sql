@@ -4,7 +4,7 @@
 
 CREATE TABLE IF NOT EXISTS public.biometric_sessions (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+    user_id UUID NOT NULL,
     session_id TEXT NOT NULL UNIQUE,
     session_type TEXT NOT NULL, -- 'fingerprint', 'face', 'biometric'
     device_id TEXT,
@@ -15,11 +15,21 @@ CREATE TABLE IF NOT EXISTS public.biometric_sessions (
     is_active BOOLEAN DEFAULT true,
     expires_at TIMESTAMPTZ NOT NULL,
     last_used_at TIMESTAMPTZ,
-    created_at TIMESTAMPTZ DEFAULT NOW(),
-    
-    CONSTRAINT biometric_sessions_user_id_fkey FOREIGN KEY (user_id) 
-        REFERENCES public.profiles(id) ON DELETE CASCADE
+    created_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- Agregar foreign key constraint solo si no existe
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_constraint 
+        WHERE conname = 'biometric_sessions_user_id_fkey'
+    ) THEN
+        ALTER TABLE public.biometric_sessions
+        ADD CONSTRAINT biometric_sessions_user_id_fkey 
+        FOREIGN KEY (user_id) REFERENCES public.profiles(id) ON DELETE CASCADE;
+    END IF;
+END $$;
 
 -- Índices para mejorar performance
 CREATE INDEX IF NOT EXISTS idx_biometric_sessions_user_id ON public.biometric_sessions(user_id);
@@ -31,26 +41,57 @@ CREATE INDEX IF NOT EXISTS idx_biometric_sessions_expires_at ON public.biometric
 ALTER TABLE public.biometric_sessions ENABLE ROW LEVEL SECURITY;
 
 -- Política: Los usuarios solo pueden ver/editar sus propias sesiones biométricas
-CREATE POLICY "Users can view their own biometric sessions"
-    ON public.biometric_sessions
-    FOR SELECT
-    USING (auth.uid() = user_id);
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies 
+        WHERE schemaname = 'public' 
+        AND tablename = 'biometric_sessions' 
+        AND policyname = 'Users can view their own biometric sessions'
+    ) THEN
+        CREATE POLICY "Users can view their own biometric sessions"
+            ON public.biometric_sessions
+            FOR SELECT
+            USING (auth.uid() = user_id);
+    END IF;
 
-CREATE POLICY "Users can insert their own biometric sessions"
-    ON public.biometric_sessions
-    FOR INSERT
-    WITH CHECK (auth.uid() = user_id);
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies 
+        WHERE schemaname = 'public' 
+        AND tablename = 'biometric_sessions' 
+        AND policyname = 'Users can insert their own biometric sessions'
+    ) THEN
+        CREATE POLICY "Users can insert their own biometric sessions"
+            ON public.biometric_sessions
+            FOR INSERT
+            WITH CHECK (auth.uid() = user_id);
+    END IF;
 
-CREATE POLICY "Users can update their own biometric sessions"
-    ON public.biometric_sessions
-    FOR UPDATE
-    USING (auth.uid() = user_id)
-    WITH CHECK (auth.uid() = user_id);
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies 
+        WHERE schemaname = 'public' 
+        AND tablename = 'biometric_sessions' 
+        AND policyname = 'Users can update their own biometric sessions'
+    ) THEN
+        CREATE POLICY "Users can update their own biometric sessions"
+            ON public.biometric_sessions
+            FOR UPDATE
+            USING (auth.uid() = user_id)
+            WITH CHECK (auth.uid() = user_id);
+    END IF;
 
-CREATE POLICY "Users can delete their own biometric sessions"
-    ON public.biometric_sessions
-    FOR DELETE
-    USING (auth.uid() = user_id);
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies 
+        WHERE schemaname = 'public' 
+        AND tablename = 'biometric_sessions' 
+        AND policyname = 'Users can delete their own biometric sessions'
+    ) THEN
+        CREATE POLICY "Users can delete their own biometric sessions"
+            ON public.biometric_sessions
+            FOR DELETE
+            USING (auth.uid() = user_id);
+    END IF;
+END $$;
 
 -- Comentarios para documentación
 COMMENT ON TABLE public.biometric_sessions IS 'Sesiones de autenticación biométrica usando WebAuthn API';
