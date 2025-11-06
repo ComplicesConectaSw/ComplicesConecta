@@ -7,11 +7,16 @@ import { sentryVitePlugin } from "@sentry/vite-plugin";
 export default defineConfig({
   plugins: [
     react(),
-    // Sentry plugin para source maps (solo en producción)
-    process.env.NODE_ENV === 'production' && sentryVitePlugin({
+    // Sentry plugin para source maps (solo en producción y con configuración completa)
+    process.env.NODE_ENV === 'production' && 
+    process.env.SENTRY_ORG && 
+    process.env.SENTRY_PROJECT && 
+    process.env.SENTRY_AUTH_TOKEN && 
+    sentryVitePlugin({
       org: process.env.SENTRY_ORG,
       project: process.env.SENTRY_PROJECT,
       authToken: process.env.SENTRY_AUTH_TOKEN,
+      telemetry: false, // Deshabilitar telemetría para evitar warnings
       sourcemaps: {
         assets: './dist/**',
       },
