@@ -36,6 +36,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Flag para evitar recursión infinita
     let isUpdating = false;
+    let lastResolvedTheme: 'light' | 'dark' | null = null;
     
     const updateTheme = () => {
       // CRÍTICO: Prevenir recursión infinita
@@ -54,6 +55,14 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
           resolvedTheme = theme;
         }
 
+        // CRÍTICO: Solo actualizar si el tema realmente cambió
+        if (lastResolvedTheme === resolvedTheme) {
+          isUpdating = false;
+          return;
+        }
+        
+        lastResolvedTheme = resolvedTheme;
+
         setActualTheme(resolvedTheme);
         
         // Apply theme to document - forzar actualización inmediata
@@ -61,12 +70,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         root.classList.remove('light', 'dark');
         root.classList.add(resolvedTheme);
         
-        // Actualizar también en localStorage para persistencia inmediata
-        try {
-          localStorage.setItem('theme', theme);
-        } catch (e) {
-          logger.warn('No se pudo guardar tema en localStorage:', { error: e instanceof Error ? e.message : String(e) });
-        }
+        // CRÍTICO: NO guardar en localStorage aquí - usePersistedState ya lo hace
+        // Guardar aquí causa que usePersistedState detecte el cambio y dispare el useEffect nuevamente
+        // Solo guardar si realmente es necesario (cuando el usuario cambia el tema manualmente)
         
         // Update meta theme-color for mobile browsers
         const metaThemeColor = document.querySelector('meta[name="theme-color"]');
@@ -78,7 +84,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         // El evento theme-change solo debe dispararse desde fuera del componente
         // Si otros componentes necesitan saber del cambio, pueden usar el contexto
 
-        logger.info('🎨 Theme updated:', { theme, resolvedTheme });
+        // CRÍTICO: NO usar logger.info aquí - puede causar efectos secundarios
+        // Solo loggear en desarrollo y de forma condicional
+        if (process.env.NODE_ENV === 'development') {
+          console.debug('🎨 Theme updated:', { theme, resolvedTheme });
+        }
       } finally {
         isUpdating = false;
       }
