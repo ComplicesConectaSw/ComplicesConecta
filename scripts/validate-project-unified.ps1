@@ -646,11 +646,46 @@ if (-not $SkipNullChecks) {
                             }
                         }
                         
+                        # Verificar si está en una función de cleanup (return () => { if (supabase) ... })
                         if (-not $hasNullCheckInContext) {
-                            $filesWithoutNullChecks += @{
-                                file = $file.FullName
-                                line = $i + 1
-                                content = $line.Trim()
+                            # Buscar función de cleanup anterior
+                            for ($j = [Math]::Max(0, $i - 20); $j -lt $i; $j++) {
+                                $prevLine = $lines[$j]
+                                # Detectar patrón: return () => { if (supabase) { ... supabase.xxx } }
+                                if ($prevLine -match "return\s+\(\)\s*=>\s*\{|return\s+function\s*\(\)\s*\{") {
+                                    # Buscar null check en las siguientes líneas
+                                    for ($k = $j + 1; $k -lt [Math]::Min($j + 10, $i); $k++) {
+                                        if ($lines[$k] -match "if\s*\([^)]*supabase") {
+                                            $hasNullCheckInContext = $true
+                                            break
+                                        }
+                                    }
+                                    if ($hasNullCheckInContext) { break }
+                                }
+                            }
+                        }
+                        
+                        # Verificar si está en un bloque catch con null check
+                        if (-not $hasNullCheckInContext) {
+                            # Buscar bloque catch anterior
+                            $catchStart = -1
+                            for ($j = [Math]::Max(0, $i - 30); $j -lt $i; $j++) {
+                                if ($lines[$j] -match "^\s*catch\s*\(|^\s*\}\s*catch") {
+                                    $catchStart = $j
+                                    break
+                                }
+                            }
+                            
+                            # Si está en un catch, buscar null check en las primeras líneas
+                            if ($catchStart -ge 0) {
+                                for ($j = $catchStart + 1; $j -lt [Math]::Min($catchStart + 15, $i); $j++) {
+                                    $catchLine = $lines[$j]
+                                    if ($catchLine -match "(if\s*\([^)]*supabase|if\s*\([^)]*!supabase)" -and
+                                        $catchLine -notmatch "^\s*//") {
+                                        $hasNullCheckInContext = $true
+                                        break
+                                    }
+                                }
                             }
                         }
                     }
