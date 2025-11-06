@@ -22,7 +22,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { useGeolocation } from '@/hooks/useGeolocation';
 import { useToast } from '@/hooks/use-toast';
 import { chatPrivacyService, ChatRequest } from '@/services/ChatPrivacyService';
-import { consentVerificationService } from '@/services/ConsentVerificationService';
+import { ConsentIndicator } from '@/components/chat/ConsentIndicator';
+import { useConsentVerification } from '@/hooks/useConsentVerification';
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
 import { MessageList } from './MessageList';
@@ -69,6 +70,14 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
   const [hasGalleryAccess, setHasGalleryAccess] = useState(false);
   const [isRequestingGallery, setIsRequestingGallery] = useState(false);
 
+  // Hook de verificación de consentimiento
+  const {
+    verification,
+    isPaused,
+    startMonitoring,
+    stopMonitoring
+  } = useConsentVerification(chatRoomId || undefined);
+
   // Verificar permisos al cargar
   useEffect(() => {
     if (!user?.id) return;
@@ -79,8 +88,24 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
     if (hasPermission && chatRoomId) {
       loadMessages();
       subscribeToMessages();
+      
+      // Iniciar monitoreo de consentimiento
+      if (user.id && recipientId) {
+        startMonitoring(chatRoomId, user.id, recipientId).catch((err) => {
+          logger.error('Error iniciando monitoreo de consentimiento', { error: err });
+        });
+      }
     }
-  }, [user?.id, recipientId, chatRoomId, hasPermission]);
+
+    // Cleanup: detener monitoreo al desmontar
+    return () => {
+      if (chatRoomId) {
+        stopMonitoring(chatRoomId).catch((err) => {
+          logger.error('Error deteniendo monitoreo de consentimiento', { error: err });
+        });
+      }
+    };
+  }, [user?.id, recipientId, chatRoomId, hasPermission, startMonitoring, stopMonitoring]);
 
   // Auto-scroll al final
   useEffect(() => {
@@ -260,41 +285,17 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
     
     if (!newMessage.trim() || !user?.id || !hasPermission) return;
 
+    // Bloquear envío si el chat está pausado por bajo consenso
+    if (isPaused) {
+      toast({
+        variant: 'destructive',
+        title: 'Chat pausado',
+        description: verification?.pauseReason || 'El chat está pausado por bajo consenso. Por favor, espera a que mejore el consenso antes de enviar mensajes.'
+      });
+      return;
+    }
+
     try {
-      // Verificar consentimiento antes de enviar (Feature: Verificador IA de Consentimiento)
-      const verification = await consentVerificationService.verifyConsentBeforeSend(
-        user.id,
-        recipientId,
-        newMessage.trim(),
-        'text'
-      );
-
-      // Si requiere confirmación y no tiene consentimiento explícito, mostrar advertencia
-      if (verification.analysis.requiresConfirmation && 
-          verification.analysis.consentLevel !== 'explicit' &&
-          verification.analysis.suggestedAction === 'review') {
-        toast({
-          variant: 'default',
-          title: 'Confirmación requerida',
-          description: verification.analysis.explanation || 'El mensaje requiere confirmación explícita'
-        });
-        // Continuar con el envío pero loguear para revisión
-        logger.info('Mensaje enviado con consentimiento ambiguo', {
-          userId: user.id.substring(0, 8) + '***',
-          recipientId: recipientId.substring(0, 8) + '***',
-          consentLevel: verification.analysis.consentLevel
-        });
-      }
-
-      // Si está bloqueado, no enviar
-      if (verification.analysis.suggestedAction === 'block') {
-        toast({
-          variant: 'destructive',
-          title: 'Mensaje bloqueado',
-          description: 'El mensaje no puede ser enviado por falta de consentimiento'
-        });
-        return;
-      }
 
       const messageData: any = {
         sender_id: user.id,
@@ -318,7 +319,7 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
         return;
       }
 
-      const { data: insertedMessage, error } = await supabase
+      const { error } = await supabase
         .from('chat_messages')
         .insert(messageData)
         .select()
@@ -326,13 +327,8 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
 
       if (error) throw error;
 
-      // Actualizar verificación con messageId
-      if (insertedMessage?.id && !verification.verified) {
-        await consentVerificationService.saveVerification({
-          ...verification,
-          messageId: insertedMessage.id
-        });
-      }
+      // El monitoreo de consentimiento se actualiza automáticamente a través de Supabase Realtime
+      // No es necesario actualizar manualmente aquí
 
       setNewMessage('');
       inputRef.current?.focus();
@@ -473,6 +469,23 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
         </div>
       </div>
 
+      {/* Indicador de consentimiento */}
+      {chatRoomId && user?.id && recipientId && (
+        <div className="px-4 py-2 border-b bg-muted/30">
+          <ConsentIndicator
+            chatId={chatRoomId}
+            userId1={user.id}
+            userId2={recipientId}
+            currentUserId={user.id}
+            onPauseChange={(paused) => {
+              if (paused) {
+                logger.warn('Chat pausado por bajo consenso', { chatRoomId });
+              }
+            }}
+          />
+        </div>
+      )}
+
       {/* Lista de mensajes */}
       <div className="flex-1 overflow-y-auto p-4">
         <MessageList messages={messages} currentUserId={user?.id || ''} />
@@ -503,6 +516,7 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
             size="icon"
             onClick={handleShareLocation}
             title="Compartir ubicación"
+            disabled={isPaused}
           >
             <MapPin className="h-5 w-5" />
           </Button>
@@ -510,13 +524,19 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
             ref={inputRef}
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
-            placeholder="Escribe un mensaje..."
+            placeholder={isPaused ? "Chat pausado - esperando mejor consenso..." : "Escribe un mensaje..."}
             className="flex-1"
+            disabled={isPaused}
           />
-          <Button type="submit" disabled={!newMessage.trim()}>
+          <Button type="submit" disabled={!newMessage.trim() || isPaused}>
             <Send className="h-5 w-5" />
           </Button>
         </div>
+        {isPaused && (
+          <p className="text-xs text-muted-foreground mt-2 text-center">
+            ⚠️ El chat está pausado por bajo consenso. El envío de mensajes está bloqueado.
+          </p>
+        )}
       </form>
 
       {/* Modal de solicitud de galería */}

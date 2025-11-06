@@ -14,6 +14,8 @@ import { invitationService } from "@/lib/invitations";
 import { simpleChatService, type SimpleChatRoom, type SimpleChatMessage } from '@/lib/simpleChatService';
 import { logger } from '@/lib/logger';
 import { useAuth } from '@/hooks/useAuth';
+import { ConsentIndicator } from '@/components/chat/ConsentIndicator';
+import { useConsentVerification } from '@/hooks/useConsentVerification';
 
 export interface ChatUser {
   id: number;
@@ -51,6 +53,16 @@ const Chat = () => {
   const [hasChatAccess, setHasChatAccess] = useState<{[key: number]: boolean}>({});
   const [isProduction, setIsProduction] = useState(false);
   const [_isLoading, setIsLoading] = useState(false);
+  const { user } = useAuth();
+  
+  // Hook de verificación de consentimiento
+  const currentRoomId = selectedChat?.id.toString();
+  const {
+    verification,
+    isPaused,
+    startMonitoring,
+    stopMonitoring
+  } = useConsentVerification(currentRoomId);
   
   // Verificar si hay sesión activa (demo o producción)
   const hasActiveSession = typeof isAuthenticated === 'function' ? isAuthenticated() : !!isAuthenticated;
@@ -319,8 +331,43 @@ const Chat = () => {
     }
   }, [selectedChat, isProduction]);
 
+  // Iniciar monitoreo de consentimiento cuando se selecciona un chat
+  useEffect(() => {
+    if (!selectedChat || !user?.id || !isProduction) return;
+    
+    const roomId = selectedChat.id.toString();
+    // Obtener el otro usuario del chat (simplificado - en producción obtener de la sala)
+    const otherUserId = selectedChat.id.toString(); // TODO: Obtener el ID real del otro usuario
+    
+    // Iniciar monitoreo de consentimiento
+    if (roomId && user.id && otherUserId) {
+      startMonitoring(roomId, user.id, otherUserId).catch((err) => {
+        logger.error('Error iniciando monitoreo de consentimiento', { error: err });
+      });
+    }
+
+    // Cleanup: detener monitoreo al cambiar de chat
+    return () => {
+      if (roomId) {
+        stopMonitoring(roomId).catch((err) => {
+          logger.error('Error deteniendo monitoreo de consentimiento', { error: err });
+        });
+      }
+    };
+  }, [selectedChat, user?.id, isProduction, startMonitoring, stopMonitoring]);
+
   const handleSendMessage = () => {
     if (!selectedChat || !newMessage.trim()) return;
+    
+    // Bloquear envío si el chat está pausado por bajo consenso
+    if (isPaused) {
+      toast({
+        variant: 'destructive',
+        title: 'Chat pausado',
+        description: verification?.pauseReason || 'El chat está pausado por bajo consenso. Por favor, espera a que mejore el consenso antes de enviar mensajes.'
+      });
+      return;
+    }
     
     // Usar datos reales en producción, mock en demo
     if (isProduction) {
@@ -644,6 +691,23 @@ const Chat = () => {
                 </div>
               </div>
 
+              {/* Indicador de consentimiento */}
+              {isProduction && selectedChat && user?.id && (
+                <div className="px-4 py-2 border-b border-white/10 bg-gradient-to-r from-purple-900/30 via-purple-800/30 to-blue-900/30">
+                  <ConsentIndicator
+                    chatId={selectedChat.id.toString()}
+                    userId1={user.id}
+                    userId2={selectedChat.id.toString()} // TODO: Obtener el ID real del otro usuario
+                    currentUserId={user.id}
+                    onPauseChange={(paused) => {
+                      if (paused) {
+                        logger.warn('Chat pausado por bajo consenso', { chatId: selectedChat.id });
+                      }
+                    }}
+                  />
+                </div>
+              )}
+
               {/* Messages */}
               <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0 chat-messages scroll-container btn-animated" style={{scrollBehavior: 'smooth'}}>
                 {isProduction ? (
@@ -773,21 +837,27 @@ const Chat = () => {
                     <div className="flex space-x-2">
                       <UnifiedInput
                         type="text"
-                        placeholder="Escribe tu mensaje..."
+                        placeholder={isPaused ? "Chat pausado - esperando mejor consenso..." : "Escribe tu mensaje..."}
                         value={newMessage}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewMessage(e.target.value)}
-                        onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && handleSendMessage()}
+                        onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && !isPaused && handleSendMessage()}
                         className="flex-1 bg-white/10 border-white/20 text-white placeholder-white/50 focus:border-white/40"
+                        disabled={isPaused}
                       />
                       <UnifiedButton 
                         onClick={handleSendMessage}
-                        disabled={!newMessage.trim()}
+                        disabled={!newMessage.trim() || isPaused}
                         gradient={true}
                         className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0"
                       >
                         <Send className="h-4 w-4" />
                       </UnifiedButton>
                     </div>
+                    {isPaused && (
+                      <p className="text-xs text-white/70 mt-2 text-center">
+                        ⚠️ El chat está pausado por bajo consenso. El envío de mensajes está bloqueado.
+                      </p>
+                    )}
                   </div>
                 )}
                 {selectedChat?.roomType === 'public' && (

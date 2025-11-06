@@ -484,15 +484,21 @@ export class AILayerService {
         return;
       }
 
-      await (supabase as any).from('ai_compatibility_scores').insert({
-        user1_id: userId1,
-        user2_id: userId2,
-        ai_score: score.method === 'ai' || score.method === 'hybrid' ? score.score : null,
-        legacy_score: score.method === 'legacy' ? score.score : null,
-        final_score: score.score,
-        model_version: 'v1-base',
-        features: score.features || {},
-      });
+      const { error } = await supabase
+        .from('ai_compatibility_scores')
+        .insert({
+          user1_id: userId1,
+          user2_id: userId2,
+          ai_score: score.method === 'ai' || score.method === 'hybrid' ? score.score : null,
+          legacy_score: score.method === 'legacy' ? score.score : null,
+          final_score: score.score,
+          model_version: 'v1-base',
+          features: (score.features || {}) as Record<string, unknown>,
+        });
+
+      if (error) {
+        logger.warn('Failed to log prediction', { error });
+      }
     } catch (error) {
       logger.warn('Failed to log prediction', { error });
     }

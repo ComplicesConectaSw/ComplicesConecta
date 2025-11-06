@@ -1,41 +1,48 @@
 import { createRoot } from 'react-dom/client'
 import * as React from 'react'
+import type { WindowWithReact } from '@/types/react.types'
 const { StrictMode } = React
 // CRÍTICO: Asegurar React disponible globalmente INMEDIATAMENTE, ANTES DE CUALQUIER OTRA COSA
 // Esto debe estar ANTES de cualquier otro import o código que pueda cargar chunks
 if (typeof window !== 'undefined') {
+  const win = window as WindowWithReact;
+  
   // Logging para diagnóstico
-  const debugLog = (event: string, data?: any) => {
-    if ((window as any).__LOADING_DEBUG__) {
-      (window as any).__LOADING_DEBUG__.log(event, data);
+  const debugLog = (event: string, data?: unknown) => {
+    if (win.__LOADING_DEBUG__) {
+      win.__LOADING_DEBUG__.log(event, data);
     }
   };
   
   debugLog('MAIN_TSX_START', { hasReact: !!React, hasCreateContext: !!React.createContext });
   
   // Forzar React disponible globalmente de forma inmediata
-  (window as any).React = React;
-  debugLog('REACT_ASSIGNED_GLOBAL', { hasReact: !!(window as any).React });
+  win.React = React;
+  debugLog('REACT_ASSIGNED_GLOBAL', { hasReact: !!win.React });
   
   // CRÍTICO: Asegurar createContext disponible inmediatamente
-  if (!(window as any).React.createContext) {
-    debugLog('REACT_CONTEXT_MISSING', { hasReact: !!(window as any).React });
-    (window as any).React.createContext = React.createContext;
-    debugLog('REACT_CONTEXT_ASSIGNED', { hasCreateContext: !!(window as any).React.createContext });
+  if (!win.React?.createContext) {
+    debugLog('REACT_CONTEXT_MISSING', { hasReact: !!win.React });
+    if (win.React) {
+      win.React.createContext = React.createContext;
+    }
+    debugLog('REACT_CONTEXT_ASSIGNED', { hasCreateContext: !!win.React?.createContext });
   } else {
-    debugLog('REACT_CONTEXT_ALREADY_EXISTS', { hasCreateContext: !!(window as any).React.createContext });
+    debugLog('REACT_CONTEXT_ALREADY_EXISTS', { hasCreateContext: !!win.React?.createContext });
   }
   
   // Asegurar polyfill si existe
-  if ((window as any).__REACT_POLYFILL__ && (window as any).__REACT_POLYFILL__.createContext) {
-    debugLog('POLYFILL_FOUND', { hasPolyfill: !!(window as any).__REACT_POLYFILL__.createContext });
+  if (win.__REACT_POLYFILL__ && win.__REACT_POLYFILL__.createContext) {
+    debugLog('POLYFILL_FOUND', { hasPolyfill: !!win.__REACT_POLYFILL__.createContext });
     // Reemplazar con el real si está disponible
-    (window as any).React.createContext = React.createContext || (window as any).__REACT_POLYFILL__.createContext;
-    debugLog('POLYFILL_APPLIED', { hasCreateContext: !!(window as any).React.createContext });
+    if (win.React) {
+      win.React.createContext = React.createContext || win.__REACT_POLYFILL__.createContext;
+    }
+    debugLog('POLYFILL_APPLIED', { hasCreateContext: !!win.React?.createContext });
   }
   
   // Asegurar TODOS los hooks críticos inmediatamente - CON FALLBACKS ROBUSTOS
-  const winReact = (window as any).React;
+  const winReact = win.React;
   if (winReact) {
     // CRÍTICO: Asegurar useLayoutEffect primero con fallback robusto
     if (!winReact.useLayoutEffect) {
@@ -45,7 +52,7 @@ if (typeof window !== 'undefined') {
         winReact.useLayoutEffect = React.useEffect;
       } else {
         // Fallback final: función que retorna no-op cleanup
-        winReact.useLayoutEffect = function(callback: any, _deps?: any) {
+        winReact.useLayoutEffect = function(callback: () => void | (() => void), _deps?: unknown[]) {
           if (typeof callback === 'function') {
             try {
               return callback();
@@ -65,15 +72,15 @@ if (typeof window !== 'undefined') {
     
     // Asegurar todos los otros hooks críticos
     winReact.useState = winReact.useState || React.useState || function() { return [null, function() {}]; };
-    winReact.useMemo = winReact.useMemo || React.useMemo || function(fn: any) { return fn(); };
-    winReact.useCallback = winReact.useCallback || React.useCallback || function(fn: any) { return fn; };
+    winReact.useMemo = winReact.useMemo || React.useMemo || function(fn: () => unknown) { return fn(); };
+    winReact.useCallback = winReact.useCallback || React.useCallback || function(fn: unknown) { return fn; };
     winReact.createElement = winReact.createElement || React.createElement || function() { return null; };
     winReact.StrictMode = winReact.StrictMode || StrictMode;
   }
   
   // También asegurar ReactDOM inmediatamente
-  if (!(window as any).ReactDOM) {
-    (window as any).ReactDOM = {
+  if (!win.ReactDOM) {
+    win.ReactDOM = {
       createRoot: createRoot
     };
   }
@@ -190,10 +197,12 @@ if ('serviceWorker' in navigator && import.meta.env.MODE === 'production') {
 
 // Initialize application with enhanced error handling
 async function initializeApp() {
+  const win = typeof window !== 'undefined' ? (window as WindowWithReact) : null;
+  
   // Logging para diagnóstico
-  const debugLog = (event: string, data?: any) => {
-    if ((window as any).__LOADING_DEBUG__) {
-      (window as any).__LOADING_DEBUG__.log(event, data);
+  const debugLog = (event: string, data?: unknown) => {
+    if (win?.__LOADING_DEBUG__) {
+      win.__LOADING_DEBUG__.log(event, data);
     }
   };
   
@@ -226,13 +235,13 @@ async function initializeApp() {
     debugLog('INIT_APP_TRY_START', {});
     // React ya está disponible globalmente (establecido al inicio del archivo)
     // Solo re-asegurar que no se haya perdido durante el proceso
-    if (typeof window !== 'undefined') {
-      if (!(window as any).React) {
-        (window as any).React = React;
+    if (win) {
+      if (!win.React) {
+        win.React = React;
       }
       
       // Re-asegurar todos los hooks críticos por si acaso
-      const winReact = (window as any).React;
+      const winReact = win.React;
       if (winReact) {
         // CRÍTICO: Asegurar useLayoutEffect con fallback robusto
         if (!winReact.useLayoutEffect) {
@@ -255,8 +264,8 @@ async function initializeApp() {
       }
       
       // Re-asegurar ReactDOM
-      if (!(window as any).ReactDOM) {
-        (window as any).ReactDOM = {
+      if (!win.ReactDOM) {
+        win.ReactDOM = {
           createRoot: createRoot
         };
       }
@@ -316,9 +325,9 @@ async function initializeApp() {
 
     // Verificar React antes de renderizar
     debugLog('REACT_VERIFICATION', { 
-      hasReact: !!(window as any).React,
-      hasCreateContext: !!(window as any).React?.createContext,
-      hasReactDOM: !!(window as any).ReactDOM
+      hasReact: !!win?.React,
+      hasCreateContext: !!win?.React?.createContext,
+      hasReactDOM: !!win?.ReactDOM
     });
 
     if (import.meta.env.DEV) {
@@ -342,8 +351,8 @@ async function initializeApp() {
     
     // Log reporte final después de un breve delay para capturar todos los eventos
     setTimeout(() => {
-      if ((window as any).__LOADING_DEBUG__) {
-        const report = (window as any).__LOADING_DEBUG__.getReport();
+      if (win?.__LOADING_DEBUG__) {
+        const report = win.__LOADING_DEBUG__.getReport();
         debugLog('LOADING_REPORT_FINAL', report);
         if (import.meta.env.DEV) {
           logger.info('Reporte de carga completo', { report });
@@ -351,15 +360,15 @@ async function initializeApp() {
         }
       }
     }, 1000);
-  } catch (error: any) {
+  } catch (error: unknown) {
     // Limpiar timeout de seguridad en caso de error
     clearTimeout(mountTimeout);
     const errorMsg = error instanceof Error ? error.message : String(error);
     debugLog('INIT_APP_ERROR', { error: errorMsg, stack: error instanceof Error ? error.stack : undefined });
     
     // Log reporte de error
-    if ((window as any).__LOADING_DEBUG__) {
-      const report = (window as any).__LOADING_DEBUG__.getReport();
+    if (win?.__LOADING_DEBUG__) {
+      const report = win.__LOADING_DEBUG__.getReport();
       debugLog('LOADING_REPORT_ERROR', report);
       logger.error('Reporte de carga al error', { report });
     }
@@ -410,7 +419,7 @@ async function initializeApp() {
 }
 
 // Initialize the application
-initializeApp().catch((error: any) => {
+initializeApp().catch((error: unknown) => {
   // CRÍTICO: Mostrar TODOS los errores para diagnóstico, incluso si son de wallet
   // Solo silenciar en consola, pero siempre mostrar en pantalla
   const errorMessage = error?.message?.toLowerCase() || '';

@@ -276,3 +276,4 @@ DEPENDENCIAS_*.md
 *_COMPONENTES_*.md
 *_DUPLICADOS_*.md
 *_CONFLICTOS_*.md
+.env*.local

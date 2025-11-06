@@ -5,6 +5,7 @@
 
 import * as React from 'react';
 import { useEffect, useLayoutEffect as originalUseLayoutEffect } from 'react';
+import type { WindowWithReact } from '@/types/react.types';
 
 // Safe useLayoutEffect that falls back to useEffect in SSR
 export const useIsomorphicLayoutEffect = 
@@ -13,66 +14,70 @@ export const useIsomorphicLayoutEffect =
 // Initialize React fallbacks for production builds - ULTRA SEGURO
 export const initializeReactFallbacks = () => {
   if (typeof window !== 'undefined') {
+    const win = window as WindowWithReact;
+    
     // Asegurar que React esté disponible globalmente para chunks lazy
-    if (!(window as any).React) {
-      (window as any).React = React;
+    if (!win.React) {
+      win.React = React;
     }
     
     // Asegurar que todos los hooks de React estén disponibles
-    if ((window as any).React && !(window as any).React.useLayoutEffect) {
-      (window as any).React.useLayoutEffect = React.useLayoutEffect;
+    if (win.React && !win.React.useLayoutEffect) {
+      win.React.useLayoutEffect = React.useLayoutEffect;
     }
     
     // Asegurar useEffect también
-    if ((window as any).React && !(window as any).React.useEffect) {
-      (window as any).React.useEffect = React.useEffect;
+    if (win.React && !win.React.useEffect) {
+      win.React.useEffect = React.useEffect;
     }
     
     // Asegurar useState
-    if ((window as any).React && !(window as any).React.useState) {
-      (window as any).React.useState = React.useState;
+    if (win.React && !win.React.useState) {
+      win.React.useState = React.useState;
     }
     
     // Asegurar useCallback
-    if ((window as any).React && !(window as any).React.useCallback) {
-      (window as any).React.useCallback = React.useCallback;
+    if (win.React && !win.React.useCallback) {
+      win.React.useCallback = React.useCallback;
     }
     
     // Asegurar useMemo
-    if ((window as any).React && !(window as any).React.useMemo) {
-      (window as any).React.useMemo = React.useMemo;
+    if (win.React && !win.React.useMemo) {
+      win.React.useMemo = React.useMemo;
     }
     
     // Asegurar createElement
-    if ((window as any).React && !(window as any).React.createElement) {
-      (window as any).React.createElement = React.createElement;
+    if (win.React && !win.React.createElement) {
+      win.React.createElement = React.createElement;
     }
     
     // Fallback para useLayoutEffect si por alguna razón no está disponible
     if (!React.useLayoutEffect && React.useEffect) {
-      (window as any).React.useLayoutEffect = React.useEffect;
+      if (win.React) {
+        win.React.useLayoutEffect = React.useEffect;
+      }
     }
   } else {
     // In SSR environment, replace useLayoutEffect with useEffect
     // Note: In SSR, React is already imported at the top, so we use it directly
     // If React is not available, the import would have failed already
-    if (React.useLayoutEffect && React.useEffect) {
-      // In SSR, useLayoutEffect should use useEffect as fallback
-      // This is handled by useIsomorphicLayoutEffect export
-    }
+    // In SSR, useLayoutEffect should use useEffect as fallback
+    // This is handled by useIsomorphicLayoutEffect export
   }
 };
 
 // Polyfill for missing React features in vendor chunks - ULTRA SEGURO
 export const ensureReactPolyfills = () => {
   if (typeof window !== 'undefined') {
+    const win = window as WindowWithReact;
+    
     // React ya está importado, simplemente exponerlo globalmente
-    if (!(window as any).React) {
-      (window as any).React = React;
+    if (!win.React) {
+      win.React = React;
     }
     
     // Asegurar que todos los métodos esenciales estén disponibles
-    const windowReact = (window as any).React;
+    const windowReact = win.React;
     if (windowReact) {
       // Asegurar useLayoutEffect
       if (!windowReact.useLayoutEffect && React.useLayoutEffect) {
@@ -102,12 +107,12 @@ export const ensureReactPolyfills = () => {
     
     // Import React dynamically as fallback (solo si no está ya disponible)
     try {
-      import('react').then((ReactModule: any) => {
-        if (!(window as any).React) {
-          (window as any).React = ReactModule;
+      import('react').then((ReactModule) => {
+        if (!win.React) {
+          win.React = ReactModule as typeof React;
         } else {
           // Asegurar hooks en módulo dinámico también
-          const winReact = (window as any).React;
+          const winReact = win.React;
           if (ReactModule.useLayoutEffect && !winReact.useLayoutEffect) {
             winReact.useLayoutEffect = ReactModule.useLayoutEffect;
           } else if (ReactModule.useEffect && !winReact.useLayoutEffect) {

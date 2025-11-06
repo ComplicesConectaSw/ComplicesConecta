@@ -384,12 +384,16 @@ ${messagesText}`;
       throw error;
     }
 
-    return (data || []).map(msg => ({
-      id: msg.id,
-      sender: (msg.sender as any)?.name || 'Usuario',
-      content: msg.content,
-      created_at: msg.created_at || '',
-    }));
+    return (data || []).map(msg => {
+      // Tipar correctamente el resultado de Supabase con relación sender:profiles(name)
+      const sender = msg.sender as { name?: string } | null | undefined;
+      return {
+        id: msg.id,
+        sender: sender?.name || 'Usuario',
+        content: msg.content,
+        created_at: msg.created_at || '',
+      };
+    });
   }
 
   /**
