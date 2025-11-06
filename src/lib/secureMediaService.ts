@@ -78,7 +78,7 @@ export class SecureMediaService {
       });
 
       return {
-        url: data.signedUrl,
+        url: signedUrl,
         expiresAt,
         permissions
       };
