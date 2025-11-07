@@ -157,7 +157,8 @@ export const initializeWalletProtection = () => {
     const walletProps = ['ethereum', 'solana', 'tronWeb', 'bybitWallet', 'tronweb', 'chainId', 'chainid'];
     
     // Si es una propiedad de wallet en window, manejar propiedades de solo lectura
-    if (obj === window && walletProps.includes(prop.toLowerCase())) {
+    const propLower = prop.toLowerCase();
+    if (obj === window && walletProps.some(wp => wp.toLowerCase() === propLower)) {
       try {
         // Intentar obtener el descriptor existente
         const existingDesc = Object.getOwnPropertyDescriptor(window, prop);

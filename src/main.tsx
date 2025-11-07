@@ -108,6 +108,8 @@ import { initWebVitalsMonitoring } from '@/utils/webVitals'
 import { initializeCriticalPreloading } from '@/utils/preloading'
 import { androidSecurity } from '@/utils/androidSecurity'
 import { logger } from '@/lib/logger'
+import { showEnvInfo } from '@/utils/showEnvInfo'
+import { startErrorCapture } from '@/utils/captureConsoleErrors'
 
 // Continuar con wallet protection después de asegurar React
 if (typeof window !== 'undefined') {
@@ -121,7 +123,11 @@ if (typeof window !== 'undefined') {
 
 // Debug info for development only
 if (import.meta.env.DEV) {
-  logger.info('ComplicesConecta v3.5.0 starting...');
+  logger.info('ComplicesConecta v3.5.1 starting...');
+  // Cargar utilidad para mostrar variables de entorno en consola
+  showEnvInfo();
+  // Iniciar captura de errores de consola
+  startErrorCapture();
 }
 
 // Initialize Datadog RUM for frontend monitoring

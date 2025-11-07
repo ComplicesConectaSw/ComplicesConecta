@@ -48,13 +48,40 @@ export default defineConfig(({ mode }) => {
       host: true,
       port: 8080,
       cors: true,
-      hmr: { port: 8080, host: "localhost" },
+      // HMR configurado para funcionar con túneles
+      // Nota: localtunnel tiene limitaciones con WebSockets, el HMR puede no funcionar
+      hmr: { 
+        port: 8080, 
+        host: "localhost",
+        clientPort: 8080,
+        protocol: 'ws',
+        // Permitir HMR a través de túneles (puede no funcionar con localtunnel)
+        client: {
+          webSocketURL: {
+            hostname: 'localhost',
+            pathname: '/ws',
+            port: 8080,
+            protocol: 'ws'
+          }
+        }
+      },
+      // Permitir hosts de túneles (localtunnel, ngrok, cloudflare, etc.)
+      allowedHosts: [
+        'localhost',
+        '.loca.lt',        // localtunnel
+        '.ngrok.io',      // ngrok
+        '.ngrok-free.app', // ngrok free
+        '.ngrok.app',     // ngrok
+        '.trycloudflare.com', // Cloudflare Tunnel
+        '.vercel.app',    // Vercel
+        '.vercel.live',   // Vercel Live
+      ],
       headers: {
         "Cross-Origin-Embedder-Policy": "unsafe-none",
         "Cross-Origin-Opener-Policy": "same-origin",
         "Content-Security-Policy":
-          process.env.NODE_ENV === "development"
-            ? "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; connect-src 'self' https: ws: wss:; frame-src 'self' https://vercel.live;"
+          process.env.NODE_ENV === "development" || import.meta.env.DEV
+            ? "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https: blob: data:; style-src 'self' 'unsafe-inline' https: blob: data:; img-src 'self' data: https: blob:; font-src 'self' data: https: blob:; connect-src 'self' https: ws: wss: http://localhost:* http://127.0.0.1:*; frame-src 'self' https://vercel.live; worker-src 'self' blob: data:;"
             : "default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; connect-src 'self' https: ws: wss:; frame-src 'self' https://vercel.live;",
       },
       sourcemapIgnoreList: (source) =>

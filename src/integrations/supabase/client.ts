@@ -16,8 +16,17 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 // Validar que las variables de entorno estén configuradas
-const isPlaceholderUrl = !supabaseUrl || supabaseUrl.includes('your-supabase-url-here') || supabaseUrl.includes('placeholder');
-const isPlaceholderKey = !supabaseAnonKey || supabaseAnonKey.includes('your-supabase-anon-key-here') || supabaseAnonKey.includes('placeholder-key');
+const isPlaceholderUrl = !supabaseUrl || 
+  (typeof supabaseUrl === 'string' && (
+    supabaseUrl.includes('your-supabase-url-here') || 
+    supabaseUrl.includes('your_supabase_url_here') ||
+    supabaseUrl.includes('placeholder') ||
+    (!supabaseUrl.startsWith('http://') && !supabaseUrl.startsWith('https://'))
+  ));
+const isPlaceholderKey = !supabaseAnonKey || 
+  supabaseAnonKey.includes('your-supabase-anon-key-here') || 
+  supabaseAnonKey.includes('your_supabase_anon_key_here') ||
+  supabaseAnonKey.includes('placeholder-key');
 
 if (isPlaceholderUrl || isPlaceholderKey) {
   safeLogger.warn('⚠️ Variables de Supabase usando valores placeholder - activando modo demo', {
@@ -46,12 +55,32 @@ function getSupabaseClient(): SupabaseClient<Database> {
   // CRÍTICO: Validar y manejar errores de forma segura
   try {
     // Validar credenciales antes de crear cliente
-    const finalUrl = (supabaseUrl && !supabaseUrl.includes('placeholder') && !supabaseUrl.includes('your-supabase-url-here')) 
-      ? supabaseUrl 
-      : 'https://placeholder.supabase.co';
-    const finalKey = (supabaseAnonKey && !supabaseAnonKey.includes('placeholder-key') && !supabaseAnonKey.includes('your-supabase-anon-key-here')) 
-      ? supabaseAnonKey 
-      : 'placeholder-key';
+    // Si es un placeholder, NO intentar crear el cliente (causará error de validación)
+    if (isPlaceholderUrl || isPlaceholderKey) {
+      safeLogger.warn('⚠️ Credenciales de Supabase son placeholders - usando cliente stub', {
+        urlPlaceholder: isPlaceholderUrl,
+        keyPlaceholder: isPlaceholderKey
+      });
+      // Crear un cliente stub mínimo que no cause errores de validación
+      // Usar una URL válida pero que no se usará realmente
+      const stubUrl = 'https://demo.supabase.co';
+      const stubKey = 'demo-anon-key-stub';
+      supabaseInstance = createClient<Database>(stubUrl, stubKey, {
+        auth: {
+          persistSession: false,
+          autoRefreshToken: false,
+        },
+        global: {
+          fetch: () => Promise.reject(new Error('Supabase not configured - using stub client')),
+        },
+      });
+      safeLogger.warn('⚠️ Cliente stub de Supabase creado - modo demo activo', {});
+      return supabaseInstance;
+    }
+    
+    // Si las credenciales son válidas, crear el cliente normalmente
+    const finalUrl = supabaseUrl!;
+    const finalKey = supabaseAnonKey!;
     
     supabaseInstance = createClient<Database>(
   finalUrl, 
@@ -117,22 +146,27 @@ function getSupabaseClient(): SupabaseClient<Database> {
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined
     });
-    // Crear cliente mínimo con valores placeholder
+    // Crear cliente stub mínimo que no cause errores de validación
     try {
+      const stubUrl = 'https://demo.supabase.co';
+      const stubKey = 'demo-anon-key-stub';
       supabaseInstance = createClient<Database>(
-        'https://placeholder.supabase.co',
-        'placeholder-key',
+        stubUrl,
+        stubKey,
         {
           auth: {
             persistSession: false,
             autoRefreshToken: false,
-          }
+          },
+          global: {
+            fetch: () => Promise.reject(new Error('Supabase not configured - using stub client')),
+          },
         }
       );
-      safeLogger.warn('⚠️ Usando cliente placeholder de Supabase debido a error', {});
+      safeLogger.warn('⚠️ Usando cliente stub de Supabase debido a error', {});
       return supabaseInstance;
     } catch (fallbackError) {
-      safeLogger.error('❌ Error crítico creando cliente placeholder:', { 
+      safeLogger.error('❌ Error crítico creando cliente stub:', { 
         error: fallbackError instanceof Error ? fallbackError.message : String(fallbackError)
       });
       // Retornar un stub mínimo que no cause errores
@@ -149,21 +183,26 @@ try {
   supabase = getSupabaseClient();
 } catch (error) {
   safeLogger.error('❌ Error creando cliente de Supabase:', { error: error instanceof Error ? error.message : String(error) });
-  // Crear cliente con valores placeholder en caso de error
+  // Crear cliente stub mínimo en caso de error
   try {
+    const stubUrl = 'https://demo.supabase.co';
+    const stubKey = 'demo-anon-key-stub';
     supabase = createClient<Database>(
-      'https://placeholder.supabase.co',
-      'placeholder-key',
+      stubUrl,
+      stubKey,
       {
         auth: {
           persistSession: false,
           autoRefreshToken: false,
-        }
+        },
+        global: {
+          fetch: () => Promise.reject(new Error('Supabase not configured - using stub client')),
+        },
       }
     );
-    safeLogger.warn('⚠️ Usando cliente placeholder de Supabase', {});
+    safeLogger.warn('⚠️ Usando cliente stub de Supabase', {});
   } catch (fallbackError) {
-    safeLogger.error('❌ Error crítico creando cliente placeholder:', { error: fallbackError instanceof Error ? fallbackError.message : String(fallbackError) });
+    safeLogger.error('❌ Error crítico creando cliente stub:', { error: fallbackError instanceof Error ? fallbackError.message : String(fallbackError) });
     // No exportar null, crear un stub mínimo
     supabase = null as any;
   }
