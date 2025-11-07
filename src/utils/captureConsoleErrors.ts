@@ -15,13 +15,31 @@ interface ConsoleError {
   column?: number;
 }
 
+interface ResourceError {
+  url: string;
+  type: 'chunk' | 'stylesheet' | 'font' | 'image' | 'script' | 'other';
+  status: number;
+  statusText: string;
+  timestamp: string;
+}
+
+interface PerformanceIssue {
+  type: 'slow-load' | 'large-chunk' | 'missing-resource' | 'cors-error';
+  message: string;
+  details: any;
+  timestamp: string;
+}
+
 class ConsoleErrorCapture {
   private errors: ConsoleError[] = [];
+  private resourceErrors: ResourceError[] = [];
+  private performanceIssues: PerformanceIssue[] = [];
   private originalError: typeof console.error;
   private originalWarn: typeof console.warn;
   private originalLog: typeof console.log;
   private errorHandler: ((event: ErrorEvent) => void) | null = null;
   private rejectionHandler: ((event: PromiseRejectionEvent) => void) | null = null;
+  private resourceErrorHandler: ((event: Event) => void) | null = null;
 
   constructor() {
     this.originalError = console.error;
@@ -96,6 +114,130 @@ class ConsoleErrorCapture {
 
     window.addEventListener('unhandledrejection', this.rejectionHandler);
 
+    // Capturar errores de recursos (chunks, CSS, imágenes, etc.)
+    this.resourceErrorHandler = (event: Event) => {
+      const target = event.target as HTMLElement;
+      if (target && (target.tagName === 'LINK' || target.tagName === 'SCRIPT' || target.tagName === 'IMG')) {
+        const element = target as HTMLLinkElement | HTMLScriptElement | HTMLImageElement;
+        const url = (element as HTMLLinkElement).href || (element as HTMLScriptElement).src || (element as HTMLImageElement).src;
+        
+        if (url) {
+          let resourceType: ResourceError['type'] = 'other';
+          if (target.tagName === 'SCRIPT') {
+            resourceType = url.includes('chunk') || url.includes('assets/js') ? 'chunk' : 'script';
+          } else if (target.tagName === 'LINK') {
+            resourceType = url.includes('.css') ? 'stylesheet' : 'other';
+          } else if (target.tagName === 'IMG') {
+            resourceType = 'image';
+          }
+
+          this.resourceErrors.push({
+            url,
+            type: resourceType,
+            status: 0,
+            statusText: 'Failed to load',
+            timestamp: new Date().toISOString()
+          });
+        }
+      }
+    };
+
+    // Capturar errores de recursos usando Performance API
+    if ('PerformanceObserver' in window) {
+      try {
+        const observer = new PerformanceObserver((list) => {
+          for (const entry of list.getEntries()) {
+            if (entry.entryType === 'resource') {
+              const resourceEntry = entry as PerformanceResourceTiming;
+              if (resourceEntry.transferSize === 0 && resourceEntry.decodedBodySize === 0 && resourceEntry.duration > 100) {
+                // Posible recurso no cargado
+                let resourceType: ResourceError['type'] = 'other';
+                const url = resourceEntry.name;
+                
+                if (url.includes('chunk') || url.includes('assets/js')) {
+                  resourceType = 'chunk';
+                } else if (url.includes('.css')) {
+                  resourceType = 'stylesheet';
+                } else if (url.includes('.woff') || url.includes('.ttf') || url.includes('.otf')) {
+                  resourceType = 'font';
+                } else if (url.match(/\.(jpg|jpeg|png|gif|svg|webp)/i)) {
+                  resourceType = 'image';
+                }
+
+                this.resourceErrors.push({
+                  url,
+                  type: resourceType,
+                  status: 0,
+                  statusText: 'Possible failed load',
+                  timestamp: new Date().toISOString()
+                });
+              }
+
+              // Detectar chunks grandes
+              const resourceUrl = resourceEntry.name;
+              if (resourceEntry.transferSize > 500 * 1024 && resourceUrl.includes('assets/js')) {
+                this.performanceIssues.push({
+                  type: 'large-chunk',
+                  message: `Chunk grande detectado: ${resourceUrl.split('/').pop()}`,
+                  details: {
+                    url: resourceUrl,
+                    size: `${(resourceEntry.transferSize / 1024).toFixed(2)} KB`,
+                    loadTime: `${resourceEntry.duration.toFixed(2)} ms`
+                  },
+                  timestamp: new Date().toISOString()
+                });
+              }
+            }
+          }
+        });
+
+        observer.observe({ entryTypes: ['resource'] });
+      } catch {
+        // PerformanceObserver no disponible o error
+      }
+    }
+
+    // Capturar errores de red usando fetch
+    const originalFetch = window.fetch;
+    (window as any).__originalFetch = originalFetch;
+    window.fetch = async (...args) => {
+      try {
+        const response = await originalFetch(...args);
+        if (!response.ok && args[0]) {
+          const url = typeof args[0] === 'string' ? args[0] : (args[0] as Request).url;
+          let resourceType: ResourceError['type'] = 'other';
+          
+          if (url.includes('chunk') || url.includes('assets/js')) {
+            resourceType = 'chunk';
+          } else if (url.includes('.css')) {
+            resourceType = 'stylesheet';
+          }
+
+          this.resourceErrors.push({
+            url,
+            type: resourceType,
+            status: response.status,
+            statusText: response.statusText,
+            timestamp: new Date().toISOString()
+          });
+        }
+        return response;
+      } catch (error) {
+        const url = typeof args[0] === 'string' ? args[0] : (args[0] as Request).url;
+        this.resourceErrors.push({
+          url,
+          type: 'other',
+          status: 0,
+          statusText: error instanceof Error ? error.message : 'Network error',
+          timestamp: new Date().toISOString()
+        });
+        throw error;
+      }
+    };
+
+    // Capturar errores de carga de recursos HTML
+    document.addEventListener('error', this.resourceErrorHandler, true);
+
     console.log('✅ Captura de errores de consola iniciada');
     console.log('💡 Comandos disponibles en la consola:');
     console.log('   - showErrorReport() - Ver reporte completo de errores');
@@ -136,6 +278,15 @@ class ConsoleErrorCapture {
       window.removeEventListener('unhandledrejection', this.rejectionHandler);
     }
 
+    if (this.resourceErrorHandler) {
+      document.removeEventListener('error', this.resourceErrorHandler, true);
+    }
+
+    // Restaurar fetch original
+    if ((window as any).__originalFetch) {
+      window.fetch = (window as any).__originalFetch;
+    }
+
     console.log('🛑 Captura de errores de consola detenida');
   }
 
@@ -153,17 +304,59 @@ class ConsoleErrorCapture {
   }
 
   exportErrors(): string {
+    // Obtener chunks y stylesheets cargados
+    const chunks: any[] = [];
+    const stylesheets: any[] = [];
+    
+    if ('PerformanceObserver' in window) {
+      try {
+        const resources = performance.getEntriesByType('resource') as PerformanceResourceTiming[];
+        
+        resources.forEach((resource) => {
+          const url = resource.name;
+          if (url.includes('assets/js') || url.includes('chunk')) {
+            chunks.push({
+              url: url.split('/').pop() || url,
+              fullUrl: url,
+              size: `${(resource.transferSize / 1024).toFixed(2)} KB`,
+              loadTime: `${resource.duration.toFixed(2)} ms`,
+              cached: resource.transferSize === 0 && resource.decodedBodySize > 0
+            });
+          } else if (url.includes('.css')) {
+            stylesheets.push({
+              url: url.split('/').pop() || url,
+              fullUrl: url,
+              size: `${(resource.transferSize / 1024).toFixed(2)} KB`,
+              loadTime: `${resource.duration.toFixed(2)} ms`,
+              cached: resource.transferSize === 0 && resource.decodedBodySize > 0
+            });
+          }
+        });
+      } catch {
+        // Performance API no disponible
+      }
+    }
+
     const report = {
       errors: this.getErrorsByType('error'),
       warnings: this.getErrorsByType('warning'),
       logs: this.getErrorsByType('log'),
-      total: this.errors.length,
+      resourceErrors: this.resourceErrors,
+      performanceIssues: this.performanceIssues,
+      chunks,
+      stylesheets,
+      total: this.errors.length + this.resourceErrors.length + this.performanceIssues.length,
       url: window.location.href,
       isTunnel: window.location.hostname.includes('.loca.lt') || 
                 window.location.hostname.includes('.ngrok-free.app') ||
                 window.location.hostname.includes('.trycloudflare.com'),
       timestamp: new Date().toISOString(),
-      userAgent: navigator.userAgent
+      userAgent: navigator.userAgent,
+      environment: {
+        mode: import.meta.env?.MODE || 'unknown',
+        dev: import.meta.env?.DEV || false,
+        prod: import.meta.env?.PROD || false
+      }
     };
     
     const json = JSON.stringify(report, null, 2);
@@ -184,12 +377,16 @@ class ConsoleErrorCapture {
     errors: ConsoleError[];
     warnings: ConsoleError[];
     logs: ConsoleError[];
+    resourceErrors: ResourceError[];
+    performanceIssues: PerformanceIssue[];
+    chunks: any[];
+    stylesheets: any[];
     total: number;
     url: string;
     isTunnel: boolean;
     timestamp: string;
   } {
-    console.group('📊 Reporte de Errores de Consola');
+    console.group('📊 Reporte Completo de Errores y Debug');
     
     // Información del entorno
     const isTunnel = window.location.hostname.includes('.loca.lt') || 
@@ -201,12 +398,52 @@ class ConsoleErrorCapture {
     }
     console.log('📍 URL actual:', window.location.href);
     console.log('⏰ Reporte generado:', new Date().toISOString());
+    console.log('🖥️ User Agent:', navigator.userAgent);
     
     const errors = this.getErrorsByType('error');
     const warnings = this.getErrorsByType('warning');
     const logs = this.getErrorsByType('log');
 
-    console.log(`\n🔴 Errores: ${errors.length}`);
+    // Análisis de chunks cargados
+    const chunks: any[] = [];
+    const stylesheets: any[] = [];
+    
+    if ('PerformanceObserver' in window) {
+      try {
+        const resources = performance.getEntriesByType('resource') as PerformanceResourceTiming[];
+        
+        resources.forEach((resource) => {
+          const url = resource.name;
+          if (url.includes('assets/js') || url.includes('chunk')) {
+            chunks.push({
+              url: url.split('/').pop() || url,
+              fullUrl: url,
+              size: `${(resource.transferSize / 1024).toFixed(2)} KB`,
+              loadTime: `${resource.duration.toFixed(2)} ms`,
+              cached: resource.transferSize === 0 && resource.decodedBodySize > 0
+            });
+          } else if (url.includes('.css')) {
+            stylesheets.push({
+              url: url.split('/').pop() || url,
+              fullUrl: url,
+              size: `${(resource.transferSize / 1024).toFixed(2)} KB`,
+              loadTime: `${resource.duration.toFixed(2)} ms`,
+              cached: resource.transferSize === 0 && resource.decodedBodySize > 0
+            });
+          }
+        });
+      } catch {
+        // Performance API no disponible
+      }
+    }
+
+    // Chunks faltantes (404)
+    const chunkErrors = this.resourceErrors.filter(e => e.type === 'chunk');
+    const stylesheetErrors = this.resourceErrors.filter(e => e.type === 'stylesheet');
+    const fontErrors = this.resourceErrors.filter(e => e.type === 'font');
+    const imageErrors = this.resourceErrors.filter(e => e.type === 'image');
+
+    console.log(`\n🔴 Errores de Consola: ${errors.length}`);
     if (errors.length > 0) {
       console.table(errors);
       errors.forEach((error, index) => {
@@ -222,7 +459,7 @@ class ConsoleErrorCapture {
         }
       });
     } else {
-      console.log('✅ No se encontraron errores');
+      console.log('✅ No se encontraron errores de consola');
     }
 
     console.log(`\n⚠️ Warnings: ${warnings.length}`);
@@ -230,6 +467,113 @@ class ConsoleErrorCapture {
       console.table(warnings);
     } else {
       console.log('✅ No se encontraron warnings');
+    }
+
+    console.log(`\n📦 Chunks Cargados: ${chunks.length}`);
+    if (chunks.length > 0) {
+      console.table(chunks);
+      
+      // Detectar chunks grandes
+      const largeChunks = chunks.filter(c => parseFloat(c.size) > 500);
+      if (largeChunks.length > 0) {
+        console.warn(`\n⚠️ Chunks grandes detectados (${largeChunks.length}):`);
+        largeChunks.forEach(chunk => {
+          console.warn(`   - ${chunk.url}: ${chunk.size} (${chunk.loadTime})`);
+        });
+      }
+    } else {
+      console.warn('⚠️ No se detectaron chunks cargados');
+    }
+
+    console.log(`\n🎨 Stylesheets Cargados: ${stylesheets.length}`);
+    if (stylesheets.length > 0) {
+      console.table(stylesheets);
+    } else {
+      console.warn('⚠️ No se detectaron stylesheets cargados');
+    }
+
+    console.log(`\n❌ Errores de Recursos: ${this.resourceErrors.length}`);
+    if (this.resourceErrors.length > 0) {
+      console.group('Detalles de Errores de Recursos');
+      
+      if (chunkErrors.length > 0) {
+        console.error(`\n📦 Chunks Faltantes (${chunkErrors.length}):`);
+        chunkErrors.forEach((error, index) => {
+          console.error(`   ${index + 1}. ${error.url}`);
+          console.error(`      Status: ${error.status} ${error.statusText}`);
+          console.error(`      Timestamp: ${error.timestamp}`);
+        });
+      }
+
+      if (stylesheetErrors.length > 0) {
+        console.error(`\n🎨 Stylesheets Faltantes (${stylesheetErrors.length}):`);
+        stylesheetErrors.forEach((error, index) => {
+          console.error(`   ${index + 1}. ${error.url}`);
+          console.error(`      Status: ${error.status} ${error.statusText}`);
+        });
+      }
+
+      if (fontErrors.length > 0) {
+        console.error(`\n🔤 Fuentes Faltantes (${fontErrors.length}):`);
+        fontErrors.forEach((error, index) => {
+          console.error(`   ${index + 1}. ${error.url}`);
+        });
+      }
+
+      if (imageErrors.length > 0) {
+        console.error(`\n🖼️ Imágenes Faltantes (${imageErrors.length}):`);
+        imageErrors.forEach((error, index) => {
+          console.error(`   ${index + 1}. ${error.url}`);
+        });
+      }
+
+      console.groupEnd();
+    } else {
+      console.log('✅ No se encontraron errores de recursos');
+    }
+
+    console.log(`\n⚡ Problemas de Performance: ${this.performanceIssues.length}`);
+    if (this.performanceIssues.length > 0) {
+      console.table(this.performanceIssues);
+    } else {
+      console.log('✅ No se encontraron problemas de performance');
+    }
+
+    // Análisis de estilos
+    console.log(`\n🎨 Análisis de Estilos:`);
+    const computedStyles = window.getComputedStyle(document.body);
+    const fontFamily = computedStyles.fontFamily;
+    const backgroundColor = computedStyles.backgroundColor;
+    const color = computedStyles.color;
+    
+    console.log(`   Font Family: ${fontFamily}`);
+    console.log(`   Background Color: ${backgroundColor}`);
+    console.log(`   Text Color: ${color}`);
+    
+    // Verificar si Tailwind está cargado
+    const tailwindLoaded = document.querySelector('style[data-vite-dev-id*="index"]') || 
+                          Array.from(document.styleSheets).some(sheet => {
+                            try {
+                              return sheet.href?.includes('style.css') || false;
+                            } catch {
+                              return false;
+                            }
+                          });
+    
+    if (tailwindLoaded) {
+      console.log('   ✅ Tailwind CSS detectado');
+    } else {
+      console.warn('   ⚠️ Tailwind CSS no detectado');
+    }
+
+    // Verificar fuentes cargadas
+    if ('fonts' in document) {
+      (document as any).fonts.ready.then(() => {
+        const loadedFonts = (document as any).fonts.values();
+        console.log(`   Fuentes cargadas: ${Array.from(loadedFonts).length}`);
+      }).catch(() => {
+        console.warn('   ⚠️ No se pudo verificar fuentes');
+      });
     }
 
     console.log(`\n📝 Logs capturados: ${logs.length}`);
@@ -241,13 +585,19 @@ class ConsoleErrorCapture {
     }
 
     console.log(`\n📊 Total de eventos capturados: ${this.errors.length}`);
+    console.log(`📊 Total de errores de recursos: ${this.resourceErrors.length}`);
+    console.log(`📊 Total de problemas de performance: ${this.performanceIssues.length}`);
     console.groupEnd();
 
     return {
       errors,
       warnings,
       logs,
-      total: this.errors.length,
+      resourceErrors: this.resourceErrors,
+      performanceIssues: this.performanceIssues,
+      chunks,
+      stylesheets,
+      total: this.errors.length + this.resourceErrors.length + this.performanceIssues.length,
       url: window.location.href,
       isTunnel,
       timestamp: new Date().toISOString()
@@ -279,6 +629,10 @@ export function showErrorReport(): {
   errors: ConsoleError[];
   warnings: ConsoleError[];
   logs: ConsoleError[];
+  resourceErrors: ResourceError[];
+  performanceIssues: PerformanceIssue[];
+  chunks: any[];
+  stylesheets: any[];
   total: number;
   url: string;
   isTunnel: boolean;

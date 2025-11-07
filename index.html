@@ -22,6 +22,24 @@
     <meta name="twitter:site" content="@ComplicesConectaSW" />
     <meta name="twitter:image" content="/placeholder.svg" />
     
+    <!-- CRÍTICO: PRELOAD DE RECURSOS CRÍTICOS PARA CARGA RÁPIDA -->
+    <!-- SOLUCIÓN ROBUSTA: Preload explícito de CSS para evitar problemas de carga -->
+    
+    <!-- Preload de fuentes críticas -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" crossorigin="anonymous" />
+    
+    <!-- CRÍTICO: Preload de CSS críticos para asegurar carga inmediata -->
+    <!-- Vite inyectará estos automáticamente, pero el preload ayuda con túneles -->
+    <link rel="preload" href="/src/index.css" as="style" />
+    <link rel="preload" href="/src/styles/consolidated-styles.css" as="style" />
+    <link rel="preload" href="/src/styles/ui-fixes-consolidated.css" as="style" />
+    <link rel="preload" href="/src/styles/decorative-hearts.css" as="style" />
+    
+    <!-- Preload de imágenes críticas -->
+    <link rel="preload" href="/favicon.ico" as="image" crossorigin="anonymous" />
+    
     <!-- CRÍTICO: PROTECCIÓN DE WALLETS - DEBE EJECUTARSE PRIMERO ANTES DE CUALQUIER OTRO SCRIPT -->
     <!-- SOLUCIÓN ULTRA AGRESIVA: Interceptar Object.defineProperty ANTES de que las extensiones se carguen -->
     <!-- TÉCNICA: Hacer propiedades configurables PROACTIVAMENTE usando Object.defineProperty con configurable:true -->

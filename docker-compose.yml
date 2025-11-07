@@ -1,44 +1,41 @@
-version: '3.8'
-
 services:
-  neo4j:
-    image: neo4j:5.15-community
-    container_name: complices_neo4j
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: complicesconecta:latest
     ports:
-      - "7474:7474"  # Browser UI
-      - "7687:7687"  # Bolt protocol
+      - "3000:3000"
     environment:
-      - NEO4J_AUTH=neo4j/complices2025
-      - NEO4J_PLUGINS=["apoc"]
-      - NEO4J_dbms_security_procedures_unrestricted=apoc.*
-      - NEO4J_dbms_memory_heap_initial__size=512m
-      - NEO4J_dbms_memory_heap_max__size=2G
-      - NEO4J_dbms_memory_pagecache_size=1G
-    volumes:
-      - neo4j_data:/data
-      - neo4j_logs:/logs
-      - neo4j_import:/var/lib/neo4j/import
-      - neo4j_plugins:/plugins
-    networks:
-      - complices_network
-    healthcheck:
-      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "complices2025", "RETURN 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      # CRÍTICO: La clave de New Relic debe pasarse como variable de entorno
+      # Obtener desde archivo .env o variables de entorno del sistema
+      - NEW_RELIC_LICENSE_KEY=${NEW_RELIC_LICENSE_KEY:-6f647c9c6eaa46100c049ab77e900462FFFFNRAL}
+      # hCaptcha Configuration (site key para frontend)
+      - VITE_HCAPTCHA_SITE_KEY=${VITE_HCAPTCHA_SITE_KEY:-ES_7a3e04d5078346a79d1a105ea17cd320}
+      - NODE_ENV=production
+      - PORT=3000
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    depends_on:
+      - newrelic-infra
 
-volumes:
-  neo4j_data:
-    driver: local
-  neo4j_logs:
-    driver: local
-  neo4j_import:
-    driver: local
-  neo4j_plugins:
-    driver: local
-
-networks:
-  complices_network:
-    driver: bridge
-
+  # New Relic Infrastructure Agent para monitoreo de Docker
+  newrelic-infra:
+    container_name: newrelic-infra
+    build:
+      context: .
+      dockerfile: Dockerfile.newrelic-infra
+    cap_add:
+      - SYS_PTRACE
+    network_mode: host
+    pid: host
+    privileged: true
+    volumes:
+      - "/:/host:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    restart: unless-stopped

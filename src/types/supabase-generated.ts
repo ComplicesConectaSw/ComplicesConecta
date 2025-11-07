@@ -717,6 +717,455 @@ export type Database = {
         }
         Relationships: []
       }
+      club_checkins: {
+        Row: {
+          club_id: string
+          created_at: string
+          distance_meters: number
+          id: string
+          is_verified: boolean | null
+          latitude: number
+          longitude: number
+          metadata: Json | null
+          user_id: string
+          verified_at: string | null
+        }
+        Insert: {
+          club_id: string
+          created_at?: string
+          distance_meters: number
+          id?: string
+          is_verified?: boolean | null
+          latitude: number
+          longitude: number
+          metadata?: Json | null
+          user_id: string
+          verified_at?: string | null
+        }
+        Update: {
+          club_id?: string
+          created_at?: string
+          distance_meters?: number
+          id?: string
+          is_verified?: boolean | null
+          latitude?: number
+          longitude?: number
+          metadata?: Json | null
+          user_id?: string
+          verified_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "club_checkins_club_id_fkey"
+            columns: ["club_id"]
+            isOneToOne: false
+            referencedRelation: "clubs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      club_flyers: {
+        Row: {
+          ai_processing_status: string | null
+          blur_applied: boolean | null
+          club_id: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          event_date: string | null
+          event_end_date: string | null
+          id: string
+          image_url: string
+          image_url_blurred: string | null
+          image_url_watermarked: string | null
+          is_active: boolean | null
+          is_featured: boolean | null
+          metadata: Json | null
+          title: string
+          updated_at: string
+          watermark_applied: boolean | null
+        }
+        Insert: {
+          ai_processing_status?: string | null
+          blur_applied?: boolean | null
+          club_id: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          event_date?: string | null
+          event_end_date?: string | null
+          id?: string
+          image_url: string
+          image_url_blurred?: string | null
+          image_url_watermarked?: string | null
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          metadata?: Json | null
+          title: string
+          updated_at?: string
+          watermark_applied?: boolean | null
+        }
+        Update: {
+          ai_processing_status?: string | null
+          blur_applied?: boolean | null
+          club_id?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          event_date?: string | null
+          event_end_date?: string | null
+          id?: string
+          image_url?: string
+          image_url_blurred?: string | null
+          image_url_watermarked?: string | null
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          metadata?: Json | null
+          title?: string
+          updated_at?: string
+          watermark_applied?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "club_flyers_club_id_fkey"
+            columns: ["club_id"]
+            isOneToOne: false
+            referencedRelation: "clubs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      club_reviews: {
+        Row: {
+          checkin_id: string | null
+          club_id: string
+          created_at: string
+          has_verified_checkin: boolean | null
+          helpful_count: number | null
+          id: string
+          images: Json | null
+          is_featured: boolean | null
+          is_verified: boolean | null
+          metadata: Json | null
+          rating: number
+          review_text: string
+          title: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          checkin_id?: string | null
+          club_id: string
+          created_at?: string
+          has_verified_checkin?: boolean | null
+          helpful_count?: number | null
+          id?: string
+          images?: Json | null
+          is_featured?: boolean | null
+          is_verified?: boolean | null
+          metadata?: Json | null
+          rating: number
+          review_text: string
+          title?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          checkin_id?: string | null
+          club_id?: string
+          created_at?: string
+          has_verified_checkin?: boolean | null
+          helpful_count?: number | null
+          id?: string
+          images?: Json | null
+          is_featured?: boolean | null
+          is_verified?: boolean | null
+          metadata?: Json | null
+          rating?: number
+          review_text?: string
+          title?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "club_reviews_checkin_id_fkey"
+            columns: ["checkin_id"]
+            isOneToOne: false
+            referencedRelation: "club_checkins"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "club_reviews_club_id_fkey"
+            columns: ["club_id"]
+            isOneToOne: false
+            referencedRelation: "clubs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      club_verifications: {
+        Row: {
+          club_id: string
+          created_at: string
+          documents: Json | null
+          expires_at: string | null
+          id: string
+          notes: string | null
+          status: string
+          updated_at: string
+          verification_type: string
+          verified_at: string | null
+          verified_by: string
+        }
+        Insert: {
+          club_id: string
+          created_at?: string
+          documents?: Json | null
+          expires_at?: string | null
+          id?: string
+          notes?: string | null
+          status?: string
+          updated_at?: string
+          verification_type: string
+          verified_at?: string | null
+          verified_by: string
+        }
+        Update: {
+          club_id?: string
+          created_at?: string
+          documents?: Json | null
+          expires_at?: string | null
+          id?: string
+          notes?: string | null
+          status?: string
+          updated_at?: string
+          verification_type?: string
+          verified_at?: string | null
+          verified_by?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "club_verifications_club_id_fkey"
+            columns: ["club_id"]
+            isOneToOne: false
+            referencedRelation: "clubs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      clubs: {
+        Row: {
+          address: string
+          check_in_count: number | null
+          check_in_radius_meters: number | null
+          city: string
+          country: string | null
+          cover_image_url: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          email: string | null
+          id: string
+          is_active: boolean | null
+          is_featured: boolean | null
+          latitude: number
+          logo_url: string | null
+          longitude: number
+          metadata: Json | null
+          name: string
+          phone: string | null
+          rating_average: number | null
+          rating_count: number | null
+          review_count: number | null
+          slug: string
+          state: string | null
+          updated_at: string
+          verified_at: string | null
+          verified_by: string | null
+          website: string | null
+        }
+        Insert: {
+          address: string
+          check_in_count?: number | null
+          check_in_radius_meters?: number | null
+          city: string
+          country?: string | null
+          cover_image_url?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          email?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          latitude: number
+          logo_url?: string | null
+          longitude: number
+          metadata?: Json | null
+          name: string
+          phone?: string | null
+          rating_average?: number | null
+          rating_count?: number | null
+          review_count?: number | null
+          slug: string
+          state?: string | null
+          updated_at?: string
+          verified_at?: string | null
+          verified_by?: string | null
+          website?: string | null
+        }
+        Update: {
+          address?: string
+          check_in_count?: number | null
+          check_in_radius_meters?: number | null
+          city?: string
+          country?: string | null
+          cover_image_url?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          email?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          latitude?: number
+          logo_url?: string | null
+          longitude?: number
+          metadata?: Json | null
+          name?: string
+          phone?: string | null
+          rating_average?: number | null
+          rating_count?: number | null
+          review_count?: number | null
+          slug?: string
+          state?: string | null
+          updated_at?: string
+          verified_at?: string | null
+          verified_by?: string | null
+          website?: string | null
+        }
+        Relationships: []
+      }
+      cmpx_purchases: {
+        Row: {
+          bonus_cmpx: number | null
+          cmpx_amount: number
+          completed_at: string | null
+          created_at: string
+          id: string
+          metadata: Json | null
+          notes: string | null
+          package_id: string | null
+          payment_method: string | null
+          payment_status: string
+          price_mxn: number
+          status: string
+          stripe_customer_id: string | null
+          stripe_payment_intent_id: string | null
+          tokens_awarded: boolean | null
+          tokens_awarded_at: string | null
+          total_cmpx: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          bonus_cmpx?: number | null
+          cmpx_amount: number
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          notes?: string | null
+          package_id?: string | null
+          payment_method?: string | null
+          payment_status?: string
+          price_mxn: number
+          status?: string
+          stripe_customer_id?: string | null
+          stripe_payment_intent_id?: string | null
+          tokens_awarded?: boolean | null
+          tokens_awarded_at?: string | null
+          total_cmpx: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          bonus_cmpx?: number | null
+          cmpx_amount?: number
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          notes?: string | null
+          package_id?: string | null
+          payment_method?: string | null
+          payment_status?: string
+          price_mxn?: number
+          status?: string
+          stripe_customer_id?: string | null
+          stripe_payment_intent_id?: string | null
+          tokens_awarded?: boolean | null
+          tokens_awarded_at?: string | null
+          total_cmpx?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cmpx_purchases_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "cmpx_shop_packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cmpx_shop_packages: {
+        Row: {
+          bonus_cmpx: number | null
+          cmpx_amount: number
+          created_at: string
+          description: string | null
+          display_order: number | null
+          id: string
+          is_active: boolean | null
+          is_popular: boolean | null
+          name: string
+          price_mxn: number
+          price_usd: number | null
+          updated_at: string
+        }
+        Insert: {
+          bonus_cmpx?: number | null
+          cmpx_amount: number
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          id?: string
+          is_active?: boolean | null
+          is_popular?: boolean | null
+          name: string
+          price_mxn: number
+          price_usd?: number | null
+          updated_at?: string
+        }
+        Update: {
+          bonus_cmpx?: number | null
+          cmpx_amount?: number
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          id?: string
+          is_active?: boolean | null
+          is_popular?: boolean | null
+          name?: string
+          price_mxn?: number
+          price_usd?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       comment_likes: {
         Row: {
           comment_id: string
@@ -788,47 +1237,74 @@ export type Database = {
       }
       consent_verifications: {
         Row: {
+          chat_id: string | null
           confidence: number
           consent_level: string
+          consent_score: number | null
           created_at: string
           explanation: string | null
           id: string
+          is_paused: boolean | null
+          message_count: number | null
           message_id: string | null
+          pause_reason: string | null
+          reasoning: string | null
           recipient_id: string
           requires_confirmation: boolean
+          status: string | null
           suggested_action: string
           updated_at: string
           user_id: string
+          user_id1: string | null
+          user_id2: string | null
           verified: boolean
           verified_at: string | null
         }
         Insert: {
+          chat_id?: string | null
           confidence: number
           consent_level: string
+          consent_score?: number | null
           created_at?: string
           explanation?: string | null
           id?: string
+          is_paused?: boolean | null
+          message_count?: number | null
           message_id?: string | null
+          pause_reason?: string | null
+          reasoning?: string | null
           recipient_id: string
           requires_confirmation?: boolean
+          status?: string | null
           suggested_action: string
           updated_at?: string
           user_id: string
+          user_id1?: string | null
+          user_id2?: string | null
           verified?: boolean
           verified_at?: string | null
         }
         Update: {
+          chat_id?: string | null
           confidence?: number
           consent_level?: string
+          consent_score?: number | null
           created_at?: string
           explanation?: string | null
           id?: string
+          is_paused?: boolean | null
+          message_count?: number | null
           message_id?: string | null
+          pause_reason?: string | null
+          reasoning?: string | null
           recipient_id?: string
           requires_confirmation?: boolean
+          status?: string | null
           suggested_action?: string
           updated_at?: string
           user_id?: string
+          user_id1?: string | null
+          user_id2?: string | null
           verified?: boolean
           verified_at?: string | null
         }
@@ -886,13 +1362,17 @@ export type Database = {
       }
       couple_events: {
         Row: {
+          cmpx_reward: number | null
+          co2_saved: number | null
           couple_id: string | null
           created_at: string | null
+          current_participants: number | null
           date: string
           description: string
           event_type: string
           id: string
           is_public: boolean | null
+          is_vip: boolean | null
           location: string
           max_participants: number | null
           participants: string[] | null
@@ -900,13 +1380,17 @@ export type Database = {
           updated_at: string | null
         }
         Insert: {
+          cmpx_reward?: number | null
+          co2_saved?: number | null
           couple_id?: string | null
           created_at?: string | null
+          current_participants?: number | null
           date: string
           description: string
           event_type: string
           id?: string
           is_public?: boolean | null
+          is_vip?: boolean | null
           location: string
           max_participants?: number | null
           participants?: string[] | null
@@ -914,13 +1398,17 @@ export type Database = {
           updated_at?: string | null
         }
         Update: {
+          cmpx_reward?: number | null
+          co2_saved?: number | null
           couple_id?: string | null
           created_at?: string | null
+          current_participants?: number | null
           date?: string
           description?: string
           event_type?: string
           id?: string
           is_public?: boolean | null
+          is_vip?: boolean | null
           location?: string
           max_participants?: number | null
           participants?: string[] | null
@@ -1965,6 +2453,81 @@ export type Database = {
           },
         ]
       }
+      digital_fingerprints: {
+        Row: {
+          ban_reason: string | null
+          banned_at: string | null
+          browser_fingerprint: string | null
+          canvas_data: string | null
+          canvas_hash: string
+          combined_hash: string
+          created_at: string
+          first_seen_at: string
+          id: string
+          ip_address: unknown
+          is_banned: boolean | null
+          language: string | null
+          last_seen_at: string
+          metadata: Json | null
+          platform: string | null
+          screen_resolution: string | null
+          seen_count: number | null
+          timezone: string | null
+          updated_at: string
+          user_agent: string | null
+          user_id: string | null
+          worldid_nullifier_hash: string | null
+        }
+        Insert: {
+          ban_reason?: string | null
+          banned_at?: string | null
+          browser_fingerprint?: string | null
+          canvas_data?: string | null
+          canvas_hash: string
+          combined_hash: string
+          created_at?: string
+          first_seen_at?: string
+          id?: string
+          ip_address?: unknown
+          is_banned?: boolean | null
+          language?: string | null
+          last_seen_at?: string
+          metadata?: Json | null
+          platform?: string | null
+          screen_resolution?: string | null
+          seen_count?: number | null
+          timezone?: string | null
+          updated_at?: string
+          user_agent?: string | null
+          user_id?: string | null
+          worldid_nullifier_hash?: string | null
+        }
+        Update: {
+          ban_reason?: string | null
+          banned_at?: string | null
+          browser_fingerprint?: string | null
+          canvas_data?: string | null
+          canvas_hash?: string
+          combined_hash?: string
+          created_at?: string
+          first_seen_at?: string
+          id?: string
+          ip_address?: unknown
+          is_banned?: boolean | null
+          language?: string | null
+          last_seen_at?: string
+          metadata?: Json | null
+          platform?: string | null
+          screen_resolution?: string | null
+          seen_count?: number | null
+          timezone?: string | null
+          updated_at?: string
+          user_agent?: string | null
+          user_id?: string | null
+          worldid_nullifier_hash?: string | null
+        }
+        Relationships: []
+      }
       error_alerts: {
         Row: {
           category: string
@@ -2015,6 +2578,44 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      event_participations: {
+        Row: {
+          cmpx_rewarded: number
+          co2_saved: number
+          created_at: string
+          event_id: string
+          id: string
+          participated_at: string
+          user_id: string
+        }
+        Insert: {
+          cmpx_rewarded?: number
+          co2_saved?: number
+          created_at?: string
+          event_id: string
+          id?: string
+          participated_at?: string
+          user_id: string
+        }
+        Update: {
+          cmpx_rewarded?: number
+          co2_saved?: number
+          created_at?: string
+          event_id?: string
+          id?: string
+          participated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_participations_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "couple_events"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       explicit_preferences: {
         Row: {
@@ -2169,6 +2770,63 @@ export type Database = {
         }
         Relationships: []
       }
+      gallery_commissions: {
+        Row: {
+          amount_cmpx: number
+          commission_amount_cmpx: number
+          commission_percentage: number
+          created_at: string
+          creator_amount_cmpx: number
+          creator_id: string
+          creator_paid: boolean | null
+          creator_paid_at: string | null
+          gallery_id: string
+          id: string
+          metadata: Json | null
+          notes: string | null
+          platform_received: boolean | null
+          platform_received_at: string | null
+          transaction_type: string
+          updated_at: string
+        }
+        Insert: {
+          amount_cmpx: number
+          commission_amount_cmpx: number
+          commission_percentage?: number
+          created_at?: string
+          creator_amount_cmpx: number
+          creator_id: string
+          creator_paid?: boolean | null
+          creator_paid_at?: string | null
+          gallery_id: string
+          id?: string
+          metadata?: Json | null
+          notes?: string | null
+          platform_received?: boolean | null
+          platform_received_at?: string | null
+          transaction_type: string
+          updated_at?: string
+        }
+        Update: {
+          amount_cmpx?: number
+          commission_amount_cmpx?: number
+          commission_percentage?: number
+          created_at?: string
+          creator_amount_cmpx?: number
+          creator_id?: string
+          creator_paid?: boolean | null
+          creator_paid_at?: string | null
+          gallery_id?: string
+          id?: string
+          metadata?: Json | null
+          notes?: string | null
+          platform_received?: boolean | null
+          platform_received_at?: string | null
+          transaction_type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       gallery_permissions: {
         Row: {
           created_at: string | null
@@ -2270,6 +2928,224 @@ export type Database = {
           updated_at?: string | null
           uploaded_at?: string | null
           url?: string
+        }
+        Relationships: []
+      }
+      investment_returns: {
+        Row: {
+          created_at: string
+          due_date: string
+          id: string
+          investment_id: string
+          metadata: Json | null
+          notes: string | null
+          paid_at: string | null
+          payment_date: string | null
+          payment_method: string | null
+          payment_status: string
+          return_amount_mxn: number
+          return_percentage: number
+          return_period_end: string
+          return_period_start: string
+          status: string
+          stripe_payout_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          due_date: string
+          id?: string
+          investment_id: string
+          metadata?: Json | null
+          notes?: string | null
+          paid_at?: string | null
+          payment_date?: string | null
+          payment_method?: string | null
+          payment_status?: string
+          return_amount_mxn: number
+          return_percentage: number
+          return_period_end: string
+          return_period_start: string
+          status?: string
+          stripe_payout_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          due_date?: string
+          id?: string
+          investment_id?: string
+          metadata?: Json | null
+          notes?: string | null
+          paid_at?: string | null
+          payment_date?: string | null
+          payment_method?: string | null
+          payment_status?: string
+          return_amount_mxn?: number
+          return_percentage?: number
+          return_period_end?: string
+          return_period_start?: string
+          status?: string
+          stripe_payout_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "investment_returns_investment_id_fkey"
+            columns: ["investment_id"]
+            isOneToOne: false
+            referencedRelation: "investments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      investment_tiers: {
+        Row: {
+          amount_mxn: number
+          benefits: Json | null
+          cmpx_tokens_rewarded: number
+          created_at: string
+          description: string | null
+          display_order: number | null
+          equity_percentage: number | null
+          id: string
+          includes_equity: boolean | null
+          includes_vip_dinner: boolean | null
+          is_active: boolean | null
+          name: string
+          return_percentage: number
+          return_type: string
+          tier_key: string
+          updated_at: string
+        }
+        Insert: {
+          amount_mxn: number
+          benefits?: Json | null
+          cmpx_tokens_rewarded?: number
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          equity_percentage?: number | null
+          id?: string
+          includes_equity?: boolean | null
+          includes_vip_dinner?: boolean | null
+          is_active?: boolean | null
+          name: string
+          return_percentage?: number
+          return_type?: string
+          tier_key: string
+          updated_at?: string
+        }
+        Update: {
+          amount_mxn?: number
+          benefits?: Json | null
+          cmpx_tokens_rewarded?: number
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          equity_percentage?: number | null
+          id?: string
+          includes_equity?: boolean | null
+          includes_vip_dinner?: boolean | null
+          is_active?: boolean | null
+          name?: string
+          return_percentage?: number
+          return_type?: string
+          tier_key?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      investments: {
+        Row: {
+          activated_at: string | null
+          amount_mxn: number
+          amount_usd: number | null
+          benefits: Json | null
+          cmpx_tokens_rewarded: number | null
+          completed_at: string | null
+          contract_signed: boolean | null
+          contract_signed_at: string | null
+          created_at: string
+          currency: string | null
+          equity_percentage: number | null
+          id: string
+          includes_equity: boolean | null
+          includes_vip_dinner: boolean | null
+          metadata: Json | null
+          notes: string | null
+          payment_method: string | null
+          payment_status: string
+          return_percentage: number
+          return_type: string
+          safte_contract_url: string | null
+          status: string
+          stripe_customer_id: string | null
+          stripe_payment_intent_id: string | null
+          tier: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          activated_at?: string | null
+          amount_mxn: number
+          amount_usd?: number | null
+          benefits?: Json | null
+          cmpx_tokens_rewarded?: number | null
+          completed_at?: string | null
+          contract_signed?: boolean | null
+          contract_signed_at?: string | null
+          created_at?: string
+          currency?: string | null
+          equity_percentage?: number | null
+          id?: string
+          includes_equity?: boolean | null
+          includes_vip_dinner?: boolean | null
+          metadata?: Json | null
+          notes?: string | null
+          payment_method?: string | null
+          payment_status?: string
+          return_percentage?: number
+          return_type?: string
+          safte_contract_url?: string | null
+          status?: string
+          stripe_customer_id?: string | null
+          stripe_payment_intent_id?: string | null
+          tier: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          activated_at?: string | null
+          amount_mxn?: number
+          amount_usd?: number | null
+          benefits?: Json | null
+          cmpx_tokens_rewarded?: number | null
+          completed_at?: string | null
+          contract_signed?: boolean | null
+          contract_signed_at?: string | null
+          created_at?: string
+          currency?: string | null
+          equity_percentage?: number | null
+          id?: string
+          includes_equity?: boolean | null
+          includes_vip_dinner?: boolean | null
+          metadata?: Json | null
+          notes?: string | null
+          payment_method?: string | null
+          payment_status?: string
+          return_percentage?: number
+          return_type?: string
+          safte_contract_url?: string | null
+          status?: string
+          stripe_customer_id?: string | null
+          stripe_payment_intent_id?: string | null
+          tier?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -2690,6 +3566,75 @@ export type Database = {
         }
         Relationships: []
       }
+      moderator_payments: {
+        Row: {
+          actions_taken: number | null
+          created_at: string
+          id: string
+          metadata: Json | null
+          moderator_id: string
+          moderator_level: string
+          notes: string | null
+          payment_amount_mxn: number
+          payment_date: string | null
+          payment_method: string | null
+          payment_period_end: string
+          payment_period_start: string
+          payment_status: string
+          quality_score: number | null
+          reports_reviewed: number | null
+          revenue_percentage: number
+          stripe_payout_id: string | null
+          total_minutes_worked: number | null
+          total_revenue_mxn: number
+          updated_at: string
+        }
+        Insert: {
+          actions_taken?: number | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          moderator_id: string
+          moderator_level: string
+          notes?: string | null
+          payment_amount_mxn: number
+          payment_date?: string | null
+          payment_method?: string | null
+          payment_period_end: string
+          payment_period_start: string
+          payment_status?: string
+          quality_score?: number | null
+          reports_reviewed?: number | null
+          revenue_percentage: number
+          stripe_payout_id?: string | null
+          total_minutes_worked?: number | null
+          total_revenue_mxn?: number
+          updated_at?: string
+        }
+        Update: {
+          actions_taken?: number | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          moderator_id?: string
+          moderator_level?: string
+          notes?: string | null
+          payment_amount_mxn?: number
+          payment_date?: string | null
+          payment_method?: string | null
+          payment_period_end?: string
+          payment_period_start?: string
+          payment_status?: string
+          quality_score?: number | null
+          reports_reviewed?: number | null
+          revenue_percentage?: number
+          stripe_payout_id?: string | null
+          total_minutes_worked?: number | null
+          total_revenue_mxn?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       moderator_requests: {
         Row: {
           acepta_terminos: boolean | null
@@ -2753,6 +3698,48 @@ export type Database = {
           telefono?: string
           updated_at?: string | null
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      moderator_sessions: {
+        Row: {
+          actions_taken: number | null
+          created_at: string
+          id: string
+          is_active: boolean | null
+          metadata: Json | null
+          moderator_id: string
+          reports_reviewed: number | null
+          session_end: string | null
+          session_start: string
+          total_minutes: number | null
+          updated_at: string
+        }
+        Insert: {
+          actions_taken?: number | null
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          metadata?: Json | null
+          moderator_id: string
+          reports_reviewed?: number | null
+          session_end?: string | null
+          session_start?: string
+          total_minutes?: number | null
+          updated_at?: string
+        }
+        Update: {
+          actions_taken?: number | null
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          metadata?: Json | null
+          moderator_id?: string
+          reports_reviewed?: number | null
+          session_end?: string | null
+          session_start?: string
+          total_minutes?: number | null
+          updated_at?: string
         }
         Relationships: []
       }
@@ -2964,6 +3951,56 @@ export type Database = {
           },
         ]
       }
+      nft_verifications: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          minted_with_gtk: number
+          network: string
+          nft_contract_address: string
+          nft_token_id: string
+          staking_record_id: string | null
+          updated_at: string
+          user_id: string
+          verified_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          minted_with_gtk: number
+          network: string
+          nft_contract_address: string
+          nft_token_id: string
+          staking_record_id?: string | null
+          updated_at?: string
+          user_id: string
+          verified_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          minted_with_gtk?: number
+          network?: string
+          nft_contract_address?: string
+          nft_token_id?: string
+          staking_record_id?: string | null
+          updated_at?: string
+          user_id?: string
+          verified_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "nft_verifications_staking_record_id_fkey"
+            columns: ["staking_record_id"]
+            isOneToOne: false
+            referencedRelation: "staking_records"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notification_history: {
         Row: {
           body: string
@@ -3164,6 +4201,81 @@ export type Database = {
           user_agent?: string | null
           user_id?: string | null
           value?: number
+        }
+        Relationships: []
+      }
+      permanent_bans: {
+        Row: {
+          appeal_rejected_reason: string | null
+          appeal_requested: boolean | null
+          appeal_reviewed_at: string | null
+          appeal_reviewed_by: string | null
+          ban_reason: string
+          ban_type: string
+          banned_at: string
+          banned_by: string | null
+          canvas_hash: string | null
+          combined_hash: string | null
+          created_at: string
+          evidence: Json | null
+          fingerprint_ids: string[] | null
+          id: string
+          is_active: boolean | null
+          metadata: Json | null
+          moderation_log_id: string | null
+          notes: string | null
+          severity: string
+          updated_at: string
+          user_id: string | null
+          worldid_nullifier_hash: string | null
+        }
+        Insert: {
+          appeal_rejected_reason?: string | null
+          appeal_requested?: boolean | null
+          appeal_reviewed_at?: string | null
+          appeal_reviewed_by?: string | null
+          ban_reason: string
+          ban_type: string
+          banned_at?: string
+          banned_by?: string | null
+          canvas_hash?: string | null
+          combined_hash?: string | null
+          created_at?: string
+          evidence?: Json | null
+          fingerprint_ids?: string[] | null
+          id?: string
+          is_active?: boolean | null
+          metadata?: Json | null
+          moderation_log_id?: string | null
+          notes?: string | null
+          severity: string
+          updated_at?: string
+          user_id?: string | null
+          worldid_nullifier_hash?: string | null
+        }
+        Update: {
+          appeal_rejected_reason?: string | null
+          appeal_requested?: boolean | null
+          appeal_reviewed_at?: string | null
+          appeal_reviewed_by?: string | null
+          ban_reason?: string
+          ban_type?: string
+          banned_at?: string
+          banned_by?: string | null
+          canvas_hash?: string | null
+          combined_hash?: string | null
+          created_at?: string
+          evidence?: Json | null
+          fingerprint_ids?: string[] | null
+          id?: string
+          is_active?: boolean | null
+          metadata?: Json | null
+          moderation_log_id?: string | null
+          notes?: string | null
+          severity?: string
+          updated_at?: string
+          user_id?: string | null
+          worldid_nullifier_hash?: string | null
         }
         Relationships: []
       }
@@ -3373,6 +4485,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      predictive_match_scores: {
+        Row: {
+          compatibility_score: number
+          confidence: number
+          created_at: string
+          emotional_score: number
+          graph_score: number
+          id: string
+          matched_user_id: string
+          reasons: string[] | null
+          social_score: number
+          total_score: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          compatibility_score: number
+          confidence: number
+          created_at?: string
+          emotional_score: number
+          graph_score: number
+          id?: string
+          matched_user_id: string
+          reasons?: string[] | null
+          social_score: number
+          total_score: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          compatibility_score?: number
+          confidence?: number
+          created_at?: string
+          emotional_score?: number
+          graph_score?: number
+          id?: string
+          matched_user_id?: string
+          reasons?: string[] | null
+          social_score?: number
+          total_score?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       profile_cache: {
         Row: {
@@ -3701,12 +4858,98 @@ export type Database = {
           },
         ]
       }
+      report_ai_classification: {
+        Row: {
+          ai_category: string | null
+          ai_confidence: number
+          ai_model_version: string | null
+          ai_severity: string
+          ai_summary: string | null
+          ai_tags: Json | null
+          created_at: string
+          detected_explicit: number | null
+          detected_harassment: number | null
+          detected_spam: number | null
+          detected_toxicity: number | null
+          human_notes: string | null
+          human_override: boolean | null
+          human_reviewed: boolean | null
+          human_severity: string | null
+          id: string
+          metadata: Json | null
+          processing_time_ms: number | null
+          report_id: string
+          suggested_action: string | null
+          suggested_priority: string
+          updated_at: string
+        }
+        Insert: {
+          ai_category?: string | null
+          ai_confidence: number
+          ai_model_version?: string | null
+          ai_severity: string
+          ai_summary?: string | null
+          ai_tags?: Json | null
+          created_at?: string
+          detected_explicit?: number | null
+          detected_harassment?: number | null
+          detected_spam?: number | null
+          detected_toxicity?: number | null
+          human_notes?: string | null
+          human_override?: boolean | null
+          human_reviewed?: boolean | null
+          human_severity?: string | null
+          id?: string
+          metadata?: Json | null
+          processing_time_ms?: number | null
+          report_id: string
+          suggested_action?: string | null
+          suggested_priority: string
+          updated_at?: string
+        }
+        Update: {
+          ai_category?: string | null
+          ai_confidence?: number
+          ai_model_version?: string | null
+          ai_severity?: string
+          ai_summary?: string | null
+          ai_tags?: Json | null
+          created_at?: string
+          detected_explicit?: number | null
+          detected_harassment?: number | null
+          detected_spam?: number | null
+          detected_toxicity?: number | null
+          human_notes?: string | null
+          human_override?: boolean | null
+          human_reviewed?: boolean | null
+          human_severity?: string | null
+          id?: string
+          metadata?: Json | null
+          processing_time_ms?: number | null
+          report_id?: string
+          suggested_action?: string | null
+          suggested_priority?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "report_ai_classification_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       reports: {
         Row: {
+          ai_classified: boolean | null
+          assigned_to: string | null
           content_type: string
           created_at: string
           description: string | null
           id: string
+          queue_position: number | null
           reason: string
           reported_content_id: string
           reported_user_id: string
@@ -3719,10 +4962,13 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          ai_classified?: boolean | null
+          assigned_to?: string | null
           content_type: string
           created_at?: string
           description?: string | null
           id?: string
+          queue_position?: number | null
           reason: string
           reported_content_id: string
           reported_user_id: string
@@ -3735,10 +4981,13 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          ai_classified?: boolean | null
+          assigned_to?: string | null
           content_type?: string
           created_at?: string
           description?: string | null
           id?: string
+          queue_position?: number | null
           reason?: string
           reported_content_id?: string
           reported_user_id?: string
@@ -4363,6 +5612,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      stripe_events: {
+        Row: {
+          created_at: string
+          error_message: string | null
+          event_data: Json
+          event_type: string
+          id: string
+          processed: boolean | null
+          processed_at: string | null
+          stripe_event_id: string
+        }
+        Insert: {
+          created_at?: string
+          error_message?: string | null
+          event_data: Json
+          event_type: string
+          id?: string
+          processed?: boolean | null
+          processed_at?: string | null
+          stripe_event_id: string
+        }
+        Update: {
+          created_at?: string
+          error_message?: string | null
+          event_data?: Json
+          event_type?: string
+          id?: string
+          processed?: boolean | null
+          processed_at?: string | null
+          stripe_event_id?: string
+        }
+        Relationships: []
       }
       subscribers: {
         Row: {
@@ -5785,6 +7067,29 @@ export type Database = {
         Args: { user1_uuid: string; user2_uuid: string }
         Returns: number
       }
+      calculate_gallery_commission: {
+        Args: { p_amount_cmpx: number; p_commission_percentage?: number }
+        Returns: {
+          commission_amount: number
+          creator_amount: number
+        }[]
+      }
+      calculate_moderator_payment: {
+        Args: {
+          p_moderator_id: string
+          p_period_end: string
+          p_period_start: string
+        }
+        Returns: number
+      }
+      check_fingerprint_banned: {
+        Args: {
+          p_canvas_hash?: string
+          p_combined_hash?: string
+          p_worldid_nullifier_hash?: string
+        }
+        Returns: boolean
+      }
       check_summary_rate_limit: {
         Args: { p_max_per_day?: number; p_user_id: string }
         Returns: boolean
@@ -5802,6 +7107,10 @@ export type Database = {
           user_count: number
         }[]
       }
+      create_annual_returns: {
+        Args: { investment_uuid: string }
+        Returns: undefined
+      }
       create_notification: {
         Args: {
           body: string
@@ -5811,6 +7120,19 @@ export type Database = {
           user_id: string
         }
         Returns: Json
+      }
+      create_permanent_ban: {
+        Args: {
+          p_ban_reason: string
+          p_banned_by: string
+          p_canvas_hash: string
+          p_combined_hash: string
+          p_evidence?: Json
+          p_severity?: string
+          p_user_id: string
+          p_worldid_nullifier_hash?: string
+        }
+        Returns: string
       }
       create_post:
         | {
@@ -5851,6 +7173,8 @@ export type Database = {
               video_url: string
             }[]
           }
+      date_trunc_day: { Args: { ts: string }; Returns: string }
+      earth: { Args: never; Returns: number }
       generate_couple_report: {
         Args: { couple_id_param: string }
         Returns: Json
@@ -5974,6 +7298,16 @@ export type Database = {
         Args: { new_user_id: string; referral_code_param: string }
         Returns: Json
       }
+      record_gallery_commission: {
+        Args: {
+          p_amount_cmpx: number
+          p_commission_percentage?: number
+          p_creator_id: string
+          p_gallery_id: string
+          p_transaction_type: string
+        }
+        Returns: string
+      }
       remove_post_like: {
         Args: { p_post_id: string; p_user_id: string }
         Returns: undefined
@@ -5989,6 +7323,10 @@ export type Database = {
       }
       toggle_post_like: {
         Args: { p_post_id: string; p_user_id: string }
+        Returns: boolean
+      }
+      verify_checkin_distance: {
+        Args: { p_club_id: string; p_latitude: number; p_longitude: number }
         Returns: boolean
       }
     }

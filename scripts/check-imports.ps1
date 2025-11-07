@@ -47,7 +47,19 @@ foreach ($file in $files) {
 
                 # Si es ruta relativa, comprobar existencia
                 if ($path.StartsWith(".")) {
-                    $resolved = Resolve-Path -Path (Join-Path $file.DirectoryName $path) -ErrorAction SilentlyContinue
+                    $basePath = $file.DirectoryName
+                    $resolved = $null
+                    
+                    # Intentar resolver con diferentes extensiones
+                    $extensions = @("", ".ts", ".tsx", ".js", ".jsx", "/index.ts", "/index.tsx", "/index.js", "/index.jsx")
+                    foreach ($ext in $extensions) {
+                        $testPath = Join-Path $basePath "$path$ext"
+                        if (Test-Path $testPath) {
+                            $resolved = $testPath
+                            break
+                        }
+                    }
+                    
                     if (-not $resolved) {
                         Write-Host "❌ Import roto: '$path' en $($file.Name)" -ForegroundColor Red
                         $brokenImports++
@@ -66,9 +78,18 @@ foreach ($file in $files) {
                     }
 
                     # Verificar si la variable se usa en el archivo
-                    if ($content -notmatch "\b$([regex]::Escape($v))\b") {
-                        Write-Host "⚠️ Import no usado: '$v' en $($file.Name)" -ForegroundColor DarkYellow
-                        $unusedImports++
+                    # Ignorar tipos TypeScript que se usan en definiciones de tipos
+                    $isTypeOnly = $v -match "^(type\s+)?[A-Z]" -or $symbols -match "type\s+$v"
+                    $isUsed = $content -match "\b$([regex]::Escape($v))\b"
+                    
+                    # Para tipos, verificar uso en definiciones de tipos (Database['public'], etc.)
+                    if (-not $isUsed -and -not $isTypeOnly) {
+                        # Verificar si se usa en definiciones de tipos TypeScript
+                        $typePattern = ":\s*$([regex]::Escape($v))|<\s*$([regex]::Escape($v))|$([regex]::Escape($v))\s*\[|$([regex]::Escape($v))\s*\{"
+                        if ($content -notmatch $typePattern) {
+                            Write-Host "⚠️ Import no usado: '$v' en $($file.Name)" -ForegroundColor DarkYellow
+                            $unusedImports++
+                        }
                     }
                 }
             }

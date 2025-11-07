@@ -14,7 +14,7 @@ foreach ($dep in $packageJson.devDependencies.PSObject.Properties) {
     $installedDevDeps[$dep.Name] = $dep.Value
 }
 
-# Módulos que se intentan cargar dinámicamente
+# Modulos que se intentan cargar dinamicamente
 $dynamicImports = @(
     @{ Name = "web3"; File = "src/utils/dynamicImports.ts"; Line = 48; Required = $false; Description = "Web3.js SDK para Ethereum" },
     @{ Name = "ethers"; File = "src/utils/dynamicImports.ts"; Line = 80; Required = $false; Description = "Ethers.js SDK para Ethereum" },
@@ -77,7 +77,11 @@ if ($missingDeps.Count -gt 0) {
 
 if ($optionalDeps.Count -gt 0) {
     Write-Host "`nCOMANDO PARA INSTALAR DEPENDENCIAS OPCIONALES:" -ForegroundColor Cyan
-    $installCmd = "npm install " + ($optionalDeps | ForEach-Object { $_.Name } | Join-String -Separator " ")
+    $depNames = @()
+    foreach ($dep in $optionalDeps) {
+        $depNames += $dep.Name
+    }
+    $installCmd = "npm install " + ($depNames -join " ")
     Write-Host "   $installCmd" -ForegroundColor White
 }
 
@@ -104,8 +108,8 @@ $reportLines += ""
 if ($optionalDeps.Count -gt 0) {
     foreach ($dep in $optionalDeps) {
         $reportLines += "- **$($dep.Name)** - $($dep.Description)"
-        $reportLines += "  - Archivo: ``$($dep.File):$($dep.Line)``"
-        $reportLines += "  - Comando: ``npm install $($dep.Name)``"
+        $reportLines += "  - Archivo: '$($dep.File):$($dep.Line)'"
+        $reportLines += "  - Comando: 'npm install $($dep.Name)'"
         $reportLines += ""
     }
 } else {
@@ -119,8 +123,8 @@ $reportLines += ""
 if ($missingDeps.Count -gt 0) {
     foreach ($dep in $missingDeps) {
         $reportLines += "- **$($dep.Name)**"
-        $reportLines += "  - Archivo: ``$($dep.File):$($dep.Line)``"
-        $reportLines += "  - Comando: ``npm install $($dep.Name)``"
+        $reportLines += "  - Archivo: '$($dep.File):$($dep.Line)'"
+        $reportLines += "  - Comando: 'npm install $($dep.Name)'"
         $reportLines += ""
     }
 } else {
@@ -131,10 +135,14 @@ if ($missingDeps.Count -gt 0) {
 if ($optionalDeps.Count -gt 0) {
     $reportLines += "## Comando para Instalar Todas las Dependencias Opcionales"
     $reportLines += ""
-    $reportLines += "```bash"
-    $installCmd = "npm install " + ($optionalDeps | ForEach-Object { $_.Name } | Join-String -Separator " ")
+    $reportLines += "``bash"
+    $depNames = @()
+    foreach ($dep in $optionalDeps) {
+        $depNames += $dep.Name
+    }
+    $installCmd = "npm install " + ($depNames -join " ")
     $reportLines += $installCmd
-    $reportLines += "```"
+    $reportLines += "``"
     $reportLines += ""
 }
 
