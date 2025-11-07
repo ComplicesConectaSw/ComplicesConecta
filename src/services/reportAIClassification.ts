@@ -118,6 +118,10 @@ export const classifyReportWithAI = async (
       suggested_action,
     };
 
+    if (!supabase) {
+      throw new Error('Supabase no está disponible');
+    }
+
     // Guardar clasificación en BD
     await supabase
       .from('report_ai_classification')
@@ -149,7 +153,7 @@ export const classifyReportWithAI = async (
 
     return result;
   } catch (error) {
-    logger.error('Error clasificando reporte con IA:', error);
+    logger.error('Error clasificando reporte con IA:', { error: error instanceof Error ? error.message : String(error) });
     throw error;
   }
 };
@@ -159,6 +163,10 @@ export const classifyReportWithAI = async (
  */
 export const getReportsQueue = async (): Promise<ReportWithClassification[]> => {
   try {
+    if (!supabase) {
+      throw new Error('Supabase no está disponible');
+    }
+
     const { data: reports, error } = await supabase
       .from('reports')
       .select(`
@@ -172,13 +180,13 @@ export const getReportsQueue = async (): Promise<ReportWithClassification[]> => 
 
     if (error) throw error;
 
-    return (reports || []).map((report: any) => ({
+    return (reports || []).map((report: ReportWithClassification & { ai_classification?: AIClassificationResult[] }) => ({
       ...report,
       ai_classified: report.ai_classified || false,
       ai_classification: report.ai_classification?.[0] || null,
     }));
   } catch (error) {
-    logger.error('Error obteniendo cola de reportes:', error);
+    logger.error('Error obteniendo cola de reportes:', { error: error instanceof Error ? error.message : String(error) });
     throw error;
   }
 };
@@ -191,6 +199,10 @@ export const assignReportToModerator = async (
   moderatorId: string
 ): Promise<void> => {
   try {
+    if (!supabase) {
+      throw new Error('Supabase no está disponible');
+    }
+
     const { error } = await supabase
       .from('reports')
       .update({
@@ -201,7 +213,7 @@ export const assignReportToModerator = async (
 
     if (error) throw error;
   } catch (error) {
-    logger.error('Error asignando reporte:', error);
+    logger.error('Error asignando reporte:', { error: error instanceof Error ? error.message : String(error) });
     throw error;
   }
 };

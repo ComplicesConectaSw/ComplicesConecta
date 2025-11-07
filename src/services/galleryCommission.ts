@@ -17,6 +17,10 @@ export const recordGalleryCommission = async (
   params: GalleryCommissionParams
 ): Promise<string | null> => {
   try {
+    if (!supabase) {
+      throw new Error('Supabase no está disponible');
+    }
+
     logger.info('💰 Registrando comisión de galería', {
       galleryId: params.galleryId,
       creatorId: params.creatorId.substring(0, 8) + '***',
@@ -42,7 +46,7 @@ export const recordGalleryCommission = async (
 
     return data;
   } catch (error) {
-    logger.error('Error registrando comisión de galería:', error);
+    logger.error('Error registrando comisión de galería:', { error: error instanceof Error ? error.message : String(error) });
     throw error;
   }
 };
@@ -52,8 +56,12 @@ export const recordGalleryCommission = async (
  */
 export const getCreatorPendingCommissions = async (
   creatorId: string
-): Promise<any[]> => {
+): Promise<unknown[]> => {
   try {
+    if (!supabase) {
+      throw new Error('Supabase no está disponible');
+    }
+
     const { data, error } = await supabase
       .from('gallery_commissions')
       .select('*')
@@ -65,7 +73,7 @@ export const getCreatorPendingCommissions = async (
 
     return data || [];
   } catch (error) {
-    logger.error('Error obteniendo comisiones pendientes:', error);
+    logger.error('Error obteniendo comisiones pendientes:', { error: error instanceof Error ? error.message : String(error) });
     throw error;
   }
 };
@@ -82,6 +90,10 @@ export const getCreatorCommissionStats = async (
   platformCommission: number;
 }> => {
   try {
+    if (!supabase) {
+      throw new Error('Supabase no está disponible');
+    }
+
     const { data, error } = await supabase
       .from('gallery_commissions')
       .select('creator_amount_cmpx, commission_amount_cmpx, creator_paid')
@@ -96,7 +108,7 @@ export const getCreatorCommissionStats = async (
       platformCommission: 0,
     };
 
-    (data || []).forEach((commission) => {
+    (data || []).forEach((commission: { creator_amount_cmpx: number; commission_amount_cmpx: number; creator_paid: boolean }) => {
       stats.totalCommissions += commission.creator_amount_cmpx + commission.commission_amount_cmpx;
       stats.platformCommission += commission.commission_amount_cmpx;
       
@@ -109,7 +121,7 @@ export const getCreatorCommissionStats = async (
 
     return stats;
   } catch (error) {
-    logger.error('Error obteniendo estadísticas de comisiones:', error);
+    logger.error('Error obteniendo estadísticas de comisiones:', { error: error instanceof Error ? error.message : String(error) });
     throw error;
   }
 };

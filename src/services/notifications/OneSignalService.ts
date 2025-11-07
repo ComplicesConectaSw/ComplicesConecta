@@ -99,12 +99,14 @@ class OneSignalService {
       logger.info('✅ OneSignal inicializado correctamente');
 
       // Registrar usuario en Supabase si está autenticado
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        await this.registerUser(user.id);
+      if (supabase) {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          await this.registerUser(user.id);
+        }
       }
     } catch (error) {
-      logger.error('Error inicializando OneSignal', { error });
+      logger.error('Error inicializando OneSignal', { error: error instanceof Error ? error.message : String(error) });
     }
   }
 
@@ -141,7 +143,7 @@ class OneSignalService {
           });
 
         if (error) {
-          logger.error('Error guardando token de OneSignal', { error });
+          logger.error('Error guardando token de OneSignal', { error: error instanceof Error ? error.message : String(error) });
         } else {
           logger.info('✅ Usuario registrado en OneSignal', {
             userId: userId.substring(0, 8) + '***',
@@ -150,7 +152,7 @@ class OneSignalService {
         }
       }
     } catch (error) {
-      logger.error('Error registrando usuario en OneSignal', { error });
+      logger.error('Error registrando usuario en OneSignal', { error: error instanceof Error ? error.message : String(error) });
     }
   }
 
@@ -193,7 +195,7 @@ class OneSignalService {
 
       return true;
     } catch (error) {
-      logger.error('Error enviando notificación OneSignal', { error });
+      logger.error('Error enviando notificación OneSignal', { error: error instanceof Error ? error.message : String(error) });
       return false;
     }
   }
@@ -223,7 +225,7 @@ class OneSignalService {
         return false;
       }
     } catch (error) {
-      logger.error('Error solicitando permiso de notificaciones', { error });
+      logger.error('Error solicitando permiso de notificaciones', { error: error instanceof Error ? error.message : String(error) });
       return false;
     }
   }

@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { MapPin, Star, Clock, Users, Map, CheckCircle, Calendar, Image as ImageIcon } from 'lucide-react';
+import { MapPin, Star, Users, CheckCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
@@ -12,7 +12,6 @@ import { logger } from '@/lib/logger';
 import type { Database } from '@/types/supabase';
 
 type ClubRow = Database['public']['Tables']['clubs']['Row'];
-type ClubCheckinRow = Database['public']['Tables']['club_checkins']['Row'];
 
 interface Club extends ClubRow {
   description?: string | null;
@@ -27,10 +26,8 @@ interface Club extends ClubRow {
   rating_count: number;
   review_count: number;
   check_in_count: number;
-  check_in_radius_meters: number;
+  check_in_radius_meters: number | null;
 }
-
-interface ClubCheckin extends ClubCheckinRow {}
 
 const Clubs = () => {
   const { user, isAuthenticated } = useAuth();
@@ -76,6 +73,9 @@ const Clubs = () => {
   const loadClubs = async () => {
     try {
       setLoading(true);
+      if (!supabase) {
+        throw new Error('Supabase no está disponible');
+      }
       const { data, error } = await supabase
         .from('clubs')
         .select('*')
@@ -89,7 +89,7 @@ const Clubs = () => {
       setClubs(data || []);
       setFilteredClubs(data || []);
     } catch (error) {
-      logger.error('Error cargando clubs:', error);
+      logger.error('Error cargando clubs:', { error: error instanceof Error ? error.message : String(error) });
       toast({
         title: 'Error',
         description: 'No se pudieron cargar los clubs',
@@ -145,6 +145,10 @@ const Clubs = () => {
     try {
       setCheckingIn(clubId);
 
+      if (!supabase) {
+        throw new Error('Supabase no está disponible');
+      }
+
       // Verificar distancia usando función SQL
       const { data: clubData, error: clubError } = await supabase
         .from('clubs')
@@ -154,8 +158,10 @@ const Clubs = () => {
 
       if (clubError || !clubData) throw new Error('Club no encontrado');
 
+      const checkInRadius = clubData.check_in_radius_meters ?? 50; // Default 50m
+
       // Calcular distancia usando función SQL
-      const { data: distanceData, error: distanceError } = await supabase.rpc(
+      const { error: distanceError } = await supabase.rpc(
         'verify_checkin_distance',
         {
           p_club_id: clubId,
@@ -173,15 +179,15 @@ const Clubs = () => {
           clubData.longitude
         );
 
-        if (distance > clubData.check_in_radius_meters) {
+        if (distance > checkInRadius) {
           throw new Error(
-            `Estás a ${Math.round(distance)}m del club. Debes estar a menos de ${clubData.check_in_radius_meters}m`
+            `Estás a ${Math.round(distance)}m del club. Debes estar a menos de ${checkInRadius}m`
           );
         }
       }
 
       // Crear check-in
-      const { data: checkinData, error: checkinError } = await supabase
+      const { error: checkinError } = await supabase
         .from('club_checkins')
         .insert({
           club_id: clubId,
@@ -197,7 +203,6 @@ const Clubs = () => {
           is_verified: true,
           verified_at: new Date().toISOString(),
         })
-        .select()
         .single();
 
       if (checkinError) {
@@ -297,19 +302,19 @@ const Clubs = () => {
 
       {/* Filtros */}
       <div className="mb-6 flex flex-col sm:flex-row gap-4">
-        <Input
+          <Input
           placeholder="Buscar por nombre, ciudad o dirección..."
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
           className="flex-1"
         />
         <select
           value={selectedCity}
-          onChange={(e) => setSelectedCity(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedCity(e.target.value)}
           className="px-4 py-2 border rounded-md"
         >
           <option value="all">Todas las ciudades</option>
-          {cities.map((city) => (
+          {cities.map((city: string) => (
             <option key={city} value={city}>
               {city}
             </option>
@@ -319,7 +324,7 @@ const Clubs = () => {
 
       {/* Lista de clubs */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredClubs.map((club) => (
+        {filteredClubs.map((club: Club) => (
           <Card key={club.id} className="overflow-hidden hover:shadow-lg transition-shadow">
             {club.cover_image_url && (
               <div className="h-48 bg-gradient-to-br from-purple-500 to-blue-600 relative">
@@ -329,7 +334,7 @@ const Clubs = () => {
                   className="w-full h-full object-cover"
                 />
                 {club.is_featured && (
-                  <Badge className="absolute top-2 right-2 bg-yellow-500">Destacado</Badge>
+                  <Badge className="absolute top-2 right-2 bg-yellow-500" variant="default">Destacado</Badge>
                 )}
               </div>
             )}

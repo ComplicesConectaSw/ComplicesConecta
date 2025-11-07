@@ -315,7 +315,7 @@ export const uploadProcessedImage = async (
   bucket: string = 'club-flyers'
 ): Promise<string> => {
   try {
-    const { data, error } = await supabase.storage
+    const { error } = await supabase.storage
       .from(bucket)
       .upload(path, blob, {
         cacheControl: '3600',

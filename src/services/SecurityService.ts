@@ -610,7 +610,7 @@ class SecurityService {
       return (count || 0) > limit;
       
     } catch (error) {
-      logger.error('Error checking action velocity:', { error });
+      logger.error('Error checking action velocity:', { error: error instanceof Error ? error.message : String(error) });
       return false;
     }
   }

@@ -77,7 +77,7 @@ export const generateCanvasFingerprint = (): CanvasFingerprint => {
       data: canvasData,
     };
   } catch (error) {
-    logger.error('Error generando canvas fingerprint:', error);
+    logger.error('Error generando canvas fingerprint:', { error: error instanceof Error ? error.message : String(error) });
     // Fallback: usar timestamp + random
     const fallback = `${Date.now()}-${Math.random()}`;
     return {
@@ -167,6 +167,11 @@ export const checkFingerprintBanned = async (
   try {
     const { supabase } = await import('@/integrations/supabase/client');
     
+    if (!supabase) {
+      logger.error('Supabase no está disponible');
+      return false;
+    }
+
     const { data, error } = await supabase.rpc('check_fingerprint_banned', {
       p_canvas_hash: fingerprint.canvasHash,
       p_worldid_nullifier_hash: worldIdNullifierHash || null,
@@ -174,13 +179,13 @@ export const checkFingerprintBanned = async (
     });
 
     if (error) {
-      logger.error('Error verificando fingerprint baneado:', error);
+      logger.error('Error verificando fingerprint baneado:', { error: error instanceof Error ? error.message : String(error) });
       return false;
     }
 
     return data === true;
   } catch (error) {
-    logger.error('Error verificando fingerprint:', error);
+    logger.error('Error verificando fingerprint:', { error: error instanceof Error ? error.message : String(error) });
     return false;
   }
 };
@@ -197,6 +202,10 @@ export const saveDigitalFingerprint = async (
   try {
     const { supabase } = await import('@/integrations/supabase/client');
     
+    if (!supabase) {
+      throw new Error('Supabase no está disponible');
+    }
+
     const { error } = await supabase
       .from('digital_fingerprints')
       .upsert({
@@ -213,11 +222,11 @@ export const saveDigitalFingerprint = async (
       });
 
     if (error) {
-      logger.error('Error guardando fingerprint:', error);
+      logger.error('Error guardando fingerprint:', { error: error instanceof Error ? error.message : String(error) });
       throw error;
     }
   } catch (error) {
-    logger.error('Error guardando huella digital:', error);
+    logger.error('Error guardando huella digital:', { error: error instanceof Error ? error.message : String(error) });
     throw error;
   }
 };

@@ -867,7 +867,7 @@ class ContentModerationService {
         });
 
       if (error) {
-        logger.error('Error guardando log de moderación', { error });
+        logger.error('Error guardando log de moderación', { error: error instanceof Error ? error.message : String(error) });
       } else {
         logger.debug('Log de moderación guardado exitosamente', {
           contentType,
@@ -876,7 +876,7 @@ class ContentModerationService {
         });
       }
     } catch (error) {
-      logger.error('Error logging moderation result', { error });
+      logger.error('Error logging moderation result', { error: error instanceof Error ? error.message : String(error) });
     }
   }
 
