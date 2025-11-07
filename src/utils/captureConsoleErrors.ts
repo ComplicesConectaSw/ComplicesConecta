@@ -299,67 +299,73 @@ export function exportConsoleErrors(): string | null {
 // CRÍTICO: Asegurar que las funciones estén disponibles inmediatamente
 // Exponer ANTES de cualquier otra cosa para que estén disponibles desde el inicio
 if (typeof window !== 'undefined') {
-  // Exponer funciones inmediatamente usando Object.defineProperty para asegurar que se asignen
-  try {
-    Object.defineProperty(window, 'startErrorCapture', {
-      value: startErrorCapture,
-      writable: true,
-      configurable: true,
-      enumerable: true
-    });
-    Object.defineProperty(window, 'stopErrorCapture', {
-      value: stopErrorCapture,
-      writable: true,
-      configurable: true,
-      enumerable: true
-    });
-    Object.defineProperty(window, 'getConsoleErrors', {
-      value: getConsoleErrors,
-      writable: true,
-      configurable: true,
-      enumerable: true
-    });
-    Object.defineProperty(window, 'showErrorReport', {
-      value: showErrorReport,
-      writable: true,
-      configurable: true,
-      enumerable: true
-    });
-    Object.defineProperty(window, 'clearConsoleErrors', {
-      value: clearConsoleErrors,
-      writable: true,
-      configurable: true,
-      enumerable: true
-    });
-    Object.defineProperty(window, 'exportConsoleErrors', {
-      value: exportConsoleErrors,
-      writable: true,
-      configurable: true,
-      enumerable: true
-    });
-    
-    // También asignar directamente como fallback
-    (window as any).startErrorCapture = startErrorCapture;
-    (window as any).stopErrorCapture = stopErrorCapture;
-    (window as any).getConsoleErrors = getConsoleErrors;
-    (window as any).showErrorReport = showErrorReport;
-    (window as any).clearConsoleErrors = clearConsoleErrors;
-    (window as any).exportConsoleErrors = exportConsoleErrors;
-    
-    // Verificar que las funciones se expusieron correctamente
-    if ((window as any).showErrorReport) {
-      console.log('✅ Funciones de captura de errores disponibles en consola');
+  // Función para exponer todas las funciones de forma robusta
+  const exposeFunctions = () => {
+    try {
+      // Intentar con Object.defineProperty primero
+      Object.defineProperty(window, 'startErrorCapture', {
+        value: startErrorCapture,
+        writable: true,
+        configurable: true,
+        enumerable: true
+      });
+      Object.defineProperty(window, 'stopErrorCapture', {
+        value: stopErrorCapture,
+        writable: true,
+        configurable: true,
+        enumerable: true
+      });
+      Object.defineProperty(window, 'getConsoleErrors', {
+        value: getConsoleErrors,
+        writable: true,
+        configurable: true,
+        enumerable: true
+      });
+      Object.defineProperty(window, 'showErrorReport', {
+        value: showErrorReport,
+        writable: true,
+        configurable: true,
+        enumerable: true
+      });
+      Object.defineProperty(window, 'clearConsoleErrors', {
+        value: clearConsoleErrors,
+        writable: true,
+        configurable: true,
+        enumerable: true
+      });
+      Object.defineProperty(window, 'exportConsoleErrors', {
+        value: exportConsoleErrors,
+        writable: true,
+        configurable: true,
+        enumerable: true
+      });
+    } catch {
+      // Si falla, continuar con asignación directa
     }
-  } catch {
-    // Fallback: asignar directamente si Object.defineProperty falla
+    
+    // SIEMPRE asignar directamente como fallback (más confiable)
     (window as any).startErrorCapture = startErrorCapture;
     (window as any).stopErrorCapture = stopErrorCapture;
     (window as any).getConsoleErrors = getConsoleErrors;
     (window as any).showErrorReport = showErrorReport;
     (window as any).clearConsoleErrors = clearConsoleErrors;
     (window as any).exportConsoleErrors = exportConsoleErrors;
-    console.warn('⚠️ Error exponiendo funciones con Object.defineProperty, usando asignación directa');
+  };
+  
+  // Exponer inmediatamente
+  exposeFunctions();
+  
+  // También exponer cuando el DOM esté listo
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', exposeFunctions);
+  } else {
+    exposeFunctions();
   }
+  
+  // Exponer también después de un breve delay para asegurar
+  setTimeout(exposeFunctions, 0);
+  setTimeout(exposeFunctions, 100);
+  setTimeout(exposeFunctions, 500);
   
   // Iniciar captura automáticamente en desarrollo
   // Verificar de forma segura si estamos en desarrollo
@@ -371,15 +377,13 @@ if (typeof window !== 'undefined') {
       console.log('✅ Captura de errores de consola iniciada automáticamente');
       console.log('💡 Usa showErrorReport() en la consola para ver el reporte completo');
       
-      // Verificar que las funciones estén disponibles después de un breve delay
+      // Verificar y re-exponer después de iniciar captura
       setTimeout(() => {
         if (!(window as any).showErrorReport) {
           console.warn('⚠️ showErrorReport no está disponible, reintentando...');
-          (window as any).showErrorReport = showErrorReport;
-          (window as any).getConsoleErrors = getConsoleErrors;
-          (window as any).exportConsoleErrors = exportConsoleErrors;
+          exposeFunctions();
         }
-      }, 100);
+      }, 200);
     }
   } catch {
     // Si import.meta no está disponible, no iniciar captura automática

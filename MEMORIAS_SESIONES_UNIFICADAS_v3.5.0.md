@@ -1,8 +1,8 @@
-# 📝 MEMORIAS DE SESIONES UNIFICADAS - ComplicesConecta v3.5.0
+# 📝 MEMORIAS DE SESIONES UNIFICADAS - ComplicesConecta v3.5.1
 
 **Fecha:** 05 de Noviembre, 2025  
-**Última Actualización:** 06 de Noviembre, 2025  
-**Versión:** 3.5.0  
+**Última Actualización:** 06 de Noviembre, 2025 (Tarde)  
+**Versión:** 3.5.1  
 **Estado:** ✅ CONSOLIDADAS Y ACTUALIZADAS
 
 > **📚 Para documentación maestra completa, consulta [DOCUMENTACION_MAESTRA_UNIFICADA_v3.5.0.md](./DOCUMENTACION_MAESTRA_UNIFICADA_v3.5.0.md)**
@@ -12,24 +12,27 @@
 ## 📋 ÍNDICE
 
 1. [Resumen Ejecutivo](#resumen-ejecutivo)
-2. [Memoria de Sesión - 05 Nov 2025](#memoria-de-sesión---05-nov-2025)
-3. [Memoria de Sesión - Optimización](#memoria-de-sesión---optimización)
-4. [Memoria de Avances - Auditoría](#memoria-de-avances---auditoría)
-5. [Optimización de Queries de BD](#optimización-de-queries-de-bd)
-6. [Análisis Completo de Pendientes](#análisis-completo-de-pendientes)
-7. [Resultados de Sesión - Prioridades](#resultados-de-sesión---prioridades)
-8. [Estado Actual del Proyecto](#estado-actual-del-proyecto)
+2. [Memoria de Sesión - 06 Nov 2025 (Tarde)](#memoria-de-sesión---06-nov-2025-tarde)
+3. [Memoria de Sesión - 06 Nov 2025 (Mañana)](#memoria-de-sesión---06-nov-2025-mañana)
+4. [Memoria de Sesión - 05 Nov 2025](#memoria-de-sesión---05-nov-2025)
+5. [Memoria de Sesión - Optimización](#memoria-de-sesión---optimización)
+6. [Memoria de Avances - Auditoría](#memoria-de-avances---auditoría)
+7. [Optimización de Queries de BD](#optimización-de-queries-de-bd)
+8. [Análisis Completo de Pendientes](#análisis-completo-de-pendientes)
+9. [Resultados de Sesión - Prioridades](#resultados-de-sesión---prioridades)
+10. [Estado Actual del Proyecto](#estado-actual-del-proyecto)
 
 ---
 
 ## 🎯 RESUMEN EJECUTIVO
 
 ### Estado General
-- **Versión:** v3.5.0
+- **Versión:** v3.5.1
 - **Build:** ✅ Exitoso (26.30s)
 - **Linting:** ✅ 0 errores, warnings legítimos
 - **TypeScript:** ✅ 0 errores
 - **Estado:** 🟢 PRODUCTION READY
+- **Última Actualización:** 06 de Noviembre, 2025 (Tarde)
 
 ### Progreso General del Proyecto
 - **Auditoría:** 46.5% completado (173/372 items)
@@ -78,7 +81,144 @@
 
 ---
 
-## 📝 MEMORIA DE SESIÓN - 06 NOV 2025
+## 📝 MEMORIA DE SESIÓN - 06 NOV 2025 (Tarde)
+
+### Tareas Completadas
+
+1. ✅ **Sistema de Captura de Errores de Consola**
+   - Archivo `src/utils/captureConsoleErrors.ts` creado (v3.5.1)
+   - Captura automática de `console.error`, `console.warn`, errores globales y promise rejections
+   - Funciones disponibles globalmente en consola: `showErrorReport()`, `getConsoleErrors()`, `exportConsoleErrors()`
+   - Detección automática de acceso vía túnel (localtunnel, ngrok, cloudflare)
+   - Exportación de errores como JSON con copia al portapapeles
+   - Reporte mejorado con información de entorno, URL y timestamp
+   - Exposición robusta de funciones con múltiples intentos y delays
+
+2. ✅ **Sistema de Visualización de Variables de Entorno**
+   - Archivo `src/utils/showEnvInfo.ts` creado
+   - Función `showEnvInfo()` disponible globalmente en consola
+   - Visualización de todas las variables de entorno en formato tabla
+   - Función `getPassword("VITE_XXX")` para ver contraseñas específicas
+   - Acceso a variables vía `window.env`
+   - Exposición robusta con múltiples intentos
+
+3. ✅ **Mejoras en Configuración de Supabase**
+   - Mejorada detección de placeholders en `src/integrations/supabase/client.ts`
+   - Cliente stub implementado cuando se detectan placeholders
+   - Manejo seguro de errores con try-catch
+   - Validación mejorada de URLs (detecta guiones bajos y guiones)
+   - Modo demo activado automáticamente cuando hay placeholders
+
+4. ✅ **Mejoras en Content Security Policy (CSP)**
+   - CSP actualizado en `vite.config.ts` para permitir `unsafe-eval` en desarrollo
+   - Agregado `data:` a directivas necesarias
+   - Verificación mejorada de entorno de desarrollo
+
+5. ✅ **Scripts para Gestión de Túneles**
+   - `scripts/start-dev-tunnel.ps1` - Iniciar dev + túnel simultáneamente
+   - `scripts/restart-dev-tunnel.ps1` - Reiniciar dev + túnel
+   - `scripts/show-env-info.ps1` - Mostrar variables de entorno (seguro)
+   - Soporte para localtunnel, ngrok, cloudflare y vercel
+
+6. ✅ **Mejoras en Configuración de Vite para Túneles**
+   - `vite.config.ts` actualizado con mejor detección de túneles
+   - `allowedHosts` configurado para `.loca.lt`, `.ngrok-free.app`, `.trycloudflare.com`
+   - HMR configurado (con limitaciones conocidas para localtunnel)
+   - CSP mejorado para desarrollo con túneles
+
+7. ✅ **Commit y Push a GitHub**
+   - Commit `75e5020` realizado exitosamente
+   - Push a `master` completado
+   - 9 archivos cambiados (5 nuevos, 4 modificados)
+   - 761 inserciones, 25 eliminaciones
+   - Pre-commit checks pasados (linting y type-check)
+
+### Problemas Identificados y Soluciones
+
+1. ⚠️ **VITE_SUPABASE_URL mal formateada en .env**
+   - **Problema:** Línea 20 tiene formato incorrecto: `VITE_SUPABASE_URL=   VITE_SUPABASE_URL=https://...`
+   - **Solución:** Corregir manualmente a: `VITE_SUPABASE_URL=https://axtvqnozatbmllvwzuim.supabase.co`
+   - **Estado:** ⏳ Pendiente de corrección manual
+
+2. ✅ **showErrorReport() y showEnvInfo() no disponibles**
+   - **Problema:** Funciones no se exponían correctamente en consola
+   - **Solución:** Implementada exposición robusta con múltiples intentos y delays
+   - **Estado:** ✅ Corregido
+
+3. ✅ **Errores de wallets (solana, ethereum)**
+   - **Problema:** Errores de redefinición de propiedades
+   - **Solución:** Son esperados y manejados por el sistema de protección de wallets
+   - **Estado:** ✅ No crítico, funcionando como esperado
+
+4. ✅ **Error de WebSocket con localtunnel**
+   - **Problema:** WebSocket no funciona con localtunnel
+   - **Solución:** Esperado, localtunnel no soporta WebSockets bien
+   - **Estado:** ✅ No crítico, HMR deshabilitado con localtunnel
+
+### Archivos Nuevos Creados
+
+- `src/utils/captureConsoleErrors.ts` - Sistema de captura de errores
+- `src/utils/showEnvInfo.ts` - Visualización de variables de entorno
+- `scripts/start-dev-tunnel.ps1` - Script para iniciar túnel
+- `scripts/restart-dev-tunnel.ps1` - Script para reiniciar túnel
+- `scripts/show-env-info.ps1` - Script para mostrar variables de entorno
+
+### Archivos Modificados
+
+- `src/integrations/supabase/client.ts` - Manejo mejorado de placeholders
+- `src/main.tsx` - Integración de captura de errores
+- `src/utils/walletProtection.ts` - Mejoras en protección
+- `vite.config.ts` - Mejoras en CSP (agregado unsafe-eval a múltiples directivas) y soporte de túneles
+- `.env` - Corrección de formato de VITE_SUPABASE_URL (línea 20)
+
+### Comandos Disponibles en Consola del Navegador
+
+- `showErrorReport()` - Ver reporte completo de errores
+- `getConsoleErrors()` - Obtener array de errores
+- `exportConsoleErrors()` - Exportar errores como JSON (se copia al portapapeles)
+- `clearConsoleErrors()` - Limpiar errores capturados
+- `stopErrorCapture()` - Detener captura
+- `startErrorCapture()` - Reiniciar captura
+- `showEnvInfo()` - Ver variables de entorno
+- `getPassword("VITE_XXX")` - Ver contraseña específica
+- `window.env` - Acceder a todas las variables de entorno
+
+### Estado del Túnel y Configuración
+
+- **Servidor de desarrollo:** ✅ Corriendo en puerto 8080
+- **Túnel activo:** ✅ localtunnel funcionando
+- **IP del túnel:** 189.191.106.197
+- **URL del túnel:** https://[tunnel-url].loca.lt
+- **HMR:** ⚠️ Deshabilitado con localtunnel (limitación conocida)
+- **WebSocket:** ⚠️ No funciona con localtunnel (esperado)
+
+### Correcciones Adicionales
+
+8. ✅ **Corrección de VITE_SUPABASE_URL en .env**
+   - Línea 20 del `.env` corregida automáticamente
+   - Formato incorrecto: `VITE_SUPABASE_URL=   VITE_SUPABASE_URL=https://...`
+   - Formato correcto: `VITE_SUPABASE_URL=https://axtvqnozatbmllvwzuim.supabase.co`
+   - Estado: ✅ Corregido
+
+9. ✅ **Mejora de Content Security Policy (CSP)**
+   - CSP actualizado para permitir `unsafe-eval` en desarrollo
+   - Agregado `'unsafe-eval'` a `default-src`
+   - Agregado `'unsafe-eval'` a `connect-src`
+   - Agregado `'unsafe-eval'` a `worker-src`
+   - Soluciona error: "Content Security Policy of your site blocks the use of 'eval' in JavaScript"
+   - Estado: ✅ Corregido
+
+### Notas Importantes
+
+- **VITE_SUPABASE_URL:** ✅ Corregido en `.env` línea 20
+- **Reinicio necesario:** Después de corregir `.env` y CSP, reiniciar servidor de desarrollo
+- **Errores de wallets:** Son esperados y no afectan funcionalidad
+- **Error de WebSocket con localtunnel:** Esperado, no crítico
+- **Problemas de contraste de color:** Mejora de accesibilidad recomendada, no crítico
+
+---
+
+## 📝 MEMORIA DE SESIÓN - 06 NOV 2025 (Mañana)
 
 ### Tareas Completadas
 
@@ -325,7 +465,8 @@ npm run setup:neo4j-indexes
 ---
 
 **Fecha de Consolidación:** 05 de Noviembre, 2025  
-**Versión:** 3.5.0  
+**Última Actualización:** 06 de Noviembre, 2025  
+**Versión:** 3.5.1  
 **Estado:** ✅ MEMORIAS CONSOLIDADAS Y ACTUALIZADAS
 
 ---

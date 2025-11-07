@@ -81,7 +81,7 @@ export default defineConfig(({ mode }) => {
         "Cross-Origin-Opener-Policy": "same-origin",
         "Content-Security-Policy":
           process.env.NODE_ENV === "development" || import.meta.env.DEV
-            ? "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https: blob: data:; style-src 'self' 'unsafe-inline' https: blob: data:; img-src 'self' data: https: blob:; font-src 'self' data: https: blob:; connect-src 'self' https: ws: wss: http://localhost:* http://127.0.0.1:*; frame-src 'self' https://vercel.live; worker-src 'self' blob: data:;"
+            ? "default-src 'self' 'unsafe-eval' 'unsafe-inline' https: blob: data: ws: wss: http://localhost:* http://127.0.0.1:*; script-src 'self' 'unsafe-eval' 'unsafe-inline' https: blob: data:; style-src 'self' 'unsafe-inline' https: blob: data:; img-src 'self' data: https: blob:; font-src 'self' data: https: blob:; connect-src 'self' 'unsafe-eval' https: ws: wss: http://localhost:* http://127.0.0.1:* blob:; frame-src 'self' https: vercel.live; worker-src 'self' blob: data: 'unsafe-eval';"
             : "default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; connect-src 'self' https: ws: wss:; frame-src 'self' https://vercel.live;",
       },
       sourcemapIgnoreList: (source) =>

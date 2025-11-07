@@ -73,15 +73,6 @@ if (typeof window !== 'undefined') {
         return null;
       }
     };
-    
-    // Verificar que las funciones se expusieron correctamente
-    if ((window as any).showEnvInfo) {
-      console.log('✅ Utilidad de variables de entorno cargada');
-      console.log('💡 Usa showEnvInfo() en la consola para ver información');
-      console.log('💡 Usa window.env para acceder a todas las variables');
-      console.log('💡 Usa getPassword("VITE_XXX") para ver una contraseña específica');
-      console.log('💡 Ejemplo: getPassword("VITE_DEMO_PASSWORD_SINGLE_OUTLOOK_ES")');
-    }
   };
   
   // Exponer inmediatamente
@@ -93,6 +84,20 @@ if (typeof window !== 'undefined') {
   } else {
     // DOM ya está listo, exponer de nuevo para asegurar
     exposeEnvFunctions();
+  }
+  
+  // Exponer también después de breves delays para asegurar
+  setTimeout(exposeEnvFunctions, 0);
+  setTimeout(exposeEnvFunctions, 100);
+  setTimeout(exposeEnvFunctions, 500);
+  
+  // Log solo una vez
+  if ((window as any).showEnvInfo) {
+    console.log('✅ Utilidad de variables de entorno cargada');
+    console.log('💡 Usa showEnvInfo() en la consola para ver información');
+    console.log('💡 Usa window.env para acceder a todas las variables');
+    console.log('💡 Usa getPassword("VITE_XXX") para ver una contraseña específica');
+    console.log('💡 Ejemplo: getPassword("VITE_DEMO_PASSWORD_SINGLE_OUTLOOK_ES")');
   }
 }
 
