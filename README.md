@@ -32,12 +32,11 @@
 - **[📝 Notas de Lanzamiento](./RELEASE_NOTES_v3.4.1.md)** - Historial completo de versiones
 - **[⚙️ DevOps Guide](./README_DEVOPS.md)** - Guía de operaciones y deployment
 - **[🤖 IA Integration Guide](./README_IA.md)** - Estrategia de desarrollo con IA
+- **[📚 Documentación Completa v3.5.0](./docs/DOCUMENTACION_COMPLETA_v3.5.0.md)** - Documentación técnica completa del sistema
+- **[📊 Diagramas de Flujos](./docs/DIAGRAMAS_FLUJOS_v3.5.0.md)** - Diagramas Mermaid de todos los flujos del sistema
+- **[📝 Resumen de Conversación](./docs/RESUMEN_CONVERSACION_v3.5.0.md)** - Resumen ejecutivo de la conversación de desarrollo
 - **[📚 Documentación Maestra Unificada](./DOCUMENTACION_MAESTRA_UNIFICADA_v3.5.0.md)** - Documentación consolidada completa (BD, Migraciones, S2, Vercel, Neo4j, Features)
 - **[📝 Memorias de Sesiones Unificadas](./MEMORIAS_SESIONES_UNIFICADAS_v3.5.0.md)** - Memorias consolidadas de sesiones y avances
-- **[🔍 Resumen de Sesión y Soluciones](./RESUMEN_SESION_SOLUCIONES_CONSOLIDADO.md)** - Resumen consolidado de sesiones y soluciones aplicadas
-- **[🚨 Diagnóstico de Vercel](./DIAGNOSTICO_VERCEL_CONSOLIDADO.md)** - Diagnóstico completo de problemas en Vercel y soluciones
-- **[🔧 Auditoría useLayoutEffect](./AUDITORIA_USELAYOUTEFFECT_CONSOLIDADO.md)** - Auditoría técnica completa del error useLayoutEffect
-- **[🎨 Análisis de Estilos](./ANALISIS_ESTILOS_PROYECTO.md)** - Análisis completo del sistema de estilos (Tailwind CSS + CSS personalizado)
 
 ---
 
@@ -96,7 +95,7 @@
 - ✅ **Operativo** - Neo4j corriendo, conexión verificada, 4 usuarios sincronizados (05 Nov 2025)
 
 #### 🗄️ Base de Datos
-- ✅ **107 Tablas Operativas** - 100% alineadas local y remota (PostgreSQL/Supabase)
+- ✅ **52+ Tablas Operativas** - Sistema completo de clubs, inversiones, moderación, tokens (PostgreSQL/Supabase)
 - ✅ **Neo4j Graph Database** - 100% implementado para conexiones sociales
 - ✅ **80+ Índices Optimizados** - Queries optimizadas
 - ✅ **65+ Políticas RLS** - Seguridad completa
@@ -104,6 +103,34 @@
 - ✅ **Docker Build Exitoso** - Imagen `complicesconecta:latest` creada (191.9s)
 - ✅ **Docker Compose** - Neo4j configurado y listo
 - ✅ **Backup Consolidado** - Actualizado y verificado
+
+#### 🏢 Sistema de Clubs Verificados ✅ (NUEVO v3.5.0)
+- ✅ **5 Tablas Nuevas**: `clubs`, `club_verifications`, `club_checkins`, `club_reviews`, `club_flyers`
+- ✅ **Check-ins Geoloc**: Radio 50m con verificación automática
+- ✅ **Reseñas Verificadas**: Solo usuarios con WorldID + check-in real
+- ✅ **Watermark + Blur IA**: Automático en imágenes de clubs
+- ✅ **Páginas Públicas**: `/clubs/{slug}` con flyers editables
+- ✅ **Panel Admin**: `/admin/partners` para gestión de clubs
+
+#### 🛡️ Sistema de Moderación 24/7 ✅ (NUEVO v3.5.0)
+- ✅ **Jerarquía 5 Niveles**: SuperAdmin (30%) → Elite (8%) → Senior (5%) → Junior (3%) → Trainee (1K CMPX)
+- ✅ **Pagos Automáticos**: Cada lunes basados en % revenue
+- ✅ **Timer Conexión**: Automático para tracking de horas
+- ✅ **IA Pre-clasificación**: Cola de reportes con priorización automática
+- ✅ **Baneo Permanente**: Con huella digital (canvas + WorldID)
+
+#### 💎 Sistema de Tokens CMPX ✅ (NUEVO v3.5.0)
+- ✅ **Total Supply**: 100M CMPX tokens
+- ✅ **Shop Activo**: 1000 CMPX = 300 MXN
+- ✅ **Comisión Galerías**: 10% (creador gana 90%)
+- ✅ **Staking**: 10% APY anual
+- ✅ **DAO**: Activación a 10K usuarios
+
+#### 💰 Sistema de Donativos/Inversión ✅ (NUEVO v3.5.0)
+- ✅ **SAFTE Automático**: 10% retorno anual garantizado
+- ✅ **Tiers**: $10K, $25K, $50K, $100K MXN
+- ✅ **Landing `/invest`**: Con Stripe integrado
+- ✅ **Plataformas**: AngelList + Republic listos para publicar
 
 #### 🔧 Refactorización Completa v3.5.0
 - ✅ **PostCSS Config** - Corregido Tailwind v3 vs v4 (ROOT CAUSE)

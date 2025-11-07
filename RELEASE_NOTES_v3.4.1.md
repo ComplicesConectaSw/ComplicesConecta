@@ -10,7 +10,71 @@
 
 ---
 
-## 🚀 Versión 3.5.0 - AI-Native Layer + Chat con Privacidad + Correcciones Críticas + Features Innovadoras (02-06 Nov 2025)
+## 🚀 Versión 3.5.0 - AI-Native Layer + Chat con Privacidad + Correcciones Críticas + Features Innovadoras + Sistema Completo (02-06 Nov 2025)
+
+### 🎉 NUEVAS FEATURES INNOVADORAS v3.5.0 (06 Nov 2025)
+
+#### 🏢 Sistema de Clubs Verificados ✅ (NUEVO v3.5.0)
+- ✅ **5 Tablas Nuevas**: `clubs`, `club_verifications`, `club_checkins`, `club_reviews`, `club_flyers`
+- ✅ **Check-ins Geoloc**: Radio 50m con verificación automática
+- ✅ **Reseñas Verificadas**: Solo usuarios con WorldID + check-in real
+- ✅ **Watermark + Blur IA**: Automático en imágenes de clubs
+- ✅ **Páginas Públicas**: `/clubs/{slug}` con flyers editables
+- ✅ **Panel Admin**: `/admin/partners` para gestión de clubs
+
+**Migración SQL:**
+- `20251106_05_create_club_system.sql` - Sistema completo de clubs
+
+**Archivos Creados:**
+- `src/pages/Clubs.tsx` - Página pública de clubs
+- `src/pages/AdminPartners.tsx` - Panel admin partners
+- `src/services/clubFlyerImageProcessing.ts` - Procesamiento IA de imágenes
+
+#### 🛡️ Sistema de Moderación 24/7 ✅ (NUEVO v3.5.0)
+- ✅ **Jerarquía 5 Niveles**: SuperAdmin (30%) → Elite (8%) → Senior (5%) → Junior (3%) → Trainee (1K CMPX)
+- ✅ **Pagos Automáticos**: Cada lunes basados en % revenue
+- ✅ **Timer Conexión**: Automático para tracking de horas
+- ✅ **IA Pre-clasificación**: Cola de reportes con priorización automática
+- ✅ **Baneo Permanente**: Con huella digital (canvas + WorldID)
+
+**Migraciones SQL:**
+- `20251106_07_create_moderation_v2_system.sql` - Moderación v2
+- `20251106_08_create_permanent_ban_system.sql` - Baneo permanente
+
+**Archivos Creados:**
+- `src/pages/ModeratorDashboard.tsx` - Dashboard moderación
+- `src/services/moderatorTimer.ts` - Timer moderadores
+- `src/services/reportAIClassification.ts` - Clasificación IA
+- `src/services/permanentBan.ts` - Baneo permanente
+- `src/services/digitalFingerprint.ts` - Huella digital
+
+#### 💎 Sistema de Tokens CMPX ✅ (NUEVO v3.5.0)
+- ✅ **Total Supply**: 100M CMPX tokens
+- ✅ **Shop Activo**: 1000 CMPX = 300 MXN
+- ✅ **Comisión Galerías**: 10% (creador gana 90%)
+- ✅ **Staking**: 10% APY anual
+- ✅ **DAO**: Activación a 10K usuarios
+
+**Migración SQL:**
+- `20251106_09_create_cmpx_shop_system.sql` - Shop CMPX
+
+**Archivos Creados:**
+- `src/pages/Shop.tsx` - Shop CMPX tokens
+- `src/services/galleryCommission.ts` - Comisiones galerías
+- `supabase/functions/create-cmpx-checkout/index.ts` - Checkout CMPX
+
+#### 💰 Sistema de Donativos/Inversión ✅ (NUEVO v3.5.0)
+- ✅ **SAFTE Automático**: 10% retorno anual garantizado
+- ✅ **Tiers**: $10K, $25K, $50K, $100K MXN
+- ✅ **Landing `/invest`**: Con Stripe integrado
+- ✅ **Plataformas**: AngelList + Republic listos para publicar
+
+**Migración SQL:**
+- `20251106_06_create_investment_system.sql` - Sistema de inversiones
+
+**Archivos Creados:**
+- `src/pages/Invest.tsx` - Landing donativos
+- `supabase/functions/create-investment-checkout/index.ts` - Checkout inversión
 
 ### 🎉 NUEVAS FEATURES INNOVADORAS v3.5.0 (06 Nov 2025)
 
@@ -361,19 +425,19 @@
 - Query nearby (100k users): 5s → 100ms (50x mejora)
 - Query nearby (1M users): 30s → 300ms (100x mejora)
 
-#### 🗄️ Base de Datos (107 tablas operativas)
+#### 🗄️ Base de Datos (52+ tablas operativas)
 
 **Nuevas Tablas v3.5.0:**
-- `ai_compatibility_scores` - Scores ML
-- `ai_prediction_logs` - Logs de predicciones
-- `ai_model_metrics` - Métricas del modelo
-- `chat_summaries` - Resúmenes automáticos
-- `summary_requests` - Rate limiting
-- `summary_feedback` - Feedback de usuarios
-- Tablas de chat: `chat_messages`, `chat_rooms`, `chat_invitations`, `chat_members`
+- **Sistema de Clubs (5 tablas):** `clubs`, `club_verifications`, `club_checkins`, `club_reviews`, `club_flyers`
+- **Sistema de Inversiones (4 tablas):** `investments`, `investment_returns`, `investment_tiers`, `stripe_events`
+- **Sistema de Moderación v2 (3 tablas):** `moderator_sessions`, `moderator_payments`, `report_ai_classification`
+- **Sistema de Baneo Permanente (2 tablas):** `digital_fingerprints`, `permanent_bans`
+- **Sistema CMPX Shop (3 tablas):** `cmpx_shop_packages`, `cmpx_purchases`, `gallery_commissions`
+- **Features IA (6 tablas):** `ai_compatibility_scores`, `ai_prediction_logs`, `ai_model_metrics`, `chat_summaries`, `summary_requests`, `summary_feedback`
+- **Chat (4 tablas):** `chat_messages`, `chat_rooms`, `chat_invitations`, `chat_members`
 
 **Estado:**
-- ✅ 107 tablas sincronizadas (100%)
+- ✅ 52+ tablas sincronizadas (100%)
 - ✅ 80+ índices optimizados
 - ✅ 65+ políticas RLS activas
 - ✅ 12 triggers funcionando

@@ -12,7 +12,12 @@
 - **Chat Summaries ML**: GPT-4, BART (HuggingFace), Fallback (3 opciones)
 - **Google S2 Geosharding (Fase 2.1)**: Cell ID generation + migration (100% estructura, 70% total)
 - **Neo4j Graph Database (Fase 2.2)**: Graph database para conexiones sociales (100% implementado) ✅
-- **Base de Datos**: 107 tablas operativas (80+ índices, 65+ RLS) + Neo4j Graph Database ✅
+- **Base de Datos**: 52+ tablas operativas (80+ índices, 65+ RLS) + Neo4j Graph Database ✅
+- **Sistema de Clubs Verificados**: 5 tablas nuevas (clubs, club_verifications, club_checkins, club_reviews, club_flyers) ✅
+- **Sistema de Moderación 24/7**: 3 tablas nuevas (moderator_sessions, moderator_payments, report_ai_classification) ✅
+- **Sistema de Tokens CMPX Shop**: 3 tablas nuevas (cmpx_shop_packages, cmpx_purchases, gallery_commissions) ✅
+- **Sistema de Donativos/Inversión**: 4 tablas nuevas (investments, investment_returns, investment_tiers, stripe_events) ✅
+- **Sistema de Baneo Permanente**: 2 tablas nuevas (digital_fingerprints, permanent_bans) ✅
 - **Refactorización Completa**: PostCSS + CSS + Consolidación (-77% duplicación) ✅
 - **Sistema de Monitoreo Completo**: Performance, Error Alerting, Analytics Dashboard (95%)
 - **Sistema de Chat con Privacidad (NUEVO v3.5.0)**: ChatRoom + MessageList + ChatPrivacyService (100%) ✅
@@ -90,6 +95,11 @@ conecta-social-comunidad-main/
 │   │   │   └── NotificationCenter.tsx # Centro de notificaciones
 │   │   └── theme/                # Sistema de temas visuales
 │   ├── pages/                    # Páginas principales de la app
+│   │   ├── Clubs.tsx                    # Página pública de clubs (NUEVO v3.5.0)
+│   │   ├── AdminPartners.tsx            # Panel admin partners (NUEVO v3.5.0)
+│   │   ├── ModeratorDashboard.tsx      # Dashboard moderación (ACTUALIZADO v3.5.0)
+│   │   ├── Invest.tsx                   # Landing donativos (NUEVO v3.5.0)
+│   │   ├── Shop.tsx                     # Shop CMPX tokens (NUEVO v3.5.0)
 │   ├── hooks/                    # Custom React hooks (ACTUALIZADO v3.4.1)
 │   │   ├── useAdvancedAnalytics.ts    # Hook para analytics avanzados
 │   │   ├── useAdvancedCache.ts        # Hook para gestión de caché
@@ -106,7 +116,12 @@ conecta-social-comunidad-main/
 │   │   ├── graph/                # Servicios de grafo (NUEVO v3.5.0)
 │   │   │   └── Neo4jService.ts                # Graph database Neo4j (NUEVO v3.5.0)
 │   │   ├── ChatPrivacyService.ts              # Privacidad y permisos de chat (NUEVO v3.5.0)
-│   │   ├── VideoChatService.ts                # Preparación video chat futuro (NUEVO v3.5.0)
+│   │   ├── permanentBan.ts              # Baneo permanente (NUEVO v3.5.0)
+│   │   ├── digitalFingerprint.ts        # Huella digital (NUEVO v3.5.0)
+│   │   ├── galleryCommission.ts         # Comisiones galerías (NUEVO v3.5.0)
+│   │   ├── moderatorTimer.ts            # Timer moderadores (NUEVO v3.5.0)
+│   │   ├── reportAIClassification.ts    # Clasificación IA reportes (NUEVO v3.5.0)
+│   │   ├── clubFlyerImageProcessing.ts  # Procesamiento IA imágenes clubs (NUEVO v3.5.0)
 │   │   ├── SmartMatchingService.ts            # Matching con IA + Neo4j (NUEVO v3.5.0)
 │   │   ├── DataPrivacyService.ts              # GDPR compliance (NUEVO v3.5.0)
 │   │   ├── UserVerificationService.ts         # Verificación unificada (NUEVO v3.5.0)
@@ -166,7 +181,11 @@ conecta-social-comunidad-main/
 │       ├── 20251029000000_create_monitoring_tables.sql        # Tablas monitoreo (NUEVO v3.4.1)
 │       ├── 20251029100000_create_interests_tables.sql         # Tablas intereses (NUEVO v3.4.1)
 │       ├── 20251029100001_create_worldid_verifications.sql    # World ID (NUEVO v3.4.1)
-│       └── 20251030000001_alter_referral_rewards.sql          # Referral rewards (NUEVO v3.4.1)
+│       ├── 20251106_05_create_club_system.sql            # Sistema de clubs (NUEVO v3.5.0)
+│       ├── 20251106_06_create_investment_system.sql      # Sistema de inversiones (NUEVO v3.5.0)
+│       ├── 20251106_07_create_moderation_v2_system.sql  # Moderación v2 (NUEVO v3.5.0)
+│       ├── 20251106_08_create_permanent_ban_system.sql  # Baneo permanente (NUEVO v3.5.0)
+│       ├── 20251106_09_create_cmpx_shop_system.sql      # Shop CMPX (NUEVO v3.5.0)
 ├── scripts/                      # Scripts de utilidad (17+ scripts)
 │   ├── sync-postgres-to-neo4j.ts              # Sincronización PostgreSQL → Neo4j (NUEVO v3.5.0, CORREGIDO 05 Nov 2025)
 │   ├── verify-neo4j.ts                        # Verificación conexión Neo4j (NUEVO v3.5.0)
@@ -194,7 +213,7 @@ conecta-social-comunidad-main/
 
 ### Base de Datos (Supabase)
 
-#### Tablas Principales v3.4.1 (47 tablas - 100% sincronizadas)
+#### Tablas Principales v3.5.0 (52+ tablas - 100% sincronizadas)
 ```sql
 -- Tablas del Sistema Core
 profiles              -- Perfiles de usuario
@@ -246,10 +265,32 @@ worldid_verifications       -- Verificaciones World ID
 worldid_nullifier_hashes    -- Hashes únicos
 worldid_verification_stats  -- Estadísticas
 
--- Tablas de Tokens y Referidos v3.4.1
-user_token_balances  -- Balances de tokens CMPX/GTK
-referral_rewards     -- Recompensas por referidos
-gallery_permissions  -- Permisos de galería
+-- Tablas de Clubs Verificados v3.5.0 (NUEVAS)
+clubs                    -- Clubs verificados
+club_verifications       -- Historial de verificaciones
+club_checkins            -- Check-ins geoloc verificados
+club_reviews             -- Reseñas solo usuarios con check-in real
+club_flyers              -- Flyers editables con watermark automático
+
+-- Tablas de Inversiones v3.5.0 (NUEVAS)
+investments              -- Inversiones SAFTE
+investment_returns       -- Retornos anuales automáticos
+investment_tiers         -- Tiers de inversión
+stripe_events            -- Eventos Stripe para inversiones
+
+-- Tablas de Moderación v2 v3.5.0 (NUEVAS)
+moderator_sessions       -- Sesiones de moderadores con timer
+moderator_payments       -- Pagos automáticos moderadores
+report_ai_classification -- Clasificación IA de reportes
+
+-- Tablas de Baneo Permanente v3.5.0 (NUEVAS)
+digital_fingerprints     -- Huellas digitales (canvas + WorldID)
+permanent_bans          -- Baneos permanentes con evidencia
+
+-- Tablas de CMPX Shop v3.5.0 (NUEVAS)
+cmpx_shop_packages      -- Paquetes de tokens CMPX
+cmpx_purchases          -- Compras de tokens CMPX
+gallery_commissions     -- Comisiones de galerías (10% app, 90% creador)
 ```
 
 ### Edge Functions

@@ -1,8 +1,8 @@
 # Documentación de Auditoría Consolidada - ComplicesConecta v3.5.0
 
-**Fecha:** 2025-11-06  
-**Versión:** 3.5.2  
-**Estado:** ✅ Consolidado y Actualizado
+> **📚 Para documentación completa del sistema, consulta [docs/DOCUMENTACION_COMPLETA_v3.5.0.md](./docs/DOCUMENTACION_COMPLETA_v3.5.0.md)**  
+> **📚 Para diagramas de flujos, consulta [docs/DIAGRAMAS_FLUJOS_v3.5.0.md](./docs/DIAGRAMAS_FLUJOS_v3.5.0.md)**  
+> **📚 Para documentación de implementación, consulta [DOCUMENTACION_IMPLEMENTACION_REPORTES_CONSOLIDADA_v3.5.0.md](./DOCUMENTACION_IMPLEMENTACION_REPORTES_CONSOLIDADA_v3.5.0.md)**
 
 ---
 

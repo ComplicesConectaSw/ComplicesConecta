@@ -30,7 +30,12 @@
    - Backups locales guardados en `D:\complicesconecta_ultima_version_respaldo\supabase\migrations`
    - **v3.4.0**: Migraciones de seguridad y parejas incluidas
    - **v3.4.1**: 20 migraciones aplicadas (47 tablas sincronizadas 100%)
-   - **NUEVO v3.5.0**: 25 migraciones aplicadas (107 tablas sincronizadas 100%)
+   - **NUEVO v3.5.0**: 40+ migraciones aplicadas (52+ tablas sincronizadas 100%)
+   - **NUEVO v3.5.0**: Sistema de Clubs Verificados (5 tablas nuevas)
+   - **NUEVO v3.5.0**: Sistema de Moderación 24/7 (3 tablas nuevas)
+   - **NUEVO v3.5.0**: Sistema de Tokens CMPX Shop (3 tablas nuevas)
+   - **NUEVO v3.5.0**: Sistema de Donativos/Inversión (4 tablas nuevas)
+   - **NUEVO v3.5.0**: Sistema de Baneo Permanente (2 tablas nuevas)
   - **NUEVO v3.5.0**: Componentes de chat implementados (ChatRoom, MessageList)
   - **NUEVO v3.5.0**: Sistema de privacidad de chat completo (ChatPrivacyService)
   - **NUEVO v3.5.0**: Integración NFT en componentes de tokens (TokenBalance, TokenDashboard, StakingModal)
@@ -51,9 +56,9 @@
    - **v3.4.1**: Validación con linting 0 errores antes de cada commit
    - **NUEVO v3.5.0**: Tests unitarios para servicios AI (AILayerService, ChatSummaryService)
 
-> **📚 Para configuración inicial del entorno, consulta [INSTALACION_SETUP_v3.5.0.md](./INSTALACION_SETUP_v3.5.0.md)**  
-> **📚 Para documentación maestra completa, consulta [DOCUMENTACION_MAESTRA_UNIFICADA_v3.5.0.md](./DOCUMENTACION_MAESTRA_UNIFICADA_v3.5.0.md)**  
-> **📚 Para memorias de sesiones, consulta [MEMORIAS_SESIONES_UNIFICADAS_v3.5.0.md](./MEMORIAS_SESIONES_UNIFICADAS_v3.5.0.md)**
+> **📚 Para documentación completa del sistema, consulta [docs/DOCUMENTACION_COMPLETA_v3.5.0.md](./docs/DOCUMENTACION_COMPLETA_v3.5.0.md)**  
+> **📚 Para diagramas de flujos, consulta [docs/DIAGRAMAS_FLUJOS_v3.5.0.md](./docs/DIAGRAMAS_FLUJOS_v3.5.0.md)**  
+> **📚 Para documentación de implementación, consulta [DOCUMENTACION_IMPLEMENTACION_REPORTES_CONSOLIDADA_v3.5.0.md](./DOCUMENTACION_IMPLEMENTACION_REPORTES_CONSOLIDADA_v3.5.0.md)**
 
 4. **Prevención de caos**
    - No se crean duplicados de carpetas sin confirmación

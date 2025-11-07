@@ -41,7 +41,82 @@ serve(async (req) => {
         const session = event.data.object as Stripe.Checkout.Session
         console.log('💳 Checkout session completed:', session.id)
         
-        // Obtener información del cliente y suscripción
+        // Verificar si es una compra de tokens CMPX
+        if (session.metadata?.purchase_id) {
+          console.log('🪙 CMPX token purchase completed:', session.metadata.purchase_id)
+          
+          const purchaseId = session.metadata.purchase_id
+          
+          // Actualizar compra como completada (el trigger otorgará los tokens)
+          const { error: purchaseError } = await supabase
+            .from('cmpx_purchases')
+            .update({
+              payment_status: 'succeeded',
+              status: 'completed',
+              completed_at: new Date().toISOString(),
+              stripe_payment_intent_id: session.payment_intent?.toString() || session.id,
+              stripe_customer_id: session.customer?.toString() || null,
+              updated_at: new Date().toISOString()
+            })
+            .eq('id', purchaseId)
+          
+          if (purchaseError) {
+            console.error('❌ Error updating CMPX purchase:', purchaseError)
+          } else {
+            console.log('✅ CMPX purchase completed:', purchaseId)
+            // Los tokens se otorgan automáticamente por el trigger SQL
+          }
+          
+          break
+        }
+        
+        // Verificar si es una inversión (tiene metadata investment_id)
+        if (session.metadata?.investment_id) {
+          console.log('💰 Investment checkout completed:', session.metadata.investment_id)
+          
+          const investmentId = session.metadata.investment_id
+          const userId = session.metadata.user_id
+          const tierKey = session.metadata.tier_key
+          const amountMxn = parseFloat(session.metadata.amount_mxn || '0')
+          const returnPercentage = parseFloat(session.metadata.return_percentage || '10')
+          const cmpxTokens = parseInt(session.metadata.cmpx_tokens_rewarded || '0')
+          
+          // Actualizar inversión como activa
+          const { error: investmentError } = await supabase
+            .from('investments')
+            .update({
+              payment_status: 'succeeded',
+              status: 'active',
+              activated_at: new Date().toISOString(),
+              stripe_payment_intent_id: session.payment_intent?.toString() || session.id,
+              updated_at: new Date().toISOString()
+            })
+            .eq('id', investmentId)
+          
+          if (investmentError) {
+            console.error('❌ Error updating investment:', investmentError)
+          } else {
+            console.log('✅ Investment activated:', investmentId)
+            
+            // Otorgar tokens CMPX al usuario
+            if (cmpxTokens > 0 && userId) {
+              // Aquí deberías tener una función para otorgar tokens
+              // Por ahora solo logueamos
+              console.log(`🎁 Tokens to award: ${cmpxTokens} CMPX to user ${userId}`)
+              
+              // TODO: Implementar otorgamiento de tokens CMPX
+              // await awardTokens(userId, cmpxTokens, 'investment_reward', investmentId)
+            }
+            
+            // Crear retornos anuales automáticos (si return_type es annual)
+            // Esto se hace automáticamente con el trigger, pero podemos verificar
+            console.log('📅 Annual returns will be created automatically via trigger')
+          }
+          
+          break
+        }
+        
+        // Obtener información del cliente y suscripción (código existente para Premium)
         const customerId = session.customer as string
         const subscriptionId = session.subscription as string
         
@@ -204,6 +279,20 @@ serve(async (req) => {
       default:
         console.log(`🤷 Unhandled event type: ${event.type}`)
     }
+
+    // Guardar evento en stripe_events
+    await supabase
+      .from('stripe_events')
+      .insert({
+        stripe_event_id: event.id,
+        event_type: event.type,
+        event_data: event.data.object,
+        processed: true,
+        processed_at: new Date().toISOString()
+      })
+      .catch(err => {
+        console.error('❌ Error saving stripe event:', err)
+      })
 
     return new Response(JSON.stringify({ 
       received: true, 

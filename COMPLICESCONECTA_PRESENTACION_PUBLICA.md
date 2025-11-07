@@ -7,11 +7,9 @@
 
 > **📚 Para desarrolladores:**  
 > **- [INSTALACION_SETUP_v3.5.0.md](./INSTALACION_SETUP_v3.5.0.md)** - Guía completa de instalación y configuración  
-> **- [DOCUMENTACION_MAESTRA_UNIFICADA_v3.5.0.md](./DOCUMENTACION_MAESTRA_UNIFICADA_v3.5.0.md)** - Documentación técnica completa  
-> **- [MEMORIAS_SESIONES_UNIFICADAS_v3.5.0.md](./MEMORIAS_SESIONES_UNIFICADAS_v3.5.0.md)** - Memorias de sesiones y avances  
-> **- [RESUMEN_SESION_SOLUCIONES_CONSOLIDADO.md](./RESUMEN_SESION_SOLUCIONES_CONSOLIDADO.md)** - Resumen consolidado de sesiones y soluciones  
-> **- [DIAGNOSTICO_VERCEL_CONSOLIDADO.md](./DIAGNOSTICO_VERCEL_CONSOLIDADO.md)** - Diagnóstico completo de problemas en Vercel  
-> **- [AUDITORIA_USELAYOUTEFFECT_CONSOLIDADO.md](./AUDITORIA_USELAYOUTEFFECT_CONSOLIDADO.md)** - Auditoría técnica del error useLayoutEffect
+> **- [docs/DOCUMENTACION_COMPLETA_v3.5.0.md](./docs/DOCUMENTACION_COMPLETA_v3.5.0.md)** - Documentación técnica completa del sistema  
+> **- [docs/DIAGRAMAS_FLUJOS_v3.5.0.md](./docs/DIAGRAMAS_FLUJOS_v3.5.0.md)** - Diagramas Mermaid de todos los flujos  
+> **- [DOCUMENTACION_IMPLEMENTACION_REPORTES_CONSOLIDADA_v3.5.0.md](./DOCUMENTACION_IMPLEMENTACION_REPORTES_CONSOLIDADA_v3.5.0.md)** - Documentación consolidada de implementación y reportes
 
 ---
 
@@ -67,7 +65,7 @@ Nuestro sistema de mensajería no es solo texto. Incluye:
 
 ### Arquitectura Empresarial
 
-- **Base de datos escalable**: 113 tablas en remoto, 66 en local (PostgreSQL/Supabase) - Optimizadas para manejar crecimiento masivo
+- **Base de datos escalable**: 52+ tablas en remoto/local (PostgreSQL/Supabase) - Optimizadas para manejar crecimiento masivo
 - **Neo4j Graph Database**: Base de datos de grafo para conexiones sociales (200x más rápido que PostgreSQL)
   - **¿Qué es Neo4j?** Es una base de datos de grafos que almacena relaciones entre usuarios como conexiones directas (nodos y relaciones)
   - **¿Para qué sirve?** Permite encontrar amigos mutuos en ~10ms (vs 2s en PostgreSQL), recomendaciones "friends of friends" en ~50ms (vs 10s), y calcular el camino más corto entre usuarios
@@ -104,7 +102,10 @@ Nuestro sistema de mensajería no es solo texto. Incluye:
 - ✅ Sistema de tokens y recompensas (CMPX y GTK)
 - ✅ Moderación automática y manual
 - ✅ Dashboard administrativo completo
-- ✅ **Verificador IA de Consentimiento** (cumplimiento Ley Olimpia)
+- ✅ **Sistema de Clubs Verificados** (check-ins geoloc, reseñas verificadas, watermark IA)
+- ✅ **Sistema de Moderación 24/7** (pagos automáticos, timer, IA pre-clasificación)
+- ✅ **Sistema de Tokens CMPX Shop** (compra directa, comisiones galerías, staking)
+- ✅ **Sistema de Donativos/Inversión** (SAFTE automático, retorno 10% anual)
 - ✅ **Galerías NFT-Verificadas** (verificación de autenticidad con blockchain - Integrado en TokenBalance, TokenDashboard, ImageGallery, ImageUpload)
 - ✅ **Matching Predictivo con Neo4j** (conexiones sociales inteligentes)
 - ✅ **Eventos Virtuales Sostenibles** (con tokens CMPX como recompensas)

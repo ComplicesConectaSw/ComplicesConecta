@@ -4,6 +4,30 @@ All notable changes to this project will be documented in this file.
 
 ## [3.5.0] - 2025-11-06
 
+### Added - Sistema Completo v3.5.0
+- **Sistema de Clubs Verificados**: 5 tablas nuevas (clubs, club_verifications, club_checkins, club_reviews, club_flyers)
+  - Check-ins geoloc con radio 50m
+  - Reseñas solo de usuarios verificados con check-in real
+  - Watermark + Blur IA automático en imágenes
+  - Páginas públicas `/clubs/{slug}` con flyers editables
+  - Panel admin `/admin/partners` para gestión
+- **Sistema de Moderación 24/7**: 3 tablas nuevas (moderator_sessions, moderator_payments, report_ai_classification)
+  - Jerarquía 5 niveles (SuperAdmin → Elite → Senior → Junior → Trainee)
+  - Pagos automáticos cada lunes basados en % revenue
+  - Timer conexión automático
+  - IA pre-clasificación de reportes
+  - Baneo permanente con huella digital (canvas + WorldID)
+- **Sistema de Tokens CMPX Shop**: 3 tablas nuevas (cmpx_shop_packages, cmpx_purchases, gallery_commissions)
+  - Shop activo: 1000 CMPX = 300 MXN
+  - Comisión galerías: 10% (creador gana 90%)
+  - Staking 10% APY
+  - DAO a 10K usuarios
+- **Sistema de Donativos/Inversión**: 4 tablas nuevas (investments, investment_returns, investment_tiers, stripe_events)
+  - SAFTE automático: 10% retorno anual garantizado
+  - Tiers: $10K, $25K, $50K, $100K MXN
+  - Landing `/invest` con Stripe integrado
+  - Plataformas AngelList + Republic listos para publicar
+
 ### Added - Features Innovadoras Completas
 - **IA Consent Verification in Chats**: Sistema real-time de verificación de consentimiento usando NLP con OpenAI GPT-4, auto-pause si consenso <80% (Ley Olimpia MX)
 - **NFT-Verified Galleries**: Galerías NFT con GTK staking (100 GTK requeridos), mint ERC-721 stub en Polygon, integración con gallery_permissions
@@ -15,6 +39,11 @@ All notable changes to this project will be documented in this file.
 - **VirtualEventsService.ts**: Corregido manejo de valores `null` en `couple_id`, `created_at`, `updated_at` al mapear eventos
 
 ### Added - Migraciones SQL
+- `20251106_05_create_club_system.sql`: Sistema completo de clubs verificados (5 tablas)
+- `20251106_06_create_investment_system.sql`: Sistema de inversiones SAFTE (4 tablas)
+- `20251106_07_create_moderation_v2_system.sql`: Moderación v2 con pagos automáticos (3 tablas)
+- `20251106_08_create_permanent_ban_system.sql`: Baneo permanente con huella digital (2 tablas)
+- `20251106_09_create_cmpx_shop_system.sql`: Shop CMPX tokens y comisiones (3 tablas)
 - `20251106_01_consent_verification.sql`: Tabla `consent_verifications` con scoring y estado
 - `20251106_02_nft_staking.sql`: Tablas `nft_galleries`, `nft_tokens`, `nft_ownership`, `nft_staking_requirements`
 - `20251106_03_graph_matching.sql`: Tablas `graph_matches`, `social_connections`, `emotional_scores`

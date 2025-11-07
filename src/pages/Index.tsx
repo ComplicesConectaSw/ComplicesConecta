@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import HeaderNav from "@/components/HeaderNav";
 import { HeroSection } from "@/components/HeroSection";

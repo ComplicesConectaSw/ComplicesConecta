@@ -2,148 +2,68 @@
 import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
-import { sentryVitePlugin } from "@sentry/vite-plugin";
-import { reactOrderPlugin } from "./vite-plugin-react-order";
 
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), "");
+  // Cargar variables de entorno
+  const env = loadEnv(mode, process.cwd(), '');
+  const isDev = mode === 'development';
 
   return {
-    plugins: [
-      react(),
-      reactOrderPlugin(),
-      ...(process.env.NODE_ENV === "production" &&
-      process.env.SENTRY_ORG &&
-      process.env.SENTRY_PROJECT &&
-      process.env.SENTRY_AUTH_TOKEN
-        ? [
-            sentryVitePlugin({
-              org: process.env.SENTRY_ORG,
-              project: process.env.SENTRY_PROJECT,
-              authToken: process.env.SENTRY_AUTH_TOKEN,
-              telemetry: false,
-              sourcemaps: { assets: "./dist/**" },
-              release: {
-                name: `complicesconecta@${process.env.npm_package_version || "3.5.0"}`,
-              },
-              disable: !process.env.SENTRY_AUTH_TOKEN,
-            }),
-          ]
-        : []),
-    ],
+    plugins: [react()],
     resolve: {
-      alias: { "@": path.resolve(__dirname, "./src") },
-      dedupe: ["react", "react-dom"],
-    },
-    optimizeDeps: {
-      exclude: ["web3", "ethers", "@metamask/detect-provider", "@solana/web3.js", "tronweb"],
-      include: ["react", "react-dom", "react/jsx-runtime"],
-      esbuildOptions: {
-        define: { global: "globalThis" },
-        sourcemap: false,
+      alias: {
+        '@': path.resolve(__dirname, './src'),
       },
     },
-    css: { postcss: "./postcss.config.js" },
     server: {
-      host: true,
       port: 8080,
-      cors: true,
-      // HMR configurado para funcionar con túneles
-      // Nota: localtunnel tiene limitaciones con WebSockets, el HMR puede no funcionar
-      hmr: { 
-        port: 8080, 
-        host: "localhost",
-        clientPort: 8080,
+      strictPort: false,
+      host: true,
+      hmr: {
         protocol: 'ws',
-        // Permitir HMR a través de túneles (puede no funcionar con localtunnel)
-        client: {
-          webSocketURL: {
-            hostname: 'localhost',
-            pathname: '/ws',
-            port: 8080,
-            protocol: 'ws'
-          }
-        }
+        host: 'localhost',
+        port: 8080,
       },
-      // Permitir hosts de túneles (localtunnel, ngrok, cloudflare, etc.)
       allowedHosts: [
+        '.loca.lt',
+        '.ngrok-free.app',
+        '.trycloudflare.com',
         'localhost',
-        '.loca.lt',        // localtunnel
-        '.ngrok.io',      // ngrok
-        '.ngrok-free.app', // ngrok free
-        '.ngrok.app',     // ngrok
-        '.trycloudflare.com', // Cloudflare Tunnel
-        '.vercel.app',    // Vercel
-        '.vercel.live',   // Vercel Live
       ],
-      headers: {
-        "Cross-Origin-Embedder-Policy": "unsafe-none",
-        "Cross-Origin-Opener-Policy": "same-origin",
-        "Content-Security-Policy":
-          process.env.NODE_ENV === "development" || import.meta.env.DEV
-            ? "default-src 'self' 'unsafe-eval' 'unsafe-inline' https: blob: data: ws: wss: http://localhost:* http://127.0.0.1:*; script-src 'self' 'unsafe-eval' 'unsafe-inline' https: blob: data:; style-src 'self' 'unsafe-inline' https: blob: data:; img-src 'self' data: https: blob:; font-src 'self' data: https: blob:; connect-src 'self' 'unsafe-eval' https: ws: wss: http://localhost:* http://127.0.0.1:* blob:; frame-src 'self' https: vercel.live; worker-src 'self' blob: data: 'unsafe-eval';"
-            : "default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; connect-src 'self' https: ws: wss:; frame-src 'self' https://vercel.live;",
-      },
-      sourcemapIgnoreList: (source) =>
-        /chrome-extension|moz-extension|installHook|<anonymous>|react_devtools_backend/.test(source),
-      fs: { strict: false },
+      headers: isDev ? {
+        'Content-Security-Policy': [
+          "default-src 'self' 'unsafe-eval' 'unsafe-inline' data: blob: https:;",
+          "script-src 'self' 'unsafe-eval' 'unsafe-inline' https:;",
+          "style-src 'self' 'unsafe-inline' https:;",
+          "img-src 'self' data: blob: https:;",
+          "font-src 'self' data: https:;",
+          "connect-src 'self' 'unsafe-eval' ws: wss: https:;",
+          "worker-src 'self' 'unsafe-eval' blob:;",
+          "frame-src 'self' https:;",
+        ].join(' '),
+      } : {},
     },
     build: {
-      sourcemap: process.env.NODE_ENV === "production" && process.env.SENTRY_AUTH_TOKEN ? true : false,
       rollupOptions: {
-        preserveEntrySignatures: "strict",
         output: {
-          format: "es",
-          exports: "named",
-          manualChunks: (id) => {
-            if (id.includes("node_modules")) {
-              if (/react|react-dom|react-router/.test(id)) return "vendor-react";
-              if (/@radix-ui/.test(id)) return "ui-radix";
-              if (/lucide-react/.test(id)) return "ui-icons";
-              if (/framer-motion/.test(id)) return "ui-animations";
-              if (/recharts|d3-/.test(id)) return "charts";
-              if (/@tensorflow|onnxruntime/.test(id)) return "ml";
-              if (/@capacitor/.test(id) && !/@capacitor\/core/.test(id)) return "mobile";
-              if (/@supabase|@tanstack/.test(id)) return "data-layer";
-              if (/@sentry|@datadog/.test(id)) return "monitoring";
-              if (/react-hook-form|zod/.test(id)) return "forms";
-              if (/date-fns|clsx/.test(id)) return "utils";
-              return "vendor";
+          // FUERZA CHUNKS ESTABLES + SIN HASH LOCO
+          chunkFileNames: 'assets/js/[name].js',
+          entryFileNames: 'assets/js/[name].js',
+          assetFileNames: ({ name }) => {
+            if (/\.(png|jpe?g|svg|gif|webp)$/i.test(name ?? '')) {
+              return 'assets/images/[name].[ext]'
             }
-            if (/src\/pages\/(Admin|Moderator)/.test(id)) return "admin";
-            if (/Analytics|PerformanceMonitoring/.test(id)) return "analytics";
-            if (/Chat/.test(id)) return "chat";
-            if (/Profile/.test(id)) return "profiles";
-            if (/Index|Auth|HeroSection|HeaderNav/.test(id)) return "entry";
-            if (/Discover|Events/.test(id)) return "discover";
-            if (/Tokens|Premium/.test(id)) return "premium";
-            if (/src\/pages\//.test(id)) return "pages";
+            if (/\.(css)$/.test(name ?? '')) {
+              return 'assets/css/[name].[ext]'
+            }
+            return 'assets/[name].[ext]'
           },
-          chunkFileNames: "assets/[name]-[hash].js",
-          entryFileNames: "assets/[name]-[hash].js",
-          assetFileNames: "assets/[name]-[hash].[ext]",
         },
       },
-      commonjsOptions: { transformMixedEsModules: true },
-      target: "es2020",
-      minify: "terser",
-      terserOptions: {
-        compress: { drop_console: false, drop_debugger: true, passes: 2 },
-        format: { comments: false },
-        mangle: { safari10: true },
-      },
-      chunkSizeWarningLimit: 400,
-      reportCompressedSize: true,
-      assetsInlineLimit: 4096,
+      // DESACTIVA SPLITTING (esto es lo que rompe Vercel)
+      chunkSizeWarningLimit: 1000,
+      cssCodeSplit: false,
     },
-    define: {
-      global: "globalThis",
-      "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV || "production"),
-      ...Object.fromEntries(
-        Object.entries(env)
-          .filter(([k]) => k.startsWith("VITE_"))
-          .map(([k, v]) => [`import.meta.env.${k}`, JSON.stringify(v)])
-      ),
-    },
+    base: '/', // CRÍTICO PARA VERCEL
   };
-});
+})

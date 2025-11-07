@@ -91,6 +91,13 @@ const TokensLegal = lazy(() => import("@/pages/TokensLegal"));
 // Admin pages - separate chunk
 const Admin = lazy(() => import("@/pages/Admin"));
 const AdminProduction = lazy(() => import("@/pages/AdminProduction"));
+const AdminPartners = lazy(() => import("@/pages/AdminPartners"));
+
+// Clubs system
+const Clubs = lazy(() => import("@/pages/Clubs"));
+
+// Shop CMPX tokens
+const Shop = lazy(() => import("@/pages/Shop"));
 
 // Stories info pages
 const StoriesInfo = lazy(() => import("@/pages/StoriesInfo"));
@@ -116,6 +123,7 @@ const Moderators = lazy(() => import("@/pages/Moderators"));
 const Blog = lazy(() => import("@/pages/Blog"));
 const ChatAuthenticated = lazy(() => import("@/pages/ChatAuthenticated"));
 const Donations = lazy(() => import("@/pages/Donations"));
+const Invest = lazy(() => import("@/pages/Invest"));
 const TemplateDemo = lazy(() => import("@/pages/TemplateDemo"));
 const News = lazy(() => import("@/pages/News"));
 const Investors = lazy(() => import("@/pages/Investors"));
@@ -225,6 +233,7 @@ const App = () => (
                   <Route path="/tokens-privacy" element={<TokensPrivacy />} />
                   <Route path="/tokens-terms" element={<TokensTerms />} />
                   <Route path="/tokens-legal" element={<TokensLegal />} />
+                  <Route path="/shop" element={<Shop />} />
                   <Route path="/project-info" element={<ProjectInfo />} />
                   <Route path="/admin" element={<Admin />} />
                   <Route path="/admin-production" element={<AdminProduction />} />
@@ -253,6 +262,13 @@ const App = () => (
                       <AdminAnalytics />
                     </AdminRoute>
                   } />
+                  <Route path="/admin/partners" element={
+                    <AdminRoute>
+                      <AdminPartners />
+                    </AdminRoute>
+                  } />
+                  <Route path="/clubs" element={<Clubs />} />
+                  <Route path="/clubs/:slug" element={<Clubs />} />
                   <Route path="/moderators/dashboard" element={
                     <ModeratorRoute>
                       <ModeratorDashboard />
@@ -263,6 +279,7 @@ const App = () => (
                   <Route path="/blog" element={<Blog />} />
                   <Route path="/chat-authenticated" element={<ChatAuthenticated />} />
                   <Route path="/donations" element={<Donations />} />
+                  <Route path="/invest" element={<Invest />} />
                   <Route path="/template-demo" element={<TemplateDemo />} />
                   <Route path="/news" element={<News />} />
                   <Route path="/investors" element={<Investors />} />
