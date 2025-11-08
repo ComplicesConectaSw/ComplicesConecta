@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import HeaderNav from '@/components/HeaderNav';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/shared/ui/Card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
 import { Button } from '@/shared/ui/Button';
 import { Badge } from '@/components/ui/badge';
 import { 
@@ -12,7 +12,6 @@ import {
   ArrowRight, 
   FileText,
   Scale,
-  Lock,
   Sparkles,
   TrendingUp,
   Zap,
