@@ -1,4 +1,4 @@
-# 🤖 README_IA v3.5.0
+# 🤖 README_IA v3.6.3
 
 ## Estrategia Avanzada con IA + Machine Learning + DevOps Manager Ultra
 
@@ -109,3 +109,9 @@
    - **Privacidad Sentry**: Filtros automáticos de datos sensibles
    - **RLS Completo**: 65+ políticas activas en Supabase (v3.5.0)
    - **Validación**: Nunca commitear `.env`, usar `.env.example` como template
+
+9. **Correcciones de Tipos y Scripts v3.6.3** 🆕
+   - **Corrección de Tipos**: Errores de tipos TypeScript corregidos en `Clubs.tsx` usando `Omit` y normalización de datos
+   - **Script de Caracteres**: Script `fix-character-encoding.ps1` para corregir caracteres mal codificados cuando los archivos están cerrados
+   - **Secciones Legales**: Secciones legales independientes agregadas a `Moderators.tsx`, `Investors.tsx`, `Clubs.tsx`, `NFTs.tsx`
+   - **Nota Importante**: Las secciones legales en estas páginas son independientes del contenido de `docs/legal/`. La página `Legal.tsx` solo se actualiza con el contenido del directorio `docs/legal/`
