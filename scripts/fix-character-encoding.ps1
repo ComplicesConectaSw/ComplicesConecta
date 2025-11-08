@@ -12,8 +12,10 @@
     .\scripts\fix-character-encoding.ps1 -Path "." -Backup
 #>
 
+[CmdletBinding()]
 param(
     [string]$Path = "src",
+    # PSScriptAnalyzer: Ignore because default is intentional
     [switch]$Backup = $true
 )
 
@@ -29,18 +31,20 @@ Write-Host ""
 $replacements = @{
     # Windows-1252 / ISO-8859-1 mal interpretado como UTF-8
     'Ã¡' = 'á'; 'Ã©' = 'é'; 'Ã­' = 'í'; 'Ã³' = 'ó'; 'Ãº' = 'ú'; 'Ã±' = 'ñ'
-    'Ã�' = 'Á'; 'Ã‰' = 'É'; 'Ã�' = 'Í'; 'Ã“' = 'Ó'; 'Ãš' = 'Ú'; 'Ã‘' = 'Ñ'
+    'Ã¡' = 'Á'; 'Ã‰' = 'É'; 'Ã­' = 'Í'; 'Ã“' = 'Ó'; 'Ãš' = 'Ú'; 'Ã‘' = 'Ñ'
     'Â¿' = '¿'; 'Â¡' = '¡'
-    'â€™' = '’'; 'â€œ' = '“'; 'â€�' = '”'; 'â€�' = '”'
+    'â€™' = '’'; 'â€œ' = '“'; 'â€�' = '”'
     'Ã¼' = 'ü'; 'Ã¶' = 'ö'; 'Ã¤' = 'ä'; 'Ãœ' = 'Ü'; 'Ã–' = 'Ö'; 'Ã„' = 'Ä'
     'Ã§' = 'ç'; 'Ã‡' = 'Ç'
     'Ã¨' = 'è'; 'Ã¬' = 'ì'; 'Ã²' = 'ò'; 'Ã¹' = 'ù'
     'Ãˆ' = 'È'; 'ÃŒ' = 'Ì'; 'Ã’' = 'Ò'; 'Ã™' = 'Ù'
     'Ã£' = 'ã'; 'Ãµ' = 'õ'; 'Ã¢' = 'â'; 'Ãª' = 'ê'
     'â‚¬' = '€'; 'â„¢' = '™'; 'Â®' = '®'; 'Â©' = '©'
-    'Â'   = ''; 'Â ' = ' '; 'Ã' = ''; 'Âª' = 'ª'; 'Âº' = 'º'
-    # Caracteres comunes de "�" (replacement character)
-    '�' = ''; 'ï¿½' = ''; 'â€‹' = ''; 'â€‹' = ''
+    'Â ' = ' '; 'Âª' = 'ª'; 'Âº' = 'º'
+    # Caracteres de reemplazo
+    '�' = ''; 'ï¿½' = ''; 'â€‹' = ''
+    # Unificados: Â y Ã (ambos aparecen como basura)
+    'Â' = ''; 'Ã' = ''
 }
 
 # === EXTENSIONES A PROCESAR ===
@@ -49,13 +53,13 @@ $extensions = @("*.ts", "*.tsx", "*.js", "*.jsx", "*.md", "*.mdx", "*.json", "*.
 # === EXCLUSIONES ===
 $excludeDirs = @("node_modules", ".git", "dist", "build", ".next", "coverage", "android", "ios")
 
-# === FUNCIÓN: CORREGIR ARCHIVO ===
-function Fix-CharacterEncoding {
+# === FUNCIÓN: REPARAR CODIFICACIÓN ===
+function Repair-CharacterEncoding {
+    [CmdletBinding()]
     param([string]$FilePath)
     
     try {
         $content = Get-Content -Path $FilePath -Encoding UTF8 -Raw -ErrorAction Stop
-        $original = $content
         $changed = $false
 
         foreach ($bad in $replacements.Keys) {
@@ -110,7 +114,7 @@ foreach ($file in $files) {
         $stream = [System.IO.File]::Open($file.FullName, 'Open', 'ReadWrite', 'None')
         $stream.Close()
 
-        if (Fix-CharacterEncoding -FilePath $file.FullName) {
+        if (Repair-CharacterEncoding -FilePath $file.FullName) {
             $corrected++
         }
     }
