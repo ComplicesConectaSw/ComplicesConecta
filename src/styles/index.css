@@ -1,15 +1,10 @@
-/* src/styles/index.css - Estilos consolidados */
-/* Solución: Consolidar todo en un solo archivo para evitar conflicto entre @import y @apply */
-
-/* Tailwind CSS v3 - Sintaxis correcta */
+/* Tailwind Directives - Deben ir PRIMERO para que @apply funcione correctamente */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ============================================
-   VARIABLES GLOBALES Y ESTILOS BASE
-   ============================================ */
-
+/* ===== ESTILOS BASE Y VARIABLES ===== */
+/* Consolidado desde src/styles/base/base.css */
 :root {
   --primary: #ff1493;
   --secondary: #8b00ff;
@@ -35,10 +30,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ============================================
-   COMPONENTES UI
-   ============================================ */
-
+/* ===== ESTILOS DE COMPONENTES ===== */
+/* Consolidado desde src/styles/components/components.css */
 @layer components {
   .button {
     @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-semibold;
@@ -51,8 +44,24 @@ body {
   .input {
     @apply flex h-10 w-full rounded-md border border-input bg-background px-3 py-2;
   }
+}
 
-  /* Estilos para perfiles individuales */
+/* ===== UTILIDADES PERSONALIZADAS ===== */
+/* Consolidado desde src/styles/utils/utils.css */
+@layer utilities {
+  .container {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .sr-only {
+    @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+    clip: rect(0, 0, 0, 0);
+  }
+}
+
+/* ===== ESTILOS DE PERFILES ===== */
+/* Consolidado desde src/styles/profiles/single.css y couple.css */
+@layer components {
   .profile-single {
     @apply container mx-auto px-4 py-8;
   }
@@ -65,7 +74,6 @@ body {
     @apply grid grid-cols-1 md:grid-cols-2 gap-6;
   }
 
-  /* Estilos para perfiles de parejas */
   .profile-couple {
     @apply container mx-auto px-4 py-8;
   }
@@ -76,20 +84,5 @@ body {
 
   .profile-couple-content {
     @apply grid grid-cols-1 md:grid-cols-2 gap-6;
-  }
-}
-
-/* ============================================
-   UTILIDADES PERSONALIZADAS
-   ============================================ */
-
-@layer utilities {
-  .container {
-    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
-  }
-
-  .sr-only {
-    @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
-    clip: rect(0, 0, 0, 0);
   }
 }

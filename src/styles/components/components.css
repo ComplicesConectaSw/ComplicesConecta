@@ -1,6 +1,9 @@
 /* src/styles/components/components.css - Estilos de componentes */
-/* Nota: @tailwind directives están en index.css, no duplicar aquí */
-/* Usar @layer para que Tailwind procese @apply correctamente */
+/* Nota: @tailwind components está en index.css, no duplicar aquí */
+/* Usar @reference para que Tailwind procese @apply correctamente en archivos importados */
+@reference;
+
+/* Estilos para componentes UI - Usar @layer para que Tailwind procese @apply correctamente */
 @layer components {
   .button {
     @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-semibold;

@@ -3,21 +3,7 @@
 **Fecha de Inicio:** 08 de Noviembre, 2025  
 **Versión:** 3.6.3  
 **Estado General:** 🟡 En Progreso  
-**Última Actualización:** 08 de Noviembre, 2025 - 12:05
-
----
-
-## ⚠️ REGLA IMPORTANTE: Verificación de Archivos Modificados
-
-**SIEMPRE verificar que los archivos modificados no tengan errores antes de continuar:**
-
-1. **Ejecutar linting:** `npm run lint`
-2. **Verificar TypeScript:** `npx tsc --noEmit`
-3. **Verificar build:** `npm run build`
-4. **Verificar imports:** Asegurar que todos los imports estén correctos
-5. **Verificar que no haya warnings:** Resolver todos los warnings antes de continuar
-
-**Esta regla debe aplicarse después de cada modificación de archivos.**
+**Última Actualización:** 08 de Noviembre, 2025
 
 ---
 
@@ -25,87 +11,80 @@
 
 | Fase | Estado | Progreso | Archivos Totales | Archivos Corregidos | Errores Restantes |
 |------|--------|----------|------------------|---------------------|-------------------|
-| **Fase 1: Tests Fallando** | 🟢 Completada | 100% | 35 | 35 | 0 |
-| **Fase 2: Directorios Vacíos** | 🟢 Completada | 100% | 9 | 9 | 0 |
-| **Fase 3: Errores useTheme** | 🟢 Completada | 100% | 2 | 2 | 0 |
+| **Fase 1: Tests Fallando** | 🟡 En Progreso | 3% | 30 | 1 | 29 |
+| **Fase 2: Directorios Vacíos** | ⚪ Pendiente | 0% | 9 | 0 | 9 |
+| **Fase 3: Errores useTheme** | ⚪ Pendiente | 0% | 2 | 0 | 2 |
 
-**Progreso Total:** 100% (46/46 archivos corregidos)
+**Progreso Total:** 7% (3/41 archivos corregidos)
 
 **✅ PROBLEMA CRÍTICO RESUELTO:**
-- ✅ **CONFLICTO CSS RESUELTO:** Error de build `@import must precede all other statements` vs `Cannot apply unknown utility class` **RESUELTO**
-- ✅ **Solución Aplicada:**
-  - Cambiado PostCSS de `@tailwindcss/postcss` (v4) a `tailwindcss` (v3) para consistencia
-  - Cambiado sintaxis CSS de `@import "tailwindcss"` a `@tailwind base/components/utilities` (v3)
-  - Eliminado `tailwind.config.js` que interfería con `tailwind.config.ts`
-  - Removido `@reference` inválido de archivos CSS importados
-  - Build exitoso ✅ (verificado con `npm run build`)
+- **SOLUCIONADO:** Error de build: `@import must precede all other statements` vs `Cannot apply unknown utility class`
+- **Solución aplicada:** Consolidado todo el contenido CSS directamente en `index.css` sin usar `@import`
+- **Resultado:** Build exitoso sin errores de CSS
 
 ---
 
 ## 🎯 FASE 1: TESTS FALLANDO Y ARCHIVOS CON ERRORES
 
-**Estado:** 🟢 Completada  
-**Progreso:** 30/30 archivos (100%)  
-**Requisito:** ✅ Todos los archivos están 100% sin errores - Fase completada
+**Estado:** 🟡 En Progreso  
+**Progreso:** 0/30 archivos (0%)  
+**Requisito:** Todos los archivos deben estar 100% sin errores antes de avanzar a Fase 2
 
 ### 📋 Checklist de Archivos
 
 #### Tests Unitarios
-- [x] `src/tests/unit/profile-cache.test.ts` - **✅ CORREGIDO:** Mocks mejorados, timeouts ajustados, verificaciones de null agregadas (08/11/2025)
-- [x] `src/tests/security/media-access.test.ts` - **✅ CORREGIDO:** Mocks de fetch corregidos, verificaciones de null agregadas (08/11/2025)
-- [x] `src/tests/unit/ProfileReportService.test.ts` - **✅ VERIFICADO:** Todos los tests pasan (9 tests)
-- [x] `src/tests/unit/ReportService.test.ts` - **✅ VERIFICADO:** Todos los tests pasan (10 tests)
-- [x] `src/tests/unit/realtime-chat.test.ts` - **✅ VERIFICADO:** Todos los tests pasan (6 tests)
-- [x] `src/tests/unit/ProfileReportsPanel.test.tsx` - **✅ CORREGIDO:** Todos los tests pasan (5/5), timeouts ajustados, verificaciones simplificadas (08/11/2025)
+- [x] `src/tests/unit/profile-cache.test.ts` - **✅ COMPLETADO:** Errores de linting corregidos (supabase null checks y propiedades faltantes en createData)
+- [ ] `src/tests/security/media-access.test.ts` - Errores de test
+- [ ] `src/tests/unit/ProfileReportService.test.ts` - Errores de test
+- [ ] `src/tests/unit/ReportService.test.ts` - Errores de test
+- [ ] `src/tests/unit/realtime-chat.test.ts` - Errores de test
+- [ ] `src/tests/unit/ProfileReportsPanel.test.tsx` - Errores de test
 
 #### Archivos CSS
-- [x] `src/styles/index.css` - **✅ CORREGIDO:** Cambiado a sintaxis Tailwind v3 (`@tailwind base/components/utilities`)
-- [x] `src/styles/profiles/single.css` - **✅ CORREGIDO:** Removido `@reference` inválido, usando `@layer` correctamente
-- [x] `src/styles/profiles/couple.css` - **✅ CORREGIDO:** Removido `@reference` inválido, usando `@layer` correctamente
-- [x] `src/styles/components/components.css` - **✅ CORREGIDO:** Removido `@reference` inválido, usando `@layer` correctamente
-- [x] `src/styles/utils/utils.css` - **✅ CORREGIDO:** Removido `@reference` inválido, usando `@layer` correctamente
-- [x] `postcss.config.js` - **✅ CORREGIDO:** Cambiado de `@tailwindcss/postcss` a `tailwindcss` para consistencia
-- [x] `tailwind.config.js` - **✅ ELIMINADO:** Archivo duplicado que interfería con `tailwind.config.ts`
+- [x] `src/styles/index.css` - **✅ COMPLETADO:** Consolidado todo el contenido CSS directamente sin usar `@import`. Build exitoso.
+- [x] `src/styles/profiles/single.css` - **✅ CONSOLIDADO:** Contenido movido a `index.css`
+- [x] `src/styles/profiles/couple.css` - **✅ CONSOLIDADO:** Contenido movido a `index.css`
+- [x] `src/styles/components/components.css` - **✅ CONSOLIDADO:** Contenido movido a `index.css`
 
 #### Servicios TypeScript
-- [x] `src/services/VideoChatService.ts` - **✅ VERIFICADO:** Sin errores de linting
-- [x] `src/services/reportAIClassification.ts` - **✅ VERIFICADO:** Sin errores de linting
-- [x] `src/services/permanentBan.ts` - **✅ VERIFICADO:** Sin errores de linting
-- [x] `src/services/moderatorTimer.ts` - **✅ VERIFICADO:** Sin errores de linting
-- [x] `src/services/IntegrationTester.ts` - **✅ VERIFICADO:** Sin errores de linting
-- [x] `src/services/galleryCommission.ts` - **✅ VERIFICADO:** Sin errores de linting
-- [x] `src/services/digitalFingerprint.ts` - **✅ VERIFICADO:** Sin errores de linting
-- [x] `src/services/ContentModerationService.ts` - **✅ VERIFICADO:** Sin errores de linting
-- [x] `src/services/notifications/OneSignalService.ts` - **✅ VERIFICADO:** Sin errores de linting
-- [x] `src/services/nft/NFTVerificationService.ts` - **✅ VERIFICADO:** Sin errores de linting
-- [x] `src/services/ai/AILayerService.ts` - **✅ VERIFICADO:** Sin errores de linting
-- [x] `src/services/ai/ConsentVerificationService.ts` - **✅ VERIFICADO:** Sin errores de linting
-- [x] `src/services/ai/EmotionalAIService.ts` - **✅ VERIFICADO:** Sin errores de linting
-- [x] `src/services/ai/PredictiveGraphMatchingService.ts` - **✅ VERIFICADO:** Sin errores de linting
+- [ ] `src/services/VideoChatService.ts` - Verificar errores de linting
+- [ ] `src/services/reportAIClassification.ts` - Verificar errores de linting
+- [ ] `src/services/permanentBan.ts` - Verificar errores de linting
+- [ ] `src/services/moderatorTimer.ts` - Verificar errores de linting
+- [ ] `src/services/IntegrationTester.ts` - Verificar errores de linting
+- [ ] `src/services/galleryCommission.ts` - Verificar errores de linting
+- [ ] `src/services/digitalFingerprint.ts` - Verificar errores de linting
+- [ ] `src/services/ContentModerationService.ts` - Verificar errores de linting
+- [ ] `src/services/notifications/OneSignalService.ts` - Verificar errores de linting
+- [ ] `src/services/nft/NFTVerificationService.ts` - Verificar errores de linting
+- [ ] `src/services/ai/AILayerService.ts` - Verificar errores de linting
+- [ ] `src/services/ai/ConsentVerificationService.ts` - Verificar errores de linting
+- [ ] `src/services/ai/EmotionalAIService.ts` - Verificar errores de linting
+- [ ] `src/services/ai/PredictiveGraphMatchingService.ts` - Verificar errores de linting
 
 #### Componentes React
-- [x] `src/profiles/single/SingleRegistrationForm.tsx` - **✅ VERIFICADO:** Sin errores de linting
-- [x] `src/profiles/single/ProfileSingle.tsx` - **✅ VERIFICADO:** Sin errores de linting
-- [x] `src/profiles/shared/ProfileTabs.tsx` - **✅ VERIFICADO:** Sin errores de linting
-- [x] `src/profiles/couple/CoupleRegistrationForm.tsx` - **✅ VERIFICADO:** Sin errores de linting
-- [x] `src/components/auth/ThemeInfoModal.tsx` - **✅ VERIFICADO:** Sin errores de linting
-- [x] `src/components/auth/EmailValidation.tsx` - **✅ VERIFICADO:** Sin errores de linting
-- [x] `src/components/notifications/NotificationBell.tsx` - **✅ VERIFICADO:** Sin errores de linting
-- [x] `src/components/sharing/TikTokShareButton.tsx` - **✅ VERIFICADO:** Sin errores de linting
-- [x] `src/features/clubs/clubFlyerImageProcessing.ts` - **✅ VERIFICADO:** Sin errores de linting
-- [x] `src/app/(clubs)/Clubs.tsx` - **✅ VERIFICADO:** Sin errores de linting
+- [ ] `src/profiles/single/SingleRegistrationForm.tsx` - Verificar errores de linting
+- [ ] `src/profiles/single/ProfileSingle.tsx` - Verificar errores de linting
+- [ ] `src/profiles/shared/ProfileTabs.tsx` - Verificar errores de linting
+- [ ] `src/profiles/couple/CoupleRegistrationForm.tsx` - Verificar errores de linting
+- [ ] `src/components/auth/ThemeInfoModal.tsx` - Verificar errores de linting
+- [ ] `src/components/auth/EmailValidation.tsx` - Verificar errores de linting
+- [ ] `src/components/notifications/NotificationBell.tsx` - Verificar errores de linting
+- [ ] `src/components/sharing/TikTokShareButton.tsx` - Verificar errores de linting
+- [ ] `src/features/clubs/clubFlyerImageProcessing.ts` - Verificar errores de linting
+- [ ] `src/app/(clubs)/Clubs.tsx` - Verificar errores de linting
 
 #### Configuración
-- [x] `src/config/posthog.config.ts` - **✅ VERIFICADO:** Sin errores de linting
+- [ ] `src/config/posthog.config.ts` - Verificar errores de linting
 
 ### 📝 Notas de Fase 1
 
 **Errores Conocidos:**
-- **✅ RESUELTO:** `profile-cache.test.ts`: Ya tiene verificaciones de null para `supabase` (líneas 127, 161, 487, 525), sin errores de linting
-- **✅ RESUELTO:** `profile-cache.test.ts`: `createData` tiene todas las propiedades requeridas (líneas 407-441), sin errores de tipo
-- **✅ RESUELTO:** `src/styles/index.css`: Conflicto CSS **RESUELTO**
-  - ✅ **Solución Aplicada:** Cambiado PostCSS a Tailwind v3, corregida sintaxis CSS, eliminado `tailwind.config.js` duplicado
-  - ✅ **Verificación:** Build exitoso (`npm run build` completado sin errores)
+- `profile-cache.test.ts`: 8 errores de linting relacionados con `supabase` posiblemente null
+- `profile-cache.test.ts`: 1 error de tipo en `createData` (faltan propiedades requeridas)
+- **✅ RESUELTO:** `src/styles/index.css`: Conflicto entre reglas CSS y Tailwind
+  - **Solución aplicada:** Consolidado todo el contenido CSS directamente en `index.css` sin usar `@import`
+  - **Resultado:** Build exitoso sin errores de CSS
 
 **Acciones Requeridas:**
 1. Agregar verificaciones de null para `supabase` en todos los tests
@@ -118,16 +97,15 @@
 
 ## 🎯 FASE 2: DIRECTORIOS VACÍOS Y ARCHIVOS DUPLICADOS
 
-**Estado:** 🟢 Completada  
-**Progreso:** 9/9 archivos (100%)  
-**Requisito:** ✅ Todos los directorios vacíos han sido eliminados o poblados - Fase completada
+**Estado:** ⚪ Pendiente  
+**Progreso:** 0/9 archivos (0%)  
+**Requisito:** Todos los directorios vacíos deben ser eliminados o poblados, y los archivos duplicados deben ser consolidados antes de avanzar a Fase 3
 
 ### 📋 Checklist de Directorios y Archivos
 
 #### Directorios Vacíos
-- [x] `src/widgets/` - **✅ VERIFICADO:** NO EXISTE - No hay acción requerida
-- [x] `src/app/(profile)/` - **✅ VERIFICADO:** NO EXISTE - No hay acción requerida
-- [x] `src/components/couples/` - **✅ ELIMINADO:** Directorio vacío eliminado (no tenía imports ni uso)
+- [ ] `src/widgets/` - Verificar si está vacío y eliminar o poblar
+- [ ] `src/app/(profile)/` - Verificar si está vacío y eliminar o poblar
 
 #### Archivos de Test (Verificar Duplicados)
 - [ ] `src/tests/security/media-access.test.ts` - Verificar si hay duplicados
@@ -153,32 +131,31 @@
 
 ## 🎯 FASE 3: ERRORES useTheme EN TESTS
 
-**Estado:** ✅ Completado  
-**Progreso:** 2/2 archivos (100%)  
+**Estado:** ⚪ Pendiente  
+**Progreso:** 0/2 archivos (0%)  
 **Requisito:** Todos los errores de `useTheme must be used within a ThemeProvider` deben estar resueltos
 
 ### 📋 Checklist de Archivos
 
 #### Tests con Errores useTheme
-- [x] `src/tests/unit/AILayerService.test.ts` - ✅ Corregido: Mock de `ThemeProvider` mejorado en `setup.ts`
-- [x] `src/tests/unit/PyTorchScoringModel.test.ts` - ✅ Corregido: Mock de `ThemeProvider` mejorado en `setup.ts`
-  - [x] "should handle loading errors gracefully"
-  - [x] "should use fallback when model fails to load"
-  - [x] "should throw error for invalid model path in strict mode"
-  - [x] "should use fallback prediction on model error"
+- [ ] `src/tests/unit/AILayerService.test.ts` - Error: `useTheme must be used within a ThemeProvider` en test "should throw error when fallback disabled and ML fails"
+- [ ] `src/tests/unit/PyTorchScoringModel.test.ts` - Error: `useTheme must be used within a ThemeProvider` en múltiples tests:
+  - [ ] "should handle loading errors gracefully"
+  - [ ] "should use fallback when model fails to load"
+  - [ ] "should throw error for invalid model path in strict mode"
+  - [ ] "should use fallback prediction on model error"
 
 ### 📝 Notas de Fase 3
 
-**Correcciones Realizadas:**
-- ✅ Mejorado el mock de `ThemeProvider` en `src/tests/setup.ts` para usar `require('react')` dentro de la función de mock
-- ✅ Agregado export `default` al mock de `ThemeProvider` para compatibilidad con imports default
-- ✅ Agregado export `default` al mock de `ThemeToggle` para compatibilidad con imports default
-- ✅ Todos los tests de `AILayerService.test.ts` y `PyTorchScoringModel.test.ts` pasan sin errores de `useTheme`
+**Errores Conocidos:**
+- Los tests están intentando usar `ThemeToggle` que requiere `ThemeProvider`
+- El mock de `ThemeProvider` y `ThemeToggle` ya está en `src/tests/setup.ts`, pero puede no estar funcionando correctamente
 
-**Cambios en `src/tests/setup.ts`:**
-- Mock de `ThemeProvider` mejorado para usar `require('react')` dentro de la función de mock
-- Agregado export `default` para compatibilidad con imports default
-- Mock de `ThemeToggle` mejorado con export `default`
+**Acciones Requeridas:**
+1. Verificar que el mock de `ThemeProvider` en `src/tests/setup.ts` esté correctamente configurado
+2. Verificar que el mock de `ThemeToggle` en `src/tests/setup.ts` esté correctamente configurado
+3. Asegurar que los tests que usan componentes que dependen de `ThemeProvider` estén correctamente envueltos
+4. Verificar que no haya imports directos de `ThemeToggle` en los tests que causen el error
 
 ---
 
@@ -188,44 +165,41 @@
 
 | # | Archivo | Estado | Errores | Notas |
 |---|---------|--------|---------|-------|
-| 1 | `profile-cache.test.ts` | ✅ Verificado | 0 | Ya tiene verificaciones de null, sin errores de linting |
+| 1 | `profile-cache.test.ts` | 🔴 Error | 9 | Errores de linting (supabase null, tipo createData) |
 | 2 | `media-access.test.ts` | ⚪ Pendiente | - | Verificar errores |
 | 3 | `ProfileReportService.test.ts` | ⚪ Pendiente | - | Verificar errores |
 | 4 | `ReportService.test.ts` | ⚪ Pendiente | - | Verificar errores |
 | 5 | `realtime-chat.test.ts` | ⚪ Pendiente | - | Verificar errores |
 | 6 | `ProfileReportsPanel.test.tsx` | ⚪ Pendiente | - | Verificar errores |
-| 7 | `index.css` | ✅ Corregido | 0 | Conflicto CSS resuelto - Build exitoso |
-| 8 | `single.css` | ✅ Corregido | 0 | Removido `@reference` inválido - Build exitoso |
-| 9 | `couple.css` | ✅ Corregido | 0 | Removido `@reference` inválido - Build exitoso |
-| 10 | `components.css` | ✅ Corregido | 0 | Removido `@reference` inválido - Build exitoso |
-| 11 | `utils.css` | ✅ Corregido | 0 | Removido `@reference` inválido - Build exitoso |
-| 12 | `postcss.config.js` | ✅ Corregido | 0 | Cambiado a Tailwind v3 - Build exitoso |
-| 13 | `tailwind.config.js` | ✅ Eliminado | 0 | Archivo duplicado eliminado |
-| 10 | `VideoChatService.ts` | ✅ Verificado | 0 | Sin errores de linting |
-| 11 | `reportAIClassification.ts` | ✅ Verificado | 0 | Sin errores de linting |
-| 12 | `permanentBan.ts` | ✅ Verificado | 0 | Sin errores de linting |
-| 13 | `moderatorTimer.ts` | ✅ Verificado | 0 | Sin errores de linting |
-| 14 | `IntegrationTester.ts` | ✅ Verificado | 0 | Sin errores de linting |
-| 15 | `galleryCommission.ts` | ✅ Verificado | 0 | Sin errores de linting |
-| 16 | `digitalFingerprint.ts` | ✅ Verificado | 0 | Sin errores de linting |
-| 17 | `ContentModerationService.ts` | ✅ Verificado | 0 | Sin errores de linting |
-| 18 | `OneSignalService.ts` | ✅ Verificado | 0 | Sin errores de linting |
-| 19 | `NFTVerificationService.ts` | ✅ Verificado | 0 | Sin errores de linting |
-| 20 | `AILayerService.ts` | ✅ Verificado | 0 | Sin errores de linting |
-| 21 | `ConsentVerificationService.ts` | ✅ Verificado | 0 | Sin errores de linting |
-| 22 | `EmotionalAIService.ts` | ✅ Verificado | 0 | Sin errores de linting |
-| 23 | `PredictiveGraphMatchingService.ts` | ✅ Verificado | 0 | Sin errores de linting |
-| 24 | `SingleRegistrationForm.tsx` | ✅ Verificado | 0 | Sin errores de linting |
-| 25 | `ProfileSingle.tsx` | ✅ Verificado | 0 | Sin errores de linting |
-| 26 | `ProfileTabs.tsx` | ✅ Verificado | 0 | Sin errores de linting |
-| 27 | `CoupleRegistrationForm.tsx` | ✅ Verificado | 0 | Sin errores de linting |
-| 28 | `clubFlyerImageProcessing.ts` | ✅ Verificado | 0 | Sin errores de linting |
-| 29 | `posthog.config.ts` | ✅ Verificado | 0 | Sin errores de linting |
-| 30 | `TikTokShareButton.tsx` | ✅ Verificado | 0 | Sin errores de linting |
-| 31 | `NotificationBell.tsx` | ✅ Verificado | 0 | Sin errores de linting |
-| 32 | `ThemeInfoModal.tsx` | ✅ Verificado | 0 | Sin errores de linting |
-| 33 | `EmailValidation.tsx` | ✅ Verificado | 0 | Sin errores de linting |
-| 34 | `Clubs.tsx` | ✅ Verificado | 0 | Sin errores de linting |
+| 7 | `index.css` | ✅ Completado | 0 | Consolidado sin `@import`, build exitoso |
+| 8 | `single.css` | ✅ Consolidado | 0 | Contenido movido a `index.css` |
+| 9 | `couple.css` | ✅ Consolidado | 0 | Contenido movido a `index.css` |
+| 10 | `components.css` | ✅ Consolidado | 0 | Contenido movido a `index.css` |
+| 10 | `VideoChatService.ts` | ⚪ Pendiente | - | Verificar errores |
+| 11 | `reportAIClassification.ts` | ⚪ Pendiente | - | Verificar errores |
+| 12 | `permanentBan.ts` | ⚪ Pendiente | - | Verificar errores |
+| 13 | `moderatorTimer.ts` | ⚪ Pendiente | - | Verificar errores |
+| 14 | `IntegrationTester.ts` | ⚪ Pendiente | - | Verificar errores |
+| 15 | `galleryCommission.ts` | ⚪ Pendiente | - | Verificar errores |
+| 16 | `digitalFingerprint.ts` | ⚪ Pendiente | - | Verificar errores |
+| 17 | `ContentModerationService.ts` | ⚪ Pendiente | - | Verificar errores |
+| 18 | `OneSignalService.ts` | ⚪ Pendiente | - | Verificar errores |
+| 19 | `NFTVerificationService.ts` | ⚪ Pendiente | - | Verificar errores |
+| 20 | `AILayerService.ts` | ⚪ Pendiente | - | Verificar errores |
+| 21 | `ConsentVerificationService.ts` | ⚪ Pendiente | - | Verificar errores |
+| 22 | `EmotionalAIService.ts` | ⚪ Pendiente | - | Verificar errores |
+| 23 | `PredictiveGraphMatchingService.ts` | ⚪ Pendiente | - | Verificar errores |
+| 24 | `SingleRegistrationForm.tsx` | ⚪ Pendiente | - | Verificar errores |
+| 25 | `ProfileSingle.tsx` | ⚪ Pendiente | - | Verificar errores |
+| 26 | `ProfileTabs.tsx` | ⚪ Pendiente | - | Verificar errores |
+| 27 | `CoupleRegistrationForm.tsx` | ⚪ Pendiente | - | Verificar errores |
+| 28 | `clubFlyerImageProcessing.ts` | ⚪ Pendiente | - | Verificar errores |
+| 29 | `posthog.config.ts` | ⚪ Pendiente | - | Verificar errores |
+| 30 | `TikTokShareButton.tsx` | ⚪ Pendiente | - | Verificar errores |
+| 31 | `NotificationBell.tsx` | ⚪ Pendiente | - | Verificar errores |
+| 32 | `ThemeInfoModal.tsx` | ⚪ Pendiente | - | Verificar errores |
+| 33 | `EmailValidation.tsx` | ⚪ Pendiente | - | Verificar errores |
+| 34 | `Clubs.tsx` | ⚪ Pendiente | - | Verificar errores |
 
 ### Fase 2: Directorios Vacíos y Archivos Duplicados
 
@@ -233,7 +207,6 @@
 |---|-------------------|--------|------------------|
 | 1 | `src/widgets/` | ✅ Verificado | **NO EXISTE** - No hay acción requerida |
 | 2 | `src/app/(profile)/` | ✅ Verificado | **NO EXISTE** - No hay acción requerida |
-| 3 | `src/components/couples/` | ✅ Eliminado | **ELIMINADO** - Directorio vacío eliminado (no tenía imports ni uso) |
 | 3 | `media-access.test.ts` | ⚪ Pendiente | Verificar duplicados |
 | 4 | `ReportService.test.ts` | ⚪ Pendiente | Verificar duplicados |
 | 5 | `Chat.test.tsx` | ⚪ Pendiente | Verificar duplicados |
@@ -246,11 +219,11 @@
 
 | # | Archivo | Test | Estado | Error |
 |---|---------|------|--------|-------|
-| 1 | `AILayerService.test.ts` | "should throw error when fallback disabled and ML fails" | ✅ Corregido | Mock de `ThemeProvider` mejorado en `setup.ts` |
-| 2 | `PyTorchScoringModel.test.ts` | "should handle loading errors gracefully" | ✅ Corregido | Mock de `ThemeProvider` mejorado en `setup.ts` |
-| 3 | `PyTorchScoringModel.test.ts` | "should use fallback when model fails to load" | ✅ Corregido | Mock de `ThemeProvider` mejorado en `setup.ts` |
-| 4 | `PyTorchScoringModel.test.ts` | "should throw error for invalid model path in strict mode" | ✅ Corregido | Mock de `ThemeProvider` mejorado en `setup.ts` |
-| 5 | `PyTorchScoringModel.test.ts` | "should use fallback prediction on model error" | ✅ Corregido | Mock de `ThemeProvider` mejorado en `setup.ts` |
+| 1 | `AILayerService.test.ts` | "should throw error when fallback disabled and ML fails" | 🔴 Error | `useTheme must be used within a ThemeProvider` |
+| 2 | `PyTorchScoringModel.test.ts` | "should handle loading errors gracefully" | 🔴 Error | `useTheme must be used within a ThemeProvider` |
+| 3 | `PyTorchScoringModel.test.ts` | "should use fallback when model fails to load" | 🔴 Error | `useTheme must be used within a ThemeProvider` |
+| 4 | `PyTorchScoringModel.test.ts` | "should throw error for invalid model path in strict mode" | 🔴 Error | `useTheme must be used within a ThemeProvider` |
+| 5 | `PyTorchScoringModel.test.ts` | "should use fallback prediction on model error" | 🔴 Error | `useTheme must be used within a ThemeProvider` |
 
 ---
 
@@ -295,21 +268,7 @@
 | 08/11/2025 | Fase 1 | Agregado `@reference` y `@layer` en archivos CSS importados | Sistema |
 | 08/11/2025 | Fase 1 | **PROBLEMA CRÍTICO:** Conflicto entre reglas CSS y Tailwind detectado | Sistema |
 | 08/11/2025 | Fase 2 | Verificación de directorios vacíos: `widgets/` y `(profile)/` no existen | Sistema |
-| 08/11/2025 | Fase 1 | **✅ RESUELTO:** Conflicto CSS resuelto - Cambiado PostCSS a Tailwind v3, corregida sintaxis CSS | Sistema |
-| 08/11/2025 | Fase 1 | **✅ RESUELTO:** Eliminado `tailwind.config.js` duplicado que interfería con `tailwind.config.ts` | Sistema |
-| 08/11/2025 | Fase 1 | **✅ VERIFICADO:** Build exitoso - Todos los archivos CSS corregidos | Sistema |
-| 08/11/2025 | Fase 1 | **✅ VERIFICADO:** Todos los servicios TypeScript sin errores de linting (14 archivos) | Sistema |
-| 08/11/2025 | Fase 1 | **✅ VERIFICADO:** Todos los componentes React sin errores de linting (10 archivos) | Sistema |
-| 08/11/2025 | Fase 1 | **✅ VERIFICADO:** `profile-cache.test.ts` ya tiene verificaciones de null, sin errores | Sistema |
-| 08/11/2025 | Fase 2 | **✅ ELIMINADO:** `src/components/couples/` directorio vacío eliminado | Sistema |
-| 08/11/2025 | Fase 1 | **✅ COMPLETADA:** Fase 1 - Tests Fallando (100% - 30/30 archivos) | Sistema |
-| 08/11/2025 | Fase 2 | **✅ COMPLETADA:** Fase 2 - Directorios Vacíos (100% - 9/9 archivos) | Sistema |
-| 08/11/2025 12:05 | Fase 1 | **✅ CORREGIDO:** `profile-cache.test.ts` - Mocks mejorados, timeouts ajustados | Sistema |
-| 08/11/2025 12:05 | Fase 1 | **✅ CORREGIDO:** `media-access.test.ts` - Mocks de fetch corregidos | Sistema |
-| 08/11/2025 12:05 | Fase 1 | **✅ CORREGIDO:** `ProfileReportsPanel.test.tsx` - Timeouts ajustados, error de tipo corregido | Sistema |
-| 08/11/2025 12:14 | Fase 1 | **✅ COMPLETADO:** `ProfileReportsPanel.test.tsx` - Todos los tests pasan (5/5), verificaciones simplificadas | Sistema |
-| 08/11/2025 12:05 | Fase 1 | **✅ CORREGIDO:** `consolidated-styles.css` - Removido @import conflictivo | Sistema |
-| 08/11/2025 12:05 | Fase 1 | **✅ COMPLETADA:** Fase 1 - Tests Fallando (100% - 35/35 archivos) | Sistema |
+| 08/11/2025 | Fase 1 | **✅ RESUELTO:** Consolidado CSS en `index.css` sin `@import`, build exitoso | Sistema |
 
 ---
 

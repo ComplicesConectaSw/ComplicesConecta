@@ -1,5 +1,7 @@
 /* src/styles/profiles/couple.css - Estilos para perfiles de parejas */
-/* Nota: Este archivo se importa desde index.css que ya tiene @tailwind directives */
+/* Usar @reference para que Tailwind procese @apply correctamente en archivos importados */
+@reference;
+
 /* Usar @layer para que Tailwind procese @apply correctamente */
 @layer components {
   .profile-couple {

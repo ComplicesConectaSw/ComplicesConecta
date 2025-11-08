@@ -6,42 +6,6 @@
 
 ---
 
-## ⚠️ REGLA IMPORTANTE: Verificación de Archivos Modificados
-
-**SIEMPRE verificar que los archivos modificados no tengan errores antes de continuar:**
-
-1. **Ejecutar linting:** `npm run lint`
-2. **Verificar TypeScript:** `npx tsc --noEmit`
-3. **Verificar build:** `npm run build`
-4. **Verificar imports:** Asegurar que todos los imports estén correctos
-5. **Verificar que no haya warnings:** Resolver todos los warnings antes de continuar
-
-**Esta regla debe aplicarse después de cada modificación de archivos.**
-
-## 📝 REGLA DE COMENTARIOS: Español México (es-MX)
-
-**TODOS los comentarios en el código deben estar en español de México (es-MX):**
-
-1. **Comentarios de archivo:** Todos los archivos deben tener un comentario JSDoc al inicio explicando su propósito
-2. **Comentarios de funciones/métodos:** Todas las funciones y métodos deben tener comentarios JSDoc en español
-3. **Comentarios inline:** Los comentarios dentro del código deben estar en español
-4. **Ejemplo de formato:**
-   ```typescript
-   /**
-    * NombreDelServicio - Descripción breve del servicio
-    * 
-    * Descripción detallada de lo que hace el servicio
-    * - Característica 1
-    * - Característica 2
-    * 
-    * @version 3.6.3
-    */
-   ```
-
-**Esta regla debe aplicarse a todos los archivos nuevos y modificados.**
-
----
-
 ## 📋 ÍNDICE
 
 1. [Fase 1: Correcciones Críticas (Antes de Producción)](#fase-1-correcciones-críticas-antes-de-producción)
@@ -55,8 +19,7 @@
 
 **Prioridad:** 🔴 **ALTA - BLOQUEANTE**  
 **Tiempo Estimado:** 1-2 días  
-**Estado:** ⏳ **EN PROGRESO (75% completada)**  
-**Nota:** ✅ Conflicto CSS crítico resuelto (08/11/2025) - Build exitoso
+**Estado:** ⏳ **EN PROGRESO (75% completada)**
 
 ### ✅ Checklist de Fase 1
 
@@ -102,29 +65,6 @@
 - [x] **Solución:** ✅ Movido a `docs/tunnel-setup.md`
 - [x] **Verificación:** ✅ Confirmado
 
-#### 1.5. Conflicto CSS Crítico (Build)
-- [x] **Problema:** Error de build `@import must precede all other statements` vs `Cannot apply unknown utility class`
-- [x] **Análisis:** Conflicto entre PostCSS configurado para Tailwind v4 pero usando sintaxis v3
-- [x] **Solución Aplicada:**
-  ```javascript
-  // postcss.config.js - Cambiado de @tailwindcss/postcss a tailwindcss
-  export default {
-    plugins: {
-      tailwindcss: {},  // v3 en lugar de @tailwindcss/postcss (v4)
-      autoprefixer: {},
-    },
-  };
-  ```
-  ```css
-  /* src/styles/index.css - Cambiado a sintaxis Tailwind v3 */
-  @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
-  ```
-  - Eliminado `tailwind.config.js` duplicado que interfería con `tailwind.config.ts`
-  - Removido `@reference` inválido de archivos CSS importados
-- [x] **Verificación:** ✅ Build exitoso (`npm run build` completado sin errores)
-
 ---
 
 ## 🟡 FASE 2: OPTIMIZACIONES IMPORTANTES
@@ -153,10 +93,10 @@
 #### 2.2. Directorios Vacíos
 - [x] **Análisis:** Verificar directorios vacíos `src/widgets` y `src/components/couples`
 - [x] **Resultado del Análisis:**
-  - `src/widgets/` - NO EXISTE (verificado)
-  - `src/components/couples/` - Vacío, sin imports ni uso
-- [x] **Acción:** ✅ Eliminado `src/components/couples/` (directorio vacío sin uso)
-- [x] **Verificación:** ✅ Confirmado que directorio fue eliminado, no tenía imports ni referencias
+  - `src/widgets/` - Vacío (puede eliminarse si no se va a usar)
+  - `src/components/couples/` - Vacío (puede eliminarse si no se va a usar)
+- [ ] **Acción:** [ ] Eliminar directorios vacíos [ ] Mantener para uso futuro
+- [ ] **Verificación:** Confirmar si se eliminan o se mantienen
 
 #### 2.3. Tests Actualizados
 - [ ] **Problema:** Tests pueden fallar por nuevos archivos y paths movidos
@@ -241,22 +181,21 @@
 
 | Fase | Estado | Progreso | Bloqueado Por |
 |------|--------|----------|---------------|
-| **Fase 1** | ⏳ En Progreso | 4/5 (80%) | - |
-| **Fase 2** | ⏳ En Progreso | 3/5 (60%) | Fase 1 |
+| **Fase 1** | ⏳ En Progreso | 3/4 (75%) | - |
+| **Fase 2** | ⏳ Pendiente | 2/5 (40%) | Fase 1 |
 | **Fase 3** | ⏳ Pendiente | 0/3 (0%) | Fase 2 |
 | **Fase 4** | ⏳ Pendiente | 0/2 (0%) | Fase 3 |
 
-### Progreso Total: 7/14 (50%)
+### Progreso Total: 5/14 (36%)
 
 ### Tareas Completadas en Fase 1
 - ✅ 1.2. TODO Pendiente: app_logs - Resuelto
 - ✅ 1.3. Script Obsoleto: eliminar-documentos-consolidados.ps1 - Eliminado
 - ✅ 1.4. Documentación: tunnel-setup.md - Movido a docs/
-- ✅ 1.5. Conflicto CSS Crítico (Build) - Resuelto (08/11/2025)
 
 ### Tareas Completadas en Fase 2
 - ✅ 2.1. Verificar Redundancia de Directorios - Confirmado NO redundantes
-- ✅ 2.2. Directorios Vacíos - Eliminado `src/components/couples/` (directorio vacío sin uso)
+- ✅ 2.2. Directorios Vacíos - Análisis completado (widgets y couples vacíos)
 
 ### Tareas Pendientes en Fase 1
 - ⏳ 1.1. APK en Repositorio - Parcialmente completado (agregado a .gitignore, pendiente mover a GitHub Releases)

@@ -1,6 +1,9 @@
 /* src/styles/utils/utils.css - Utilidades CSS */
-/* Nota: @tailwind directives están en index.css, no duplicar aquí */
-/* Usar @layer para que Tailwind procese @apply correctamente */
+/* Nota: @tailwind utilities está en index.css, no duplicar aquí */
+/* Usar @reference para que Tailwind procese @apply correctamente en archivos importados */
+@reference;
+
+/* Utilidades personalizadas - Usar @layer para que Tailwind procese @apply correctamente */
 @layer utilities {
   .container {
     @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
