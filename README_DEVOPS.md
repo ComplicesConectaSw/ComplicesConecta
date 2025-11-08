@@ -12,7 +12,7 @@ Script unificado para manejar:
 - **v3.6.0**: Refactorización completa de estructura (profiles/, features/, shared/, entities/, app/) ✅
 - **v3.6.1**: Consolidación de estilos CSS + Script maestro consolidando 14 scripts ✅
 - **v3.6.2**: Unificación de hooks + Correcciones de imports y paths ✅
-- **v3.6.3**: Documentación consolidada + Índices completos + docs-unified/ en .gitignore ✅
+- **v3.6.3**: Documentación consolidada + Índices completos + docs-unified/ en .gitignore + Script de corrección de caracteres ✅
 
 ## 📋 Requisitos
 - PowerShell 7+
@@ -109,3 +109,18 @@ docker run -d --name dd-agent \
 - **New Relic**: https://one.newrelic.com (Account ID: 7299297)
 - **Sentry**: https://sentry.io (configurar DSN)
 - **In-App**: `/admin/analytics` (4 pestañas funcionales)
+
+---
+
+## 🔧 Scripts de Utilidad v3.6.3
+
+### Script de Corrección de Caracteres
+- **Archivo:** `scripts/fix-character-encoding.ps1`
+- **Propósito:** Corregir caracteres mal codificados (?, etc.) en archivos cuando están cerrados
+- **Uso:** `.\scripts\fix-character-encoding.ps1 [-Path <ruta>] [-Backup]`
+- **Características:**
+  - Busca archivos TypeScript, JavaScript, TSX, JSX, Markdown
+  - Corrige caracteres comunes mal codificados (á, é, í, ó, ú, ñ, ¿, ¡, etc.)
+  - Crea backups automáticos antes de modificar archivos
+  - Detecta archivos abiertos en otros procesos y los omite
+- **Nota:** Se recomienda cerrar los archivos antes de ejecutar el script para obtener mejores resultados

@@ -2,7 +2,7 @@
 
 **Última Actualización:** 08 de Noviembre, 2025  
 **Versión Actual:** v3.6.3  
-**Estado:** ✅ **PRODUCTION READY - ENTERPRISE GRADE - AI-NATIVE - REFACTORIZADO v3.6.3 - DOCKER BUILD SUCCESSFUL - NEO4J OPERATIVO - ESTILOS AUDITADOS**
+**Estado:** ✅ **PRODUCTION READY - ENTERPRISE GRADE - AI-NATIVE - REFACTORIZADO v3.6.3 - DOCKER BUILD SUCCESSFUL - NEO4J OPERATIVO - ESTILOS AUDITADOS - CORRECCIONES DE TIPOS COMPLETADAS**
 
 > **📚 Para guía completa de instalación y configuración, consulta [INSTALACION_SETUP_v3.5.0.md](./INSTALACION_SETUP_v3.5.0.md)**  
 > **📚 Para documentación pública, consulta [docs/README.md](./docs/README.md)**  
@@ -893,6 +893,33 @@ El proyecto está ahora completamente equipado para operar en producción con:
 - ✅ **DOCUMENTACION_MAESTRA_COMPLETA_v3.5.0.md**: Consolidación de 4 archivos de documentación
 - ✅ **Archivos eliminados**: INSTRUCCIONES_APLICAR_MIGRACIONES_REMOTO_v3.5.0.md, DOCUMENTACION_CONSOLIDADA_BD_v3.5.0.md, PROGRESO_S2_BACKFILL.md, VERCEL_DEPLOYMENT_TROUBLESHOOTING.md
 - ✅ **Scripts de backup**: Scripts PowerShell para gestión de backups y alineación
+
+---
+
+## 🚀 Versión 3.6.3 - Correcciones de Tipos y Script de Caracteres (08 Nov 2025)
+
+### 🔧 Correcciones Realizadas
+
+#### 1. Corrección de Errores de Tipos en Clubs.tsx
+- **Problema:** Errores de tipos TypeScript en la interfaz `Club` debido a incompatibilidades entre tipos `undefined` y `null`.
+- **Solución:** Se actualizó la interfaz `Club` para usar `Omit` y excluir campos problemáticos, redefiniéndolos con tipos estrictos (`string | null` en lugar de `string | null | undefined`).
+- **Normalización:** Se agregó normalización de datos en `loadClubs()` para asegurar que todos los campos tengan valores por defecto.
+- **Estado:** ✅ COMPLETADO - 0 errores de linting en `Clubs.tsx`.
+
+#### 2. Script para Corrección de Caracteres
+- **Creación:** Se creó el script `scripts/fix-character-encoding.ps1` para corregir caracteres mal codificados (?, etc.) en archivos cuando están cerrados.
+- **Características:**
+  - Busca archivos TypeScript, JavaScript, TSX, JSX, Markdown en el directorio especificado (por defecto `src`).
+  - Corrige caracteres comunes mal codificados (á, é, í, ó, ú, ñ, ¿, ¡, etc.).
+  - Crea backups automáticos antes de modificar archivos (opcional, habilitado por defecto).
+  - Detecta archivos abiertos en otros procesos y los omite con advertencia.
+- **Uso:** `.\scripts\fix-character-encoding.ps1 [-Path <ruta>] [-Backup]`
+- **Estado:** ✅ COMPLETADO - Script creado y listo para usar.
+
+#### 3. Secciones Legales en Páginas
+- **Moderators.tsx, Investors.tsx, Clubs.tsx, NFTs.tsx:** Se agregaron secciones legales independientes con enlaces a `/legal`, `/terms`, y `/privacy`.
+- **Nota Importante:** Las secciones legales en estas páginas son independientes del contenido de `docs/legal/`. La página `Legal.tsx` solo se actualiza con el contenido del directorio `docs/legal/`.
+- **Estado:** ✅ COMPLETADO - Todas las páginas tienen secciones legales con HeaderNav.
 
 ---
 

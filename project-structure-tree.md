@@ -2,7 +2,7 @@
 
 **Última Actualización:** 08 de Noviembre, 2025  
 **Versión:** 3.6.3  
-**Estado:** ✅ **PRODUCTION READY - AI-NATIVE - ENTERPRISE GRADE - REFACTORIZADO v3.6.3 - NEO4J OPERATIVO**  
+**Estado:** ✅ **PRODUCTION READY - AI-NATIVE - ENTERPRISE GRADE - REFACTORIZADO v3.6.3 - NEO4J OPERATIVO - CORRECCIONES DE TIPOS COMPLETADAS**  
 **Puntuación:** 96/100 ✅ (Estructura: 100/100, Lógica: 100/100, Consistencia: 96/100)  
 **Build:** ✅ 17.13s | **Linting:** ✅ 0 errores | **TypeScript:** ✅ 0 errores
 
@@ -250,10 +250,11 @@ conecta-social-comunidad-main/
 │       ├── 20251106_07_create_moderation_v2_system.sql  # Moderación v2 (NUEVO v3.5.0)
 │       ├── 20251106_08_create_permanent_ban_system.sql  # Baneo permanente (NUEVO v3.5.0)
 │       ├── 20251106_09_create_cmpx_shop_system.sql      # Shop CMPX (NUEVO v3.5.0)
-├── scripts/                      # Scripts de utilidad (17+ scripts)
+├── scripts/                      # Scripts de utilidad (18+ scripts)
 │   ├── sync-postgres-to-neo4j.ts              # Sincronización PostgreSQL → Neo4j (NUEVO v3.5.0, CORREGIDO 05 Nov 2025)
 │   ├── verify-neo4j.ts                        # Verificación conexión Neo4j (NUEVO v3.5.0)
-│   └── setup-neo4j-indexes.ts                # Setup de índices Neo4j (NUEVO v3.5.0)
+│   ├── setup-neo4j-indexes.ts                # Setup de índices Neo4j (NUEVO v3.5.0)
+│   └── fix-character-encoding.ps1             # Corrección de caracteres mal codificados (NUEVO v3.6.3)
 ├── tailwind.config.ts            # Configuración Tailwind CSS v3.4.18 (300 líneas)
 ├── postcss.config.js             # Configuración PostCSS con @tailwindcss/postcss
 ├── docker-compose.yml            # Docker Compose con Neo4j (ACTUALIZADO v3.5.0)

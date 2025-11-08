@@ -1,7 +1,7 @@
-# 🤝 Guía de Contribución - ComplicesConecta v3.5.0
+# 🤝 Guía de Contribución - ComplicesConecta v3.6.3
 
-**Última Actualización:** 05 de Noviembre, 2025  
-**Versión:** 3.5.0  
+**Última Actualización:** 08 de Noviembre, 2025  
+**Versión:** 3.6.3  
 **Estado:** ✅ ACTUALIZADO
 
 ¡Gracias por tu interés en contribuir a ComplicesConecta! Esta guía te ayudará a entender cómo puedes participar en el desarrollo de la plataforma swinger más exclusiva de México.
@@ -566,11 +566,11 @@ Al contribuir a ComplicesConecta, aceptas que tus contribuciones serán licencia
 
 <div align="center">
 
-### 🤝 # 🤝 CONTRIBUTING - ComplicesConecta v3.5.0
+### 🤝 # 🤝 CONTRIBUTING - ComplicesConecta v3.6.3
 
-**Última Actualización:** 05 de Noviembre, 2025  
-**Versión:** 3.5.0  
-**Estado:** ✅ **PRODUCTION READY ENHANCED** + **NEO4J INTEGRATION**
+**Última Actualización:** 08 de Noviembre, 2025  
+**Versión:** 3.6.3  
+**Estado:** ✅ **PRODUCTION READY ENHANCED** + **NEO4J INTEGRATION** + **CORRECCIONES DE TIPOS COMPLETADAS**
 
 **[Crear Issue](https://github.com/ComplicesConectaSw/ComplicesConecta/issues/new)** | **[Fork Proyecto](https://github.com/ComplicesConectaSw/ComplicesConecta/fork)** | **[Ver Documentación](./docs-unified/)**
 
