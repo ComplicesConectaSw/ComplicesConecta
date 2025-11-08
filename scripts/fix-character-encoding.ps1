@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Corrige caracteres mal codificados (� → á, � → ñ, etc.) en archivos de código.
+    Corrige caracteres mal codificados ( → á, → ñ, etc.) en archivos de código.
 .DESCRIPTION
     Reemplaza caracteres corruptos comunes (UTF-8 mal interpretado).
     Soporta archivos abiertos, crea backups, y solo escribe si hay cambios.
@@ -34,21 +34,62 @@ Write-Host ""
 # === MAPA DE REEMPLAZOS (CORRUPTOS → CORRECTOS) ===
 $replacements = @{
     # Windows-1252 / ISO-8859-1 mal interpretado como UTF-8
-    'Ã¡' = 'á'; 'Ã©' = 'é'; 'Ã­' = 'í'; 'Ã³' = 'ó'; 'Ãº' = 'ú'; 'Ã±' = 'ñ'
-    'Ã¡' = 'Á'; 'Ã‰' = 'É'; 'Ã¡' = 'Í'; 'Ã“' = 'Ó'; 'Ãš' = 'Ú'; 'Ã‘' = 'Ñ'
-    'Â¿' = '¿'; 'Â¡' = '¡'
-    'â€™' = '’'; 'â€œ' = '“'; 'â€�' = '”'
-    'Ã¼' = 'ü'; 'Ã¶' = 'ö'; 'Ã¤' = 'ä'; 'Ãœ' = 'Ü'; 'Ã–' = 'Ö'; 'Ã„' = 'Ä'
-    'Ã§' = 'ç'; 'Ã‡' = 'Ç'
-    'Ã¨' = 'è'; 'Ã¬' = 'ì'; 'Ã²' = 'ò'; 'Ã¹' = 'ù'
-    'Ãˆ' = 'È'; 'ÃŒ' = 'Ì'; 'Ã’' = 'Ò'; 'Ã™' = 'Ù'
-    'Ã£' = 'ã'; 'Ãµ' = 'õ'; 'Ã¢' = 'â'; 'Ãª' = 'ê'
-    'â‚¬' = '€'; 'â„¢' = '™'; 'Â®' = '®'; 'Â©' = '©'
-    'Â' = ' '; 'Âª' = 'ª'; 'Âº' = 'º'
+    # Minúsculas con acento
+    'Ã¡' = 'á'
+    'Ã©' = 'é'
+    'Ã­' = 'í'
+    'Ã³' = 'ó'
+    'Ãº' = 'ú'
+    'Ã±' = 'ñ'
+    # Mayúsculas con acento (NOTA: Los caracteres corruptos para mayúsculas son diferentes)
+    'Ã' = 'Á'
+    'Ã‰' = 'É'
+    'Ã' = 'Í'
+    'Ã"' = 'Ó'
+    'Ãš' = 'Ú'
+    'Ã'' = 'Ñ'
+    # Signos de interrogación y exclamación
+    'Â¿' = '¿'
+    'Â¡' = '¡'
+    # Comillas y apostrofes
+    'â€™' = ''
+    'â€œ' = '"'
+    'â€' = '"'
+    # Caracteres alemanes
+    'Ã¼' = 'ü'
+    'Ã¶' = 'ö'
+    'Ã¤' = 'ä'
+    'Ãœ' = 'Ü'
+    'Ã–' = 'Ö'
+    'Ã„' = 'Ä'
+    # Caracteres franceses
+    'Ã§' = 'ç'
+    'Ã‡' = 'Ç'
+    # Caracteres italianos
+    'Ã¨' = 'è'
+    'Ã¬' = 'ì'
+    'Ã²' = 'ò'
+    'Ã¹' = 'ù'
+    'Ãˆ' = 'È'
+    'ÃŒ' = 'Ì'
+    'Ã'' = 'Ò'
+    'Ã™' = 'Ù'
+    # Caracteres portugueses
+    'Ã£' = 'ã'
+    'Ãµ' = 'õ'
+    'Ã¢' = 'â'
+    'Ãª' = 'ê'
+    # Símbolos especiales
+    'â‚¬' = '€'
+    'â„¢' = '™'
+    'Â®' = '®'
+    'Â©' = '©'
+    'Âª' = 'ª'
+    'Âº' = 'º'
     # Caracteres de reemplazo
-    '�' = ''; 'ï¿½' = ''; 'â€‹' = ''
-    # Unificados: Â y Ã (ambos aparecen como basura)
-    'Â' = ''; 'Ã' = ''
+    '' = ''
+    'ï¿½' = ''
+    'â€‹' = ''
 }
 
 # === EXTENSIONES A PROCESAR ===
