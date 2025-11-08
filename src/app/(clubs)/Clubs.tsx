@@ -13,14 +13,14 @@ import type { Database } from '@/types/supabase';
 
 type ClubRow = Database['public']['Tables']['clubs']['Row'];
 
-interface Club extends Omit<ClubRow, 'cover_image_url' | 'is_featured' | 'rating_average' | 'rating_count' | 'description' | 'logo_url' | 'review_count'> {
+interface Club extends Omit<ClubRow, 'cover_image_url' | 'is_featured' | 'rating_average' | 'rating_count' | 'description' | 'logo_url' | 'review_count' | 'phone' | 'check_in_count' | 'state' | 'verified_at' | 'website'> {
   description: string | null;
-  state?: string | null;
-  phone?: string | null;
-  website?: string | null;
+  state: string | null;
+  phone: string | null;
+  website: string | null;
   logo_url: string | null;
   cover_image_url: string | null;
-  verified_at?: string | null;
+  verified_at: string | null;
   is_featured: boolean;
   rating_average: number;
   rating_count: number;
@@ -96,6 +96,11 @@ const Clubs = () => {
         description: club.description ?? null,
         logo_url: club.logo_url ?? null,
         review_count: club.review_count ?? 0,
+        phone: club.phone ?? null,
+        check_in_count: club.check_in_count ?? 0,
+        state: club.state ?? null,
+        verified_at: club.verified_at ?? null,
+        website: club.website ?? null,
       }));
 
       setClubs(normalizedClubs);
