@@ -301,7 +301,7 @@ export const LazyComponents = {
   
   // Componentes de análisis - manejo seguro de imports
   ProfileAnalytics: createLazyComponent(
-    () => import('@/components/analytics/ProfileAnalytics').then(module => ({ 
+    () => import('@/profiles/shared/ProfileAnalytics').then(module => ({ 
       default: (module as any).default || (module as any).ProfileAnalytics || module 
     })),
     { chunkName: 'profile-analytics', preload: false }

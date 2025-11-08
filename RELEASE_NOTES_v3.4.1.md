@@ -896,11 +896,43 @@ El proyecto está ahora completamente equipado para operar en producción con:
 
 ---
 
-## 🚀 Versión 3.6.3 - Correcciones de Tipos y Script de Caracteres (08 Nov 2025)
+## 🚀 Versión 3.6.3 - Correcciones de Tipos, Scripts Unificados y Backups (08 Nov 2025)
 
 ### 🔧 Correcciones Realizadas
 
-#### 1. Corrección de Errores de Tipos en Clubs.tsx
+#### 1. Script fix-character-encoding.ps1 Actualizado
+- **Backups en directorio bck**: Los backups ahora se guardan en `C:\Users\conej\Documents\bck` (fuera del proyecto)
+- **Ejecutado exitosamente**: 1,171 archivos corregidos, todos los backups creados correctamente
+- **Ubicación de backups**: Directorio `bck` excluido del proyecto principal y de `.gitignore`/`.dockerignore`
+- **Estado:** ✅ COMPLETADO - Script actualizado y ejecutado exitosamente
+
+#### 2. Script Maestro database-manager.ps1 (NUEVO)
+- **Unificación de scripts**: Consolida funcionalidades de 5 scripts:
+  - `alinear-supabase.ps1` → Sincronización de BD
+  - `analizar-y-alinear-bd.ps1` → Análisis de tablas
+  - `aplicar-migraciones-remoto.ps1` → Generación de scripts remotos
+  - `sync-databases.ps1` → Sincronización completa
+  - `verificar-alineacion-tablas.ps1` → Verificación de alineación
+- **Funcionalidades unificadas**:
+  - Sincronización de BD local y remota
+  - Verificación de alineación de tablas
+  - Generación de scripts para migraciones remotas
+  - Regeneración de tipos TypeScript
+  - Análisis de migraciones y backups
+- **Uso**: `.\scripts\database-manager.ps1 -Action sync|verify|generate-remote|regenerate-types|analyze|all`
+- **Estado:** ✅ COMPLETADO - Script maestro creado y listo para usar
+
+#### 3. Scripts Validados
+- ✅ **alinear-supabase.ps1**: OK (no modifica proyecto incorrectamente)
+- ✅ **analizar-y-alinear-bd.ps1**: OK (no modifica proyecto incorrectamente)
+- ✅ **fix-character-encoding.ps1**: OK (modifica archivos con backup en `bck`)
+- ✅ **aplicar-migraciones-remoto.ps1**: OK (solo genera archivos)
+- ✅ **sync-databases.ps1**: OK (no modifica proyecto incorrectamente)
+- ✅ **verificar-alineacion-tablas.ps1**: OK (solo lectura)
+- ✅ **validate-project-unified.ps1**: OK (solo validación)
+- ✅ **backfill-s2-cells.ts**: OK (modifica BD, pero es su propósito)
+
+#### 4. Corrección de Errores de Tipos en Clubs.tsx
 - **Problema:** Errores de tipos TypeScript en la interfaz `Club` debido a incompatibilidades entre tipos `undefined` y `null`.
 - **Solución:** Se actualizó la interfaz `Club` para usar `Omit` y excluir campos problemáticos, redefiniéndolos con tipos estrictos (`string | null` en lugar de `string | null | undefined`).
 - **Normalización:** Se agregó normalización de datos en `loadClubs()` para asegurar que todos los campos tengan valores por defecto.

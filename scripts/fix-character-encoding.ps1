@@ -97,10 +97,17 @@ function Repair-CharacterEncoding {
 
         if ($changed) {
             if ($Backup) {
+                # Backup al directorio bck fuera del proyecto
+                $bckDir = Join-Path (Split-Path (Get-Location).Path -Parent) "bck"
+                if (-not (Test-Path $bckDir)) {
+                    New-Item -ItemType Directory -Path $bckDir -Force | Out-Null
+                }
                 $ts = Get-Date -Format "yyyyMMdd-HHmmss"
-                $backup = "$FilePath.backup-$ts"
+                $relativePath = $FilePath.Replace((Get-Location).Path + "\", "").Replace("\", "_")
+                $backupFileName = "$relativePath.backup-$ts"
+                $backup = Join-Path $bckDir $backupFileName
                 Copy-Item -Path $FilePath -Destination $backup -Force
-                Write-Host "  Backup: $(Split-Path $backup -Leaf)" -ForegroundColor DarkYellow
+                Write-Host "  Backup: $backupFileName" -ForegroundColor DarkYellow
             }
             Set-Content -Path $FilePath -Value $content -Encoding UTF8 -NoNewline
             Write-Host "  Corregido: $(Split-Path $FilePath -Leaf)" -ForegroundColor Green
@@ -112,6 +119,7 @@ function Repair-CharacterEncoding {
         Write-Host "  Error: $(Split-Path $FilePath -Leaf) → $_" -ForegroundColor Red
         return $false
     }
+    
 }
 
 # === BUSCAR ARCHIVOS ===

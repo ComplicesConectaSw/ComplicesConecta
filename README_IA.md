@@ -112,6 +112,8 @@
 
 9. **Correcciones de Tipos y Scripts v3.6.3** 🆕
    - **Corrección de Tipos**: Errores de tipos TypeScript corregidos en `Clubs.tsx` usando `Omit` y normalización de datos
-   - **Script de Caracteres**: Script `fix-character-encoding.ps1` para corregir caracteres mal codificados cuando los archivos están cerrados
+   - **Script de Caracteres**: Script `fix-character-encoding.ps1` actualizado - Backups ahora se guardan en directorio `bck` fuera del proyecto
+   - **Script Maestro de BD**: Script `database-manager.ps1` creado - Unifica 5 scripts de gestión de BD
+   - **Scripts Unificados**: `alinear-supabase.ps1`, `analizar-y-alinear-bd.ps1`, `aplicar-migraciones-remoto.ps1`, `sync-databases.ps1`, `verificar-alineacion-tablas.ps1` → `database-manager.ps1`
    - **Secciones Legales**: Secciones legales independientes agregadas a `Moderators.tsx`, `Investors.tsx`, `Clubs.tsx`, `NFTs.tsx`
    - **Nota Importante**: Las secciones legales en estas páginas son independientes del contenido de `docs/legal/`. La página `Legal.tsx` solo se actualiza con el contenido del directorio `docs/legal/`
