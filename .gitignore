@@ -227,16 +227,13 @@ dist/js/*.js
 # Directorio de auditoría - archivos movidos durante limpieza del proyecto
 audit-files/
 
-# Directorio de documentación unificada (organizado)
+# Directorio de documentación unificada (organizado) - USO INTERNO - NO SUBIR A GIT
 docs-unified/
 
 # Directorios adicionales de auditoría y respaldos
 2025-01-22/
 backups/
 audit-files/
-
-# Directorios de documentación temporales (no subir a GitHub)
-docs-unified/
 
 # Docker (ignorar archivos temporales y builds)
 .docker/
