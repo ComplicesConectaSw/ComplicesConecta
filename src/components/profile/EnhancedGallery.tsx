@@ -159,10 +159,10 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
       }
       
       // Cargar imágenes públicas
-      const { data: publicImages, error: publicError } = await (supabase as any)
+      const { data: publicImages, error: publicError } = await supabase
         .from('media')
         .select('*')
-        .eq('owner_id', userId)
+        .eq('user_id', userId)
         .eq('is_public', true)
         .order('created_at', { ascending: false });
 
@@ -171,12 +171,12 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
       }
 
       // Cargar imágenes privadas si es el propietario o tiene acceso
-      let privateImages: any[] = [];
+      let privateImages: unknown[] = [];
       if (isOwner) {
-        const { data: privateData, error: privateError } = await (supabase as any)
+        const { data: privateData, error: privateError } = await supabase
           .from('media')
           .select('*')
-          .eq('owner_id', userId)
+          .eq('user_id', userId)
           .eq('is_public', false)
           .order('created_at', { ascending: false });
 
@@ -188,18 +188,31 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
       }
 
       // Combinar imágenes
+      type MediaRow = {
+        id?: string;
+        file_url?: string;
+        thumbnail_url?: string;
+        is_public?: boolean | null;
+        created_at?: string | null;
+        metadata?: unknown;
+        tags?: string[] | null;
+      };
+      
       const allImages = [
         ...(publicImages || []),
-        ...privateImages
-      ].map((img: any) => ({
-        id: img.id || 'unknown',
-        url: img.image_url || '/placeholder.svg',
-        caption: img.caption || '',
-        isPublic: img.is_public || false,
-        uploadedAt: img.created_at || new Date().toISOString(),
-        likes: img.likes_count || 0,
-        comments: img.comments_count || 0
-      }));
+        ...(privateImages || [])
+      ].map((img: unknown) => {
+        const media = img as MediaRow;
+        return {
+          id: media.id || 'unknown',
+          url: media.file_url || media.thumbnail_url || '/placeholder.svg',
+          caption: '',
+          isPublic: media.is_public ?? false,
+          uploadedAt: media.created_at || new Date().toISOString(),
+          likes: 0,
+          comments: 0
+        };
+      });
 
       setImages(allImages);
       logger.info('✅ Galería real cargada:', { userId, imageCount: allImages.length });
@@ -250,19 +263,21 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
       }
 
       // Guardar metadata en base de datos
-      const { data: imageData, error: dbError } = await (supabase as any)
+      const { data: imageData, error: dbError } = await supabase
         .from('media')
         .insert({
-          owner_id: userId,
-          storage_path: uploadData.path,
-          file_type: file.type,
-          is_public: true,
-          is_profile_photo: false
+          user_id: userId,
+          file_name: file.name,
+          file_path: uploadData.path,
+          file_url: uploadData.path, // Usar path como URL temporal
+          file_type: file.type.includes('image') ? 'image' : 'other',
+          mime_type: file.type,
+          is_public: true
         })
         .select()
         .single();
 
-      if (dbError) {
+      if (dbError || !imageData) {
         logger.error('Error guardando metadata:', { error: String(dbError) });
         return;
       }
@@ -270,10 +285,10 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
       // Actualizar estado local
       const newImage: GalleryImage = {
         id: String(imageData.id) || 'unknown',
-        url: (imageData as any).storage_path || '/placeholder.svg',
-        caption: 'Nueva imagen',
-        isPublic: (imageData as any).is_public || false,
-        uploadedAt: (imageData as any).created_at || new Date().toISOString(),
+        url: (imageData as { file_url?: string; thumbnail_url?: string }).file_url || (imageData as { file_url?: string; thumbnail_url?: string }).thumbnail_url || '/placeholder.svg',
+        caption: '',
+        isPublic: (imageData as { is_public?: boolean | null }).is_public ?? false,
+        uploadedAt: (imageData as { created_at?: string | null }).created_at || new Date().toISOString(),
         likes: 0,
         comments: 0
       };
@@ -299,7 +314,7 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
       }
       
       // Eliminar de base de datos
-      const { error: dbError } = await (supabase as any)
+      const { error: dbError } = await supabase
         .from('media')
         .delete()
         .eq('id', imageId);
@@ -309,15 +324,21 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
         return;
       }
 
-      // Eliminar de storage
+      // Eliminar de storage (si es necesario)
       const image = images.find(img => img.id === imageId);
-      if (image && supabase) {
-        const { error: storageError } = await supabase.storage
-          .from('gallery-images')
-          .remove([image.url]);
+      if (image && supabase && image.url && !image.url.startsWith('/')) {
+        try {
+          // Extraer path del URL si es necesario
+          const urlPath = image.url.split('/').slice(-2).join('/');
+          const { error: storageError } = await supabase.storage
+            .from('gallery-images')
+            .remove([urlPath]);
 
-        if (storageError) {
-          logger.error('Error eliminando de storage:', { error: String(storageError) });
+          if (storageError) {
+            logger.error('Error eliminando de storage:', { error: String(storageError) });
+          }
+        } catch (storageErr) {
+          logger.warn('No se pudo eliminar de storage:', { error: String(storageErr) });
         }
       }
 
@@ -343,7 +364,7 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
         return;
       }
       
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('media')
         .update({ is_public: !isPublic })
         .eq('id', imageId);

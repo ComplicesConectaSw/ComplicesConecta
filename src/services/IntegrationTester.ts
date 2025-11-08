@@ -7,7 +7,7 @@ import { logger } from '@/lib/logger';
 import { TokenAnalyticsService } from './TokenAnalyticsService';
 import { postsService } from './postsService';
 import { securityService } from './SecurityService';
-import { coupleProfilesService } from './CoupleProfilesService';
+import { coupleProfilesService } from '@/features/profile/CoupleProfilesService';
 import { referralTokensService } from './ReferralTokensService';
 import { invitationsService } from './InvitationsService';
 

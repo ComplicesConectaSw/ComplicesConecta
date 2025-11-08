@@ -2,7 +2,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Palette, Heart, Sparkles, Users, User } from 'lucide-react';
 import { Button } from '@/shared/ui/Button';
-import { ProfileCard } from '@/components/ui/ProfileCard';
+import { ProfileCard } from '@/profiles/shared/ProfileCard';
 import { Gender, Theme } from '@/features/profile/useProfileTheme';
 
 interface ThemeInfoModalProps {

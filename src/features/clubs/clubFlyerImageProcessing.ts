@@ -289,6 +289,11 @@ export const processClubFlyerImageServer = async (
   flyerId: string
 ): Promise<ProcessingResult> => {
   try {
+    if (!supabase) {
+      logger.warn('Supabase no está disponible, usando procesamiento cliente');
+      return processClubFlyerImage(imageUrl, flyerId);
+    }
+
     const { data, error } = await supabase.functions.invoke('process-club-flyer-image', {
       body: {
         image_url: imageUrl,
@@ -297,6 +302,10 @@ export const processClubFlyerImageServer = async (
     });
 
     if (error) throw error;
+
+    if (!data) {
+      throw new Error('No se recibieron datos del servidor');
+    }
 
     return data as ProcessingResult;
   } catch (error) {
@@ -315,6 +324,10 @@ export const uploadProcessedImage = async (
   bucket: string = 'club-flyers'
 ): Promise<string> => {
   try {
+    if (!supabase) {
+      throw new Error('Supabase no está disponible');
+    }
+
     const { error } = await supabase.storage
       .from(bucket)
       .upload(path, blob, {
@@ -327,6 +340,10 @@ export const uploadProcessedImage = async (
     const { data: urlData } = supabase.storage
       .from(bucket)
       .getPublicUrl(path);
+
+    if (!urlData) {
+      throw new Error('No se pudo obtener la URL pública');
+    }
 
     return urlData.publicUrl;
   } catch (error) {

@@ -9,9 +9,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/useToast';
 import { User } from 'lucide-react';
-import { InterestsSelector } from './InterestsSelector';
-import { NicknameValidator } from './NicknameValidator';
-import { TermsModal } from './TermsModal';
+import { InterestsSelector } from '@/components/auth/InterestsSelector';
+import { NicknameValidator } from '@/components/auth/NicknameValidator';
+import { TermsModal } from '@/components/auth/TermsModal';
 import { logger } from '@/lib/logger';
 
 // Configuración de Supabase

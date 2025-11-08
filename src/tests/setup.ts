@@ -11,20 +11,30 @@ import './mocks/performance';
 // Import TensorFlow mock
 import './mocks/tensorflow';
 
-// Mock ThemeProvider para tests
-vi.mock('@/components/ui/ThemeProvider', () => ({
-  ThemeProvider: ({ children }: { children: React.ReactNode }) => React.createElement('div', { 'data-testid': 'theme-provider' }, children),
-  useTheme: () => ({
-    theme: 'light' as const,
-    setTheme: vi.fn(),
-    actualTheme: 'light' as const
-  })
-}));
+// Mock ThemeProvider para tests - Debe estar antes de cualquier import que lo use
+vi.mock('@/components/ui/ThemeProvider', () => {
+  const React = require('react');
+  return {
+    ThemeProvider: ({ children }: { children: React.ReactNode }) => 
+      React.createElement('div', { 'data-testid': 'theme-provider' }, children),
+    useTheme: () => ({
+      theme: 'light' as const,
+      setTheme: vi.fn(),
+      actualTheme: 'light' as const
+    }),
+    default: ({ children }: { children: React.ReactNode }) => 
+      React.createElement('div', { 'data-testid': 'theme-provider' }, children)
+  };
+});
 
 // Mock ThemeToggle para tests
-vi.mock('@/components/ui/ThemeToggle', () => ({
-  ThemeToggle: () => React.createElement('div', { 'data-testid': 'theme-toggle' }, 'ThemeToggle')
-}));
+vi.mock('@/components/ui/ThemeToggle', () => {
+  const React = require('react');
+  return {
+    ThemeToggle: () => React.createElement('div', { 'data-testid': 'theme-toggle' }, 'ThemeToggle'),
+    default: () => React.createElement('div', { 'data-testid': 'theme-toggle' }, 'ThemeToggle')
+  };
+});
 
 // extends Vitest's expect method with methods from react-testing-library
 expect.extend(matchers);

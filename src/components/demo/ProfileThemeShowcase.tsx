@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ProfileCard } from '@/components/ui/ProfileCard';
+import { ProfileCard } from '@/profiles/shared/ProfileCard';
 import { ThemeSelector, ThemePreviewCard } from '@/components/ui/ThemeSelector';
 import { UnifiedCard } from '@/components/ui/UnifiedCard';
 import { Badge } from '@/components/ui/badge';
