@@ -1,4 +1,4 @@
-﻿import React, { useState, memo, useMemo, useCallback } from 'react';
+import React, { useState, memo, useMemo, useCallback } from 'react';
 import { Heart, MapPin, Verified, Star, X, Zap } from "lucide-react";
 import { useUserOnlineStatus } from "@/hooks/useOnlineStatus";
 import { Button } from "@/shared/ui/Button";
@@ -22,12 +22,12 @@ interface ProfileCardProps {
     lastSeen?: string;
     verified?: boolean;
     rating?: number;
-    // Propiedades para personalizaciÃ³n visual
+    // Propiedades para personalización visual
     gender?: Gender;
     partnerGender?: Gender;
     accountType?: ProfileType;
     theme?: Theme;
-    // Propiedades especÃ­ficas para parejas
+    // Propiedades específicas para parejas
     couple_name?: string;
     partner1_first_name?: string;
     partner1_age?: number;
@@ -37,7 +37,7 @@ interface ProfileCardProps {
   onLike?: (id: string) => void;
   onSuperLike?: (profile: ProfileCardProps['profile']) => void;
   onOpenModal?: () => void;
-  // Props de configuraciÃ³n
+  // Props de configuración
   useThemeBackground?: boolean;
   variant?: 'single' | 'couple' | 'discover' | 'animated';
   showQuickActions?: boolean;
@@ -70,7 +70,7 @@ const MainProfileCardComponent = ({
   const [_imageError, setImageError] = useState(false);
   const [currentImageSrc, setCurrentImageSrc] = useState(image);
 
-  // Configurar gÃ©neros para el hook de tema - memoizado
+  // Configurar géneros para el hook de tema - memoizado
   const genders: Gender[] = useMemo(() => 
     accountType === 'couple' && partnerGender 
       ? [gender, partnerGender] 
@@ -78,7 +78,7 @@ const MainProfileCardComponent = ({
     [accountType, gender, partnerGender]
   );
   
-  // Obtener configuraciÃ³n de tema
+  // Obtener configuración de tema
   const themeConfig = useProfileTheme(accountType, genders, theme);
 
   const handleViewProfile = useCallback(() => {
@@ -183,7 +183,7 @@ const MainProfileCardComponent = ({
         {/* Online Status */}
         <div className="absolute top-3 sm:top-4 left-3 sm:left-4 flex items-center space-x-1 sm:space-x-2 bg-white/20 backdrop-blur-md rounded-full px-2 sm:px-3 py-1 border border-white/30">
           <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-sm" />
-          <span className="text-[10px] sm:text-xs font-semibold text-white">En lÃ­nea</span>
+          <span className="text-[10px] sm:text-xs font-semibold text-white">En línea</span>
         </div>
 
         {/* Rating */}
@@ -257,9 +257,9 @@ const MainProfileCardComponent = ({
         <div className="flex flex-wrap gap-2 sm:gap-2 mb-5">
           {interests?.slice(0, 3).map((interest: string, index: number) => {
             const colors = [
-              'bg-gradient-to-r from-pink-500 to-pink-600 text-white border border-pink-400', // Rosa sÃ³lido
-              'bg-gradient-to-r from-orange-500 to-orange-600 text-white border border-orange-400', // Naranja sÃ³lido
-              'bg-gradient-to-r from-amber-500 to-yellow-500 text-white border border-amber-400', // Ãmbar sÃ³lido
+              'bg-gradient-to-r from-pink-500 to-pink-600 text-white border border-pink-400', // Rosa sólido
+              'bg-gradient-to-r from-orange-500 to-orange-600 text-white border border-orange-400', // Naranja sólido
+              'bg-gradient-to-r from-amber-500 to-yellow-500 text-white border border-amber-400', // Ámbar sólido
             ];
             return (
               <span 
@@ -317,7 +317,7 @@ const MainProfileCardComponent = ({
   );
 };
 
-// Export con memo para optimizaciÃ³n de performance
+// Export con memo para optimización de performance
 export const MainProfileCard = memo(MainProfileCardComponent);
 
 // Export alias for backward compatibility

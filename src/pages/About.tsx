@@ -11,7 +11,7 @@ const About = () => {
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 relative overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0">
-        {/* Elementos fantasma deshabilitados para evitar aparición/desaparición */}
+        {/* Elementos fantasma deshabilitados para evitar apariciï¿½n/desapariciï¿½n */}
         {/* <div className="absolute top-20 left-10 w-72 h-72 bg-pink-500/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
         <div className="absolute top-40 right-10 w-72 h-72 bg-purple-500/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
         <div className="absolute -bottom-8 left-20 w-72 h-72 bg-red-500/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div> */}
@@ -33,7 +33,7 @@ const About = () => {
               </div>
               <h2 className="text-4xl font-bold text-white mb-4">ComplicesConecta</h2>
               <p className="text-xl text-white/90 font-medium leading-relaxed mb-6">
-                La plataforma social líder en México para adultos que buscan conexiones auténticas 
+                La plataforma social lï¿½der en Mï¿½xico para adultos que buscan conexiones autï¿½nticas 
                 en el lifestyle swinger. Conecta con parejas y solteros verificados en un ambiente 
                 seguro, discreto y completamente respetuoso.
               </p>
@@ -46,7 +46,7 @@ const About = () => {
                 <div className="bg-white/5 rounded-lg p-4">
                   <Shield className="h-8 w-8 text-green-400 mx-auto mb-2" />
                   <h3 className="text-white font-semibold text-sm">100% Seguro</h3>
-                  <p className="text-white/70 text-xs">Verificación de identidad obligatoria</p>
+                  <p className="text-white/70 text-xs">Verificaciï¿½n de identidad obligatoria</p>
                 </div>
                 <div className="bg-white/5 rounded-lg p-4">
                   <Award className="h-8 w-8 text-yellow-400 mx-auto mb-2" />
@@ -63,12 +63,12 @@ const About = () => {
               <CardContent className="p-6">
                 <div className="flex items-center mb-4">
                   <Target className="h-8 w-8 text-pink-400 mr-3" />
-                  <h3 className="text-xl font-bold text-white">Nuestra Misión</h3>
+                  <h3 className="text-xl font-bold text-white">Nuestra Misiï¿½n</h3>
                 </div>
                 <p className="text-white font-medium leading-relaxed">
                   Crear un espacio seguro donde parejas y solteros del lifestyle swinger puedan 
-                  conectar de manera auténtica, explorando nuevas experiencias con total 
-                  discreción y respeto mutuo.
+                  conectar de manera autï¿½ntica, explorando nuevas experiencias con total 
+                  discreciï¿½n y respeto mutuo.
                 </p>
               </CardContent>
             </Card>
@@ -77,11 +77,11 @@ const About = () => {
               <CardContent className="p-6">
                 <div className="flex items-center mb-4">
                   <Star className="h-8 w-8 text-purple-400 mr-3" />
-                  <h3 className="text-xl font-bold text-white">Nuestra Visión</h3>
+                  <h3 className="text-xl font-bold text-white">Nuestra Visiï¿½n</h3>
                 </div>
                 <p className="text-white font-medium leading-relaxed">
-                  Convertirnos en una plataforma confiable para la comunidad lifestyle en México, 
-                  reconocida por brindar un ambiente seguro, tecnología moderna y compromiso 
+                  Convertirnos en una plataforma confiable para la comunidad lifestyle en Mï¿½xico, 
+                  reconocida por brindar un ambiente seguro, tecnologï¿½a moderna y compromiso 
                   con la privacidad de nuestros usuarios.
                 </p>
               </CardContent>
@@ -99,7 +99,7 @@ const About = () => {
                   </div>
                   <h4 className="text-lg font-semibold text-white mb-2">Seguridad</h4>
                   <p className="text-white/70 text-sm">
-                    Sistema de verificación de usuarios y protección de datos personales.
+                    Sistema de verificaciï¿½n de usuarios y protecciï¿½n de datos personales.
                   </p>
                 </div>
 
@@ -109,7 +109,7 @@ const About = () => {
                   </div>
                   <h4 className="text-lg font-semibold text-white mb-2">Comunidad</h4>
                   <p className="text-white/70 text-sm">
-                    Comunidad lifestyle con códigos de respeto y ética bien definidos.
+                    Comunidad lifestyle con cï¿½digos de respeto y ï¿½tica bien definidos.
                   </p>
                 </div>
 
@@ -117,7 +117,7 @@ const About = () => {
                   <div className="p-4 bg-gradient-to-r from-orange-500 to-red-600 rounded-full w-16 h-16 mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                     <Zap className="h-8 w-8 text-white" />
                   </div>
-                  <h4 className="text-lg font-semibold text-white mb-2">Innovación</h4>
+                  <h4 className="text-lg font-semibold text-white mb-2">Innovaciï¿½n</h4>
                   <p className="text-white/70 text-sm">
                     Sistema de matching inteligente basado en compatibilidad e intereses.
                   </p>
@@ -133,28 +133,28 @@ const About = () => {
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div className="bg-white/5 rounded-lg p-4 hover:bg-white/10 transition-colors">
                   <Camera className="h-8 w-8 text-purple-400 mb-3" />
-                  <h4 className="font-semibold text-white mb-2">Historias Efímeras</h4>
+                  <h4 className="font-semibold text-white mb-2">Historias Efï¿½meras</h4>
                   <p className="text-white/70 text-sm">Comparte momentos que desaparecen en 24 horas con total privacidad</p>
                 </div>
                 <div className="bg-white/5 rounded-lg p-4 hover:bg-white/10 transition-colors">
                   <Users className="h-8 w-8 text-blue-400 mb-3" />
                   <h4 className="font-semibold text-white mb-2">Matching Inteligente</h4>
-                  <p className="text-white/70 text-sm">Algoritmo avanzado que conecta según compatibilidad y preferencias</p>
+                  <p className="text-white/70 text-sm">Algoritmo avanzado que conecta segï¿½n compatibilidad y preferencias</p>
                 </div>
                 <div className="bg-white/5 rounded-lg p-4 hover:bg-white/10 transition-colors">
                   <Shield className="h-8 w-8 text-green-400 mb-3" />
-                  <h4 className="font-semibold text-white mb-2">Verificación Biométrica</h4>
-                  <p className="text-white/70 text-sm">Sistema 2FA con autenticación facial y huella digital</p>
+                  <h4 className="font-semibold text-white mb-2">Verificaciï¿½n Biomï¿½trica</h4>
+                  <p className="text-white/70 text-sm">Sistema 2FA con autenticaciï¿½n facial y huella digital</p>
                 </div>
                 <div className="bg-white/5 rounded-lg p-4 hover:bg-white/10 transition-colors">
                   <Eye className="h-8 w-8 text-pink-400 mb-3" />
-                  <h4 className="font-semibold text-white mb-2">Galerías NFT-Verificadas</h4>
-                  <p className="text-white/70 text-sm">Perfiles y galerías como NFTs mintados con GTK tokens</p>
+                  <h4 className="font-semibold text-white mb-2">Galerï¿½as NFT-Verificadas</h4>
+                  <p className="text-white/70 text-sm">Perfiles y galerï¿½as como NFTs mintados con GTK tokens</p>
                 </div>
                 <div className="bg-white/5 rounded-lg p-4 hover:bg-white/10 transition-colors">
                   <Play className="h-8 w-8 text-orange-400 mb-3" />
                   <h4 className="font-semibold text-white mb-2">Verificador IA de Consentimiento</h4>
-                  <p className="text-white/70 text-sm">Detección proactiva de consentimiento en chats con IA</p>
+                  <p className="text-white/70 text-sm">Detecciï¿½n proactiva de consentimiento en chats con IA</p>
                 </div>
                 <div className="bg-white/5 rounded-lg p-4 hover:bg-white/10 transition-colors">
                   <Award className="h-8 w-8 text-yellow-400 mb-3" />
@@ -170,14 +170,14 @@ const About = () => {
             </CardContent>
           </Card>
 
-          {/* Estadísticas y Logros */}
+          {/* Estadï¿½sticas y Logros */}
           <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-xl">
             <CardContent className="p-8">
-              <h3 className="text-2xl font-bold text-white mb-6 text-center">Nuestra Comunidad en Números</h3>
+              <h3 className="text-2xl font-bold text-white mb-6 text-center">Nuestra Comunidad en Nï¿½meros</h3>
               <div className="grid md:grid-cols-4 gap-6 text-center">
                 <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-lg p-6">
                   <div className="text-3xl font-bold text-white mb-2">v3.5.0</div>
-                  <div className="text-white/70 text-sm">Versión Actual</div>
+                  <div className="text-white/70 text-sm">Versiï¿½n Actual</div>
                 </div>
                 <div className="bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-lg p-6">
                   <div className="text-3xl font-bold text-white mb-2">107</div>
@@ -204,22 +204,22 @@ const About = () => {
                   <div className="flex items-start space-x-3">
                     <Shield className="h-6 w-6 text-green-400 mt-1 flex-shrink-0" />
                     <div>
-                      <h4 className="font-semibold text-white">Encriptación AES-GCM</h4>
-                      <p className="text-white/70 text-sm">Todos los datos están protegidos con cifrado militar de grado empresarial</p>
+                      <h4 className="font-semibold text-white">Encriptaciï¿½n AES-GCM</h4>
+                      <p className="text-white/70 text-sm">Todos los datos estï¿½n protegidos con cifrado militar de grado empresarial</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
                     <Award className="h-6 w-6 text-yellow-400 mt-1 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-white">Cumplimiento GDPR/LFPDPPP</h4>
-                      <p className="text-white/70 text-sm">Certificados en protección de datos europea y mexicana</p>
+                      <p className="text-white/70 text-sm">Certificados en protecciï¿½n de datos europea y mexicana</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
                     <Eye className="h-6 w-6 text-blue-400 mt-1 flex-shrink-0" />
                     <div>
-                      <h4 className="font-semibold text-white">Moderación IA + Humana</h4>
-                      <p className="text-white/70 text-sm">Sistema híbrido de detección de contenido inapropiado</p>
+                      <h4 className="font-semibold text-white">Moderaciï¿½n IA + Humana</h4>
+                      <p className="text-white/70 text-sm">Sistema hï¿½brido de detecciï¿½n de contenido inapropiado</p>
                     </div>
                   </div>
                 </div>
@@ -227,14 +227,14 @@ const About = () => {
                   <div className="flex items-start space-x-3">
                     <Users className="h-6 w-6 text-purple-400 mt-1 flex-shrink-0" />
                     <div>
-                      <h4 className="font-semibold text-white">Verificación Obligatoria</h4>
-                      <p className="text-white/70 text-sm">Documento oficial + selfie + verificación telefónica</p>
+                      <h4 className="font-semibold text-white">Verificaciï¿½n Obligatoria</h4>
+                      <p className="text-white/70 text-sm">Documento oficial + selfie + verificaciï¿½n telefï¿½nica</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
                     <Zap className="h-6 w-6 text-orange-400 mt-1 flex-shrink-0" />
                     <div>
-                      <h4 className="font-semibold text-white">Detección de Fraude</h4>
+                      <h4 className="font-semibold text-white">Detecciï¿½n de Fraude</h4>
                       <p className="text-white/70 text-sm">IA avanzada para identificar perfiles falsos y comportamiento sospechoso</p>
                     </div>
                   </div>
@@ -253,9 +253,9 @@ const About = () => {
           {/* CTA */}
           <Card className="bg-gradient-to-r from-pink-500/20 to-purple-600/20 backdrop-blur-md border-pink-300/30 shadow-xl">
             <CardContent className="p-8 text-center">
-              <h3 className="text-2xl font-bold text-white mb-4">¿Listo para Conectar?</h3>
+              <h3 className="text-2xl font-bold text-white mb-4">ï¿½Listo para Conectar?</h3>
               <p className="text-white font-medium mb-6">
-                Únete a nuestra creciente comunidad lifestyle en México. 
+                ï¿½nete a nuestra creciente comunidad lifestyle en Mï¿½xico. 
                 Estamos construyendo algo especial juntos.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">

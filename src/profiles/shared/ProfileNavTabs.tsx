@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/shared/ui/Button';
 import { Card, CardContent } from '@/shared/ui/Card';
 import { 
@@ -50,7 +50,7 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
     },
     {
       id: 'gallery' as TabType,
-      label: 'GalerÃ­a',
+      label: 'Galería',
       icon: Upload,
       count: 24
     }
@@ -76,7 +76,7 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
                         <span className="text-white/60 text-sm">hace 2h</span>
                       </div>
                       <p className="text-white/90 text-sm">
-                        Â¡QuÃ© dÃ­a tan increÃ­ble! Explorando nuevos lugares juntos ðŸ’•
+                        ¡Qué día tan increíble! Explorando nuevos lugares juntos ðŸ’•
                       </p>
                     </div>
                     {isOwnProfile && (
@@ -143,7 +143,7 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
               {/* Empty State */}
               <div className="text-center py-12">
                 <Grid3X3 className="w-12 h-12 mx-auto mb-4 text-white/40" />
-                <p className="text-white/60 mb-4">No hay posts aÃºn</p>
+                <p className="text-white/60 mb-4">No hay posts aún</p>
                 {isOwnProfile && (
                   <Button
                     onClick={onUploadImage}
@@ -164,7 +164,7 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
             <StoriesContainer />
             <div className="text-center py-8">
               <Play className="w-12 h-12 mx-auto mb-4 text-white/40" />
-              <p className="text-white/60 mb-4">Tus historias aparecerÃ¡n aquÃ­</p>
+              <p className="text-white/60 mb-4">Tus historias aparecerán aquí</p>
               {isOwnProfile && (
                 <Button
                   onClick={onUploadImage}
@@ -186,7 +186,7 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
               <div className="aspect-square bg-gradient-to-br from-pink-400 to-purple-600 rounded-lg overflow-hidden">
                 <img 
                   src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=faces&auto=format&q=80" 
-                  alt="GalerÃ­a 1"
+                  alt="Galería 1"
                   className="w-full h-full object-cover"
                   onError={(e) => {
                     e.currentTarget.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&crop=face';
@@ -196,7 +196,7 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
               <div className="aspect-square bg-gradient-to-br from-purple-400 to-blue-600 rounded-lg overflow-hidden">
                 <img 
                   src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=faces&auto=format&q=80" 
-                  alt="GalerÃ­a 2"
+                  alt="Galería 2"
                   className="w-full h-full object-cover"
                   onError={(e) => {
                     e.currentTarget.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&crop=face';
@@ -262,8 +262,8 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
       <ComingSoonModal 
         isOpen={showComingSoon}
         onClose={() => setShowComingSoon(false)}
-        title="GalerÃ­a Privada"
-        feature="GalerÃ­a Privada"
+        title="Galería Privada"
+        feature="Galería Privada"
       />
       
       <FeatureModal 

@@ -1,4 +1,4 @@
-﻿// src/lib/index.ts - ARCHIVO MAESTRO DE IMPORTS
+// src/lib/index.ts - ARCHIVO MAESTRO DE IMPORTS
 // USO: import { Button, Card, useAuth } from '@/lib'
 
 // UI

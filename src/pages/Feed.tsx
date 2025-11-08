@@ -110,11 +110,11 @@ const Feed = () => {
         ) : posts.length === 0 ? (
           <div className="text-center py-12">
             <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-lg p-8">
-              <h3 className="text-xl font-semibold text-white mb-2">¡Sé el primero en publicar!</h3>
+              <h3 className="text-xl font-semibold text-white mb-2">ï¿½Sï¿½ el primero en publicar!</h3>
               <p className="text-white/80 mb-4">Comparte tus experiencias con la comunidad lifestyle</p>
               <Button className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white">
                 <Plus className="h-4 w-4 mr-2" />
-                Crear publicación
+                Crear publicaciï¿½n
               </Button>
             </div>
           </div>
@@ -139,7 +139,7 @@ const Feed = () => {
                       <div>
                         <div className="flex items-center space-x-2">
                           <h3 className="font-semibold text-foreground">
-                            {post.profile?.name || 'Usuario Anónimo'}
+                            {post.profile?.name || 'Usuario Anï¿½nimo'}
                           </h3>
                           {post.profile?.is_verified && (
                             <CheckCircle className="w-4 h-4 text-blue-500" />
@@ -210,7 +210,7 @@ const Feed = () => {
           </div>
         )}
 
-        {/* Botón para cargar más */}
+        {/* Botï¿½n para cargar mï¿½s */}
         {!loading && posts.length > 0 && hasMore && (
           <div className="text-center mt-8">
             <Button 
@@ -224,7 +224,7 @@ const Feed = () => {
                   <span className="drop-shadow-md">Cargando...</span>
                 </>
               ) : (
-                <span className="drop-shadow-md">Cargar más publicaciones</span>
+                <span className="drop-shadow-md">Cargar mï¿½s publicaciones</span>
               )}
             </Button>
           </div>

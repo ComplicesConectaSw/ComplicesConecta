@@ -116,27 +116,159 @@ export default defineConfig(({ mode }) => {
       assetsInlineLimit: 4096, // 4KB
       rollupOptions: {
         output: {
-          // TEMPORAL: Chunks desactivados - todo en un solo archivo
-          // TODO: Reactivar chunks cuando se resuelvan problemas de carga
-          manualChunks: undefined, // Desactivar chunks - todo en un solo archivo
-          // Nombres de archivos simples sin chunks
-          chunkFileNames: isDev ? 'assets/js/[name].js' : 'assets/js/[name]-[hash].js',
-          entryFileNames: isDev ? 'assets/js/[name].js' : 'assets/js/[name]-[hash].js',
+          // FUERZA CHUNKS ESTABLES + SIN HASH LOCO
+          chunkFileNames: 'assets/js/[name].js',
+          entryFileNames: 'assets/js/[name].js',
           assetFileNames: ({ name }) => {
             if (/\.(png|jpe?g|svg|gif|webp)$/i.test(name ?? '')) {
-              return isDev ? 'assets/images/[name].[ext]' : 'assets/images/[name]-[hash].[ext]'
+              return 'assets/images/[name].[ext]'
             }
             if (/\.(css)$/.test(name ?? '')) {
-              return isDev ? 'assets/css/[name].[ext]' : 'assets/css/[name]-[hash].[ext]'
+              return 'assets/css/[name].[ext]'
             }
-            return isDev ? 'assets/[name].[ext]' : 'assets/[name]-[hash].[ext]'
+            return 'assets/[name].[ext]'
+          },
+          // MANUAL CHUNKS: Dividir código en chunks más pequeños y eficientes
+          manualChunks: (id) => {
+            // Vendor chunks - librerías externas (MÁS GRANULAR)
+            if (id.includes('node_modules')) {
+              // React core - separar React y React DOM
+              if (id.includes('react/') && !id.includes('react-dom')) {
+                return 'vendor-react-core';
+              }
+              // React DOM - separado
+              if (id.includes('react-dom')) {
+                return 'vendor-react-dom';
+              }
+              // React Router - separado
+              if (id.includes('react-router')) {
+                return 'vendor-react-router';
+              }
+              // Supabase - separado (puede ser grande)
+              if (id.includes('@supabase')) {
+                return 'vendor-supabase';
+              }
+              // Charts (recharts, etc.) - separado (puede ser muy grande)
+              if (id.includes('recharts') || id.includes('chart') || id.includes('d3-')) {
+                return 'vendor-charts';
+              }
+              // UI libraries grandes
+              if (id.includes('framer-motion')) {
+                return 'vendor-framer-motion';
+              }
+              if (id.includes('lucide-react')) {
+                return 'vendor-lucide';
+              }
+              if (id.includes('radix-ui') || id.includes('@radix-ui')) {
+                return 'vendor-radix';
+              }
+              // Query libraries
+              if (id.includes('@tanstack/react-query')) {
+                return 'vendor-query';
+              }
+              // Otros vendors grandes
+              if (id.includes('@capacitor') || id.includes('@solana')) {
+                return 'vendor-mobile';
+              }
+              // Resto de vendors pequeños - agrupar
+              return 'vendor-other';
+            }
+            
+            // Código de aplicación - dividir por funcionalidad
+            // Charts y gráficos - separar (muy grandes)
+            if (id.includes('AreaChart') || 
+                id.includes('components/admin/HistoricalCharts') ||
+                id.includes('components/admin/AnalyticsDashboard') ||
+                id.includes('components/admin/AnalyticsPanel')) {
+              return 'chunk-charts';
+            }
+            
+            // Chat - separar (muy grande ~140KB)
+            if (id.includes('pages/Chat') || 
+                id.includes('pages/ChatInfo') ||
+                id.includes('pages/ChatAuthenticated') ||
+                id.includes('components/chat/') ||
+                id.includes('features/chat/')) {
+              return 'chunk-chat';
+            }
+            
+            // Admin Analytics - separar (muy grande ~112KB)
+            if (id.includes('app/(admin)/AdminAnalytics') ||
+                id.includes('components/admin/Analytics')) {
+              return 'chunk-admin-analytics';
+            }
+            
+            // Admin pages - agrupar
+            if (id.includes('app/(admin)/')) {
+              return 'chunk-admin';
+            }
+            
+            // Admin components - agrupar
+            if (id.includes('components/admin/')) {
+              return 'chunk-admin-components';
+            }
+            
+            // Tokens - separar (puede ser grande)
+            if (id.includes('pages/Tokens') || 
+                id.includes('components/tokens/')) {
+              return 'chunk-tokens';
+            }
+            
+            // Profiles - separar
+            if (id.includes('profiles/') || 
+                id.includes('components/profile') ||
+                id.includes('features/profile')) {
+              return 'chunk-profiles';
+            }
+            
+            // Pages grandes - separar individualmente
+            if (id.includes('pages/Dashboard')) {
+              return 'chunk-dashboard';
+            }
+            if (id.includes('pages/Settings')) {
+              return 'chunk-settings';
+            }
+            if (id.includes('pages/TokensInfo')) {
+              return 'chunk-tokens-info';
+            }
+            if (id.includes('pages/Investors')) {
+              return 'chunk-investors';
+            }
+            if (id.includes('pages/ReportDialog')) {
+              return 'chunk-report-dialog';
+            }
+            if (id.includes('pages/StoriesContainer')) {
+              return 'chunk-stories';
+            }
+            if (id.includes('pages/TemplateDemo')) {
+              return 'chunk-template-demo';
+            }
+            
+            // Features grandes - separar
+            if (id.includes('features/')) {
+              return 'chunk-features';
+            }
+            
+            // Services grandes - separar
+            if (id.includes('services/')) {
+              return 'chunk-services';
+            }
+            
+            // Shared - agrupar
+            if (id.includes('shared/')) {
+              return 'chunk-shared';
+            }
+            
+            // Utils - agrupar
+            if (id.includes('utils/') && !id.includes('node_modules')) {
+              return 'chunk-utils';
+            }
           },
         },
       },
-      // Aumentar límite de warning pero mantener splitting
-      chunkSizeWarningLimit: 500,
+      // Límite de warning ajustado - chunks grandes se dividen automáticamente
+      chunkSizeWarningLimit: 1000,
       // CRÍTICO: Deshabilitar CSS code splitting para evitar problemas de carga
-      // Esto asegura que todos los CSS se carguen en un solo archivo
       cssCodeSplit: false,
       // Asegurar que los assets se sirvan con rutas absolutas
       assetsInclude: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.svg', '**/*.gif', '**/*.webp'],

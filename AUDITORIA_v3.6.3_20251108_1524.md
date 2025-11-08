@@ -1,146 +1,18 @@
-﻿# AUDITORIA COMPLETA v3.6.3
-- Fecha: 08 nov. 2025 06:11
+# AUDITORIA COMPLETA v3.6.3
+- Fecha: 08 nov 2025 15:24
 - Ruta: C:\Users\conej\Documents\conecta-social-comunidad-main
 
 ## 1. ESTRUCTURA (excluye node_modules, .git, etc.)
-- Directorios: 278
-- Archivos: 1298
+- Directorios: 250
+- Archivos: 1263
 
-## DIRECTORIOS VACIOS (17)
-- \docs-unified\docs\Auditoria\analytics
-- \docs-unified\docs\Auditoria\autenticacion
-- \docs-unified\docs\Auditoria\base-datos
-- \docs-unified\docs\Auditoria\cache
-- \docs-unified\docs\Auditoria\chat
-- \docs-unified\docs\Auditoria\componentes
-- \docs-unified\docs\Auditoria\couple
-- \docs-unified\docs\Auditoria\matching
-- \docs-unified\docs\Auditoria\moderation
-- \docs-unified\docs\Auditoria\notificaciones
-- \docs-unified\docs\Auditoria\optimizaciones
-- \docs-unified\docs\Auditoria\performance
-- \docs-unified\docs\Auditoria\security
-- \docs-unified\docs\Auditoria\seguridad
-- \docs-unified\docs\Auditoria\vercel
-- \docs-unified\docs\Auditoria\web3
-- \src\assets\images
+## DIRECTORIOS VACIOS (2)
+- \docs\Auditoria\scripts
+- \docs-unified\docs\Auditoria\final
 
-## DUPLICADOS (37)
-- COMPONENTS.md (9184 bytes)
-  -> \docs\COMPONENTS.md
-  -> \docs-unified\development\COMPONENTS.md
-  -> \docs-unified\legacy-docs-unified\development\COMPONENTS.md
-- AUDIT_202509.md (3968 bytes)
-  -> \docs\Auditoria\AUDIT_202509.md
-  -> \docs-unified\legacy-docs-unified\AUDIT_202509.md
-- REPORTE_SCRIPTS.md (6614 bytes)
-  -> \docs\Auditoria\REPORTE_SCRIPTS.md
-  -> \docs\Auditoria\scripts\REPORTE_SCRIPTS.md
-- REPORTE_UNIFICADO_COMPLETO_FINAL.md (23219 bytes)
-  -> \docs\Auditoria\final\REPORTE_UNIFICADO_COMPLETO_FINAL.md
-  -> \docs-unified\docs\Auditoria\final\REPORTE_UNIFICADO_COMPLETO_FINAL.md
-- ANALYSIS_REPORT_202509.md (4549 bytes)
-  -> \docs\legal\ANALYSIS_REPORT_202509.md
-  -> \docs-unified\legacy-docs-unified\ANALYSIS_REPORT_202509.md
-- API.md (7087 bytes)
-  -> \docs\legal\API.md
-  -> \docs-unified\api\API.md
-  -> \docs-unified\legacy-docs-unified\api\API.md
-- DISCLAIMER.md (11231 bytes)
-  -> \docs\legal\DISCLAIMER.md
-  -> \docs-unified\legacy-docs-unified\legal\DISCLAIMER.md
-- LEGAL_SUMMARY_REPORT.md (12324 bytes)
-  -> \docs\legal\LEGAL_SUMMARY_REPORT.md
-  -> \docs-unified\legacy-docs-unified\legal\LEGAL_SUMMARY_REPORT.md
-- PRIVACY_POLICY.md (15521 bytes)
-  -> \docs\legal\PRIVACY_POLICY.md
-  -> \docs-unified\legacy-docs-unified\legal\PRIVACY_POLICY.md
-- TERMS_OF_SERVICE.md (12127 bytes)
-  -> \docs\legal\TERMS_OF_SERVICE.md
-  -> \docs-unified\legacy-docs-unified\legal\TERMS_OF_SERVICE.md
-- README_DEV.md (13877 bytes)
-  -> \docs-unified\README_DEV.md
-  -> \docs-unified\legacy-docs-unified\README_DEV.md
-- AUTHENTICATION_202509.md (3683 bytes)
-  -> \docs-unified\authentication\AUTHENTICATION_202509.md
-  -> \docs-unified\legacy-docs-unified\authentication\AUTHENTICATION_202509.md
-- FINAL_MIGRATION_REPORT.md (6215 bytes)
-  -> \docs-unified\database\FINAL_MIGRATION_REPORT.md
-  -> \docs-unified\legacy-docs-unified\database\FINAL_MIGRATION_REPORT.md
-- DEPLOYMENT_202509.md (4312 bytes)
-  -> \docs-unified\deployment\DEPLOYMENT_202509.md
-  -> \docs-unified\legacy-docs-unified\deployment\DEPLOYMENT_202509.md
-- FEATURES_202509.md (4816 bytes)
-  -> \docs-unified\features\FEATURES_202509.md
-  -> \docs-unified\legacy-docs-unified\features\FEATURES_202509.md
-- FINAL_OPTIMIZATION_PLAN.md (4048 bytes)
-  -> \docs-unified\guides\FINAL_OPTIMIZATION_PLAN.md
-  -> \docs-unified\legacy-docs-unified\guides\FINAL_OPTIMIZATION_PLAN.md
-- MOBILE_TESTING_GUIDE.md (4941 bytes)
-  -> \docs-unified\guides\MOBILE_TESTING_GUIDE.md
-  -> \docs-unified\legacy-docs-unified\guides\MOBILE_TESTING_GUIDE.md
-- patch-log.md (6092 bytes)
-  -> \docs-unified\guides\patch-log.md
-  -> \docs-unified\legacy-docs-unified\guides\patch-log.md
-- PULL_REQUEST_TEMPLATE.md (4795 bytes)
-  -> \docs-unified\guides\PULL_REQUEST_TEMPLATE.md
-  -> \docs-unified\legacy-docs-unified\guides\PULL_REQUEST_TEMPLATE.md
-- CAREER_FORM_IMPLEMENTATION.md (8925 bytes)
-  -> \docs-unified\implementation\CAREER_FORM_IMPLEMENTATION.md
-  -> \docs-unified\legacy-docs-unified\implementation\CAREER_FORM_IMPLEMENTATION.md
-- COMPLICES_CONECTA_v3.3.0_IMPLEMENTATION.md (11975 bytes)
-  -> \docs-unified\implementation\COMPLICES_CONECTA_v3.3.0_IMPLEMENTATION.md
-  -> \docs-unified\legacy-docs-unified\implementation\COMPLICES_CONECTA_v3.3.0_IMPLEMENTATION.md
-- MATCHING_SYSTEM_IMPLEMENTATION_GUIDE.md (9044 bytes)
-  -> \docs-unified\implementation\MATCHING_SYSTEM_IMPLEMENTATION_GUIDE.md
-  -> \docs-unified\legacy-docs-unified\implementation\MATCHING_SYSTEM_IMPLEMENTATION_GUIDE.md
-- RELEASE_NOTES_v3.3.0.md (12642 bytes)
-  -> \docs-unified\legacy-docs-unified\releases\RELEASE_NOTES_v3.3.0.md
-  -> \docs-unified\releases\RELEASE_NOTES_v3.3.0.md
-- ROADMAP_v3.3.0_SIGUIENTES_PASOS.md (8681 bytes)
-  -> \docs-unified\legacy-docs-unified\releases\ROADMAP_v3.3.0_SIGUIENTES_PASOS.md
-  -> \docs-unified\releases\ROADMAP_v3.3.0_SIGUIENTES_PASOS.md
-- SECURITY_202509.md (5588 bytes)
-  -> \docs-unified\legacy-docs-unified\security\SECURITY_202509.md
-  -> \docs-unified\security\SECURITY_202509.md
-- SISTEMA_REPORTES_TOKENS_v3.2.0.md (12723 bytes)
-  -> \docs-unified\legacy-docs-unified\systems\SISTEMA_REPORTES_TOKENS_v3.2.0.md
-  -> \docs-unified\systems\SISTEMA_REPORTES_TOKENS_v3.2.0.md
-- THEME_SYSTEM_IMPLEMENTATION.md (6095 bytes)
-  -> \docs-unified\legacy-docs-unified\theme-system\THEME_SYSTEM_IMPLEMENTATION.md
-  -> \docs-unified\theme-system\THEME_SYSTEM_IMPLEMENTATION.md
-- comprehensive-test.mjs (6308 bytes)
-  -> \scripts\comprehensive-test.mjs
-  -> \src\scripts\comprehensive-test.mjs
-- debug-tests.js (2681 bytes)
-  -> \scripts\debug-tests.js
-  -> \src\scripts\debug-tests.js
-- replace-console-logs.js (4008 bytes)
-  -> \scripts\replace-console-logs.js
-  -> \src\scripts\replace-console-logs.js
-- profile-1.jpg (44818 bytes)
-  -> \src\assets\profile-1.jpg
-  -> \src\assets\people\male\profile-1.jpg
-- profile-2.jpg (49334 bytes)
-  -> \src\assets\profile-2.jpg
-  -> \src\assets\people\male\profile-2.jpg
-- profile-3.jpg (77903 bytes)
-  -> \src\assets\profile-3.jpg
-  -> \src\assets\people\male\profile-3.jpg
-- profile-4.jpg (37329 bytes)
-  -> \src\assets\profile-4.jpg
-  -> \src\assets\people\male\profile-4.jpg
-- button.tsx (3441 bytes)
-  -> \src\components\ui\button.tsx
-  -> \src\shared\ui\Button.tsx
-- card.tsx (1960 bytes)
-  -> \src\components\ui\card.tsx
-  -> \src\shared\ui\Card.tsx
-- input.tsx (1022 bytes)
-  -> \src\components\ui\input.tsx
-  -> \src\shared\ui\Input.tsx
+## DUPLICADOS (0)
 
-## IMPORTS ROTOS (solo src/) (1617)
+## IMPORTS ROTOS (solo src/) (1620)
 - App.tsx:1 -> '@/components/ui/toaster'
 - App.tsx:2 -> '@/components/ui/tooltip'
 - App.tsx:19 -> '@/components/ui/CrossBrowserOptimizer'
@@ -162,18 +34,18 @@
 - App.tsx:61 -> '@/app/(discover)/Discover'
 - debug.tsx:3 -> '@/lib/logger'
 - main.tsx:94 -> './App.tsx'
-- main.tsx:101 -> '@/components/ErrorBoundary'
-- main.tsx:102 -> '@/config/sentry.config'
-- main.tsx:103 -> '@/config/datadog-rum.config'
-- main.tsx:104 -> '@/config/posthog.config'
-- main.tsx:105 -> '@/services/notifications/OneSignalService'
-- main.tsx:106 -> '@/debug'
-- main.tsx:107 -> '@/utils/webVitals'
-- main.tsx:108 -> '@/utils/preloading'
-- main.tsx:109 -> '@/utils/androidSecurity'
-- main.tsx:110 -> '@/lib/logger'
-- main.tsx:111 -> '@/utils/showEnvInfo'
-- main.tsx:112 -> '@/utils/captureConsoleErrors'
+- main.tsx:98 -> '@/components/ErrorBoundary'
+- main.tsx:99 -> '@/config/sentry.config'
+- main.tsx:100 -> '@/config/datadog-rum.config'
+- main.tsx:101 -> '@/config/posthog.config'
+- main.tsx:102 -> '@/services/notifications/OneSignalService'
+- main.tsx:103 -> '@/debug'
+- main.tsx:104 -> '@/utils/webVitals'
+- main.tsx:105 -> '@/utils/preloading'
+- main.tsx:106 -> '@/utils/androidSecurity'
+- main.tsx:107 -> '@/lib/logger'
+- main.tsx:108 -> '@/utils/showEnvInfo'
+- main.tsx:109 -> '@/utils/captureConsoleErrors'
 - Admin.tsx:3 -> '@/shared/ui/Card'
 - Admin.tsx:4 -> '@/shared/ui/Button'
 - Admin.tsx:5 -> '@/shared/ui/Input'
@@ -299,11 +171,11 @@
 - ErrorBoundary.tsx:4 -> '@/shared/ui/Card'
 - Footer.tsx:2 -> '@/shared/ui/Button'
 - HCaptchaWidget.tsx:3 -> '@/lib/logger'
-- HeaderNav.tsx:26 -> '@/shared/ui/Button'
-- HeaderNav.tsx:27 -> '@/components/ui/badge'
-- HeaderNav.tsx:35 -> '@/components/ui/dropdown-menu'
-- HeaderNav.tsx:36 -> '@/features/auth/useAuth'
-- HeaderNav.tsx:37 -> '@/lib/logger'
+- HeaderNav.tsx:27 -> '@/shared/ui/Button'
+- HeaderNav.tsx:28 -> '@/components/ui/badge'
+- HeaderNav.tsx:36 -> '@/components/ui/dropdown-menu'
+- HeaderNav.tsx:37 -> '@/features/auth/useAuth'
+- HeaderNav.tsx:38 -> '@/lib/logger'
 - ModeIndicator.tsx:2 -> '@/components/ui/badge'
 - ModeIndicator.tsx:3 -> '@/lib/app-config'
 - Navigation.tsx:4 -> '@/components/ui/ThemeToggle'
@@ -935,10 +807,8 @@
 - avatar.tsx:4 -> '@/shared/lib/cn'
 - badge.tsx:4 -> '@/shared/lib/cn'
 - breadcrumb.tsx:5 -> '@/shared/lib/cn'
-- button.tsx:5 -> '@/shared/lib/cn'
 - calendar.tsx:5 -> '@/shared/lib/cn'
 - calendar.tsx:6 -> '@/shared/ui/Button'
-- card.tsx:3 -> '@/shared/lib/cn'
 - carousel.tsx:7 -> '@/shared/lib/cn'
 - carousel.tsx:8 -> '@/shared/ui/Button'
 - chart.tsx:4 -> '@/shared/lib/cn'
@@ -974,7 +844,6 @@
 - InfoCard.tsx:4 -> '@/components/ui/badge'
 - InfoCard.tsx:7 -> '@/lib/infoCards'
 - input-otp.tsx:5 -> '@/shared/lib/cn'
-- input.tsx:3 -> '@/shared/lib/cn'
 - label.tsx:5 -> '@/shared/lib/cn'
 - LazyImage.tsx:8 -> '@/shared/lib/cn'
 - LogoutButton.tsx:7 -> '@/shared/ui/Button'
@@ -1337,6 +1206,10 @@
 - News.tsx:4 -> '@/shared/ui/Button'
 - News.tsx:5 -> '@/components/ui/badge'
 - News.tsx:7 -> '@/components/DecorativeHearts'
+- NFTs.tsx:3 -> '@/components/HeaderNav'
+- NFTs.tsx:4 -> '@/shared/ui/Card'
+- NFTs.tsx:5 -> '@/shared/ui/Button'
+- NFTs.tsx:6 -> '@/components/ui/badge'
 - NotFound.tsx:3 -> '@/shared/ui/Button'
 - NotFound.tsx:4 -> '@/shared/ui/Card'
 - NotFound.tsx:6 -> '@/lib/logger'
@@ -1640,13 +1513,15 @@
 - AnalyticsService.ts:7 -> '@/types/analytics.types'
 - APMService.ts:7 -> '@/lib/logger'
 - CDNService.ts:7 -> '@/lib/logger'
-- ChatPrivacyService.ts:2 -> '@/features/chat/ChatPrivacyService'
-- ChatPrivacyService.ts:3 -> '@/features/chat/ChatPrivacyService'
+- ChatPrivacyService.ts:11 -> '@/features/chat/ChatPrivacyService'
+- ChatPrivacyService.ts:12 -> '@/features/chat/ChatPrivacyService'
+- ChatPrivacyService.ts:15 -> '@/features/chat/ChatPrivacyService'
 - ConsentVerificationService.ts:14 -> '@/lib/logger'
 - ContentModerationService.ts:10 -> '@/lib/logger'
 - ContentModerationService.ts:13 -> '@/types/content-moderation.types'
-- CoupleProfilesService.ts:2 -> '@/features/profile/CoupleProfilesService'
-- CoupleProfilesService.ts:3 -> '@/features/profile/CoupleProfilesService'
+- CoupleProfilesService.ts:11 -> '@/features/profile/CoupleProfilesService'
+- CoupleProfilesService.ts:12 -> '@/features/profile/CoupleProfilesService'
+- CoupleProfilesService.ts:15 -> '@/features/profile/CoupleProfilesService'
 - DataPrivacyService.ts:13 -> '@/lib/logger'
 - DesktopNotificationService.ts:11 -> '@/lib/logger'
 - ErrorAlertService.ts:11 -> '@/lib/logger'
@@ -1759,7 +1634,7 @@
 - wallets.ts:7 -> '@/lib/logger'
 - webVitals.ts:3 -> '@/lib/logger'
 
-## DEPENDENCIAS FALTANTES (79)
+## DEPENDENCIAS FALTANTES (77)
 @capacitor/android
 @capacitor/app
 @capacitor/browser
@@ -1826,8 +1701,6 @@
 @types/uuid
 @vitejs/plugin-react
 @worldcoin/idkit
-@azure/core-auth
-@azure/core-sse
 @eslint/js
 @playwright/test
 @tailwindcss/typography
@@ -1843,8 +1716,8 @@
 ## ANDROID (0)
 
 ## RESUMEN
-- Duracion: 00:12
-- Vacios: 17
-- Duplicados: 37
-- Imports rotos: 1617
-- Deps faltantes: 79
+- Duracion: 00:07
+- Vacios: 2
+- Duplicados: 0
+- Imports rotos: 1620
+- Deps faltantes: 77

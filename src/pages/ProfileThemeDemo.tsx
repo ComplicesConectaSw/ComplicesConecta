@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import HeaderNav from "@/components/HeaderNav";
 import ProfileThemeDemoComponent from '@/components/profile/ProfileThemeDemo';
 

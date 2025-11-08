@@ -1,8 +1,10 @@
 <#
 .SYNOPSIS
-    Corrige caracteres mal codificados ( → á, → ñ, etc.) en archivos de código.
+    Corrige caracteres mal codificados del español de México (es-MX) UTF-8.
 .DESCRIPTION
-    Reemplaza caracteres corruptos comunes (UTF-8 mal interpretado).
+    Reemplaza caracteres corruptos comunes del español mexicano (UTF-8 mal interpretado como Windows-1252).
+    Solo maneja caracteres del español de México: vocales con acento (á, é, í, ó, ú, Á, É, Í, Ó, Ú),
+    ñ/Ñ, signos de interrogación/exclamación (¿, ¡), y comillas/apostrofes básicos.
     Soporta archivos abiertos, crea backups, y solo escribe si hay cambios.
 .PARAMETER Path
     Ruta base. Por defecto: "src"
@@ -32,61 +34,40 @@ Write-Host "=================================================" -ForegroundColor 
 Write-Host ""
 
 # === MAPA DE REEMPLAZOS (CORRUPTOS → CORRECTOS) ===
+# Solo caracteres del español de México (es-MX) UTF-8
+# Crear caracteres corruptos completos desde valores hexadecimales
+$corruptA = [char]0xC3 + [char]0x81  # Á corrupto
+$corruptE = [char]0xC3 + [char]0x89  # É corrupto
+$corruptI = [char]0xC3 + [char]0x8D  # Í corrupto
+$corruptO = [char]0xC3 + [char]0x93  # Ó corrupto
+$corruptU = [char]0xC3 + [char]0x9A  # Ú corrupto
+$corruptN = [char]0xC3 + [char]0x91  # Ñ corrupto
+
 $replacements = @{
     # Windows-1252 / ISO-8859-1 mal interpretado como UTF-8
-    # Minúsculas con acento
+    # Vocales con acento - Minúsculas
     'Ã¡' = 'á'
     'Ã©' = 'é'
     'Ã­' = 'í'
     'Ã³' = 'ó'
     'Ãº' = 'ú'
+    # Vocales con acento - Mayúsculas (usando caracteres completos corruptos)
+    $corruptA = 'Á'
+    $corruptE = 'É'
+    $corruptI = 'Í'
+    $corruptO = 'Ó'
+    $corruptU = 'Ú'
+    # Ñ y ñ
     'Ã±' = 'ñ'
-    # Mayúsculas con acento (NOTA: Los caracteres corruptos para mayúsculas son diferentes)
-    'Ã' = 'Á'
-    'Ã‰' = 'É'
-    'Ã' = 'Í'
-    'Ã"' = 'Ó'
-    'Ãš' = 'Ú'
-    'Ã'' = 'Ñ'
+    $corruptN = 'Ñ'
     # Signos de interrogación y exclamación
     'Â¿' = '¿'
     'Â¡' = '¡'
-    # Comillas y apostrofes
-    'â€™' = ''
+    # Comillas y apostrofes básicos
+    'â€™' = "'"
     'â€œ' = '"'
     'â€' = '"'
-    # Caracteres alemanes
-    'Ã¼' = 'ü'
-    'Ã¶' = 'ö'
-    'Ã¤' = 'ä'
-    'Ãœ' = 'Ü'
-    'Ã–' = 'Ö'
-    'Ã„' = 'Ä'
-    # Caracteres franceses
-    'Ã§' = 'ç'
-    'Ã‡' = 'Ç'
-    # Caracteres italianos
-    'Ã¨' = 'è'
-    'Ã¬' = 'ì'
-    'Ã²' = 'ò'
-    'Ã¹' = 'ù'
-    'Ãˆ' = 'È'
-    'ÃŒ' = 'Ì'
-    'Ã'' = 'Ò'
-    'Ã™' = 'Ù'
-    # Caracteres portugueses
-    'Ã£' = 'ã'
-    'Ãµ' = 'õ'
-    'Ã¢' = 'â'
-    'Ãª' = 'ê'
-    # Símbolos especiales
-    'â‚¬' = '€'
-    'â„¢' = '™'
-    'Â®' = '®'
-    'Â©' = '©'
-    'Âª' = 'ª'
-    'Âº' = 'º'
-    # Caracteres de reemplazo
+    # Caracteres de reemplazo comunes (limpieza de basura)
     '' = ''
     'ï¿½' = ''
     'â€‹' = ''

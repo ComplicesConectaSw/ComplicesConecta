@@ -1,16 +1,16 @@
-﻿import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-// CRÃTICO: Importar QueryClient de forma segura - verificar que React estÃ© disponible
+// CRÍTICO: Importar QueryClient de forma segura - verificar que React esté disponible
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-// CRÃTICO: Verificar que React estÃ© disponible antes de usar QueryClient
+// CRÍTICO: Verificar que React esté disponible antes de usar QueryClient
 if (typeof window !== 'undefined') {
-  // Esperar a que React estÃ© disponible antes de crear QueryClient
+  // Esperar a que React esté disponible antes de crear QueryClient
   const checkReact = () => {
     const hasReact = (window as any).React || (window as any).__REACT_STUB__;
     if (!hasReact) {
-      // Si React no estÃ¡ disponible, esperar un poco y reintentar
+      // Si React no está disponible, esperar un poco y reintentar
       setTimeout(checkReact, 10);
     }
   };
@@ -31,26 +31,26 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import { AppFactory } from '@/demo/AppFactory';
 
 // ============================================================================
-// ESTRATEGIA DE CARGA DE PÃGINAS
+// ESTRATEGIA DE CARGA DE PÁGINAS
 // ============================================================================
 // 
-// PÃGINAS CRÃTICAS (Carga Inmediata):
-// - Index: PÃ¡gina principal, debe cargar instantÃ¡neamente
-// - Auth: AutenticaciÃ³n, crÃ­tica para el flujo de usuario
-// - NotFound: PÃ¡gina de error, debe estar siempre disponible
-// - Events: PÃ¡gina principal de eventos
-// - Discover: PÃ¡gina principal de descubrimiento
+// PÁGINAS CRÍTICAS (Carga Inmediata):
+// - Index: Página principal, debe cargar instantáneamente
+// - Auth: Autenticación, crítica para el flujo de usuario
+// - NotFound: Página de error, debe estar siempre disponible
+// - Events: Página principal de eventos
+// - Discover: Página principal de descubrimiento
 //
-// PÃGINAS CORE (Lazy Loading):
+// PÁGINAS CORE (Lazy Loading):
 // - Profiles, ProfileDetail: Funcionalidades principales
 // - Chat, ChatInfo: Sistema de chat
 // - Matches: Sistema de matches
 //
-// PÃGINAS ADMIN (Lazy Loading):
+// PÁGINAS ADMIN (Lazy Loading):
 // - Admin*, Moderator*: Panel administrativo
 //
-// PÃGINAS SECUNDARIAS (Lazy Loading):
-// - About, Terms, Privacy, etc.: PÃ¡ginas informativas
+// PÁGINAS SECUNDARIAS (Lazy Loading):
+// - About, Terms, Privacy, etc.: Páginas informativas
 // ============================================================================
 
 // Critical pages - loaded immediately
@@ -139,7 +139,7 @@ const PageLoader = () => (
   </div>
 );
 
-// Loading component especÃ­fico para diferentes tipos de pÃ¡ginas
+// Loading component específico para diferentes tipos de páginas
 const _AdminPageLoader = () => (
   <div className="min-h-screen bg-gray-900 flex items-center justify-center">
     <div className="text-center">
@@ -158,8 +158,8 @@ const _ProfilePageLoader = () => (
   </div>
 );
 
-// CRÃTICO: Crear QueryClient fuera del componente para evitar recreaciÃ³n en cada render
-// ConfiguraciÃ³n optimizada para producciÃ³n
+// CRÍTICO: Crear QueryClient fuera del componente para evitar recreación en cada render
+// Configuración optimizada para producción
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

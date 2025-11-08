@@ -1,6 +1,6 @@
 /**
- * Página principal de Tokens CMPX/GTK
- * Dashboard completo para gestión de tokens en fase Beta
+ * Pï¿½gina principal de Tokens CMPX/GTK
+ * Dashboard completo para gestiï¿½n de tokens en fase Beta
  */
 
 import React, { useState } from 'react';
@@ -25,7 +25,7 @@ export default function Tokens() {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   
-  // Determinar si hay sesión activa para mostrar Navigation o HeaderNav
+  // Determinar si hay sesiï¿½n activa para mostrar Navigation o HeaderNav
   const hasActiveSession = isAuthenticated();
 
   const handleGoHome = () => {
@@ -41,7 +41,7 @@ export default function Tokens() {
       {hasActiveSession ? <Navigation /> : <HeaderNav />}
       {/* Corazones decorativos flotantes */}
       <DecorativeHearts count={6} />
-      {/* Background Uniforme - Sin múltiples formas */}
+      {/* Background Uniforme - Sin mï¿½ltiples formas */}
       <div className="fixed inset-0 z-0 bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900">
         {/* Elementos decorativos sutiles */}
         <div className="absolute inset-0 overflow-hidden opacity-30">
@@ -89,7 +89,7 @@ export default function Tokens() {
           </p>
         </div>
 
-        {/* Información de fase Beta */}
+        {/* Informaciï¿½n de fase Beta */}
         <Card className="mb-6 bg-white/10 backdrop-blur-md border-white/20 shadow-xl">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-white">
@@ -100,26 +100,26 @@ export default function Tokens() {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
               <div>
-                <h4 className="font-semibold mb-2 text-white">?? Cómo obtener CMPX:</h4>
+                <h4 className="font-semibold mb-2 text-white">?? Cï¿½mo obtener CMPX:</h4>
                 <ul className="space-y-1 text-white/90">
                   <li className="flex items-start gap-2">
-                    <span className="text-purple-600">•</span>
+                    <span className="text-purple-600">ï¿½</span>
                     <span>100 CMPX ? Verificar World ID</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-purple-600">•</span>
+                    <span className="text-purple-600">ï¿½</span>
                     <span>50 CMPX ? Por cada referido exitoso</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-purple-600">•</span>
+                    <span className="text-purple-600">ï¿½</span>
                     <span>25 CMPX ? Completar perfil</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-purple-600">•</span>
+                    <span className="text-purple-600">ï¿½</span>
                     <span>20 CMPX ? Feedback beta</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-purple-600">•</span>
+                    <span className="text-purple-600">ï¿½</span>
                     <span>5 CMPX ? Login diario</span>
                   </li>
                 </ul>
@@ -128,28 +128,28 @@ export default function Tokens() {
                 <h4 className="font-semibold mb-2 text-white">?? Beneficios del Staking:</h4>
                 <ul className="space-y-1 text-white/90">
                   <li className="flex items-start gap-2">
-                    <span className="text-purple-600">•</span>
-                    <span>+10% recompensa en 30 días</span>
+                    <span className="text-purple-600">ï¿½</span>
+                    <span>+10% recompensa en 30 dï¿½as</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-purple-600">•</span>
+                    <span className="text-purple-600">ï¿½</span>
                     <span>Apoyas la red ComplicesConecta</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-purple-600">•</span>
-                    <span>Tokens seguros durante el período</span>
+                    <span className="text-purple-600">ï¿½</span>
+                    <span>Tokens seguros durante el perï¿½odo</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-purple-600">•</span>
-                    <span>Recompensa automática al finalizar</span>
+                    <span className="text-purple-600">ï¿½</span>
+                    <span>Recompensa automï¿½tica al finalizar</span>
                   </li>
                 </ul>
               </div>
             </div>
             <div className="mt-4 p-3 bg-white/20 rounded-lg border border-white/30">
               <p className="text-xs text-white">
-                ?? <strong>Límite Beta:</strong> Máximo 500 CMPX por usuario al mes. 
-                En la versión final no habrá límites y podrás convertir CMPX a GTK (ERC20).
+                ?? <strong>Lï¿½mite Beta:</strong> Mï¿½ximo 500 CMPX por usuario al mes. 
+                En la versiï¿½n final no habrï¿½ lï¿½mites y podrï¿½s convertir CMPX a GTK (ERC20).
               </p>
             </div>
           </CardContent>
@@ -166,8 +166,8 @@ export default function Tokens() {
             </CardHeader>
             <CardContent>
               <p className="text-sm text-white/90 mb-4">
-                Tu guía personal paso a paso para gestionar tokens CMPX/GTK. 
-                Pregúntame sobre tu balance, cómo reclamar recompensas o activar staking.
+                Tu guï¿½a personal paso a paso para gestionar tokens CMPX/GTK. 
+                Pregï¿½ntame sobre tu balance, cï¿½mo reclamar recompensas o activar staking.
               </p>
               <TokenChatBot />
             </CardContent>
@@ -177,7 +177,7 @@ export default function Tokens() {
         {/* Dashboard principal */}
         <TokenDashboard />
 
-        {/* Botones de acción rápida */}
+        {/* Botones de acciï¿½n rï¿½pida */}
         <motion.div 
           className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4"
           initial={{ opacity: 0, y: 20 }}
@@ -220,7 +220,7 @@ export default function Tokens() {
               className="h-16 w-full flex flex-col items-center justify-center gap-1 bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/20 text-white hover:text-blue-200 transition-all duration-300"
             >
               <span className="text-lg">??</span>
-              <span className="text-sm font-medium truncate">Guía de Tokens</span>
+              <span className="text-sm font-medium truncate">Guï¿½a de Tokens</span>
             </Button>
           </motion.div>
 
@@ -233,12 +233,12 @@ export default function Tokens() {
               className="h-16 w-full flex flex-col items-center justify-center gap-1 bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/20 text-white hover:text-yellow-200 transition-all duration-300"
             >
               <span className="text-lg">??</span>
-              <span className="text-sm font-medium truncate">Términos</span>
+              <span className="text-sm font-medium truncate">Tï¿½rminos</span>
             </Button>
           </motion.div>
         </motion.div>
 
-        {/* Información adicional */}
+        {/* Informaciï¿½n adicional */}
         <Card className="mt-6 bg-white/10 backdrop-blur-md border-white/20 shadow-xl">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-white">
@@ -250,7 +250,7 @@ export default function Tokens() {
             <div className="space-y-3">
               <div className="bg-white/20 p-3 sm:p-4 rounded-lg border border-white/30">
                 <p className="text-sm text-white mb-2">
-                  <strong>Pregunta a la IA:</strong> "¿Cuántos tokens tengo?" o "¿Qué es staking?"
+                  <strong>Pregunta a la IA:</strong> "ï¿½Cuï¿½ntos tokens tengo?" o "ï¿½Quï¿½ es staking?"
                 </p>
                 <div className="text-xs text-white/90 space-y-1">
                   <p>?? <strong>Ejemplo de respuesta:</strong></p>
@@ -262,7 +262,7 @@ export default function Tokens() {
               
               <div className="bg-white/20 p-3 sm:p-4 rounded-lg border border-white/30">
                 <p className="text-sm text-white mb-2">
-                  <strong>Explicación de staking:</strong>
+                  <strong>Explicaciï¿½n de staking:</strong>
                 </p>
                 <div className="text-xs text-white/90">
                   <div className="bg-gradient-to-r from-purple-500/95 to-blue-600/95 p-2 rounded border border-purple-400/50 ml-2 sm:ml-4 shadow-sm">

@@ -60,7 +60,7 @@ const ModeratorRequest = () => {
     if (!validation.success) {
       const firstError = validation.error.issues[0];
       toast({
-        title: "Error de validación",
+        title: "Error de validaciï¿½n",
         description: firstError.message,
         variant: "destructive"
       });
@@ -105,7 +105,7 @@ const ModeratorRequest = () => {
 
       setSubmitted(true);
       toast({
-        title: "¡Éxito!",
+        title: "ï¿½ï¿½xito!",
         description: "Solicitud enviada exitosamente"
       });
     } catch (error) {
@@ -129,20 +129,20 @@ const ModeratorRequest = () => {
             <CardContent className="p-8 text-center">
               <CheckCircle className="h-16 w-16 text-green-400 mx-auto mb-6" />
               <h2 className="text-2xl font-bold text-white mb-4">
-                ¡Solicitud Enviada!
+                ï¿½Solicitud Enviada!
               </h2>
               <p className="text-white/80 mb-6">
                 Tu solicitud para convertirte en moderador ha sido enviada exitosamente. 
-                Nuestro equipo la revisará y te contactaremos pronto.
+                Nuestro equipo la revisarï¿½ y te contactaremos pronto.
               </p>
               <div className="space-y-4">
                 <div className="bg-white/5 rounded-lg p-4">
-                  <h3 className="text-white font-semibold mb-2">¿Qué sigue?</h3>
+                  <h3 className="text-white font-semibold mb-2">ï¿½Quï¿½ sigue?</h3>
                   <ul className="text-white/70 text-sm space-y-2 text-left">
-                    <li>• Revisaremos tu solicitud en 2-3 días hábiles</li>
-                    <li>• Te contactaremos por email con la decisión</li>
-                    <li>• Si eres aprobado, recibirás un enlace de activación</li>
-                    <li>• Podrás acceder al panel de moderación una vez activado</li>
+                    <li>ï¿½ Revisaremos tu solicitud en 2-3 dï¿½as hï¿½biles</li>
+                    <li>ï¿½ Te contactaremos por email con la decisiï¿½n</li>
+                    <li>ï¿½ Si eres aprobado, recibirï¿½s un enlace de activaciï¿½n</li>
+                    <li>ï¿½ Podrï¿½s acceder al panel de moderaciï¿½n una vez activado</li>
                   </ul>
                 </div>
                 <Link to="/">
@@ -173,11 +173,11 @@ const ModeratorRequest = () => {
             Solicitud de Moderador
           </h1>
           <p className="text-white/80">
-            Únete a nuestro equipo de moderación y ayuda a mantener la comunidad segura
+            ï¿½nete a nuestro equipo de moderaciï¿½n y ayuda a mantener la comunidad segura
           </p>
         </div>
 
-        {/* Información detallada sobre el rol */}
+        {/* Informaciï¿½n detallada sobre el rol */}
         <Card className="bg-white/10 backdrop-blur-sm border-white/20 mb-6">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
@@ -185,18 +185,18 @@ const ModeratorRequest = () => {
               Programa de Moderadores ComplicesConecta
             </CardTitle>
             <CardDescription className="text-white/80">
-              Únete a nuestro equipo de moderación y ayuda a crear un espacio seguro y respetuoso para todos
+              ï¿½nete a nuestro equipo de moderaciï¿½n y ayuda a crear un espacio seguro y respetuoso para todos
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            {/* Descripción del programa */}
+            {/* Descripciï¿½n del programa */}
             <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-lg p-4 border border-purple-400/20">
               <h3 className="text-white font-semibold mb-2 flex items-center gap-2">
                 <AlertCircle className="h-5 w-5 text-blue-400" />
-                ¿Por qué necesitamos moderadores?
+                ï¿½Por quï¿½ necesitamos moderadores?
               </h3>
               <p className="text-white/80 text-sm leading-relaxed">
-                ComplicesConecta es una plataforma para adultos que facilita conexiones auténticas y respetuosas. 
+                ComplicesConecta es una plataforma para adultos que facilita conexiones autï¿½nticas y respetuosas. 
                 Nuestros moderadores son fundamentales para mantener un ambiente seguro, donde todos los miembros 
                 puedan interactuar con confianza y respeto mutuo.
               </p>
@@ -209,26 +209,26 @@ const ModeratorRequest = () => {
                   Responsabilidades Principales
                 </h3>
                 <ul className="text-white/70 text-sm space-y-2">
-                  <li>• <strong>Revisar reportes:</strong> Analizar denuncias de usuarios de manera imparcial</li>
-                  <li>• <strong>Moderar contenido:</strong> Evaluar fotos, mensajes y perfiles reportados</li>
-                  <li>• <strong>Aplicar sanciones:</strong> Advertencias, suspensiones temporales o permanentes</li>
-                  <li>• <strong>Apoyo a usuarios:</strong> Resolver consultas sobre políticas de la comunidad</li>
-                  <li>• <strong>Prevención:</strong> Identificar patrones de comportamiento problemático</li>
+                  <li>ï¿½ <strong>Revisar reportes:</strong> Analizar denuncias de usuarios de manera imparcial</li>
+                  <li>ï¿½ <strong>Moderar contenido:</strong> Evaluar fotos, mensajes y perfiles reportados</li>
+                  <li>ï¿½ <strong>Aplicar sanciones:</strong> Advertencias, suspensiones temporales o permanentes</li>
+                  <li>ï¿½ <strong>Apoyo a usuarios:</strong> Resolver consultas sobre polï¿½ticas de la comunidad</li>
+                  <li>ï¿½ <strong>Prevenciï¿½n:</strong> Identificar patrones de comportamiento problemï¿½tico</li>
                 </ul>
               </div>
 
               <div className="bg-white/5 rounded-lg p-4">
                 <h3 className="text-white font-semibold mb-3 flex items-center gap-2">
                   <DollarSign className="h-5 w-5 text-yellow-400" />
-                  Retribución Monetaria
+                  Retribuciï¿½n Monetaria
                 </h3>
                 <div className="text-white/70 text-sm space-y-2">
                   <div className="flex justify-between items-center">
-                    <span>Compensación base mensual:</span>
+                    <span>Compensaciï¿½n base mensual:</span>
                     <span className="text-green-400 font-semibold">$2,500 - $4,000 MXN</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span>Bono por desempeño:</span>
+                    <span>Bono por desempeï¿½o:</span>
                     <span className="text-green-400 font-semibold">Hasta $1,500 MXN</span>
                   </div>
                   <div className="flex justify-between items-center">
@@ -237,7 +237,7 @@ const ModeratorRequest = () => {
                   </div>
                   <div className="mt-3 pt-2 border-t border-white/10">
                     <p className="text-xs text-white/60">
-                      * Pagos quincenales vía transferencia bancaria
+                      * Pagos quincenales vï¿½a transferencia bancaria
                     </p>
                     <p className="text-xs text-white/60">
                       * Incrementos basados en evaluaciones trimestrales
@@ -252,16 +252,16 @@ const ModeratorRequest = () => {
                   Perfil Ideal del Moderador
                 </h3>
                 <ul className="text-white/70 text-sm space-y-2">
-                  <li>• <strong>Edad:</strong> Mayor de 21 años (preferible)</li>
-                  <li>• <strong>Disponibilidad:</strong> Mínimo 8-10 horas semanales</li>
-                  <li>• <strong>Experiencia:</strong> Moderación online, atención al cliente o psicología</li>
-                  <li>• <strong>Habilidades:</strong> Comunicación empática y toma de decisiones</li>
-                  <li>• <strong>Compromiso:</strong> Mínimo 6 meses en el programa</li>
+                  <li>ï¿½ <strong>Edad:</strong> Mayor de 21 aï¿½os (preferible)</li>
+                  <li>ï¿½ <strong>Disponibilidad:</strong> Mï¿½nimo 8-10 horas semanales</li>
+                  <li>ï¿½ <strong>Experiencia:</strong> Moderaciï¿½n online, atenciï¿½n al cliente o psicologï¿½a</li>
+                  <li>ï¿½ <strong>Habilidades:</strong> Comunicaciï¿½n empï¿½tica y toma de decisiones</li>
+                  <li>ï¿½ <strong>Compromiso:</strong> Mï¿½nimo 6 meses en el programa</li>
                 </ul>
               </div>
             </div>
 
-            {/* Beneficios y compensación */}
+            {/* Beneficios y compensaciï¿½n */}
             <div className="bg-gradient-to-r from-green-500/10 to-blue-500/10 rounded-lg p-4 border border-green-400/20">
               <h3 className="text-white font-semibold mb-3 flex items-center gap-2">
                 <Badge className="h-5 w-5 text-yellow-400" />
@@ -269,8 +269,8 @@ const ModeratorRequest = () => {
               </h3>
               <div className="grid md:grid-cols-3 gap-4 text-sm">
                 <div>
-                  <h4 className="text-green-300 font-medium mb-1">Compensación</h4>
-                  <p className="text-white/70">Tokens CMPX mensuales según horas dedicadas</p>
+                  <h4 className="text-green-300 font-medium mb-1">Compensaciï¿½n</h4>
+                  <p className="text-white/70">Tokens CMPX mensuales segï¿½n horas dedicadas</p>
                 </div>
                 <div>
                   <h4 className="text-blue-300 font-medium mb-1">Acceso Premium</h4>
@@ -278,16 +278,16 @@ const ModeratorRequest = () => {
                 </div>
                 <div>
                   <h4 className="text-purple-300 font-medium mb-1">Experiencia</h4>
-                  <p className="text-white/70">Certificado de moderación y referencias profesionales</p>
+                  <p className="text-white/70">Certificado de moderaciï¿½n y referencias profesionales</p>
                 </div>
               </div>
             </div>
 
-            {/* Proceso de selección */}
+            {/* Proceso de selecciï¿½n */}
             <div className="bg-white/5 rounded-lg p-4">
               <h3 className="text-white font-semibold mb-3 flex items-center gap-2">
                 <Clock className="h-5 w-5 text-orange-400" />
-                Proceso de Selección
+                Proceso de Selecciï¿½n
               </h3>
               <div className="grid md:grid-cols-4 gap-3 text-xs">
                 <div className="text-center">
@@ -296,7 +296,7 @@ const ModeratorRequest = () => {
                 </div>
                 <div className="text-center">
                   <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-2 text-white font-bold">2</div>
-                  <p className="text-white/70">Revisión (2-3 días)</p>
+                  <p className="text-white/70">Revisiï¿½n (2-3 dï¿½as)</p>
                 </div>
                 <div className="text-center">
                   <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-2 text-white font-bold">3</div>
@@ -304,7 +304,7 @@ const ModeratorRequest = () => {
                 </div>
                 <div className="text-center">
                   <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center mx-auto mb-2 text-white font-bold">4</div>
-                  <p className="text-white/70">Capacitación</p>
+                  <p className="text-white/70">Capacitaciï¿½n</p>
                 </div>
               </div>
             </div>
@@ -321,11 +321,11 @@ const ModeratorRequest = () => {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Información personal */}
+              {/* Informaciï¿½n personal */}
               <div className="space-y-4">
                 <h3 className="text-white font-semibold flex items-center gap-2">
                   <User className="h-4 w-4" />
-                  Información Personal
+                  Informaciï¿½n Personal
                 </h3>
                 
                 <div>
@@ -375,21 +375,21 @@ const ModeratorRequest = () => {
                     value={formData.experience}
                     onChange={handleInputChange}
                     className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50"
-                    placeholder="Describe tu experiencia en moderación, administración de comunidades, atención al cliente, etc."
+                    placeholder="Describe tu experiencia en moderaciï¿½n, administraciï¿½n de comunidades, atenciï¿½n al cliente, etc."
                     rows={3}
                   />
                 </div>
 
                 <div>
                   <label className="text-white text-sm mb-2 block">
-                    Experiencia Previa en Moderación
+                    Experiencia Previa en Moderaciï¿½n
                   </label>
                   <textarea
                     name="previousModeration"
                     value={formData.previousModeration}
                     onChange={handleInputChange}
                     className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50"
-                    placeholder="¿Has sido moderador en otras plataformas? Describe tu experiencia."
+                    placeholder="ï¿½Has sido moderador en otras plataformas? Describe tu experiencia."
                     rows={3}
                   />
                 </div>
@@ -409,30 +409,30 @@ const ModeratorRequest = () => {
                 </div>
               </div>
 
-              {/* Motivación */}
+              {/* Motivaciï¿½n */}
               <div className="space-y-4">
                 <h3 className="text-white font-semibold flex items-center gap-2">
                   <MessageSquare className="h-4 w-4" />
-                  Motivación
+                  Motivaciï¿½n
                 </h3>
 
                 <div>
                   <label className="text-white text-sm mb-2 block">
-                    ¿Por qué quieres ser moderador? *
+                    ï¿½Por quï¿½ quieres ser moderador? *
                   </label>
                   <textarea
                     name="motivation"
                     value={formData.motivation}
                     onChange={handleInputChange}
                     className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50"
-                    placeholder="Explica tu motivación para unirte al equipo de moderación y cómo planeas contribuir a la comunidad."
+                    placeholder="Explica tu motivaciï¿½n para unirte al equipo de moderaciï¿½n y cï¿½mo planeas contribuir a la comunidad."
                     rows={4}
                     required
                   />
                 </div>
               </div>
 
-              {/* Términos */}
+              {/* Tï¿½rminos */}
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
                   <input
@@ -444,14 +444,14 @@ const ModeratorRequest = () => {
                     required
                   />
                   <label className="text-white/80 text-sm">
-                    Acepto los términos y condiciones del programa de moderación. 
+                    Acepto los tï¿½rminos y condiciones del programa de moderaciï¿½n. 
                     Entiendo que como moderador debo mantener la confidencialidad, 
-                    actuar de manera imparcial y seguir las políticas de la comunidad. *
+                    actuar de manera imparcial y seguir las polï¿½ticas de la comunidad. *
                   </label>
                 </div>
               </div>
 
-              {/* Botón de envío */}
+              {/* Botï¿½n de envï¿½o */}
               <div className="pt-4">
                 <Button
                   type="submit"
@@ -473,7 +473,7 @@ const ModeratorRequest = () => {
               </div>
 
               <p className="text-white/60 text-xs text-center">
-                * Campos obligatorios. Tu información será revisada por nuestro equipo.
+                * Campos obligatorios. Tu informaciï¿½n serï¿½ revisada por nuestro equipo.
               </p>
             </form>
           </CardContent>

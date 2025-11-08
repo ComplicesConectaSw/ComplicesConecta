@@ -1,4 +1,4 @@
-﻿import { lazy } from 'react';
+import { lazy } from 'react';
 
 // Lazy loading with chunk names for better debugging
 export const LazyPages = {

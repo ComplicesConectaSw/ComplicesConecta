@@ -55,7 +55,7 @@ const Chat = () => {
   const [_isLoading, setIsLoading] = useState(false);
   const { user } = useAuth();
   
-  // Hook de verificación de consentimiento
+  // Hook de verificaciï¿½n de consentimiento
   const currentRoomId = selectedChat?.id.toString();
   const {
     verification,
@@ -64,17 +64,17 @@ const Chat = () => {
     stopMonitoring
   } = useConsentVerification(currentRoomId);
   
-  // Verificar si hay sesión activa (demo o producción)
+  // Verificar si hay sesiï¿½n activa (demo o producciï¿½n)
   const hasActiveSession = typeof isAuthenticated === 'function' ? isAuthenticated() : !!isAuthenticated;
 
-  // Detectar modo de operación (demo vs producción)
+  // Detectar modo de operaciï¿½n (demo vs producciï¿½n)
   useEffect(() => {
     const demoAuth = localStorage.getItem('demo_authenticated');
     const isDemo = demoAuth === 'true';
     setIsProduction(!isDemo);
     
     if (!isDemo) {
-      // Modo producción - cargar datos reales
+      // Modo producciï¿½n - cargar datos reales
       loadRealChatData();
     } else {
       // Modo demo - usar datos mock SIEMPRE
@@ -104,7 +104,7 @@ const Chat = () => {
     };
   };
 
-  // Cargar datos reales de chat para producción
+  // Cargar datos reales de chat para producciï¿½n
   const loadRealChatData = async () => {
     setIsLoading(true);
     try {
@@ -164,9 +164,9 @@ const Chat = () => {
   // Load messages for a specific chat
   const loadMessages = (chatId: number) => {
     const mockMessages: Message[] = [
-      { id: 1, senderId: chatId, content: "¡Hola! ¿Cómo están?", timestamp: "10:30", type: 'text' },
-      { id: 2, senderId: 0, content: "¡Muy bien! ¿Y ustedes?", timestamp: "10:32", type: 'text' },
-      { id: 3, senderId: chatId, content: "Genial, ¿les interesa conocernos mejor?", timestamp: "10:35", type: 'text' }
+      { id: 1, senderId: chatId, content: "ï¿½Hola! ï¿½Cï¿½mo estï¿½n?", timestamp: "10:30", type: 'text' },
+      { id: 2, senderId: 0, content: "ï¿½Muy bien! ï¿½Y ustedes?", timestamp: "10:32", type: 'text' },
+      { id: 3, senderId: chatId, content: "Genial, ï¿½les interesa conocernos mejor?", timestamp: "10:35", type: 'text' }
     ];
     setMessages(mockMessages);
   };
@@ -216,7 +216,7 @@ const Chat = () => {
       id: 1,
       name: "Anabella & Julio",
       image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=100&h=100&fit=crop&crop=faces",
-      lastMessage: "¿Están libres este fin de semana? ??",
+      lastMessage: "ï¿½Estï¿½n libres este fin de semana? ??",
       timestamp: "5 min",
       isOnline: true,
       unreadCount: 2,
@@ -225,9 +225,9 @@ const Chat = () => {
     },
     {
       id: 2,
-      name: "Sofía",
+      name: "Sofï¿½a",
       image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face",
-      lastMessage: "Me encantó conocerlos en la fiesta ??",
+      lastMessage: "Me encantï¿½ conocerlos en la fiesta ??",
       timestamp: "1 h",
       isOnline: true,
       unreadCount: 0,
@@ -238,7 +238,7 @@ const Chat = () => {
       id: 3,
       name: "Carmen & Roberto",
       image: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=100&h=100&fit=crop&crop=faces",
-      lastMessage: "¿Vienen al evento VIP del sábado?",
+      lastMessage: "ï¿½Vienen al evento VIP del sï¿½bado?",
       timestamp: "3 h",
       isOnline: false,
       unreadCount: 0,
@@ -247,9 +247,9 @@ const Chat = () => {
     },
     {
       id: 4,
-      name: "Raúl",
+      name: "Raï¿½l",
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
-      lastMessage: "¿Qué tal si nos vemos para tomar algo?",
+      lastMessage: "ï¿½Quï¿½ tal si nos vemos para tomar algo?",
       timestamp: "2 h",
       isOnline: false,
       unreadCount: 1,
@@ -264,7 +264,7 @@ const Chat = () => {
       id: 101,
       name: "?? Sala General Lifestyle",
       image: "https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=100&h=100&fit=crop&crop=face",
-      lastMessage: "¡Bienvenidos a la comunidad swinger!",
+      lastMessage: "ï¿½Bienvenidos a la comunidad swinger!",
       timestamp: "10 min",
       isOnline: true,
       unreadCount: 5,
@@ -275,7 +275,7 @@ const Chat = () => {
       id: 102,
       name: "?? Parejas CDMX",
       image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=100&h=100&fit=crop&crop=faces",
-      lastMessage: "Evento swinger este sábado en Polanco",
+      lastMessage: "Evento swinger este sï¿½bado en Polanco",
       timestamp: "30 min",
       isOnline: true,
       unreadCount: 12,
@@ -286,7 +286,7 @@ const Chat = () => {
       id: 103,
       name: "?? Singles Lifestyle",
       image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face",
-      lastMessage: "¿Alguien para intercambio hoy?",
+      lastMessage: "ï¿½Alguien para intercambio hoy?",
       timestamp: "1 h",
       isOnline: true,
       unreadCount: 3,
@@ -336,7 +336,7 @@ const Chat = () => {
     if (!selectedChat || !user?.id || !isProduction) return;
     
     const roomId = selectedChat.id.toString();
-    // Obtener el otro usuario del chat (simplificado - en producción obtener de la sala)
+    // Obtener el otro usuario del chat (simplificado - en producciï¿½n obtener de la sala)
     const otherUserId = selectedChat.id.toString(); // TODO: Obtener el ID real del otro usuario
     
     // Iniciar monitoreo de consentimiento
@@ -359,32 +359,32 @@ const Chat = () => {
   const handleSendMessage = () => {
     if (!selectedChat || !newMessage.trim()) return;
     
-    // Bloquear envío si el chat está pausado por bajo consenso
+    // Bloquear envï¿½o si el chat estï¿½ pausado por bajo consenso
     if (isPaused) {
       toast({
         variant: 'destructive',
         title: 'Chat pausado',
-        description: verification?.pauseReason || 'El chat está pausado por bajo consenso. Por favor, espera a que mejore el consenso antes de enviar mensajes.'
+        description: verification?.pauseReason || 'El chat estï¿½ pausado por bajo consenso. Por favor, espera a que mejore el consenso antes de enviar mensajes.'
       });
       return;
     }
     
-    // Usar datos reales en producción, mock en demo
+    // Usar datos reales en producciï¿½n, mock en demo
     if (isProduction) {
       sendRealMessage(newMessage);
       return;
     }
     
-    // Lógica para modo demo
+    // Lï¿½gica para modo demo
     if (selectedChat.isPrivate && !hasChatAccess[selectedChat.id]) {
-      alert('No tienes acceso a este chat privado. Necesitas una invitación aceptada.');
+      alert('No tienes acceso a este chat privado. Necesitas una invitaciï¿½n aceptada.');
       return;
     }
     
-    // Verificar permisos de mensajería según configuración de privacidad
+    // Verificar permisos de mensajerï¿½a segï¿½n configuraciï¿½n de privacidad
     const canSendMessage = checkMessagePermissions(selectedChat);
     if (!canSendMessage) {
-      alert('No puedes enviar mensajes a este usuario según su configuración de privacidad.');
+      alert('No puedes enviar mensajes a este usuario segï¿½n su configuraciï¿½n de privacidad.');
       return;
     }
     
@@ -403,17 +403,17 @@ const Chat = () => {
   const checkMessagePermissions = (chat: ChatUser) => {
     if (!features.messagingPrivacy) return true;
     
-    // Para chats públicos, siempre permitir
+    // Para chats pï¿½blicos, siempre permitir
     if (chat.roomType === 'public') return true;
     
-    // Para chats privados, verificar configuración
-    const userPrivacySettings = mockPrivacySettings; // En producción, obtener del usuario específico
+    // Para chats privados, verificar configuraciï¿½n
+    const userPrivacySettings = mockPrivacySettings; // En producciï¿½n, obtener del usuario especï¿½fico
     
     switch (userPrivacySettings.allowMessages) {
       case 'everyone':
         return true;
       case 'connections_only':
-        // Verificar si hay conexión aceptada (simulado)
+        // Verificar si hay conexiï¿½n aceptada (simulado)
         return true; // Por ahora siempre true para demo
       case 'none':
         return false;
@@ -431,7 +431,7 @@ const Chat = () => {
         <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-purple-800/20 to-blue-900/20"></div>
       </div>
 
-      {/* Navegación condicional */}
+      {/* Navegaciï¿½n condicional */}
       {hasActiveSession ? <Navigation /> : <HeaderNav />}
       
       <div className={`relative z-10 flex h-screen ${hasActiveSession ? 'pt-4' : 'pt-16'} ${hasActiveSession ? 'pb-4' : 'pb-20'}`}>
@@ -513,11 +513,11 @@ const Chat = () => {
                   setTabError(null);
                   setActiveTab('public');
                   setSelectedChat(null); // Limpiar chat seleccionado al cambiar tab
-                  logger.info('?? Cambiando a tab público');
+                  logger.info('?? Cambiando a tab pï¿½blico');
                 }}
               >
                 <Globe className="h-4 w-4" />
-                Público
+                Pï¿½blico
                 {publicChats.reduce((acc, chat) => acc + chat.unreadCount, 0) > 0 && (
                   <Badge className="bg-red-500 text-white text-xs">
                     {publicChats.reduce((acc, chat) => acc + chat.unreadCount, 0)}
@@ -594,7 +594,7 @@ const Chat = () => {
             {activeTab === 'public' && (
               <div className="mt-4">
                 <div className="text-white font-semibold text-sm mb-3 px-2 drop-shadow-lg">
-                  ?? Salas públicas de la comunidad
+                  ?? Salas pï¿½blicas de la comunidad
                 </div>
                 <div className="space-y-2">
                   {publicChats.map((chat) => (
@@ -646,7 +646,7 @@ const Chat = () => {
           </div>
         </div>
 
-        {/* Área de chat */}
+        {/* ï¿½rea de chat */}
         <div className={`${selectedChat ? 'block' : 'hidden md:block'} flex-1 flex flex-col bg-gradient-to-br from-purple-900/20 via-purple-800/20 to-blue-900/20 backdrop-blur-sm`}>
           {selectedChat ? (
             <>
@@ -683,8 +683,8 @@ const Chat = () => {
                     </div>
                     <p className="text-sm text-white/90 drop-shadow-md">
                       {selectedChat.roomType === 'public' 
-                        ? `Sala pública • ${Math.floor(Math.random() * 50) + 10} miembros activos`
-                        : selectedChat.isOnline ? 'En línea' : `Última vez ${selectedChat.timestamp}`
+                        ? `Sala pï¿½blica ï¿½ ${Math.floor(Math.random() * 50) + 10} miembros activos`
+                        : selectedChat.isOnline ? 'En lï¿½nea' : `ï¿½ltima vez ${selectedChat.timestamp}`
                       }
                     </p>
                   </div>
@@ -768,27 +768,27 @@ const Chat = () => {
                       <span className="font-semibold text-lg">Chat privado bloqueado</span>
                     </div>
                     <p className="text-sm text-white/90 mb-6 leading-relaxed max-w-sm mx-auto">
-                      Necesitas una invitación aceptada para chatear con {selectedChat?.name}. Puedes enviar una invitación o esperar a que te envíen una.
+                      Necesitas una invitaciï¿½n aceptada para chatear con {selectedChat?.name}. Puedes enviar una invitaciï¿½n o esperar a que te envï¿½en una.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-3 justify-center">
                       <UnifiedButton 
                         onClick={() => {
-                          logger.info('Enviando invitación...');
+                          logger.info('Enviando invitaciï¿½n...');
                           // Simulate invitation sent
                           setHasChatAccess(prev => ({...prev, [selectedChat?.id || 0]: true}));
-                          alert('¡Invitación aceptada! Ahora puedes chatear.');
+                          alert('ï¿½Invitaciï¿½n aceptada! Ahora puedes chatear.');
                         }}
                         className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-6 py-2 rounded-lg font-medium transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
                       >
                         <UserPlus className="h-4 w-4 mr-2" />
-                        Aceptar invitación
+                        Aceptar invitaciï¿½n
                       </UnifiedButton>
                       <UnifiedButton 
                         onClick={() => {
-                          logger.info('Rechazando invitación...');
+                          logger.info('Rechazando invitaciï¿½n...');
                           // Properly reject the invitation and navigate back
                           setSelectedChat(null);
-                          alert('Invitación rechazada. Has vuelto a la lista de chats.');
+                          alert('Invitaciï¿½n rechazada. Has vuelto a la lista de chats.');
                         }}
                         variant="outline"
                         className="border-red-300/50 text-red-300 hover:bg-red-500/20 px-6 py-2 rounded-lg font-medium transition-all duration-200"
@@ -799,7 +799,7 @@ const Chat = () => {
                   </div>
                 ) : (
                   <div className="space-y-3">
-                    {/* Botones de galería y solicitudes */}
+                    {/* Botones de galerï¿½a y solicitudes */}
                     <div className="flex gap-2 justify-center">
                       <UnifiedButton
                         onClick={() => navigate('/gallery')}
@@ -807,7 +807,7 @@ const Chat = () => {
                         className="flex-1 border-purple-400/50 text-purple-300 hover:bg-purple-500/20 text-xs py-2"
                       >
                         <Heart className="h-3 w-3 mr-1" />
-                        Galería
+                        Galerï¿½a
                       </UnifiedButton>
                       <UnifiedButton
                         onClick={() => navigate('/requests')}
@@ -820,16 +820,16 @@ const Chat = () => {
                       <UnifiedButton
                         onClick={() => {
                           if (selectedChat?.roomType === 'private') {
-                            toast({ title: "Galería Privada", description: "Accediendo a galería privada con " + selectedChat.name });
+                            toast({ title: "Galerï¿½a Privada", description: "Accediendo a galerï¿½a privada con " + selectedChat.name });
                           } else {
-                            toast({ title: "Galería Pública", description: "Accediendo a galería pública de la sala" });
+                            toast({ title: "Galerï¿½a Pï¿½blica", description: "Accediendo a galerï¿½a pï¿½blica de la sala" });
                           }
                         }}
                         variant="outline"
                         className="flex-1 border-green-400/50 text-green-300 hover:bg-green-500/20 text-xs py-2"
                       >
                         <Globe className="h-3 w-3 mr-1" />
-                        {selectedChat?.roomType === 'private' ? 'Privada' : 'Pública'}
+                        {selectedChat?.roomType === 'private' ? 'Privada' : 'Pï¿½blica'}
                       </UnifiedButton>
                     </div>
                     
@@ -855,14 +855,14 @@ const Chat = () => {
                     </div>
                     {isPaused && (
                       <p className="text-xs text-white/70 mt-2 text-center">
-                        ?? El chat está pausado por bajo consenso. El envío de mensajes está bloqueado.
+                        ?? El chat estï¿½ pausado por bajo consenso. El envï¿½o de mensajes estï¿½ bloqueado.
                       </p>
                     )}
                   </div>
                 )}
                 {selectedChat?.roomType === 'public' && (
                   <p className="text-xs text-white/50 mt-2 px-1">
-                    ?? Los mensajes en salas públicas son visibles para todos los miembros
+                    ?? Los mensajes en salas pï¿½blicas son visibles para todos los miembros
                   </p>
                 )}
               </div>
@@ -871,11 +871,11 @@ const Chat = () => {
               <div className="flex-1 flex items-center justify-center">
               <div className="text-center text-white">
                 <MessageCircle className="h-16 w-16 mx-auto mb-4 text-white opacity-80 drop-shadow-lg" />
-                <h3 className="text-xl font-semibold mb-2 text-white drop-shadow-md">Selecciona una conversación</h3>
+                <h3 className="text-xl font-semibold mb-2 text-white drop-shadow-md">Selecciona una conversaciï¿½n</h3>
                 <p className="mb-4 text-white/90 drop-shadow-md">
                   {activeTab === 'private' 
                     ? 'Elige un chat privado para conversar de forma segura'
-                    : 'Únete a una sala pública para conocer la comunidad'
+                    : 'ï¿½nete a una sala pï¿½blica para conocer la comunidad'
                   }
                 </p>
                 <div className="flex items-center justify-center text-sm space-x-4">
@@ -885,7 +885,7 @@ const Chat = () => {
                   </div>
                   <div className="flex items-center text-white/90">
                     <Globe className="h-4 w-4 mr-1 text-green-300" />
-                    <span className="drop-shadow-md">Salas públicas moderadas</span>
+                    <span className="drop-shadow-md">Salas pï¿½blicas moderadas</span>
                   </div>
                 </div>
               </div>

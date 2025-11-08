@@ -1,4 +1,4 @@
-﻿import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, Heart, MessageCircle, MapPin, Star, Shield, Camera } from "lucide-react";
 import { Button } from "@/shared/ui/Button";
 import { Card, CardContent } from "@/shared/ui/Card";
@@ -19,11 +19,11 @@ const ProfileDetail = () => {
   const navigate = useNavigate();
   const { user, isAuthenticated } = useAuth();
 
-  // Verificar autenticaciÃ³n demo
+  // Verificar autenticación demo
   const demoAuth = localStorage.getItem('demo_authenticated');
   const demoUser = localStorage.getItem('demo_user');
   
-  // Determinar si hay sesiÃ³n activa (demo o producciÃ³n)
+  // Determinar si hay sesión activa (demo o producción)
   const authStatus = typeof isAuthenticated === 'function' ? isAuthenticated() : isAuthenticated;
   const hasActiveSession = (demoAuth === 'true' && demoUser) || (authStatus && user);
   
@@ -44,32 +44,32 @@ const ProfileDetail = () => {
       name: "Demo User",
       age: 28,
       location: "Tu Ciudad",
-      interests: ["MÃºsica", "Viajes", "Arte"],
+      interests: ["Música", "Viajes", "Arte"],
       image: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=400&h=600&fit=crop&crop=face",
       rating: 4.8,
       isOnline: true,
-      bio: "Este es un perfil de demostraciÃ³n para la versiÃ³n Beta de ComplicesConecta.",
+      bio: "Este es un perfil de demostración para la versión Beta de ComplicesConecta.",
       profession: "Beta Tester",
       education: "Universidad Demo",
-      languages: ["EspaÃ±ol", "InglÃ©s"],
+      languages: ["Español", "Inglés"],
       hobbies: ["Testing", "Feedback"],
-      lookingFor: "Probar la aplicaciÃ³n y dar feedback valioso",
+      lookingFor: "Probar la aplicación y dar feedback valioso",
       images: ["https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=400&h=600&fit=crop&crop=face", "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face"],
     },
     {
       id: 2,
       name: "Antonio",
       age: 34,
-      location: "Ciudad de MÃ©xico",
+      location: "Ciudad de México",
       interests: ["Lifestyle Swinger", "Intercambio de Parejas", "Eventos Lifestyle", "Mentalidad Abierta"],
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&crop=face&auto=format&q=80",
       rating: 4.9,
       isOnline: false,
-      bio: "Chef profesional con pasiÃ³n por la mÃºsica y la naturaleza.",
+      bio: "Chef profesional con pasión por la música y la naturaleza.",
       profession: "Chef",
-      education: "Escuela de HostelerÃ­a de Ciudad de MÃ©xico",
-      languages: ["EspaÃ±ol", "CatalÃ¡n", "InglÃ©s"],
-      hobbies: ["Guitarra", "Escalada", "Lectura", "DegustaciÃ³n de vinos"],
+      education: "Escuela de Hostelería de Ciudad de México",
+      languages: ["Español", "Catalán", "Inglés"],
+      hobbies: ["Guitarra", "Escalada", "Lectura", "Degustación de vinos"],
       lookingFor: "Alguien con quien compartir buena comida y mejores conversaciones",
       images: ["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face", "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=400&h=600&fit=crop&crop=face", "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&crop=face"],
     },
@@ -78,15 +78,15 @@ const ProfileDetail = () => {
       name: "Ana",
       age: 26,
       location: "Guadalajara",
-      interests: ["Fiestas TemÃ¡ticas", "Clubs Privados", "Experiencias Nuevas", "Ambiente Sensual"],
+      interests: ["Fiestas Temáticas", "Clubs Privados", "Experiencias Nuevas", "Ambiente Sensual"],
       image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=600&fit=crop&crop=face",
       rating: 4.7,
       isOnline: true,
-      bio: "Artista y escritora. Me encanta el cafÃ© y las buenas conversaciones.",
+      bio: "Artista y escritora. Me encanta el café y las buenas conversaciones.",
       profession: "Artista",
       education: "Bellas Artes - Universidad de Guadalajara",
-      languages: ["EspaÃ±ol", "InglÃ©s", "Italiano"],
-      hobbies: ["Escritura creativa", "Pintura al Ã³leo", "Teatro amateur", "CafÃ©s especiales"],
+      languages: ["Español", "Inglés", "Italiano"],
+      hobbies: ["Escritura creativa", "Pintura al óleo", "Teatro amateur", "Cafés especiales"],
       lookingFor: "Una persona creativa que aprecie el arte y las conversaciones profundas",
       images: ["https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=600&fit=crop&crop=face", "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&crop=face", "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=400&h=600&fit=crop&crop=face"],
     },
@@ -95,16 +95,16 @@ const ProfileDetail = () => {
       name: "Diego",
       age: 30,
       location: "Monterrey",
-      interests: ["Arte ErÃ³tico", "FotografÃ­a ErÃ³tica", "Ambiente Sensual", "Conexiones AutÃ©nticas"],
+      interests: ["Arte Erótico", "Fotografía Erótica", "Ambiente Sensual", "Conexiones Auténticas"],
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&crop=face",
       rating: 4.8,
       isOnline: true,
       bio: "Desarrollador de software apasionado por el deporte y la vida sana.",
       profession: "Desarrollador",
-      education: "IngenierÃ­a InformÃ¡tica - Universidad de Monterrey",
-      languages: ["EspaÃ±ol", "InglÃ©s"],
-      hobbies: ["Ciclismo", "Running", "ProgramaciÃ³n", "FotografÃ­a de naturaleza"],
-      lookingFor: "CompaÃ±era de aventuras que valore el equilibrio entre tecnologÃ­a y naturaleza",
+      education: "Ingeniería Informática - Universidad de Monterrey",
+      languages: ["Español", "Inglés"],
+      hobbies: ["Ciclismo", "Running", "Programación", "Fotografía de naturaleza"],
+      lookingFor: "Compañera de aventuras que valore el equilibrio entre tecnología y naturaleza",
       images: ["https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&crop=face", "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=600&fit=crop&crop=face", "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face"],
     }
   ];
@@ -173,7 +173,7 @@ const ProfileDetail = () => {
                           if (e.currentTarget.src !== randomFallback) {
                             e.currentTarget.src = randomFallback;
                           } else {
-                            // Si tambiÃ©n falla el fallback, ocultar imagen y mostrar fallback
+                            // Si también falla el fallback, ocultar imagen y mostrar fallback
                             e.currentTarget.style.display = 'none';
                           }
                         }}
@@ -185,7 +185,7 @@ const ProfileDetail = () => {
                     <div className="flex items-center justify-center mt-2">
                       <div className={`w-3 h-3 rounded-full ${profile.isOnline ? 'bg-green-500' : 'bg-gray-400'}`} />
                       <span className="text-sm text-white/80 ml-2">
-                        {profile.isOnline ? 'En lÃ­nea' : 'Desconectado'}
+                        {profile.isOnline ? 'En línea' : 'Desconectado'}
                       </span>
                     </div>
                   </div>
@@ -193,7 +193,7 @@ const ProfileDetail = () => {
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
                       <h1 className="text-3xl font-bold text-white">{profile.name}</h1>
-                      <Badge className="bg-white/10 border-white/30 text-white backdrop-blur-sm">{profile.age} aÃ±os</Badge>
+                      <Badge className="bg-white/10 border-white/30 text-white backdrop-blur-sm">{profile.age} años</Badge>
                     </div>
                     
                     <div className="flex items-center gap-4 text-white/80 mb-4">
@@ -215,7 +215,7 @@ const ProfileDetail = () => {
                     </div>
                     
                     <p className="text-sm text-white/80">
-                      <strong className="text-white">ProfesiÃ³n:</strong> {profile.profession}
+                      <strong className="text-white">Profesión:</strong> {profile.profession}
                     </p>
                   </div>
                 </div>
@@ -225,15 +225,15 @@ const ProfileDetail = () => {
             {/* About Section */}
             <Card className="bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl">
               <CardContent className="p-6">
-                <h2 className="text-xl font-semibold text-white mb-4">Sobre mÃ­</h2>
+                <h2 className="text-xl font-semibold text-white mb-4">Sobre mí</h2>
                 <div className="space-y-4">
                   <div>
-                    <h3 className="font-medium text-white mb-2">QuÃ© busco</h3>
+                    <h3 className="font-medium text-white mb-2">Qué busco</h3>
                     <p className="text-white/80">{profile.lookingFor}</p>
                   </div>
                   
                   <div>
-                    <h3 className="font-medium text-white mb-2">EducaciÃ³n</h3>
+                    <h3 className="font-medium text-white mb-2">Educación</h3>
                     <p className="text-white/80">{profile.education}</p>
                   </div>
                   
@@ -321,7 +321,7 @@ const ProfileDetail = () => {
                   <Button 
                     onClick={() => {
                       logger.info('Me gusta', { profileName: profile.name });
-                      alert(`Â¡Has dado like a ${profile.name}!`);
+                      alert(`¡Has dado like a ${profile.name}!`);
                     }}
                     className="w-full bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white px-6 py-3 text-lg"
                   >
@@ -343,7 +343,7 @@ const ProfileDetail = () => {
                   <Button 
                     onClick={() => {
                       logger.info('Reportando perfil de', { profileName: profile.name });
-                      if (confirm(`Â¿EstÃ¡s seguro de que quieres reportar el perfil de ${profile.name}?`)) {
+                      if (confirm(`¿Estás seguro de que quieres reportar el perfil de ${profile.name}?`)) {
                         alert('Perfil reportado. Gracias por ayudarnos a mantener la comunidad segura.');
                       }
                     }}
@@ -358,22 +358,22 @@ const ProfileDetail = () => {
             {/* Quick Info */}
             <Card className="bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl">
               <CardContent className="p-6">
-                <h3 className="font-semibold text-white mb-4">InformaciÃ³n rÃ¡pida</h3>
+                <h3 className="font-semibold text-white mb-4">Información rápida</h3>
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between">
                     <span className="text-white/80">Edad:</span>
-                    <span className="text-white">{profile.age} aÃ±os</span>
+                    <span className="text-white">{profile.age} años</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-white/80">UbicaciÃ³n:</span>
+                    <span className="text-white/80">Ubicación:</span>
                     <span className="text-white">{profile.location}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-white/80">ProfesiÃ³n:</span>
+                    <span className="text-white/80">Profesión:</span>
                     <span className="text-white">{profile.profession}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-white/80">ValoraciÃ³n:</span>
+                    <span className="text-white/80">Valoración:</span>
                     <span className="text-white flex items-center gap-1">
                       <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
                       {profile.rating}
@@ -382,7 +382,7 @@ const ProfileDetail = () => {
                   <div className="flex justify-between">
                     <span className="text-white/80">Estado:</span>
                     <span className={`text-sm ${profile.isOnline ? 'text-green-600' : 'text-white'}`}>
-                      {profile.isOnline ? 'En lÃ­nea' : 'Desconectado'}
+                      {profile.isOnline ? 'En línea' : 'Desconectado'}
                     </span>
                   </div>
                 </div>
@@ -427,10 +427,10 @@ const ProfileDetail = () => {
                 
                 <div className="mt-4 p-3 bg-primary/10 rounded-lg">
                   <p className="text-sm text-primary font-medium text-center">
-                    Â¡Gran compatibilidad! ðŸŽ‰
+                    ¡Gran compatibilidad! ðŸŽ‰
                   </p>
                   <p className="text-xs text-white/80 text-center mt-1">
-                    Tienes muchas cosas en comÃºn
+                    Tienes muchas cosas en común
                   </p>
                 </div>
               </CardContent>

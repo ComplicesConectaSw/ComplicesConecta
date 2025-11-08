@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from '@/shared/ui/Card';
 import { Button } from '@/shared/ui/Button';
@@ -57,16 +57,16 @@ const Profiles: React.FC = () => {
   const [userType, setUserType] = useState<'demo' | 'real' | null>(null);
   const profilesPerPage = 9;
 
-  // Datos de ejemplo con coordenadas para bÃºsqueda por distancia
+  // Datos de ejemplo con coordenadas para búsqueda por distancia
   const mockProfiles: Profile[] = [
     {
       id: "1",
-      name: "MarÃ­a Elena",
+      name: "María Elena",
       age: 28,
-      location: "Ciudad de MÃ©xico",
-      bio: "FotÃ³grafa profesional especializada en eventos privados y sesiones Ã­ntimas. Discreta y respetuosa, capturo momentos Ãºnicos para parejas aventureras. Experiencia en el ambiente swinger con enfoque en la elegancia y el respeto mutuo.",
+      location: "Ciudad de México",
+      bio: "Fotógrafa profesional especializada en eventos privados y sesiones íntimas. Discreta y respetuosa, capturo momentos únicos para parejas aventureras. Experiencia en el ambiente swinger con enfoque en la elegancia y el respeto mutuo.",
       images: ["https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=600&fit=crop&crop=face"],
-      interests: ["Swinger", "Eventos Privados", "FotografÃ­a", "DiscreciÃ³n", "Intercambio"],
+      interests: ["Swinger", "Eventos Privados", "Fotografía", "Discreción", "Intercambio"],
       isOnline: true,
       verified: true,
       coordinates: { lat: 19.4326, lng: -99.1332 }
@@ -75,10 +75,10 @@ const Profiles: React.FC = () => {
       id: "2",
       name: "Antonio",
       age: 34,
-      location: "Ciudad de MÃ©xico",
-      bio: "Chef ejecutivo con experiencia en catering para eventos exclusivos del lifestyle swinger. Organizo cenas Ã­ntimas para parejas aventureras, siempre manteniendo la discreciÃ³n y el profesionalismo. Busco conexiones maduras y respetuosas.",
+      location: "Ciudad de México",
+      bio: "Chef ejecutivo con experiencia en catering para eventos exclusivos del lifestyle swinger. Organizo cenas íntimas para parejas aventureras, siempre manteniendo la discreción y el profesionalismo. Busco conexiones maduras y respetuosas.",
       images: ["https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&crop=face&auto=format&q=80"],
-      interests: ["Swinger", "Eventos Privados", "GastronomÃ­a", "Parejas", "DiscreciÃ³n"],
+      interests: ["Swinger", "Eventos Privados", "Gastronomía", "Parejas", "Discreción"],
       isOnline: false,
       verified: true,
       coordinates: { lat: 20.6597, lng: -103.3496 }
@@ -88,9 +88,9 @@ const Profiles: React.FC = () => {
       name: "Gabriela",
       age: 26,
       location: "Monterrey",
-      bio: "Artista creativa con mente abierta al lifestyle alternativo. Discreta y respetuosa, disfruto explorando nuevas experiencias en el ambiente swinger. Busco parejas maduras para conexiones autÃ©nticas y eventos privados.",
+      bio: "Artista creativa con mente abierta al lifestyle alternativo. Discreta y respetuosa, disfruto explorando nuevas experiencias en el ambiente swinger. Busco parejas maduras para conexiones auténticas y eventos privados.",
       images: ["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face"],
-      interests: ["Swinger", "Arte", "Lifestyle", "DiscreciÃ³n", "Nuevas Experiencias"],
+      interests: ["Swinger", "Arte", "Lifestyle", "Discreción", "Nuevas Experiencias"],
       isOnline: true,
       verified: true,
       coordinates: { lat: 25.6866, lng: -100.3161 }
@@ -100,9 +100,9 @@ const Profiles: React.FC = () => {
       name: "Diego",
       age: 30,
       location: "Puebla",
-      bio: "Profesional discreto con experiencia en el lifestyle swinger. Busco parejas maduras para eventos privados y experiencias Ãºnicas. Valoro la discreciÃ³n, el respeto mutuo y las conexiones autÃ©nticas en el ambiente alternativo.",
+      bio: "Profesional discreto con experiencia en el lifestyle swinger. Busco parejas maduras para eventos privados y experiencias únicas. Valoro la discreción, el respeto mutuo y las conexiones auténticas en el ambiente alternativo.",
       images: ["https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&crop=face"],
-      interests: ["Swinger", "Eventos Privados", "Parejas", "DiscreciÃ³n", "Fitness"],
+      interests: ["Swinger", "Eventos Privados", "Parejas", "Discreción", "Fitness"],
       isOnline: true,
       verified: true,
       coordinates: { lat: 19.0414, lng: -98.2063 }
@@ -112,9 +112,9 @@ const Profiles: React.FC = () => {
       name: "Laura",
       age: 29,
       location: "Tijuana",
-      bio: "Bailarina profesional que organiza eventos privados para parejas aventureras. Discreta y respetuosa, creo experiencias Ãºnicas en el ambiente swinger. Busco conexiones maduras basadas en el respeto mutuo y la discreciÃ³n.",
+      bio: "Bailarina profesional que organiza eventos privados para parejas aventureras. Discreta y respetuosa, creo experiencias únicas en el ambiente swinger. Busco conexiones maduras basadas en el respeto mutuo y la discreción.",
       images: ["https://images.unsplash.com/photo-1488716820095-cbe80883c496?w=400&h=600&fit=crop&crop=face"],
-      interests: ["Swinger", "Eventos Privados", "Danza", "Parejas", "DiscreciÃ³n"],
+      interests: ["Swinger", "Eventos Privados", "Danza", "Parejas", "Discreción"],
       isOnline: true,
       verified: true,
       coordinates: { lat: 32.5149, lng: -117.0382 }
@@ -123,10 +123,10 @@ const Profiles: React.FC = () => {
       id: "6",
       name: "Javier",
       age: 27,
-      location: "CancÃºn",
-      bio: "FotÃ³grafo especializado en eventos privados del ambiente swinger. Discreto y profesional, capturo momentos Ãºnicos para parejas aventureras. Experiencia en sesiones Ã­ntimas manteniendo siempre la elegancia y el respeto.",
+      location: "Cancún",
+      bio: "Fotógrafo especializado en eventos privados del ambiente swinger. Discreto y profesional, capturo momentos únicos para parejas aventureras. Experiencia en sesiones íntimas manteniendo siempre la elegancia y el respeto.",
       images: ["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face"],
-      interests: ["Swinger", "FotografÃ­a", "Eventos Privados", "DiscreciÃ³n", "Aventura"],
+      interests: ["Swinger", "Fotografía", "Eventos Privados", "Discreción", "Aventura"],
       isOnline: false,
       verified: true,
       coordinates: { lat: 21.1619, lng: -86.8515 }
@@ -135,10 +135,10 @@ const Profiles: React.FC = () => {
       id: "7",
       name: "Carmen",
       age: 31,
-      location: "MÃ©rida",
-      bio: "Profesional discreta con amplia experiencia en el lifestyle alternativo. Busco parejas maduras para eventos exclusivos y conexiones autÃ©nticas. Valoro la discreciÃ³n, la comunicaciÃ³n abierta y el respeto mutuo en todas las interacciones.",
+      location: "Mérida",
+      bio: "Profesional discreta con amplia experiencia en el lifestyle alternativo. Busco parejas maduras para eventos exclusivos y conexiones auténticas. Valoro la discreción, la comunicación abierta y el respeto mutuo en todas las interacciones.",
       images: ["https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=600&fit=crop&crop=face"],
-      interests: ["Swinger", "Eventos Privados", "Parejas", "DiscreciÃ³n", "Cultura"],
+      interests: ["Swinger", "Eventos Privados", "Parejas", "Discreción", "Cultura"],
       isOnline: true,
       verified: true,
       coordinates: { lat: 20.9674, lng: -89.5926 }
@@ -147,10 +147,10 @@ const Profiles: React.FC = () => {
       id: "8",
       name: "Pablo",
       age: 33,
-      location: "LeÃ³n",
-      bio: "Emprendedor discreto que organiza eventos privados para parejas aventureras en el ambiente swinger. Profesional y respetuoso, creo experiencias Ãºnicas basadas en la discreciÃ³n y el respeto mutuo. Busco conexiones maduras y autÃ©nticas.",
+      location: "León",
+      bio: "Emprendedor discreto que organiza eventos privados para parejas aventureras en el ambiente swinger. Profesional y respetuoso, creo experiencias únicas basadas en la discreción y el respeto mutuo. Busco conexiones maduras y auténticas.",
       images: ["https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&crop=face"],
-      interests: ["Swinger", "Eventos Privados", "Parejas", "DiscreciÃ³n", "Networking"],
+      interests: ["Swinger", "Eventos Privados", "Parejas", "Discreción", "Networking"],
       isOnline: true,
       verified: true,
       coordinates: { lat: 21.1220, lng: -101.6869 }
@@ -160,23 +160,23 @@ const Profiles: React.FC = () => {
       name: "Isabella",
       age: 26,
       location: "Playa del Carmen",
-      bio: "Instructora de yoga especializada en wellness para parejas en el lifestyle swinger. Discreta y profesional, busco conexiones autÃ©nticas basadas en el respeto mutuo y la discreciÃ³n. Experiencia en eventos privados y sesiones Ã­ntimas.",
+      bio: "Instructora de yoga especializada en wellness para parejas en el lifestyle swinger. Discreta y profesional, busco conexiones auténticas basadas en el respeto mutuo y la discreción. Experiencia en eventos privados y sesiones íntimas.",
       images: ["https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face"],
-      interests: ["Swinger", "Wellness", "Parejas", "DiscreciÃ³n", "Yoga"],
+      interests: ["Swinger", "Wellness", "Parejas", "Discreción", "Yoga"],
       isOnline: true,
       verified: true,
       coordinates: { lat: 20.6296, lng: -87.0739 }
     }
   ];
 
-  // FunciÃ³n para cargar perfiles reales desde Supabase
+  // Función para cargar perfiles reales desde Supabase
   const loadRealProfiles = async () => {
     try {
       setIsLoading(true);
       logger.info('ðŸ”„ Cargando perfiles reales desde Supabase...');
       
       if (!supabase) {
-        logger.error('Supabase no estÃ¡ disponible');
+        logger.error('Supabase no está disponible');
         return [];
       }
       
@@ -209,10 +209,10 @@ const Profiles: React.FC = () => {
         id: p.id,
         name: p.display_name || `${p.first_name} ${p.last_name}`,
         age: p.age || 25,
-        location: p.location || 'Ciudad de MÃ©xico',
+        location: p.location || 'Ciudad de México',
         bio: p.bio || 'Perfil profesional en el ambiente swinger',
         images: p.avatar_url ? [p.avatar_url] : ['https://ui-avatars.com/api/?name=' + encodeURIComponent(p.first_name || 'Usuario')],
-        interests: Array.isArray(p.interests) ? p.interests : ['Swinger', 'DiscreciÃ³n'],
+        interests: Array.isArray(p.interests) ? p.interests : ['Swinger', 'Discreción'],
         isOnline: Math.random() > 0.5, // Simular estado online
         verified: p.is_verified || false,
         coordinates: { lat: 19.4326, lng: -99.1332 } // Coordenadas por defecto
@@ -226,7 +226,7 @@ const Profiles: React.FC = () => {
     }
   };
 
-  // FunciÃ³n para cargar perfiles demo
+  // Función para cargar perfiles demo
   const loadDemoProfiles = () => {
     logger.info('ðŸ”„ Cargando perfiles demo...');
     return mockProfiles;
@@ -275,7 +275,7 @@ const Profiles: React.FC = () => {
     initializeProfiles();
   }, [isAuthenticated, user, profile, navigate]);
 
-  // FunciÃ³n para calcular distancia entre coordenadas
+  // Función para calcular distancia entre coordenadas
   const calculateDistance = (lat1: number, lng1: number, lat2: number, lng2: number): number => {
     const R = 6371; // Radio de la Tierra en km
     const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -287,7 +287,7 @@ const Profiles: React.FC = () => {
     return R * c;
   };
 
-  // FunciÃ³n para calcular similitud de intereses
+  // Función para calcular similitud de intereses
   const calculateInterestSimilarity = (interests1: string[], interests2: string[]): number => {
     const set1 = new Set(interests1.map(i => i.toLowerCase()));
     const set2 = new Set(interests2.map(i => i.toLowerCase()));
@@ -305,10 +305,10 @@ const Profiles: React.FC = () => {
       "Lifestyle alternativo",
       "Parejas aventureras",
       "Eventos exclusivos",
-      "DiscreciÃ³n y respeto",
+      "Discreción y respeto",
       "Nuevas experiencias",
       "Ambiente swinger",
-      "Conexiones autÃ©nticas"
+      "Conexiones auténticas"
     ];
     return suggestions.filter(s => s.toLowerCase().includes(query.toLowerCase())).slice(0, 3);
   };
@@ -316,10 +316,10 @@ const Profiles: React.FC = () => {
   const handleAiSearch = async (query: string) => {
     setIsSearching(true);
     try {
-      // SimulaciÃ³n de bÃºsqueda IA con filtrado real
+      // Simulación de búsqueda IA con filtrado real
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Filtrar perfiles basado en la bÃºsqueda
+      // Filtrar perfiles basado en la búsqueda
       let filtered = allProfiles.filter(profile => 
         profile.name.toLowerCase().includes(query.toLowerCase()) ||
         profile.bio.toLowerCase().includes(query.toLowerCase()) ||
@@ -330,21 +330,21 @@ const Profiles: React.FC = () => {
       );
 
       // Ordenar por similitud de intereses y distancia
-      // Usar ubicaciÃ³n del usuario actual si estÃ¡ disponible
-      let userLocation = { lat: 19.4326, lng: -99.1332 }; // Ciudad de MÃ©xico como referencia por defecto
+      // Usar ubicación del usuario actual si está disponible
+      let userLocation = { lat: 19.4326, lng: -99.1332 }; // Ciudad de México como referencia por defecto
       
-      // Si es usuario real, usar su ubicaciÃ³n del perfil
+      // Si es usuario real, usar su ubicación del perfil
       if (userType === 'real' && profile?.location) {
         // Mapear ubicaciones conocidas a coordenadas
         const locationMap: { [key: string]: { lat: number; lng: number } } = {
-          'Ciudad de MÃ©xico': { lat: 19.4326, lng: -99.1332 },
+          'Ciudad de México': { lat: 19.4326, lng: -99.1332 },
           'Guadalajara': { lat: 20.6597, lng: -103.3496 },
           'Monterrey': { lat: 25.6866, lng: -100.3161 },
           'Puebla': { lat: 19.0414, lng: -98.2063 },
           'Tijuana': { lat: 32.5149, lng: -117.0382 },
-          'CancÃºn': { lat: 21.1619, lng: -86.8515 },
-          'MÃ©rida': { lat: 20.9674, lng: -89.5926 },
-          'LeÃ³n': { lat: 21.1220, lng: -101.6869 },
+          'Cancún': { lat: 21.1619, lng: -86.8515 },
+          'Mérida': { lat: 20.9674, lng: -89.5926 },
+          'León': { lat: 21.1220, lng: -101.6869 },
           'Playa del Carmen': { lat: 20.6296, lng: -87.0739 }
         };
         
@@ -360,7 +360,7 @@ const Profiles: React.FC = () => {
         // Calcular similitud de intereses
         const userInterests = userType === 'real' && profile?.interests 
           ? profile.interests 
-          : ["Swinger", "Eventos Privados", "DiscreciÃ³n"]; // Intereses por defecto
+          : ["Swinger", "Eventos Privados", "Discreción"]; // Intereses por defecto
         const similarity = calculateInterestSimilarity(userInterests, profile.interests);
         score += similarity * 50; // 50% del score por similitud
         
@@ -372,7 +372,7 @@ const Profiles: React.FC = () => {
           );
           profile.distance = Math.round(distance);
           
-          // Score por proximidad (mÃ¡s cerca = mejor score)
+          // Score por proximidad (más cerca = mejor score)
           if (distance < 50) score += 30; // Dentro de 50km
           else if (distance < 100) score += 20; // Dentro de 100km
           else if (distance < 200) score += 10; // Dentro de 200km
@@ -392,8 +392,8 @@ const Profiles: React.FC = () => {
       
       setFilteredProfiles(filtered);
       setAiSearchMode(true);
-      setAiSuggestions(["parejas swinger", "eventos privados", "lifestyle alternativo", "discreciÃ³n"]);
-      logger.info('ðŸ¤– BÃºsqueda IA completada', { 
+      setAiSuggestions(["parejas swinger", "eventos privados", "lifestyle alternativo", "discreción"]);
+      logger.info('ðŸ¤– Búsqueda IA completada', { 
         query, 
         results: filtered.length,
         userType,
@@ -401,7 +401,7 @@ const Profiles: React.FC = () => {
         topScore: (filtered[0] as any)?.aiScore
       });
     } catch (error) {
-      logger.error('âŒ Error en bÃºsqueda IA:', { error });
+      logger.error('âŒ Error en búsqueda IA:', { error });
     } finally {
       setIsSearching(false);
     }
@@ -412,7 +412,7 @@ const Profiles: React.FC = () => {
     
     let filtered = allProfiles;
 
-    // Filtro por ubicaciÃ³n
+    // Filtro por ubicación
     if (filters.location && filters.location !== "all") {
       filtered = filtered.filter(profile => 
         profile.location.toLowerCase().includes(filters.location.toLowerCase())
@@ -442,7 +442,7 @@ const Profiles: React.FC = () => {
       filtered = filtered.filter(profile => profile.isOnline);
     }
 
-    // Filtro por bÃºsqueda de texto
+    // Filtro por búsqueda de texto
     if (filters.searchQuery && filters.searchQuery.trim() !== "") {
       const query = filters.searchQuery.toLowerCase();
       filtered = filtered.filter(profile => 
@@ -463,7 +463,7 @@ const Profiles: React.FC = () => {
     });
   };
 
-  // PaginaciÃ³n
+  // Paginación
   const totalPages = Math.ceil(filteredProfiles.length / profilesPerPage);
   const startIndex = (currentPage - 1) * profilesPerPage;
   const currentProfiles = filteredProfiles.slice(startIndex, startIndex + profilesPerPage);
@@ -495,7 +495,7 @@ const Profiles: React.FC = () => {
                 </Badge>
               )}
             </div>
-            <p className="text-sm text-white/70">{profile.age} aÃ±os â€¢ {profile.location} {profile.distance && `â€¢ ${profile.distance} km`}</p>
+            <p className="text-sm text-white/70">{profile.age} años "¢ {profile.location} {profile.distance && `"¢ ${profile.distance} km`}</p>
           </div>
         </div>
         <p className="text-sm text-white/80 mb-3 line-clamp-2">{profile.bio}</p>
@@ -507,7 +507,7 @@ const Profiles: React.FC = () => {
           ))}
           {profile.interests.length > 3 && (
             <Badge className="text-xs bg-white/10 text-white/70 border-white/20">
-              +{profile.interests.length - 3} mÃ¡s
+              +{profile.interests.length - 3} más
             </Badge>
           )}
         </div>
@@ -529,7 +529,7 @@ const Profiles: React.FC = () => {
       <Heart className="absolute bottom-1/3 right-1/4 w-5 h-5 text-accent/20 animate-pulse" fill="currentColor" />
       <MapPin className="absolute top-1/2 right-1/6 w-7 h-7 text-secondary/15 animate-pulse" />
       
-      {/* NavegaciÃ³n */}
+      {/* Navegación */}
       <HeaderNav />
       
       <main className="container mx-auto px-4 py-8 pt-24">
@@ -559,7 +559,7 @@ const Profiles: React.FC = () => {
         {/* Contenido principal */}
         {!isLoading && (
           <>
-            {/* Encabezado de pÃ¡gina */}
+            {/* Encabezado de página */}
             <div className="text-center mb-12 pt-8">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-lg">
             Descubre
@@ -568,10 +568,10 @@ const Profiles: React.FC = () => {
             </span>
           </h1>
           <p className="text-xl text-white/90 max-w-2xl mx-auto mb-8 drop-shadow-md">
-            Usa nuestra IA avanzada para encontrar personas compatibles basÃ¡ndose en personalidad, intereses y valores
+            Usa nuestra IA avanzada para encontrar personas compatibles basándose en personalidad, intereses y valores
           </p>
           
-          {/* SecciÃ³n de bÃºsqueda IA */}
+          {/* Sección de búsqueda IA */}
           <Card className="max-w-2xl mx-auto mb-8 shadow-glow border-primary/20">
             <CardContent className="p-6">
               <div className="flex items-center gap-3 mb-4">
@@ -579,7 +579,7 @@ const Profiles: React.FC = () => {
                   <Brain className="h-6 w-6 text-purple-400 drop-shadow-md" />
                   <Sparkles className="h-5 w-5 text-purple-400 animate-pulse drop-shadow-md" />
                 </div>
-                <h3 className="text-lg font-semibold text-white drop-shadow-md">BÃºsqueda Inteligente por IA</h3>
+                <h3 className="text-lg font-semibold text-white drop-shadow-md">Búsqueda Inteligente por IA</h3>
               </div>
               
               <div className="relative">
@@ -647,7 +647,7 @@ const Profiles: React.FC = () => {
           </Card>
         </div>
 
-        {/* SecciÃ³n de filtros */}
+        {/* Sección de filtros */}
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-4">
             <Filter className="h-5 w-5 text-white drop-shadow-md" />
@@ -656,9 +656,9 @@ const Profiles: React.FC = () => {
           <Card className="bg-white/10 backdrop-blur-sm border-white/20">
             <CardContent className="p-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {/* Filtro por ubicaciÃ³n */}
+                {/* Filtro por ubicación */}
                 <div>
-                  <label className="block text-sm font-medium text-white mb-2 drop-shadow-md">UbicaciÃ³n</label>
+                  <label className="block text-sm font-medium text-white mb-2 drop-shadow-md">Ubicación</label>
                   <select 
                     className="w-full p-3 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                     onChange={(e) => {
@@ -673,14 +673,14 @@ const Profiles: React.FC = () => {
                     }}
                   >
                     <option value="all">Todas las ubicaciones</option>
-                    <option value="Ciudad de MÃ©xico">Ciudad de MÃ©xico</option>
+                    <option value="Ciudad de México">Ciudad de México</option>
                     <option value="Guadalajara">Guadalajara</option>
                     <option value="Monterrey">Monterrey</option>
                     <option value="Puebla">Puebla</option>
                     <option value="Tijuana">Tijuana</option>
-                    <option value="CancÃºn">CancÃºn</option>
-                    <option value="MÃ©rida">MÃ©rida</option>
-                    <option value="LeÃ³n">LeÃ³n</option>
+                    <option value="Cancún">Cancún</option>
+                    <option value="Mérida">Mérida</option>
+                    <option value="León">León</option>
                     <option value="Playa del Carmen">Playa del Carmen</option>
                   </select>
                 </div>
@@ -705,7 +705,7 @@ const Profiles: React.FC = () => {
                     <option value="Swinger">Swinger</option>
                     <option value="Eventos Privados">Eventos Privados</option>
                     <option value="Parejas">Parejas</option>
-                    <option value="DiscreciÃ³n">DiscreciÃ³n</option>
+                    <option value="Discreción">Discreción</option>
                     <option value="Intercambio">Intercambio</option>
                     <option value="Lifestyle">Lifestyle</option>
                     <option value="Nuevas Experiencias">Nuevas Experiencias</option>
@@ -773,7 +773,7 @@ const Profiles: React.FC = () => {
           ))}
         </div>
 
-        {/* PaginaciÃ³n */}
+        {/* Paginación */}
         <div className="mt-8 flex justify-center">
           <div className="flex items-center space-x-2">
             <button
@@ -784,7 +784,7 @@ const Profiles: React.FC = () => {
               Anterior
             </button>
             <span className="px-3 py-2 text-sm font-medium text-white">
-              PÃ¡gina {currentPage} de {totalPages}
+              Página {currentPage} de {totalPages}
             </span>
             <button
               onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}

@@ -104,6 +104,10 @@ step*.sql
 regenerate-types.js
 apply-migrations.js
 
+# Directorio de backups fuera del proyecto
+../bck/
+bck/
+
 # Archivos temporales de testing
 test_*.md
 
