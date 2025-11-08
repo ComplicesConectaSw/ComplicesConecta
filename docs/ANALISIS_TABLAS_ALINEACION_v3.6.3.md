@@ -103,24 +103,26 @@
 
 ---
 
-## ℹ️ TABLAS EN LOCAL PERO NO USADAS (13)
+## ✅ TABLAS EN LOCAL AHORA EN USO (12 de 13)
 
-### Tablas Preparadas para Futuras Funcionalidades
-1. **`ai_model_metrics`** - Métricas de modelos de IA (preparada para monitoreo)
-2. **`ai_prediction_logs`** - Logs de predicciones de IA (preparada para análisis)
-3. **`analytics_events`** - Eventos de analytics (preparada para tracking)
-4. **`cache_statistics`** - Estadísticas de caché (preparada para optimización)
-5. **`couple_profile_reports`** - Reportes de perfiles de parejas (preparada para moderación)
-6. **`couple_profile_views`** - Vistas de perfiles de parejas (preparada para analytics)
-7. **`invitation_statistics`** - Estadísticas de invitaciones (preparada para analytics)
-8. **`monitoring_sessions`** - Sesiones de monitoreo (preparada para seguridad)
-9. **`spatial_ref_sys`** - Tabla del sistema PostGIS (no requiere acción)
-10. **`story_shares`** - Compartidos de historias (preparada para funcionalidad futura)
-11. **`summary_feedback`** - Feedback de resúmenes (preparada para mejora de IA)
-12. **`worldid_rewards`** - Recompensas de WorldID (preparada para verificación)
-13. **`worldid_statistics`** - Estadísticas de WorldID (preparada para analytics)
+### Tablas Integradas en Código ✅
+1. ✅ **`ai_model_metrics`** - Integrada en `AILayerService.ts` (logModelMetrics)
+2. ✅ **`ai_prediction_logs`** - Integrada en `AILayerService.ts` (logPrediction)
+3. ✅ **`analytics_events`** - Integrada en `AdvancedAnalyticsService.ts` (trackUserBehavior)
+4. ✅ **`cache_statistics`** - Integrada en `AdvancedCacheService.ts` (logCacheStatistics)
+5. ✅ **`couple_profile_reports`** - Integrada en `CoupleProfilesService.ts` (reportCoupleProfile)
+6. ✅ **`couple_profile_views`** - Integrada en `CoupleProfilesService.ts` (logCoupleProfileView)
+7. ✅ **`invitation_statistics`** - Integrada en `InvitationsService.ts` (logInvitationStatistics)
+8. ✅ **`monitoring_sessions`** - Integrada en `PerformanceMonitoringService.ts` (logMonitoringSession)
+9. ✅ **`story_shares`** - Integrada en `postsService.ts` (sharePost) y `StoryService.ts` (shareStory)
+10. ✅ **`summary_feedback`** - Integrada en `ChatSummaryService.ts` (submitFeedback) y `SummaryModal.tsx`
+11. ✅ **`worldid_rewards`** - Integrada en `useWorldID.ts` (fetchStats)
+12. ✅ **`worldid_statistics`** - Integrada en `useWorldID.ts` (fetchStats)
 
-**Nota:** Estas tablas están preparadas para futuras funcionalidades y no deben eliminarse.
+### Tablas del Sistema (No Requieren Acción)
+13. **`spatial_ref_sys`** - Tabla del sistema PostGIS (no requiere acción)
+
+**Estado:** ✅ 12 de 13 tablas ahora están en uso activo en el código.
 
 ---
 

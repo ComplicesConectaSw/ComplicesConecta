@@ -520,6 +520,11 @@ class InvitationsService {
         acceptanceRate
       };
 
+      // Registrar estadísticas en invitation_statistics (async, no bloquea)
+      this.logInvitationStatistics(userId, stats).catch(err => 
+        logger.debug('Failed to log invitation statistics:', { error: String(err) })
+      );
+
       logger.info('✅ Invitation statistics loaded successfully', stats);
       return stats;
     } catch (error) {
@@ -532,6 +537,46 @@ class InvitationsService {
         expiredInvitations: 0,
         acceptanceRate: 0
       };
+    }
+  }
+
+  /**
+   * Registra estadísticas de invitaciones en la base de datos
+   * @private
+   */
+  private async logInvitationStatistics(
+    userId: string,
+    stats: {
+      totalInvitations: number;
+      pendingInvitations: number;
+      acceptedInvitations: number;
+      declinedInvitations: number;
+      expiredInvitations: number;
+      acceptanceRate: number;
+    }
+  ): Promise<void> {
+    try {
+      if (!supabase) return;
+
+      const now = new Date();
+      const periodStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+      const periodEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59).toISOString();
+
+      await supabase
+        .from('invitation_statistics')
+        .insert({
+          user_id: userId,
+          period_start: periodStart,
+          period_end: periodEnd,
+          total_invitations: stats.totalInvitations,
+          pending_invitations: stats.pendingInvitations,
+          accepted_invitations: stats.acceptedInvitations,
+          declined_invitations: stats.declinedInvitations,
+          expired_invitations: stats.expiredInvitations,
+          acceptance_rate: stats.acceptanceRate,
+        });
+    } catch (error) {
+      logger.debug('Failed to log invitation statistics:', { error: String(error) });
     }
   }
 }

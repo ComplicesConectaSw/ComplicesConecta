@@ -591,12 +591,31 @@ class PostsService {
    */
   async sharePost(postId: string, shareType: 'share' | 'repost' = 'share'): Promise<void> {
     try {
-      logger.info('🔄 Sharing post (mock)', { postId, shareType });
+      logger.info('🔄 Sharing post', { postId, shareType });
 
-      // Simular delay de red
-      await new Promise(resolve => setTimeout(resolve, 300));
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        throw new Error('Supabase no está disponible');
+      }
 
-      logger.info('✅ Post shared successfully (mock)', { postId, shareType });
+      const userId = this.getCurrentUserId();
+
+      // Registrar share en story_shares
+      const { error } = await supabase
+        .from('story_shares')
+        .insert({
+          story_id: postId,
+          user_id: userId,
+          share_type: shareType,
+          created_at: new Date().toISOString(),
+        });
+
+      if (error) {
+        logger.error('Error sharing post:', { error: error.message });
+        throw new Error(error.message);
+      }
+
+      logger.info('✅ Post shared successfully', { postId, shareType });
     } catch (error) {
       logger.error('❌ Error in sharePost', { error: String(error) });
       throw error;

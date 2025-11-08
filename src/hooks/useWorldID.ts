@@ -116,17 +116,59 @@ export const useWorldID = () => {
   // Get World ID statistics for admin/analytics
   const fetchStats = useCallback(async () => {
     try {
-      // Simular estadísticas de WorldID para demo
+      if (!supabase) {
+        setStats({
+          totalVerified: 0,
+          totalRewards: 0,
+          monthlyVerified: 0,
+          monthlyRewards: 0,
+          currentMonth: new Date().toISOString().slice(0, 7)
+        });
+        return;
+      }
+
+      // Obtener estadísticas de worldid_statistics
+      const { data: statsData, error: statsError } = await supabase
+        .from('worldid_statistics')
+        .select('*')
+        .order('period_start', { ascending: false })
+        .limit(1)
+        .single();
+
+      if (statsError && statsError.code !== 'PGRST116') {
+        logger.warn('Error fetching WorldID statistics:', { error: statsError.message });
+      }
+
+      // Obtener recompensas de worldid_rewards
+      const { data: rewardsData, error: rewardsError } = await supabase
+        .from('worldid_rewards')
+        .select('amount')
+        .eq('is_active', true);
+
+      if (rewardsError) {
+        logger.warn('Error fetching WorldID rewards:', { error: rewardsError.message });
+      }
+
+      const totalRewards = rewardsData?.reduce((sum, r) => sum + (Number(r.amount) || 0), 0) || 0;
+      const currentMonth = new Date().toISOString().slice(0, 7);
+
       setStats({
-        totalVerified: 89,
-        totalRewards: 12500,
-        monthlyVerified: 0,
-        monthlyRewards: 0,
-        currentMonth: ''
-      });  
+        totalVerified: statsData?.total_verified || 0,
+        totalRewards,
+        monthlyVerified: statsData?.monthly_verified || 0,
+        monthlyRewards: statsData?.monthly_rewards || 0,
+        currentMonth
+      });
     } catch (err) {
       logger.error('Error initializing WorldID:', { error: String(err) });
       setError(err instanceof Error ? err.message : 'Error al obtener estadísticas');
+      setStats({
+        totalVerified: 0,
+        totalRewards: 0,
+        monthlyVerified: 0,
+        monthlyRewards: 0,
+        currentMonth: new Date().toISOString().slice(0, 7)
+      });
     }
   }, []);
 

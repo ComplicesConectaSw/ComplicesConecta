@@ -88,6 +88,11 @@ class CoupleProfilesServiceImpl implements CoupleProfilesService {
 
       if (!data) return null;
 
+      // Registrar vista en couple_profile_views (async, no bloquea)
+      this.logCoupleProfileView(id).catch(err => 
+        logger.debug('Failed to log couple profile view:', { error: String(err) })
+      );
+
       // Transformar datos para coincidir con CoupleProfileWithPartners
       return {
         ...data,
@@ -105,6 +110,72 @@ class CoupleProfilesServiceImpl implements CoupleProfilesService {
     } catch (error) {
       logger.error('Error in getCoupleProfileById:', { error: String(error) });
       return null;
+    }
+  }
+
+  /**
+   * Registra vista de perfil de pareja
+   * @private
+   */
+  private async logCoupleProfileView(coupleProfileId: string): Promise<void> {
+    try {
+      if (!supabase) return;
+
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      await supabase
+        .from('couple_profile_views')
+        .insert({
+          couple_profile_id: coupleProfileId,
+          viewer_profile_id: user.id,
+          viewed_at: new Date().toISOString(),
+        });
+    } catch (error) {
+      logger.debug('Failed to log couple profile view:', { error: String(error) });
+    }
+  }
+
+  /**
+   * Reporta un perfil de pareja
+   */
+  async reportCoupleProfile(
+    coupleProfileId: string,
+    reason: string,
+    description?: string
+  ): Promise<boolean> {
+    try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return false;
+      }
+
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        logger.error('Usuario no autenticado');
+        return false;
+      }
+
+      const { error } = await supabase
+        .from('couple_profile_reports')
+        .insert({
+          couple_profile_id: coupleProfileId,
+          reporter_profile_id: user.id,
+          reason,
+          description: description || null,
+          status: 'pending',
+        });
+
+      if (error) {
+        logger.error('Error reporting couple profile:', { error: error.message });
+        return false;
+      }
+
+      logger.info('Couple profile reported successfully');
+      return true;
+    } catch (error) {
+      logger.error('Error in reportCoupleProfile:', { error: String(error) });
+      return false;
     }
   }
 
