@@ -1,21 +1,21 @@
 /**
- * Utilidad para mostrar información de variables de entorno en consola
- * Versión: 3.5.1
+ * Utilidad para mostrar informaci├│n de variables de entorno en consola
+ * Versi├│n: 3.5.1
  * 
  * Uso: Importar y llamar showEnvInfo() en la consola del navegador
  */
 
 export function showEnvInfo(): void {
-  console.group('🔐 Variables de Entorno - ComplicesConecta v3.5.1');
+  console.group('­ƒöÉ Variables de Entorno - ComplicesConecta v3.5.1');
   
   // Mostrar todas las variables de entorno
   const env = import.meta.env;
   
-  console.log('📋 Todas las variables de entorno:');
+  console.log('­ƒôï Todas las variables de entorno:');
   console.table(env);
   
-  // Mostrar variables VITE_* específicas
-  console.log('\n🔑 Variables VITE_* (CONTRASEÑAS COMPLETAS):');
+  // Mostrar variables VITE_* espec├¡ficas
+  console.log('\n­ƒöæ Variables VITE_* (CONTRASE├æAS COMPLETAS):');
   const viteVars: Record<string, string> = {};
   
   Object.keys(env).forEach((key) => {
@@ -27,8 +27,8 @@ export function showEnvInfo(): void {
   
   console.table(viteVars);
   
-  // Mostrar contraseñas específicas
-  console.log('\n🔐 Contraseñas disponibles:');
+  // Mostrar contrase├▒as espec├¡ficas
+  console.log('\n­ƒöÉ Contrase├▒as disponibles:');
   const passwordKeys = Object.keys(env).filter(key => 
     key.match(/PASSWORD/i) && key.startsWith('VITE_')
   );
@@ -37,8 +37,8 @@ export function showEnvInfo(): void {
     console.log(`  ${key}:`, env[key]);
   });
   
-  // Información adicional
-  console.log('\n📊 Información del entorno:');
+  // Informaci├│n adicional
+  console.log('\n­ƒôè Informaci├│n del entorno:');
   console.log('Mode:', env.MODE);
   console.log('Dev:', env.DEV);
   console.log('Prod:', env.PROD);
@@ -46,7 +46,7 @@ export function showEnvInfo(): void {
   
   console.groupEnd();
   
-  // Retornar objeto con información (para uso en consola)
+  // Retornar objeto con informaci├│n (para uso en consola)
   return {
     env,
     viteVars,
@@ -58,7 +58,7 @@ export function showEnvInfo(): void {
 }
 
 // Hacer disponible globalmente para uso en consola
-// CRÍTICO: Asegurar que las funciones estén disponibles inmediatamente
+// CR├ìTICO: Asegurar que las funciones est├®n disponibles inmediatamente
 if (typeof window !== 'undefined') {
   const exposeEnvFunctions = () => {
     (window as any).showEnvInfo = showEnvInfo;
@@ -66,10 +66,10 @@ if (typeof window !== 'undefined') {
     (window as any).getPassword = (key: string) => {
       const value = import.meta.env[key];
       if (value) {
-        console.log(`🔑 ${key}:`, value);
+        console.log(`­ƒöæ ${key}:`, value);
         return value;
       } else {
-        console.warn(`⚠️ Variable ${key} no encontrada`);
+        console.warn(`ÔÜá´©Å Variable ${key} no encontrada`);
         return null;
       }
     };
@@ -78,26 +78,26 @@ if (typeof window !== 'undefined') {
   // Exponer inmediatamente
   exposeEnvFunctions();
   
-  // También exponer cuando el DOM esté listo (por si acaso)
+  // Tambi├®n exponer cuando el DOM est├® listo (por si acaso)
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', exposeEnvFunctions);
   } else {
-    // DOM ya está listo, exponer de nuevo para asegurar
+    // DOM ya est├í listo, exponer de nuevo para asegurar
     exposeEnvFunctions();
   }
   
-  // Exponer también después de breves delays para asegurar
+  // Exponer tambi├®n despu├®s de breves delays para asegurar
   setTimeout(exposeEnvFunctions, 0);
   setTimeout(exposeEnvFunctions, 100);
   setTimeout(exposeEnvFunctions, 500);
   
   // Log solo una vez
   if ((window as any).showEnvInfo) {
-    console.log('✅ Utilidad de variables de entorno cargada');
-    console.log('💡 Usa showEnvInfo() en la consola para ver información');
-    console.log('💡 Usa window.env para acceder a todas las variables');
-    console.log('💡 Usa getPassword("VITE_XXX") para ver una contraseña específica');
-    console.log('💡 Ejemplo: getPassword("VITE_DEMO_PASSWORD_SINGLE_OUTLOOK_ES")');
+    console.log('Ô£à Utilidad de variables de entorno cargada');
+    console.log('­ƒÆí Usa showEnvInfo() en la consola para ver informaci├│n');
+    console.log('­ƒÆí Usa window.env para acceder a todas las variables');
+    console.log('­ƒÆí Usa getPassword("VITE_XXX") para ver una contrase├▒a espec├¡fica');
+    console.log('­ƒÆí Ejemplo: getPassword("VITE_DEMO_PASSWORD_SINGLE_OUTLOOK_ES")');
   }
 }
 

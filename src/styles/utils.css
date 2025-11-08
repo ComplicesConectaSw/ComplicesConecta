@@ -1,6 +1,6 @@
 /* src/styles/utils/utils.css - Utilidades CSS */
-/* Nota: @tailwind utilities est├í en index.css, no duplicar aqu├¡ */
-/* Este archivo est├í consolidado en index.css - mantener solo para referencia */
+/* Nota: @tailwind utilities está en index.css, no duplicar aquí */
+/* Este archivo está consolidado en index.css - mantener solo para referencia */
 
 /* stylelint-disable-next-line at-rule-no-unknown */
 /* Utilidades personalizadas - Usar @layer para que Tailwind procese @apply correctamente */

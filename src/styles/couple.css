@@ -1,21 +1,21 @@
-/* src/styles/profiles/single.css - Estilos para perfiles individuales */
-/* Este archivo est├í consolidado en index.css - mantener solo para referencia */
+/* src/styles/profiles/couple.css - Estilos para perfiles de parejas */
+/* Este archivo está consolidado en index.css - mantener solo para referencia */
 
 /* stylelint-disable-next-line at-rule-no-unknown */
 /* Usar @layer para que Tailwind procese @apply correctamente */
 @layer components {
   /* stylelint-disable-next-line at-rule-no-unknown */
-  .profile-single {
+  .profile-couple {
     @apply container mx-auto px-4 py-8;
   }
 
   /* stylelint-disable-next-line at-rule-no-unknown */
-  .profile-single-header {
+  .profile-couple-header {
     @apply mb-8 text-center;
   }
 
   /* stylelint-disable-next-line at-rule-no-unknown */
-  .profile-single-content {
+  .profile-couple-content {
     @apply grid grid-cols-1 md:grid-cols-2 gap-6;
   }
 }

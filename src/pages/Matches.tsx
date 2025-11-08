@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import HeaderNav from "@/components/HeaderNav";
 import Navigation from "@/components/Navigation";
 import { MatchCard } from "@/components/ui/MatchCard";
-// import { ProfileCard } from "@/components/ui/ProfileCard";
+import { ProfileCard } from "@/profiles/shared/ProfileCard";
 // import { UnifiedTabs } from "@/components/ui/UnifiedTabs";
 import { UnifiedButton } from "@/components/ui/UnifiedButton";
 import { UnifiedCard } from "@/components/ui/UnifiedCard";

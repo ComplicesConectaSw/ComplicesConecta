@@ -1,6 +1,6 @@
 /* src/styles/components/components.css - Estilos de componentes */
-/* Nota: @tailwind components est├í en index.css, no duplicar aqu├¡ */
-/* Este archivo est├í consolidado en index.css - mantener solo para referencia */
+/* Nota: @tailwind components está en index.css, no duplicar aquí */
+/* Este archivo está consolidado en index.css - mantener solo para referencia */
 
 /* stylelint-disable-next-line at-rule-no-unknown */
 /* Estilos para componentes UI - Usar @layer para que Tailwind procese @apply correctamente */

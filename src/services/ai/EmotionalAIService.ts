@@ -197,11 +197,11 @@ Responde SOLO con un JSON válido:
     }
 
     // Obtener room_id donde ambos usuarios han enviado mensajes
+    // Buscar sala donde userId1 es user1_id o user2_id, Y donde userId2 es user1_id o user2_id
     const { data: rooms } = await supabase
       .from('chat_rooms')
       .select('id')
-      .or(`user1_id.eq.${userId1},user2_id.eq.${userId1}`)
-      .or(`user1_id.eq.${userId2},user2_id.eq.${userId2}`)
+      .or(`and(user1_id.eq.${userId1},user2_id.eq.${userId2}),and(user1_id.eq.${userId2},user2_id.eq.${userId1})`)
       .limit(1);
 
     if (!rooms || rooms.length === 0) {

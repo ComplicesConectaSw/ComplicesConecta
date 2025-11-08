@@ -91,7 +91,7 @@ if (typeof window !== 'undefined') {
 }
 
 // Ahora sí, importar el resto de las dependencias
-import App from './App.tsx'
+import App from './App'
 import './styles/global.css' // Estilos unificados: Tailwind + Base + Componentes + Decorative Hearts + UI Fixes
 import { initializeWalletProtection, detectWalletConflicts } from "./utils/walletProtection";
 import { initializeReactFallbacks, ensureReactPolyfills } from "./utils/reactFallbacks";
@@ -480,3 +480,4 @@ initializeApp().catch((error: unknown) => {
     }
   }
 });
+

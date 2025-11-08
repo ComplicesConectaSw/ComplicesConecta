@@ -1,203 +1,199 @@
+/**
+ * CoupleProfilesService - Servicio de Perfiles de Pareja
+ * 
+ * Servicio para gestionar perfiles de pareja con integración con Supabase
+ * 
+ * @version 3.6.3
+ */
+
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
-import type { Database } from '@/types/supabase';
+import type { 
+  CoupleProfileData, 
+  CoupleProfileWithPartners, 
+  CreateCoupleProfileData,
+  UpdateCoupleProfileData 
+} from './coupleProfiles';
 
-type _Tables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Row'];
-
-export interface CoupleProfile {
+// Re-exportar tipos para compatibilidad
+export type CoupleProfile = CoupleProfileData;
+export type CoupleProfileView = CoupleProfileWithPartners;
+export type CoupleProfileLike = {
   id: string;
-  couple_name: string;
-  couple_bio?: string;
-  relationship_type: 'man-woman' | 'man-man' | 'woman-woman';
-  partner1_id: string;
-  partner2_id: string;
-  couple_images?: string[];
-  is_verified: boolean;
-  is_premium: boolean;
-  looking_for?: string;
-  experience_level?: string;
-  swinger_experience?: string;
-  interested_in?: string;
-  couple_interests?: string[];
-  preferences: Record<string, any>;
+  couple_profile_id: string;
+  user_id: string;
   created_at: string;
-  updated_at: string;
-  // Campos adicionales agregados
-  latitude?: number;
-  longitude?: number;
-  is_demo?: boolean;
-  total_views?: number;
-  // Datos de los perfiles
-  partner1?: {
-    id: string;
-    first_name: string;
-    last_name: string;
-    age?: number;
-    avatar_url?: string;
-  };
-  partner2?: {
-    id: string;
-    first_name: string;
-    last_name: string;
-    age?: number;
-    avatar_url?: string;
-  };
-}
-
-export interface CoupleProfileView {
+};
+export type CoupleProfileReport = {
   id: string;
   couple_profile_id: string;
-  viewer_profile_id: string;
-  viewed_at: string;
-}
-
-export interface CoupleProfileLike {
-  id: string;
-  couple_profile_id: string;
-  liker_profile_id: string;
-  liked_at: string;
-}
-
-export interface CoupleProfileReport {
-  id: string;
-  couple_profile_id: string;
-  reporter_profile_id: string;
+  reporter_id: string;
   reason: string;
   description?: string;
-  status: 'pending' | 'reviewed' | 'resolved';
   created_at: string;
+};
+export type { CreateCoupleProfileData };
+
+export interface CoupleProfilesService {
+  // Obtener perfil de pareja por ID
+  getCoupleProfileById(id: string): Promise<CoupleProfileView | null>;
+  
+  // Obtener perfil de pareja por ID de usuario
+  getCoupleProfileByUserId(userId: string): Promise<CoupleProfileView | null>;
+  
+  // Obtener todos los perfiles de pareja
+  getCoupleProfiles(offset?: number, limit?: number): Promise<CoupleProfileView[]>;
+  
+  // Crear perfil de pareja
+  createCoupleProfile(data: CreateCoupleProfileData): Promise<CoupleProfile | null>;
+  
+  // Actualizar perfil de pareja
+  updateCoupleProfile(id: string, data: UpdateCoupleProfileData): Promise<CoupleProfile | null>;
+  
+  // Eliminar perfil de pareja
+  deleteCoupleProfile(id: string): Promise<boolean>;
+  
+  // Obtener estadísticas de perfiles de pareja
+  getCoupleProfileStats(): Promise<{
+    totalProfiles: number;
+    verifiedProfiles: number;
+    premiumProfiles: number;
+  }>;
 }
 
-export interface CreateCoupleProfileData {
-  couple_name: string;
-  couple_bio?: string;
-  relationship_type: 'man-woman' | 'man-man' | 'woman-woman';
-  partner1_id: string;
-  partner2_id: string;
-  couple_images?: string[];
-  looking_for?: string;
-  experience_level?: string;
-  swinger_experience?: string;
-  interested_in?: string;
-  couple_interests?: string[];
-  preferences?: Record<string, any>;
-  // Campos adicionales agregados
-  latitude?: number;
-  longitude?: number;
-  is_demo?: boolean;
-}
-
-class CoupleProfilesService {
-  constructor() {
-    logger.info('CoupleProfilesService initialized');
-  }
-
+class CoupleProfilesServiceImpl implements CoupleProfilesService {
   /**
-   * Obtener ID del usuario actual
+   * Obtener perfil de pareja por ID
    */
-  private getCurrentUserId(): string {
-    const demoUser = localStorage.getItem('demo_user');
-    if (demoUser) {
-      try {
-        const user = JSON.parse(demoUser);
-        return user.id || 'demo-user-id';
-      } catch {
-        return 'demo-user-id';
-      }
-    }
-    throw new Error('No authenticated user found');
-  }
-
-  /**
-   * Obtener perfiles de parejas usando datos reales de Supabase
-   */
-  async getCoupleProfiles(
-    page = 0,
-    limit = 20,
-    filters?: {
-      relationshipType?: 'man-woman' | 'man-man' | 'woman-woman';
-      experienceLevel?: string;
-      isVerified?: boolean;
-      isPremium?: boolean;
-    }
-  ): Promise<CoupleProfile[]> {
+  async getCoupleProfileById(id: string): Promise<CoupleProfileView | null> {
     try {
-      logger.info('Fetching couple profiles from Supabase', { page, limit, filters });
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return null;
+      }
+      const { data, error } = await supabase
+        .from('couple_profiles')
+        .select(`
+          *,
+          partner1:profiles!partner1_id(first_name, last_name, age, bio, gender),
+          partner2:profiles!partner2_id(first_name, last_name, age, bio, gender)
+        `)
+        .eq('id', id)
+        .single();
 
+      if (error) {
+        logger.error('Error fetching couple profile by ID:', { error: error.message });
+        return null;
+      }
+
+      if (!data) return null;
+
+      // Transformar datos para coincidir con CoupleProfileWithPartners
+      return {
+        ...data,
+        partner1_first_name: data.partner1?.first_name || '',
+        partner1_last_name: data.partner1?.last_name || '',
+        partner1_age: data.partner1?.age || 0,
+        partner1_bio: data.partner1?.bio || null,
+        partner1_gender: data.partner1?.gender || '',
+        partner2_first_name: data.partner2?.first_name || '',
+        partner2_last_name: data.partner2?.last_name || '',
+        partner2_age: data.partner2?.age || 0,
+        partner2_bio: data.partner2?.bio || null,
+        partner2_gender: data.partner2?.gender || ''
+      } as CoupleProfileView;
+    } catch (error) {
+      logger.error('Error in getCoupleProfileById:', { error: String(error) });
+      return null;
+    }
+  }
+
+  /**
+   * Obtener perfil de pareja por ID de usuario
+   */
+  async getCoupleProfileByUserId(userId: string): Promise<CoupleProfileView | null> {
+    try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return null;
+      }
+      const { data, error } = await supabase
+        .from('couple_profiles')
+        .select(`
+          *,
+          partner1:profiles!partner1_id(first_name, last_name, age, bio, gender),
+          partner2:profiles!partner2_id(first_name, last_name, age, bio, gender)
+        `)
+        .or(`partner1_id.eq.${userId},partner2_id.eq.${userId}`)
+        .single();
+
+      if (error) {
+        logger.error('Error fetching couple profile by user ID:', { error: error.message });
+        return null;
+      }
+
+      if (!data) return null;
+
+      // Transformar datos para coincidir con CoupleProfileWithPartners
+      return {
+        ...data,
+        partner1_first_name: data.partner1?.first_name || '',
+        partner1_last_name: data.partner1?.last_name || '',
+        partner1_age: data.partner1?.age || 0,
+        partner1_bio: data.partner1?.bio || null,
+        partner1_gender: data.partner1?.gender || '',
+        partner2_first_name: data.partner2?.first_name || '',
+        partner2_last_name: data.partner2?.last_name || '',
+        partner2_age: data.partner2?.age || 0,
+        partner2_bio: data.partner2?.bio || null,
+        partner2_gender: data.partner2?.gender || ''
+      } as CoupleProfileView;
+    } catch (error) {
+      logger.error('Error in getCoupleProfileByUserId:', { error: String(error) });
+      return null;
+    }
+  }
+
+  /**
+   * Obtener todos los perfiles de pareja
+   */
+  async getCoupleProfiles(offset: number = 0, limit: number = 20): Promise<CoupleProfileView[]> {
+    try {
       if (!supabase) {
         logger.error('Supabase no está disponible');
         return [];
       }
-
-      let query = supabase
+      const { data, error } = await supabase
         .from('couple_profiles')
         .select(`
-          id,
-          couple_name,
-          couple_bio,
-          relationship_type,
-          partner1_id,
-          partner2_id,
-          couple_images,
-          is_verified,
-          is_premium,
-          preferences,
-          created_at,
-          updated_at
+          *,
+          partner1:profiles!partner1_id(first_name, last_name, age, bio, gender),
+          partner2:profiles!partner2_id(first_name, last_name, age, bio, gender)
         `)
-        .order('created_at', { ascending: false })
-        .range(page * limit, (page + 1) * limit - 1);
-
-      // Aplicar filtros
-      if (filters?.relationshipType) {
-        query = query.eq('relationship_type', filters.relationshipType);
-      }
-      if (filters?.isVerified !== undefined) {
-        query = query.eq('is_verified', filters.isVerified);
-      }
-      if (filters?.isPremium !== undefined) {
-        query = query.eq('is_premium', filters.isPremium);
-      }
-
-      const { data, error } = await query;
+        .range(offset, offset + limit - 1)
+        .order('created_at', { ascending: false });
 
       if (error) {
-        logger.error('Error fetching couple profiles from Supabase:', error);
+        logger.error('Error fetching couple profiles:', { error: error.message });
         return [];
       }
 
-      // Mapear datos de Supabase al formato esperado
-      const profiles: CoupleProfile[] = (data || []).map((profile) => ({
-        id: profile.id,
-        couple_name: profile.couple_name,
-        couple_bio: profile.couple_bio ?? undefined,
-        relationship_type: (profile.relationship_type as 'man-woman' | 'man-man' | 'woman-woman') || 'man-woman',
-        partner1_id: profile.partner1_id,
-        partner2_id: profile.partner2_id,
-        couple_images: profile.couple_images || [],
-        is_verified: profile.is_verified || false,
-        is_premium: profile.is_premium || false,
-        preferences: (profile.preferences as Record<string, any>) || {},
-        created_at: profile.created_at || '',
-        updated_at: profile.updated_at || '',
-        partner1: {
-          id: profile.partner1_id,
-          first_name: 'Usuario',
-          last_name: 'Anónimo',
-          age: undefined,
-          avatar_url: undefined
-        },
-        partner2: {
-          id: profile.partner2_id,
-          first_name: 'Usuario',
-          last_name: 'Anónimo',
-          age: undefined,
-          avatar_url: undefined
-        }
-      }));
+      if (!data) return [];
 
-      logger.info('✅ Couple profiles loaded successfully from Supabase', { count: profiles.length });
-      return profiles;
+      // Transformar datos para coincidir con CoupleProfileWithPartners
+      return data.map((profile: any) => ({
+        ...profile,
+        partner1_first_name: profile.partner1?.first_name || '',
+        partner1_last_name: profile.partner1?.last_name || '',
+        partner1_age: profile.partner1?.age || 0,
+        partner1_bio: profile.partner1?.bio || null,
+        partner1_gender: profile.partner1?.gender || '',
+        partner2_first_name: profile.partner2?.first_name || '',
+        partner2_last_name: profile.partner2?.last_name || '',
+        partner2_age: profile.partner2?.age || 0,
+        partner2_bio: profile.partner2?.bio || null,
+        partner2_gender: profile.partner2?.gender || ''
+      })) as CoupleProfileView[];
     } catch (error) {
       logger.error('Error in getCoupleProfiles:', { error: String(error) });
       return [];
@@ -205,55 +201,36 @@ class CoupleProfilesService {
   }
 
   /**
-   * Crear perfil de pareja usando datos reales de Supabase
+   * Crear perfil de pareja
    */
-  async createCoupleProfile(profileData: CreateCoupleProfileData): Promise<CoupleProfile | null> {
+  async createCoupleProfile(data: CreateCoupleProfileData): Promise<CoupleProfile | null> {
     try {
-      logger.info('Creating couple profile in Supabase', { profileData });
-
       if (!supabase) {
         logger.error('Supabase no está disponible');
         return null;
       }
-
-      const { data, error } = await supabase
+      const { data: result, error } = await supabase
         .from('couple_profiles')
         .insert({
-          couple_name: profileData.couple_name,
-          couple_bio: profileData.couple_bio || null,
-          relationship_type: profileData.relationship_type,
-          partner1_id: profileData.partner1_id,
-          partner2_id: profileData.partner2_id,
-          couple_images: profileData.couple_images || null,
-          preferences: (profileData.preferences as any) || null,
+          couple_name: data.couple_name,
+          couple_bio: data.couple_bio || null,
+          relationship_type: data.relationship_type,
+          partner1_id: data.partner1_id,
+          partner2_id: data.partner2_id,
+          couple_images: data.couple_images || null,
           is_verified: false,
           is_premium: false
         })
-        .select('*')
+        .select()
         .single();
 
       if (error) {
-        logger.error('Error creating couple profile in Supabase:', error);
+        logger.error('Error creating couple profile:', { error: error.message });
         return null;
       }
 
-      const newProfile: CoupleProfile = {
-        id: data.id,
-        couple_name: data.couple_name,
-        couple_bio: data.couple_bio ?? undefined,
-        relationship_type: (data.relationship_type as 'man-woman' | 'man-man' | 'woman-woman') || 'man-woman',
-        partner1_id: data.partner1_id,
-        partner2_id: data.partner2_id,
-        couple_images: data.couple_images || [],
-        is_verified: data.is_verified || false,
-        is_premium: data.is_premium || false,
-        preferences: (data.preferences as Record<string, any>) || {},
-        created_at: data.created_at || '',
-        updated_at: data.updated_at || ''
-      };
-
-      logger.info('✅ Couple profile created successfully in Supabase', { profileId: newProfile.id });
-      return newProfile;
+      logger.info('Couple profile created successfully:', { id: result.id });
+      return result as CoupleProfile;
     } catch (error) {
       logger.error('Error in createCoupleProfile:', { error: String(error) });
       return null;
@@ -261,229 +238,115 @@ class CoupleProfilesService {
   }
 
   /**
-   * Dar like a un perfil de pareja usando datos reales de Supabase
+   * Actualizar perfil de pareja
    */
-  async likeCoupleProfile(profileId: string): Promise<boolean> {
+  async updateCoupleProfile(id: string, data: UpdateCoupleProfileData): Promise<CoupleProfile | null> {
     try {
-      logger.info('Liking couple profile in Supabase:', { profileId });
-
       if (!supabase) {
         logger.error('Supabase no está disponible');
-        return false;
+        return null;
       }
-
-      const userId = this.getCurrentUserId();
-
-      // Verificar si ya existe un like
-      const { data: existingLike, error: checkError } = await supabase
-        .from('couple_profile_likes')
-        .select('id')
-        .eq('couple_profile_id', profileId)
-        .eq('liker_profile_id', userId)
+      const { data: result, error } = await supabase
+        .from('couple_profiles')
+        .update({
+          couple_name: data.couple_name,
+          couple_bio: data.couple_bio,
+          couple_images: data.couple_images,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', id)
+        .select()
         .single();
 
-      if (checkError && checkError.code !== 'PGRST116') { // PGRST116 = no rows found
-        logger.error('Error checking existing like:', checkError);
-        return false;
+      if (error) {
+        logger.error('Error updating couple profile:', { error: error.message });
+        return null;
       }
 
-      if (existingLike) {
-        // Quitar like
-        const { error: deleteError } = await supabase
-          .from('couple_profile_likes')
-          .delete()
-          .eq('couple_profile_id', profileId)
-          .eq('liker_profile_id', userId);
-
-        if (deleteError) {
-          logger.error('Error removing like:', deleteError);
-          return false;
-        }
-
-        logger.info('✅ Like removed successfully', { profileId });
-        return true;
-      } else {
-        // Agregar like
-        const { error: insertError } = await supabase
-          .from('couple_profile_likes')
-          .insert({
-            couple_profile_id: profileId,
-            liker_profile_id: userId
-          });
-
-        if (insertError) {
-          logger.error('Error adding like:', insertError);
-          return false;
-        }
-
-        logger.info('✅ Like added successfully', { profileId });
-        return true;
-      }
+      logger.info('Couple profile updated successfully:', { id: result.id });
+      return result as CoupleProfile;
     } catch (error) {
-      logger.error('Error in likeCoupleProfile:', { error: String(error) });
-      return false;
+      logger.error('Error in updateCoupleProfile:', { error: String(error) });
+      return null;
     }
   }
 
   /**
-   * Registrar vista de perfil de pareja usando datos reales de Supabase
+   * Eliminar perfil de pareja
    */
-  async viewCoupleProfile(profileId: string): Promise<void> {
+  async deleteCoupleProfile(id: string): Promise<boolean> {
     try {
-      logger.info('Recording couple profile view in Supabase:', { profileId });
-
-      if (!supabase) {
-        logger.error('Supabase no está disponible');
-        return;
-      }
-
-      const userId = this.getCurrentUserId();
-
-      const { error } = await supabase
-        .from('couple_profile_views')
-        .insert({
-          couple_profile_id: profileId,
-          viewer_profile_id: userId
-        });
-
-      if (error) {
-        logger.error('Error recording profile view:', error);
-      } else {
-        logger.info('✅ Profile view recorded successfully', { profileId });
-      }
-    } catch (error) {
-      logger.error('Error in viewCoupleProfile:', { error: String(error) });
-    }
-  }
-
-  /**
-   * Reportar perfil de pareja usando datos reales de Supabase
-   */
-  async reportCoupleProfile(
-    profileId: string,
-    reason: string,
-    description?: string
-  ): Promise<boolean> {
-    try {
-      logger.info('Reporting couple profile in Supabase:', { profileId, reason });
-
       if (!supabase) {
         logger.error('Supabase no está disponible');
         return false;
       }
-
-      const userId = this.getCurrentUserId();
-
       const { error } = await supabase
-        .from('couple_profile_reports')
-        .insert({
-          couple_profile_id: profileId,
-          reporter_profile_id: userId,
-          reason,
-          description,
-          status: 'pending'
-        });
+        .from('couple_profiles')
+        .delete()
+        .eq('id', id);
 
       if (error) {
-        logger.error('Error reporting profile:', error);
+        logger.error('Error deleting couple profile:', { error: error.message });
         return false;
       }
 
-      logger.info('✅ Profile reported successfully', { profileId });
+      logger.info('Couple profile deleted successfully:', { id });
       return true;
     } catch (error) {
-      logger.error('Error in reportCoupleProfile:', { error: String(error) });
+      logger.error('Error in deleteCoupleProfile:', { error: String(error) });
       return false;
     }
   }
 
   /**
-   * Obtener estadísticas de perfiles de parejas usando datos reales de Supabase
+   * Obtener estadísticas de perfiles de pareja
    */
   async getCoupleProfileStats(): Promise<{
     totalProfiles: number;
     verifiedProfiles: number;
     premiumProfiles: number;
-    totalViews: number;
-    totalLikes: number;
-    relationshipTypeDistribution: Record<string, number>;
   }> {
     try {
-      logger.info('Getting couple profile stats from Supabase');
-
       if (!supabase) {
         logger.error('Supabase no está disponible');
-        return {
-          totalProfiles: 0,
-          verifiedProfiles: 0,
-          premiumProfiles: 0,
-          totalViews: 0,
-          totalLikes: 0,
-          relationshipTypeDistribution: {}
-        };
+        return { totalProfiles: 0, verifiedProfiles: 0, premiumProfiles: 0 };
       }
+      const { count: totalCount, error: totalError } = await supabase
+        .from('couple_profiles')
+        .select('*', { count: 'exact', head: true });
 
-      const [
-        profilesResult,
-        viewsResult,
-        likesResult
-      ] = await Promise.allSettled([
-        supabase
-          .from('couple_profiles')
-          .select('*'),
-        supabase
-          .from('couple_profile_views')
-          .select('id', { count: 'exact' }),
-        supabase
-          .from('couple_profile_likes')
-          .select('id', { count: 'exact' })
-      ]);
+      const { count: verifiedCount, error: verifiedError } = await supabase
+        .from('couple_profiles')
+        .select('*', { count: 'exact', head: true })
+        .eq('is_verified', true);
 
-      const stats = {
-        totalProfiles: 0,
-        verifiedProfiles: 0,
-        premiumProfiles: 0,
-        totalViews: 0,
-        totalLikes: 0,
-        relationshipTypeDistribution: {} as Record<string, number>
-      };
+      const { count: premiumCount, error: premiumError } = await supabase
+        .from('couple_profiles')
+        .select('*', { count: 'exact', head: true })
+        .eq('is_premium', true);
 
-      if (profilesResult.status === 'fulfilled' && profilesResult.value.data) {
-        const profiles = profilesResult.value.data;
-        stats.totalProfiles = profiles.length;
-        stats.verifiedProfiles = profiles.filter((p) => p.is_verified).length;
-        stats.premiumProfiles = profiles.filter((p) => p.is_premium).length;
-
-        // Calcular distribución por tipo de relación
-        profiles.forEach((profile) => {
-          const type = profile.relationship_type || 'unknown';
-          stats.relationshipTypeDistribution[type] = (stats.relationshipTypeDistribution[type] || 0) + 1;
+      if (totalError || verifiedError || premiumError) {
+        logger.error('Error fetching couple profile stats:', { 
+          totalError: totalError?.message, 
+          verifiedError: verifiedError?.message, 
+          premiumError: premiumError?.message 
         });
+        return { totalProfiles: 0, verifiedProfiles: 0, premiumProfiles: 0 };
       }
 
-      if (viewsResult.status === 'fulfilled' && viewsResult.value.count !== null) {
-        stats.totalViews = viewsResult.value.count;
-      }
-
-      if (likesResult.status === 'fulfilled' && likesResult.value.count !== null) {
-        stats.totalLikes = likesResult.value.count;
-      }
-
-      logger.info('✅ Couple profile stats loaded successfully', stats);
-      return stats;
+      return {
+        totalProfiles: totalCount || 0,
+        verifiedProfiles: verifiedCount || 0,
+        premiumProfiles: premiumCount || 0
+      };
     } catch (error) {
       logger.error('Error in getCoupleProfileStats:', { error: String(error) });
-      return {
-        totalProfiles: 0,
-        verifiedProfiles: 0,
-        premiumProfiles: 0,
-        totalViews: 0,
-        totalLikes: 0,
-        relationshipTypeDistribution: {}
-      };
+      return { totalProfiles: 0, verifiedProfiles: 0, premiumProfiles: 0 };
     }
   }
 }
 
-export const coupleProfilesService = new CoupleProfilesService();
+// Exportar instancia singleton
+export const coupleProfilesService = new CoupleProfilesServiceImpl();
 export default coupleProfilesService;
+

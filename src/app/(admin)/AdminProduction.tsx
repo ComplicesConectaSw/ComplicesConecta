@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/Card";
 import { Button } from "@/shared/ui/Button";
-// import { Tables } from '@/integrations/supabase/types';
+// import { Database } from '@/types/supabase';
 
 interface Invitation {
   id: string;

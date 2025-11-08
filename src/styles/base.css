@@ -1,5 +1,5 @@
 /* src/styles/base/base.css - Estilos base y variables */
-/* Nota: @tailwind base est├í en index.css, no duplicar aqu├¡ */
+/* Nota: @tailwind base está en index.css, no duplicar aquí */
 
 :root {
   --primary: #ff1493;

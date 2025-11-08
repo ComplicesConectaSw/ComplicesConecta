@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/useToast';
-import { advancedCoupleService, CoupleProfile, CoupleEvent, CoupleMatch } from '@/services/AdvancedCoupleService';
+import { advancedCoupleService, CoupleProfile, CoupleEvent, CoupleMatch } from '@/profiles/couple/AdvancedCoupleService';
 import {
   Users,
   Heart,
