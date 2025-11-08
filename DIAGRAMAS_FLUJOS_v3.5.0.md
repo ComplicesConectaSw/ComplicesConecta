@@ -351,6 +351,39 @@ sequenceDiagram
 
 ---
 
+---
+
+## 🔄 FLUJO DE ALINEACIÓN DE BASE DE DATOS v3.6.3
+
+```mermaid
+flowchart TD
+    A[Iniciar Alineación] --> B[Verificar Migraciones]
+    B --> C{Migraciones<br/>Corregidas?}
+    C -->|Sí| D[Aplicar en LOCAL]
+    C -->|No| E[Corregir Migraciones]
+    E --> D
+    D --> F[Verificar Tablas LOCAL]
+    F --> G[Verificar Tablas REMOTO]
+    G --> H[Analizar Uso en Código]
+    H --> I{Tablas<br/>Faltantes?}
+    I -->|Sí| J[Crear Migraciones]
+    I -->|No| K[Regenerar Tipos]
+    J --> K
+    K --> L[Verificar Errores]
+    L --> M{Errores?}
+    M -->|Sí| N[Corregir Código]
+    M -->|No| O[✅ Alineación Completa]
+    N --> L
+    
+    style A fill:#6366f1
+    style D fill:#10b981
+    style J fill:#f59e0b
+    style O fill:#10b981
+```
+
+---
+
 **Documento creado:** 06 Noviembre 2025  
-**Versión:** 1.0
+**Última actualización:** 08 Noviembre 2025  
+**Versión:** 1.1
 

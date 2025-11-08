@@ -31,18 +31,36 @@ Write-Host ""
 if (-not $RemoteOnly) {
     Write-Host "  🗄️  Aplicando migraciones locales..." -ForegroundColor Cyan
     try {
-        # Aplicar migración corregida manualmente
-        Write-Host "     Aplicando migración corregida: 20251108000003_add_chat_rooms_columns.sql" -ForegroundColor Gray
-        $migrationPath = "supabase\migrations\20251108000003_add_chat_rooms_columns.sql"
-        if (Test-Path $migrationPath) {
-            # Verificar si ya se aplicó
-            Write-Host "     ✅ Migración corregida lista para aplicar" -ForegroundColor Green
+        # Verificar migraciones corregidas
+        Write-Host "     Verificando migraciones corregidas..." -ForegroundColor Gray
+        $correctedMigrations = @(
+            "20251108000001_create_user_device_tokens.sql",
+            "20251108000002_create_user_tokens.sql",
+            "20251108000003_add_chat_rooms_columns.sql",
+            "20251108000004_add_full_name_to_profiles.sql"
+        )
+        foreach ($migration in $correctedMigrations) {
+            $migrationPath = "supabase\migrations\$migration"
+            if (Test-Path $migrationPath) {
+                Write-Host "     ✅ $migration (lista)" -ForegroundColor Green
+            } else {
+                Write-Host "     ⚠️  $migration (no encontrada)" -ForegroundColor Yellow
+            }
         }
         
         # Aplicar todas las migraciones
         Write-Host "     Aplicando todas las migraciones..." -ForegroundColor Gray
-        npx supabase db reset --local 2>&1 | Out-Null
-        Write-Host "     ✅ Migraciones locales aplicadas" -ForegroundColor Green
+        try {
+            $resetOutput = npx supabase db reset --local 2>&1 | Out-String
+            if ($LASTEXITCODE -eq 0) {
+                Write-Host "     ✅ Migraciones locales aplicadas exitosamente" -ForegroundColor Green
+            } else {
+                Write-Host "     ⚠️  Advertencias durante aplicación de migraciones" -ForegroundColor Yellow
+                Write-Host "     Verifica la salida para más detalles" -ForegroundColor Gray
+            }
+        } catch {
+            Write-Host "     ❌ Error aplicando migraciones: $_" -ForegroundColor Red
+        }
     } catch {
         Write-Host "     ❌ Error aplicando migraciones locales: $_" -ForegroundColor Red
     }
@@ -110,19 +128,24 @@ function Get-LocalTables {
 function Get-RemoteTables {
     Write-Host "  ☁️  Tablas en REMOTO:" -ForegroundColor Cyan
     try {
-        $remoteTables = npx supabase db remote list 2>&1 | Out-String
+        $remoteOutput = npx supabase db remote list 2>&1 | Out-String
         if ($LASTEXITCODE -eq 0) {
             Write-Host "     ✅ Conectado a Supabase remoto" -ForegroundColor Green
-            # Parsear tablas de la salida
-            # Nota: Esto requiere que el comando devuelva las tablas
-            Write-Host "     ℹ️  Usa 'npx supabase db remote list' para ver tablas remotas" -ForegroundColor Gray
+            # Intentar parsear tablas de la salida si es posible
+            if ($remoteOutput -match "table|Table") {
+                Write-Host "     ℹ️  Tablas remotas detectadas en la salida" -ForegroundColor Gray
+            } else {
+                Write-Host "     ℹ️  Usa 'npx supabase db remote list' para ver tablas remotas" -ForegroundColor Gray
+            }
             return @()
         } else {
             Write-Host "     ⚠️  No se pudo conectar a Supabase remoto" -ForegroundColor Yellow
+            Write-Host "     Verifica que estés logueado: npx supabase login" -ForegroundColor Gray
             return @()
         }
     } catch {
         Write-Host "     ⚠️  Error conectando a remoto: $_" -ForegroundColor Yellow
+        Write-Host "     Verifica que Supabase CLI esté instalado y configurado" -ForegroundColor Gray
         return @()
     }
 }
@@ -222,14 +245,16 @@ Write-Host ""
 if (-not $RemoteOnly) {
     Write-Host "  🔧 Regenerando tipos desde LOCAL..." -ForegroundColor Cyan
     try {
-        npx supabase gen types typescript --local > src/types/supabase-generated.ts 2>&1
+        $typesOutput = npx supabase gen types typescript --local > src/types/supabase-generated.ts 2>&1
         if ($LASTEXITCODE -eq 0) {
-            Write-Host "     ✅ Tipos regenerados desde LOCAL" -ForegroundColor Green
+            Write-Host "     ✅ Tipos regenerados desde LOCAL exitosamente" -ForegroundColor Green
+            Write-Host "     Archivo actualizado: src/types/supabase-generated.ts" -ForegroundColor Gray
         } else {
-            Write-Host "     ⚠️  Error regenerando tipos: $_" -ForegroundColor Yellow
+            Write-Host "     ⚠️  Error regenerando tipos desde LOCAL" -ForegroundColor Yellow
+            Write-Host "     Verifica que Supabase local esté corriendo: npx supabase status" -ForegroundColor Gray
         }
     } catch {
-        Write-Host "     ❌ Error: $_" -ForegroundColor Red
+        Write-Host "     ❌ Error regenerando tipos: $_" -ForegroundColor Red
     }
     Write-Host ""
 }

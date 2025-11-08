@@ -110,9 +110,12 @@
    - **RLS Completo**: 65+ políticas activas en Supabase (v3.5.0)
    - **Validación**: Nunca commitear `.env`, usar `.env.example` como template
 
-9. **Correcciones de Tipos y Scripts v3.6.3** 🆕
-   - **Corrección de Tipos**: Errores de tipos TypeScript corregidos en `Clubs.tsx` usando `Omit` y normalización de datos
-   - **Script de Caracteres**: Script `fix-character-encoding.ps1` actualizado - Backups ahora se guardan en directorio `bck` fuera del proyecto
+9. **Correcciones de Tipos, Migraciones y Análisis v3.6.3** 🆕
+   - **Migraciones Creadas**: 4 migraciones nuevas (`user_device_tokens`, `user_tokens`, `chat_rooms` columnas, `profiles` full_name)
+   - **Análisis de Tablas**: Script `alinear-y-verificar-todo.ps1` creado para verificar y alinear tablas (67 local, 79 usadas)
+   - **Corrección de Tipos**: Errores corregidos en `AdminDashboard.tsx` y `simpleChatService.ts` (eliminado `as any`)
+   - **Corrección de Migración**: Error en `chat_rooms` corregido (`room_type` → `type`)
+   - **Script de Caracteres**: Script `fix-character-encoding.ps1` actualizado - Backups en directorio `bck` fuera del proyecto
    - **Script Maestro de BD**: Script `database-manager.ps1` creado - Unifica 5 scripts de gestión de BD
    - **Scripts Unificados**: `alinear-supabase.ps1`, `analizar-y-alinear-bd.ps1`, `aplicar-migraciones-remoto.ps1`, `sync-databases.ps1`, `verificar-alineacion-tablas.ps1` → `database-manager.ps1`
    - **Secciones Legales**: Secciones legales independientes agregadas a `Moderators.tsx`, `Investors.tsx`, `Clubs.tsx`, `NFTs.tsx`

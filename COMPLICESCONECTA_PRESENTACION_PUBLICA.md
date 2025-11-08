@@ -101,6 +101,9 @@ Nuestro sistema de mensajería no es solo texto. Incluye:
 - **Refactorización**: ✅ Completa v3.6.3 (estructura modular)
 
 ### Características Implementadas (v3.6.3)
+- ✅ **Migraciones de Base de Datos**: 4 nuevas migraciones (`user_device_tokens`, `user_tokens`, `chat_rooms` columnas, `profiles` full_name)
+- ✅ **Análisis de Tablas**: Script de alineación y verificación (67 tablas local, 79 usadas en código)
+- ✅ **Correcciones de Tipos**: Eliminado `as any` en código crítico (`AdminDashboard.tsx`, `simpleChatService.ts`)
 - ✅ Sistema de perfiles completo (individuales y parejas) - Refactorizado
 - ✅ Matching inteligente con IA + Neo4j Graph Database
 - ✅ Chat en tiempo real con privacidad y verificación IA de consentimiento

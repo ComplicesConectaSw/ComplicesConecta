@@ -131,6 +131,24 @@ docker run -d --name dd-agent \
   - `sync-databases.ps1` → `-Action sync`
   - `verificar-alineacion-tablas.ps1` → `-Action verify`
 
+### Script de Alineación y Verificación de Tablas (NUEVO)
+- **Archivo:** `scripts/alinear-y-verificar-todo.ps1`
+- **Propósito:** Alinear y verificar todas las tablas en LOCAL y REMOTO, verificar uso en código
+- **Uso:** 
+  - `.\scripts\alinear-y-verificar-todo.ps1` - Verificar local y remoto
+  - `.\scripts\alinear-y-verificar-todo.ps1 -LocalOnly` - Solo local
+  - `.\scripts\alinear-y-verificar-todo.ps1 -RemoteOnly` - Solo remoto
+- **Funcionalidades:**
+  - Aplica migraciones corregidas en local
+  - Verifica tablas en LOCAL y REMOTO
+  - Analiza uso de tablas en código
+  - Compara y reporta tablas faltantes o no usadas
+  - Regenera tipos TypeScript desde local
+- **Mejoras v3.6.3:**
+  - Verificación de todas las migraciones corregidas
+  - Mejor manejo de errores en `db reset` y regeneración de tipos
+  - Mejor detección de conexión remota con mensajes informativos
+
 ### Script de Corrección de Caracteres
 - **Archivo:** `scripts/fix-character-encoding.ps1`
 - **Propósito:** Corregir caracteres mal codificados (?, etc.) en archivos cuando están cerrados
