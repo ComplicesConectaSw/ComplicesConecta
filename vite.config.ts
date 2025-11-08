@@ -9,7 +9,51 @@ export default defineConfig(({ mode }) => {
   const isDev = mode === 'development';
 
   return {
-    plugins: [react()],
+    plugins: [
+      react(),
+      // Middleware para asegurar headers Content-Type correctos
+      {
+        name: 'fix-mime-types',
+        configureServer(server) {
+          // CRÍTICO: Usar transformIndexHtml para establecer headers antes de que Vite procese
+          // Pero también necesitamos middleware para archivos estáticos
+          server.middlewares.use((req, res, next) => {
+            const url = req.url || '';
+            const urlWithoutQuery = url.split('?')[0];
+            
+            // CRÍTICO: Establecer Content-Type ANTES de que Vite procese la respuesta
+            // Esto es especialmente importante para archivos de dependencias optimizadas
+            if (url.includes('/node_modules/.vite/deps/') || 
+                url.includes('/deps/') ||
+                urlWithoutQuery.endsWith('.js') || 
+                urlWithoutQuery.endsWith('.mjs') || 
+                urlWithoutQuery.endsWith('.jsx') || 
+                urlWithoutQuery.endsWith('.ts') || 
+                urlWithoutQuery.endsWith('.tsx')) {
+              // Forzar Content-Type para archivos JavaScript (incluyendo dependencias optimizadas)
+              res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+            } else if (urlWithoutQuery.endsWith('.css') || 
+                       url.includes('/src/index.css') || 
+                       url.includes('/styles/index.css') ||
+                       url.includes('/src/styles/')) {
+              // Forzar Content-Type para archivos CSS
+              res.setHeader('Content-Type', 'text/css; charset=utf-8');
+            } else if (urlWithoutQuery.endsWith('.json')) {
+              // Forzar Content-Type para archivos JSON
+              res.setHeader('Content-Type', 'application/json; charset=utf-8');
+            } else if (urlWithoutQuery.endsWith('.html') || url === '/' || url === '') {
+              // Forzar Content-Type para archivos HTML
+              res.setHeader('Content-Type', 'text/html; charset=utf-8');
+            } else if (urlWithoutQuery.endsWith('.wasm')) {
+              // Forzar Content-Type para archivos WebAssembly
+              res.setHeader('Content-Type', 'application/wasm');
+            }
+            
+            next();
+          });
+        },
+      },
+    ],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),
@@ -20,16 +64,22 @@ export default defineConfig(({ mode }) => {
       strictPort: false,
       // CRÍTICO: host: true es más simple y funciona mejor (basado en respaldo)
       host: true, // Permitir conexiones desde cualquier IP (equivalente a '0.0.0.0' pero más simple)
-      // HMR: Deshabilitado cuando se accede a través de túneles para evitar errores de WebSocket
-      hmr: false, // Deshabilitar HMR para evitar errores de WebSocket con túneles
+      // HMR: Habilitado para desarrollo local (deshabilitar solo para túneles si es necesario)
+      hmr: isDev ? {
+        protocol: 'ws',
+        host: 'localhost',
+        port: 8080,
+      } : false,
       cors: true, // Habilitar CORS para recursos estáticos
       // CRÍTICO: Headers simples basados en respaldo que funcionaba
+      // IMPORTANTE: No enviar X-Content-Type-Options: nosniff sin asegurar Content-Type correctos
       headers: isDev ? {
         'Cross-Origin-Embedder-Policy': 'unsafe-none',
         'Cross-Origin-Opener-Policy': 'same-origin',
         'Access-Control-Allow-Origin': '*', // Permitir acceso desde cualquier origen en desarrollo
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        // NO incluir X-Content-Type-Options: nosniff aquí - Vite maneja los Content-Type automáticamente
       } : {},
     },
     // Configuración de CSS para asegurar carga correcta (basado en respaldo)
@@ -90,6 +140,9 @@ export default defineConfig(({ mode }) => {
       cssCodeSplit: false,
       // Asegurar que los assets se sirvan con rutas absolutas
       assetsInclude: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.svg', '**/*.gif', '**/*.webp'],
+      // CRÍTICO: Asegurar que los CSS se procesen correctamente durante el build
+      // Esto resuelve el warning sobre /src/index.css
+      cssMinify: true,
       // Optimizaciones adicionales
       minify: 'terser',
       terserOptions: {
