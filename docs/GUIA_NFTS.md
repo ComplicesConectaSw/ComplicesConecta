@@ -253,6 +253,29 @@ Después de 1 año:
 
 ---
 
+---
+
+## ⚖️ Información Legal
+
+ComplicesConecta opera bajo estricto cumplimiento del marco legal mexicano e internacional. 
+Consulta nuestra documentación legal para más información sobre términos, privacidad y cumplimiento normativo relacionado con NFTs y blockchain.
+
+### Enlaces Legales:
+
+- **[Marco Legal Completo](/legal)**: Documentación legal completa de ComplicesConecta
+- **[Términos de Servicio](/terms)**: Condiciones de uso de la plataforma
+- **[Política de Privacidad](/privacy)**: Cómo protegemos y manejamos tu información personal
+- **[Cumplimiento Legal México](/legal)**: Marco regulatorio y cumplimiento en territorio mexicano
+
+### Consideraciones Legales sobre NFTs:
+
+1. **Propiedad Digital**: Los NFTs representan propiedad digital verificable en blockchain, pero el contenido subyacente puede estar sujeto a derechos de autor
+2. **Regulación**: Los NFTs están sujetos a regulación financiera en algunos países. Consulta las leyes locales antes de participar
+3. **Implicaciones Fiscales**: Las transacciones de NFTs pueden tener implicaciones fiscales. Consulta con un asesor fiscal
+4. **Riesgos**: Los NFTs son activos digitales volátiles. Invierte solo lo que puedas permitirte perder
+
+---
+
 **Última actualización:** 08 de Noviembre, 2025  
 **Versión:** 3.6.3
 

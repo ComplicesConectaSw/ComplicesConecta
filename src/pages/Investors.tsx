@@ -27,7 +27,9 @@ import {
   Award,
   Mail,
   ArrowRight,
-  ChevronRight
+  ChevronRight,
+  FileText,
+  Scale
 } from 'lucide-react';
 
 const Investors: React.FC = () => {
@@ -830,6 +832,55 @@ const Investors: React.FC = () => {
                   <Globe className="h-4 w-4" />
                   <span>complicesconecta.com</span>
                 </div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.section>
+
+        {/* Sección Legal */}
+        <motion.section
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 1.6 }}
+        >
+          <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
+            <CardHeader>
+              <CardTitle className="text-3xl font-bold text-white flex items-center gap-3">
+                <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg">
+                  <Scale className="h-6 w-6 text-white" />
+                </div>
+                Información Legal
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-white/90 mb-6 text-center text-lg">
+                ComplicesConecta opera bajo estricto cumplimiento del marco legal mexicano e internacional. 
+                Consulta nuestra documentación legal para más información sobre términos, privacidad y cumplimiento normativo.
+              </p>
+              <div className="flex flex-wrap gap-4 justify-center">
+                <Button
+                  onClick={() => navigate('/legal')}
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold px-8 py-4 text-lg shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 hover:scale-105"
+                >
+                  <FileText className="h-5 w-5 mr-2" />
+                  Marco Legal Completo
+                </Button>
+                <Button
+                  onClick={() => navigate('/terms')}
+                  variant="outline"
+                  className="border-2 border-white/30 text-white hover:bg-white/10 px-8 py-4 text-lg backdrop-blur-sm transition-all duration-300 hover:scale-105"
+                >
+                  <FileText className="h-5 w-5 mr-2" />
+                  Términos de Servicio
+                </Button>
+                <Button
+                  onClick={() => navigate('/privacy')}
+                  variant="outline"
+                  className="border-2 border-white/30 text-white hover:bg-white/10 px-8 py-4 text-lg backdrop-blur-sm transition-all duration-300 hover:scale-105"
+                >
+                  <Shield className="h-5 w-5 mr-2" />
+                  Política de Privacidad
+                </Button>
               </div>
             </CardContent>
           </Card>

@@ -127,6 +127,7 @@ const Invest = lazy(() => import("@/pages/Invest"));
 const TemplateDemo = lazy(() => import("@/pages/TemplateDemo"));
 const News = lazy(() => import("@/pages/News"));
 const Investors = lazy(() => import("@/pages/Investors"));
+const NFTs = lazy(() => import("@/pages/NFTs"));
 
 // Loading component for Suspense - Optimizado
 const PageLoader = () => (
@@ -283,6 +284,7 @@ const App = () => (
                   <Route path="/template-demo" element={<TemplateDemo />} />
                   <Route path="/news" element={<News />} />
                   <Route path="/investors" element={<Investors />} />
+                  <Route path="/nfts" element={<NFTs />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                             </Routes>

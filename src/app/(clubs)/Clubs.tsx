@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/sha
 import { Button } from '@/shared/ui/Button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/shared/ui/Input';
-import { MapPin, Star, Users, CheckCircle } from 'lucide-react';
+import { MapPin, Star, Users, CheckCircle, FileText, Shield } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/useToast';
 import { useAuth } from '@/features/auth/useAuth';
@@ -13,13 +13,13 @@ import type { Database } from '@/types/supabase';
 
 type ClubRow = Database['public']['Tables']['clubs']['Row'];
 
-interface Club extends ClubRow {
+interface Club extends Omit<ClubRow, 'cover_image_url' | 'is_featured' | 'rating_average'> {
   description?: string | null;
   state?: string | null;
   phone?: string | null;
   website?: string | null;
   logo_url?: string | null;
-  cover_image_url?: string | null;
+  cover_image_url: string | null;
   verified_at?: string | null;
   is_featured: boolean;
   rating_average: number;
@@ -86,8 +86,16 @@ const Clubs = () => {
 
       if (error) throw error;
 
-      setClubs(data || []);
-      setFilteredClubs(data || []);
+      // Mapear y normalizar los datos para asegurar tipos correctos
+      const normalizedClubs: Club[] = (data || []).map((club) => ({
+        ...club,
+        is_featured: club.is_featured ?? false,
+        cover_image_url: club.cover_image_url ?? null,
+        rating_average: club.rating_average ?? 0,
+      }));
+
+      setClubs(normalizedClubs);
+      setFilteredClubs(normalizedClubs);
     } catch (error) {
       logger.error('Error cargando clubs:', { error: error instanceof Error ? error.message : String(error) });
       toast({
@@ -402,6 +410,43 @@ const Clubs = () => {
           <p className="text-muted-foreground">No se encontraron clubs</p>
         </div>
       )}
+
+      {/* Sección Legal */}
+      <div className="mt-12 border-t pt-8">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-bold mb-4">Información Legal</h2>
+          <p className="text-muted-foreground mb-6">
+            ComplicesConecta opera bajo estricto cumplimiento del marco legal mexicano e internacional. 
+            Consulta nuestra documentación legal para más información.
+          </p>
+          <div className="flex flex-wrap gap-4">
+            <Button
+              onClick={() => navigate('/legal')}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
+              <FileText className="h-4 w-4" />
+              Marco Legal Completo
+            </Button>
+            <Button
+              onClick={() => navigate('/terms')}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
+              <FileText className="h-4 w-4" />
+              Términos de Servicio
+            </Button>
+            <Button
+              onClick={() => navigate('/privacy')}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
+              <Shield className="h-4 w-4" />
+              Política de Privacidad
+            </Button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
