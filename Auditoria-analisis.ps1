@@ -1,14 +1,21 @@
-# AUDITORÍA COMPLETA v3.6.3 - CONSOLIDADO Y MEJORADO - 08 Nov 2025
-# Script consolidado que corrige la detección de imports rotos
-# Resuelve correctamente alias @/ y verifica múltiples extensiones
+# AUDITORÍA COMPLETA v3.6.3 - MEJORADO Y EXPANDIDO - 08 Nov 2025
+# Script consolidado con análisis completo de:
+# - Estructura del proyecto
+# - Imports rotos
+# - Dependencias faltantes
+# - Seguridad (vulnerabilidades, exploits)
+# - Archivos huérfanos, corruptos, vacíos, obsoletos, mal ubicados
+# - Verificación de tablas (local y remoto)
+# - Análisis de código (TypeScript, ESLint, Lint)
+# - Uso de tablas en código (as any, null, etc.)
 
-Write-Host "INICIANDO AUDITORÍA COMPLETA v3.6.3..." -ForegroundColor White -BackgroundColor DarkBlue
+Write-Host "INICIANDO AUDITORÍA COMPLETA v3.6.3 MEJORADA..." -ForegroundColor White -BackgroundColor DarkBlue
 $root = Get-Location
 $report = @()
 $startTime = Get-Date
 
 # CONFIGURACIÓN
-$excludeDirs = @("node_modules", ".git", "build", "dist", "android", "ios", "public", ".vite", "coverage")
+$excludeDirs = @("node_modules", ".git", "build", "dist", "android", "ios", "public", ".vite", "coverage", "bck")
 $extensions = @('.ts', '.tsx', '.js', '.jsx', '.json', '.css')
 $indexFiles = @('index.ts', 'index.tsx', 'index.js', 'index.jsx')
 
@@ -42,7 +49,7 @@ $files = $allItems | Where-Object { -not $_.PSIsContainer }
 Write-Host "Directorios: $($dirs.Count)" -ForegroundColor Cyan
 Write-Host "Archivos: $($files.Count)" -ForegroundColor Cyan
 
-$report += "# AUDITORÍA COMPLETA v3.6.3"
+$report += "# AUDITORÍA COMPLETA v3.6.3 MEJORADA"
 $report += "- Fecha: $(Get-Date -Format 'dd MMM yyyy HH:mm')"
 $report += "- Ruta: $root"
 $report += "- Alias configurado: @/ → ./$aliasBase/`n"
@@ -83,6 +90,103 @@ $largeFiles = $files | Where-Object { $_.Length -gt 10MB }
 $report += "`n## ARCHIVOS GRANDES (>10MB) ($($largeFiles.Count))"
 foreach ($f in $largeFiles) {
     $report += "- $($f.Name) ($([math]::Round($f.Length/1MB,2)) MB) → $($f.DirectoryName.Replace($root, ''))"
+}
+
+# 1.4 ARCHIVOS VACÍOS
+Write-Host "`n1.4. Buscando archivos vacíos..." -ForegroundColor Yellow
+$emptyFiles = $files | Where-Object { 
+    $_.Length -eq 0 -or ((Get-Content $_.FullName -Raw -ErrorAction SilentlyContinue) -and (Get-Content $_.FullName -Raw -ErrorAction SilentlyContinue).Trim().Length -eq 0)
+}
+$report += "`n## ARCHIVOS VACÍOS ($($emptyFiles.Count))"
+foreach ($f in $emptyFiles | Select-Object -First 20) {
+    $report += "- $($f.FullName.Replace($root, ''))"
+}
+
+# 1.5 ARCHIVOS CORRUPTOS (sintaxis inválida)
+Write-Host "`n1.5. Buscando archivos corruptos..." -ForegroundColor Yellow
+$corruptFiles = @()
+$tsFiles = $files | Where-Object { $_.Extension -match 'ts|tsx|js|jsx' -and $_.FullName -like "*\src\*" }
+foreach ($f in $tsFiles) {
+    try {
+        $content = Get-Content $f.FullName -Raw -ErrorAction SilentlyContinue
+        if ($content) {
+            # Verificar paréntesis, llaves, corchetes balanceados
+            $openParen = ($content.ToCharArray() | Where-Object { $_ -eq '(' }).Count
+            $closeParen = ($content.ToCharArray() | Where-Object { $_ -eq ')' }).Count
+            $openBrace = ($content.ToCharArray() | Where-Object { $_ -eq '{' }).Count
+            $closeBrace = ($content.ToCharArray() | Where-Object { $_ -eq '}' }).Count
+            $openBracket = ($content.ToCharArray() | Where-Object { $_ -eq '[' }).Count
+            $closeBracket = ($content.ToCharArray() | Where-Object { $_ -eq ']' }).Count
+            
+            if ($openParen -ne $closeParen -or $openBrace -ne $closeBrace -or $openBracket -ne $closeBracket) {
+                $corruptFiles += $f.FullName.Replace($root, '')
+            }
+        }
+    } catch {
+        $corruptFiles += $f.FullName.Replace($root, '')
+    }
+}
+$report += "`n## ARCHIVOS CORRUPTOS ($($corruptFiles.Count))"
+foreach ($f in $corruptFiles | Select-Object -First 20) {
+    $report += "- $f"
+}
+
+# 1.6 ARCHIVOS OBSOLETOS
+Write-Host "`n1.6. Buscando archivos obsoletos..." -ForegroundColor Yellow
+$obsoleteFiles = $files | Where-Object { $_.Name -match "(deprecated|old|backup|\.bak|\.old|_old|_backup|_deprecated)" }
+$report += "`n## ARCHIVOS OBSOLETOS ($($obsoleteFiles.Count))"
+foreach ($f in $obsoleteFiles | Select-Object -First 20) {
+    $report += "- $($f.FullName.Replace($root, ''))"
+}
+
+# 1.7 ARCHIVOS MAL UBICADOS
+Write-Host "`n1.7. Buscando archivos mal ubicados..." -ForegroundColor Yellow
+$misplacedFiles = @()
+# Componentes en directorios incorrectos
+$componentFiles = $files | Where-Object { 
+    $_.Name -match "^(Component|Button|Modal|Card|Dialog|Form)" -and 
+    $_.DirectoryName -notmatch "(components|shared|ui)" -and
+    $_.FullName -like "*\src\*"
+}
+if ($componentFiles.Count -gt 0) {
+    $misplacedFiles += $componentFiles
+}
+$report += "`n## ARCHIVOS MAL UBICADOS ($($misplacedFiles.Count))"
+foreach ($f in $misplacedFiles | Select-Object -First 20) {
+    $report += "- $($f.FullName.Replace($root, ''))"
+}
+
+# 1.8 ARCHIVOS HUÉRFANOS (sin imports)
+Write-Host "`n1.8. Buscando archivos huérfanos..." -ForegroundColor Yellow
+$orphanFiles = @()
+$allSrcFiles = Get-ChildItem "src" -Recurse -File -Include "*.ts", "*.tsx" -ErrorAction SilentlyContinue | Where-Object { $_.FullName -notmatch "node_modules|\.test\.|\.spec\." }
+$allContent = @()
+foreach ($f in $allSrcFiles) {
+    $content = Get-Content $f.FullName -Raw -ErrorAction SilentlyContinue
+    if ($content) { $allContent += $content }
+}
+
+foreach ($file in $allSrcFiles) {
+    $fileName = $file.BaseName
+    $filePath = $file.FullName.Replace($root + "\", "").Replace("\", "/")
+    
+    # Buscar si el archivo es importado
+    $isImported = $false
+    foreach ($content in $allContent) {
+        if ($content -match "from\s+['`"].*$fileName['`"]|import.*$fileName") {
+            $isImported = $true
+            break
+        }
+    }
+    
+    # Excluir archivos de entrada
+    if (-not $isImported -and $file.Name -notmatch "^(main|App|index|vite-env)\.(ts|tsx)$") {
+        $orphanFiles += $filePath
+    }
+}
+$report += "`n## ARCHIVOS HUÉRFANOS ($($orphanFiles.Count))"
+foreach ($f in $orphanFiles | Select-Object -First 20) {
+    $report += "- $f"
 }
 
 # 2. IMPORTS ROTOS (MEJORADO)
@@ -240,9 +344,10 @@ if ($missing.Count -gt 0) {
     $report += "- ✅ Todas las dependencias están instaladas"
 }
 
-# 4. SEGURIDAD (Búsqueda de secretos)
-Write-Host "`n4. BUSCANDO POSIBLES SECRETOS..." -ForegroundColor Yellow
+# 4. SEGURIDAD (Búsqueda de secretos y vulnerabilidades)
+Write-Host "`n4. BUSCANDO POSIBLES SECRETOS Y VULNERABILIDADES..." -ForegroundColor Yellow
 $secrets = @()
+$vulnerabilities = @()
 $filesToScan = $files | Where-Object { 
     $_.Extension -match "js|ts|tsx|json|env" -and 
     $_.FullName -notlike "*node_modules*" -and
@@ -250,8 +355,25 @@ $filesToScan = $files | Where-Object {
 }
 foreach ($f in $filesToScan) {
     $content = Get-Content $f.FullName -Raw -ErrorAction SilentlyContinue
-    if ($content -match "(?i)(sk-[a-zA-Z0-9]{32,}|secret[=:]\s*['`"][^'`"]+['`"]|password[=:]\s*['`"][^'`"]+['`"])") {
-        $secrets += "- POSIBLE SECRETO: $($f.FullName.Replace($root, ''))"
+    if ($content) {
+        # Secretos hardcodeados
+        if ($content -match "(?i)(sk-[a-zA-Z0-9]{32,}|secret[=:]\s*['`"][^'`"]+['`"]|password[=:]\s*['`"][^'`"]+['`"]|api[_-]?key[=:]\s*['`"][^'`"]+['`"]|token[=:]\s*['`"][^'`"]+['`"])") {
+            $secrets += "- POSIBLE SECRETO: $($f.FullName.Replace($root, ''))"
+        }
+        
+        # Vulnerabilidades comunes
+        if ($content -match "eval\s*\(") {
+            $vulnerabilities += "- 🔴 Uso de eval(): $($f.FullName.Replace($root, ''))"
+        }
+        if ($content -match "dangerouslySetInnerHTML|innerHTML\s*=") {
+            $vulnerabilities += "- ⚠️  Posible XSS (innerHTML): $($f.FullName.Replace($root, ''))"
+        }
+        if ($content -match "\.query\(|\.execute\(|SELECT.*\+|INSERT.*\+") {
+            $vulnerabilities += "- ⚠️  Posible SQL Injection: $($f.FullName.Replace($root, ''))"
+        }
+        if ($content -match "localStorage\.(setItem|getItem)" -and $content -notmatch "sanitize|validate") {
+            $vulnerabilities += "- ⚠️  localStorage sin validación: $($f.FullName.Replace($root, ''))"
+        }
     }
 }
 $report += "`n## POSIBLES SECRETOS ($($secrets.Count))"
@@ -260,9 +382,98 @@ if ($secrets.Count -gt 0) {
 } else {
     $report += "- ✅ No se encontraron secretos obvios"
 }
+$report += "`n## VULNERABILIDADES ($($vulnerabilities.Count))"
+if ($vulnerabilities.Count -gt 0) {
+    $report += $vulnerabilities | Select-Object -First 20
+} else {
+    $report += "- ✅ No se encontraron vulnerabilidades obvias"
+}
 
-# 5. ANDROID / CAPACITOR
-Write-Host "`n5. VERIFICANDO ANDROID..." -ForegroundColor Yellow
+# 5. ANÁLISIS DE CÓDIGO (TypeScript, ESLint, Lint)
+Write-Host "`n5. ANALIZANDO CÓDIGO (TypeScript, ESLint, Lint)..." -ForegroundColor Yellow
+$codeErrors = @()
+
+# TypeScript
+Write-Host "  5.1. Verificando errores de TypeScript..." -ForegroundColor Gray
+try {
+    $tsErrors = pnpm run type-check 2>&1 | Out-String
+    if ($tsErrors -match "error TS|Found \d+ error") {
+        $tsErrorLines = $tsErrors -split "`n" | Where-Object { $_ -match "error TS" } | Select-Object -First 20
+        foreach ($line in $tsErrorLines) {
+            $codeErrors += "- TypeScript: $line"
+        }
+    }
+} catch {
+    $codeErrors += "- ⚠️  No se pudo ejecutar type-check: $_"
+}
+
+# ESLint
+Write-Host "  5.2. Verificando errores de ESLint..." -ForegroundColor Gray
+try {
+    $eslintErrors = npx eslint . --format compact 2>&1 | Out-String
+    if ($eslintErrors -match "error|warning" -and $eslintErrors -notmatch "No files matching") {
+        $eslintErrorLines = $eslintErrors -split "`n" | Where-Object { $_ -match "error|warning" } | Select-Object -First 20
+        foreach ($line in $eslintErrorLines) {
+            $codeErrors += "- ESLint: $line"
+        }
+    }
+} catch {
+    $codeErrors += "- ⚠️  No se pudo ejecutar ESLint: $_"
+}
+
+# Lint
+Write-Host "  5.3. Verificando errores de Lint..." -ForegroundColor Gray
+try {
+    $lintErrors = pnpm run lint 2>&1 | Out-String
+    if ($lintErrors -match "error|warning" -and $lintErrors -notmatch "No files matching") {
+        $lintErrorLines = $lintErrors -split "`n" | Where-Object { $_ -match "error|warning" } | Select-Object -First 20
+        foreach ($line in $lintErrorLines) {
+            $codeErrors += "- Lint: $line"
+        }
+    }
+} catch {
+    $codeErrors += "- ⚠️  No se pudo ejecutar lint: $_"
+}
+
+$report += "`n## ERRORES DE CÓDIGO ($($codeErrors.Count))"
+if ($codeErrors.Count -gt 0) {
+    $report += $codeErrors | Select-Object -First 50
+} else {
+    $report += "- ✅ No se encontraron errores de código"
+}
+
+# 6. USO DE TABLAS EN CÓDIGO (as any, null, etc.)
+Write-Host "`n6. VERIFICANDO USO DE TABLAS EN CÓDIGO..." -ForegroundColor Yellow
+$tableIssues = @()
+$srcFiles = Get-ChildItem "src" -Recurse -File -Include "*.ts", "*.tsx" -ErrorAction SilentlyContinue | Where-Object { $_.FullName -notmatch "node_modules|\.test\.|\.spec\." }
+
+foreach ($file in $srcFiles) {
+    $content = Get-Content $file.FullName -Raw -ErrorAction SilentlyContinue
+    if ($content) {
+        # Buscar 'as any' o 'null' relacionados con tablas
+        if ($content -match "as\s+any|:\s*null|undefined") {
+            $lines = $content -split "`n"
+            for ($i = 0; $i -lt $lines.Count; $i++) {
+                if ($lines[$i] -match "as\s+any|:\s*null|undefined") {
+                    # Buscar si hay referencia a tabla
+                    if ($lines[$i] -match "\.from\(|supabase\.from") {
+                        $tableIssues += "- $($file.Name):$($i+1) → $($lines[$i].Trim())"
+                    }
+                }
+            }
+        }
+    }
+}
+
+$report += "`n## USO DE 'as any' O 'null' CON TABLAS ($($tableIssues.Count))"
+if ($tableIssues.Count -gt 0) {
+    $report += $tableIssues | Select-Object -First 30
+} else {
+    $report += "- ✅ No se encontraron usos problemáticos de 'as any' o 'null' con tablas"
+}
+
+# 7. ANDROID / CAPACITOR
+Write-Host "`n7. VERIFICANDO ANDROID..." -ForegroundColor Yellow
 $androidIssues = @()
 if (-not (Test-Path "android")) { $androidIssues += "- FALTA CARPETA 'android/'" }
 if (-not (Test-Path "capacitor.config.ts")) { $androidIssues += "- FALTA capacitor.config.ts" }
@@ -273,7 +484,7 @@ if ($androidIssues.Count -gt 0) {
     $report += "- ✅ Configuración Android correcta"
 }
 
-# 6. FINAL
+# 8. FINAL
 $endTime = Get-Date
 $duration = ($endTime - $startTime).ToString("mm\:ss")
 $report += "`n## RESUMEN FINAL"
@@ -281,9 +492,17 @@ $report += "- Duración: $duration"
 $report += "- Archivos escaneados: $($files.Count)"
 $report += "- Directorios vacíos: $($emptyDirs.Count)"
 $report += "- Duplicados: $($dupes.Count)"
+$report += "- Archivos vacíos: $($emptyFiles.Count)"
+$report += "- Archivos corruptos: $($corruptFiles.Count)"
+$report += "- Archivos obsoletos: $($obsoleteFiles.Count)"
+$report += "- Archivos mal ubicados: $($misplacedFiles.Count)"
+$report += "- Archivos huérfanos: $($orphanFiles.Count)"
 $report += "- Imports rotos: $($importErrors.Count)"
-$report += "- Dependencias faltantes: $($missing.Count)"
+$report += "- Deps faltantes: $($missing.Count)"
 $report += "- Posibles secretos: $($secrets.Count)"
+$report += "- Vulnerabilidades: $($vulnerabilities.Count)"
+$report += "- Errores de código: $($codeErrors.Count)"
+$report += "- Uso problemático de tablas: $($tableIssues.Count)"
 
 # GUARDAR REPORTE
 $ts = Get-Date -Format "yyyyMMdd_HHmm"
@@ -295,4 +514,6 @@ Write-Host "`n📊 RESUMEN:" -ForegroundColor Cyan
 Write-Host "  - Imports rotos: $($importErrors.Count)" -ForegroundColor $(if ($importErrors.Count -eq 0) { "Green" } else { "Yellow" })
 Write-Host "  - Dependencias faltantes: $($missing.Count)" -ForegroundColor $(if ($missing.Count -eq 0) { "Green" } else { "Yellow" })
 Write-Host "  - Directorios vacíos: $($emptyDirs.Count)" -ForegroundColor $(if ($emptyDirs.Count -eq 0) { "Green" } else { "Yellow" })
-
+Write-Host "  - Archivos huérfanos: $($orphanFiles.Count)" -ForegroundColor $(if ($orphanFiles.Count -eq 0) { "Green" } else { "Yellow" })
+Write-Host "  - Vulnerabilidades: $($vulnerabilities.Count)" -ForegroundColor $(if ($vulnerabilities.Count -eq 0) { "Green" } else { "Red" })
+Write-Host "  - Errores de código: $($codeErrors.Count)" -ForegroundColor $(if ($codeErrors.Count -eq 0) { "Green" } else { "Yellow" })

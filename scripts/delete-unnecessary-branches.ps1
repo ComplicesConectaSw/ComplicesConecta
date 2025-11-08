@@ -23,7 +23,7 @@ $protectedBranches = @(
 )
 
 Write-Host "🗑️  ELIMINANDO RAMAS INNECESARIAS" -ForegroundColor Yellow
-Write-Host "=" * 70 -ForegroundColor Cyan
+Write-Host ("=" * 70) -ForegroundColor Cyan
 Write-Host ""
 
 # Obtener todas las ramas remotas
@@ -74,7 +74,7 @@ if ($branchesToDelete.Count -gt 0) {
         foreach ($branch in $branchesToDelete) {
             Write-Host "   🗑️  Eliminando: $branch" -ForegroundColor Yellow
             try {
-                $result = git push origin --delete $branch 2>&1
+                git push origin --delete $branch 2>&1 | Out-Null
                 if ($LASTEXITCODE -eq 0) {
                     Write-Host "      ✅ Eliminada: $branch" -ForegroundColor Green
                     $deletedCount++
@@ -90,7 +90,7 @@ if ($branchesToDelete.Count -gt 0) {
         
         Write-Host ""
         Write-Host "📊 RESUMEN" -ForegroundColor Cyan
-        Write-Host "=" * 70 -ForegroundColor Cyan
+        Write-Host ("=" * 70) -ForegroundColor Cyan
         Write-Host "✅ Eliminadas: $deletedCount" -ForegroundColor Green
         Write-Host "❌ Fallidas: $failedCount" -ForegroundColor Red
         Write-Host "🔒 Protegidas: $($protectedBranches.Count)" -ForegroundColor Green

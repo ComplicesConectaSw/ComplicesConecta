@@ -25,6 +25,7 @@ import { useAuth } from '@/features/auth/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/useToast';
 import { logger } from '@/lib/logger';
+import type { Database } from '@/types/supabase-generated';
 
 interface DashboardStats {
   totalUsers: number;
@@ -125,19 +126,22 @@ const AdminDashboard = () => {
       ).length || 0;
 
       // Obtener estad�sticas de matches
-      const { data: matchesData, error: matchesError } = await (supabase as any)
+      const { data: matchesData, error: matchesError } = await supabase
         .from('matches')
         .select('id, created_at');
 
       if (matchesError) throw matchesError;
 
-      const totalMatches = matchesData?.length || 0;
-      const matchesToday = matchesData?.filter((m: any) => 
+      type MatchRow = Database['public']['Tables']['matches']['Row'];
+      const matches = (matchesData || []) as MatchRow[];
+
+      const totalMatches = matches.length;
+      const matchesToday = matches.filter((m) => 
         new Date(m.created_at) >= today
-      ).length || 0;
+      ).length;
 
       // Obtener estad�sticas de mensajes
-      const { data: messagesData, error: _messagesError } = await (supabase as any)
+      const { data: messagesData, error: _messagesError } = await supabase
         .from('messages')
         .select('id');
 
@@ -152,7 +156,7 @@ const AdminDashboard = () => {
       const reportsCount = reportsData?.length || 0;
 
       // Obtener moderadores
-      const { data: moderatorsData, error: _moderatorsError } = await (supabase as any)
+      const { data: moderatorsData, error: _moderatorsError } = await supabase
         .from('user_roles')
         .select('id')
         .eq('role', 'moderator');
@@ -160,14 +164,14 @@ const AdminDashboard = () => {
       const moderatorsCount = moderatorsData?.length || 0;
 
       // Obtener solicitudes de carrera
-      const { data: careerData, error: _careerError } = await (supabase as any)
+      const { data: careerData, error: _careerError } = await supabase
         .from('career_applications')
         .select('id');
 
       const careerApplications = careerData?.length || 0;
 
       // Obtener solicitudes de moderadores
-      const { data: moderatorRequestsData, error: _moderatorRequestsError } = await (supabase as any)
+      const { data: moderatorRequestsData, error: _moderatorRequestsError } = await supabase
         .from('moderator_requests')
         .select('id');
 
@@ -189,17 +193,19 @@ const AdminDashboard = () => {
       // Cargar actividad de usuarios recientes
       const { data: recentUsers, error: recentUsersError } = await supabase
         .from('profiles')
-        .select('id, email, full_name, created_at, updated_at')
+        .select('id, first_name, last_name, name, created_at, updated_at')
         .order('updated_at', { ascending: false })
         .limit(10);
 
       if (!recentUsersError && recentUsers) {
-        setUserActivity(recentUsers.map((u: any) => ({
+        type RecentProfileRow = Database['public']['Tables']['profiles']['Row'];
+        const recentProfiles = (recentUsers || []) as RecentProfileRow[];
+        setUserActivity(recentProfiles.map((u) => ({
           id: u.id,
-          email: u.email || '',
-          full_name: u.full_name,
-          last_sign_in_at: u.updated_at,
-          created_at: u.created_at,
+          email: '', // Email no está disponible en profiles directamente
+          full_name: u.name || (u.first_name && u.last_name ? `${u.first_name} ${u.last_name}` : 'Usuario'),
+          last_sign_in_at: u.updated_at || undefined,
+          created_at: u.created_at || new Date().toISOString(),
           is_active: u.updated_at ? new Date(u.updated_at) >= weekAgo : false
         })));
       }
@@ -274,7 +280,7 @@ const AdminDashboard = () => {
           break;
         }
         case 'matches': {
-          const { data: matchesData } = await (supabase as any)
+          const { data: matchesData } = await supabase
             .from('matches')
             .select('*');
           data = matchesData || [];
