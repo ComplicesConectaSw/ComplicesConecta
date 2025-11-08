@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/Card";
+import { Button } from "@/shared/ui/Button";
 import { Heart, Flame, Crown, Filter, RefreshCw } from 'lucide-react';
 import { AdvancedFilters, FilterState } from '@/components/discover/AdvancedFilters';
 

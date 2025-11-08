@@ -6,8 +6,8 @@ import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { logger } from '@/lib/logger';
 import { useFeatures } from '@/hooks/useFeatures';
 import { usePersistedState } from '@/hooks/usePersistedState';
-import { cn } from '@/lib/utils';
-import { getNavbarStyles } from '@/hooks/useProfileTheme';
+import { cn } from '@/shared/lib/cn';
+import { getNavbarStyles } from '@/features/profile/useProfileTheme';
 
 interface NavigationProps {
   className?: string;

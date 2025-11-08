@@ -26,7 +26,7 @@ const ROUTE_CONFIGS: RouteConfig[] = [
   // Rutas críticas - alta prioridad
   {
     path: '/profiles',
-    component: () => import('@/pages/Profiles'),
+    component: () => import('@/profiles/shared/Profiles'),
     priority: 'high',
     preload: true,
     chunkName: 'profiles',
@@ -282,7 +282,7 @@ export function useCodeSplitting() {
 export const LazyComponents = {
   // Componentes de perfil - manejo seguro de imports
   ProfileCard: createLazyComponent(
-    () => import('@/components/profile/MainProfileCard').then(module => ({ 
+    () => import('@/profiles/shared/MainProfileCard').then(module => ({ 
       default: (module as any).default || (module as any).MainProfileCard || module 
     })),
     { chunkName: 'profile-card', preload: true }

@@ -8,8 +8,11 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: ['./src/tests/setup.ts'],
-    include: ['src/tests/unit/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    include: ['src/tests/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     exclude: ['src/tests/e2e/**/*', 'tests/e2e/**/*', 'node_modules/**/*'],
+    testTimeout: 10000, // 10 segundos máximo por test
+    hookTimeout: 5000, // 5 segundos máximo para hooks
+    teardownTimeout: 5000, // 5 segundos máximo para cleanup
     typecheck: {
       tsconfig: './tsconfig.test.json'
     },

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/shared/ui/Card';
+import { Button } from '@/shared/ui/Button';
 import { Textarea } from '@/components/ui/textarea';
 import { EyeOff, Lock, Send, X } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/hooks/useToast';
 import { logger } from '@/lib/logger';
 
 interface PrivateImageRequestProps {

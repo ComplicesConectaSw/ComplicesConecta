@@ -125,7 +125,6 @@ temp/
 dev-scripts/
 reports/
 token-system-spec/
-docs/
 GIT_HUB_Menu.ps1/
 fix-supabase.ps1/
 .GIT_HUB_Menu.ps1/
@@ -155,6 +154,8 @@ android/.gradle/
 android/.fastRequest/
 *.apk
 *.aab
+# APK específico en public/ (debe estar en GitHub Releases)
+public/app-release.apk
 
 # Vite build artifacts
 dist-ssr/
@@ -202,7 +203,6 @@ scripts/fix_rls_profiles.sql
 scripts/create_missing_tables.sql
 
 # Directorios de documentación redundantes
-docs/
 docs-public/
 workflows-desactivados/
 diff.patch
@@ -227,17 +227,13 @@ dist/js/*.js
 # Directorio de auditoría - archivos movidos durante limpieza del proyecto
 audit-files/
 
-# Directorio de documentación unificada (organizado)
+# Directorio de documentación unificada (organizado) - USO INTERNO - NO SUBIR A GIT
 docs-unified/
 
 # Directorios adicionales de auditoría y respaldos
 2025-01-22/
 backups/
 audit-files/
-
-# Directorios de documentación temporales (no subir a GitHub)
-docs-unified/
-docs/
 
 # Docker (ignorar archivos temporales y builds)
 .docker/
@@ -251,29 +247,30 @@ docker-volumes/
 # Sentry Config File
 sentry.properties
 
-# Archivos de documentación y análisis (no subir a GitHub)
-ANALISIS_*.md
-REPORTE_*.md
-RESUMEN_*.md
-DOCUMENTACION_*.md
-MEMORIAS_*.md
-PLAN_*.md
-ComplicesConecta_Diagnostico*.md
-DEPENDENCIAS_*.md
-*_AUDITORIA_*.md
-*_CONSOLIDADO_*.md
-*_UNIFICADO_*.md
-*_CONSOLIDADA_*.md
-*_UNIFICADA_*.md
-*_DIAGNOSTICO_*.md
-*_DIAGNOSTICO*.md
-*_HALLAZGOS*.md
-*_SOLUCIONES_*.md
-*_VALIDACION_*.md
-*_COMPARACION_*.md
-*_CORRECCIONES_*.md
-*_ESTILOS_*.md
-*_COMPONENTES_*.md
-*_DUPLICADOS_*.md
-*_CONFLICTOS_*.md
+# Archivos de documentación y análisis (no subir a GitHub, excepto en docs/)
+# Excluir solo en root, no en docs/
+/ANALISIS_*.md
+/REPORTE_*.md
+/RESUMEN_*.md
+/DOCUMENTACION_*.md
+/MEMORIAS_*.md
+/PLAN_*.md
+/ComplicesConecta_Diagnostico*.md
+/DEPENDENCIAS_*.md
+/*_AUDITORIA_*.md
+/*_CONSOLIDADO_*.md
+/*_UNIFICADO_*.md
+/*_CONSOLIDADA_*.md
+/*_UNIFICADA_*.md
+/*_DIAGNOSTICO_*.md
+/*_DIAGNOSTICO*.md
+/*_HALLAZGOS*.md
+/*_SOLUCIONES_*.md
+/*_VALIDACION_*.md
+/*_COMPARACION_*.md
+/*_CORRECCIONES_*.md
+/*_ESTILOS_*.md
+/*_COMPONENTES_*.md
+/*_DUPLICADOS_*.md
+/*_CONFLICTOS_*.md
 .env*.local

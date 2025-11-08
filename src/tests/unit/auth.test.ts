@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/features/auth/useAuth';
 import { createTestQueryClient } from '../setup/test-utils';
 import { QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
@@ -42,7 +42,7 @@ vi.mock('@/integrations/supabase/client', () => ({
 }));
 
 // Mock useAuth hook and useProfile
-vi.mock('@/hooks/useAuth', () => ({
+vi.mock('@/features/auth/useAuth', () => ({
   useAuth: vi.fn(() => ({
     user: null,
     session: null,

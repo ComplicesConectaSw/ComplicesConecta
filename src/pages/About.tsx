@@ -1,6 +1,6 @@
-锘縤mport { Heart, Users, Shield, Zap, Star, Award, Target, Camera, Play, Eye } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Heart, Users, Shield, Zap, Star, Award, Target, Camera, Play, Eye } from "lucide-react";
+import { Button } from "@/shared/ui/Button";
+import { Card, CardContent } from "@/shared/ui/Card";
 import { useNavigate } from "react-router-dom";
 import HeaderNav from "@/components/HeaderNav";
 
@@ -11,7 +11,7 @@ const About = () => {
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 relative overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0">
-        {/* Elementos fantasma deshabilitados para evitar aparici贸n/desaparici贸n */}
+        {/* Elementos fantasma deshabilitados para evitar aparici髇/desaparici髇 */}
         {/* <div className="absolute top-20 left-10 w-72 h-72 bg-pink-500/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
         <div className="absolute top-40 right-10 w-72 h-72 bg-purple-500/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
         <div className="absolute -bottom-8 left-20 w-72 h-72 bg-red-500/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div> */}
@@ -33,7 +33,7 @@ const About = () => {
               </div>
               <h2 className="text-4xl font-bold text-white mb-4">ComplicesConecta</h2>
               <p className="text-xl text-white/90 font-medium leading-relaxed mb-6">
-                La plataforma social l铆der en M茅xico para adultos que buscan conexiones aut茅nticas 
+                La plataforma social l韉er en M閤ico para adultos que buscan conexiones aut閚ticas 
                 en el lifestyle swinger. Conecta con parejas y solteros verificados en un ambiente 
                 seguro, discreto y completamente respetuoso.
               </p>
@@ -46,7 +46,7 @@ const About = () => {
                 <div className="bg-white/5 rounded-lg p-4">
                   <Shield className="h-8 w-8 text-green-400 mx-auto mb-2" />
                   <h3 className="text-white font-semibold text-sm">100% Seguro</h3>
-                  <p className="text-white/70 text-xs">Verificaci贸n de identidad obligatoria</p>
+                  <p className="text-white/70 text-xs">Verificaci髇 de identidad obligatoria</p>
                 </div>
                 <div className="bg-white/5 rounded-lg p-4">
                   <Award className="h-8 w-8 text-yellow-400 mx-auto mb-2" />
@@ -63,12 +63,12 @@ const About = () => {
               <CardContent className="p-6">
                 <div className="flex items-center mb-4">
                   <Target className="h-8 w-8 text-pink-400 mr-3" />
-                  <h3 className="text-xl font-bold text-white">Nuestra Misi贸n</h3>
+                  <h3 className="text-xl font-bold text-white">Nuestra Misi髇</h3>
                 </div>
                 <p className="text-white font-medium leading-relaxed">
                   Crear un espacio seguro donde parejas y solteros del lifestyle swinger puedan 
-                  conectar de manera aut茅ntica, explorando nuevas experiencias con total 
-                  discreci贸n y respeto mutuo.
+                  conectar de manera aut閚tica, explorando nuevas experiencias con total 
+                  discreci髇 y respeto mutuo.
                 </p>
               </CardContent>
             </Card>
@@ -77,11 +77,11 @@ const About = () => {
               <CardContent className="p-6">
                 <div className="flex items-center mb-4">
                   <Star className="h-8 w-8 text-purple-400 mr-3" />
-                  <h3 className="text-xl font-bold text-white">Nuestra Visi贸n</h3>
+                  <h3 className="text-xl font-bold text-white">Nuestra Visi髇</h3>
                 </div>
                 <p className="text-white font-medium leading-relaxed">
-                  Convertirnos en una plataforma confiable para la comunidad lifestyle en M茅xico, 
-                  reconocida por brindar un ambiente seguro, tecnolog铆a moderna y compromiso 
+                  Convertirnos en una plataforma confiable para la comunidad lifestyle en M閤ico, 
+                  reconocida por brindar un ambiente seguro, tecnolog韆 moderna y compromiso 
                   con la privacidad de nuestros usuarios.
                 </p>
               </CardContent>
@@ -99,7 +99,7 @@ const About = () => {
                   </div>
                   <h4 className="text-lg font-semibold text-white mb-2">Seguridad</h4>
                   <p className="text-white/70 text-sm">
-                    Sistema de verificaci贸n de usuarios y protecci贸n de datos personales.
+                    Sistema de verificaci髇 de usuarios y protecci髇 de datos personales.
                   </p>
                 </div>
 
@@ -109,7 +109,7 @@ const About = () => {
                   </div>
                   <h4 className="text-lg font-semibold text-white mb-2">Comunidad</h4>
                   <p className="text-white/70 text-sm">
-                    Comunidad lifestyle con c贸digos de respeto y 茅tica bien definidos.
+                    Comunidad lifestyle con c骴igos de respeto y 閠ica bien definidos.
                   </p>
                 </div>
 
@@ -117,7 +117,7 @@ const About = () => {
                   <div className="p-4 bg-gradient-to-r from-orange-500 to-red-600 rounded-full w-16 h-16 mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                     <Zap className="h-8 w-8 text-white" />
                   </div>
-                  <h4 className="text-lg font-semibold text-white mb-2">Innovaci贸n</h4>
+                  <h4 className="text-lg font-semibold text-white mb-2">Innovaci髇</h4>
                   <p className="text-white/70 text-sm">
                     Sistema de matching inteligente basado en compatibilidad e intereses.
                   </p>
@@ -133,28 +133,28 @@ const About = () => {
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div className="bg-white/5 rounded-lg p-4 hover:bg-white/10 transition-colors">
                   <Camera className="h-8 w-8 text-purple-400 mb-3" />
-                  <h4 className="font-semibold text-white mb-2">Historias Ef铆meras</h4>
+                  <h4 className="font-semibold text-white mb-2">Historias Ef韒eras</h4>
                   <p className="text-white/70 text-sm">Comparte momentos que desaparecen en 24 horas con total privacidad</p>
                 </div>
                 <div className="bg-white/5 rounded-lg p-4 hover:bg-white/10 transition-colors">
                   <Users className="h-8 w-8 text-blue-400 mb-3" />
                   <h4 className="font-semibold text-white mb-2">Matching Inteligente</h4>
-                  <p className="text-white/70 text-sm">Algoritmo avanzado que conecta seg煤n compatibilidad y preferencias</p>
+                  <p className="text-white/70 text-sm">Algoritmo avanzado que conecta seg鷑 compatibilidad y preferencias</p>
                 </div>
                 <div className="bg-white/5 rounded-lg p-4 hover:bg-white/10 transition-colors">
                   <Shield className="h-8 w-8 text-green-400 mb-3" />
-                  <h4 className="font-semibold text-white mb-2">Verificaci贸n Biom茅trica</h4>
-                  <p className="text-white/70 text-sm">Sistema 2FA con autenticaci贸n facial y huella digital</p>
+                  <h4 className="font-semibold text-white mb-2">Verificaci髇 Biom閠rica</h4>
+                  <p className="text-white/70 text-sm">Sistema 2FA con autenticaci髇 facial y huella digital</p>
                 </div>
                 <div className="bg-white/5 rounded-lg p-4 hover:bg-white/10 transition-colors">
                   <Eye className="h-8 w-8 text-pink-400 mb-3" />
-                  <h4 className="font-semibold text-white mb-2">Galer铆as NFT-Verificadas</h4>
-                  <p className="text-white/70 text-sm">Perfiles y galer铆as como NFTs mintados con GTK tokens</p>
+                  <h4 className="font-semibold text-white mb-2">Galer韆s NFT-Verificadas</h4>
+                  <p className="text-white/70 text-sm">Perfiles y galer韆s como NFTs mintados con GTK tokens</p>
                 </div>
                 <div className="bg-white/5 rounded-lg p-4 hover:bg-white/10 transition-colors">
                   <Play className="h-8 w-8 text-orange-400 mb-3" />
                   <h4 className="font-semibold text-white mb-2">Verificador IA de Consentimiento</h4>
-                  <p className="text-white/70 text-sm">Detecci贸n proactiva de consentimiento en chats con IA</p>
+                  <p className="text-white/70 text-sm">Detecci髇 proactiva de consentimiento en chats con IA</p>
                 </div>
                 <div className="bg-white/5 rounded-lg p-4 hover:bg-white/10 transition-colors">
                   <Award className="h-8 w-8 text-yellow-400 mb-3" />
@@ -170,14 +170,14 @@ const About = () => {
             </CardContent>
           </Card>
 
-          {/* Estad铆sticas y Logros */}
+          {/* Estad韘ticas y Logros */}
           <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-xl">
             <CardContent className="p-8">
-              <h3 className="text-2xl font-bold text-white mb-6 text-center">Nuestra Comunidad en N煤meros</h3>
+              <h3 className="text-2xl font-bold text-white mb-6 text-center">Nuestra Comunidad en N鷐eros</h3>
               <div className="grid md:grid-cols-4 gap-6 text-center">
                 <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-lg p-6">
                   <div className="text-3xl font-bold text-white mb-2">v3.5.0</div>
-                  <div className="text-white/70 text-sm">Versi贸n Actual</div>
+                  <div className="text-white/70 text-sm">Versi髇 Actual</div>
                 </div>
                 <div className="bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-lg p-6">
                   <div className="text-3xl font-bold text-white mb-2">107</div>
@@ -204,22 +204,22 @@ const About = () => {
                   <div className="flex items-start space-x-3">
                     <Shield className="h-6 w-6 text-green-400 mt-1 flex-shrink-0" />
                     <div>
-                      <h4 className="font-semibold text-white">Encriptaci贸n AES-GCM</h4>
-                      <p className="text-white/70 text-sm">Todos los datos est谩n protegidos con cifrado militar de grado empresarial</p>
+                      <h4 className="font-semibold text-white">Encriptaci髇 AES-GCM</h4>
+                      <p className="text-white/70 text-sm">Todos los datos est醤 protegidos con cifrado militar de grado empresarial</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
                     <Award className="h-6 w-6 text-yellow-400 mt-1 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-white">Cumplimiento GDPR/LFPDPPP</h4>
-                      <p className="text-white/70 text-sm">Certificados en protecci贸n de datos europea y mexicana</p>
+                      <p className="text-white/70 text-sm">Certificados en protecci髇 de datos europea y mexicana</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
                     <Eye className="h-6 w-6 text-blue-400 mt-1 flex-shrink-0" />
                     <div>
-                      <h4 className="font-semibold text-white">Moderaci贸n IA + Humana</h4>
-                      <p className="text-white/70 text-sm">Sistema h铆brido de detecci贸n de contenido inapropiado</p>
+                      <h4 className="font-semibold text-white">Moderaci髇 IA + Humana</h4>
+                      <p className="text-white/70 text-sm">Sistema h韇rido de detecci髇 de contenido inapropiado</p>
                     </div>
                   </div>
                 </div>
@@ -227,14 +227,14 @@ const About = () => {
                   <div className="flex items-start space-x-3">
                     <Users className="h-6 w-6 text-purple-400 mt-1 flex-shrink-0" />
                     <div>
-                      <h4 className="font-semibold text-white">Verificaci贸n Obligatoria</h4>
-                      <p className="text-white/70 text-sm">Documento oficial + selfie + verificaci贸n telef贸nica</p>
+                      <h4 className="font-semibold text-white">Verificaci髇 Obligatoria</h4>
+                      <p className="text-white/70 text-sm">Documento oficial + selfie + verificaci髇 telef髇ica</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
                     <Zap className="h-6 w-6 text-orange-400 mt-1 flex-shrink-0" />
                     <div>
-                      <h4 className="font-semibold text-white">Detecci贸n de Fraude</h4>
+                      <h4 className="font-semibold text-white">Detecci髇 de Fraude</h4>
                       <p className="text-white/70 text-sm">IA avanzada para identificar perfiles falsos y comportamiento sospechoso</p>
                     </div>
                   </div>
@@ -253,9 +253,9 @@ const About = () => {
           {/* CTA */}
           <Card className="bg-gradient-to-r from-pink-500/20 to-purple-600/20 backdrop-blur-md border-pink-300/30 shadow-xl">
             <CardContent className="p-8 text-center">
-              <h3 className="text-2xl font-bold text-white mb-4">驴Listo para Conectar?</h3>
+              <h3 className="text-2xl font-bold text-white mb-4">縇isto para Conectar?</h3>
               <p className="text-white font-medium mb-6">
-                脷nete a nuestra creciente comunidad lifestyle en M茅xico. 
+                趎ete a nuestra creciente comunidad lifestyle en M閤ico. 
                 Estamos construyendo algo especial juntos.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">

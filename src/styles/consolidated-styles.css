@@ -17,7 +17,8 @@
  */
 
 /* ===== IMPORTACIONES DE FUENTES ===== */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+/* NOTA: El @import de fuentes se maneja en index.html para evitar conflictos con @tailwind */
+/* Las fuentes se cargan mediante <link> en index.html para mejor rendimiento */
 
 /* ===== VARIABLES CSS GLOBALES ===== */
 :root {

@@ -1,15 +1,15 @@
-Ôªøimport { useState } from "react";
+import { useState } from "react";
 import HeaderNav from "@/components/HeaderNav";
 import { Footer } from "@/components/Footer";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/shared/ui/Button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/Card";
 import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
+import { Input } from "@/shared/ui/Input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { HelpCircle, MessageSquare, Star, Send, Heart, Shield, Crown, Bug, AlertTriangle, UserCheck, Lock, GalleryHorizontal, MessageCircle, Gift, Zap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/useToast";
 import { logger } from '@/lib/logger';
 
 const FAQ = () => {
@@ -32,21 +32,21 @@ const FAQ = () => {
 
   const faqCategories = {
     verificacion: {
-      title: "Verificaci√≥n KYC",
+      title: "VerificaciÛn KYC",
       icon: UserCheck,
       color: "text-blue-500",
       faqs: [
         {
-          question: "¬øC√≥mo funciona la verificaci√≥n KYC?",
-          answer: "Utilizamos tecnolog√≠a blockchain avanzada y verificaci√≥n de identidad para verificar la identidad de todos nuestros miembros. El sistema incluye verificaci√≥n de documentos oficiales, selfie biom√©trica y verificaci√≥n telef√≥nica. Este proceso garantiza que solo personas reales y verificadas accedan a la plataforma."
+          question: "øCÛmo funciona la verificaciÛn KYC?",
+          answer: "Utilizamos tecnologÌa blockchain avanzada y verificaciÛn de identidad para verificar la identidad de todos nuestros miembros. El sistema incluye verificaciÛn de documentos oficiales, selfie biomÈtrica y verificaciÛn telefÛnica. Este proceso garantiza que solo personas reales y verificadas accedan a la plataforma."
         },
         {
-          question: "¬øQu√© documentos necesito para verificarme?",
-          answer: "Necesitas una identificaci√≥n oficial vigente (INE, pasaporte o c√©dula profesional) y una selfie clara. El proceso es completamente seguro y tus datos est√°n protegidos."
+          question: "øQuÈ documentos necesito para verificarme?",
+          answer: "Necesitas una identificaciÛn oficial vigente (INE, pasaporte o cÈdula profesional) y una selfie clara. El proceso es completamente seguro y tus datos est·n protegidos."
         },
         {
-          question: "¬øCu√°nto tarda la verificaci√≥n?",
-          answer: "La verificaci√≥n KYC toma entre 24-48 horas h√°biles. Los miembros Premium tienen verificaci√≥n prioritaria en menos de 12 horas."
+          question: "øCu·nto tarda la verificaciÛn?",
+          answer: "La verificaciÛn KYC toma entre 24-48 horas h·biles. Los miembros Premium tienen verificaciÛn prioritaria en menos de 12 horas."
         }
       ]
     },
@@ -56,35 +56,35 @@ const FAQ = () => {
       color: "text-green-500",
       faqs: [
         {
-          question: "¬øEs seguro el chat privado?",
-          answer: "Absolutamente. Todas las conversaciones est√°n encriptadas end-to-end con AES-GCM. Adem√°s, implementamos el Verificador IA de Consentimiento que detecta proactivamente patrones de consentimiento en los mensajes, cumpliendo con la Ley Olimpia. Tu privacidad y discreci√≥n son nuestra m√°xima prioridad."
+          question: "øEs seguro el chat privado?",
+          answer: "Absolutamente. Todas las conversaciones est·n encriptadas end-to-end con AES-GCM. Adem·s, implementamos el Verificador IA de Consentimiento que detecta proactivamente patrones de consentimiento en los mensajes, cumpliendo con la Ley Olimpia. Tu privacidad y discreciÛn son nuestra m·xima prioridad."
         },
         {
-          question: "¬øC√≥mo protegen mis datos personales?",
-          answer: "Utilizamos encriptaci√≥n de grado militar y cumplimos con GDPR. Nunca compartimos tu informaci√≥n personal con terceros sin tu consentimiento expl√≠cito."
+          question: "øCÛmo protegen mis datos personales?",
+          answer: "Utilizamos encriptaciÛn de grado militar y cumplimos con GDPR. Nunca compartimos tu informaciÛn personal con terceros sin tu consentimiento explÌcito."
         },
         {
-          question: "¬øPuedo controlar qui√©n ve mi perfil?",
-          answer: "S√≠, tienes control total sobre tu privacidad. Puedes configurar qui√©n puede ver tu perfil, fotos privadas y contactarte."
+          question: "øPuedo controlar quiÈn ve mi perfil?",
+          answer: "SÌ, tienes control total sobre tu privacidad. Puedes configurar quiÈn puede ver tu perfil, fotos privadas y contactarte."
         }
       ]
     },
     galerias: {
-      title: "Galer√≠as Privadas",
+      title: "GalerÌas Privadas",
       icon: GalleryHorizontal,
       color: "text-purple-500",
       faqs: [
         {
-          question: "¬øC√≥mo funcionan las galer√≠as privadas?",
-          answer: "Las galer√≠as privadas te permiten compartir fotos √≠ntimas solo con personas que hayas autorizado. Tienes control total sobre qui√©n puede acceder. Adem√°s, puedes crear Galer√≠as NFT-Verificadas usando tokens GTK, lo que garantiza autenticidad y verificaci√≥n de tus galer√≠as."
+          question: "øCÛmo funcionan las galerÌas privadas?",
+          answer: "Las galerÌas privadas te permiten compartir fotos Ìntimas solo con personas que hayas autorizado. Tienes control total sobre quiÈn puede acceder. Adem·s, puedes crear GalerÌas NFT-Verificadas usando tokens GTK, lo que garantiza autenticidad y verificaciÛn de tus galerÌas."
         },
         {
-          question: "¬øC√≥mo env√≠o una invitaci√≥n de galer√≠a?",
-          answer: "Desde cualquier perfil, puedes enviar una invitaci√≥n para acceder a tu galer√≠a privada. La persona debe aceptar la invitaci√≥n para ver tu contenido privado."
+          question: "øCÛmo envÌo una invitaciÛn de galerÌa?",
+          answer: "Desde cualquier perfil, puedes enviar una invitaciÛn para acceder a tu galerÌa privada. La persona debe aceptar la invitaciÛn para ver tu contenido privado."
         },
         {
-          question: "¬øPuedo revocar el acceso a mi galer√≠a?",
-          answer: "S√≠, puedes revocar el acceso a tu galer√≠a privada en cualquier momento desde tu configuraci√≥n de privacidad."
+          question: "øPuedo revocar el acceso a mi galerÌa?",
+          answer: "SÌ, puedes revocar el acceso a tu galerÌa privada en cualquier momento desde tu configuraciÛn de privacidad."
         }
       ]
     },
@@ -94,16 +94,16 @@ const FAQ = () => {
       color: "text-pink-500",
       faqs: [
         {
-          question: "¬øC√≥mo funcionan las invitaciones?",
-          answer: "Puedes enviar invitaciones para conectar, acceder a galer√≠as privadas o chatear. Las invitaciones incluyen un mensaje personalizado y requieren aceptaci√≥n."
+          question: "øCÛmo funcionan las invitaciones?",
+          answer: "Puedes enviar invitaciones para conectar, acceder a galerÌas privadas o chatear. Las invitaciones incluyen un mensaje personalizado y requieren aceptaciÛn."
         },
         {
-          question: "¬øQu√© tipos de invitaciones existen?",
-          answer: "Hay tres tipos: invitaciones de perfil (para conectar), de galer√≠a (para ver fotos privadas) y de chat (para conversaciones privadas)."
+          question: "øQuÈ tipos de invitaciones existen?",
+          answer: "Hay tres tipos: invitaciones de perfil (para conectar), de galerÌa (para ver fotos privadas) y de chat (para conversaciones privadas)."
         },
         {
-          question: "¬øPuedo rechazar una invitaci√≥n?",
-          answer: "Por supuesto. Tienes control total para aceptar o rechazar cualquier invitaci√≥n. Las personas rechazadas no pueden volver a enviarte invitaciones del mismo tipo."
+          question: "øPuedo rechazar una invitaciÛn?",
+          answer: "Por supuesto. Tienes control total para aceptar o rechazar cualquier invitaciÛn. Las personas rechazadas no pueden volver a enviarte invitaciones del mismo tipo."
         }
       ]
     },
@@ -113,15 +113,15 @@ const FAQ = () => {
       color: "text-yellow-500",
       faqs: [
         {
-          question: "¬øQu√© son los eventos VIP?",
-          answer: "Son fiestas privadas y encuentros exclusivos organizados para miembros verificados. Incluyen clubs exclusivos, cenas √≠ntimas y experiencias √∫nicas para la comunidad swinger."
+          question: "øQuÈ son los eventos VIP?",
+          answer: "Son fiestas privadas y encuentros exclusivos organizados para miembros verificados. Incluyen clubs exclusivos, cenas Ìntimas y experiencias ˙nicas para la comunidad swinger."
         },
         {
-          question: "¬øC√≥mo puedo acceder a eventos VIP?",
-          answer: "Los eventos VIP est√°n disponibles para miembros Premium verificados. Recibir√°s invitaciones exclusivas basadas en tu ubicaci√≥n y preferencias."
+          question: "øCÛmo puedo acceder a eventos VIP?",
+          answer: "Los eventos VIP est·n disponibles para miembros Premium verificados. Recibir·s invitaciones exclusivas basadas en tu ubicaciÛn y preferencias."
         },
         {
-          question: "¬øLos eventos son seguros y discretos?",
+          question: "øLos eventos son seguros y discretos?",
           answer: "Absolutamente. Todos los eventos son organizados en ubicaciones seguras y discretas, con estrictos protocolos de privacidad y consentimiento."
         }
       ]
@@ -132,15 +132,15 @@ const FAQ = () => {
       color: "text-orange-500",
       faqs: [
         {
-          question: "¬øQu√© son los tokens?",
+          question: "øQuÈ son los tokens?",
           answer: "Los tokens son nuestra moneda virtual que puedes usar para enviar regalos, destacar tu perfil y acceder a funciones premium especiales."
         },
         {
-          question: "¬øC√≥mo obtengo tokens?",
-          answer: "Puedes comprar tokens o ganarlos completando tu perfil, verific√°ndote, siendo activo en la comunidad y recibiendo valoraciones positivas."
+          question: "øCÛmo obtengo tokens?",
+          answer: "Puedes comprar tokens o ganarlos completando tu perfil, verific·ndote, siendo activo en la comunidad y recibiendo valoraciones positivas."
         },
         {
-          question: "¬øLos tokens caducan?",
+          question: "øLos tokens caducan?",
           answer: "No, tus tokens no caducan. Puedes usarlos cuando quieras para mejorar tu experiencia en la plataforma."
         }
       ]
@@ -151,45 +151,45 @@ const FAQ = () => {
       color: "text-red-500",
       faqs: [
         {
-          question: "¬øC√≥mo puedo reportar un perfil?",
-          answer: "Puedes reportar cualquier perfil sospechoso directamente desde su p√°gina. Nuestro equipo de moderaci√≥n revisa todos los reportes en menos de 24 horas."
+          question: "øCÛmo puedo reportar un perfil?",
+          answer: "Puedes reportar cualquier perfil sospechoso directamente desde su p·gina. Nuestro equipo de moderaciÛn revisa todos los reportes en menos de 24 horas."
         },
         {
-          question: "¬øQu√© hago si alguien me acosa?",
-          answer: "Reporta inmediatamente el comportamiento inapropiado. Tenemos tolerancia cero al acoso y tomamos medidas r√°pidas para proteger a nuestra comunidad."
+          question: "øQuÈ hago si alguien me acosa?",
+          answer: "Reporta inmediatamente el comportamiento inapropiado. Tenemos tolerancia cero al acoso y tomamos medidas r·pidas para proteger a nuestra comunidad."
         },
         {
-          question: "¬øHay moderadores activos?",
-          answer: "S√≠, tenemos un equipo de moderaci√≥n 24/7 que supervisa la plataforma y responde r√°pidamente a reportes y situaciones de seguridad."
+          question: "øHay moderadores activos?",
+          answer: "SÌ, tenemos un equipo de moderaciÛn 24/7 que supervisa la plataforma y responde r·pidamente a reportes y situaciones de seguridad."
         }
       ]
     },
     soporte: {
-      title: "Soporte T√©cnico",
+      title: "Soporte TÈcnico",
       icon: Zap,
       color: "text-cyan-500",
       faqs: [
         {
-          question: "üöß ¬øEncontraste un error en la versi√≥n Beta?",
-          answer: "Como estamos en fase beta, algunos errores pueden ocurrir. Por favor, utiliza el formulario de reporte de errores m√°s abajo para ayudarnos a identificar y corregir cualquier problema que encuentres."
+          question: "?? øEncontraste un error en la versiÛn Beta?",
+          answer: "Como estamos en fase beta, algunos errores pueden ocurrir. Por favor, utiliza el formulario de reporte de errores m·s abajo para ayudarnos a identificar y corregir cualquier problema que encuentres."
         },
         {
-          question: "üì± ¬øProblemas con la aplicaci√≥n m√≥vil?",
-          answer: "Si experimentas crashes, pantallas en blanco, o funciones que no responden en la app m√≥vil, rep√≥rtalo detalladamente en el formulario de errores especificando tu dispositivo y sistema operativo."
+          question: "?? øProblemas con la aplicaciÛn mÛvil?",
+          answer: "Si experimentas crashes, pantallas en blanco, o funciones que no responden en la app mÛvil, repÛrtalo detalladamente en el formulario de errores especificando tu dispositivo y sistema operativo."
         },
         {
-          question: "üí≥ ¬øProblemas con pagos o suscripciones?",
-          answer: "Si tienes inconvenientes con donaciones, suscripciones premium, o procesamiento de pagos, cont√°ctanos inmediatamente a trav√©s del formulario con todos los detalles de la transacci√≥n."
+          question: "?? øProblemas con pagos o suscripciones?",
+          answer: "Si tienes inconvenientes con donaciones, suscripciones premium, o procesamiento de pagos, cont·ctanos inmediatamente a travÈs del formulario con todos los detalles de la transacciÛn."
         }
       ]
     }
   };
 
   const handleSubmitFeedback = () => {
-    // Aqu√≠ se enviar√≠a el feedback al backend
+    // AquÌ se enviarÌa el feedback al backend
     logger.info("Feedback enviado:", { email, feedback, rating });
     toast({
-      title: "¬°Comentarios enviados!",
+      title: "°Comentarios enviados!",
       description: "Gracias por tu feedback. Nos ayuda a mejorar la plataforma.",
     });
     setFeedback("");
@@ -206,7 +206,7 @@ Tipo de Error: ${bugReport.type}
 Severidad: ${bugReport.severity}
 Dispositivo/Navegador: ${bugReport.device} - ${bugReport.browser}
 
-DESCRIPCI√ìN DEL PROBLEMA:
+DESCRIPCI”N DEL PROBLEMA:
 ${bugReport.description}
 
 PASOS PARA REPRODUCIR:
@@ -216,12 +216,12 @@ Email de contacto: ${bugReport.email}
 Fecha: ${new Date().toLocaleString()}
     `.trim();
 
-    const mailtoLink = `mailto:support@complicesconecta.com?subject=üêõ Reporte de Error Beta&body=${encodeURIComponent(emailBody)}`;
+    const mailtoLink = `mailto:support@complicesconecta.com?subject=?? Reporte de Error Beta&body=${encodeURIComponent(emailBody)}`;
     window.location.href = mailtoLink;
     
     toast({
-      title: "¬°Reporte enviado!",
-      description: "Se abri√≥ tu cliente de email con el reporte. Env√≠alo para que podamos ayudarte.",
+      title: "°Reporte enviado!",
+      description: "Se abriÛ tu cliente de email con el reporte. EnvÌalo para que podamos ayudarte.",
     });
 
     // Reset form
@@ -284,7 +284,7 @@ Fecha: ${new Date().toLocaleString()}
               </span>
             </h1>
             <p className="text-xl text-white font-medium max-w-2xl mx-auto">
-              Encuentra respuestas a tus preguntas y ay√∫danos a mejorar tu experiencia en ComplicesConecta
+              Encuentra respuestas a tus preguntas y ay˙danos a mejorar tu experiencia en ComplicesConecta
             </p>
           </div>
 
@@ -336,10 +336,10 @@ Fecha: ${new Date().toLocaleString()}
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-2xl text-red-600 dark:text-red-400">
                     <HelpCircle className="h-6 w-6" />
-                    üêõ Reporte de Errores Beta
+                    ?? Reporte de Errores Beta
                   </CardTitle>
                   <p className="text-white/90">
-                    Ay√∫danos a mejorar reportando errores, bugs o problemas que encuentres
+                    Ay˙danos a mejorar reportando errores, bugs o problemas que encuentres
                   </p>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -353,14 +353,14 @@ Fecha: ${new Date().toLocaleString()}
                         <SelectValue placeholder="Selecciona el tipo de error" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="ui">üé® Problema de Interfaz</SelectItem>
-                        <SelectItem value="functionality">‚öôÔ∏è Funcionalidad no funciona</SelectItem>
-                        <SelectItem value="performance">üêå Problema de Rendimiento</SelectItem>
-                        <SelectItem value="mobile">üì± Error en M√≥vil</SelectItem>
-                        <SelectItem value="payment">üí≥ Problema de Pagos</SelectItem>
-                        <SelectItem value="auth">üîê Error de Login/Registro</SelectItem>
-                        <SelectItem value="chat">üí¨ Problema en Chat</SelectItem>
-                        <SelectItem value="other">üîß Otro</SelectItem>
+                        <SelectItem value="ui">?? Problema de Interfaz</SelectItem>
+                        <SelectItem value="functionality">?? Funcionalidad no funciona</SelectItem>
+                        <SelectItem value="performance">?? Problema de Rendimiento</SelectItem>
+                        <SelectItem value="mobile">?? Error en MÛvil</SelectItem>
+                        <SelectItem value="payment">?? Problema de Pagos</SelectItem>
+                        <SelectItem value="auth">?? Error de Login/Registro</SelectItem>
+                        <SelectItem value="chat">?? Problema en Chat</SelectItem>
+                        <SelectItem value="other">?? Otro</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -372,13 +372,13 @@ Fecha: ${new Date().toLocaleString()}
                     </label>
                     <Select onValueChange={(value: string) => handleBugReportChange("severity", value)}>
                       <SelectTrigger className="bg-background/50 border-red-200 dark:border-red-800">
-                        <SelectValue placeholder="¬øQu√© tan grave es?" />
+                        <SelectValue placeholder="øQuÈ tan grave es?" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="critical">üî• Cr√≠tico - La app no funciona</SelectItem>
-                        <SelectItem value="high">‚ö†Ô∏è Alto - Funcionalidad importante rota</SelectItem>
-                        <SelectItem value="medium">üìã Medio - Inconveniente menor</SelectItem>
-                        <SelectItem value="low">üí° Bajo - Sugerencia de mejora</SelectItem>
+                        <SelectItem value="critical">?? CrÌtico - La app no funciona</SelectItem>
+                        <SelectItem value="high">?? Alto - Funcionalidad importante rota</SelectItem>
+                        <SelectItem value="medium">?? Medio - Inconveniente menor</SelectItem>
+                        <SelectItem value="low">?? Bajo - Sugerencia de mejora</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -401,7 +401,7 @@ Fecha: ${new Date().toLocaleString()}
                         Navegador/App
                       </label>
                       <Input
-                        placeholder="Chrome, Safari, App m√≥vil..."
+                        placeholder="Chrome, Safari, App mÛvil..."
                         value={bugReport.browser}
                         onChange={(e) => handleBugReportChange("browser", e.target.value)}
                         className="bg-background/50 border-red-200 dark:border-red-800"
@@ -412,10 +412,10 @@ Fecha: ${new Date().toLocaleString()}
                   {/* Description */}
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
-                      Descripci√≥n del Problema
+                      DescripciÛn del Problema
                     </label>
                     <Textarea
-                      placeholder="Describe detalladamente qu√© error encontraste..."
+                      placeholder="Describe detalladamente quÈ error encontraste..."
                       value={bugReport.description}
                       onChange={(e) => handleBugReportChange("description", e.target.value)}
                       rows={3}
@@ -429,7 +429,7 @@ Fecha: ${new Date().toLocaleString()}
                       Pasos para Reproducir el Error
                     </label>
                     <Textarea
-                      placeholder="1. Entr√© a la secci√≥n de... &#10;2. Hice clic en... &#10;3. Entonces apareci√≥..."
+                      placeholder="1. EntrÈ a la secciÛn de... &#10;2. Hice clic en... &#10;3. Entonces apareciÛ..."
                       value={bugReport.steps}
                       onChange={(e) => handleBugReportChange("steps", e.target.value)}
                       rows={3}
@@ -463,7 +463,7 @@ Fecha: ${new Date().toLocaleString()}
 
                   <div className="text-xs text-white/90 bg-red-50 dark:bg-red-950/20 p-3 rounded-lg border border-red-200 dark:border-red-800">
                     <AlertTriangle className="h-4 w-4 text-red-600 dark:text-red-400 inline mr-1" />
-                    Este formulario abrir√° tu cliente de email con el reporte pre-llenado para enviarlo a support@complicesconecta.com
+                    Este formulario abrir· tu cliente de email con el reporte pre-llenado para enviarlo a support@complicesconecta.com
                   </div>
                 </CardContent>
               </Card>
@@ -473,10 +473,10 @@ Fecha: ${new Date().toLocaleString()}
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-2xl">
                     <MessageSquare className="h-6 w-6 text-accent" />
-                    üí¨ Comentarios Generales
+                    ?? Comentarios Generales
                   </CardTitle>
                   <p className="text-white/90">
-                    Tu opini√≥n nos ayuda a crear la mejor experiencia swinger
+                    Tu opiniÛn nos ayuda a crear la mejor experiencia swinger
                   </p>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -525,7 +525,7 @@ Fecha: ${new Date().toLocaleString()}
                       Tus comentarios y sugerencias
                     </label>
                     <Textarea
-                      placeholder="Cu√©ntanos qu√© te gusta, qu√© mejorar√≠as, o cualquier sugerencia para hacer ComplicesConecta a√∫n mejor..."
+                      placeholder="CuÈntanos quÈ te gusta, quÈ mejorarÌas, o cualquier sugerencia para hacer ComplicesConecta a˙n mejor..."
                       value={feedback}
                       onChange={(e) => setFeedback(e.target.value)}
                       rows={4}

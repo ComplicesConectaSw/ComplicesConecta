@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/shared/ui/Button';
 import { Share2 } from 'lucide-react';
 import { shareToTikTok, isTikTokAvailable } from '@/utils/tiktokShare';
 import { logger } from '@/lib/logger';

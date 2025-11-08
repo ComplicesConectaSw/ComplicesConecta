@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/shared/ui/Button';
 import { Sparkles, Loader2 } from 'lucide-react';
-import { useChatSummary } from '@/hooks/ai/useChatSummary';
+import { useChatSummary } from '@/features/chat/useChatSummary';
 import { SummaryModal } from './SummaryModal';
 
 interface SummaryButtonProps {

@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { MapPin, Navigation, Search } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/shared/ui/Button";
+import { Input } from "@/shared/ui/Input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { useGeolocation } from "@/hooks/useGeolocation";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/useToast";
 
 interface LocationSelectorProps {
   onLocationChange: (location: { lat: number; lng: number; address: string; radius: number }) => void;

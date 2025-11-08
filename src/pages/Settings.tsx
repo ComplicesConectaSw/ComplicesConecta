@@ -1,7 +1,7 @@
-锘縤mport Navigation from '@/components/Navigation';
+import Navigation from '@/components/Navigation';
 import { Footer } from "@/components/Footer";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/shared/ui/Button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/Card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, Users, Calendar, MessageSquare, Heart, Crown, Shield, Zap, Star, MapPin, Lock, Settings as SettingsIcon } from "lucide-react";
@@ -24,20 +24,20 @@ const Settings = () => {
   const swingerFeatures = [
     {
       icon: Shield,
-      title: "Verificaci贸n Lifestyle KYC",
-      description: "Verificaci贸n de identidad + validaci贸n de experiencia swinger para comunidad aut茅ntica",
+      title: "Verificaci髇 Lifestyle KYC",
+      description: "Verificaci髇 de identidad + validaci髇 de experiencia swinger para comunidad aut閚tica",
       status: "Activo"
     },
     {
       icon: MessageSquare,
-      title: "Chat 脥ntimo Encriptado",
-      description: "Conversaciones privadas entre parejas con encriptaci贸n militar para m谩xima discreci贸n",
+      title: "Chat 蚽timo Encriptado",
+      description: "Conversaciones privadas entre parejas con encriptaci髇 militar para m醲ima discreci髇",
       status: "Activo"
     },
     {
       icon: MapPin,
       title: "Encuentros Gelocalizados",
-      description: "Localiza parejas swinger y clubs exclusivos cerca de tu ubicaci贸n",
+      description: "Localiza parejas swinger y clubs exclusivos cerca de tu ubicaci髇",
       status: "Activo"
     },
     {
@@ -82,11 +82,11 @@ const Settings = () => {
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
               Dashboard Swinger
               <span className="block bg-love-gradient bg-clip-text text-transparent">
-                Tu Centro de Control 脥ntimo
+                Tu Centro de Control 蚽timo
               </span>
             </h1>
             <p className="text-xl text-white/90 max-w-2xl mx-auto">
-              Gestiona tu experiencia swinger: conexiones, eventos privados y estad铆sticas de tu vida 铆ntima
+              Gestiona tu experiencia swinger: conexiones, eventos privados y estad韘ticas de tu vida 韓tima
             </p>
           </div>
 
@@ -120,7 +120,7 @@ const Settings = () => {
 
             <Card className="bg-card/80 backdrop-blur-sm border border-primary/10">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Conexiones 脥ntimas</CardTitle>
+                <CardTitle className="text-sm font-medium">Conexiones 蚽timas</CardTitle>
                 <Zap className="h-4 w-4 text-accent" />
               </CardHeader>
               <CardContent>
@@ -139,7 +139,7 @@ const Settings = () => {
               <CardContent>
                 <div className="text-2xl font-bold text-foreground">{swingerStats.verifiedProfiles}</div>
                 <p className="text-xs text-white/80">
-                  Verificaci贸n KYC + Lifestyle
+                  Verificaci髇 KYC + Lifestyle
                 </p>
               </CardContent>
             </Card>
@@ -159,7 +159,7 @@ const Settings = () => {
 
             <Card className="bg-card/80 backdrop-blur-sm border border-primary/10">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Satisfacci贸n</CardTitle>
+                <CardTitle className="text-sm font-medium">Satisfacci髇</CardTitle>
                 <Star className="h-4 w-4 text-accent" fill="currentColor" />
               </CardHeader>
               <CardContent>
@@ -174,7 +174,7 @@ const Settings = () => {
           {/* Settings Tabs */}
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold text-white mb-2">Configuraci贸n</h1>
+              <h1 className="text-3xl font-bold text-white mb-2">Configuraci髇</h1>
               <p className="text-white/80">Personaliza tu experiencia en ComplicesConecta</p>
             </div>
 
@@ -186,11 +186,11 @@ const Settings = () => {
                 </TabsTrigger>
                 <TabsTrigger value="location" className="flex items-center gap-2 data-[state=active]:bg-white/20">
                   <MapPin className="h-4 w-4" />
-                  Ubicaci贸n
+                  Ubicaci髇
                 </TabsTrigger>
                 <TabsTrigger value="features" className="flex items-center gap-2 data-[state=active]:bg-white/20">
                   <SettingsIcon className="h-4 w-4" />
-                  Caracter铆sticas
+                  Caracter韘ticas
                 </TabsTrigger>
               </TabsList>
 
@@ -199,7 +199,7 @@ const Settings = () => {
                   <CardHeader>
                     <CardTitle className="text-white flex items-center gap-2">
                       <Lock className="h-5 w-5" />
-                      Configuraci贸n de Privacidad
+                      Configuraci髇 de Privacidad
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
@@ -213,7 +213,7 @@ const Settings = () => {
                   <CardHeader>
                     <CardTitle className="text-white flex items-center gap-2">
                       <MapPin className="h-5 w-5" />
-                      Configuraci贸n de Ubicaci贸n
+                      Configuraci髇 de Ubicaci髇
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
@@ -229,9 +229,9 @@ const Settings = () => {
                       key={index} 
                       className="bg-card/80 backdrop-blur-sm border border-primary/10 cursor-pointer hover:bg-card/90 transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/20"
                       onClick={() => {
-                        if (feature.title === "Verificaci贸n Lifestyle KYC") {
+                        if (feature.title === "Verificaci髇 Lifestyle KYC") {
                           navigate('/profile-single');
-                        } else if (feature.title === "Chat 脥ntimo Encriptado") {
+                        } else if (feature.title === "Chat 蚽timo Encriptado") {
                           navigate('/chat-info');
                         } else if (feature.title === "Encuentros Gelocalizados") {
                           navigate('/discover');
@@ -272,8 +272,8 @@ const Settings = () => {
             </CardHeader>
             <CardContent className="text-center space-y-6">
               <p className="text-white/90 text-lg max-w-2xl mx-auto">
-                Accede a la 茅lite swinger: fiestas VIP exclusivas, parejas verificadas premium 
-                y experiencias 铆ntimas que transformar谩n tu vida sexual.
+                Accede a la 閘ite swinger: fiestas VIP exclusivas, parejas verificadas premium 
+                y experiencias 韓timas que transformar醤 tu vida sexual.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 

@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/shared/ui/Button';
 import { LogOut, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';

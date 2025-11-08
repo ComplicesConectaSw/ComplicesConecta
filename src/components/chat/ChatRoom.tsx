@@ -12,16 +12,16 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Send, Video, MapPin, Image, Lock, UserPlus, Check, X, AlertCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/shared/ui/Button';
+import { Input } from '@/shared/ui/Input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent } from '@/shared/ui/Card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/features/auth/useAuth';
 import { useGeolocation } from '@/hooks/useGeolocation';
-import { useToast } from '@/hooks/use-toast';
-import { chatPrivacyService, ChatRequest } from '@/services/ChatPrivacyService';
+import { useToast } from '@/hooks/useToast';
+import { chatPrivacyService, ChatRequest } from '@/features/chat/ChatPrivacyService';
 import { ConsentIndicator } from '@/components/chat/ConsentIndicator';
 import { useConsentVerification } from '@/hooks/useConsentVerification';
 import { supabase } from '@/integrations/supabase/client';

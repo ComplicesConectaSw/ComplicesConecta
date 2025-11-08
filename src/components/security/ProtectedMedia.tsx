@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Shield, Download, Eye, AlertTriangle } from 'lucide-react';
 import { useSecureMedia } from '@/lib/secureMediaService';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/features/auth/useAuth';
 import { useWatermark } from '@/components/security/DynamicWatermark';
 import { logger } from '@/lib/logger';
 

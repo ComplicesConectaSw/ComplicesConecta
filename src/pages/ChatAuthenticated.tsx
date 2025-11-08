@@ -1,9 +1,9 @@
-ï»¿import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Send, Users, Lock, MessageCircle, Check, X, UserPlus } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/shared/ui/Button";
+import { Input } from "@/shared/ui/Input";
+import { Card, CardContent } from "@/shared/ui/Card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -42,14 +42,14 @@ const ChatAuthenticated = () => {
   const [activeTab, setActiveTab] = useState("public");
   const [selectedPrivateChat, setSelectedPrivateChat] = useState<string | null>(null);
   
-  // Mock data - en producciÃ³n vendrÃ­a de la API
+  // Mock data - en producción vendría de la API
   const [publicMessages, setPublicMessages] = useState<ChatMessage[]>([
     {
       id: "1",
       senderId: "user1",
-      senderName: "MarÃ­a & Carlos",
+      senderName: "María & Carlos",
       senderAvatar: "/placeholder.svg",
-      message: "Â¡Hola a todos! Â¿Alguien sabe de eventos este fin de semana?",
+      message: "¡Hola a todos! ¿Alguien sabe de eventos este fin de semana?",
       timestamp: new Date(Date.now() - 300000),
       isPrivate: false
     },
@@ -58,7 +58,7 @@ const ChatAuthenticated = () => {
       senderId: "user2",
       senderName: "Ana",
       senderAvatar: "/placeholder.svg",
-      message: "Nosotros organizamos una reuniÃ³n privada el sÃ¡bado ðŸ”¥",
+      message: "Nosotros organizamos una reunión privada el sábado ??",
       timestamp: new Date(Date.now() - 180000),
       isPrivate: false
     }
@@ -69,9 +69,9 @@ const ChatAuthenticated = () => {
       {
         id: "p1",
         senderId: "user1",
-        senderName: "MarÃ­a & Carlos",
+        senderName: "María & Carlos",
         senderAvatar: "/placeholder.svg",
-        message: "Hola, nos gustÃ³ mucho su perfil. Â¿Les interesa conocernos?",
+        message: "Hola, nos gustó mucho su perfil. ¿Les interesa conocernos?",
         timestamp: new Date(Date.now() - 3600000),
         isPrivate: true
       }
@@ -84,16 +84,16 @@ const ChatAuthenticated = () => {
       fromUserId: "user3",
       fromUserName: "Roberto & Lisa",
       fromUserAvatar: "/placeholder.svg",
-      message: "Nos encantarÃ­a chatear con ustedes. Somos una pareja experimentada.",
+      message: "Nos encantaría chatear con ustedes. Somos una pareja experimentada.",
       timestamp: new Date(Date.now() - 7200000),
       status: 'pending'
     },
     {
       id: "req2",
       fromUserId: "user4", 
-      fromUserName: "SofÃ­a",
+      fromUserName: "Sofía",
       fromUserAvatar: "/placeholder.svg",
-      message: "Hola! Soy nueva en esto, me gustarÃ­a conocer gente como ustedes.",
+      message: "Hola! Soy nueva en esto, me gustaría conocer gente como ustedes.",
       timestamp: new Date(Date.now() - 1800000),
       status: 'pending'
     }
@@ -102,7 +102,7 @@ const ChatAuthenticated = () => {
   const [onlineUsers, _setOnlineUsers] = useState<User[]>([
     {
       id: "user1",
-      name: "MarÃ­a & Carlos",
+      name: "María & Carlos",
       avatar: "/placeholder.svg",
       isOnline: true
     },
@@ -121,7 +121,7 @@ const ChatAuthenticated = () => {
   ]);
 
   useEffect(() => {
-    // Verificar autenticaciÃ³n
+    // Verificar autenticación
     const demoAuth = localStorage.getItem('demo_authenticated');
     const demoUser = localStorage.getItem('demo_user');
     
@@ -137,7 +137,7 @@ const ChatAuthenticated = () => {
     const newMessage: ChatMessage = {
       id: Date.now().toString(),
       senderId: "current_user",
-      senderName: "TÃº",
+      senderName: "Tú",
       senderAvatar: "/placeholder.svg",
       message: currentMessage,
       timestamp: new Date(),
@@ -215,7 +215,7 @@ const ChatAuthenticated = () => {
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-1">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <span className="text-white text-sm">{onlineUsers.length} en lÃ­nea</span>
+                <span className="text-white text-sm">{onlineUsers.length} en línea</span>
               </div>
             </div>
           </div>
@@ -277,7 +277,7 @@ const ChatAuthenticated = () => {
               <CardContent className="p-4">
                 <div className="flex items-center gap-2 mb-3">
                   <Users className="h-4 w-4 text-white" />
-                  <h3 className="font-semibold text-white">En LÃ­nea</h3>
+                  <h3 className="font-semibold text-white">En Línea</h3>
                 </div>
                 <div className="space-y-2">
                   {onlineUsers.map((user) => (
@@ -298,7 +298,7 @@ const ChatAuthenticated = () => {
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-white font-medium text-sm truncate">{user.name}</p>
-                        <p className="text-green-400 text-xs">En lÃ­nea</p>
+                        <p className="text-green-400 text-xs">En línea</p>
                       </div>
                     </div>
                   ))}
@@ -317,7 +317,7 @@ const ChatAuthenticated = () => {
                     <TabsList className="grid w-full grid-cols-2 bg-white/5">
                       <TabsTrigger value="public" className="data-[state=active]:bg-pink-500 data-[state=active]:text-white">
                         <Users className="h-4 w-4 mr-2" />
-                        Chat PÃºblico
+                        Chat Público
                       </TabsTrigger>
                       <TabsTrigger value="private" className="data-[state=active]:bg-purple-500 data-[state=active]:text-white">
                         <Lock className="h-4 w-4 mr-2" />
@@ -368,7 +368,7 @@ const ChatAuthenticated = () => {
                                   <p className="font-medium text-white">
                                     {onlineUsers.find(u => u.id === selectedPrivateChat)?.name}
                                   </p>
-                                  <p className="text-green-400 text-sm">En lÃ­nea</p>
+                                  <p className="text-green-400 text-sm">En línea</p>
                                 </div>
                               </div>
                             </div>
@@ -410,7 +410,7 @@ const ChatAuthenticated = () => {
                       <Input
                         value={currentMessage}
                         onChange={(e) => setCurrentMessage(e.target.value)}
-                        placeholder={activeTab === "public" ? "Escribe un mensaje pÃºblico..." : "Escribe un mensaje privado..."}
+                        placeholder={activeTab === "public" ? "Escribe un mensaje público..." : "Escribe un mensaje privado..."}
                         className="flex-1 bg-white/10 border-white/20 text-white placeholder:text-white/50"
                         onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
                       />

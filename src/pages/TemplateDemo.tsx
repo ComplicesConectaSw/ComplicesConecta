@@ -1,13 +1,13 @@
-ï»¿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
+import { Button } from '@/shared/ui/Button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { TemplateIntegrator } from '@/components/ui/TemplateIntegrator';
 import { ChatTemplate } from '@/components/templates/ChatTemplate';
 import { ButtonEffectsTemplate } from '@/components/templates/ButtonEffectsTemplate';
-import { useProfileTheme } from '@/hooks/useProfileTheme';
+import { useProfileTheme } from '@/features/profile/useProfileTheme';
 import { ProfileType, Theme } from '@/types';
 import HeaderNav from '@/components/HeaderNav';
 import { 
@@ -21,7 +21,7 @@ import {
   Zap,
   Eye
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/cn';
 
 const TemplateDemo: React.FC = () => {
   const [selectedTheme, setSelectedTheme] = useState<Theme>('modern');
@@ -50,7 +50,7 @@ const TemplateDemo: React.FC = () => {
           className="text-center mb-8"
         >
           <h1 className="text-4xl font-bold text-white mb-4">
-            ðŸŽ¨ Demo de IntegraciÃ³n de Plantillas
+            ?? Demo de Integración de Plantillas
           </h1>
           <p className="text-gray-300 text-lg">
             Sistema de Temas v2.8.3 + Plantillas React Adaptadas
@@ -83,7 +83,7 @@ const TemplateDemo: React.FC = () => {
             <CardHeader>
               <CardTitle className="text-white flex items-center gap-2">
                 <Palette className="w-5 h-5" />
-                ConfiguraciÃ³n Global de Temas
+                Configuración Global de Temas
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -117,7 +117,7 @@ const TemplateDemo: React.FC = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-white mb-2">
-                    GÃ©nero
+                    Género
                   </label>
                   <select 
                     value={gender} 
@@ -141,7 +141,7 @@ const TemplateDemo: React.FC = () => {
                     Vista Previa del Tema Actual
                   </h3>
                   <p className={cn("text-sm mt-1", themeConfig.accentClass)}>
-                    {selectedTheme.charAt(0).toUpperCase() + selectedTheme.slice(1)} â€¢ {profileType} â€¢ {gender}
+                    {selectedTheme.charAt(0).toUpperCase() + selectedTheme.slice(1)} • {profileType} • {gender}
                   </p>
                 </div>
               </div>
@@ -162,7 +162,7 @@ const TemplateDemo: React.FC = () => {
                 className="data-[state=active]:bg-white/20 text-white"
               >
                 <Eye className="w-4 h-4 mr-2" />
-                AuditorÃ­a
+                Auditoría
               </TabsTrigger>
               <TabsTrigger 
                 value="chat" 
@@ -243,10 +243,10 @@ const TemplateDemo: React.FC = () => {
                             Vista Mobile
                           </h3>
                           <p className={cn("text-sm", themeConfig.accentClass)}>
-                            Optimizado para pantallas pequeÃ±as
+                            Optimizado para pantallas pequeñas
                           </p>
                           <Button className="w-full mt-3 btn-animated">
-                            AcciÃ³n Mobile
+                            Acción Mobile
                           </Button>
                         </div>
                       </div>
@@ -270,12 +270,12 @@ const TemplateDemo: React.FC = () => {
                             Vista Tablet
                           </h3>
                           <p className={cn("text-sm", themeConfig.accentClass)}>
-                            DiseÃ±o adaptativo para tablets
+                            Diseño adaptativo para tablets
                           </p>
                           <div className="flex gap-2 mt-3">
-                            <Button className="flex-1 btn-animated">AcciÃ³n 1</Button>
+                            <Button className="flex-1 btn-animated">Acción 1</Button>
                             <Button className="flex-1 btn-animated border border-input bg-background hover:bg-accent hover:text-accent-foreground">
-                              AcciÃ³n 2
+                              Acción 2
                             </Button>
                           </div>
                         </div>
@@ -326,24 +326,24 @@ const TemplateDemo: React.FC = () => {
           <Card className="bg-white/5 backdrop-blur-sm border-white/10">
             <CardContent className="p-6">
               <h3 className="text-white font-semibold mb-2">
-                ðŸŽ¯ IntegraciÃ³n Completada
+                ?? Integración Completada
               </h3>
               <p className="text-gray-300 text-sm">
                 Las plantillas han sido auditadas, adaptadas e integradas con el Sistema de Temas v2.8.3.
-                Todas las mejoras mantienen la compatibilidad con la lÃ³gica de negocio existente.
+                Todas las mejoras mantienen la compatibilidad con la lógica de negocio existente.
               </p>
               <div className="flex justify-center gap-4 mt-4">
                 <Badge className="bg-green-500/20 text-green-300">
-                  âœ… Responsive Design
+                  ? Responsive Design
                 </Badge>
                 <Badge className="bg-blue-500/20 text-blue-300">
-                  âœ… Multi-Browser
+                  ? Multi-Browser
                 </Badge>
                 <Badge className="bg-purple-500/20 text-purple-300">
-                  âœ… Theme Integration
+                  ? Theme Integration
                 </Badge>
                 <Badge className="bg-orange-500/20 text-orange-300">
-                  âœ… Accessibility
+                  ? Accessibility
                 </Badge>
               </div>
             </CardContent>

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { motion, HTMLMotionProps } from "framer-motion";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/cn";
 
 interface GlassCardProps extends HTMLMotionProps<"div"> {
   variant?: "default" | "frosted" | "minimal" | "colored";

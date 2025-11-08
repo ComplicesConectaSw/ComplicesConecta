@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/shared/ui/Card';
+import { Button } from '@/shared/ui/Button';
 import { Badge } from '@/components/ui/badge';
 import { Eye, Lock, Unlock, Check, X } from 'lucide-react';
 import { PrivateImageRequest } from './PrivateImageRequest';

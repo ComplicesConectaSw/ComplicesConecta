@@ -4,14 +4,14 @@ import { UnifiedCard } from '@/components/ui/UnifiedCard';
 import { UnifiedButton } from '@/components/ui/UnifiedButton';
 import { Badge } from '@/components/ui/badge';
 import { Heart, X, Star, MapPin, Users, Sparkles } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/cn';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
+} from '@/shared/ui/Modal';
 
 interface MatchCardProps {
   id: string;

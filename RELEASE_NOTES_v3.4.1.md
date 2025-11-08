@@ -1,12 +1,12 @@
 # 📝 RELEASE NOTES - ComplicesConecta
 
-**Última Actualización:** 06 de Noviembre, 2025  
-**Versión Actual:** v3.5.0  
-**Estado:** ✅ **PRODUCTION READY - ENTERPRISE GRADE - AI-NATIVE - REFACTORIZADO - DOCKER BUILD SUCCESSFUL - NEO4J OPERATIVO - ESTILOS AUDITADOS**
+**Última Actualización:** 08 de Noviembre, 2025  
+**Versión Actual:** v3.6.3  
+**Estado:** ✅ **PRODUCTION READY - ENTERPRISE GRADE - AI-NATIVE - REFACTORIZADO v3.6.3 - DOCKER BUILD SUCCESSFUL - NEO4J OPERATIVO - ESTILOS AUDITADOS**
 
 > **📚 Para guía completa de instalación y configuración, consulta [INSTALACION_SETUP_v3.5.0.md](./INSTALACION_SETUP_v3.5.0.md)**  
-> **📚 Para documentación maestra completa, consulta [DOCUMENTACION_MAESTRA_UNIFICADA_v3.5.0.md](./DOCUMENTACION_MAESTRA_UNIFICADA_v3.5.0.md)**  
-> **📚 Para memorias de sesiones, consulta [MEMORIAS_SESIONES_UNIFICADAS_v3.5.0.md](./MEMORIAS_SESIONES_UNIFICADAS_v3.5.0.md)**
+> **📚 Para documentación pública, consulta [docs/README.md](./docs/README.md)**  
+> **📚 Para documentación técnica (uso interno), consulta [docs-unified/DOCUMENTACION_MAESTRA_UNIFICADA_v3.6.3.md](./docs-unified/DOCUMENTACION_MAESTRA_UNIFICADA_v3.6.3.md)** (no se sube a Git)
 
 ---
 

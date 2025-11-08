@@ -4,8 +4,8 @@
  */
 
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
+import { Button } from '@/shared/ui/Button';
 import { Badge } from '@/components/ui/badge';
 import { useTokens } from '@/hooks/useTokens';
 import { Coins, TrendingUp, Lock, Gift, Users, Calendar, Sparkles } from 'lucide-react';
@@ -29,31 +29,31 @@ export function TokenDashboard() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center p-8">
+      <main role="main" className="flex items-center justify-center p-8">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto mb-4"></div>
           <p className="text-white/90">🪙 Cargando tu balance...</p>
         </div>
-      </div>
+      </main>
     );
   }
 
   if (error) {
     return (
-      <div className="p-4 bg-red-500/20 backdrop-blur-md border border-red-300/30 rounded-lg">
+      <main role="main" className="p-4 bg-red-500/20 backdrop-blur-md border border-red-300/30 rounded-lg">
         <p className="text-white">❌ {error}</p>
         <Button onClick={refreshTokens} className="mt-2 bg-white/20 hover:bg-white/30 text-white border-white/30" size="sm">
           Reintentar
         </Button>
-      </div>
+      </main>
     );
   }
 
   if (!balance) {
     return (
-      <div className="p-4 bg-yellow-500/20 backdrop-blur-md border border-yellow-300/30 rounded-lg">
+      <main role="main" className="p-4 bg-yellow-500/20 backdrop-blur-md border border-yellow-300/30 rounded-lg">
         <p className="text-white">⚠️ No se pudo cargar el balance</p>
-      </div>
+      </main>
     );
   }
 
@@ -62,7 +62,7 @@ export function TokenDashboard() {
   const stakedPercentage = totalCMPX > 0 ? (balance.cmpxStaked / totalCMPX) * 100 : 0;
 
   return (
-    <div className="space-y-6 p-4">
+    <main role="main" className="space-y-6 p-4">
       {/* Header con balance principal */}
       <div className="text-center bg-gradient-to-r from-purple-600/80 to-pink-600/80 backdrop-blur-md border border-white/20 text-white p-6 rounded-xl shadow-xl">
         <h2 className="text-2xl font-bold mb-2 text-white">🪙 Tu Balance de Tokens</h2>
@@ -361,6 +361,6 @@ export function TokenDashboard() {
           🔄 Actualizar Balance
         </Button>
       </div>
-    </div>
+    </main>
   );
 };

@@ -6,10 +6,10 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
+import { Button } from '@/shared/ui/Button';
 import { Textarea } from '@/components/ui/textarea';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/shared/ui/Input';
 import { Badge } from '@/components/ui/badge';
 import { 
   Star, 
@@ -19,8 +19,8 @@ import {
   Send,
   CheckCircle
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/shared/lib/cn';
+import { useToast } from '@/hooks/useToast';
 import { logger } from '@/lib/logger';
 
 export interface FeedbackData {

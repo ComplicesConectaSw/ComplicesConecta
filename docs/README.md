@@ -1,0 +1,163 @@
+# 📚 DOCUMENTACIÓN - ComplicesConecta v3.6.3
+
+**Última Actualización:** 08 de Noviembre, 2025  
+**Versión:** 3.6.3  
+**Estado:** ✅ Documentación Consolidada y Organizada
+
+---
+
+## 📋 ÍNDICE DE DOCUMENTACIÓN
+
+### **📖 Documentación Principal (Uso Interno)**
+- **[📚 Documentación Maestra Unificada](../docs-unified/DOCUMENTACION_MAESTRA_UNIFICADA_v3.6.3.md)** - Documentación técnica completa consolidada (uso interno)
+- **[📝 Memorias de Sesiones Unificadas](../docs-unified/MEMORIAS_SESIONES_UNIFICADAS_v3.6.3.md)** - Memorias consolidadas de sesiones y avances (uso interno)
+- **[📊 Reportes y Análisis Unificados](../docs-unified/REPORTES_ANALISIS_UNIFICADOS_v3.6.3.md)** - Reportes consolidados de dependencias, problemas y correcciones (uso interno)
+- **[📄 Presentación Pública](../COMPLICESCONECTA_PRESENTACION_PUBLICA.md)** - Presentación pública del proyecto
+- **[📝 Notas de Lanzamiento](../RELEASE_NOTES_v3.4.1.md)** - Historial completo de versiones
+- **[🏗️ Estructura del Proyecto](../project-structure-tree.md)** - Árbol detallado del monorepo
+
+### **📄 Documentos Técnicos en `docs/`**
+
+#### **🎨 Documentación de Features**
+- **[🎨 Guía de NFTs](./GUIA_NFTS.md)** - Guía completa de Galerías NFT-Verificadas
+- **[💰 Guía de Tokens](./GUIA_TOKENS.md)** - Guía completa del Sistema de Tokens (CMPX y GTK)
+- **[🔧 Plan de Correcciones por Fases](./CORRECCIONES_FASES_v3.6.3.md)** - Plan de correcciones organizado por prioridad
+
+#### **👥 Guías para Usuarios Específicos**
+- **[💼 Guía para Inversores](./Inversores/README.md)** - Índice y guía completa para inversores
+  - **[📄 Guía Completa](./Inversores/GUIA_INVERSORES.md)** - Información de inversión y SAFTE
+- **[🛡️ Guía para Moderadores](./Moderadores/README.md)** - Índice y guía completa para moderadores
+  - **[📄 Guía Completa](./Moderadores/GUIA_MODERADORES.md)** - Información de moderación y pagos
+- **[🏢 Guía para Clubs](./Clubs/README.md)** - Índice y guía completa para clubs
+  - **[📄 Guía Completa](./Clubs/GUIA_CLUBS.md)** - Información de clubs verificados y partners
+
+#### **Configuración y Setup**
+- **[🚀 Configuración de Túnel](./tunnel-setup.md)** - Guía de configuración de túnel para desarrollo
+- **[🧩 Componentes](./COMPONENTS.md)** - Documentación de componentes
+- ~~**[📧 Configuración de Email Supabase](./SUPABASE_EMAIL_SETUP.md)**~~ - *Pendiente de creación*
+- ~~**[🧪 Guía de Testing](./TESTING.md)**~~ - *Pendiente de creación*
+
+#### **World ID Integration**
+- ~~**[🌍 Pasos de Deployment World ID](./worldid_deployment_steps.md)**~~ - *Pendiente de creación*
+- ~~**[✅ Guía de Éxito World ID](./WORLDID_SUCCESS_GUIDE.md)**~~ - *Pendiente de creación*
+- ~~**[🧪 Test de Función World ID](./WORLDID_FUNCTION_TEST.md)**~~ - *Pendiente de creación*
+- ~~**[🔍 Análisis de Errores World ID](./WORLDID_ERROR_ANALYSIS.md)**~~ - *Pendiente de creación*
+- ~~**[📊 Schema Check World ID](./worldid_schema_check.sql)**~~ - *Pendiente de creación*
+
+#### **📊 Reportes y Auditorías**
+- **[📊 Auditorías Profesionales](./Auditoria/README.md)** - Índice completo de auditorías profesionales
+  - **[📁 Auditoría de Directorios](./Auditoria/directorios/README.md)** - Análisis de directorios
+  - **[📊 Auditoría de Sistemas](./Auditoria/README.md#-auditoría-de-sistemas-nuevo-v363)** - Análisis de sistemas
+  - **[🔧 Auditoría de Scripts](./Auditoria/scripts/REPORTE_SCRIPTS.md)** - Análisis de scripts
+- **[📊 Auditorías y Análisis JSON](./audits/README.md)** - Índice de reportes JSON de auditorías y análisis CSS
+  - `AUDITORIA_20251108_012932.json` - Auditoría completa del proyecto
+  - `AUDITORIA_COMPLETA_20251108_005757.json` - Auditoría detallada
+  - `ANALISIS_CSS_DUPLICADOS_*.json` - Análisis de duplicados CSS
+
+#### **⚖️ Documentación Legal**
+- **[⚖️ Índice Legal](./legal/README.md)** - Índice completo de documentación legal
+  - **[📋 Resumen Legal](./legal/LEGAL_SUMMARY_REPORT.md)** - Resumen ejecutivo legal
+  - **[⚖️ Cumplimiento Legal México](./legal/LEGAL_COMPLIANCE_MEXICO.md)** - Cumplimiento normativo
+  - **[📄 Términos de Servicio](./legal/TERMS_OF_SERVICE.md)** - Términos y condiciones
+  - **[🔒 Política de Privacidad](./legal/PRIVACY_POLICY.md)** - Política de privacidad
+  - **[⚠️ Descargo de Responsabilidad](./legal/DISCLAIMER.md)** - Limitación de responsabilidad
+  - **[🔌 API Legal](./legal/API.md)** - Documentación de API legal
+  - **[🚀 Deployment Legal](./legal/DEPLOY.md)** - Guía de deployment legal
+
+---
+
+## 🎯 NAVEGACIÓN RÁPIDA
+
+### Para Desarrolladores
+1. Lee primero: [Documentación Maestra Unificada](../docs-unified/DOCUMENTACION_MAESTRA_UNIFICADA_v3.6.3.md) (uso interno)
+2. Revisa: [Estructura del Proyecto](../project-structure-tree.md)
+3. Consulta: [Componentes](./COMPONENTS.md) y [Configuración de Túnel](./tunnel-setup.md)
+4. ~~[Guía de Testing](./TESTING.md)~~ - *Pendiente*
+
+### Para Configuración
+1. [Configuración de Túnel](./tunnel-setup.md)
+2. [Componentes](./COMPONENTS.md)
+3. ~~[Configuración de Email Supabase](./SUPABASE_EMAIL_SETUP.md)~~ - *Pendiente*
+4. ~~[World ID Integration](./worldid_deployment_steps.md)~~ - *Pendiente*
+5. ~~[Guía de Testing](./TESTING.md)~~ - *Pendiente*
+
+### Para Legal y Cumplimiento
+1. [Índice Legal](./legal/README.md) - Índice completo
+2. [Resumen Legal](./legal/LEGAL_SUMMARY_REPORT.md)
+3. [Cumplimiento Legal México](./legal/LEGAL_COMPLIANCE_MEXICO.md)
+4. [Términos de Servicio](./legal/TERMS_OF_SERVICE.md)
+5. [Política de Privacidad](./legal/PRIVACY_POLICY.md)
+
+### Para Auditorías y Análisis
+1. [Auditorías Profesionales](./Auditoria/README.md) - Índice completo
+2. [Auditorías JSON](./audits/README.md) - Índice de reportes JSON
+3. [Reportes JSON](./audits/AUDITORIA_20251108_012932.json) - Reportes JSON
+4. [Análisis CSS Duplicados](./audits/ANALISIS_CSS_DUPLICADOS_20251108_012153.json)
+
+### Para Features
+1. [Guía de NFTs](./GUIA_NFTS.md) - Galerías NFT-Verificadas
+2. [Guía de Tokens](./GUIA_TOKENS.md) - Sistema de Tokens (CMPX y GTK)
+3. [Plan de Correcciones](./CORRECCIONES_FASES_v3.6.3.md) - Correcciones por fases
+
+---
+
+## 📊 ESTRUCTURA DE DIRECTORIOS
+
+```
+docs/
+├── README.md                    # Este archivo (índice completo)
+├── GUIA_NFTS.md                 # Guía de NFTs
+├── GUIA_TOKENS.md               # Guía de Tokens
+├── CORRECCIONES_FASES_v3.6.3.md # Plan de correcciones por fases
+├── COMPONENTS.md                # Documentación de componentes
+├── tunnel-setup.md              # Configuración de túnel
+├── Auditoria/                   # Auditorías profesionales
+│   ├── README.md               # Índice de auditorías
+│   ├── directorios/           # Auditorías de directorios
+│   ├── scripts/               # Auditorías de scripts
+│   └── [sistemas]/           # Auditorías de sistemas
+├── audits/                      # Reportes JSON de auditorías
+│   ├── README.md               # Índice de reportes JSON
+│   ├── AUDITORIA_*.json        # Auditorías completas
+│   └── ANALISIS_CSS_*.json     # Análisis de CSS duplicados
+├── Inversores/                  # Guías para inversores
+│   ├── README.md               # Índice para inversores
+│   └── GUIA_INVERSORES.md      # Guía completa
+├── Moderadores/                 # Guías para moderadores
+│   ├── README.md               # Índice para moderadores
+│   └── GUIA_MODERADORES.md     # Guía completa
+├── Clubs/                       # Guías para clubs
+│   ├── README.md               # Índice para clubs
+│   └── GUIA_CLUBS.md           # Guía completa
+└── legal/                       # Documentación legal
+    ├── README.md               # Índice legal
+    ├── LEGAL_SUMMARY_REPORT.md
+    ├── LEGAL_COMPLIANCE_MEXICO.md
+    ├── TERMS_OF_SERVICE.md
+    ├── PRIVACY_POLICY.md
+    ├── DISCLAIMER.md
+    ├── API.md
+    └── DEPLOY.md
+```
+
+---
+
+## 🔄 ACTUALIZACIONES
+
+**Última actualización:** 08 de Noviembre, 2025  
+**Versión:** 3.6.3  
+**Próxima revisión:** Después de lanzamiento beta
+
+---
+
+## 📞 CONTACTO
+
+Para preguntas sobre la documentación:
+- Revisa primero los documentos principales en el root
+- Consulta la documentación técnica específica en este directorio
+- Revisa los reportes de auditorías en `audits/`
+
+---
+
+**¡Todo está documentado y listo para producción!** 🚀
+

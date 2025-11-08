@@ -5,7 +5,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/cn';
 
 interface LazyImageProps {
   src: string;

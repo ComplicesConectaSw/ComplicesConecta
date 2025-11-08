@@ -60,12 +60,24 @@ export const EmailValidation = ({
     }, 500);
 
     return () => clearTimeout(timeoutId);
-  }, [email]);
+  }, [email, onValidationChange]);
 
   const checkEmailUniqueness = async (emailToCheck: string) => {
     setIsChecking(true);
     
     try {
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        setValidationState({
+          isValid: false,
+          message: 'Error de conexión',
+          type: 'error'
+        });
+        onValidationChange(false, 'Error de conexión');
+        setIsChecking(false);
+        return;
+      }
+
       // Verificar en auth.users (tabla de Supabase Auth)
       const { data: authData, error: authError } = await supabase
         .from('profiles')
@@ -166,6 +178,11 @@ export const useEmailValidation = () => {
       }
 
       // Verificar unicidad en Supabase
+      if (!supabase) {
+        logger.error('Supabase no está disponible');
+        return { isValid: false, message: 'Error de conexión' };
+      }
+
       const { data, error } = await supabase
         .from('profiles')
         .select('id')

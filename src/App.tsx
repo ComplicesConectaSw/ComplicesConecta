@@ -1,16 +1,16 @@
-import { Toaster } from "@/components/ui/toaster";
+﻿import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-// CRÍTICO: Importar QueryClient de forma segura - verificar que React esté disponible
+// CRÃTICO: Importar QueryClient de forma segura - verificar que React estÃ© disponible
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-// CRÍTICO: Verificar que React esté disponible antes de usar QueryClient
+// CRÃTICO: Verificar que React estÃ© disponible antes de usar QueryClient
 if (typeof window !== 'undefined') {
-  // Esperar a que React esté disponible antes de crear QueryClient
+  // Esperar a que React estÃ© disponible antes de crear QueryClient
   const checkReact = () => {
     const hasReact = (window as any).React || (window as any).__REACT_STUB__;
     if (!hasReact) {
-      // Si React no está disponible, esperar un poco y reintentar
+      // Si React no estÃ¡ disponible, esperar un poco y reintentar
       setTimeout(checkReact, 10);
     }
   };
@@ -31,38 +31,38 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import { AppFactory } from '@/demo/AppFactory';
 
 // ============================================================================
-// ESTRATEGIA DE CARGA DE PÁGINAS
+// ESTRATEGIA DE CARGA DE PÃGINAS
 // ============================================================================
 // 
-// PÁGINAS CRÍTICAS (Carga Inmediata):
-// - Index: Página principal, debe cargar instantáneamente
-// - Auth: Autenticación, crítica para el flujo de usuario
-// - NotFound: Página de error, debe estar siempre disponible
-// - Events: Página principal de eventos
-// - Discover: Página principal de descubrimiento
+// PÃGINAS CRÃTICAS (Carga Inmediata):
+// - Index: PÃ¡gina principal, debe cargar instantÃ¡neamente
+// - Auth: AutenticaciÃ³n, crÃ­tica para el flujo de usuario
+// - NotFound: PÃ¡gina de error, debe estar siempre disponible
+// - Events: PÃ¡gina principal de eventos
+// - Discover: PÃ¡gina principal de descubrimiento
 //
-// PÁGINAS CORE (Lazy Loading):
+// PÃGINAS CORE (Lazy Loading):
 // - Profiles, ProfileDetail: Funcionalidades principales
 // - Chat, ChatInfo: Sistema de chat
 // - Matches: Sistema de matches
 //
-// PÁGINAS ADMIN (Lazy Loading):
+// PÃGINAS ADMIN (Lazy Loading):
 // - Admin*, Moderator*: Panel administrativo
 //
-// PÁGINAS SECUNDARIAS (Lazy Loading):
-// - About, Terms, Privacy, etc.: Páginas informativas
+// PÃGINAS SECUNDARIAS (Lazy Loading):
+// - About, Terms, Privacy, etc.: PÃ¡ginas informativas
 // ============================================================================
 
 // Critical pages - loaded immediately
 import Index from "@/pages/Index";
-import Auth from "@/pages/Auth";
+import Auth from "@/app/(auth)/Auth";
 import NotFound from "@/pages/NotFound";
 import Events from "@/pages/Events";
-import Discover from "@/pages/Discover";
+import Discover from "@/app/(discover)/Discover";
 
 // Lazy loaded pages for performance optimization - Core features
-const Profiles = lazy(() => import("@/pages/Profiles"));
-const ProfileDetail = lazy(() => import("@/pages/ProfileDetail"));
+const Profiles = lazy(() => import("@/profiles/shared/Profiles"));
+const ProfileDetail = lazy(() => import("@/profiles/shared/ProfileDetail"));
 const Chat = lazy(() => import("@/pages/Chat"));
 const ChatInfo = lazy(() => import("@/pages/ChatInfo"));
 const Matches = lazy(() => import("@/pages/Matches"));
@@ -89,23 +89,23 @@ const TokensTerms = lazy(() => import("@/pages/TokensTerms"));
 const TokensLegal = lazy(() => import("@/pages/TokensLegal"));
 
 // Admin pages - separate chunk
-const Admin = lazy(() => import("@/pages/Admin"));
-const AdminProduction = lazy(() => import("@/pages/AdminProduction"));
-const AdminPartners = lazy(() => import("@/pages/AdminPartners"));
+const Admin = lazy(() => import("@/app/(admin)/Admin"));
+const AdminProduction = lazy(() => import("@/app/(admin)/AdminProduction"));
+const AdminPartners = lazy(() => import("@/app/(admin)/AdminPartners"));
 
 // Clubs system
-const Clubs = lazy(() => import("@/pages/Clubs"));
+const Clubs = lazy(() => import("@/app/(clubs)/Clubs"));
 
 // Shop CMPX tokens
 const Shop = lazy(() => import("@/pages/Shop"));
 
 // Stories info pages
 const StoriesInfo = lazy(() => import("@/pages/StoriesInfo"));
-const ProfileSingle = lazy(() => import("@/pages/ProfileSingle"));
+const ProfileSingle = lazy(() => import("@/profiles/single/ProfileSingle"));
 const Stories = lazy(() => import("@/pages/Stories"));
-const ProfileCouple = lazy(() => import("@/pages/ProfileCouple"));
-const EditProfileSingle = lazy(() => import("@/pages/EditProfileSingle"));
-const EditProfileCouple = lazy(() => import("@/pages/EditProfileCouple"));
+const ProfileCouple = lazy(() => import("@/profiles/couple/ProfileCouple"));
+const EditProfileSingle = lazy(() => import("@/profiles/single/EditProfileSingle"));
+const EditProfileCouple = lazy(() => import("@/profiles/couple/EditProfileCouple"));
 const Feed = lazy(() => import("@/pages/Feed"));
 const VideoChat = lazy(() => import("@/pages/VideoChat"));
 const VIPEvents = lazy(() => import("@/pages/VIPEvents"));
@@ -114,9 +114,9 @@ const Marketplace = lazy(() => import("@/pages/Marketplace"));
 const Info = lazy(() => import("@/pages/Info"));
 const About = lazy(() => import("@/pages/About"));
 const Careers = lazy(() => import("@/pages/Careers"));
-const AdminCareerApplications = lazy(() => import("@/pages/AdminCareerApplications"));
-const AdminModerators = lazy(() => import("@/pages/AdminModerators"));
-const AdminAnalytics = lazy(() => import("@/pages/AdminAnalytics"));
+const AdminCareerApplications = lazy(() => import("@/app/(admin)/AdminCareerApplications"));
+const AdminModerators = lazy(() => import("@/app/(admin)/AdminModerators"));
+const AdminAnalytics = lazy(() => import("@/app/(admin)/AdminAnalytics"));
 const ModeratorDashboard = lazy(() => import("@/pages/ModeratorDashboard"));
 const ModeratorRequest = lazy(() => import("@/pages/ModeratorRequest"));
 const Moderators = lazy(() => import("@/pages/Moderators"));
@@ -138,7 +138,7 @@ const PageLoader = () => (
   </div>
 );
 
-// Loading component específico para diferentes tipos de páginas
+// Loading component especÃ­fico para diferentes tipos de pÃ¡ginas
 const _AdminPageLoader = () => (
   <div className="min-h-screen bg-gray-900 flex items-center justify-center">
     <div className="text-center">
@@ -157,8 +157,8 @@ const _ProfilePageLoader = () => (
   </div>
 );
 
-// CRÍTICO: Crear QueryClient fuera del componente para evitar recreación en cada render
-// Configuración optimizada para producción
+// CRÃTICO: Crear QueryClient fuera del componente para evitar recreaciÃ³n en cada render
+// ConfiguraciÃ³n optimizada para producciÃ³n
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

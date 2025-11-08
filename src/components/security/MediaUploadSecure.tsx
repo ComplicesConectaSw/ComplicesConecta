@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/Card';
+import { Button } from '@/shared/ui/Button';
 import { Progress } from '@/components/ui/progress';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
@@ -18,7 +18,7 @@ import {
   Trash2
 } from 'lucide-react';
 import { MultimediaSecurityService, MediaValidationResult } from '@/lib/multimediaSecurity';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/features/auth/useAuth';
 import { logger } from '@/lib/logger';
 
 interface MediaUploadSecureProps {

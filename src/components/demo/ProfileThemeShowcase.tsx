@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ProfileCard } from '@/components/ui/ProfileCard';
+import { ProfileCard } from '@/profiles/shared/ProfileCard';
 import { ThemeSelector, ThemePreviewCard } from '@/components/ui/ThemeSelector';
 import { UnifiedCard } from '@/components/ui/UnifiedCard';
 import { Badge } from '@/components/ui/badge';
 import { Palette, Users, User, Heart } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Theme, Gender, ProfileType } from '@/hooks/useProfileTheme';
+import { cn } from '@/shared/lib/cn';
+import { Theme, Gender, ProfileType } from '@/features/profile/useProfileTheme';
 import { generateDemoProfiles } from '@/demo/demoData';
 
 interface ProfileThemeShowcaseProps {

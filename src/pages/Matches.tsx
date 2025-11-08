@@ -1,4 +1,4 @@
-Ôªøimport { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import HeaderNav from "@/components/HeaderNav";
 import Navigation from "@/components/Navigation";
 import { MatchCard } from "@/components/ui/MatchCard";
@@ -10,7 +10,7 @@ import { Heart, MessageCircle, Sparkles, ArrowLeft, Flame, Users, Crown } from "
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { logger } from '@/lib/logger';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/features/auth/useAuth';
 
 // Professional profile images from Unsplash - Production ready
 // Removed local imports that fail in production
@@ -35,7 +35,7 @@ const Matches = () => {
   const [_isProduction, _setIsProduction] = useState(false);
   const [isLoading] = useState(false);
   
-  // Verificar si hay sesi√≥n activa (demo o producci√≥n)
+  // Verificar si hay sesiÛn activa (demo o producciÛn)
   const hasActiveSession = typeof isAuthenticated === 'function' ? isAuthenticated() : !!isAuthenticated;
   const [demoMatches] = useState<Match[]>([
     {
@@ -52,11 +52,11 @@ const Matches = () => {
     },
     {
       id: 2,
-      name: "Sof√≠a",
+      name: "SofÌa",
       age: 29,
       image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=600&fit=crop&crop=face&v=2",
       compatibility: 94,
-      mutualInterests: ["Unicornio", "Experiencias Nuevas", "Discreci√≥n"],
+      mutualInterests: ["Unicornio", "Experiencias Nuevas", "DiscreciÛn"],
       distance: 3.5,
       matchedAt: "Ayer",
       hasUnreadMessage: true,
@@ -70,17 +70,17 @@ const Matches = () => {
       compatibility: 91,
       mutualInterests: ["Intercambio Suave", "Clubs Exclusivos", "Parejas Verificadas"],
       distance: 5.8,
-      matchedAt: "Hace 3 d√≠as",
+      matchedAt: "Hace 3 dÌas",
       hasUnreadMessage: false,
       status: 'viewed'
     },
     {
       id: 4,
-      name: "Ra√∫l",
+      name: "Ra˙l",
       age: 26,
       image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=600&fit=crop&crop=face",
       compatibility: 89,
-      mutualInterests: ["Single Masculino", "Experiencias √çntimas", "Aventuras"],
+      mutualInterests: ["Single Masculino", "Experiencias Õntimas", "Aventuras"],
       distance: 2.1,
       matchedAt: "Hace 1 semana",
       hasUnreadMessage: false,
@@ -92,7 +92,7 @@ const Matches = () => {
       age: 27,
       image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop&crop=face",
       compatibility: 96,
-      mutualInterests: ["Lifestyle", "Aventuras", "Discreci√≥n Total"],
+      mutualInterests: ["Lifestyle", "Aventuras", "DiscreciÛn Total"],
       distance: 4.2,
       matchedAt: "Hace 5 horas",
       hasUnreadMessage: true,
@@ -106,7 +106,7 @@ const Matches = () => {
       compatibility: 92,
       mutualInterests: ["Parejas Swinger", "Intercambio Completo", "Eventos Exclusivos"],
       distance: 6.8,
-      matchedAt: "Hace 2 d√≠as",
+      matchedAt: "Hace 2 dÌas",
       hasUnreadMessage: false,
       status: 'viewed'
     }
@@ -114,19 +114,19 @@ const Matches = () => {
 
   const [filter, setFilter] = useState<'all' | 'new' | 'recent' | 'unread'>('all');
 
-  // Detectar modo de operaci√≥n (demo vs producci√≥n)
+  // Detectar modo de operaciÛn (demo vs producciÛn)
   useEffect(() => {
     const demoAuth = localStorage.getItem('demo_authenticated');
     const isDemo = demoAuth === 'true';
     // _setIsProduction(!isDemo); // Commented out - variable not used
 
-    // SIEMPRE usar datos demo para respetar la l√≥gica de negocio
-    // No cargar datos reales hasta que el sistema est√© completamente implementado
+    // SIEMPRE usar datos demo para respetar la lÛgica de negocio
+    // No cargar datos reales hasta que el sistema estÈ completamente implementado
     // setMatches(demoMatches); // Commented out - variable not used
-    logger.info('üé≠ Matches demo cargados (respetando l√≥gica de negocio):', { count: demoMatches.length, isDemo });
+    logger.info('?? Matches demo cargados (respetando lÛgica de negocio):', { count: demoMatches.length, isDemo });
   }, []);
 
-  const currentMatches = demoMatches; // Siempre usar datos demo para respetar l√≥gica de negocio
+  const currentMatches = demoMatches; // Siempre usar datos demo para respetar lÛgica de negocio
   const filteredMatches = currentMatches.filter(match => {
     switch (filter) {
       case 'new':
@@ -221,7 +221,7 @@ const Matches = () => {
               </span>
             </h1>
             <p className="text-xl text-white/90 max-w-2xl mx-auto drop-shadow-md">
-              Parejas y solteros verificados que han mostrado inter√©s mutuo contigo en la comunidad swinger
+              Parejas y solteros verificados que han mostrado interÈs mutuo contigo en la comunidad swinger
             </p>
           </div>
 
@@ -336,7 +336,7 @@ const Matches = () => {
               }`}
             >
               <MessageCircle className="h-4 w-4" />
-              No le√≠dos ({currentMatches.filter(m => m.hasUnreadMessage).length})
+              No leÌdos ({currentMatches.filter(m => m.hasUnreadMessage).length})
             </UnifiedButton>
           </div>
         </motion.div>
@@ -387,7 +387,7 @@ const Matches = () => {
               No hay matches con este filtro
             </h3>
             <p className="text-sm sm:text-base text-white/70 mb-6 max-w-md mx-auto">
-              Intenta cambiar los filtros o descubre m√°s parejas y solteros verificados
+              Intenta cambiar los filtros o descubre m·s parejas y solteros verificados
             </p>
             <UnifiedButton 
               variant="love" 

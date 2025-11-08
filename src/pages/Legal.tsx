@@ -1,7 +1,7 @@
-Ôªø
+
 import HeaderNav from '@/components/HeaderNav';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
+import { Button } from '@/shared/ui/Button';
 import { Badge } from '@/components/ui/badge';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -25,23 +25,23 @@ const Legal: React.FC = () => {
 
   const legalDocuments = [
     {
-      title: "T√©rminos de Servicio",
+      title: "TÈrminos de Servicio",
       description: "Condiciones de uso de la plataforma ComplicesConecta",
       icon: <Gavel className="h-6 w-6" />,
       file: "TERMS_OF_SERVICE.md",
       lastUpdated: "2025-11-05",
-      category: "T√©rminos"
+      category: "TÈrminos"
     },
     {
-      title: "Pol√≠tica de Privacidad", 
-      description: "C√≥mo protegemos y manejamos tu informaci√≥n personal",
+      title: "PolÌtica de Privacidad", 
+      description: "CÛmo protegemos y manejamos tu informaciÛn personal",
       icon: <Shield className="h-6 w-6" />,
       file: "PRIVACY_POLICY.md",
       lastUpdated: "2025-11-05",
       category: "Privacidad"
     },
     {
-      title: "Cumplimiento Legal M√©xico",
+      title: "Cumplimiento Legal MÈxico",
       description: "Marco regulatorio y cumplimiento en territorio mexicano",
       icon: <Scale className="h-6 w-6" />,
       file: "LEGAL_COMPLIANCE_MEXICO.md", 
@@ -57,7 +57,7 @@ const Legal: React.FC = () => {
       category: "Legal"
     },
     {
-      title: "Auditor√≠a de Seguridad",
+      title: "AuditorÌa de Seguridad",
       description: "Resumen de medidas de seguridad implementadas",
       icon: <Lock className="h-6 w-6" />,
       file: "SECURITY_AUDIT_OVERVIEW.md",
@@ -65,8 +65,8 @@ const Legal: React.FC = () => {
       category: "Seguridad"
     },
     {
-      title: "Gu√≠a de Contribuci√≥n",
-      description: "C√≥mo contribuir al desarrollo de la plataforma",
+      title: "GuÌa de ContribuciÛn",
+      description: "CÛmo contribuir al desarrollo de la plataforma",
       icon: <Users className="h-6 w-6" />,
       file: "CONTRIBUTING.md",
       lastUpdated: "2025-11-05",
@@ -109,19 +109,19 @@ const Legal: React.FC = () => {
 
       {/* Contenido principal */}
       <div className="max-w-4xl mx-auto p-4 space-y-6">
-        {/* Introducci√≥n */}
+        {/* IntroducciÛn */}
         <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-white">
               <Shield className="h-5 w-5" />
-              Informaci√≥n Legal de ComplicesConecta
+              InformaciÛn Legal de ComplicesConecta
             </CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-white/90 leading-relaxed">
               ComplicesConecta opera bajo estricto cumplimiento del marco legal mexicano e internacional. 
-              Esta secci√≥n proporciona informaci√≥n transparente sobre nuestras obligaciones legales, 
-              derechos de los usuarios y pol√≠ticas de cumplimiento.
+              Esta secciÛn proporciona informaciÛn transparente sobre nuestras obligaciones legales, 
+              derechos de los usuarios y polÌticas de cumplimiento.
             </p>
           </CardContent>
         </Card>
@@ -137,21 +137,21 @@ const Legal: React.FC = () => {
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-3">
-                <h3 className="font-semibold text-pink-300">Legislaci√≥n Mexicana</h3>
+                <h3 className="font-semibold text-pink-300">LegislaciÛn Mexicana</h3>
                 <ul className="space-y-2 text-white/80 text-sm">
-                  <li>‚Ä¢ Ley Federal de Protecci√≥n de Datos Personales (LFPDPPP)</li>
-                  <li>‚Ä¢ C√≥digo Civil Federal</li>
-                  <li>‚Ä¢ Ley Federal del Consumidor</li>
-                  <li>‚Ä¢ Ley de Instituciones de Cr√©dito</li>
+                  <li>ï Ley Federal de ProtecciÛn de Datos Personales (LFPDPPP)</li>
+                  <li>ï CÛdigo Civil Federal</li>
+                  <li>ï Ley Federal del Consumidor</li>
+                  <li>ï Ley de Instituciones de CrÈdito</li>
                 </ul>
               </div>
               <div className="space-y-3">
                 <h3 className="font-semibold text-purple-300">Normativas Internacionales</h3>
                 <ul className="space-y-2 text-white/80 text-sm">
-                  <li>‚Ä¢ GDPR (Reglamento General de Protecci√≥n de Datos)</li>
-                  <li>‚Ä¢ CCPA (California Consumer Privacy Act)</li>
-                  <li>‚Ä¢ SOX (Sarbanes-Oxley Act)</li>
-                  <li>‚Ä¢ ISO 27001 (Seguridad de la Informaci√≥n)</li>
+                  <li>ï GDPR (Reglamento General de ProtecciÛn de Datos)</li>
+                  <li>ï CCPA (California Consumer Privacy Act)</li>
+                  <li>ï SOX (Sarbanes-Oxley Act)</li>
+                  <li>ï ISO 27001 (Seguridad de la InformaciÛn)</li>
                 </ul>
               </div>
             </div>
@@ -173,10 +173,10 @@ const Legal: React.FC = () => {
                   Derechos ARCO
                 </Badge>
                 <ul className="space-y-2 text-white/80 text-sm">
-                  <li><strong>Acceso:</strong> Conocer qu√© datos personales tenemos</li>
-                  <li><strong>Rectificaci√≥n:</strong> Corregir datos inexactos</li>
-                  <li><strong>Cancelaci√≥n:</strong> Eliminar datos cuando no sean necesarios</li>
-                  <li><strong>Oposici√≥n:</strong> Oponerse al tratamiento de datos</li>
+                  <li><strong>Acceso:</strong> Conocer quÈ datos personales tenemos</li>
+                  <li><strong>RectificaciÛn:</strong> Corregir datos inexactos</li>
+                  <li><strong>CancelaciÛn:</strong> Eliminar datos cuando no sean necesarios</li>
+                  <li><strong>OposiciÛn:</strong> Oponerse al tratamiento de datos</li>
                 </ul>
               </div>
               <div className="space-y-3">
@@ -185,8 +185,8 @@ const Legal: React.FC = () => {
                 </Badge>
                 <ul className="space-y-2 text-white/80 text-sm">
                   <li><strong>Portabilidad:</strong> Transferir datos a otro servicio</li>
-                  <li><strong>Limitaci√≥n:</strong> Restringir el procesamiento</li>
-                  <li><strong>Transparencia:</strong> Informaci√≥n clara sobre el uso</li>
+                  <li><strong>LimitaciÛn:</strong> Restringir el procesamiento</li>
+                  <li><strong>Transparencia:</strong> InformaciÛn clara sobre el uso</li>
                   <li><strong>Consentimiento:</strong> Control sobre el uso de datos</li>
                 </ul>
               </div>
@@ -199,48 +199,48 @@ const Legal: React.FC = () => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-white">
               <Shield className="h-5 w-5" />
-              Informaci√≥n de Seguridad - v3.3.0
+              InformaciÛn de Seguridad - v3.3.0
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div className="p-4 bg-green-500/20 border border-green-400/30 rounded-lg">
-                <h3 className="font-semibold text-green-300 mb-2">üîí Protecci√≥n de Datos Enterprise</h3>
+                <h3 className="font-semibold text-green-300 mb-2">?? ProtecciÛn de Datos Enterprise</h3>
                 <p className="text-white/80 text-sm">
-                  Encriptaci√≥n AES-GCM, cumplimiento GDPR/LFPDPPP, sistema de auditor√≠a avanzada 
-                  con IP tracking, session monitoring y risk scoring autom√°tico.
+                  EncriptaciÛn AES-GCM, cumplimiento GDPR/LFPDPPP, sistema de auditorÌa avanzada 
+                  con IP tracking, session monitoring y risk scoring autom·tico.
                 </p>
               </div>
               
               <div className="p-4 bg-blue-500/20 border border-blue-400/30 rounded-lg">
-                <h3 className="font-semibold text-blue-300 mb-2">üõ°Ô∏è Autenticaci√≥n Biom√©trica 2FA</h3>
+                <h3 className="font-semibold text-blue-300 mb-2">??? AutenticaciÛn BiomÈtrica 2FA</h3>
                 <p className="text-white/80 text-sm">
-                  Sistema TOTP con Google Authenticator/Authy, c√≥digos de recuperaci√≥n seguros, 
+                  Sistema TOTP con Google Authenticator/Authy, cÛdigos de recuperaciÛn seguros, 
                   WebAuthn para huella/FaceID y monitoreo de sesiones activas.
                 </p>
               </div>
               
               <div className="p-4 bg-purple-500/20 border border-purple-400/30 rounded-lg">
-                <h3 className="font-semibold text-purple-300 mb-2">üì± Protecci√≥n Multimedia Avanzada</h3>
+                <h3 className="font-semibold text-purple-300 mb-2">?? ProtecciÛn Multimedia Avanzada</h3>
                 <p className="text-white/80 text-sm">
-                  URLs firmadas temporales, watermarks din√°micos invisibles, FLAG_SECURE Android, 
+                  URLs firmadas temporales, watermarks din·micos invisibles, FLAG_SECURE Android, 
                   bloqueo de screenshots web y sistema de permisos granular por roles.
                 </p>
               </div>
 
               <div className="p-4 bg-red-500/20 border border-red-400/30 rounded-lg">
-                <h3 className="font-semibold text-red-300 mb-2">üö® Detecci√≥n de Fraude</h3>
+                <h3 className="font-semibold text-red-300 mb-2">?? DetecciÛn de Fraude</h3>
                 <p className="text-white/80 text-sm">
-                  Fraud detection autom√°tico, logs de moderaci√≥n completos, performance monitoring 
-                  con alertas por anomal√≠as y sistema de puntuaci√≥n de riesgo en tiempo real.
+                  Fraud detection autom·tico, logs de moderaciÛn completos, performance monitoring 
+                  con alertas por anomalÌas y sistema de puntuaciÛn de riesgo en tiempo real.
                 </p>
               </div>
 
               <div className="p-4 bg-yellow-500/20 border border-yellow-400/30 rounded-lg">
-                <h3 className="font-semibold text-yellow-300 mb-2">üìä Monitoreo 24/7</h3>
+                <h3 className="font-semibold text-yellow-300 mb-2">?? Monitoreo 24/7</h3>
                 <p className="text-white/80 text-sm">
-                  Sistema de m√©tricas en tiempo real, error rate monitoring, user activity tracking, 
-                  notificaciones push seguras y auditor√≠as autom√°ticas cada 5 minutos.
+                  Sistema de mÈtricas en tiempo real, error rate monitoring, user activity tracking, 
+                  notificaciones push seguras y auditorÌas autom·ticas cada 5 minutos.
                 </p>
               </div>
             </div>
@@ -327,30 +327,30 @@ const Legal: React.FC = () => {
               <div className="space-y-2">
                 <h3 className="font-semibold text-purple-300">Derechos ARCO</h3>
                 <p className="text-white/80 text-sm">derechos@complicesconecta.com</p>
-                <p className="text-white/80 text-sm">Respuesta: 20 d√≠as h√°biles</p>
+                <p className="text-white/80 text-sm">Respuesta: 20 dÌas h·biles</p>
               </div>
               <div className="space-y-2">
                 <h3 className="font-semibold text-green-300">Emergencias Seguridad</h3>
                 <p className="text-white/80 text-sm">emergencias@complicesconecta.com</p>
-                <p className="text-white/80 text-sm">Atenci√≥n 24/7</p>
+                <p className="text-white/80 text-sm">AtenciÛn 24/7</p>
               </div>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
               <div className="p-3 bg-blue-500/20 border border-blue-400/30 rounded-lg">
-                <h4 className="font-semibold text-blue-300 mb-2">üìç Domicilio Legal</h4>
+                <h4 className="font-semibold text-blue-300 mb-2">?? Domicilio Legal</h4>
                 <p className="text-white/80 text-sm">
-                  Juan Carlos M√©ndez Nataren<br/>
+                  Juan Carlos MÈndez Nataren<br/>
                   ComplicesConecta Platform<br/>
-                  Ciudad de M√©xico, M√©xico
+                  Ciudad de MÈxico, MÈxico
                 </p>
               </div>
               <div className="p-3 bg-orange-500/20 border border-orange-400/30 rounded-lg">
-                <h4 className="font-semibold text-orange-300 mb-2">‚öñÔ∏è Autoridades Competentes</h4>
+                <h4 className="font-semibold text-orange-300 mb-2">?? Autoridades Competentes</h4>
                 <p className="text-white/80 text-sm">
-                  PROFECO ‚Ä¢ INAI ‚Ä¢ IFT<br/>
-                  Ministerio P√∫blico<br/>
-                  Jurisdicci√≥n: CDMX, M√©xico
+                  PROFECO ï INAI ï IFT<br/>
+                  Ministerio P˙blico<br/>
+                  JurisdicciÛn: CDMX, MÈxico
                 </p>
               </div>
             </div>
@@ -361,21 +361,21 @@ const Legal: React.FC = () => {
                   <strong>Marco Legal Actualizado:</strong> 21 de septiembre de 2025
                 </p>
                 <p className="text-white/70 text-xs">
-                  T√©rminos v3.0.0 ‚Ä¢ Cumplimiento LFPDPPP/GDPR ‚Ä¢ Jurisdicci√≥n M√©xico
+                  TÈrminos v3.0.0 ï Cumplimiento LFPDPPP/GDPR ï JurisdicciÛn MÈxico
                 </p>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Botones de acci√≥n */}
+        {/* Botones de acciÛn */}
         <div className="flex flex-wrap gap-4 justify-center">
           <Button
             onClick={() => navigate('/terms')}
             className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
           >
             <FileText className="h-4 w-4 mr-2" />
-            Ver T√©rminos y Condiciones
+            Ver TÈrminos y Condiciones
           </Button>
           
           <Button
@@ -383,7 +383,7 @@ const Legal: React.FC = () => {
             className="border-white/30 text-white hover:bg-white/10 border bg-transparent"
           >
             <Shield className="h-4 w-4 mr-2" />
-            Pol√≠tica de Privacidad
+            PolÌtica de Privacidad
           </Button>
         </div>
         </div>

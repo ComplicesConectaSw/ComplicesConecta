@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Palette } from 'lucide-react';
-import { Theme } from '@/hooks/useProfileTheme';
+import { Theme } from '@/features/profile/useProfileTheme';
 import { ThemeSelector } from '@/components/ui/ThemeSelector';
 
 interface ThemeModalProps {

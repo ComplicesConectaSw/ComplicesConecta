@@ -161,8 +161,6 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
-    "@azure/core-auth": "^1.10.1",
-    "@azure/core-sse": "^2.3.0",
     "@eslint/js": "^9.34.0",
     "@playwright/test": "^1.56.1",
     "@tailwindcss/typography": "^0.5.19",

@@ -1,6 +1,6 @@
-ï»¿import HeaderNav from "@/components/HeaderNav";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import HeaderNav from "@/components/HeaderNav";
+import { Button } from "@/shared/ui/Button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/Card";
 import { Badge } from "@/components/ui/badge";
 import { 
   MessageCircle, 
@@ -49,7 +49,7 @@ const ChatInfo = () => {
               </h1>
             </div>
             <p className="text-lg text-white/90 max-w-2xl mx-auto">
-              Conecta de forma segura y discreta con la comunidad lifestyle mÃ¡s exclusiva de MÃ©xico
+              Conecta de forma segura y discreta con la comunidad lifestyle más exclusiva de México
             </p>
           </div>
 
@@ -68,12 +68,12 @@ const ChatInfo = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-white/90">
-                  Conversaciones Ã­ntimas y seguras con tus conexiones verificadas del lifestyle swinger.
+                  Conversaciones íntimas y seguras con tus conexiones verificadas del lifestyle swinger.
                 </p>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 text-sm">
                     <Shield className="h-4 w-4 text-green-400" />
-                    <span>EncriptaciÃ³n de extremo a extremo</span>
+                    <span>Encriptación de extremo a extremo</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <UserCheck className="h-4 w-4 text-blue-400" />
@@ -92,7 +92,7 @@ const ChatInfo = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-3">
                   <Globe className="h-6 w-6 text-green-300" />
-                  Salas PÃºblicas
+                  Salas Públicas
                   <Badge className="bg-green-500/20 text-green-200 border-green-300/30">
                     Moderadas 24/7
                   </Badge>
@@ -100,7 +100,7 @@ const ChatInfo = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-white/90">
-                  Ãšnete a la conversaciÃ³n comunitaria en salas temÃ¡ticas del lifestyle mexicano.
+                  Únete a la conversación comunitaria en salas temáticas del lifestyle mexicano.
                 </p>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 text-sm">
@@ -109,7 +109,7 @@ const ChatInfo = () => {
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <Shield className="h-4 w-4 text-blue-400" />
-                    <span>ModeraciÃ³n profesional</span>
+                    <span>Moderación profesional</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <Heart className="h-4 w-4 text-purple-400" />
@@ -133,11 +133,11 @@ const ChatInfo = () => {
                 <div className="p-4 bg-white/5 rounded-lg border border-white/10">
                   <div className="flex items-center gap-3 mb-2">
                     <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center text-white font-bold">
-                      ðŸ”¥
+                      ??
                     </div>
                     <div>
                       <h4 className="font-semibold">Sala General Lifestyle</h4>
-                      <p className="text-sm text-white/70">ConversaciÃ³n general de la comunidad</p>
+                      <p className="text-sm text-white/70">Conversación general de la comunidad</p>
                     </div>
                   </div>
                 </div>
@@ -145,11 +145,11 @@ const ChatInfo = () => {
                 <div className="p-4 bg-white/5 rounded-lg border border-white/10">
                   <div className="flex items-center gap-3 mb-2">
                     <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full flex items-center justify-center text-white font-bold">
-                      ðŸ’‘
+                      ??
                     </div>
                     <div>
                       <h4 className="font-semibold">Parejas CDMX</h4>
-                      <p className="text-sm text-white/70">Exclusivo para parejas de la Ciudad de MÃ©xico</p>
+                      <p className="text-sm text-white/70">Exclusivo para parejas de la Ciudad de México</p>
                     </div>
                   </div>
                 </div>
@@ -157,7 +157,7 @@ const ChatInfo = () => {
                 <div className="p-4 bg-white/5 rounded-lg border border-white/10">
                   <div className="flex items-center gap-3 mb-2">
                     <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center text-white font-bold">
-                      ðŸŒŸ
+                      ??
                     </div>
                     <div>
                       <h4 className="font-semibold">Singles Lifestyle</h4>
@@ -169,11 +169,11 @@ const ChatInfo = () => {
                 <div className="p-4 bg-white/5 rounded-lg border border-white/10">
                   <div className="flex items-center gap-3 mb-2">
                     <div className="w-10 h-10 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center text-white font-bold">
-                      ðŸŽ­
+                      ??
                     </div>
                     <div>
                       <h4 className="font-semibold">Eventos Privados</h4>
-                      <p className="text-sm text-white/70">OrganizaciÃ³n de eventos exclusivos</p>
+                      <p className="text-sm text-white/70">Organización de eventos exclusivos</p>
                     </div>
                   </div>
                 </div>
@@ -193,18 +193,18 @@ const ChatInfo = () => {
               <div className="grid sm:grid-cols-3 gap-6">
                 <div className="text-center">
                   <Lock className="h-8 w-8 text-purple-400 mx-auto mb-2" />
-                  <h4 className="font-semibold mb-1">EncriptaciÃ³n E2E</h4>
-                  <p className="text-sm text-white/70">Tus mensajes privados estÃ¡n protegidos con encriptaciÃ³n de extremo a extremo</p>
+                  <h4 className="font-semibold mb-1">Encriptación E2E</h4>
+                  <p className="text-sm text-white/70">Tus mensajes privados están protegidos con encriptación de extremo a extremo</p>
                 </div>
                 <div className="text-center">
                   <UserCheck className="h-8 w-8 text-blue-400 mx-auto mb-2" />
-                  <h4 className="font-semibold mb-1">VerificaciÃ³n KYC</h4>
+                  <h4 className="font-semibold mb-1">Verificación KYC</h4>
                   <p className="text-sm text-white/70">Solo usuarios verificados pueden acceder al sistema de chat</p>
                 </div>
                 <div className="text-center">
                   <Eye className="h-8 w-8 text-green-400 mx-auto mb-2" />
                   <h4 className="font-semibold mb-1">Control de Privacidad</h4>
-                  <p className="text-sm text-white/70">TÃº decides quiÃ©n puede contactarte y cÃ³mo</p>
+                  <p className="text-sm text-white/70">Tú decides quién puede contactarte y cómo</p>
                 </div>
               </div>
             </CardContent>
@@ -220,7 +220,7 @@ const ChatInfo = () => {
               Comenzar a Chatear
             </Button>
             <p className="text-white/70 text-sm mt-4">
-              Ãšnete a la comunidad lifestyle mÃ¡s exclusiva y segura de MÃ©xico
+              Únete a la comunidad lifestyle más exclusiva y segura de México
             </p>
           </div>
         </div>

@@ -1,11 +1,11 @@
-ï»¿import { useState, useEffect } from 'react';
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { useState, useEffect } from 'react';
+import { Card, CardContent } from "@/shared/ui/Card";
+import { Button } from "@/shared/ui/Button";
 import { Heart, MessageCircle, Share2, MoreHorizontal, MapPin, Clock, CheckCircle, Loader2, Plus } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 import { postsService, type Post } from '@/services/postsService';
-import { useAuth } from '@/hooks/useAuth';
-import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/features/auth/useAuth';
+import { useToast } from '@/hooks/useToast';
 import { logger } from '@/lib/logger';
 
 const Feed = () => {
@@ -98,7 +98,7 @@ const Feed = () => {
             Feed <span className="bg-love-gradient bg-clip-text text-transparent">Lifestyle</span>
           </h1>
           <p className="text-white">
-            Descubre las experiencias de la comunidad ðŸ”¥
+            Descubre las experiencias de la comunidad ??
           </p>
         </div>
 
@@ -110,11 +110,11 @@ const Feed = () => {
         ) : posts.length === 0 ? (
           <div className="text-center py-12">
             <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-lg p-8">
-              <h3 className="text-xl font-semibold text-white mb-2">Â¡SÃ© el primero en publicar!</h3>
+              <h3 className="text-xl font-semibold text-white mb-2">¡Sé el primero en publicar!</h3>
               <p className="text-white/80 mb-4">Comparte tus experiencias con la comunidad lifestyle</p>
               <Button className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white">
                 <Plus className="h-4 w-4 mr-2" />
-                Crear publicaciÃ³n
+                Crear publicación
               </Button>
             </div>
           </div>
@@ -139,7 +139,7 @@ const Feed = () => {
                       <div>
                         <div className="flex items-center space-x-2">
                           <h3 className="font-semibold text-foreground">
-                            {post.profile?.name || 'Usuario AnÃ³nimo'}
+                            {post.profile?.name || 'Usuario Anónimo'}
                           </h3>
                           {post.profile?.is_verified && (
                             <CheckCircle className="w-4 h-4 text-blue-500" />
@@ -210,7 +210,7 @@ const Feed = () => {
           </div>
         )}
 
-        {/* BotÃ³n para cargar mÃ¡s */}
+        {/* Botón para cargar más */}
         {!loading && posts.length > 0 && hasMore && (
           <div className="text-center mt-8">
             <Button 
@@ -224,7 +224,7 @@ const Feed = () => {
                   <span className="drop-shadow-md">Cargando...</span>
                 </>
               ) : (
-                <span className="drop-shadow-md">Cargar mÃ¡s publicaciones</span>
+                <span className="drop-shadow-md">Cargar más publicaciones</span>
               )}
             </Button>
           </div>

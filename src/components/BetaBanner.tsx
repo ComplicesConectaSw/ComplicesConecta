@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { X, Rocket, Gift, Heart, Sparkles } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/ui/Button";
 import { DismissibleBanner } from "@/components/DismissibleBanner";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/shared/ui/Card";
 import { Link } from "react-router-dom";
 import { logger } from '@/lib/logger';
 
