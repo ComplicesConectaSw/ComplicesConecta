@@ -1,8 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Check, Palette } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Theme, getAvailableThemes, getThemeDisplayName } from '@/hooks/useProfileTheme';
+import { cn } from '@/shared/lib/cn';
+import { Theme, getAvailableThemes, getThemeDisplayName } from '@/features/profile/useProfileTheme';
 import { Badge } from '@/components/ui/badge';
 import { validateThemeSelector } from '@/lib/zod-schemas';
 import { logger } from '@/lib/logger';

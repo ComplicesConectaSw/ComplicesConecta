@@ -88,7 +88,8 @@ Write-Host ""
 
 # Filtrar vistas y tablas conocidas que son vistas o están en desarrollo
 $knownViews = @('couple_profiles_with_partners')
-$knownTODOs = @('app_logs')
+# app_logs existe en remoto pero no en local - Preparada para implementación futura
+$knownTODOs = @()  # app_logs removido: existe en remoto, preparada para uso futuro
 $knownDeprecated = @('user_tokens')  # Se debe migrar a user_token_balances
 
 # Tablas en código pero no en local (excluyendo vistas y TODOs)
@@ -127,7 +128,7 @@ if ($unusedInLocal.Count -gt 0) {
             "ai_model_metrics" { $reason = " - Métricas de modelos IA (futuro)" }
             "ai_prediction_logs" { $reason = " - Logs de predicciones IA (futuro)" }
             "analytics_events" { $reason = " - Eventos de analytics (puede usarse en Edge Functions)" }
-            "app_logs" { $reason = " - Sistema de logging (TODO)" }
+            "app_logs" { $reason = " - Sistema de logging (existe en remoto, preparada para uso futuro)" }
             "cache_statistics" { $reason = " - Estadísticas de caché (optimización futura)" }
             "invitation_statistics" { $reason = " - Estadísticas de invitaciones (analytics)" }
             "monitoring_sessions" { $reason = " - Sesiones de monitoreo v3.4.1" }

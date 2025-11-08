@@ -3,10 +3,10 @@
 
 import React, { useState } from 'react';
 import { IDKitWidget, VerificationLevel, ISuccessResult } from '@worldcoin/idkit'
-import { Button } from "@/components/ui/button"
+import { Button } from "@/shared/ui/Button"
 import { Badge } from "@/components/ui/badge"
-import { useAuth } from "@/hooks/useAuth"
-import { useToast } from '@/hooks/use-toast';
+import { useAuth } from "@/features/auth/useAuth"
+import { useToast } from '@/hooks/useToast';
 import { supabase } from '@/integrations/supabase/client';
 import { CheckCircle, Loader2, Globe, Shield } from 'lucide-react';
 import { logger } from '@/lib/logger';

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Shield, Eye, CheckCircle, XCircle, Clock, User } from 'lucide-react';
-import { profileReportService } from '@/services/ProfileReportService';
+import { profileReportService } from '@/features/profile/ProfileReportService';
 import { toast } from 'sonner';
 
 interface ProfileReport {

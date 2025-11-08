@@ -1,8 +1,8 @@
-ï»¿import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Video, VideoOff, Mic, MicOff, Phone, PhoneOff, Users, Settings, ArrowLeft } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/shared/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
 import { Badge } from '@/components/ui/badge';
 import HeaderNav from '@/components/HeaderNav';
 
@@ -14,7 +14,7 @@ const VideoChat = () => {
   const [_participants, _setParticipants] = useState([
     {
       id: 1,
-      name: "MarÃ­a Elena",
+      name: "María Elena",
       avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face",
       isVideoOn: true,
       isMicOn: true,
@@ -33,25 +33,25 @@ const VideoChat = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    // Simular inicializaciÃ³n de video
+    // Simular inicialización de video
     if (videoRef.current) {
-      videoRef.current.srcObject = null; // En producciÃ³n serÃ­a el stream real
+      videoRef.current.srcObject = null; // En producción sería el stream real
     }
   }, []);
 
   const toggleVideo = () => {
     setIsVideoOn(!isVideoOn);
-    // En producciÃ³n aquÃ­ se manejarÃ­a el stream de video
+    // En producción aquí se manejaría el stream de video
   };
 
   const toggleMic = () => {
     setIsMicOn(!isMicOn);
-    // En producciÃ³n aquÃ­ se manejarÃ­a el audio
+    // En producción aquí se manejaría el audio
   };
 
   const startCall = () => {
     setIsCallActive(true);
-    // En producciÃ³n aquÃ­ se iniciarÃ­a la llamada WebRTC
+    // En producción aquí se iniciaría la llamada WebRTC
   };
 
   const endCall = () => {
@@ -62,14 +62,14 @@ const VideoChat = () => {
   const callHistory = [
     {
       id: 1,
-      participants: ["MarÃ­a Elena", "Carlos & Ana"],
+      participants: ["María Elena", "Carlos & Ana"],
       duration: "15:32",
       date: "Hoy",
       type: "video"
     },
     {
       id: 2,
-      participants: ["SofÃ­a", "Roberto"],
+      participants: ["Sofía", "Roberto"],
       duration: "8:45",
       date: "Ayer",
       type: "video"
@@ -78,7 +78,7 @@ const VideoChat = () => {
       id: 3,
       participants: ["Anabella & Julio"],
       duration: "22:15",
-      date: "2 dÃ­as",
+      date: "2 días",
       type: "video"
     }
   ];
@@ -112,7 +112,7 @@ const VideoChat = () => {
               </h1>
             </div>
             <p className="text-xl text-white/90 max-w-3xl mx-auto">
-              Llamadas de video seguras y privadas con tecnologÃ­a WebRTC para conexiones autÃ©nticas
+              Llamadas de video seguras y privadas con tecnología WebRTC para conexiones auténticas
             </p>
           </div>
 
@@ -300,7 +300,7 @@ const VideoChat = () => {
                       className="border-white/30 text-white hover:bg-white/10"
                     >
                       <Settings className="h-4 w-4 mr-2" />
-                      ConfiguraciÃ³n
+                      Configuración
                     </Button>
                   </div>
                 </CardContent>

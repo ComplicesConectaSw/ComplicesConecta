@@ -23,7 +23,7 @@ import {
   MoreHorizontal,
   Scale
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/shared/ui/Button';
 import { Badge } from '@/components/ui/badge';
 import {
   DropdownMenu,
@@ -33,7 +33,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuLabel
 } from '@/components/ui/dropdown-menu';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/features/auth/useAuth';
 import { logger } from '@/lib/logger';
 
 interface HeaderNavProps {

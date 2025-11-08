@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ResponsiveNavigation } from '@/components/navigation/ResponsiveNavigation';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/cn';
 
 interface ResponsiveLayoutProps {
   children: React.ReactNode;

@@ -1,0 +1,16 @@
+/* src/styles/components/components.css - Estilos de componentes */
+/* Nota: @tailwind directives están en index.css, no duplicar aquí */
+/* Usar @layer para que Tailwind procese @apply correctamente */
+@layer components {
+  .button {
+    @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-semibold;
+  }
+
+  .card {
+    @apply rounded-lg border bg-card text-card-foreground shadow-sm;
+  }
+
+  .input {
+    @apply flex h-10 w-full rounded-md border border-input bg-background px-3 py-2;
+  }
+}

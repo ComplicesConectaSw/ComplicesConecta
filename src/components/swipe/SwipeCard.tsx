@@ -1,9 +1,9 @@
 import { useState, useRef } from "react";
 import { Heart, X, Zap, Flag, Ban } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/shared/ui/Button";
+import { Card, CardContent } from "@/shared/ui/Card";
 import { Badge } from "@/components/ui/badge";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/useToast";
 import { ReportDialog } from "@/components/swipe/ReportDialog";
 import { VerificationBadge } from "@/components/ui/verification-badge";
 import { MatchScore } from "@/components/discover/MatchScore";

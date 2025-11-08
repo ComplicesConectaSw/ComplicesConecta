@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/hooks/useAuth';
-import { Theme, NavbarStyle } from '@/hooks/useProfileTheme';
+import { useAuth } from '@/features/auth/useAuth';
+import { Theme, NavbarStyle } from '@/features/profile/useProfileTheme';
 import { logger } from '@/lib/supabase-logger';
 
 interface ThemePreferences {

@@ -5,7 +5,7 @@ import { UnifiedButton } from '@/components/ui/UnifiedButton';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, MapPin, Users, Clock, Star, Lock } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/cn';
 
 interface EventCardProps {
   id: string;

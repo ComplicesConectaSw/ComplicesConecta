@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import HeaderNav from "@/components/HeaderNav";
 import { HeroSection } from "@/components/HeroSection";
-import { ProfileCard } from "@/components/profile/MainProfileCard";
+import { ProfileCard } from "@/profiles/shared/MainProfileCard";
 import { Footer } from "@/components/Footer";
 import { BetaBanner } from "@/components/BetaBanner";
 import { LoadingScreen } from "@/components/LoadingScreen";
@@ -13,12 +13,12 @@ import { ActionButtonsModal } from "@/components/modals/ActionButtonsModal";
 import { DecorativeHearts } from "@/components/DecorativeHearts";
 // StoriesContainer removido - ya está en HeaderNav
 import { Heart, Users, Shield, Zap, Smartphone as Android, Info, Briefcase, DollarSign, UserCheck } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/ui/Button";
 import "@/styles/animations.css";
 import { logger } from '@/lib/logger';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/features/auth/useAuth';
 import { usePersistedState } from '@/hooks/usePersistedState';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/Card";
 import ModeratorApplicationForm from "@/components/forms/ModeratorApplicationForm";
 
 import { getRandomProfileImage } from '@/lib/imageService';

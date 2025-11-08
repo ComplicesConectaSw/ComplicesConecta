@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/ui/Button";
 import { Badge } from "@/components/ui/badge";
 import { Heart, Clock, MessageCircle, Users } from "lucide-react";
 

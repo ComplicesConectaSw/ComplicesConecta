@@ -1,0 +1,16 @@
+/* src/styles/profiles/single.css - Estilos para perfiles individuales */
+/* Nota: Este archivo se importa desde index.css que ya tiene @tailwind directives */
+/* Usar @layer para que Tailwind procese @apply correctamente */
+@layer components {
+  .profile-single {
+    @apply container mx-auto px-4 py-8;
+  }
+
+  .profile-single-header {
+    @apply mb-8 text-center;
+  }
+
+  .profile-single-content {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-6;
+  }
+}

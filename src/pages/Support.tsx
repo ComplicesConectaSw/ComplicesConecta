@@ -1,9 +1,9 @@
-ï»¿import { HelpCircle, Shield, MessageCircle, Mail, Clock, Search, ChevronDown, ChevronUp } from 'lucide-react';
+import { HelpCircle, Shield, MessageCircle, Mail, Clock, Search, ChevronDown, ChevronUp } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/shared/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
+import { Input } from '@/shared/ui/Input';
 import { Textarea } from '@/components/ui/textarea';
 import HeaderNav from '@/components/HeaderNav';
 
@@ -18,16 +18,16 @@ const Support = () => {
       icon: HelpCircle,
       questions: [
         {
-          q: "Â¿CÃ³mo creo una cuenta en ComplicesConecta?",
-          a: "Para crear una cuenta, haz clic en 'Crear Cuenta Gratis' en la pÃ¡gina principal. NecesitarÃ¡s verificar tu email y completar tu perfil con informaciÃ³n bÃ¡sica."
+          q: "¿Cómo creo una cuenta en ComplicesConecta?",
+          a: "Para crear una cuenta, haz clic en 'Crear Cuenta Gratis' en la página principal. Necesitarás verificar tu email y completar tu perfil con información básica."
         },
         {
-          q: "Â¿Puedo cambiar mi informaciÃ³n de perfil despuÃ©s de registrarme?",
-          a: "SÃ­, puedes editar tu perfil en cualquier momento desde la secciÃ³n 'ConfiguraciÃ³n' en tu cuenta."
+          q: "¿Puedo cambiar mi información de perfil después de registrarme?",
+          a: "Sí, puedes editar tu perfil en cualquier momento desde la sección 'Configuración' en tu cuenta."
         },
         {
-          q: "Â¿CÃ³mo verifico mi perfil?",
-          a: "La verificaciÃ³n se realiza mediante nuestro sistema KYC avanzado. Sube una foto de tu identificaciÃ³n oficial y una selfie para completar el proceso."
+          q: "¿Cómo verifico mi perfil?",
+          a: "La verificación se realiza mediante nuestro sistema KYC avanzado. Sube una foto de tu identificación oficial y una selfie para completar el proceso."
         }
       ]
     },
@@ -36,16 +36,16 @@ const Support = () => {
       icon: Shield,
       questions: [
         {
-          q: "Â¿QuÃ© medidas de seguridad tienen implementadas?",
-          a: "Utilizamos verificaciÃ³n KYC, tecnologÃ­a blockchain, cifrado end-to-end para mensajes y moderaciÃ³n 24/7 para garantizar un ambiente seguro."
+          q: "¿Qué medidas de seguridad tienen implementadas?",
+          a: "Utilizamos verificación KYC, tecnología blockchain, cifrado end-to-end para mensajes y moderación 24/7 para garantizar un ambiente seguro."
         },
         {
-          q: "Â¿CÃ³mo reporto un perfil sospechoso?",
-          a: "Puedes reportar cualquier perfil usando el botÃ³n 'Reportar' en su perfil. Nuestro equipo revisarÃ¡ el reporte en menos de 24 horas."
+          q: "¿Cómo reporto un perfil sospechoso?",
+          a: "Puedes reportar cualquier perfil usando el botón 'Reportar' en su perfil. Nuestro equipo revisará el reporte en menos de 24 horas."
         },
         {
-          q: "Â¿Mis datos personales estÃ¡n protegidos?",
-          a: "Absolutamente. Cumplimos con todas las regulaciones de protecciÃ³n de datos y nunca compartimos informaciÃ³n personal sin tu consentimiento."
+          q: "¿Mis datos personales están protegidos?",
+          a: "Absolutamente. Cumplimos con todas las regulaciones de protección de datos y nunca compartimos información personal sin tu consentimiento."
         }
       ]
     },
@@ -54,16 +54,16 @@ const Support = () => {
       icon: MessageCircle,
       questions: [
         {
-          q: "Â¿QuÃ© son los tokens CMPX/GTK?",
-          a: "CMPX son tokens internos para consumo (suministro ilimitado) que puedes usar para funciones premium, regalos virtuales y eventos VIP. GTK son tokens blockchain (suministro limitado) para staking e inversiÃ³n, con roadmap hacia blockchain en Q2-Q4 2026."
+          q: "¿Qué son los tokens CMPX/GTK?",
+          a: "CMPX son tokens internos para consumo (suministro ilimitado) que puedes usar para funciones premium, regalos virtuales y eventos VIP. GTK son tokens blockchain (suministro limitado) para staking e inversión, con roadmap hacia blockchain en Q2-Q4 2026."
         },
         {
-          q: "Â¿CÃ³mo puedo ganar tokens?",
-          a: "Puedes ganar CMPX invitando amigos (50 CMPX por referido, lÃ­mite 500/mes), completando tu perfil (25 CMPX), login diario (5 CMPX), verificaciÃ³n World ID (100 CMPX - prÃ³ximamente), o comprÃ¡ndolos directamente. GTK tokens estarÃ¡n disponibles para staking en Q2-Q4 2026."
+          q: "¿Cómo puedo ganar tokens?",
+          a: "Puedes ganar CMPX invitando amigos (50 CMPX por referido, límite 500/mes), completando tu perfil (25 CMPX), login diario (5 CMPX), verificación World ID (100 CMPX - próximamente), o comprándolos directamente. GTK tokens estarán disponibles para staking en Q2-Q4 2026."
         },
         {
-          q: "Â¿QuÃ© funciones premium estÃ¡n disponibles?",
-          a: "Con CMPX puedes acceder a Super Like (10 CMPX), Boost de Perfil (50 CMPX), Regalos Virtuales (50-500 CMPX), Video Llamadas (75-200 CMPX), Eventos VIP (200-1000 CMPX), GalerÃ­as NFT (100-1000 CMPX), Chat Premium (100 CMPX/mes), y mÃ¡s. Ver guÃ­a completa en /tokens-info."
+          q: "¿Qué funciones premium están disponibles?",
+          a: "Con CMPX puedes acceder a Super Like (10 CMPX), Boost de Perfil (50 CMPX), Regalos Virtuales (50-500 CMPX), Video Llamadas (75-200 CMPX), Eventos VIP (200-1000 CMPX), Galerías NFT (100-1000 CMPX), Chat Premium (100 CMPX/mes), y más. Ver guía completa en /tokens-info."
         }
       ]
     }
@@ -84,9 +84,9 @@ const Support = () => {
     },
     {
       icon: Clock,
-      title: "Horario de AtenciÃ³n",
+      title: "Horario de Atención",
       description: "Lun - Vie: 9:00 - 18:00",
-      subtitle: "Hora de MÃ©xico"
+      subtitle: "Hora de México"
     }
   ];
 
@@ -114,10 +114,10 @@ const Support = () => {
             <HelpCircle className="w-10 h-10 text-white" />
           </div>
           <h2 className="text-4xl font-bold text-white mb-4">
-            Â¿En quÃ© podemos ayudarte?
+            ¿En qué podemos ayudarte?
           </h2>
           <p className="text-xl text-white font-medium max-w-2xl mx-auto mb-8">
-            Encuentra respuestas rÃ¡pidas a las preguntas mÃ¡s frecuentes o contÃ¡ctanos directamente
+            Encuentra respuestas rápidas a las preguntas más frecuentes o contáctanos directamente
           </p>
 
           {/* Search Bar */}
@@ -197,7 +197,7 @@ const Support = () => {
             </div>
           ) : (
             <div className="text-center py-8">
-              <p className="text-white font-medium">No se encontraron preguntas que coincidan con tu bÃºsqueda.</p>
+              <p className="text-white font-medium">No se encontraron preguntas que coincidan con tu búsqueda.</p>
             </div>
           )}
         </div>
@@ -205,8 +205,8 @@ const Support = () => {
         {/* Contact Form */}
         <Card className="bg-gradient-to-br from-purple-500/20 to-blue-500/20 backdrop-blur-sm border-purple-300/30">
           <CardHeader>
-            <CardTitle className="text-center text-white">Â¿No encontraste lo que buscabas?</CardTitle>
-            <p className="text-center text-white font-medium">EnvÃ­anos un mensaje y te ayudaremos personalmente</p>
+            <CardTitle className="text-center text-white">¿No encontraste lo que buscabas?</CardTitle>
+            <p className="text-center text-white font-medium">Envíanos un mensaje y te ayudaremos personalmente</p>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4 max-w-2xl mx-auto">
@@ -235,7 +235,7 @@ const Support = () => {
                 <label htmlFor="subject" className="block text-sm font-medium text-white mb-1">Asunto</label>
                 <Input 
                   id="subject" 
-                  placeholder="Â¿En quÃ© podemos ayudarte?" 
+                  placeholder="¿En qué podemos ayudarte?" 
                   required 
                   className="bg-white/10 backdrop-blur-md border-white/20 text-white placeholder-white/50 focus:ring-2 focus:ring-purple-400 focus:border-purple-400"
                 />

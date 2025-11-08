@@ -5,10 +5,10 @@
 
 import React, { useState, useEffect } from 'react';
 import { Download, Smartphone, Wifi, WifiOff, Bell, BellOff } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/shared/ui/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/Card';
 import { Badge } from '@/components/ui/badge';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/hooks/useToast';
 import { logger } from '@/lib/logger';
 
 interface BeforeInstallPromptEvent extends Event {

@@ -10,8 +10,8 @@ import {
   Minimize2,
   Settings
 } from 'lucide-react';
-import { useVideoChat } from '@/hooks/useVideoChat';
-import { useAuth } from '@/hooks/useAuth';
+import { useVideoChat } from '@/features/chat/useVideoChat';
+import { useAuth } from '@/features/auth/useAuth';
 import { logger } from '@/lib/logger';
 
 interface VideoCallWindowProps {

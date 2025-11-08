@@ -1,14 +1,14 @@
-Ôªøimport { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
+import { useState } from 'react';
+import { Button } from '@/shared/ui/Button';
+import { Card, CardContent } from '@/shared/ui/Card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/shared/ui/Modal';
+import { Input } from '@/shared/ui/Input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ArrowLeft, FileText, GitBranch, Shield, Users, Send, Info, Lock, Code, Smartphone } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/hooks/useToast';
 import { logger } from '@/lib/logger';
 import HeaderNav from '@/components/HeaderNav';
 
@@ -32,7 +32,7 @@ export default function ProjectInfo() {
               <ArrowLeft className="h-4 w-4 mr-2" />
               Volver
             </Button>
-            <h1 className="text-3xl font-bold text-white">Informaci√≥n del Proyecto</h1>
+            <h1 className="text-3xl font-bold text-white">InformaciÛn del Proyecto</h1>
           </div>
 
           {/* Tabs */}
@@ -51,7 +51,7 @@ export default function ProjectInfo() {
               className="text-white"
             >
               <GitBranch className="h-4 w-4 mr-2" />
-              Notas de Versi√≥n
+              Notas de VersiÛn
             </Button>
             <Button
               variant={activeTab === 'moderators' ? 'default' : 'ghost'}
@@ -69,56 +69,56 @@ export default function ProjectInfo() {
               {activeTab === 'readme' ? (
                 <div className="prose prose-invert max-w-none">
                   <h1 className="text-4xl font-bold text-white mb-6">
-                    üéØ ComplicesConecta - Plataforma Swinger Premium v3.5.0
+                    ?? ComplicesConecta - Plataforma Swinger Premium v3.5.0
                   </h1>
                   
                   <div className="bg-green-500/20 border border-green-500/30 rounded-lg p-4 mb-6">
                     <h2 className="text-2xl font-bold text-green-400 mb-2">
-                      üèÜ PRODUCTION READY - AI-NATIVE - NEO4J OPERATIVO
+                      ?? PRODUCTION READY - AI-NATIVE - NEO4J OPERATIVO
                     </h2>
                     <p className="text-white">
-                      <strong>Estado:</strong> ‚úÖ PRODUCTION READY - AI-NATIVE - ENTERPRISE GRADE - NEO4J OPERATIVO üèÜ<br/>
-                      <strong>√öltima Actualizaci√≥n:</strong> 05 de Noviembre, 2025<br/>
-                      <strong>Versi√≥n:</strong> 3.5.0 - Features Innovadoras + Neo4j + Documentaci√≥n Consolidada<br/>
-                      <strong>Puntuaci√≥n Global:</strong> 87/100 - ‚úÖ Production Ready
+                      <strong>Estado:</strong> ? PRODUCTION READY - AI-NATIVE - ENTERPRISE GRADE - NEO4J OPERATIVO ??<br/>
+                      <strong>⁄ltima ActualizaciÛn:</strong> 05 de Noviembre, 2025<br/>
+                      <strong>VersiÛn:</strong> 3.5.0 - Features Innovadoras + Neo4j + DocumentaciÛn Consolidada<br/>
+                      <strong>PuntuaciÛn Global:</strong> 87/100 - ? Production Ready
                     </p>
                   </div>
 
                   <blockquote className="border-l-4 border-purple-500 pl-4 italic text-xl text-white/90 mb-8">
-                    La plataforma de intercambio de parejas m√°s exclusiva y segura de M√©xico +18
+                    La plataforma de intercambio de parejas m·s exclusiva y segura de MÈxico +18
                   </blockquote>
 
-                  <h2 className="text-2xl font-bold text-white mb-4">üéØ Misi√≥n y Visi√≥n</h2>
+                  <h2 className="text-2xl font-bold text-white mb-4">?? MisiÛn y VisiÛn</h2>
                   <p className="text-white/90 mb-6">
-                    ComplicesConecta es m√°s que una aplicaci√≥n de citas: es una plataforma integral 
-                    dise√±ada espec√≠ficamente para la comunidad swinger mexicana, ofreciendo un espacio 
-                    seguro, verificado y discreto para intercambio de parejas y conexiones aut√©nticas.
+                    ComplicesConecta es m·s que una aplicaciÛn de citas: es una plataforma integral 
+                    diseÒada especÌficamente para la comunidad swinger mexicana, ofreciendo un espacio 
+                    seguro, verificado y discreto para intercambio de parejas y conexiones autÈnticas.
                   </p>
 
-                  <h2 className="text-2xl font-bold text-white mb-4">‚ú® Caracter√≠sticas Revolucionarias</h2>
+                  <h2 className="text-2xl font-bold text-white mb-4">? CaracterÌsticas Revolucionarias</h2>
                   
-                  <h3 className="text-xl font-semibold text-purple-400 mb-3">üß† Sistema de Matches Inteligente con IA</h3>
+                  <h3 className="text-xl font-semibold text-purple-400 mb-3">?? Sistema de Matches Inteligente con IA</h3>
                   <ul className="text-white/90 mb-4 space-y-2">
-                    <li>‚Ä¢ Algoritmo basado en Big Five + traits espec√≠ficos swinger</li>
-                    <li>‚Ä¢ Scoring de compatibilidad con an√°lisis multifactorial</li>
-                    <li>‚Ä¢ Geolocalizaci√≥n avanzada con f√≥rmula de Haversine</li>
-                    <li>‚Ä¢ Filtros por proximidad y preferencias</li>
-                    <li>‚Ä¢ Matches mutuos y notificaciones en tiempo real</li>
+                    <li>ï Algoritmo basado en Big Five + traits especÌficos swinger</li>
+                    <li>ï Scoring de compatibilidad con an·lisis multifactorial</li>
+                    <li>ï GeolocalizaciÛn avanzada con fÛrmula de Haversine</li>
+                    <li>ï Filtros por proximidad y preferencias</li>
+                    <li>ï Matches mutuos y notificaciones en tiempo real</li>
                   </ul>
 
-                  <h3 className="text-xl font-semibold text-blue-400 mb-3">üíï Experiencia Social Premium</h3>
+                  <h3 className="text-xl font-semibold text-blue-400 mb-3">?? Experiencia Social Premium</h3>
                   <ul className="text-white/90 mb-4 space-y-2">
-                    <li>‚Ä¢ Chat en tiempo real con WebSockets</li>
-                    <li>‚Ä¢ Video chat P2P con WebRTC</li>
-                    <li>‚Ä¢ Push notifications nativas</li>
-                    <li>‚Ä¢ Sistema de conexiones y privacidad</li>
-                    <li>‚Ä¢ Galer√≠as p√∫blicas y privadas</li>
-                    <li>‚Ä¢ Perfiles de pareja avanzados</li>
-                    <li>‚Ä¢ Eventos VIP exclusivos</li>
-                    <li>‚Ä¢ Sistema de tokens CMPX y GTK</li>
+                    <li>ï Chat en tiempo real con WebSockets</li>
+                    <li>ï Video chat P2P con WebRTC</li>
+                    <li>ï Push notifications nativas</li>
+                    <li>ï Sistema de conexiones y privacidad</li>
+                    <li>ï GalerÌas p˙blicas y privadas</li>
+                    <li>ï Perfiles de pareja avanzados</li>
+                    <li>ï Eventos VIP exclusivos</li>
+                    <li>ï Sistema de tokens CMPX y GTK</li>
                   </ul>
 
-                  <h2 className="text-2xl font-bold text-white mb-4">üìä M√©tricas del Proyecto</h2>
+                  <h2 className="text-2xl font-bold text-white mb-4">?? MÈtricas del Proyecto</h2>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
                     <div className="bg-white/5 rounded-lg p-4">
                       <div className="text-2xl font-bold text-purple-400">107</div>
@@ -126,11 +126,11 @@ export default function ProjectInfo() {
                     </div>
                     <div className="bg-white/5 rounded-lg p-4">
                       <div className="text-2xl font-bold text-purple-400">122</div>
-                      <div className="text-white/70">Pol√≠ticas RLS</div>
+                      <div className="text-white/70">PolÌticas RLS</div>
                     </div>
                     <div className="bg-white/5 rounded-lg p-4">
                       <div className="text-2xl font-bold text-blue-400">209</div>
-                      <div className="text-white/70">√çndices Optimizados</div>
+                      <div className="text-white/70">Õndices Optimizados</div>
                     </div>
                     <div className="bg-white/5 rounded-lg p-4">
                       <div className="text-2xl font-bold text-green-400">260</div>
@@ -149,86 +149,86 @@ export default function ProjectInfo() {
               ) : activeTab === 'releases' ? (
                 <div className="prose prose-invert max-w-none">
                   <h1 className="text-4xl font-bold text-white mb-6">
-                    üìã Notas de Versi√≥n - ComplicesConecta
+                    ?? Notas de VersiÛn - ComplicesConecta
                   </h1>
                   
                   <h2 className="text-2xl font-bold text-green-400 mb-4">v3.5.0 - Features Innovadoras + Neo4j (Actual)</h2>
                   <ul className="text-white/90 mb-6 space-y-2">
-                    <li>‚Ä¢ ‚úÖ Verificador IA de Consentimiento en Chats</li>
-                    <li>‚Ä¢ ‚úÖ Galer√≠as NFT-Verificadas con GTK</li>
-                    <li>‚Ä¢ ‚úÖ Matching Predictivo con Graphs Sociales (Neo4j)</li>
-                    <li>‚Ä¢ ‚úÖ Eventos Virtuales Sostenibles con Tokens</li>
-                    <li>‚Ä¢ ‚úÖ Neo4j Graph Database 100% operativo</li>
-                    <li>‚Ä¢ ‚úÖ Documentaci√≥n consolidada y actualizada</li>
-                    <li>‚Ä¢ ‚úÖ Gu√≠a de instalaci√≥n completa</li>
-                    <li>‚Ä¢ ‚úÖ 107 tablas + 122 pol√≠ticas RLS</li>
+                    <li>ï ? Verificador IA de Consentimiento en Chats</li>
+                    <li>ï ? GalerÌas NFT-Verificadas con GTK</li>
+                    <li>ï ? Matching Predictivo con Graphs Sociales (Neo4j)</li>
+                    <li>ï ? Eventos Virtuales Sostenibles con Tokens</li>
+                    <li>ï ? Neo4j Graph Database 100% operativo</li>
+                    <li>ï ? DocumentaciÛn consolidada y actualizada</li>
+                    <li>ï ? GuÌa de instalaciÛn completa</li>
+                    <li>ï ? 107 tablas + 122 polÌticas RLS</li>
                   </ul>
 
                   <h2 className="text-2xl font-bold text-blue-400 mb-4">v3.2.0 - Sistema de Matching IA</h2>
                   <ul className="text-white/90 mb-6 space-y-2">
-                    <li>‚Ä¢ üß† Algoritmo de matching con IA</li>
-                    <li>‚Ä¢ üìç Geolocalizaci√≥n avanzada</li>
-                    <li>‚Ä¢ üí¨ Chat en tiempo real</li>
-                    <li>‚Ä¢ üìπ Video chat P2P</li>
-                    <li>‚Ä¢ üîî Sistema de notificaciones</li>
+                    <li>ï ?? Algoritmo de matching con IA</li>
+                    <li>ï ?? GeolocalizaciÛn avanzada</li>
+                    <li>ï ?? Chat en tiempo real</li>
+                    <li>ï ?? Video chat P2P</li>
+                    <li>ï ?? Sistema de notificaciones</li>
                   </ul>
 
                   <h2 className="text-2xl font-bold text-purple-400 mb-4">v3.1.0 - Perfiles Avanzados</h2>
                   <ul className="text-white/90 mb-6 space-y-2">
-                    <li>‚Ä¢ üë´ Perfiles de pareja completos</li>
-                    <li>‚Ä¢ üñºÔ∏è Galer√≠as p√∫blicas y privadas</li>
-                    <li>‚Ä¢ üîê Sistema de verificaci√≥n</li>
-                    <li>‚Ä¢ üé≠ Eventos y experiencias</li>
+                    <li>ï ?? Perfiles de pareja completos</li>
+                    <li>ï ??? GalerÌas p˙blicas y privadas</li>
+                    <li>ï ?? Sistema de verificaciÛn</li>
+                    <li>ï ?? Eventos y experiencias</li>
                   </ul>
 
                   <h2 className="text-2xl font-bold text-orange-400 mb-4">v3.0.0 - Arquitectura Moderna</h2>
                   <ul className="text-white/90 mb-6 space-y-2">
-                    <li>‚Ä¢ ‚öõÔ∏è Migraci√≥n a React 18</li>
-                    <li>‚Ä¢ üé® Nuevo dise√±o con Tailwind CSS</li>
-                    <li>‚Ä¢ üóÑÔ∏è Integraci√≥n con Supabase</li>
-                    <li>‚Ä¢ üì± PWA y capacidades nativas</li>
+                    <li>ï ?? MigraciÛn a React 18</li>
+                    <li>ï ?? Nuevo diseÒo con Tailwind CSS</li>
+                    <li>ï ??? IntegraciÛn con Supabase</li>
+                    <li>ï ?? PWA y capacidades nativas</li>
                   </ul>
                 </div>
               ) : (
                 <div className="prose prose-invert max-w-none">
                   <h1 className="text-4xl font-bold text-white mb-6">
-                    üõ°Ô∏è Programa de Moderadores
+                    ??? Programa de Moderadores
                   </h1>
                   
                   <div className="bg-blue-500/20 border border-blue-500/30 rounded-lg p-4 mb-6">
                     <h2 className="text-2xl font-bold text-blue-400 mb-2">
-                      üöÄ √önete al Equipo de Moderaci√≥n
+                      ?? ⁄nete al Equipo de ModeraciÛn
                     </h2>
                     <p className="text-white">
-                      Ay√∫danos a mantener ComplicesConecta como una comunidad segura y respetuosa.
+                      Ay˙danos a mantener ComplicesConecta como una comunidad segura y respetuosa.
                     </p>
                   </div>
 
-                  <h2 className="text-2xl font-bold text-white mb-4">üë• ¬øQu√© hace un Moderador?</h2>
+                  <h2 className="text-2xl font-bold text-white mb-4">?? øQuÈ hace un Moderador?</h2>
                   <ul className="text-white/90 mb-6 space-y-2">
-                    <li>‚Ä¢ Revisar reportes de usuarios y contenido</li>
-                    <li>‚Ä¢ Mantener un ambiente seguro y respetuoso</li>
-                    <li>‚Ä¢ Aplicar las pol√≠ticas de la comunidad</li>
-                    <li>‚Ä¢ Asistir a usuarios con dudas o problemas</li>
-                    <li>‚Ä¢ Colaborar con el equipo de desarrollo</li>
+                    <li>ï Revisar reportes de usuarios y contenido</li>
+                    <li>ï Mantener un ambiente seguro y respetuoso</li>
+                    <li>ï Aplicar las polÌticas de la comunidad</li>
+                    <li>ï Asistir a usuarios con dudas o problemas</li>
+                    <li>ï Colaborar con el equipo de desarrollo</li>
                   </ul>
 
-                  <h2 className="text-2xl font-bold text-white mb-4">‚ú® Beneficios</h2>
+                  <h2 className="text-2xl font-bold text-white mb-4">? Beneficios</h2>
                   <ul className="text-white/90 mb-6 space-y-2">
-                    <li>‚Ä¢ Acceso anticipado a nuevas funciones</li>
-                    <li>‚Ä¢ Tokens CMPX adicionales mensuales</li>
-                    <li>‚Ä¢ Badge especial de Moderador</li>
-                    <li>‚Ä¢ Participaci√≥n en decisiones de la comunidad</li>
-                    <li>‚Ä¢ Experiencia en moderaci√≥n de plataformas</li>
+                    <li>ï Acceso anticipado a nuevas funciones</li>
+                    <li>ï Tokens CMPX adicionales mensuales</li>
+                    <li>ï Badge especial de Moderador</li>
+                    <li>ï ParticipaciÛn en decisiones de la comunidad</li>
+                    <li>ï Experiencia en moderaciÛn de plataformas</li>
                   </ul>
 
-                  <h2 className="text-2xl font-bold text-white mb-4">üìã Requisitos</h2>
+                  <h2 className="text-2xl font-bold text-white mb-4">?? Requisitos</h2>
                   <ul className="text-white/90 mb-6 space-y-2">
-                    <li>‚Ä¢ Mayor de 21 a√±os</li>
-                    <li>‚Ä¢ Usuario activo de la plataforma</li>
-                    <li>‚Ä¢ Disponibilidad de al menos 10 horas semanales</li>
-                    <li>‚Ä¢ Excelente comunicaci√≥n y criterio</li>
-                    <li>‚Ä¢ Compromiso con la seguridad de la comunidad</li>
+                    <li>ï Mayor de 21 aÒos</li>
+                    <li>ï Usuario activo de la plataforma</li>
+                    <li>ï Disponibilidad de al menos 10 horas semanales</li>
+                    <li>ï Excelente comunicaciÛn y criterio</li>
+                    <li>ï Compromiso con la seguridad de la comunidad</li>
                   </ul>
 
                   <div className="mt-8">
@@ -239,13 +239,13 @@ export default function ProjectInfo() {
             </CardContent>
           </Card>
 
-          {/* Informaci√≥n Sensible Protegida */}
+          {/* InformaciÛn Sensible Protegida */}
           <Card className="bg-white/10 backdrop-blur-md border-white/20 mt-6">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <Lock className="h-5 w-5 text-yellow-400" />
-                  <span className="text-white font-medium">Informaci√≥n T√©cnica Detallada</span>
+                  <span className="text-white font-medium">InformaciÛn TÈcnica Detallada</span>
                 </div>
                 <Dialog>
                   <DialogTrigger asChild>
@@ -255,16 +255,16 @@ export default function ProjectInfo() {
                   </DialogTrigger>
                   <DialogContent className="bg-gray-900 border-white/20 max-w-4xl max-h-[80vh] overflow-y-auto">
                     <DialogHeader>
-                      <DialogTitle className="text-white">Informaci√≥n T√©cnica del Proyecto</DialogTitle>
+                      <DialogTitle className="text-white">InformaciÛn TÈcnica del Proyecto</DialogTitle>
                     </DialogHeader>
                     <div className="text-white/90 space-y-4">
-                      <h3 className="text-lg font-semibold text-blue-400">Stack Tecnol√≥gico</h3>
+                      <h3 className="text-lg font-semibold text-blue-400">Stack TecnolÛgico</h3>
                       <p>React 18.3.1, TypeScript, Tailwind CSS, Supabase, PostgreSQL</p>
                       
-                      <h3 className="text-lg font-semibold text-green-400">M√©tricas del Proyecto</h3>
+                      <h3 className="text-lg font-semibold text-green-400">MÈtricas del Proyecto</h3>
                       <div className="grid grid-cols-2 gap-4">
                         <div>Archivos: 220+</div>
-                        <div>L√≠neas de c√≥digo: 35,000+</div>
+                        <div>LÌneas de cÛdigo: 35,000+</div>
                         <div>Componentes: 55+</div>
                         <div>Tablas DB: 20</div>
                       </div>
@@ -290,7 +290,7 @@ export default function ProjectInfo() {
             <Card className="bg-gradient-to-r from-blue-900/80 to-purple-900/80 backdrop-blur-sm border border-blue-400/30">
               <CardContent className="p-6 text-center">
                 <Code className="h-8 w-8 text-blue-400 mx-auto mb-3" />
-                <h3 className="text-lg font-semibold text-white mb-2">C√≥digo Fuente</h3>
+                <h3 className="text-lg font-semibold text-white mb-2">CÛdigo Fuente</h3>
                 <p className="text-blue-200 text-sm mb-4">
                   Accede al repositorio completo en GitHub
                 </p>
@@ -308,7 +308,7 @@ export default function ProjectInfo() {
                 <Smartphone className="h-8 w-8 text-green-400 mx-auto mb-3" />
                 <h3 className="text-lg font-semibold text-white mb-2">APK Android</h3>
                 <p className="text-green-200 text-sm mb-4">
-                  Descarga la aplicaci√≥n para Android
+                  Descarga la aplicaciÛn para Android
                 </p>
                 <Button
                   onClick={() => window.open('https://github.com/complicesconecta/conecta-social-comunidad/releases', '_blank')}
@@ -324,7 +324,7 @@ export default function ProjectInfo() {
                 <Info className="h-8 w-8 text-purple-400 mx-auto mb-3" />
                 <h3 className="text-lg font-semibold text-white mb-2">Soporte</h3>
                 <p className="text-purple-200 text-sm mb-4">
-                  Obt√©n ayuda y reporta problemas
+                  ObtÈn ayuda y reporta problemas
                 </p>
                 <Button
                   onClick={() => navigate('/support')}
@@ -368,8 +368,8 @@ const ModeratorApplicationModal = () => {
     if (!formData.aceptaTerminos) {
       toast({
         variant: "destructive",
-        title: "T√©rminos requeridos",
-        description: "Debes aceptar los t√©rminos y condiciones"
+        title: "TÈrminos requeridos",
+        description: "Debes aceptar los tÈrminos y condiciones"
       });
       return;
     }
@@ -386,19 +386,19 @@ const ModeratorApplicationModal = () => {
     setIsSubmitting(true);
 
     try {
-      logger.info('üìù Enviando solicitud de moderador:', { 
+      logger.info('?? Enviando solicitud de moderador:', { 
         nombre: formData.nombre, 
         correo: formData.correo 
       });
 
-      // Simular env√≠o de solicitud (sin usar Supabase por ahora)
+      // Simular envÌo de solicitud (sin usar Supabase por ahora)
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      logger.info('‚úÖ Solicitud de moderador enviada exitosamente (simulado)');
+      logger.info('? Solicitud de moderador enviada exitosamente (simulado)');
 
       toast({
-        title: "¬°Solicitud enviada exitosamente!",
-        description: `Tu solicitud para moderador ha sido registrada. Te contactaremos en las pr√≥ximas 48 horas.`,
+        title: "°Solicitud enviada exitosamente!",
+        description: `Tu solicitud para moderador ha sido registrada. Te contactaremos en las prÛximas 48 horas.`,
         duration: 7000
       });
 
@@ -414,7 +414,7 @@ const ModeratorApplicationModal = () => {
       });
 
     } catch (error: any) {
-      logger.error('‚ùå Error al enviar solicitud de moderador:', { error: error.message });
+      logger.error('? Error al enviar solicitud de moderador:', { error: error.message });
       
       toast({
         variant: "destructive",
@@ -455,7 +455,7 @@ const ModeratorApplicationModal = () => {
               />
             </div>
             <div>
-              <Label className="text-white">Correo Electr√≥nico *</Label>
+              <Label className="text-white">Correo ElectrÛnico *</Label>
               <Input
                 type="email"
                 value={formData.correo}
@@ -468,7 +468,7 @@ const ModeratorApplicationModal = () => {
           </div>
 
           <div>
-            <Label className="text-white">Tel√©fono</Label>
+            <Label className="text-white">TelÈfono</Label>
             <Input
               value={formData.telefono}
               onChange={(e) => handleInputChange('telefono', e.target.value)}
@@ -478,23 +478,23 @@ const ModeratorApplicationModal = () => {
           </div>
 
           <div>
-            <Label className="text-white">Experiencia en Moderaci√≥n *</Label>
+            <Label className="text-white">Experiencia en ModeraciÛn *</Label>
             <Textarea
               value={formData.experiencia}
               onChange={(e) => handleInputChange('experiencia', e.target.value)}
               className="bg-white/10 border-white/20 text-white placeholder:text-white/50 min-h-[80px]"
-              placeholder="Describe tu experiencia previa en moderaci√≥n o gesti√≥n de comunidades..."
+              placeholder="Describe tu experiencia previa en moderaciÛn o gestiÛn de comunidades..."
               required
             />
           </div>
 
           <div>
-            <Label className="text-white">¬øPor qu√© quieres ser moderador? *</Label>
+            <Label className="text-white">øPor quÈ quieres ser moderador? *</Label>
             <Textarea
               value={formData.motivacion}
               onChange={(e) => handleInputChange('motivacion', e.target.value)}
               className="bg-white/10 border-white/20 text-white placeholder:text-white/50 min-h-[80px]"
-              placeholder="Cu√©ntanos tu motivaci√≥n para ser parte del equipo de moderaci√≥n..."
+              placeholder="CuÈntanos tu motivaciÛn para ser parte del equipo de moderaciÛn..."
               required
             />
           </div>
@@ -517,9 +517,9 @@ const ModeratorApplicationModal = () => {
               className="border-white/30"
             />
             <Label htmlFor="terminos-mod" className="text-white/90 text-sm leading-relaxed">
-              Acepto los t√©rminos y condiciones del programa de moderadores. Entiendo que es una 
-              posici√≥n de responsabilidad voluntaria y me comprometo a mantener la confidencialidad 
-              y seguir las pol√≠ticas de la comunidad.
+              Acepto los tÈrminos y condiciones del programa de moderadores. Entiendo que es una 
+              posiciÛn de responsabilidad voluntaria y me comprometo a mantener la confidencialidad 
+              y seguir las polÌticas de la comunidad.
             </Label>
           </div>
 

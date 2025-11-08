@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Check, X, Loader2, RefreshCw } from 'lucide-react';
 import { createClient } from '@supabase/supabase-js';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/shared/ui/Button';
+import { Input } from '@/shared/ui/Input';
 import { Label } from '@/components/ui/label';
 
 // Configuración de Supabase

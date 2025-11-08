@@ -1,8 +1,8 @@
 import React, { forwardRef } from 'react';
 import { motion } from 'framer-motion';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/shared/ui/Input';
 import { Label } from '@/components/ui/label';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/cn';
 import { Eye, EyeOff } from 'lucide-react';
 
 interface UnifiedInputProps extends React.InputHTMLAttributes<HTMLInputElement> {

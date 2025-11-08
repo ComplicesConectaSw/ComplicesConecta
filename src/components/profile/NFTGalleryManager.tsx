@@ -10,12 +10,12 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/shared/ui/Card';
+import { Button } from '@/shared/ui/Button';
+import { Input } from '@/shared/ui/Input';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/shared/ui/Modal';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   Image as ImageIcon, 
@@ -28,8 +28,8 @@ import {
   Lock,
   Sparkles
 } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
-import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/features/auth/useAuth';
+import { useToast } from '@/hooks/useToast';
 import { nftGalleryService, NFTGallery, NFTGalleryImage } from '@/services/NFTGalleryService';
 import { tokenService } from '@/services/TokenService';
 import { logger } from '@/lib/logger';

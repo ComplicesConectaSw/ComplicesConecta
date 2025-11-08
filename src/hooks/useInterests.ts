@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/hooks/useAuth';
-import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/features/auth/useAuth';
+import { useToast } from '@/hooks/useToast';
 import { logger } from '@/lib/logger';
 
 // Interfaces actualizadas para coincidir con el schema de Supabase

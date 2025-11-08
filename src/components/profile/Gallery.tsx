@@ -1,6 +1,6 @@
 import { useState, useEffect, memo } from 'react';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card } from '@/shared/ui/Card';
+import { Button } from '@/shared/ui/Button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { 
@@ -15,7 +15,7 @@ import {
   UserPlus
 } from 'lucide-react';
 import { invitationService } from '@/lib/invitations';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/features/auth/useAuth';
 import { InvitationDialog } from "@/components/invitations/InvitationDialog";
 import { logger } from '@/lib/logger';
 

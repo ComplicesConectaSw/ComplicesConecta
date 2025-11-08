@@ -88,18 +88,24 @@ class Logger {
         });
       }
 
-      // Send to Supabase for application logging (disabled for now)
-      // TODO: Implement app_logs table and enable logging
+      // Send to Supabase for application logging
+      // app_logs table exists in remote database, ready for future implementation
+      // Currently using external loggers (Sentry) for production
+      // To enable app_logs: uncomment and implement user_id retrieval
       // if ((window as any).supabase) {
-      //   await (window as any).supabase
-      //     .from('app_logs')
-      //     .insert({
-      //       level: entry.level,
-      //       message: entry.message,
-      //       context: entry.context,
-      //       timestamp: entry.timestamp,
-      //       user_id: (await (window as any).supabase.auth.getUser()).data.user?.id
-      //     });
+      //   const { data: { user } } = await (window as any).supabase.auth.getUser();
+      //   if (user) {
+      //     await (window as any).supabase
+      //       .from('app_logs')
+      //       .insert({
+      //         level: entry.level,
+      //         message: entry.message,
+      //         context: entry.context,
+      //         metadata: entry.context,
+      //         user_id: user.id,
+      //         created_at: entry.timestamp
+      //       });
+      //   }
       // }
     } catch (error) {
       // Fallback to console in case external logging fails

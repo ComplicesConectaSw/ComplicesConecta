@@ -1,6 +1,6 @@
 // Hook para timer de conexión automático
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/features/auth/useAuth';
 import {
   startModeratorSession,
   endModeratorSession,

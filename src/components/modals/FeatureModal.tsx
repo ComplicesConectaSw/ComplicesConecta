@@ -1,5 +1,5 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/shared/ui/Modal";
+import { Button } from "@/shared/ui/Button";
 import { Heart, Shield, Users, Zap, Crown } from "lucide-react";
 
 interface FeatureModalProps {

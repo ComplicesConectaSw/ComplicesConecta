@@ -1,0 +1,95 @@
+/* src/styles/index.css - Estilos consolidados */
+/* Solución: Consolidar todo en un solo archivo para evitar conflicto entre @import y @apply */
+
+/* Tailwind CSS v3 - Sintaxis correcta */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   VARIABLES GLOBALES Y ESTILOS BASE
+   ============================================ */
+
+:root {
+  --primary: #ff1493;
+  --secondary: #8b00ff;
+  --bg-dark: #1a0033;
+  --accent: #ff6b9d;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --info: #3b82f6;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================
+   COMPONENTES UI
+   ============================================ */
+
+@layer components {
+  .button {
+    @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-semibold;
+  }
+
+  .card {
+    @apply rounded-lg border bg-card text-card-foreground shadow-sm;
+  }
+
+  .input {
+    @apply flex h-10 w-full rounded-md border border-input bg-background px-3 py-2;
+  }
+
+  /* Estilos para perfiles individuales */
+  .profile-single {
+    @apply container mx-auto px-4 py-8;
+  }
+
+  .profile-single-header {
+    @apply mb-8 text-center;
+  }
+
+  .profile-single-content {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-6;
+  }
+
+  /* Estilos para perfiles de parejas */
+  .profile-couple {
+    @apply container mx-auto px-4 py-8;
+  }
+
+  .profile-couple-header {
+    @apply mb-8 text-center;
+  }
+
+  .profile-couple-content {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-6;
+  }
+}
+
+/* ============================================
+   UTILIDADES PERSONALIZADAS
+   ============================================ */
+
+@layer utilities {
+  .container {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .sr-only {
+    @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+    clip: rect(0, 0, 0, 0);
+  }
+}

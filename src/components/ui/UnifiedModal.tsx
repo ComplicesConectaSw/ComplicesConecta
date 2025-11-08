@@ -4,8 +4,8 @@
  */
 
 import React from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/shared/ui/Modal';
+import { Button } from '@/shared/ui/Button';
 import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 

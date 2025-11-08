@@ -1,6 +1,6 @@
 import React from 'react';
 import { Heart, Shield, Users, Zap } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/cn';
 
 interface FeatureCardProps {
   icon: React.ReactNode;

@@ -1,5 +1,5 @@
 import { CheckCircle, Shield, Star, Crown } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/cn";
 
 interface VerificationBadgeProps {
   type: "verified" | "premium" | "vip" | "trusted";

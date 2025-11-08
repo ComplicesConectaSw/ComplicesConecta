@@ -92,7 +92,7 @@ if (typeof window !== 'undefined') {
 
 // Ahora sí, importar el resto de las dependencias
 import App from './App.tsx'
-import './index.css'
+import './styles/index.css'
 import './styles/consolidated-styles.css' // Consolidado: accessibility.css, cross-browser.css (estilos únicos), mobile-responsive.css (estilos únicos)
 import './styles/ui-fixes-consolidated.css' // Consolidado: ui-fixes-contraste, info-text-visibility, header-nav-protection, responsive-fixes, text-overflow-fixes, text-visibility-fixes
 import './styles/decorative-hearts.css'

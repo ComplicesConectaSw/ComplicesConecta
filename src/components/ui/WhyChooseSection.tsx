@@ -1,7 +1,7 @@
 import React from 'react';
 import { Heart } from 'lucide-react';
 import { FeatureCards } from './FeatureCards';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/cn';
 
 interface WhyChooseSectionProps {
   className?: string;

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/shared/ui/Card";
+import { Button } from "@/shared/ui/Button";
 import { Badge } from "@/components/ui/badge";
 import { motion } from 'framer-motion';
 import { CheckCircle, ArrowRight } from 'lucide-react';

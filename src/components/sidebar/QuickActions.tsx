@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { Button } from '@/shared/ui/Button';
 import { Heart, Zap } from 'lucide-react';
 
 export const QuickActions = () => (

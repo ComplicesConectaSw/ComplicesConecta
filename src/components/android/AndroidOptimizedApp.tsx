@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect } from 'react';
 import { AndroidThemeProvider } from './AndroidThemeProvider';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/cn';
 
 interface AndroidOptimizedAppProps {
   children: React.ReactNode;

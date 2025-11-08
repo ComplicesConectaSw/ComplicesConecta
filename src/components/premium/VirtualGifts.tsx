@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Card } from "@/components/ui/card";
+import { Card } from "@/shared/ui/Card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/ui/Button";
 import { Gift, Crown, Send } from "lucide-react";
 
 // Check if user is in demo mode

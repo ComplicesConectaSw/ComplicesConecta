@@ -1,0 +1,16 @@
+/* src/styles/profiles/couple.css - Estilos para perfiles de parejas */
+/* Nota: Este archivo se importa desde index.css que ya tiene @tailwind directives */
+/* Usar @layer para que Tailwind procese @apply correctamente */
+@layer components {
+  .profile-couple {
+    @apply container mx-auto px-4 py-8;
+  }
+
+  .profile-couple-header {
+    @apply mb-8 text-center;
+  }
+
+  .profile-couple-content {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-6;
+  }
+}
