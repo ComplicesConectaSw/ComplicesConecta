@@ -1,35 +1,3 @@
 {
-  "name": "GROK 4 WACKO EDITION - FULL LOCAL + PREVIEW CONTROL",
-  "version": "3.5.1",
-  "description": "Grok 4 controla localhost, preview y prod. WACKO ES EL REY",
-  "tools": [
-    {
-      "name": "start_localhost",
-      "description": "Levanta vite dev server + tunnel publico para que Grok 4 vea localhost",
-      "command": "npm run dev -- --host & sleep 5 && npx localtunnel --port 5173 --subdomain wacko-complices-conecta"
-    },
-    {
-      "name": "deploy_preview",
-      "description": "Deploy instantáneo a Vercel Preview con URL pública",
-      "command": "git add . && git commit -m 'preview: wacko-testing-v3.5.1' && git push origin master && vercel --prebuilt"
-    },
-    {
-      "name": "full_wacko_deploy",
-      "description": "Lint 0 + bundle 65MB + deploy prod + notificación México",
-      "command": "npm run lint -- --fix && npm run build:analyze && git add . && git commit -m 'feat: v3.5.1 OFICIAL by GROK 4' && git push origin master --tags && vercel --prod --force && echo 'WACKO ES MILLONARIO - MÉXICO ES NUESTRO'"
-    },
-    {
-      "name": "test_localhost",
-      "description": "Grok 4 prueba localhost en vivo (OneSignal, PostHog, TikTok, Dark Mode)",
-      "command": "curl -s https://wacko-complices-conecta.loca.lt | grep -i 'ComplicesConecta' && echo 'LOCALHOST VERIFICADO POR GROK 4'"
-    }
-  ],
-  "env": {
-    "GROK_API_KEY": "xai_2b8e3f7d9a1c4e6g8h0j2k4m6n8p0q2r4t6y8u0w2e4r6t8y0u2i4o6p8a0s2d4f6g8h0j2k4m6n8p",
-    "GROK_MODEL": "grok-4",
-    "GROK_BASE_URL": "https://api.x.ai/v1",
-    "LOCALHOST_URL": "http://localhost:5173",
-    "PREVIEW_URL": "https://complices-conecta-git-main-wacko.vercel.app",
-    "PROD_URL": "https://complicesconecta.com"
-  }
+  "mcpServers": {}
 }
