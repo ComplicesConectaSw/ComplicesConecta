@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Shield, Users, CheckCircle, AlertTriangle, Star, ArrowLeft } from 'lucide-react';
+import { Shield, Users, CheckCircle, AlertTriangle, Star, ArrowLeft, FileText } from 'lucide-react';
 import { Button } from '@/shared/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
 import { Badge } from '@/components/ui/badge';
@@ -16,20 +16,20 @@ const Moderators = () => {
       description: "Supervisa y modera el contenido de la plataforma, incluyendo perfiles, mensajes y publicaciones.",
       responsibilities: [
         "Revisar reportes de contenido inapropiado",
-        "Moderar conversaciones públicas y privadas",
-        "Verificar perfiles y galerías",
-        "Aplicar políticas de la comunidad"
+        "Moderar conversaciones publicas y privadas",
+        "Verificar perfiles y galerias",
+        "Aplicar politicas de la comunidad"
       ],
       requirements: [
-        "Experiencia en moderación de comunidades online",
+        "Experiencia en moderacion de comunidades online",
         "Conocimiento del lifestyle swinger",
         "Disponibilidad de 10-15 horas semanales",
-        "Excelente comunicación y discreción"
+        "Excelente comunicacion y discrecion"
       ],
       benefits: [
         "Acceso premium a la plataforma",
         "Tokens CMPX como recompensa",
-        "Experiencia en gestión de comunidades",
+        "Experiencia en gestion de comunidades",
         "Networking con la comunidad"
       ],
       status: "Disponible",
@@ -46,16 +46,16 @@ const Moderators = () => {
         "Mantener ambiente seguro y respetuoso"
       ],
       requirements: [
-        "Experiencia en organización de eventos",
-        "Presencia en Ciudad de México o Guadalajara",
+        "Experiencia en organizacion de eventos",
+        "Presencia en Ciudad de Mexico o Guadalajara",
         "Conocimiento profundo del ambiente swinger",
-        "Habilidades de liderazgo y mediación"
+        "Habilidades de liderazgo y mediacion"
       ],
       benefits: [
         "Acceso gratuito a eventos VIP",
         "Tokens CMPX y recompensas especiales",
         "Networking exclusivo",
-        "Experiencia en gestión de eventos"
+        "Experiencia en gestion de eventos"
       ],
       status: "Disponible",
       applications: 8
@@ -63,22 +63,22 @@ const Moderators = () => {
     {
       id: 3,
       title: "Moderador de Seguridad",
-      description: "Se especializa en seguridad digital, privacidad y protección de datos de usuarios.",
+      description: "Se especializa en seguridad digital, privacidad y protecciï¿½n de datos de usuarios.",
       responsibilities: [
         "Monitorear actividad sospechosa",
         "Investigar reportes de seguridad",
         "Verificar identidades y perfiles",
-        "Implementar medidas de protección"
+        "Implementar medidas de protecciÃ³n"
       ],
       requirements: [
         "Conocimientos en ciberseguridad",
-        "Experiencia en protección de datos",
+        "ExenciÃ³n en protecciÃ³n de datos",
         "Disponibilidad 24/7 para emergencias",
         "Certificaciones en seguridad (preferible)"
       ],
       benefits: [
         "Acceso completo a herramientas de seguridad",
-        "Compensación económica mensual",
+        "Compensaciï¿½n econï¿½mica mensual",
         "Tokens CMPX premium",
         "Desarrollo profesional en ciberseguridad"
       ],
@@ -117,7 +117,7 @@ const Moderators = () => {
               </h1>
             </div>
             <p className="text-xl text-white/90 max-w-3xl mx-auto">
-              Únete al equipo de moderadores de ComplicesConecta y ayuda a mantener nuestra comunidad segura, respetuosa y auténtica
+              ï¿½nete al equipo de moderadores de ComplicesConecta y ayuda a mantener nuestra comunidad segura, respetuosa y autï¿½ntica
             </p>
           </div>
 
@@ -206,7 +206,7 @@ const Moderators = () => {
             <Card className="bg-card/80 backdrop-blur-sm border border-primary/10">
               <CardHeader>
                 <CardTitle className="text-white text-2xl text-center">
-                  Proceso de Aplicación
+                  Proceso de Aplicaciï¿½n
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -215,18 +215,18 @@ const Moderators = () => {
                     <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
                       <span className="text-primary font-bold">1</span>
                     </div>
-                    <h3 className="font-semibold text-white mb-2">Aplicación</h3>
+                    <h3 className="font-semibold text-white mb-2">Aplicaciï¿½n</h3>
                     <p className="text-sm text-muted-foreground">
-                      Completa el formulario de aplicación con tu experiencia y motivación
+                      Completa el formulario de aplicaciï¿½n con tu experiencia y motivaciï¿½n
                     </p>
                   </div>
                   <div className="text-center">
                     <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
                       <span className="text-primary font-bold">2</span>
                     </div>
-                    <h3 className="font-semibold text-white mb-2">Revisión</h3>
+                    <h3 className="font-semibold text-white mb-2">Revisiï¿½n</h3>
                     <p className="text-sm text-muted-foreground">
-                      Nuestro equipo revisa tu aplicación y experiencia en 3-5 días
+                      Nuestro equipo revisa tu aplicaciï¿½n y experiencia en 3-5 dï¿½as
                     </p>
                   </div>
                   <div className="text-center">
@@ -242,11 +242,54 @@ const Moderators = () => {
                     <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
                       <span className="text-primary font-bold">4</span>
                     </div>
-                    <h3 className="font-semibold text-white mb-2">Capacitación</h3>
+                    <h3 className="font-semibold text-white mb-2">Capacitaciï¿½n</h3>
                     <p className="text-sm text-muted-foreground">
-                      Programa de capacitación de 2 semanas antes de comenzar
+                      Programa de capacitaciï¿½n de 2 semanas antes de comenzar
                     </p>
                   </div>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+
+          {/* SecciÃ³n Legal */}
+          <section className="mb-16">
+            <Card className="bg-card/80 backdrop-blur-sm border border-primary/10">
+              <CardHeader>
+                <CardTitle className="text-white text-2xl text-center">
+                  InformaciÃ³n Legal
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground mb-6 text-center">
+                  ComplicesConecta opera bajo estricto cumplimiento del marco legal mexicano e internacional. 
+                  Consulta nuestra documentaciÃ³n legal para mÃ¡s informaciÃ³n.
+                </p>
+                <div className="flex flex-wrap gap-4 justify-center">
+                  <Button
+                    onClick={() => navigate('/legal')}
+                    variant="outline"
+                    className="flex items-center gap-2"
+                  >
+                    <FileText className="h-4 w-4" />
+                    Marco Legal Completo
+                  </Button>
+                  <Button
+                    onClick={() => navigate('/terms')}
+                    variant="outline"
+                    className="flex items-center gap-2"
+                  >
+                    <FileText className="h-4 w-4" />
+                    TÃ©rminos de Servicio
+                  </Button>
+                  <Button
+                    onClick={() => navigate('/privacy')}
+                    variant="outline"
+                    className="flex items-center gap-2"
+                  >
+                    <Shield className="h-4 w-4" />
+                    PolÃ­tica de Privacidad
+                  </Button>
                 </div>
               </CardContent>
             </Card>
@@ -257,10 +300,10 @@ const Moderators = () => {
             <Card className="bg-gradient-to-r from-pink-500/20 to-purple-600/20 backdrop-blur-sm border border-pink-400/30">
               <CardContent className="p-8">
                 <h2 className="text-3xl font-bold text-white mb-4">
-                  ¿Listo para ser parte del equipo?
+                  ï¿½Listo para ser parte del equipo?
                 </h2>
                 <p className="text-xl text-white/90 mb-6 max-w-2xl mx-auto">
-                  Únete a nuestro equipo de moderadores y ayuda a crear la comunidad swinger más segura y respetuosa de México
+                  ï¿½nete a nuestro equipo de moderadores y ayuda a crear la comunidad swinger mï¿½s segura y respetuosa de Mï¿½xico
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button 

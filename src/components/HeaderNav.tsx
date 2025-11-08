@@ -21,7 +21,8 @@ import {
   Crown,
   ChevronDown,
   MoreHorizontal,
-  Scale
+  Scale,
+  Image
 } from 'lucide-react';
 import { Button } from '@/shared/ui/Button';
 import { Badge } from '@/components/ui/badge';
@@ -64,7 +65,8 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
     { name: 'Chat', path: '/chat', icon: MessageSquare },
     { name: 'Noticias', path: '/news', icon: Bell },
     { name: 'Eventos', path: '/events', icon: Calendar },
-    { name: 'Tokens', path: '/tokens', icon: DollarSign }
+    { name: 'Tokens', path: '/tokens', icon: DollarSign },
+    { name: 'NFTs', path: '/nfts', icon: Image }
   ];
 
   // Items secundarios - en menú desplegable
