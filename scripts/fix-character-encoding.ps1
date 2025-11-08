@@ -15,9 +15,13 @@
 [CmdletBinding()]
 param(
     [string]$Path = "src",
-    # PSScriptAnalyzer: Ignore because default is intentional
-    [switch]$Backup = $true
+    [switch]$Backup
 )
+
+# Si Backup no se especifica, por defecto es $true
+if (-not $PSBoundParameters.ContainsKey('Backup')) {
+    $Backup = $true
+}
 
 # === CONFIGURACIÓN ===
 $ErrorActionPreference = 'Stop'
