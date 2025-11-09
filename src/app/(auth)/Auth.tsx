@@ -16,6 +16,7 @@ import { ResponsiveContainer } from '@/components/ui/ResponsiveContainer';
 import { Theme } from '@/features/profile/useProfileTheme';
 import { usePersistedState } from '@/hooks/usePersistedState';
 import { DecorativeHearts } from '@/components/DecorativeHearts';
+import { safeSetItem } from '@/utils/safeLocalStorage';
 
 interface FormData {
   email: string;
@@ -117,9 +118,9 @@ const Auth = () => {
       _setUserType('single');
       
       // Configurar localStorage para demo
-      localStorage.setItem('demo_authenticated', 'true');
-      localStorage.setItem('demo_user', JSON.stringify(demoCredentials));
-      localStorage.setItem('userType', 'single');
+      safeSetItem('demo_authenticated', 'true', { validate: true });
+      safeSetItem('demo_user', demoCredentials, { validate: false, sanitize: true });
+      safeSetItem('userType', 'single', { validate: false });
       
       toast({
         title: "Acceso Demo Activado",
