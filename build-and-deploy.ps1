@@ -10,8 +10,54 @@ if (-not (Test-Path "package.json")) {
     exit 1
 }
 
+# Función para importar variables de entorno desde archivo .env
+function Import-EnvFile {
+    param([string]$envFile)
+    
+    if (Test-Path $envFile) {
+        Write-Host "  📄 Cargando variables desde $envFile..." -ForegroundColor Cyan
+        Get-Content $envFile | ForEach-Object {
+            if ($_ -match '^\s*([^#=]+)\s*=\s*(.+)$') {
+                $key = $matches[1].Trim()
+                $value = $matches[2].Trim().Trim('"').Trim("'")
+                if (-not [string]::IsNullOrEmpty($key) -and -not [string]::IsNullOrEmpty($value)) {
+                    # Solo establecer si no existe en el sistema
+                    if ([string]::IsNullOrEmpty([Environment]::GetEnvironmentVariable($key))) {
+                        [Environment]::SetEnvironmentVariable($key, $value, "Process")
+                    }
+                }
+            }
+        }
+        return $true
+    }
+    return $false
+}
+
+# Cargar variables de entorno desde archivos .env
+Write-Host "`n📋 Cargando variables de entorno..." -ForegroundColor Yellow
+$envLoaded = $false
+
+# Intentar cargar desde .env.local primero (tiene prioridad)
+if (Import-EnvFile ".env.local") {
+    $envLoaded = $true
+}
+
+# Intentar cargar desde .env si .env.local no existe
+if (-not $envLoaded) {
+    if (Import-EnvFile ".env") {
+        $envLoaded = $true
+    }
+}
+
+if ($envLoaded) {
+    Write-Host "  ✅ Variables cargadas desde archivo .env" -ForegroundColor Green
+} else {
+    Write-Host "  ⚠️  No se encontró archivo .env o .env.local" -ForegroundColor Yellow
+    Write-Host "     Las variables deben estar en el sistema o en Vercel Dashboard" -ForegroundColor Yellow
+}
+
 # Verificar variables de entorno críticas
-Write-Host "`n📋 Verificando variables de entorno..." -ForegroundColor Yellow
+Write-Host "`n🔍 Verificando variables de entorno críticas..." -ForegroundColor Yellow
 $requiredVars = @(
     "VITE_SUPABASE_URL",
     "VITE_SUPABASE_ANON_KEY"
@@ -28,11 +74,13 @@ foreach ($var in $requiredVars) {
     }
 }
 
+# Advertencia pero no error fatal (Vite puede leer del .env durante build)
 if ($missingVars.Count -gt 0) {
-    Write-Host "`n❌ Error: Variables de entorno faltantes:" -ForegroundColor Red
-    $missingVars | ForEach-Object { Write-Host "  - $_" -ForegroundColor Red }
-    Write-Host "`n💡 Configura las variables en Vercel Dashboard o en .env.local" -ForegroundColor Yellow
-    exit 1
+    Write-Host "`n⚠️  Advertencia: Variables de entorno faltantes:" -ForegroundColor Yellow
+    $missingVars | ForEach-Object { Write-Host "  - $_" -ForegroundColor Yellow }
+    Write-Host "`n💡 Nota: Vite puede leer variables desde .env durante el build" -ForegroundColor Cyan
+    Write-Host "   Para producción, configura las variables en Vercel Dashboard" -ForegroundColor Cyan
+    Write-Host "`n⏭️  Continuando con el build..." -ForegroundColor Cyan
 }
 
 # Limpiar build anterior
