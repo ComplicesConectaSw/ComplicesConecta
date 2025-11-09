@@ -1,5 +1,5 @@
-# Ignore package-lock.json to force npm install
-package-lock.json
+# Don't ignore package-lock.json - Vercel needs it for dependency resolution
+# package-lock.json
 
 # Ignore GitHub workflows
 .github/
