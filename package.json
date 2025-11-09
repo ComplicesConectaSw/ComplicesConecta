@@ -4,6 +4,7 @@
   "version": "3.5.1",
   "type": "module",
   "scripts": {
+    "vercel-build": "npm run build",
     "dev": "vite",
     "dev:tunnel": "concurrently \"npm run dev\" \"npm run tunnel:ngrok\"",
     "tunnel:ngrok": "ngrok http 8080",
