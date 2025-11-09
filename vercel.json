@@ -17,6 +17,15 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/assets/js/(.*\\.js)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
         },
         {
           "key": "Content-Type",
@@ -25,7 +34,7 @@
       ]
     },
     {
-      "source": "/assets/css/(.*)",
+      "source": "/assets/css/(.*\\.css)",
       "headers": [
         {
           "key": "Cache-Control",
@@ -54,15 +63,6 @@
           "value": "public, max-age=31536000, immutable"
         }
       ]
-    }
-  ],
-  "routes": [
-    {
-      "src": "/assets/(.*)",
-      "dest": "/assets/$1",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable"
-      }
     }
   ],
   "env": {
