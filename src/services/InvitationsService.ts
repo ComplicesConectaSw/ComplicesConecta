@@ -1,5 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
+import { safeGetItem } from '@/utils/safeLocalStorage';
 
 // Interfaces para datos de Supabase
 interface InvitationRow {
@@ -105,11 +106,14 @@ class InvitationsService {
    * Obtener ID del usuario actual
    */
   private getCurrentUserId(): string {
-    const demoUser = localStorage.getItem('demo_user');
+    const demoUser = safeGetItem<unknown>('demo_user', { validate: false, defaultValue: null });
     if (demoUser) {
       try {
-        const user = JSON.parse(demoUser);
-        return user.id || 'demo-user-id';
+        const user = typeof demoUser === 'string' ? JSON.parse(demoUser) : (demoUser as { id?: string } | null);
+        if (user && typeof user === 'object' && 'id' in user) {
+          return user.id || 'demo-user-id';
+        }
+        return 'demo-user-id';
       } catch {
         return 'demo-user-id';
       }

@@ -37,7 +37,7 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({
   const [progress, setProgress] = useState(0);
   const { toast } = useToast();
 
-  const isDemoMode = localStorage.getItem('demo_authenticated') === 'true';
+  const isDemoMode = safeGetItem<string>('demo_authenticated', { validate: true, defaultValue: 'false' }) === 'true';
   const currentUserId = "1"; // Usuario demo
 
   useEffect(() => {

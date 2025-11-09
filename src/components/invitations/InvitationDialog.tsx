@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { UserPlus, MessageCircle, Image, User } from 'lucide-react';
 import { invitationService } from '@/lib/invitations';
 import { useToast } from "@/hooks/useToast";
+import { safeGetItem } from '@/utils/safeLocalStorage';
 
 interface InvitationDialogProps {
   targetProfileId: string;
@@ -33,10 +34,11 @@ export function InvitationDialog({ targetProfileId, targetProfileName, children 
 
     setIsLoading(true);
     try {
-      const currentUser = JSON.parse(localStorage.getItem('demo_user') || '{}');
+      const demoUser = safeGetItem<unknown>('demo_user', { validate: false, defaultValue: null });
+      const currentUser = typeof demoUser === 'string' ? JSON.parse(demoUser) : (demoUser as { id?: string } | null);
       
       await invitationService.sendInvitation(
-        currentUser.id || '1',
+        (currentUser && typeof currentUser === 'object' && 'id' in currentUser) ? currentUser.id || '1' : '1',
         targetProfileId,
         type,
         message.trim()

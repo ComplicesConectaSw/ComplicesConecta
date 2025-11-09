@@ -16,6 +16,7 @@ import {
 import { useAuth } from '@/features/auth/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
+import { safeGetItem } from '@/utils/safeLocalStorage';
 
 interface GalleryImage {
   id: string;
@@ -131,7 +132,7 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
   }, [userId]);
 
   const checkModeAndLoadImages = async () => {
-    const demoAuth = localStorage.getItem('demo_authenticated');
+    const demoAuth = safeGetItem<string>('demo_authenticated', { validate: true, defaultValue: 'false' });
     const isDemo = demoAuth === 'true';
     setIsDemoMode(isDemo);
 

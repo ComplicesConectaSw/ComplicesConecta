@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { X } from 'lucide-react';
 import { Button } from '@/shared/ui/Button';
+import { safeGetItem, safeSetItem } from '@/utils/safeLocalStorage';
 
 interface DismissibleBannerProps {
   children: React.ReactNode;
@@ -17,13 +18,13 @@ export const DismissibleBanner = ({
 }: DismissibleBannerProps) => {
   const [isVisible, setIsVisible] = useState(() => {
     if (!storageKey) return true;
-    return localStorage.getItem(`dismissed_${storageKey}`) !== 'true';
+    return safeGetItem<string>(`dismissed_${storageKey}`, { validate: true, defaultValue: 'false' }) !== 'true';
   });
 
   const handleDismiss = () => {
     setIsVisible(false);
     if (storageKey) {
-      localStorage.setItem(`dismissed_${storageKey}`, 'true');
+      safeSetItem(`dismissed_${storageKey}`, 'true', { validate: true });
     }
   };
 

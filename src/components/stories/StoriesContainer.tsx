@@ -18,6 +18,7 @@ import {
 import { useFeatures } from '@/hooks/useFeatures';
 import { Story } from './StoryTypes';
 import { storyService } from './StoryService';
+import { safeGetItem } from '@/utils/safeLocalStorage';
 import { CreateStory } from './CreateStory';
 import { StoryViewer } from './StoryViewer';
 import { logger } from '@/lib/logger';
@@ -30,11 +31,11 @@ const StoriesContainer: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   const isDemoMode = () => {
-    return localStorage.getItem('demo_authenticated') === 'true';
+    return safeGetItem<string>('demo_authenticated', { validate: true, defaultValue: 'false' }) === 'true';
   };
 
   const isAuthenticated = () => {
-    return isDemoMode() || localStorage.getItem('authenticated') === 'true';
+    return isDemoMode() || safeGetItem<string>('authenticated', { validate: true, defaultValue: 'false' }) === 'true';
   };
 
   useEffect(() => {

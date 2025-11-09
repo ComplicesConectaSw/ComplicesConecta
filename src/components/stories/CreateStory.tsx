@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { storyService } from './StoryService';
 import { CreateStoryData } from './StoryTypes';
+import { safeGetItem } from '@/utils/safeLocalStorage';
 
 interface CreateStoryProps {
   onStoryCreated: () => void;
@@ -73,7 +74,7 @@ export const CreateStory: React.FC<CreateStoryProps> = ({ onStoryCreated, onClos
     setIsUploading(true);
     try {
       // En modo demo, simular la creación de historia
-      const isDemoMode = localStorage.getItem('demo_authenticated') === 'true';
+      const isDemoMode = safeGetItem<string>('demo_authenticated', { validate: true, defaultValue: 'false' }) === 'true';
       
       const storyData: CreateStoryData = {
         contentUrl: selectedImage,
@@ -263,7 +264,7 @@ export const CreateStory: React.FC<CreateStoryProps> = ({ onStoryCreated, onClos
           </Button>
 
           {/* Demo Notice */}
-          {localStorage.getItem('demo_authenticated') === 'true' && (
+          {safeGetItem<string>('demo_authenticated', { validate: true, defaultValue: 'false' }) === 'true' && (
             <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-lg p-3">
               <p className="text-yellow-200 text-xs text-center">
                 📱 Modo Demo: Esta historia solo se guardará localmente

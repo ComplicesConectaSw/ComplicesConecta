@@ -1,6 +1,7 @@
 // Monitoreo de Core Web Vitals - ComplicesConecta v3.3.0
 import { Metric } from 'web-vitals';
 import { logger } from '@/lib/logger';
+import { safeGetItem, safeSetItem } from '@/utils/safeLocalStorage';
 
 // Importación dinámica para evitar errores de build
 const getWebVitals = async () => {
@@ -309,7 +310,7 @@ const _storeMetric = (metric: Partial<PerformanceMetrics>) => {
   
   // Guardar en localStorage para persistencia
   try {
-    localStorage.setItem('webVitalsMetrics', JSON.stringify(metricsStorage.slice(-10)));
+    safeSetItem('webVitalsMetrics', metricsStorage.slice(-10), { validate: false, sanitize: true });
   } catch {
     logger.warn('No se pudo guardar métricas en localStorage');
   }
@@ -343,8 +344,8 @@ export const getAverageMetrics = (): PerformanceMetrics | null => {
 // Función para obtener métricas desde localStorage
 export const getStoredMetrics = (): PerformanceMetrics[] => {
   try {
-    const stored = localStorage.getItem('webVitalsMetrics');
-    return stored ? JSON.parse(stored) : [];
+    const stored = safeGetItem<PerformanceMetrics[]>('webVitalsMetrics', { validate: false, defaultValue: [] });
+    return Array.isArray(stored) ? stored : [];
   } catch {
     logger.warn('No se pudieron cargar métricas desde localStorage');
     return [];

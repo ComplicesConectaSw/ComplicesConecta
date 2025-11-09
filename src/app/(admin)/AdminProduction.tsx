@@ -153,27 +153,29 @@ const AdminProduction = () => {
     }
     
     // Verificar sesin demo primero
-    const demoAuth = localStorage.getItem('demo_authenticated');
-    const demoUser = localStorage.getItem('demo_user');
+    const demoAuth = safeGetItem<string>('demo_authenticated', { validate: true, defaultValue: 'false' });
+    const demoUser = safeGetItem<unknown>('demo_user', { validate: false, defaultValue: null });
     
     if (demoAuth === 'true' && demoUser) {
       try {
-        const user = JSON.parse(demoUser);
-        logger.info('?? Actualizando estado premium para usuario:', { userId: user.id, email: user.email, role: user.role });
-        
-        if (user.accountType === 'admin' || user.role === 'admin') {
-          logger.info('? Admin demo autorizado - cargando panel produccin');
-          loadProductionData();
-          return;
-        } else {
-          logger.info('? Usuario demo sin permisos admin');
-          toast({
-            title: "Acceso Denegado",
-            description: "No tienes permisos de administrador",
-            variant: "destructive"
-          });
-          navigate('/auth');
-          return;
+        const user = typeof demoUser === 'string' ? JSON.parse(demoUser) : (demoUser as { id?: string; email?: string; role?: string; accountType?: string } | null);
+        if (user && typeof user === 'object') {
+          logger.info('?? Actualizando estado premium para usuario:', { userId: user.id, email: user.email, role: user.role });
+          
+          if (user.accountType === 'admin' || user.role === 'admin') {
+            logger.info('? Admin demo autorizado - cargando panel produccin');
+            loadProductionData();
+            return;
+          } else {
+            logger.info('? Usuario demo sin permisos admin');
+            toast({
+              title: "Acceso Denegado",
+              description: "No tienes permisos de administrador",
+              variant: "destructive"
+            });
+            navigate('/auth');
+            return;
+          }
         }
       } catch (_error) {
         logger.error('Error parsing demo user:', { error: String(_error) });

@@ -1,5 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
+import { safeGetItem } from '@/utils/safeLocalStorage';
 import { performanceMonitoring } from './PerformanceMonitoringService';
 
 export interface Post {
@@ -78,7 +79,7 @@ class PostsService {
   private getCurrentUserId(): string {
     // En un entorno real, esto vendría de la sesión de autenticación
     // Por ahora, usar un ID demo o lanzar error si no hay usuario
-    const demoUser = localStorage.getItem('demo_user');
+    const demoUser = safeGetItem<unknown>('demo_user', { validate: false, defaultValue: null });
     if (demoUser) {
       try {
         const user = JSON.parse(demoUser);
