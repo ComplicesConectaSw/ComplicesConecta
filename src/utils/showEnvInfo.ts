@@ -69,43 +69,89 @@ export function showEnvInfo(): {
 // CR├ìTICO: Asegurar que las funciones est├®n disponibles inmediatamente
 if (typeof window !== 'undefined') {
   const exposeEnvFunctions = () => {
-    (window as unknown as Record<string, unknown>).showEnvInfo = showEnvInfo;
-    (window as unknown as Record<string, unknown>).env = import.meta.env;
-    (window as unknown as Record<string, unknown>).getPassword = (key: string) => {
-      const value = import.meta.env[key];
-      if (value) {
-        console.log(`­ƒöæ ${key}:`, value);
-        return value;
-      } else {
-        console.warn(`ÔÜá´©Å Variable ${key} no encontrada`);
-        return null;
-      }
-    };
+    try {
+      // Usar Object.defineProperty para evitar errores de redefinición
+      Object.defineProperty(window, 'showEnvInfo', {
+        value: showEnvInfo,
+        writable: true,
+        configurable: true,
+        enumerable: true
+      });
+      
+      Object.defineProperty(window, 'env', {
+        value: import.meta.env,
+        writable: true,
+        configurable: true,
+        enumerable: true
+      });
+      
+      Object.defineProperty(window, 'getPassword', {
+        value: (key: string) => {
+          const value = import.meta.env[key];
+          if (value) {
+            // eslint-disable-next-line no-console
+            console.log(`🔐 ${key}:`, value);
+            return value;
+          } else {
+            // eslint-disable-next-line no-console
+            console.warn(`⚠️ Variable ${key} no encontrada`);
+            return null;
+          }
+        },
+        writable: true,
+        configurable: true,
+        enumerable: true
+      });
+    } catch {
+      // Si falla Object.defineProperty, usar asignación directa
+      (window as unknown as Record<string, unknown>).showEnvInfo = showEnvInfo;
+      (window as unknown as Record<string, unknown>).env = import.meta.env;
+      (window as unknown as Record<string, unknown>).getPassword = (key: string) => {
+        const value = import.meta.env[key];
+        if (value) {
+          // eslint-disable-next-line no-console
+          console.log(`🔐 ${key}:`, value);
+          return value;
+        } else {
+          // eslint-disable-next-line no-console
+          console.warn(`⚠️ Variable ${key} no encontrada`);
+          return null;
+        }
+      };
+    }
   };
   
   // Exponer inmediatamente
   exposeEnvFunctions();
   
-  // Tambi├®n exponer cuando el DOM est├® listo (por si acaso)
+  // También exponer cuando el DOM esté listo (por si acaso)
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', exposeEnvFunctions);
   } else {
-    // DOM ya est├í listo, exponer de nuevo para asegurar
+    // DOM ya está listo, exponer de nuevo para asegurar
     exposeEnvFunctions();
   }
   
-  // Exponer tambi├®n despu├®s de breves delays para asegurar
+  // Exponer también después de breves delays para asegurar
   setTimeout(exposeEnvFunctions, 0);
   setTimeout(exposeEnvFunctions, 100);
   setTimeout(exposeEnvFunctions, 500);
+  setTimeout(exposeEnvFunctions, 1000);
   
-  // Log solo una vez
-  if ((window as unknown as Record<string, unknown>).showEnvInfo) {
-    console.log('Ô£à Utilidad de variables de entorno cargada');
-    console.log('­ƒÆí Usa showEnvInfo() en la consola para ver informaci├│n');
-    console.log('­ƒÆí Usa window.env para acceder a todas las variables');
-    console.log('­ƒÆí Usa getPassword("VITE_XXX") para ver una contrase├▒a espec├¡fica');
-    console.log('­ƒÆí Ejemplo: getPassword("VITE_DEMO_PASSWORD_SINGLE_OUTLOOK_ES")');
+  // Log solo una vez en desarrollo
+  if (import.meta.env.DEV) {
+    setTimeout(() => {
+      if ((window as unknown as Record<string, unknown>).showEnvInfo) {
+        // eslint-disable-next-line no-console
+        console.log('✅ Utilidad de variables de entorno cargada');
+        // eslint-disable-next-line no-console
+        console.log('💡 Usa showEnvInfo() en la consola para ver información');
+        // eslint-disable-next-line no-console
+        console.log('💡 Usa window.env para acceder a todas las variables');
+        // eslint-disable-next-line no-console
+        console.log('💡 Usa getPassword("VITE_XXX") para ver una contraseña específica');
+      }
+    }, 100);
   }
 }
 

@@ -698,12 +698,16 @@ if (typeof window !== 'undefined') {
     }
     
     // SIEMPRE asignar directamente como fallback (más confiable)
-    (window as any).startErrorCapture = startErrorCapture;
-    (window as any).stopErrorCapture = stopErrorCapture;
-    (window as any).getConsoleErrors = getConsoleErrors;
-    (window as any).showErrorReport = showErrorReport;
-    (window as any).clearConsoleErrors = clearConsoleErrors;
-    (window as any).exportConsoleErrors = exportConsoleErrors;
+    try {
+      (window as any).startErrorCapture = startErrorCapture;
+      (window as any).stopErrorCapture = stopErrorCapture;
+      (window as any).getConsoleErrors = getConsoleErrors;
+      (window as any).showErrorReport = showErrorReport;
+      (window as any).clearConsoleErrors = clearConsoleErrors;
+      (window as any).exportConsoleErrors = exportConsoleErrors;
+    } catch {
+      // Silenciar errores de asignación (pueden ser de wallet)
+    }
   };
   
   // Exponer inmediatamente
@@ -716,10 +720,11 @@ if (typeof window !== 'undefined') {
     exposeFunctions();
   }
   
-  // Exponer también después de un breve delay para asegurar
+  // Exponer también después de breves delays para asegurar
   setTimeout(exposeFunctions, 0);
   setTimeout(exposeFunctions, 100);
   setTimeout(exposeFunctions, 500);
+  setTimeout(exposeFunctions, 1000);
   
   // Iniciar captura automáticamente en desarrollo
   // Verificar de forma segura si estamos en desarrollo
@@ -728,16 +733,26 @@ if (typeof window !== 'undefined') {
     
     if (isDev) {
       startErrorCapture();
+      // eslint-disable-next-line no-console
       console.log('✅ Captura de errores de consola iniciada automáticamente');
+      // eslint-disable-next-line no-console
       console.log('💡 Usa showErrorReport() en la consola para ver el reporte completo');
       
       // Verificar y re-exponer después de iniciar captura
       setTimeout(() => {
         if (!(window as any).showErrorReport) {
+          // eslint-disable-next-line no-console
           console.warn('⚠️ showErrorReport no está disponible, reintentando...');
           exposeFunctions();
         }
       }, 200);
+      
+      // Verificar nuevamente después de más tiempo
+      setTimeout(() => {
+        if (!(window as any).showErrorReport) {
+          exposeFunctions();
+        }
+      }, 1000);
     }
   } catch {
     // Si import.meta no está disponible, no iniciar captura automática
