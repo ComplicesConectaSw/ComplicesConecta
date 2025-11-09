@@ -14,6 +14,7 @@ export default [
       // Directorios completos generados
       'dist/**',
       'build/**',
+      '.vercel/**',
       'node_modules/**',
       'android/**',
       'android/app/**',

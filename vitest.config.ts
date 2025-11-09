@@ -13,6 +13,9 @@ export default defineConfig({
     testTimeout: 10000, // 10 segundos máximo por test
     hookTimeout: 5000, // 5 segundos máximo para hooks
     teardownTimeout: 5000, // 5 segundos máximo para cleanup
+    bail: 1, // Detener en el primer error para evitar bucles infinitos
+    retry: 0, // No reintentar tests fallidos automáticamente
+    maxConcurrency: 5, // Limitar concurrencia para evitar sobrecarga
     typecheck: {
       tsconfig: './tsconfig.test.json'
     },
