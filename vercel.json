@@ -1,10 +1,18 @@
+// vercel.json
 {
-  "rewrites": [
-    { "source": "/assets/(.*)", "destination": "/assets/$1" },
-    { "source": "/(.*)", "destination": "/index.html" }
+  "builds": [
+    {
+      "src": "dist/**/*",
+      "use": "@vercel/static"
+    }
   ],
-  "headers": [
-    { "source": "/assets/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000" }] },
-    { "source": "/index.html", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] }
-  ]
+  "outputDirectory": "dist",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false
 }
