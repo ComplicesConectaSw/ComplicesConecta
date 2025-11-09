@@ -89,11 +89,9 @@ if (typeof window !== 'undefined') {
         value: (key: string) => {
           const value = import.meta.env[key];
           if (value) {
-            // eslint-disable-next-line no-console
             console.log(`🔐 ${key}:`, value);
             return value;
           } else {
-            // eslint-disable-next-line no-console
             console.warn(`⚠️ Variable ${key} no encontrada`);
             return null;
           }
@@ -109,11 +107,9 @@ if (typeof window !== 'undefined') {
       (window as unknown as Record<string, unknown>).getPassword = (key: string) => {
         const value = import.meta.env[key];
         if (value) {
-          // eslint-disable-next-line no-console
           console.log(`🔐 ${key}:`, value);
           return value;
         } else {
-          // eslint-disable-next-line no-console
           console.warn(`⚠️ Variable ${key} no encontrada`);
           return null;
         }
@@ -142,13 +138,9 @@ if (typeof window !== 'undefined') {
   if (import.meta.env.DEV) {
     setTimeout(() => {
       if ((window as unknown as Record<string, unknown>).showEnvInfo) {
-        // eslint-disable-next-line no-console
         console.log('✅ Utilidad de variables de entorno cargada');
-        // eslint-disable-next-line no-console
         console.log('💡 Usa showEnvInfo() en la consola para ver información');
-        // eslint-disable-next-line no-console
         console.log('💡 Usa window.env para acceder a todas las variables');
-        // eslint-disable-next-line no-console
         console.log('💡 Usa getPassword("VITE_XXX") para ver una contraseña específica');
       }
     }, 100);
