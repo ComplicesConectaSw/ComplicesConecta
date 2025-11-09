@@ -893,6 +893,10 @@
       // Silenciar console
       console.error = function() {
         var msg = Array.prototype.join.call(arguments, ' ').toLowerCase();
+        var stack = Array.prototype.find.call(arguments, function(arg) {
+          return typeof arg === 'string' && arg.indexOf('at ') !== -1;
+        }) || '';
+        var stackLower = String(stack).toLowerCase();
         if (msg.indexOf('wallet') !== -1 || msg.indexOf('ethereum') !== -1 || msg.indexOf('solana') !== -1 ||
             msg.indexOf('metamask') !== -1 || msg.indexOf('tronweb') !== -1 || msg.indexOf('tronlink') !== -1 ||
             msg.indexOf('bybit') !== -1 || msg.indexOf('evmask') !== -1 || msg.indexOf('cannot redefine') !== -1 ||
@@ -901,7 +905,14 @@
             msg.indexOf('evmask.js') !== -1 || msg.indexOf('evmAsk.js') !== -1 || msg.indexOf('data-layer') !== -1 || 
             msg.indexOf('solana.js') !== -1 || msg.indexOf('dist.94abdbf1.js') !== -1 || msg.indexOf('chainid') !== -1 ||
             msg.indexOf('solana.js:3') !== -1 || msg.indexOf('evmAsk.js:5') !== -1 || msg.indexOf('inpage.js:154') !== -1 ||
-            msg.indexOf('inpage.js:168') !== -1 || msg.indexOf('inpage.js:1') !== -1) {
+            msg.indexOf('inpage.js:168') !== -1 || msg.indexOf('inpage.js:1') !== -1 ||
+            msg.indexOf('vendor-luqm') !== -1 || msg.indexOf('vendor-') !== -1 ||
+            msg.indexOf('cannot read properties of undefined') !== -1 || msg.indexOf('reading \'uselayouteffect\'') !== -1 ||
+            msg.indexOf('reading "uselayouteffect"') !== -1 || msg.indexOf('uselayouteffect') !== -1 ||
+            stackLower.indexOf('solana.js') !== -1 || stackLower.indexOf('inpage.js') !== -1 ||
+            stackLower.indexOf('evmask.js') !== -1 || stackLower.indexOf('evmAsk.js') !== -1 ||
+            stackLower.indexOf('dist.94abdbf1.js') !== -1 || stackLower.indexOf('vendor-luqm') !== -1 ||
+            stackLower.indexOf('vendor-') !== -1) {
           return;
         }
         walletProtection.originalConsoleError.apply(console, arguments);
