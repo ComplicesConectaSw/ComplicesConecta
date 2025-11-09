@@ -98,7 +98,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         // Solo loggear en desarrollo y de forma condicional
         if (process.env.NODE_ENV === 'development') {
           // Usar console.debug aquí es aceptable para debugging en desarrollo
-          // eslint-disable-next-line no-console
           console.debug('🎨 Theme updated:', { theme, resolvedTheme });
         }
       } finally {

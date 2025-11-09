@@ -32,7 +32,6 @@ app.use((req, res, next) => {
   res.on('finish', () => {
     const duration = Date.now() - start;
     // Usar console.log aquí es aceptable para logging del servidor
-    // eslint-disable-next-line no-console
     console.log(`${req.method} ${req.path} - ${res.statusCode} - ${duration}ms`);
   });
   next();
@@ -79,7 +78,6 @@ app.use((req, res, next) => {
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, _next) => {
   // Usar console.error aquí es aceptable para errores del servidor
-  // eslint-disable-next-line no-console
   console.error('Server error:', err);
   res.status(500).json({
     error: 'Internal Server Error',
@@ -90,31 +88,22 @@ app.use((err, req, res, _next) => {
 // Iniciar servidor
 app.listen(PORT, '0.0.0.0', () => {
   // Usar console.log aquí es aceptable para logging de inicio del servidor
-  // eslint-disable-next-line no-console
   console.log('================================================');
-  // eslint-disable-next-line no-console
   console.log('  ComplicesConecta Server');
-  // eslint-disable-next-line no-console
   console.log('================================================');
-  // eslint-disable-next-line no-console
   console.log(`✅ Server running on http://localhost:${PORT}`);
-  // eslint-disable-next-line no-console
   console.log(`✅ Environment: ${process.env.NODE_ENV || 'production'}`);
-  // eslint-disable-next-line no-console
   console.log(`✅ New Relic: ${process.env.NEW_RELIC_APP_NAME || 'Not configured'}`);
-  // eslint-disable-next-line no-console
   console.log('================================================');
 });
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
-  // eslint-disable-next-line no-console
   console.log('SIGTERM received, shutting down gracefully...');
   process.exit(0);
 });
 
 process.on('SIGINT', () => {
-  // eslint-disable-next-line no-console
   console.log('SIGINT received, shutting down gracefully...');
   process.exit(0);
 });
