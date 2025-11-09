@@ -2,7 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
-## [3.6.3] - 2025-11-08
+## [3.6.3] - 2025-11-09
+
+### Fixed - Vercel Deployment
+- **vercel.json**: Eliminada sección `routes` (conflicto con `rewrites`/`headers`)
+- **vercel.json**: Eliminado header con patrón regex inválido `/(.*\\.(js|css|...))$`
+- **vite.config.ts**: Chunks estables con hash, CSS no split (`cssCodeSplit: false`), base path `/`
+- **index.html**: Ruta absoluta `/src/main.tsx` para compatibilidad con Vercel
+- **build-and-deploy.ps1**: Función `Import-EnvFile` para cargar variables desde `.env`/`.env.local`
+- **build-and-deploy.ps1**: Verificación opcional de variables (advertencia, no error fatal)
+- **build-and-deploy.ps1**: Detección de conflictos en `vercel.json` antes de deploy
 
 ### Added - Scripts Unificados
 - **database-manager.ps1**: Script maestro que unifica 5 scripts de gestión de BD
@@ -17,6 +26,18 @@ All notable changes to this project will be documented in this file.
 - **fix-character-encoding.ps1**: Backups ahora se guardan en directorio `bck` fuera del proyecto
   - Ubicación: `C:\Users\conej\Documents\bck` (excluido de `.gitignore` y `.dockerignore`)
   - Ejecutado exitosamente: 1,171 archivos corregidos
+
+### Added - Build y Deploy
+- **build-and-deploy.ps1**: Script automatizado para build y deploy a Vercel
+  - Carga automática de variables desde `.env`/`.env.local`
+  - Verificación de variables críticas
+  - Type check antes de build
+  - Análisis de tamaño de build
+  - Verificación de `vercel.json`
+  - Deploy opcional a Vercel
+
+### Added - Documentación
+- **docs/VERCEL_DEPLOY_FIX_v3.6.3.md**: Guía completa de fixes de deployment Vercel
 
 ### Deprecated - Scripts Consolidados
 - **alinear-supabase.ps1**: Usar `database-manager.ps1 -Action sync`

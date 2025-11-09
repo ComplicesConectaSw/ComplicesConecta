@@ -12,7 +12,7 @@ Script unificado para manejar:
 - **v3.6.0**: Refactorización completa de estructura (profiles/, features/, shared/, entities/, app/) ✅
 - **v3.6.1**: Consolidación de estilos CSS + Script maestro consolidando 14 scripts ✅
 - **v3.6.2**: Unificación de hooks + Correcciones de imports y paths ✅
-- **v3.6.3**: Documentación consolidada + Índices completos + docs-unified/ en .gitignore + Script de corrección de caracteres ✅
+- **v3.6.3**: Documentación consolidada + Índices completos + docs-unified/ en .gitignore + Script de corrección de caracteres + Vercel Deployment Fixed ✅
 
 ## 📋 Requisitos
 - PowerShell 7+
@@ -160,3 +160,22 @@ docker run -d --name dd-agent \
   - Detecta archivos abiertos en otros procesos y los omite
 - **Nota:** Se recomienda cerrar los archivos antes de ejecutar el script para obtener mejores resultados
 - **Ubicación de Backups:** `C:\Users\conej\Documents\bck` (fuera del proyecto, excluido de `.gitignore` y `.dockerignore`)
+
+### Script de Build y Deploy para Vercel (NUEVO v3.6.3)
+- **Archivo:** `build-and-deploy.ps1`
+- **Propósito:** Build optimizado y deploy a Vercel con verificación completa
+- **Uso:** `.\build-and-deploy.ps1`
+- **Funcionalidades:**
+  - Carga automática de variables desde `.env`/`.env.local`
+  - Verificación de variables críticas (advertencia, no error fatal)
+  - Limpieza de build anterior
+  - Instalación de dependencias
+  - Type check
+  - Build optimizado con análisis de tamaño
+  - Verificación de `vercel.json` (conflictos routes, headers)
+  - Deploy opcional a Vercel
+- **Mejoras v3.6.3:**
+  - Función `Import-EnvFile` para cargar variables desde archivos .env
+  - Verificación opcional (advertencia, no bloquea build)
+  - Detección de conflictos en `vercel.json`
+  - Análisis de tamaño de build (<60MB recomendado)

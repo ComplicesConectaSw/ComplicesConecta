@@ -383,7 +383,63 @@ flowchart TD
 
 ---
 
+## 🚀 FLUJO DE DEPLOYMENT VERCEL v3.6.3
+
+```mermaid
+flowchart TD
+    A[Iniciar Build] --> B[Cargar Variables .env/.env.local]
+    B --> C{Variables<br/>Encontradas?}
+    C -->|Sí| D[Variables Cargadas en Proceso]
+    C -->|No| E[Advertencia + Continuar]
+    E --> D
+    D --> F[Verificar Variables Críticas]
+    F --> G{Variables<br/>Faltantes?}
+    G -->|Sí| H[Advertencia + Continuar]
+    G -->|No| I[Limpiar Build Anterior]
+    H --> I
+    I --> J[Instalar Dependencias]
+    J --> K[Type Check]
+    K --> L{Build<br/>Exitoso?}
+    L -->|No| M[Corregir Errores]
+    M --> K
+    L -->|Sí| N[Analizar Tamaño Build]
+    N --> O{< 60MB?}
+    O -->|No| P[Advertencia]
+    O -->|Sí| Q[Verificar vercel.json]
+    P --> Q
+    Q --> R{Conflicto<br/>routes?}
+    R -->|Sí| S[Eliminar routes]
+    R -->|No| T[Verificar Headers]
+    S --> T
+    T --> U{Patrón Regex<br/>Válido?}
+    U -->|No| V[Corregir Headers]
+    U -->|Sí| W{Deploy<br/>Vercel?}
+    V --> T
+    W -->|Sí| X[Deploy a Producción]
+    W -->|No| Y[Build Local Completado]
+    X --> Z[Verificar Deployment]
+    Z --> AA{Errores?}
+    AA -->|Sí| AB[Corregir Configuración]
+    AB --> X
+    AA -->|No| AC[✅ Deployment Exitoso]
+    
+    style A fill:#6366f1
+    style D fill:#10b981
+    style N fill:#f59e0b
+    style AC fill:#10b981
+    style S fill:#ef4444
+    style V fill:#ef4444
+```
+
+---
+
 **Documento creado:** 06 Noviembre 2025  
-**Última actualización:** 08 Noviembre 2025  
-**Versión:** 1.1
+**Última actualización:** 09 Noviembre 2025  
+**Versión:** 1.3
+
+### 🚀 Cambios v3.6.3 (09 Nov 2025)
+- ✅ Flujo de deployment Vercel actualizado con verificación de `vercel.json`
+- ✅ Detección de conflictos `routes` vs `rewrites`/`headers`
+- ✅ Validación de patrones regex en headers
+- ✅ Carga automática de variables desde `.env`/`.env.local`
 
