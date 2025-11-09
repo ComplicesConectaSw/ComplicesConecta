@@ -993,14 +993,47 @@ El proyecto está ahora completamente equipado para operar en producción con:
   - Análisis de tamaño de build
 - ✅ **Build Optimizado**: Tamaño <60MB, chunks estables, 0 errores
 - ✅ **Documentación**: `docs/VERCEL_DEPLOY_FIX_v3.6.3.md` creada con guía completa
+- ✅ **Funciones Globales Fixed**: `showEnvInfo()` y `showErrorReport()` ahora disponibles en producción
+- ✅ **Wallet Conflicts Silenciados**: Errores de wallet extensions completamente silenciados
 
 **Archivos Corregidos:**
 - `vercel.json` - Eliminado `routes`, simplificados headers
 - `vite.config.ts` - Chunks estables, CSS no split, base path correcto
 - `index.html` - Ruta absoluta para main.tsx
 - `build-and-deploy.ps1` - Carga de variables, verificación completa
+- `src/utils/showEnvInfo.ts` - Exposición de funciones también en producción
+- `src/utils/captureConsoleErrors.ts` - Exposición de funciones también en producción
 
 **Estado:** ✅ Vercel deployment completamente funcional
+
+#### 12. CircleCI Fixed ✅ (09 Nov 2025)
+- ✅ **Node.js 20.19+ Configurado**: Actualizado `.circleci/config.yml` para usar `cimg/node:20.19`
+- ✅ **Verificación de Versión**: Paso explícito para verificar e instalar Node.js 20.19+ si es necesario
+- ✅ **package.json engines**: Agregada sección `engines` con requisito Node.js 20.19+ o 22.12+
+- ✅ **Build Exitoso**: CircleCI ahora puede ejecutar builds con Vite 7.2.2
+
+**Archivos Corregidos:**
+- `.circleci/config.yml` - Actualizado a Node.js 20.19+
+- `package.json` - Agregada sección `engines`
+
+**Estado:** ✅ CircleCI completamente funcional
+
+#### 13. Correcciones de Servicios ✅ (09 Nov 2025)
+- ✅ **AdminProduction.tsx**: Importado `safeGetItem` de `safeLocalStorage`
+- ✅ **postsService.ts**: 
+  - Corregido manejo de `demoUser` con verificación de tipo
+  - Eliminados alias no soportados en consultas Supabase
+  - Ajustados tipos para permitir `null` en `created_at` y `updated_at`
+  - Ajustado mapeo para usar `media_urls` en lugar de `content_url` y `location`
+- ✅ **InvitationsService.ts**:
+  - Corregido manejo de `demoUser` con verificación de tipo
+  - Eliminadas interfaces no usadas
+  - Ajustados tipos para manejar valores `null` correctamente
+  - Reemplazado `GalleryPermissionRow` con `GalleryPermissionQueryRow`
+- ✅ **clearStorage.ts**: Importado `safeGetItem` y `safeRemoveItem` de `safeLocalStorage`
+- ✅ **StoryViewer.tsx**: Importado `safeGetItem` de `safeLocalStorage`
+
+**Estado:** ✅ Todos los servicios corregidos y funcionando correctamente
 
 ---
 

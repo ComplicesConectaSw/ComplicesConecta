@@ -3,7 +3,7 @@
 **Versión:** 3.6.3  
 **Fecha:** Noviembre, 2025  
 **Última Actualización:** 09 de Noviembre, 2025  
-**Estado:** ✅ PRODUCTION READY - AI-NATIVE - ENTERPRISE GRADE - REFACTORIZADO v3.6.3 - NEO4J OPERATIVO - VERCEL DEPLOYMENT FIXED - BUILD OPTIMIZED - CORRECCIONES DE TIPOS COMPLETADAS
+**Estado:** ✅ PRODUCTION READY - AI-NATIVE - ENTERPRISE GRADE - REFACTORIZADO v3.6.3 - NEO4J OPERATIVO - VERCEL DEPLOYMENT FIXED - BUILD OPTIMIZED - CORRECCIONES DE TIPOS COMPLETADAS - FUNCIONES GLOBALES FIXED - CIRCLE CI FIXED
 
 > **📚 Para desarrolladores:**  
 > **- [INSTALACION_SETUP_v3.5.0.md](./INSTALACION_SETUP_v3.5.0.md)** - Guía completa de instalación y configuración  
@@ -123,6 +123,9 @@ Nuestro sistema de mensajería no es solo texto. Incluye:
 - ✅ **Eventos Virtuales Sostenibles** (tracking CO2, recompensas CMPX)
 - ✅ **Baneo Permanente** (huella digital canvas + browser + WorldID, 99.9% efectivo)
 - ✅ **Refactorización Completa v3.6.3** (estructura modular: profiles/, features/, shared/, entities/, app/)
+- ✅ **Funciones Globales Fixed** - `showEnvInfo()` y `showErrorReport()` disponibles en producción
+- ✅ **CircleCI Fixed** - Node.js 20.19+ configurado (requerido por Vite 7.2.2)
+- ✅ **Correcciones de Servicios** - `AdminProduction.tsx`, `postsService.ts`, `InvitationsService.ts`, `clearStorage.ts`, `StoryViewer.tsx` corregidos
 
 ---
 

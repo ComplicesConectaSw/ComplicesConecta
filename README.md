@@ -85,9 +85,9 @@
 
 ## 🏆 AI-NATIVE PLATFORM - Production Ready Enterprise
 
-**Estado:** ✅ **PRODUCTION READY - AI-NATIVE - ENTERPRISE GRADE - REFACTORIZADO v3.6.3 - NEO4J OPERATIVO - VERCEL DEPLOYMENT FIXED** 🏆  
+**Estado:** ✅ **PRODUCTION READY - AI-NATIVE - ENTERPRISE GRADE - REFACTORIZADO v3.6.3 - NEO4J OPERATIVO - VERCEL DEPLOYMENT FIXED - FUNCIONES GLOBALES FIXED - CIRCLE CI FIXED** 🏆  
 **Última Actualización:** 09 de Noviembre, 2025  
-**Versión:** 3.6.3 - AI-Native + Refactorización Completa + CSS Optimizado + React Fixes + Chat con Privacidad + Correcciones Críticas + Docker Build Successful + Neo4j Correcciones + Campos de Registro + Análisis de Estilos Completo + Estructura Modular + Vercel Deployment Fixed
+**Versión:** 3.6.3 - AI-Native + Refactorización Completa + CSS Optimizado + React Fixes + Chat con Privacidad + Correcciones Críticas + Docker Build Successful + Neo4j Correcciones + Campos de Registro + Análisis de Estilos Completo + Estructura Modular + Vercel Deployment Fixed + Funciones Globales Fixed + CircleCI Fixed
 
 > **La primera plataforma swinger con IA nativa de México +18**
 
@@ -153,6 +153,8 @@
 - ✅ **build-and-deploy.ps1** - Script automatizado con verificación completa
 - ✅ **Variables de Entorno** - Carga automática desde `.env`/`.env.local`
 - ✅ **Build Optimizado** - Tamaño <60MB, chunks estables, 0 errores
+- ✅ **Funciones Globales Fixed** - `showEnvInfo()` y `showErrorReport()` disponibles en producción
+- ✅ **Wallet Conflicts Silenciados** - Errores de wallet extensions completamente silenciados
 
 #### 🏢 Sistema de Clubs Verificados ✅
 - ✅ **5 Tablas Nuevas**: `clubs`, `club_verifications`, `club_checkins`, `club_reviews`, `club_flyers`
@@ -181,6 +183,12 @@
 - ✅ **Tiers**: $10K, $25K, $50K, $100K MXN
 - ✅ **Landing `/invest`**: Con Stripe integrado
 - ✅ **Plataformas**: AngelList + Republic listos para publicar
+
+#### 🔧 Correcciones y Mejoras v3.6.3 ✅ (09 Nov 2025)
+- ✅ **Funciones Globales Fixed**: `showEnvInfo()` y `showErrorReport()` disponibles en producción
+- ✅ **Wallet Conflicts Silenciados**: Errores de wallet extensions completamente silenciados
+- ✅ **CircleCI Fixed**: Node.js 20.19+ configurado (requerido por Vite 7.2.2)
+- ✅ **Correcciones de Servicios**: `AdminProduction.tsx`, `postsService.ts`, `InvitationsService.ts`, `clearStorage.ts`, `StoryViewer.tsx` corregidos con `safeLocalStorage`
 
 ---
 
