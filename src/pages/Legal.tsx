@@ -10,7 +10,6 @@ import {
   Scale, 
   AlertTriangle, 
   Users, 
-  Lock,
   BookOpen,
   Gavel,
   Download,
