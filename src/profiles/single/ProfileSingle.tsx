@@ -104,7 +104,7 @@ const ProfileSingle: React.FC = () => {
     try {
       // Simular actividad reciente
       const mockActivity = [
-        { id: 1, type: 'like', description: 'Recibiste un like de Mar�a', time: '2 horas' },
+        { id: 1, type: 'like', description: 'Recibiste un like de Maria', time: '2 horas' },
         { id: 2, type: 'view', description: 'Tu perfil fue visto 15 veces', time: '4 horas' },
         { id: 3, type: 'match', description: 'Nuevo match con Carlos', time: '1 d�a' },
         { id: 4, type: 'message', description: 'Nuevo mensaje de Ana', time: '2 d�as' }
@@ -147,7 +147,7 @@ const ProfileSingle: React.FC = () => {
       // Track en PostHog
       trackEvent('profile_shared', {
         profileId: profile?.id?.substring(0, 8) + '***',
-        method: navigator.share ? 'native' : 'clipboard'
+        method: typeof navigator.share !== 'undefined' ? 'native' : 'clipboard'
       });
     } catch (error) {
       logger.error('Error sharing profile:', { error: String(error) });
@@ -180,7 +180,7 @@ const ProfileSingle: React.FC = () => {
           });
         }
         
-        // Verificar si hay sesi�n demo activa PRIMERO - manejar tanto string como boolean
+        // Verificar si hay sesion demo activa PRIMERO - manejar tanto string como boolean
         const isDemoActive = (String(demoAuth) === 'true') && demoUser;
         if (isDemoActive && !profile) {
           try {
@@ -189,17 +189,19 @@ const ProfileSingle: React.FC = () => {
             // Crear perfil demo est�tico una sola vez
             const profileData: Database['public']['Tables']['profiles']['Row'] = {
               id: parsedUser.id || 'demo-single-1',
-              name: parsedUser.name || 'Sof�a Demo',
+              name: parsedUser.name || 'Sofia Demo',
+              first_name: parsedUser.first_name || 'Sofía',
+              last_name: parsedUser.last_name || 'Demo',
               age: 28,
-              bio: 'Explorando conexiones aut�nticas en el lifestyle swinger. Disfruto de experiencias discretas, respeto mutuo y encuentros sofisticados. Me encanta viajar, la m�sica y conocer parejas interesantes.',
+              bio: 'Explorando conexiones autinticas en el lifestyle swinger. Disfruto de experiencias discretas, respeto mutuo y encuentros sofisticados. Me encanta viajar, la m�sica y conocer parejas interesantes.',
               avatar_url: '/placeholder.svg',
               created_at: new Date().toISOString(),
               gender: 'female',
-              interests: ['Lifestyle Swinger', 'Encuentros Discretos', 'Viajes', 'M�sica', 'Gastronom�a', 'Arte', 'Fotograf�a', 'Eventos Sofisticados'],
+              interests: ['Lifestyle Swinger', 'Encuentros Discretos', 'Viajes', 'Musica', 'soft', 'Arte', 'Fotografia erotica', 'Eventos Sofisticados'],
               is_admin: false,
               is_premium: false,
               is_verified: true,
-              location: 'CDMX, M�xico',
+              location: 'CDMX, Mexico',
               role: 'user',
               user_id: parsedUser.id || 'demo-single-1',
               updated_at: new Date().toISOString(),
@@ -240,7 +242,7 @@ const ProfileSingle: React.FC = () => {
           }
         }
         
-        // Si authProfile ya est� disponible, usarlo directamente
+        // Si authProfile ya esta disponible, usarlo directamente
         if (authProfile && authProfile.id) {
           logger.info('?? Perfil cargado exitosamente:', { name: authProfile.name });
           setProfile(authProfile);
@@ -255,24 +257,24 @@ const ProfileSingle: React.FC = () => {
           return;
         }
         
-        // Si no hay autenticaci�n v�lida Y no es demo, redirigir
-        if (!isAuthenticated && !(String(demoAuth) === 'true' && demoUser)) {
-          logger.info('? No hay autenticaci�n v�lida, redirigiendo...');
+        // Si no hay autenticacian valida Y no es demo, redirigir
+        if (!checkAuth() && !(String(demoAuth) === 'true' && demoUser)) {
+          logger.info('? No hay autenticacion valida, redirigiendo...');
           navigate('/auth', { replace: true });
           return;
         }
         
-        // Si llegamos aqu� sin perfil ni usuario pero con demo, mostrar error
+        // Si llegamos aqui sin perfil ni usuario pero con demo, mostrar error
         if (String(demoAuth) === 'true' && demoUser && !profile) {
           logger.info('?? Demo autenticado pero perfil no cargado, reintentando...');
-          // El perfil demo deber�a haberse cargado arriba, algo fall�
+          // El perfil demo deberia haberse cargado arriba, algo fallo?
           setIsLoading(false);
           return;
         }
         
         // Estado inesperado final - solo log una vez
         if (!profile) {
-          logger.info('?? Estado inesperado: sin usuario ni perfil v�lido');
+          logger.info('?? Estado inesperado: sin usuario ni perfil valido');
         }
         setIsLoading(false);
       } catch (error) {
@@ -369,7 +371,7 @@ const ProfileSingle: React.FC = () => {
                       <CheckCircle className="w-6 h-6 text-white" />
                     </div>
                   )}
-                  {/* TODO: Implementar cuando is_premium est� disponible en la tabla profiles */}
+                  {/* TODO: Implementar cuando is_premium esta disponible en la tabla profiles */}
                   {/* {profile.is_premium && (
                     <div className="absolute -bottom-2 -right-2 bg-yellow-500 rounded-full p-1">
                       <Crown className="w-6 h-6 text-white" />
@@ -377,7 +379,7 @@ const ProfileSingle: React.FC = () => {
                   )} */}
                 </div>
 
-                {/* Informaci�n b�sica */}
+                {/* Informacoin basica */}
                 <div className="flex-1 text-center sm:text-left">
                   <h2 className="text-xl sm:text-2xl font-bold mb-2">
                     {profile.name}

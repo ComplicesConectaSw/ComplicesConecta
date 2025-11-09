@@ -173,13 +173,16 @@ function Get-UsedTables {
         $content = Get-Content $file.FullName -Raw -ErrorAction SilentlyContinue
         if ($content) {
             # Buscar patrones .from('table_name')
-            $matches = [regex]::Matches($content, "\.from\(['`"]([^'`"]+)['`"]\)")
-            foreach ($match in $matches) {
-                $tableName = $match.Groups[1].Value
-                if (-not $usedTables.ContainsKey($tableName)) {
-                    $usedTables[$tableName] = @()
+            # Usar Select-String para evitar problemas con regex en PowerShell
+            $matches = $content | Select-String -Pattern "\.from\(['`"]([^'`"]+)['`"]\)" -AllMatches
+            if ($matches) {
+                foreach ($match in $matches.Matches) {
+                    $tableName = $match.Groups[1].Value
+                    if (-not $usedTables.ContainsKey($tableName)) {
+                        $usedTables[$tableName] = @()
+                    }
+                    $usedTables[$tableName] += $file.Name
                 }
-                $usedTables[$tableName] += $file.Name
             }
         }
     }
@@ -261,7 +264,7 @@ if (-not $RemoteOnly) {
 
 if (-not $LocalOnly) {
     Write-Host "  🔧 Regenerando tipos desde REMOTO..." -ForegroundColor Cyan
-    Write-Host "     ℹ️  Ejecuta manualmente: npx supabase gen types typescript --project-id <project-id> > src/types/supabase-generated.ts" -ForegroundColor Gray
+    Write-Host "     ℹ️  Ejecuta manualmente: npx supabase gen types typescript --project-id [project-id] > src/types/supabase-generated.ts" -ForegroundColor Gray
     Write-Host ""
 }
 
@@ -277,7 +280,7 @@ Write-Host ""
 Write-Host "📋 PRÓXIMOS PASOS:" -ForegroundColor Yellow
 Write-Host "  1. Aplicar migraciones remotas manualmente en Supabase Dashboard" -ForegroundColor White
 Write-Host "  2. Verificar que todas las tablas estén en remoto" -ForegroundColor White
-Write-Host "  3. Regenerar tipos desde remoto: npx supabase gen types typescript --project-id <id>" -ForegroundColor White
+Write-Host "  3. Regenerar tipos desde remoto: npx supabase gen types typescript --project-id [id]" -ForegroundColor White
 Write-Host "  4. Verificar que no haya errores de tipo" -ForegroundColor White
 Write-Host ""
 

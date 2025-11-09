@@ -319,6 +319,54 @@ Se han reportado múltiples errores críticos en la consola del navegador durant
 
 ---
 
-**Última actualización:** 08 de Noviembre, 2025 - 16:50  
+## Actualización - 08 de Noviembre, 2025 (Final de Sesión)
+
+### Correcciones de Servicios y Utilidades
+
+#### 1. Corrección de ConsentVerificationService.ts
+- **Problema:** `supabase` puede ser `null` al llamar a `removeChannel` en la función de desuscripción.
+- **Solución:** Agregada verificación `if (supabase)` antes de llamar a `removeChannel`.
+- **Estado:** ✅ COMPLETADO - Sin errores de linting ni TypeScript.
+
+#### 2. Corrección de permanentBan.ts
+- **Problema:** Uso de `supabase` sin verificar si es `null` en múltiples funciones.
+- **Solución:** Agregadas verificaciones `if (!supabase)` en:
+  - `createPermanentBan()`: Lanza error si supabase no está disponible.
+  - `checkUserBanned()`: Retorna `{ isBanned: false }` si supabase no está disponible.
+  - `liftPermanentBan()`: Lanza error si supabase no está disponible.
+  - `getPermanentBans()`: Lanza error si supabase no está disponible.
+- **Estado:** ✅ COMPLETADO - Sin errores de linting ni TypeScript.
+
+#### 3. Verificación de InvitationsService.ts
+- **Verificación:** Archivo verificado, sin errores de linting ni TypeScript.
+- **Estado:** ✅ VERIFICADO - Sin correcciones necesarias.
+
+#### 4. Verificación de showEnvInfo.ts
+- **Verificación:** Archivo verificado, sin errores de linting ni TypeScript.
+- **Estado:** ✅ VERIFICADO - Sin correcciones necesarias.
+
+#### 5. Corrección de alinear-y-verificar-todo.ps1
+- **Problema:** Error de sintaxis en regex para buscar tablas usadas en código.
+- **Solución:** Cambiado de `[regex]::Matches` a `Select-String` para evitar problemas con comillas en PowerShell.
+- **Estado:** ✅ COMPLETADO - Script funcional.
+
+#### 6. Corrección de fix-character-encoding.ps1
+- **Problema:** Caracteres especiales causando errores de parsing en PowerShell.
+- **Solución:** Reemplazados caracteres especiales en mensajes y comentarios con equivalentes ASCII.
+- **Estado:** ✅ COMPLETADO - Script funcional.
+
+### Archivos Corregidos en Esta Sesión
+1. ✅ `src/services/ai/ConsentVerificationService.ts` - Verificación de supabase null
+2. ✅ `src/services/permanentBan.ts` - Verificaciones de supabase null en todas las funciones
+3. ✅ `src/services/InvitationsService.ts` - Verificado (sin errores)
+4. ✅ `src/utils/showEnvInfo.ts` - Verificado (sin errores)
+5. ✅ `scripts/alinear-y-verificar-todo.ps1` - Corrección de regex
+6. ✅ `scripts/fix-character-encoding.ps1` - Corrección de caracteres especiales
+7. ✅ `src/profiles/single/ProfileSingle.tsx` - Correcciones previas (first_name, last_name)
+8. ✅ `src/services/digitalFingerprint.ts` - Correcciones previas
+
+---
+
+**Última actualización:** 08 de Noviembre, 2025 - 18:00  
 **Versión:** 3.6.3  
-**Estado:** ✅ Scripts Actualizados y Unificados
+**Estado:** ✅ Servicios y Utilidades Corregidos y Verificados
