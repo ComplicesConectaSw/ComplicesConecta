@@ -920,9 +920,16 @@
       
       console.warn = function() {
         var msg = Array.prototype.join.call(arguments, ' ').toLowerCase();
+        var stack = Array.prototype.find.call(arguments, function(arg) {
+          return typeof arg === 'string' && arg.indexOf('at ') !== -1;
+        }) || '';
+        var stackLower = String(stack).toLowerCase();
         if (msg.indexOf('wallet') !== -1 || msg.indexOf('ethereum') !== -1 || msg.indexOf('solana') !== -1 ||
             msg.indexOf('metamask') !== -1 || msg.indexOf('tronweb') !== -1 || msg.indexOf('tronlink') !== -1 ||
-            msg.indexOf('bybit') !== -1 || msg.indexOf('evmask') !== -1 || msg.indexOf('overwrite') !== -1) {
+            msg.indexOf('bybit') !== -1 || msg.indexOf('evmask') !== -1 || msg.indexOf('overwrite') !== -1 ||
+            msg.indexOf('tronweb is already initiated') !== -1 || msg.indexOf('bybit:page provider') !== -1 ||
+            stackLower.indexOf('solana.js') !== -1 || stackLower.indexOf('inpage.js') !== -1 ||
+            stackLower.indexOf('evmask.js') !== -1 || stackLower.indexOf('dist.94abdbf1.js') !== -1) {
           return;
         }
         walletProtection.originalConsoleWarn.apply(console, arguments);
@@ -938,15 +945,20 @@
             msg.indexOf('wallet') !== -1 || msg.indexOf('ethereum') !== -1 || msg.indexOf('solana') !== -1 ||
             msg.indexOf('metamask') !== -1 || msg.indexOf('tronweb') !== -1 || msg.indexOf('tronlink') !== -1 ||
             msg.indexOf('bybit') !== -1 || msg.indexOf('evmask') !== -1 ||
+            msg.indexOf('cannot read properties of undefined') !== -1 || msg.indexOf('reading \'uselayouteffect\'') !== -1 ||
+            msg.indexOf('reading "uselayouteffect"') !== -1 || msg.indexOf('uselayouteffect') !== -1 ||
+            msg.indexOf('vendor-luqm') !== -1 || msg.indexOf('vendor-') !== -1 ||
             filename.indexOf('inpage.js') !== -1 || filename.indexOf('evmask.js') !== -1 ||
             filename.indexOf('evmAsk.js') !== -1 || filename.indexOf('solana.js') !== -1 || 
             filename.indexOf('data-layer') !== -1 || filename.indexOf('dist.94abdbf1.js') !== -1 ||
+            filename.indexOf('vendor-luqm') !== -1 || filename.indexOf('vendor-') !== -1 ||
             stack.indexOf('inpage.js') !== -1 || stack.indexOf('evmask.js') !== -1 ||
             stack.indexOf('evmAsk.js') !== -1 || stack.indexOf('solana.js') !== -1 || 
             stack.indexOf('data-layer') !== -1 || stack.indexOf('dist.94abdbf1.js') !== -1 ||
             stack.indexOf('solana.js:3') !== -1 || stack.indexOf('evmAsk.js:5') !== -1 ||
             stack.indexOf('inpage.js:154') !== -1 || stack.indexOf('inpage.js:168') !== -1 ||
-            stack.indexOf('inpage.js:1') !== -1) {
+            stack.indexOf('inpage.js:1') !== -1 || stack.indexOf('vendor-luqm') !== -1 ||
+            stack.indexOf('vendor-') !== -1 || stack.indexOf('vendor-luqmi8p1') !== -1) {
           e.stopImmediatePropagation();
           e.preventDefault();
           return false;
@@ -965,6 +977,9 @@
             msg.indexOf('ethereum') !== -1 || msg.indexOf('solana') !== -1 || msg.indexOf('metamask') !== -1 ||
             msg.indexOf('tronweb') !== -1 || msg.indexOf('tronlink') !== -1 || msg.indexOf('bybit') !== -1 ||
             msg.indexOf('evmask') !== -1 || msg.indexOf('chainid') !== -1 ||
+            msg.indexOf('cannot read properties of undefined') !== -1 || msg.indexOf('reading \'uselayouteffect\'') !== -1 ||
+            msg.indexOf('reading "uselayouteffect"') !== -1 || msg.indexOf('uselayouteffect') !== -1 ||
+            msg.indexOf('vendor-luqm') !== -1 || msg.indexOf('vendor-') !== -1 ||
             msg.indexOf('inpage.js') !== -1 || msg.indexOf('evmask.js') !== -1 || 
             msg.indexOf('evmAsk.js') !== -1 || msg.indexOf('data-layer') !== -1 ||
             msg.indexOf('solana.js') !== -1 || msg.indexOf('dist.94abdbf1.js') !== -1 ||
@@ -973,7 +988,8 @@
             stack.indexOf('solana.js') !== -1 || stack.indexOf('dist.94abdbf1.js') !== -1 ||
             stack.indexOf('solana.js:3') !== -1 || stack.indexOf('evmAsk.js:5') !== -1 ||
             stack.indexOf('inpage.js:154') !== -1 || stack.indexOf('inpage.js:168') !== -1 ||
-            stack.indexOf('inpage.js:1') !== -1 ||
+            stack.indexOf('inpage.js:1') !== -1 || stack.indexOf('vendor-luqm') !== -1 ||
+            stack.indexOf('vendor-') !== -1 || stack.indexOf('vendor-luqmi8p1') !== -1 ||
             code === '4001' || (reason && typeof reason === 'object' && 'code' in reason && reason.code === 4001)) {
           e.stopImmediatePropagation();
           e.preventDefault();
