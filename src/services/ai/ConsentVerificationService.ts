@@ -437,7 +437,9 @@ Responde SOLO con un JSON válido en este formato exacto:
 
     // Guardar función de desuscripción
     this.messageSubscriptions.set(chatId, () => {
-      supabase.removeChannel(channel);
+      if (supabase) {
+        supabase.removeChannel(channel);
+      }
     });
   }
 

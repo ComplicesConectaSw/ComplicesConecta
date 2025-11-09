@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { User, Users } from 'lucide-react';
 import { cn } from '@/shared/lib/cn';
 

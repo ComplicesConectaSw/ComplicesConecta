@@ -484,7 +484,11 @@ export class AILayerService {
         return;
       }
 
-      const { error } = await supabase
+      const startTime = Date.now();
+      const predictionTime = Date.now() - startTime;
+
+      // Registrar en ai_compatibility_scores
+      const { error: scoresError } = await supabase
         .from('ai_compatibility_scores')
         .insert({
           user1_id: userId1,
@@ -496,11 +500,85 @@ export class AILayerService {
           features: (score.features || {}) as Record<string, unknown>,
         });
 
-      if (error) {
-        logger.warn('Failed to log prediction', { error });
+      if (scoresError) {
+        logger.warn('Failed to log prediction to ai_compatibility_scores', { error: scoresError });
+      }
+
+      // Registrar en ai_prediction_logs
+      const { error: logsError } = await supabase
+        .from('ai_prediction_logs')
+        .insert({
+          user1_id: userId1,
+          user2_id: userId2,
+          score: score.score,
+          method: score.method,
+          model_version: 'v1-base',
+          prediction_time_ms: predictionTime,
+          cache_hit: this.cache.has(`${userId1}-${userId2}`),
+          fallback_used: score.method === 'legacy',
+          features: (score.features || {}) as Record<string, unknown>,
+          timestamp: new Date().toISOString(),
+        });
+
+      if (logsError) {
+        logger.warn('Failed to log prediction to ai_prediction_logs', { error: logsError });
       }
     } catch (error) {
       logger.warn('Failed to log prediction', { error });
+    }
+  }
+
+  /**
+   * Registra métricas del modelo de IA
+   * @private
+   */
+  private async logModelMetrics(
+    periodStart: string,
+    periodEnd: string,
+    metrics: {
+      predictionsCount: number;
+      accuracyScore?: number;
+      precisionScore?: number;
+      recallScore?: number;
+      f1Score?: number;
+      avgPredictionTimeMs?: number;
+      cacheHitRate?: number;
+      errorRate?: number;
+      matchRate?: number;
+      conversationRate?: number;
+      satisfactionScore?: number;
+    }
+  ): Promise<void> {
+    try {
+      if (!supabase) {
+        logger.warn('Supabase no está disponible, no se puede registrar métricas del modelo');
+        return;
+      }
+
+      const { error } = await supabase
+        .from('ai_model_metrics')
+        .insert({
+          period_start: periodStart,
+          period_end: periodEnd,
+          model_version: 'v1-base',
+          predictions_count: metrics.predictionsCount,
+          accuracy_score: metrics.accuracyScore ?? null,
+          precision_score: metrics.precisionScore ?? null,
+          recall_score: metrics.recallScore ?? null,
+          f1_score: metrics.f1Score ?? null,
+          avg_prediction_time_ms: metrics.avgPredictionTimeMs ?? null,
+          cache_hit_rate: metrics.cacheHitRate ?? null,
+          error_rate: metrics.errorRate ?? null,
+          match_rate: metrics.matchRate ?? null,
+          conversation_rate: metrics.conversationRate ?? null,
+          satisfaction_score: metrics.satisfactionScore ?? null,
+        });
+
+      if (error) {
+        logger.warn('Failed to log model metrics', { error });
+      }
+    } catch (error) {
+      logger.warn('Failed to log model metrics', { error });
     }
   }
 

@@ -32,21 +32,21 @@ const FAQ = () => {
 
   const faqCategories = {
     verificacion: {
-      title: "Verificación KYC",
+      title: "Verificaciï¿½n KYC",
       icon: UserCheck,
       color: "text-blue-500",
       faqs: [
         {
-          question: "¿Cómo funciona la verificación KYC?",
-          answer: "Utilizamos tecnología blockchain avanzada y verificación de identidad para verificar la identidad de todos nuestros miembros. El sistema incluye verificación de documentos oficiales, selfie biométrica y verificación telefónica. Este proceso garantiza que solo personas reales y verificadas accedan a la plataforma."
+          question: "ï¿½Cï¿½mo funciona la verificaciï¿½n KYC?",
+          answer: "Utilizamos tecnologï¿½a blockchain avanzada y verificaciï¿½n de identidad para verificar la identidad de todos nuestros miembros. El sistema incluye verificaciï¿½n de documentos oficiales, selfie biomï¿½trica y verificaciï¿½n telefï¿½nica. Este proceso garantiza que solo personas reales y verificadas accedan a la plataforma."
         },
         {
-          question: "¿Qué documentos necesito para verificarme?",
-          answer: "Necesitas una identificación oficial vigente (INE, pasaporte o cédula profesional) y una selfie clara. El proceso es completamente seguro y tus datos están protegidos."
+          question: "ï¿½Quï¿½ documentos necesito para verificarme?",
+          answer: "Necesitas una identificaciï¿½n oficial vigente (INE, pasaporte o cï¿½dula profesional) y una selfie clara. El proceso es completamente seguro y tus datos estï¿½n protegidos."
         },
         {
-          question: "¿Cuánto tarda la verificación?",
-          answer: "La verificación KYC toma entre 24-48 horas hábiles. Los miembros Premium tienen verificación prioritaria en menos de 12 horas."
+          question: "ï¿½Cuï¿½nto tarda la verificaciï¿½n?",
+          answer: "La verificaciï¿½n KYC toma entre 24-48 horas hï¿½biles. Los miembros Premium tienen verificaciï¿½n prioritaria en menos de 12 horas."
         }
       ]
     },
@@ -56,35 +56,35 @@ const FAQ = () => {
       color: "text-green-500",
       faqs: [
         {
-          question: "¿Es seguro el chat privado?",
-          answer: "Absolutamente. Todas las conversaciones están encriptadas end-to-end con AES-GCM. Además, implementamos el Verificador IA de Consentimiento que detecta proactivamente patrones de consentimiento en los mensajes, cumpliendo con la Ley Olimpia. Tu privacidad y discreción son nuestra máxima prioridad."
+          question: "ï¿½Es seguro el chat privado?",
+          answer: "Absolutamente. Todas las conversaciones estï¿½n encriptadas end-to-end con AES-GCM. Ademï¿½s, implementamos el Verificador IA de Consentimiento que detecta proactivamente patrones de consentimiento en los mensajes, cumpliendo con la Ley Olimpia. Tu privacidad y discreciï¿½n son nuestra mï¿½xima prioridad."
         },
         {
-          question: "¿Cómo protegen mis datos personales?",
-          answer: "Utilizamos encriptación de grado militar y cumplimos con GDPR. Nunca compartimos tu información personal con terceros sin tu consentimiento explícito."
+          question: "ï¿½Cï¿½mo protegen mis datos personales?",
+          answer: "Utilizamos encriptaciï¿½n de grado militar y cumplimos con GDPR. Nunca compartimos tu informaciï¿½n personal con terceros sin tu consentimiento explï¿½cito."
         },
         {
-          question: "¿Puedo controlar quién ve mi perfil?",
-          answer: "Sí, tienes control total sobre tu privacidad. Puedes configurar quién puede ver tu perfil, fotos privadas y contactarte."
+          question: "ï¿½Puedo controlar quiï¿½n ve mi perfil?",
+          answer: "Sï¿½, tienes control total sobre tu privacidad. Puedes configurar quiï¿½n puede ver tu perfil, fotos privadas y contactarte."
         }
       ]
     },
     galerias: {
-      title: "Galerías Privadas",
+      title: "Galerï¿½as Privadas",
       icon: GalleryHorizontal,
       color: "text-purple-500",
       faqs: [
         {
-          question: "¿Cómo funcionan las galerías privadas?",
-          answer: "Las galerías privadas te permiten compartir fotos íntimas solo con personas que hayas autorizado. Tienes control total sobre quién puede acceder. Además, puedes crear Galerías NFT-Verificadas usando tokens GTK, lo que garantiza autenticidad y verificación de tus galerías."
+          question: "ï¿½Cï¿½mo funcionan las galerï¿½as privadas?",
+          answer: "Las galerï¿½as privadas te permiten compartir fotos ï¿½ntimas solo con personas que hayas autorizado. Tienes control total sobre quiï¿½n puede acceder. Ademï¿½s, puedes crear Galerï¿½as NFT-Verificadas usando tokens GTK, lo que garantiza autenticidad y verificaciï¿½n de tus galerï¿½as."
         },
         {
-          question: "¿Cómo envío una invitación de galería?",
-          answer: "Desde cualquier perfil, puedes enviar una invitación para acceder a tu galería privada. La persona debe aceptar la invitación para ver tu contenido privado."
+          question: "ï¿½Cï¿½mo envï¿½o una invitaciï¿½n de galerï¿½a?",
+          answer: "Desde cualquier perfil, puedes enviar una invitaciï¿½n para acceder a tu galerï¿½a privada. La persona debe aceptar la invitaciï¿½n para ver tu contenido privado."
         },
         {
-          question: "¿Puedo revocar el acceso a mi galería?",
-          answer: "Sí, puedes revocar el acceso a tu galería privada en cualquier momento desde tu configuración de privacidad."
+          question: "ï¿½Puedo revocar el acceso a mi galerï¿½a?",
+          answer: "Sï¿½, puedes revocar el acceso a tu galerï¿½a privada en cualquier momento desde tu configuraciï¿½n de privacidad."
         }
       ]
     },
@@ -94,16 +94,16 @@ const FAQ = () => {
       color: "text-pink-500",
       faqs: [
         {
-          question: "¿Cómo funcionan las invitaciones?",
-          answer: "Puedes enviar invitaciones para conectar, acceder a galerías privadas o chatear. Las invitaciones incluyen un mensaje personalizado y requieren aceptación."
+          question: "ï¿½Cï¿½mo funcionan las invitaciones?",
+          answer: "Puedes enviar invitaciones para conectar, acceder a galerï¿½as privadas o chatear. Las invitaciones incluyen un mensaje personalizado y requieren aceptaciï¿½n."
         },
         {
-          question: "¿Qué tipos de invitaciones existen?",
-          answer: "Hay tres tipos: invitaciones de perfil (para conectar), de galería (para ver fotos privadas) y de chat (para conversaciones privadas)."
+          question: "ï¿½Quï¿½ tipos de invitaciones existen?",
+          answer: "Hay tres tipos: invitaciones de perfil (para conectar), de galerï¿½a (para ver fotos privadas) y de chat (para conversaciones privadas)."
         },
         {
-          question: "¿Puedo rechazar una invitación?",
-          answer: "Por supuesto. Tienes control total para aceptar o rechazar cualquier invitación. Las personas rechazadas no pueden volver a enviarte invitaciones del mismo tipo."
+          question: "ï¿½Puedo rechazar una invitaciï¿½n?",
+          answer: "Por supuesto. Tienes control total para aceptar o rechazar cualquier invitaciï¿½n. Las personas rechazadas no pueden volver a enviarte invitaciones del mismo tipo."
         }
       ]
     },
@@ -113,15 +113,15 @@ const FAQ = () => {
       color: "text-yellow-500",
       faqs: [
         {
-          question: "¿Qué son los eventos VIP?",
-          answer: "Son fiestas privadas y encuentros exclusivos organizados para miembros verificados. Incluyen clubs exclusivos, cenas íntimas y experiencias únicas para la comunidad swinger."
+          question: "ï¿½Quï¿½ son los eventos VIP?",
+          answer: "Son fiestas privadas y encuentros exclusivos organizados para miembros verificados. Incluyen clubs exclusivos, cenas ï¿½ntimas y experiencias ï¿½nicas para la comunidad swinger."
         },
         {
-          question: "¿Cómo puedo acceder a eventos VIP?",
-          answer: "Los eventos VIP están disponibles para miembros Premium verificados. Recibirás invitaciones exclusivas basadas en tu ubicación y preferencias."
+          question: "ï¿½Cï¿½mo puedo acceder a eventos VIP?",
+          answer: "Los eventos VIP estï¿½n disponibles para miembros Premium verificados. Recibirï¿½s invitaciones exclusivas basadas en tu ubicaciï¿½n y preferencias."
         },
         {
-          question: "¿Los eventos son seguros y discretos?",
+          question: "ï¿½Los eventos son seguros y discretos?",
           answer: "Absolutamente. Todos los eventos son organizados en ubicaciones seguras y discretas, con estrictos protocolos de privacidad y consentimiento."
         }
       ]
@@ -132,15 +132,15 @@ const FAQ = () => {
       color: "text-orange-500",
       faqs: [
         {
-          question: "¿Qué son los tokens?",
+          question: "ï¿½Quï¿½ son los tokens?",
           answer: "Los tokens son nuestra moneda virtual que puedes usar para enviar regalos, destacar tu perfil y acceder a funciones premium especiales."
         },
         {
-          question: "¿Cómo obtengo tokens?",
-          answer: "Puedes comprar tokens o ganarlos completando tu perfil, verificándote, siendo activo en la comunidad y recibiendo valoraciones positivas."
+          question: "ï¿½Cï¿½mo obtengo tokens?",
+          answer: "Puedes comprar tokens o ganarlos completando tu perfil, verificï¿½ndote, siendo activo en la comunidad y recibiendo valoraciones positivas."
         },
         {
-          question: "¿Los tokens caducan?",
+          question: "ï¿½Los tokens caducan?",
           answer: "No, tus tokens no caducan. Puedes usarlos cuando quieras para mejorar tu experiencia en la plataforma."
         }
       ]
@@ -151,45 +151,45 @@ const FAQ = () => {
       color: "text-red-500",
       faqs: [
         {
-          question: "¿Cómo puedo reportar un perfil?",
-          answer: "Puedes reportar cualquier perfil sospechoso directamente desde su página. Nuestro equipo de moderación revisa todos los reportes en menos de 24 horas."
+          question: "ï¿½Cï¿½mo puedo reportar un perfil?",
+          answer: "Puedes reportar cualquier perfil sospechoso directamente desde su pï¿½gina. Nuestro equipo de moderaciï¿½n revisa todos los reportes en menos de 24 horas."
         },
         {
-          question: "¿Qué hago si alguien me acosa?",
-          answer: "Reporta inmediatamente el comportamiento inapropiado. Tenemos tolerancia cero al acoso y tomamos medidas rápidas para proteger a nuestra comunidad."
+          question: "ï¿½Quï¿½ hago si alguien me acosa?",
+          answer: "Reporta inmediatamente el comportamiento inapropiado. Tenemos tolerancia cero al acoso y tomamos medidas rï¿½pidas para proteger a nuestra comunidad."
         },
         {
-          question: "¿Hay moderadores activos?",
-          answer: "Sí, tenemos un equipo de moderación 24/7 que supervisa la plataforma y responde rápidamente a reportes y situaciones de seguridad."
+          question: "ï¿½Hay moderadores activos?",
+          answer: "Sï¿½, tenemos un equipo de moderaciï¿½n 24/7 que supervisa la plataforma y responde rï¿½pidamente a reportes y situaciones de seguridad."
         }
       ]
     },
     soporte: {
-      title: "Soporte Técnico",
+      title: "Soporte Tï¿½cnico",
       icon: Zap,
       color: "text-cyan-500",
       faqs: [
         {
-          question: "?? ¿Encontraste un error en la versión Beta?",
-          answer: "Como estamos en fase beta, algunos errores pueden ocurrir. Por favor, utiliza el formulario de reporte de errores más abajo para ayudarnos a identificar y corregir cualquier problema que encuentres."
+          question: "?? ï¿½Encontraste un error en la versiï¿½n Beta?",
+          answer: "Como estamos en fase beta, algunos errores pueden ocurrir. Por favor, utiliza el formulario de reporte de errores mï¿½s abajo para ayudarnos a identificar y corregir cualquier problema que encuentres."
         },
         {
-          question: "?? ¿Problemas con la aplicación móvil?",
-          answer: "Si experimentas crashes, pantallas en blanco, o funciones que no responden en la app móvil, repórtalo detalladamente en el formulario de errores especificando tu dispositivo y sistema operativo."
+          question: "?? ï¿½Problemas con la aplicaciï¿½n mï¿½vil?",
+          answer: "Si experimentas crashes, pantallas en blanco, o funciones que no responden en la app mï¿½vil, repï¿½rtalo detalladamente en el formulario de errores especificando tu dispositivo y sistema operativo."
         },
         {
-          question: "?? ¿Problemas con pagos o suscripciones?",
-          answer: "Si tienes inconvenientes con donaciones, suscripciones premium, o procesamiento de pagos, contáctanos inmediatamente a través del formulario con todos los detalles de la transacción."
+          question: "?? ï¿½Problemas con pagos o suscripciones?",
+          answer: "Si tienes inconvenientes con donaciones, suscripciones premium, o procesamiento de pagos, contï¿½ctanos inmediatamente a travï¿½s del formulario con todos los detalles de la transacciï¿½n."
         }
       ]
     }
   };
 
   const handleSubmitFeedback = () => {
-    // Aquí se enviaría el feedback al backend
+    // Aquï¿½ se enviarï¿½a el feedback al backend
     logger.info("Feedback enviado:", { email, feedback, rating });
     toast({
-      title: "¡Comentarios enviados!",
+      title: "ï¿½Comentarios enviados!",
       description: "Gracias por tu feedback. Nos ayuda a mejorar la plataforma.",
     });
     setFeedback("");
@@ -206,7 +206,7 @@ Tipo de Error: ${bugReport.type}
 Severidad: ${bugReport.severity}
 Dispositivo/Navegador: ${bugReport.device} - ${bugReport.browser}
 
-DESCRIPCIÓN DEL PROBLEMA:
+DESCRIPCIï¿½N DEL PROBLEMA:
 ${bugReport.description}
 
 PASOS PARA REPRODUCIR:
@@ -220,8 +220,8 @@ Fecha: ${new Date().toLocaleString()}
     window.location.href = mailtoLink;
     
     toast({
-      title: "¡Reporte enviado!",
-      description: "Se abrió tu cliente de email con el reporte. Envíalo para que podamos ayudarte.",
+      title: "ï¿½Reporte enviado!",
+      description: "Se abriï¿½ tu cliente de email con el reporte. Envï¿½alo para que podamos ayudarte.",
     });
 
     // Reset form
@@ -284,7 +284,7 @@ Fecha: ${new Date().toLocaleString()}
               </span>
             </h1>
             <p className="text-xl text-white font-medium max-w-2xl mx-auto">
-              Encuentra respuestas a tus preguntas y ayúdanos a mejorar tu experiencia en ComplicesConecta
+              Encuentra respuestas a tus preguntas y ayï¿½danos a mejorar tu experiencia en ComplicesConecta
             </p>
           </div>
 
@@ -339,7 +339,7 @@ Fecha: ${new Date().toLocaleString()}
                     ?? Reporte de Errores Beta
                   </CardTitle>
                   <p className="text-white/90">
-                    Ayúdanos a mejorar reportando errores, bugs o problemas que encuentres
+                    Ayï¿½danos a mejorar reportando errores, bugs o problemas que encuentres
                   </p>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -356,7 +356,7 @@ Fecha: ${new Date().toLocaleString()}
                         <SelectItem value="ui">?? Problema de Interfaz</SelectItem>
                         <SelectItem value="functionality">?? Funcionalidad no funciona</SelectItem>
                         <SelectItem value="performance">?? Problema de Rendimiento</SelectItem>
-                        <SelectItem value="mobile">?? Error en Móvil</SelectItem>
+                        <SelectItem value="mobile">?? Error en Mï¿½vil</SelectItem>
                         <SelectItem value="payment">?? Problema de Pagos</SelectItem>
                         <SelectItem value="auth">?? Error de Login/Registro</SelectItem>
                         <SelectItem value="chat">?? Problema en Chat</SelectItem>
@@ -372,10 +372,10 @@ Fecha: ${new Date().toLocaleString()}
                     </label>
                     <Select onValueChange={(value: string) => handleBugReportChange("severity", value)}>
                       <SelectTrigger className="bg-background/50 border-red-200 dark:border-red-800">
-                        <SelectValue placeholder="¿Qué tan grave es?" />
+                        <SelectValue placeholder="ï¿½Quï¿½ tan grave es?" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="critical">?? Crítico - La app no funciona</SelectItem>
+                        <SelectItem value="critical">?? Crï¿½tico - La app no funciona</SelectItem>
                         <SelectItem value="high">?? Alto - Funcionalidad importante rota</SelectItem>
                         <SelectItem value="medium">?? Medio - Inconveniente menor</SelectItem>
                         <SelectItem value="low">?? Bajo - Sugerencia de mejora</SelectItem>
@@ -401,7 +401,7 @@ Fecha: ${new Date().toLocaleString()}
                         Navegador/App
                       </label>
                       <Input
-                        placeholder="Chrome, Safari, App móvil..."
+                        placeholder="Chrome, Safari, App mï¿½vil..."
                         value={bugReport.browser}
                         onChange={(e) => handleBugReportChange("browser", e.target.value)}
                         className="bg-background/50 border-red-200 dark:border-red-800"
@@ -412,10 +412,10 @@ Fecha: ${new Date().toLocaleString()}
                   {/* Description */}
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
-                      Descripción del Problema
+                      Descripciï¿½n del Problema
                     </label>
                     <Textarea
-                      placeholder="Describe detalladamente qué error encontraste..."
+                      placeholder="Describe detalladamente quï¿½ error encontraste..."
                       value={bugReport.description}
                       onChange={(e) => handleBugReportChange("description", e.target.value)}
                       rows={3}
@@ -429,7 +429,7 @@ Fecha: ${new Date().toLocaleString()}
                       Pasos para Reproducir el Error
                     </label>
                     <Textarea
-                      placeholder="1. Entré a la sección de... &#10;2. Hice clic en... &#10;3. Entonces apareció..."
+                      placeholder="1. Entrï¿½ a la secciï¿½n de... &#10;2. Hice clic en... &#10;3. Entonces apareciï¿½..."
                       value={bugReport.steps}
                       onChange={(e) => handleBugReportChange("steps", e.target.value)}
                       rows={3}
@@ -463,7 +463,7 @@ Fecha: ${new Date().toLocaleString()}
 
                   <div className="text-xs text-white/90 bg-red-50 dark:bg-red-950/20 p-3 rounded-lg border border-red-200 dark:border-red-800">
                     <AlertTriangle className="h-4 w-4 text-red-600 dark:text-red-400 inline mr-1" />
-                    Este formulario abrirá tu cliente de email con el reporte pre-llenado para enviarlo a support@complicesconecta.com
+                    Este formulario abrirï¿½ tu cliente de email con el reporte pre-llenado para enviarlo a support@complicesconecta.com
                   </div>
                 </CardContent>
               </Card>
@@ -476,7 +476,7 @@ Fecha: ${new Date().toLocaleString()}
                     ?? Comentarios Generales
                   </CardTitle>
                   <p className="text-white/90">
-                    Tu opinión nos ayuda a crear la mejor experiencia swinger
+                    Tu opiniï¿½n nos ayuda a crear la mejor experiencia swinger
                   </p>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -525,7 +525,7 @@ Fecha: ${new Date().toLocaleString()}
                       Tus comentarios y sugerencias
                     </label>
                     <Textarea
-                      placeholder="Cuéntanos qué te gusta, qué mejorarías, o cualquier sugerencia para hacer ComplicesConecta aún mejor..."
+                      placeholder="Cuï¿½ntanos quï¿½ te gusta, quï¿½ mejorarï¿½as, o cualquier sugerencia para hacer ComplicesConecta aï¿½n mejor..."
                       value={feedback}
                       onChange={(e) => setFeedback(e.target.value)}
                       rows={4}

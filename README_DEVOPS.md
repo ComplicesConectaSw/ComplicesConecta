@@ -114,6 +114,41 @@ docker run -d --name dd-agent \
 
 ## 🔧 Scripts de Utilidad v3.6.3
 
+### Script Maestro de Gestión de BD (NUEVO)
+- **Archivo:** `scripts/database-manager.ps1`
+- **Propósito:** Gestión completa de base de datos (unifica 5 scripts)
+- **Uso:** `.\scripts\database-manager.ps1 -Action sync|verify|generate-remote|regenerate-types|analyze|all`
+- **Funcionalidades:**
+  - Sincronización de BD local y remota
+  - Verificación de alineación de tablas
+  - Generación de scripts para migraciones remotas
+  - Regeneración de tipos TypeScript
+  - Análisis de migraciones y backups
+- **Scripts Unificados:**
+  - `alinear-supabase.ps1` → `-Action sync`
+  - `analizar-y-alinear-bd.ps1` → `-Action analyze`
+  - `aplicar-migraciones-remoto.ps1` → `-Action generate-remote`
+  - `sync-databases.ps1` → `-Action sync`
+  - `verificar-alineacion-tablas.ps1` → `-Action verify`
+
+### Script de Alineación y Verificación de Tablas (NUEVO)
+- **Archivo:** `scripts/alinear-y-verificar-todo.ps1`
+- **Propósito:** Alinear y verificar todas las tablas en LOCAL y REMOTO, verificar uso en código
+- **Uso:** 
+  - `.\scripts\alinear-y-verificar-todo.ps1` - Verificar local y remoto
+  - `.\scripts\alinear-y-verificar-todo.ps1 -LocalOnly` - Solo local
+  - `.\scripts\alinear-y-verificar-todo.ps1 -RemoteOnly` - Solo remoto
+- **Funcionalidades:**
+  - Aplica migraciones corregidas en local
+  - Verifica tablas en LOCAL y REMOTO
+  - Analiza uso de tablas en código
+  - Compara y reporta tablas faltantes o no usadas
+  - Regenera tipos TypeScript desde local
+- **Mejoras v3.6.3:**
+  - Verificación de todas las migraciones corregidas
+  - Mejor manejo de errores en `db reset` y regeneración de tipos
+  - Mejor detección de conexión remota con mensajes informativos
+
 ### Script de Corrección de Caracteres
 - **Archivo:** `scripts/fix-character-encoding.ps1`
 - **Propósito:** Corregir caracteres mal codificados (?, etc.) en archivos cuando están cerrados
@@ -121,6 +156,7 @@ docker run -d --name dd-agent \
 - **Características:**
   - Busca archivos TypeScript, JavaScript, TSX, JSX, Markdown
   - Corrige caracteres comunes mal codificados (á, é, í, ó, ú, ñ, ¿, ¡, etc.)
-  - Crea backups automáticos antes de modificar archivos
+  - Crea backups automáticos en directorio `bck` fuera del proyecto
   - Detecta archivos abiertos en otros procesos y los omite
 - **Nota:** Se recomienda cerrar los archivos antes de ejecutar el script para obtener mejores resultados
+- **Ubicación de Backups:** `C:\Users\conej\Documents\bck` (fuera del proyecto, excluido de `.gitignore` y `.dockerignore`)

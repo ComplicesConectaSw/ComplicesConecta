@@ -25,6 +25,7 @@ import { useAuth } from '@/features/auth/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/useToast';
 import { logger } from '@/lib/logger';
+import type { Database } from '@/types/supabase-generated';
 
 interface DashboardStats {
   totalUsers: number;
@@ -96,13 +97,13 @@ const AdminDashboard = () => {
       setRefreshing(true);
       
       if (!supabase) {
-        logger.error('Supabase no está disponible');
+        logger.error('Supabase no estï¿½ disponible');
         setLoading(false);
         setRefreshing(false);
         return;
       }
       
-      // Obtener estadísticas de usuarios
+      // Obtener estadï¿½sticas de usuarios
       const { data: usersData, error: usersError } = await supabase
         .from('profiles')
         .select('id, created_at, updated_at')
@@ -110,7 +111,7 @@ const AdminDashboard = () => {
 
       if (usersError) throw usersError;
 
-      // Calcular estadísticas
+      // Calcular estadï¿½sticas
       const now = new Date();
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
       const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
@@ -124,20 +125,23 @@ const AdminDashboard = () => {
         u.updated_at && new Date(u.updated_at) >= weekAgo
       ).length || 0;
 
-      // Obtener estadísticas de matches
-      const { data: matchesData, error: matchesError } = await (supabase as any)
+      // Obtener estadï¿½sticas de matches
+      const { data: matchesData, error: matchesError } = await supabase
         .from('matches')
         .select('id, created_at');
 
       if (matchesError) throw matchesError;
 
-      const totalMatches = matchesData?.length || 0;
-      const matchesToday = matchesData?.filter((m: any) => 
-        new Date(m.created_at) >= today
-      ).length || 0;
+      type MatchRow = Database['public']['Tables']['matches']['Row'];
+      const matches = (matchesData || []) as MatchRow[];
 
-      // Obtener estadísticas de mensajes
-      const { data: messagesData, error: _messagesError } = await (supabase as any)
+      const totalMatches = matches.length;
+      const matchesToday = matches.filter((m) => 
+        new Date(m.created_at) >= today
+      ).length;
+
+      // Obtener estadï¿½sticas de mensajes
+      const { data: messagesData, error: _messagesError } = await supabase
         .from('messages')
         .select('id');
 
@@ -152,7 +156,7 @@ const AdminDashboard = () => {
       const reportsCount = reportsData?.length || 0;
 
       // Obtener moderadores
-      const { data: moderatorsData, error: _moderatorsError } = await (supabase as any)
+      const { data: moderatorsData, error: _moderatorsError } = await supabase
         .from('user_roles')
         .select('id')
         .eq('role', 'moderator');
@@ -160,14 +164,14 @@ const AdminDashboard = () => {
       const moderatorsCount = moderatorsData?.length || 0;
 
       // Obtener solicitudes de carrera
-      const { data: careerData, error: _careerError } = await (supabase as any)
+      const { data: careerData, error: _careerError } = await supabase
         .from('career_applications')
         .select('id');
 
       const careerApplications = careerData?.length || 0;
 
       // Obtener solicitudes de moderadores
-      const { data: moderatorRequestsData, error: _moderatorRequestsError } = await (supabase as any)
+      const { data: moderatorRequestsData, error: _moderatorRequestsError } = await supabase
         .from('moderator_requests')
         .select('id');
 
@@ -189,17 +193,19 @@ const AdminDashboard = () => {
       // Cargar actividad de usuarios recientes
       const { data: recentUsers, error: recentUsersError } = await supabase
         .from('profiles')
-        .select('id, email, full_name, created_at, updated_at')
+        .select('id, first_name, last_name, name, created_at, updated_at')
         .order('updated_at', { ascending: false })
         .limit(10);
 
       if (!recentUsersError && recentUsers) {
-        setUserActivity(recentUsers.map((u: any) => ({
+        type RecentProfileRow = Database['public']['Tables']['profiles']['Row'];
+        const recentProfiles = (recentUsers || []) as RecentProfileRow[];
+        setUserActivity(recentProfiles.map((u) => ({
           id: u.id,
-          email: u.email || '',
-          full_name: u.full_name,
-          last_sign_in_at: u.updated_at,
-          created_at: u.created_at,
+          email: '', // Email no estÃ¡ disponible en profiles directamente
+          full_name: u.name || (u.first_name && u.last_name ? `${u.first_name} ${u.last_name}` : 'Usuario'),
+          last_sign_in_at: u.updated_at || undefined,
+          created_at: u.created_at || new Date().toISOString(),
           is_active: u.updated_at ? new Date(u.updated_at) >= weekAgo : false
         })));
       }
@@ -209,7 +215,7 @@ const AdminDashboard = () => {
         {
           id: '1',
           type: 'security',
-          message: 'Múltiples intentos de login fallidos detectados',
+          message: 'Mï¿½ltiples intentos de login fallidos detectados',
           severity: 'medium',
           created_at: new Date().toISOString(),
           resolved: false
@@ -252,10 +258,10 @@ const AdminDashboard = () => {
   const exportData = async (type: string) => {
     try {
       if (!supabase) {
-        logger.error('Supabase no está disponible');
+        logger.error('Supabase no estï¿½ disponible');
         toast({
           title: "Error",
-          description: "Supabase no está disponible",
+          description: "Supabase no estï¿½ disponible",
           variant: "destructive"
         });
         return;
@@ -274,7 +280,7 @@ const AdminDashboard = () => {
           break;
         }
         case 'matches': {
-          const { data: matchesData } = await (supabase as any)
+          const { data: matchesData } = await supabase
             .from('matches')
             .select('*');
           data = matchesData || [];
@@ -299,7 +305,7 @@ const AdminDashboard = () => {
       URL.revokeObjectURL(url);
 
       toast({
-        title: "Éxito",
+        title: "ï¿½xito",
         description: `Datos exportados como ${filename}`,
       });
     } catch (error) {
@@ -322,7 +328,7 @@ const AdminDashboard = () => {
     );
     
     toast({
-      title: "Éxito",
+      title: "ï¿½xito",
       description: "Reporte marcado como resuelto",
     });
   };
@@ -418,7 +424,7 @@ const AdminDashboard = () => {
                   <div>
                     <p className="text-white/80 text-xs sm:text-sm">Usuarios Activos</p>
                     <p className="text-xl sm:text-2xl font-bold text-white">{stats.activeUsers}</p>
-                    <p className="text-blue-400 text-xs">Última semana</p>
+                    <p className="text-blue-400 text-xs">ï¿½ltima semana</p>
                   </div>
                   <UserCheck className="h-6 w-6 sm:h-8 sm:w-8 text-green-400" />
                 </div>
@@ -457,7 +463,7 @@ const AdminDashboard = () => {
                   <div>
                     <p className="text-white/80 text-xs sm:text-sm">Solicitudes Carrera</p>
                     <p className="text-xl sm:text-2xl font-bold text-white">{stats.careerApplications}</p>
-                    <p className="text-orange-400 text-xs">Pendientes revisión</p>
+                    <p className="text-orange-400 text-xs">Pendientes revisiï¿½n</p>
                   </div>
                   <Mail className="h-6 w-6 sm:h-8 sm:w-8 text-orange-400" />
                 </div>
@@ -470,7 +476,7 @@ const AdminDashboard = () => {
                   <div>
                     <p className="text-white/80 text-xs sm:text-sm">Solicitudes Moderador</p>
                     <p className="text-xl sm:text-2xl font-bold text-white">{stats.moderatorRequests}</p>
-                    <p className="text-purple-400 text-xs">En evaluación</p>
+                    <p className="text-purple-400 text-xs">En evaluaciï¿½n</p>
                   </div>
                   <Shield className="h-6 w-6 sm:h-8 sm:w-8 text-purple-400" />
                 </div>
@@ -506,7 +512,7 @@ const AdminDashboard = () => {
                   <CardHeader>
                     <CardTitle className="text-white flex items-center gap-2">
                       <TrendingUp className="h-5 w-5" />
-                      Estadísticas Generales
+                      Estadï¿½sticas Generales
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -519,7 +525,7 @@ const AdminDashboard = () => {
                       <Badge className="bg-green-500 text-white">{stats.moderatorsCount}</Badge>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-white/80">Tasa de Conversión</span>
+                      <span className="text-white/80">Tasa de Conversiï¿½n</span>
                       <Badge className="bg-blue-500">
                         {stats.totalUsers > 0 ? ((stats.totalMatches / stats.totalUsers) * 100).toFixed(1) : 0}%
                       </Badge>
@@ -577,8 +583,8 @@ const AdminDashboard = () => {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="1d">Hoy</SelectItem>
-                          <SelectItem value="7d">7 días</SelectItem>
-                          <SelectItem value="30d">30 días</SelectItem>
+                          <SelectItem value="7d">7 dï¿½as</SelectItem>
+                          <SelectItem value="30d">30 dï¿½as</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -593,7 +599,7 @@ const AdminDashboard = () => {
                           <div>
                             <p className="text-white font-medium">{user.full_name || user.email}</p>
                             <p className="text-white/60 text-sm">
-                              Último acceso: {user.last_sign_in_at ? formatDate(user.last_sign_in_at) : 'Nunca'}
+                              ï¿½ltimo acceso: {user.last_sign_in_at ? formatDate(user.last_sign_in_at) : 'Nunca'}
                             </p>
                           </div>
                         </div>
@@ -625,7 +631,7 @@ const AdminDashboard = () => {
                           <div>
                             <p className="text-white font-medium">{report.message}</p>
                             <p className="text-white/60 text-sm">
-                              {formatDate(report.created_at)} • {report.type}
+                              {formatDate(report.created_at)} ï¿½ {report.type}
                             </p>
                           </div>
                         </div>
@@ -681,7 +687,7 @@ const AdminDashboard = () => {
                   <CardHeader>
                     <CardTitle className="text-white flex items-center gap-2">
                       <Settings className="h-5 w-5" />
-                      Acciones Rápidas
+                      Acciones Rï¿½pidas
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">

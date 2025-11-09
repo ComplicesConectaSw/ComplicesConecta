@@ -176,6 +176,11 @@ class PerformanceMonitoringService {
       logger.debug('Failed to persist metric:', { error: String(err) })
     );
 
+    // Registrar sesión de monitoreo (async, no bloquea)
+    this.logMonitoringSession(fullMetric).catch(err => 
+      logger.debug('Failed to log monitoring session:', { error: String(err) })
+    );
+
     // 🆕 Enviar a New Relic si está disponible
     if (newrelic) {
       try {
@@ -198,6 +203,38 @@ class PerformanceMonitoringService {
     }
 
     logger.debug('Metric recorded:', { metric: fullMetric });
+  }
+
+  /**
+   * Registra sesión de monitoreo en la base de datos
+   * @private
+   */
+  private async logMonitoringSession(metric: PerformanceMetric): Promise<void> {
+    try {
+      const { supabase } = await import('@/integrations/supabase/client');
+      if (!supabase) return;
+
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      await supabase
+        .from('monitoring_sessions')
+        .insert({
+          user_id: user.id,
+          session_type: metric.category,
+          metrics: {
+            name: metric.name,
+            value: metric.value,
+            unit: metric.unit,
+            category: metric.category,
+            metadata: metric.metadata || {},
+          } as Record<string, unknown>,
+          started_at: metric.timestamp.toISOString(),
+          ended_at: metric.timestamp.toISOString(),
+        });
+    } catch (error) {
+      logger.debug('Failed to log monitoring session:', { error: String(error) });
+    }
   }
 
   /**

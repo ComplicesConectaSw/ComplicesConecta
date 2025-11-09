@@ -5,6 +5,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
+import type { Database } from '@/types/supabase-generated';
 
 export interface SimpleChatRoom {
   id: string;
@@ -45,7 +46,7 @@ export class SimpleChatService {
       }
 
       // Obtener salas públicas
-      const { data: publicRooms, error: publicError } = await (supabase as any)
+      const { data: publicRooms, error: publicError } = await supabase
         .from('chat_rooms')
         .select('*')
         .eq('is_public', true)
@@ -56,7 +57,7 @@ export class SimpleChatService {
       }
 
       // Obtener salas privadas donde el usuario es miembro
-      const { data: memberRooms, error: memberError } = await (supabase as any)
+      const { data: memberRooms, error: memberError } = await supabase
         .from('chat_members')
         .select(`
           room_id,
@@ -68,18 +69,28 @@ export class SimpleChatService {
         logger.error('Error obteniendo membresías:', { error: String(memberError) });
       }
 
-      const privateRooms = memberRooms?.map((member: any) => ({
+      type ChatMemberWithRoom = Database['public']['Tables']['chat_members']['Row'] & {
+        chat_rooms: Database['public']['Tables']['chat_rooms']['Row'];
+      };
+      
+      const privateRooms = (memberRooms as ChatMemberWithRoom[] | null)?.map((member) => ({
         id: member.chat_rooms.id,
-        name: member.chat_rooms.name,
+        name: member.chat_rooms.name || 'Sala sin nombre',
         type: 'private' as const,
-        description: member.chat_rooms.description,
-        created_at: member.chat_rooms.created_at,
-        updated_at: member.chat_rooms.updated_at
+        description: (member.chat_rooms as Database['public']['Tables']['chat_rooms']['Row'] & { description?: string | null }).description || undefined,
+        created_at: member.chat_rooms.created_at || new Date().toISOString(),
+        updated_at: member.chat_rooms.updated_at || new Date().toISOString()
       })) || [];
 
-      const formattedPublicRooms: SimpleChatRoom[] = (publicRooms || []).map((room: any) => ({
+      type ChatRoomRow = Database['public']['Tables']['chat_rooms']['Row'] & {
+        description?: string | null;
+        is_public?: boolean | null;
+        is_active?: boolean | null;
+      };
+      
+      const formattedPublicRooms: SimpleChatRoom[] = ((publicRooms || []) as unknown as ChatRoomRow[]).map((room) => ({
         id: room.id,
-        name: room.name,
+        name: room.name || 'Sala sin nombre',
         type: 'public' as const,
         description: room.description || undefined,
         created_at: room.created_at || new Date().toISOString(),
@@ -111,7 +122,7 @@ export class SimpleChatService {
         return { success: false, error: 'Supabase no está disponible' };
       }
 
-      const { data: messages, error } = await (supabase as any)
+      const { data: messages, error } = await supabase
         .from('messages')
         .select('*')
         .eq('room_id', roomId)
@@ -123,25 +134,27 @@ export class SimpleChatService {
       }
 
       // Obtener información de los remitentes
-      const senderIds = [...new Set(messages?.map((m: any) => m.sender_id) || [])];
-      const { data: profiles } = await (supabase as any)
+      const senderIds = [...new Set((messages || []).map((m) => m.sender_id).filter((id): id is string => id !== null))];
+      const { data: profiles } = await supabase
         .from('profiles')
         .select('id, first_name, last_name')
         .in('id', senderIds);
 
       const profileMap = new Map(
-        profiles?.map((p: any) => [p.id, `${p.first_name} ${p.last_name}`]) || []
+        profiles?.map((p) => [p.id, `${p.first_name} ${p.last_name}`]) || []
       );
 
-      const formattedMessages: SimpleChatMessage[] = (messages || []).map((message: any) => ({
-        id: message.id,
-        content: message.content,
-        sender_id: message.sender_id,
-        sender_name: profileMap.get(message.sender_id) || 'Usuario desconocido',
-        room_id: message.room_id || roomId,
-        created_at: message.created_at || new Date().toISOString(),
-        message_type: message.message_type || 'text'
-      }));
+      const formattedMessages: SimpleChatMessage[] = (messages || [])
+        .filter((message) => message.sender_id !== null && message.room_id !== null)
+        .map((message) => ({
+          id: message.id,
+          content: message.content,
+          sender_id: message.sender_id!,
+          sender_name: profileMap.get(message.sender_id!) || 'Usuario desconocido',
+          room_id: message.room_id!,
+          created_at: message.created_at || new Date().toISOString(),
+          message_type: message.message_type || 'text'
+        }));
 
       return { success: true, messages: formattedMessages };
 
@@ -170,7 +183,7 @@ export class SimpleChatService {
       }
 
       // Obtener perfil del usuario
-      const { data: profile } = await (supabase as any)
+      const { data: profile } = await supabase
         .from('profiles')
         .select('id, first_name, last_name')
         .eq('user_id', user.user.id)
@@ -181,7 +194,7 @@ export class SimpleChatService {
       }
 
       // Enviar mensaje
-      const { data: message, error } = await (supabase as any)
+      const { data: message, error } = await supabase
         .from('messages')
         .insert({
           content,
@@ -196,12 +209,16 @@ export class SimpleChatService {
         return { success: false, error: error.message };
       }
 
+      if (!message.sender_id || !message.room_id) {
+        return { success: false, error: 'Mensaje inválido: sender_id o room_id faltante' };
+      }
+
       const formattedMessage: SimpleChatMessage = {
         id: message.id,
         content: message.content,
         sender_id: message.sender_id,
-        sender_name: `${profile.first_name} ${profile.last_name}`,
-        room_id: message.room_id || roomId,
+        sender_name: `${profile.first_name || ''} ${profile.last_name || ''}`.trim() || 'Usuario',
+        room_id: message.room_id,
         created_at: message.created_at || new Date().toISOString(),
         message_type: message.message_type || 'text'
       };
@@ -216,16 +233,20 @@ export class SimpleChatService {
     }
   }
 
-  subscribeToRoomMessages(roomId: string, callback: (message: SimpleChatMessage) => void) {
+  subscribeToRoomMessages(roomId: string, callback: (message: SimpleChatMessage) => void): {
+    unsubscribe: () => void;
+    channel: ReturnType<NonNullable<typeof supabase>['channel']> | null;
+  } {
     if (!supabase) {
       logger.error('Supabase no está disponible');
       return {
         unsubscribe: () => {},
-        channel: null as any
+        channel: null
       };
     }
 
-    const subscription = supabase
+    const supabaseClient = supabase; // Guardar referencia para usar en callback
+    const channel = supabaseClient
       .channel(`room-${roomId}`)
       .on(
         'postgres_changes',
@@ -236,16 +257,15 @@ export class SimpleChatService {
           filter: `room_id=eq.${roomId}`
         },
         async (payload) => {
-          const newMessage = payload.new as any;
+          const newMessage = payload.new as Database['public']['Tables']['messages']['Row'];
           
-          // Verificar que supabase esté disponible antes de usarlo
-          if (!supabase) {
-            logger.error('Supabase no está disponible en callback');
+          if (!newMessage.sender_id || !newMessage.room_id) {
+            logger.error('Mensaje inválido: sender_id o room_id faltante');
             return;
           }
           
           // Obtener información del remitente
-          const { data: profile } = await (supabase as any)
+          const { data: profile } = await supabaseClient
             .from('profiles')
             .select('first_name, last_name')
             .eq('id', newMessage.sender_id)
@@ -255,9 +275,9 @@ export class SimpleChatService {
             id: newMessage.id,
             content: newMessage.content,
             sender_id: newMessage.sender_id,
-            sender_name: profile ? `${profile.first_name} ${profile.last_name}` : 'Usuario desconocido',
+            sender_name: profile ? `${profile.first_name || ''} ${profile.last_name || ''}`.trim() || 'Usuario' : 'Usuario desconocido',
             room_id: newMessage.room_id,
-            created_at: newMessage.created_at,
+            created_at: newMessage.created_at || new Date().toISOString(),
             message_type: newMessage.message_type || 'text'
           };
 
@@ -266,7 +286,14 @@ export class SimpleChatService {
       )
       .subscribe();
 
-    return subscription;
+    return {
+      unsubscribe: () => {
+        if (supabaseClient) {
+          supabaseClient.removeChannel(channel);
+        }
+      },
+      channel: channel as ReturnType<typeof supabaseClient.channel> | null
+    };
   }
 }
 

@@ -44,7 +44,7 @@ export default function TokensLegal() {
             </span>
           </h1>
           <p className="text-white/80 max-w-2xl mx-auto">
-            Información importante sobre responsabilidades legales, limitaciones y consideraciones 
+            Informaciï¿½n importante sobre responsabilidades legales, limitaciones y consideraciones 
             regulatorias del programa de tokens.
           </p>
         </div>
@@ -61,13 +61,13 @@ export default function TokensLegal() {
             <div className="bg-purple-900/50 p-4 rounded-lg border border-purple-400/30">
               <h4 className="font-bold text-purple-200 mb-3">DESCARGO DE RESPONSABILIDAD</h4>
               <p className="text-purple-100 mb-3">
-                Los tokens CMPX son créditos digitales internos SIN VALOR MONETARIO REAL durante la fase beta. 
-                ComplicesConecta no garantiza ningún valor económico presente o futuro de estos tokens.
+                Los tokens CMPX son crï¿½ditos digitales internos SIN VALOR MONETARIO REAL durante la fase beta. 
+                ComplicesConecta no garantiza ningï¿½n valor econï¿½mico presente o futuro de estos tokens.
               </p>
               <ul className="list-disc list-inside space-y-1 text-sm text-purple-100">
                 <li>NO son instrumentos financieros regulados</li>
-                <li>NO constituyen inversión ni activos digitales</li>
-                <li>NO tienen garantía de conversión a dinero real</li>
+                <li>NO constituyen inversiï¿½n ni activos digitales</li>
+                <li>NO tienen garantï¿½a de conversiï¿½n a dinero real</li>
                 <li>Su valor puede cambiar o eliminarse sin previo aviso</li>
               </ul>
             </div>
@@ -85,13 +85,13 @@ export default function TokensLegal() {
           <CardContent className="space-y-6 text-white/80">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-4">
-                <h4 className="font-semibold text-white">Jurisdicción Aplicable:</h4>
+                <h4 className="font-semibold text-white">Jurisdicciï¿½n Aplicable:</h4>
                 <div className="bg-purple-900/30 p-4 rounded-lg border border-purple-400/20">
                   <ul className="space-y-2 text-sm">
-                    <li><strong className="text-purple-200">País:</strong> <span className="text-purple-100">Estados Unidos Mexicanos</span></li>
-                    <li><strong className="text-purple-200">Legislación:</strong> <span className="text-purple-100">Ley Federal de Protección de Datos Personales</span></li>
+                    <li><strong className="text-purple-200">Paï¿½s:</strong> <span className="text-purple-100">Estados Unidos Mexicanos</span></li>
+                    <li><strong className="text-purple-200">Legislaciï¿½n:</strong> <span className="text-purple-100">Ley Federal de Protecciï¿½n de Datos Personales</span></li>
                     <li><strong className="text-purple-200">Regulador:</strong> <span className="text-purple-100">CONDUSEF (servicios financieros)</span></li>
-                    <li><strong className="text-purple-200">Tribunales:</strong> <span className="text-purple-100">Federales de México</span></li>
+                    <li><strong className="text-purple-200">Tribunales:</strong> <span className="text-purple-100">Federales de Mï¿½xico</span></li>
                   </ul>
                 </div>
               </div>
@@ -100,10 +100,10 @@ export default function TokensLegal() {
                 <h4 className="font-semibold text-white">Cumplimiento Normativo:</h4>
                 <div className="bg-purple-900/30 p-4 rounded-lg border border-purple-400/20">
                   <ul className="space-y-2 text-sm">
-                    <li><strong className="text-purple-200">KYC:</strong> <span className="text-purple-100">Verificación de identidad requerida</span></li>
+                    <li><strong className="text-purple-200">KYC:</strong> <span className="text-purple-100">Verificaciï¿½n de identidad requerida</span></li>
                     <li><strong className="text-purple-200">AML:</strong> <span className="text-purple-100">Monitoreo anti-lavado de dinero</span></li>
                     <li><strong className="text-purple-200">Reportes:</strong> <span className="text-purple-100">Transacciones sospechosas a autoridades</span></li>
-                    <li><strong className="text-purple-200">Auditorías:</strong> <span className="text-purple-100">Revisiones periódicas del sistema</span></li>
+                    <li><strong className="text-purple-200">Auditorï¿½as:</strong> <span className="text-purple-100">Revisiones periï¿½dicas del sistema</span></li>
                   </ul>
                 </div>
               </div>
@@ -128,25 +128,25 @@ export default function TokensLegal() {
           </CardHeader>
           <CardContent className="space-y-6 text-white/80">
             <div className="space-y-4">
-              <h4 className="font-semibold text-white">ComplicesConecta NO será responsable por:</h4>
+              <h4 className="font-semibold text-white">ComplicesConecta NO serï¿½ responsable por:</h4>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="bg-purple-900/30 p-4 rounded-lg border border-purple-400/20">
-                  <h5 className="font-semibold text-purple-200 mb-2">Pérdidas Económicas:</h5>
+                  <h5 className="font-semibold text-purple-200 mb-2">Pï¿½rdidas Econï¿½micas:</h5>
                   <ul className="list-disc list-inside space-y-1 text-sm text-purple-100">
-                    <li>Pérdida de valor de tokens CMPX</li>
-                    <li>Oportunidades de inversión perdidas</li>
+                    <li>Pï¿½rdida de valor de tokens CMPX</li>
+                    <li>Oportunidades de inversiï¿½n perdidas</li>
                     <li>Gastos incurridos por uso del sistema</li>
-                    <li>Daños indirectos o consecuenciales</li>
+                    <li>Daï¿½os indirectos o consecuenciales</li>
                   </ul>
                 </div>
                 
                 <div className="bg-purple-900/30 p-4 rounded-lg border border-purple-400/20">
-                  <h5 className="font-semibold text-purple-200 mb-2">Problemas Técnicos:</h5>
+                  <h5 className="font-semibold text-purple-200 mb-2">Problemas Tï¿½cnicos:</h5>
                   <ul className="list-disc list-inside space-y-1 text-sm text-purple-100">
                     <li>Interrupciones del servicio</li>
                     <li>Errores en el sistema de tokens</li>
-                    <li>Pérdida de datos por fallas técnicas</li>
+                    <li>Pï¿½rdida de datos por fallas tï¿½cnicas</li>
                     <li>Problemas de conectividad</li>
                   </ul>
                 </div>
@@ -154,7 +154,7 @@ export default function TokensLegal() {
                 <div className="bg-purple-900/30 p-4 rounded-lg border border-purple-400/20">
                   <h5 className="font-semibold text-purple-200 mb-2">Acciones de Terceros:</h5>
                   <ul className="list-disc list-inside space-y-1 text-sm text-purple-100">
-                    <li>Hackeos o ataques cibernéticos</li>
+                    <li>Hackeos o ataques cibernï¿½ticos</li>
                     <li>Fraudes por parte de usuarios</li>
                     <li>Cambios regulatorios gubernamentales</li>
                     <li>Problemas con proveedores externos</li>
@@ -166,7 +166,7 @@ export default function TokensLegal() {
                   <ul className="list-disc list-inside space-y-1 text-sm text-purple-100">
                     <li>Mal uso del sistema de referidos</li>
                     <li>Compartir credenciales de acceso</li>
-                    <li>Violación de términos de uso</li>
+                    <li>Violaciï¿½n de tï¿½rminos de uso</li>
                     <li>Decisiones basadas en tokens</li>
                   </ul>
                 </div>
@@ -175,8 +175,8 @@ export default function TokensLegal() {
             
             <div className="bg-blue-900/30 p-4 rounded-lg border border-blue-400/20">
               <p className="text-blue-200">
-                <strong>Límite Máximo de Responsabilidad:</strong> <span className="text-blue-100">En ningún caso la responsabilidad total 
-                de ComplicesConecta excederá el equivalente a $100 USD por usuario afectado.</span>
+                <strong>Lï¿½mite Mï¿½ximo de Responsabilidad:</strong> <span className="text-blue-100">En ningï¿½n caso la responsabilidad total 
+                de ComplicesConecta excederï¿½ el equivalente a $100 USD por usuario afectado.</span>
               </p>
             </div>
           </CardContent>
@@ -196,14 +196,14 @@ export default function TokensLegal() {
                 <h4 className="font-semibold text-purple-200 mb-2">Responsabilidades del Usuario:</h4>
                 <ul className="list-disc list-inside space-y-1 text-sm text-purple-100">
                   <li>Consultar con un asesor fiscal sobre implicaciones tributarias</li>
-                  <li>Declarar beneficios obtenidos según legislación local</li>
+                  <li>Declarar beneficios obtenidos segï¿½n legislaciï¿½n local</li>
                   <li>Mantener registros de transacciones para efectos fiscales</li>
-                  <li>Cumplir con obligaciones fiscales en su jurisdicción</li>
+                  <li>Cumplir con obligaciones fiscales en su jurisdicciï¿½n</li>
                 </ul>
               </div>
               
               <div className="bg-blue-900/30 p-4 rounded-lg border border-blue-400/20">
-                <h4 className="font-semibold text-blue-200 mb-2">Posición de ComplicesConecta:</h4>
+                <h4 className="font-semibold text-blue-200 mb-2">Posiciï¿½n de ComplicesConecta:</h4>
                 <p className="text-blue-100 text-sm">
                   ComplicesConecta NO proporciona asesoramiento fiscal ni garantiza el tratamiento 
                   tributario de los tokens. Los usuarios son responsables de cumplir con sus 
@@ -214,47 +214,47 @@ export default function TokensLegal() {
           </CardContent>
         </Card>
 
-        {/* Resolución de Disputas */}
+        {/* Resoluciï¿½n de Disputas */}
         <Card className="bg-card/80 backdrop-blur-sm border border-primary/10">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
               <Scale className="h-6 w-6 text-orange-400" />
-              Resolución de Disputas y Procedimientos Legales
+              Resoluciï¿½n de Disputas y Procedimientos Legales
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6 text-white/80">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-4">
-                <h4 className="font-semibold text-white">Proceso de Resolución:</h4>
+                <h4 className="font-semibold text-white">Proceso de Resoluciï¿½n:</h4>
                 <div className="space-y-3">
                   <div className="bg-purple-900/30 p-3 rounded-lg border border-purple-400/20">
                     <h5 className="font-semibold text-purple-200 text-sm">1. Contacto Directo</h5>
                     <p className="text-xs text-purple-100 mt-1">
-                      Comunicación directa con soporte técnico (24-48 horas)
+                      Comunicaciï¿½n directa con soporte tï¿½cnico (24-48 horas)
                     </p>
                   </div>
                   <div className="bg-purple-900/30 p-3 rounded-lg border border-purple-400/20">
-                    <h5 className="font-semibold text-purple-200 text-sm">2. Mediación</h5>
+                    <h5 className="font-semibold text-purple-200 text-sm">2. Mediaciï¿½n</h5>
                     <p className="text-xs text-purple-100 mt-1">
-                      Proceso de mediación con tercero neutral (30 días)
+                      Proceso de mediaciï¿½n con tercero neutral (30 dï¿½as)
                     </p>
                   </div>
                   <div className="bg-purple-900/30 p-3 rounded-lg border border-purple-400/20">
                     <h5 className="font-semibold text-purple-200 text-sm">3. Arbitraje</h5>
                     <p className="text-xs text-purple-100 mt-1">
-                      Arbitraje vinculante según reglas de CANACO (90 días)
+                      Arbitraje vinculante segï¿½n reglas de CANACO (90 dï¿½as)
                     </p>
                   </div>
                 </div>
               </div>
               
               <div className="space-y-4">
-                <h4 className="font-semibold text-white">Información Legal:</h4>
+                <h4 className="font-semibold text-white">Informaciï¿½n Legal:</h4>
                 <div className="bg-purple-900/30 p-4 rounded-lg text-sm border border-purple-400/20">
                   <p><strong className="text-purple-200">Empresa:</strong> <span className="text-purple-100">ComplicesConecta S.A. de C.V.</span></p>
                   <p><strong className="text-purple-200">RFC:</strong> <span className="text-purple-100">CCO240901ABC</span></p>
-                  <p><strong className="text-purple-200">Domicilio:</strong> <span className="text-purple-100">Ciudad de México, México</span></p>
-                  <p><strong className="text-purple-200">Representante Legal:</strong> <span className="text-purple-100">Ing. Juan Carlos Méndez Nataren</span></p>
+                  <p><strong className="text-purple-200">Domicilio:</strong> <span className="text-purple-100">Ciudad de Mï¿½xico, Mï¿½xico</span></p>
+                  <p><strong className="text-purple-200">Representante Legal:</strong> <span className="text-purple-100">Ing. Juan Carlos Mï¿½ndez Nataren</span></p>
                   <p><strong className="text-purple-200">Email Legal:</strong> <span className="text-purple-100">legal@complicesconecta.com</span></p>
                 </div>
               </div>
@@ -263,11 +263,11 @@ export default function TokensLegal() {
             <div className="bg-blue-900/30 p-4 rounded-lg border border-blue-400/20">
               <h4 className="font-semibold text-blue-200 mb-2">Derechos del Usuario:</h4>
               <ul className="list-disc list-inside space-y-1 text-sm text-blue-100">
-                <li>Derecho a la información clara y transparente</li>
-                <li>Derecho a la protección de datos personales</li>
-                <li>Derecho a la resolución justa de disputas</li>
-                <li>Derecho a cancelar la participación en cualquier momento</li>
-                <li>Derecho a recibir soporte técnico adecuado</li>
+                <li>Derecho a la informaciï¿½n clara y transparente</li>
+                <li>Derecho a la protecciï¿½n de datos personales</li>
+                <li>Derecho a la resoluciï¿½n justa de disputas</li>
+                <li>Derecho a cancelar la participaciï¿½n en cualquier momento</li>
+                <li>Derecho a recibir soporte tï¿½cnico adecuado</li>
               </ul>
             </div>
           </CardContent>
@@ -287,10 +287,10 @@ export default function TokensLegal() {
                 <h4 className="font-semibold text-white mb-2">Procedimiento para Cambios:</h4>
                 <div className="bg-purple-900/30 p-4 rounded-lg border border-purple-400/20">
                   <ul className="list-disc list-inside space-y-2 text-sm text-purple-100">
-                    <li><strong className="text-purple-200">Cambios Menores:</strong> Notificación por email con 7 días de anticipación</li>
-                    <li><strong className="text-purple-200">Cambios Importantes:</strong> Notificación con 30 días de anticipación</li>
-                    <li><strong className="text-purple-200">Cambios Críticos:</strong> Consentimiento explícito requerido</li>
-                    <li><strong className="text-purple-200">Emergencias:</strong> Implementación inmediata con notificación posterior</li>
+                    <li><strong className="text-purple-200">Cambios Menores:</strong> Notificaciï¿½n por email con 7 dï¿½as de anticipaciï¿½n</li>
+                    <li><strong className="text-purple-200">Cambios Importantes:</strong> Notificaciï¿½n con 30 dï¿½as de anticipaciï¿½n</li>
+                    <li><strong className="text-purple-200">Cambios Crï¿½ticos:</strong> Consentimiento explï¿½cito requerido</li>
+                    <li><strong className="text-purple-200">Emergencias:</strong> Implementaciï¿½n inmediata con notificaciï¿½n posterior</li>
                   </ul>
                 </div>
               </div>
@@ -300,10 +300,10 @@ export default function TokensLegal() {
                 <div className="bg-purple-900/30 p-4 rounded-lg border border-purple-400/20">
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-purple-200 font-semibold">Versión 1.0</span>
+                      <span className="text-purple-200 font-semibold">Versiï¿½n 1.0</span>
                       <span className="text-purple-100">3 de septiembre de 2025</span>
                     </div>
-                    <p className="text-purple-100">Versión inicial para fase beta</p>
+                    <p className="text-purple-100">Versiï¿½n inicial para fase beta</p>
                   </div>
                 </div>
               </div>
@@ -336,13 +336,13 @@ export default function TokensLegal() {
                 className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
               >
                 <FileText className="h-4 w-4 mr-2" />
-                Ver Términos y Condiciones
+                Ver Tï¿½rminos y Condiciones
               </Button>
               <Button
                 onClick={() => navigate('/tokens-info')}
                 className="border-white/20 text-white hover:bg-white/10 border border-input bg-background hover:bg-accent hover:text-accent-foreground"
               >
-                Volver a Información de Tokens
+                Volver a Informaciï¿½n de Tokens
               </Button>
             </div>
           </CardContent>

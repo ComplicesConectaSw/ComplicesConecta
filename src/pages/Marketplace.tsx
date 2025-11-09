@@ -15,7 +15,7 @@ const Marketplace = () => {
   const categories = [
     { id: 'all', label: 'Todos', icon: ShoppingBag },
     { id: 'premium', label: 'Premium', icon: Crown },
-    { id: 'romantic', label: 'Romántico', icon: Heart },
+    { id: 'romantic', label: 'Romï¿½ntico', icon: Heart },
     { id: 'fun', label: 'Divertido', icon: Sparkles },
     { id: 'luxury', label: 'Lujo', icon: Star }
   ];
@@ -24,20 +24,20 @@ const Marketplace = () => {
     {
       id: 1,
       name: "Paquete Premium Mensual",
-      description: "Acceso completo a todas las funciones premium por 30 días. Incluye matches ilimitados, mensajes prioritarios y eventos VIP.",
+      description: "Acceso completo a todas las funciones premium por 30 dï¿½as. Incluye matches ilimitados, mensajes prioritarios y eventos VIP.",
       price: 299,
       currency: "CMPX",
       category: "premium",
       image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop&crop=center",
       rating: 4.9,
       reviews: 1247,
-      badge: "Más Popular",
+      badge: "Mï¿½s Popular",
       features: ["Matches ilimitados", "Mensajes prioritarios", "Eventos VIP", "Perfil destacado"]
     },
     {
       id: 2,
       name: "Super Likes Pack",
-      description: "Paquete de 10 Super Likes para destacar tu interés y aumentar tus posibilidades de match.",
+      description: "Paquete de 10 Super Likes para destacar tu interï¿½s y aumentar tus posibilidades de match.",
       price: 150,
       currency: "CMPX",
       category: "romantic",
@@ -45,7 +45,7 @@ const Marketplace = () => {
       rating: 4.8,
       reviews: 892,
       badge: "Recomendado",
-      features: ["10 Super Likes", "Notificación especial", "Mayor visibilidad"]
+      features: ["10 Super Likes", "Notificaciï¿½n especial", "Mayor visibilidad"]
     },
     {
       id: 3,
@@ -58,7 +58,7 @@ const Marketplace = () => {
       rating: 4.7,
       reviews: 654,
       badge: "Nuevo",
-      features: ["24 horas de boost", "10x más visibilidad", "Posición destacada"]
+      features: ["24 horas de boost", "10x mï¿½s visibilidad", "Posiciï¿½n destacada"]
     },
     {
       id: 4,
@@ -71,12 +71,12 @@ const Marketplace = () => {
       rating: 4.9,
       reviews: 423,
       badge: "Limitado",
-      features: ["Efectos especiales", "Mensaje personalizado", "Animación única"]
+      features: ["Efectos especiales", "Mensaje personalizado", "Animaciï¿½n ï¿½nica"]
     },
     {
       id: 5,
       name: "Acceso VIP a Eventos",
-      description: "Acceso prioritario a eventos VIP exclusivos con descuentos especiales y beneficios únicos.",
+      description: "Acceso prioritario a eventos VIP exclusivos con descuentos especiales y beneficios ï¿½nicos.",
       price: 199,
       currency: "CMPX",
       category: "luxury",
@@ -84,7 +84,7 @@ const Marketplace = () => {
       rating: 5.0,
       reviews: 156,
       badge: "Exclusivo",
-      features: ["Acceso prioritario", "Descuentos especiales", "Beneficios únicos"]
+      features: ["Acceso prioritario", "Descuentos especiales", "Beneficios ï¿½nicos"]
     },
     {
       id: 6,
@@ -97,7 +97,7 @@ const Marketplace = () => {
       rating: 4.8,
       reviews: 2341,
       badge: "Mejor Valor",
-      features: ["500 tokens CMPX", "Uso flexible", "Sin expiración"]
+      features: ["500 tokens CMPX", "Uso flexible", "Sin expiraciï¿½n"]
     }
   ];
 
@@ -110,7 +110,7 @@ const Marketplace = () => {
 
   const getBadgeColor = (badge: any) => {
     switch (badge) {
-      case 'Más Popular': return 'bg-green-500/80';
+      case 'Mï¿½s Popular': return 'bg-green-500/80';
       case 'Recomendado': return 'bg-blue-500/80';
       case 'Nuevo': return 'bg-purple-500/80';
       case 'Limitado': return 'bg-red-500/80';
@@ -149,7 +149,7 @@ const Marketplace = () => {
               </h1>
             </div>
             <p className="text-xl text-white/90 max-w-3xl mx-auto">
-              Descubre productos y servicios premium diseñados para mejorar tu experiencia en ComplicesConecta
+              Descubre productos y servicios premium diseï¿½ados para mejorar tu experiencia en ComplicesConecta
             </p>
           </div>
 
@@ -222,12 +222,12 @@ const Marketplace = () => {
                       {product.price} {product.currency}
                     </div>
                     <div className="text-sm text-muted-foreground">
-                      {product.reviews} reseñas
+                      {product.reviews} reseï¿½as
                     </div>
                   </div>
                   
                   <div className="space-y-2">
-                    <h4 className="text-white font-medium text-sm">Características:</h4>
+                    <h4 className="text-white font-medium text-sm">Caracterï¿½sticas:</h4>
                     <ul className="space-y-1">
                       {product.features.map((feature, index) => (
                         <li key={index} className="text-sm text-muted-foreground flex items-center">
@@ -241,7 +241,7 @@ const Marketplace = () => {
                   <Button 
                     className="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:from-pink-600 hover:to-purple-700"
                     onClick={() => {
-                      // Lógica para comprar producto
+                      // Lï¿½gica para comprar producto
                     }}
                   >
                     <ShoppingCart className="h-4 w-4 mr-2" />
@@ -278,10 +278,10 @@ const Marketplace = () => {
                 <CardContent className="p-6">
                   <div className="flex items-center mb-4">
                     <Heart className="h-8 w-8 text-pink-400 mr-3" />
-                    <h3 className="text-xl font-bold text-white">Pack Romántico</h3>
+                    <h3 className="text-xl font-bold text-white">Pack Romï¿½ntico</h3>
                   </div>
                   <p className="text-muted-foreground mb-4">
-                    Super Likes, regalos virtuales, y boost de perfil para maximizar tus conexiones románticas.
+                    Super Likes, regalos virtuales, y boost de perfil para maximizar tus conexiones romï¿½nticas.
                   </p>
                   <div className="flex items-center justify-between">
                     <div className="text-2xl font-bold text-white">299 CMPX</div>
@@ -297,7 +297,7 @@ const Marketplace = () => {
             <Card className="bg-card/80 backdrop-blur-sm border border-primary/10">
               <CardHeader>
                 <CardTitle className="text-white text-2xl text-center">
-                  ¿Cómo Comprar en el Marketplace?
+                  ï¿½Cï¿½mo Comprar en el Marketplace?
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -317,7 +317,7 @@ const Marketplace = () => {
                     </div>
                     <h3 className="font-semibold text-white mb-2">Paga con Tokens CMPX</h3>
                     <p className="text-sm text-muted-foreground">
-                      Usa tus tokens CMPX para realizar la compra de forma segura e instantánea
+                      Usa tus tokens CMPX para realizar la compra de forma segura e instantï¿½nea
                     </p>
                   </div>
                   <div className="text-center">
@@ -339,7 +339,7 @@ const Marketplace = () => {
             <Card className="bg-gradient-to-r from-pink-500/20 to-purple-600/20 backdrop-blur-sm border border-pink-400/30">
               <CardContent className="p-8">
                 <h2 className="text-3xl font-bold text-white mb-4">
-                  ¿Necesitas más tokens CMPX?
+                  ï¿½Necesitas mï¿½s tokens CMPX?
                 </h2>
                 <p className="text-xl text-white/90 mb-6 max-w-2xl mx-auto">
                   Compra tokens CMPX para acceder a todos los productos premium del marketplace

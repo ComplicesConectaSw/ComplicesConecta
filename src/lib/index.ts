@@ -1,4 +1,4 @@
-﻿// src/lib/index.ts - ARCHIVO MAESTRO DE IMPORTS
+// src/lib/index.ts - ARCHIVO MAESTRO DE IMPORTS
 // USO: import { Button, Card, useAuth } from '@/lib'
 
 // UI
@@ -20,5 +20,5 @@ export * from '@/shared/lib/validation';
 
 // Entities
 export * from '@/entities/user';
-export * from '@/entities/profile';
+// export * from '@/entities/profile'; // No existe, usar @/profiles/shared/ProfileCard o @/features/profile/
 export * from '@/entities/club';

@@ -299,6 +299,24 @@ export class AdvancedAnalyticsService {
       // Calcular engagement score
       userMetrics.engagementScore = this.calculateEngagementScore(userMetrics);
 
+      // Registrar evento en analytics_events
+      if (supabase) {
+        try {
+          await supabase
+            .from('analytics_events')
+            .insert({
+              user_id: userId,
+              event_name: `${action}_${page}`,
+              event_type: 'user_behavior',
+              properties: metadata || {},
+              session_id: sessionId,
+              timestamp: now,
+            });
+        } catch (error) {
+          logger.debug('Failed to log analytics event:', { error: String(error) });
+        }
+      }
+
       logger.debug('User behavior tracked:', { userId, sessionId, action, page });
     } catch (error) {
       logger.error('Error tracking user behavior:', { error: String(error) });

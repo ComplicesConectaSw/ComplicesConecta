@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor, act } from '@testing-library/react';
-import { ProfileReportsPanel } from '@/components/admin/ProfileReportsPanel';
+import { ProfileReportsPanel } from '@/profiles/shared/ProfileReportsPanel';
 import { testDebugger } from '@/utils/testDebugger';
 import { profileReportService } from '@/features/profile/ProfileReportService';
 

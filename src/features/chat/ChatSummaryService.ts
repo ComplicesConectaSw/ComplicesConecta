@@ -173,6 +173,43 @@ export class ChatSummaryService {
   }
 
   /**
+   * Envía feedback sobre un resumen
+   */
+  async submitFeedback(
+    summaryId: string,
+    userId: string,
+    isHelpful: boolean,
+    feedbackText?: string
+  ): Promise<boolean> {
+    try {
+      if (!supabase) {
+        logger.warn('Supabase no está disponible');
+        return false;
+      }
+
+      const { error } = await supabase
+        .from('summary_feedback')
+        .insert({
+          summary_id: summaryId,
+          user_id: userId,
+          is_helpful: isHelpful,
+          feedback_text: feedbackText || (isHelpful ? 'Resumen útil' : 'Resumen no útil'),
+        });
+
+      if (error) {
+        logger.warn('Failed to submit summary feedback:', { error });
+        return false;
+      }
+
+      logger.info('Summary feedback submitted successfully');
+      return true;
+    } catch (error) {
+      logger.error('Error submitting summary feedback:', { error: String(error) });
+      return false;
+    }
+  }
+
+  /**
    * Genera resumen con GPT-4
    * @private
    */

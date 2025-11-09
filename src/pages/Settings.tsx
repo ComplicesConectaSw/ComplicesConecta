@@ -24,20 +24,20 @@ const Settings = () => {
   const swingerFeatures = [
     {
       icon: Shield,
-      title: "Verificación Lifestyle KYC",
-      description: "Verificación de identidad + validación de experiencia swinger para comunidad auténtica",
+      title: "Verificaciï¿½n Lifestyle KYC",
+      description: "Verificaciï¿½n de identidad + validaciï¿½n de experiencia swinger para comunidad autï¿½ntica",
       status: "Activo"
     },
     {
       icon: MessageSquare,
-      title: "Chat Íntimo Encriptado",
-      description: "Conversaciones privadas entre parejas con encriptación militar para máxima discreción",
+      title: "Chat ï¿½ntimo Encriptado",
+      description: "Conversaciones privadas entre parejas con encriptaciï¿½n militar para mï¿½xima discreciï¿½n",
       status: "Activo"
     },
     {
       icon: MapPin,
       title: "Encuentros Gelocalizados",
-      description: "Localiza parejas swinger y clubs exclusivos cerca de tu ubicación",
+      description: "Localiza parejas swinger y clubs exclusivos cerca de tu ubicaciï¿½n",
       status: "Activo"
     },
     {
@@ -82,11 +82,11 @@ const Settings = () => {
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
               Dashboard Swinger
               <span className="block bg-love-gradient bg-clip-text text-transparent">
-                Tu Centro de Control Íntimo
+                Tu Centro de Control ï¿½ntimo
               </span>
             </h1>
             <p className="text-xl text-white/90 max-w-2xl mx-auto">
-              Gestiona tu experiencia swinger: conexiones, eventos privados y estadísticas de tu vida íntima
+              Gestiona tu experiencia swinger: conexiones, eventos privados y estadï¿½sticas de tu vida ï¿½ntima
             </p>
           </div>
 
@@ -120,7 +120,7 @@ const Settings = () => {
 
             <Card className="bg-card/80 backdrop-blur-sm border border-primary/10">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Conexiones Íntimas</CardTitle>
+                <CardTitle className="text-sm font-medium">Conexiones ï¿½ntimas</CardTitle>
                 <Zap className="h-4 w-4 text-accent" />
               </CardHeader>
               <CardContent>
@@ -139,7 +139,7 @@ const Settings = () => {
               <CardContent>
                 <div className="text-2xl font-bold text-foreground">{swingerStats.verifiedProfiles}</div>
                 <p className="text-xs text-white/80">
-                  Verificación KYC + Lifestyle
+                  Verificaciï¿½n KYC + Lifestyle
                 </p>
               </CardContent>
             </Card>
@@ -159,7 +159,7 @@ const Settings = () => {
 
             <Card className="bg-card/80 backdrop-blur-sm border border-primary/10">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Satisfacción</CardTitle>
+                <CardTitle className="text-sm font-medium">Satisfacciï¿½n</CardTitle>
                 <Star className="h-4 w-4 text-accent" fill="currentColor" />
               </CardHeader>
               <CardContent>
@@ -174,7 +174,7 @@ const Settings = () => {
           {/* Settings Tabs */}
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold text-white mb-2">Configuración</h1>
+              <h1 className="text-3xl font-bold text-white mb-2">Configuraciï¿½n</h1>
               <p className="text-white/80">Personaliza tu experiencia en ComplicesConecta</p>
             </div>
 
@@ -186,11 +186,11 @@ const Settings = () => {
                 </TabsTrigger>
                 <TabsTrigger value="location" className="flex items-center gap-2 data-[state=active]:bg-white/20">
                   <MapPin className="h-4 w-4" />
-                  Ubicación
+                  Ubicaciï¿½n
                 </TabsTrigger>
                 <TabsTrigger value="features" className="flex items-center gap-2 data-[state=active]:bg-white/20">
                   <SettingsIcon className="h-4 w-4" />
-                  Características
+                  Caracterï¿½sticas
                 </TabsTrigger>
               </TabsList>
 
@@ -199,7 +199,7 @@ const Settings = () => {
                   <CardHeader>
                     <CardTitle className="text-white flex items-center gap-2">
                       <Lock className="h-5 w-5" />
-                      Configuración de Privacidad
+                      Configuraciï¿½n de Privacidad
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
@@ -213,7 +213,7 @@ const Settings = () => {
                   <CardHeader>
                     <CardTitle className="text-white flex items-center gap-2">
                       <MapPin className="h-5 w-5" />
-                      Configuración de Ubicación
+                      Configuraciï¿½n de Ubicaciï¿½n
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
@@ -229,9 +229,9 @@ const Settings = () => {
                       key={index} 
                       className="bg-card/80 backdrop-blur-sm border border-primary/10 cursor-pointer hover:bg-card/90 transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/20"
                       onClick={() => {
-                        if (feature.title === "Verificación Lifestyle KYC") {
+                        if (feature.title === "Verificaciï¿½n Lifestyle KYC") {
                           navigate('/profile-single');
-                        } else if (feature.title === "Chat Íntimo Encriptado") {
+                        } else if (feature.title === "Chat ï¿½ntimo Encriptado") {
                           navigate('/chat-info');
                         } else if (feature.title === "Encuentros Gelocalizados") {
                           navigate('/discover');
@@ -272,8 +272,8 @@ const Settings = () => {
             </CardHeader>
             <CardContent className="text-center space-y-6">
               <p className="text-white/90 text-lg max-w-2xl mx-auto">
-                Accede a la élite swinger: fiestas VIP exclusivas, parejas verificadas premium 
-                y experiencias íntimas que transformarán tu vida sexual.
+                Accede a la ï¿½lite swinger: fiestas VIP exclusivas, parejas verificadas premium 
+                y experiencias ï¿½ntimas que transformarï¿½n tu vida sexual.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 

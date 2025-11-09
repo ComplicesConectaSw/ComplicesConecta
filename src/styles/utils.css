@@ -1,0 +1,18 @@
+/* src/styles/utils/utils.css - Utilidades CSS */
+/* Nota: @tailwind utilities está en index.css, no duplicar aquí */
+/* Este archivo está consolidado en index.css - mantener solo para referencia */
+
+/* stylelint-disable-next-line at-rule-no-unknown */
+/* Utilidades personalizadas - Usar @layer para que Tailwind procese @apply correctamente */
+@layer utilities {
+  /* stylelint-disable-next-line at-rule-no-unknown */
+  .container {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  /* stylelint-disable-next-line at-rule-no-unknown */
+  .sr-only {
+    @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+    clip: rect(0, 0, 0, 0);
+  }
+}

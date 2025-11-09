@@ -52,7 +52,7 @@ const Auth = () => {
   const { getCurrentLocation: _getCurrentLocation, location: _location, isLoading: _locationLoading, error: _locationError } = useGeolocation();
   const { user: _user, session: _session, profile: _profile, loading: _loading, signIn, signOut: _signOut, isAdmin: _isAdmin, isDemo: _isDemo, getProfileType: _getProfileType, shouldUseProductionAdmin: _shouldUseProductionAdmin, appMode: _appMode } = useAuth();
   
-  // Estado persistente para autenticación demo
+  // Estado persistente para autenticaciï¿½n demo
   const [_demoUser, _setDemoUser] = usePersistedState<any>('demo_user', null);
   const [_demoAuthenticated, _setDemoAuthenticated] = usePersistedState<boolean>('demo_authenticated', false);
   const [_userType, _setUserType] = usePersistedState<string>('userType', '');
@@ -111,7 +111,7 @@ const Auth = () => {
         password: 'demo123'
       };
       
-      // Establecer estado de autenticación demo
+      // Establecer estado de autenticaciï¿½n demo
       _setDemoAuthenticated(true);
       _setDemoUser(demoCredentials);
       _setUserType('single');
@@ -126,7 +126,7 @@ const Auth = () => {
         description: "Bienvenido al modo demo de ComplicesConecta",
       });
       
-      // Navegar al feed después de un breve delay
+      // Navegar al feed despuï¿½s de un breve delay
       setTimeout(() => {
         navigate('/feed');
       }, 1500);
@@ -150,16 +150,16 @@ const Auth = () => {
     setShowLoginLoading(true);
 
     try {
-      // Usar el método signIn del hook useAuth que maneja correctamente demo y producción
+      // Usar el mï¿½todo signIn del hook useAuth que maneja correctamente demo y producciï¿½n
       const result = await signIn(formData.email, formData.password, formData.accountType || 'single');
 
       if (result && result.user) {
         toast({
-          title: "Inicio de sesión exitoso",
+          title: "Inicio de sesiï¿½n exitoso",
           description: "Bienvenido de vuelta a ComplicesConecta",
         });
 
-        // Redirigir según el tipo de cuenta
+        // Redirigir segï¿½n el tipo de cuenta
         const userWithMetadata = result.user as any;
         const accountType = userWithMetadata?.user_metadata?.account_type || 
                            userWithMetadata?.user_metadata?.accountType || 
@@ -179,17 +179,17 @@ const Auth = () => {
       }
     } catch (error: any) {
       // Mejorar mensajes de error
-      let errorMessage = 'Error al iniciar sesión';
+      let errorMessage = 'Error al iniciar sesiï¿½n';
       
       if (error?.message) {
         if (error.message.includes('Invalid API key')) {
-          errorMessage = 'Error de configuración. Por favor, contacta al soporte.';
+          errorMessage = 'Error de configuraciï¿½n. Por favor, contacta al soporte.';
         } else if (error.message.includes('Invalid login credentials') || error.message.includes('Invalid credentials')) {
-          errorMessage = 'Correo electrónico o contraseña incorrectos';
+          errorMessage = 'Correo electrï¿½nico o contraseï¿½a incorrectos';
         } else if (error.message.includes('Email not confirmed')) {
-          errorMessage = 'Por favor, confirma tu correo electrónico antes de iniciar sesión';
+          errorMessage = 'Por favor, confirma tu correo electrï¿½nico antes de iniciar sesiï¿½n';
         } else if (error.message.includes('User not found')) {
-          errorMessage = 'Usuario no encontrado. Verifica tu correo electrónico';
+          errorMessage = 'Usuario no encontrado. Verifica tu correo electrï¿½nico';
         } else {
           errorMessage = error.message;
         }
@@ -197,7 +197,7 @@ const Auth = () => {
 
       toast({
         variant: "destructive",
-        title: "Error al iniciar sesión",
+        title: "Error al iniciar sesiï¿½n",
         description: errorMessage,
       });
     } finally {
@@ -213,20 +213,20 @@ const Auth = () => {
     try {
       // Validaciones adicionales
       if (!formData.acceptTerms) {
-        throw new Error('Debes aceptar los términos y condiciones');
+        throw new Error('Debes aceptar los tï¿½rminos y condiciones');
       }
 
       if (formData.age && parseInt(formData.age) < 18) {
-        throw new Error('Debes ser mayor de 18 años');
+        throw new Error('Debes ser mayor de 18 aï¿½os');
       }
 
       if (formData.accountType === 'couple' && formData.partnerAge && parseInt(formData.partnerAge) < 18) {
-        throw new Error('Tu pareja debe ser mayor de 18 años');
+        throw new Error('Tu pareja debe ser mayor de 18 aï¿½os');
       }
 
       // Crear usuario en Supabase
       if (!supabase) {
-        throw new Error('Supabase no está disponible');
+        throw new Error('Supabase no estï¿½ disponible');
       }
       
       const { data: _authData, error: authError } = await supabase.auth.signUp({
@@ -261,11 +261,11 @@ const Auth = () => {
       if (authError) throw authError;
 
       toast({
-        title: "¡Cuenta creada exitosamente!",
+        title: "ï¿½Cuenta creada exitosamente!",
         description: "Revisa tu correo para verificar tu cuenta",
       });
 
-      // Redirigir al login después del registro
+      // Redirigir al login despuï¿½s del registro
       setTimeout(() => {
         navigate('/auth');
       }, 2000);
@@ -348,14 +348,14 @@ const Auth = () => {
           <CardContent>
             <Tabs defaultValue="signin" className="w-full">
               <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="signin" data-testid="switch-to-login">Iniciar Sesión</TabsTrigger>
+                <TabsTrigger value="signin" data-testid="switch-to-login">Iniciar Sesiï¿½n</TabsTrigger>
                 <TabsTrigger value="signup" data-testid="switch-to-register">Registrarse</TabsTrigger>
               </TabsList>
               
               <TabsContent value="signin">
                 <form onSubmit={handleSignIn} className="space-y-4" data-testid="login-form">
                   <div className="space-y-2">
-                    <Label htmlFor="email" className="text-white font-medium">Correo electrónico</Label>
+                    <Label htmlFor="email" className="text-white font-medium">Correo electrï¿½nico</Label>
                     <Input
                       id="email"
                       type="email"
@@ -367,7 +367,7 @@ const Auth = () => {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="password" className="text-white font-medium">Contraseña</Label>
+                    <Label htmlFor="password" className="text-white font-medium">Contraseï¿½a</Label>
                     <Input
                       id="password"
                       type="password"
@@ -386,7 +386,7 @@ const Auth = () => {
                     data-testid="login-button"
                     style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}
                   >
-                    {isLoading ? "Iniciando sesión..." : "Iniciar Sesión"}
+                    {isLoading ? "Iniciando sesiï¿½n..." : "Iniciar Sesiï¿½n"}
                   </Button>
                   
                   {/* Demo Login Button con glassmorphism mejorado */}
@@ -429,7 +429,7 @@ const Auth = () => {
                     </div>
                   </div>
 
-                  {/* Información Básica */}
+                  {/* Informaciï¿½n Bï¿½sica */}
                   <div className="space-y-2">
                     <Label htmlFor="firstName" className="text-white font-medium">Nombre</Label>
                     <Input
@@ -461,7 +461,7 @@ const Auth = () => {
                       value={formData.nickname}
                       onChange={(e) => handleInputChange('nickname', e.target.value)}
                       required
-                      placeholder="Nombre público"
+                      placeholder="Nombre pï¿½blico"
                       className="bg-white/10 border-white/20 text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500"
                     />
                   </div>
@@ -481,7 +481,7 @@ const Auth = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="gender" className="text-white font-medium">Género</Label>
+                    <Label htmlFor="gender" className="text-white font-medium">Gï¿½nero</Label>
                     <select
                       id="gender"
                       value={formData.gender}
@@ -492,7 +492,7 @@ const Auth = () => {
                         colorScheme: 'dark'
                       }}
                     >
-                      <option value="" className="bg-purple-900 text-white">Selecciona tu género</option>
+                      <option value="" className="bg-purple-900 text-white">Selecciona tu gï¿½nero</option>
                       <option value="male" className="bg-purple-900 text-white">Masculino</option>
                       <option value="female" className="bg-purple-900 text-white">Femenino</option>
                       <option value="non-binary" className="bg-purple-900 text-white">No binario</option>
@@ -512,7 +512,7 @@ const Auth = () => {
                         colorScheme: 'dark'
                       }}
                     >
-                      <option value="" className="bg-purple-900 text-white">Selecciona tu interés</option>
+                      <option value="" className="bg-purple-900 text-white">Selecciona tu interï¿½s</option>
                       <option value="male" className="bg-purple-900 text-white">Hombres</option>
                       <option value="female" className="bg-purple-900 text-white">Mujeres</option>
                       <option value="both" className="bg-purple-900 text-white">Ambos</option>
@@ -520,11 +520,11 @@ const Auth = () => {
                     </select>
                   </div>
 
-                  {/* Información de Pareja - Solo si es pareja */}
+                  {/* Informaciï¿½n de Pareja - Solo si es pareja */}
                   {formData.accountType === 'couple' && (
                     <>
                       <div className="border-t border-white/20 pt-4">
-                        <h4 className="text-white font-medium mb-4">Información de tu Pareja</h4>
+                        <h4 className="text-white font-medium mb-4">Informaciï¿½n de tu Pareja</h4>
                         
                         <div className="space-y-2">
                           <Label htmlFor="partnerFirstName" className="text-white font-medium">Nombre de tu Pareja</Label>
@@ -557,7 +557,7 @@ const Auth = () => {
                             value={formData.partnerNickname}
                             onChange={(e) => handleInputChange('partnerNickname', e.target.value)}
                             required
-                            placeholder="Nombre público de tu pareja"
+                            placeholder="Nombre pï¿½blico de tu pareja"
                             className="bg-white/10 border-white/20 text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500"
                           />
                         </div>
@@ -577,7 +577,7 @@ const Auth = () => {
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlFor="partnerGender" className="text-white font-medium">Género de tu Pareja</Label>
+                          <Label htmlFor="partnerGender" className="text-white font-medium">Gï¿½nero de tu Pareja</Label>
                           <select
                             id="partnerGender"
                             value={formData.partnerGender}
@@ -588,7 +588,7 @@ const Auth = () => {
                               colorScheme: 'dark'
                             }}
                           >
-                            <option value="" className="bg-purple-900 text-white">Selecciona el género</option>
+                            <option value="" className="bg-purple-900 text-white">Selecciona el gï¿½nero</option>
                             <option value="male" className="bg-purple-900 text-white">Masculino</option>
                             <option value="female" className="bg-purple-900 text-white">Femenino</option>
                             <option value="non-binary" className="bg-purple-900 text-white">No binario</option>
@@ -608,7 +608,7 @@ const Auth = () => {
                               colorScheme: 'dark'
                             }}
                           >
-                            <option value="" className="bg-purple-900 text-white">Selecciona el interés</option>
+                            <option value="" className="bg-purple-900 text-white">Selecciona el interï¿½s</option>
                             <option value="male" className="bg-purple-900 text-white">Hombres</option>
                             <option value="female" className="bg-purple-900 text-white">Mujeres</option>
                             <option value="both" className="bg-purple-900 text-white">Ambos</option>
@@ -619,9 +619,9 @@ const Auth = () => {
                     </>
                   )}
 
-                  {/* Información Adicional */}
+                  {/* Informaciï¿½n Adicional */}
                   <div className="space-y-2">
-                    <Label htmlFor="email" className="text-white font-medium">Correo electrónico</Label>
+                    <Label htmlFor="email" className="text-white font-medium">Correo electrï¿½nico</Label>
                     <Input
                       id="email"
                       type="email"
@@ -634,7 +634,7 @@ const Auth = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="password" className="text-white font-medium">Contraseña</Label>
+                    <Label htmlFor="password" className="text-white font-medium">Contraseï¿½a</Label>
                     <Input
                       id="password"
                       type="password"
@@ -642,26 +642,26 @@ const Auth = () => {
                       onChange={(e) => handleInputChange('password', e.target.value)}
                       required
                       minLength={6}
-                      placeholder="Mínimo 6 caracteres"
+                      placeholder="Mï¿½nimo 6 caracteres"
                       className="bg-white/10 border-white/20 text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="bio" className="text-white font-medium">Biografía</Label>
+                    <Label htmlFor="bio" className="text-white font-medium">Biografï¿½a</Label>
                     <textarea
                       id="bio"
                       value={formData.bio}
                       onChange={(e) => handleInputChange('bio', e.target.value)}
                       required
                       rows={3}
-                      placeholder="Cuéntanos sobre ti..."
+                      placeholder="Cuï¿½ntanos sobre ti..."
                       className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="location" className="text-white font-medium">Ubicación</Label>
+                    <Label htmlFor="location" className="text-white font-medium">Ubicaciï¿½n</Label>
                     <Input
                       id="location"
                       value={formData.location}
@@ -672,7 +672,7 @@ const Auth = () => {
                     />
                   </div>
 
-                  {/* Términos y Condiciones */}
+                  {/* Tï¿½rminos y Condiciones */}
                   <div className="space-y-2">
                     <div className="flex items-center space-x-2">
                       <input
@@ -684,7 +684,7 @@ const Auth = () => {
                         className="rounded"
                       />
                       <Label htmlFor="acceptTerms" className="text-sm text-white/80">
-                        Acepto los <Link to="/terms" className="text-purple-300 hover:underline">Términos y Condiciones</Link> y la <Link to="/privacy" className="text-purple-300 hover:underline">Política de Privacidad</Link>
+                        Acepto los <Link to="/terms" className="text-purple-300 hover:underline">Tï¿½rminos y Condiciones</Link> y la <Link to="/privacy" className="text-purple-300 hover:underline">Polï¿½tica de Privacidad</Link>
                       </Label>
                     </div>
                   </div>
@@ -699,7 +699,7 @@ const Auth = () => {
                         className="rounded"
                       />
                       <Label htmlFor="shareLocation" className="text-sm text-white/80">
-                        Compartir mi ubicación para mejorar las coincidencias
+                        Compartir mi ubicaciï¿½n para mejorar las coincidencias
                       </Label>
                     </div>
                 </div>

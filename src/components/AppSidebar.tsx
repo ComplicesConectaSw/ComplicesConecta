@@ -1,7 +1,7 @@
 import { Sidebar, SidebarContent, useSidebar } from '@/components/ui/sidebar';
 import { mainNavItems, premiumItems, settingsItems, mockUser } from '@/lib/data';
-import { UserProfile } from '@/components/sidebar/UserProfile';
-import { CollapsedUserProfile } from '@/components/sidebar/CollapsedUserProfile';
+import { UserProfile } from '@/profiles/shared/UserProfile';
+import { CollapsedUserProfile } from '@/profiles/shared/CollapsedUserProfile';
 import { NavGroup } from '@/components/sidebar/NavGroup';
 import { QuickActions } from '@/components/sidebar/QuickActions';
 

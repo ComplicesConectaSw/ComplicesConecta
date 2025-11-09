@@ -30,6 +30,10 @@ export const createPermanentBan = async (
   try {
     logger.info('🚫 Creando baneo permanente', { userId: banData.userId });
 
+    if (!supabase) {
+      throw new Error('Supabase no está disponible');
+    }
+
     // Generar huella digital
     const fingerprint = await generateDigitalFingerprint(banData.worldIdNullifierHash);
 
@@ -64,6 +68,10 @@ export const checkUserBanned = async (
   worldIdNullifierHash?: string
 ): Promise<BanCheckResult> => {
   try {
+    if (!supabase) {
+      return { isBanned: false };
+    }
+
     // Generar huella digital actual
     const fingerprint = await generateDigitalFingerprint(worldIdNullifierHash);
 
@@ -110,6 +118,10 @@ export const liftPermanentBan = async (
   reason?: string
 ): Promise<void> => {
   try {
+    if (!supabase) {
+      throw new Error('Supabase no está disponible');
+    }
+
     // Obtener baneo
     const { data: ban, error: banError } = await supabase
       .from('permanent_bans')
@@ -170,6 +182,10 @@ export const liftPermanentBan = async (
  */
 export const getPermanentBans = async (): Promise<any[]> => {
   try {
+    if (!supabase) {
+      throw new Error('Supabase no está disponible');
+    }
+
     const { data, error } = await supabase
       .from('permanent_bans')
       .select(`

@@ -93,6 +93,13 @@
 
 ### 🎉 NUEVAS FUNCIONALIDADES v3.6.3
 
+#### 🗄️ Migraciones de Base de Datos y Análisis de Tablas ✅ (08 Nov 2025)
+- ✅ **4 Migraciones Creadas**: `user_device_tokens`, `user_tokens`, `chat_rooms` (columnas), `profiles` (full_name)
+- ✅ **Análisis de Tablas**: 67 tablas en LOCAL, 79 tablas usadas en código
+- ✅ **Script de Alineación**: `scripts/alinear-y-verificar-todo.ps1` para verificar y alinear tablas
+- ✅ **Documentación**: `docs/ANALISIS_TABLAS_ALINEACION_v3.6.3.md` con análisis detallado
+- ✅ **Correcciones de Tipos**: Eliminado `as any` en `AdminDashboard.tsx` y `simpleChatService.ts`
+
 #### 🔧 Refactorización Completa de Estructura (v3.6.0 - v3.6.3)
 - ✅ **Organización de Perfiles:** `src/profiles/` con subdirectorios `single/`, `couple/`, `shared/`
 - ✅ **Organización de Features:** `src/features/` con subdirectorios `auth/`, `profile/`, `clubs/`, `chat/`

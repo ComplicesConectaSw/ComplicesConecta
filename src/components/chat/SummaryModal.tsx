@@ -56,8 +56,24 @@ export function SummaryModal({ isOpen, onClose, summary, error }: SummaryModalPr
   const handleFeedback = async (isHelpful: boolean) => {
     if (!summary) return;
 
-    // TODO: Implement feedback submission to summary_feedback table
-    console.log('Feedback:', { summaryId: summary.id, isHelpful });
+    try {
+      const { supabase } = await import('@/integrations/supabase/client');
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (supabase && user) {
+        await supabase
+          .from('summary_feedback')
+          .insert({
+            summary_id: summary.id,
+            user_id: user.id,
+            is_helpful: isHelpful,
+            feedback_text: isHelpful ? 'Resumen útil' : 'Resumen no útil',
+            created_at: new Date().toISOString(),
+          });
+      }
+    } catch (error) {
+      console.error('Error submitting feedback:', error);
+    }
     
     setFeedbackSent(true);
     setTimeout(() => {

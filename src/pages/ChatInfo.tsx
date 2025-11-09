@@ -49,7 +49,7 @@ const ChatInfo = () => {
               </h1>
             </div>
             <p className="text-lg text-white/90 max-w-2xl mx-auto">
-              Conecta de forma segura y discreta con la comunidad lifestyle más exclusiva de México
+              Conecta de forma segura y discreta con la comunidad lifestyle mï¿½s exclusiva de Mï¿½xico
             </p>
           </div>
 
@@ -68,12 +68,12 @@ const ChatInfo = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-white/90">
-                  Conversaciones íntimas y seguras con tus conexiones verificadas del lifestyle swinger.
+                  Conversaciones ï¿½ntimas y seguras con tus conexiones verificadas del lifestyle swinger.
                 </p>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 text-sm">
                     <Shield className="h-4 w-4 text-green-400" />
-                    <span>Encriptación de extremo a extremo</span>
+                    <span>Encriptaciï¿½n de extremo a extremo</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <UserCheck className="h-4 w-4 text-blue-400" />
@@ -92,7 +92,7 @@ const ChatInfo = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-3">
                   <Globe className="h-6 w-6 text-green-300" />
-                  Salas Públicas
+                  Salas Pï¿½blicas
                   <Badge className="bg-green-500/20 text-green-200 border-green-300/30">
                     Moderadas 24/7
                   </Badge>
@@ -100,7 +100,7 @@ const ChatInfo = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-white/90">
-                  Únete a la conversación comunitaria en salas temáticas del lifestyle mexicano.
+                  ï¿½nete a la conversaciï¿½n comunitaria en salas temï¿½ticas del lifestyle mexicano.
                 </p>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 text-sm">
@@ -109,7 +109,7 @@ const ChatInfo = () => {
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <Shield className="h-4 w-4 text-blue-400" />
-                    <span>Moderación profesional</span>
+                    <span>Moderaciï¿½n profesional</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <Heart className="h-4 w-4 text-purple-400" />
@@ -137,7 +137,7 @@ const ChatInfo = () => {
                     </div>
                     <div>
                       <h4 className="font-semibold">Sala General Lifestyle</h4>
-                      <p className="text-sm text-white/70">Conversación general de la comunidad</p>
+                      <p className="text-sm text-white/70">Conversaciï¿½n general de la comunidad</p>
                     </div>
                   </div>
                 </div>
@@ -149,7 +149,7 @@ const ChatInfo = () => {
                     </div>
                     <div>
                       <h4 className="font-semibold">Parejas CDMX</h4>
-                      <p className="text-sm text-white/70">Exclusivo para parejas de la Ciudad de México</p>
+                      <p className="text-sm text-white/70">Exclusivo para parejas de la Ciudad de Mï¿½xico</p>
                     </div>
                   </div>
                 </div>
@@ -173,7 +173,7 @@ const ChatInfo = () => {
                     </div>
                     <div>
                       <h4 className="font-semibold">Eventos Privados</h4>
-                      <p className="text-sm text-white/70">Organización de eventos exclusivos</p>
+                      <p className="text-sm text-white/70">Organizaciï¿½n de eventos exclusivos</p>
                     </div>
                   </div>
                 </div>
@@ -193,18 +193,18 @@ const ChatInfo = () => {
               <div className="grid sm:grid-cols-3 gap-6">
                 <div className="text-center">
                   <Lock className="h-8 w-8 text-purple-400 mx-auto mb-2" />
-                  <h4 className="font-semibold mb-1">Encriptación E2E</h4>
-                  <p className="text-sm text-white/70">Tus mensajes privados están protegidos con encriptación de extremo a extremo</p>
+                  <h4 className="font-semibold mb-1">Encriptaciï¿½n E2E</h4>
+                  <p className="text-sm text-white/70">Tus mensajes privados estï¿½n protegidos con encriptaciï¿½n de extremo a extremo</p>
                 </div>
                 <div className="text-center">
                   <UserCheck className="h-8 w-8 text-blue-400 mx-auto mb-2" />
-                  <h4 className="font-semibold mb-1">Verificación KYC</h4>
+                  <h4 className="font-semibold mb-1">Verificaciï¿½n KYC</h4>
                   <p className="text-sm text-white/70">Solo usuarios verificados pueden acceder al sistema de chat</p>
                 </div>
                 <div className="text-center">
                   <Eye className="h-8 w-8 text-green-400 mx-auto mb-2" />
                   <h4 className="font-semibold mb-1">Control de Privacidad</h4>
-                  <p className="text-sm text-white/70">Tú decides quién puede contactarte y cómo</p>
+                  <p className="text-sm text-white/70">Tï¿½ decides quiï¿½n puede contactarte y cï¿½mo</p>
                 </div>
               </div>
             </CardContent>
@@ -220,7 +220,7 @@ const ChatInfo = () => {
               Comenzar a Chatear
             </Button>
             <p className="text-white/70 text-sm mt-4">
-              Únete a la comunidad lifestyle más exclusiva y segura de México
+              ï¿½nete a la comunidad lifestyle mï¿½s exclusiva y segura de Mï¿½xico
             </p>
           </div>
         </div>

@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, MessageCircle, Crown, EyeOff, MapPin, Eye } from "lucide-react";
 import { Card, CardContent } from "@/shared/ui/Card";

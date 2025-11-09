@@ -12,7 +12,7 @@ const Donations = () => {
   const donationTiers = [
     {
       id: 1,
-      name: "Apoyo Básico",
+      name: "Apoyo Bï¿½sico",
       amount: 50,
       icon: Heart,
       color: "from-pink-500 to-rose-500",
@@ -30,9 +30,9 @@ const Donations = () => {
       icon: Star,
       color: "from-purple-500 to-indigo-500",
       benefits: [
-        "Todos los beneficios del Apoyo Básico",
+        "Todos los beneficios del Apoyo Bï¿½sico",
         "100 tokens CMPX de regalo",
-        "Perfil destacado por 30 días",
+        "Perfil destacado por 30 dï¿½as",
         "Acceso a eventos exclusivos",
         "Chat directo con desarrolladores"
       ]
@@ -47,8 +47,8 @@ const Donations = () => {
         "Todos los beneficios anteriores",
         "300 tokens CMPX de regalo",
         "Badge VIP permanente",
-        "Perfil destacado por 90 días",
-        "Participación en decisiones de desarrollo",
+        "Perfil destacado por 90 dï¿½as",
+        "Participaciï¿½n en decisiones de desarrollo",
         "Acceso beta a todas las funciones"
       ]
     },
@@ -63,8 +63,8 @@ const Donations = () => {
         "1000 tokens CMPX de regalo",
         "Badge de 'Fundador' exclusivo",
         "Perfil destacado permanente",
-        "Mención en créditos de la app",
-        "Sesión personalizada con el equipo",
+        "Menciï¿½n en crï¿½ditos de la app",
+        "Sesiï¿½n personalizada con el equipo",
         "Influencia directa en roadmap"
       ]
     }
@@ -99,8 +99,8 @@ const Donations = () => {
             Apoya a ComplicesConecta
           </h1>
           <p className="text-xl text-white/80 max-w-2xl mx-auto">
-            Tu donación nos ayuda a mantener la plataforma gratuita y desarrollar nuevas funciones 
-            para la comunidad swinger más grande de México.
+            Tu donaciï¿½n nos ayuda a mantener la plataforma gratuita y desarrollar nuevas funciones 
+            para la comunidad swinger mï¿½s grande de Mï¿½xico.
           </p>
         </div>
 
@@ -171,7 +171,7 @@ const Donations = () => {
           <CardHeader>
             <CardTitle className="text-white text-center">Cantidad Personalizada</CardTitle>
             <CardDescription className="text-white/70 text-center">
-              Elige tu propia cantidad de donación
+              Elige tu propia cantidad de donaciï¿½n
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -208,7 +208,7 @@ const Donations = () => {
         {/* Payment Methods */}
         <Card className="bg-white/10 border-white/20 mb-8">
           <CardHeader>
-            <CardTitle className="text-white text-center">Métodos de Pago</CardTitle>
+            <CardTitle className="text-white text-center">Mï¿½todos de Pago</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -216,7 +216,7 @@ const Donations = () => {
                 <div className="w-12 h-8 bg-white/20 rounded mb-2 mx-auto flex items-center justify-center">
                   <span className="text-xs font-bold">VISA</span>
                 </div>
-                <span className="text-sm">Tarjeta de Crédito</span>
+                <span className="text-sm">Tarjeta de Crï¿½dito</span>
               </div>
               <div className="text-center text-white">
                 <div className="w-12 h-8 bg-white/20 rounded mb-2 mx-auto flex items-center justify-center">
@@ -250,7 +250,7 @@ const Donations = () => {
             {selectedAmount ? `Donar $${selectedAmount} MXN` : 'Selecciona una cantidad'}
           </Button>
           <p className="text-white/60 text-sm mt-4">
-            Procesamiento seguro • Cancelación en cualquier momento • Recibo por email
+            Procesamiento seguro ï¿½ Cancelaciï¿½n en cualquier momento ï¿½ Recibo por email
           </p>
         </div>
 
@@ -262,7 +262,7 @@ const Donations = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card className="bg-white/10 border-white/20">
               <CardHeader>
-                <CardTitle className="text-white text-lg">¿Para qué se usan las donaciones?</CardTitle>
+                <CardTitle className="text-white text-lg">ï¿½Para quï¿½ se usan las donaciones?</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-white/80">
@@ -273,17 +273,17 @@ const Donations = () => {
             </Card>
             <Card className="bg-white/10 border-white/20">
               <CardHeader>
-                <CardTitle className="text-white text-lg">¿Las donaciones son recurrentes?</CardTitle>
+                <CardTitle className="text-white text-lg">ï¿½Las donaciones son recurrentes?</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-white/80">
-                  No, todas las donaciones son únicas. Puedes donar cuando quieras y la cantidad que desees.
+                  No, todas las donaciones son ï¿½nicas. Puedes donar cuando quieras y la cantidad que desees.
                 </p>
               </CardContent>
             </Card>
             <Card className="bg-white/10 border-white/20">
               <CardHeader>
-                <CardTitle className="text-white text-lg">¿Puedo cancelar mi donación?</CardTitle>
+                <CardTitle className="text-white text-lg">ï¿½Puedo cancelar mi donaciï¿½n?</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-white/80">
@@ -293,11 +293,11 @@ const Donations = () => {
             </Card>
             <Card className="bg-white/10 border-white/20">
               <CardHeader>
-                <CardTitle className="text-white text-lg">¿Es seguro donar?</CardTitle>
+                <CardTitle className="text-white text-lg">ï¿½Es seguro donar?</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-white/80">
-                  Sí, utilizamos procesadores de pago seguros y certificados. Tu información está protegida.
+                  Sï¿½, utilizamos procesadores de pago seguros y certificados. Tu informaciï¿½n estï¿½ protegida.
                 </p>
               </CardContent>
             </Card>

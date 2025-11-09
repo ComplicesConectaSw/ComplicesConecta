@@ -1,5 +1,6 @@
 import { Story, CreateStoryData, StoryLike, StoryComment } from './StoryTypes';
 import { getRandomProfileImage } from '@/lib/imageService';
+import { logger } from '@/lib/logger';
 
 // Mock data for demo mode - adapts to user profile type
 const getDemoStories = (): Story[] => {
@@ -293,14 +294,42 @@ class StoryService {
       return `${window.location.origin}/stories/${storyId}?demo=true`;
     }
 
-    // TODO: Implementar lógica de compartir para producción
     try {
-      // const response = await fetch(`/api/stories/${storyId}/share`, { method: 'POST' });
-      // const data = await response.json();
-      // return data.shareUrl;
-      return null;
+      const { supabase } = await import('@/integrations/supabase/client');
+      
+      if (!supabase) {
+        logger.warn('Supabase no disponible para compartir story');
+        return null;
+      }
+
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        logger.warn('Usuario no disponible para compartir story');
+        return null;
+      }
+
+      // Registrar share en story_shares
+      const { error } = await supabase
+        .from('story_shares')
+        .insert({
+          story_id: storyId.toString(),
+          user_id: user.id,
+          share_type: 'share',
+          created_at: new Date().toISOString(),
+        });
+
+      if (error) {
+        logger.error('Error sharing story:', { error: error.message });
+        return null;
+      }
+
+      // Generar URL de compartir
+      const shareUrl = `${window.location.origin}/stories/${storyId}`;
+      logger.info('✅ Story shared successfully', { storyId, shareUrl });
+      return shareUrl;
     } catch (error) {
-      console.error('Error sharing story:', error);
+      logger.error('Error sharing story:', { error: String(error) });
       return null;
     }
   }

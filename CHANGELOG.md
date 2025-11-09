@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.6.3] - 2025-11-08
+
+### Added - Scripts Unificados
+- **database-manager.ps1**: Script maestro que unifica 5 scripts de gestión de BD
+  - Sincronización de BD local y remota
+  - Verificación de alineación de tablas
+  - Generación de scripts para migraciones remotas
+  - Regeneración de tipos TypeScript
+  - Análisis de migraciones y backups
+- **Uso**: `.\scripts\database-manager.ps1 -Action sync|verify|generate-remote|regenerate-types|analyze|all`
+
+### Changed - Scripts Actualizados
+- **fix-character-encoding.ps1**: Backups ahora se guardan en directorio `bck` fuera del proyecto
+  - Ubicación: `C:\Users\conej\Documents\bck` (excluido de `.gitignore` y `.dockerignore`)
+  - Ejecutado exitosamente: 1,171 archivos corregidos
+
+### Deprecated - Scripts Consolidados
+- **alinear-supabase.ps1**: Usar `database-manager.ps1 -Action sync`
+- **analizar-y-alinear-bd.ps1**: Usar `database-manager.ps1 -Action analyze`
+- **aplicar-migraciones-remoto.ps1**: Usar `database-manager.ps1 -Action generate-remote`
+- **sync-databases.ps1**: Usar `database-manager.ps1 -Action sync`
+- **verificar-alineacion-tablas.ps1**: Usar `database-manager.ps1 -Action verify`
+
 ## [3.5.0] - 2025-11-06
 
 ### Added - Sistema Completo v3.5.0

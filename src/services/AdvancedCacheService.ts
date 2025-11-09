@@ -305,7 +305,7 @@ class AdvancedCacheService {
     // Calcular score de rendimiento
     const performanceScore = this.calculatePerformanceScore(hitRate, averageAccessTime, compressionRatio);
 
-    return {
+    const stats = {
       memoryEntries: this.memoryCache.size,
       persistentEntries: 0, // TODO: Implementar conteo de entradas persistentes
       memorySize: this.calculateMemorySize(),
@@ -323,6 +323,42 @@ class AdvancedCacheService {
       distributedSyncs: this.stats.distributedSyncs,
       performanceScore
     };
+
+    // Registrar estadísticas en cache_statistics (async, no bloquea)
+    this.logCacheStatistics(stats).catch(err => 
+      logger.debug('Failed to log cache statistics:', { error: String(err) })
+    );
+
+    return stats;
+  }
+
+  /**
+   * Registra estadísticas del cache en la base de datos
+   * @private
+   */
+  private async logCacheStatistics(stats: CacheStats): Promise<void> {
+    try {
+      const { supabase } = await import('@/integrations/supabase/client');
+      if (!supabase) return;
+
+      await supabase
+        .from('cache_statistics')
+        .insert({
+          hit_rate: stats.hitRate,
+          miss_rate: stats.missRate,
+          total_hits: stats.totalHits,
+          total_misses: stats.totalMisses,
+          average_access_time_ms: stats.averageAccessTime,
+          memory_entries: stats.memoryEntries,
+          memory_size_bytes: stats.memorySize,
+          compression_ratio: stats.compressionRatio,
+          performance_score: stats.performanceScore,
+          timestamp: new Date().toISOString(),
+        });
+    } catch (error) {
+      // Silenciar errores de logging
+      logger.debug('Failed to log cache statistics:', { error: String(error) });
+    }
   }
 
   /**

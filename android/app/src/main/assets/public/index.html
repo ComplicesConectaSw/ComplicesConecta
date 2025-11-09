@@ -209,30 +209,47 @@
         }
       });
       
-      // Interceptar Object.defineProperty de forma ULTRA AGRESIVA - SIN TRY-CATCH INTERNO
+      // Interceptar Object.defineProperty de forma ULTRA AGRESIVA - MEJORADO
       Object.defineProperty = function(obj, prop, descriptor) {
         var propLower = String(prop).toLowerCase();
         var isWalletProp = _walletProps.some(function(wp) { return propLower === wp.toLowerCase(); });
         
         // Si es una propiedad de wallet en window, manejar de forma especial
         if (obj === window && isWalletProp) {
-          // Intentar definir normalmente primero
+          // Verificar si la propiedad ya existe y no es configurable
+          try {
+            var existingDesc = Object.getOwnPropertyDescriptor(window, prop);
+            if (existingDesc && !existingDesc.configurable) {
+              // Propiedad no configurable - simplemente retornar sin error
+              return obj;
+            }
+            if (existingDesc && existingDesc.writable === false && descriptor && descriptor.value !== undefined) {
+              // Propiedad read-only - intentar hacerla configurable primero
+              try {
+                var newDesc = {
+                  configurable: true,
+                  writable: true,
+                  enumerable: existingDesc.enumerable !== false,
+                  value: existingDesc.value,
+                  get: existingDesc.get,
+                  set: existingDesc.set
+                };
+                _originalDefineProperty.call(this, obj, prop, newDesc);
+              } catch(e) {
+                // Si no se puede hacer configurable, retornar sin error
+                return obj;
+              }
+            }
+          } catch(e) {
+            // Si hay error al verificar, continuar
+          }
+          
+          // Intentar definir normalmente
           try {
             return _originalDefineProperty.call(this, obj, prop, descriptor);
           } catch(e) {
-            // Si falla, verificar si es porque no es configurable
-            try {
-              var existingDesc = Object.getOwnPropertyDescriptor(window, prop);
-              if (existingDesc && !existingDesc.configurable) {
-                // Propiedad no configurable - simplemente retornar sin error
-                return obj;
-              }
-              // Intentar de nuevo
-              return _originalDefineProperty.call(this, obj, prop, descriptor);
-            } catch(e2) {
-              // Cualquier error, simplemente retornar sin error
-              return obj;
-            }
+            // Cualquier error al definir propiedad de wallet - silenciar
+            return obj;
           }
         }
         
@@ -245,7 +262,8 @@
           if ((isWalletProp && obj === window) || 
               (errMsg.indexOf('cannot redefine property') !== -1 && isWalletProp) ||
               (errMsg.indexOf('cannot assign to read only') !== -1 && isWalletProp) ||
-              (errMsg.indexOf('read only property') !== -1 && isWalletProp)) {
+              (errMsg.indexOf('read only property') !== -1 && isWalletProp) ||
+              (errMsg.indexOf('cannot redefine') !== -1 && (propLower === 'ethereum' || propLower === 'solana'))) {
             return obj;
           }
           throw e;
@@ -274,12 +292,14 @@
           'wallet', 'ethereum', 'solana', 'metamask', 'tronweb', 'tronlink', 'bybit', 'evmask',
           'cannot redefine property', 'cannot assign to read only', 'read only property',
           'which has only a getter', 'inpage.js', 'evmask.js', 'evmask.js:5', 'evmAsk.js',
-          'evmAsk.js:5', 'solana.js', 'solana.js:3', 'solana.js:', 'dist.94abdbf1.js', 'dist.',
+          'evmAsk.js:5', 'evmAsk.js:', 'solana.js', 'solana.js:3', 'solana.js:', 'dist.94abdbf1.js', 'dist.',
           'data-layer', 'inpage.js:154', 'inpage.js:168', 'inpage.js:1', 'inpage.js:',
           'chainid', 'chain id', 'tronweb is already initiated', 'tronlink will overwrite',
           'bybit:page provider', 'metamask encountered an error', 'metamask encountered',
           'wallet must has at least one account', 'wallet must have', 'wallet must',
-          'code 4001', '4001', 'typeerror', 'cannot set property'
+          'code 4001', '4001', 'typeerror', 'cannot set property', 'typeerror: cannot redefine',
+          'typeerror: cannot assign', 'cannot redefine property: ethereum', 'cannot redefine property: solana',
+          'cannot assign to read only property \'ethereum\'', 'cannot assign to read only property \'solana\''
         ];
         
         // Verificar si es error de wallet por mensaje o stack
@@ -341,7 +361,7 @@
           'solana.js', 'solana.js:3', 'solana.js:', 'inpage.js', 'inpage.js:154',
           'inpage.js:168', 'inpage.js:1', 'inpage.js:', 'evmask.js', 'evmAsk.js',
           'evmAsk.js:5', 'evmAsk.js:', 'dist.94abdbf1.js', 'dist.', 'data-layer',
-          'chunk', 'wallet'
+          'chunk', 'wallet', 'extension://', 'chrome-extension://', 'moz-extension://'
         ];
         
         var isWalletError = _walletPatterns.some(function(pattern) {
@@ -389,7 +409,7 @@
           'solana.js', 'solana.js:3', 'solana.js:', 'inpage.js', 'inpage.js:154',
           'inpage.js:168', 'inpage.js:1', 'inpage.js:', 'evmask.js', 'evmAsk.js',
           'evmAsk.js:5', 'evmAsk.js:', 'dist.94abdbf1.js', 'dist.', 'data-layer',
-          'chunk', 'wallet'
+          'chunk', 'wallet', 'extension://', 'chrome-extension://', 'moz-extension://'
         ];
         
         var isWalletError = _walletPatterns.some(function(pattern) {
@@ -425,7 +445,7 @@
           'solana.js', 'solana.js:3', 'solana.js:', 'inpage.js', 'inpage.js:154',
           'inpage.js:168', 'inpage.js:1', 'inpage.js:', 'evmask.js', 'evmAsk.js',
           'evmAsk.js:5', 'evmAsk.js:', 'dist.94abdbf1.js', 'dist.', 'data-layer',
-          'chunk', 'wallet'
+          'chunk', 'wallet', 'extension://', 'chrome-extension://', 'moz-extension://'
         ];
         
         var isWalletError = _walletPatterns.some(function(pattern) {
@@ -946,8 +966,28 @@
         }
       }, true);
     </script>
-    <script type="module" crossorigin src="/assets/js/index-CbQPdJIf.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/css/style-C902YR-E.css">
+    <script type="module" crossorigin src="/assets/js/index.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/js/vendor-react-dom.js">
+    <link rel="modulepreload" crossorigin href="/assets/js/vendor-radix.js">
+    <link rel="modulepreload" crossorigin href="/assets/js/chunk-shared.js">
+    <link rel="modulepreload" crossorigin href="/assets/js/vendor-framer-motion.js">
+    <link rel="modulepreload" crossorigin href="/assets/js/vendor-react-router.js">
+    <link rel="modulepreload" crossorigin href="/assets/js/chunk-utils.js">
+    <link rel="modulepreload" crossorigin href="/assets/js/chunk-admin-components.js">
+    <link rel="modulepreload" crossorigin href="/assets/js/chunk-dashboard.js">
+    <link rel="modulepreload" crossorigin href="/assets/js/chunk-profiles.js">
+    <link rel="modulepreload" crossorigin href="/assets/js/chunk-chat.js">
+    <link rel="modulepreload" crossorigin href="/assets/js/chunk-features.js">
+    <link rel="modulepreload" crossorigin href="/assets/js/vendor-supabase.js">
+    <link rel="modulepreload" crossorigin href="/assets/js/chunk-admin.js">
+    <link rel="modulepreload" crossorigin href="/assets/js/chunk-services.js">
+    <link rel="modulepreload" crossorigin href="/assets/js/vendor-other.js">
+    <link rel="modulepreload" crossorigin href="/assets/js/vendor-react-core.js">
+    <link rel="modulepreload" crossorigin href="/assets/js/vendor-query.js">
+    <link rel="modulepreload" crossorigin href="/assets/js/chunk-settings.js">
+    <link rel="modulepreload" crossorigin href="/assets/js/vendor-charts.js">
+    <link rel="modulepreload" crossorigin href="/assets/js/chunk-tokens.js">
+    <link rel="stylesheet" crossorigin href="/assets/css/style.css">
   </head>
 
   <body>

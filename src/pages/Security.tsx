@@ -18,11 +18,11 @@ const SecurityPage = () => {
             <Shield className="h-16 w-16 text-white" />
           </div>
           <h1 className="text-4xl font-bold text-white mb-4">
-            Seguridad y Protección
+            Seguridad y Protecciï¿½n
           </h1>
           <p className="text-xl text-white font-medium max-w-3xl mx-auto">
-            Tu seguridad y privacidad son nuestra máxima prioridad. Conoce todas las medidas 
-            que implementamos para proteger tu información y garantizar una experiencia segura.
+            Tu seguridad y privacidad son nuestra mï¿½xima prioridad. Conoce todas las medidas 
+            que implementamos para proteger tu informaciï¿½n y garantizar una experiencia segura.
           </p>
         </div>
 
@@ -31,12 +31,12 @@ const SecurityPage = () => {
           <Card className="bg-white/10 border-white/20 shadow-lg hover:shadow-xl transition-shadow overflow-hidden min-h-[250px]">
             <CardHeader className="text-center pb-3">
               <Lock className="h-12 w-12 text-white mx-auto mb-4 flex-shrink-0" />
-              <CardTitle className="text-lg sm:text-xl text-white break-words px-2">Encriptación de Datos</CardTitle>
+              <CardTitle className="text-lg sm:text-xl text-white break-words px-2">Encriptaciï¿½n de Datos</CardTitle>
             </CardHeader>
             <CardContent className="px-4">
               <p className="text-sm sm:text-base text-white font-medium text-center break-words leading-relaxed">
-                Todos tus datos están protegidos con encriptación de nivel bancario 
-                AES-GCM tanto en tránsito como en reposo. 122 políticas RLS activas.
+                Todos tus datos estï¿½n protegidos con encriptaciï¿½n de nivel bancario 
+                AES-GCM tanto en trï¿½nsito como en reposo. 122 polï¿½ticas RLS activas.
               </p>
             </CardContent>
           </Card>
@@ -44,12 +44,12 @@ const SecurityPage = () => {
           <Card className="bg-white/10 border-white/20 shadow-lg hover:shadow-xl transition-shadow overflow-hidden min-h-[250px]">
             <CardHeader className="text-center pb-3">
               <UserCheck className="h-12 w-12 text-white mx-auto mb-4 flex-shrink-0" />
-              <CardTitle className="text-lg sm:text-xl text-white break-words px-2">Verificación KYC</CardTitle>
+              <CardTitle className="text-lg sm:text-xl text-white break-words px-2">Verificaciï¿½n KYC</CardTitle>
             </CardHeader>
             <CardContent className="px-4">
               <p className="text-sm sm:text-base text-white font-medium text-center break-words leading-relaxed">
-                Sistema de verificación de identidad para garantizar que todos 
-                los usuarios sean personas reales y auténticas.
+                Sistema de verificaciï¿½n de identidad para garantizar que todos 
+                los usuarios sean personas reales y autï¿½nticas.
               </p>
             </CardContent>
           </Card>
@@ -61,7 +61,7 @@ const SecurityPage = () => {
             </CardHeader>
             <CardContent className="px-4">
               <p className="text-white font-medium text-center break-words leading-relaxed">
-                Tú decides qué información compartir y con quién. Control total 
+                Tï¿½ decides quï¿½ informaciï¿½n compartir y con quiï¿½n. Control total 
                 sobre la visibilidad de tu perfil y contenido.
               </p>
             </CardContent>
@@ -74,7 +74,7 @@ const SecurityPage = () => {
             <CardHeader>
               <CardTitle className="flex items-center text-2xl text-white font-medium">
                 <CheckCircle className="h-6 w-6 text-green-400 mr-3" />
-                Políticas de Seguridad
+                Polï¿½ticas de Seguridad
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -82,7 +82,7 @@ const SecurityPage = () => {
                 <div className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-400 mr-3 mt-0.5 flex-shrink-0" />
                   <p className="text-white font-medium">
-                    <strong>Autenticación de dos factores (2FA)</strong> disponible para mayor seguridad
+                    <strong>Autenticaciï¿½n de dos factores (2FA)</strong> disponible para mayor seguridad
                   </p>
                 </div>
                 <div className="flex items-start">
@@ -94,31 +94,31 @@ const SecurityPage = () => {
                 <div className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-400 mr-3 mt-0.5 flex-shrink-0" />
                   <p className="text-white font-medium">
-                    <strong>Auditorías regulares</strong> de seguridad por terceros especializados
+                    <strong>Auditorï¿½as regulares</strong> de seguridad por terceros especializados
                   </p>
                 </div>
                 <div className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-400 mr-3 mt-0.5 flex-shrink-0" />
                   <p className="text-white font-medium">
-                    <strong>Backup automático</strong> y recuperación de datos en múltiples ubicaciones
+                    <strong>Backup automï¿½tico</strong> y recuperaciï¿½n de datos en mï¿½ltiples ubicaciones
                   </p>
                 </div>
                 <div className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-400 mr-3 mt-0.5 flex-shrink-0" />
                   <p className="text-white font-medium">
-                    <strong>Cumplimiento GDPR/LFPDPPP + Ley Olimpia</strong> y normativas internacionales de protección de datos. Verificador IA de Consentimiento implementado.
+                    <strong>Cumplimiento GDPR/LFPDPPP + Ley Olimpia</strong> y normativas internacionales de protecciï¿½n de datos. Verificador IA de Consentimiento implementado.
                   </p>
                 </div>
                 <div className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-400 mr-3 mt-0.5 flex-shrink-0" />
                   <p className="text-white font-medium">
-                    <strong>Row Level Security (RLS):</strong> 122 políticas RLS activas protegiendo acceso a datos sensibles
+                    <strong>Row Level Security (RLS):</strong> 122 polï¿½ticas RLS activas protegiendo acceso a datos sensibles
                   </p>
                 </div>
                 <div className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-400 mr-3 mt-0.5 flex-shrink-0" />
                   <p className="text-white font-medium">
-                    <strong>Neo4j Graph Database:</strong> Análisis de conexiones sospechosas y detección de fraude avanzada
+                    <strong>Neo4j Graph Database:</strong> Anï¿½lisis de conexiones sospechosas y detecciï¿½n de fraude avanzada
                   </p>
                 </div>
               </div>
@@ -135,7 +135,7 @@ const SecurityPage = () => {
             <CardContent className="space-y-4">
               <p className="text-white font-medium">
                 Si detectas alguna actividad sospechosa o problema de seguridad, 
-                contáctanos inmediatamente:
+                contï¿½ctanos inmediatamente:
               </p>
               <div className="space-y-3">
                 <div className="bg-red-500/20 p-4 rounded-lg border border-red-400/30">
@@ -145,8 +145,8 @@ const SecurityPage = () => {
                 </div>
                 <div className="bg-orange-500/20 p-4 rounded-lg border border-orange-400/30">
                   <p className="font-semibold text-orange-300">Reportar Usuario</p>
-                  <p className="text-orange-200">Usa el botón "Reportar" en cualquier perfil</p>
-                  <p className="text-sm text-orange-200/80">Investigación en 24-48 horas</p>
+                  <p className="text-orange-200">Usa el botï¿½n "Reportar" en cualquier perfil</p>
+                  <p className="text-sm text-orange-200/80">Investigaciï¿½n en 24-48 horas</p>
                 </div>
                 <div className="bg-blue-500/20 p-4 rounded-lg border border-blue-400/30">
                   <p className="font-semibold text-blue-300">Soporte General</p>
@@ -166,21 +166,21 @@ const SecurityPage = () => {
           <CardContent>
             <div className="grid md:grid-cols-2 gap-8">
               <div>
-                <h3 className="text-lg font-semibold mb-4 text-purple-300">Gestión de Fotos</h3>
+                <h3 className="text-lg font-semibold mb-4 text-purple-300">Gestiï¿½n de Fotos</h3>
                 <ul className="space-y-2 text-white font-medium">
-                  <li>• Fotos públicas: visibles para todos los usuarios</li>
-                  <li>• Fotos privadas: requieren solicitud de acceso</li>
-                  <li>• Control total sobre quién puede ver tu contenido</li>
-                  <li>• Eliminación permanente cuando lo desees</li>
+                  <li>ï¿½ Fotos pï¿½blicas: visibles para todos los usuarios</li>
+                  <li>ï¿½ Fotos privadas: requieren solicitud de acceso</li>
+                  <li>ï¿½ Control total sobre quiï¿½n puede ver tu contenido</li>
+                  <li>ï¿½ Eliminaciï¿½n permanente cuando lo desees</li>
                 </ul>
               </div>
               <div>
-                <h3 className="text-lg font-semibold mb-4 text-purple-300">Configuración de Perfil</h3>
+                <h3 className="text-lg font-semibold mb-4 text-purple-300">Configuraciï¿½n de Perfil</h3>
                 <ul className="space-y-2 text-white font-medium">
-                  <li>• Visibilidad del perfil configurable</li>
-                  <li>• Bloqueo de usuarios no deseados</li>
-                  <li>• Control de mensajes y notificaciones</li>
-                  <li>• Modo invisible disponible</li>
+                  <li>ï¿½ Visibilidad del perfil configurable</li>
+                  <li>ï¿½ Bloqueo de usuarios no deseados</li>
+                  <li>ï¿½ Control de mensajes y notificaciones</li>
+                  <li>ï¿½ Modo invisible disponible</li>
                 </ul>
               </div>
             </div>
@@ -198,27 +198,27 @@ const SecurityPage = () => {
                 <div className="bg-purple-500/20 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center border border-purple-400/30">
                   <Lock className="h-8 w-8 text-purple-300" />
                 </div>
-                <h3 className="font-semibold mb-2 text-white">Contraseña Segura</h3>
+                <h3 className="font-semibold mb-2 text-white">Contraseï¿½a Segura</h3>
                 <p className="text-sm text-white font-medium">
-                  Usa contraseñas únicas y complejas. Activa la autenticación de dos factores.
+                  Usa contraseï¿½as ï¿½nicas y complejas. Activa la autenticaciï¿½n de dos factores.
                 </p>
               </div>
               <div className="text-center">
                 <div className="bg-purple-500/20 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center border border-purple-400/30">
                   <Eye className="h-8 w-8 text-purple-300" />
                 </div>
-                <h3 className="font-semibold mb-2 text-white">Información Personal</h3>
+                <h3 className="font-semibold mb-2 text-white">Informaciï¿½n Personal</h3>
                 <p className="text-sm text-white font-medium">
-                  No compartas información sensible como direcciones o datos financieros.
+                  No compartas informaciï¿½n sensible como direcciones o datos financieros.
                 </p>
               </div>
               <div className="text-center">
                 <div className="bg-purple-500/20 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center border border-purple-400/30">
                   <AlertTriangle className="h-8 w-8 text-purple-300" />
                 </div>
-                <h3 className="font-semibold mb-2 text-white">Manténte Alerta</h3>
+                <h3 className="font-semibold mb-2 text-white">Mantï¿½nte Alerta</h3>
                 <p className="text-sm text-white font-medium">
-                  Reporta comportamientos sospechosos y confía en tu instinto.
+                  Reporta comportamientos sospechosos y confï¿½a en tu instinto.
                 </p>
               </div>
             </div>
@@ -228,7 +228,7 @@ const SecurityPage = () => {
         {/* Contact CTA */}
         <div className="text-center mt-12">
           <p className="text-white font-medium mb-4">
-            ¿Tienes preguntas sobre seguridad o necesitas ayuda?
+            ï¿½Tienes preguntas sobre seguridad o necesitas ayuda?
           </p>
           <Button
             onClick={() => navigate('/support')}

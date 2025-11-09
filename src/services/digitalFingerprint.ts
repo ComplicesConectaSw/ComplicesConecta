@@ -174,7 +174,7 @@ export const checkFingerprintBanned = async (
 
     const { data, error } = await supabase.rpc('check_fingerprint_banned', {
       p_canvas_hash: fingerprint.canvasHash,
-      p_worldid_nullifier_hash: worldIdNullifierHash || null,
+      p_worldid_nullifier_hash: worldIdNullifierHash || undefined,
       p_combined_hash: fingerprint.combinedHash,
     });
 
@@ -212,10 +212,10 @@ export const saveDigitalFingerprint = async (
         user_id: userId,
         canvas_hash: fingerprint.canvasHash,
         canvas_data: fingerprint.canvasData,
-        browser_fingerprint: fingerprint.browserFingerprint,
-        worldid_nullifier_hash: worldIdNullifierHash || null,
+        browser_fingerprint: JSON.stringify(fingerprint.browserFingerprint),
+        worldid_nullifier_hash: worldIdNullifierHash ?? null,
         combined_hash: fingerprint.combinedHash,
-        ip_address: ipAddress || null,
+        ip_address: ipAddress ?? null,
         last_seen_at: new Date().toISOString(),
       }, {
         onConflict: 'combined_hash',

@@ -26,8 +26,8 @@ const Premium = () => {
   const [demoUser, _setDemoUser] = usePersistedState<any>('demo_user', null);
 
   useEffect(() => {
-    // Verificar autenticación (demo o real)
-    // Si hay sesión demo, usar esa
+    // Verificar autenticaciï¿½n (demo o real)
+    // Si hay sesiï¿½n demo, usar esa
     if (demoAuth === 'true' && demoUser) {
       const user = typeof demoUser === 'string' ? JSON.parse(demoUser) : demoUser;
       setIsDemoUser(true);
@@ -35,9 +35,9 @@ const Premium = () => {
       return;
     }
     
-    // Si no hay demo, verificar autenticación real
-    // Por ahora permitir acceso sin autenticación para usuarios reales
-    logger.info('?? Acceso a Premium sin autenticación requerida');
+    // Si no hay demo, verificar autenticaciï¿½n real
+    // Por ahora permitir acceso sin autenticaciï¿½n para usuarios reales
+    logger.info('?? Acceso a Premium sin autenticaciï¿½n requerida');
   }, [navigate, demoAuth, demoUser]);
 
   const handleComingSoon = (title: string) => {
@@ -49,19 +49,19 @@ const Premium = () => {
     {
       icon: Heart,
       title: "Conexiones Ilimitadas",
-      description: "Intercambio sin límites con parejas verificadas",
+      description: "Intercambio sin lï¿½mites con parejas verificadas",
       color: "from-pink-500 to-rose-500"
     },
     {
       icon: Shield,
-      title: "Verificación VIP",
+      title: "Verificaciï¿½n VIP",
       description: "Acceso a perfiles ultra-verificados",
       color: "from-purple-500 to-indigo-500"
     },
     {
       icon: Calendar,
       title: "Eventos Exclusivos",
-      description: "Fiestas privadas y orgías VIP",
+      description: "Fiestas privadas y orgï¿½as VIP",
       color: "from-amber-500 to-orange-500"
     },
     {
@@ -106,11 +106,11 @@ const Premium = () => {
               </h1>
             </div>
             <div className="bg-love-gradient bg-clip-text text-transparent text-2xl md:text-3xl font-bold mb-4">
-              Experiencias Íntimas Exclusivas
+              Experiencias ï¿½ntimas Exclusivas
             </div>
             <p className="text-xl text-white max-w-3xl mx-auto">
-              Accede a la élite swinger con funciones premium, eventos VIP y el sistema de tokens CMPX. 
-              <strong className="text-accent"> Disponible después de la fase Beta.</strong>
+              Accede a la ï¿½lite swinger con funciones premium, eventos VIP y el sistema de tokens CMPX. 
+              <strong className="text-accent"> Disponible despuï¿½s de la fase Beta.</strong>
             </p>
           </div>
 
@@ -119,7 +119,7 @@ const Premium = () => {
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-foreground mb-4">Apoya el Proyecto Beta</h2>
               <p className="text-white max-w-2xl mx-auto">
-                Ayúdanos a hacer ComplicesConecta la mejor plataforma swinger. Tu donación nos permite mejorar 
+                Ayï¿½danos a hacer ComplicesConecta la mejor plataforma swinger. Tu donaciï¿½n nos permite mejorar 
                 la experiencia y agregar nuevas funciones exclusivas.
               </p>
             </div>
@@ -143,15 +143,15 @@ const Premium = () => {
                   </div>
                   <ul className="space-y-2 list-none">
                     <li className="text-sm text-white flex items-start gap-2">
-                      <span className="text-blue-400 mt-1">•</span>
+                      <span className="text-blue-400 mt-1">ï¿½</span>
                       <span>Acceso anticipado a noticias</span>
                     </li>
                     <li className="text-sm text-white flex items-start gap-2">
-                      <span className="text-blue-400 mt-1">•</span>
+                      <span className="text-blue-400 mt-1">ï¿½</span>
                       <span>Nuestro agradecimiento eterno</span>
                     </li>
                     <li className="text-sm text-white flex items-start gap-2">
-                      <span className="text-blue-400 mt-1">•</span>
+                      <span className="text-blue-400 mt-1">ï¿½</span>
                       <span>Reconocimiento en la comunidad</span>
                     </li>
                   </ul>
@@ -159,7 +159,7 @@ const Premium = () => {
                     asChild
                     className="w-full mt-4 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600"
                   >
-                    <a href="#" onClick={(e) => { e.preventDefault(); alert('Funcionalidad de pago disponible próximamente'); }}>Seleccionar</a>
+                    <a href="#" onClick={(e) => { e.preventDefault(); alert('Funcionalidad de pago disponible prï¿½ximamente'); }}>Seleccionar</a>
                   </Button>
                 </CardContent>
               </Card>
@@ -182,16 +182,16 @@ const Premium = () => {
                   </div>
                   <ul className="space-y-2 list-none">
                     <li className="text-sm text-white flex items-start gap-2">
-                      <span className="text-purple-400 mt-1">•</span>
+                      <span className="text-purple-400 mt-1">ï¿½</span>
                       <span>Todo lo anterior</span>
                     </li>
                     <li className="text-sm text-white flex items-start gap-2">
-                      <span className="text-purple-400 mt-1">•</span>
+                      <span className="text-purple-400 mt-1">ï¿½</span>
                       <span>Acceso a contenido exclusivo</span>
                     </li>
                     <li className="text-sm text-white flex items-start gap-2">
-                      <span className="text-purple-400 mt-1">•</span>
-                      <span>Participación en encuestas</span>
+                      <span className="text-purple-400 mt-1">ï¿½</span>
+                      <span>Participaciï¿½n en encuestas</span>
                     </li>
                   </ul>
                   <Button 
@@ -199,7 +199,7 @@ const Premium = () => {
                     onClick={() => {
                       if (isDemoUser) {
                         toast({
-                          title: "¡Premium Activado! (Modo Demo)",
+                          title: "ï¿½Premium Activado! (Modo Demo)",
                           description: "En modo demo tienes acceso completo a todas las funciones premium.",
                           duration: 3000,
                         });
@@ -235,15 +235,15 @@ const Premium = () => {
                   </div>
                   <ul className="space-y-2 list-none">
                     <li className="text-sm text-white flex items-start gap-2">
-                      <span className="text-amber-400 mt-1">•</span>
+                      <span className="text-amber-400 mt-1">ï¿½</span>
                       <span>Todo lo anterior</span>
                     </li>
                     <li className="text-sm text-white flex items-start gap-2">
-                      <span className="text-amber-400 mt-1">•</span>
+                      <span className="text-amber-400 mt-1">ï¿½</span>
                       <span>Acceso beta a nuevas funciones</span>
                     </li>
                     <li className="text-sm text-white flex items-start gap-2">
-                      <span className="text-amber-400 mt-1">•</span>
+                      <span className="text-amber-400 mt-1">ï¿½</span>
                       <span>Consulta directa con el equipo</span>
                     </li>
                   </ul>
@@ -252,7 +252,7 @@ const Premium = () => {
                     onClick={() => {
                       if (isDemoUser) {
                         toast({
-                          title: "¡Premium VIP Activado! (Modo Demo)",
+                          title: "ï¿½Premium VIP Activado! (Modo Demo)",
                           description: "En modo demo tienes acceso completo a todas las funciones VIP.",
                           duration: 3000,
                         });
@@ -280,15 +280,15 @@ const Premium = () => {
                       Founding Member
                     </Badge>
                   </div>
-                  <p className="text-sm text-white">• Todo lo anterior</p>
-                  <p className="text-sm text-white">• Tu nombre en los créditos</p>
-                  <p className="text-sm text-white">• Acceso de por vida a funciones premium</p>
+                  <p className="text-sm text-white">ï¿½ Todo lo anterior</p>
+                  <p className="text-sm text-white">ï¿½ Tu nombre en los crï¿½ditos</p>
+                  <p className="text-sm text-white">ï¿½ Acceso de por vida a funciones premium</p>
                   <Button 
                     className="w-full mt-4 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600"
                     onClick={() => {
                       if (isDemoUser) {
                         toast({
-                          title: "¡Founding Member Activado! (Modo Demo)",
+                          title: "ï¿½Founding Member Activado! (Modo Demo)",
                           description: "En modo demo tienes acceso completo a todas las funciones de miembro fundador.",
                           duration: 3000,
                         });
@@ -303,7 +303,7 @@ const Premium = () => {
 
             <div className="text-center">
               <p className="text-sm text-white mb-4">
-                ?? Pagos seguros procesados por Stripe • ?? Transacciones encriptadas • ???? Precios en pesos mexicanos
+                ?? Pagos seguros procesados por Stripe ï¿½ ?? Transacciones encriptadas ï¿½ ???? Precios en pesos mexicanos
               </p>
               <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
                 <Shield className="h-3 w-3 mr-1" />
@@ -318,12 +318,12 @@ const Premium = () => {
               <Lock className="h-12 w-12 text-accent mx-auto mb-4" />
               <h2 className="text-2xl font-bold text-foreground mb-2">Funciones Premium - Post Beta</h2>
               <p className="text-white mb-4">
-                Las funciones Premium avanzadas se activarán al finalizar la fase beta. 
-                Los donantes tendrán acceso prioritario y beneficios exclusivos.
+                Las funciones Premium avanzadas se activarï¿½n al finalizar la fase beta. 
+                Los donantes tendrï¿½n acceso prioritario y beneficios exclusivos.
               </p>
               <Badge variant="secondary" className="bg-accent/20 text-accent">
                 <Sparkles className="h-4 w-4 mr-1" />
-                Próximamente
+                Prï¿½ximamente
               </Badge>
             </CardContent>
           </Card>
@@ -365,14 +365,14 @@ const Premium = () => {
                   <Calendar className="h-5 w-5 text-accent mt-1" />
                   <div>
                     <h4 className="font-medium text-foreground">Eventos VIP Exclusivos</h4>
-                    <p className="text-sm text-white">Invitaciones a fiestas privadas, orgías y clubs swinger de élite</p>
+                    <p className="text-sm text-white">Invitaciones a fiestas privadas, orgï¿½as y clubs swinger de ï¿½lite</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <Shield className="h-5 w-5 text-accent mt-1" />
                   <div>
-                    <h4 className="font-medium text-foreground">Privacidad Máxima</h4>
-                    <p className="text-sm text-white">Modo incógnito y protección avanzada de identidad</p>
+                    <h4 className="font-medium text-foreground">Privacidad Mï¿½xima</h4>
+                    <p className="text-sm text-white">Modo incï¿½gnito y protecciï¿½n avanzada de identidad</p>
                   </div>
                 </div>
               </CardContent>
@@ -405,7 +405,7 @@ const Premium = () => {
                   <Star className="h-5 w-5 text-primary mt-1" />
                   <div>
                     <h4 className="font-medium text-foreground">NFTs de Experiencias</h4>
-                    <p className="text-sm text-white">Colecciona NFTs únicos de tus experiencias swinger más memorables</p>
+                    <p className="text-sm text-white">Colecciona NFTs ï¿½nicos de tus experiencias swinger mï¿½s memorables</p>
                   </div>
                 </div>
               </CardContent>
@@ -431,16 +431,16 @@ const Premium = () => {
           <Card className="bg-hero-gradient border-0 text-white">
             <CardContent className="text-center py-12">
               <Crown className="h-16 w-16 mx-auto mb-6 text-white" />
-              <h2 className="text-3xl font-bold mb-4">Únete a la Lista VIP</h2>
+              <h2 className="text-3xl font-bold mb-4">ï¿½nete a la Lista VIP</h2>
               <p className="text-white/90 text-lg mb-8 max-w-2xl mx-auto">
-                Sé de los primeros en acceder a las funciones Premium cuando finalice la beta. 
-                Recibirás tokens CMPX gratuitos y acceso prioritario a eventos exclusivos.
+                Sï¿½ de los primeros en acceder a las funciones Premium cuando finalice la beta. 
+                Recibirï¿½s tokens CMPX gratuitos y acceso prioritario a eventos exclusivos.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 
                   size="lg" 
                   className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
-                  onClick={() => handleComingSoon("Planes de Suscripción Premium")}
+                  onClick={() => handleComingSoon("Planes de Suscripciï¿½n Premium")}
                 >
                   <Crown className="mr-2 h-5 w-5" />
                   Ver Planes Premium
@@ -467,7 +467,7 @@ const Premium = () => {
         isOpen={showComingSoonModal}
         onClose={() => setShowComingSoonModal(false)}
         title={comingSoonTitle}
-        description="Esta funcionalidad estará disponible después de la fase Beta. Los usuarios que apoyen el proyecto tendrán acceso prioritario."
+        description="Esta funcionalidad estarï¿½ disponible despuï¿½s de la fase Beta. Los usuarios que apoyen el proyecto tendrï¿½n acceso prioritario."
         feature="Premium"
       />
       

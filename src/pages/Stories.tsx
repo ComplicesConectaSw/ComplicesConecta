@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import StoriesContainer from '@/components/stories/StoriesContainer';
 import HeaderNav from '@/components/HeaderNav';
 

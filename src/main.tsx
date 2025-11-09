@@ -91,11 +91,8 @@ if (typeof window !== 'undefined') {
 }
 
 // Ahora sí, importar el resto de las dependencias
-import App from './App.tsx'
-import './styles/index.css'
-import './styles/consolidated-styles.css' // Consolidado: accessibility.css, cross-browser.css (estilos únicos), mobile-responsive.css (estilos únicos)
-import './styles/ui-fixes-consolidated.css' // Consolidado: ui-fixes-contraste, info-text-visibility, header-nav-protection, responsive-fixes, text-overflow-fixes, text-visibility-fixes
-import './styles/decorative-hearts.css'
+import App from './App'
+import './styles/global.css' // Estilos unificados: Tailwind + Base + Componentes + Decorative Hearts + UI Fixes
 import { initializeWalletProtection, detectWalletConflicts } from "./utils/walletProtection";
 import { initializeReactFallbacks, ensureReactPolyfills } from "./utils/reactFallbacks";
 import ErrorBoundary from '@/components/ErrorBoundary'
@@ -483,3 +480,4 @@ initializeApp().catch((error: unknown) => {
     }
   }
 });
+

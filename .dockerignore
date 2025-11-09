@@ -55,3 +55,7 @@ SINCRONIZACION_*.md
 Thumbs.db
 *.log
 
+# Directorio de backups fuera del proyecto
+../bck/
+bck/
+

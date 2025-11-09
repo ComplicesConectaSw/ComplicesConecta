@@ -32,7 +32,7 @@ const Requests = () => {
   const [sentInvitations, setSentInvitations] = useState<Invitation[]>([]);
   const [activeTab, setActiveTab] = useState<'received' | 'sent'>('received');
   
-  // Migración localStorage ? usePersistedState
+  // Migraciï¿½n localStorage ? usePersistedState
   const [demoAuth, _setDemoAuth] = usePersistedState('demo_authenticated', 'false');
   const [demoUser, _setDemoUser] = usePersistedState<any>('demo_user', null);
 
@@ -44,31 +44,31 @@ const Requests = () => {
       {
         id: 'demo-inv-1',
         from_profile: 'Anabella & Julio',
-        to_profile: 'Sofía',
+        to_profile: 'Sofï¿½a',
         type: 'chat',
         status: 'pending',
-        message: '¡Hola! Nos encantaría conocerte mejor. ¿Te gustaría chatear con nosotros?',
-        created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 horas atrás
+        message: 'ï¿½Hola! Nos encantarï¿½a conocerte mejor. ï¿½Te gustarï¿½a chatear con nosotros?',
+        created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 horas atrï¿½s
         decided_at: null
       },
       {
         id: 'demo-inv-2',
         from_profile: 'Carmen & Roberto',
-        to_profile: 'Sofía',
+        to_profile: 'Sofï¿½a',
         type: 'gallery',
         status: 'pending',
-        message: 'Hola guapa, nos gustó mucho tu perfil. ¿Nos permites ver tu galería privada?',
-        created_at: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(), // 5 horas atrás
+        message: 'Hola guapa, nos gustï¿½ mucho tu perfil. ï¿½Nos permites ver tu galerï¿½a privada?',
+        created_at: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(), // 5 horas atrï¿½s
         decided_at: null
       },
       {
         id: 'demo-inv-3',
-        from_profile: 'Raúl',
-        to_profile: 'Sofía',
+        from_profile: 'Raï¿½l',
+        to_profile: 'Sofï¿½a',
         type: 'profile',
         status: 'accepted',
-        message: '¿Qué tal si nos conocemos mejor?',
-        created_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), // 1 día atrás
+        message: 'ï¿½Quï¿½ tal si nos conocemos mejor?',
+        created_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), // 1 dï¿½a atrï¿½s
         decided_at: new Date(Date.now() - 20 * 60 * 60 * 1000).toISOString()
       }
     ];
@@ -77,22 +77,22 @@ const Requests = () => {
     const demoSent: Invitation[] = [
       {
         id: 'demo-sent-1',
-        from_profile: 'Sofía',
+        from_profile: 'Sofï¿½a',
         to_profile: 'Miguel & Laura',
         type: 'chat',
         status: 'accepted',
-        message: 'Hola, me encantó su perfil. ¿Les gustaría platicar?',
-        created_at: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(), // 3 horas atrás
+        message: 'Hola, me encantï¿½ su perfil. ï¿½Les gustarï¿½a platicar?',
+        created_at: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(), // 3 horas atrï¿½s
         decided_at: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString()
       },
       {
         id: 'demo-sent-2',
-        from_profile: 'Sofía',
+        from_profile: 'Sofï¿½a',
         to_profile: 'Carlos',
         type: 'profile',
         status: 'pending',
-        message: 'Hola, me pareces muy interesante. ¿Te gustaría conocernos?',
-        created_at: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(), // 6 horas atrás
+        message: 'Hola, me pareces muy interesante. ï¿½Te gustarï¿½a conocernos?',
+        created_at: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(), // 6 horas atrï¿½s
         decided_at: null
       }
     ];
@@ -141,7 +141,7 @@ const Requests = () => {
     }
     
     
-    // Verificar autenticación real - solo redirigir si realmente no está autenticado
+    // Verificar autenticaciï¿½n real - solo redirigir si realmente no estï¿½ autenticado
     try {
       if (!isAuthenticated) {
         logger.info('? Usuario no autenticado en Requests, redirigiendo a /auth');
@@ -149,11 +149,11 @@ const Requests = () => {
         return;
       }
     } catch (error) {
-      logger.error('? Error verificando autenticación en Requests:', { error });
-      // No redirigir automáticamente en caso de error, permitir que el usuario permanezca
+      logger.error('? Error verificando autenticaciï¿½n en Requests:', { error });
+      // No redirigir automï¿½ticamente en caso de error, permitir que el usuario permanezca
       toast({
         title: "Advertencia",
-        description: "Hubo un problema verificando la autenticación. Si persiste, intenta cerrar y abrir sesión.",
+        description: "Hubo un problema verificando la autenticaciï¿½n. Si persiste, intenta cerrar y abrir sesiï¿½n.",
         variant: "destructive"
       });
     }
@@ -171,7 +171,7 @@ const Requests = () => {
 
   const handleInvitationAction = async (invitationId: string, action: 'accept' | 'decline') => {
     try {
-      // Si es modo demo, simular la acción
+      // Si es modo demo, simular la acciï¿½n
       if (demoAuth === 'true') {
         // Actualizar el estado local para demo
         setReceivedInvitations(prev => 
@@ -183,25 +183,25 @@ const Requests = () => {
         );
         
         toast({
-          title: `Invitación ${action === 'accept' ? 'aceptada' : 'rechazada'}`,
-          description: `La invitación ha sido procesada correctamente (modo demo).`,
+          title: `Invitaciï¿½n ${action === 'accept' ? 'aceptada' : 'rechazada'}`,
+          description: `La invitaciï¿½n ha sido procesada correctamente (modo demo).`,
         });
         
-        logger.info('?? Acción demo en invitación:', { invitationId, action });
+        logger.info('?? Acciï¿½n demo en invitaciï¿½n:', { invitationId, action });
         return;
       }
       
       // Modo real
       await invitationService.respondInvitation(invitationId, action);
       toast({
-        title: `Invitación ${action === 'accept' ? 'aceptada' : 'rechazada'}`,
-        description: `La invitación ha sido procesada correctamente.`,
+        title: `Invitaciï¿½n ${action === 'accept' ? 'aceptada' : 'rechazada'}`,
+        description: `La invitaciï¿½n ha sido procesada correctamente.`,
       });
       loadInvitations(); // Refresh the list
     } catch {
       toast({
         title: "Error",
-        description: "No se pudo procesar la solicitud. Inténtalo de nuevo.",
+        description: "No se pudo procesar la solicitud. Intï¿½ntalo de nuevo.",
         variant: "destructive",
       });
     }
@@ -241,8 +241,8 @@ const Requests = () => {
       <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 flex items-center justify-center">
         <Card className="p-8 text-center bg-card/80 backdrop-blur-sm">
           <UserX className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-          <h2 className="text-xl font-semibold mb-2">Función no disponible</h2>
-          <p className="text-muted-foreground">Las solicitudes de conexión no están habilitadas en esta versión.</p>
+          <h2 className="text-xl font-semibold mb-2">Funciï¿½n no disponible</h2>
+          <p className="text-muted-foreground">Las solicitudes de conexiï¿½n no estï¿½n habilitadas en esta versiï¿½n.</p>
         </Card>
       </div>
     );
@@ -302,7 +302,7 @@ const Requests = () => {
                     <Card className="p-8 text-center bg-gradient-to-br from-purple-900/30 via-purple-800/20 to-blue-900/30 backdrop-blur-sm border-white/10">
                       <UserPlus className="h-16 w-16 mx-auto mb-4 text-white/50" />
                       <h3 className="text-xl font-semibold text-white mb-2">No hay invitaciones recibidas</h3>
-                      <p className="text-white/70">Cuando alguien te envíe una invitación, aparecerá aquí.</p>
+                      <p className="text-white/70">Cuando alguien te envï¿½e una invitaciï¿½n, aparecerï¿½ aquï¿½.</p>
                     </Card>
                   ) : (
                     receivedInvitations.map((inv) => (
@@ -311,7 +311,7 @@ const Requests = () => {
                           <div className="flex justify-between items-start mb-2">
                             <div className="flex items-center text-sm text-white/80">
                               {getInvitationTypeIcon(inv.type)}
-                              <span>Invitación de <strong>{inv.from_profile}</strong></span>
+                              <span>Invitaciï¿½n de <strong>{inv.from_profile}</strong></span>
                             </div>
                             {getStatusBadge(inv.status)}
                           </div>
@@ -340,7 +340,7 @@ const Requests = () => {
                     <Card className="p-8 text-center bg-gradient-to-br from-purple-900/30 via-purple-800/20 to-blue-900/30 backdrop-blur-sm border-white/10">
                       <Send className="h-16 w-16 mx-auto mb-4 text-white/50" />
                       <h3 className="text-xl font-semibold text-white mb-2">No has enviado invitaciones</h3>
-                      <p className="text-white/70">Explora perfiles y envía invitaciones para conectar.</p>
+                      <p className="text-white/70">Explora perfiles y envï¿½a invitaciones para conectar.</p>
                     </Card>
                   ) : (
                     sentInvitations.map((inv) => (
@@ -348,7 +348,7 @@ const Requests = () => {
                         <div className="flex justify-between items-start">
                           <div className="flex items-center text-sm text-white/80">
                             {getInvitationTypeIcon(inv.type)}
-                            <span>Invitación para <strong>{inv.to_profile}</strong></span>
+                            <span>Invitaciï¿½n para <strong>{inv.to_profile}</strong></span>
                           </div>
                           {getStatusBadge(inv.status)}
                         </div>

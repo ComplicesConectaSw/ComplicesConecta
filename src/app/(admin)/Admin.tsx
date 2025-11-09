@@ -167,7 +167,7 @@ const Admin = () => {
       logger.error('Error loading admin data:', { error: String(error) });
       toast({
         title: "Error",
-        description: "Error al cargar datos del panel de administración",
+        description: "Error al cargar datos del panel de administraciï¿½n",
         variant: "destructive"
       });
     } finally {
@@ -190,7 +190,7 @@ const Admin = () => {
           created_at: new Date().toISOString(),
           last_seen: new Date().toISOString(),
           avatar_url: undefined,
-          bio: 'Perfil de demostración'
+          bio: 'Perfil de demostraciï¿½n'
         }
       ];
       
@@ -232,8 +232,8 @@ const Admin = () => {
       const mockFAQs: FAQItem[] = [
         {
           id: '1',
-          question: '¿Cómo funciona la verificación?',
-          answer: 'La verificación se realiza mediante WorldID y documentos oficiales.',
+          question: 'ï¿½Cï¿½mo funciona la verificaciï¿½n?',
+          answer: 'La verificaciï¿½n se realiza mediante WorldID y documentos oficiales.',
           category: 'general',
           priority: 1,
           created_at: new Date().toISOString()
@@ -254,7 +254,7 @@ const Admin = () => {
           from_profile: 'user1@example.com',
           to_profile: 'user2@example.com',
           type: 'profile',
-          message: 'Me gustaría conectar contigo',
+          message: 'Me gustarï¿½a conectar contigo',
           status: 'pending',
           created_at: new Date().toISOString()
         }
@@ -268,10 +268,10 @@ const Admin = () => {
   const _handleDeleteProfile = async (profileId: string) => {
     try {
       if (!supabase) {
-        logger.error('Supabase no está disponible');
+        logger.error('Supabase no estï¿½ disponible');
         toast({
           title: "Error",
-          description: "Supabase no está disponible",
+          description: "Supabase no estï¿½ disponible",
           variant: "destructive"
         });
         return;
@@ -302,10 +302,10 @@ const Admin = () => {
   const _handleToggleVerification = async (profileId: string, currentStatus: boolean) => {
     try {
       if (!supabase) {
-        logger.error('Supabase no está disponible');
+        logger.error('Supabase no estï¿½ disponible');
         toast({
           title: "Error",
-          description: "Supabase no está disponible",
+          description: "Supabase no estï¿½ disponible",
           variant: "destructive"
         });
         return;
@@ -325,14 +325,14 @@ const Admin = () => {
       ));
 
       toast({
-        title: currentStatus ? "Verificación Removida" : "Perfil Verificado",
+        title: currentStatus ? "Verificaciï¿½n Removida" : "Perfil Verificado",
         description: `El perfil ha sido ${currentStatus ? 'desverificado' : 'verificado'} exitosamente`
       });
     } catch (_error) {
       logger.error('Error updating verification:', { error: String(_error) });
       toast({
         title: "Error",
-        description: "Error al actualizar verificación",
+        description: "Error al actualizar verificaciï¿½n",
         variant: "destructive"
       });
     }
@@ -388,8 +388,8 @@ const Admin = () => {
         inv.id === invitationId ? { ...inv, status: 'revoked' as const } : inv
       ));
       toast({
-        title: "Invitación Revocada",
-        description: "La invitación ha sido revocada exitosamente"
+        title: "Invitaciï¿½n Revocada",
+        description: "La invitaciï¿½n ha sido revocada exitosamente"
       });
     } catch (_error) {
       logger.error('Error revoking invitation:', { error: String(_error) });
@@ -443,7 +443,7 @@ const Admin = () => {
               <Shield className="w-16 h-16 mx-auto text-red-500" />
               <h2 className="text-2xl font-bold text-foreground">Acceso Denegado</h2>
               <p className="text-muted-foreground">
-                No tienes permisos para acceder al panel de administración.
+                No tienes permisos para acceder al panel de administraciï¿½n.
               </p>
               <Button onClick={() => navigate('/')} className="w-full">
                 Volver al Inicio
@@ -478,8 +478,8 @@ const Admin = () => {
       <AdminNav userRole="admin" />
       <div className="container mx-auto px-4 py-8 pt-24">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground mb-2">Panel de Administración</h1>
-          <p className="text-muted-foreground">Gestiona usuarios, estadísticas y configuraciones del sistema</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Panel de Administraciï¿½n</h1>
+          <p className="text-muted-foreground">Gestiona usuarios, estadï¿½sticas y configuraciones del sistema</p>
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
@@ -487,7 +487,7 @@ const Admin = () => {
             <TabsTrigger value="overview">Resumen</TabsTrigger>
             <TabsTrigger value="users">Usuarios</TabsTrigger>
             <TabsTrigger value="invitations">Invitaciones</TabsTrigger>
-            <TabsTrigger value="stats">Estadísticas</TabsTrigger>
+            <TabsTrigger value="stats">Estadï¿½sticas</TabsTrigger>
             <TabsTrigger value="faq">FAQ</TabsTrigger>
           </TabsList>
 
@@ -538,7 +538,7 @@ const Admin = () => {
           <TabsContent value="users">
             <Card>
               <CardHeader>
-                <CardTitle>Gestión de Usuarios</CardTitle>
+                <CardTitle>Gestiï¿½n de Usuarios</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -569,7 +569,7 @@ const Admin = () => {
           <TabsContent value="invitations">
             <Card>
               <CardHeader>
-                <CardTitle>Gestión de Invitaciones</CardTitle>
+                <CardTitle>Gestiï¿½n de Invitaciones</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -592,7 +592,7 @@ const Admin = () => {
           <TabsContent value="stats">
             <Card>
               <CardHeader>
-                <CardTitle>Estadísticas Detalladas</CardTitle>
+                <CardTitle>Estadï¿½sticas Detalladas</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -600,7 +600,7 @@ const Admin = () => {
                     <h3 className="text-lg font-semibold mb-4">Tokens</h3>
                     <div className="space-y-2">
                       <div className="flex justify-between">
-                        <span>Total en circulación:</span>
+                        <span>Total en circulaciï¿½n:</span>
                         <span className="font-bold">{_stats.totalTokens.toLocaleString()}</span>
                       </div>
                       <div className="flex justify-between">
@@ -611,7 +611,7 @@ const Admin = () => {
                   </div>
                   
                   <div>
-                    <h3 className="text-lg font-semibold mb-4">Verificación</h3>
+                    <h3 className="text-lg font-semibold mb-4">Verificaciï¿½n</h3>
                     <div className="space-y-2">
                       <div className="flex justify-between">
                         <span>WorldID verificados:</span>
@@ -631,7 +631,7 @@ const Admin = () => {
           <TabsContent value="faq">
             <Card>
               <CardHeader>
-                <CardTitle>Gestión de FAQ</CardTitle>
+                <CardTitle>Gestiï¿½n de FAQ</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4 mb-6">
@@ -642,7 +642,7 @@ const Admin = () => {
                       onChange={(e) => setNewFaq({ ...newFaq, question: e.target.value })}
                     />
                     <Input
-                      placeholder="Categoría"
+                      placeholder="Categorï¿½a"
                       value={newFaq.category}
                       onChange={(e) => setNewFaq({ ...newFaq, category: e.target.value })}
                     />

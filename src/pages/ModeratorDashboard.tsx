@@ -123,7 +123,7 @@ const ModeratorDashboard = () => {
 
   const fetchReports = async () => {
     if (!supabase) {
-      console.error('Supabase no está disponible');
+      console.error('Supabase no estï¿½ disponible');
       return;
     }
     
@@ -150,7 +150,7 @@ const ModeratorDashboard = () => {
 
   const fetchModerationLogs = async () => {
     if (!supabase) {
-      logger.error('Supabase no está disponible');
+      logger.error('Supabase no estï¿½ disponible');
       return;
     }
     
@@ -186,7 +186,7 @@ const ModeratorDashboard = () => {
 
   const fetchSuspensions = async () => {
     if (!supabase) {
-      console.error('Supabase no está disponible');
+      console.error('Supabase no estï¿½ disponible');
       return;
     }
     
@@ -227,7 +227,7 @@ const ModeratorDashboard = () => {
     if (!actionReason.trim()) {
       toast({
         title: "Error",
-        description: "Por favor proporciona una razón para esta acción",
+        description: "Por favor proporciona una razï¿½n para esta acciï¿½n",
         variant: "destructive"
       });
       return;
@@ -235,7 +235,7 @@ const ModeratorDashboard = () => {
 
     try {
       if (!supabase) {
-        logger.error('Supabase no está disponible');
+        logger.error('Supabase no estï¿½ disponible');
         return;
       }
       
@@ -257,7 +257,7 @@ const ModeratorDashboard = () => {
 
       if (updateError) throw updateError;
 
-      // Registrar la acción en los logs
+      // Registrar la acciï¿½n en los logs
       const moderationAction = action === 'approve' ? 'report_approved' : 'report_dismissed';
       const { error: logError } = await supabase
         .from('moderation_logs')
@@ -274,7 +274,7 @@ const ModeratorDashboard = () => {
 
       if (logError) throw logError;
 
-      // Si se aprueba el reporte, crear suspensión
+      // Si se aprueba el reporte, crear suspensiï¿½n
       if (action === 'approve') {
         const suspendedUntil = suspensionDays > 0 
           ? new Date(Date.now() + suspensionDays * 24 * 60 * 60 * 1000).toISOString()
@@ -297,7 +297,7 @@ const ModeratorDashboard = () => {
       }
 
       toast({
-        title: "Éxito",
+        title: "ï¿½xito",
         description: `Reporte ${action === 'approve' ? 'aprobado' : 'rechazado'} exitosamente`
       });
       setActionReason('');
@@ -307,7 +307,7 @@ const ModeratorDashboard = () => {
       console.error('Error handling report action:', error);
       toast({
         title: "Error",
-        description: "Error al procesar la acción",
+        description: "Error al procesar la acciï¿½n",
         variant: "destructive"
       });
     }
@@ -325,10 +325,10 @@ const ModeratorDashboard = () => {
 
     try {
       if (!supabase) {
-        throw new Error('Supabase no está disponible');
+        throw new Error('Supabase no estï¿½ disponible');
       }
 
-      // Obtener WorldID nullifier hash si está disponible
+      // Obtener WorldID nullifier hash si estï¿½ disponible
       const { data: worldIdData } = await supabase
         .from('worldid_verifications')
         .select('nullifier_hash')
@@ -371,7 +371,7 @@ const ModeratorDashboard = () => {
   const liftSuspension = async (suspensionId: string) => {
     try {
       if (!supabase) {
-        logger.error('Supabase no está disponible');
+        logger.error('Supabase no estï¿½ disponible');
         return;
       }
       
@@ -388,7 +388,7 @@ const ModeratorDashboard = () => {
 
       if (error) throw error;
 
-      // Registrar la acción en los logs
+      // Registrar la acciï¿½n en los logs
       const suspension = suspensions.find(s => s.id === suspensionId);
       if (suspension) {
         await supabase
@@ -399,22 +399,22 @@ const ModeratorDashboard = () => {
             target_type: 'user',
             target_id: suspension.user_id,
             target_user_id: suspension.user_id,
-            description: 'Suspensión levantada por moderador',
-            reason: 'Suspensión levantada por moderador',
+            description: 'Suspensiï¿½n levantada por moderador',
+            reason: 'Suspensiï¿½n levantada por moderador',
             created_at: new Date().toISOString()
           }]);
       }
 
       toast({
-        title: "Éxito",
-        description: "Suspensión levantada exitosamente"
+        title: "ï¿½xito",
+        description: "Suspensiï¿½n levantada exitosamente"
       });
       fetchData();
     } catch (error) {
       console.error('Error lifting suspension:', error);
       toast({
         title: "Error",
-        description: "Error al levantar la suspensión",
+        description: "Error al levantar la suspensiï¿½n",
         variant: "destructive"
       });
     }
@@ -427,7 +427,7 @@ const ModeratorDashboard = () => {
       spam: 'Spam',
       fake_profile: 'Perfil falso',
       underage: 'Menor de edad',
-      terms_violation: 'Violación de términos'
+      terms_violation: 'Violaciï¿½n de tï¿½rminos'
     };
     return labels[type] || type;
   };
@@ -442,7 +442,7 @@ const ModeratorDashboard = () => {
 
     const labels: Record<ReportStatus, string> = {
       pending: 'Pendiente',
-      under_review: 'En revisión',
+      under_review: 'En revisiï¿½n',
       resolved: 'Resuelto',
       dismissed: 'Desestimado'
     };
@@ -459,7 +459,7 @@ const ModeratorDashboard = () => {
       <div className="min-h-screen bg-hero-gradient flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
-          <p className="text-white">Cargando panel de moderación...</p>
+          <p className="text-white">Cargando panel de moderaciï¿½n...</p>
         </div>
       </div>
     );
@@ -475,14 +475,14 @@ const ModeratorDashboard = () => {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-white mb-2 flex items-center gap-2">
             <Shield className="h-8 w-8" />
-            Panel de Moderación
+            Panel de Moderaciï¿½n
           </h1>
           <p className="text-white/80">
-            Gestiona reportes de usuarios y mantén la comunidad segura
+            Gestiona reportes de usuarios y mantï¿½n la comunidad segura
           </p>
         </div>
 
-        {/* Estadísticas rápidas */}
+        {/* Estadï¿½sticas rï¿½pidas */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <Card className="bg-white/10 backdrop-blur-sm border-white/20">
             <CardContent className="p-6">
@@ -560,7 +560,7 @@ const ModeratorDashboard = () => {
                 <CardContent className="p-8 text-center">
                   <CheckCircle className="h-12 w-12 text-green-400 mx-auto mb-4" />
                   <p className="text-white text-lg">No hay reportes pendientes</p>
-                  <p className="text-white/60">¡Excelente trabajo manteniendo la comunidad segura!</p>
+                  <p className="text-white/60">ï¿½Excelente trabajo manteniendo la comunidad segura!</p>
                 </CardContent>
               </Card>
             ) : (
@@ -591,13 +591,13 @@ const ModeratorDashboard = () => {
                     </div>
                     
                     <div>
-                      <p className="text-white/80 text-sm mb-1">Razón:</p>
+                      <p className="text-white/80 text-sm mb-1">Razï¿½n:</p>
                       <p className="text-white">{report.reason}</p>
                     </div>
                     
                     {report.description && (
                       <div>
-                        <p className="text-white/80 text-sm mb-1">Descripción:</p>
+                        <p className="text-white/80 text-sm mb-1">Descripciï¿½n:</p>
                         <p className="text-white">{report.description}</p>
                       </div>
                     )}
@@ -606,20 +606,20 @@ const ModeratorDashboard = () => {
                       <div className="space-y-4 p-4 bg-white/5 rounded-lg">
                         <div>
                           <label className="text-white text-sm mb-2 block">
-                            Razón de la decisión:
+                            Razï¿½n de la decisiï¿½n:
                           </label>
                           <textarea
                             value={actionReason}
                             onChange={(e) => setActionReason(e.target.value)}
                             className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50"
-                            placeholder="Explica la razón de tu decisión..."
+                            placeholder="Explica la razï¿½n de tu decisiï¿½n..."
                             rows={3}
                           />
                         </div>
                         
                         <div>
                           <label className="text-white text-sm mb-2 block">
-                            Días de suspensión (0 = permanente):
+                            Dï¿½as de suspensiï¿½n (0 = permanente):
                           </label>
                           <input
                             type="number"
@@ -704,7 +704,7 @@ const ModeratorDashboard = () => {
                 <CardContent className="p-8 text-center">
                   <Users className="h-12 w-12 text-blue-400 mx-auto mb-4" />
                   <p className="text-white text-lg">No hay suspensiones activas</p>
-                  <p className="text-white/60">Todos los usuarios están en buen estado</p>
+                  <p className="text-white/60">Todos los usuarios estï¿½n en buen estado</p>
                 </CardContent>
               </Card>
             ) : (
@@ -732,7 +732,7 @@ const ModeratorDashboard = () => {
                     </div>
                     
                     <div>
-                      <p className="text-white/80 text-sm mb-1">Razón:</p>
+                      <p className="text-white/80 text-sm mb-1">Razï¿½n:</p>
                       <p className="text-white">{suspension.reason}</p>
                     </div>
                     
@@ -757,7 +757,7 @@ const ModeratorDashboard = () => {
                       className="bg-green-600 hover:bg-green-700 text-white"
                     >
                       <CheckCircle className="h-4 w-4 mr-2" />
-                      Levantar Suspensión
+                      Levantar Suspensiï¿½n
                     </Button>
                   </CardContent>
                 </Card>
@@ -771,7 +771,7 @@ const ModeratorDashboard = () => {
                 <CardContent className="p-8 text-center">
                   <Fingerprint className="h-12 w-12 text-purple-400 mx-auto mb-4" />
                   <p className="text-white text-lg">No hay baneos permanentes</p>
-                  <p className="text-white/60">Los baneos permanentes con huella digital aparecerán aquí</p>
+                  <p className="text-white/60">Los baneos permanentes con huella digital aparecerï¿½n aquï¿½</p>
                 </CardContent>
               </Card>
             ) : (
@@ -807,7 +807,7 @@ const ModeratorDashboard = () => {
                     </div>
                     
                     <div>
-                      <p className="text-white/80 text-sm mb-1">Razón:</p>
+                      <p className="text-white/80 text-sm mb-1">Razï¿½n:</p>
                       <p className="text-white">{ban.ban_reason}</p>
                     </div>
 
@@ -828,7 +828,7 @@ const ModeratorDashboard = () => {
 
                     <Button
                       onClick={async () => {
-                        if (confirm('¿Estás seguro de levantar este baneo permanente?')) {
+                        if (confirm('ï¿½Estï¿½s seguro de levantar este baneo permanente?')) {
                           try {
                             await liftPermanentBan(ban.id, user?.id || '', 'Levantado por moderador');
                             toast({
@@ -862,8 +862,8 @@ const ModeratorDashboard = () => {
               <Card className="bg-white/10 backdrop-blur-sm border-white/20">
                 <CardContent className="p-8 text-center">
                   <Clock className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-white text-lg">No hay historial de moderación</p>
-                  <p className="text-white/60">Las acciones de moderación aparecerán aquí</p>
+                  <p className="text-white text-lg">No hay historial de moderaciï¿½n</p>
+                  <p className="text-white/60">Las acciones de moderaciï¿½n aparecerï¿½n aquï¿½</p>
                 </CardContent>
               </Card>
             ) : (
@@ -880,7 +880,7 @@ const ModeratorDashboard = () => {
                           <p className="text-white/60 text-sm">
                             Usuario: {log.target_user_email || 'Email no disponible'}
                           </p>
-                          <p className="text-white/60 text-sm">Razón: {log.description || 'Sin razón especificada'}</p>
+                          <p className="text-white/60 text-sm">Razï¿½n: {log.description || 'Sin razï¿½n especificada'}</p>
                         </div>
                       </div>
                       <div className="text-right">
@@ -908,19 +908,19 @@ const ModeratorDashboard = () => {
                 Baneo Permanente con Huella Digital
               </DialogTitle>
               <DialogDescription className="text-white/70">
-                Este baneo utilizará canvas fingerprint + WorldID para prevenir que el usuario vuelva a registrarse
+                Este baneo utilizarï¿½ canvas fingerprint + WorldID para prevenir que el usuario vuelva a registrarse
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
               <div>
                 <label className="text-white text-sm mb-2 block">
-                  Razón del baneo permanente:
+                  Razï¿½n del baneo permanente:
                 </label>
                 <Textarea
                   value={actionReason}
                   onChange={(e) => setActionReason(e.target.value)}
                   className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50"
-                  placeholder="Explica la razón del baneo permanente..."
+                  placeholder="Explica la razï¿½n del baneo permanente..."
                   rows={4}
                 />
               </div>
@@ -937,15 +937,15 @@ const ModeratorDashboard = () => {
                     <SelectItem value="low" className="text-white">Baja</SelectItem>
                     <SelectItem value="medium" className="text-white">Media</SelectItem>
                     <SelectItem value="high" className="text-white">Alta</SelectItem>
-                    <SelectItem value="critical" className="text-white">Crítica</SelectItem>
+                    <SelectItem value="critical" className="text-white">Crï¿½tica</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="bg-yellow-500/20 border border-yellow-500/50 rounded-lg p-4">
                 <p className="text-yellow-200 text-sm">
-                  ?? Este baneo es permanente y utilizará huella digital (canvas + WorldID). 
-                  El usuario no podrá crear nuevas cuentas con el mismo dispositivo o WorldID.
+                  ?? Este baneo es permanente y utilizarï¿½ huella digital (canvas + WorldID). 
+                  El usuario no podrï¿½ crear nuevas cuentas con el mismo dispositivo o WorldID.
                 </p>
               </div>
 
