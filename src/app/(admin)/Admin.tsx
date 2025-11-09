@@ -118,12 +118,24 @@ const Admin = () => {
     const demoUser = safeGetItem<unknown>('demo_user', { validate: false, defaultValue: null });
     
     if (demoAuth === 'true' && demoUser) {
-      const user = JSON.parse(demoUser);
-      if (user.accountType === 'admin' || user.role === 'admin') {
+      // Parse user safely
+      let user: { accountType?: string; role?: string } | null = null;
+      try {
+        if (typeof demoUser === 'string') {
+          user = JSON.parse(demoUser);
+        } else if (typeof demoUser === 'object' && demoUser !== null) {
+          user = demoUser as { accountType?: string; role?: string };
+        }
+      } catch (error) {
+        logger.error('Error parsing demo user:', { error: String(error) });
+        user = null;
+      }
+      
+      if (user && (user.accountType === 'admin' || user.role === 'admin')) {
         // Redirect admin users to production admin panel
         navigate('/admin-production');
         return;
-      } else {
+      } else if (user) {
         toast({
           title: "Acceso Denegado",
           description: "No tienes permisos de administrador",
@@ -312,10 +324,10 @@ const Admin = () => {
         return;
       }
 
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('profiles')
         .update({ 
-          bio: `${_profiles.find((p: any) => p.id === profileId)?.bio || ''} [verified:${!currentStatus}]`
+          bio: `${_profiles.find((p) => p.id === profileId)?.bio || ''} [verified:${!currentStatus}]`
         })
         .eq('id', profileId);
 
