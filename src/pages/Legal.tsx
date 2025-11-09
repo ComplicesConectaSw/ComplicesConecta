@@ -17,13 +17,23 @@ import {
   Eye,
   Calendar,
   ArrowLeft,
-  Heart
+  Heart,
+  AlertCircle
 } from 'lucide-react';
 
 const Legal: React.FC = () => {
   const navigate = useNavigate();
 
   const legalDocuments = [
+    {
+      title: "Ley Olimpia",
+      description: "Protección contra violencia digital - Delitos tipificados, protección en ComplicesConecta, canales de denuncia y protocolo de actuación",
+      icon: <Shield className="h-6 w-6" />,
+      file: "LEY_OLIMPIA.md",
+      lastUpdated: "2025-11-09",
+      category: "Protección",
+      priority: true
+    },
     {
       title: "Términos de Servicio",
       description: "Condiciones de uso de la plataforma ComplicesConecta",
@@ -42,11 +52,19 @@ const Legal: React.FC = () => {
     },
     {
       title: "Cumplimiento Legal México",
-      description: "Marco regulatorio y cumplimiento en territorio mexicano",
+      description: "Marco regulatorio y cumplimiento en territorio mexicano, incluyendo Ley Olimpia",
       icon: <Scale className="h-6 w-6" />,
       file: "LEGAL_COMPLIANCE_MEXICO.md", 
       lastUpdated: "2025-11-08",
       category: "Cumplimiento"
+    },
+    {
+      title: "Reporte Resumen Legal",
+      description: "Resumen ejecutivo legal y normativo completo",
+      icon: <FileText className="h-6 w-6" />,
+      file: "LEGAL_SUMMARY_REPORT.md",
+      lastUpdated: "2025-11-08",
+      category: "Resumen"
     },
     {
       title: "Descargo de Responsabilidad",
@@ -57,12 +75,28 @@ const Legal: React.FC = () => {
       category: "Legal"
     },
     {
-      title: "Auditoría de Seguridad",
-      description: "Resumen de medidas de seguridad implementadas",
-      icon: <Lock className="h-6 w-6" />,
-      file: "SECURITY_AUDIT_OVERVIEW.md",
+      title: "Documentación API",
+      description: "Términos y condiciones para uso de API",
+      icon: <FileText className="h-6 w-6" />,
+      file: "API.md",
       lastUpdated: "2025-11-08",
-      category: "Seguridad"
+      category: "Técnico"
+    },
+    {
+      title: "Guía de Deployment",
+      description: "Consideraciones legales para deployment",
+      icon: <FileText className="h-6 w-6" />,
+      file: "DEPLOY.md",
+      lastUpdated: "2025-11-08",
+      category: "Técnico"
+    },
+    {
+      title: "Análisis Legal",
+      description: "Análisis detallado de cumplimiento legal (Septiembre 2025)",
+      icon: <FileText className="h-6 w-6" />,
+      file: "ANALYSIS_REPORT_202509.md",
+      lastUpdated: "2025-11-08",
+      category: "Análisis"
     },
     {
       title: "Guía de Contribución",
@@ -71,6 +105,14 @@ const Legal: React.FC = () => {
       file: "CONTRIBUTING.md",
       lastUpdated: "2025-11-08",
       category: "Desarrollo"
+    },
+    {
+      title: "Historial de Cambios",
+      description: "Registro de cambios en documentación legal",
+      icon: <Calendar className="h-6 w-6" />,
+      file: "CHANGELOG.md",
+      lastUpdated: "2025-11-08",
+      category: "Historial"
     }
   ];
 
@@ -123,6 +165,26 @@ const Legal: React.FC = () => {
               Esta sección proporciona información transparente sobre nuestras obligaciones legales, 
               derechos de los usuarios y políticas de cumplimiento.
             </p>
+            <div className="mt-4 p-4 bg-red-500/20 border border-red-400/30 rounded-lg">
+              <div className="flex items-start gap-3">
+                <AlertCircle className="h-5 w-5 text-red-300 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h3 className="font-semibold text-red-300 mb-2">🛡️ Ley Olimpia - Protección contra Violencia Digital</h3>
+                  <p className="text-white/80 text-sm leading-relaxed">
+                    ComplicesConecta cumple estrictamente con la <strong>Ley Olimpia</strong> (Código Penal Federal, Artículos 259 Ter, 259 Quáter, 259 Quinquies) 
+                    que protege contra la violencia digital, difusión de contenido íntimo sin consentimiento, acoso digital y violación a la intimidad sexual. 
+                    Contamos con sistemas de verificación de consentimiento, reportes prioritarios, eliminación automática de contenido y cooperación con autoridades.
+                  </p>
+                  <Button
+                    onClick={() => window.open('/legal/LEY_OLIMPIA.md', '_blank')}
+                    className="mt-3 bg-red-500/30 hover:bg-red-500/40 text-white text-xs px-3 py-1 border border-red-400/50"
+                  >
+                    <Shield className="h-3 w-3 mr-1" />
+                    Ver Ley Olimpia Completa
+                  </Button>
+                </div>
+              </div>
+            </div>
           </CardContent>
         </Card>
 
@@ -139,6 +201,7 @@ const Legal: React.FC = () => {
               <div className="space-y-3">
                 <h3 className="font-semibold text-pink-300">Legislación Mexicana</h3>
                 <ul className="space-y-2 text-white/80 text-sm">
+                  <li>• <strong>Ley Olimpia</strong> - Protección contra Violencia Digital (Código Penal Federal, Art. 259 Ter, 259 Quáter, 259 Quinquies)</li>
                   <li>• Ley Federal de Protección de Datos Personales (LFPDPPP)</li>
                   <li>• Código Civil Federal</li>
                   <li>• Ley Federal del Consumidor</li>
@@ -257,8 +320,10 @@ const Legal: React.FC = () => {
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {legalDocuments.map((doc, index) => (
-                <Card key={index} className="bg-white/5 backdrop-blur-md border-white/10 text-white hover:bg-white/10 transition-all duration-300 hover:scale-105">
+              {legalDocuments
+                .sort((a, b) => (b.priority ? 1 : 0) - (a.priority ? 1 : 0))
+                .map((doc, index) => (
+                <Card key={index} className={`bg-white/5 backdrop-blur-md border-white/10 text-white hover:bg-white/10 transition-all duration-300 hover:scale-105 ${doc.priority ? 'border-red-400/50 bg-red-500/10' : ''}`}>
                   <CardContent className="p-4">
                     <div className="flex items-center gap-3 mb-3">
                       <div className="p-2 bg-white/10 rounded-lg text-white">
@@ -267,9 +332,14 @@ const Legal: React.FC = () => {
                       <div className="flex-1">
                         <h3 className="font-semibold text-white text-sm">{doc.title}</h3>
                         <div className="flex items-center gap-2 mt-1">
-                          <Badge className="text-xs bg-white/20 text-white border-white/30">
+                          <Badge className={`text-xs border-white/30 ${doc.priority ? 'bg-red-500/30 text-red-300 border-red-400/50' : 'bg-white/20 text-white'}`}>
                             {doc.category}
                           </Badge>
+                          {doc.priority && (
+                            <Badge className="text-xs bg-red-500/30 text-red-300 border-red-400/50">
+                              Prioridad
+                            </Badge>
+                          )}
                         </div>
                       </div>
                     </div>
