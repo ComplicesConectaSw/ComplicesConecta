@@ -51,20 +51,63 @@ Muchos de estos archivos pueden ser:
 
 **Nota:** Esta lista se genera automáticamente y puede contener falsos positivos. Revisar manualmente cada archivo antes de eliminarlo.
 
-### Archivos de prueba (tests)
+### 📄 Lista Completa
+
+La lista completa de 142 archivos huérfanos se encuentra en:
+- `docs/Auditoria/LISTA_ARCHIVOS_HUERFANOS_v3.6.3.txt` (generado automáticamente)
+- `docs/Auditoria/LISTA_COMPLETA_ARCHIVOS_HUERFANOS_v3.6.3.md` (documentación)
+
+### 🔍 Primeros 30 Archivos Identificados
+
+1. `src/app/(admin)/AdminDashboard.tsx`
+2. `src/components/accessibility/AccessibilityAudit.tsx`
+3. `src/components/accessibility/AccessibilityProvider.tsx` ⚠️ **EN USO** - Provider de contexto
+4. `src/components/admin/AdvancedModerationPanel.tsx`
+5. `src/components/admin/ReportsManagement.tsx`
+6. `src/components/admin/SecurityDashboard.tsx`
+7. `src/components/ai/ContentModerationModal.tsx`
+8. `src/components/ai/SmartMatchingModal.tsx`
+9. `src/components/analytics/AdvancedAnalyticsDashboard.tsx`
+10. `src/components/android/AndroidOptimizedApp.tsx`
+11. `src/components/android/LazyImageLoader.tsx`
+12. `src/components/animations/EnhancedComponents.tsx`
+13. `src/components/animations/GlobalAnimations.tsx`
+14. `src/components/auth/EmailValidation.tsx`
+15. `src/components/auth/EmailVerification.tsx`
+16. `src/components/auth/ThemeInfoModal.tsx`
+17. `src/components/auth/WorldIDButton.tsx`
+18. `src/components/cache/CacheDashboard.tsx`
+19. `src/components/chat/ChatContainer.tsx`
+20. `src/components/chat/ChatList.tsx`
+21. `src/components/chat/ChatWithLocation.tsx`
+22. `src/components/chat/SummaryButton.tsx`
+23. `src/components/feedback/UserFeedbackForm.tsx`
+24. `src/components/forms/EmailValidationForm.tsx`
+25. `src/components/layout/ResponsiveLayout.tsx`
+26. `src/components/matches/MatchFilters.tsx`
+27. `src/components/mobile/PWAManager.tsx`
+28. `src/components/mobile/TouchGestureManager.tsx`
+29. `src/components/notifications/NotificationBell.tsx`
+30. `src/components/notifications/PushNotificationSettings.tsx`
+
+### 📝 Categorías de Revisión
+
+#### Archivos de prueba (tests)
 - [ ] Revisar archivos de prueba que no se ejecutan automáticamente
 - [ ] Verificar que los tests se ejecutan correctamente
 
-### Componentes React
+#### Componentes React
 - [ ] Revisar componentes que no se importan directamente
 - [ ] Verificar si se cargan dinámicamente con `lazy()` o `React.lazy()`
+- [ ] Verificar si se usan en rutas dinámicas
 
-### Utilidades
+#### Utilidades
 - [ ] Revisar utilidades que pueden ser útiles en el futuro
 - [ ] Verificar si se usan en archivos de configuración
 
-### Servicios
+#### Servicios
 - [ ] Revisar servicios que pueden ser instanciados dinámicamente
+- [ ] Verificar si se usan mediante strings o configuración
 - [ ] Verificar si se usan en otros servicios
 
 ---
