@@ -172,8 +172,9 @@ function Repair-CharacterEncoding {
         
         # Eliminar caracteres de reemplazo Unicode (U+FFFD)
         foreach ($char in $replacementChars) {
-            if ($content.Contains($char)) {
-                $newContent = $content.Replace($char, '')
+            $charStr = $char.ToString()
+            if ($content.Contains($charStr)) {
+                $newContent = $content.Replace($charStr, '')
                 if ($newContent -ne $content) {
                     $content = $newContent
                     $changed = $true
