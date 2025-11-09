@@ -62,7 +62,7 @@ interface GalleryCommission {
   amount_cmpx: number;
   commission_amount_cmpx: number;
   creator_amount_cmpx: number;
-  creator_paid: boolean;
+  creator_paid: boolean | null;
   created_at: string;
   updated_at: string;
 }
@@ -124,14 +124,14 @@ export const getCreatorCommissionStats = async (
     interface CommissionStatsRow {
       creator_amount_cmpx: number;
       commission_amount_cmpx: number;
-      creator_paid: boolean;
+      creator_paid: boolean | null;
     }
     
     (data || []).forEach((commission: CommissionStatsRow) => {
       stats.totalCommissions += commission.creator_amount_cmpx + commission.commission_amount_cmpx;
       stats.platformCommission += commission.commission_amount_cmpx;
       
-      if (commission.creator_paid) {
+      if (commission.creator_paid === true) {
         stats.totalEarned += commission.creator_amount_cmpx;
       } else {
         stats.totalPending += commission.creator_amount_cmpx;
