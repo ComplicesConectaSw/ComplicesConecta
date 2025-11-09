@@ -55,7 +55,7 @@ export const PrivateImageRequest: React.FC<PrivateImageRequestProps> = ({
 
       onRequestSent?.();
     } catch (error) {
-      logger.error('Error enviando solicitud de acceso', { error });
+      logger.error('Error enviando solicitud de acceso', { error: error instanceof Error ? error.message : String(error), profileId, profileName });
       toast({
         title: "Error",
         description: "No se pudo enviar la solicitud. Inténtalo de nuevo.",

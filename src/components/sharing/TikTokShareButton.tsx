@@ -17,7 +17,7 @@ interface TikTokShareButtonProps {
   hashtags?: string[];
   className?: string;
   variant?: 'default' | 'outline' | 'ghost';
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'default' | 'lg' | 'xl' | 'action' | 'hero' | 'compact' | 'icon';
 }
 
 export const TikTokShareButton: React.FC<TikTokShareButtonProps> = ({
@@ -26,7 +26,7 @@ export const TikTokShareButton: React.FC<TikTokShareButtonProps> = ({
   hashtags,
   className,
   variant = 'outline',
-  size = 'md',
+  size = 'default',
 }) => {
   const [isSharing, setIsSharing] = React.useState(false);
 
@@ -49,7 +49,7 @@ export const TikTokShareButton: React.FC<TikTokShareButtonProps> = ({
         });
       }
     } catch (error) {
-      logger.error('Error compartiendo en TikTok', { error });
+      logger.error('Error compartiendo en TikTok', { error: error instanceof Error ? error.message : String(error), url: url || window.location.href });
     } finally {
       setIsSharing(false);
     }

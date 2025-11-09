@@ -276,7 +276,7 @@ export const processClubFlyerImage = async (
       processingTime,
     };
   } catch (error) {
-    logger.error('Error procesando imagen:', error);
+    logger.error('Error procesando imagen:', { error: error instanceof Error ? error.message : String(error), flyerId });
     throw error;
   }
 };
@@ -309,7 +309,7 @@ export const processClubFlyerImageServer = async (
 
     return data as ProcessingResult;
   } catch (error) {
-    logger.error('Error procesando imagen en servidor:', error);
+    logger.error('Error procesando imagen en servidor:', { error: error instanceof Error ? error.message : String(error), flyerId });
     // Fallback a procesamiento cliente
     return processClubFlyerImage(imageUrl, flyerId);
   }
@@ -347,7 +347,7 @@ export const uploadProcessedImage = async (
 
     return urlData.publicUrl;
   } catch (error) {
-    logger.error('Error subiendo imagen procesada:', error);
+    logger.error('Error subiendo imagen procesada:', { error: error instanceof Error ? error.message : String(error), path, bucket });
     throw error;
   }
 };

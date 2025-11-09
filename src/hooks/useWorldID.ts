@@ -142,21 +142,29 @@ export const useWorldID = () => {
       // Obtener recompensas de worldid_rewards
       const { data: rewardsData, error: rewardsError } = await supabase
         .from('worldid_rewards')
-        .select('amount')
-        .eq('is_active', true);
+        .select('reward_amount')
+        .eq('claimed', false);
 
       if (rewardsError) {
         logger.warn('Error fetching WorldID rewards:', { error: rewardsError.message });
       }
 
-      const totalRewards = rewardsData?.reduce((sum, r) => sum + (Number(r.amount) || 0), 0) || 0;
+      interface WorldIDReward {
+        reward_amount: number;
+      }
+
+      const totalRewards = (rewardsData as WorldIDReward[] | null)?.reduce((sum, r) => sum + (Number(r.reward_amount) || 0), 0) || 0;
       const currentMonth = new Date().toISOString().slice(0, 7);
 
+      // Calcular estadísticas mensuales desde rewardsData
+      // Por ahora, usar todos los rewards no reclamados como aproximación mensual
+      const monthlyRewards = totalRewards; // Usar totalRewards como aproximación hasta tener filtro por fecha
+
       setStats({
-        totalVerified: statsData?.total_verified || 0,
+        totalVerified: statsData?.total_verifications || 0,
         totalRewards,
-        monthlyVerified: statsData?.monthly_verified || 0,
-        monthlyRewards: statsData?.monthly_rewards || 0,
+        monthlyVerified: statsData?.total_verifications || 0, // Usar total_verifications como aproximación
+        monthlyRewards,
         currentMonth
       });
     } catch (err) {

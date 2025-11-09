@@ -72,7 +72,8 @@ export function SummaryModal({ isOpen, onClose, summary, error }: SummaryModalPr
           });
       }
     } catch (error) {
-      console.error('Error submitting feedback:', error);
+      // eslint-disable-next-line no-console
+      console.error('Error submitting feedback:', error instanceof Error ? error.message : String(error));
     }
     
     setFeedbackSent(true);
