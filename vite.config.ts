@@ -8,20 +8,28 @@ export default defineConfig(({ mode }) => {
     build: {
       rollupOptions: {
         output: {
-          chunkFileNames: 'assets/js/[name].js', // Sin hash dinámico
+          chunkFileNames: 'assets/js/[name].js',  // Nombres estables (sin hash)
           entryFileNames: 'assets/js/[name].js',
-          assetFileNames: 'assets/[ext]/[name].[ext]',
+          assetFileNames: ({ name }) => {
+            if (/\.(png|jpe?g|svg|gif|webp)$/i.test(name ?? '')) {
+              return 'assets/images/[name].[ext]';
+            }
+            if (/\.css$/.test(name ?? '')) {
+              return 'assets/css/[name].css';
+            }
+            return 'assets/[name].[ext]';
+          },
         },
       },
-      cssCodeSplit: false, // No split CSS
+      cssCodeSplit: false,  // No split CSS (evita 404s)
     },
     define: {
-      // Exponer TODAS VITE_* explícitamente
+      // Exponer TODAS VITE_* en bundles
       ...Object.fromEntries(
         Object.entries(env).filter(([k]) => k.startsWith('VITE_'))
           .map(([k, v]) => [`import.meta.env.${k}`, JSON.stringify(v)])
       ),
     },
-    base: '/',
+    base: '/',  // Para Vercel
   };
 });
