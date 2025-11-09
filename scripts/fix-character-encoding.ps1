@@ -146,14 +146,18 @@ function Repair-CharacterEncoding {
         $changed = $false
 
         # Procesar cada reemplazo (ordenar por longitud descendente para evitar reemplazos parciales)
-        $sortedKeys = $replacements.Keys | Sort-Object { 
-            if ($_ -is [string]) { $_.Length } else { 1 }
-        } -Descending
+        # Primero procesar strings más largos, luego caracteres individuales
+        $stringKeys = $replacements.Keys | Where-Object { $_ -is [string] } | Sort-Object Length -Descending
+        $charKeys = $replacements.Keys | Where-Object { $_ -isnot [string] }
+        $sortedKeys = $stringKeys + $charKeys
         
         foreach ($bad in $sortedKeys) {
-            if ($content.Contains($bad)) {
-                $content = $content.Replace($bad, $replacements[$bad])
-                $changed = $true
+            if ($null -ne $bad -and $content.Contains($bad)) {
+                $newContent = $content.Replace($bad, $replacements[$bad])
+                if ($newContent -ne $content) {
+                    $content = $newContent
+                    $changed = $true
+                }
             }
         }
         
