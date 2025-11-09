@@ -32,6 +32,7 @@ import {
 import { logger } from '@/lib/logger';
 import errorAlertService, { AlertRule } from '@/services/ErrorAlertService';
 import { useToast } from '@/hooks/useToast';
+import { safeGetItem, safeSetItem } from '@/utils/safeLocalStorage';
 // performanceMonitoring - preparado para uso futuro en configuración avanzada
 // import performanceMonitoring from '@/services/PerformanceMonitoringService';
 
@@ -159,11 +160,10 @@ export const AlertConfigPanel: React.FC = () => {
 
   const loadConfigs = () => {
     try {
-      const saved = localStorage.getItem('alert-configs');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        setConfigs(parsed);
-        applyConfigs(parsed);
+      const saved = safeGetItem<AlertConfig[]>('alert-configs', { validate: false, defaultValue: null });
+      if (saved && Array.isArray(saved)) {
+        setConfigs(saved);
+        applyConfigs(saved);
       } else {
         applyConfigs(ALERT_PRESETS);
       }
@@ -174,7 +174,7 @@ export const AlertConfigPanel: React.FC = () => {
 
   const saveConfigs = (newConfigs: AlertConfig[]) => {
     try {
-      localStorage.setItem('alert-configs', JSON.stringify(newConfigs));
+      safeSetItem('alert-configs', newConfigs, { validate: false, sanitize: true });
       setConfigs(newConfigs);
       applyConfigs(newConfigs);
       logger.info('✅ Alert configs saved');

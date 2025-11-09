@@ -19,6 +19,7 @@ import { useAuth } from "@/features/auth/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/useToast";
 import { logger } from '@/lib/logger';
+import { safeGetItem } from '@/utils/safeLocalStorage';
 
 // Tipos para matches privados
 interface PrivateMatch {
@@ -110,7 +111,7 @@ const mockPrivateMatches: PrivateMatch[] = [
 
 // Check if user is in demo mode
 const isDemoMode = (): boolean => {
-  return localStorage.getItem('demo_authenticated') === 'true';
+  return safeGetItem<string>('demo_authenticated', { validate: true, defaultValue: 'false' }) === 'true';
 };
 
 export const PrivateMatches: React.FC = () => {

@@ -7,6 +7,7 @@ import { Fingerprint, Eye, Shield, CheckCircle, XCircle, AlertTriangle } from 'l
 import { BiometricAuthService, BiometricAuthResult } from '@/lib/multimediaSecurity';
 import { useAuth } from '@/features/auth/useAuth';
 import { logger } from '@/lib/logger';
+import { safeGetItem } from '@/utils/safeLocalStorage';
 
 interface BiometricAuthProps {
   onAuthSuccess?: (result: BiometricAuthResult) => void;
@@ -55,7 +56,7 @@ export const BiometricAuth: React.FC<BiometricAuthProps> = ({
     
     try {
       // Check if user has registered biometric credentials
-      const credentials = localStorage.getItem(`biometric_credential_${user.id}`);
+      const credentials = safeGetItem<string>(`biometric_credential_${user.id}`, { validate: false, defaultValue: null });
       setIsRegistered(!!credentials);
     } catch (error) {
       logger.error('Error checking registration status:', { error: error instanceof Error ? error.message : String(error) });

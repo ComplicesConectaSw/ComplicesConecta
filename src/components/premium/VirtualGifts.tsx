@@ -3,10 +3,11 @@ import { Card } from "@/shared/ui/Card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/shared/ui/Button";
 import { Gift, Crown, Send } from "lucide-react";
+import { safeGetItem } from '@/utils/safeLocalStorage';
 
 // Check if user is in demo mode
 const isDemoMode = () => {
-  return localStorage.getItem('demo_authenticated') === 'true';
+  return safeGetItem<string>('demo_authenticated', { validate: true, defaultValue: 'false' }) === 'true';
 };
 
 import { useFeatures } from "@/hooks/useFeatures";

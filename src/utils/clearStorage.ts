@@ -16,7 +16,7 @@ export const clearAllStorage = () => {
     ];
 
     keysToRemove.forEach(key => {
-      localStorage.removeItem(key);
+      safeRemoveItem(key);
     });
 
     logger.info('🧹 localStorage limpiado completamente');
@@ -31,9 +31,9 @@ export const clearAllStorage = () => {
 export const resetAuthState = () => {
   try {
     // Solo limpiar claves de autenticación
-    localStorage.removeItem('demo_authenticated');
-    localStorage.removeItem('demo_user');
-    localStorage.removeItem('userType');
+    safeRemoveItem('demo_authenticated');
+    safeRemoveItem('demo_user');
+    safeRemoveItem('userType');
     
     logger.info('🔄 Estado de autenticación reseteado');
   } catch (error) {
@@ -44,11 +44,13 @@ export const resetAuthState = () => {
 // Función para debug - mostrar todo el localStorage
 export const debugStorage = () => {
   logger.debug('Estado actual del localStorage');
-  for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i);
-    if (key) {
-      const value = localStorage.getItem(key);
-      logger.debug(`${key}: ${value}`);
+  if (typeof window !== 'undefined' && window.localStorage) {
+    for (let i = 0; i < window.localStorage.length; i++) {
+      const key = window.localStorage.key(i);
+      if (key) {
+        const value = safeGetItem<string>(key, { validate: false, defaultValue: null });
+        logger.debug(`${key}: ${value}`);
+      }
     }
   }
 };

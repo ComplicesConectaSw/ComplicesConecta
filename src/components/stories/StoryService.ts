@@ -1,25 +1,28 @@
 import { Story, CreateStoryData, StoryLike, StoryComment } from './StoryTypes';
 import { getRandomProfileImage } from '@/lib/imageService';
 import { logger } from '@/lib/logger';
+import { safeGetItem, safeSetItem } from '@/utils/safeLocalStorage';
 
 // Mock data for demo mode - adapts to user profile type
 const getDemoStories = (): Story[] => {
-  const demoUser = localStorage.getItem('demo_user');
-  const userType = localStorage.getItem('userType') || 'single';
+  const demoUser = safeGetItem<unknown>('demo_user', { validate: false, defaultValue: null });
+  const userType = safeGetItem<string>('userType', { validate: false, defaultValue: 'single' });
   
   let userName = "Usuario Demo";
   let userAvatar = getRandomProfileImage('female', { width: 150, height: 150 });
   
   if (demoUser) {
     try {
-      const parsedUser = JSON.parse(demoUser);
-      userName = userType === 'couple' 
-        ? `${parsedUser.first_name} & Pareja`
-        : parsedUser.first_name || "Usuario Demo";
-      
-      // Use dynamic image based on user gender
-      const userGender = parsedUser.gender || 'female';
-      userAvatar = getRandomProfileImage(userGender, { width: 150, height: 150 });
+      const parsedUser = typeof demoUser === 'string' ? JSON.parse(demoUser) : (demoUser as { first_name?: string; gender?: string } | null);
+      if (parsedUser && typeof parsedUser === 'object' && 'first_name' in parsedUser) {
+        userName = userType === 'couple' 
+          ? `${parsedUser.first_name} & Pareja`
+          : parsedUser.first_name || "Usuario Demo";
+        
+        // Use dynamic image based on user gender
+        const userGender = parsedUser.gender || 'female';
+        userAvatar = getRandomProfileImage(userGender, { width: 150, height: 150 });
+      }
     } catch {
       // Fallback to default
     }
@@ -90,16 +93,16 @@ const getDemoStories = (): Story[] => {
 
 class StoryService {
   private isDemoMode(): boolean {
-    return localStorage.getItem('demo_authenticated') === 'true';
+    return safeGetItem<string>('demo_authenticated', { validate: true, defaultValue: 'false' }) === 'true';
   }
 
   private getDemoStories(): Story[] {
-    const stored = localStorage.getItem('demo_stories');
-    return stored ? JSON.parse(stored) : getDemoStories();
+    const stored = safeGetItem<Story[]>('demo_stories', { validate: false, defaultValue: null });
+    return Array.isArray(stored) ? stored : getDemoStories();
   }
 
   private saveDemoStories(stories: Story[]): void {
-    localStorage.setItem('demo_stories', JSON.stringify(stories));
+    safeSetItem('demo_stories', stories, { validate: false, sanitize: true });
   }
 
   async getStories(_userId?: number): Promise<Story[]> {

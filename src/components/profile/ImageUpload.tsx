@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Upload, X, Image as ImageIcon, Loader2 } from 'lucide-react';
 import { ProfileImageService, ImageUploadResult } from '@/lib/storage';
+import { safeGetItem } from '@/utils/safeLocalStorage';
 
 interface ImageUploadProps {
   onImageUploaded: (url: string) => void;
@@ -37,7 +38,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
     
     try {
       // Check if user is in demo mode
-      const isDemoMode = localStorage.getItem('demo_authenticated') === 'true';
+      const isDemoMode = safeGetItem<string>('demo_authenticated', { validate: true, defaultValue: 'false' }) === 'true';
       
       if (isDemoMode) {
         // Simulate upload for demo users
