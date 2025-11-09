@@ -44,7 +44,7 @@ export const createPermanentBan = async (
       p_combined_hash: fingerprint.combinedHash,
       p_ban_reason: banData.banReason,
       p_banned_by: bannedBy,
-      p_worldid_nullifier_hash: banData.worldIdNullifierHash || null,
+      p_worldid_nullifier_hash: banData.worldIdNullifierHash || undefined,
       p_severity: banData.severity,
       p_evidence: banData.evidence || {},
     });
@@ -55,7 +55,10 @@ export const createPermanentBan = async (
 
     return data;
   } catch (error) {
-    logger.error('Error creando baneo permanente:', error);
+    logger.error('Error creando baneo permanente:', {
+      error: error instanceof Error ? error.message : String(error),
+      userId: banData.userId
+    });
     throw error;
   }
 };
@@ -104,7 +107,10 @@ export const checkUserBanned = async (
       fingerprint,
     };
   } catch (error) {
-    logger.error('Error verificando baneo:', error);
+    logger.error('Error verificando baneo:', {
+      error: error instanceof Error ? error.message : String(error),
+      userId
+    });
     return { isBanned: false };
   }
 };
@@ -172,7 +178,10 @@ export const liftPermanentBan = async (
 
     logger.info('✅ Baneo permanente levantado', { banId });
   } catch (error) {
-    logger.error('Error levantando baneo:', error);
+    logger.error('Error levantando baneo:', {
+      error: error instanceof Error ? error.message : String(error),
+      banId
+    });
     throw error;
   }
 };
@@ -200,7 +209,9 @@ export const getPermanentBans = async (): Promise<any[]> => {
 
     return data || [];
   } catch (error) {
-    logger.error('Error obteniendo baneos permanentes:', error);
+    logger.error('Error obteniendo baneos permanentes:', {
+      error: error instanceof Error ? error.message : String(error)
+    });
     throw error;
   }
 };

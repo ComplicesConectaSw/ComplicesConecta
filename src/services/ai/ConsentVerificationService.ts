@@ -175,9 +175,9 @@ class ConsentVerificationService {
 
       const verification: ConsentVerification = {
         id: data.id,
-        chatId: data.chat_id,
-        userId1: data.user_id1,
-        userId2: data.user_id2,
+        chatId: data.chat_id || '',
+        userId1: data.user_id1 || '',
+        userId2: data.user_id2 || '',
         currentScore: {
           score: data.consent_score || 50,
           confidence: data.confidence || 0.5,

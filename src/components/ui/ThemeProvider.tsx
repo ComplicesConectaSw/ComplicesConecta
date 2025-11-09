@@ -4,9 +4,10 @@ import { logger } from '@/lib/logger';
 
 // CRÍTICO: Asegurar createContext disponible antes de usar
 const safeCreateContext = <T,>(defaultValue: T | undefined): React.Context<T | undefined> => {
-  const debugLog = (event: string, data?: any) => {
-    if (typeof window !== 'undefined' && (window as any).__LOADING_DEBUG__) {
-      (window as any).__LOADING_DEBUG__.log(event, data);
+  const debugLog = (event: string, data?: Record<string, unknown> | unknown) => {
+    if (typeof window !== 'undefined' && (window as Record<string, unknown>).__LOADING_DEBUG__) {
+      const debugWindow = (window as Record<string, unknown>).__LOADING_DEBUG__ as { log?: (event: string, data?: unknown) => void };
+      debugWindow.log?.(event, data);
     }
   };
   
@@ -54,11 +55,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
           const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
           resolvedTheme = prefersDark ? 'dark' : 'light';
           
-          // También verificar hora del día para dark mode automático (opcional)
+          // Dark mode automático por hora del día (siempre activo)
           const hour = new Date().getHours();
-          const autoDarkMode = import.meta.env.VITE_AUTO_DARK_MODE === 'true';
-          if (autoDarkMode && (hour >= 20 || hour < 6)) {
-            // Forzar dark mode entre 8 PM y 6 AM si está habilitado
+          if (hour >= 20 || hour < 6) {
+            // Forzar dark mode entre 8 PM y 6 AM automáticamente
             resolvedTheme = 'dark';
           }
         } else {
@@ -97,6 +97,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         // CRÍTICO: NO usar logger.info aquí - puede causar efectos secundarios
         // Solo loggear en desarrollo y de forma condicional
         if (process.env.NODE_ENV === 'development') {
+          // Usar console.debug aquí es aceptable para debugging en desarrollo
+          // eslint-disable-next-line no-console
           console.debug('🎨 Theme updated:', { theme, resolvedTheme });
         }
       } finally {

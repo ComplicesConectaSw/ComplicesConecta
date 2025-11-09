@@ -47,13 +47,17 @@ export async function initPostHog(): Promise<void> {
             logger.info('✅ PostHog inicializado correctamente');
             
             // Identificar usuario si está autenticado
-            supabase.auth.getUser().then(({ data: { user } }) => {
-              if (user) {
-                identifyUser(user.id, {
-                  email: user.email,
-                });
-              }
-            });
+            if (supabase) {
+              supabase.auth.getUser().then(({ data: { user } }) => {
+                if (user) {
+                  identifyUser(user.id, {
+                    email: user.email,
+                  });
+                }
+              }).catch((error) => {
+                logger.debug('Error obteniendo usuario para PostHog:', { error: error instanceof Error ? error.message : String(error) });
+              });
+            }
           },
         });
 
@@ -65,7 +69,7 @@ export async function initPostHog(): Promise<void> {
       }
     };
   } catch (error) {
-    logger.error('Error inicializando PostHog', { error });
+    logger.error('Error inicializando PostHog', { error: error instanceof Error ? error.message : String(error) });
   }
 }
 
@@ -84,7 +88,7 @@ export function identifyUser(userId: string, properties?: Record<string, unknown
       userId: userId.substring(0, 8) + '***'
     });
   } catch (error) {
-    logger.error('Error identificando usuario en PostHog', { error });
+    logger.error('Error identificando usuario en PostHog', { error: error instanceof Error ? error.message : String(error), userId: userId.substring(0, 8) + '***' });
   }
 }
 
@@ -104,7 +108,7 @@ export function trackEvent(
     posthog.capture(eventName, properties);
     logger.debug('Evento registrado en PostHog', { eventName });
   } catch (error) {
-    logger.error('Error registrando evento en PostHog', { error });
+    logger.error('Error registrando evento en PostHog', { error: error instanceof Error ? error.message : String(error), eventName });
   }
 }
 
@@ -121,7 +125,7 @@ export function setUserProperties(properties: Record<string, unknown>): void {
     posthog.setPersonProperties(properties);
     logger.debug('Propiedades de usuario actualizadas en PostHog');
   } catch (error) {
-    logger.error('Error estableciendo propiedades de usuario en PostHog', { error });
+    logger.error('Error estableciendo propiedades de usuario en PostHog', { error: error instanceof Error ? error.message : String(error) });
   }
 }
 
@@ -137,7 +141,7 @@ export function resetPostHog(): void {
     posthog.reset();
     logger.info('PostHog reset completado');
   } catch (error) {
-    logger.error('Error reseteando PostHog', { error });
+    logger.error('Error reseteando PostHog', { error: error instanceof Error ? error.message : String(error) });
   }
 }
 

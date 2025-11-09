@@ -1,0 +1,11 @@
+{
+  "css.lint.unknownAtRules": "ignore",
+  "css.validate": true,
+  "css.customData": [
+    ".vscode/css-custom-data.json"
+  ],
+  "files.associations": {
+    "*.dbclient-js": "javascript",
+    "plyconfig.json": "jsonc"
+  }
+}

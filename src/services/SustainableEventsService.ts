@@ -391,8 +391,22 @@ class SustainableEventsService {
   /**
    * Mapea datos de BD a SustainableEvent
    */
-  private mapToSustainableEvent(data: any): SustainableEvent {
-    const metadata = (data.metadata as Record<string, any>) || {};
+  private mapToSustainableEvent(data: {
+    id: string;
+    couple_id: string;
+    title: string;
+    description?: string;
+    event_type: string;
+    location?: string;
+    date: string;
+    max_participants?: number;
+    participants?: string[];
+    is_public?: boolean;
+    metadata?: Record<string, unknown>;
+    created_at: string;
+    updated_at: string;
+  }): SustainableEvent {
+    const metadata = (data.metadata as Record<string, unknown>) || {};
     
     return {
       id: data.id,
