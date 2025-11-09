@@ -3,8 +3,8 @@ version: 2.1
 jobs:
   build:
     docker:
-      # Usar imagen base con git preinstalado
-      - image: cimg/node:20.0
+      # Usar imagen base con Node.js 20.19+ (requerido por Vite 7.2.2)
+      - image: cimg/node:20.19
     steps:
       - checkout:
           # Usar HTTPS en lugar de SSH para evitar problemas con ssh
