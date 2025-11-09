@@ -147,6 +147,13 @@
 - ✅ **Docker Build Exitoso** - Imagen `complicesconecta:latest` creada
 - ✅ **Docker Compose** - Neo4j configurado y listo
 
+#### 🚀 Deployment Vercel (NUEVO v3.6.3)
+- ✅ **vercel.json Corregido** - Eliminado `routes`, solo `rewrites` y `headers` válidos
+- ✅ **vite.config.ts Optimizado** - Chunks estables, CSS no split, base path correcto
+- ✅ **build-and-deploy.ps1** - Script automatizado con verificación completa
+- ✅ **Variables de Entorno** - Carga automática desde `.env`/`.env.local`
+- ✅ **Build Optimizado** - Tamaño <60MB, chunks estables, 0 errores
+
 #### 🏢 Sistema de Clubs Verificados ✅
 - ✅ **5 Tablas Nuevas**: `clubs`, `club_verifications`, `club_checkins`, `club_reviews`, `club_flyers`
 - ✅ **Check-ins Geoloc**: Radio 50m con verificación automática
