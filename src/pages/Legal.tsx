@@ -175,7 +175,7 @@ const Legal: React.FC = () => {
                     Contamos con sistemas de verificación de consentimiento, reportes prioritarios, eliminación automática de contenido y cooperación con autoridades.
                   </p>
                   <Button
-                    onClick={() => window.open('/legal/LEY_OLIMPIA.md', '_blank')}
+                    onClick={() => window.open('https://github.com/ComplicesConectaSw/ComplicesConecta/blob/master/docs/legal/LEY_OLIMPIA.md', '_blank')}
                     className="mt-3 bg-red-500/30 hover:bg-red-500/40 text-white text-xs px-3 py-1 border border-red-400/50"
                   >
                     <Shield className="h-3 w-3 mr-1" />
@@ -353,7 +353,7 @@ const Legal: React.FC = () => {
                     </div>
                     <div className="flex gap-2">
                       <Button
-                        onClick={() => window.open(`/legal/${doc.file}`, '_blank')}
+                        onClick={() => window.open(`https://github.com/ComplicesConectaSw/ComplicesConecta/blob/master/docs/legal/${doc.file}`, '_blank')}
                         className="flex-1 bg-white/20 hover:bg-white/30 text-white text-xs px-3 py-1"
                       >
                         <Eye className="h-3 w-3 mr-1" />
@@ -362,8 +362,9 @@ const Legal: React.FC = () => {
                       <Button
                         onClick={() => {
                           const link = document.createElement('a');
-                          link.href = `/legal/${doc.file}`;
+                          link.href = `https://raw.githubusercontent.com/ComplicesConectaSw/ComplicesConecta/master/docs/legal/${doc.file}`;
                           link.download = doc.file;
+                          link.target = '_blank';
                           link.click();
                         }}
                         className="border-white/30 text-white hover:bg-white/10 text-xs border bg-transparent px-3 py-1"
