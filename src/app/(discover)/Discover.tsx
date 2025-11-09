@@ -18,6 +18,7 @@ import { calculateDistance, getLocationDisplay } from '@/lib/distance-utils';
 import { type CoupleProfileWithPartners } from "@/features/profile/coupleProfiles";
 import { getAllCoupleProfiles } from "@/features/profile/coupleProfiles";
 import { generateDemoProfiles, type DemoProfile } from '@/demo/demoData';
+import { safeGetItem } from '@/utils/safeLocalStorage';
 import { generateFilterDemoCards, type FilterDemoCard } from '@/lib/infoCards';
 import { FilterDemoCard as FilterDemoCardComponent } from '@/components/ui/FilterDemoCard';
 import { supabase } from "@/integrations/supabase/client";
@@ -29,7 +30,7 @@ import { motion } from 'framer-motion';
 import { DecorativeHearts } from '@/components/DecorativeHearts';
 import { logger } from '@/lib/logger';
 
-// Definici�n del tipo para un perfil
+// Definicin del tipo para un perfil
 interface Profile {
   id: string;
   name: string;
@@ -93,29 +94,29 @@ const Discover = () => {
 
   // Intereses generales (para todos los usuarios)
   const generalInterests = [
-    'Lifestyle', 'Aventura', 'Diversi�n', 'Respeto', 'Discreci�n', 
-    'Experiencia', 'Naturaleza', 'Viajes', 'M�sica', 'Arte', 
-    'Deportes', 'Cine', 'Literatura', 'Tecnolog�a', 'Gastronom�a'
+    'Lifestyle', 'Aventura', 'Diversin', 'Respeto', 'Discrecin', 
+    'Experiencia', 'Naturaleza', 'Viajes', 'Msica', 'Arte', 
+    'Deportes', 'Cine', 'Literatura', 'Tecnologa', 'Gastronoma'
   ];
 
-  // Intereses expl�citos (solo para perfiles demo y producci�n)
+  // Intereses explcitos (solo para perfiles demo y produccin)
   const explicitInterests = [
     'Swinger', 'Parejas', 'Intercambio', 'Liberal', 'Soft Swap',
     'Hard Swap', 'Clubs Exclusivos', 'Eventos VIP', 'Fiestas Privadas',
     'Tantra', 'BDSM', 'Poliamor', 'Cuckolding', 'Hotwife', 'Lifestyle Swinger'
   ];
 
-  // Determinar si el usuario es demo/producci�n
+  // Determinar si el usuario es demo/produccin
   const isDemoOrProduction = () => {
     const authStatus = typeof isAuthenticated === 'function' ? isAuthenticated() : isAuthenticated;
     if (!authStatus || !user) return false;
-    const demoAuth = localStorage.getItem('demo_authenticated') === 'true';
+    const demoAuth = safeGetItem<string>('demo_authenticated', { validate: true, defaultValue: 'false' }) === 'true';
     const isDemoUser = user.email === 'single@outlook.es' || user.email === 'pareja@outlook.es';
-    // Tambi�n considerar usuarios de producci�n (que tienen cuenta real)
+    // Tambin considerar usuarios de produccin (que tienen cuenta real)
     return (demoAuth && isDemoUser) || (authStatus && !isDemoUser);
   };
 
-  // Intereses disponibles seg�n el tipo de usuario
+  // Intereses disponibles segn el tipo de usuario
   const availableInterests = isDemoOrProduction() 
     ? [...generalInterests, ...explicitInterests]
     : generalInterests;
@@ -134,30 +135,30 @@ const Discover = () => {
   // Generar perfiles aleatorios
   const generateRandomProfiles = useCallback(() => {
     const nombres = [
-      'Alejandro', 'Mar�a', 'Carlos', 'Ana', 'Jos�', 'Laura', 'Miguel', 'Carmen',
+      'Alejandro', 'Mara', 'Carlos', 'Ana', 'Jos', 'Laura', 'Miguel', 'Carmen',
       'Antonio', 'Isabel', 'Manuel', 'Pilar', 'Francisco', 'Dolores', 'David',
       'Cristina', 'Javier', 'Rosa', 'Daniel', 'Antonia', 'Rafael', 'Francisca',
-      'Jos� Luis', 'Luc�a', 'Jes�s', 'Mercedes', '�ngel', 'Josefa', 'Marcos',
+      'Jos Luis', 'Luca', 'Jess', 'Mercedes', 'ngel', 'Josefa', 'Marcos',
       'Elena', 'Pedro', 'Teresa', 'Sergio', 'Raquel', 'Pablo', 'Manuela'
     ];
 
     const ubicaciones = [
-      'Ciudad de M�xico', 'Guadalajara', 'Monterrey', 'Puebla', 'Tijuana',
-      'Le�n', 'Ju�rez', 'Torre�n', 'Quer�taro', 'San Luis Potos�',
-      'M�rida', 'Mexicali', 'Aguascalientes', 'Cuernavaca', 'Saltillo'
+      'Ciudad de Mxico', 'Guadalajara', 'Monterrey', 'Puebla', 'Tijuana',
+      'Len', 'Jurez', 'Torren', 'Quertaro', 'San Luis Potos',
+      'Mrida', 'Mexicali', 'Aguascalientes', 'Cuernavaca', 'Saltillo'
     ];
 
     const bios = [
-      'Aventurero en busca de nuevas experiencias y conexiones aut�nticas.',
+      'Aventurero en busca de nuevas experiencias y conexiones autnticas.',
       'Amante de la vida, los viajes y las buenas conversaciones.',
       'Explorando el mundo del lifestyle swinger con mente abierta.',
-      'Buscando parejas y personas afines para compartir momentos �nicos.',
+      'Buscando parejas y personas afines para compartir momentos nicos.',
       'Discreto, respetuoso y con ganas de conocer gente interesante.',
       'Pareja liberal en busca de otras parejas para intercambios.',
       'Nuevo en esto, pero con muchas ganas de aprender y disfrutar.',
-      'Experiencia y diversi�n garantizada. Siempre con respeto.',
-      'Mente abierta, coraz�n libre. Buscando conexiones reales.',
-      'Lifestyle swinger desde hace a�os. Conocemos el ambiente.'
+      'Experiencia y diversin garantizada. Siempre con respeto.',
+      'Mente abierta, corazn libre. Buscando conexiones reales.',
+      'Lifestyle swinger desde hace aos. Conocemos el ambiente.'
     ];
 
     resetImageCounters();
@@ -182,7 +183,7 @@ const Discover = () => {
         image: pickProfileImage({ id, name, type: profileType, gender }, usedImages),
         bio: bios[Math.floor(Math.random() * bios.length)],
         isOnline: Math.random() > 0.6,
-        lastActive: Math.random() > 0.5 ? 'Hace 1 hora' : 'Hace 2 d�as',
+        lastActive: Math.random() > 0.5 ? 'Hace 1 hora' : 'Hace 2 das',
         isVerified: Math.random() > 0.7,
         isPremium: Math.random() > 0.8,
         rating: Math.round((Math.random() * 2 + 3) * 10) / 10,
@@ -226,7 +227,7 @@ const Discover = () => {
             distanceMatch = profile.distance <= filters.distance;
           } else {
             // Si no tiene distancia pero tiene coordenadas, calcularla
-            // Esto se maneja en loadRealProfiles, as� que aqu� solo verificamos la distancia ya calculada
+            // Esto se maneja en loadRealProfiles, as que aqu solo verificamos la distancia ya calculada
             distanceMatch = true; // Permitir si no hay distancia disponible
           }
         }
@@ -270,7 +271,7 @@ const Discover = () => {
     applyFilters();
   }, [filters, demoProfiles, profiles, coupleProfiles, location]);
 
-  // Funci�n para cargar perfiles reales desde Supabase
+  // Funcin para cargar perfiles reales desde Supabase
   const loadRealProfiles = useCallback(async () => {
     try {
       // Solo log una vez por carga
@@ -279,7 +280,7 @@ const Discover = () => {
       }
       
       if (!supabase) {
-        logger.error('Supabase no est� disponible');
+        logger.error('Supabase no est disponible');
         generateRandomProfiles();
         return;
       }
@@ -306,16 +307,16 @@ const Discover = () => {
           id: profile.id,
           name: `${profile.first_name} ${profile.last_name || ''}`.trim(),
           age: profile.age || 25,
-          location: getLocationDisplay(location), // Ubicaci�n real implementada con useGeolocation
+          location: getLocationDisplay(location), // Ubicacin real implementada con useGeolocation
           distance: calculateDistance(
             location, 
             profile.latitude && profile.longitude 
               ? { latitude: profile.latitude, longitude: profile.longitude } 
               : null
-          ), // C�lculo de distancia implementado con coordenadas reales
+          ), // Clculo de distancia implementado con coordenadas reales
           interests: Array.isArray(profile.interests) ? profile.interests : [], // Sistema de intereses conectado con Supabase
           image: pickProfileImage({ id: profile.id, name: profile.first_name, type: 'single', gender: profile.gender as Gender }, new Set()), // Avatar URL desde Supabase profiles
-          bio: profile.bio || 'Sin descripci�n',
+          bio: profile.bio || 'Sin descripcin',
           isOnline: profile.is_online || false,
           lastActive: profile.last_active ? new Date(profile.last_active).toLocaleString('es-ES', { 
             hour: '2-digit', 
@@ -352,9 +353,9 @@ const Discover = () => {
     }
   }, [filterCards.length]);
 
-  // Cargar perfiles demo solo para usuarios con credenciales espec�ficas
+  // Cargar perfiles demo solo para usuarios con credenciales especficas
   useEffect(() => {
-    const demoAuth = localStorage.getItem('demo_authenticated') === 'true';
+    const demoAuth = safeGetItem<string>('demo_authenticated', { validate: true, defaultValue: 'false' }) === 'true';
     const isDemoUser = user?.email === 'single@outlook.es' || user?.email === 'pareja@outlook.es';
     
     if (demoAuth && isDemoUser && demoProfiles.length === 0) {
@@ -364,9 +365,9 @@ const Discover = () => {
     }
   }, [user?.email, demoProfiles.length]);
 
-  // Verificar autenticaci�n y cargar perfiles reales
+  // Verificar autenticacin y cargar perfiles reales
   useEffect(() => {
-    // Si no est� autenticado, mostrar cards informativos
+    // Si no est autenticado, mostrar cards informativos
     if (!isAuthenticated) {
       logger.info('?? Usuario no autenticado - mostrando cards informativos');
       return;
@@ -374,12 +375,12 @@ const Discover = () => {
     
     logger.info('? Usuario autenticado en Discover:', { user: user?.email || user?.id, isAuthenticated });
     
-    // Verificar autenticaci�n local adicional (demo)
-    const demoAuth = localStorage.getItem('demo_authenticated') === 'true';
+    // Verificar autenticacin local adicional (demo)
+    const demoAuth = safeGetItem<string>('demo_authenticated', { validate: true, defaultValue: 'false' }) === 'true';
     
     // Solo cargar perfiles reales una vez para usuarios autenticados
     if (profiles.length === 0) {
-      // Cargar perfiles seg�n el tipo de usuario
+      // Cargar perfiles segn el tipo de usuario
       if (demoAuth) {
         // Solo log una vez para demo
         if (demoProfiles.length === 0) {
@@ -409,7 +410,7 @@ const Discover = () => {
       return;
     }
     toast({
-      title: "�Like enviado!",
+      title: "Like enviado!",
       description: "Le has dado like a este perfil.",
     });
   };
@@ -420,7 +421,7 @@ const Discover = () => {
       return;
     }
     toast({
-      title: "�Super Like enviado!",
+      title: "Super Like enviado!",
       description: "Has enviado un Super Like especial.",
       variant: "default",
     });
@@ -495,7 +496,7 @@ const Discover = () => {
         <HeaderNav />
       </div>
       
-      {/* Header con navegaci�n */}
+      {/* Header con navegacin */}
       <div className="bg-white/10 backdrop-blur-md border-b border-white/20 p-4 shadow-lg relative z-10">
         <div className="flex items-center justify-between max-w-6xl mx-auto">
           <div className="flex items-center space-x-2 sm:space-x-4">
@@ -590,7 +591,7 @@ const Discover = () => {
               {/* Edad */}
               <div className="mb-6">
                 <label className="block text-sm font-semibold text-white mb-3">
-                  Edad: {filters.ageRange[0]} - {filters.ageRange[1]} a�os
+                  Edad: {filters.ageRange[0]} - {filters.ageRange[1]} aos
                 </label>
                 <Slider
                   value={filters.ageRange}
@@ -622,7 +623,7 @@ const Discover = () => {
                 <label className="block text-sm font-semibold text-white mb-3">
                   Intereses
                   {isDemoOrProduction() && (
-                    <span className="ml-2 text-xs text-purple-300">(Demo/Producci�n)</span>
+                    <span className="ml-2 text-xs text-purple-300">(Demo/Produccin)</span>
                   )}
                 </label>
                 <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto p-3 bg-white/20 rounded-lg border border-white/30">
@@ -649,10 +650,10 @@ const Discover = () => {
                 </div>
               </div>
 
-              {/* Tipo de Relaci�n */}
+              {/* Tipo de Relacin */}
               <div className="mb-6">
                 <label className="block text-sm font-medium text-purple-800 mb-3">
-                  Tipo de Relaci�n
+                  Tipo de Relacin
                 </label>
                 <div className="grid grid-cols-2 gap-2">
                   {["Pareja", "Soltero/a", "Abierto", "Poliamoroso"].map((type) => {
@@ -681,7 +682,7 @@ const Discover = () => {
                 </div>
               </div>
 
-              {/* Verificaci�n */}
+              {/* Verificacin */}
               <div className="mb-4">
                 <label className="flex items-center gap-2 text-sm font-medium text-purple-800 cursor-pointer">
                   <input 
@@ -699,7 +700,7 @@ const Discover = () => {
                 </label>
               </div>
 
-              {/* Bot�n Limpiar Filtros */}
+              {/* Botn Limpiar Filtros */}
               <AnimatedButton 
                 variant="love"
                 className="w-full"
@@ -741,26 +742,26 @@ const Discover = () => {
                     <CoupleProfileCard
                       profile={{
                         ...coupleProfile,
-                        location: coupleProfile.location || 'Ciudad de M�xico',
+                        location: coupleProfile.location || 'Ciudad de Mxico',
                         isOnline: coupleProfile.isOnline || Math.random() > 0.6
                       }}
                       onLike={() => {
                         toast({
-                          title: "�Like enviado!",
-                          description: `Tu inter�s en ${coupleProfile.couple_name} ha sido registrado.`,
+                          title: "Like enviado!",
+                          description: `Tu inters en ${coupleProfile.couple_name} ha sido registrado.`,
                         });
                       }}
                       _onMessage={() => {
                         toast({
                           title: "Chat iniciado",
-                          description: `Iniciando conversaci�n con ${coupleProfile.couple_name}...`,
+                          description: `Iniciando conversacin con ${coupleProfile.couple_name}...`,
                         });
                         navigate('/chat-info');
                       }}
                       onOpenModal={() => {
                         toast({
-                          title: "Acci�n requerida",
-                          description: "Funcionalidad de modal disponible pr�ximamente.",
+                          title: "Accin requerida",
+                          description: "Funcionalidad de modal disponible prximamente.",
                         });
                       }}
                     />

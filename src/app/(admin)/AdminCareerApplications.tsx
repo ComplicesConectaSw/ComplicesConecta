@@ -65,11 +65,11 @@ const AdminCareerApplications = () => {
       logger.info('?? Cargando solicitudes de carrera...');
 
       if (!supabase) {
-        logger.error('Supabase no est� disponible');
+        logger.error('Supabase no est disponible');
         toast({
           variant: "destructive",
           title: "Error",
-          description: "Supabase no est� disponible"
+          description: "Supabase no est disponible"
         });
         setLoading(false);
         return;
@@ -110,11 +110,11 @@ const AdminCareerApplications = () => {
       logger.info('?? Actualizando status de solicitud:', { id, newStatus });
 
       if (!supabase) {
-        logger.error('Supabase no est� disponible');
+        logger.error('Supabase no est disponible');
         toast({
           variant: "destructive",
           title: "Error",
-          description: "Supabase no est� disponible"
+          description: "Supabase no est disponible"
         });
         return;
       }
@@ -163,11 +163,11 @@ const AdminCareerApplications = () => {
       logger.info('?? Descargando CV:', { cvUrl, applicantName });
 
       if (!supabase) {
-        logger.error('Supabase no est� disponible');
+        logger.error('Supabase no est disponible');
         toast({
           variant: "destructive",
           title: "Error",
-          description: "Supabase no est� disponible"
+          description: "Supabase no est disponible"
         });
         return;
       }
@@ -271,7 +271,7 @@ const AdminCareerApplications = () => {
             </Button>
             <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-white flex items-center gap-2 text-center sm:text-left">
               <Users className="h-5 w-5 sm:h-6 sm:w-6" />
-              <span className="hidden sm:inline">Panel de Administraci�n - </span>Solicitudes de Carrera
+              <span className="hidden sm:inline">Panel de Administracin - </span>Solicitudes de Carrera
             </h1>
             <div className="flex items-center gap-2 text-white">
               <Badge className="bg-white/20 text-white text-xs sm:text-sm border border-white/30">
@@ -287,7 +287,7 @@ const AdminCareerApplications = () => {
             <CardHeader>
               <CardTitle className="text-white flex items-center gap-2 text-sm sm:text-base">
                 <Filter className="h-4 w-4 sm:h-5 sm:w-5" />
-                Filtros y B�squeda
+                Filtros y Bsqueda
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -453,18 +453,18 @@ const AdminCareerApplications = () => {
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 <div>
-                  <h4 className="text-white font-semibold mb-2">Informaci�n Personal</h4>
+                  <h4 className="text-white font-semibold mb-2">Informacin Personal</h4>
                   <div className="space-y-2 text-white/80">
                     <p><strong>Nombre:</strong> {selectedApplication.nombre}</p>
                     <p><strong>Email:</strong> {selectedApplication.correo}</p>
-                    <p><strong>Tel�fono:</strong> {selectedApplication.telefono}</p>
+                    <p><strong>Telfono:</strong> {selectedApplication.telefono}</p>
                     {selectedApplication.domicilio && (
                       <p><strong>Domicilio:</strong> {selectedApplication.domicilio}</p>
                     )}
                   </div>
                 </div>
                 <div>
-                  <h4 className="text-white font-semibold mb-2">Informaci�n Profesional</h4>
+                  <h4 className="text-white font-semibold mb-2">Informacin Profesional</h4>
                   <div className="space-y-2 text-white/80">
                     <p><strong>Puesto:</strong> {selectedApplication.puesto}</p>
                     <p><strong>Fecha:</strong> {formatDate(selectedApplication.created_at)}</p>

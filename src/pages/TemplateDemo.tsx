@@ -50,7 +50,7 @@ const TemplateDemo: React.FC = () => {
           className="text-center mb-8"
         >
           <h1 className="text-4xl font-bold text-white mb-4">
-            ?? Demo de Integraci�n de Plantillas
+            ?? Demo de Integracin de Plantillas
           </h1>
           <p className="text-gray-300 text-lg">
             Sistema de Temas v2.8.3 + Plantillas React Adaptadas
@@ -83,7 +83,7 @@ const TemplateDemo: React.FC = () => {
             <CardHeader>
               <CardTitle className="text-white flex items-center gap-2">
                 <Palette className="w-5 h-5" />
-                Configuraci�n Global de Temas
+                Configuracin Global de Temas
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -117,7 +117,7 @@ const TemplateDemo: React.FC = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-white mb-2">
-                    G�nero
+                    Gnero
                   </label>
                   <select 
                     value={gender} 
@@ -141,7 +141,7 @@ const TemplateDemo: React.FC = () => {
                     Vista Previa del Tema Actual
                   </h3>
                   <p className={cn("text-sm mt-1", themeConfig.accentClass)}>
-                    {selectedTheme.charAt(0).toUpperCase() + selectedTheme.slice(1)} � {profileType} � {gender}
+                    {selectedTheme.charAt(0).toUpperCase() + selectedTheme.slice(1)}  {profileType}  {gender}
                   </p>
                 </div>
               </div>
@@ -162,7 +162,7 @@ const TemplateDemo: React.FC = () => {
                 className="data-[state=active]:bg-white/20 text-white"
               >
                 <Eye className="w-4 h-4 mr-2" />
-                Auditor�a
+                Auditora
               </TabsTrigger>
               <TabsTrigger 
                 value="chat" 
@@ -243,10 +243,10 @@ const TemplateDemo: React.FC = () => {
                             Vista Mobile
                           </h3>
                           <p className={cn("text-sm", themeConfig.accentClass)}>
-                            Optimizado para pantallas peque�as
+                            Optimizado para pantallas pequeas
                           </p>
                           <Button className="w-full mt-3 btn-animated">
-                            Acci�n Mobile
+                            Accin Mobile
                           </Button>
                         </div>
                       </div>
@@ -270,12 +270,12 @@ const TemplateDemo: React.FC = () => {
                             Vista Tablet
                           </h3>
                           <p className={cn("text-sm", themeConfig.accentClass)}>
-                            Dise�o adaptativo para tablets
+                            Diseo adaptativo para tablets
                           </p>
                           <div className="flex gap-2 mt-3">
-                            <Button className="flex-1 btn-animated">Acci�n 1</Button>
+                            <Button className="flex-1 btn-animated">Accin 1</Button>
                             <Button className="flex-1 btn-animated border border-input bg-background hover:bg-accent hover:text-accent-foreground">
-                              Acci�n 2
+                              Accin 2
                             </Button>
                           </div>
                         </div>
@@ -326,11 +326,11 @@ const TemplateDemo: React.FC = () => {
           <Card className="bg-white/5 backdrop-blur-sm border-white/10">
             <CardContent className="p-6">
               <h3 className="text-white font-semibold mb-2">
-                ?? Integraci�n Completada
+                ?? Integracin Completada
               </h3>
               <p className="text-gray-300 text-sm">
                 Las plantillas han sido auditadas, adaptadas e integradas con el Sistema de Temas v2.8.3.
-                Todas las mejoras mantienen la compatibilidad con la l�gica de negocio existente.
+                Todas las mejoras mantienen la compatibilidad con la lgica de negocio existente.
               </p>
               <div className="flex justify-center gap-4 mt-4">
                 <Badge className="bg-green-500/20 text-green-300">

@@ -14,7 +14,7 @@ const VideoChat = () => {
   const [_participants, _setParticipants] = useState([
     {
       id: 1,
-      name: "Mar�a Elena",
+      name: "Mara Elena",
       avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face",
       isVideoOn: true,
       isMicOn: true,
@@ -33,25 +33,25 @@ const VideoChat = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    // Simular inicializaci�n de video
+    // Simular inicializacin de video
     if (videoRef.current) {
-      videoRef.current.srcObject = null; // En producci�n ser�a el stream real
+      videoRef.current.srcObject = null; // En produccin sera el stream real
     }
   }, []);
 
   const toggleVideo = () => {
     setIsVideoOn(!isVideoOn);
-    // En producci�n aqu� se manejar�a el stream de video
+    // En produccin aqu se manejara el stream de video
   };
 
   const toggleMic = () => {
     setIsMicOn(!isMicOn);
-    // En producci�n aqu� se manejar�a el audio
+    // En produccin aqu se manejara el audio
   };
 
   const startCall = () => {
     setIsCallActive(true);
-    // En producci�n aqu� se iniciar�a la llamada WebRTC
+    // En produccin aqu se iniciara la llamada WebRTC
   };
 
   const endCall = () => {
@@ -62,14 +62,14 @@ const VideoChat = () => {
   const callHistory = [
     {
       id: 1,
-      participants: ["Mar�a Elena", "Carlos & Ana"],
+      participants: ["Mara Elena", "Carlos & Ana"],
       duration: "15:32",
       date: "Hoy",
       type: "video"
     },
     {
       id: 2,
-      participants: ["Sof�a", "Roberto"],
+      participants: ["Sofa", "Roberto"],
       duration: "8:45",
       date: "Ayer",
       type: "video"
@@ -78,7 +78,7 @@ const VideoChat = () => {
       id: 3,
       participants: ["Anabella & Julio"],
       duration: "22:15",
-      date: "2 d�as",
+      date: "2 das",
       type: "video"
     }
   ];
@@ -112,7 +112,7 @@ const VideoChat = () => {
               </h1>
             </div>
             <p className="text-xl text-white/90 max-w-3xl mx-auto">
-              Llamadas de video seguras y privadas con tecnolog�a WebRTC para conexiones aut�nticas
+              Llamadas de video seguras y privadas con tecnologa WebRTC para conexiones autnticas
             </p>
           </div>
 
@@ -300,7 +300,7 @@ const VideoChat = () => {
                       className="border-white/30 text-white hover:bg-white/10"
                     >
                       <Settings className="h-4 w-4 mr-2" />
-                      Configuraci�n
+                      Configuracin
                     </Button>
                   </div>
                 </CardContent>

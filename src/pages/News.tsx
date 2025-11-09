@@ -33,20 +33,20 @@ const News: React.FC = () => {
     {
       version: "v3.5.0",
       date: "05 Nov 2025",
-      title: "Features Innovadoras + Neo4j Operativo + Documentaci�n Consolidada",
+      title: "Features Innovadoras + Neo4j Operativo + Documentacin Consolidada",
       type: "major",
       icon: <Brain className="h-6 w-6" />,
       highlights: [
-        "? Verificador IA de Consentimiento en Chats - Servicio + Migraci�n + Integraci�n",
-        "? Galer�as NFT-Verificadas - Servicio + Migraci�n + UI completa",
+        "? Verificador IA de Consentimiento en Chats - Servicio + Migracin + Integracin",
+        "? Galeras NFT-Verificadas - Servicio + Migracin + UI completa",
         "? Matching Predictivo con Graphs Sociales - Neo4j + IA integrado",
         "? Eventos Virtuales Sostenibles con Tokens - Servicio completo",
-        "? Neo4j Graph Database 100% operativo - Docker + Scripts + Sincronizaci�n",
-        "? Documentaci�n consolidada - DOCUMENTACION_CONSOLIDADA_MAESTRA_v3.5.0.md",
-        "? Gu�a de instalaci�n completa - INSTALACION_SETUP_v3.5.0.md",
-        "? 107 tablas en base de datos - 122 pol�ticas RLS activas",
+        "? Neo4j Graph Database 100% operativo - Docker + Scripts + Sincronizacin",
+        "? Documentacin consolidada - DOCUMENTACION_CONSOLIDADA_MAESTRA_v3.5.0.md",
+        "? Gua de instalacin completa - INSTALACION_SETUP_v3.5.0.md",
+        "? 107 tablas en base de datos - 122 polticas RLS activas",
         "? Tests: 260 passed | 14 skipped - 100% pasando",
-        "? TypeScript: 0 errores - ESLint: 0 errores cr�ticos"
+        "? TypeScript: 0 errores - ESLint: 0 errores crticos"
       ],
       color: "from-purple-500 via-pink-500 to-blue-600",
       stats: {
@@ -62,12 +62,12 @@ const News: React.FC = () => {
       type: "major",
       icon: <TrendingUp className="h-6 w-6" />,
       highlights: [
-        "ML-Powered Compatibility Scoring - Modelo 400K par�metros con PyTorch/TensorFlow.js",
+        "ML-Powered Compatibility Scoring - Modelo 400K parmetros con PyTorch/TensorFlow.js",
         "Chat Summaries ML - GPT-4, BART (HuggingFace gratis), Fallback sin ML",
         "Google S2 Geosharding implementado - Cell ID generation (niveles 10-20)",
         "Database Migration - s2_cell_id y s2_level agregados a profiles",
         "Backfill Script preparado - Batch processing (100 perfiles/vez)",
-        "Mejoras de performance esperadas: 50-100x m�s r�pido en queries geogr�ficas",
+        "Mejoras de performance esperadas: 50-100x ms rpido en queries geogrficas",
         "AI Model Metrics - Seguimiento completo de predicciones ML"
       ],
       color: "from-blue-500 to-cyan-600",
@@ -84,20 +84,20 @@ const News: React.FC = () => {
       type: "major",
       icon: <BarChart3 className="h-6 w-6" />,
       highlights: [
-        "Performance Monitoring Service - M�tricas Web Vitals (LCP, FCP, FID, CLS, TTFB)",
-        "Error Alert Service - Captura autom�tica con categorizaci�n inteligente",
-        "Analytics Dashboard - 4 pesta�as (Overview, Moderaci�n, Hist�rico, Configuraci�n)",
+        "Performance Monitoring Service - Mtricas Web Vitals (LCP, FCP, FID, CLS, TTFB)",
+        "Error Alert Service - Captura automtica con categorizacin inteligente",
+        "Analytics Dashboard - 4 pestaas (Overview, Moderacin, Histrico, Configuracin)",
         "Historical Charts con Recharts - Line, Area, Composed, Bar charts",
         "Sistema de Webhooks - Slack, Discord, Custom con rate limiting",
-        "Integraci�n Sentry completa - Error tracking + Source maps + Session Replay",
+        "Integracin Sentry completa - Error tracking + Source maps + Session Replay",
         "New Relic APM - Infrastructure + Browser agent integrado",
-        "Moderation Metrics - 7 KPIs completos con gr�ficos de distribuci�n"
+        "Moderation Metrics - 7 KPIs completos con grficos de distribucin"
       ],
       color: "from-green-500 to-emerald-600",
       stats: {
         tablas: 107,
         coverage: "98% tests",
-        qa: "96/100 puntuaci�n"
+        qa: "96/100 puntuacin"
       }
     },
     {
@@ -118,60 +118,60 @@ const News: React.FC = () => {
     {
       version: "v3.0.0",
       date: "21 Sep 2025", 
-      title: "Sistema de Temas y Optimizaci�n Android",
+      title: "Sistema de Temas y Optimizacin Android",
       type: "major",
       icon: <Palette className="h-6 w-6" />,
       highlights: [
-        "5 temas �nicos personalizables (Light, Dark, Elegant, Modern, Vibrant)",
-        "Selecci�n de tema durante registro con modal interactivo",
-        "Optimizaci�n completa para Android con Material Design",
-        "LazyImageLoader con detecci�n WebP/AVIF",
-        "Reducci�n 30% en tiempo de carga inicial"
+        "5 temas nicos personalizables (Light, Dark, Elegant, Modern, Vibrant)",
+        "Seleccin de tema durante registro con modal interactivo",
+        "Optimizacin completa para Android con Material Design",
+        "LazyImageLoader con deteccin WebP/AVIF",
+        "Reduccin 30% en tiempo de carga inicial"
       ],
       color: "from-purple-500 to-pink-600"
     },
     {
       version: "v2.1.8",
       date: "14 Ene 2025",
-      title: "Geolocalizaci�n y Matches Inteligentes",
+      title: "Geolocalizacin y Matches Inteligentes",
       type: "major",
       icon: <Users className="h-6 w-6" />,
       highlights: [
-        "Sistema de geolocalizaci�n con f�rmula de Haversine",
+        "Sistema de geolocalizacin con frmula de Haversine",
         "Filtros por proximidad: 'Muy cerca' (=5km), 'En tu zona' (=15km)",
         "Algoritmo de compatibilidad con scoring inteligente",
         "Chat en tiempo real optimizado con Supabase Realtime",
-        "Privacidad de ubicaci�n configurable"
+        "Privacidad de ubicacin configurable"
       ],
       color: "from-green-500 to-teal-600"
     },
     {
       version: "v2.1.0 - v2.1.7",
       date: "11-13 Ene 2025",
-      title: "Consolidaci�n y Estabilidad",
+      title: "Consolidacin y Estabilidad",
       type: "minor",
       icon: <Shield className="h-6 w-6" />,
       highlights: [
         "Sistema de tokens CMPX/GTK completamente funcional",
-        "Auditor�a DevOps completa con puntuaci�n 96/100",
-        "Navegaci�n unificada y responsiva",
-        "Configuraci�n de storage buckets y funciones de BD",
-        "Correcci�n de errores TypeScript cr�ticos"
+        "Auditora DevOps completa con puntuacin 96/100",
+        "Navegacin unificada y responsiva",
+        "Configuracin de storage buckets y funciones de BD",
+        "Correccin de errores TypeScript crticos"
       ],
       color: "from-orange-500 to-red-600"
     },
     {
       version: "v1.0 - v2.0",
       date: "Dic 2024 - Ene 2025",
-      title: "Fundaci�n y Arquitectura Base",
+      title: "Fundacin y Arquitectura Base",
       type: "foundation",
       icon: <Database className="h-6 w-6" />,
       highlights: [
         "Arquitectura base con React + TypeScript + Supabase",
-        "Sistema de autenticaci�n y perfiles (single/pareja)",
-        "Base de datos con RLS y pol�ticas de seguridad",
+        "Sistema de autenticacin y perfiles (single/pareja)",
+        "Base de datos con RLS y polticas de seguridad",
         "UI/UX inicial con Tailwind CSS",
-        "Funcionalidades core: matches, chat, galer�a"
+        "Funcionalidades core: matches, chat, galera"
       ],
       color: "from-gray-500 to-slate-600"
     }
@@ -188,10 +188,10 @@ const News: React.FC = () => {
 
   const getTypeLabel = (type: string) => {
     switch (type) {
-      case 'major': return 'Actualizaci�n Mayor';
+      case 'major': return 'Actualizacin Mayor';
       case 'minor': return 'Mejoras y Correcciones';
-      case 'foundation': return 'Versi�n Fundacional';
-      default: return 'Actualizaci�n';
+      case 'foundation': return 'Versin Fundacional';
+      default: return 'Actualizacin';
     }
   };
 
@@ -240,7 +240,7 @@ const News: React.FC = () => {
 
       {/* Content con animaciones */}
       <div className="relative z-10 max-w-6xl mx-auto p-4 sm:p-6 space-y-6 pb-20">
-        {/* Introducci�n mejorada */}
+        {/* Introduccin mejorada */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -252,13 +252,13 @@ const News: React.FC = () => {
                 <div className="p-2 bg-gradient-to-r from-purple-500 to-blue-600 rounded-lg">
                   <Zap className="h-5 w-5 text-white" />
                 </div>
-                Evoluci�n Continua de ComplicesConecta
+                Evolucin Continua de ComplicesConecta
               </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-white/90 leading-relaxed text-base sm:text-lg">
                 Descubre todas las mejoras, nuevas funcionalidades y optimizaciones que hemos implementado 
-                desde el lanzamiento de ComplicesConecta. Cada actualizaci�n est� dise�ada para mejorar 
+                desde el lanzamiento de ComplicesConecta. Cada actualizacin est diseada para mejorar 
                 tu experiencia, la seguridad de la plataforma y el rendimiento del sistema.
               </p>
               
@@ -293,7 +293,7 @@ const News: React.FC = () => {
               <Card className="bg-white/10 backdrop-blur-xl border-white/20 text-white hover:bg-white/15 hover:border-purple-400/30 transition-all duration-300 shadow-xl hover:shadow-2xl group">
                 <CardContent className="p-6 sm:p-8">
                   <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6">
-                    {/* Icon con animaci�n */}
+                    {/* Icon con animacin */}
                     <motion.div
                       whileHover={{ scale: 1.1, rotate: 5 }}
                       className={`p-4 rounded-xl bg-gradient-to-r ${update.color} text-white flex-shrink-0 shadow-lg group-hover:shadow-purple-500/50 transition-all duration-300`}
@@ -362,7 +362,7 @@ const News: React.FC = () => {
           ))}
         </div>
 
-        {/* Estad�sticas de Desarrollo mejoradas */}
+        {/* Estadsticas de Desarrollo mejoradas */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -374,7 +374,7 @@ const News: React.FC = () => {
                 <div className="p-2 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-lg">
                   <BarChart3 className="h-5 w-5 text-white" />
                 </div>
-                Estad�sticas de Desarrollo
+                Estadsticas de Desarrollo
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -405,11 +405,11 @@ const News: React.FC = () => {
                   className="text-center p-4 sm:p-6 bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-xl border border-green-400/30 hover:border-green-400/50 transition-all duration-300"
                 >
                   <div className="text-2xl sm:text-3xl font-bold text-green-300 mb-2">{stats.qa}/100</div>
-                  <div className="text-sm sm:text-base text-white/70">Puntuaci�n QA</div>
+                  <div className="text-sm sm:text-base text-white/70">Puntuacin QA</div>
                 </motion.div>
               </div>
               
-              {/* Estad�sticas adicionales */}
+              {/* Estadsticas adicionales */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mt-6">
                 <div className="text-center p-4 bg-white/5 rounded-lg border border-white/10">
                   <div className="text-xl sm:text-2xl font-bold text-white mb-1">{stats.tablas}</div>
@@ -417,11 +417,11 @@ const News: React.FC = () => {
                 </div>
                 <div className="text-center p-4 bg-white/5 rounded-lg border border-white/10">
                   <div className="text-xl sm:text-2xl font-bold text-white mb-1">{stats.rls}+</div>
-                  <div className="text-xs sm:text-sm text-white/70">Pol�ticas RLS</div>
+                  <div className="text-xs sm:text-sm text-white/70">Polticas RLS</div>
                 </div>
                 <div className="text-center p-4 bg-white/5 rounded-lg border border-white/10">
                   <div className="text-xl sm:text-2xl font-bold text-white mb-1">{stats.indices}+</div>
-                  <div className="text-xs sm:text-sm text-white/70">�ndices</div>
+                  <div className="text-xs sm:text-sm text-white/70">ndices</div>
                 </div>
                 <div className="text-center p-4 bg-white/5 rounded-lg border border-white/10">
                   <div className="text-xl sm:text-2xl font-bold text-white mb-1">{stats.triggers}</div>
@@ -432,7 +432,7 @@ const News: React.FC = () => {
           </Card>
         </motion.div>
 
-        {/* Pr�ximas Actualizaciones mejoradas */}
+        {/* Prximas Actualizaciones mejoradas */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -444,17 +444,17 @@ const News: React.FC = () => {
                 <div className="p-2 bg-gradient-to-r from-yellow-500 to-orange-600 rounded-lg">
                   <Bell className="h-5 w-5 text-white" />
                 </div>
-                Pr�ximas Actualizaciones
+                Prximas Actualizaciones
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
                 {[
-                  "Integraci�n MongoDB Atlas para analytics avanzados",
+                  "Integracin MongoDB Atlas para analytics avanzados",
                   "Sistema de video chat P2P con WebRTC",
                   "Marketplace de productos premium",
                   "Notificaciones push nativas mejoradas",
-                  "Expansi�n internacional (m�s pa�ses)",
+                  "Expansin internacional (ms pases)",
                   "App iOS nativa para iPhone y iPad"
                 ].map((item, idx) => (
                   <motion.div
@@ -484,10 +484,10 @@ const News: React.FC = () => {
             <CardContent className="p-8">
               <Star className="h-12 w-12 text-yellow-400 mx-auto mb-4 animate-pulse" />
               <h3 className="text-2xl sm:text-3xl font-bold text-white mb-4">
-                �Tienes Feedback o Sugerencias?
+                Tienes Feedback o Sugerencias?
               </h3>
               <p className="text-white/80 text-base sm:text-lg mb-6">
-                Tu opini�n es valiosa para nosotros. Ay�danos a mejorar ComplicesConecta compartiendo tus ideas.
+                Tu opinin es valiosa para nosotros. Aydanos a mejorar ComplicesConecta compartiendo tus ideas.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button
@@ -502,7 +502,7 @@ const News: React.FC = () => {
                   className="border-2 border-white/30 text-white hover:bg-white/10 px-8 py-3 backdrop-blur-sm transition-all duration-300 hover:scale-105"
                 >
                   <Eye className="h-4 w-4 mr-2" />
-                  Conocer M�s
+                  Conocer Ms
                 </Button>
               </div>
             </CardContent>

@@ -87,11 +87,11 @@ const AdminModerators = () => {
   const fetchModerators = async () => {
     try {
       if (!supabase) {
-        logger.error('Supabase no est� disponible');
+        logger.error('Supabase no est disponible');
         toast({
           variant: "destructive",
           title: "Error",
-          description: "Supabase no est� disponible"
+          description: "Supabase no est disponible"
         });
         return;
       }
@@ -117,11 +117,11 @@ const AdminModerators = () => {
   const fetchRequests = async () => {
     try {
       if (!supabase) {
-        logger.error('Supabase no est� disponible');
+        logger.error('Supabase no est disponible');
         toast({
           variant: "destructive",
           title: "Error",
-          description: "Supabase no est� disponible"
+          description: "Supabase no est disponible"
         });
         return;
       }
@@ -159,26 +159,26 @@ const AdminModerators = () => {
       logger.info('?? Creando nuevo moderador:', { email: newModeratorEmail, name: newModeratorName });
 
       if (!supabase) {
-        logger.error('Supabase no est� disponible');
+        logger.error('Supabase no est disponible');
         toast({
           variant: "destructive",
           title: "Error",
-          description: "Supabase no est� disponible"
+          description: "Supabase no est disponible"
         });
         return;
       }
 
-      // Generar token de activaci�n
+      // Generar token de activacin
       const activationToken = crypto.randomUUID();
       const expiresAt = new Date();
       expiresAt.setHours(expiresAt.getHours() + 24); // 24 horas
 
       if (!supabase) {
-        logger.error('Supabase no est� disponible');
+        logger.error('Supabase no est disponible');
         toast({
           variant: "destructive",
           title: "Error",
-          description: "Supabase no est� disponible"
+          description: "Supabase no est disponible"
         });
         setIsCreating(false);
         return;
@@ -203,7 +203,7 @@ const AdminModerators = () => {
 
       toast({
         title: "Moderador creado exitosamente",
-        description: `Se ha enviado un enlace de activaci�n a ${newModeratorEmail}`,
+        description: `Se ha enviado un enlace de activacin a ${newModeratorEmail}`,
         duration: 5000
       });
 
@@ -233,11 +233,11 @@ const AdminModerators = () => {
       logger.info('?? Actualizando status de moderador:', { moderatorId, newStatus });
 
       if (!supabase) {
-        logger.error('Supabase no est� disponible');
+        logger.error('Supabase no est disponible');
         toast({
           variant: "destructive",
           title: "Error",
-          description: "Supabase no est� disponible"
+          description: "Supabase no est disponible"
         });
         return;
       }
@@ -278,11 +278,11 @@ const AdminModerators = () => {
       logger.info('?? Procesando solicitud:', { requestId, action, reason });
 
       if (!supabase) {
-        logger.error('Supabase no est� disponible');
+        logger.error('Supabase no est disponible');
         toast({
           variant: "destructive",
           title: "Error",
-          description: "Supabase no est� disponible"
+          description: "Supabase no est disponible"
         });
         return;
       }
@@ -326,7 +326,7 @@ const AdminModerators = () => {
       toast({
         title: `Solicitud ${action === 'approved' ? 'aprobada' : 'rechazada'}`,
         description: action === 'approved' 
-          ? "Se ha creado el moderador y enviado enlace de activaci�n"
+          ? "Se ha creado el moderador y enviado enlace de activacin"
           : "La solicitud ha sido rechazada"
       });
 
@@ -392,7 +392,7 @@ const AdminModerators = () => {
             </Button>
             <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-white flex items-center gap-2 text-center sm:text-left">
               <Shield className="h-5 w-5 sm:h-6 sm:w-6" />
-              <span className="hidden sm:inline">Panel de Administraci�n - </span>Moderadores
+              <span className="hidden sm:inline">Panel de Administracin - </span>Moderadores
             </h1>
             <div className="flex items-center gap-2 text-white">
               <Badge variant="secondary" className="bg-white/20 text-white text-xs sm:text-sm">
@@ -504,7 +504,7 @@ const AdminModerators = () => {
                           <div className="text-white/80 text-sm sm:text-base space-y-1">
                             <p><strong>Email:</strong> <span className="break-all">{request.email}</span></p>
                             <p><strong>Fecha:</strong> {formatDate(request.created_at)}</p>
-                            <p><strong>Motivaci�n:</strong> {request.motivation.substring(0, 100)}...</p>
+                            <p><strong>Motivacin:</strong> {request.motivation.substring(0, 100)}...</p>
                           </div>
                         </div>
                         <div className="flex gap-1 sm:gap-2 w-full sm:w-auto sm:ml-4 flex-wrap">
@@ -573,8 +573,8 @@ const AdminModerators = () => {
                   </div>
                   <div className="bg-white/5 p-3 sm:p-4 rounded-lg border border-white/10">
                     <p className="text-white/80 text-xs sm:text-sm">
-                      <strong>Nota:</strong> Se enviar� un enlace de activaci�n al email especificado. 
-                      El moderador tendr� 24 horas para activar su cuenta y definir su contrase�a.
+                      <strong>Nota:</strong> Se enviar un enlace de activacin al email especificado. 
+                      El moderador tendr 24 horas para activar su cuenta y definir su contrasea.
                     </p>
                   </div>
                   <Button

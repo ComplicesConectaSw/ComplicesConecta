@@ -12,7 +12,7 @@ const GuidelinesPage = () => {
       <HeaderNav />
       <div className="absolute inset-0 bg-gradient-to-br from-background via-muted/30 to-secondary/20"></div>
       <div className="container mx-auto px-4 py-6 max-w-4xl relative z-10">
-        {/* Header con bot�n de regreso */}
+        {/* Header con botn de regreso */}
         <div className="bg-gradient-to-r from-purple-900/90 to-pink-900/90 backdrop-blur-md border-b border-purple-300/30 p-3 sm:p-4 shadow-lg flex-shrink-0 rounded-t-xl mb-6">
           <div className="flex items-center justify-between">
             <Button
@@ -44,7 +44,7 @@ const GuidelinesPage = () => {
               Directrices de la Comunidad
             </h2>
             <p className="text-lg text-white/80 max-w-3xl mx-auto">
-              Nuestra comunidad se basa en el respeto mutuo, la autenticidad y la diversi�n responsable. 
+              Nuestra comunidad se basa en el respeto mutuo, la autenticidad y la diversin responsable. 
               Estas directrices nos ayudan a mantener un ambiente seguro y acogedor para todos.
             </p>
           </div>
@@ -58,7 +58,7 @@ const GuidelinesPage = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-white/80 text-center">
-                  Tratamos a todos los miembros con dignidad, respeto y consideraci�n, 
+                  Tratamos a todos los miembros con dignidad, respeto y consideracin, 
                   independientemente de sus preferencias o estilo de vida.
                 </p>
               </CardContent>
@@ -71,7 +71,7 @@ const GuidelinesPage = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-white/80 text-center">
-                  Valoramos la honestidad y la transparencia. S� genuino en tu perfil 
+                  Valoramos la honestidad y la transparencia. S genuino en tu perfil 
                   y en tus interacciones con otros miembros.
                 </p>
               </CardContent>
@@ -105,25 +105,25 @@ const GuidelinesPage = () => {
                 <div className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
                   <p className="text-white/80">
-                    <strong>Comunicaci�n respetuosa:</strong> Usa un lenguaje cort�s y considerado
+                    <strong>Comunicacin respetuosa:</strong> Usa un lenguaje corts y considerado
                   </p>
                 </div>
                 <div className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
                   <p className="text-gray-700">
-                    <strong>Perfiles aut�nticos:</strong> Usa fotos reales y informaci�n veraz
+                    <strong>Perfiles autnticos:</strong> Usa fotos reales y informacin veraz
                   </p>
                 </div>
                 <div className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
                   <p className="text-gray-700">
-                    <strong>Consentimiento mutuo:</strong> Respeta los l�mites y decisiones de otros
+                    <strong>Consentimiento mutuo:</strong> Respeta los lmites y decisiones de otros
                   </p>
                 </div>
                 <div className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
                   <p className="text-gray-700">
-                    <strong>Privacidad:</strong> Mant�n confidencial la informaci�n personal compartida
+                    <strong>Privacidad:</strong> Mantn confidencial la informacin personal compartida
                   </p>
                 </div>
                 <div className="flex items-start">
@@ -148,7 +148,7 @@ const GuidelinesPage = () => {
                 <div className="flex items-start">
                   <XCircle className="h-5 w-5 text-red-600 mr-3 mt-0.5 flex-shrink-0" />
                   <p className="text-gray-700">
-                    <strong>Acoso o intimidaci�n:</strong> Cualquier forma de hostigamiento est� prohibida
+                    <strong>Acoso o intimidacin:</strong> Cualquier forma de hostigamiento est prohibida
                   </p>
                 </div>
                 <div className="flex items-start">
@@ -166,13 +166,13 @@ const GuidelinesPage = () => {
                 <div className="flex items-start">
                   <XCircle className="h-5 w-5 text-red-600 mr-3 mt-0.5 flex-shrink-0" />
                   <p className="text-gray-700">
-                    <strong>Spam o promoci�n:</strong> No uses la plataforma para publicidad no autorizada
+                    <strong>Spam o promocin:</strong> No uses la plataforma para publicidad no autorizada
                   </p>
                 </div>
                 <div className="flex items-start">
                   <XCircle className="h-5 w-5 text-red-600 mr-3 mt-0.5 flex-shrink-0" />
                   <p className="text-gray-700">
-                    <strong>Discriminaci�n:</strong> No toleramos prejuicios por raza, g�nero, orientaci�n, etc.
+                    <strong>Discriminacin:</strong> No toleramos prejuicios por raza, gnero, orientacin, etc.
                   </p>
                 </div>
               </div>
@@ -190,21 +190,21 @@ const GuidelinesPage = () => {
               <div>
                 <h3 className="text-lg font-semibold mb-4 text-purple-700">Fotos de Perfil</h3>
                 <ul className="space-y-2 text-gray-700">
-                  <li>� Usa fotos claras y recientes (m�ximo 2 a�os)</li>
-                  <li>� Incluye al menos una foto de rostro visible</li>
-                  <li>� Las fotos deben ser tuyas o de tu pareja</li>
-                  <li>� Evita contenido excesivamente expl�cito en fotos p�blicas</li>
-                  <li>� Respeta los derechos de autor</li>
+                  <li> Usa fotos claras y recientes (mximo 2 aos)</li>
+                  <li> Incluye al menos una foto de rostro visible</li>
+                  <li> Las fotos deben ser tuyas o de tu pareja</li>
+                  <li> Evita contenido excesivamente explcito en fotos pblicas</li>
+                  <li> Respeta los derechos de autor</li>
                 </ul>
               </div>
               <div>
                 <h3 className="text-lg font-semibold mb-4 text-purple-700">Mensajes y Chat</h3>
                 <ul className="space-y-2 text-gray-700">
-                  <li>� S� respetuoso desde el primer mensaje</li>
-                  <li>� No env�es contenido no solicitado</li>
-                  <li>� Respeta si alguien no responde o declina</li>
-                  <li>� Mant�n las conversaciones apropiadas al contexto</li>
-                  <li>� No compartas informaci�n de contacto de terceros</li>
+                  <li> S respetuoso desde el primer mensaje</li>
+                  <li> No enves contenido no solicitado</li>
+                  <li> Respeta si alguien no responde o declina</li>
+                  <li> Mantn las conversaciones apropiadas al contexto</li>
+                  <li> No compartas informacin de contacto de terceros</li>
                 </ul>
               </div>
             </div>
@@ -227,7 +227,7 @@ const GuidelinesPage = () => {
                 </div>
                 <h3 className="font-semibold mb-2 text-red-700">Reportar Usuario</h3>
                 <p className="text-sm text-gray-600">
-                  Usa el bot�n "Reportar" en cualquier perfil para denunciar comportamientos inapropiados.
+                  Usa el botn "Reportar" en cualquier perfil para denunciar comportamientos inapropiados.
                 </p>
               </div>
               <div className="text-center">
@@ -263,25 +263,25 @@ const GuidelinesPage = () => {
                 <div className="bg-yellow-50 p-6 rounded-lg border border-yellow-200">
                   <h3 className="font-semibold text-yellow-800 mb-2">Primera Advertencia</h3>
                   <p className="text-yellow-700 text-sm">
-                    Notificaci�n y orientaci�n sobre las directrices de la comunidad.
+                    Notificacin y orientacin sobre las directrices de la comunidad.
                   </p>
                 </div>
                 <div className="bg-orange-50 p-6 rounded-lg border border-orange-200">
-                  <h3 className="font-semibold text-orange-800 mb-2">Suspensi�n Temporal</h3>
+                  <h3 className="font-semibold text-orange-800 mb-2">Suspensin Temporal</h3>
                   <p className="text-orange-700 text-sm">
-                    Restricci�n de acceso por un per�odo determinado (1-30 d�as).
+                    Restriccin de acceso por un perodo determinado (1-30 das).
                   </p>
                 </div>
                 <div className="bg-red-50 p-6 rounded-lg border border-red-200">
-                  <h3 className="font-semibold text-red-800 mb-2">Expulsi�n Permanente</h3>
+                  <h3 className="font-semibold text-red-800 mb-2">Expulsin Permanente</h3>
                   <p className="text-red-700 text-sm">
-                    Eliminaci�n definitiva de la cuenta por violaciones graves o reincidentes.
+                    Eliminacin definitiva de la cuenta por violaciones graves o reincidentes.
                   </p>
                 </div>
               </div>
               <div className="text-center text-gray-600">
                 <p className="text-sm">
-                  Las decisiones se toman caso por caso, considerando la gravedad y el contexto de cada situaci�n.
+                  Las decisiones se toman caso por caso, considerando la gravedad y el contexto de cada situacin.
                 </p>
               </div>
             </div>
@@ -295,12 +295,12 @@ const GuidelinesPage = () => {
             </CardHeader>
           <CardContent className="text-center">
             <p className="text-white/80 mb-6">
-              Si tienes preguntas sobre estas directrices o deseas apelar una decisi�n, 
+              Si tienes preguntas sobre estas directrices o deseas apelar una decisin, 
               no dudes en contactarnos:
             </p>
             <div className="space-y-4">
               <div>
-                <p className="font-semibold text-purple-300">Equipo de Moderaci�n</p>
+                <p className="font-semibold text-purple-300">Equipo de Moderacin</p>
                 <p className="text-white/70">moderacion@complicesconecta.com</p>
               </div>
               <div>
@@ -322,10 +322,10 @@ const GuidelinesPage = () => {
           {/* Footer Note */}
           <div className="text-center mt-12 text-white/70 text-sm">
             <p>
-              Estas directrices pueden actualizarse peri�dicamente. Te notificaremos sobre cambios importantes.
+              Estas directrices pueden actualizarse peridicamente. Te notificaremos sobre cambios importantes.
             </p>
             <p className="mt-2">
-              �ltima actualizaci�n: Enero 2025
+              ltima actualizacin: Enero 2025
             </p>
           </div>
         </div>

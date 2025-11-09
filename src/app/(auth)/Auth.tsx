@@ -52,7 +52,7 @@ const Auth = () => {
   const { getCurrentLocation: _getCurrentLocation, location: _location, isLoading: _locationLoading, error: _locationError } = useGeolocation();
   const { user: _user, session: _session, profile: _profile, loading: _loading, signIn, signOut: _signOut, isAdmin: _isAdmin, isDemo: _isDemo, getProfileType: _getProfileType, shouldUseProductionAdmin: _shouldUseProductionAdmin, appMode: _appMode } = useAuth();
   
-  // Estado persistente para autenticaci�n demo
+  // Estado persistente para autenticacin demo
   const [_demoUser, _setDemoUser] = usePersistedState<any>('demo_user', null);
   const [_demoAuthenticated, _setDemoAuthenticated] = usePersistedState<boolean>('demo_authenticated', false);
   const [_userType, _setUserType] = usePersistedState<string>('userType', '');
@@ -111,7 +111,7 @@ const Auth = () => {
         password: 'demo123'
       };
       
-      // Establecer estado de autenticaci�n demo
+      // Establecer estado de autenticacin demo
       _setDemoAuthenticated(true);
       _setDemoUser(demoCredentials);
       _setUserType('single');
@@ -126,7 +126,7 @@ const Auth = () => {
         description: "Bienvenido al modo demo de ComplicesConecta",
       });
       
-      // Navegar al feed despu�s de un breve delay
+      // Navegar al feed despus de un breve delay
       setTimeout(() => {
         navigate('/feed');
       }, 1500);
@@ -150,16 +150,16 @@ const Auth = () => {
     setShowLoginLoading(true);
 
     try {
-      // Usar el m�todo signIn del hook useAuth que maneja correctamente demo y producci�n
+      // Usar el mtodo signIn del hook useAuth que maneja correctamente demo y produccin
       const result = await signIn(formData.email, formData.password, formData.accountType || 'single');
 
       if (result && result.user) {
         toast({
-          title: "Inicio de sesi�n exitoso",
+          title: "Inicio de sesin exitoso",
           description: "Bienvenido de vuelta a ComplicesConecta",
         });
 
-        // Redirigir seg�n el tipo de cuenta
+        // Redirigir segn el tipo de cuenta
         const userWithMetadata = result.user as any;
         const accountType = userWithMetadata?.user_metadata?.account_type || 
                            userWithMetadata?.user_metadata?.accountType || 
@@ -179,17 +179,17 @@ const Auth = () => {
       }
     } catch (error: any) {
       // Mejorar mensajes de error
-      let errorMessage = 'Error al iniciar sesi�n';
+      let errorMessage = 'Error al iniciar sesin';
       
       if (error?.message) {
         if (error.message.includes('Invalid API key')) {
-          errorMessage = 'Error de configuraci�n. Por favor, contacta al soporte.';
+          errorMessage = 'Error de configuracin. Por favor, contacta al soporte.';
         } else if (error.message.includes('Invalid login credentials') || error.message.includes('Invalid credentials')) {
-          errorMessage = 'Correo electr�nico o contrase�a incorrectos';
+          errorMessage = 'Correo electrnico o contrasea incorrectos';
         } else if (error.message.includes('Email not confirmed')) {
-          errorMessage = 'Por favor, confirma tu correo electr�nico antes de iniciar sesi�n';
+          errorMessage = 'Por favor, confirma tu correo electrnico antes de iniciar sesin';
         } else if (error.message.includes('User not found')) {
-          errorMessage = 'Usuario no encontrado. Verifica tu correo electr�nico';
+          errorMessage = 'Usuario no encontrado. Verifica tu correo electrnico';
         } else {
           errorMessage = error.message;
         }
@@ -197,7 +197,7 @@ const Auth = () => {
 
       toast({
         variant: "destructive",
-        title: "Error al iniciar sesi�n",
+        title: "Error al iniciar sesin",
         description: errorMessage,
       });
     } finally {
@@ -213,20 +213,20 @@ const Auth = () => {
     try {
       // Validaciones adicionales
       if (!formData.acceptTerms) {
-        throw new Error('Debes aceptar los t�rminos y condiciones');
+        throw new Error('Debes aceptar los trminos y condiciones');
       }
 
       if (formData.age && parseInt(formData.age) < 18) {
-        throw new Error('Debes ser mayor de 18 a�os');
+        throw new Error('Debes ser mayor de 18 aos');
       }
 
       if (formData.accountType === 'couple' && formData.partnerAge && parseInt(formData.partnerAge) < 18) {
-        throw new Error('Tu pareja debe ser mayor de 18 a�os');
+        throw new Error('Tu pareja debe ser mayor de 18 aos');
       }
 
       // Crear usuario en Supabase
       if (!supabase) {
-        throw new Error('Supabase no est� disponible');
+        throw new Error('Supabase no est disponible');
       }
       
       const { data: _authData, error: authError } = await supabase.auth.signUp({
@@ -261,11 +261,11 @@ const Auth = () => {
       if (authError) throw authError;
 
       toast({
-        title: "�Cuenta creada exitosamente!",
+        title: "Cuenta creada exitosamente!",
         description: "Revisa tu correo para verificar tu cuenta",
       });
 
-      // Redirigir al login despu�s del registro
+      // Redirigir al login despus del registro
       setTimeout(() => {
         navigate('/auth');
       }, 2000);
@@ -348,14 +348,14 @@ const Auth = () => {
           <CardContent>
             <Tabs defaultValue="signin" className="w-full">
               <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="signin" data-testid="switch-to-login">Iniciar Sesi�n</TabsTrigger>
+                <TabsTrigger value="signin" data-testid="switch-to-login">Iniciar Sesin</TabsTrigger>
                 <TabsTrigger value="signup" data-testid="switch-to-register">Registrarse</TabsTrigger>
               </TabsList>
               
               <TabsContent value="signin">
                 <form onSubmit={handleSignIn} className="space-y-4" data-testid="login-form">
                   <div className="space-y-2">
-                    <Label htmlFor="email" className="text-white font-medium">Correo electr�nico</Label>
+                    <Label htmlFor="email" className="text-white font-medium">Correo electrnico</Label>
                     <Input
                       id="email"
                       type="email"
@@ -367,7 +367,7 @@ const Auth = () => {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="password" className="text-white font-medium">Contrase�a</Label>
+                    <Label htmlFor="password" className="text-white font-medium">Contrasea</Label>
                     <Input
                       id="password"
                       type="password"
@@ -386,7 +386,7 @@ const Auth = () => {
                     data-testid="login-button"
                     style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}
                   >
-                    {isLoading ? "Iniciando sesi�n..." : "Iniciar Sesi�n"}
+                    {isLoading ? "Iniciando sesin..." : "Iniciar Sesin"}
                   </Button>
                   
                   {/* Demo Login Button con glassmorphism mejorado */}
@@ -429,7 +429,7 @@ const Auth = () => {
                     </div>
                   </div>
 
-                  {/* Informaci�n B�sica */}
+                  {/* Informacin Bsica */}
                   <div className="space-y-2">
                     <Label htmlFor="firstName" className="text-white font-medium">Nombre</Label>
                     <Input
@@ -461,7 +461,7 @@ const Auth = () => {
                       value={formData.nickname}
                       onChange={(e) => handleInputChange('nickname', e.target.value)}
                       required
-                      placeholder="Nombre p�blico"
+                      placeholder="Nombre pblico"
                       className="bg-white/10 border-white/20 text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500"
                     />
                   </div>
@@ -481,7 +481,7 @@ const Auth = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="gender" className="text-white font-medium">G�nero</Label>
+                    <Label htmlFor="gender" className="text-white font-medium">Gnero</Label>
                     <select
                       id="gender"
                       value={formData.gender}
@@ -492,7 +492,7 @@ const Auth = () => {
                         colorScheme: 'dark'
                       }}
                     >
-                      <option value="" className="bg-purple-900 text-white">Selecciona tu g�nero</option>
+                      <option value="" className="bg-purple-900 text-white">Selecciona tu gnero</option>
                       <option value="male" className="bg-purple-900 text-white">Masculino</option>
                       <option value="female" className="bg-purple-900 text-white">Femenino</option>
                       <option value="non-binary" className="bg-purple-900 text-white">No binario</option>
@@ -512,7 +512,7 @@ const Auth = () => {
                         colorScheme: 'dark'
                       }}
                     >
-                      <option value="" className="bg-purple-900 text-white">Selecciona tu inter�s</option>
+                      <option value="" className="bg-purple-900 text-white">Selecciona tu inters</option>
                       <option value="male" className="bg-purple-900 text-white">Hombres</option>
                       <option value="female" className="bg-purple-900 text-white">Mujeres</option>
                       <option value="both" className="bg-purple-900 text-white">Ambos</option>
@@ -520,11 +520,11 @@ const Auth = () => {
                     </select>
                   </div>
 
-                  {/* Informaci�n de Pareja - Solo si es pareja */}
+                  {/* Informacin de Pareja - Solo si es pareja */}
                   {formData.accountType === 'couple' && (
                     <>
                       <div className="border-t border-white/20 pt-4">
-                        <h4 className="text-white font-medium mb-4">Informaci�n de tu Pareja</h4>
+                        <h4 className="text-white font-medium mb-4">Informacin de tu Pareja</h4>
                         
                         <div className="space-y-2">
                           <Label htmlFor="partnerFirstName" className="text-white font-medium">Nombre de tu Pareja</Label>
@@ -557,7 +557,7 @@ const Auth = () => {
                             value={formData.partnerNickname}
                             onChange={(e) => handleInputChange('partnerNickname', e.target.value)}
                             required
-                            placeholder="Nombre p�blico de tu pareja"
+                            placeholder="Nombre pblico de tu pareja"
                             className="bg-white/10 border-white/20 text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500"
                           />
                         </div>
@@ -577,7 +577,7 @@ const Auth = () => {
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlFor="partnerGender" className="text-white font-medium">G�nero de tu Pareja</Label>
+                          <Label htmlFor="partnerGender" className="text-white font-medium">Gnero de tu Pareja</Label>
                           <select
                             id="partnerGender"
                             value={formData.partnerGender}
@@ -588,7 +588,7 @@ const Auth = () => {
                               colorScheme: 'dark'
                             }}
                           >
-                            <option value="" className="bg-purple-900 text-white">Selecciona el g�nero</option>
+                            <option value="" className="bg-purple-900 text-white">Selecciona el gnero</option>
                             <option value="male" className="bg-purple-900 text-white">Masculino</option>
                             <option value="female" className="bg-purple-900 text-white">Femenino</option>
                             <option value="non-binary" className="bg-purple-900 text-white">No binario</option>
@@ -608,7 +608,7 @@ const Auth = () => {
                               colorScheme: 'dark'
                             }}
                           >
-                            <option value="" className="bg-purple-900 text-white">Selecciona el inter�s</option>
+                            <option value="" className="bg-purple-900 text-white">Selecciona el inters</option>
                             <option value="male" className="bg-purple-900 text-white">Hombres</option>
                             <option value="female" className="bg-purple-900 text-white">Mujeres</option>
                             <option value="both" className="bg-purple-900 text-white">Ambos</option>
@@ -619,9 +619,9 @@ const Auth = () => {
                     </>
                   )}
 
-                  {/* Informaci�n Adicional */}
+                  {/* Informacin Adicional */}
                   <div className="space-y-2">
-                    <Label htmlFor="email" className="text-white font-medium">Correo electr�nico</Label>
+                    <Label htmlFor="email" className="text-white font-medium">Correo electrnico</Label>
                     <Input
                       id="email"
                       type="email"
@@ -634,7 +634,7 @@ const Auth = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="password" className="text-white font-medium">Contrase�a</Label>
+                    <Label htmlFor="password" className="text-white font-medium">Contrasea</Label>
                     <Input
                       id="password"
                       type="password"
@@ -642,26 +642,26 @@ const Auth = () => {
                       onChange={(e) => handleInputChange('password', e.target.value)}
                       required
                       minLength={6}
-                      placeholder="M�nimo 6 caracteres"
+                      placeholder="Mnimo 6 caracteres"
                       className="bg-white/10 border-white/20 text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="bio" className="text-white font-medium">Biograf�a</Label>
+                    <Label htmlFor="bio" className="text-white font-medium">Biografa</Label>
                     <textarea
                       id="bio"
                       value={formData.bio}
                       onChange={(e) => handleInputChange('bio', e.target.value)}
                       required
                       rows={3}
-                      placeholder="Cu�ntanos sobre ti..."
+                      placeholder="Cuntanos sobre ti..."
                       className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="location" className="text-white font-medium">Ubicaci�n</Label>
+                    <Label htmlFor="location" className="text-white font-medium">Ubicacin</Label>
                     <Input
                       id="location"
                       value={formData.location}
@@ -672,7 +672,7 @@ const Auth = () => {
                     />
                   </div>
 
-                  {/* T�rminos y Condiciones */}
+                  {/* Trminos y Condiciones */}
                   <div className="space-y-2">
                     <div className="flex items-center space-x-2">
                       <input
@@ -684,7 +684,7 @@ const Auth = () => {
                         className="rounded"
                       />
                       <Label htmlFor="acceptTerms" className="text-sm text-white/80">
-                        Acepto los <Link to="/terms" className="text-purple-300 hover:underline">T�rminos y Condiciones</Link> y la <Link to="/privacy" className="text-purple-300 hover:underline">Pol�tica de Privacidad</Link>
+                        Acepto los <Link to="/terms" className="text-purple-300 hover:underline">Trminos y Condiciones</Link> y la <Link to="/privacy" className="text-purple-300 hover:underline">Poltica de Privacidad</Link>
                       </Label>
                     </div>
                   </div>
@@ -699,7 +699,7 @@ const Auth = () => {
                         className="rounded"
                       />
                       <Label htmlFor="shareLocation" className="text-sm text-white/80">
-                        Compartir mi ubicaci�n para mejorar las coincidencias
+                        Compartir mi ubicacin para mejorar las coincidencias
                       </Label>
                     </div>
                 </div>
