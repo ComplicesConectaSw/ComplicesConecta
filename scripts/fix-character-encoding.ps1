@@ -58,7 +58,8 @@ $replacements['Â¿'] = '¿'
 $replacements['Â¡'] = '¡'
 
 # 2. Caracteres de reemplazo Unicode (U+FFFD =)
-$replacements[[char]0xFFFD] = ''  # Carácter de reemplazo
+# Nota: Los caracteres de reemplazo se eliminan usando Remove() en lugar de Replace()
+$replacementChars = @([char]0xFFFD)  # Caracteres a eliminar
 
 # 3. Secuencias de bytes UTF-8 mal interpretadas (como strings concatenados)
 # Cuando UTF-8 se lee como Windows-1252, aparecen como secuencias de 2 caracteres
@@ -153,7 +154,26 @@ function Repair-CharacterEncoding {
         
         foreach ($bad in $sortedKeys) {
             if ($null -ne $bad -and $content.Contains($bad)) {
-                $newContent = $content.Replace($bad, $replacements[$bad])
+                $replacement = $replacements[$bad]
+                if ($null -ne $replacement) {
+                    # Si el reemplazo es un string vacío, eliminar el carácter
+                    if ($replacement -eq '') {
+                        $newContent = $content.Replace($bad, '')
+                    } else {
+                        $newContent = $content.Replace($bad, $replacement)
+                    }
+                    if ($newContent -ne $content) {
+                        $content = $newContent
+                        $changed = $true
+                    }
+                }
+            }
+        }
+        
+        # Eliminar caracteres de reemplazo Unicode (U+FFFD)
+        foreach ($char in $replacementChars) {
+            if ($content.Contains($char)) {
+                $newContent = $content.Replace($char, '')
                 if ($newContent -ne $content) {
                     $content = $newContent
                     $changed = $true
