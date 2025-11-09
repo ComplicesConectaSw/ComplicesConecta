@@ -15,14 +15,10 @@ export default defineConfig(({ mode }) => {
       {
         name: 'fix-mime-types',
         configureServer(server) {
-          // CRÍTICO: Usar transformIndexHtml para establecer headers antes de que Vite procese
-          // Pero también necesitamos middleware para archivos estáticos
           server.middlewares.use((req, res, next) => {
             const url = req.url || '';
             const urlWithoutQuery = url.split('?')[0];
             
-            // CRÍTICO: Establecer Content-Type ANTES de que Vite procese la respuesta
-            // Esto es especialmente importante para archivos de dependencias optimizadas
             if (url.includes('/node_modules/.vite/deps/') || 
                 url.includes('/deps/') ||
                 urlWithoutQuery.endsWith('.js') || 
@@ -30,22 +26,17 @@ export default defineConfig(({ mode }) => {
                 urlWithoutQuery.endsWith('.jsx') || 
                 urlWithoutQuery.endsWith('.ts') || 
                 urlWithoutQuery.endsWith('.tsx')) {
-              // Forzar Content-Type para archivos JavaScript (incluyendo dependencias optimizadas)
               res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
             } else if (urlWithoutQuery.endsWith('.css') || 
                        url.includes('/src/index.css') || 
                        url.includes('/styles/index.css') ||
                        url.includes('/src/styles/')) {
-              // Forzar Content-Type para archivos CSS
               res.setHeader('Content-Type', 'text/css; charset=utf-8');
             } else if (urlWithoutQuery.endsWith('.json')) {
-              // Forzar Content-Type para archivos JSON
               res.setHeader('Content-Type', 'application/json; charset=utf-8');
             } else if (urlWithoutQuery.endsWith('.html') || url === '/' || url === '') {
-              // Forzar Content-Type para archivos HTML
               res.setHeader('Content-Type', 'text/html; charset=utf-8');
             } else if (urlWithoutQuery.endsWith('.wasm')) {
-              // Forzar Content-Type para archivos WebAssembly
               res.setHeader('Content-Type', 'application/wasm');
             }
             
@@ -62,37 +53,28 @@ export default defineConfig(({ mode }) => {
     server: {
       port: 8080,
       strictPort: false,
-      // CRÍTICO: host: true es más simple y funciona mejor (basado en respaldo)
-      host: true, // Permitir conexiones desde cualquier IP (equivalente a '0.0.0.0' pero más simple)
-      // HMR: Habilitado para desarrollo local (deshabilitar solo para túneles si es necesario)
+      host: true,
       hmr: isDev ? {
         protocol: 'ws',
         host: 'localhost',
         port: 8080,
       } : false,
-      cors: true, // Habilitar CORS para recursos estáticos
-      // CRÍTICO: Headers simples basados en respaldo que funcionaba
-      // IMPORTANTE: No enviar X-Content-Type-Options: nosniff sin asegurar Content-Type correctos
+      cors: true,
       headers: isDev ? {
         'Cross-Origin-Embedder-Policy': 'unsafe-none',
         'Cross-Origin-Opener-Policy': 'same-origin',
-        'Access-Control-Allow-Origin': '*', // Permitir acceso desde cualquier origen en desarrollo
+        'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        // NO incluir X-Content-Type-Options: nosniff aquí - Vite maneja los Content-Type automáticamente
       } : {},
     },
-    // Configuración de CSS para asegurar carga correcta (basado en respaldo)
     css: {
-      devSourcemap: isDev, // Sourcemaps en desarrollo
-      // Asegurar que los CSS se sirvan correctamente en desarrollo
+      devSourcemap: isDev,
       modules: {
         localsConvention: 'camelCase',
       },
-      // CRÍTICO: PostCSS configurado si existe (basado en respaldo)
-      postcss: './postcss.config.js', // Usar PostCSS si existe el archivo
+      postcss: './postcss.config.js',
     },
-    // CRÍTICO: Optimización de dependencias para desarrollo
     optimizeDeps: {
       include: [
         'react',
@@ -106,31 +88,42 @@ export default defineConfig(({ mode }) => {
         '@capacitor/core',
         '@capacitor/android',
       ],
-      // CRÍTICO: Forzar re-optimización si hay problemas
       force: false,
     },
     build: {
-      // Asegurar que los assets se sirvan correctamente
+      // CRÍTICO: Assets directory
       assetsDir: 'assets',
       // Inline assets pequeños para reducir requests
       assetsInlineLimit: 4096, // 4KB
       rollupOptions: {
         output: {
-          // FUERZA CHUNKS ESTABLES + SIN HASH LOCO
-          chunkFileNames: 'assets/js/[name].js',
-          entryFileNames: 'assets/js/[name].js',
+          // CRÍTICO: Chunks estables con hash para caché pero nombres predecibles
+          chunkFileNames: (chunkInfo) => {
+            // Chunks de vendor con hash estable
+            if (chunkInfo.name?.startsWith('vendor-')) {
+              return `assets/js/${chunkInfo.name}-[hash].js`;
+            }
+            // Chunks de aplicación con hash estable
+            if (chunkInfo.name?.startsWith('chunk-')) {
+              return `assets/js/${chunkInfo.name}-[hash].js`;
+            }
+            // Entry point con hash estable
+            return `assets/js/[name]-[hash].js`;
+          },
+          entryFileNames: 'assets/js/[name]-[hash].js',
           assetFileNames: ({ name }) => {
             if (/\.(png|jpe?g|svg|gif|webp)$/i.test(name ?? '')) {
-              return 'assets/images/[name].[ext]'
+              return 'assets/images/[name]-[hash].[ext]';
             }
             if (/\.(css)$/.test(name ?? '')) {
-              return 'assets/css/[name].[ext]'
+              // CRÍTICO: CSS sin split - un solo archivo
+              return 'assets/css/[name]-[hash].[ext]';
             }
-            return 'assets/[name].[ext]'
+            return 'assets/[name]-[hash].[ext]';
           },
-          // MANUAL CHUNKS: Dividir código en chunks más pequeños y eficientes
+          // CRÍTICO: Manual chunks optimizados para <60MB
           manualChunks: (id) => {
-            // Vendor chunks - librerías externas (MÁS GRANULAR)
+            // Vendor chunks - librerías externas
             if (id.includes('node_modules')) {
               // React core - separar React y React DOM
               if (id.includes('react/') && !id.includes('react-dom')) {
@@ -166,11 +159,7 @@ export default defineConfig(({ mode }) => {
               if (id.includes('@tanstack/react-query')) {
                 return 'vendor-query';
               }
-              // Otros vendors grandes
-              if (id.includes('@capacitor') || id.includes('@solana')) {
-                return 'vendor-mobile';
-              }
-              // Resto de vendors pequeños - agrupar
+              // Otros vendors pequeños - agrupar
               return 'vendor-other';
             }
             
@@ -266,14 +255,13 @@ export default defineConfig(({ mode }) => {
           },
         },
       },
-      // Límite de warning ajustado - chunks grandes se dividen automáticamente
+      // Límite de warning ajustado
       chunkSizeWarningLimit: 1000,
       // CRÍTICO: Deshabilitar CSS code splitting para evitar problemas de carga
       cssCodeSplit: false,
       // Asegurar que los assets se sirvan con rutas absolutas
       assetsInclude: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.svg', '**/*.gif', '**/*.webp'],
       // CRÍTICO: Asegurar que los CSS se procesen correctamente durante el build
-      // Esto resuelve el warning sobre /src/index.css
       cssMinify: true,
       // Optimizaciones adicionales
       minify: 'terser',
@@ -283,7 +271,14 @@ export default defineConfig(({ mode }) => {
           drop_debugger: true,
         },
       },
+      // CRÍTICO: Sourcemaps solo en desarrollo
+      sourcemap: isDev,
+      // CRÍTICO: Reporte de tamaño de chunks
+      reportCompressedSize: true,
+      // CRÍTICO: Target moderno para mejor optimización
+      target: 'esnext',
     },
-    base: '/', // CRÍTICO PARA VERCEL
+    // CRÍTICO: Base path para Vercel
+    base: '/',
   };
-})
+});
