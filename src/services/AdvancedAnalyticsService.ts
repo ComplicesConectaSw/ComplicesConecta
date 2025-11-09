@@ -48,7 +48,7 @@ export interface UserJourneyStep {
   timestamp: string;
   duration: number;
   action: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 export interface PredictiveInsights {
@@ -257,7 +257,7 @@ export class AdvancedAnalyticsService {
     sessionId: string,
     action: string,
     page: string,
-    metadata?: Record<string, any>
+    metadata?: Record<string, unknown>
   ): Promise<void> {
     if (!this.config.enableBehaviorAnalytics) return;
 

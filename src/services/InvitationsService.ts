@@ -1,6 +1,44 @@
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
 
+// Interfaces para datos de Supabase
+interface InvitationRow {
+  id: string;
+  from_profile: string;
+  to_profile: string;
+  type: string;
+  status: string;
+  metadata?: Record<string, unknown> | null;
+  created_at: string;
+  updated_at: string;
+}
+
+interface GalleryPermissionRow {
+  id: string;
+  profile_id?: string;
+  granted_by: string;
+  granted_to: string;
+  permission_type: string;
+  created_at: string;
+}
+
+interface InvitationTemplateRow {
+  id: string;
+  template_name?: string;
+  name?: string;
+  template_content?: string;
+  content?: string;
+  invitation_type?: string;
+  type?: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+interface InvitationStatusRow {
+  status: string;
+}
+
 export interface Invitation {
   id: string;
   inviter_id: string;
@@ -9,7 +47,7 @@ export interface Invitation {
   type: string;
   status: 'pending' | 'accepted' | 'declined' | 'expired';
   expires_at?: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
   created_at: string;
   updated_at: string;
   // Datos del invitador
@@ -48,7 +86,7 @@ export interface CreateInvitationData {
   invitation_type?: string;
   type: string;
   expires_at?: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 export interface CreateGalleryPermissionData {
@@ -125,7 +163,7 @@ class InvitationsService {
       }
 
       // Mapear datos de Supabase al formato esperado
-      const invitations: Invitation[] = (data || []).map((invitation: any) => ({
+      const invitations: Invitation[] = (data || []).map((invitation: InvitationRow) => ({
         id: invitation.id,
         inviter_id: invitation.from_profile,
         invitee_email: invitation.to_profile, // Usar to_profile como ID
@@ -316,7 +354,7 @@ class InvitationsService {
       logger.info('✅ Gallery permissions loaded successfully from Supabase', { count: data?.length || 0 });
       
       // Mapear a GalleryPermission con campos requeridos
-      return (data || []).map((perm: any) => ({
+      return (data || []).map((perm: GalleryPermissionRow) => ({
         id: perm.id,
         gallery_owner_id: perm.profile_id || perm.granted_by || '',
         granted_by: perm.granted_by || '',
@@ -442,7 +480,7 @@ class InvitationsService {
       logger.info('✅ Invitation templates loaded successfully from Supabase', { count: data?.length || 0 });
       
       // Mapear a InvitationTemplate con campo template_type
-      return (data || []).map((template: any) => ({
+      return (data || []).map((template: InvitationTemplateRow) => ({
         id: template.id,
         template_name: template.template_name || template.name || '',
         template_content: template.template_content || template.content || '',
@@ -503,12 +541,12 @@ class InvitationsService {
         };
       }
 
-      const invitations = data || [];
+      const invitations: InvitationStatusRow[] = data || [];
       const totalInvitations = invitations.length;
-      const pendingInvitations = invitations.filter((i: any) => i.status === 'pending').length;
-      const acceptedInvitations = invitations.filter((i: any) => i.status === 'accepted').length;
-      const declinedInvitations = invitations.filter((i: any) => i.status === 'declined').length;
-      const expiredInvitations = invitations.filter((i: any) => i.status === 'expired').length;
+      const pendingInvitations = invitations.filter((i: InvitationStatusRow) => i.status === 'pending').length;
+      const acceptedInvitations = invitations.filter((i: InvitationStatusRow) => i.status === 'accepted').length;
+      const declinedInvitations = invitations.filter((i: InvitationStatusRow) => i.status === 'declined').length;
+      const expiredInvitations = invitations.filter((i: InvitationStatusRow) => i.status === 'expired').length;
       const acceptanceRate = totalInvitations > 0 ? (acceptedInvitations / totalInvitations) * 100 : 0;
 
       const stats = {

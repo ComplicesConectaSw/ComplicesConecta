@@ -244,7 +244,11 @@ export const useWorldID = () => {
         throw error;
       }
 
-      const current = data?.reduce((sum: number, reward: any) => {
+      interface ReferralReward {
+        amount: string | number;
+      }
+      
+      const current = data?.reduce((sum: number, reward: ReferralReward) => {
         const amount = typeof reward.amount === 'string' ? parseFloat(reward.amount) : reward.amount;
         return sum + (amount || 0);
       }, 0) || 0;
