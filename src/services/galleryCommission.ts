@@ -54,9 +54,22 @@ export const recordGalleryCommission = async (
 /**
  * Obtener comisiones pendientes de un creador
  */
+interface GalleryCommission {
+  id: string;
+  gallery_id: string;
+  creator_id: string;
+  transaction_type: string;
+  amount_cmpx: number;
+  commission_amount_cmpx: number;
+  creator_amount_cmpx: number;
+  creator_paid: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
 export const getCreatorPendingCommissions = async (
   creatorId: string
-): Promise<unknown[]> => {
+): Promise<GalleryCommission[]> => {
   try {
     if (!supabase) {
       throw new Error('Supabase no está disponible');
@@ -108,7 +121,13 @@ export const getCreatorCommissionStats = async (
       platformCommission: 0,
     };
 
-    (data || []).forEach((commission: { creator_amount_cmpx: number; commission_amount_cmpx: number; creator_paid: boolean }) => {
+    interface CommissionStatsRow {
+      creator_amount_cmpx: number;
+      commission_amount_cmpx: number;
+      creator_paid: boolean;
+    }
+    
+    (data || []).forEach((commission: CommissionStatsRow) => {
       stats.totalCommissions += commission.creator_amount_cmpx + commission.commission_amount_cmpx;
       stats.platformCommission += commission.commission_amount_cmpx;
       

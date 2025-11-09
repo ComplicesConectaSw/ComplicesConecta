@@ -108,6 +108,20 @@ Este documento contiene todos los errores, warnings y problemas encontrados dura
   - [x] Agregar comentario TODO para implementar cuando la tabla esté disponible
   - [x] Verificar que el código compile sin errores
 
+##### 5. `src/services/galleryCommission.ts`
+- **Ruta**: `src/services/galleryCommission.ts`
+- **Líneas**: 59, 111
+- **Problema**: Uso de `unknown[]` y tipo inline sin interfaz específica
+- **Severidad**: Warning de tipo
+- **Estado**: ✅ Corregido
+- **Recomendación**: Crear interfaces específicas para los tipos de datos
+- **Checklist**:
+  - [x] Crear interfaz `GalleryCommission` para datos de comisiones
+  - [x] Crear interfaz `CommissionStatsRow` para estadísticas
+  - [x] Reemplazar `Promise<unknown[]>` con `Promise<GalleryCommission[]>`
+  - [x] Reemplazar tipo inline con interfaz específica
+  - [x] Verificar que el código compile sin errores
+
 ---
 
 ### Sección 3: Archivos Duplicados o Similares
@@ -219,6 +233,7 @@ Este documento contiene todos los errores, warnings y problemas encontrados dura
 - **Errores críticos**: 0
 - **Warnings**: 1 (corregido)
 - **Errores de tipo TypeScript**: 0 (todos corregidos)
+- **Archivos corregidos**: 5 (useWorldID.ts, InvitationsService.ts, AdvancedAnalyticsService.ts, AdvancedCacheService.ts, galleryCommission.ts)
 
 ---
 
@@ -246,7 +261,14 @@ Este documento contiene todos los errores, warnings y problemas encontrados dura
    - [x] Deshabilitar función `logCacheStatistics` que intenta insertar en tabla inexistente
    - [x] Verificar compilación sin errores
 
-5. **Revisar duplicado de ConsentVerificationService.ts**
+5. **Corregir tipos `unknown[]` en galleryCommission.ts**
+   - [x] Crear interfaz `GalleryCommission` para datos de comisiones
+   - [x] Crear interfaz `CommissionStatsRow` para estadísticas
+   - [x] Reemplazar `Promise<unknown[]>` con `Promise<GalleryCommission[]>`
+   - [x] Reemplazar tipo inline con interfaz específica
+   - [x] Verificar compilación sin errores
+
+6. **Revisar duplicado de ConsentVerificationService.ts**
    - [ ] Analizar si ambos servicios son necesarios
    - [ ] Consolidar en un solo servicio si es posible
    - [ ] Documentar por qué existen ambos si ambos son necesarios
