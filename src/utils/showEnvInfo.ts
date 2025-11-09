@@ -3,13 +3,21 @@
  * Versi├│n: 3.5.1
  * 
  * Uso: Importar y llamar showEnvInfo() en la consola del navegador
+ * 
+ * NOTA: Este archivo usa console.log intencionalmente para debugging en consola del navegador
  */
-
-export function showEnvInfo(): void {
+export function showEnvInfo(): {
+  env: Record<string, unknown>;
+  viteVars: Record<string, string>;
+  mode: string;
+  dev: boolean;
+  prod: boolean;
+  baseUrl: string;
+} {
   console.group('­ƒöÉ Variables de Entorno - ComplicesConecta v3.5.1');
   
   // Mostrar todas las variables de entorno
-  const env = import.meta.env;
+  const env = import.meta.env as Record<string, unknown>;
   
   console.log('­ƒôï Todas las variables de entorno:');
   console.table(env);
@@ -21,7 +29,7 @@ export function showEnvInfo(): void {
   Object.keys(env).forEach((key) => {
     if (key.startsWith('VITE_')) {
       const value = env[key];
-      viteVars[key] = value; // Mostrar valores completos en desarrollo
+      viteVars[key] = String(value || ''); // Mostrar valores completos en desarrollo
     }
   });
   
@@ -50,20 +58,21 @@ export function showEnvInfo(): void {
   return {
     env,
     viteVars,
-    mode: env.MODE,
-    dev: env.DEV,
-    prod: env.PROD,
-    baseUrl: env.BASE_URL
+    mode: String(env.MODE || ''),
+    dev: Boolean(env.DEV),
+    prod: Boolean(env.PROD),
+    baseUrl: String(env.BASE_URL || '')
   };
 }
+//eslint-enable no-console//
 
 // Hacer disponible globalmente para uso en consola
 // CR├ìTICO: Asegurar que las funciones est├®n disponibles inmediatamente
 if (typeof window !== 'undefined') {
   const exposeEnvFunctions = () => {
-    (window as any).showEnvInfo = showEnvInfo;
-    (window as any).env = import.meta.env;
-    (window as any).getPassword = (key: string) => {
+    (window as unknown as Record<string, unknown>).showEnvInfo = showEnvInfo;
+    (window as unknown as Record<string, unknown>).env = import.meta.env;
+    (window as unknown as Record<string, unknown>).getPassword = (key: string) => {
       const value = import.meta.env[key];
       if (value) {
         console.log(`­ƒöæ ${key}:`, value);
@@ -92,7 +101,7 @@ if (typeof window !== 'undefined') {
   setTimeout(exposeEnvFunctions, 500);
   
   // Log solo una vez
-  if ((window as any).showEnvInfo) {
+  if ((window as unknown as Record<string, unknown>).showEnvInfo) {
     console.log('Ô£à Utilidad de variables de entorno cargada');
     console.log('­ƒÆí Usa showEnvInfo() en la consola para ver informaci├│n');
     console.log('­ƒÆí Usa window.env para acceder a todas las variables');

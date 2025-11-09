@@ -47,6 +47,20 @@ export interface CreatePostData {
   is_premium?: boolean;
 }
 
+export interface StoryData {
+  id: string;
+  user_id: string;
+  content?: string;
+  post_type: 'text' | 'photo' | 'video';
+  media_urls?: string[];
+  location?: string;
+  story_likes?: Array<{ count: number }>;
+  story_comments?: Array<{ count: number }>;
+  story_shares?: Array<{ count: number }>;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface CreateCommentData {
   post_id: string;
   content: string;
@@ -242,7 +256,7 @@ class PostsService {
           }
 
           // Mapear datos con conteos incluidos (90% reducción en consultas)
-          const posts: Post[] = (data || []).map((story: any) => ({
+          const posts: Post[] = (data || []).map((story: StoryData) => ({
             id: story.id,
             user_id: story.user_id,
             profile_id: story.user_id,
@@ -324,22 +338,23 @@ class PostsService {
       }
 
       // Mapear datos de Supabase al formato esperado
+      const story = storyData as StoryData & { content_url?: string };
       const newPost: Post = {
-        id: (storyData as any).id,
-        user_id: (storyData as any).user_id,
-        profile_id: (storyData as any).user_id,
-        content: (storyData as any).content || '',
-        post_type: (storyData as any).post_type as 'text' | 'photo' | 'video',
-        image_url: (storyData as any).content_url || undefined,
-        video_url: (storyData as any).post_type === 'video' ? (storyData as any).content_url : undefined,
-        location: (storyData as any).location || undefined,
+        id: story.id,
+        user_id: story.user_id,
+        profile_id: story.user_id,
+        content: story.content || '',
+        post_type: story.post_type as 'text' | 'photo' | 'video',
+        image_url: story.content_url || undefined,
+        video_url: story.post_type === 'video' ? story.content_url : undefined,
+        location: story.location || undefined,
         likes_count: 0,
         comments_count: 0,
         shares_count: 0,
-        created_at: (storyData as any).created_at,
-        updated_at: (storyData as any).updated_at,
+        created_at: story.created_at,
+        updated_at: story.updated_at,
         profile: {
-          id: (storyData as any).user_id,
+          id: story.user_id,
           name: 'Usuario',
           avatar_url: undefined,
           is_verified: false

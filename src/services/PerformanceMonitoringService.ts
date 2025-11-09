@@ -12,9 +12,16 @@ import { logger } from '@/lib/logger';
 import { supabase } from '@/integrations/supabase/client';
 
 // New Relic integration (only in browser context)
-let newrelic: any = null;
-if (typeof window !== 'undefined' && (window as any).newrelic) {
-  newrelic = (window as any).newrelic;
+interface NewRelicAPI {
+  noticeError?: (error: Error | string, customAttributes?: Record<string, unknown>) => void;
+  addPageAction?: (name: string, attributes?: Record<string, unknown>) => void;
+  setCustomAttribute?: (name: string, value: string | number | boolean) => void;
+  [key: string]: unknown;
+}
+
+let newrelic: NewRelicAPI | null = null;
+if (typeof window !== 'undefined' && (window as unknown as Record<string, unknown>).newrelic) {
+  newrelic = (window as unknown as Record<string, unknown>).newrelic as NewRelicAPI;
 }
 
 // =====================================================
@@ -182,7 +189,7 @@ class PerformanceMonitoringService {
     );
 
     // 🆕 Enviar a New Relic si está disponible
-    if (newrelic) {
+    if (newrelic?.addPageAction) {
       try {
         newrelic.addPageAction('PerformanceMetric', {
           name: fullMetric.name,
@@ -420,7 +427,13 @@ class PerformanceMonitoringService {
     fcp?: number; // First Contentful Paint
     ttfb?: number; // Time to First Byte
   } {
-    const vitals: any = {};
+    const vitals: {
+      lcp?: number;
+      fid?: number;
+      cls?: number;
+      fcp?: number;
+      ttfb?: number;
+    } = {};
 
     const lcpMetric = this.metrics
       .filter((m) => m.name === 'largest-contentful-paint')

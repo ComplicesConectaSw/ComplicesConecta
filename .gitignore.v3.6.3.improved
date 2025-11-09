@@ -191,25 +191,18 @@ worldid-integration/prompts/INTEGRATION_PROMPT.md
 worldid-integration/token-system-spec/DEV_README.md
 
 # ============================================================================
-# IA & MCP (SENSITIVE - API Keys)
-# Solo existen localmente, sin referencias explícitas en el proyecto público
+# IA, GROK & MCP (SENSITIVE - API Keys)
 # ============================================================================
 scripts/verify-grok.js
 scripts/grok-mcp-server.js
 scripts/grok-verification.js
 scripts/mpc-controller-server.js
-scripts/verify-apidog.js
 .cursor/grok-config.json
 .cursor/mcp.json
 .cursor/ai-config.json
 .cursor/settings.json
 GROK_CONFIGURADO.md
 .nore
-**/*grok*
-**/*mcp*
-**/*ai-assistant*
-**/*mpc-controller*
-**/*apidog*
 
 # ============================================================================
 # SCRIPTS OBSOLETOS Y TEMPORALES
