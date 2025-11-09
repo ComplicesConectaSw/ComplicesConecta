@@ -34,55 +34,85 @@ Write-Host "=================================================" -ForegroundColor 
 Write-Host ""
 
 # === MAPA DE REEMPLAZOS (CORRUPTOS → CORRECTOS) ===
-# Solo caracteres del español de México (es-MX) UTF-8
-# Crear caracteres corruptos como strings primero
-$corrupt_a = [char]0xC3 + [char]0xA1
-$corrupt_e = [char]0xC3 + [char]0xA9
-$corrupt_i = [char]0xC3 + [char]0xAD
-$corrupt_o = [char]0xC3 + [char]0xB3
-$corrupt_u = [char]0xC3 + [char]0xBA
-$corrupt_A = [char]0xC3 + [char]0x81
-$corrupt_E = [char]0xC3 + [char]0x89
-$corrupt_I = [char]0xC3 + [char]0x8D
-$corrupt_O = [char]0xC3 + [char]0x93
-$corrupt_U = [char]0xC3 + [char]0x9A
-$corrupt_n = [char]0xC3 + [char]0xB1
-$corrupt_N = [char]0xC3 + [char]0x91
-$corrupt_question = [char]0xC2 + [char]0xBF
-$corrupt_exclamation = [char]0xC2 + [char]0xA1
-$corrupt_apostrophe = [char]0xE2 + [char]0x80 + [char]0x99
-$corrupt_quote_open = [char]0xE2 + [char]0x80 + [char]0x9C
-$corrupt_quote_close = [char]0xE2 + [char]0x80 + [char]0x9D
-$corrupt_replacement = [char]0xEF + [char]0xBF + [char]0xBD
-$corrupt_zwsp = [char]0xE2 + [char]0x80 + [char]0x8B
+# Caracteres del español de México (es-MX) UTF-8
+# Múltiples formas de caracteres corruptos que pueden aparecer
 
-# Crear hash table de reemplazos usando Add() para evitar duplicados
+# Crear hash table de reemplazos
 $replacements = @{}
-# Vocales con acento - Minúsculas
-$replacements[$corrupt_a] = [char]0xE1  # á
-$replacements[$corrupt_e] = [char]0xE9  # é
-$replacements[$corrupt_i] = [char]0xED  # í
-$replacements[$corrupt_o] = [char]0xF3  # ó
-$replacements[$corrupt_u] = [char]0xFA  # ú
-# Vocales con acento - Mayúsculas
-$replacements[$corrupt_A] = [char]0xC1  # Á
-$replacements[$corrupt_E] = [char]0xC9  # É
-$replacements[$corrupt_I] = [char]0xCD  # Í
-$replacements[$corrupt_O] = [char]0xD3  # Ó
-$replacements[$corrupt_U] = [char]0xDA  # Ú
-# Ñ y ñ
-$replacements[$corrupt_n] = [char]0xF1  # ñ
-$replacements[$corrupt_N] = [char]0xD1  # Ñ
-# Signos de interrogación y exclamación
-$replacements[$corrupt_question] = [char]0xBF  # ¿
-$replacements[$corrupt_exclamation] = [char]0xA1  # ¡
-# Comillas y apostrofes básicos
-$replacements[$corrupt_apostrophe] = [char]0x27  # '
-$replacements[$corrupt_quote_open] = [char]0x22  # "
-$replacements[$corrupt_quote_close] = [char]0x22  # "
-# Caracteres de reemplazo comunes (limpieza de basura)
-$replacements[$corrupt_replacement] = ''  # carácter de reemplazo
-$replacements[$corrupt_zwsp] = ''  # zero-width space
+
+# 1. Caracteres corruptos como secuencias UTF-8 mal interpretadas (Windows-1252)
+# Estos aparecen cuando UTF-8 se lee como Windows-1252
+$utf8Bytes = @{
+    # á (UTF-8: C3 A1, Windows-1252: Ã¡)
+    'Ã¡' = 'á'
+    'Ã©' = 'é'
+    'Ã­' = 'í'
+    'Ã³' = 'ó'
+    'Ãº' = 'ú'
+    'Ã' = 'Á'
+    'Ã‰' = 'É'
+    'Ã' = 'Í'
+    'Ã"' = 'Ó'
+    'Ãš' = 'Ú'
+    'Ã±' = 'ñ'
+    'Ã' = 'Ñ'
+    'Â¿' = '¿'
+    'Â¡' = '¡'
+}
+
+# 2. Caracteres de reemplazo Unicode (U+FFFD =)
+$replacements[[char]0xFFFD] = ''  # Carácter de reemplazo
+
+# 3. Secuencias de bytes UTF-8 mal interpretadas (como strings)
+# Cuando UTF-8 se lee como Windows-1252, aparecen como secuencias de 2 caracteres
+$corruptPatterns = @{
+    # á: UTF-8 bytes C3 A1 → Windows-1252: Ã + ¡
+    ([char]0xC3).ToString() + ([char]0xA1).ToString() = 'á'
+    # é: UTF-8 bytes C3 A9 → Windows-1252: Ã + ©
+    ([char]0xC3).ToString() + ([char]0xA9).ToString() = 'é'
+    # í: UTF-8 bytes C3 AD → Windows-1252: Ã + 
+    ([char]0xC3).ToString() + ([char]0xAD).ToString() = 'í'
+    # ó: UTF-8 bytes C3 B3 → Windows-1252: Ã + ³
+    ([char]0xC3).ToString() + ([char]0xB3).ToString() = 'ó'
+    # ú: UTF-8 bytes C3 BA → Windows-1252: Ã + º
+    ([char]0xC3).ToString() + ([char]0xBA).ToString() = 'ú'
+    # Á: UTF-8 bytes C3 81 → Windows-1252: Ã + 
+    ([char]0xC3).ToString() + ([char]0x81).ToString() = 'Á'
+    # É: UTF-8 bytes C3 89 → Windows-1252: Ã + ‰
+    ([char]0xC3).ToString() + ([char]0x89).ToString() = 'É'
+    # Í: UTF-8 bytes C3 8D → Windows-1252: Ã + 
+    ([char]0xC3).ToString() + ([char]0x8D).ToString() = 'Í'
+    # Ó: UTF-8 bytes C3 93 → Windows-1252: Ã + "
+    ([char]0xC3).ToString() + ([char]0x93).ToString() = 'Ó'
+    # Ú: UTF-8 bytes C3 9A → Windows-1252: Ã + š
+    ([char]0xC3).ToString() + ([char]0x9A).ToString() = 'Ú'
+    # ñ: UTF-8 bytes C3 B1 → Windows-1252: Ã + ±
+    ([char]0xC3).ToString() + ([char]0xB1).ToString() = 'ñ'
+    # Ñ: UTF-8 bytes C3 91 → Windows-1252: Ã + '
+    ([char]0xC3).ToString() + ([char]0x91).ToString() = 'Ñ'
+    # ¿: UTF-8 bytes C2 BF → Windows-1252: Â + ¿
+    ([char]0xC2).ToString() + ([char]0xBF).ToString() = '¿'
+    # ¡: UTF-8 bytes C2 A1 → Windows-1252: Â + ¡
+    ([char]0xC2).ToString() + ([char]0xA1).ToString() = '¡'
+}
+
+# 4. Agregar reemplazos de strings comunes
+foreach ($key in $utf8Bytes.Keys) {
+    $replacements[$key] = $utf8Bytes[$key]
+}
+
+# 5. Agregar reemplazos de patrones de bytes
+foreach ($key in $corruptPatterns.Keys) {
+    $replacements[$key] = $corruptPatterns[$key]
+}
+
+# 6. Caracteres especiales adicionales
+$replacements['â€™'] = "'"  # Apostrophe tipográfico
+$replacements['â€œ'] = '"'  # Comilla izquierda
+$replacements['â€'] = '"'  # Comilla derecha
+$replacements['â€"'] = '—'  # Em dash
+$replacements['â€"'] = '–'  # En dash
+$replacements['â€¦'] = '...'  # Ellipsis
 
 # === EXTENSIONES A PROCESAR ===
 $extensions = @("*.ts", "*.tsx", "*.js", "*.jsx", "*.md", "*.mdx", "*.json", "*.css", "*.html", "*.txt", "*.ps1")
@@ -98,15 +128,44 @@ function Repair-CharacterEncoding {
     try {
         # Leer archivo como bytes para detectar codificación
         $bytes = [System.IO.File]::ReadAllBytes($FilePath)
-        $content = [System.Text.Encoding]::UTF8.GetString($bytes)
+        
+        # Intentar detectar la codificación
+        $encoding = [System.Text.Encoding]::UTF8
+        $content = $null
+        
+        # Intentar leer como UTF-8 primero
+        try {
+            $content = [System.Text.Encoding]::UTF8.GetString($bytes)
+        }
+        catch {
+            # Si falla, intentar como Windows-1252 (común en Windows)
+            try {
+                $encoding = [System.Text.Encoding]::GetEncoding('Windows-1252')
+                $content = $encoding.GetString($bytes)
+            }
+            catch {
+                # Si falla, usar UTF-8 con reemplazo de caracteres
+                $utf8WithReplacement = New-Object System.Text.UTF8Encoding $false
+                $content = $utf8WithReplacement.GetString($bytes)
+            }
+        }
+        
+        $originalContent = $content
         $changed = $false
 
-        # Procesar cada reemplazo
-        foreach ($bad in $replacements.Keys) {
+        # Procesar cada reemplazo (ordenar por longitud descendente para evitar reemplazos parciales)
+        $sortedKeys = $replacements.Keys | Sort-Object { $_.Length } -Descending
+        
+        foreach ($bad in $sortedKeys) {
             if ($content.Contains($bad)) {
                 $content = $content.Replace($bad, $replacements[$bad])
                 $changed = $true
             }
+        }
+        
+        # Verificar si realmente cambió algo
+        if ($content -ne $originalContent) {
+            $changed = $true
         }
 
         if ($changed) {
