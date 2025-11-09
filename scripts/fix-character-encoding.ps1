@@ -3,7 +3,7 @@
     Corrige caracteres mal codificados del español de México (es-MX) UTF-8.
 .DESCRIPTION
     Reemplaza caracteres corruptos comunes del español mexicano (UTF-8 mal interpretado como Windows-1252).
-    Solo maneja caracteres del español de México: vocales con acento (á, é, í, ó, ú, Á, É, Í, Ó, Ú),
+    Maneja caracteres del español de México: vocales con acento (á, é, í, ó, ú, Á, É, Í, Ó, Ú),
     ñ/Ñ, signos de interrogación/exclamación (¿, ¡), y comillas/apostrofes básicos.
     Soporta archivos abiertos, crea backups, y solo escribe si hay cambios.
 .PARAMETER Path
@@ -40,79 +40,71 @@ Write-Host ""
 # Crear hash table de reemplazos
 $replacements = @{}
 
-# 1. Caracteres corruptos como secuencias UTF-8 mal interpretadas (Windows-1252)
+# 1. Caracteres corruptos como strings (cuando UTF-8 se lee como Windows-1252)
 # Estos aparecen cuando UTF-8 se lee como Windows-1252
-$utf8Bytes = @{
-    # á (UTF-8: C3 A1, Windows-1252: Ã¡)
-    'Ã¡' = 'á'
-    'Ã©' = 'é'
-    'Ã­' = 'í'
-    'Ã³' = 'ó'
-    'Ãº' = 'ú'
-    'Ã' = 'Á'
-    'Ã‰' = 'É'
-    'Ã' = 'Í'
-    'Ã"' = 'Ó'
-    'Ãš' = 'Ú'
-    'Ã±' = 'ñ'
-    'Ã' = 'Ñ'
-    'Â¿' = '¿'
-    'Â¡' = '¡'
-}
+$replacements['Ã¡'] = 'á'
+$replacements['Ã©'] = 'é'
+$replacements['Ã­'] = 'í'
+$replacements['Ã³'] = 'ó'
+$replacements['Ãº'] = 'ú'
+$replacements['Ã'] = 'Á'
+$replacements['Ã‰'] = 'É'
+$replacements['Ã'] = 'Í'
+$replacements['Ã"'] = 'Ó'
+$replacements['Ãš'] = 'Ú'
+$replacements['Ã±'] = 'ñ'
+$replacements['Ã'] = 'Ñ'
+$replacements['Â¿'] = '¿'
+$replacements['Â¡'] = '¡'
 
 # 2. Caracteres de reemplazo Unicode (U+FFFD =)
 $replacements[[char]0xFFFD] = ''  # Carácter de reemplazo
 
-# 3. Secuencias de bytes UTF-8 mal interpretadas (como strings)
+# 3. Secuencias de bytes UTF-8 mal interpretadas (como strings concatenados)
 # Cuando UTF-8 se lee como Windows-1252, aparecen como secuencias de 2 caracteres
-$corruptPatterns = @{
-    # á: UTF-8 bytes C3 A1 → Windows-1252: Ã + ¡
-    ([char]0xC3).ToString() + ([char]0xA1).ToString() = 'á'
-    # é: UTF-8 bytes C3 A9 → Windows-1252: Ã + ©
-    ([char]0xC3).ToString() + ([char]0xA9).ToString() = 'é'
-    # í: UTF-8 bytes C3 AD → Windows-1252: Ã + 
-    ([char]0xC3).ToString() + ([char]0xAD).ToString() = 'í'
-    # ó: UTF-8 bytes C3 B3 → Windows-1252: Ã + ³
-    ([char]0xC3).ToString() + ([char]0xB3).ToString() = 'ó'
-    # ú: UTF-8 bytes C3 BA → Windows-1252: Ã + º
-    ([char]0xC3).ToString() + ([char]0xBA).ToString() = 'ú'
-    # Á: UTF-8 bytes C3 81 → Windows-1252: Ã + 
-    ([char]0xC3).ToString() + ([char]0x81).ToString() = 'Á'
-    # É: UTF-8 bytes C3 89 → Windows-1252: Ã + ‰
-    ([char]0xC3).ToString() + ([char]0x89).ToString() = 'É'
-    # Í: UTF-8 bytes C3 8D → Windows-1252: Ã + 
-    ([char]0xC3).ToString() + ([char]0x8D).ToString() = 'Í'
-    # Ó: UTF-8 bytes C3 93 → Windows-1252: Ã + "
-    ([char]0xC3).ToString() + ([char]0x93).ToString() = 'Ó'
-    # Ú: UTF-8 bytes C3 9A → Windows-1252: Ã + š
-    ([char]0xC3).ToString() + ([char]0x9A).ToString() = 'Ú'
-    # ñ: UTF-8 bytes C3 B1 → Windows-1252: Ã + ±
-    ([char]0xC3).ToString() + ([char]0xB1).ToString() = 'ñ'
-    # Ñ: UTF-8 bytes C3 91 → Windows-1252: Ã + '
-    ([char]0xC3).ToString() + ([char]0x91).ToString() = 'Ñ'
-    # ¿: UTF-8 bytes C2 BF → Windows-1252: Â + ¿
-    ([char]0xC2).ToString() + ([char]0xBF).ToString() = '¿'
-    # ¡: UTF-8 bytes C2 A1 → Windows-1252: Â + ¡
-    ([char]0xC2).ToString() + ([char]0xA1).ToString() = '¡'
-}
+# á: UTF-8 bytes C3 A1 → Windows-1252: Ã + ¡
+$replacements[([char]0xC3).ToString() + ([char]0xA1).ToString()] = 'á'
+# é: UTF-8 bytes C3 A9 → Windows-1252: Ã + ©
+$replacements[([char]0xC3).ToString() + ([char]0xA9).ToString()] = 'é'
+# í: UTF-8 bytes C3 AD → Windows-1252: Ã + 
+$replacements[([char]0xC3).ToString() + ([char]0xAD).ToString()] = 'í'
+# ó: UTF-8 bytes C3 B3 → Windows-1252: Ã + ³
+$replacements[([char]0xC3).ToString() + ([char]0xB3).ToString()] = 'ó'
+# ú: UTF-8 bytes C3 BA → Windows-1252: Ã + º
+$replacements[([char]0xC3).ToString() + ([char]0xBA).ToString()] = 'ú'
+# Á: UTF-8 bytes C3 81 → Windows-1252: Ã + 
+$replacements[([char]0xC3).ToString() + ([char]0x81).ToString()] = 'Á'
+# É: UTF-8 bytes C3 89 → Windows-1252: Ã + ‰
+$replacements[([char]0xC3).ToString() + ([char]0x89).ToString()] = 'É'
+# Í: UTF-8 bytes C3 8D → Windows-1252: Ã + 
+$replacements[([char]0xC3).ToString() + ([char]0x8D).ToString()] = 'Í'
+# Ó: UTF-8 bytes C3 93 → Windows-1252: Ã + "
+$replacements[([char]0xC3).ToString() + ([char]0x93).ToString()] = 'Ó'
+# Ú: UTF-8 bytes C3 9A → Windows-1252: Ã + š
+$replacements[([char]0xC3).ToString() + ([char]0x9A).ToString()] = 'Ú'
+# ñ: UTF-8 bytes C3 B1 → Windows-1252: Ã + ±
+$replacements[([char]0xC3).ToString() + ([char]0xB1).ToString()] = 'ñ'
+# Ñ: UTF-8 bytes C3 91 → Windows-1252: Ã + '
+$replacements[([char]0xC3).ToString() + ([char]0x91).ToString()] = 'Ñ'
+# ¿: UTF-8 bytes C2 BF → Windows-1252: Â + ¿
+$replacements[([char]0xC2).ToString() + ([char]0xBF).ToString()] = '¿'
+# ¡: UTF-8 bytes C2 A1 → Windows-1252: Â + ¡
+$replacements[([char]0xC2).ToString() + ([char]0xA1).ToString()] = '¡'
 
-# 4. Agregar reemplazos de strings comunes
-foreach ($key in $utf8Bytes.Keys) {
-    $replacements[$key] = $utf8Bytes[$key]
-}
-
-# 5. Agregar reemplazos de patrones de bytes
-foreach ($key in $corruptPatterns.Keys) {
-    $replacements[$key] = $corruptPatterns[$key]
-}
-
-# 6. Caracteres especiales adicionales
+# 4. Caracteres especiales adicionales (comillas tipográficas, apostrofes, etc.)
 $replacements['â€™'] = "'"  # Apostrophe tipográfico
 $replacements['â€œ'] = '"'  # Comilla izquierda
 $replacements['â€'] = '"'  # Comilla derecha
 $replacements['â€"'] = '—'  # Em dash
 $replacements['â€"'] = '–'  # En dash
 $replacements['â€¦'] = '...'  # Ellipsis
+
+# 5. Caracteres corruptos adicionales comunes
+$replacements['Ã'] = 'ó'  # ó mal codificado
+$replacements['Ã'] = 'í'  # í mal codificado
+$replacements['Ã'] = 'á'  # á mal codificado
+$replacements['Ã'] = 'é'  # é mal codificado
+$replacements['Ã'] = 'ú'  # ú mal codificado
 
 # === EXTENSIONES A PROCESAR ===
 $extensions = @("*.ts", "*.tsx", "*.js", "*.jsx", "*.md", "*.mdx", "*.json", "*.css", "*.html", "*.txt", "*.ps1")
@@ -130,8 +122,8 @@ function Repair-CharacterEncoding {
         $bytes = [System.IO.File]::ReadAllBytes($FilePath)
         
         # Intentar detectar la codificación
-        $encoding = [System.Text.Encoding]::UTF8
         $content = $null
+        $encoding = [System.Text.Encoding]::UTF8
         
         # Intentar leer como UTF-8 primero
         try {
@@ -154,7 +146,9 @@ function Repair-CharacterEncoding {
         $changed = $false
 
         # Procesar cada reemplazo (ordenar por longitud descendente para evitar reemplazos parciales)
-        $sortedKeys = $replacements.Keys | Sort-Object { $_.Length } -Descending
+        $sortedKeys = $replacements.Keys | Sort-Object { 
+            if ($_ -is [string]) { $_.Length } else { 1 }
+        } -Descending
         
         foreach ($bad in $sortedKeys) {
             if ($content.Contains($bad)) {
