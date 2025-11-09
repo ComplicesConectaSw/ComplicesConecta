@@ -64,7 +64,6 @@ export function showEnvInfo(): {
     baseUrl: String(env.BASE_URL || '')
   };
 }
-//eslint-enable no-console//
 
 // Hacer disponible globalmente para uso en consola
 // CR├ìTICO: Asegurar que las funciones est├®n disponibles inmediatamente
