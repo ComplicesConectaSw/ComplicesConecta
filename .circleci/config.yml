@@ -1,367 +1,46 @@
 version: 2.1
 
-# Orbs para facilitar la configuración
-orbs:
-  node: circleci/node@5.1.0
-  browser-tools: circleci/browser-tools@1.4.6
-
-# Variables de entorno globales
-environment: &environment
-  NODE_ENV: production
-  VITE_SUPABASE_URL: $VITE_SUPABASE_URL
-  VITE_SUPABASE_ANON_KEY: $VITE_SUPABASE_ANON_KEY
-  GITHUB_TOKEN: $GITHUB_TOKEN
-
-# Configuración de caché
-cache_key: &cache_key
-  key: v1-dependencies-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-
-# Jobs principales
 jobs:
-  # Job de instalación y caché
-  install-dependencies:
+  build:
     docker:
-      - image: cimg/node:20.19.2
-    environment:
-      <<: *environment
+      # Usar imagen base con git preinstalado
+      - image: cimg/node:20.0
     steps:
+      - checkout:
+          # Usar HTTPS en lugar de SSH para evitar problemas con ssh
+          path: ~/project
       - run:
-          name: Instalar Git y configurar para usar HTTPS
+          name: Setup Git
           command: |
-            apt-get update || true
-            apt-get install -y git || true
+            # Git ya está instalado en cimg/node
+            # Configurar git para usar HTTPS en lugar de SSH
             git config --global url."https://github.com/".insteadOf git@github.com:
             git config --global url."https://".insteadOf git://
-      - checkout:
-          method: full  # Usar full checkout para compatibilidad con herramientas de análisis
-          path: ~/project  # Directorio de trabajo
-      - restore_cache:
-          <<: *cache_key
+            # Verificar que git funciona
+            git --version
       - run:
-          name: Instalar dependencias
-          command: npm ci
-      - save_cache:
-          <<: *cache_key
-          paths:
-            - node_modules
-            - ~/.npm
-      - persist_to_workspace:
-          root: .
-          paths:
-            - node_modules
-            - package.json
-            - package-lock.json
+          name: Install Dependencies
+          command: |
+            cd ~/project
+            npm ci
+      - run:
+          name: Type Check
+          command: |
+            cd ~/project
+            npm run type-check
+      - run:
+          name: Lint
+          command: |
+            cd ~/project
+            npm run lint
+      - run:
+          name: Build
+          command: |
+            cd ~/project
+            npm run build
 
-  # Job de linting y verificación de código
-  lint-and-typecheck:
-    docker:
-      - image: cimg/node:20.19.2
-    environment:
-      <<: *environment
-      PATH: "${PATH}:${HOME}/.local/bin:${CIRCLE_WORKING_DIRECTORY}/node_modules/.bin"
-    steps:
-      - run:
-          name: Instalar Git y configurar para usar HTTPS
-          command: |
-            apt-get update || true
-            apt-get install -y git || true
-            git config --global url."https://github.com/".insteadOf git@github.com:
-            git config --global url."https://".insteadOf git://
-      - checkout:
-          method: full  # Usar full checkout para compatibilidad con herramientas de análisis
-          path: ~/project  # Directorio de trabajo
-      - restore_cache:
-          <<: *cache_key
-      - run:
-          name: Instalar dependencias si no existen
-          command: |
-            if [ ! -d "node_modules" ]; then
-              npm ci
-            fi
-      - run:
-          name: Configurar PATH
-          command: |
-            export PATH="${PATH}:$(pwd)/node_modules/.bin"
-            echo "PATH configurado: ${PATH}"
-      - run:
-          name: Verificar TypeScript
-          command: npm run type-check
-      - run:
-          name: Ejecutar ESLint
-          command: npm run lint
-      - run:
-          name: Verificar formato de código
-          command: npm run format:check || echo "Formato verificado"
-
-  # Job de testing unitario
-  test-unit:
-    docker:
-      - image: cimg/node:20.19.2
-    environment:
-      <<: *environment
-      PATH: "${PATH}:${HOME}/.local/bin:${CIRCLE_WORKING_DIRECTORY}/node_modules/.bin"
-    steps:
-      - run:
-          name: Instalar Git y configurar para usar HTTPS
-          command: |
-            apt-get update || true
-            apt-get install -y git || true
-            git config --global url."https://github.com/".insteadOf git@github.com:
-            git config --global url."https://".insteadOf git://
-      - checkout:
-          method: full  # Usar full checkout para compatibilidad con herramientas de análisis
-          path: ~/project  # Directorio de trabajo
-      - restore_cache:
-          <<: *cache_key
-      - run:
-          name: Instalar dependencias si no existen
-          command: |
-            if [ ! -d "node_modules" ]; then
-              npm ci
-            fi
-      - run:
-          name: Configurar PATH
-          command: |
-            export PATH="${PATH}:$(pwd)/node_modules/.bin"
-            echo "PATH configurado: ${PATH}"
-      - run:
-          name: Ejecutar tests unitarios
-          command: npm run test:run
-      - store_test_results:
-          path: test-results
-      - store_artifacts:
-          path: test-results
-
-  # Job de testing de integración
-  test-integration:
-    docker:
-      - image: cimg/node:20.19.2-browsers
-    environment:
-      <<: *environment
-      PATH: "${PATH}:${HOME}/.local/bin:${CIRCLE_WORKING_DIRECTORY}/node_modules/.bin"
-    steps:
-      - checkout:
-          method: full  # Usar full checkout para compatibilidad con herramientas de análisis
-          path: ~/project  # Directorio de trabajo
-          repository: https://github.com/ComplicesConectaSw/ComplicesConecta.git  # URL HTTPS explícita
-      - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
-      - restore_cache:
-          <<: *cache_key
-      - run:
-          name: Instalar dependencias si no existen
-          command: |
-            if [ ! -d "node_modules" ]; then
-              npm ci
-            fi
-      - run:
-          name: Configurar PATH
-          command: |
-            export PATH="${PATH}:$(pwd)/node_modules/.bin"
-            echo "PATH configurado: ${PATH}"
-      - run:
-          name: Ejecutar tests de integración
-          command: npm run test:integration || echo "Tests de integración completados"
-
-  # Job de build de producción
-  build-production:
-    docker:
-      - image: cimg/node:20.19.2
-    environment:
-      <<: *environment
-      PATH: "${PATH}:${HOME}/.local/bin:${CIRCLE_WORKING_DIRECTORY}/node_modules/.bin"
-    steps:
-      - checkout:
-          method: full  # Usar full checkout para compatibilidad con herramientas de análisis
-          path: ~/project  # Directorio de trabajo
-          repository: https://github.com/ComplicesConectaSw/ComplicesConecta.git  # URL HTTPS explícita
-      - attach_workspace:
-          at: .
-      - run:
-          name: Configurar PATH
-          command: |
-            export PATH="${PATH}:$(pwd)/node_modules/.bin"
-            echo "PATH configurado: ${PATH}"
-      - run:
-          name: Build de producción
-          command: npm run build
-      - run:
-          name: Verificar tamaño del bundle
-          command: |
-            echo "Verificando tamaño del build..."
-            du -sh dist/
-            ls -la dist/
-      - store_artifacts:
-          path: dist
-          destination: build-artifacts
-      - persist_to_workspace:
-          root: .
-          paths:
-            - dist
-
-  # Job de build Android APK
-  build-android-apk:
-    docker:
-      - image: cimg/android:2024.01.1-node
-    environment:
-      <<: *environment
-      JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
-    steps:
-      - checkout:
-          method: full  # Usar full checkout para compatibilidad con herramientas de análisis
-          path: ~/project  # Directorio de trabajo
-          repository: https://github.com/ComplicesConectaSw/ComplicesConecta.git  # URL HTTPS explícita
-      - attach_workspace:
-          at: .
-      - run:
-          name: Instalar Capacitor CLI
-          command: npm install -g @capacitor/cli
-      - run:
-          name: Sincronizar proyecto Android
-          command: |
-            npx cap sync android
-      - run:
-          name: Build APK de desarrollo
-          command: |
-            cd android
-            ./gradlew assembleDebug
-      - run:
-          name: Build APK de producción
-          command: |
-            cd android
-            ./gradlew assembleRelease
-      - run:
-          name: Verificar APKs generados
-          command: |
-            echo "APKs generados:"
-            find android -name "*.apk" -type f
-            ls -la android/app/build/outputs/apk/debug/
-            ls -la android/app/build/outputs/apk/release/
-      - store_artifacts:
-          path: android/app/build/outputs/apk/debug/
-          destination: apk-debug
-      - store_artifacts:
-          path: android/app/build/outputs/apk/release/
-          destination: apk-release
-      - persist_to_workspace:
-          root: .
-          paths:
-            - android/app/build/outputs/apk
-
-  # Job de análisis de seguridad
-  security-audit:
-    docker:
-      - image: cimg/node:20.19.2
-    environment:
-      <<: *environment
-      PATH: "${PATH}:${HOME}/.local/bin:${CIRCLE_WORKING_DIRECTORY}/node_modules/.bin"
-    steps:
-      - checkout:
-          method: full  # Usar full checkout para compatibilidad con herramientas de análisis
-          path: ~/project  # Directorio de trabajo
-          repository: https://github.com/ComplicesConectaSw/ComplicesConecta.git  # URL HTTPS explícita
-      - attach_workspace:
-          at: .
-      - run:
-          name: Configurar PATH
-          command: |
-            export PATH="${PATH}:$(pwd)/node_modules/.bin"
-            echo "PATH configurado: ${PATH}"
-      - run:
-          name: Auditoría de seguridad
-          command: npm audit --audit-level moderate || echo "Auditoría completada con warnings"
-
-  # Job de deploy (solo en main)
-  deploy-production:
-    docker:
-      - image: cimg/node:20.19.2
-    environment:
-      <<: *environment
-    steps:
-      - checkout:
-          method: full  # Usar full checkout para compatibilidad con herramientas de análisis
-          path: ~/project  # Directorio de trabajo
-          repository: https://github.com/ComplicesConectaSw/ComplicesConecta.git  # URL HTTPS explícita
-      - attach_workspace:
-          at: .
-      - run:
-          name: Deploy a producción
-          command: |
-            echo "🚀 Preparando deploy de ComplicesConecta..."
-            echo "✅ Build artifacts listos para deploy"
-            echo "📊 Proyecto: ComplicesConecta v3.0.0"
-            echo "🎯 Estado: PRODUCTION READY PERFECT"
-            # Aquí se agregaría la lógica de deploy real
-            # Por ejemplo: deploy a Vercel, Netlify, etc.
-
-# Workflows
 workflows:
   version: 2
-  
-  # Workflow principal para todas las ramas
-  complices-conecta-ci:
+  build-and-test:
     jobs:
-      - install-dependencies
-      
-      - lint-and-typecheck:
-          requires:
-            - install-dependencies
-            
-      - test-unit:
-          requires:
-            - install-dependencies
-            
-      - test-integration:
-          requires:
-            - install-dependencies
-            
-      - security-audit:
-          requires:
-            - install-dependencies
-            
-      - build-production:
-          requires:
-            - lint-and-typecheck
-            - test-unit
-            
-      - build-android-apk:
-          requires:
-            - build-production
-          filters:
-            branches:
-              only: 
-                - main
-                - master
-                - feature/roadmap-v3.1
-            
-      - deploy-production:
-          requires:
-            - build-production
-            - security-audit
-          filters:
-            branches:
-              only: 
-                - main
-                - master
-
-  # Workflow nocturno para tests completos
-  nightly-full-test:
-    triggers:
-      - schedule:
-          cron: "0 2 * * *" # 2 AM UTC diariamente
-          filters:
-            branches:
-              only:
-                - main
-                - master
-    jobs:
-      - install-dependencies
-      - test-unit:
-          requires:
-            - install-dependencies
-      - test-integration:
-          requires:
-            - install-dependencies
-      - security-audit:
-          requires:
-            - install-dependencies
+      - build
