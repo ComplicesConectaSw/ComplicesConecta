@@ -32,21 +32,21 @@ const FAQ = () => {
 
   const faqCategories = {
     verificacion: {
-      title: "Verificaci�n KYC",
+      title: "Verificacin KYC",
       icon: UserCheck,
       color: "text-blue-500",
       faqs: [
         {
-          question: "�C�mo funciona la verificaci�n KYC?",
-          answer: "Utilizamos tecnolog�a blockchain avanzada y verificaci�n de identidad para verificar la identidad de todos nuestros miembros. El sistema incluye verificaci�n de documentos oficiales, selfie biom�trica y verificaci�n telef�nica. Este proceso garantiza que solo personas reales y verificadas accedan a la plataforma."
+          question: "Cmo funciona la verificacin KYC?",
+          answer: "Utilizamos tecnologa blockchain avanzada y verificacin de identidad para verificar la identidad de todos nuestros miembros. El sistema incluye verificacin de documentos oficiales, selfie biomtrica y verificacin telefnica. Este proceso garantiza que solo personas reales y verificadas accedan a la plataforma."
         },
         {
-          question: "�Qu� documentos necesito para verificarme?",
-          answer: "Necesitas una identificaci�n oficial vigente (INE, pasaporte o c�dula profesional) y una selfie clara. El proceso es completamente seguro y tus datos est�n protegidos."
+          question: "Qu documentos necesito para verificarme?",
+          answer: "Necesitas una identificacin oficial vigente (INE, pasaporte o cdula profesional) y una selfie clara. El proceso es completamente seguro y tus datos estn protegidos."
         },
         {
-          question: "�Cu�nto tarda la verificaci�n?",
-          answer: "La verificaci�n KYC toma entre 24-48 horas h�biles. Los miembros Premium tienen verificaci�n prioritaria en menos de 12 horas."
+          question: "Cunto tarda la verificacin?",
+          answer: "La verificacin KYC toma entre 24-48 horas hbiles. Los miembros Premium tienen verificacin prioritaria en menos de 12 horas."
         }
       ]
     },
@@ -56,35 +56,35 @@ const FAQ = () => {
       color: "text-green-500",
       faqs: [
         {
-          question: "�Es seguro el chat privado?",
-          answer: "Absolutamente. Todas las conversaciones est�n encriptadas end-to-end con AES-GCM. Adem�s, implementamos el Verificador IA de Consentimiento que detecta proactivamente patrones de consentimiento en los mensajes, cumpliendo con la Ley Olimpia. Tu privacidad y discreci�n son nuestra m�xima prioridad."
+          question: "Es seguro el chat privado?",
+          answer: "Absolutamente. Todas las conversaciones estn encriptadas end-to-end con AES-GCM. Adems, implementamos el Verificador IA de Consentimiento que detecta proactivamente patrones de consentimiento en los mensajes, cumpliendo con la Ley Olimpia. Tu privacidad y discrecin son nuestra mxima prioridad."
         },
         {
-          question: "�C�mo protegen mis datos personales?",
-          answer: "Utilizamos encriptaci�n de grado militar y cumplimos con GDPR. Nunca compartimos tu informaci�n personal con terceros sin tu consentimiento expl�cito."
+          question: "Cmo protegen mis datos personales?",
+          answer: "Utilizamos encriptacin de grado militar y cumplimos con GDPR. Nunca compartimos tu informacin personal con terceros sin tu consentimiento explcito."
         },
         {
-          question: "�Puedo controlar qui�n ve mi perfil?",
-          answer: "S�, tienes control total sobre tu privacidad. Puedes configurar qui�n puede ver tu perfil, fotos privadas y contactarte."
+          question: "Puedo controlar quin ve mi perfil?",
+          answer: "S, tienes control total sobre tu privacidad. Puedes configurar quin puede ver tu perfil, fotos privadas y contactarte."
         }
       ]
     },
     galerias: {
-      title: "Galer�as Privadas",
+      title: "Galeras Privadas",
       icon: GalleryHorizontal,
       color: "text-purple-500",
       faqs: [
         {
-          question: "�C�mo funcionan las galer�as privadas?",
-          answer: "Las galer�as privadas te permiten compartir fotos �ntimas solo con personas que hayas autorizado. Tienes control total sobre qui�n puede acceder. Adem�s, puedes crear Galer�as NFT-Verificadas usando tokens GTK, lo que garantiza autenticidad y verificaci�n de tus galer�as."
+          question: "Cmo funcionan las galeras privadas?",
+          answer: "Las galeras privadas te permiten compartir fotos ntimas solo con personas que hayas autorizado. Tienes control total sobre quin puede acceder. Adems, puedes crear Galeras NFT-Verificadas usando tokens GTK, lo que garantiza autenticidad y verificacin de tus galeras."
         },
         {
-          question: "�C�mo env�o una invitaci�n de galer�a?",
-          answer: "Desde cualquier perfil, puedes enviar una invitaci�n para acceder a tu galer�a privada. La persona debe aceptar la invitaci�n para ver tu contenido privado."
+          question: "Cmo envo una invitacin de galera?",
+          answer: "Desde cualquier perfil, puedes enviar una invitacin para acceder a tu galera privada. La persona debe aceptar la invitacin para ver tu contenido privado."
         },
         {
-          question: "�Puedo revocar el acceso a mi galer�a?",
-          answer: "S�, puedes revocar el acceso a tu galer�a privada en cualquier momento desde tu configuraci�n de privacidad."
+          question: "Puedo revocar el acceso a mi galera?",
+          answer: "S, puedes revocar el acceso a tu galera privada en cualquier momento desde tu configuracin de privacidad."
         }
       ]
     },
@@ -94,16 +94,16 @@ const FAQ = () => {
       color: "text-pink-500",
       faqs: [
         {
-          question: "�C�mo funcionan las invitaciones?",
-          answer: "Puedes enviar invitaciones para conectar, acceder a galer�as privadas o chatear. Las invitaciones incluyen un mensaje personalizado y requieren aceptaci�n."
+          question: "Cmo funcionan las invitaciones?",
+          answer: "Puedes enviar invitaciones para conectar, acceder a galeras privadas o chatear. Las invitaciones incluyen un mensaje personalizado y requieren aceptacin."
         },
         {
-          question: "�Qu� tipos de invitaciones existen?",
-          answer: "Hay tres tipos: invitaciones de perfil (para conectar), de galer�a (para ver fotos privadas) y de chat (para conversaciones privadas)."
+          question: "Qu tipos de invitaciones existen?",
+          answer: "Hay tres tipos: invitaciones de perfil (para conectar), de galera (para ver fotos privadas) y de chat (para conversaciones privadas)."
         },
         {
-          question: "�Puedo rechazar una invitaci�n?",
-          answer: "Por supuesto. Tienes control total para aceptar o rechazar cualquier invitaci�n. Las personas rechazadas no pueden volver a enviarte invitaciones del mismo tipo."
+          question: "Puedo rechazar una invitacin?",
+          answer: "Por supuesto. Tienes control total para aceptar o rechazar cualquier invitacin. Las personas rechazadas no pueden volver a enviarte invitaciones del mismo tipo."
         }
       ]
     },
@@ -113,15 +113,15 @@ const FAQ = () => {
       color: "text-yellow-500",
       faqs: [
         {
-          question: "�Qu� son los eventos VIP?",
-          answer: "Son fiestas privadas y encuentros exclusivos organizados para miembros verificados. Incluyen clubs exclusivos, cenas �ntimas y experiencias �nicas para la comunidad swinger."
+          question: "Qu son los eventos VIP?",
+          answer: "Son fiestas privadas y encuentros exclusivos organizados para miembros verificados. Incluyen clubs exclusivos, cenas ntimas y experiencias nicas para la comunidad swinger."
         },
         {
-          question: "�C�mo puedo acceder a eventos VIP?",
-          answer: "Los eventos VIP est�n disponibles para miembros Premium verificados. Recibir�s invitaciones exclusivas basadas en tu ubicaci�n y preferencias."
+          question: "Cmo puedo acceder a eventos VIP?",
+          answer: "Los eventos VIP estn disponibles para miembros Premium verificados. Recibirs invitaciones exclusivas basadas en tu ubicacin y preferencias."
         },
         {
-          question: "�Los eventos son seguros y discretos?",
+          question: "Los eventos son seguros y discretos?",
           answer: "Absolutamente. Todos los eventos son organizados en ubicaciones seguras y discretas, con estrictos protocolos de privacidad y consentimiento."
         }
       ]
@@ -132,15 +132,15 @@ const FAQ = () => {
       color: "text-orange-500",
       faqs: [
         {
-          question: "�Qu� son los tokens?",
+          question: "Qu son los tokens?",
           answer: "Los tokens son nuestra moneda virtual que puedes usar para enviar regalos, destacar tu perfil y acceder a funciones premium especiales."
         },
         {
-          question: "�C�mo obtengo tokens?",
-          answer: "Puedes comprar tokens o ganarlos completando tu perfil, verific�ndote, siendo activo en la comunidad y recibiendo valoraciones positivas."
+          question: "Cmo obtengo tokens?",
+          answer: "Puedes comprar tokens o ganarlos completando tu perfil, verificndote, siendo activo en la comunidad y recibiendo valoraciones positivas."
         },
         {
-          question: "�Los tokens caducan?",
+          question: "Los tokens caducan?",
           answer: "No, tus tokens no caducan. Puedes usarlos cuando quieras para mejorar tu experiencia en la plataforma."
         }
       ]
@@ -151,45 +151,45 @@ const FAQ = () => {
       color: "text-red-500",
       faqs: [
         {
-          question: "�C�mo puedo reportar un perfil?",
-          answer: "Puedes reportar cualquier perfil sospechoso directamente desde su p�gina. Nuestro equipo de moderaci�n revisa todos los reportes en menos de 24 horas."
+          question: "Cmo puedo reportar un perfil?",
+          answer: "Puedes reportar cualquier perfil sospechoso directamente desde su pgina. Nuestro equipo de moderacin revisa todos los reportes en menos de 24 horas."
         },
         {
-          question: "�Qu� hago si alguien me acosa?",
-          answer: "Reporta inmediatamente el comportamiento inapropiado. Tenemos tolerancia cero al acoso y tomamos medidas r�pidas para proteger a nuestra comunidad."
+          question: "Qu hago si alguien me acosa?",
+          answer: "Reporta inmediatamente el comportamiento inapropiado. Tenemos tolerancia cero al acoso y tomamos medidas rpidas para proteger a nuestra comunidad."
         },
         {
-          question: "�Hay moderadores activos?",
-          answer: "S�, tenemos un equipo de moderaci�n 24/7 que supervisa la plataforma y responde r�pidamente a reportes y situaciones de seguridad."
+          question: "Hay moderadores activos?",
+          answer: "S, tenemos un equipo de moderacin 24/7 que supervisa la plataforma y responde rpidamente a reportes y situaciones de seguridad."
         }
       ]
     },
     soporte: {
-      title: "Soporte T�cnico",
+      title: "Soporte Tcnico",
       icon: Zap,
       color: "text-cyan-500",
       faqs: [
         {
-          question: "?? �Encontraste un error en la versi�n Beta?",
-          answer: "Como estamos en fase beta, algunos errores pueden ocurrir. Por favor, utiliza el formulario de reporte de errores m�s abajo para ayudarnos a identificar y corregir cualquier problema que encuentres."
+          question: "?? Encontraste un error en la versin Beta?",
+          answer: "Como estamos en fase beta, algunos errores pueden ocurrir. Por favor, utiliza el formulario de reporte de errores ms abajo para ayudarnos a identificar y corregir cualquier problema que encuentres."
         },
         {
-          question: "?? �Problemas con la aplicaci�n m�vil?",
-          answer: "Si experimentas crashes, pantallas en blanco, o funciones que no responden en la app m�vil, rep�rtalo detalladamente en el formulario de errores especificando tu dispositivo y sistema operativo."
+          question: "?? Problemas con la aplicacin mvil?",
+          answer: "Si experimentas crashes, pantallas en blanco, o funciones que no responden en la app mvil, reprtalo detalladamente en el formulario de errores especificando tu dispositivo y sistema operativo."
         },
         {
-          question: "?? �Problemas con pagos o suscripciones?",
-          answer: "Si tienes inconvenientes con donaciones, suscripciones premium, o procesamiento de pagos, cont�ctanos inmediatamente a trav�s del formulario con todos los detalles de la transacci�n."
+          question: "?? Problemas con pagos o suscripciones?",
+          answer: "Si tienes inconvenientes con donaciones, suscripciones premium, o procesamiento de pagos, contctanos inmediatamente a travs del formulario con todos los detalles de la transaccin."
         }
       ]
     }
   };
 
   const handleSubmitFeedback = () => {
-    // Aqu� se enviar�a el feedback al backend
+    // Aqu se enviara el feedback al backend
     logger.info("Feedback enviado:", { email, feedback, rating });
     toast({
-      title: "�Comentarios enviados!",
+      title: "Comentarios enviados!",
       description: "Gracias por tu feedback. Nos ayuda a mejorar la plataforma.",
     });
     setFeedback("");
@@ -206,7 +206,7 @@ Tipo de Error: ${bugReport.type}
 Severidad: ${bugReport.severity}
 Dispositivo/Navegador: ${bugReport.device} - ${bugReport.browser}
 
-DESCRIPCI�N DEL PROBLEMA:
+DESCRIPCIN DEL PROBLEMA:
 ${bugReport.description}
 
 PASOS PARA REPRODUCIR:
@@ -220,8 +220,8 @@ Fecha: ${new Date().toLocaleString()}
     window.location.href = mailtoLink;
     
     toast({
-      title: "�Reporte enviado!",
-      description: "Se abri� tu cliente de email con el reporte. Env�alo para que podamos ayudarte.",
+      title: "Reporte enviado!",
+      description: "Se abri tu cliente de email con el reporte. Envalo para que podamos ayudarte.",
     });
 
     // Reset form
@@ -284,7 +284,7 @@ Fecha: ${new Date().toLocaleString()}
               </span>
             </h1>
             <p className="text-xl text-white font-medium max-w-2xl mx-auto">
-              Encuentra respuestas a tus preguntas y ay�danos a mejorar tu experiencia en ComplicesConecta
+              Encuentra respuestas a tus preguntas y aydanos a mejorar tu experiencia en ComplicesConecta
             </p>
           </div>
 
@@ -339,7 +339,7 @@ Fecha: ${new Date().toLocaleString()}
                     ?? Reporte de Errores Beta
                   </CardTitle>
                   <p className="text-white/90">
-                    Ay�danos a mejorar reportando errores, bugs o problemas que encuentres
+                    Aydanos a mejorar reportando errores, bugs o problemas que encuentres
                   </p>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -356,7 +356,7 @@ Fecha: ${new Date().toLocaleString()}
                         <SelectItem value="ui">?? Problema de Interfaz</SelectItem>
                         <SelectItem value="functionality">?? Funcionalidad no funciona</SelectItem>
                         <SelectItem value="performance">?? Problema de Rendimiento</SelectItem>
-                        <SelectItem value="mobile">?? Error en M�vil</SelectItem>
+                        <SelectItem value="mobile">?? Error en Mvil</SelectItem>
                         <SelectItem value="payment">?? Problema de Pagos</SelectItem>
                         <SelectItem value="auth">?? Error de Login/Registro</SelectItem>
                         <SelectItem value="chat">?? Problema en Chat</SelectItem>
@@ -372,10 +372,10 @@ Fecha: ${new Date().toLocaleString()}
                     </label>
                     <Select onValueChange={(value: string) => handleBugReportChange("severity", value)}>
                       <SelectTrigger className="bg-background/50 border-red-200 dark:border-red-800">
-                        <SelectValue placeholder="�Qu� tan grave es?" />
+                        <SelectValue placeholder="Qu tan grave es?" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="critical">?? Cr�tico - La app no funciona</SelectItem>
+                        <SelectItem value="critical">?? Crtico - La app no funciona</SelectItem>
                         <SelectItem value="high">?? Alto - Funcionalidad importante rota</SelectItem>
                         <SelectItem value="medium">?? Medio - Inconveniente menor</SelectItem>
                         <SelectItem value="low">?? Bajo - Sugerencia de mejora</SelectItem>
@@ -401,7 +401,7 @@ Fecha: ${new Date().toLocaleString()}
                         Navegador/App
                       </label>
                       <Input
-                        placeholder="Chrome, Safari, App m�vil..."
+                        placeholder="Chrome, Safari, App mvil..."
                         value={bugReport.browser}
                         onChange={(e) => handleBugReportChange("browser", e.target.value)}
                         className="bg-background/50 border-red-200 dark:border-red-800"
@@ -412,10 +412,10 @@ Fecha: ${new Date().toLocaleString()}
                   {/* Description */}
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
-                      Descripci�n del Problema
+                      Descripcin del Problema
                     </label>
                     <Textarea
-                      placeholder="Describe detalladamente qu� error encontraste..."
+                      placeholder="Describe detalladamente qu error encontraste..."
                       value={bugReport.description}
                       onChange={(e) => handleBugReportChange("description", e.target.value)}
                       rows={3}
@@ -429,7 +429,7 @@ Fecha: ${new Date().toLocaleString()}
                       Pasos para Reproducir el Error
                     </label>
                     <Textarea
-                      placeholder="1. Entr� a la secci�n de... &#10;2. Hice clic en... &#10;3. Entonces apareci�..."
+                      placeholder="1. Entr a la seccin de... &#10;2. Hice clic en... &#10;3. Entonces apareci..."
                       value={bugReport.steps}
                       onChange={(e) => handleBugReportChange("steps", e.target.value)}
                       rows={3}
@@ -463,7 +463,7 @@ Fecha: ${new Date().toLocaleString()}
 
                   <div className="text-xs text-white/90 bg-red-50 dark:bg-red-950/20 p-3 rounded-lg border border-red-200 dark:border-red-800">
                     <AlertTriangle className="h-4 w-4 text-red-600 dark:text-red-400 inline mr-1" />
-                    Este formulario abrir� tu cliente de email con el reporte pre-llenado para enviarlo a support@complicesconecta.com
+                    Este formulario abrir tu cliente de email con el reporte pre-llenado para enviarlo a support@complicesconecta.com
                   </div>
                 </CardContent>
               </Card>
@@ -476,7 +476,7 @@ Fecha: ${new Date().toLocaleString()}
                     ?? Comentarios Generales
                   </CardTitle>
                   <p className="text-white/90">
-                    Tu opini�n nos ayuda a crear la mejor experiencia swinger
+                    Tu opinin nos ayuda a crear la mejor experiencia swinger
                   </p>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -525,7 +525,7 @@ Fecha: ${new Date().toLocaleString()}
                       Tus comentarios y sugerencias
                     </label>
                     <Textarea
-                      placeholder="Cu�ntanos qu� te gusta, qu� mejorar�as, o cualquier sugerencia para hacer ComplicesConecta a�n mejor..."
+                      placeholder="Cuntanos qu te gusta, qu mejoraras, o cualquier sugerencia para hacer ComplicesConecta an mejor..."
                       value={feedback}
                       onChange={(e) => setFeedback(e.target.value)}
                       rows={4}

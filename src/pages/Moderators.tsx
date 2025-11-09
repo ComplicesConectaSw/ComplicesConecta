@@ -63,7 +63,7 @@ const Moderators = () => {
     {
       id: 3,
       title: "Moderador de Seguridad",
-      description: "Se especializa en seguridad digital, privacidad y protecci�n de datos de usuarios.",
+      description: "Se especializa en seguridad digital, privacidad y proteccin de datos de usuarios.",
       responsibilities: [
         "Monitorear actividad sospechosa",
         "Investigar reportes de seguridad",
@@ -78,7 +78,7 @@ const Moderators = () => {
       ],
       benefits: [
         "Acceso completo a herramientas de seguridad",
-        "Compensaci�n econ�mica mensual",
+        "Compensacin econmica mensual",
         "Tokens CMPX premium",
         "Desarrollo profesional en ciberseguridad"
       ],
@@ -117,7 +117,7 @@ const Moderators = () => {
               </h1>
             </div>
             <p className="text-xl text-white/90 max-w-3xl mx-auto">
-              �nete al equipo de moderadores de ComplicesConecta y ayuda a mantener nuestra comunidad segura, respetuosa y aut�ntica
+              nete al equipo de moderadores de ComplicesConecta y ayuda a mantener nuestra comunidad segura, respetuosa y autntica
             </p>
           </div>
 
@@ -206,7 +206,7 @@ const Moderators = () => {
             <Card className="bg-card/80 backdrop-blur-sm border border-primary/10">
               <CardHeader>
                 <CardTitle className="text-white text-2xl text-center">
-                  Proceso de Aplicaci�n
+                  Proceso de Aplicacin
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -215,18 +215,18 @@ const Moderators = () => {
                     <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
                       <span className="text-primary font-bold">1</span>
                     </div>
-                    <h3 className="font-semibold text-white mb-2">Aplicaci�n</h3>
+                    <h3 className="font-semibold text-white mb-2">Aplicacin</h3>
                     <p className="text-sm text-muted-foreground">
-                      Completa el formulario de aplicaci�n con tu experiencia y motivaci�n
+                      Completa el formulario de aplicacin con tu experiencia y motivacin
                     </p>
                   </div>
                   <div className="text-center">
                     <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
                       <span className="text-primary font-bold">2</span>
                     </div>
-                    <h3 className="font-semibold text-white mb-2">Revisi�n</h3>
+                    <h3 className="font-semibold text-white mb-2">Revisin</h3>
                     <p className="text-sm text-muted-foreground">
-                      Nuestro equipo revisa tu aplicaci�n y experiencia en 3-5 d�as
+                      Nuestro equipo revisa tu aplicacin y experiencia en 3-5 das
                     </p>
                   </div>
                   <div className="text-center">
@@ -242,9 +242,9 @@ const Moderators = () => {
                     <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
                       <span className="text-primary font-bold">4</span>
                     </div>
-                    <h3 className="font-semibold text-white mb-2">Capacitaci�n</h3>
+                    <h3 className="font-semibold text-white mb-2">Capacitacin</h3>
                     <p className="text-sm text-muted-foreground">
-                      Programa de capacitaci�n de 2 semanas antes de comenzar
+                      Programa de capacitacin de 2 semanas antes de comenzar
                     </p>
                   </div>
                 </div>
@@ -300,10 +300,10 @@ const Moderators = () => {
             <Card className="bg-gradient-to-r from-pink-500/20 to-purple-600/20 backdrop-blur-sm border border-pink-400/30">
               <CardContent className="p-8">
                 <h2 className="text-3xl font-bold text-white mb-4">
-                  �Listo para ser parte del equipo?
+                  Listo para ser parte del equipo?
                 </h2>
                 <p className="text-xl text-white/90 mb-6 max-w-2xl mx-auto">
-                  �nete a nuestro equipo de moderadores y ayuda a crear la comunidad swinger m�s segura y respetuosa de M�xico
+                  nete a nuestro equipo de moderadores y ayuda a crear la comunidad swinger ms segura y respetuosa de Mxico
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button 

@@ -12,25 +12,25 @@ const Info = () => {
     {
       icon: <Shield className="h-6 w-6" />,
       title: "Seguridad Total",
-      description: "Verificaci�n de identidad, encriptaci�n end-to-end y protecci�n de datos personales.",
+      description: "Verificacin de identidad, encriptacin end-to-end y proteccin de datos personales.",
       color: "text-green-400"
     },
     {
       icon: <Users className="h-6 w-6" />,
       title: "Comunidad Verificada",
-      description: "Solo perfiles aut�nticos y verificados. Sin bots ni perfiles falsos.",
+      description: "Solo perfiles autnticos y verificados. Sin bots ni perfiles falsos.",
       color: "text-blue-400"
     },
     {
       icon: <Heart className="h-6 w-6" />,
-      title: "Conexiones Aut�nticas",
+      title: "Conexiones Autnticas",
       description: "Algoritmo inteligente que conecta personas con intereses y valores compatibles.",
       color: "text-purple-400"
     },
     {
       icon: <Lock className="h-6 w-6" />,
       title: "Privacidad Garantizada",
-      description: "Control total sobre tu informaci�n. Solo compartes lo que quieres.",
+      description: "Control total sobre tu informacin. Solo compartes lo que quieres.",
       color: "text-purple-400"
     },
     {
@@ -42,14 +42,14 @@ const Info = () => {
     {
       icon: <Globe className="h-6 w-6" />,
       title: "Comunidad Global",
-      description: "Conecta con personas de todo M�xico y expande tu red social.",
+      description: "Conecta con personas de todo Mxico y expande tu red social.",
       color: "text-cyan-400"
     }
   ];
 
   const stats = [
     { number: "10,000+", label: "Usuarios Activos" },
-    { number: "95%", label: "Satisfacci�n" },
+    { number: "95%", label: "Satisfaccin" },
     { number: "24/7", label: "Soporte" },
     { number: "100%", label: "Verificado" }
   ];
@@ -80,11 +80,11 @@ const Info = () => {
             <div className="flex items-center justify-center mb-4">
               <InfoIcon className="h-12 w-12 text-purple-400 mr-3" />
               <h1 className="text-4xl md:text-5xl font-bold text-white">
-                Informaci�n
+                Informacin
               </h1>
             </div>
             <p className="text-xl text-white font-medium max-w-3xl mx-auto drop-shadow-lg">
-              Conoce m�s sobre ComplicesConecta, la plataforma social m�s exclusiva y segura para la comunidad swinger en M�xico
+              Conoce ms sobre ComplicesConecta, la plataforma social ms exclusiva y segura para la comunidad swinger en Mxico
             </p>
           </div>
 
@@ -105,7 +105,7 @@ const Info = () => {
           {/* Features Section */}
           <section className="mb-16">
             <h2 className="text-3xl font-bold text-white mb-8 text-center">
-              �Por qu� elegir ComplicesConecta?
+              Por qu elegir ComplicesConecta?
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {features.map((feature, index) => (
@@ -133,18 +133,18 @@ const Info = () => {
               <CardContent className="space-y-6">
                 <div className="text-center">
                   <p className="text-lg text-white font-medium max-w-4xl mx-auto leading-relaxed drop-shadow-md">
-                    ComplicesConecta es la plataforma social m�s exclusiva y segura dise�ada espec�ficamente 
-                    para la comunidad swinger mexicana. Nuestra misi�n es crear un espacio donde parejas y 
-                    solteros puedan conectar de manera aut�ntica, discreta y verificada.
+                    ComplicesConecta es la plataforma social ms exclusiva y segura diseada especficamente 
+                    para la comunidad swinger mexicana. Nuestra misin es crear un espacio donde parejas y 
+                    solteros puedan conectar de manera autntica, discreta y verificada.
                   </p>
                 </div>
                 
                 <div className="grid md:grid-cols-2 gap-8">
                   <div>
-                    <h3 className="text-xl font-bold text-white mb-4 drop-shadow-md">Nuestra Misi�n</h3>
+                    <h3 className="text-xl font-bold text-white mb-4 drop-shadow-md">Nuestra Misin</h3>
                     <p className="text-white font-medium leading-relaxed drop-shadow-sm">
-                      Crear la comunidad swinger m�s exclusiva y segura de M�xico, donde las conexiones 
-                      aut�nticas y el respeto mutuo son los pilares fundamentales de nuestra plataforma.
+                      Crear la comunidad swinger ms exclusiva y segura de Mxico, donde las conexiones 
+                      autnticas y el respeto mutuo son los pilares fundamentales de nuestra plataforma.
                     </p>
                   </div>
                   <div>
@@ -152,7 +152,7 @@ const Info = () => {
                     <ul className="space-y-2 text-white font-medium">
                       <li className="flex items-center drop-shadow-sm">
                         <CheckCircle className="h-5 w-5 text-green-400 mr-2 flex-shrink-0" />
-                        Discreci�n y privacidad
+                        Discrecin y privacidad
                       </li>
                       <li className="flex items-center drop-shadow-sm">
                         <CheckCircle className="h-5 w-5 text-green-400 mr-2 flex-shrink-0" />
@@ -179,10 +179,10 @@ const Info = () => {
             <Card className="bg-gradient-to-r from-purple-600/90 to-blue-700/90 backdrop-blur-sm border border-purple-400/50 shadow-lg">
               <CardContent className="p-8">
                 <h2 className="text-3xl font-bold text-white mb-4 drop-shadow-lg">
-                  �Listo para unirte a nuestra comunidad?
+                  Listo para unirte a nuestra comunidad?
                 </h2>
                 <p className="text-xl text-white font-medium mb-6 max-w-2xl mx-auto drop-shadow-md">
-                  Descubre conexiones aut�nticas en un ambiente seguro y discreto dise�ado especialmente para ti
+                  Descubre conexiones autnticas en un ambiente seguro y discreto diseado especialmente para ti
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button 
@@ -196,7 +196,7 @@ const Info = () => {
                     variant="outline"
                     className="border-white/30 text-white hover:bg-white/10 px-8 py-3"
                   >
-                    M�s Informaci�n
+                    Ms Informacin
                   </Button>
                 </div>
               </CardContent>

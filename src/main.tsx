@@ -234,7 +234,10 @@ async function initializeApp() {
     if (rootElement && !rootElement.hasChildNodes()) {
       logger.warn('Forzando montaje de React después de timeout de seguridad');
       try {
-        rootElement.innerHTML = '';
+        // Limpiar de forma segura sin innerHTML
+        while (rootElement.firstChild) {
+          rootElement.removeChild(rootElement.firstChild);
+        }
         createRoot(rootElement).render(
           <StrictMode>
             <ErrorBoundary>
@@ -330,7 +333,10 @@ async function initializeApp() {
     
     // Limpiar el contenido del loading fallback
     debugLog('ROOT_ELEMENT_CLEARING', { innerHTML: finalRootElement.innerHTML.length });
-    finalRootElement.innerHTML = '';
+    // Limpiar de forma segura sin innerHTML
+    while (finalRootElement.firstChild) {
+      finalRootElement.removeChild(finalRootElement.firstChild);
+    }
 
     // Verify security before rendering (no bloquear si falla)
     debugLog('SECURITY_CHECK_START', {});
@@ -414,24 +420,53 @@ async function initializeApp() {
     if (!isWalletError) {
       logger.error('Application initialization failed (no wallet error)', { error });
       
-      // Mostrar error crítico en la página si no es de wallet
+      // Mostrar error crítico en la página si no es de wallet (usando DOM seguro)
       const rootElement = document.getElementById("root");
       if (rootElement) {
-        rootElement.innerHTML = `
-          <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #6b21a8 0%, #3b82f6 100%); color: white; padding: 20px; text-align: center;">
-            <div style="max-width: 600px;">
-              <h1 style="font-size: 2rem; margin-bottom: 1rem;">⚠️ Error al Cargar la Aplicación</h1>
-              <p style="margin-bottom: 1rem;">Por favor, recarga la página o contacta al soporte si el problema persiste.</p>
-              <p style="font-size: 0.875rem; margin-bottom: 2rem; opacity: 0.8;">Error: ${(error as Error)?.message || errorMsg}</p>
-              <button onclick="window.location.reload()" style="padding: 12px 24px; background: white; color: #6b21a8; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-right: 10px;">
-                Recargar Página
-              </button>
-              ${import.meta.env.DEV ? `<button onclick="console.log(window.__LOADING_DEBUG__?.getReport())" style="padding: 12px 24px; background: rgba(255,255,255,0.2); color: white; border: 1px solid white; border-radius: 8px; cursor: pointer; font-weight: bold;">
-                Ver Reporte de Carga
-              </button>` : ''}
-            </div>
-          </div>
-        `;
+        // Limpiar contenido previo de forma segura
+        while (rootElement.firstChild) {
+          rootElement.removeChild(rootElement.firstChild);
+        }
+        
+        // Crear elementos DOM de forma segura
+        const container = document.createElement('div');
+        container.style.cssText = 'min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #6b21a8 0%, #3b82f6 100%); color: white; padding: 20px; text-align: center;';
+        
+        const content = document.createElement('div');
+        content.style.cssText = 'max-width: 600px;';
+        
+        const h1 = document.createElement('h1');
+        h1.textContent = '⚠️ Error al Cargar la Aplicación';
+        h1.style.cssText = 'font-size: 2rem; margin-bottom: 1rem;';
+        
+        const p1 = document.createElement('p');
+        p1.textContent = 'Por favor, recarga la página o contacta al soporte si el problema persiste.';
+        p1.style.cssText = 'margin-bottom: 1rem;';
+        
+        const p2 = document.createElement('p');
+        p2.textContent = `Error: ${(error as Error)?.message || errorMsg}`;
+        p2.style.cssText = 'font-size: 0.875rem; margin-bottom: 2rem; opacity: 0.8;';
+        
+        const button1 = document.createElement('button');
+        button1.textContent = 'Recargar Página';
+        button1.style.cssText = 'padding: 12px 24px; background: white; color: #6b21a8; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-right: 10px;';
+        button1.onclick = () => window.location.reload();
+        
+        content.appendChild(h1);
+        content.appendChild(p1);
+        content.appendChild(p2);
+        content.appendChild(button1);
+        
+        if (import.meta.env.DEV) {
+          const button2 = document.createElement('button');
+          button2.textContent = 'Ver Reporte de Carga';
+          button2.style.cssText = 'padding: 12px 24px; background: rgba(255,255,255,0.2); color: white; border: 1px solid white; border-radius: 8px; cursor: pointer; font-weight: bold;';
+          button2.onclick = () => console.log((window as any).__LOADING_DEBUG__?.getReport());
+          content.appendChild(button2);
+        }
+        
+        container.appendChild(content);
+        rootElement.appendChild(container);
       }
     }
   }
@@ -458,25 +493,52 @@ initializeApp().catch((error: unknown) => {
     error: error
   });
   
-  // SIEMPRE mostrar error visual si no es de wallet
+  // SIEMPRE mostrar error visual si no es de wallet (usando DOM seguro)
   if (!isWalletError) {
     const rootElement = document.getElementById("root");
     if (rootElement) {
-      rootElement.innerHTML = `
-        <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #6b21a8 0%, #3b82f6 100%); color: white; padding: 20px; text-align: center;">
-          <div style="max-width: 600px;">
-            <h1 style="font-size: 2rem; margin-bottom: 1rem;">⚠️ Error al Cargar la Aplicación</h1>
-            <p style="margin-bottom: 1rem;">Por favor, recarga la página o contacta al soporte si el problema persiste.</p>
-            <p style="font-size: 0.875rem; margin-bottom: 2rem; opacity: 0.8;">Error: ${(error as Error)?.message || 'Error desconocido'}</p>
-            <button onclick="window.location.reload()" style="padding: 12px 24px; background: white; color: #6b21a8; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-right: 10px;">
-              Recargar Página
-            </button>
-            <button onclick="console.log(window.__LOADING_DEBUG__?.getReport())" style="padding: 12px 24px; background: rgba(255,255,255,0.2); color: white; border: 1px solid white; border-radius: 8px; cursor: pointer; font-weight: bold;">
-              Ver Reporte de Carga
-            </button>
-          </div>
-        </div>
-      `;
+      // Limpiar contenido previo de forma segura
+      while (rootElement.firstChild) {
+        rootElement.removeChild(rootElement.firstChild);
+      }
+      
+      // Crear elementos DOM de forma segura
+      const container = document.createElement('div');
+      container.style.cssText = 'min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #6b21a8 0%, #3b82f6 100%); color: white; padding: 20px; text-align: center;';
+      
+      const content = document.createElement('div');
+      content.style.cssText = 'max-width: 600px;';
+      
+      const h1 = document.createElement('h1');
+      h1.textContent = '⚠️ Error al Cargar la Aplicación';
+      h1.style.cssText = 'font-size: 2rem; margin-bottom: 1rem;';
+      
+      const p1 = document.createElement('p');
+      p1.textContent = 'Por favor, recarga la página o contacta al soporte si el problema persiste.';
+      p1.style.cssText = 'margin-bottom: 1rem;';
+      
+      const p2 = document.createElement('p');
+      p2.textContent = `Error: ${(error as Error)?.message || 'Error desconocido'}`;
+      p2.style.cssText = 'font-size: 0.875rem; margin-bottom: 2rem; opacity: 0.8;';
+      
+      const button1 = document.createElement('button');
+      button1.textContent = 'Recargar Página';
+      button1.style.cssText = 'padding: 12px 24px; background: white; color: #6b21a8; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-right: 10px;';
+      button1.onclick = () => window.location.reload();
+      
+      const button2 = document.createElement('button');
+      button2.textContent = 'Ver Reporte de Carga';
+      button2.style.cssText = 'padding: 12px 24px; background: rgba(255,255,255,0.2); color: white; border: 1px solid white; border-radius: 8px; cursor: pointer; font-weight: bold;';
+      button2.onclick = () => console.log((window as any).__LOADING_DEBUG__?.getReport());
+      
+      content.appendChild(h1);
+      content.appendChild(p1);
+      content.appendChild(p2);
+      content.appendChild(button1);
+      content.appendChild(button2);
+      
+      container.appendChild(content);
+      rootElement.appendChild(container);
     }
   }
 });

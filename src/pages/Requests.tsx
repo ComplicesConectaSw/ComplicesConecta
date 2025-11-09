@@ -32,7 +32,7 @@ const Requests = () => {
   const [sentInvitations, setSentInvitations] = useState<Invitation[]>([]);
   const [activeTab, setActiveTab] = useState<'received' | 'sent'>('received');
   
-  // Migraci�n localStorage ? usePersistedState
+  // Migracin localStorage ? usePersistedState
   const [demoAuth, _setDemoAuth] = usePersistedState('demo_authenticated', 'false');
   const [demoUser, _setDemoUser] = usePersistedState<any>('demo_user', null);
 
@@ -44,31 +44,31 @@ const Requests = () => {
       {
         id: 'demo-inv-1',
         from_profile: 'Anabella & Julio',
-        to_profile: 'Sof�a',
+        to_profile: 'Sofa',
         type: 'chat',
         status: 'pending',
-        message: '�Hola! Nos encantar�a conocerte mejor. �Te gustar�a chatear con nosotros?',
-        created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 horas atr�s
+        message: 'Hola! Nos encantara conocerte mejor. Te gustara chatear con nosotros?',
+        created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 horas atrs
         decided_at: null
       },
       {
         id: 'demo-inv-2',
         from_profile: 'Carmen & Roberto',
-        to_profile: 'Sof�a',
+        to_profile: 'Sofa',
         type: 'gallery',
         status: 'pending',
-        message: 'Hola guapa, nos gust� mucho tu perfil. �Nos permites ver tu galer�a privada?',
-        created_at: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(), // 5 horas atr�s
+        message: 'Hola guapa, nos gust mucho tu perfil. Nos permites ver tu galera privada?',
+        created_at: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(), // 5 horas atrs
         decided_at: null
       },
       {
         id: 'demo-inv-3',
-        from_profile: 'Ra�l',
-        to_profile: 'Sof�a',
+        from_profile: 'Ral',
+        to_profile: 'Sofa',
         type: 'profile',
         status: 'accepted',
-        message: '�Qu� tal si nos conocemos mejor?',
-        created_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), // 1 d�a atr�s
+        message: 'Qu tal si nos conocemos mejor?',
+        created_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), // 1 da atrs
         decided_at: new Date(Date.now() - 20 * 60 * 60 * 1000).toISOString()
       }
     ];
@@ -77,22 +77,22 @@ const Requests = () => {
     const demoSent: Invitation[] = [
       {
         id: 'demo-sent-1',
-        from_profile: 'Sof�a',
+        from_profile: 'Sofa',
         to_profile: 'Miguel & Laura',
         type: 'chat',
         status: 'accepted',
-        message: 'Hola, me encant� su perfil. �Les gustar�a platicar?',
-        created_at: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(), // 3 horas atr�s
+        message: 'Hola, me encant su perfil. Les gustara platicar?',
+        created_at: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(), // 3 horas atrs
         decided_at: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString()
       },
       {
         id: 'demo-sent-2',
-        from_profile: 'Sof�a',
+        from_profile: 'Sofa',
         to_profile: 'Carlos',
         type: 'profile',
         status: 'pending',
-        message: 'Hola, me pareces muy interesante. �Te gustar�a conocernos?',
-        created_at: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(), // 6 horas atr�s
+        message: 'Hola, me pareces muy interesante. Te gustara conocernos?',
+        created_at: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(), // 6 horas atrs
         decided_at: null
       }
     ];
@@ -141,7 +141,7 @@ const Requests = () => {
     }
     
     
-    // Verificar autenticaci�n real - solo redirigir si realmente no est� autenticado
+    // Verificar autenticacin real - solo redirigir si realmente no est autenticado
     try {
       if (!isAuthenticated) {
         logger.info('? Usuario no autenticado en Requests, redirigiendo a /auth');
@@ -149,11 +149,11 @@ const Requests = () => {
         return;
       }
     } catch (error) {
-      logger.error('? Error verificando autenticaci�n en Requests:', { error });
-      // No redirigir autom�ticamente en caso de error, permitir que el usuario permanezca
+      logger.error('? Error verificando autenticacin en Requests:', { error });
+      // No redirigir automticamente en caso de error, permitir que el usuario permanezca
       toast({
         title: "Advertencia",
-        description: "Hubo un problema verificando la autenticaci�n. Si persiste, intenta cerrar y abrir sesi�n.",
+        description: "Hubo un problema verificando la autenticacin. Si persiste, intenta cerrar y abrir sesin.",
         variant: "destructive"
       });
     }
@@ -171,7 +171,7 @@ const Requests = () => {
 
   const handleInvitationAction = async (invitationId: string, action: 'accept' | 'decline') => {
     try {
-      // Si es modo demo, simular la acci�n
+      // Si es modo demo, simular la accin
       if (demoAuth === 'true') {
         // Actualizar el estado local para demo
         setReceivedInvitations(prev => 
@@ -183,25 +183,25 @@ const Requests = () => {
         );
         
         toast({
-          title: `Invitaci�n ${action === 'accept' ? 'aceptada' : 'rechazada'}`,
-          description: `La invitaci�n ha sido procesada correctamente (modo demo).`,
+          title: `Invitacin ${action === 'accept' ? 'aceptada' : 'rechazada'}`,
+          description: `La invitacin ha sido procesada correctamente (modo demo).`,
         });
         
-        logger.info('?? Acci�n demo en invitaci�n:', { invitationId, action });
+        logger.info('?? Accin demo en invitacin:', { invitationId, action });
         return;
       }
       
       // Modo real
       await invitationService.respondInvitation(invitationId, action);
       toast({
-        title: `Invitaci�n ${action === 'accept' ? 'aceptada' : 'rechazada'}`,
-        description: `La invitaci�n ha sido procesada correctamente.`,
+        title: `Invitacin ${action === 'accept' ? 'aceptada' : 'rechazada'}`,
+        description: `La invitacin ha sido procesada correctamente.`,
       });
       loadInvitations(); // Refresh the list
     } catch {
       toast({
         title: "Error",
-        description: "No se pudo procesar la solicitud. Int�ntalo de nuevo.",
+        description: "No se pudo procesar la solicitud. Intntalo de nuevo.",
         variant: "destructive",
       });
     }
@@ -241,8 +241,8 @@ const Requests = () => {
       <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 flex items-center justify-center">
         <Card className="p-8 text-center bg-card/80 backdrop-blur-sm">
           <UserX className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-          <h2 className="text-xl font-semibold mb-2">Funci�n no disponible</h2>
-          <p className="text-muted-foreground">Las solicitudes de conexi�n no est�n habilitadas en esta versi�n.</p>
+          <h2 className="text-xl font-semibold mb-2">Funcin no disponible</h2>
+          <p className="text-muted-foreground">Las solicitudes de conexin no estn habilitadas en esta versin.</p>
         </Card>
       </div>
     );
@@ -302,7 +302,7 @@ const Requests = () => {
                     <Card className="p-8 text-center bg-gradient-to-br from-purple-900/30 via-purple-800/20 to-blue-900/30 backdrop-blur-sm border-white/10">
                       <UserPlus className="h-16 w-16 mx-auto mb-4 text-white/50" />
                       <h3 className="text-xl font-semibold text-white mb-2">No hay invitaciones recibidas</h3>
-                      <p className="text-white/70">Cuando alguien te env�e una invitaci�n, aparecer� aqu�.</p>
+                      <p className="text-white/70">Cuando alguien te enve una invitacin, aparecer aqu.</p>
                     </Card>
                   ) : (
                     receivedInvitations.map((inv) => (
@@ -311,7 +311,7 @@ const Requests = () => {
                           <div className="flex justify-between items-start mb-2">
                             <div className="flex items-center text-sm text-white/80">
                               {getInvitationTypeIcon(inv.type)}
-                              <span>Invitaci�n de <strong>{inv.from_profile}</strong></span>
+                              <span>Invitacin de <strong>{inv.from_profile}</strong></span>
                             </div>
                             {getStatusBadge(inv.status)}
                           </div>
@@ -340,7 +340,7 @@ const Requests = () => {
                     <Card className="p-8 text-center bg-gradient-to-br from-purple-900/30 via-purple-800/20 to-blue-900/30 backdrop-blur-sm border-white/10">
                       <Send className="h-16 w-16 mx-auto mb-4 text-white/50" />
                       <h3 className="text-xl font-semibold text-white mb-2">No has enviado invitaciones</h3>
-                      <p className="text-white/70">Explora perfiles y env�a invitaciones para conectar.</p>
+                      <p className="text-white/70">Explora perfiles y enva invitaciones para conectar.</p>
                     </Card>
                   ) : (
                     sentInvitations.map((inv) => (
@@ -348,7 +348,7 @@ const Requests = () => {
                         <div className="flex justify-between items-start">
                           <div className="flex items-center text-sm text-white/80">
                             {getInvitationTypeIcon(inv.type)}
-                            <span>Invitaci�n para <strong>{inv.to_profile}</strong></span>
+                            <span>Invitacin para <strong>{inv.to_profile}</strong></span>
                           </div>
                           {getStatusBadge(inv.status)}
                         </div>

@@ -146,13 +146,13 @@ const AdminProduction = () => {
   useEffect(() => {
     logger.info('?? AdminProduction - Verificando acceso...');
     
-    // CR�TICO: No verificar autenticaci�n si a�n est� cargando
+    // CRTICO: No verificar autenticacin si an est cargando
     if (loading) {
-      logger.info('? useAuth a�n cargando - esperando...');
+      logger.info('? useAuth an cargando - esperando...');
       return;
     }
     
-    // Verificar sesi�n demo primero
+    // Verificar sesin demo primero
     const demoAuth = localStorage.getItem('demo_authenticated');
     const demoUser = localStorage.getItem('demo_user');
     
@@ -162,7 +162,7 @@ const AdminProduction = () => {
         logger.info('?? Actualizando estado premium para usuario:', { userId: user.id, email: user.email, role: user.role });
         
         if (user.accountType === 'admin' || user.role === 'admin') {
-          logger.info('? Admin demo autorizado - cargando panel producci�n');
+          logger.info('? Admin demo autorizado - cargando panel produccin');
           loadProductionData();
           return;
         } else {
@@ -180,15 +180,15 @@ const AdminProduction = () => {
       }
     }
 
-    // Verificar autenticaci�n
+    // Verificar autenticacin
     const authStatus = isAuthenticated();
-    logger.info('?? Estado autenticaci�n:', { status: authStatus });
+    logger.info('?? Estado autenticacin:', { status: authStatus });
     
     if (!authStatus) {
       logger.info('? No autenticado - redirigiendo a /auth');
       toast({
         title: "Acceso Denegado",
-        description: "Debe iniciar sesi�n para acceder al panel de administraci�n",
+        description: "Debe iniciar sesin para acceder al panel de administracin",
         variant: "destructive"
       });
       navigate('/auth');
@@ -210,7 +210,7 @@ const AdminProduction = () => {
       return;
     }
 
-    logger.info('? Acceso autorizado - cargando panel producci�n');
+    logger.info('? Acceso autorizado - cargando panel produccin');
     
     // Cargar datos del panel
     loadRealProfiles();
@@ -232,7 +232,7 @@ const AdminProduction = () => {
       logger.error('Error loading production admin data:', { error: String(_error) });
       toast({
         title: "Error",
-        description: "Error al cargar datos del panel de administraci�n de producci�n",
+        description: "Error al cargar datos del panel de administracin de produccin",
         variant: "destructive"
       });
     } finally {
@@ -243,7 +243,7 @@ const AdminProduction = () => {
   const loadRealProfiles = async () => {
     try {
       if (!supabase) {
-        logger.error('Supabase no est� disponible');
+        logger.error('Supabase no est disponible');
         return;
       }
       
@@ -274,7 +274,7 @@ const AdminProduction = () => {
         created_at: profile.created_at || new Date().toISOString(),
         last_seen: 'Nunca', // Not in profiles table
         avatar_url: '', // Not in profiles table
-        bio: profile.bio || 'Sin biograf�a',
+        bio: profile.bio || 'Sin biografa',
         relationship_type: 'single' // Default value
       }));
 
@@ -287,11 +287,11 @@ const AdminProduction = () => {
   const loadRealStats = async () => {
     try {
       if (!supabase) {
-        logger.error('Supabase no est� disponible');
+        logger.error('Supabase no est disponible');
         return;
       }
       
-      // Obtener estad�sticas b�sicas de profiles
+      // Obtener estadsticas bsicas de profiles
       const [
         { count: totalUsers },
         { count: premiumUsers },
@@ -304,7 +304,7 @@ const AdminProduction = () => {
         supabase.from('invitations').select('*', { count: 'exact', head: true })
       ]);
 
-      // Intentar cargar m�tricas adicionales - tablas podr�an no existir
+      // Intentar cargar mtricas adicionales - tablas podran no existir
       let apkDownloadsResponse = { count: 0 };
       let __appMetrics = null;
       let tokenData = null;
@@ -317,7 +317,7 @@ const AdminProduction = () => {
 
       try {
         if (!supabase) {
-          logger.error('Supabase no est� disponible');
+          logger.error('Supabase no est disponible');
           tokenData = null;
         } else {
           const tokensResponse = await supabase.from('user_token_balances').select('cmpx_balance');
@@ -329,7 +329,7 @@ const AdminProduction = () => {
         logger.info('?? Tabla user_token_balances no disponible');
       }
 
-      // Funci�n para obtener m�tricas espec�ficas
+      // Funcin para obtener mtricas especficas
       const getMetricValue = (_name: string) => {
         // Como appMetrics es null, siempre retornamos 0
         return 0;
@@ -339,7 +339,7 @@ const AdminProduction = () => {
       const totalTokens = tokenData?.length || 0;
       const stakedTokens = getMetricValue('staked_tokens');
       
-      logger.info('?? Estad�sticas cargadas:', {
+      logger.info('?? Estadsticas cargadas:', {
         totalUsers: totalUsers || 0,
         premiumUsers: premiumUsers || 0,
         activeUsers: activeUsers || 0,
@@ -373,14 +373,14 @@ const AdminProduction = () => {
 
   const loadRealFAQ = async () => {
     // Tabla faq_items no existe en el esquema actual
-    logger.info('?? Tabla faq_items no disponible, usando lista vac�a');
+    logger.info('?? Tabla faq_items no disponible, usando lista vaca');
     setFaqItems([]);
   };
 
   const loadRealInvitations = async () => {
     try {
       if (!supabase) {
-        logger.error('Supabase no est� disponible');
+        logger.error('Supabase no est disponible');
         setInvitations([]);
         return;
       }
@@ -420,10 +420,10 @@ const AdminProduction = () => {
   const handleDeleteProfile = async (profileId: string) => {
     try {
       if (!supabase) {
-        logger.error('Supabase no est� disponible');
+        logger.error('Supabase no est disponible');
         toast({
           title: "Error",
-          description: "Supabase no est� disponible",
+          description: "Supabase no est disponible",
           variant: "destructive"
         });
         return;
@@ -453,10 +453,10 @@ const AdminProduction = () => {
   const handleTogglePremium = async (profileId: string) => {
     try {
       if (!supabase) {
-        logger.error('Supabase no est� disponible');
+        logger.error('Supabase no est disponible');
         toast({
           title: "Error",
-          description: "Supabase no est� disponible",
+          description: "Supabase no est disponible",
           variant: "destructive"
         });
         return;
@@ -500,8 +500,8 @@ const AdminProduction = () => {
 
     // Tabla faq_items no existe en el esquema actual
     toast({
-      title: "Funci�n no disponible",
-      description: "La tabla FAQ no est� disponible en el esquema actual",
+      title: "Funcin no disponible",
+      description: "La tabla FAQ no est disponible en el esquema actual",
       variant: "destructive"
     });
   };
@@ -512,7 +512,7 @@ const AdminProduction = () => {
         <HeaderNav />
         <div className="container mx-auto px-4 py-8">
           <div className="flex items-center justify-center h-64">
-            <div className="text-white text-xl">Cargando panel de administraci�n...</div>
+            <div className="text-white text-xl">Cargando panel de administracin...</div>
           </div>
         </div>
       </div>
@@ -532,12 +532,12 @@ const AdminProduction = () => {
             Volver
           </Button>
           <div>
-            <h1 className="text-3xl font-bold text-white">Panel de Administraci�n - Producci�n</h1>
-            <p className="text-white/70">Gesti�n completa de la plataforma ComplicesConecta</p>
+            <h1 className="text-3xl font-bold text-white">Panel de Administracin - Produccin</h1>
+            <p className="text-white/70">Gestin completa de la plataforma ComplicesConecta</p>
           </div>
         </div>
 
-        {/* Estad�sticas Principales */}
+        {/* Estadsticas Principales */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Card className="bg-white/10 backdrop-blur-md border-white/20">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -557,7 +557,7 @@ const AdminProduction = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-white">{stats.premiumUsers}</div>
-              <p className="text-xs text-white/70">Con suscripci�n activa</p>
+              <p className="text-xs text-white/70">Con suscripcin activa</p>
             </CardContent>
           </Card>
 
@@ -579,7 +579,7 @@ const AdminProduction = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-white">{stats.moderationQueue}</div>
-              <p className="text-xs text-white/70">En evaluaci�n</p>
+              <p className="text-xs text-white/70">En evaluacin</p>
             </CardContent>
           </Card>
         </div>
@@ -606,10 +606,10 @@ const AdminProduction = () => {
               <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4">
                 <h3 className="text-white font-semibold mb-2 flex items-center gap-2">
                   <AlertTriangle className="h-5 w-5 text-yellow-400" />
-                  Pendientes Revisi�n
+                  Pendientes Revisin
                 </h3>
                 <p className="text-2xl font-bold text-yellow-400">23</p>
-                <p className="text-white/60 text-sm">Requieren supervisi�n</p>
+                <p className="text-white/60 text-sm">Requieren supervisin</p>
               </div>
               
               <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4">
@@ -629,7 +629,7 @@ const AdminProduction = () => {
               </Button>
               <Button className="border-yellow-500 text-yellow-400 hover:bg-yellow-500/10 border bg-transparent">
                 <Eye className="h-4 w-4 mr-2" />
-                Revisar Cola de Moderaci�n
+                Revisar Cola de Moderacin
               </Button>
               <Button className="bg-red-500 hover:bg-red-600 text-white">
                 <XCircle className="h-4 w-4 mr-2" />
@@ -647,7 +647,7 @@ const AdminProduction = () => {
             </TabsTrigger>
             <TabsTrigger value="stats" className="text-white data-[state=active]:bg-white/20">
               <BarChart3 className="w-4 h-4 mr-2" />
-              Estad�sticas
+              Estadsticas
             </TabsTrigger>
             <TabsTrigger value="faq" className="text-white data-[state=active]:bg-white/20">
               <HelpCircle className="w-4 h-4 mr-2" />
@@ -662,7 +662,7 @@ const AdminProduction = () => {
           <TabsContent value="users" className="space-y-6">
             <Card className="bg-white/10 backdrop-blur-md border-white/20">
               <CardHeader>
-                <CardTitle className="text-white">Gesti�n de Usuarios</CardTitle>
+                <CardTitle className="text-white">Gestin de Usuarios</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -683,7 +683,7 @@ const AdminProduction = () => {
                             {profile.is_premium && <Badge className="bg-gray-500 text-white">Premium</Badge>}
                             {profile.is_verified && <Badge className="border border-white/30 bg-transparent text-white">Verificado</Badge>}
                           </div>
-                          <p><strong>G�nero:</strong> {(profile as any).gender || 'No especificado'}</p>
+                          <p><strong>Gnero:</strong> {(profile as any).gender || 'No especificado'}</p>
                           <p><strong>Interesado en:</strong> {(profile as any).interested_in || 'No especificado'}</p>
                         </div>
                       </div>
@@ -711,7 +711,7 @@ const AdminProduction = () => {
           <TabsContent value="faq" className="space-y-6">
             <Card className="bg-white/10 backdrop-blur-md border-white/20">
               <CardHeader>
-                <CardTitle className="text-white">Gesti�n de FAQ</CardTitle>
+                <CardTitle className="text-white">Gestin de FAQ</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4 mb-6">
@@ -772,7 +772,7 @@ const AdminProduction = () => {
                 <CardContent>
                   <div className="space-y-2">
                     <div className="flex justify-between">
-                      <span className="text-white/70">Total en circulaci�n:</span>
+                      <span className="text-white/70">Total en circulacin:</span>
                       <span className="text-white font-semibold">{stats.totalTokens.toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between">
@@ -821,7 +821,7 @@ const AdminProduction = () => {
                   {invitations.slice(0, 10).map((invitation) => (
                     <div key={invitation.id} className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
                       <div>
-                        <p className="text-white font-medium">Invitaci�n {invitation.type}</p>
+                        <p className="text-white font-medium">Invitacin {invitation.type}</p>
                         <p className="text-white/60 text-sm">{invitation.message}</p>
                         <p className="text-white/40 text-xs">
                           {new Date(invitation.created_at).toLocaleDateString()}

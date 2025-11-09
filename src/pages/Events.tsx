@@ -15,7 +15,7 @@ const Events = () => {
   const [_activeTab, setActiveTab] = useState("events");
   const [showAgeModal, setShowAgeModal] = useState(false);
 
-  // Estado persistente para verificaci�n de edad
+  // Estado persistente para verificacin de edad
   const [ageVerified, setAgeVerified] = usePersistedState<boolean>('ageVerified', false);
 
   useEffect(() => {
@@ -38,7 +38,7 @@ const Events = () => {
     {
       id: 1,
       title: "Encuentro Elegante - Parejas Selectas CDMX",
-      description: "Evento VIP exclusivo para parejas maduras y experimentadas en el lifestyle swinger. Ambiente elegante con c�cteles premium, m�sica sofisticada y espacios privados para conexiones aut�nticas en Polanco.",
+      description: "Evento VIP exclusivo para parejas maduras y experimentadas en el lifestyle swinger. Ambiente elegante con ccteles premium, msica sofisticada y espacios privados para conexiones autnticas en Polanco.",
       date: "2025-03-15",
       time: "21:00",
       location: "Villa Privada Polanco, CDMX",
@@ -48,7 +48,7 @@ const Events = () => {
       category: "VIP Exclusivo",
       image: "https://images.unsplash.com/photo-1519167758481-83f142bb8cba?w=400&h=300&fit=crop&crop=center",
       organizer: {
-        name: "Elite Connections M�xico",
+        name: "Elite Connections Mxico",
         avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
       },
       isJoined: true,
@@ -58,8 +58,8 @@ const Events = () => {
     },
     {
       id: 2,
-      title: "Velada �ntima Swinger Guadalajara",
-      description: "Velada �ntima para parejas que buscan experiencias compartidas en el ambiente swinger. Incluye sesiones de networking, actividades grupales discretas y espacios privados para conexiones profundas en Guadalajara.",
+      title: "Velada ntima Swinger Guadalajara",
+      description: "Velada ntima para parejas que buscan experiencias compartidas en el ambiente swinger. Incluye sesiones de networking, actividades grupales discretas y espacios privados para conexiones profundas en Guadalajara.",
       date: "2025-03-20",
       time: "20:00",
       location: "Club Privado Zapopan, Jalisco",
@@ -79,8 +79,8 @@ const Events = () => {
     },
     {
       id: 3,
-      title: "Fiesta Acu�tica Swinger Canc�n",
-      description: "Celebraci�n acu�tica exclusiva para parejas del lifestyle swinger en la Riviera Maya. Piscina climatizada, jacuzzi privado, actividades acu�ticas y ambiente relajado para conexiones �ntimas en Canc�n.",
+      title: "Fiesta Acutica Swinger Cancn",
+      description: "Celebracin acutica exclusiva para parejas del lifestyle swinger en la Riviera Maya. Piscina climatizada, jacuzzi privado, actividades acuticas y ambiente relajado para conexiones ntimas en Cancn.",
       date: "2025-03-25",
       time: "15:00",
       location: "Resort Privado Playa del Carmen, Q.Roo",
@@ -90,7 +90,7 @@ const Events = () => {
       category: "Ambiente Playero",
       image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&h=300&fit=crop&crop=center",
       organizer: {
-        name: "Aqua Lifestyle Canc�n",
+        name: "Aqua Lifestyle Cancn",
         avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=face"
       },
       isJoined: false,
@@ -104,14 +104,14 @@ const Events = () => {
     {
       id: 1,
       name: "Club Elite CDMX",
-      description: "Club VIP exclusivo para parejas maduras y experimentadas en el lifestyle swinger. Acceso a eventos privados, networking premium, actividades exclusivas y comunidad selecta en Ciudad de M�xico.",
+      description: "Club VIP exclusivo para parejas maduras y experimentadas en el lifestyle swinger. Acceso a eventos privados, networking premium, actividades exclusivas y comunidad selecta en Ciudad de Mxico.",
       memberCount: 156,
       maxMembers: 200,
       isPrivate: true,
       category: "Club VIP",
       image: "https://images.unsplash.com/photo-1519167758481-83f142bb8cba?w=400&h=300&fit=crop&crop=center",
       admin: {
-        name: "Administraci�n Elite M�xico",
+        name: "Administracin Elite Mxico",
         avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
       },
       lastActivity: "Hace 1h",
@@ -119,12 +119,12 @@ const Events = () => {
       isPending: true,
       reputation: 4.9,
       verified: true,
-      requirements: "Parejas 25-50 a�os, verificaci�n KYC + experiencia swinger"
+      requirements: "Parejas 25-50 aos, verificacin KYC + experiencia swinger"
     },
     {
       id: 2,
-      name: "Swingers Principiantes M�xico",
-      description: "Comunidad educativa para parejas que inician en el lifestyle swinger. Ambiente seguro, mentor�as, talleres educativos, eventos de introducci�n y apoyo para parejas principiantes en M�xico.",
+      name: "Swingers Principiantes Mxico",
+      description: "Comunidad educativa para parejas que inician en el lifestyle swinger. Ambiente seguro, mentoras, talleres educativos, eventos de introduccin y apoyo para parejas principiantes en Mxico.",
       memberCount: 89,
       maxMembers: 120,
       isPrivate: false,
@@ -139,19 +139,19 @@ const Events = () => {
       isPending: false,
       reputation: 4.6,
       verified: true,
-      requirements: "Parejas 21+ a�os, mente abierta, respeto mutuo"
+      requirements: "Parejas 21+ aos, mente abierta, respeto mutuo"
     },
     {
       id: 3,
       name: "Aqua Swinger Riviera Maya",
-      description: "Club especializado en eventos acu�ticos y celebraciones swinger en destinos playeros. Acceso a resorts exclusivos, actividades acu�ticas, eventos tem�ticos y conexiones en ambiente tropical en Riviera Maya.",
+      description: "Club especializado en eventos acuticos y celebraciones swinger en destinos playeros. Acceso a resorts exclusivos, actividades acuticas, eventos temticos y conexiones en ambiente tropical en Riviera Maya.",
       memberCount: 203,
       maxMembers: 250,
       isPrivate: true,
       category: "Eventos Playeros",
       image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&h=300&fit=crop&crop=center",
       admin: {
-        name: "Aqua Team Canc�n",
+        name: "Aqua Team Cancn",
         avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=face"
       },
       lastActivity: "Hace 30min",
@@ -198,10 +198,10 @@ const Events = () => {
             <CardContent className="p-8 text-center">
               <AlertTriangle className="h-16 w-16 text-destructive mx-auto mb-6" />
               <h2 className="text-2xl font-bold text-foreground mb-4">
-                Verificaci�n de Edad
+                Verificacin de Edad
               </h2>
               <p className="text-white mb-6">
-                Este contenido est� destinado exclusivamente para adultos mayores de 18 a�os. 
+                Este contenido est destinado exclusivamente para adultos mayores de 18 aos. 
                 Al continuar, confirmas que tienes la edad legal requerida.
               </p>
               <div className="flex gap-3">
@@ -216,7 +216,7 @@ const Events = () => {
                   onClick={() => handleAgeConfirmation(true)}
                   className="flex-1 bg-primary text-primary-foreground"
                 >
-                  Soy mayor de 18 a�os
+                  Soy mayor de 18 aos
                 </Button>
               </div>
               <p className="text-xs text-white mt-4">
@@ -225,14 +225,14 @@ const Events = () => {
                   onClick={() => navigate('/terms')}
                   className="text-primary hover:underline"
                 >
-                  T�rminos y Condiciones
+                  Trminos y Condiciones
                 </button>
                 {' '}y{' '}
                 <button 
                   onClick={() => navigate('/privacy')}
                   className="text-primary hover:underline"
                 >
-                  Pol�tica de Privacidad
+                  Poltica de Privacidad
                 </button>
               </p>
             </CardContent>
@@ -284,13 +284,13 @@ const Events = () => {
 
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-              Eventos Swinger M�xico
+              Eventos Swinger Mxico
               <span className="block bg-love-gradient bg-clip-text text-transparent">
                 Experiencias Exclusivas para Parejas
               </span>
             </h1>
             <p className="text-xl text-white max-w-2xl mx-auto">
-              Encuentros privados, clubs verificados y experiencias swinger en M�xico
+              Encuentros privados, clubs verificados y experiencias swinger en Mxico
             </p>
           </div>
 
@@ -298,14 +298,14 @@ const Events = () => {
           <Card className="bg-gradient-to-r from-accent/20 to-primary/20 border border-accent/30 mb-12">
             <CardContent className="text-center py-8">
               <Lock className="h-12 w-12 text-accent mx-auto mb-4" />
-              <h2 className="text-2xl font-bold text-foreground mb-2">Integraci�n de Clubs - Post Beta</h2>
+              <h2 className="text-2xl font-bold text-foreground mb-2">Integracin de Clubs - Post Beta</h2>
               <p className="text-white mb-4">
-                Los clubs swinger de M�xico podr�n integrarse a la plataforma despu�s de la beta, 
-                con sistema de reputaci�n basado en valoraciones de usuarios verificados.
+                Los clubs swinger de Mxico podrn integrarse a la plataforma despus de la beta, 
+                con sistema de reputacin basado en valoraciones de usuarios verificados.
               </p>
               <Badge className="bg-accent/20 text-accent border border-accent/30">
                 <Sparkles className="h-4 w-4 mr-1" />
-                Pr�ximamente
+                Prximamente
               </Badge>
             </CardContent>
           </Card>
@@ -315,7 +315,7 @@ const Events = () => {
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/70 h-4 w-4" />
               <Input
-                placeholder="Buscar fiestas swinger, clubs privados, eventos en M�xico..."
+                placeholder="Buscar fiestas swinger, clubs privados, eventos en Mxico..."
                 value={_searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 bg-card/80 backdrop-blur-sm border-primary/20"
@@ -430,7 +430,7 @@ const Events = () => {
                     No se encontraron eventos
                   </h3>
                   <p className="text-white/70 mb-6">
-                    Intenta con otros t�rminos de b�squeda
+                    Intenta con otros trminos de bsqueda
                   </p>
                 </div>
               )}
@@ -524,7 +524,7 @@ const Events = () => {
                     No se encontraron clubs
                   </h3>
                   <p className="text-white/70 mb-6">
-                    Intenta con otros t�rminos de b�squeda
+                    Intenta con otros trminos de bsqueda
                   </p>
                 </div>
               )}

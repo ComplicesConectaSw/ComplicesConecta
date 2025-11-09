@@ -64,53 +64,53 @@ interface FAQItem {
 
 const faqData: FAQItem[] = [
   {
-    question: "�Qu� son los tokens CMPX?",
-    answer: "Los CMPX son tokens internos de ComplicesConecta que puedes ganar participando en la comunidad. Durante la fase beta funcionan off-chain y en el futuro se convertir�n en tokens GTK en blockchain.",
+    question: "Qu son los tokens CMPX?",
+    answer: "Los CMPX son tokens internos de ComplicesConecta que puedes ganar participando en la comunidad. Durante la fase beta funcionan off-chain y en el futuro se convertirn en tokens GTK en blockchain.",
     category: "general"
   },
   {
-    question: "�C�mo gano tokens CMPX?",
-    answer: "Actualmente puedes ganar 50 CMPX por cada amigo que invites exitosamente, m�s 50 CMPX de bienvenida cuando uses un c�digo de referido v�lido.",
+    question: "Cmo gano tokens CMPX?",
+    answer: "Actualmente puedes ganar 50 CMPX por cada amigo que invites exitosamente, ms 50 CMPX de bienvenida cuando uses un cdigo de referido vlido.",
     category: "rewards"
   },
   {
-    question: "�Cu�l es el l�mite mensual?",
-    answer: "Puedes ganar m�ximo 500 CMPX por mes. Este l�mite se resetea autom�ticamente el primer d�a de cada mes.",
+    question: "Cul es el lmite mensual?",
+    answer: "Puedes ganar mximo 500 CMPX por mes. Este lmite se resetea automticamente el primer da de cada mes.",
     category: "rewards"
   },
   {
-    question: "�Los tokens son seguros?",
-    answer: "S�, el sistema tiene m�ltiples capas de seguridad: validaci�n de c�digos, prevenci�n de auto-referidos, l�mites mensuales y auditor�a de transacciones.",
+    question: "Los tokens son seguros?",
+    answer: "S, el sistema tiene mltiples capas de seguridad: validacin de cdigos, prevencin de auto-referidos, lmites mensuales y auditora de transacciones.",
     category: "security"
   },
   {
-    question: "�Qu� son los tokens GTK?",
-    answer: "GTK son tokens blockchain (ERC20) que representar�n el valor real de CMPX en el futuro. Durante la beta est�n pausados y se activar�n en la versi�n de producci�n.",
+    question: "Qu son los tokens GTK?",
+    answer: "GTK son tokens blockchain (ERC20) que representarn el valor real de CMPX en el futuro. Durante la beta estn pausados y se activarn en la versin de produccin.",
     category: "blockchain"
   },
   {
-    question: "�Para qu� sirven los tokens?",
-    answer: "Los tokens te dar�n acceso a funciones premium, eventos VIP, contenido exclusivo y beneficios especiales en la comunidad (disponible despu�s de la beta).",
+    question: "Para qu sirven los tokens?",
+    answer: "Los tokens te darn acceso a funciones premium, eventos VIP, contenido exclusivo y beneficios especiales en la comunidad (disponible despus de la beta).",
     category: "premium"
   },
   {
-    question: "�Puedo transferir mis tokens?",
-    answer: "Durante la beta, los CMPX son internos y no transferibles. Cuando se activen los GTK en blockchain, podr�s transferirlos libremente.",
+    question: "Puedo transferir mis tokens?",
+    answer: "Durante la beta, los CMPX son internos y no transferibles. Cuando se activen los GTK en blockchain, podrs transferirlos libremente.",
     category: "security"
   },
   {
-    question: "�Qu� es World ID y c�mo funciona?",
-    answer: "World ID es un sistema de verificaci�n de identidad humana desarrollado por Worldcoin. Pr�ximamente podr�s verificar tu identidad y ganar 100 CMPX adicionales. Utiliza tecnolog�a blockchain para garantizar privacidad y seguridad.",
+    question: "Qu es World ID y cmo funciona?",
+    answer: "World ID es un sistema de verificacin de identidad humana desarrollado por Worldcoin. Prximamente podrs verificar tu identidad y ganar 100 CMPX adicionales. Utiliza tecnologa blockchain para garantizar privacidad y seguridad.",
     category: "security"
   },
   {
-    question: "�Cu�ndo estar� disponible World ID?",
-    answer: "La integraci�n con World ID est� en desarrollo y se activar� pr�ximamente. Te notificaremos cuando est� disponible para que puedas verificar tu identidad y obtener las recompensas.",
+    question: "Cundo estar disponible World ID?",
+    answer: "La integracin con World ID est en desarrollo y se activar prximamente. Te notificaremos cuando est disponible para que puedas verificar tu identidad y obtener las recompensas.",
     category: "general"
   },
   {
-    question: "�Qu� pasa si encuentro un error?",
-    answer: "Reporta cualquier problema a trav�s del soporte. Todas las transacciones est�n auditadas y podemos corregir errores leg�timos.",
+    question: "Qu pasa si encuentro un error?",
+    answer: "Reporta cualquier problema a travs del soporte. Todas las transacciones estn auditadas y podemos corregir errores legtimos.",
     category: "security"
   }
 ];
@@ -132,10 +132,10 @@ export default function TokensInfo() {
   const [globalStats, setGlobalStats] = useState<TokenGlobalStats | null>(null);
   const [loadingStats, setLoadingStats] = useState(true);
   
-  // Determinar si hay sesi�n activa para mostrar Navigation o HeaderNav
+  // Determinar si hay sesin activa para mostrar Navigation o HeaderNav
   const hasActiveSession = isAuthenticated();
   
-  // Cargar estad�sticas globales
+  // Cargar estadsticas globales
   useEffect(() => {
     const loadGlobalStats = async () => {
       try {
@@ -143,7 +143,7 @@ export default function TokensInfo() {
         const analytics = TokenAnalyticsService.getInstance();
         const metrics = await analytics.generateCurrentMetrics();
         
-        // Calcular estad�sticas globales
+        // Calcular estadsticas globales
         const tokenMetrics = metrics.metrics || {
           totalSupply: { cmpx: 1000000, gtk: 5000000 },
           circulatingSupply: { cmpx: 0, gtk: 0 },
@@ -156,13 +156,13 @@ export default function TokensInfo() {
           totalCirculation: tokenMetrics.circulatingSupply.cmpx,
           locked: tokenMetrics.totalSupply.cmpx - tokenMetrics.circulatingSupply.cmpx,
           globalStaking: tokenMetrics.stakingMetrics.totalStaked,
-          monthlyRelease: 50000, // Valor estimado de liberaci�n mensual
+          monthlyRelease: 50000, // Valor estimado de liberacin mensual
           available: tokenMetrics.circulatingSupply.cmpx - tokenMetrics.stakingMetrics.totalStaked
         };
         
         setGlobalStats(stats);
       } catch (error) {
-        console.error('Error cargando estad�sticas globales:', error);
+        console.error('Error cargando estadsticas globales:', error);
         // Valores por defecto en caso de error
         setGlobalStats({
           totalCirculation: 0,
@@ -199,20 +199,20 @@ export default function TokensInfo() {
   // Casos de uso CMPX con precios
   const cmpxUseCases = [
     { name: 'Super Like', icon: <Heart className="h-5 w-5" />, cost: 10, description: 'Destaca tu like entre otros usuarios' },
-    { name: 'Boost de Perfil', icon: <Rocket className="h-5 w-5" />, cost: 50, description: 'Aparece m�s en Discover por 24 horas' },
-    { name: 'Regalo Virtual (B�sico)', icon: <Gift className="h-5 w-5" />, cost: 50, description: 'Env�a flores, chocolates virtuales' },
+    { name: 'Boost de Perfil', icon: <Rocket className="h-5 w-5" />, cost: 50, description: 'Aparece ms en Discover por 24 horas' },
+    { name: 'Regalo Virtual (Bsico)', icon: <Gift className="h-5 w-5" />, cost: 50, description: 'Enva flores, chocolates virtuales' },
     { name: 'Regalo Virtual (Premium)', icon: <Gift className="h-5 w-5" />, cost: 200, description: 'Regalos personalizados y exclusivos' },
     { name: 'Regalo Virtual (Lujo)', icon: <Crown className="h-5 w-5" />, cost: 500, description: 'Regalos premium con efectos especiales' },
-    { name: 'Video Llamada (15 min)', icon: <Video className="h-5 w-5" />, cost: 75, description: 'Sesi�n de video chat en tiempo real' },
-    { name: 'Video Llamada (30 min)', icon: <Video className="h-5 w-5" />, cost: 120, description: 'Sesi�n extendida de video chat' },
-    { name: 'Video Llamada (60 min)', icon: <Video className="h-5 w-5" />, cost: 200, description: 'Sesi�n premium de video chat' },
+    { name: 'Video Llamada (15 min)', icon: <Video className="h-5 w-5" />, cost: 75, description: 'Sesin de video chat en tiempo real' },
+    { name: 'Video Llamada (30 min)', icon: <Video className="h-5 w-5" />, cost: 120, description: 'Sesin extendida de video chat' },
+    { name: 'Video Llamada (60 min)', icon: <Video className="h-5 w-5" />, cost: 200, description: 'Sesin premium de video chat' },
     { name: 'Evento VIP (Entrada)', icon: <Ticket className="h-5 w-5" />, cost: 200, description: 'Acceso a evento exclusivo' },
     { name: 'Evento VIP (Premium)', icon: <Crown className="h-5 w-5" />, cost: 500, description: 'Acceso VIP con beneficios extra' },
     { name: 'Evento VIP (Lujo)', icon: <Sparkles className="h-5 w-5" />, cost: 1000, description: 'Acceso exclusivo con todos los beneficios' },
-    { name: 'Desbloquear Galer�a Privada', icon: <Lock className="h-5 w-5" />, cost: 100, description: 'Acceso temporal a contenido exclusivo' },
-    { name: 'Chat Premium (30 d�as)', icon: <MessageSquare className="h-5 w-5" />, cost: 100, description: 'Mensajes ilimitados y funciones avanzadas' },
-    { name: 'Filtros Avanzados (30 d�as)', icon: <Zap className="h-5 w-5" />, cost: 75, description: 'B�squedas m�s precisas' },
-    { name: 'Likes Ilimitados (30 d�as)', icon: <Heart className="h-5 w-5" />, cost: 50, description: 'Sin l�mites en conexiones diarias' }
+    { name: 'Desbloquear Galera Privada', icon: <Lock className="h-5 w-5" />, cost: 100, description: 'Acceso temporal a contenido exclusivo' },
+    { name: 'Chat Premium (30 das)', icon: <MessageSquare className="h-5 w-5" />, cost: 100, description: 'Mensajes ilimitados y funciones avanzadas' },
+    { name: 'Filtros Avanzados (30 das)', icon: <Zap className="h-5 w-5" />, cost: 75, description: 'Bsquedas ms precisas' },
+    { name: 'Likes Ilimitados (30 das)', icon: <Heart className="h-5 w-5" />, cost: 50, description: 'Sin lmites en conexiones diarias' }
   ];
 
   // Staking GTK - Opciones
@@ -222,13 +222,13 @@ export default function TokensInfo() {
     { duration: 365, apy: 18, minTokens: 100, penalty: 5 }
   ];
 
-  // Distribuci�n de tokens
+  // Distribucin de tokens
   const gtkDistribution = [
-    { category: 'Venta P�blica (ICO/IDO)', percentage: 40, description: 'Para inversores y usuarios tempranos', tokens: '2,000,000 GTK (ejemplo)' },
+    { category: 'Venta Pblica (ICO/IDO)', percentage: 40, description: 'Para inversores y usuarios tempranos', tokens: '2,000,000 GTK (ejemplo)' },
     { category: 'Staking Rewards Pool', percentage: 20, description: 'Recompensas para stakers a largo plazo', tokens: '1,000,000 GTK' },
-    { category: 'Team y Desarrollo', percentage: 15, description: 'Vesting de 3 a�os para el equipo', tokens: '750,000 GTK' },
+    { category: 'Team y Desarrollo', percentage: 15, description: 'Vesting de 3 aos para el equipo', tokens: '750,000 GTK' },
     { category: 'Liquidez en Exchanges', percentage: 10, description: 'DEX/CEX para comercio', tokens: '500,000 GTK' },
-    { category: 'Marketing y Partnerships', percentage: 10, description: 'Alianzas estrat�gicas y promociones', tokens: '500,000 GTK' },
+    { category: 'Marketing y Partnerships', percentage: 10, description: 'Alianzas estratgicas y promociones', tokens: '500,000 GTK' },
     { category: 'Reserva de Emergencias', percentage: 5, description: 'Desarrollo futuro y contingencia', tokens: '250,000 GTK' }
   ];
 
@@ -247,7 +247,7 @@ export default function TokensInfo() {
               <span className="sm:hidden">Regresar</span>
             </Button>
             
-            <h1 className="text-lg sm:text-xl font-bold text-white text-center">Gu�a Completa de Tokens</h1>
+            <h1 className="text-lg sm:text-xl font-bold text-white text-center">Gua Completa de Tokens</h1>
             
             <Button
               onClick={() => navigate('/')}
@@ -281,8 +281,8 @@ export default function TokensInfo() {
           </h1>
           
           <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed">
-            Econom�a digital dual: <strong className="text-purple-300">CMPX</strong> para consumo dentro de la app y 
-            <strong className="text-blue-300"> GTK</strong> para staking e inversi�n en blockchain.
+            Economa digital dual: <strong className="text-purple-300">CMPX</strong> para consumo dentro de la app y 
+            <strong className="text-blue-300"> GTK</strong> para staking e inversin en blockchain.
           </p>
 
           {/* Tabs para cambiar entre secciones */}
@@ -296,7 +296,7 @@ export default function TokensInfo() {
               }`}
             >
               <Users className="h-4 w-4 mr-2" />
-              P�blico General
+              Pblico General
             </Button>
             <Button
               onClick={() => setActiveSection('investors')}
@@ -323,17 +323,17 @@ export default function TokensInfo() {
           </div>
         </motion.div>
 
-        {/* SECCI�N: P�BLICO GENERAL */}
+        {/* SECCIN: PBLICO GENERAL */}
         {activeSection === 'general' && (
           <div className="space-y-8">
-            {/* Gr�ficos Globales de Tokens */}
+            {/* Grficos Globales de Tokens */}
             <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
               <CardHeader>
                 <CardTitle className="text-2xl text-white flex items-center gap-3">
                   <div className="p-2 bg-gradient-to-r from-purple-500 to-blue-600 rounded-lg">
                     <BarChart3 className="h-6 w-6 text-white" />
                   </div>
-                  Estad�sticas Globales de Tokens
+                  Estadsticas Globales de Tokens
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
@@ -341,7 +341,7 @@ export default function TokensInfo() {
                   <div className="flex items-center justify-center p-8">
                     <div className="text-center">
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto mb-4"></div>
-                      <p className="text-white/90">Cargando estad�sticas...</p>
+                      <p className="text-white/90">Cargando estadsticas...</p>
                     </div>
                   </div>
                 ) : globalStats && (
@@ -349,7 +349,7 @@ export default function TokensInfo() {
                     {/* Tarjetas de resumen */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                       <div className="bg-gradient-to-r from-purple-900/40 to-blue-900/40 p-4 rounded-lg border border-purple-400/30">
-                        <div className="text-purple-300 text-sm mb-1">En Circulaci�n</div>
+                        <div className="text-purple-300 text-sm mb-1">En Circulacin</div>
                         <div className="text-2xl font-bold text-white">{globalStats.totalCirculation.toLocaleString()}</div>
                         <div className="text-purple-200 text-xs mt-1">CMPX</div>
                       </div>
@@ -364,20 +364,20 @@ export default function TokensInfo() {
                         <div className="text-blue-200 text-xs mt-1">CMPX</div>
                       </div>
                       <div className="bg-gradient-to-r from-green-900/40 to-emerald-900/40 p-4 rounded-lg border border-green-400/30">
-                        <div className="text-green-300 text-sm mb-1">Liberaci�n Mensual</div>
+                        <div className="text-green-300 text-sm mb-1">Liberacin Mensual</div>
                         <div className="text-2xl font-bold text-white">{globalStats.monthlyRelease.toLocaleString()}</div>
                         <div className="text-green-200 text-xs mt-1">CMPX</div>
                       </div>
                     </div>
 
-                    {/* Gr�fico de distribuci�n de tokens */}
+                    {/* Grfico de distribucin de tokens */}
                     <div className="bg-white/5 p-4 rounded-lg border border-white/10">
-                      <h4 className="text-lg font-semibold text-white mb-4">Distribuci�n de Tokens CMPX</h4>
+                      <h4 className="text-lg font-semibold text-white mb-4">Distribucin de Tokens CMPX</h4>
                       <ResponsiveContainer width="100%" height={300}>
                         <PieChart>
                           <Pie
                             data={[
-                              { name: 'En Circulaci�n', value: globalStats.available, color: '#8b5cf6' },
+                              { name: 'En Circulacin', value: globalStats.available, color: '#8b5cf6' },
                               { name: 'En Staking', value: globalStats.globalStaking, color: '#3b82f6' },
                               { name: 'Bloqueados', value: globalStats.locked, color: '#ef4444' }
                             ]}
@@ -390,7 +390,7 @@ export default function TokensInfo() {
                             dataKey="value"
                           >
                             {[
-                              { name: 'En Circulaci�n', value: globalStats.available, color: '#8b5cf6' },
+                              { name: 'En Circulacin', value: globalStats.available, color: '#8b5cf6' },
                               { name: 'En Staking', value: globalStats.globalStaking, color: '#3b82f6' },
                               { name: 'Bloqueados', value: globalStats.locked, color: '#ef4444' }
                             ].map((entry, index) => (
@@ -413,15 +413,15 @@ export default function TokensInfo() {
                       </ResponsiveContainer>
                     </div>
 
-                    {/* Gr�fico de barras - Comparaci�n */}
+                    {/* Grfico de barras - Comparacin */}
                     <div className="bg-white/5 p-4 rounded-lg border border-white/10">
-                      <h4 className="text-lg font-semibold text-white mb-4">Comparaci�n de Tokens</h4>
+                      <h4 className="text-lg font-semibold text-white mb-4">Comparacin de Tokens</h4>
                       <ResponsiveContainer width="100%" height={300}>
                         <BarChart data={[
-                          { name: 'Circulaci�n', CMPX: globalStats.totalCirculation, color: '#8b5cf6' },
+                          { name: 'Circulacin', CMPX: globalStats.totalCirculation, color: '#8b5cf6' },
                           { name: 'Staking', CMPX: globalStats.globalStaking, color: '#3b82f6' },
                           { name: 'Bloqueados', CMPX: globalStats.locked, color: '#ef4444' },
-                          { name: 'Liberaci�n/Mes', CMPX: globalStats.monthlyRelease, color: '#10b981' }
+                          { name: 'Liberacin/Mes', CMPX: globalStats.monthlyRelease, color: '#10b981' }
                         ]}>
                           <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
                           <XAxis 
@@ -444,10 +444,10 @@ export default function TokensInfo() {
                           />
                           <Bar dataKey="CMPX" fill="#8b5cf6" radius={[8, 8, 0, 0]}>
                             {[
-                              { name: 'Circulaci�n', CMPX: globalStats.totalCirculation, color: '#8b5cf6' },
+                              { name: 'Circulacin', CMPX: globalStats.totalCirculation, color: '#8b5cf6' },
                               { name: 'Staking', CMPX: globalStats.globalStaking, color: '#3b82f6' },
                               { name: 'Bloqueados', CMPX: globalStats.locked, color: '#ef4444' },
-                              { name: 'Liberaci�n/Mes', CMPX: globalStats.monthlyRelease, color: '#10b981' }
+                              { name: 'Liberacin/Mes', CMPX: globalStats.monthlyRelease, color: '#10b981' }
                             ].map((entry, index) => (
                               <Cell key={`cell-${index}`} fill={entry.color} />
                             ))}
@@ -456,7 +456,7 @@ export default function TokensInfo() {
                       </ResponsiveContainer>
                     </div>
 
-                    {/* Gr�fico de �rea - Tendencias mensuales */}
+                    {/* Grfico de rea - Tendencias mensuales */}
                     <div className="bg-white/5 p-4 rounded-lg border border-white/10">
                       <h4 className="text-lg font-semibold text-white mb-4">Tendencias Mensuales</h4>
                       <ResponsiveContainer width="100%" height={300}>
@@ -497,7 +497,7 @@ export default function TokensInfo() {
                           <Area type="monotone" dataKey="staking" stroke="#3b82f6" fillOpacity={1} fill="url(#colorStaking)" />
                           <Legend 
                             wrapperStyle={{ color: '#fff' }}
-                            formatter={(value) => <span style={{ color: '#fff' }}>{value === 'circulacion' ? 'Circulaci�n' : 'Staking'}</span>}
+                            formatter={(value) => <span style={{ color: '#fff' }}>{value === 'circulacion' ? 'Circulacin' : 'Staking'}</span>}
                           />
                         </AreaChart>
                       </ResponsiveContainer>
@@ -520,11 +520,11 @@ export default function TokensInfo() {
               <CardContent className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-4">
-                    <h3 className="text-xl font-semibold text-white">Caracter�sticas</h3>
+                    <h3 className="text-xl font-semibold text-white">Caractersticas</h3>
                     <ul className="space-y-2 text-white/80">
                       <li className="flex items-start gap-2">
                         <CheckCircle2 className="h-5 w-5 text-green-400 flex-shrink-0 mt-0.5" />
-                        <span><strong>Suministro Ilimitado:</strong> Dise�ado para transacciones diarias</span>
+                        <span><strong>Suministro Ilimitado:</strong> Diseado para transacciones diarias</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle2 className="h-5 w-5 text-green-400 flex-shrink-0 mt-0.5" />
@@ -536,21 +536,21 @@ export default function TokensInfo() {
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle2 className="h-5 w-5 text-green-400 flex-shrink-0 mt-0.5" />
-                        <span><strong>Transferible:</strong> Env�a tokens como regalo entre usuarios</span>
+                        <span><strong>Transferible:</strong> Enva tokens como regalo entre usuarios</span>
                       </li>
                     </ul>
                   </div>
                   
                   <div className="space-y-4">
-                    <h3 className="text-xl font-semibold text-white">Obtenci�n de CMPX</h3>
+                    <h3 className="text-xl font-semibold text-white">Obtencin de CMPX</h3>
                     <ul className="space-y-2 text-white/80">
                       <li className="flex items-start gap-2">
                         <Gift className="h-5 w-5 text-purple-400 flex-shrink-0 mt-0.5" />
-                        <span><strong>Referidos:</strong> 50 CMPX por cada amigo invitado (l�mite 500/mes)</span>
+                        <span><strong>Referidos:</strong> 50 CMPX por cada amigo invitado (lmite 500/mes)</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <Shield className="h-5 w-5 text-green-400 flex-shrink-0 mt-0.5" />
-                        <span><strong>World ID:</strong> 100 CMPX por verificaci�n</span>
+                        <span><strong>World ID:</strong> 100 CMPX por verificacin</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <UserPlus className="h-5 w-5 text-blue-400 flex-shrink-0 mt-0.5" />
@@ -601,7 +601,7 @@ export default function TokensInfo() {
 
                 {/* Casos de Uso Detallados */}
                 <div className="mt-6">
-                  <h3 className="text-xl font-semibold text-white mb-4">?? �Para Qu� Puedo Usar CMPX?</h3>
+                  <h3 className="text-xl font-semibold text-white mb-4">?? Para Qu Puedo Usar CMPX?</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {cmpxUseCases.map((useCase, idx) => (
                       <motion.div
@@ -626,9 +626,9 @@ export default function TokensInfo() {
                   </div>
                 </div>
 
-                {/* Distribuci�n de CMPX */}
+                {/* Distribucin de CMPX */}
                 <div className="mt-6 p-6 bg-gradient-to-r from-purple-900/40 to-blue-900/40 rounded-xl border border-white/20">
-                  <h3 className="text-xl font-semibold text-white mb-4">?? Distribuci�n de CMPX</h3>
+                  <h3 className="text-xl font-semibold text-white mb-4">?? Distribucin de CMPX</h3>
                   <div className="grid md:grid-cols-4 gap-4">
                     {[
                       { label: 'Venta Directa', percentage: 60, color: 'from-blue-500 to-cyan-600' },
@@ -648,20 +648,20 @@ export default function TokensInfo() {
               </CardContent>
             </Card>
 
-            {/* Token GTK - Staking e Inversi�n */}
+            {/* Token GTK - Staking e Inversin */}
             <Card className="bg-gradient-to-r from-purple-600/20 via-purple-600/20 to-blue-600/20 backdrop-blur-xl border-white/20 shadow-2xl">
               <CardHeader>
                 <CardTitle className="text-2xl text-white flex items-center gap-3">
                   <div className="p-2 bg-gradient-to-r from-purple-500 to-blue-600 rounded-lg">
                     <Rocket className="h-6 w-6 text-white" />
                   </div>
-                  Token GTK: Staking e Inversi�n Blockchain
+                  Token GTK: Staking e Inversin Blockchain
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-4">
-                    <h3 className="text-xl font-semibold text-white">Caracter�sticas</h3>
+                    <h3 className="text-xl font-semibold text-white">Caractersticas</h3>
                     <ul className="space-y-2 text-white/80">
                       <li className="flex items-start gap-2">
                         <CheckCircle2 className="h-5 w-5 text-purple-400 flex-shrink-0 mt-0.5" />
@@ -669,7 +669,7 @@ export default function TokensInfo() {
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle2 className="h-5 w-5 text-purple-400 flex-shrink-0 mt-0.5" />
-                        <span><strong>Token de Staking:</strong> Dise�ado para ingresos pasivos</span>
+                        <span><strong>Token de Staking:</strong> Diseado para ingresos pasivos</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle2 className="h-5 w-5 text-purple-400 flex-shrink-0 mt-0.5" />
@@ -677,7 +677,7 @@ export default function TokensInfo() {
                       </li>
                       <li className="flex items-start gap-2">
                         <CheckCircle2 className="h-5 w-5 text-purple-400 flex-shrink-0 mt-0.5" />
-                        <span><strong>Gobernanza DAO:</strong> Votaci�n en decisiones (futuro)</span>
+                        <span><strong>Gobernanza DAO:</strong> Votacin en decisiones (futuro)</span>
                       </li>
                     </ul>
                   </div>
@@ -688,13 +688,13 @@ export default function TokensInfo() {
                       {stakingOptions.map((option, idx) => (
                         <div key={idx} className="p-4 bg-white/10 rounded-lg border border-white/20">
                           <div className="flex items-center justify-between mb-2">
-                            <span className="text-white font-semibold">{option.duration} d�as</span>
+                            <span className="text-white font-semibold">{option.duration} das</span>
                             <Badge className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-300 border-green-400/30">
                               {option.apy}% APY
                             </Badge>
                           </div>
                           <div className="text-sm text-white/70">
-                            M�nimo: {option.minTokens} GTK � Penalizaci�n: {option.penalty}%
+                            Mnimo: {option.minTokens} GTK  Penalizacin: {option.penalty}%
                           </div>
                         </div>
                       ))}
@@ -704,15 +704,15 @@ export default function TokensInfo() {
 
                 {/* Ejemplo de Staking */}
                 <div className="mt-6 p-6 bg-white/10 rounded-xl border border-white/20">
-                  <h3 className="text-xl font-semibold text-white mb-4">?? Ejemplo Pr�ctico de Staking</h3>
+                  <h3 className="text-xl font-semibold text-white mb-4">?? Ejemplo Prctico de Staking</h3>
                   <div className="space-y-3 text-white/90">
                     <p><strong>Usuario invierte en GTK:</strong></p>
                     <ol className="list-decimal list-inside space-y-2 ml-4">
                       <li>Compra 1,000 GTK tokens</li>
                       <li>Selecciona "Staking" en el panel de tokens</li>
-                      <li>Elige duraci�n: 365 d�as</li>
+                      <li>Elige duracin: 365 das</li>
                       <li>APY: 18% anual</li>
-                      <li>Despu�s del per�odo, recibe: <strong className="text-green-300">1,000 GTK (capital) + 180 GTK (intereses) = 1,180 GTK</strong></li>
+                      <li>Despus del perodo, recibe: <strong className="text-green-300">1,000 GTK (capital) + 180 GTK (intereses) = 1,180 GTK</strong></li>
                     </ol>
                   </div>
                 </div>
@@ -721,23 +721,23 @@ export default function TokensInfo() {
           </div>
         )}
 
-        {/* SECCI�N: PARA INVERSORES */}
+        {/* SECCIN: PARA INVERSORES */}
         {activeSection === 'investors' && (
           <div className="space-y-8">
-            {/* Informaci�n T�cnica para Inversores */}
+            {/* Informacin Tcnica para Inversores */}
             <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
               <CardHeader>
                 <CardTitle className="text-2xl text-white flex items-center gap-3">
                   <div className="p-2 bg-gradient-to-r from-yellow-500 to-orange-600 rounded-lg">
                     <Building2 className="h-6 w-6 text-white" />
                   </div>
-                  Informaci�n para Inversores
+                  Informacin para Inversores
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-4">
-                    <h3 className="text-xl font-semibold text-white">Token CMPX - Econom�a de Consumo</h3>
+                    <h3 className="text-xl font-semibold text-white">Token CMPX - Economa de Consumo</h3>
                     <div className="space-y-3">
                       <div className="p-4 bg-white/5 rounded-lg">
                         <div className="text-white/70 text-sm mb-1">Suministro</div>
@@ -748,14 +748,14 @@ export default function TokensInfo() {
                         <div className="text-white font-bold text-lg">Ingresos Recurrentes</div>
                       </div>
                       <div className="p-4 bg-white/5 rounded-lg">
-                        <div className="text-white/70 text-sm mb-1">Distribuci�n Principal</div>
+                        <div className="text-white/70 text-sm mb-1">Distribucin Principal</div>
                         <div className="text-white font-bold text-lg">60% Venta Directa</div>
                       </div>
                     </div>
                   </div>
                   
                   <div className="space-y-4">
-                    <h3 className="text-xl font-semibold text-white">Token GTK - Econom�a de Inversi�n</h3>
+                    <h3 className="text-xl font-semibold text-white">Token GTK - Economa de Inversin</h3>
                     <div className="space-y-3">
                       <div className="p-4 bg-white/5 rounded-lg">
                         <div className="text-white/70 text-sm mb-1">Suministro</div>
@@ -763,19 +763,19 @@ export default function TokensInfo() {
                       </div>
                       <div className="p-4 bg-white/5 rounded-lg">
                         <div className="text-white/70 text-sm mb-1">Modelo</div>
-                        <div className="text-white font-bold text-lg">Inversi�n a Largo Plazo</div>
+                        <div className="text-white font-bold text-lg">Inversin a Largo Plazo</div>
                       </div>
                       <div className="p-4 bg-white/5 rounded-lg">
-                        <div className="text-white/70 text-sm mb-1">Distribuci�n Principal</div>
-                        <div className="text-white font-bold text-lg">40% Venta P�blica</div>
+                        <div className="text-white/70 text-sm mb-1">Distribucin Principal</div>
+                        <div className="text-white font-bold text-lg">40% Venta Pblica</div>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Distribuci�n Detallada de GTK */}
+                {/* Distribucin Detallada de GTK */}
                 <div className="mt-6">
-                  <h3 className="text-xl font-semibold text-white mb-4">?? Distribuci�n Detallada de GTK en Blockchain</h3>
+                  <h3 className="text-xl font-semibold text-white mb-4">?? Distribucin Detallada de GTK en Blockchain</h3>
                   <div className="space-y-3">
                     {gtkDistribution.map((item, idx) => (
                       <motion.div
@@ -821,17 +821,17 @@ export default function TokensInfo() {
                     </div>
                     <div className="p-4 bg-white/10 rounded-lg">
                       <div className="text-white/70 text-sm mb-1">Vesting Period</div>
-                      <div className="text-white font-bold text-2xl">3 a�os</div>
-                      <div className="text-white/70 text-sm mt-1">Distribuci�n gradual</div>
+                      <div className="text-white font-bold text-2xl">3 aos</div>
+                      <div className="text-white/70 text-sm mt-1">Distribucin gradual</div>
                     </div>
                     <div className="p-4 bg-white/10 rounded-lg">
-                      <div className="text-white/70 text-sm mb-1">Distribuci�n Mensual</div>
+                      <div className="text-white/70 text-sm mb-1">Distribucin Mensual</div>
                       <div className="text-white font-bold text-2xl">~2.78%</div>
                       <div className="text-white/70 text-sm mt-1">Durante 36 meses</div>
                     </div>
                   </div>
                   <p className="text-white/80 text-sm mt-4">
-                    <strong>Nota:</strong> El equipo recibe tokens mediante un sistema de vesting de 3 a�os para 
+                    <strong>Nota:</strong> El equipo recibe tokens mediante un sistema de vesting de 3 aos para 
                     asegurar compromiso a largo plazo y alinear intereses con los inversores.
                   </p>
                 </div>
@@ -842,9 +842,9 @@ export default function TokensInfo() {
                   <div className="space-y-4">
                     {[
                       { 
-                        phase: 'Fase 1: Preparaci�n (Q2 2026)',
+                        phase: 'Fase 1: Preparacin (Q2 2026)',
                         items: [
-                          'Auditor�a de smart contracts',
+                          'Auditora de smart contracts',
                           'Listing en CoinGecko/CoinMarketCap',
                           'KYC/AML compliance',
                           'Desarrollo de DApp'
@@ -896,20 +896,20 @@ export default function TokensInfo() {
                   <div className="grid md:grid-cols-3 gap-4">
                     {[
                       { 
-                        year: 'A�o 1 (2026)',
+                        year: 'Ao 1 (2026)',
                         cmpx: '$500,000',
                         subscriptions: '$200,000',
                         total: '$700,000'
                       },
                       { 
-                        year: 'A�o 2 (2027)',
+                        year: 'Ao 2 (2027)',
                         cmpx: '$2,000,000',
                         subscriptions: '$800,000',
                         staking: '$100,000',
                         total: '$2,900,000'
                       },
                       { 
-                        year: 'A�o 3 (2028)',
+                        year: 'Ao 3 (2028)',
                         cmpx: '$5,000,000',
                         subscriptions: '$2,000,000',
                         blockchain: '$500,000',
@@ -959,27 +959,27 @@ export default function TokensInfo() {
           </div>
         )}
 
-        {/* SECCI�N: BLOCKCHAIN ROADMAP */}
+        {/* SECCIN: BLOCKCHAIN ROADMAP */}
         {activeSection === 'blockchain' && (
           <div className="space-y-8">
-            {/* Migraci�n a Blockchain */}
+            {/* Migracin a Blockchain */}
             <Card className="bg-gradient-to-r from-purple-600/20 via-purple-600/20 to-blue-600/20 backdrop-blur-xl border-white/20 shadow-2xl">
               <CardHeader>
                 <CardTitle className="text-2xl text-white flex items-center gap-3">
                   <div className="p-2 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg">
                     <Globe className="h-6 w-6 text-white" />
                   </div>
-                  Migraci�n a Blockchain
+                  Migracin a Blockchain
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="p-6 bg-white/10 rounded-xl border border-white/20">
-                  <h3 className="text-xl font-semibold text-white mb-4">?? Conversi�n CMPX ? GTK</h3>
+                  <h3 className="text-xl font-semibold text-white mb-4">?? Conversin CMPX ? GTK</h3>
                   <div className="space-y-4">
                     <p className="text-white/90 leading-relaxed">
-                      Cuando se lance la blockchain en Q4 2026, los usuarios podr�n convertir sus CMPX acumulados 
-                      a GTK mediante un <strong className="text-purple-300">bridge autom�tico</strong>. La tasa de conversi�n 
-                      ser� determinada antes del lanzamiento y anunciada p�blicamente.
+                      Cuando se lance la blockchain en Q4 2026, los usuarios podrn convertir sus CMPX acumulados 
+                      a GTK mediante un <strong className="text-purple-300">bridge automtico</strong>. La tasa de conversin 
+                      ser determinada antes del lanzamiento y anunciada pblicamente.
                     </p>
                     
                     <div className="grid md:grid-cols-2 gap-4 mt-4">
@@ -987,19 +987,19 @@ export default function TokensInfo() {
                         <div className="text-blue-300 font-bold text-sm mb-2">ANTES (Beta)</div>
                         <div className="text-white font-semibold">CMPX Off-Chain</div>
                         <ul className="text-white/70 text-sm mt-2 space-y-1">
-                          <li>� Tokens internos</li>
-                          <li>� No transferibles</li>
-                          <li>� Solo uso en app</li>
+                          <li> Tokens internos</li>
+                          <li> No transferibles</li>
+                          <li> Solo uso en app</li>
                         </ul>
                       </div>
                       
                       <div className="p-4 bg-gradient-to-r from-purple-900/40 to-blue-900/40 rounded-lg border border-purple-400/30">
-                        <div className="text-purple-300 font-bold text-sm mb-2">DESPU�S (Blockchain)</div>
+                        <div className="text-purple-300 font-bold text-sm mb-2">DESPUS (Blockchain)</div>
                         <div className="text-white font-semibold">GTK On-Chain</div>
                         <ul className="text-white/70 text-sm mt-2 space-y-1">
-                          <li>� Token ERC-20</li>
-                          <li>� Transferible libremente</li>
-                          <li>� Staking y gobernanza</li>
+                          <li> Token ERC-20</li>
+                          <li> Transferible libremente</li>
+                          <li> Staking y gobernanza</li>
                         </ul>
                       </div>
                     </div>
@@ -1011,7 +1011,7 @@ export default function TokensInfo() {
                   <h3 className="text-xl font-semibold text-white mb-4">??? Gobernanza Descentralizada (DAO)</h3>
                   <div className="space-y-4">
                     <p className="text-white/90 leading-relaxed">
-                      Los holders de GTK tendr�n derecho a votar en decisiones importantes de la plataforma a trav�s 
+                      Los holders de GTK tendrn derecho a votar en decisiones importantes de la plataforma a travs 
                       de un sistema de gobernanza descentralizada (DAO).
                     </p>
                     
@@ -1025,11 +1025,11 @@ export default function TokensInfo() {
                           </li>
                           <li className="flex items-start gap-2">
                             <Target className="h-4 w-4 text-purple-400 flex-shrink-0 mt-1" />
-                            <span>Distribuci�n de fondos del treasury</span>
+                            <span>Distribucin de fondos del treasury</span>
                           </li>
                           <li className="flex items-start gap-2">
                             <Target className="h-4 w-4 text-purple-400 flex-shrink-0 mt-1" />
-                            <span>Par�metros de staking (APY, duraciones)</span>
+                            <span>Parmetros de staking (APY, duraciones)</span>
                           </li>
                           <li className="flex items-start gap-2">
                             <Target className="h-4 w-4 text-purple-400 flex-shrink-0 mt-1" />
@@ -1039,7 +1039,7 @@ export default function TokensInfo() {
                       </div>
                       
                       <div className="space-y-3">
-                        <h4 className="font-semibold text-white">Sistema de Votaci�n</h4>
+                        <h4 className="font-semibold text-white">Sistema de Votacin</h4>
                         <ul className="space-y-2 text-white/80">
                           <li className="flex items-start gap-2">
                             <CheckCircle2 className="h-4 w-4 text-green-400 flex-shrink-0 mt-1" />
@@ -1047,15 +1047,15 @@ export default function TokensInfo() {
                           </li>
                           <li className="flex items-start gap-2">
                             <CheckCircle2 className="h-4 w-4 text-green-400 flex-shrink-0 mt-1" />
-                            <span>Votaci�n por peso de tokens</span>
+                            <span>Votacin por peso de tokens</span>
                           </li>
                           <li className="flex items-start gap-2">
                             <CheckCircle2 className="h-4 w-4 text-green-400 flex-shrink-0 mt-1" />
-                            <span>Per�odo de votaci�n: 7 d�as</span>
+                            <span>Perodo de votacin: 7 das</span>
                           </li>
                           <li className="flex items-start gap-2">
                             <CheckCircle2 className="h-4 w-4 text-green-400 flex-shrink-0 mt-1" />
-                            <span>M�nimo de participaci�n: 10% de supply</span>
+                            <span>Mnimo de participacin: 10% de supply</span>
                           </li>
                         </ul>
                       </div>
@@ -1067,14 +1067,14 @@ export default function TokensInfo() {
                 <div className="mt-6 p-6 bg-white/10 rounded-xl border border-white/20">
                   <h3 className="text-xl font-semibold text-white mb-4">?? Multi-Chain Strategy</h3>
                   <p className="text-white/90 leading-relaxed mb-4">
-                    ComplicesConecta planea expandirse a m�ltiples blockchains para maximizar accesibilidad y reducir costos.
+                    ComplicesConecta planea expandirse a mltiples blockchains para maximizar accesibilidad y reducir costos.
                   </p>
                   <div className="grid md:grid-cols-4 gap-4">
                     {[
                       { name: 'Ethereum', status: 'Principal', color: 'from-blue-500 to-cyan-600' },
                       { name: 'Polygon', status: 'Bajo costo', color: 'from-purple-500 to-blue-600' },
                       { name: 'Arbitrum', status: 'Optimizado', color: 'from-cyan-500 to-blue-600' },
-                      { name: 'Optimism', status: 'R�pido', color: 'from-orange-500 to-red-600' }
+                      { name: 'Optimism', status: 'Rpido', color: 'from-orange-500 to-red-600' }
                     ].map((chain, idx) => (
                       <div key={idx} className={`p-4 rounded-lg bg-gradient-to-r ${chain.color} text-white text-center`}>
                         <div className="font-bold text-lg mb-1">{chain.name}</div>
@@ -1102,7 +1102,7 @@ export default function TokensInfo() {
             <CardContent className="p-6 text-center">
               <TrendingUp className="h-8 w-8 text-purple-400 mx-auto mb-3" />
               <div className="text-2xl font-bold text-white">{TOKEN_CONFIG.MONTHLY_LIMIT}</div>
-              <div className="text-white/70">CMPX l�mite mensual</div>
+              <div className="text-white/70">CMPX lmite mensual</div>
             </CardContent>
           </Card>
           
@@ -1110,7 +1110,7 @@ export default function TokensInfo() {
             <CardContent className="p-6 text-center">
               <Star className="h-8 w-8 text-orange-400 mx-auto mb-3" />
               <div className="text-2xl font-bold text-white">18%</div>
-              <div className="text-white/70">APY m�ximo (GTK)</div>
+              <div className="text-white/70">APY mximo (GTK)</div>
             </CardContent>
           </Card>
         </div>
@@ -1169,14 +1169,14 @@ export default function TokensInfo() {
             className="border-white/20 text-white hover:bg-white/10 border backdrop-blur-sm"
           >
             <FileText className="h-4 w-4 mr-2" />
-            T�rminos y Condiciones
+            Trminos y Condiciones
           </Button>
           <Button
             onClick={() => navigate('/tokens-privacy')}
             className="border-white/20 text-white hover:bg-white/10 border backdrop-blur-sm"
           >
             <Shield className="h-4 w-4 mr-2" />
-            Pol�tica de Privacidad
+            Poltica de Privacidad
           </Button>
           <Button
             onClick={() => navigate('/tokens-legal')}
@@ -1190,10 +1190,10 @@ export default function TokensInfo() {
         {/* CTA Section */}
         <div className="text-center space-y-6">
           <h2 className="text-3xl font-bold text-white">
-            �Listo para empezar a ganar tokens?
+            Listo para empezar a ganar tokens?
           </h2>
           <p className="text-white/80 max-w-2xl mx-auto">
-            �nete a ComplicesConecta, invita a tus amigos y comienza a acumular CMPX. 
+            nete a ComplicesConecta, invita a tus amigos y comienza a acumular CMPX. 
             El futuro de las recompensas digitales te espera.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -1215,7 +1215,7 @@ export default function TokensInfo() {
         </div>
       </div>
       
-      {/* Navigation Menu - Condicional basado en autenticaci�n */}
+      {/* Navigation Menu - Condicional basado en autenticacin */}
       {hasActiveSession ? <Navigation /> : <HeaderNav />}
     </div>
   );

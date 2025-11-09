@@ -11,22 +11,22 @@ const StoriesInfo = () => {
   const features = [
     {
       icon: Clock,
-      title: "24 Horas de Duraci�n",
-      description: "Contenido que desaparece autom�ticamente despu�s de 24 horas para m�xima privacidad"
+      title: "24 Horas de Duracin",
+      description: "Contenido que desaparece automticamente despus de 24 horas para mxima privacidad"
     },
     {
       icon: Eye,
       title: "Control de Privacidad",
-      description: "Decide qui�n puede ver tus historias con controles granulares de audiencia"
+      description: "Decide quin puede ver tus historias con controles granulares de audiencia"
     },
     {
       icon: Heart,
       title: "Interacciones Privadas",
-      description: "Reacciones y comentarios privados que solo t� puedes ver"
+      description: "Reacciones y comentarios privados que solo t puedes ver"
     },
     {
       icon: Users,
-      title: "Conexiones Aut�nticas",
+      title: "Conexiones Autnticas",
       description: "Comparte momentos reales con personas que comparten tus intereses"
     }
   ];
@@ -34,13 +34,13 @@ const StoriesInfo = () => {
   const benefits = [
     {
       icon: Zap,
-      title: "Engagement Instant�neo",
+      title: "Engagement Instantneo",
       description: "Aumenta tu visibilidad y conexiones de manera natural"
     },
     {
       icon: Shield,
       title: "Seguridad Total",
-      description: "Contenido encriptado y verificaci�n de usuarios para tu tranquilidad"
+      description: "Contenido encriptado y verificacin de usuarios para tu tranquilidad"
     },
     {
       icon: Star,
@@ -63,41 +63,41 @@ const StoriesInfo = () => {
               </div>
             </div>
             <h1 className="text-4xl font-bold text-white mb-4">
-              Historias Ef�meras de ComplicesConecta
+              Historias Efmeras de ComplicesConecta
             </h1>
             <p className="text-xl text-white/80 max-w-2xl mx-auto">
-              Comparte momentos aut�nticos que desaparecen autom�ticamente en 24 horas. 
-              Conecta de manera m�s �ntima y espont�nea con otros miembros de la comunidad.
+              Comparte momentos autnticos que desaparecen automticamente en 24 horas. 
+              Conecta de manera ms ntima y espontnea con otros miembros de la comunidad.
             </p>
           </div>
 
-          {/* �Qu� son las Historias? */}
+          {/* Qu son las Historias? */}
           <Card className="bg-white/10 border-white/20 backdrop-blur-sm mb-8">
             <CardHeader>
-              <CardTitle className="text-2xl text-white">�Qu� son las Historias Ef�meras?</CardTitle>
+              <CardTitle className="text-2xl text-white">Qu son las Historias Efmeras?</CardTitle>
               <CardDescription className="text-white/70 text-lg">
                 Una nueva forma de compartir y conectar en la comunidad lifestyle
               </CardDescription>
             </CardHeader>
             <CardContent className="text-white/80 space-y-4">
               <p>
-                Las Historias Ef�meras son una funci�n exclusiva que permite a los miembros de ComplicesConecta 
-                compartir momentos aut�nticos de su vida diaria, experiencias y pensamientos de manera temporal.
+                Las Historias Efmeras son una funcin exclusiva que permite a los miembros de ComplicesConecta 
+                compartir momentos autnticos de su vida diaria, experiencias y pensamientos de manera temporal.
               </p>
               <p>
-                A diferencia del contenido permanente, estas historias desaparecen autom�ticamente despu�s de 24 horas, 
-                creando un ambiente m�s relajado y espont�neo para la expresi�n personal.
+                A diferencia del contenido permanente, estas historias desaparecen automticamente despus de 24 horas, 
+                creando un ambiente ms relajado y espontneo para la expresin personal.
               </p>
               <p>
                 Perfectas para mostrar tu personalidad real, compartir momentos especiales, o simplemente 
-                conectar de manera m�s casual con otros miembros que comparten tus intereses.
+                conectar de manera ms casual con otros miembros que comparten tus intereses.
               </p>
             </CardContent>
           </Card>
 
-          {/* Caracter�sticas */}
+          {/* Caractersticas */}
           <div className="mb-12">
-            <h2 className="text-3xl font-bold text-white mb-8 text-center">Caracter�sticas Principales</h2>
+            <h2 className="text-3xl font-bold text-white mb-8 text-center">Caractersticas Principales</h2>
             <div className="grid md:grid-cols-2 gap-6">
               {features.map((feature, index) => {
                 const Icon = feature.icon;
@@ -152,18 +152,18 @@ const StoriesInfo = () => {
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="text-center p-4 bg-white/5 rounded-lg">
                   <Camera className="h-8 w-8 text-purple-400 mx-auto mb-3" />
-                  <h4 className="font-semibold text-white mb-2">Cena rom�ntica en casa</h4>
-                  <p className="text-sm text-white/70">Comparte momentos �ntimos y especiales</p>
+                  <h4 className="font-semibold text-white mb-2">Cena romntica en casa</h4>
+                  <p className="text-sm text-white/70">Comparte momentos ntimos y especiales</p>
                 </div>
                 <div className="text-center p-4 bg-white/5 rounded-lg">
                   <Users className="h-8 w-8 text-purple-400 mx-auto mb-3" />
                   <h4 className="font-semibold text-white mb-2">Viaje de fin de semana</h4>
-                  <p className="text-sm text-white/70">Aventuras y experiencias �nicas</p>
+                  <p className="text-sm text-white/70">Aventuras y experiencias nicas</p>
                 </div>
                 <div className="text-center p-4 bg-white/5 rounded-lg">
                   <Heart className="h-8 w-8 text-red-400 mx-auto mb-3" />
                   <h4 className="font-semibold text-white mb-2">Momento especial juntos</h4>
-                  <p className="text-sm text-white/70">Conexiones aut�nticas y reales</p>
+                  <p className="text-sm text-white/70">Conexiones autnticas y reales</p>
                 </div>
               </div>
             </CardContent>
@@ -178,7 +178,7 @@ const StoriesInfo = () => {
               Explorar Historias
             </Button>
             <p className="text-white/60 mt-4">
-              �nete a la comunidad y comienza a compartir tus momentos especiales
+              nete a la comunidad y comienza a compartir tus momentos especiales
             </p>
           </div>
         </div>

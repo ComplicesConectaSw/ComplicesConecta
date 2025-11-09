@@ -1,5 +1,6 @@
 import { logger } from '@/lib/logger';
 import { supabase } from '@/integrations/supabase/client';
+import { safeGetItem, safeSetItem } from '@/utils/safeLocalStorage';
 
 /**
  * Sistema de Backup Automático para ComplicesConecta
@@ -227,7 +228,7 @@ class BackupSystem {
 
   // Respaldar tabla completa
   private async backupTableFull(table: string): Promise<any[]> {
-    const isDemoMode = localStorage.getItem('demo_authenticated') === 'true';
+    const isDemoMode = safeGetItem<string>('demo_authenticated', { validate: true, defaultValue: 'false' }) === 'true';
     
     if (isDemoMode) {
       // En modo demo, generar datos mock
@@ -247,8 +248,10 @@ class BackupSystem {
         return [];
       }
       
+      // Usar tipo seguro para tablas conocidas
+      type ValidTable = 'profiles' | 'messages' | 'matches' | 'user_tokens' | 'invitations' | 'posts' | 'notifications';
       const { data, error } = await supabase
-        .from(table as any)
+        .from(table as ValidTable)
         .select('*')
         .limit(1000);
 
@@ -265,7 +268,7 @@ class BackupSystem {
 
   // Respaldar cambios incrementales de tabla
   private async backupTableIncremental(tableName: string, sinceTimestamp: number): Promise<any[]> {
-    const isDemoMode = localStorage.getItem('demo_authenticated') === 'true';
+    const isDemoMode = safeGetItem<string>('demo_authenticated', { validate: true, defaultValue: 'false' }) === 'true';
     
     if (isDemoMode) {
       // En modo demo, simular cambios incrementales
@@ -297,8 +300,10 @@ class BackupSystem {
       
       const lastBackupTime = new Date(sinceTimestamp);
       
+      // Usar tipo seguro para tablas conocidas
+      type ValidTable = 'profiles' | 'messages' | 'matches' | 'user_tokens' | 'invitations' | 'posts' | 'notifications';
       const { data, error } = await supabase
-        .from(tableName as any)
+        .from(tableName as ValidTable)
         .select('*')
         .gte('created_at', lastBackupTime.toISOString())
         .limit(1000);
@@ -374,7 +379,7 @@ class BackupSystem {
   // Guardar backup localmente (simulado)
   private async saveBackupLocally(backupId: string, data: string): Promise<void> {
     // En un entorno real, esto guardaría en el sistema de archivos local
-    localStorage.setItem(`backup_${backupId}`, data);
+      safeSetItem(`backup_${backupId}`, data, { validate: false, sanitize: true });
     console.log(`💾 Backup: Guardado localmente - backup_${backupId}`);
   }
 
@@ -455,7 +460,7 @@ class BackupSystem {
   // Guardar historial de backups
   private async saveBackupHistory(): Promise<void> {
     try {
-      localStorage.setItem('backup_history', JSON.stringify(this.backupHistory));
+      safeSetItem('backup_history', this.backupHistory, { validate: false, sanitize: true });
     } catch (error) {
       console.error('💾 Backup: Error al guardar historial', error);
     }
@@ -464,9 +469,9 @@ class BackupSystem {
   // Cargar historial de backups
   private loadBackupHistory(): void {
     try {
-      const saved = localStorage.getItem('backup_history');
-      if (saved) {
-        this.backupHistory = JSON.parse(saved);
+      const saved = safeGetItem<BackupMetadata[]>('backup_history', { validate: false, defaultValue: [] });
+      if (saved && Array.isArray(saved)) {
+        this.backupHistory = saved;
         console.log(`💾 Backup: Historial cargado - ${this.backupHistory.length} backups`);
       }
     } catch (error) {
@@ -499,7 +504,7 @@ class BackupSystem {
     console.log(`💾 Backup: Iniciando restauración desde ${backupId}...`);
     
     try {
-      const backupData = localStorage.getItem(`backup_${backupId}`);
+      const backupData = safeGetItem<string>(`backup_${backupId}`, { validate: false, defaultValue: null });
       if (!backupData) {
         throw new Error(`Backup ${backupId} no encontrado`);
       }
@@ -507,7 +512,7 @@ class BackupSystem {
       const backup: BackupData = JSON.parse(backupData);
       
       // En modo demo, solo simular restauración
-      const isDemoMode = localStorage.getItem('demo_authenticated') === 'true';
+      const isDemoMode = safeGetItem<string>('demo_authenticated', { validate: true, defaultValue: 'false' }) === 'true';
       if (isDemoMode) {
         console.log('💾 Backup: Restauración simulada en modo demo');
         return true;

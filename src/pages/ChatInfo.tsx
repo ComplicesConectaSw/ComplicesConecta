@@ -49,7 +49,7 @@ const ChatInfo = () => {
               </h1>
             </div>
             <p className="text-lg text-white/90 max-w-2xl mx-auto">
-              Conecta de forma segura y discreta con la comunidad lifestyle m�s exclusiva de M�xico
+              Conecta de forma segura y discreta con la comunidad lifestyle ms exclusiva de Mxico
             </p>
           </div>
 
@@ -68,12 +68,12 @@ const ChatInfo = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-white/90">
-                  Conversaciones �ntimas y seguras con tus conexiones verificadas del lifestyle swinger.
+                  Conversaciones ntimas y seguras con tus conexiones verificadas del lifestyle swinger.
                 </p>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 text-sm">
                     <Shield className="h-4 w-4 text-green-400" />
-                    <span>Encriptaci�n de extremo a extremo</span>
+                    <span>Encriptacin de extremo a extremo</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <UserCheck className="h-4 w-4 text-blue-400" />
@@ -92,7 +92,7 @@ const ChatInfo = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-3">
                   <Globe className="h-6 w-6 text-green-300" />
-                  Salas P�blicas
+                  Salas Pblicas
                   <Badge className="bg-green-500/20 text-green-200 border-green-300/30">
                     Moderadas 24/7
                   </Badge>
@@ -100,7 +100,7 @@ const ChatInfo = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-white/90">
-                  �nete a la conversaci�n comunitaria en salas tem�ticas del lifestyle mexicano.
+                  nete a la conversacin comunitaria en salas temticas del lifestyle mexicano.
                 </p>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 text-sm">
@@ -109,7 +109,7 @@ const ChatInfo = () => {
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <Shield className="h-4 w-4 text-blue-400" />
-                    <span>Moderaci�n profesional</span>
+                    <span>Moderacin profesional</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <Heart className="h-4 w-4 text-purple-400" />
@@ -137,7 +137,7 @@ const ChatInfo = () => {
                     </div>
                     <div>
                       <h4 className="font-semibold">Sala General Lifestyle</h4>
-                      <p className="text-sm text-white/70">Conversaci�n general de la comunidad</p>
+                      <p className="text-sm text-white/70">Conversacin general de la comunidad</p>
                     </div>
                   </div>
                 </div>
@@ -149,7 +149,7 @@ const ChatInfo = () => {
                     </div>
                     <div>
                       <h4 className="font-semibold">Parejas CDMX</h4>
-                      <p className="text-sm text-white/70">Exclusivo para parejas de la Ciudad de M�xico</p>
+                      <p className="text-sm text-white/70">Exclusivo para parejas de la Ciudad de Mxico</p>
                     </div>
                   </div>
                 </div>
@@ -173,7 +173,7 @@ const ChatInfo = () => {
                     </div>
                     <div>
                       <h4 className="font-semibold">Eventos Privados</h4>
-                      <p className="text-sm text-white/70">Organizaci�n de eventos exclusivos</p>
+                      <p className="text-sm text-white/70">Organizacin de eventos exclusivos</p>
                     </div>
                   </div>
                 </div>
@@ -193,18 +193,18 @@ const ChatInfo = () => {
               <div className="grid sm:grid-cols-3 gap-6">
                 <div className="text-center">
                   <Lock className="h-8 w-8 text-purple-400 mx-auto mb-2" />
-                  <h4 className="font-semibold mb-1">Encriptaci�n E2E</h4>
-                  <p className="text-sm text-white/70">Tus mensajes privados est�n protegidos con encriptaci�n de extremo a extremo</p>
+                  <h4 className="font-semibold mb-1">Encriptacin E2E</h4>
+                  <p className="text-sm text-white/70">Tus mensajes privados estn protegidos con encriptacin de extremo a extremo</p>
                 </div>
                 <div className="text-center">
                   <UserCheck className="h-8 w-8 text-blue-400 mx-auto mb-2" />
-                  <h4 className="font-semibold mb-1">Verificaci�n KYC</h4>
+                  <h4 className="font-semibold mb-1">Verificacin KYC</h4>
                   <p className="text-sm text-white/70">Solo usuarios verificados pueden acceder al sistema de chat</p>
                 </div>
                 <div className="text-center">
                   <Eye className="h-8 w-8 text-green-400 mx-auto mb-2" />
                   <h4 className="font-semibold mb-1">Control de Privacidad</h4>
-                  <p className="text-sm text-white/70">T� decides qui�n puede contactarte y c�mo</p>
+                  <p className="text-sm text-white/70">T decides quin puede contactarte y cmo</p>
                 </div>
               </div>
             </CardContent>
@@ -220,7 +220,7 @@ const ChatInfo = () => {
               Comenzar a Chatear
             </Button>
             <p className="text-white/70 text-sm mt-4">
-              �nete a la comunidad lifestyle m�s exclusiva y segura de M�xico
+              nete a la comunidad lifestyle ms exclusiva y segura de Mxico
             </p>
           </div>
         </div>

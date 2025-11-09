@@ -44,7 +44,7 @@ export default function TokensLegal() {
             </span>
           </h1>
           <p className="text-white/80 max-w-2xl mx-auto">
-            Informaci�n importante sobre responsabilidades legales, limitaciones y consideraciones 
+            Informacin importante sobre responsabilidades legales, limitaciones y consideraciones 
             regulatorias del programa de tokens.
           </p>
         </div>
@@ -61,13 +61,13 @@ export default function TokensLegal() {
             <div className="bg-purple-900/50 p-4 rounded-lg border border-purple-400/30">
               <h4 className="font-bold text-purple-200 mb-3">DESCARGO DE RESPONSABILIDAD</h4>
               <p className="text-purple-100 mb-3">
-                Los tokens CMPX son cr�ditos digitales internos SIN VALOR MONETARIO REAL durante la fase beta. 
-                ComplicesConecta no garantiza ning�n valor econ�mico presente o futuro de estos tokens.
+                Los tokens CMPX son crditos digitales internos SIN VALOR MONETARIO REAL durante la fase beta. 
+                ComplicesConecta no garantiza ningn valor econmico presente o futuro de estos tokens.
               </p>
               <ul className="list-disc list-inside space-y-1 text-sm text-purple-100">
                 <li>NO son instrumentos financieros regulados</li>
-                <li>NO constituyen inversi�n ni activos digitales</li>
-                <li>NO tienen garant�a de conversi�n a dinero real</li>
+                <li>NO constituyen inversin ni activos digitales</li>
+                <li>NO tienen garanta de conversin a dinero real</li>
                 <li>Su valor puede cambiar o eliminarse sin previo aviso</li>
               </ul>
             </div>
@@ -85,13 +85,13 @@ export default function TokensLegal() {
           <CardContent className="space-y-6 text-white/80">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-4">
-                <h4 className="font-semibold text-white">Jurisdicci�n Aplicable:</h4>
+                <h4 className="font-semibold text-white">Jurisdiccin Aplicable:</h4>
                 <div className="bg-purple-900/30 p-4 rounded-lg border border-purple-400/20">
                   <ul className="space-y-2 text-sm">
-                    <li><strong className="text-purple-200">Pa�s:</strong> <span className="text-purple-100">Estados Unidos Mexicanos</span></li>
-                    <li><strong className="text-purple-200">Legislaci�n:</strong> <span className="text-purple-100">Ley Federal de Protecci�n de Datos Personales</span></li>
+                    <li><strong className="text-purple-200">Pas:</strong> <span className="text-purple-100">Estados Unidos Mexicanos</span></li>
+                    <li><strong className="text-purple-200">Legislacin:</strong> <span className="text-purple-100">Ley Federal de Proteccin de Datos Personales</span></li>
                     <li><strong className="text-purple-200">Regulador:</strong> <span className="text-purple-100">CONDUSEF (servicios financieros)</span></li>
-                    <li><strong className="text-purple-200">Tribunales:</strong> <span className="text-purple-100">Federales de M�xico</span></li>
+                    <li><strong className="text-purple-200">Tribunales:</strong> <span className="text-purple-100">Federales de Mxico</span></li>
                   </ul>
                 </div>
               </div>
@@ -100,10 +100,10 @@ export default function TokensLegal() {
                 <h4 className="font-semibold text-white">Cumplimiento Normativo:</h4>
                 <div className="bg-purple-900/30 p-4 rounded-lg border border-purple-400/20">
                   <ul className="space-y-2 text-sm">
-                    <li><strong className="text-purple-200">KYC:</strong> <span className="text-purple-100">Verificaci�n de identidad requerida</span></li>
+                    <li><strong className="text-purple-200">KYC:</strong> <span className="text-purple-100">Verificacin de identidad requerida</span></li>
                     <li><strong className="text-purple-200">AML:</strong> <span className="text-purple-100">Monitoreo anti-lavado de dinero</span></li>
                     <li><strong className="text-purple-200">Reportes:</strong> <span className="text-purple-100">Transacciones sospechosas a autoridades</span></li>
-                    <li><strong className="text-purple-200">Auditor�as:</strong> <span className="text-purple-100">Revisiones peri�dicas del sistema</span></li>
+                    <li><strong className="text-purple-200">Auditoras:</strong> <span className="text-purple-100">Revisiones peridicas del sistema</span></li>
                   </ul>
                 </div>
               </div>
@@ -128,25 +128,25 @@ export default function TokensLegal() {
           </CardHeader>
           <CardContent className="space-y-6 text-white/80">
             <div className="space-y-4">
-              <h4 className="font-semibold text-white">ComplicesConecta NO ser� responsable por:</h4>
+              <h4 className="font-semibold text-white">ComplicesConecta NO ser responsable por:</h4>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="bg-purple-900/30 p-4 rounded-lg border border-purple-400/20">
-                  <h5 className="font-semibold text-purple-200 mb-2">P�rdidas Econ�micas:</h5>
+                  <h5 className="font-semibold text-purple-200 mb-2">Prdidas Econmicas:</h5>
                   <ul className="list-disc list-inside space-y-1 text-sm text-purple-100">
-                    <li>P�rdida de valor de tokens CMPX</li>
-                    <li>Oportunidades de inversi�n perdidas</li>
+                    <li>Prdida de valor de tokens CMPX</li>
+                    <li>Oportunidades de inversin perdidas</li>
                     <li>Gastos incurridos por uso del sistema</li>
-                    <li>Da�os indirectos o consecuenciales</li>
+                    <li>Daos indirectos o consecuenciales</li>
                   </ul>
                 </div>
                 
                 <div className="bg-purple-900/30 p-4 rounded-lg border border-purple-400/20">
-                  <h5 className="font-semibold text-purple-200 mb-2">Problemas T�cnicos:</h5>
+                  <h5 className="font-semibold text-purple-200 mb-2">Problemas Tcnicos:</h5>
                   <ul className="list-disc list-inside space-y-1 text-sm text-purple-100">
                     <li>Interrupciones del servicio</li>
                     <li>Errores en el sistema de tokens</li>
-                    <li>P�rdida de datos por fallas t�cnicas</li>
+                    <li>Prdida de datos por fallas tcnicas</li>
                     <li>Problemas de conectividad</li>
                   </ul>
                 </div>
@@ -154,7 +154,7 @@ export default function TokensLegal() {
                 <div className="bg-purple-900/30 p-4 rounded-lg border border-purple-400/20">
                   <h5 className="font-semibold text-purple-200 mb-2">Acciones de Terceros:</h5>
                   <ul className="list-disc list-inside space-y-1 text-sm text-purple-100">
-                    <li>Hackeos o ataques cibern�ticos</li>
+                    <li>Hackeos o ataques cibernticos</li>
                     <li>Fraudes por parte de usuarios</li>
                     <li>Cambios regulatorios gubernamentales</li>
                     <li>Problemas con proveedores externos</li>
@@ -166,7 +166,7 @@ export default function TokensLegal() {
                   <ul className="list-disc list-inside space-y-1 text-sm text-purple-100">
                     <li>Mal uso del sistema de referidos</li>
                     <li>Compartir credenciales de acceso</li>
-                    <li>Violaci�n de t�rminos de uso</li>
+                    <li>Violacin de trminos de uso</li>
                     <li>Decisiones basadas en tokens</li>
                   </ul>
                 </div>
@@ -175,8 +175,8 @@ export default function TokensLegal() {
             
             <div className="bg-blue-900/30 p-4 rounded-lg border border-blue-400/20">
               <p className="text-blue-200">
-                <strong>L�mite M�ximo de Responsabilidad:</strong> <span className="text-blue-100">En ning�n caso la responsabilidad total 
-                de ComplicesConecta exceder� el equivalente a $100 USD por usuario afectado.</span>
+                <strong>Lmite Mximo de Responsabilidad:</strong> <span className="text-blue-100">En ningn caso la responsabilidad total 
+                de ComplicesConecta exceder el equivalente a $100 USD por usuario afectado.</span>
               </p>
             </div>
           </CardContent>
@@ -196,14 +196,14 @@ export default function TokensLegal() {
                 <h4 className="font-semibold text-purple-200 mb-2">Responsabilidades del Usuario:</h4>
                 <ul className="list-disc list-inside space-y-1 text-sm text-purple-100">
                   <li>Consultar con un asesor fiscal sobre implicaciones tributarias</li>
-                  <li>Declarar beneficios obtenidos seg�n legislaci�n local</li>
+                  <li>Declarar beneficios obtenidos segn legislacin local</li>
                   <li>Mantener registros de transacciones para efectos fiscales</li>
-                  <li>Cumplir con obligaciones fiscales en su jurisdicci�n</li>
+                  <li>Cumplir con obligaciones fiscales en su jurisdiccin</li>
                 </ul>
               </div>
               
               <div className="bg-blue-900/30 p-4 rounded-lg border border-blue-400/20">
-                <h4 className="font-semibold text-blue-200 mb-2">Posici�n de ComplicesConecta:</h4>
+                <h4 className="font-semibold text-blue-200 mb-2">Posicin de ComplicesConecta:</h4>
                 <p className="text-blue-100 text-sm">
                   ComplicesConecta NO proporciona asesoramiento fiscal ni garantiza el tratamiento 
                   tributario de los tokens. Los usuarios son responsables de cumplir con sus 
@@ -214,47 +214,47 @@ export default function TokensLegal() {
           </CardContent>
         </Card>
 
-        {/* Resoluci�n de Disputas */}
+        {/* Resolucin de Disputas */}
         <Card className="bg-card/80 backdrop-blur-sm border border-primary/10">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
               <Scale className="h-6 w-6 text-orange-400" />
-              Resoluci�n de Disputas y Procedimientos Legales
+              Resolucin de Disputas y Procedimientos Legales
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6 text-white/80">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-4">
-                <h4 className="font-semibold text-white">Proceso de Resoluci�n:</h4>
+                <h4 className="font-semibold text-white">Proceso de Resolucin:</h4>
                 <div className="space-y-3">
                   <div className="bg-purple-900/30 p-3 rounded-lg border border-purple-400/20">
                     <h5 className="font-semibold text-purple-200 text-sm">1. Contacto Directo</h5>
                     <p className="text-xs text-purple-100 mt-1">
-                      Comunicaci�n directa con soporte t�cnico (24-48 horas)
+                      Comunicacin directa con soporte tcnico (24-48 horas)
                     </p>
                   </div>
                   <div className="bg-purple-900/30 p-3 rounded-lg border border-purple-400/20">
-                    <h5 className="font-semibold text-purple-200 text-sm">2. Mediaci�n</h5>
+                    <h5 className="font-semibold text-purple-200 text-sm">2. Mediacin</h5>
                     <p className="text-xs text-purple-100 mt-1">
-                      Proceso de mediaci�n con tercero neutral (30 d�as)
+                      Proceso de mediacin con tercero neutral (30 das)
                     </p>
                   </div>
                   <div className="bg-purple-900/30 p-3 rounded-lg border border-purple-400/20">
                     <h5 className="font-semibold text-purple-200 text-sm">3. Arbitraje</h5>
                     <p className="text-xs text-purple-100 mt-1">
-                      Arbitraje vinculante seg�n reglas de CANACO (90 d�as)
+                      Arbitraje vinculante segn reglas de CANACO (90 das)
                     </p>
                   </div>
                 </div>
               </div>
               
               <div className="space-y-4">
-                <h4 className="font-semibold text-white">Informaci�n Legal:</h4>
+                <h4 className="font-semibold text-white">Informacin Legal:</h4>
                 <div className="bg-purple-900/30 p-4 rounded-lg text-sm border border-purple-400/20">
                   <p><strong className="text-purple-200">Empresa:</strong> <span className="text-purple-100">ComplicesConecta S.A. de C.V.</span></p>
                   <p><strong className="text-purple-200">RFC:</strong> <span className="text-purple-100">CCO240901ABC</span></p>
-                  <p><strong className="text-purple-200">Domicilio:</strong> <span className="text-purple-100">Ciudad de M�xico, M�xico</span></p>
-                  <p><strong className="text-purple-200">Representante Legal:</strong> <span className="text-purple-100">Ing. Juan Carlos M�ndez Nataren</span></p>
+                  <p><strong className="text-purple-200">Domicilio:</strong> <span className="text-purple-100">Ciudad de Mxico, Mxico</span></p>
+                  <p><strong className="text-purple-200">Representante Legal:</strong> <span className="text-purple-100">Ing. Juan Carlos Mndez Nataren</span></p>
                   <p><strong className="text-purple-200">Email Legal:</strong> <span className="text-purple-100">legal@complicesconecta.com</span></p>
                 </div>
               </div>
@@ -263,11 +263,11 @@ export default function TokensLegal() {
             <div className="bg-blue-900/30 p-4 rounded-lg border border-blue-400/20">
               <h4 className="font-semibold text-blue-200 mb-2">Derechos del Usuario:</h4>
               <ul className="list-disc list-inside space-y-1 text-sm text-blue-100">
-                <li>Derecho a la informaci�n clara y transparente</li>
-                <li>Derecho a la protecci�n de datos personales</li>
-                <li>Derecho a la resoluci�n justa de disputas</li>
-                <li>Derecho a cancelar la participaci�n en cualquier momento</li>
-                <li>Derecho a recibir soporte t�cnico adecuado</li>
+                <li>Derecho a la informacin clara y transparente</li>
+                <li>Derecho a la proteccin de datos personales</li>
+                <li>Derecho a la resolucin justa de disputas</li>
+                <li>Derecho a cancelar la participacin en cualquier momento</li>
+                <li>Derecho a recibir soporte tcnico adecuado</li>
               </ul>
             </div>
           </CardContent>
@@ -287,10 +287,10 @@ export default function TokensLegal() {
                 <h4 className="font-semibold text-white mb-2">Procedimiento para Cambios:</h4>
                 <div className="bg-purple-900/30 p-4 rounded-lg border border-purple-400/20">
                   <ul className="list-disc list-inside space-y-2 text-sm text-purple-100">
-                    <li><strong className="text-purple-200">Cambios Menores:</strong> Notificaci�n por email con 7 d�as de anticipaci�n</li>
-                    <li><strong className="text-purple-200">Cambios Importantes:</strong> Notificaci�n con 30 d�as de anticipaci�n</li>
-                    <li><strong className="text-purple-200">Cambios Cr�ticos:</strong> Consentimiento expl�cito requerido</li>
-                    <li><strong className="text-purple-200">Emergencias:</strong> Implementaci�n inmediata con notificaci�n posterior</li>
+                    <li><strong className="text-purple-200">Cambios Menores:</strong> Notificacin por email con 7 das de anticipacin</li>
+                    <li><strong className="text-purple-200">Cambios Importantes:</strong> Notificacin con 30 das de anticipacin</li>
+                    <li><strong className="text-purple-200">Cambios Crticos:</strong> Consentimiento explcito requerido</li>
+                    <li><strong className="text-purple-200">Emergencias:</strong> Implementacin inmediata con notificacin posterior</li>
                   </ul>
                 </div>
               </div>
@@ -300,10 +300,10 @@ export default function TokensLegal() {
                 <div className="bg-purple-900/30 p-4 rounded-lg border border-purple-400/20">
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-purple-200 font-semibold">Versi�n 1.0</span>
+                      <span className="text-purple-200 font-semibold">Versin 1.0</span>
                       <span className="text-purple-100">3 de septiembre de 2025</span>
                     </div>
-                    <p className="text-purple-100">Versi�n inicial para fase beta</p>
+                    <p className="text-purple-100">Versin inicial para fase beta</p>
                   </div>
                 </div>
               </div>
@@ -336,13 +336,13 @@ export default function TokensLegal() {
                 className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
               >
                 <FileText className="h-4 w-4 mr-2" />
-                Ver T�rminos y Condiciones
+                Ver Trminos y Condiciones
               </Button>
               <Button
                 onClick={() => navigate('/tokens-info')}
                 className="border-white/20 text-white hover:bg-white/10 border border-input bg-background hover:bg-accent hover:text-accent-foreground"
               >
-                Volver a Informaci�n de Tokens
+                Volver a Informacin de Tokens
               </Button>
             </div>
           </CardContent>

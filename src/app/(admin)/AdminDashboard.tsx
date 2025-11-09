@@ -97,13 +97,13 @@ const AdminDashboard = () => {
       setRefreshing(true);
       
       if (!supabase) {
-        logger.error('Supabase no est� disponible');
+        logger.error('Supabase no est disponible');
         setLoading(false);
         setRefreshing(false);
         return;
       }
       
-      // Obtener estad�sticas de usuarios
+      // Obtener estadsticas de usuarios
       const { data: usersData, error: usersError } = await supabase
         .from('profiles')
         .select('id, created_at, updated_at')
@@ -111,7 +111,7 @@ const AdminDashboard = () => {
 
       if (usersError) throw usersError;
 
-      // Calcular estad�sticas
+      // Calcular estadsticas
       const now = new Date();
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
       const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
@@ -125,7 +125,7 @@ const AdminDashboard = () => {
         u.updated_at && new Date(u.updated_at) >= weekAgo
       ).length || 0;
 
-      // Obtener estad�sticas de matches
+      // Obtener estadsticas de matches
       const { data: matchesData, error: matchesError } = await supabase
         .from('matches')
         .select('id, created_at');
@@ -140,7 +140,7 @@ const AdminDashboard = () => {
         new Date(m.created_at) >= today
       ).length;
 
-      // Obtener estad�sticas de mensajes
+      // Obtener estadsticas de mensajes
       const { data: messagesData, error: _messagesError } = await supabase
         .from('messages')
         .select('id');
@@ -215,7 +215,7 @@ const AdminDashboard = () => {
         {
           id: '1',
           type: 'security',
-          message: 'M�ltiples intentos de login fallidos detectados',
+          message: 'Mltiples intentos de login fallidos detectados',
           severity: 'medium',
           created_at: new Date().toISOString(),
           resolved: false
@@ -258,10 +258,10 @@ const AdminDashboard = () => {
   const exportData = async (type: string) => {
     try {
       if (!supabase) {
-        logger.error('Supabase no est� disponible');
+        logger.error('Supabase no est disponible');
         toast({
           title: "Error",
-          description: "Supabase no est� disponible",
+          description: "Supabase no est disponible",
           variant: "destructive"
         });
         return;
@@ -305,7 +305,7 @@ const AdminDashboard = () => {
       URL.revokeObjectURL(url);
 
       toast({
-        title: "�xito",
+        title: "xito",
         description: `Datos exportados como ${filename}`,
       });
     } catch (error) {
@@ -328,7 +328,7 @@ const AdminDashboard = () => {
     );
     
     toast({
-      title: "�xito",
+      title: "xito",
       description: "Reporte marcado como resuelto",
     });
   };
@@ -424,7 +424,7 @@ const AdminDashboard = () => {
                   <div>
                     <p className="text-white/80 text-xs sm:text-sm">Usuarios Activos</p>
                     <p className="text-xl sm:text-2xl font-bold text-white">{stats.activeUsers}</p>
-                    <p className="text-blue-400 text-xs">�ltima semana</p>
+                    <p className="text-blue-400 text-xs">ltima semana</p>
                   </div>
                   <UserCheck className="h-6 w-6 sm:h-8 sm:w-8 text-green-400" />
                 </div>
@@ -463,7 +463,7 @@ const AdminDashboard = () => {
                   <div>
                     <p className="text-white/80 text-xs sm:text-sm">Solicitudes Carrera</p>
                     <p className="text-xl sm:text-2xl font-bold text-white">{stats.careerApplications}</p>
-                    <p className="text-orange-400 text-xs">Pendientes revisi�n</p>
+                    <p className="text-orange-400 text-xs">Pendientes revisin</p>
                   </div>
                   <Mail className="h-6 w-6 sm:h-8 sm:w-8 text-orange-400" />
                 </div>
@@ -476,7 +476,7 @@ const AdminDashboard = () => {
                   <div>
                     <p className="text-white/80 text-xs sm:text-sm">Solicitudes Moderador</p>
                     <p className="text-xl sm:text-2xl font-bold text-white">{stats.moderatorRequests}</p>
-                    <p className="text-purple-400 text-xs">En evaluaci�n</p>
+                    <p className="text-purple-400 text-xs">En evaluacin</p>
                   </div>
                   <Shield className="h-6 w-6 sm:h-8 sm:w-8 text-purple-400" />
                 </div>
@@ -512,7 +512,7 @@ const AdminDashboard = () => {
                   <CardHeader>
                     <CardTitle className="text-white flex items-center gap-2">
                       <TrendingUp className="h-5 w-5" />
-                      Estad�sticas Generales
+                      Estadsticas Generales
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -525,7 +525,7 @@ const AdminDashboard = () => {
                       <Badge className="bg-green-500 text-white">{stats.moderatorsCount}</Badge>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-white/80">Tasa de Conversi�n</span>
+                      <span className="text-white/80">Tasa de Conversin</span>
                       <Badge className="bg-blue-500">
                         {stats.totalUsers > 0 ? ((stats.totalMatches / stats.totalUsers) * 100).toFixed(1) : 0}%
                       </Badge>
@@ -583,8 +583,8 @@ const AdminDashboard = () => {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="1d">Hoy</SelectItem>
-                          <SelectItem value="7d">7 d�as</SelectItem>
-                          <SelectItem value="30d">30 d�as</SelectItem>
+                          <SelectItem value="7d">7 das</SelectItem>
+                          <SelectItem value="30d">30 das</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -599,7 +599,7 @@ const AdminDashboard = () => {
                           <div>
                             <p className="text-white font-medium">{user.full_name || user.email}</p>
                             <p className="text-white/60 text-sm">
-                              �ltimo acceso: {user.last_sign_in_at ? formatDate(user.last_sign_in_at) : 'Nunca'}
+                              ltimo acceso: {user.last_sign_in_at ? formatDate(user.last_sign_in_at) : 'Nunca'}
                             </p>
                           </div>
                         </div>
@@ -631,7 +631,7 @@ const AdminDashboard = () => {
                           <div>
                             <p className="text-white font-medium">{report.message}</p>
                             <p className="text-white/60 text-sm">
-                              {formatDate(report.created_at)} � {report.type}
+                              {formatDate(report.created_at)}  {report.type}
                             </p>
                           </div>
                         </div>
@@ -687,7 +687,7 @@ const AdminDashboard = () => {
                   <CardHeader>
                     <CardTitle className="text-white flex items-center gap-2">
                       <Settings className="h-5 w-5" />
-                      Acciones R�pidas
+                      Acciones Rpidas
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">

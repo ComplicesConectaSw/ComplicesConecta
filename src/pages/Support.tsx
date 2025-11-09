@@ -18,16 +18,16 @@ const Support = () => {
       icon: HelpCircle,
       questions: [
         {
-          q: "�C�mo creo una cuenta en ComplicesConecta?",
-          a: "Para crear una cuenta, haz clic en 'Crear Cuenta Gratis' en la p�gina principal. Necesitar�s verificar tu email y completar tu perfil con informaci�n b�sica."
+          q: "Cmo creo una cuenta en ComplicesConecta?",
+          a: "Para crear una cuenta, haz clic en 'Crear Cuenta Gratis' en la pgina principal. Necesitars verificar tu email y completar tu perfil con informacin bsica."
         },
         {
-          q: "�Puedo cambiar mi informaci�n de perfil despu�s de registrarme?",
-          a: "S�, puedes editar tu perfil en cualquier momento desde la secci�n 'Configuraci�n' en tu cuenta."
+          q: "Puedo cambiar mi informacin de perfil despus de registrarme?",
+          a: "S, puedes editar tu perfil en cualquier momento desde la seccin 'Configuracin' en tu cuenta."
         },
         {
-          q: "�C�mo verifico mi perfil?",
-          a: "La verificaci�n se realiza mediante nuestro sistema KYC avanzado. Sube una foto de tu identificaci�n oficial y una selfie para completar el proceso."
+          q: "Cmo verifico mi perfil?",
+          a: "La verificacin se realiza mediante nuestro sistema KYC avanzado. Sube una foto de tu identificacin oficial y una selfie para completar el proceso."
         }
       ]
     },
@@ -36,16 +36,16 @@ const Support = () => {
       icon: Shield,
       questions: [
         {
-          q: "�Qu� medidas de seguridad tienen implementadas?",
-          a: "Utilizamos verificaci�n KYC, tecnolog�a blockchain, cifrado end-to-end para mensajes y moderaci�n 24/7 para garantizar un ambiente seguro."
+          q: "Qu medidas de seguridad tienen implementadas?",
+          a: "Utilizamos verificacin KYC, tecnologa blockchain, cifrado end-to-end para mensajes y moderacin 24/7 para garantizar un ambiente seguro."
         },
         {
-          q: "�C�mo reporto un perfil sospechoso?",
-          a: "Puedes reportar cualquier perfil usando el bot�n 'Reportar' en su perfil. Nuestro equipo revisar� el reporte en menos de 24 horas."
+          q: "Cmo reporto un perfil sospechoso?",
+          a: "Puedes reportar cualquier perfil usando el botn 'Reportar' en su perfil. Nuestro equipo revisar el reporte en menos de 24 horas."
         },
         {
-          q: "�Mis datos personales est�n protegidos?",
-          a: "Absolutamente. Cumplimos con todas las regulaciones de protecci�n de datos y nunca compartimos informaci�n personal sin tu consentimiento."
+          q: "Mis datos personales estn protegidos?",
+          a: "Absolutamente. Cumplimos con todas las regulaciones de proteccin de datos y nunca compartimos informacin personal sin tu consentimiento."
         }
       ]
     },
@@ -54,16 +54,16 @@ const Support = () => {
       icon: MessageCircle,
       questions: [
         {
-          q: "�Qu� son los tokens CMPX/GTK?",
-          a: "CMPX son tokens internos para consumo (suministro ilimitado) que puedes usar para funciones premium, regalos virtuales y eventos VIP. GTK son tokens blockchain (suministro limitado) para staking e inversi�n, con roadmap hacia blockchain en Q2-Q4 2026."
+          q: "Qu son los tokens CMPX/GTK?",
+          a: "CMPX son tokens internos para consumo (suministro ilimitado) que puedes usar para funciones premium, regalos virtuales y eventos VIP. GTK son tokens blockchain (suministro limitado) para staking e inversin, con roadmap hacia blockchain en Q2-Q4 2026."
         },
         {
-          q: "�C�mo puedo ganar tokens?",
-          a: "Puedes ganar CMPX invitando amigos (50 CMPX por referido, l�mite 500/mes), completando tu perfil (25 CMPX), login diario (5 CMPX), verificaci�n World ID (100 CMPX - pr�ximamente), o compr�ndolos directamente. GTK tokens estar�n disponibles para staking en Q2-Q4 2026."
+          q: "Cmo puedo ganar tokens?",
+          a: "Puedes ganar CMPX invitando amigos (50 CMPX por referido, lmite 500/mes), completando tu perfil (25 CMPX), login diario (5 CMPX), verificacin World ID (100 CMPX - prximamente), o comprndolos directamente. GTK tokens estarn disponibles para staking en Q2-Q4 2026."
         },
         {
-          q: "�Qu� funciones premium est�n disponibles?",
-          a: "Con CMPX puedes acceder a Super Like (10 CMPX), Boost de Perfil (50 CMPX), Regalos Virtuales (50-500 CMPX), Video Llamadas (75-200 CMPX), Eventos VIP (200-1000 CMPX), Galer�as NFT (100-1000 CMPX), Chat Premium (100 CMPX/mes), y m�s. Ver gu�a completa en /tokens-info."
+          q: "Qu funciones premium estn disponibles?",
+          a: "Con CMPX puedes acceder a Super Like (10 CMPX), Boost de Perfil (50 CMPX), Regalos Virtuales (50-500 CMPX), Video Llamadas (75-200 CMPX), Eventos VIP (200-1000 CMPX), Galeras NFT (100-1000 CMPX), Chat Premium (100 CMPX/mes), y ms. Ver gua completa en /tokens-info."
         }
       ]
     }
@@ -84,9 +84,9 @@ const Support = () => {
     },
     {
       icon: Clock,
-      title: "Horario de Atenci�n",
+      title: "Horario de Atencin",
       description: "Lun - Vie: 9:00 - 18:00",
-      subtitle: "Hora de M�xico"
+      subtitle: "Hora de Mxico"
     }
   ];
 
@@ -114,10 +114,10 @@ const Support = () => {
             <HelpCircle className="w-10 h-10 text-white" />
           </div>
           <h2 className="text-4xl font-bold text-white mb-4">
-            �En qu� podemos ayudarte?
+            En qu podemos ayudarte?
           </h2>
           <p className="text-xl text-white font-medium max-w-2xl mx-auto mb-8">
-            Encuentra respuestas r�pidas a las preguntas m�s frecuentes o cont�ctanos directamente
+            Encuentra respuestas rpidas a las preguntas ms frecuentes o contctanos directamente
           </p>
 
           {/* Search Bar */}
@@ -197,7 +197,7 @@ const Support = () => {
             </div>
           ) : (
             <div className="text-center py-8">
-              <p className="text-white font-medium">No se encontraron preguntas que coincidan con tu b�squeda.</p>
+              <p className="text-white font-medium">No se encontraron preguntas que coincidan con tu bsqueda.</p>
             </div>
           )}
         </div>
@@ -205,8 +205,8 @@ const Support = () => {
         {/* Contact Form */}
         <Card className="bg-gradient-to-br from-purple-500/20 to-blue-500/20 backdrop-blur-sm border-purple-300/30">
           <CardHeader>
-            <CardTitle className="text-center text-white">�No encontraste lo que buscabas?</CardTitle>
-            <p className="text-center text-white font-medium">Env�anos un mensaje y te ayudaremos personalmente</p>
+            <CardTitle className="text-center text-white">No encontraste lo que buscabas?</CardTitle>
+            <p className="text-center text-white font-medium">Envanos un mensaje y te ayudaremos personalmente</p>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4 max-w-2xl mx-auto">
@@ -235,7 +235,7 @@ const Support = () => {
                 <label htmlFor="subject" className="block text-sm font-medium text-white mb-1">Asunto</label>
                 <Input 
                   id="subject" 
-                  placeholder="�En qu� podemos ayudarte?" 
+                  placeholder="En qu podemos ayudarte?" 
                   required 
                   className="bg-white/10 backdrop-blur-md border-white/20 text-white placeholder-white/50 focus:ring-2 focus:ring-purple-400 focus:border-purple-400"
                 />
