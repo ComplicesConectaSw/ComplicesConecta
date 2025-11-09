@@ -163,17 +163,22 @@ Write-Host "`n🔍 Verificando errores potenciales..." -ForegroundColor Yellow
 if (Test-Path "dist/index.html") {
     $indexHtml = Get-Content "dist/index.html" -Raw -ErrorAction SilentlyContinue
     if ($indexHtml) {
-        if ($indexHtml -match "src=['\""]/src/main\.tsx['\""]") {
-            Write-Host "  ✅ Ruta de main.tsx correcta" -ForegroundColor Green
-        } else {
-            Write-Host "  ⚠️  Advertencia: Ruta de main.tsx puede ser incorrecta" -ForegroundColor Yellow
-        }
-        
-        # Verificar que los assets tienen rutas correctas
-        if ($indexHtml -match "/assets/") {
+        # Verificar que los assets tienen rutas correctas (Vite inyecta automáticamente)
+        if ($indexHtml -match "/assets/" -or $indexHtml -match 'type="module"') {
             Write-Host "  ✅ Assets referenciados correctamente" -ForegroundColor Green
         } else {
             Write-Host "  ⚠️  Advertencia: No se encontraron referencias a /assets/" -ForegroundColor Yellow
+        }
+        
+        # Verificar que vercel.json no tiene conflictos
+        if (Test-Path "vercel.json") {
+            $vercelJson = Get-Content "vercel.json" -Raw -ErrorAction SilentlyContinue
+            if ($vercelJson -match '"routes"') {
+                Write-Host "  ⚠️  Advertencia: vercel.json contiene 'routes' que puede causar conflictos" -ForegroundColor Yellow
+                Write-Host "     Vercel no permite 'routes' junto con 'rewrites' o 'headers'" -ForegroundColor Yellow
+            } else {
+                Write-Host "  ✅ vercel.json configurado correctamente" -ForegroundColor Green
+            }
         }
     }
 }
