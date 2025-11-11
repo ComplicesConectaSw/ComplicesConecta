@@ -69,6 +69,11 @@ export function showEnvInfo(): {
 // CR├ìTICO: Asegurar que las funciones est├®n disponibles inmediatamente
 if (typeof window !== 'undefined') {
   const exposeEnvFunctions = () => {
+    // SOLO en desarrollo - NO en producción
+    if (!import.meta.env.DEV) {
+      return;
+    }
+    
     try {
       // Usar Object.defineProperty para evitar errores de redefinición
       Object.defineProperty(window, 'showEnvInfo', {
@@ -88,38 +93,33 @@ if (typeof window !== 'undefined') {
       Object.defineProperty(window, 'getPassword', {
         value: (key: string) => {
           const value = import.meta.env[key];
-          if (value) {
-            console.log(`🔐 ${key}:`, value);
-            return value;
-          } else {
-            console.warn(`⚠️ Variable ${key} no encontrada`);
-            return null;
+          if (typeof value === 'string' && value.includes('****')) {
+            return 'Contraseña oculta por seguridad';
           }
+          return value || 'Variable no encontrada';
         },
         writable: true,
         configurable: true,
         enumerable: true
       });
     } catch {
-      // Si falla Object.defineProperty, usar asignación directa
+      // Si falla Object.defineProperty, usar asignación directa (solo en dev)
       (window as unknown as Record<string, unknown>).showEnvInfo = showEnvInfo;
       (window as unknown as Record<string, unknown>).env = import.meta.env;
       (window as unknown as Record<string, unknown>).getPassword = (key: string) => {
         const value = import.meta.env[key];
-        if (value) {
-          console.log(`🔐 ${key}:`, value);
-          return value;
-        } else {
-          console.warn(`⚠️ Variable ${key} no encontrada`);
-          return null;
+        if (typeof value === 'string' && value.includes('****')) {
+          return 'Contraseña oculta por seguridad';
         }
+        return value || 'Variable no encontrada';
       };
     }
   };
-  
-  // Exponer inmediatamente
-  exposeEnvFunctions();
-  
+
+  // Solo exponer en desarrollo
+  if (import.meta.env.DEV) {
+    exposeEnvFunctions();
+  }
   // También exponer cuando el DOM esté listo (por si acaso)
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', exposeEnvFunctions);

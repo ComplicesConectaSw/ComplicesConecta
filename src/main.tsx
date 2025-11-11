@@ -3,6 +3,11 @@ import * as React from 'react'
 import type { WindowWithReact } from '@/types/react.types'
 const { StrictMode } = React
 
+// CRÍTICO: Verificar que React esté completamente disponible
+if (!React || !React.createElement || !React.useEffect || !React.useState) {
+  throw new Error('React is not properly loaded - critical hooks missing');
+}
+
 // CRÍTICO: Asegurar React disponible globalmente INMEDIATAMENTE, ANTES DE CUALQUIER OTRA COSA
 // Esto debe estar ANTES de cualquier otro import o código que pueda cargar chunks
 if (typeof window !== 'undefined') {
@@ -20,6 +25,13 @@ if (typeof window !== 'undefined') {
   // Forzar React disponible globalmente de forma inmediata
   win.React = React;
   win.ReactDOM = { createRoot };
+  
+  // CRÍTICO: Asegurar que useLayoutEffect esté disponible
+  if (!React.useLayoutEffect) {
+    // Fallback a useEffect si useLayoutEffect no está disponible
+    (React as any).useLayoutEffect = React.useEffect;
+    debugLog('REACT_USELAYOUTEFFECT_FALLBACK', { fallbackToUseEffect: true });
+  }
   
   // Asegurar que React.createContext esté disponible inmediatamente
   if (!React.createContext) {
