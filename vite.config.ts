@@ -27,8 +27,12 @@ export default defineConfig(({ mode }) => {
           manualChunks: (id) => {
             // Vendor libraries
             if (id.includes('node_modules')) {
-              if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
+              // CRÍTICO: React debe estar en el chunk principal para evitar problemas de carga
+              if (id.includes('react') || id.includes('react-dom')) {
                 return 'vendor-react';
+              }
+              if (id.includes('react-router')) {
+                return 'vendor-router';
               }
               if (id.includes('@radix-ui')) {
                 return 'vendor-ui';

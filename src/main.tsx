@@ -5,7 +5,20 @@ const { StrictMode } = React
 
 // CRÍTICO: Verificar que React esté completamente disponible
 if (!React || !React.createElement || !React.useEffect || !React.useState) {
+  console.error('🚨 React is not properly loaded:', {
+    hasReact: !!React,
+    hasCreateElement: !!(React && React.createElement),
+    hasUseEffect: !!(React && React.useEffect),
+    hasUseState: !!(React && React.useState),
+    hasUseLayoutEffect: !!(React && React.useLayoutEffect)
+  });
   throw new Error('React is not properly loaded - critical hooks missing');
+}
+
+// CRÍTICO: Asegurar useLayoutEffect está disponible ANTES de cualquier componente
+if (!React.useLayoutEffect) {
+  console.warn('⚠️ useLayoutEffect not available, using useEffect fallback');
+  (React as any).useLayoutEffect = React.useEffect;
 }
 
 // CRÍTICO: Asegurar React disponible globalmente INMEDIATAMENTE, ANTES DE CUALQUIER OTRA COSA

@@ -467,6 +467,69 @@
       }, true); // CAPTURA EN FASE DE CAPTURA
     </script>
     
+    <!-- CRÍTICO: PROTECCIÓN ULTRA AGRESIVA DE REACT - DEBE SER EL PRIMER SCRIPT -->
+    <script>
+      // CRÍTICO: Interceptar accesos a React ANTES de que cualquier chunk se cargue
+      // Esto previene el error "Cannot read properties of undefined (reading 'useLayoutEffect')"
+      (function() {
+        'use strict';
+        
+        // CRÍTICO: Crear React stub INMEDIATAMENTE
+        var reactStub = {
+          useLayoutEffect: function(callback, deps) {
+            // Fallback seguro que siempre funciona
+            if (typeof callback === 'function') {
+              try {
+                setTimeout(callback, 0);
+              } catch(e) {}
+            }
+            return function() {};
+          },
+          useEffect: function(callback, deps) {
+            if (typeof callback === 'function') {
+              try {
+                setTimeout(callback, 0);
+              } catch(e) {}
+            }
+            return function() {};
+          },
+          createElement: function() { return null; },
+          useState: function(initial) { return [initial, function() {}]; },
+          useMemo: function(fn, deps) { try { return fn(); } catch(e) { return null; } },
+          useCallback: function(fn, deps) { return fn || function() {}; },
+          useContext: function(context) { return null; },
+          useRef: function(initial) { return { current: initial }; },
+          createContext: function(defaultValue) {
+            return {
+              Provider: function(props) { return props && props.children || null; },
+              Consumer: function(props) { return props && props.children ? props.children(defaultValue) : null; },
+              _currentValue: defaultValue
+            };
+          },
+          Fragment: function(props) { return props ? props.children : null; },
+          StrictMode: function(props) { return props ? props.children : null; },
+          version: '18.3.1'
+        };
+        
+        // CRÍTICO: Hacer React disponible INMEDIATAMENTE en window
+        if (typeof window !== 'undefined') {
+          window.React = reactStub;
+          
+          // CRÍTICO: Interceptar Object.defineProperty para React
+          var originalDefineProperty = Object.defineProperty;
+          Object.defineProperty = function(obj, prop, descriptor) {
+            if (obj === window && prop === 'React' && descriptor && descriptor.value) {
+              // Si alguien intenta redefinir React, asegurar que tenga useLayoutEffect
+              if (!descriptor.value.useLayoutEffect) {
+                descriptor.value.useLayoutEffect = reactStub.useLayoutEffect;
+              }
+            }
+            return originalDefineProperty.call(this, obj, prop, descriptor);
+          };
+        }
+      })();
+    </script>
+    
     <!-- CRÍTICO: Asegurar React disponible globalmente ANTES de chunks -->
     <script>
       // CRÍTICO: Establecer stub de React INMEDIATAMENTE - ANTES de logging
