@@ -306,34 +306,27 @@
           'cannot assign to read only property \'ethereum\'', 'cannot assign to read only property \'solana\''
         ];
         
-        // Verificar si es error de wallet por mensaje o stack
-        var isWalletError = _walletPatterns.some(function(pattern) {
+        var shouldSuppress = _walletPatterns.some(function(pattern) {
           return msg.indexOf(pattern) !== -1 || stack.indexOf(pattern) !== -1;
         });
         
-        if (!isWalletError) {
-          _originalConsoleError.apply(console, args);
+        if (!shouldSuppress) {
+          _originalConsoleError.apply(console, arguments);
         }
       };
       
-      // Interceptar console.warn ULTRA AGRESIVO - MEJORADO
       console.warn = function() {
-        var args = Array.prototype.slice.call(arguments);
-        var msg = args.join(' ').toLowerCase();
-        
-        var _walletPatterns = [
-          'wallet', 'ethereum', 'solana', 'metamask', 'tronweb', 'tronlink', 'bybit', 'evmask',
-          'tronweb is already initiated', 'tronlink will overwrite', 'bybit:page provider inject code',
-          'bybit:page provider', 'download the react devtools', 'inpage.js', 'evmask.js', 'evmAsk.js',
-          'solana.js', 'dist.94abdbf1.js', 'data-layer', 'inpage.js:', 'evmAsk.js:', 'solana.js:'
-        ];
-        
-        var isWalletWarning = _walletPatterns.some(function(pattern) {
-          return msg.indexOf(pattern) !== -1;
+        var message = Array.prototype.slice.call(arguments).join(' ');
+        var shouldSuppress = [
+          'TronLink will overwrite',
+          'provider inject code',
+          'bybit:page provider inject'
+        ].some(function(pattern) {
+          return message.indexOf(pattern) !== -1;
         });
         
-        if (!isWalletWarning) {
-          _originalConsoleWarn.apply(console, args);
+        if (!shouldSuppress) {
+          _originalConsoleWarn.apply(console, arguments);
         }
       };
       
