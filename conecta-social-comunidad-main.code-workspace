@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"*.dbclient-js": "javascript",
+			"plyconfig.json": "jsonc"
+		}
+	}
+}

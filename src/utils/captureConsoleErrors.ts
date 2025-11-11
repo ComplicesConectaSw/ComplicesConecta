@@ -1,9 +1,12 @@
 /**
  * Utilidad para capturar y mostrar errores de consola
- * Versión: 3.5.1
+ * Versión: 3.6.3
  * 
  * Uso: Importar y llamar captureConsoleErrors() en la consola del navegador
  */
+
+/// <reference lib="dom" />
+/// <reference lib="dom.iterable" />
 
 interface ConsoleError {
   type: 'error' | 'warning' | 'log';
@@ -148,7 +151,7 @@ class ConsoleErrorCapture {
         const observer = new PerformanceObserver((list) => {
           for (const entry of list.getEntries()) {
             if (entry.entryType === 'resource') {
-              const resourceEntry = entry as PerformanceResourceTiming;
+              const resourceEntry = entry as any;
               if (resourceEntry.transferSize === 0 && resourceEntry.decodedBodySize === 0 && resourceEntry.duration > 100) {
                 // Posible recurso no cargado
                 let resourceType: ResourceError['type'] = 'other';
@@ -200,7 +203,7 @@ class ConsoleErrorCapture {
     // Capturar errores de red usando fetch
     const originalFetch = window.fetch;
     (window as any).__originalFetch = originalFetch;
-    window.fetch = async (...args) => {
+    window.fetch = async (...args: Parameters<typeof fetch>) => {
       try {
         const response = await originalFetch(...args);
         if (!response.ok && args[0]) {
@@ -729,16 +732,19 @@ if (typeof window !== 'undefined') {
   // Iniciar captura automáticamente en desarrollo
   // Verificar de forma segura si estamos en desarrollo
   try {
-    const isDev = import.meta.env?.DEV ?? false;
+    const isDev = import.meta.env?.DEV || false;
     
     if (isDev) {
       startErrorCapture();
+       
       console.log('✅ Captura de errores de consola iniciada automáticamente');
+       
       console.log('💡 Usa showErrorReport() en la consola para ver el reporte completo');
       
       // Verificar y re-exponer después de iniciar captura
       setTimeout(() => {
         if (!(window as any).showErrorReport) {
+           
           console.warn('⚠️ showErrorReport no está disponible, reintentando...');
           exposeFunctions();
         }

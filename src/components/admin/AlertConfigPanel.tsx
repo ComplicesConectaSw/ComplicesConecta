@@ -306,7 +306,7 @@ export const AlertConfigPanel: React.FC = () => {
 
   const testAlert = (config: AlertConfig) => {
     logger.info(`🧪 Testing alert: ${config.name}`);
-    
+
     if (config.type === 'error') {
       errorAlertService.createAlert({
         severity: config.conditions.severity || 'medium',
@@ -513,7 +513,7 @@ export const AlertConfigPanel: React.FC = () => {
               {editingConfig ? 'Editar Alerta' : 'Nueva Alerta'}
             </DialogTitle>
             <DialogDescription className="text-gray-400">
-              {editingConfig 
+              {editingConfig
                 ? 'Modifica la configuración de la alerta'
                 : 'Crea una nueva alerta personalizada para monitorear el sistema'
               }
@@ -648,7 +648,7 @@ export const AlertConfigPanel: React.FC = () => {
                   checked={newConfig.actions?.notification ?? true}
                   onCheckedChange={(checked) => setNewConfig({
                     ...newConfig,
-                    actions: { 
+                    actions: {
                       notification: checked,
                       console: newConfig.actions?.console ?? true,
                       email: newConfig.actions?.email ?? false
@@ -662,7 +662,7 @@ export const AlertConfigPanel: React.FC = () => {
                   checked={newConfig.actions?.console ?? true}
                   onCheckedChange={(checked) => setNewConfig({
                     ...newConfig,
-                    actions: { 
+                    actions: {
                       notification: newConfig.actions?.notification ?? true,
                       console: checked,
                       email: newConfig.actions?.email ?? false
@@ -676,7 +676,7 @@ export const AlertConfigPanel: React.FC = () => {
                   checked={newConfig.actions?.email ?? false}
                   onCheckedChange={(checked) => setNewConfig({
                     ...newConfig,
-                    actions: { 
+                    actions: {
                       notification: newConfig.actions?.notification ?? true,
                       console: newConfig.actions?.console ?? true,
                       email: checked
