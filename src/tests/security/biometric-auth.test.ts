@@ -189,26 +189,13 @@ describe('Biometric Authentication Library', () => {
     });
 
     it('should return false when WebAuthn is not supported', () => {
-      const originalCredentials = global.navigator.credentials;
-      const originalDescriptor = Object.getOwnPropertyDescriptor(global.navigator, 'credentials');
-      
-      Object.defineProperty(global.navigator, 'credentials', {
-        value: undefined,
-        writable: true,
-        configurable: true
-      });
+      // Mock navigator.credentials como undefined usando vi.spyOn
+      const credentialsSpy = vi.spyOn(global.navigator, 'credentials', 'get').mockReturnValue(undefined as any);
       
       expect(isWebAuthnSupported()).toBe(false);
       
-      if (originalDescriptor) {
-        Object.defineProperty(global.navigator, 'credentials', originalDescriptor);
-      } else {
-        Object.defineProperty(global.navigator, 'credentials', {
-          value: originalCredentials,
-          writable: true,
-          configurable: true
-        });
-      }
+      // Restaurar el mock
+      credentialsSpy.mockRestore();
     });
   });
 

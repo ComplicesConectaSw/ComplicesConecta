@@ -12,7 +12,7 @@ const StoriesInfo = () => {
     {
       icon: Clock,
       title: "24 Horas de Duracin",
-      description: "Contenido que desaparece automticamente despus de 24 horas para mxima privacidad"
+      description: "Contenido que desaparece automticamente despus de 24 horas para maxima privacidad"
     },
     {
       icon: Eye,
@@ -22,7 +22,7 @@ const StoriesInfo = () => {
     {
       icon: Heart,
       title: "Interacciones Privadas",
-      description: "Reacciones y comentarios privados que solo t puedes ver"
+      description: "Reacciones y comentarios privados que solo tu puedes ver"
     },
     {
       icon: Users,

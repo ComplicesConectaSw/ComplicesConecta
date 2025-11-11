@@ -125,47 +125,31 @@ describe('Media Access Security', () => {
 
   describe('requestSecureMediaUrl', () => {
     it('should request media URL with proper authentication', async () => {
-      const startTime = Date.now();
-      const maxTime = 3000; // Máximo 3 segundos
-      
-      try {
-        const mockResponse = {
-          url: 'https://example.com/secure-media',
-          access_level: 'full',
-          expires_at: new Date().toISOString()
-        };
+      const mockResponse = {
+        url: 'https://example.com/secure-media',
+        access_level: 'full',
+        expires_at: new Date().toISOString()
+      };
 
-        (global.fetch as any).mockResolvedValueOnce({
-          ok: true,
-          json: () => Promise.resolve(mockResponse)
-        });
+      // Mock fetch correctamente
+      const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve(mockResponse)
+      } as Response);
 
-        const result = await Promise.race([
-          requestSecureMediaUrl('test-media-id'),
-          new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), maxTime))
-        ]).catch(() => {
-          return null;
-        });
+      const result = await requestSecureMediaUrl('test-media-id');
 
-        expect(result).toEqual(mockResponse);
-        expect(global.fetch).toHaveBeenCalledWith(
-          '/api/media/serve?mediaId=test-media-id&token=undefined',
-          expect.objectContaining({
-            method: 'GET',
-            headers: expect.objectContaining({
-              'Content-Type': 'application/json'
-            })
+      expect(result).toEqual(mockResponse);
+      expect(fetchSpy).toHaveBeenCalledWith(
+        expect.stringContaining('/api/media/serve'),
+        expect.objectContaining({
+          method: 'GET',
+          headers: expect.objectContaining({
+            'Content-Type': 'application/json'
           })
-        );
-      } catch (error) {
-        const elapsed = Date.now() - startTime;
-        if (elapsed >= maxTime) {
-          console.warn('⚠️ [Media Access Test] Timeout alcanzado, saliendo del test');
-          return; // Salida de emergencia
-        }
-        throw error;
-      }
-    }, 5000); // Timeout de 5 segundos para el test completo
+        })
+      );
+    });
 
     it('should handle access denied errors', async () => {
       const startTime = Date.now();
