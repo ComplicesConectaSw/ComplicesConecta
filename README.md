@@ -30,9 +30,12 @@
 - **[🔧 Guía de Instalación](./INSTALACION_SETUP_v3.5.0.md)** - Guía completa paso a paso de instalación y configuración
 - **[🚀 Inicio Rápido Túnel](./QUICK_START_TUNNEL.md)** - Configuración rápida de túnel para desarrollo
 - **[🏗️ Estructura del Proyecto](./project-structure-tree.md)** - Árbol detallado del monorepo
-- **[📝 Notas de Lanzamiento](./RELEASE_NOTES_v3.4.1.md)** - Historial completo de versiones
+- **[📝 Notas de Lanzamiento](./RELEASE_NOTES_v3.4.1.md)** - Historial completo de versiones y cambios
+- **[📋 Changelog](./CHANGELOG.md)** - Registro detallado de cambios por versión
 - **[⚙️ DevOps Guide](./README_DEVOPS.md)** - Guía de operaciones y deployment
 - **[🤖 IA Integration Guide](./README_IA.md)** - Estrategia de desarrollo con IA
+- **[🔄 Diagramas de Flujos](./DIAGRAMAS_FLUJOS_v3.5.0.md)** - Diagramas técnicos y flujos de trabajo
+- **[🤝 Guía de Contribución](./CONTRIBUTING.md)** - Cómo contribuir al proyecto
 - **[📄 Presentación Pública](./COMPLICESCONECTA_PRESENTACION_PUBLICA.md)** - Presentación pública del proyecto
 
 ### **📖 Documentos en `docs/`**
@@ -44,19 +47,14 @@
 - **[💰 Guía de Tokens](./docs/GUIA_TOKENS.md)** - Sistema de Tokens (CMPX y GTK)
 - **[📊 Auditorías Profesionales](./docs/Auditoria/README.md)** - Índice de auditorías profesionales
 - **[⚖️ Documentación Legal](./docs/legal/README.md)** - Términos, privacidad, cumplimiento legal
+  - **[🛡️ Ley Olimpia](./docs/legal/LEY_OLIMPIA.md)** - Protección contra violencia digital (Art. 259 Ter/Quáter/Quinquies)
+  - **[📋 Políticas Legales](./docs/legal/Legal-Policy/README.md)** - 9 políticas de seguridad y cumplimiento
 
 > **📚 Documentación Técnica (Uso Interno):**  
 > La documentación técnica completa está en `docs-unified/` (no se sube a Git):
 > - `docs-unified/DOCUMENTACION_MAESTRA_UNIFICADA_v3.6.3.md` - Documentación técnica completa
 > - `docs-unified/MEMORIAS_SESIONES_UNIFICADAS_v3.6.3.md` - Memorias consolidadas
 > - `docs-unified/REPORTES_ANALISIS_UNIFICADOS_v3.6.3.md` - Reportes consolidados
-- **[💼 Guía para Inversores](./docs/GUIA_INVERSORES.md)** - Información de inversión y SAFTE
-- **[🛡️ Guía para Moderadores](./docs/GUIA_MODERADORES.md)** - Información de moderación y pagos
-- **[🏢 Guía para Clubs](./docs/GUIA_CLUBS.md)** - Información de clubs verificados y partners
-- **[🧪 Guía de Testing](./docs/TESTING.md)** - Guía completa de testing
-- **[🧩 Componentes](./docs/COMPONENTS.md)** - Documentación de componentes
-- **[⚖️ Documentación Legal](./docs/legal/)** - Términos, privacidad, cumplimiento legal (incluye Ley Olimpia)
-- **[📊 Auditorías y Análisis](./docs/Auditoria/README.md)** - Reportes de auditorías profesionales
 
 ### **🎯 Navegación Rápida**
 

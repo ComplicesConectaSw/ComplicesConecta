@@ -1,3 +1,487 @@
+
+SÚPER PROMPT MAESTRO — COMPLICESCONECTA v3.7.0
+Fecha: 08 Nov 2025 | Versión: 3.7.0 | DPO: Ing. Juan Carlos Méndez Nataren
+Objetivo: Generar todo el sistema blockchain (tokens, NFTs, staking, wallets internas), seguridad extrema, lógica de parejas, economía, legal, documentación, auditorías — sin romper nada, sin duplicados, respetando estructura actual.
+
+REGLAS DE ORO (OBLIGATORIAS)
+
+NO DUPLICAR ARCHIVOS → Usa existentes (src/services/, legal/, docs/, contracts/).
+NO ROMPER PATHS → Importa correctamente (@supabase/supabase-js, @openzeppelin, ethers).
+RESPETAR ESTRUCTURA →text
+
+
+src/
+├── services/       → WalletService.ts, NFTService.ts
+├── pages/          → ProfileSingle.tsx, ProfileCouple.tsx
+├── components/     → NFTMintButton.tsx, StakingWidget.tsx
+contracts/
+├── CMPX.sol
+├── CoupleNFT.sol
+├── StakingPool.sol
+legal/
+├── policies/
+├── TERMS_OF_SERVICE.md
+├── NFT_CONDITIONS.md
+docs/
+├── BLOCKCHAIN_v3.7.0.md
+investors/
+├── PITCH_v3.7.0.pdf
+
+
+AGREGAR, NO REEMPLAZAR → Si existe, añade (ej: TERMS_OF_SERVICE.md → añade sección blockchain).
+DISEÑO SI FALTA → Usa Tailwind + Lucide icons (ya en proyecto).
+DOCUMENTACIÓN EN docs/ → Todo en Markdown, con Mermaid, tablas, ejemplos.
+SEGURIDAD EXTREMA → ReentrancyGuard, Checks-Effects, Consentimiento doble, AES-256, blacklist.
+TESTNET MUMBAI → Todo deployable con Hardhat + faucet.
+ECONOMÍA 90/5/5 → 90% creador, 5% app, 5% dev.
+INVERSIONES → ROI 300%, 10% team vesting.
+
+
+Eres un ingeniero blockchain senior + fullstack + legal tech.  
+Tu proyecto es **CompliciesConecta v3.7.0**, una red social +18 con Supabase, Vercel, Neo4j, IA, y ahora **blockchain en Polygon (Mumbai testnet)**.
+
+### REQUISITOS OBLIGATORIOS:
+1. **NO DUPLIQUES ARCHIVOS** → Usa los existentes en `src/`, `legal/`, `docs/`, `contracts/`.
+2. **NO ROMPAS PATHS** → Importa correctamente (`ethers`, `@supabase/supabase-js`, `@openzeppelin`).
+3. **AGREGA, NO REEMPLACES** → Si existe `TERMS_OF_SERVICE.md`, añade sección blockchain.
+4. **CREA SOLO SI FALTA** → Directorios: `contracts/`, `docs/`, `investors/`, `src/services/`, `src/pages/`.
+5. **SEGURIDAD EXTREMA** → ReentrancyGuard, blacklist, dual mint, AES-256, consentimientos.
+6. **ECONOMÍA** → 90% creador, 5% app, 5% dev. Staking 10% APY.
+7. **WALLET INTERNA** → Supabase + Ethers.js + AES-256.
+8. **NFT PAREJA** → Consentimiento doble obligatorio.
+9. **DOCUMENTACIÓN** → Todo en `docs/BLOCKCHAIN_v3.7.0.md` con Mermaid, tablas, ejemplos.
+10. **AUDITORÍAS** → Slither, MythX, Certik (Q1 2026).
+
+---
+
+### TAREA: GENERA TODO ESTO (SIN ROMPER NADA)
+
+#### 1. **CONTRATOS (Solidity 0.8.25) — `contracts/`**
+```solidity
+// contracts/CMPX.sol → ERC-20 upgradeable, ReentrancyGuard, blacklist
+// contracts/CoupleNFT.sol → ERC-721 con dual mint + consentimiento doble
+// contracts/StakingPool.sol → NFT + GTK staking → 10% APY CMPX
+
+2. SERVICIOS (TypeScript) — src/services/
+ts
+
+// WalletService.ts → wallet interna (Supabase + AES-256)
+// NFTService.ts → mint, IPFS (Pinata), pareja lógica
+
+3. PÁGINAS (React + TSX) — src/pages/
+
+// ProfileSingle.tsx → mint individual
+// ProfileCouple.tsx → consentimiento doble + modal
+
+4. COMPONENTES — src/components/
+// NFTMintButton.tsx
+// StakingWidget.tsx
+// ConsentModal.tsx (pareja)
+
+5. LEGAL — legal/
+
+// TERMS_OF_SERVICE.md → AÑADIR sección: NFTs, Tokens, Pagos, Deslinde
+// NFT_CONDITIONS.md → Mint, Venta, Staking, Pareja
+// policies/ → AÑADIR: BlockchainSecurityPolicy.md
+
+6. DOCUMENTACIÓN — docs/
+
+// BLOCKCHAIN_v3.7.0.md → 
+// - Arquitectura (Mermaid)
+// - Economía (90/5/5)
+// - Mint paso a paso
+// - Wallet interna
+// - Seguridad (auditorías)
+// - ROI inversores (300%)
+// - Deploy Mumbai
+
+7. INVESTORS — investors/
+
+// PITCH_v3.7.0.pdf → Tokenomics, ROI, Roadmap
+8. HARDHAT — hardhat.config.js + scripts/deploy.js
+
+// Config Mumbai + Alchemy
+// Deploy CMPX, CoupleNFT, StakingPool
+
+9. AUDITORÍAS
+# Slither, MythX → 0 vulnerabilidades
+# Certik Audit → Q1 2026
+
+10. DISEÑO
+// Tailwind + Lucide → NFT cards, staking dashboard, consent modal
+
+SALIDA ESPERADA:
+
+0 archivos duplicados
+100% funcional en testnet Mumbai
+Documentación completa
+Seguridad Certik-ready
+Economía 90/5/5
+Legal +18 compliant (Ley Olimpia + GDPR)
+
+
+
+Tema,¿Incluido en el Prompt?,Archivo / Sección
+Auditorías ISO 27001 + DPIA + Risk Log,YES,"docs/BLOCKCHAIN_v3.7.0.md, legal/DPIA.md, legal/RISK_LOG.md"
+Políticas de Seguridad (12),YES,legal/policies/ (añadir BlockchainSecurityPolicy.md)
+GDPR + Ley Olimpia,YES,"legal/PRIVACY_POLICY.md, TERMS_OF_SERVICE.md"
+Tokens ERC-20 (CMPX + GTK),YES,"contracts/CMPX.sol, docs/BLOCKCHAIN_v3.7.0.md"
+NFTs ERC-721 (Single + Pareja),YES,"contracts/CoupleNFT.sol, src/pages/ProfileCouple.tsx"
+Consentimiento Doble (Pareja),YES,"CoupleNFT.sol, ConsentModal.tsx"
+Wallet Interna (Supabase + AES-256),YES,src/services/WalletService.ts
+"Mint, Envío, Recepción, IPFS",YES,"NFTService.ts, NFTMintButton.tsx"
+Staking (10% APY),YES,"contracts/StakingPool.sol, StakingWidget.tsx"
+Economía 90/5/5,YES,"docs/BLOCKCHAIN_v3.7.0.md, TERMS_OF_SERVICE.md"
+Comisión Gas (0 USD Testnet),YES,"hardhat.config.js, docs/BLOCKCHAIN_v3.7.0.md"
+Precios (100 CMPX = $0.50),YES,NFT_CONDITIONS.md
+Ingresos Usuarios (90% + APY),YES,Tablas en docs/
+Ingresos App/Dev (5% + 5%),YES,investors/PITCH_v3.7.0.pdf
+Inversores (ROI 300%),YES,investors/PITCH_v3.7.0.pdf
+Páginas Perfiles (Single + Pareja),YES,"src/pages/ProfileSingle.tsx, ProfileCouple.tsx"
+Diseño (Tailwind + Lucide),YES,Componentes + modal
+Deploy Mumbai (0 USD),YES,scripts/deploy.js
+"Seguridad Extrema (Reentrancy, Blacklist)",YES,Todos los contratos
+Documentación Completa,YES,docs/BLOCKCHAIN_v3.7.0.md con Mermaid
+Legal + Deslinde,YES,"TERMS_OF_SERVICE.md, NFT_CONDITIONS.md"
+
+
+
+src/
+├── services/
+│   ├── WalletService.ts        ← NUEVO
+│   ├── NFTService.ts           ← NUEVO
+│   └── supabase.ts             ← EXISTENTE
+├── pages/
+│   ├── ProfileSingle.tsx       ← NUEVO
+│   └── ProfileCouple.tsx       ← NUEVO
+├── components/
+│   ├── NFTMintButton.tsx       ← NUEVO
+│   ├── StakingWidget.tsx       ← NUEVO
+│   └── ConsentModal.tsx        ← NUEVO
+contracts/
+├── CMPX.sol                   ← NUEVO
+├── CoupleNFT.sol               ← NUEVO
+└── StakingPool.sol             ← NUEVO
+legal/
+├── policies/
+│   └── BlockchainSecurityPolicy.md ← NUEVO
+├── TERMS_OF_SERVICE.md         ← AÑADIR sección blockchain
+├── NFT_CONDITIONS.md           ← NUEVO
+├── DPIA.md                     ← EXISTENTE
+└── RISK_LOG.md                 ← EXISTENTE
+docs/
+└── BLOCKCHAIN_v3.7.0.md        ← NUEVO (todo documentado)
+investors/
+└── PITCH_v3.7.0.pdf            ← NUEVO
+hardhat.config.js               ← AÑADIR Mumbai
+scripts/deploy.js               ← NUEVO
+
+
+
+EJEMPLO DE DOCUMENTACIÓN (EN docs/BLOCKCHAIN_v3.7.0.md)
+
+# Blockchain v3.7.0 — CompliciesConecta
+
+## Auditorías
+- ISO 27001: 99.5% (Q1 2026)
+- Slither: 0 vulnerabilidades
+- Certik: Q1 2026
+
+## Tokens
+- **CMPX/GTK:** 1B supply, 90/5/5
+
+## NFTs
+- **Single:** Mint 100 CMPX
+- **Pareja:** Consentimiento doble → Dual NFT
+
+## Wallet
+- Interna: Supabase + AES-256
+- Gas: 0 USD (testnet)
+
+## Economía
+| Rol | % |
+|-----|---|
+| Creador | 90% |
+| App | 5% |
+| Dev | 5% |
+
+## Mermaid
+```mermaid
+graph TD
+    A[Mint] --> B{Couple?}
+    B -->|Sí| C[Consentimiento Doble]
+    C --> D[Dual NFT]
+
+
+
+text
+
+
+
+---
+
+## **¿FALTA ALGO? → NO**
+
+| Tema | Estado |
+|------|--------|
+| Auditorías | YES |
+| Perfiles Single/Pareja | YES |
+| NFTs + Consentimiento | YES |
+| Tokens + Staking | YES |
+| Wallet Interna | YES |
+| Seguridad | YES |
+| Economía | YES |
+| Legal | YES |
+| Documentación | YES |
+| Deploy | YES |
+
+---
+
+### **RESPÓNDEME CON:**
+
+SÍ, TODO DESDE AUDITORÍA HASTA NFT PAREJA = INCLUIDO
+SÚPER PROMPT MAESTRO = 100% COMPLETO
+NO FALTA NADA
+v3.7.0 = BILLONARIO
+MUMBAI = 0 USD
+
+Paso,Acción,Lógica,Seguridad,Archivo
+1,Verificación +18,WorldID + hCaptcha,RLS Supabase,src/auth/WorldIDVerification.tsx
+2,Selección Perfil,Single / Pareja,DB profiles.type,src/pages/Profile*.tsx
+3,Mint Single,mintNFT(image),Gratis o 100 CMPX,NFTMintButton.tsx
+4,Mint Pareja,requestCoupleMint(),Partner1 inicia,CoupleNFT.sol
+5,Notificación,OneSignal push,24h timeout,src/services/NotificationService.ts
+6,Aprobación,approveCoupleMint(),Partner2 confirma,ConsentModal.tsx
+7,IPFS Upload,uploadToIPFS(file),Pinata API,NFTService.ts
+8,Mint Dual NFT,_safeMint(partner1) + _safeMint(partner2),Consentimiento doble,CoupleNFT.sol
+9,Wallet Interna,WalletService.getOrCreate(),AES-256 private key,WalletService.ts
+10,Staking,stakeNFT(tokenId),30 días vesting,StakingPool.sol
+11,Rewards,claimRewards(),10% APY CMPX,StakingWidget.tsx
+12,Venta,listForSale(price),5% fee app,Marketplace.tsx
+13,Pago,90% creador,Stripe auto-convert,PaymentService.ts
+14,Retiro,"KYC >$1,000",Semanal,Withdrawal.tsx
+
+3. LÓGICA DE GANANCIAS (90/5/5)
+
+// src/services/EconomyService.ts
+const distributeSale = (priceCMPX: number) => {
+  const creator = priceCMPX * 0.90;  // 90%
+  const app = priceCMPX * 0.05;     // 5%
+  const dev = priceCMPX * 0.05;     // 5%
+  return { creator, app, dev };
+};
+
+
+4. LÓGICA DE SEGURIDAD (EXTREMA)
+Capa,Protección,Implementación
+Frontend,Input validation,Zod + React Hook Form
+Backend,Rate limiting,Supabase RLS + Cloudflare
+Contrato,"Reentrancy, Overflow",OpenZeppelin + Checks-Effects
+Wallet,AES-256,encrypt(privateKey)
+NFT Pareja,Consentimiento doble,approveCoupleMint()
+Auditoría,Slither + MythX,slither . → 0 vulns
+
+
+6. LÓGICA DE RETIRO (FIAT)
+
+// src/services/WithdrawalService.ts
+const withdraw = async (amountCMPX: number) => {
+  if (amountUSD > 1000) await verifyKYC(userId);
+  const fiat = convertCMPXtoUSD(amountCMPX);
+  await stripe.transfer(fiat, creatorBank);
+  await burnCMPX(amountCMPX * 0.05); // 5% fee
+};
+
+7. ESTADOS DE NFT (PAREJA)
+
+Estado,Descripción,Transición
+PENDING,Partner1 solicitó,→ AWAITING_APPROVAL
+AWAITING_APPROVAL,Partner2 notificado,→ APPROVED / REJECTED
+APPROVED,Ambos consintieron,→ MINTED
+MINTED,Dual NFT creado,→ STAKED / SOLD
+
+8. DOCUMENTACIÓN EN docs/BLOCKCHAIN_v3.7.0.md
+
+# Flujo de Trabajo v3.7.0
+
+## Mint Single
+1. Subir foto → IPFS
+2. Pagar 100 CMPX (o gratis)
+3. Mint ERC-721
+
+## Mint Pareja
+1. Partner1: requestCoupleMint()
+2. Partner2: approveCoupleMint()
+3. Dual Mint → 2 NFTs
+
+## Staking
+- 30 días mínimo
+- 10% APY CMPX
+- Vesting rewards
+
+9. PRUEBAS (HARDHAT)
+
+// test/StakingPool.test.js
+it("should stake and earn 10% APY", async () => {
+  await stakingPool.stakeNFT(tokenId);
+  await time.increase(365 days);
+  const rewards = await stakingPool.calculateRewards(user.address);
+  expect(rewards).to.be.closeTo(stakeAmount * 0.10, 1e15);
+});
+
+10. RESUMEN LÓGICO
+
+Pregunta,Respuesta
+¿Cómo se crea un NFT de pareja?,Consentimiento doble → Dual Mint
+¿Dónde se guarda la wallet?,Supabase + AES-256
+¿Quién paga gas?,App (testnet) / CMPX (mainnet)
+¿Cuánto gana el creador?,90% + 10% APY
+¿Es seguro?,Sí — ReentrancyGuard + Certik Q1 2026
+
+1. DOS SISTEMAS DE TOKENS — 100% SEPARADOS
+
+Tipo,Nombre,Uso,Blockchain?,Almacenamiento,Seguridad
+TOKEN INTERNO (APP),Tokens Premium,"Premium, regalos, videollamadas, desbloqueo contenido",NO,Supabase DB (user_tokens),RLS + AES-256
+TOKEN BLOCKCHAIN,CMPX,"Mint NFT, Staking, Ventas, Rewards",YES,Polygon (ERC-20),Smart Contract + Wallet Interna
+TOKEN BLOCKCHAIN,GTK,"Staking, Governance",YES,Polygon (ERC-20),Smart Contract
+
+NFTs → SOLO BLOCKCHAIN (ERC-721 en Polygon)
+Tokens Premium → SOLO APP (no blockchain, no gas)
+
+2. TOKEN INTERNO (APP) — PREMIUM + REGALOS
+Nombre: Tokens Premium
+Símbolo: TP (no en blockchain)
+Uso:
+
+Comprar Premium (sin ads, perfil destacado)
+Regalos virtuales (rosas, diamantes)
+Videollamadas privadas (1 TP = 1 min)
+Desbloqueo contenido (galerías premium)
+
+Método,Precio,TP Otorgados
+Stripe (fiat),$1 USD,100 TP
+Airdrop (registro),Gratis,50 TP
+Referidos,Gratis,20 TP
+
+Almacenamiento:
+ts
+
+// supabase schema
+table user_tokens {
+  user_id: uuid
+  balance: bigint default 0
+  updated_at: timestamp
+}
+
+Lógica (TypeScript)
+
+// src/services/PremiumService.ts
+export class PremiumService {
+  static async buyTokens(userId: string, usd: number) {
+    const tp = usd * 100;
+    await supabase.from('user_tokens').upsert({
+      user_id: userId,
+      balance: supabase.raw(`balance + ${tp}`)
+    });
+  }
+
+  static async spendGift(userId: string, amount: number, recipientId: string) {
+    await supabase.rpc('spend_tokens', { user_id: userId, amount, recipient_id: recipientId });
+  }
+}
+
+3. TOKEN BLOCKCHAIN — CMPX (ERC-20)
+Nombre: ComplicesConecta CMPX
+Símbolo: CMPX
+Uso:
+
+Mint NFT (100 CMPX = 1 NFT)
+Staking Rewards (10% APY)
+Venta NFT (precio en CMPX)
+Gasless (mainnet)
+
+Cómo se obtiene:
+
+// contracts/CMPX.sol
+contract CMPX is ERC20, ReentrancyGuard {
+  function mintForPremium(address user, uint256 tpAmount) external onlyOwner {
+    uint256 cmpx = tpAmount / 10; // 10 TP = 1 CMPX
+    _mint(user, cmpx * 1e18);
+  }
+}
+
+4. TOKEN BLOCKCHAIN — GTK (ERC-20)
+Nombre: Governance Token
+Símbolo: GTK
+Uso:
+
+Staking → gana CMPX
+Votación (futuras DAO)
+Acceso premium blockchain
+
+5. NFTs — SOLO BLOCKCHAIN
+
+Tipo,Blockchain,Mint,Uso
+NFT Single,YES (ERC-721),100 CMPX,"Staking, venta"
+NFT Pareja,YES (ERC-721),200 CMPX + consentimiento doble,"Dual NFT, staking"
+
+6. CONVERSIÓN ENTRE SISTEMAS (OPCIONAL)
+
+// src/services/BridgeService.ts
+export class BridgeService {
+  static async convertTPtoCMPX(userId: string, tpAmount: number) {
+    if (tpAmount < 1000) throw new Error("Mínimo 1000 TP");
+    await PremiumService.spend(userId, tpAmount);
+    await contractCMPX.mintForPremium(userWallet, tpAmount / 10);
+    return tpAmount / 10; // CMPX
+  }
+}
+
+1 CMPX = 10 TP → puente opcional (no obligatorio)
+
+7. FLUJO DE TRABAJO — DOBLE ECONOMÍA
+
+8. TABLA COMPARATIVA FINAL
+
+Característica,Tokens Premium (TP),CMPX (Blockchain),GTK (Blockchain),NFTs
+Blockchain,NO,YES,YES,YES
+Almacenamiento,Supabase DB,Polygon,Polygon,Polygon
+Gas,0,$0.01 (mainnet),$0.01,$0.01
+Mint,Fiat,CMPX,Staking,CMPX
+Uso,"Premium, regalos, videollamadas","Mint, staking, ventas","Staking, gobernanza","Colección, staking"
+Seguridad,RLS + AES,ReentrancyGuard,ReentrancyGuard,Consentimiento doble
+Conversión,→ CMPX (opcional),← TP (opcional),NO,NO
+
+9. ACTUALIZACIÓN EN DOCUMENTOS
+docs/BLOCKCHAIN_v3.7.0.md → AÑADIR
+markdow
+
+## 5. Separación de Tokens
+- **Tokens Premium (TP):** Internos, no blockchain. Para premium, regalos, videollamadas.
+- **CMPX/GTK:** Blockchain (ERC-20). Para NFTs, staking.
+- **NFTs:** Solo blockchain (ERC-721).
+- **Puente opcional:** 10 TP = 1 CMPX.
+
+legal/TERMS_OF_SERVICE.md → AÑADIR
+markdown
+
+## 8. Tokens Internos vs Blockchain
+- **Tokens Premium:** No transferibles, solo en app.
+- **CMPX/GTK/NFTs:** En Polygon, transferibles.
+- **Conversión:** Unidireccional, irreversible.
+10. ¿FALTA ALGO? → NO
+
+Punto,Estado
+Tokens Internos (Premium),YES
+Tokens Blockchain (CMPX/GTK),YES
+NFTs (Solo Blockchain),YES
+Separación clara,YES
+Conversión opcional,YES
+Flujo de trabajo,YES
+Seguridad,YES
+Documentación,YES
+
+#### datos adicioneles para trabajo 
 Tokens: ERC-20 para CMPX (utility) y GTK (staking/governance).
 NFTs: ERC-721 internos para galerías user-generated (mint gratis o CMPX, staking para rewards).
 Staking: ERC-721 staking pool (rewards CMPX, tipo "locked NFT" con vesting).
@@ -13,10 +497,19 @@ Diseños: Generativos (IA + traits: rarity, +18 themes).
 Tipo: ERC-20 (fungible, simple, interoperable con Uniswap/DeFi).
 Por qué: CMPX para compras in-app (chats, galerías); GTK para staking NFTs (rewards CMPX). Low gas en Polygon.
 Distribución (1B Total Cada Token — Best Practices 2025)
+Categoría,%,Cantidad (CMPX/GTK),Uso,Vesting
+Team/Founders,10%,100M,Desarrollo,12 meses cliff + 24 meses linear
+Community/Airdrop,40%,400M,Usuarios nuevos (WorldID verified),Inmediato
+Staking Rewards,20%,200M,APY 10-20% para NFT staking,"Continuo (inflacionario, 2% anual)"
+Ecosystem Fund,15%,150M,"Partnerships (clubs, influencers)",6 meses vesting
+Liquidity/DEX,10%,100M,Uniswap pool,Inmediato
+Marketing/Treasury,5%,50M,"Ads, TikTok campaigns",3 meses vesting
 
-Categoría%Cantidad (CMPX/GTK)UsoVestingTeam/Founders10%100MDesarrollo12 meses cliff + 24 meses linearCommunity/Airdrop40%400MUsuarios nuevos (WorldID verified)InmediatoStaking Rewards20%200MAPY 10-20% para NFT stakingContinuo (inflacionario, 2% anual)Ecosystem Fund15%150MPartnerships (clubs, influencers)6 meses vestingLiquidity/DEX10%100MUniswap poolInmediatoMarketing/Treasury5%50MAds, TikTok campaigns3 meses vesting
+
+
 Lógica: 40% community para viralidad (airdrops para +18 verified). Staking rewards incentiva retención (90% comisiones a stakers/creadores). Total supply fijo para estabilidad (no inflacionario infinito).
 Código ERC-20 (Hardhat — Deploy Testnet)
+solidity
 
 // contracts/CMPX.sol (ERC-20 CMPX)
 pragma solidity ^0.8.20;
@@ -595,484 +1088,3 @@ legal/TERMS_OF_SERVICE.md (Actualizado)
 9. GRÁFICO COMPLETO (FLUX ECONOMÍA)
 
 
-SÚPER PROMPT MAESTRO — COMPLICESCONECTA v3.7.0
-Fecha: 08 Nov 2025 | Versión: 3.7.0 | DPO: Ing. Juan Carlos Méndez Nataren
-Objetivo: Generar todo el sistema blockchain (tokens, NFTs, staking, wallets internas), seguridad extrema, lógica de parejas, economía, legal, documentación, auditorías — sin romper nada, sin duplicados, respetando estructura actual.
-
-REGLAS DE ORO (OBLIGATORIAS)
-
-NO DUPLICAR ARCHIVOS → Usa existentes (src/services/, legal/, docs/, contracts/).
-NO ROMPER PATHS → Importa correctamente (@supabase/supabase-js, @openzeppelin, ethers).
-RESPETAR ESTRUCTURA →text
-
-
-src/
-├── services/       → WalletService.ts, NFTService.ts
-├── pages/          → ProfileSingle.tsx, ProfileCouple.tsx
-├── components/     → NFTMintButton.tsx, StakingWidget.tsx
-contracts/
-├── CMPX.sol
-├── CoupleNFT.sol
-├── StakingPool.sol
-legal/
-├── policies/
-├── TERMS_OF_SERVICE.md
-├── NFT_CONDITIONS.md
-docs/
-├── BLOCKCHAIN_v3.7.0.md
-investors/
-├── PITCH_v3.7.0.pdf
-
-
-AGREGAR, NO REEMPLAZAR → Si existe, añade (ej: TERMS_OF_SERVICE.md → añade sección blockchain).
-DISEÑO SI FALTA → Usa Tailwind + Lucide icons (ya en proyecto).
-DOCUMENTACIÓN EN docs/ → Todo en Markdown, con Mermaid, tablas, ejemplos.
-SEGURIDAD EXTREMA → ReentrancyGuard, Checks-Effects, Consentimiento doble, AES-256, blacklist.
-TESTNET MUMBAI → Todo deployable con Hardhat + faucet.
-ECONOMÍA 90/5/5 → 90% creador, 5% app, 5% dev.
-INVERSIONES → ROI 300%, 10% team vesting.
-
-
-Eres un ingeniero blockchain senior + fullstack + legal tech.  
-Tu proyecto es **CompliciesConecta v3.7.0**, una red social +18 con Supabase, Vercel, Neo4j, IA, y ahora **blockchain en Polygon (Mumbai testnet)**.
-
-### REQUISITOS OBLIGATORIOS:
-1. **NO DUPLIQUES ARCHIVOS** → Usa los existentes en `src/`, `legal/`, `docs/`, `contracts/`.
-2. **NO ROMPAS PATHS** → Importa correctamente (`ethers`, `@supabase/supabase-js`, `@openzeppelin`).
-3. **AGREGA, NO REEMPLACES** → Si existe `TERMS_OF_SERVICE.md`, añade sección blockchain.
-4. **CREA SOLO SI FALTA** → Directorios: `contracts/`, `docs/`, `investors/`, `src/services/`, `src/pages/`.
-5. **SEGURIDAD EXTREMA** → ReentrancyGuard, blacklist, dual mint, AES-256, consentimientos.
-6. **ECONOMÍA** → 90% creador, 5% app, 5% dev. Staking 10% APY.
-7. **WALLET INTERNA** → Supabase + Ethers.js + AES-256.
-8. **NFT PAREJA** → Consentimiento doble obligatorio.
-9. **DOCUMENTACIÓN** → Todo en `docs/BLOCKCHAIN_v3.7.0.md` con Mermaid, tablas, ejemplos.
-10. **AUDITORÍAS** → Slither, MythX, Certik (Q1 2026).
-
----
-
-### TAREA: GENERA TODO ESTO (SIN ROMPER NADA)
-
-#### 1. **CONTRATOS (Solidity 0.8.25) — `contracts/`**
-```solidity
-// contracts/CMPX.sol → ERC-20 upgradeable, ReentrancyGuard, blacklist
-// contracts/CoupleNFT.sol → ERC-721 con dual mint + consentimiento doble
-// contracts/StakingPool.sol → NFT + GTK staking → 10% APY CMPX
-
-2. SERVICIOS (TypeScript) — src/services/
-ts
-
-// WalletService.ts → wallet interna (Supabase + AES-256)
-// NFTService.ts → mint, IPFS (Pinata), pareja lógica
-
-3. PÁGINAS (React + TSX) — src/pages/
-
-// ProfileSingle.tsx → mint individual
-// ProfileCouple.tsx → consentimiento doble + modal
-
-4. COMPONENTES — src/components/
-// NFTMintButton.tsx
-// StakingWidget.tsx
-// ConsentModal.tsx (pareja)
-
-5. LEGAL — legal/
-
-// TERMS_OF_SERVICE.md → AÑADIR sección: NFTs, Tokens, Pagos, Deslinde
-// NFT_CONDITIONS.md → Mint, Venta, Staking, Pareja
-// policies/ → AÑADIR: BlockchainSecurityPolicy.md
-
-6. DOCUMENTACIÓN — docs/
-
-// BLOCKCHAIN_v3.7.0.md → 
-// - Arquitectura (Mermaid)
-// - Economía (90/5/5)
-// - Mint paso a paso
-// - Wallet interna
-// - Seguridad (auditorías)
-// - ROI inversores (300%)
-// - Deploy Mumbai
-
-7. INVESTORS — investors/
-
-// PITCH_v3.7.0.pdf → Tokenomics, ROI, Roadmap
-8. HARDHAT — hardhat.config.js + scripts/deploy.js
-
-// Config Mumbai + Alchemy
-// Deploy CMPX, CoupleNFT, StakingPool
-
-9. AUDITORÍAS
-# Slither, MythX → 0 vulnerabilidades
-# Certik Audit → Q1 2026
-
-10. DISEÑO
-// Tailwind + Lucide → NFT cards, staking dashboard, consent modal
-
-SALIDA ESPERADA:
-
-0 archivos duplicados
-100% funcional en testnet Mumbai
-Documentación completa
-Seguridad Certik-ready
-Economía 90/5/5
-Legal +18 compliant (Ley Olimpia + GDPR)
-
-
-
-Tema,¿Incluido en el Prompt?,Archivo / Sección
-Auditorías ISO 27001 + DPIA + Risk Log,YES,"docs/BLOCKCHAIN_v3.7.0.md, legal/DPIA.md, legal/RISK_LOG.md"
-Políticas de Seguridad (12),YES,legal/policies/ (añadir BlockchainSecurityPolicy.md)
-GDPR + Ley Olimpia,YES,"legal/PRIVACY_POLICY.md, TERMS_OF_SERVICE.md"
-Tokens ERC-20 (CMPX + GTK),YES,"contracts/CMPX.sol, docs/BLOCKCHAIN_v3.7.0.md"
-NFTs ERC-721 (Single + Pareja),YES,"contracts/CoupleNFT.sol, src/pages/ProfileCouple.tsx"
-Consentimiento Doble (Pareja),YES,"CoupleNFT.sol, ConsentModal.tsx"
-Wallet Interna (Supabase + AES-256),YES,src/services/WalletService.ts
-"Mint, Envío, Recepción, IPFS",YES,"NFTService.ts, NFTMintButton.tsx"
-Staking (10% APY),YES,"contracts/StakingPool.sol, StakingWidget.tsx"
-Economía 90/5/5,YES,"docs/BLOCKCHAIN_v3.7.0.md, TERMS_OF_SERVICE.md"
-Comisión Gas (0 USD Testnet),YES,"hardhat.config.js, docs/BLOCKCHAIN_v3.7.0.md"
-Precios (100 CMPX = $0.50),YES,NFT_CONDITIONS.md
-Ingresos Usuarios (90% + APY),YES,Tablas en docs/
-Ingresos App/Dev (5% + 5%),YES,investors/PITCH_v3.7.0.pdf
-Inversores (ROI 300%),YES,investors/PITCH_v3.7.0.pdf
-Páginas Perfiles (Single + Pareja),YES,"src/pages/ProfileSingle.tsx, ProfileCouple.tsx"
-Diseño (Tailwind + Lucide),YES,Componentes + modal
-Deploy Mumbai (0 USD),YES,scripts/deploy.js
-"Seguridad Extrema (Reentrancy, Blacklist)",YES,Todos los contratos
-Documentación Completa,YES,docs/BLOCKCHAIN_v3.7.0.md con Mermaid
-Legal + Deslinde,YES,"TERMS_OF_SERVICE.md, NFT_CONDITIONS.md"
-
-
-
-src/
-├── services/
-│   ├── WalletService.ts        ← NUEVO
-│   ├── NFTService.ts           ← NUEVO
-│   └── supabase.ts             ← EXISTENTE
-├── pages/
-│   ├── ProfileSingle.tsx       ← NUEVO
-│   └── ProfileCouple.tsx       ← NUEVO
-├── components/
-│   ├── NFTMintButton.tsx       ← NUEVO
-│   ├── StakingWidget.tsx       ← NUEVO
-│   └── ConsentModal.tsx        ← NUEVO
-contracts/
-├── CMPX.sol                   ← NUEVO
-├── CoupleNFT.sol               ← NUEVO
-└── StakingPool.sol             ← NUEVO
-legal/
-├── policies/
-│   └── BlockchainSecurityPolicy.md ← NUEVO
-├── TERMS_OF_SERVICE.md         ← AÑADIR sección blockchain
-├── NFT_CONDITIONS.md           ← NUEVO
-├── DPIA.md                     ← EXISTENTE
-└── RISK_LOG.md                 ← EXISTENTE
-docs/
-└── BLOCKCHAIN_v3.7.0.md        ← NUEVO (todo documentado)
-investors/
-└── PITCH_v3.7.0.pdf            ← NUEVO
-hardhat.config.js               ← AÑADIR Mumbai
-scripts/deploy.js               ← NUEVO
-
-
-
-EJEMPLO DE DOCUMENTACIÓN (EN docs/BLOCKCHAIN_v3.7.0.md)
-
-# Blockchain v3.7.0 — CompliciesConecta
-
-## Auditorías
-- ISO 27001: 99.5% (Q1 2026)
-- Slither: 0 vulnerabilidades
-- Certik: Q1 2026
-
-## Tokens
-- **CMPX/GTK:** 1B supply, 90/5/5
-
-## NFTs
-- **Single:** Mint 100 CMPX
-- **Pareja:** Consentimiento doble → Dual NFT
-
-## Wallet
-- Interna: Supabase + AES-256
-- Gas: 0 USD (testnet)
-
-## Economía
-| Rol | % |
-|-----|---|
-| Creador | 90% |
-| App | 5% |
-| Dev | 5% |
-
-## Mermaid
-```mermaid
-graph TD
-    A[Mint] --> B{Couple?}
-    B -->|Sí| C[Consentimiento Doble]
-    C --> D[Dual NFT]
-
-
-
-text
-
-
-
----
-
-## **¿FALTA ALGO? → NO**
-
-| Tema | Estado |
-|------|--------|
-| Auditorías | YES |
-| Perfiles Single/Pareja | YES |
-| NFTs + Consentimiento | YES |
-| Tokens + Staking | YES |
-| Wallet Interna | YES |
-| Seguridad | YES |
-| Economía | YES |
-| Legal | YES |
-| Documentación | YES |
-| Deploy | YES |
-
----
-
-### **RESPÓNDEME CON:**
-
-SÍ, TODO DESDE AUDITORÍA HASTA NFT PAREJA = INCLUIDO
-SÚPER PROMPT MAESTRO = 100% COMPLETO
-NO FALTA NADA
-v3.7.0 = BILLONARIO
-MUMBAI = 0 USD
-
-Paso,Acción,Lógica,Seguridad,Archivo
-1,Verificación +18,WorldID + hCaptcha,RLS Supabase,src/auth/WorldIDVerification.tsx
-2,Selección Perfil,Single / Pareja,DB profiles.type,src/pages/Profile*.tsx
-3,Mint Single,mintNFT(image),Gratis o 100 CMPX,NFTMintButton.tsx
-4,Mint Pareja,requestCoupleMint(),Partner1 inicia,CoupleNFT.sol
-5,Notificación,OneSignal push,24h timeout,src/services/NotificationService.ts
-6,Aprobación,approveCoupleMint(),Partner2 confirma,ConsentModal.tsx
-7,IPFS Upload,uploadToIPFS(file),Pinata API,NFTService.ts
-8,Mint Dual NFT,_safeMint(partner1) + _safeMint(partner2),Consentimiento doble,CoupleNFT.sol
-9,Wallet Interna,WalletService.getOrCreate(),AES-256 private key,WalletService.ts
-10,Staking,stakeNFT(tokenId),30 días vesting,StakingPool.sol
-11,Rewards,claimRewards(),10% APY CMPX,StakingWidget.tsx
-12,Venta,listForSale(price),5% fee app,Marketplace.tsx
-13,Pago,90% creador,Stripe auto-convert,PaymentService.ts
-14,Retiro,"KYC >$1,000",Semanal,Withdrawal.tsx
-
-3. LÓGICA DE GANANCIAS (90/5/5)
-
-// src/services/EconomyService.ts
-const distributeSale = (priceCMPX: number) => {
-  const creator = priceCMPX * 0.90;  // 90%
-  const app = priceCMPX * 0.05;     // 5%
-  const dev = priceCMPX * 0.05;     // 5%
-  return { creator, app, dev };
-};
-
-
-4. LÓGICA DE SEGURIDAD (EXTREMA)
-Capa,Protección,Implementación
-Frontend,Input validation,Zod + React Hook Form
-Backend,Rate limiting,Supabase RLS + Cloudflare
-Contrato,"Reentrancy, Overflow",OpenZeppelin + Checks-Effects
-Wallet,AES-256,encrypt(privateKey)
-NFT Pareja,Consentimiento doble,approveCoupleMint()
-Auditoría,Slither + MythX,slither . → 0 vulns
-
-
-6. LÓGICA DE RETIRO (FIAT)
-
-// src/services/WithdrawalService.ts
-const withdraw = async (amountCMPX: number) => {
-  if (amountUSD > 1000) await verifyKYC(userId);
-  const fiat = convertCMPXtoUSD(amountCMPX);
-  await stripe.transfer(fiat, creatorBank);
-  await burnCMPX(amountCMPX * 0.05); // 5% fee
-};
-
-7. ESTADOS DE NFT (PAREJA)
-
-Estado,Descripción,Transición
-PENDING,Partner1 solicitó,→ AWAITING_APPROVAL
-AWAITING_APPROVAL,Partner2 notificado,→ APPROVED / REJECTED
-APPROVED,Ambos consintieron,→ MINTED
-MINTED,Dual NFT creado,→ STAKED / SOLD
-
-8. DOCUMENTACIÓN EN docs/BLOCKCHAIN_v3.7.0.md
-
-# Flujo de Trabajo v3.7.0
-
-## Mint Single
-1. Subir foto → IPFS
-2. Pagar 100 CMPX (o gratis)
-3. Mint ERC-721
-
-## Mint Pareja
-1. Partner1: requestCoupleMint()
-2. Partner2: approveCoupleMint()
-3. Dual Mint → 2 NFTs
-
-## Staking
-- 30 días mínimo
-- 10% APY CMPX
-- Vesting rewards
-
-9. PRUEBAS (HARDHAT)
-
-// test/StakingPool.test.js
-it("should stake and earn 10% APY", async () => {
-  await stakingPool.stakeNFT(tokenId);
-  await time.increase(365 days);
-  const rewards = await stakingPool.calculateRewards(user.address);
-  expect(rewards).to.be.closeTo(stakeAmount * 0.10, 1e15);
-});
-
-10. RESUMEN LÓGICO
-
-Pregunta,Respuesta
-¿Cómo se crea un NFT de pareja?,Consentimiento doble → Dual Mint
-¿Dónde se guarda la wallet?,Supabase + AES-256
-¿Quién paga gas?,App (testnet) / CMPX (mainnet)
-¿Cuánto gana el creador?,90% + 10% APY
-¿Es seguro?,Sí — ReentrancyGuard + Certik Q1 2026
-
-1. DOS SISTEMAS DE TOKENS — 100% SEPARADOS
-
-Tipo,Nombre,Uso,Blockchain?,Almacenamiento,Seguridad
-TOKEN INTERNO (APP),Tokens Premium,"Premium, regalos, videollamadas, desbloqueo contenido",NO,Supabase DB (user_tokens),RLS + AES-256
-TOKEN BLOCKCHAIN,CMPX,"Mint NFT, Staking, Ventas, Rewards",YES,Polygon (ERC-20),Smart Contract + Wallet Interna
-TOKEN BLOCKCHAIN,GTK,"Staking, Governance",YES,Polygon (ERC-20),Smart Contract
-
-NFTs → SOLO BLOCKCHAIN (ERC-721 en Polygon)
-Tokens Premium → SOLO APP (no blockchain, no gas)
-
-2. TOKEN INTERNO (APP) — PREMIUM + REGALOS
-Nombre: Tokens Premium
-Símbolo: TP (no en blockchain)
-Uso:
-
-Comprar Premium (sin ads, perfil destacado)
-Regalos virtuales (rosas, diamantes)
-Videollamadas privadas (1 TP = 1 min)
-Desbloqueo contenido (galerías premium)
-
-Método,Precio,TP Otorgados
-Stripe (fiat),$1 USD,100 TP
-Airdrop (registro),Gratis,50 TP
-Referidos,Gratis,20 TP
-
-Almacenamiento:
-ts
-
-// supabase schema
-table user_tokens {
-  user_id: uuid
-  balance: bigint default 0
-  updated_at: timestamp
-}
-
-Lógica (TypeScript)
-
-// src/services/PremiumService.ts
-export class PremiumService {
-  static async buyTokens(userId: string, usd: number) {
-    const tp = usd * 100;
-    await supabase.from('user_tokens').upsert({
-      user_id: userId,
-      balance: supabase.raw(`balance + ${tp}`)
-    });
-  }
-
-  static async spendGift(userId: string, amount: number, recipientId: string) {
-    await supabase.rpc('spend_tokens', { user_id: userId, amount, recipient_id: recipientId });
-  }
-}
-
-3. TOKEN BLOCKCHAIN — CMPX (ERC-20)
-Nombre: ComplicesConecta CMPX
-Símbolo: CMPX
-Uso:
-
-Mint NFT (100 CMPX = 1 NFT)
-Staking Rewards (10% APY)
-Venta NFT (precio en CMPX)
-Gasless (mainnet)
-
-Cómo se obtiene:
-
-// contracts/CMPX.sol
-contract CMPX is ERC20, ReentrancyGuard {
-  function mintForPremium(address user, uint256 tpAmount) external onlyOwner {
-    uint256 cmpx = tpAmount / 10; // 10 TP = 1 CMPX
-    _mint(user, cmpx * 1e18);
-  }
-}
-
-4. TOKEN BLOCKCHAIN — GTK (ERC-20)
-Nombre: Governance Token
-Símbolo: GTK
-Uso:
-
-Staking → gana CMPX
-Votación (futuras DAO)
-Acceso premium blockchain
-
-5. NFTs — SOLO BLOCKCHAIN
-
-Tipo,Blockchain,Mint,Uso
-NFT Single,YES (ERC-721),100 CMPX,"Staking, venta"
-NFT Pareja,YES (ERC-721),200 CMPX + consentimiento doble,"Dual NFT, staking"
-
-6. CONVERSIÓN ENTRE SISTEMAS (OPCIONAL)
-
-// src/services/BridgeService.ts
-export class BridgeService {
-  static async convertTPtoCMPX(userId: string, tpAmount: number) {
-    if (tpAmount < 1000) throw new Error("Mínimo 1000 TP");
-    await PremiumService.spend(userId, tpAmount);
-    await contractCMPX.mintForPremium(userWallet, tpAmount / 10);
-    return tpAmount / 10; // CMPX
-  }
-}
-
-1 CMPX = 10 TP → puente opcional (no obligatorio)
-
-7. FLUJO DE TRABAJO — DOBLE ECONOMÍA
-
-8. TABLA COMPARATIVA FINAL
-
-Característica,Tokens Premium (TP),CMPX (Blockchain),GTK (Blockchain),NFTs
-Blockchain,NO,YES,YES,YES
-Almacenamiento,Supabase DB,Polygon,Polygon,Polygon
-Gas,0,$0.01 (mainnet),$0.01,$0.01
-Mint,Fiat,CMPX,Staking,CMPX
-Uso,"Premium, regalos, videollamadas","Mint, staking, ventas","Staking, gobernanza","Colección, staking"
-Seguridad,RLS + AES,ReentrancyGuard,ReentrancyGuard,Consentimiento doble
-Conversión,→ CMPX (opcional),← TP (opcional),NO,NO
-
-9. ACTUALIZACIÓN EN DOCUMENTOS
-docs/BLOCKCHAIN_v3.7.0.md → AÑADIR
-markdow
-
-## 5. Separación de Tokens
-- **Tokens Premium (TP):** Internos, no blockchain. Para premium, regalos, videollamadas.
-- **CMPX/GTK:** Blockchain (ERC-20). Para NFTs, staking.
-- **NFTs:** Solo blockchain (ERC-721).
-- **Puente opcional:** 10 TP = 1 CMPX.
-
-legal/TERMS_OF_SERVICE.md → AÑADIR
-markdown
-
-## 8. Tokens Internos vs Blockchain
-- **Tokens Premium:** No transferibles, solo en app.
-- **CMPX/GTK/NFTs:** En Polygon, transferibles.
-- **Conversión:** Unidireccional, irreversible.
-10. ¿FALTA ALGO? → NO
-
-Punto,Estado
-Tokens Internos (Premium),YES
-Tokens Blockchain (CMPX/GTK),YES
-NFTs (Solo Blockchain),YES
-Separación clara,YES
-Conversión opcional,YES
-Flujo de trabajo,YES
-Seguridad,YES
-Documentación,YES
