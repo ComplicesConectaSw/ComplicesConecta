@@ -13,6 +13,30 @@ All notable changes to this project will be documented in this file.
 - **build-and-deploy.ps1**: Verificación opcional de variables (advertencia, no error fatal)
 - **build-and-deploy.ps1**: Detección de conflictos en `vercel.json` antes de deploy
 
+### Fixed - Funciones Globales
+- **showEnvInfo.ts**: Funciones ahora se exponen también en producción (no solo en desarrollo)
+- **captureConsoleErrors.ts**: Funciones ahora se exponen también en producción (no solo en desarrollo)
+- **Verificaciones adicionales**: Múltiples intentos de exposición con delays para asegurar disponibilidad
+- **Wallet conflicts**: Errores de wallet extensions completamente silenciados
+
+### Fixed - CircleCI
+- **.circleci/config.yml**: Actualizado a Node.js 20.19+ (requerido por Vite 7.2.2)
+- **package.json**: Agregada sección `engines` con requisito Node.js 20.19+ o 22.12+
+- **Verificación de versión**: Paso explícito para verificar e instalar Node.js 20.19+ si es necesario
+
+### Fixed - Servicios
+- **AdminProduction.tsx**: Importado `safeGetItem` de `safeLocalStorage`
+- **postsService.ts**: 
+  - Corregido manejo de `demoUser` con verificación de tipo
+  - Eliminados alias no soportados en consultas Supabase
+  - Ajustados tipos para permitir `null` en `created_at` y `updated_at`
+- **InvitationsService.ts**:
+  - Corregido manejo de `demoUser` con verificación de tipo
+  - Eliminadas interfaces no usadas
+  - Ajustados tipos para manejar valores `null` correctamente
+- **clearStorage.ts**: Importado `safeGetItem` y `safeRemoveItem` de `safeLocalStorage`
+- **StoryViewer.tsx**: Importado `safeGetItem` de `safeLocalStorage`
+
 ### Added - Scripts Unificados
 - **database-manager.ps1**: Script maestro que unifica 5 scripts de gestión de BD
   - Sincronización de BD local y remota

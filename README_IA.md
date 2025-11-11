@@ -120,3 +120,6 @@
    - **Scripts Unificados**: `alinear-supabase.ps1`, `analizar-y-alinear-bd.ps1`, `aplicar-migraciones-remoto.ps1`, `sync-databases.ps1`, `verificar-alineacion-tablas.ps1` → `database-manager.ps1`
    - **Secciones Legales**: Secciones legales independientes agregadas a `Moderators.tsx`, `Investors.tsx`, `Clubs.tsx`, `NFTs.tsx`
    - **Nota Importante**: Las secciones legales en estas páginas son independientes del contenido de `docs/legal/`. La página `Legal.tsx` solo se actualiza con el contenido del directorio `docs/legal/`
+   - **Funciones Globales Fixed**: `showEnvInfo()` y `showErrorReport()` ahora disponibles en producción (no solo en desarrollo)
+   - **CircleCI Fixed**: Configurado con Node.js 20.19+ (requerido por Vite 7.2.2)
+   - **Correcciones de Servicios**: `AdminProduction.tsx`, `postsService.ts`, `InvitationsService.ts`, `clearStorage.ts`, `StoryViewer.tsx` corregidos con `safeLocalStorage`
