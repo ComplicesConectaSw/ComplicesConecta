@@ -1,12 +1,9 @@
 /**
  * Utilidad para capturar y mostrar errores de consola
- * Versión: 3.6.3
+ * Versión: 3.5.1
  * 
  * Uso: Importar y llamar captureConsoleErrors() en la consola del navegador
  */
-
-/// <reference lib="dom" />
-/// <reference lib="dom.iterable" />
 
 interface ConsoleError {
   type: 'error' | 'warning' | 'log';
@@ -151,7 +148,7 @@ class ConsoleErrorCapture {
         const observer = new PerformanceObserver((list) => {
           for (const entry of list.getEntries()) {
             if (entry.entryType === 'resource') {
-              const resourceEntry = entry as any;
+              const resourceEntry = entry as PerformanceResourceTiming;
               if (resourceEntry.transferSize === 0 && resourceEntry.decodedBodySize === 0 && resourceEntry.duration > 100) {
                 // Posible recurso no cargado
                 let resourceType: ResourceError['type'] = 'other';
@@ -203,7 +200,7 @@ class ConsoleErrorCapture {
     // Capturar errores de red usando fetch
     const originalFetch = window.fetch;
     (window as any).__originalFetch = originalFetch;
-    window.fetch = async (...args: Parameters<typeof fetch>) => {
+    window.fetch = async (...args) => {
       try {
         const response = await originalFetch(...args);
         if (!response.ok && args[0]) {
