@@ -19,9 +19,78 @@ export default defineConfig(({ mode }) => {
           chunkFileNames: 'assets/js/[name].js',
           entryFileNames: 'assets/js/[name].js',
           assetFileNames: 'assets/[ext]/[name].[ext]',
+          manualChunks: (id) => {
+            // Vendor libraries
+            if (id.includes('node_modules')) {
+              if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
+                return 'vendor-react';
+              }
+              if (id.includes('@radix-ui')) {
+                return 'vendor-ui';
+              }
+              if (id.includes('lucide-react') || id.includes('date-fns') || id.includes('clsx')) {
+                return 'vendor-utils';
+              }
+              if (id.includes('@supabase')) {
+                return 'vendor-supabase';
+              }
+              if (id.includes('@tanstack/react-query')) {
+                return 'vendor-query';
+              }
+              // Separar librerías pesadas específicas
+              if (id.includes('framer-motion')) {
+                return 'vendor-animation';
+              }
+              if (id.includes('recharts') || id.includes('chart')) {
+                return 'vendor-charts';
+              }
+              if (id.includes('@sentry') || id.includes('sentry')) {
+                return 'vendor-monitoring';
+              }
+              if (id.includes('zod') || id.includes('yup') || id.includes('joi')) {
+                return 'vendor-validation';
+              }
+              if (id.includes('axios') || id.includes('fetch')) {
+                return 'vendor-http';
+              }
+              if (id.includes('crypto') || id.includes('bcrypt') || id.includes('hash')) {
+                return 'vendor-crypto';
+              }
+              return 'vendor-other';
+            }
+            
+            // Large components by path
+            if (id.includes('src/app/(admin)')) {
+              return 'admin-components';
+            }
+            if (id.includes('src/components/chat') || id.includes('Chat.tsx')) {
+              return 'chat-components';
+            }
+            if (id.includes('src/components/profiles') || id.includes('Profile')) {
+              return 'profile-components';
+            }
+            if (id.includes('src/services/Analytics') || id.includes('analytics')) {
+              return 'analytics';
+            }
+            if (id.includes('src/components/tokens') || id.includes('Tokens')) {
+              return 'tokens';
+            }
+            if (id.includes('src/components/stories') || id.includes('Stories')) {
+              return 'stories';
+            }
+          }
         },
       },
-      cssCodeSplit: false,
+      cssCodeSplit: true,
+      chunkSizeWarningLimit: 1000,
+      target: 'esnext',
+      minify: 'terser',
+      terserOptions: {
+        compress: {
+          drop_console: true,
+          drop_debugger: true
+        }
+      }
     },
     define: {
       ...Object.fromEntries(

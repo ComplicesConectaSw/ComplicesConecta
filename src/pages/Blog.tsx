@@ -8,8 +8,8 @@ const Blog = () => {
   const blogPosts = [
     {
       id: 1,
-      title: "Gu�a Completa para Conexiones Seguras en el Lifestyle - v3.5.0",
-      excerpt: "Aprende las mejores pr�cticas para conectar de manera segura y discreta en la comunidad lifestyle. Conoce las nuevas features: Verificador IA de Consentimiento, Galer�as NFT-Verificadas, Matching Predictivo con Neo4j y Eventos Virtuales Sostenibles.",
+      title: "Gua Completa para Conexiones Seguras en el Lifestyle - v3.5.0",
+      excerpt: "Aprende las mejores prcticas para conectar de manera segura y discreta en la comunidad lifestyle. Conoce las nuevas features: Verificador IA de Consentimiento, Galeras NFT-Verificadas, Matching Predictivo con Neo4j y Eventos Virtuales Sostenibles.",
       author: "Equipo ComplicesConecta",
       date: "2025-11-05",
       category: "Seguridad",
@@ -17,16 +17,16 @@ const Blog = () => {
     },
     {
       id: 2,
-      title: "C�mo Crear un Perfil Atractivo y Aut�ntico",
+      title: "Cmo Crear un Perfil Atractivo y Autntico",
       excerpt: "Tips y consejos para destacar en la plataforma manteniendo tu autenticidad.",
-      author: "Mar�a Gonz�lez",
+      author: "Mara Gonzlez",
       date: "2024-11-28",
       category: "Consejos",
       image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&h=400&fit=crop&auto=format&q=80"
     },
     {
       id: 3,
-      title: "Eventos Exclusivos: Qu� Esperar y C�mo Participar",
+      title: "Eventos Exclusivos: Qu Esperar y Cmo Participar",
       excerpt: "Todo lo que necesitas saber sobre nuestros eventos presenciales y virtuales.",
       author: "Carlos Ruiz",
       date: "2024-11-25",
@@ -55,7 +55,7 @@ const Blog = () => {
             Blog ComplicesConecta
           </h1>
           <p className="text-xl text-white/90 max-w-2xl">
-            Consejos, gu�as y novedades para aprovechar al m�ximo tu experiencia en la comunidad lifestyle m�s exclusiva.
+            Consejos, guas y novedades para aprovechar al mximo tu experiencia en la comunidad lifestyle ms exclusiva.
           </p>
         </div>
       </div>
@@ -103,7 +103,7 @@ const Blog = () => {
                   className="w-full border-white/30 text-white font-semibold hover:bg-white/20 hover:border-white/40 shadow-lg hover:shadow-xl transition-all duration-300"
                   onClick={() => navigate(`/blog/${post.id}`)}
                 >
-                  Leer m�s
+                  Leer ms
                 </Button>
               </div>
             </article>
@@ -113,10 +113,10 @@ const Blog = () => {
         {/* Newsletter Subscription */}
         <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-8 mt-16 text-center">
           <h3 className="text-2xl font-bold mb-4 text-white">
-            Suscr�bete a nuestro newsletter
+            Suscrbete a nuestro newsletter
           </h3>
           <p className="text-white/90 mb-6 max-w-2xl mx-auto">
-            Recibe los �ltimos art�culos, consejos exclusivos y novedades directamente en tu email.
+            Recibe los ltimos artculos, consejos exclusivos y novedades directamente en tu email.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">

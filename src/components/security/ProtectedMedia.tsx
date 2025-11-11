@@ -146,24 +146,19 @@ export const ProtectedMedia: React.FC<ProtectedMediaProps> = ({
   };
 
   const showScreenshotWarning = () => {
+    // Crear elementos DOM de forma segura sin innerHTML
     const warning = document.createElement('div');
-    warning.innerHTML = `
-      <div style="
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: rgba(0,0,0,0.9);
-        color: white;
-        padding: 20px;
-        border-radius: 8px;
-        z-index: 10000;
-        text-align: center;
-      ">
-        <div style="color: #ff4444; margin-bottom: 10px;">⚠️ ADVERTENCIA DE SEGURIDAD</div>
-        <div>Las capturas de pantalla están restringidas en este contenido</div>
-      </div>
-    `;
+    warning.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.9); color: white; padding: 20px; border-radius: 8px; z-index: 10000; text-align: center;';
+    
+    const title = document.createElement('div');
+    title.textContent = '⚠️ ADVERTENCIA DE SEGURIDAD';
+    title.style.cssText = 'color: #ff4444; margin-bottom: 10px;';
+    
+    const message = document.createElement('div');
+    message.textContent = 'Las capturas de pantalla están restringidas en este contenido';
+    
+    warning.appendChild(title);
+    warning.appendChild(message);
     document.body.appendChild(warning);
     setTimeout(() => document.body.removeChild(warning), 3000);
   };

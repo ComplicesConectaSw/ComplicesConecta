@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { safeGetItem, safeSetItem } from '@/utils/safeLocalStorage';
 
 // CRÍTICO: Asegurar createContext disponible antes de usar
 const safeCreateContext = <T,>(defaultValue: T | undefined): React.Context<T | undefined> => {
@@ -53,14 +54,9 @@ export const AccessibilityProvider: React.FC<AccessibilityProviderProps> = ({ ch
 
   // Cargar configuraciones guardadas
   useEffect(() => {
-    const savedSettings = localStorage.getItem('accessibility-settings');
-    if (savedSettings) {
-      try {
-        const parsed = JSON.parse(savedSettings);
-        setSettings({ ...defaultSettings, ...parsed });
-      } catch (error) {
-        console.warn('Error loading accessibility settings:', error);
-      }
+    const savedSettings = safeGetItem<AccessibilitySettings>('accessibility-settings', { validate: false, defaultValue: null });
+    if (savedSettings && typeof savedSettings === 'object') {
+      setSettings({ ...defaultSettings, ...savedSettings });
     }
 
     // Detectar preferencias del sistema
@@ -116,7 +112,7 @@ export const AccessibilityProvider: React.FC<AccessibilityProviderProps> = ({ ch
     }
 
     // Guardar configuraciones
-    localStorage.setItem('accessibility-settings', JSON.stringify(settings));
+    safeSetItem('accessibility-settings', settings, { validate: false, sanitize: true });
   }, [settings]);
 
   const updateSetting = (key: keyof AccessibilitySettings, value: boolean) => {

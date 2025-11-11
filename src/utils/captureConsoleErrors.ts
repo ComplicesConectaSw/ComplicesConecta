@@ -733,15 +733,12 @@ if (typeof window !== 'undefined') {
     
     if (isDev) {
       startErrorCapture();
-      // eslint-disable-next-line no-console
       console.log('✅ Captura de errores de consola iniciada automáticamente');
-      // eslint-disable-next-line no-console
       console.log('💡 Usa showErrorReport() en la consola para ver el reporte completo');
       
       // Verificar y re-exponer después de iniciar captura
       setTimeout(() => {
         if (!(window as any).showErrorReport) {
-          // eslint-disable-next-line no-console
           console.warn('⚠️ showErrorReport no está disponible, reintentando...');
           exposeFunctions();
         }

@@ -4,10 +4,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/Card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/shared/ui/Button";
 import { Progress } from "@/components/ui/progress";
+import { safeGetItem } from '@/utils/safeLocalStorage';
 
 // Check if user is in demo mode
 const isDemoMode = () => {
-  return localStorage.getItem('demo_authenticated') === 'true';
+  return safeGetItem<string>('demo_authenticated', { validate: true, defaultValue: 'false' }) === 'true';
 };
 
 // Beta user data - all features available

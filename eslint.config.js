@@ -14,6 +14,7 @@ export default [
       // Directorios completos generados
       'dist/**',
       'build/**',
+      '.vercel/**',
       'node_modules/**',
       'android/**',
       'android/app/**',
@@ -30,6 +31,7 @@ export default [
       'respaldo_auditoria/**',
       'backups/**',
       'reports/**',
+      '.backup-working-v3.6.3/**',
       // Archivos específicos
       '*.config.js',
       '*.config.ts',

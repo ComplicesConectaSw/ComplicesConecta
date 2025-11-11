@@ -12,7 +12,7 @@ Script unificado para manejar:
 - **v3.6.0**: Refactorización completa de estructura (profiles/, features/, shared/, entities/, app/) ✅
 - **v3.6.1**: Consolidación de estilos CSS + Script maestro consolidando 14 scripts ✅
 - **v3.6.2**: Unificación de hooks + Correcciones de imports y paths ✅
-- **v3.6.3**: Documentación consolidada + Índices completos + docs-unified/ en .gitignore + Script de corrección de caracteres + Vercel Deployment Fixed ✅
+- **v3.6.3**: Documentación consolidada + Índices completos + docs-unified/ en .gitignore + Script de corrección de caracteres + Vercel Deployment Fixed + Funciones Globales Fixed + CircleCI Fixed ✅
 
 ## 📋 Requisitos
 - PowerShell 7+
@@ -179,3 +179,7 @@ docker run -d --name dd-agent \
   - Verificación opcional (advertencia, no bloquea build)
   - Detección de conflictos en `vercel.json`
   - Análisis de tamaño de build (<60MB recomendado)
+- **Correcciones v3.6.3:**
+  - Funciones globales `showEnvInfo()` y `showErrorReport()` disponibles en producción
+  - Wallet conflicts completamente silenciados
+  - CircleCI configurado con Node.js 20.19+ (requerido por Vite 7.2.2)

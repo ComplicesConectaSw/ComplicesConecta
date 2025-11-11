@@ -1,8 +1,8 @@
 # 📊 DIAGRAMAS DE FLUJOS - COMPLICESCONECTA v3.6.3
 
-**Fecha:** 08 Noviembre 2025  
+**Fecha:** 09 Noviembre 2025  
 **Versión:** 3.6.3  
-**Estado:** ✅ Documentación Actualizada
+**Estado:** ✅ Documentación Actualizada - Funciones Globales Fixed - CircleCI Fixed
 
 ---
 
@@ -442,4 +442,6 @@ flowchart TD
 - ✅ Detección de conflictos `routes` vs `rewrites`/`headers`
 - ✅ Validación de patrones regex en headers
 - ✅ Carga automática de variables desde `.env`/`.env.local`
+- ✅ Funciones globales `showEnvInfo()` y `showErrorReport()` disponibles en producción
+- ✅ CircleCI configurado con Node.js 20.19+ (requerido por Vite 7.2.2)
 

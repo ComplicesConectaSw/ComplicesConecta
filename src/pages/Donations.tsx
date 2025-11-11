@@ -12,7 +12,7 @@ const Donations = () => {
   const donationTiers = [
     {
       id: 1,
-      name: "Apoyo B�sico",
+      name: "Apoyo Bsico",
       amount: 50,
       icon: Heart,
       color: "from-pink-500 to-rose-500",
@@ -30,9 +30,9 @@ const Donations = () => {
       icon: Star,
       color: "from-purple-500 to-indigo-500",
       benefits: [
-        "Todos los beneficios del Apoyo B�sico",
+        "Todos los beneficios del Apoyo Bsico",
         "100 tokens CMPX de regalo",
-        "Perfil destacado por 30 d�as",
+        "Perfil destacado por 30 das",
         "Acceso a eventos exclusivos",
         "Chat directo con desarrolladores"
       ]
@@ -47,8 +47,8 @@ const Donations = () => {
         "Todos los beneficios anteriores",
         "300 tokens CMPX de regalo",
         "Badge VIP permanente",
-        "Perfil destacado por 90 d�as",
-        "Participaci�n en decisiones de desarrollo",
+        "Perfil destacado por 90 das",
+        "Participacin en decisiones de desarrollo",
         "Acceso beta a todas las funciones"
       ]
     },
@@ -63,8 +63,8 @@ const Donations = () => {
         "1000 tokens CMPX de regalo",
         "Badge de 'Fundador' exclusivo",
         "Perfil destacado permanente",
-        "Menci�n en cr�ditos de la app",
-        "Sesi�n personalizada con el equipo",
+        "Mencin en crditos de la app",
+        "Sesin personalizada con el equipo",
         "Influencia directa en roadmap"
       ]
     }
@@ -99,8 +99,8 @@ const Donations = () => {
             Apoya a ComplicesConecta
           </h1>
           <p className="text-xl text-white/80 max-w-2xl mx-auto">
-            Tu donaci�n nos ayuda a mantener la plataforma gratuita y desarrollar nuevas funciones 
-            para la comunidad swinger m�s grande de M�xico.
+            Tu donacin nos ayuda a mantener la plataforma gratuita y desarrollar nuevas funciones 
+            para la comunidad swinger ms grande de Mxico.
           </p>
         </div>
 
@@ -171,7 +171,7 @@ const Donations = () => {
           <CardHeader>
             <CardTitle className="text-white text-center">Cantidad Personalizada</CardTitle>
             <CardDescription className="text-white/70 text-center">
-              Elige tu propia cantidad de donaci�n
+              Elige tu propia cantidad de donacin
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -208,7 +208,7 @@ const Donations = () => {
         {/* Payment Methods */}
         <Card className="bg-white/10 border-white/20 mb-8">
           <CardHeader>
-            <CardTitle className="text-white text-center">M�todos de Pago</CardTitle>
+            <CardTitle className="text-white text-center">Mtodos de Pago</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -216,7 +216,7 @@ const Donations = () => {
                 <div className="w-12 h-8 bg-white/20 rounded mb-2 mx-auto flex items-center justify-center">
                   <span className="text-xs font-bold">VISA</span>
                 </div>
-                <span className="text-sm">Tarjeta de Cr�dito</span>
+                <span className="text-sm">Tarjeta de Crdito</span>
               </div>
               <div className="text-center text-white">
                 <div className="w-12 h-8 bg-white/20 rounded mb-2 mx-auto flex items-center justify-center">
@@ -250,7 +250,7 @@ const Donations = () => {
             {selectedAmount ? `Donar $${selectedAmount} MXN` : 'Selecciona una cantidad'}
           </Button>
           <p className="text-white/60 text-sm mt-4">
-            Procesamiento seguro � Cancelaci�n en cualquier momento � Recibo por email
+            Procesamiento seguro  Cancelacin en cualquier momento  Recibo por email
           </p>
         </div>
 
@@ -262,7 +262,7 @@ const Donations = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card className="bg-white/10 border-white/20">
               <CardHeader>
-                <CardTitle className="text-white text-lg">�Para qu� se usan las donaciones?</CardTitle>
+                <CardTitle className="text-white text-lg">Para qu se usan las donaciones?</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-white/80">
@@ -273,17 +273,17 @@ const Donations = () => {
             </Card>
             <Card className="bg-white/10 border-white/20">
               <CardHeader>
-                <CardTitle className="text-white text-lg">�Las donaciones son recurrentes?</CardTitle>
+                <CardTitle className="text-white text-lg">Las donaciones son recurrentes?</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-white/80">
-                  No, todas las donaciones son �nicas. Puedes donar cuando quieras y la cantidad que desees.
+                  No, todas las donaciones son nicas. Puedes donar cuando quieras y la cantidad que desees.
                 </p>
               </CardContent>
             </Card>
             <Card className="bg-white/10 border-white/20">
               <CardHeader>
-                <CardTitle className="text-white text-lg">�Puedo cancelar mi donaci�n?</CardTitle>
+                <CardTitle className="text-white text-lg">Puedo cancelar mi donacin?</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-white/80">
@@ -293,11 +293,11 @@ const Donations = () => {
             </Card>
             <Card className="bg-white/10 border-white/20">
               <CardHeader>
-                <CardTitle className="text-white text-lg">�Es seguro donar?</CardTitle>
+                <CardTitle className="text-white text-lg">Es seguro donar?</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-white/80">
-                  S�, utilizamos procesadores de pago seguros y certificados. Tu informaci�n est� protegida.
+                  S, utilizamos procesadores de pago seguros y certificados. Tu informacin est protegida.
                 </p>
               </CardContent>
             </Card>

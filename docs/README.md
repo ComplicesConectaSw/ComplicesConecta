@@ -8,13 +8,22 @@
 
 ## 📋 ÍNDICE DE DOCUMENTACIÓN
 
-### **📖 Documentación Principal (Uso Interno)**
+### **📖 Documentación Principal**
 - **[📚 Documentación Maestra Unificada](../docs-unified/DOCUMENTACION_MAESTRA_UNIFICADA_v3.6.3.md)** - Documentación técnica completa consolidada (uso interno)
 - **[📝 Memorias de Sesiones Unificadas](../docs-unified/MEMORIAS_SESIONES_UNIFICADAS_v3.6.3.md)** - Memorias consolidadas de sesiones y avances (uso interno)
 - **[📊 Reportes y Análisis Unificados](../docs-unified/REPORTES_ANALISIS_UNIFICADOS_v3.6.3.md)** - Reportes consolidados de dependencias, problemas y correcciones (uso interno)
+
+### **📋 Documentación Técnica del Proyecto**
 - **[📄 Presentación Pública](../COMPLICESCONECTA_PRESENTACION_PUBLICA.md)** - Presentación pública del proyecto
-- **[📝 Notas de Lanzamiento](../RELEASE_NOTES_v3.4.1.md)** - Historial completo de versiones
+- **[📝 Notas de Lanzamiento](../RELEASE_NOTES_v3.4.1.md)** - Historial completo de versiones y cambios
+- **[📋 Changelog](../CHANGELOG.md)** - Registro detallado de cambios por versión
 - **[🏗️ Estructura del Proyecto](../project-structure-tree.md)** - Árbol detallado del monorepo
+- **[🔧 Guía de Instalación](../INSTALACION_SETUP_v3.5.0.md)** - Guía completa paso a paso de instalación
+- **[🚀 Inicio Rápido Túnel](../QUICK_START_TUNNEL.md)** - Configuración rápida de túnel para desarrollo
+- **[⚙️ DevOps Guide](../README_DEVOPS.md)** - Guía de operaciones y deployment
+- **[🤖 IA Integration Guide](../README_IA.md)** - Estrategia de desarrollo con IA
+- **[🔄 Diagramas de Flujos](../DIAGRAMAS_FLUJOS_v3.5.0.md)** - Diagramas técnicos y flujos de trabajo
+- **[🤝 Guía de Contribución](../CONTRIBUTING.md)** - Cómo contribuir al proyecto
 
 ### **📄 Documentos Técnicos en `docs/`**
 
@@ -56,13 +65,18 @@
 
 #### **⚖️ Documentación Legal**
 - **[⚖️ Índice Legal](./legal/README.md)** - Índice completo de documentación legal
+  - **[🛡️ Ley Olimpia](./legal/LEY_OLIMPIA.md)** - **PRIORITARIO** - Protección contra violencia digital
+    - Artículo 259 Ter: Difusión de contenido íntimo sin consentimiento (3-6 años prisión)
+    - Artículo 259 Quáter: Acoso digital (1-3 años prisión)  
+    - Artículo 259 Quinquies: Violación a la intimidad sexual (3-6 años prisión)
+    - Verificador IA de Consentimiento integrado en ComplicesConecta
+  - **[📋 Políticas Legales](./legal/Legal-Policy/README.md)** - 9 políticas de seguridad y cumplimiento
   - **[📋 Resumen Legal](./legal/LEGAL_SUMMARY_REPORT.md)** - Resumen ejecutivo legal
   - **[⚖️ Cumplimiento Legal México](./legal/LEGAL_COMPLIANCE_MEXICO.md)** - Cumplimiento normativo
   - **[📄 Términos de Servicio](./legal/TERMS_OF_SERVICE.md)** - Términos y condiciones
   - **[🔒 Política de Privacidad](./legal/PRIVACY_POLICY.md)** - Política de privacidad
   - **[⚠️ Descargo de Responsabilidad](./legal/DISCLAIMER.md)** - Limitación de responsabilidad
   - **[🔌 API Legal](./legal/API.md)** - Documentación de API legal
-  - **[🚀 Deployment Legal](./legal/DEPLOY.md)** - Guía de deployment legal
 
 ---
 
@@ -82,11 +96,12 @@
 5. ~~[Guía de Testing](./TESTING.md)~~ - *Pendiente*
 
 ### Para Legal y Cumplimiento
-1. [Índice Legal](./legal/README.md) - Índice completo
-2. [Resumen Legal](./legal/LEGAL_SUMMARY_REPORT.md)
-3. [Cumplimiento Legal México](./legal/LEGAL_COMPLIANCE_MEXICO.md)
-4. [Términos de Servicio](./legal/TERMS_OF_SERVICE.md)
-5. [Política de Privacidad](./legal/PRIVACY_POLICY.md)
+1. **[🛡️ Ley Olimpia](./legal/LEY_OLIMPIA.md)** - **PRIORITARIO** - Protección contra violencia digital
+2. [Índice Legal](./legal/README.md) - Índice completo
+3. [Políticas Legales](./legal/Legal-Policy/README.md) - 9 políticas de seguridad
+4. [Cumplimiento Legal México](./legal/LEGAL_COMPLIANCE_MEXICO.md)
+5. [Términos de Servicio](./legal/TERMS_OF_SERVICE.md)
+6. [Política de Privacidad](./legal/PRIVACY_POLICY.md)
 
 ### Para Auditorías y Análisis
 1. [Auditorías Profesionales](./Auditoria/README.md) - Índice completo

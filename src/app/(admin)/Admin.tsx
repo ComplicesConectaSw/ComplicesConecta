@@ -11,6 +11,7 @@ import { useAuth } from '@/features/auth/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
 import AdminNav from '@/components/AdminNav';
+import { safeGetItem } from '@/utils/safeLocalStorage';
 import {
   Users,
   Shield,
@@ -113,16 +114,28 @@ const Admin = () => {
 
   useEffect(() => {
     // Check for demo authentication first
-    const demoAuth = localStorage.getItem('demo_authenticated');
-    const demoUser = localStorage.getItem('demo_user');
+    const demoAuth = safeGetItem<string>('demo_authenticated', { validate: true, defaultValue: 'false' });
+    const demoUser = safeGetItem<unknown>('demo_user', { validate: false, defaultValue: null });
     
     if (demoAuth === 'true' && demoUser) {
-      const user = JSON.parse(demoUser);
-      if (user.accountType === 'admin' || user.role === 'admin') {
+      // Parse user safely
+      let user: { accountType?: string; role?: string } | null = null;
+      try {
+        if (typeof demoUser === 'string') {
+          user = JSON.parse(demoUser);
+        } else if (typeof demoUser === 'object' && demoUser !== null) {
+          user = demoUser as { accountType?: string; role?: string };
+        }
+      } catch (error) {
+        logger.error('Error parsing demo user:', { error: String(error) });
+        user = null;
+      }
+      
+      if (user && (user.accountType === 'admin' || user.role === 'admin')) {
         // Redirect admin users to production admin panel
         navigate('/admin-production');
         return;
-      } else {
+      } else if (user) {
         toast({
           title: "Acceso Denegado",
           description: "No tienes permisos de administrador",
@@ -167,7 +180,7 @@ const Admin = () => {
       logger.error('Error loading admin data:', { error: String(error) });
       toast({
         title: "Error",
-        description: "Error al cargar datos del panel de administraci�n",
+        description: "Error al cargar datos del panel de administracin",
         variant: "destructive"
       });
     } finally {
@@ -190,7 +203,7 @@ const Admin = () => {
           created_at: new Date().toISOString(),
           last_seen: new Date().toISOString(),
           avatar_url: undefined,
-          bio: 'Perfil de demostraci�n'
+          bio: 'Perfil de demostracin'
         }
       ];
       
@@ -232,8 +245,8 @@ const Admin = () => {
       const mockFAQs: FAQItem[] = [
         {
           id: '1',
-          question: '�C�mo funciona la verificaci�n?',
-          answer: 'La verificaci�n se realiza mediante WorldID y documentos oficiales.',
+          question: 'Cmo funciona la verificacin?',
+          answer: 'La verificacin se realiza mediante WorldID y documentos oficiales.',
           category: 'general',
           priority: 1,
           created_at: new Date().toISOString()
@@ -254,7 +267,7 @@ const Admin = () => {
           from_profile: 'user1@example.com',
           to_profile: 'user2@example.com',
           type: 'profile',
-          message: 'Me gustar�a conectar contigo',
+          message: 'Me gustara conectar contigo',
           status: 'pending',
           created_at: new Date().toISOString()
         }
@@ -268,10 +281,10 @@ const Admin = () => {
   const _handleDeleteProfile = async (profileId: string) => {
     try {
       if (!supabase) {
-        logger.error('Supabase no est� disponible');
+        logger.error('Supabase no est disponible');
         toast({
           title: "Error",
-          description: "Supabase no est� disponible",
+          description: "Supabase no est disponible",
           variant: "destructive"
         });
         return;
@@ -302,19 +315,19 @@ const Admin = () => {
   const _handleToggleVerification = async (profileId: string, currentStatus: boolean) => {
     try {
       if (!supabase) {
-        logger.error('Supabase no est� disponible');
+        logger.error('Supabase no est disponible');
         toast({
           title: "Error",
-          description: "Supabase no est� disponible",
+          description: "Supabase no est disponible",
           variant: "destructive"
         });
         return;
       }
 
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('profiles')
         .update({ 
-          bio: `${_profiles.find((p: any) => p.id === profileId)?.bio || ''} [verified:${!currentStatus}]`
+          bio: `${_profiles.find((p) => p.id === profileId)?.bio || ''} [verified:${!currentStatus}]`
         })
         .eq('id', profileId);
 
@@ -325,14 +338,14 @@ const Admin = () => {
       ));
 
       toast({
-        title: currentStatus ? "Verificaci�n Removida" : "Perfil Verificado",
+        title: currentStatus ? "Verificacin Removida" : "Perfil Verificado",
         description: `El perfil ha sido ${currentStatus ? 'desverificado' : 'verificado'} exitosamente`
       });
     } catch (_error) {
       logger.error('Error updating verification:', { error: String(_error) });
       toast({
         title: "Error",
-        description: "Error al actualizar verificaci�n",
+        description: "Error al actualizar verificacin",
         variant: "destructive"
       });
     }
@@ -388,8 +401,8 @@ const Admin = () => {
         inv.id === invitationId ? { ...inv, status: 'revoked' as const } : inv
       ));
       toast({
-        title: "Invitaci�n Revocada",
-        description: "La invitaci�n ha sido revocada exitosamente"
+        title: "Invitacin Revocada",
+        description: "La invitacin ha sido revocada exitosamente"
       });
     } catch (_error) {
       logger.error('Error revoking invitation:', { error: String(_error) });
@@ -443,7 +456,7 @@ const Admin = () => {
               <Shield className="w-16 h-16 mx-auto text-red-500" />
               <h2 className="text-2xl font-bold text-foreground">Acceso Denegado</h2>
               <p className="text-muted-foreground">
-                No tienes permisos para acceder al panel de administraci�n.
+                No tienes permisos para acceder al panel de administracin.
               </p>
               <Button onClick={() => navigate('/')} className="w-full">
                 Volver al Inicio
@@ -478,8 +491,8 @@ const Admin = () => {
       <AdminNav userRole="admin" />
       <div className="container mx-auto px-4 py-8 pt-24">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground mb-2">Panel de Administraci�n</h1>
-          <p className="text-muted-foreground">Gestiona usuarios, estad�sticas y configuraciones del sistema</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Panel de Administracin</h1>
+          <p className="text-muted-foreground">Gestiona usuarios, estadsticas y configuraciones del sistema</p>
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
@@ -487,7 +500,7 @@ const Admin = () => {
             <TabsTrigger value="overview">Resumen</TabsTrigger>
             <TabsTrigger value="users">Usuarios</TabsTrigger>
             <TabsTrigger value="invitations">Invitaciones</TabsTrigger>
-            <TabsTrigger value="stats">Estad�sticas</TabsTrigger>
+            <TabsTrigger value="stats">Estadsticas</TabsTrigger>
             <TabsTrigger value="faq">FAQ</TabsTrigger>
           </TabsList>
 
@@ -538,7 +551,7 @@ const Admin = () => {
           <TabsContent value="users">
             <Card>
               <CardHeader>
-                <CardTitle>Gesti�n de Usuarios</CardTitle>
+                <CardTitle>Gestin de Usuarios</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -569,7 +582,7 @@ const Admin = () => {
           <TabsContent value="invitations">
             <Card>
               <CardHeader>
-                <CardTitle>Gesti�n de Invitaciones</CardTitle>
+                <CardTitle>Gestin de Invitaciones</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -592,7 +605,7 @@ const Admin = () => {
           <TabsContent value="stats">
             <Card>
               <CardHeader>
-                <CardTitle>Estad�sticas Detalladas</CardTitle>
+                <CardTitle>Estadsticas Detalladas</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -600,7 +613,7 @@ const Admin = () => {
                     <h3 className="text-lg font-semibold mb-4">Tokens</h3>
                     <div className="space-y-2">
                       <div className="flex justify-between">
-                        <span>Total en circulaci�n:</span>
+                        <span>Total en circulacin:</span>
                         <span className="font-bold">{_stats.totalTokens.toLocaleString()}</span>
                       </div>
                       <div className="flex justify-between">
@@ -611,7 +624,7 @@ const Admin = () => {
                   </div>
                   
                   <div>
-                    <h3 className="text-lg font-semibold mb-4">Verificaci�n</h3>
+                    <h3 className="text-lg font-semibold mb-4">Verificacin</h3>
                     <div className="space-y-2">
                       <div className="flex justify-between">
                         <span>WorldID verificados:</span>
@@ -631,7 +644,7 @@ const Admin = () => {
           <TabsContent value="faq">
             <Card>
               <CardHeader>
-                <CardTitle>Gesti�n de FAQ</CardTitle>
+                <CardTitle>Gestin de FAQ</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4 mb-6">
@@ -642,7 +655,7 @@ const Admin = () => {
                       onChange={(e) => setNewFaq({ ...newFaq, question: e.target.value })}
                     />
                     <Input
-                      placeholder="Categor�a"
+                      placeholder="Categora"
                       value={newFaq.category}
                       onChange={(e) => setNewFaq({ ...newFaq, category: e.target.value })}
                     />

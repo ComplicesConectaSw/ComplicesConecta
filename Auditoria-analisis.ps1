@@ -10,7 +10,7 @@
 # - Uso de tablas en código (as any, null, etc.)
 
 Write-Host "INICIANDO AUDITORÍA COMPLETA v3.6.3 MEJORADA..." -ForegroundColor White -BackgroundColor DarkBlue
-$root = Get-Location
+$root = (Get-Location).Path
 $report = @()
 $startTime = Get-Date
 
@@ -168,7 +168,8 @@ foreach ($f in $allSrcFiles) {
 
 foreach ($file in $allSrcFiles) {
     $fileName = $file.BaseName
-    $filePath = $file.FullName.Replace($root + "\", "").Replace("\", "/")
+    $rootPath = $root + "\"
+    $filePath = $file.FullName.Replace($rootPath, "").Replace("\", "/")
     
     # Buscar si el archivo es importado
     $isImported = $false

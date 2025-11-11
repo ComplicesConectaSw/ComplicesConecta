@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { logger } from '@/lib/logger';
+import { safeGetItem, safeSetItem } from '@/utils/safeLocalStorage';
 
 // CRÍTICO: Asegurar createContext disponible antes de usar
 const safeCreateContext = <T,>(defaultValue: T | undefined): React.Context<T | undefined> => {
@@ -64,8 +65,8 @@ export const AnimationProvider: React.FC<AnimationProviderProps> = ({ children }
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     
     // Load saved config from localStorage
-    const savedConfig = localStorage.getItem('animation-config');
-    const parsedConfig = savedConfig ? JSON.parse(savedConfig) : {};
+    const savedConfig = safeGetItem<Partial<AnimationConfig>>('animation-config', { validate: false, defaultValue: {} });
+    const parsedConfig = savedConfig && typeof savedConfig === 'object' ? savedConfig : {};
     
     return {
       ...defaultConfig,
@@ -79,7 +80,7 @@ export const AnimationProvider: React.FC<AnimationProviderProps> = ({ children }
   const updateConfig = useCallback((newConfig: Partial<AnimationConfig>) => {
     const updatedConfig = { ...config, ...newConfig };
     setConfig(updatedConfig);
-    localStorage.setItem('animation-config', JSON.stringify(updatedConfig));
+    safeSetItem('animation-config', updatedConfig, { validate: false, sanitize: true });
   }, [config]);
 
   const triggerGlobalAnimation = useCallback((type: string, data?: Record<string, unknown>) => {

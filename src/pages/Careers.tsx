@@ -56,8 +56,8 @@ const ProjectSupport = () => {
     if (!formData.aceptaTerminos) {
       toast({
         variant: "destructive",
-        title: "T�rminos requeridos",
-        description: "Debes aceptar los t�rminos y condiciones"
+        title: "Trminos requeridos",
+        description: "Debes aceptar los trminos y condiciones"
       });
       return;
     }
@@ -81,7 +81,7 @@ const ProjectSupport = () => {
         correo: formData.correo 
       });
 
-      // Obtener informaci�n adicional para auditor�a
+      // Obtener informacin adicional para auditora
       const userAgent = navigator.userAgent;
       const _timestamp = new Date().toISOString();
 
@@ -91,8 +91,8 @@ const ProjectSupport = () => {
         setUploadingFile(true);
         
         if (!supabase) {
-          logger.error('Supabase no est� disponible');
-          throw new Error('Supabase no est� disponible');
+          logger.error('Supabase no est disponible');
+          throw new Error('Supabase no est disponible');
         }
         
         const fileExt = formData.cv.name.split('.').pop();
@@ -112,7 +112,7 @@ const ProjectSupport = () => {
         setUploadingFile(false);
       }
 
-      // Simular inserci�n en base de datos (tabla career_applications no existe)
+      // Simular insercin en base de datos (tabla career_applications no existe)
       const mockData = {
         id: `career_${Date.now()}`,
         nombre: formData.nombre.trim(),
@@ -129,7 +129,7 @@ const ProjectSupport = () => {
         created_at: new Date().toISOString()
       };
 
-      // Log de la solicitud para auditor�a
+      // Log de la solicitud para auditora
       logger.info('?? Solicitud de carrera procesada:', mockData);
       
       // Simular delay de red
@@ -138,7 +138,7 @@ const ProjectSupport = () => {
       const data = [mockData];
       const _error = null;
 
-      // No hay error en la simulaci�n, continuar con �xito
+      // No hay error en la simulacin, continuar con xito
 
       logger.info('? Solicitud guardada exitosamente:', { 
         id: data?.[0]?.id,
@@ -146,8 +146,8 @@ const ProjectSupport = () => {
       });
       
       toast({
-        title: "�Solicitud enviada exitosamente!",
-        description: `Tu solicitud para ${formData.puesto} ha sido registrada. Te contactaremos en las pr�ximas 24 horas a ${formData.correo}`,
+        title: "Solicitud enviada exitosamente!",
+        description: `Tu solicitud para ${formData.puesto} ha sido registrada. Te contactaremos en las prximas 24 horas a ${formData.correo}`,
         duration: 7000
       });
 
@@ -171,7 +171,7 @@ const ProjectSupport = () => {
       toast({
         variant: "destructive",
         title: "Error al enviar solicitud",
-        description: _error.message || "Hubo un problema al procesar tu solicitud. Int�ntalo de nuevo o contacta a ComplicesConectaSw@outlook.es"
+        description: _error.message || "Hubo un problema al procesar tu solicitud. Intntalo de nuevo o contacta a ComplicesConectaSw@outlook.es"
       });
     } finally {
       setIsSubmitting(false);
@@ -216,29 +216,29 @@ const ProjectSupport = () => {
               </CardTitle>
               <div className="text-white/90 mt-4 space-y-4">
                 <div className="bg-gradient-to-r from-pink-500/20 to-purple-500/20 p-4 rounded-lg border border-white/10">
-                  <h3 className="text-xl font-semibold mb-2">�Qu� ofrecemos?</h3>
+                  <h3 className="text-xl font-semibold mb-2">Qu ofrecemos?</h3>
                   <ul className="space-y-2 text-sm">
-                    <li>� Colaboraci�n en startup innovadora en el sector lifestyle</li>
-                    <li>� Honorarios basados en tiempo dedicado y crecimiento del proyecto</li>
-                    <li>� Oportunidad de formar parte del equipo fundador</li>
-                    <li>� Participaci�n en decisiones estrat�gicas del producto</li>
-                    <li>� Ambiente de trabajo flexible y remoto</li>
+                    <li> Colaboracin en startup innovadora en el sector lifestyle</li>
+                    <li> Honorarios basados en tiempo dedicado y crecimiento del proyecto</li>
+                    <li> Oportunidad de formar parte del equipo fundador</li>
+                    <li> Participacin en decisiones estratgicas del producto</li>
+                    <li> Ambiente de trabajo flexible y remoto</li>
                   </ul>
                 </div>
                 
                 <div className="bg-gradient-to-r from-indigo-500/20 to-pink-500/20 p-4 rounded-lg border border-white/10">
                   <h3 className="text-xl font-semibold mb-2">Beneficios de unirte</h3>
                   <ul className="space-y-2 text-sm">
-                    <li>� Experiencia en startup tecnol�gica real</li>
-                    <li>� Crecimiento profesional acelerado</li>
-                    <li>� Red de contactos en el ecosistema tech</li>
-                    <li>� Posibilidad de equity en el futuro</li>
-                    <li>� Impacto directo en el producto final</li>
+                    <li> Experiencia en startup tecnolgica real</li>
+                    <li> Crecimiento profesional acelerado</li>
+                    <li> Red de contactos en el ecosistema tech</li>
+                    <li> Posibilidad de equity en el futuro</li>
+                    <li> Impacto directo en el producto final</li>
                   </ul>
                 </div>
                 
                 <p className="text-center text-white/80 font-medium">
-                  Si te interesa formar parte de nuestro equipo, completa el formulario a continuaci�n
+                  Si te interesa formar parte de nuestro equipo, completa el formulario a continuacin
                 </p>
               </div>
             </CardHeader>
@@ -258,7 +258,7 @@ const ProjectSupport = () => {
                     />
                   </div>
                   <div>
-                    <Label className="text-white">Tel�fono *</Label>
+                    <Label className="text-white">Telfono *</Label>
                     <Input
                       value={formData.telefono}
                       onChange={(e) => handleInputChange('telefono', e.target.value)}
@@ -271,7 +271,7 @@ const ProjectSupport = () => {
 
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <Label className="text-white">Correo Electr�nico *</Label>
+                    <Label className="text-white">Correo Electrnico *</Label>
                     <Input
                       type="email"
                       value={formData.correo}
@@ -282,7 +282,7 @@ const ProjectSupport = () => {
                     />
                   </div>
                   <div>
-                    <Label className="text-white">Puesto de Inter�s *</Label>
+                    <Label className="text-white">Puesto de Inters *</Label>
                     <Select value={formData.puesto} onValueChange={(value: string) => handleInputChange('puesto', value)}>
                       <SelectTrigger className="bg-white/10 border-white/20 text-white">
                         <SelectValue placeholder="Selecciona un puesto" />
@@ -302,7 +302,7 @@ const ProjectSupport = () => {
                     value={formData.domicilio}
                     onChange={(e) => handleInputChange('domicilio', e.target.value)}
                     className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
-                    placeholder="Ciudad, Estado, Pa�s"
+                    placeholder="Ciudad, Estado, Pas"
                   />
                 </div>
 
@@ -328,12 +328,12 @@ const ProjectSupport = () => {
                 </div>
 
                 <div>
-                  <Label className="text-white">�Qu� esperas del proyecto? *</Label>
+                  <Label className="text-white">Qu esperas del proyecto? *</Label>
                   <Textarea
                     value={formData.expectativas}
                     onChange={(e) => handleInputChange('expectativas', e.target.value)}
                     className="bg-white/10 border-white/20 text-white placeholder:text-white/50 min-h-[100px]"
-                    placeholder="Cu�ntanos qu� esperas de esta colaboraci�n, tus objetivos y motivaciones..."
+                    placeholder="Cuntanos qu esperas de esta colaboracin, tus objetivos y motivaciones..."
                     required
                   />
                 </div>
@@ -352,7 +352,7 @@ const ProjectSupport = () => {
                       className="bg-white/10 border-white/20 text-white file:bg-purple-500 file:text-white file:border-0 file:rounded-md file:px-4 file:py-2 file:mr-4"
                     />
                     <p className="text-white/60 text-sm mt-1">
-                      Formatos aceptados: PDF, DOC, DOCX, TXT (m�ximo 10MB)
+                      Formatos aceptados: PDF, DOC, DOCX, TXT (mximo 10MB)
                     </p>
                     {formData.cv && (
                       <p className="text-green-400 text-sm mt-1">
@@ -362,7 +362,7 @@ const ProjectSupport = () => {
                   </div>
                 </div>
 
-                {/* T�rminos y Condiciones */}
+                {/* Trminos y Condiciones */}
                 <div className="flex items-start space-x-2">
                   <Checkbox
                     id="terminos"
@@ -371,22 +371,22 @@ const ProjectSupport = () => {
                     className="border-white/30"
                   />
                   <Label htmlFor="terminos" className="text-white/90 text-sm leading-relaxed">
-                    Acepto los t�rminos y condiciones. Entiendo que ComplicesConecta es una startup en crecimiento 
-                    y que la colaboraci�n ser� por honorarios basados en el tiempo dedicado, avance del proyecto 
-                    y crecimiento de la empresa. La respuesta ser� enviada en un plazo m�ximo de 24 horas a mi correo electr�nico.
+                    Acepto los trminos y condiciones. Entiendo que ComplicesConecta es una startup en crecimiento 
+                    y que la colaboracin ser por honorarios basados en el tiempo dedicado, avance del proyecto 
+                    y crecimiento de la empresa. La respuesta ser enviada en un plazo mximo de 24 horas a mi correo electrnico.
                   </Label>
                 </div>
 
-                {/* Informaci�n adicional */}
+                {/* Informacin adicional */}
                 <div className="bg-white/5 p-4 rounded-lg border border-white/10">
                   <p className="text-white/80 text-sm">
-                    <strong>Nota:</strong> Tu solicitud ser� registrada en nuestra base de datos y enviada directamente 
-                    al equipo de ComplicesConecta. Nos comprometemos a responder en un plazo m�ximo de 24 horas 
-                    a tu correo electr�nico con informaci�n detallada sobre la colaboraci�n y pr�ximos pasos.
+                    <strong>Nota:</strong> Tu solicitud ser registrada en nuestra base de datos y enviada directamente 
+                    al equipo de ComplicesConecta. Nos comprometemos a responder en un plazo mximo de 24 horas 
+                    a tu correo electrnico con informacin detallada sobre la colaboracin y prximos pasos.
                   </p>
                 </div>
 
-                {/* Bot�n de Env�o */}
+                {/* Botn de Envo */}
                 <Button
                   type="submit"
                   disabled={isSubmitting}

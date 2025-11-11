@@ -16,6 +16,7 @@ import { logger } from '@/lib/logger';
 import { useAuth } from '@/features/auth/useAuth';
 import { ConsentIndicator } from '@/components/chat/ConsentIndicator';
 import { useConsentVerification } from '@/hooks/useConsentVerification';
+import { safeGetItem } from '@/utils/safeLocalStorage';
 
 export interface ChatUser {
   id: number;
@@ -55,7 +56,7 @@ const Chat = () => {
   const [_isLoading, setIsLoading] = useState(false);
   const { user } = useAuth();
   
-  // Hook de verificaci�n de consentimiento
+  // Hook de verificacin de consentimiento
   const currentRoomId = selectedChat?.id.toString();
   const {
     verification,
@@ -64,17 +65,17 @@ const Chat = () => {
     stopMonitoring
   } = useConsentVerification(currentRoomId);
   
-  // Verificar si hay sesi�n activa (demo o producci�n)
+  // Verificar si hay sesin activa (demo o produccin)
   const hasActiveSession = typeof isAuthenticated === 'function' ? isAuthenticated() : !!isAuthenticated;
 
-  // Detectar modo de operaci�n (demo vs producci�n)
+  // Detectar modo de operacin (demo vs produccin)
   useEffect(() => {
-    const demoAuth = localStorage.getItem('demo_authenticated');
+    const demoAuth = safeGetItem<string>('demo_authenticated', { validate: true, defaultValue: 'false' });
     const isDemo = demoAuth === 'true';
     setIsProduction(!isDemo);
     
     if (!isDemo) {
-      // Modo producci�n - cargar datos reales
+      // Modo produccin - cargar datos reales
       loadRealChatData();
     } else {
       // Modo demo - usar datos mock SIEMPRE
@@ -104,7 +105,7 @@ const Chat = () => {
     };
   };
 
-  // Cargar datos reales de chat para producci�n
+  // Cargar datos reales de chat para produccin
   const loadRealChatData = async () => {
     setIsLoading(true);
     try {
@@ -164,9 +165,9 @@ const Chat = () => {
   // Load messages for a specific chat
   const loadMessages = (chatId: number) => {
     const mockMessages: Message[] = [
-      { id: 1, senderId: chatId, content: "�Hola! �C�mo est�n?", timestamp: "10:30", type: 'text' },
-      { id: 2, senderId: 0, content: "�Muy bien! �Y ustedes?", timestamp: "10:32", type: 'text' },
-      { id: 3, senderId: chatId, content: "Genial, �les interesa conocernos mejor?", timestamp: "10:35", type: 'text' }
+      { id: 1, senderId: chatId, content: "Hola! Cmo estn?", timestamp: "10:30", type: 'text' },
+      { id: 2, senderId: 0, content: "Muy bien! Y ustedes?", timestamp: "10:32", type: 'text' },
+      { id: 3, senderId: chatId, content: "Genial, les interesa conocernos mejor?", timestamp: "10:35", type: 'text' }
     ];
     setMessages(mockMessages);
   };
@@ -216,7 +217,7 @@ const Chat = () => {
       id: 1,
       name: "Anabella & Julio",
       image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=100&h=100&fit=crop&crop=faces",
-      lastMessage: "�Est�n libres este fin de semana? ??",
+      lastMessage: "Estn libres este fin de semana? ??",
       timestamp: "5 min",
       isOnline: true,
       unreadCount: 2,
@@ -225,9 +226,9 @@ const Chat = () => {
     },
     {
       id: 2,
-      name: "Sof�a",
+      name: "Sofa",
       image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face",
-      lastMessage: "Me encant� conocerlos en la fiesta ??",
+      lastMessage: "Me encant conocerlos en la fiesta ??",
       timestamp: "1 h",
       isOnline: true,
       unreadCount: 0,
@@ -238,7 +239,7 @@ const Chat = () => {
       id: 3,
       name: "Carmen & Roberto",
       image: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=100&h=100&fit=crop&crop=faces",
-      lastMessage: "�Vienen al evento VIP del s�bado?",
+      lastMessage: "Vienen al evento VIP del sbado?",
       timestamp: "3 h",
       isOnline: false,
       unreadCount: 0,
@@ -247,9 +248,9 @@ const Chat = () => {
     },
     {
       id: 4,
-      name: "Ra�l",
+      name: "Ral",
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
-      lastMessage: "�Qu� tal si nos vemos para tomar algo?",
+      lastMessage: "Qu tal si nos vemos para tomar algo?",
       timestamp: "2 h",
       isOnline: false,
       unreadCount: 1,
@@ -264,7 +265,7 @@ const Chat = () => {
       id: 101,
       name: "?? Sala General Lifestyle",
       image: "https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=100&h=100&fit=crop&crop=face",
-      lastMessage: "�Bienvenidos a la comunidad swinger!",
+      lastMessage: "Bienvenidos a la comunidad swinger!",
       timestamp: "10 min",
       isOnline: true,
       unreadCount: 5,
@@ -275,7 +276,7 @@ const Chat = () => {
       id: 102,
       name: "?? Parejas CDMX",
       image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=100&h=100&fit=crop&crop=faces",
-      lastMessage: "Evento swinger este s�bado en Polanco",
+      lastMessage: "Evento swinger este sbado en Polanco",
       timestamp: "30 min",
       isOnline: true,
       unreadCount: 12,
@@ -286,7 +287,7 @@ const Chat = () => {
       id: 103,
       name: "?? Singles Lifestyle",
       image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face",
-      lastMessage: "�Alguien para intercambio hoy?",
+      lastMessage: "Alguien para intercambio hoy?",
       timestamp: "1 h",
       isOnline: true,
       unreadCount: 3,
@@ -336,7 +337,7 @@ const Chat = () => {
     if (!selectedChat || !user?.id || !isProduction) return;
     
     const roomId = selectedChat.id.toString();
-    // Obtener el otro usuario del chat (simplificado - en producci�n obtener de la sala)
+    // Obtener el otro usuario del chat (simplificado - en produccin obtener de la sala)
     const otherUserId = selectedChat.id.toString(); // TODO: Obtener el ID real del otro usuario
     
     // Iniciar monitoreo de consentimiento
@@ -359,32 +360,32 @@ const Chat = () => {
   const handleSendMessage = () => {
     if (!selectedChat || !newMessage.trim()) return;
     
-    // Bloquear env�o si el chat est� pausado por bajo consenso
+    // Bloquear envo si el chat est pausado por bajo consenso
     if (isPaused) {
       toast({
         variant: 'destructive',
         title: 'Chat pausado',
-        description: verification?.pauseReason || 'El chat est� pausado por bajo consenso. Por favor, espera a que mejore el consenso antes de enviar mensajes.'
+        description: verification?.pauseReason || 'El chat est pausado por bajo consenso. Por favor, espera a que mejore el consenso antes de enviar mensajes.'
       });
       return;
     }
     
-    // Usar datos reales en producci�n, mock en demo
+    // Usar datos reales en produccin, mock en demo
     if (isProduction) {
       sendRealMessage(newMessage);
       return;
     }
     
-    // L�gica para modo demo
+    // Lgica para modo demo
     if (selectedChat.isPrivate && !hasChatAccess[selectedChat.id]) {
-      alert('No tienes acceso a este chat privado. Necesitas una invitaci�n aceptada.');
+      alert('No tienes acceso a este chat privado. Necesitas una invitacin aceptada.');
       return;
     }
     
-    // Verificar permisos de mensajer�a seg�n configuraci�n de privacidad
+    // Verificar permisos de mensajera segn configuracin de privacidad
     const canSendMessage = checkMessagePermissions(selectedChat);
     if (!canSendMessage) {
-      alert('No puedes enviar mensajes a este usuario seg�n su configuraci�n de privacidad.');
+      alert('No puedes enviar mensajes a este usuario segn su configuracin de privacidad.');
       return;
     }
     
@@ -403,17 +404,17 @@ const Chat = () => {
   const checkMessagePermissions = (chat: ChatUser) => {
     if (!features.messagingPrivacy) return true;
     
-    // Para chats p�blicos, siempre permitir
+    // Para chats pblicos, siempre permitir
     if (chat.roomType === 'public') return true;
     
-    // Para chats privados, verificar configuraci�n
-    const userPrivacySettings = mockPrivacySettings; // En producci�n, obtener del usuario espec�fico
+    // Para chats privados, verificar configuracin
+    const userPrivacySettings = mockPrivacySettings; // En produccin, obtener del usuario especfico
     
     switch (userPrivacySettings.allowMessages) {
       case 'everyone':
         return true;
       case 'connections_only':
-        // Verificar si hay conexi�n aceptada (simulado)
+        // Verificar si hay conexin aceptada (simulado)
         return true; // Por ahora siempre true para demo
       case 'none':
         return false;
@@ -431,7 +432,7 @@ const Chat = () => {
         <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-purple-800/20 to-blue-900/20"></div>
       </div>
 
-      {/* Navegaci�n condicional */}
+      {/* Navegacin condicional */}
       {hasActiveSession ? <Navigation /> : <HeaderNav />}
       
       <div className={`relative z-10 flex h-screen ${hasActiveSession ? 'pt-4' : 'pt-16'} ${hasActiveSession ? 'pb-4' : 'pb-20'}`}>
@@ -513,11 +514,11 @@ const Chat = () => {
                   setTabError(null);
                   setActiveTab('public');
                   setSelectedChat(null); // Limpiar chat seleccionado al cambiar tab
-                  logger.info('?? Cambiando a tab p�blico');
+                  logger.info('?? Cambiando a tab pblico');
                 }}
               >
                 <Globe className="h-4 w-4" />
-                P�blico
+                Pblico
                 {publicChats.reduce((acc, chat) => acc + chat.unreadCount, 0) > 0 && (
                   <Badge className="bg-red-500 text-white text-xs">
                     {publicChats.reduce((acc, chat) => acc + chat.unreadCount, 0)}
@@ -594,7 +595,7 @@ const Chat = () => {
             {activeTab === 'public' && (
               <div className="mt-4">
                 <div className="text-white font-semibold text-sm mb-3 px-2 drop-shadow-lg">
-                  ?? Salas p�blicas de la comunidad
+                  ?? Salas pblicas de la comunidad
                 </div>
                 <div className="space-y-2">
                   {publicChats.map((chat) => (
@@ -646,7 +647,7 @@ const Chat = () => {
           </div>
         </div>
 
-        {/* �rea de chat */}
+        {/* rea de chat */}
         <div className={`${selectedChat ? 'block' : 'hidden md:block'} flex-1 flex flex-col bg-gradient-to-br from-purple-900/20 via-purple-800/20 to-blue-900/20 backdrop-blur-sm`}>
           {selectedChat ? (
             <>
@@ -683,8 +684,8 @@ const Chat = () => {
                     </div>
                     <p className="text-sm text-white/90 drop-shadow-md">
                       {selectedChat.roomType === 'public' 
-                        ? `Sala p�blica � ${Math.floor(Math.random() * 50) + 10} miembros activos`
-                        : selectedChat.isOnline ? 'En l�nea' : `�ltima vez ${selectedChat.timestamp}`
+                        ? `Sala pblica  ${Math.floor(Math.random() * 50) + 10} miembros activos`
+                        : selectedChat.isOnline ? 'En lnea' : `ltima vez ${selectedChat.timestamp}`
                       }
                     </p>
                   </div>
@@ -715,18 +716,18 @@ const Chat = () => {
                   realMessages.map((message) => (
                     <div
                       key={message.id}
-                      className={`flex ${message.sender_id === localStorage.getItem('user_id') ? 'justify-end' : 'justify-start'}`}
+                      className={`flex ${message.sender_id === safeGetItem<string>('user_id', { validate: false, defaultValue: '' }) ? 'justify-end' : 'justify-start'}`}
                     >
                       <div
                         className={`max-w-[85%] sm:max-w-xs lg:max-w-sm px-3 sm:px-4 py-2 sm:py-3 rounded-2xl transition-all duration-300 hover:scale-102 ${
-                          message.sender_id === localStorage.getItem('user_id')
+                          message.sender_id === safeGetItem<string>('user_id', { validate: false, defaultValue: '' })
                             ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg'
                             : 'bg-gradient-to-r from-blue-500/95 to-purple-600/95 text-white shadow-md border border-blue-400/50 backdrop-blur-sm'
                         }`}
                       >
                         <p className="text-xs sm:text-sm leading-relaxed break-words whitespace-pre-wrap overflow-wrap-anywhere hyphens-auto font-medium text-white drop-shadow-md" style={{wordBreak: 'break-word', overflowWrap: 'anywhere'}}>{message.content}</p>
                         <p className={`text-xs mt-1 font-medium ${
-                          message.sender_id === localStorage.getItem('user_id') ? 'text-purple-100 drop-shadow-sm' : 'text-white/90 drop-shadow-sm'
+                          message.sender_id === safeGetItem<string>('user_id', { validate: false, defaultValue: '' }) ? 'text-purple-100 drop-shadow-sm' : 'text-white/90 drop-shadow-sm'
                         }`}>
                           {new Date(message.created_at).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}
                         </p>
@@ -768,27 +769,27 @@ const Chat = () => {
                       <span className="font-semibold text-lg">Chat privado bloqueado</span>
                     </div>
                     <p className="text-sm text-white/90 mb-6 leading-relaxed max-w-sm mx-auto">
-                      Necesitas una invitaci�n aceptada para chatear con {selectedChat?.name}. Puedes enviar una invitaci�n o esperar a que te env�en una.
+                      Necesitas una invitacin aceptada para chatear con {selectedChat?.name}. Puedes enviar una invitacin o esperar a que te enven una.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-3 justify-center">
                       <UnifiedButton 
                         onClick={() => {
-                          logger.info('Enviando invitaci�n...');
+                          logger.info('Enviando invitacin...');
                           // Simulate invitation sent
                           setHasChatAccess(prev => ({...prev, [selectedChat?.id || 0]: true}));
-                          alert('�Invitaci�n aceptada! Ahora puedes chatear.');
+                          alert('Invitacin aceptada! Ahora puedes chatear.');
                         }}
                         className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-6 py-2 rounded-lg font-medium transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
                       >
                         <UserPlus className="h-4 w-4 mr-2" />
-                        Aceptar invitaci�n
+                        Aceptar invitacin
                       </UnifiedButton>
                       <UnifiedButton 
                         onClick={() => {
-                          logger.info('Rechazando invitaci�n...');
+                          logger.info('Rechazando invitacin...');
                           // Properly reject the invitation and navigate back
                           setSelectedChat(null);
-                          alert('Invitaci�n rechazada. Has vuelto a la lista de chats.');
+                          alert('Invitacin rechazada. Has vuelto a la lista de chats.');
                         }}
                         variant="outline"
                         className="border-red-300/50 text-red-300 hover:bg-red-500/20 px-6 py-2 rounded-lg font-medium transition-all duration-200"
@@ -799,7 +800,7 @@ const Chat = () => {
                   </div>
                 ) : (
                   <div className="space-y-3">
-                    {/* Botones de galer�a y solicitudes */}
+                    {/* Botones de galera y solicitudes */}
                     <div className="flex gap-2 justify-center">
                       <UnifiedButton
                         onClick={() => navigate('/gallery')}
@@ -807,7 +808,7 @@ const Chat = () => {
                         className="flex-1 border-purple-400/50 text-purple-300 hover:bg-purple-500/20 text-xs py-2"
                       >
                         <Heart className="h-3 w-3 mr-1" />
-                        Galer�a
+                        Galera
                       </UnifiedButton>
                       <UnifiedButton
                         onClick={() => navigate('/requests')}
@@ -820,16 +821,16 @@ const Chat = () => {
                       <UnifiedButton
                         onClick={() => {
                           if (selectedChat?.roomType === 'private') {
-                            toast({ title: "Galer�a Privada", description: "Accediendo a galer�a privada con " + selectedChat.name });
+                            toast({ title: "Galera Privada", description: "Accediendo a galera privada con " + selectedChat.name });
                           } else {
-                            toast({ title: "Galer�a P�blica", description: "Accediendo a galer�a p�blica de la sala" });
+                            toast({ title: "Galera Pblica", description: "Accediendo a galera pblica de la sala" });
                           }
                         }}
                         variant="outline"
                         className="flex-1 border-green-400/50 text-green-300 hover:bg-green-500/20 text-xs py-2"
                       >
                         <Globe className="h-3 w-3 mr-1" />
-                        {selectedChat?.roomType === 'private' ? 'Privada' : 'P�blica'}
+                        {selectedChat?.roomType === 'private' ? 'Privada' : 'Pblica'}
                       </UnifiedButton>
                     </div>
                     
@@ -855,14 +856,14 @@ const Chat = () => {
                     </div>
                     {isPaused && (
                       <p className="text-xs text-white/70 mt-2 text-center">
-                        ?? El chat est� pausado por bajo consenso. El env�o de mensajes est� bloqueado.
+                        ?? El chat est pausado por bajo consenso. El envo de mensajes est bloqueado.
                       </p>
                     )}
                   </div>
                 )}
                 {selectedChat?.roomType === 'public' && (
                   <p className="text-xs text-white/50 mt-2 px-1">
-                    ?? Los mensajes en salas p�blicas son visibles para todos los miembros
+                    ?? Los mensajes en salas pblicas son visibles para todos los miembros
                   </p>
                 )}
               </div>
@@ -871,11 +872,11 @@ const Chat = () => {
               <div className="flex-1 flex items-center justify-center">
               <div className="text-center text-white">
                 <MessageCircle className="h-16 w-16 mx-auto mb-4 text-white opacity-80 drop-shadow-lg" />
-                <h3 className="text-xl font-semibold mb-2 text-white drop-shadow-md">Selecciona una conversaci�n</h3>
+                <h3 className="text-xl font-semibold mb-2 text-white drop-shadow-md">Selecciona una conversacin</h3>
                 <p className="mb-4 text-white/90 drop-shadow-md">
                   {activeTab === 'private' 
                     ? 'Elige un chat privado para conversar de forma segura'
-                    : '�nete a una sala p�blica para conocer la comunidad'
+                    : 'nete a una sala pblica para conocer la comunidad'
                   }
                 </p>
                 <div className="flex items-center justify-center text-sm space-x-4">
@@ -885,7 +886,7 @@ const Chat = () => {
                   </div>
                   <div className="flex items-center text-white/90">
                     <Globe className="h-4 w-4 mr-1 text-green-300" />
-                    <span className="drop-shadow-md">Salas p�blicas moderadas</span>
+                    <span className="drop-shadow-md">Salas pblicas moderadas</span>
                   </div>
                 </div>
               </div>

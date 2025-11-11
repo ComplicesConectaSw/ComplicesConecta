@@ -135,9 +135,9 @@ class VirtualEventsService {
         throw new Error('Evento no encontrado o no es virtual');
       }
 
-      // 2. Verificar si ya participó (usar tabla event_participations después de migración)
+      // 2. Verificar si ya participó
       const { data: existingParticipation } = await supabase
-        .from('event_participations' as any)
+        .from('event_participations')
         .select('id')
         .eq('event_id', eventId)
         .eq('user_id', userId)
@@ -161,7 +161,7 @@ class VirtualEventsService {
       const cmpxReward = eventMetadata.cmpx_reward || 50;
 
       const { data: participation, error: participationError } = await supabase
-        .from('event_participations' as any)
+        .from('event_participations')
         .insert({
           event_id: eventId,
           user_id: userId,

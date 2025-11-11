@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/shared/ui/Card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { safeGetItem } from '@/utils/safeLocalStorage';
 
 interface ChatMessage {
   id: string;
@@ -42,14 +43,14 @@ const ChatAuthenticated = () => {
   const [activeTab, setActiveTab] = useState("public");
   const [selectedPrivateChat, setSelectedPrivateChat] = useState<string | null>(null);
   
-  // Mock data - en producci�n vendr�a de la API
+  // Mock data - en produccin vendra de la API
   const [publicMessages, setPublicMessages] = useState<ChatMessage[]>([
     {
       id: "1",
       senderId: "user1",
-      senderName: "Mar�a & Carlos",
+      senderName: "Mara & Carlos",
       senderAvatar: "/placeholder.svg",
-      message: "�Hola a todos! �Alguien sabe de eventos este fin de semana?",
+      message: "Hola a todos! Alguien sabe de eventos este fin de semana?",
       timestamp: new Date(Date.now() - 300000),
       isPrivate: false
     },
@@ -58,7 +59,7 @@ const ChatAuthenticated = () => {
       senderId: "user2",
       senderName: "Ana",
       senderAvatar: "/placeholder.svg",
-      message: "Nosotros organizamos una reuni�n privada el s�bado ??",
+      message: "Nosotros organizamos una reunin privada el sbado ??",
       timestamp: new Date(Date.now() - 180000),
       isPrivate: false
     }
@@ -69,9 +70,9 @@ const ChatAuthenticated = () => {
       {
         id: "p1",
         senderId: "user1",
-        senderName: "Mar�a & Carlos",
+        senderName: "Mara & Carlos",
         senderAvatar: "/placeholder.svg",
-        message: "Hola, nos gust� mucho su perfil. �Les interesa conocernos?",
+        message: "Hola, nos gust mucho su perfil. Les interesa conocernos?",
         timestamp: new Date(Date.now() - 3600000),
         isPrivate: true
       }
@@ -84,16 +85,16 @@ const ChatAuthenticated = () => {
       fromUserId: "user3",
       fromUserName: "Roberto & Lisa",
       fromUserAvatar: "/placeholder.svg",
-      message: "Nos encantar�a chatear con ustedes. Somos una pareja experimentada.",
+      message: "Nos encantara chatear con ustedes. Somos una pareja experimentada.",
       timestamp: new Date(Date.now() - 7200000),
       status: 'pending'
     },
     {
       id: "req2",
       fromUserId: "user4", 
-      fromUserName: "Sof�a",
+      fromUserName: "Sofa",
       fromUserAvatar: "/placeholder.svg",
-      message: "Hola! Soy nueva en esto, me gustar�a conocer gente como ustedes.",
+      message: "Hola! Soy nueva en esto, me gustara conocer gente como ustedes.",
       timestamp: new Date(Date.now() - 1800000),
       status: 'pending'
     }
@@ -102,7 +103,7 @@ const ChatAuthenticated = () => {
   const [onlineUsers, _setOnlineUsers] = useState<User[]>([
     {
       id: "user1",
-      name: "Mar�a & Carlos",
+      name: "Mara & Carlos",
       avatar: "/placeholder.svg",
       isOnline: true
     },
@@ -121,9 +122,9 @@ const ChatAuthenticated = () => {
   ]);
 
   useEffect(() => {
-    // Verificar autenticaci�n
-    const demoAuth = localStorage.getItem('demo_authenticated');
-    const demoUser = localStorage.getItem('demo_user');
+    // Verificar autenticacin
+    const demoAuth = safeGetItem<string>('demo_authenticated', { validate: true, defaultValue: 'false' });
+    const demoUser = safeGetItem<unknown>('demo_user', { validate: false, defaultValue: null });
     
     if (demoAuth !== 'true' || !demoUser) {
       navigate('/auth');
@@ -137,7 +138,7 @@ const ChatAuthenticated = () => {
     const newMessage: ChatMessage = {
       id: Date.now().toString(),
       senderId: "current_user",
-      senderName: "T�",
+      senderName: "T",
       senderAvatar: "/placeholder.svg",
       message: currentMessage,
       timestamp: new Date(),
@@ -215,7 +216,7 @@ const ChatAuthenticated = () => {
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-1">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <span className="text-white text-sm">{onlineUsers.length} en l�nea</span>
+                <span className="text-white text-sm">{onlineUsers.length} en lnea</span>
               </div>
             </div>
           </div>
@@ -277,7 +278,7 @@ const ChatAuthenticated = () => {
               <CardContent className="p-4">
                 <div className="flex items-center gap-2 mb-3">
                   <Users className="h-4 w-4 text-white" />
-                  <h3 className="font-semibold text-white">En L�nea</h3>
+                  <h3 className="font-semibold text-white">En Lnea</h3>
                 </div>
                 <div className="space-y-2">
                   {onlineUsers.map((user) => (
@@ -298,7 +299,7 @@ const ChatAuthenticated = () => {
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-white font-medium text-sm truncate">{user.name}</p>
-                        <p className="text-green-400 text-xs">En l�nea</p>
+                        <p className="text-green-400 text-xs">En lnea</p>
                       </div>
                     </div>
                   ))}
@@ -317,7 +318,7 @@ const ChatAuthenticated = () => {
                     <TabsList className="grid w-full grid-cols-2 bg-white/5">
                       <TabsTrigger value="public" className="data-[state=active]:bg-pink-500 data-[state=active]:text-white">
                         <Users className="h-4 w-4 mr-2" />
-                        Chat P�blico
+                        Chat Pblico
                       </TabsTrigger>
                       <TabsTrigger value="private" className="data-[state=active]:bg-purple-500 data-[state=active]:text-white">
                         <Lock className="h-4 w-4 mr-2" />
@@ -368,7 +369,7 @@ const ChatAuthenticated = () => {
                                   <p className="font-medium text-white">
                                     {onlineUsers.find(u => u.id === selectedPrivateChat)?.name}
                                   </p>
-                                  <p className="text-green-400 text-sm">En l�nea</p>
+                                  <p className="text-green-400 text-sm">En lnea</p>
                                 </div>
                               </div>
                             </div>
@@ -410,7 +411,7 @@ const ChatAuthenticated = () => {
                       <Input
                         value={currentMessage}
                         onChange={(e) => setCurrentMessage(e.target.value)}
-                        placeholder={activeTab === "public" ? "Escribe un mensaje p�blico..." : "Escribe un mensaje privado..."}
+                        placeholder={activeTab === "public" ? "Escribe un mensaje pblico..." : "Escribe un mensaje privado..."}
                         className="flex-1 bg-white/10 border-white/20 text-white placeholder:text-white/50"
                         onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
                       />

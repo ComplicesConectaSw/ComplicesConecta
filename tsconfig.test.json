@@ -12,15 +12,16 @@
     "jsx": "react-jsx",
     "strict": true,
     "skipLibCheck": true,
+    "noFallthroughCasesInSwitch": false,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["vitest/globals", "@testing-library/jest-dom"]
+    "types": ["vitest/globals", "@testing-library/jest-dom", "node"]
   },
   "include": [
     "src/**/*",
     "tests/**/*",
     "vitest.config.ts"
-  ]
+, "docs-unified/Investors.tsx"  ]
 }

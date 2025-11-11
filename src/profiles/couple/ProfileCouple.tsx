@@ -30,33 +30,33 @@ const ProfileCouple: React.FC = () => {
   // Handlers para las acciones del perfil
   const handleUploadImage = () => {
     logger.info('Subir imagen solicitado');
-    // Implementar l�gica de subida de imagen
+    // Implementar lgica de subida de imagen
   };
 
   const handleDeletePost = (postId: string) => {
     logger.info('Eliminar post solicitado', { postId });
-    // Implementar l�gica de eliminaci�n de post
+    // Implementar lgica de eliminacin de post
   };
 
   const handleCommentPost = (postId: string) => {
     logger.info('Comentar post solicitado', { postId });
-    // Implementar l�gica de comentario
+    // Implementar lgica de comentario
   };
   
-  // Migraci�n localStorage ? usePersistedState
+  // Migracin localStorage ? usePersistedState
   const [demoAuth, _setDemoAuth] = usePersistedState('demo_authenticated', 'false');
   const [demoUser, _setDemoUser] = usePersistedState<any>('demo_user', null);
 
   useEffect(() => {
     const loadProfile = async () => {
       try {
-        logger.info('?? ProfileCouple - Estado de autenticaci�n:', {
+        logger.info('?? ProfileCouple - Estado de autenticacin:', {
           isAuthenticated,
           user: !!user,
           authProfile: !!authProfile
         });
 
-        // Verificar si hay sesi�n demo activa PRIMERO
+        // Verificar si hay sesin demo activa PRIMERO
         if (demoAuth === 'true' && demoUser) {
           try {
             const parsedUser = typeof demoUser === 'string' ? JSON.parse(demoUser) : demoUser;
@@ -74,7 +74,7 @@ const ProfileCouple: React.FC = () => {
           }
         }
         
-        // Verificar autenticaci�n usando useAuth
+        // Verificar autenticacin usando useAuth
         if (!isAuthenticated) {
           logger.info('? No autenticado, redirigiendo a auth');
           navigate('/auth', { replace: true });
@@ -140,7 +140,7 @@ const ProfileCouple: React.FC = () => {
         </div>
       </div>
       
-      {/* Navegaci�n superior */}
+      {/* Navegacin superior */}
       <Navigation />
       
       <div className="relative z-10 flex flex-col min-h-screen">
@@ -171,7 +171,7 @@ const ProfileCouple: React.FC = () => {
                   e.stopPropagation();
                   if (navigator.share) {
                     navigator.share({
-                      title: `Perfil de ${profile ? profile.partner1_first_name : 'Ella'} y ${profile ? profile.partner2_first_name : '�l'}`,
+                      title: `Perfil de ${profile ? profile.partner1_first_name : 'Ella'} y ${profile ? profile.partner2_first_name : 'l'}`,
                       text: `Conoce a esta pareja en ComplicesConecta`,
                       url: window.location.href
                     }).catch(console.error);
@@ -214,7 +214,7 @@ const ProfileCouple: React.FC = () => {
 
         <div className="flex-1 overflow-y-auto custom-scrollbar">
           <div className="max-w-4xl mx-auto p-2 sm:p-4 space-y-4 sm:space-y-6">
-            {/* Informaci�n principal de la pareja */}
+            {/* Informacin principal de la pareja */}
             <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
               <CardContent className="p-4 sm:p-6">
                 <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
@@ -233,7 +233,7 @@ const ProfileCouple: React.FC = () => {
                     <Heart className="w-5 h-5 sm:w-6 sm:h-6 text-pink-400 animate-pulse" />
                     <div className="relative">
                       <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-purple-400 to-pink-600 flex items-center justify-center text-white text-lg sm:text-2xl font-bold">
-                        {profile?.partner2_first_name?.[0]?.toUpperCase() || '�'}
+                        {profile?.partner2_first_name?.[0]?.toUpperCase() || ''}
                       </div>
                       {profile?.is_verified && (
                         <div className="absolute -top-1 -right-1 bg-blue-500 rounded-full p-1">
@@ -243,7 +243,7 @@ const ProfileCouple: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Informaci�n b�sica */}
+                  {/* Informacin bsica */}
                   <div className="flex-1 text-center sm:text-left">
                     <h2 className="text-xl sm:text-2xl font-bold mb-2">
                       {profile?.partner1_first_name} & {profile?.partner2_first_name}
@@ -254,16 +254,16 @@ const ProfileCouple: React.FC = () => {
                       </Badge>
                       <Badge variant="secondary" className="bg-white/20 text-white border-white/30 flex items-center gap-1 text-xs sm:text-sm">
                         <MapPin className="w-3 h-3" />
-                        {profile?.location || 'CDMX, M�xico'}
+                        {profile?.location || 'CDMX, Mxico'}
                       </Badge>
                     </div>
                     
-                    {/* Biograf�a */}
+                    {/* Biografa */}
                     <p className="text-white/90 mb-4 leading-relaxed text-sm sm:text-base">
-                      Una pareja aventurera que busca nuevas experiencias y conexiones aut�nticas.
+                      Una pareja aventurera que busca nuevas experiencias y conexiones autnticas.
                     </p>
 
-                    {/* Botones de acci�n */}
+                    {/* Botones de accin */}
                     <div className="flex flex-wrap gap-2 sm:gap-3 justify-center sm:justify-start">
                       <Button 
                         onClick={(e) => {
@@ -290,7 +290,7 @@ const ProfileCouple: React.FC = () => {
                         <span className="sm:hidden">Report</span>
                       </Button>
                       
-                      {/* Bot�n para solicitar acceso a fotos privadas */}
+                      {/* Botn para solicitar acceso a fotos privadas */}
                       {privateImageAccess === 'none' && (
                         <Button 
                           onClick={() => setShowPrivateImageRequest(true)}
@@ -319,7 +319,7 @@ const ProfileCouple: React.FC = () => {
                       {/* Acceso aprobado */}
                       {privateImageAccess === 'approved' && (
                         <Button 
-                          onClick={() => {/* Mostrar galer�a privada */}}
+                          onClick={() => {/* Mostrar galera privada */}}
                           className="bg-green-600/80 hover:bg-green-700/80 text-white flex items-center gap-2 text-sm sm:text-base px-3 sm:px-4 py-2"
                           size="sm"
                         >
@@ -342,7 +342,7 @@ const ProfileCouple: React.FC = () => {
               onCommentPost={handleCommentPost}
             />
 
-            {/* Galer�a privada - solo si tiene acceso aprobado */}
+            {/* Galera privada - solo si tiene acceso aprobado */}
             {privateImageAccess === 'approved' && (
               <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white mt-6">
                 <CardContent className="p-4 sm:p-6">
@@ -367,7 +367,7 @@ const ProfileCouple: React.FC = () => {
           </div>
         </div>
 
-        {/* Navegaci�n inferior fija */}
+        {/* Navegacin inferior fija */}
         <div className="fixed bottom-0 left-0 right-0 z-50">
           <Navigation />
         </div>
@@ -396,7 +396,7 @@ const ProfileCouple: React.FC = () => {
         onOpenChange={setShowReportDialog}
         onReport={(reason) => {
           console.log('Perfil reportado por:', reason);
-          // Aqu� se implementar� la l�gica de reporte
+          // Aqu se implementar la lgica de reporte
         }}
       />
     </div>

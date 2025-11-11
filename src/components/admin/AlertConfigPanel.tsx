@@ -32,6 +32,7 @@ import {
 import { logger } from '@/lib/logger';
 import errorAlertService, { AlertRule } from '@/services/ErrorAlertService';
 import { useToast } from '@/hooks/useToast';
+import { safeGetItem, safeSetItem } from '@/utils/safeLocalStorage';
 // performanceMonitoring - preparado para uso futuro en configuración avanzada
 // import performanceMonitoring from '@/services/PerformanceMonitoringService';
 
@@ -159,11 +160,10 @@ export const AlertConfigPanel: React.FC = () => {
 
   const loadConfigs = () => {
     try {
-      const saved = localStorage.getItem('alert-configs');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        setConfigs(parsed);
-        applyConfigs(parsed);
+      const saved = safeGetItem<AlertConfig[]>('alert-configs', { validate: false, defaultValue: null });
+      if (saved && Array.isArray(saved)) {
+        setConfigs(saved);
+        applyConfigs(saved);
       } else {
         applyConfigs(ALERT_PRESETS);
       }
@@ -174,7 +174,7 @@ export const AlertConfigPanel: React.FC = () => {
 
   const saveConfigs = (newConfigs: AlertConfig[]) => {
     try {
-      localStorage.setItem('alert-configs', JSON.stringify(newConfigs));
+      safeSetItem('alert-configs', newConfigs, { validate: false, sanitize: true });
       setConfigs(newConfigs);
       applyConfigs(newConfigs);
       logger.info('✅ Alert configs saved');
@@ -306,7 +306,7 @@ export const AlertConfigPanel: React.FC = () => {
 
   const testAlert = (config: AlertConfig) => {
     logger.info(`🧪 Testing alert: ${config.name}`);
-    
+
     if (config.type === 'error') {
       errorAlertService.createAlert({
         severity: config.conditions.severity || 'medium',
@@ -513,7 +513,7 @@ export const AlertConfigPanel: React.FC = () => {
               {editingConfig ? 'Editar Alerta' : 'Nueva Alerta'}
             </DialogTitle>
             <DialogDescription className="text-gray-400">
-              {editingConfig 
+              {editingConfig
                 ? 'Modifica la configuración de la alerta'
                 : 'Crea una nueva alerta personalizada para monitorear el sistema'
               }
@@ -648,7 +648,7 @@ export const AlertConfigPanel: React.FC = () => {
                   checked={newConfig.actions?.notification ?? true}
                   onCheckedChange={(checked) => setNewConfig({
                     ...newConfig,
-                    actions: { 
+                    actions: {
                       notification: checked,
                       console: newConfig.actions?.console ?? true,
                       email: newConfig.actions?.email ?? false
@@ -662,7 +662,7 @@ export const AlertConfigPanel: React.FC = () => {
                   checked={newConfig.actions?.console ?? true}
                   onCheckedChange={(checked) => setNewConfig({
                     ...newConfig,
-                    actions: { 
+                    actions: {
                       notification: newConfig.actions?.notification ?? true,
                       console: checked,
                       email: newConfig.actions?.email ?? false
@@ -676,7 +676,7 @@ export const AlertConfigPanel: React.FC = () => {
                   checked={newConfig.actions?.email ?? false}
                   onCheckedChange={(checked) => setNewConfig({
                     ...newConfig,
-                    actions: { 
+                    actions: {
                       notification: newConfig.actions?.notification ?? true,
                       console: newConfig.actions?.console ?? true,
                       email: checked

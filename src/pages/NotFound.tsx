@@ -114,11 +114,11 @@ const NotFound = () => {
           <div className="space-y-6">
             <div className="animate-fade-in-delay">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                P�gina no encontrada
+                Pgina no encontrada
               </h2>
               <p className="text-white/80 text-lg leading-relaxed max-w-prose mx-auto">
                 Parece que este enlace se fue a una fiesta privada. No te preocupes, 
-                te ayudamos a regresar al lugar correcto donde la diversi�n nunca se detiene.
+                te ayudamos a regresar al lugar correcto donde la diversin nunca se detiene.
               </p>
             </div>
 
@@ -150,7 +150,7 @@ const NotFound = () => {
 
             {/* Additional Info */}
             <div className="text-white/60 text-sm animate-fade-in-delay-3">
-              <p>�Necesitas ayuda? Visita nuestro <Link to="/faq" className="text-pink-400 hover:text-pink-300 underline">Centro de Ayuda</Link></p>
+              <p>Necesitas ayuda? Visita nuestro <Link to="/faq" className="text-pink-400 hover:text-pink-300 underline">Centro de Ayuda</Link></p>
             </div>
           </div>
         </Card>

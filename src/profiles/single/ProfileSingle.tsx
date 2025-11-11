@@ -40,7 +40,7 @@ const ProfileSingle: React.FC = () => {
   const navigate = useNavigate();
   const { user, profile: authProfile, isAuthenticated } = useAuth();
   
-  // Funci�n helper para verificar autenticaci�n
+  // Funcin helper para verificar autenticacin
   const checkAuth = () => {
     return typeof isAuthenticated === 'function' ? isAuthenticated() : !!isAuthenticated;
   };
@@ -68,23 +68,23 @@ const ProfileSingle: React.FC = () => {
   // Handlers para las acciones del perfil
   const handleUploadImage = () => {
     logger.info('Subir imagen solicitado');
-    // Implementar l�gica de subida de imagen
+    // Implementar lgica de subida de imagen
   };
 
   const handleDeletePost = (postId: string) => {
     logger.info('Eliminar post solicitado', { postId });
-    // Implementar l�gica de eliminaci�n de post
+    // Implementar lgica de eliminacin de post
   };
 
   const handleCommentPost = (postId: string) => {
     logger.info('Comentar post solicitado', { postId });
-    // Implementar l�gica de comentario
+    // Implementar lgica de comentario
   };
 
   // Funciones para cargar datos adicionales
   const loadProfileStats = async () => {
     try {
-      // Simular carga de estad�sticas
+      // Simular carga de estadsticas
       const mockStats = {
         totalViews: Math.floor(Math.random() * 1000) + 100,
         totalLikes: Math.floor(Math.random() * 500) + 50,
@@ -106,8 +106,8 @@ const ProfileSingle: React.FC = () => {
       const mockActivity = [
         { id: 1, type: 'like', description: 'Recibiste un like de Maria', time: '2 horas' },
         { id: 2, type: 'view', description: 'Tu perfil fue visto 15 veces', time: '4 horas' },
-        { id: 3, type: 'match', description: 'Nuevo match con Carlos', time: '1 d�a' },
-        { id: 4, type: 'message', description: 'Nuevo mensaje de Ana', time: '2 d�as' }
+        { id: 3, type: 'match', description: 'Nuevo match con Carlos', time: '1 da' },
+        { id: 4, type: 'message', description: 'Nuevo mensaje de Ana', time: '2 das' }
       ];
       setRecentActivity(mockActivity);
     } catch (error) {
@@ -156,10 +156,10 @@ const ProfileSingle: React.FC = () => {
 
   const handleDownloadProfile = () => {
     logger.info('Descargar perfil solicitado');
-    // Implementar l�gica de descarga de perfil
+    // Implementar lgica de descarga de perfil
   };
   
-  // Migraci�n localStorage ? usePersistedState
+  // Migracin localStorage ? usePersistedState
   const [demoAuth, _setDemoAuth] = usePersistedState('demo_authenticated', 'false');
   const [demoUser, _setDemoUser] = usePersistedState<any>('demo_user', null);
 
@@ -168,7 +168,7 @@ const ProfileSingle: React.FC = () => {
       try {
         // Solo log una vez al montar el componente
         if (!profile) {
-          logger.info('?? ProfileSingle - Estado de autenticaci�n:', {
+          logger.info('📱 ProfileSingle - Estado de autenticación:', {
             user: !!user,
             authProfile: !!authProfile,
             isDemo: authProfile?.is_demo,
@@ -186,14 +186,14 @@ const ProfileSingle: React.FC = () => {
           try {
             const parsedUser = typeof demoUser === 'string' ? JSON.parse(demoUser) : demoUser;
             
-            // Crear perfil demo est�tico una sola vez
+            // Crear perfil demo esttico una sola vez
             const profileData: Database['public']['Tables']['profiles']['Row'] = {
               id: parsedUser.id || 'demo-single-1',
               name: parsedUser.name || 'Sofia Demo',
               first_name: parsedUser.first_name || 'Sofía',
               last_name: parsedUser.last_name || 'Demo',
               age: 28,
-              bio: 'Explorando conexiones autinticas en el lifestyle swinger. Disfruto de experiencias discretas, respeto mutuo y encuentros sofisticados. Me encanta viajar, la m�sica y conocer parejas interesantes.',
+              bio: 'Explorando conexiones autinticas en el lifestyle swinger. Disfruto de experiencias discretas, respeto mutuo y encuentros sofisticados. Me encanta viajar, la msica y conocer parejas interesantes.',
               avatar_url: '/placeholder.svg',
               created_at: new Date().toISOString(),
               gender: 'female',
@@ -244,7 +244,7 @@ const ProfileSingle: React.FC = () => {
         
         // Si authProfile ya esta disponible, usarlo directamente
         if (authProfile && authProfile.id) {
-          logger.info('?? Perfil cargado exitosamente:', { name: authProfile.name });
+          logger.info('✅ Perfil cargado exitosamente:', { name: authProfile.name });
           setProfile(authProfile);
           setIsLoading(false);
           return;
@@ -266,7 +266,7 @@ const ProfileSingle: React.FC = () => {
         
         // Si llegamos aqui sin perfil ni usuario pero con demo, mostrar error
         if (String(demoAuth) === 'true' && demoUser && !profile) {
-          logger.info('?? Demo autenticado pero perfil no cargado, reintentando...');
+          logger.info('🔄 Demo autenticado pero perfil no cargado, reintentando...');
           // El perfil demo deberia haberse cargado arriba, algo fallo?
           setIsLoading(false);
           return;
@@ -274,7 +274,7 @@ const ProfileSingle: React.FC = () => {
         
         // Estado inesperado final - solo log una vez
         if (!profile) {
-          logger.info('?? Estado inesperado: sin usuario ni perfil valido');
+          logger.info('⚠️ Estado inesperado: sin usuario ni perfil válido');
         }
         setIsLoading(false);
       } catch (error) {
@@ -303,7 +303,7 @@ const ProfileSingle: React.FC = () => {
         <Card className="w-full max-w-md mx-4">
           <CardContent className="p-6 text-center">
             <h2 className="text-xl font-semibold mb-2">Perfil no encontrado</h2>
-            <p className="text-white/80 mb-4">No se pudo cargar la informaci�n del perfil.</p>
+            <p className="text-white/80 mb-4">No se pudo cargar la informacin del perfil.</p>
             <Button onClick={() => navigate('/discover')} className="border border-white/30 bg-transparent text-white hover:bg-white/10">
               Volver al inicio
             </Button>
@@ -322,10 +322,10 @@ const ProfileSingle: React.FC = () => {
         </div>
       </div>
       
-      {/* Navegaci�n superior */}
+      {/* Navegacin superior */}
       <Navigation />
       
-      {/* Header con navegaci�n */}
+      {/* Header con navegacin */}
       <div className="relative z-10">
         <div className="pt-20 pb-6 px-4">
           <div className="max-w-4xl mx-auto text-center">
@@ -344,7 +344,7 @@ const ProfileSingle: React.FC = () => {
       {/* Contenido principal con scroll personalizado */}
       <div className="relative z-10 pb-20 px-2 sm:px-4 overflow-y-auto custom-scrollbar">
         <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6 py-4">
-          {/* Informaci�n principal del perfil */}
+          {/* Informacin principal del perfil */}
           <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
             <CardContent className="p-4 sm:p-6">
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
@@ -386,25 +386,25 @@ const ProfileSingle: React.FC = () => {
                   </h2>
                   <div className="flex flex-wrap gap-2 justify-center sm:justify-start mb-4">
                     <Badge className="bg-white/20 text-white border-white/30 text-xs sm:text-sm">
-                      {profile.age} a�os
+                      {profile.age} aos
                     </Badge>
                     <Badge className="bg-white/20 text-white border-white/30 text-xs sm:text-sm">
                       {profile.gender || 'No especificado'}
                     </Badge>
                     <Badge className="bg-white/20 text-white border-white/30 flex items-center gap-1 text-xs sm:text-sm">
                       <MapPin className="w-3 h-3" />
-                      CDMX, M�xico
+                      CDMX, Mxico
                     </Badge>
                   </div>
                   
-                  {/* Biograf�a */}
+                  {/* Biografa */}
                   {profile.bio && (
                     <p className="text-white/90 mb-4 leading-relaxed">
                       {profile.bio}
                     </p>
                   )}
 
-                  {/* Botones de acci�n */}
+                  {/* Botones de accin */}
                   <div className="flex flex-wrap gap-2 sm:gap-3 justify-center sm:justify-start">
                     <Button 
                       onClick={() => navigate('/edit-profile-single')}
@@ -426,7 +426,7 @@ const ProfileSingle: React.FC = () => {
                     
                     <TikTokShareButton
                       url={window.location.href}
-                      text={`Mira el perfil de ${profile?.name || 'Usuario'} en ComplicesConecta ??`}
+                      text={`Mira el perfil de ${profile?.name || 'Usuario'} en ComplicesConecta 💕`}
                       hashtags={['ComplicesConecta', 'Swinger', 'Mexico', 'Dating']}
                       className="bg-black/20 hover:bg-black/30 text-white border-white/30 flex items-center gap-2 text-sm sm:text-base px-3 sm:px-4 py-2"
                       variant="outline"
@@ -451,7 +451,7 @@ const ProfileSingle: React.FC = () => {
                       <span className="sm:hidden">Report</span>
                     </Button>
                     
-                    {/* Bot�n para solicitar acceso a fotos privadas */}
+                    {/* Botn para solicitar acceso a fotos privadas */}
                     {privateImageAccess === 'none' && (
                       <Button 
                         onClick={() => setShowPrivateImageRequest(true)}
@@ -478,7 +478,7 @@ const ProfileSingle: React.FC = () => {
                     {/* Acceso aprobado */}
                     {privateImageAccess === 'approved' && (
                       <Button 
-                        onClick={() => {/* Mostrar galer�a privada */}}
+                        onClick={() => {/* Mostrar galera privada */}}
                         className="bg-green-600/80 hover:bg-green-700/80 text-white flex items-center gap-2 text-sm sm:text-base px-3 sm:px-4 py-2"
                       >
                         <Images className="w-4 h-4" />
@@ -492,7 +492,7 @@ const ProfileSingle: React.FC = () => {
             </CardContent>
           </Card>
 
-          {/* Estad�sticas mejoradas */}
+          {/* Estadsticas mejoradas */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -670,7 +670,7 @@ const ProfileSingle: React.FC = () => {
                   <div className="space-y-6">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="p-4 bg-white/5 rounded-lg">
-                        <h3 className="text-white font-semibold mb-2">�ltima Actividad</h3>
+                        <h3 className="text-white font-semibold mb-2">ltima Actividad</h3>
                         <p className="text-white/70 text-sm">
                           {profileStats.lastActive.toLocaleDateString('es-ES', {
                             day: 'numeric',
@@ -692,7 +692,7 @@ const ProfileSingle: React.FC = () => {
                     </div>
                     
                     <div className="p-4 bg-white/5 rounded-lg">
-                      <h3 className="text-white font-semibold mb-3">Nivel de Verificaci�n</h3>
+                      <h3 className="text-white font-semibold mb-3">Nivel de Verificacin</h3>
                       <div className="flex items-center gap-2">
                         {Array.from({ length: 3 }).map((_, i) => (
                           <div
@@ -732,7 +732,7 @@ const ProfileSingle: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-2">
-                {['Lifestyle Swinger', 'Encuentros Discretos', 'Viajes', 'M�sica', 'Gastronom�a', 'Arte', 'Fotograf�a', 'Eventos Sofisticados'].map((interest) => (
+                {['Lifestyle Swinger', 'Encuentros Discretos', 'Viajes', 'Msica', 'Gastronoma', 'Arte', 'Fotografa', 'Eventos Sofisticados'].map((interest) => (
                   <Badge 
                     key={interest} 
                     className="bg-gradient-to-r from-purple-500/20 to-blue-600/20 text-white border-purple-400/30 hover:bg-purple-500/30 transition-colors"
@@ -744,12 +744,12 @@ const ProfileSingle: React.FC = () => {
             </CardContent>
           </Card>
 
-          {/* Galer�a */}
+          {/* Galera */}
           <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
             <CardHeader>
               <CardTitle className="text-white flex items-center gap-2">
                 <Images className="w-5 h-5" />
-                Galer�a de Fotos
+                Galera de Fotos
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -762,12 +762,12 @@ const ProfileSingle: React.FC = () => {
                 </div>
               )}
               
-              {/* Galer�a p�blica siempre visible */}
+              {/* Galera pblica siempre visible */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
                 <div className="aspect-square bg-gradient-to-br from-purple-400 to-blue-600 rounded-lg flex items-center justify-center overflow-hidden">
                   <img 
                     src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=faces&auto=format&q=80" 
-                    alt="Foto p�blica 1"
+                    alt="Foto pblica 1"
                     className="w-full h-full object-cover"
                     onError={(e) => {
                       e.currentTarget.src = '/placeholder.svg';
@@ -778,7 +778,7 @@ const ProfileSingle: React.FC = () => {
                 <div className="aspect-square bg-gradient-to-br from-purple-400 to-blue-600 rounded-lg flex items-center justify-center overflow-hidden">
                   <img 
                     src="/placeholder.svg" 
-                    alt="Foto p�blica 2"
+                    alt="Foto pblica 2"
                     className="w-full h-full object-cover"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
@@ -791,7 +791,7 @@ const ProfileSingle: React.FC = () => {
                 <div className="aspect-square bg-gradient-to-br from-blue-400 to-teal-600 rounded-lg flex items-center justify-center overflow-hidden">
                   <img 
                     src="/placeholder.svg" 
-                    alt="Foto p�blica 3"
+                    alt="Foto pblica 3"
                     className="w-full h-full object-cover"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
@@ -803,7 +803,7 @@ const ProfileSingle: React.FC = () => {
                 </div>
               </div>
 
-              {/* Galer�a privada - visible solo para el due�o del perfil */}
+              {/* Galera privada - visible solo para el dueo del perfil */}
               <div className="mb-6">
                 <h4 className="text-white font-semibold mb-3 flex items-center gap-2">
                   <Lock className="w-4 h-4" />
@@ -849,7 +849,7 @@ const ProfileSingle: React.FC = () => {
                 </div>
               </div>
               
-              {/* Galer�a privada - solo si tiene acceso aprobado */}
+              {/* Galera privada - solo si tiene acceso aprobado */}
               {privateImageAccess === 'approved' && (
                 <PrivateImageGallery 
                   profileId={profile?.id || ''}
@@ -895,7 +895,7 @@ const ProfileSingle: React.FC = () => {
         onOpenChange={setShowReportDialog}
         onReport={(reason) => {
           console.log('Perfil reportado por:', reason);
-          // Aqu� se implementar� la l�gica de reporte
+          // Aqu se implementar la lgica de reporte
         }}
       />
     </div>
