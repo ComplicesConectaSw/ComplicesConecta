@@ -655,7 +655,10 @@ export type Database = {
         Row: {
           created_at: string | null
           created_by: string | null
+          description: string | null
           id: string
+          is_active: boolean | null
+          is_public: boolean | null
           name: string
           type: string | null
           updated_at: string | null
@@ -663,7 +666,10 @@ export type Database = {
         Insert: {
           created_at?: string | null
           created_by?: string | null
+          description?: string | null
           id?: string
+          is_active?: boolean | null
+          is_public?: boolean | null
           name: string
           type?: string | null
           updated_at?: string | null
@@ -671,7 +677,10 @@ export type Database = {
         Update: {
           created_at?: string | null
           created_by?: string | null
+          description?: string | null
           id?: string
+          is_active?: boolean | null
+          is_public?: boolean | null
           name?: string
           type?: string | null
           updated_at?: string | null
@@ -3232,6 +3241,62 @@ export type Database = {
           },
         ]
       }
+      invitation_statistics: {
+        Row: {
+          acceptance_rate: number | null
+          accepted_invitations: number | null
+          created_at: string | null
+          declined_invitations: number | null
+          expired_invitations: number | null
+          id: string
+          metadata: Json | null
+          pending_invitations: number | null
+          period_end: string
+          period_start: string
+          total_invitations: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          acceptance_rate?: number | null
+          accepted_invitations?: number | null
+          created_at?: string | null
+          declined_invitations?: number | null
+          expired_invitations?: number | null
+          id?: string
+          metadata?: Json | null
+          pending_invitations?: number | null
+          period_end: string
+          period_start: string
+          total_invitations?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          acceptance_rate?: number | null
+          accepted_invitations?: number | null
+          created_at?: string | null
+          declined_invitations?: number | null
+          expired_invitations?: number | null
+          id?: string
+          metadata?: Json | null
+          pending_invitations?: number | null
+          period_end?: string
+          period_start?: string
+          total_invitations?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invitation_statistics_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       invitation_templates: {
         Row: {
           created_at: string | null
@@ -4578,6 +4643,7 @@ export type Database = {
           blocked_reason: string | null
           created_at: string | null
           first_name: string | null
+          full_name: string | null
           gender: string | null
           id: string
           interested_in: string | null
@@ -4619,6 +4685,7 @@ export type Database = {
           blocked_reason?: string | null
           created_at?: string | null
           first_name?: string | null
+          full_name?: string | null
           gender?: string | null
           id?: string
           interested_in?: string | null
@@ -4660,6 +4727,7 @@ export type Database = {
           blocked_reason?: string | null
           created_at?: string | null
           first_name?: string | null
+          full_name?: string | null
           gender?: string | null
           id?: string
           interested_in?: string | null
@@ -7067,13 +7135,21 @@ export type Database = {
         Args: { user1_uuid: string; user2_uuid: string }
         Returns: number
       }
-      calculate_gallery_commission: {
-        Args: { p_amount_cmpx: number; p_commission_percentage?: number }
-        Returns: {
-          commission_amount: number
-          creator_amount: number
-        }[]
-      }
+      calculate_gallery_commission:
+        | {
+            Args: { p_amount_cmpx: number; p_commission_percentage?: number }
+            Returns: {
+              commission_amount: number
+              creator_amount: number
+            }[]
+          }
+        | {
+            Args: { p_amount_cmpx: number; p_commission_percentage?: number }
+            Returns: {
+              commission_amount: number
+              creator_amount: number
+            }[]
+          }
       calculate_moderator_payment: {
         Args: {
           p_moderator_id: string
@@ -7179,7 +7255,9 @@ export type Database = {
         Args: { couple_id_param: string }
         Returns: Json
       }
-      generate_referral_code: { Args: { user_uuid: string }; Returns: string }
+      generate_referral_code:
+        | { Args: never; Returns: string }
+        | { Args: { user_uuid: string }; Returns: string }
       get_ai_compatibility_score: {
         Args: { p_user1_id: string; p_user2_id: string }
         Returns: number
@@ -7299,6 +7377,16 @@ export type Database = {
         Returns: Json
       }
       record_gallery_commission: {
+        Args: {
+          p_amount_cmpx: number
+          p_commission_percentage?: number
+          p_creator_id: string
+          p_gallery_id: string
+          p_transaction_type: string
+        }
+        Returns: string
+      }
+      record_gallery_commission_internal: {
         Args: {
           p_amount_cmpx: number
           p_commission_percentage?: number
@@ -7463,4 +7551,6 @@ export const Constants = {
     },
   },
 } as const
+A new version of Supabase CLI is available: v2.58.5 (currently installed v2.58.3)
+We recommend updating regularly for new features and bug fixes: https://supabase.com/docs/guides/cli/getting-started#updating-the-supabase-cli
 
