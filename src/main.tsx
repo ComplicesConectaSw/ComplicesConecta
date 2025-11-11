@@ -18,7 +18,7 @@ if (!React || !React.createElement || !React.useEffect || !React.useState) {
 // CRÍTICO: Asegurar useLayoutEffect está disponible ANTES de cualquier componente
 if (!React.useLayoutEffect) {
   console.warn('⚠️ useLayoutEffect not available, using useEffect fallback');
-  (React as any).useLayoutEffect = React.useEffect;
+  // No podemos reasignar React directamente, se maneja en window.React
 }
 
 // CRÍTICO: Asegurar React disponible globalmente INMEDIATAMENTE, ANTES DE CUALQUIER OTRA COSA
@@ -39,10 +39,10 @@ if (typeof window !== 'undefined') {
   win.React = React;
   win.ReactDOM = { createRoot };
   
-  // CRÍTICO: Asegurar que useLayoutEffect esté disponible
-  if (!React.useLayoutEffect) {
+  // CRÍTICO: Asegurar que useLayoutEffect esté disponible en window.React
+  if (!React.useLayoutEffect && win.React) {
     // Fallback a useEffect si useLayoutEffect no está disponible
-    (React as any).useLayoutEffect = React.useEffect;
+    win.React.useLayoutEffect = React.useEffect;
     debugLog('REACT_USELAYOUTEFFECT_FALLBACK', { fallbackToUseEffect: true });
   }
   
