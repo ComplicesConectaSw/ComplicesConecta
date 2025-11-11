@@ -8,6 +8,11 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react()],
+    server: {
+      port: 8080,
+      host: true,
+      strictPort: true
+    },
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'), // FIJA EL ALIAS @

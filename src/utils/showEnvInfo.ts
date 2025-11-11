@@ -74,6 +74,8 @@ if (typeof window !== 'undefined') {
       return;
     }
     
+    console.log('🔧 Exponiendo funciones debug en desarrollo...');
+    
     try {
       // Usar Object.defineProperty para evitar errores de redefinición
       Object.defineProperty(window, 'showEnvInfo', {
@@ -112,6 +114,12 @@ if (typeof window !== 'undefined') {
           return 'Contraseña oculta por seguridad';
         }
         return value || 'Variable no encontrada';
+      };
+      (window as unknown as Record<string, unknown>).showErrorReport = () => {
+        console.log('📊 Error Report Service Status:');
+        console.log('- Service available:', !!(window as any).errorReportService);
+        console.log('- Recent errors:', (window as any).__ERROR_LOGS__ || []);
+        return (window as any).errorReportService?.showReport() || 'No error report service available';
       };
     }
   };
