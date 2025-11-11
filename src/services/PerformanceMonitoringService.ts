@@ -218,7 +218,6 @@ class PerformanceMonitoringService {
    */
   private async logMonitoringSession(metric: PerformanceMetric): Promise<void> {
     try {
-      const { supabase } = await import('@/integrations/supabase/client');
       if (!supabase) return;
 
       const { data: { user } } = await supabase.auth.getUser();

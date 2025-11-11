@@ -1,5 +1,6 @@
 // Servicio de Huella Digital (Canvas Fingerprint + Browser)
 import { logger } from '@/lib/logger';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface BrowserFingerprint {
   userAgent: string;
@@ -165,8 +166,6 @@ export const checkFingerprintBanned = async (
   worldIdNullifierHash?: string
 ): Promise<boolean> => {
   try {
-    const { supabase } = await import('@/integrations/supabase/client');
-    
     if (!supabase) {
       logger.error('Supabase no está disponible');
       return false;
@@ -200,8 +199,6 @@ export const saveDigitalFingerprint = async (
   ipAddress?: string
 ): Promise<void> => {
   try {
-    const { supabase } = await import('@/integrations/supabase/client');
-    
     if (!supabase) {
       throw new Error('Supabase no está disponible');
     }
