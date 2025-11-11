@@ -23,5 +23,5 @@
     "src/**/*",
     "tests/**/*",
     "vitest.config.ts"
-  ]
+, "docs-unified/Investors copy.tsx"  ]
 }
