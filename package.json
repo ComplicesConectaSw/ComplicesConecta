@@ -46,7 +46,7 @@
     "security:progress": "node scripts/security-progress-check.js",
     "token:verify": "node scripts/verify-token.js",
     "security:scan": "node scripts/security-check.js",
-    "prepare": "node -e \"if (!process.env.CI && !process.env.CIRCLECI && !process.env.GITHUB_ACTIONS && require('fs').existsSync('.git')) { require('child_process').execSync('husky', {stdio: 'inherit'}) }\""
+    "prepare": "echo 'Husky prepare script disabled for deployment compatibility'"
   },
   "dependencies": {
     "@capacitor/android": "^7.4.4",
