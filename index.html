@@ -515,6 +515,24 @@
         if (typeof window !== 'undefined') {
           window.React = reactStub;
           
+          // CRÍTICO: Agregar ReactDOM stub también
+          window.ReactDOM = {
+            createRoot: function(container) {
+              return {
+                render: function(element) {
+                  if (container && element) {
+                    container.innerHTML = '<div style="color: white; padding: 20px;">ReactDOM stub - cargando aplicación real...</div>';
+                  }
+                }
+              };
+            },
+            render: function(element, container) {
+              if (container && element) {
+                container.innerHTML = '<div style="color: white; padding: 20px;">ReactDOM legacy render - cargando aplicación real...</div>';
+              }
+            }
+          };
+          
           // CRÍTICO: Interceptar Object.defineProperty para React
           var originalDefineProperty = Object.defineProperty;
           Object.defineProperty = function(obj, prop, descriptor) {
