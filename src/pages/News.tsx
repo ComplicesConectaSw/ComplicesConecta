@@ -33,20 +33,20 @@ const News: React.FC = () => {
     {
       version: "v3.5.0",
       date: "05 Nov 2025",
-      title: "Features Innovadoras + Neo4j Operativo + Documentacin Consolidada",
+      title: "Features Innovadoras + Neo4j Operativo + Documentación Consolidada",
       type: "major",
       icon: <Brain className="h-6 w-6" />,
       highlights: [
-        "? Verificador IA de Consentimiento en Chats - Servicio + Migracin + Integracin",
-        "? Galeras NFT-Verificadas - Servicio + Migracin + UI completa",
-        "? Matching Predictivo con Graphs Sociales - Neo4j + IA integrado",
-        "? Eventos Virtuales Sostenibles con Tokens - Servicio completo",
-        "? Neo4j Graph Database 100% operativo - Docker + Scripts + Sincronizacin",
-        "? Documentacin consolidada - DOCUMENTACION_CONSOLIDADA_MAESTRA_v3.5.0.md",
-        "? Gua de instalacin completa - INSTALACION_SETUP_v3.5.0.md",
-        "? 107 tablas en base de datos - 122 polticas RLS activas",
-        "? Tests: 260 passed | 14 skipped - 100% pasando",
-        "? TypeScript: 0 errores - ESLint: 0 errores crticos"
+        "✅ Verificador IA de Consentimiento en Chats - Servicio + Migración + Integración",
+        "✅ Galerías NFT-Verificadas - Servicio + Migración + UI completa",
+        "✅ Matching Predictivo con Graphs Sociales - Neo4j + IA integrado",
+        "✅ Eventos Virtuales Sostenibles con Tokens - Servicio completo",
+        "✅ Neo4j Graph Database 100% operativo - Docker + Scripts + Sincronización",
+        "✅ Documentación consolidada - DOCUMENTACION_CONSOLIDADA_MAESTRA_v3.5.0.md",
+        "✅ Guía de instalación completa - INSTALACION_SETUP_v3.5.0.md",
+        "✅ 107 tablas en base de datos - 122 políticas RLS activas",
+        "✅ Tests: 260 passed | 14 skipped - 100% pasando",
+        "✅ TypeScript: 0 errores - ESLint: 0 errores críticos"
       ],
       color: "from-purple-500 via-pink-500 to-blue-600",
       stats: {

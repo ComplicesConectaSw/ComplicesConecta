@@ -37,6 +37,25 @@ export default defineConfig(({ mode }) => {
               if (id.includes('@tanstack/react-query')) {
                 return 'vendor-query';
               }
+              // Separar librerías pesadas específicas
+              if (id.includes('framer-motion')) {
+                return 'vendor-animation';
+              }
+              if (id.includes('recharts') || id.includes('chart')) {
+                return 'vendor-charts';
+              }
+              if (id.includes('@sentry') || id.includes('sentry')) {
+                return 'vendor-monitoring';
+              }
+              if (id.includes('zod') || id.includes('yup') || id.includes('joi')) {
+                return 'vendor-validation';
+              }
+              if (id.includes('axios') || id.includes('fetch')) {
+                return 'vendor-http';
+              }
+              if (id.includes('crypto') || id.includes('bcrypt') || id.includes('hash')) {
+                return 'vendor-crypto';
+              }
               return 'vendor-other';
             }
             

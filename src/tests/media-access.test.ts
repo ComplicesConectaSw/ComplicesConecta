@@ -71,8 +71,9 @@ const uploadSecureMedia = async ({ file }: { file: File }) => {
   };
 };
 
+import { supabase } from '@/integrations/supabase/client';
+
 const logSecurityEvent = async (event: string, data: any) => {
-  const { supabase } = await import('@/integrations/supabase/client');
   return supabase.from('security_logs').insert({ event, data });
 };
 
@@ -522,7 +523,7 @@ describe('MediaUploader Component', () => {
 
 describe('Security Event Logging', () => {
   it('should log media access events', async () => {
-    const { supabase } = await import('@/integrations/supabase/client');
+    // supabase ya importado estáticamente
     await logSecurityEvent('media_accessed', {
       media_id: 'test-id',
       user_id: 'user-id',
@@ -533,7 +534,7 @@ describe('Security Event Logging', () => {
   });
 
   it('should log suspicious activities', async () => {
-    const { supabase } = await import('@/integrations/supabase/client');
+    // supabase ya importado estáticamente
     await logSecurityEvent('suspicious_activity', {
       activity: 'multiple_download_attempts',
       media_id: 'test-id'
@@ -543,7 +544,7 @@ describe('Security Event Logging', () => {
   });
 
   it('should handle logging errors gracefully', async () => {
-    const { supabase } = await import('@/integrations/supabase/client');
+    // supabase ya importado estáticamente
     // Mock database error
     vi.mocked(supabase.from).mockReturnValueOnce({
       insert: vi.fn(() => Promise.resolve({ error: new Error('DB Error') }))
