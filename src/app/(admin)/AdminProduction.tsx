@@ -719,12 +719,12 @@ const AdminProduction = () => {
                     <Input
                       placeholder="Pregunta"
                       value={newFaq.question}
-                      onChange={(e) => setNewFaq({...newFaq, question: e.target.value})}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewFaq({...newFaq, question: e.target.value})}
                       className="bg-white/10 border-white/20 text-white placeholder-white/50"
                     />
                     <select
                       value={newFaq.category}
-                      onChange={(e) => setNewFaq({...newFaq, category: e.target.value})}
+                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setNewFaq({...newFaq, category: e.target.value})}
                       className="bg-white/10 border border-white/20 text-white rounded-md px-3 py-2"
                     >
                       <option value="general">General</option>
@@ -736,7 +736,7 @@ const AdminProduction = () => {
                   <Textarea
                     placeholder="Respuesta"
                     value={newFaq.answer}
-                    onChange={(e) => setNewFaq({...newFaq, answer: e.target.value})}
+                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setNewFaq({...newFaq, answer: e.target.value})}
                     className="bg-white/10 border-white/20 text-white placeholder-white/50"
                     rows={3}
                   />

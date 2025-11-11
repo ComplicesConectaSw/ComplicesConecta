@@ -129,6 +129,7 @@
     "glob": "^11.0.3",
     "hcaptcha": "^0.2.0",
     "input-otp": "^1.4.2",
+    "install": "^0.13.0",
     "lucide-react": "^0.451.0",
     "neo4j-driver": "^5.28.2",
     "newrelic": "^13.6.2",
@@ -163,6 +164,7 @@
     "vite": "^7.1.12",
     "web-vitals": "^5.1.0",
     "web3": "^4.16.0",
+    "yarn": "^1.22.22",
     "zod": "^4.1.12"
   },
   "devDependencies": {
