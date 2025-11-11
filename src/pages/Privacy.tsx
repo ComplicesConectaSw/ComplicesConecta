@@ -263,8 +263,8 @@ const Privacy = () => {
                 </p>
                 <p className="text-white/80 mt-2">
                   <strong className="text-white">Email:</strong> <a href="mailto:privacy@complicesconecta.com" className="text-purple-300 hover:underline hover:text-purple-200">privacy@complicesconecta.com</a><br />
-                  <strong className="text-white">Responsable de Proteccin de Datos:</strong> <a href="mailto:dpo@complicesconecta.com" className="text-purple-300 hover:underline hover:text-purple-200">dpo@complicesconecta.com</a><br />
-                  <strong className="text-white">Direccin:</strong> Madrid, Espaa
+                  <strong className="text-white">Responsable de Protección de Datos:</strong> <a href="mailto:dpo@complicesconecta.com" className="text-purple-300 hover:underline hover:text-purple-200">dpo@complicesconecta.com</a><br />
+                  <strong className="text-white">Dirección:</strong> Ciudad de México, México
                 </p>
               </CardContent>
             </Card>

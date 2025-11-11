@@ -168,7 +168,7 @@ const ProfileSingle: React.FC = () => {
       try {
         // Solo log una vez al montar el componente
         if (!profile) {
-          logger.info('?? ProfileSingle - Estado de autenticacin:', {
+          logger.info('📱 ProfileSingle - Estado de autenticación:', {
             user: !!user,
             authProfile: !!authProfile,
             isDemo: authProfile?.is_demo,
@@ -244,7 +244,7 @@ const ProfileSingle: React.FC = () => {
         
         // Si authProfile ya esta disponible, usarlo directamente
         if (authProfile && authProfile.id) {
-          logger.info('?? Perfil cargado exitosamente:', { name: authProfile.name });
+          logger.info('✅ Perfil cargado exitosamente:', { name: authProfile.name });
           setProfile(authProfile);
           setIsLoading(false);
           return;
@@ -266,7 +266,7 @@ const ProfileSingle: React.FC = () => {
         
         // Si llegamos aqui sin perfil ni usuario pero con demo, mostrar error
         if (String(demoAuth) === 'true' && demoUser && !profile) {
-          logger.info('?? Demo autenticado pero perfil no cargado, reintentando...');
+          logger.info('🔄 Demo autenticado pero perfil no cargado, reintentando...');
           // El perfil demo deberia haberse cargado arriba, algo fallo?
           setIsLoading(false);
           return;
@@ -274,7 +274,7 @@ const ProfileSingle: React.FC = () => {
         
         // Estado inesperado final - solo log una vez
         if (!profile) {
-          logger.info('?? Estado inesperado: sin usuario ni perfil valido');
+          logger.info('⚠️ Estado inesperado: sin usuario ni perfil válido');
         }
         setIsLoading(false);
       } catch (error) {
@@ -426,7 +426,7 @@ const ProfileSingle: React.FC = () => {
                     
                     <TikTokShareButton
                       url={window.location.href}
-                      text={`Mira el perfil de ${profile?.name || 'Usuario'} en ComplicesConecta ??`}
+                      text={`Mira el perfil de ${profile?.name || 'Usuario'} en ComplicesConecta 💕`}
                       hashtags={['ComplicesConecta', 'Swinger', 'Mexico', 'Dating']}
                       className="bg-black/20 hover:bg-black/30 text-white border-white/30 flex items-center gap-2 text-sm sm:text-base px-3 sm:px-4 py-2"
                       variant="outline"

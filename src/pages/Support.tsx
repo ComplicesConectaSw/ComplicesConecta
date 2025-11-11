@@ -18,16 +18,16 @@ const Support = () => {
       icon: HelpCircle,
       questions: [
         {
-          q: "Cmo creo una cuenta en ComplicesConecta?",
-          a: "Para crear una cuenta, haz clic en 'Crear Cuenta Gratis' en la pgina principal. Necesitars verificar tu email y completar tu perfil con informacin bsica."
+          q: "¿Cómo creo una cuenta en ComplicesConecta?",
+          a: "Para crear una cuenta, haz clic en 'Crear Cuenta Gratis' en la página principal. Necesitarás verificar tu email y completar tu perfil con información básica."
         },
         {
-          q: "Puedo cambiar mi informacin de perfil despus de registrarme?",
-          a: "S, puedes editar tu perfil en cualquier momento desde la seccin 'Configuracin' en tu cuenta."
+          q: "¿Puedo cambiar mi información de perfil después de registrarme?",
+          a: "Sí, puedes editar tu perfil en cualquier momento desde la sección 'Configuración' en tu cuenta."
         },
         {
-          q: "Cmo verifico mi perfil?",
-          a: "La verificacin se realiza mediante nuestro sistema KYC avanzado. Sube una foto de tu identificacin oficial y una selfie para completar el proceso."
+          q: "¿Cómo verifico mi perfil?",
+          a: "La verificación se realiza mediante nuestro sistema KYC avanzado. Sube una foto de tu identificación oficial y una selfie para completar el proceso."
         }
       ]
     },
@@ -36,16 +36,16 @@ const Support = () => {
       icon: Shield,
       questions: [
         {
-          q: "Qu medidas de seguridad tienen implementadas?",
-          a: "Utilizamos verificacin KYC, tecnologa blockchain, cifrado end-to-end para mensajes y moderacin 24/7 para garantizar un ambiente seguro."
+          q: "¿Qué medidas de seguridad tienen implementadas?",
+          a: "Utilizamos verificación KYC, tecnología blockchain, cifrado end-to-end para mensajes y moderación 24/7 para garantizar un ambiente seguro."
         },
         {
-          q: "Cmo reporto un perfil sospechoso?",
-          a: "Puedes reportar cualquier perfil usando el botn 'Reportar' en su perfil. Nuestro equipo revisar el reporte en menos de 24 horas."
+          q: "¿Cómo reporto un perfil sospechoso?",
+          a: "Puedes reportar cualquier perfil usando el botón 'Reportar' en su perfil. Nuestro equipo revisará el reporte en menos de 24 horas."
         },
         {
-          q: "Mis datos personales estn protegidos?",
-          a: "Absolutamente. Cumplimos con todas las regulaciones de proteccin de datos y nunca compartimos informacin personal sin tu consentimiento."
+          q: "¿Mis datos personales están protegidos?",
+          a: "Absolutamente. Cumplimos con todas las regulaciones de protección de datos y nunca compartimos información personal sin tu consentimiento."
         }
       ]
     },
@@ -54,16 +54,16 @@ const Support = () => {
       icon: MessageCircle,
       questions: [
         {
-          q: "Qu son los tokens CMPX/GTK?",
-          a: "CMPX son tokens internos para consumo (suministro ilimitado) que puedes usar para funciones premium, regalos virtuales y eventos VIP. GTK son tokens blockchain (suministro limitado) para staking e inversin, con roadmap hacia blockchain en Q2-Q4 2026."
+          q: "¿Qué son los tokens CMPX/GTK?",
+          a: "CMPX son tokens internos para consumo (suministro ilimitado) que puedes usar para funciones premium, regalos virtuales y eventos VIP. GTK son tokens blockchain (suministro limitado) para staking e inversión, con roadmap hacia blockchain en Q2-Q4 2026."
         },
         {
-          q: "Cmo puedo ganar tokens?",
-          a: "Puedes ganar CMPX invitando amigos (50 CMPX por referido, lmite 500/mes), completando tu perfil (25 CMPX), login diario (5 CMPX), verificacin World ID (100 CMPX - prximamente), o comprndolos directamente. GTK tokens estarn disponibles para staking en Q2-Q4 2026."
+          q: "¿Cómo puedo ganar tokens?",
+          a: "Puedes ganar CMPX invitando amigos (50 CMPX por referido, límite 500/mes), completando tu perfil (25 CMPX), login diario (5 CMPX), verificación World ID (100 CMPX - próximamente), o comprándolos directamente. GTK tokens estarán disponibles para staking en Q2-Q4 2026."
         },
         {
-          q: "Qu funciones premium estn disponibles?",
-          a: "Con CMPX puedes acceder a Super Like (10 CMPX), Boost de Perfil (50 CMPX), Regalos Virtuales (50-500 CMPX), Video Llamadas (75-200 CMPX), Eventos VIP (200-1000 CMPX), Galeras NFT (100-1000 CMPX), Chat Premium (100 CMPX/mes), y ms. Ver gua completa en /tokens-info."
+          q: "¿Qué funciones premium están disponibles?",
+          a: "Con CMPX puedes acceder a Super Like (10 CMPX), Boost de Perfil (50 CMPX), Regalos Virtuales (50-500 CMPX), Video Llamadas (75-200 CMPX), Eventos VIP (200-1000 CMPX), Galerías NFT (100-1000 CMPX), Chat Premium (100 CMPX/mes), y más. Ver guía completa en /tokens-info."
         }
       ]
     }
@@ -84,9 +84,9 @@ const Support = () => {
     },
     {
       icon: Clock,
-      title: "Horario de Atencin",
+      title: "Horario de Atención",
       description: "Lun - Vie: 9:00 - 18:00",
-      subtitle: "Hora de Mxico"
+      subtitle: "Hora de México"
     }
   ];
 
