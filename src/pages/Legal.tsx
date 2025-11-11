@@ -1,9 +1,11 @@
-
+import React from 'react';
 import HeaderNav from '@/components/HeaderNav';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
 import { Button } from '@/shared/ui/Button';
 import { Badge } from '@/components/ui/badge';
 import { useNavigate } from 'react-router-dom';
+import { DecorativeHearts } from '@/components/DecorativeHearts';
+import { motion } from 'framer-motion';
 import { 
   FileText, 
   Shield, 
@@ -17,7 +19,13 @@ import {
   Calendar,
   ArrowLeft,
   Heart,
-  AlertCircle
+  AlertCircle,
+  CheckCircle2,
+  Globe,
+  Lock,
+  UserCheck,
+  ExternalLink,
+  Info
 } from 'lucide-react';
 
 const Legal: React.FC = () => {
@@ -25,439 +33,450 @@ const Legal: React.FC = () => {
 
   const legalDocuments = [
     {
-      title: "Ley Olimpia",
-      description: "Protección contra violencia digital - Delitos tipificados, protección en ComplicesConecta, canales de denuncia y protocolo de actuación",
+      title: "Ley Olimpia - Protección contra Violencia Digital",
+      description: "Marco legal mexicano que tipifica como delito la violencia digital y la difusión de contenido íntimo sin consentimiento. ComplicesConecta cumple estrictamente con esta normativa.",
       icon: <Shield className="h-6 w-6" />,
       file: "LEY_OLIMPIA.md",
       lastUpdated: "2025-11-09",
-      category: "Protección",
-      priority: true
-    },
-    {
-      title: "Términos de Servicio",
-      description: "Condiciones de uso de la plataforma ComplicesConecta",
-      icon: <Gavel className="h-6 w-6" />,
-      file: "TERMS_OF_SERVICE.md",
-      lastUpdated: "2025-11-08",
-      category: "Términos"
-    },
-    {
-      title: "Política de Privacidad", 
-      description: "Cómo protegemos y manejamos tu información personal",
-      icon: <Shield className="h-6 w-6" />,
-      file: "PRIVACY_POLICY.md",
-      lastUpdated: "2025-11-08",
-      category: "Privacidad"
+      category: "Protección Legal",
+      priority: true,
+      details: [
+        "Artículo 259 Ter: Difusión de contenido íntimo sin consentimiento (3-6 años prisión)",
+        "Artículo 259 Quáter: Acoso digital (1-3 años prisión)",
+        "Artículo 259 Quinquies: Violación a la intimidad sexual (3-6 años prisión)",
+        "Verificador IA de Consentimiento integrado en ComplicesConecta",
+        "Canal de denuncias 24/7 disponible"
+      ]
     },
     {
       title: "Cumplimiento Legal México",
-      description: "Marco regulatorio y cumplimiento en territorio mexicano, incluyendo Ley Olimpia",
-      icon: <Scale className="h-6 w-6" />,
-      file: "LEGAL_COMPLIANCE_MEXICO.md", 
+      description: "Documentación completa del cumplimiento normativo específico para México, incluyendo protección de datos y normativas de contenido adulto.",
+      icon: <Gavel className="h-6 w-6" />,
+      file: "LEGAL_COMPLIANCE_MEXICO.md",
       lastUpdated: "2025-11-08",
-      category: "Cumplimiento"
+      category: "Cumplimiento",
+      details: [
+        "Ley Federal de Protección de Datos Personales",
+        "Normativas de contenido adulto",
+        "Regulaciones de privacidad mexicanas",
+        "Protocolos de verificación de edad",
+        "Cumplimiento con autoridades locales"
+      ]
     },
     {
-      title: "Reporte Resumen Legal",
-      description: "Resumen ejecutivo legal y normativo completo",
+      title: "Términos de Servicio",
+      description: "Condiciones de uso completas de la plataforma ComplicesConecta, derechos y obligaciones de usuarios.",
       icon: <FileText className="h-6 w-6" />,
-      file: "LEGAL_SUMMARY_REPORT.md",
+      file: "TERMS_OF_SERVICE.md",
       lastUpdated: "2025-11-08",
-      category: "Resumen"
+      category: "Términos",
+      details: [
+        "Condiciones de uso de la plataforma",
+        "Derechos y obligaciones de usuarios",
+        "Políticas de contenido y comportamiento",
+        "Procedimientos de suspensión y cancelación",
+        "Resolución de disputas"
+      ]
+    },
+    {
+      title: "Política de Privacidad",
+      description: "Cómo protegemos, recopilamos y manejamos tu información personal. Cumplimiento con GDPR y normativas mexicanas.",
+      icon: <Lock className="h-6 w-6" />,
+      file: "PRIVACY_POLICY.md",
+      lastUpdated: "2025-11-08",
+      category: "Privacidad",
+      details: [
+        "Recopilación y uso de datos personales",
+        "Derechos de los usuarios sobre sus datos",
+        "Medidas de seguridad implementadas",
+        "Compartición de datos con terceros",
+        "Cumplimiento GDPR y normativas mexicanas"
+      ]
     },
     {
       title: "Descargo de Responsabilidad",
-      description: "Limitaciones y exclusiones de responsabilidad",
+      description: "Limitaciones de responsabilidad y descargos legales de la plataforma ComplicesConecta.",
       icon: <AlertTriangle className="h-6 w-6" />,
       file: "DISCLAIMER.md",
-      lastUpdated: "2025-11-08", 
-      category: "Legal"
+      lastUpdated: "2025-11-08",
+      category: "Responsabilidad",
+      details: [
+        "Limitaciones de responsabilidad",
+        "Uso bajo propio riesgo",
+        "Responsabilidad de contenido de usuarios",
+        "Limitaciones de garantías",
+        "Jurisdicción y ley aplicable"
+      ]
     },
     {
-      title: "Documentación API",
-      description: "Términos y condiciones para uso de API",
-      icon: <FileText className="h-6 w-6" />,
+      title: "Documentación de API Legal",
+      description: "Términos y condiciones específicos para el uso de la API de ComplicesConecta por desarrolladores y terceros.",
+      icon: <Globe className="h-6 w-6" />,
       file: "API.md",
       lastUpdated: "2025-11-08",
-      category: "Técnico"
+      category: "Técnico",
+      details: [
+        "Términos de uso de API",
+        "Limitaciones de acceso y uso",
+        "Responsabilidades de desarrolladores",
+        "Políticas de rate limiting",
+        "Cumplimiento de seguridad"
+      ]
+    }
+  ];
+
+  const complianceAreas = [
+    {
+      title: "México",
+      icon: <Shield className="h-8 w-8" />,
+      items: [
+        "✅ Ley Federal de Protección de Datos Personales",
+        "✅ Ley Olimpia (protección contra violencia digital)",
+        "✅ Normativas de contenido adulto",
+        "✅ Regulaciones de privacidad",
+        "✅ Verificación de edad obligatoria"
+      ],
+      color: "from-green-500 to-emerald-600"
     },
     {
-      title: "Guía de Deployment",
-      description: "Consideraciones legales para deployment",
-      icon: <FileText className="h-6 w-6" />,
-      file: "DEPLOY.md",
-      lastUpdated: "2025-11-08",
-      category: "Técnico"
-    },
-    {
-      title: "Análisis Legal",
-      description: "Análisis detallado de cumplimiento legal (Septiembre 2025)",
-      icon: <FileText className="h-6 w-6" />,
-      file: "ANALYSIS_REPORT_202509.md",
-      lastUpdated: "2025-11-08",
-      category: "Análisis"
-    },
-    {
-      title: "Guía de Contribución",
-      description: "Cómo contribuir al desarrollo de la plataforma",
-      icon: <Users className="h-6 w-6" />,
-      file: "CONTRIBUTING.md",
-      lastUpdated: "2025-11-08",
-      category: "Desarrollo"
-    },
-    {
-      title: "Historial de Cambios",
-      description: "Registro de cambios en documentación legal",
-      icon: <Calendar className="h-6 w-6" />,
-      file: "CHANGELOG.md",
-      lastUpdated: "2025-11-08",
-      category: "Historial"
+      title: "Internacional",
+      icon: <Globe className="h-8 w-8" />,
+      items: [
+        "✅ GDPR (Reglamento General de Protección de Datos)",
+        "✅ Normativas de protección de datos internacionales",
+        "✅ Estándares de seguridad globales",
+        "✅ Protocolos de privacidad internacionales",
+        "✅ Cumplimiento multi-jurisdiccional"
+      ],
+      color: "from-blue-500 to-purple-600"
     }
   ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 relative overflow-hidden">
+      {/* Background decorativo */}
+      <DecorativeHearts count={8} />
+      
       <HeaderNav />
       
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-purple-500/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-        <div className="absolute top-40 right-10 w-72 h-72 bg-purple-500/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-red-500/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
-      </div>
-
-      {/* Content */}
-      <div className="relative z-10 min-h-screen">
-        {/* Header */}
-        <div className="bg-black/30 backdrop-blur-sm border-b border-white/10 p-4">
-          <div className="flex items-center justify-between max-w-4xl mx-auto">
-          <Button
-            onClick={() => navigate(-1)}
-            className="text-white hover:bg-white/10 flex items-center gap-2 bg-transparent"
+      {/* Hero Section */}
+      <section className="relative z-10 pt-24 pb-12 px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
           >
-            <ArrowLeft className="h-4 w-4" />
-            <span className="hidden sm:inline">Regresar</span>
-          </Button>
-          
-          <h1 className="text-xl font-bold text-white flex items-center gap-2">
-            <Scale className="h-6 w-6" />
-            Marco Legal
-          </h1>
-          
-          <div className="w-20" />
-        </div>
-      </div>
-
-      {/* Contenido principal */}
-      <div className="max-w-4xl mx-auto p-4 space-y-6">
-        {/* Introducción */}
-        <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-white">
-              <Shield className="h-5 w-5" />
-              Información Legal de ComplicesConecta
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-white/90 leading-relaxed">
-              ComplicesConecta opera bajo estricto cumplimiento del marco legal mexicano e internacional. 
-              Esta sección proporciona información transparente sobre nuestras obligaciones legales, 
-              derechos de los usuarios y políticas de cumplimiento.
+            <Badge className="bg-gradient-to-r from-blue-400 to-purple-500 text-white font-bold mb-4">
+              ⚖️ MARCO LEGAL COMPLETO
+            </Badge>
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+              Documentación
+              <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"> Legal</span>
+            </h1>
+            <p className="text-xl text-white/80 max-w-3xl mx-auto mb-8">
+              ComplicesConecta opera bajo estricto cumplimiento del marco legal mexicano e internacional, 
+              con especial énfasis en la Ley Olimpia y protección contra violencia digital.
             </p>
-            <div className="mt-4 p-4 bg-red-500/20 border border-red-400/30 rounded-lg">
-              <div className="flex items-start gap-3">
-                <AlertCircle className="h-5 w-5 text-red-300 flex-shrink-0 mt-0.5" />
-                <div>
-                  <h3 className="font-semibold text-red-300 mb-2">🛡️ Ley Olimpia - Protección contra Violencia Digital</h3>
-                  <p className="text-white/80 text-sm leading-relaxed">
-                    ComplicesConecta cumple estrictamente con la <strong>Ley Olimpia</strong> (Código Penal Federal, Artículos 259 Ter, 259 Quáter, 259 Quinquies) 
-                    que protege contra la violencia digital, difusión de contenido íntimo sin consentimiento, acoso digital y violación a la intimidad sexual. 
-                    Contamos con sistemas de verificación de consentimiento, reportes prioritarios, eliminación automática de contenido y cooperación con autoridades.
+            
+            <div className="flex flex-wrap justify-center gap-3 mb-8">
+              <Badge className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-300 border-green-400/30 px-4 py-2 text-base">
+                <Shield className="h-4 w-4 mr-2" />
+                Ley Olimpia Compliant
+              </Badge>
+              <Badge className="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-300 border-blue-400/30 px-4 py-2 text-base">
+                <Lock className="h-4 w-4 mr-2" />
+                GDPR Compliant
+              </Badge>
+              <Badge className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-300 border-purple-400/30 px-4 py-2 text-base">
+                <Gavel className="h-4 w-4 mr-2" />
+                México Legal
+              </Badge>
+            </div>
+
+            <div className="flex flex-wrap justify-center gap-4">
+              <Button 
+                onClick={() => navigate('/privacy')} 
+                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-3 text-lg font-semibold"
+              >
+                <Lock className="w-5 h-5 mr-2" />
+                Política de Privacidad
+              </Button>
+              <Button 
+                onClick={() => navigate('/terms')} 
+                variant="outline" 
+                className="border-white/30 text-white hover:bg-white/10 px-8 py-3 text-lg"
+              >
+                <FileText className="w-5 h-5 mr-2" />
+                Términos de Servicio
+              </Button>
+            </div>
+          </motion.div>
+
+          {/* Ley Olimpia Destacada */}
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="mb-20"
+          >
+            <Card className="bg-gradient-to-r from-red-600/20 via-pink-600/20 to-purple-600/20 backdrop-blur-xl border-red-400/30 shadow-2xl">
+              <CardHeader>
+                <CardTitle className="text-3xl font-bold text-white flex items-center gap-3">
+                  <div className="p-2 bg-gradient-to-r from-red-500 to-pink-600 rounded-lg">
+                    <Shield className="h-6 w-6 text-white" />
+                  </div>
+                  Ley Olimpia - Protección contra Violencia Digital
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="bg-white/10 rounded-lg p-6 border border-white/20">
+                  <h4 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+                    <AlertCircle className="h-5 w-5 text-red-400" />
+                    ¿Qué es la Ley Olimpia?
+                  </h4>
+                  <p className="text-white/90 mb-4 leading-relaxed">
+                    La <strong>Ley Olimpia</strong> es una reforma legislativa mexicana vigente desde el 9 de noviembre de 2020 
+                    que tipifica como delito la violencia digital, específicamente la difusión de contenido íntimo sin consentimiento. 
+                    Es una ley federal que protege contra el acoso, la difusión no consensuada de imágenes íntimas, y la violencia en medios digitales.
                   </p>
-                  <Button
-                    onClick={() => window.open('https://github.com/ComplicesConectaSw/ComplicesConecta/blob/master/docs/legal/LEY_OLIMPIA.md', '_blank')}
-                    className="mt-3 bg-red-500/30 hover:bg-red-500/40 text-white text-xs px-3 py-1 border border-red-400/50"
-                  >
-                    <Shield className="h-3 w-3 mr-1" />
-                    Ver Ley Olimpia Completa
-                  </Button>
                 </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
 
-        {/* Cumplimiento Legal */}
-        <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-white">
-              <FileText className="h-5 w-5" />
-              Cumplimiento Normativo
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-3">
-                <h3 className="font-semibold text-pink-300">Legislación Mexicana</h3>
-                <ul className="space-y-2 text-white/80 text-sm">
-                  <li>• <strong>Ley Olimpia</strong> - Protección contra Violencia Digital (Código Penal Federal, Art. 259 Ter, 259 Quáter, 259 Quinquies)</li>
-                  <li>• Ley Federal de Protección de Datos Personales (LFPDPPP)</li>
-                  <li>• Código Civil Federal</li>
-                  <li>• Ley Federal del Consumidor</li>
-                  <li>• Ley de Instituciones de Crédito</li>
-                </ul>
-              </div>
-              <div className="space-y-3">
-                <h3 className="font-semibold text-purple-300">Normativas Internacionales</h3>
-                <ul className="space-y-2 text-white/80 text-sm">
-                  <li>• GDPR (Reglamento General de Protección de Datos)</li>
-                  <li>• CCPA (California Consumer Privacy Act)</li>
-                  <li>• SOX (Sarbanes-Oxley Act)</li>
-                  <li>• ISO 27001 (Seguridad de la Información)</li>
-                </ul>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+                <div className="grid md:grid-cols-3 gap-6">
+                  <div className="p-4 bg-white/5 rounded-lg border border-red-400/30">
+                    <h5 className="font-semibold text-white mb-2 flex items-center gap-2">
+                      <Gavel className="h-4 w-4 text-red-400" />
+                      Artículo 259 Ter
+                    </h5>
+                    <p className="text-white/80 text-sm mb-2">Difusión de contenido íntimo sin consentimiento</p>
+                    <p className="text-red-300 font-semibold text-sm">3-6 años de prisión</p>
+                  </div>
+                  <div className="p-4 bg-white/5 rounded-lg border border-red-400/30">
+                    <h5 className="font-semibold text-white mb-2 flex items-center gap-2">
+                      <AlertTriangle className="h-4 w-4 text-red-400" />
+                      Artículo 259 Quáter
+                    </h5>
+                    <p className="text-white/80 text-sm mb-2">Acoso digital y hostigamiento</p>
+                    <p className="text-red-300 font-semibold text-sm">1-3 años de prisión</p>
+                  </div>
+                  <div className="p-4 bg-white/5 rounded-lg border border-red-400/30">
+                    <h5 className="font-semibold text-white mb-2 flex items-center gap-2">
+                      <Eye className="h-4 w-4 text-red-400" />
+                      Artículo 259 Quinquies
+                    </h5>
+                    <p className="text-white/80 text-sm mb-2">Violación a la intimidad sexual</p>
+                    <p className="text-red-300 font-semibold text-sm">3-6 años de prisión</p>
+                  </div>
+                </div>
 
-        {/* Derechos de los Usuarios */}
-        <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-white">
-              <Users className="h-5 w-5" />
-              Derechos de los Usuarios
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-3">
-                <Badge className="bg-green-500/20 text-green-300 border-green-400/30">
-                  Derechos ARCO
-                </Badge>
-                <ul className="space-y-2 text-white/80 text-sm">
-                  <li><strong>Acceso:</strong> Conocer qué datos personales tenemos</li>
-                  <li><strong>Rectificación:</strong> Corregir datos inexactos</li>
-                  <li><strong>Cancelación:</strong> Eliminar datos cuando no sean necesarios</li>
-                  <li><strong>Oposición:</strong> Oponerse al tratamiento de datos</li>
-                </ul>
-              </div>
-              <div className="space-y-3">
-                <Badge className="bg-blue-500/20 text-blue-300 border-blue-400/30">
-                  Derechos Adicionales
-                </Badge>
-                <ul className="space-y-2 text-white/80 text-sm">
-                  <li><strong>Portabilidad:</strong> Transferir datos a otro servicio</li>
-                  <li><strong>Limitación:</strong> Restringir el procesamiento</li>
-                  <li><strong>Transparencia:</strong> Información clara sobre el uso</li>
-                  <li><strong>Consentimiento:</strong> Control sobre el uso de datos</li>
-                </ul>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+                <div className="bg-green-500/10 rounded-lg p-6 border border-green-400/30">
+                  <h4 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-400" />
+                    Cumplimiento en ComplicesConecta
+                  </h4>
+                  <ul className="space-y-2 text-white/90">
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-green-400 flex-shrink-0 mt-0.5" />
+                      <span><strong>Verificador IA de Consentimiento:</strong> Sistema automático que detecta y previene contenido no consensuado</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-green-400 flex-shrink-0 mt-0.5" />
+                      <span><strong>Canal de denuncias 24/7:</strong> Reportes inmediatos y respuesta en menos de 2 horas</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-green-400 flex-shrink-0 mt-0.5" />
+                      <span><strong>Protocolo de actuación:</strong> Procedimientos claros para casos de violencia digital</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-green-400 flex-shrink-0 mt-0.5" />
+                      <span><strong>Cooperación con autoridades:</strong> Colaboración directa con fiscalías especializadas</span>
+                    </li>
+                  </ul>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
 
-        {/* Responsabilidades Legales */}
-        <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-white">
-              <Shield className="h-5 w-5" />
-              Información de Seguridad - v3.6.3
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="p-4 bg-green-500/20 border border-green-400/30 rounded-lg">
-                <h3 className="font-semibold text-green-300 mb-2">🔒 Protección de Datos Enterprise</h3>
-                <p className="text-white/80 text-sm">
-                  Encriptación AES-GCM, cumplimiento GDPR/LFPDPPP, sistema de auditoría avanzada 
-                  con IP tracking, session monitoring y risk scoring automático.
-                </p>
-              </div>
-              
-              <div className="p-4 bg-blue-500/20 border border-blue-400/30 rounded-lg">
-                <h3 className="font-semibold text-blue-300 mb-2">🔐 Autenticación Biométrica 2FA</h3>
-                <p className="text-white/80 text-sm">
-                  Sistema TOTP con Google Authenticator/Authy, códigos de recuperación seguros, 
-                  WebAuthn para huella/FaceID y monitoreo de sesiones activas.
-                </p>
-              </div>
-              
-              <div className="p-4 bg-purple-500/20 border border-purple-400/30 rounded-lg">
-                <h3 className="font-semibold text-purple-300 mb-2">🛡️ Protección Multimedia Avanzada</h3>
-                <p className="text-white/80 text-sm">
-                  URLs firmadas temporales, watermarks dinámicos invisibles, FLAG_SECURE Android, 
-                  bloqueo de screenshots web y sistema de permisos granular por roles.
-                </p>
-              </div>
-
-              <div className="p-4 bg-red-500/20 border border-red-400/30 rounded-lg">
-                <h3 className="font-semibold text-red-300 mb-2">🚨 Detección de Fraude</h3>
-                <p className="text-white/80 text-sm">
-                  Fraud detection automático, logs de moderación completos, performance monitoring 
-                  con alertas por anomalías y sistema de puntuación de riesgo en tiempo real.
-                </p>
-              </div>
-
-              <div className="p-4 bg-yellow-500/20 border border-yellow-400/30 rounded-lg">
-                <h3 className="font-semibold text-yellow-300 mb-2">📊 Monitoreo 24/7</h3>
-                <p className="text-white/80 text-sm">
-                  Sistema de métricas en tiempo real, error rate monitoring, user activity tracking, 
-                  notificaciones push seguras y auditorías automáticas cada 5 minutos.
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Documentos Legales Disponibles */}
-        <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-white">
-              <BookOpen className="h-5 w-5" />
-              Documentos Legales Disponibles
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {legalDocuments
-                .sort((a, b) => (b.priority ? 1 : 0) - (a.priority ? 1 : 0))
-                .map((doc, index) => (
-                <Card key={index} className={`bg-white/5 backdrop-blur-md border-white/10 text-white hover:bg-white/10 transition-all duration-300 hover:scale-105 ${doc.priority ? 'border-red-400/50 bg-red-500/10' : ''}`}>
-                  <CardContent className="p-4">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="p-2 bg-white/10 rounded-lg text-white">
-                        {doc.icon}
+          {/* Documentos Legales */}
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="mb-20"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+              Documentación Legal Completa
+            </h2>
+            <p className="text-lg text-white/70 text-center mb-12 max-w-2xl mx-auto">
+              Accede a toda nuestra documentación legal, términos y políticas actualizadas
+            </p>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {legalDocuments.map((doc, index) => (
+                <motion.div
+                  key={doc.file}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className="relative"
+                >
+                  <Card className={`bg-white/10 backdrop-blur-xl border border-white/20 hover:bg-white/15 transition-colors h-full ${doc.priority ? 'ring-2 ring-red-400/50' : ''}`}>
+                    {doc.priority && (
+                      <div className="absolute -top-2 -right-2">
+                        <Badge className="bg-red-500 text-white">
+                          Prioritario
+                        </Badge>
                       </div>
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-white text-sm">{doc.title}</h3>
-                        <div className="flex items-center gap-2 mt-1">
-                          <Badge className={`text-xs border-white/30 ${doc.priority ? 'bg-red-500/30 text-red-300 border-red-400/50' : 'bg-white/20 text-white'}`}>
+                    )}
+                    <CardHeader>
+                      <CardTitle className="text-xl font-semibold text-white flex items-start gap-3">
+                        <div className={`p-2 rounded-lg ${doc.priority ? 'bg-gradient-to-r from-red-500 to-pink-600' : 'bg-gradient-to-r from-blue-500 to-purple-600'} text-white flex-shrink-0`}>
+                          {doc.icon}
+                        </div>
+                        <div>
+                          <div>{doc.title}</div>
+                          <Badge className="bg-white/20 text-white/80 text-xs mt-1">
                             {doc.category}
                           </Badge>
-                          {doc.priority && (
-                            <Badge className="text-xs bg-red-500/30 text-red-300 border-red-400/50">
-                              Prioridad
-                            </Badge>
-                          )}
                         </div>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <p className="text-white/80 text-sm leading-relaxed">
+                        {doc.description}
+                      </p>
+                      
+                      {doc.details && (
+                        <div className="space-y-2">
+                          <h5 className="text-white font-semibold text-sm">Incluye:</h5>
+                          <ul className="space-y-1">
+                            {doc.details.slice(0, 3).map((detail, idx) => (
+                              <li key={idx} className="flex items-start gap-2 text-white/70 text-xs">
+                                <CheckCircle2 className="h-3 w-3 text-green-400 flex-shrink-0 mt-0.5" />
+                                <span>{detail}</span>
+                              </li>
+                            ))}
+                            {doc.details.length > 3 && (
+                              <li className="text-white/60 text-xs">
+                                +{doc.details.length - 3} elementos más...
+                              </li>
+                            )}
+                          </ul>
+                        </div>
+                      )}
+                      
+                      <div className="flex items-center justify-between text-xs text-white/60">
+                        <span className="flex items-center gap-1">
+                          <Calendar className="h-3 w-3" />
+                          {doc.lastUpdated}
+                        </span>
                       </div>
-                    </div>
-                    <p className="text-white/80 text-xs mb-3 line-clamp-2">
-                      {doc.description}
-                    </p>
-                    <div className="flex items-center justify-between text-xs text-white/60 mb-3">
-                      <div className="flex items-center gap-1">
-                        <Calendar className="h-3 w-3" />
-                        {doc.lastUpdated}
-                      </div>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button
-                        onClick={() => window.open(`https://github.com/ComplicesConectaSw/ComplicesConecta/blob/master/docs/legal/${doc.file}`, '_blank')}
-                        className="flex-1 bg-white/20 hover:bg-white/30 text-white text-xs px-3 py-1"
+                      
+                      <Button 
+                        className="w-full bg-white/20 hover:bg-white/30 text-white border-white/30"
+                        onClick={() => window.open(`/docs/legal/${doc.file}`, '_blank')}
                       >
-                        <Eye className="h-3 w-3 mr-1" />
-                        Ver
+                        <ExternalLink className="w-4 h-4 mr-2" />
+                        Ver Documento
                       </Button>
-                      <Button
-                        onClick={() => {
-                          const link = document.createElement('a');
-                          link.href = `https://raw.githubusercontent.com/ComplicesConectaSw/ComplicesConecta/master/docs/legal/${doc.file}`;
-                          link.download = doc.file;
-                          link.target = '_blank';
-                          link.click();
-                        }}
-                        className="border-white/30 text-white hover:bg-white/10 text-xs border bg-transparent px-3 py-1"
-                      >
-                        <Download className="h-3 w-3" />
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
+                </motion.div>
               ))}
             </div>
-          </CardContent>
-        </Card>
+          </motion.div>
 
-        {/* Contacto Legal */}
-        <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-white">
-              <Heart className="h-5 w-5" />
-              Contacto Legal
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <h3 className="font-semibold text-pink-300">Departamento Legal</h3>
-                <p className="text-white/80 text-sm">legal@complicesconecta.com</p>
-                <p className="text-white/80 text-sm">Lun-Vie 9:00-18:00 GMT-6</p>
-              </div>
-              <div className="space-y-2">
-                <h3 className="font-semibold text-purple-300">Derechos ARCO</h3>
-                <p className="text-white/80 text-sm">derechos@complicesconecta.com</p>
-                <p className="text-white/80 text-sm">Respuesta: 20 días hábiles</p>
-              </div>
-              <div className="space-y-2">
-                <h3 className="font-semibold text-green-300">Emergencias Seguridad</h3>
-                <p className="text-white/80 text-sm">emergencias@complicesconecta.com</p>
-                <p className="text-white/80 text-sm">Atención 24/7</p>
-              </div>
-            </div>
+          {/* Áreas de Cumplimiento */}
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="mb-20"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+              Cumplimiento Legal
+            </h2>
+            <p className="text-lg text-white/70 text-center mb-12 max-w-2xl mx-auto">
+              ComplicesConecta cumple con las normativas legales más estrictas a nivel nacional e internacional
+            </p>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-              <div className="p-3 bg-blue-500/20 border border-blue-400/30 rounded-lg">
-                <h4 className="font-semibold text-blue-300 mb-2">📍 Domicilio Legal</h4>
-                <p className="text-white/80 text-sm">
-                  Juan Carlos Méndez Nataren<br/>
-                  ComplicesConecta Platform<br/>
-                  Ciudad de México, México
-                </p>
-              </div>
-              <div className="p-3 bg-orange-500/20 border border-orange-400/30 rounded-lg">
-                <h4 className="font-semibold text-orange-300 mb-2">⚖️ Autoridades Competentes</h4>
-                <p className="text-white/80 text-sm">
-                  PROFECO • INAI • IFT<br/>
-                  Ministerio Público<br/>
-                  Jurisdicción: CDMX, México
-                </p>
-              </div>
+            <div className="grid md:grid-cols-2 gap-8">
+              {complianceAreas.map((area, index) => (
+                <motion.div
+                  key={area.title}
+                  initial={{ opacity: 0, x: index === 0 ? -30 : 30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: 0.7 + index * 0.1 }}
+                >
+                  <Card className="bg-white/10 backdrop-blur-xl border border-white/20 h-full">
+                    <CardHeader>
+                      <CardTitle className="text-2xl font-bold text-white flex items-center gap-3">
+                        <div className={`p-3 rounded-lg bg-gradient-to-r ${area.color} text-white`}>
+                          {area.icon}
+                        </div>
+                        {area.title}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <ul className="space-y-3">
+                        {area.items.map((item, idx) => (
+                          <li key={idx} className="text-white/90 flex items-start gap-2">
+                            <span className="text-sm">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
             </div>
-            
-            <div className="mt-6 p-4 bg-gradient-to-r from-pink-500/10 to-purple-500/10 border border-pink-400/30 rounded-lg">
-              <div className="text-center space-y-2">
-                <p className="text-white/90 text-sm">
-                  <strong>Marco Legal Actualizado:</strong> 08 de Noviembre de 2025
-                </p>
-                <p className="text-white/70 text-xs">
-                  Términos v3.6.3 • Cumplimiento LFPDPPP/GDPR • Jurisdicción México
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+          </motion.div>
 
-        {/* Botones de acción */}
-        <div className="flex flex-wrap gap-4 justify-center">
-          <Button
-            onClick={() => navigate('/terms')}
-            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+          {/* Información Importante */}
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+            className="text-center"
           >
-            <FileText className="h-4 w-4 mr-2" />
-            Ver Términos y Condiciones
-          </Button>
-          
-          <Button
-            onClick={() => navigate('/privacy')}
-            className="border-white/30 text-white hover:bg-white/10 border bg-transparent"
-          >
-            <Shield className="h-4 w-4 mr-2" />
-            Política de Privacidad
-          </Button>
+            <Card className="bg-gradient-to-r from-orange-600/20 via-yellow-600/20 to-red-600/20 backdrop-blur-xl border-orange-400/30 shadow-2xl">
+              <CardContent className="p-8">
+                <div className="flex justify-center mb-4">
+                  <div className="p-3 bg-gradient-to-r from-orange-500 to-red-600 rounded-lg">
+                    <Info className="h-8 w-8 text-white" />
+                  </div>
+                </div>
+                <h2 className="text-2xl font-bold text-white mb-4">
+                  Información Importante
+                </h2>
+                <p className="text-lg text-white/90 mb-6 max-w-2xl mx-auto leading-relaxed">
+                  Esta documentación legal es de carácter informativo y no constituye asesoría legal. 
+                  Para asuntos legales específicos, consulta con un abogado calificado.
+                </p>
+                
+                <div className="flex flex-wrap justify-center gap-4">
+                  <Button 
+                    onClick={() => window.open('mailto:legal@complicesconecta.com')}
+                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3"
+                  >
+                    <Users className="w-5 h-5 mr-2" />
+                    Contactar Legal
+                  </Button>
+                  <Button 
+                    onClick={() => navigate('/support')}
+                    variant="outline"
+                    className="border-white/30 text-white hover:bg-white/10 px-8 py-3"
+                  >
+                    <BookOpen className="w-5 h-5 mr-2" />
+                    Centro de Ayuda
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
         </div>
-        </div>
-      </div>
+      </section>
     </div>
   );
 };
