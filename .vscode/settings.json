@@ -7,5 +7,11 @@
   "files.associations": {
     "*.dbclient-js": "javascript",
     "plyconfig.json": "jsonc"
-  }
+  },
+  "typescript.preferences.includePackageJsonAutoImports": "on",
+  "typescript.suggest.autoImports": true,
+  "typescript.validate.enable": true,
+  "typescript.preferences.useLabelDetailsInCompletionEntries": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "typescript.workspaceSymbols.scope": "allOpenProjects"
 }
