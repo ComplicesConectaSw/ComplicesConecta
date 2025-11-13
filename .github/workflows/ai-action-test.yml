@@ -1,0 +1,21 @@
+name: AI Action Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  generate-text:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate text with AI Action
+        uses: vercel/ai-action@v2
+        id: prompt
+        with:
+          prompt: '¿Por qué el cielo es azul?'
+          model: 'openai/gpt-4o'
+          api-key: ${{ secrets.AI_GATEWAY_API_KEY }}
+
+      - name: Print AI Output
+        run: |
+          echo "Respuesta de la IA:"
+          echo "${{ steps.prompt.outputs.text }}"

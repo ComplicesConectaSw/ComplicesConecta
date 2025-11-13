@@ -241,8 +241,7 @@ step*.sql
 # ============================================================================
 # DOCUMENTACIÓN Y REPORTES (NO SUBIR A GIT)
 # ============================================================================
-docs-unified/
-docs-public/
+docs-unified/docs-public/
 workflows-desactivados/
 audit-files/
 backups/

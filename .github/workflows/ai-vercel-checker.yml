@@ -1,0 +1,116 @@
+name: AI Vercel Deployment Checker
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  analyze-changes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v41
+        with:
+          files: |
+            **/*.ts
+            **/*.tsx
+            **/*.js
+            **/*.jsx
+            vercel.json
+            vite.config.ts
+            tsconfig.json
+
+      - name: Read changed files content
+        id: file-content
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          files="${{ steps.changed-files.outputs.all_changed_files }}"
+          content=""
+          for file in $files; do
+            content="$content--- FILE: $file ---
+"
+            content="$content$(cat "$file")
+
+"
+          done
+          # Escape newlines and other special characters for JSON
+          content=$(echo "$content" | awk -v ORS='\n' '1' | sed 's/"/\"/g')
+          echo "::set-output name=content::$content"
+
+      - name: Ask AI to analyze for Vercel issues
+        if: steps.changed-files.outputs.any_changed == 'true'
+        id: ai-analysis
+        uses: vercel/ai-action@v2
+        with:
+          api-key: ${{ secrets.AI_GATEWAY_API_KEY }}
+          model: 'openai/gpt-4o'
+          system: |
+            Eres un ingeniero de software experto en despliegues a Vercel, especializado en aplicaciones Vite + React + TypeScript.
+            Tu tarea es analizar el código en busca de problemas que puedan causar fallos en el despliegue de Vercel.
+            Presta especial atención a:
+            1.  **Configuración de Vercel (`vercel.json`):** El uso de `routes` está obsoleto; se debe usar `rewrites` y `headers`.
+            2.  **Configuración de Vite (`vite.config.ts`):** Problemas con `base path`, `build.outDir`, y la división de chunks (`splitChunks`) que puedan generar assets no encontrados.
+            3.  **Variables de Entorno:** Uso incorrecto de `process.env` en lugar de `import.meta.env` en el código de cliente (Vite).
+            4.  **Código Server-Side en Componentes de Cliente:** Funciones o módulos de Node.js (`fs`, `path`) importados en componentes de React que no son Server Components.
+            5.  **Errores de TypeScript:** Problemas de tipos que puedan pasar el linting local pero fallen en el build estricto de Vercel.
+          prompt: |
+            Analiza los siguientes archivos modificados en este Pull Request y detecta posibles problemas de despliegue en Vercel.
+            Proporciona un resumen claro de cada problema y una sugerencia de cómo solucionarlo.
+            Archivos y su contenido:
+            ${{ steps.file-content.outputs.content }}
+          schema: |
+            {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "type": "object",
+              "properties": {
+                "issues": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "file": { "type": "string", "description": "El archivo que contiene el problema." },
+                      "problem": { "type": "string", "description": "Una descripción corta y clara del problema detectado." },
+                      "suggestion": { "type": "string", "description": "El código corregido o la sugerencia para solucionar el problema." }
+                    },
+                    "required": ["file", "problem", "suggestion"]
+                  }
+                }
+              },
+              "required": ["issues"]
+            }
+
+      - name: Create comment for PR
+        if: steps.changed-files.outputs.any_changed == 'true' && fromJson(steps.ai-analysis.outputs.json).issues.length > 0
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const issues = ${{ steps.ai-analysis.outputs.json }}.issues;
+            let commentBody = `### 🤖 Análisis de IA para Despliegue en Vercel\n\nHe encontrado ${issues.length} posible(s) problema(s) en este Pull Request que podrían afectar el despliegue a Vercel:\n\n`;
+            for (const issue of issues) {
+              commentBody += `---`;
+              commentBody += `**📄 Archivo:** 
+${issue.file}
+
+`;
+              commentBody += `**🚨 Problema:** ${issue.problem}
+
+`;
+              commentBody += `**💡 Sugerencia:**
+
+${issue.suggestion}
+
+`;
+            }
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: commentBody
+            });

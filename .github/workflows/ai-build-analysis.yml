@@ -1,0 +1,83 @@
+# GitHub Workflow for AI-Powered Build Analysis
+#
+# This workflow is triggered on every pull request to the main branch.
+# It performs the following steps:
+# 1. Checks out the code from the pull request.
+# 2. Sets up a Node.js environment.
+# 3. Installs the project dependencies using npm.
+# 4. Runs the build command (`npm run build`).
+# 5. If the build fails, it captures the error logs.
+# 6. It then sends the error logs to an AI model via the vercel/ai-action.
+# 7. The AI analyzes the log and suggests a potential fix.
+# 8. The AI's suggestion is posted as a comment on the pull request for human review.
+#
+name: AI Vercel Build Analysis
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  analyze-build-failure:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Attempt to Build Project
+        id: build-step
+        run: npm run build
+        continue-on-error: true
+
+      - name: Analyze Build Log with AI
+        if: failure() && steps.build-step.outcome == 'failure'
+        id: ai-analysis
+        uses: vercel/ai-action@v2
+        with:
+          api-key: ${{ secrets.AI_GATEWAY_API_KEY }}
+          model: 'openai/gpt-4o'
+          system: |
+            You are an expert software engineer specializing in Vercel deployments for React/Vite applications.
+            Your task is to analyze the provided build log, identify the single root cause of the error,
+            and provide a concise, actionable solution. The solution should be presented clearly
+            so a developer can quickly understand and apply the fix.
+          prompt: |
+            Analyze the following build log from a failed Vercel deployment and provide a solution.
+
+            Build Log:
+            ```
+            ${{ steps.build-step.outputs.stdout }}
+            ${{ steps.build-step.outputs.stderr }}
+            ```
+
+      - name: Post AI Suggestion as a Comment
+        if: failure() && steps.build-step.outcome == 'failure'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const body = `
+            ### 🤖 AI Build Analysis
+
+            The build failed, and an AI analysis suggests the following:
+
+            ---
+
+            ${{ steps.ai-analysis.outputs.text }}
+            `;
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: body
+            });
