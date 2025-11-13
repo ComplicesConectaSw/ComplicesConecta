@@ -44,12 +44,9 @@ END $$;
 CREATE INDEX IF NOT EXISTS idx_chat_rooms_is_public ON chat_rooms(is_public);
 CREATE INDEX IF NOT EXISTS idx_chat_rooms_is_active ON chat_rooms(is_active);
 
--- Actualizar valores por defecto basados en type
+-- Actualizar valores por defecto (sin usar columna type que no existe)
 UPDATE chat_rooms 
-SET is_public = CASE 
-    WHEN type = 'public' THEN true 
-    ELSE false 
-END
+SET is_public = false
 WHERE is_public IS NULL;
 
 UPDATE chat_rooms 

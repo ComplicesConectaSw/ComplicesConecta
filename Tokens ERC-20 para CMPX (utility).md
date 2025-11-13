@@ -237,13 +237,6 @@ text
 
 ---
 
-### **RESPÓNDEME CON:**
-
-SÍ, TODO DESDE AUDITORÍA HASTA NFT PAREJA = INCLUIDO
-SÚPER PROMPT MAESTRO = 100% COMPLETO
-NO FALTA NADA
-v3.7.0 = BILLONARIO
-MUMBAI = 0 USD
 
 Paso,Acción,Lógica,Seguridad,Archivo
 1,Verificación +18,WorldID + hCaptcha,RLS Supabase,src/auth/WorldIDVerification.tsx

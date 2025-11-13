@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card, CardContent } from "@/shared/ui/Card";
 import { Button } from "@/shared/ui/Button";
 import { Badge } from "@/components/ui/badge";
-import { Heart, MapPin, Verified, Crown, Settings, Share2, Lock, Images, Flag } from "lucide-react";
+import { Heart, MapPin, Verified, Crown, Settings, Share2, Lock, Images, Flag, Coins, Wallet, Gift, Zap, Calendar, Camera, Users, Eye } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { generateMockCoupleProfiles, type CoupleProfileWithPartners } from "@/features/profile/coupleProfiles";
@@ -13,6 +13,8 @@ import { PrivateImageRequest } from '@/components/profile/PrivateImageRequest';
 import { PrivateImageGallery } from '@/components/profile/PrivateImageGallery';
 import { ReportDialog } from '@/components/swipe/ReportDialog';
 import { ProfileNavTabs } from '@/profiles/shared/ProfileNavTabs';
+import { walletService, WalletService } from '@/services/WalletService';
+import { nftService } from '@/services/NFTService';
 
 const ProfileCouple: React.FC = () => {
   const navigate = useNavigate();
@@ -23,7 +25,16 @@ const ProfileCouple: React.FC = () => {
   const [privateImageAccess, setPrivateImageAccess] = useState<'none' | 'pending' | 'approved' | 'denied'>('none');
   const [showReportDialog, setShowReportDialog] = useState(false);
   const { isAuthenticated, user, profile: authProfile } = useAuth();
-  
+
+  // Estados para funcionalidades blockchain
+  const [walletInfo, setWalletInfo] = useState<any>(null);
+  const [tokenBalances, setTokenBalances] = useState({ cmpx: '0', gtk: '0', matic: '0' });
+  const [testnetInfo, setTestnetInfo] = useState<any>(null);
+  const [coupleNFTs, setCoupleNFTs] = useState<any[]>([]);
+  const [coupleRequests, setCoupleRequests] = useState<any[]>([]);
+  const [isClaimingTokens, setIsClaimingTokens] = useState(false);
+  const [isDemoMode] = useState(WalletService.isDemoMode());
+
   // Determinar si es el perfil propio
   const isOwnProfile = user?.id === profile?.id;
 
@@ -41,6 +52,100 @@ const ProfileCouple: React.FC = () => {
   const handleCommentPost = (postId: string) => {
     logger.info('Comentar post solicitado', { postId });
     // Implementar lgica de comentario
+  };
+
+  // Funciones blockchain específicas para parejas
+  const loadCoupleBlockchainData = async () => {
+    if (!user?.id) return;
+    
+    try {
+      // Cargar información específica de pareja
+      const [wallet, tokens, nfts, requests, testnet] = await Promise.all([
+        walletService.getOrCreateWallet(user.id).catch(() => null),
+        walletService.getTokenBalances('').catch(() => ({ cmpx: '0', gtk: '0', matic: '0' })),
+        nftService.getUserNFTs(user.id).catch(() => []),
+        Promise.resolve([]).catch(() => []),
+        walletService.getTestnetTokensInfo(user.id).catch(() => null)
+      ]);
+      
+      setWalletInfo(wallet);
+      setTokenBalances(tokens);
+      setCoupleNFTs(nfts.filter(nft => nft.is_couple));
+      setCoupleRequests(requests);
+      setTestnetInfo(testnet);
+    } catch (error) {
+      logger.error('Error cargando datos blockchain de pareja:', { error: String(error) });
+    }
+  };
+
+  const handleRequestCoupleNFT = async (partnerEmail: string) => {
+    if (!user?.id) return;
+    
+    try {
+      if (isDemoMode) {
+        // Modo demo - simular solicitud de NFT de pareja
+        const result = await walletService.executeDemoAction(user.id, 'couple_nft', { 
+          partnerEmail,
+          name: `NFT de ${profile?.partner1_first_name} & ${profile?.partner2_first_name}`,
+          description: 'NFT de pareja con consentimiento doble'
+        });
+        logger.info('Solicitud de NFT de pareja creada (DEMO):', { result });
+        
+        // Agregar solicitud simulada
+        const mockRequest = {
+          id: `demo-${Date.now()}`,
+          requestId: result.requestId,
+          partner1_address: 'demo-address-1',
+          partner2_address: 'demo-address-2',
+          status: 'pending',
+          expiresIn: result.expiresIn,
+          created_at: new Date().toISOString()
+        };
+        setCoupleRequests(prev => [mockRequest, ...prev]);
+      } else {
+        // Modo real - crear solicitud real
+        // Crear un archivo temporal para el NFT de pareja
+        const tempFile = new File([''], 'couple-nft.png', { type: 'image/png' });
+        const request = await nftService.requestCoupleNFT(user.id, partnerEmail, `NFT de ${profile?.partner1_first_name} & ${profile?.partner2_first_name}`, 'NFT de pareja con consentimiento doble', tempFile);
+        logger.info('Solicitud de NFT de pareja creada:', request);
+        
+        // Recargar solicitudes
+        const updatedRequests = await nftService.getCoupleNFTRequests(user.id);
+        setCoupleRequests(updatedRequests);
+      }
+    } catch (error) {
+      logger.error('Error creando solicitud de NFT de pareja:', { error: String(error) });
+    }
+  };
+
+  const handleApproveCoupleNFT = async (requestId: string) => {
+    if (!user?.id) return;
+    
+    try {
+      if (isDemoMode) {
+        // Modo demo - simular aprobación
+        logger.info('NFT de pareja aprobado (DEMO):', { requestId });
+        
+        // Actualizar estado de la solicitud
+        setCoupleRequests(prev => 
+          prev.map(req => 
+            req.id === requestId 
+              ? { ...req, status: 'approved', consent2_timestamp: new Date().toISOString() }
+              : req
+          )
+        );
+      } else {
+        // Modo real - aprobar solicitud
+        await nftService.approveCoupleNFT(requestId, user.id);
+        logger.info('NFT de pareja aprobado:', { requestId });
+        
+        // Recargar solicitudes
+        const updatedRequests = await nftService.getCoupleNFTRequests(user.id);
+        setCoupleRequests(updatedRequests);
+      }
+    } catch (error) {
+      logger.error('Error aprobando NFT de pareja:', { error: String(error) });
+    }
   };
   
   // Migracin localStorage ? usePersistedState
@@ -68,6 +173,8 @@ const ProfileCouple: React.FC = () => {
             
             setProfile(demoProfile);
             setLoading(false);
+            // Cargar datos blockchain para demo
+            loadCoupleBlockchainData();
             return;
           } catch (error) {
             logger.error('Error parseando usuario demo pareja:', { error: String(error) });
@@ -88,6 +195,8 @@ const ProfileCouple: React.FC = () => {
           
           setProfile(selectedProfile);
           setLoading(false);
+          // Cargar datos blockchain
+          loadCoupleBlockchainData();
         }, 1500);
         
       } catch (error) {
@@ -333,6 +442,73 @@ const ProfileCouple: React.FC = () => {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Sección Blockchain para Parejas - Solo para perfil propio */}
+            {isOwnProfile && (
+              <Card className="bg-gradient-to-br from-pink-600/20 to-purple-600/20 backdrop-blur-md border-pink-400/30 text-white">
+                <CardContent className="p-4 sm:p-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Wallet className="w-5 h-5 text-pink-400" />
+                    <h3 className="text-lg font-semibold">Blockchain & NFTs de Pareja</h3>
+                    {isDemoMode && (
+                      <Badge className="bg-yellow-500/20 text-yellow-300 border-yellow-400/30 text-xs">
+                        DEMO
+                      </Badge>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                    <div className="p-3 bg-white/10 rounded-lg">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Coins className="w-4 h-4 text-yellow-400" />
+                        <span className="text-sm font-medium">CMPX</span>
+                      </div>
+                      <div className="text-lg font-bold">{tokenBalances.cmpx}</div>
+                      <div className="text-xs text-white/70">Tokens Compartidos</div>
+                    </div>
+                    
+                    <div className="p-3 bg-white/10 rounded-lg">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Users className="w-4 h-4 text-pink-400" />
+                        <span className="text-sm font-medium">NFTs Pareja</span>
+                      </div>
+                      <div className="text-lg font-bold">{coupleNFTs.length}</div>
+                      <div className="text-xs text-white/70">Colección Conjunta</div>
+                    </div>
+                    
+                    <div className="p-3 bg-white/10 rounded-lg">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Heart className="w-4 h-4 text-pink-400" />
+                        <span className="text-sm font-medium">Solicitudes</span>
+                      </div>
+                      <div className="text-lg font-bold">{coupleRequests.length}</div>
+                      <div className="text-xs text-white/70">Pendientes</div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    <Button
+                      onClick={() => handleRequestCoupleNFT('pareja@demo.com')}
+                      className="bg-pink-500/20 hover:bg-pink-600/30 text-pink-200 border-pink-400/30 flex items-center gap-2 text-sm px-3 py-2 border"
+                    >
+                      <Heart className="w-4 h-4" />
+                      Crear NFT de Pareja
+                    </Button>
+                  </div>
+
+                  <div className="p-3 bg-white/5 rounded-lg">
+                    <h4 className="text-sm font-medium mb-2 flex items-center gap-2">
+                      <Lock className="w-4 h-4 text-yellow-400" />
+                      Sistema de Consentimiento Doble
+                    </h4>
+                    <p className="text-xs text-white/70 leading-relaxed">
+                      Todos los NFTs de pareja requieren aprobación de ambos miembros.
+                      {isDemoMode && ' (Modo demo - sin transacciones reales)'}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
 
             {/* Profile Navigation Tabs - Estilo Twitter/Instagram */}
             <ProfileNavTabs 

@@ -20,7 +20,11 @@ import {
   MessageCircle,
   Calendar,
   TrendingUp,
-  Award
+  Award,
+  Coins,
+  Wallet,
+  Gift,
+  Zap
 } from 'lucide-react';
 import { TikTokShareButton } from '@/components/sharing/TikTokShareButton';
 import { trackEvent } from '@/config/posthog.config';
@@ -35,6 +39,8 @@ import { PrivateImageGallery } from '@/components/profile/PrivateImageGallery';
 import { ReportDialog } from '@/components/swipe/ReportDialog';
 import { motion } from 'framer-motion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { walletService, WalletService } from '@/services/WalletService';
+import { nftService } from '@/services/NFTService';
 
 const ProfileSingle: React.FC = () => {
   const navigate = useNavigate();
@@ -61,6 +67,14 @@ const ProfileSingle: React.FC = () => {
   });
   const [recentActivity, setRecentActivity] = useState<any[]>([]);
   const [achievements, setAchievements] = useState<any[]>([]);
+  
+  // Estados para funcionalidades blockchain
+  const [walletInfo, setWalletInfo] = useState<any>(null);
+  const [tokenBalances, setTokenBalances] = useState({ cmpx: '0', gtk: '0', matic: '0' });
+  const [testnetInfo, setTestnetInfo] = useState<any>(null);
+  const [userNFTs, setUserNFTs] = useState<any[]>([]);
+  const [isClaimingTokens, setIsClaimingTokens] = useState(false);
+  const [isDemoMode] = useState(WalletService.isDemoMode());
   
   // Determinar si es el perfil propio
   const isOwnProfile = user?.id === profile?.id;
@@ -158,6 +172,132 @@ const ProfileSingle: React.FC = () => {
     logger.info('Descargar perfil solicitado');
     // Implementar lgica de descarga de perfil
   };
+
+  // Funciones para blockchain
+  const loadBlockchainData = async () => {
+    if (!user?.id) return;
+    
+    try {
+      // Cargar información de wallet y tokens
+      const [wallet, tokens, nfts, testnet] = await Promise.all([
+        walletService.getOrCreateWallet(user.id).catch(() => null),
+        walletService.getTokenBalances('').catch(() => ({ cmpx: '0', gtk: '0', matic: '0' })),
+        nftService.getUserNFTs(user.id).catch(() => []),
+        walletService.getTestnetTokensInfo(user.id).catch(() => null)
+      ]);
+      
+      setWalletInfo(wallet);
+      setTokenBalances(tokens);
+      setUserNFTs(nfts);
+      setTestnetInfo(testnet);
+    } catch (error) {
+      logger.error('Error cargando datos blockchain:', { error: String(error) });
+    }
+  };
+
+  const handleClaimTestnetTokens = async () => {
+    if (!user?.id || isClaimingTokens) return;
+    
+    setIsClaimingTokens(true);
+    try {
+      if (isDemoMode) {
+        // Modo demo - simular reclamo
+        const result = await walletService.executeDemoAction(user.id, 'send_tokens', { amount: 1000 });
+        logger.info('Tokens de testnet reclamados (DEMO):', result);
+        
+        // Actualizar estado local para demo
+        setTestnetInfo((prev: any) => ({
+          ...prev,
+          claimed: (prev?.claimed || 0) + 1000,
+          remaining: Math.max(0, (prev?.remaining || 1000) - 1000)
+        }));
+      } else {
+        // Modo real - reclamar tokens reales
+        const txHash = await walletService.claimTestnetTokens(user.id, 1000);
+        logger.info('Tokens de testnet reclamados:', { txHash });
+        
+        // Recargar información
+        await loadBlockchainData();
+      }
+    } catch (error) {
+      logger.error('Error reclamando tokens de testnet:', { error: String(error) });
+    } finally {
+      setIsClaimingTokens(false);
+    }
+  };
+
+  const handleClaimDailyTokens = async () => {
+    if (!user?.id || isClaimingTokens) return;
+    
+    setIsClaimingTokens(true);
+    try {
+      if (isDemoMode) {
+        // Modo demo - simular reclamo diario
+        const result = await walletService.executeDemoAction(user.id, 'send_tokens', { amount: 50000 });
+        logger.info('Tokens diarios reclamados (DEMO):', { result });
+        
+        // Actualizar estado local para demo
+        setTestnetInfo((prev: any) => ({
+          ...prev,
+          dailyClaimed: (prev?.dailyClaimed || 0) + 50000,
+          dailyRemaining: Math.max(0, (prev?.dailyRemaining || 2500000) - 50000)
+        }));
+      } else {
+        // Modo real - reclamar tokens diarios
+        const txHash = await walletService.claimDailyTokens(user.id, 50000);
+        logger.info('Tokens diarios reclamados:', { txHash });
+        
+        // Recargar información
+        await loadBlockchainData();
+      }
+    } catch (error) {
+      logger.error('Error reclamando tokens diarios:', { error: String(error) });
+    } finally {
+      setIsClaimingTokens(false);
+    }
+  };
+
+  const handleMintNFT = async () => {
+    if (!user?.id) return;
+    
+    try {
+      if (isDemoMode) {
+        // Modo demo - simular mint
+        const result = await walletService.executeDemoAction(user.id, 'mint_nft', { 
+          name: `NFT de ${profile?.name}`,
+          description: 'NFT de perfil individual'
+        });
+        logger.info('NFT minteado (DEMO):', { result });
+        
+        // Agregar NFT simulado a la lista
+        const mockNFT = {
+          id: `demo-${Date.now()}`,
+          token_id: result.tokenId,
+          metadata_uri: 'ipfs://demo-metadata',
+          rarity: 'common',
+          is_couple: false,
+          created_at: new Date().toISOString()
+        };
+        setUserNFTs(prev => [...prev, mockNFT]);
+      } else {
+        // Modo real - crear archivo de imagen simulado para demo
+        const mockFile = new File(['demo'], 'profile.jpg', { type: 'image/jpeg' });
+        const nft = await nftService.mintSingleNFT(
+          user.id,
+          `NFT de ${profile?.name}`,
+          'NFT de perfil individual',
+          mockFile
+        );
+        logger.info('NFT minteado:', nft);
+        
+        // Recargar NFTs
+        const updatedNFTs = await nftService.getUserNFTs(user.id);
+        setUserNFTs(updatedNFTs);
+      }
+    } catch (error) {
+      logger.error('Error minteando NFT:', { error: String(error) });
+    }
+  };
   
   // Migracin localStorage ? usePersistedState
   const [demoAuth, _setDemoAuth] = usePersistedState('demo_authenticated', 'false');
@@ -192,6 +332,7 @@ const ProfileSingle: React.FC = () => {
               name: parsedUser.name || 'Sofia Demo',
               first_name: parsedUser.first_name || 'Sofía',
               last_name: parsedUser.last_name || 'Demo',
+              full_name: 'Sofía Demo',
               age: 28,
               bio: 'Explorando conexiones autinticas en el lifestyle swinger. Disfruto de experiencias discretas, respeto mutuo y encuentros sofisticados. Me encanta viajar, la msica y conocer parejas interesantes.',
               avatar_url: '/placeholder.svg',
@@ -236,6 +377,7 @@ const ProfileSingle: React.FC = () => {
             loadProfileStats();
             loadRecentActivity();
             loadAchievements();
+            loadBlockchainData();
             return;
           } catch (error) {
             logger.error('Error parseando usuario demo:', { error: String(error) });
@@ -430,7 +572,7 @@ const ProfileSingle: React.FC = () => {
                       hashtags={['ComplicesConecta', 'Swinger', 'Mexico', 'Dating']}
                       className="bg-black/20 hover:bg-black/30 text-white border-white/30 flex items-center gap-2 text-sm sm:text-base px-3 sm:px-4 py-2"
                       variant="outline"
-                      size="md"
+                      size="default"
                     />
                     
                     <Button 
@@ -547,6 +689,138 @@ const ProfileSingle: React.FC = () => {
               </Card>
             </motion.div>
           </div>
+
+          {/* Sección Blockchain - Solo para perfil propio */}
+          {isOwnProfile && (
+            <Card className="bg-gradient-to-br from-purple-600/20 to-blue-600/20 backdrop-blur-md border-purple-400/30 text-white">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center gap-2">
+                  <Wallet className="w-5 h-5 text-purple-400" />
+                  Blockchain & NFTs
+                  {isDemoMode && (
+                    <Badge className="bg-yellow-500/20 text-yellow-300 border-yellow-400/30 text-xs">
+                      DEMO
+                    </Badge>
+                  )}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {/* Información de Wallet */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="p-3 bg-white/10 rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Coins className="w-4 h-4 text-yellow-400" />
+                      <span className="text-sm font-medium">CMPX</span>
+                    </div>
+                    <div className="text-lg font-bold">{tokenBalances.cmpx}</div>
+                    <div className="text-xs text-white/70">Tokens Utility</div>
+                  </div>
+                  
+                  <div className="p-3 bg-white/10 rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Zap className="w-4 h-4 text-blue-400" />
+                      <span className="text-sm font-medium">GTK</span>
+                    </div>
+                    <div className="text-lg font-bold">{tokenBalances.gtk}</div>
+                    <div className="text-xs text-white/70">Governance</div>
+                  </div>
+                  
+                  <div className="p-3 bg-white/10 rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Images className="w-4 h-4 text-purple-400" />
+                      <span className="text-sm font-medium">NFTs</span>
+                    </div>
+                    <div className="text-lg font-bold">{userNFTs.length}</div>
+                    <div className="text-xs text-white/70">Colección</div>
+                  </div>
+                </div>
+
+                {/* Botones de Acción Blockchain */}
+                <div className="flex flex-wrap gap-2">
+                  {/* Reclamar Tokens Gratuitos */}
+                  {testnetInfo?.canClaim && testnetInfo?.remaining > 0 && (
+                    <Button
+                      onClick={handleClaimTestnetTokens}
+                      disabled={isClaimingTokens}
+                      className="bg-green-500/20 hover:bg-green-600/30 text-green-200 border-green-400/30 flex items-center gap-2 text-sm px-3 py-2 border"
+                    >
+                      <Gift className="w-4 h-4" />
+                      {isClaimingTokens ? 'Reclamando...' : `Reclamar ${testnetInfo.remaining} CMPX Gratis`}
+                    </Button>
+                  )}
+
+                  {/* Reclamar Tokens Diarios */}
+                  {testnetInfo?.dailyRemaining > 0 && (
+                    <Button
+                      onClick={handleClaimDailyTokens}
+                      disabled={isClaimingTokens}
+                      className="bg-blue-500/20 hover:bg-blue-600/30 text-blue-200 border-blue-400/30 flex items-center gap-2 text-sm px-3 py-2 border"
+                    >
+                      <Calendar className="w-4 h-4" />
+                      {isClaimingTokens ? 'Reclamando...' : `Reclamar ${Math.floor(testnetInfo.dailyRemaining / 1000)}K CMPX Diarios`}
+                    </Button>
+                  )}
+
+                  {/* Mintear NFT */}
+                  <Button
+                    onClick={handleMintNFT}
+                    className="bg-purple-500/20 hover:bg-purple-600/30 text-purple-200 border-purple-400/30 flex items-center gap-2 text-sm px-3 py-2 border"
+                  >
+                    <Camera className="w-4 h-4" />
+                    Mintear NFT de Perfil
+                  </Button>
+                </div>
+
+                {/* Información de Testnet */}
+                {testnetInfo && (
+                  <div className="p-3 bg-white/5 rounded-lg">
+                    <h4 className="text-sm font-medium mb-2 flex items-center gap-2">
+                      <Zap className="w-4 h-4 text-yellow-400" />
+                      Estado Testnet Mumbai
+                    </h4>
+                    <div className="grid grid-cols-2 gap-4 text-xs">
+                      <div>
+                        <span className="text-white/70">Tokens Gratuitos:</span>
+                        <div className="font-medium">{testnetInfo.claimed || 0} / {testnetInfo.maxClaim || 1000} CMPX</div>
+                      </div>
+                      <div>
+                        <span className="text-white/70">Tokens Diarios:</span>
+                        <div className="font-medium">{Math.floor((testnetInfo.dailyClaimed || 0) / 1000)}K / {Math.floor((testnetInfo.dailyLimit || 2500000) / 1000)}K CMPX</div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Lista de NFTs */}
+                {userNFTs.length > 0 && (
+                  <div>
+                    <h4 className="text-sm font-medium mb-2 flex items-center gap-2">
+                      <Images className="w-4 h-4 text-purple-400" />
+                      Mis NFTs ({userNFTs.length})
+                    </h4>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                      {userNFTs.slice(0, 4).map((nft, index) => (
+                        <div key={nft.id || index} className="p-2 bg-white/10 rounded-lg">
+                          <div className="aspect-square bg-gradient-to-br from-purple-500 to-blue-500 rounded mb-2 flex items-center justify-center">
+                            <Images className="w-6 h-6 text-white" />
+                          </div>
+                          <div className="text-xs">
+                            <div className="font-medium truncate">NFT #{nft.token_id}</div>
+                            <div className="text-white/70 capitalize">{nft.rarity}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    {userNFTs.length > 4 && (
+                      <div className="text-center mt-2">
+                        <span className="text-xs text-white/70">+{userNFTs.length - 4} más</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          )}
 
           {/* Tabs de contenido avanzado */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
