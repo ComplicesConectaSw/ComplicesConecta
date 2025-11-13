@@ -41,22 +41,7 @@ interface NFTInfo {
   created_at: string;
 }
 
-/**
- * Interfaz para solicitud de NFT de pareja
- */
-interface CoupleNFTRequest {
-  id: string;
-  token_id: number;
-  partner1_address: string;
-  partner2_address: string;
-  initiator_address: string;
-  metadata_uri: string;
-  consent1_timestamp?: string;
-  consent2_timestamp?: string;
-  status: 'pending' | 'approved' | 'minted' | 'cancelled' | 'expired';
-  created_at: string;
-  expires_at: string;
-}
+// CoupleNFTRequest ya está importado desde @/types/blockchain
 
 /**
  * Servicio de NFTs para ComplicesConecta
@@ -295,7 +280,7 @@ export class NFTService {
         .single();
       
       if (error) {
-        logger.error('Error guardando NFT en base de datos:', error);
+        logger.error('Error guardando NFT en base de datos:', { error: String(error) });
         throw error;
       }
       
@@ -401,7 +386,7 @@ export class NFTService {
       return (data as any) as CoupleNFTRequest;
       
     } catch (error) {
-      logger.error('Error solicitando NFT de pareja:', error);
+      logger.error('Error solicitando NFT de pareja:', { error: String(error) });
       throw error;
     }
   }
@@ -506,7 +491,7 @@ export class NFTService {
       return [];
       
     } catch (error) {
-      logger.error('Error aprobando NFT de pareja:', error);
+      logger.error('Error aprobando NFT de pareja:', { error: String(error) });
       throw error;
     }
   }
@@ -574,7 +559,7 @@ export class NFTService {
       return data as NFTInfo[];
       
     } catch (error) {
-      logger.error('Error ejecutando mint de NFT de pareja:', error);
+      logger.error('Error ejecutando mint de NFT de pareja:', { error: String(error) });
       throw error;
     }
   }
@@ -600,7 +585,7 @@ export class NFTService {
       logger.info(`Solicitud de NFT de pareja cancelada: ${requestId} - ${reason}`);
       
     } catch (error) {
-      logger.error('Error cancelando solicitud:', error);
+      logger.error('Error cancelando solicitud:', { error: String(error) });
       throw error;
     }
   }
@@ -621,14 +606,14 @@ export class NFTService {
         .limit(1);
       
       if (error) {
-        logger.error('Error verificando NFT de pareja existente:', error);
+        logger.error('Error verificando NFT de pareja existente:', { error: String(error) });
         return false;
       }
       
       return data && data.length > 0;
       
     } catch (error) {
-      logger.error('Error verificando NFT de pareja:', error);
+      logger.error('Error verificando NFT de pareja:', { error: String(error) });
       return false;
     }
   }
@@ -659,7 +644,7 @@ export class NFTService {
       return data as NFTInfo[];
       
     } catch (error) {
-      logger.error('Error obteniendo NFTs:', error);
+      logger.error('Error obteniendo NFTs:', { error: String(error) });
       throw error;
     }
   }
@@ -684,14 +669,14 @@ export class NFTService {
         .order('created_at', { ascending: false });
       
       if (error) {
-        logger.error('Error obteniendo solicitudes pendientes:', error);
+        logger.error('Error obteniendo solicitudes pendientes:', { error: String(error) });
         throw error;
       }
       
       return data as CoupleNFTRequest[];
       
     } catch (error) {
-      logger.error('Error obteniendo solicitudes:', error);
+      logger.error('Error obteniendo solicitudes:', { error: String(error) });
       throw error;
     }
   }

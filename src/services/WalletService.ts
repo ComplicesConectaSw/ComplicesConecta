@@ -749,7 +749,7 @@ export class WalletService {
         });
       
       if (error) {
-        logger.error('Error guardando reclamo de tokens de testnet:', error);
+        logger.error('Error guardando reclamo de tokens de testnet:', { error: String(error) });
         throw error;
       }
       

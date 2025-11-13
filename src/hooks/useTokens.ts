@@ -387,13 +387,15 @@ export const useTokens = () => {
       const notification = document.createElement('div');
       notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 transition-all duration-300';
       notification.textContent = '✅ Balance actualizado correctamente';
-      document.body.appendChild(notification);
+      document.body.appendChild(notification as Node);
       
       // Remover después de 3 segundos
       setTimeout(() => {
         notification.style.opacity = '0';
         setTimeout(() => {
-          document.body.removeChild(notification);
+          if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+          }
         }, 300);
       }, 3000);
     }
