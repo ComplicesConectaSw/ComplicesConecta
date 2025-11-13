@@ -12,11 +12,14 @@ async function main() {
   console.log("📝 Deploying contracts con la cuenta:", deployer.address);
   console.log("💰 Balance de la cuenta:", ethers.utils.formatEther(await deployer.getBalance()), "MATIC\n");
 
-  // 1. Deploy CMPX Token
+  // 1. Deploy CMPX Token (Upgradeable)
   console.log("1️⃣ Deploying CMPX Token...");
   const CMPX = await ethers.getContractFactory("CMPX");
   const cmpx = await CMPX.deploy();
   await cmpx.deployed();
+  
+  // Inicializar el contrato CMPX
+  await cmpx.initialize(deployer.address, true); // true = testnet mode
   console.log("✅ CMPX Token deployed to:", cmpx.address);
 
   // 2. Deploy CoupleNFT
@@ -39,35 +42,24 @@ async function main() {
   // 4. Configurar permisos y roles
   console.log("\n4️⃣ Configurando permisos y roles...");
   
-  // Dar rol de minter al StakingPool en CMPX
-  const MINTER_ROLE = await cmpx.MINTER_ROLE();
-  await cmpx.grantRole(MINTER_ROLE, stakingPool.address);
+  // Agregar StakingPool como minter autorizado en CMPX
+  await cmpx.addMinter(stakingPool.address);
   console.log("✅ StakingPool agregado como minter de CMPX");
 
-  // Dar rol de minter al deployer en CoupleNFT (temporal)
-  const NFT_MINTER_ROLE = await coupleNFT.MINTER_ROLE();
-  await coupleNFT.grantRole(NFT_MINTER_ROLE, deployer.address);
-  console.log("✅ Deployer agregado como minter de CoupleNFT");
+  // Configurar CoupleNFT con dirección de CMPX
+  await coupleNFT.setCMPXToken(cmpx.address);
+  console.log("✅ CMPX token configurado en CoupleNFT");
 
-  // 5. Configurar modo testnet en CMPX
-  console.log("\n5️⃣ Configurando modo testnet...");
-  await cmpx.setTestnetMode(true);
-  console.log("✅ Modo testnet activado en CMPX");
-
-  // 6. Mint inicial de tokens para testnet (250M CMPX)
-  console.log("\n6️⃣ Minting tokens iniciales para testnet...");
-  const testnetAmount = ethers.utils.parseEther("250000000"); // 250M CMPX
-  await cmpx.mintTestnetTokens(deployer.address, testnetAmount);
-  console.log("✅ 250M CMPX minteados para testnet");
-
-  // 7. Verificar configuración
-  console.log("\n7️⃣ Verificando configuración...");
+  // 5. Verificar configuración inicial
+  console.log("\n5️⃣ Verificando configuración inicial...");
   const totalSupply = await cmpx.totalSupply();
-  const testnetMode = await cmpx.testnetMode();
+  const isTestnetMode = await cmpx.isTestnet();
   const deployerBalance = await cmpx.balanceOf(deployer.address);
   
+  console.log("✅ Configuración inicial verificada");
+  
   console.log("📊 Total Supply CMPX:", ethers.utils.formatEther(totalSupply));
-  console.log("🧪 Modo Testnet:", testnetMode);
+  console.log("🧪 Modo Testnet:", isTestnetMode);
   console.log("💰 Balance Deployer:", ethers.utils.formatEther(deployerBalance), "CMPX");
 
   // 8. Resumen final
@@ -102,9 +94,9 @@ async function main() {
       StakingPool: stakingPool.address
     },
     configuration: {
-      testnetMode: testnetMode,
+      testnetMode: isTestnetMode,
       totalSupply: ethers.utils.formatEther(totalSupply),
-      testnetTokens: ethers.utils.formatEther(testnetAmount)
+      deployerBalance: ethers.utils.formatEther(deployerBalance)
     }
   };
 

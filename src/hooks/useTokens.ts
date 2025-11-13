@@ -409,7 +409,7 @@ export const useTokens = () => {
   };
 
   const getStakingMessage = () => {
-    return "El staking te permite bloquear tus tokens por un período determinado y recibir recompensas. Durante la fase Beta, puedes hacer staking de tokens CMPX con un 8% APY y GTK con 12.5% APY.";
+    return "El staking te permite bloquear tus tokens por un período determinado y recibir recompensas. Durante la fase Beta, puedes hacer staking de tokens CMPX y GTK con un APY del 15-35% según la duración del staking.";
   };
 
   const refreshTokens = () => {

@@ -40,11 +40,11 @@ contract StakingPool is Ownable, ReentrancyGuard, Pausable, IERC721Receiver {
     /// @notice Token CMPX para rewards
     IERC20 public cmpxToken;
     
-    /// @notice APY base para staking (10%)
-    uint256 public constant BASE_APY = 10;
+    /// @notice APY base para staking (15%)
+    uint256 public constant BASE_APY = 15;
     
-    /// @notice APY máximo para staking (20%)
-    uint256 public constant MAX_APY = 20;
+    /// @notice APY máximo para staking (35%)
+    uint256 public constant MAX_APY = 35;
     
     /// @notice Período mínimo de vesting (30 días)
     uint256 public constant MIN_VESTING_PERIOD = 30 days;
@@ -432,13 +432,15 @@ contract StakingPool is Ownable, ReentrancyGuard, Pausable, IERC721Receiver {
      */
     function _calculateAPY(uint256 vestingPeriod) internal pure returns (uint256) {
         if (vestingPeriod >= MAX_VESTING_PERIOD) {
-            return MAX_APY; // 20% APY para 365 días
+            return MAX_APY; // 35% APY para 365 días
+        } else if (vestingPeriod >= 270 days) {
+            return 30; // 30% APY para 270 días (9 meses)
         } else if (vestingPeriod >= 180 days) {
-            return 15; // 15% APY para 180 días
+            return 25; // 25% APY para 180 días (6 meses)
         } else if (vestingPeriod >= 90 days) {
-            return 12; // 12% APY para 90 días
+            return 20; // 20% APY para 90 días (3 meses)
         } else {
-            return BASE_APY; // 10% APY para 30 días
+            return BASE_APY; // 15% APY para 30 días (1 mes)
         }
     }
     

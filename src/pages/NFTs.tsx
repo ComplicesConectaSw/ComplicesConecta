@@ -218,7 +218,7 @@ const NFTs: React.FC = () => {
             </h1>
             <p className="text-xl text-white/80 max-w-3xl mx-auto mb-8">
               Convierte tus galerías en NFTs únicos y verificables en blockchain. 
-              Propiedad digital auténtica con verificación de consentimiento y staking del 10% APY.
+              Propiedad digital auténtica con verificación de consentimiento y staking del 15-35% APY.
             </p>
             
             <div className="flex flex-wrap justify-center gap-3 mb-8">

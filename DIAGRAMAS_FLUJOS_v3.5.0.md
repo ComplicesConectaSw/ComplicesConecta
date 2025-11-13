@@ -1,7 +1,7 @@
-# 📊 DIAGRAMAS DE FLUJOS - COMPLICESCONECTA v3.6.3
+# 📊 DIAGRAMAS DE FLUJOS v3.7.0 - COMPLICESCONECTA v3.6.3
 
 **Fecha:** 09 Noviembre 2025  
-**Versión:** 3.6.3  
+**Versión:** 3.7.0  
 **Estado:** ✅ Documentación Actualizada - Funciones Globales Fixed - CircleCI Fixed
 
 ---

@@ -83,15 +83,16 @@ export default function Tokens() {
       features: [
         "Token de staking para ingresos pasivos",
         "Próxima integración blockchain (Q2-Q4 2026)",
-        "APY: 8-18% según duración de staking",
+        "APY: 15-35% según duración de staking",
         "Potencial de apreciación a largo plazo",
         "Acceso a funcionalidades blockchain exclusivas"
       ],
       stakingTiers: [
-        { duration: "30 días", apy: "8%", minAmount: "1,000 GTK" },
-        { duration: "90 días", apy: "12%", minAmount: "5,000 GTK" },
-        { duration: "180 días", apy: "15%", minAmount: "10,000 GTK" },
-        { duration: "365 días", apy: "18%", minAmount: "25,000 GTK" }
+        { duration: "30 días", apy: "15%", minAmount: "1,000 GTK" },
+        { duration: "90 días", apy: "20%", minAmount: "5,000 GTK" },
+        { duration: "180 días", apy: "25%", minAmount: "10,000 GTK" },
+        { duration: "270 días", apy: "30%", minAmount: "20,000 GTK" },
+        { duration: "365 días", apy: "35%", minAmount: "25,000 GTK" }
       ],
       roadmap: [
         { phase: "Q2 2026", milestone: "Preparación y auditoría de contratos" },
