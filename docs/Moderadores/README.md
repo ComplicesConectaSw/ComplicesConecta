@@ -1,8 +1,8 @@
-# 🛡️ GUÍA PARA MODERADORES - ComplicesConecta v3.6.3
+# 🛡️ GUÍA PARA MODERADORES - ComplicesConecta v3.7.0
 
-**Fecha:** 08 de Noviembre, 2025  
-**Versión:** 3.6.3  
-**Estado:** ✅ Guía Completa para Moderadores
+**Fecha:** 13 de Noviembre, 2025  
+**Versión:** 3.7.0  
+**Estado:** ✅ Guía Completa para Moderadores + Sistema Blockchain Integrado
 
 ---
 

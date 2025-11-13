@@ -1,8 +1,8 @@
-# ⚖️ DOCUMENTACIÓN LEGAL - ComplicesConecta v3.6.3
+# ⚖️ DOCUMENTACIÓN LEGAL - ComplicesConecta v3.7.0
 
-**Fecha:** 08 de Noviembre, 2025  
-**Versión:** 3.6.3  
-**Estado:** ✅ Documentación Legal Completa
+**Fecha:** 13 de Noviembre, 2025  
+**Versión:** 3.7.0  
+**Estado:** ✅ Documentación Legal Completa + Términos Blockchain Integrados
 
 ---
 

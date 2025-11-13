@@ -1,8 +1,8 @@
 # 💰 Guía del Sistema de Tokens - ComplicesConecta
 
-**Versión:** 3.6.3  
+**Versión:** 3.7.0  
 **Fecha:** Noviembre, 2025  
-**Última Actualización:** 08 de Noviembre, 2025
+**Última Actualización:** 13 de Noviembre, 2025
 
 ---
 

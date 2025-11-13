@@ -1,8 +1,8 @@
-# 📚 DOCUMENTACIÓN - ComplicesConecta v3.6.3
+# 📚 DOCUMENTACIÓN - ComplicesConecta v3.7.0
 
-**Última Actualización:** 08 de Noviembre, 2025  
-**Versión:** 3.6.3  
-**Estado:** ✅ Documentación Consolidada y Organizada
+**Última Actualización:** 13 de Noviembre, 2025  
+**Versión:** 3.7.0  
+**Estado:** ✅ Documentación Consolidada y Organizada + Sistema Blockchain Integrado
 
 ---
 
