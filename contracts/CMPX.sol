@@ -91,7 +91,8 @@ contract CMPX is
         require(initialOwner != address(0), "CMPX: Owner cannot be zero address");
         
         __ERC20_init("ComplicesConecta CMPX", "CMPX");
-        __Ownable_init(initialOwner);
+        __Ownable_init();
+        _transferOwnership(initialOwner);
         __ReentrancyGuard_init();
         __Pausable_init();
         

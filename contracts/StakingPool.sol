@@ -165,7 +165,7 @@ contract StakingPool is Ownable, ReentrancyGuard, Pausable, IERC721Receiver {
         address _nftContract,
         address _gtkToken,
         address _cmpxToken
-    ) Ownable(msg.sender) {
+    ) {
         require(_nftContract != address(0), "StakingPool: NFT contract cannot be zero address");
         require(_gtkToken != address(0), "StakingPool: GTK token cannot be zero address");
         require(_cmpxToken != address(0), "StakingPool: CMPX token cannot be zero address");

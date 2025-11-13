@@ -87,7 +87,7 @@ contract CoupleNFT is ERC721, ERC721URIStorage, Ownable, ReentrancyGuard, Pausab
         uint256 indexed tokenId1,
         uint256 indexed tokenId2,
         address indexed partner1,
-        address indexed partner2,
+        address partner2,
         string tokenURI
     );
     
@@ -105,7 +105,6 @@ contract CoupleNFT is ERC721, ERC721URIStorage, Ownable, ReentrancyGuard, Pausab
      */
     constructor(address _cmpxToken) 
         ERC721("ComplicesConecta Couple NFT", "CCNFT") 
-        Ownable(msg.sender) 
     {
         require(_cmpxToken != address(0), "CoupleNFT: CMPX token cannot be zero address");
         cmpxToken = _cmpxToken;
@@ -115,19 +114,19 @@ contract CoupleNFT is ERC721, ERC721URIStorage, Ownable, ReentrancyGuard, Pausab
      * @notice Solicita mint de NFT para pareja
      * @param partner1 Dirección de la primera pareja
      * @param partner2 Dirección de la segunda pareja
-     * @param tokenURI URI del metadata IPFS
+     * @param _tokenURI URI del metadata IPFS
      * @return uint256 Token ID de la solicitud
      */
     function requestCoupleMint(
         address partner1,
         address partner2,
-        string memory tokenURI
+        string memory _tokenURI
     ) external nonReentrant whenNotPaused returns (uint256) {
         require(partner1 != address(0) && partner2 != address(0), "CoupleNFT: Partners cannot be zero address");
         require(partner1 != partner2, "CoupleNFT: Partners must be different");
         require(msg.sender == partner1 || msg.sender == partner2, "CoupleNFT: Caller must be one of the partners");
         require(!blacklisted[partner1] && !blacklisted[partner2], "CoupleNFT: One or both partners are blacklisted");
-        require(bytes(tokenURI).length > 0, "CoupleNFT: Token URI cannot be empty");
+        require(bytes(_tokenURI).length > 0, "CoupleNFT: Token URI cannot be empty");
         
         // Verificar que la pareja no tenga ya un NFT
         bytes32 coupleHash = keccak256(abi.encodePacked(
@@ -146,7 +145,7 @@ contract CoupleNFT is ERC721, ERC721URIStorage, Ownable, ReentrancyGuard, Pausab
             consentTimestamp1: msg.sender == partner1 ? block.timestamp : 0,
             consentTimestamp2: msg.sender == partner2 ? block.timestamp : 0,
             requestTimestamp: block.timestamp,
-            tokenURI: tokenURI,
+            tokenURI: _tokenURI,
             isActive: true,
             isMinted: false,
             initiator: msg.sender
