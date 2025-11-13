@@ -82,7 +82,7 @@ const AdminPartners = () => {
   });
 
   useEffect(() => {
-    if (!isAdmin) {
+    if (!isAdmin()) {
       navigate('/');
       return;
     }

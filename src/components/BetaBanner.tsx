@@ -27,7 +27,7 @@ export const BetaBanner = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  if (!isVisible || isScrolled) return null;
+  if (!isVisible) return null;
 
   return (
     <DismissibleBanner 

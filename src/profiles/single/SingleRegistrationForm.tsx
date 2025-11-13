@@ -233,10 +233,6 @@ export const SingleRegistrationForm: React.FC<SingleRegistrationFormProps> = ({
       if (authData.user) {
         logger.info('✅ Usuario registrado exitosamente:', { userId: authData.user.id });
         
-        if (!supabase) {
-          throw new Error('Supabase no está disponible');
-        }
-        
         // Crear perfil en la tabla profiles
         const { error: profileError } = await supabase
           .from('profiles')

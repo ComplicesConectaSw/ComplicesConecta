@@ -33,7 +33,7 @@ const Shop = () => {
 
   useEffect(() => {
     loadPackages();
-    if (isAuthenticated && user) {
+    if (isAuthenticated() && user) {
       loadUserPurchases();
     }
 
@@ -100,7 +100,7 @@ const Shop = () => {
   };
 
   const handlePurchase = async (packageId: string) => {
-    if (!isAuthenticated || !user) {
+    if (!isAuthenticated() || !user) {
       toast({
         title: 'Inicia sesión',
         description: 'Debes iniciar sesión para comprar tokens',
@@ -290,7 +290,7 @@ const Shop = () => {
         </div>
 
         {/* User Purchases */}
-        {isAuthenticated && userPurchases.length > 0 && (
+        {isAuthenticated() && userPurchases.length > 0 && (
           <Card className="bg-white/10 border-white/20 mb-8">
             <CardHeader>
               <CardTitle className="text-white">Mis Compras</CardTitle>

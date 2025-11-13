@@ -147,6 +147,7 @@ export const ChatContainer: React.FC<ChatContainerProps> = ({
         <AnimatePresence mode="popLayout">
           {messages.map((message, _index) => (
             <ChatBubble
+              key={message.id}
               id={message.id}
               message={message.content}
               isOwn={message.sender_id === (message as any).currentUserId}

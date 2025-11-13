@@ -131,7 +131,6 @@ export const ProtectedMedia: React.FC<ProtectedMediaProps> = ({
     // Bloquear clic derecho en imágenes
     if (mediaType === 'image') {
       e.preventDefault();
-      return false;
     }
   };
 

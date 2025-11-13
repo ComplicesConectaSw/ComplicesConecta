@@ -143,7 +143,7 @@ const Requests = () => {
     
     // Verificar autenticacin real - solo redirigir si realmente no est autenticado
     try {
-      if (!isAuthenticated) {
+      if (!isAuthenticated()) {
         logger.info('? Usuario no autenticado en Requests, redirigiendo a /auth');
         navigate('/auth');
         return;

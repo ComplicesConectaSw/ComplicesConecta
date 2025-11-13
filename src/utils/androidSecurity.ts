@@ -141,7 +141,7 @@ export class AndroidSecurityManager {
             // En modo desarrollador, el rendimiento es típicamente más lento
             const start = performance.now();
             for (let i = 0; i < 10000; i++) {
-              Math.random();
+              const _ = Math.random();
             }
             const end = performance.now();
             
@@ -164,7 +164,7 @@ export class AndroidSecurityManager {
       // Verificar timing attacks (los dispositivos con modo dev son más lentos)
       const start = performance.now();
       for (let i = 0; i < 1000; i++) {
-        Math.random();
+        const _ = Math.random();
       }
       const end = performance.now();
       

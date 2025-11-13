@@ -108,7 +108,7 @@ const Discover = () => {
 
   // Determinar si el usuario es demo/produccin
   const isDemoOrProduction = () => {
-    const authStatus = typeof isAuthenticated === 'function' ? isAuthenticated() : isAuthenticated;
+    const authStatus = isAuthenticated();
     if (!authStatus || !user) return false;
     const demoAuth = safeGetItem<string>('demo_authenticated', { validate: true, defaultValue: 'false' }) === 'true';
     const isDemoUser = user.email === 'single@outlook.es' || user.email === 'pareja@outlook.es';
@@ -368,12 +368,12 @@ const Discover = () => {
   // Verificar autenticacin y cargar perfiles reales
   useEffect(() => {
     // Si no est autenticado, mostrar cards informativos
-    if (!isAuthenticated) {
+    if (!isAuthenticated()) {
       logger.info('?? Usuario no autenticado - mostrando cards informativos');
       return;
     }
     
-    logger.info('? Usuario autenticado en Discover:', { user: user?.email || user?.id, isAuthenticated });
+    logger.info('? Usuario autenticado en Discover:', { user: user?.email || user?.id, isAuthenticated: isAuthenticated() });
     
     // Verificar autenticacin local adicional (demo)
     const demoAuth = safeGetItem<string>('demo_authenticated', { validate: true, defaultValue: 'false' }) === 'true';
@@ -405,7 +405,7 @@ const Discover = () => {
   }, [profiles]);
 
   const handleLike = (_profileId: number | string) => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated()) {
       setShowPremiumModal(true);
       return;
     }
@@ -416,7 +416,7 @@ const Discover = () => {
   };
 
   const _handleSuperLike = useCallback((_profileId: string) => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated()) {
       setShowSuperLikesModal(true);
       return;
     }
@@ -432,13 +432,13 @@ const Discover = () => {
   }, []);
 
   const _handleCompatibilityClick = useCallback(() => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated()) {
       setShowCompatibilityModal(true);
     }
   }, []);
 
   const _handleEventsClick = useCallback(() => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated()) {
       setShowEventsModal(true);
     }
   }, []);
@@ -452,7 +452,7 @@ const Discover = () => {
   };
 
   const handleMessage = (profileId: number | string) => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated()) {
       setShowPremiumModal(true);
       return;
     }
@@ -771,7 +771,7 @@ const Discover = () => {
                 // Show content based on authentication status
                 <>
                   {/* Usuarios NO autenticados: Cards de filtros demo */}
-                  {!(typeof isAuthenticated === 'function' ? isAuthenticated() : isAuthenticated) && filterCards.map((card, index) => (
+                  {!isAuthenticated() && filterCards.map((card, index) => (
                     <FilterDemoCardComponent
                       key={card.id}
                       card={card}
@@ -781,7 +781,7 @@ const Discover = () => {
                   ))}
                   
                   {/* Usuarios autenticados con credenciales demo: Perfiles demo */}
-                  {(typeof isAuthenticated === 'function' ? isAuthenticated() : isAuthenticated) && user?.email === 'single@outlook.es' && filteredDemoProfiles.map((profile, index) => (
+                  {isAuthenticated() && user?.email === 'single@outlook.es' && filteredDemoProfiles.map((profile, index) => (
                     <motion.div
                       key={profile.id}
                       initial={{ opacity: 0, y: 50 }}
@@ -808,7 +808,7 @@ const Discover = () => {
                   ))}
                   
                   {/* Usuarios autenticados con credenciales demo: Perfiles demo */}
-                  {(typeof isAuthenticated === 'function' ? isAuthenticated() : isAuthenticated) && user?.email === 'pareja@outlook.es' && filteredDemoProfiles.map((profile, index) => (
+                  {isAuthenticated() && user?.email === 'pareja@outlook.es' && filteredDemoProfiles.map((profile, index) => (
                     <motion.div
                       key={profile.id}
                       initial={{ opacity: 0, y: 50 }}
@@ -835,7 +835,7 @@ const Discover = () => {
                   ))}
                   
                   {/* Usuarios autenticados reales: Perfiles reales */}
-                  {(typeof isAuthenticated === 'function' ? isAuthenticated() : isAuthenticated) && user?.email !== 'single@outlook.es' && user?.email !== 'pareja@outlook.es' && filteredProfiles.map((profile, index) => (
+                  {isAuthenticated() && user?.email !== 'single@outlook.es' && user?.email !== 'pareja@outlook.es' && filteredProfiles.map((profile, index) => (
                     <motion.div
                       key={profile.id}
                       initial={{ opacity: 0, y: 50 }}

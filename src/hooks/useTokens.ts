@@ -534,7 +534,7 @@ export const useTokens = () => {
     getStakingMessage,
 
     // Utilidades
-    totalBalance: balance ? balance.cmpx + balance.gtk : 0,
+    totalBalance: balance.cmpx + balance.gtk,
     availableRewards: rewards.filter(r => !r.claimed).length,
     activeStakings: stakingRecords.filter(s => s.status === 'active').length,
     

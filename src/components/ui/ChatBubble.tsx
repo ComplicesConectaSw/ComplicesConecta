@@ -94,7 +94,7 @@ export const ChatBubble = React.memo<ChatBubbleProps>(function ChatBubble({
             )}
           >
             <p className="text-sm leading-relaxed break-words text-white">{message}</p>
-            <span className={cn("text-xs opacity-70 mt-1 block", isOwn ? "text-white/80" : "text-white/80")}>
+            <span className={cn("text-xs opacity-70 mt-1 block", "text-white/80")}>
               {timestamp}
             </span>
           </motion.div>

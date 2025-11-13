@@ -98,7 +98,7 @@ export const MediaUploadSecure: React.FC<MediaUploadSecureProps> = ({
           {
             maxFileSize,
             allowedTypes: acceptedTypes.map(type => 
-              type.replace('*', 'jpeg').replace('image/', 'image/').replace('video/', 'video/').replace('audio/', 'audio/')
+              type.replace('*', 'jpeg')
             ).filter(type => !type.includes('*'))
           }
         );

@@ -201,9 +201,7 @@ describe('ProfileReportService', () => {
             eq: vi.fn().mockReturnValue({
               eq: vi.fn().mockReturnValue({
                 gte: vi.fn().mockResolvedValue({
-                  data: callCount === 1 ? [{id: '1'}, {id: '2'}] : 
-                        callCount === 2 ? [{id: '1'}] : 
-                        [{id: '1'}],
+                  data: callCount === 1 ? [{id: '1'}, {id: '2'}] : [{id: '1'}],
                   error: null
                 })
               })
