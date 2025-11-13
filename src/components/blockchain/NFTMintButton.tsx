@@ -50,7 +50,7 @@ export const NFTMintButton: React.FC<NFTMintButtonProps> = ({
   onMintSuccess,
   onMintError,
   className = '',
-  size = 'md',
+  size: _size = 'md',
   variant = 'default',
   buttonText,
   showDemoMode = true

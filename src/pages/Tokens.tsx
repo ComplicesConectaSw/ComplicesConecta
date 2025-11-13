@@ -38,7 +38,7 @@ import { AnimatedButton } from '@/components/ui/AnimatedButton';
 
 export default function Tokens() {
   const [showStakingModal, setShowStakingModal] = useState(false);
-  const { balance: _balance, refreshTokens } = useTokens();
+  const { balance: _balance, refreshTokens: _refreshTokens } = useTokens();
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   

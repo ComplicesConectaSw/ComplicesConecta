@@ -5,14 +5,12 @@
 
 import { supabase } from '../integrations/supabase/client';
 import { logger } from '@/lib/logger';
-import { ethers } from 'ethers';
 import { WalletService } from './WalletService';
 import type { 
-  UserNFT, 
   CoupleNFTRequest, 
   BlockchainSupabaseClient 
 } from '@/types/blockchain';
-import { safeBlockchainCast, safeGet } from '@/types/blockchain';
+import { safeBlockchainCast } from '@/types/blockchain';
 
 /**
  * Interfaz para metadata de NFT

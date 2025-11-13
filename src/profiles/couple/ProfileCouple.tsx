@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card, CardContent } from "@/shared/ui/Card";
 import { Button } from "@/shared/ui/Button";
 import { Badge } from "@/components/ui/badge";
-import { Heart, MapPin, Verified, Crown, Settings, Share2, Lock, Images, Flag, Coins, Wallet, Gift, Zap, Calendar, Camera, Users, Eye } from "lucide-react";
+import { Heart, MapPin, Verified, Crown, Settings, Share2, Lock, Images, Flag, Coins, Wallet, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { generateMockCoupleProfiles, type CoupleProfileWithPartners } from "@/features/profile/coupleProfiles";
@@ -32,7 +32,7 @@ const ProfileCouple: React.FC = () => {
   const [testnetInfo, setTestnetInfo] = useState<any>(null);
   const [coupleNFTs, setCoupleNFTs] = useState<any[]>([]);
   const [coupleRequests, setCoupleRequests] = useState<any[]>([]);
-  const [isClaimingTokens, setIsClaimingTokens] = useState(false);
+  const [_isClaimingTokens, _setIsClaimingTokens] = useState(false);
   const [isDemoMode] = useState(WalletService.isDemoMode());
 
   // Determinar si es el perfil propio
