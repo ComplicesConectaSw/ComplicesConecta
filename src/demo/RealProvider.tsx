@@ -2,64 +2,13 @@
  * Provider para lógica de producción - ComplicesConecta
  * Maneja datos reales de Supabase y autenticación real
  */
-
-import React, { createContext, useContext, ReactNode } from 'react';
-
-// CRÍTICO: Asegurar createContext disponible antes de usar
-const safeCreateContext = <T,>(defaultValue: T | null): React.Context<T | null> => {
-  const debugLog = (event: string, data?: any) => {
-    if (typeof window !== 'undefined' && (window as any).__LOADING_DEBUG__) {
-      (window as any).__LOADING_DEBUG__.log(event, data);
-    }
-  };
-  
-  // PRIORIDAD 1: React local (importado en este archivo)
-  if (React && React.createContext) {
-    debugLog('SAFE_CREATE_CONTEXT_LOCAL', { provider: 'RealProvider', hasLocal: true });
-    return React.createContext(defaultValue);
-  }
-  
-  // PRIORIDAD 2: React global (window.React)
-  if (typeof window !== 'undefined' && (window as any).React?.createContext) {
-    debugLog('SAFE_CREATE_CONTEXT_GLOBAL', { provider: 'RealProvider', hasGlobal: true });
-    return (window as any).React.createContext(defaultValue);
-  }
-  
-  // PRIORIDAD 3: createContext local (importado directamente de 'react')
-  if (createContext) {
-    debugLog('SAFE_CREATE_CONTEXT_FALLBACK', { provider: 'RealProvider', hasLocal: true });
-    return createContext<T | null>(defaultValue);
-  }
-  
-  // PRIORIDAD 4: Fallback mínimo si nada está disponible
-  debugLog('SAFE_CREATE_CONTEXT_STUB', { provider: 'RealProvider', usingStub: true });
-  return {
-    Provider: ({ children }: any) => children,
-    Consumer: ({ children }: any) => children(null),
-    displayName: 'Context',
-    _currentValue: defaultValue
-  } as any;
-};
+import React, { ReactNode } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
-import { Database } from '@/types/supabase';
+import type { Database } from '@/types/supabase';
+import { AppContext, AppContextType } from '@/context/AppContext';
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
-
-interface RealContextType {
-  profiles: Profile[];
-  isDemo: false;
-  getRealProfile: (id: string) => Promise<Profile | null>;
-  getRealProfiles: (filters?: any) => Promise<Profile[]>;
-  realAuth: {
-    login: (email: string, password: string) => Promise<{ success: boolean; user?: any; error?: string }>;
-    logout: () => Promise<void>;
-    getCurrentUser: () => Promise<any | null>;
-    signUp: (email: string, password: string, profileData: any) => Promise<{ success: boolean; user?: any; error?: string }>;
-  };
-}
-
-const RealContext = safeCreateContext<RealContextType | null>(null);
 
 interface RealProviderProps {
   children: ReactNode;
@@ -131,7 +80,7 @@ export const RealProvider: React.FC<RealProviderProps> = ({ children }) => {
     }
   };
 
-  const realAuth = {
+  const auth = {
     login: async (email: string, password: string) => {
       try {
         if (!supabase) {
@@ -150,7 +99,6 @@ export const RealProvider: React.FC<RealProviderProps> = ({ children }) => {
         }
 
         if (data.user) {
-          // Fetch user profile
           const profile = await getRealProfile(data.user.id);
           return {
             success: true,
@@ -231,7 +179,6 @@ export const RealProvider: React.FC<RealProviderProps> = ({ children }) => {
         }
 
         if (data.user) {
-          // Create profile
           if (!supabase) {
             logger.error('Supabase no está disponible');
             return { success: false, error: 'Supabase no está disponible' };
@@ -264,27 +211,19 @@ export const RealProvider: React.FC<RealProviderProps> = ({ children }) => {
     }
   };
 
-  const contextValue: RealContextType = {
-    profiles: [], // Will be loaded dynamically
+  const contextValue: AppContextType = {
     isDemo: false,
-    getRealProfile,
-    getRealProfiles,
-    realAuth
+    profiles: [], // Will be loaded dynamically
+    getProfile: getRealProfile,
+    getProfiles: getRealProfiles,
+    auth
   };
 
   return (
-    <RealContext.Provider value={contextValue}>
+    <AppContext.Provider value={contextValue}>
       {children}
-    </RealContext.Provider>
+    </AppContext.Provider>
   );
-};
-
-export const useRealContext = (): RealContextType => {
-  const context = useContext(RealContext);
-  if (!context) {
-    throw new Error('useRealContext debe usarse dentro de RealProvider');
-  }
-  return context;
 };
 
 export default RealProvider;

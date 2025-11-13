@@ -7,33 +7,22 @@ import { Badge } from '@/components/ui/badge';
 import { DecorativeHearts } from '@/components/DecorativeHearts';
 import { motion } from 'framer-motion';
 import { 
-  Image, 
   Shield, 
-  Coins, 
   CheckCircle, 
-  ArrowRight, 
-  FileText,
-  Scale,
+  ArrowRight,
   Sparkles,
   TrendingUp,
-  Zap,
   Award,
   Lock,
-  Globe,
   Users,
   Eye,
-  Heart,
   Star,
   Camera,
   Palette,
   Gem,
   Database,
   Verified,
-  DollarSign,
-  BarChart3,
-  Target,
-  Clock,
-  Layers
+  DollarSign
 } from 'lucide-react';
 
 const NFTs: React.FC = () => {

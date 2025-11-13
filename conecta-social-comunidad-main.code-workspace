@@ -8,6 +8,7 @@
 		"files.associations": {
 			"*.dbclient-js": "javascript",
 			"plyconfig.json": "jsonc"
-		}
+		},
+		"gitConfigUser.selectedProfile": "complciesconectaswvsco"
 	}
 }

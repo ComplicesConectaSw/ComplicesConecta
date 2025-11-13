@@ -11,30 +11,18 @@ import {
   ArrowLeft, 
   Home, 
   Coins, 
-  Info, 
-  ExternalLink, 
-  Bot,
+  Info,
   DollarSign,
   TrendingUp,
   Rocket,
   Shield,
-  Users,
-  Globe,
-  Zap,
   Star,
-  CheckCircle,
   BarChart3,
   Wallet,
   Gift,
-  Calendar,
-  Target,
-  Award,
   Sparkles,
-  Heart,
   Camera,
-  Gamepad2,
-  Crown,
-  Gem
+  Crown
 } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
 import { useTokens } from '@/hooks/useTokens';
@@ -50,7 +38,7 @@ import { AnimatedButton } from '@/components/ui/AnimatedButton';
 
 export default function Tokens() {
   const [showStakingModal, setShowStakingModal] = useState(false);
-  const { balance: _balance, getBalanceMessage, getStakingMessage, refreshTokens } = useTokens();
+  const { balance: _balance, refreshTokens } = useTokens();
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   

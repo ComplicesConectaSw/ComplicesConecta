@@ -186,3 +186,7 @@ body.light {
 /* ===== CORRECCIONES UI CONSOLIDADAS ===== */
 /* Nota: ui-fixes-consolidated.css ya está importado al inicio del archivo */
 
+/* Animación para el spinner de carga inicial */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

@@ -2,74 +2,24 @@
  * Provider para lógica demo - ComplicesConecta
  * Maneja datos mock y comportamiento demo sin afectar producción
  */
-
-import React, { createContext, useContext, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { logger } from '@/lib/logger';
-import { Database } from '@/types/supabase';
+import type { Database } from '@/types/supabase';
 import { demoProfiles } from '@/demo/demoData';
-
-// CRÍTICO: Asegurar createContext disponible antes de usar
-const safeCreateContext = <T,>(defaultValue: T | null): React.Context<T | null> => {
-  const debugLog = (event: string, data?: any) => {
-    if (typeof window !== 'undefined' && (window as any).__LOADING_DEBUG__) {
-      (window as any).__LOADING_DEBUG__.log(event, data);
-    }
-  };
-  
-  // PRIORIDAD 1: React local (importado en este archivo)
-  if (React && React.createContext) {
-    debugLog('SAFE_CREATE_CONTEXT_LOCAL', { provider: 'DemoProvider', hasLocal: true });
-    return React.createContext(defaultValue);
-  }
-  
-  // PRIORIDAD 2: React global (window.React)
-  if (typeof window !== 'undefined' && (window as any).React?.createContext) {
-    debugLog('SAFE_CREATE_CONTEXT_GLOBAL', { provider: 'DemoProvider', hasGlobal: true });
-    return (window as any).React.createContext(defaultValue);
-  }
-  
-  // PRIORIDAD 3: createContext local (importado directamente de 'react')
-  if (createContext) {
-    debugLog('SAFE_CREATE_CONTEXT_FALLBACK', { provider: 'DemoProvider', hasLocal: true });
-    return createContext<T | null>(defaultValue);
-  }
-  
-  // PRIORIDAD 4: Fallback mínimo si nada está disponible
-  debugLog('SAFE_CREATE_CONTEXT_STUB', { provider: 'DemoProvider', usingStub: true });
-  return {
-    Provider: ({ children }: any) => children,
-    Consumer: ({ children }: any) => children(null),
-    displayName: 'Context',
-    _currentValue: defaultValue
-  } as any;
-};
+import { AppContext, AppContextType } from '@/context/AppContext';
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
-
-interface DemoContextType {
-  profiles: Profile[];
-  isDemo: true;
-  getDemoProfile: (id: string) => Profile | null;
-  getDemoProfiles: (filters?: any) => Profile[];
-  mockAuth: {
-    login: (email: string, password: string) => Promise<{ success: boolean; user?: any }>;
-    logout: () => Promise<void>;
-    getCurrentUser: () => any | null;
-  };
-}
-
-const DemoContext = safeCreateContext<DemoContextType | null>(null);
 
 interface DemoProviderProps {
   children: ReactNode;
 }
 
 export const DemoProvider: React.FC<DemoProviderProps> = ({ children }) => {
-  const getDemoProfile = (id: string): Profile | null => {
+  const getDemoProfile = async (id: string): Promise<Profile | null> => {
     return (demoProfiles as any[]).find((p: any) => p.id === id) as Profile || null;
   };
 
-  const getDemoProfiles = (filters?: any): Profile[] => {
+  const getDemoProfiles = async (filters?: any): Promise<Profile[]> => {
     let filtered = [...(demoProfiles as any[])];
     
     if (filters?.ageRange) {
@@ -89,11 +39,10 @@ export const DemoProvider: React.FC<DemoProviderProps> = ({ children }) => {
     return filtered as Profile[];
   };
 
-  const mockAuth = {
+  const auth = {
     login: async (email: string, _password: string) => {
       logger.info('Demo login attempt:', { email });
       
-      // Mock successful login for demo users
       if (email.includes('demo') || email.includes('test')) {
         return {
           success: true,
@@ -105,45 +54,47 @@ export const DemoProvider: React.FC<DemoProviderProps> = ({ children }) => {
         };
       }
       
-      return { success: false };
+      return { success: false, error: 'Invalid demo credentials' };
     },
     
     logout: async () => {
       logger.info('Demo logout');
-      // Mock logout - no real session to clear
     },
     
-    getCurrentUser: () => {
-      // Return mock user for demo
+    getCurrentUser: async () => {
       return {
         id: 'demo-user-1',
         email: 'demo@complicesconecta.com',
         profile: demoProfiles[0]
       };
+    },
+
+    signUp: async (email: string, _password: string, _profileData: any) => {
+      logger.info('Demo signUp attempt:', { email });
+      return {
+        success: true,
+        user: {
+          id: `demo-user-${Date.now()}`,
+          email,
+          profile: demoProfiles[1]
+        }
+      };
     }
   };
 
-  const contextValue: DemoContextType = {
-    profiles: demoProfiles as any as Profile[],
+  const contextValue: AppContextType = {
     isDemo: true,
-    getDemoProfile,
-    getDemoProfiles,
-    mockAuth
+    profiles: demoProfiles as any as Profile[],
+    getProfile: getDemoProfile,
+    getProfiles: getDemoProfiles,
+    auth
   };
 
   return (
-    <DemoContext.Provider value={contextValue}>
+    <AppContext.Provider value={contextValue}>
       {children}
-    </DemoContext.Provider>
+    </AppContext.Provider>
   );
-};
-
-export const useDemoContext = (): DemoContextType => {
-  const context = useContext(DemoContext);
-  if (!context) {
-    throw new Error('useDemoContext debe usarse dentro de DemoProvider');
-  }
-  return context;
 };
 
 export default DemoProvider;

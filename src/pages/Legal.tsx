@@ -9,21 +9,16 @@ import { motion } from 'framer-motion';
 import { 
   FileText, 
   Shield, 
-  Scale, 
   AlertTriangle, 
   Users, 
   BookOpen,
   Gavel,
-  Download,
   Eye,
   Calendar,
-  ArrowLeft,
-  Heart,
   AlertCircle,
   CheckCircle2,
   Globe,
   Lock,
-  UserCheck,
   ExternalLink,
   Info
 } from 'lucide-react';

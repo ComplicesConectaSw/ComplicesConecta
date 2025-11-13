@@ -335,13 +335,9 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                     </DropdownMenuItem>
                     <DropdownMenuSeparator className="bg-purple-500/30" />
                     <DropdownMenuItem 
-                      onClick={() => {
-                        localStorage.removeItem('demo_authenticated');
-                        localStorage.removeItem('demo_user');
-                        localStorage.removeItem('userType');
-                        sessionStorage.clear();
+                      onClick={async () => {
+                        await signOut();
                         navigate('/auth', { replace: true });
-                        window.location.reload();
                       }}
                       className="text-red-300 hover:bg-red-900/50 cursor-pointer"
                     >

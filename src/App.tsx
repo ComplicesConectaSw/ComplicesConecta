@@ -126,25 +126,6 @@ const PageLoader = () => (
   </div>
 );
 
-// Loading component específico para diferentes tipos de páginas
-const _AdminPageLoader = () => (
-  <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-    <div className="text-center">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
-      <p className="text-white text-lg">Cargando panel administrativo...</p>
-    </div>
-  </div>
-);
-
-const _ProfilePageLoader = () => (
-  <div className="min-h-screen bg-gradient-to-br from-purple-900 to-pink-900 flex items-center justify-center">
-    <div className="text-center">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500 mx-auto mb-4"></div>
-      <p className="text-white text-lg">Cargando perfil...</p>
-    </div>
-  </div>
-);
-
 // CRÍTICO: Crear QueryClient fuera del componente para evitar recreación en cada render
 // Configuración optimizada para producción
 const queryClient = new QueryClient({

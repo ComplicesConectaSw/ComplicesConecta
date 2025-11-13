@@ -1,6 +1,11 @@
 import { createRoot } from 'react-dom/client'
 import * as React from 'react'
 import type { WindowWithReact } from '@/types/react.types'
+import { suppressWalletErrors } from '@/utils/suppress-wallet-errors'
+
+// CRÍTICO: Silenciar errores de wallet ANTES de cualquier otra cosa.
+suppressWalletErrors();
+
 const { StrictMode } = React
 
 // CRÍTICO: Verificar que React esté completamente disponible
