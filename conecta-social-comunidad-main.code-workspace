@@ -9,6 +9,7 @@
 			"*.dbclient-js": "javascript",
 			"plyconfig.json": "jsonc"
 		},
-		"gitConfigUser.selectedProfile": "complciesconectaswvsco"
+		"gitConfigUser.selectedProfile": "complciesconectaswvsco",
+		"CodeGPT.apiKey": "Gemini CLI"
 	}
 }
