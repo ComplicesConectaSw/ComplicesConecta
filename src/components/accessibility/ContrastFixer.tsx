@@ -29,7 +29,7 @@ export function ContrastFixer({ enabled = true, level = 'AA' }: ContrastFixerPro
           const elements = document.querySelectorAll(selector);
           elements.forEach(element => {
             const htmlElement = element as HTMLElement;
-            const computedStyle = window.getComputedStyle(htmlElement);
+            const computedStyle = window.getComputedStyle(htmlElement as Element);
             const backgroundColor = computedStyle.backgroundColor;
             
             // Detectar si está sobre fondo oscuro
@@ -60,7 +60,7 @@ export function ContrastFixer({ enabled = true, level = 'AA' }: ContrastFixerPro
         const inputs = document.querySelectorAll('input, textarea');
         inputs.forEach(input => {
           const htmlInput = input as HTMLInputElement;
-          const _computedStyle = window.getComputedStyle(htmlInput);
+          const _computedStyle = window.getComputedStyle(htmlInput as Element);
           
           // Aplicar estilo de placeholder con mejor contraste
           const styleSheet = document.createElement('style');
@@ -74,7 +74,7 @@ export function ContrastFixer({ enabled = true, level = 'AA' }: ContrastFixerPro
           
           if (!document.head.querySelector('[data-contrast-placeholder]')) {
             styleSheet.setAttribute('data-contrast-placeholder', 'true');
-            document.head.appendChild(styleSheet);
+            document.head.appendChild(styleSheet as Node);
           }
           
           htmlInput.classList.add('contrast-fixed');

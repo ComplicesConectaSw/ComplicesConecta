@@ -62,12 +62,12 @@ export const SecurityDashboard: React.FC = () => {
     
     const blob = new Blob([JSON.stringify(reportData, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement('a') as HTMLAnchorElement;
     a.href = url;
     a.download = `security-report-${new Date().toISOString().split('T')[0]}.json`;
-    document.body.appendChild(a);
+    document.body.appendChild(a as Node);
     a.click();
-    document.body.removeChild(a);
+    document.body.removeChild(a as Node);
     URL.revokeObjectURL(url);
     
     toast({

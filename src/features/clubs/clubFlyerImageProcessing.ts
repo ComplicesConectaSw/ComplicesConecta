@@ -111,7 +111,7 @@ export const applyBlurToRegions = async (
     const img = new Image();
     img.crossOrigin = 'anonymous';
     img.onload = () => {
-      const canvas = document.createElement('canvas');
+      const canvas = document.createElement('canvas') as HTMLCanvasElement;
       const ctx = canvas.getContext('2d');
       
       if (!ctx) {
@@ -145,7 +145,7 @@ export const applyBlurToRegions = async (
 
       // Convertir a blob URL
       canvas.toBlob(
-        (blob) => {
+        (blob: Blob | null) => {
           if (blob) {
             const url = URL.createObjectURL(blob);
             resolve(url);
@@ -173,7 +173,7 @@ export const applyWatermark = async (
     const img = new Image();
     img.crossOrigin = 'anonymous';
     img.onload = () => {
-      const canvas = document.createElement('canvas');
+      const canvas = document.createElement('canvas') as HTMLCanvasElement;
       const ctx = canvas.getContext('2d');
       
       if (!ctx) {
@@ -207,7 +207,7 @@ export const applyWatermark = async (
 
       // Convertir a blob URL
       canvas.toBlob(
-        (blob) => {
+        (blob: Blob | null) => {
           if (blob) {
             const url = URL.createObjectURL(blob);
             resolve(url);
