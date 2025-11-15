@@ -234,10 +234,9 @@ export const ProfileThemeShowcase: React.FC<ProfileThemeShowcaseProps> = ({
                   image: profile.image,
                   isOnline: profile.isOnline,
                   verified: profile.isVerified,
-                  accountType: profile.profileType,
                   interests: profile.interests,
                 }}
-                variant="single"
+                onOpenModal={() => {}}
               />
               
               {/* Etiquetas informativas */}

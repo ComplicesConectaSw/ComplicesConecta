@@ -268,7 +268,7 @@ class APMService {
   private startErrorTracking(): void {
     if (typeof window !== 'undefined') {
       // Global error handler
-      window.addEventListener('error', (event) => {
+      window.addEventListener('error', (event: ErrorEvent) => {
         this.recordError(new Error(event.message), {
           component: 'global',
           action: 'unhandled_error',
@@ -281,12 +281,12 @@ class APMService {
       });
 
       // Unhandled promise rejection handler
-      window.addEventListener('unhandledrejection', (event) => {
-        this.recordError(new Error(event.reason), {
+      window.addEventListener('unhandledrejection', (event: PromiseRejectionEvent) => {
+        this.recordError(new Error(String(event.reason)), {
           component: 'global',
           action: 'unhandled_promise_rejection',
           metadata: {
-            reason: event.reason
+            reason: String(event.reason)
           }
         });
       });
