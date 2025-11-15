@@ -150,7 +150,8 @@ const App = () => {
   const { profile, isAuthenticated } = useAuth();
   
   // Determinar si mostrar Navigation (cuando hay perfil activo)
-  const showProfileNavigation = isAuthenticated && profile !== null && profile !== undefined;
+  // isAuthenticated es una función, por eso la llamamos con ()
+  const showProfileNavigation = isAuthenticated() && Boolean(profile);
 
   return (
     <QueryClientProvider client={queryClient}>
