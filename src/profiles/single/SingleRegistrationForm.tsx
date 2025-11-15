@@ -190,7 +190,7 @@ export const SingleRegistrationForm: React.FC<SingleRegistrationFormProps> = ({
     );
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     
     if (!canSubmit()) {

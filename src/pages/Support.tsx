@@ -98,7 +98,7 @@ const Support = () => {
     )
   })).filter(category => category.questions.length > 0);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     alert("Mensaje enviado correctamente. Te contactaremos pronto.");
   };

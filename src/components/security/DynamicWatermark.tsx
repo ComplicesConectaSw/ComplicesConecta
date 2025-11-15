@@ -169,7 +169,7 @@ export const DynamicWatermark: React.FC<DynamicWatermarkProps> = ({
       });
     });
 
-    observer.observe(containerRef.current, {
+    observer.observe(containerRef.current as Element, {
       childList: true,
       subtree: true
     });

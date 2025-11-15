@@ -108,7 +108,7 @@ describe('EditProfileSingle', () => {
         expect(screen.getByRole('main')).toBeInTheDocument();
         const nameInput = screen.queryByDisplayValue('Ana García');
         if (nameInput) {
-          fireEvent.change(nameInput, { target: { value: 'Ana María García' } });
+          fireEvent.change(nameInput as Element, { target: { value: 'Ana María García' } });
           expect(nameInput).toHaveValue('Ana María García');
         }
       }, { timeout: 3000 });
@@ -204,7 +204,7 @@ describe('EditProfileSingle', () => {
         expect(screen.getByRole('main')).toBeInTheDocument();
         const saveButton = screen.queryByRole('button', { name: /guardar/i });
         if (saveButton) {
-          fireEvent.click(saveButton);
+          fireEvent.click(saveButton as Element);
         }
       }, { timeout: 3000 });
       

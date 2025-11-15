@@ -18,7 +18,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
-import type { Database } from '@/types/supabase';
+import type { Database } from '@/types/supabase-generated';
 import { pytorchModel } from './models/PyTorchScoringModel';
 import { logger } from '@/lib/logger';
 
@@ -27,8 +27,13 @@ type Profile = Database['public']['Tables']['profiles']['Row'];
 /**
  * Perfil con intereses relacionados
  */
-interface ProfileWithInterests extends Profile {
+interface ProfileWithInterests {
+  id: string;
+  age?: number | null;
   interests?: Array<{ id: string; [key: string]: unknown }>;
+  latitude?: number | null;
+  longitude?: number | null;
+  [key: string]: any;
 }
 
 // Types
@@ -244,10 +249,10 @@ export class AILayerService {
     const ageGap = Math.abs((user1.age || 0) - (user2.age || 0));
 
     // Feature 6: Big Five compatibility (del scoring actual)
-    const bigFiveCompatibility = this.calculateBigFiveCompatibility(user1, user2);
+    const bigFiveCompatibility = this.calculateBigFiveCompatibility(user1 as any, user2 as any);
 
     // Feature 7: Swinger traits score (del scoring actual)
-    const swingerTraitsScore = this.calculateSwingerTraitsScore(user1, user2);
+    const swingerTraitsScore = this.calculateSwingerTraitsScore(user1 as any, user2 as any);
 
     // Feature 8: Response time (calcular desde mensajes)
     const responseTimeMs = await this.calculateResponseTime(userId1, userId2);

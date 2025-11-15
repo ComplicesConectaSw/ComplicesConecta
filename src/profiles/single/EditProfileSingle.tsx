@@ -11,7 +11,7 @@ import ImageUpload from "@/components/profile/ImageUpload";
 import { supabase } from "@/integrations/supabase/client";
 import { getAppConfig } from "@/lib/app-config";
 import Navigation from "@/components/Navigation";
-import type { Database } from '@/types/supabase';
+import type { Database } from '@/types/supabase-generated';
 import { SAFE_INTERESTS } from '@/lib/lifestyle-interests';
 import { ExplicitInterestsEditor } from '@/components/settings/ExplicitInterestsEditor';
 
