@@ -1,0 +1,231 @@
+/* ===== CORRECCIONES DE CONTRASTE DE TEXTO ===== */
+/* Archivo: text-contrast-fixes.css */
+/* Propósito: Corregir todos los problemas de visibilidad de texto */
+
+/* ===== TEXTOS GRISES - MEJORAR CONTRASTE ===== */
+
+/* Textos grises claros - hacerlos más oscuros para mejor contraste */
+.text-gray-300 {
+  color: #374151 !important; /* gray-700 */
+  font-weight: 500 !important;
+}
+
+.text-gray-400 {
+  color: #374151 !important; /* gray-700 */
+  font-weight: 500 !important;
+}
+
+.text-gray-500 {
+  color: #1f2937 !important; /* gray-800 */
+  font-weight: 500 !important;
+}
+
+.text-gray-600 {
+  color: #1f2937 !important; /* gray-800 */
+  font-weight: 500 !important;
+}
+
+/* ===== TEXT-MUTED-FOREGROUND - MEJORAR CONTRASTE ===== */
+.text-muted-foreground {
+  color: #374151 !important; /* gray-700 en lugar de gray-500 */
+  font-weight: 500 !important;
+}
+
+/* ===== TEXTOS EN FONDOS OSCUROS - FORZAR BLANCO ===== */
+
+/* Textos grises en fondos púrpura/oscuros */
+.bg-purple-600 .text-gray-300,
+.bg-purple-600 .text-gray-400,
+.bg-purple-600 .text-gray-500,
+.bg-purple-600 .text-gray-600,
+.bg-purple-700 .text-gray-300,
+.bg-purple-700 .text-gray-400,
+.bg-purple-700 .text-gray-500,
+.bg-purple-700 .text-gray-600,
+.bg-purple-800 .text-gray-300,
+.bg-purple-800 .text-gray-400,
+.bg-purple-800 .text-gray-500,
+.bg-purple-800 .text-gray-600,
+.bg-purple-900 .text-gray-300,
+.bg-purple-900 .text-gray-400,
+.bg-purple-900 .text-gray-500,
+.bg-purple-900 .text-gray-600 {
+  color: #ffffff !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8) !important;
+  font-weight: 600 !important;
+}
+
+/* Text-muted-foreground en fondos oscuros */
+.bg-purple-600 .text-muted-foreground,
+.bg-purple-700 .text-muted-foreground,
+.bg-purple-800 .text-muted-foreground,
+.bg-purple-900 .text-muted-foreground,
+.bg-blue-600 .text-muted-foreground,
+.bg-blue-700 .text-muted-foreground,
+.bg-blue-800 .text-muted-foreground,
+.bg-blue-900 .text-muted-foreground {
+  color: #e5e7eb !important; /* gray-200 */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8) !important;
+  font-weight: 500 !important;
+}
+
+/* ===== GRADIENTES - FORZAR BLANCO ===== */
+.bg-gradient-to-r .text-gray-300,
+.bg-gradient-to-r .text-gray-400,
+.bg-gradient-to-r .text-gray-500,
+.bg-gradient-to-r .text-gray-600,
+.bg-gradient-to-br .text-gray-300,
+.bg-gradient-to-br .text-gray-400,
+.bg-gradient-to-br .text-gray-500,
+.bg-gradient-to-br .text-gray-600,
+.bg-gradient-to-l .text-gray-300,
+.bg-gradient-to-l .text-gray-400,
+.bg-gradient-to-l .text-gray-500,
+.bg-gradient-to-l .text-gray-600 {
+  color: #ffffff !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9) !important;
+  font-weight: 600 !important;
+}
+
+.bg-gradient-to-r .text-muted-foreground,
+.bg-gradient-to-br .text-muted-foreground,
+.bg-gradient-to-l .text-muted-foreground {
+  color: #e5e7eb !important; /* gray-200 */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9) !important;
+  font-weight: 500 !important;
+}
+
+/* ===== CARDS CON FONDOS CLAROS - MEJORAR CONTRASTE ===== */
+
+/* Cards con fondo blanco o claro */
+.bg-white .text-gray-300,
+.bg-white .text-gray-400,
+.bg-white .text-gray-500,
+.bg-gray-50 .text-gray-300,
+.bg-gray-50 .text-gray-400,
+.bg-gray-50 .text-gray-500,
+.bg-gray-100 .text-gray-300,
+.bg-gray-100 .text-gray-400,
+.bg-gray-100 .text-gray-500 {
+  color: #1f2937 !important; /* gray-800 */
+  font-weight: 600 !important;
+}
+
+.bg-white .text-gray-600,
+.bg-gray-50 .text-gray-600,
+.bg-gray-100 .text-gray-600 {
+  color: #111827 !important; /* gray-900 */
+  font-weight: 600 !important;
+}
+
+.bg-white .text-muted-foreground,
+.bg-gray-50 .text-muted-foreground,
+.bg-gray-100 .text-muted-foreground {
+  color: #374151 !important; /* gray-700 */
+  font-weight: 500 !important;
+}
+
+/* ===== ICONOS - MEJORAR CONTRASTE ===== */
+
+/* Iconos grises en fondos claros */
+.bg-white .text-gray-400,
+.bg-gray-50 .text-gray-400,
+.bg-gray-100 .text-gray-400 {
+  color: #6b7280 !important; /* gray-500 - más oscuro */
+}
+
+/* Iconos en fondos oscuros */
+.bg-purple-600 .text-gray-400,
+.bg-purple-700 .text-gray-400,
+.bg-purple-800 .text-gray-400,
+.bg-purple-900 .text-gray-400,
+.bg-blue-600 .text-gray-400,
+.bg-blue-700 .text-gray-400,
+.bg-blue-800 .text-gray-400,
+.bg-blue-900 .text-gray-400 {
+  color: #d1d5db !important; /* gray-300 */
+}
+
+/* ===== PLACEHOLDERS - MEJORAR CONTRASTE ===== */
+.placeholder-gray-400::placeholder {
+  color: #6b7280 !important; /* gray-500 */
+  opacity: 1 !important;
+}
+
+.placeholder-gray-500::placeholder {
+  color: #4b5563 !important; /* gray-600 */
+  opacity: 1 !important;
+}
+
+/* ===== CASOS ESPECÍFICOS ===== */
+
+/* CardDescription mejorada */
+.card-description,
+[class*="CardDescription"] {
+  color: #374151 !important; /* gray-700 */
+  font-weight: 500 !important;
+}
+
+/* Textos pequeños mejorados */
+.text-xs.text-gray-500,
+.text-sm.text-gray-500 {
+  color: #374151 !important; /* gray-700 */
+  font-weight: 500 !important;
+}
+
+.text-xs.text-muted-foreground,
+.text-sm.text-muted-foreground {
+  color: #374151 !important; /* gray-700 */
+  font-weight: 500 !important;
+}
+
+/* ===== RESPONSIVE - MÓVIL ===== */
+@media (max-width: 768px) {
+  /* En móvil, hacer los textos aún más contrastados */
+  .text-gray-300,
+  .text-gray-400,
+  .text-gray-500,
+  .text-gray-600 {
+    font-weight: 600 !important;
+  }
+  
+  .text-muted-foreground {
+    color: #1f2937 !important; /* gray-800 en móvil */
+    font-weight: 600 !important;
+  }
+}
+
+/* ===== DARK MODE OVERRIDES ===== */
+.dark .text-gray-300 {
+  color: #d1d5db !important; /* gray-300 en dark mode */
+}
+
+.dark .text-gray-400 {
+  color: #9ca3af !important; /* gray-400 en dark mode */
+}
+
+.dark .text-gray-500 {
+  color: #6b7280 !important; /* gray-500 en dark mode */
+}
+
+.dark .text-gray-600 {
+  color: #4b5563 !important; /* gray-600 en dark mode */
+}
+
+.dark .text-muted-foreground {
+  color: #9ca3af !important; /* gray-400 en dark mode */
+}
+
+/* ===== FORZAR APLICACIÓN ===== */
+/* Los estilos se aplican automáticamente con !important */
+
+/* ===== DEBUGGING - REMOVER EN PRODUCCIÓN ===== */
+/*
+.text-gray-300,
+.text-gray-400,
+.text-gray-500,
+.text-gray-600,
+.text-muted-foreground {
+outline: 1px solid red !important;
+}
+*/
