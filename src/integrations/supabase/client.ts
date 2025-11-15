@@ -1,5 +1,5 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { Database } from '@/types/supabase';
+import { Database } from '@/types/supabase-generated';
 
 // CRÍTICO: Importar logger de forma segura con fallback
 import { logger } from '@/lib/logger';

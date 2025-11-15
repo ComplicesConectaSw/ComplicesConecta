@@ -241,12 +241,13 @@ step*.sql
 # ============================================================================
 # DOCUMENTACIÓN Y REPORTES (NO SUBIR A GIT)
 # ============================================================================
-docs-unified/docs-public/
+docs-unified/
+scripts/
+reports/
 workflows-desactivados/
 audit-files/
 backups/
 2025-01-22/
-reports/
 dev-scripts/
 
 # Archivos de documentación y análisis (root only)

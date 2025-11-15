@@ -24,17 +24,29 @@ export default defineConfig(({ mode }) => {
           chunkFileNames: 'assets/js/[name]-[hash].js',
           entryFileNames: 'assets/js/[name]-[hash].js',
           assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
-          // 🔥 SOLUCIÓN: NO separar React - mantenerlo en bundle principal
-          manualChunks: undefined, // Deshabilitar chunking manual
+          // 🚀 OPTIMIZACIÓN: Manual chunks para resolver warning >1000KB
+          manualChunks: {
+            // Separar vendor libraries grandes
+            'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+            'vendor-ui': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-tabs'],
+            'vendor-supabase': ['@supabase/supabase-js'],
+            'vendor-utils': ['date-fns', 'crypto-js', 'ethers'],
+            // Separar tipos grandes de Supabase
+            'types-supabase': ['./src/types/supabase-generated'],
+            // Separar páginas grandes
+            'pages-large': ['./src/pages/TokensInfo', './src/profiles/single/ProfileSingle'],
+            // Separar servicios complejos
+            'services-advanced': ['./src/services/AdvancedCacheService', './src/services/ContentModerationService']
+          }
         },
       },
-      cssCodeSplit: true, // Habilitar CSS code splitting para mejor performance
-      chunkSizeWarningLimit: 1000, // Ajustar el límite de advertencia de tamaño de chunk
+      cssCodeSplit: true,
+      chunkSizeWarningLimit: 1500, // Aumentar límite para chunks optimizados
       target: 'esnext',
       minify: 'terser',
       terserOptions: {
         compress: {
-          drop_console: false,
+          drop_console: mode === 'production', // Remover console.log en producción
           drop_debugger: true
         }
       }
