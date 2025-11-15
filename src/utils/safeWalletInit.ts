@@ -127,9 +127,9 @@ export const initWalletsAsync = async (): Promise<void> => {
     const _detected = await detectAvailableWallets(); // Detectar wallets disponibles
     safeWalletInit(); // Inicializar polyfills seguros
     
-    // Importar y ejecutar protección de wallets de forma asíncrona
-    const { detectWalletConflicts } = await import('./walletProtection');
-    detectWalletConflicts();
+    // Importar protección de wallets de forma asíncrona
+    await import('./walletProtection');
+    console.log('✅ Wallet protection loaded');
     
   } catch (error) {
     logger.warn('Error en inicialización asíncrona', { error });

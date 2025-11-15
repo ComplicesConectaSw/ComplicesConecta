@@ -38,7 +38,7 @@ declare global {
     'TronWeb is already initiated',
   ];
 
-  const isWalletError = (error) => {
+  const isWalletError = (error: any) => {
     if (!error) return false;
 
     const errorMessage = (error.message || '').toLowerCase();
@@ -50,7 +50,7 @@ declare global {
     return WALLET_ERROR_KEYWORDS.some(keyword => combinedText.includes(keyword));
   };
 
-  const handleError = (event) => {
+  const handleError = (event: any) => {
     if (isWalletError(event.error || event.reason)) {
       event.preventDefault();
       event.stopPropagation();
