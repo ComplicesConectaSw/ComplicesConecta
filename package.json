@@ -27,6 +27,8 @@
     "type-check": "tsc --noEmit",
     "test:e2e": "npx playwright test",
     "test:e2e:ui": "npx playwright test --ui",
+    "test:e2e:demo": "npx playwright test demo-flow",
+    "test:e2e:basic": "npx playwright test demo-flow --workers=1",
     "test:integration": "npx vitest run tests/integration",
     "format:check": "npx prettier --check .",
     "format:fix": "npx prettier --write .",
