@@ -819,14 +819,19 @@ export class WalletService {
       const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
       const currentClaimed = await this.getDailyTokensClaimed(userId, today);
       
-      // Usar tabla tokens existente en lugar de daily_token_claims
+      // Usar tabla app_logs para registrar el claim
       const { error } = await (supabase!)
-        .from('tokens')
-        .upsert({
+        .from('app_logs')
+        .insert({
+          message: `Daily tokens claimed: ${amount}`,
+          level: 'info',
           user_id: userId,
-          token_type: 'daily_claim',
-          amount: currentClaimed + amount,
-          created_at: new Date().toISOString()
+          metadata: {
+            amount,
+            currentClaimed,
+            claimDate: today,
+            type: 'daily_token_claim'
+          }
         });
       
       if (error) {

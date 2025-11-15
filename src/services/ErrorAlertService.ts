@@ -129,7 +129,7 @@ class ErrorAlertService {
     if (typeof window === 'undefined') return;
 
     // Unhandled errors
-    window.addEventListener('error', (event) => {
+    window.addEventListener('error', (event: ErrorEvent) => {
       this.createAlert({
         severity: 'high',
         category: 'frontend',
@@ -145,7 +145,7 @@ class ErrorAlertService {
     });
 
     // Unhandled promise rejections
-    window.addEventListener('unhandledrejection', (event) => {
+    window.addEventListener('unhandledrejection', (event: PromiseRejectionEvent) => {
       this.createAlert({
         severity: 'high',
         category: 'frontend',

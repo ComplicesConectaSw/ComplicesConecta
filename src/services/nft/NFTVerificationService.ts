@@ -225,7 +225,7 @@ class NFTVerificationService {
         nftTokenId: data.nft_token_id,
         network: data.network as 'polygon' | 'ethereum',
         mintedWithGtk: data.minted_with_gtk || 0,
-        stakingRecordId: data.staking_record_id,
+        stakingRecordId: data.staking_record_id || '',
         verifiedAt: new Date(data.verified_at),
         isActive: data.is_active
       };
