@@ -1,0 +1,19 @@
+{
+  "timestamp": "2025-11-15T10:05:55.760Z",
+  "environmentVariables": {
+    "configured": true,
+    "missing": []
+  },
+  "contracts": {
+    "available": [
+      "CMPX.sol",
+      "CoupleNFT.sol",
+      "StakingPool.sol"
+    ]
+  },
+  "hardhatConfig": true,
+  "readyForDeploy": true,
+  "nextSteps": [
+    "Ejecutar: npx hardhat run scripts/deploy-amoy.js --network amoy"
+  ]
+}
