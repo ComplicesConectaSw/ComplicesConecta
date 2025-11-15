@@ -21,17 +21,17 @@ export interface SentryConfig {
 }
 
 /**
- * Configuración por defecto de Sentry
+ * Configuración por defecto de Sentry (Plan Gratuito)
  */
 export const defaultSentryConfig: SentryConfig = {
   // NOTA: Reemplaza este DSN con tu propio DSN de Sentry
-  dsn: import.meta.env.VITE_SENTRY_DSN || '',
+  dsn: import.meta.env.VITE_SENTRY_DSN || import.meta.env.SENTRY_DSN || '',
   environment: (import.meta.env.MODE as any) || 'development',
-  enabled: import.meta.env.PROD || false,
-  tracesSampleRate: 0.1, // 10% de transactions
-  replaysSessionSampleRate: 0.1, // 10% de sesiones
-  replaysOnErrorSampleRate: 1.0, // 100% cuando hay error
-  release: `complicesconecta@${import.meta.env.VITE_APP_VERSION || '3.4.1'}`
+  enabled: !!(import.meta.env.VITE_SENTRY_DSN || import.meta.env.SENTRY_DSN) && import.meta.env.PROD,
+  tracesSampleRate: 0.05, // 5% para plan gratuito (menos quota)
+  replaysSessionSampleRate: 0.05, // 5% para plan gratuito
+  replaysOnErrorSampleRate: 0.5, // 50% cuando hay error (reducido para plan gratuito)
+  release: `complicesconecta@${import.meta.env.VITE_APP_VERSION || '3.6.3'}`
 };
 
 /**
