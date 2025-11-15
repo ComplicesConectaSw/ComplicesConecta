@@ -1,0 +1,24 @@
+<svg width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="radialGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#ffd6a5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fdffb6;stop-opacity:1" />
+    </radialGradient>
+    <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6b46c1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d53f8c;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Outer swirl ring -->
+  <path d="M40,10 C20,10 10,30 10,40 C10,50 20,70 40,70 C60,70 70,50 70,40 C70,30 60,10 40,10 Z"
+        fill="none" stroke="url(#lineGrad)" stroke-width="4" stroke-linejoin="round"/>
+  <!-- Three speech bubble icons interspersed -->
+  <g fill="url(#radialGrad)" stroke="url(#lineGrad)" stroke-width="2">
+    <path d="M40,20 l-8,0 l0,12 l6,0 l4,6 l4,-6 l6,0 l0,-12 z"/>
+    <path d="M60,40 l-12,0 l0,12 l6,0 l4,6 l4,-6 l6,0 l0,-12 z"/>
+    <path d="M20,40 l-12,0 l0,12 l6,0 l4,6 l4,-6 l6,0 l0,-12 z"/>
+  </g>
+  <!-- Central star / hub -->
+  <polygon points="40,34 44,46 56,46 48,52 52,64 40,56 28,64 32,52 24,46 36,46"
+           fill="url(#lineGrad)" opacity="0.8"/>
+</svg>

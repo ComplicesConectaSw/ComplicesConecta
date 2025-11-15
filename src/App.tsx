@@ -16,6 +16,8 @@ import AdminRoute from '@/components/auth/AdminRoute';
 import ModeratorRoute from '@/components/auth/ModeratorRoute';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { AppFactory } from '@/demo/AppFactory';
+import { useAuth } from '@/features/auth/useAuth';
+import Navigation from '@/components/Navigation';
 
 // ============================================================================
 // ESTRATEGIA DE CARGA DE PÁGINAS
@@ -46,6 +48,7 @@ import Auth from "@/app/(auth)/Auth";
 import NotFound from "@/pages/NotFound";
 import Events from "@/pages/Events";
 import Discover from "@/app/(discover)/Discover";
+import Demo from "@/pages/Demo";
 
 // Lazy loaded pages for performance optimization - Core features
 const Profiles = lazy(() => import("@/profiles/shared/Profiles"));
@@ -142,32 +145,41 @@ const queryClient = new QueryClient({
   },
 });
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <ThemeProvider>
-        <CrossBrowserOptimizer>
-          <AccessibilityEnhancer>
-            <MobileOptimizer>
-              <AnimationProvider>
-                <NotificationProvider>
-                  <AppFactory>
-                    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-800 relative overflow-hidden">
-                      {/* AnimatedBackground disabled to prevent ghost elements */}
-                      {/* <AnimatedBackground /> */}
-                      {/* FloatingParticles disabled to prevent ghost elements */}
-                      {/* <FloatingParticles count={15} /> */}
-                      <AnimationSettingsButton />
-                      <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-                        <PageTransitionWrapper>
-                          <Suspense fallback={<PageLoader />}>
-                            <Routes>
+const App = () => {
+  // Hook para obtener el estado del perfil del usuario
+  const { profile, isAuthenticated } = useAuth();
+  
+  // Determinar si mostrar Navigation (cuando hay perfil activo)
+  // isAuthenticated es una función, por eso la llamamos con ()
+  const showProfileNavigation = isAuthenticated() && Boolean(profile);
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <ThemeProvider>
+          <CrossBrowserOptimizer>
+            <AccessibilityEnhancer>
+              <MobileOptimizer>
+                <AnimationProvider>
+                  <NotificationProvider>
+                    <AppFactory>
+                      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-800 relative overflow-hidden">
+                        {/* AnimatedBackground disabled to prevent ghost elements */}
+                        {/* <AnimatedBackground /> */}
+                        {/* FloatingParticles disabled to prevent ghost elements */}
+                        {/* <FloatingParticles count={15} /> */}
+                        <AnimationSettingsButton />
+                        <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+                          <PageTransitionWrapper>
+                            <Suspense fallback={<PageLoader />}>
+                              <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/auth" element={
                     <ProtectedRoute requireAuth={false}>
                       <Auth />
                     </ProtectedRoute>
                   } />
+                  <Route path="/demo" element={<Demo />} />
                   <Route path="/faq" element={<FAQ />} />
                   <Route path="/feed" element={<Feed />} />
                   <Route path="/profiles" element={<Profiles />} />
@@ -260,6 +272,13 @@ const App = () => (
                         </PageTransitionWrapper>
                       </Router>
                       <Toaster />
+                      
+                      {/* Navegación condicional: mostrar Navigation solo cuando hay perfil activo */}
+                      {showProfileNavigation && (
+                        <div className="fixed bottom-0 left-0 right-0 z-50">
+                          <Navigation />
+                        </div>
+                      )}
                     </div>
                   </AppFactory>
                 </NotificationProvider>
@@ -270,6 +289,7 @@ const App = () => (
       </ThemeProvider>
     </TooltipProvider>
   </QueryClientProvider>
-);
+  );
+};
 
 export default App;

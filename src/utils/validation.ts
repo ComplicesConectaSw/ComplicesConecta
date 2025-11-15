@@ -91,6 +91,85 @@ export const validateEmailFormat = (email: string): boolean => {
 };
 
 /**
+ * Valida y normaliza números telefónicos de México
+ * Acepta formatos: 5512345678, 044 55 1234 5678, 045 55 1234 5678, +52 55 1234 5678, 52 55 1234 5678
+ * @param value - Número de teléfono a validar
+ * @returns Objeto con validación, número normalizado y mensaje de error
+ */
+export const validateMXPhone = (value: string): {
+  valid: boolean;
+  normalized: string;
+  error?: string;
+} => {
+  // Limpiar el número: eliminar espacios, guiones y paréntesis
+  const clean = value.replace(/[\s\-()]/g, '');
+  
+  // Expresión regular para validar números mexicanos
+  // Acepta: +52, 52, 044, 045 seguido de 10 dígitos
+  // O directamente 10 dígitos
+  const mexicanPhoneRegex = /^(\+?52|044|045)?(\d{10})$/;
+  const match = clean.match(mexicanPhoneRegex);
+  
+  if (!match) {
+    return {
+      valid: false,
+      normalized: '',
+      error: '10 dígitos requeridos (ej: 55 1234 5678)'
+    };
+  }
+  
+  // Extraer los 10 dígitos finales
+  const tenDigits = match[2];
+  
+  // Validar que los 10 dígitos sean válidos para México
+  // Los números móviles en México empiezan típicamente con: 55, 33, 81, 222, etc.
+  const firstTwoDigits = tenDigits.substring(0, 2);
+  const validPrefixes = ['55', '33', '81', '22', '44', '66', '77', '99', '61', '62', '64', '65', '67', '68', '69', '71', '72', '73', '74', '75', '76'];
+  
+  const isValidPrefix = validPrefixes.includes(firstTwoDigits) || 
+                       (parseInt(firstTwoDigits) >= 20 && parseInt(firstTwoDigits) <= 99);
+  
+  if (!isValidPrefix) {
+    return {
+      valid: false,
+      normalized: '',
+      error: 'Código de área no válido para México'
+    };
+  }
+  
+  // Normalizar al formato +52 seguido de los 10 dígitos
+  const normalized = `+52${tenDigits}`;
+  
+  return {
+    valid: true,
+    normalized,
+    error: undefined
+  };
+};
+
+/**
+ * Formatea un número de teléfono mexicano para visualización
+ * @param phone - Número de teléfono (puede estar normalizado o no)
+ * @returns Número formateado (ej: +52 55 1234 5678)
+ */
+export const formatMXPhone = (phone: string): string => {
+  const validation = validateMXPhone(phone);
+  
+  if (!validation.valid || !validation.normalized) {
+    return phone; // Devolver el original si no es válido
+  }
+  
+  // Formato: +52 XX XXXX XXXX
+  const normalized = validation.normalized;
+  const countryCode = normalized.substring(0, 3);  // +52
+  const areaCode = normalized.substring(3, 5);     // XX
+  const firstPart = normalized.substring(5, 9);    // XXXX
+  const secondPart = normalized.substring(9, 13);  // XXXX
+  
+  return `${countryCode} ${areaCode} ${firstPart} ${secondPart}`;
+};
+
+/**
  * Valida que los términos y políticas hayan sido aceptados
  * @param termsAccepted - Boolean indicando si se aceptaron los términos
  * @param privacyAccepted - Boolean indicando si se aceptó la política de privacidad
