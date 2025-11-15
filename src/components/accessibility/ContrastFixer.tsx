@@ -126,7 +126,7 @@ export function ContrastFixer({ enabled = true, level = 'AA' }: ContrastFixerPro
       }
     });
 
-    observer.observe(document.body, {
+    observer.observe(document.body as Element, {
       childList: true,
       subtree: true
     });

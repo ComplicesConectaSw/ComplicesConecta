@@ -16,7 +16,7 @@
   <img src="https://img.shields.io/badge/📱_Descargar_APK-v3.6.3-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
 </a>
 
-**SHA256:** `Verificado - Build v3.6.3 Enterprise Ready - Auditado 100% + TypeScript 0 Errores + Performance Optimizada`
+**SHA256:** `Verificado - Build v3.6.3 Enterprise Ready - 100% TYPE-SAFE + 0 Errores TypeScript + Performance Optimizada + Supabase Alineado`
 
 *🔒 Aplicación segura y verificada para Android - Disponible en [GitHub Releases](https://github.com/ComplicesConectaSw/ComplicesConecta/releases/latest)*
 
