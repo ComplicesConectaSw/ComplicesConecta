@@ -393,45 +393,45 @@ class SustainableEventsService {
    */
   private mapToSustainableEvent(data: {
     id: string;
-    couple_id: string;
+    couple_id: string | null;
     title: string;
-    description?: string;
+    description?: string | null;
     event_type: string;
-    location?: string;
+    location?: string | null;
     date: string;
-    max_participants?: number;
-    participants?: string[];
-    is_public?: boolean;
-    metadata?: Record<string, unknown>;
-    created_at: string;
-    updated_at: string;
+    max_participants?: number | null;
+    participants?: string[] | null;
+    is_public?: boolean | null;
+    metadata?: Record<string, unknown> | null;
+    created_at: string | null;
+    updated_at: string | null;
   }): SustainableEvent {
     const metadata = (data.metadata as Record<string, unknown>) || {};
     
     return {
       id: data.id,
-      coupleId: data.couple_id,
+      coupleId: data.couple_id || '',
       title: data.title,
       description: data.description || '',
       eventType: this.mapEventTypeFromDB(data.event_type),
-      location: data.location,
+      location: data.location || undefined,
       date: data.date,
       maxParticipants: data.max_participants || 0,
       participants: (data.participants as string[]) || [],
       isPublic: data.is_public || false,
       isVirtual: metadata.is_virtual !== false,
-      carbonFootprint: metadata.carbon_footprint || 15,
-      sustainabilityScore: metadata.sustainability_score || 50,
-      cmpxReward: metadata.cmpx_reward || 25,
-      requiredCMPX: metadata.required_cmpx || 0,
+      carbonFootprint: (metadata.carbon_footprint as number) || 15,
+      sustainabilityScore: (metadata.sustainability_score as number) || 50,
+      cmpxReward: (metadata.cmpx_reward as number) || 25,
+      requiredCMPX: (metadata.required_cmpx as number) || 0,
       metadata: {
-        platform: metadata.platform,
-        ecoFriendly: metadata.eco_friendly,
-        carbonOffset: metadata.carbon_offset,
-        sustainableMaterials: metadata.sustainable_materials || []
+        platform: metadata.platform as string | undefined,
+        ecoFriendly: metadata.eco_friendly as boolean | undefined,
+        carbonOffset: metadata.carbon_offset as boolean | undefined,
+        sustainableMaterials: (metadata.sustainable_materials as string[]) || []
       },
-      createdAt: new Date(data.created_at),
-      updatedAt: new Date(data.updated_at)
+      createdAt: new Date(data.created_at || new Date()),
+      updatedAt: new Date(data.updated_at || new Date())
     };
   }
 
