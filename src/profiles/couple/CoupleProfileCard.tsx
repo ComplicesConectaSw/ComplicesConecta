@@ -131,17 +131,17 @@ const CoupleProfileCard = ({
     navigate(`/profile/${profile.id}`);
   };
 
-  const handleLike = (_e: React.MouseEvent) => {
+  const handleLike = (_e: React.MouseEvent<HTMLButtonElement>) => {
     _e.stopPropagation();
     onOpenModal();
   };
 
-  const handleSuperLike = (_e: React.MouseEvent) => {
+  const handleSuperLike = (_e: React.MouseEvent<HTMLButtonElement>) => {
     _e.stopPropagation();
     onOpenModal();
   };
 
-  const handleDislike = (_e: any) => {
+  const handleDislike = (_e: React.MouseEvent<HTMLButtonElement>) => {
     _e.stopPropagation();
     onOpenModal();
     toast({

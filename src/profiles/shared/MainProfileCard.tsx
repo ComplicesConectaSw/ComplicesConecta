@@ -3,6 +3,7 @@ import { Heart, MapPin, Verified, Star, X, Zap } from "lucide-react";
 import { useUserOnlineStatus } from "@/hooks/useOnlineStatus";
 import { Button } from "@/shared/ui/Button";
 import { useNavigate } from "react-router-dom";
+import type { Database } from '@/types/supabase-generated';
 import { useToast } from "@/hooks/useToast";
 import { logger } from '@/lib/logger';
 import { useProfileTheme, Gender, ProfileType, Theme } from '@/features/profile/useProfileTheme';

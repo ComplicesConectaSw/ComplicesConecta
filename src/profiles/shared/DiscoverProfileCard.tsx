@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Card } from "@/shared/ui/Card";
 import { Button } from "@/shared/ui/Button";
 import { Heart, Flame, CheckCircle, Crown, Star, MapPin, MessageCircle, User } from 'lucide-react';
-import type { Database } from '@/types/supabase';
+import type { Database } from '@/types/supabase-generated';
 
 // Tipos estrictos basados en Supabase
 type Tables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Row'];
@@ -67,12 +67,12 @@ export const DiscoverProfileCard = React.memo<DiscoverProfileCardProps>(({ profi
     }
   }, [profile.interested_in]);
 
-  const handleLike = useCallback((event: React.MouseEvent) => {
+  const handleLike = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     onLike(profile.id);
   }, [profile.id, onLike]);
 
-  const handleSuperLike = useCallback((event: React.MouseEvent) => {
+  const handleSuperLike = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     onSuperLike(profile);
   }, [profile, onSuperLike]);

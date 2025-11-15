@@ -198,7 +198,7 @@ export const CoupleRegistrationForm: React.FC<CoupleRegistrationFormProps> = ({
     );
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     
     if (!canSubmit()) {

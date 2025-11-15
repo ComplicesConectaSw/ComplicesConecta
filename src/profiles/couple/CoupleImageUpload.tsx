@@ -77,7 +77,7 @@ export const CoupleImageUpload: React.FC<CoupleImageUploadProps> = ({
     }
   };
 
-  const handleDrop = (e: React.DragEvent, partner: 'partner1' | 'partner2') => {
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>, partner: 'partner1' | 'partner2') => {
     e.preventDefault();
     setDragActive(prev => ({ ...prev, [partner]: false }));
     
@@ -87,12 +87,12 @@ export const CoupleImageUpload: React.FC<CoupleImageUploadProps> = ({
     }
   };
 
-  const handleDragOver = (e: React.DragEvent, partner: 'partner1' | 'partner2') => {
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>, partner: 'partner1' | 'partner2') => {
     e.preventDefault();
     setDragActive(prev => ({ ...prev, [partner]: true }));
   };
 
-  const handleDragLeave = (e: React.DragEvent, partner: 'partner1' | 'partner2') => {
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>, partner: 'partner1' | 'partner2') => {
     e.preventDefault();
     setDragActive(prev => ({ ...prev, [partner]: false }));
   };
@@ -194,9 +194,9 @@ export const CoupleImageUpload: React.FC<CoupleImageUploadProps> = ({
           // Área de subida cuando no hay imagen
           <div
             onClick={() => handleClick(partner)}
-            onDrop={(e) => handleDrop(e, partner)}
-            onDragOver={(e) => handleDragOver(e, partner)}
-            onDragLeave={(e) => handleDragLeave(e, partner)}
+            onDrop={(e) => handleDrop(e as React.DragEvent<HTMLDivElement>, partner)}
+            onDragOver={(e) => handleDragOver(e as React.DragEvent<HTMLDivElement>, partner)}
+            onDragLeave={(e) => handleDragLeave(e as React.DragEvent<HTMLDivElement>, partner)}
             className={cn(
               "border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-all duration-200 h-48 flex flex-col items-center justify-center",
               isPartnerDragActive 
