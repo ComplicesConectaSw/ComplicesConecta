@@ -31,8 +31,8 @@ export default defineConfig(({ mode }) => {
             'vendor-ui': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-tabs'],
             'vendor-supabase': ['@supabase/supabase-js'],
             'vendor-utils': ['date-fns', 'crypto-js', 'ethers'],
-            // Separar tipos grandes de Supabase
-            'types-supabase': ['./src/types/supabase-generated'],
+            // Separar tipos grandes de Supabase (solo si se importan)
+            // 'types-supabase': ['./src/types/supabase-generated'],
             // Separar páginas grandes
             'pages-large': ['./src/pages/TokensInfo', './src/profiles/single/ProfileSingle'],
             // Separar servicios complejos
