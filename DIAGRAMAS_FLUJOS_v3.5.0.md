@@ -1,39 +1,65 @@
-# 📊 DIAGRAMAS DE FLUJOS v3.6.3 - COMPLICESCONECTA v3.6.3
+# 📊 DIAGRAMAS DE FLUJOS v3.6.4 - COMPLICESCONECTA v3.6.3
 
 **Fecha:** 15 Noviembre 2025  
-**Versión:** 3.6.3  
-**Estado:** ✅ 100% TYPE-SAFE - Errores TypeScript Eliminados - Supabase Alineado - Build Optimizado
+**Versión:** 3.6.4  
+**Estado:** ✅ 100% TYPE-SAFE - Errores TypeScript Eliminados - Supabase Alineado - Build Optimizado - Ruta /demo Implementada
 
 ---
 
-## 🔄 FLUJO COMPLETO DE USUARIO
+## 🔄 FLUJO COMPLETO DE USUARIO (Actualizado v3.6.4)
 
 ```mermaid
 flowchart TD
-    A[Usuario Nuevo] --> B{Registro}
-    B -->|Con WorldID| C[Verificación Instantánea]
-    B -->|Sin WorldID| D[Verificación Manual]
-    C --> E[Onboarding]
-    D --> E
-    E --> F[Discover]
-    F --> G{Acción}
-    G -->|Match| H[Chat Realtime]
-    G -->|Club Check-in| I[Geoloc 50m]
-    G -->|Comprar Tokens| J[Shop CMPX]
-    G -->|Invertir| K[Donativos /invest]
-    I --> L{Verificado?}
-    L -->|Sí| M[Reseña 24h después]
-    L -->|No| N[Check-in no válido]
-    H --> O{Galería Privada?}
-    O -->|Sí| P[Pago CMPX]
-    O -->|No| Q[Chat Gratis]
-    P --> R[Creador gana 90%]
-    M --> S[Club Rating Actualizado]
+    A[Landing +18] --> B{Opción Usuario}
+    B -->|Modo Demo| C[Ruta /demo]
+    B -->|Registro Real| D[Ruta /auth]
     
-    style C fill:#10b981
-    style I fill:#3b82f6
-    style P fill:#f59e0b
-    style K fill:#8b5cf6
+    C --> E{Selector Demo}
+    E -->|Usuario Single| F[Demo Single]
+    E -->|Pareja| G[Demo Pareja]
+    
+    F --> H[Perfil Demo Activo]
+    G --> H
+    
+    D --> I{Registro}
+    I -->|Con WorldID| J[Verificación Instantánea]
+    I -->|Sin WorldID| K[Verificación Manual]
+    
+    J --> L[Onboarding]
+    K --> L
+    
+    L --> M[Validación Teléfono MX]
+    M --> N{Teléfono Válido?}
+    N -->|Sí +52XXXXXXXXXX| O[Perfil Real Creado]
+    N -->|No| L
+    
+    H --> P[Discover]
+    O --> P
+    
+    P --> Q{Acción}
+    Q -->|Match| R[Chat Realtime]
+    Q -->|Club Check-in| S[Geoloc 50m]
+    Q -->|Comprar Tokens| T[Shop CMPX]
+    Q -->|Invertir| U[Donativos /invest]
+    
+    S --> V{Verificado?}
+    V -->|Sí| W[Reseña 24h después]
+    V -->|No| X[Check-in no válido]
+    
+    R --> Y{Galería Privada?}
+    Y -->|Sí| Z[Pago CMPX]
+    Y -->|No| AA[Chat Gratis]
+    
+    Z --> AB[Creador gana 90%]
+    W --> AC[Club Rating Actualizado]
+    
+    style C fill:#8b5cf6
+    style E fill:#ec4899
+    style J fill:#10b981
+    style M fill:#f59e0b
+    style S fill:#3b82f6
+    style Z fill:#f59e0b
+    style U fill:#8b5cf6
 ```
 
 ---
@@ -434,8 +460,21 @@ flowchart TD
 ---
 
 **Documento creado:** 06 Noviembre 2025  
-**Última actualización:** 09 Noviembre 2025  
-**Versión:** 1.3
+**Última actualización:** 15 Noviembre 2025  
+**Versión:** 1.4
+
+### 🚀 Cambios v3.6.4 (15 Nov 2025)
+- ✅ **FLUJO COMPLETO DE USUARIO actualizado** con ruta `/demo`
+- ✅ **Selector de cuentas demo** (Single/Pareja) implementado
+- ✅ **Validación de teléfono MX** integrada en onboarding
+  - Soporte formatos: 5512345678, 044/045, +52, etc.
+  - Normalización automática a +52XXXXXXXXXX
+  - Validación de códigos de área mexicanos
+- ✅ **Navegación condicional** basada en estado de perfil
+- ✅ **PhoneInput component** con validación en tiempo real
+- ✅ **Auto-formato visual** de número telefónico
+- ✅ Diagrama muestra flujo Demo vs Registro Real
+- ✅ Integración completa teléfono en proceso de registro
 
 ### 🚀 Cambios v3.6.3 (09 Nov 2025)
 - ✅ Flujo de deployment Vercel actualizado con verificación de `vercel.json`
