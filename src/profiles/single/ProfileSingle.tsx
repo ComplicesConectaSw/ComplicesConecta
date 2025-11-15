@@ -69,7 +69,7 @@ const ProfileSingle: React.FC = () => {
   const [achievements, setAchievements] = useState<any[]>([]);
   
   // Estados para funcionalidades blockchain
-  const [walletInfo, setWalletInfo] = useState<any>(null);
+  const [_walletInfo, setWalletInfo] = useState<any>(null);
   const [tokenBalances, setTokenBalances] = useState({ cmpx: '0', gtk: '0', matic: '0' });
   const [testnetInfo, setTestnetInfo] = useState<any>(null);
   const [userNFTs, setUserNFTs] = useState<any[]>([]);

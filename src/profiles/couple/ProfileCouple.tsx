@@ -27,9 +27,9 @@ const ProfileCouple: React.FC = () => {
   const { isAuthenticated, user, profile: authProfile } = useAuth();
 
   // Estados para funcionalidades blockchain
-  const [walletInfo, setWalletInfo] = useState<any>(null);
+  const [_walletInfo, setWalletInfo] = useState<any>(null);
   const [tokenBalances, setTokenBalances] = useState({ cmpx: '0', gtk: '0', matic: '0' });
-  const [testnetInfo, setTestnetInfo] = useState<any>(null);
+  const [_testnetInfo, setTestnetInfo] = useState<any>(null);
   const [coupleNFTs, setCoupleNFTs] = useState<any[]>([]);
   const [coupleRequests, setCoupleRequests] = useState<any[]>([]);
   const [_isClaimingTokens, _setIsClaimingTokens] = useState(false);
@@ -118,7 +118,7 @@ const ProfileCouple: React.FC = () => {
     }
   };
 
-  const handleApproveCoupleNFT = async (requestId: string) => {
+  const _handleApproveCoupleNFT = async (requestId: string) => {
     if (!user?.id) return;
     
     try {

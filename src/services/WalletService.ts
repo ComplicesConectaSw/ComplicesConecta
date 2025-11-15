@@ -35,7 +35,7 @@ interface TokenBalance {
 /**
  * Interfaz para transacción
  */
-interface Transaction {
+interface _Transaction {
   hash: string;
   from: string;
   to: string;
@@ -340,7 +340,7 @@ export class WalletService {
     network: string = 'mumbai'
   ): Promise<string> {
     try {
-      const signer = await this.createSigner(userId, network);
+      const _signer = await this.createSigner(userId, network);
       
       // TODO: Implementar cuando el contrato CMPX esté deployado
       // const cmpxContract = new ethers.Contract(
@@ -378,7 +378,7 @@ export class WalletService {
     network: string = 'mumbai'
   ): Promise<number> {
     try {
-      const signer = await this.createSigner(userId, network);
+      const _signer = await this.createSigner(userId, network);
       
       // TODO: Implementar cuando el contrato CoupleNFT esté deployado
       // const coupleNFTContract = new ethers.Contract(
@@ -417,7 +417,7 @@ export class WalletService {
     network: string = 'mumbai'
   ): Promise<string> {
     try {
-      const signer = await this.createSigner(userId, network);
+      const _signer = await this.createSigner(userId, network);
       
       // TODO: Implementar cuando el contrato StakingPool esté deployado
       // const stakingContract = new ethers.Contract(
@@ -549,7 +549,7 @@ export class WalletService {
         throw new Error(`Máximo ${WalletService.TESTNET_FREE_TOKENS} tokens por usuario`);
       }
       
-      const signer = await this.createSigner(userId, network);
+      const _signer = await this.createSigner(userId, network);
       
       // TODO: Implementar cuando el contrato CMPX esté deployado
       // const cmpxContract = new ethers.Contract(
@@ -636,7 +636,7 @@ export class WalletService {
         throw new Error(`Solo puedes reclamar ${dailyInfo.remaining} tokens más hoy`);
       }
       
-      const signer = await this.createSigner(userId, network);
+      const _signer = await this.createSigner(userId, network);
       
       // TODO: Implementar cuando el contrato CMPX esté deployado
       // const cmpxContract = new ethers.Contract(
@@ -733,7 +733,7 @@ export class WalletService {
    */
   private async saveTestnetTokensClaim(userId: string, amount: number): Promise<void> {
     try {
-      const { data, error } = await this.blockchainClient
+      const { data: _data, error } = await this.blockchainClient
         .from('testnet_token_claims')
         .upsert({
           user_id: userId,

@@ -733,7 +733,7 @@ if (typeof window !== 'undefined') {
       try {
         // Asignación directa es más robusta contra configuraciones de propiedad existentes
         (window as any)[name] = func;
-      } catch (e) {
+      } catch (_e) {
         // Silenciar errores (pueden ser de extensiones de wallet que congelan el objeto window)
         console.warn(`No se pudo exponer la función '${name}' en window.`);
       }

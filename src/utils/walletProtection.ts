@@ -94,7 +94,7 @@
         });
       }
     });
-  } catch (e) {
+  } catch (_e) {
     // This may fail if extensions have already defined these properties.
     // We swallow this error as part of the protection mechanism.
   }
