@@ -18,7 +18,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
-import type { Database } from '@/types/supabase-generated';
+import type { Database, Json } from '@/types/supabase-generated';
 import { pytorchModel } from './models/PyTorchScoringModel';
 import { logger } from '@/lib/logger';
 
@@ -205,7 +205,7 @@ export class AILayerService {
       throw new Error('Profiles not found');
     }
 
-    const [user1, user2] = profiles as ProfileWithInterests[];
+    const [user1, user2] = profiles as unknown as ProfileWithInterests[];
 
     // Feature 1: Likes intercambiados
     const { count: likesGiven } = await supabase
@@ -502,7 +502,7 @@ export class AILayerService {
           legacy_score: score.method === 'legacy' ? score.score : null,
           final_score: score.score,
           model_version: 'v1-base',
-          features: (score.features || {}) as Record<string, unknown>,
+          features: (score.features || {}) as unknown as Json,
         });
 
       if (scoresError) {
@@ -521,7 +521,7 @@ export class AILayerService {
           prediction_time_ms: predictionTime,
           cache_hit: this.cache.has(`${userId1}-${userId2}`),
           fallback_used: score.method === 'legacy',
-          features: (score.features || {}) as Record<string, unknown>,
+          features: (score.features || {}) as unknown as Json,
           timestamp: new Date().toISOString(),
         });
 
