@@ -414,7 +414,7 @@ class SustainableEventsService {
       title: data.title,
       description: data.description || '',
       eventType: this.mapEventTypeFromDB(data.event_type),
-      location: data.location || undefined,
+      location: data.location || '',
       date: data.date,
       maxParticipants: data.max_participants || 0,
       participants: (data.participants as string[]) || [],
