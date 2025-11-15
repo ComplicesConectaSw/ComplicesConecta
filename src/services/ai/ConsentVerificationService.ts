@@ -465,7 +465,11 @@ Responde SOLO con un JSON válido en este formato exacto:
       return [];
     }
 
-    return data.reverse(); // Ordenar cronológicamente
+    return data.map(msg => ({
+      ...msg,
+      sender_id: msg.sender_id || '',
+      created_at: msg.created_at || new Date().toISOString()
+    })).reverse(); // Ordenar cronológicamente
   }
 
   /**
@@ -515,17 +519,14 @@ Responde SOLO con un JSON válido en este formato exacto:
       const { error } = await supabase
         .from('consent_verifications')
         .upsert({
-          id: verification.id,
           chat_id: verification.chatId,
-          user_id1: verification.userId1,
-          user_id2: verification.userId2,
+          user_id: verification.userId1,
+          recipient_id: verification.userId2,
+          consent_level: verification.currentScore.status,
           consent_score: verification.currentScore.score,
           confidence: verification.currentScore.confidence,
-          status: verification.currentScore.status,
-          reasoning: verification.currentScore.reasoning,
-          message_count: verification.messageCount,
-          is_paused: verification.isPaused,
-          pause_reason: verification.pauseReason,
+          explanation: verification.currentScore.reasoning,
+          suggested_action: verification.isPaused ? 'pause' : 'continue',
           updated_at: new Date().toISOString()
         }, {
           onConflict: 'chat_id'

@@ -1,8 +1,8 @@
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
 
-// Interfaces para datos de Supabase
-interface InvitationRow {
+// Interfaces para datos de Supabase (prefijo _ para unused)
+interface _InvitationRow {
   id: string;
   from_profile: string;
   to_profile: string;
@@ -13,7 +13,7 @@ interface InvitationRow {
   updated_at: string;
 }
 
-interface GalleryPermissionRow {
+interface _GalleryPermissionRow {
   id: string;
   profile_id?: string;
   granted_by: string;
@@ -22,7 +22,7 @@ interface GalleryPermissionRow {
   created_at: string;
 }
 
-interface InvitationTemplateRow {
+interface _InvitationTemplateRow {
   id: string;
   template_name?: string;
   name?: string;
@@ -163,7 +163,7 @@ class InvitationsService {
       }
 
       // Mapear datos de Supabase al formato esperado
-      const invitations: Invitation[] = (data || []).map((invitation: InvitationRow) => ({
+      const invitations: Invitation[] = (Array.isArray(data) ? data : []).map((invitation: any) => ({
         id: invitation.id,
         inviter_id: invitation.from_profile,
         invitee_email: invitation.to_profile, // Usar to_profile como ID

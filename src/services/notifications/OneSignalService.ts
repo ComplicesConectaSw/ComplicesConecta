@@ -18,6 +18,10 @@ export interface OneSignalConfig {
   notifyButton?: {
     enable: boolean;
   };
+  welcomeNotification?: {
+    title: string;
+    message: string;
+  };
 }
 
 class OneSignalService {
@@ -55,10 +59,10 @@ class OneSignalService {
       }
 
       // Cargar script de OneSignal
-      const script = document.createElement('script');
+      const script = document.createElement('script') as HTMLScriptElement;
       script.src = 'https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js';
       script.async = true;
-      document.head.appendChild(script);
+      document.head.appendChild(script as Node);
 
       script.onload = () => {
         if (window.OneSignal) {
@@ -83,7 +87,7 @@ class OneSignalService {
 
       await this.OneSignal.init({
         appId,
-        safari_web_id: import.meta.env.VITE_ONESIGNAL_SAFARI_WEB_ID,
+        safariWebId: import.meta.env.VITE_ONESIGNAL_SAFARI_WEB_ID,
         autoRegister: true,
         autoResubscribe: true,
         notifyButton: {

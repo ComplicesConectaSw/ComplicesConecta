@@ -222,7 +222,11 @@ Responde SOLO con un JSON válido:
       return [];
     }
 
-    return messages.reverse();
+    return messages.map(msg => ({
+      ...msg,
+      sender_id: msg.sender_id || '',
+      created_at: msg.created_at || new Date().toISOString()
+    })).reverse();
   }
 }
 

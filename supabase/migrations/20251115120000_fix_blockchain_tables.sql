@@ -241,9 +241,21 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
-CREATE TRIGGER update_story_comments_updated_at 
-    BEFORE UPDATE ON story_comments 
-    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+-- Crear trigger solo si no existe
+DO $$ 
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_trigger 
+        WHERE tgname = 'update_story_comments_updated_at'
+    ) THEN
+        CREATE TRIGGER update_story_comments_updated_at 
+            BEFORE UPDATE ON story_comments 
+            FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+        RAISE NOTICE '✅ Trigger update_story_comments_updated_at creado';
+    ELSE
+        RAISE NOTICE '⚠️ Trigger update_story_comments_updated_at ya existe, omitiendo';
+    END IF;
+END $$;
 
 -- 10. Verificación final y reporte
 DO $$ 
