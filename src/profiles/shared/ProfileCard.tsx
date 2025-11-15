@@ -39,17 +39,17 @@ export const ProfileCard = ({ profile, onLike, onSuperLike: _onSuperLike, onOpen
     navigate(`/profile/${id}`);
   };
 
-  const handleLike = (e: React.MouseEvent) => {
+  const handleLike = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     onOpenModal();
   };
 
-  const handleSuperLike = (e: React.MouseEvent) => {
+  const handleSuperLike = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     onOpenModal();
   };
 
-  const handleDislike = (e: React.MouseEvent) => {
+  const handleDislike = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     onOpenModal();
     toast({

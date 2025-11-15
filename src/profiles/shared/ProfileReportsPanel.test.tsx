@@ -71,12 +71,15 @@ describe('ProfileReportsPanel', () => {
           reporter_user_id: 'user2',
           reported_content_id: 'profile1',
           reason: 'harassment',
-          report_type: 'profile',
           severity: 'medium',
           status: 'pending',
           description: 'Test report',
-          resolved_at: null,
-          resolved_by: null,
+          ai_classified: false,
+          assigned_to: null,
+          queue_position: null,
+          resolution_notes: null,
+          reviewed_at: null,
+          reviewed_by: null,
           created_at: '2023-01-01T00:00:00Z',
           updated_at: '2023-01-01T00:00:00Z'
         }

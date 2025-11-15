@@ -85,21 +85,42 @@ CREATE INDEX IF NOT EXISTS idx_analytics_events_session_id ON analytics_events(s
 -- 5. Habilitar RLS en analytics_events
 ALTER TABLE analytics_events ENABLE ROW LEVEL SECURITY;
 
--- Políticas RLS para analytics_events
-CREATE POLICY "Users can view own analytics events" ON analytics_events
-    FOR SELECT USING (auth.uid() = user_id);
+-- Políticas RLS para analytics_events (verificar existencia)
+DO $$ 
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies 
+        WHERE tablename = 'analytics_events' 
+        AND policyname = 'Users can view own analytics events'
+    ) THEN
+        CREATE POLICY "Users can view own analytics events" ON analytics_events
+            FOR SELECT USING (auth.uid() = user_id);
+    END IF;
 
-CREATE POLICY "System can insert analytics events" ON analytics_events
-    FOR INSERT WITH CHECK (true);
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies 
+        WHERE tablename = 'analytics_events' 
+        AND policyname = 'System can insert analytics events'
+    ) THEN
+        CREATE POLICY "System can insert analytics events" ON analytics_events
+            FOR INSERT WITH CHECK (true);
+    END IF;
 
-CREATE POLICY "Admins can view all analytics events" ON analytics_events
-    FOR SELECT USING (
-        EXISTS (
-            SELECT 1 FROM user_roles 
-            WHERE user_id = auth.uid() 
-            AND role IN ('admin', 'superadmin')
-        )
-    );
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies 
+        WHERE tablename = 'analytics_events' 
+        AND policyname = 'Admins can view all analytics events'
+    ) THEN
+        CREATE POLICY "Admins can view all analytics events" ON analytics_events
+            FOR SELECT USING (
+                EXISTS (
+                    SELECT 1 FROM user_roles 
+                    WHERE user_id = auth.uid() 
+                    AND role IN ('admin', 'superadmin')
+                )
+            );
+    END IF;
+END $$;
 
 -- 6. Corregir tabla invitation_templates (para InvitationsService)
 DO $$ 

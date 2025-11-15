@@ -427,6 +427,7 @@ describe('Profile Cache Tests', () => {
         first_name: 'New',
         last_name: 'User',
         name: 'New User',
+        full_name: 'New User',
         email: null,
         bio: null,
         avatar_url: null,
