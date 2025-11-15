@@ -91,18 +91,18 @@ export const AndroidOptimizedApp: React.FC<AndroidOptimizedAppProps> = ({
       // Precargar recursos críticos
       const preloadCriticalResources = () => {
         // Precargar fuentes
-        const fontLink = document.createElement('link');
+        const fontLink = document.createElement('link') as HTMLLinkElement;
         fontLink.rel = 'preload';
         fontLink.href = 'https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap';
         fontLink.as = 'style';
-        document.head.appendChild(fontLink);
+        document.head.appendChild(fontLink as Node);
 
         // Precargar iconos críticos
-        const iconLink = document.createElement('link');
+        const iconLink = document.createElement('link') as HTMLLinkElement;
         iconLink.rel = 'preload';
         iconLink.href = '/icons/app-icon-192.png';
         iconLink.as = 'image';
-        document.head.appendChild(iconLink);
+        document.head.appendChild(iconLink as Node);
       };
 
       preloadCriticalResources();

@@ -67,7 +67,7 @@ export const WebhookConfigPanel: React.FC = () => {
     setWebhooks(webhookService.getAllWebhooks());
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (editingId) {

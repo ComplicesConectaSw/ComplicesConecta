@@ -20,7 +20,7 @@ export const MagneticButton: React.FC<MagneticButtonProps> = ({
   const springX = useSpring(x, { stiffness: 300, damping: 30 });
   const springY = useSpring(y, { stiffness: 300, damping: 30 });
 
-  const handleMouseMove = (e: React.MouseEvent) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (!ref.current) return;
     
     const rect = ref.current.getBoundingClientRect();
@@ -105,7 +105,7 @@ export const RippleEffect: React.FC<RippleEffectProps> = ({
 }) => {
   const [ripples, setRipples] = useState<Array<{ x: number; y: number; id: number }>>([]);
 
-  const handleClick = (e: React.MouseEvent) => {
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;

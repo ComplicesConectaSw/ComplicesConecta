@@ -73,7 +73,7 @@ export const LazyImageLoader: React.FC<LazyImageLoaderProps> = ({
         }
       );
 
-      observerRef.current.observe(imgRef.current);
+      observerRef.current.observe(imgRef.current as Element);
     } else {
       loadImage();
     }
