@@ -240,18 +240,86 @@ ALTER TABLE story_likes ENABLE ROW LEVEL SECURITY;
 ALTER TABLE story_comments ENABLE ROW LEVEL SECURITY;
 ALTER TABLE story_shares ENABLE ROW LEVEL SECURITY;
 
--- Políticas RLS
-CREATE POLICY "Users can view all story likes" ON story_likes FOR SELECT USING (true);
-CREATE POLICY "Users can create own story likes" ON story_likes FOR INSERT WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "Users can delete own story likes" ON story_likes FOR DELETE USING (auth.uid() = user_id);
+-- Políticas RLS (verificar existencia)
+DO $$ 
+BEGIN
+    -- Políticas para story_likes
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies 
+        WHERE tablename = 'story_likes' 
+        AND policyname = 'Users can view all story likes'
+    ) THEN
+        CREATE POLICY "Users can view all story likes" ON story_likes FOR SELECT USING (true);
+    END IF;
 
-CREATE POLICY "Users can view all story comments" ON story_comments FOR SELECT USING (true);
-CREATE POLICY "Users can create own story comments" ON story_comments FOR INSERT WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "Users can update own story comments" ON story_comments FOR UPDATE USING (auth.uid() = user_id);
-CREATE POLICY "Users can delete own story comments" ON story_comments FOR DELETE USING (auth.uid() = user_id);
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies 
+        WHERE tablename = 'story_likes' 
+        AND policyname = 'Users can create own story likes'
+    ) THEN
+        CREATE POLICY "Users can create own story likes" ON story_likes FOR INSERT WITH CHECK (auth.uid() = user_id);
+    END IF;
 
-CREATE POLICY "Users can view all story shares" ON story_shares FOR SELECT USING (true);
-CREATE POLICY "Users can create own story shares" ON story_shares FOR INSERT WITH CHECK (auth.uid() = user_id);
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies 
+        WHERE tablename = 'story_likes' 
+        AND policyname = 'Users can delete own story likes'
+    ) THEN
+        CREATE POLICY "Users can delete own story likes" ON story_likes FOR DELETE USING (auth.uid() = user_id);
+    END IF;
+
+    -- Políticas para story_comments
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies 
+        WHERE tablename = 'story_comments' 
+        AND policyname = 'Users can view all story comments'
+    ) THEN
+        CREATE POLICY "Users can view all story comments" ON story_comments FOR SELECT USING (true);
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies 
+        WHERE tablename = 'story_comments' 
+        AND policyname = 'Users can create own story comments'
+    ) THEN
+        CREATE POLICY "Users can create own story comments" ON story_comments FOR INSERT WITH CHECK (auth.uid() = user_id);
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies 
+        WHERE tablename = 'story_comments' 
+        AND policyname = 'Users can update own story comments'
+    ) THEN
+        CREATE POLICY "Users can update own story comments" ON story_comments FOR UPDATE USING (auth.uid() = user_id);
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies 
+        WHERE tablename = 'story_comments' 
+        AND policyname = 'Users can delete own story comments'
+    ) THEN
+        CREATE POLICY "Users can delete own story comments" ON story_comments FOR DELETE USING (auth.uid() = user_id);
+    END IF;
+
+    -- Políticas para story_shares
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies 
+        WHERE tablename = 'story_shares' 
+        AND policyname = 'Users can view all story shares'
+    ) THEN
+        CREATE POLICY "Users can view all story shares" ON story_shares FOR SELECT USING (true);
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies 
+        WHERE tablename = 'story_shares' 
+        AND policyname = 'Users can create own story shares'
+    ) THEN
+        CREATE POLICY "Users can create own story shares" ON story_shares FOR INSERT WITH CHECK (auth.uid() = user_id);
+    END IF;
+
+    RAISE NOTICE '✅ Políticas RLS para story_* verificadas y creadas según necesidad';
+END $$;
 
 -- 9. Triggers para updated_at
 CREATE OR REPLACE FUNCTION update_updated_at_column()
