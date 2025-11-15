@@ -64,16 +64,17 @@ export function ContrastFixer({ enabled = true, level = 'AA' }: ContrastFixerPro
           
           // Aplicar estilo de placeholder con mejor contraste
           if (!document.head.querySelector('[data-contrast-placeholder]')) {
-            const styleSheet = document.createElement('style');
-            styleSheet.textContent = `
+            const style = document.createElement('style') as HTMLStyleElement;
+            style.setAttribute('data-contrast-placeholder', 'true');
+            style.textContent = `
               input.contrast-fixed::placeholder,
               textarea.contrast-fixed::placeholder {
                 color: ${level === 'AAA' ? '#cbd5e1' : '#94a3b8'} !important;
                 opacity: 1;
               }
             `;
-            styleSheet.setAttribute('data-contrast-placeholder', 'true');
-            document.head.insertBefore(styleSheet, document.head.firstChild);
+            // @ts-ignore - HTMLStyleElement es compatible con appendChild
+            document.head.appendChild(style);
           }
           
           htmlInput.classList.add('contrast-fixed');
