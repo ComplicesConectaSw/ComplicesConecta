@@ -3,7 +3,6 @@ import { Heart, MapPin, Verified, Star, X, Zap } from "lucide-react";
 import { useUserOnlineStatus } from "@/hooks/useOnlineStatus";
 import { Button } from "@/shared/ui/Button";
 import { useNavigate } from "react-router-dom";
-import type { Database } from '@/types/supabase-generated';
 import { useToast } from "@/hooks/useToast";
 import { logger } from '@/lib/logger';
 import { useProfileTheme, Gender, ProfileType, Theme } from '@/features/profile/useProfileTheme';
@@ -86,19 +85,19 @@ const MainProfileCardComponent = ({
     navigate(`/profile/${id}`);
   }, [navigate, id]);
 
-  const handleLike = useCallback((e: React.MouseEvent) => {
+  const handleLike = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     if (onLike) onLike(String(id));
     if (onOpenModal) onOpenModal();
   }, [onLike, onOpenModal, id]);
 
-  const handleSuperLike = useCallback((e: React.MouseEvent) => {
+  const handleSuperLike = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     if (onSuperLike) onSuperLike(profile);
     if (onOpenModal) onOpenModal();
   }, [onSuperLike, onOpenModal, profile]);
 
-  const handleDislike = useCallback((e: any) => {
+  const handleDislike = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     if (onOpenModal) onOpenModal();
     toast({
