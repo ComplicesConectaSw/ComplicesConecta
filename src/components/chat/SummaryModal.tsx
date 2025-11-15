@@ -58,6 +58,11 @@ export function SummaryModal({ isOpen, onClose, summary, error }: SummaryModalPr
 
     try {
       const { supabase } = await import('@/integrations/supabase/client');
+      if (!supabase) {
+        console.error('Supabase no está disponible');
+        return;
+      }
+      
       const { data: { user } } = await supabase.auth.getUser();
       
       if (supabase && user) {

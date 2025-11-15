@@ -133,7 +133,7 @@ export const OptimizedImage: React.FC<ImageOptimizerProps> = ({
     observerRef.current = createLazyLoader();
     
     if (observerRef.current && imgRef.current) {
-      observerRef.current.observe(imgRef.current);
+      observerRef.current.observe(imgRef.current as Element);
     }
 
     return () => {

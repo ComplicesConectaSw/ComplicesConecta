@@ -34,7 +34,7 @@ export const TermsModal: React.FC<TermsModalProps> = ({
         >
           <div
             className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto mx-4 sm:mx-0 transform transition-all duration-300 ease-out"
-            onClick={(e: React.MouseEvent) => e.stopPropagation()}
+            onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
           >
             {/* Header */}
             <div className="sticky top-0 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 p-6 rounded-t-2xl">

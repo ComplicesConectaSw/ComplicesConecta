@@ -280,7 +280,7 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
   /**
    * Enviar mensaje con verificación de consentimiento
    */
-  const handleSendMessage = async (e: React.FormEvent) => {
+  const handleSendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
     if (!newMessage.trim() || !user?.id || !hasPermission) return;

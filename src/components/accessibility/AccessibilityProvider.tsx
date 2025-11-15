@@ -129,10 +129,10 @@ export const AccessibilityProvider: React.FC<AccessibilityProviderProps> = ({ ch
     announcement.className = 'sr-only';
     announcement.textContent = message;
     
-    document.body.appendChild(announcement);
+    document.body.appendChild(announcement as Node);
     
     setTimeout(() => {
-      document.body.removeChild(announcement);
+      document.body.removeChild(announcement as Node);
     }, 1000);
   };
 

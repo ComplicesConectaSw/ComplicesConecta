@@ -180,7 +180,7 @@ export const ThemeInfoModal: React.FC<ThemeInfoModalProps> = ({
                         <div className="w-full max-w-sm">
                           <ProfileCard
                             profile={demoProfileProps}
-                            variant="single"
+                            onOpenModal={() => {}}
                           />
                         </div>
                       </div>

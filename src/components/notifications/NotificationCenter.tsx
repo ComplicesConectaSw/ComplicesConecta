@@ -51,7 +51,7 @@ export function NotificationCenter({ userId, className }: NotificationCenterProp
     }
   };
 
-  const handleDeleteNotification = async (notificationId: string, event: React.MouseEvent) => {
+  const handleDeleteNotification = async (notificationId: string, event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     await deleteNotification(notificationId);
   };
