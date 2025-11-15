@@ -20,7 +20,7 @@ export const processImageUpload = async (file: File): Promise<ImageUploadResult>
         img.onload = async () => {
           try {
             // Create canvas for image processing
-            const canvas = document.createElement('canvas');
+            const canvas = document.createElement('canvas') as HTMLCanvasElement;
             const ctx = canvas.getContext('2d');
             
             if (!ctx) throw new Error('Could not get canvas context');
@@ -50,7 +50,7 @@ export const processImageUpload = async (file: File): Promise<ImageUploadResult>
             
             // Convert to blob with compression
             canvas.toBlob(
-              (blob) => {
+              (blob: Blob | null) => {
                 if (blob) {
                   resolve({
                     file,
@@ -159,7 +159,7 @@ export const optimizeImageForSize = async (
     reader.onload = (event) => {
       const img = new Image();
       img.onload = () => {
-        const canvas = document.createElement('canvas');
+        const canvas = document.createElement('canvas') as HTMLCanvasElement;
         const ctx = canvas.getContext('2d');
         
         if (!ctx) {
@@ -261,7 +261,7 @@ export const analyzeImageContent = async (file: File): Promise<{
     }
     
     // Análisis de colores básico
-    const canvas = document.createElement('canvas');
+    const canvas = document.createElement('canvas') as HTMLCanvasElement;
     const ctx = canvas.getContext('2d');
     
     if (ctx) {
@@ -360,7 +360,7 @@ export const addWatermark = async (
     reader.onload = (event) => {
       const img = new Image();
       img.onload = () => {
-        const canvas = document.createElement('canvas');
+        const canvas = document.createElement('canvas') as HTMLCanvasElement;
         const ctx = canvas.getContext('2d');
         
         if (!ctx) {

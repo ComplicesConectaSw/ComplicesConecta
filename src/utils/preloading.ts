@@ -26,7 +26,7 @@ export const CRITICAL_RESOURCES = [
 
 // Crear elemento de preload
 export const createPreloadLink = (href: string, options: PreloadOptions = {}): HTMLLinkElement => {
-  const link = document.createElement('link');
+  const link = document.createElement('link') as HTMLLinkElement;
   link.rel = 'preload';
   link.href = href;
   
@@ -53,7 +53,7 @@ export const preloadResource = (href: string, options: PreloadOptions = {}): Pro
     link.onload = () => resolve();
     link.onerror = () => reject(new Error(`Failed to preload ${href}`));
     
-    document.head.appendChild(link);
+    document.head.appendChild(link as Node);
   });
 };
 
@@ -74,11 +74,11 @@ export const prefetchRoute = (href: string): void => {
   const existing = document.querySelector(`link[href="${href}"][rel="prefetch"]`);
   if (existing) return;
 
-  const link = document.createElement('link');
+  const link = document.createElement('link') as HTMLLinkElement;
   link.rel = 'prefetch';
   link.href = href;
   
-  document.head.appendChild(link);
+  document.head.appendChild(link as Node);
 };
 
 // Preconnect a dominios externos
@@ -86,7 +86,7 @@ export const preconnectDomain = (domain: string, crossorigin = false): void => {
   const existing = document.querySelector(`link[href="${domain}"][rel="preconnect"]`);
   if (existing) return;
 
-  const link = document.createElement('link');
+  const link = document.createElement('link') as HTMLLinkElement;
   link.rel = 'preconnect';
   link.href = domain;
   
@@ -94,7 +94,7 @@ export const preconnectDomain = (domain: string, crossorigin = false): void => {
     link.crossOrigin = 'anonymous';
   }
   
-  document.head.appendChild(link);
+  document.head.appendChild(link as Node);
 };
 
 // DNS prefetch para dominios
@@ -102,11 +102,11 @@ export const dnsPrefetch = (domain: string): void => {
   const existing = document.querySelector(`link[href="${domain}"][rel="dns-prefetch"]`);
   if (existing) return;
 
-  const link = document.createElement('link');
+  const link = document.createElement('link') as HTMLLinkElement;
   link.rel = 'dns-prefetch';
   link.href = domain;
   
-  document.head.appendChild(link);
+  document.head.appendChild(link as Node);
 };
 
 // Precargar rutas basado en hover (predictive prefetching)
@@ -162,7 +162,7 @@ export const setupViewportPrefetching = (): IntersectionObserver => {
           const link = entry.target as HTMLAnchorElement;
           if (link.href && link.hostname === window.location.hostname) {
             prefetchRoute(link.href);
-            observer.unobserve(link); // Solo prefetch una vez
+            observer.unobserve(link as Element); // Solo prefetch una vez
           }
         }
       });
