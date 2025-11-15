@@ -203,16 +203,16 @@ function downloadFile(content: string, filename: string, mimeType: string): void
     const blob = new Blob([content], { type: mimeType });
     const url = URL.createObjectURL(blob);
     
-    const link = document.createElement('a');
+    const link = document.createElement('a') as HTMLAnchorElement;
     link.href = url;
     link.download = filename;
     link.style.display = 'none';
     
-    document.body.appendChild(link);
+    document.body.appendChild(link as Node);
     link.click();
     
     // Cleanup
-    document.body.removeChild(link);
+    document.body.removeChild(link as Node);
     URL.revokeObjectURL(url);
     
     logger.debug('File downloaded successfully', { filename });

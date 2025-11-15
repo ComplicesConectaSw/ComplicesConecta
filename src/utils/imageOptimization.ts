@@ -141,7 +141,7 @@ export const convertToModernFormat = async (
   quality: number = 0.8
 ): Promise<Blob> => {
   return new Promise((resolve, reject) => {
-    const canvas = document.createElement('canvas');
+    const canvas = document.createElement('canvas') as HTMLCanvasElement;
     const ctx = canvas.getContext('2d');
     const img = new Image();
 
@@ -181,7 +181,7 @@ export const resizeImage = (
   quality: number = 0.8
 ): Promise<Blob> => {
   return new Promise((resolve, reject) => {
-    const canvas = document.createElement('canvas');
+    const canvas = document.createElement('canvas') as HTMLCanvasElement;
     const ctx = canvas.getContext('2d');
     const img = new Image();
 
