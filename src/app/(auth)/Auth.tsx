@@ -17,6 +17,7 @@ import { Theme } from '@/features/profile/useProfileTheme';
 import { usePersistedState } from '@/hooks/usePersistedState';
 import { DecorativeHearts } from '@/components/DecorativeHearts';
 import { safeSetItem } from '@/utils/safeLocalStorage';
+import PhoneInput from '@/components/forms/PhoneInput';
 
 interface FormData {
   email: string;
@@ -31,6 +32,7 @@ interface FormData {
   bio: string;
   role: string;
   accountType: string;
+  phone: string; // Teléfono para validación MX
   partnerFirstName: string;
   partnerLastName: string;
   partnerNickname: string;
@@ -78,6 +80,7 @@ const Auth = () => {
     bio: '',
     role: 'user',
     accountType: 'single',
+    phone: '', // Teléfono agregado para validación MX
     partnerFirstName: '',
     partnerLastName: '',
     partnerNickname: '',
@@ -478,6 +481,22 @@ const Auth = () => {
                       onChange={(e) => handleInputChange('age', e.target.value)}
                       required
                       className="bg-white/10 border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    />
+                  </div>
+
+                  {/* Campo de teléfono con validación MX */}
+                  <div className="space-y-2">
+                    <Label htmlFor="phone" className="text-white font-medium">
+                      Teléfono <span className="text-white/60 text-sm">(México)</span>
+                    </Label>
+                    <PhoneInput
+                      value={formData.phone}
+                      onChange={(value) => handleInputChange('phone', value)}
+                      placeholder="55 1234 5678"
+                      required
+                      showValidation={true}
+                      autoFormat={true}
+                      className="w-full"
                     />
                   </div>
 

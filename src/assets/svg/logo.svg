@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 1200 600">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2a2a2a"/>
+      <stop offset="100%" stop-color="#1a1a1a"/>
+    </linearGradient>
+    <!-- C gradient -->
+    <linearGradient id="cGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ff3cac"/>
+      <stop offset="100%" stop-color="#784ba0"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="1200" height="600" fill="url(#bgGrad)" />
+
+  <!-- Large C -->
+  <path d="M100 50
+           C 100 50, 50 50, 50 300
+           C 50 550, 100 550, 100 550" 
+        fill="none" stroke="url(#cGrad)" stroke-width="40" stroke-linecap="round" />
+
+  <!-- Human icons -->
+  <g fill="#ffffff" transform="translate(280,250)">
+    <!-- First person -->
+    <circle cx="0" cy="-50" r="20" />
+    <path d="M -20,0 L -20,20 Q 0,60 20,20 L 20,0 Z" />
+    <!-- Second person -->
+    <circle cx="70" cy="-50" r="20" />
+    <path d="M 50,0 L 50,20 Q 70,60 90,20 L 90,0 Z" />
+    <!-- Third person -->
+    <circle cx="140" cy="-50" r="20" />
+    <path d="M 120,0 L 120,20 Q 140,60 160,20 L 160,0 Z" />
+  </g>
+
+  <!-- Text -->
+  <text x="260" y="380" fill="#ffffff" font-family="Arial, sans-serif" font-size="80" font-weight="bold">
+    CÓMPLICES
+  </text>
+  <text x="260" y="480" fill="#ffffff" font-family="Arial, sans-serif" font-size="80" font-weight="bold">
+    CONECTA
+  </text>
+</svg>
