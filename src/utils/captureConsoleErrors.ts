@@ -649,110 +649,130 @@ export function exportConsoleErrors(): string | null {
   return errorCapture?.exportErrors() || null;
 }
 
+/**
+ * Muestra información del entorno de desarrollo en la consola.
+ * Incluye URL, User Agent, modo de Vite, y estado de Tailwind/fuentes.
+ */
+export function showEnvInfo(): void {
+  if (typeof window === 'undefined') {
+    console.log('Esta función solo está disponible en el navegador.');
+    return;
+  }
+
+  console.group('ℹ️ Información de Entorno');
+  console.log('📍 URL actual:', window.location.href);
+  console.log('⏰ Fecha:', new Date().toISOString());
+  console.log('🖥️ User Agent:', navigator.userAgent);
+  
+  const isTunnel = window.location.hostname.includes('.loca.lt') || 
+                   window.location.hostname.includes('.ngrok-free.app') ||
+                   window.location.hostname.includes('.trycloudflare.com');
+  if (isTunnel) {
+    console.log('🌐 Acceso vía túnel detectado.');
+  }
+
+  try {
+    console.log('🔧 Modo:', import.meta.env?.MODE || 'unknown');
+    console.log('   - DEV:', import.meta.env?.DEV ?? false);
+    console.log('   - PROD:', import.meta.env?.PROD ?? false);
+  } catch {
+    console.warn('⚠️ No se pudo acceder a import.meta.env');
+  }
+
+  // Verificar si Tailwind está cargado
+  const tailwindLoaded = document.querySelector('style[data-vite-dev-id*="index"]') || 
+                        Array.from(document.styleSheets).some(sheet => {
+                          try {
+                            return sheet.href?.includes('style.css') || false;
+                          } catch {
+                            return false;
+                          }
+                        });
+  
+  if (tailwindLoaded) {
+    console.log('   ✅ Tailwind CSS detectado');
+  } else {
+    console.warn('   ⚠️ Tailwind CSS no detectado');
+  }
+
+  // Verificar fuentes cargadas
+  if ('fonts' in document) {
+    (document as any).fonts.ready.then(() => {
+      const loadedFonts = Array.from((document as any).fonts.values());
+      console.log(`   ✅ Fuentes cargadas: ${loadedFonts.length}`);
+      if(loadedFonts.length > 0) {
+        const fontFamilies = loadedFonts.map((font: any) => font.family);
+        const uniqueFamilies = [...new Set(fontFamilies)];
+        console.log('      - ' + uniqueFamilies.join('\n      - '));
+      }
+    }).catch(() => {
+      console.warn('   ⚠️ No se pudo verificar el estado de las fuentes.');
+    });
+  }
+
+  console.groupEnd();
+}
+
+
 // Hacer disponible globalmente para uso en consola
 // CRÍTICO: Asegurar que las funciones estén disponibles inmediatamente
-// Exponer ANTES de cualquier otra cosa para que estén disponibles desde el inicio
 if (typeof window !== 'undefined') {
   // Función para exponer todas las funciones de forma robusta
   const exposeFunctions = () => {
-    try {
-      // Intentar con Object.defineProperty primero
-      Object.defineProperty(window, 'startErrorCapture', {
-        value: startErrorCapture,
-        writable: true,
-        configurable: true,
-        enumerable: true
-      });
-      Object.defineProperty(window, 'stopErrorCapture', {
-        value: stopErrorCapture,
-        writable: true,
-        configurable: true,
-        enumerable: true
-      });
-      Object.defineProperty(window, 'getConsoleErrors', {
-        value: getConsoleErrors,
-        writable: true,
-        configurable: true,
-        enumerable: true
-      });
-      Object.defineProperty(window, 'showErrorReport', {
-        value: showErrorReport,
-        writable: true,
-        configurable: true,
-        enumerable: true
-      });
-      Object.defineProperty(window, 'clearConsoleErrors', {
-        value: clearConsoleErrors,
-        writable: true,
-        configurable: true,
-        enumerable: true
-      });
-      Object.defineProperty(window, 'exportConsoleErrors', {
-        value: exportConsoleErrors,
-        writable: true,
-        configurable: true,
-        enumerable: true
-      });
-    } catch {
-      // Si falla, continuar con asignación directa
-    }
-    
-    // SIEMPRE asignar directamente como fallback (más confiable)
-    try {
-      (window as any).startErrorCapture = startErrorCapture;
-      (window as any).stopErrorCapture = stopErrorCapture;
-      (window as any).getConsoleErrors = getConsoleErrors;
-      (window as any).showErrorReport = showErrorReport;
-      (window as any).clearConsoleErrors = clearConsoleErrors;
-      (window as any).exportConsoleErrors = exportConsoleErrors;
-    } catch {
-      // Silenciar errores de asignación (pueden ser de wallet)
+    const functionsToExpose = {
+      startErrorCapture,
+      stopErrorCapture,
+      getConsoleErrors,
+      showErrorReport,
+      clearConsoleErrors,
+      exportConsoleErrors,
+      showEnvInfo // <-- Nueva función
+    };
+
+    for (const [name, func] of Object.entries(functionsToExpose)) {
+      try {
+        // Asignación directa es más robusta contra configuraciones de propiedad existentes
+        (window as any)[name] = func;
+      } catch (e) {
+        // Silenciar errores (pueden ser de extensiones de wallet que congelan el objeto window)
+        console.warn(`No se pudo exponer la función '${name}' en window.`);
+      }
     }
   };
   
   // Exponer inmediatamente
   exposeFunctions();
   
-  // También exponer cuando el DOM esté listo
+  // Re-exponer en momentos clave del ciclo de vida para máxima robustez
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', exposeFunctions);
-  } else {
-    exposeFunctions();
   }
   
-  // Exponer también después de breves delays para asegurar
-  setTimeout(exposeFunctions, 0);
+  window.addEventListener('load', exposeFunctions);
+  
+  // Reintentos para asegurar la disponibilidad
   setTimeout(exposeFunctions, 100);
   setTimeout(exposeFunctions, 500);
-  setTimeout(exposeFunctions, 1000);
+  setTimeout(exposeFunctions, 1500);
   
   // Iniciar captura automáticamente en desarrollo
-  // Verificar de forma segura si estamos en desarrollo
   try {
     const isDev = import.meta.env?.DEV ?? false;
     
     if (isDev) {
       startErrorCapture();
-      console.log('✅ Captura de errores de consola iniciada automáticamente');
-      console.log('💡 Usa showErrorReport() en la consola para ver el reporte completo');
       
       // Verificar y re-exponer después de iniciar captura
       setTimeout(() => {
-        if (!(window as any).showErrorReport) {
-          console.warn('⚠️ showErrorReport no está disponible, reintentando...');
+        if (!(window as any).showErrorReport || !(window as any).showEnvInfo) {
+          console.warn('⚠️ Funciones de debug no disponibles, reintentando exposición...');
           exposeFunctions();
+        } else {
+          console.log('✅ Funciones de debug (showErrorReport, showEnvInfo) listas.');
         }
       }, 200);
-      
-      // Verificar nuevamente después de más tiempo
-      setTimeout(() => {
-        if (!(window as any).showErrorReport) {
-          exposeFunctions();
-        }
-      }, 1000);
     }
   } catch {
-    // Si import.meta no está disponible, no iniciar captura automática
-    // Las funciones seguirán disponibles manualmente
+    // Si import.meta no está disponible, no hacer nada.
   }
 }
