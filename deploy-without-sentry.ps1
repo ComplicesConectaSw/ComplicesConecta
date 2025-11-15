@@ -28,6 +28,14 @@ SENTRY_DISABLE_AUTO_UPLOAD="true"
 
 $envContent | Out-File -FilePath ".env.deploy" -Encoding UTF8
 
+# Limpiar Android build antes de continuar
+Write-Host "🧹 Limpiando build de Android..." -ForegroundColor Cyan
+if (Test-Path "clean-android.ps1") {
+    & .\clean-android.ps1
+} else {
+    Write-Host "⚠️ Script de limpieza no encontrado, continuando..." -ForegroundColor Yellow
+}
+
 # Build del proyecto
 Write-Host "🔨 Construyendo proyecto..." -ForegroundColor Cyan
 npm run build
@@ -37,12 +45,39 @@ if ($LASTEXITCODE -ne 0) {
     exit 1
 }
 
-# Sync con Android
+# Sync con Android (con reintentos)
 Write-Host "📱 Sincronizando con Android..." -ForegroundColor Cyan
-npx cap sync android
+$maxRetries = 3
+$retryCount = 0
+
+do {
+    $retryCount++
+    Write-Host "  🔄 Intento $retryCount de $maxRetries..." -ForegroundColor Yellow
+    
+    npx cap sync android
+    
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "  ✅ Sync Android exitoso!" -ForegroundColor Green
+        break
+    } else {
+        Write-Host "  ❌ Error en sync Android (intento $retryCount)" -ForegroundColor Red
+        
+        if ($retryCount -lt $maxRetries) {
+            Write-Host "  🧹 Limpiando y reintentando..." -ForegroundColor Yellow
+            Start-Sleep -Seconds 2
+            
+            # Limpiar directorios problemáticos
+            Remove-Item "android\capacitor-cordova-android-plugins\build" -Recurse -Force -ErrorAction SilentlyContinue
+            Remove-Item "android\app\build" -Recurse -Force -ErrorAction SilentlyContinue
+        }
+    }
+} while ($retryCount -lt $maxRetries -and $LASTEXITCODE -ne 0)
 
 if ($LASTEXITCODE -ne 0) {
-    Write-Host "❌ Error en sync Android" -ForegroundColor Red
+    Write-Host "❌ Error persistente en sync Android después de $maxRetries intentos" -ForegroundColor Red
+    Write-Host "💡 Intenta ejecutar manualmente:" -ForegroundColor Yellow
+    Write-Host "   .\clean-android.ps1" -ForegroundColor White
+    Write-Host "   npx cap sync android" -ForegroundColor White
     exit 1
 }
 
