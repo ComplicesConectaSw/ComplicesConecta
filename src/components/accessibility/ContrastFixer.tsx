@@ -63,18 +63,17 @@ export function ContrastFixer({ enabled = true, level = 'AA' }: ContrastFixerPro
           const _computedStyle = window.getComputedStyle(htmlInput as Element);
           
           // Aplicar estilo de placeholder con mejor contraste
-          const styleSheet = document.createElement('style');
-          styleSheet.textContent = `
-            input.contrast-fixed::placeholder,
-            textarea.contrast-fixed::placeholder {
-              color: ${level === 'AAA' ? '#cbd5e1' : '#94a3b8'} !important;
-              opacity: 1;
-            }
-          `;
-          
           if (!document.head.querySelector('[data-contrast-placeholder]')) {
+            const styleSheet = document.createElement('style');
+            styleSheet.textContent = `
+              input.contrast-fixed::placeholder,
+              textarea.contrast-fixed::placeholder {
+                color: ${level === 'AAA' ? '#cbd5e1' : '#94a3b8'} !important;
+                opacity: 1;
+              }
+            `;
             styleSheet.setAttribute('data-contrast-placeholder', 'true');
-            document.head.appendChild(styleSheet as Node);
+            document.head.insertBefore(styleSheet, document.head.firstChild);
           }
           
           htmlInput.classList.add('contrast-fixed');
