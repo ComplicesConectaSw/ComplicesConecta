@@ -93,7 +93,26 @@ foreach ($filePattern in $filesToClean) {
 Write-Host "🧹 Limpiando cache de npm..." -ForegroundColor Cyan
 npm cache clean --force 2>$null
 
-Write-Host "✅ Limpieza de Android completada!" -ForegroundColor Green
-Write-Host "💡 Ahora puedes ejecutar:" -ForegroundColor Yellow
-Write-Host "   npm run build" -ForegroundColor White
-Write-Host "   npx cap sync android" -ForegroundColor White
+# Reconstruir después de limpiar
+Write-Host "🔨 Reconstruyendo proyecto después de limpieza..." -ForegroundColor Cyan
+
+# Build del proyecto
+Write-Host "  📦 Ejecutando npm run build..." -ForegroundColor Yellow
+npm run build
+
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "❌ Error en el build después de limpieza" -ForegroundColor Red
+    exit 1
+}
+
+# Sync con Android
+Write-Host "  📱 Ejecutando npx cap sync android..." -ForegroundColor Yellow
+npx cap sync android
+
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "❌ Error en sync Android después de limpieza" -ForegroundColor Red
+    exit 1
+}
+
+Write-Host "✅ Limpieza y reconstrucción de Android completada!" -ForegroundColor Green
+Write-Host "🚀 Proyecto listo para deploy o desarrollo" -ForegroundColor Green

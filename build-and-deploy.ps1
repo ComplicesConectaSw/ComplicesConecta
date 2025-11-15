@@ -83,11 +83,21 @@ if ($missingVars.Count -gt 0) {
     Write-Host "`n⏭️  Continuando con el build..." -ForegroundColor Cyan
 }
 
-# Limpiar build anterior
+# Limpiar build anterior y Android
 Write-Host "`n🧹 Limpiando build anterior..." -ForegroundColor Yellow
 if (Test-Path "dist") {
     Remove-Item -Recurse -Force "dist"
     Write-Host "  ✅ Directorio dist eliminado" -ForegroundColor Green
+}
+
+# Limpiar Android build también
+Write-Host "🧹 Limpiando build de Android..." -ForegroundColor Yellow
+$androidDirs = @("android\.gradle", "android\app\build", "android\build", "android\capacitor-cordova-android-plugins\build")
+foreach ($dir in $androidDirs) {
+    if (Test-Path $dir) {
+        Remove-Item -Recurse -Force $dir -ErrorAction SilentlyContinue
+        Write-Host "  ✅ $dir eliminado" -ForegroundColor Green
+    }
 }
 
 # Instalar dependencias

@@ -101,7 +101,7 @@ export const NFTMintButton: React.FC<NFTMintButtonProps> = ({
         // Crear objeto NFT simulado
         const mockNFT = {
           id: `demo-${Date.now()}`,
-          token_id: result.tokenId || Math.floor(Math.random() * 10000),
+          token_id: result.tokenId || Date.now() % 10000, // Usar timestamp en lugar de Math.random() para seguridad
           metadata_uri: 'ipfs://demo-metadata-hash',
           rarity: 'common',
           is_couple: type === 'couple',

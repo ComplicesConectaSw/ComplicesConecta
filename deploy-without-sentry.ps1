@@ -31,13 +31,41 @@ $envContent | Out-File -FilePath ".env.deploy" -Encoding UTF8
 # Limpiar Android build antes de continuar
 Write-Host "🧹 Limpiando build de Android..." -ForegroundColor Cyan
 if (Test-Path "clean-android.ps1") {
-    & .\clean-android.ps1
+    # Ejecutar solo la limpieza, sin reconstruir (lo haremos nosotros)
+    Write-Host "  🗑️ Ejecutando limpieza de archivos Android..." -ForegroundColor Yellow
+    
+    # Detener procesos que puedan estar usando los archivos
+    Get-Process | Where-Object {$_.ProcessName -like "*gradle*" -or $_.ProcessName -like "*java*" -or $_.ProcessName -like "*adb*"} | Stop-Process -Force -ErrorAction SilentlyContinue
+    Start-Sleep -Seconds 2
+    
+    # Limpiar directorios problemáticos
+    $directoriesToClean = @(
+        "android\.gradle",
+        "android\app\build",
+        "android\app\release", 
+        "android\build",
+        "android\capacitor-cordova-android-plugins\build",
+        "android\.idea",
+        "android\app\.cxx"
+    )
+    
+    foreach ($dir in $directoriesToClean) {
+        if (Test-Path $dir) {
+            Write-Host "    🗑️ Eliminando: $dir" -ForegroundColor Gray
+            Remove-Item $dir -Recurse -Force -ErrorAction SilentlyContinue
+        }
+    }
+    
+    # Limpiar cache
+    npm cache clean --force 2>$null
+    
+    Write-Host "  ✅ Limpieza completada" -ForegroundColor Green
 } else {
     Write-Host "⚠️ Script de limpieza no encontrado, continuando..." -ForegroundColor Yellow
 }
 
-# Build del proyecto
-Write-Host "🔨 Construyendo proyecto..." -ForegroundColor Cyan
+# Build del proyecto (SIEMPRE después de limpiar)
+Write-Host "🔨 Construyendo proyecto completo..." -ForegroundColor Cyan
 npm run build
 
 if ($LASTEXITCODE -ne 0) {
