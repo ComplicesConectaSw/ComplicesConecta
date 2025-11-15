@@ -23,14 +23,22 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
     
-    /* Increased timeouts for CI environment */
-    actionTimeout: 30000, // 30 seconds for actions
-    navigationTimeout: 60000, // 60 seconds for navigation
+    /* Timeouts optimizados para evitar bucles infinitos */
+    actionTimeout: 15000, // 15 segundos para acciones
+    navigationTimeout: 30000, // 30 segundos para navegación
     
     // Mock hCaptcha para tests headless
     extraHTTPHeaders: {
       'Accept-Language': 'es-ES,es;q=0.9,en;q=0.8'
     }
+  },
+  
+  /* Timeout global para cada test - Evita bucles infinitos */
+  timeout: 60000, // 1 minuto máximo por test
+  
+  /* Timeout para expect - Evita esperas infinitas */
+  expect: {
+    timeout: 10000, // 10 segundos para assertions
   },
 
   /* Configure projects for major browsers */
