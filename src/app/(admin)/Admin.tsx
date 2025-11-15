@@ -441,7 +441,7 @@ const Admin = () => {
     const dataStr = JSON.stringify(auditReport, null, 2);
     const dataBlob = new Blob([dataStr], { type: 'application/json' });
     const url = URL.createObjectURL(dataBlob);
-    const link = document.createElement('a');
+    const link = document.createElement('a') as HTMLAnchorElement;
     link.href = url;
     link.download = 'audit-report.json';
     link.click();

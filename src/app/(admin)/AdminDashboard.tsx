@@ -137,7 +137,7 @@ const AdminDashboard = () => {
 
       const totalMatches = matches.length;
       const matchesToday = matches.filter((m) => 
-        new Date(m.created_at) >= today
+        m.created_at && new Date(m.created_at) >= today
       ).length;
 
       // Obtener estadsticas de mensajes
@@ -296,12 +296,12 @@ const AdminDashboard = () => {
 
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
+      const a = document.createElement('a') as HTMLAnchorElement;
       a.href = url;
       a.download = filename;
-      document.body.appendChild(a);
+      document.body.appendChild(a as Node);
       a.click();
-      document.body.removeChild(a);
+      document.body.removeChild(a as Node);
       URL.revokeObjectURL(url);
 
       toast({

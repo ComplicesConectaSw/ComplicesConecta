@@ -26,7 +26,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/useToast';
 import { useAuth } from '@/features/auth/useAuth';
 import { logger } from '@/lib/logger';
-import type { Database } from '@/types/supabase';
+import type { Database } from '@/types/supabase-generated';
 
 type ClubRow = Database['public']['Tables']['clubs']['Row'];
 
@@ -124,7 +124,7 @@ const Clubs = () => {
   const loadClubs = async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
+      const { data, error } = await supabase!
         .from('clubs')
         .select('*')
         .eq('is_active', true)
@@ -133,10 +133,10 @@ const Clubs = () => {
 
       if (error) throw error;
       
-      setClubs(data || []);
+      setClubs((data || []) as Club[]);
       logger.info('Clubs loaded successfully', { count: data?.length });
     } catch (error) {
-      logger.error('Error loading clubs:', error);
+      logger.error('Error loading clubs:', { error: error instanceof Error ? error.message : String(error) });
       toast({
         title: "Error",
         description: "No se pudieron cargar los clubs",

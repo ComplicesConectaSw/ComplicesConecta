@@ -188,12 +188,12 @@ const AdminCareerApplications = () => {
 
       // Crear URL de descarga
       const url = URL.createObjectURL(data);
-      const a = document.createElement('a');
+      const a = document.createElement('a') as HTMLAnchorElement;
       a.href = url;
       a.download = `CV_${applicantName.replace(/\s+/g, '_')}.pdf`;
-      document.body.appendChild(a);
+      document.body.appendChild(a as Node);
       a.click();
-      document.body.removeChild(a);
+      document.body.removeChild(a as Node);
       URL.revokeObjectURL(url);
 
       toast({
