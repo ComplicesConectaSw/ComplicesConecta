@@ -164,9 +164,9 @@ export const InstallAppModal = ({ isOpen, onClose }: InstallAppModalProps) => {
                 <div className="bg-blue-900/30 border border-blue-500/30 rounded-lg p-4">
                   <h4 className="text-sm font-semibold text-white mb-2">Información del Dispositivo:</h4>
                   <div className="space-y-1 text-xs text-blue-100">
-                    <p>📱 Tipo: {platformInfo.isMobile ? 'Móvil' : platformInfo.isTablet ? 'Tablet' : 'Desktop'}</p>
-                    <p>📏 Pantalla: {platformInfo.screenSize}</p>
-                    <p>🔧 Capacitor: {platformInfo.isCapacitor ? 'Sí' : 'No'}</p>
+                    <p>📱 Plataforma: {platformInfo.platform}</p>
+                    <p>🌐 Navegador: {platformInfo.browser}</p>
+                    <p>🔧 Standalone: {platformInfo.isStandalone ? 'Sí' : 'No'}</p>
                   </div>
                 </div>
                 
@@ -229,13 +229,13 @@ export const InstallAppModal = ({ isOpen, onClose }: InstallAppModalProps) => {
                   <Button 
                     onClick={() => {
                       try {
-                        const link = document.createElement('a');
+                        const link = document.createElement('a') as HTMLAnchorElement;
                         link.href = 'https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v.3.3.0/app-release.apk';
                         link.download = 'app-release.apk';
-                        document.body.appendChild(link);
+                        document.body.appendChild(link as Node);
                         link.click();
-                        if (document.body.contains(link)) {
-                          document.body.removeChild(link);
+                        if (document.body.contains(link as Node)) {
+                          document.body.removeChild(link as Node);
                         }
                       } catch (error) {
                         logger.error('Error al descargar APK:', { error: error instanceof Error ? error.message : String(error) });

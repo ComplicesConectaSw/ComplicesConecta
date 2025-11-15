@@ -61,7 +61,7 @@ export const UserFeedbackForm: React.FC<UserFeedbackFormProps> = ({
     { id: 'general', label: '💬 Comentario General', icon: MessageCircle, color: 'text-purple-400' }
   ];
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
     if (!message.trim()) {

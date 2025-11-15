@@ -24,7 +24,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (message.trim() && !disabled) {
       onSendMessage(message.trim());
@@ -33,10 +33,14 @@ export const ChatInput: React.FC<ChatInputProps> = ({
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      handleSubmit(e);
+      if (message.trim() && !disabled) {
+        onSendMessage(message.trim());
+        setMessage('');
+        inputRef.current?.focus();
+      }
     }
   };
 
