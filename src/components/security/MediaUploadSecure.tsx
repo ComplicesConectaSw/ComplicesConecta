@@ -178,7 +178,7 @@ export const MediaUploadSecure: React.FC<MediaUploadSecureProps> = ({
     setIsValidating(false);
   }, [user, uploadedFiles.length, maxFiles, maxFileSize, acceptedTypes, enableEncryption, onUploadSuccess, onUploadError]);
 
-  const handleDrop = useCallback((e: React.DragEvent) => {
+  const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragOver(false);
     
@@ -187,12 +187,12 @@ export const MediaUploadSecure: React.FC<MediaUploadSecureProps> = ({
     }
   }, [handleFileSelect]);
 
-  const handleDragOver = useCallback((e: React.DragEvent) => {
+  const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragOver(true);
   }, []);
 
-  const handleDragLeave = useCallback((e: React.DragEvent) => {
+  const handleDragLeave = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragOver(false);
   }, []);

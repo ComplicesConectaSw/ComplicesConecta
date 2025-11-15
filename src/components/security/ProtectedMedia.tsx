@@ -107,12 +107,12 @@ export const ProtectedMedia: React.FC<ProtectedMediaProps> = ({
       
       if (downloadMedia) {
         // Crear enlace temporal para descarga
-        const link = document.createElement('a');
+        const link = document.createElement('a') as HTMLAnchorElement;
         link.href = downloadMedia.url;
         link.download = mediaPath.split('/').pop() || 'media';
-        document.body.appendChild(link);
+        document.body.appendChild(link as Node);
         link.click();
-        document.body.removeChild(link);
+        document.body.removeChild(link as Node);
         
         await logAccess(user.id, mediaPath, 'download');
       } else {
@@ -127,7 +127,7 @@ export const ProtectedMedia: React.FC<ProtectedMediaProps> = ({
     }
   };
 
-  const handleContextMenu = (e: React.MouseEvent) => {
+  const handleContextMenu = (e: React.MouseEvent<HTMLImageElement | HTMLVideoElement | HTMLAudioElement>) => {
     // Bloquear clic derecho en imágenes
     if (mediaType === 'image') {
       e.preventDefault();
@@ -156,10 +156,10 @@ export const ProtectedMedia: React.FC<ProtectedMediaProps> = ({
     const message = document.createElement('div');
     message.textContent = 'Las capturas de pantalla están restringidas en este contenido';
     
-    warning.appendChild(title);
-    warning.appendChild(message);
-    document.body.appendChild(warning);
-    setTimeout(() => document.body.removeChild(warning), 3000);
+    warning.appendChild(title as Node);
+    warning.appendChild(message as Node);
+    document.body.appendChild(warning as Node);
+    setTimeout(() => document.body.removeChild(warning as Node), 3000);
   };
 
   useEffect(() => {

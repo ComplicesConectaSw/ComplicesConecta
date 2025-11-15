@@ -87,7 +87,7 @@ export const DynamicWatermark: React.FC<DynamicWatermarkProps> = ({
     
     // Crear patrón de watermark repetido
     const createWatermarkPattern = () => {
-      const canvas = document.createElement('canvas');
+      const canvas = document.createElement('canvas') as HTMLCanvasElement;
       const ctx = canvas.getContext('2d');
       if (!ctx) return '';
 
@@ -137,7 +137,7 @@ export const DynamicWatermark: React.FC<DynamicWatermarkProps> = ({
     `;
     
     watermarkOverlay.setAttribute('data-watermark', 'true');
-    container.appendChild(watermarkOverlay);
+    container.appendChild(watermarkOverlay as Node);
 
     return () => {
       const existingWatermark = container.querySelector('[data-watermark="true"]');
@@ -266,7 +266,7 @@ export const useWatermark = (
       }
     `;
     
-    document.head.appendChild(style);
+    document.head.appendChild(style as Node);
     element.classList.add(watermarkId);
 
     return () => {
