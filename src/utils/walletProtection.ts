@@ -1,3 +1,10 @@
+
+declare global {
+  interface Window {
+    hasWalletProtection?: boolean;
+    [key: string]: any;
+  }
+}
 /**
  * Wallet Protection Script (v2.0.0)
  * 
@@ -87,7 +94,7 @@
   try {
     const protectedProps = ['ethereum', 'solana'];
     protectedProps.forEach(prop => {
-      if (window[prop]) {
+      if ((window as any)[prop]) {
         Object.defineProperty(window, prop, {
           writable: false,
           configurable: false,

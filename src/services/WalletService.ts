@@ -229,14 +229,14 @@ export class WalletService {
         .single();
       
       if (error && error.code !== 'PGRST116') { // PGRST116 = no rows returned
-        logger.error('Error obteniendo wallet:', error);
+        logger.error('Error obteniendo wallet:', { error: String(error) });
         throw error;
       }
       
       return data as WalletInfo | null;
       
     } catch (error) {
-      logger.error('Error obteniendo wallet:', error);
+      logger.error('Error obteniendo wallet:', { error: String(error) });
       throw error;
     }
   }
@@ -258,7 +258,7 @@ export class WalletService {
       return wallet;
       
     } catch (error) {
-      logger.error('Error obteniendo o creando wallet:', error);
+      logger.error('Error obteniendo o creando wallet:', { error: String(error) });
       throw error;
     }
   }
@@ -315,12 +315,12 @@ export class WalletService {
       }
       
       // Crear signer
-      const signer = new ethers.Wallet(privateKey, this.provider);
+      const signer = new ethers.Wallet(privateKey, this.provider!);
       
       return signer;
       
     } catch (error) {
-      logger.error('Error creando signer:', error);
+      logger.error('Error creando signer:', { error: String(error) });
       throw error;
     }
   }
@@ -356,7 +356,7 @@ export class WalletService {
       return '0x' + Math.random().toString(16).substr(2, 64);
       
     } catch (error) {
-      logger.error('Error enviando CMPX:', error);
+      logger.error('Error enviando CMPX:', { error: String(error) });
       throw error;
     }
   }
@@ -568,7 +568,7 @@ export class WalletService {
       return '0x' + Math.random().toString(16).substr(2, 64);
       
     } catch (error) {
-      logger.error('Error reclamando tokens de testnet:', error);
+      logger.error('Error reclamando tokens de testnet:', { error: String(error) });
       throw error;
     }
   }
@@ -655,7 +655,7 @@ export class WalletService {
       return '0x' + Math.random().toString(16).substr(2, 64);
       
     } catch (error) {
-      logger.error('Error reclamando tokens diarios:', error);
+      logger.error('Error reclamando tokens diarios:', { error: String(error) });
       throw error;
     }
   }
@@ -819,22 +819,23 @@ export class WalletService {
       const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
       const currentClaimed = await this.getDailyTokensClaimed(userId, today);
       
-      const { error } = await supabase
-        .from('daily_token_claims')
+      // Usar tabla tokens existente en lugar de daily_token_claims
+      const { error } = await (supabase!)
+        .from('tokens')
         .upsert({
           user_id: userId,
-          claim_date: today,
-          amount_claimed: currentClaimed + amount,
-          updated_at: new Date().toISOString()
+          token_type: 'daily_claim',
+          amount: currentClaimed + amount,
+          created_at: new Date().toISOString()
         });
       
       if (error) {
-        logger.error('Error guardando reclamo de tokens diarios:', error);
+        logger.error('Error guardando reclamo de tokens diarios:', { error: String(error) });
         throw error;
       }
       
     } catch (error) {
-      logger.error('Error en saveDailyTokensClaim:', error);
+      logger.error('Error en saveDailyTokensClaim:', { error: String(error) });
       throw error;
     }
   }
