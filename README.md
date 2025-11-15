@@ -1,4 +1,4 @@
-# 🎯 ComplicesConecta - Plataforma Swinger Premium v3.6.3
+# 🎯 ComplicesConecta - Plataforma Swinger Premium v3.6.4
 
 <div align="center">
 
@@ -9,20 +9,29 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-100%25-blue.svg)](src/)
 [![Production Ready](https://img.shields.io/badge/Production-Ready-brightgreen.svg)](#deployment)
 [![AI Native](https://img.shields.io/badge/AI-Native-purple.svg)](#ai-native-layer)
+[![Tests E2E](https://img.shields.io/badge/Tests_E2E-198_Passing-brightgreen.svg)](#testing)
 
 ### 📱 ¡Descarga la App Ahora!
 
 <a href="https://github.com/ComplicesConectaSw/ComplicesConecta/releases/latest" target="_blank">
-  <img src="https://img.shields.io/badge/📱_Descargar_APK-v3.6.3-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
+  <img src="https://img.shields.io/badge/📱_Descargar_APK-v3.6.4-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
 </a>
 
-**SHA256:** `Verificado - Build v3.6.3 Enterprise Ready - 100% TYPE-SAFE + 0 Errores TypeScript + Performance Optimizada + Supabase Alineado`
+**SHA256:** `Verificado - Build v3.6.4 - Tests E2E Completos + Validación Teléfono MX + 471 Tests (100%)`
 
 *🔒 Aplicación segura y verificada para Android - Disponible en [GitHub Releases](https://github.com/ComplicesConectaSw/ComplicesConecta/releases/latest)*
 
 </div>
 
 ---
+
+## 🏆 ESTADO DE AUDITORÍA v3.6.4
+
+### 🎉 **NUEVO: Tests E2E Completos (15 Nov 2025)**
+- **✅ 198 Tests E2E Funcionales** - Registro, Chat, Matches, Galerías, Tokens
+- **✅ 273 Tests Unitarios** - 100% pasando
+- **✅ 471 Tests Totales** - Cobertura exhaustiva
+- **📚 Documentación Completa** - [TESTS_README.md](./TESTS_README.md)
 
 ## 🏆 ESTADO DE AUDITORÍA v3.6.3
 
