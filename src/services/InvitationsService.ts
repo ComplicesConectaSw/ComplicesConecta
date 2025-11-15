@@ -169,7 +169,7 @@ class InvitationsService {
         invitee_email: invitation.to_profile, // Usar to_profile como ID
         invitation_type: undefined, // No existe en la tabla
         type: invitation.type || 'connection',
-        status: invitation.status || 'pending',
+        status: (invitation.status as 'pending' | 'accepted' | 'declined' | 'expired') || 'pending',
         expires_at: undefined, // No existe en la tabla
         metadata: invitation.metadata || {},
         created_at: invitation.created_at || '',
@@ -354,7 +354,7 @@ class InvitationsService {
       logger.info('✅ Gallery permissions loaded successfully from Supabase', { count: data?.length || 0 });
       
       // Mapear a GalleryPermission con campos requeridos
-      return (data || []).map((perm: GalleryPermissionRow) => ({
+      return (data || []).map((perm: any) => ({
         id: perm.id,
         gallery_owner_id: perm.profile_id || perm.granted_by || '',
         granted_by: perm.granted_by || '',
@@ -480,12 +480,12 @@ class InvitationsService {
       logger.info('✅ Invitation templates loaded successfully from Supabase', { count: data?.length || 0 });
       
       // Mapear a InvitationTemplate con campo template_type
-      return (data || []).map((template: InvitationTemplateRow) => ({
+      return (data || []).map((template: any) => ({
         id: template.id,
         template_name: template.template_name || template.name || '',
         template_content: template.template_content || template.content || '',
         template_type: template.invitation_type || template.type || 'default',
-        is_active: template.is_active !== false,
+        is_active: template.is_active !== false && template.is_active !== null,
         created_at: template.created_at || '',
         updated_at: template.updated_at || ''
       }));
@@ -541,7 +541,10 @@ class InvitationsService {
         };
       }
 
-      const invitations: InvitationStatusRow[] = data || [];
+      const invitations: InvitationStatusRow[] = (data || []).map((item: any) => ({
+        ...item,
+        status: item.status || 'pending'
+      }));
       const totalInvitations = invitations.length;
       const pendingInvitations = invitations.filter((i: InvitationStatusRow) => i.status === 'pending').length;
       const acceptedInvitations = invitations.filter((i: InvitationStatusRow) => i.status === 'accepted').length;

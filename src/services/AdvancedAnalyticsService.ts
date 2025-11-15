@@ -1,4 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
+import type { AnalyticsEventInsert, validateAnalyticsEvent } from '@/types/supabase-fixes';
 import { logger } from '@/lib/logger';
 import { advancedCacheService } from '@/services/AdvancedCacheService';
 
@@ -299,19 +300,25 @@ export class AdvancedAnalyticsService {
       // Calcular engagement score
       userMetrics.engagementScore = this.calculateEngagementScore(userMetrics);
 
-      // Registrar evento en analytics_events
+      // Registrar evento en analytics_events con type safety
       if (supabase) {
         try {
-          await supabase
-            .from('analytics_events')
-            .insert({
-              user_id: userId,
-              event_name: `${action}_${page}`,
-              event_type: 'user_behavior',
-              properties: metadata || {},
-              session_id: sessionId,
-              timestamp: now,
-            });
+          const analyticsEvent: AnalyticsEventInsert = {
+            user_id: userId,
+            event_name: `${action}_${page}`,
+            event_type: 'user_behavior',
+            properties: metadata || {},
+            session_id: sessionId,
+          };
+
+          // Validar evento antes de insertar
+          if (validateAnalyticsEvent(analyticsEvent)) {
+            await supabase
+              .from('analytics_events')
+              .insert(analyticsEvent);
+          } else {
+            logger.warn('Invalid analytics event format:', analyticsEvent);
+          }
         } catch (error) {
           logger.debug('Failed to log analytics event:', { error: String(error) });
         }

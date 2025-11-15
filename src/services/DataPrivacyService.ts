@@ -513,13 +513,13 @@ class DataPrivacyService {
       const jsonString = JSON.stringify(exportData, null, 2);
       const blob = new Blob([jsonString], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
+      const link = document.createElement('a') as HTMLAnchorElement;
       
       link.href = url;
       link.download = filename || `complicesconecta-data-export-${exportData.metadata.exportDate.split('T')[0]}.json`;
-      document.body.appendChild(link);
+      document.body.appendChild(link as Node);
       link.click();
-      document.body.removeChild(link);
+      document.body.removeChild(link as Node);
       URL.revokeObjectURL(url);
 
       logger.info('✅ Archivo de exportación descargado');

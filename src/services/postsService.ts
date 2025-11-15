@@ -256,7 +256,7 @@ class PostsService {
           }
 
           // Mapear datos con conteos incluidos (90% reducción en consultas)
-          const posts: Post[] = (data || []).map((story: StoryData) => ({
+          const posts: Post[] = (Array.isArray(data) ? data : []).map((story: any) => ({
             id: story.id,
             user_id: story.user_id,
             profile_id: story.user_id,
@@ -338,7 +338,7 @@ class PostsService {
       }
 
       // Mapear datos de Supabase al formato esperado
-      const story = storyData as StoryData & { content_url?: string };
+      const story = storyData as unknown as StoryData & { content_url?: string };
       const newPost: Post = {
         id: story.id,
         user_id: story.user_id,
