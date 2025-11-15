@@ -500,6 +500,22 @@ const Auth = () => {
                     />
                   </div>
 
+                  {/* Campo de teléfono con validación MX */}
+                  <div className="space-y-2">
+                    <Label htmlFor="phone" className="text-white font-medium">
+                      Teléfono <span className="text-white/60 text-sm">(México)</span>
+                    </Label>
+                    <PhoneInput
+                      value={formData.phone}
+                      onChange={(value) => handleInputChange('phone', value)}
+                      placeholder="55 1234 5678"
+                      required
+                      showValidation={true}
+                      autoFormat={true}
+                      className="w-full"
+                    />
+                  </div>
+
                   <div className="space-y-2">
                     <Label htmlFor="gender" className="text-white font-medium">Gnero</Label>
                     <select
