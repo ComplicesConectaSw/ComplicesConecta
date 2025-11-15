@@ -188,54 +188,53 @@ Write-Host "`n🔍 Verificando branch actual..." -ForegroundColor Yellow
 $currentBranch = git rev-parse --abbrev-ref HEAD
 Write-Host "  📌 Branch actual: $currentBranch" -ForegroundColor Cyan
 
-# Deploy a Vercel (opcional)
-Write-Host "`n🚀 ¿Deseas desplegar a Vercel? (S/N)" -ForegroundColor Cyan
-$deploy = Read-Host
-if ($deploy -eq "S" -or $deploy -eq "s" -or $deploy -eq "Y" -or $deploy -eq "y") {
-    Write-Host "`n📤 Desplegando a Vercel..." -ForegroundColor Yellow
-    
-    # Verificar que estamos en master para producción
-    if ($currentBranch -ne "master") {
-        Write-Host "  ⚠️  ADVERTENCIA: No estás en la rama 'master'" -ForegroundColor Yellow
-        Write-Host "     Branch actual: $currentBranch" -ForegroundColor Yellow
-        Write-Host "     Para producción, Vercel debe desplegarse desde 'master'" -ForegroundColor Yellow
-        Write-Host "`n  ¿Deseas cambiar a 'master' y desplegar? (S/N)" -ForegroundColor Cyan
-        $switchBranch = Read-Host
-        if ($switchBranch -eq "S" -or $switchBranch -eq "s" -or $switchBranch -eq "Y" -or $switchBranch -eq "y") {
-            Write-Host "  🔄 Cambiando a rama 'master'..." -ForegroundColor Yellow
-            git checkout master
-            if ($LASTEXITCODE -ne 0) {
-                Write-Host "  ❌ Error al cambiar a rama 'master'" -ForegroundColor Red
-                exit 1
-            }
-            Write-Host "  ✅ Cambiado a rama 'master'" -ForegroundColor Green
-            $currentBranch = "master"
-        } else {
-            Write-Host "  ⚠️  Deploy cancelado. Cambia a 'master' manualmente y vuelve a intentar." -ForegroundColor Yellow
-            Write-Host "     Comando: git checkout master && vercel --prod" -ForegroundColor Cyan
-            exit 0
-        }
-    }
-    
-    # Verificar que Vercel CLI está instalado
-    $vercelInstalled = Get-Command vercel -ErrorAction SilentlyContinue
-    if (-not $vercelInstalled) {
-        Write-Host "  ⚠️  Vercel CLI no está instalado. Instalando..." -ForegroundColor Yellow
-        npm install -g vercel
-    }
-    
-    # Deploy desde master
-    Write-Host "`n  📤 Desplegando desde rama 'master' a producción..." -ForegroundColor Yellow
-    vercel --prod
+# Deploy a Vercel
+Write-Host "`n🚀 Desplegando en Vercel..." -ForegroundColor Cyan
+
+# Verificar branch actual antes de deploy
+Write-Host "`n🔍 Verificando branch actual..." -ForegroundColor Yellow
+$currentBranch = git rev-parse --abbrev-ref HEAD
+Write-Host "  📌 Branch actual: $currentBranch" -ForegroundColor Cyan
+
+if ($currentBranch -ne "master") {
+    Write-Host "  ⚠️  No estás en la rama 'master'. Intentando cambiar..." -ForegroundColor Yellow
+    git checkout master
     if ($LASTEXITCODE -ne 0) {
-        Write-Host "  ❌ Error al desplegar" -ForegroundColor Red
+        Write-Host "  ❌ Error al cambiar a la rama 'master'. Abortando deploy." -ForegroundColor Red
         exit 1
     }
-    Write-Host "  ✅ Deploy completado desde 'master'" -ForegroundColor Green
-} else {
-    Write-Host "`n💡 Para desplegar manualmente desde 'master', ejecuta:" -ForegroundColor Yellow
-    Write-Host "   git checkout master && vercel --prod" -ForegroundColor Cyan
+    $currentBranch = git rev-parse --abbrev-ref HEAD
+    if ($currentBranch -ne "master") {
+        Write-Host "  ❌ No se pudo cambiar a la rama 'master'. Abortando deploy." -ForegroundColor Red
+        exit 1
+    }
+    Write-Host "  ✅ Cambiado a la rama 'master'." -ForegroundColor Green
 }
+
+# Actualizar la rama master desde el repositorio remoto
+Write-Host "`n🔄 Actualizando la rama 'master' desde origin..." -ForegroundColor Yellow
+git pull origin master
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "  ❌ Error al actualizar la rama 'master' desde origin. Abortando deploy." -ForegroundColor Red
+    exit 1
+}
+Write-Host "  ✅ Rama 'master' actualizada." -ForegroundColor Green
+
+# Verificar que Vercel CLI está instalado
+$vercelInstalled = Get-Command vercel -ErrorAction SilentlyContinue
+if (-not $vercelInstalled) {
+    Write-Host "  ⚠️  Vercel CLI no está instalado. Instalando..." -ForegroundColor Yellow
+    npm install -g vercel
+}
+
+# Deploy desde master
+Write-Host "`n  📤 Desplegando desde rama 'master' a producción..." -ForegroundColor Yellow
+vercel --prod --yes --force
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "  ❌ Error al desplegar" -ForegroundColor Red
+    exit 1
+}
+Write-Host "  ✅ Deploy completado desde 'master'" -ForegroundColor Green
 
 Write-Host "`n✅ Proceso completado exitosamente!" -ForegroundColor Green
 Write-Host "`n📋 Resumen:" -ForegroundColor Cyan
