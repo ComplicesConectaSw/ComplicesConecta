@@ -1,6 +1,6 @@
 import { supabase } from '@/integrations/supabase/client'
 import { logger } from '@/lib/logger'
-import type { Database } from '@/types/supabase'
+import type { Database } from '@/types/supabase-generated'
 
 // Force TypeScript to reload types
 type _ReportsTableCheck = Database['public']['Tables']['reports']

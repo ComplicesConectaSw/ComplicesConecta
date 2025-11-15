@@ -54,12 +54,12 @@ export const HCaptchaWidget: React.FC<HCaptchaWidgetProps> = ({
   useEffect(() => {
     // Cargar el script de hCaptcha si no está cargado
     if (!window.hcaptcha) {
-      const script = document.createElement('script');
+      const script = document.createElement('script') as HTMLScriptElement;
       script.src = 'https://js.hcaptcha.com/1/api.js';
       script.async = true;
       script.defer = true;
       script.onload = () => setIsLoaded(true);
-      document.head.appendChild(script);
+      document.head.appendChild(script as Node);
     } else {
       setIsLoaded(true);
     }

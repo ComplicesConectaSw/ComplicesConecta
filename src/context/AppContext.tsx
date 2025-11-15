@@ -5,7 +5,7 @@
  * cambiar entre el modo de demostración y el de producción de forma transparente.
  */
 import { createContext, useContext } from 'react';
-import type { Database } from '@/types/supabase';
+import type { Database } from '@/types/supabase-generated';
 
 // CRÍTICO: Asegurar createContext disponible antes de usar
 const safeCreateContext = <T,>(defaultValue: T | null): React.Context<T | null> => {

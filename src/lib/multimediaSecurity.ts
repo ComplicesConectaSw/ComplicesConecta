@@ -357,8 +357,8 @@ export class MultimediaSecurityService {
   private static getMediaDuration(file: File): Promise<number> {
     return new Promise((resolve, reject) => {
       const media = file.type.startsWith('video/') ? 
-        document.createElement('video') : 
-        document.createElement('audio');
+        document.createElement('video') as HTMLVideoElement : 
+        document.createElement('audio') as HTMLAudioElement;
       
       const url = URL.createObjectURL(file);
 
@@ -385,7 +385,7 @@ export class MultimediaSecurityService {
     }
 
     try {
-      const canvas = document.createElement('canvas');
+      const canvas = document.createElement('canvas') as HTMLCanvasElement;
       const ctx = canvas.getContext('2d');
       const img = new Image();
       
