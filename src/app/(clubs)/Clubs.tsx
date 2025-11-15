@@ -39,6 +39,7 @@ interface Club extends Omit<ClubRow, 'cover_image_url' | 'is_featured' | 'rating
   cover_image_url: string | null;
   verified_at: string | null;
   is_featured: boolean;
+  is_verified: boolean;
   rating_average: number;
   rating_count: number;
   review_count: number;
@@ -214,7 +215,7 @@ const Clubs = () => {
       
       logger.info('Club check-in successful', { clubId, userId: user?.id });
     } catch (error) {
-      logger.error('Check-in error:', error);
+      logger.error('Check-in error:', { error: error instanceof Error ? error.message : String(error) });
       toast({
         title: "Error en check-in",
         description: "No se pudo completar el check-in",
@@ -477,7 +478,7 @@ const Clubs = () => {
                             Ver Club
                           </Button>
                           
-                          {isAuthenticated && (
+                          {isAuthenticated() && (
                             <Button
                               onClick={() => handleCheckIn(club.id)}
                               disabled={checkingIn === club.id}
