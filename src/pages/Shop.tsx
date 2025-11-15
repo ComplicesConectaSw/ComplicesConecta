@@ -61,6 +61,10 @@ const Shop = () => {
 
   const loadPackages = async () => {
     try {
+      if (!supabase) {
+        throw new Error('Supabase no está disponible');
+      }
+      
       const { data, error } = await supabase
         .from('cmpx_shop_packages')
         .select('*')
@@ -68,9 +72,18 @@ const Shop = () => {
         .order('display_order', { ascending: true });
 
       if (error) throw error;
-      setPackages(data || []);
+      const mappedPackages = (data || []).map(pkg => ({
+        ...pkg,
+        bonus_cmpx: pkg.bonus_cmpx || 0,
+        description: pkg.description || '',
+        display_order: pkg.display_order || 0,
+        is_active: pkg.is_active !== false,
+        is_popular: pkg.is_popular || false,
+        price_usd: pkg.price_usd || 0
+      }));
+      setPackages(mappedPackages);
     } catch (error) {
-      logger.error('Error cargando paquetes:', error);
+      logger.error('Error cargando paquetes:', { error: error instanceof Error ? error.message : String(error) });
       toast({
         title: 'Error',
         description: 'No se pudieron cargar los paquetes',
@@ -82,7 +95,7 @@ const Shop = () => {
   };
 
   const loadUserPurchases = async () => {
-    if (!user) return;
+    if (!user || !supabase) return;
     
     try {
       const { data, error } = await supabase
@@ -95,7 +108,7 @@ const Shop = () => {
       if (error) throw error;
       setUserPurchases(data || []);
     } catch (error) {
-      logger.error('Error cargando compras:', error);
+      logger.error('Error cargando compras:', { error: error instanceof Error ? error.message : String(error) });
     }
   };
 
@@ -107,6 +120,15 @@ const Shop = () => {
         variant: 'destructive',
       });
       navigate('/auth');
+      return;
+    }
+
+    if (!supabase) {
+      toast({
+        title: 'Error',
+        description: 'Servicio no disponible',
+        variant: 'destructive',
+      });
       return;
     }
 
