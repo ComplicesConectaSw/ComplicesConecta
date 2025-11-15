@@ -9,7 +9,7 @@ import { useAuth } from '@/features/auth/useAuth';
 import { useToast } from '@/hooks/useToast';
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
-import type { Database } from '@/types/supabase';
+import type { Database } from '@/types/supabase-generated';
 
 type InvestmentTierRow = Database['public']['Tables']['investment_tiers']['Row'];
 type InvestmentRow = Database['public']['Tables']['investments']['Row'];
@@ -82,7 +82,7 @@ const Invest = () => {
         benefits: Array.isArray(tier.benefits) ? (tier.benefits as string[]) : []
       }));
 
-      setTiers(formattedTiers);
+      setTiers(formattedTiers as InvestmentTier[]);
     } catch (error) {
       logger.error('Error cargando tiers:', { error });
       toast({
