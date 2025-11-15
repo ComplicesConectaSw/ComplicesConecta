@@ -862,7 +862,7 @@ class ContentModerationService {
             isAppropriate: result.isAppropriate,
             confidence: result.confidence,
             flags: result.flags,
-            userId
+            userId: userId || null
           } as unknown as Json
         });
 
