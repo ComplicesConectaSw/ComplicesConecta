@@ -1,5 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
-import type { AnalyticsEventInsert, validateAnalyticsEvent } from '@/types/supabase-fixes';
+import type { AnalyticsEventInsert } from '@/types/supabase-fixes';
+import { validateAnalyticsEvent } from '@/types/supabase-fixes';
 import { logger } from '@/lib/logger';
 import { advancedCacheService } from '@/services/AdvancedCacheService';
 
@@ -314,8 +315,13 @@ export class AdvancedAnalyticsService {
           // Validar evento antes de insertar
           if (validateAnalyticsEvent(analyticsEvent)) {
             await supabase
-              .from('analytics_events')
-              .insert(analyticsEvent);
+              .from('app_logs')
+              .insert({
+                message: analyticsEvent.event_name,
+                level: 'info',
+                metadata: analyticsEvent.properties as any,
+                user_id: analyticsEvent.user_id
+              });
           } else {
             logger.warn('Invalid analytics event format:', analyticsEvent);
           }

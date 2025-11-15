@@ -135,7 +135,7 @@ export function resizeImage(
   quality: number = 0.8
 ): Promise<File> {
   return new Promise((resolve, reject) => {
-    const canvas = document.createElement('canvas');
+    const canvas = document.createElement('canvas') as HTMLCanvasElement;
     const ctx = canvas.getContext('2d');
     const img = new Image();
 
@@ -162,8 +162,7 @@ export function resizeImage(
       ctx?.drawImage(img, 0, 0, width, height);
 
       // Convertir a blob y luego a File
-      canvas.toBlob(
-        (blob) => {
+      canvas.toBlob((blob: Blob | null) => {
           if (blob) {
             const resizedFile = new File([blob], file.name, {
               type: file.type,

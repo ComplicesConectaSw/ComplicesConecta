@@ -77,12 +77,12 @@ export const useScreenshotProtection = (options: ScreenshotProtectionOptions = {
       </div>
     `;
     
-    document.body.appendChild(warningDiv);
+    document.body.appendChild(warningDiv as Node);
     
     // Auto-remove después de 5 segundos
     setTimeout(() => {
       if (warningDiv.parentNode) {
-        warningDiv.parentNode.removeChild(warningDiv);
+        warningDiv.parentNode.removeChild(warningDiv as Node);
       }
     }, 5000);
   }, [showWarnings]);
@@ -238,11 +238,11 @@ export const useScreenshotProtection = (options: ScreenshotProtectionOptions = {
       }
     `;
     
-    document.head.appendChild(style);
+    document.head.appendChild(style as Node);
     
     return () => {
       if (style.parentNode) {
-        style.parentNode.removeChild(style);
+        style.parentNode.removeChild(style as Node);
       }
     };
   }, [enabled]);
