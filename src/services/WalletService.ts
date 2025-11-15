@@ -288,7 +288,7 @@ export class WalletService {
       };
       
     } catch (error) {
-      logger.error('Error obteniendo balances:', error);
+      logger.error('Error obteniendo balances:', { error: String(error) });
       throw error;
     }
   }
@@ -395,7 +395,7 @@ export class WalletService {
       return Math.floor(Math.random() * 10000);
       
     } catch (error) {
-      logger.error('Error minteando NFT de pareja:', error);
+      logger.error('Error minteando NFT de pareja:', { error: String(error) });
       throw error;
     }
   }
@@ -434,7 +434,7 @@ export class WalletService {
       return '0x' + Math.random().toString(16).substr(2, 64);
       
     } catch (error) {
-      logger.error('Error stakeando NFT:', error);
+      logger.error('Error stakeando NFT:', { error: String(error) });
       throw error;
     }
   }
@@ -449,7 +449,7 @@ export class WalletService {
       const encrypted = CryptoJS.AES.encrypt(privateKey, this.encryptionKey).toString();
       return encrypted;
     } catch (error) {
-      logger.error('Error encriptando clave privada:', error);
+      logger.error('Error encriptando clave privada:', { error: String(error) });
       throw error;
     }
   }
@@ -464,7 +464,7 @@ export class WalletService {
       const decrypted = CryptoJS.AES.decrypt(encryptedPrivateKey, this.encryptionKey);
       return decrypted.toString(CryptoJS.enc.Utf8);
     } catch (error) {
-      logger.error('Error desencriptando clave privada:', error);
+      logger.error('Error desencriptando clave privada:', { error: String(error) });
       throw error;
     }
   }
@@ -604,7 +604,7 @@ export class WalletService {
       };
       
     } catch (error) {
-      logger.error('Error obteniendo info de tokens de testnet:', error);
+      logger.error('Error obteniendo info de tokens de testnet:', { error: String(error) });
       throw error;
     }
   }
@@ -721,7 +721,7 @@ export class WalletService {
       }
       
     } catch (error) {
-      logger.error('Error ejecutando acción demo:', error);
+      logger.error('Error ejecutando acción demo:', { error: String(error) });
       throw error;
     }
   }
@@ -766,14 +766,14 @@ export class WalletService {
         .single();
       
       if (error && error.code !== 'PGRST116') { // PGRST116 = no rows returned
-        logger.error('Error obteniendo tokens reclamados:', error);
+        logger.error('Error obteniendo tokens reclamados:', { error: String(error) });
         throw error;
       }
       
       return data?.amount_claimed || 0;
       
     } catch (error) {
-      logger.error('Error en getTestnetTokensClaimed:', error);
+      logger.error('Error en getTestnetTokensClaimed:', { error: String(error) });
       return 0;
     }
   }
@@ -800,7 +800,7 @@ export class WalletService {
       };
       
     } catch (error) {
-      logger.error('Error obteniendo info de tokens diarios:', error);
+      logger.error('Error obteniendo info de tokens diarios:', { error: String(error) });
       return {
         claimed: 0,
         remaining: WalletService.DAILY_CLAIM_LIMIT,
@@ -856,14 +856,14 @@ export class WalletService {
         .single();
       
       if (error && error.code !== 'PGRST116') { // PGRST116 = no rows returned
-        logger.error('Error obteniendo tokens diarios reclamados:', error);
+        logger.error('Error obteniendo tokens diarios reclamados:', { error: String(error) });
         throw error;
       }
       
       return data?.amount_claimed || 0;
       
     } catch (error) {
-      logger.error('Error en getDailyTokensClaimed:', error);
+      logger.error('Error en getDailyTokensClaimed:', { error: String(error) });
       return 0;
     }
   }
