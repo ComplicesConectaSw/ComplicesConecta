@@ -92,15 +92,15 @@ export const detectAvailableWallets = async (): Promise<WalletGlobals> => {
     // Fallback a detección simple si falla la importación
     try {
       // Detección condicional segura para SSR
-      const hasEthereum = typeof window !== 'undefined' && typeof (window as any).ethereum !== 'undefined';
-      const hasSolana = typeof window !== 'undefined' && typeof (window as any).solana !== 'undefined';
-      const hasTron = typeof window !== 'undefined' && typeof (window as any).tronWeb !== 'undefined';
-      const hasBybit = typeof window !== 'undefined' && typeof (window as any).bybitWallet !== 'undefined';
+      const hasEthereum = typeof window !== 'undefined' && typeof (window as Window & { [key: string]: any }).ethereum !== 'undefined';
+      const hasSolana = typeof window !== 'undefined' && typeof (window as Window & { [key: string]: any }).solana !== 'undefined';
+      const hasTron = typeof window !== 'undefined' && typeof (window as Window & { [key: string]: any }).tronWeb !== 'undefined';
+      const hasBybit = typeof window !== 'undefined' && typeof (window as Window & { [key: string]: any }).bybitWallet !== 'undefined';
       
-      if (hasEthereum) detected.ethereum = (window as any).ethereum;
-      if (hasSolana) detected.solana = (window as any).solana;
-      if (hasTron) detected.tronWeb = (window as any).tronWeb;
-      if (hasBybit) detected.bybitWallet = (window as any).bybitWallet;
+      if (hasEthereum) detected.ethereum = (window as Window & { [key: string]: any }).ethereum;
+      if (hasSolana) detected.solana = (window as Window & { [key: string]: any }).solana;
+      if (hasTron) detected.tronWeb = (window as Window & { [key: string]: any }).tronWeb;
+      if (hasBybit) detected.bybitWallet = (window as Window & { [key: string]: any }).bybitWallet;
       
     } catch (fallbackError) {
       logger.warn('Fallback detection failed', { error: fallbackError });

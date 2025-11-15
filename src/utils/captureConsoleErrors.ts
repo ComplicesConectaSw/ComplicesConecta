@@ -199,7 +199,7 @@ class ConsoleErrorCapture {
 
     // Capturar errores de red usando fetch
     const originalFetch = window.fetch;
-    (window as any).__originalFetch = originalFetch;
+    (window as Window & { [key: string]: any }).__originalFetch = originalFetch;
     window.fetch = async (...args) => {
       try {
         const response = await originalFetch(...args);
@@ -283,8 +283,8 @@ class ConsoleErrorCapture {
     }
 
     // Restaurar fetch original
-    if ((window as any).__originalFetch) {
-      window.fetch = (window as any).__originalFetch;
+    if ((window as Window & { [key: string]: any }).__originalFetch) {
+      window.fetch = (window as Window & { [key: string]: any }).__originalFetch;
     }
 
     console.log('🛑 Captura de errores de consola detenida');
@@ -568,8 +568,8 @@ class ConsoleErrorCapture {
 
     // Verificar fuentes cargadas
     if ('fonts' in document) {
-      (document as any).fonts.ready.then(() => {
-        const loadedFonts = (document as any).fonts.values();
+      (document as Document & { [key: string]: any }).fonts.ready.then(() => {
+        const loadedFonts = (document as Document & { [key: string]: any }).fonts.values();
         console.log(`   Fuentes cargadas: ${Array.from(loadedFonts).length}`);
       }).catch(() => {
         console.warn('   ⚠️ No se pudo verificar fuentes');
@@ -697,8 +697,8 @@ export function showEnvInfo(): void {
 
   // Verificar fuentes cargadas
   if ('fonts' in document) {
-    (document as any).fonts.ready.then(() => {
-      const loadedFonts = Array.from((document as any).fonts.values());
+    (document as Document & { [key: string]: any }).fonts.ready.then(() => {
+      const loadedFonts = Array.from((document as Document & { [key: string]: any }).fonts.values());
       console.log(`   ✅ Fuentes cargadas: ${loadedFonts.length}`);
       if(loadedFonts.length > 0) {
         const fontFamilies = loadedFonts.map((font: any) => font.family);
@@ -732,8 +732,8 @@ if (typeof window !== 'undefined') {
     for (const [name, func] of Object.entries(functionsToExpose)) {
       try {
         // Asignación directa es más robusta contra configuraciones de propiedad existentes
-        (window as any)[name] = func;
-      } catch (_e) {
+        (window as Window & { [key: string]: any })[name] = func;
+      } catch {
         // Silenciar errores (pueden ser de extensiones de wallet que congelan el objeto window)
         console.warn(`No se pudo exponer la función '${name}' en window.`);
       }
@@ -764,7 +764,7 @@ if (typeof window !== 'undefined') {
       
       // Verificar y re-exponer después de iniciar captura
       setTimeout(() => {
-        if (!(window as any).showErrorReport || !(window as any).showEnvInfo) {
+        if (!(window as Window & { [key: string]: any }).showErrorReport || !(window as Window & { [key: string]: any }).showEnvInfo) {
           console.warn('⚠️ Funciones de debug no disponibles, reintentando exposición...');
           exposeFunctions();
         } else {

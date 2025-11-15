@@ -347,8 +347,8 @@ export const useAuth = () => {
         // Manejar autenticación demo
         const demoAuth = handleDemoAuth(email, accountType);
         if (demoAuth) {
-          setUser(demoAuth.user as any);
-          setSession(demoAuth.session as any);
+          setUser(demoAuth.user as { id: string; email: string; [key: string]: unknown });
+          setSession(demoAuth.session as { user: any; access_token: string; [key: string]: unknown });
           await loadProfile(demoAuth.user.id);
           logger.info('✅ Sesión demo iniciada', { email });
           return { user: demoAuth.user, session: demoAuth.session };
@@ -479,10 +479,10 @@ export const useAuth = () => {
     const isDemoActive = sessionFlags.demo_authenticated && demoUser;
     
     // Solo log una vez por sesión para evitar spam
-    if (isDemoActive && !(window as any).__demoLoggedOnce) {
+    if (isDemoActive && !(window as Window & { [key: string]: any }).__demoLoggedOnce) {
       const parsedDemoUser = typeof demoUser === 'string' ? JSON.parse(demoUser) : demoUser;
       logger.info('🎭 Demo mode active', { email: parsedDemoUser?.email, role: parsedDemoUser?.role });
-      (window as any).__demoLoggedOnce = true;
+      (window as Window & { [key: string]: any }).__demoLoggedOnce = true;
     }
     return isDemoActive;
   };
