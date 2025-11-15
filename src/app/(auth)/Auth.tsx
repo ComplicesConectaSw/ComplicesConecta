@@ -364,7 +364,7 @@ const Auth = () => {
                       onChange={(e) => handleInputChange("email", e.target.value)}
                       required
                       data-testid="email-input"
-                      className="bg-white/10 border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="bg-white/20 border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400"
                     />
                   </div>
                   <div className="space-y-2">
@@ -377,7 +377,7 @@ const Auth = () => {
                       required
                       minLength={6}
                       data-testid="password-input"
-                      className="bg-white/10 border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="bg-white/20 border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400"
                     />
                   </div>
                   <Button 
@@ -415,17 +415,17 @@ const Auth = () => {
                         type="button"
                         variant={formData.accountType === 'single' ? 'default' : 'outline'}
                         onClick={() => handleInputChange('accountType', 'single')}
-                        className="text-sm"
+                        className={`text-sm font-semibold ${formData.accountType === 'single' ? 'bg-purple-600 text-white shadow-lg' : 'bg-white/20 text-white border-white/30 hover:bg-white/30'}`}
                       >
-                        ?? Soltero/a
+                        👤 Soltero/a
                       </Button>
                       <Button
                         type="button"
                         variant={formData.accountType === 'couple' ? 'default' : 'outline'}
                         onClick={() => handleInputChange('accountType', 'couple')}
-                        className="text-sm"
+                        className={`text-sm font-semibold ${formData.accountType === 'couple' ? 'bg-purple-600 text-white shadow-lg' : 'bg-white/20 text-white border-white/30 hover:bg-white/30'}`}
                       >
-                        ?? Pareja
+                        💑 Pareja
                       </Button>
                     </div>
                   </div>
@@ -439,7 +439,7 @@ const Auth = () => {
                       onChange={(e) => handleInputChange('firstName', e.target.value)}
                       required
                       placeholder="Tu nombre"
-                      className="bg-white/10 border-white/20 text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="bg-white/20 border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400"
                     />
                   </div>
 
@@ -451,7 +451,7 @@ const Auth = () => {
                       onChange={(e) => handleInputChange('lastName', e.target.value)}
                       required
                       placeholder="Tu apellido"
-                      className="bg-white/10 border-white/20 text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="bg-white/20 border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400"
                     />
                   </div>
 
@@ -463,7 +463,7 @@ const Auth = () => {
                       onChange={(e) => handleInputChange('nickname', e.target.value)}
                       required
                       placeholder="Nombre pblico"
-                      className="bg-white/10 border-white/20 text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="bg-white/20 border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400"
                     />
                   </div>
 
@@ -477,7 +477,7 @@ const Auth = () => {
                       value={formData.age}
                       onChange={(e) => handleInputChange('age', e.target.value)}
                       required
-                      className="bg-white/10 border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="bg-white/20 border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400"
                     />
                   </div>
 
@@ -488,7 +488,7 @@ const Auth = () => {
                       value={formData.gender}
                       onChange={(e) => handleInputChange('gender', e.target.value)}
                       required
-                      className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500 [&>option]:bg-purple-900 [&>option]:text-white"
+                      className="w-full px-3 py-2 bg-white/20 border border-white/30 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400 [&>option]:bg-purple-900 [&>option]:text-white"
                       style={{
                         colorScheme: 'dark'
                       }}
@@ -508,7 +508,7 @@ const Auth = () => {
                       value={formData.interestedIn}
                       onChange={(e) => handleInputChange('interestedIn', e.target.value)}
                       required
-                      className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500 [&>option]:bg-purple-900 [&>option]:text-white"
+                      className="w-full px-3 py-2 bg-white/20 border border-white/30 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400 [&>option]:bg-purple-900 [&>option]:text-white"
                       style={{
                         colorScheme: 'dark'
                       }}
@@ -535,7 +535,7 @@ const Auth = () => {
                             onChange={(e) => handleInputChange('partnerFirstName', e.target.value)}
                             required
                             placeholder="Nombre de tu pareja"
-                            className="bg-white/10 border-white/20 text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            className="bg-white/20 border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400"
                           />
                         </div>
 
@@ -547,7 +547,7 @@ const Auth = () => {
                             onChange={(e) => handleInputChange('partnerLastName', e.target.value)}
                             required
                             placeholder="Apellido de tu pareja"
-                            className="bg-white/10 border-white/20 text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            className="bg-white/20 border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400"
                           />
                         </div>
 
@@ -559,7 +559,7 @@ const Auth = () => {
                             onChange={(e) => handleInputChange('partnerNickname', e.target.value)}
                             required
                             placeholder="Nombre pblico de tu pareja"
-                            className="bg-white/10 border-white/20 text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            className="bg-white/20 border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400"
                           />
                         </div>
 
@@ -573,7 +573,7 @@ const Auth = () => {
                             value={formData.partnerAge}
                             onChange={(e) => handleInputChange('partnerAge', e.target.value)}
                             required
-                            className="bg-white/10 border-white/20 text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            className="bg-white/20 border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400"
                           />
                         </div>
 
@@ -584,7 +584,7 @@ const Auth = () => {
                             value={formData.partnerGender}
                             onChange={(e) => handleInputChange('partnerGender', e.target.value)}
                             required
-                            className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500 [&>option]:bg-purple-900 [&>option]:text-white"
+                            className="w-full px-3 py-2 bg-white/20 border border-white/30 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400 [&>option]:bg-purple-900 [&>option]:text-white"
                             style={{
                               colorScheme: 'dark'
                             }}
@@ -604,7 +604,7 @@ const Auth = () => {
                             value={formData.partnerInterestedIn}
                             onChange={(e) => handleInputChange('partnerInterestedIn', e.target.value)}
                             required
-                            className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500 [&>option]:bg-purple-900 [&>option]:text-white"
+                            className="w-full px-3 py-2 bg-white/20 border border-white/30 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400 [&>option]:bg-purple-900 [&>option]:text-white"
                             style={{
                               colorScheme: 'dark'
                             }}
@@ -630,7 +630,7 @@ const Auth = () => {
                       onChange={(e) => handleInputChange('email', e.target.value)}
                       required
                       placeholder="tu@email.com"
-                      className="bg-white/10 border-white/20 text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="bg-white/20 border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400"
                     />
                   </div>
 
@@ -644,7 +644,7 @@ const Auth = () => {
                       required
                       minLength={6}
                       placeholder="Mnimo 6 caracteres"
-                      className="bg-white/10 border-white/20 text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="bg-white/20 border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400"
                     />
                   </div>
 
@@ -657,7 +657,7 @@ const Auth = () => {
                       required
                       rows={3}
                       placeholder="Cuntanos sobre ti..."
-                      className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
+                      className="w-full px-3 py-2 bg-white/20 border border-white/30 rounded-md text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400 resize-none"
                     />
                   </div>
 
@@ -669,7 +669,7 @@ const Auth = () => {
                       onChange={(e) => handleInputChange('location', e.target.value)}
                       required
                       placeholder="Ciudad, Estado"
-                      className="bg-white/10 border-white/20 text-white placeholder-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="bg-white/20 border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400"
                     />
                   </div>
 
