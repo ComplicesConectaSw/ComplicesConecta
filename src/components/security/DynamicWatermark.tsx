@@ -272,7 +272,7 @@ export const useWatermark = (
     return () => {
       element.classList.remove(watermarkId);
       if (style.parentNode) {
-        style.parentNode.removeChild(style);
+        style.parentNode.removeChild(style as Node);
       }
     };
   }, [elementRef, user?.id, options.intensity]);

@@ -83,7 +83,7 @@ export const useInterests = () => {
         .eq('user_id', user.id);
 
       if (error) throw error;
-      setUserInterests(data || []);
+      setUserInterests((data || []) as UserInterest[]);
     } catch (error) {
       logger.error('❌ Error updating user interests:', { error: error instanceof Error ? error.message : String(error) });
       setError('Error cargando intereses del usuario');

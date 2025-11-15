@@ -394,7 +394,7 @@ export const useTokens = () => {
         notification.style.opacity = '0';
         setTimeout(() => {
           if (notification.parentNode) {
-            notification.parentNode.removeChild(notification);
+            notification.parentNode.removeChild(notification as Node);
           }
         }, 300);
       }, 3000);
