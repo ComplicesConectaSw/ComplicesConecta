@@ -502,7 +502,7 @@ Información del perfil:
               {profile.name || 'Mi Perfil'}
             </h1>
             <p className="text-purple-300 text-sm sm:text-base font-medium mb-1">
-              {profile.username || '@usuario'}
+              {(profile as any).username || '@usuario'}
             </p>
             {checkAuth() &&
               <p className="text-white/70 text-xs sm:text-sm">
