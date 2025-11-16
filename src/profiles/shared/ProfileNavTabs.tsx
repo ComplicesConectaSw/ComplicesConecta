@@ -76,7 +76,7 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
                         <span className="text-white/60 text-sm">hace 2h</span>
                       </div>
                       <p className="text-white/90 text-sm">
-                        ¡Qué día tan increíble! Explorando nuevos lugares juntos ðŸ’•
+                        ¡Qué día tan increíble! Explorando nuevos lugares juntos 💕
                       </p>
                     </div>
                     {isOwnProfile && (

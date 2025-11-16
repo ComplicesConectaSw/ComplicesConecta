@@ -1006,7 +1006,7 @@ const ProfileSingle: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-2">
-                {['Lifestyle Swinger', 'Encuentros Discretos', 'Viajes', 'Msica', 'Gastronoma', 'Arte', 'Fotografa', 'Eventos Sofisticados'].map((interest) => (
+                {['Lifestyle Swinger', 'Encuentros Discretos', 'Viajes', 'Música', 'Gastronomía', 'Arte', 'Fotografía', 'Eventos Sofisticados'].map((interest) => (
                   <Badge 
                     key={interest} 
                     className="bg-gradient-to-r from-purple-500/20 to-blue-600/20 text-white border-purple-400/30 hover:bg-purple-500/30 transition-colors"

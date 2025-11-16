@@ -94,9 +94,9 @@ const Discover = () => {
 
   // Intereses generales (para todos los usuarios)
   const generalInterests = [
-    'Lifestyle', 'Aventura', 'Diversin', 'Respeto', 'Discrecin', 
-    'Experiencia', 'Naturaleza', 'Viajes', 'Msica', 'Arte', 
-    'Deportes', 'Cine', 'Literatura', 'Tecnologa', 'Gastronoma'
+    'Lifestyle', 'Aventura', 'Diversión', 'Respeto', 'Discreción', 
+    'Experiencia', 'Naturaleza', 'Viajes', 'Música', 'Arte', 
+    'Deportes', 'Cine', 'Literatura', 'Tecnología', 'Gastronomía'
   ];
 
   // Intereses explcitos (solo para perfiles demo y produccin)
