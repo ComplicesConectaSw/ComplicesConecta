@@ -154,11 +154,11 @@ const Chat = () => {
         setRealMessages(prev => [...prev, result.message!]);
         setNewMessage('');
       } else {
-        alert(result.error || 'Error al enviar mensaje');
+        toast.error(result.error || 'Error al enviar mensaje');
       }
     } catch (_error) {
       logger.error('Error enviando mensaje:', { error: String(_error) });
-      alert('Error al enviar mensaje');
+      toast.error('Error al enviar mensaje');
     }
   };
   
@@ -217,7 +217,7 @@ const Chat = () => {
       id: 1,
       name: "Anabella & Julio",
       image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=100&h=100&fit=crop&crop=faces",
-      lastMessage: "Estn libres este fin de semana? ??",
+      lastMessage: "Están libres este fin de semana? 🔥💕",
       timestamp: "5 min",
       isOnline: true,
       unreadCount: 2,
@@ -228,7 +228,7 @@ const Chat = () => {
       id: 2,
       name: "Sofa",
       image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face",
-      lastMessage: "Me encant conocerlos en la fiesta ??",
+      lastMessage: "Me encantó conocerlos en la fiesta 🎉✨",
       timestamp: "1 h",
       isOnline: true,
       unreadCount: 0,
@@ -239,7 +239,7 @@ const Chat = () => {
       id: 3,
       name: "Carmen & Roberto",
       image: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=100&h=100&fit=crop&crop=faces",
-      lastMessage: "Vienen al evento VIP del sbado?",
+      lastMessage: "Vienen al evento VIP del sábado? 🌟",
       timestamp: "3 h",
       isOnline: false,
       unreadCount: 0,
@@ -250,7 +250,7 @@ const Chat = () => {
       id: 4,
       name: "Ral",
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
-      lastMessage: "Qu tal si nos vemos para tomar algo?",
+      lastMessage: "Qué tal si nos vemos para tomar algo? 🍷",
       timestamp: "2 h",
       isOnline: false,
       unreadCount: 1,
@@ -263,7 +263,7 @@ const Chat = () => {
   const publicChats: ChatUser[] = [
     {
       id: 101,
-      name: "?? Sala General Lifestyle",
+      name: "🌍 Sala General Lifestyle",
       image: "https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=100&h=100&fit=crop&crop=face",
       lastMessage: "Bienvenidos a la comunidad swinger!",
       timestamp: "10 min",
@@ -274,9 +274,9 @@ const Chat = () => {
     },
     {
       id: 102,
-      name: "?? Parejas CDMX",
+      name: "💕 Parejas CDMX",
       image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=100&h=100&fit=crop&crop=faces",
-      lastMessage: "Evento swinger este sbado en Polanco",
+      lastMessage: "Evento swinger este sábado en Polanco 🎊",
       timestamp: "30 min",
       isOnline: true,
       unreadCount: 12,
@@ -285,7 +285,7 @@ const Chat = () => {
     },
     {
       id: 103,
-      name: "?? Singles Lifestyle",
+      name: "💫 Singles Lifestyle",
       image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face",
       lastMessage: "Alguien para intercambio hoy?",
       timestamp: "1 h",
@@ -296,7 +296,7 @@ const Chat = () => {
     },
     {
       id: 104,
-      name: "?? Eventos Privados",
+      name: "🔒 Eventos Privados",
       image: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=100&h=100&fit=crop&crop=faces",
       lastMessage: "Club exclusivo abre sus puertas",
       timestamp: "2 h",
@@ -378,14 +378,14 @@ const Chat = () => {
     
     // Lgica para modo demo
     if (selectedChat.isPrivate && !hasChatAccess[selectedChat.id]) {
-      alert('No tienes acceso a este chat privado. Necesitas una invitacin aceptada.');
+      toast.error('No tienes acceso a este chat privado. Necesitas una invitación aceptada.');
       return;
     }
     
     // Verificar permisos de mensajera segn configuracin de privacidad
     const canSendMessage = checkMessagePermissions(selectedChat);
     if (!canSendMessage) {
-      alert('No puedes enviar mensajes a este usuario segn su configuracin de privacidad.');
+      toast.error('No puedes enviar mensajes a este usuario según su configuración de privacidad.');
       return;
     }
     
@@ -491,7 +491,7 @@ const Chat = () => {
                   setTabError(null);
                   setActiveTab('private');
                   setSelectedChat(null); // Limpiar chat seleccionado al cambiar tab
-                  logger.info('?? Cambiando a tab privado');
+                  logger.info('Cambiando a tab privado');
                 }}
               >
                 <Lock className="h-4 w-4" />
@@ -514,7 +514,7 @@ const Chat = () => {
                   setTabError(null);
                   setActiveTab('public');
                   setSelectedChat(null); // Limpiar chat seleccionado al cambiar tab
-                  logger.info('?? Cambiando a tab pblico');
+                  logger.info('Cambiando a tab público');
                 }}
               >
                 <Globe className="h-4 w-4" />
@@ -538,7 +538,7 @@ const Chat = () => {
             {activeTab === 'private' && (
               <div className="mt-4">
                 <div className="text-white font-semibold text-sm mb-3 px-2 drop-shadow-lg">
-                  ?? Chats privados con tus conexiones
+                  🔒 Chats privados con tus conexiones
                 </div>
                 <div className="space-y-2">
                   {privateChats.map((chat) => (
@@ -777,19 +777,16 @@ const Chat = () => {
                           logger.info('Enviando invitacin...');
                           // Simulate invitation sent
                           setHasChatAccess(prev => ({...prev, [selectedChat?.id || 0]: true}));
-                          alert('Invitacin aceptada! Ahora puedes chatear.');
+                          toast.success('¡Invitación aceptada! Ahora puedes chatear.');
                         }}
                         className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-6 py-2 rounded-lg font-medium transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
-                      >
-                        <UserPlus className="h-4 w-4 mr-2" />
-                        Aceptar invitacin
                       </UnifiedButton>
                       <UnifiedButton 
                         onClick={() => {
-                          logger.info('Rechazando invitacin...');
+                          logger.info('Rechazando invitación...');
                           // Properly reject the invitation and navigate back
                           setSelectedChat(null);
-                          alert('Invitacin rechazada. Has vuelto a la lista de chats.');
+                          toast.info('Invitación rechazada. Has vuelto a la lista de chats.');
                         }}
                         variant="outline"
                         className="border-red-300/50 text-red-300 hover:bg-red-500/20 px-6 py-2 rounded-lg font-medium transition-all duration-200"
