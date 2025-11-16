@@ -37,6 +37,7 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
   const [showFeatureModal, setShowFeatureModal] = useState(false);
   const [likeCount, setLikeCount] = useState(24);
   const [isLiked, setIsLiked] = useState(false);
+  const [demoPost, setDemoPost] = useState<any>(null);
 
   const tabs = [
     {
@@ -170,20 +171,62 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
                 </CardContent>
               </Card>
 
+              {/* Post Demo Creado */}
+              {demoPost && (
+                <Card className="bg-white/10 backdrop-blur-md border-white/20 mb-4">
+                  <CardContent className="p-4">
+                    <div className="flex items-start gap-3 mb-3">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center text-white font-bold">
+                        D
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="font-semibold text-white">Demo User</span>
+                          <span className="text-white/60 text-sm">hace 1 min</span>
+                        </div>
+                        <p className="text-white/90 text-sm">{demoPost.content}</p>
+                      </div>
+                    </div>
+                    <div className="aspect-video bg-gradient-to-br from-blue-400 to-purple-600 rounded-lg mb-3 flex items-center justify-center">
+                      <span className="text-white text-6xl">🎉</span>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <Button variant="ghost" size="sm" className="text-white/60 hover:text-pink-400 flex items-center gap-2">
+                        <Heart className="w-4 h-4" />
+                        <span className="text-sm">0</span>
+                      </Button>
+                      <Button variant="ghost" size="sm" className="text-white/60 hover:text-blue-400 flex items-center gap-2">
+                        <MessageCircle className="w-4 h-4" />
+                        <span className="text-sm">0</span>
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+              
               {/* Empty State */}
-              <div className="text-center py-12">
-                <Grid3X3 className="w-12 h-12 mx-auto mb-4 text-white/40" />
-                <p className="text-white/60 mb-4">No hay posts aún</p>
-                {isOwnProfile && (
-                  <Button
-                    onClick={onUploadImage}
-                    className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white"
-                  >
-                    <Upload className="w-4 h-4 mr-2" />
-                    Crear Post
-                  </Button>
-                )}
-              </div>
+              {!demoPost && (
+                <div className="text-center py-12">
+                  <Grid3X3 className="w-12 h-12 mx-auto mb-4 text-white/40" />
+                  <p className="text-white/60 mb-4">No hay posts aún</p>
+                  {isOwnProfile && (
+                    <Button
+                      onClick={() => {
+                        onUploadImage?.();
+                        setDemoPost({
+                          id: `demo-${Date.now()}`,
+                          content: '¡Nuevo post demo creado! 🎉',
+                          timestamp: new Date().toISOString()
+                        });
+                      }}
+                      className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white"
+                    >
+                      <Upload className="w-4 h-4 mr-2" />
+                      Crear Post
+                    </Button>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         );
