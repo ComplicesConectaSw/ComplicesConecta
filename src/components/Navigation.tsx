@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Home, MessageCircle, Heart, User, Settings, Coins, Search, UserPlus, LogOut } from 'lucide-react';
+import { Home, MessageCircle, Heart, User, Settings, Coins, Search, UserPlus } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { useFeatures } from '@/hooks/useFeatures';
 import { cn } from '@/shared/lib/cn';
