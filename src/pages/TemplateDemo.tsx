@@ -96,6 +96,7 @@ const TemplateDemo: React.FC = () => {
                     value={selectedTheme} 
                     onChange={(e) => setSelectedTheme(e.target.value as Theme)}
                     className="w-full p-2 bg-white/10 border border-white/20 rounded-md text-white"
+                    aria-label="Seleccionar tema visual"
                   >
                     <option value="elegant">Elegante</option>
                     <option value="modern">Moderno</option>
@@ -110,6 +111,7 @@ const TemplateDemo: React.FC = () => {
                     value={profileType} 
                     onChange={(e) => setProfileType(e.target.value as ProfileType)}
                     className="w-full p-2 bg-white/10 border border-white/20 rounded-md text-white"
+                    aria-label="Seleccionar tipo de perfil"
                   >
                     <option value="single">Individual</option>
                     <option value="couple">Pareja</option>
@@ -123,6 +125,7 @@ const TemplateDemo: React.FC = () => {
                     value={gender} 
                     onChange={(e) => setGender(e.target.value as 'male' | 'female')}
                     className="w-full p-2 bg-white/10 border border-white/20 rounded-md text-white"
+                    aria-label="Seleccionar género"
                   >
                     <option value="male">Masculino</option>
                     <option value="female">Femenino</option>
