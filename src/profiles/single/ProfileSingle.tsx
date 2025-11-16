@@ -330,12 +330,12 @@ Información del perfil:
         if (!checkAuth() || !user?.id) {
           logger.warn('Usuario no autenticado o sin ID');
           // DEMO: Perfil demo completo para inversor
-          const demoProfile = {
+          const demoProfile: any = {
             id: 'demo-user-123',
             name: 'Ana García',
             username: '@ana_swinger',
             age: 28,
-            gender: 'Femenino',
+            gender: 'female',
             location: 'CDMX, México',
             bio: 'Explorando el lifestyle swinger con mente abierta 💕',
             avatar_url: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=200',
@@ -343,7 +343,7 @@ Información del perfil:
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString()
           };
-          setProfile(demoProfile as any);
+          setProfile(demoProfile);
           return;
         }
         
