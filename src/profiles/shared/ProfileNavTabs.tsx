@@ -38,6 +38,9 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
   const [likeCount, setLikeCount] = useState(24);
   const [isLiked, setIsLiked] = useState(false);
   const [demoPost, setDemoPost] = useState<any>(null);
+  const [demoPostLikes, setDemoPostLikes] = useState(0);
+  const [demoPostComments, setDemoPostComments] = useState(0);
+  const [showComments, setShowComments] = useState(false);
 
   const tabs = [
     {
@@ -191,15 +194,48 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
                       <span className="text-white text-6xl">🎉</span>
                     </div>
                     <div className="flex items-center gap-4">
-                      <Button variant="ghost" size="sm" className="text-white/60 hover:text-pink-400 flex items-center gap-2">
-                        <Heart className="w-4 h-4" />
-                        <span className="text-sm">0</span>
-                      </Button>
-                      <Button variant="ghost" size="sm" className="text-white/60 hover:text-blue-400 flex items-center gap-2">
+                      <motion.div whileTap={{ scale: 0.9 }}>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className={`flex items-center gap-2 ${demoPostLikes > 0 ? 'text-pink-400' : 'text-white/60 hover:text-pink-400'}`}
+                          onClick={() => setDemoPostLikes(prev => prev + 1)}
+                        >
+                          <Heart className={`w-4 h-4 ${demoPostLikes > 0 ? 'fill-pink-400' : ''}`} />
+                          <span className="text-sm">{demoPostLikes}</span>
+                        </Button>
+                      </motion.div>
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="text-white/60 hover:text-blue-400 flex items-center gap-2"
+                        onClick={() => {
+                          setShowComments(!showComments);
+                          if (!showComments) {
+                            setDemoPostComments(prev => prev + 1);
+                          }
+                        }}
+                      >
                         <MessageCircle className="w-4 h-4" />
-                        <span className="text-sm">0</span>
+                        <span className="text-sm">{demoPostComments}</span>
+                      </Button>
+                      <Button variant="ghost" size="sm" className="text-white/60 hover:text-green-400">
+                        <Share className="w-4 h-4" />
                       </Button>
                     </div>
+                    {showComments && (
+                      <div className="mt-4 p-3 bg-white/5 rounded-lg">
+                        <p className="text-white/70 text-sm mb-2">💬 Comentarios demo:</p>
+                        <div className="space-y-2">
+                          <div className="text-xs text-white/60">
+                            <span className="font-semibold text-white">Usuario 1:</span> ¡Me encanta! 😍
+                          </div>
+                          <div className="text-xs text-white/60">
+                            <span className="font-semibold text-white">Usuario 2:</span> Genial 👏
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               )}

@@ -81,16 +81,9 @@ const ProfileSingle: React.FC = () => {
   // Handlers para las acciones del perfil
   const handleUploadImage = () => {
     logger.info('Subir imagen solicitado');
-    // Demo: Simular creación de post
-    const demoPost = {
-      id: `demo-post-${Date.now()}`,
-      content: '¡Nuevo post demo creado! 🎉',
-      timestamp: new Date().toISOString(),
-      likes: 0
-    };
-    logger.info('Post demo creado:', demoPost);
-    // TODO: En producción, agregar al feed real
-    alert('✅ Post demo creado exitosamente');
+    // Demo: Simular subida de imagen a galería (NO es crear post)
+    alert('📷 SUBIR IMAGEN\n\nEn producción:\n✅ Selector de archivos\n✅ Crop y filtros\n✅ Agrega a tu galería\n\nDEMO: Funcionalidad simulada');
+    logger.info('Subida de imagen demo');
   };
 
   const handleDeletePost = (postId: string) => {
