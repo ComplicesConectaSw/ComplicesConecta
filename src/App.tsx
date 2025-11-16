@@ -163,7 +163,7 @@ const App = () => {
                 <AnimationProvider>
                   <NotificationProvider>
                     <AppFactory>
-                      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-800 relative overflow-hidden">
+                      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-800 dark:from-gray-950 dark:via-purple-950 dark:to-black transition-colors duration-500 relative overflow-hidden">
                         {/* AnimatedBackground disabled to prevent ghost elements */}
                         {/* <AnimatedBackground /> */}
                         {/* FloatingParticles disabled to prevent ghost elements */}
