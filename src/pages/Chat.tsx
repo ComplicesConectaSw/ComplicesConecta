@@ -154,11 +154,11 @@ const Chat = () => {
         setRealMessages(prev => [...prev, result.message!]);
         setNewMessage('');
       } else {
-        toast.error(result.error || 'Error al enviar mensaje');
+        toast({ title: "Error", description: result.error || 'Error al enviar mensaje' });
       }
     } catch (_error) {
       logger.error('Error enviando mensaje:', { error: String(_error) });
-      toast.error('Error al enviar mensaje');
+      toast({ title: "Error", description: 'Error al enviar mensaje' });
     }
   };
   
