@@ -196,12 +196,12 @@ const ProfileSingle: React.FC = () => {
     
     const blob = new Blob([JSON.stringify(profileData, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a') as HTMLAnchorElement;
-    a.href = url;
-    a.download = `perfil-${Date.now()}.json`;
-    document.body.appendChild(a as Node);
-    a.click();
-    document.body.removeChild(a as Node);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `perfil-${Date.now()}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
     URL.revokeObjectURL(url);
     
     alert('✅ Perfil descargado como JSON');
