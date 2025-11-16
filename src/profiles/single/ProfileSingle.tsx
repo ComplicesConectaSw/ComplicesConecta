@@ -1144,25 +1144,6 @@ const ProfileSingle: React.FC = () => {
                   </div>
                 )}
               </div>
-              
-              {/* Galera privada adicional - solo si tiene acceso aprobado */}
-              {privateImageAccess === 'approved' && false && (
-                <PrivateImageGallery 
-                  profileId={profile?.id || ''}
-                  profileName={profile?.name || 'Usuario'}
-                  profileType="single"
-                  isOwner={false}
-                  hasAccess={true}
-                  images={[
-                    {
-                      id: '1',
-                      url: '/src/assets/people/privado/erocpriv.jpg',
-                      thumbnail: '/src/assets/people/privado/erocpriv.jpg',
-                      uploadedAt: new Date()
-                    }
-                  ]}
-                />
-              )}
             </CardContent>
           </Card>
         </div>
