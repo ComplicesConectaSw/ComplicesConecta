@@ -548,10 +548,7 @@ const Auth = () => {
                       value={formData.gender}
                       onChange={(e) => handleInputChange('gender', e.target.value)}
                       required
-                      className="w-full px-3 py-2 bg-white/20 border border-white/30 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400 [&>option]:bg-purple-900 [&>option]:text-white"
-                      style={{
-                        colorScheme: 'dark'
-                      }}
+                      className="w-full px-3 py-2 bg-white/20 border border-white/30 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400 [&>option]:bg-purple-900 [&>option]:text-white [color-scheme:dark]"
                     >
                       <option value="" className="bg-purple-900 text-white">Selecciona tu gnero</option>
                       <option value="male" className="bg-purple-900 text-white">Masculino</option>
@@ -569,10 +566,7 @@ const Auth = () => {
                       value={formData.interestedIn}
                       onChange={(e) => handleInputChange('interestedIn', e.target.value)}
                       required
-                      className="w-full px-3 py-2 bg-white/20 border border-white/30 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400 [&>option]:bg-purple-900 [&>option]:text-white"
-                      style={{
-                        colorScheme: 'dark'
-                      }}
+                      className="w-full px-3 py-2 bg-white/20 border border-white/30 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400 [&>option]:bg-purple-900 [&>option]:text-white [color-scheme:dark]"
                     >
                       <option value="" className="bg-purple-900 text-white">Selecciona tu inters</option>
                       <option value="male" className="bg-purple-900 text-white">Hombres</option>
@@ -646,10 +640,7 @@ const Auth = () => {
                             value={formData.partnerGender}
                             onChange={(e) => handleInputChange('partnerGender', e.target.value)}
                             required
-                            className="w-full px-3 py-2 bg-white/20 border border-white/30 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400 [&>option]:bg-purple-900 [&>option]:text-white"
-                            style={{
-                              colorScheme: 'dark'
-                            }}
+                            className="w-full px-3 py-2 bg-white/20 border border-white/30 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400 [&>option]:bg-purple-900 [&>option]:text-white [color-scheme:dark]"
                           >
                             <option value="" className="bg-purple-900 text-white">Selecciona el gnero</option>
                             <option value="male" className="bg-purple-900 text-white">Masculino</option>
@@ -667,10 +658,7 @@ const Auth = () => {
                             value={formData.partnerInterestedIn}
                             onChange={(e) => handleInputChange('partnerInterestedIn', e.target.value)}
                             required
-                            className="w-full px-3 py-2 bg-white/20 border border-white/30 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400 [&>option]:bg-purple-900 [&>option]:text-white"
-                            style={{
-                              colorScheme: 'dark'
-                            }}
+                            className="w-full px-3 py-2 bg-white/20 border border-white/30 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400 [&>option]:bg-purple-900 [&>option]:text-white [color-scheme:dark]"
                           >
                             <option value="" className="bg-purple-900 text-white">Selecciona el inters</option>
                             <option value="male" className="bg-purple-900 text-white">Hombres</option>

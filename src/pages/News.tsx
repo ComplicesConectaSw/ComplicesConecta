@@ -341,16 +341,17 @@ const News: React.FC = () => {
                         </h4>
                         <ul className="space-y-2.5">
                           {update.highlights.map((highlight, idx) => (
-                            <motion.li
-                              key={idx}
-                              initial={{ opacity: 0, x: -10 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: 0.3 + index * 0.1 + idx * 0.05 }}
-                              className="flex items-start gap-3 text-white/85 text-sm sm:text-base leading-relaxed group/item"
-                            >
-                              <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full mt-2 flex-shrink-0 group-hover/item:scale-150 transition-transform duration-300" />
-                              <span className="flex-1">{highlight}</span>
-                            </motion.li>
+                            <li key={idx} className="list-none">
+                              <motion.div
+                                initial={{ opacity: 0, x: -10 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 0.3 + index * 0.1 + idx * 0.05 }}
+                                className="flex items-start gap-3 text-white/85 text-sm sm:text-base leading-relaxed group/item"
+                              >
+                                <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full mt-2 flex-shrink-0 group-hover/item:scale-150 transition-transform duration-300" />
+                                <span className="flex-1">{highlight}</span>
+                              </motion.div>
+                            </li>
                           ))}
                         </ul>
                       </div>
