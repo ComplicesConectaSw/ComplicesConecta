@@ -186,26 +186,29 @@ const ProfileSingle: React.FC = () => {
 
   const handleDownloadProfile = () => {
     logger.info('Descargar perfil solicitado');
-    // Demo: Simular descarga de perfil
-    const profileData = {
-      name: profile?.name || 'Usuario Demo',
-      email: user?.email || 'demo@complicesconecta.com',
-      stats: profileStats,
-      timestamp: new Date().toISOString()
-    };
     
-    const blob = new Blob([JSON.stringify(profileData, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a') as HTMLAnchorElement;
-    a.href = url;
-    a.download = `perfil-${Date.now()}.json`;
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    // DEMO: Por seguridad, mostrar modal en lugar de descargar JSON plano
+    const modalContent = `
+📥 FUNCIÓN DE DESCARGA
+
+En versión de producción:
+✅ Datos encriptados
+✅ Formato seguro (PDF/Encriptado)
+✅ Autenticación requerida
+✅ Watermark con ID único
+
+VERSIÓN DEMO:
+Datos protegidos por seguridad.
+
+Información del perfil:
+- Nombre: ${profile?.name || 'Demo'}
+- Email: ${user?.email?.substring(0, 3)}***@***
+- Verificado: ${profile?.is_verified ? 'Sí' : 'No'}
+- Fecha: ${new Date().toLocaleDateString()}
+    `;
     
-    alert('✅ Perfil descargado como JSON');
+    alert(modalContent);
+    logger.info('Demo descarga mostrado - datos protegidos');
   };
 
   // Funciones para blockchain
@@ -293,45 +296,33 @@ const ProfileSingle: React.FC = () => {
   };
 
   const handleMintNFT = async () => {
-    if (!user?.id) return;
+    logger.info('Mintear NFT solicitado');
     
-    try {
-      if (isDemoMode) {
-        // Modo demo - simular mint
-        const result = await walletService.executeDemoAction(user.id, 'mint_nft', { 
-          name: `NFT de ${profile?.name}`,
-          description: 'NFT de perfil individual'
-        });
-        logger.info('NFT minteado (DEMO):', { result });
-        
-        // Agregar NFT simulado a la lista
-        const mockNFT = {
-          id: `demo-${Date.now()}`,
-          token_id: result.tokenId,
-          metadata_uri: 'ipfs://demo-metadata',
-          rarity: 'common',
-          is_couple: false,
-          created_at: new Date().toISOString()
-        };
-        setUserNFTs(prev => [...prev, mockNFT]);
-      } else {
-        // Modo real - crear archivo de imagen simulado para demo
-        const mockFile = new File(['demo'], 'profile.jpg', { type: 'image/jpeg' });
-        const nft = await nftService.mintSingleNFT(
-          user.id,
-          `NFT de ${profile?.name}`,
-          'NFT de perfil individual',
-          mockFile
-        );
-        logger.info('NFT minteado:', nft);
-        
-        // Recargar NFTs
-        const updatedNFTs = await nftService.getUserNFTs(user.id);
-        setUserNFTs(updatedNFTs);
-      }
-    } catch (error) {
-      logger.error('Error minteando NFT:', { error: String(error) });
-    }
+    // Demo: Simular minteo de NFT
+    const nftData = {
+      name: `NFT Perfil - ${profile?.name || 'Usuario'}`,
+      description: 'NFT único del perfil en ComplicesConecta',
+      image: 'https://images.unsplash.com/photo-1634193295627-1cdddf751ebf?w=400',
+      attributes: [
+        { trait_type: 'Tipo', value: 'Perfil Single' },
+        { trait_type: 'Verificado', value: profile?.is_verified ? 'Sí' : 'No' },
+        { trait_type: 'Fecha', value: new Date().toLocaleDateString() }
+      ],
+      tokenId: Math.floor(Math.random() * 10000)
+    };
+    
+    // Mostrar progreso
+    alert('⏳ Minteando NFT...\n\nEsto puede tardar unos segundos');
+    
+    // Simular delay de blockchain
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    // Agregar a la lista de NFTs del usuario
+    setUserNFTs(prev => [...prev, nftData]);
+    
+    alert(`✅ NFT MINTEADO EXITOSAMENTE\n\n🎨 Token ID: #${nftData.tokenId}\n📦 Tipo: ${nftData.attributes[0].value}\n✨ Agregado a tu colección`);
+    
+    logger.info('NFT minteado (demo):', nftData);
   };
   
   // Migracin localStorage ? usePersistedState
