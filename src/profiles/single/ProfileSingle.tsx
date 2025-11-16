@@ -1115,8 +1115,9 @@ const ProfileSingle: React.FC = () => {
                   Fotos Privadas
                 </h4>
                 
-                {/* Mostrar con blur y candado si no tiene acceso */}
-                {!isOwnProfile && privateImageAccess !== 'approved' && (
+                {/* DEMO: SIEMPRE mostrar versión bloqueada primero */}
+                <div className="mb-4">
+                  <p className="text-white/60 text-xs mb-2">🔒 Vista sin acceso (otros usuarios):</p>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                     <div className="aspect-square rounded-lg overflow-hidden relative cursor-pointer" onClick={() => setShowPrivateImageRequest(true)}>
                       <img 
@@ -1150,31 +1151,34 @@ const ProfileSingle: React.FC = () => {
                       </div>
                     </div>
                   </div>
-                )}
+                </div>
                 
-                {/* Mostrar fotos normales si es dueño o tiene acceso */}
-                {(isOwnProfile || privateImageAccess === 'approved') && (
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                    <div className="aspect-square rounded-lg overflow-hidden relative">
-                      <img 
-                        src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&h=400&fit=crop" 
-                        alt="Foto privada 1"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div className="aspect-square rounded-lg overflow-hidden relative">
-                      <img 
-                        src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=400&fit=crop" 
-                        alt="Foto privada 2"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div className="aspect-square rounded-lg overflow-hidden relative">
-                      <img 
-                        src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=400&h=400&fit=crop" 
-                        alt="Foto privada 3"
-                        className="w-full h-full object-cover"
-                      />
+                {/* Mostrar fotos normales si es dueño (para demo) */}
+                {isOwnProfile && (
+                  <div>
+                    <p className="text-white/60 text-xs mb-2">✅ Vista con acceso (tu perfil):</p>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                      <div className="aspect-square rounded-lg overflow-hidden relative border-2 border-green-500/50">
+                        <img 
+                          src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&h=400&fit=crop" 
+                          alt="Foto privada 1"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="aspect-square rounded-lg overflow-hidden relative border-2 border-green-500/50">
+                        <img 
+                          src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=400&fit=crop" 
+                          alt="Foto privada 2"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="aspect-square rounded-lg overflow-hidden relative border-2 border-green-500/50">
+                        <img 
+                          src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=400&h=400&fit=crop" 
+                          alt="Foto privada 3"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
                     </div>
                   </div>
                 )}
