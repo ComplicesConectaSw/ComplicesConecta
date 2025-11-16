@@ -378,14 +378,14 @@ const Chat = () => {
     
     // Lgica para modo demo
     if (selectedChat.isPrivate && !hasChatAccess[selectedChat.id]) {
-      toast.error('No tienes acceso a este chat privado. Necesitas una invitación aceptada.');
+      toast({ title: "Acceso Denegado", description: 'No tienes acceso a este chat privado. Necesitas una invitación aceptada.' });
       return;
     }
     
     // Verificar permisos de mensajera segn configuracin de privacidad
     const canSendMessage = checkMessagePermissions(selectedChat);
     if (!canSendMessage) {
-      toast.error('No puedes enviar mensajes a este usuario según su configuración de privacidad.');
+      toast({ title: "Sin Permisos", description: 'No puedes enviar mensajes a este usuario según su configuración de privacidad.' });
       return;
     }
     
@@ -803,12 +803,18 @@ const Chat = () => {
                     {/* Botones de galera y solicitudes */}
                     <div className="flex gap-2 justify-center">
                       <UnifiedButton
-                        onClick={() => navigate('/gallery')}
+                        onClick={() => {
+                          if (selectedChat?.roomType === 'private') {
+                            toast({ title: "Galería Privada", description: `Ver galería privada de ${selectedChat.name}` });
+                          } else {
+                            toast({ title: "Galería Pública", description: "Ver galería pública de la sala" });
+                          }
+                        }}
                         variant="outline"
                         className="flex-1 border-purple-400/50 text-purple-300 hover:bg-purple-500/20 text-xs py-2"
                       >
                         <Heart className="h-3 w-3 mr-1" />
-                        Galera
+                        Galería
                       </UnifiedButton>
                       <UnifiedButton
                         onClick={() => navigate('/requests')}
