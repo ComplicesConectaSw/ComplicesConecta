@@ -94,11 +94,11 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
                   {/* Post Image */}
                   <div className="aspect-video bg-gradient-to-br from-purple-400 to-pink-600 rounded-lg mb-3 overflow-hidden">
                     <img 
-                      src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=600&h=400&fit=crop&crop=faces&auto=format&q=80" 
+                      src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=600&h=400&fit=crop" 
                       alt="Post"
                       className="w-full h-full object-cover"
                       onError={(e) => {
-                        e.currentTarget.src = 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face';
+                        e.currentTarget.src = 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600&h=400&fit=crop';
                       }}
                     />
                   </div>
