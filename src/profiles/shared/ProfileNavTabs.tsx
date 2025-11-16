@@ -210,30 +210,76 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
 
       case 'gallery':
         return (
-          <div className="space-y-4">
-            {/* Gallery Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-              <div className="aspect-square bg-gradient-to-br from-pink-400 to-purple-600 rounded-lg overflow-hidden">
-                <img 
-                  src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=faces&auto=format&q=80" 
-                  alt="Galería 1"
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    e.currentTarget.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&crop=face';
-                  }}
-                />
+          <div className="space-y-6">
+            {/* Gallery Grid Pública */}
+            <div>
+              <h4 className="text-white font-semibold mb-3 flex items-center gap-2">
+                <Upload className="w-4 h-4" />
+                Fotos Públicas
+              </h4>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                <div className="aspect-square bg-gradient-to-br from-pink-400 to-purple-600 rounded-lg overflow-hidden">
+                  <img 
+                    src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=faces&auto=format&q=80" 
+                    alt="Galería 1"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&crop=face';
+                    }}
+                  />
+                </div>
+                <div className="aspect-square bg-gradient-to-br from-purple-400 to-blue-600 rounded-lg overflow-hidden">
+                  <img 
+                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=faces&auto=format&q=80" 
+                    alt="Galería 2"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&crop=face';
+                    }}
+                  />
+                </div>
               </div>
-              <div className="aspect-square bg-gradient-to-br from-purple-400 to-blue-600 rounded-lg overflow-hidden">
-                <img 
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=faces&auto=format&q=80" 
-                  alt="Galería 2"
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    e.currentTarget.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&crop=face';
-                  }}
-                />
+            </div>
+
+            {/* Gallery Privada con Lock */}
+            <div>
+              <h4 className="text-white font-semibold mb-3 flex items-center gap-2">
+                <Upload className="w-4 h-4" />
+                Fotos Privadas 🔒
+              </h4>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                <div className="aspect-square rounded-lg overflow-hidden relative cursor-pointer" onClick={() => alert('🔒 Solicita acceso para ver fotos privadas')}>
+                  <img 
+                    src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&h=400&fit=crop" 
+                    alt="Foto privada 1"
+                    className="w-full h-full object-cover filter blur-lg"
+                  />
+                  <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center">
+                    <span className="text-6xl mb-2">🔒</span>
+                    <span className="text-white text-sm">Click para solicitar</span>
+                  </div>
+                </div>
+                <div className="aspect-square rounded-lg overflow-hidden relative cursor-pointer" onClick={() => alert('🔒 Solicita acceso para ver fotos privadas')}>
+                  <img 
+                    src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=400&fit=crop" 
+                    alt="Foto privada 2"
+                    className="w-full h-full object-cover filter blur-lg"
+                  />
+                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                    <span className="text-6xl">🔒</span>
+                  </div>
+                </div>
+                <div className="aspect-square rounded-lg overflow-hidden relative cursor-pointer" onClick={() => alert('🔒 Solicita acceso para ver fotos privadas')}>
+                  <img 
+                    src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=400&h=400&fit=crop" 
+                    alt="Foto privada 3"
+                    className="w-full h-full object-cover filter blur-lg"
+                  />
+                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                    <span className="text-6xl">🔒</span>
+                  </div>
+                </div>
               </div>
-              {/* Add more gallery items */}
             </div>
 
             {/* Upload Button for Own Profile */}

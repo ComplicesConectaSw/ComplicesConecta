@@ -186,7 +186,25 @@ const ProfileSingle: React.FC = () => {
 
   const handleDownloadProfile = () => {
     logger.info('Descargar perfil solicitado');
-    // Implementar lgica de descarga de perfil
+    // Demo: Simular descarga de perfil
+    const profileData = {
+      name: profile?.name || 'Usuario Demo',
+      email: user?.email || 'demo@complicesconecta.com',
+      stats: profileStats,
+      timestamp: new Date().toISOString()
+    };
+    
+    const blob = new Blob([JSON.stringify(profileData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a') as HTMLAnchorElement;
+    a.href = url;
+    a.download = `perfil-${Date.now()}.json`;
+    document.body.appendChild(a as Node);
+    a.click();
+    document.body.removeChild(a as Node);
+    URL.revokeObjectURL(url);
+    
+    alert('✅ Perfil descargado como JSON');
   };
 
   // Funciones para blockchain
