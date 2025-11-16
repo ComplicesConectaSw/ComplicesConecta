@@ -197,12 +197,12 @@ const ProfileSingle: React.FC = () => {
     const blob = new Blob([JSON.stringify(profileData, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.setAttribute('href', url);
-    a.setAttribute('download', `perfil-${Date.now()}.json`);
+    a.href = url;
+    a.download = `perfil-${Date.now()}.json`;
     a.style.display = 'none';
-    document.body.appendChild(a);
+    (document.body as any).appendChild(a);
     a.click();
-    document.body.removeChild(a);
+    (document.body as any).removeChild(a);
     URL.revokeObjectURL(url);
     
     alert('✅ Perfil descargado como JSON');
@@ -341,18 +341,26 @@ const ProfileSingle: React.FC = () => {
   useEffect(() => {
     const loadProfile = async () => {
       try {
-        // Solo log una vez al montar el componente
-        if (!profile) {
-          logger.info('📱 ProfileSingle - Estado de autenticación:', {
-            user: !!user,
-            authProfile: !!authProfile,
-            isDemo: authProfile?.is_demo,
-            userEmail: user?.email,
-            isAuthenticated,
-            demoAuth,
-            demoAuthType: typeof demoAuth,
-            demoUser: !!demoUser
-          });
+        setIsLoading(true);
+        
+        if (!checkAuth() || !user?.id) {
+          logger.warn('Usuario no autenticado o sin ID');
+          // DEMO: Perfil demo completo para inversor
+          const demoProfile = {
+            id: 'demo-user-123',
+            name: 'Ana García',
+            username: '@ana_swinger',
+            age: 28,
+            gender: 'Femenino',
+            location: 'CDMX, México',
+            bio: 'Explorando el lifestyle swinger con mente abierta 💕',
+            avatar_url: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=200',
+            is_verified: true,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          };
+          setProfile(demoProfile as any);
+          return;
         }
         
         // Verificar si hay sesion demo activa PRIMERO - manejar tanto string como boolean
