@@ -145,6 +145,9 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
                       variant="ghost"
                       size="sm"
                       className="text-white/60 hover:text-green-400 hover:bg-white/10"
+                      onClick={() => {
+                        alert('🔗 Compartir post\n\n(Función demo)');
+                      }}
                     >
                       <Share className="w-4 h-4" />
                     </Button>
@@ -152,6 +155,14 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
                       variant="ghost"
                       size="sm"
                       className="text-white/60 hover:text-white hover:bg-white/10 ml-auto"
+                      onClick={() => {
+                        const options = window.confirm(
+                          '⚙️ MÁS OPCIONES\n\n✅ Guardar post\n✅ Reportar\n✅ Ocultar\n\n(Función demo)'
+                        );
+                        if (options) {
+                          alert('✅ Acción guardada');
+                        }
+                      }}
                     >
                       <MoreHorizontal className="w-4 h-4" />
                     </Button>
