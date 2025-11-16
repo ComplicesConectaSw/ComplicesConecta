@@ -1073,54 +1073,80 @@ const ProfileSingle: React.FC = () => {
                 </div>
               </div>
 
-              {/* Galera privada - visible solo para el dueo del perfil */}
+              {/* Galera privada - solo visible para dueño o con acceso aprobado */}
               <div className="mb-6">
                 <h4 className="text-white font-semibold mb-3 flex items-center gap-2">
                   <Lock className="w-4 h-4" />
                   Fotos Privadas
                 </h4>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                  <div className="aspect-square rounded-lg overflow-hidden relative">
-                    <img 
-                      src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&h=400&fit=crop" 
-                      alt="Foto privada 1"
-                      className={`w-full h-full object-cover ${isOwnProfile ? '' : 'filter blur-md'}`}
-                    />
-                    {!isOwnProfile && (
-                      <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                        <Lock className="w-8 h-8 text-white" />
+                
+                {/* Mostrar con blur y candado si no tiene acceso */}
+                {!isOwnProfile && privateImageAccess !== 'approved' && (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    <div className="aspect-square rounded-lg overflow-hidden relative cursor-pointer" onClick={() => setShowPrivateImageRequest(true)}>
+                      <img 
+                        src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&h=400&fit=crop" 
+                        alt="Foto privada bloqueada"
+                        className="w-full h-full object-cover filter blur-lg"
+                      />
+                      <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center">
+                        <Lock className="w-12 h-12 text-white mb-2" />
+                        <span className="text-white text-xs">Click para solicitar</span>
                       </div>
-                    )}
-                  </div>
-                  <div className="aspect-square rounded-lg overflow-hidden relative">
-                    <img 
-                      src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=400&fit=crop" 
-                      alt="Foto privada 2"
-                      className={`w-full h-full object-cover ${isOwnProfile ? '' : 'filter blur-md'}`}
-                    />
-                    {!isOwnProfile && (
-                      <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                        <Lock className="w-8 h-8 text-white" />
+                    </div>
+                    <div className="aspect-square rounded-lg overflow-hidden relative cursor-pointer" onClick={() => setShowPrivateImageRequest(true)}>
+                      <img 
+                        src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=400&fit=crop" 
+                        alt="Foto privada bloqueada"
+                        className="w-full h-full object-cover filter blur-lg"
+                      />
+                      <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                        <Lock className="w-12 h-12 text-white" />
                       </div>
-                    )}
-                  </div>
-                  <div className="aspect-square rounded-lg overflow-hidden relative">
-                    <img 
-                      src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=400&h=400&fit=crop" 
-                      alt="Foto privada 3"
-                      className={`w-full h-full object-cover ${isOwnProfile ? '' : 'filter blur-md'}`}
-                    />
-                    {!isOwnProfile && (
-                      <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                        <Lock className="w-8 h-8 text-white" />
+                    </div>
+                    <div className="aspect-square rounded-lg overflow-hidden relative cursor-pointer" onClick={() => setShowPrivateImageRequest(true)}>
+                      <img 
+                        src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=400&h=400&fit=crop" 
+                        alt="Foto privada bloqueada"
+                        className="w-full h-full object-cover filter blur-lg"
+                      />
+                      <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                        <Lock className="w-12 h-12 text-white" />
                       </div>
-                    )}
+                    </div>
                   </div>
-                </div>
+                )}
+                
+                {/* Mostrar fotos normales si es dueño o tiene acceso */}
+                {(isOwnProfile || privateImageAccess === 'approved') && (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    <div className="aspect-square rounded-lg overflow-hidden relative">
+                      <img 
+                        src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&h=400&fit=crop" 
+                        alt="Foto privada 1"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="aspect-square rounded-lg overflow-hidden relative">
+                      <img 
+                        src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=400&fit=crop" 
+                        alt="Foto privada 2"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="aspect-square rounded-lg overflow-hidden relative">
+                      <img 
+                        src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=400&h=400&fit=crop" 
+                        alt="Foto privada 3"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
               
-              {/* Galera privada - solo si tiene acceso aprobado */}
-              {privateImageAccess === 'approved' && (
+              {/* Galera privada adicional - solo si tiene acceso aprobado */}
+              {privateImageAccess === 'approved' && false && (
                 <PrivateImageGallery 
                   profileId={profile?.id || ''}
                   profileName={profile?.name || 'Usuario'}
