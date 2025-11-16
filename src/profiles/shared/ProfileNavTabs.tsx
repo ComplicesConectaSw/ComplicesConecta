@@ -11,6 +11,7 @@ import {
   Share,
   MoreHorizontal
 } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { cn } from '@/shared/lib/cn';
 import StoriesContainer from '@/components/stories/StoriesContainer';
 import { ComingSoonModal } from '@/components/modals/ComingSoonModal';
@@ -34,6 +35,8 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
   const [activeTab, setActiveTab] = useState<TabType>('posts');
   const [showComingSoon, setShowComingSoon] = useState(false);
   const [showFeatureModal, setShowFeatureModal] = useState(false);
+  const [likeCount, setLikeCount] = useState(24);
+  const [isLiked, setIsLiked] = useState(false);
 
   const tabs = [
     {
@@ -105,14 +108,30 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
 
                   {/* Post Actions */}
                   <div className="flex items-center gap-4">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="text-white/60 hover:text-pink-400 hover:bg-white/10 flex items-center gap-2"
+                    <motion.div
+                      whileTap={{ scale: 0.9 }}
+                      animate={isLiked ? { scale: [1, 1.2, 1] } : {}}
+                      transition={{ duration: 0.3 }}
                     >
-                      <Heart className="w-4 h-4" />
-                      <span className="text-sm">24</span>
-                    </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className={`flex items-center gap-2 transition-colors ${
+                          isLiked 
+                            ? 'text-pink-400 hover:text-pink-500' 
+                            : 'text-white/60 hover:text-pink-400'
+                        } hover:bg-white/10`}
+                        onClick={() => {
+                          setIsLiked(!isLiked);
+                          setLikeCount(prev => isLiked ? prev - 1 : prev + 1);
+                        }}
+                      >
+                        <Heart className={`w-4 h-4 ${
+                          isLiked ? 'fill-pink-400' : ''
+                        }`} />
+                        <span className="text-sm">{likeCount}</span>
+                      </Button>
+                    </motion.div>
                     <Button
                       variant="ghost"
                       size="sm"

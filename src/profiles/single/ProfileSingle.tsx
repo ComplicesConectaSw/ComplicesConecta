@@ -81,12 +81,29 @@ const ProfileSingle: React.FC = () => {
   // Handlers para las acciones del perfil
   const handleUploadImage = () => {
     logger.info('Subir imagen solicitado');
-    // Implementar lgica de subida de imagen
+    // Demo: Simular creación de post
+    const demoPost = {
+      id: `demo-post-${Date.now()}`,
+      content: '¡Nuevo post demo creado! 🎉',
+      timestamp: new Date().toISOString(),
+      likes: 0
+    };
+    logger.info('Post demo creado:', demoPost);
+    // TODO: En producción, agregar al feed real
+    alert('✅ Post demo creado exitosamente');
   };
 
   const handleDeletePost = (postId: string) => {
     logger.info('Eliminar post solicitado', { postId });
-    // Implementar lgica de eliminacin de post
+    // Demo: Modal de confirmación
+    const confirmed = window.confirm(
+      '🗑️ PERFIL DEMO\n\nEste es un perfil de demostración.\n¿Eliminar este post temporalmente?\n\n(Se recargará al refrescar)'
+    );
+    if (confirmed) {
+      logger.info('Post eliminado (demo):', { postId });
+      alert('✅ Post eliminado (temporal)');
+      // TODO: En producción, eliminar del estado
+    }
   };
 
   const handleCommentPost = (postId: string) => {
