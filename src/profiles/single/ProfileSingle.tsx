@@ -474,11 +474,11 @@ const ProfileSingle: React.FC = () => {
             <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2 drop-shadow-lg">
               Mi Perfil - {profile.name}
             </h1>
-            {checkAuth() && (
+            {checkAuth() &&
               <p className="text-white/80 text-sm sm:text-base">
-                Logueado como: {user?.email || 'Usuario'}
+                {user?.email || 'Usuario'}
               </p>
-            )}
+            }
           </div>
         </div>
       </div>
