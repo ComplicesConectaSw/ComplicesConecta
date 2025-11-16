@@ -270,15 +270,15 @@ const App = () => {
                             </Routes>
                           </Suspense>
                         </PageTransitionWrapper>
+                        
+                        {/* Navegación condicional: mostrar Navigation solo cuando hay perfil activo - DENTRO de Router */}
+                        {showProfileNavigation && (
+                          <div className="fixed bottom-0 left-0 right-0 z-50">
+                            <Navigation />
+                          </div>
+                        )}
                       </Router>
                       <Toaster />
-                      
-                      {/* Navegación condicional: mostrar Navigation solo cuando hay perfil activo */}
-                      {showProfileNavigation && (
-                        <div className="fixed bottom-0 left-0 right-0 z-50">
-                          <Navigation />
-                        </div>
-                      )}
                     </div>
                   </AppFactory>
                 </NotificationProvider>

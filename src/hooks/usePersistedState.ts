@@ -31,13 +31,13 @@ export function usePersistedState<T>(
       try {
         const parsed = JSON.parse(item);
         // Solo loggear en desarrollo o para keys críticas
-        if (process.env.NODE_ENV === 'development' || key.includes('demo_') || key.includes('auth_')) {
+        if (import.meta.env.MODE === 'development' || key.includes('demo_') || key.includes('auth_')) {
           logger.info('Estado cargado desde localStorage:', { key, hasValue: !!parsed });
         }
         return parsed;
       } catch {
         // Si falla JSON, tratar como string simple
-        if (process.env.NODE_ENV === 'development' || key.includes('demo_') || key.includes('auth_')) {
+        if (import.meta.env.MODE === 'development' || key.includes('demo_') || key.includes('auth_')) {
           logger.info('Estado cargado desde localStorage (string):', { key, value: item });
         }
         return item as T;
@@ -58,12 +58,12 @@ export function usePersistedState<T>(
       if (typeof window !== 'undefined') {
         if (valueToStore === null || valueToStore === undefined) {
           window.localStorage.removeItem(key);
-          if (process.env.NODE_ENV === 'development' || key.includes('demo_') || key.includes('auth_')) {
+          if (import.meta.env.MODE === 'development' || key.includes('demo_') || key.includes('auth_')) {
             logger.info('Valor removido de localStorage:', { key });
           }
         } else {
           window.localStorage.setItem(key, JSON.stringify(valueToStore));
-          if (process.env.NODE_ENV === 'development' || key.includes('demo_') || key.includes('auth_')) {
+          if (import.meta.env.MODE === 'development' || key.includes('demo_') || key.includes('auth_')) {
             logger.info('Valor guardado en localStorage:', { key, hasValue: !!valueToStore });
           }
         }

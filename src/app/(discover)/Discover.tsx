@@ -285,12 +285,22 @@ const Discover = () => {
         return;
       }
       
-      const { data: realProfiles, error } = await supabase
+      // Agregar timeout de 3 segundos para evitar bloqueo
+      const timeoutPromise = new Promise<null>((_, reject) => {
+        setTimeout(() => reject(new Error('Timeout loading profiles')), 3000);
+      });
+      
+      const profilesPromise = supabase
         .from('profiles')
         .select('*')
         .eq('is_active', true)
         .neq('is_demo', true)
         .limit(50);
+      
+      const { data: realProfiles, error } = await Promise.race([
+        profilesPromise,
+        timeoutPromise
+      ]) as any;
 
       if (error) {
         logger.error('? Error cargando perfiles reales:', error);
@@ -339,8 +349,8 @@ const Discover = () => {
         generateRandomProfiles();
       }
     } catch (error) {
-      logger.error('? Error inesperado cargando perfiles', { error: error instanceof Error ? error.message : String(error) });
-      // Fallback a perfiles mock
+      logger.error('? Error inesperado cargando perfiles (timeout o error de red)', { error: error instanceof Error ? error.message : String(error) });
+      // Fallback inmediato a perfiles mock cuando hay timeout
       generateRandomProfiles();
     }
   }, [generateRandomProfiles]);

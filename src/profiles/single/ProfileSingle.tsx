@@ -528,14 +528,14 @@ const ProfileSingle: React.FC = () => {
                   </h2>
                   <div className="flex flex-wrap gap-2 justify-center sm:justify-start mb-4">
                     <Badge className="bg-white/20 text-white border-white/30 text-xs sm:text-sm">
-                      {profile.age} aos
+                      {profile.age} años
                     </Badge>
                     <Badge className="bg-white/20 text-white border-white/30 text-xs sm:text-sm">
                       {profile.gender || 'No especificado'}
                     </Badge>
                     <Badge className="bg-white/20 text-white border-white/30 flex items-center gap-1 text-xs sm:text-sm">
                       <MapPin className="w-3 h-3" />
-                      CDMX, Mxico
+                      CDMX, México
                     </Badge>
                   </div>
                   

@@ -13,7 +13,7 @@
  */
 export function suppressWalletErrors() {
   // No ejecutar en entornos de prueba o de servidor
-  if (typeof window === 'undefined' || process.env.NODE_ENV === 'test') {
+  if (typeof window === 'undefined' || import.meta.env.MODE === 'test') {
     return;
   }
 

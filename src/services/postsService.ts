@@ -98,27 +98,53 @@ class PostsService {
     const postTypes: ('text' | 'photo' | 'video')[] = ['text', 'photo', 'video'];
     const locations = ['CDMX, México', 'Guadalajara, México', 'Monterrey, México', 'Puebla, México'];
     const contents = [
-      '¡Explorando nuevas conexiones en la comunidad! 🌟',
-      'Una noche increíble con parejas increíbles 💫',
+      '¡Explorando nuevas conexiones en la comunidad! 😊',
+      'Una noche increíble con parejas increíbles 💖',
       'Respeto y comunicación son la clave 🔑',
       'Nuevas aventuras esperando ser descubiertas ✨',
-      'La discreción es fundamental en nuestro estilo de vida 🤐',
-      'Conectando con personas de mente abierta 🧠',
+      'La discreción es fundamental en nuestro estilo de vida 🤫',
+      'Conectando con personas de mente abierta 🌈',
       'Celebrando la diversidad en nuestras relaciones 💕',
-      'La confianza es la base de todo 🏗️'
+      'La confianza es la base de todo 💪'
     ];
 
     for (let i = 0; i < count; i++) {
       const postType = postTypes[Math.floor(Math.random() * postTypes.length)];
       const content = contents[Math.floor(Math.random() * contents.length)];
-      
+
+      // URLs de imágenes reales para posts (Unsplash con IDs válidos + picsum)
+      const realImageUrls = [
+        'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=400&fit=crop', // Grupo de personas
+        'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600&h=400&fit=crop', // Pareja feliz
+        'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=600&h=400&fit=crop', // Fiesta/evento
+        'https://images.unsplash.com/photo-1519671282429-b44660c9c3e6?w=600&h=400&fit=crop', // Evento social
+        'https://images.unsplash.com/photo-1510076857177-7470076d4098?w=600&h=400&fit=crop', // Amigos celebrando
+        'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&h=400&fit=crop', // Pareja romántica
+        'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600&h=400&fit=crop', // Evento nocturno
+        'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&h=400&fit=crop', // Fiesta
+        'https://picsum.photos/seed/lifestyle1/600/400', // Imagen aleatoria 1
+        'https://picsum.photos/seed/lifestyle2/600/400', // Imagen aleatoria 2
+      ];
+
+      // Avatares reales usando pravatar.cc y UI Avatars
+      const avatarUrls = [
+        'https://i.pravatar.cc/150?img=1',
+        'https://i.pravatar.cc/150?img=5',
+        'https://i.pravatar.cc/150?img=9',
+        'https://i.pravatar.cc/150?img=12',
+        'https://i.pravatar.cc/150?img=16',
+        'https://i.pravatar.cc/150?img=20',
+        'https://i.pravatar.cc/150?img=25',
+        'https://i.pravatar.cc/150?img=32',
+      ];
+
       mockPosts.push({
         id: `post-${i + 1}`,
         user_id: `user-${Math.floor(Math.random() * 10) + 1}`,
         profile_id: `profile-${Math.floor(Math.random() * 10) + 1}`,
         content,
         post_type: postType,
-        image_url: postType === 'photo' ? `https://images.unsplash.com/photo-${1500000000000 + i}?w=400&h=400&fit=crop&auto=format&q=80` : undefined,
+        image_url: postType === 'photo' ? realImageUrls[i % realImageUrls.length] : undefined,
         video_url: postType === 'video' ? `/mock-videos/post-${i + 1}.mp4` : undefined,
         location: locations[Math.floor(Math.random() * locations.length)],
         likes_count: Math.floor(Math.random() * 50) + 1,
@@ -129,7 +155,7 @@ class PostsService {
         profile: {
           id: `profile-${Math.floor(Math.random() * 10) + 1}`,
           name: ['Ana García', 'Carlos López', 'María & Juan', 'Laura Martínez', 'Roberto Silva', 'Sofía & David', 'Elena Ruiz', 'Diego Torres'][i % 8] || `Usuario ${i + 1}`,
-          avatar_url: `https://images.unsplash.com/photo-${1494790108755 + i}?w=100&h=100&fit=crop&crop=faces&auto=format&q=80`,
+          avatar_url: avatarUrls[i % avatarUrls.length],
           is_verified: Math.random() > 0.7
         }
       });
@@ -377,8 +403,27 @@ class PostsService {
       logger.info('Toggling like for post in Supabase:', { postId });
       
       if (!supabase) {
-        logger.error('Supabase no está disponible');
-        return false;
+        // MODO DEMO: Simular comportamiento de like con localStorage
+        logger.warn('Modo demo: Simulando toggle like');
+        const likedPostsKey = 'demo_liked_posts';
+        const likedPostsStr = localStorage.getItem(likedPostsKey) || '[]';
+        const likedPosts: string[] = JSON.parse(likedPostsStr);
+        
+        const isLiked = likedPosts.includes(postId);
+        
+        if (isLiked) {
+          // Quitar like
+          const newLikedPosts = likedPosts.filter(id => id !== postId);
+          localStorage.setItem(likedPostsKey, JSON.stringify(newLikedPosts));
+          logger.info('✅ Demo: Like removed', { postId });
+          return false; // Ya NO está liked
+        } else {
+          // Agregar like
+          likedPosts.push(postId);
+          localStorage.setItem(likedPostsKey, JSON.stringify(likedPosts));
+          logger.info('✅ Demo: Like added', { postId });
+          return true; // Ahora SÍ está liked
+        }
       }
       
       const userId = this.getCurrentUserId();
@@ -406,11 +451,11 @@ class PostsService {
 
         if (deleteError) {
           logger.error('Error removing like:', deleteError);
-          return false;
+          return true; // Mantener estado como liked si falla
         }
 
         logger.info('✅ Like removed successfully', { postId });
-        return true;
+        return false; // Ahora NO está liked
       } else {
         // Agregar like
         const { error: insertError } = await supabase
@@ -422,11 +467,11 @@ class PostsService {
 
         if (insertError) {
           logger.error('Error adding like:', insertError);
-          return false;
+          return false; // Mantener estado como no liked si falla
         }
 
         logger.info('✅ Like added successfully', { postId });
-        return true;
+        return true; // Ahora SÍ está liked
       }
     } catch (error) {
       logger.error('Error in toggleLike:', { error: String(error) });

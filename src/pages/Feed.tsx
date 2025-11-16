@@ -7,6 +7,7 @@ import { postsService, type Post } from '@/services/postsService';
 import { useAuth } from '@/features/auth/useAuth';
 import { useToast } from '@/hooks/useToast';
 import { logger } from '@/lib/logger';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Feed = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -14,12 +15,19 @@ const Feed = () => {
   const [loadingMore, _setLoadingMore] = useState(false);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
+  const [expandedComments, setExpandedComments] = useState<Set<string>>(new Set());
+  const [likedPosts, setLikedPosts] = useState<Set<string>>(new Set());
   const { isAuthenticated: _isAuthenticated } = useAuth();
   const { toast } = useToast();
 
-  // Cargar posts iniciales
+  // Cargar posts iniciales y estado de likes
   useEffect(() => {
     loadPosts();
+    
+    // Cargar likes guardados en localStorage
+    const likedPostsStr = localStorage.getItem('demo_liked_posts') || '[]';
+    const savedLikedPosts: string[] = JSON.parse(likedPostsStr);
+    setLikedPosts(new Set(savedLikedPosts));
   }, []);
 
   const loadPosts = async (pageNum = 0) => {
@@ -51,6 +59,17 @@ const Feed = () => {
   const handleLike = async (post: Post) => {
     try {
       const newLikedState = await postsService.toggleLike(post.id);
+      
+      // Actualizar estado de likes para animación
+      setLikedPosts(prev => {
+        const newSet = new Set(prev);
+        if (newLikedState) {
+          newSet.add(post.id);
+        } else {
+          newSet.delete(post.id);
+        }
+        return newSet;
+      });
         
       // Actualizar el contador de likes en el post
       setPosts(prevPosts => 
@@ -76,6 +95,36 @@ const Feed = () => {
     }
   };
 
+  const toggleComments = (postId: string) => {
+    setExpandedComments(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(postId)) {
+        newSet.delete(postId);
+      } else {
+        newSet.add(postId);
+      }
+      return newSet;
+    });
+  };
+
+  const handleShare = (post: Post) => {
+    // En modo demo, mostrar modal con opciones de compartir
+    toast({
+      title: "Compartir Publicación",
+      description: `Funcionalidad de compartir para "${post.content.substring(0, 30)}..."`,
+    });
+    
+    // En producción, aquí iría la lógica de compartir
+    logger.info('Share button clicked', { postId: post.id });
+  };
+
+  // Comentarios demo para modo demo
+  const getDemoComments = (postId: string) => [
+    { id: `${postId}-c1`, author: "Carlos M.", text: "¡Me encanta! 🔥", time: "2h", avatar: null },
+    { id: `${postId}-c2`, author: "Ana L.", text: "Totalmente de acuerdo", time: "4h", avatar: null },
+    { id: `${postId}-c3`, author: "Roberto S.", text: "Excelente punto de vista", time: "1d", avatar: null },
+  ];
+
   const formatTimeAgo = (dateString: string) => {
     const date = new Date(dateString);
     const now = new Date();
@@ -98,7 +147,7 @@ const Feed = () => {
             Feed <span className="bg-love-gradient bg-clip-text text-transparent">Lifestyle</span>
           </h1>
           <p className="text-white">
-            Descubre las experiencias de la comunidad ??
+            Descubre las experiencias de la comunidad 🌟
           </p>
         </div>
 
@@ -120,8 +169,18 @@ const Feed = () => {
           </div>
         ) : (
           <div className="space-y-6">
-            {posts.map((post) => (
-              <Card key={post.id} className="bg-card/80 backdrop-blur-sm border-accent/20 overflow-hidden">
+            {posts.map((post, index) => (
+              <motion.div
+                key={post.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ 
+                  duration: 0.4,
+                  delay: index * 0.1,
+                  ease: "easeOut"
+                }}
+              >
+              <Card className="bg-card/80 backdrop-blur-sm border-accent/20 overflow-hidden">
                 <CardContent className="p-0">
                   {/* Header del post */}
                   <div className="flex items-center justify-between p-4 pb-3">
@@ -188,24 +247,127 @@ const Feed = () => {
                     <div className="flex items-center space-x-4">
                       <Button
                         onClick={() => handleLike(post)}
-                        className="flex items-center space-x-2 text-white hover:text-red-400 bg-transparent hover:bg-white/10 border-none px-2 py-1 text-sm font-semibold drop-shadow-md"
+                        className="flex items-center space-x-2 bg-transparent hover:bg-white/10 border-none px-2 py-1 text-sm font-semibold drop-shadow-md"
                       >
-                        <Heart className="w-5 h-5" />
-                        <span className="drop-shadow-md">{post.likes_count}</span>
+                        <motion.div
+                          key={`like-${post.id}`}
+                          animate={likedPosts.has(post.id) ? {
+                            scale: [1, 1.3, 1],
+                            rotate: [0, -10, 10, 0]
+                          } : {}}
+                          transition={{ 
+                            duration: 0.5,
+                            ease: "easeInOut"
+                          }}
+                        >
+                          <Heart 
+                            className={`w-5 h-5 transition-colors duration-300 ${
+                              likedPosts.has(post.id) 
+                                ? 'fill-red-500 text-red-500' 
+                                : 'text-white hover:text-red-400'
+                            }`}
+                          />
+                        </motion.div>
+                        <span className="text-white drop-shadow-md">{post.likes_count}</span>
                       </Button>
                       
-                      <Button className="flex items-center space-x-2 text-white bg-transparent hover:bg-white/10 border-none px-2 py-1 text-sm font-semibold drop-shadow-md">
+                      <Button 
+                        onClick={() => toggleComments(post.id)}
+                        className="flex items-center space-x-2 text-white bg-transparent hover:bg-white/10 border-none px-2 py-1 text-sm font-semibold drop-shadow-md"
+                      >
                         <MessageCircle className="w-5 h-5" />
                         <span className="drop-shadow-md">{post.comments_count}</span>
                       </Button>
                     </div>
                     
-                    <Button className="text-white bg-transparent hover:bg-white/10 border-none px-2 py-1 text-sm drop-shadow-md">
-                      <Share2 className="w-5 h-5" />
-                    </Button>
+                    <motion.div
+                      whileTap={{ 
+                        scale: 0.9,
+                        rotate: [0, -15, 15, 0]
+                      }}
+                      transition={{ 
+                        duration: 0.4,
+                        ease: "easeOut"
+                      }}
+                    >
+                      <Button 
+                        onClick={() => handleShare(post)}
+                        className="text-white bg-transparent hover:bg-white/10 border-none px-2 py-1 text-sm drop-shadow-md"
+                      >
+                        <motion.div
+                          whileHover={{ scale: 1.1 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <Share2 className="w-5 h-5" />
+                        </motion.div>
+                      </Button>
+                    </motion.div>
                   </div>
+
+                  {/* Sección de comentarios expandible con animación */}
+                  <AnimatePresence>
+                    {expandedComments.has(post.id) && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ 
+                          duration: 0.3,
+                          ease: "easeInOut"
+                        }}
+                        className="border-t border-border/50 mt-4 pt-4 px-4 pb-4 space-y-3 overflow-hidden"
+                      >
+                        <h4 className="text-sm font-semibold text-foreground mb-3">Comentarios ({post.comments_count})</h4>
+                      
+                      {/* Comentarios demo */}
+                      {getDemoComments(post.id).map((comment) => (
+                        <div key={comment.id} className="flex space-x-3">
+                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                            {comment.author.charAt(0)}
+                          </div>
+                          <div className="flex-1">
+                            <div className="bg-white/5 rounded-lg p-3">
+                              <p className="text-sm font-semibold text-foreground">{comment.author}</p>
+                              <p className="text-sm text-foreground/90 mt-1">{comment.text}</p>
+                            </div>
+                            <p className="text-xs text-muted-foreground mt-1 ml-1">{comment.time}</p>
+                          </div>
+                        </div>
+                      ))}
+
+                      {/* Campo para agregar comentario */}
+                      <div className="flex space-x-2 mt-4 pt-3 border-t border-border/30">
+                        <input 
+                          type="text" 
+                          placeholder="Escribe un comentario..." 
+                          className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                          onKeyPress={(e) => {
+                            if (e.key === 'Enter') {
+                              toast({
+                                title: "Modo Demo",
+                                description: "Los comentarios están deshabilitados en modo demo",
+                              });
+                            }
+                          }}
+                        />
+                        <Button 
+                          className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-4"
+                          onClick={() => {
+                            toast({
+                              title: "Modo Demo",
+                              description: "Los comentarios están deshabilitados en modo demo",
+                            });
+                          }}
+                        >
+                          Enviar
+                        </Button>
+                      </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </CardContent>
               </Card>
+              </motion.div>
             ))}
           </div>
         )}

@@ -124,13 +124,13 @@ export class WalletService {
   };
   
   // Configuración de demo y testnet
-  private static readonly DEMO_MODE = process.env.VITE_DEMO_MODE === 'true';
+  private static readonly DEMO_MODE = import.meta.env.VITE_DEMO_MODE === 'true';
   private static readonly TESTNET_FREE_TOKENS = 1000; // 1000 CMPX gratuitos en testnet
   private static readonly DAILY_CLAIM_LIMIT = 2500000; // 2.5M CMPX diarios (1% del pool)
   
   private constructor() {
     // Clave de encriptación desde variables de entorno
-    this.encryptionKey = process.env.VITE_WALLET_ENCRYPTION_KEY || 'default-key-change-in-production';
+    this.encryptionKey = import.meta.env.VITE_WALLET_ENCRYPTION_KEY || 'default-key-change-in-production';
     
     // Inicializar provider por defecto (Mumbai testnet)
     this.initializeProvider('mumbai');

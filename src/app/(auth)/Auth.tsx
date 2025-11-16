@@ -154,7 +154,31 @@ const Auth = () => {
     setShowLoginLoading(true);
 
     try {
-      // Usar el mtodo signIn del hook useAuth que maneja correctamente demo y produccin
+      // ✅ Detectar credenciales demo y manejarlas directamente
+      if (formData.email === 'demo@complicesconecta.com' && formData.password === 'demo123') {
+        // Configurar estado de autenticación demo
+        _setDemoAuthenticated(true);
+        _setDemoUser({ email: formData.email, password: formData.password });
+        _setUserType(formData.accountType || 'single');
+        
+        // Configurar localStorage para demo
+        safeSetItem('demo_authenticated', 'true', { validate: true });
+        safeSetItem('demo_user', { email: formData.email, id: 'demo-user-id' }, { validate: false, sanitize: true });
+        safeSetItem('userType', formData.accountType || 'single', { validate: false });
+        
+        toast({
+          title: "Inicio de sesión exitoso",
+          description: "Bienvenido al modo demo de ComplicesConecta",
+        });
+
+        setTimeout(() => {
+          navigate('/feed');
+        }, 1500);
+        
+        return;
+      }
+
+      // Usar el método signIn del hook useAuth que maneja correctamente demo y producción
       const result = await signIn(formData.email, formData.password, formData.accountType || 'single');
 
       if (result && result.user) {
@@ -352,7 +376,7 @@ const Auth = () => {
           <CardContent>
             <Tabs defaultValue="signin" className="w-full">
               <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="signin" data-testid="switch-to-login">Iniciar Sesin</TabsTrigger>
+                <TabsTrigger value="signin" data-testid="switch-to-login">Iniciar Sesión</TabsTrigger>
                 <TabsTrigger value="signup" data-testid="switch-to-register">Registrarse</TabsTrigger>
               </TabsList>
               
@@ -390,15 +414,15 @@ const Auth = () => {
                     data-testid="login-button"
                     style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}
                   >
-                    {isLoading ? "Iniciando sesin..." : "Iniciar Sesin"}
+                    {isLoading ? "Iniciando sesión..." : "Iniciar Sesión"}
                   </Button>
                   
-                  {/* Demo Login Button con glassmorphism mejorado */}
+                  {/* Demo Login Button con glassmorphism mejorado - Navega a selector */}
                   <Button 
                     type="button" 
                     variant="outline" 
                     className="w-full border-2 border-purple-400/50 bg-white/10 backdrop-blur-sm text-white font-semibold hover:bg-purple-500/30 hover:border-purple-400 hover:text-white transition-all duration-300 hover:scale-105 active:scale-95"
-                    onClick={handleDemoLogin}
+                    onClick={() => navigate('/demo')}
                     data-testid="demo-login-button"
                     style={{ textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}
                   >
@@ -520,6 +544,7 @@ const Auth = () => {
                     <Label htmlFor="gender" className="text-white font-medium">Gnero</Label>
                     <select
                       id="gender"
+                      aria-label="Selecciona tu género"
                       value={formData.gender}
                       onChange={(e) => handleInputChange('gender', e.target.value)}
                       required
@@ -540,6 +565,7 @@ const Auth = () => {
                     <Label htmlFor="interestedIn" className="text-white font-medium">Interesado en</Label>
                     <select
                       id="interestedIn"
+                      aria-label="Selecciona en quién estás interesado"
                       value={formData.interestedIn}
                       onChange={(e) => handleInputChange('interestedIn', e.target.value)}
                       required
@@ -616,6 +642,7 @@ const Auth = () => {
                           <Label htmlFor="partnerGender" className="text-white font-medium">Gnero de tu Pareja</Label>
                           <select
                             id="partnerGender"
+                            aria-label="Selecciona el género de tu pareja"
                             value={formData.partnerGender}
                             onChange={(e) => handleInputChange('partnerGender', e.target.value)}
                             required
@@ -636,6 +663,7 @@ const Auth = () => {
                           <Label htmlFor="partnerInterestedIn" className="text-white font-medium">Interesado en</Label>
                           <select
                             id="partnerInterestedIn"
+                            aria-label="Selecciona en quién está interesada tu pareja"
                             value={formData.partnerInterestedIn}
                             onChange={(e) => handleInputChange('partnerInterestedIn', e.target.value)}
                             required
@@ -714,6 +742,7 @@ const Auth = () => {
                       <input
                         type="checkbox"
                         id="acceptTerms"
+                        aria-label="Acepto los términos y condiciones"
                         checked={formData.acceptTerms}
                         onChange={(e) => handleInputChange('acceptTerms', e.target.checked)}
                         required
@@ -730,6 +759,7 @@ const Auth = () => {
                       <input
                         type="checkbox"
                         id="shareLocation"
+                        aria-label="Compartir mi ubicación"
                         checked={formData.shareLocation}
                         onChange={(e) => handleInputChange('shareLocation', e.target.checked)}
                         className="rounded"

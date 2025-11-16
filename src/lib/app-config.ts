@@ -62,7 +62,8 @@ export const DEMO_CREDENTIALS = [
   'single@outlook.es',
   'pareja@outlook.es', 
   'admin',
-  'djwacko28@gmail.com'        // Admin DEMO - usa datos demo
+  'djwacko28@gmail.com',       // Admin DEMO - usa datos demo
+  'demo@complicesconecta.com'  // Demo genérico desde DemoSelector
 ];
 
 // Contraseñas demo por email - MIGRADO A VARIABLES DE ENTORNO
@@ -71,7 +72,8 @@ const DEFAULT_DEMO_PASSWORDS: Record<string, string> = {
   'single@outlook.es': '123456',
   'pareja@outlook.es': '123456',
   'admin': '123456',
-  'djwacko28@gmail.com': 'Magy_Wacko_nala28' // Admin DEMO
+  'djwacko28@gmail.com': 'Magy_Wacko_nala28', // Admin DEMO
+  'demo@complicesconecta.com': 'demo123' // Demo genérico
 };
 
 // Función auxiliar para obtener contraseña desde env o fallback
