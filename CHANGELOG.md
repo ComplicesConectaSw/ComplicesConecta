@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.7.0] - 2025-11-16
+
+### ✨ Agregado
+- 🏆 Sistema completo de recompensas para beta-testers (4 niveles)
+- 💰 Economía de tokens para salas (Pay-to-Enter & Earn)
+- 📋 Sistema de límites por plan (Free/Basic/Premium/VIP)
+- ⚖️ Documentos legales completos (Términos, Privacidad, Deslinde)
+- 🗄️ 10 tablas Supabase para sistema de recompensas
+- 🎮 Misiones semanales y sistema de puntos
+- 🚨 Sistema anti-cheating
+- 📊 Estrategia completa beta → lanzamiento
+
+### 🔧 Corregido
+- ✅ TemplateDemo: aria-labels de accesibilidad
+- ✅ Discover: z-index background (pantalla oscura)
+- ✅ Trigger PostgreSQL: columna GENERATED
+- ✅ Chat.tsx: Estructura JSX estabilizada
+
+### 📚 Documentación
+- Guía completa sistema de recompensas
+- Estrategia de monetización
+- Documentos legales (Ley Olimpia incluida)
+- Índice legal completo
+- Resumen de sesións file.
+
 ## [3.6.3] - 2025-11-15
 
 ### Added - Type Safety Complete
