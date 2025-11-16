@@ -498,11 +498,14 @@ Información del perfil:
       <div className="relative z-10">
         <div className="pt-20 pb-6 px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2 drop-shadow-lg">
-              Mi Perfil - {profile.name}
+            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1 drop-shadow-lg">
+              {profile.name || 'Mi Perfil'}
             </h1>
+            <p className="text-purple-300 text-sm sm:text-base font-medium mb-1">
+              {profile.username || '@usuario'}
+            </p>
             {checkAuth() &&
-              <p className="text-white/80 text-sm sm:text-base">
+              <p className="text-white/70 text-xs sm:text-sm">
                 {user?.email || 'Usuario'}
               </p>
             }
@@ -554,11 +557,11 @@ Información del perfil:
                     {profile.name}
                   </h2>
                   <div className="flex flex-wrap gap-2 justify-center sm:justify-start mb-4">
-                    <Badge className="bg-white/20 text-white border-white/30 text-xs sm:text-sm">
-                      {profile.age} años
+                    <Badge className="bg-purple-500/30 text-white border-purple-400/50 text-xs sm:text-sm font-semibold">
+                      🎂 {profile.age} años
                     </Badge>
-                    <Badge className="bg-white/20 text-white border-white/30 text-xs sm:text-sm">
-                      {profile.gender || 'No especificado'}
+                    <Badge className="bg-blue-500/30 text-white border-blue-400/50 text-xs sm:text-sm">
+                      {profile.gender === 'female' ? '♀️ Femenino' : profile.gender === 'male' ? '♂️ Masculino' : '⚧️ Género no especificado'}
                     </Badge>
                     <Badge className="bg-white/20 text-white border-white/30 flex items-center gap-1 text-xs sm:text-sm">
                       <MapPin className="w-3 h-3" />
