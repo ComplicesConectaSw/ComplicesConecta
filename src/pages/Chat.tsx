@@ -777,16 +777,19 @@ const Chat = () => {
                           logger.info('Enviando invitacin...');
                           // Simulate invitation sent
                           setHasChatAccess(prev => ({...prev, [selectedChat?.id || 0]: true}));
-                          toast.success('¡Invitación aceptada! Ahora puedes chatear.');
+                          toast({ title: "¡Éxito!", description: '¡Invitación aceptada! Ahora puedes chatear.' });
                         }}
                         className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-6 py-2 rounded-lg font-medium transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                      >
+                        <UserPlus className="h-4 w-4 mr-2" />
+                        Aceptar invitacin
                       </UnifiedButton>
                       <UnifiedButton 
                         onClick={() => {
                           logger.info('Rechazando invitación...');
                           // Properly reject the invitation and navigate back
                           setSelectedChat(null);
-                          toast.info('Invitación rechazada. Has vuelto a la lista de chats.');
+                          toast({ title: "Invitación Rechazada", description: 'Has vuelto a la lista de chats.' });
                         }}
                         variant="outline"
                         className="border-red-300/50 text-red-300 hover:bg-red-500/20 px-6 py-2 rounded-lg font-medium transition-all duration-200"
