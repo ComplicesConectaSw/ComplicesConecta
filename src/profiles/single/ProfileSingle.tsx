@@ -1040,37 +1040,33 @@ const ProfileSingle: React.FC = () => {
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
                 <div className="aspect-square bg-gradient-to-br from-purple-400 to-blue-600 rounded-lg flex items-center justify-center overflow-hidden">
                   <img 
-                    src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=faces&auto=format&q=80" 
-                    alt="Foto pblica 1"
+                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&crop=face" 
+                    alt="Foto pública 1"
                     className="w-full h-full object-cover"
                     onError={(e) => {
-                      e.currentTarget.src = '/placeholder.svg';
+                      e.currentTarget.src = 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face';
                     }}
                   />
                   <Camera className="w-8 h-8 text-white hidden" />
                 </div>
                 <div className="aspect-square bg-gradient-to-br from-purple-400 to-blue-600 rounded-lg flex items-center justify-center overflow-hidden">
                   <img 
-                    src="/placeholder.svg" 
-                    alt="Foto pblica 2"
+                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&crop=face" 
+                    alt="Foto pública 2"
                     className="w-full h-full object-cover"
                     onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.style.display = 'none';
-                      target.nextElementSibling?.classList.remove('hidden');
+                      e.currentTarget.src = 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face';
                     }}
                   />
                   <Camera className="w-8 h-8 text-white hidden" />
                 </div>
                 <div className="aspect-square bg-gradient-to-br from-blue-400 to-teal-600 rounded-lg flex items-center justify-center overflow-hidden">
                   <img 
-                    src="/placeholder.svg" 
-                    alt="Foto pblica 3"
+                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face" 
+                    alt="Foto pública 3"
                     className="w-full h-full object-cover"
                     onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.style.display = 'none';
-                      target.nextElementSibling?.classList.remove('hidden');
+                      e.currentTarget.src = 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face';
                     }}
                   />
                   <Camera className="w-8 h-8 text-white hidden" />
@@ -1086,7 +1082,7 @@ const ProfileSingle: React.FC = () => {
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                   <div className="aspect-square rounded-lg overflow-hidden relative">
                     <img 
-                      src="/placeholder.svg" 
+                      src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&h=400&fit=crop" 
                       alt="Foto privada 1"
                       className={`w-full h-full object-cover ${isOwnProfile ? '' : 'filter blur-md'}`}
                     />
@@ -1098,7 +1094,7 @@ const ProfileSingle: React.FC = () => {
                   </div>
                   <div className="aspect-square rounded-lg overflow-hidden relative">
                     <img 
-                      src="/placeholder.svg" 
+                      src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=400&fit=crop" 
                       alt="Foto privada 2"
                       className={`w-full h-full object-cover ${isOwnProfile ? '' : 'filter blur-md'}`}
                     />
@@ -1110,7 +1106,7 @@ const ProfileSingle: React.FC = () => {
                   </div>
                   <div className="aspect-square rounded-lg overflow-hidden relative">
                     <img 
-                      src="/placeholder.svg" 
+                      src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=400&h=400&fit=crop" 
                       alt="Foto privada 3"
                       className={`w-full h-full object-cover ${isOwnProfile ? '' : 'filter blur-md'}`}
                     />
