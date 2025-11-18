@@ -24,6 +24,7 @@ const ProfileCouple: React.FC = () => {
   const [showPrivateImageRequest, setShowPrivateImageRequest] = useState(false);
   const [privateImageAccess, setPrivateImageAccess] = useState<'none' | 'pending' | 'approved' | 'denied'>('none');
   const [showReportDialog, setShowReportDialog] = useState(false);
+  const [demoPrivateUnlocked, setDemoPrivateUnlocked] = useState(false);
   const { isAuthenticated, user, profile: authProfile } = useAuth();
 
   // Estados para funcionalidades blockchain
@@ -41,17 +42,19 @@ const ProfileCouple: React.FC = () => {
   // Handlers para las acciones del perfil
   const handleUploadImage = () => {
     logger.info('Subir imagen solicitado');
-    // Implementar lgica de subida de imagen
+    alert('🖼️ Subir Imagen (DEMO)\n\nEn la versión completa, esto abrirá la galería para que puedas subir una nueva foto.');
   };
 
   const handleDeletePost = (postId: string) => {
     logger.info('Eliminar post solicitado', { postId });
-    // Implementar lgica de eliminacin de post
+    if (window.confirm('🗑️ ¿Seguro que quieres eliminar este post? (Acción de DEMO)')) {
+      alert('✅ Post eliminado (temporalmente para el demo)');
+    }
   };
 
   const handleCommentPost = (postId: string) => {
     logger.info('Comentar post solicitado', { postId });
-    // Implementar lgica de comentario
+    alert('💬 Comentar Post (DEMO)\n\nAquí se abriría la sección de comentarios para que puedas escribir.');
   };
 
   // Funciones blockchain específicas para parejas
@@ -163,22 +166,38 @@ const ProfileCouple: React.FC = () => {
 
         // Verificar si hay sesin demo activa PRIMERO
         if (demoAuth === 'true' && demoUser) {
-          try {
-            const parsedUser = typeof demoUser === 'string' ? JSON.parse(demoUser) : demoUser;
-            logger.info('?? Cargando perfil demo pareja:', parsedUser);
-            
-            // Usar el perfil demo o generar uno basado en los datos demo
-            const mockCoupleProfiles = generateMockCoupleProfiles();
-            const demoProfile = mockCoupleProfiles[0]; // Usar el primer perfil como demo
-            
-            setProfile(demoProfile);
-            setLoading(false);
-            // Cargar datos blockchain para demo
-            loadCoupleBlockchainData();
-            return;
-          } catch (error) {
-            logger.error('Error parseando usuario demo pareja:', { error: String(error) });
-          }
+          logger.info('?? Cargando perfil demo pareja...');
+          const demoCoupleProfile: CoupleProfileWithPartners = {
+            id: 'demo-couple-123',
+            couple_name: 'Sofía & Leo',
+            username: '@sofiayleo_sw',
+            location: 'CDMX, México',
+            couple_bio: 'Una pareja liberal en busca de nuevas aventuras. Nos encanta la buena comida, los viajes y conocer gente interesante.',
+            is_verified: true,
+            is_premium: false,
+            relationship_type: 'man-woman',
+            couple_images: [],
+            partner1_id: 'demo-partner-1',
+            partner1_first_name: 'Sofía',
+            partner1_last_name: 'Reyes',
+            partner1_age: 29,
+            partner1_gender: 'female',
+            partner1_interested_in: 'both',
+            partner1_bio: 'Amo el arte y los atardeceres.',
+            partner2_id: 'demo-partner-2',
+            partner2_first_name: 'Leo',
+            partner2_last_name: 'Vega',
+            partner2_age: 32,
+            partner2_gender: 'male',
+            partner2_interested_in: 'both',
+            partner2_bio: 'Fan de la tecnología y el buen café.',
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          };
+          setProfile(demoCoupleProfile);
+          setLoading(false);
+          loadCoupleBlockchainData();
+          return;
         }
         
         // Verificar autenticacin usando useAuth
@@ -256,12 +275,15 @@ const ProfileCouple: React.FC = () => {
         {/* Header centrado */}
         <div className="pt-20 pb-6 px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2 drop-shadow-lg">
-              {profile ? profile.couple_name : 'Mi Perfil - Pareja'}
+            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1 drop-shadow-lg">
+              {profile.couple_name || 'Perfil de Pareja'}
             </h1>
+            <p className="text-purple-300 text-sm sm:text-base font-medium mb-1">
+              {profile.username || '@pareja_sw'}
+            </p>
             {isAuthenticated() && user && (
-              <p className="text-white/80 text-sm sm:text-base">
-                Logueado como: {user.email || 'Usuario'}
+              <p className="text-white/70 text-xs sm:text-sm">
+                {user.email || 'Usuario'}
               </p>
             )}
           </div>
@@ -365,6 +387,24 @@ const ProfileCouple: React.FC = () => {
                         <MapPin className="w-3 h-3" />
                         {profile?.location || 'CDMX, Mxico'}
                       </Badge>
+                    </div>
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm mb-4">
+                      <div>
+                        <p className="font-semibold text-white">{profile.partner1_first_name}</p>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          <Badge className="bg-purple-500/30 text-white border-purple-400/50 text-xs"> {profile.partner1_age} años</Badge>
+                          <Badge className="bg-blue-500/30 text-white border-blue-400/50 text-xs">{profile.partner1_gender === 'female' ? '♀️' : '♂️'}</Badge>
+                          <Badge className="bg-pink-500/30 text-white border-pink-400/50 text-xs">{profile.partner1_interested_in === 'both' ? '⚥' : '⚤'}</Badge>
+                        </div>
+                      </div>
+                      <div>
+                        <p className="font-semibold text-white">{profile.partner2_first_name}</p>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          <Badge className="bg-purple-500/30 text-white border-purple-400/50 text-xs"> {profile.partner2_age} años</Badge>
+                          <Badge className="bg-blue-500/30 text-white border-blue-400/50 text-xs">{profile.partner2_gender === 'female' ? '♀️' : '♂️'}</Badge>
+                          <Badge className="bg-pink-500/30 text-white border-pink-400/50 text-xs">{profile.partner2_interested_in === 'both' ? '⚥' : '⚤'}</Badge>
+                        </div>
+                      </div>
                     </div>
                     
                     {/* Biografa */}
@@ -518,8 +558,29 @@ const ProfileCouple: React.FC = () => {
               onCommentPost={handleCommentPost}
             />
 
+            {/* Galera privada - demo: mostrar bloqueado y ejemplo de desbloqueo */}
+            <div className="mb-4">
+              <h4 className="text-white font-semibold mb-3 flex items-center gap-2"><Lock className="w-4 h-4" />Fotos Privadas</h4>
+              <div
+                className="grid grid-cols-2 sm:grid-cols-3 gap-4 cursor-pointer"
+                onClick={() => {
+                  if (isOwnProfile) {
+                    alert('✅ ACCESO CONCEDIDO (DEMO)\n\nEn producción esto se haría solo tras aprobar la solicitud.');
+                    setDemoPrivateUnlocked(true);
+                  } else {
+                    setShowPrivateImageRequest(true);
+                  }
+                }}
+              >
+                <div className={`aspect-square rounded-lg overflow-hidden relative ${demoPrivateUnlocked && isOwnProfile ? '' : 'filter blur-lg'}`}>
+                  <img src="/src/assets/people/privado/coupleprivjpg.jpg" alt="Foto privada 1" className="w-full h-full object-cover" />
+                  {!demoPrivateUnlocked && <div className="absolute inset-0 bg-black/50 flex items-center justify-center"><Lock className="w-12 h-12 text-white" /></div>}
+                </div>
+              </div>
+            </div>
+
             {/* Galera privada - solo si tiene acceso aprobado */}
-            {privateImageAccess === 'approved' && (
+            {(privateImageAccess === 'approved' || (demoPrivateUnlocked && isOwnProfile)) && (
               <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white mt-6">
                 <CardContent className="p-4 sm:p-6">
                   <PrivateImageGallery 

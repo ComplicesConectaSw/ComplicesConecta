@@ -19,16 +19,19 @@ export interface CoupleProfileData {
 }
 
 export interface CoupleProfileWithPartners extends CoupleProfileData {
+  username?: string;
   partner1_first_name: string;
   partner1_last_name: string;
   partner1_age: number;
   partner1_bio: string | null;
   partner1_gender: string;
+  partner1_interested_in?: 'male' | 'female' | 'both';
   partner2_first_name: string;
   partner2_last_name: string;
   partner2_age: number;
   partner2_bio: string | null;
   partner2_gender: string;
+  partner2_interested_in?: 'male' | 'female' | 'both';
   location?: string;
   isOnline?: boolean;
 }

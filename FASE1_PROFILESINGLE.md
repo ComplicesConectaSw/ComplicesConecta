@@ -87,21 +87,24 @@
 
 ---
 
-## 📊 **PROGRESO:**
+## 📊 **PROGRESO ACTUAL (16 Nov ~05:45 AM):**
 
-| # | Problema | Estado | Commit |
-|---|----------|--------|--------|
-| 1 | Ver fotos privadas | ⏳ Pending | - |
-| 2 | Theme toggle | ⏳ Pending | - |
-| 3 | Botón eliminar | ⏳ Pending | - |
-| 4 | Like aumenta | ⏳ Pending | - |
-| 5 | Crear post | ⏳ Pending | - |
-| 6 | Galería pública | ✅ OK | - |
-| 7 | Galería privada | ⏳ Pending | - |
-| 8 | Subir imagen | ⏳ Pending | - |
-| 9 | Escribir crea post | ⏳ Pending | - |
+| # | Problema | Estado | Nota |
+|---|----------|--------|------|
+| 1 | Ver fotos privadas | ✅ Listo | Blur + candado + vista demo con/sin acceso |
+| 2 | Theme toggle (luna) | ✅ Listo | Cambia claro/oscuro/sistema + alert demo |
+| 3 | Botón eliminar (basura) | ✅ Listo | Modal demo "Perfil demo" + alerta de borrado temporal |
+| 4 | Like aumenta + animación | ✅ Listo | Implementado en `ProfileNavTabs` con framer-motion |
+| 5 | Crear post | ✅ Listo | Post demo visible con imagen de fondo y texto |
+| 6 | Galería pública | ✅ OK | Sin cambios, solo pequeños ajustes visuales |
+| 7 | Galería privada | ✅ Listo | Sección con blur + 🔒 y vista con acceso para demo |
+| 8 | Subir imagen | ✅ Listo (demo) | Muestra modal de explicación, no rompe nada |
+| 9 | Escribir crea post | ⏳ Pending | Campo aún no localizado / conectado |
+|10 | Descargar perfil | ✅ Listo (demo segura) | Modal informativo, sin JSON plano |
+|11 | Mintear NFT de Perfil | ✅ Listo (demo) | Alert de progreso + éxito, agrega a `userNFTs` |
+|12 | Header UX (nombre/apodo/edad/género) | ✅ Listo | Nombre real, username, edad y género claros |
 
-**Total:** 1/9 (11%)
+**Total:** 11/12 completados (~92%)
 
 ---
 
@@ -130,4 +133,13 @@ Una vez ProfileSingle esté 100%:
 ---
 
 **Iniciado:** 16 Nov 2025 - 05:15 AM  
-**Status:** Arrancando Fase 1
+**Status:** Fase 1 ProfileSingle casi completada (lista para demo inversor)
+
+### 🧾 Commits relevantes (rama `master`)
+
+- `4479c40` – Seguridad Descargar + Mintear NFT simplificado (modal seguro, NFT demo)
+- `cd7f796` – Separar Subir Imagen de Crear Post + comentarios funcionales en post demo
+- `94a61b2` – Mejorar header ProfileSingle (nombre, username, edad, género)
+- `07c3c85` / `ad1840a` – Fixes TypeScript para `username` y acceso seguro
+- Commits previos: like animado, crear post, eliminar post, galería privada, theme toggle, etc.
+

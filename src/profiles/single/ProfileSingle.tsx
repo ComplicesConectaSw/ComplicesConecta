@@ -53,6 +53,8 @@ const ProfileSingle: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [showPrivateImageRequest, setShowPrivateImageRequest] = useState(false);
   const [privateImageAccess, setPrivateImageAccess] = usePersistedState<'none' | 'pending' | 'approved' | 'denied'>('private_image_access', 'none');
+  // Demo: controlar desbloqueo visual de fotos privadas en el propio perfil
+  const [demoPrivateUnlocked, setDemoPrivateUnlocked] = useState(false);
   const [showReportDialog, setShowReportDialog] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
   const [profileStats, setProfileStats] = useState({
@@ -336,6 +338,7 @@ Información del perfil:
             username: '@ana_swinger',
             age: 28,
             gender: 'female',
+            interested_in: 'both', // 'male', 'female', 'both'
             location: 'CDMX, México',
             bio: 'Explorando el lifestyle swinger con mente abierta 💕',
             avatar_url: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=200',
@@ -482,6 +485,29 @@ Información del perfil:
     );
   }
 
+  // Valores de display seguros para DEMO inversor (fallback cuando faltan datos reales)
+  const displayName = profile.name || 'Ana García';
+  const displayUsername = (profile as any).username || '@ana_swinger';
+  const displayAge = typeof profile.age === 'number' && profile.age > 0 ? profile.age : 28;
+  const displayGenderLabel = profile.gender === 'female'
+    ? '♀️ Femenino'
+    : profile.gender === 'male'
+      ? '♂️ Masculino'
+      : '⚧️ Género no especificado';
+
+  const interestedIn = (profile as any).interested_in;
+  const displayOrientationLabel = interestedIn === 'male' && profile.gender === 'female'
+    ? '⚤ Heterosexual'
+    : interestedIn === 'female' && profile.gender === 'male'
+    ? '⚤ Heterosexual'
+    : interestedIn === 'female' && profile.gender === 'female'
+    ? '⚢ Homosexual'
+    : interestedIn === 'male' && profile.gender === 'male'
+    ? '⚣ Homosexual'
+    : interestedIn === 'both'
+    ? '⚥ Bisexual'
+    : '❔ Orientación no especificada';
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 profile-page relative overflow-hidden">
       {/* Background decorativo */}
@@ -499,10 +525,10 @@ Información del perfil:
         <div className="pt-20 pb-6 px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1 drop-shadow-lg">
-              {profile.name || 'Mi Perfil'}
+              {displayName}
             </h1>
             <p className="text-purple-300 text-sm sm:text-base font-medium mb-1">
-              {(profile as any).username || '@usuario'}
+              {displayUsername}
             </p>
             {checkAuth() &&
               <p className="text-white/70 text-xs sm:text-sm">
@@ -554,14 +580,17 @@ Información del perfil:
                 {/* Informacoin basica */}
                 <div className="flex-1 text-center sm:text-left">
                   <h2 className="text-xl sm:text-2xl font-bold mb-2">
-                    {profile.name}
+                    {displayName}
                   </h2>
                   <div className="flex flex-wrap gap-2 justify-center sm:justify-start mb-4">
                     <Badge className="bg-purple-500/30 text-white border-purple-400/50 text-xs sm:text-sm font-semibold">
-                      🎂 {profile.age} años
+                      🎂 {displayAge} años
                     </Badge>
                     <Badge className="bg-blue-500/30 text-white border-blue-400/50 text-xs sm:text-sm">
-                      {profile.gender === 'female' ? '♀️ Femenino' : profile.gender === 'male' ? '♂️ Masculino' : '⚧️ Género no especificado'}
+                      {displayGenderLabel}
+                    </Badge>
+                    <Badge className="bg-pink-500/30 text-white border-pink-400/50 text-xs sm:text-sm">
+                      {displayOrientationLabel}
                     </Badge>
                     <Badge className="bg-white/20 text-white border-white/30 flex items-center gap-1 text-xs sm:text-sm">
                       <MapPin className="w-3 h-3" />
@@ -1103,7 +1132,7 @@ Información del perfil:
                 </div>
               </div>
 
-              {/* Galera privada - solo visible para dueño o con acceso aprobado */}
+              {/* Galera privada - demo: mostrar bloqueado y ejemplo de desbloqueo */}
               <div className="mb-6">
                 <h4 className="text-white font-semibold mb-3 flex items-center gap-2">
                   <Lock className="w-4 h-4" />
@@ -1114,36 +1143,72 @@ Información del perfil:
                 <div className="mb-4">
                   <p className="text-white/60 text-xs mb-2">🔒 Vista sin acceso (otros usuarios):</p>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                    <div className="aspect-square rounded-lg overflow-hidden relative cursor-pointer" onClick={() => setShowPrivateImageRequest(true)}>
+                    <div
+                      className="aspect-square rounded-lg overflow-hidden relative cursor-pointer"
+                      onClick={() => {
+                        if (isOwnProfile) {
+                          alert('✅ ACCESO CONCEDIDO (DEMO)\n\nEn producción esto se haría solo tras aprobar la solicitud.');
+                          setDemoPrivateUnlocked(true);
+                        } else {
+                          setShowPrivateImageRequest(true);
+                        }
+                      }}
+                    >
                       <img 
                         src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&h=400&fit=crop" 
                         alt="Foto privada bloqueada"
-                        className="w-full h-full object-cover filter blur-lg"
+                        className={`w-full h-full object-cover ${demoPrivateUnlocked && isOwnProfile ? '' : 'filter blur-lg'}`}
                       />
-                      <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center">
-                        <Lock className="w-12 h-12 text-white mb-2" />
-                        <span className="text-white text-xs">Click para solicitar</span>
-                      </div>
+                      {!demoPrivateUnlocked && (
+                        <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center">
+                          <Lock className="w-12 h-12 text-white mb-2" />
+                          <span className="text-white text-xs">Click para solicitar</span>
+                        </div>
+                      )}
                     </div>
-                    <div className="aspect-square rounded-lg overflow-hidden relative cursor-pointer" onClick={() => setShowPrivateImageRequest(true)}>
+                    <div
+                      className="aspect-square rounded-lg overflow-hidden relative cursor-pointer"
+                      onClick={() => {
+                        if (isOwnProfile) {
+                          alert('✅ ACCESO CONCEDIDO (DEMO)');
+                          setDemoPrivateUnlocked(true);
+                        } else {
+                          setShowPrivateImageRequest(true);
+                        }
+                      }}
+                    >
                       <img 
                         src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=400&fit=crop" 
                         alt="Foto privada bloqueada"
-                        className="w-full h-full object-cover filter blur-lg"
+                        className={`w-full h-full object-cover ${demoPrivateUnlocked && isOwnProfile ? '' : 'filter blur-lg'}`}
                       />
-                      <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                        <Lock className="w-12 h-12 text-white" />
-                      </div>
+                      {!demoPrivateUnlocked && (
+                        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                          <Lock className="w-12 h-12 text-white" />
+                        </div>
+                      )}
                     </div>
-                    <div className="aspect-square rounded-lg overflow-hidden relative cursor-pointer" onClick={() => setShowPrivateImageRequest(true)}>
+                    <div
+                      className="aspect-square rounded-lg overflow-hidden relative cursor-pointer"
+                      onClick={() => {
+                        if (isOwnProfile) {
+                          alert('✅ ACCESO CONCEDIDO (DEMO)');
+                          setDemoPrivateUnlocked(true);
+                        } else {
+                          setShowPrivateImageRequest(true);
+                        }
+                      }}
+                    >
                       <img 
                         src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=400&h=400&fit=crop" 
                         alt="Foto privada bloqueada"
-                        className="w-full h-full object-cover filter blur-lg"
+                        className={`w-full h-full object-cover ${demoPrivateUnlocked && isOwnProfile ? '' : 'filter blur-lg'}`}
                       />
-                      <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                        <Lock className="w-12 h-12 text-white" />
-                      </div>
+                      {!demoPrivateUnlocked && (
+                        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                          <Lock className="w-12 h-12 text-white" />
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

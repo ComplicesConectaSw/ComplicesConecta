@@ -70,7 +70,7 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
           <div className="space-y-4">
             {/* Posts Grid */}
             <div className="grid grid-cols-1 gap-4">
-              {/* Post Example */}
+              {/* Post Example - Perfil Single (Ana) */}
               <Card className="bg-white/10 backdrop-blur-md border-white/20">
                 <CardContent className="p-4">
                   <div className="flex items-start gap-3 mb-3">
@@ -79,11 +79,11 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="font-semibold text-white">Ana & Carlos</span>
+                        <span className="font-semibold text-white">Ana</span>
                         <span className="text-white/60 text-sm">hace 2h</span>
                       </div>
                       <p className="text-white/90 text-sm">
-                        ¡Qué día tan increíble! Explorando nuevos lugares juntos 💕
+                        Disfrutando de un día increíble y conociendo nuevos lugares ✨
                       </p>
                     </div>
                     {isOwnProfile && (

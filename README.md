@@ -25,6 +25,21 @@
 
 ---
 
+## 📚 Tabla de Contenidos
+
+1.  [**Estado de Auditoría v3.6.4**](#-estado-de-auditoría-v364)
+2.  [**Índice de Documentación**](#-índice-de-documentación)
+3.  [**AI-Native Platform**](#-ai-native-platform---production-ready-enterprise)
+4.  [**Inicio Rápido**](#-inicio-rápido)
+5.  [**Estructura del Proyecto**](#️-estructura-del-proyecto-resumen)
+6.  [**Testing**](#-testing)
+7.  [**Build & Deployment**](#-build--deployment)
+8.  [**Estadísticas del Proyecto**](#-estadísticas-del-proyecto)
+9.  [**Equipo y Contacto Legal**](#-equipo)
+10. [**Licencia y Aviso Legal**](#️-licencia)
+
+---
+
 ## 🏆 ESTADO DE AUDITORÍA v3.6.4
 
 ### 🎉 **NUEVO: Tests E2E Completos (15 Nov 2025)**
