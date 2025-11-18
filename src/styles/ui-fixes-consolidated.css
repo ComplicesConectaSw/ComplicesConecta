@@ -462,9 +462,10 @@ html header.header-nav-main {
 }
 
 /* Scrollbar hide para navegación horizontal */
+/* Nota: scrollbar-width es estándar moderno con fallbacks para otros navegadores */
 .scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  -ms-overflow-style: none; /* IE y Edge legacy */
+  scrollbar-width: none; /* Firefox */
 }
 
 .scrollbar-hide::-webkit-scrollbar {

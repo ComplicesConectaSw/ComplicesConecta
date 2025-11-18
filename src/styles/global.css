@@ -120,3 +120,11 @@ body {
 .edit-profile-gradient {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #6366f1 100%);
 }
+
+.theme-preview-box {
+  background: var(--preview-bg, #374151);
+}
+
+.theme-preview-gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}

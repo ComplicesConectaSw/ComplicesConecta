@@ -134,11 +134,11 @@ const TemplateDemo: React.FC = () => {
               </div>
 
               {/* Theme Preview */}
-              <div className="mt-6 p-4 rounded-lg" style={{
-                background: themeConfig.backgroundClass.includes('gradient') 
-                  ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-                  : '#374151'
-              }}>
+              <div className={`mt-6 p-4 rounded-lg ${
+                themeConfig.backgroundClass.includes('gradient') 
+                  ? 'theme-preview-gradient'
+                  : 'theme-preview-box'
+              }`}>
                 <div className="text-center">
                   <h3 className={cn("text-lg font-semibold", themeConfig.textClass)}>
                     Vista Previa del Tema Actual
