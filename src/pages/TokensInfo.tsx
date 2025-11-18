@@ -800,9 +800,10 @@ export default function TokensInfo() {
                           </div>
                         </div>
                         <div className="w-full bg-white/10 rounded-full h-2 mt-2">
+                          {/* Nota: estilo en línea necesario para ancho dinámico basado en datos */}
                           <div 
                             className="bg-gradient-to-r from-purple-500 to-blue-600 h-2 rounded-full transition-all duration-1000"
-                            style={{ ['--progress-width' as string]: `${item.percentage}%`, width: 'var(--progress-width)' } as React.CSSProperties}
+                            style={{ width: `${item.percentage}%` }}
                           ></div>
                         </div>
                       </motion.div>

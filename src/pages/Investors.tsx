@@ -506,7 +506,7 @@ const Investors: React.FC = () => {
                   <span className="text-2xl font-bold text-green-400">~85%</span>
                 </div>
                 <div className="w-full bg-white/10 rounded-full h-3">
-                  <div className="bg-gradient-to-r from-green-500 to-emerald-600 h-3 rounded-full" style={{ width: '85%' }}></div>
+                  <div className="bg-gradient-to-r from-green-500 to-emerald-600 h-3 rounded-full progress-85"></div>
                 </div>
               </div>
 
