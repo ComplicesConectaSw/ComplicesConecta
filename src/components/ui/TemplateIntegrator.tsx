@@ -207,6 +207,7 @@ export const TemplateIntegrator: React.FC<TemplateIntegratorProps> = ({ classNam
                 value={selectedTheme} 
                 onChange={(e) => setSelectedTheme(e.target.value as Theme)}
                 className="w-full p-2 border rounded-md"
+                aria-label="Seleccionar tema"
               >
                 <option value="elegant">Elegante</option>
                 <option value="modern">Moderno</option>
@@ -219,6 +220,7 @@ export const TemplateIntegrator: React.FC<TemplateIntegratorProps> = ({ classNam
                 value={profileType} 
                 onChange={(e) => setProfileType(e.target.value as ProfileType)}
                 className="w-full p-2 border rounded-md"
+                aria-label="Seleccionar tipo de perfil"
               >
                 <option value="single">Individual</option>
                 <option value="couple">Pareja</option>
@@ -230,6 +232,7 @@ export const TemplateIntegrator: React.FC<TemplateIntegratorProps> = ({ classNam
                 value={gender} 
                 onChange={(e) => setGender(e.target.value as 'male' | 'female')}
                 className="w-full p-2 border rounded-md"
+                aria-label="Seleccionar género"
               >
                 <option value="male">Masculino</option>
                 <option value="female">Femenino</option>

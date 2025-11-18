@@ -236,6 +236,7 @@ export const VideoCallWindow: React.FC<VideoCallWindowProps> = ({
               <button
                 onClick={handleEndCall}
                 className="p-4 bg-red-500 hover:bg-red-600 rounded-full transition-colors"
+                aria-label="Colgar llamada"
               >
                 <PhoneOff className="h-6 w-6 text-white" />
               </button>
@@ -244,6 +245,7 @@ export const VideoCallWindow: React.FC<VideoCallWindowProps> = ({
                 onClick={handleStartCall}
                 disabled={!targetUserId}
                 className="p-4 bg-green-500 hover:bg-green-600 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                aria-label="Iniciar llamada"
               >
                 <Phone className="h-6 w-6 text-white" />
               </button>
@@ -265,6 +267,7 @@ export const VideoCallWindow: React.FC<VideoCallWindowProps> = ({
             <button
               onClick={() => setShowControls(!showControls)}
               className="p-4 bg-gray-700 hover:bg-gray-600 rounded-full transition-colors"
+              aria-label="Mostrar/ocultar controles"
             >
               <Settings className="h-6 w-6 text-white" />
             </button>

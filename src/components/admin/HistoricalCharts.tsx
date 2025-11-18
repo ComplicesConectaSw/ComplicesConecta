@@ -394,6 +394,7 @@ export const HistoricalCharts: React.FC<HistoricalChartsProps> = ({
             value={selectedRange}
             onChange={(e) => setSelectedRange(Number(e.target.value))}
             className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+            aria-label="Seleccionar rango de tiempo"
           >
             <option value={1}>Última hora</option>
             <option value={6}>Últimas 6 horas</option>

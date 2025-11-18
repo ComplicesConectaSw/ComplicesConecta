@@ -125,13 +125,9 @@ export const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
   
   return (
     <div 
-      className={`fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm ${
+      className={`welcome-modal-container ${
         shouldBeVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'
       }`}
-      style={{ 
-        pointerEvents: shouldBeVisible ? 'auto' : 'none',
-        transition: 'opacity 0.3s ease-in-out'
-      }}
     >
       <div 
         className={`transition-all duration-500 transform ${
