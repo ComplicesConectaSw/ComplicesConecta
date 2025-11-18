@@ -41,7 +41,7 @@ export const CreateStory: React.FC<CreateStoryProps> = ({ onStoryCreated, onClos
     }
   };
 
-  const handleDrop = (e: React.DragEvent) => {
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setDragActive(false);
     
@@ -51,12 +51,12 @@ export const CreateStory: React.FC<CreateStoryProps> = ({ onStoryCreated, onClos
     }
   };
 
-  const handleDragOver = (e: React.DragEvent) => {
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setDragActive(true);
   };
 
-  const handleDragLeave = (e: React.DragEvent) => {
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setDragActive(false);
   };
@@ -169,6 +169,7 @@ export const CreateStory: React.FC<CreateStoryProps> = ({ onStoryCreated, onClos
             accept="image/*"
             onChange={handleFileInputChange}
             className="hidden"
+            aria-label="Seleccionar imagen para historia"
           />
 
           {/* Description */}

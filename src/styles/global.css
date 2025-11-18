@@ -103,3 +103,20 @@ body {
   color: #0f0;
   font-family: monospace;
 }
+
+.chat-scroll-smooth {
+  scroll-behavior: smooth;
+}
+
+.chat-message-text {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.legend-text-white {
+  color: #fff;
+}
+
+.edit-profile-gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #6366f1 100%);
+}

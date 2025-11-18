@@ -75,6 +75,7 @@
     "@datadog/browser-logs": "^6.23.0",
     "@datadog/browser-rum": "^6.23.0",
     "@heroicons/react": "^2.2.0",
+    "@hint/hint-no-inline-styles": "^1.0.19",
     "@hookform/resolvers": "^5.2.2",
     "@huggingface/inference": "^4.13.2",
     "@huggingface/transformers": "^3.7.6",

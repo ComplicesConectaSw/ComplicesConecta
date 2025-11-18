@@ -710,7 +710,7 @@ const Chat = () => {
               )}
 
               {/* Messages */}
-              <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0 chat-messages scroll-container btn-animated" style={{scrollBehavior: 'smooth'}}>
+              <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0 chat-messages scroll-container btn-animated chat-scroll-smooth">
                 {isProduction ? (
                   // Renderizar mensajes reales de Supabase
                   realMessages.map((message) => (
@@ -725,7 +725,7 @@ const Chat = () => {
                             : 'bg-gradient-to-r from-blue-500/95 to-purple-600/95 text-white shadow-md border border-blue-400/50 backdrop-blur-sm'
                         }`}
                       >
-                        <p className="text-xs sm:text-sm leading-relaxed break-words whitespace-pre-wrap overflow-wrap-anywhere hyphens-auto font-medium text-white drop-shadow-md" style={{wordBreak: 'break-word', overflowWrap: 'anywhere'}}>{message.content}</p>
+                        <p className="text-xs sm:text-sm leading-relaxed break-words whitespace-pre-wrap overflow-wrap-anywhere hyphens-auto font-medium text-white drop-shadow-md chat-message-text">{message.content}</p>
                         <p className={`text-xs mt-1 font-medium ${
                           message.sender_id === safeGetItem<string>('user_id', { validate: false, defaultValue: '' }) ? 'text-purple-100 drop-shadow-sm' : 'text-white/90 drop-shadow-sm'
                         }`}>
@@ -748,7 +748,7 @@ const Chat = () => {
                             : 'bg-gradient-to-r from-blue-500/95 to-purple-600/95 text-white shadow-md border border-blue-400/50 backdrop-blur-sm'
                         }`}
                       >
-                        <p className="text-xs sm:text-sm leading-relaxed break-words whitespace-pre-wrap overflow-wrap-anywhere hyphens-auto font-medium text-white drop-shadow-md" style={{wordBreak: 'break-word', overflowWrap: 'anywhere'}}>{message.content}</p>
+                        <p className="text-xs sm:text-sm leading-relaxed break-words whitespace-pre-wrap overflow-wrap-anywhere hyphens-auto font-medium text-white drop-shadow-md chat-message-text">{message.content}</p>
                         <p className={`text-xs mt-1 font-medium ${
                           message.senderId === 0 ? 'text-purple-100 drop-shadow-sm' : 'text-white/90 drop-shadow-sm'
                         }`}>

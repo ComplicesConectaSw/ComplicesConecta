@@ -259,7 +259,7 @@ const EditProfileSingle = () => {
   }
 
   return (
-    <div className={`min-h-screen ${themeConfig.backgroundClass} relative overflow-hidden pb-20`} style={{ background: themeConfig.backgroundClass ? undefined : 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #6366f1 100%)' }}>
+    <div className={`min-h-screen ${themeConfig.backgroundClass || 'edit-profile-gradient'} relative overflow-hidden pb-20`}>
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full mix-blend-multiply filter blur-xl animate-blob"></div>

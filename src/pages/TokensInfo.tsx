@@ -407,7 +407,7 @@ export default function TokensInfo() {
                           />
                           <Legend 
                             wrapperStyle={{ color: '#fff' }}
-                            formatter={(value) => <span style={{ color: '#fff' }}>{value}</span>}
+                            formatter={(value) => <span className="legend-text-white">{value}</span>}
                           />
                         </PieChart>
                       </ResponsiveContainer>
@@ -497,7 +497,7 @@ export default function TokensInfo() {
                           <Area type="monotone" dataKey="staking" stroke="#3b82f6" fillOpacity={1} fill="url(#colorStaking)" />
                           <Legend 
                             wrapperStyle={{ color: '#fff' }}
-                            formatter={(value) => <span style={{ color: '#fff' }}>{value === 'circulacion' ? 'Circulacin' : 'Staking'}</span>}
+                            formatter={(value) => <span className="legend-text-white">{value === 'circulacion' ? 'Circulacin' : 'Staking'}</span>}
                           />
                         </AreaChart>
                       </ResponsiveContainer>
@@ -802,7 +802,7 @@ export default function TokensInfo() {
                         <div className="w-full bg-white/10 rounded-full h-2 mt-2">
                           <div 
                             className="bg-gradient-to-r from-purple-500 to-blue-600 h-2 rounded-full transition-all duration-1000"
-                            style={{ width: `${item.percentage}%` }}
+                            style={{ ['--progress-width' as string]: `${item.percentage}%`, width: 'var(--progress-width)' } as React.CSSProperties}
                           ></div>
                         </div>
                       </motion.div>
