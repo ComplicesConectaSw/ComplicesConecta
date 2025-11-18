@@ -1,192 +1,84 @@
-/* CRÍTICO: @import debe ir ANTES de todo (excepto @charset o @layer vacío) */
-@import './ui-fixes-consolidated.css';
-
-/* Tailwind Directives - Deben ir PRIMERO para que @apply funcione correctamente */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* ===== ESTILOS BASE Y VARIABLES ===== */
-:root {
-  --primary: #ff1493;
-  --secondary: #8b00ff;
-  --bg-dark: #1a0033;
-  --accent: #ff6b9d;
-  --success: #10b981;
-  --warning: #f59e0b;
-  --error: #ef4444;
-  --info: #3b82f6;
-}
-
-* {
+body {
+  background-color: #1a1a1a;
+  color: #ffffff;
+  font-family: sans-serif;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
 }
 
-/* Backgrounds fijos - Solo si los archivos existen */
-/* body.dark {
-  background: url('/assets/backgrounds/hearts-dark.jpg');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
+.card {
+  background-color: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
 }
 
-body.light {
-  background: url('/assets/backgrounds/hearts-light.jpg');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-} */
-
-/* ===== ESTILOS DE COMPONENTES ===== */
-@layer components {
-  .button {
-    @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-semibold;
-  }
-
-  .card {
-    @apply rounded-lg border bg-card text-card-foreground shadow-sm;
-  }
-
-  .input {
-    @apply flex h-10 w-full rounded-md border border-input bg-background px-3 py-2;
-  }
-
-  .profile-single {
-    @apply container mx-auto px-4 py-8;
-  }
-
-  .profile-single-header {
-    @apply mb-8 text-center;
-  }
-
-  .profile-single-content {
-    @apply grid grid-cols-1 md:grid-cols-2 gap-6;
-  }
-
-  .profile-couple {
-    @apply container mx-auto px-4 py-8;
-  }
-
-  .profile-couple-header {
-    @apply mb-8 text-center;
-  }
-
-  .profile-couple-content {
-    @apply grid grid-cols-1 md:grid-cols-2 gap-6;
-  }
+.button {
+  background-color: #8b00ff;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
-/* ===== UTILIDADES PERSONALIZADAS ===== */
-@layer utilities {
-  .container {
-    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
-  }
-
-  .sr-only {
-    @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
-    clip: rect(0, 0, 0, 0);
-  }
+.profile-header-title {
+  font-size: 1.875rem;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 0.25rem;
 }
 
-/* ===== ESTILOS DECORATIVOS DE CORAZONES ===== */
-@keyframes float-heart {
-  0%, 100% {
-    transform: translateY(0px) translateX(0px) rotate(0deg) scale(1);
-    opacity: 0.3;
-  }
-  25% {
-    transform: translateY(-30px) translateX(15px) rotate(8deg) scale(1.1);
-    opacity: 0.6;
-  }
-  50% {
-    transform: translateY(-20px) translateX(-10px) rotate(-6deg) scale(0.95);
-    opacity: 0.5;
-  }
-  75% {
-    transform: translateY(-35px) translateX(12px) rotate(7deg) scale(1.05);
-    opacity: 0.65;
-  }
+.profile-header-username {
+  color: #c084fc;
+  font-size: 1.125rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
 }
 
-@keyframes float-heart-slow {
-  0%, 100% {
-    transform: translateY(0px) translateX(0px) rotate(0deg) scale(1) translateZ(0);
-    opacity: 0.5;
-  }
-  25% {
-    transform: translateY(-20px) translateX(10px) rotate(5deg) scale(1.08) translateZ(0);
-    opacity: 0.75;
-  }
-  50% {
-    transform: translateY(-15px) translateX(-8px) rotate(-4deg) scale(0.98) translateZ(0);
-    opacity: 0.65;
-  }
-  75% {
-    transform: translateY(-25px) translateX(8px) rotate(4deg) scale(1.05) translateZ(0);
-    opacity: 0.8;
-  }
+.profile-header-email {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.875rem;
 }
 
-@keyframes pulse-glow {
-  0%, 100% {
-    filter: drop-shadow(0 4px 12px rgba(255,255,255,0.5));
-  }
-  50% {
-    filter: drop-shadow(0 6px 20px rgba(255,255,255,0.8));
-  }
+.profile-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
 }
 
-.animate-float {
-  animation: float-heart 10s ease-in-out infinite, pulse-glow 4s ease-in-out infinite;
-  will-change: transform, opacity;
-  transform: translateZ(0);
+.badge-age {
+  background-color: rgba(168, 85, 247, 0.3);
+  color: white;
+  border: 1px solid rgba(168, 85, 247, 0.5);
+  font-weight: 600;
 }
 
-.animate-float-heart-slow {
-  animation: float-heart-slow 15s ease-in-out infinite, pulse-glow 5s ease-in-out infinite;
-  will-change: transform, opacity;
-  transform: translateZ(0);
+.badge-gender {
+  background-color: rgba(59, 130, 246, 0.3);
+  color: white;
+  border: 1px solid rgba(59, 130, 246, 0.5);
 }
 
-/* Estilos personalizados para scrollbar */
-.custom-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(168, 85, 247, 0.3) transparent;
+.badge-orientation {
+  background-color: rgba(236, 72, 153, 0.3);
+  color: white;
+  border: 1px solid rgba(236, 72, 153, 0.5);
 }
 
-.custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-  border-radius: 10px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(168, 85, 247, 0.4);
-  border-radius: 10px;
-  transition: background 0.3s ease;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(168, 85, 247, 0.6);
-}
-
-/* ===== CORRECCIONES UI CONSOLIDADAS ===== */
-/* Nota: ui-fixes-consolidated.css ya está importado al inicio del archivo */
-
-/* Animación para el spinner de carga inicial */
-@keyframes spin {
-  to { transform: rotate(360deg); }
+.badge-location {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }

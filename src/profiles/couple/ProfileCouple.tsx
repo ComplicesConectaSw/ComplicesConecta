@@ -273,18 +273,12 @@ const ProfileCouple: React.FC = () => {
       
       <div className="relative z-10 flex flex-col min-h-screen">
         {/* Header centrado */}
-        <div className="pt-20 pb-6 px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1 drop-shadow-lg">
-              {profile.couple_name || 'Perfil de Pareja'}
-            </h1>
-            <p className="text-purple-300 text-sm sm:text-base font-medium mb-1">
-              {profile.username || '@pareja_sw'}
-            </p>
+        <div className="profile-header-container">
+          <div className="max-w-36rem mx-auto text-center">
+            <h1 className="profile-header-title">{profile.couple_name || 'Perfil de Pareja'}</h1>
+            <p className="profile-header-username">{profile.username || '@pareja_sw'}</p>
             {isAuthenticated() && user && (
-              <p className="text-white/70 text-xs sm:text-sm">
-                {user.email || 'Usuario'}
-              </p>
+              <p className="profile-header-email">{user.email || 'Usuario'}</p>
             )}
           </div>
         </div>
@@ -375,40 +369,35 @@ const ProfileCouple: React.FC = () => {
                   </div>
 
                   {/* Informacin bsica */}
-                  <div className="flex-1 text-center sm:text-left">
-                    <h2 className="text-xl sm:text-2xl font-bold mb-2">
-                      {profile?.partner1_first_name} & {profile?.partner2_first_name}
-                    </h2>
-                    <div className="flex flex-wrap gap-2 justify-center sm:justify-start mb-4">
-                      <Badge variant="secondary" className="bg-white/20 text-white border-white/30 text-xs sm:text-sm">
-                        Pareja
-                      </Badge>
-                      <Badge variant="secondary" className="bg-white/20 text-white border-white/30 flex items-center gap-1 text-xs sm:text-sm">
-                        <MapPin className="w-3 h-3" />
-                        {profile?.location || 'CDMX, Mxico'}
+                  <div className="flex flex-col items-center justify-start flex-1">
+                    <h2 className="text-lg font-bold">{profile?.partner1_first_name} & {profile?.partner2_first_name}</h2>
+                    <div className="flex flex-wrap gap-1 mt-2">
+                      <Badge className="profile-badge badge-location">
+                        <MapPin className="w-4 h-4" />
+                        {profile?.location || 'CDMX, México'}
                       </Badge>
                     </div>
-                    <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm mb-4">
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm mt-4">
                       <div>
                         <p className="font-semibold text-white">{profile.partner1_first_name}</p>
                         <div className="flex flex-wrap gap-1 mt-1">
-                          <Badge className="bg-purple-500/30 text-white border-purple-400/50 text-xs"> {profile.partner1_age} años</Badge>
-                          <Badge className="bg-blue-500/30 text-white border-blue-400/50 text-xs">{profile.partner1_gender === 'female' ? '♀️' : '♂️'}</Badge>
-                          <Badge className="bg-pink-500/30 text-white border-pink-400/50 text-xs">{profile.partner1_interested_in === 'both' ? '⚥' : '⚤'}</Badge>
+                          <Badge className="profile-badge badge-age">🎂 {profile.partner1_age} años</Badge>
+                          <Badge className="profile-badge badge-gender">{profile.partner1_gender === 'female' ? '♀️' : '♂️'}</Badge>
+                          <Badge className="profile-badge badge-orientation">{profile.partner1_interested_in === 'both' ? '⚥' : '⚤'}</Badge>
                         </div>
                       </div>
                       <div>
                         <p className="font-semibold text-white">{profile.partner2_first_name}</p>
                         <div className="flex flex-wrap gap-1 mt-1">
-                          <Badge className="bg-purple-500/30 text-white border-purple-400/50 text-xs"> {profile.partner2_age} años</Badge>
-                          <Badge className="bg-blue-500/30 text-white border-blue-400/50 text-xs">{profile.partner2_gender === 'female' ? '♀️' : '♂️'}</Badge>
-                          <Badge className="bg-pink-500/30 text-white border-pink-400/50 text-xs">{profile.partner2_interested_in === 'both' ? '⚥' : '⚤'}</Badge>
+                          <Badge className="profile-badge badge-age">🎂 {profile.partner2_age} años</Badge>
+                          <Badge className="profile-badge badge-gender">{profile.partner2_gender === 'female' ? '♀️' : '♂️'}</Badge>
+                          <Badge className="profile-badge badge-orientation">{profile.partner2_interested_in === 'both' ? '⚥' : '⚤'}</Badge>
                         </div>
                       </div>
                     </div>
                     
                     {/* Biografa */}
-                    <p className="text-white/90 mb-4 leading-relaxed text-sm sm:text-base">
+                    <p className="text-sm text-white/90 mt-4">
                       Una pareja aventurera que busca nuevas experiencias y conexiones autnticas.
                     </p>
 

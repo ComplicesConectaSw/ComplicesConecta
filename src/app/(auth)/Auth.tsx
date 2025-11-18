@@ -104,49 +104,17 @@ const Auth = () => {
     }));
   };
 
-  const handleDemoLogin = async () => {
-    setIsLoading(true);
-    setShowLoginLoading(true);
-    
-    try {
-      // Configurar credenciales demo
-      const demoCredentials = {
-        email: 'demo@complicesconecta.com',
-        password: 'demo123'
-      };
-      
-      // Establecer estado de autenticacin demo
-      _setDemoAuthenticated(true);
-      _setDemoUser(demoCredentials);
-      _setUserType('single');
-      
-      // Configurar localStorage para demo
-      safeSetItem('demo_authenticated', 'true', { validate: true });
-      safeSetItem('demo_user', demoCredentials, { validate: false, sanitize: true });
-      safeSetItem('userType', 'single', { validate: false });
-      
-      toast({
-        title: "Acceso Demo Activado",
-        description: "Bienvenido al modo demo de ComplicesConecta",
-      });
-      
-      // Navegar al feed despus de un breve delay
-      setTimeout(() => {
-        navigate('/feed');
-      }, 1500);
-      
-    } catch (error) {
-      console.error('Error en demo login:', error);
-      toast({
-        title: "Error",
-        description: "No se pudo activar el modo demo",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-      setShowLoginLoading(false);
-    }
+  const demoCredentials = {
+    email: 'demo@complicesconecta.com',
+    password: 'demo123'
   };
+
+  const handleDemoLogin = () => {
+    const event = new Event('submit') as any;
+    event.isDemo = true;
+    handleSignIn(event);
+  };
+
 
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -155,7 +123,7 @@ const Auth = () => {
 
     try {
       // ✅ Detectar credenciales demo y manejarlas directamente
-      if (formData.email === 'demo@complicesconecta.com' && formData.password === 'demo123') {
+      if ((e.nativeEvent as any).isDemo || (formData.email === demoCredentials.email && formData.password === demoCredentials.password)) {
         // Configurar estado de autenticación demo
         _setDemoAuthenticated(true);
         _setDemoUser({ email: formData.email, password: formData.password });

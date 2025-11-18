@@ -16,7 +16,7 @@ const Navigation = ({ className }: NavigationProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { features } = useFeatures();
-  const { isAuthenticated, signOut, getProfileType } = useAuth();
+  const { signOut, getProfileType } = useAuth();
 
   // Determinar el estilo del navbar desde localStorage para mantener la personalización del tema.
   const [navbarStyle] = usePersistedState<'transparent' | 'solid'>('demo_navbar_style', 'solid');

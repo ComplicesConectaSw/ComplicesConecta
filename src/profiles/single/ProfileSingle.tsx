@@ -524,16 +524,10 @@ Información del perfil:
       <div className="relative z-10">
         <div className="pt-20 pb-6 px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1 drop-shadow-lg">
-              {displayName}
-            </h1>
-            <p className="text-purple-300 text-sm sm:text-base font-medium mb-1">
-              {displayUsername}
-            </p>
+            <h1 className="profile-header-title">{displayName}</h1>
+            <p className="profile-header-username">{displayUsername}</p>
             {checkAuth() &&
-              <p className="text-white/70 text-xs sm:text-sm">
-                {user?.email || 'Usuario'}
-              </p>
+              <p className="profile-header-email">{user?.email || 'Usuario'}</p>
             }
           </div>
         </div>
@@ -579,23 +573,12 @@ Información del perfil:
 
                 {/* Informacoin basica */}
                 <div className="flex-1 text-center sm:text-left">
-                  <h2 className="text-xl sm:text-2xl font-bold mb-2">
-                    {displayName}
-                  </h2>
+                  <h2 className="profile-header-title">{displayName}</h2>
                   <div className="flex flex-wrap gap-2 justify-center sm:justify-start mb-4">
-                    <Badge className="bg-purple-500/30 text-white border-purple-400/50 text-xs sm:text-sm font-semibold">
-                      🎂 {displayAge} años
-                    </Badge>
-                    <Badge className="bg-blue-500/30 text-white border-blue-400/50 text-xs sm:text-sm">
-                      {displayGenderLabel}
-                    </Badge>
-                    <Badge className="bg-pink-500/30 text-white border-pink-400/50 text-xs sm:text-sm">
-                      {displayOrientationLabel}
-                    </Badge>
-                    <Badge className="bg-white/20 text-white border-white/30 flex items-center gap-1 text-xs sm:text-sm">
-                      <MapPin className="w-3 h-3" />
-                      CDMX, México
-                    </Badge>
+                    <Badge className="profile-badge badge-age">🎂 {displayAge} años</Badge>
+                    <Badge className="profile-badge badge-gender">{displayGenderLabel}</Badge>
+                    <Badge className="profile-badge badge-orientation">{displayOrientationLabel}</Badge>
+                    <Badge className="profile-badge badge-location"><MapPin className="w-3 h-3" />CDMX, México</Badge>
                   </div>
                   
                   {/* Biografa */}

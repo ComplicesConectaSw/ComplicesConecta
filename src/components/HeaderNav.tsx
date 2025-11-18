@@ -48,16 +48,6 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  const handleLogout = async () => {
-    try {
-      await signOut();
-      logger.info('Usuario deslogueado exitosamente');
-      navigate('/auth', { replace: true });
-    } catch (error) {
-      logger.error('Error al cerrar sesión:', { error: String(error) });
-    }
-  };
-
   // Detectar scroll para efecto de transparencia
   useEffect(() => {
     const handleScroll = () => {
