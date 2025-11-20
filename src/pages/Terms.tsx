@@ -42,12 +42,12 @@ const Terms = () => {
           </div>
 
           <div className="max-w-4xl mx-auto space-y-8">
-            {/* Aceptacin de Trminos */}
+            {/* Aceptación de Términos */}
             <Card className="bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-white">
                   <Shield className="h-5 w-5 text-purple-300" />
-                  1. Aceptacin de Trminos
+                  1. Aceptación de Términos
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">

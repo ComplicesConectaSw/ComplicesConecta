@@ -354,10 +354,10 @@ export default function TokensTerms() {
         {/* Aceptacin */}
         <Card className="bg-gradient-to-r from-purple-900/80 to-purple-800/80 backdrop-blur-sm border border-purple-400/30">
           <CardContent className="p-6 text-center">
-            <h3 className="text-xl font-bold text-white mb-4">Aceptacin de Trminos</h3>
+            <h3 className="text-xl font-bold text-white mb-4">Aceptación de Términos</h3>
             <p className="text-white/80 mb-6">
-              Al usar el sistema de tokens CMPX/GTK, confirmas que has ledo, entendido y aceptado 
-              estos trminos y condiciones en su totalidad.
+              Al usar el sistema de tokens CMPX/GTK, confirmas que has leído, entendido y aceptado 
+              estos términos y condiciones en su totalidad.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button

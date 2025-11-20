@@ -11,7 +11,7 @@ const About = () => {
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 relative overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0">
-        {/* Elementos fantasma deshabilitados para evitar aparicin/desaparicin */}
+        {/* Elementos fantasma deshabilitados para evitar aparición/desaparición */}
         {/* <div className="absolute top-20 left-10 w-72 h-72 bg-pink-500/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
         <div className="absolute top-40 right-10 w-72 h-72 bg-purple-500/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
         <div className="absolute -bottom-8 left-20 w-72 h-72 bg-red-500/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div> */}
@@ -33,7 +33,7 @@ const About = () => {
               </div>
               <h2 className="text-4xl font-bold text-white mb-4">ComplicesConecta</h2>
               <p className="text-xl text-white/90 font-medium leading-relaxed mb-6">
-                La plataforma social lder en Mxico para adultos que buscan conexiones autnticas 
+                La plataforma social líder en México para adultos que buscan conexiones auténticas 
                 en el lifestyle swinger. Conecta con parejas y solteros verificados en un ambiente 
                 seguro, discreto y completamente respetuoso.
               </p>
@@ -46,7 +46,7 @@ const About = () => {
                 <div className="bg-white/5 rounded-lg p-4">
                   <Shield className="h-8 w-8 text-green-400 mx-auto mb-2" />
                   <h3 className="text-white font-semibold text-sm">100% Seguro</h3>
-                  <p className="text-white/70 text-xs">Verificacin de identidad obligatoria</p>
+                  <p className="text-white/70 text-xs">Verificación de identidad obligatoria</p>
                 </div>
                 <div className="bg-white/5 rounded-lg p-4">
                   <Award className="h-8 w-8 text-yellow-400 mx-auto mb-2" />
@@ -63,7 +63,7 @@ const About = () => {
               <CardContent className="p-6">
                 <div className="flex items-center mb-4">
                   <Target className="h-8 w-8 text-pink-400 mr-3" />
-                  <h3 className="text-xl font-bold text-white">Nuestra Misin</h3>
+                  <h3 className="text-xl font-bold text-white">Nuestra Misión</h3>
                 </div>
                 <p className="text-white font-medium leading-relaxed">
                   Crear un espacio seguro donde parejas y solteros del lifestyle swinger puedan 
@@ -77,10 +77,10 @@ const About = () => {
               <CardContent className="p-6">
                 <div className="flex items-center mb-4">
                   <Star className="h-8 w-8 text-purple-400 mr-3" />
-                  <h3 className="text-xl font-bold text-white">Nuestra Visin</h3>
+                  <h3 className="text-xl font-bold text-white">Nuestra Visión</h3>
                 </div>
                 <p className="text-white font-medium leading-relaxed">
-                  Convertirnos en una plataforma confiable para la comunidad lifestyle en Mxico, 
+                  Convertirnos en una plataforma confiable para la comunidad lifestyle en México, 
                   reconocida por brindar un ambiente seguro, tecnologa moderna y compromiso 
                   con la privacidad de nuestros usuarios.
                 </p>

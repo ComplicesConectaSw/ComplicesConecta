@@ -473,7 +473,7 @@ Fecha: ${new Date().toLocaleString()}
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-2xl">
                     <MessageSquare className="h-6 w-6 text-accent" />
-                    ?? Comentarios Generales
+                    💬 Comentarios Generales
                   </CardTitle>
                   <p className="text-white/90">
                     Tu opinin nos ayuda a crear la mejor experiencia swinger
