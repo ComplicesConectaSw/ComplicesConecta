@@ -24,7 +24,22 @@ import {
   Coins,
   Wallet,
   Gift,
-  Zap
+  Zap,
+  ChevronLeft,
+  ChevronRight,
+  ThumbsUp,
+  ThumbsDown,
+  X,
+  Baby,
+  Shield, 
+  Verified, 
+  Unlock,
+  Settings,
+  LogOut,
+  Upload,
+  Trash2,
+  MoreHorizontal,
+  ChevronDown
 } from 'lucide-react';
 import { TikTokShareButton } from '@/components/sharing/TikTokShareButton';
 import { trackEvent } from '@/config/posthog.config';
@@ -56,6 +71,12 @@ const ProfileSingle: React.FC = () => {
   // Demo: controlar desbloqueo visual de fotos privadas en el propio perfil
   const [demoPrivateUnlocked, setDemoPrivateUnlocked] = useState(false);
   const [showReportDialog, setShowReportDialog] = useState(false);
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [imageComments, setImageComments] = useState<{[key: string]: string}>({});
+  const [imageLikes, setImageLikes] = useState<{[key: string]: number}>({});
+  const [imageUserLikes, setImageUserLikes] = useState<{[key: string]: boolean}>({});
+  const [isParentalLocked, setIsParentalLocked] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
   const [profileStats, setProfileStats] = useState({
     totalViews: 0,
@@ -78,7 +99,71 @@ const ProfileSingle: React.FC = () => {
   const [isDemoMode] = useState(WalletService.isDemoMode());
   
   // Determinar si es el perfil propio
-  const isOwnProfile = user?.id === profile?.id;
+  const isOwnProfile = checkAuth() && user?.id === profile?.id;
+
+  // Datos de imágenes privadas para el carrusel
+  const privateImages = [
+    { 
+      id: '1', 
+      url: '/src/assets/people/male/privado/0CD28qq-editado.jpg', 
+      caption: 'Foto artística en blanco y negro 📸',
+      likes: imageLikes['1'] || 12,
+      userLiked: imageUserLikes['1'] || false
+    },
+    { 
+      id: '2', 
+      url: '/src/assets/people/male/privado/45Xas2E.jpg', 
+      caption: 'Sesión profesional de estudio 🎭',
+      likes: imageLikes['2'] || 8,
+      userLiked: imageUserLikes['2'] || false
+    },
+    { 
+      id: '3', 
+      url: '/src/assets/people/male/privado/4Jyc0cr-editado.jpg', 
+      caption: 'Momento íntimo y personal 💫',
+      likes: imageLikes['3'] || 15,
+      userLiked: imageUserLikes['3'] || false
+    }
+  ];
+
+  // Funciones para manejar likes
+  const handleImageLike = (imageId: string) => {
+    const currentLikes = imageLikes[imageId] || 0;
+    const userLiked = imageUserLikes[imageId] || false;
+    
+    setImageLikes(prev => ({
+      ...prev,
+      [imageId]: userLiked ? currentLikes - 1 : currentLikes + 1
+    }));
+    
+    setImageUserLikes(prev => ({
+      ...prev,
+      [imageId]: !userLiked
+    }));
+  };
+
+  // Función para abrir imagen en modal
+  const openImageModal = (index: number) => {
+    setSelectedImageIndex(index);
+    setShowImageModal(true);
+  };
+
+  // Función para navegar en el carrusel
+  const navigateCarousel = (direction: 'prev' | 'next') => {
+    if (direction === 'prev') {
+      setSelectedImageIndex(prev => prev > 0 ? prev - 1 : privateImages.length - 1);
+    } else {
+      setSelectedImageIndex(prev => prev < privateImages.length - 1 ? prev + 1 : 0);
+    }
+  };
+
+  // Función para añadir comentario
+  const handleAddComment = (imageId: string, comment: string) => {
+    setImageComments(prev => ({
+      ...prev,
+      [imageId]: comment
+    }));
+  };
 
   // Handlers para las acciones del perfil
   const handleUploadImage = () => {
@@ -334,7 +419,9 @@ Información del perfil:
           // DEMO: Perfil demo completo para inversor
           const demoProfile: any = {
             id: 'demo-user-123',
+            profile_id: 'CC-2025-001',
             name: 'Ana García',
+            nickname: 'ana_swinger',
             username: '@ana_swinger',
             age: 28,
             gender: 'female',
@@ -487,7 +574,8 @@ Información del perfil:
 
   // Valores de display seguros para DEMO inversor (fallback cuando faltan datos reales)
   const displayName = profile.name || 'Ana García';
-  const displayUsername = (profile as any).username || '@ana_swinger';
+  const displayNickname = (profile as any).nickname || 'ana_swinger';
+  const displayProfileId = (profile as any).profile_id || 'CC-2025-001';
   const displayAge = typeof profile.age === 'number' && profile.age > 0 ? profile.age : 28;
   const displayGenderLabel = profile.gender === 'female'
     ? '♀️ Femenino'
@@ -525,7 +613,8 @@ Información del perfil:
         <div className="pt-20 pb-6 px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="profile-header-title">{displayName}</h1>
-            <p className="profile-header-username">{displayUsername}</p>
+            <p className="profile-header-username">@{displayNickname}</p>
+            <p className="text-sm text-white/60">ID: {displayProfileId}</p>
             {checkAuth() &&
               <p className="profile-header-email">{user?.email || 'Usuario'}</p>
             }
@@ -635,7 +724,7 @@ Información del perfil:
                       <span className="sm:hidden">Report</span>
                     </Button>
                     
-                    {/* Botn para solicitar acceso a fotos privadas */}
+                    {/* Boton para solicitar acceso a fotos privadas */}
                     {privateImageAccess === 'none' && (
                       <Button 
                         onClick={() => setShowPrivateImageRequest(true)}
@@ -1115,12 +1204,23 @@ Información del perfil:
                 </div>
               </div>
 
-              {/* Galera privada - demo: mostrar bloqueado y ejemplo de desbloqueo */}
+              {/* Galería privada mejorada con carrusel */}
               <div className="mb-6">
-                <h4 className="text-white font-semibold mb-3 flex items-center gap-2">
-                  <Lock className="w-4 h-4" />
-                  Fotos Privadas
-                </h4>
+                <div className="flex items-center justify-between mb-3">
+                  <h4 className="text-white font-semibold flex items-center gap-2">
+                    <Lock className="w-4 h-4" />
+                    Fotos Privadas ({privateImages.length})
+                  </h4>
+                  {demoPrivateUnlocked && (
+                    <Button
+                      onClick={() => setIsParentalLocked(!isParentalLocked)}
+                      className="bg-orange-600/80 hover:bg-orange-700/80 text-white text-xs px-2 py-1"
+                    >
+                      <Baby className="w-3 h-3 mr-1" />
+                      {isParentalLocked ? 'Desbloquear' : 'Bloquear'}
+                    </Button>
+                  )}
+                </div>
                 
                 {/* DEMO: SIEMPRE mostrar versión bloqueada primero */}
                 <div className="mb-4">
