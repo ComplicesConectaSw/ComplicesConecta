@@ -56,9 +56,9 @@ export const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
     },
     {
       icon: Shield,
-      title: "⚖️ Ley Olimpia - Protección Digital",
-      subtitle: "Tu privacidad y seguridad son nuestra prioridad",
-      description: "ComplicesConecta cumple estrictamente con la Ley Olimpia mexicana. Prohibimos y sancionamos la difusión no consensuada de contenido íntimo. Reporta cualquier violación inmediatamente. Tu confianza es fundamental para nuestra comunidad.",
+      title: "🇲🇽 Primera App en México con Ley Olimpia 100%",
+      subtitle: "Pioneros en protección digital y seguridad",
+      description: "ComplicesConecta es la PRIMERA aplicación lifestyle en México que implementa la Ley Olimpia al 100%. Protección avanzada contra violencia digital, marca de agua obligatoria, y tolerancia CERO a la difusión no consensuada. Tu seguridad es nuestra misión desde el primer día.",
       color: "text-red-400",
       bgColor: "bg-red-400/10"
     },

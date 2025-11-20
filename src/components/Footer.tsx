@@ -17,7 +17,8 @@ export const Footer = () => {
               </h3>
             </div>
             <p className="text-background/80 mb-4 leading-relaxed">
-              La plataforma líder para encontrar conexiones auténticas y experiencias únicas con personas que comparten tus intereses.
+              🇲🇽 <strong>Primera app lifestyle en México</strong> con implementación completa de Ley Olimpia. 
+              Plataforma líder para conexiones auténticas con máxima protección digital.
             </p>
             <div className="flex space-x-3">
               <Button 
