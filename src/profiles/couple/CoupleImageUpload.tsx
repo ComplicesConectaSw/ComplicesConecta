@@ -145,6 +145,8 @@ export const CoupleImageUpload: React.FC<CoupleImageUploadProps> = ({
           onChange={(e) => handleFileChange(e, partner)}
           className="hidden"
           disabled={disabled || isPartnerUploading}
+          aria-label={`Subir imagen para ${partnerName}`}
+          title={`Seleccionar archivo de imagen para ${partnerName}`}
         />
 
         <div className="mb-2">

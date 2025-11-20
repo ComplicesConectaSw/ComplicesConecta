@@ -217,6 +217,8 @@ export const CoupleImageGallery: React.FC<CoupleImageGalleryProps> = ({
             onChange={handleFileChange}
             className="hidden"
             disabled={disabled || isUploading}
+            aria-label="Subir múltiples imágenes para galería de pareja"
+            title="Seleccionar archivos de imagen para la galería"
           />
 
           <div

@@ -243,6 +243,8 @@ export const CouplePhotoSection: React.FC<CouplePhotoSectionProps> = ({
         accept="image/*"
         onChange={(e) => handleFileSelect(e, 'el')}
         className="hidden"
+        aria-label="Subir foto de él"
+        title="Seleccionar imagen para él"
       />
       <input
         ref={fileInputEllaRef}
@@ -250,6 +252,8 @@ export const CouplePhotoSection: React.FC<CouplePhotoSectionProps> = ({
         accept="image/*"
         onChange={(e) => handleFileSelect(e, 'ella')}
         className="hidden"
+        aria-label="Subir foto de ella"
+        title="Seleccionar imagen para ella"
       />
 
       {/* Sección de fotos de Él */}
