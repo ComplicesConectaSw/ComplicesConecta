@@ -11,7 +11,7 @@
 import React, { useState, useEffect } from 'react';
 import { Trophy, Star, Zap, Gift, Lock, Check } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
+import { Card, CardContent } from '@/shared/ui/Card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 
@@ -41,7 +41,7 @@ interface UserLevel {
   title: string;
 }
 
-const LEVELS = [
+const _LEVELS = [
   { level: 1, points: 0, title: 'Novato' },
   { level: 2, points: 100, title: 'Explorador' },
   { level: 3, points: 300, title: 'Sociable' },
@@ -167,8 +167,8 @@ const MOCK_ACHIEVEMENTS: Achievement[] = [
 ];
 
 export const RewardsSystem: React.FC<RewardsSystemProps> = ({ userId }) => {
-  const [achievements, setAchievements] = useState<Achievement[]>(MOCK_ACHIEVEMENTS);
-  const [userLevel, setUserLevel] = useState<UserLevel>({
+  const [achievements] = useState<Achievement[]>(MOCK_ACHIEVEMENTS);
+  const [userLevel] = useState<UserLevel>({
     current: 3,
     next: 4,
     progress: 65,

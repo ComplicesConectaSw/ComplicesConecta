@@ -55,7 +55,7 @@ const LOOKING_FOR_OPTIONS = [
 ];
 
 export const AdvancedProfileEditor: React.FC<AdvancedProfileEditorProps> = ({
-  userId,
+  userId: _userId,
   profileType,
   initialData,
   onSave,
@@ -246,6 +246,7 @@ export const AdvancedProfileEditor: React.FC<AdvancedProfileEditorProps> = ({
                       value={data.relationshipStatus}
                       onChange={(e) => setData({ ...data, relationshipStatus: e.target.value })}
                       className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700"
+                      aria-label="Estado de Relación"
                     >
                       <option value="single">Soltero/a</option>
                       <option value="in_relationship">En una relación</option>
@@ -405,6 +406,7 @@ export const AdvancedProfileEditor: React.FC<AdvancedProfileEditorProps> = ({
                         privacy: { ...data.privacy, photoVisibility: e.target.value as any }
                       })}
                       className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700"
+                      aria-label="Visibilidad de Fotos"
                     >
                       <option value="public">Público</option>
                       <option value="members">Solo Miembros</option>
@@ -424,6 +426,7 @@ export const AdvancedProfileEditor: React.FC<AdvancedProfileEditorProps> = ({
                         privacy: { ...data.privacy, allowMessages: e.target.value as any }
                       })}
                       className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700"
+                      aria-label="Quién puede enviarte mensajes"
                     >
                       <option value="everyone">Todos</option>
                       <option value="members">Solo Miembros</option>
