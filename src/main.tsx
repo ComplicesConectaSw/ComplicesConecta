@@ -46,7 +46,7 @@ if (typeof window !== 'undefined') {
   
   // Forzar React disponible globalmente de forma inmediata
   win.React = React;
-  win.ReactDOM = { createRoot };
+  win.ReactDOM = { createRoot: createRoot as any };
   
   // CRÍTICO: Asegurar que useLayoutEffect esté disponible en window.React
   if (!React.useLayoutEffect && win.React) {
@@ -90,14 +90,14 @@ if (typeof window !== 'undefined') {
   }
   
   // Configurar error boundaries globales para React
-  win.addEventListener('unhandledrejection', (event) => {
+  win.addEventListener('unhandledrejection', (event: PromiseRejectionEvent) => {
     debugLog('UNHANDLED_PROMISE_REJECTION', { 
       reason: event.reason,
       promise: event.promise 
     });
   });
   
-  win.addEventListener('error', (event) => {
+  win.addEventListener('error', (event: ErrorEvent) => {
     debugLog('GLOBAL_ERROR', { 
       message: event.message,
       filename: event.filename,
@@ -186,7 +186,7 @@ async function initializeApp() {
     }
 
     // Crear la raíz de React
-    const root = createRoot(container);
+    const root = createRoot(container as any);
     
     // Renderizar la aplicación
     root.render(
@@ -201,7 +201,7 @@ async function initializeApp() {
     logger.info('ComplicesConecta v3.6.3 initialized successfully');
 
   } catch (error) {
-    logger.error('Failed to initialize app:', error);
+    logger.error('Failed to initialize app:', error as any);
     
     // Mostrar error en el DOM si es posible
     const container = document.getElementById('root');
