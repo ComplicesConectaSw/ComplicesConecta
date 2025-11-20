@@ -576,6 +576,16 @@ Información del perfil:
   const displayName = profile.name || 'Ana García';
   const displayNickname = (profile as any).nickname || 'ana_swinger';
   const displayProfileId = (profile as any).profile_id || 'CC-2025-001';
+  
+  // Función para hacer funcional el botón "Ver Fotos Privadas"
+  const handleViewPrivatePhotos = () => {
+    if (isOwnProfile) {
+      alert('✅ ACCESO CONCEDIDO (DEMO)\n\nEn producción esto se haría solo tras aprobar la solicitud.');
+      setDemoPrivateUnlocked(true);
+    } else {
+      setShowPrivateImageRequest(true);
+    }
+  };
   const displayAge = typeof profile.age === 'number' && profile.age > 0 ? profile.age : 28;
   const displayGenderLabel = profile.gender === 'female'
     ? '♀️ Femenino'

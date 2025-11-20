@@ -168,7 +168,7 @@ const ProfileCouple: React.FC = () => {
         if (demoAuth === 'true' && demoUser) {
           logger.info('?? Cargando perfil demo pareja...');
           const demoCoupleProfile: CoupleProfileWithPartners = {
-            id: 'demo-couple-123',
+            profile_id: 'CC-2025-002',
             couple_name: 'Sofía & Leo',
             username: '@sofiayleo_sw',
             location: 'CDMX, México',
@@ -178,7 +178,8 @@ const ProfileCouple: React.FC = () => {
             relationship_type: 'man-woman',
             couple_images: [],
             partner1_id: 'demo-partner-1',
-            partner1_first_name: 'Sofía',
+            partner1_first_name: 'Carlos',
+            partner1_nickname: 'carlos_swinger',
             partner1_last_name: 'Reyes',
             partner1_age: 29,
             partner1_gender: 'female',
