@@ -165,7 +165,7 @@ const Chat = () => {
   };
   
   // Load messages for a specific chat
-  const loadMockMessages = (chatId: number) => {
+  const loadMessages = (chatId: number) => {
     const mockMessages: SimpleChatMessage[] = [
       { 
         id: '1', 
