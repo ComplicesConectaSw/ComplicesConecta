@@ -70,7 +70,7 @@ const ProfileSingle: React.FC = () => {
     '1': 12, '2': 8, '3': 15
   });
   const [imageUserLikes, setImageUserLikes] = useState<{[key: string]: boolean}>({});
-  const [imageComments, setImageComments] = useState<{[key: string]: string[]}>({});
+  const [_imageComments, setImageComments] = useState<{[key: string]: string[]}>({});
   const [activeTab, setActiveTab] = useState('overview');
   const [profileStats, setProfileStats] = useState({
     totalViews: 0,
@@ -98,7 +98,7 @@ const ProfileSingle: React.FC = () => {
   // 🎨 Aplicar tema distintivo para perfil demo
   const isDemoProfile = profile?.id === 'demo-user-123';
   const demoTheme = isDemoProfile ? 'demo_premium' : undefined;
-  const themeConfig = useProfileTheme('single', ['male'], demoTheme);
+  const _themeConfig = useProfileTheme('single', ['male'], demoTheme);
 
   // Datos de imágenes privadas para el carrusel
   const privateImages = [
@@ -734,7 +734,7 @@ Información del perfil:
                     {/* Boton para solicitar acceso a fotos privadas */}
                     {privateImageAccess === 'none' && (
                       <Button 
-                        onClick={() => setShowPrivateImageRequest(true)}
+                        onClick={handleViewPrivatePhotos}
                         className="bg-purple-600/80 hover:bg-purple-700/80 text-white flex items-center gap-2 text-sm sm:text-base px-3 sm:px-4 py-2"
                       >
                         <Lock className="w-4 h-4" />
