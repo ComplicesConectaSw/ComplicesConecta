@@ -53,10 +53,10 @@ import Demo from "@/pages/Demo";
 // Lazy loaded pages for performance optimization - Core features
 const Profiles = lazy(() => import("@/profiles/shared/Profiles"));
 const ProfileDetail = lazy(() => import("@/profiles/shared/ProfileDetail"));
-const Chat = lazy(() => import("@/pages/Chat"));
-const ChatInfo = lazy(() => import("@/pages/ChatInfo"));
-const Matches = lazy(() => import("@/pages/Matches"));
-const Requests = lazy(() => import("@/pages/Requests"));
+const _Chat = lazy(() => import("@/pages/Chat"));
+const _ChatInfo = lazy(() => import("@/pages/ChatInfo"));
+const _Matches = lazy(() => import("@/pages/Matches"));
+const _Requests = lazy(() => import("@/pages/Requests"));
 const Settings = lazy(() => import("@/pages/Settings"));
 const Premium = lazy(() => import("@/pages/Premium"));
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
@@ -190,10 +190,10 @@ const App = () => {
                   <Route path="/edit-profile-single" element={<EditProfileSingle />} />
                   <Route path="/edit-profile-couple" element={<EditProfileCouple />} />
                   <Route path="/events" element={<Events />} />
-                  <Route path="/chat" element={<Chat />} />
-                  <Route path="/chat-info" element={<ChatInfo />} />
-                  <Route path="/matches" element={<Matches />} />
-                  <Route path="/requests" element={<Requests />} />
+                  <Route path="/chat" element={<_Chat />} />
+                  <Route path="/chat-info" element={<_ChatInfo />} />
+                  <Route path="/matches" element={<_Matches />} />
+                  <Route path="/requests" element={<_Requests />} />
                   <Route path="/discover" element={<Discover />} />
                   <Route path="/stories" element={<Stories />} />
                   <Route path="/stories/info" element={<StoriesInfo />} />

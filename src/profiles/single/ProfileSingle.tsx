@@ -14,12 +14,18 @@ import {
   Download, 
   Flag, 
   Lock, 
-  Clock, 
   CheckCircle, 
-  XCircle, 
   Baby,
-  ChevronLeft,
-  ChevronRight
+  Award,
+  Edit,
+  Images,
+  Eye,
+  Users,
+  TrendingUp,
+  Wallet,
+  Coins,
+  Zap,
+  Gift
 } from 'lucide-react';
 import { TikTokShareButton } from '@/components/sharing/TikTokShareButton';
 import { trackEvent } from '@/config/posthog.config';

@@ -52,8 +52,6 @@ const Chat = () => {
   const [tabError, setTabError] = useState<string | null>(null);
   const [hasChatAccess, setHasChatAccess] = useState<{[key: number]: boolean}>({});
   const [isProduction, setIsProduction] = useState(false);
-  const [_isLoading, setIsLoading] = useState(false);
-  const { user } = useAuth();
   
   // Hook de verificacin de consentimiento
   const currentRoomId = selectedChat?.id.toString();
