@@ -2,7 +2,21 @@ import React, { useState, useEffect } from "react";
 import { Card, CardContent } from "@/shared/ui/Card";
 import { Button } from "@/shared/ui/Button";
 import { Badge } from "@/components/ui/badge";
-import { Heart, MapPin, Verified, Crown, Settings, Share2, Lock, Images, Flag, Coins, Wallet, Users } from "lucide-react";
+import { 
+  Heart, 
+  MapPin, 
+  Verified, 
+  Crown, 
+  Settings, 
+  Share2, 
+  Lock, 
+  Images, 
+  Flag, 
+  Coins, 
+  Wallet, 
+  Users, 
+  Baby
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { generateMockCoupleProfiles, type CoupleProfileWithPartners } from "@/features/profile/coupleProfiles";
@@ -25,6 +39,17 @@ const ProfileCouple: React.FC = () => {
   const [privateImageAccess, setPrivateImageAccess] = useState<'none' | 'pending' | 'approved' | 'denied'>('none');
   const [showReportDialog, setShowReportDialog] = useState(false);
   const [demoPrivateUnlocked, setDemoPrivateUnlocked] = useState(false);
+  const [isParentalLocked, setIsParentalLocked] = useState(false);
+  
+  // Función para hacer funcional el botón "Ver Fotos Privadas"
+  const handleViewPrivatePhotos = () => {
+    if (isOwnProfile) {
+      alert('✅ ACCESO CONCEDIDO (DEMO)\n\nEn producción esto se haría solo tras aprobar la solicitud.');
+      setDemoPrivateUnlocked(true);
+    } else {
+      setShowPrivateImageRequest(true);
+    }
+  };
   const { isAuthenticated, user, profile: authProfile } = useAuth();
 
   // Estados para funcionalidades blockchain
@@ -277,7 +302,8 @@ const ProfileCouple: React.FC = () => {
         <div className="profile-header-container">
           <div className="max-w-36rem mx-auto text-center">
             <h1 className="profile-header-title">{profile.couple_name || 'Perfil de Pareja'}</h1>
-            <p className="profile-header-username">{profile.username || '@pareja_sw'}</p>
+            <p className="profile-header-username">{profile.username || '@sofiayleo_sw'}</p>
+            <p className="text-sm text-white/60">ID: {(profile as any).profile_id || 'CC-2025-002'}</p>
             {isAuthenticated() && user && (
               <p className="profile-header-email">{user.email || 'Usuario'}</p>
             )}
@@ -548,9 +574,23 @@ const ProfileCouple: React.FC = () => {
               onCommentPost={handleCommentPost}
             />
 
-            {/* Galera privada - demo: mostrar bloqueado y ejemplo de desbloqueo */}
+            {/* Galería privada mejorada - demo: mostrar bloqueado y ejemplo de desbloqueo */}
             <div className="mb-4">
-              <h4 className="text-white font-semibold mb-3 flex items-center gap-2"><Lock className="w-4 h-4" />Fotos Privadas</h4>
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="text-white font-semibold flex items-center gap-2">
+                  <Lock className="w-4 h-4" />
+                  Fotos Privadas (4)
+                </h4>
+                {demoPrivateUnlocked && (
+                  <Button
+                    onClick={() => setIsParentalLocked(!isParentalLocked)}
+                    className="bg-orange-600/80 hover:bg-orange-700/80 text-white text-xs px-2 py-1"
+                  >
+                    <Baby className="w-3 h-3 mr-1" />
+                    {isParentalLocked ? 'Desbloquear' : 'Bloquear'}
+                  </Button>
+                )}
+              </div>
               <div
                 className="grid grid-cols-2 sm:grid-cols-3 gap-4 cursor-pointer"
                 onClick={() => {
@@ -562,7 +602,7 @@ const ProfileCouple: React.FC = () => {
                   }
                 }}
               >
-                <div className={`aspect-square rounded-lg overflow-hidden relative ${demoPrivateUnlocked && isOwnProfile ? '' : 'filter blur-lg'}`}>
+                <div className={`aspect-square rounded-lg overflow-hidden relative ${demoPrivateUnlocked && isOwnProfile && !isParentalLocked ? '' : 'filter blur-lg'}`}>
                   <div className="relative w-full h-full">
                     <img 
                       src="/src/assets/people/couple/privado/coupleprivjpg.jpg" 
