@@ -1152,9 +1152,12 @@ Información del perfil:
                   )}
                 </div>
                 
-                {/* DEMO: SIEMPRE mostrar versión bloqueada primero */}
-                <div className="mb-4">
-                  <p className="text-white/60 text-xs mb-2">🔒 Vista sin acceso (otros usuarios):</p>
+                {/* Carrusel de imágenes privadas con control parental */}
+                {!demoPrivateUnlocked || isParentalLocked ? (
+                  <div className="mb-4">
+                    <p className="text-white/60 text-xs mb-2">
+                      🔒 {isParentalLocked ? 'Vista bloqueada (control parental)' : 'Vista sin acceso (otros usuarios)'}:
+                    </p>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                     <div
                       className="aspect-square rounded-lg overflow-hidden relative cursor-pointer"
@@ -1266,7 +1269,34 @@ Información del perfil:
                       )}
                     </div>
                   </div>
-                </div>
+                ) : (
+                  <div className="mb-4">
+                    <p className="text-white/60 text-xs mb-2">✅ Vista con acceso (tu perfil):</p>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                      {/* Aquí irá el carrusel expandible */}
+                      <div 
+                        className="aspect-square rounded-lg overflow-hidden relative border-2 border-green-500/50 cursor-pointer"
+                        onClick={() => alert('🚀 CARRUSEL\n\nAquí se abrirá el modal con carrusel completo')}
+                      >
+                        <img 
+                          src="/src/assets/people/male/privado/0CD28qq-editado.jpg" 
+                          alt="Foto privada 1"
+                          className="w-full h-full object-cover private-image-protection"
+                          onContextMenu={(e) => e.preventDefault()}
+                          draggable={false}
+                        />
+                        <div className="absolute inset-0 pointer-events-none">
+                          <div className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                            ComplicesConecta
+                          </div>
+                          <div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                            © Privado
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
                 
                 {/* Mostrar fotos normales si es dueño (para demo) */}
                 {isOwnProfile && (
