@@ -85,13 +85,10 @@ export const AnimatedButton: React.FC<AnimatedButtonProps> = ({
       {ripples.map((ripple) => (
         <span
           key={ripple.id}
-          className="absolute bg-white/30 rounded-full pointer-events-none animate-ripple"
+          className="absolute bg-white/30 rounded-full pointer-events-none animate-ripple w-2.5 h-2.5 -translate-x-1/2 -translate-y-1/2"
           style={{
             left: ripple.x,
-            top: ripple.y,
-            width: 10,
-            height: 10,
-            transform: 'translate(-50%, -50%)'
+            top: ripple.y
           }}
         />
       ))}
@@ -509,7 +506,7 @@ export const Toast: React.FC<ToastProps> = ({
     >
       {icons[type]}
       <span className="font-medium">{message}</span>
-      <button onClick={onClose} className="ml-2">
+      <button onClick={onClose} className="ml-2" aria-label="Cerrar notificación">
         <X className="h-4 w-4" />
       </button>
     </motion.div>
