@@ -20,7 +20,7 @@ interface ImageLightboxProps {
   onClose: () => void;
   allowDownload?: boolean;
   showThumbnails?: boolean;
-  userId?: string;
+  _userId?: string;
   userRole?: 'user' | 'moderator' | 'admin';
 }
 
@@ -30,7 +30,7 @@ export const ImageLightbox: React.FC<ImageLightboxProps> = ({
   onClose,
   allowDownload = false,
   showThumbnails = true,
-  userId,
+  _userId,
   userRole = 'user'
 }) => {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
@@ -83,14 +83,14 @@ export const ImageLightbox: React.FC<ImageLightboxProps> = ({
   /**
    * Drag para pan
    */
-  const handleMouseDown = (e: React.MouseEvent) => {
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     if (zoom > 1) {
       setIsDragging(true);
       setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
     }
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (isDragging && zoom > 1) {
       setPosition({
         x: e.clientX - dragStart.x,
@@ -148,9 +148,14 @@ export const ImageLightbox: React.FC<ImageLightboxProps> = ({
     try {
       // TODO: Registrar descarga con contentProtectionService
       const link = document.createElement('a');
-      link.href = currentImage;
-      link.download = `evidence-${Date.now()}.jpg`;
+      link.setAttribute('href', currentImage);
+      link.setAttribute('download', `evidence-${Date.now()}.jpg`);
+      link.style.display = 'none';
+      // @ts-ignore - TypeScript strict mode issue with appendChild/removeChild
+      document.body.appendChild(link);
       link.click();
+      // @ts-ignore
+      document.body.removeChild(link);
 
       alert(`✅ Descarga registrada\n\nMotivo: ${reason}\nHora: ${new Date().toLocaleString()}`);
     } catch (error) {

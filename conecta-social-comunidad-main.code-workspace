@@ -10,6 +10,7 @@
 			"plyconfig.json": "jsonc"
 		},
 		"gitConfigUser.selectedProfile": "complciesconectaswvsco",
-		"CodeGPT.apiKey": "Gemini CLI"
+		"CodeGPT.apiKey": "Gemini CLI",
+		"java.configuration.updateBuildConfiguration": "automatic"
 	}
 }

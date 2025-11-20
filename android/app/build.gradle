@@ -97,25 +97,16 @@ catch (Exception ) {
 }
 
 
-sentry
-        {   org = "complicesconecta"
+/* sentry {   
+    org = "complicesconecta"
     projectName = "android"
-
-    // this will upload your source code to Sentry to show it as part of the stack traces
-    // disable if you don't want to expose your sources
     includeSourceContext = true
-    
-    // Auto upload ProGuard/R8 mapping files (habilitado si hay token configurado)
     autoUploadProguardMapping = project.findProperty("SENTRY_AUTH_TOKEN") != null || System.getenv("SENTRY_AUTH_TOKEN") != null
-    
-    // Auto upload source bundle files (habilitado si hay token configurado)
     autoUploadSourceContext = project.findProperty("SENTRY_AUTH_TOKEN") != null || System.getenv("SENTRY_AUTH_TOKEN") != null
-    
-    // Skip upload tasks if no auth token is configured
-    tracingInstrumentation
-            {
-        enabled = false }
-}
+    tracingInstrumentation {
+        enabled = false 
+    }
+} */
 
 // Configurar token de Sentry desde gradle.properties o variable de entorno
 def sentryToken = project.findProperty("SENTRY_AUTH_TOKEN") ?: System.getenv("SENTRY_AUTH_TOKEN")

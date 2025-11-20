@@ -10,7 +10,7 @@
  */
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Mic, Square, Play, Pause, Trash2, Send, Loader2 } from 'lucide-react';
+import { Mic, Square, Play, Pause, Trash2, Send } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Button } from '@/shared/ui/Button';
 import { logger } from '@/lib/logger';

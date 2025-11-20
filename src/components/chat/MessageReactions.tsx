@@ -26,7 +26,7 @@ interface MessageReactionsProps {
   reactions?: Reaction[];
   onReactionAdd: (messageId: string, emoji: string) => void;
   onReactionRemove: (messageId: string, emoji: string) => void;
-  currentUserId?: string;
+  _currentUserId?: string;
   className?: string;
 }
 
@@ -37,7 +37,7 @@ export const MessageReactions: React.FC<MessageReactionsProps> = ({
   reactions = [],
   onReactionAdd,
   onReactionRemove,
-  currentUserId,
+  _currentUserId,
   className = ''
 }) => {
   const [showPicker, setShowPicker] = useState(false);

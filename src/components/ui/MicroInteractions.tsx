@@ -85,11 +85,11 @@ export const AnimatedButton: React.FC<AnimatedButtonProps> = ({
       {ripples.map((ripple) => (
         <span
           key={ripple.id}
-          className="absolute bg-white/30 rounded-full pointer-events-none animate-ripple w-2.5 h-2.5 -translate-x-1/2 -translate-y-1/2"
+          className="ripple-effect"
           style={{
-            left: ripple.x,
-            top: ripple.y
-          }}
+            '--ripple-x': `${ripple.x}px`,
+            '--ripple-y': `${ripple.y}px`,
+          } as React.CSSProperties}
         />
       ))}
 

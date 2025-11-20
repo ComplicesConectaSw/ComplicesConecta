@@ -132,3 +132,24 @@ body {
 .progress-85 {
   width: 85%;
 }
+
+/* Ripple effect for AnimatedButton */
+.ripple-effect {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+  animation: ripple 0.6s linear;
+  width: 10px;
+  height: 10px;
+  left: var(--ripple-x);
+  top: var(--ripple-y);
+  transform: translate(-50%, -50%);
+}
+
+@keyframes ripple {
+  to {
+    transform: translate(-50%, -50%) scale(4);
+    opacity: 0;
+  }
+}
