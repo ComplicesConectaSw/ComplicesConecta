@@ -50,6 +50,7 @@ import { logger } from '@/lib/logger';
 import { usePersistedState } from '@/hooks/usePersistedState';
 import type { Database } from '@/types/supabase-generated';
 import { PrivateImageRequest } from '@/components/profile/PrivateImageRequest';
+import { ImageModal } from '@/components/profile/ImageModal';
 import { ReportDialog } from '@/components/swipe/ReportDialog';
 import { motion } from 'framer-motion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -71,11 +72,15 @@ const ProfileSingle: React.FC = () => {
   // Demo: controlar desbloqueo visual de fotos privadas en el propio perfil
   const [demoPrivateUnlocked, setDemoPrivateUnlocked] = useState(false);
   const [showReportDialog, setShowReportDialog] = useState(false);
+  
+  // Estados para el modal de imagen expandida
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const [imageComments, setImageComments] = useState<{[key: string]: string}>({});
-  const [imageLikes, setImageLikes] = useState<{[key: string]: number}>({});
+  const [imageLikes, setImageLikes] = useState<{[key: string]: number}>({
+    '1': 12, '2': 8, '3': 15
+  });
   const [imageUserLikes, setImageUserLikes] = useState<{[key: string]: boolean}>({});
+  const [imageComments, setImageComments] = useState<{[key: string]: string[]}>({});
   const [isParentalLocked, setIsParentalLocked] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
   const [profileStats, setProfileStats] = useState({
