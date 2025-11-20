@@ -800,7 +800,12 @@ export default function TokensInfo() {
                           </div>
                         </div>
                         <div className="w-full bg-white/10 rounded-full h-2 mt-2">
-                          {/* Nota: estilo en línea necesario para ancho dinámico basado en datos */}
+                          {/* 
+                            EXCEPCIÓN LEGÍTIMA: Estilo en línea necesario para ancho dinámico
+                            El valor de 'width' se calcula en runtime basado en item.percentage
+                            No puede predefinirse en CSS ya que es un valor variable por elemento
+                            Referencia: https://webhint.io/docs/user-guide/hints/hint-no-inline-styles/
+                          */}
                           <div 
                             className="bg-gradient-to-r from-purple-500 to-blue-600 h-2 rounded-full transition-all duration-1000"
                             style={{ width: `${item.percentage}%` }}
