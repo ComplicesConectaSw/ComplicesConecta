@@ -25,21 +25,7 @@ import {
   Wallet,
   Gift,
   Zap,
-  ChevronLeft,
-  ChevronRight,
-  ThumbsUp,
-  ThumbsDown,
-  X,
-  Baby,
-  Shield, 
-  Verified, 
-  Unlock,
-  Settings,
-  LogOut,
-  Upload,
-  Trash2,
-  MoreHorizontal,
-  ChevronDown
+  Baby
 } from 'lucide-react';
 import { TikTokShareButton } from '@/components/sharing/TikTokShareButton';
 import { trackEvent } from '@/config/posthog.config';
@@ -50,7 +36,6 @@ import { logger } from '@/lib/logger';
 import { usePersistedState } from '@/hooks/usePersistedState';
 import type { Database } from '@/types/supabase-generated';
 import { PrivateImageRequest } from '@/components/profile/PrivateImageRequest';
-import { ImageModal } from '@/components/profile/ImageModal';
 import { ReportDialog } from '@/components/swipe/ReportDialog';
 import { motion } from 'framer-motion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -73,14 +58,7 @@ const ProfileSingle: React.FC = () => {
   const [demoPrivateUnlocked, setDemoPrivateUnlocked] = useState(false);
   const [showReportDialog, setShowReportDialog] = useState(false);
   
-  // Estados para el modal de imagen expandida
-  const [showImageModal, setShowImageModal] = useState(false);
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const [imageLikes, setImageLikes] = useState<{[key: string]: number}>({
-    '1': 12, '2': 8, '3': 15
-  });
-  const [imageUserLikes, setImageUserLikes] = useState<{[key: string]: boolean}>({});
-  const [imageComments, setImageComments] = useState<{[key: string]: string[]}>({});
+  // Estado para control parental básico
   const [isParentalLocked, setIsParentalLocked] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
   const [profileStats, setProfileStats] = useState({
@@ -106,69 +84,6 @@ const ProfileSingle: React.FC = () => {
   // Determinar si es el perfil propio
   const isOwnProfile = checkAuth() && user?.id === profile?.id;
 
-  // Datos de imágenes privadas para el carrusel
-  const privateImages = [
-    { 
-      id: '1', 
-      url: '/src/assets/people/male/privado/0CD28qq-editado.jpg', 
-      caption: 'Foto artística en blanco y negro 📸',
-      likes: imageLikes['1'] || 12,
-      userLiked: imageUserLikes['1'] || false
-    },
-    { 
-      id: '2', 
-      url: '/src/assets/people/male/privado/45Xas2E.jpg', 
-      caption: 'Sesión profesional de estudio 🎭',
-      likes: imageLikes['2'] || 8,
-      userLiked: imageUserLikes['2'] || false
-    },
-    { 
-      id: '3', 
-      url: '/src/assets/people/male/privado/4Jyc0cr-editado.jpg', 
-      caption: 'Momento íntimo y personal 💫',
-      likes: imageLikes['3'] || 15,
-      userLiked: imageUserLikes['3'] || false
-    }
-  ];
-
-  // Funciones para manejar likes
-  const handleImageLike = (imageId: string) => {
-    const currentLikes = imageLikes[imageId] || 0;
-    const userLiked = imageUserLikes[imageId] || false;
-    
-    setImageLikes(prev => ({
-      ...prev,
-      [imageId]: userLiked ? currentLikes - 1 : currentLikes + 1
-    }));
-    
-    setImageUserLikes(prev => ({
-      ...prev,
-      [imageId]: !userLiked
-    }));
-  };
-
-  // Función para abrir imagen en modal
-  const openImageModal = (index: number) => {
-    setSelectedImageIndex(index);
-    setShowImageModal(true);
-  };
-
-  // Función para navegar en el carrusel
-  const navigateCarousel = (direction: 'prev' | 'next') => {
-    if (direction === 'prev') {
-      setSelectedImageIndex(prev => prev > 0 ? prev - 1 : privateImages.length - 1);
-    } else {
-      setSelectedImageIndex(prev => prev < privateImages.length - 1 ? prev + 1 : 0);
-    }
-  };
-
-  // Función para añadir comentario
-  const handleAddComment = (imageId: string, comment: string) => {
-    setImageComments(prev => ({
-      ...prev,
-      [imageId]: comment
-    }));
-  };
 
   // Handlers para las acciones del perfil
   const handleUploadImage = () => {
