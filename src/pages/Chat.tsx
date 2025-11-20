@@ -55,7 +55,7 @@ const Chat = () => {
   const [selectedChat, setSelectedChat] = useState<any>(null);
   const [activeTab, setActiveTab] = useState('chats');
   const [realRooms, setRealRooms] = useState<any[]>([]);
-  const [realMessages, setRealMessages] = useState<any[]>([]);
+  const [realMessages, setRealMessages] = useState<SimpleChatMessage[]>([]);
   const { isAuthenticated } = useAuth();
   
   // Hook de verificacin de consentimiento
@@ -165,11 +165,35 @@ const Chat = () => {
   };
   
   // Load messages for a specific chat
-  const loadMessages = (chatId: number) => {
-    const mockMessages: Message[] = [
-      { id: 1, senderId: chatId, content: "Hola! Cmo estn?", timestamp: "10:30", type: 'text' },
-      { id: 2, senderId: 0, content: "Muy bien! Y ustedes?", timestamp: "10:32", type: 'text' },
-      { id: 3, senderId: chatId, content: "Genial, les interesa conocernos mejor?", timestamp: "10:35", type: 'text' }
+  const loadMockMessages = (chatId: number) => {
+    const mockMessages: SimpleChatMessage[] = [
+      { 
+        id: '1', 
+        sender_id: chatId.toString(), 
+        sender_name: 'Demo User', 
+        room_id: chatId.toString(),
+        content: "Hola! Cómo están?", 
+        created_at: new Date().toISOString(), 
+        message_type: 'text' 
+      },
+      { 
+        id: '2', 
+        sender_id: '0', 
+        sender_name: 'Tú', 
+        room_id: chatId.toString(),
+        content: "Muy bien! Y ustedes?", 
+        created_at: new Date().toISOString(), 
+        message_type: 'text' 
+      },
+      { 
+        id: '3', 
+        sender_id: chatId.toString(), 
+        sender_name: 'Demo User', 
+        room_id: chatId.toString(),
+        content: "Genial, les interesa conocernos mejor?", 
+        created_at: new Date().toISOString(), 
+        message_type: 'text' 
+      }
     ];
     setMessages(mockMessages);
   };
@@ -391,12 +415,14 @@ const Chat = () => {
       return;
     }
     
-    const message: Message = {
-      id: Date.now() + Math.random(),
-      senderId: 0,
+    const message: SimpleChatMessage = {
+      id: (Date.now() + Math.random()).toString(),
+      sender_id: '0',
+      sender_name: 'Tú',
+      room_id: selectedChat.id.toString(),
       content: newMessage,
-      timestamp: new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }),
-      type: 'text'
+      created_at: new Date().toISOString(),
+      message_type: 'text'
     };
     
     setMessages(prev => [...prev, message]);
