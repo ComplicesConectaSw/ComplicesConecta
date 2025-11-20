@@ -3,6 +3,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 // CRÍTICO: Importar QueryClient de forma segura - verificar que React esté disponible
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { MessageCircle, Heart, Users } from 'lucide-react';
 import { CrossBrowserOptimizer } from '@/components/ui/CrossBrowserOptimizer';
 import { AccessibilityEnhancer } from '@/components/ui/AccessibilityEnhancer';
 import { MobileOptimizer } from '@/components/ui/MobileOptimizer';
@@ -190,10 +191,33 @@ const App = () => {
                   <Route path="/edit-profile-single" element={<EditProfileSingle />} />
                   <Route path="/edit-profile-couple" element={<EditProfileCouple />} />
                   <Route path="/events" element={<Events />} />
-                  <Route path="/chat" element={<Chat />} />
-                  <Route path="/chat-info" element={<ChatInfo />} />
-                  <Route path="/matches" element={<Matches />} />
-                  <Route path="/requests" element={<Requests />} />
+                  <Route path="/chat" element={
+                    <div className="min-h-screen bg-gradient-to-br from-purple-900 to-blue-900 flex items-center justify-center">
+                      <div className="text-center text-white">
+                        <MessageCircle className="w-24 h-24 mx-auto mb-4 text-white/60" />
+                        <h2 className="text-2xl font-bold mb-2">Chat Demo</h2>
+                        <p className="text-white/80">Función disponible en versión completa</p>
+                      </div>
+                    </div>
+                  } />
+                  <Route path="/matches" element={
+                    <div className="min-h-screen bg-gradient-to-br from-purple-900 to-blue-900 flex items-center justify-center">
+                      <div className="text-center text-white">
+                        <Heart className="w-24 h-24 mx-auto mb-4 text-white/60" />
+                        <h2 className="text-2xl font-bold mb-2">Matches Demo</h2>
+                        <p className="text-white/80">Función disponible en versión completa</p>
+                      </div>
+                    </div>
+                  } />
+                  <Route path="/requests" element={
+                    <div className="min-h-screen bg-gradient-to-br from-purple-900 to-blue-900 flex items-center justify-center">
+                      <div className="text-center text-white">
+                        <Users className="w-24 h-24 mx-auto mb-4 text-white/60" />
+                        <h2 className="text-2xl font-bold mb-2">Solicitudes Demo</h2>
+                        <p className="text-white/80">Función disponible en versión completa</p>
+                      </div>
+                    </div>
+                  } />
                   <Route path="/discover" element={<Discover />} />
                   <Route path="/stories" element={<Stories />} />
                   <Route path="/stories/info" element={<StoriesInfo />} />

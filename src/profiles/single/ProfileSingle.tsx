@@ -4,28 +4,23 @@ import { Button } from '@/shared/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
 import { Badge } from '@/components/ui/badge';
 import { 
-  Camera, 
   Heart, 
+  MessageCircle, 
+  Share2, 
   MapPin, 
-  Edit, 
-  Lock,
-  Flag,
-  CheckCircle,
-  Images,
-  Share2,
-  Download,
-  Star,
-  Eye,
-  Users,
-  MessageCircle,
-  Calendar,
-  TrendingUp,
-  Award,
-  Coins,
-  Wallet,
-  Gift,
-  Zap,
-  Baby
+  Calendar, 
+  Star, 
+  Camera, 
+  Download, 
+  Flag, 
+  Lock, 
+  Clock, 
+  CheckCircle, 
+  XCircle, 
+  Baby,
+  ChevronLeft,
+  ChevronRight,
+  LogOut
 } from 'lucide-react';
 import { TikTokShareButton } from '@/components/sharing/TikTokShareButton';
 import { trackEvent } from '@/config/posthog.config';
@@ -728,6 +723,24 @@ Información del perfil:
                       <span className="hidden sm:inline">Reportar</span>
                       <span className="sm:hidden">Report</span>
                     </Button>
+                    
+                    {/* Botón de Logout */}
+                    {isOwnProfile && (
+                      <Button 
+                        onClick={() => {
+                          if (window.confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+                            localStorage.removeItem('demo_authenticated');
+                            localStorage.removeItem('demo_user');
+                            window.location.href = '/';
+                          }
+                        }}
+                        className="bg-gray-600/80 hover:bg-gray-700/80 text-white flex items-center gap-2 text-sm sm:text-base px-3 sm:px-4 py-2"
+                      >
+                        <LogOut className="w-4 h-4" />
+                        <span className="hidden sm:inline">Cerrar Sesión</span>
+                        <span className="sm:hidden">Logout</span>
+                      </Button>
+                    )}
                     
                     {/* Boton para solicitar acceso a fotos privadas */}
                     {privateImageAccess === 'none' && (

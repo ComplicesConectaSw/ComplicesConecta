@@ -41,15 +41,14 @@ export interface Message {
 const Chat = () => {
   const navigate = useNavigate();
   const { features } = useFeatures();
-  const { isAuthenticated } = useAuth();
-
-  // Estados para chat real y demo
-  const [selectedChat, setSelectedChat] = useState<ChatUser | null>(null);
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [realMessages, setRealMessages] = useState<SimpleChatMessage[]>([]);
-  const [realRooms, setRealRooms] = useState<SimpleChatRoom[]>([]);
-  const [newMessage, setNewMessage] = useState('');
-  const [activeTab, setActiveTab] = useState<'private' | 'public'>('private');
+  const { user } = useAuth();
+  const [rooms, setRooms] = useState<SimpleChatRoom[]>([]);
+  const [selectedRoom, setSelectedRoom] = useState<SimpleChatRoom | null>(null);
+  const [messages, setMessages] = useState<SimpleChatMessage[]>([]);
+  const [newMessage, setNewMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isConnected, setIsConnected] = useState(true);
+  const [connectionStatus, setConnectionStatus] = useState<'connecting' | 'connected' | 'disconnected'>('connected');
   const [tabError, setTabError] = useState<string | null>(null);
   const [hasChatAccess, setHasChatAccess] = useState<{[key: number]: boolean}>({});
   const [isProduction, setIsProduction] = useState(false);
