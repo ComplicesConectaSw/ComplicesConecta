@@ -109,7 +109,7 @@ const Auth = () => {
     password: 'demo123'
   };
 
-  const handleDemoLogin = () => {
+  const _handleDemoLogin = () => {
     const event = new Event('submit') as any;
     event.isDemo = true;
     handleSignIn(event);
