@@ -25,14 +25,14 @@ export default function TokensTerms() {
               <span className="sm:hidden">Regresar</span>
             </AnimatedButton>
             
-            <h1 className="text-lg sm:text-xl font-bold text-white text-center truncate">Trminos y Condiciones - Tokens</h1>
+            <h1 className="text-lg sm:text-xl font-bold text-white text-center truncate">Términos y Condiciones - Tokens</h1>
             
             <Button
               onClick={() => navigate('/')}
               className="text-white hover:bg-white/20 bg-transparent border-none"
             >
               <span className="hidden sm:inline">Inicio</span>
-              <span className="sm:hidden">??</span>
+              <span className="sm:hidden">🏠</span>
             </Button>
           </div>
         </div>
@@ -45,7 +45,7 @@ export default function TokensTerms() {
             <FileText className="h-8 w-8 text-white" />
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-white">
-            Trminos y Condiciones
+            Términos y Condiciones
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-400">
               Programa de Tokens CMPX/GTK
             </span>
@@ -55,20 +55,20 @@ export default function TokensTerms() {
           </p>
         </div>
 
-        {/* Informacin General */}
+        {/* Información General */}
         <Card className="bg-card/80 backdrop-blur-sm border border-primary/10">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
               <FileText className="h-6 w-6 text-blue-400" />
-              Informacin General del Acuerdo
+              Información General del Acuerdo
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4 text-white/80">
             <p><strong className="text-white">Fecha de vigencia:</strong> 3 de septiembre de 2025</p>
             <p><strong className="text-white">Versin:</strong> 1.0 - Fase Beta</p>
             <p>
-              Al participar en el programa de tokens CMPX/GTK de ComplicesConecta, aceptas estos trminos y condiciones. 
-              Este acuerdo complementa nuestros Trminos de Servicio generales.
+              Al participar en el programa de tokens CMPX/GTK de ComplicesConecta, aceptas estos términos y condiciones. 
+              Este acuerdo complementa nuestros Términos de Servicio generales.
             </p>
             <div className="bg-blue-900/30 p-4 rounded-lg">
               <p className="text-blue-200">
@@ -298,7 +298,7 @@ export default function TokensTerms() {
                     <li>CMPX se convertirn automticamente a GTK</li>
                     <li>Ratio de conversin ser 1:1 inicialmente</li>
                     <li>Proceso gratuito para todos los usuarios beta</li>
-                    <li>Notificacin 60 das antes de la migracin</li>
+                    <li>Notificación 60 días antes de la migración</li>
                   </ul>
                 </div>
                 
@@ -342,9 +342,9 @@ export default function TokensTerms() {
               <div className="space-y-3">
                 <h4 className="font-semibold text-white">Disputas Legales:</h4>
                 <div className="bg-purple-900/30 p-3 rounded-lg text-sm">
-                  <p><strong>Jurisdiccin:</strong> Mxico</p>
-                  <p><strong>Ley aplicable:</strong> Legislacin mexicana</p>
-                  <p><strong>Mediacin:</strong> Preferida antes de litigio</p>
+                  <p><strong>Jurisdicción:</strong> México</p>
+                  <p><strong>Ley aplicable:</strong> Legislación mexicana</p>
+                  <p><strong>Mediación:</strong> Preferida antes de litigio</p>
                 </div>
               </div>
             </div>
@@ -365,13 +365,13 @@ export default function TokensTerms() {
                 className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
               >
                 <Shield className="h-4 w-4 mr-2" />
-                Ver Poltica de Privacidad
+                Ver Política de Privacidad
               </Button>
               <Button
                 onClick={() => navigate('/tokens-info')}
                 className="border border-white/20 text-white hover:bg-white/10 bg-transparent"
               >
-                Volver a Informacin de Tokens
+                Volver a Información de Tokens
               </Button>
             </div>
           </CardContent>

@@ -50,7 +50,7 @@ const TemplateDemo: React.FC = () => {
           className="text-center mb-8"
         >
           <h1 className="text-4xl font-bold text-white mb-4">
-            ?? Demo de Integracin de Plantillas
+            🎨 Demo de Integración de Plantillas
           </h1>
           <p className="text-gray-300 text-lg">
             Sistema de Temas v2.8.3 + Plantillas React Adaptadas
@@ -329,7 +329,7 @@ const TemplateDemo: React.FC = () => {
           <Card className="bg-white/5 backdrop-blur-sm border-white/10">
             <CardContent className="p-6">
               <h3 className="text-white font-semibold mb-2">
-                ?? Integracin Completada
+                ✅ Integración Completada
               </h3>
               <p className="text-gray-300 text-sm">
                 Las plantillas han sido auditadas, adaptadas e integradas con el Sistema de Temas v2.8.3.

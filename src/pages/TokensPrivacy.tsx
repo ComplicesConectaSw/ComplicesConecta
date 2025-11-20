@@ -24,7 +24,7 @@ export default function TokensPrivacy() {
               <span className="truncate">Regresar</span>
             </AnimatedButton>
             
-            <h1 className="text-xl font-bold text-white">Poltica de Privacidad - Tokens</h1>
+            <h1 className="text-xl font-bold text-white">Política de Privacidad - Tokens</h1>
             
             <div className="w-20"></div>
           </div>
@@ -38,7 +38,7 @@ export default function TokensPrivacy() {
             <Shield className="h-8 w-8 text-white" />
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-white">
-            Poltica de Privacidad
+            Política de Privacidad
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
               Sistema de Tokens CMPX/GTK
             </span>
@@ -48,12 +48,12 @@ export default function TokensPrivacy() {
           </p>
         </div>
 
-        {/* Informacin General */}
+        {/* Información General */}
         <Card className="bg-card/80 backdrop-blur-sm border border-primary/10">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
               <FileText className="h-6 w-6 text-blue-400" />
-              Informacin General
+              Información General
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4 text-white/80">
@@ -76,7 +76,7 @@ export default function TokensPrivacy() {
           </CardHeader>
           <CardContent className="space-y-4 text-white/80">
             <div className="space-y-3">
-              <h4 className="font-semibold text-white">Informacin de Tokens:</h4>
+              <h4 className="font-semibold text-white">Información de Tokens:</h4>
               <ul className="list-disc list-inside space-y-1 ml-4">
                 <li>Balance actual de tokens CMPX</li>
                 <li>Historial de transacciones y recompensas</li>
@@ -87,7 +87,7 @@ export default function TokensPrivacy() {
             </div>
             
             <div className="space-y-3">
-              <h4 className="font-semibold text-white">Informacin de Referidos:</h4>
+              <h4 className="font-semibold text-white">Información de Referidos:</h4>
               <ul className="list-disc list-inside space-y-1 ml-4">
                 <li>Relaciones de referido entre usuarios</li>
                 <li>Fechas y montos de recompensas otorgadas</li>
@@ -104,12 +104,12 @@ export default function TokensPrivacy() {
           </CardContent>
         </Card>
 
-        {/* Uso de la Informacin */}
+        {/* Uso de la Información */}
         <Card className="bg-card/80 backdrop-blur-sm border border-primary/10">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
               <Eye className="h-6 w-6 text-purple-400" />
-              Uso de la Informacin
+              Uso de la Información
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4 text-white/80">
@@ -189,7 +189,7 @@ export default function TokensPrivacy() {
               <ul className="list-disc list-inside space-y-2 text-sm">
                 <li><strong className="text-white">Oposicin:</strong> Rechazar ciertos usos de datos</li>
                 <li><strong className="text-white">Limitacin:</strong> Restringir el procesamiento</li>
-                <li><strong className="text-white">Transparencia:</strong> Informacin clara sobre el uso</li>
+                <li><strong className="text-white">Transparencia:</strong> Información clara sobre el uso</li>
                 <li><strong className="text-white">Soporte:</strong> Asistencia con tus datos</li>
               </ul>
             </div>
@@ -250,13 +250,13 @@ export default function TokensPrivacy() {
               className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
             >
               <FileText className="h-4 w-4 mr-2" />
-              Ver Trminos de Uso
+              Ver Términos de Uso
             </Button>
             <Button
               onClick={() => navigate('/tokens-info')}
               className="border border-white/20 text-white hover:bg-white/10 bg-transparent"
             >
-              Volver a Informacin de Tokens
+              Volver a Información de Tokens
             </Button>
           </div>
         </div>

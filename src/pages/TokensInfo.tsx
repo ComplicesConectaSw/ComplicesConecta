@@ -64,18 +64,18 @@ interface FAQItem {
 
 const faqData: FAQItem[] = [
   {
-    question: "Qu son los tokens CMPX?",
+    question: "¿Qué son los tokens CMPX?",
     answer: "Los CMPX son tokens internos de ComplicesConecta que puedes ganar participando en la comunidad. Durante la fase beta funcionan off-chain y en el futuro se convertirn en tokens GTK en blockchain.",
     category: "general"
   },
   {
-    question: "Cmo gano tokens CMPX?",
-    answer: "Actualmente puedes ganar 50 CMPX por cada amigo que invites exitosamente, ms 50 CMPX de bienvenida cuando uses un cdigo de referido vlido.",
+    question: "¿Cómo gano tokens CMPX?",
+    answer: "Actualmente puedes ganar 50 CMPX por cada amigo que invites exitosamente, más 50 CMPX de bienvenida cuando uses un código de referido válido.",
     category: "rewards"
   },
   {
-    question: "Cul es el lmite mensual?",
-    answer: "Puedes ganar mximo 500 CMPX por mes. Este lmite se resetea automticamente el primer da de cada mes.",
+    question: "¿Cuál es el límite mensual?",
+    answer: "Puedes ganar máximo 500 CMPX por mes. Este límite se resetea automáticamente el primer día de cada mes.",
     category: "rewards"
   },
   {
@@ -84,8 +84,8 @@ const faqData: FAQItem[] = [
     category: "security"
   },
   {
-    question: "Qu son los tokens GTK?",
-    answer: "GTK son tokens blockchain (ERC20) que representarn el valor real de CMPX en el futuro. Durante la beta estn pausados y se activarn en la versin de produccin.",
+    question: "¿Qué son los tokens GTK?",
+    answer: "GTK son tokens blockchain (ERC20) que representarán el valor real de CMPX en el futuro. Durante la beta están pausados y se activarán en la versión de producción.",
     category: "blockchain"
   },
   {
@@ -99,8 +99,8 @@ const faqData: FAQItem[] = [
     category: "security"
   },
   {
-    question: "Qu es World ID y cmo funciona?",
-    answer: "World ID es un sistema de verificacin de identidad humana desarrollado por Worldcoin. Prximamente podrs verificar tu identidad y ganar 100 CMPX adicionales. Utiliza tecnologa blockchain para garantizar privacidad y seguridad.",
+    question: "¿Qué es World ID y cómo funciona?",
+    answer: "World ID es un sistema de verificación de identidad humana desarrollado por Worldcoin. Próximamente podrás verificar tu identidad y ganar 100 CMPX adicionales. Utiliza tecnología blockchain para garantizar privacidad y seguridad.",
     category: "security"
   },
   {
@@ -109,8 +109,8 @@ const faqData: FAQItem[] = [
     category: "general"
   },
   {
-    question: "Qu pasa si encuentro un error?",
-    answer: "Reporta cualquier problema a travs del soporte. Todas las transacciones estn auditadas y podemos corregir errores legtimos.",
+    question: "¿Qué pasa si encuentro un error?",
+    answer: "Reporta cualquier problema a través del soporte. Todas las transacciones están auditadas y podemos corregir errores legítimos.",
     category: "security"
   }
 ];
@@ -226,9 +226,9 @@ export default function TokensInfo() {
   const gtkDistribution = [
     { category: 'Venta Pblica (ICO/IDO)', percentage: 40, description: 'Para inversores y usuarios tempranos', tokens: '2,000,000 GTK (ejemplo)' },
     { category: 'Staking Rewards Pool', percentage: 20, description: 'Recompensas para stakers a largo plazo', tokens: '1,000,000 GTK' },
-    { category: 'Team y Desarrollo', percentage: 15, description: 'Vesting de 3 aos para el equipo', tokens: '750,000 GTK' },
+    { category: 'Team y Desarrollo', percentage: 15, description: 'Vesting de 3 años para el equipo', tokens: '750,000 GTK' },
     { category: 'Liquidez en Exchanges', percentage: 10, description: 'DEX/CEX para comercio', tokens: '500,000 GTK' },
-    { category: 'Marketing y Partnerships', percentage: 10, description: 'Alianzas estratgicas y promociones', tokens: '500,000 GTK' },
+    { category: 'Marketing y Partnerships', percentage: 10, description: 'Alianzas estratégicas y promociones', tokens: '500,000 GTK' },
     { category: 'Reserva de Emergencias', percentage: 5, description: 'Desarrollo futuro y contingencia', tokens: '250,000 GTK' }
   ];
 
@@ -254,7 +254,7 @@ export default function TokensInfo() {
               className="text-white hover:bg-white/20 bg-white/10 backdrop-blur-sm border border-white/20 transition-all duration-300 hover:scale-105"
             >
               <span className="hidden sm:inline">Inicio</span>
-              <span className="sm:hidden">??</span>
+              <span className="sm:hidden">🏠</span>
             </Button>
           </div>
         </div>
@@ -570,7 +570,7 @@ export default function TokensInfo() {
 
                 {/* Precios de Compra */}
                 <div className="mt-6">
-                  <h3 className="text-xl font-semibold text-white mb-4">?? Precios de Compra de CMPX</h3>
+                  <h3 className="text-xl font-semibold text-white mb-4">💰 Precios de Compra de CMPX</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {cmpxPricing.map((pkg, idx) => (
                       <motion.div
@@ -601,7 +601,7 @@ export default function TokensInfo() {
 
                 {/* Casos de Uso Detallados */}
                 <div className="mt-6">
-                  <h3 className="text-xl font-semibold text-white mb-4">?? Para Qu Puedo Usar CMPX?</h3>
+                  <h3 className="text-xl font-semibold text-white mb-4">🎯 ¿Para Qué Puedo Usar CMPX?</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {cmpxUseCases.map((useCase, idx) => (
                       <motion.div
@@ -628,7 +628,7 @@ export default function TokensInfo() {
 
                 {/* Distribucin de CMPX */}
                 <div className="mt-6 p-6 bg-gradient-to-r from-purple-900/40 to-blue-900/40 rounded-xl border border-white/20">
-                  <h3 className="text-xl font-semibold text-white mb-4">?? Distribucin de CMPX</h3>
+                  <h3 className="text-xl font-semibold text-white mb-4">📈 Distribución de CMPX</h3>
                   <div className="grid md:grid-cols-4 gap-4">
                     {[
                       { label: 'Venta Directa', percentage: 60, color: 'from-blue-500 to-cyan-600' },
@@ -704,7 +704,7 @@ export default function TokensInfo() {
 
                 {/* Ejemplo de Staking */}
                 <div className="mt-6 p-6 bg-white/10 rounded-xl border border-white/20">
-                  <h3 className="text-xl font-semibold text-white mb-4">?? Ejemplo Prctico de Staking</h3>
+                  <h3 className="text-xl font-semibold text-white mb-4">📊 Ejemplo Práctico de Staking</h3>
                   <div className="space-y-3 text-white/90">
                     <p><strong>Usuario invierte en GTK:</strong></p>
                     <ol className="list-decimal list-inside space-y-2 ml-4">
@@ -724,14 +724,14 @@ export default function TokensInfo() {
         {/* SECCIN: PARA INVERSORES */}
         {activeSection === 'investors' && (
           <div className="space-y-8">
-            {/* Informacin Tcnica para Inversores */}
+            {/* Información Técnica para Inversores */}
             <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
               <CardHeader>
                 <CardTitle className="text-2xl text-white flex items-center gap-3">
                   <div className="p-2 bg-gradient-to-r from-yellow-500 to-orange-600 rounded-lg">
                     <Building2 className="h-6 w-6 text-white" />
                   </div>
-                  Informacin para Inversores
+                  Información para Inversores
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
@@ -775,7 +775,7 @@ export default function TokensInfo() {
 
                 {/* Distribucin Detallada de GTK */}
                 <div className="mt-6">
-                  <h3 className="text-xl font-semibold text-white mb-4">?? Distribucin Detallada de GTK en Blockchain</h3>
+                  <h3 className="text-xl font-semibold text-white mb-4">🔗 Distribución Detallada de GTK en Blockchain</h3>
                   <div className="space-y-3">
                     {gtkDistribution.map((item, idx) => (
                       <motion.div
@@ -813,7 +813,7 @@ export default function TokensInfo() {
 
                 {/* Equipo y Desarrollo */}
                 <div className="mt-6 p-6 bg-gradient-to-r from-purple-900/40 to-blue-900/40 rounded-xl border border-white/20">
-                  <h3 className="text-xl font-semibold text-white mb-4">?? Equipo y Desarrollo</h3>
+                  <h3 className="text-xl font-semibold text-white mb-4">👥 Equipo y Desarrollo</h3>
                   <div className="grid md:grid-cols-3 gap-4">
                     <div className="p-4 bg-white/10 rounded-lg">
                       <div className="text-white/70 text-sm mb-1">Porcentaje Total</div>
@@ -822,8 +822,8 @@ export default function TokensInfo() {
                     </div>
                     <div className="p-4 bg-white/10 rounded-lg">
                       <div className="text-white/70 text-sm mb-1">Vesting Period</div>
-                      <div className="text-white font-bold text-2xl">3 aos</div>
-                      <div className="text-white/70 text-sm mt-1">Distribucin gradual</div>
+                      <div className="text-white font-bold text-2xl">3 años</div>
+                      <div className="text-white/70 text-sm mt-1">Distribución gradual</div>
                     </div>
                     <div className="p-4 bg-white/10 rounded-lg">
                       <div className="text-white/70 text-sm mb-1">Distribucin Mensual</div>
@@ -832,14 +832,14 @@ export default function TokensInfo() {
                     </div>
                   </div>
                   <p className="text-white/80 text-sm mt-4">
-                    <strong>Nota:</strong> El equipo recibe tokens mediante un sistema de vesting de 3 aos para 
+                    <strong>Nota:</strong> El equipo recibe tokens mediante un sistema de vesting de 3 años para 
                     asegurar compromiso a largo plazo y alinear intereses con los inversores.
                   </p>
                 </div>
 
                 {/* Roadmap Blockchain */}
                 <div className="mt-6">
-                  <h3 className="text-xl font-semibold text-white mb-4">??? Roadmap Blockchain (Q2-Q4 2026)</h3>
+                  <h3 className="text-xl font-semibold text-white mb-4">🗺️ Roadmap Blockchain (Q2-Q4 2026)</h3>
                   <div className="space-y-4">
                     {[
                       { 
@@ -893,7 +893,7 @@ export default function TokensInfo() {
 
                 {/* Modelo de Ingresos Proyectado */}
                 <div className="mt-6">
-                  <h3 className="text-xl font-semibold text-white mb-4">?? Modelo de Ingresos Proyectado</h3>
+                  <h3 className="text-xl font-semibold text-white mb-4">💹 Modelo de Ingresos Proyectado</h3>
                   <div className="grid md:grid-cols-3 gap-4">
                     {[
                       { 
@@ -975,10 +975,10 @@ export default function TokensInfo() {
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="p-6 bg-white/10 rounded-xl border border-white/20">
-                  <h3 className="text-xl font-semibold text-white mb-4">?? Conversin CMPX ? GTK</h3>
+                  <h3 className="text-xl font-semibold text-white mb-4">🔄 Conversión CMPX → GTK</h3>
                   <div className="space-y-4">
                     <p className="text-white/90 leading-relaxed">
-                      Cuando se lance la blockchain en Q4 2026, los usuarios podrn convertir sus CMPX acumulados 
+                      Cuando se lance la blockchain en Q4 2026, los usuarios podrán convertir sus CMPX acumulados 
                       a GTK mediante un <strong className="text-purple-300">bridge automtico</strong>. La tasa de conversin 
                       ser determinada antes del lanzamiento y anunciada pblicamente.
                     </p>
@@ -1009,10 +1009,10 @@ export default function TokensInfo() {
 
                 {/* Gobernanza DAO */}
                 <div className="mt-6 p-6 bg-white/10 rounded-xl border border-white/20">
-                  <h3 className="text-xl font-semibold text-white mb-4">??? Gobernanza Descentralizada (DAO)</h3>
+                  <h3 className="text-xl font-semibold text-white mb-4">🏠 Gobernanza Descentralizada (DAO)</h3>
                   <div className="space-y-4">
                     <p className="text-white/90 leading-relaxed">
-                      Los holders de GTK tendrn derecho a votar en decisiones importantes de la plataforma a travs 
+                      Los holders de GTK tendrán derecho a votar en decisiones importantes de la plataforma a través 
                       de un sistema de gobernanza descentralizada (DAO).
                     </p>
                     
@@ -1066,9 +1066,9 @@ export default function TokensInfo() {
 
                 {/* Multi-chain */}
                 <div className="mt-6 p-6 bg-white/10 rounded-xl border border-white/20">
-                  <h3 className="text-xl font-semibold text-white mb-4">?? Multi-Chain Strategy</h3>
+                  <h3 className="text-xl font-semibold text-white mb-4">🌐 Multi-Chain Strategy</h3>
                   <p className="text-white/90 leading-relaxed mb-4">
-                    ComplicesConecta planea expandirse a mltiples blockchains para maximizar accesibilidad y reducir costos.
+                    ComplicesConecta planea expandirse a múltiples blockchains para maximizar accesibilidad y reducir costos.
                   </p>
                   <div className="grid md:grid-cols-4 gap-4">
                     {[

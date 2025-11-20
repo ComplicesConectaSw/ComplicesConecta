@@ -300,7 +300,7 @@ const VideoChat = () => {
                       className="border-white/30 text-white hover:bg-white/10"
                     >
                       <Settings className="h-4 w-4 mr-2" />
-                      Configuracin
+                      Configuración
                     </Button>
                   </div>
                 </CardContent>
