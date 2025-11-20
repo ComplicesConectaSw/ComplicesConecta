@@ -203,11 +203,13 @@ export const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
                         ageRange: [parseInt(e.target.value), filters.ageRange[1]]
                       })}
                       className="flex-1"
+                      aria-label="Edad mínima"
                     />
                     <input
                       type="range"
                       min="18"
                       max="99"
+                      aria-label="Edad máxima"
                       value={filters.ageRange[1]}
                       onChange={(e) => setFilters({
                         ...filters,
@@ -231,6 +233,7 @@ export const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
                     value={filters.distance}
                     onChange={(e) => setFilters({ ...filters, distance: parseInt(e.target.value) })}
                     className="w-full"
+                    aria-label="Distancia máxima en kilómetros"
                   />
                   <div className="flex justify-between text-xs text-gray-500 mt-1">
                     <span>1 km</span>

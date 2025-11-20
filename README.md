@@ -1,4 +1,4 @@
-# 🎯 ComplicesConecta - Plataforma Swinger Premium v3.6.4
+# 🎯 ComplicesConecta - Plataforma Swinger Premium v3.6.6
 
 <div align="center">
 
@@ -14,10 +14,10 @@
 ### 📱 ¡Descarga la App Ahora!
 
 <a href="https://github.com/ComplicesConectaSw/ComplicesConecta/releases/latest" target="_blank">
-  <img src="https://img.shields.io/badge/📱_Descargar_APK-v3.6.4-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
+  <img src="https://img.shields.io/badge/📱_Descargar_APK-v3.6.6-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
 </a>
 
-**SHA256:** `Verificado - Build v3.6.4 - Tests E2E Completos + Validación Teléfono MX + 471 Tests (100%)`
+**SHA256:** `Verificado - Build v3.6.6 - Ley Olimpia Compliant + 10 Features Demo Investor Ready`
 
 *🔒 Aplicación segura y verificada para Android - Disponible en [GitHub Releases](https://github.com/ComplicesConectaSw/ComplicesConecta/releases/latest)*
 

@@ -313,6 +313,7 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({
             <button
               onClick={handleSkip}
               className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+              aria-label="Saltar onboarding"
             >
               <X className="h-6 w-6" />
             </button>
@@ -334,7 +335,7 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({
         </div>
 
         {/* Content */}
-        <div className="p-6 overflow-y-auto" style={{ maxHeight: 'calc(90vh - 240px)' }}>
+        <div className="p-6 overflow-y-auto max-h-[calc(90vh-240px)]">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentStep}
@@ -355,6 +356,7 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({
               <button
                 key={step.id}
                 onClick={() => setCurrentStep(index)}
+                aria-label={`Ir al paso ${index + 1}`}
                 className={`h-2 rounded-full transition-all ${
                   index === currentStep
                     ? 'w-8 bg-purple-500'
