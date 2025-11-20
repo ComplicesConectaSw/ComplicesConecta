@@ -717,6 +717,23 @@ const AdminProduction = () => {
                 <div className="space-y-4 mb-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <Input
+                      placeholder="Pregunta"
+                      value={newFaq.question}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewFaq({...newFaq, question: e.target.value})}
+                      className="bg-white/10 border-white/20 text-white placeholder-white/50"
+                    />
+                    <select
+                      value={newFaq.category}
+                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setNewFaq({...newFaq, category: e.target.value})}
+                      className="bg-white/10 border border-white/20 text-white rounded-md px-3 py-2"
+                      aria-label="Categoría de FAQ"
+                    >
+                      <option value="">Seleccionar categoría</option>
+                      <option value="general">General</option>
+                      <option value="premium">Premium</option>
+                      <option value="tokens">Tokens</option>
+                      <option value="eventos">Eventos</option>
+                    </select>
                   </div>
                   <Textarea
                     placeholder="Respuesta"

@@ -424,13 +424,13 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
               
               <div
                 className={cn(
-                  "max-w-[80%] rounded-lg p-3 break-words overflow-hidden",
+                  "max-w-[85%] sm:max-w-[75%] md:max-w-[70%] lg:max-w-[65%] rounded-lg p-3 sm:p-4 break-words overflow-hidden",
                   message.type === 'user'
                     ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-md'
                     : 'bg-gradient-to-r from-purple-800/95 via-purple-700/95 to-blue-800/95 backdrop-filter backdrop-blur-md text-white border border-purple-400/50 shadow-lg'
                 )}
               >
-                <div className="whitespace-pre-wrap text-sm leading-relaxed break-words max-h-40 overflow-y-auto overflow-wrap-break-word hyphens-auto font-semibold text-white drop-shadow-lg">
+                <div className="whitespace-pre-wrap text-xs sm:text-sm leading-relaxed break-words max-h-32 sm:max-h-40 overflow-y-auto overflow-wrap-break-word hyphens-auto font-medium sm:font-semibold text-white drop-shadow-lg word-break-break-all">
                   {message.content.split('\n').map((line, idx) => {
                     // Detectar bullets y aplicar estilos especiales
                     if (line.trim().startsWith('•')) {
@@ -445,14 +445,14 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
                 </div>
                 
                 {message.actions && (
-                  <div className="flex flex-wrap gap-2 mt-3">
+                  <div className="flex flex-wrap gap-1 sm:gap-2 mt-2 sm:mt-3">
                     {message.actions.map((action) => (
                       <Button
                         key={action.id}
                         size="sm"
                         variant={action.variant || 'outline'}
                         onClick={action.action}
-                        className="text-xs"
+                        className="text-xs sm:text-sm px-2 sm:px-3 py-1 sm:py-2 min-w-0 flex-shrink-0 whitespace-nowrap"
                       >
                         {action.label}
                       </Button>
@@ -477,8 +477,8 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
               <div className="bg-gradient-to-r from-purple-800/40 to-blue-800/40 border border-purple-400/50 rounded-lg p-3 shadow-sm">
                 <div className="flex space-x-1">
                   <div className="w-2 h-2 bg-purple-300 rounded-full animate-bounce"></div>
-                  <div className="w-2 h-2 bg-blue-300 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                  <div className="w-2 h-2 bg-purple-300 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                  <div className="w-2 h-2 bg-blue-300 rounded-full animate-bounce animate-delay-100"></div>
+                  <div className="w-2 h-2 bg-purple-300 rounded-full animate-bounce animate-delay-200"></div>
                 </div>
               </div>
             </div>
@@ -488,26 +488,26 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
         </div>
         
         {/* Input Area */}
-        <div className="border-t border-white/30 p-4 bg-gradient-to-r from-purple-900/50 to-blue-900/50 backdrop-filter backdrop-blur-md flex-shrink-0 shadow-lg">
+        <div className="border-t border-white/30 p-3 sm:p-4 bg-gradient-to-r from-purple-900/50 to-blue-900/50 backdrop-filter backdrop-blur-md flex-shrink-0 shadow-lg">
           <div className="flex gap-2">
             <Input
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder="Escribe tu mensaje aquí..."
-              className="flex-1 bg-white/15 border-white/30 text-white placeholder-white/70 focus:border-white/50"
+              className="flex-1 bg-white/15 border-white/30 text-white placeholder-white/70 focus:border-white/50 text-sm"
               disabled={isTyping}
             />
             <Button
               onClick={handleSendMessage}
               disabled={!userInput.trim() || isTyping}
               size="sm"
-              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0"
+              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0 px-3 sm:px-4"
             >
               <Send className="h-4 w-4" />
             </Button>
           </div>
-          <p className="text-xs text-white/80 mt-2">
+          <p className="text-xs sm:text-sm text-white/80 mt-2 leading-relaxed">
             💡 Prueba: "¿Cuántos tokens tengo?" o "Quiero hacer staking"
           </p>
         </div>

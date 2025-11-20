@@ -12,6 +12,15 @@
 /* Custom scrollbar styles moved to consolidated-styles.css to avoid conflicts */
 /* Animations moved to consolidated-styles.css to avoid conflicts */
 
+/* Animation delays for TokenChatBot */
+.animate-delay-100 {
+  animation-delay: 0.1s;
+}
+
+.animate-delay-200 {
+  animation-delay: 0.2s;
+}
+
 /* Hover animations for buttons and interactive elements */
 .btn-animated {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);

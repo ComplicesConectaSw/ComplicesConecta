@@ -741,20 +741,20 @@ const Chat = () => {
                   messages.map((message) => (
                     <div
                       key={message.id}
-                      className={`flex ${message.senderId === 0 ? 'justify-end' : 'justify-start'}`}
+                      className={`flex ${String(message.sender_id) === '0' ? 'justify-end' : 'justify-start'}`}
                     >
                       <div
-                        className={`max-w-[85%] sm:max-w-xs lg:max-w-sm px-3 sm:px-4 py-2 sm:py-3 rounded-2xl transition-all duration-300 hover:scale-102 ${
-                          message.senderId === 0
+                        className={`max-w-[90%] sm:max-w-[75%] md:max-w-[65%] lg:max-w-[55%] px-3 sm:px-4 py-2 sm:py-3 rounded-2xl transition-all duration-300 hover:scale-102 ${
+                          String(message.sender_id) === '0'
                             ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg'
                             : 'bg-gradient-to-r from-blue-500/95 to-purple-600/95 text-white shadow-md border border-blue-400/50 backdrop-blur-sm'
                         }`}
                       >
-                        <p className="text-xs sm:text-sm leading-relaxed break-words whitespace-pre-wrap overflow-wrap-anywhere hyphens-auto font-medium text-white drop-shadow-md chat-message-text">{message.content}</p>
+                        <p className="text-xs sm:text-sm leading-relaxed break-words whitespace-pre-wrap overflow-wrap-anywhere hyphens-auto font-medium text-white drop-shadow-md chat-message-text word-break-break-all">{message.content}</p>
                         <p className={`text-xs mt-1 font-medium ${
-                          message.senderId === 0 ? 'text-purple-100 drop-shadow-sm' : 'text-white/90 drop-shadow-sm'
+                          String(message.sender_id) === '0' ? 'text-purple-100 drop-shadow-sm' : 'text-white/90 drop-shadow-sm'
                         }`}>
-                          {message.timestamp}
+                          {message.created_at}
                         </p>
                       </div>
                     </div>
@@ -803,7 +803,7 @@ const Chat = () => {
                 ) : (
                   <div className="space-y-3">
                     {/* Botones de galera y solicitudes */}
-                    <div className="flex gap-2 justify-center">
+                    <div className="flex flex-wrap gap-2 justify-center">
                       <UnifiedButton
                         onClick={() => {
                           if (selectedChat?.roomType === 'private') {
@@ -813,18 +813,18 @@ const Chat = () => {
                           }
                         }}
                         variant="outline"
-                        className="flex-1 border-purple-400/50 text-purple-300 hover:bg-purple-500/20 text-xs py-2"
+                        className="flex-1 min-w-0 border-purple-400/50 text-purple-300 hover:bg-purple-500/20 text-xs sm:text-sm py-2 px-2 sm:px-3"
                       >
                         <Heart className="h-3 w-3 mr-1" />
-                        Galería
+                        <span className="truncate">Galería</span>
                       </UnifiedButton>
                       <UnifiedButton
                         onClick={() => navigate('/requests')}
                         variant="outline"
-                        className="flex-1 border-purple-400/50 text-purple-300 hover:bg-purple-500/20 text-xs py-2"
+                        className="flex-1 min-w-0 border-purple-400/50 text-purple-300 hover:bg-purple-500/20 text-xs sm:text-sm py-2 px-2 sm:px-3"
                       >
                         <UserPlus className="h-3 w-3 mr-1" />
-                        Solicitudes
+                        <span className="truncate">Solicitudes</span>
                       </UnifiedButton>
                       <UnifiedButton
                         onClick={() => {
@@ -843,21 +843,21 @@ const Chat = () => {
                     </div>
                     
                     {/* Input de mensaje */}
-                    <div className="flex space-x-2">
-                      <UnifiedInput
+                    <div className="flex gap-2">
+                      <Input
                         type="text"
-                        placeholder={isPaused ? "Chat pausado - esperando mejor consenso..." : "Escribe tu mensaje..."}
+                        placeholder="Escribe tu mensaje..."
                         value={newMessage}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewMessage(e.target.value)}
                         onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && !isPaused && handleSendMessage()}
-                        className="flex-1 bg-white/10 border-white/20 text-white placeholder-white/50 focus:border-white/40"
+                        className="flex-1 bg-white/10 border-white/20 text-white placeholder-white/50 focus:border-white/40 text-sm sm:text-base"
                         disabled={isPaused}
                       />
                       <UnifiedButton 
                         onClick={handleSendMessage}
                         disabled={!newMessage.trim() || isPaused}
                         gradient={true}
-                        className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0"
+                        className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0 px-3 sm:px-4 py-2"
                       >
                         <Send className="h-4 w-4" />
                       </UnifiedButton>
