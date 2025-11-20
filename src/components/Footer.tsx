@@ -109,6 +109,11 @@ export const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/ley-olimpia" className="text-background/80 hover:text-red-400 transition-colors font-medium">
+                  ⚖️ Ley Olimpia
+                </Link>
+              </li>
+              <li>
                 <Link to="/support" className="text-background/80 hover:text-primary transition-colors">
                   Contacto
                 </Link>

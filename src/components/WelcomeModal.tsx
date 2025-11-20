@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { X, Heart, Sparkles, Users, Gift, Star, Zap, HelpCircle, Globe, Shield } from "lucide-react";
+import { X, Heart, Sparkles, Gift, Star, Zap, HelpCircle, Globe, Shield } from "lucide-react";
 import { Button } from "@/shared/ui/Button";
 import { Card, CardContent } from "@/shared/ui/Card";
 import { Badge } from "@/components/ui/badge";
@@ -55,12 +55,12 @@ export const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
       bgColor: "bg-blue-500/10"
     },
     {
-      icon: Users,
-      title: "🎭 Perfiles Demo Disponibles",
-      subtitle: "Prueba la plataforma con cuentas de demostración",
-      description: "Accede con credenciales demo para explorar todas las funciones. Single: single@outlook.es (contraseña: 123456) | Pareja: pareja@outlook.es (contraseña: 123456). Explora chats, perfiles y funciones premium sin compromiso.",
-      color: "text-primary",
-      bgColor: "bg-primary/10"
+      icon: Shield,
+      title: "⚖️ Ley Olimpia - Protección Digital",
+      subtitle: "Tu privacidad y seguridad son nuestra prioridad",
+      description: "ComplicesConecta cumple estrictamente con la Ley Olimpia mexicana. Prohibimos y sancionamos la difusión no consensuada de contenido íntimo. Reporta cualquier violación inmediatamente. Tu confianza es fundamental para nuestra comunidad.",
+      color: "text-red-400",
+      bgColor: "bg-red-400/10"
     },
     {
       icon: Shield,
