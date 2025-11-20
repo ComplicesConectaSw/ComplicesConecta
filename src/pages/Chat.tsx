@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { MessageCircle, Video, MoreVertical, ArrowLeft, Heart, Send, Lock, Globe, UserPlus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { UnifiedButton } from "@/components/ui/UnifiedButton";
-import { UnifiedInput } from "@/components/ui/UnifiedInput";
+import { Input } from "@/shared/ui/Input";
 import { useNavigate } from "react-router-dom";
 import { useFeatures } from "@/hooks/useFeatures";
 import { toast } from "@/hooks/useToast";
@@ -42,13 +42,13 @@ const Chat = () => {
   const navigate = useNavigate();
   const { features } = useFeatures();
   const { user } = useAuth();
-  const [rooms, setRooms] = useState<SimpleChatRoom[]>([]);
-  const [selectedRoom, setSelectedRoom] = useState<SimpleChatRoom | null>(null);
+  const [_rooms, _setRooms] = useState<SimpleChatRoom[]>([]);
+  const [_selectedRoom, _setSelectedRoom] = useState<SimpleChatRoom | null>(null);
   const [messages, setMessages] = useState<SimpleChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [isConnected, setIsConnected] = useState(true);
-  const [connectionStatus, setConnectionStatus] = useState<'connecting' | 'connected' | 'disconnected'>('connected');
+  const [_isLoading, _setIsLoading] = useState(false);
+  const [_isConnected, _setIsConnected] = useState(true);
+  const [_connectionStatus, _setConnectionStatus] = useState<'connecting' | 'connected' | 'disconnected'>('connected');
   const [tabError, setTabError] = useState<string | null>(null);
   const [hasChatAccess, setHasChatAccess] = useState<{[key: number]: boolean}>({});
   const [isProduction, setIsProduction] = useState(false);
@@ -88,7 +88,7 @@ const Chat = () => {
         demoAccessMap[chat.id] = true;
       });
       setHasChatAccess(demoAccessMap);
-      setIsLoading(false);
+      _setIsLoading(false);
     }
   }, [navigate]);
 
@@ -109,7 +109,7 @@ const Chat = () => {
 
   // Cargar datos reales de chat para produccin
   const loadRealChatData = async () => {
-    setIsLoading(true);
+    _setIsLoading(true);
     try {
       // Obtener salas del usuario
       const roomsResult = await simpleChatService.getUserChatRooms();
@@ -120,13 +120,13 @@ const Chat = () => {
     } catch (error) {
       logger.error('Error cargando datos de chat:', { error: String(error) });
     } finally {
-      setIsLoading(false);
+      _setIsLoading(false);
     }
   };
 
   // Cargar mensajes reales de una sala
   const loadRealMessages = async (roomId: string) => {
-    setIsLoading(true);
+    _setIsLoading(true);
     try {
       const result = await simpleChatService.getRoomMessages(roomId, 50);
       if (result.success && result.messages) {
@@ -140,7 +140,7 @@ const Chat = () => {
     } catch (_error) {
       logger.error('Error cargando mensajes:', { error: String(_error) });
     } finally {
-      setIsLoading(false);
+      _setIsLoading(false);
     }
   };
 
