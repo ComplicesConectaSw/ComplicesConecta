@@ -174,7 +174,7 @@ const Settings = () => {
           {/* Settings Tabs */}
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold text-white mb-2">Configuracin</h1>
+              <h1 className="text-3xl font-bold text-white mb-2">Configuración</h1>
               <p className="text-white/80">Personaliza tu experiencia en ComplicesConecta</p>
             </div>
 
@@ -199,7 +199,7 @@ const Settings = () => {
                   <CardHeader>
                     <CardTitle className="text-white flex items-center gap-2">
                       <Lock className="h-5 w-5" />
-                      Configuracin de Privacidad
+                      Configuración de Privacidad
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
@@ -213,7 +213,7 @@ const Settings = () => {
                   <CardHeader>
                     <CardTitle className="text-white flex items-center gap-2">
                       <MapPin className="h-5 w-5" />
-                      Configuracin de Ubicacin
+                      Configuración de Ubicación
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
