@@ -91,12 +91,14 @@ export function TokenDashboard() {
             {/* Barra de progreso visual */}
             <div className="w-full bg-gray-200 rounded-full h-4">
               <div className="flex h-4 rounded-full overflow-hidden">
+                {/* Dynamic width based on availablePercentage - legitimate inline style */}
                 <div 
-                  className="bg-green-500 transition-all duration-500"
+                  className="bg-green-500 progress-bar-dynamic"
                   style={{ width: `${availablePercentage}%` }}
                 ></div>
+                {/* Dynamic width based on stakedPercentage - legitimate inline style */}
                 <div 
-                  className="bg-blue-500 transition-all duration-500"
+                  className="bg-blue-500 progress-bar-dynamic"
                   style={{ width: `${stakedPercentage}%` }}
                 ></div>
               </div>
@@ -136,8 +138,9 @@ export function TokenDashboard() {
               <span className="font-semibold text-green-400 truncate">{balance.monthlyRemaining} CMPX</span>
             </div>
             <div className="w-full bg-white/20 rounded-full h-2">
+              {/* Dynamic width based on monthly progress - legitimate inline style */}
               <div 
-                className="bg-gradient-to-r from-blue-400 to-purple-500 h-2 rounded-full transition-all duration-500"
+                className="bg-gradient-to-r from-blue-400 to-purple-500 h-2 rounded-full progress-bar-dynamic"
                 style={{ width: `${(balance.monthlyEarned / balance.monthlyLimit) * 100}%` }}
               ></div>
             </div>

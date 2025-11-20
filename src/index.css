@@ -21,6 +21,18 @@
   animation-delay: 0.2s;
 }
 
+/* Dynamic progress bars - TokenDashboard */
+.progress-bar-dynamic {
+  transition: width 0.5s ease-in-out;
+}
+
+/* 
+ * CSS Compatibility Notes:
+ * - scrollbar-width: Supported in Firefox, Chrome 121+. Fallbacks provided.
+ * - -webkit-overflow-scrolling: Legacy iOS support. Progressive enhancement.
+ * These warnings are acceptable as they have proper fallbacks.
+ */
+
 /* Hover animations for buttons and interactive elements */
 .btn-animated {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
