@@ -1,21 +1,86 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# =====================================================
+# PROGUARD RULES - COMPLICES CONECTA
+# =====================================================
+# Protección de código y ofuscación
+# Versión: v3.6.6
+# Fecha: 19 Nov 2025
+# =====================================================
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# ===== PROTECCIÓN DE CONTENIDO (LEY OLIMPIA) =====
+# Mantener clases de protección de contenido
+-keep class com.complicesconecta.app.ContentProtectionPlugin { *; }
+-keep class com.complicesconecta.app.MainActivity { *; }
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# ===== CAPACITOR =====
+# Mantener todas las clases de Capacitor
+-keep public class com.getcapacitor.** { *; }
+-dontwarn com.getcapacitor.**
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# Mantener plugins de Capacitor
+-keep class * extends com.getcapacitor.Plugin { *; }
+-keep @com.getcapacitor.annotation.CapacitorPlugin class * { *; }
+
+# ===== JAVASCRIPT INTERFACES =====
+# Mantener interfaces JavaScript para WebView
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
+
+# ===== ANNOTATIONS =====
+# Mantener anotaciones para debugging
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable
+-keepattributes Signature
+-keepattributes Exceptions
+
+# ===== PROTECCIÓN CONTRA INGENIERÍA INVERSA =====
+# Mantener información de excepciones
+-keep public class * extends java.lang.Exception
+
+# Ofuscar nombres de paquetes
+-repackageclasses ''
+-allowaccessmodification
+
+# ===== SUPABASE =====
+-keep class io.supabase.** { *; }
+-dontwarn io.supabase.**
+
+# ===== ANDROIDX =====
+-keep class androidx.** { *; }
+-keep interface androidx.** { *; }
+-dontwarn androidx.**
+
+# ===== KOTLINX =====
+-keep class kotlinx.** { *; }
+-dontwarn kotlinx.**
+
+# ===== GSON / JSON =====
+-keep class com.google.gson.** { *; }
+-keepclassmembers class * {
+    @com.google.gson.annotations.SerializedName <fields>;
+}
+
+# ===== OKHTTP / RETROFIT =====
+-keep class okhttp3.** { *; }
+-keep class retrofit2.** { *; }
+-dontwarn okhttp3.**
+-dontwarn retrofit2.**
+
+# ===== SECURITY =====
+# No exponer información sensible en logs
+-assumenosideeffects class android.util.Log {
+    public static *** d(...);
+    public static *** v(...);
+    public static *** i(...);
+}
+
+# ===== PERFORMANCE =====
+# Optimizar código
+-optimizationpasses 5
+-dontusemixedcaseclassnames
+-dontskipnonpubliclibraryclasses
+-verbose
+
+# ===== DEBUGGING (SOLO PRODUCCIÓN) =====
+# Renombrar archivo fuente para ofuscar
+-renamesourcefileattribute SourceFile
