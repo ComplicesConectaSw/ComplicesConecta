@@ -432,7 +432,7 @@ const ModeratorRequest = () => {
                 </div>
               </div>
 
-              {/* Trminos */}
+              {/* Términos */}
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
                   <input
@@ -442,6 +442,8 @@ const ModeratorRequest = () => {
                     onChange={handleInputChange}
                     className="mt-1"
                     required
+                    aria-label="Acepto los términos y condiciones para ser moderador"
+                    title="Acepto los términos y condiciones"
                   />
                   <label className="text-white/80 text-sm">
                     Acepto los trminos y condiciones del programa de moderacin. 

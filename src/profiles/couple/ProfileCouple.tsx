@@ -562,7 +562,7 @@ const ProfileCouple: React.FC = () => {
                 }}
               >
                 <div className={`aspect-square rounded-lg overflow-hidden relative ${demoPrivateUnlocked && isOwnProfile ? '' : 'filter blur-lg'}`}>
-                  <img src="/src/assets/people/privado/coupleprivjpg.jpg" alt="Foto privada 1" className="w-full h-full object-cover" />
+                  <img src="/src/assets/people/couple/privado/coupleprivjpg.jpg" alt="Foto privada 1" className="w-full h-full object-cover" />
                   {!demoPrivateUnlocked && <div className="absolute inset-0 bg-black/50 flex items-center justify-center"><Lock className="w-12 h-12 text-white" /></div>}
                 </div>
               </div>
@@ -581,8 +581,26 @@ const ProfileCouple: React.FC = () => {
                     images={[
                       {
                         id: '1',
-                        url: '/src/assets/people/privado/coupleprivjpg.jpg',
-                        thumbnail: '/src/assets/people/privado/coupleprivjpg.jpg',
+                        url: '/src/assets/people/couple/privado/coupleprivjpg.jpg',
+                        thumbnail: '/src/assets/people/couple/privado/coupleprivjpg.jpg',
+                        uploadedAt: new Date()
+                      },
+                      {
+                        id: '2',
+                        url: '/src/assets/people/couple/privado/privadicouple2.jpg',
+                        thumbnail: '/src/assets/people/couple/privado/privadicouple2.jpg',
+                        uploadedAt: new Date()
+                      },
+                      {
+                        id: '3',
+                        url: '/src/assets/people/couple/privado/privado couplple4.jpg',
+                        thumbnail: '/src/assets/people/couple/privado/privado couplple4.jpg',
+                        uploadedAt: new Date()
+                      },
+                      {
+                        id: '4',
+                        url: '/src/assets/people/couple/privado/privadocouple (3).jpg',
+                        thumbnail: '/src/assets/people/couple/privado/privadocouple (3).jpg',
                         uploadedAt: new Date()
                       }
                     ]}

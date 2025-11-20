@@ -619,7 +619,7 @@ const ModeratorDashboard = () => {
                         
                         <div>
                           <label className="text-white text-sm mb-2 block">
-                            Das de suspensin (0 = permanente):
+                            Días de suspensión (0 = permanente):
                           </label>
                           <input
                             type="number"
@@ -627,6 +627,8 @@ const ModeratorDashboard = () => {
                             onChange={(e) => setSuspensionDays(parseInt(e.target.value) || 0)}
                             className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white"
                             min="0"
+                            placeholder="Ingresa días de suspensión (0 = permanente)"
+                            aria-label="Días de suspensión"
                             max="365"
                           />
                         </div>
