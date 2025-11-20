@@ -562,7 +562,25 @@ const ProfileCouple: React.FC = () => {
                 }}
               >
                 <div className={`aspect-square rounded-lg overflow-hidden relative ${demoPrivateUnlocked && isOwnProfile ? '' : 'filter blur-lg'}`}>
-                  <img src="/src/assets/people/couple/privado/coupleprivjpg.jpg" alt="Foto privada 1" className="w-full h-full object-cover" />
+                  <div className="relative w-full h-full">
+                    <img 
+                      src="/src/assets/people/couple/privado/coupleprivjpg.jpg" 
+                      alt="Foto privada 1" 
+                      className={`w-full h-full object-cover ${demoPrivateUnlocked ? 'private-image-protection' : 'private-image-interactive'}`}
+                      onContextMenu={(e) => e.preventDefault()}
+                      draggable={false}
+                    />
+                    {demoPrivateUnlocked && (
+                      <div className="absolute inset-0 pointer-events-none">
+                        <div className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                          ComplicesConecta
+                        </div>
+                        <div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                          © Privado
+                        </div>
+                      </div>
+                    )}
+                  </div>
                   {!demoPrivateUnlocked && <div className="absolute inset-0 bg-black/50 flex items-center justify-center"><Lock className="w-12 h-12 text-white" /></div>}
                 </div>
               </div>

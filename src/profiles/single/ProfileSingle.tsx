@@ -1137,11 +1137,25 @@ Información del perfil:
                         }
                       }}
                     >
-                      <img 
-                        src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&h=400&fit=crop" 
-                        alt="Foto privada bloqueada"
-                        className={`w-full h-full object-cover ${demoPrivateUnlocked && isOwnProfile ? '' : 'filter blur-lg'}`}
-                      />
+                      <div className="relative w-full h-full">
+                        <img 
+                          src="/src/assets/people/male/privado/0CD28qq-editado.jpg" 
+                          alt="Foto privada bloqueada"
+                          className={`w-full h-full object-cover ${demoPrivateUnlocked && isOwnProfile ? '' : 'filter blur-lg'} ${demoPrivateUnlocked ? 'private-image-protection' : 'private-image-interactive'}`}
+                          onContextMenu={(e) => e.preventDefault()}
+                          draggable={false}
+                        />
+                        {demoPrivateUnlocked && (
+                          <div className="absolute inset-0 pointer-events-none">
+                            <div className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                              ComplicesConecta
+                            </div>
+                            <div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                              © Privado
+                            </div>
+                          </div>
+                        )}
+                      </div>
                       {!demoPrivateUnlocked && (
                         <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center">
                           <Lock className="w-12 h-12 text-white mb-2" />
@@ -1160,11 +1174,25 @@ Información del perfil:
                         }
                       }}
                     >
-                      <img 
-                        src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=400&fit=crop" 
-                        alt="Foto privada bloqueada"
-                        className={`w-full h-full object-cover ${demoPrivateUnlocked && isOwnProfile ? '' : 'filter blur-lg'}`}
-                      />
+                      <div className="relative w-full h-full">
+                        <img 
+                          src="/src/assets/people/male/privado/45Xas2E.jpg" 
+                          alt="Foto privada bloqueada"
+                          className={`w-full h-full object-cover ${demoPrivateUnlocked && isOwnProfile ? '' : 'filter blur-lg'} ${demoPrivateUnlocked ? 'private-image-protection' : 'private-image-interactive'}`}
+                          onContextMenu={(e) => e.preventDefault()}
+                          draggable={false}
+                        />
+                        {demoPrivateUnlocked && (
+                          <div className="absolute inset-0 pointer-events-none">
+                            <div className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                              ComplicesConecta
+                            </div>
+                            <div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                              © Privado
+                            </div>
+                          </div>
+                        )}
+                      </div>
                       {!demoPrivateUnlocked && (
                         <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
                           <Lock className="w-12 h-12 text-white" />
@@ -1182,11 +1210,25 @@ Información del perfil:
                         }
                       }}
                     >
-                      <img 
-                        src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=400&h=400&fit=crop" 
-                        alt="Foto privada bloqueada"
-                        className={`w-full h-full object-cover ${demoPrivateUnlocked && isOwnProfile ? '' : 'filter blur-lg'}`}
-                      />
+                      <div className="relative w-full h-full">
+                        <img 
+                          src="/src/assets/people/male/privado/4Jyc0cr-editado.jpg" 
+                          alt="Foto privada bloqueada"
+                          className={`w-full h-full object-cover ${demoPrivateUnlocked && isOwnProfile ? '' : 'filter blur-lg'} ${demoPrivateUnlocked ? 'private-image-protection' : 'private-image-interactive'}`}
+                          onContextMenu={(e) => e.preventDefault()}
+                          draggable={false}
+                        />
+                        {demoPrivateUnlocked && (
+                          <div className="absolute inset-0 pointer-events-none">
+                            <div className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                              ComplicesConecta
+                            </div>
+                            <div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                              © Privado
+                            </div>
+                          </div>
+                        )}
+                      </div>
                       {!demoPrivateUnlocked && (
                         <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
                           <Lock className="w-12 h-12 text-white" />
