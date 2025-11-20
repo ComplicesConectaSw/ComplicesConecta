@@ -41,6 +41,8 @@ import { motion } from 'framer-motion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { walletService, WalletService } from '@/services/WalletService';
 import { nftService } from '@/services/NFTService';
+import { useProfileTheme } from '@/features/profile/useProfileTheme';
+import { ImageModal } from '@/components/profile/ImageModal';
 
 const ProfileSingle: React.FC = () => {
   const navigate = useNavigate();
@@ -60,6 +62,15 @@ const ProfileSingle: React.FC = () => {
   
   // Estado para control parental básico
   const [isParentalLocked, setIsParentalLocked] = useState(false);
+  
+  // Estados para modal de carrusel avanzado
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [imageLikes, setImageLikes] = useState<{[key: string]: number}>({
+    '1': 12, '2': 8, '3': 15
+  });
+  const [imageUserLikes, setImageUserLikes] = useState<{[key: string]: boolean}>({});
+  const [imageComments, setImageComments] = useState<{[key: string]: string[]}>({});
   const [activeTab, setActiveTab] = useState('overview');
   const [profileStats, setProfileStats] = useState({
     totalViews: 0,
@@ -83,6 +94,72 @@ const ProfileSingle: React.FC = () => {
   
   // Determinar si es el perfil propio
   const isOwnProfile = checkAuth() && user?.id === profile?.id;
+  
+  // 🎨 Aplicar tema distintivo para perfil demo
+  const isDemoProfile = profile?.id === 'demo-user-123';
+  const demoTheme = isDemoProfile ? 'demo_premium' : undefined;
+  const themeConfig = useProfileTheme('single', ['male'], demoTheme);
+
+  // Datos de imágenes privadas para el carrusel
+  const privateImages = [
+    { 
+      id: '1', 
+      url: '/src/assets/people/male/privado/0CD28qq-editado.jpg', 
+      caption: 'Foto artística en blanco y negro 📸',
+      likes: imageLikes['1'] || 12,
+      userLiked: imageUserLikes['1'] || false
+    },
+    { 
+      id: '2', 
+      url: '/src/assets/people/male/privado/45Xas2E.jpg', 
+      caption: 'Sesión profesional de estudio 🎭',
+      likes: imageLikes['2'] || 8,
+      userLiked: imageUserLikes['2'] || false
+    },
+    { 
+      id: '3', 
+      url: '/src/assets/people/male/privado/4Jyc0cr-editado.jpg', 
+      caption: 'Momento íntimo y personal 💫',
+      likes: imageLikes['3'] || 15,
+      userLiked: imageUserLikes['3'] || false
+    }
+  ];
+
+  // Funciones para el modal del carrusel
+  const handleImageLike = (imageId: string) => {
+    const currentLikes = imageLikes[imageId] || 0;
+    const userLiked = imageUserLikes[imageId] || false;
+    
+    setImageLikes(prev => ({
+      ...prev,
+      [imageId]: userLiked ? currentLikes - 1 : currentLikes + 1
+    }));
+    
+    setImageUserLikes(prev => ({
+      ...prev,
+      [imageId]: !userLiked
+    }));
+  };
+
+  const openImageModal = (index: number) => {
+    setSelectedImageIndex(index);
+    setShowImageModal(true);
+  };
+
+  const navigateCarousel = (direction: 'prev' | 'next') => {
+    if (direction === 'prev') {
+      setSelectedImageIndex(prev => prev > 0 ? prev - 1 : privateImages.length - 1);
+    } else {
+      setSelectedImageIndex(prev => prev < privateImages.length - 1 ? prev + 1 : 0);
+    }
+  };
+
+  const handleAddComment = (imageId: string, comment: string) => {
+    setImageComments(prev => ({
+      ...prev,
+      [imageId]: [...(prev[imageId] || []), comment]
+    }));
+  };
 
 
   // Handlers para las acciones del perfil
@@ -497,7 +574,7 @@ Información del perfil:
   const displayNickname = (profile as any).nickname || 'ana_swinger';
   const displayProfileId = (profile as any).profile_id || 'CC-2025-001';
   
-  // Función para hacer funcional el botón "Ver Fotos Privadas"
+  // Función para hacer funcional el botón "Ver Fotos Privadas" - USADA EN LÍNEA 660
   const handleViewPrivatePhotos = () => {
     if (isOwnProfile) {
       alert('✅ ACCESO CONCEDIDO (DEMO)\n\nEn producción esto se haría solo tras aprobar la solicitud.');
@@ -1235,7 +1312,9 @@ Información del perfil:
                     <div
                       className="aspect-square rounded-lg overflow-hidden relative cursor-pointer"
                       onClick={() => {
-                        if (isOwnProfile) {
+                        if (demoPrivateUnlocked && isOwnProfile && !isParentalLocked) {
+                          openImageModal(2); // Tercera imagen (índice 2)
+                        } else if (isOwnProfile) {
                           alert('✅ ACCESO CONCEDIDO (DEMO)');
                           setDemoPrivateUnlocked(true);
                         } else {
@@ -1320,6 +1399,19 @@ Información del perfil:
           }}
         />
       )}
+
+      {/* Modal de carrusel de imágenes */}
+      <ImageModal
+        isOpen={showImageModal}
+        onClose={() => setShowImageModal(false)}
+        images={privateImages}
+        currentIndex={selectedImageIndex}
+        onNavigate={navigateCarousel}
+        onLike={handleImageLike}
+        onComment={handleAddComment}
+        isParentalLocked={isParentalLocked}
+        onToggleParental={() => setIsParentalLocked(!isParentalLocked)}
+      />
 
       {/* Modal de reporte */}
       <ReportDialog
