@@ -19,8 +19,7 @@ import {
   XCircle, 
   Baby,
   ChevronLeft,
-  ChevronRight,
-  LogOut
+  ChevronRight
 } from 'lucide-react';
 import { TikTokShareButton } from '@/components/sharing/TikTokShareButton';
 import { trackEvent } from '@/config/posthog.config';
@@ -736,7 +735,7 @@ Información del perfil:
                         }}
                         className="bg-gray-600/80 hover:bg-gray-700/80 text-white flex items-center gap-2 text-sm sm:text-base px-3 sm:px-4 py-2"
                       >
-                        <LogOut className="w-4 h-4" />
+                        <Lock className="w-4 h-4" />
                         <span className="hidden sm:inline">Cerrar Sesión</span>
                         <span className="sm:hidden">Logout</span>
                       </Button>
