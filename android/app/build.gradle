@@ -1,7 +1,7 @@
 
 plugins {
     id 'com.android.application'
-    id 'io.sentry.android.gradle' version '5.12.1'
+    // id 'io.sentry.android.gradle' version '5.12.1' // TEMPORALMENTE DESHABILITADO
 }
 
 android {
@@ -35,8 +35,8 @@ android {
         release {
             def keystorePropertiesFile = rootProject.file("keystore.properties")
             if (keystorePropertiesFile.exists()) {
-                def keystoreProperties = new Properties()
-                keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+                def keystoreProperties = new Properties ()
+                keystoreProperties.load = (new FileInputStream(keystorePropertiesFile))
                 storeFile rootProject.file(keystoreProperties['storeFile'])
                 storePassword keystoreProperties['storePassword']
                 keyAlias keystoreProperties['keyAlias']
@@ -91,13 +91,14 @@ try {
     if (servicesJSON.text) {
         apply plugin: 'com.google.gms.google-services'
     }
-} catch(Exception e) {
+}
+catch (Exception ) {
     logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
 }
 
 
-sentry {
-    org = "complicesconecta"
+sentry
+        {   org = "complicesconecta"
     projectName = "android"
 
     // this will upload your source code to Sentry to show it as part of the stack traces
@@ -111,9 +112,9 @@ sentry {
     autoUploadSourceContext = project.findProperty("SENTRY_AUTH_TOKEN") != null || System.getenv("SENTRY_AUTH_TOKEN") != null
     
     // Skip upload tasks if no auth token is configured
-    tracingInstrumentation {
-        enabled = false
-    }
+    tracingInstrumentation
+            {
+        enabled = false }
 }
 
 // Configurar token de Sentry desde gradle.properties o variable de entorno
@@ -128,3 +129,4 @@ if (sentryToken) {
         logger.warn("Sentry auth token not configured. Skipping ${it.name} task.")
     }
 }
+

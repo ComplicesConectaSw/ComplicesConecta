@@ -29,6 +29,9 @@ interface UseProfileStatsReturn {
   refetch: () => Promise<void>;
   incrementViews: () => Promise<void>;
   incrementLikes: () => Promise<void>;
+  // Datos calculados
+  unlockedAchievements: Achievement[];
+  totalTokensEarned: number;
 }
 
 // Cache simple en memoria
@@ -187,7 +190,10 @@ export function useProfileStats(options: UseProfileStatsOptions = {}): UseProfil
     error,
     refetch: loadAllStats,
     incrementViews,
-    incrementLikes
+    incrementLikes,
+    // Datos adicionales calculados
+    unlockedAchievements,
+    totalTokensEarned
   };
 }
 
