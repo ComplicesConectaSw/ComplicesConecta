@@ -20,7 +20,7 @@ const Navigation = ({ className }: NavigationProps) => {
 
   // Determinar el estilo del navbar desde localStorage para mantener la personalización del tema.
   const [navbarStyle] = usePersistedState<'transparent' | 'solid'>('demo_navbar_style', 'solid');
-  const navbarStyles = getNavbarStyles(navbarStyle || 'solid');
+  const _navbarStyles = getNavbarStyles(navbarStyle || 'solid');
   
   const profileType = getProfileType();
 
@@ -81,12 +81,10 @@ const Navigation = ({ className }: NavigationProps) => {
       {/* Navegación inferior */}
       <nav className={cn(
         "fixed bottom-0 left-0 right-0 z-50",
-        navbarStyles.backgroundClass,
-        navbarStyles.shadowClass,
-        navbarStyles.borderClass ? `border-t ${navbarStyles.borderClass}` : "border-t border-purple-500/40",
-        "backdrop-blur-xl",
+        "bg-gradient-to-r from-purple-900/80 via-purple-800/80 to-blue-900/80",
+        "backdrop-blur-xl border-t border-purple-500/40",
         "px-2 sm:px-4 py-2 sm:py-3 safe-area-pb",
-        "translate-y-0 opacity-100",
+        "translate-y-0 opacity-100 shadow-lg shadow-purple-900/50",
         className
       )}>
         <div className="flex items-center justify-around w-full max-w-full mx-auto overflow-x-auto scrollbar-hide safe-area-inset gap-0.5 sm:gap-1">

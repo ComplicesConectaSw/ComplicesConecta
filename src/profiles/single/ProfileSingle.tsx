@@ -416,16 +416,14 @@ Información del perfil:
           // DEMO: Perfil demo completo para inversor
           const demoProfile: any = {
             id: 'demo-user-123',
-            profile_id: 'CC-2025-001',
             name: 'Ana García',
-            nickname: 'ana_swinger',
             username: '@ana_swinger',
             age: 28,
             gender: 'female',
             interested_in: 'both', // 'male', 'female', 'both'
-            location: 'CDMX, México',
-            bio: 'Explorando el lifestyle swinger con mente abierta 💕',
-            avatar_url: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=200',
+            bio: 'Explorando nuevas experiencias con mente abierta 💫 | Lifestyle enthusiast | CDMX 🇲🇽',
+            location: 'Ciudad de México, México',
+            avatar_url: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face',
             is_verified: true,
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString()
@@ -637,8 +635,8 @@ Información del perfil:
             <CardContent className="p-4 sm:p-6">
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
                 {/* Avatar */}
-                <div className="relative flex-shrink-0">
-                  <div className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden bg-gradient-to-br from-purple-400 to-blue-600 flex items-center justify-center text-white text-2xl sm:text-4xl font-bold">
+                <div className="relative flex-shrink-0 mx-auto sm:mx-0">
+                  <div className="relative w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden bg-gradient-to-br from-purple-400 to-blue-600 flex items-center justify-center text-white text-2xl sm:text-4xl font-bold mx-auto">
                     {profile.avatar_url && profile.avatar_url !== '/placeholder.svg' ? (
                       <img
                         src={profile.avatar_url}

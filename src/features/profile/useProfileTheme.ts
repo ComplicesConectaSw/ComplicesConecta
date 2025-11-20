@@ -310,9 +310,11 @@ export const getThemeDisplayName = (theme?: Theme): string => {
 export const getAvailableThemes = (): { value: Theme; label: string }[] => [
   { value: "light", label: "☀️ Claro" },
   { value: "dark", label: "🌙 Oscuro" },
-  { value: "elegant", label: "Elegante" },
-  { value: "modern", label: "Moderno" },
-  { value: "vibrant", label: "Vibrante" }
+  { value: "elegant", label: "✨ Elegante" },
+  { value: "modern", label: "🚀 Moderno" },
+  { value: "vibrant", label: "🎨 Vibrante" },
+  { value: "demo_premium", label: "👑 Premium Demo" },
+  { value: "demo_couple", label: "💑 Pareja Demo" }
 ];
 
 /**
