@@ -1,8 +1,8 @@
-# 📊 DIAGRAMAS DE FLUJOS v3.6.4 - COMPLICESCONECTA v3.6.3
+# 📊 DIAGRAMAS DE FLUJOS v3.7.1 - COMPLICESCONECTA v3.7.1
 
-**Fecha:** 15 Noviembre 2025  
-**Versión:** 3.6.4  
-**Estado:** ✅ 100% TYPE-SAFE - Errores TypeScript Eliminados - Supabase Alineado - Build Optimizado - Ruta /demo Implementada
+**Fecha:** 20 Noviembre 2025  
+**Versión:** 3.7.1  
+**Estado:** ✅ FEATURES AVANZADAS COMPLETADAS - Modal Carrusel + Control Parental + Build Limpio
 
 ---
 

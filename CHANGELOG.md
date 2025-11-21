@@ -2,6 +2,56 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.7.1] - 2025-11-20
+
+### ✨ Features Avanzadas Implementadas
+- **Modal de Imagen Expandida**: Carrusel completo con navegación flechas + dots
+- **Swipe Gestures**: Navegación táctil en móvil + teclado
+- **Likes Individuales**: Sistema de likes por imagen con contador animado
+- **Comentarios por Imagen**: Sistema de comentarios con prompt interactivo
+- **Control Parental Avanzado**: PIN 4 dígitos + auto-bloqueo configurable
+- **3 Niveles Restricción**: Soft (sin auto-bloqueo), Medium (5min), Strict (5min + restricciones)
+- **Estados Persistentes**: Configuración guardada en localStorage
+- **Integración Completa**: ProfileSingle + ProfileCouple con modal unificado
+
+### 🔧 Mejoras Técnicas
+- **ImageModal.tsx**: Componente nuevo (210 líneas) con navegación completa
+- **ParentalControl.tsx**: Componente nuevo (220 líneas) con lógica avanzada
+- **Build Optimizado**: 1,021.01 kB (293.02 kB gzip) - 24.41s
+- **Tests E2E**: 9/9 pasando (25.8s) - Validación completa
+- **Manual Usuario**: Documentación completa v3.7.1 (300+ líneas)
+
+### 🐛 Fixes
+- **ProfileCouple.tsx**: Corregidos tipos partner1_name → partner1_first_name
+- **Variables no usadas**: Prefijadas con _ para cumplir linting
+- **CSS inline styles**: Documentados como legítimos para barras dinámicas
+- **ParentalControl**: Corregidas referencias a funciones renombradas
+
+## [3.7.0] - 2025-11-16
+
+### ✨ Agregado
+- 🏆 Sistema completo de recompensas para beta-testers (4 niveles)
+- 💰 Economía de tokens para salas (Pay-to-Enter & Earn)
+- 📋 Sistema de límites por plan (Free/Basic/Premium/VIP)
+- ⚖️ Documentos legales completos (Términos, Privacidad, Deslinde)
+- 🗄️ 10 tablas Supabase para sistema de recompensas
+- 🎮 Misiones semanales y sistema de puntos
+- 🚨 Sistema anti-cheating
+- 📊 Estrategia completa beta → lanzamiento
+
+### 🔧 Corregido
+- ✅ TemplateDemo: aria-labels de accesibilidad
+- ✅ Discover: z-index background (pantalla oscura)
+- ✅ Trigger PostgreSQL: columna GENERATED
+- ✅ Chat.tsx: Estructura JSX estabilizada
+
+### 📚 Documentación
+- Guía completa sistema de recompensas
+- Estrategia de monetización
+- Documentos legales (Ley Olimpia incluida)
+- Índice legal completo
+- Resumen de sesións file.
+
 ## [3.6.6] - 2025-11-19
 
 ### 🚨 FEATURES CRÍTICAS (Ley Olimpia & Demo Inversor)

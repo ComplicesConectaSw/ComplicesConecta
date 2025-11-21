@@ -1,7 +1,7 @@
 # 📝 RELEASE NOTES - ComplicesConecta
 
-**Última Actualización:** 15 de Noviembre, 2025  
-**Versión Actual:** v3.6.3  
+**Última Actualización:** 20 de Noviembre, 2025  
+**Versión Actual:** v3.7.1  
 **Estado:** ✅ **PRODUCTION READY - ENTERPRISE GRADE - AI-NATIVE - BLOCKCHAIN INTEGRADO - 100% TYPE-SAFE - SISTEMA COMPLETO SIN ERRORES TYPESCRIPT**
 
 > **📚 Para guía completa de instalación y configuración, consulta [INSTALACION_SETUP_v3.5.0.md](./INSTALACION_SETUP_v3.5.0.md)**  
